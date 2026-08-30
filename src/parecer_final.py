@@ -21,6 +21,27 @@ def prepare(case_root):
     payload={"liberado_em":now_iso(),"modelo_final_env":"FAROL_FINAL_MODEL","instrucao":"Atue como especialista sênior em captação, execução e prestação de contas. Resolva divergências com base em evidência, recalcule os requisitos, não invente fatos e produza o plano final, o manual do presidente e a matriz de prestação de contas.","respostas_independentes":responses}
     write_json(case_root/"parecer_final/pacote_liberado.json",payload); return {"status":"liberado","respostas":7}
 
+def consolidar(case_root) -> dict:
+    """Resumo por conselheiro: ponto de vista, personalidade, vantagens e
+    desvantagens — insumo do parecer final e do pacote do presidente."""
+    case_root=Path(case_root)
+    manifest=load_json(case_root/"conselho/manifesto.json")
+    conselheiros=[]
+    for index,item in enumerate(manifest["conselheiros"],1):
+        path=case_root/"conselho"/f"{index:02d}_{item['ponto_de_vista']}"/"resposta.json"
+        if not path.exists(): continue
+        analise=load_json(path)
+        conselheiros.append({
+            "ponto_de_vista":item["ponto_de_vista"],
+            "personalidade":item["personalidade"].get("nome",item["personalidade"].get("id","?")),
+            "vantagens":(analise.get("achados_beneficos") or [])[:4],
+            "desvantagens":(analise.get("achados_prejudiciais") or [])[:4],
+            "recomendacao":analise.get("recomendacao"),
+            "pontuacao_comprovada":analise.get("pontuacao_comprovada"),
+            "pontuacao_potencial":analise.get("pontuacao_potencial"),
+        })
+    return {"rodada":manifest.get("rodada"),"conselheiros":conselheiros,"completo":len(conselheiros)==7}
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         raise SystemExit("uso: python -m src.parecer_final dados/associacoes/SLUG/farol/casos/ID")

@@ -15,3 +15,7 @@
 13. Conselheiros de IA são execuções independentes. Cada um recebe apenas seu pacote; respostas alheias só entram no parecer final depois das sete conclusões.
 14. Personalidades históricas são lentes simuladas inspiradas em legados públicos, nunca falas ou endossos reais.
 15. Arquivos brutos de associação, PII, dados bancários e fotos sem autorização permanecem fora do Git público.
+16. Documentos em `submissao/` saem prontos, em nome da entidade, sem referência a IA, ferramentas ou método de produção e sem placeholders; toda orientação vai ao `07_pacote_presidente.md`, objetiva e resumida.
+17. O modelo de IA é escolhido POR TAREFA em `config/ia.json` (extração econômica; conselho intermediário; parecer final com o mais avançado). Nunca grave modelo em código-fonte; nunca chame IA fora das etapas essenciais; registre todo uso em `estado/ia_uso.jsonl`.
+18. A recoleta usa `merge_registro`: status protegidos e campos humanos (`requisitos`, `notas`, `verificado_*`) jamais são sobrescritos por automação.
+19. Pista secundária (imprensa/rede social/diário sem URL do edital) só vira oportunidade com a URL oficial confirmada (`scripts/confirmar_pista.py` ou verificação assistida com evidência).

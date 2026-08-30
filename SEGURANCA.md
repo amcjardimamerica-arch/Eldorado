@@ -1,6 +1,11 @@
 # Segurança
 
-- Use somente fontes HTTPS incluídas em `config/fontes.json`.
+- Use somente fontes HTTPS incluídas em `config/fontes.json` (ou APIs oficiais de `config/coletores_api.json`).
+- A coleta respeita `robots.txt` e aplica intervalo entre requisições (`politica.intervalo_segundos`); o User-Agent identifica o projeto.
+- Pistas de imprensa/redes (camada capilar) ficam em arquivo separado e **nunca** entram na base primária sem confirmação da URL oficial.
+- A recoleta nunca rebaixa status definidos por humano nem apaga `requisitos`/`notas` (merge preservador com trilha em `dados/editais/*/historico.jsonl`).
+- Chamadas de IA: somente com `FAROL_AI_API_KEY` em GitHub Actions Secrets; modelo por tarefa em `config/ia.json`; payloads passam por checagem de dados proibidos; respostas passam pelo filtro de injeção (PT e EN); uso auditado em `estado/ia_uso.jsonl`. Sem credencial, nada é simulado.
+- Documentos de `submissao/` são varridos antes de aceitos: referência a IA/ferramentas ou placeholder pendente reprova o arquivo para `rascunhos/`, com o motivo listado ao presidente.
 - Não armazene chaves no código. Segredos futuros devem ficar em GitHub Actions Secrets.
 - O token automático recebe apenas `contents: write` e `issues: write` no fluxo diário.
 - O DOCX original da associação não é publicado quando contém PII. A camada pública usa texto/tabelas compactados e sanitizados; imagens são apenas catalogadas por hash até autorização.
