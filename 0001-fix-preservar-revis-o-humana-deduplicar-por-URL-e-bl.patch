@@ -1,0 +1,568 @@
+From 1793fa4dfa5f65588e2f8905ca1e88ba6b283172 Mon Sep 17 00:00:00 2001
+From: "Claude (Cowork)" <noreply@anthropic.com>
+Date: Sun, 30 Aug 2026 14:47:00 +0000
+Subject: [PATCH 1/3] =?UTF-8?q?fix:=20preservar=20revis=C3=A3o=20humana,?=
+ =?UTF-8?q?=20deduplicar=20por=20URL=20e=20blindar=20a=20coleta?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- merge_registro: recoleta nunca rebaixa status revisado nem apaga requisitos/notas (B1)
+- rascunhos de caso nunca são sobrescritos; triagem idempotente (B2/S4)
+- dedup global por URL canônica com fontes_observadas acumuladas
+- robots.txt + intervalo entre requisições + suporte a RSS/Atom na coleta
+- sentinela compara conjunto de candidatos, não bytes brutos (B7)
+- padrões de prompt injection em português (B5)
+- scripts/promover.py: verificação humana com auditoria (S1)
+- .gitkeep em dados/editais e concurrency na revisão mensal (B3/B8)
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_0148zW29BKojQvQpu2RUypko
+---
+ .github/workflows/revisao-mensal.yml   |   3 +
+ .github/workflows/sentinela-diaria.yml |   3 +-
+ dados/editais/.gitkeep                 |   0
+ dados/oportunidades/.gitkeep           |   0
+ scripts/promover.py                    |  59 +++++++++++
+ src/casos.py                           |  13 ++-
+ src/eldorado.py                        | 140 ++++++++++++++++---------
+ src/nucleo.py                          |  96 +++++++++++++++++
+ src/sentinela.py                       |  22 ++--
+ src/triagem.py                         |   2 +
+ 10 files changed, 274 insertions(+), 64 deletions(-)
+ create mode 100644 dados/editais/.gitkeep
+ create mode 100644 dados/oportunidades/.gitkeep
+ create mode 100644 scripts/promover.py
+
+diff --git a/.github/workflows/revisao-mensal.yml b/.github/workflows/revisao-mensal.yml
+index eeeb618..7beecdb 100644
+--- a/.github/workflows/revisao-mensal.yml
++++ b/.github/workflows/revisao-mensal.yml
+@@ -6,6 +6,9 @@ on:
+ permissions:
+   contents: write
+   issues: write
++concurrency:
++  group: eldorado-repo-writes
++  cancel-in-progress: false
+ jobs:
+   revisar:
+     runs-on: ubuntu-latest
+diff --git a/.github/workflows/sentinela-diaria.yml b/.github/workflows/sentinela-diaria.yml
+index c059b15..369eda2 100644
+--- a/.github/workflows/sentinela-diaria.yml
++++ b/.github/workflows/sentinela-diaria.yml
+@@ -22,7 +22,8 @@ jobs:
+         run: |
+           git config user.name "eldorado-bot"
+           git config user.email "eldorado-bot@users.noreply.github.com"
+-          git add estado/fila_fontes.json estado/ultima_sentinela.json
++          git pull --rebase --autostash origin main || true
++          git add -A estado
+           git diff --cached --quiet && exit 0
+           git commit -m "dados: sentinela diária $(date -u +%F)"
+           git push
+diff --git a/dados/editais/.gitkeep b/dados/editais/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/dados/oportunidades/.gitkeep b/dados/oportunidades/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/scripts/promover.py b/scripts/promover.py
+new file mode 100644
+index 0000000..24f2f3a
+--- /dev/null
++++ b/scripts/promover.py
+@@ -0,0 +1,59 @@
++"""Ferramenta HUMANA de verificação: promove ou rebaixa o status de uma
++oportunidade com trilha de auditoria. É o elo que autoriza o Farol.
++
++Uso:
++  python scripts/promover.py listar [capturada|pista...]        # pendentes
++  python scripts/promover.py ID verificada_primaria --por "Nome" [--nota "..."]
++  python scripts/promover.py ID descartada --por "Nome" --nota "motivo"
++"""
++from __future__ import annotations
++import argparse, json, sys
++from pathlib import Path
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++from src.nucleo import ROOT, append_jsonl, carregar_oportunidades, gravar_oportunidades, now_iso
++
++STATUS_HUMANOS = [
++    "verificada_primaria", "verificada_dupla", "elegivel", "inelegivel",
++    "em_preparacao", "submetida", "selecionada", "nao_selecionada",
++    "em_execucao", "prestacao_de_contas", "encerrada", "descartada", "capturada",
++]
++
++def promover(oid: str, status: str, por: str, nota: str | None = None, registros: dict | None = None) -> dict:
++    if status not in STATUS_HUMANOS:
++        raise SystemExit(f"status inválido; use um de: {', '.join(STATUS_HUMANOS)}")
++    proprio = registros is None
++    registros = carregar_oportunidades() if proprio else registros
++    if oid not in registros:
++        raise SystemExit(f"oportunidade {oid} não encontrada na base")
++    item = registros[oid]
++    anterior = item.get("status")
++    item.update({"status": status, "verificado_em": now_iso(), "verificado_por": por})
++    if nota:
++        item.setdefault("notas", []).append({"em": now_iso(), "por": por, "texto": nota})
++    if proprio:
++        gravar_oportunidades(registros)
++        append_jsonl(ROOT / "estado/auditoria.jsonl", {
++            "evento": "promocao_status", "oportunidade": oid,
++            "de": anterior, "para": status, "por": por, "em": now_iso(),
++        })
++    return item
++
++def listar(filtro: str | None) -> None:
++    registros = carregar_oportunidades()
++    linhas = [x for x in registros.values() if not filtro or (x.get("status") or "").startswith(filtro)]
++    linhas.sort(key=lambda x: (x.get("status", ""), x.get("coletado_em", "")))
++    for x in linhas:
++        print(f'{x["id"]}  {x.get("status", "?"):28} {x.get("uf") or "BR":5} {x.get("titulo", "")[:80]}')
++        print(f'{"":2}{x.get("url", "")}')
++    print(f"total: {len(linhas)}")
++
++if __name__ == "__main__":
++    if len(sys.argv) >= 2 and sys.argv[1] == "listar":
++        listar(sys.argv[2] if len(sys.argv) > 2 else None); raise SystemExit(0)
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument("id"); p.add_argument("status")
++    p.add_argument("--por", default="revisao_humana")
++    p.add_argument("--nota", default=None)
++    a = p.parse_args()
++    item = promover(a.id, a.status, a.por, a.nota)
++    print(json.dumps({"id": item["id"], "status": item["status"], "titulo": item.get("titulo")}, ensure_ascii=False, indent=2))
+diff --git a/src/casos.py b/src/casos.py
+index 7162015..27c69ee 100644
+--- a/src/casos.py
++++ b/src/casos.py
+@@ -103,15 +103,20 @@ def president_manual(profile,opp):
+ Os marcos acima são preventivos; prevalecem os prazos expressos no edital e no instrumento assinado.
+ '''
+ 
++def _escrever_uma_vez(path: Path, texto: str) -> None:
++    """Rascunhos podem ser editados por humanos: NUNCA sobrescrever os existentes."""
++    if not path.exists():
++        path.write_text(texto, encoding="utf-8")
++
+ def prepare(profile: dict, opportunity: dict, decision: dict) -> Path:
+     assoc_root=ROOT/"dados/associacoes"/profile["id"]
+     if assoc_root.resolve().parent!=(ROOT/"dados/associacoes").resolve(): raise ValueError("universo inválido")
+     root=assoc_root/"farol/casos"/opportunity["id"]; root.mkdir(parents=True,exist_ok=True)
+     write_json(root/"01_enquadramento.json",{"gerado_em":now_iso(),**decision,"fundamentos":decision.get("razoes",[]),"ressalvas":decision.get("riscos",[])})
+-    (root/"02_plano_trabalho.md").write_text(plan_text(profile,opportunity,decision),encoding="utf-8")
+-    (root/"03_manual_presidente.md").write_text(president_manual(profile,opportunity),encoding="utf-8")
+-    (root/"04_documentos_necessarios.md").write_text("# Documentos necessários\n\n- [ ] Edital e retificações\n- [ ] Estatuto registrado\n- [ ] Ata e representação vigente\n- [ ] Certidões exigidas\n- [ ] Comprovantes de experiência\n- [ ] Inscrições em conselhos/fundos, se exigidas\n- [ ] Plano e orçamento aprovados\n- [ ] Declarações do edital\n- [ ] Autorizações de imagem e tratamento de dados\n- [ ] Pasta contábil e bancária exclusiva\n",encoding="utf-8")
+-    (root/"05_prestacao_contas.md").write_text("# Matriz de prestação de contas\n\n| Meta | Entrega | Documento fiscal | Pagamento | Evidência do objeto | Status |\n|---|---|---|---|---|---|\n| [M1] | [ ] | [ ] | [ ] | [ ] | pendente |\n",encoding="utf-8")
++    _escrever_uma_vez(root/"02_plano_trabalho.md",plan_text(profile,opportunity,decision))
++    _escrever_uma_vez(root/"03_manual_presidente.md",president_manual(profile,opportunity))
++    _escrever_uma_vez(root/"04_documentos_necessarios.md","# Documentos necessários\n\n- [ ] Edital e retificações\n- [ ] Estatuto registrado\n- [ ] Ata e representação vigente\n- [ ] Certidões exigidas\n- [ ] Comprovantes de experiência\n- [ ] Inscrições em conselhos/fundos, se exigidas\n- [ ] Plano e orçamento aprovados\n- [ ] Declarações do edital\n- [ ] Autorizações de imagem e tratamento de dados\n- [ ] Pasta contábil e bancária exclusiva\n")
++    _escrever_uma_vez(root/"05_prestacao_contas.md","# Matriz de prestação de contas\n\n| Meta | Entrega | Documento fiscal | Pagamento | Evidência do objeto | Status |\n|---|---|---|---|---|---|\n| [M1] | [ ] | [ ] | [ ] | [ ] | pendente |\n")
+     conselho.prepare(root,profile,opportunity,decision)
+     return root
+ 
+diff --git a/src/eldorado.py b/src/eldorado.py
+index 896ee52..eee473f 100644
+--- a/src/eldorado.py
++++ b/src/eldorado.py
+@@ -3,18 +3,24 @@ from __future__ import annotations
+ import html
+ import json
+ import re
++import time
+ from html.parser import HTMLParser
+-from pathlib import Path
+ from urllib.error import HTTPError, URLError
+ from urllib.parse import urljoin, urlsplit
+ from urllib.request import Request, build_opener, HTTPRedirectHandler
++from xml.etree import ElementTree as ET
+ 
+-from .nucleo import ROOT, append_jsonl, canonical_url, has_prompt_injection, load_json, now_iso, sha256, slug, validate_public_https, write_json
++from .nucleo import (
++    ROOT, append_jsonl, canonical_url, carregar_oportunidades, gravar_oportunidades,
++    has_prompt_injection, load_json, merge_registro, novo_id, now_iso,
++    robots_permite, sha256, validate_public_https, write_json,
++)
+ 
+-TERMS = re.compile(r"\b(edital|chamada pública|seleção pública|chamamento público|doação|patrocínio|apoio financeiro|fundo|emenda|incentivo)\b", re.I)
+-DISCOVERY = re.compile(r"(edital|chamad|chamament|sele[cç][aã]o|oportunidade|convenio|parceria|fomento|doa[cç][aã]o|patrocin|fundo|emenda|incentivo)", re.I)
++TERMS = re.compile(r"\b(edital|chamada pública|seleção pública|chamamento público|credenciamento|doação|patrocínio|apoio financeiro|fomento|fundo|emenda|incentivo|prêmio)\b", re.I)
++DISCOVERY = re.compile(r"(edital|chamad|chamament|credenciament|sele[cç][aã]o|oportunidade|convenio|parceria|fomento|doa[cç][aã]o|patrocin|fundo|emenda|incentivo|premio|pr[êe]mio|transparencia|licitac)", re.I)
+ DEADLINE = re.compile(r"\b(?:at[eé]|prazo|inscri(?:ção|ções))\D{0,25}(\d{1,2}/\d{1,2}/20\d{2})", re.I)
+ YEAR = re.compile(r"\b(20(?:2[0-9]|1[0-9]))\b")
++XML_TYPES = {"application/rss+xml", "application/atom+xml", "application/xml", "text/xml"}
+ 
+ class Links(HTMLParser):
+     def __init__(self):
+@@ -36,40 +42,63 @@ class SafeRedirect(HTTPRedirectHandler):
+ def fetch(source: dict, policy: dict) -> tuple[bytes, str, str]:
+     url=source["url"]; host=urlsplit(url).hostname
+     validate_public_https(url, host)
+-    req=Request(url, headers={"User-Agent":policy["user_agent"],"Accept":"text/html,application/rss+xml,application/atom+xml,text/plain;q=0.8,*/*;q=0.2"})
++    req=Request(url, headers={"User-Agent":policy["user_agent"],"Accept":"text/html,application/rss+xml,application/atom+xml,application/json,text/plain;q=0.8,*/*;q=0.2"})
+     with build_opener(SafeRedirect(host)).open(req, timeout=policy["timeout_segundos"]) as response:
+         final=response.geturl(); validate_public_https(final, host)
+         ctype=response.headers.get_content_type()
+         data=response.read(policy["max_bytes"]+1)
+         if len(data)>policy["max_bytes"]: raise ValueError("resposta excede limite")
+-        if ctype not in {"text/html","text/plain","application/rss+xml","application/atom+xml","application/xml","text/xml"}:
++        if ctype not in {"text/html","text/plain","application/json"} | XML_TYPES:
+             raise ValueError(f"tipo não permitido: {ctype}")
+         return data, final, ctype
+ 
+-def candidates(source: dict, data: bytes, final_url: str) -> list[dict]:
++def montar_item(source: dict, url: str, label: str, extra: dict | None = None) -> dict:
++    deadline=DEADLINE.search(label); year=YEAR.search(label)
++    item={
++        "id":novo_id(url), "status":"capturada", "titulo":label[:300],
++        "url":url, "fonte_id":source["id"], "fonte_nome":source["nome"], "territorio":source.get("territorio","BR"),
++        "tipo_fonte":source.get("tipo"), "confianca":source.get("confianca"), "coletado_em":now_iso(),
++        "nivel":source.get("nivel"), "uf":source.get("uf"), "municipio":source.get("municipio"),
++        "areas_fonte":source.get("areas") or [],
++        "prazo_texto":deadline.group(1) if deadline else None, "ano_referencia":int(year.group(1)) if year else None,
++        "evidencia":label[:500], "hash_evidencia":sha256(label.encode()),
++    }
++    if extra: item.update(extra)
++    return item
++
++def _host_permitido(source: dict, url: str, final_url: str) -> bool:
++    host=urlsplit(url).hostname or ""
++    allowed=source.get("hosts_links") or [urlsplit(source.get("url") or final_url).hostname]
++    return urlsplit(url).scheme=="https" and any(host == a or host.endswith("." + a) for a in allowed)
++
++def candidates(source: dict, data: bytes, final_url: str, ctype: str = "text/html") -> list[dict]:
+     text=data.decode("utf-8", "replace")
+     if has_prompt_injection(text):
+-        return [{"status":"quarentena_prompt_injection","titulo":source["nome"],"url":final_url,"evidencia":"Conteúdo externo contém padrão de controle de modelo."}]
+-    parser=Links(); parser.feed(text)
++        return [{"status":"quarentena_prompt_injection","titulo":source["nome"],"url":final_url,
++                 "pagina":canonical_url(final_url),"evidencia":"Conteúdo externo contém padrão de controle de modelo.","registrado_em":now_iso()}]
+     out=[]
+-    for href,label in parser.links:
+-        label=html.unescape(re.sub(r"\s+"," ",label)).strip()
+-        if len(label)<5 or not TERMS.search(label): continue
+-        url=canonical_url(urljoin(final_url,href))
+-        if urlsplit(url).scheme!="https": continue
+-        host=urlsplit(url).hostname or ""
+-        allowed=source.get("hosts_links") or [urlsplit(source.get("url") or final_url).hostname]
+-        if not any(host == item or host.endswith("." + item) for item in allowed): continue
+-        deadline=DEADLINE.search(label); year=YEAR.search(label)
+-        out.append({
+-            "id":sha256((source["id"]+"|"+url).encode())[:20], "status":"capturada", "titulo":label[:300],
+-            "url":url, "fonte_id":source["id"], "fonte_nome":source["nome"], "territorio":source["territorio"],
+-            "tipo_fonte":source["tipo"], "confianca":source["confianca"], "coletado_em":now_iso(),
+-            "nivel":source.get("nivel"), "uf":source.get("uf"), "municipio":source.get("municipio"),
+-            "areas_fonte":source.get("areas") or [],
+-            "prazo_texto":deadline.group(1) if deadline else None, "ano_referencia":int(year.group(1)) if year else None,
+-            "evidencia":label[:500], "hash_evidencia":sha256(label.encode())
+-        })
++    if ctype in XML_TYPES or text.lstrip()[:100].startswith("<?xml"):
++        try: root=ET.fromstring(data)
++        except ET.ParseError: root=None
++        if root is not None:
++            ns={"atom":"http://www.w3.org/2005/Atom"}
++            entries=root.findall(".//item")+root.findall(".//atom:entry",ns)
++            for node in entries:
++                title=(node.findtext("title") or node.findtext("atom:title",namespaces=ns) or "").strip()
++                link=node.findtext("link") or ""
++                if not link:
++                    el=node.find("atom:link",ns); link=el.get("href") if el is not None else ""
++                link=canonical_url(urljoin(final_url,link.strip()))
++                if len(title)>=5 and TERMS.search(title) and _host_permitido(source,link,final_url):
++                    out.append(montar_item(source,link,title))
++    else:
++        parser=Links(); parser.feed(text)
++        for href,label in parser.links:
++            label=html.unescape(re.sub(r"\s+"," ",label)).strip()
++            if len(label)<5 or not TERMS.search(label): continue
++            url=canonical_url(urljoin(final_url,href))
++            if not _host_permitido(source,url,final_url): continue
++            out.append(montar_item(source,url,label))
+     unique={item["id"]:item for item in out}
+     return list(unique.values())
+ 
+@@ -92,43 +121,46 @@ def discover_pages(source: dict, data: bytes, final_url: str) -> list[str]:
+     return list(dict.fromkeys(found))
+ 
+ def record_edital_history(item: dict, previous: dict | None) -> None:
+-    tracked=("titulo","url","status","prazo_texto","ano_referencia","evidencia","hash_evidencia")
++    tracked=("titulo","url","status","prazo_texto","ano_referencia","evidencia","hash_evidencia","requisitos")
+     changes={key:{"anterior":previous.get(key) if previous else None,"atual":item.get(key)} for key in tracked if not previous or previous.get(key)!=item.get(key)}
+     if not changes: return
+     folder=ROOT/"dados/editais"/item["id"]; folder.mkdir(parents=True,exist_ok=True)
+-    append_jsonl(folder/"historico.jsonl",{"registrado_em":now_iso(),"fonte_id":item["fonte_id"],"alteracoes":changes})
++    append_jsonl(folder/"historico.jsonl",{"registrado_em":now_iso(),"fonte_id":item.get("fonte_id"),"alteracoes":changes})
+     write_json(folder/"atual.json",item)
+ 
+-def crawl_source(source: dict, policy: dict, existing: dict) -> tuple[list[dict],dict]:
++def crawl_source(source: dict, policy: dict) -> tuple[list[dict],dict]:
+     state_path=ROOT/"estado/fontes"/(source["id"]+".json")
+     state=load_json(state_path) if state_path.exists() else {"paginas":{},"conhecidas":[]}
+     priority=[source["url"],*state.get("conhecidas",[])]
+-    queue=list(dict.fromkeys(priority)); visited=set(); found=[]; changed_pages=0
+-    limit=int(policy.get("max_paginas_por_fonte",40))
+-    while queue and len(visited)<limit:
+-        url=queue.pop(0)
++    queue=list(dict.fromkeys(priority)); visited=set(); found=[]; changed_pages=0; robots_skips=0
++    limit=int(source.get("max_paginas") or policy.get("max_paginas_por_fonte",40))
++    interval=float(policy.get("intervalo_segundos",1))
++    for url in iter(lambda: queue.pop(0) if queue else None, None):
++        if len(visited)>=limit: break
+         if url in visited or not allowed_url(source,url): continue
+         visited.add(url)
+-        data,final,_=fetch({**source,"url":url},policy); digest=sha256(data)
++        if policy.get("respeitar_robots",True) and not robots_permite(url,policy["user_agent"]):
++            robots_skips+=1; continue
++        data,final,ctype=fetch({**source,"url":url},policy); digest=sha256(data)
++        if interval: time.sleep(interval)
+         old=state.get("paginas",{}).get(canonical_url(final))
+         if old==digest: continue
+         changed_pages+=1; state.setdefault("paginas",{})[canonical_url(final)]=digest
+-        found.extend(candidates(source,data,final))
+-        for discovered in discover_pages(source,data,final):
+-            if discovered not in visited and discovered not in queue: queue.append(discovered)
++        found.extend(candidates(source,data,final,ctype))
++        if ctype=="text/html":
++            for discovered in discover_pages(source,data,final):
++                if discovered not in visited and discovered not in queue: queue.append(discovered)
+     known=list(dict.fromkeys([*state.get("conhecidas",[]),*visited]))[:limit]
+-    state.update({"conhecidas":known,"ultima_verificacao_completa":now_iso(),"paginas_alteradas":changed_pages})
++    state.update({"conhecidas":known,"ultima_verificacao_completa":now_iso(),"paginas_alteradas":changed_pages,"bloqueadas_por_robots":robots_skips})
+     write_json(state_path,state)
+     return found,state
+ 
++MODOS_CRAWL={"html_publico","rss_publico"}
++
+ def run() -> dict:
+-    cfg=load_json(ROOT/"config/fontes.json"); scope=load_json(ROOT/"config/escopo.json"); db=ROOT/"dados/oportunidades/oportunidades.jsonl"
+-    existing={}
+-    if db.exists():
+-        for line in db.read_text(encoding="utf-8").splitlines():
+-            if line.strip():
+-                item=json.loads(line); existing[item["id"]]=item
+-    report={"executado_em":now_iso(),"fontes_catalogadas":len(cfg["fontes"]),"fontes_total":0,"fontes_ok":0,"fontes_falha":0,"fontes_fora_escopo":0,"fontes_manuais":0,"novas":0,"quarentena":0,"falhas":[],"escopo":scope}
++    cfg=load_json(ROOT/"config/fontes.json"); scope=load_json(ROOT/"config/escopo.json")
++    existing=carregar_oportunidades()
++    report={"executado_em":now_iso(),"fontes_catalogadas":len(cfg["fontes"]),"fontes_total":0,"fontes_ok":0,"fontes_falha":0,"fontes_fora_escopo":0,"fontes_manuais":0,"fontes_api":0,"novas":0,"atualizadas":0,"quarentena":0,"falhas":[],"escopo":{k:scope.get(k) for k in ("ufs_ativas","niveis_ativos")}}
+     queued=set()
+     queue_path=ROOT/"estado/fila_fontes.json"
+     if queue_path.exists(): queued=set(load_json(queue_path).get("fontes",[]))
+@@ -137,21 +169,25 @@ def run() -> dict:
+     for source in sources:
+         if not source.get("ativa"): continue
+         if not source_in_scope(source,scope): report["fontes_fora_escopo"]+=1; continue
+-        if source.get("modo","html_publico") not in cfg["politica"].get("modos_coleta_permitidos",[]): report["fontes_manuais"]+=1; continue
++        modo=source.get("modo","html_publico")
++        if modo.startswith("api_"): report["fontes_api"]+=1; continue  # tratadas em src.coletores_api
++        if modo not in MODOS_CRAWL or modo not in cfg["politica"].get("modos_coleta_permitidos",[]):
++            report["fontes_manuais"]+=1; continue
+         report["fontes_total"]+=1
+         try:
+-            rows,state=crawl_source(source,cfg["politica"],existing); report["fontes_ok"]+=1; report["paginas_alteradas"]+=state["paginas_alteradas"]
++            rows,state=crawl_source(source,cfg["politica"]); report["fontes_ok"]+=1; report["paginas_alteradas"]+=state["paginas_alteradas"]
+             for item in rows:
+                 if item["status"].startswith("quarentena"):
+                     report["quarentena"]+=1; append_jsonl(ROOT/"estado/quarentena.jsonl",item); continue
+                 previous=existing.get(item["id"])
++                merged=merge_registro(previous,item)
+                 if previous is None: report["novas"]+=1
+-                record_edital_history(item,previous)
+-                existing[item["id"]]=item
++                elif merged!=previous: report["atualizadas"]+=1
++                record_edital_history(merged,previous)
++                existing[item["id"]]=merged
+         except (HTTPError,URLError,OSError,ValueError) as exc:
+             report["fontes_falha"]+=1; report["falhas"].append({"fonte":source["id"],"erro":type(exc).__name__})
+-    db.parent.mkdir(parents=True,exist_ok=True)
+-    db.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in sorted(existing.values(),key=lambda v:v["id"])),encoding="utf-8")
++    gravar_oportunidades(existing)
+     write_json(ROOT/"estado/ultima_execucao.json",report)
+     write_json(queue_path,{"fontes":[],"consumido_em":now_iso()})
+     append_jsonl(ROOT/"estado/auditoria.jsonl",{"evento":"coleta_diaria",**report})
+diff --git a/src/nucleo.py b/src/nucleo.py
+index f185993..59c2a0b 100644
+--- a/src/nucleo.py
++++ b/src/nucleo.py
+@@ -8,21 +8,44 @@ import socket
+ import unicodedata
+ from datetime import datetime, timezone
+ from pathlib import Path
++from urllib import robotparser
+ from urllib.parse import urlsplit, urlunsplit
++from urllib.request import Request, urlopen
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+ 
+ INJECTION_PATTERNS = [
+     re.compile(p, re.I) for p in (
++        # inglês
+         r"ignore .{0,40}(instruction|prompt|message)",
+         r"disregard (all|any|the|previous|prior)",
+         r"system prompt",
+         r"prompt injection",
+         r"reveal (the )?(prompt|secret|token)",
+         r"you are (chatgpt|claude|an ai)",
++        # português — o conteúdo coletado é brasileiro
++        r"ignore\s+(todas\s+)?(as\s+)?(instru[çc]|regras|mensagens)",
++        r"desconsidere\s+(tudo|todas|as\s+instru[çc]|o\s+prompt)",
++        r"esque[çc]a\s+(tudo|todas|as\s+instru[çc])",
++        r"revele\s+(o\s+)?(prompt|segredo|token|senha|chave)",
++        r"voc[êe]\s+[ée]\s+(o\s+)?(chatgpt|claude|gemini|uma\s+ia|um\s+modelo)",
++        r"novo\s+prompt\s+d[oe]\s+sistema",
++        r"aja\s+como\s+se\s+(n[ãa]o\s+houvesse|as\s+regras)",
+     )
+ ]
+ 
++# Estados definidos por revisão humana (ou verificação assistida auditada).
++# A recoleta automática NUNCA rebaixa um destes estados nem apaga campos humanos.
++STATUS_PROTEGIDOS = {
++    "verificada_primaria", "verificada_dupla", "elegivel", "inelegivel",
++    "em_preparacao", "submetida", "selecionada", "nao_selecionada",
++    "em_execucao", "prestacao_de_contas", "encerrada", "descartada",
++}
++CAMPOS_PRESERVADOS = (
++    "requisitos", "requisitos_validados", "requisitos_fonte", "notas",
++    "verificado_em", "verificado_por", "descoberto_em",
++)
++
+ def now_iso() -> str:
+     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+ 
+@@ -52,6 +75,79 @@ def has_prompt_injection(text: str) -> bool:
+     sample = text[:250_000]
+     return any(p.search(sample) for p in INJECTION_PATTERNS)
+ 
++def novo_id(url: str) -> str:
++    """Identificador global por URL canônica: o mesmo edital visto por fontes
++    diferentes recebe o mesmo id (deduplicação entre fontes)."""
++    return sha256(("opp|" + canonical_url(url)).encode())[:20]
++
++def merge_registro(anterior: dict | None, novo: dict) -> dict:
++    """Funde uma observação nova com o registro existente sem destruir trabalho
++    humano: status protegido nunca regride e campos preservados permanecem."""
++    if not anterior:
++        novo.setdefault("descoberto_em", novo.get("coletado_em"))
++        novo["fontes_observadas"] = sorted({f for f in [novo.get("fonte_id")] if f})
++        return novo
++    m = {**anterior, **novo}
++    if anterior.get("status") in STATUS_PROTEGIDOS:
++        m["status"] = anterior["status"]
++    for campo in CAMPOS_PRESERVADOS:
++        if anterior.get(campo) is not None:
++            m[campo] = anterior[campo]
++    m["descoberto_em"] = anterior.get("descoberto_em") or anterior.get("coletado_em") or novo.get("coletado_em")
++    fontes = {*(anterior.get("fontes_observadas") or []), anterior.get("fonte_id"), novo.get("fonte_id")}
++    m["fontes_observadas"] = sorted(f for f in fontes if f)
++    return m
++
++_ROBOTS_CACHE: dict = {}
++
++def robots_permite(url: str, agente: str) -> bool:
++    """Consulta e respeita o robots.txt do host (cache por execução).
++    Falha na leitura do robots => permite, registrando comportamento padrão."""
++    host = urlsplit(url).hostname or ""
++    if host not in _ROBOTS_CACHE:
++        parser = robotparser.RobotFileParser()
++        try:
++            req = Request(f"https://{host}/robots.txt", headers={"User-Agent": agente})
++            with urlopen(req, timeout=10) as resp:
++                parser.parse(resp.read(200_000).decode("utf-8", "ignore").splitlines())
++        except Exception:
++            parser = None
++        _ROBOTS_CACHE[host] = parser
++    parser = _ROBOTS_CACHE[host]
++    return True if parser is None else parser.can_fetch(agente, url)
++
++_TAGS_INUTEIS = re.compile(r"(?is)<(script|style|noscript|svg|nav|footer)[^>]*>.*?</\1>")
++_TAG = re.compile(r"(?s)<[^>]+>")
++
++def html_para_texto(html_bruto: str, limite: int = 120_000) -> str:
++    """Conversão simples HTML->texto (biblioteca-padrão) para leitura de editais."""
++    import html as _html
++    texto = _TAGS_INUTEIS.sub(" ", html_bruto)
++    texto = _TAG.sub(" ", texto)
++    texto = _html.unescape(texto)
++    texto = re.sub(r"[ \t\r\f\v]+", " ", texto)
++    texto = re.sub(r"\n\s*\n+", "\n\n", texto)
++    return texto.strip()[:limite]
++
++DB_OPORTUNIDADES = ROOT / "dados/oportunidades/oportunidades.jsonl"
++
++def carregar_oportunidades() -> dict:
++    registros = {}
++    if DB_OPORTUNIDADES.exists():
++        for linha in DB_OPORTUNIDADES.read_text(encoding="utf-8").splitlines():
++            if linha.strip():
++                item = json.loads(linha)
++                registros[item["id"]] = item
++    return registros
++
++def gravar_oportunidades(registros: dict) -> None:
++    DB_OPORTUNIDADES.parent.mkdir(parents=True, exist_ok=True)
++    corpo = "".join(
++        json.dumps(x, ensure_ascii=False, separators=(",", ":")) + "\n"
++        for x in sorted(registros.values(), key=lambda v: v["id"])
++    )
++    DB_OPORTUNIDADES.write_text(corpo, encoding="utf-8")
++
+ def load_json(path: Path):
+     return json.loads(path.read_text(encoding="utf-8"))
+ 
+diff --git a/src/sentinela.py b/src/sentinela.py
+index 48e54d9..f9fe719 100644
+--- a/src/sentinela.py
++++ b/src/sentinela.py
+@@ -1,9 +1,15 @@
+-"""Verificação diária leve: detecta raízes alteradas e prioriza a varredura profunda."""
++"""Verificação diária leve: compara o CONJUNTO DE CANDIDATOS da página raiz
++(e não os bytes brutos, que mudam a cada acesso em portais dinâmicos) e
++prioriza a varredura profunda de segunda e quarta."""
+ from __future__ import annotations
+ import json
+ from urllib.error import HTTPError, URLError
+-from .eldorado import fetch, source_in_scope
+-from .nucleo import ROOT, canonical_url, load_json, now_iso, sha256, write_json
++from .eldorado import candidates, fetch, source_in_scope
++from .nucleo import ROOT, load_json, now_iso, sha256, write_json
++
++def _hash_candidatos(rows: list[dict]) -> str:
++    chave="|".join(sorted(f'{r.get("id","?")}:{r.get("hash_evidencia","")}' for r in rows))
++    return sha256(chave.encode())
+ 
+ def run() -> dict:
+     cfg=load_json(ROOT/"config/fontes.json"); scope=load_json(ROOT/"config/escopo.json")
+@@ -13,11 +19,13 @@ def run() -> dict:
+         if not source.get("ativa") or not source_in_scope(source,scope) or source.get("modo","html_publico")!="html_publico": continue
+         checked+=1
+         try:
+-            data,_,_=fetch(source,cfg["politica"]); digest=sha256(data)
+-            state_path=ROOT/"estado/fontes"/(source["id"]+".json")
++            data,final,ctype=fetch(source,cfg["politica"])
++            digest=_hash_candidatos(candidates(source,data,final,ctype))
++            state_path=ROOT/"estado/sentinela"/(source["id"]+".json")
+             state=load_json(state_path) if state_path.exists() else {}
+-            root_hash=state.get("paginas",{}).get(canonical_url(source["url"]))
+-            if digest!=root_hash: changed.add(source["id"])
++            if digest!=state.get("hash_candidatos"):
++                changed.add(source["id"])
++                write_json(state_path,{"hash_candidatos":digest,"observado_em":now_iso()})
+         except (HTTPError,URLError,OSError,ValueError) as exc:
+             failures.append({"fonte":source["id"],"erro":type(exc).__name__})
+     report={"executado_em":now_iso(),"fontes_verificadas":checked,"fontes_na_fila":len(changed),"falhas":failures}
+diff --git a/src/triagem.py b/src/triagem.py
+index fa4efcd..ad840ee 100644
+--- a/src/triagem.py
++++ b/src/triagem.py
+@@ -29,6 +29,8 @@ def run() -> list[dict]:
+         profile=load_json(profile_path); aid=profile["id"]
+         if profile_path.parent.name!=aid: raise ValueError(f"perfil {aid} fora de seu universo")
+         for opportunity in opportunities:
++            # idempotência: caso já aberto não é reprocessado nem reescrito
++            if (profile_path.parent/"farol/casos"/opportunity["id"]).exists(): continue
+             decision=assess(profile,opportunity)
+             if decision["acionar_farol"]:
+                 payload={"associacao_id":aid,"oportunidade_id":opportunity["id"],"titulo":opportunity["titulo"],"url":opportunity["url"],"avaliado_em":now_iso(),**decision}
+-- 
+2.43.0
+

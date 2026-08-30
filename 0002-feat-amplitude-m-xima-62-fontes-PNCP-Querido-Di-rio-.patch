@@ -1,0 +1,2982 @@
+From ee6186c41af5dedb2f3aa88a2454babc0144c271 Mon Sep 17 00:00:00 2001
+From: "Claude (Cowork)" <noreply@anthropic.com>
+Date: Sun, 30 Aug 2026 14:47:00 +0000
+Subject: [PATCH 2/3] =?UTF-8?q?feat:=20amplitude=20m=C3=A1xima=20=E2=80=94?=
+ =?UTF-8?q?=2062=20fontes,=20PNCP,=20Querido=20Di=C3=A1rio,=20capilaridade?=
+ =?UTF-8?q?=20e=20carga=20m=C3=AAs=20a=20m=C3=AAs?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- 27 portais estaduais ativados + fontes setoriais (SALIC, Goyazes, SEDS/SEEL GO, TJGO)
+- coletores de APIs oficiais: PNCP (credenciamento/concurso) e Querido Diário (diários municipais)
+- camada capilar descentralizada de imprensa por termo × UF × emissor (pistas secundárias
+  que só viram oportunidade com URL oficial confirmada — confirmar_pista.py)
+- verificação assistida determinística com evidência hasheada e auditoria
+- carga histórica de 5 anos fracionada MÊS A MÊS com cursor e retry por janela
+- biblioteca de leis: +13 normas (Lei Pelé, LC 222/2025 que revoga a 11.438/2006, PNAB,
+  Lei Paulo Gustavo, Lei Goyazes 13.613/2000, ECA, Pessoa Idosa, OSCIP, 14.133…)
+- cobertura_catalogo.py: 181/260 pontos do acervo cobertos por camada ativa; fila dos 79
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_0148zW29BKojQvQpu2RUypko
+---
+ biblioteca/leis/catalogo.json  |  263 ++++++-
+ config/capilaridade.json       |   29 +
+ config/coletores_api.json      |   22 +
+ config/escopo.json             |   66 +-
+ config/fontes.json             | 1186 +++++++++++++++++++++++++++++++-
+ config/retrospectivo.json      |   97 ++-
+ config/verificacao_social.json |   16 +-
+ estado/cobertura_catalogo.json |  499 ++++++++++++++
+ scripts/cobertura_catalogo.py  |   52 ++
+ scripts/confirmar_pista.py     |   61 ++
+ src/capilaridade.py            |   96 +++
+ src/coletores_api.py           |  171 +++++
+ src/retrospectivo.py           |  172 +++--
+ src/verificacao_assistida.py   |   68 ++
+ 14 files changed, 2666 insertions(+), 132 deletions(-)
+ create mode 100644 config/capilaridade.json
+ create mode 100644 config/coletores_api.json
+ create mode 100644 estado/cobertura_catalogo.json
+ create mode 100644 scripts/cobertura_catalogo.py
+ create mode 100644 scripts/confirmar_pista.py
+ create mode 100644 src/capilaridade.py
+ create mode 100644 src/coletores_api.py
+ create mode 100644 src/verificacao_assistida.py
+
+diff --git a/biblioteca/leis/catalogo.json b/biblioteca/leis/catalogo.json
+index 37cb4b8..2fcc3b5 100644
+--- a/biblioteca/leis/catalogo.json
++++ b/biblioteca/leis/catalogo.json
+@@ -2,18 +2,251 @@
+   "versao": 2,
+   "aviso": "Catálogo de orientação. Mudança de hash abre revisão humana; vigência, revogação e aplicação ao caso nunca são concluídas somente pelo robô.",
+   "itens": [
+-    {"id":"cf88","titulo":"Constituição da República Federativa do Brasil","esfera":"federal","tipo":"constituicao","url_oficial":"https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm","status":"monitorar"},
+-    {"id":"lei-13019-2014","titulo":"Marco Regulatório das Organizações da Sociedade Civil — Lei 13.019/2014","esfera":"federal","tipo":"parcerias","url_oficial":"https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l13019compilado.htm","status":"monitorar"},
+-    {"id":"decreto-8726-2016","titulo":"Decreto 8.726/2016 — regulamentação federal do MROSC","esfera":"federal","tipo":"parcerias","url_oficial":"https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/decreto/d8726.htm","status":"monitorar"},
+-    {"id":"lei-8742-1993","titulo":"Lei Orgânica da Assistência Social — Lei 8.742/1993","esfera":"federal","tipo":"assistencia_social","url_oficial":"https://www.planalto.gov.br/ccivil_03/leis/L8742compilado.htm","status":"monitorar"},
+-    {"id":"lc-187-2021","titulo":"Lei Complementar 187/2021 — CEBAS","esfera":"federal","tipo":"certificacao","url_oficial":"https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp187.htm","status":"monitorar"},
+-    {"id":"lei-12527-2011","titulo":"Lei de Acesso à Informação — Lei 12.527/2011","esfera":"federal","tipo":"transparencia","url_oficial":"https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm","status":"monitorar"},
+-    {"id":"lei-8313-1991","titulo":"Lei 8.313/1991 — Incentivo à Cultura","esfera":"federal","tipo":"cultura","url_oficial":"https://www.planalto.gov.br/ccivil_03/leis/l8313cons.htm","status":"monitorar"},
+-    {"id":"lei-13709-2018","titulo":"Lei Geral de Proteção de Dados — Lei 13.709/2018","esfera":"federal","tipo":"protecao_dados","url_oficial":"https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm","status":"monitorar"},
+-    {"id":"res-cnas-109-2009","titulo":"Resolução CNAS 109/2009 — Tipificação Nacional dos Serviços Socioassistenciais","esfera":"federal","tipo":"resolucao","url_oficial":null,"status":"localizar_fonte_oficial_consolidada"},
+-    {"id":"res-cnas-33-2012","titulo":"Resolução CNAS 33/2012 — NOB/SUAS","esfera":"federal","tipo":"resolucao","url_oficial":null,"status":"localizar_fonte_oficial_consolidada"},
+-    {"id":"res-cnas-14-2014","titulo":"Resolução CNAS 14/2014 — inscrição de entidades","esfera":"federal","tipo":"resolucao","url_oficial":"https://www.gov.br/participamaisbrasil/resolucao-cnas-mdes-n-14-de-15-de-maio-de-2014-consolidada","status":"revisar_em_conjunto_com_normas_supervenientes"},
+-    {"id":"res-cnas-182-2025","titulo":"Resolução CNAS 182/2025 — parâmetros de inscrição e transição","esfera":"federal","tipo":"resolucao","url_oficial":"https://www.gov.br/participamaisbrasil/blob/baixar/67703","status":"revisao_humana_prioritaria"},
+-    {"id":"cmdca-goiania-77-2021","titulo":"Resolução CMDCA Goiânia 77/2021 e anexos","esfera":"municipal","territorio":"GO/Goiânia","tipo":"crianca_adolescente","url_oficial":null,"status":"localizar_fonte_oficial_consolidada"}
+-  ]
+-}
++    {
++      "id": "cf88",
++      "titulo": "Constituição da República Federativa do Brasil",
++      "esfera": "federal",
++      "tipo": "constituicao",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
++      "status": "monitorar"
++    },
++    {
++      "id": "lei-13019-2014",
++      "titulo": "Marco Regulatório das Organizações da Sociedade Civil — Lei 13.019/2014",
++      "esfera": "federal",
++      "tipo": "parcerias",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l13019compilado.htm",
++      "status": "monitorar"
++    },
++    {
++      "id": "decreto-8726-2016",
++      "titulo": "Decreto 8.726/2016 — regulamentação federal do MROSC",
++      "esfera": "federal",
++      "tipo": "parcerias",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/decreto/d8726.htm",
++      "status": "monitorar"
++    },
++    {
++      "id": "lei-8742-1993",
++      "titulo": "Lei Orgânica da Assistência Social — Lei 8.742/1993",
++      "esfera": "federal",
++      "tipo": "assistencia_social",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/L8742compilado.htm",
++      "status": "monitorar"
++    },
++    {
++      "id": "lc-187-2021",
++      "titulo": "Lei Complementar 187/2021 — CEBAS",
++      "esfera": "federal",
++      "tipo": "certificacao",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp187.htm",
++      "status": "monitorar"
++    },
++    {
++      "id": "lei-12527-2011",
++      "titulo": "Lei de Acesso à Informação — Lei 12.527/2011",
++      "esfera": "federal",
++      "tipo": "transparencia",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2011/lei/l12527.htm",
++      "status": "monitorar"
++    },
++    {
++      "id": "lei-8313-1991",
++      "titulo": "Lei 8.313/1991 — Incentivo à Cultura",
++      "esfera": "federal",
++      "tipo": "cultura",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/l8313cons.htm",
++      "status": "monitorar"
++    },
++    {
++      "id": "lei-13709-2018",
++      "titulo": "Lei Geral de Proteção de Dados — Lei 13.709/2018",
++      "esfera": "federal",
++      "tipo": "protecao_dados",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm",
++      "status": "monitorar"
++    },
++    {
++      "id": "res-cnas-109-2009",
++      "titulo": "Resolução CNAS 109/2009 — Tipificação Nacional dos Serviços Socioassistenciais",
++      "esfera": "federal",
++      "tipo": "resolucao",
++      "url_oficial": null,
++      "status": "localizar_fonte_oficial_consolidada"
++    },
++    {
++      "id": "res-cnas-33-2012",
++      "titulo": "Resolução CNAS 33/2012 — NOB/SUAS",
++      "esfera": "federal",
++      "tipo": "resolucao",
++      "url_oficial": null,
++      "status": "localizar_fonte_oficial_consolidada"
++    },
++    {
++      "id": "res-cnas-14-2014",
++      "titulo": "Resolução CNAS 14/2014 — inscrição de entidades",
++      "esfera": "federal",
++      "tipo": "resolucao",
++      "url_oficial": "https://www.gov.br/participamaisbrasil/resolucao-cnas-mdes-n-14-de-15-de-maio-de-2014-consolidada",
++      "status": "revisar_em_conjunto_com_normas_supervenientes"
++    },
++    {
++      "id": "res-cnas-182-2025",
++      "titulo": "Resolução CNAS 182/2025 — parâmetros de inscrição e transição",
++      "esfera": "federal",
++      "tipo": "resolucao",
++      "url_oficial": "https://www.gov.br/participamaisbrasil/blob/baixar/67703",
++      "status": "revisao_humana_prioritaria"
++    },
++    {
++      "id": "cmdca-goiania-77-2021",
++      "titulo": "Resolução CMDCA Goiânia 77/2021 e anexos",
++      "esfera": "municipal",
++      "territorio": "GO/Goiânia",
++      "tipo": "crianca_adolescente",
++      "url_oficial": null,
++      "status": "localizar_fonte_oficial_consolidada"
++    },
++    {
++      "id": "lei-9615-1998",
++      "titulo": "Lei Pelé — Lei 9.615/1998 (normas gerais do desporto)",
++      "esfera": "federal",
++      "tipo": "esporte",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/l9615consol.htm",
++      "status": "monitorar",
++      "programas": [
++        "lei_pele"
++      ]
++    },
++    {
++      "id": "lc-222-2025",
++      "titulo": "LC 222/2025 — regime atual de incentivos fiscais ao esporte (revoga a Lei 11.438/2006)",
++      "esfera": "federal",
++      "tipo": "incentivo_fiscal_esporte",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp222.htm",
++      "status": "monitorar",
++      "programas": [
++        "incentivo_esporte"
++      ]
++    },
++    {
++      "id": "lei-11438-2006",
++      "titulo": "Lei de Incentivo ao Esporte — Lei 11.438/2006 (REVOGADA pela LC 222/2025; manter para prestações antigas)",
++      "esfera": "federal",
++      "tipo": "incentivo_fiscal_esporte",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2006/lei/l11438.htm",
++      "status": "revogada_lc_222_2025",
++      "programas": [
++        "incentivo_esporte_historico"
++      ]
++    },
++    {
++      "id": "lei-14260-2021",
++      "titulo": "Lei 14.260/2021 — incentivos ao esporte por Estados e Municípios (alterada pela LC 222/2025)",
++      "esfera": "federal",
++      "tipo": "incentivo_fiscal_esporte",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14260.htm",
++      "status": "monitorar",
++      "programas": [
++        "incentivo_esporte"
++      ]
++    },
++    {
++      "id": "lei-14399-2022",
++      "titulo": "PNAB — Política Nacional Aldir Blanc, Lei 14.399/2022",
++      "esfera": "federal",
++      "tipo": "fomento_cultura",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14399.htm",
++      "status": "monitorar",
++      "programas": [
++        "pnab"
++      ]
++    },
++    {
++      "id": "lcp-195-2022",
++      "titulo": "Lei Paulo Gustavo — LC 195/2022",
++      "esfera": "federal",
++      "tipo": "fomento_cultura",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp195.htm",
++      "status": "monitorar",
++      "programas": [
++        "lei_paulo_gustavo"
++      ]
++    },
++    {
++      "id": "lei-go-13613-2000",
++      "titulo": "Lei Goyazes — Lei estadual (GO) 13.613/2000, Programa Estadual de Incentivo à Cultura (alterada pela Lei 17.627/2012)",
++      "esfera": "estadual_go",
++      "tipo": "incentivo_fiscal_cultura",
++      "url_oficial": "https://goias.gov.br/cultura/programa-goyazes/legislacao/",
++      "status": "monitorar",
++      "programas": [
++        "goyazes"
++      ]
++    },
++    {
++      "id": "lei-8069-1990",
++      "titulo": "ECA — Estatuto da Criança e do Adolescente, Lei 8.069/1990 (FMDCA/FIA)",
++      "esfera": "federal",
++      "tipo": "direitos",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
++      "status": "monitorar",
++      "programas": [
++        "fia_fmdca"
++      ]
++    },
++    {
++      "id": "lei-10741-2003",
++      "titulo": "Estatuto da Pessoa Idosa — Lei 10.741/2003",
++      "esfera": "federal",
++      "tipo": "direitos",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/2003/l10.741.htm",
++      "status": "monitorar",
++      "programas": [
++        "fundo_idoso"
++      ]
++    },
++    {
++      "id": "lei-12213-2010",
++      "titulo": "Fundo Nacional do Idoso — Lei 12.213/2010",
++      "esfera": "federal",
++      "tipo": "fundo_publico",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/lei/l12213.htm",
++      "status": "monitorar",
++      "programas": [
++        "fundo_idoso"
++      ]
++    },
++    {
++      "id": "lei-9608-1998",
++      "titulo": "Lei do Voluntariado — Lei 9.608/1998",
++      "esfera": "federal",
++      "tipo": "voluntariado",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/l9608.htm",
++      "status": "monitorar",
++      "programas": []
++    },
++    {
++      "id": "lei-9790-1999",
++      "titulo": "OSCIP — Lei 9.790/1999 e termo de parceria",
++      "esfera": "federal",
++      "tipo": "qualificacao",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/leis/l9790.htm",
++      "status": "monitorar",
++      "programas": []
++    },
++    {
++      "id": "lei-14133-2021",
++      "titulo": "Lei 14.133/2021 — licitações e contratos (credenciamento/concurso no PNCP)",
++      "esfera": "federal",
++      "tipo": "licitacoes",
++      "url_oficial": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
++      "status": "monitorar",
++      "programas": [
++        "pncp"
++      ]
++    }
++  ],
++  "atualizado_em": "2026-08-30",
++  "nota": "Lei 11.438/2006 mantida como histórica: REVOGADA pela LC 222/2025 (art. 25). URLs do Planalto verificadas em 30/08/2026; a revisão mensal por hash detecta mudanças."
++}
+\ No newline at end of file
+diff --git a/config/capilaridade.json b/config/capilaridade.json
+new file mode 100644
+index 0000000..73d3a08
+--- /dev/null
++++ b/config/capilaridade.json
+@@ -0,0 +1,29 @@
++{
++  "versao": 1,
++  "ativa": true,
++  "regra": "Camada descentralizada de PISTAS SECUNDÁRIAS (imprensa e anúncios). Nunca entra na base primária: cada pista exige confirmação da URL oficial (scripts/confirmar_pista.py) antes de virar oportunidade.",
++  "motor_rss": "https://www.bing.com/news/search?q={consulta}&format=rss&setmkt=pt-BR",
++  "termos_gerais": [
++    "chamamento público organizações da sociedade civil",
++    "edital projetos sociais inscrições",
++    "edital fundo da criança e do adolescente",
++    "edital cultura associações inscrições abertas"
++  ],
++  "termos_emissor_padrao": ["edital", "chamamento público", "inscrições abertas"],
++  "emissores": [
++    {"id": "goiania", "nome": "Prefeitura de Goiânia", "uf": "GO", "ativa": true},
++    {"id": "governo-goias", "nome": "Governo de Goiás", "uf": "GO", "ativa": true},
++    {"id": "secult-goias", "nome": "Secult Goiás", "uf": "GO", "ativa": true},
++    {"id": "fundacao-banco-do-brasil", "nome": "Fundação Banco do Brasil", "uf": null, "ativa": true},
++    {"id": "itau-social", "nome": "Itaú Social", "uf": null, "ativa": true},
++    {"id": "bndes", "nome": "BNDES projetos sociais", "uf": null, "ativa": true}
++  ],
++  "max_consultas_por_execucao": 40,
++  "max_itens_por_consulta": 10,
++  "intervalo_segundos": 1,
++  "redes_sociais": {
++    "regra": "Redes fechadas não servem conteúdo a coletor simples. Acesso legítimo é por API oficial com credencial; preparado e desativado até haver credenciais em GitHub Actions Secrets.",
++    "instagram_graph": {"ativa": false, "credencial_env": "IG_GRAPH_TOKEN", "contas_env": "IG_CONTAS_MONITORADAS"},
++    "youtube_data": {"ativa": false, "credencial_env": "YT_DATA_KEY"}
++  }
++}
+diff --git a/config/coletores_api.json b/config/coletores_api.json
+new file mode 100644
+index 0000000..d9fb7c1
+--- /dev/null
++++ b/config/coletores_api.json
+@@ -0,0 +1,22 @@
++{
++  "versao": 1,
++  "regra": "APIs públicas oficiais, somente leitura, sem chave e sem IA. Resultados entram na base deduplicada pelo mesmo merge que preserva revisão humana. Endpoints conferidos em 30/08/2026 na especificação OpenAPI do PNCP; a primeira execução real valida e registra falhas por camada.",
++  "pncp": {
++    "ativa": true,
++    "bases": ["https://pncp.gov.br/api/consulta"],
++    "modalidades": [12, 3],
++    "nota_modalidades": "12 = credenciamento; 3 = concurso (tabela de modalidades da Lei 14.133/2021). Chamamentos MROSC publicados no PNCP costumam entrar nessas modalidades ou aparecer pela busca textual do filtro.",
++    "filtro_regex": "chamamento|credenciament|organiza[çc][õo]es? da sociedade civil|\\bOSC\\b|entidade sem fins lucrativos|projeto (social|cultural|esportivo)|fomento|termo de (fomento|colabora[çc][ãa]o)",
++    "dias_incrementais": 5,
++    "max_paginas": 5,
++    "tamanho_pagina": 50
++  },
++  "querido_diario": {
++    "ativa": true,
++    "bases": ["https://queridodiario.ok.org.br/api", "https://api.queridodiario.ok.org.br"],
++    "consultas": ["\"chamamento público\" \"organizações da sociedade civil\"", "\"edital de chamamento público\" associação"],
++    "dias_incrementais": 5,
++    "size": 50,
++    "max_paginas": 4
++  }
++}
+diff --git a/config/escopo.json b/config/escopo.json
+index c78416b..8378fd8 100644
+--- a/config/escopo.json
++++ b/config/escopo.json
+@@ -1,14 +1,62 @@
+ {
+-  "versao": 1,
+-  "ufs_ativas": ["GO"],
+-  "municipios_ativos": ["GO/Goiânia"],
+-  "niveis_ativos": ["municipal", "estadual", "federal", "privada", "internacional"],
++  "versao": 2,
++  "ufs_ativas": [
++    "AC",
++    "AL",
++    "AM",
++    "AP",
++    "BA",
++    "CE",
++    "DF",
++    "ES",
++    "GO",
++    "MA",
++    "MG",
++    "MS",
++    "MT",
++    "PA",
++    "PB",
++    "PE",
++    "PI",
++    "PR",
++    "RJ",
++    "RN",
++    "RO",
++    "RR",
++    "RS",
++    "SC",
++    "SE",
++    "SP",
++    "TO"
++  ],
++  "municipios_ativos": [
++    "GO/Goiânia"
++  ],
++  "niveis_ativos": [
++    "municipal",
++    "estadual",
++    "federal",
++    "privada",
++    "internacional"
++  ],
+   "areas_ativas": [
+-    "cultura", "esporte", "educacao", "assistencia_social", "seguranca_alimentar",
+-    "crianca_adolescente", "pessoa_idosa", "direitos_humanos", "saude", "pcd",
+-    "meio_ambiente", "direitos_difusos", "cidadania", "justica", "controle"
++    "cultura",
++    "esporte",
++    "educacao",
++    "assistencia_social",
++    "seguranca_alimentar",
++    "crianca_adolescente",
++    "pessoa_idosa",
++    "direitos_humanos",
++    "saude",
++    "pcd",
++    "meio_ambiente",
++    "direitos_difusos",
++    "cidadania",
++    "justica",
++    "controle"
+   ],
+   "somente_fontes_catalogadas": true,
+   "limite_itens_pacote_ia": 50,
+-  "observacao": "Edite as UFs e os municípios antes da execução. Fontes federais, privadas nacionais e internacionais continuam sujeitas aos demais filtros."
+-}
++  "observacao": "Fase Eldorado com amplitude máxima: todas as UFs ativas. A seleção fina acontece na fase Farol (território/aderência da associação). Reduza UFs aqui apenas para poupar tempo de varredura."
++}
+\ No newline at end of file
+diff --git a/config/fontes.json b/config/fontes.json
+index 6a577c6..bf0a21b 100644
+--- a/config/fontes.json
++++ b/config/fontes.json
+@@ -1,34 +1,1158 @@
+ {
+-  "versao": 2,
+-  "politica": {"timeout_segundos":45,"max_bytes":5000000,"max_paginas_por_fonte":40,"user_agent":"Eldorado-OSC/3.0 contato-via-repositorio","modos_coleta_permitidos":["html_publico"]},
++  "versao": 3,
++  "politica": {
++    "timeout_segundos": 45,
++    "max_bytes": 5000000,
++    "max_paginas_por_fonte": 40,
++    "user_agent": "Eldorado-OSC/3.0 contato-via-repositorio",
++    "modos_coleta_permitidos": [
++      "html_publico",
++      "rss_publico",
++      "api_pncp",
++      "api_querido_diario"
++    ],
++    "intervalo_segundos": 1,
++    "respeitar_robots": true
++  },
+   "fontes": [
+-    {"id":"transferegov","nome":"Transferegov.br","nivel":"federal","tipo":"transferencias_mrosc","territorio":"BR","uf":null,"municipio":null,"areas":[],"url":"https://www.gov.br/transferegov/","hosts_links":["gov.br","transferegov.sistema.gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"ministerio-cultura","nome":"Ministério da Cultura — editais","nivel":"federal","tipo":"editais_publicos","territorio":"BR","uf":null,"municipio":null,"areas":["cultura"],"url":"https://www.gov.br/cultura/pt-br/assuntos/editais","hosts_links":["gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"ministerio-esporte","nome":"Ministério do Esporte — editais","nivel":"federal","tipo":"editais_publicos","territorio":"BR","uf":null,"municipio":null,"areas":["esporte"],"url":"https://www.gov.br/esporte/pt-br/composicao/orgaos-especificos/esporte/SNELIS/editais","hosts_links":["gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"mds","nome":"Ministério do Desenvolvimento e Assistência Social","nivel":"federal","tipo":"chamamentos_publicos","territorio":"BR","uf":null,"municipio":null,"areas":["assistencia_social","seguranca_alimentar"],"url":"https://www.gov.br/mds/pt-br/servicos/modalidade-de-licitacoes/editais-de-chamada-publica","hosts_links":["gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"conanda","nome":"Conanda e Fundo Nacional para a Criança e o Adolescente","nivel":"federal","tipo":"fundos_direitos","territorio":"BR","uf":null,"municipio":null,"areas":["crianca_adolescente","direitos_humanos"],"url":"https://www.gov.br/participamaisbrasil/conanda","hosts_links":["gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"pronon-pronas","nome":"PRONON e PRONAS/PCD","nivel":"federal","tipo":"incentivo_fiscal_saude","territorio":"BR","uf":null,"municipio":null,"areas":["saude","pcd"],"url":"https://www.gov.br/saude/pt-br/se/pronon-e-pronas-pcd","hosts_links":["gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"fdd","nome":"Fundo de Defesa de Direitos Difusos","nivel":"federal","tipo":"fundo_publico","territorio":"BR","uf":null,"municipio":null,"areas":["meio_ambiente","direitos_difusos","cidadania"],"url":"https://www.gov.br/mj/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/conselho-federal-gestor-do-fundo-de-defesa-dos-direitos-difusos","hosts_links":["gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"fnma","nome":"Fundo Nacional do Meio Ambiente","nivel":"federal","tipo":"fundo_publico","territorio":"BR","uf":null,"municipio":null,"areas":["meio_ambiente"],"url":"https://www.gov.br/mma/pt-br/composicao/secex/dfre/fundo-nacional-do-meio-ambiente","hosts_links":["gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"goias-cultura","nome":"Secult Goiás — chamamentos MROSC","nivel":"estadual","tipo":"chamamentos_mrosc","territorio":"GO","uf":"GO","municipio":null,"areas":["cultura"],"url":"https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/","hosts_links":["goias.gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"goias-pnab","nome":"Secult Goiás — PNAB","nivel":"estadual","tipo":"editais_pnab","territorio":"GO","uf":"GO","municipio":null,"areas":["cultura"],"url":"https://goias.gov.br/cultura/pnab/edital-2026-pnab/","hosts_links":["goias.gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"goias-cultura-raiz","nome":"Secult Goiás — notícias e editais","nivel":"estadual","tipo":"portal_setorial","territorio":"GO","uf":"GO","municipio":null,"areas":["cultura"],"url":"https://goias.gov.br/cultura/","hosts_links":["goias.gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"goiania","nome":"Prefeitura de Goiânia","nivel":"municipal","tipo":"portal_governo","territorio":"GO/Goiânia","uf":"GO","municipio":"GO/Goiânia","areas":[],"url":"https://www.goiania.go.gov.br/","hosts_links":["goiania.go.gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"goiania-noticias","nome":"Agência Goiânia — notícias oficiais","nivel":"municipal","tipo":"noticias_governo","territorio":"GO/Goiânia","uf":"GO","municipio":"GO/Goiânia","areas":[],"url":"https://www.goiania.go.gov.br/agora/","hosts_links":["goiania.go.gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"bndes-social","nome":"BNDES — Área Social","nivel":"federal","tipo":"empresa_publica","territorio":"BR","uf":null,"municipio":null,"areas":[],"url":"https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social","hosts_links":["bndes.gov.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"fundacao-bb","nome":"Fundação Banco do Brasil — editais","nivel":"privada","tipo":"fundacao_empresarial","territorio":"BR","uf":null,"municipio":null,"areas":[],"url":"https://fbb.org.br/editais-de-projetos/editais-publicos/","hosts_links":["fbb.org.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"petrobras","nome":"Petrobras — seleções socioambientais","nivel":"privada","tipo":"empresa","territorio":"BR","uf":null,"municipio":null,"areas":["meio_ambiente","cultura","esporte","educacao","direitos_humanos"],"url":"https://petrobras.com.br/sustentabilidade/selecoes-publicas","hosts_links":["petrobras.com.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"itau-social","nome":"Itaú Social — editais","nivel":"privada","tipo":"fundacao_empresarial","territorio":"BR","uf":null,"municipio":null,"areas":["educacao","direitos_humanos"],"url":"https://www.itausocial.org.br/editais/","hosts_links":["itausocial.org.br"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"prosas","nome":"Prosas — Central de Editais","nivel":"privada","tipo":"plataforma_radar","territorio":"BR","uf":null,"municipio":null,"areas":[],"url":"https://produtos.prosas.com.br/editais","hosts_links":["prosas.com.br","produtos.prosas.com.br"],"confianca":"secundaria","modo":"html_publico","ativa":true},
+-    {"id":"mapa-osc","nome":"Mapa das OSC — editais","nivel":"federal","tipo":"plataforma_radar","territorio":"BR","uf":null,"municipio":null,"areas":[],"url":"https://mapaosc.ipea.gov.br/editais","hosts_links":["mapaosc.ipea.gov.br","ipea.gov.br"],"confianca":"secundaria_oficial","modo":"html_publico","ativa":true},
+-    {"id":"capta","nome":"Capta — oportunidades","nivel":"privada","tipo":"plataforma_radar","territorio":"BR","uf":null,"municipio":null,"areas":[],"url":"https://capta.org.br/fontes-de-financiamento/oportunidades/","hosts_links":["capta.org.br"],"confianca":"secundaria","modo":"html_publico","ativa":true},
+-    {"id":"observatorio-terceiro-setor","nome":"Observatório do Terceiro Setor — editais","nivel":"privada","tipo":"plataforma_radar","territorio":"BR","uf":null,"municipio":null,"areas":[],"url":"https://observatorio3setor.org.br/secoes_tematicas/editais/","hosts_links":["observatorio3setor.org.br"],"confianca":"secundaria","modo":"html_publico","ativa":true},
+-    {"id":"gife-mosaico","nome":"GIFE Mosaico — base de projetos","nivel":"privada","tipo":"plataforma_radar","territorio":"BR","uf":null,"municipio":null,"areas":[],"url":"https://mosaico.gife.org.br/base-de-projetos","hosts_links":["mosaico.gife.org.br","gife.org.br"],"confianca":"secundaria","modo":"html_publico","ativa":true},
+-    {"id":"goodstack","nome":"Goodstack — Grant Finder","nivel":"internacional","tipo":"portal_autenticado","territorio":"INTERNACIONAL","uf":null,"municipio":null,"areas":[],"url":"https://goodstack.org/grant-finder-and-writer","hosts_links":["goodstack.org"],"confianca":"secundaria","modo":"portal_autenticado","ativa":true,"nota":"Cadastro e verificação podem ser necessários; o robô não contorna autenticação."},
+-    {"id":"un-partner-portal","nome":"UN Partner Portal","nivel":"internacional","tipo":"portal_autenticado","territorio":"INTERNACIONAL","uf":null,"municipio":null,"areas":[],"url":"https://www.unpartnerportal.org/","hosts_links":["unpartnerportal.org"],"confianca":"primaria","modo":"portal_autenticado","ativa":true},
+-    {"id":"eu-funding","nome":"União Europeia — Funding & Tenders","nivel":"internacional","tipo":"portal_oficial","territorio":"INTERNACIONAL","uf":null,"municipio":null,"areas":[],"url":"https://commission.europa.eu/funding-and-tenders_en","hosts_links":["europa.eu","ec.europa.eu"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"bid-chamadas","nome":"BID — chamadas a propostas","nivel":"internacional","tipo":"portal_oficial","territorio":"INTERNACIONAL","uf":null,"municipio":null,"areas":[],"url":"https://www.iadb.org/en/how-we-can-work-together/calls-proposals","hosts_links":["iadb.org"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"unesco-ifcd","nome":"UNESCO — Fundo Internacional para a Diversidade Cultural","nivel":"internacional","tipo":"grant_internacional","territorio":"INTERNACIONAL","uf":null,"municipio":null,"areas":["cultura"],"url":"https://www.unesco.org/creativity/en/ifcd/apply","hosts_links":["unesco.org"],"confianca":"primaria","modo":"html_publico","ativa":true},
+-    {"id":"grants-gov","nome":"Grants.gov — elegibilidade internacional depende da oportunidade","nivel":"internacional","tipo":"portal_oficial","territorio":"INTERNACIONAL","uf":null,"municipio":null,"areas":[],"url":"https://grants.gov/learn-grants/grant-programs","hosts_links":["grants.gov"],"confianca":"primaria","modo":"html_publico","ativa":true}
++    {
++      "id": "transferegov",
++      "nome": "Transferegov.br",
++      "nivel": "federal",
++      "tipo": "transferencias_mrosc",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.gov.br/transferegov/",
++      "hosts_links": [
++        "gov.br",
++        "transferegov.sistema.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "ministerio-cultura",
++      "nome": "Ministério da Cultura — editais",
++      "nivel": "federal",
++      "tipo": "editais_publicos",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "cultura"
++      ],
++      "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
++      "hosts_links": [
++        "gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "ministerio-esporte",
++      "nome": "Ministério do Esporte — editais",
++      "nivel": "federal",
++      "tipo": "editais_publicos",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "esporte"
++      ],
++      "url": "https://www.gov.br/esporte/pt-br/composicao/orgaos-especificos/esporte/SNELIS/editais",
++      "hosts_links": [
++        "gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "mds",
++      "nome": "Ministério do Desenvolvimento e Assistência Social",
++      "nivel": "federal",
++      "tipo": "chamamentos_publicos",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "assistencia_social",
++        "seguranca_alimentar"
++      ],
++      "url": "https://www.gov.br/mds/pt-br/servicos/modalidade-de-licitacoes/editais-de-chamada-publica",
++      "hosts_links": [
++        "gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "conanda",
++      "nome": "Conanda e Fundo Nacional para a Criança e o Adolescente",
++      "nivel": "federal",
++      "tipo": "fundos_direitos",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "crianca_adolescente",
++        "direitos_humanos"
++      ],
++      "url": "https://www.gov.br/participamaisbrasil/conanda",
++      "hosts_links": [
++        "gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "pronon-pronas",
++      "nome": "PRONON e PRONAS/PCD",
++      "nivel": "federal",
++      "tipo": "incentivo_fiscal_saude",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "saude",
++        "pcd"
++      ],
++      "url": "https://www.gov.br/saude/pt-br/se/pronon-e-pronas-pcd",
++      "hosts_links": [
++        "gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "fdd",
++      "nome": "Fundo de Defesa de Direitos Difusos",
++      "nivel": "federal",
++      "tipo": "fundo_publico",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "meio_ambiente",
++        "direitos_difusos",
++        "cidadania"
++      ],
++      "url": "https://www.gov.br/mj/pt-br/acesso-a-informacao/participacao-social/conselhos-e-orgaos-colegiados/conselho-federal-gestor-do-fundo-de-defesa-dos-direitos-difusos",
++      "hosts_links": [
++        "gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "fnma",
++      "nome": "Fundo Nacional do Meio Ambiente",
++      "nivel": "federal",
++      "tipo": "fundo_publico",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "meio_ambiente"
++      ],
++      "url": "https://www.gov.br/mma/pt-br/composicao/secex/dfre/fundo-nacional-do-meio-ambiente",
++      "hosts_links": [
++        "gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "goias-cultura",
++      "nome": "Secult Goiás — chamamentos MROSC",
++      "nivel": "estadual",
++      "tipo": "chamamentos_mrosc",
++      "territorio": "GO",
++      "uf": "GO",
++      "municipio": null,
++      "areas": [
++        "cultura"
++      ],
++      "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
++      "hosts_links": [
++        "goias.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "goias-pnab",
++      "nome": "Secult Goiás — PNAB",
++      "nivel": "estadual",
++      "tipo": "editais_pnab",
++      "territorio": "GO",
++      "uf": "GO",
++      "municipio": null,
++      "areas": [
++        "cultura"
++      ],
++      "url": "https://goias.gov.br/cultura/pnab/edital-2026-pnab/",
++      "hosts_links": [
++        "goias.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "goias-cultura-raiz",
++      "nome": "Secult Goiás — notícias e editais",
++      "nivel": "estadual",
++      "tipo": "portal_setorial",
++      "territorio": "GO",
++      "uf": "GO",
++      "municipio": null,
++      "areas": [
++        "cultura"
++      ],
++      "url": "https://goias.gov.br/cultura/",
++      "hosts_links": [
++        "goias.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "goiania",
++      "nome": "Prefeitura de Goiânia",
++      "nivel": "municipal",
++      "tipo": "portal_governo",
++      "territorio": "GO/Goiânia",
++      "uf": "GO",
++      "municipio": "GO/Goiânia",
++      "areas": [],
++      "url": "https://www.goiania.go.gov.br/",
++      "hosts_links": [
++        "goiania.go.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "goiania-noticias",
++      "nome": "Agência Goiânia — notícias oficiais",
++      "nivel": "municipal",
++      "tipo": "noticias_governo",
++      "territorio": "GO/Goiânia",
++      "uf": "GO",
++      "municipio": "GO/Goiânia",
++      "areas": [],
++      "url": "https://www.goiania.go.gov.br/agora/",
++      "hosts_links": [
++        "goiania.go.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "bndes-social",
++      "nome": "BNDES — Área Social",
++      "nivel": "federal",
++      "tipo": "empresa_publica",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social",
++      "hosts_links": [
++        "bndes.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "fundacao-bb",
++      "nome": "Fundação Banco do Brasil — editais",
++      "nivel": "privada",
++      "tipo": "fundacao_empresarial",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://fbb.org.br/editais-de-projetos/editais-publicos/",
++      "hosts_links": [
++        "fbb.org.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "petrobras",
++      "nome": "Petrobras — seleções socioambientais",
++      "nivel": "privada",
++      "tipo": "empresa",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "meio_ambiente",
++        "cultura",
++        "esporte",
++        "educacao",
++        "direitos_humanos"
++      ],
++      "url": "https://petrobras.com.br/sustentabilidade/selecoes-publicas",
++      "hosts_links": [
++        "petrobras.com.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "itau-social",
++      "nome": "Itaú Social — editais",
++      "nivel": "privada",
++      "tipo": "fundacao_empresarial",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "educacao",
++        "direitos_humanos"
++      ],
++      "url": "https://www.itausocial.org.br/editais/",
++      "hosts_links": [
++        "itausocial.org.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "prosas",
++      "nome": "Prosas — Central de Editais",
++      "nivel": "privada",
++      "tipo": "plataforma_radar",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://produtos.prosas.com.br/editais",
++      "hosts_links": [
++        "prosas.com.br",
++        "produtos.prosas.com.br"
++      ],
++      "confianca": "secundaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "mapa-osc",
++      "nome": "Mapa das OSC — editais",
++      "nivel": "federal",
++      "tipo": "plataforma_radar",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://mapaosc.ipea.gov.br/editais",
++      "hosts_links": [
++        "mapaosc.ipea.gov.br",
++        "ipea.gov.br"
++      ],
++      "confianca": "secundaria_oficial",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "capta",
++      "nome": "Capta — oportunidades",
++      "nivel": "privada",
++      "tipo": "plataforma_radar",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://capta.org.br/fontes-de-financiamento/oportunidades/",
++      "hosts_links": [
++        "capta.org.br"
++      ],
++      "confianca": "secundaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "observatorio-terceiro-setor",
++      "nome": "Observatório do Terceiro Setor — editais",
++      "nivel": "privada",
++      "tipo": "plataforma_radar",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://observatorio3setor.org.br/secoes_tematicas/editais/",
++      "hosts_links": [
++        "observatorio3setor.org.br"
++      ],
++      "confianca": "secundaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "gife-mosaico",
++      "nome": "GIFE Mosaico — base de projetos",
++      "nivel": "privada",
++      "tipo": "plataforma_radar",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://mosaico.gife.org.br/base-de-projetos",
++      "hosts_links": [
++        "mosaico.gife.org.br",
++        "gife.org.br"
++      ],
++      "confianca": "secundaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "goodstack",
++      "nome": "Goodstack — Grant Finder",
++      "nivel": "internacional",
++      "tipo": "portal_autenticado",
++      "territorio": "INTERNACIONAL",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://goodstack.org/grant-finder-and-writer",
++      "hosts_links": [
++        "goodstack.org"
++      ],
++      "confianca": "secundaria",
++      "modo": "portal_autenticado",
++      "ativa": true,
++      "nota": "Cadastro e verificação podem ser necessários; o robô não contorna autenticação."
++    },
++    {
++      "id": "un-partner-portal",
++      "nome": "UN Partner Portal",
++      "nivel": "internacional",
++      "tipo": "portal_autenticado",
++      "territorio": "INTERNACIONAL",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.unpartnerportal.org/",
++      "hosts_links": [
++        "unpartnerportal.org"
++      ],
++      "confianca": "primaria",
++      "modo": "portal_autenticado",
++      "ativa": true
++    },
++    {
++      "id": "eu-funding",
++      "nome": "União Europeia — Funding & Tenders",
++      "nivel": "internacional",
++      "tipo": "portal_oficial",
++      "territorio": "INTERNACIONAL",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://commission.europa.eu/funding-and-tenders_en",
++      "hosts_links": [
++        "europa.eu",
++        "ec.europa.eu"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "bid-chamadas",
++      "nome": "BID — chamadas a propostas",
++      "nivel": "internacional",
++      "tipo": "portal_oficial",
++      "territorio": "INTERNACIONAL",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.iadb.org/en/how-we-can-work-together/calls-proposals",
++      "hosts_links": [
++        "iadb.org"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "unesco-ifcd",
++      "nome": "UNESCO — Fundo Internacional para a Diversidade Cultural",
++      "nivel": "internacional",
++      "tipo": "grant_internacional",
++      "territorio": "INTERNACIONAL",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "cultura"
++      ],
++      "url": "https://www.unesco.org/creativity/en/ifcd/apply",
++      "hosts_links": [
++        "unesco.org"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "grants-gov",
++      "nome": "Grants.gov — elegibilidade internacional depende da oportunidade",
++      "nivel": "internacional",
++      "tipo": "portal_oficial",
++      "territorio": "INTERNACIONAL",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://grants.gov/learn-grants/grant-programs",
++      "hosts_links": [
++        "grants.gov"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true
++    },
++    {
++      "id": "portal-ac",
++      "nome": "Portal do Governo de Acre — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "AC",
++      "uf": "AC",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.ac.gov.br/",
++      "hosts_links": [
++        "ac.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-al",
++      "nome": "Portal do Governo de Alagoas — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "AL",
++      "uf": "AL",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.al.gov.br/",
++      "hosts_links": [
++        "al.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-ap",
++      "nome": "Portal do Governo de Amapá — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "AP",
++      "uf": "AP",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.portal.ap.gov.br/",
++      "hosts_links": [
++        "portal.ap.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-am",
++      "nome": "Portal do Governo de Amazonas — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "AM",
++      "uf": "AM",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.amazonas.am.gov.br/",
++      "hosts_links": [
++        "amazonas.am.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-ba",
++      "nome": "Portal do Governo de Bahia — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "BA",
++      "uf": "BA",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.ba.gov.br/",
++      "hosts_links": [
++        "ba.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-ce",
++      "nome": "Portal do Governo de Ceará — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "CE",
++      "uf": "CE",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.ceara.gov.br/",
++      "hosts_links": [
++        "ceara.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-df",
++      "nome": "Portal do Governo de Distrito Federal — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "DF",
++      "uf": "DF",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.df.gov.br/",
++      "hosts_links": [
++        "df.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-es",
++      "nome": "Portal do Governo de Espírito Santo — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "ES",
++      "uf": "ES",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.es.gov.br/",
++      "hosts_links": [
++        "es.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-go",
++      "nome": "Portal do Governo de Goiás — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "GO",
++      "uf": "GO",
++      "municipio": null,
++      "areas": [],
++      "url": "https://goias.gov.br/",
++      "hosts_links": [
++        "goias.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-ma",
++      "nome": "Portal do Governo de Maranhão — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "MA",
++      "uf": "MA",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.ma.gov.br/",
++      "hosts_links": [
++        "ma.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-mt",
++      "nome": "Portal do Governo de Mato Grosso — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "MT",
++      "uf": "MT",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.mt.gov.br/",
++      "hosts_links": [
++        "mt.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-ms",
++      "nome": "Portal do Governo de Mato Grosso do Sul — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "MS",
++      "uf": "MS",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.ms.gov.br/",
++      "hosts_links": [
++        "ms.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-mg",
++      "nome": "Portal do Governo de Minas Gerais — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "MG",
++      "uf": "MG",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.mg.gov.br/",
++      "hosts_links": [
++        "mg.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-pa",
++      "nome": "Portal do Governo de Pará — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "PA",
++      "uf": "PA",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.pa.gov.br/",
++      "hosts_links": [
++        "pa.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-pb",
++      "nome": "Portal do Governo de Paraíba — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "PB",
++      "uf": "PB",
++      "municipio": null,
++      "areas": [],
++      "url": "https://paraiba.pb.gov.br/",
++      "hosts_links": [
++        "paraiba.pb.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-pr",
++      "nome": "Portal do Governo de Paraná — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "PR",
++      "uf": "PR",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.pr.gov.br/",
++      "hosts_links": [
++        "pr.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-pe",
++      "nome": "Portal do Governo de Pernambuco — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "PE",
++      "uf": "PE",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.pe.gov.br/",
++      "hosts_links": [
++        "pe.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-pi",
++      "nome": "Portal do Governo de Piauí — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "PI",
++      "uf": "PI",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.pi.gov.br/",
++      "hosts_links": [
++        "pi.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-rj",
++      "nome": "Portal do Governo de Rio de Janeiro — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "RJ",
++      "uf": "RJ",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.rj.gov.br/",
++      "hosts_links": [
++        "rj.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-rn",
++      "nome": "Portal do Governo de Rio Grande do Norte — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "RN",
++      "uf": "RN",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.rn.gov.br/",
++      "hosts_links": [
++        "rn.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-rs",
++      "nome": "Portal do Governo de Rio Grande do Sul — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "RS",
++      "uf": "RS",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.rs.gov.br/",
++      "hosts_links": [
++        "rs.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-ro",
++      "nome": "Portal do Governo de Rondônia — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "RO",
++      "uf": "RO",
++      "municipio": null,
++      "areas": [],
++      "url": "https://rondonia.ro.gov.br/",
++      "hosts_links": [
++        "rondonia.ro.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-rr",
++      "nome": "Portal do Governo de Roraima — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "RR",
++      "uf": "RR",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.rr.gov.br/",
++      "hosts_links": [
++        "rr.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-sc",
++      "nome": "Portal do Governo de Santa Catarina — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "SC",
++      "uf": "SC",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.sc.gov.br/",
++      "hosts_links": [
++        "sc.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-sp",
++      "nome": "Portal do Governo de São Paulo — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "SP",
++      "uf": "SP",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.sp.gov.br/",
++      "hosts_links": [
++        "sp.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-se",
++      "nome": "Portal do Governo de Sergipe — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "SE",
++      "uf": "SE",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.se.gov.br/",
++      "hosts_links": [
++        "se.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "portal-to",
++      "nome": "Portal do Governo de Tocantins — descoberta na raiz",
++      "nivel": "estadual",
++      "tipo": "portal_federativo_raiz",
++      "territorio": "TO",
++      "uf": "TO",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.to.gov.br/",
++      "hosts_links": [
++        "to.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "pncp",
++      "nome": "PNCP — Portal Nacional de Contratações Públicas (API oficial)",
++      "nivel": "federal",
++      "tipo": "api_oficial",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao",
++      "hosts_links": [
++        "pncp.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "api_pncp",
++      "ativa": true
++    },
++    {
++      "id": "querido-diario",
++      "nome": "Querido Diário — diários oficiais municipais (API pública)",
++      "nivel": "municipal",
++      "tipo": "api_oficial",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [],
++      "url": "https://queridodiario.ok.org.br/api/gazettes",
++      "hosts_links": [
++        "queridodiario.ok.org.br",
++        "querido-diario.nyc3.cdn.digitaloceanspaces.com"
++      ],
++      "confianca": "primaria",
++      "modo": "api_querido_diario",
++      "ativa": true
++    },
++    {
++      "id": "tjgo-banco-projetos",
++      "nome": "TJGO — Banco de Projetos Sociais (destinações de penas)",
++      "nivel": "estadual",
++      "tipo": "justica_destinacoes",
++      "territorio": "GO",
++      "uf": "GO",
++      "municipio": null,
++      "areas": [],
++      "url": "https://www.tjgo.jus.br/index.php/banco-de-projetos",
++      "hosts_links": [
++        "tjgo.jus.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 8
++    },
++    {
++      "id": "salic-editais",
++      "nome": "SALIC / Ministério da Cultura — sistema da Lei Rouanet",
++      "nivel": "federal",
++      "tipo": "incentivo_fiscal_cultura",
++      "territorio": "BR",
++      "uf": null,
++      "municipio": null,
++      "areas": [
++        "cultura"
++      ],
++      "url": "https://salic.cultura.gov.br/",
++      "hosts_links": [
++        "salic.cultura.gov.br",
++        "cultura.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 8
++    },
++    {
++      "id": "goias-social",
++      "nome": "SEDS Goiás — Secretaria de Desenvolvimento Social",
++      "nivel": "estadual",
++      "tipo": "portal_setorial",
++      "territorio": "GO",
++      "uf": "GO",
++      "municipio": null,
++      "areas": [
++        "assistencia_social",
++        "seguranca_alimentar"
++      ],
++      "url": "https://goias.gov.br/desenvolvimento-social/",
++      "hosts_links": [
++        "goias.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "goias-esporte",
++      "nome": "SEEL Goiás — Esporte e Lazer",
++      "nivel": "estadual",
++      "tipo": "portal_setorial",
++      "territorio": "GO",
++      "uf": "GO",
++      "municipio": null,
++      "areas": [
++        "esporte"
++      ],
++      "url": "https://goias.gov.br/esporte/",
++      "hosts_links": [
++        "goias.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 12
++    },
++    {
++      "id": "goyazes-programa",
++      "nome": "Programa Goyazes — incentivo à cultura de Goiás",
++      "nivel": "estadual",
++      "tipo": "incentivo_fiscal_cultura",
++      "territorio": "GO",
++      "uf": "GO",
++      "municipio": null,
++      "areas": [
++        "cultura"
++      ],
++      "url": "https://goias.gov.br/cultura/programa-goyazes/",
++      "hosts_links": [
++        "goias.gov.br"
++      ],
++      "confianca": "primaria",
++      "modo": "html_publico",
++      "ativa": true,
++      "max_paginas": 8
++    }
+   ]
+-}
++}
+\ No newline at end of file
+diff --git a/config/retrospectivo.json b/config/retrospectivo.json
+index 1f13872..84639b4 100644
+--- a/config/retrospectivo.json
++++ b/config/retrospectivo.json
+@@ -1,5 +1,5 @@
+ {
+-  "versao": 2,
++  "versao": 3,
+   "motor": "https://www.bing.com/search?format=rss&q={consulta}",
+   "janela_anos": 5,
+   "max_consultas_por_execucao": 500,
+@@ -9,21 +9,82 @@
+     "site:{dominio} {nome} investimento social doação projeto {ano} valor"
+   ],
+   "financiadores": [
+-    {"nome":"Fundação Banco do Brasil","dominio_oficial":"fbb.org.br","ativa":true},
+-    {"nome":"BNDES","dominio_oficial":"bndes.gov.br","ativa":true},
+-    {"nome":"Petrobras","dominio_oficial":"petrobras.com.br","ativa":true},
+-    {"nome":"Itaú Social","dominio_oficial":"itausocial.org.br","ativa":true},
+-    {"nome":"Fundação Vale","dominio_oficial":null,"ativa":false},
+-    {"nome":"Instituto Sabin","dominio_oficial":null,"ativa":false},
+-    {"nome":"Fundação Telefônica Vivo","dominio_oficial":null,"ativa":false},
+-    {"nome":"Instituto Localiza","dominio_oficial":null,"ativa":false},
+-    {"nome":"Fundação Grupo Volkswagen","dominio_oficial":null,"ativa":false},
+-    {"nome":"Instituto ACP","dominio_oficial":null,"ativa":false},
+-    {"nome":"Instituto Unibanco","dominio_oficial":null,"ativa":false},
+-    {"nome":"Santander Brasil","dominio_oficial":null,"ativa":false},
+-    {"nome":"Fundação Cargill","dominio_oficial":null,"ativa":false},
+-    {"nome":"Instituto Mosaic","dominio_oficial":null,"ativa":false},
+-    {"nome":"Instituto Sicoob","dominio_oficial":null,"ativa":false}
++    {
++      "nome": "Fundação Banco do Brasil",
++      "dominio_oficial": "fbb.org.br",
++      "ativa": true
++    },
++    {
++      "nome": "BNDES",
++      "dominio_oficial": "bndes.gov.br",
++      "ativa": true
++    },
++    {
++      "nome": "Petrobras",
++      "dominio_oficial": "petrobras.com.br",
++      "ativa": true
++    },
++    {
++      "nome": "Itaú Social",
++      "dominio_oficial": "itausocial.org.br",
++      "ativa": true
++    },
++    {
++      "nome": "Fundação Vale",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Instituto Sabin",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Fundação Telefônica Vivo",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Instituto Localiza",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Fundação Grupo Volkswagen",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Instituto ACP",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Instituto Unibanco",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Santander Brasil",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Fundação Cargill",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Instituto Mosaic",
++      "dominio_oficial": null,
++      "ativa": false
++    },
++    {
++      "nome": "Instituto Sicoob",
++      "dominio_oficial": null,
++      "ativa": false
++    }
+   ],
+-  "regra": "Toda consulta contém site:dominio_oficial e todo resultado fora desse domínio é descartado. Entradas sem domínio validado ficam inativas. Resultados continuam pistas até conferência da página primária."
+-}
++  "regra": "Carga histórica fracionada MÊS A MÊS (5 anos) sobre PNCP e Querido Diário, com cursor e retry por janela; camada complementar anual por site:dominio_oficial dos financiadores. Toda consulta a domínio usa site:dominio_oficial e resultados fora dele são descartados. Resultados são pistas até conferência da página primária.",
++  "max_janelas_por_execucao": 12
++}
+\ No newline at end of file
+diff --git a/config/verificacao_social.json b/config/verificacao_social.json
+index 778f003..6929e62 100644
+--- a/config/verificacao_social.json
++++ b/config/verificacao_social.json
+@@ -1,6 +1,6 @@
+ {
+-  "versao": 1,
+-  "regra": "Rede social gera pista secundária. A confirmação exige URL primária do edital no domínio oficial do emissor.",
++  "versao": 2,
++  "regra": "Rede social gera pista secundária e NUNCA confirma edital sozinha. Raspagem direta de redes fechadas (Instagram/Facebook/X) não funciona sem credencial — o caminho ativo de capilaridade é config/capilaridade.json (imprensa/anúncios via RSS) e, no futuro, APIs oficiais com credencial.",
+   "fontes": [
+     {
+       "id": "instagram-prefeitura-goiania",
+@@ -11,8 +11,9 @@
+       "modo": "pagina_social_publica",
+       "uf": "GO",
+       "municipio": "GO/Goiânia",
+-      "ativa": true,
+-      "evidencia_identidade": "https://www.goiania.go.gov.br/sing_servicos/contato-com-o-cidadao/"
++      "ativa": false,
++      "evidencia_identidade": "https://www.goiania.go.gov.br/sing_servicos/contato-com-o-cidadao/",
++      "motivo_inativa": "Instagram não serve conteúdo a coletor HTTP simples; reativar somente via API oficial com credencial (config/capilaridade.json → redes_sociais)."
+     },
+     {
+       "id": "redes-minc",
+@@ -23,8 +24,9 @@
+       "modo": "pagina_social_publica",
+       "uf": null,
+       "municipio": null,
+-      "ativa": true,
+-      "evidencia_identidade": "https://www.gov.br/cultura/pt-br"
++      "ativa": false,
++      "evidencia_identidade": "https://www.gov.br/cultura/pt-br",
++      "motivo_inativa": "Instagram não serve conteúdo a coletor HTTP simples; reativar somente via API oficial com credencial (config/capilaridade.json → redes_sociais)."
+     },
+     {
+       "id": "redes-secult-goias",
+@@ -39,4 +41,4 @@
+       "evidencia_identidade": "https://goias.gov.br/cultura/"
+     }
+   ]
+-}
++}
+\ No newline at end of file
+diff --git a/estado/cobertura_catalogo.json b/estado/cobertura_catalogo.json
+new file mode 100644
+index 0000000..4401adb
+--- /dev/null
++++ b/estado/cobertura_catalogo.json
+@@ -0,0 +1,499 @@
++{
++  "gerado_em": "2026-08-30T14:45:55+00:00",
++  "total_catalogo": 260,
++  "cobertos_por_camada_ativa": 181,
++  "descobertos": 79,
++  "percentual_cobertura": 69.6,
++  "fila_validacao": [
++    {
++      "id": "captacao-050",
++      "fonte_programa": "Pró-Goiás Atleta - atletas e treinadores vinculados a entidades",
++      "tipo": "outros",
++      "niveis": [
++        "estadual"
++      ]
++    },
++    {
++      "id": "captacao-052",
++      "fonte_programa": "Projeto de inclusão pelo paradesporto",
++      "tipo": "outros",
++      "niveis": [
++        "federal"
++      ]
++    },
++    {
++      "id": "captacao-053",
++      "fonte_programa": "Projeto de esporte e lazer para idosos",
++      "tipo": "outros",
++      "niveis": [
++        "estadual",
++        "federal"
++      ]
++    },
++    {
++      "id": "captacao-054",
++      "fonte_programa": "Projeto de esporte e contraturno escolar",
++      "tipo": "outros",
++      "niveis": [
++        "municipal"
++      ]
++    },
++    {
++      "id": "captacao-057",
++      "fonte_programa": "Núcleo de artes marciais educativas",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-058",
++      "fonte_programa": "Núcleo de futebol de base comunitário",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-059",
++      "fonte_programa": "Núcleo de corrida/caminhada comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-060",
++      "fonte_programa": "Escolinha de natação/paradesporto adaptado",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-062",
++      "fonte_programa": "Festival esportivo intergeracional",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-070",
++      "fonte_programa": "Parceria com SME Goiânia para contraturno/educação integral",
++      "tipo": "outros",
++      "niveis": [
++        "municipal"
++      ]
++    },
++    {
++      "id": "captacao-071",
++      "fonte_programa": "Programa Escola em Tempo Integral - articulação com OSC",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-073",
++      "fonte_programa": "Projeto de alfabetização comunitária de jovens",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-074",
++      "fonte_programa": "Projeto de reforço escolar e recomposição de aprendizagem",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-075",
++      "fonte_programa": "Projeto de inclusão digital comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-076",
++      "fonte_programa": "Projeto de laboratório maker social",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-077",
++      "fonte_programa": "Projeto de educação ambiental escolar",
++      "tipo": "outros",
++      "niveis": [
++        "federal"
++      ]
++    },
++    {
++      "id": "captacao-078",
++      "fonte_programa": "Projeto de biblioteca comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "municipal",
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-079",
++      "fonte_programa": "Projeto de clubes de leitura",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-080",
++      "fonte_programa": "Projeto de mediação de leitura para crianças",
++      "tipo": "outros",
++      "niveis": [
++        "municipal",
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-081",
++      "fonte_programa": "Projeto de educação para o trabalho",
++      "tipo": "outros",
++      "niveis": [
++        "estadual",
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-082",
++      "fonte_programa": "Projeto de empreendedorismo juvenil",
++      "tipo": "outros",
++      "niveis": [
++        "municipal",
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-083",
++      "fonte_programa": "Projeto de robótica educacional comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-085",
++      "fonte_programa": "Projeto de educação financeira comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-086",
++      "fonte_programa": "Projeto de educação para direitos humanos",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-087",
++      "fonte_programa": "Projeto de combate à evasão escolar",
++      "tipo": "outros",
++      "niveis": [
++        "municipal",
++        "estadual"
++      ]
++    },
++    {
++      "id": "captacao-088",
++      "fonte_programa": "Projeto de inclusão de estudantes com deficiência",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-089",
++      "fonte_programa": "Projeto de formação para famílias e parentalidade",
++      "tipo": "outros",
++      "niveis": [
++        "municipal"
++      ]
++    },
++    {
++      "id": "captacao-092",
++      "fonte_programa": "MDS - Programa Cisternas / tecnologias sociais de água",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-093",
++      "fonte_programa": "MDS - Sistemas alimentares circulares",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-095",
++      "fonte_programa": "SEDS Goiás - Auxílio Nutricional a entidades",
++      "tipo": "outros",
++      "niveis": [
++        "estadual"
++      ]
++    },
++    {
++      "id": "captacao-096",
++      "fonte_programa": "SEDS Goiás - Água, energia e esgoto para entidades",
++      "tipo": "outros",
++      "niveis": [
++        "estadual"
++      ]
++    },
++    {
++      "id": "captacao-108",
++      "fonte_programa": "Projeto de convivência e fortalecimento de vínculos",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-109",
++      "fonte_programa": "Projeto de inclusão produtiva de famílias",
++      "tipo": "outros",
++      "niveis": [
++        "estadual",
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-110",
++      "fonte_programa": "Projeto de apoio a pessoas em situação de rua",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-111",
++      "fonte_programa": "Projeto de segurança alimentar comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "estadual",
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-112",
++      "fonte_programa": "Projeto de apoio a mulheres em vulnerabilidade",
++      "tipo": "outros",
++      "niveis": [
++        "estadual",
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-113",
++      "fonte_programa": "Projeto de apoio a famílias de baixa renda",
++      "tipo": "outros",
++      "niveis": [
++        "estadual"
++      ]
++    },
++    {
++      "id": "captacao-123",
++      "fonte_programa": "Projeto de cultura para adolescentes",
++      "tipo": "outros",
++      "niveis": [
++        "municipal"
++      ]
++    },
++    {
++      "id": "captacao-124",
++      "fonte_programa": "Projeto de esporte para adolescentes",
++      "tipo": "outros",
++      "niveis": [
++        "municipal"
++      ]
++    },
++    {
++      "id": "captacao-132",
++      "fonte_programa": "Projeto de cuidadores e apoio familiar",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-136",
++      "fonte_programa": "Conselho de Igualdade Racial - projetos de promoção da igualdade",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-137",
++      "fonte_programa": "Conselho da Mulher - projetos de autonomia e proteção",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-146",
++      "fonte_programa": "SES-GO - chamamento para gestão/serviços de unidade de saúde",
++      "tipo": "outros",
++      "niveis": [
++        "estadual"
++      ]
++    },
++    {
++      "id": "captacao-147",
++      "fonte_programa": "SES-GO - atuação em rede com OSC celebrante",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-153",
++      "fonte_programa": "Projeto de saúde bucal comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-154",
++      "fonte_programa": "Projeto de saúde mental comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-155",
++      "fonte_programa": "Projeto de prevenção ao uso de álcool e drogas",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-156",
++      "fonte_programa": "Projeto de formação de cuidadores",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-157",
++      "fonte_programa": "Projeto de apoio a familiares de PCD",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-158",
++      "fonte_programa": "Projeto de reabilitação comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-159",
++      "fonte_programa": "Projeto de teleorientação em saúde comunitária",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-160",
++      "fonte_programa": "Projeto de prevenção de doenças crônicas",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-161",
++      "fonte_programa": "Projeto de vacinação/campanhas educativas de apoio",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-162",
++      "fonte_programa": "Projeto de acessibilidade em saúde",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-163",
++      "fonte_programa": "Projeto de saúde da mulher",
++      "tipo": "outros",
++      "niveis": [
++        "a_validar"
++      ]
++    },
++    {
++      "id": "captacao-164",
++      "fonte_programa": "Projeto de saúde para população em vulnerabilidade",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    },
++    {
++      "id": "captacao-175",
++      "fonte_programa": "BNDES Periferias - geração de emprego e renda",
++      "tipo": "outros",
++      "niveis": [
++        "federal"
++      ]
++    },
++    {
++      "id": "captacao-176",
++      "fonte_programa": "BNDES Corais - meio ambiente",
++      "tipo": "outros",
++      "niveis": [
++        "federal"
++      ]
++    },
++    {
++      "id": "captacao-177",
++      "fonte_programa": "SEMAD Goiás - banco de projetos de autocomposição ambiental",
++      "tipo": "outros",
++      "niveis": [
++        "estadual"
++      ]
++    },
++    {
++      "id": "captacao-179",
++      "fonte_programa": "Compensação ambiental e projetos de educação ambiental",
++      "tipo": "outros",
++      "niveis": [
++        "privada"
++      ]
++    }
++  ],
++  "regra": "cobertura por camada não substitui a validação página a página: itens cobertos continuam pistas até terem URL primária confirmada"
++}
+diff --git a/scripts/cobertura_catalogo.py b/scripts/cobertura_catalogo.py
+new file mode 100644
+index 0000000..fc4ebca
+--- /dev/null
++++ b/scripts/cobertura_catalogo.py
+@@ -0,0 +1,52 @@
++"""Mede a abrangência: quantos dos 260 pontos de captação do acervo têm ao
++menos uma camada de coleta ativa cobrindo seu nível/tipo — e lista os
++descobertos, que são a fila de validação de novas fontes.
++
++Uso: python scripts/cobertura_catalogo.py"""
++from __future__ import annotations
++import json, sys
++from pathlib import Path
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++from src.nucleo import ROOT, load_json, now_iso, write_json
++
++CAMADAS_GERAIS = {
++    # tipo_catalogo -> justificativa da camada que o cobre
++    "editais_chamamentos": "varredura de portais (62 fontes) + PNCP + Querido Diário",
++    "fundos": "fontes de fundos catalogadas + diários oficiais (conselhos deliberam por resolução publicada)",
++    "emendas": "portais federativos + diários oficiais",
++    "incentivos_fiscais": "páginas de programas (Rouanet/SALIC, PRONON/PRONAS, Goyazes, LC 222/2025)",
++    "justica_destinacoes": "TJGO banco de projetos + diários oficiais",
++    "doacoes_patrocinios": "páginas institucionais catalogadas + camada capilar de imprensa",
++    "grants_internacionais": "fontes internacionais (UE, BID, UNESCO, Grants.gov) + portais autenticados manuais",
++    "plataformas_radar": "fontes agregadoras (Prosas, Capta, GIFE, Observatório)",
++    "outros": None,
++}
++
++def run() -> dict:
++    catalogo = load_json(ROOT / "catalogo_captacao/catalogo_anexo.json")
++    fontes = load_json(ROOT / "config/fontes.json")["fontes"]
++    ativos_nivel = {f.get("nivel") for f in fontes if f.get("ativa")}
++    cobertos, descobertos = [], []
++    for item in catalogo["itens"]:
++        tipo = item.get("tipo_catalogo") or "outros"
++        niveis = item.get("niveis_inferidos") or ["a_validar"]
++        camada = CAMADAS_GERAIS.get(tipo)
++        nivel_ok = any(n in ativos_nivel or n == "a_validar" for n in niveis)
++        if camada and nivel_ok:
++            cobertos.append(item["id_acervo"])
++        else:
++            descobertos.append({"id": item["id_acervo"], "fonte_programa": item.get("fonte_programa"),
++                                "tipo": tipo, "niveis": niveis})
++    resultado = {
++        "gerado_em": now_iso(), "total_catalogo": catalogo["total"],
++        "cobertos_por_camada_ativa": len(cobertos), "descobertos": len(descobertos),
++        "percentual_cobertura": round(100 * len(cobertos) / max(catalogo["total"], 1), 1),
++        "fila_validacao": descobertos[:60],
++        "regra": "cobertura por camada não substitui a validação página a página: itens cobertos continuam pistas até terem URL primária confirmada",
++    }
++    write_json(ROOT / "estado/cobertura_catalogo.json", resultado)
++    print(json.dumps({k: resultado[k] for k in ("total_catalogo", "cobertos_por_camada_ativa", "descobertos", "percentual_cobertura")}, ensure_ascii=False, indent=2))
++    return resultado
++
++if __name__ == "__main__":
++    run()
+diff --git a/scripts/confirmar_pista.py b/scripts/confirmar_pista.py
+new file mode 100644
+index 0000000..cb6e5f2
+--- /dev/null
++++ b/scripts/confirmar_pista.py
+@@ -0,0 +1,61 @@
++"""Converte uma pista secundária (imprensa/diário/rede social) em oportunidade
++primária, exigindo a URL oficial do edital. A pista nunca entra sozinha.
++
++Uso:
++  python scripts/confirmar_pista.py PISTA_ID https://dominio-oficial/pagina-do-edital --por "Nome"
++"""
++from __future__ import annotations
++import argparse, json, sys
++from pathlib import Path
++from urllib.parse import urlsplit
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++from src.nucleo import (ROOT, append_jsonl, carregar_oportunidades, gravar_oportunidades,
++                        load_json, merge_registro, novo_id, now_iso, sha256, validate_public_https)
++
++def hosts_catalogados() -> set:
++    hosts = set()
++    cfg = load_json(ROOT / "config/fontes.json")
++    for f in cfg["fontes"]:
++        hosts.update(f.get("hosts_links") or [])
++        if f.get("url"): hosts.add(urlsplit(f["url"]).hostname)
++    for uf, url in load_json(ROOT / "config/portais_federativos.json")["estados"]:
++        hosts.add(urlsplit(url).hostname)
++    return {h for h in hosts if h}
++
++def confirmar(pista_id: str, url_primaria: str, por: str) -> dict:
++    validate_public_https(url_primaria)
++    host = urlsplit(url_primaria).hostname or ""
++    catalogo = hosts_catalogados()
++    if not any(host == h or host.endswith("." + h) for h in catalogo):
++        raise SystemExit(f"host {host} não está entre os domínios catalogados; adicione a fonte antes")
++    pistas_path = ROOT / "dados/oportunidades/pistas_imprensa.jsonl"
++    pista = None
++    if pistas_path.exists():
++        for linha in pistas_path.read_text(encoding="utf-8").splitlines():
++            if linha.strip():
++                registro = json.loads(linha)
++                if registro["id"] == pista_id: pista = registro; break
++    if pista is None:
++        raise SystemExit(f"pista {pista_id} não encontrada em pistas_imprensa.jsonl")
++    registros = carregar_oportunidades()
++    novo = {
++        "id": novo_id(url_primaria), "status": "capturada",
++        "titulo": pista.get("titulo", "")[:300], "url": url_primaria,
++        "fonte_id": pista.get("fonte_id", "pista_confirmada"), "fonte_nome": pista.get("fonte_nome", "pista confirmada"),
++        "territorio": pista.get("territorio", "BR"), "tipo_fonte": "pista_confirmada_manual",
++        "confianca": "primaria", "coletado_em": now_iso(), "nivel": pista.get("nivel"),
++        "uf": pista.get("uf"), "municipio": pista.get("municipio"), "areas_fonte": pista.get("areas_fonte") or [],
++        "prazo_texto": pista.get("prazo_texto"), "ano_referencia": pista.get("ano_referencia"),
++        "evidencia": pista.get("evidencia", "")[:500], "hash_evidencia": sha256(pista.get("evidencia", "").encode()),
++        "pista_origem": pista_id, "verificado_por": por, "verificado_em": now_iso(),
++    }
++    registros[novo["id"]] = merge_registro(registros.get(novo["id"]), novo)
++    gravar_oportunidades(registros)
++    append_jsonl(ROOT / "estado/auditoria.jsonl", {"evento": "pista_confirmada", "pista": pista_id, "oportunidade": novo["id"], "por": por, "em": now_iso()})
++    return novo
++
++if __name__ == "__main__":
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument("pista_id"); p.add_argument("url_primaria"); p.add_argument("--por", default="revisao_humana")
++    a = p.parse_args()
++    print(json.dumps(confirmar(a.pista_id, a.url_primaria, a.por), ensure_ascii=False, indent=2))
+diff --git a/src/capilaridade.py b/src/capilaridade.py
+new file mode 100644
+index 0000000..37e530d
+--- /dev/null
++++ b/src/capilaridade.py
+@@ -0,0 +1,96 @@
++"""Camada capilar e descentralizada de PISTAS SECUNDÁRIAS.
++
++Busca menções a editais/chamamentos na imprensa e em anúncios de emissores
++(via RSS de notícias), por termo, por emissor catalogado e por UF ativa.
++Nada daqui entra na base primária: pistas ficam em arquivo separado e só se
++tornam oportunidade quando a URL OFICIAL é confirmada
++(`scripts/confirmar_pista.py` ou verificação assistida).
++
++Redes sociais fechadas (Instagram/Facebook/X) não servem conteúdo a coletores
++simples; a via preparada para elas é por credencial de API oficial
++(config/capilaridade.json → redes_sociais, inativa até haver credencial).
++"""
++from __future__ import annotations
++
++import json
++import time
++from urllib.error import HTTPError, URLError
++from urllib.parse import quote
++from urllib.request import Request, urlopen
++from xml.etree import ElementTree as ET
++
++from .nucleo import (ROOT, append_jsonl, canonical_url, load_json, now_iso,
++                     sha256, slug, validate_public_https, write_json)
++
++def _rss(url: str, timeout: int = 30):
++    validate_public_https(url)
++    req = Request(url, headers={"User-Agent": "Eldorado-OSC/3.0 contato-via-repositorio"})
++    with urlopen(req, timeout=timeout) as resp:
++        data = resp.read(2_000_001)
++    if len(data) > 2_000_000: raise ValueError("resposta excede limite")
++    return ET.fromstring(data)
++
++def _consultas(cfg: dict, escopo: dict) -> list[tuple[str, str, str | None]]:
++    """(id_consulta, texto, uf) — descentralizado: termos gerais × UFs ativas
++    + termos específicos por emissor catalogado."""
++    saida = []
++    ufs = escopo.get("ufs_ativas") or []
++    for termo in cfg.get("termos_gerais", []):
++        for uf in ufs:
++            saida.append((f"g-{slug(termo)}-{uf.lower()}", f'{termo} {uf}', uf))
++    for emissor in cfg.get("emissores", []):
++        if not emissor.get("ativa", True): continue
++        for termo in emissor.get("termos") or cfg.get("termos_emissor_padrao", []):
++            saida.append((f'e-{emissor["id"]}-{slug(termo)}', f'{emissor["nome"]} {termo}', emissor.get("uf")))
++    limite = int(cfg.get("max_consultas_por_execucao", 40))
++    if len(saida) <= limite:
++        return saida
++    # rotação persistente: cada execução cobre uma fatia; nenhum termo/UF fica para trás
++    cursor_path = ROOT / "estado/cursor_capilaridade.json"
++    inicio = int(load_json(cursor_path).get("proxima", 0)) % len(saida) if cursor_path.exists() else 0
++    fatia = [saida[(inicio + i) % len(saida)] for i in range(limite)]
++    write_json(cursor_path, {"proxima": (inicio + limite) % len(saida), "total": len(saida)})
++    return fatia
++
++def run() -> dict:
++    cfg = load_json(ROOT / "config/capilaridade.json")
++    if not cfg.get("ativa", True):
++        return {"executado_em": now_iso(), "status": "desativada"}
++    escopo = load_json(ROOT / "config/escopo.json")
++    saida_path = ROOT / "dados/oportunidades/pistas_imprensa.jsonl"
++    conhecidas = {}
++    if saida_path.exists():
++        for linha in saida_path.read_text(encoding="utf-8").splitlines():
++            if linha.strip():
++                item = json.loads(linha); conhecidas[item["id"]] = item
++    relatorio = {"executado_em": now_iso(), "consultas": 0, "consultas_com_falha": 0, "pistas_novas": 0}
++    for cid, texto, uf in _consultas(cfg, escopo):
++        relatorio["consultas"] += 1
++        try:
++            raiz = _rss(cfg["motor_rss"].format(consulta=quote(texto)))
++            for node in raiz.findall(".//item")[: int(cfg.get("max_itens_por_consulta", 10))]:
++                titulo = (node.findtext("title") or "").strip()
++                link = canonical_url((node.findtext("link") or "").strip())
++                if not titulo or not link.startswith("https://"): continue
++                pid = sha256(("imprensa|" + link).encode())[:20]
++                if pid in conhecidas: continue
++                conhecidas[pid] = {
++                    "id": pid, "status": "pista_imprensa", "confianca": "secundaria",
++                    "titulo": titulo[:300], "url": link, "fonte_id": "imprensa-" + cid,
++                    "fonte_nome": "Camada capilar de imprensa/anúncios", "uf": uf, "territorio": uf or "BR",
++                    "consulta_origem": texto, "coletado_em": now_iso(),
++                    "evidencia": titulo[:500], "hash_evidencia": sha256(titulo.encode()),
++                    "regra": "não entra na base primária sem confirmação da URL oficial",
++                }
++                relatorio["pistas_novas"] += 1
++            time.sleep(float(cfg.get("intervalo_segundos", 1)))
++        except (HTTPError, URLError, OSError, ValueError, ET.ParseError):
++            relatorio["consultas_com_falha"] += 1
++    saida_path.parent.mkdir(parents=True, exist_ok=True)
++    saida_path.write_text("".join(json.dumps(x, ensure_ascii=False, separators=(",", ":")) + "\n" for x in sorted(conhecidas.values(), key=lambda x: x["id"])), encoding="utf-8")
++    write_json(ROOT / "estado/ultima_capilaridade.json", relatorio)
++    append_jsonl(ROOT / "estado/auditoria.jsonl", {"evento": "capilaridade", **relatorio})
++    return relatorio
++
++if __name__ == "__main__":
++    print(json.dumps(run(), ensure_ascii=False, indent=2))
+diff --git a/src/coletores_api.py b/src/coletores_api.py
+new file mode 100644
+index 0000000..f61dcda
+--- /dev/null
++++ b/src/coletores_api.py
+@@ -0,0 +1,171 @@
++"""Coletores de APIs públicas oficiais (somente leitura, sem chave, sem IA):
++
++- PNCP  (pncp.gov.br): editais de credenciamento/concurso publicados por todos
++  os entes federativos — capilaridade nacional com uma única API.
++- Querido Diário (Open Knowledge Brasil): busca textual nos diários oficiais
++  municipais — captura chamamentos que nunca chegam a portais estruturados.
++
++Ambos alimentam a MESMA base deduplicada, via merge que preserva revisão humana.
++"""
++from __future__ import annotations
++
++import json
++import time
++from datetime import date, timedelta
++from urllib.error import HTTPError, URLError
++from urllib.parse import quote, urlencode, urlsplit
++from urllib.request import Request, urlopen
++
++from .nucleo import (ROOT, append_jsonl, carregar_oportunidades, gravar_oportunidades,
++                     load_json, merge_registro, novo_id, now_iso, sha256,
++                     validate_public_https, write_json)
++
++import re
++
++def _cfg():
++    return load_json(ROOT / "config/coletores_api.json")
++
++def _get_json(url: str, timeout: int = 45, max_bytes: int = 8_000_000):
++    validate_public_https(url)
++    req = Request(url, headers={"User-Agent": "Eldorado-OSC/3.0 contato-via-repositorio", "Accept": "application/json"})
++    with urlopen(req, timeout=timeout) as resp:
++        data = resp.read(max_bytes + 1)
++        if len(data) > max_bytes: raise ValueError("resposta excede limite")
++        return json.loads(data.decode("utf-8", "replace"))
++
++def _salvar(novos: list[dict], relatorio: dict) -> None:
++    if not novos: return
++    registros = carregar_oportunidades()
++    for item in novos:
++        anterior = registros.get(item["id"])
++        fundido = merge_registro(anterior, item)
++        if anterior is None: relatorio["novas"] += 1
++        registros[item["id"]] = fundido
++    gravar_oportunidades(registros)
++
++# ─── PNCP ────────────────────────────────────────────────────────────────────
++
++def _pncp_url_publica(item: dict) -> str | None:
++    link = (item.get("linkSistemaOrigem") or "").strip()
++    if link.startswith("https://"):
++        return link
++    controle = item.get("numeroControlePNCP")  # ex.: 00000000000000-1-000001/2026
++    if controle and "/" in controle:
++        ident, ano = controle.split("/", 1)
++        partes = ident.split("-")
++        if len(partes) == 3:
++            cnpj, _, sequencial = partes
++            return f"https://pncp.gov.br/app/editais/{cnpj}/{ano}/{int(sequencial)}"
++    return None
++
++def coletar_pncp(inicio: date, fim: date, escopo: dict, cfg: dict | None = None) -> tuple[list[dict], list[dict]]:
++    cfg = cfg or _cfg()["pncp"]
++    filtro = re.compile(cfg["filtro_regex"], re.I)
++    ufs = set(escopo.get("ufs_ativas") or [])
++    achados, falhas = [], []
++    for base in cfg["bases"]:
++        try:
++            for modalidade in cfg["modalidades"]:
++                pagina = 1
++                while pagina <= int(cfg.get("max_paginas", 5)):
++                    q = urlencode({"dataInicial": inicio.strftime("%Y%m%d"), "dataFinal": fim.strftime("%Y%m%d"),
++                                   "codigoModalidadeContratacao": modalidade, "pagina": pagina,
++                                   "tamanhoPagina": int(cfg.get("tamanho_pagina", 50))})
++                    corpo = _get_json(f"{base}/v1/contratacoes/publicacao?{q}")
++                    dados = corpo.get("data") or corpo.get("resultado") or []
++                    for item in dados:
++                        objeto = (item.get("objetoCompra") or item.get("objeto") or "").strip()
++                        uf = ((item.get("unidadeOrgao") or {}).get("ufSigla") or "").upper() or None
++                        if not objeto or not filtro.search(objeto): continue
++                        if uf and ufs and uf not in ufs: continue
++                        url = _pncp_url_publica(item)
++                        if not url: continue
++                        orgao = ((item.get("orgaoEntidade") or {}).get("razaoSocial") or "órgão público").strip()
++                        municipio = ((item.get("unidadeOrgao") or {}).get("municipioNome") or None)
++                        publicado = (item.get("dataPublicacaoPncp") or "")[:10] or None
++                        achados.append({
++                            "id": novo_id(url), "status": "capturada", "titulo": objeto[:300], "url": url,
++                            "fonte_id": "pncp", "fonte_nome": f"PNCP — {orgao}"[:120], "territorio": uf or "BR",
++                            "tipo_fonte": "api_oficial_pncp", "confianca": "primaria", "coletado_em": now_iso(),
++                            "nivel": "municipal" if municipio else "federal", "uf": uf,
++                            "municipio": f"{uf}/{municipio}" if uf and municipio else None,
++                            "areas_fonte": [], "prazo_texto": None,
++                            "ano_referencia": int(publicado[:4]) if publicado else None,
++                            "data_publicacao": publicado,
++                            "evidencia": objeto[:500], "hash_evidencia": sha256(objeto.encode()),
++                            "modalidade_pncp": modalidade,
++                        })
++                    total_paginas = int(corpo.get("totalPaginas") or 1)
++                    if pagina >= total_paginas: break
++                    pagina += 1
++                    time.sleep(0.5)
++            return achados, falhas
++        except (HTTPError, URLError, OSError, ValueError, json.JSONDecodeError) as exc:
++            falhas.append({"api": "pncp", "base": base, "erro": type(exc).__name__})
++    return achados, falhas
++
++# ─── Querido Diário ─────────────────────────────────────────────────────────
++
++def coletar_querido_diario(inicio: date, fim: date, escopo: dict, cfg: dict | None = None) -> tuple[list[dict], list[dict]]:
++    cfg = cfg or _cfg()["querido_diario"]
++    ufs = set(escopo.get("ufs_ativas") or [])
++    achados, falhas = [], []
++    for base in cfg["bases"]:
++        try:
++            for consulta in cfg["consultas"]:
++                offset = 0
++                for _ in range(int(cfg.get("max_paginas", 4))):
++                    q = urlencode({"querystring": consulta, "published_since": inicio.isoformat(),
++                                   "published_until": fim.isoformat(), "size": int(cfg.get("size", 50)),
++                                   "offset": offset, "excerpt_size": 400, "number_of_excerpts": 1})
++                    corpo = _get_json(f"{base}/gazettes?{q}")
++                    diarios = corpo.get("gazettes") or []
++                    for g in diarios:
++                        uf = (g.get("state_code") or "").upper() or None
++                        if uf and ufs and uf not in ufs: continue
++                        url = (g.get("url") or g.get("txt_url") or "").strip()
++                        if not url.startswith("https://"): continue
++                        nome = g.get("territory_name") or "município"
++                        dia = (g.get("date") or "")[:10]
++                        trecho = " ".join((g.get("excerpts") or [""])[0].split())
++                        titulo = f"Diário Oficial de {nome} ({uf}) {dia} — {consulta}"
++                        achados.append({
++                            "id": sha256(("qd|" + url + "|" + dia).encode())[:20], "status": "capturada", "titulo": titulo[:300], "url": url,
++                            "fonte_id": "querido-diario", "fonte_nome": "Querido Diário — diários oficiais municipais",
++                            "territorio": uf or "BR", "tipo_fonte": "diario_oficial_municipal", "confianca": "primaria",
++                            "coletado_em": now_iso(), "nivel": "municipal", "uf": uf,
++                            "municipio": f"{uf}/{nome}" if uf else None, "areas_fonte": [],
++                            "prazo_texto": None, "ano_referencia": int(dia[:4]) if dia else None,
++                            "data_publicacao": dia or None,
++                            "evidencia": (trecho or titulo)[:500], "hash_evidencia": sha256((trecho or titulo).encode()),
++                        })
++                    total = int(corpo.get("total_gazettes") or 0)
++                    offset += int(cfg.get("size", 50))
++                    if offset >= total: break
++                    time.sleep(0.5)
++            return achados, falhas
++        except (HTTPError, URLError, OSError, ValueError, json.JSONDecodeError) as exc:
++            falhas.append({"api": "querido_diario", "base": base, "erro": type(exc).__name__})
++    return achados, falhas
++
++# ─── Execução incremental (diária/segunda-quarta) ───────────────────────────
++
++def run(dias: int | None = None) -> dict:
++    cfg = _cfg(); escopo = load_json(ROOT / "config/escopo.json")
++    hoje = date.today()
++    relatorio = {"executado_em": now_iso(), "novas": 0, "itens": 0, "falhas": []}
++    novos: list[dict] = []
++    if cfg["pncp"].get("ativa"):
++        ini = hoje - timedelta(days=dias or int(cfg["pncp"].get("dias_incrementais", 5)))
++        a, f = coletar_pncp(ini, hoje, escopo); novos += a; relatorio["falhas"] += f
++    if cfg["querido_diario"].get("ativa"):
++        ini = hoje - timedelta(days=dias or int(cfg["querido_diario"].get("dias_incrementais", 5)))
++        a, f = coletar_querido_diario(ini, hoje, escopo); novos += a; relatorio["falhas"] += f
++    relatorio["itens"] = len(novos)
++    _salvar(novos, relatorio)
++    write_json(ROOT / "estado/ultima_coleta_api.json", relatorio)
++    append_jsonl(ROOT / "estado/auditoria.jsonl", {"evento": "coleta_api", **{k: relatorio[k] for k in ("executado_em", "novas", "itens")}, "falhas": len(relatorio["falhas"])})
++    return relatorio
++
++if __name__ == "__main__":
++    print(json.dumps(run(), ensure_ascii=False, indent=2))
+diff --git a/src/retrospectivo.py b/src/retrospectivo.py
+index 724bc73..c887abc 100644
+--- a/src/retrospectivo.py
++++ b/src/retrospectivo.py
+@@ -1,61 +1,129 @@
++"""Carga histórica única de cinco anos — FRACIONADA MÊS A MÊS, como pedido na
++especificação: cada janela mensal é consumida uma única vez, com cursor
++persistente e repetição automática apenas das janelas que falharam.
++
++Camadas por janela: PNCP (API oficial) e Querido Diário (diários municipais).
++Camada complementar anual: busca `site:domínio_oficial` por financiador
++catalogado (config/retrospectivo.json). O marcador estado/bootstrap_cinco_anos.json
++só é gravado quando TODAS as janelas foram consumidas com sucesso."""
+ from __future__ import annotations
++
+ import json
+-from datetime import datetime, timezone
++from datetime import date, datetime, timezone
++from urllib.error import HTTPError, URLError
+ from urllib.parse import quote, urlsplit
+ from urllib.request import Request, urlopen
+ from xml.etree import ElementTree as ET
+-from .nucleo import ROOT, canonical_url, load_json, now_iso, sha256, slug, validate_public_https
++
++from .coletores_api import _salvar, coletar_pncp, coletar_querido_diario
++from .nucleo import (ROOT, canonical_url, load_json, now_iso, novo_id, sha256, slug,
++                     validate_public_https, write_json)
++
++MARCADOR = ROOT / "estado/bootstrap_cinco_anos.json"
++CURSOR = ROOT / "estado/cursor_carga_historica.json"
+ 
+ def host_allowed(url: str, domain: str) -> bool:
+-    host=urlsplit(url).hostname or ""
++    host = urlsplit(url).hostname or ""
+     return host == domain or host.endswith("." + domain)
+ 
+-def run(limit_per_query: int = 10) -> dict:
+-    marker=ROOT/"estado/bootstrap_cinco_anos.json"
+-    if marker.exists(): return {"status":"levantamento_inicial_ja_concluido","executado_em":now_iso()}
+-    cfg=load_json(ROOT/"config/retrospectivo.json"); db=ROOT/"dados/oportunidades/oportunidades.jsonl"; existing={}
+-    if db.exists():
+-        for line in db.read_text(encoding="utf-8").splitlines():
+-            if line.strip():
+-                row=json.loads(line); existing[row["id"]]=row
+-    current=datetime.now(timezone.utc).year; years=range(current-cfg["janela_anos"]+1,current+1)
+-    queries=[]
+-    for funder in cfg["financiadores"]:
+-        if not funder.get("ativa") or not funder.get("dominio_oficial"): continue
+-        name=funder["nome"]; domain=funder["dominio_oficial"]
+-        for year in years:
+-            for template in cfg["consultas_base"]:
+-                query=template.format(nome=name,ano=year,dominio=domain)
+-                queries.append((name,domain,year,query))
+-    if not queries:
+-        return {"novas_pistas":0,"consultas":0,"consultas_com_falha":0,"proximo_cursor":0,"executado_em":now_iso()}
+-    cursor_path=ROOT/"estado/cursor_retrospectivo.json"
+-    cursor=load_json(cursor_path).get("proxima",0) if cursor_path.exists() else 0
+-    selected=[queries[(cursor+i)%len(queries)] for i in range(min(cfg["max_consultas_por_execucao"],len(queries)))]
+-    found=errors=0
+-    for name,domain,year,query in selected:
+-                url=cfg["motor"].format(consulta=quote(query)); validate_public_https(url,"www.bing.com")
+-                try:
+-                    req=Request(url,headers={"User-Agent":"Eldorado-OSC/1.0"})
+-                    with urlopen(req,timeout=20) as response: data=response.read(2_000_001)
+-                    if len(data)>2_000_000: raise ValueError("resposta excede limite")
+-                    root=ET.fromstring(data)
+-                    for node in root.findall(".//item")[:limit_per_query]:
+-                        title=(node.findtext("title") or "").strip(); link=canonical_url(node.findtext("link") or "")
+-                        if not title or urlsplit(link).scheme!="https" or not host_allowed(link,domain): continue
+-                        oid=sha256(("retro|"+link).encode())[:20]
+-                        if oid in existing: continue
+-                        existing[oid]={"id":oid,"status":"descoberta_nao_verificada","titulo":title[:300],"url":link,"fonte_id":slug(name),"fonte_nome":name,"territorio":"BR","tipo_fonte":"busca_retroativa_dominio_catalogado","confianca":"pista","coletado_em":now_iso(),"ano_pesquisado":year,"dominio_autorizado":domain,"consulta_origem":query,"prazo_texto":None,"evidencia":title[:500],"hash_evidencia":sha256(title.encode())}; found+=1
+-                except Exception:
+-                    errors+=1
+-    db.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in sorted(existing.values(),key=lambda v:v["id"])),encoding="utf-8")
+-    next_cursor=(cursor+len(selected))%len(queries)
+-    cursor_path.parent.mkdir(parents=True,exist_ok=True); cursor_path.write_text(json.dumps({"proxima":next_cursor,"total":len(queries)},indent=2)+"\n",encoding="utf-8")
+-    report={"novas_pistas":found,"consultas":len(selected),"consultas_com_falha":errors,"proximo_cursor":next_cursor,"executado_em":now_iso()}
+-    if len(selected)==len(queries) and errors==0:
+-        marker.write_text(json.dumps({"concluido_em":report["executado_em"],"janela_anos":cfg["janela_anos"],"consultas":len(selected)},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+-        report["status"]="levantamento_inicial_concluido"
+-    else: report["status"]="pendente_repeticao_por_falhas"
+-    return report
+-
+-if __name__=="__main__": print(json.dumps(run(),ensure_ascii=False,indent=2))
++def _janelas_mensais(anos: int) -> list[tuple[str, date, date]]:
++    hoje = date.today()
++    janelas = []
++    ano, mes = hoje.year - anos, hoje.month
++    while (ano, mes) <= (hoje.year, hoje.month):
++        inicio = date(ano, mes, 1)
++        fim = (date(ano + 1, 1, 1) if mes == 12 else date(ano, mes + 1, 1))
++        fim = min(fim, hoje)
++        janelas.append((f"{ano:04d}-{mes:02d}", inicio, fim))
++        ano, mes = (ano + 1, 1) if mes == 12 else (ano, mes + 1)
++    return janelas
++
++def _dominios_por_ano(cfg: dict, existentes: dict, ano: int, limite_consultas: int) -> tuple[int, int]:
++    """Camada complementar: RSS de busca restrito ao domínio oficial do financiador."""
++    novas = erros = consultas = 0
++    for financiador in cfg["financiadores"]:
++        if not financiador.get("ativa") or not financiador.get("dominio_oficial"): continue
++        nome, dominio = financiador["nome"], financiador["dominio_oficial"]
++        for template in cfg["consultas_base"]:
++            if consultas >= limite_consultas: return novas, erros
++            consultas += 1
++            consulta = template.format(nome=nome, ano=ano, dominio=dominio)
++            url = cfg["motor"].format(consulta=quote(consulta))
++            try:
++                validate_public_https(url, urlsplit(url).hostname)
++                req = Request(url, headers={"User-Agent": "Eldorado-OSC/3.0 contato-via-repositorio"})
++                with urlopen(req, timeout=20) as resposta:
++                    dados = resposta.read(2_000_001)
++                if len(dados) > 2_000_000: raise ValueError("resposta excede limite")
++                raiz = ET.fromstring(dados)
++                for node in raiz.findall(".//item")[:10]:
++                    titulo = (node.findtext("title") or "").strip()
++                    link = canonical_url(node.findtext("link") or "")
++                    if not titulo or urlsplit(link).scheme != "https" or not host_allowed(link, dominio): continue
++                    oid = novo_id(link)
++                    if oid in existentes: continue
++                    existentes[oid] = {
++                        "id": oid, "status": "descoberta_nao_verificada", "titulo": titulo[:300], "url": link,
++                        "fonte_id": slug(nome), "fonte_nome": nome, "territorio": "BR",
++                        "tipo_fonte": "busca_retroativa_dominio_catalogado", "confianca": "pista",
++                        "coletado_em": now_iso(), "ano_pesquisado": ano, "dominio_autorizado": dominio,
++                        "consulta_origem": consulta, "prazo_texto": None,
++                        "evidencia": titulo[:500], "hash_evidencia": sha256(titulo.encode()),
++                    }
++                    novas += 1
++            except (HTTPError, URLError, OSError, ValueError, ET.ParseError):
++                erros += 1
++    return novas, erros
++
++def run() -> dict:
++    if MARCADOR.exists():
++        return {"status": "levantamento_inicial_ja_concluido", "executado_em": now_iso()}
++    cfg = load_json(ROOT / "config/retrospectivo.json")
++    escopo = load_json(ROOT / "config/escopo.json")
++    janelas = _janelas_mensais(int(cfg.get("janela_anos", 5)))
++    cursor = load_json(CURSOR) if CURSOR.exists() else {"concluidas": [], "falhas": {}}
++    concluidas = set(cursor.get("concluidas", []))
++    pendentes = [j for j in janelas if j[0] not in concluidas]
++    limite = int(cfg.get("max_janelas_por_execucao", 12))
++    relatorio = {"executado_em": now_iso(), "janelas_totais": len(janelas), "janelas_ja_concluidas": len(concluidas),
++                 "janelas_nesta_execucao": 0, "novas": 0, "falhas": []}
++    for rotulo, inicio, fim in pendentes[:limite]:
++        relatorio["janelas_nesta_execucao"] += 1
++        novos, falhas = [], []
++        a, f = coletar_pncp(inicio, fim, escopo); novos += a; falhas += f
++        a, f = coletar_querido_diario(inicio, fim, escopo); novos += a; falhas += f
++        parcial = {"novas": 0}
++        _salvar(novos, parcial)
++        relatorio["novas"] += parcial["novas"]
++        if falhas:
++            cursor.setdefault("falhas", {})[rotulo] = falhas
++            relatorio["falhas"].append({"janela": rotulo, "camadas": falhas})
++        else:
++            concluidas.add(rotulo)
++            cursor.get("falhas", {}).pop(rotulo, None)
++    # camada complementar por domínio oficial: um ano por execução, ciclando
++    ano_atual = datetime.now(timezone.utc).year
++    anos = list(range(ano_atual - int(cfg.get("janela_anos", 5)) + 1, ano_atual + 1))
++    indice_ano = int(cursor.get("proximo_ano_dominios", 0)) % len(anos)
++    from .nucleo import carregar_oportunidades, gravar_oportunidades
++    existentes = carregar_oportunidades()
++    novas_dom, erros_dom = _dominios_por_ano(cfg, existentes, anos[indice_ano], int(cfg.get("max_consultas_por_execucao", 60)))
++    gravar_oportunidades(existentes)
++    cursor["proximo_ano_dominios"] = indice_ano + 1
++    relatorio["dominios_ano_pesquisado"] = anos[indice_ano]
++    relatorio["dominios_novas"] = novas_dom
++    relatorio["dominios_falhas"] = erros_dom
++    relatorio["novas"] += novas_dom
++    cursor["concluidas"] = sorted(concluidas)
++    write_json(CURSOR, cursor)
++    if len(concluidas) == len(janelas) and cursor.get("proximo_ano_dominios", 0) >= len(anos):
++        write_json(MARCADOR, {"concluido_em": now_iso(), "janelas": len(janelas), "anos_dominios": len(anos)})
++        relatorio["status"] = "levantamento_inicial_concluido"
++    else:
++        relatorio["status"] = "em_andamento"
++        relatorio["janelas_restantes"] = len(janelas) - len(concluidas)
++    write_json(ROOT / "estado/ultima_carga_historica.json", relatorio)
++    return relatorio
++
++if __name__ == "__main__":
++    print(json.dumps(run(), ensure_ascii=False, indent=2))
+diff --git a/src/verificacao_assistida.py b/src/verificacao_assistida.py
+new file mode 100644
+index 0000000..c473d90
+--- /dev/null
++++ b/src/verificacao_assistida.py
+@@ -0,0 +1,68 @@
++"""Verificação assistida (determinística, sem IA e sem tokens): abre a URL
++primária de oportunidades apenas `capturada`, confere que a página é de fonte
++catalogada, contém termos de edital e está livre de padrões de injeção, e
++então promove para `verificada_primaria` com evidência hasheada e auditoria.
++
++O humano continua soberano: `scripts/promover.py` rebaixa ou descarta qualquer
++promoção (status protegidos nunca são rebaixados pela máquina)."""
++from __future__ import annotations
++
++import json
++import re
++from urllib.error import HTTPError, URLError
++
++from .eldorado import TERMS, fetch
++from .nucleo import (ROOT, append_jsonl, carregar_oportunidades, gravar_oportunidades,
++                     has_prompt_injection, html_para_texto, load_json, now_iso, sha256, write_json)
++
++TIPOS_INELEGIVEIS = {"busca_retroativa_dominio_catalogado", "rede_social_oficial", "diario_oficial_municipal"}
++
++def _fontes() -> dict:
++    return {f["id"]: f for f in load_json(ROOT / "config/fontes.json")["fontes"]}
++
++def run() -> dict:
++    cfg = load_json(ROOT / "config/ia.json").get("verificacao_assistida", {})
++    relatorio = {"executado_em": now_iso(), "avaliadas": 0, "promovidas": 0, "recusadas": 0, "falhas": []}
++    if not cfg.get("ativa"):
++        relatorio["status"] = "desativada"; return relatorio
++    politica = load_json(ROOT / "config/fontes.json")["politica"]
++    fontes = _fontes()
++    registros = carregar_oportunidades()
++    limite = int(cfg.get("max_por_execucao", 10))
++    candidatas = [x for x in registros.values()
++                  if x.get("status") == "capturada" and x.get("confianca") == "primaria"
++                  and x.get("tipo_fonte") not in TIPOS_INELEGIVEIS]
++    candidatas.sort(key=lambda x: x.get("coletado_em") or "", reverse=True)
++    for item in candidatas[:limite]:
++        relatorio["avaliadas"] += 1
++        fonte = fontes.get(item.get("fonte_id"))
++        if not fonte:
++            relatorio["recusadas"] += 1; continue
++        pseudo = {**fonte, "url": item["url"]}
++        try:
++            data, final, ctype = fetch(pseudo, politica)
++            texto = html_para_texto(data.decode("utf-8", "replace")) if ctype == "text/html" else data.decode("utf-8", "replace")[:120_000]
++            if has_prompt_injection(texto):
++                relatorio["recusadas"] += 1
++                append_jsonl(ROOT / "estado/quarentena.jsonl", {"id": item["id"], "url": final, "motivo": "injecao_na_pagina_primaria", "em": now_iso()})
++                continue
++            achado = TERMS.search(texto)
++            if not achado:
++                relatorio["recusadas"] += 1; continue
++            inicio = max(achado.start() - 120, 0)
++            trecho = re.sub(r"\s+", " ", texto[inicio:achado.end() + 280]).strip()
++            item.update({
++                "status": "verificada_primaria",
++                "verificado_em": now_iso(), "verificado_por": "verificacao_assistida",
++                "evidencia_verificacao": {"url_final": final, "sha256_pagina": sha256(data), "trecho": trecho[:500]},
++            })
++            relatorio["promovidas"] += 1
++            append_jsonl(ROOT / "estado/auditoria.jsonl", {"evento": "verificacao_assistida", "oportunidade": item["id"], "url": final, "em": now_iso()})
++        except (HTTPError, URLError, OSError, ValueError) as exc:
++            relatorio["falhas"].append({"oportunidade": item["id"], "erro": type(exc).__name__})
++    gravar_oportunidades(registros)
++    write_json(ROOT / "estado/ultima_verificacao_assistida.json", relatorio)
++    return relatorio
++
++if __name__ == "__main__":
++    print(json.dumps(run(), ensure_ascii=False, indent=2))
+-- 
+2.43.0
+
