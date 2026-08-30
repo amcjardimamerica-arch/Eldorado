@@ -1,6 +1,6 @@
 {
-  "versao": 1,
-  "regra": "Rede social gera pista secundária. A confirmação exige URL primária do edital no domínio oficial do emissor.",
+  "versao": 2,
+  "regra": "Rede social gera pista secundária e NUNCA confirma edital sozinha. Raspagem direta de redes fechadas (Instagram/Facebook/X) não funciona sem credencial — o caminho ativo de capilaridade é config/capilaridade.json (imprensa/anúncios via RSS) e, no futuro, APIs oficiais com credencial.",
   "fontes": [
     {
       "id": "instagram-prefeitura-goiania",
@@ -11,8 +11,9 @@
       "modo": "pagina_social_publica",
       "uf": "GO",
       "municipio": "GO/Goiânia",
-      "ativa": true,
-      "evidencia_identidade": "https://www.goiania.go.gov.br/sing_servicos/contato-com-o-cidadao/"
+      "ativa": false,
+      "evidencia_identidade": "https://www.goiania.go.gov.br/sing_servicos/contato-com-o-cidadao/",
+      "motivo_inativa": "Instagram não serve conteúdo a coletor HTTP simples; reativar somente via API oficial com credencial (config/capilaridade.json → redes_sociais)."
     },
     {
       "id": "redes-minc",
@@ -23,8 +24,9 @@
       "modo": "pagina_social_publica",
       "uf": null,
       "municipio": null,
-      "ativa": true,
-      "evidencia_identidade": "https://www.gov.br/cultura/pt-br"
+      "ativa": false,
+      "evidencia_identidade": "https://www.gov.br/cultura/pt-br",
+      "motivo_inativa": "Instagram não serve conteúdo a coletor HTTP simples; reativar somente via API oficial com credencial (config/capilaridade.json → redes_sociais)."
     },
     {
       "id": "redes-secult-goias",

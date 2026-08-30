@@ -1,0 +1,29 @@
+{
+  "versao": 1,
+  "ativa": true,
+  "regra": "Camada descentralizada de PISTAS SECUNDÁRIAS (imprensa e anúncios). Nunca entra na base primária: cada pista exige confirmação da URL oficial (scripts/confirmar_pista.py) antes de virar oportunidade.",
+  "motor_rss": "https://www.bing.com/news/search?q={consulta}&format=rss&setmkt=pt-BR",
+  "termos_gerais": [
+    "chamamento público organizações da sociedade civil",
+    "edital projetos sociais inscrições",
+    "edital fundo da criança e do adolescente",
+    "edital cultura associações inscrições abertas"
+  ],
+  "termos_emissor_padrao": ["edital", "chamamento público", "inscrições abertas"],
+  "emissores": [
+    {"id": "goiania", "nome": "Prefeitura de Goiânia", "uf": "GO", "ativa": true},
+    {"id": "governo-goias", "nome": "Governo de Goiás", "uf": "GO", "ativa": true},
+    {"id": "secult-goias", "nome": "Secult Goiás", "uf": "GO", "ativa": true},
+    {"id": "fundacao-banco-do-brasil", "nome": "Fundação Banco do Brasil", "uf": null, "ativa": true},
+    {"id": "itau-social", "nome": "Itaú Social", "uf": null, "ativa": true},
+    {"id": "bndes", "nome": "BNDES projetos sociais", "uf": null, "ativa": true}
+  ],
+  "max_consultas_por_execucao": 40,
+  "max_itens_por_consulta": 10,
+  "intervalo_segundos": 1,
+  "redes_sociais": {
+    "regra": "Redes fechadas não servem conteúdo a coletor simples. Acesso legítimo é por API oficial com credencial; preparado e desativado até haver credenciais em GitHub Actions Secrets.",
+    "instagram_graph": {"ativa": false, "credencial_env": "IG_GRAPH_TOKEN", "contas_env": "IG_CONTAS_MONITORADAS"},
+    "youtube_data": {"ativa": false, "credencial_env": "YT_DATA_KEY"}
+  }
+}

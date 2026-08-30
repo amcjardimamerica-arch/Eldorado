@@ -1,0 +1,22 @@
+{
+  "versao": 1,
+  "regra": "APIs públicas oficiais, somente leitura, sem chave e sem IA. Resultados entram na base deduplicada pelo mesmo merge que preserva revisão humana. Endpoints conferidos em 30/08/2026 na especificação OpenAPI do PNCP; a primeira execução real valida e registra falhas por camada.",
+  "pncp": {
+    "ativa": true,
+    "bases": ["https://pncp.gov.br/api/consulta"],
+    "modalidades": [12, 3],
+    "nota_modalidades": "12 = credenciamento; 3 = concurso (tabela de modalidades da Lei 14.133/2021). Chamamentos MROSC publicados no PNCP costumam entrar nessas modalidades ou aparecer pela busca textual do filtro.",
+    "filtro_regex": "chamamento|credenciament|organiza[çc][õo]es? da sociedade civil|\\bOSC\\b|entidade sem fins lucrativos|projeto (social|cultural|esportivo)|fomento|termo de (fomento|colabora[çc][ãa]o)",
+    "dias_incrementais": 5,
+    "max_paginas": 5,
+    "tamanho_pagina": 50
+  },
+  "querido_diario": {
+    "ativa": true,
+    "bases": ["https://queridodiario.ok.org.br/api", "https://api.queridodiario.ok.org.br"],
+    "consultas": ["\"chamamento público\" \"organizações da sociedade civil\"", "\"edital de chamamento público\" associação"],
+    "dias_incrementais": 5,
+    "size": 50,
+    "max_paginas": 4
+  }
+}
