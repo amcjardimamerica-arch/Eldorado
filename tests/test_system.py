@@ -16,6 +16,9 @@ from src.relatorio_amplitude import _etapas_com_ia
 from src.retrospectivo import _janelas_mensais
 from src.rota_monitoramento import rota_para, run as rotas_run
 from src.rmg_diarios import _normalizar
+from src.programas import caracterizar, extrair_periodo, identificar_programa
+from src.relatorio_busca import _situacao, _calendario
+from src.triagem import _bloqueio_politico
 from datetime import date
 
 class SystemTests(unittest.TestCase):
@@ -234,6 +237,73 @@ class SystemTests(unittest.TestCase):
         # a única rota de confiança primária é o espelho no site oficial
         primarias=[k for k,v in cfg["rotas"].items() if v.get("confianca")=="primaria"]
         self.assertEqual(primarias,["espelho_oficial_no_site"])
+
+
+    # ---- programa, lei e modalidade por edital ----
+    def test_individualiza_editais_do_mesmo_programa(self):
+        base={"url":"https://x.gov.br/a","fonte_id":"f","fonte_nome":"F","coletado_em":"2026-08-30T00:00:00+00:00","hash_evidencia":"h"}
+        a=dict(base,id="a",titulo="Edital PNAB 12/2026",evidencia="Aldir Blanc Lei 14.399/2022. Objeto: fomento a projetos culturais. Inscrições de 20/08/2026 a 30/09/2026.")
+        b=dict(base,id="b",titulo="Edital PNAB 13/2026",evidencia="Aldir Blanc. Objeto: manutenção de espaços e coletivos culturais. Inscrições de 18/08/2026 até 15/09/2026.")
+        ca,cb=caracterizar(a),caracterizar(b)
+        self.assertEqual(ca["programa_id"],cb["programa_id"],"mesmo programa")
+        self.assertEqual(ca["lei"],"Lei 14.399/2022 (PNAB)")
+        self.assertNotEqual(ca["modalidade"],cb["modalidade"],"modalidades devem ser distintas")
+        self.assertEqual(ca["periodo"]["fim"],"2026-09-30")
+        self.assertEqual(cb["periodo"]["fim"],"2026-09-15")
+
+    def test_periodo_inicio_e_fim(self):
+        p=extrair_periodo({"evidencia":"Inscrições de 01/10/2026 até 10/11/2026.","titulo":""})
+        self.assertEqual(p["inicio"],"2026-10-01"); self.assertEqual(p["fim"],"2026-11-10")
+        self.assertTrue(p["inicio_declarado"])
+        vazio=extrair_periodo({"evidencia":"sem datas","titulo":"","data_publicacao":"2026-05-01"})
+        self.assertEqual(vazio["inicio"],"2026-05-01"); self.assertIsNone(vazio["fim"])
+
+    def test_programa_nao_identificado_declara_lacuna(self):
+        r=identificar_programa({"titulo":"Aviso qualquer","evidencia":"texto sem programa conhecido"})
+        self.assertIsNone(r["programa_id"]); self.assertIn("lacuna",r)
+
+    # ---- situação da janela e calendário ----
+    def test_situacao_aberto_a_abrir_encerrado(self):
+        hoje=date(2026,9,2)
+        self.assertEqual(_situacao("2026-08-20","2026-09-30",hoje)["estado"],"aberto")
+        self.assertEqual(_situacao("2026-10-01","2026-11-10",hoje)["estado"],"a_abrir")
+        self.assertEqual(_situacao("2026-07-01","2026-08-15",hoje)["estado"],"encerrado")
+        self.assertEqual(_situacao(None,None,hoje)["estado"],"sem_prazo")
+
+    def test_calendario_marca_emendas_em_outubro_e_novembro(self):
+        cfg=json.load(open("config/programas.json"))
+        cal=_calendario([],cfg,2026)
+        self.assertEqual(len(cal),12)
+        meses_emenda=[m["mes"] for m in cal if m["emendas"]]
+        self.assertEqual(meses_emenda,[10,11])
+        self.assertTrue(cal[0]["fluxo_continuo"])
+
+    # ---- emendas nunca acionam o Farol automaticamente ----
+    def test_emenda_nao_aciona_farol(self):
+        perfil={"areas":["cultura"],"territorios":["GO"],"experiencias":[1]}
+        emenda={"status":"verificada_primaria","uf":"GO","areas_fonte":["cultura"],
+                "caracterizacao":{"programa_id":"emenda-parlamentar","aciona_farol":False}}
+        r=assess(perfil,emenda)
+        self.assertFalse(r["acionar_farol"]); self.assertTrue(r.get("somente_informativo"))
+        self.assertIsNotNone(_bloqueio_politico(emenda))
+        por_forma={"status":"verificada_primaria","uf":"GO","forma_divulgacao":"emenda_parlamentar"}
+        self.assertFalse(assess(perfil,por_forma)["acionar_farol"])
+        normal={"status":"verificada_primaria","uf":"GO","areas_fonte":["cultura"],
+                "caracterizacao":{"programa_id":"pnab-aldir-blanc","aciona_farol":True}}
+        self.assertTrue(assess(perfil,normal)["acionar_farol"])
+        self.assertFalse(json.load(open("config/parlamentares.json"))["aciona_farol"])
+
+    # ---- parlamentares: nenhum dado inventado ----
+    def test_parlamentares_sem_dado_inventado(self):
+        cfg=json.load(open("config/parlamentares.json"))
+        self.assertEqual(cfg["janela_de_exibicao"]["meses"],[10,11])
+        for chave in ("assembleia_goias","camara_goiania","tse"):
+            fonte=cfg["fontes"][chave]
+            self.assertFalse(fonte["ativa"])
+            self.assertIsNone(fonte["base"])
+            self.assertTrue(fonte["motivo_pendencia"])
+            self.assertTrue(fonte["url_consulta_humana"])
+        self.assertGreaterEqual(cfg["min_ocorrencias_bandeira"],2)
 
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}

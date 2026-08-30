@@ -4,8 +4,28 @@ from .nucleo import ROOT, load_json, now_iso, write_json
 
 VERIFIED={"verificada_primaria","verificada_dupla"}
 
+# Programas que NUNCA acionam o Farol automaticamente. Emenda parlamentar depende
+# de articulação e viabilidade política, não de inscrição em edital: o sistema
+# informa e direciona, mas não abre caso nem gera plano de trabalho sem pedido.
+PROGRAMAS_SEM_FAROL_AUTOMATICO = {"emenda-parlamentar"}
+
+def _bloqueio_politico(opportunity: dict) -> str | None:
+    carac = opportunity.get("caracterizacao") or {}
+    if carac.get("aciona_farol") is False or carac.get("programa_id") in PROGRAMAS_SEM_FAROL_AUTOMATICO:
+        return "emenda parlamentar: depende de articulação política; Farol só por solicitação expressa"
+    if opportunity.get("aciona_farol_programa") is False:
+        return "programa marcado para não acionar o Farol automaticamente"
+    if (opportunity.get("forma_divulgacao") or carac.get("forma_divulgacao")) == "emenda_parlamentar":
+        return "captação por emenda parlamentar: Farol só por solicitação expressa"
+    return None
+
 def assess(profile: dict, opportunity: dict) -> dict:
     reasons=[]; risks=[]; score=0
+    bloqueio=_bloqueio_politico(opportunity)
+    if bloqueio:
+        return {"acionar_farol":False,"pontuacao_preliminar":0,"faixa":"nao_automatico",
+                "razoes":["oportunidade informada e direcionada, sem abertura de caso"],
+                "riscos":[bloqueio],"somente_informativo":True}
     if opportunity.get("status") not in VERIFIED:
         return {"acionar_farol":False,"pontuacao_preliminar":0,"faixa":"insuficiente","razoes":[],"riscos":["oportunidade ainda não verificada na fonte primária"]}
     score+=30; reasons.append("fonte primária verificada")

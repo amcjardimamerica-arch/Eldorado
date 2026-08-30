@@ -23,6 +23,26 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Coletar, verificar, acionar Farol e publicar painel
         run: python -m src.executar_diario
+      - name: Carga de parlamentares (apenas em outubro e novembro)
+        if: always()
+        run: |
+          MES=$(date -u +%m)
+          if [ "$MES" = "10" ] || [ "$MES" = "11" ]; then
+            python -m src.parlamentares || echo "carga de parlamentares falhou; area declara pendencia"
+          else
+            echo "Fora da janela de emendas (outubro/novembro) - carga nao executada." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Relatorio da varredura (segunda e quarta)
+        if: always()
+        run: |
+          python -m src.relatorio_busca | tee relbusca.json
+          {
+            echo '## Relatorio da varredura'
+            echo '```json'
+            cat relbusca.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          rm -f relbusca.json
       - name: Rotas dos 260 pontos e cobertura do acervo
         if: always()
         run: |

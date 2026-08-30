@@ -5,7 +5,8 @@ registrado e o resumo/alerta dá visibilidade. Ordem do fluxo:
 
 coleta HTML -> APIs oficiais -> capilaridade (pistas) -> social -> verificacao
 assistida -> conformidade de edital -> prazos e alertas -> dossies ->
-aprendizado/previsoes -> triagem -> casos -> Farol IA -> fichas HTML -> painel
+aprendizado/previsoes -> triagem -> casos -> Farol IA -> fichas HTML ->
+relatorio da varredura (3 partes) -> painel
 
 Toda analise de oportunidade viva produz HTML: uma ficha por edital em
 docs/editais/<id>.html mais o painel consolidado em docs/index.html.
@@ -14,9 +15,9 @@ from __future__ import annotations
 import json
 
 from . import (aprendizado, capilaridade, casos, coletores_api, dossies, eldorado,
-               farol_ia, fichas, painel, prazos, qualidade, redes_indireta,
-               rmg_diarios, rota_monitoramento, triagem, verificacao_assistida,
-               verificacao_social)
+               farol_ia, fichas, painel, prazos, programas, qualidade, redes_indireta,
+               relatorio_busca, rmg_diarios, rota_monitoramento, triagem,
+               verificacao_assistida, verificacao_social)
 from .nucleo import ROOT, append_jsonl, now_iso, write_json
 
 def _rodar(nome, funcao, relatorio):
@@ -34,6 +35,7 @@ def main():
     _rodar("redes_indireta", redes_indireta.run, relatorio)
     _rodar("verificacao_social", verificacao_social.run, relatorio)
     _rodar("verificacao_assistida", verificacao_assistida.run, relatorio)
+    _rodar("programas", programas.run, relatorio)
     _rodar("qualidade", qualidade.run, relatorio)
     _rodar("prazos", prazos.run, relatorio)
     _rodar("dossies", dossies.run, relatorio)
@@ -49,6 +51,7 @@ def main():
     _rodar("triagem_e_casos", _triagem_e_casos, relatorio)
     _rodar("farol_ia", farol_ia.run, relatorio)
     _rodar("fichas_html", fichas.run, relatorio)
+    _rodar("relatorio_busca", relatorio_busca.run, relatorio)
     _rodar("painel", painel.run, relatorio)
 
     write_json(ROOT / "estado/ultima_execucao_diaria.json", relatorio)

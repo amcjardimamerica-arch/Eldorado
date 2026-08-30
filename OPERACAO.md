@@ -135,3 +135,43 @@ imagem, e obter o arquivo exige o acesso direto que estas rotas não têm. O gan
 declarado em `config/redes_indireta.json` → `ocr_quando_houver_credencial` e só se torna
 executável pela rota 4. Mesmo com OCR, o resultado continua **pista**: card de divulgação
 não é edital.
+
+## Relatório da varredura — segundas e quartas
+
+`src/relatorio_busca.py` grava `docs/relatorios/<data>.html` ao fim de cada varredura,
+com histórico navegável em `docs/relatorios/index.html`. Três partes:
+
+**1. Editais abertos no período.** Uma caixa por edital. Quando o mesmo programa publica
+vários editais — a PNAB/Aldir Blanc é o caso típico — cada um aparece individualizado, com
+nome da lei de regência, modalidade (objeto ou atividade a executar) e a contagem de prazo
+de início e fim. `src/programas.py` faz o reconhecimento por termo literal; o que não casa
+fica como "programa não identificado", com a lacuna declarada.
+
+**2. Calendário do ano.** Doze meses com abertura e encerramento de cada edital, mais os
+programas de fluxo contínuo (Rouanet, LIE, Goyazes — habilitação por lote, sem data única
+de encerramento) e a janela de emendas parlamentares destacada em outubro e novembro.
+
+**3. Emendas parlamentares.** Área que **só abre em outubro e novembro**. Fora da janela,
+exibe apenas a data de reabertura. Lista parlamentares com mandato no ano, gabinete,
+resultado eleitoral e bandeiras medidas por atuação registrada (proposições e comissões),
+não por opinião atribuída. Tema com uma só ocorrência é ruído e não vira bandeira.
+
+```bash
+python -m src.relatorio_busca
+python -m src.relatorio_busca --forcar   # consulta fora da janela, marcada como tal
+python -m src.parlamentares              # carga oficial; roda no workflow só em out/nov
+```
+
+### Emendas não acionam o Farol
+
+Trava em `src/triagem.py`: oportunidade cujo programa é emenda parlamentar, ou cuja forma de
+divulgação é `emenda_parlamentar`, nunca abre caso nem gera plano de trabalho automaticamente.
+A triagem devolve `somente_informativo`. Emenda depende de articulação e viabilidade política —
+o sistema informa e direciona; o plano só é produzido mediante solicitação expressa.
+
+### Dados de parlamentares
+
+Nenhum nome, partido, gabinete, votação ou bandeira é escrito de memória. Federal vem da API
+de dados abertos da Câmara. ALEGO, Câmara de Goiânia e resultado eleitoral do TSE estão
+declarados como **pendência**, com o link oficial para consulta humana — sem carga, a área
+mostra a pendência em vez de dado que pareça verdadeiro.

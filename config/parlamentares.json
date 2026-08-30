@@ -1,0 +1,69 @@
+{
+  "versao": 1,
+  "regra": "Área de emendas parlamentares. Nenhum dado de parlamentar é escrito de memória: nome, partido, gabinete, votação e bandeira só existem se vierem de fonte oficial, com URL e data de consulta. Sem carga, a área declara a pendência.",
+  "aciona_farol": false,
+  "motivo_nao_acionar": "Emenda depende de articulação e viabilidade política, não de inscrição em edital. O sistema informa e direciona; plano de trabalho só é produzido mediante solicitação expressa.",
+  "janela_de_exibicao": {
+    "meses": [10, 11],
+    "rotulo": "Outubro e novembro — período de articulação e indicação de emendas para o orçamento do ano seguinte",
+    "fora_da_janela": "A área permanece fechada, exibindo apenas a data de reabertura.",
+    "permitir_forcar": true,
+    "nota_forcar": "A abertura fora de época é possível sob demanda (parâmetro explícito), para consulta, mas o relatório marca que está fora da janela."
+  },
+  "ufs_de_interesse": ["GO"],
+  "min_ocorrencias_bandeira": 2,
+  "fontes": {
+    "camara_federal": {
+      "nome": "Câmara dos Deputados — dados abertos",
+      "esfera": "federal",
+      "ativa": true,
+      "base": "https://dadosabertos.camara.leg.br/api/v2",
+      "url_consulta_humana": "https://www.camara.leg.br/deputados/quem-sao",
+      "o_que_traz": "deputados em exercício, partido, UF, gabinete e proposições de autoria"
+    },
+    "assembleia_goias": {
+      "nome": "ALEGO — Assembleia Legislativa de Goiás",
+      "esfera": "estadual",
+      "ativa": false,
+      "base": null,
+      "url_consulta_humana": "https://portal.al.go.leg.br/deputados",
+      "motivo_pendencia": "sem endpoint de dados abertos confirmado; carga manual assistida ou configuração posterior de endpoint oficial"
+    },
+    "camara_goiania": {
+      "nome": "Câmara Municipal de Goiânia",
+      "esfera": "municipal",
+      "ativa": false,
+      "base": null,
+      "url_consulta_humana": "https://www.goiania.go.leg.br/vereadores",
+      "motivo_pendencia": "sem endpoint de dados abertos confirmado; carga manual assistida ou configuração posterior de endpoint oficial"
+    },
+    "tse": {
+      "nome": "TSE — dados abertos de resultados eleitorais",
+      "esfera": "todas",
+      "ativa": false,
+      "base": null,
+      "url_consulta_humana": "https://dadosabertos.tse.jus.br/",
+      "motivo_pendencia": "os arquivos de resultado são pacotes por eleição, não uma API de consulta por parlamentar; a carga exige definição de escopo (eleição, cargo, agregação) antes de automatizar"
+    }
+  },
+  "temas": {
+    "assistencia_social": ["assistência social", "suas", "vulnerabilidade", "cras", "creas", "bolsa família"],
+    "crianca_adolescente": ["criança", "adolescente", "eca", "infância", "juventude"],
+    "pessoa_idosa": ["idoso", "pessoa idosa", "envelhecimento", "terceira idade"],
+    "pcd": ["deficiência", "acessibilidade", "inclusão", "pcd"],
+    "cultura": ["cultura", "cultural", "patrimônio", "audiovisual", "artístic"],
+    "esporte": ["esporte", "esportiv", "atleta", "desporto", "paradesporto"],
+    "educacao": ["educação", "escolar", "ensino", "creche", "alfabetiz"],
+    "saude": ["saúde", "sus", "hospital", "atenção básica"],
+    "meio_ambiente": ["ambiental", "meio ambiente", "sustentabilidade", "resíduos", "clima"],
+    "direitos_humanos": ["direitos humanos", "igualdade", "discriminação", "violência", "mulher"],
+    "seguranca_alimentar": ["segurança alimentar", "fome", "alimentação", "nutricional"],
+    "terceiro_setor": ["organizações da sociedade civil", "osc", "terceiro setor", "13.019", "entidade sem fins lucrativos"]
+  },
+  "orientacao_de_uso": [
+    "Bandeira é medida por atuação registrada (proposições e comissões), não por opinião atribuída ao parlamentar.",
+    "Tema com uma única ocorrência é ruído e não vira bandeira — mesmo critério dos padrões de financiador.",
+    "A aproximação com gabinete é decisão do titular. O sistema indica aderência temática e nada mais.",
+    "Nenhum caso é aberto e nenhum plano de trabalho é gerado a partir desta área sem solicitação expressa."
+  ]
+}
