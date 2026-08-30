@@ -22,7 +22,8 @@ jobs:
         run: |
           git config user.name "eldorado-bot"
           git config user.email "eldorado-bot@users.noreply.github.com"
-          git add estado/fila_fontes.json estado/ultima_sentinela.json
+          git pull --rebase --autostash origin main || true
+          git add -A estado
           git diff --cached --quiet && exit 0
           git commit -m "dados: sentinela diária $(date -u +%F)"
           git push

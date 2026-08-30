@@ -33,6 +33,9 @@ def run() -> None:
         "escopo": load_json(ROOT / "config/escopo.json"), "prestacao": load_json(ROOT / "config/prestacao_contas.json"),
         "associacoes": [load_json(p) for p in sorted((ROOT / "dados/associacoes").glob("*/perfil_publico.json"))],
         "casos_farol": len(list((ROOT / "dados/associacoes").glob("*/farol/casos/*/01_enquadramento.json"))),
+        "previsoes": (load_json(ROOT / "estado/previsoes.json") if (ROOT / "estado/previsoes.json").exists() else {}).get("previsoes", []),
+        "cobertura_catalogo": load_json(ROOT / "estado/cobertura_catalogo.json") if (ROOT / "estado/cobertura_catalogo.json").exists() else {},
+        "pacotes_presidente": len(list((ROOT / "dados/associacoes").glob("*/farol/casos/*/07_pacote_presidente.md"))),
     }
     write_json(ROOT / "docs/dados.json", data)
     (ROOT / "docs/index.html").write_text(TEMPLATE.replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/")), encoding="utf-8")

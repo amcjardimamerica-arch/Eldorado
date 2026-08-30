@@ -13,19 +13,39 @@ jobs:
   monitorar:
     runs-on: ubuntu-latest
     timeout-minutes: 180
+    env:
+      FAROL_AI_API_KEY: ${{ secrets.FAROL_AI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - name: Testes antes da coleta
         run: python -m unittest discover -s tests -v
-      - name: Coletar, verificar pistas e publicar painel Eldorado
+      - name: Coletar, verificar, acionar Farol e publicar painel
         run: python -m src.executar_diario
+      - name: Resumo e decisão de alerta
+        if: always()
+        run: python -m src.resumo_execucao >> "$GITHUB_STEP_SUMMARY"
       - name: Registrar somente alterações produzidas
+        if: always()
         run: |
           git config user.name "eldorado-bot"
           git config user.email "eldorado-bot@users.noreply.github.com"
-          git add dados/oportunidades dados/editais dados/financiadores dados/doadores dados/associacoes estado docs
+          git pull --rebase --autostash origin main || true
+          git add -A dados estado docs
           git diff --cached --quiet && exit 0
           git commit -m "dados: varredura profunda $(date -u +%F)"
           git push
+      - name: Abrir issue quando houver alerta
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const caminho = 'estado/alerta.json';
+            if (!fs.existsSync(caminho)) return;
+            const alerta = JSON.parse(fs.readFileSync(caminho, 'utf8'));
+            if (!alerta.abrir_issue) return;
+            const {data} = await github.rest.issues.listForRepo({...context.repo, state: 'open', labels: 'alerta-operacao'});
+            if (data.some(i => i.title === alerta.titulo)) return;
+            await github.rest.issues.create({...context.repo, title: alerta.titulo, body: alerta.corpo, labels: ['alerta-operacao']});

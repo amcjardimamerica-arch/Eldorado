@@ -1,5 +1,5 @@
 {
-  "versao": 2,
+  "versao": 3,
   "motor": "https://www.bing.com/search?format=rss&q={consulta}",
   "janela_anos": 5,
   "max_consultas_por_execucao": 500,
@@ -9,21 +9,82 @@
     "site:{dominio} {nome} investimento social doação projeto {ano} valor"
   ],
   "financiadores": [
-    {"nome":"Fundação Banco do Brasil","dominio_oficial":"fbb.org.br","ativa":true},
-    {"nome":"BNDES","dominio_oficial":"bndes.gov.br","ativa":true},
-    {"nome":"Petrobras","dominio_oficial":"petrobras.com.br","ativa":true},
-    {"nome":"Itaú Social","dominio_oficial":"itausocial.org.br","ativa":true},
-    {"nome":"Fundação Vale","dominio_oficial":null,"ativa":false},
-    {"nome":"Instituto Sabin","dominio_oficial":null,"ativa":false},
-    {"nome":"Fundação Telefônica Vivo","dominio_oficial":null,"ativa":false},
-    {"nome":"Instituto Localiza","dominio_oficial":null,"ativa":false},
-    {"nome":"Fundação Grupo Volkswagen","dominio_oficial":null,"ativa":false},
-    {"nome":"Instituto ACP","dominio_oficial":null,"ativa":false},
-    {"nome":"Instituto Unibanco","dominio_oficial":null,"ativa":false},
-    {"nome":"Santander Brasil","dominio_oficial":null,"ativa":false},
-    {"nome":"Fundação Cargill","dominio_oficial":null,"ativa":false},
-    {"nome":"Instituto Mosaic","dominio_oficial":null,"ativa":false},
-    {"nome":"Instituto Sicoob","dominio_oficial":null,"ativa":false}
+    {
+      "nome": "Fundação Banco do Brasil",
+      "dominio_oficial": "fbb.org.br",
+      "ativa": true
+    },
+    {
+      "nome": "BNDES",
+      "dominio_oficial": "bndes.gov.br",
+      "ativa": true
+    },
+    {
+      "nome": "Petrobras",
+      "dominio_oficial": "petrobras.com.br",
+      "ativa": true
+    },
+    {
+      "nome": "Itaú Social",
+      "dominio_oficial": "itausocial.org.br",
+      "ativa": true
+    },
+    {
+      "nome": "Fundação Vale",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Instituto Sabin",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Fundação Telefônica Vivo",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Instituto Localiza",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Fundação Grupo Volkswagen",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Instituto ACP",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Instituto Unibanco",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Santander Brasil",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Fundação Cargill",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Instituto Mosaic",
+      "dominio_oficial": null,
+      "ativa": false
+    },
+    {
+      "nome": "Instituto Sicoob",
+      "dominio_oficial": null,
+      "ativa": false
+    }
   ],
-  "regra": "Toda consulta contém site:dominio_oficial e todo resultado fora desse domínio é descartado. Entradas sem domínio validado ficam inativas. Resultados continuam pistas até conferência da página primária."
+  "regra": "Carga histórica fracionada MÊS A MÊS (5 anos) sobre PNCP e Querido Diário, com cursor e retry por janela; camada complementar anual por site:dominio_oficial dos financiadores. Toda consulta a domínio usa site:dominio_oficial e resultados fora dele são descartados. Resultados são pistas até conferência da página primária.",
+  "max_janelas_por_execucao": 12
 }

@@ -29,6 +29,8 @@ def run() -> list[dict]:
         profile=load_json(profile_path); aid=profile["id"]
         if profile_path.parent.name!=aid: raise ValueError(f"perfil {aid} fora de seu universo")
         for opportunity in opportunities:
+            # idempotência: caso já aberto não é reprocessado nem reescrito
+            if (profile_path.parent/"farol/casos"/opportunity["id"]).exists(): continue
             decision=assess(profile,opportunity)
             if decision["acionar_farol"]:
                 payload={"associacao_id":aid,"oportunidade_id":opportunity["id"],"titulo":opportunity["titulo"],"url":opportunity["url"],"avaliado_em":now_iso(),**decision}

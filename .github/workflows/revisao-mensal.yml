@@ -6,6 +6,9 @@ on:
 permissions:
   contents: write
   issues: write
+concurrency:
+  group: eldorado-repo-writes
+  cancel-in-progress: false
 jobs:
   revisar:
     runs-on: ubuntu-latest

@@ -103,15 +103,20 @@ def president_manual(profile,opp):
 Os marcos acima são preventivos; prevalecem os prazos expressos no edital e no instrumento assinado.
 '''
 
+def _escrever_uma_vez(path: Path, texto: str) -> None:
+    """Rascunhos podem ser editados por humanos: NUNCA sobrescrever os existentes."""
+    if not path.exists():
+        path.write_text(texto, encoding="utf-8")
+
 def prepare(profile: dict, opportunity: dict, decision: dict) -> Path:
     assoc_root=ROOT/"dados/associacoes"/profile["id"]
     if assoc_root.resolve().parent!=(ROOT/"dados/associacoes").resolve(): raise ValueError("universo inválido")
     root=assoc_root/"farol/casos"/opportunity["id"]; root.mkdir(parents=True,exist_ok=True)
     write_json(root/"01_enquadramento.json",{"gerado_em":now_iso(),**decision,"fundamentos":decision.get("razoes",[]),"ressalvas":decision.get("riscos",[])})
-    (root/"02_plano_trabalho.md").write_text(plan_text(profile,opportunity,decision),encoding="utf-8")
-    (root/"03_manual_presidente.md").write_text(president_manual(profile,opportunity),encoding="utf-8")
-    (root/"04_documentos_necessarios.md").write_text("# Documentos necessários\n\n- [ ] Edital e retificações\n- [ ] Estatuto registrado\n- [ ] Ata e representação vigente\n- [ ] Certidões exigidas\n- [ ] Comprovantes de experiência\n- [ ] Inscrições em conselhos/fundos, se exigidas\n- [ ] Plano e orçamento aprovados\n- [ ] Declarações do edital\n- [ ] Autorizações de imagem e tratamento de dados\n- [ ] Pasta contábil e bancária exclusiva\n",encoding="utf-8")
-    (root/"05_prestacao_contas.md").write_text("# Matriz de prestação de contas\n\n| Meta | Entrega | Documento fiscal | Pagamento | Evidência do objeto | Status |\n|---|---|---|---|---|---|\n| [M1] | [ ] | [ ] | [ ] | [ ] | pendente |\n",encoding="utf-8")
+    _escrever_uma_vez(root/"02_plano_trabalho.md",plan_text(profile,opportunity,decision))
+    _escrever_uma_vez(root/"03_manual_presidente.md",president_manual(profile,opportunity))
+    _escrever_uma_vez(root/"04_documentos_necessarios.md","# Documentos necessários\n\n- [ ] Edital e retificações\n- [ ] Estatuto registrado\n- [ ] Ata e representação vigente\n- [ ] Certidões exigidas\n- [ ] Comprovantes de experiência\n- [ ] Inscrições em conselhos/fundos, se exigidas\n- [ ] Plano e orçamento aprovados\n- [ ] Declarações do edital\n- [ ] Autorizações de imagem e tratamento de dados\n- [ ] Pasta contábil e bancária exclusiva\n")
+    _escrever_uma_vez(root/"05_prestacao_contas.md","# Matriz de prestação de contas\n\n| Meta | Entrega | Documento fiscal | Pagamento | Evidência do objeto | Status |\n|---|---|---|---|---|---|\n| [M1] | [ ] | [ ] | [ ] | [ ] | pendente |\n")
     conselho.prepare(root,profile,opportunity,decision)
     return root
 
