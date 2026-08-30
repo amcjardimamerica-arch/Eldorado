@@ -32,8 +32,15 @@ def run() -> dict:
     db=ROOT/"dados/oportunidades/oportunidades.jsonl"
     if db.exists(): opp=[json.loads(x) for x in db.read_text(encoding="utf-8").splitlines() if x.strip()]
     results={"executado_em":now_iso(),"associacoes":{}}
-    for path in sorted((ROOT/"dados/associacoes").glob("*/perfil.json")):
+    paths=list((ROOT/"dados/associacoes").glob("*/perfil_publico.json"))
+    example=ROOT/"dados/associacoes/EXEMPLO/perfil.json"
+    if example.exists(): paths.append(example)
+    forbidden={"cnpj","cpf","dados_bancarios","telefone","email","endereco","documentos_pessoais"}
+    for path in sorted(paths):
         profile=load_json(path); aid=profile["id"]
+        exposed=forbidden & set(profile)
+        if exposed:
+            raise ValueError(f"perfil público {aid} contém campos proibidos: {sorted(exposed)}")
         ranked=[]
         for item in opp:
             decision=evaluate(profile,item,criteria); ranked.append({"oportunidade_id":item["id"],"titulo":item["titulo"],"url":item["url"],**decision})
@@ -44,4 +51,3 @@ def run() -> dict:
     return results
 
 if __name__ == "__main__": print(json.dumps(run(),ensure_ascii=False,indent=2))
-

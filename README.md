@@ -32,7 +32,7 @@ As partes usam um identificador imutável de oportunidade, mas não misturam ass
 1. Abra **Actions → 00 · Verificar prontidão → Run workflow**.
 2. Em **Settings → Actions → General**, permita leitura e gravação ao workflow.
 3. Em **Settings → Pages**, publique a pasta `docs` da branch `main` se desejar o painel público.
-4. Cadastre uma associação copiando `dados/associacoes/EXEMPLO/perfil.json` para um diretório local exclusivo. Não envie CNPJ, documentos pessoais, certidões ou dados bancários para um repositório público.
+4. Cadastre cada associação copiando `dados/associacoes/EXEMPLO/perfil.json` para `dados/associacoes/SLUG/perfil_publico.json`. Inclua apenas critérios de elegibilidade não sensíveis; contatos, CNPJ, documentos, certidões e dados bancários ficam fora do Git.
 5. Execute localmente: `python -m src.executar_diario`.
 
 ## Estrutura
@@ -52,4 +52,3 @@ estado/                       hashes, cache HTTP e auditoria
 ```
 
 Consulte também [ARQUITETURA.md](ARQUITETURA.md), [SEGURANCA.md](SEGURANCA.md) e [OPERACAO.md](OPERACAO.md).
-
