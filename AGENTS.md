@@ -19,3 +19,4 @@
 17. O modelo de IA é escolhido POR TAREFA em `config/ia.json` (extração econômica; conselho intermediário; parecer final com o mais avançado). Nunca grave modelo em código-fonte; nunca chame IA fora das etapas essenciais; registre todo uso em `estado/ia_uso.jsonl`.
 18. A recoleta usa `merge_registro`: status protegidos e campos humanos (`requisitos`, `notas`, `verificado_*`) jamais são sobrescritos por automação.
 19. Pista secundária (imprensa/rede social/diário sem URL do edital) só vira oportunidade com a URL oficial confirmada (`scripts/confirmar_pista.py` ou verificação assistida com evidência).
+11. Antes de gerar qualquer HTML, leia `config/identidade_visual.json` e respeite cores, tipografia, formas e layout ali definidos. Somente tons claros. Não invente paleta nem redesenhe layout aprovado.

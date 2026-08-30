@@ -26,3 +26,23 @@ O titular é advogado, trabalha com captação, projetos e prestação de contas
 - Documentos em `submissao/` saem prontos e **sem qualquer referência a IA/ferramentas** e sem placeholders; orientações vão ao `07_pacote_presidente.md`, objetivas e resumidas.
 - Segredos apenas em GitHub Actions Secrets (`FAROL_AI_API_KEY`); jamais em arquivo ou chat.
 - Antes de qualquer PR: `python -m unittest discover -s tests` e `python scripts/verificar_privacidade.py` verdes.
+
+## Identidade visual — leitura obrigatória antes de qualquer HTML
+
+`config/identidade_visual.json` é a **fonte única** da aparência de todo artefato visual do
+sistema: dashboard, fichas de edital, painel, relatórios e o que vier depois.
+
+**Antes de gerar ou alterar qualquer HTML, leia esse arquivo e obedeça integralmente.**
+
+- Somente **tons claros**. Fundo escuro e modo noturno estão proibidos.
+- As cores vêm da **identidade visual da associação**, nunca de escolha da sessão.
+- Quando houver design de referência registrado, **respeitar o layout por inteiro** —
+  estrutura, navegação, grade e espaçamento — sem redesenhar por conta própria.
+- Enquanto `status` for `AGUARDANDO_DESIGN_DE_REFERENCIA`, usar a paleta provisória de
+  `docs/modelos/` e **declarar ao titular** que a identidade definitiva ainda está pendente.
+- Nenhuma sessão inventa paleta, tipografia ou layout quando os tokens estiverem preenchidos.
+
+O titular aprovou um design no Claude Design (link no próprio arquivo). Esse link **não é
+acessível** por outra conversa nem pelo ambiente de execução. Se os tokens ainda estiverem
+nulos, peça ao titular a captura de tela, o código ou o logotipo — e então preencha os tokens,
+mude `status` para `ATIVO` e regenere as saídas visuais a partir deles.

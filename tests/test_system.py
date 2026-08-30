@@ -327,6 +327,17 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(js.startswith("window.DADOS="))
         self.assertNotIn("</script",js.lower())
 
+
+    # ---- identidade visual persiste e obriga tons claros ----
+    def test_identidade_visual_registrada(self):
+        cfg=json.load(open("config/identidade_visual.json"))
+        self.assertEqual(cfg["diretriz_permanente"]["tons"],"somente tons claros")
+        self.assertIn("fundo escuro ou modo noturno",cfg["diretriz_permanente"]["proibido"])
+        self.assertIn("cores",cfg["tokens"])
+        # a regra tem de estar nos arquivos que toda sessao carrega
+        for arquivo in ("CLAUDE.md","AGENTS.md"):
+            self.assertIn("identidade_visual.json",open(arquivo,encoding="utf-8").read(),arquivo)
+
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}
         p={"natureza_juridica":"associacao","territorios":["GO"],"areas":["educacao"],"anos_existencia":3,"certificacoes":[],"experiencias":[1],"documentos_validos":[1],"capacidade_execucao":True}

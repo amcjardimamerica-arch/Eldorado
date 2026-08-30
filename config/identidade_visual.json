@@ -1,0 +1,78 @@
+{
+  "versao": 1,
+  "status": "AGUARDANDO_DESIGN_DE_REFERENCIA",
+  "regra": "Fonte única da identidade visual de TODA saída visual do sistema: dashboard, fichas de edital, painel, relatórios e qualquer artefato futuro. Toda conversa e toda sessão devem ler este arquivo ANTES de gerar HTML e respeitar integralmente o que estiver aqui — cores, tipografia, espaçamento, formas e layout. Nenhuma paleta pode ser inventada ou improvisada quando este arquivo estiver preenchido.",
+  "titular": "A.M.C. Jardim América — Associação dos Moradores e Comerciantes do Jardim América",
+  "diretriz_permanente": {
+    "tons": "somente tons claros",
+    "origem_das_cores": "identidade visual da associação (logotipo e material institucional)",
+    "layout": "respeitar integralmente o layout do design de referência aprovado pelo titular",
+    "proibido": [
+      "fundo escuro ou modo noturno",
+      "paleta inventada quando houver design de referência registrado",
+      "alterar estrutura de layout do design aprovado sem pedido expresso do titular"
+    ]
+  },
+  "design_de_referencia": {
+    "origem": "Claude Design compartilhado pelo titular em 30/08/2026",
+    "link": "https://claude.ai/design/p/50128d9c-28ac-4df2-9970-b0c1a19737a3",
+    "acessivel_por_sessao": false,
+    "motivo": "links de Claude Design não são acessíveis a partir de outra conversa nem pelo ambiente de execução (403); o conteúdo precisa ser fornecido pelo titular como captura de tela, código ou arquivo",
+    "capturado_em": null,
+    "resumo_do_layout": null
+  },
+  "tokens": {
+    "nota": "Preencher a partir do design de referência. Enquanto estiverem nulos, o sistema mantém a paleta provisória de `docs/modelos/` e declara que a identidade final está pendente.",
+    "cores": {
+      "fundo": null,
+      "superficie": null,
+      "superficie_alt": null,
+      "tinta": null,
+      "tinta_suave": null,
+      "marca_primaria": null,
+      "marca_secundaria": null,
+      "realce": null,
+      "linha": null,
+      "sucesso": null,
+      "alerta": null,
+      "urgente": null
+    },
+    "tipografia": {
+      "familia": null,
+      "escala": null,
+      "peso_titulo": null,
+      "peso_corpo": null
+    },
+    "forma": {
+      "raio_borda": null,
+      "sombra": null,
+      "espessura_borda": null,
+      "espacamento_base": null
+    },
+    "layout": {
+      "estrutura": null,
+      "largura_maxima": null,
+      "navegacao": null,
+      "grade_cartoes": null
+    },
+    "desenhos": {
+      "logotipo": null,
+      "motivos": null,
+      "estilo_iconografico": null
+    }
+  },
+  "como_preencher": [
+    "O titular envia captura de tela do design, o código/HTML dele, ou o logotipo em PNG.",
+    "A sessão extrai as cores exatas e a estrutura de layout e preenche `tokens`.",
+    "`status` passa a `ATIVO` e `design_de_referencia.capturado_em` recebe a data.",
+    "Todas as saídas visuais são regeradas a partir destes tokens, sem exceção."
+  ],
+  "arquivos_que_consomem": [
+    "docs/dashboard.html",
+    "src/fichas.py",
+    "src/painel.py",
+    "src/relatorio_amplitude.py",
+    "src/relatorio_busca.py",
+    "docs/modelos/*.html"
+  ]
+}
