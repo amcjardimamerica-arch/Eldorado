@@ -1,0 +1,22 @@
+name: 02 · Alexandria — revisão mensal de leis e procedimentos
+on:
+  schedule:
+    - cron: "20 10 1 * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Abrir checklist de revisão humana
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const month = new Date().toISOString().slice(0,7);
+            const title = `Revisão normativa e procedimental — ${month}`;
+            const {data} = await github.rest.issues.listForRepo({...context.repo, state:'open'});
+            if (!data.some(i => i.title === title)) await github.rest.issues.create({...context.repo,title,body:'Conferir vigência em fontes oficiais, retificações, novos procedimentos, modelos e efeitos sobre planos de trabalho e prestações de contas. Não promover alteração normativa sem URL oficial e revisão humana.'});

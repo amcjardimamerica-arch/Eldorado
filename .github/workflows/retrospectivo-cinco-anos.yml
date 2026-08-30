@@ -1,0 +1,31 @@
+name: 03 · Eldorado — histórico móvel de cinco anos
+on:
+  schedule:
+    - cron: "35 9 * * 0"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: eldorado-repo-writes
+  cancel-in-progress: false
+jobs:
+  pesquisar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Pesquisar pistas históricas sem IA
+        run: |
+          python -m src.retrospectivo
+          python -m src.dossies
+          python -m src.painel
+      - name: Versionar resultados
+        run: |
+          git config user.name "eldorado-bot"
+          git config user.email "eldorado-bot@users.noreply.github.com"
+          git add dados/oportunidades dados/financiadores docs estado/cursor_retrospectivo.json
+          git diff --cached --quiet && exit 0
+          git commit -m "dados: retrospectivo móvel de cinco anos"
+          git push
