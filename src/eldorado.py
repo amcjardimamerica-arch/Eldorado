@@ -56,27 +56,41 @@ def candidates(source: dict, data: bytes, final_url: str) -> list[dict]:
         if len(label)<5 or not TERMS.search(label): continue
         url=canonical_url(urljoin(final_url,href))
         if urlsplit(url).scheme!="https": continue
+        host=urlsplit(url).hostname or ""
+        allowed=source.get("hosts_links") or [urlsplit(source.get("url") or final_url).hostname]
+        if not any(host == item or host.endswith("." + item) for item in allowed): continue
         deadline=DEADLINE.search(label); year=YEAR.search(label)
         out.append({
             "id":sha256((source["id"]+"|"+url).encode())[:20], "status":"capturada", "titulo":label[:300],
             "url":url, "fonte_id":source["id"], "fonte_nome":source["nome"], "territorio":source["territorio"],
             "tipo_fonte":source["tipo"], "confianca":source["confianca"], "coletado_em":now_iso(),
+            "nivel":source.get("nivel"), "uf":source.get("uf"), "municipio":source.get("municipio"),
+            "areas_fonte":source.get("areas") or [],
             "prazo_texto":deadline.group(1) if deadline else None, "ano_referencia":int(year.group(1)) if year else None,
             "evidencia":label[:500], "hash_evidencia":sha256(label.encode())
         })
     unique={item["id"]:item for item in out}
     return list(unique.values())
 
+def source_in_scope(source: dict, scope: dict) -> bool:
+    if source.get("nivel") not in scope.get("niveis_ativos", []): return False
+    if source.get("uf") and source["uf"] not in scope.get("ufs_ativas", []): return False
+    if source.get("municipio") and source["municipio"] not in scope.get("municipios_ativos", []): return False
+    selected=set(scope.get("areas_ativas", [])); areas=set(source.get("areas") or [])
+    return not areas or not selected or bool(areas & selected)
+
 def run() -> dict:
-    cfg=load_json(ROOT/"config/fontes.json"); db=ROOT/"dados/oportunidades/oportunidades.jsonl"
+    cfg=load_json(ROOT/"config/fontes.json"); scope=load_json(ROOT/"config/escopo.json"); db=ROOT/"dados/oportunidades/oportunidades.jsonl"
     existing={}
     if db.exists():
         for line in db.read_text(encoding="utf-8").splitlines():
             if line.strip():
                 item=json.loads(line); existing[item["id"]]=item
-    report={"executado_em":now_iso(),"fontes_total":0,"fontes_ok":0,"fontes_falha":0,"novas":0,"quarentena":0,"falhas":[]}
+    report={"executado_em":now_iso(),"fontes_catalogadas":len(cfg["fontes"]),"fontes_total":0,"fontes_ok":0,"fontes_falha":0,"fontes_fora_escopo":0,"fontes_manuais":0,"novas":0,"quarentena":0,"falhas":[],"escopo":scope}
     for source in cfg["fontes"]:
         if not source.get("ativa"): continue
+        if not source_in_scope(source,scope): report["fontes_fora_escopo"]+=1; continue
+        if source.get("modo","html_publico") not in cfg["politica"].get("modos_coleta_permitidos",[]): report["fontes_manuais"]+=1; continue
         report["fontes_total"]+=1
         try:
             data,final,ctype=fetch(source,cfg["politica"]); report["fontes_ok"]+=1

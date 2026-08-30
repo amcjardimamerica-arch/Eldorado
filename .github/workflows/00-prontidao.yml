@@ -13,6 +13,5 @@ jobs:
       - run: python -m unittest discover -s tests -v
       - name: Resumo
         run: |
-          echo "# Eldorado + Farol" >> "$GITHUB_STEP_SUMMARY"
-          echo "Testes passaram. O monitoramento diário está agendado para 6h de Brasília." >> "$GITHUB_STEP_SUMMARY"
-
+          echo "# Eldorado" >> "$GITHUB_STEP_SUMMARY"
+          echo "Testes passaram. O monitoramento Eldorado está agendado para 6h de Brasília; o Farol é um segundo estágio separado." >> "$GITHUB_STEP_SUMMARY"

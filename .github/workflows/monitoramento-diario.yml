@@ -19,13 +19,13 @@ jobs:
         with: {python-version: "3.12"}
       - name: Testes antes da coleta
         run: python -m unittest discover -s tests -v
-      - name: Coletar, enquadrar e publicar painel
+      - name: Coletar, verificar pistas e publicar painel Eldorado
         run: python -m src.executar_diario
       - name: Registrar somente alterações produzidas
         run: |
           git config user.name "eldorado-bot"
           git config user.email "eldorado-bot@users.noreply.github.com"
-          git add dados/oportunidades dados/financiadores resultados estado docs
+          git add dados/oportunidades dados/financiadores estado docs
           git diff --cached --quiet && exit 0
           git commit -m "dados: monitoramento diário $(date -u +%F)"
           git push

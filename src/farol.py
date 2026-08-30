@@ -30,7 +30,9 @@ def evaluate(profile: dict, opportunity: dict, criteria: dict) -> dict:
 def run() -> dict:
     criteria=load_json(ROOT/"config/criterios.json"); opp=[]
     db=ROOT/"dados/oportunidades/oportunidades.jsonl"
-    if db.exists(): opp=[json.loads(x) for x in db.read_text(encoding="utf-8").splitlines() if x.strip()]
+    if db.exists():
+        opp=[json.loads(x) for x in db.read_text(encoding="utf-8").splitlines() if x.strip()]
+        opp=[x for x in opp if x.get("status") in {"verificada_primaria","verificada_dupla"}]
     results={"executado_em":now_iso(),"associacoes":{}}
     paths=list((ROOT/"dados/associacoes").glob("*/perfil_publico.json"))
     example=ROOT/"dados/associacoes/EXEMPLO/perfil.json"
