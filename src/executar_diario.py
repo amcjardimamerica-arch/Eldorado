@@ -6,7 +6,11 @@ registrado e o resumo/alerta dá visibilidade. Ordem do fluxo:
 coleta HTML -> APIs oficiais -> capilaridade (pistas) -> social -> verificacao
 assistida -> conformidade de edital -> prazos e alertas -> dossies ->
 aprendizado/previsoes -> triagem -> casos -> Farol IA -> fichas HTML ->
-relatorio da varredura (3 partes) -> painel
+dashboard interativo (dados) -> painel
+
+O dashboard (docs/dashboard.html) é a saida padrao: um unico painel vivo que
+le docs/dashboard-dados.js e calcula prazos no navegador. O relatorio HTML
+datado continua disponivel, desligado por padrao em config/relatorios.json.
 
 Toda analise de oportunidade viva produz HTML: uma ficha por edital em
 docs/editais/<id>.html mais o painel consolidado em docs/index.html.
@@ -15,9 +19,9 @@ from __future__ import annotations
 import json
 
 from . import (aprendizado, capilaridade, casos, coletores_api, dossies, eldorado,
-               farol_ia, fichas, painel, prazos, programas, qualidade, redes_indireta,
-               relatorio_busca, rmg_diarios, rota_monitoramento, triagem,
-               verificacao_assistida, verificacao_social)
+               dashboard_dados, farol_ia, fichas, painel, prazos, programas, qualidade,
+               redes_indireta, relatorio_busca, rmg_diarios, rota_monitoramento,
+               triagem, verificacao_assistida, verificacao_social)
 from .nucleo import ROOT, append_jsonl, now_iso, write_json
 
 def _rodar(nome, funcao, relatorio):
@@ -51,7 +55,15 @@ def main():
     _rodar("triagem_e_casos", _triagem_e_casos, relatorio)
     _rodar("farol_ia", farol_ia.run, relatorio)
     _rodar("fichas_html", fichas.run, relatorio)
-    _rodar("relatorio_busca", relatorio_busca.run, relatorio)
+    _rodar("dashboard", dashboard_dados.run, relatorio)
+
+    def _relatorio_datado_opcional():
+        cfg = __import__("json").loads((ROOT / "config/relatorios.json").read_text(encoding="utf-8")) \
+            if (ROOT / "config/relatorios.json").exists() else {}
+        if not cfg.get("gerar_html_datado", False):
+            return {"status": "desativado — dashboard interativo é a saída padrão"}
+        return relatorio_busca.run()
+    _rodar("relatorio_datado", _relatorio_datado_opcional, relatorio)
     _rodar("painel", painel.run, relatorio)
 
     write_json(ROOT / "estado/ultima_execucao_diaria.json", relatorio)

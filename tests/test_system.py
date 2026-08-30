@@ -19,6 +19,7 @@ from src.rmg_diarios import _normalizar
 from src.programas import caracterizar, extrair_periodo, identificar_programa
 from src.relatorio_busca import _situacao, _calendario
 from src.triagem import _bloqueio_politico
+from src.dashboard_dados import coletar as dash_coletar
 from datetime import date
 
 class SystemTests(unittest.TestCase):
@@ -304,6 +305,27 @@ class SystemTests(unittest.TestCase):
             self.assertTrue(fonte["motivo_pendencia"])
             self.assertTrue(fonte["url_consulta_humana"])
         self.assertGreaterEqual(cfg["min_ocorrencias_bandeira"],2)
+
+
+    # ---- dashboard interativo ----
+    def test_dashboard_dados_estrutura(self):
+        d=dash_coletar(date(2026,9,2))
+        for chave in ("editais","calendario","janela_emendas","parlamentares","fluxo_continuo","avisos"):
+            self.assertIn(chave,d)
+        self.assertEqual(len(d["calendario"]),12)
+        self.assertEqual(d["janela_emendas"]["meses"],[10,11])
+        self.assertFalse(d["janela_emendas"]["aciona_farol"])
+
+    def test_dashboard_html_estatico_e_offline(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn('src="dashboard-dados.js"',html)   # funciona local via file://
+        self.assertNotIn("http://",html)
+        self.assertNotIn("cdn.",html)                     # sem dependência externa
+        self.assertIn("aciona o Farol",html)
+        # dados serializados escapam </ para não quebrar o script
+        js=open("docs/dashboard-dados.js",encoding="utf-8").read()
+        self.assertTrue(js.startswith("window.DADOS="))
+        self.assertNotIn("</script",js.lower())
 
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}

@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eldorado · Dashboard interativo</title>
+<style>
+:root{--gold:#f5c451;--navy:#081426;--ink:#eaf1f8;--muted:#9eb0c5;--ok:#47d7ac;--bad:#ff7373;--warn:#ffb547;--line:#244766;--card:#0d223b}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 10% 0,#173a5f,var(--navy) 42%);color:var(--ink);font:15px/1.55 system-ui,sans-serif}
+main{max-width:1160px;margin:auto;padding:20px}
+h1{color:var(--gold);font-size:clamp(22px,4vw,34px);margin:.2em 0}
+.meta{color:var(--muted);font-size:13px}a{color:#8ed5ff;word-break:break-word}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0;position:sticky;top:0;background:rgba(8,20,38,.92);padding:10px 0;z-index:5;backdrop-filter:blur(4px)}
+nav button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 15px;border-radius:22px;cursor:pointer;font-size:14px}
+nav button.ativo{background:var(--gold);color:#17212d;font-weight:800;border-color:var(--gold)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:11px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px}
+.metric{font-size:27px;color:var(--gold);font-weight:800}
+.filtros{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:9px;margin:14px 0}
+input,select{border:1px solid #365b7a;background:#0a1b2f;color:var(--ink);padding:10px;border-radius:9px;font-size:14px}
+.editais{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:13px}
+.edital{background:var(--card);border:1px solid var(--line);border-left:4px solid #3a607e;border-radius:12px;padding:14px;display:flex;flex-direction:column}
+.edital.bad{border-left-color:var(--bad)}.edital.warn{border-left-color:var(--warn)}.edital.ok{border-left-color:var(--ok)}
+.edital h3{margin:0 0 5px;font-size:15.5px}
+.linha{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:3px 0;border-bottom:1px dashed #1d3a57}
+.linha b{color:var(--muted);font-weight:600;white-space:nowrap}
+.linha span{text-align:right}
+.contagem{margin-top:auto;padding-top:10px;font-size:14px}
+.tag{display:inline-block;border:1px solid #3a607e;border-radius:20px;padding:2px 9px;margin:3px 3px 0 0;font-size:12px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.mes{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;min-height:110px}
+.mes.emenda{border-color:var(--gold);background:#12294a}
+.mes.atual{outline:2px solid #8ed5ff}
+.mes h4{margin:0 0 7px;font-size:13.5px;color:var(--gold);text-transform:capitalize}
+.ev{font-size:12px;padding:3px 0;border-bottom:1px dashed #1d3a57;cursor:pointer}
+.ev:hover{color:var(--gold)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+td,th{text-align:left;padding:7px 6px;border-bottom:1px solid #1d3a57;vertical-align:top}
+th{color:var(--muted);font-weight:600;cursor:pointer;user-select:none}
+.aviso{border-left:3px solid var(--warn);padding-left:12px}
+.fechado{border:1px dashed #3a607e;border-radius:13px;padding:22px;text-align:center;background:#0a1b2f}
+.oculto{display:none}
+footer{color:var(--muted);padding:30px 0;font-size:12.5px}
+dialog{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;max-width:640px;width:92%;padding:20px}
+dialog::backdrop{background:rgba(3,9,18,.75)}
+@media(max-width:720px){.filtros{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body><main>
+<div class=meta>ELDORADO · FAROL DE ALEXANDRIA — painel vivo, sem relatórios datados</div>
+<h1>Dashboard interativo</h1>
+<p class=meta>Última varredura: <strong id=ultima>—</strong> · contagens de prazo calculadas agora, no seu navegador
+(<span id=hoje></span>). <a href="relatorio-amplitude.html">relatório de amplitude</a> · <a href="index.html">painel clássico</a></p>
+
+<nav id=abas>
+<button data-aba=visao class=ativo>Visão geral</button>
+<button data-aba=editais>Editais</button>
+<button data-aba=calendario>Calendário</button>
+<button data-aba=prazos>Prazos</button>
+<button data-aba=fontes>Execução e fontes</button>
+<button data-aba=emendas>Emendas <span id=emenda-badge></span></button>
+</nav>
+
+<section id=aba-visao>
+  <div class=cards id=visao-cards></div>
+  <div class=card style="margin-top:13px" id=visao-programas></div>
+  <div class=card style="margin-top:13px" id=visao-historica></div>
+</section>
+
+<section id=aba-editais class=oculto>
+  <div class=filtros>
+    <input id=f-busca placeholder="Buscar por título, fonte, lei ou modalidade">
+    <select id=f-programa><option value="">Todos os programas</option></select>
+    <select id=f-territorio><option value="">Todos os territórios</option></select>
+    <select id=f-estado>
+      <option value="">Todas as situações</option>
+      <option value=aberto>Abertos</option>
+      <option value=a_abrir>A abrir</option>
+      <option value=sem_prazo>Sem prazo na fonte</option>
+      <option value=encerrado>Encerrados</option>
+    </select>
+  </div>
+  <div class=meta id=editais-contagem></div>
+  <div class=editais id=lista-editais></div>
+</section>
+
+<section id=aba-calendario class=oculto>
+  <p class=meta>Clique num evento para abrir o edital. Meses dourados concentram a articulação de emendas; o mês atual está contornado.</p>
+  <div class=cal id=grade-cal></div>
+  <div class=card style="margin-top:13px" id=continuos></div>
+</section>
+
+<section id=aba-prazos class=oculto>
+  <div class=card>
+    <table id=tab-prazos>
+      <thead><tr><th data-k=dias>Dias restantes ↕</th><th data-k=titulo>Edital ↕</th><th data-k=programa>Programa ↕</th><th data-k=fim>Encerramento ↕</th><th>Fonte</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p class=meta>Prazos conforme escritos na fonte — conferir no edital. Encerrados permanecem para alimentar o aprendizado de janelas.</p>
+  </div>
+</section>
+
+<section id=aba-fontes class=oculto>
+  <div class=cards id=fontes-cards></div>
+  <div class=card style="margin-top:13px" id=fontes-detalhe></div>
+</section>
+
+<section id=aba-emendas class=oculto>
+  <div class="card aviso" style="margin-bottom:13px">
+    <strong>Esta área não aciona o Farol de Alexandria.</strong>
+    <p class=meta id=emendas-motivo style="margin:6px 0 0"></p>
+  </div>
+  <div id=emendas-corpo></div>
+</section>
+
+<dialog id=detalhe></dialog>
+<footer>Gerado sem consumo de tokens. Prazo, valor, requisitos e vigência exigem conferência na fonte primária.<br>
+Funciona no GitHub Pages e localmente (abra este arquivo no repositório clonado).</footer>
+</main>
+
+<script src="dashboard-dados.js"></script>
+<script>
+(function(){
+"use strict";
+const D = window.DADOS || {editais:[],calendario:[],avisos:[]};
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "—").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const HOJE = new Date(); HOJE.setHours(0,0,0,0);
+const MESES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+
+$("hoje").textContent = HOJE.toLocaleDateString("pt-BR");
+$("ultima").textContent = D.gerado_em ? new Date(D.gerado_em).toLocaleString("pt-BR") : "nenhuma varredura ainda";
+
+function dataISO(s){ if(!s) return null; const d = new Date(String(s).slice(0,10)+"T00:00:00"); return isNaN(d)?null:d; }
+function dias(ate){ const d = dataISO(ate); return d===null?null:Math.round((d-HOJE)/86400000); }
+function br(s){ const d = dataISO(s); return d?d.toLocaleDateString("pt-BR"):"—"; }
+
+// situação calculada AO VIVO no navegador — sempre atual entre varreduras
+function situacao(e){
+  const dFim = dias(e.fim), dIni = dias(e.inicio);
+  if(dFim!==null && dFim<0)  return {estado:"encerrado", classe:"bad",  rotulo:"Encerrado em "+br(e.fim), dias:dFim};
+  if(dIni!==null && dIni>0)  return {estado:"a_abrir",  classe:"warn", rotulo:"Abre em "+dIni+" dia(s)", dias:dFim};
+  if(dFim!==null)            return {estado:"aberto", classe:dFim<=7?"bad":dFim<=30?"warn":"ok",
+                                     rotulo:"Aberto — faltam "+dFim+" dia(s)", dias:dFim};
+  return {estado:"sem_prazo", classe:"meta", rotulo:"Sem data de encerramento na fonte", dias:null};
+}
+const EDS = (D.editais||[]).map(e => ({...e, viva: situacao(e)}));
+
+// ------- abas -------
+document.querySelectorAll("#abas button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("#abas button").forEach(x=>x.classList.remove("ativo"));
+  b.classList.add("ativo");
+  document.querySelectorAll("main > section").forEach(s=>s.classList.add("oculto"));
+  $("aba-"+b.dataset.aba).classList.remove("oculto");
+});
+
+// ------- visão geral -------
+(function visao(){
+  const abertos = EDS.filter(e=>e.viva.estado==="aberto");
+  const em7 = abertos.filter(e=>e.viva.dias!==null && e.viva.dias<=7).length;
+  const programas = new Set(abertos.map(e=>e.programa));
+  $("visao-cards").innerHTML = [
+    [abertos.length,"editais abertos"],
+    [EDS.filter(e=>e.viva.estado==="a_abrir").length,"a abrir"],
+    [em7,"encerram em ≤ 7 dias"],
+    [programas.size,"programas em aberto"],
+    [EDS.length,"registros na base"],
+    [(D.rotas_260||{}).com_rota_de_monitoramento ?? "—","pontos com rota (de "+((D.rotas_260||{}).total_catalogo??260)+")"],
+  ].map(x=>`<div class=card><div class=metric>${x[0]}</div><div class=meta>${x[1]}</div></div>`).join("");
+
+  const porPrograma = {};
+  abertos.forEach(e=>{ porPrograma[e.programa]=(porPrograma[e.programa]||0)+1; });
+  $("visao-programas").innerHTML = "<strong>Programas com edital aberto</strong><p>" +
+    (Object.entries(porPrograma).sort((a,b)=>b[1]-a[1])
+      .map(([p,n])=>`<span class=tag>${esc(p)}: ${n}</span>`).join("") || "<span class=meta>nenhum</span>") + "</p>";
+
+  const ch = D.carga_historica||{};
+  $("visao-historica").innerHTML = "<strong>Carga histórica de 5 anos</strong><p class=meta>" +
+    (ch.status==="nunca_executada" ? "Ainda não executada — a base é formada a partir da primeira campanha."
+      : esc(ch.status||"—") + (ch.janelas_restantes!=null ? " · janelas restantes: "+ch.janelas_restantes : "")) + "</p>";
+})();
+
+// ------- editais (filtros) -------
+(function editais(){
+  [...new Set(EDS.map(e=>e.programa).filter(Boolean))].sort()
+    .forEach(v=>$("f-programa").insertAdjacentHTML("beforeend",`<option>${esc(v)}</option>`));
+  [...new Set(EDS.map(e=>e.territorio).filter(Boolean))].sort()
+    .forEach(v=>$("f-territorio").insertAdjacentHTML("beforeend",`<option>${esc(v)}</option>`));
+
+  function caixa(e){
+    const s=e.viva;
+    const cont = s.estado==="aberto" && s.dias!==null
+      ? `<div class="contagem ${s.classe}"><strong>Faltam ${s.dias} dia(s)</strong> <span class=meta>encerra ${br(e.fim)}</span></div>`
+      : s.estado==="a_abrir" ? `<div class="contagem warn"><strong>${s.rotulo}</strong> <span class=meta>${br(e.inicio)}${e.fim?" · encerra "+br(e.fim):""}</span></div>`
+      : s.estado==="encerrado" ? `<div class="contagem bad"><strong>Encerrado</strong> <span class=meta>${br(e.fim)}</span></div>`
+      : `<div class="contagem meta">Sem data de encerramento na fonte — <strong>conferir no edital</strong></div>`;
+    return `<article class="edital ${s.classe}" data-id="${esc(e.id)}">
+<h3><a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">${esc(e.titulo)}</a></h3>
+<div class=meta>${esc(e.fonte_nome)} · ${esc(e.territorio)}</div>
+<div style="margin:7px 0 2px"><span class=tag>${esc(e.programa)}</span>${e.fluxo==="invertido"?'<span class=tag>fluxo contínuo</span>':""}${e.aciona_farol===false?'<span class="tag warn">não aciona o Farol</span>':""}${e.nota_conformidade!=null?`<span class=tag>conformidade ${e.nota_conformidade}/100</span>`:""}</div>
+${e.alerta_programa?`<div class=meta style="color:var(--warn)">⚠ ${esc(e.alerta_programa)}</div>`:""}
+<div class=linha><b>Lei</b><span>${esc(e.lei)}</span></div>
+<div class=linha><b>Modalidade</b><span>${esc(e.modalidade||"não localizada — conferir edital")}</span></div>
+<div class=linha><b>Início</b><span>${br(e.inicio)}${e.inicio_declarado?"":" <span class=meta>(publicação)</span>"}</span></div>
+<div class=linha><b>Fim</b><span>${br(e.fim)}</span></div>
+${cont}
+<div style="margin-top:8px"><a class=meta href="javascript:void 0" onclick="abrirDetalhe('${esc(e.id)}')">detalhes ›</a> · <a class=meta href="${esc(e.ficha)}">ficha</a></div>
+</article>`;
+  }
+
+  function render(){
+    const q=$("f-busca").value.toLowerCase(), p=$("f-programa").value,
+          t=$("f-territorio").value, st=$("f-estado").value;
+    const rows = EDS.filter(e =>
+      (!q || [e.titulo,e.fonte_nome,e.lei,e.modalidade,e.programa].join(" ").toLowerCase().includes(q)) &&
+      (!p || e.programa===p) && (!t || e.territorio===t) && (!st || e.viva.estado===st));
+    rows.sort((a,b)=>(a.viva.dias??9e9)-(b.viva.dias??9e9));
+    $("editais-contagem").textContent = rows.length+" edital(is) no filtro";
+    $("lista-editais").innerHTML = rows.map(caixa).join("") || "<div class=card>Nenhum edital neste filtro.</div>";
+  }
+  ["f-busca","f-programa","f-territorio","f-estado"].forEach(id=>$(id).addEventListener("input",render));
+  render();
+})();
+
+window.abrirDetalhe = function(id){
+  const e = EDS.find(x=>x.id===id); if(!e) return;
+  $("detalhe").innerHTML = `<h3 style="color:var(--gold);margin-top:0">${esc(e.titulo)}</h3>
+<p class=meta>${esc(e.programa)} · ${esc(e.lei)} · ${esc(e.territorio)}</p>
+<div class=linha><b>Modalidade</b><span>${esc(e.modalidade||"—")}</span></div>
+<div class=linha><b>Período</b><span>${br(e.inicio)} → ${br(e.fim)}</span></div>
+<div class=linha><b>Situação viva</b><span>${esc(e.viva.rotulo)}</span></div>
+<div class=linha><b>Funil</b><span>${esc(e.status)} · ${esc(e.confianca)}</span></div>
+${(e.pendencias_conformidade||[]).length?`<p><strong>Pendente de confirmação no edital:</strong></p><p>${e.pendencias_conformidade.map(x=>`<span class="tag warn">${esc(x)}</span>`).join("")}</p>`:""}
+<p><a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir na fonte primária ↗</a> · <a href="${esc(e.ficha)}">ficha completa</a></p>
+<form method=dialog style="text-align:right"><button>fechar</button></form>`;
+  $("detalhe").showModal();
+};
+
+// ------- calendário -------
+(function calendario(){
+  const porMes = {};
+  EDS.forEach(e=>{
+    [["inicio","abre"],["fim","encerra"]].forEach(([campo,rot])=>{
+      const d = dataISO(e[campo]);
+      if(d && d.getFullYear()===HOJE.getFullYear())
+        (porMes[d.getMonth()+1] ||= []).push({dia:d.getDate(),rot,e});
+    });
+  });
+  const emendas = new Set(((D.janela_emendas||{}).meses)||[10,11]);
+  $("grade-cal").innerHTML = MESES.map((nome,i)=>{
+    const m=i+1, itens=(porMes[m]||[]).sort((a,b)=>a.dia-b.dia);
+    return `<div class="mes${emendas.has(m)?" emenda":""}${m===HOJE.getMonth()+1?" atual":""}"><h4>${nome}</h4>
+${itens.map(x=>`<div class=ev onclick="abrirDetalhe('${esc(x.e.id)}')"><strong>${String(x.dia).padStart(2,"0")}</strong> ${x.rot} · ${esc(x.e.titulo.slice(0,42))}</div>`).join("") || '<div class="ev meta" style="cursor:default">sem data registrada</div>'}
+${emendas.has(m)?'<div class=ev style="color:var(--gold);border:none;cursor:default;margin-top:5px"><strong>Emendas parlamentares</strong><div class=meta>articulação e indicação</div></div>':""}
+</div>`;
+  }).join("");
+  $("continuos").innerHTML = "<strong>Fluxo contínuo ou janela mensal</strong><ul>" +
+    ((D.fluxo_continuo||[]).map(c=>`<li>${esc(c.programa)} <span class=meta>— ${esc(c.lei)}</span></li>`).join("") || "<li class=meta>nenhum</li>") +
+    "</ul><p class=meta>Habilitação analisada por lote; a captação depende de empresa incentivadora.</p>";
+})();
+
+// ------- prazos (tabela ordenável) -------
+(function prazos(){
+  let linhas = EDS.filter(e=>e.fim).map(e=>({dias:e.viva.dias, titulo:e.titulo, programa:e.programa,
+                                             fim:e.fim, fonte:e.fonte_nome, url:e.url, id:e.id}));
+  let chave="dias", asc=true;
+  function render(){
+    linhas.sort((a,b)=>{const x=a[chave]??9e9,y=b[chave]??9e9;return (x<y?-1:x>y?1:0)*(asc?1:-1);});
+    document.querySelector("#tab-prazos tbody").innerHTML = linhas.map(l=>
+      `<tr><td class="${l.dias<0?"bad":l.dias<=7?"bad":l.dias<=30?"warn":"ok"}"><strong>${l.dias<0?"encerrado":l.dias}</strong></td>
+<td><a href="javascript:void 0" onclick="abrirDetalhe('${esc(l.id)}')">${esc(l.titulo.slice(0,80))}</a></td>
+<td class=meta>${esc(l.programa)}</td><td>${br(l.fim)}</td><td class=meta>${esc(l.fonte)}</td></tr>`).join("")
+      || "<tr><td colspan=5 class=meta>Nenhum edital com data de encerramento na fonte.</td></tr>";
+  }
+  document.querySelectorAll("#tab-prazos th[data-k]").forEach(th=>th.onclick=()=>{
+    if(chave===th.dataset.k) asc=!asc; else {chave=th.dataset.k; asc=true;} render();});
+  render();
+})();
+
+// ------- execução e fontes -------
+(function fontes(){
+  const x=D.execucao||{}, q=D.qualidade||{};
+  $("fontes-cards").innerHTML = [
+    [x.fontes_ok??"—","fontes ok"],[x.fontes_falha??"—","fontes com falha"],
+    [x.novas??"—","novas na última varredura"],[x.quarentena??"—","em quarentena"],
+    [q.nota_media??"—","conformidade média"],
+  ].map(v=>`<div class=card><div class=metric>${v[0]}</div><div class=meta>${v[1]}</div></div>`).join("");
+  $("fontes-detalhe").innerHTML = "<strong>Falhas da última varredura</strong>" +
+    ((x.falhas||[]).map(f=>`<div class=meta>${esc(f.fonte)}: ${esc(f.erro)}</div>`).join("") ||
+     "<p class=meta>Nenhuma falha registrada — ou nenhuma varredura executada ainda.</p>");
+})();
+
+// ------- emendas: abre só em out/nov, no relógio do navegador -------
+(function emendas(){
+  const cfg=D.janela_emendas||{meses:[10,11]}, parl=D.parlamentares||{};
+  const mes=HOJE.getMonth()+1, aberta=(cfg.meses||[]).includes(mes);
+  $("emendas-motivo").textContent = cfg.motivo || "Emenda depende de articulação e viabilidade política.";
+  $("emenda-badge").textContent = aberta ? "●" : "";
+
+  function corpo(fora){
+    const aviso = fora ? `<p class=meta style="color:var(--warn)">⚠ Consulta fora da janela de outubro/novembro — dados para referência, não para articulação em curso.</p>` : "";
+    const lista = parl.lista||[];
+    const linhas = lista.length ? lista.map(p=>{
+      const g=p.gabinete||{};
+      const bandeiras=(p.bandeiras||[]).map(b=>`<span class=tag>${esc(b.tema)} (${b.ocorrencias})</span>`).join("")||"<span class=meta>sem bandeira medida</span>";
+      return `<tr><td><strong>${esc(p.nome)}</strong><div class=meta>${esc(p.partido)} · ${esc(p.uf)} · ${esc(p.esfera)}</div></td>
+<td class=meta>${esc(g.sala)}${g.predio?" · prédio "+esc(g.predio):""}</td><td>${bandeiras}</td>
+<td class=meta>${esc(p.resultado_eleicao||"não carregado")}</td></tr>`;}).join("")
+      : `<tr><td colspan=4 class=meta>Nenhum parlamentar carregado (${esc(parl.status||"aguardando carga oficial")}). A área não exibe nome, gabinete ou votação sem carga de fonte oficial.</td></tr>`;
+    const pend=(parl.pendencias||[]).map(x=>`<li>${esc(x.casa||x.esfera||"")}: ${esc(x.motivo)}${x.consulta_humana?` — <a href="${esc(x.consulta_humana)}" target=_blank rel="noopener noreferrer">consulta oficial</a>`:""}</li>`).join("")||"<li class=meta>sem pendências registradas</li>";
+    return aviso+`<div class=card><table><tr><th>Parlamentar</th><th>Gabinete</th><th>Bandeiras por atuação</th><th>Resultado eleitoral</th></tr>${linhas}</table>
+<p class=meta>Bandeira é contagem de atuação registrada (proposições e comissões), não opinião. Tema com uma ocorrência é ruído.</p></div>
+<div class=card style="margin-top:12px"><strong>Pendências de carga</strong><ul>${pend}</ul>
+<p class=meta>Resultado eleitoral: ${esc((parl.resultado_eleicao||{}).status||"não carregado")}. ${esc((parl.resultado_eleicao||{}).motivo||"")}</p></div>`;
+  }
+
+  if(aberta){ $("emendas-corpo").innerHTML = corpo(false); }
+  else {
+    const ano = mes<10 ? HOJE.getFullYear() : HOJE.getFullYear()+1;
+    $("emendas-corpo").innerHTML = `<div class=fechado>
+<h3 style="color:var(--gold)">Área fechada</h3>
+<p class=meta>${esc(cfg.rotulo||"Outubro e novembro")}.<br>Reabre em <strong>01/10/${ano}</strong>.</p>
+<button id=forcar style="margin-top:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 16px;border-radius:9px;cursor:pointer">consultar mesmo assim</button></div>`;
+    document.getElementById("forcar").onclick = ()=>{ $("emendas-corpo").innerHTML = corpo(true); };
+  }
+})();
+})();
+</script>
+</body></html>

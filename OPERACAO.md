@@ -175,3 +175,25 @@ Nenhum nome, partido, gabinete, votação ou bandeira é escrito de memória. Fe
 de dados abertos da Câmara. ALEGO, Câmara de Goiânia e resultado eleitoral do TSE estão
 declarados como **pendência**, com o link oficial para consulta humana — sem carga, a área
 mostra a pendência em vez de dado que pareça verdadeiro.
+
+## Dashboard interativo — a saída padrão
+
+`docs/dashboard.html` é um painel único e vivo que substitui os relatórios datados. O robô
+atualiza apenas os **dados** (`docs/dashboard-dados.js` e `.json`, via `src/dashboard_dados.py`);
+o painel monta tudo no navegador: abas (visão geral, editais, calendário, prazos, execução,
+emendas), filtros combinados, tabela de prazos ordenável, detalhe por edital e **contagem de
+dias calculada na hora da abertura** — sempre atual, mesmo entre varreduras.
+
+Onde roda:
+- **GitHub Pages**: https://amcjardimamerica-arch.github.io/Eldorado/dashboard.html
+- **Local**: clone o repositório e abra `docs/dashboard.html` com dois cliques. Os dados vão
+  num arquivo `.js` justamente para funcionar offline, sem servidor e sem `fetch` bloqueado.
+  Para atualizar localmente: `git pull` (traz os dados novos que o robô commitou) ou rode
+  `python -m src.executar_diario` na sua máquina.
+
+A área de emendas abre sozinha em outubro/novembro **pelo relógio do navegador**; fora da
+janela mostra a data de reabertura e um botão de consulta avulsa, marcada como fora de época.
+Nada no dashboard aciona o Farol.
+
+Os relatórios HTML datados continuam disponíveis (fotografia histórica): ligue
+`gerar_html_datado` em `config/relatorios.json`.

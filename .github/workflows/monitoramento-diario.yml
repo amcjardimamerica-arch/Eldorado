@@ -32,17 +32,18 @@ jobs:
           else
             echo "Fora da janela de emendas (outubro/novembro) - carga nao executada." >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Relatorio da varredura (segunda e quarta)
+      - name: Dados do dashboard interativo
         if: always()
         run: |
-          python -m src.relatorio_busca | tee relbusca.json
+          python -m src.dashboard_dados | tee dash.json
           {
-            echo '## Relatorio da varredura'
+            echo '## Dashboard interativo atualizado'
+            echo 'Painel vivo: docs/dashboard.html (GitHub Pages ou local)'
             echo '```json'
-            cat relbusca.json
+            cat dash.json
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-          rm -f relbusca.json
+          rm -f dash.json
       - name: Rotas dos 260 pontos e cobertura do acervo
         if: always()
         run: |
