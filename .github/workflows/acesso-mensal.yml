@@ -1,0 +1,68 @@
+name: acesso-mensal
+# Dia 1º de cada mês, 6h de Brasília: nova senha derivada, dados recifrados,
+# senha enviada ao WhatsApp cadastrado. A senha anterior deixa de abrir tudo.
+# Execução manual ("workflow_dispatch") = REENVIO/recuperação: o titular aciona
+# no GitHub (Actions > acesso-mensal > Run workflow) e recebe a senha vigente
+# de novo no WhatsApp — fluxo de recuperação sem expor nada em texto claro.
+on:
+  schedule:
+    - cron: "0 9 1 * *"
+  workflow_dispatch:
+    inputs:
+      motivo:
+        description: "Motivo do reenvio (registro em auditoria)"
+        required: false
+        default: "reenvio solicitado pelo titular"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eldorado-pipeline
+  cancel-in-progress: false
+
+jobs:
+  ciclo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ACESSO_MASTER: ${{ secrets.ACESSO_MASTER }}
+      WHATSAPP_PHONE: ${{ secrets.WHATSAPP_PHONE }}
+      CALLMEBOT_APIKEY: ${{ secrets.CALLMEBOT_APIKEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Recifrar dados e enviar senha do mes
+        run: |
+          pip install cryptography --quiet
+          python -m src.dashboard_dados
+          python scripts/acesso.py ciclo | tee ciclo.json
+          {
+            echo '## Ciclo de acesso'
+            echo '```json'
+            cat ciclo.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          rm -f ciclo.json
+      - name: Auditoria e commit
+        run: |
+          python - << 'PY'
+          import json, os, pathlib
+          from datetime import datetime, timezone
+          reg = {"evento": "ciclo_acesso",
+                 "em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                 "gatilho": os.getenv("GITHUB_EVENT_NAME"),
+                 "motivo": os.getenv("MOTIVO") or "ciclo mensal"}
+          with open("estado/auditoria.jsonl", "a", encoding="utf-8") as f:
+              f.write(json.dumps(reg, ensure_ascii=False) + "\n")
+          PY
+          git config user.name "eldorado-robo"
+          git config user.email "eldorado-robo@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "chore: ciclo mensal de acesso (recifragem)"
+          git pull --rebase origin main || true
+          git push origin main || true
+        env:
+          MOTIVO: ${{ inputs.motivo }}

@@ -176,24 +176,37 @@ de dados abertos da Câmara. ALEGO, Câmara de Goiânia e resultado eleitoral do
 declarados como **pendência**, com o link oficial para consulta humana — sem carga, a área
 mostra a pendência em vez de dado que pareça verdadeiro.
 
-## Dashboard interativo — a saída padrão
+## Dashboard — Eldorado e Farol de Alexandria
 
-`docs/dashboard.html` é um painel único e vivo que substitui os relatórios datados. O robô
-atualiza apenas os **dados** (`docs/dashboard-dados.js` e `.json`, via `src/dashboard_dados.py`);
-o painel monta tudo no navegador: abas (visão geral, editais, calendário, prazos, execução,
-emendas), filtros combinados, tabela de prazos ordenável, detalhe por edital e **contagem de
-dias calculada na hora da abertura** — sempre atual, mesmo entre varreduras.
+`docs/dashboard.html` — painel único, alimentado às **segundas e sextas** pela varredura,
+e **mensalmente** pela revisão de leis (dia 1º) e pelo compilado de dados históricos
+(`dados/compilados/AAAA-MM.json`).
 
-Onde roda:
-- **GitHub Pages**: https://amcjardimamerica-arch.github.io/Eldorado/dashboard.html
-- **Local**: clone o repositório e abra `docs/dashboard.html` com dois cliques. Os dados vão
-  num arquivo `.js` justamente para funcionar offline, sem servidor e sem `fetch` bloqueado.
-  Para atualizar localmente: `git pull` (traz os dados novos que o robô commitou) ou rode
-  `python -m src.executar_diario` na sua máquina.
+Estrutura: dois botões no centro superior — **Eldorado** e **Farol de Alexandria**.
+- Eldorado → **Calendário** (mês navegável; ícone por dia, cor = área do edital, símbolo =
+  tipo de evento: abertura ▲, encerramento ■, resultado preliminar ◐, final ●, prorrogação ⟳,
+  retificação ✎, recurso §; prorrogações atualizam a data e mostram a original),
+  **Editais Abertos** (caixas com resumo; clique abre protocolo, qualificação, pontuação,
+  requisitos e documentos — lacunas declaradas) e **Bússola** (quadros lineares dos dias do
+  mês: houve busca? validou? clique traz o detalhe da auditoria; fontes com edital aberto em
+  caixas próprias com links e anexos; legenda de cor por tipo de fonte).
+- Farol → **Documentos** (posteriormente), **Editais Abertos** e **Biblioteca** (26 normas).
+- Tudo tem resumo ao passar o mouse e detalhe ao clicar.
+- Resultados/prorrogações/recursos são buscados ativamente (`src/resultados.py`).
 
-A área de emendas abre sozinha em outubro/novembro **pelo relógio do navegador**; fora da
-janela mostra a data de reabertura e um botão de consulta avulsa, marcada como fora de época.
-Nada no dashboard aciona o Farol.
+### Acesso restrito
 
-Os relatórios HTML datados continuam disponíveis (fotografia histórica): ligue
-`gerar_html_datado` em `config/relatorios.json`.
+- Dados publicados **cifrados** (AES-256-GCM; chave por PBKDF2-SHA256, 200k iterações).
+  Sem a senha, o arquivo no ar é ilegível — esta é a proteção real.
+- **Senha do mês** AMC-XXXX-XXXX, derivada de `ACESSO_MASTER` (Secret) + mês corrente:
+  troca sozinha todo dia 1º e a anterior deixa de abrir qualquer coisa (expiração automática
+  no último dia do mês). Sessão local vale até o fim do mês.
+- Envio automático por **WhatsApp** no dia 1º (workflow `acesso-mensal`); **reenvio /
+  recuperação**: Actions → acesso-mensal → *Run workflow* (registra motivo em auditoria).
+  Trocar o número = atualizar o Secret `WHATSAPP_PHONE`.
+- Bloqueio de **celular** e verificação de **localização Goiânia** por IP no navegador —
+  barreiras dissuasórias (contornáveis por técnico); a criptografia é o cadeado.
+- Secrets necessários: `ACESSO_MASTER` (frase longa aleatória), `WHATSAPP_PHONE`
+  (com DDI, ex.: 5562...), `CALLMEBOT_APIKEY` (obtida no primeiro contato com o robô do
+  CallMeBot). Sem eles, o painel publica sem cifragem e declara a pendência.
+

@@ -19,7 +19,7 @@ from __future__ import annotations
 import json
 
 from . import (aprendizado, capilaridade, casos, coletores_api, dossies, eldorado,
-               dashboard_dados, farol_ia, fichas, painel, prazos, programas, qualidade,
+               dashboard_dados, farol_ia, fichas, painel, prazos, programas, qualidade, resultados,
                redes_indireta, relatorio_busca, rmg_diarios, rota_monitoramento,
                triagem, verificacao_assistida, verificacao_social)
 from .nucleo import ROOT, append_jsonl, now_iso, write_json
@@ -55,6 +55,7 @@ def main():
     _rodar("triagem_e_casos", _triagem_e_casos, relatorio)
     _rodar("farol_ia", farol_ia.run, relatorio)
     _rodar("fichas_html", fichas.run, relatorio)
+    _rodar("resultados_editais", resultados.run, relatorio)
     _rodar("dashboard", dashboard_dados.run, relatorio)
 
     def _relatorio_datado_opcional():

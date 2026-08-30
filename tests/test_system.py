@@ -19,7 +19,11 @@ from src.rmg_diarios import _normalizar
 from src.programas import caracterizar, extrair_periodo, identificar_programa
 from src.relatorio_busca import _situacao, _calendario
 from src.triagem import _bloqueio_politico
-from src.dashboard_dados import coletar as dash_coletar
+from src.dashboard_dados import coletar as dash_coletar, area_do_edital, AREAS
+from src.resultados import analisar_texto
+import importlib.util as _ilu, sys as _sys
+_spec=_ilu.spec_from_file_location('acesso', 'scripts/acesso.py')
+_acesso=_ilu.module_from_spec(_spec); _spec.loader.exec_module(_acesso)
 from datetime import date
 
 class SystemTests(unittest.TestCase):
@@ -310,18 +314,17 @@ class SystemTests(unittest.TestCase):
     # ---- dashboard interativo ----
     def test_dashboard_dados_estrutura(self):
         d=dash_coletar(date(2026,9,2))
-        for chave in ("editais","calendario","janela_emendas","parlamentares","fluxo_continuo","avisos"):
+        for chave in ("editais","eventos","emendas","avisos"):
             self.assertIn(chave,d)
-        self.assertEqual(len(d["calendario"]),12)
-        self.assertEqual(d["janela_emendas"]["meses"],[10,11])
-        self.assertFalse(d["janela_emendas"]["aciona_farol"])
+        self.assertEqual(d["emendas"]["meses"],[10,11])
+        self.assertFalse(d["emendas"]["aciona_farol"])
 
     def test_dashboard_html_estatico_e_offline(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn('src="dashboard-dados.js"',html)   # funciona local via file://
         self.assertNotIn("http://",html)
         self.assertNotIn("cdn.",html)                     # sem dependência externa
-        self.assertIn("aciona o Farol",html)
+        self.assertIn("AES-256-GCM",html)
         # dados serializados escapam </ para não quebrar o script
         js=open("docs/dashboard-dados.js",encoding="utf-8").read()
         self.assertTrue(js.startswith("window.DADOS="))
@@ -337,6 +340,50 @@ class SystemTests(unittest.TestCase):
         # a regra tem de estar nos arquivos que toda sessao carrega
         for arquivo in ("CLAUDE.md","AGENTS.md"):
             self.assertIn("identidade_visual.json",open(arquivo,encoding="utf-8").read(),arquivo)
+
+
+    # ---- dashboard v2: estrutura Eldorado/Farol ----
+    def test_dashboard_v2_estrutura(self):
+        d=dash_coletar(date(2026,9,2))
+        for chave in ("areas","tipos_evento","editais","eventos","bussola","farol","cadencia"):
+            self.assertIn(chave,d)
+        self.assertIn("segundas e sextas", d["cadencia"]["varredura"])
+        self.assertIn("biblioteca", d["farol"])
+        self.assertGreaterEqual(len(d["farol"]["biblioteca"]), 26)
+        self.assertIn("categorias", d["bussola"])
+        self.assertIn("diario_oficial", d["bussola"]["categorias"])
+
+    def test_area_do_edital(self):
+        self.assertEqual(area_do_edital({"titulo":"Edital PNAB de fomento cultural","evidencia":""}),"cultura")
+        self.assertEqual(area_do_edital({"titulo":"Chamamento CMDCA","evidencia":"protecao de criancas"}),"crianca_adolescente")
+        self.assertEqual(area_do_edital({"titulo":"Edital de prestação pecuniária TJGO","evidencia":""}),"justica")
+        self.assertIn(area_do_edital({"titulo":"Edital genérico","evidencia":"sem tema"}),AREAS)
+
+    def test_resultados_analisar_texto(self):
+        t=("Fica prorrogado o prazo para 15/10/2026. O resultado preliminar sera divulgado em 20/10/2026. "
+           "Prazo para recursos: 22/10/2026.")
+        evs={e["tipo"]:e["data_mencionada"] for e in analisar_texto(t)}
+        self.assertEqual(evs.get("prorrogacao"),"15/10/2026")
+        self.assertEqual(evs.get("resultado_preliminar"),"20/10/2026")
+        self.assertEqual(evs.get("recurso"),"22/10/2026")
+
+    # ---- acesso: senha mensal deterministica e formato ----
+    def test_senha_mensal(self):
+        s1=_acesso.derivar_senha("master-x","2026-09")
+        s2=_acesso.derivar_senha("master-x","2026-09")
+        s3=_acesso.derivar_senha("master-x","2026-10")
+        self.assertEqual(s1,s2)                    # mesma p/ o robô recifrar
+        self.assertNotEqual(s1,s3)                 # troca todo mês
+        self.assertRegex(s1,r"^AMC-[A-Z2-9]{4}-[A-Z2-9]{4}$")
+        for amb in "01OI": self.assertNotIn(amb,s1.replace("AMC-",""))
+
+    def test_dashboard_html_portao_e_estrutura(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for trecho in ("Eldorado","Farol de Alexandria","Calendário","Editais Abertos","Bússola",
+                       "Documentos","Biblioteca","AES-256-GCM","PBKDF2","noindex","ligaTip",
+                       "dashboard-dados.enc.js"):
+            self.assertIn(trecho,html,trecho)
+        self.assertNotIn("cdn.",html)
 
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}

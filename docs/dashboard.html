@@ -3,329 +3,446 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Eldorado · Dashboard interativo</title>
+<meta name="robots" content="noindex,nofollow">
+<title>Painel · A.M.C. Jardim América</title>
 <style>
-:root{--gold:#f5c451;--navy:#081426;--ink:#eaf1f8;--muted:#9eb0c5;--ok:#47d7ac;--bad:#ff7373;--warn:#ffb547;--line:#244766;--card:#0d223b}
+:root{--fundo:#F7F5F0;--cartao:#FFFFFF;--tinta:#23272E;--suave:#68707C;--linha:#E4E1D8;
+--marca:#1F5B99;--realce:#EEF3F9;--ok:#1E7E4B;--alerta:#B8860B;--urgente:#B8433A}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(circle at 10% 0,#173a5f,var(--navy) 42%);color:var(--ink);font:15px/1.55 system-ui,sans-serif}
-main{max-width:1160px;margin:auto;padding:20px}
-h1{color:var(--gold);font-size:clamp(22px,4vw,34px);margin:.2em 0}
-.meta{color:var(--muted);font-size:13px}a{color:#8ed5ff;word-break:break-word}
-nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0;position:sticky;top:0;background:rgba(8,20,38,.92);padding:10px 0;z-index:5;backdrop-filter:blur(4px)}
-nav button{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 15px;border-radius:22px;cursor:pointer;font-size:14px}
-nav button.ativo{background:var(--gold);color:#17212d;font-weight:800;border-color:var(--gold)}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:11px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px}
-.metric{font-size:27px;color:var(--gold);font-weight:800}
-.filtros{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:9px;margin:14px 0}
-input,select{border:1px solid #365b7a;background:#0a1b2f;color:var(--ink);padding:10px;border-radius:9px;font-size:14px}
-.editais{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:13px}
-.edital{background:var(--card);border:1px solid var(--line);border-left:4px solid #3a607e;border-radius:12px;padding:14px;display:flex;flex-direction:column}
-.edital.bad{border-left-color:var(--bad)}.edital.warn{border-left-color:var(--warn)}.edital.ok{border-left-color:var(--ok)}
-.edital h3{margin:0 0 5px;font-size:15.5px}
-.linha{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:3px 0;border-bottom:1px dashed #1d3a57}
-.linha b{color:var(--muted);font-weight:600;white-space:nowrap}
-.linha span{text-align:right}
-.contagem{margin-top:auto;padding-top:10px;font-size:14px}
-.tag{display:inline-block;border:1px solid #3a607e;border-radius:20px;padding:2px 9px;margin:3px 3px 0 0;font-size:12px}
-.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
-.cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
-.mes{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;min-height:110px}
-.mes.emenda{border-color:var(--gold);background:#12294a}
-.mes.atual{outline:2px solid #8ed5ff}
-.mes h4{margin:0 0 7px;font-size:13.5px;color:var(--gold);text-transform:capitalize}
-.ev{font-size:12px;padding:3px 0;border-bottom:1px dashed #1d3a57;cursor:pointer}
-.ev:hover{color:var(--gold)}
-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
-td,th{text-align:left;padding:7px 6px;border-bottom:1px solid #1d3a57;vertical-align:top}
-th{color:var(--muted);font-weight:600;cursor:pointer;user-select:none}
-.aviso{border-left:3px solid var(--warn);padding-left:12px}
-.fechado{border:1px dashed #3a607e;border-radius:13px;padding:22px;text-align:center;background:#0a1b2f}
-.oculto{display:none}
-footer{color:var(--muted);padding:30px 0;font-size:12.5px}
-dialog{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;max-width:640px;width:92%;padding:20px}
-dialog::backdrop{background:rgba(3,9,18,.75)}
-@media(max-width:720px){.filtros{grid-template-columns:1fr 1fr}}
+body{margin:0;background:var(--fundo);color:var(--tinta);font:14.5px/1.55 system-ui,-apple-system,sans-serif}
+main{max-width:1140px;margin:auto;padding:18px 20px 40px}
+a{color:var(--marca)}
+.meta{color:var(--suave);font-size:12.5px}
+.cartao{background:var(--cartao);border:1px solid var(--linha);border-radius:14px;padding:16px}
+button{font:inherit;cursor:pointer;border:1px solid var(--linha);background:var(--cartao);color:var(--tinta);border-radius:12px;padding:10px 18px}
+button:hover{border-color:var(--marca)}
+.topo{display:flex;justify-content:center;gap:14px;padding:16px 0 6px}
+.topo button{font-size:16px;font-weight:700;padding:13px 34px;border-radius:14px}
+.topo button.on{background:var(--marca);color:#fff;border-color:var(--marca)}
+.subnav{display:flex;justify-content:center;gap:10px;padding:10px 0 18px;flex-wrap:wrap}
+.subnav button.on{background:var(--realce);border-color:var(--marca);font-weight:700;color:var(--marca)}
+.oculto{display:none!important}
+.legenda{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.legenda span{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--suave)}
+.ponto{width:11px;height:11px;border-radius:50%;display:inline-block;flex:none}
+/* calendário */
+.calcab{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.calcab h2{margin:0;font-size:19px}
+.calgrade{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.caldia-h{font-size:11px;letter-spacing:.08em;color:var(--suave);text-align:center;padding:4px 0;text-transform:uppercase}
+.caldia{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;min-height:86px;padding:6px;position:relative}
+.caldia.fora{opacity:.38}
+.caldia.hoje{outline:2px solid var(--marca)}
+.caldia .n{font-size:12px;font-weight:700;color:var(--suave)}
+.evt{display:flex;align-items:center;gap:4px;font-size:10.5px;margin-top:3px;padding:1px 4px;border-radius:6px;cursor:pointer;line-height:1.25;background:var(--realce)}
+.evt:hover{filter:brightness(.96)}
+.evt i{font-style:normal;font-weight:700}
+/* editais */
+.grade-ed{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:13px}
+.ed{border-left:5px solid var(--suave);cursor:pointer;transition:box-shadow .12s}
+.ed:hover{box-shadow:0 3px 12px #23272E1c}
+.ed h3{margin:0 0 4px;font-size:15px}
+.lin{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:3px 0;border-bottom:1px dashed var(--linha)}
+.lin b{color:var(--suave);font-weight:600;white-space:nowrap}
+.tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;background:var(--realce);border:1px solid var(--linha);margin:3px 4px 0 0}
+/* bússola */
+.bgrade{display:grid;grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:7px}
+.bdia{border:1px solid var(--linha);border-radius:10px;background:var(--cartao);padding:7px 4px;text-align:center;cursor:pointer;position:relative}
+.bdia:hover{border-color:var(--marca)}
+.bdia .n{font-size:13px;font-weight:700}
+.bdia .s{font-size:9px;letter-spacing:.05em;color:var(--suave);text-transform:uppercase}
+.bdia.ok{border-bottom:4px solid var(--ok)}
+.bdia.falha{border-bottom:4px solid var(--alerta)}
+.bdia.vazio{opacity:.45}
+/* tooltip */
+#tip{position:fixed;z-index:60;max-width:340px;background:#2B3038;color:#fff;font-size:12.5px;line-height:1.45;padding:9px 12px;border-radius:9px;pointer-events:none;box-shadow:0 6px 18px #0006;display:none}
+/* modal */
+dialog{border:none;border-radius:16px;max-width:680px;width:94%;padding:0;box-shadow:0 18px 50px #0004}
+dialog::backdrop{background:#23272E66}
+.mcab{background:var(--realce);padding:16px 20px;border-bottom:1px solid var(--linha)}
+.mcorpo{padding:18px 20px;max-height:64vh;overflow:auto}
+/* portão de acesso */
+#portao{position:fixed;inset:0;background:var(--fundo);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+#portao .cartao{max-width:420px;width:100%;text-align:center}
+#portao input{width:100%;font:inherit;font-size:17px;letter-spacing:.14em;text-align:center;padding:12px;border:1px solid var(--linha);border-radius:11px;margin:12px 0}
+.err{color:var(--urgente);font-size:13px;min-height:18px}
+footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
+@media(max-width:720px){.calgrade{gap:3px}.caldia{min-height:64px}}
 </style>
 </head>
-<body><main>
-<div class=meta>ELDORADO · FAROL DE ALEXANDRIA — painel vivo, sem relatórios datados</div>
-<h1>Dashboard interativo</h1>
-<p class=meta>Última varredura: <strong id=ultima>—</strong> · contagens de prazo calculadas agora, no seu navegador
-(<span id=hoje></span>). <a href="relatorio-amplitude.html">relatório de amplitude</a> · <a href="index.html">painel clássico</a></p>
+<body>
 
-<nav id=abas>
-<button data-aba=visao class=ativo>Visão geral</button>
-<button data-aba=editais>Editais</button>
-<button data-aba=calendario>Calendário</button>
-<button data-aba=prazos>Prazos</button>
-<button data-aba=fontes>Execução e fontes</button>
-<button data-aba=emendas>Emendas <span id=emenda-badge></span></button>
-</nav>
+<div id="portao"><div class="cartao">
+<h2 style="margin:6px 0 2px">Acesso restrito</h2>
+<p class="meta">A.M.C. Jardim América · painel de captação</p>
+<div id="portao-conteudo">
+<p class="meta" id="portao-msg">Verificando ambiente…</p>
+<div id="portao-form" class="oculto">
+<input id="senha" type="password" placeholder="SENHA DO MÊS" autocomplete="off" spellcheck="false">
+<div class="err" id="portao-erro"></div>
+<button style="width:100%;background:var(--marca);color:#fff;border-color:var(--marca);font-weight:700" onclick="entrar()">Entrar</button>
+<p class="meta" style="margin-top:12px">A senha é enviada ao WhatsApp cadastrado no dia 1º de cada mês e vale até o último dia do mês. Recuperação: acione a rotina «reenviar senha» ou os e-mails de recuperação cadastrados.</p>
+</div></div></div></div>
 
-<section id=aba-visao>
-  <div class=cards id=visao-cards></div>
-  <div class=card style="margin-top:13px" id=visao-programas></div>
-  <div class=card style="margin-top:13px" id=visao-historica></div>
+<main id="app" class="oculto">
+<header style="text-align:center;padding-top:4px">
+<div class="meta">A.M.C. JARDIM AMÉRICA · PAINEL DE CAPTAÇÃO</div>
+<div class="topo">
+<button id="bt-eldorado" class="on" onclick="modulo('eldorado')">Eldorado</button>
+<button id="bt-farol" onclick="modulo('farol')">Farol de Alexandria</button>
+</div>
+<div class="subnav" id="nav-eldorado">
+<button data-v="calendario" class="on">Calendário</button>
+<button data-v="editais">Editais Abertos</button>
+<button data-v="bussola">Bússola</button>
+</div>
+<div class="subnav oculto" id="nav-farol">
+<button data-v="f-documentos">Documentos</button>
+<button data-v="f-editais" class="on">Editais Abertos</button>
+<button data-v="f-biblioteca">Biblioteca</button>
+</div>
+<div class="meta" id="rodada"></div>
+</header>
+
+<!-- ============ ELDORADO · CALENDÁRIO ============ -->
+<section id="v-calendario" style="margin-top:14px">
+<div class="cartao">
+<div class="calcab">
+<button onclick="mudaMes(-1)">‹ anterior</button>
+<h2 id="cal-titulo"></h2>
+<button onclick="mudaMes(1)">seguinte ›</button>
+</div>
+<div class="legenda" id="cal-legenda" style="margin-bottom:10px"></div>
+<div class="legenda meta" id="cal-simbolos" style="margin-bottom:12px"></div>
+<div class="calgrade" id="cal-grade"></div>
+</div>
 </section>
 
-<section id=aba-editais class=oculto>
-  <div class=filtros>
-    <input id=f-busca placeholder="Buscar por título, fonte, lei ou modalidade">
-    <select id=f-programa><option value="">Todos os programas</option></select>
-    <select id=f-territorio><option value="">Todos os territórios</option></select>
-    <select id=f-estado>
-      <option value="">Todas as situações</option>
-      <option value=aberto>Abertos</option>
-      <option value=a_abrir>A abrir</option>
-      <option value=sem_prazo>Sem prazo na fonte</option>
-      <option value=encerrado>Encerrados</option>
-    </select>
-  </div>
-  <div class=meta id=editais-contagem></div>
-  <div class=editais id=lista-editais></div>
+<!-- ============ ELDORADO · EDITAIS ============ -->
+<section id="v-editais" class="oculto" style="margin-top:14px">
+<div class="legenda" style="margin-bottom:12px" id="ed-legenda"></div>
+<div class="grade-ed" id="ed-grade"></div>
 </section>
 
-<section id=aba-calendario class=oculto>
-  <p class=meta>Clique num evento para abrir o edital. Meses dourados concentram a articulação de emendas; o mês atual está contornado.</p>
-  <div class=cal id=grade-cal></div>
-  <div class=card style="margin-top:13px" id=continuos></div>
+<!-- ============ ELDORADO · BÚSSOLA ============ -->
+<section id="v-bussola" class="oculto" style="margin-top:14px">
+<div class="cartao" style="margin-bottom:14px">
+<div class="calcab">
+<button onclick="mudaMesB(-1)">‹ anterior</button>
+<h2 id="bus-titulo" style="font-size:17px"></h2>
+<button onclick="mudaMesB(1)">seguinte ›</button>
+</div>
+<p class="meta" style="margin:0 0 10px">Monitor de integridade: um quadro por dia. Verde embaixo = busca executada e validada; âmbar = busca com falhas; apagado = sem execução (a varredura roda às segundas e sextas). Clique no dia para o detalhe.</p>
+<div class="bgrade" id="bus-grade"></div>
+</div>
+<div class="cartao">
+<h3 style="margin:0 0 4px;font-size:16px">Fontes com edital aberto</h3>
+<p class="meta" style="margin:0 0 12px">Cada fonte em sua caixa, com o link de acesso e os documentos anexos conhecidos de cada edital, para validação e pesquisa. Legenda por tipo de fonte extraída:</p>
+<div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
+<div id="bus-fontes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px"></div>
+</div>
 </section>
 
-<section id=aba-prazos class=oculto>
-  <div class=card>
-    <table id=tab-prazos>
-      <thead><tr><th data-k=dias>Dias restantes ↕</th><th data-k=titulo>Edital ↕</th><th data-k=programa>Programa ↕</th><th data-k=fim>Encerramento ↕</th><th>Fonte</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <p class=meta>Prazos conforme escritos na fonte — conferir no edital. Encerrados permanecem para alimentar o aprendizado de janelas.</p>
-  </div>
+<!-- ============ FAROL ============ -->
+<section id="v-f-documentos" class="oculto" style="margin-top:14px">
+<div class="cartao" style="text-align:center;padding:40px">
+<h3 style="margin:0">Documentos</h3>
+<p class="meta">Os ícones e detalhes do Farol de Alexandria serão definidos posteriormente, conforme sua orientação.</p>
+</div>
+</section>
+<section id="v-f-editais" class="oculto" style="margin-top:14px">
+<p class="meta" style="margin:0 0 10px">Editais abertos sob a ótica do Farol — os mesmos registros do Eldorado, priorizados pelos já verificados.</p>
+<div class="grade-ed" id="fed-grade"></div>
+</section>
+<section id="v-f-biblioteca" class="oculto" style="margin-top:14px">
+<div class="cartao">
+<h3 style="margin:0 0 4px;font-size:16px">Biblioteca jurídica</h3>
+<p class="meta" id="fb-meta" style="margin:0 0 10px"></p>
+<div id="fb-lista"></div>
+</div>
 </section>
 
-<section id=aba-fontes class=oculto>
-  <div class=cards id=fontes-cards></div>
-  <div class=card style="margin-top:13px" id=fontes-detalhe></div>
-</section>
-
-<section id=aba-emendas class=oculto>
-  <div class="card aviso" style="margin-bottom:13px">
-    <strong>Esta área não aciona o Farol de Alexandria.</strong>
-    <p class=meta id=emendas-motivo style="margin:6px 0 0"></p>
-  </div>
-  <div id=emendas-corpo></div>
-</section>
-
-<dialog id=detalhe></dialog>
-<footer>Gerado sem consumo de tokens. Prazo, valor, requisitos e vigência exigem conferência na fonte primária.<br>
-Funciona no GitHub Pages e localmente (abra este arquivo no repositório clonado).</footer>
+<footer>Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histórico).<br>
+Dados automatizados exigem conferência na fonte primária. <span id="rodape-ger"></span></footer>
 </main>
 
+<div id="tip"></div>
+<dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
+<div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
+
+<script src="dashboard-dados.enc.js"></script>
 <script src="dashboard-dados.js"></script>
 <script>
 (function(){
 "use strict";
-const D = window.DADOS || {editais:[],calendario:[],avisos:[]};
-const $ = id => document.getElementById(id);
-const esc = s => String(s ?? "—").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const HOJE = new Date(); HOJE.setHours(0,0,0,0);
-const MESES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"—").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const MES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+const HOJE=new Date();HOJE.setHours(0,0,0,0);
+let D=null;
 
-$("hoje").textContent = HOJE.toLocaleDateString("pt-BR");
-$("ultima").textContent = D.gerado_em ? new Date(D.gerado_em).toLocaleString("pt-BR") : "nenhuma varredura ainda";
-
-function dataISO(s){ if(!s) return null; const d = new Date(String(s).slice(0,10)+"T00:00:00"); return isNaN(d)?null:d; }
-function dias(ate){ const d = dataISO(ate); return d===null?null:Math.round((d-HOJE)/86400000); }
-function br(s){ const d = dataISO(s); return d?d.toLocaleDateString("pt-BR"):"—"; }
-
-// situação calculada AO VIVO no navegador — sempre atual entre varreduras
-function situacao(e){
-  const dFim = dias(e.fim), dIni = dias(e.inicio);
-  if(dFim!==null && dFim<0)  return {estado:"encerrado", classe:"bad",  rotulo:"Encerrado em "+br(e.fim), dias:dFim};
-  if(dIni!==null && dIni>0)  return {estado:"a_abrir",  classe:"warn", rotulo:"Abre em "+dIni+" dia(s)", dias:dFim};
-  if(dFim!==null)            return {estado:"aberto", classe:dFim<=7?"bad":dFim<=30?"warn":"ok",
-                                     rotulo:"Aberto — faltam "+dFim+" dia(s)", dias:dFim};
-  return {estado:"sem_prazo", classe:"meta", rotulo:"Sem data de encerramento na fonte", dias:null};
+/* ================= PORTÃO DE ACESSO =================
+Camadas, na ordem: (1) bloqueio de celular; (2) verificação de localização
+Goiânia por IP; (3) SENHA DO MÊS — esta é a proteção real: os dados publicados
+são cifrados com AES-256-GCM e só a senha decifra. Sessão expira no último dia
+do mês. As camadas 1 e 2 são barreiras de navegador (contornáveis por técnico);
+a camada 3 é criptográfica. */
+function ehCelular(){
+  const ua=navigator.userAgent||"";
+  return /Android|iPhone|iPad|iPod|Mobile|IEMobile|Opera Mini/i.test(ua)
+      || (matchMedia("(pointer:coarse)").matches && Math.min(screen.width,screen.height)<820);
 }
-const EDS = (D.editais||[]).map(e => ({...e, viva: situacao(e)}));
-
-// ------- abas -------
-document.querySelectorAll("#abas button").forEach(b => b.onclick = () => {
-  document.querySelectorAll("#abas button").forEach(x=>x.classList.remove("ativo"));
-  b.classList.add("ativo");
-  document.querySelectorAll("main > section").forEach(s=>s.classList.add("oculto"));
-  $("aba-"+b.dataset.aba).classList.remove("oculto");
-});
-
-// ------- visão geral -------
-(function visao(){
-  const abertos = EDS.filter(e=>e.viva.estado==="aberto");
-  const em7 = abertos.filter(e=>e.viva.dias!==null && e.viva.dias<=7).length;
-  const programas = new Set(abertos.map(e=>e.programa));
-  $("visao-cards").innerHTML = [
-    [abertos.length,"editais abertos"],
-    [EDS.filter(e=>e.viva.estado==="a_abrir").length,"a abrir"],
-    [em7,"encerram em ≤ 7 dias"],
-    [programas.size,"programas em aberto"],
-    [EDS.length,"registros na base"],
-    [(D.rotas_260||{}).com_rota_de_monitoramento ?? "—","pontos com rota (de "+((D.rotas_260||{}).total_catalogo??260)+")"],
-  ].map(x=>`<div class=card><div class=metric>${x[0]}</div><div class=meta>${x[1]}</div></div>`).join("");
-
-  const porPrograma = {};
-  abertos.forEach(e=>{ porPrograma[e.programa]=(porPrograma[e.programa]||0)+1; });
-  $("visao-programas").innerHTML = "<strong>Programas com edital aberto</strong><p>" +
-    (Object.entries(porPrograma).sort((a,b)=>b[1]-a[1])
-      .map(([p,n])=>`<span class=tag>${esc(p)}: ${n}</span>`).join("") || "<span class=meta>nenhum</span>") + "</p>";
-
-  const ch = D.carga_historica||{};
-  $("visao-historica").innerHTML = "<strong>Carga histórica de 5 anos</strong><p class=meta>" +
-    (ch.status==="nunca_executada" ? "Ainda não executada — a base é formada a partir da primeira campanha."
-      : esc(ch.status||"—") + (ch.janelas_restantes!=null ? " · janelas restantes: "+ch.janelas_restantes : "")) + "</p>";
-})();
-
-// ------- editais (filtros) -------
-(function editais(){
-  [...new Set(EDS.map(e=>e.programa).filter(Boolean))].sort()
-    .forEach(v=>$("f-programa").insertAdjacentHTML("beforeend",`<option>${esc(v)}</option>`));
-  [...new Set(EDS.map(e=>e.territorio).filter(Boolean))].sort()
-    .forEach(v=>$("f-territorio").insertAdjacentHTML("beforeend",`<option>${esc(v)}</option>`));
-
-  function caixa(e){
-    const s=e.viva;
-    const cont = s.estado==="aberto" && s.dias!==null
-      ? `<div class="contagem ${s.classe}"><strong>Faltam ${s.dias} dia(s)</strong> <span class=meta>encerra ${br(e.fim)}</span></div>`
-      : s.estado==="a_abrir" ? `<div class="contagem warn"><strong>${s.rotulo}</strong> <span class=meta>${br(e.inicio)}${e.fim?" · encerra "+br(e.fim):""}</span></div>`
-      : s.estado==="encerrado" ? `<div class="contagem bad"><strong>Encerrado</strong> <span class=meta>${br(e.fim)}</span></div>`
-      : `<div class="contagem meta">Sem data de encerramento na fonte — <strong>conferir no edital</strong></div>`;
-    return `<article class="edital ${s.classe}" data-id="${esc(e.id)}">
-<h3><a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">${esc(e.titulo)}</a></h3>
-<div class=meta>${esc(e.fonte_nome)} · ${esc(e.territorio)}</div>
-<div style="margin:7px 0 2px"><span class=tag>${esc(e.programa)}</span>${e.fluxo==="invertido"?'<span class=tag>fluxo contínuo</span>':""}${e.aciona_farol===false?'<span class="tag warn">não aciona o Farol</span>':""}${e.nota_conformidade!=null?`<span class=tag>conformidade ${e.nota_conformidade}/100</span>`:""}</div>
-${e.alerta_programa?`<div class=meta style="color:var(--warn)">⚠ ${esc(e.alerta_programa)}</div>`:""}
-<div class=linha><b>Lei</b><span>${esc(e.lei)}</span></div>
-<div class=linha><b>Modalidade</b><span>${esc(e.modalidade||"não localizada — conferir edital")}</span></div>
-<div class=linha><b>Início</b><span>${br(e.inicio)}${e.inicio_declarado?"":" <span class=meta>(publicação)</span>"}</span></div>
-<div class=linha><b>Fim</b><span>${br(e.fim)}</span></div>
-${cont}
-<div style="margin-top:8px"><a class=meta href="javascript:void 0" onclick="abrirDetalhe('${esc(e.id)}')">detalhes ›</a> · <a class=meta href="${esc(e.ficha)}">ficha</a></div>
-</article>`;
-  }
-
-  function render(){
-    const q=$("f-busca").value.toLowerCase(), p=$("f-programa").value,
-          t=$("f-territorio").value, st=$("f-estado").value;
-    const rows = EDS.filter(e =>
-      (!q || [e.titulo,e.fonte_nome,e.lei,e.modalidade,e.programa].join(" ").toLowerCase().includes(q)) &&
-      (!p || e.programa===p) && (!t || e.territorio===t) && (!st || e.viva.estado===st));
-    rows.sort((a,b)=>(a.viva.dias??9e9)-(b.viva.dias??9e9));
-    $("editais-contagem").textContent = rows.length+" edital(is) no filtro";
-    $("lista-editais").innerHTML = rows.map(caixa).join("") || "<div class=card>Nenhum edital neste filtro.</div>";
-  }
-  ["f-busca","f-programa","f-territorio","f-estado"].forEach(id=>$(id).addEventListener("input",render));
-  render();
-})();
-
-window.abrirDetalhe = function(id){
-  const e = EDS.find(x=>x.id===id); if(!e) return;
-  $("detalhe").innerHTML = `<h3 style="color:var(--gold);margin-top:0">${esc(e.titulo)}</h3>
-<p class=meta>${esc(e.programa)} · ${esc(e.lei)} · ${esc(e.territorio)}</p>
-<div class=linha><b>Modalidade</b><span>${esc(e.modalidade||"—")}</span></div>
-<div class=linha><b>Período</b><span>${br(e.inicio)} → ${br(e.fim)}</span></div>
-<div class=linha><b>Situação viva</b><span>${esc(e.viva.rotulo)}</span></div>
-<div class=linha><b>Funil</b><span>${esc(e.status)} · ${esc(e.confianca)}</span></div>
-${(e.pendencias_conformidade||[]).length?`<p><strong>Pendente de confirmação no edital:</strong></p><p>${e.pendencias_conformidade.map(x=>`<span class="tag warn">${esc(x)}</span>`).join("")}</p>`:""}
-<p><a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir na fonte primária ↗</a> · <a href="${esc(e.ficha)}">ficha completa</a></p>
-<form method=dialog style="text-align:right"><button>fechar</button></form>`;
-  $("detalhe").showModal();
+async function checarLocal(){
+  try{
+    const r=await fetch("https://ipapi.co/json/",{signal:AbortSignal.timeout(6000)});
+    const j=await r.json();
+    const cidade=(j.city||"").normalize("NFD").replace(/\p{M}/gu,"").toLowerCase();
+    return {ok:cidade.includes("goiania")||j.region_code==="GO",info:`${j.city||"?"} · ${j.region_code||"?"} · IP ${j.ip||"?"}`};
+  }catch(e){return {ok:null,info:"verificação de localização indisponível (rede local ou API fora do ar)"};}
+}
+function fimDoMes(){const f=new Date(HOJE.getFullYear(),HOJE.getMonth()+1,0);f.setHours(23,59,59,0);return f.getTime();}
+async function derivarChave(senha,saltB64){
+  const enc=new TextEncoder();
+  const base=await crypto.subtle.importKey("raw",enc.encode(senha.trim().toUpperCase()),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey({name:"PBKDF2",hash:"SHA-256",salt:Uint8Array.from(atob(saltB64),c=>c.charCodeAt(0)),iterations:200000},
+    base,{name:"AES-GCM",length:256},true,["decrypt"]);
+}
+async function decifrar(chave){
+  const E=window.DADOS_ENC;
+  const iv=Uint8Array.from(atob(E.iv),c=>c.charCodeAt(0));
+  const ct=Uint8Array.from(atob(E.ct),c=>c.charCodeAt(0));
+  const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv},chave,ct);
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+window.entrar=async function(){
+  $("portao-erro").textContent="";
+  try{
+    const chave=await derivarChave($("senha").value,window.DADOS_ENC.salt);
+    D=await decifrar(chave);
+    const bruta=await crypto.subtle.exportKey("raw",chave);
+    localStorage.setItem("amc_k",btoa(String.fromCharCode(...new Uint8Array(bruta))));
+    localStorage.setItem("amc_exp",String(fimDoMes()));
+    iniciar();
+  }catch(e){$("portao-erro").textContent="Senha incorreta. Confira a senha do mês enviada ao WhatsApp.";}
 };
+async function tentarSessao(){
+  const k=localStorage.getItem("amc_k"),exp=Number(localStorage.getItem("amc_exp")||0);
+  if(!k||Date.now()>exp){localStorage.removeItem("amc_k");localStorage.removeItem("amc_exp");return false;}
+  try{
+    const chave=await crypto.subtle.importKey("raw",Uint8Array.from(atob(k),c=>c.charCodeAt(0)),{name:"AES-GCM"},false,["decrypt"]);
+    D=await decifrar(chave);return true;
+  }catch(e){localStorage.removeItem("amc_k");return false;}
+}
+async function portao(){
+  if(ehCelular()){$("portao-msg").innerHTML="<strong>Acesso por celular não é permitido.</strong><br>Abra este painel em um computador.";return;}
+  const loc=await checarLocal();
+  if(loc.ok===false){$("portao-msg").innerHTML=`<strong>Acesso restrito a Goiânia.</strong><br><span class=meta>${esc(loc.info)}</span>`;return;}
+  if(window.DADOS && !window.DADOS_ENC){D=window.DADOS;iniciar();return;} /* modo local sem proteção configurada */
+  if(!window.DADOS_ENC){$("portao-msg").textContent="Dados protegidos ainda não publicados. Execute a rotina de acesso.";return;}
+  if(await tentarSessao()){iniciar();return;}
+  $("portao-msg").innerHTML=(loc.ok===null?`<span class=meta>${esc(loc.info)}</span><br>`:"")+"Informe a senha do mês:";
+  $("portao-form").classList.remove("oculto");$("senha").focus();
+  $("senha").addEventListener("keydown",e=>{if(e.key==="Enter")window.entrar();});
+}
 
-// ------- calendário -------
-(function calendario(){
-  const porMes = {};
-  EDS.forEach(e=>{
-    [["inicio","abre"],["fim","encerra"]].forEach(([campo,rot])=>{
-      const d = dataISO(e[campo]);
-      if(d && d.getFullYear()===HOJE.getFullYear())
-        (porMes[d.getMonth()+1] ||= []).push({dia:d.getDate(),rot,e});
-    });
+/* ================= UTILITÁRIOS ================= */
+const AREA=a=>((D.areas||{})[a])||{rotulo:a,cor:"#607086"};
+const TEVT=t=>((D.tipos_evento||{})[t])||{rotulo:t,simbolo:"•"};
+function br(iso){if(!iso)return "—";const d=new Date(iso.slice(0,10)+"T00:00:00");return isNaN(d)?iso:d.toLocaleDateString("pt-BR");}
+function dias(iso){if(!iso)return null;const d=new Date(iso.slice(0,10)+"T00:00:00");return Math.round((d-HOJE)/86400000);}
+/* tooltip: resumo ao passar o mouse */
+const tip=$("tip");
+function ligaTip(el,html){
+  el.addEventListener("mousemove",e=>{tip.innerHTML=html;tip.style.display="block";
+    tip.style.left=Math.min(e.clientX+14,innerWidth-360)+"px";tip.style.top=Math.min(e.clientY+14,innerHeight-140)+"px";});
+  el.addEventListener("mouseleave",()=>tip.style.display="none");
+}
+function abreModal(cab,corpo){$("m-cab").innerHTML=cab;$("m-corpo").innerHTML=corpo;tip.style.display="none";$("modal").showModal();}
+
+/* ================= NAVEGAÇÃO ================= */
+const VISTAS=["calendario","editais","bussola","f-documentos","f-editais","f-biblioteca"];
+function mostra(v){VISTAS.forEach(x=>$("v-"+x).classList.toggle("oculto",x!==v));
+  document.querySelectorAll(".subnav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));}
+window.modulo=function(m){
+  $("bt-eldorado").classList.toggle("on",m==="eldorado");
+  $("bt-farol").classList.toggle("on",m==="farol");
+  $("nav-eldorado").classList.toggle("oculto",m!=="eldorado");
+  $("nav-farol").classList.toggle("oculto",m!=="farol");
+  mostra(m==="eldorado"?"calendario":"f-editais");
+};
+document.querySelectorAll(".subnav button").forEach(b=>b.onclick=()=>mostra(b.dataset.v));
+
+/* ================= DETALHE DE EDITAL ================= */
+function detalheEdital(e){
+  const d=e.detalhes||{},s=dias(e.fim);
+  const situ=e.fim?(s<0?`<span style="color:var(--urgente)">encerrado em ${br(e.fim)}</span>`:`faltam <strong>${s}</strong> dia(s) — encerra ${br(e.fim)}`):"sem data de encerramento na fonte";
+  const prorrog=e.prazo_prorrogado?`<div class=tag style="border-color:var(--alerta);color:var(--alerta)">⟳ prazo prorrogado — original: ${esc(e.prazo_original)}</div>`:"";
+  const lista=(t,arr)=>arr&&arr.length?`<p style="margin:10px 0 4px"><strong>${t}</strong></p><ul style="margin:4px 0;padding-left:20px">${arr.map(x=>`<li>${esc(typeof x==="object"?JSON.stringify(x):x)}</li>`).join("")}</ul>`:"";
+  const marcos=(e.marcos||[]).map(m=>`<li>${esc(TEVT(m.tipo).rotulo)} — ${esc(m.data||"data não informada")}</li>`).join("");
+  abreModal(
+    `<div class=meta>${esc(e.fonte_nome)} · ${esc(e.territorio)} · <span style="color:${AREA(e.area).cor};font-weight:700">${esc(AREA(e.area).rotulo)}</span></div>
+     <h3 style="margin:4px 0 0">${esc(e.titulo)}</h3>`,
+    `<div class=lin><b>Protocolo</b><span><code>${esc(e.protocolo)}</code></span></div>
+     <div class=lin><b>Programa / Lei</b><span>${esc(e.programa)} · ${esc(e.lei)}</span></div>
+     <div class=lin><b>Objeto</b><span>${esc(e.objeto||"não localizado no texto — conferir edital")}</span></div>
+     <div class=lin><b>Período</b><span>${br(e.inicio)} → ${br(e.fim)}</span></div>
+     <div class=lin><b>Situação</b><span>${situ}</span></div>
+     <div class=lin><b>Qualificação</b><span>${d.qualificacao&&d.qualificacao.nota!=null?d.qualificacao.nota+"/100 · "+esc(d.qualificacao.classe):"—"}</span></div>
+     ${prorrog}
+     ${lista("Pontuação (critérios extraídos)",d.pontuacao)}
+     ${lista("Documentos exigidos",d.documentos_exigidos)}
+     ${lista("Itens confirmados no texto",d.atendidos)}
+     ${lista("Pendente de confirmação no edital",d.pendencias)}
+     ${marcos?`<p style="margin:10px 0 4px"><strong>Marcos detectados</strong></p><ul style="margin:4px 0;padding-left:20px">${marcos}</ul>`:""}
+     ${d.lacuna?`<p class=meta style="border-left:3px solid var(--alerta);padding-left:10px">${esc(d.lacuna)}</p>`:""}
+     <p style="margin:10px 0 4px"><strong>Evidência capturada</strong></p>
+     <blockquote class=meta style="margin:4px 0;border-left:3px solid var(--linha);padding-left:10px">${esc(d.evidencia)}</blockquote>
+     <p><a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir na fonte primária ↗</a></p>`);
+}
+function resumoTip(e){
+  const s=dias(e.fim);
+  return `<strong>${esc(e.titulo)}</strong><br>${esc(AREA(e.area).rotulo)} · ${esc(e.fonte_nome)}<br>
+  ${esc(e.objeto||"objeto: conferir edital")}<br>${e.fim?(s<0?"encerrado":"faltam "+s+" dia(s)")+" · "+br(e.fim):"sem prazo na fonte"}
+  ${e.prazo_prorrogado?"<br>⟳ prorrogado":""}<br><em>clique para detalhes</em>`;
+}
+
+/* ================= CALENDÁRIO ================= */
+let calAno,calMes;
+window.mudaMes=function(dx){calMes+=dx;if(calMes<0){calMes=11;calAno--;}if(calMes>11){calMes=0;calAno++;}desenhaCal();};
+function desenhaCal(){
+  $("cal-titulo").textContent=MES[calMes]+" de "+calAno;
+  const porDia={};
+  (D.eventos||[]).forEach(ev=>{const d=new Date(ev.data+"T00:00:00");
+    if(d.getFullYear()===calAno&&d.getMonth()===calMes)(porDia[d.getDate()]||(porDia[d.getDate()]=[])).push(ev);});
+  const prim=new Date(calAno,calMes,1),ini=prim.getDay(),nd=new Date(calAno,calMes+1,0).getDate();
+  let h=["D","S","T","Q","Q","S","S"].map(x=>`<div class=caldia-h>${x}</div>`).join("");
+  for(let i=0;i<ini;i++)h+='<div class="caldia fora"></div>';
+  for(let dia=1;dia<=nd;dia++){
+    const hoje=(calAno===HOJE.getFullYear()&&calMes===HOJE.getMonth()&&dia===HOJE.getDate());
+    const evs=(porDia[dia]||[]).slice(0,4);
+    const mais=(porDia[dia]||[]).length-evs.length;
+    h+=`<div class="caldia${hoje?" hoje":""}" data-dia="${dia}"><div class=n>${dia}</div>`+
+      evs.map((ev,i)=>`<div class=evt data-ev="${dia}:${i}" style="color:${AREA(ev.area).cor}">
+        <span class=ponto style="background:${AREA(ev.area).cor}"></span><i>${TEVT(ev.tipo).simbolo}</i>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(ev.titulo.slice(0,26))}</span></div>`).join("")+
+      (mais>0?`<div class="evt meta">+${mais} evento(s)</div>`:"")+"</div>";
+  }
+  $("cal-grade").innerHTML=h;
+  document.querySelectorAll(".evt[data-ev]").forEach(el=>{
+    const [dia,i]=el.dataset.ev.split(":").map(Number);
+    const ev=porDia[dia][i];const ed=(D.editais||[]).find(x=>x.id===ev.edital_id);
+    const extra=ev.tipo==="encerramento"&&ev.prorrogado?`<br>⟳ prorrogado (original: ${br(ev.data_original)})`:"";
+    ligaTip(el,`<strong>${esc(TEVT(ev.tipo).rotulo)}</strong> · ${br(ev.data)}${extra}<br>`+(ed?resumoTip(ed):esc(ev.titulo)));
+    el.onclick=()=>ed?detalheEdital(ed):null;
   });
-  const emendas = new Set(((D.janela_emendas||{}).meses)||[10,11]);
-  $("grade-cal").innerHTML = MESES.map((nome,i)=>{
-    const m=i+1, itens=(porMes[m]||[]).sort((a,b)=>a.dia-b.dia);
-    return `<div class="mes${emendas.has(m)?" emenda":""}${m===HOJE.getMonth()+1?" atual":""}"><h4>${nome}</h4>
-${itens.map(x=>`<div class=ev onclick="abrirDetalhe('${esc(x.e.id)}')"><strong>${String(x.dia).padStart(2,"0")}</strong> ${x.rot} · ${esc(x.e.titulo.slice(0,42))}</div>`).join("") || '<div class="ev meta" style="cursor:default">sem data registrada</div>'}
-${emendas.has(m)?'<div class=ev style="color:var(--gold);border:none;cursor:default;margin-top:5px"><strong>Emendas parlamentares</strong><div class=meta>articulação e indicação</div></div>':""}
-</div>`;
-  }).join("");
-  $("continuos").innerHTML = "<strong>Fluxo contínuo ou janela mensal</strong><ul>" +
-    ((D.fluxo_continuo||[]).map(c=>`<li>${esc(c.programa)} <span class=meta>— ${esc(c.lei)}</span></li>`).join("") || "<li class=meta>nenhum</li>") +
-    "</ul><p class=meta>Habilitação analisada por lote; a captação depende de empresa incentivadora.</p>";
-})();
+  const areasUsadas=[...new Set((D.eventos||[]).map(e=>e.area))];
+  $("cal-legenda").innerHTML=areasUsadas.length
+    ?areasUsadas.map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("")
+    :"<span class=meta>Nenhum evento registrado ainda — a primeira varredura de segunda/sexta popula o calendário.</span>";
+  $("cal-simbolos").innerHTML=Object.entries(D.tipos_evento||{}).map(([k,v])=>`<span><i style="font-style:normal;font-weight:700">${v.simbolo}</i> ${esc(v.rotulo)}</span>`).join(" · ");
+}
 
-// ------- prazos (tabela ordenável) -------
-(function prazos(){
-  let linhas = EDS.filter(e=>e.fim).map(e=>({dias:e.viva.dias, titulo:e.titulo, programa:e.programa,
-                                             fim:e.fim, fonte:e.fonte_nome, url:e.url, id:e.id}));
-  let chave="dias", asc=true;
-  function render(){
-    linhas.sort((a,b)=>{const x=a[chave]??9e9,y=b[chave]??9e9;return (x<y?-1:x>y?1:0)*(asc?1:-1);});
-    document.querySelector("#tab-prazos tbody").innerHTML = linhas.map(l=>
-      `<tr><td class="${l.dias<0?"bad":l.dias<=7?"bad":l.dias<=30?"warn":"ok"}"><strong>${l.dias<0?"encerrado":l.dias}</strong></td>
-<td><a href="javascript:void 0" onclick="abrirDetalhe('${esc(l.id)}')">${esc(l.titulo.slice(0,80))}</a></td>
-<td class=meta>${esc(l.programa)}</td><td>${br(l.fim)}</td><td class=meta>${esc(l.fonte)}</td></tr>`).join("")
-      || "<tr><td colspan=5 class=meta>Nenhum edital com data de encerramento na fonte.</td></tr>";
+/* ================= EDITAIS ABERTOS ================= */
+function caixaEdital(e){
+  const s=dias(e.fim);
+  const cor=AREA(e.area).cor;
+  const div=document.createElement("article");
+  div.className="cartao ed";div.style.borderLeftColor=cor;
+  div.innerHTML=`<h3>${esc(e.titulo)}</h3>
+   <div class=meta>${esc(e.fonte_nome)} · ${esc(e.territorio)}</div>
+   <div><span class=tag style="color:${cor};border-color:${cor}55">${esc(AREA(e.area).rotulo)}</span>
+   ${e.detalhes&&e.detalhes.qualificacao&&e.detalhes.qualificacao.nota!=null?`<span class=tag>qualificação ${e.detalhes.qualificacao.nota}/100</span>`:""}
+   ${e.prazo_prorrogado?`<span class=tag style="color:var(--alerta);border-color:var(--alerta)">⟳ prorrogado</span>`:""}</div>
+   <div class=lin><b>Objeto</b><span>${esc((e.objeto||"conferir edital").slice(0,70))}</span></div>
+   <div class=lin><b>Prazos</b><span>${br(e.inicio)} → ${br(e.fim)}</span></div>
+   <div class=lin><b>Restante</b><span>${e.fim?(s<0?'<span style="color:var(--urgente)">encerrado</span>':`<strong>${s} dia(s)</strong>`):"—"}</span></div>
+   <p class=meta style="margin:8px 0 0">${esc(e.resumo)}…</p>`;
+  ligaTip(div,resumoTip(e));
+  div.onclick=()=>detalheEdital(e);
+  return div;
+}
+function desenhaEditais(){
+  const abertos=(D.editais||[]).filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export))
+    .sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9)));
+  const g=$("ed-grade");g.innerHTML="";
+  if(!abertos.length){g.innerHTML='<div class=cartao>Nenhum edital aberto na base ainda. A varredura de segunda/sexta alimenta esta lista.</div>';}
+  abertos.forEach(e=>g.appendChild(caixaEdital(e)));
+  const areas=[...new Set(abertos.map(e=>e.area))];
+  $("ed-legenda").innerHTML=areas.map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("");
+  const fg=$("fed-grade");fg.innerHTML=g.innerHTML===""?"":"";
+  const prioridade={verificada_humana:0,verificada_dupla:1,verificada_primaria:2};
+  const farolOrd=[...abertos].sort((a,b)=>(prioridade[a.status]??9)-(prioridade[b.status]??9));
+  fg.innerHTML="";if(!farolOrd.length)fg.innerHTML='<div class=cartao>Nenhum edital aberto.</div>';
+  farolOrd.forEach(e=>fg.appendChild(caixaEdital(e)));
+}
+
+/* ================= BÚSSOLA ================= */
+let busAno,busMes;
+window.mudaMesB=function(dx){busMes+=dx;if(busMes<0){busMes=11;busAno--;}if(busMes>11){busMes=0;busAno++;}desenhaBussola();};
+function desenhaBussola(){
+  $("bus-titulo").textContent="Buscas de "+MES[busMes]+" de "+busAno;
+  const porData={};(D.bussola&&D.bussola.dias||[]).forEach(d=>porData[d.data]=d);
+  const nd=new Date(busAno,busMes+1,0).getDate();
+  const g=$("bus-grade");g.innerHTML="";
+  for(let dia=1;dia<=nd;dia++){
+    const iso=`${busAno}-${String(busMes+1).padStart(2,"0")}-${String(dia).padStart(2,"0")}`;
+    const reg=porData[iso];
+    const el=document.createElement("div");
+    el.className="bdia "+(reg?(reg.validado?"ok":"falha"):"vazio");
+    el.innerHTML=`<div class=n>${dia}</div><div class=s>${reg?(reg.validado?"validado":"falhas"):"—"}</div>`;
+    if(reg){
+      ligaTip(el,`<strong>${br(iso)}</strong> — busca executada<br>camadas: ${esc(reg.camadas.join(", "))}<br>
+        fontes ok: ${reg.fontes_ok} · falhas: ${reg.fontes_falha} · novas: ${reg.novas}<br><em>clique para detalhes</em>`);
+      el.onclick=()=>abreModal(`<h3 style="margin:0">Busca de ${br(iso)}</h3>`,
+        `<div class=lin><b>Validação</b><span>${reg.validado?'<span style="color:var(--ok)">íntegra — sem falhas</span>':'<span style="color:var(--alerta)">com falhas de fonte</span>'}</span></div>
+         <div class=lin><b>Camadas executadas</b><span>${esc(reg.camadas.join(", "))}</span></div>
+         <div class=lin><b>Fontes que responderam</b><span>${reg.fontes_ok}</span></div>
+         <div class=lin><b>Fontes com falha</b><span>${reg.fontes_falha}</span></div>
+         <div class=lin><b>Itens novos</b><span>${reg.novas}</span></div>
+         <p class=meta>Registro derivado da trilha de auditoria (estado/auditoria.jsonl).</p>`);
+    } else ligaTip(el,`<strong>${br(iso)}</strong><br>sem execução registrada${[1,5].includes(new Date(iso+"T00:00:00").getDay())?"":" (fora da cadência seg/sex)"}`);
+    g.appendChild(el);
   }
-  document.querySelectorAll("#tab-prazos th[data-k]").forEach(th=>th.onclick=()=>{
-    if(chave===th.dataset.k) asc=!asc; else {chave=th.dataset.k; asc=true;} render();});
-  render();
-})();
+  const cat=(D.bussola&&D.bussola.categorias)||{};
+  $("bus-legenda").innerHTML=Object.values(cat).map(c=>`<span><span class=ponto style="background:${c.cor}"></span>${esc(c.rotulo)}</span>`).join("");
+  const fx=$("bus-fontes");fx.innerHTML="";
+  const fontes=(D.bussola&&D.bussola.fontes_com_editais)||[];
+  if(!fontes.length)fx.innerHTML='<div class=cartao style="grid-column:1/-1">Nenhuma fonte com edital aberto no momento.</div>';
+  fontes.forEach(f=>{
+    const c=(cat[f.categoria]||{cor:"#607086",rotulo:f.categoria});
+    const div=document.createElement("div");div.className="cartao";div.style.borderTop=`4px solid ${c.cor}`;
+    div.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+      <strong>${esc(f.fonte_nome)}</strong><span class=ponto title="${esc(c.rotulo)}" style="background:${c.cor}"></span></div>
+      <div class=meta>${esc(c.rotulo)} · <a href="${esc(f.url_fonte)}" target=_blank rel="noopener noreferrer">acessar fonte ↗</a></div>
+      ${f.editais.map(e=>`<div style="margin-top:9px;padding-top:9px;border-top:1px dashed var(--linha)">
+        <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">${esc(e.titulo.slice(0,90))}</a>
+        <div class=meta>${e.anexos&&e.anexos.length
+          ? "anexos: "+e.anexos.map(a=>`<a href="${esc(a.url||a)}" target=_blank rel="noopener noreferrer">${esc(a.nome||"documento")}</a>`).join(" · ")
+          : "anexos ainda não catalogados — <em>pendência declarada; validar na página do edital</em>"}</div></div>`).join("")}`;
+    ligaTip(div,`<strong>${esc(f.fonte_nome)}</strong><br>${f.editais.length} edital(is) aberto(s)<br>${esc(c.rotulo)}`);
+    fx.appendChild(div);
+  });
+}
 
-// ------- execução e fontes -------
-(function fontes(){
-  const x=D.execucao||{}, q=D.qualidade||{};
-  $("fontes-cards").innerHTML = [
-    [x.fontes_ok??"—","fontes ok"],[x.fontes_falha??"—","fontes com falha"],
-    [x.novas??"—","novas na última varredura"],[x.quarentena??"—","em quarentena"],
-    [q.nota_media??"—","conformidade média"],
-  ].map(v=>`<div class=card><div class=metric>${v[0]}</div><div class=meta>${v[1]}</div></div>`).join("");
-  $("fontes-detalhe").innerHTML = "<strong>Falhas da última varredura</strong>" +
-    ((x.falhas||[]).map(f=>`<div class=meta>${esc(f.fonte)}: ${esc(f.erro)}</div>`).join("") ||
-     "<p class=meta>Nenhuma falha registrada — ou nenhuma varredura executada ainda.</p>");
-})();
+/* ================= FAROL · BIBLIOTECA ================= */
+function desenhaBiblioteca(){
+  const libs=(D.farol&&D.farol.biblioteca)||[];
+  $("fb-meta").textContent=libs.length+" normas catalogadas · revisão mensal automática de vigência (dia 1º)";
+  $("fb-lista").innerHTML=libs.map(l=>`<div class=lin style="cursor:default">
+    <b>${esc(l.esfera)}</b><span>${esc(l.titulo)} <span class=tag>${esc(l.status)}</span></span></div>`).join("");
+}
 
-// ------- emendas: abre só em out/nov, no relógio do navegador -------
-(function emendas(){
-  const cfg=D.janela_emendas||{meses:[10,11]}, parl=D.parlamentares||{};
-  const mes=HOJE.getMonth()+1, aberta=(cfg.meses||[]).includes(mes);
-  $("emendas-motivo").textContent = cfg.motivo || "Emenda depende de articulação e viabilidade política.";
-  $("emenda-badge").textContent = aberta ? "●" : "";
-
-  function corpo(fora){
-    const aviso = fora ? `<p class=meta style="color:var(--warn)">⚠ Consulta fora da janela de outubro/novembro — dados para referência, não para articulação em curso.</p>` : "";
-    const lista = parl.lista||[];
-    const linhas = lista.length ? lista.map(p=>{
-      const g=p.gabinete||{};
-      const bandeiras=(p.bandeiras||[]).map(b=>`<span class=tag>${esc(b.tema)} (${b.ocorrencias})</span>`).join("")||"<span class=meta>sem bandeira medida</span>";
-      return `<tr><td><strong>${esc(p.nome)}</strong><div class=meta>${esc(p.partido)} · ${esc(p.uf)} · ${esc(p.esfera)}</div></td>
-<td class=meta>${esc(g.sala)}${g.predio?" · prédio "+esc(g.predio):""}</td><td>${bandeiras}</td>
-<td class=meta>${esc(p.resultado_eleicao||"não carregado")}</td></tr>`;}).join("")
-      : `<tr><td colspan=4 class=meta>Nenhum parlamentar carregado (${esc(parl.status||"aguardando carga oficial")}). A área não exibe nome, gabinete ou votação sem carga de fonte oficial.</td></tr>`;
-    const pend=(parl.pendencias||[]).map(x=>`<li>${esc(x.casa||x.esfera||"")}: ${esc(x.motivo)}${x.consulta_humana?` — <a href="${esc(x.consulta_humana)}" target=_blank rel="noopener noreferrer">consulta oficial</a>`:""}</li>`).join("")||"<li class=meta>sem pendências registradas</li>";
-    return aviso+`<div class=card><table><tr><th>Parlamentar</th><th>Gabinete</th><th>Bandeiras por atuação</th><th>Resultado eleitoral</th></tr>${linhas}</table>
-<p class=meta>Bandeira é contagem de atuação registrada (proposições e comissões), não opinião. Tema com uma ocorrência é ruído.</p></div>
-<div class=card style="margin-top:12px"><strong>Pendências de carga</strong><ul>${pend}</ul>
-<p class=meta>Resultado eleitoral: ${esc((parl.resultado_eleicao||{}).status||"não carregado")}. ${esc((parl.resultado_eleicao||{}).motivo||"")}</p></div>`;
-  }
-
-  if(aberta){ $("emendas-corpo").innerHTML = corpo(false); }
-  else {
-    const ano = mes<10 ? HOJE.getFullYear() : HOJE.getFullYear()+1;
-    $("emendas-corpo").innerHTML = `<div class=fechado>
-<h3 style="color:var(--gold)">Área fechada</h3>
-<p class=meta>${esc(cfg.rotulo||"Outubro e novembro")}.<br>Reabre em <strong>01/10/${ano}</strong>.</p>
-<button id=forcar style="margin-top:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 16px;border-radius:9px;cursor:pointer">consultar mesmo assim</button></div>`;
-    document.getElementById("forcar").onclick = ()=>{ $("emendas-corpo").innerHTML = corpo(true); };
-  }
-})();
+/* ================= INÍCIO ================= */
+function iniciar(){
+  $("portao").classList.add("oculto");$("app").classList.remove("oculto");
+  $("rodada").textContent="Última alimentação: "+(D.gerado_em?new Date(D.gerado_em).toLocaleString("pt-BR"):"—")
+    +" · cadência: "+((D.cadencia&&D.cadencia.varredura)||"segundas e sextas");
+  $("rodape-ger").textContent="Gerado em "+(D.gerado_em||"—")+".";
+  calAno=HOJE.getFullYear();calMes=HOJE.getMonth();
+  busAno=HOJE.getFullYear();busMes=HOJE.getMonth();
+  desenhaCal();desenhaEditais();desenhaBussola();desenhaBiblioteca();
+}
+portao();
 })();
 </script>
 </body></html>
