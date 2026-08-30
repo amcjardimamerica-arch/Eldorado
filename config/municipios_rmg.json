@@ -1,0 +1,40 @@
+{
+  "versao": 1,
+  "regiao": "Região Metropolitana de Goiânia",
+  "fundamento": "Composição instituída por lei complementar estadual de Goiás. A lista abaixo deve ser reconferida em fonte oficial a cada revisão normativa — municípios podem ser incluídos ou excluídos por alteração legislativa.",
+  "status_juridico": "verificar_composicao_em_fonte_oficial",
+  "regra_territory_id": "O código IBGE (territory_id) NÃO é preenchido a partir de memória. Ele é resolvido em execução pelo endpoint público de cidades do Querido Diário e gravado em estado/territorios_rmg.json. Município sem código resolvido fica registrado como pendência explícita e continua coberto pelas demais camadas (PNCP e varredura do site).",
+  "municipios": [
+    {"nome": "Goiânia", "uf": "GO", "polo": true, "territory_id": null},
+    {"nome": "Abadia de Goiás", "uf": "GO", "territory_id": null},
+    {"nome": "Aparecida de Goiânia", "uf": "GO", "territory_id": null},
+    {"nome": "Aragoiânia", "uf": "GO", "territory_id": null},
+    {"nome": "Bela Vista de Goiás", "uf": "GO", "territory_id": null},
+    {"nome": "Bonfinópolis", "uf": "GO", "territory_id": null},
+    {"nome": "Brazabrantes", "uf": "GO", "territory_id": null},
+    {"nome": "Caldazinha", "uf": "GO", "territory_id": null},
+    {"nome": "Caturaí", "uf": "GO", "territory_id": null},
+    {"nome": "Goianápolis", "uf": "GO", "territory_id": null},
+    {"nome": "Goianira", "uf": "GO", "territory_id": null},
+    {"nome": "Guapó", "uf": "GO", "territory_id": null},
+    {"nome": "Hidrolândia", "uf": "GO", "territory_id": null},
+    {"nome": "Inhumas", "uf": "GO", "territory_id": null},
+    {"nome": "Nerópolis", "uf": "GO", "territory_id": null},
+    {"nome": "Nova Veneza", "uf": "GO", "territory_id": null},
+    {"nome": "Santa Bárbara de Goiás", "uf": "GO", "territory_id": null},
+    {"nome": "Santo Antônio de Goiás", "uf": "GO", "territory_id": null},
+    {"nome": "Senador Canedo", "uf": "GO", "territory_id": null},
+    {"nome": "Terezópolis de Goiás", "uf": "GO", "territory_id": null},
+    {"nome": "Trindade", "uf": "GO", "territory_id": null}
+  ],
+  "consultas_diario": [
+    "\"chamamento público\" \"organizações da sociedade civil\"",
+    "\"edital de chamamento público\" associação",
+    "CMDCA resolução edital projeto",
+    "CMAS resolução chamamento entidade",
+    "\"fundo municipal\" edital projeto entidade",
+    "\"termo de fomento\" OR \"termo de colaboração\" chamamento",
+    "\"conselho municipal do idoso\" edital OR resolução"
+  ],
+  "nota_operacional": "Municípios menores da região metropolitana frequentemente publicam apenas no diário oficial e no perfil social da prefeitura, sem página de editais. Por isso a cobertura desses municípios depende primariamente do Querido Diário, com a camada de imprensa e a camada indireta de redes como reforço."
+}

@@ -14,6 +14,8 @@ from src.prazos import classificar, data_do_prazo
 from src.fichas import render as render_ficha
 from src.relatorio_amplitude import _etapas_com_ia
 from src.retrospectivo import _janelas_mensais
+from src.rota_monitoramento import rota_para, run as rotas_run
+from src.rmg_diarios import _normalizar
 from datetime import date
 
 class SystemTests(unittest.TestCase):
@@ -182,6 +184,56 @@ class SystemTests(unittest.TestCase):
             self.assertEqual(anterior[2],seguinte[1])  # fim de um mês é o início do próximo
         cfg=json.load(open("config/retrospectivo.json"))
         self.assertGreaterEqual(cfg["max_janelas_por_execucao"],len(janelas))
+
+
+    # ---- nenhum dos 260 pontos sem rota de monitoramento ----
+    def test_todos_260_tem_rota(self):
+        r=rotas_run()
+        self.assertEqual(r["total_catalogo"],260)
+        self.assertEqual(r["sem_rota"],0)
+        self.assertEqual(r["com_rota_de_monitoramento"],260)
+        self.assertGreater(r["com_publicacao_obrigatoria"],100)
+
+    def test_rota_reconhece_fundos_mp_e_tribunais(self):
+        formas={f["id"]:f for f in json.load(open("config/canais_divulgacao.json"))["formas"]}
+        casos=[
+            ({"id_acervo":1,"fonte_programa":"FMDCA Goiânia","onde_captar_original":"CMDCA Goiânia / FMDCA","niveis_inferidos":["municipal"]},"resolucao_conselho"),
+            ({"id_acervo":2,"fonte_programa":"Fundo do Idoso","onde_captar_original":"CMI / Fundo do Idoso","niveis_inferidos":["municipal"]},"resolucao_conselho"),
+            ({"id_acervo":3,"fonte_programa":"TAC ambiental","onde_captar_original":"MPGO/MPF/órgãos ambientais","niveis_inferidos":["estadual"]},"edital_ministerio_publico"),
+            ({"id_acervo":4,"fonte_programa":"Penas pecuniárias","onde_captar_original":"CNJ + tribunais","niveis_inferidos":["federal"]},"edital_destinacao_judicial"),
+            ({"id_acervo":5,"fonte_programa":"Emenda municipal","onde_captar_original":"Câmara Municipal + Secretaria","niveis_inferidos":["municipal"]},"emenda_parlamentar"),
+        ]
+        for item,esperado in casos:
+            self.assertEqual(rota_para(item,formas,{})["forma_divulgacao"],esperado,item["fonte_programa"])
+
+    def test_rota_piso_cobre_item_sem_sinal(self):
+        formas={f["id"]:f for f in json.load(open("config/canais_divulgacao.json"))["formas"]}
+        r=rota_para({"id_acervo":9,"fonte_programa":"xyz","onde_captar_original":"","niveis_inferidos":["municipal"]},formas,{})
+        self.assertTrue(r["monitoravel"]); self.assertEqual(r["origem_da_rota"],"piso_por_nivel")
+        self.assertTrue(any(x["camada"]=="querido_diario" for x in r["reforcos"]))
+
+    # ---- região metropolitana de Goiânia ----
+    def test_rmg_21_municipios_sem_codigo_inventado(self):
+        cfg=json.load(open("config/municipios_rmg.json"))
+        self.assertEqual(len(cfg["municipios"]),21)
+        nomes=[m["nome"] for m in cfg["municipios"]]
+        self.assertIn("Goiânia",nomes); self.assertIn("Aparecida de Goiânia",nomes); self.assertIn("Trindade",nomes)
+        self.assertEqual(len(set(nomes)),21)
+        # nenhum código IBGE escrito de memória
+        self.assertTrue(all(m["territory_id"] is None for m in cfg["municipios"]))
+        self.assertEqual(_normalizar("Goiânia"),"goiania")
+
+    # ---- redes sociais: pista, nunca confirmação ----
+    def test_redes_indireta_nunca_confirma_sozinha(self):
+        cfg=json.load(open("config/redes_indireta.json"))
+        self.assertFalse(cfg["rotas"]["api_oficial_credencial"]["ativa"])
+        self.assertFalse(cfg["ocr_quando_houver_credencial"]["ativo"])
+        self.assertTrue(cfg["rotas"]["indexacao_buscador"]["ativa"])
+        for rota in cfg["rotas"].values():
+            self.assertIn(rota.get("confianca","pista"),{"pista","primaria"})
+        # a única rota de confiança primária é o espelho no site oficial
+        primarias=[k for k,v in cfg["rotas"].items() if v.get("confianca")=="primaria"]
+        self.assertEqual(primarias,["espelho_oficial_no_site"])
 
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}

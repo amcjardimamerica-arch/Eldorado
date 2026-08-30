@@ -90,3 +90,48 @@ mais uma camada anual por `site:domínio_oficial` dos financiadores catalogados.
   grava `estado/bootstrap_cinco_anos.json` e passa a encerrar imediatamente — nunca mais consome tempo.
 - Esta etapa **não gera HTML**: é levantamento de padrão, não análise de oportunidade viva.
   Ela alimenta `src/aprendizado.py`, que é quem transforma histórico em previsão de janelas.
+
+## Formas de divulgação e rota dos 260 pontos
+
+`config/canais_divulgacao.json` lista as 18 formas pelas quais um ponto de captação
+torna público que há dinheiro disponível, e qual camada do sistema captura cada uma.
+
+O princípio é o modelo primário de rastreio de dinheiro público: **onde há recurso
+público, há ato administrativo; onde há ato administrativo, há publicação obrigatória.**
+A publicação é o ponto de captura — não o anúncio, não a notícia, não o post.
+
+`src/rota_monitoramento.py` aplica isso ponto a ponto: lê o campo de origem do acervo,
+identifica a forma de divulgação (resolução de conselho, edital do MP, destinação
+judicial, emenda, incentivo fiscal, diário oficial…) e atribui a camada correspondente
+mais as rotas de reforço. Quando o texto não permite identificar a forma, entra a
+**rota-piso do nível federativo**: DOU para federal, diário estadual para estadual,
+diário municipal para municipal. Resultado em `estado/rotas_monitoramento.json`.
+
+```bash
+python -m src.rota_monitoramento
+python scripts/cobertura_catalogo.py
+```
+
+## Região Metropolitana de Goiânia
+
+`src/rmg_diarios.py` cobre os 21 municípios pelo diário oficial, com consultas
+específicas para conselhos e fundos. Em município pequeno raramente existe página de
+editais; o que existe é o diário. O código IBGE de cada município é **resolvido em
+execução** pelo endpoint público de cidades e cacheado em `estado/territorios_rmg.json` —
+nenhum código é escrito de memória. Município não resolvido vira pendência declarada e
+continua coberto por PNCP e varredura de site.
+
+## Redes sociais sem acesso direto
+
+`src/redes_indireta.py` usa quatro rotas, em ordem de confiabilidade:
+
+1. **Espelho oficial no site do órgão** — a mais confiável, já coberta pela varredura HTML.
+2. **Indexação por buscador** — ativa; devolve título e trecho textual do post, não a imagem.
+3. **oEmbed público** — desligada; enriquece pista cuja URL já se conhece, não descobre post novo.
+4. **API oficial com credencial** — desligada até haver segredo; única rota com a imagem disponível.
+
+Sobre ler o texto impresso na imagem do post: o OCR exige primeiro obter o arquivo da
+imagem, e obter o arquivo exige o acesso direto que estas rotas não têm. O gancho está
+declarado em `config/redes_indireta.json` → `ocr_quando_houver_credencial` e só se torna
+executável pela rota 4. Mesmo com OCR, o resultado continua **pista**: card de divulgação
+não é edital.

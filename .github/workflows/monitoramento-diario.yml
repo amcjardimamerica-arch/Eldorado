@@ -23,6 +23,11 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Coletar, verificar, acionar Farol e publicar painel
         run: python -m src.executar_diario
+      - name: Rotas dos 260 pontos e cobertura do acervo
+        if: always()
+        run: |
+          python -m src.rota_monitoramento
+          python scripts/cobertura_catalogo.py
       - name: Relatorio de amplitude (canais, tokens, testes, padroes)
         if: always()
         run: python -m src.relatorio_amplitude

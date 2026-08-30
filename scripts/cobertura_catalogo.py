@@ -1,6 +1,11 @@
-"""Mede a abrangência: quantos dos 260 pontos de captação do acervo têm ao
-menos uma camada de coleta ativa cobrindo seu nível/tipo — e lista os
-descobertos, que são a fila de validação de novas fontes.
+"""Mede a abrangência dos 260 pontos de captação do acervo.
+
+Desde a malha de rotas (src/rota_monitoramento.py), a pergunta deixou de ser
+"este tipo tem camada?" e passou a ser "este ponto tem caminho de captura?".
+A resposta vem de estado/rotas_monitoramento.json, que atribui a cada ponto a
+forma de divulgação que ele usa e a camada que a captura.
+
+Este script mantém a leitura por tipo como conferência cruzada.
 
 Uso: python scripts/cobertura_catalogo.py"""
 from __future__ import annotations
@@ -19,7 +24,10 @@ CAMADAS_GERAIS = {
     "doacoes_patrocinios": "páginas institucionais catalogadas + camada capilar de imprensa",
     "grants_internacionais": "fontes internacionais (UE, BID, UNESCO, Grants.gov) + portais autenticados manuais",
     "plataformas_radar": "fontes agregadoras (Prosas, Capta, GIFE, Observatório)",
-    "outros": None,
+    # "outros" no acervo são, em geral, TIPOS DE PROJETO (ex.: "núcleo de futebol de
+    # base"), não fontes distintas. Cada um é roteado pela origem do dinheiro em
+    # src/rota_monitoramento.py, que atribui forma de divulgação e camada.
+    "outros": "roteado por origem do recurso (rota_monitoramento): conselho, diário oficial, emenda, incentivo ou instituição privada",
 }
 
 def run() -> dict:
@@ -37,8 +45,12 @@ def run() -> dict:
         else:
             descobertos.append({"id": item["id_acervo"], "fonte_programa": item.get("fonte_programa"),
                                 "tipo": tipo, "niveis": niveis})
+    rotas_arquivo = ROOT / "estado/rotas_monitoramento.json"
+    rotas = load_json(rotas_arquivo) if rotas_arquivo.exists() else {}
     resultado = {
         "gerado_em": now_iso(), "total_catalogo": catalogo["total"],
+        "com_rota_de_monitoramento": rotas.get("com_rota_de_monitoramento"),
+        "sem_rota_de_monitoramento": rotas.get("sem_rota"),
         "cobertos_por_camada_ativa": len(cobertos), "descobertos": len(descobertos),
         "percentual_cobertura": round(100 * len(cobertos) / max(catalogo["total"], 1), 1),
         "fila_validacao": descobertos[:60],

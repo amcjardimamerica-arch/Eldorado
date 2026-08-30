@@ -1,0 +1,71 @@
+{
+  "versao": 1,
+  "ativa": true,
+  "regra": "Leitura INDIRETA de redes sociais, sem login, sem raspagem de página fechada e sem burlar proteção. Toda saída é PISTA e exige confirmação em URL oficial (scripts/confirmar_pista.py). Nenhuma pista de rede social entra na base primária de oportunidades.",
+  "resposta_a_pergunta_da_imagem": "Não é possível ler o texto de dentro da imagem de um post sem antes obter o arquivo da imagem, e obter o arquivo exige o acesso direto que estas rotas justamente não têm. Por isso o sistema lê texto de legenda e de indexação pública. O OCR fica declarado como gancho: assim que a rota de API oficial for ativada com credencial, a imagem passa a estar disponível e o reconhecimento de texto se torna executável.",
+  "modelo_consulta": "site:{dominio} {handle} {termo}",
+  "termos": [
+    "edital",
+    "chamamento público",
+    "inscrições abertas",
+    "resolução CMDCA",
+    "fundo municipal projeto",
+    "termo de fomento"
+  ],
+  "max_consultas_por_execucao": 30,
+  "max_itens_por_consulta": 10,
+  "intervalo_segundos": 1,
+  "rotas": {
+    "espelho_oficial_no_site": {
+      "ativa": true,
+      "prioridade": 1,
+      "descricao": "O mesmo conteúdo do post publicado no portal de notícias do órgão. Rota mais confiável e já coberta pela varredura HTML das fontes catalogadas.",
+      "confianca": "primaria",
+      "coberta_por": "src/eldorado.py"
+    },
+    "indexacao_buscador": {
+      "ativa": true,
+      "prioridade": 2,
+      "motor": "https://www.bing.com/search?format=rss&q={consulta}",
+      "descricao": "Posts públicos de perfis institucionais indexados por buscador. Devolve título e trecho textual do post; não devolve a imagem.",
+      "confianca": "pista",
+      "limitacao": "cobertura irregular e dependente do que o buscador indexou; não substitui a rota 1 nem a 4"
+    },
+    "oembed_publico": {
+      "ativa": false,
+      "prioridade": 3,
+      "descricao": "Endpoint oficial de incorporação. Devolve metadados de um post cuja URL já se conhece — enriquece pista existente, não descobre post novo.",
+      "motivo": "sem função enquanto não houver volume de URLs de post já confirmadas; ligar depois da primeira safra de pistas",
+      "confianca": "pista"
+    },
+    "api_oficial_credencial": {
+      "ativa": false,
+      "prioridade": 4,
+      "descricao": "Instagram Graph e YouTube Data. Única rota que lê a conta inteira de forma estável e legítima, com a imagem disponível.",
+      "motivo": "aguardando credencial em GitHub Actions Secrets",
+      "credenciais_env": {
+        "instagram": "IG_GRAPH_TOKEN",
+        "instagram_contas": "IG_CONTAS_MONITORADAS",
+        "youtube": "YT_DATA_KEY"
+      },
+      "requisito_instagram": "a conta monitorada precisa ser business/creator e estar vinculada; contas pessoais não são legíveis nem com credencial",
+      "confianca": "pista"
+    }
+  },
+  "ocr_quando_houver_credencial": {
+    "ativo": false,
+    "descricao": "Reconhecimento do texto impresso no card do edital. Só se torna executável pela rota 4, quando a imagem está legitimamente disponível.",
+    "regra": "Mesmo com OCR, o resultado permanece PISTA: card de divulgação não é edital e não substitui a publicação oficial.",
+    "dependencia": "biblioteca de OCR fora da biblioteca-padrão — decisão de escopo pendente"
+  },
+  "perfis_monitorados": [
+    {"id": "ig-prefeitura-goiania", "nome": "Prefeitura de Goiânia", "emissor_id": "goiania", "rede": "instagram", "dominio_rede": "instagram.com", "handle": "prefeituradegoiania", "uf": "GO", "territorio": "GO/Goiânia", "nivel": "municipal", "ativa": true, "evidencia_identidade": "https://www.goiania.go.gov.br/"},
+    {"id": "ig-semasdh-goiania", "nome": "SEMASDH Goiânia", "emissor_id": "semasdh-goiania", "rede": "instagram", "dominio_rede": "instagram.com", "handle": "semasdhgoiania", "uf": "GO", "territorio": "GO/Goiânia", "nivel": "municipal", "ativa": true, "evidencia_identidade": "https://www.goiania.go.gov.br/semasdh/"},
+    {"id": "ig-governo-goias", "nome": "Governo de Goiás", "emissor_id": "goias-editais", "rede": "instagram", "dominio_rede": "instagram.com", "handle": "governodegoias", "uf": "GO", "territorio": "GO", "nivel": "estadual", "ativa": true, "evidencia_identidade": "https://goias.gov.br/"},
+    {"id": "ig-secult-goias", "nome": "Secult Goiás", "emissor_id": "goias-cultura", "rede": "instagram", "dominio_rede": "instagram.com", "handle": "secultgoias", "uf": "GO", "territorio": "GO", "nivel": "estadual", "ativa": true, "evidencia_identidade": "https://goias.gov.br/cultura/"},
+    {"id": "ig-minc", "nome": "Ministério da Cultura", "emissor_id": "ministerio-cultura", "rede": "instagram", "dominio_rede": "instagram.com", "handle": "minc", "uf": null, "territorio": "BR", "nivel": "federal", "ativa": true, "evidencia_identidade": "https://www.gov.br/cultura/pt-br"},
+    {"id": "fb-prefeitura-goiania", "nome": "Prefeitura de Goiânia (Facebook)", "emissor_id": "goiania", "rede": "facebook", "dominio_rede": "facebook.com", "handle": "prefeituradegoiania", "uf": "GO", "territorio": "GO/Goiânia", "nivel": "municipal", "ativa": true, "evidencia_identidade": "https://www.goiania.go.gov.br/"},
+    {"id": "yt-governo-goias", "nome": "Governo de Goiás (YouTube)", "emissor_id": "goias-editais", "rede": "youtube", "dominio_rede": "youtube.com", "handle": "governodegoias", "uf": "GO", "territorio": "GO", "nivel": "estadual", "ativa": true, "evidencia_identidade": "https://goias.gov.br/"}
+  ],
+  "nota_municipios_pequenos": "Nos municípios menores da Região Metropolitana de Goiânia a rede social costuma ser o primeiro aviso, antes do site. Por isso a camada existe. Mas a captura válida continua sendo o diário oficial, coberto por src/rmg_diarios.py."
+}

@@ -28,6 +28,9 @@ ETAPAS = [
     ("eldorado", "Varredura HTML das fontes catalogadas", "Eldorado"),
     ("coletores_api", "APIs oficiais (PNCP e Querido Diário)", "Eldorado"),
     ("capilaridade", "Camada de imprensa — gera pistas", "Eldorado"),
+    ("rmg_diarios", "Diários oficiais da Região Metropolitana de Goiânia", "Eldorado"),
+    ("redes_indireta", "Leitura indireta de redes sociais", "Eldorado"),
+    ("rota_monitoramento", "Rota de monitoramento dos 260 pontos", "Eldorado"),
     ("verificacao_social", "Páginas de redes sociais oficiais", "Eldorado"),
     ("verificacao_assistida", "Confirmação da página primária", "Eldorado"),
     ("qualidade", "Conformidade com padrões de edital oficial", "Eldorado"),
@@ -90,6 +93,10 @@ def coletar() -> dict:
     padroes = load_json(ROOT / "config/padroes_edital.json")
     ia_cfg = load_json(ROOT / "config/ia.json")
     leis = load_json(ROOT / "biblioteca/leis/catalogo.json")["itens"]
+    rmg = load_json(ROOT / "config/municipios_rmg.json")
+    redes = load_json(ROOT / "config/redes_indireta.json")
+    canais_div = load_json(ROOT / "config/canais_divulgacao.json")
+    rotas = load_json(ROOT / "estado/rotas_monitoramento.json") if (ROOT / "estado/rotas_monitoramento.json").exists() else {}
     com_ia = _etapas_com_ia()
 
     return {
@@ -127,6 +134,12 @@ def coletar() -> dict:
              "estado": "preparado, aguardando credencial" if not capilar["redes_sociais"]["instagram_graph"]["ativa"] else "ativo",
              "alcance": "Instagram Graph e YouTube Data — dependem de credencial em Secrets",
              "confianca": "pista", "tokens": "não", "modulo": "config/capilaridade.json"},
+            {"canal": "Diários oficiais da RM de Goiânia", "estado": f"ativo — {len(rmg['municipios'])} municípios",
+             "alcance": f"{len(rmg['municipios'])} municípios × {len(rmg['consultas_diario'])} consultas de fundo e conselho",
+             "confianca": "primária", "tokens": "não", "modulo": "src/rmg_diarios.py"},
+            {"canal": "Redes sociais — leitura indireta", "estado": "ativo (indexação pública)",
+             "alcance": f"{sum(1 for p in redes['perfis_monitorados'] if p.get('ativa'))} perfis × {len(redes['termos'])} termos; texto de legenda, não a imagem",
+             "confianca": "pista — exige URL oficial", "tokens": "não", "modulo": "src/redes_indireta.py"},
             {"canal": "Carga histórica de 5 anos", "estado": "campanha única, mês a mês",
              "alcance": f"{retro['janela_anos']} anos × PNCP + Querido Diário + domínios oficiais",
              "confianca": "pista até conferência", "tokens": "não", "modulo": "src/retrospectivo.py"},
@@ -153,6 +166,15 @@ def coletar() -> dict:
             "fundamento": padroes["fundamento_legal"],
         },
         "biblioteca_juridica": {"normas": len(leis)},
+        "regiao_metropolitana": {"municipios": [m["nome"] for m in rmg["municipios"]],
+                                 "consultas": rmg["consultas_diario"]},
+        "formas_divulgacao": [{"rotulo": f["rotulo"], "obrigatoriedade": f["obrigatoriedade"],
+                               "camada": f["camada"], "confianca": f["confianca"]} for f in canais_div["formas"]],
+        "rotas_260": {k: v for k, v in rotas.items() if k != "rotas"},
+        "redes_rotas": [{"rota": k, "ativa": v.get("ativa"), "prioridade": v.get("prioridade"),
+                         "descricao": v.get("descricao"), "motivo": v.get("motivo")}
+                        for k, v in redes["rotas"].items()],
+        "ocr_redes": redes["ocr_quando_houver_credencial"],
     }
 
 def _e(v) -> str:
@@ -184,6 +206,19 @@ def render(d: dict) -> str:
     reprovacao = "".join(f"<li class=bad>{_e(r)}</li>" for r in d["padroes_edital"]["reprovacao_automatica"])
     modelos = "".join(f"<li><strong>{_e(k)}</strong>: <code>{_e(v)}</code></li>"
                       for k, v in d["ia"]["modelos_por_tarefa"].items())
+    formas_html = "".join(
+        f"<tr><td>{_e(f['rotulo'])}</td><td class={'ok' if f['obrigatoriedade']=='legal' else 'meta'}>{_e(f['obrigatoriedade'])}</td>"
+        f"<td><code>{_e(f['camada'])}</code></td><td>{_e(f['confianca'])}</td></tr>"
+        for f in d["formas_divulgacao"])
+    r260 = d.get("rotas_260") or {}
+    rotas_html = "".join(f"<tr><td>{_e(k)}</td><td>{v}</td></tr>"
+                         for k, v in (r260.get("por_forma_divulgacao") or {}).items())
+    rmg_html = "".join(f"<span class=tag>{_e(m)}</span>" for m in d["regiao_metropolitana"]["municipios"])
+    redes_html = "".join(
+        f"<tr><td>{v.get('prioridade','–')}</td><td>{_e(v['rota'])}</td>"
+        f"<td class={'ok' if v.get('ativa') else 'warn'}>{'ativa' if v.get('ativa') else 'desligada'}</td>"
+        f"<td>{_e(v.get('descricao'))}{'<div class=meta>' + _e(v.get('motivo')) + '</div>' if v.get('motivo') else ''}</td></tr>"
+        for v in sorted(d["redes_rotas"], key=lambda x: x.get("prioridade") or 9))
     fontes_lista = "".join(
         f"<tr><td>{_e(f['territorio'])}</td><td><a href='{_e(f['url'])}' target=_blank rel='noopener noreferrer'>{_e(f['nome'])}</a></td>"
         f"<td>{_e(f['tipo'])}</td><td>{_e(f['confianca'])}</td></tr>" for f in d["fontes"]["lista"])
@@ -265,7 +300,43 @@ Se um falhar, o robô não coleta — evita gravar dado ruim por cima de dado bo
 <div class=card><h3>Por território</h3><p>{territorios}</p>
 <h3>Por tipo</h3><p>{tipos}</p></div>
 
-<h2>6. Catálogo completo de fontes</h2>
+<h2>6. Formas de divulgação usadas pelos pontos de captação</h2>
+<div class=card>
+<p class=meta>{_e(d['formas_divulgacao'] and "Modelo primário: onde há recurso público, há ato administrativo; onde há ato administrativo, há publicação obrigatória. A publicação é o ponto de captura — não o anúncio.")}</p>
+<table><tr><th>Forma de divulgação</th><th>Obrigatoriedade</th><th>Camada que captura</th><th>Confiança</th></tr>{formas_html}</table>
+</div>
+
+<h2>7. Rota de monitoramento dos 260 pontos de captação</h2>
+<div class=card>
+<div class=cards>
+<div class=card><div class=metric>{r260.get('com_rota_de_monitoramento','–')}</div><div class=meta>com rota</div></div>
+<div class=card><div class=metric>{r260.get('sem_rota','–')}</div><div class=meta>sem rota</div></div>
+<div class=card><div class=metric>{r260.get('percentual','–')}%</div><div class=meta>cobertura</div></div>
+<div class=card><div class=metric>{r260.get('com_publicacao_obrigatoria','–')}</div><div class=meta>com publicação obrigatória por lei</div></div>
+</div>
+<table><tr><th>Forma de divulgação</th><th>Pontos do acervo</th></tr>{rotas_html}</table>
+<p class=meta>Ter rota não é ter oportunidade confirmada: a rota garante caminho técnico de captura.
+A confirmação continua exigindo URL primária.</p>
+</div>
+
+<h2>8. Região Metropolitana de Goiânia</h2>
+<div class=card>
+<p>{len(d['regiao_metropolitana']['municipios'])} municípios monitorados pelo diário oficial, com consultas
+específicas para conselhos e fundos (CMDCA, CMAS, CMI, termo de fomento).</p>
+<p>{rmg_html}</p>
+<p class=meta>Em município pequeno raramente existe página de editais: o que existe é o diário oficial.
+Por isso a cobertura aqui depende primariamente do Querido Diário, com imprensa e redes como reforço.
+O código IBGE de cada município é resolvido em execução, nunca escrito de memória.</p>
+</div>
+
+<h2>9. Redes sociais — rotas de leitura sem acesso direto</h2>
+<div class=card>
+<table><tr><th>#</th><th>Rota</th><th>Estado</th><th>O que faz</th></tr>{redes_html}</table>
+<p class=meta><strong>Sobre ler o texto de dentro da imagem:</strong> {_e(d['ocr_redes']['descricao'])}
+{_e(d['ocr_redes']['regra'])}</p>
+</div>
+
+<h2>10. Catálogo completo de fontes</h2>
 <div class="card rolagem"><table>
 <tr><th>Território</th><th>Fonte</th><th>Tipo</th><th>Confiança</th></tr>{fontes_lista}</table></div>
 

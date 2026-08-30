@@ -1,0 +1,168 @@
+{
+  "versao": 1,
+  "regra": "Taxonomia das formas pelas quais um ponto de captação torna público que há dinheiro disponível. Cada forma tem um canal de monitoramento correspondente. Um ponto de captação só é considerado monitorável quando pelo menos uma forma abaixo está coberta por camada ativa.",
+  "principio": "Modelo primário: seguir o dinheiro público na origem. Onde há recurso público, há ato administrativo; onde há ato administrativo, há publicação obrigatória. A publicação é o ponto de captura — não o anúncio, não a notícia, não a rede social.",
+  "formas": [
+    {
+      "id": "diario_oficial_uniao",
+      "rotulo": "Diário Oficial da União",
+      "obrigatoriedade": "legal",
+      "fundamento": "Publicidade dos atos administrativos federais; Lei 12.527/2011 e leis específicas de cada programa.",
+      "usada_por": ["ministerios", "autarquias_federais", "conselhos_nacionais", "fundos_federais"],
+      "camada": "in_dou",
+      "confianca": "primaria"
+    },
+    {
+      "id": "diario_oficial_estado",
+      "rotulo": "Diário Oficial do Estado",
+      "obrigatoriedade": "legal",
+      "fundamento": "Publicidade dos atos estaduais; resoluções de conselhos estaduais e editais de secretarias.",
+      "usada_por": ["secretarias_estaduais", "conselhos_estaduais", "fundos_estaduais", "assembleias"],
+      "camada": "portais_estaduais + querido_diario",
+      "confianca": "primaria"
+    },
+    {
+      "id": "diario_oficial_municipio",
+      "rotulo": "Diário Oficial do Município",
+      "obrigatoriedade": "legal",
+      "fundamento": "Publicidade municipal. É onde CMDCA, CMAS, CMI e conselhos setoriais publicam resolução de chamamento e resultado.",
+      "usada_por": ["prefeituras", "conselhos_municipais", "fundos_municipais", "camaras_municipais"],
+      "camada": "querido_diario",
+      "confianca": "primaria",
+      "nota": "Canal decisivo para fundos: o conselho delibera por resolução publicada no diário, muitas vezes antes de qualquer aviso no site."
+    },
+    {
+      "id": "site_oficial_orgao",
+      "rotulo": "Site oficial do órgão ou programa",
+      "obrigatoriedade": "administrativa",
+      "usada_por": ["ministerios", "secretarias", "fundacoes_publicas", "programas_de_incentivo"],
+      "camada": "varredura_html",
+      "confianca": "primaria"
+    },
+    {
+      "id": "portal_compras_pncp",
+      "rotulo": "PNCP — Portal Nacional de Contratações Públicas",
+      "obrigatoriedade": "legal",
+      "fundamento": "Lei 14.133/2021 — publicidade obrigatória dos atos que a lei abrange.",
+      "usada_por": ["orgaos_de_todos_os_niveis"],
+      "camada": "api_pncp",
+      "confianca": "primaria"
+    },
+    {
+      "id": "portal_transparencia",
+      "rotulo": "Portal da transparência e prestação de contas",
+      "obrigatoriedade": "legal",
+      "usada_por": ["executivos", "fundos", "tribunais"],
+      "camada": "varredura_html",
+      "confianca": "primaria",
+      "nota": "Revela o repasse já executado — serve ao aprendizado histórico e à previsão de janelas, não à inscrição."
+    },
+    {
+      "id": "resolucao_conselho",
+      "rotulo": "Resolução de conselho deliberativo",
+      "obrigatoriedade": "legal",
+      "usada_por": ["cmdca", "cmas", "cmi", "conselhos_de_saude", "conselhos_de_cultura", "conanda", "cnas"],
+      "camada": "querido_diario + varredura_html",
+      "confianca": "primaria",
+      "nota": "Fundos da criança/adolescente, do idoso e de assistência social não publicam edital comum: deliberam por resolução."
+    },
+    {
+      "id": "edital_destinacao_judicial",
+      "rotulo": "Edital de destinação de recursos judiciais",
+      "obrigatoriedade": "legal",
+      "fundamento": "Resolução CNJ sobre destinação de penas pecuniárias e prestação pecuniária; atos de cada tribunal.",
+      "usada_por": ["tribunais_de_justica", "varas_de_execucao_penal", "cnj"],
+      "camada": "varredura_html + querido_diario",
+      "confianca": "primaria"
+    },
+    {
+      "id": "edital_ministerio_publico",
+      "rotulo": "Edital ou chamamento do Ministério Público",
+      "obrigatoriedade": "legal",
+      "fundamento": "Destinação de recursos de TAC, ACP e fundos de direitos difusos.",
+      "usada_por": ["mpgo", "mpf", "mpt", "cnmp", "fdd_cfdd"],
+      "camada": "varredura_html + diario_oficial",
+      "confianca": "primaria"
+    },
+    {
+      "id": "emenda_parlamentar",
+      "rotulo": "Indicação de emenda parlamentar",
+      "obrigatoriedade": "parcial",
+      "usada_por": ["camaras_municipais", "assembleias_estaduais", "congresso"],
+      "camada": "portais_federativos + transferegov + querido_diario",
+      "confianca": "primaria",
+      "nota": "A emenda não é divulgada como edital: aparece na lei orçamentária, no ato de indicação e no Transferegov. Monitorar exige seguir o instrumento, não o anúncio."
+    },
+    {
+      "id": "lista_projetos_aptos",
+      "rotulo": "Lista pública de projetos aptos à captação (incentivo fiscal)",
+      "obrigatoriedade": "legal",
+      "usada_por": ["salic_rouanet", "lie_esporte", "pronon_pronas", "goyazes", "leis_estaduais_de_incentivo"],
+      "camada": "varredura_html + api_quando_houver",
+      "confianca": "primaria",
+      "nota": "Aqui o fluxo é invertido: o edital não convoca a OSC, a OSC habilita o projeto e depois busca a empresa incentivadora."
+    },
+    {
+      "id": "plataforma_agregadora",
+      "rotulo": "Plataforma agregadora de editais",
+      "obrigatoriedade": "nenhuma",
+      "usada_por": ["prosas", "capta", "gife", "observatorios"],
+      "camada": "varredura_html",
+      "confianca": "secundaria"
+    },
+    {
+      "id": "pagina_institucional_privada",
+      "rotulo": "Página institucional de fundação, instituto ou empresa",
+      "obrigatoriedade": "nenhuma",
+      "usada_por": ["fundacoes_empresariais", "institutos", "empresas"],
+      "camada": "varredura_html + capilaridade_imprensa",
+      "confianca": "primaria_quando_no_dominio_oficial"
+    },
+    {
+      "id": "newsletter_e_mailing",
+      "rotulo": "Boletim, newsletter ou mailing de cadastrados",
+      "obrigatoriedade": "nenhuma",
+      "usada_por": ["fundacoes", "plataformas", "secretarias"],
+      "camada": "nao_coberta_por_robo",
+      "confianca": "pista",
+      "nota": "Exige cadastro humano. Mitigado pela camada de imprensa e pela varredura do site, que normalmente publica o mesmo conteúdo."
+    },
+    {
+      "id": "rede_social_oficial",
+      "rotulo": "Perfil oficial em rede social",
+      "obrigatoriedade": "nenhuma",
+      "usada_por": ["prefeituras", "secretarias", "conselhos", "fundacoes"],
+      "camada": "redes_indireta",
+      "confianca": "pista",
+      "nota": "Nunca confirma edital sozinha. Em municípios pequenos costuma ser o primeiro aviso — por isso a camada indireta existe, mas sempre exige a URL oficial depois."
+    },
+    {
+      "id": "portal_autenticado",
+      "rotulo": "Portal que exige login ou cadastro prévio",
+      "obrigatoriedade": "nenhuma",
+      "usada_por": ["transferegov", "sistemas_estaduais", "plataformas_internacionais"],
+      "camada": "acompanhamento_manual_assistido",
+      "confianca": "primaria",
+      "nota": "Robô não autentica. O sistema monitora a página pública de avisos e registra a pendência de acesso humano."
+    },
+    {
+      "id": "submissao_internacional",
+      "rotulo": "Chamada internacional em portal próprio",
+      "obrigatoriedade": "nenhuma",
+      "usada_por": ["ue", "bid", "unesco", "grants_gov", "fundacoes_internacionais"],
+      "camada": "varredura_html",
+      "confianca": "primaria"
+    }
+  ],
+  "camadas_ativas": {
+    "varredura_html": "src/eldorado.py — fontes catalogadas em config/fontes.json",
+    "api_pncp": "src/coletores_api.py — PNCP",
+    "querido_diario": "src/coletores_api.py — diários oficiais municipais",
+    "in_dou": "fonte catalogada do Diário Oficial da União",
+    "portais_estaduais": "27 portais estaduais raiz",
+    "capilaridade_imprensa": "src/capilaridade.py — RSS de notícias",
+    "redes_indireta": "src/redes_indireta.py — leitura sem acesso autenticado",
+    "acompanhamento_manual_assistido": "registrado como pendência com responsável humano",
+    "nao_coberta_por_robo": "declarada como lacuna assumida, com mitigação indicada"
+  }
+}

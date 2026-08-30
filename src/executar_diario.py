@@ -14,8 +14,9 @@ from __future__ import annotations
 import json
 
 from . import (aprendizado, capilaridade, casos, coletores_api, dossies, eldorado,
-               farol_ia, fichas, painel, prazos, qualidade, triagem,
-               verificacao_assistida, verificacao_social)
+               farol_ia, fichas, painel, prazos, qualidade, redes_indireta,
+               rmg_diarios, rota_monitoramento, triagem, verificacao_assistida,
+               verificacao_social)
 from .nucleo import ROOT, append_jsonl, now_iso, write_json
 
 def _rodar(nome, funcao, relatorio):
@@ -29,12 +30,15 @@ def main():
     _rodar("coleta", eldorado.run, relatorio)
     _rodar("apis_oficiais", coletores_api.run, relatorio)
     _rodar("capilaridade", capilaridade.run, relatorio)
+    _rodar("diarios_regiao_metropolitana", rmg_diarios.run, relatorio)
+    _rodar("redes_indireta", redes_indireta.run, relatorio)
     _rodar("verificacao_social", verificacao_social.run, relatorio)
     _rodar("verificacao_assistida", verificacao_assistida.run, relatorio)
     _rodar("qualidade", qualidade.run, relatorio)
     _rodar("prazos", prazos.run, relatorio)
     _rodar("dossies", dossies.run, relatorio)
     _rodar("aprendizado", aprendizado.run, relatorio)
+    _rodar("rotas_monitoramento", rota_monitoramento.run, relatorio)
 
     def _triagem_e_casos():
         gatilhos = triagem.run()
