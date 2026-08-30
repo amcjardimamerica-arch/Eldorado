@@ -10,4 +10,8 @@
 8. Plano de trabalho e prestação de contas são rascunhos até validação jurídica, contábil e do edital.
 9. Preserve hashes, versões e auditoria. Não apague evidências para ocultar divergência.
 10. Não leia, grave nem modifique o repositório `cade-o-queijo-CMASGyn`; ele foi apenas referência arquitetural.
-
+11. Cada pasta em `dados/associacoes/` é um universo estanque. Nunca copie documentos, evidências, resultados, projetos ou históricos entre entidades.
+12. Só acione o Farol para oportunidade `verificada_primaria` ou `verificada_dupla` cuja triagem indique possibilidade real.
+13. Conselheiros de IA são execuções independentes. Cada um recebe apenas seu pacote; respostas alheias só entram no parecer final depois das sete conclusões.
+14. Personalidades históricas são lentes simuladas inspiradas em legados públicos, nunca falas ou endossos reais.
+15. Arquivos brutos de associação, PII, dados bancários e fotos sem autorização permanecem fora do Git público.

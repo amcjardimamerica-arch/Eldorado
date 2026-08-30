@@ -11,6 +11,8 @@ def host_allowed(url: str, domain: str) -> bool:
     return host == domain or host.endswith("." + domain)
 
 def run(limit_per_query: int = 10) -> dict:
+    marker=ROOT/"estado/bootstrap_cinco_anos.json"
+    if marker.exists(): return {"status":"levantamento_inicial_ja_concluido","executado_em":now_iso()}
     cfg=load_json(ROOT/"config/retrospectivo.json"); db=ROOT/"dados/oportunidades/oportunidades.jsonl"; existing={}
     if db.exists():
         for line in db.read_text(encoding="utf-8").splitlines():
@@ -49,6 +51,11 @@ def run(limit_per_query: int = 10) -> dict:
     db.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in sorted(existing.values(),key=lambda v:v["id"])),encoding="utf-8")
     next_cursor=(cursor+len(selected))%len(queries)
     cursor_path.parent.mkdir(parents=True,exist_ok=True); cursor_path.write_text(json.dumps({"proxima":next_cursor,"total":len(queries)},indent=2)+"\n",encoding="utf-8")
-    return {"novas_pistas":found,"consultas":len(selected),"consultas_com_falha":errors,"proximo_cursor":next_cursor,"executado_em":now_iso()}
+    report={"novas_pistas":found,"consultas":len(selected),"consultas_com_falha":errors,"proximo_cursor":next_cursor,"executado_em":now_iso()}
+    if len(selected)==len(queries) and errors==0:
+        marker.write_text(json.dumps({"concluido_em":report["executado_em"],"janela_anos":cfg["janela_anos"],"consultas":len(selected)},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+        report["status"]="levantamento_inicial_concluido"
+    else: report["status"]="pendente_repeticao_por_falhas"
+    return report
 
 if __name__=="__main__": print(json.dumps(run(),ensure_ascii=False,indent=2))

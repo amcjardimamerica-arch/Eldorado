@@ -4,17 +4,22 @@
 
 ```bash
 python -m src.executar_diario
+python -m src.sentinela
 python -m src.executar_farol
 python -m unittest discover -s tests -v
 python scripts/importar_acervo.py entrada_acervo
 python scripts/importar_catalogo_captacao.py planilha.xlsx
+python scripts/criar_associacao.py SLUG "Nome da associação"
+python scripts/ingestao_associacao.py SLUG documento.docx
 ```
 
 ## Estados de uma oportunidade
 
 `pista_do_acervo_pendente_url_primaria` → `capturada` → `verificada_primaria` ou `verificada_dupla` → `elegivel` ou `inelegivel` → `em_preparacao` → `submetida` → `selecionada` ou `nao_selecionada` → `em_execucao` → `prestacao_de_contas` → `encerrada`.
 
-`src.executar_diario` não executa o Farol. Depois da revisão humana das evidências, altere explicitamente o status e use `src.executar_farol`.
+`src.executar_diario` não encaminha oportunidades apenas capturadas. Depois da revisão humana das evidências, a triagem pode abrir um caso isolado; `src.executar_farol` continua disponível para reavaliação manual.
+
+Na operação automática, `src.executar_diario` chama uma triagem determinística. Somente oportunidades verificadas e com aderência mínima de 60/100 recebem caso no Farol; os demais itens permanecem no histórico para preparação futura da associação.
 
 ## Dossiê do financiador
 

@@ -1,7 +1,7 @@
-name: 01 · Eldorado — monitoramento diário às 6h
+name: 01 · Eldorado — varredura profunda segunda e quarta
 on:
   schedule:
-    - cron: "0 9 * * *" # 06:00 America/Sao_Paulo (UTC-3)
+    - cron: "0 9 * * 1,3" # 06:00 America/Sao_Paulo (UTC-3)
   workflow_dispatch:
 permissions:
   contents: write
@@ -12,7 +12,7 @@ concurrency:
 jobs:
   monitorar:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,7 +25,7 @@ jobs:
         run: |
           git config user.name "eldorado-bot"
           git config user.email "eldorado-bot@users.noreply.github.com"
-          git add dados/oportunidades dados/financiadores estado docs
+          git add dados/oportunidades dados/editais dados/financiadores dados/doadores dados/associacoes estado docs
           git diff --cached --quiet && exit 0
-          git commit -m "dados: monitoramento diário $(date -u +%F)"
+          git commit -m "dados: varredura profunda $(date -u +%F)"
           git push

@@ -1,4 +1,4 @@
-name: 03 · Eldorado — histórico móvel de cinco anos
+name: 03 · Eldorado — levantamento inicial único de cinco anos
 on:
   schedule:
     - cron: "35 9 * * 0"
@@ -16,16 +16,22 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - name: Pesquisar pistas históricas sem IA
+      - name: Verificar marcador do bootstrap
+        id: bootstrap
+        run: |
+          if test -f estado/bootstrap_cinco_anos.json; then echo "executar=false" >> "$GITHUB_OUTPUT"; else echo "executar=true" >> "$GITHUB_OUTPUT"; fi
+      - name: Pesquisar uma única vez pistas históricas sem IA
+        if: steps.bootstrap.outputs.executar == 'true'
         run: |
           python -m src.retrospectivo
           python -m src.dossies
           python -m src.painel
       - name: Versionar resultados
+        if: steps.bootstrap.outputs.executar == 'true'
         run: |
           git config user.name "eldorado-bot"
           git config user.email "eldorado-bot@users.noreply.github.com"
-          git add dados/oportunidades dados/financiadores docs estado/cursor_retrospectivo.json
+          git add dados/oportunidades dados/editais dados/financiadores dados/doadores docs estado/cursor_retrospectivo.json estado/bootstrap_cinco_anos.json
           git diff --cached --quiet && exit 0
-          git commit -m "dados: retrospectivo móvel de cinco anos"
+          git commit -m "dados: levantamento inicial único de cinco anos"
           git push

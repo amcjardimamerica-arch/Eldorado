@@ -9,13 +9,14 @@ Sistema nacional, auditável e econômico para localizar recursos destinados a o
 | **Eldorado** | Monitora fontes públicas, privadas e plataformas de editais; deduplica; registra evidências; acompanha cinco anos de histórico por financiador | oportunidades verificadas e dossiês individualizados |
 | **Farol de Alexandria** | Aplica requisitos eliminatórios, pontua aderência de cada associação, consulta leis/procedimentos e prepara pacotes de trabalho | ranking explicável, checklist, plano de trabalho e prestação de contas |
 
-As partes usam um identificador imutável de oportunidade, mas não misturam associações. Cada perfil fica em diretório próprio e os perfis reais são ignorados pelo Git por padrão, porque este repositório é público.
+As partes usam um identificador imutável de oportunidade, mas não misturam associações. Cada perfil fica em diretório próprio. Somente o perfil institucional saneado pode ser versionado; originais, documentos pessoais e dados privados são ignorados pelo Git porque este repositório é público.
 
 ## Operação automática
 
-- Todos os dias, às **6h de Brasília**, o GitHub Actions executa apenas o **Eldorado**: coleta em fontes catalogadas, filtro local, pistas sociais, dossiês de financiadores e painel.
-- Aos domingos, a rotina histórica revisita uma janela móvel de cinco anos e mantém achados de busca como pistas até validação primária. Um cursor limita a carga e avança a cobertura a cada execução.
-- Mensalmente, o Farol confere a vigência e a integridade do catálogo jurídico; alterações normativas ficam marcadas para revisão humana.
+- Diariamente, às **5h30 de Brasília**, uma sentinela leve detecta fontes alteradas e atualiza a fila sem executar o Farol.
+- Às **segundas e quartas, às 6h**, o Eldorado faz a varredura aprofundada desde o último checkpoint, prioriza a fila, percorre páginas catalogadas e registra histórico individual por edital.
+- O levantamento de cinco anos é um bootstrap único. Depois do marcador `estado/bootstrap_cinco_anos.json`, ele não volta a executar.
+- Mensalmente, hashes das fontes jurídicas oficiais são comparados e uma revisão humana é aberta para vigência, revogação e impacto procedimental.
 - Nenhum token de IA é necessário para a coleta, deduplicação, filtros, pontuação ou geração do HTML.
 - A IA entra apenas por exportação controlada de um pacote JSON mínimo, pelo botão **Preparar pacote para IA** do painel.
 
@@ -32,10 +33,12 @@ As partes usam um identificador imutável de oportunidade, mas não misturam ass
 1. Abra **Actions → 00 · Verificar prontidão → Run workflow**.
 2. Em **Settings → Actions → General**, permita leitura e gravação ao workflow.
 3. Em **Settings → Pages**, publique a pasta `docs` da branch `main` se desejar o painel público.
-4. Cadastre cada associação copiando `dados/associacoes/EXEMPLO/perfil.json` para `dados/associacoes/SLUG/perfil_publico.json`. Inclua apenas critérios de elegibilidade não sensíveis; contatos, CNPJ, documentos, certidões e dados bancários ficam fora do Git.
+4. Crie cada associação com `python scripts/criar_associacao.py SLUG "Nome"`. Cada entidade recebe diretórios exclusivos de conhecimento, documentos, editais, planos, prestações e casos do Farol.
 5. Ajuste `config/escopo.json` para escolher UFs, municípios, níveis e áreas. O padrão monitora Goiás/Goiânia, além de fontes federais, privadas nacionais e internacionais compatíveis.
 6. Execute o Eldorado localmente: `python -m src.executar_diario`.
-7. Somente após verificação primária ou dupla, execute o segundo estágio: `python -m src.executar_farol`.
+7. O Farol é acionado automaticamente apenas após verificação primária/dupla e triagem com possibilidade moderada ou alta. A execução manual continua disponível em `python -m src.executar_farol`.
+
+Para importar DOCX, imagens ou planilhas localmente, instale os componentes opcionais com `pip install -r requirements-importacao.txt`. O monitoramento normal continua usando apenas a biblioteca-padrão do Python.
 
 ## Estrutura
 
@@ -46,6 +49,7 @@ src/                          coleta, normalização, dossiês, matching e paine
 dados/oportunidades/          banco JSONL deduplicado
 dados/financiadores/          um dossiê por organização financiadora
 dados/associacoes/            isolamento estrito por associação
+dados/doadores/               empresas e fundações doadoras separadas
 biblioteca/leis/              catálogo jurídico e vigência
 biblioteca/procedimentos/     procedimentos e checklists reutilizáveis
 biblioteca/modelos/           modelos versionados
@@ -64,5 +68,15 @@ estado/                       hashes, cache HTTP e auditoria
 6. Uma oportunidade só segue ao Farol quando revisada como `verificada_primaria` ou `verificada_dupla`.
 
 O dashboard permite filtrar por UF, nível e área, baixar um novo `escopo.json` e exportar um pacote JSON mínimo para ChatGPT ou Claude.
+
+## Conselho independente do Farol
+
+Cada caso elegível recebe sete pacotes separados, dos pontos de vista extremamente pessimista ao extremamente otimista. As personalidades brasileiras são sorteadas entre lentes relevantes à área e não repetem a mesma posição na rodada seguinte. Elas são simulações metodológicas, não opiniões reais.
+
+O parecer final permanece bloqueado até existirem sete respostas JSON válidas. O modelo usado é definido externamente por `FAROL_FINAL_MODEL`; nenhuma versão comercial é presumida no código. Sem credencial autorizada, o sistema prepara os pacotes, plano integral em rascunho, manual do presidente, documentos faltantes e matriz de prestação de contas, mas não simula que uma IA externa foi executada.
+
+## Associação inicial
+
+`dados/associacoes/amc-jardim-america/` contém o perfil público sanitizado da A.M.C., capacidades, indicadores, projetos/eventos e o índice compacto do DOCX anexado. O arquivo original tem dados pessoais e 17 imagens; por segurança, foram publicados apenas texto e tabelas compactados com PII removida e manifestos de hash das imagens.
 
 Consulte também [ARQUITETURA.md](ARQUITETURA.md), [SEGURANCA.md](SEGURANCA.md) e [OPERACAO.md](OPERACAO.md).

@@ -1,0 +1,18 @@
+{
+  "versao": 1,
+  "google_drive": {
+    "ativa": false,
+    "modo": "somente_leitura",
+    "credencial_env": "GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON",
+    "associacoes": {
+      "amc-jardim-america": {"folder_id_env":"DRIVE_FOLDER_AMC_JARDIM_AMERICA","ativa":false}
+    },
+    "regras": [
+      "cada pasta do Drive pertence a exatamente uma associação",
+      "o ID da pasta não pode ser reutilizado por outra associação",
+      "originais são armazenados na camada privada e nunca publicados automaticamente",
+      "arquivos são indexados por SHA-256; duplicatas não são reprocessadas",
+      "fotografias com pessoas exigem autorização antes de qualquer publicação ou envio a IA"
+    ]
+  }
+}

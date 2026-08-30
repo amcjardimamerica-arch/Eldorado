@@ -4,12 +4,13 @@
 
 ```mermaid
 flowchart TD
-  A[Escopo por UF e área] --> B[Fontes catalogadas]
-  B --> C[Eldorado: coleta e hash]
-  C --> D[Prova primária e pista social]
-  D --> E[Painel e dossiês]
-  D -->|revisão humana| F[Oportunidade verificada]
-  F --> G[Farol: enquadramento separado]
+  A[Sentinela diária] --> B[Fila de fontes alteradas]
+  B --> C[Eldorado segunda e quarta]
+  C --> D[Histórico por edital e doador]
+  D --> E{Fonte verificada e aderência >= 60}
+  E -->|não| F[Aprendizado e preparação]
+  E -->|sim| G[Farol no universo da associação]
+  G --> H[7 análises independentes e parecer final]
 ```
 
 ## Contrato de dados
@@ -22,6 +23,8 @@ O matching tem duas etapas:
 2. **Pontuação explicável**: aderência temática, territorial, experiência, documentação, capacidade financeira e histórico com o financiador.
 
 Cada associação recebe uma execução independente. O agregador do painel lê apenas os resultados finais e nunca cruza documentos ou dados brutos entre associações.
+
+Cada caso do Farol nasce dentro de `dados/associacoes/<id>/farol/casos/<oportunidade>`. O sistema não mantém ranking detalhado global e valida que o `id` do perfil seja igual ao nome da pasta.
 
 ## Economia de tokens
 

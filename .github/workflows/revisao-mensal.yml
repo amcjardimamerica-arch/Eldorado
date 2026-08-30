@@ -4,7 +4,7 @@ on:
     - cron: "20 10 1 * *"
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
   issues: write
 jobs:
   revisar:
@@ -12,6 +12,16 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Comparar fontes normativas oficiais
+        run: python -m src.revisao_normativa
+      - name: Versionar hashes e relatório
+        run: |
+          git config user.name "eldorado-bot"
+          git config user.email "eldorado-bot@users.noreply.github.com"
+          git add estado/leis estado/revisao_normativa.json
+          git diff --cached --quiet || (git commit -m "dados: revisão normativa mensal $(date -u +%F)" && git push)
       - name: Abrir checklist de revisão humana
         uses: actions/github-script@v7
         with:
@@ -19,4 +29,4 @@ jobs:
             const month = new Date().toISOString().slice(0,7);
             const title = `Revisão normativa e procedimental — ${month}`;
             const {data} = await github.rest.issues.listForRepo({...context.repo, state:'open'});
-            if (!data.some(i => i.title === title)) await github.rest.issues.create({...context.repo,title,body:'Conferir vigência em fontes oficiais, retificações, novos procedimentos, modelos e efeitos sobre planos de trabalho e prestações de contas. Não promover alteração normativa sem URL oficial e revisão humana.'});
+            if (!data.some(i => i.title === title)) await github.rest.issues.create({...context.repo,title,body:'O robô comparou os hashes das fontes oficiais em `estado/revisao_normativa.json`. Conferir alterações, vigência, revogações, normas sem URL oficial, procedimentos, modelos e efeitos sobre planos de trabalho e prestações de contas. Não promover conclusão normativa sem revisão humana.'});

@@ -1,0 +1,28 @@
+name: 00 · Sentinela diária de editais
+on:
+  schedule:
+    - cron: "30 8 * * *" # 05:30 America/Sao_Paulo (UTC-3)
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: eldorado-repo-writes
+  cancel-in-progress: false
+jobs:
+  detectar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Detectar somente fontes alteradas
+        run: python -m src.sentinela
+      - name: Atualizar fila incremental
+        run: |
+          git config user.name "eldorado-bot"
+          git config user.email "eldorado-bot@users.noreply.github.com"
+          git add estado/fila_fontes.json estado/ultima_sentinela.json
+          git diff --cached --quiet && exit 0
+          git commit -m "dados: sentinela diária $(date -u +%F)"
+          git push

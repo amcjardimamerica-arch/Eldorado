@@ -5,6 +5,9 @@ from src.eldorado import candidates, source_in_scope
 from src.farol import evaluate
 from src.nucleo import canonical_url, has_prompt_injection, slug, validate_public_https
 from src.retrospectivo import host_allowed
+from src.triagem import assess
+from src.conselho import assignment
+from scripts.ingestao_associacao import sanitize_tables
 
 class SystemTests(unittest.TestCase):
     def test_slug(self): self.assertEqual(slug("Fundação Árvore Viva!"),"fundacao-arvore-viva")
@@ -29,6 +32,18 @@ class SystemTests(unittest.TestCase):
     def test_retrospective_domain_allowlist(self):
         self.assertTrue(host_allowed("https://noticias.example.org/a","example.org"))
         self.assertFalse(host_allowed("https://example.org.evil.test/a","example.org"))
+    def test_farol_only_after_verified_opportunity(self):
+        profile={"territorios":["GO"],"areas":["cultura"],"experiencias":[1]}
+        opp={"id":"x","status":"capturada","areas_fonte":["cultura"],"uf":"GO"}
+        self.assertFalse(assess(profile,opp)["acionar_farol"])
+        opp["status"]="verificada_primaria"
+        self.assertTrue(assess(profile,opp)["acionar_farol"])
+    def test_council_has_seven_distinct_people(self):
+        rows=assignment("a",{"id":"e","areas_fonte":["cultura"]},1)
+        self.assertEqual(len(rows),7); self.assertEqual(len({x["personalidade"]["id"] for x in rows}),7)
+    def test_table_pii_redaction(self):
+        value=sanitize_tables([[["RG","5686474","CPF","031.720.541-28"]]])
+        self.assertNotIn("5686474",json.dumps(value)); self.assertNotIn("031.720",json.dumps(value))
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}
         p={"natureza_juridica":"associacao","territorios":["GO"],"areas":["educacao"],"anos_existencia":3,"certificacoes":[],"experiencias":[1],"documentos_validos":[1],"capacidade_execucao":True}
