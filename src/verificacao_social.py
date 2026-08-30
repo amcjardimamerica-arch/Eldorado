@@ -19,7 +19,7 @@ def run() -> dict:
             if line.strip():
                 item = json.loads(line); known[item["id"]] = item
     for item in cfg["fontes"]:
-        if not item.get("ativa") or (item.get("uf") and item["uf"] not in scope["ufs_ativas"]):
+        if not item.get("ativa") or item.get("modo") != "pagina_social_publica" or (item.get("uf") and item["uf"] not in scope["ufs_ativas"]):
             continue
         report["fontes_total"] += 1
         source = {**item, "tipo": "rede_social_oficial", "territorio": item.get("municipio") or item.get("uf") or "BR", "confianca": "secundaria", "hosts_links": [item["url"].split("/")[2]]}
