@@ -1,9 +1,15 @@
-"""Verificação diária leve: detecta raízes alteradas e prioriza a varredura profunda."""
+"""Verificação diária leve: compara o CONJUNTO DE CANDIDATOS da página raiz
+(e não os bytes brutos, que mudam a cada acesso em portais dinâmicos) e
+prioriza a varredura profunda de segunda e quarta."""
 from __future__ import annotations
 import json
 from urllib.error import HTTPError, URLError
-from .eldorado import fetch, source_in_scope
-from .nucleo import ROOT, canonical_url, load_json, now_iso, sha256, write_json
+from .eldorado import candidates, fetch, source_in_scope
+from .nucleo import ROOT, load_json, now_iso, sha256, write_json
+
+def _hash_candidatos(rows: list[dict]) -> str:
+    chave="|".join(sorted(f'{r.get("id","?")}:{r.get("hash_evidencia","")}' for r in rows))
+    return sha256(chave.encode())
 
 def run() -> dict:
     cfg=load_json(ROOT/"config/fontes.json"); scope=load_json(ROOT/"config/escopo.json")
@@ -13,11 +19,13 @@ def run() -> dict:
         if not source.get("ativa") or not source_in_scope(source,scope) or source.get("modo","html_publico")!="html_publico": continue
         checked+=1
         try:
-            data,_,_=fetch(source,cfg["politica"]); digest=sha256(data)
-            state_path=ROOT/"estado/fontes"/(source["id"]+".json")
+            data,final,ctype=fetch(source,cfg["politica"])
+            digest=_hash_candidatos(candidates(source,data,final,ctype))
+            state_path=ROOT/"estado/sentinela"/(source["id"]+".json")
             state=load_json(state_path) if state_path.exists() else {}
-            root_hash=state.get("paginas",{}).get(canonical_url(source["url"]))
-            if digest!=root_hash: changed.add(source["id"])
+            if digest!=state.get("hash_candidatos"):
+                changed.add(source["id"])
+                write_json(state_path,{"hash_candidatos":digest,"observado_em":now_iso()})
         except (HTTPError,URLError,OSError,ValueError) as exc:
             failures.append({"fonte":source["id"],"erro":type(exc).__name__})
     report={"executado_em":now_iso(),"fontes_verificadas":checked,"fontes_na_fila":len(changed),"falhas":failures}
