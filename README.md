@@ -79,4 +79,15 @@ O parecer final permanece bloqueado até existirem sete respostas JSON válidas 
 
 `dados/associacoes/amc-jardim-america/` contém o perfil público sanitizado da A.M.C., capacidades, indicadores, projetos/eventos e o índice compacto do DOCX anexado. O arquivo original tem dados pessoais e 17 imagens; por segurança, foram publicados apenas texto e tabelas compactados com PII removida e manifestos de hash das imagens.
 
+## Relatórios em HTML
+
+- `docs/index.html` — painel consolidado com filtros, conformidade e prazo de cada item.
+- `docs/editais/<id>.html` — **uma ficha por edital**, com dados, fonte, evidência hasheada,
+  prazo, conformidade item a item e aprendizado do financiador.
+- `docs/relatorio-amplitude.html` — canais de busca, uso de tokens por etapa, testes e padrões
+  exigidos de um edital oficial, tudo gerado a partir da configuração viva do repositório.
+
+A carga histórica de cinco anos é a única rotina que não gera HTML: ela é levantamento de padrão,
+não análise de oportunidade viva.
+
 Consulte também [ARQUITETURA.md](ARQUITETURA.md), [SEGURANCA.md](SEGURANCA.md) e [OPERACAO.md](OPERACAO.md).

@@ -1,7 +1,15 @@
-name: 03 · Eldorado — carga histórica de cinco anos (mês a mês)
+name: 03 · Eldorado — carga histórica de cinco anos (campanha única, mês a mês)
+# Levantamento histórico ÚNICO: percorre 5 anos fracionados mês a mês, em ordem
+# cronológica, um mês após o outro. O objetivo é formar o padrão do repositório
+# (requisitos, parâmetros, janelas de publicação e condições de cumprimento).
+#
+# Não gera HTML — é levantamento de padrão, não análise de oportunidade viva.
+# Roda de 6 em 6 horas APENAS enquanto houver janela pendente; assim que a
+# campanha conclui, o marcador estado/bootstrap_cinco_anos.json faz o job
+# encerrar imediatamente e a rotina nunca mais consome tempo de execução.
 on:
   schedule:
-    - cron: "35 9 * * 0" # domingos 06:35 America/Sao_Paulo, até concluir todas as janelas
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 permissions:
   contents: write
@@ -11,28 +19,49 @@ concurrency:
 jobs:
   pesquisar:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - name: Consumir janelas mensais pendentes (PNCP + Querido Diário + domínios)
+
+      - name: Verificar se a campanha ja foi concluida
+        id: estado
+        run: |
+          if [ -f estado/bootstrap_cinco_anos.json ]; then
+            echo "concluida=true" >> "$GITHUB_OUTPUT"
+            echo "Campanha historica ja concluida - nada a fazer." >> "$GITHUB_STEP_SUMMARY"
+            cat estado/bootstrap_cinco_anos.json >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "concluida=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Consumir janelas mensais em ordem cronologica (PNCP + Querido Diario + dominios)
+        if: steps.estado.outputs.concluida == 'false'
         run: |
           python -m src.retrospectivo | tee retro.json
-          echo '## Carga histórica' >> "$GITHUB_STEP_SUMMARY"
-          tail -40 retro.json >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo '## Carga historica - campanha unica mes a mes'
+            echo '```json'
+            tail -60 retro.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
           rm -f retro.json
-      - name: Dossiês, aprendizado e painel
+
+      - name: Consolidar padrao historico (dossies, qualidade e aprendizado, sem HTML)
+        if: steps.estado.outputs.concluida == 'false'
         run: |
           python -m src.dossies
+          python -m src.qualidade
           python -m src.aprendizado
-          python -m src.painel
+
       - name: Versionar resultados
+        if: steps.estado.outputs.concluida == 'false'
         run: |
           git config user.name "eldorado-bot"
           git config user.email "eldorado-bot@users.noreply.github.com"
           git pull --rebase --autostash origin main || true
-          git add -A dados estado docs
+          git add -A dados estado
           git diff --cached --quiet && exit 0
-          git commit -m "dados: carga histórica mensal $(date -u +%F)"
+          git commit -m "dados: carga historica mes a mes $(date -u +%F)"
           git push

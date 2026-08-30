@@ -23,6 +23,9 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Coletar, verificar, acionar Farol e publicar painel
         run: python -m src.executar_diario
+      - name: Relatorio de amplitude (canais, tokens, testes, padroes)
+        if: always()
+        run: python -m src.relatorio_amplitude
       - name: Resumo e decisão de alerta
         if: always()
         run: python -m src.resumo_execucao >> "$GITHUB_STEP_SUMMARY"
@@ -49,3 +52,17 @@ jobs:
             const {data} = await github.rest.issues.listForRepo({...context.repo, state: 'open', labels: 'alerta-operacao'});
             if (data.some(i => i.title === alerta.titulo)) return;
             await github.rest.issues.create({...context.repo, title: alerta.titulo, body: alerta.corpo, labels: ['alerta-operacao']});
+
+      - name: Abrir issue de prazos a vencer
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const caminho = 'estado/alerta_prazos.json';
+            if (!fs.existsSync(caminho)) return;
+            const alerta = JSON.parse(fs.readFileSync(caminho, 'utf8'));
+            if (!alerta.abrir_issue) return;
+            const {data} = await github.rest.issues.listForRepo({...context.repo, state: 'open', labels: 'prazo'});
+            if (data.some(i => i.title === alerta.titulo)) return;
+            await github.rest.issues.create({...context.repo, title: alerta.titulo, body: alerta.corpo, labels: ['prazo']});

@@ -3,14 +3,19 @@
 Cada etapa é isolada: falha em uma NUNCA derruba as demais — o erro fica
 registrado e o resumo/alerta dá visibilidade. Ordem do fluxo:
 
-coleta HTML → APIs oficiais → capilaridade (pistas) → social → verificação
-assistida → dossiês → aprendizado/previsões → triagem → casos → Farol IA → painel
+coleta HTML -> APIs oficiais -> capilaridade (pistas) -> social -> verificacao
+assistida -> conformidade de edital -> prazos e alertas -> dossies ->
+aprendizado/previsoes -> triagem -> casos -> Farol IA -> fichas HTML -> painel
+
+Toda analise de oportunidade viva produz HTML: uma ficha por edital em
+docs/editais/<id>.html mais o painel consolidado em docs/index.html.
 """
 from __future__ import annotations
 import json
 
 from . import (aprendizado, capilaridade, casos, coletores_api, dossies, eldorado,
-               farol_ia, painel, triagem, verificacao_assistida, verificacao_social)
+               farol_ia, fichas, painel, prazos, qualidade, triagem,
+               verificacao_assistida, verificacao_social)
 from .nucleo import ROOT, append_jsonl, now_iso, write_json
 
 def _rodar(nome, funcao, relatorio):
@@ -26,6 +31,8 @@ def main():
     _rodar("capilaridade", capilaridade.run, relatorio)
     _rodar("verificacao_social", verificacao_social.run, relatorio)
     _rodar("verificacao_assistida", verificacao_assistida.run, relatorio)
+    _rodar("qualidade", qualidade.run, relatorio)
+    _rodar("prazos", prazos.run, relatorio)
     _rodar("dossies", dossies.run, relatorio)
     _rodar("aprendizado", aprendizado.run, relatorio)
 
@@ -37,6 +44,7 @@ def main():
         return {"gatilhos": len(gatilhos), "casos_criados": criados}
     _rodar("triagem_e_casos", _triagem_e_casos, relatorio)
     _rodar("farol_ia", farol_ia.run, relatorio)
+    _rodar("fichas_html", fichas.run, relatorio)
     _rodar("painel", painel.run, relatorio)
 
     write_json(ROOT / "estado/ultima_execucao_diaria.json", relatorio)

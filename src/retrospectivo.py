@@ -87,11 +87,21 @@ def run() -> dict:
     limite = int(cfg.get("max_janelas_por_execucao", 12))
     relatorio = {"executado_em": now_iso(), "janelas_totais": len(janelas), "janelas_ja_concluidas": len(concluidas),
                  "janelas_nesta_execucao": 0, "novas": 0, "falhas": []}
+    # Campanha única, sequencial: as janelas são consumidas em ordem cronológica,
+    # um mês após o outro, do mais antigo ao mais recente. `limite` só existe como
+    # rede de segurança contra o teto de tempo do runner — em condição normal a
+    # execução percorre todas as janelas pendentes de uma vez e encerra a campanha.
     for rotulo, inicio, fim in pendentes[:limite]:
         relatorio["janelas_nesta_execucao"] += 1
+        relatorio.setdefault("janelas_consumidas", []).append(rotulo)
         novos, falhas = [], []
-        a, f = coletar_pncp(inicio, fim, escopo); novos += a; falhas += f
-        a, f = coletar_querido_diario(inicio, fim, escopo); novos += a; falhas += f
+        for tentativa in range(1, int(cfg.get("tentativas_por_janela", 2)) + 1):
+            novos, falhas = [], []
+            a, f = coletar_pncp(inicio, fim, escopo); novos += a; falhas += f
+            a, f = coletar_querido_diario(inicio, fim, escopo); novos += a; falhas += f
+            if not falhas:
+                break
+            relatorio.setdefault("retentativas", []).append({"janela": rotulo, "tentativa": tentativa})
         parcial = {"novas": 0}
         _salvar(novos, parcial)
         relatorio["novas"] += parcial["novas"]

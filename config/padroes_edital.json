@@ -1,0 +1,57 @@
+{
+  "versao": 1,
+  "regra": "Padrões objetivos de qualidade e conformidade que um registro de edital deve cumprir para ser tratado como oportunidade confiável. Nenhum item é inferido: cada exigência é verificada contra o registro coletado e contra o texto da página primária. Ausência vira pendência declarada, nunca preenchimento automático.",
+  "fundamento_legal": {
+    "nota": "Referências de origem do checklist. A vigência e a redação consolidada devem ser conferidas em fonte oficial antes de uso jurídico — a biblioteca marca todas as normas como verificar_consolidacao.",
+    "mrosc_art_24": "Lei 13.019/2014, art. 24, §1º — conteúdo mínimo do edital de chamamento público: programação orçamentária, objeto, datas, prazos, condições, local de apresentação das propostas, datas e critérios de seleção e julgamento, valor de referência e minuta do instrumento de parceria.",
+    "mrosc_decreto": "Decreto 8.726/2016 — regulamento federal do MROSC.",
+    "licitacoes": "Lei 14.133/2021 — publicidade obrigatória no PNCP para os atos que a lei abrange.",
+    "transparencia": "Lei 12.527/2011 — publicidade ativa dos atos administrativos."
+  },
+  "camadas_confianca": {
+    "pista": "Origem secundária (imprensa, busca, rede social). Nunca vira oportunidade sem URL oficial confirmada.",
+    "capturada": "Encontrada em fonte catalogada, ainda sem conferência da página primária.",
+    "verificada_primaria": "Página primária aberta, fonte catalogada confirmada, termos de edital presentes, sem padrão de injeção, evidência hasheada.",
+    "verificada_humana": "Conferida por pessoa via scripts/promover.py. Nunca é rebaixada por rotina automática."
+  },
+  "obrigatorios_registro": [
+    {"campo": "url", "exigencia": "URL HTTPS canônica em domínio de fonte catalogada", "bloqueante": true},
+    {"campo": "titulo", "exigencia": "Título não vazio com ao menos 10 caracteres", "bloqueante": true},
+    {"campo": "fonte_id", "exigencia": "Fonte presente em config/fontes.json", "bloqueante": true},
+    {"campo": "coletado_em", "exigencia": "Carimbo UTC da coleta", "bloqueante": true},
+    {"campo": "evidencia", "exigencia": "Trecho literal que motivou a captura", "bloqueante": true},
+    {"campo": "hash_evidencia", "exigencia": "SHA-256 da evidência, para detectar alteração silenciosa", "bloqueante": true}
+  ],
+  "conteudo_minimo_edital": [
+    {"id": "objeto", "rotulo": "Objeto da parceria ou do apoio", "peso": 15, "termos": ["objeto", "finalidade", "destina-se", "tem por objeto"]},
+    {"id": "prazo_inscricao", "rotulo": "Prazo e local de apresentação das propostas", "peso": 20, "termos": ["prazo", "inscri", "apresenta", "protocolo", "submiss", "até o dia", "encerra"]},
+    {"id": "valor", "rotulo": "Valor de referência ou programação orçamentária", "peso": 15, "termos": ["valor", "R$", "recurso", "dotação", "orçament", "montante", "aporte"]},
+    {"id": "criterios_selecao", "rotulo": "Critérios de seleção e julgamento", "peso": 15, "termos": ["critério", "julgamento", "pontuaç", "avaliaç", "classificaç", "seleção"]},
+    {"id": "requisitos_habilitacao", "rotulo": "Requisitos de habilitação da proponente", "peso": 15, "termos": ["habilitaç", "requisito", "documentaç", "poderão participar", "elegív", "condições de participação"]},
+    {"id": "instrumento", "rotulo": "Minuta ou indicação do instrumento de parceria", "peso": 10, "termos": ["termo de fomento", "termo de colaboração", "acordo de cooperação", "convênio", "minuta", "instrumento"]},
+    {"id": "contrapartida", "rotulo": "Contrapartida e prestação de contas", "peso": 10, "termos": ["contrapartida", "prestação de contas", "presta contas", "monitoramento", "fiscalizaç"]}
+  ],
+  "sinais_de_oficialidade": [
+    {"id": "dominio_oficial", "rotulo": "Domínio governamental ou de fonte catalogada", "peso": 25},
+    {"id": "identificacao_do_ato", "rotulo": "Numeração do ato (edital/chamamento nº)", "peso": 20, "regex": "(edital|chamamento|chamada|sele[çc][ãa]o|concurso|credenciamento)[^.\\n]{0,40}n[.º°o]{0,3}\\s*\\d"},
+    {"id": "data_publicacao", "rotulo": "Data de publicação identificada", "peso": 20},
+    {"id": "orgao_emissor", "rotulo": "Órgão ou entidade emissora identificada", "peso": 20},
+    {"id": "anexos_ou_minuta", "rotulo": "Anexos, minuta ou formulários referenciados", "peso": 15, "termos": ["anexo", "formulário", "minuta", "modelo de", "apêndice"]}
+  ],
+  "faixas_qualidade": {
+    "completo": 80,
+    "suficiente": 60,
+    "insuficiente": 40
+  },
+  "prazos": {
+    "alerta_dias": [30, 15, 7, 3, 1],
+    "regra": "Contagem em dias corridos sobre o prazo textual extraído da fonte. Prazo não confirmado na página primária é sempre rotulado como 'mencionado, exige conferência' e nunca substitui a leitura do edital.",
+    "encerrado_mantem_historico": true
+  },
+  "reprovacao_automatica": [
+    "URL fora dos domínios da fonte catalogada",
+    "Conteúdo com padrão de injeção de prompt",
+    "Registro sem evidência ou sem hash",
+    "Título genérico sem nenhum termo de edital"
+  ]
+}

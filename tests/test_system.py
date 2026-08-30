@@ -9,6 +9,12 @@ from src.submissao import avaliar_limpeza
 from src.triagem import assess
 from src.conselho import assignment
 from scripts.ingestao_associacao import sanitize_tables
+from src.qualidade import avaliar
+from src.prazos import classificar, data_do_prazo
+from src.fichas import render as render_ficha
+from src.relatorio_amplitude import _etapas_com_ia
+from src.retrospectivo import _janelas_mensais
+from datetime import date
 
 class SystemTests(unittest.TestCase):
     def test_slug(self): self.assertEqual(slug("Fundação Árvore Viva!"),"fundacao-arvore-viva")
@@ -111,6 +117,71 @@ class SystemTests(unittest.TestCase):
         verificar_pacote_seguro({"associacao":{"nome":"AMC","areas":["cultura"]}})
         with self.assertRaises(ValueError):
             verificar_pacote_seguro({"associacao":{"nome":"AMC","cpf":"000"}})
+
+
+    # ---- conformidade com padrões de edital oficial ----
+    def test_qualidade_edital_completo_vs_indicio(self):
+        completo={"id":"a","titulo":"Edital de Chamamento Público nº 07/2026","url":"https://goias.gov.br/x",
+            "fonte_id":"goias-cultura","fonte_nome":"Secult GO","coletado_em":"2026-08-30T00:00:00+00:00",
+            "hash_evidencia":"h","data_publicacao":"2026-08-15",
+            "evidencia":("Edital de Chamamento Público nº 07/2026. O objeto é a seleção de projetos. "
+                "Prazo de inscrição até 30/09/2026. Valor de referência R$ 500.000,00. Critério de julgamento no anexo. "
+                "Requisito de habilitação: entidade sem fins lucrativos. Termo de fomento. Contrapartida e prestação de contas.")}
+        r=avaliar(completo)
+        self.assertEqual(r["classe"],"completo"); self.assertGreaterEqual(r["nota"],80)
+        self.assertEqual(r["conteudo_pendente"],[])
+        vago=dict(completo,id="b",titulo="Apoio a projetos",evidencia="Apoio a projetos sociais.",data_publicacao=None)
+        rv=avaliar(vago)
+        self.assertLess(rv["nota"],r["nota"]); self.assertTrue(rv["conteudo_pendente"])
+
+    def test_qualidade_reprova_sem_obrigatorio(self):
+        r=avaliar({"titulo":"Edital de chamamento público nº 1","url":"https://x.gov.br/a","fonte_id":"f",
+                   "coletado_em":"2026-01-01T00:00:00+00:00","evidencia":"objeto prazo valor"})
+        self.assertEqual(r["classe"],"reprovado"); self.assertEqual(r["nota"],0)
+        self.assertIn("hash_evidencia",r["obrigatorios_faltando"])
+
+    # ---- prazos e alertas ----
+    def test_prazo_extrai_e_classifica(self):
+        self.assertEqual(data_do_prazo({"prazo_texto":"30/09/2026"}),date(2026,9,30))
+        self.assertIsNone(data_do_prazo({"prazo_texto":"sem data"}))
+        self.assertIsNone(data_do_prazo({"prazo_texto":"32/13/2026"}))
+        faixas=[30,15,7,3,1]
+        self.assertEqual(classificar(-1,faixas),"encerrado")
+        self.assertEqual(classificar(2,faixas),"faltam_3_dias_ou_menos")
+        self.assertEqual(classificar(90,faixas),"em_aberto")
+        self.assertEqual(classificar(None,faixas),"sem_prazo_identificado")
+
+    # ---- ficha HTML por edital ----
+    def test_ficha_html_gera_e_escapa(self):
+        item={"id":"x1","titulo":"Edital <script>alert(1)</script>","url":"https://x.gov.br/a","fonte_id":"f",
+              "fonte_nome":"Fonte","coletado_em":"2026-08-30T00:00:00+00:00","hash_evidencia":"h",
+              "evidencia":"objeto prazo valor critério habilitação termo de fomento contrapartida","prazo_dias_restantes":5}
+        item["qualidade"]=avaliar(item)
+        html=render_ficha(item)
+        self.assertIn("<!doctype html>",html)
+        self.assertNotIn("<script>alert(1)</script>",html)
+        self.assertIn("altam 5 dia(s)",html)
+        self.assertIn("Conformidade com os padrões de edital oficial",html)
+
+    # ---- garantia de que o Eldorado não consome tokens ----
+    def test_eldorado_nao_usa_tokens(self):
+        com_ia=_etapas_com_ia()
+        for modulo in ("eldorado","coletores_api","capilaridade","verificacao_assistida","qualidade",
+                       "prazos","dossies","aprendizado","retrospectivo","fichas","painel","sentinela","triagem"):
+            self.assertNotIn(modulo,com_ia,f"{modulo} não pode consumir tokens")
+        self.assertIn("farol_ia",com_ia)
+
+    # ---- carga histórica: mês a mês, sequencial, sem buraco ----
+    def test_carga_historica_mes_a_mes_sequencial(self):
+        janelas=_janelas_mensais(5)
+        self.assertGreaterEqual(len(janelas),60)
+        rotulos=[j[0] for j in janelas]
+        self.assertEqual(rotulos,sorted(rotulos))
+        self.assertEqual(len(set(rotulos)),len(rotulos))
+        for anterior,seguinte in zip(janelas,janelas[1:]):
+            self.assertEqual(anterior[2],seguinte[1])  # fim de um mês é o início do próximo
+        cfg=json.load(open("config/retrospectivo.json"))
+        self.assertGreaterEqual(cfg["max_janelas_por_execucao"],len(janelas))
 
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}

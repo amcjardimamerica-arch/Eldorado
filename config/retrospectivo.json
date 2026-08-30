@@ -1,5 +1,5 @@
 {
-  "versao": 3,
+  "versao": 4,
   "motor": "https://www.bing.com/search?format=rss&q={consulta}",
   "janela_anos": 5,
   "max_consultas_por_execucao": 500,
@@ -85,6 +85,7 @@
       "ativa": false
     }
   ],
-  "regra": "Carga histórica fracionada MÊS A MÊS (5 anos) sobre PNCP e Querido Diário, com cursor e retry por janela; camada complementar anual por site:dominio_oficial dos financiadores. Toda consulta a domínio usa site:dominio_oficial e resultados fora dele são descartados. Resultados são pistas até conferência da página primária.",
-  "max_janelas_por_execucao": 12
+  "regra": "CAMPANHA ÚNICA de levantamento histórico: 5 anos fracionados MÊS A MÊS, consumidos em ordem cronológica, um mês após o outro, do mais antigo ao mais recente, sobre PNCP e Querido Diário. O cursor registra cada janela concluída e as janelas que falharam são repetidas na execução seguinte. Quando todas as janelas e todos os anos da camada de domínios são concluídos, grava-se estado/bootstrap_cinco_anos.json e a campanha NUNCA mais roda — o objetivo é formar o padrão histórico (requisitos, parâmetros, janelas de publicação e condições), não monitorar. Esta etapa NÃO gera HTML: é levantamento de padrão, não análise de oportunidade viva. max_janelas_por_execucao=72 cobre as 61 janelas de 5 anos em uma única execução; o valor é rede de segurança contra o teto de tempo do runner, não fracionamento deliberado.",
+  "max_janelas_por_execucao": 72,
+  "tentativas_por_janela": 2
 }
