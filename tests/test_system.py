@@ -4,6 +4,7 @@ from unittest.mock import patch
 from src.eldorado import candidates, source_in_scope
 from src.farol import evaluate
 from src.nucleo import canonical_url, has_prompt_injection, slug, validate_public_https
+from src.retrospectivo import host_allowed
 
 class SystemTests(unittest.TestCase):
     def test_slug(self): self.assertEqual(slug("Fundação Árvore Viva!"),"fundacao-arvore-viva")
@@ -25,6 +26,9 @@ class SystemTests(unittest.TestCase):
         scope={"niveis_ativos":["estadual"],"ufs_ativas":["GO"],"municipios_ativos":[],"areas_ativas":["cultura"]}
         self.assertTrue(source_in_scope({"nivel":"estadual","uf":"GO","municipio":None,"areas":["cultura"]},scope))
         self.assertFalse(source_in_scope({"nivel":"estadual","uf":"SP","municipio":None,"areas":["cultura"]},scope))
+    def test_retrospective_domain_allowlist(self):
+        self.assertTrue(host_allowed("https://noticias.example.org/a","example.org"))
+        self.assertFalse(host_allowed("https://example.org.evil.test/a","example.org"))
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}
         p={"natureza_juridica":"associacao","territorios":["GO"],"areas":["educacao"],"anos_existencia":3,"certificacoes":[],"experiencias":[1],"documentos_validos":[1],"capacidade_execucao":True}

@@ -1,15 +1,29 @@
 {
-  "versao":1,
-  "motor":"https://www.bing.com/search?format=rss&q={consulta}",
-  "janela_anos":5,
-  "max_consultas_por_execucao":40,
-  "consultas_base":[
-    "{nome} edital projetos sociais {ano}",
-    "{nome} chamada pública organizações sociedade civil {ano}",
-    "{nome} investimento social doação projeto {ano} valor"
+  "versao": 2,
+  "motor": "https://www.bing.com/search?format=rss&q={consulta}",
+  "janela_anos": 5,
+  "max_consultas_por_execucao": 40,
+  "consultas_base": [
+    "site:{dominio} {nome} edital projetos sociais {ano}",
+    "site:{dominio} {nome} chamada pública organizações sociedade civil {ano}",
+    "site:{dominio} {nome} investimento social doação projeto {ano} valor"
   ],
-  "financiadores":[
-    "Fundação Banco do Brasil","BNDES","Petrobras","Itaú Social","Fundação Vale","Instituto Sabin","Fundação Telefônica Vivo","Instituto Localiza","Fundação Grupo Volkswagen","Instituto ACP","Instituto Unibanco","Santander Brasil","Fundação Cargill","Instituto Mosaic","Instituto Sicoob"
+  "financiadores": [
+    {"nome":"Fundação Banco do Brasil","dominio_oficial":"fbb.org.br","ativa":true},
+    {"nome":"BNDES","dominio_oficial":"bndes.gov.br","ativa":true},
+    {"nome":"Petrobras","dominio_oficial":"petrobras.com.br","ativa":true},
+    {"nome":"Itaú Social","dominio_oficial":"itausocial.org.br","ativa":true},
+    {"nome":"Fundação Vale","dominio_oficial":null,"ativa":false},
+    {"nome":"Instituto Sabin","dominio_oficial":null,"ativa":false},
+    {"nome":"Fundação Telefônica Vivo","dominio_oficial":null,"ativa":false},
+    {"nome":"Instituto Localiza","dominio_oficial":null,"ativa":false},
+    {"nome":"Fundação Grupo Volkswagen","dominio_oficial":null,"ativa":false},
+    {"nome":"Instituto ACP","dominio_oficial":null,"ativa":false},
+    {"nome":"Instituto Unibanco","dominio_oficial":null,"ativa":false},
+    {"nome":"Santander Brasil","dominio_oficial":null,"ativa":false},
+    {"nome":"Fundação Cargill","dominio_oficial":null,"ativa":false},
+    {"nome":"Instituto Mosaic","dominio_oficial":null,"ativa":false},
+    {"nome":"Instituto Sicoob","dominio_oficial":null,"ativa":false}
   ],
-  "regra":"A janela é recalculada a cada execução. Resultados são pistas secundárias e só mudam para verificado após conferência em URL primária. O cursor permite cobrir o conjunto gradualmente sem sobrecarregar o buscador."
+  "regra": "Toda consulta contém site:dominio_oficial e todo resultado fora desse domínio é descartado. Entradas sem domínio validado ficam inativas. Resultados continuam pistas até conferência da página primária."
 }

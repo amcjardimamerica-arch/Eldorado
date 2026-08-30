@@ -57,7 +57,7 @@ estado/                       hashes, cache HTTP e auditoria
 ## Trilha de busca cirúrgica
 
 1. O acervo fornece pistas de programas e formas de captação, sem convertê-las automaticamente em fatos atuais.
-2. `config/fontes.json` funciona como lista de permissão: o coletor não segue links para domínios não catalogados.
+2. `config/fontes.json` funciona como lista de permissão: o coletor não segue links para domínios não catalogados. A busca histórica usa `site:dominio_oficial` e também descarta o resultado se o host não coincidir.
 3. `config/escopo.json` elimina UFs, municípios e áreas antes de qualquer requisição, economizando banda e tokens.
 4. Portais públicos são coletados automaticamente; Goodstack e UN Partner Portal ficam como portais autenticados e não são raspados.
 5. A etapa social consulta somente canais previamente identificados em `config/verificacao_social.json` e gera pista secundária.
