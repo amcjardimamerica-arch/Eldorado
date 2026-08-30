@@ -13,6 +13,7 @@ from .nucleo import ROOT, append_jsonl, canonical_url, has_prompt_injection, loa
 
 TERMS = re.compile(r"\b(edital|chamada pública|seleção pública|chamamento público|doação|patrocínio|apoio financeiro|fundo|emenda|incentivo)\b", re.I)
 DEADLINE = re.compile(r"\b(?:at[eé]|prazo|inscri(?:ção|ções))\D{0,25}(\d{1,2}/\d{1,2}/20\d{2})", re.I)
+YEAR = re.compile(r"\b(20(?:2[0-9]|1[0-9]))\b")
 
 class Links(HTMLParser):
     def __init__(self):
@@ -55,12 +56,13 @@ def candidates(source: dict, data: bytes, final_url: str) -> list[dict]:
         if len(label)<5 or not TERMS.search(label): continue
         url=canonical_url(urljoin(final_url,href))
         if urlsplit(url).scheme!="https": continue
-        deadline=DEADLINE.search(label)
+        deadline=DEADLINE.search(label); year=YEAR.search(label)
         out.append({
             "id":sha256((source["id"]+"|"+url).encode())[:20], "status":"capturada", "titulo":label[:300],
             "url":url, "fonte_id":source["id"], "fonte_nome":source["nome"], "territorio":source["territorio"],
             "tipo_fonte":source["tipo"], "confianca":source["confianca"], "coletado_em":now_iso(),
-            "prazo_texto":deadline.group(1) if deadline else None, "evidencia":label[:500], "hash_evidencia":sha256(label.encode())
+            "prazo_texto":deadline.group(1) if deadline else None, "ano_referencia":int(year.group(1)) if year else None,
+            "evidencia":label[:500], "hash_evidencia":sha256(label.encode())
         })
     unique={item["id"]:item for item in out}
     return list(unique.values())

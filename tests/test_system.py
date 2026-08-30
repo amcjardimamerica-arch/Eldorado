@@ -15,8 +15,8 @@ class SystemTests(unittest.TestCase):
         with self.assertRaises(ValueError): validate_public_https("https://example.org")
     def test_candidates(self):
         src={"id":"x","nome":"Fonte","territorio":"BR","tipo":"publica","confianca":"primaria"}
-        rows=candidates(src,b'<a href="/edital">Edital para organizacoes sociais ate 30/09/2026</a>',"https://example.org/")
-        self.assertEqual(len(rows),1); self.assertEqual(rows[0]["prazo_texto"],"30/09/2026")
+        rows=candidates(src,b'<a href="/edital">Edital 2026 para organizacoes sociais ate 30/09/2026</a>',"https://example.org/")
+        self.assertEqual(len(rows),1); self.assertEqual(rows[0]["prazo_texto"],"30/09/2026"); self.assertEqual(rows[0]["ano_referencia"],2026)
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}
         p={"natureza_juridica":"associacao","territorios":["GO"],"areas":["educacao"],"anos_existencia":3,"certificacoes":[],"experiencias":[1],"documentos_validos":[1],"capacidade_execucao":True}
@@ -25,4 +25,3 @@ class SystemTests(unittest.TestCase):
         o["requisitos"]["certificacoes"]=["CEBAS"]; self.assertFalse(evaluate(p,o,c)["elegivel"])
 
 if __name__=="__main__": unittest.main()
-
