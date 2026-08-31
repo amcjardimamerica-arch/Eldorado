@@ -28,6 +28,11 @@ button:hover{border-color:var(--marca)}
 .subnav{display:flex;justify-content:center;gap:10px;padding:10px 0 18px;flex-wrap:wrap}
 .subnav button.on{background:var(--realce);border-color:var(--marca);font-weight:700;color:var(--marca)}
 .oculto{display:none!important}
+/* transição entre páginas: a vista atual desaparece (fade-out) e a
+   selecionada reaparece (fade-in) */
+#palco{transition:opacity .18s ease}
+#palco.apaga{opacity:0}
+@media(prefers-reduced-motion:reduce){#palco{transition:none}}
 .legenda{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .legenda span{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--suave)}
 .ponto{width:11px;height:11px;border-radius:50%;display:inline-block;flex:none}
@@ -36,9 +41,19 @@ button:hover{border-color:var(--marca)}
 /* proporção travada em 1536x343 → a arte nunca distorce, só escala */
 .hero-arte{position:relative;width:100vw;margin-left:calc(50% - 50vw);line-height:0}
 .hero-arte img{width:100%;height:auto;display:block}
-.hero-arte .hot{position:absolute;border:0;background:transparent;padding:0;cursor:pointer;border-radius:12px}
-.hero-arte .hot:hover{box-shadow:0 0 0 3px #ffffffaa,0 0 14px #00000026}
-.hero-arte .hot:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.hotzona{position:absolute}
+.hotzona .hot{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;padding:0;cursor:pointer;border-radius:12px}
+.hotzona:hover .hot{box-shadow:0 0 0 3px #ffffffaa,0 0 14px #00000026}
+.hotzona .hot:focus-visible{outline:3px solid #fff;outline-offset:2px}
+/* subdivisões aparecem ao passar o mouse sobre o botão da arte */
+.submenu{display:none;position:absolute;top:calc(100% + 2px);left:50%;transform:translateX(-50%);
+z-index:30;background:#fff;border:1px solid var(--linha);border-radius:12px;padding:6px;
+box-shadow:0 10px 26px #00000022;min-width:190px;flex-direction:column;gap:3px}
+.hotzona:hover .submenu,.hotzona:focus-within .submenu{display:flex}
+.submenu::before{content:"";position:absolute;top:-9px;left:0;right:0;height:10px} /* ponte do mouse */
+.submenu button{border:0;background:transparent;text-align:left;padding:9px 13px;border-radius:9px;font-size:13.5px;font-weight:600}
+#hot-eldorado .submenu button:hover{background:#FFF3E4;color:#C05E00}
+#hot-farol .submenu button:hover{background:#E8F1FB;color:#0B4EA2}
 /* posições medidas por esquadrinhamento sobre a arte original */
 /* medido pela borda da pílula, a partir do miolo do botão (a varredura por cor
    capturava o cenário laranja e estendia a área de clique além do desenho) */
@@ -210,13 +225,28 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 </header>
 
+<div id="palco">
 
 <!-- ============ PÁGINA INICIAL (arte aprovada) ============ -->
 <section id="v-inicio">
 <div class="hero-arte">
 <img src="arte/cabecalho.png" alt="A.M.C. Jardim América — Eldorado e Farol de Alexandria" id="img-cab">
-<button class="hot" id="hot-eldorado" onclick="modulo('eldorado')" aria-label="Abrir Eldorado" title="Eldorado — radar de recursos"></button>
-<button class="hot" id="hot-farol" onclick="modulo('farol')" aria-label="Abrir Farol de Alexandria" title="Farol de Alexandria — inteligência de decisão"></button>
+<div class="hotzona" id="hot-eldorado">
+  <button class="hot" onclick="modulo('eldorado')" aria-label="Abrir Eldorado"></button>
+  <nav class="submenu" aria-label="Seções do Eldorado">
+    <button onclick="modulo('eldorado');mostra('calendario')">Calendário</button>
+    <button onclick="modulo('eldorado');mostra('editais')">Editais Abertos</button>
+    <button onclick="modulo('eldorado');mostra('bussola')">Bússola</button>
+  </nav>
+</div>
+<div class="hotzona" id="hot-farol">
+  <button class="hot" onclick="modulo('farol')" aria-label="Abrir Farol de Alexandria"></button>
+  <nav class="submenu" aria-label="Seções do Farol">
+    <button onclick="modulo('farol');mostra('f-documentos')">Documentos</button>
+    <button onclick="modulo('farol');mostra('f-editais')">Editais Abertos</button>
+    <button onclick="modulo('farol');mostra('f-biblioteca')">Biblioteca</button>
+  </nav>
+</div>
 </div>
 
 <div class="inicio-grade">
@@ -301,10 +331,16 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <section id="v-bussola" class="oculto" style="margin-top:14px">
 <div class="cartao" style="margin-bottom:14px">
 <div class="calcab">
+<div style="display:flex;align-items:center;gap:9px">
+<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C05E00" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1 5.1-2.2z" stroke-linejoin="round"/><circle cx="12" cy="12" r="1" fill="#C05E00"/></svg>
+<h2 style="margin:0;font-size:18px">Bússola <span style="font-weight:500;color:var(--suave);font-size:14px">— monitoramento das buscas</span></h2>
+</div>
+<span style="margin-left:auto"></span>
 <button onclick="mudaMesB(-1)">‹ anterior</button>
-<h2 id="bus-titulo" style="font-size:17px"></h2>
+<h2 id="bus-titulo" style="font-size:15px;margin:0 6px"></h2>
 <button onclick="mudaMesB(1)">seguinte ›</button>
 </div>
+<div class="mets" id="bus-mets" style="margin:4px 0 14px"></div>
 <p class="meta" style="margin:0 0 10px">Monitor de integridade: um quadro por dia. Verde embaixo = busca executada e validada; âmbar = busca com falhas; apagado = sem execução (a varredura roda às segundas e sextas). Clique no dia para o detalhe.</p>
 <div class="bgrade" id="bus-grade"></div>
 </div>
@@ -334,6 +370,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div id="fb-lista"></div>
 </div>
 </section>
+
+</div><!-- /palco -->
 
 <footer><div id="rodada" style="font-size:13px;color:var(--tinta)"></div>
 Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histórico).</footer>
@@ -434,9 +472,15 @@ function abreModal(cab,corpo){$("m-cab").innerHTML=cab;$("m-corpo").innerHTML=co
 
 /* ================= NAVEGAÇÃO ================= */
 const VISTAS=["inicio","calendario","editais","bussola","f-documentos","f-editais","f-biblioteca"];
-window.mostra=function(v){VISTAS.forEach(x=>$("v-"+x).classList.toggle("oculto",x!==v));
+let vAtual=null;
+function trocaVista(v){VISTAS.forEach(x=>$("v-"+x).classList.toggle("oculto",x!==v));
   document.querySelectorAll(".subnav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
-  $("bt-inicio").classList.toggle("on",v==="inicio");};
+  $("bt-inicio").classList.toggle("on",v==="inicio");vAtual=v;}
+window.mostra=function(v,imediato){
+  if(imediato||vAtual===null||vAtual===v){trocaVista(v);return;}
+  const palco=$("palco");palco.classList.add("apaga");
+  setTimeout(()=>{trocaVista(v);requestAnimationFrame(()=>palco.classList.remove("apaga"));},180);
+};
 const mostra=window.mostra;
 window.irInicio=function(){
   document.body.classList.add("inicial");
@@ -750,8 +794,24 @@ function desenhaEditais(){
 let busAno,busMes;
 window.mudaMesB=function(dx){busMes+=dx;if(busMes<0){busMes=11;busAno--;}if(busMes>11){busMes=0;busAno++;}desenhaBussola();};
 function desenhaBussola(){
-  $("bus-titulo").textContent="Buscas de "+MES[busMes]+" de "+busAno;
+  $("bus-titulo").textContent=MES[busMes]+" de "+busAno;
   const porData={};(D.bussola&&D.bussola.dias||[]).forEach(d=>porData[d.data]=d);
+  // painel de monitoramento: números do mês exibido
+  const doMes=Object.values(porData).filter(r=>{
+    const dt=new Date(r.data+"T00:00:00");
+    return dt.getFullYear()===busAno&&dt.getMonth()===busMes;});
+  const soma=c=>doMes.reduce((s,r)=>s+(r[c]||0),0);
+  const ICOB={
+    exec:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#C05E00" stroke-width="2" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/><path d="M8.6 15l2.3 2.3 4.5-4.6" stroke-linejoin="round"/></svg>',
+    ok:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#1E7E4B" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.8"/><path d="M8.3 12.3l2.5 2.5 4.9-5.1" stroke-linejoin="round"/></svg>',
+    falha:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#B8860B" stroke-width="2" stroke-linecap="round"><path d="M12 3.5l9 16H3l9-16z" stroke-linejoin="round"/><path d="M12 10v4.2M12 17.3v.2"/></svg>',
+    novo:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0B4EA2" stroke-width="2" stroke-linecap="round"><path d="M12 4.5v15M4.5 12h15"/><circle cx="12" cy="12" r="9" stroke-dasharray="2.4 3.4"/></svg>'};
+  $("bus-mets").innerHTML=[
+    [ICOB.exec, doMes.length, "Buscas executadas"],
+    [ICOB.ok,   soma("fontes_ok"), "Fontes respondendo"],
+    [ICOB.falha,soma("fontes_falha"), "Fontes com falha"],
+    [ICOB.novo, soma("novas"), "Itens novos captados"]]
+    .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
   const nd=new Date(busAno,busMes+1,0).getDate();
   const g=$("bus-grade");g.innerHTML="";
   for(let dia=1;dia<=nd;dia++){
@@ -812,7 +872,8 @@ function iniciar(){
   gAno=HOJE.getFullYear();gMes=HOJE.getMonth();
   desenhaRadar();desenhaFarolResumo();desenhaGantt();desenhaFila();
   desenhaCal();desenhaEditais();desenhaBussola();desenhaBiblioteca();
-  irInicio();
+  document.body.classList.add("inicial");trocaVista("inicio");
+  $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
 }
 portao();
 })();

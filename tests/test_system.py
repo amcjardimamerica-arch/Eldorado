@@ -538,6 +538,47 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(x0,452); self.assertLessEqual(x1,703)
         self.assertGreaterEqual(y0,152); self.assertLessEqual(y1,209)
 
+
+    def test_banco_sqlite_do_parecer(self):
+        """Camada de consulta recomendada no parecer: SQLite embutido, JSONL
+        permanece como espelho de auditoria. Sem dependência nova."""
+        import tempfile, json as _json
+        from src.banco import sincronizar, consultar, total
+        with tempfile.TemporaryDirectory() as tmp:
+            jsonl=pathlib.Path(tmp)/"op.jsonl"; db=pathlib.Path(tmp)/"t.db"
+            regs=[{"id":"x1","titulo":"Edital de saúde da família","url":"u","fonte_id":"f",
+                   "territorio":"GO","nivel":"estadual","status":"capturada",
+                   "prazos":{"inicio":"2026-08-01","fim":"2026-09-10"}},
+                  {"id":"x2","titulo":"Edital cultura viva","url":"u","fonte_id":"f",
+                   "territorio":"MG","nivel":"estadual","status":"capturada","prazos":{}}]
+            jsonl.write_text("\n".join(_json.dumps(r) for r in regs),encoding="utf-8")
+            r=sincronizar(jsonl,db)
+            self.assertEqual((r["lidos"],r["gravados"]),(2,2))
+            self.assertEqual(total(db),2)
+            go=consultar(uf="GO",banco=db)
+            self.assertEqual(len(go),1); self.assertEqual(go[0]["id"],"x1")
+            ab=consultar(uf="GO",abertos_em="2026-08-31",banco=db)
+            self.assertEqual(len(ab),1)
+            self.assertEqual(len(consultar(uf="GO",abertos_em="2026-10-01",banco=db)),0)
+        # sincronização do repositório real integrada ao workflow
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.banco",wf)
+
+    def test_fade_e_submenus(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        # transição fade-out/fade-in entre páginas
+        self.assertIn("#palco{transition:opacity",html)
+        self.assertIn('palco.classList.add("apaga")',html)
+        self.assertIn("prefers-reduced-motion",html)
+        # subdivisões no hover dos botões da arte
+        self.assertIn(".hotzona:hover .submenu",html)
+        for item in ("Calendário","Editais Abertos","Bússola","Documentos","Biblioteca"):
+            self.assertIn(item,html,item)
+        # painel de monitoramento da Bússola
+        self.assertIn("bus-mets",html)
+        for rotulo in ("Buscas executadas","Fontes respondendo","Fontes com falha","Itens novos captados"):
+            self.assertIn(rotulo,html,rotulo)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
