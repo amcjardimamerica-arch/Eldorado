@@ -472,7 +472,11 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(uf_do_territorio({"territorio":"sp"}),"SP")
         self.assertIsNone(uf_do_territorio({"territorio":"BR"}))       # nacional
         self.assertIsNone(uf_do_territorio({"territorio":"XX"}))
-        self.assertEqual(abrangencia({"territorio":"BR"}),"nacional")
+        # 'BR' sozinho não basta: alcance nacional exige nível/programa federal
+        # e vocabulário de edital (ver test_alcance_nacional_rigoroso)
+        self.assertEqual(abrangencia({"territorio":"BR"}),"indefinida")
+        self.assertEqual(abrangencia({"territorio":"BR","nivel":"federal",
+                                      "titulo":"Edital nacional","evidencia":"inscrições"}),"nacional")
         self.assertEqual(abrangencia({"territorio":"MG"}),"estadual")
         # o painel precisa do campo montado
         d=dash_coletar(date(2026,9,2))
