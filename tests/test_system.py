@@ -1,4 +1,4 @@
-import json, tempfile, unittest
+import json, pathlib, tempfile, unittest
 from unittest.mock import patch
 
 from src.eldorado import candidates, source_in_scope
@@ -384,6 +384,31 @@ class SystemTests(unittest.TestCase):
                        "dashboard-dados.enc.js"):
             self.assertIn(trecho,html,trecho)
         self.assertNotIn("cdn.",html)
+
+
+    # ---- página inicial (arte aprovada) e raiz do Pages ----
+    def test_pagina_inicial(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for trecho in ("Radar de recursos","Inteligência de decisão","Fila prioritária",
+                       "Calendário de projetos em aberto","Descobrir","Confirmar","Enquadrar",
+                       "Decidir","Preparar","arte/logo-topo.png","arte/cena-eldorado.png",
+                       "arte/cena-farol.png","fi-mets","fa-donut","desenhaGantt","desenhaFila"):
+            self.assertIn(trecho,html,trecho)
+        idx=open("docs/index.html",encoding="utf-8").read()
+        self.assertIn("url=dashboard.html",idx)
+        self.assertIn("transparencia.html",idx)
+        for arte in ("logo-topo","cena-eldorado","cena-farol"):
+            self.assertTrue(pathlib.Path(f"docs/arte/{arte}.png").exists(),arte)
+
+    def test_farol_resumo_e_valor(self):
+        from src.dashboard_dados import valor_citado
+        self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
+        self.assertIsNone(valor_citado("sem valor publicado"))
+        d=dash_coletar(date(2026,9,2))
+        self.assertIn("farol_resumo",d)
+        f=d["farol_resumo"]
+        self.assertIsNone(f["aderencia_media"])   # Farol nunca rodou: sem número inventado
+        self.assertIn("decisoes",f)
 
     def test_gate_and_score(self):
         c={"pesos":{"tema":25,"territorio":15,"experiencia":20,"documentacao":15,"capacidade_execucao":15,"historico_financiador":10}}

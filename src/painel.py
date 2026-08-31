@@ -39,7 +39,7 @@ def run() -> None:
         "pacotes_presidente": len(list((ROOT / "dados/associacoes").glob("*/farol/casos/*/07_pacote_presidente.md"))),
     }
     write_json(ROOT / "docs/dados.json", data)
-    (ROOT / "docs/index.html").write_text(TEMPLATE.replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/")), encoding="utf-8")
+    (ROOT / "docs/transparencia.html").write_text(TEMPLATE.replace("__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/")), encoding="utf-8")
 
 
 if __name__ == "__main__": run()

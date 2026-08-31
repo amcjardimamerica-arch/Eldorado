@@ -92,6 +92,12 @@ def _iso_de_br(br):
     except ValueError: return None
 
 # ---------------- editais com detalhes ----------------
+_VALOR = re.compile(r"R\$\s?([\d\.]{1,12}(?:,\d{2})?)(\s?(?:mil|milh[õo]es|milh[ãa]o))?", re.I)
+
+def valor_citado(texto: str) -> str | None:
+    m = _VALOR.search(texto or "")
+    return ("R$ " + m.group(1) + (m.group(2) or "")).strip() if m else None
+
 def _editais(hoje: date) -> list[dict]:
     cfg_prog = load_json(ROOT / "config/programas.json")
     saida = []
@@ -119,6 +125,7 @@ def _editais(hoje: date) -> list[dict]:
             "prazo_original": item.get("prazo_original"),
             "estado_export": situ["estado"],
             "resumo": (item.get("evidencia") or "")[:220],
+            "valor_texto": valor_citado(item.get("evidencia")),
             "detalhes": {
                 "qualificacao": {"nota": q.get("nota"), "classe": q.get("classe")},
                 "requisitos_estruturados": req or None,
@@ -222,6 +229,40 @@ def _bussola(editais: list[dict]) -> dict:
             "fontes_com_editais": sorted(por_fonte.values(), key=lambda x: -len(x["editais"])),
             "regra": "monitor de integridade: cada dia registra se houve busca e o que validou; anexos ausentes são pendência declarada, não omissão silenciosa"}
 
+def _farol_resumo(editais: list[dict]) -> dict:
+    """Números da página inicial. Aderência média só existe após a primeira
+    execução real do Farol (resultados/*/ranking.json); antes disso é null e o
+    painel declara a pendência em vez de inventar percentual."""
+    notas = []
+    for ranking in (ROOT / "resultados").glob("*/ranking.json"):
+        try:
+            for opp in load_json(ranking).get("oportunidades", []):
+                if opp.get("elegivel"):
+                    notas.append(opp.get("pontuacao") or 0)
+        except (ValueError, OSError):
+            continue
+    abertos = [e for e in editais if e["estado_export"] in {"aberto", "a_abrir", "sem_prazo"}]
+    pendentes = sum(len(e["detalhes"].get("pendencias") or []) for e in abertos)
+    contagem = {"elegiveis": 0, "acao_necessaria": 0, "verificadas": 0, "descartadas": 0, "capturadas": 0}
+    for e in editais:
+        s = e["status"] or ""
+        if s == "elegivel": contagem["elegiveis"] += 1
+        elif s in {"descartada", "inelegivel"}: contagem["descartadas"] += 1
+        elif s.startswith("verificada"): contagem["verificadas"] += 1
+        elif e["detalhes"].get("pendencias"): contagem["acao_necessaria"] += 1
+        else: contagem["capturadas"] += 1
+    return {
+        "aderencia_media": round(sum(notas) / len(notas)) if notas else None,
+        "aderencia_nota": None if notas else "aguarda a primeira execução do Farol (requer FAROL_AI_API_KEY)",
+        "avaliacoes": len(notas),
+        "requisitos_pendentes": pendentes,
+        "decisoes": contagem,
+        "documentacao_pronta": [
+            {"id": e["id"], "titulo": e["titulo"], "area": e["area"], "status": e["status"],
+             "qualificacao": e["detalhes"]["qualificacao"]}
+            for e in editais if str(e["status"]).startswith(("verificada", "elegivel"))][:6],
+    }
+
 def coletar(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
     editais = _editais(hoje)
@@ -238,6 +279,7 @@ def coletar(hoje: date | None = None) -> dict:
         "editais": editais,
         "eventos": _eventos(editais),
         "bussola": _bussola(editais),
+        "farol_resumo": _farol_resumo(editais),
         "farol": {
             "documentos": {"status": "em_construcao", "nota": "ícones e detalhes serão definidos posteriormente"},
             "biblioteca": [{"id": l["id"], "titulo": l["titulo"], "esfera": l.get("esfera"),

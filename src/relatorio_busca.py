@@ -303,7 +303,7 @@ def render(dados: dict, calendario: list[dict], dados_parl: dict, cfg_parl: dict
     return f"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Relatório da varredura · {_dia(dados['referencia'])} · Eldorado</title>{ESTILO}</head><body><main>
-<div class=meta><a href="../index.html">← painel</a> · <a href="../relatorio-amplitude.html">relatório de amplitude</a></div>
+<div class=meta><a href="../dashboard.html">← painel</a> · <a href="../relatorio-amplitude.html">relatório de amplitude</a></div>
 <h1>Relatório da varredura — {_dia(dados['referencia'])}</h1>
 <p class=meta>Emitido após a busca de segunda e quarta-feira. Gerado em {_e(dados['gerado_em'])}.
 Dados automatizados exigem conferência na fonte primária antes de qualquer decisão.</p>

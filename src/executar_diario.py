@@ -13,7 +13,7 @@ le docs/dashboard-dados.js e calcula prazos no navegador. O relatorio HTML
 datado continua disponivel, desligado por padrao em config/relatorios.json.
 
 Toda analise de oportunidade viva produz HTML: uma ficha por edital em
-docs/editais/<id>.html mais o painel consolidado em docs/index.html.
+docs/editais/<id>.html mais o painel consolidado em docs/transparencia.html.
 """
 from __future__ import annotations
 import json

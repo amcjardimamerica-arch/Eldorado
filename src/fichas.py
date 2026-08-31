@@ -100,7 +100,7 @@ def render(item: dict, aprendizado: dict | None = None) -> str:
     return f"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{_e(item.get('titulo'))[:90]} · Eldorado</title>{ESTILO}</head><body><main>
-<div class=meta><a href="../index.html">← painel</a> · ficha de edital</div>
+<div class=meta><a href="../dashboard.html">← painel</a> · ficha de edital</div>
 <h1>{_e(item.get('titulo'))}</h1>
 <p><a href="{_e(item.get('url'))}" target=_blank rel="noopener noreferrer">{_e(item.get('url'))}</a></p>
 <span class="tag {classe_prazo}">{_e(texto_prazo)}</span>

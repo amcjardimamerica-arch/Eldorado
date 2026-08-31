@@ -250,7 +250,7 @@ ul{{margin:6px 0;padding-left:20px}}li{{margin:3px 0}}
 footer{{color:var(--muted);padding:32px 0;font-size:13px}}
 .rolagem{{max-height:420px;overflow:auto}}
 </style></head><body><main>
-<div class=meta><a href="index.html">← painel</a> · relatório técnico</div>
+<div class=meta><a href="dashboard.html">← painel</a> · relatório técnico</div>
 <h1>Eldorado — relatório de amplitude</h1>
 <p class=meta>Gerado automaticamente a partir da configuração viva do repositório em {_e(d['gerado_em'])}.
 Nenhum número desta página foi escrito à mão: todos vêm dos arquivos de configuração e do código.</p>
