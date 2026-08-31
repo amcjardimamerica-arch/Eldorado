@@ -158,6 +158,68 @@ box-shadow:0 1px 3px #0002}
 .bdia.ok{border-bottom:4px solid var(--ok)}
 .bdia.falha{border-bottom:4px solid var(--alerta)}
 .bdia.vazio{opacity:.45}
+
+/* ===== Bússola (réplica do modelo, dados reais) ===== */
+.bz-topo{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;min-height:150px;margin-bottom:6px}
+.bz-cidade{position:absolute;right:calc(50% - 50vw);top:-14px;height:172px;pointer-events:none}
+.bz-titulo{font-family:Georgia,'Times New Roman',serif;font-size:clamp(40px,4.6vw,62px);font-weight:700;color:#0E2A55;letter-spacing:.5px;line-height:1;display:flex;align-items:center;gap:16px}
+.bz-logo{height:64px;margin-top:2px;justify-self:center}
+.bz-fio{align-self:center;height:2px;background:linear-gradient(90deg,transparent,#C9A227);position:relative;top:-38px}
+.bz-fio.dir{background:linear-gradient(90deg,#C9A227,transparent)}
+.bz-botoes{display:flex;gap:12px;margin:10px 0 16px}
+.bz-botoes button{display:flex;align-items:center;gap:9px;white-space:nowrap;font-weight:800;font-size:14.5px;letter-spacing:.06em;padding:12px 26px;border-radius:12px}
+.bz-botoes .ativo{color:#fff;border:0;background:linear-gradient(180deg,#E8A93B,#C77E12);box-shadow:0 4px 10px #C77E1244}
+.bz-botoes .quieto{background:#fff;color:#0B4EA2;border:1px solid var(--linha)}
+.bz-cards{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.bz-card{background:#fff;border:1px solid var(--linha);border-radius:13px;padding:13px 14px;display:grid;grid-template-columns:auto 1fr;gap:4px 11px;align-items:center}
+.bz-card svg{grid-row:span 2}
+.bz-card .r{font-size:12px;color:var(--tinta);font-weight:600}
+.bz-card .v{font-size:27px;font-weight:800;color:#0E2A55;line-height:1}
+.bz-card .s{grid-column:2;font-size:11.5px;font-weight:600}
+.s.vermelho{color:#C0392B}.s.azul{color:#0B4EA2}
+.bz-meio{display:grid;grid-template-columns:1.9fr 1fr;gap:16px;margin-bottom:16px}
+.bz-mapa-grade{display:grid;grid-template-columns:auto 1fr 1.05fr;gap:14px;align-items:start}
+.bz-rosa{width:104px;margin-top:26px}
+#bz-mapa path{fill:#F3E9D8;stroke:#D8C9AC;stroke-width:1;cursor:pointer;transition:fill .12s}
+#bz-mapa path:hover{fill:#EADCC2}
+#bz-mapa path.sel{fill:#E4D2AE;stroke:#C9A227;stroke-width:1.6}
+#bz-mapa text{font-size:11px;fill:#8A7A5C;pointer-events:none}
+.bz-pin{cursor:pointer}
+.bz-legenda{display:flex;flex-direction:column;gap:9px;border:1px solid var(--linha);border-radius:11px;padding:11px 13px;background:#fff;width:max-content;margin-top:12px}
+.bz-legenda span{display:flex;align-items:center;gap:8px;font-size:12.5px}
+.bz-atual{display:flex;flex-direction:column;gap:13px;padding-top:6px}
+.bz-evt{display:grid;grid-template-columns:52px 22px 1fr;gap:8px;align-items:start;font-size:13px;cursor:pointer}
+.bz-evt:hover{background:var(--realce);border-radius:8px}
+.bz-evt .dt{color:var(--suave);font-weight:700;font-size:12px;padding-top:2px}
+.bz-evt b{display:block}
+.bz-evt .sb{color:var(--suave);font-size:12px}
+.bz-gauge.semdado{background:#E9EEF5}
+.bz-gauge{width:168px;height:168px;border-radius:50%;margin:8px auto;position:relative;display:flex;align-items:center;justify-content:center;
+background:conic-gradient(from 220deg,#2F79D0 0deg,#2F79D0 calc(var(--p)*2.8deg),#E8A93B calc(var(--p)*2.8deg),#E8A93B 280deg,#E9EEF5 280deg)}
+.bz-gauge::before{content:"";position:absolute;inset:17px;border-radius:50%;background:#fff}
+.bz-gauge div{position:relative;text-align:center}
+.bz-gauge .g{font-size:42px;font-weight:800;color:#0E2A55;line-height:1}
+.bz-gauge .g100{color:var(--suave);font-size:14px}
+.bz-dim{display:grid;grid-template-columns:26px 1fr auto;gap:4px 9px;align-items:center;font-size:12.5px;margin:7px 0}
+.bz-dim .barra{grid-column:2/4;height:5px;border-radius:4px;background:#E9EEF5;overflow:hidden}
+.bz-dim .barra i{display:block;height:100%;background:#2F79D0;border-radius:4px}
+.bz-filtros{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-left:auto}
+.bz-filtros select{font:inherit;font-size:12.5px;padding:7px 10px;border:1px solid var(--linha);border-radius:9px;background:#fff}
+.bz-limpar{color:#0B4EA2;font-weight:700;font-size:12.5px;cursor:pointer;display:flex;align-items:center;gap:5px}
+.bz-tab{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+.bz-tab th{text-align:left;color:var(--suave);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:none;padding:8px 8px;border-bottom:1px solid var(--linha)}
+.bz-tab td{padding:11px 8px;border-bottom:1px solid var(--linha);vertical-align:middle}
+.bz-tab tr:hover td{background:var(--realce)}
+.bz-op b{display:block}
+.bz-op .ed{color:var(--suave);font-size:11.5px;font-weight:500}
+.bz-dias{display:block;font-size:11.5px;font-weight:700}
+.bz-don{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+background:conic-gradient(var(--c) calc(var(--p)*1%),#E9EEF5 0);position:relative;vertical-align:middle;margin-right:7px}
+.bz-don::before{content:"";position:absolute;inset:5px;border-radius:50%;background:#fff}
+.bz-don b{position:relative;font-size:11px}
+.bz-acao{font-size:11.5px;font-weight:700;padding:6px 11px;border-radius:9px;border:1px solid #F0B27A;background:#FFF6EC;color:#C05E00;white-space:nowrap}
+.bz-acao.ficha{border-color:#9FC1E8;background:#EFF5FC;color:#0B4EA2}
+@media(max-width:1100px){.bz-cards{grid-template-columns:repeat(3,1fr)}.bz-meio{grid-template-columns:1fr}.bz-mapa-grade{grid-template-columns:1fr}}
 /* tooltip */
 #tip{position:fixed;z-index:60;max-width:340px;background:#2B3038;color:#fff;font-size:12.5px;line-height:1.45;padding:9px 12px;border-radius:9px;pointer-events:none;box-shadow:0 6px 18px #0006;display:none}
 /* modal */
@@ -329,6 +391,71 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 
 <!-- ============ ELDORADO · BÚSSOLA ============ -->
 <section id="v-bussola" class="oculto" style="margin-top:14px">
+
+<!-- topo do modelo: título, logotipo, cidade dourada e botões -->
+<div class="bz-topo">
+<img class="bz-cidade" src="arte/bussola-cidade.png" alt="">
+<div>
+  <div class="bz-titulo">ELDORADO
+    <svg viewBox="0 0 48 48" width="46" height="46"><circle cx="24" cy="24" r="21" fill="#fff" stroke="#C9A227" stroke-width="2.6"/><circle cx="24" cy="24" r="16" fill="none" stroke="#E4D2AE" stroke-width="1"/><path d="M24 9l3.4 11.6L24 24l-3.4-3.4L24 9z" fill="#C0392B"/><path d="M24 39l-3.4-11.6L24 24l3.4 3.4L24 39z" fill="#0E2A55"/><circle cx="24" cy="24" r="2.3" fill="#C9A227"/></svg>
+  </div>
+  <div class="bz-botoes">
+    <button class="ativo"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>ELDORADO</button>
+    <button class="quieto" onclick="modulo('farol')"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#0B4EA2" stroke-width="1.8"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M8 21h8"/></svg>FAROL DE ALEXANDRIA</button>
+  </div>
+</div>
+<img class="bz-logo" src="arte/logo-oficial.png" alt="A.M.C. Jardim América">
+<div></div>
+</div>
+
+<!-- 6 cartões de números reais -->
+<div class="bz-cards" id="bz-cards"></div>
+
+<!-- mapa + atualizações | aderência -->
+<div class="bz-meio">
+<div class="cartao">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Mapa de oportunidades</div>
+  <div class="bz-mapa-grade">
+    <div><img class="bz-rosa" src="arte/rosa-ventos.png" alt="">
+      <div class="bz-legenda">
+        <span><span class=ponto style="background:#F09B2E"></span>Oportunidade aberta</span>
+        <span><span class=ponto style="background:#2F79D0"></span>Em verificação</span>
+        <span><span class=ponto style="background:#9AA4B2"></span>Encerrada</span>
+      </div></div>
+    <div id="bz-mapa"></div>
+    <div>
+      <div class="bz-atual" id="bz-atual"></div>
+      <span class="verlink" onclick="mostra('editais')">Ver todas as atualizações →</span>
+    </div>
+  </div>
+</div>
+<div class="cartao">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Farol de aderência
+    <span class=meta title="Notas por dimensão calculadas pelo Farol de Alexandria a partir do perfil da associação e dos requisitos de cada edital." style="cursor:help">ⓘ</span></div>
+  <div class="bz-gauge" id="bz-gauge" style="--p:0"><div><span class="g" id="bz-nota">—</span><span class="g100">/100</span><div class=meta style="margin-top:4px">Aderência geral</div><div id="bz-classe" style="font-weight:800;color:#0B4EA2">—</div></div></div>
+  <div id="bz-dimensoes"></div>
+  <button style="width:100%;margin-top:12px;color:#0B4EA2;font-weight:700;border-color:#9FC1E8" onclick="modulo('farol')">⚓ Ver detalhes do Farol</button>
+</div>
+</div>
+
+<!-- filtro e tabela -->
+<div class="cartao" style="margin-bottom:16px">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Filtro de Oportunidades</div>
+    <div class="bz-filtros">
+      <select id="bz-assoc"><option value="">Associação</option><option value="amc">A.M.C. Jardim América</option></select>
+      <select id="bz-uf"><option value="">UF</option></select>
+      <select id="bz-area"><option value="">Área</option></select>
+      <select id="bz-nivel"><option value="">Nível</option></select>
+      <select id="bz-prazo"><option value="">Prazo</option><option value="abertos">Inscrições abertas</option><option value="encerrados">Inscrições encerradas</option></select>
+      <span class="bz-limpar" onclick="bzLimpar()">⨯ Limpar filtros</span>
+    </div>
+  </div>
+  <table class="bz-tab" id="bz-tab"><thead><tr>
+    <th>Oportunidade</th><th>Fonte</th><th>Área</th><th>Nível</th><th>Valor estimado</th><th>Prazo final</th><th>Aderência</th><th></th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
 <div class="cartao" style="margin-bottom:14px">
 <div class="calcab">
 <div style="display:flex;align-items:center;gap:9px">
@@ -381,6 +508,7 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
+<script src="mapa-brasil.js"></script>
 <script src="dashboard-dados.enc.js"></script>
 <script src="dashboard-dados.js"></script>
 <script>
@@ -854,6 +982,132 @@ function desenhaBussola(){
   });
 }
 
+
+/* ================= BÚSSOLA · réplica do modelo ================= */
+let bzUFsel="";
+window.bzLimpar=function(){["bz-assoc","bz-uf","bz-area","bz-nivel","bz-prazo"].forEach(id=>$(id).value="");bzUFsel="";desenhaBzTabela();desenhaBzMapa();};
+function desenhaBzCards(){
+  const bp=D.bussola_painel||{}; const eds=D.editais||[];
+  const IC=c=>({
+    rosa:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z" stroke-linejoin="round"/></svg>`,
+    banco:`<svg viewBox="0 0 24 24" width="30" height="30" fill="${c}"><path d="M12 3L3 8v1.6h18V8l-9-5zM5 11h2.6v7H5v-7zm5.7 0h2.6v7h-2.6v-7zm5.7 0H19v7h-2.6v-7zM3.6 19.6h16.8V22H3.6v-2.4z"/></svg>`,
+    escudo:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><path d="M12 2.7l7.5 3v6c0 4.4-3.1 8.3-7.5 9.6-4.4-1.3-7.5-5.2-7.5-9.6v-6l7.5-3z" stroke-linejoin="round"/><path d="M8.6 11.8l2.4 2.4 4.3-4.5" stroke-linecap="round"/></svg>`,
+    relogio:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><circle cx="12" cy="12" r="8.8"/><path d="M12 7v5.2l3.2 2" stroke-linecap="round"/></svg>`,
+    farol:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.7"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M12 2.2v2.2M7 4.4l1.7 1.3M17 4.4l-1.7 1.3M8 21h8"/></svg>`,
+    livro:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><path d="M12 5.5C10 4 7.4 3.6 4 3.8v14.7c3.4-.2 6 .2 8 1.7 2-1.5 4.6-1.9 8-1.7V3.8c-3.4-.2-6 .2-8 1.7z" stroke-linejoin="round"/><path d="M12 5.5v14.7"/></svg>`});
+  const abertos=eds.filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export)).length;
+  const cards=[
+    [IC("#C77E12").rosa,"Oportunidades",eds.length,`+${bp.novas_ultima??0} novas`,"vermelho","captadas pelo Eldorado; novas = última varredura"],
+    [IC("#0B4EA2").banco,"Fontes monitoradas",bp.fontes_ativas??"—","ativas","azul","fontes com varredura ativa no catálogo"],
+    [IC("#0B4EA2").escudo,"Editais verificados",bp.verificados??0,`+${bp.verificados_semana??0} esta semana`,"azul","confirmados na página primária (0 até a 1ª verificação)"],
+    [IC("#C0392B").relogio,"Prazos urgentes",bp.urgentes_7d??0,"até 7 dias","vermelho","inscrições abertas encerrando em até 7 dias"],
+    [IC("#0B4EA2").farol,"Casos no Farol",bp.casos_farol??0,bp.casos_nota||"em análise","azul","casos em preparação de documentação"],
+    [IC("#0B4EA2").livro,"Fontes",bp.sites??"—","sites","azul","pontos de coleta no catálogo de rotas"]];
+  $("bz-cards").innerHTML=cards.map(c=>`<div class="bz-card" title="${esc(c[5])}">${c[0]}<div class=r>${c[1]}</div><div class=v>${c[2]}</div><div class="s ${c[4]}">${esc(String(c[3]))}</div></div>`).join("");
+  const na=$("bz-cards").children[0];
+  // honestidade: 305 "novas" hoje = carga inicial de 31/08
+}
+function bzStatusUF(){
+  const eds=D.editais||[]; const por={};
+  eds.forEach(e=>{if(!e.uf)return;
+    const s=["aberto","a_abrir","sem_prazo"].includes(e.estado_export)?"aberta"
+      :(String(e.status).startsWith("verificada")||e.status==="capturada")&&e.estado_export!=="encerrado"?"verificacao":"encerrada";
+    (por[e.uf]||(por[e.uf]={aberta:0,verificacao:0,encerrada:0,total:0}));
+    por[e.uf][s]++;por[e.uf].total++;});
+  return por;
+}
+function desenhaBzMapa(){
+  const M=window.MAPA_BR;if(!M){$("bz-mapa").innerHTML="<div class=meta>mapa indisponível</div>";return;}
+  const por=bzStatusUF();
+  const COR={aberta:"#F09B2E",verificacao:"#2F79D0",encerrada:"#9AA4B2"};
+  let svg=`<svg viewBox="${M.viewBox}" style="width:100%;height:auto">`;
+  for(const [uf,e] of Object.entries(M.estados))
+    svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}"><title>${uf}</title></path>`;
+  for(const [uf,e] of Object.entries(M.estados)){
+    svg+=`<text x="${e.cx+10}" y="${e.cy+4}">${uf}</text>`;
+    const st=por[uf];if(!st)continue;
+    const dom=st.aberta?"aberta":st.verificacao?"verificacao":"encerrada";
+    svg+=`<g class="bz-pin" data-uf="${uf}"><path d="M${e.cx} ${e.cy-22} c-8.4 0-14 6.2-14 14 0 9.8 14 22.4 14 22.4s14-12.6 14-22.4c0-7.8-5.6-14-14-14z" fill="${COR[dom]}" stroke="#fff" stroke-width="2"/><circle cx="${e.cx}" cy="${e.cy-9}" r="5.4" fill="#fff"/><title>${uf}: ${st.total} (abertas ${st.aberta} · verificação ${st.verificacao} · encerradas ${st.encerrada})</title></g>`;
+  }
+  svg+="</svg>";
+  $("bz-mapa").innerHTML=svg;
+  $("bz-mapa").querySelectorAll("path[data-uf],g.bz-pin").forEach(el=>el.onclick=()=>{
+    bzUFsel=(bzUFsel===el.dataset.uf?"":el.dataset.uf);
+    $("bz-uf").value=bzUFsel;desenhaBzMapa();desenhaBzTabela();});
+}
+function desenhaBzAtual(){
+  const ats=(D.bussola_painel&&D.bussola_painel.atualizacoes)||[];
+  const IC={novo:["#F09B2E",'●'],verificada:["#2F79D0",'●'],prazo:["#C0392B",'◷']};
+  $("bz-atual").innerHTML=ats.length?ats.slice(0,4).map(a=>{
+    const [cor,s]=IC[a.tipo]||["#607086","●"];
+    const d=new Date(a.data+"T00:00:00");
+    const dt=`${String(d.getDate()).padStart(2,"0")} ${MES[d.getMonth()].slice(0,3).toUpperCase()}`;
+    return `<div class="bz-evt" data-id="${esc(a.id||"")}"><span class=dt>${dt}</span><span style="color:${cor};font-size:16px">${s}</span><span><b>${esc(a.titulo)}</b><span class=sb>${esc(a.sub)}</span></span></div>`;}).join("")
+    :'<div class=meta>Sem atualizações registradas ainda.</div>';
+  $("bz-atual").querySelectorAll(".bz-evt[data-id]").forEach(el=>{
+    const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);
+    if(ed){ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);}});
+}
+function desenhaBzAderencia(){
+  const f=D.farol_resumo||{};
+  const nota=f.aderencia_media;
+  $("bz-gauge").style.setProperty("--p",nota??0);
+  $("bz-gauge").classList.toggle("semdado",nota==null);
+  $("bz-nota").textContent=nota??"—";
+  $("bz-classe").textContent=nota==null?"aguardando Farol":nota>=80?"Boa":nota>=60?"Regular":"Atenção";
+  const DIM=[["Alinhamento estratégico","alinhamento"],["Capacidade técnica","capacidade"],["Viabilidade financeira","viabilidade"],["Impacto social","impacto"],["Documentação","documentacao"]];
+  const dims=f.dimensoes||{};
+  $("bz-dimensoes").innerHTML=DIM.map(([rot,ch])=>{
+    const v=dims[ch];
+    return `<div class="bz-dim"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="#0B4EA2" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M8.4 12.2l2.4 2.4 4.6-4.8" stroke-linecap="round"/></svg><span>${rot}</span><b>${v==null?"—":v+"/100"}</b><span class=barra><i style="width:${v||0}%"></i></span></div>`;}).join("")
+    +(f.aderencia_media==null?'<p class=meta style="margin:8px 0 0">As notas por dimensão serão calculadas na primeira execução do Farol (requer a credencial FAROL_AI_API_KEY).</p>':"");
+}
+function desenhaBzTabela(){
+  const eds=D.editais||[];
+  const uf=$("bz-uf").value,ar=$("bz-area").value,ni=$("bz-nivel").value,pz=$("bz-prazo").value;
+  const casaUF=e=>!uf?true:(e.uf===uf||(!e.uf&&e.abrangencia==="nacional"));
+  const rows=eds.filter(e=>casaUF(e)&&(!ar||e.area===ar)&&(!ni||e.nivel===ni)
+    &&(!pz||(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export):e.estado_export==="encerrado")))
+    .sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9))).slice(0,12);
+  const tb=$("bz-tab").querySelector("tbody");
+  tb.innerHTML=rows.length?rows.map(e=>{
+    const dz=dias(e.fim);
+    const diasTxt=e.fim?(dz<0?`<span class="bz-dias" style="color:#9AA4B2">encerrado</span>`
+      :`<span class="bz-dias" style="color:${dz<=7?"#C0392B":dz<=15?"#B8860B":"var(--suave)"}">${dz} dia${dz===1?"":"s"}</span>`):"";
+    const nota=e.detalhes&&e.detalhes.qualificacao?e.detalhes.qualificacao.nota:null;
+    const don=nota!=null?`<span class="bz-don" style="--p:${nota};--c:${nota>=80?"#1E7E4B":nota>=60?"#E8A93B":"#C0392B"}" title="qualificação automática do texto; a aderência do Farol substitui após a 1ª execução"><b></b></span><b>${nota}</b>`
+      :`<span class=meta title="aderência calculada pelo Farol após a 1ª execução">—</span>`;
+    return `<tr data-id="${esc(e.id)}">
+    <td class="bz-op"><span style="display:flex;gap:9px;align-items:center">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#C77E12" stroke-width="1.7"><circle cx="12" cy="12" r="8.6"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3M15.2 8.8l-2 4.4-4.4 2 2-4.4z"/></svg>
+      <span><b>${esc(nomeObjetivo(e).slice(0,44))}</b><span class=ed>${esc(e.protocolo?("Protocolo "+String(e.protocolo).slice(0,14)):"")}</span></span></span></td>
+    <td class=meta>${esc((e.fonte_nome||"").slice(0,26))}</td>
+    <td>${esc(AREA(e.area).rotulo)}</td>
+    <td>${esc(e.nivel||"—")}</td>
+    <td>${e.valor_texto?esc(e.valor_texto):'<span class=meta>—</span>'}</td>
+    <td>${br(e.fim)}${diasTxt}</td>
+    <td>${don}</td>
+    <td style="white-space:nowrap"><a class="bz-acao" href="${esc(e.url)}" target=_blank rel="noopener noreferrer" style="text-decoration:none">Ver oportunidade</a>
+        <button class="bz-acao ficha">Abrir ficha</button></td></tr>`;}).join("")
+    :`<tr><td colspan=8 class=meta style="padding:14px 6px">Nenhuma oportunidade neste filtro.</td></tr>`;
+  tb.querySelectorAll("tr[data-id]").forEach(el=>{
+    const ed=eds.find(x=>x.id===el.dataset.id);
+    ligaTip(el,resumoTip(ed));
+    el.querySelector(".ficha").onclick=ev=>{ev.stopPropagation();detalheEdital(ed);};
+    el.onclick=ev=>{if(ev.target.closest("a")||ev.target.closest("button"))return;detalheEdital(ed);};});
+}
+function iniciarBz(){
+  const eds=D.editais||[];
+  const porUF={};eds.forEach(e=>{if(e.uf)porUF[e.uf]=(porUF[e.uf]||0)+1;});
+  const sel=$("bz-uf");sel.length=1;
+  Object.keys(porUF).sort().forEach(u=>{const o=document.createElement("option");o.value=u;o.textContent=`${u} (${porUF[u]})`;sel.appendChild(o);});
+  const areas=[...new Set(eds.map(e=>e.area))].sort();
+  const sa=$("bz-area");sa.length=1;areas.forEach(a=>{const o=document.createElement("option");o.value=a;o.textContent=AREA(a).rotulo;sa.appendChild(o);});
+  const sn=$("bz-nivel");sn.length=1;[...new Set(eds.map(e=>e.nivel).filter(Boolean))].sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;sn.appendChild(o);});
+  ["bz-uf","bz-area","bz-nivel","bz-prazo"].forEach(id=>$(id).addEventListener("input",()=>{bzUFsel=$("bz-uf").value;desenhaBzMapa();desenhaBzTabela();}));
+  desenhaBzCards();desenhaBzMapa();desenhaBzAtual();desenhaBzAderencia();desenhaBzTabela();
+}
+
 /* ================= FAROL · BIBLIOTECA ================= */
 function desenhaBiblioteca(){
   const libs=(D.farol&&D.farol.biblioteca)||[];
@@ -871,7 +1125,7 @@ function iniciar(){
   busAno=HOJE.getFullYear();busMes=HOJE.getMonth();
   gAno=HOJE.getFullYear();gMes=HOJE.getMonth();
   desenhaRadar();desenhaFarolResumo();desenhaGantt();desenhaFila();
-  desenhaCal();desenhaEditais();desenhaBussola();desenhaBiblioteca();
+  desenhaCal();desenhaEditais();desenhaBussola();iniciarBz();desenhaBiblioteca();
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
 }

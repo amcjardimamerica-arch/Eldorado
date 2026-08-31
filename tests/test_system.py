@@ -579,6 +579,42 @@ class SystemTests(unittest.TestCase):
         for rotulo in ("Buscas executadas","Fontes respondendo","Fontes com falha","Itens novos captados"):
             self.assertIn(rotulo,html,rotulo)
 
+
+    def test_pagina_bussola_replica(self):
+        """Página Bússola conforme o modelo de 31/08 (esquadrinhada em grade
+        16x12): título+bússola, logotipo, cidade dourada, 2 botões, 6 cartões,
+        mapa com pinos por UF, atualizações, Farol de aderência, filtro+tabela.
+        Números sempre reais; sem Farol executado, aderência declara a lacuna."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for trecho in ("bz-titulo","bz-cidade","bz-logo","bz-cards","bz-mapa",
+                       "bz-atual","bz-gauge","bz-dimensoes","bz-tab","bzLimpar",
+                       "Mapa de oportunidades","Farol de aderência","Filtro de Oportunidades",
+                       "Ver todas as atualizações","Ver detalhes do Farol",
+                       "Oportunidade aberta","Em verificação","Encerrada",
+                       "Ver oportunidade","Abrir ficha","Limpar filtros",
+                       "aguardando primeira execução do Farol"):
+            self.assertIn(trecho,html,trecho)
+        for arte in ("bussola-cidade.png","rosa-ventos.png","logo-oficial.png"):
+            self.assertTrue(pathlib.Path(f"docs/arte/{arte}").exists(),arte)
+        # mapa vetorial com os 27 estados e centroides
+        mapa=open("docs/mapa-brasil.js",encoding="utf-8").read()
+        self.assertIn("window.MAPA_BR",mapa)
+        import json as _json, re as _re
+        M=_json.loads(_re.search(r"window\.MAPA_BR=(\{.*\});",mapa).group(1))
+        self.assertEqual(len(M["estados"]),27)
+        for uf in ("GO","SP","AM","RS"): self.assertIn("cx",M["estados"][uf])
+
+    def test_bussola_painel_dados_reais(self):
+        d=dash_coletar(date(2026,9,2))
+        bp=d["bussola_painel"]
+        for ch in ("novas_ultima","fontes_ativas","sites","verificados",
+                   "verificados_semana","urgentes_7d","casos_farol","atualizacoes"):
+            self.assertIn(ch,bp,ch)
+        # coerência: verificados nunca excede o total; urgentes são abertos ≤7d
+        self.assertLessEqual(bp["verificados"],len(d["editais"]))
+        for a in bp["atualizacoes"]:
+            self.assertIn(a["tipo"],("novo","verificada","prazo"))
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

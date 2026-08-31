@@ -157,6 +157,63 @@ def abrangencia(item: dict, carac: dict | None = None) -> str:
         return "estadual"
     return "nacional" if alcance_nacional(item, carac) else "indefinida"
 
+def painel_bussola(editais: list[dict], bussola: dict, hoje: date) -> dict:
+    """Números reais dos cartões da página Bússola (nada demonstrativo).
+
+    - novas na última varredura e verificados na semana vêm de coletado_em;
+    - fontes ativas vêm do catálogo de fontes; sites do catálogo de rotas;
+    - casos no Farol: contagem real de casos abertos (0 até a 1ª execução);
+    - atualizações: últimos acontecimentos reais (coleta, verificação, prazo).
+    """
+    import json as _json
+    iso_hoje = hoje.isoformat()
+    def col(e): return str((e.get("detalhes") or {}).get("coletado_em") or "")[:10]
+    datas = sorted({col(e) for e in editais if col(e)}, reverse=True)
+    ultima = datas[0] if datas else None
+    novas = sum(1 for e in editais if col(e) == ultima) if ultima else 0
+    semana = [ (hoje - __import__("datetime").timedelta(days=i)).isoformat() for i in range(7) ]
+    verif_semana = sum(1 for e in editais
+                       if str(e.get("status","")).startswith("verificada") and col(e) in semana)
+    fontes_cfg = _fontes()
+    ativas = sum(1 for f in fontes_cfg.values() if f.get("ativa"))
+    try:
+        rotas = _json.loads((ROOT/"estado/cobertura_catalogo.json").read_text(encoding="utf-8"))
+        sites = int(rotas.get("total") or rotas.get("pontos_total") or 0) or len(fontes_cfg)
+    except Exception:
+        sites = len(fontes_cfg)
+    casos_dir = ROOT/"dados/associacoes/amc-jardim-america/casos"
+    casos = len(list(casos_dir.glob("*/"))) if casos_dir.exists() else 0
+    urgentes = [e for e in editais
+                if e.get("estado_export") in ("aberto","a_abrir")
+                and e.get("fim") and 0 <= ( __import__("datetime").date.fromisoformat(e["fim"]) - hoje ).days <= 7]
+    verificados = sum(1 for e in editais if str(e.get("status","")).startswith("verificada")
+                      or e.get("status")=="elegivel")
+
+    # linha do tempo: últimos acontecimentos reais
+    eventos=[]
+    for e in editais:
+        if col(e):
+            eventos.append({"data": col(e), "tipo": "novo",
+                "titulo": "Novo edital captado",
+                "sub": f'{e.get("fonte_nome","")} · {e.get("valor_texto") or "valor não publicado"}',
+                "id": e.get("id")})
+        if str(e.get("status","")).startswith("verificada"):
+            eventos.append({"data": col(e) or iso_hoje, "tipo": "verificada",
+                "titulo": "Oportunidade verificada",
+                "sub": e.get("fonte_nome",""), "id": e.get("id")})
+    for e in urgentes:
+        eventos.append({"data": e["fim"], "tipo": "prazo",
+            "titulo": "Prazo se aproximando",
+            "sub": f'{e.get("fonte_nome","")} · encerra {e["fim"][8:10]}/{e["fim"][5:7]}',
+            "id": e.get("id")})
+    eventos.sort(key=lambda x: x["data"], reverse=True)
+    return {"novas_ultima": novas, "fontes_ativas": ativas, "sites": sites,
+            "verificados": verificados, "verificados_semana": verif_semana,
+            "urgentes_7d": len(urgentes), "casos_farol": casos,
+            "casos_nota": "aguardando primeira execução do Farol" if casos==0 else "em análise",
+            "atualizacoes": eventos[:8]}
+
+
 def _editais(hoje: date) -> list[dict]:
     cfg_prog = load_json(ROOT / "config/programas.json")
     saida = []
@@ -330,6 +387,7 @@ def coletar(hoje: date | None = None) -> dict:
     revisao = load_json(ROOT / "estado/revisao_normativa.json") if (ROOT / "estado/revisao_normativa.json").exists() else {}
     parl = mod_parlamentares.carregar_do_disco(hoje.year)
     ch = load_json(ROOT / "estado/ultima_carga_historica.json") if (ROOT / "estado/ultima_carga_historica.json").exists() else {"status": "nunca_executada"}
+    saida_bussola = painel_bussola(editais, _bussola(editais), hoje)
     return {
         "gerado_em": now_iso(), "referencia": hoje.isoformat(),
         "cadencia": {"varredura": "segundas e sextas, 6h de Brasília",
@@ -339,6 +397,7 @@ def coletar(hoje: date | None = None) -> dict:
         "editais": editais,
         "eventos": _eventos(editais),
         "bussola": _bussola(editais),
+        "bussola_painel": saida_bussola,
         "farol_resumo": _farol_resumo(editais),
         "farol": {
             "documentos": {"status": "em_construcao", "nota": "ícones e detalhes serão definidos posteriormente"},
