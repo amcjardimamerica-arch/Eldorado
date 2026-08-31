@@ -408,8 +408,15 @@ class SystemTests(unittest.TestCase):
     def test_fundo_sem_elementos_demonstrativos(self):
         """O fundo é só cenário: não pode carregar os painéis fictícios da arte
         (números inventados, filtros, listas). Verificação por densidade de
-        traços finos escuros — assinatura de texto miúdo renderizado."""
-        from PIL import Image
+        traços finos escuros — assinatura de texto miúdo renderizado.
+
+        Pillow é dependência apenas desta verificação de imagem; o núcleo do
+        sistema segue usando somente a biblioteca-padrão. Sem Pillow o teste é
+        pulado (nunca falha por ausência da biblioteca)."""
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("Pillow ausente — verificação de imagem pulada")
         for arq in ("docs/arte/fundo.jpg", "docs/arte/fundo-leve.jpg"):
             im = Image.open(arq).convert("L")
             larg, alt = im.size
