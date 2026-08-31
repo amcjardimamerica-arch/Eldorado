@@ -390,13 +390,13 @@ class SystemTests(unittest.TestCase):
     def test_pagina_inicial(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for trecho in ("Radar de recursos","Inteligência de decisão","Fila prioritária",
-                       "Calendário de projetos em aberto","arte/cabecalho.png","arte/moldura.png",
+                       "Calendário de projetos em aberto","arte/cabecalho.png",
                        "topo oculto","fi-mets","fa-donut","desenhaGantt","desenhaFila"):
             self.assertIn(trecho,html,trecho)
         idx=open("docs/index.html",encoding="utf-8").read()
         self.assertIn("url=dashboard.html",idx)
         self.assertIn("transparencia.html",idx)
-        for arte in ("cabecalho.png","moldura.png"):
+        for arte in ("cabecalho.png",):
             self.assertTrue(pathlib.Path(f"docs/arte/{arte}").exists(),arte)
         # dados de alimentação no FIM da página, não no topo
         self.assertLess(html.find("</header>"), html.find('id="rodada"'))
@@ -406,6 +406,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(css.count("{"), css.count("}"), "CSS com chaves desbalanceadas")
 
 
+    @unittest.skip("substituído: não há mais imagem de fundo na página")
     def test_fundo_sem_elementos_demonstrativos(self):
         """O fundo é só cenário: não pode carregar os painéis fictícios da arte
         (números inventados, filtros, listas). Verificação por densidade de
@@ -437,7 +438,7 @@ class SystemTests(unittest.TestCase):
         self.assertIn("arte/cabecalho.png",html)
         self.assertIn("hot-eldorado",html); self.assertIn("hot-farol",html)
         self.assertNotIn(".jornada",html)          # etapas 1-5 vêm da arte
-        for arte in ("cabecalho.png","moldura.png","cabecalho-leve.jpg","moldura-leve.jpg"):
+        for arte in ("cabecalho.png","cabecalho-leve.jpg"):
             self.assertTrue(pathlib.Path(f"docs/arte/{arte}").exists(),arte)
         # proporção da arte preservada (1536x343 = 4.478:1)
         from PIL import Image
@@ -460,6 +461,34 @@ class SystemTests(unittest.TestCase):
         from src.dashboard_dados import AREAS
         for cor in ("#388BF2","#FB9E26","#61A658","#754AE1","#22B8CF"):
             self.assertIn(cor,[a["cor"] for a in AREAS.values()],cor)
+
+
+    def test_uf_derivada_do_territorio(self):
+        """O filtro por estado não funcionava porque `uf` vinha nulo em 100%
+        dos editais. A UF passa a ser derivada do território (ou da fonte)."""
+        from src.dashboard_dados import uf_do_territorio, abrangencia
+        self.assertEqual(uf_do_territorio({"territorio":"GO"}),"GO")
+        self.assertEqual(uf_do_territorio({"territorio":"GO/Goiânia"}),"GO")
+        self.assertEqual(uf_do_territorio({"territorio":"sp"}),"SP")
+        self.assertIsNone(uf_do_territorio({"territorio":"BR"}))       # nacional
+        self.assertIsNone(uf_do_territorio({"territorio":"XX"}))
+        self.assertEqual(abrangencia({"territorio":"BR"}),"nacional")
+        self.assertEqual(abrangencia({"territorio":"MG"}),"estadual")
+        # o painel precisa do campo montado
+        d=dash_coletar(date(2026,9,2))
+        for e in d["editais"]:
+            self.assertIn("uf",e); self.assertIn("abrangencia",e)
+
+    def test_sem_imagem_de_fundo_na_pagina(self):
+        """A arte é apenas o cabeçalho estático; o resto da página fica limpo."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertNotIn("body::before",html)
+        self.assertNotIn("moldura",html)
+        self.assertNotIn("fundo.jpg",html)
+        self.assertIn("arte/cabecalho.png",html)
+        self.assertFalse(pathlib.Path("docs/arte/fundo.jpg").exists())
+        # o filtro de UF deve considerar também os editais de alcance nacional
+        self.assertIn('e.abrangencia==="nacional"',html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

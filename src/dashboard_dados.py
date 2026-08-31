@@ -101,6 +101,31 @@ def valor_citado(texto: str) -> str | None:
     m = _VALOR.search(texto or "")
     return ("R$ " + m.group(1) + (m.group(2) or "")).strip() if m else None
 
+UFS = ("AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB",
+       "PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO")
+
+def uf_do_territorio(item: dict) -> str | None:
+    """UF do edital, derivada do território ('GO', 'GO/Goiânia') ou da fonte.
+
+    O campo nunca era preenchido e o filtro de estado comparava contra `null`:
+    nenhuma linha casava. Território nacional ('BR') não vira UF — fica `None` e
+    é tratado como 'alcança todos os estados' pelo filtro do painel.
+    """
+    territorio = str(item.get("territorio") or "").strip().upper()
+    if territorio in UFS:
+        return territorio
+    if "/" in territorio:                       # 'GO/Goiânia'
+        sigla = territorio.split("/")[0].strip()
+        if sigla in UFS:
+            return sigla
+    fonte = _fontes().get(item.get("fonte_id")) or {}
+    da_fonte = str(fonte.get("territorio") or "").split("/")[0].strip().upper()
+    return da_fonte if da_fonte in UFS else None
+
+def abrangencia(item: dict) -> str:
+    """'nacional' quando o edital não é de um estado específico."""
+    return "estadual" if uf_do_territorio(item) else "nacional"
+
 def _editais(hoje: date) -> list[dict]:
     cfg_prog = load_json(ROOT / "config/programas.json")
     saida = []
@@ -119,6 +144,7 @@ def _editais(hoje: date) -> list[dict]:
             "titulo": item.get("titulo"), "url": item.get("url"),
             "fonte_id": item.get("fonte_id"), "fonte_nome": item.get("fonte_nome"),
             "territorio": item.get("territorio"), "nivel": item.get("nivel"),
+            "uf": uf_do_territorio(item), "abrangencia": abrangencia(item),
             "status": item.get("status"), "confianca": item.get("confianca"),
             "area": area_do_edital(item), "programa": carac.get("programa"),
             "lei": carac.get("lei"), "objeto": carac.get("modalidade"),
