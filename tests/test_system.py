@@ -592,7 +592,7 @@ class SystemTests(unittest.TestCase):
                        "Ver todas as atualizações","Ver detalhes do Farol",
                        "Oportunidade aberta","Em verificação","Encerrada",
                        "Ver oportunidade","Abrir ficha","Limpar filtros",
-                       "aguardando primeira execução do Farol"):
+                       "As notas por dimensão serão calculadas na primeira execução do Farol"):
             self.assertIn(trecho,html,trecho)
         for arte in ("bussola-cidade.png","rosa-ventos.png","logo-oficial.png"):
             self.assertTrue(pathlib.Path(f"docs/arte/{arte}").exists(),arte)
@@ -614,6 +614,9 @@ class SystemTests(unittest.TestCase):
         self.assertLessEqual(bp["verificados"],len(d["editais"]))
         for a in bp["atualizacoes"]:
             self.assertIn(a["tipo"],("novo","verificada","prazo"))
+        # sem casos, a nota declara a lacuna em vez de fingir análise
+        if bp["casos_farol"]==0:
+            self.assertIn("aguardando",bp["casos_nota"])
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
