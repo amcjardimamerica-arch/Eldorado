@@ -41,6 +41,7 @@ jobs:
         if: always()
         run: |
           python -m src.dashboard_dados | tee dash.json
+          python -m src.banco
           pip install cryptography --quiet
           python scripts/acesso.py proteger || true
           {
