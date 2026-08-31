@@ -122,9 +122,40 @@ def uf_do_territorio(item: dict) -> str | None:
     da_fonte = str(fonte.get("territorio") or "").split("/")[0].strip().upper()
     return da_fonte if da_fonte in UFS else None
 
-def abrangencia(item: dict) -> str:
-    """'nacional' quando o edital não é de um estado específico."""
-    return "estadual" if uf_do_territorio(item) else "nacional"
+# vocabulário que caracteriza um edital de verdade (e não notícia ou página de portal)
+_EH_EDITAL = re.compile(
+    r"edital|chamada\s+p[úu]blica|chamamento|sele[çc][ãa]o\s+p[úu]blica|concurso|"
+    r"pr[êe]mio|inscri[çc][õo]es|fomento|apoio\s+a\s+projetos|credenciamento|"
+    r"chamada\s+de\s+propostas|edital\s+de", re.I)
+
+# programas cujo alcance é o país inteiro (valem para qualquer estado)
+PROGRAMAS_NACIONAIS = {
+    "rouanet", "pnab-aldir-blanc", "paulo-gustavo", "lie-esporte", "mrosc",
+    "fundo-crianca", "fundo-idoso", "suas", "fdd", "pronon", "pronas",
+}
+
+def alcance_nacional(item: dict, carac: dict | None = None) -> bool:
+    """Nacional = aplica-se a QUALQUER estado (ex.: Rouanet, um por modalidade).
+
+    Não basta a fonte ser federal: portais nacionais também publicam notícias e
+    páginas de navegação. Exige-se, cumulativamente, que (1) não haja UF; (2) o
+    item seja de nível federal ou de um programa de alcance nacional; e (3) o
+    texto tenha vocabulário de edital. O que não passa fica como alcance
+    'indefinido' e não é contado como nacional — aparece apenas em 'Brasil'.
+    """
+    if uf_do_territorio(item):
+        return False
+    carac = carac or item.get("caracterizacao") or {}
+    programa_nacional = str(carac.get("programa_id") or "") in PROGRAMAS_NACIONAIS
+    if not (programa_nacional or item.get("nivel") == "federal"):
+        return False
+    texto = " ".join(str(item.get(c) or "") for c in ("titulo", "evidencia"))
+    return bool(_EH_EDITAL.search(texto))
+
+def abrangencia(item: dict, carac: dict | None = None) -> str:
+    if uf_do_territorio(item):
+        return "estadual"
+    return "nacional" if alcance_nacional(item, carac) else "indefinida"
 
 def _editais(hoje: date) -> list[dict]:
     cfg_prog = load_json(ROOT / "config/programas.json")
@@ -144,7 +175,7 @@ def _editais(hoje: date) -> list[dict]:
             "titulo": item.get("titulo"), "url": item.get("url"),
             "fonte_id": item.get("fonte_id"), "fonte_nome": item.get("fonte_nome"),
             "territorio": item.get("territorio"), "nivel": item.get("nivel"),
-            "uf": uf_do_territorio(item), "abrangencia": abrangencia(item),
+            "uf": uf_do_territorio(item), "abrangencia": abrangencia(item, carac),
             "status": item.get("status"), "confianca": item.get("confianca"),
             "area": area_do_edital(item), "programa": carac.get("programa"),
             "lei": carac.get("lei"), "objeto": carac.get("modalidade"),

@@ -40,8 +40,10 @@ button:hover{border-color:var(--marca)}
 .hero-arte .hot:hover{box-shadow:0 0 0 3px #ffffffaa,0 0 14px #00000026}
 .hero-arte .hot:focus-visible{outline:3px solid #fff;outline-offset:2px}
 /* posições medidas por esquadrinhamento sobre a arte original */
-#hot-eldorado{left:24.740%;top:46.356%;width:20.573%;height:11.662%}
-#hot-farol{left:53.060%;top:46.356%;width:17.578%;height:11.662%}
+/* medido pela borda da pílula, a partir do miolo do botão (a varredura por cor
+   capturava o cenário laranja e estendia a área de clique além do desenho) */
+#hot-eldorado{left:29.818%;top:46.064%;width:15.625%;height:13.411%}
+#hot-farol{left:52.995%;top:46.064%;width:17.708%;height:12.245%}
 @media(max-width:900px){.hero-arte img{content:url(arte/cabecalho-leve.jpg)}}
 /* ===== demais elementos da página inicial ===== */
 #v-inicio{margin-top:0}
@@ -221,7 +223,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div class="cartao">
 <div class="painel-tit eldorado"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#E07B00" stroke-width="1.9"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.4"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg><span>ELDORADO <span style="font-weight:500;color:var(--suave)">— Radar de recursos</span></span></div>
 <div class="filtros">
-<div><label>UF</label><select id="fi-uf"><option value="">Todos</option></select></div>
+<div><label>UF</label><select id="fi-uf"><option value="">Brasil</option></select></div>
 <div><label>Área</label><select id="fi-area"><option value="">Todos</option></select></div>
 <div><label>Nível</label><select id="fi-nivel"><option value="">Todos</option></select></div>
 <div><label>Prazo</label><select id="fi-prazo"><option value="">Todos</option>
@@ -492,19 +494,28 @@ function resumoTip(e){
 function desenhaRadar(){
   const eds=D.editais||[];
   const UFS=["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
+  // contagem PRÓPRIA de cada estado (não soma os de alcance nacional)
   const porUF={};eds.forEach(e=>{if(e.uf)porUF[e.uf]=(porUF[e.uf]||0)+1;});
   const nacionais=eds.filter(e=>!e.uf&&e.abrangencia==="nacional").length;
-  const ufs=UFS;
+  // só entram no seletor os estados que têm edital próprio
+  const ufs=UFS.filter(u=>porUF[u]>0);
   const areas=[...new Set(eds.map(e=>e.area))].sort();
   const niveis=[...new Set(eds.map(e=>e.nivel).filter(Boolean))].sort();
   const enche=(id,vals,rot)=>{const s=$(id);s.length=1;vals.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=rot?rot(v):v;s.appendChild(o);});};
-  enche("fi-uf",ufs,u=>{const n=(porUF[u]||0)+nacionais;return n?`${u} (${n})`:`${u} — só nacionais`;});
-  $("fi-uf").options[0].textContent=`Todos (${eds.length})`;enche("fi-area",areas,a=>AREA(a).rotulo);enche("fi-nivel",niveis);
+  enche("fi-uf",ufs,u=>`${u} (${porUF[u]})`);
+  $("fi-uf").options[0].textContent=`Brasil (${eds.length})`;
+  if(nacionais){
+    const o=document.createElement("option");
+    o.value="__nac__"; o.textContent=`Nacional (${nacionais})`;
+    $("fi-uf").insertBefore(o, $("fi-uf").options[1] || null);
+  }enche("fi-area",areas,a=>AREA(a).rotulo);enche("fi-nivel",niveis);
   function aplica(){
     const uf=$("fi-uf").value,ar=$("fi-area").value,ni=$("fi-nivel").value,pz=$("fi-prazo").value;
-    // um edital entra no filtro do estado quando é daquela UF OU tem alcance
-    // nacional (vale para todos os estados, inclusive o escolhido)
-    const casaUF=e=>!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional");
+    // Brasil = tudo · Nacional = só os que valem para qualquer estado ·
+    // UF = os do estado somados aos de alcance nacional (que também valem lá)
+    const casaUF=e=>!uf ? true
+      : uf==="__nac__" ? (!e.uf && e.abrangencia==="nacional")
+      : (e.uf===uf || (!e.uf && e.abrangencia==="nacional"));
     const filt=eds.filter(e=>casaUF(e)&&(!ar||e.area===ar)&&(!ni||e.nivel===ni)
       &&(!pz||(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export)
                               :e.estado_export==="encerrado")));

@@ -490,6 +490,50 @@ class SystemTests(unittest.TestCase):
         # o filtro de UF deve considerar também os editais de alcance nacional
         self.assertIn('e.abrangencia==="nacional"',html)
 
+
+    def test_alcance_nacional_rigoroso(self):
+        """Nacional só para o que se aplica a qualquer estado. Portal federal
+        publica notícia e página de navegação: isso não é edital nacional."""
+        from src.dashboard_dados import alcance_nacional, abrangencia
+        rouanet={"territorio":"BR","nivel":"federal",
+                 "titulo":"Edital Rouanet — modalidade audiovisual","evidencia":"inscrições abertas"}
+        self.assertTrue(alcance_nacional(rouanet))
+        self.assertEqual(abrangencia(rouanet),"nacional")
+        noticia={"territorio":"BR","nivel":"privada",
+                 "titulo":"Varejo fortalece cultura da doação no fim de ano","evidencia":"reportagem"}
+        self.assertFalse(alcance_nacional(noticia))
+        self.assertEqual(abrangencia(noticia),"indefinida")
+        navegacao={"territorio":"BR","nivel":"federal","titulo":"BNDES - Sistemas","evidencia":""}
+        self.assertFalse(alcance_nacional(navegacao))
+        estadual={"territorio":"GO","nivel":"estadual","titulo":"Edital Secult","evidencia":"inscrições"}
+        self.assertFalse(alcance_nacional(estadual))
+        self.assertEqual(abrangencia(estadual),"estadual")
+
+    def test_filtro_uf_brasil_e_contagem(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn('<option value="">Brasil</option>',html)   # 'Todos' virou 'Brasil'
+        self.assertIn("Brasil (${eds.length})",html)
+        self.assertIn("__nac__",html)                            # opção Nacional própria
+        # a contagem de cada estado é PRÓPRIA (não soma os nacionais)
+        self.assertIn("`${u} (${porUF[u]})`",html)
+        # só entram estados com edital próprio
+        self.assertIn("UFS.filter(u=>porUF[u]>0)",html)
+
+    def test_hotspot_dentro_do_desenho(self):
+        """A área de clique do Eldorado não pode ultrapassar a pílula desenhada."""
+        from PIL import Image
+        import re as _re
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        m=_re.search(r"#hot-eldorado\{left:([\d.]+)%;top:([\d.]+)%;width:([\d.]+)%;height:([\d.]+)%\}",html)
+        self.assertIsNotNone(m,"hotspot do Eldorado não encontrado")
+        L,T,Wp,Hp=[float(x) for x in m.groups()]
+        larg,alt=Image.open("docs/arte/cabecalho.png").size
+        x0,x1=round(L/100*larg),round((L+Wp)/100*larg)
+        y0,y1=round(T/100*alt),round((T+Hp)/100*alt)
+        # a pílula laranja medida na arte: x 458–697, y 158–203 (tolerância de 6px)
+        self.assertGreaterEqual(x0,452); self.assertLessEqual(x1,703)
+        self.assertGreaterEqual(y0,152); self.assertLessEqual(y1,209)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
