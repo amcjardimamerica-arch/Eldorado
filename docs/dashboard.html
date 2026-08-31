@@ -10,10 +10,18 @@
 --marca:#1F5B99;--realce:#EEF3F9;--ok:#1E7E4B;--alerta:#B8860B;--urgente:#B8433A}
 *{box-sizing:border-box}
 body{margin:0;background:var(--fundo);color:var(--tinta);font:14.5px/1.55 system-ui,-apple-system,sans-serif}
+/* fundo de página inteira com a arte aprovada — responsivo: cover acompanha
+   redimensionamento e zoom sem distorcer nem cortar o essencial */
+body::before{content:"";position:fixed;inset:0;z-index:-2;
+background:url(arte/fundo.jpg) center/cover no-repeat}
+body::after{content:"";position:fixed;inset:0;z-index:-1;
+background:linear-gradient(180deg,rgba(255,255,255,.30) 0,rgba(252,252,250,.66) 26%,rgba(252,252,250,.72) 78%,rgba(255,255,255,.42) 100%)}
+@media(max-width:900px){body::before{background-image:url(arte/fundo-leve.jpg)}}
+@media(max-resolution:1dppx) and (max-width:1200px){body::before{background-image:url(arte/fundo-leve.jpg)}}
 main{max-width:1140px;margin:auto;padding:18px 20px 40px}
 a{color:var(--marca)}
 .meta{color:var(--suave);font-size:12.5px}
-.cartao{background:var(--cartao);border:1px solid var(--linha);border-radius:14px;padding:16px}
+.cartao{background:rgba(255,255,255,.90);backdrop-filter:blur(3px);border:1px solid var(--linha);border-radius:14px;padding:16px}
 button{font:inherit;cursor:pointer;border:1px solid var(--linha);background:var(--cartao);color:var(--tinta);border-radius:12px;padding:10px 18px}
 button:hover{border-color:var(--marca)}
 .topo{display:flex;justify-content:center;gap:14px;padding:16px 0 6px}
@@ -54,7 +62,7 @@ font-weight:800;background:#fff;border:2px solid var(--pc);color:var(--pc);box-s
 .filtros label{font-size:10.5px;letter-spacing:.08em;color:var(--suave);text-transform:uppercase;display:block;margin-bottom:3px}
 .filtros select{width:100%;font:inherit;font-size:13px;padding:8px;border:1px solid var(--linha);border-radius:9px;background:#fff;color:var(--tinta)}
 .mets{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:12px 0}
-.met{border:1px solid var(--linha);border-radius:11px;padding:10px;text-align:center;background:#FDFDFC}
+.met{border:1px solid var(--linha);border-radius:11px;padding:10px;text-align:center;background:rgba(253,253,252,.92)}
 .met .v{font-size:23px;font-weight:800;color:#C05E00}
 .met .r{font-size:10px;letter-spacing:.05em;color:var(--suave);text-transform:uppercase;line-height:1.3;margin-top:2px}
 .novas .item{display:flex;align-items:center;gap:9px;padding:9px 2px;border-bottom:1px solid var(--linha);cursor:pointer;font-size:13px}
@@ -148,7 +156,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <main id="app" class="oculto">
 <header style="text-align:center;padding-top:4px">
 <div class="meta" style="cursor:pointer" onclick="irInicio()" title="voltar à página inicial">A.M.C. JARDIM AMÉRICA · PAINEL DE CAPTAÇÃO</div>
-<div class="topo" id="topo-modulos">
+<div class="topo oculto" id="topo-modulos">
 <button id="bt-inicio" onclick="irInicio()">Início</button>
 <button id="bt-eldorado" onclick="modulo('eldorado')">Eldorado</button>
 <button id="bt-farol" onclick="modulo('farol')">Farol de Alexandria</button>
@@ -163,16 +171,13 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <button data-v="f-editais" class="on">Editais Abertos</button>
 <button data-v="f-biblioteca">Biblioteca</button>
 </div>
-<div class="meta" id="rodada"></div>
 </header>
 
 
 <!-- ============ PÁGINA INICIAL (arte aprovada) ============ -->
 <section id="v-inicio">
 <div class="hero">
-<img class="cena esq" src="arte/cena-eldorado.png" alt="">
-<img class="cena dir" src="arte/cena-farol.png" alt="">
-<img class="logo" src="arte/logo-topo.png" alt="A.M.C. Jardim América">
+<img class="logo" src="arte/logo-oficial.png" alt="A.M.C. Jardim América" style="height:118px">
 <div class="hero-botoes">
 <button class="hbt eldorado" onclick="modulo('eldorado')">🏛&nbsp; Eldorado</button>
 <button class="hbt farol" onclick="modulo('farol')">🗼&nbsp; Farol de Alexandria</button>
@@ -303,7 +308,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 </section>
 
-<footer>Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histórico).<br>
+<footer><div id="rodada" style="font-size:13px;color:var(--tinta);margin-bottom:6px"></div>
+Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histórico).<br>
 Dados automatizados exigem conferência na fonte primária. <span id="rodape-ger"></span></footer>
 </main>
 
@@ -409,8 +415,10 @@ const mostra=window.mostra;
 window.irInicio=function(){
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
   $("nav-eldorado").classList.add("oculto");$("nav-farol").classList.add("oculto");
+  $("topo-modulos").classList.add("oculto");
   mostra("inicio");};
 window.modulo=function(m){
+  $("topo-modulos").classList.remove("oculto");
   $("bt-eldorado").classList.toggle("on",m==="eldorado");
   $("bt-farol").classList.toggle("on",m==="farol");
   $("nav-eldorado").classList.toggle("oculto",m!=="eldorado");

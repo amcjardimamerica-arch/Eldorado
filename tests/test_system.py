@@ -391,14 +391,18 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for trecho in ("Radar de recursos","Inteligência de decisão","Fila prioritária",
                        "Calendário de projetos em aberto","Descobrir","Confirmar","Enquadrar",
-                       "Decidir","Preparar","arte/logo-topo.png","arte/cena-eldorado.png",
-                       "arte/cena-farol.png","fi-mets","fa-donut","desenhaGantt","desenhaFila"):
+                       "Decidir","Preparar","arte/logo-oficial.png","arte/fundo.jpg","arte/fundo-leve.jpg",
+                       "topo oculto","fi-mets","fa-donut","desenhaGantt","desenhaFila"):
             self.assertIn(trecho,html,trecho)
         idx=open("docs/index.html",encoding="utf-8").read()
         self.assertIn("url=dashboard.html",idx)
         self.assertIn("transparencia.html",idx)
-        for arte in ("logo-topo","cena-eldorado","cena-farol"):
-            self.assertTrue(pathlib.Path(f"docs/arte/{arte}.png").exists(),arte)
+        for arte in ("logo-oficial.png","fundo.jpg","fundo-leve.jpg"):
+            self.assertTrue(pathlib.Path(f"docs/arte/{arte}").exists(),arte)
+        # dados de alimentação no FIM da página, não no topo
+        self.assertLess(html.find("</header>"), html.find('id="rodada"'))
+        # fundo integral responsivo
+        self.assertIn("center/cover", html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
