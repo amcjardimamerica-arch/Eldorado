@@ -390,19 +390,20 @@ class SystemTests(unittest.TestCase):
     def test_pagina_inicial(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for trecho in ("Radar de recursos","Inteligência de decisão","Fila prioritária",
-                       "Calendário de projetos em aberto","Descobrir","Confirmar","Enquadrar",
-                       "Decidir","Preparar","arte/logo-oficial.png","arte/fundo.jpg","arte/fundo-leve.jpg",
+                       "Calendário de projetos em aberto","arte/cabecalho.png","arte/moldura.png",
                        "topo oculto","fi-mets","fa-donut","desenhaGantt","desenhaFila"):
             self.assertIn(trecho,html,trecho)
         idx=open("docs/index.html",encoding="utf-8").read()
         self.assertIn("url=dashboard.html",idx)
         self.assertIn("transparencia.html",idx)
-        for arte in ("logo-oficial.png","fundo.jpg","fundo-leve.jpg"):
+        for arte in ("cabecalho.png","moldura.png"):
             self.assertTrue(pathlib.Path(f"docs/arte/{arte}").exists(),arte)
         # dados de alimentação no FIM da página, não no topo
         self.assertLess(html.find("</header>"), html.find('id="rodada"'))
-        # fundo integral responsivo
-        self.assertIn("center/cover", html)
+        # arte estática em proporção travada (nunca distorce)
+        self.assertIn("hero-arte", html)
+        css=html.split("<style>")[1].split("</style>")[0]
+        self.assertEqual(css.count("{"), css.count("}"), "CSS com chaves desbalanceadas")
 
 
     def test_fundo_sem_elementos_demonstrativos(self):
@@ -431,13 +432,21 @@ class SystemTests(unittest.TestCase):
 
     def test_ajustes_visuais_do_demonstrativo(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        # legenda textual retirada (a marca já está no logotipo) e logo 20% menor
         self.assertNotIn("PAINEL DE CAPTAÇÃO",html)
-        self.assertIn("logo-oficial.png",html); self.assertIn("height:94px",html)
-        # linha de etapas com trilho contínuo e 5 marcadores
-        self.assertIn(".jornada::before",html)
-        for passo in ("Descobrir","Confirmar","Enquadrar","Decidir","Preparar"):
-            self.assertIn(passo,html,passo)
+        # cabeçalho é a ARTE EXTRAÍDA da referência, não uma recriação em HTML
+        self.assertIn("arte/cabecalho.png",html)
+        self.assertIn("hot-eldorado",html); self.assertIn("hot-farol",html)
+        self.assertNotIn(".jornada",html)          # etapas 1-5 vêm da arte
+        for arte in ("cabecalho.png","moldura.png","cabecalho-leve.jpg","moldura-leve.jpg"):
+            self.assertTrue(pathlib.Path(f"docs/arte/{arte}").exists(),arte)
+        # proporção da arte preservada (1536x343 = 4.478:1)
+        from PIL import Image
+        larg,alt=Image.open("docs/arte/cabecalho.png").size
+        self.assertEqual((larg,alt),(1536,343))
+        # faixa de calendário e fila até as margens; rodapé sem a frase retirada
+        self.assertIn("faixa-larga",html)
+        self.assertNotIn("Dados automatizados exigem",html)
+        self.assertIn("nomeObjetivo",html)
         # UF com as 27 siglas e prazo padronizado
         self.assertIn('"AC","AL","AP","AM","BA"',html)
         self.assertIn("Inscrições abertas",html); self.assertIn("Inscrições encerradas",html)
