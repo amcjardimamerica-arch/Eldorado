@@ -360,9 +360,10 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <span class="verlink" onclick="modulo('eldorado');mostra('calendario')">Ver calendário completo ›</span>
 </div>
 <div class="cartao">
-<div class="painel-tit" style="color:var(--tinta)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#23272E" stroke-width="1.9" stroke-linecap="round"><path d="M4 6.5h16M4 12h11M4 17.5h7"/></svg>Fila prioritária</div>
+<div class="painel-tit" style="color:var(--tinta)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#23272E" stroke-width="1.9" stroke-linecap="round"><path d="M4 6.5h16M4 12h11M4 17.5h7"/></svg>Fila prioritária
+<span class=meta style="font-weight:500;margin-left:4px" title="Somente projetos já vinculados a uma associação, com documentação em preparo para protocolo.">— enquadrados com documentação</span></div>
 <table class="fila" id="fila">
-<thead><tr><th>Prioridade</th><th>Oportunidade</th><th>Fonte</th><th>Valor citado</th><th>Prazo</th><th>Status</th><th>Ações</th></tr></thead>
+<thead><tr><th>Prioridade</th><th>Projeto enquadrado</th><th>Fonte</th><th>Valor citado</th><th>Prazo</th><th>Documentação</th><th>Ações</th></tr></thead>
 <tbody></tbody></table>
 <span class="verlink" onclick="modulo('eldorado');mostra('editais')">Ver todas na fila ›</span>
 </div>
@@ -715,6 +716,11 @@ function desenhaRadar(){
     $("fi-novas").querySelectorAll(".item").forEach(el=>{
       const ed=eds.find(x=>x.id===el.dataset.id);
       ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);});
+    // o mesmo recorte rege o calendário e a fila prioritária
+    const semFiltro=!uf&&!ar&&!ni&&!pz;
+    gFiltrados=semFiltro?null:filt;
+    filaFiltro=semFiltro?null:{uf,ar,ni,pz};
+    desenhaGantt();desenhaFila();
   }
   ["fi-uf","fi-area","fi-nivel","fi-prazo"].forEach(id=>$(id).addEventListener("input",aplica));
   aplica();
@@ -742,7 +748,7 @@ function desenhaFarolResumo(){
     const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);
     if(ed){ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);}});
 }
-let gAno,gMes;
+let gAno,gMes,gFiltrados=null;   // gFiltrados = recorte vindo do filtro da página inicial
 window.mudaMesG=function(dx){gMes+=dx;if(gMes<0){gMes=11;gAno--;}if(gMes>11){gMes=0;gAno++;}desenhaGantt();};
 function desenhaGantt(){
   $("g-mes").textContent=MES[gMes]+" "+gAno;
@@ -754,16 +760,19 @@ function desenhaGantt(){
   const ini=new Date(gAno,gMes,1),fim=new Date(gAno,gMes+1,0),nd=fim.getDate();
   const SEM=["DOM","SEG","TER","QUA","QUI","SEX","SAB"];
   // projetos cujo período de inscrição toca o mês
-  const eds=(D.editais||[]).filter(e=>{
+  const base=gFiltrados||D.editais||[];
+  const noMes=base.filter(e=>{
     const a=e.inicio?new Date(e.inicio+"T00:00:00"):null,b=e.fim?new Date(e.fim+"T00:00:00"):null;
-    return (a&&a<=fim&&(!b||b>=ini))||(b&&b>=ini&&b<=fim);}).slice(0,8);
+    return (a&&a<=fim&&(!b||b>=ini))||(b&&b>=ini&&b<=fim);});
+  // as 8 mais urgentes do mês (encerra antes aparece primeiro)
+  const eds=[...noMes].sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9))).slice(0,8);
 
   // cabeçalho: dia + dia da semana, ocupando toda a largura até a margem
   const diasCab=Array.from({length:nd},(_,i)=>{
     const dt=new Date(gAno,gMes,i+1);
     return `<span><b>${i+1}</b><i>${SEM[dt.getDay()]}</i></span>`;}).join("");
   let linhas=`<div class=gantt style="--nd:${nd}"><div></div><div class=gdias>${diasCab}</div>`;
-  if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">Nenhum período de inscrição neste mês.</div>`;
+  if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">${gFiltrados?"Nenhum período de inscrição neste mês para o filtro selecionado.":"Nenhum período de inscrição neste mês."}</div>`;
   eds.forEach(e=>{
     // barra: do dia de ABERTURA até o ÚLTIMO dia de inscrição
     const a=e.inicio?new Date(e.inicio+"T00:00:00"):ini,b=e.fim?new Date(e.fim+"T00:00:00"):fim;
@@ -775,16 +784,27 @@ function desenhaGantt(){
     const nome=nomeObjetivo(e);
     linhas+=`<div class=grotulo title="${esc(e.titulo)}">${esc(nome.slice(0,40))}</div>
       <div class=gfaixa>${hoje}
-      <span class=gbarra data-id="${esc(e.id)}" style="left:${((d1-1)/nd*100).toFixed(2)}%;width:${((d2-d1+1)/nd*100).toFixed(2)}%;background:${AREA(e.area).cor}">${rot}</span></div>`;
+      <span class=gbarra data-id="${esc(e.id)}" style="left:${((d1-1)/nd*100).toFixed(2)}%;width:${((d2-d1+1)/nd*100).toFixed(2)}%;background:${AREA(e.area).cor};color:${corTexto(AREA(e.area).cor)}">${rot}</span></div>`;
   });
   linhas+="</div>";
   $("g-corpo").innerHTML=linhas;
   $("g-corpo").querySelectorAll(".gbarra").forEach(el=>{
     const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);
     ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);});
-  const areasG=[...new Set(eds.map(e=>e.area))];
-  $("g-legenda").innerHTML=areasG.map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("");
+  // legenda por área (cada área tem matiz próprio, igual ao filtro de Área)
+  const cont={};noMes.forEach(e=>cont[e.area]=(cont[e.area]||0)+1);
+  const areasG=Object.keys(cont).sort((a,b)=>cont[b]-cont[a]);
+  $("g-legenda").innerHTML=areasG.map(a=>
+    `<span title="${esc(AREA(a).rotulo)}: ${cont[a]} no mês"><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave);font-weight:600">${cont[a]}</b></span>`).join("")
+    +(noMes.length>eds.length?`<span class=meta>mostrando ${eds.length} de ${noMes.length} — abra o calendário completo</span>`:"");
 }
+/* contraste do rótulo dentro da barra: escuro sobre cor clara, claro sobre escura */
+function corTexto(hex){
+  const c=String(hex).replace("#","");
+  const r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);
+  return (0.299*r+0.587*g+0.114*b)>168?"#23272E":"#fff";
+}
+
 /* prioridade: sugerida pelo prazo, ajustável pelo titular (fica salva no computador) */
 function prioridadesSalvas(){
   try{return JSON.parse(localStorage.getItem("amc_prioridades")||"{}");}catch(e){return {};}
@@ -800,35 +820,51 @@ function prioridadeDe(e){
   const dz=dias(e.fim);
   return {n:dz===null?1:dz<=7?3:dz<=15?2:1,manual:false};
 }
+let filaFiltro=null;
+/* Fila prioritária: projetos JÁ ENQUADRADOS numa associação, com o estado real
+   da documentação para protocolo. Nada entra aqui por simples captação. */
 function desenhaFila(){
-  const abertos=(D.editais||[]).filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export))
-    .sort((a,b)=>{const pa=prioridadeDe(a).n,pb=prioridadeDe(b).n;
-      return pb-pa || ((dias(a.fim)??9e9)-(dias(b.fim)??9e9));}).slice(0,8);
+  let fila=((D.farol_resumo||{}).fila_enquadrados)||[];
+  if(filaFiltro){
+    const {uf,ar,ni,pz}=filaFiltro;
+    const porId={};(D.editais||[]).forEach(e=>porId[e.id]=e);
+    fila=fila.filter(c=>{const e=porId[c.id]||{};
+      return (!uf||uf==="__nac__"?(!uf||(!e.uf&&e.abrangencia==="nacional")):(e.uf===uf||(!e.uf&&e.abrangencia==="nacional")))
+        &&(!ar||c.area===ar)&&(!ni||e.nivel===ni)
+        &&(!pz||(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export):e.estado_export==="encerrado"));});
+  }
+  fila=[...fila].sort((a,b)=>{const pa=prioridadeDe(a).n,pb=prioridadeDe(b).n;
+    return pb-pa || (b.etapas_prontas-a.etapas_prontas) || ((dias(a.fim)??9e9)-(dias(b.fim)??9e9));}).slice(0,8);
   const tb=$("fila").querySelector("tbody");
-  const stMap=s=>String(s).startsWith("verificada")?["ok","Verificada"]:s==="elegivel"?["eleg","Elegível"]
-    :s==="capturada"?["cap","Capturada"]:["acao","Ação necessária"];
-  tb.innerHTML=abertos.length?abertos.map(e=>{
-    const pr=prioridadeDe(e), st=stMap(e.status);
+  const stMap=c=>c.protocolo_pronto?["ok","Pronta para protocolo"]
+    :c.etapas_prontas?["eleg","Documentação em preparo"]:["acao","Enquadrado, sem documentos"];
+  tb.innerHTML=fila.length?fila.map(c=>{
+    const pr=prioridadeDe(c), st=stMap(c);
     const estrelas=[1,2,3].map(i=>
-      `<span class=estrela data-id="${esc(e.id)}" data-n="${i}" title="definir prioridade ${i}">${i<=pr.n?"★":"☆"}</span>`).join("");
-    return `<tr data-id="${esc(e.id)}">
+      `<span class=estrela data-id="${esc(c.id)}" data-n="${i}" title="definir prioridade ${i}">${i<=pr.n?"★":"☆"}</span>`).join("");
+    const pct=Math.round(c.etapas_prontas/c.etapas_total*100);
+    return `<tr data-id="${esc(c.id)}">
     <td><span class="estrelas${pr.manual?" manual":""}" title="${pr.manual?"prioridade definida por você":"sugerida pelo prazo — clique para ajustar"}">${estrelas}</span></td>
-    <td><span class=ponto style="background:${AREA(e.area).cor};margin-right:6px"></span>${esc(e.titulo.slice(0,52))}</td>
-    <td class=meta>${esc(e.fonte_nome)}</td>
-    <td>${e.valor_texto?esc(e.valor_texto):'<span class=meta title="valor não publicado na evidência coletada">—</span>'}</td>
-    <td>${br(e.fim)}${e.prazo_prorrogado?" ⟳":""}</td>
-    <td><span class="st ${st[0]}">${st[1]}</span></td>
-    <td class=acoes><a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" title="abrir na fonte primária">↗</a></td></tr>`;}).join("")
-    :`<tr><td colspan=7 class=meta style="padding:12px 4px">Fila vazia — alimentada automaticamente pelas varreduras de segunda e sexta.</td></tr>`;
+    <td><span class=ponto style="background:${AREA(c.area).cor};margin-right:6px"></span>${esc(nomeObjetivo(c).slice(0,46))}
+        <span class=meta style="display:block">${esc(c.associacao)}</span></td>
+    <td class=meta>${esc(c.fonte_nome)}</td>
+    <td>${c.valor_texto?esc(c.valor_texto):'<span class=meta title="valor não publicado na evidência coletada">—</span>'}</td>
+    <td>${br(c.fim)}</td>
+    <td><span class="st ${st[0]}">${st[1]}</span>
+        <span class=meta style="display:block" title="etapas do caso concluídas">${c.etapas_prontas}/${c.etapas_total} etapas · ${pct}%</span></td>
+    <td class=acoes><a href="#" title="abrir o caso" onclick="return false">↗</a></td></tr>`;}).join("")
+    :`<tr><td colspan=7 class=meta style="padding:12px 4px">${filaFiltro
+       ?"Nenhum projeto enquadrado neste filtro."
+       :"Nenhum projeto enquadrado ainda. Esta fila reúne os editais já vinculados a uma associação, com a documentação em preparo para protocolo — ela nasce quando um edital é verificado e o Farol monta o caso (aguarda a credencial FAROL_AI_API_KEY)."}</td></tr>`;
   tb.querySelectorAll("tr[data-id]").forEach(el=>{
     const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);
-    ligaTip(el,resumoTip(ed));
-    el.onclick=ev=>{if(ev.target.closest(".estrela")||ev.target.closest("a"))return;detalheEdital(ed);};});
+    if(ed){ligaTip(el,resumoTip(ed));
+      el.onclick=ev=>{if(ev.target.closest(".estrela")||ev.target.closest("a"))return;detalheEdital(ed);};}});
   tb.querySelectorAll(".estrela").forEach(s=>s.onclick=ev=>{
     ev.stopPropagation();
     const id=s.dataset.id,n=Number(s.dataset.n);
     const atual=prioridadesSalvas()[id];
-    salvaPrioridade(id, atual===n ? 0 : n);   // clicar de novo na mesma volta ao automático
+    salvaPrioridade(id, atual===n ? 0 : n);   // reclique volta ao automático
     desenhaFila();});
 }
 

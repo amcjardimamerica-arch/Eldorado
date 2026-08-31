@@ -457,11 +457,6 @@ class SystemTests(unittest.TestCase):
         # calendário com todos os meses e barra abertura->prazo
         self.assertIn("g-meses",html); self.assertIn("SEM=",html)
 
-    def test_paleta_do_demonstrativo(self):
-        from src.dashboard_dados import AREAS
-        for cor in ("#388BF2","#FB9E26","#61A658","#754AE1","#22B8CF"):
-            self.assertIn(cor,[a["cor"] for a in AREAS.values()],cor)
-
 
     def test_uf_derivada_do_territorio(self):
         """O filtro por estado não funcionava porque `uf` vinha nulo em 100%
@@ -617,6 +612,48 @@ class SystemTests(unittest.TestCase):
         # sem casos, a nota declara a lacuna em vez de fingir análise
         if bp["casos_farol"]==0:
             self.assertIn("aguardando",bp["casos_nota"])
+
+
+    def test_paleta_areas_distinta(self):
+        """Cada área precisa de matiz próprio: o calendário distingue as áreas
+        pela cor, em conjunto com o filtro de Área."""
+        from src.dashboard_dados import AREAS
+        cores=[a["cor"] for a in AREAS.values()]
+        self.assertEqual(len(set(cores)),len(cores),"há cores repetidas entre áreas")
+        self.assertGreaterEqual(len(cores),13)
+        # base do demonstrativo preservada nas cinco áreas principais
+        for chave,esperada in (("saude","#2F7FE0"),("infraestrutura","#F08C1E"),
+                               ("educacao","#3FA34D"),("meio_ambiente","#7B4BE0"),
+                               ("assistencia_social","#17B8CF")):
+            self.assertEqual(AREAS[chave]["cor"],esperada,chave)
+
+    def test_filtro_rege_calendario_e_fila(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        # o recorte do filtro alimenta o gantt e a fila
+        self.assertIn("gFiltrados",html)
+        self.assertIn("desenhaGantt();desenhaFila();",html)
+        self.assertIn("filaFiltro",html)
+        # contraste do rótulo dentro da barra colorida
+        self.assertIn("function corTexto(",html)
+        # legenda por área com contagem
+        self.assertIn("no mês",html)
+
+    def test_fila_apenas_enquadrados(self):
+        """A fila prioritária mostra projetos já vinculados a uma associação,
+        com o estado real da documentação — nunca simples captação."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("Projeto enquadrado",html)
+        self.assertIn("Documentação",html)
+        self.assertIn("fila_enquadrados",html)
+        self.assertIn("Pronta para protocolo",html)
+        self.assertIn("Nenhum projeto enquadrado ainda",html)
+        d=dash_coletar(date(2026,9,2))
+        fila=d["farol_resumo"]["fila_enquadrados"]
+        self.assertIsInstance(fila,list)
+        for c in fila:
+            for ch in ("id","associacao","etapas_prontas","etapas_total","protocolo_pronto"):
+                self.assertIn(ch,c,ch)
+            self.assertLessEqual(c["etapas_prontas"],c["etapas_total"])
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

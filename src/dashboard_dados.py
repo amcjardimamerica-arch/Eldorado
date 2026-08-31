@@ -31,21 +31,23 @@ from .relatorio_busca import _situacao
 from .nucleo import ROOT, carregar_oportunidades, load_json, now_iso, write_json
 
 # ---------------- áreas e cores (tons claros) ----------------
-# Paleta do demonstrativo aprovado: azul, laranja, verde, roxo e azul claro.
+# Paleta do demonstrativo (azul, laranja, verde, roxo, azul claro) ampliada para
+# 13 matizes distintos entre si, de modo que o filtro de Área e as barras do
+# calendário distingam cada área sem ambiguidade de cor.
 AREAS = {
-    "saude":              {"rotulo": "Saúde",                "cor": "#388BF2"},
-    "infraestrutura":     {"rotulo": "Infraestrutura",       "cor": "#FB9E26"},
-    "educacao":           {"rotulo": "Educação",             "cor": "#61A658"},
-    "meio_ambiente":      {"rotulo": "Meio ambiente",        "cor": "#754AE1"},
-    "assistencia_social": {"rotulo": "Assistência social",   "cor": "#22B8CF"},
-    "cultura":            {"rotulo": "Cultura",              "cor": "#8E63E8"},
-    "esporte":            {"rotulo": "Esporte",              "cor": "#3FA45C"},
-    "crianca_adolescente":{"rotulo": "Criança e adolescente","cor": "#2F79D0"},
-    "pessoa_idosa":       {"rotulo": "Pessoa idosa",         "cor": "#E08A1E"},
-    "direitos_humanos":   {"rotulo": "Direitos humanos",     "cor": "#6B5BD6"},
-    "justica":            {"rotulo": "Justiça",              "cor": "#4A90D9"},
-    "seguranca_alimentar":{"rotulo": "Segurança alimentar",  "cor": "#F0A93B"},
-    "outros":             {"rotulo": "Outros",               "cor": "#7C90A8"},
+    "saude":              {"rotulo": "Saúde",                "cor": "#2F7FE0"},
+    "infraestrutura":     {"rotulo": "Infraestrutura",       "cor": "#F08C1E"},
+    "educacao":           {"rotulo": "Educação",             "cor": "#3FA34D"},
+    "meio_ambiente":      {"rotulo": "Meio ambiente",        "cor": "#7B4BE0"},
+    "assistencia_social": {"rotulo": "Assistência social",   "cor": "#17B8CF"},
+    "cultura":            {"rotulo": "Cultura",              "cor": "#D6336C"},
+    "esporte":            {"rotulo": "Esporte",              "cor": "#8FBF26"},
+    "crianca_adolescente":{"rotulo": "Criança e adolescente","cor": "#F2B705"},
+    "pessoa_idosa":       {"rotulo": "Pessoa idosa",         "cor": "#A9611F"},
+    "direitos_humanos":   {"rotulo": "Direitos humanos",     "cor": "#E8503A"},
+    "justica":            {"rotulo": "Justiça",              "cor": "#4A5568"},
+    "seguranca_alimentar":{"rotulo": "Segurança alimentar",  "cor": "#0E8A74"},
+    "outros":             {"rotulo": "Outros",               "cor": "#94A3B8"},
 }
 _PALAVRAS_AREA = [
     ("infraestrutura", r"infraestrutur|pavimenta|ilumina[çc][ãa]o p[úu]blica|obra|saneament|mobilidade urbana|drenagem"),
@@ -378,7 +380,61 @@ def _farol_resumo(editais: list[dict]) -> dict:
             {"id": e["id"], "titulo": e["titulo"], "area": e["area"], "status": e["status"],
              "qualificacao": e["detalhes"]["qualificacao"]}
             for e in editais if str(e["status"]).startswith(("verificada", "elegivel"))][:6],
+        "fila_enquadrados": _fila_enquadrados(editais),
     }
+
+
+def _fila_enquadrados(editais: list[dict]) -> list[dict]:
+    """Fila prioritária: projetos JÁ ENQUADRADOS numa associação, com o estado
+    real da documentação para protocolo.
+
+    Enquadrado = existe caso aberto para a associação (dados/associacoes/<slug>/
+    casos/<id>/). O progresso vem dos arquivos do caso realmente presentes.
+    Enquanto o Farol não roda, a fila fica vazia e o painel declara o motivo —
+    não se inventa enquadramento.
+    """
+    base = ROOT / "dados/associacoes"
+    porid = {e["id"]: e for e in editais}
+    fila: list[dict] = []
+    if not base.exists():
+        return fila
+    for assoc in sorted(base.glob("*/")):
+        if assoc.name.upper() == "EXEMPLO":
+            continue
+        perfil = assoc / "perfil_publico.json"
+        nome = assoc.name
+        if perfil.exists():
+            try:
+                nome = load_json(perfil).get("nome") or nome
+            except Exception:
+                pass
+        for caso in sorted((assoc / "casos").glob("*/")) if (assoc / "casos").exists() else []:
+            edital = porid.get(caso.name)
+            if edital is None:
+                continue
+            arquivos = {f.name for f in caso.glob("*") if f.is_file()}
+            etapas = [
+                ("enquadramento", any(a.startswith("01") for a in arquivos)),
+                ("plano_de_trabalho", any(a.startswith("02") for a in arquivos)),
+                ("orcamento", any(a.startswith("03") for a in arquivos)),
+                ("documentos", any(a.startswith("04") for a in arquivos)),
+                ("parecer", any(a.startswith(("06", "07")) for a in arquivos)),
+            ]
+            prontas = sum(1 for _, ok in etapas if ok)
+            submissao = (caso / "submissao").exists()
+            fila.append({
+                "id": edital["id"], "associacao": nome,
+                "titulo": edital["titulo"], "area": edital["area"],
+                "fonte_nome": edital["fonte_nome"], "valor_texto": edital.get("valor_texto"),
+                "fim": edital.get("fim"), "uf": edital.get("uf"),
+                "etapas": dict(etapas), "etapas_prontas": prontas, "etapas_total": len(etapas),
+                "protocolo_pronto": submissao,
+                "situacao": ("pronta para protocolo" if submissao
+                             else "documentação em preparo" if prontas
+                             else "enquadrado, sem documentos"),
+            })
+    fila.sort(key=lambda c: (not c["protocolo_pronto"], -c["etapas_prontas"], c["fim"] or "9999"))
+    return fila
 
 def coletar(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
