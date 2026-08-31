@@ -428,6 +428,30 @@ class SystemTests(unittest.TestCase):
                             f"{arq}: faixa central tem tinta escura demais ({proporcao:.4%}) "
                             "— provável resíduo dos elementos demonstrativos")
 
+
+    def test_ajustes_visuais_do_demonstrativo(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        # legenda textual retirada (a marca já está no logotipo) e logo 20% menor
+        self.assertNotIn("PAINEL DE CAPTAÇÃO",html)
+        self.assertIn("logo-oficial.png",html); self.assertIn("height:94px",html)
+        # linha de etapas com trilho contínuo e 5 marcadores
+        self.assertIn(".jornada::before",html)
+        for passo in ("Descobrir","Confirmar","Enquadrar","Decidir","Preparar"):
+            self.assertIn(passo,html,passo)
+        # UF com as 27 siglas e prazo padronizado
+        self.assertIn('"AC","AL","AP","AM","BA"',html)
+        self.assertIn("Inscrições abertas",html); self.assertIn("Inscrições encerradas",html)
+        self.assertNotIn("≤ 7 dias",html)
+        # fila com estrelas ajustáveis e persistência local
+        self.assertIn("amc_prioridades",html); self.assertIn("class=estrela",html)
+        # calendário com todos os meses e barra abertura->prazo
+        self.assertIn("g-meses",html); self.assertIn("SEM=",html)
+
+    def test_paleta_do_demonstrativo(self):
+        from src.dashboard_dados import AREAS
+        for cor in ("#388BF2","#FB9E26","#61A658","#754AE1","#22B8CF"):
+            self.assertIn(cor,[a["cor"] for a in AREAS.values()],cor)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

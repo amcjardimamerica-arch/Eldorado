@@ -19,6 +19,9 @@ background:linear-gradient(180deg,rgba(255,255,255,.18) 0,rgba(252,252,250,.52) 
 @media(max-width:900px){body::before{background-image:url(arte/fundo-leve.jpg)}}
 @media(max-resolution:1dppx) and (max-width:1200px){body::before{background-image:url(arte/fundo-leve.jpg)}}
 main{max-width:1140px;margin:auto;padding:18px 20px 40px}
+/* a página inicial ocupa a largura da tela, como no demonstrativo */
+body.inicial main{max-width:1560px;padding-inline:26px}
+@media(max-width:1200px){body.inicial main{padding-inline:14px}}
 a{color:var(--marca)}
 .meta{color:var(--suave);font-size:12.5px}
 .cartao{background:rgba(255,255,255,.90);backdrop-filter:blur(3px);border:1px solid var(--linha);border-radius:14px;padding:16px}
@@ -46,17 +49,28 @@ padding:12px 34px;border-radius:14px;border:0;box-shadow:0 4px 12px #0002, inset
 .hbt.eldorado{background:linear-gradient(90deg,#FB9602,#EE6801)}
 .hbt.farol{background:linear-gradient(90deg,#0071E0,#003AA8)}
 .hbt:hover{filter:brightness(1.06)}
-.jornada{position:relative;z-index:1;display:flex;justify-content:center;align-items:flex-start;gap:0;margin:22px auto 8px;max-width:980px}
-.jornada .liga{flex:1;height:2px;margin-top:19px;background:linear-gradient(90deg,#F2A65A,#7FA8E8)}
-.passo{width:150px;text-align:center}
-.passo .num{width:40px;height:40px;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;
-font-weight:800;background:#fff;border:2px solid var(--pc);color:var(--pc);box-shadow:0 2px 6px #0001}
-.passo.atual .num{outline:4px solid #ffffff;box-shadow:0 0 0 6px var(--pc)33,0 2px 8px #0002}
-.passo b{display:block;font-size:13.5px;margin-top:7px}
-.passo span{display:block;font-size:10.5px;color:var(--suave);line-height:1.35;margin-top:2px}
-.inicio-grade{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.jornada{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-start;
+margin:26px auto 10px;max-width:1080px;padding:0 10px}
+/* trilho contínuo laranja→azul, atrás dos marcadores */
+.jornada::before{content:"";position:absolute;left:8%;right:8%;top:23px;height:2px;
+background:linear-gradient(90deg,#F09B2E 0,#F0A93B 34%,#9BB6E8 52%,#2F79D0 100%)}
+.passo{flex:1;text-align:center;position:relative;z-index:1}
+.passo .num{width:44px;height:44px;border-radius:50%;margin:auto;display:flex;align-items:center;justify-content:center;
+font-weight:800;font-size:17px;background:#fff;border:2px solid var(--pc);color:var(--pc)}
+.passo.atual .num{box-shadow:0 0 0 5px #fff,0 0 0 8px var(--pc)2e,0 0 0 13px #fff,0 0 0 15px var(--pc)1c}
+.passo b{display:block;font-size:14px;margin-top:9px;font-weight:700}
+.passo span{display:block;font-size:10.5px;color:var(--suave);line-height:1.35;margin-top:3px;max-width:170px;margin-inline:auto}
+.inicio-grade{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px;align-items:start}
+/* calendário e fila: cada um encosta na sua margem da tela */
+.inicio-grade > .cartao:nth-child(3),
+.inicio-grade > .cartao:nth-child(4){min-width:0}
 @media(max-width:960px){.inicio-grade{grid-template-columns:1fr}.hero .cena{display:none}}
-.painel-tit{display:flex;align-items:center;gap:8px;font-size:16.5px;font-weight:800;letter-spacing:.02em}
+.painel-tit{display:flex;align-items:center;gap:9px;font-size:16.5px;font-weight:800;letter-spacing:.02em}
+.painel-tit svg{flex:none}
+.met .ico{display:flex;align-items:center;justify-content:center;gap:9px}
+.met .ico svg{flex:none}
+.met.linha{display:flex;align-items:center;gap:11px;text-align:left;padding:12px}
+.met.linha .v{font-size:26px;line-height:1}
 .painel-tit.eldorado{color:#C05E00}.painel-tit.farol{color:#0B4EA2}
 .filtros{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
 .filtros label{font-size:10.5px;letter-spacing:.08em;color:var(--suave);text-transform:uppercase;display:block;margin-bottom:3px}
@@ -81,18 +95,33 @@ background:conic-gradient(#0B6BD3 calc(var(--p)*1%),#E3EAF3 0);position:relative
 /* gantt */
 .gcab{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .gcab h3{margin:0;font-size:15.5px}
-.gantt{display:grid;grid-template-columns:150px 1fr;row-gap:7px;font-size:11px;position:relative}
-.gdias{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;color:var(--suave);font-size:9px;text-align:center}
-.gfaixa{position:relative;height:20px;background:#F4F3EF;border-radius:6px}
-.gbarra{position:absolute;top:2px;bottom:2px;border-radius:6px;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap;cursor:pointer;min-width:14px}
-.ghoje{position:absolute;top:0;bottom:0;width:2px;background:#0B4EA2;z-index:2}
-.grotulo{padding-right:8px;display:flex;align-items:center;font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gantt{display:grid;grid-template-columns:158px 1fr;row-gap:8px;font-size:11px;position:relative}
+.gdias{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;color:var(--suave);font-size:9px;text-align:center;line-height:1.15}
+.gdias b{display:block;font-weight:700;font-size:10px;color:var(--tinta)}
+.gdias i{font-style:normal;font-size:8px;letter-spacing:.02em}
+.gfaixa{position:relative;height:22px;border-radius:7px;
+background:repeating-linear-gradient(90deg,#F5F4F0 0,#F5F4F0 calc(100%/31 - 1px),#EAE8E2 calc(100%/31 - 1px),#EAE8E2 calc(100%/31))}
+.gbarra{position:absolute;top:2px;bottom:2px;border-radius:11px;color:#fff;font-size:10px;font-weight:600;
+display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap;cursor:pointer;min-width:16px;
+box-shadow:0 1px 3px #0002}
+.ghoje{position:absolute;top:-16px;bottom:0;width:2px;background:#0B4EA2;z-index:2}
+.ghoje::before{content:"";position:absolute;top:-4px;left:-4px;width:10px;height:10px;border-radius:50%;background:#0B4EA2}
+.grotulo{padding-right:10px;display:flex;align-items:center;font-size:11.5px;line-height:1.25;overflow:hidden}
+.gmes{display:flex;align-items:center;gap:2px;flex-wrap:wrap;justify-content:center}
+.gmes button{border:1px solid var(--linha);background:#fff;border-radius:8px;padding:4px 9px;font-size:11px;cursor:pointer}
+.gmes button.on{background:var(--realce);border-color:#2F79D0;color:#0B4EA2;font-weight:700}
 /* fila */
 .fila{width:100%;border-collapse:collapse;font-size:12.5px}
 .fila th{text-align:left;color:var(--suave);font-weight:600;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;padding:6px 6px;border-bottom:1px solid var(--linha)}
 .fila td{padding:8px 6px;border-bottom:1px solid var(--linha);vertical-align:middle}
 .fila tr:hover td{background:var(--realce);cursor:pointer}
-.estrelas{color:#FEAD0C;letter-spacing:2px;font-size:13px}
+.estrelas{color:#FEAD0C;letter-spacing:2px;font-size:15px;white-space:nowrap;display:inline-flex;gap:1px}
+.estrela{cursor:pointer;line-height:1;transition:transform .1s}
+.estrela:hover{transform:scale(1.22)}
+.estrelas.manual{filter:drop-shadow(0 0 2px #FEAD0C66)}
+.fila td.acoes{text-align:center;white-space:nowrap}
+.fila td.acoes a{text-decoration:none;font-size:15px;color:#0B4EA2;padding:3px 6px;border-radius:7px}
+.fila td.acoes a:hover{background:var(--realce)}
 .verlink{font-size:12.5px;font-weight:700;color:#0B4EA2;cursor:pointer;display:inline-block;margin-top:9px}
 /* calendário */
 .calcab{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
@@ -153,9 +182,26 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <p class="meta" style="margin-top:12px">A senha é enviada ao WhatsApp cadastrado no dia 1º de cada mês e vale até o último dia do mês. Recuperação: acione a rotina «reenviar senha» ou os e-mails de recuperação cadastrados.</p>
 </div></div></div></div>
 
+<svg style="position:absolute;width:0;height:0">
+<svg id="i-radar" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#E07B00" stroke-width="1.9" style="display:none">
+<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.4"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg>
+<svg id="i-farol" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#0B4EA2" stroke-width="1.8" style="display:none">
+<path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M12 2.2v2.2M7 4.4l1.7 1.3M17 4.4l-1.7 1.3"/><path d="M8 21h8"/></svg>
+<svg id="i-barras" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round" style="display:none">
+<path d="M4 20V12M9.3 20V6M14.7 20v-6M20 20V9"/></svg>
+<svg id="i-lupa" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round" style="display:none">
+<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+<svg id="i-escudo" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#E07B00" stroke-width="2" stroke-linejoin="round" style="display:none">
+<path d="M12 2.7l7.5 3v6c0 4.4-3.1 8.3-7.5 9.6-4.4-1.3-7.5-5.2-7.5-9.6v-6l7.5-3z"/><path d="M8.6 11.8l2.4 2.4 4.3-4.5" stroke-linecap="round"/></svg>
+<svg id="i-relogio" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round" style="display:none">
+<circle cx="12" cy="12" r="8.7"/><path d="M12 7v5.2l3.2 2"/></svg>
+<svg id="i-calendario" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#2F79D0" stroke-width="1.9" stroke-linecap="round" style="display:none">
+<rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/></svg>
+<svg id="i-fila" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#23272E" stroke-width="1.9" stroke-linecap="round" style="display:none">
+<path d="M4 6.5h16M4 12h11M4 17.5h7"/></svg>
+</svg>
 <main id="app" class="oculto">
 <header style="text-align:center;padding-top:4px">
-<div class="meta" style="cursor:pointer" onclick="irInicio()" title="voltar à página inicial">A.M.C. JARDIM AMÉRICA · PAINEL DE CAPTAÇÃO</div>
 <div class="topo oculto" id="topo-modulos">
 <button id="bt-inicio" onclick="irInicio()">Início</button>
 <button id="bt-eldorado" onclick="modulo('eldorado')">Eldorado</button>
@@ -177,7 +223,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <!-- ============ PÁGINA INICIAL (arte aprovada) ============ -->
 <section id="v-inicio">
 <div class="hero">
-<img class="logo" src="arte/logo-oficial.png" alt="A.M.C. Jardim América" style="height:118px">
+<img class="logo" src="arte/logo-oficial.png" alt="A.M.C. Jardim América" style="height:94px">
 <div class="hero-botoes">
 <button class="hbt eldorado" onclick="modulo('eldorado')">🏛&nbsp; Eldorado</button>
 <button class="hbt farol" onclick="modulo('farol')">🗼&nbsp; Farol de Alexandria</button>
@@ -197,13 +243,14 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 
 <div class="inicio-grade">
 <div class="cartao">
-<div class="painel-tit eldorado">◎ ELDORADO — Radar de recursos</div>
+<div class="painel-tit eldorado"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#E07B00" stroke-width="1.9"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.4"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg><span>ELDORADO <span style="font-weight:500;color:var(--suave)">— Radar de recursos</span></span></div>
 <div class="filtros">
 <div><label>UF</label><select id="fi-uf"><option value="">Todos</option></select></div>
 <div><label>Área</label><select id="fi-area"><option value="">Todos</option></select></div>
 <div><label>Nível</label><select id="fi-nivel"><option value="">Todos</option></select></div>
 <div><label>Prazo</label><select id="fi-prazo"><option value="">Todos</option>
-<option value="7">≤ 7 dias</option><option value="15">≤ 15 dias</option><option value="30">≤ 30 dias</option></select></div>
+<option value="abertos">Inscrições abertas</option>
+<option value="encerrados">Inscrições encerradas</option></select></div>
 </div>
 <div class="mets" id="fi-mets"></div>
 <div style="font-weight:700;font-size:13.5px;margin:4px 0 2px;color:#C05E00">Novas oportunidades</div>
@@ -212,7 +259,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 
 <div class="cartao">
-<div class="painel-tit farol">◈ FAROL — Inteligência de decisão</div>
+<div class="painel-tit farol"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#0B4EA2" stroke-width="1.8"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M12 2.2v2.2M7 4.4l1.7 1.3M17 4.4l-1.7 1.3"/><path d="M8 21h8"/></svg><span>FAROL <span style="font-weight:500;color:var(--suave)">— Inteligência de decisão</span></span></div>
 <div class="farol-grade" style="margin-top:12px">
 <div class="met"><div class="donut" id="fa-donut" style="--p:0"><b id="fa-aderencia">—</b></div>
 <div class="r" style="margin-top:6px">Aderência média<br><span id="fa-adnota" style="text-transform:none;letter-spacing:0"></span></div></div>
@@ -231,19 +278,20 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 
 <div class="cartao">
 <div class="gcab">
-<span style="font-size:17px">🗓</span><h3>Calendário de projetos em aberto</h3>
+<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#2F79D0" stroke-width="1.9" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/></svg><h3>Calendário de projetos em aberto</h3>
 <span style="margin-left:auto"></span>
-<button onclick="mudaMesG(-1)">‹</button><strong id="g-mes" style="min-width:120px;text-align:center"></strong><button onclick="mudaMesG(1)">›</button>
+<button onclick="mudaMesG(-1)">‹</button><strong id="g-mes" style="min-width:130px;text-align:center"></strong><button onclick="mudaMesG(1)">›</button>
 </div>
+<div class="gmes" id="g-meses" style="margin-bottom:10px"></div>
 <div id="g-corpo"></div>
 <div class="legenda" id="g-legenda" style="margin-top:10px"></div>
 <span class="verlink" onclick="modulo('eldorado');mostra('calendario')">Ver calendário completo ›</span>
 </div>
 
 <div class="cartao">
-<div class="painel-tit" style="color:var(--tinta)">Fila prioritária</div>
+<div class="painel-tit" style="color:var(--tinta)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#23272E" stroke-width="1.9" stroke-linecap="round"><path d="M4 6.5h16M4 12h11M4 17.5h7"/></svg>Fila prioritária</div>
 <table class="fila" id="fila">
-<thead><tr><th>Prioridade</th><th>Oportunidade</th><th>Fonte</th><th>Valor citado</th><th>Prazo</th><th>Status</th></tr></thead>
+<thead><tr><th>Prioridade</th><th>Oportunidade</th><th>Fonte</th><th>Valor citado</th><th>Prazo</th><th>Status</th><th>Ações</th></tr></thead>
 <tbody></tbody></table>
 <span class="verlink" onclick="modulo('eldorado');mostra('editais')">Ver todas na fila ›</span>
 </div>
@@ -413,11 +461,13 @@ window.mostra=function(v){VISTAS.forEach(x=>$("v-"+x).classList.toggle("oculto",
   $("bt-inicio").classList.toggle("on",v==="inicio");};
 const mostra=window.mostra;
 window.irInicio=function(){
+  document.body.classList.add("inicial");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
   $("nav-eldorado").classList.add("oculto");$("nav-farol").classList.add("oculto");
   $("topo-modulos").classList.add("oculto");
   mostra("inicio");};
 window.modulo=function(m){
+  document.body.classList.remove("inicial");
   $("topo-modulos").classList.remove("oculto");
   $("bt-eldorado").classList.toggle("on",m==="eldorado");
   $("bt-farol").classList.toggle("on",m==="farol");
@@ -465,22 +515,30 @@ function resumoTip(e){
 /* ================= PÁGINA INICIAL ================= */
 function desenhaRadar(){
   const eds=D.editais||[];
-  const ufs=[...new Set(eds.map(e=>e.uf).filter(Boolean))].sort();
+  const UFS=["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
+  const comDados=new Set(eds.map(e=>e.uf).filter(Boolean));
+  const ufs=UFS;
   const areas=[...new Set(eds.map(e=>e.area))].sort();
   const niveis=[...new Set(eds.map(e=>e.nivel).filter(Boolean))].sort();
   const enche=(id,vals,rot)=>{const s=$(id);s.length=1;vals.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=rot?rot(v):v;s.appendChild(o);});};
-  enche("fi-uf",ufs);enche("fi-area",areas,a=>AREA(a).rotulo);enche("fi-nivel",niveis);
+  enche("fi-uf",ufs,u=>comDados.has(u)?u:u+" —");enche("fi-area",areas,a=>AREA(a).rotulo);enche("fi-nivel",niveis);
   function aplica(){
     const uf=$("fi-uf").value,ar=$("fi-area").value,ni=$("fi-nivel").value,pz=$("fi-prazo").value;
     const filt=eds.filter(e=>(!uf||e.uf===uf)&&(!ar||e.area===ar)&&(!ni||e.nivel===ni)
-      &&(!pz||(dias(e.fim)!==null&&dias(e.fim)>=0&&dias(e.fim)<=Number(pz))));
+      &&(!pz||(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export)
+                              :e.estado_export==="encerrado")));
     const abertos=filt.filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export));
     const emVer=filt.filter(e=>["capturada","descoberta_nao_verificada","verificacao_pendente"].includes(e.status));
     const eleg=filt.filter(e=>String(e.status).startsWith("verificada")||e.status==="elegivel");
     const prox=abertos.filter(e=>dias(e.fim)!==null&&dias(e.fim)>=0&&dias(e.fim)<=15);
-    $("fi-mets").innerHTML=[[filt.length,"Oportunidades identificadas"],[emVer.length,"Em verificação"],
-      [eleg.length,"Verificadas / elegíveis"],[prox.length,"Prazos próximos (≤15d)"]]
-      .map(x=>`<div class=met><div class=v>${x[0]}</div><div class=r>${x[1]}</div></div>`).join("");
+    const ICO={
+      barras:'<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><path d="M4 20V12M9.3 20V6M14.7 20v-6M20 20V9"/></svg>',
+      lupa:'<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>',
+      escudo:'<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linejoin="round"><path d="M12 2.7l7.5 3v6c0 4.4-3.1 8.3-7.5 9.6-4.4-1.3-7.5-5.2-7.5-9.6v-6l7.5-3z"/><path d="M8.6 11.8l2.4 2.4 4.3-4.5" stroke-linecap="round"/></svg>',
+      relogio:'<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.7"/><path d="M12 7v5.2l3.2 2"/></svg>'};
+    $("fi-mets").innerHTML=[[ICO.barras,filt.length,"Oportunidades<br>identificadas"],[ICO.lupa,emVer.length,"Em verificação"],
+      [ICO.escudo,eleg.length,"Elegíveis"],[ICO.relogio,prox.length,"Prazos próximos"]]
+      .map(x=>`<div class="met linha">${x[0]}<div><div class=v>${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
     const novas=[...abertos].sort((a,b)=>String(b.detalhes.coletado_em||"").localeCompare(String(a.detalhes.coletado_em||""))).slice(0,5);
     $("fi-novas").innerHTML=novas.length?novas.map(e=>`<div class=item data-id="${esc(e.id)}">
       <span class=ponto style="background:${AREA(e.area).cor}"></span>
@@ -524,20 +582,35 @@ let gAno,gMes;
 window.mudaMesG=function(dx){gMes+=dx;if(gMes<0){gMes=11;gAno--;}if(gMes>11){gMes=0;gAno++;}desenhaGantt();};
 function desenhaGantt(){
   $("g-mes").textContent=MES[gMes]+" "+gAno;
+  // seletor com TODOS os meses do ano corrente do calendário
+  $("g-meses").innerHTML=MES.map((m,i)=>
+    `<button data-m="${i}" class="${i===gMes?"on":""}">${m.slice(0,3)}</button>`).join("");
+  $("g-meses").querySelectorAll("button").forEach(b=>b.onclick=()=>{gMes=Number(b.dataset.m);desenhaGantt();});
+
   const ini=new Date(gAno,gMes,1),fim=new Date(gAno,gMes+1,0),nd=fim.getDate();
+  const SEM=["DOM","SEG","TER","QUA","QUI","SEX","SAB"];
+  // projetos cujo período de inscrição toca o mês
   const eds=(D.editais||[]).filter(e=>{
     const a=e.inicio?new Date(e.inicio+"T00:00:00"):null,b=e.fim?new Date(e.fim+"T00:00:00"):null;
     return (a&&a<=fim&&(!b||b>=ini))||(b&&b>=ini&&b<=fim);}).slice(0,8);
-  const diasCab=Array.from({length:nd},(_,i)=>`<span>${i+1}</span>`).join("");
-  let linhas=`<div class=gantt><div></div><div class=gdias>${diasCab}</div>`;
-  if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">Nenhum projeto com período neste mês — o calendário completo mostra todos os eventos.</div>`;
+
+  // cabeçalho: dia + dia da semana, ocupando toda a largura até a margem
+  const diasCab=Array.from({length:nd},(_,i)=>{
+    const dt=new Date(gAno,gMes,i+1);
+    return `<span><b>${i+1}</b><i>${SEM[dt.getDay()]}</i></span>`;}).join("");
+  let linhas=`<div class=gantt style="--nd:${nd}"><div></div><div class=gdias>${diasCab}</div>`;
+  if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">Nenhum período de inscrição neste mês.</div>`;
   eds.forEach(e=>{
+    // barra: do dia de ABERTURA até o ÚLTIMO dia de inscrição
     const a=e.inicio?new Date(e.inicio+"T00:00:00"):ini,b=e.fim?new Date(e.fim+"T00:00:00"):fim;
     const d1=Math.max(1,(a<ini?1:a.getDate())),d2=Math.min(nd,(b>fim?nd:b.getDate()));
-    const rot=`${String(d1).padStart(2,"0")}/${String(gMes+1).padStart(2,"0")} - ${String(d2).padStart(2,"0")}/${String(gMes+1).padStart(2,"0")}`;
-    linhas+=`<div class=grotulo title="${esc(e.titulo)}">${esc(e.titulo.slice(0,24))}</div>
-      <div class=gfaixa>${(gAno===HOJE.getFullYear()&&gMes===HOJE.getMonth())?`<span class=ghoje style="left:${(HOJE.getDate()-0.5)/nd*100}%"></span>`:""}
-      <span class=gbarra data-id="${esc(e.id)}" style="left:${(d1-1)/nd*100}%;width:${(d2-d1+1)/nd*100}%;background:${AREA(e.area).cor}">${rot}</span></div>`;
+    const mm=String(gMes+1).padStart(2,"0");
+    const rot=`${String(d1).padStart(2,"0")}/${mm} - ${String(d2).padStart(2,"0")}/${mm}`;
+    const hoje=(gAno===HOJE.getFullYear()&&gMes===HOJE.getMonth())
+      ?`<span class=ghoje style="left:${((HOJE.getDate()-0.5)/nd*100).toFixed(2)}%"></span>`:"";
+    linhas+=`<div class=grotulo title="${esc(e.titulo)}">${esc(e.titulo.slice(0,34))}</div>
+      <div class=gfaixa>${hoje}
+      <span class=gbarra data-id="${esc(e.id)}" style="left:${((d1-1)/nd*100).toFixed(2)}%;width:${((d2-d1+1)/nd*100).toFixed(2)}%;background:${AREA(e.area).cor}">${rot}</span></div>`;
   });
   linhas+="</div>";
   $("g-corpo").innerHTML=linhas;
@@ -547,23 +620,51 @@ function desenhaGantt(){
   const areasG=[...new Set(eds.map(e=>e.area))];
   $("g-legenda").innerHTML=areasG.map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("");
 }
+/* prioridade: sugerida pelo prazo, ajustável pelo titular (fica salva no computador) */
+function prioridadesSalvas(){
+  try{return JSON.parse(localStorage.getItem("amc_prioridades")||"{}");}catch(e){return {};}
+}
+function salvaPrioridade(id,n){
+  const m=prioridadesSalvas();
+  if(n) m[id]=n; else delete m[id];
+  try{localStorage.setItem("amc_prioridades",JSON.stringify(m));}catch(e){}
+}
+function prioridadeDe(e){
+  const m=prioridadesSalvas();
+  if(m[e.id]) return {n:m[e.id],manual:true};
+  const dz=dias(e.fim);
+  return {n:dz===null?1:dz<=7?3:dz<=15?2:1,manual:false};
+}
 function desenhaFila(){
   const abertos=(D.editais||[]).filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export))
-    .sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9))).slice(0,8);
+    .sort((a,b)=>{const pa=prioridadeDe(a).n,pb=prioridadeDe(b).n;
+      return pb-pa || ((dias(a.fim)??9e9)-(dias(b.fim)??9e9));}).slice(0,8);
   const tb=$("fila").querySelector("tbody");
   const stMap=s=>String(s).startsWith("verificada")?["ok","Verificada"]:s==="elegivel"?["eleg","Elegível"]
     :s==="capturada"?["cap","Capturada"]:["acao","Ação necessária"];
   tb.innerHTML=abertos.length?abertos.map(e=>{
-    const dz=dias(e.fim);const n=dz===null?1:dz<=7?3:dz<=15?2:1;
-    const st=stMap(e.status);
-    return `<tr data-id="${esc(e.id)}"><td><span class=estrelas>${"★".repeat(n)}${"☆".repeat(3-n)}</span></td>
-    <td><span class=ponto style="background:${AREA(e.area).cor};margin-right:5px"></span>${esc(e.titulo.slice(0,46))}</td>
-    <td class=meta>${esc(e.fonte_nome)}</td><td>${e.valor_texto?esc(e.valor_texto):'<span class=meta title="valor não publicado na evidência coletada">—</span>'}</td>
-    <td>${br(e.fim)}${e.prazo_prorrogado?" ⟳":""}</td><td><span class="st ${st[0]}">${st[1]}</span></td></tr>`;}).join("")
-    :`<tr><td colspan=6 class=meta style="padding:12px 4px">Fila vazia — alimentada automaticamente pelas varreduras de segunda e sexta.</td></tr>`;
+    const pr=prioridadeDe(e), st=stMap(e.status);
+    const estrelas=[1,2,3].map(i=>
+      `<span class=estrela data-id="${esc(e.id)}" data-n="${i}" title="definir prioridade ${i}">${i<=pr.n?"★":"☆"}</span>`).join("");
+    return `<tr data-id="${esc(e.id)}">
+    <td><span class="estrelas${pr.manual?" manual":""}" title="${pr.manual?"prioridade definida por você":"sugerida pelo prazo — clique para ajustar"}">${estrelas}</span></td>
+    <td><span class=ponto style="background:${AREA(e.area).cor};margin-right:6px"></span>${esc(e.titulo.slice(0,52))}</td>
+    <td class=meta>${esc(e.fonte_nome)}</td>
+    <td>${e.valor_texto?esc(e.valor_texto):'<span class=meta title="valor não publicado na evidência coletada">—</span>'}</td>
+    <td>${br(e.fim)}${e.prazo_prorrogado?" ⟳":""}</td>
+    <td><span class="st ${st[0]}">${st[1]}</span></td>
+    <td class=acoes><a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" title="abrir na fonte primária">↗</a></td></tr>`;}).join("")
+    :`<tr><td colspan=7 class=meta style="padding:12px 4px">Fila vazia — alimentada automaticamente pelas varreduras de segunda e sexta.</td></tr>`;
   tb.querySelectorAll("tr[data-id]").forEach(el=>{
     const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);
-    ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);});
+    ligaTip(el,resumoTip(ed));
+    el.onclick=ev=>{if(ev.target.closest(".estrela")||ev.target.closest("a"))return;detalheEdital(ed);};});
+  tb.querySelectorAll(".estrela").forEach(s=>s.onclick=ev=>{
+    ev.stopPropagation();
+    const id=s.dataset.id,n=Number(s.dataset.n);
+    const atual=prioridadesSalvas()[id];
+    salvaPrioridade(id, atual===n ? 0 : n);   // clicar de novo na mesma volta ao automático
+    desenhaFila();});
 }
 
 /* ================= CALENDÁRIO ================= */

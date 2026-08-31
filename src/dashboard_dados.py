@@ -31,21 +31,24 @@ from .relatorio_busca import _situacao
 from .nucleo import ROOT, carregar_oportunidades, load_json, now_iso, write_json
 
 # ---------------- áreas e cores (tons claros) ----------------
+# Paleta do demonstrativo aprovado: azul, laranja, verde, roxo e azul claro.
 AREAS = {
-    "cultura":            {"rotulo": "Cultura",              "cor": "#7C4DBE"},
-    "esporte":            {"rotulo": "Esporte",              "cor": "#1E7E4B"},
-    "educacao":           {"rotulo": "Educação",             "cor": "#1F5B99"},
-    "assistencia_social": {"rotulo": "Assistência social",   "cor": "#C2571B"},
-    "crianca_adolescente":{"rotulo": "Criança e adolescente","cor": "#C23B69"},
-    "pessoa_idosa":       {"rotulo": "Pessoa idosa",         "cor": "#8A6A16"},
-    "saude":              {"rotulo": "Saúde",                "cor": "#0F8B8D"},
-    "meio_ambiente":      {"rotulo": "Meio ambiente",        "cor": "#4A7C2F"},
-    "direitos_humanos":   {"rotulo": "Direitos humanos",     "cor": "#5B5EA6"},
-    "justica":            {"rotulo": "Justiça",              "cor": "#6D4C41"},
-    "seguranca_alimentar":{"rotulo": "Segurança alimentar",  "cor": "#B0752B"},
-    "outros":             {"rotulo": "Outros",               "cor": "#607086"},
+    "saude":              {"rotulo": "Saúde",                "cor": "#388BF2"},
+    "infraestrutura":     {"rotulo": "Infraestrutura",       "cor": "#FB9E26"},
+    "educacao":           {"rotulo": "Educação",             "cor": "#61A658"},
+    "meio_ambiente":      {"rotulo": "Meio ambiente",        "cor": "#754AE1"},
+    "assistencia_social": {"rotulo": "Assistência social",   "cor": "#22B8CF"},
+    "cultura":            {"rotulo": "Cultura",              "cor": "#8E63E8"},
+    "esporte":            {"rotulo": "Esporte",              "cor": "#3FA45C"},
+    "crianca_adolescente":{"rotulo": "Criança e adolescente","cor": "#2F79D0"},
+    "pessoa_idosa":       {"rotulo": "Pessoa idosa",         "cor": "#E08A1E"},
+    "direitos_humanos":   {"rotulo": "Direitos humanos",     "cor": "#6B5BD6"},
+    "justica":            {"rotulo": "Justiça",              "cor": "#4A90D9"},
+    "seguranca_alimentar":{"rotulo": "Segurança alimentar",  "cor": "#F0A93B"},
+    "outros":             {"rotulo": "Outros",               "cor": "#7C90A8"},
 }
 _PALAVRAS_AREA = [
+    ("infraestrutura", r"infraestrutur|pavimenta|ilumina[çc][ãa]o p[úu]blica|obra|saneament|mobilidade urbana|drenagem"),
     ("cultura", r"cultur|audiovisual|artist|patrim[oô]nio|m[uú]sic|teatro|danca|dança|pnab|aldir|paulo gustavo|rouanet|goyazes"),
     ("esporte", r"esport|atleta|desport|paradesporto|lei pel[eé]|lie\b"),
     ("educacao", r"educa|escolar|alfabetiz|creche|contraturno"),
