@@ -404,6 +404,23 @@ class SystemTests(unittest.TestCase):
         # fundo integral responsivo
         self.assertIn("center/cover", html)
 
+
+    def test_fundo_sem_elementos_demonstrativos(self):
+        """O fundo é só cenário: não pode carregar os painéis fictícios da arte
+        (números inventados, filtros, listas). Verificação por densidade de
+        traços finos escuros — assinatura de texto miúdo renderizado."""
+        from PIL import Image
+        for arq in ("docs/arte/fundo.jpg", "docs/arte/fundo-leve.jpg"):
+            im = Image.open(arq).convert("L")
+            larg, alt = im.size
+            # a faixa central (onde ficavam os painéis) tem de estar limpa
+            faixa = im.crop((int(larg*0.18), int(alt*0.22), int(larg*0.82), int(alt*0.92)))
+            escuros = sum(1 for p in faixa.getdata() if p < 120)
+            proporcao = escuros / (faixa.width * faixa.height)
+            self.assertLess(proporcao, 0.001,
+                            f"{arq}: faixa central tem tinta escura demais ({proporcao:.4%}) "
+                            "— provável resíduo dos elementos demonstrativos")
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
