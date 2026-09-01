@@ -9,7 +9,7 @@ flowchart TD
         P2["2 · CONFIRMAR<br/><small>elegibilidade, requisitos, documentos e anexos</small>"]
     end
     subgraph INT["🔷 INTEGRAÇÃO"]
-        P3["3 · ENQUADRAR<br/><small>Biblioteca alimentada · IA cruza requisitos<br/>aderência, viabilidade e histórico</small>"]
+            P3["3 · ENQUADRAR<br/><small>Biblioteca alimentada · IA cruza requisitos<br/>CONSELHO DE 7 LENTES delibera</small>"]
     end
     subgraph FAR["🔵 FAROL DE ALEXANDRIA — decisão e preparo"]
         P4["4 · DECIDIR<br/><small>entidades com chances reais<br/>pasta do edital e documentos separados</small>"]
@@ -25,9 +25,10 @@ flowchart TD
 
     P3 --> B[("BIBLIOTECA DE ALEXANDRIA<br/>leis · oportunidades · associações")]
     B -->|histórico: o que é cobrado,<br/>quem venceu e por quê| IA["IA por tarefa<br/><small>extração → análise → parecer</small>"]
-    IA -->|parecer com aderência<br/>e viabilidade| P4
+    IA --> CO["CONSELHO DE 7 LENTES<br/><small>3 pessimistas · neutro · 3 otimistas<br/>arquétipos jurídicos sorteados</small>"]
+    CO -->|voto do NEUTRO — vinculante<br/>+ parâmetros de qualidade<br/>+ mitigação de riscos| P4
 
-    P4 -->|bloqueio eliminatório| D["descartada<br/><small>motivo registrado</small>"]
+    P4 -->|conselho: descartar<br/>ou regularizar antes| D["fora desta rodada<br/><small>fundamento registrado</small>"]
     P4 -->|chance real| PA["pasta do edital<br/>dentro da entidade"] --> P5
     P5 --> DL["documentos para download"]
     P5 --> NT["NOTA TÉCNICA<br/><small>o que falta e como obter</small>"]
@@ -35,6 +36,7 @@ flowchart TD
     style P1 fill:#FFF3E4,stroke:#C05E00
     style P2 fill:#FFF3E4,stroke:#C05E00
     style P3 fill:#F3EEFF,stroke:#7B4BE0
+    style CO fill:#F3EEFF,stroke:#7B4BE0
     style P4 fill:#E8F1FB,stroke:#0B4EA2
     style P5 fill:#E8F1FB,stroke:#0B4EA2
     style B fill:#FDF6E3,stroke:#C9A227
@@ -48,9 +50,26 @@ flowchart TD
 |---|---|---|---|---|
 | 1 | **Descobrir** | Eldorado | oportunidade identificada com fonte, URL e evidência hasheada | identificação em diário é começo, não fim |
 | 2 | **Confirmar** | Eldorado | edital integral, datas de inscrição, requisitos e anexos-modelo | verificação **dupla** (fonte + conteúdo); sem isso não passa |
-| 3 | **Enquadrar** | Eldorado → Farol | dados na Biblioteca; IA cruza requisitos × associações com apoio do histórico | modelo adequado a cada tarefa; pacote mínimo; sem credencial, só a parte determinística |
-| 4 | **Decidir** | Farol (automático) | entidades com chance real, pasta do edital criada, documentos separados | **nenhuma informação nova** é criada; o que falta é declarado |
+| 3 | **Enquadrar** | Eldorado → Farol | dados na Biblioteca; conselho de 7 lentes delibera sobre cada par edital × associação | pessimistas caçam falhas, otimistas apontam virtudes, **o neutro fecha a decisão**; sem credencial o conselho roda determinístico |
+| 4 | **Decidir** | Farol (automático) | entidades com chance real, pasta do edital criada, documentos separados | só entra quem o **conselho corroborou** (voto do neutro); nenhuma informação nova é criada |
 | 5 | **Preparar** | Farol (automático) | modelos preenchidos no próprio PDF, prontos para download | dado ausente vira **nota técnica** com o caminho para obtê-lo |
+
+### O conselho da etapa 3
+
+Sete posições sobre o mesmo material: **extremamente pessimista, pessimista,
+levemente pessimista, neutro, levemente otimista, otimista e extremamente
+otimista**. Os pessimistas procuram falhas, defeitos e motivos de
+inabilitação; os otimistas, as vantagens e o melhor resultado alcançável. O
+**neutro pondera de forma imparcial**, fecha a decisão (concorrer /
+regularizar antes / descartar) e fixa os **parâmetros de qualidade** e a
+**mitigação de riscos** que seguem para a nota técnica.
+
+Como a matéria é jurídica, os conselheiros têm peso de ministros de tribunais
+superiores, doutrinadores e advogados pós-doutores, sorteados a cada análise.
+São **arquétipos**, não nomes de pessoas reais — o repositório é público.
+
+O portão objetivo prevalece: nem a IA pode liberar edital com requisito
+eliminatório em falta.
 
 As etapas 4 e 5 **não dependem de ação do titular** — rodam sozinhas assim que
 o edital chega completo e o parecer aponta enquadramento.

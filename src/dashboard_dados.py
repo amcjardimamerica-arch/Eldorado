@@ -540,6 +540,7 @@ def _funil_5_passos(base: list[dict], completos: list[dict], _=None) -> dict:
     preparados = len(list(_OP.glob("*/*/preparacao.json"))) if _OP.exists() else 0
     pareceres = len(list((ROOT / "biblioteca_alexandria/pareceres").glob("*/*/parecer.json"))) \
         if (ROOT / "biblioteca_alexandria/pareceres").exists() else 0
+    conselhos = len(list(_OP.glob("*/*/conselho.json"))) if _OP.exists() else 0
     passos = [
         {"n": 1, "nome": "Descobrir", "modulo": "Eldorado",
          "descricao": "mapear oportunidades e fontes de recursos",
@@ -549,7 +550,9 @@ def _funil_5_passos(base: list[dict], completos: list[dict], _=None) -> dict:
          "quantidade": em_campanha},
         {"n": 3, "nome": "Enquadrar", "modulo": "Eldorado + Farol",
          "descricao": "Biblioteca alimentada; IA cruza requisitos e histórico",
-         "quantidade": len(completos), "pareceres": pareceres},
+         "quantidade": len(completos), "pareceres": pareceres,
+         "conselhos": conselhos,
+         "instrumento": "conselho de 7 lentes — voto do neutro é vinculante"},
         {"n": 4, "nome": "Decidir", "modulo": "Farol",
          "descricao": "entidades com chance real e documentos separados",
          "quantidade": decididos},

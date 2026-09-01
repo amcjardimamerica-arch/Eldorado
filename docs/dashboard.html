@@ -871,12 +871,14 @@ function desenhaFunil(){
     const dest=p.n<=2?"editais":p.n===3?"bussola":"f-editais";
     const mod=p.n<=2?"eldorado":"farol";
     return `<div class="passo ${cls(p.n)}${ativo}" data-mod="${mod}" data-v="${dest}"
-      title="${esc(p.descricao)}${p.n>=4?" — etapa automática":""}" style="cursor:pointer">
+      title="${esc(p.descricao)}${p.instrumento?" · "+esc(p.instrumento):""}${p.n>=4?" — etapa automática":""}" style="cursor:pointer">
       <div class=bolha>${p.n}</div>
       <b>${esc(p.nome)}</b>
       <div class=mod>${esc(p.modulo)}</div>
       <div class=qtd>${p.quantidade}</div>
-      <small>${esc(p.descricao)}</small></div>`;}).join("");
+      <small>${esc(p.descricao)}</small>
+      ${p.n===3?`<small style="color:#7B4BE0;font-weight:700">conselho de 7 lentes${p.conselhos?" · "+p.conselhos+" deliberado(s)":""}</small>`:""}
+      ${p.n===4?'<small style="color:#0B4EA2;font-weight:700">corroborada pelo conselho</small>':""}</div>`;}).join("");
   $("funil").querySelectorAll(".passo").forEach(el=>el.onclick=()=>{
     modulo(el.dataset.mod);mostra(el.dataset.v);});
 }

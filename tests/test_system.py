@@ -1024,9 +1024,10 @@ class SystemTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             base=pathlib.Path(tmp)
             orig=(B.OPORTUNIDADES,B.ASSOCIACOES,fluxo.OPORTUNIDADES,fluxo.ASSOCIACOES,
-                  FP.OPORTUNIDADES,FP.ASSOCIACOES)
+                  FP.OPORTUNIDADES,FP.ASSOCIACOES,FP.PARECERES)
             B.OPORTUNIDADES=fluxo.OPORTUNIDADES=FP.OPORTUNIDADES=base/"oportunidades"
             B.ASSOCIACOES=fluxo.ASSOCIACOES=FP.ASSOCIACOES=base/"associacoes"
+            FP.PARECERES=base/"pareceres"
             fluxo.pasta_edital_da_associacao=lambda s,t0:(
                 (base/"associacoes"/s/"editais"/slug(t0)[:70]).mkdir(parents=True,exist_ok=True)
                 or base/"associacoes"/s/"editais"/slug(t0)[:70])
@@ -1063,7 +1064,7 @@ class SystemTests(unittest.TestCase):
                 self.assertIn("cnpj",[c for c in campos])    # campo existe, sem dado
             finally:
                 (B.OPORTUNIDADES,B.ASSOCIACOES,fluxo.OPORTUNIDADES,fluxo.ASSOCIACOES,
-                 FP.OPORTUNIDADES,FP.ASSOCIACOES)=orig
+                 FP.OPORTUNIDADES,FP.ASSOCIACOES,FP.PARECERES)=orig
 
     def test_documentos_exigidos_so_do_texto(self):
         from src.fluxo import documentos_exigidos, _ONDE_OBTER, _DOCS
@@ -1094,6 +1095,112 @@ class SystemTests(unittest.TestCase):
         self.assertIn('id="funil"',html); self.assertIn("desenhaFunil",html)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.fluxo",wf)
+
+
+    def test_conselho_7_lentes_etapa3(self):
+        """Etapa 3: conselho de 7 posições (3 pessimistas, neutro, 3 otimistas),
+        com conselheiros jurídicos sorteados. O neutro fecha a decisão e fixa
+        parâmetros de qualidade e mitigação de riscos."""
+        from src.conselho_edital import (deliberar, PONTOS_DE_VISTA, PESOS,
+                                         sorteia_conselheiros, ARQUETIPOS)
+        self.assertEqual(len(PONTOS_DE_VISTA),7)
+        self.assertEqual([PESOS[p] for p in PONTOS_DE_VISTA],[-3,-2,-1,0,1,2,3])
+        edital={"chave":"c","ano":"2026","titulo":"Edital","fim":"2026-09-30",
+                "valor_texto":"R$ 100.000,00"}
+        ctx={"documentos_faltantes":[{"documento":"certidao_fgts","como_obter":"CRF na Caixa"}],
+             "historico_ocorrencias":2,"modelos":1,"area_aderente":True,"perfil_completo":True}
+        # cenário sem bloqueio → conselho corrobora concorrer
+        apta={"slug":"a","associacao":"A","faltam":[],"atende":["cebas"],
+              "alertas":["plano de trabalho: exigido no edital — confirmar"],
+              "bloqueio_objetivo":False}
+        d=deliberar(edital,apta,ctx,date(2026,9,1))
+        self.assertEqual(set(d["lentes"]),set(PONTOS_DE_VISTA))
+        self.assertEqual(d["decisao"],"concorrer")
+        self.assertTrue(d["vinculante_para_etapa_4"])
+        self.assertTrue(d["parametros_de_qualidade"])
+        self.assertTrue(d["mitigacao_de_riscos"])
+        # pessimistas apontam falhas; otimistas, vantagens
+        self.assertTrue(any("pend" in x.lower() or "risco" in x.lower() or "falha" in x.lower()
+                            for x in d["lentes"]["pessimista"]["achados"]))
+        self.assertTrue(any("atendid" in x.lower() or "aderente" in x.lower()
+                            or "alcanç" in x.lower()
+                            for lente in ("levemente_otimista","otimista","extremamente_otimista")
+                            for x in d["lentes"][lente]["achados"]))
+        # cada lente tem conselheiro próprio, sem repetir, e sem nome de pessoa real
+        conselheiros=[l["conselheiro"] for l in d["lentes"].values()]
+        self.assertEqual(len(set(conselheiros)),7)
+        for c in conselheiros: self.assertIn(c,ARQUETIPOS)
+        # sorteio é distinto entre análises e reprodutível na mesma
+        self.assertEqual(sorteia_conselheiros("x"),sorteia_conselheiros("x"))
+        self.assertNotEqual(sorteia_conselheiros("x"),sorteia_conselheiros("y"))
+        # cenário com bloqueio → conselho manda descartar
+        bloq={**apta,"faltam":["cebas"],"bloqueio_objetivo":True}
+        self.assertEqual(deliberar(edital,bloq,ctx,date(2026,9,1))["decisao"],"descartar")
+        # prazo curto com muitos documentos → regularizar antes
+        curto={"documentos_faltantes":[{"documento":f"d{i}","como_obter":"x"} for i in range(5)],
+               "historico_ocorrencias":0,"modelos":0,"area_aderente":False,"perfil_completo":False}
+        r=deliberar({**edital,"fim":"2026-09-05"},apta,curto,date(2026,9,1))
+        self.assertEqual(r["decisao"],"regularizar antes")
+
+    def test_etapa4_depende_do_conselho(self):
+        """A decisão automática só ocorre quando o conselho corrobora."""
+        try:
+            import pypdf  # noqa
+        except ImportError:
+            self.skipTest("pypdf ausente")
+        import tempfile
+        from src import fluxo, biblioteca as B, farol_parecer as FP
+        with tempfile.TemporaryDirectory() as tmp:
+            base=pathlib.Path(tmp)
+            orig=(B.OPORTUNIDADES,B.ASSOCIACOES,fluxo.OPORTUNIDADES,fluxo.ASSOCIACOES,
+                  FP.OPORTUNIDADES,FP.ASSOCIACOES,FP.PARECERES)
+            B.OPORTUNIDADES=fluxo.OPORTUNIDADES=FP.OPORTUNIDADES=base/"oportunidades"
+            B.ASSOCIACOES=fluxo.ASSOCIACOES=FP.ASSOCIACOES=base/"associacoes"
+            FP.PARECERES=base/"pareceres"
+            fluxo.pasta_edital_da_associacao=lambda s,t0:(
+                (base/"associacoes"/s/"editais"/slug(t0)[:70]).mkdir(parents=True,exist_ok=True)
+                or base/"associacoes"/s/"editais"/slug(t0)[:70])
+            try:
+                self._lab_edital(base)
+                # segunda entidade, com menos de 2 anos → deve ser barrada
+                nova=base/"associacoes"/"lab-nova"
+                (nova/"documentos").mkdir(parents=True,exist_ok=True)
+                write_json(nova/"perfil_publico.json",{"id":"lab-nova","nome":"Nova",
+                    "territorios":["GO"],"areas":["cultura"],"anos_existencia":1,
+                    "certificacoes":[]})
+                write_json(base/"associacoes"/"indice.json",{"associacoes":[
+                    {"slug":"lab-assoc","nome":"Associação Laboratório","caminho":"x","editais_concorridos":[]},
+                    {"slug":"lab-nova","nome":"Nova","caminho":"x","editais_concorridos":[]}]})
+                d=fluxo.decidir("lab-ed-777","2026")
+                # a etapa 4 declara de onde vem a corroboração
+                self.assertEqual(d["corroboracao"]["etapa"],3)
+                self.assertEqual(d["corroboracao"]["voto_vinculante"],"neutro")
+                self.assertIn("conselho",d["corroboracao"]["instrumento"])
+                slugs_esc={e["slug"] for e in d["escolhidas"]}
+                slugs_desc={x["slug"] for x in d["descartadas"]}
+                self.assertIn("lab-assoc",slugs_esc)
+                self.assertIn("lab-nova",slugs_desc)
+                barrada=[x for x in d["descartadas"] if x["slug"]=="lab-nova"][0]
+                self.assertEqual(barrada["decisao_conselho"],"descartar")
+                self.assertTrue(barrada["conselheiro_neutro"])
+                # deliberação de cada associação fica gravada
+                cj=load_json(base/"oportunidades"/"lab-ed-777"/"2026"/"conselho.json")
+                self.assertEqual(len(cj["deliberacoes"]),2)
+                self.assertEqual(len(cj["deliberacoes"]["lab-assoc"]["lentes"]),7)
+                # o dossiê e a nota técnica carregam os parâmetros do conselho
+                pasta=pathlib.Path(d["escolhidas"][0]["pasta"])
+                if not pasta.is_absolute(): pasta=ROOT/pasta
+                dossie=load_json(pasta/"dossie.json")
+                self.assertTrue(dossie["parametros_de_qualidade"])
+                self.assertEqual(dossie["base_da_decisao"]["conselho"]["decisao"],"concorrer")
+                fluxo.preparar("lab-ed-777","2026")
+                nota=(pasta/"NOTA-TECNICA.md").read_text(encoding="utf-8")
+                self.assertIn("Deliberação do conselho",nota)
+                self.assertIn("Parâmetros de qualidade",nota)
+                self.assertIn("Mitigação de riscos",nota)
+            finally:
+                (B.OPORTUNIDADES,B.ASSOCIACOES,fluxo.OPORTUNIDADES,fluxo.ASSOCIACOES,
+                 FP.OPORTUNIDADES,FP.ASSOCIACOES,FP.PARECERES)=orig
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

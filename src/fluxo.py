@@ -111,6 +111,27 @@ def documentos_da_associacao(assoc_slug: str) -> dict[str, Path]:
     return achados
 
 
+def _previa_documentos(assoc_slug: str, exigidos: list[str]) -> dict:
+    """O que a entidade já tem e o que falta — antes de decidir."""
+    disponiveis = documentos_da_associacao(assoc_slug)
+    faltantes = [{"documento": d,
+                  "como_obter": _ONDE_OBTER.get(d, "conferir a exigência no edital")}
+                 for d in exigidos if d not in disponiveis]
+    perfil_p = ASSOCIACOES / assoc_slug / "perfil_publico.json"
+    perfil = load_json(perfil_p) if perfil_p.exists() else {}
+    completo = bool(perfil.get("nome") and perfil.get("territorios")
+                    and perfil.get("anos_existencia") is not None)
+    return {"faltantes": faltantes, "perfil_completo": completo}
+
+
+def _area_aderente(assoc_slug: str, texto: str) -> bool:
+    perfil_p = ASSOCIACOES / assoc_slug / "perfil_publico.json"
+    if not perfil_p.exists():
+        return False
+    areas = load_json(perfil_p).get("areas") or []
+    return any(re.search(a.replace("_", "[ _]"), texto, re.I) for a in areas)
+
+
 # ------------------------------------------------------------------ etapa 4
 def decidir(chave: str, ano: str, hoje: date | None = None) -> dict:
     """Etapa 4 — DECIDIR (automática).
@@ -128,21 +149,47 @@ def decidir(chave: str, ano: str, hoje: date | None = None) -> dict:
     texto = (ficha_p.parent / "edital.txt").read_text(encoding="utf-8", errors="ignore")
     exigidos = documentos_exigidos(texto)
 
-    parecer_p = ROOT / "biblioteca_alexandria/pareceres" / chave / ano / "parecer.json"
+    from . import farol_parecer as _fp
+    parecer_p = _fp.PARECERES / chave / ano / "parecer.json"
     parecer = load_json(parecer_p) if parecer_p.exists() else {}
     avaliacoes = parecer.get("portao") or []
     if not avaliacoes:
-        from .farol_parecer import gerar
-        parecer = gerar(chave, ano)
+        parecer = _fp.gerar(chave, ano)
         avaliacoes = parecer.get("portao") or []
 
-    escolhidas, descartadas = [], []
+    # ---- ETAPA 3: conselho de 7 lentes delibera ANTES e corrobora a decisão
+    from .conselho_edital import deliberar_com_ia
+    from .farol_parecer import trechos_relevantes
+    historico = (load_json(OPORTUNIDADES / "indice.json")
+                 if (OPORTUNIDADES / "indice.json").exists() else {})
+    trechos = trechos_relevantes(texto, 8000)
+    edital_ctx = {"chave": chave, "ano": ano, "titulo": ficha.get("titulo"),
+                  "fonte_nome": ficha.get("fonte_nome"), "inicio": ficha.get("inicio"),
+                  "fim": ficha.get("fim"), "valor_texto": ficha.get("valor_texto")}
+
+    escolhidas, descartadas, conselhos = [], [], {}
     for av in avaliacoes:
-        # chance real = nenhum requisito eliminatório em falta
-        if av.get("bloqueio_objetivo"):
-            descartadas.append({"associacao": av["associacao"], "slug": av["slug"],
-                                "motivo": "requisito eliminatório não atendido: "
-                                          + ", ".join(av.get("faltam", []))})
+        prevs = _previa_documentos(av["slug"], exigidos)
+        ctx_conselho = {
+            "documentos_faltantes": prevs["faltantes"],
+            "historico_ocorrencias": len([r for r in historico.get("editais", [])
+                                          if r.get("financiador") == ficha.get("fonte_nome")]),
+            "modelos": len(list((OPORTUNIDADES / chave / ano / "modelos").glob("*.pdf")))
+                       if (OPORTUNIDADES / chave / ano / "modelos").exists() else 0,
+            "area_aderente": _area_aderente(av["slug"], texto),
+            "perfil_completo": prevs["perfil_completo"],
+        }
+        conselho = deliberar_com_ia(edital_ctx, av, ctx_conselho,
+                                    trechos, historico.get("exigencias_mais_cobradas"))
+        conselhos[av["slug"]] = conselho
+        av["_conselho"] = conselho
+        # o voto do neutro é VINCULANTE
+        if conselho["decisao"] != "concorrer":
+            descartadas.append({
+                "associacao": av["associacao"], "slug": av["slug"],
+                "decisao_conselho": conselho["decisao"],
+                "motivo": conselho["fundamento"],
+                "conselheiro_neutro": conselho["conselheiros"]["neutro"]})
             continue
         escolhidas.append(av)
 
@@ -179,7 +226,14 @@ def decidir(chave: str, ano: str, hoje: date | None = None) -> dict:
             "decidido_em": now_iso(), "decisao": "concorrer",
             "base_da_decisao": {"atende": av.get("atende", []),
                                 "alertas": av.get("alertas", []),
-                                "recomendacao_parecer": parecer.get("recomendacao")},
+                                "recomendacao_parecer": parecer.get("recomendacao"),
+                                "conselho": {
+                                    "decisao": av["_conselho"]["decisao"],
+                                    "fundamento": av["_conselho"]["fundamento"],
+                                    "modo": av["_conselho"]["modo"],
+                                    "conselheiros": av["_conselho"]["conselheiros"]}},
+            "parametros_de_qualidade": av["_conselho"]["parametros_de_qualidade"],
+            "mitigacao_de_riscos": av["_conselho"]["mitigacao_de_riscos"],
             "documentos_exigidos": exigidos,
             "documentos_anexados": anexados,
             "documentos_faltantes": faltantes,
@@ -194,7 +248,15 @@ def decidir(chave: str, ano: str, hoje: date | None = None) -> dict:
 
     resultado = {"etapa": 4, "edital": f"{chave}/{ano}", "executado_em": now_iso(),
                  "escolhidas": preparadas, "descartadas": descartadas,
-                 "documentos_exigidos": exigidos}
+                 "documentos_exigidos": exigidos,
+                 "corroboracao": {"etapa": 3, "instrumento": "conselho de 7 lentes",
+                                  "voto_vinculante": "neutro",
+                                  "por_associacao": {s: {"decisao": c["decisao"],
+                                                         "modo": c["modo"]}
+                                                     for s, c in conselhos.items()}}}
+    write_json(OPORTUNIDADES / chave / ano / "conselho.json",
+               {"edital": f"{chave}/{ano}", "executado_em": now_iso(),
+                "deliberacoes": conselhos})
     write_json(OPORTUNIDADES / chave / ano / "decisao.json", resultado)
     return resultado
 
@@ -280,6 +342,20 @@ def preparar(chave: str, ano: str) -> dict:
                        "Preencher à mão sobre o PDF (dados sensíveis não ficam no "
                        "repositório público):", ""]
             linhas += [f"- {c}" for c in sorted(set(campos_sem_dado))[:30]]
+        conselho = (dossie.get("base_da_decisao") or {}).get("conselho") or {}
+        if conselho:
+            linhas += ["", "## Deliberação do conselho (etapa 3)", "",
+                       f'**Decisão:** {str(conselho.get("decisao","")).upper()}  ',
+                       f'**Fundamento:** {conselho.get("fundamento","")}  ',
+                       f'**Voto ponderador:** {(conselho.get("conselheiros") or {}).get("neutro","—")}  ',
+                       f'**Modo:** {conselho.get("modo","")}', ""]
+        if dossie.get("parametros_de_qualidade"):
+            linhas += ["### Parâmetros de qualidade", ""]
+            linhas += [f"- {x}" for x in dossie["parametros_de_qualidade"]]
+        if dossie.get("mitigacao_de_riscos"):
+            linhas += ["", "### Mitigação de riscos", ""]
+            linhas += [f'- **{m["risco"]}** → {m["acao"]}'
+                       for m in dossie["mitigacao_de_riscos"]]
         linhas += ["", "---", "",
                    "Documento gerado automaticamente pelo Farol de Alexandria a "
                    "partir do texto do edital e do cadastro da associação. "
