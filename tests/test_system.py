@@ -1439,17 +1439,15 @@ class SystemTests(unittest.TestCase):
         self.assertIn('const soHover = (v==="bussola")',html)
         # ordem das caixas
         ordem=_re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)
-        self.assertEqual([n for n,_ in ordem],["1","2","3","4","5"])
+        self.assertEqual([n for n,_ in ordem],["1","2","3","4"])
         rotulos=" ".join(r for _,r in ordem)
         self.assertIn("MAPA DE OPORTUNIDADES",rotulos)
-        self.assertIn("BÚSSOLA",rotulos)
-        self.assertIn("FONTES COM EDITAL ABERTO",rotulos)
         self.assertIn("FILTRO DE OPORTUNIDADES",rotulos)
         self.assertIn("MONITORAMENTOS ENCONTRADOS",rotulos)
-        self.assertLess(sec.find("MAPA DE OPORTUNIDADES"),sec.find("2 · BÚSSOLA"))
-        self.assertLess(sec.find("2 · BÚSSOLA"),sec.find("FONTES COM EDITAL ABERTO"))
-        self.assertLess(sec.find("FONTES COM EDITAL ABERTO"),sec.find("FILTRO DE OPORTUNIDADES"))
+        self.assertIn("FONTES COM EDITAL ABERTO",rotulos)
+        self.assertLess(sec.find("MAPA DE OPORTUNIDADES"),sec.find("FILTRO DE OPORTUNIDADES"))
         self.assertLess(sec.find("FILTRO DE OPORTUNIDADES"),sec.find("MONITORAMENTOS ENCONTRADOS"))
+        self.assertLess(sec.find("MONITORAMENTOS ENCONTRADOS"),sec.find("FONTES COM EDITAL ABERTO"))
 
     def test_mapa_monitor_etapa1(self):
         """O Mapa de Oportunidades absorveu o monitor: Encontrado/Ausente por
@@ -1555,7 +1553,9 @@ class SystemTests(unittest.TestCase):
         from src.dashboard_dados import _marcos_projetados
         proj={"inicio":None,"fim":"2026-09-18","marcos":_marcos_projetados("2026-09-18")}
         c2=ciclo_do_edital(proj)
-        self.assertIsNone(c2["inscricao"]["inicio"])
+        # a abertura passa a ser PROJETADA para a barra existir (como o recurso)
+        self.assertIsNotNone(c2["inscricao"]["inicio"])
+        self.assertTrue(c2["inscricao"]["projetado"])
         self.assertIn("não declarada",c2["inscricao"]["nota"])
         self.assertTrue(c2["resultado"]["projetado"])
         self.assertEqual(c2["resultado"]["data"],"2026-10-03")     # +15
@@ -1587,6 +1587,85 @@ class SystemTests(unittest.TestCase):
         # legenda explica as três faixas
         for rot in ("inscrição</span>","resultado</span>","recurso</span>"):
             self.assertIn(rot,html,rot)
+
+
+    def test_filtro_destinacao_terceiro_setor(self):
+        """Fase 2: só entra o que uma ASSOCIAÇÃO pode concorrer. Objeto
+        comercial puro sai; edital privado que destina ao terceiro setor fica."""
+        from src.destinacao import avaliar_destinacao
+        manter=["Chamamento público para OSCs — termo de fomento cultural",
+                "Credenciamento de organizações da sociedade civil para serviços",
+                "Edital Rouanet — apoio a projetos culturais Lei 8.313/91",
+                "Instituto privado lança edital de apoio a projetos de associações",
+                "Termo de colaboração Lei 13.019/2014 com entidade sem fins lucrativos",
+                "Chamada pública do Fundo Municipal da Criança e do Adolescente"]
+        descartar=["Pregão eletrônico para aquisição de material de escritório",
+                   "Contratação de empresa especializada em pavimentação asfáltica",
+                   "Edital de credenciamento de peritos ambientais",
+                   "Registro de preços para fornecimento de merenda — menor preço",
+                   "Leilão de bens inservíveis do município",
+                   "Aviso de licitação — SICAF, empresas do ramo, capital social"]
+        for txt in manter:
+            r=avaliar_destinacao({"titulo":txt,"evidencia":txt},set())
+            self.assertTrue(r["elegivel"],txt)
+        for txt in descartar:
+            r=avaliar_destinacao({"titulo":txt,"evidencia":txt},set())
+            self.assertFalse(r["elegivel"],txt)
+            self.assertTrue(r["motivo"])
+        # na dúvida MANTÉM e declara
+        duvida=avaliar_destinacao({"titulo":"Aviso 12/2026","evidencia":""},set())
+        self.assertTrue(duvida["elegivel"])
+        self.assertIn("cautela",duvida["motivo"])
+        # o catálogo de fontes é o parâmetro de enquadramento
+        from src.destinacao import _fontes_catalogadas
+        self.assertGreater(len(_fontes_catalogadas()),100)
+        # nada fora do escopo chega ao painel
+        d=dash_coletar(date(2026,9,2))
+        for e in d["editais"]:
+            dest=e.get("destinacao") or {}
+            self.assertNotEqual(dest.get("elegivel"),False,e["id"])
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.destinacao",wf)
+
+    def test_periodo_de_inscricao_aparece(self):
+        """A barra de inscrição precisa aparecer como a de recurso — quando a
+        abertura não é publicada, projeta-se e declara-se a projeção."""
+        from src.dashboard_dados import ciclo_do_edital
+        c=ciclo_do_edital({"inicio":None,"fim":"2026-07-09",
+                           "publicado_em":"2025-07-14","marcos":[]})
+        self.assertEqual(c["inscricao"]["inicio"],"2025-07-14")
+        self.assertTrue(c["inscricao"]["projetado"])
+        self.assertIn("publicação",c["inscricao"]["base"])
+        # sem publicação, projeta janela de 30 dias
+        c2=ciclo_do_edital({"inicio":None,"fim":"2026-07-09","marcos":[]})
+        self.assertEqual(c2["inscricao"]["inicio"],"2026-06-09")
+        self.assertIn("30 dias",c2["inscricao"]["base"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("ginscricao",html)
+        self.assertIn(".ginscricao.projetada",html)
+        # o critério de prazo não pode esconder ciclo em curso
+        self.assertIn("MENOS o critério de prazo",html)
+
+    def test_bussola_sem_caixa_e_fontes_por_ultimo(self):
+        import re as _re
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        sec=_re.search(r'<section id="v-bussola".*?\n</section>',html,_re.S).group(0)
+        # caixa Bússola excluída; métricas dentro do Mapa
+        self.assertNotIn("monitoramento das buscas",sec)
+        i_grade=sec.find('id="mp-grade"'); i_mets=sec.find('id="bus-mets"')
+        self.assertGreater(i_mets,i_grade,"métricas devem vir abaixo dos dias do mês")
+        for m in ("Buscas executadas","Fontes respondendo","Fontes com falha",
+                  "Itens novos captados"):
+            self.assertIn(m,html,m)
+        # Fontes com edital aberto é a última caixa de conteúdo
+        ordem=[n for n,_ in _re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)]
+        self.assertEqual(ordem,["1","2","3","4"])
+        self.assertIn("4 · FONTES COM EDITAL ABERTO",sec)
+        # cada edital em bloco próprio, com os dois botões
+        self.assertIn('class="ed-item"',html)
+        self.assertIn("Investigar com IA",html)
+        self.assertIn("bt-arq",html)
+        self.assertIn("investigarEdital",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

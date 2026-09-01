@@ -547,7 +547,7 @@ def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
             "  (vencedores NOT IN ('[]','')) DESC, "
             "  (criterios NOT IN ('[]','')) DESC, "
             "  data_publicacao DESC LIMIT ?",
-            (limite,)).fetchall()
+            (limite * 3,)).fetchall()
         con.close()
     except Exception:
         return []
@@ -555,6 +555,9 @@ def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
     saida = []
     for f, pj in linhas:
         fi = _json.loads(f)
+        # fase 2: fora do escopo do terceiro setor não entra no painel
+        if (fi.get("destinacao") or {}).get("elegivel") is False:
+            continue
         pa = _json.loads(pj or "{}")
         fim = fi.get("fim")
         saida.append({
@@ -575,6 +578,7 @@ def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
             "estado_export": fi.get("estado_prazo") or "encerrado",
             "base_do_prazo": fi.get("base_do_prazo"),
             "confirmacao": (fi.get("confirmacao") or {}).get("nivel_confirmacao"),
+            "destinacao": fi.get("destinacao"),
             "nivel_confirmacao_itens": (fi.get("confirmacao") or {}).get("nao_comprovados", [])[:6],
             "resumo": (fi.get("evidencia") or "")[:180],
             "valor_texto": (fi.get("valores_citados") or [None])[0],
@@ -594,7 +598,7 @@ def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
             "marcos": _marcos_projetados(fim),
             "anexos": [], "ficha": "",
         })
-    return saida
+    return saida[:limite]
 
 
 def _marcos_projetados(fim: str | None) -> list[dict]:
@@ -633,7 +637,18 @@ def ciclo_do_edital(e: dict) -> dict:
     if e.get("inicio") and fim:
         ciclo["inscricao"] = {"inicio": e["inicio"], "fim": fim, "projetado": False}
     elif fim:
-        ciclo["inscricao"] = {"inicio": None, "fim": fim, "projetado": False,
+        # Abertura não declarada: projeta-se a partir da PUBLICAÇÃO (o edital
+        # não existia antes dela) e, sem publicação, pela praxe de 30 dias de
+        # janela. A barra aparece como projeção — igual ao recurso.
+        pub = e.get("publicado_em") or (e.get("detalhes") or {}).get("coletado_em")
+        pub = str(pub or "")[:10] or None
+        if pub and pub < fim:
+            ini_proj, base = pub, "abertura projetada pela data de publicação"
+        else:
+            ini_proj = (date.fromisoformat(fim) - _td(days=30)).isoformat()
+            base = "abertura projetada pela praxe (janela de 30 dias)"
+        ciclo["inscricao"] = {"inicio": ini_proj, "fim": fim, "projetado": True,
+                              "base": base,
                               "nota": "abertura não declarada na fonte"}
 
     res = marcos.get("resultado_preliminar") or marcos.get("resultado_final")
