@@ -520,6 +520,44 @@ def _so_completos(editais: list[dict], hoje: date) -> list[dict]:
     return saida
 
 
+TIPOS_DECISAO = ("resultado_preliminar", "resultado_final", "recurso")
+
+
+def _calendario_decisao(editais: list[dict], hoje: date) -> dict:
+    """Calendário de RESULTADOS e RECURSOS do Farol.
+
+    Reúne os marcos que decidem o destino da inscrição — resultado preliminar,
+    resultado final e a fase de recurso — com a contagem de dias. Datas
+    ausentes na fonte NÃO são estimadas: viram alerta para acompanhamento.
+    """
+    itens, sem_data = [], []
+    for e in editais:
+        marcos = {m["tipo"]: m.get("data") for m in (e.get("marcos") or [])}
+        achou = False
+        for tipo in TIPOS_DECISAO:
+            data = marcos.get(tipo)
+            if not data:
+                continue
+            achou = True
+            dias = (date.fromisoformat(data) - hoje).days
+            itens.append({
+                "edital_id": e["id"], "titulo": e["titulo"], "area": e["area"],
+                "fonte_nome": e.get("fonte_nome"), "tipo": tipo, "data": data,
+                "dias": dias, "passou": dias < 0,
+                "prazo_recurso_aberto": (tipo == "recurso" and dias >= 0),
+            })
+        if not achou and e.get("estado_export") in ("aberto", "a_abrir"):
+            sem_data.append({"edital_id": e["id"], "titulo": e["titulo"],
+                             "alerta": "edital sem data de resultado ou recurso "
+                                       "declarada — acompanhar publicação"})
+    itens.sort(key=lambda x: x["data"])
+    proximos = [i for i in itens if not i["passou"]]
+    return {"marcos": itens, "proximos": proximos[:12],
+            "total": len(itens), "sem_data": sem_data[:20],
+            "recursos_abertos": sum(1 for i in itens if i["prazo_recurso_aberto"]),
+            "nota": "datas conforme publicadas na fonte; ausência vira alerta, nunca estimativa"}
+
+
 def _monitoramentos(hoje: date) -> dict:
     """Bússola: os MONITORAMENTOS encontrados — cada identificação com sua
     campanha diária de completude (dia X/30, tentativas, pendências)."""
@@ -591,6 +629,7 @@ def coletar(hoje: date | None = None) -> dict:
                     "gerado_em": pp.get("gerado_em")}
             except Exception:
                 continue
+    decisao = _calendario_decisao(completos_lista, hoje)
     monit = _monitoramentos(hoje)
     saida_bussola = painel_bussola(completos_lista, _bussola(editais), hoje)
     saida_bussola["monitoramentos"] = monit
@@ -608,6 +647,7 @@ def coletar(hoje: date | None = None) -> dict:
         "editais": editais,
         "eventos": _eventos(editais),
         "biblioteca": biblioteca, "pareceres": pareceres,
+        "calendario_decisao": decisao,
         "bussola": _bussola(editais),
         "bussola_painel": saida_bussola,
         "farol_resumo": _farol_resumo(editais),

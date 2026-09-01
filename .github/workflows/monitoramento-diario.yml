@@ -43,6 +43,7 @@ jobs:
           pip install pypdf --quiet
           python -m src.completude | tee completude.json
           python -m src.biblioteca
+          python -m src.arquivamento
           python -m src.farol_parecer || echo "parecer: sem credencial ou sem pedidos"
           python -m src.dashboard_dados | tee dash.json
           python -m src.banco

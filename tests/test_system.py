@@ -392,7 +392,7 @@ class SystemTests(unittest.TestCase):
     def test_pagina_inicial(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for trecho in ("Radar de recursos","Inteligência de decisão","Fila prioritária",
-                       "Calendário de projetos em aberto","arte/cabecalho.png",
+                       "Calendário de projetos em andamento","arte/cabecalho.png",
                        "topo oculto","fi-mets","fa-donut","desenhaGantt","desenhaFila"):
             self.assertIn(trecho,html,trecho)
         idx=open("docs/index.html",encoding="utf-8").read()
@@ -895,6 +895,76 @@ class SystemTests(unittest.TestCase):
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.biblioteca",wf)
         self.assertIn("python -m src.farol_parecer",wf)
+
+
+    def test_calendario_de_resultados_e_recursos(self):
+        """Farol: calendário de resultados e recursos em Editais Abertos, com
+        contagem de dias. Data ausente vira alerta, nunca estimativa."""
+        from src.dashboard_dados import _calendario_decisao
+        eds=[{"id":"a","titulo":"Edital A","area":"cultura","fonte_nome":"F",
+              "estado_export":"aberto","marcos":[
+                  {"tipo":"resultado_preliminar","data":"2026-09-25"},
+                  {"tipo":"recurso","data":"2026-09-28"},
+                  {"tipo":"abertura","data":"2026-09-02"}]},
+             {"id":"b","titulo":"Edital B","area":"esporte","fonte_nome":"F",
+              "estado_export":"aberto","marcos":[]}]
+        c=_calendario_decisao(eds,date(2026,9,1))
+        self.assertEqual(c["total"],2)                     # só resultado/recurso
+        self.assertEqual({m["tipo"] for m in c["marcos"]},
+                         {"resultado_preliminar","recurso"})
+        self.assertEqual(c["recursos_abertos"],1)
+        self.assertEqual(c["marcos"][0]["dias"],24)
+        self.assertEqual(len(c["sem_data"]),1)             # edital B vira alerta
+        self.assertIn("acompanhar",c["sem_data"][0]["alerta"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("Calendário de resultados e recursos",html)
+        self.assertIn("desenhaCalendarioDecisao",html)
+        self.assertIn("Prazos de recurso abertos",html)
+
+    def test_estrela_de_decisao_no_calendario_inicial(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        # nome novo do calendário
+        self.assertIn("Calendário de projetos em andamento",html)
+        self.assertNotIn("Calendário de projetos em aberto",html)
+        # estrela que brilha, em camada própria, sem deslocar as barras
+        self.assertIn(".gestrela",html)
+        self.assertIn("@keyframes brilho",html)
+        self.assertIn("prefers-reduced-motion",html)
+        css=html.split("<style>")[1].split("</style>")[0]
+        i=css.find(".gestrela{")
+        bloco=css[i:css.find("}",i)]
+        self.assertIn("position:absolute",bloco)   # camada própria
+        self.assertIn("z-index",bloco)             # acima da barra
+        # aparece nas duas formas de linha (barra completa e bandeira de prazo)
+        self.assertEqual(html.count("${hoje}${estrelas(e)}"),2)
+        self.assertIn("gestrela recurso",html)     # recurso em cor distinta
+
+    def test_arquivamento_na_biblioteca(self):
+        """Edital removido da análise tem as informações arquivadas na pasta
+        do respectivo edital e do ano em que aconteceu."""
+        from src import arquivamento as A
+        from src.biblioteca import OPORTUNIDADES
+        pasta=OPORTUNIDADES/"teste-arq-001"/"2026"
+        pasta.mkdir(parents=True,exist_ok=True)
+        write_json(pasta/"ficha.json",{"id":"tarq1","chave":"teste-arq-001",
+                                       "ano":"2026","titulo":"Edital teste"})
+        try:
+            r=A.arquivar("tarq1","descartado","Edital teste","sem enquadramento")
+            self.assertTrue(r["arquivado"])
+            self.assertIn("2026",r["pasta"])
+            self.assertIn("removido da análise",r["motivo"])
+            self.assertTrue((pasta/"arquivamento.json").exists())
+            A.arquivar("tarq1","inscrito","Edital teste")
+            linhas=(pasta/"historico.jsonl").read_text(encoding="utf-8").strip().split("\n")
+            self.assertEqual(len(linhas),2)          # trilha append-only
+            # o acervo do edital NÃO é apagado ao arquivar
+            self.assertTrue((pasta/"ficha.json").exists())
+            fora=A.arquivar("nao-existe","descartado")
+            self.assertFalse(fora["arquivado"])
+        finally:
+            import shutil; shutil.rmtree(OPORTUNIDADES/"teste-arq-001",ignore_errors=True)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.arquivamento",wf)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

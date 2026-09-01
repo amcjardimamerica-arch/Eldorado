@@ -107,6 +107,16 @@ background:conic-gradient(#0B6BD3 calc(var(--p)*1%),#E3EAF3 0);position:relative
 .gdias i{font-style:normal;font-size:8px;letter-spacing:.02em}
 .gfaixa{position:relative;height:22px;border-radius:7px;
 background:repeating-linear-gradient(90deg,#F5F4F0 0,#F5F4F0 calc(100%/31 - 1px),#EAE8E2 calc(100%/31 - 1px),#EAE8E2 calc(100%/31))}
+/* marco de decisão (resultado ou recurso): estrela que pulsa, em camada
+   própria, sem cobrir a barra nem deslocar as demais informações */
+.gestrela{position:absolute;top:-9px;transform:translateX(-50%);z-index:4;
+font-size:15px;line-height:1;pointer-events:auto;cursor:pointer;
+color:#F2B705;text-shadow:0 0 5px #F2B70599,0 0 11px #F2B70566;
+animation:brilho 1.9s ease-in-out infinite}
+@keyframes brilho{0%,100%{opacity:.55;transform:translateX(-50%) scale(1)}
+50%{opacity:1;transform:translateX(-50%) scale(1.28)}}
+@media(prefers-reduced-motion:reduce){.gestrela{animation:none;opacity:1}}
+.gestrela.recurso{color:#E8503A;text-shadow:0 0 5px #E8503A99,0 0 11px #E8503A55}
 .gprazo{border-radius:5px;min-width:20px!important;font-size:12px}
 .gprazorot{position:absolute;top:2px;bottom:2px;display:flex;align-items:center;padding-left:5px;font-size:10px;font-weight:700;color:var(--suave);white-space:nowrap}
 .gbarra{position:absolute;top:2px;bottom:2px;border-radius:11px;color:#fff;font-size:10px;font-weight:600;
@@ -360,7 +370,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div class="faixa-larga">
 <div class="cartao">
 <div class="gcab">
-<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#2F79D0" stroke-width="1.9" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/></svg><h3>Calendário de projetos em aberto</h3>
+<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#2F79D0" stroke-width="1.9" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/></svg><h3>Calendário de projetos em andamento</h3>
 <span style="margin-left:auto"></span>
 <button onclick="mudaMesG(-1)">‹</button><strong id="g-mes" style="min-width:130px;text-align:center"></strong><button onclick="mudaMesG(1)">›</button>
 </div>
@@ -513,6 +523,16 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 </section>
 <section id="v-f-editais" class="oculto" style="margin-top:14px">
+<div class="cartao" style="margin-bottom:14px">
+  <div class="painel-tit farol">
+    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#0B4EA2" stroke-width="1.9" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/><path d="M8.4 15.2l2.3 2.3 4.6-4.7" stroke-linejoin="round"/></svg>
+    Calendário de resultados e recursos
+    <span class=meta style="font-weight:500" title="Marcos que decidem o destino da inscrição: divulgação de resultado preliminar, resultado final e a fase de recurso. Datas conforme publicadas na fonte — ausência vira alerta, nunca estimativa.">— prazos de divulgação e de recurso</span>
+  </div>
+  <div class="mets" id="fd-mets" style="margin:10px 0 12px"></div>
+  <div id="fd-lista"></div>
+  <div id="fd-alertas" style="margin-top:10px"></div>
+</div>
 <p class="meta" style="margin:0 0 10px">Editais abertos sob a ótica do Farol — os mesmos registros do Eldorado, priorizados pelos já verificados.</p>
 <div class="grade-ed" id="fed-grade"></div>
 </section>
@@ -875,6 +895,19 @@ function desenhaGantt(){
   let linhas=`<div class=gantt style="--nd:${nd}"><div></div><div class=gdias>${diasCab}</div>`;
   if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">${gFiltrados?"Nenhum período de inscrição neste mês para o filtro selecionado.":"Nenhum período de inscrição neste mês."}</div>`;
   const ddmm=iso=>`${iso.slice(8,10)}/${iso.slice(5,7)}`;
+  /* marcos de decisão do mês, por edital: resultado preliminar/final e recurso */
+  const DEC=(D.calendario_decisao||{}).marcos||[];
+  const decDoMes=id=>DEC.filter(m=>{
+    if(m.edital_id!==id||!m.data)return false;
+    const dt=new Date(m.data+"T00:00:00");
+    return dt.getFullYear()===gAno&&dt.getMonth()===gMes;});
+  const estrelas=e=>decDoMes(e.id).map(m=>{
+    const dia=Number(m.data.slice(8,10));
+    const cls=m.tipo==="recurso"?"gestrela recurso":"gestrela";
+    const rot=(D.tipos_evento||{})[m.tipo]?D.tipos_evento[m.tipo].rotulo:m.tipo;
+    return `<span class="${cls}" style="left:${((dia-0.5)/nd*100).toFixed(2)}%"
+      data-dec="${esc(m.edital_id)}" title="${esc(rot)} — ${ddmm(m.data)}${m.passou?" (já ocorrido)":""}">★</span>`;
+  }).join("");
   eds.forEach(e=>{
     const hoje=(gAno===HOJE.getFullYear()&&gMes===HOJE.getMonth())
       ?`<span class=ghoje style="left:${((HOJE.getDate()-0.5)/nd*100).toFixed(2)}%"></span>`:"";
@@ -886,13 +919,13 @@ function desenhaGantt(){
       const rot=`${ddmm(e.inicio)} → ${ddmm(e.fim)}`;   // datas REAIS, mesmo cruzando meses
       const cont=(a<ini?"◂ ":"")+(b>fim?" ▸":"");
       linhas+=`<div class=grotulo title="${esc(e.titulo)} — inscrições ${ddmm(e.inicio)} a ${ddmm(e.fim)}">${esc(nome.slice(0,40))}</div>
-        <div class=gfaixa>${hoje}
+        <div class=gfaixa>${hoje}${estrelas(e)}
         <span class=gbarra data-id="${esc(e.id)}" style="left:${((d1-1)/nd*100).toFixed(2)}%;width:${((d2-d1+1)/nd*100).toFixed(2)}%;background:${AREA(e.area).cor};color:${corTexto(AREA(e.area).cor)}">${cont?cont.trim()+" ":""}${rot}</span></div>`;
     } else {
       // só o prazo final é declarado: bandeira no dia exato, sem inventar início
       const b=new Date(e.fim+"T00:00:00"),d2=b.getDate();
       linhas+=`<div class=grotulo title="${esc(e.titulo)} — prazo final ${ddmm(e.fim)}; abertura não declarada na fonte">${esc(nome.slice(0,40))}</div>
-        <div class=gfaixa>${hoje}
+        <div class=gfaixa>${hoje}${estrelas(e)}
         <span class="gbarra gprazo" data-id="${esc(e.id)}" style="left:${((d2-1)/nd*100).toFixed(2)}%;width:${(1/nd*100).toFixed(2)}%;background:${AREA(e.area).cor}" title="prazo final ${ddmm(e.fim)} — abertura não declarada na fonte">⚑</span>
         <span class=gprazorot style="left:${(d2/nd*100).toFixed(2)}%">prazo ${ddmm(e.fim)}</span></div>`;
     }
@@ -905,7 +938,10 @@ function desenhaGantt(){
   // legenda por área (cada área tem matiz próprio, igual ao filtro de Área)
   const cont={};noMes.forEach(e=>cont[e.area]=(cont[e.area]||0)+1);
   const areasG=Object.keys(cont).sort((a,b)=>cont[b]-cont[a]);
-  $("g-legenda").innerHTML=areasG.map(a=>
+  const nDec=eds.reduce((s,e)=>s+decDoMes(e.id).length,0);
+  const rec=(D.calendario_decisao||{}).recursos_abertos||0;
+  $("g-legenda").innerHTML=(nDec?`<span title="Estrela = data de divulgação de resultado ou fase de recurso neste mês"><span class="gestrela" style="position:static;transform:none;animation:none">★</span> ${nDec} marco(s) de resultado/recurso</span>`:"")
+    +areasG.map(a=>
     `<span title="${esc(AREA(a).rotulo)}: ${cont[a]} no mês"><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave);font-weight:600">${cont[a]}</b></span>`).join("")
     +(noMes.length>eds.length?`<span class=meta>mostrando ${eds.length} de ${noMes.length} — abra o calendário completo</span>`:"")
     +(semData?`<span class=meta title="itens sem data de inscrição declarada na fonte não entram no calendário — a data de publicação no diário não é início de inscrição">· ${semData} sem datas de inscrição confirmadas (fora do calendário)</span>`:"");
@@ -1291,6 +1327,41 @@ function desenhaBzMon(){
     tb.insertAdjacentHTML("beforeend",`<tr><td colspan=6 class=meta>mostrando ${rows.length} de ${mon.encontrados} monitoramentos — acervo completo no banco local</td></tr>`);
 }
 
+/* ============ FAROL · CALENDÁRIO DE RESULTADOS E RECURSOS ============ */
+function desenhaCalendarioDecisao(){
+  const C=D.calendario_decisao||{}, marcos=C.marcos||[], prox=C.proximos||[];
+  const passados=marcos.filter(m=>m.passou).length;
+  const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.7"/><path d="M12 7v5.2l3.2 2"/></svg>`;
+  $("fd-mets").innerHTML=[
+    [IC("#0B4EA2"),prox.length,"Marcos por vir"],
+    [IC("#C0392B"),C.recursos_abertos||0,"Prazos de recurso abertos"],
+    [IC("#7C90A8"),passados,"Já ocorridos"],
+    [IC("#B8860B"),(C.sem_data||[]).length,"Sem data publicada"]]
+    .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
+  const linha=m=>{
+    const rot=(D.tipos_evento||{})[m.tipo]||{rotulo:m.tipo,simbolo:"•"};
+    const urg=m.dias<0?["#9AA4B2","ocorrido"]:m.dias<=3?["#C0392B",`${m.dias} dia(s)`]
+      :m.dias<=10?["#B8860B",`${m.dias} dias`]:["var(--suave)",`${m.dias} dias`];
+    const estrela=m.tipo==="recurso"||m.tipo.startsWith("resultado")
+      ? `<span class="gestrela${m.tipo==="recurso"?" recurso":""}" style="position:static;transform:none">★</span>` : "";
+    return `<div class="doc-linha" data-id="${esc(m.edital_id)}">
+      ${estrela}<i style="font-style:normal;font-weight:700">${rot.simbolo}</i>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(m.titulo.slice(0,60))}</span>
+      <span class=tag style="flex:none">${esc(rot.rotulo)}</span>
+      <span class=meta style="flex:none;min-width:88px;text-align:right">${br(m.data)}</span>
+      <strong style="flex:none;color:${urg[0]};min-width:74px;text-align:right">${urg[1]}</strong></div>`;};
+  $("fd-lista").innerHTML=prox.length?prox.map(linha).join("")
+    :`<div class=meta style="padding:8px 2px">Nenhum marco de resultado ou recurso por vir. ${marcos.length?`${marcos.length} já ocorrido(s).`:"As datas entram conforme os editais completos publicam resultado e fase recursal."}</div>`;
+  $("fd-lista").querySelectorAll(".doc-linha[data-id]").forEach(el=>{
+    const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);
+    if(ed){ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);}});
+  const sd=C.sem_data||[];
+  $("fd-alertas").innerHTML=sd.length
+    ? `<div class=meta style="border-left:3px solid var(--alerta);padding-left:10px">
+        <strong>${sd.length} edital(is) sem data de resultado ou recurso publicada</strong> — acompanhar a fonte.
+        <div style="margin-top:4px">${sd.slice(0,4).map(x=>esc(x.titulo.slice(0,58))).join("<br>")}</div></div>` : "";
+}
+
 /* ================= FAROL · BIBLIOTECA ================= */
 function desenhaBiblioteca(){
   const B=D.biblioteca||{}, det=B.detalhe||{}, ac=B.acervos||{};
@@ -1349,7 +1420,7 @@ function iniciar(){
   busAno=HOJE.getFullYear();busMes=HOJE.getMonth();
   gAno=HOJE.getFullYear();gMes=HOJE.getMonth();
   desenhaRadar();desenhaFarolResumo();desenhaGantt();desenhaFila();
-  desenhaCal();desenhaEditais();desenhaBussola();iniciarBz();desenhaBiblioteca();
+  desenhaCal();desenhaEditais();desenhaBussola();iniciarBz();desenhaCalendarioDecisao();desenhaBiblioteca();
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
 }
