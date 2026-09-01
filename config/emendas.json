@@ -1,0 +1,53 @@
+{
+  "versao": 1,
+  "regra": "Três fontes anuais SEM edital. Janela fixa de 01/10 a 30/11 de todos os anos. A oportunidade existe em TODOS os parlamentares com mandato: cada tipo vira UMA linha no calendário, com o levantamento completo dos parlamentares. Fase 2 = levantamento de gabinetes e mandatos; fase 3 = aprovação automática para todas as associações; salta para a fase 5, que produz ofícios e projetos conforme o perfil de cada associação.",
+  "janela": {"inicio_mes_dia": "10-01", "fim_mes_dia": "11-30"},
+  "tipos": [
+    {
+      "id": "emenda-municipal-goiania",
+      "nome": "Emenda Parlamentar Municipal — Goiânia",
+      "esfera": "municipal",
+      "territorio": "GO/Goiânia",
+      "uf": "GO",
+      "casa": "Câmara Municipal de Goiânia",
+      "cargo": "Vereador(a)",
+      "fonte_dados": "https://www.goiania.go.leg.br/parlamentares",
+      "fonte_votacao": "https://divulgacandcontas.tse.jus.br/",
+      "lei": "LC 383/2025 — emendas parlamentares municipais",
+      "area": "outros"
+    },
+    {
+      "id": "emenda-estadual-goias",
+      "nome": "Emenda Parlamentar Estadual — Goiás",
+      "esfera": "estadual",
+      "territorio": "GO",
+      "uf": "GO",
+      "casa": "Assembleia Legislativa do Estado de Goiás (ALEGO)",
+      "cargo": "Deputado(a) Estadual",
+      "fonte_dados": "https://portal.al.go.leg.br/deputados",
+      "fonte_votacao": "https://divulgacandcontas.tse.jus.br/",
+      "lei": "Lei Ordinária GO 22.874 — emendas parlamentares estaduais",
+      "area": "outros"
+    },
+    {
+      "id": "emenda-federal",
+      "nome": "Emenda Parlamentar Federal — Câmara e Senado",
+      "esfera": "federal",
+      "territorio": "BR",
+      "uf": null,
+      "casa": "Congresso Nacional (Câmara dos Deputados e Senado Federal)",
+      "cargo": "Deputado(a) Federal / Senador(a)",
+      "fonte_dados": "https://dadosabertos.camara.leg.br/api/v2/deputados",
+      "fonte_dados_senado": "https://legis.senado.leg.br/dadosabertos/senador/lista/atual",
+      "fonte_votacao": "https://dadosabertos.tse.jus.br/",
+      "lei": "LC 210/2024 — emendas parlamentares federais",
+      "area": "outros"
+    }
+  ],
+  "campos_do_levantamento": [
+    "nome_parlamentar", "nome_civil", "partido", "uf", "cargo", "casa",
+    "gabinete", "endereco", "telefone", "email", "votacao_eleicao",
+    "situacao_mandato", "legislatura", "url_perfil", "foto"
+  ],
+  "nota_dados": "Os dados vêm das APIs oficiais das casas legislativas e do TSE. Onde a casa não publica API, a rota fica declarada como pendência de coleta — nenhum dado de parlamentar é inventado."
+}

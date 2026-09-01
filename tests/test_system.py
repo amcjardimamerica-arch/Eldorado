@@ -776,8 +776,15 @@ class SystemTests(unittest.TestCase):
         d=dash_coletar(date(2026,9,2))
         # dois acervos distintos e declarados: VIVO (verificação dupla, é o que
         # o Farol trabalha) e HISTÓRICO (catalogado, só compõe «encerradas»)
-        vivos=[e for e in d["editais"] if e.get("acervo")!="historico"]
+        # três acervos: editais vivos (verificação dupla), histórico catalogado
+        # e as emendas anuais (regra própria, sem edital)
+        vivos=[e for e in d["editais"]
+               if e.get("acervo")!="historico" and not e.get("sem_edital")]
         hist=[e for e in d["editais"] if e.get("acervo")=="historico"]
+        emendas=[e for e in d["editais"] if e.get("sem_edital")]
+        for e in emendas:
+            self.assertTrue(e["verificacao_dupla"]["fonte"])
+            self.assertIn(e["estado_export"],("aberto","a_abrir","encerrado"))
         for e in vivos:
             self.assertIn("verificacao_dupla",e,e["id"])
         for e in hist:
@@ -1702,6 +1709,88 @@ class SystemTests(unittest.TestCase):
         self.assertIn("from .destinacao import avaliar_destinacao",fonte)
         self.assertIn("descartados_fase2",fonte)
         self.assertIn('"destinacao": dest',fonte)
+
+
+    def test_emendas_tres_fontes_anuais(self):
+        """Três fontes anuais sem edital, janela fixa 01/10–30/11, uma linha
+        por tipo com o levantamento dos parlamentares."""
+        from src.emendas import janela, oportunidade, levantar, _cfg
+        cfg=_cfg()
+        self.assertEqual([t0["id"] for t0 in cfg["tipos"]],
+                         ["emenda-municipal-goiania","emenda-estadual-goias","emenda-federal"])
+        self.assertEqual(janela(2026),("2026-10-01","2026-11-30"))
+        self.assertEqual(janela(2031),("2031-10-01","2031-11-30"))  # todo ano
+        tipo=cfg["tipos"][2]
+        lev={"total":2,"com_contato_completo":1,"origem_dos_dados":"API",
+             "pendencias":[],"levantado_em":"x","parlamentares":[
+                 {"nome_parlamentar":"A","cargo":"Deputado(a) Federal","gabinete":"G",
+                  "telefone":"1","partido":"X","uf":"GO"},
+                 {"nome_parlamentar":"B","cargo":"Senador(a)","gabinete":None,
+                  "email":"b@x","partido":"Y","uf":"GO"}]}
+        op=oportunidade(tipo,2026,lev,date(2026,10,15))
+        self.assertTrue(op["sem_edital"])
+        self.assertEqual((op["inicio"],op["fim"]),("2026-10-01","2026-11-30"))
+        self.assertEqual(op["estado_export"],"aberto")       # dentro da janela
+        self.assertEqual(op["etapa"],5)                      # salta para preparar
+        self.assertEqual(len(op["parlamentares"]),2)
+        self.assertEqual(op["ciclo"]["inscricao"]["fim"],"2026-11-30")
+        self.assertFalse(op["ciclo"]["inscricao"]["projetado"])
+        # fora da janela
+        antes=oportunidade(tipo,2026,lev,date(2026,5,1))
+        self.assertEqual(antes["estado_export"],"a_abrir")
+        depois=oportunidade(tipo,2026,lev,date(2026,12,15))
+        self.assertEqual(depois["estado_export"],"encerrado")
+        # sem levantamento: fica na fase 2 e declara a lacuna
+        vazio={**lev,"total":0,"parlamentares":[],
+               "pendencias":["levantamento pendente — casa não respondeu"]}
+        op2=oportunidade(tipo,2026,vazio,date(2026,10,15))
+        self.assertEqual(op2["etapa"],2)
+        self.assertTrue(op2["detalhes"]["pendencias"])
+
+    def test_emendas_fase3_automatica_e_documentos(self):
+        """Fase 3 aprova todas as associações; fase 5 gera ofício por gabinete
+        e plano de trabalho completo, sem inventar dado."""
+        from src.emendas_docs import oficio, plano_de_trabalho
+        perfil={"nome":"Associação Teste","areas":["cultura","educacao"],
+                "territorios":["GO/Goiânia"],"anos_existencia":5,
+                "natureza_juridica":"associacao"}
+        parlamentar={"nome_parlamentar":"Fulano de Tal","partido":"XYZ","uf":"GO",
+                     "cargo":"Deputado(a) Federal","gabinete":"Gabinete 512",
+                     "endereco":"Brasília/DF","telefone":"(61) 1","email":"f@x"}
+        tipo={"nome":"Emenda Federal","lei":"LC 210/2024"}
+        o=oficio(perfil,parlamentar,tipo,2026,1,date(2026,9,1))
+        self.assertIn("Ofício nº 001/2026",o)
+        self.assertIn("Fulano de Tal",o)
+        self.assertIn("Senhor Deputado",o)
+        self.assertIn("Associação Teste",o)
+        self.assertIn("emenda parlamentar do exercício 2026",o)
+        self.assertIn("[preencher",o)          # CNPJ não é inventado
+        pt=plano_de_trabalho(perfil,{"nome":"Emenda Federal","lei":"LC 210/2024"},2026)
+        for secao in ("Diagnóstico","Objeto","Metas e indicadores",
+                      "Cronograma físico-financeiro","Orçamento e memória de cálculo",
+                      "Contrapartida","Prestação de contas"):
+            self.assertIn(secao,pt,secao)
+        self.assertIn("Nenhuma informação foi inventada",pt)
+        self.assertIn("cultura",pt)            # ajustado ao perfil
+
+    def test_emendas_no_painel(self):
+        d=dash_coletar(date(2026,9,2))
+        em=[e for e in d["editais"] if e.get("sem_edital")]
+        self.assertEqual(len(em),3,"uma linha por tipo de emenda")
+        for e in em:
+            self.assertEqual((e["inicio"][5:],e["fim"][5:]),("10-01","11-30"))
+            self.assertIn(e["nivel"],("federal","estadual","municipal"))
+            self.assertTrue(e["destinacao"]["elegivel"])
+            self.assertIn("parlamentares",e)
+            self.assertIn("levantamento",e)
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("Sem edital",html)
+        self.assertIn("Parlamentares com mandato",html)
+        self.assertIn("gemenda",html)
+        self.assertIn("Nenhum parlamentar foi inventado",html)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.emendas",wf)
+        self.assertIn("python -m src.emendas_docs",wf)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

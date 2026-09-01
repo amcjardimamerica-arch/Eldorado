@@ -126,6 +126,8 @@ animation:brilho 1.9s ease-in-out infinite}
 font-size:9.5px;letter-spacing:.03em}
 .grecurso.projetada{outline:1px dashed #ffffffaa;outline-offset:-2px}
 .ginscricao.projetada{outline:1px dashed #ffffffaa;outline-offset:-2px}
+/* emenda parlamentar: sem edital, janela fixa anual */
+.gemenda{background-image:repeating-linear-gradient(90deg,#ffffff00 0 8px,#ffffff40 8px 10px)}
 .gprazo{border-radius:5px;min-width:20px!important;font-size:12px}
 .gprazorot{position:absolute;top:2px;bottom:2px;display:flex;align-items:center;padding-left:5px;font-size:10px;font-weight:700;color:var(--suave);white-space:nowrap}
 .gbarra{position:absolute;top:2px;bottom:2px;border-radius:11px;color:#fff;font-size:10px;font-weight:600;
@@ -834,6 +836,22 @@ function detalheEdital(e){
      <div class=lin><b>Objeto</b><span>${esc(e.objeto||"não localizado no texto — conferir edital")}</span></div>
      <div class=lin><b>Período</b><span>${br(e.inicio)} → ${br(e.fim)}</span></div>
      <div class=lin><b>Situação</b><span>${situ}</span></div>
+     ${e.sem_edital?`
+       <div class=lin><b>Modalidade</b><span><strong>Sem edital</strong> — captação por ofício e projeto em cada gabinete, de 01/10 a 30/11 de todo ano</span></div>
+       <div class=lin><b>Levantamento</b><span>${(e.levantamento||{}).total??0} parlamentar(es) com mandato · ${(e.levantamento||{}).com_contato_completo??0} com gabinete e contato completos</span></div>
+       <div class=lin><b>Origem dos dados</b><span class=meta>${esc((e.levantamento||{}).origem_dos_dados||"—")}</span></div>
+       ${(e.parlamentares||[]).length?`<p style="margin:10px 0 4px"><strong>Parlamentares com mandato</strong></p>
+         <table class="bz-tab"><thead><tr><th>Parlamentar</th><th>Partido/UF</th><th>Cargo</th><th>Gabinete</th><th>Contato</th></tr></thead><tbody>
+         ${e.parlamentares.slice(0,60).map(p=>`<tr>
+           <td><b>${esc(p.nome_parlamentar||"—")}</b>${p.url_perfil?` <a href="${esc(p.url_perfil)}" target=_blank rel="noopener noreferrer">↗</a>`:""}
+               <span class=ed>${esc(p.situacao_mandato||"")}${p.votacao_eleicao?" · "+esc(String(p.votacao_eleicao))+" votos":""}</span></td>
+           <td>${esc(p.partido||"—")}/${esc(p.uf||"—")}</td>
+           <td class=meta>${esc(p.cargo||"—")}</td>
+           <td class=meta>${esc(p.gabinete||"<em>não publicado</em>")}</td>
+           <td class=meta>${esc(p.telefone||"")} ${p.email?`<a href="mailto:${esc(p.email)}">${esc(p.email)}</a>`:""}</td></tr>`).join("")}
+         </tbody></table>
+         ${e.parlamentares.length>60?`<p class=meta>mostrando 60 de ${e.parlamentares.length}</p>`:""}`
+        :'<p class=meta style="border-left:3px solid var(--alerta);padding-left:10px">Levantamento de parlamentares pendente — a casa legislativa não respondeu ou não há catálogo local. Nenhum parlamentar foi inventado.</p>'}`:""}
      ${e.acervo==="historico"?`
        <div class=lin><b>Acervo</b><span>catalogação histórica (fases 1 e 2) — força probatória: <strong>${esc(e.historico.forca_probatoria||"—")}</strong></span></div>
        ${e.historico.vencedores&&e.historico.vencedores.length?`<div class=lin><b>Vencedor(es)</b><span>${e.historico.vencedores.map(esc).join(" · ")}</span></div>`:""}
@@ -1018,7 +1036,7 @@ function desenhaGantt(){
     if(c.inscricao&&c.inscricao.inicio&&cruza(c.inscricao.inicio,c.inscricao.fim)){
       const [d1,d2,antes,depois]=recorte(c.inscricao.inicio,c.inscricao.fim);
       const [l,w]=pct(d1,d2);
-      faixa+=`<span class="gbarra ginscricao${c.inscricao.projetado?" projetada":""}" data-id="${esc(e.id)}"
+      faixa+=`<span class="gbarra ginscricao${c.inscricao.projetado?" projetada":""}${e.sem_edital?" gemenda":""}" data-id="${esc(e.id)}"
         style="left:${l}%;width:${w}%;background:${cor};color:${tinta}"
         title="Inscrições: ${ddmm(c.inscricao.inicio)} a ${ddmm(c.inscricao.fim)}${c.inscricao.projetado?" (abertura projetada: "+esc(c.inscricao.base||"praxe")+"; conferir no edital)":" (datas publicadas)"}">${antes?"◂ ":""}${ddmm(c.inscricao.inicio)} → ${ddmm(c.inscricao.fim)}${depois?" ▸":""}</span>`;
     } else if(c.inscricao&&!c.inscricao.inicio&&c.inscricao.fim&&dentro(c.inscricao.fim)){

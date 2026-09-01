@@ -414,7 +414,8 @@ def _bussola(editais: list[dict]) -> dict:
             {"item": "Órgão / financiador", "valor": e.get("fonte_nome"),
              "comprovado": bool(e.get("fonte_nome"))},
             {"item": "Território", "valor": e.get("territorio"),
-             "comprovado": bool(e.get("uf"))},
+             # alcance nacional é território definido, ainda que sem UF
+             "comprovado": bool(e.get("uf")) or e.get("abrangencia") == "nacional"},
             {"item": "Esfera", "valor": e.get("nivel"),
              "comprovado": e.get("nivel") in ("federal", "estadual", "municipal")},
             {"item": "Requisitos", "valor": ", ".join(det.get("documentos_exigidos") or [])[:160] or None,
@@ -790,6 +791,8 @@ def _marca_etapas(editais: list[dict]) -> list[dict]:
                     for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
     com_parecer |= conjunto("*/*/conselho.json")
     for e in editais:
+        if e.get("sem_edital"):        # emendas trazem etapa e ciclo próprios
+            continue
         e.update(etapa_do_edital(e, decididos, preparados, com_parecer))
         e["ciclo"] = ciclo_do_edital(e)
     return editais
@@ -909,9 +912,13 @@ def coletar(hoje: date | None = None) -> dict:
     editais_base = _editais(hoje)
     completos_lista = _so_completos(editais_base, hoje)
     historicos = _historicos_encerrados(hoje)
+    from .emendas import oportunidades_do_painel as _emendas
+    emendas = _emendas(hoje)
     vivos = completos_lista
     editais = _marca_etapas(
         (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos)
+    # as três emendas anuais entram como linha própria, já com etapa definida
+    editais = emendas + editais
     leis = load_json(ROOT / "biblioteca/leis/catalogo.json")["itens"]
     revisao = load_json(ROOT / "estado/revisao_normativa.json") if (ROOT / "estado/revisao_normativa.json").exists() else {}
     parl = mod_parlamentares.carregar_do_disco(hoje.year)
