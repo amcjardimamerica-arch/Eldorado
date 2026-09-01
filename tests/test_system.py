@@ -824,6 +824,78 @@ class SystemTests(unittest.TestCase):
             self.assertEqual(rel["dados_sem_campo"],["extra"])
             self.assertEqual(PdfReader(pathlib.Path(tmp)/"s/out.pdf").get_fields()["nome_entidade"].get("/V"),"A.M.C.")
 
+
+    def test_biblioteca_de_alexandria(self):
+        """Banco único: leis por tema/tipo, oportunidades (histórico) e
+        associações com a pasta de cada edital concorrido."""
+        from src import biblioteca as B
+        r=B.run()
+        self.assertTrue((B.RAIZ/"indice.json").exists())
+        idx=load_json(B.RAIZ/"indice.json")
+        self.assertEqual(idx["biblioteca"],"Biblioteca de Alexandria")
+        self.assertEqual(set(idx["acervos"]),{"leis","oportunidades","associacoes"})
+        # classificação temática correta (LGPD não pode cair em criança/ECA)
+        self.assertEqual(B.tema_da_norma({"titulo":"Lei Geral de Proteção de Dados",
+                                          "tipo":"protecao_dados"}),"gestao_e_controle")
+        self.assertEqual(B.tema_da_norma({"titulo":"ECA — Estatuto da Criança",
+                                          "tipo":"direitos"}),"crianca_adolescente")
+        self.assertEqual(B.tema_da_norma({"titulo":"Resolução CNAS 109/2009 — Tipificação",
+                                          "tipo":"resolucao"}),"assistencia_social")
+        self.assertNotIn("geral",r["leis"]["temas"],"toda norma deve ter tema próprio")
+        # pasta do edital concorrido dentro da associação
+        pasta=B.pasta_edital_da_associacao("amc-jardim-america","Edital 007/2026 Cultura")
+        self.assertTrue(pasta.exists())
+        self.assertIn("editais",str(pasta))
+
+    def test_parecer_deterministico_sem_credencial(self):
+        """Sem FAROL_AI_API_KEY o parecer entrega a parte determinística e
+        declara a pendência — nunca simula IA."""
+        import os
+        from src import farol_parecer as FP
+        texto=("Poderão participar entidades com CEBAS válido. Exige-se plano de "
+               "trabalho e contrapartida. A entidade deve ter no mínimo dois (2) anos. "
+               "As inscrições vão até 30/09/2026.")
+        pt=FP.portao_deterministico({"certificacoes":["CNEAS"],"anos_existencia":3},texto)
+        self.assertIn("cebas",pt["faltam"])
+        self.assertTrue(pt["bloqueio_objetivo"])
+        pt2=FP.portao_deterministico({"certificacoes":["CEBAS"],"anos_existencia":3},texto)
+        self.assertFalse(pt2["bloqueio_objetivo"])
+        self.assertIn("tempo mínimo de existência",pt2["atende"])
+        # perfil sem o dado vira ALERTA, não suposição
+        pt3=FP.portao_deterministico({"certificacoes":["CEBAS"]},texto)
+        self.assertTrue(any("tempo de existência" in a for a in pt3["alertas"]))
+        # pacote mínimo: só trechos de requisito
+        self.assertLessEqual(len("".join(FP.trechos_relevantes(texto,5000))),len(texto)+50)
+        # roteamento por tarefa (economia de tokens)
+        m=FP._cfg()["modelos"]
+        self.assertIn("haiku",m["extracao"])
+        self.assertNotEqual(m["extracao"],m["parecer"])
+        chave_antes=os.environ.pop("FAROL_AI_API_KEY",None)
+        try:
+            self.assertIsNone(FP._chave())
+        finally:
+            if chave_antes: os.environ["FAROL_AI_API_KEY"]=chave_antes
+
+    def test_botoes_do_edital_e_biblioteca_no_painel(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for trecho in ("Aprimorar análise com IA","Inscrição realizada","Descartar",
+                       "arquivarInscrito","descartarEdital","pedirParecer",
+                       "Em andamento","Arquivados","Encerrados / descartados",
+                       "Biblioteca de Alexandria","Oportunidades (histórico)",
+                       "Associações","exportarDecisoes"):
+            self.assertIn(trecho,html,trecho)
+        # o pacote enviado à IA não pode conter dado pessoal
+        i=html.find("const pacote=");j=html.find("};",i)
+        pacote=html[i:j]
+        for proibido in ("cnpj","cpf","dados_bancarios","telefone","endereco"):
+            self.assertNotIn(proibido,pacote.lower(),proibido)
+        d=dash_coletar(date(2026,9,2))
+        self.assertEqual(d["biblioteca"]["biblioteca"],"Biblioteca de Alexandria")
+        self.assertIn("credencial_ia",d["farol_resumo"])
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.biblioteca",wf)
+        self.assertIn("python -m src.farol_parecer",wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

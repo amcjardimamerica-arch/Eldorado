@@ -23,6 +23,7 @@ import json
 import re
 import unicodedata
 from collections import defaultdict
+import os
 from datetime import date, datetime, timedelta
 
 from . import parlamentares as mod_parlamentares
@@ -368,6 +369,15 @@ def _bussola(editais: list[dict]) -> dict:
             "fontes_com_editais": sorted(por_fonte.values(), key=lambda x: -len(x["editais"])),
             "regra": "monitor de integridade: cada dia registra se houve busca e o que validou; anexos ausentes são pendência declarada, não omissão silenciosa"}
 
+def _assocs_publicas() -> list[dict]:
+    from .biblioteca import ASSOCIACOES as _A
+    i = _A / "indice.json"
+    if not i.exists():
+        return []
+    return [{"slug": a["slug"], "nome": a["nome"]}
+            for a in load_json(i).get("associacoes", [])]
+
+
 def _farol_resumo(editais: list[dict]) -> dict:
     """Números da página inicial. Aderência média só existe após a primeira
     execução real do Farol (resultados/*/ranking.json); antes disso é null e o
@@ -396,6 +406,8 @@ def _farol_resumo(editais: list[dict]) -> dict:
         "avaliacoes": len(notas),
         "requisitos_pendentes": pendentes,
         "decisoes": contagem,
+        "credencial_ia": bool(os.environ.get("FAROL_AI_API_KEY")),
+        "associacoes_publicas": _assocs_publicas(),
         "documentacao_pronta": [
             {"id": e["id"], "titulo": e["titulo"], "area": e["area"], "status": e["status"],
              "qualificacao": e["detalhes"]["qualificacao"]}
@@ -550,6 +562,35 @@ def coletar(hoje: date | None = None) -> dict:
     revisao = load_json(ROOT / "estado/revisao_normativa.json") if (ROOT / "estado/revisao_normativa.json").exists() else {}
     parl = mod_parlamentares.carregar_do_disco(hoje.year)
     ch = load_json(ROOT / "estado/ultima_carga_historica.json") if (ROOT / "estado/ultima_carga_historica.json").exists() else {"status": "nunca_executada"}
+    from . import biblioteca as _bib
+    import os as _os
+    bib_idx = _bib.RAIZ / "indice.json"
+    biblioteca = load_json(bib_idx) if bib_idx.exists() else {}
+    for acervo, arq in (("leis", _bib.LEIS), ("oportunidades", _bib.OPORTUNIDADES),
+                        ("associacoes", _bib.ASSOCIACOES)):
+        i = arq / "indice.json"
+        if i.exists():
+            d0 = load_json(i)
+            biblioteca.setdefault("detalhe", {})[acervo] = {
+                k: v for k, v in d0.items() if k not in ("editais", "por_tema")}
+            if acervo == "leis":
+                biblioteca["detalhe"][acervo]["por_tema"] = {
+                    tema: [{"titulo": x["titulo"], "tipo": x["tipo"], "esfera": x["esfera"],
+                            "status": x["status"]} for x in itens]
+                    for tema, itens in d0.get("por_tema", {}).items()}
+    pareceres = {}
+    praiz = ROOT / "biblioteca_alexandria/pareceres"
+    if praiz.exists():
+        for pj in praiz.glob("*/*/parecer.json"):
+            try:
+                pp = load_json(pj)
+                pareceres[pp["edital"].get("chave")] = {
+                    "recomendacao": pp.get("recomendacao"),
+                    "alertas": pp.get("alertas", []),
+                    "resumo": (pp.get("ia") or {}).get("parecer", "")[:1200],
+                    "gerado_em": pp.get("gerado_em")}
+            except Exception:
+                continue
     monit = _monitoramentos(hoje)
     saida_bussola = painel_bussola(completos_lista, _bussola(editais), hoje)
     saida_bussola["monitoramentos"] = monit
@@ -566,6 +607,7 @@ def coletar(hoje: date | None = None) -> dict:
         "areas": AREAS, "tipos_evento": _TIPOS_EVT,
         "editais": editais,
         "eventos": _eventos(editais),
+        "biblioteca": biblioteca, "pareceres": pareceres,
         "bussola": _bussola(editais),
         "bussola_painel": saida_bussola,
         "farol_resumo": _farol_resumo(editais),

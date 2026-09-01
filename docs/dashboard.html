@@ -144,6 +144,14 @@ box-shadow:0 1px 3px #0002}
 .evt:hover{filter:brightness(.96)}
 .evt i{font-style:normal;font-weight:700}
 /* editais */
+.abas{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.abas button{font-size:13px;padding:8px 15px;border-radius:11px}
+.abas button.on{background:var(--realce);border-color:var(--marca);color:var(--marca);font-weight:700}
+.acoes-ed{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px;padding-top:10px;border-top:1px dashed var(--linha)}
+.acoes-ed button{font-size:11.5px;font-weight:700;padding:7px 11px;border-radius:9px}
+.bt-ia{background:linear-gradient(180deg,#7B4BE0,#5B33B8);color:#fff;border:0}
+.bt-insc{background:#E7F4EC;color:#1E7E4B;border-color:#A9D6BC}
+.bt-desc{background:#FDECEA;color:#B8433A;border-color:#F0B8B2}
 .grade-ed{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:13px}
 .ed{border-left:5px solid var(--suave);cursor:pointer;transition:box-shadow .12s}
 .ed:hover{box-shadow:0 3px 12px #23272E1c}
@@ -388,6 +396,11 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 
 <!-- ============ ELDORADO · EDITAIS ============ -->
 <section id="v-editais" class="oculto" style="margin-top:14px">
+<div class="abas" id="ed-abas">
+  <button data-aba="em_andamento" class="on">Em andamento</button>
+  <button data-aba="inscrito">Arquivados — inscrição realizada</button>
+  <button data-aba="encerrado">Encerrados / descartados</button>
+</div>
 <div class="legenda" style="margin-bottom:12px" id="ed-legenda"></div>
 <div class="grade-ed" id="ed-grade"></div>
 </section>
@@ -504,10 +517,15 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div class="grade-ed" id="fed-grade"></div>
 </section>
 <section id="v-f-biblioteca" class="oculto" style="margin-top:14px">
-<div class="cartao">
-<h3 style="margin:0 0 4px;font-size:16px">Biblioteca jurídica</h3>
-<p class="meta" id="fb-meta" style="margin:0 0 10px"></p>
-<div id="fb-lista"></div>
+<div class="cartao" style="margin-bottom:14px">
+  <div class="painel-tit farol"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#0B4EA2" stroke-width="1.8"><path d="M12 5.5C10 4 7.4 3.6 4 3.8v14.7c3.4-.2 6 .2 8 1.7 2-1.5 4.6-1.9 8-1.7V3.8c-3.4-.2-6 .2-8 1.7z" stroke-linejoin="round"/><path d="M12 5.5v14.7"/></svg>Biblioteca de Alexandria</div>
+  <p class="meta" id="ba-meta" style="margin:6px 0 10px"></p>
+  <div class="abas" id="ba-abas">
+    <button data-ba="leis" class="on">Leis e normas</button>
+    <button data-ba="oportunidades">Oportunidades (histórico)</button>
+    <button data-ba="associacoes">Associações</button>
+  </div>
+  <div id="ba-corpo"></div>
 </div>
 </section>
 
@@ -639,6 +657,68 @@ window.modulo=function(m){
   mostra(m==="eldorado"?"calendario":"f-editais");
 };
 document.querySelectorAll(".subnav button").forEach(b=>b.onclick=()=>mostra(b.dataset.v));
+document.querySelectorAll("#ed-abas button").forEach(b=>b.onclick=()=>{
+  window._abaEd=b.dataset.aba;
+  document.querySelectorAll("#ed-abas button").forEach(x=>x.classList.toggle("on",x===b));
+  desenhaEditais();});
+
+/* ============ DECISÕES DO TITULAR (ficam no computador e são exportáveis) ============
+   em_andamento (padrão) · inscrito (arquivado) · descartado (encerrado).
+   Também guarda os pedidos do botão "Aprimorar análise com IA", que o Farol
+   executa na próxima rodada com a credencial configurada. */
+function decisoes(){try{return JSON.parse(localStorage.getItem("amc_decisoes")||"{}");}catch(e){return {};}}
+function salvaDecisao(id,estado,extra){
+  const m=decisoes();
+  if(estado) m[id]={...(m[id]||{}),estado,em:new Date().toISOString(),...(extra||{})};
+  else delete m[id];
+  try{localStorage.setItem("amc_decisoes",JSON.stringify(m));}catch(e){}
+  try{ if(typeof aplicaRadar==="function") aplicaRadar();
+       desenhaEditais(); desenhaFila();
+       if(typeof desenhaBzTabela==="function") desenhaBzTabela(); }catch(e){}
+}
+const estadoDe=id=>(decisoes()[id]||{}).estado||"em_andamento";
+window.arquivarInscrito=function(e){
+  salvaDecisao(e.id,"inscrito",{titulo:e.titulo,acao:"inscrição realizada"});
+  abreModal("<h3 style=\"margin:0\">Inscrição registrada</h3>",
+   `<p>O edital <strong>${esc(e.titulo)}</strong> foi para <strong>Arquivados</strong> — inscrição realizada.</p>
+    <p class=meta>A decisão fica salva neste computador. Use «Exportar decisões» para levá-la ao repositório e registrar no histórico da Biblioteca.</p>
+    <button onclick="exportarDecisoes()">Exportar decisões</button>`);
+};
+window.descartarEdital=function(e){
+  salvaDecisao(e.id,"descartado",{titulo:e.titulo,acao:"descartado"});
+  abreModal("<h3 style=\"margin:0\">Edital encerrado</h3>",
+   `<p><strong>${esc(e.titulo)}</strong> passou a compor os <strong>Encerrados</strong>; a lista mantém apenas os editais em andamento.</p>`);
+};
+window.exportarDecisoes=function(){
+  const blob=new Blob([JSON.stringify({exportado_em:new Date().toISOString(),decisoes:decisoes()},null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="decisoes-editais.json";a.click();URL.revokeObjectURL(a.href);
+};
+/* Botão «Aprimorar análise com IA»: registra o pedido e entrega o PACOTE
+   MÍNIMO (trechos + perfil público + recorrências) — economia de tokens e
+   nenhum dado pessoal sai do painel. */
+window.pedirParecer=function(e){
+  const pend=(e.detalhes&&e.detalhes.pendencias)||[];
+  salvaDecisao(e.id,estadoDe(e.id),{parecer_pedido:new Date().toISOString(),
+    chave:e.pasta_farol||null,titulo:e.titulo});
+  const pacote={instrucao:"Analise SOMENTE os dados abaixo. Não invente exigência, valor, prazo ou critério: o que faltar deve ser listado como dado faltante. Produza: (1) o que o edital exige para vencer; (2) se há enquadramento da associação; (3) o que falta providenciar; (4) recomendação CONCORRER, REGULARIZAR ANTES ou DESCARTAR.",
+    edital:{titulo:e.titulo,fonte:e.fonte_nome,territorio:e.territorio,objeto:e.objeto,
+            inicio:e.inicio,fim:e.fim,url:e.url,modelos:(e.anexos_modelo||[]).map(a=>a.nome)},
+    evidencia:(e.detalhes||{}).evidencia,
+    requisitos_detectados:(e.detalhes||{}).documentos_exigidos||[],
+    pendencias:pend, pasta_biblioteca:e.pasta_farol||null,
+    associacoes:(D.farol_resumo||{}).associacoes_publicas||[]};
+  const blob=new Blob([JSON.stringify(pacote,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="pacote-parecer-"+(e.protocolo||e.id)+".json";a.click();URL.revokeObjectURL(a.href);
+  const pj=(D.pareceres||{})[e.id];
+  abreModal(`<div class=meta>${esc(e.fonte_nome||"")}</div><h3 style="margin:4px 0 0">Aprimorar análise com IA</h3>`,
+    (pj?`<div class=lin><b>Recomendação</b><span><strong>${esc(pj.recomendacao||"—")}</strong></span></div>
+         <p style="white-space:pre-wrap">${esc(pj.resumo||"")}</p><hr>`:"")+
+    `<p>Pedido registrado. O Farol produz o parecer detalhado na próxima rodada, usando o modelo adequado a cada etapa (extração → análise → parecer final).</p>
+     <p class=meta>Baixei também o <strong>pacote mínimo</strong> deste edital: só trechos de requisito, perfil público e recorrências — sem dado pessoal e sem o edital inteiro. Você pode colá-lo agora numa conversa com o Claude para ter o parecer imediato.</p>
+     ${pend.length?`<p><strong>Alertas de dados faltantes</strong></p><ul>${pend.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+     ${!(D.farol_resumo||{}).credencial_ia?'<p class=meta style="border-left:3px solid var(--alerta);padding-left:10px">A execução automática aguarda o secret <code>FAROL_AI_API_KEY</code>. Sem ele o Farol entrega a parte determinística e nunca simula IA.</p>':""}`);
+};
 
 /* ================= DETALHE DE EDITAL ================= */
 function detalheEdital(e){
@@ -737,6 +817,7 @@ function desenhaRadar(){
     desenhaGantt();desenhaFila();
   }
   ["fi-uf","fi-area","fi-nivel","fi-prazo"].forEach(id=>$(id).addEventListener("input",aplica));
+  window.aplicaRadar=aplica;
   aplica();
 }
 function desenhaFarolResumo(){
@@ -965,13 +1046,27 @@ function caixaEdital(e){
    <div class=lin><b>Objeto</b><span>${esc((e.objeto||"conferir edital").slice(0,70))}</span></div>
    <div class=lin><b>Prazos</b><span>${br(e.inicio)} → ${br(e.fim)}</span></div>
    <div class=lin><b>Restante</b><span>${e.fim?(s<0?'<span style="color:var(--urgente)">encerrado</span>':`<strong>${s} dia(s)</strong>`):"—"}</span></div>
-   <p class=meta style="margin:8px 0 0">${esc(e.resumo)}…</p>`;
+   <p class=meta style="margin:8px 0 0">${esc(e.resumo)}…</p>
+   <div class="acoes-ed">
+     <button class="bt-ia" title="Parecer detalhado: o que é preciso para vencer, se há enquadramento de alguma associação e se o edital pode ser descartado">✦ Aprimorar análise com IA</button>
+     <button class="bt-insc" title="Inscrição realizada — arquiva o edital">✓ Inscrição realizada</button>
+     <button class="bt-desc" title="Descartar — passa a compor os encerrados">✕ Descartar</button>
+   </div>`;
   ligaTip(div,resumoTip(e));
-  div.onclick=()=>detalheEdital(e);
+  div.onclick=ev=>{if(ev.target.closest(".acoes-ed"))return;detalheEdital(e);};
+  div.querySelector(".bt-ia").onclick=ev=>{ev.stopPropagation();pedirParecer(e);};
+  div.querySelector(".bt-insc").onclick=ev=>{ev.stopPropagation();arquivarInscrito(e);};
+  div.querySelector(".bt-desc").onclick=ev=>{ev.stopPropagation();descartarEdital(e);};
   return div;
 }
 function desenhaEditais(){
-  const abertos=(D.editais||[]).filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export))
+  const filtroEstado=window._abaEd||"em_andamento";
+  const abertos=(D.editais||[])
+    .filter(e=>{const st=estadoDe(e.id);
+      return filtroEstado==="em_andamento"
+        ? (st==="em_andamento" && ["aberto","a_abrir","sem_prazo"].includes(e.estado_export))
+        : filtroEstado==="inscrito" ? st==="inscrito"
+        : (st==="descartado" || e.estado_export==="encerrado");})
     .sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9)));
   const g=$("ed-grade");g.innerHTML="";
   if(!abertos.length){g.innerHTML=`<div class=cartao>Nenhum edital COMPLETO aberto ainda. O padrão de qualidade exige verificação dupla (texto integral + datas + documentos-modelo); ${((D.bussola_painel||{}).monitoramentos||{}).monitorando??0} identificações estão em campanha de completude na Bússola.</div>`;}
@@ -1198,10 +1293,51 @@ function desenhaBzMon(){
 
 /* ================= FAROL · BIBLIOTECA ================= */
 function desenhaBiblioteca(){
-  const libs=(D.farol&&D.farol.biblioteca)||[];
-  $("fb-meta").textContent=libs.length+" normas catalogadas · revisão mensal automática de vigência (dia 1º)";
-  $("fb-lista").innerHTML=libs.map(l=>`<div class=lin style="cursor:default">
-    <b>${esc(l.esfera)}</b><span>${esc(l.titulo)} <span class=tag>${esc(l.status)}</span></span></div>`).join("");
+  const B=D.biblioteca||{}, det=B.detalhe||{}, ac=B.acervos||{};
+  $("ba-meta").innerHTML=`Banco de dados do Farol · <strong>${ac.leis||0}</strong> normas · `
+    +`<strong>${ac.oportunidades||0}</strong> editais no histórico · <strong>${ac.associacoes||0}</strong> associação(ões)`
+    +` <span class=meta>— alimentada pelo Eldorado, analisada pelo Farol</span>`;
+  const render=aba=>{
+    if(aba==="leis"){
+      const pt=(det.leis||{}).por_tema||{};
+      const temas=Object.keys(pt).sort();
+      $("ba-corpo").innerHTML=temas.length?temas.map(tm=>`
+        <div style="margin-bottom:14px"><div style="font-weight:800;color:#0B4EA2;margin-bottom:5px">
+          ${esc(tm.replace(/_/g," "))} <span class=meta style="font-weight:500">${pt[tm].length} norma(s)</span></div>
+        ${pt[tm].map(n=>`<div class=lin style="cursor:default"><b>${esc(n.tipo||"")}</b>
+          <span>${esc(n.titulo)} <span class=tag>${esc(n.esfera||"")}</span>
+          <span class=tag title="situação de conferência da vigência">${esc(n.status||"")}</span></span></div>`).join("")}
+        </div>`).join(""):'<div class=meta>Acervo jurídico ainda não montado.</div>';
+    } else if(aba==="oportunidades"){
+      const o=det.oportunidades||{};
+      const exig=o.exigencias_mais_cobradas||[], rec=o.recorrencias||[];
+      $("ba-corpo").innerHTML=`
+        <p class=meta>Histórico de editais e oportunidades anteriores — base para apurar o que é cobrado, quais janelas se repetem e quais critérios levam à aprovação. A leitura de padrões é feita pela IA a partir deste índice, sem reler os editais inteiros.</p>
+        <div class="farol-grade" style="grid-template-columns:1fr 1fr">
+          <div><div style="font-weight:800;margin-bottom:6px">Exigências mais cobradas</div>
+            ${exig.length?exig.map(x=>`<div class=lin style="cursor:default"><b>${x.ocorrencias}×</b><span>${esc(x.exigencia)}</span></div>`).join(""):'<div class=meta>Sem histórico ainda — o índice se forma conforme os editais completos entram na Biblioteca.</div>'}</div>
+          <div><div style="font-weight:800;margin-bottom:6px">Janelas recorrentes</div>
+            ${rec.length?rec.map(r=>`<div class=lin style="cursor:default"><b>${esc(r.mes)}</b><span>${esc(r.financiador)} — ${r.ocorrencias} anos <span class=meta>(hipótese a confirmar)</span></span></div>`).join(""):'<div class=meta>Recorrência exige o mesmo mês em 2+ anos; ainda não há base.</div>'}</div>
+        </div>`;
+    } else {
+      const a=(det.associacoes||{}).associacoes||[];
+      $("ba-corpo").innerHTML=a.length?a.map(x=>`
+        <div class="cartao" style="margin-bottom:10px">
+          <div style="font-weight:800">${esc(x.nome)}</div>
+          <div class=meta>${esc(x.caminho)}</div>
+          <div style="margin-top:8px;font-weight:700;font-size:13px">Editais concorridos</div>
+          ${x.editais_concorridos&&x.editais_concorridos.length
+            ? x.editais_concorridos.map(e=>`<div class=lin style="cursor:default"><b>${esc(e.edital)}</b>
+                <span>${e.documentos_preenchidos.length} documento(s) preenchido(s)
+                ${e.para_download?'<span class=tag style="color:var(--ok);border-color:var(--ok)">disponível para download</span>':'<span class=tag>sem documento ainda</span>'}</span></div>`).join("")
+            : '<div class=meta>Nenhum edital concorrido ainda. Os documentos preenchidos de cada edital ficam nesta pasta e passam a ser baixados aqui.</div>'}
+        </div>`).join(""):'<div class=meta>Nenhuma associação cadastrada.</div>';
+    }
+  };
+  document.querySelectorAll("#ba-abas button").forEach(b=>b.onclick=()=>{
+    document.querySelectorAll("#ba-abas button").forEach(x=>x.classList.toggle("on",x===b));
+    render(b.dataset.ba);});
+  render("leis");
 }
 
 /* ================= INÍCIO ================= */
