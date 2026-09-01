@@ -681,8 +681,11 @@ class SystemTests(unittest.TestCase):
         arquivo chegou a 37 MB; o painel passa a publicar só o recorte
         operacional e a base completa fica no JSONL + SQLite."""
         import os
-        self.assertLess(os.path.getsize("docs/dashboard-dados.js"),2_000_000,
-                        "painel acima do limite de 2 MB do parecer")
+        from src.dashboard_dados import LIMITE_TOTAL_MB, LIMITE_NUCLEO_MB
+        nucleo=os.path.getsize("docs/dashboard-dados.js")
+        frags=sum(os.path.getsize(f) for f in pathlib.Path("docs/dados").glob("*.json"))
+        self.assertLess(nucleo,LIMITE_NUCLEO_MB*1_048_576,"núcleo acima do limite")
+        self.assertLess(nucleo+frags,LIMITE_TOTAL_MB*1_048_576,"painel acima de 20 MB")
         d=dash_coletar(date(2026,9,2))
         tot=d["bussola_painel"]["totais"]
         self.assertGreaterEqual(tot["base_completa"],tot["no_painel"])
@@ -1883,11 +1886,66 @@ class SystemTests(unittest.TestCase):
         self.assertIn("mesFuturo",html)                     # só meses adiante
         self.assertIn("previsto pelo histórico",html)
         self.assertIn("a confirmar",html)
-        import os
-        self.assertLess(os.path.getsize("docs/dashboard-dados.js"),2_000_000)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         for m in ("src.investigacao","src.previsao","src.dossie_fontes"):
             self.assertIn(m,wf)
+
+
+    def test_compactacao_por_dicionario(self):
+        from src.compacto import compactar, expandir, tamanho
+        regs=[{"id":i,"fonte":"PNCP" if i%2 else "QD","uf":"GO","n":None,"ok":bool(i%3)}
+              for i in range(500)]
+        c=compactar(regs)
+        self.assertEqual(expandir(c),regs)                 # ida e volta exata
+        self.assertLess(tamanho(c),tamanho(regs)*0.5)      # pelo menos 50% mais leve
+        self.assertIn("fonte",c["dic"]); self.assertNotIn("id",c["dic"])
+
+    def test_publicacao_em_camadas(self):
+        """Núcleo leve + fragmentos sob demanda, orçamento total de 20 MB."""
+        import os
+        d=dash_coletar(date(2026,9,2))
+        for f in ("historico.json","previsoes.json","parlamentares.json"):
+            self.assertTrue(pathlib.Path("docs/dados",f).exists(),f)
+        h=load_json(pathlib.Path("docs/dados/historico.json"))
+        self.assertIn("campos",h); self.assertIn("linhas",h)
+        self.assertGreater(len(h["linhas"]),1000)          # muito mais que o núcleo
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for f in ("expandeCompacto","carregaFragmento","garantePrevisoes",
+                  "garanteHistorico","garanteParlamentares"):
+            self.assertIn(f,html,f)
+
+    def test_busca_ativa_localiza_orgao(self):
+        import tempfile
+        from src import busca_ativa as B
+        l=B.local_de_publicacao("cultura","municipal","GO")
+        self.assertEqual(l["tipo"],"secretaria"); self.assertTrue(l["mapeado"])
+        l2=B.local_de_publicacao("crianca_adolescente","federal",None)
+        self.assertEqual(l2["tipo"],"fundo"); self.assertIn("Conanda",l2["orgao"])
+        l3=B.local_de_publicacao("outros","estadual","MG")
+        self.assertFalse(l3["mapeado"]); self.assertEqual(l3["nivel"],"estadual")
+        with tempfile.TemporaryDirectory() as tmp:
+            lab=pathlib.Path(tmp)
+            (lab/"o.html").write_text('<a href="/ed.pdf">Edital de Chamamento — apoio a '
+                                      'projetos de cultura popular</a><a href="/n">Notícias</a>',encoding="utf-8")
+            ind={"id":"t","titulo":"Chamamento apoio cultura popular","area":"cultura",
+                 "nivel":"municipal","uf":"GO","objeto":None}
+            r=B.busca_deterministica(ind,{"orgao":"x","nivel":"municipal","tipo":"secretaria",
+                                          "urls":[f"file://{lab}/o.html"],"mapeado":True})
+        self.assertEqual(len(r["achados"]),1)
+        self.assertGreaterEqual(r["achados"][0]["aderencia"],2)
+        # sem credencial: declara, não inventa URL
+        import os
+        chave=os.environ.pop("FAROL_AI_API_KEY",None)
+        try:
+            ia=B.busca_ia(ind,{"orgao":"x","nivel":"municipal"})
+            self.assertIsNone(ia["url"]); self.assertIn("credencial",ia["status"])
+        finally:
+            if chave: os.environ["FAROL_AI_API_KEY"]=chave
+        self.assertEqual(B._cfg()["cadencia_dias"],3)
+        wf=open(".github/workflows/busca-ativa.yml",encoding="utf-8").read()
+        self.assertIn("*/3",wf); self.assertIn("src.busca_ativa",wf)
+        ia_cfg=load_json(pathlib.Path("config/ia.json"))
+        self.assertIn("haiku",ia_cfg["modelos"]["busca"]["padrao"])
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

@@ -1,0 +1,57 @@
+{
+  "versao": 1,
+  "regra": "Onde um edital de cada área costuma ser publicado, por nível. Usado pela busca ativa para saber ONDE procurar: secretaria, ministério ou fundo especializado. IDs referenciam config/fontes.json e config/conselhos.json; URLs diretas quando a fonte não está catalogada.",
+  "por_area": {
+    "cultura": {
+      "municipal": {"orgao": "Secretaria Municipal de Cultura", "fontes": ["goiania-cultura"], "urls": ["https://www.goiania.go.gov.br/cultura/"]},
+      "estadual": {"orgao": "Secretaria de Estado da Cultura (Secult-GO) / Programa Goyazes", "fontes": ["goias-cultura", "goyazes"], "urls": ["https://goias.gov.br/cultura/"]},
+      "federal":  {"orgao": "Ministério da Cultura / SALIC / PNAB", "fontes": ["ministerio-cultura", "salic"], "urls": ["https://www.gov.br/cultura/pt-br/assuntos/editais"]}
+    },
+    "assistencia_social": {
+      "municipal": {"orgao": "SEMASDH e Fundo Municipal de Assistência Social (CMAS)", "fontes": ["cmas-goiania"], "urls": ["https://www.goiania.go.gov.br/"]},
+      "estadual": {"orgao": "SEDS-GO e Fundo Estadual (CEAS-GO)", "fontes": ["ceas-go"], "urls": ["https://goias.gov.br/social/"]},
+      "federal":  {"orgao": "MDS e Fundo Nacional de Assistência Social (CNAS)", "fontes": ["mds", "cnas"], "urls": ["https://www.gov.br/mds/pt-br"]}
+    },
+    "crianca_adolescente": {
+      "municipal": {"orgao": "CMDCA e Fundo Municipal da Criança (FMDCA)", "fontes": ["cmdca-goiania"], "urls": ["https://www.goiania.go.gov.br/"]},
+      "estadual": {"orgao": "CEDCA-GO e Fundo Estadual (FEIA)", "fontes": ["cedca-go"], "urls": ["https://goias.gov.br/social/"]},
+      "federal":  {"orgao": "Conanda e Fundo Nacional (FNCA)", "fontes": ["fundo-crianca", "conanda"], "urls": ["https://www.gov.br/participamaisbrasil/conanda"]}
+    },
+    "pessoa_idosa": {
+      "municipal": {"orgao": "Conselho Municipal do Idoso e Fundo Municipal", "fontes": ["cmi-goiania"], "urls": ["https://www.goiania.go.gov.br/"]},
+      "estadual": {"orgao": "Conselho Estadual do Idoso e Fundo Estadual", "fontes": ["cei-go"], "urls": ["https://goias.gov.br/social/"]},
+      "federal":  {"orgao": "CNDI e Fundo Nacional do Idoso", "fontes": ["cndi"], "urls": ["https://www.gov.br/mdh/pt-br"]}
+    },
+    "esporte": {
+      "municipal": {"orgao": "Secretaria Municipal de Esporte e Lazer", "fontes": [], "urls": ["https://www.goiania.go.gov.br/"]},
+      "estadual": {"orgao": "SEEL-GO", "fontes": ["seel-go"], "urls": ["https://goias.gov.br/esporte/"]},
+      "federal":  {"orgao": "Ministério do Esporte / Lei de Incentivo ao Esporte", "fontes": ["ministerio-esporte"], "urls": ["https://www.gov.br/esporte/pt-br"]}
+    },
+    "educacao": {
+      "municipal": {"orgao": "Secretaria Municipal de Educação", "fontes": [], "urls": ["https://www.goiania.go.gov.br/"]},
+      "estadual": {"orgao": "Seduc-GO", "fontes": [], "urls": ["https://goias.gov.br/educacao/"]},
+      "federal":  {"orgao": "MEC / FNDE", "fontes": [], "urls": ["https://www.gov.br/fnde/pt-br"]}
+    },
+    "saude": {
+      "municipal": {"orgao": "Secretaria Municipal de Saúde", "fontes": [], "urls": ["https://www.goiania.go.gov.br/saude/"]},
+      "estadual": {"orgao": "SES-GO", "fontes": [], "urls": ["https://goias.gov.br/saude/"]},
+      "federal":  {"orgao": "Ministério da Saúde / PRONON / PRONAS", "fontes": [], "urls": ["https://www.gov.br/saude/pt-br"]}
+    },
+    "meio_ambiente": {
+      "municipal": {"orgao": "AMMA — Agência Municipal do Meio Ambiente", "fontes": [], "urls": ["https://www.goiania.go.gov.br/"]},
+      "estadual": {"orgao": "Semad-GO", "fontes": [], "urls": ["https://goias.gov.br/meioambiente/"]},
+      "federal":  {"orgao": "MMA / Fundo Nacional do Meio Ambiente / Fundo Amazônia (BNDES)", "fontes": ["bndes"], "urls": ["https://www.gov.br/mma/pt-br"]}
+    },
+    "emendas_parlamentares": {
+      "municipal": {"orgao": "Câmara Municipal de Goiânia (gabinetes)", "fontes": ["emenda-municipal-goiania"], "urls": ["https://www.goiania.go.leg.br/"]},
+      "estadual": {"orgao": "ALEGO (gabinetes)", "fontes": ["emenda-estadual-goias"], "urls": ["https://portal.al.go.leg.br/"]},
+      "federal":  {"orgao": "Câmara dos Deputados e Senado (gabinetes)", "fontes": ["emenda-federal"], "urls": ["https://www.camara.leg.br/", "https://www12.senado.leg.br/"]}
+    }
+  },
+  "generico": {
+    "municipal": {"orgao": "Prefeitura (Diário Oficial do Município)", "urls": ["https://www.goiania.go.gov.br/"]},
+    "estadual": {"orgao": "Governo do Estado (Diário Oficial)", "urls": ["https://goias.gov.br/casacivil/editais/"]},
+    "federal":  {"orgao": "Portal Gov.br / DOU / PNCP", "urls": ["https://www.gov.br/pt-br/search?SearchableText=edital", "https://pncp.gov.br/"]}
+  },
+  "cadencia_dias": 3
+}

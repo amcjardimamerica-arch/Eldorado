@@ -1010,14 +1010,94 @@ def coletar(hoje: date | None = None) -> dict:
                    "Detecção de resultado/prorrogação é textual — conferir na página."],
     }
 
+LIMITE_TOTAL_MB = 20      # orçamento total do painel (núcleo + fragmentos)
+LIMITE_NUCLEO_MB = 3      # o que carrega na abertura; o resto vem sob demanda
+
+
+def publicar_fragmentos(dados: dict, hoje: date) -> dict:
+    """Publicação em CAMADAS: o núcleo carrega na abertura; fragmentos
+    compactados por dicionário são buscados sob demanda pelo painel.
+
+    - historico.json ...... até 4.000 editais históricos (filtro «encerradas»)
+    - previsoes.json ...... todas as previsões dos próximos 12 meses
+    - parlamentares.json .. levantamento completo das emendas
+    Cada fragmento contém apenas dado de registro público (editais e mandatos).
+    """
+    from .compacto import compactar, tamanho
+    pasta = ROOT / "docs/dados"
+    pasta.mkdir(parents=True, exist_ok=True)
+    tamanhos = {}
+
+    hist = _historicos_encerrados(hoje, limite=4000)
+    campos_h = ["id", "protocolo", "titulo", "url", "fonte_id", "fonte_nome", "territorio",
+                "uf", "abrangencia", "nivel", "status", "area", "objeto", "inicio", "fim",
+                "datas", "publicado_em", "estado_export", "resumo", "valor_texto", "acervo",
+                "confirmacao", "etapa", "etapa_nome"]
+    hist_l = _marca_etapas(hist)
+    pac = compactar([{k: e.get(k) for k in campos_h} for e in hist_l], campos_h)
+    pac["ciclos"] = {e["id"]: e.get("ciclo") for e in hist_l if e.get("ciclo")}
+    pac["historico"] = {e["id"]: e.get("historico") for e in hist_l}
+    (pasta / "historico.json").write_text(json.dumps(pac, ensure_ascii=False,
+                                                     separators=(",", ":")), encoding="utf-8")
+    tamanhos["historico.json"] = tamanho(pac)
+
+    prev = dados.get("previsoes", {}).get("itens", [])
+    campos_p = ["id", "titulo", "orgao", "area", "uf", "nivel", "inicio", "fim", "forca",
+                "especial", "base", "status_verificacao", "fonte_confirmacao", "lei"]
+    pacp = compactar([{k: p0.get(k) for k in campos_p} for p0 in prev], campos_p)
+    (pasta / "previsoes.json").write_text(json.dumps(pacp, ensure_ascii=False,
+                                                     separators=(",", ":")), encoding="utf-8")
+    tamanhos["previsoes.json"] = tamanho(pacp)
+
+    parl = {}
+    for e in dados.get("editais", []):
+        if e.get("sem_edital") and e.get("parlamentares"):
+            parl[e["id"]] = compactar(e["parlamentares"])
+    (pasta / "parlamentares.json").write_text(json.dumps(parl, ensure_ascii=False,
+                                                         separators=(",", ":")), encoding="utf-8")
+    tamanhos["parlamentares.json"] = tamanho(parl)
+    return {"fragmentos": tamanhos, "total_bytes": sum(tamanhos.values()),
+            "historico_publicado": len(hist_l), "previsoes_publicadas": len(prev)}
+
+
+def enxugar_nucleo(dados: dict, hoje: date) -> dict:
+    """O núcleo fica com o que a abertura precisa; o resto aponta para o fragmento."""
+    prev = dados.get("previsoes", {})
+    lim = f"{hoje.year + (hoje.month + 1) // 12}-{(hoje.month + 1) % 12 + 1:02d}"
+    prev["itens"] = [p0 for p0 in prev.get("itens", []) if p0["inicio"][:7] <= lim]
+    prev["completo"] = False
+    prev["fragmento"] = "dados/previsoes.json"
+    for e in dados.get("editais", []):
+        if e.get("sem_edital"):
+            e["parlamentares_total"] = len(e.get("parlamentares") or [])
+            e["parlamentares"] = []
+            e["fragmento_parlamentares"] = "dados/parlamentares.json"
+    dados["fragmentos"] = {"historico": "dados/historico.json",
+                           "previsoes": "dados/previsoes.json",
+                           "parlamentares": "dados/parlamentares.json",
+                           "nota": "carregados sob demanda; só registro público"}
+    return dados
+
+
 def run(hoje: date | None = None) -> dict:
+    hoje = hoje or date.today()
     dados = coletar(hoje)
+    frag = publicar_fragmentos(dados, hoje)
+    dados = enxugar_nucleo(dados, hoje)
     write_json(ROOT / "docs/dashboard-dados.json", dados)
     conteudo = json.dumps(dados, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     (ROOT / "docs/dashboard-dados.js").write_text("window.DADOS=" + conteudo + ";\n", encoding="utf-8")
+    import os
+    nucleo = os.path.getsize(ROOT / "docs/dashboard-dados.js")
     return {"gerado_em": dados["gerado_em"], "editais": len(dados["editais"]),
             "eventos_calendario": len(dados["eventos"]),
-            "dias_com_busca": len(dados["bussola"]["dias"])}
+            "dias_com_busca": len(dados["bussola"]["dias"]),
+            "publicacao": {"nucleo_mb": round(nucleo / 1048576, 2),
+                           "fragmentos_mb": round(frag["total_bytes"] / 1048576, 2),
+                           "total_mb": round((nucleo + frag["total_bytes"]) / 1048576, 2),
+                           "limite_total_mb": LIMITE_TOTAL_MB,
+                           "limite_nucleo_mb": LIMITE_NUCLEO_MB,
+                           **{k: v for k, v in frag.items() if k != "total_bytes"}}}
 
 if __name__ == "__main__":
     print(json.dumps(run(), ensure_ascii=False, indent=2))

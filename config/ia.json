@@ -5,17 +5,45 @@
   "segredo_provedor_env": "FAROL_AI_API_KEY",
   "regra": "IA somente em etapas essenciais, com o modelo mais adequado a cada tarefa. Sem credencial configurada, o sistema prepara os pacotes e NUNCA simula que uma IA executou. Cada chamada é registrada em estado/ia_uso.jsonl com modelo e volume.",
   "modelos": {
-    "extracao_requisitos": {"env": "FAROL_EXTRACAO_MODEL", "padrao": "claude-haiku-4-5", "papel": "ler o edital extraído e devolver requisitos estruturados sem inventar"},
-    "conselheiros": {"env": "FAROL_CONSELHEIRO_MODEL", "padrao": "claude-sonnet-4-5", "papel": "sete análises independentes por ponto de vista"},
-    "parecer_final": {"env": "FAROL_FINAL_MODEL", "padrao": "claude-fable-5", "papel": "modelo mais avançado: síntese do conselho, decisão fundamentada e documentos de submissão"}
+    "extracao_requisitos": {
+      "env": "FAROL_EXTRACAO_MODEL",
+      "padrao": "claude-haiku-4-5",
+      "papel": "ler o edital extraído e devolver requisitos estruturados sem inventar"
+    },
+    "conselheiros": {
+      "env": "FAROL_CONSELHEIRO_MODEL",
+      "padrao": "claude-sonnet-4-5",
+      "papel": "sete análises independentes por ponto de vista"
+    },
+    "parecer_final": {
+      "env": "FAROL_FINAL_MODEL",
+      "padrao": "claude-fable-5",
+      "papel": "modelo mais avançado: síntese do conselho, decisão fundamentada e documentos de submissão"
+    },
+    "busca": {
+      "env": "FAROL_MODELO_BUSCA",
+      "padrao": "claude-haiku-4-5",
+      "nota": "busca ativa de URL de edital com busca na web: tarefa curta, modelo mais barato"
+    }
   },
   "nota_modelos": "IDs padrão registrados em 30/08/2026. Atualize os padrões (ou defina as variáveis de ambiente) quando modelos mais novos estiverem disponíveis; o código nunca traz modelo gravado em fonte.",
-  "verificacao_assistida": {"ativa": true, "max_por_execucao": 10},
+  "verificacao_assistida": {
+    "ativa": true,
+    "max_por_execucao": 10
+  },
   "limites": {
     "max_casos_ia_por_execucao": 2,
     "max_chars_edital": 80000,
     "max_tokens_saida": 8000,
     "max_chars_pacote_conselheiro": 30000
   },
-  "dados_proibidos": ["cpf", "rg", "dados_bancarios", "email_pessoal", "telefone_pessoal", "documentos_pessoais", "fotos_sem_autorizacao"]
+  "dados_proibidos": [
+    "cpf",
+    "rg",
+    "dados_bancarios",
+    "email_pessoal",
+    "telefone_pessoal",
+    "documentos_pessoais",
+    "fotos_sem_autorizacao"
+  ]
 }

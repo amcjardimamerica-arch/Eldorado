@@ -1,0 +1,39 @@
+name: 05 · Busca ativa (a cada 3 dias)
+
+on:
+  schedule:
+    - cron: "0 10 */3 * *"   # 07h de Brasília, a cada 3 dias
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eldorado-escrita
+  cancel-in-progress: false
+
+jobs:
+  buscar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      FAROL_AI_API_KEY: ${{ secrets.FAROL_AI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Busca ativa dos indícios (órgão publicador + IA econômica)
+        run: |
+          pip install pypdf --quiet
+          python -m src.busca_ativa | tee busca.json
+          python -m src.completude | tee completude.json
+          python -m src.dashboard_dados | tee dash.json
+      - name: Registrar
+        run: |
+          git config user.name "eldorado-bot"
+          git config user.email "eldorado-bot@users.noreply.github.com"
+          git add estado docs dados biblioteca_alexandria
+          git diff --cached --quiet && echo "sem alteracoes" || git commit -m "busca ativa: $(date -u +%F)"
+          git pull --rebase origin main || true
+          git push

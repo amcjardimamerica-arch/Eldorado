@@ -689,6 +689,46 @@ async function portao(){
   $("senha").addEventListener("keydown",e=>{if(e.key==="Enter")window.entrar();});
 }
 
+/* ================= FRAGMENTOS SOB DEMANDA =================
+   O núcleo carrega na abertura (leve). Histórico completo, previsões e
+   parlamentares vêm compactados por dicionário e só quando a tela precisa. */
+const _frag={};
+function expandeCompacto(p){
+  const {campos,dic={},linhas}=p; return linhas.map(l=>{const r={};
+    campos.forEach((c,i)=>{const v=l[i]; r[c]=(dic[c]&&Number.isInteger(v))?dic[c][v]:v;}); return r;});
+}
+async function carregaFragmento(nome){
+  if(_frag[nome]) return _frag[nome];
+  try{
+    const r=await fetch("dados/"+nome+".json",{cache:"force-cache"});
+    if(!r.ok) throw new Error(r.status);
+    _frag[nome]=await r.json(); return _frag[nome];
+  }catch(e){ _frag[nome]=null; return null; }
+}
+/* previsões completas (12 meses) — o núcleo traz só os 2 meses seguintes */
+async function garantePrevisoes(){
+  if(!D.previsoes||D.previsoes.completo) return false;
+  const p=await carregaFragmento("previsoes"); if(!p) return false;
+  D.previsoes.itens=expandeCompacto(p); D.previsoes.completo=true; return true;
+}
+/* histórico completo — o núcleo traz só os mais valiosos */
+async function garanteHistorico(){
+  if(D._historicoCompleto) return false;
+  const p=await carregaFragmento("historico"); if(!p) return false;
+  const ids=new Set((D.editais||[]).map(e=>e.id));
+  const novos=expandeCompacto(p).filter(e=>!ids.has(e.id)).map(e=>({
+    ...e, prazo_prorrogado:false, anexos:[], marcos:[], ficha:"",
+    ciclo:(p.ciclos||{})[e.id]||null, historico:(p.historico||{})[e.id]||{},
+    detalhes:{qualificacao:{nota:null,classe:"histórico"},documentos_exigidos:[],pontuacao:[],
+              atendidos:[],pendencias:[],evidencia:e.resumo||"",coletado_em:e.publicado_em,lacuna:null}}));
+  D.editais=D.editais.concat(novos); D._historicoCompleto=true; return novos.length;
+}
+async function garanteParlamentares(e){
+  if(!e||!e.sem_edital||(e.parlamentares&&e.parlamentares.length)) return false;
+  const p=await carregaFragmento("parlamentares"); if(!p||!p[e.id]) return false;
+  e.parlamentares=expandeCompacto(p[e.id]); return true;
+}
+
 /* ================= UTILITÁRIOS ================= */
 const AREA=a=>((D.areas||{})[a])||{rotulo:a,cor:"#607086"};
 const TEVT=t=>((D.tipos_evento||{})[t])||{rotulo:t,simbolo:"•"};
@@ -826,6 +866,8 @@ window.investigarEdital=function(e){
 
 /* ================= DETALHE DE EDITAL ================= */
 function detalheEdital(e){
+  if(e.sem_edital&&!(e.parlamentares&&e.parlamentares.length)&&e.parlamentares_total){
+    garanteParlamentares(e).then(ok=>{if(ok)detalheEdital(e);});}
   const d=e.detalhes||{},s=dias(e.fim);
   const situ=e.fim?(s<0?`<span style="color:var(--urgente)">encerrado em ${br(e.fim)}</span>`:`faltam <strong>${s}</strong> dia(s) — encerra ${br(e.fim)}`):"sem data de encerramento na fonte";
   const prorrog=e.prazo_prorrogado?`<div class=tag style="border-color:var(--alerta);color:var(--alerta)">⟳ prazo prorrogado — original: ${esc(e.prazo_original)}</div>`:"";
@@ -841,7 +883,7 @@ function detalheEdital(e){
      <div class=lin><b>Situação</b><span>${situ}</span></div>
      ${e.sem_edital?`
        <div class=lin><b>Modalidade</b><span><strong>Sem edital</strong> — captação por ofício e projeto em cada gabinete, de 01/10 a 30/11 de todo ano</span></div>
-       <div class=lin><b>Levantamento</b><span>${(e.levantamento||{}).total??0} parlamentar(es) com mandato · ${(e.levantamento||{}).com_contato_completo??0} com gabinete e contato completos</span></div>
+       <div class=lin><b>Levantamento</b><span>${(e.levantamento||{}).total??e.parlamentares_total??0} parlamentar(es) com mandato · ${(e.levantamento||{}).com_contato_completo??0} com gabinete e contato completos${e.parlamentares_total&&!(e.parlamentares||[]).length?" · <em>carregando lista…</em>":""}</span></div>
        <div class=lin><b>Origem dos dados</b><span class=meta>${esc((e.levantamento||{}).origem_dos_dados||"—")}</span></div>
        ${(e.parlamentares||[]).length?`<p style="margin:10px 0 4px"><strong>Parlamentares com mandato</strong></p>
          <table class="bz-tab"><thead><tr><th>Parlamentar</th><th>Partido/UF</th><th>Cargo</th><th>Gabinete</th><th>Contato</th></tr></thead><tbody>
@@ -904,12 +946,16 @@ function desenhaRadar(){
   }enche("fi-area",areas,a=>AREA(a).rotulo);const NIVEL={federal:"Federal",estadual:"Estadual",municipal:"Municipal"};
   enche("fi-nivel",["federal","estadual","municipal"].filter(n=>niveis.includes(n)),n=>NIVEL[n]);
   function aplica(){
+    const eds=D.editais||[];
     const uf=$("fi-uf").value,ar=$("fi-area").value,ni=$("fi-nivel").value,pz=$("fi-prazo").value;
     // Brasil = tudo · Nacional = só os que valem para qualquer estado ·
     // UF = os do estado somados aos de alcance nacional (que também valem lá)
     const casaUF=e=>!uf ? true
       : uf==="__nac__" ? (!e.uf && e.abrangencia==="nacional")
       : (e.uf===uf || (!e.uf && e.abrangencia==="nacional"));
+    if(pz==="encerrados"&&!D._historicoCompleto&&!D._histPedido){
+      D._histPedido=true; garanteHistorico().then(n=>{if(n){aplica();
+        if(typeof desenhaBzTabela==="function")desenhaBzTabela();}});}
     const filt=eds.filter(e=>casaUF(e)&&(!ar||e.area===ar)&&(!ni||e.nivel===ni)
       &&(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export)
                        :e.estado_export==="encerrado"));
@@ -1025,6 +1071,8 @@ function desenhaGantt(){
   /* PREVISÕES (cinza claro) — apenas nos meses adiante do atual. Ao virar o
      mês, as previsões daquele mês somem: fica só o que ainda está por vir. */
   const mesFuturo=(gAno>HOJE.getFullYear())||(gAno===HOJE.getFullYear()&&gMes>HOJE.getMonth());
+  if(mesFuturo&&D.previsoes&&!D.previsoes.completo&&!D._prevPedido){
+    D._prevPedido=true; garantePrevisoes().then(ok=>{if(ok)desenhaGantt();});}
   const uf0=$("fi-uf").value,ar0=$("fi-area").value,ni0=$("fi-nivel").value;
   const prevs=mesFuturo?((D.previsoes||{}).itens||[]).filter(pv=>
       cruza(pv.inicio,pv.fim)
