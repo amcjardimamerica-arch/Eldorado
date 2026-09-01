@@ -523,6 +523,44 @@ def _so_completos(editais: list[dict], hoje: date) -> list[dict]:
 TIPOS_DECISAO = ("resultado_preliminar", "resultado_final", "recurso")
 
 
+def _funil_5_passos(base: list[dict], completos: list[dict], _=None) -> dict:
+    """Quantos itens estão em cada um dos 5 passos, agora.
+
+    1 Descobrir  · tudo que foi identificado
+    2 Confirmar  · campanhas de completude em andamento
+    3 Enquadrar  · editais completos na Biblioteca (com parecer, quando houver)
+    4 Decidir    · editais com decisão registrada (pasta criada na entidade)
+    5 Preparar   · editais com documentos preenchidos e nota técnica
+    """
+    from . import completude as _comp
+    from .biblioteca import OPORTUNIDADES as _OP
+    campanhas = _comp._estado().get("campanhas", {})
+    em_campanha = sum(1 for c in campanhas.values() if c.get("status") == "monitorando")
+    decididos = len(list(_OP.glob("*/*/decisao.json"))) if _OP.exists() else 0
+    preparados = len(list(_OP.glob("*/*/preparacao.json"))) if _OP.exists() else 0
+    pareceres = len(list((ROOT / "biblioteca_alexandria/pareceres").glob("*/*/parecer.json"))) \
+        if (ROOT / "biblioteca_alexandria/pareceres").exists() else 0
+    passos = [
+        {"n": 1, "nome": "Descobrir", "modulo": "Eldorado",
+         "descricao": "mapear oportunidades e fontes de recursos",
+         "quantidade": len(base)},
+        {"n": 2, "nome": "Confirmar", "modulo": "Eldorado",
+         "descricao": "elegibilidade, requisitos, documentos e anexos",
+         "quantidade": em_campanha},
+        {"n": 3, "nome": "Enquadrar", "modulo": "Eldorado + Farol",
+         "descricao": "Biblioteca alimentada; IA cruza requisitos e histórico",
+         "quantidade": len(completos), "pareceres": pareceres},
+        {"n": 4, "nome": "Decidir", "modulo": "Farol",
+         "descricao": "entidades com chance real e documentos separados",
+         "quantidade": decididos},
+        {"n": 5, "nome": "Preparar", "modulo": "Farol",
+         "descricao": "documentos preenchidos e nota técnica do que falta",
+         "quantidade": preparados},
+    ]
+    return {"passos": passos, "atualizado_em": now_iso(),
+            "nota": "etapas 4 e 5 são automáticas; não dependem de ação do titular"}
+
+
 def _calendario_decisao(editais: list[dict], hoje: date) -> dict:
     """Calendário de RESULTADOS e RECURSOS do Farol.
 
@@ -630,6 +668,7 @@ def coletar(hoje: date | None = None) -> dict:
             except Exception:
                 continue
     decisao = _calendario_decisao(completos_lista, hoje)
+    funil = _funil_5_passos(editais_base, completos_lista, monit_prev := None)
     monit = _monitoramentos(hoje)
     saida_bussola = painel_bussola(completos_lista, _bussola(editais), hoje)
     saida_bussola["monitoramentos"] = monit
@@ -647,7 +686,7 @@ def coletar(hoje: date | None = None) -> dict:
         "editais": editais,
         "eventos": _eventos(editais),
         "biblioteca": biblioteca, "pareceres": pareceres,
-        "calendario_decisao": decisao,
+        "calendario_decisao": decisao, "funil": funil,
         "bussola": _bussola(editais),
         "bussola_painel": saida_bussola,
         "farol_resumo": _farol_resumo(editais),

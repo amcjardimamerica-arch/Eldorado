@@ -5,7 +5,7 @@ from src.eldorado import candidates, source_in_scope
 from src.farol import evaluate
 from src.nucleo import (canonical_url, has_prompt_injection, load_json,
                         merge_registro, novo_id, slug, validate_public_https,
-                        write_json)
+                        write_json, ROOT)
 from src.retrospectivo import host_allowed
 from src.submissao import avaliar_limpeza
 from src.triagem import assess
@@ -965,6 +965,135 @@ class SystemTests(unittest.TestCase):
             import shutil; shutil.rmtree(OPORTUNIDADES/"teste-arq-001",ignore_errors=True)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.arquivamento",wf)
+
+
+    def _lab_edital(self, base: pathlib.Path):
+        """Monta um edital completo na Biblioteca + associação com 2 documentos."""
+        from pypdf import PdfWriter
+        from pypdf.generic import (DictionaryObject, NameObject, TextStringObject,
+                                   ArrayObject, NumberObject, BooleanObject)
+        pasta=base/"oportunidades"/"lab-ed-777"/"2026"
+        (pasta/"modelos").mkdir(parents=True,exist_ok=True)
+        (pasta/"edital.txt").write_text(
+            "EDITAL 777/2026. Objeto: apoio cultural. Inscricoes de 05/09/2026 ate "
+            "30/09/2026. Documentos: estatuto social, ata de posse, cartao CNPJ, "
+            "certidao negativa federal, CRF do FGTS, CNDT, balanco patrimonial, "
+            "plano de trabalho. Entidade com no minimo dois (2) anos.",encoding="utf-8")
+        write_json(pasta/"ficha.json",{"id":"lab777","chave":"lab-ed-777","ano":"2026",
+            "titulo":"Edital 777/2026","fonte_nome":"Secult","inicio":"2026-09-05",
+            "fim":"2026-09-30","modelos":["anexo.pdf"]})
+        w=PdfWriter();w.add_blank_page(612,792)
+        fonte=DictionaryObject({NameObject("/Type"):NameObject("/Font"),
+            NameObject("/Subtype"):NameObject("/Type1"),NameObject("/BaseFont"):NameObject("/Helvetica")})
+        fref=w._add_object(fonte);refs=[]
+        for i,c in enumerate(["nome_entidade","municipio","cnpj"]):
+            campo=DictionaryObject({NameObject("/FT"):NameObject("/Tx"),
+                NameObject("/T"):TextStringObject(c),NameObject("/Type"):NameObject("/Annot"),
+                NameObject("/Subtype"):NameObject("/Widget"),
+                NameObject("/DA"):TextStringObject("/Helv 11 Tf 0 g"),
+                NameObject("/Rect"):ArrayObject([NumberObject(50),NumberObject(700-i*30),
+                                                 NumberObject(400),NumberObject(720-i*30)]),
+                NameObject("/V"):TextStringObject("")})
+            refs.append(w._add_object(campo))
+        w.pages[0][NameObject("/Annots")]=ArrayObject(refs)
+        w._root_object[NameObject("/AcroForm")]=DictionaryObject({
+            NameObject("/Fields"):ArrayObject(refs),NameObject("/NeedAppearances"):BooleanObject(True),
+            NameObject("/DA"):TextStringObject("/Helv 11 Tf 0 g"),
+            NameObject("/DR"):DictionaryObject({NameObject("/Font"):DictionaryObject({NameObject("/Helv"):fref})})})
+        with (pasta/"modelos"/"anexo.pdf").open("wb") as h: w.write(h)
+        docs=base/"associacoes"/"lab-assoc"/"documentos"; docs.mkdir(parents=True,exist_ok=True)
+        (docs/"estatuto_social.pdf").write_bytes(b"%PDF-1.4\n%%EOF")
+        (docs/"cnpj.pdf").write_bytes(b"%PDF-1.4\n%%EOF")
+        write_json(base/"associacoes"/"lab-assoc"/"perfil_publico.json",
+                   {"id":"lab-assoc","nome":"Associação Laboratório","territorios":["GO"],
+                    "areas":["cultura"],"anos_existencia":5,"certificacoes":[]})
+        write_json(base/"associacoes"/"indice.json",{"associacoes":[
+            {"slug":"lab-assoc","nome":"Associação Laboratório","caminho":"x",
+             "editais_concorridos":[]}]})
+
+    def test_fluxo_5_passos_decidir_e_preparar(self):
+        """Etapas 4 e 5 são automáticas: escolhem a entidade com chance real,
+        criam a pasta do edital nela, separam os documentos e preenchem os
+        modelos — sem criar informação nova; o que falta vira nota técnica."""
+        try:
+            import pypdf  # noqa
+        except ImportError:
+            self.skipTest("pypdf ausente")
+        import tempfile
+        from src import fluxo, biblioteca as B, farol_parecer as FP
+        with tempfile.TemporaryDirectory() as tmp:
+            base=pathlib.Path(tmp)
+            orig=(B.OPORTUNIDADES,B.ASSOCIACOES,fluxo.OPORTUNIDADES,fluxo.ASSOCIACOES,
+                  FP.OPORTUNIDADES,FP.ASSOCIACOES)
+            B.OPORTUNIDADES=fluxo.OPORTUNIDADES=FP.OPORTUNIDADES=base/"oportunidades"
+            B.ASSOCIACOES=fluxo.ASSOCIACOES=FP.ASSOCIACOES=base/"associacoes"
+            fluxo.pasta_edital_da_associacao=lambda s,t0:(
+                (base/"associacoes"/s/"editais"/slug(t0)[:70]).mkdir(parents=True,exist_ok=True)
+                or base/"associacoes"/s/"editais"/slug(t0)[:70])
+            try:
+                self._lab_edital(base)
+                # etapa 4
+                d=fluxo.decidir("lab-ed-777","2026")
+                self.assertEqual(len(d["escolhidas"]),1)      # sem bloqueio → concorre
+                esc=d["escolhidas"][0]
+                self.assertGreaterEqual(esc["exigidos"],7)
+                self.assertEqual(esc["anexados"],2)           # os 2 que a entidade tem
+                self.assertGreaterEqual(esc["faltantes"],5)   # o resto declarado
+                pasta=pathlib.Path(esc["pasta"]) if pathlib.Path(esc["pasta"]).is_absolute() \
+                      else ROOT/esc["pasta"]
+                dossie=load_json(pasta/"dossie.json")
+                self.assertEqual(dossie["decisao"],"concorrer")
+                # nenhuma informação nova: todo faltante traz o caminho para obter
+                for f in dossie["documentos_faltantes"]:
+                    self.assertTrue(f["como_obter"])
+                # etapa 5
+                p5=fluxo.preparar("lab-ed-777","2026")
+                a=p5["associacoes"][0]
+                self.assertEqual(a["preenchidos"],1)
+                self.assertTrue(a["pronto_para_download"])
+                nota=(pasta/"NOTA-TECNICA.md").read_text(encoding="utf-8")
+                self.assertIn("Documentos prontos para envio",nota)
+                self.assertIn("Falta providenciar",nota)
+                self.assertIn("CNDT",nota)                   # como obter, do edital
+                self.assertIn("Nenhuma informação foi inventada",nota)
+                # o modelo foi preenchido no PRÓPRIO PDF
+                from pypdf import PdfReader
+                campos=PdfReader(pasta/"preenchidos"/"anexo.pdf").get_fields()
+                self.assertEqual(campos["nome_entidade"].get("/V"),"Associação Laboratório")
+                self.assertIn("cnpj",[c for c in campos])    # campo existe, sem dado
+            finally:
+                (B.OPORTUNIDADES,B.ASSOCIACOES,fluxo.OPORTUNIDADES,fluxo.ASSOCIACOES,
+                 FP.OPORTUNIDADES,FP.ASSOCIACOES)=orig
+
+    def test_documentos_exigidos_so_do_texto(self):
+        from src.fluxo import documentos_exigidos, _ONDE_OBTER, _DOCS
+        texto="Exige-se estatuto social, cartao CNPJ e CNDT."
+        d=documentos_exigidos(texto)
+        self.assertIn("estatuto_social",d); self.assertIn("cnpj",d)
+        self.assertIn("certidao_trabalhista",d)
+        self.assertNotIn("balanco_patrimonial",d)   # não mencionado → não exigido
+        self.assertEqual(documentos_exigidos(""),[])
+        for chave in _DOCS:                          # todo documento tem orientação
+            self.assertIn(chave,_ONDE_OBTER,chave)
+
+    def test_fluxograma_5_passos(self):
+        arq=open("ARQUITETURA.md",encoding="utf-8").read()
+        self.assertIn("mermaid",arq)
+        for passo in ("1 · DESCOBRIR","2 · CONFIRMAR","3 · ENQUADRAR",
+                      "4 · DECIDIR","5 · PREPARAR"):
+            self.assertIn(passo,arq,passo)
+        self.assertIn("BIBLIOTECA DE ALEXANDRIA",arq)
+        self.assertIn("não dependem de ação do titular",arq)
+        d=dash_coletar(date(2026,9,2))
+        passos=d["funil"]["passos"]
+        self.assertEqual([p["n"] for p in passos],[1,2,3,4,5])
+        self.assertEqual([p["nome"] for p in passos],
+                         ["Descobrir","Confirmar","Enquadrar","Decidir","Preparar"])
+        self.assertEqual(passos[2]["modulo"],"Eldorado + Farol")
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn('id="funil"',html); self.assertIn("desenhaFunil",html)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.fluxo",wf)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

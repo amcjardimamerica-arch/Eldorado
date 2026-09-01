@@ -1,5 +1,60 @@
 # Arquitetura
 
+## O procedimento em 5 passos
+
+```mermaid
+flowchart TD
+    subgraph ELD["🔶 ELDORADO — descoberta e verificação"]
+        P1["1 · DESCOBRIR<br/><small>mapear oportunidades e fontes de recursos</small>"]
+        P2["2 · CONFIRMAR<br/><small>elegibilidade, requisitos, documentos e anexos</small>"]
+    end
+    subgraph INT["🔷 INTEGRAÇÃO"]
+        P3["3 · ENQUADRAR<br/><small>Biblioteca alimentada · IA cruza requisitos<br/>aderência, viabilidade e histórico</small>"]
+    end
+    subgraph FAR["🔵 FAROL DE ALEXANDRIA — decisão e preparo"]
+        P4["4 · DECIDIR<br/><small>entidades com chances reais<br/>pasta do edital e documentos separados</small>"]
+        P5["5 · PREPARAR<br/><small>documentos preenchidos, prontos para download<br/>nota técnica do que falta</small>"]
+    end
+
+    F["Fontes: diários oficiais, PNCP,<br/>portais, secretarias, ministérios"] --> P1
+    P1 -->|identificação registrada<br/>com URL e evidência| C{"campanha de<br/>completude<br/>até 30 dias"}
+    C -->|edital integral<br/>+ datas + modelos| P2
+    C -->|ainda incompleto| M["monitoramento na Bússola<br/><small>tenta todo dia</small>"] --> C
+    C -->|30 dias sem completar| H["expirado —<br/>revisão humana"]
+    P2 -->|verificação DUPLA<br/>fonte + conteúdo| P3
+
+    P3 --> B[("BIBLIOTECA DE ALEXANDRIA<br/>leis · oportunidades · associações")]
+    B -->|histórico: o que é cobrado,<br/>quem venceu e por quê| IA["IA por tarefa<br/><small>extração → análise → parecer</small>"]
+    IA -->|parecer com aderência<br/>e viabilidade| P4
+
+    P4 -->|bloqueio eliminatório| D["descartada<br/><small>motivo registrado</small>"]
+    P4 -->|chance real| PA["pasta do edital<br/>dentro da entidade"] --> P5
+    P5 --> DL["documentos para download"]
+    P5 --> NT["NOTA TÉCNICA<br/><small>o que falta e como obter</small>"]
+
+    style P1 fill:#FFF3E4,stroke:#C05E00
+    style P2 fill:#FFF3E4,stroke:#C05E00
+    style P3 fill:#F3EEFF,stroke:#7B4BE0
+    style P4 fill:#E8F1FB,stroke:#0B4EA2
+    style P5 fill:#E8F1FB,stroke:#0B4EA2
+    style B fill:#FDF6E3,stroke:#C9A227
+    style H fill:#FDECEA,stroke:#B8433A
+    style NT fill:#FFFBEA,stroke:#B8860B
+```
+
+### O que cada passo faz, e o que ele não faz
+
+| # | Passo | Quem executa | Entrega | Regra dura |
+|---|---|---|---|---|
+| 1 | **Descobrir** | Eldorado | oportunidade identificada com fonte, URL e evidência hasheada | identificação em diário é começo, não fim |
+| 2 | **Confirmar** | Eldorado | edital integral, datas de inscrição, requisitos e anexos-modelo | verificação **dupla** (fonte + conteúdo); sem isso não passa |
+| 3 | **Enquadrar** | Eldorado → Farol | dados na Biblioteca; IA cruza requisitos × associações com apoio do histórico | modelo adequado a cada tarefa; pacote mínimo; sem credencial, só a parte determinística |
+| 4 | **Decidir** | Farol (automático) | entidades com chance real, pasta do edital criada, documentos separados | **nenhuma informação nova** é criada; o que falta é declarado |
+| 5 | **Preparar** | Farol (automático) | modelos preenchidos no próprio PDF, prontos para download | dado ausente vira **nota técnica** com o caminho para obtê-lo |
+
+As etapas 4 e 5 **não dependem de ação do titular** — rodam sozinhas assim que
+o edital chega completo e o parecer aponta enquadramento.
+
 ## Fluxo completo (visão geral)
 
 ```mermaid

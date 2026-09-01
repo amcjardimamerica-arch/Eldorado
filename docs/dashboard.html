@@ -60,6 +60,26 @@ box-shadow:0 10px 26px #00000022;min-width:190px;flex-direction:column;gap:3px}
 #hot-eldorado{left:29.818%;top:46.064%;width:15.625%;height:13.411%}
 #hot-farol{left:52.995%;top:46.064%;width:17.708%;height:12.245%}
 @media(max-width:900px){.hero-arte img{content:url(arte/cabecalho-leve.jpg)}}
+/* ===== funil de 5 passos (fluxograma vivo) ===== */
+.funil{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:16px;position:relative}
+.funil .passo{position:relative;text-align:center;padding:14px 10px 12px}
+.funil .passo::before{content:"";position:absolute;left:0;right:0;top:26px;height:3px;background:var(--linha);z-index:0}
+.funil .passo:first-child::before{left:50%}
+.funil .passo:last-child::before{right:50%}
+.funil .passo.eld::before{background:linear-gradient(90deg,#F0A93B,#F0A93B)}
+.funil .passo.int::before{background:linear-gradient(90deg,#F0A93B,#7B4BE0)}
+.funil .passo.far::before{background:linear-gradient(90deg,#7B4BE0,#2F79D0)}
+.funil .bolha{position:relative;z-index:1;width:44px;height:44px;border-radius:50%;margin:0 auto 8px;
+display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;background:#fff;border:2px solid}
+.funil .passo.eld .bolha{border-color:#C05E00;color:#C05E00}
+.funil .passo.int .bolha{border-color:#7B4BE0;color:#7B4BE0}
+.funil .passo.far .bolha{border-color:#0B4EA2;color:#0B4EA2}
+.funil .passo.ativo .bolha{box-shadow:0 0 0 5px #fff,0 0 0 8px currentColor}
+.funil b{display:block;font-size:13.5px}
+.funil .qtd{font-size:19px;font-weight:800;color:var(--tinta);line-height:1.1;margin-top:3px}
+.funil small{display:block;font-size:10.5px;color:var(--suave);line-height:1.3;margin-top:3px;max-width:190px;margin-inline:auto}
+.funil .mod{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--suave)}
+@media(max-width:900px){.funil{grid-template-columns:1fr 1fr}.funil .passo::before{display:none}}
 /* ===== demais elementos da página inicial ===== */
 #v-inicio{margin-top:0}
 .inicio-grade{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px;align-items:start}
@@ -330,6 +350,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </nav>
 </div>
 </div>
+
+<div class="funil" id="funil" title="O procedimento em 5 passos: 1-2 no Eldorado, 3 na integração, 4-5 no Farol (automáticos)"></div>
 
 <div class="inicio-grade">
 <div class="cartao">
@@ -839,6 +861,24 @@ function desenhaRadar(){
   ["fi-uf","fi-area","fi-nivel","fi-prazo"].forEach(id=>$(id).addEventListener("input",aplica));
   window.aplicaRadar=aplica;
   aplica();
+}
+function desenhaFunil(){
+  const f=(D.funil||{}).passos||[];
+  if(!f.length){$("funil").innerHTML="";return;}
+  const cls=n=>n<=2?"eld":n===3?"int":"far";
+  $("funil").innerHTML=f.map(p=>{
+    const ativo=p.quantidade>0?" ativo":"";
+    const dest=p.n<=2?"editais":p.n===3?"bussola":"f-editais";
+    const mod=p.n<=2?"eldorado":"farol";
+    return `<div class="passo ${cls(p.n)}${ativo}" data-mod="${mod}" data-v="${dest}"
+      title="${esc(p.descricao)}${p.n>=4?" — etapa automática":""}" style="cursor:pointer">
+      <div class=bolha>${p.n}</div>
+      <b>${esc(p.nome)}</b>
+      <div class=mod>${esc(p.modulo)}</div>
+      <div class=qtd>${p.quantidade}</div>
+      <small>${esc(p.descricao)}</small></div>`;}).join("");
+  $("funil").querySelectorAll(".passo").forEach(el=>el.onclick=()=>{
+    modulo(el.dataset.mod);mostra(el.dataset.v);});
 }
 function desenhaFarolResumo(){
   const f=D.farol_resumo||{};
@@ -1419,7 +1459,7 @@ function iniciar(){
   calAno=HOJE.getFullYear();calMes=HOJE.getMonth();
   busAno=HOJE.getFullYear();busMes=HOJE.getMonth();
   gAno=HOJE.getFullYear();gMes=HOJE.getMonth();
-  desenhaRadar();desenhaFarolResumo();desenhaGantt();desenhaFila();
+  desenhaRadar();desenhaFunil();desenhaFarolResumo();desenhaGantt();desenhaFila();
   desenhaCal();desenhaEditais();desenhaBussola();iniciarBz();desenhaCalendarioDecisao();desenhaBiblioteca();
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
