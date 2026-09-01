@@ -40,6 +40,8 @@ jobs:
       - name: Dados do dashboard interativo
         if: always()
         run: |
+          pip install pypdf --quiet
+          python -m src.completude | tee completude.json
           python -m src.dashboard_dados | tee dash.json
           python -m src.banco
           pip install cryptography --quiet

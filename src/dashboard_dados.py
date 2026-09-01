@@ -484,17 +484,80 @@ def _recorte_painel(editais: list[dict], hoje: date) -> list[dict]:
     return painel + recentes
 
 
+def _so_completos(editais: list[dict], hoje: date) -> list[dict]:
+    """REGRA DO TITULAR: apenas editais VERIFICADOS EM DUPLA (fonte + conteúdo
+    completo pela campanha de 30 dias) compõem o Dashboard. Datas passam a vir
+    do texto integral; cada item carrega o selo da verificação e os modelos."""
+    from . import completude as _comp
+    mapa = _comp.completos()
+    saida = []
+    for e in editais:
+        c = mapa.get(e["id"])
+        if not c:
+            continue
+        e = dict(e)
+        e["inicio"], e["fim"] = c.get("inicio") or e["inicio"], c.get("fim") or e["fim"]
+        e["datas"] = "ambas" if e["inicio"] and e["fim"] else ("so_fim" if e["fim"] else e["datas"])
+        situ = _situacao(e["inicio"], e["fim"], hoje)
+        e["estado_export"] = situ["estado"]
+        e["verificacao_dupla"] = c["verificacao"]
+        e["anexos_modelo"] = [{"nome": a["nome"], "arquivo": a["arquivo"]}
+                              for a in c.get("anexos_modelo", [])]
+        e["pasta_farol"] = f'dados/farol/editais/{c["chave"]}/{c["ano"]}'
+        saida.append(e)
+    return saida
+
+
+def _monitoramentos(hoje: date) -> dict:
+    """Bússola: os MONITORAMENTOS encontrados — cada identificação com sua
+    campanha diária de completude (dia X/30, tentativas, pendências)."""
+    from . import completude as _comp
+    est = _comp._estado()
+    campanhas = est.get("campanhas", {})
+    itens = {}
+    for oid, item in carregar_oportunidades().items():
+        itens[oid] = item
+    amostra = []
+    contagem = {"encontrados": len(campanhas), "monitorando": 0,
+                "completos": 0, "expirados": 0}
+    for oid, c in campanhas.items():
+        contagem[{"monitorando": "monitorando", "completo": "completos",
+                  "expirado": "expirados"}.get(c["status"], "monitorando")] += 1
+    ordem = sorted(((oid, c) for oid, c in campanhas.items() if oid in itens),
+                   key=lambda x: (x[1]["status"] != "monitorando",
+                                  x[1].get("criado_em", "")))
+    for oid, c in ordem[:40]:
+        it = itens[oid]
+        dias_camp = (hoje - date.fromisoformat(c["criado_em"])).days + 1
+        amostra.append({"id": oid, "titulo": it.get("titulo", "")[:120],
+                        "fonte": it.get("fonte_nome"), "territorio": it.get("territorio"),
+                        "status": c["status"], "dia": min(dias_camp, 30),
+                        "tentativas": len(c.get("tentativas", [])),
+                        "pendencias": (c.get("pendencias") or [])[:2],
+                        "fim_detectado": c.get("fim_iso"), "url": it.get("url")})
+    contagem["amostra"] = amostra
+    contagem["regra"] = ("cada identificação em diário abre campanha de até 30 dias "
+                         "consecutivos atrás do edital integral nos sites oficiais")
+    return contagem
+
+
 def coletar(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
     editais_base = _editais(hoje)
-    editais = _recorte_painel(editais_base, hoje)
+    completos_lista = _so_completos(editais_base, hoje)
+    editais = _recorte_painel(completos_lista, hoje) if len(completos_lista) > 600 else completos_lista
     leis = load_json(ROOT / "biblioteca/leis/catalogo.json")["itens"]
     revisao = load_json(ROOT / "estado/revisao_normativa.json") if (ROOT / "estado/revisao_normativa.json").exists() else {}
     parl = mod_parlamentares.carregar_do_disco(hoje.year)
     ch = load_json(ROOT / "estado/ultima_carga_historica.json") if (ROOT / "estado/ultima_carga_historica.json").exists() else {"status": "nunca_executada"}
-    saida_bussola = painel_bussola(editais_base, _bussola(editais), hoje)
-    saida_bussola["totais"] = {"base_completa": len(editais_base), "no_painel": len(editais),
-        "nota": "o painel publica o recorte operacional; o acervo completo fica no banco local"}
+    monit = _monitoramentos(hoje)
+    saida_bussola = painel_bussola(completos_lista, _bussola(editais), hoje)
+    saida_bussola["monitoramentos"] = monit
+    saida_bussola["totais"] = {"base_completa": len(editais_base),
+        "monitoramentos": monit["encontrados"], "completos": len(completos_lista),
+        "no_painel": len(editais),
+        "nota": "o Dashboard publica somente editais completos (verificação dupla); "
+                "o restante segue em monitoramento na Bússola"}
     return {
         "gerado_em": now_iso(), "referencia": hoje.isoformat(),
         "cadencia": {"varredura": "segundas e sextas, 6h de Brasília",

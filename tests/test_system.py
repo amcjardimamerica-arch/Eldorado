@@ -3,7 +3,9 @@ from unittest.mock import patch
 
 from src.eldorado import candidates, source_in_scope
 from src.farol import evaluate
-from src.nucleo import canonical_url, has_prompt_injection, merge_registro, novo_id, slug, validate_public_https
+from src.nucleo import (canonical_url, has_prompt_injection, load_json,
+                        merge_registro, novo_id, slug, validate_public_https,
+                        write_json)
 from src.retrospectivo import host_allowed
 from src.submissao import avaliar_limpeza
 from src.triagem import assess
@@ -692,6 +694,135 @@ class SystemTests(unittest.TestCase):
         for e in base:
             if e["estado_export"] in ("aberto","a_abrir"):
                 self.assertIn(e["id"],painel,e["id"])
+
+
+    def _pdf_minimo(self,texto):
+        corpo=f"BT /F1 11 Tf 40 750 Td ({texto}) Tj ET".encode("latin-1","replace")
+        objs=[b"<< /Type /Catalog /Pages 2 0 R >>",
+              b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+              b"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>",
+              b"<< /Length "+str(len(corpo)).encode()+b" >>\nstream\n"+corpo+b"\nendstream",
+              b"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>"]
+        s=b"%PDF-1.4\n";offs=[]
+        for i,o in enumerate(objs,1):offs.append(len(s));s+=f"{i} 0 obj\n".encode()+o+b"\nendobj\n"
+        x=len(s);s+=b"xref\n0 "+str(len(objs)+1).encode()+b"\n0000000000 65535 f \n"
+        for o in offs:s+=f"{o:010d} 00000 n \n".encode()
+        return s+b"trailer\n<< /Size "+str(len(objs)+1).encode()+b" /Root 1 0 R >>\nstartxref\n"+str(x).encode()+b"\n%%EOF"
+
+    def test_campanha_de_completude_ate_encontrar(self):
+        """Regra do titular: a busca só termina quando encontra o edital
+        INTEIRO. Verificação dupla, texto convertido, apenas modelos em PDF,
+        pasta por edital com subpasta do ano."""
+        try:
+            import pypdf  # noqa
+        except ImportError:
+            self.skipTest("pypdf ausente")
+        import tempfile
+        from src import completude as C
+        with tempfile.TemporaryDirectory() as tmp:
+            lab=pathlib.Path(tmp)
+            (lab/"ed.pdf").write_bytes(self._pdf_minimo(
+                "EDITAL DE CHAMAMENTO PUBLICO 007/2026 - Objeto: apoio cultural. "
+                "Inscricoes a partir de 05/09/2026 ate 30/09/2026. Ver Anexo I - modelo."))
+            (lab/"anexo-modelo.pdf").write_bytes(self._pdf_minimo("ANEXO I - MODELO DE PLANO"))
+            (lab/"p.html").write_text('<a href="ed.pdf">Edital 007/2026 integra</a>'
+                                      '<a href="anexo-modelo.pdf">Anexo I - Modelo</a>',encoding="utf-8")
+            item={"id":"t1","titulo":"Edital de Chamamento Público 007/2026 — apoio cultural",
+                  "fonte_id":"secult-t","fonte_nome":"Secult","territorio":"GO",
+                  "url":f"file://{lab}/p.html","prazo_texto":None,"evidencia":"diário",
+                  "caracterizacao":{"objeto":"apoio cultural"}}
+            farol_orig=C.FAROL; C.FAROL=pathlib.Path(tmp)/"farol"
+            fontes_orig=C._fontes_oficiais; C._fontes_oficiais=lambda it:[item["url"]]
+            try:
+                camp={"criado_em":date(2026,9,1).isoformat(),"status":"monitorando","tentativas":[]}
+                C._tentar(item,camp,C._cfg())
+                self.assertEqual(camp["status"],"completo")
+                self.assertEqual(camp["fim_iso"],"2026-09-30")   # data REAL do texto
+                self.assertEqual(camp["inicio_iso"],"2026-09-05")
+                pasta=C.FAROL/"secult-t-edital-007"/"2026"       # chave + ANO
+                self.assertTrue((pasta/"edital.txt").exists())
+                self.assertFalse((pasta/"edital.pdf").exists(),
+                                 "com anexos-modelo o PDF do edital não é mantido")
+                anexos=list((pasta/"anexos").glob("*.pdf"))
+                self.assertEqual(len(anexos),1)                  # só o modelo
+                d=load_json(pasta/"dados.json")
+                self.assertTrue(d["verificacao"]["fonte"] and d["verificacao"]["conteudo"])
+            finally:
+                C.FAROL=farol_orig; C._fontes_oficiais=fontes_orig
+
+    def test_campanha_expira_em_30_dias(self):
+        import tempfile
+        from src import completude as C
+        with tempfile.TemporaryDirectory() as tmp:
+            est_orig, C.ESTADO = C.ESTADO, pathlib.Path(tmp)/"e.json"
+            try:
+                write_json(C.ESTADO,{"versao":1,"campanhas":{
+                    "x1":{"criado_em":"2026-07-20","status":"monitorando","tentativas":[]}}})
+                import src.nucleo as N
+                carr_orig=N.carregar_oportunidades
+                # item presente na base
+                C.carregar_oportunidades=lambda: {"x1":{"valor":{"id":"x1"}}} if False else {"x1":{"id":"x1","titulo":"t","url":"https://x/","fonte_id":"f"}}
+                r=C.run(limite=5,hoje=date(2026,9,1))
+                self.assertEqual(r["expiradas"],1)
+                est=load_json(C.ESTADO)
+                self.assertEqual(est["campanhas"]["x1"]["status"],"expirado")
+                self.assertTrue(any("verificação humana" in p0 for p0 in est["campanhas"]["x1"]["pendencias"]))
+            finally:
+                C.ESTADO=est_orig
+                C.carregar_oportunidades=N.carregar_oportunidades
+
+    def test_dashboard_somente_completos(self):
+        """Só editais com verificação dupla compõem o Dashboard; a Bússola
+        carrega os monitoramentos encontrados."""
+        d=dash_coletar(date(2026,9,2))
+        for e in d["editais"]:
+            self.assertIn("verificacao_dupla",e,e["id"])
+        tot=d["bussola_painel"]["totais"]
+        self.assertEqual(tot["completos"],len(d["editais"]))
+        mon=d["bussola_painel"]["monitoramentos"]
+        self.assertGreaterEqual(mon["encontrados"],tot["completos"])
+        self.assertLessEqual(len(mon["amostra"]),40)
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for trecho in ("Monitoramentos encontrados","campanha de completude","Dia ${m.dia}/30",
+                       "verificação dupla","só editais completos","sites oficiais"):
+            self.assertIn(trecho,html,trecho)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.completude",wf)
+        self.assertIn("pip install pypdf",wf)
+
+    def test_preenchimento_no_proprio_modelo(self):
+        try:
+            from pypdf import PdfWriter
+        except ImportError:
+            self.skipTest("pypdf ausente")
+        import tempfile
+        from pypdf import PdfReader
+        from pypdf.generic import (DictionaryObject,NameObject,TextStringObject,
+                                   ArrayObject,NumberObject,BooleanObject)
+        from src.farol_docs import preencher_modelo
+        with tempfile.TemporaryDirectory() as tmp:
+            w=PdfWriter();w.add_blank_page(612,792)
+            fonte=DictionaryObject({NameObject("/Type"):NameObject("/Font"),
+              NameObject("/Subtype"):NameObject("/Type1"),NameObject("/BaseFont"):NameObject("/Helvetica")})
+            fref=w._add_object(fonte)
+            campo=DictionaryObject({NameObject("/FT"):NameObject("/Tx"),
+              NameObject("/T"):TextStringObject("nome_entidade"),
+              NameObject("/Type"):NameObject("/Annot"),NameObject("/Subtype"):NameObject("/Widget"),
+              NameObject("/DA"):TextStringObject("/Helv 11 Tf 0 g"),
+              NameObject("/Rect"):ArrayObject([NumberObject(50),NumberObject(700),NumberObject(400),NumberObject(720)]),
+              NameObject("/V"):TextStringObject("")})
+            ref=w._add_object(campo)
+            w.pages[0][NameObject("/Annots")]=ArrayObject([ref])
+            w._root_object[NameObject("/AcroForm")]=DictionaryObject({
+              NameObject("/Fields"):ArrayObject([ref]),NameObject("/NeedAppearances"):BooleanObject(True),
+              NameObject("/DA"):TextStringObject("/Helv 11 Tf 0 g"),
+              NameObject("/DR"):DictionaryObject({NameObject("/Font"):DictionaryObject({NameObject("/Helv"):fref})})})
+            mod=pathlib.Path(tmp)/"modelo.pdf"
+            with mod.open("wb") as h:w.write(h)
+            rel=preencher_modelo(mod,{"nome_entidade":"A.M.C.","extra":"x"},pathlib.Path(tmp)/"s/out.pdf")
+            self.assertEqual(rel["preenchidos"],["nome_entidade"])
+            self.assertEqual(rel["dados_sem_campo"],["extra"])
+            self.assertEqual(PdfReader(pathlib.Path(tmp)/"s/out.pdf").get_fields()["nome_entidade"].get("/V"),"A.M.C.")
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

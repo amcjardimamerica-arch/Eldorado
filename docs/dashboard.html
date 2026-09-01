@@ -441,10 +441,20 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 </div>
 
+<!-- monitoramentos em andamento: a busca só termina quando encontra -->
+<div class="cartao" style="margin-bottom:16px">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Monitoramentos encontrados
+    <span class=meta style="font-weight:500" title="Cada identificação em diário oficial abre uma campanha de até 30 dias consecutivos atrás do edital integral (texto, datas e documentos-modelo) nos sites oficiais. A busca só termina quando encontra — ou expira para revisão humana.">— campanha de completude (30 dias)</span></div>
+  <table class="bz-tab" id="bz-mon"><thead><tr>
+    <th>Identificação</th><th>Fonte</th><th>Campanha</th><th>Tentativas</th><th>Prazo detectado</th><th>Pendências</th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
 <!-- filtro e tabela -->
 <div class="cartao" style="margin-bottom:16px">
   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-    <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Filtro de Oportunidades</div>
+    <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Filtro de Oportunidades
+      <span class=meta style="font-weight:500" title="Somente editais com verificação dupla (fonte + conteúdo completo) entram aqui e no restante do Dashboard.">— só editais completos</span></div>
     <div class="bz-filtros">
       <select id="bz-assoc"><option value="">Associação</option><option value="amc">A.M.C. Jardim América</option></select>
       <select id="bz-uf"><option value="">UF</option></select>
@@ -645,6 +655,8 @@ function detalheEdital(e){
      <div class=lin><b>Objeto</b><span>${esc(e.objeto||"não localizado no texto — conferir edital")}</span></div>
      <div class=lin><b>Período</b><span>${br(e.inicio)} → ${br(e.fim)}</span></div>
      <div class=lin><b>Situação</b><span>${situ}</span></div>
+     ${e.verificacao_dupla?`<div class=lin><b>Verificação</b><span style="color:var(--ok)">dupla ✓ — fonte + conteúdo (${esc(e.verificacao_dupla.criterio)})</span></div>`:""}
+     ${e.anexos_modelo&&e.anexos_modelo.length?`<div class=lin><b>Modelos preservados</b><span>${e.anexos_modelo.map(a=>esc(a.nome)).join(" · ")} <span class=meta>(${esc(e.pasta_farol||"")})</span></span></div>`:""}
      <div class=lin><b>Qualificação</b><span>${d.qualificacao&&d.qualificacao.nota!=null?d.qualificacao.nota+"/100 · "+esc(d.qualificacao.classe):"—"}</span></div>
      ${prorrog}
      ${lista("Pontuação (critérios extraídos)",d.pontuacao)}
@@ -714,7 +726,7 @@ function desenhaRadar(){
       <span class=meta style="flex:none;min-width:74px;text-align:right">${e.valor_texto?esc(e.valor_texto):"—"}</span>
       <span class=meta style="flex:none">${br(e.fim)}</span>
       <span class=abrir>Abrir oportunidade</span></div>`).join("")
-      :'<div class=meta style="padding:10px 2px">Nenhuma oportunidade aberta na base ainda — a varredura de segunda/sexta alimenta este radar automaticamente.</div>';
+      :`<div class=meta style="padding:10px 2px">Padrão de qualidade em vigor: o Dashboard mostra apenas editais COMPLETOS (verificação dupla: fonte + texto integral, datas e documentos-modelo). Hoje: ${((D.bussola_painel||{}).totais||{}).completos??0} completos · ${((D.bussola_painel||{}).monitoramentos||{}).monitorando??0} em monitoramento na Bússola.</div>`;
     $("fi-novas").querySelectorAll(".item").forEach(el=>{
       const ed=eds.find(x=>x.id===el.dataset.id);
       ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);});
@@ -962,7 +974,7 @@ function desenhaEditais(){
   const abertos=(D.editais||[]).filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export))
     .sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9)));
   const g=$("ed-grade");g.innerHTML="";
-  if(!abertos.length){g.innerHTML='<div class=cartao>Nenhum edital aberto na base ainda. A varredura de segunda/sexta alimenta esta lista.</div>';}
+  if(!abertos.length){g.innerHTML=`<div class=cartao>Nenhum edital COMPLETO aberto ainda. O padrão de qualidade exige verificação dupla (texto integral + datas + documentos-modelo); ${((D.bussola_painel||{}).monitoramentos||{}).monitorando??0} identificações estão em campanha de completude na Bússola.</div>`;}
   abertos.forEach(e=>g.appendChild(caixaEdital(e)));
   const areas=[...new Set(abertos.map(e=>e.area))];
   $("ed-legenda").innerHTML=areas.map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("");
@@ -1050,12 +1062,15 @@ function desenhaBzCards(){
     relogio:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><circle cx="12" cy="12" r="8.8"/><path d="M12 7v5.2l3.2 2" stroke-linecap="round"/></svg>`,
     farol:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.7"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M12 2.2v2.2M7 4.4l1.7 1.3M17 4.4l-1.7 1.3M8 21h8"/></svg>`,
     livro:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><path d="M12 5.5C10 4 7.4 3.6 4 3.8v14.7c3.4-.2 6 .2 8 1.7 2-1.5 4.6-1.9 8-1.7V3.8c-3.4-.2-6 .2-8 1.7z" stroke-linejoin="round"/><path d="M12 5.5v14.7"/></svg>`});
-  const total=(bp.totais&&bp.totais.base_completa)||eds.length;
+  const mon=bp.monitoramentos||{}; const tot=bp.totais||{};
   const cards=[
-    [IC("#C77E12").rosa,"Oportunidades",total,`+${bp.novas_ultima??0} novas`,"vermelho",
-     `base completa do Eldorado (${total}); o painel publica o recorte operacional de ${eds.length}`],
-    [IC("#0B4EA2").banco,"Fontes monitoradas",bp.fontes_ativas??"—","ativas","azul","fontes com varredura ativa no catálogo"],
-    [IC("#0B4EA2").escudo,"Editais verificados",bp.verificados??0,`+${bp.verificados_semana??0} esta semana`,"azul","confirmados na página primária (0 até a 1ª verificação)"],
+    [IC("#C77E12").rosa,"Oportunidades",mon.encontrados??tot.base_completa??eds.length,
+     `${mon.monitorando??0} em monitoramento`,"vermelho",
+     "monitoramentos encontrados: cada identificação em diário abre campanha de até 30 dias atrás do edital integral"],
+    [IC("#0B4EA2").banco,"Fontes monitoradas",bp.fontes_ativas??"—","sites oficiais","azul",
+     "sites oficiais onde os editais são publicados: secretarias, prefeituras, governos, ministérios e empresas"],
+    [IC("#0B4EA2").escudo,"Editais verificados",tot.completos??0,"completos p/ o Farol","azul",
+     "verificação DUPLA: fonte identificada + edital integral com texto, datas e documentos-modelo — só estes compõem o Dashboard"],
     [IC("#C0392B").relogio,"Prazos urgentes",bp.urgentes_7d??0,"até 7 dias","vermelho","inscrições abertas encerrando em até 7 dias"],
     [IC("#0B4EA2").farol,"Casos no Farol",bp.casos_farol??0,bp.casos_nota||"em análise","azul","casos em preparação de documentação"],
     [IC("#0B4EA2").livro,"Fontes",bp.sites??"—","sites","azul","pontos de coleta no catálogo de rotas"]];
@@ -1161,7 +1176,24 @@ function iniciarBz(){
   const sa=$("bz-area");sa.length=1;areas.forEach(a=>{const o=document.createElement("option");o.value=a;o.textContent=AREA(a).rotulo;sa.appendChild(o);});
   const sn=$("bz-nivel");sn.length=1;[...new Set(eds.map(e=>e.nivel).filter(Boolean))].sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;sn.appendChild(o);});
   ["bz-uf","bz-area","bz-nivel","bz-prazo"].forEach(id=>$(id).addEventListener("input",()=>{bzUFsel=$("bz-uf").value;desenhaBzMapa();desenhaBzTabela();}));
-  desenhaBzCards();desenhaBzMapa();desenhaBzAtual();desenhaBzAderencia();desenhaBzTabela();
+  desenhaBzCards();desenhaBzMapa();desenhaBzAtual();desenhaBzAderencia();desenhaBzTabela();desenhaBzMon();
+}
+function desenhaBzMon(){
+  const mon=(D.bussola_painel||{}).monitoramentos||{};
+  const tb=$("bz-mon").querySelector("tbody");
+  const rows=mon.amostra||[];
+  tb.innerHTML=rows.length?rows.map(m=>{
+    const st=m.status==="completo"?["ok","Completo"]:m.status==="expirado"?["acao","Expirado — revisão humana"]:["cap",`Dia ${m.dia}/30`];
+    return `<tr>
+    <td class="bz-op"><b>${esc(m.titulo.slice(0,58))}</b><span class=ed>${esc(m.territorio||"")}</span></td>
+    <td class=meta>${esc((m.fonte||"").slice(0,26))}</td>
+    <td><span class="st ${st[0]}">${st[1]}</span></td>
+    <td style="text-align:center">${m.tentativas}</td>
+    <td>${m.fim_detectado?br(m.fim_detectado):'<span class=meta>—</span>'}</td>
+    <td class=meta>${m.pendencias&&m.pendencias.length?esc(m.pendencias.join(" · ")):"—"}</td></tr>`;}).join("")
+    :'<tr><td colspan=6 class=meta style="padding:12px 6px">Nenhum monitoramento aberto.</td></tr>';
+  if(rows.length&&mon.encontrados>rows.length)
+    tb.insertAdjacentHTML("beforeend",`<tr><td colspan=6 class=meta>mostrando ${rows.length} de ${mon.encontrados} monitoramentos — acervo completo no banco local</td></tr>`);
 }
 
 /* ================= FAROL · BIBLIOTECA ================= */
