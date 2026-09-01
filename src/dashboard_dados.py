@@ -385,10 +385,54 @@ def _bussola(editais: list[dict]) -> dict:
             "url_fonte": f.get("url"), "tipo": f.get("tipo"),
             "categoria": _categoria_fonte(f.get("tipo")),
             "editais": []})
+        det = e.get("detalhes") or {}
+        ciclo = e.get("ciclo") or {}
+        insc = ciclo.get("inscricao") or {}
+        # análise da ETAPA 2, item a item, para a caixa exibir por edital
+        analise = [
+            {"item": "Objeto", "valor": (e.get("objeto") or "")[:180] or None,
+             "comprovado": bool(e.get("objeto"))},
+            {"item": "Prazo de inscrição",
+             "valor": (f'{insc.get("inicio") or "?"} a {insc.get("fim") or "?"}'
+                       + (" (abertura projetada)" if insc.get("projetado") else ""))
+                      if insc else None,
+             "comprovado": bool(insc.get("fim"))},
+            {"item": "Resultado", "valor": (ciclo.get("resultado") or {}).get("data"),
+             "comprovado": bool(ciclo.get("resultado")
+                                and not (ciclo["resultado"] or {}).get("projetado"))},
+            {"item": "Prazo de recurso",
+             "valor": (f'{ciclo["recurso"]["inicio"]} a {ciclo["recurso"]["fim"]}'
+                       if ciclo.get("recurso") else None),
+             "comprovado": bool(ciclo.get("recurso")
+                                and not ciclo["recurso"].get("projetado"))},
+            {"item": "Valor", "valor": e.get("valor_texto"),
+             "comprovado": bool(e.get("valor_texto"))},
+            {"item": "Órgão / financiador", "valor": e.get("fonte_nome"),
+             "comprovado": bool(e.get("fonte_nome"))},
+            {"item": "Território", "valor": e.get("territorio"),
+             "comprovado": bool(e.get("uf"))},
+            {"item": "Esfera", "valor": e.get("nivel"),
+             "comprovado": e.get("nivel") in ("federal", "estadual", "municipal")},
+            {"item": "Requisitos", "valor": ", ".join(det.get("documentos_exigidos") or [])[:160] or None,
+             "comprovado": bool(det.get("documentos_exigidos"))},
+            {"item": "Anexos", "valor": (f'{len(e.get("anexos") or [])} anexo(s)'
+                                         if e.get("anexos") else None),
+             "comprovado": bool(e.get("anexos"))},
+            {"item": "Destinação",
+             "valor": (e.get("destinacao") or {}).get("motivo"),
+             "comprovado": (e.get("destinacao") or {}).get("elegivel") is True},
+        ]
         cx["editais"].append({"id": e["id"], "titulo": e["titulo"], "url": e["url"],
                               "uf": e.get("uf"), "area": e.get("area"),
                               "nivel": e.get("nivel"), "fim": e.get("fim"),
                               "estado_export": e.get("estado_export"),
+                              "objeto": e.get("objeto"),
+                              "valor_texto": e.get("valor_texto"),
+                              "confirmacao": e.get("confirmacao"),
+                              "analise_etapa2": analise,
+                              "comprovados": sum(1 for a in analise if a["comprovado"]),
+                              "total_itens": len(analise),
+                              "pendencias": (det.get("pendencias") or [])[:6],
                               "anexos": e["anexos"],
                               "anexos_pendentes": not e["anexos"]})
     # frentes que a pesquisa deve percorrer, com a cobertura observada

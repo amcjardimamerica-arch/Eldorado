@@ -62,7 +62,7 @@ def coletar_pncp(inicio: date, fim: date, escopo: dict, cfg: dict | None = None)
     cfg = cfg or _cfg()["pncp"]
     filtro = re.compile(cfg["filtro_regex"], re.I)
     ufs = set(escopo.get("ufs_ativas") or [])
-    achados, falhas = [], []
+    achados, falhas, descartados = [], [], []
     for base in cfg["bases"]:
         try:
             for modalidade in cfg["modalidades"]:
@@ -78,6 +78,16 @@ def coletar_pncp(inicio: date, fim: date, escopo: dict, cfg: dict | None = None)
                         uf = ((item.get("unidadeOrgao") or {}).get("ufSigla") or "").upper() or None
                         if not objeto or not filtro.search(objeto): continue
                         if uf and ufs and uf not in ufs: continue
+                        # filtro da ETAPA 2 já na coleta: o PNCP publica muito
+                        # certame comercial; o que uma OSC não pode concorrer
+                        # não entra na base (economia e higiene do acervo)
+                        from .destinacao import avaliar_destinacao
+                        dest = avaliar_destinacao({"titulo": objeto, "evidencia": objeto,
+                                                   "fonte_id": "pncp"})
+                        if not dest["elegivel"]:
+                            descartados.append({"objeto": objeto[:120],
+                                                "motivo": dest["motivo"]})
+                            continue
                         url = _pncp_url_publica(item)
                         if not url: continue
                         orgao = ((item.get("orgaoEntidade") or {}).get("razaoSocial") or "órgão público").strip()
@@ -94,11 +104,16 @@ def coletar_pncp(inicio: date, fim: date, escopo: dict, cfg: dict | None = None)
                             "data_publicacao": publicado,
                             "evidencia": objeto[:500], "hash_evidencia": sha256(objeto.encode()),
                             "modalidade_pncp": modalidade,
+                            "destinacao": dest,
                         })
                     total_paginas = int(corpo.get("totalPaginas") or 1)
                     if pagina >= total_paginas: break
                     pagina += 1
                     time.sleep(0.5)
+            if descartados:
+                falhas.append({"api": "pncp", "descartados_fase2": len(descartados),
+                               "amostra": descartados[:5],
+                               "nota": "fora do escopo do terceiro setor"})
             return achados, falhas
         except (HTTPError, URLError, OSError, ValueError, json.JSONDecodeError) as exc:
             falhas.append({"api": "pncp", "base": base, "erro": type(exc).__name__})

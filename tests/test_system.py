@@ -1529,7 +1529,9 @@ class SystemTests(unittest.TestCase):
                       "etapa 5 cumprida"):
             self.assertIn(texto,html,texto)
         # o filtro do radar continua regendo o calendário
-        self.assertIn("gFiltrados=semFiltro?null:filt",html)
+        # o calendário recebe SEMPRE o recorte do Radar (UF/área/nível)
+        self.assertIn("gFiltrados=eds.filter(e=>casaUF(e)",html)
+        self.assertIn("atua EM CONJUNTO com o Radar",html)
         self.assertIn("desenhaGantt();desenhaFila();",html)
 
 
@@ -1644,7 +1646,7 @@ class SystemTests(unittest.TestCase):
         self.assertIn("ginscricao",html)
         self.assertIn(".ginscricao.projetada",html)
         # o critério de prazo não pode esconder ciclo em curso
-        self.assertIn("MENOS o critério de prazo",html)
+        self.assertIn("O critério de prazo fica de fora",html)
 
     def test_bussola_sem_caixa_e_fontes_por_ultimo(self):
         import re as _re
@@ -1666,6 +1668,38 @@ class SystemTests(unittest.TestCase):
         self.assertIn("Investigar com IA",html)
         self.assertIn("bt-arq",html)
         self.assertIn("investigarEdital",html)
+
+
+    def test_analise_etapa2_por_edital_nas_fontes(self):
+        """Cada edital da caixa de fontes traz a análise da etapa 2 item a
+        item, e o hover mostra os detalhes da oportunidade."""
+        d=dash_coletar(date(2026,9,2))
+        for f in d["bussola"]["fontes_com_editais"]:
+            for e in f["editais"]:
+                self.assertIn("analise_etapa2",e)
+                rotulos=[a["item"] for a in e["analise_etapa2"]]
+                for esperado in ("Objeto","Prazo de inscrição","Resultado",
+                                 "Prazo de recurso","Valor","Órgão / financiador",
+                                 "Território","Esfera","Requisitos","Anexos","Destinação"):
+                    self.assertIn(esperado,rotulos,esperado)
+                self.assertEqual(e["total_itens"],len(e["analise_etapa2"]))
+                self.assertEqual(e["comprovados"],
+                                 sum(1 for a in e["analise_etapa2"] if a["comprovado"]))
+                # item não comprovado nunca traz valor inventado
+                for a in e["analise_etapa2"]:
+                    if not a["comprovado"] and a["item"] in ("Valor","Resultado"):
+                        self.assertIsNone(a["valor"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("an-grade",html); self.assertIn("an-barra",html)
+        self.assertIn("itens da etapa 2",html)
+        self.assertIn("detalhe completo da oportunidade ao passar o cursor",html)
+
+    def test_pncp_filtra_na_coleta(self):
+        """O filtro da etapa 2 roda já na coleta do PNCP."""
+        fonte=open("src/coletores_api.py",encoding="utf-8").read()
+        self.assertIn("from .destinacao import avaliar_destinacao",fonte)
+        self.assertIn("descartados_fase2",fonte)
+        self.assertIn('"destinacao": dest',fonte)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

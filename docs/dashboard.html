@@ -171,6 +171,16 @@ box-shadow:0 1px 3px #0002}
 .bt-arq{background:#F1F3F5;color:#495057;border-color:#CED4DA}
 .ed-item{margin-top:10px;padding:10px;border:1px solid var(--linha);border-radius:11px;background:#FCFCFB}
 .ed-item + .ed-item{margin-top:8px}
+.an-barra{position:relative;height:16px;border-radius:8px;background:#EDEFF2;margin:8px 0 7px;overflow:hidden;display:flex;align-items:center}
+.an-barra i{position:absolute;left:0;top:0;bottom:0;background:#A9D6BC;border-radius:8px}
+.an-barra b{position:relative;font-size:10px;font-weight:700;color:#23272E;padding-left:7px}
+.an-grade{display:grid;grid-template-columns:1fr;gap:2px}
+.an-item{display:grid;grid-template-columns:112px 1fr;gap:6px;font-size:11.5px;padding:2px 0;border-bottom:1px dotted var(--linha)}
+.an-item .an-rot{color:var(--suave);font-weight:600}
+.an-item.ok .an-val{color:var(--tinta)}
+.an-item.pend .an-val{color:var(--suave)}
+.an-item.ok .an-rot::before{content:"✓ ";color:var(--ok)}
+.an-item.pend .an-rot::before{content:"○ ";color:var(--alerta)}
 .bt-ia{background:linear-gradient(180deg,#7B4BE0,#5B33B8);color:#fff;border:0}
 .bt-insc{background:#E7F4EC;color:#1E7E4B;border-color:#A9D6BC}
 .bt-desc{background:#FDECEA;color:#B8433A;border-color:#F0B8B2}
@@ -921,13 +931,11 @@ function desenhaRadar(){
     $("fi-novas").querySelectorAll(".item").forEach(el=>{
       const ed=eds.find(x=>x.id===el.dataset.id);
       ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);});
-    /* O calendário recebe o mesmo recorte, MENOS o critério de prazo: um
-       edital com inscrição encerrada mas resultado ou recurso por vir precisa
-       continuar visível até o fim do ciclo. */
-    const filtCal=eds.filter(e=>casaUF(e)&&(!ar||e.area===ar)&&(!ni||e.nivel===ni));
-    const semFiltro=!uf&&!ar&&!ni;
-    gFiltrados=semFiltro?null:filtCal;
-    filaFiltro=semFiltro?null:{uf,ar,ni,pz};
+    /* O Calendário de Editais atua EM CONJUNTO com o Radar: recebe sempre o
+       mesmo recorte de UF, área e nível. O critério de prazo fica de fora
+       porque o ciclo (resultado e recurso) segue depois do encerramento. */
+    gFiltrados=eds.filter(e=>casaUF(e)&&(!ar||e.area===ar)&&(!ni||e.nivel===ni));
+    filaFiltro=(!uf&&!ar&&!ni)?null:{uf,ar,ni,pz};
     desenhaGantt();desenhaFila();
   }
   ["fi-uf","fi-area","fi-nivel","fi-prazo"].forEach(id=>$(id).addEventListener("input",aplica));
@@ -999,7 +1007,7 @@ function desenhaGantt(){
   let linhas=`<div class=gantt style="--nd:${nd}"><div></div><div class=gdias>${diasCab}</div>`;
   if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">`
     +`Nenhum edital validado com ciclo neste mês.`
-    +`${gFiltrados?" (filtro aplicado)":""} O calendário mostra apenas editais que cumpriram a etapa 2.</div>`;
+    +` O calendário acompanha o filtro do Radar e mostra apenas editais que cumpriram a etapa 2.</div>`;
 
   eds.forEach(e=>{
     const c=e.ciclo, cor=AREA(e.area).cor, tinta=corTexto(cor);
@@ -1282,16 +1290,26 @@ function desenhaFontesAbertas(){
     div.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
       <strong>${esc(f.fonte_nome)}</strong><span class=ponto title="${esc(c.rotulo)}" style="background:${c.cor}"></span></div>
       <div class=meta>${esc(c.rotulo)} · <a href="${esc(f.url_fonte)}" target=_blank rel="noopener noreferrer">acessar fonte ↗</a></div>
-      ${f.editais.map(e=>`<div class="ed-item" data-id="${esc(e.id)}">
+      ${f.editais.map(e=>{
+        const an=e.analise_etapa2||[];
+        const pct=e.total_itens?Math.round(e.comprovados/e.total_itens*100):0;
+        return `<div class="ed-item" data-id="${esc(e.id)}">
         <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">${esc(e.titulo.slice(0,90))}</a>
         <div class=meta>${esc(e.uf||"—")} · ${esc((D.areas&&D.areas[e.area]||{}).rotulo||e.area||"—")} · ${esc(e.nivel||"—")}${e.fim?" · encerra "+br(e.fim):""}</div>
+        <div class="an-barra" title="itens da etapa 2 comprovados na evidência"><i style="width:${pct}%"></i>
+          <b>${e.comprovados}/${e.total_itens} itens da etapa 2</b></div>
+        <div class="an-grade">${an.map(a=>`<div class="an-item ${a.comprovado?"ok":"pend"}"
+            title="${esc(a.item)}: ${a.comprovado?esc(String(a.valor||"")):"não comprovado na evidência"}">
+            <span class=an-rot>${esc(a.item)}</span>
+            <span class=an-val>${a.valor?esc(String(a.valor).slice(0,64)):"<em>não comprovado</em>"}</span></div>`).join("")}</div>
+        ${e.pendencias&&e.pendencias.length?`<div class=meta style="margin-top:6px">⚠ ${e.pendencias.map(esc).join(" · ")}</div>`:""}
         <div class=meta>${e.anexos&&e.anexos.length
           ? "anexos: "+e.anexos.map(a=>`<a href="${esc(a.url||a)}" target=_blank rel="noopener noreferrer">${esc(a.nome||"documento")}</a>`).join(" · ")
           : "anexos ainda não catalogados — <em>pendência declarada; validar na página do edital</em>"}</div>
         <div class="acoes-ed">
           <button class="bt-ia" data-id="${esc(e.id)}" title="Relatório sobre os parâmetros deste edital: objeto, requisitos, prazos, documentos e enquadramento da associação">✦ Investigar com IA</button>
           <button class="bt-arq" data-id="${esc(e.id)}" title="Arquivar este edital — sai das listas ativas">🗄 Arquivar</button>
-        </div></div>`).join("")}`;
+        </div></div>`;}).join("")}`;
     ligaTip(div,`<strong>${esc(f.fonte_nome)}</strong><br>${f.editais.length} edital(is) na seleção<br>${esc(c.rotulo)}`);
     div.querySelectorAll(".bt-ia").forEach(b=>b.onclick=ev=>{
       ev.stopPropagation();
@@ -1304,7 +1322,15 @@ function desenhaFontesAbertas(){
         desenhaFontesAbertas();}});
     div.querySelectorAll(".ed-item").forEach(el=>{
       const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);
-      if(ed)ligaTip(el,resumoTip(ed));});
+      const be=f.editais.find(x=>x.id===el.dataset.id)||{};
+      const an=(be.analise_etapa2||[]);
+      // detalhe completo da oportunidade ao passar o cursor
+      ligaTip(el,`<strong>${esc(be.titulo||"")}</strong><br>
+        <span style="opacity:.85">${esc(be.uf||"—")} · ${esc((D.areas&&D.areas[be.area]||{}).rotulo||be.area||"—")} · ${esc(be.nivel||"—")}</span><br>
+        <span style="opacity:.85">confirmação: ${esc(be.confirmacao||"—")} · ${be.comprovados}/${be.total_itens} itens comprovados</span>
+        <hr style="border:0;border-top:1px solid #ffffff33;margin:5px 0">
+        ${an.map(a=>`${a.comprovado?"✓":"○"} <strong>${esc(a.item)}</strong>: ${a.valor?esc(String(a.valor).slice(0,70)):"<em>não comprovado</em>"}`).join("<br>")}
+        <br><em>clique nos botões para investigar ou arquivar</em>`);});
     fx.appendChild(div);
   });
 }
