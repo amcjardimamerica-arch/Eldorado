@@ -42,6 +42,9 @@ button:hover{border-color:var(--marca)}
 .hero-arte{position:relative;width:100vw;margin-left:calc(50% - 50vw);line-height:0}
 .hero-arte img{width:100%;height:auto;display:block}
 .hotzona{position:absolute}
+.hotzona-bz{position:relative}
+.hotzona-bz:hover .submenu,.hotzona-bz:focus-within .submenu{display:flex}
+.hotzona-bz .submenu{left:0;transform:none}
 .hotzona .hot{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;padding:0;cursor:pointer;border-radius:12px}
 .hotzona:hover .hot{box-shadow:0 0 0 3px #ffffffaa,0 0 14px #00000026}
 .hotzona .hot:focus-visible{outline:3px solid #fff;outline-offset:2px}
@@ -179,6 +182,12 @@ box-shadow:0 1px 3px #0002}
 .bdia.ok{border-bottom:4px solid var(--ok)}
 .bdia.falha{border-bottom:4px solid var(--alerta)}
 .bdia.vazio{opacity:.45}
+.bdia .n{display:flex;align-items:baseline;justify-content:center;gap:4px}
+.bdia .sem{font-size:8px;letter-spacing:.04em;color:var(--suave);font-weight:600}
+.bdia .s.encontrado{color:var(--ok);font-weight:700}
+.bdia .s.ausente{color:var(--urgente);font-weight:700}
+.bdia .pts{display:flex;gap:3px;justify-content:center;margin-top:4px;min-height:8px}
+.bdia.s-ausente{border-bottom-color:var(--urgente)}
 
 /* ===== Bússola (réplica do modelo, dados reais) ===== */
 .bz-topo{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;min-height:150px;margin-bottom:6px}
@@ -419,7 +428,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <!-- ============ ELDORADO · BÚSSOLA ============ -->
 <section id="v-bussola" class="oculto" style="margin-top:14px">
 
-<!-- topo do modelo: título, logotipo, cidade dourada e botões -->
+<!-- topo do modelo: título, logotipo, cidade dourada e navegação por hover -->
 <div class="bz-topo">
 <img class="bz-cidade" src="arte/bussola-cidade.png" alt="">
 <div>
@@ -427,92 +436,129 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <svg viewBox="0 0 48 48" width="46" height="46"><circle cx="24" cy="24" r="21" fill="#fff" stroke="#C9A227" stroke-width="2.6"/><circle cx="24" cy="24" r="16" fill="none" stroke="#E4D2AE" stroke-width="1"/><path d="M24 9l3.4 11.6L24 24l-3.4-3.4L24 9z" fill="#C0392B"/><path d="M24 39l-3.4-11.6L24 24l3.4 3.4L24 39z" fill="#0E2A55"/><circle cx="24" cy="24" r="2.3" fill="#C9A227"/></svg>
   </div>
   <div class="bz-botoes">
-    <button class="ativo"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>ELDORADO</button>
-    <button class="quieto" onclick="modulo('farol')"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#0B4EA2" stroke-width="1.8"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M8 21h8"/></svg>FAROL DE ALEXANDRIA</button>
+    <div class="hotzona-bz">
+      <button class="ativo"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>ELDORADO</button>
+      <nav class="submenu" aria-label="Seções do Eldorado">
+        <button onclick="modulo('eldorado');mostra('calendario')">Calendário</button>
+        <button onclick="modulo('eldorado');mostra('editais')">Editais Abertos</button>
+        <button onclick="modulo('eldorado');mostra('bussola')">Bússola</button>
+      </nav>
+    </div>
+    <div class="hotzona-bz">
+      <button class="quieto" onclick="modulo('farol')"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#0B4EA2" stroke-width="1.8"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M8 21h8"/></svg>FAROL DE ALEXANDRIA</button>
+      <nav class="submenu" aria-label="Seções do Farol">
+        <button onclick="modulo('farol');mostra('f-documentos')">Documentos</button>
+        <button onclick="modulo('farol');mostra('f-editais')">Editais Abertos</button>
+        <button onclick="modulo('farol');mostra('f-biblioteca')">Biblioteca</button>
+      </nav>
+    </div>
   </div>
 </div>
 <img class="bz-logo" src="arte/logo-oficial.png" alt="A.M.C. Jardim América">
 <div></div>
 </div>
 
-<!-- 6 cartões de números reais -->
 <div class="bz-cards" id="bz-cards"></div>
 
-<!-- mapa + atualizações | aderência -->
-<div class="bz-meio">
-<div class="cartao">
-  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Mapa de oportunidades</div>
+<!-- 1 · MAPA DE OPORTUNIDADES — monitor da etapa 1 (levantamento) -->
+<div class="cartao" style="margin-bottom:16px">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Mapa de oportunidades
+    <span class=meta style="font-weight:500" title="Monitor da ETAPA 1 (levantamento). Mostra onde e quando a varredura encontrou indícios de edital, por frente de busca. Ainda sem a confirmação da etapa 2.">— levantamento por dia, frente e território</span></div>
+  <div class="bz-filtros" id="mp-filtros" style="margin:10px 0 12px">
+    <select id="mp-mes"></select>
+    <select id="mp-frente"><option value="">Todas as frentes</option></select>
+    <select id="mp-sit"><option value="">Encontrado e ausente</option><option value="encontrado">Só encontrado</option><option value="ausente">Só ausente</option></select>
+    <select id="mp-uf"><option value="">Todo o Brasil</option></select>
+    <span class="bz-limpar" onclick="mpLimpar()">⨯ Limpar filtros</span>
+  </div>
   <div class="bz-mapa-grade">
     <div><img class="bz-rosa" src="arte/rosa-ventos.png" alt="">
-      <div class="bz-legenda">
-        <span><span class=ponto style="background:#F09B2E"></span>Oportunidade aberta</span>
-        <span><span class=ponto style="background:#2F79D0"></span>Em verificação</span>
-        <span><span class=ponto style="background:#9AA4B2"></span>Encerrada</span>
-      </div></div>
+      <div class="bz-legenda" id="mp-legenda"></div>
+    </div>
     <div id="bz-mapa"></div>
     <div>
       <div class="bz-atual" id="bz-atual"></div>
       <span class="verlink" onclick="mostra('editais')">Ver todas as atualizações →</span>
     </div>
   </div>
+  <p class="meta" style="margin:14px 0 8px"><strong>Monitor de integridade:</strong> um quadro por dia.
+    Verde embaixo = busca executada e íntegra; âmbar = busca com falhas; apagado = sem execução
+    (a varredura roda às segundas e sextas). <strong>Encontrado</strong> = a varredura trouxe indícios de
+    edital naquele dia; <strong>Ausente</strong> = nada encontrado. Os pontos de cor indicam as frentes
+    que captaram. Clique no dia para o detalhe.</p>
+  <div class="legenda" id="mp-frentes" style="margin-bottom:10px"></div>
+  <div class="bgrade" id="mp-grade"></div>
 </div>
+
+<!-- 2 · BÚSSOLA -->
+<div class="cartao" style="margin-bottom:16px">
+  <div class="calcab">
+    <div style="display:flex;align-items:center;gap:9px">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C05E00" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1 5.1-2.2z" stroke-linejoin="round"/><circle cx="12" cy="12" r="1" fill="#C05E00"/></svg>
+      <h2 style="margin:0;font-size:18px">Bússola <span style="font-weight:500;color:var(--suave);font-size:14px">— monitoramento das buscas</span></h2>
+    </div>
+    <span style="margin-left:auto"></span>
+    <button onclick="mudaMesB(-1)">‹ anterior</button>
+    <h2 id="bus-titulo" style="font-size:15px;margin:0 6px"></h2>
+    <button onclick="mudaMesB(1)">seguinte ›</button>
+  </div>
+  <div class="bz-filtros" style="margin:10px 0 12px">
+    <select id="bs-assoc"><option value="">Associação</option></select>
+    <select id="bs-uf"><option value="">UF</option></select>
+    <select id="bs-area"><option value="">Área</option></select>
+    <select id="bs-nivel"><option value="">Nível</option></select>
+    <select id="bs-prazo"><option value="abertos">Inscrições abertas</option><option value="encerrados">Inscrições encerradas</option></select>
+    <span class="bz-limpar" onclick="bsLimpar()">⨯ Limpar filtros</span>
+  </div>
+  <div class="mets" id="bus-mets" style="margin:4px 0 14px"></div>
+  <div class="bgrade" id="bus-grade"></div>
+</div>
+
+<!-- 3 · FONTES COM EDITAL ABERTO -->
+<div class="cartao" style="margin-bottom:16px">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <h3 style="margin:0;font-size:16px">Fontes com edital aberto</h3>
+    <span class=meta style="margin-left:auto" id="fa-resumo"></span>
+  </div>
+  <p class="meta" style="margin:6px 0 10px">Editais já validados, consolidados por fonte, com link de acesso e anexos conhecidos. O filtro abaixo rege esta lista.</p>
+  <div class="bz-filtros" style="margin:0 0 12px">
+    <select id="bz-assoc"><option value="">Associação</option></select>
+    <select id="bz-uf"><option value="">UF</option></select>
+    <select id="bz-area"><option value="">Área</option></select>
+    <select id="bz-nivel"><option value="">Nível</option></select>
+    <select id="bz-prazo"><option value="abertos">Inscrições abertas</option><option value="encerrados">Inscrições encerradas</option></select>
+    <span class="bz-limpar" onclick="bzLimpar()">⨯ Limpar filtros</span>
+  </div>
+  <div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
+  <div id="bus-fontes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px"></div>
+</div>
+
+<!-- 4 · FILTRO DE OPORTUNIDADES (tabela) -->
+<div class="cartao" style="margin-bottom:16px">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Filtro de Oportunidades
+    <span class=meta style="font-weight:500" title="Mesma seleção aplicada às Fontes com edital aberto.">— resultado da seleção acima</span></div>
+  <table class="bz-tab" id="bz-tab"><thead><tr>
+    <th>Oportunidade</th><th>Fonte</th><th>Área</th><th>Nível</th><th>Valor estimado</th><th>Prazo final</th><th>Aderência</th><th></th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
+<!-- 5 · MONITORAMENTOS ENCONTRADOS (indícios ainda incompletos) -->
+<div class="cartao" style="margin-bottom:16px">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Monitoramentos encontrados
+    <span class=meta style="font-weight:500" title="Indícios de edital ainda INCOMPLETOS: cada identificação abre campanha de até 30 dias atrás do edital integral. Sai desta lista quando completa (vira edital verificado) ou quando expira para revisão humana.">— indícios em campanha de 30 dias</span></div>
+  <p class="meta" id="bz-mon-nota" style="margin:6px 0 10px"></p>
+  <table class="bz-tab" id="bz-mon"><thead><tr>
+    <th>Identificação</th><th>Fonte</th><th>Campanha</th><th>Tentativas</th><th>Prazo detectado</th><th>Pendências</th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
+<!-- Farol de aderência -->
 <div class="cartao">
   <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Farol de aderência
     <span class=meta title="Notas por dimensão calculadas pelo Farol de Alexandria a partir do perfil da associação e dos requisitos de cada edital." style="cursor:help">ⓘ</span></div>
   <div class="bz-gauge" id="bz-gauge" style="--p:0"><div><span class="g" id="bz-nota">—</span><span class="g100">/100</span><div class=meta style="margin-top:4px">Aderência geral</div><div id="bz-classe" style="font-weight:800;color:#0B4EA2">—</div></div></div>
   <div id="bz-dimensoes"></div>
   <button style="width:100%;margin-top:12px;color:#0B4EA2;font-weight:700;border-color:#9FC1E8" onclick="modulo('farol')">⚓ Ver detalhes do Farol</button>
-</div>
-</div>
-
-<!-- monitoramentos em andamento: a busca só termina quando encontra -->
-<div class="cartao" style="margin-bottom:16px">
-  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Monitoramentos encontrados
-    <span class=meta style="font-weight:500" title="Cada identificação em diário oficial abre uma campanha de até 30 dias consecutivos atrás do edital integral (texto, datas e documentos-modelo) nos sites oficiais. A busca só termina quando encontra — ou expira para revisão humana.">— campanha de completude (30 dias)</span></div>
-  <table class="bz-tab" id="bz-mon"><thead><tr>
-    <th>Identificação</th><th>Fonte</th><th>Campanha</th><th>Tentativas</th><th>Prazo detectado</th><th>Pendências</th>
-  </tr></thead><tbody></tbody></table>
-</div>
-
-<!-- filtro e tabela -->
-<div class="cartao" style="margin-bottom:16px">
-  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-    <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Filtro de Oportunidades
-      <span class=meta style="font-weight:500" title="Somente editais com verificação dupla (fonte + conteúdo completo) entram aqui e no restante do Dashboard.">— só editais completos</span></div>
-    <div class="bz-filtros">
-      <select id="bz-assoc"><option value="">Associação</option><option value="amc">A.M.C. Jardim América</option></select>
-      <select id="bz-uf"><option value="">UF</option></select>
-      <select id="bz-area"><option value="">Área</option></select>
-      <select id="bz-nivel"><option value="">Nível</option></select>
-      <select id="bz-prazo"><option value="">Prazo</option><option value="abertos">Inscrições abertas</option><option value="encerrados">Inscrições encerradas</option></select>
-      <span class="bz-limpar" onclick="bzLimpar()">⨯ Limpar filtros</span>
-    </div>
-  </div>
-  <table class="bz-tab" id="bz-tab"><thead><tr>
-    <th>Oportunidade</th><th>Fonte</th><th>Área</th><th>Nível</th><th>Valor estimado</th><th>Prazo final</th><th>Aderência</th><th></th>
-  </tr></thead><tbody></tbody></table>
-</div>
-
-<div class="cartao" style="margin-bottom:14px">
-<div class="calcab">
-<div style="display:flex;align-items:center;gap:9px">
-<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#C05E00" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1 5.1-2.2z" stroke-linejoin="round"/><circle cx="12" cy="12" r="1" fill="#C05E00"/></svg>
-<h2 style="margin:0;font-size:18px">Bússola <span style="font-weight:500;color:var(--suave);font-size:14px">— monitoramento das buscas</span></h2>
-</div>
-<span style="margin-left:auto"></span>
-<button onclick="mudaMesB(-1)">‹ anterior</button>
-<h2 id="bus-titulo" style="font-size:15px;margin:0 6px"></h2>
-<button onclick="mudaMesB(1)">seguinte ›</button>
-</div>
-<div class="mets" id="bus-mets" style="margin:4px 0 14px"></div>
-<p class="meta" style="margin:0 0 10px">Monitor de integridade: um quadro por dia. Verde embaixo = busca executada e validada; âmbar = busca com falhas; apagado = sem execução (a varredura roda às segundas e sextas). Clique no dia para o detalhe.</p>
-<div class="bgrade" id="bus-grade"></div>
-</div>
-<div class="cartao">
-<h3 style="margin:0 0 4px;font-size:16px">Fontes com edital aberto</h3>
-<p class="meta" style="margin:0 0 12px">Cada fonte em sua caixa, com o link de acesso e os documentos anexos conhecidos de cada edital, para validação e pesquisa. Legenda por tipo de fonte extraída:</p>
-<div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
-<div id="bus-fontes" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px"></div>
 </div>
 </section>
 
@@ -654,6 +700,11 @@ function abreModal(cab,corpo){$("m-cab").innerHTML=cab;$("m-corpo").innerHTML=co
 const VISTAS=["inicio","calendario","editais","bussola","f-documentos","f-editais","f-biblioteca"];
 let vAtual=null;
 function trocaVista(v){VISTAS.forEach(x=>$("v-"+x).classList.toggle("oculto",x!==v));
+  // a Bússola tem navegação própria por hover (como a página inicial)
+  const soHover = (v==="bussola");
+  $("topo-modulos").classList.toggle("oculto",soHover||v==="inicio");
+  $("nav-eldorado").classList.toggle("oculto",soHover||!$("bt-eldorado").classList.contains("on"));
+  $("nav-farol").classList.toggle("oculto",soHover||!$("bt-farol").classList.contains("on"));
   document.querySelectorAll(".subnav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
   $("bt-inicio").classList.toggle("on",v==="inicio");vAtual=v;}
 window.mostra=function(v,imediato){
@@ -1152,6 +1203,22 @@ function desenhaEditais(){
 /* ================= BÚSSOLA ================= */
 let busAno,busMes;
 window.mudaMesB=function(dx){busMes+=dx;if(busMes<0){busMes=11;busAno--;}if(busMes>11){busMes=0;busAno++;}desenhaBussola();};
+window.bsLimpar=function(){["bs-assoc","bs-uf","bs-area","bs-nivel"].forEach(id=>$(id).value="");
+  $("bs-prazo").value="abertos";desenhaBussola();};
+function iniciaBussolaFiltros(){
+  const eds=D.editais||[];
+  const enche=(id,vals,rot)=>{const s=$(id);s.length=1;
+    vals.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=rot?rot(v):v;s.appendChild(o);});};
+  enche("bs-assoc",((D.farol_resumo||{}).associacoes_publicas||[]).map(a=>a.slug),
+        s=>(((D.farol_resumo||{}).associacoes_publicas||[]).find(a=>a.slug===s)||{}).nome||s);
+  enche("bs-uf",[...new Set(eds.map(e=>e.uf).filter(Boolean))].sort());
+  enche("bs-area",[...new Set(eds.map(e=>e.area))].sort(),a=>AREA(a).rotulo);
+  const NIV={federal:"Federal",estadual:"Estadual",municipal:"Municipal"};
+  enche("bs-nivel",["federal","estadual","municipal"]
+        .filter(n=>eds.some(e=>e.nivel===n)),n=>NIV[n]);
+  ["bs-assoc","bs-uf","bs-area","bs-nivel","bs-prazo"].forEach(id=>
+    $(id).addEventListener("input",desenhaBussola));
+}
 function desenhaBussola(){
   $("bus-titulo").textContent=MES[busMes]+" de "+busAno;
   const porData={};(D.bussola&&D.bussola.dias||[]).forEach(d=>porData[d.data]=d);
@@ -1194,9 +1261,28 @@ function desenhaBussola(){
   }
   const cat=(D.bussola&&D.bussola.categorias)||{};
   $("bus-legenda").innerHTML=Object.values(cat).map(c=>`<span><span class=ponto style="background:${c.cor}"></span>${esc(c.rotulo)}</span>`).join("");
+  desenhaFontesAbertas();
+}
+/* Fontes com edital aberto: consolidado dos editais VALIDADOS, regido pelo
+   mesmo filtro do «Filtro de Oportunidades» logo abaixo. */
+function editaisFiltradosBz(){
+  const eds=D.editais||[];
+  const uf=$("bz-uf").value,ar=$("bz-area").value,ni=$("bz-nivel").value,pz=$("bz-prazo").value;
+  return eds.filter(e=>(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))
+    &&(!ar||e.area===ar)&&(!ni||e.nivel===ni)
+    &&(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export)
+                     :e.estado_export==="encerrado"));
+}
+function desenhaFontesAbertas(){
+  const cat=(D.bussola&&D.bussola.categorias)||{};
   const fx=$("bus-fontes");fx.innerHTML="";
-  const fontes=(D.bussola&&D.bussola.fontes_com_editais)||[];
-  if(!fontes.length)fx.innerHTML='<div class=cartao style="grid-column:1/-1">Nenhuma fonte com edital aberto no momento.</div>';
+  const sel=new Set(editaisFiltradosBz().map(e=>e.id));
+  const fontes=((D.bussola&&D.bussola.fontes_com_editais)||[])
+    .map(f=>({...f,editais:f.editais.filter(e=>sel.has(e.id))}))
+    .filter(f=>f.editais.length);
+  const nEd=fontes.reduce((s,f)=>s+f.editais.length,0);
+  $("fa-resumo").textContent=`${fontes.length} fonte(s) · ${nEd} edital(is) na seleção`;
+  if(!fontes.length)fx.innerHTML='<div class=cartao style="grid-column:1/-1">Nenhuma fonte com edital nesta seleção.</div>';
   fontes.forEach(f=>{
     const c=(cat[f.categoria]||{cor:"#607086",rotulo:f.categoria});
     const div=document.createElement("div");div.className="cartao";div.style.borderTop=`4px solid ${c.cor}`;
@@ -1214,9 +1300,105 @@ function desenhaBussola(){
 }
 
 
+/* ============ MAPA DE OPORTUNIDADES · monitor da ETAPA 1 ============
+   Absorve o monitor de integridade e as frentes de busca: cada dia do mês
+   mostra se a varredura ENCONTROU indícios (verde) ou ficou AUSENTE
+   (vermelho, sem pontos de cor), com um ponto por frente que captou.
+   Ainda sem a confirmação da etapa 2 — é levantamento puro. */
+let mpFiltro={mes:null,frente:"",sit:"",uf:""};
+window.mpLimpar=function(){["mp-frente","mp-sit","mp-uf"].forEach(id=>$(id).value="");
+  mpFiltro={...mpFiltro,frente:"",sit:"",uf:""};desenhaMapaMonitor();desenhaBzMapa();};
+function diasDaBussola(){return (D.bussola&&D.bussola.dias)||[];}
+function mesesComBusca(){
+  return [...new Set(diasDaBussola().map(d=>d.data.slice(0,7)))].sort().reverse();
+}
+function desenhaMapaMonitor(){
+  const CAT=(D.bussola&&D.bussola.categorias)||{};
+  const dias=diasDaBussola();
+  const mes=mpFiltro.mes||(mesesComBusca()[0])||new Date().toISOString().slice(0,7);
+  const [ano,m]=mes.split("-").map(Number);
+  const nd=new Date(ano,m,0).getDate();
+  const porData={};dias.forEach(d=>porData[d.data]=d);
+  // legenda das frentes, com a cobertura observada
+  const cob=(D.bussola&&D.bussola.frentes_cobertura)||{};
+  $("mp-frentes").innerHTML=Object.entries(CAT).map(([k,c])=>
+    `<span title="${esc(c.rotulo)} — dias com captação nesta frente: ${cob[k]??0}${cob[k]?"":" (frente sem captação no período)"}">
+      <span class=ponto style="background:${c.cor};${cob[k]?"":"opacity:.35"}"></span>${esc(c.rotulo)}
+      <b style="color:var(--suave);font-weight:600">${cob[k]??0}</b></span>`).join("");
+  $("mp-legenda").innerHTML=
+    `<span><span class=ponto style="background:#F09B2E"></span>Oportunidade aberta</span>
+     <span><span class=ponto style="background:#2F79D0"></span>Em verificação</span>
+     <span><span class=ponto style="background:#9AA4B2"></span>Encerrada</span>
+     <hr style="border:0;border-top:1px solid var(--linha);width:100%;margin:4px 0">
+     <span><span class=ponto style="background:var(--ok)"></span>Encontrado</span>
+     <span><span class=ponto style="background:var(--urgente)"></span>Ausente</span>`;
+  const SEM=["DOM","SEG","TER","QUA","QUI","SEX","SAB"];
+  const g=$("mp-grade");g.innerHTML="";
+  for(let dia=1;dia<=nd;dia++){
+    const iso=`${ano}-${String(m).padStart(2,"0")}-${String(dia).padStart(2,"0")}`;
+    const reg=porData[iso];
+    const dt=new Date(iso+"T00:00:00");
+    // filtros de navegação
+    // filtrar por frente esconde também os dias sem execução
+    if(mpFiltro.frente&&!(reg&&(reg.categorias_ativas||[]).includes(mpFiltro.frente)))continue;
+    if(mpFiltro.sit==="encontrado"&&!(reg&&reg.encontrado))continue;
+    if(mpFiltro.sit==="ausente"&&(reg&&reg.encontrado))continue;
+    const el=document.createElement("div");
+    const situ=reg?(reg.encontrado?"encontrado":"ausente"):"vazio";
+    el.className="bdia "+(reg?(reg.integridade==="integra"?"ok":"falha"):"vazio")+" s-"+situ;
+    const pontos=reg&&reg.encontrado
+      ? (reg.categorias_ativas||[]).map(c=>`<span class=ponto title="${esc((CAT[c]||{}).rotulo||c)}" style="background:${(CAT[c]||{}).cor||"#607086"};width:8px;height:8px"></span>`).join("")
+      : "";
+    el.innerHTML=`<div class=n>${dia}<span class=sem>${SEM[dt.getDay()]}</span></div>
+      <div class="s ${situ}">${reg?(reg.encontrado?"Encontrado":"Ausente"):"—"}</div>
+      <div class=pts>${pontos}</div>`;
+    if(reg){
+      ligaTip(el,`<strong>${br(iso)}</strong> — ${reg.encontrado?"<span style='color:#7CE0A8'>ENCONTRADO</span>":"<span style='color:#FF9C93'>AUSENTE</span>"}<br>
+        frentes que captaram: ${(reg.categorias_ativas||[]).map(c=>esc((CAT[c]||{}).rotulo||c)).join(", ")||"nenhuma"}<br>
+        integridade: ${reg.integridade==="integra"?"íntegra":"com falhas"} · fontes ok ${reg.fontes_ok} · falhas ${reg.fontes_falha}<br>
+        indícios novos: ${reg.novas}<br><em>clique para detalhes</em>`);
+      el.onclick=()=>abreModal(`<h3 style="margin:0">Levantamento de ${br(iso)}</h3>
+         <div class=meta>etapa 1 — sem confirmação ainda</div>`,
+        `<div class=lin><b>Situação</b><span>${reg.encontrado
+            ?'<span style="color:var(--ok)">Encontrado — houve indício de edital</span>'
+            :'<span style="color:var(--urgente)">Ausente — nada encontrado neste dia</span>'}</span></div>
+         <div class=lin><b>Integridade</b><span>${reg.integridade==="integra"
+            ?'<span style="color:var(--ok)">íntegra — sem falhas de fonte</span>'
+            :'<span style="color:var(--alerta)">com falhas de fonte</span>'}</span></div>
+         <div class=lin><b>Frentes que captaram</b><span>${(reg.categorias_ativas||[]).map(c=>esc((CAT[c]||{}).rotulo||c)).join(" · ")||"—"}</span></div>
+         <div class=lin><b>Camadas executadas</b><span>${esc((reg.camadas||[]).join(", "))}</span></div>
+         <div class=lin><b>Fontes que responderam</b><span>${reg.fontes_ok}</span></div>
+         <div class=lin><b>Fontes com falha</b><span>${reg.fontes_falha}</span></div>
+         <div class=lin><b>Indícios novos</b><span>${reg.novas}</span></div>
+         <p class=meta>Levantamento da etapa 1. A confirmação (etapa 2) roda em seguida e decide o que vira edital verificado.</p>`);
+    } else ligaTip(el,`<strong>${br(iso)}</strong><br>sem execução registrada${[1,5].includes(dt.getDay())?"":" (fora da cadência seg/sex)"}`);
+    g.appendChild(el);
+  }
+  if(!g.children.length)g.innerHTML='<div class=meta style="grid-column:1/-1">Nenhum dia neste filtro.</div>';
+}
+function iniciaMapaMonitor(){
+  const meses=mesesComBusca();
+  const sm=$("mp-mes");sm.innerHTML=meses.map(x=>{
+    const [a,m]=x.split("-");return `<option value="${x}">${MES[Number(m)-1]} de ${a}</option>`;}).join("")
+    ||`<option value="">sem buscas registradas</option>`;
+  mpFiltro.mes=meses[0]||null;
+  const CAT=(D.bussola&&D.bussola.categorias)||{};
+  $("mp-frente").innerHTML='<option value="">Todas as frentes</option>'
+    +Object.entries(CAT).map(([k,c])=>`<option value="${k}">${esc(c.rotulo)}</option>`).join("");
+  const ufs=[...new Set((D.editais||[]).map(e=>e.uf).filter(Boolean))].sort();
+  $("mp-uf").innerHTML='<option value="">Todo o Brasil</option>'
+    +ufs.map(u=>`<option value="${u}">${u}</option>`).join("");
+  ["mp-mes","mp-frente","mp-sit","mp-uf"].forEach(id=>$(id).addEventListener("input",()=>{
+    mpFiltro={mes:$("mp-mes").value||mpFiltro.mes,frente:$("mp-frente").value,
+              sit:$("mp-sit").value,uf:$("mp-uf").value};
+    bzUFsel=mpFiltro.uf;desenhaMapaMonitor();desenhaBzMapa();}));
+  desenhaMapaMonitor();
+}
+
 /* ================= BÚSSOLA · réplica do modelo ================= */
 let bzUFsel="";
-window.bzLimpar=function(){["bz-assoc","bz-uf","bz-area","bz-nivel","bz-prazo"].forEach(id=>$(id).value="");bzUFsel="";desenhaBzTabela();desenhaBzMapa();};
+window.bzLimpar=function(){["bz-assoc","bz-uf","bz-area","bz-nivel"].forEach(id=>$(id).value="");
+  $("bz-prazo").value="abertos";bzUFsel="";desenhaBzTabela();desenhaBzMapa();desenhaFontesAbertas();};
 function desenhaBzCards(){
   const bp=D.bussola_painel||{}; const eds=D.editais||[];
   const IC=c=>({
@@ -1301,9 +1483,7 @@ function desenhaBzTabela(){
   const eds=D.editais||[];
   const uf=$("bz-uf").value,ar=$("bz-area").value,ni=$("bz-nivel").value,pz=$("bz-prazo").value;
   const casaUF=e=>!uf?true:(e.uf===uf||(!e.uf&&e.abrangencia==="nacional"));
-  const rows=eds.filter(e=>casaUF(e)&&(!ar||e.area===ar)&&(!ni||e.nivel===ni)
-    &&(!pz||(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export):e.estado_export==="encerrado")))
-    .sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9))).slice(0,12);
+  const rows=editaisFiltradosBz().sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9))).slice(0,12);
   const tb=$("bz-tab").querySelector("tbody");
   tb.innerHTML=rows.length?rows.map(e=>{
     const dz=dias(e.fim);
@@ -1339,15 +1519,26 @@ function iniciarBz(){
   const areas=[...new Set(eds.map(e=>e.area))].sort();
   const sa=$("bz-area");sa.length=1;areas.forEach(a=>{const o=document.createElement("option");o.value=a;o.textContent=AREA(a).rotulo;sa.appendChild(o);});
   const sn=$("bz-nivel");sn.length=1;[...new Set(eds.map(e=>e.nivel).filter(Boolean))].sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;sn.appendChild(o);});
-  ["bz-uf","bz-area","bz-nivel","bz-prazo"].forEach(id=>$(id).addEventListener("input",()=>{bzUFsel=$("bz-uf").value;desenhaBzMapa();desenhaBzTabela();}));
+  const sa2=$("bz-assoc");sa2.length=1;
+  ((D.farol_resumo||{}).associacoes_publicas||[]).forEach(a=>{
+    const o=document.createElement("option");o.value=a.slug;o.textContent=a.nome;sa2.appendChild(o);});
+  const NIV={federal:"Federal",estadual:"Estadual",municipal:"Municipal"};
+  [...$("bz-nivel").options].forEach(o=>{if(NIV[o.value])o.textContent=NIV[o.value];});
+  ["bz-assoc","bz-uf","bz-area","bz-nivel","bz-prazo"].forEach(id=>$(id).addEventListener("input",()=>{
+    bzUFsel=$("bz-uf").value;desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();}));
   desenhaBzCards();desenhaBzMapa();desenhaBzAtual();desenhaBzAderencia();desenhaBzTabela();desenhaBzMon();
+  iniciaBussolaFiltros();iniciaMapaMonitor();
 }
 function desenhaBzMon(){
   const mon=(D.bussola_painel||{}).monitoramentos||{};
   const tb=$("bz-mon").querySelector("tbody");
-  const rows=mon.amostra||[];
+  // apenas indícios AINDA INCOMPLETOS, dentro da janela de 30 dias
+  const rows=(mon.amostra||[]).filter(m=>m.status==="monitorando"&&m.dia<=30);
+  $("bz-mon-nota").textContent=
+    `${mon.monitorando??0} identificação(ões) em campanha de completude; nenhuma delas `
+    +`entra no Dashboard antes de completar. Mostrando ${rows.length}.`;
   tb.innerHTML=rows.length?rows.map(m=>{
-    const st=m.status==="completo"?["ok","Completo"]:m.status==="expirado"?["acao","Expirado — revisão humana"]:["cap",`Dia ${m.dia}/30`];
+    const st=["cap",`Dia ${m.dia}/30`];
     return `<tr>
     <td class="bz-op"><b>${esc(m.titulo.slice(0,58))}</b><span class=ed>${esc(m.territorio||"")}</span></td>
     <td class=meta>${esc((m.fonte||"").slice(0,26))}</td>

@@ -348,14 +348,37 @@ def _bussola(editais: list[dict]) -> dict:
             d["fontes_ok"] += int(ev.get("fontes_ok") or 0)
             d["fontes_falha"] += int(ev.get("fontes_falha") or 0)
             d["novas"] += int(ev.get("novas") or ev.get("pistas_novas") or 0)
-    dias = [{"data": k, "houve_busca": True, "camadas": sorted(set(v["buscas"])),
-             "fontes_ok": v["fontes_ok"], "fontes_falha": v["fontes_falha"], "novas": v["novas"],
-             "validado": v["fontes_falha"] == 0}
-            for k, v in sorted(por_dia.items())]
+    # Cada camada de busca corresponde a uma frente de coleta (ponto de cor).
+    # A pesquisa deve atuar em TODAS as frentes; o dia mostra em quais houve
+    # captação e se algo foi ENCONTRADO.
+    CAMADA_CATEGORIA = {
+        "coleta_diaria": "site_oficial", "verificacao_social": "rede_social",
+        "coleta_api": "api_oficial", "rmg_diarios": "api_oficial",
+        "capilaridade": "imprensa", "redes_indireta": "rede_social",
+        "retrospectivo": "busca", "carga_historica": "busca",
+        "catalogacao_historica": "busca", "plataformas": "plataforma",
+        "coleta_plataforma": "plataforma", "ciclo_acesso": None,
+    }
+    dias = []
+    for k, v in sorted(por_dia.items()):
+        cats = sorted({c for b in v["buscas"]
+                       if (c := CAMADA_CATEGORIA.get(b))})
+        encontrou = v["novas"] > 0
+        dias.append({
+            "data": k, "houve_busca": True, "camadas": sorted(set(v["buscas"])),
+            "categorias_ativas": cats,
+            "fontes_ok": v["fontes_ok"], "fontes_falha": v["fontes_falha"],
+            "novas": v["novas"],
+            # ENCONTRADO = a varredura trouxe indícios de edital naquele dia
+            "encontrado": encontrou,
+            "situacao": "encontrado" if encontrou else "ausente",
+            "integridade": ("integra" if v["fontes_falha"] == 0 else "com_falhas"),
+            "validado": v["fontes_falha"] == 0,
+        })
     # fontes com edital aberto: caixa própria com links e anexos
-    abertos = [e for e in editais if e["estado_export"] in {"aberto", "a_abrir", "sem_prazo"}]
+    # a caixa consolida por fonte; o filtro do painel decide o que exibir
     por_fonte: dict[str, dict] = {}
-    for e in abertos:
+    for e in editais:
         f = _fontes().get(e["fonte_id"]) or {}
         cx = por_fonte.setdefault(e["fonte_id"], {
             "fonte_id": e["fonte_id"], "fonte_nome": e["fonte_nome"],
@@ -363,9 +386,16 @@ def _bussola(editais: list[dict]) -> dict:
             "categoria": _categoria_fonte(f.get("tipo")),
             "editais": []})
         cx["editais"].append({"id": e["id"], "titulo": e["titulo"], "url": e["url"],
+                              "uf": e.get("uf"), "area": e.get("area"),
+                              "nivel": e.get("nivel"), "fim": e.get("fim"),
+                              "estado_export": e.get("estado_export"),
                               "anexos": e["anexos"],
                               "anexos_pendentes": not e["anexos"]})
+    # frentes que a pesquisa deve percorrer, com a cobertura observada
+    cobertura = {c: sum(1 for d in dias if c in d["categorias_ativas"]) for c in CATEGORIAS_FONTE}
     return {"dias": dias, "categorias": CATEGORIAS_FONTE,
+            "frentes_cobertura": cobertura,
+            "frentes_sem_cobertura": [c for c, n in cobertura.items() if n == 0],
             "fontes_com_editais": sorted(por_fonte.values(), key=lambda x: -len(x["editais"])),
             "regra": "monitor de integridade: cada dia registra se houve busca e o que validou; anexos ausentes são pendência declarada, não omissão silenciosa"}
 

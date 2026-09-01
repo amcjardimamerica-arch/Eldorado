@@ -793,7 +793,7 @@ class SystemTests(unittest.TestCase):
         self.assertLessEqual(len(mon["amostra"]),40)
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for trecho in ("Monitoramentos encontrados","campanha de completude","Dia ${m.dia}/30",
-                       "verificação dupla","só editais completos","sites oficiais"):
+                       "verificação dupla","sites oficiais"):
             self.assertIn(trecho,html,trecho)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.completude",wf)
@@ -1424,6 +1424,77 @@ class SystemTests(unittest.TestCase):
         self.assertIn(".gestrela.projetada",html)      # estilo próprio da projeção
         self.assertIn("ciclo pós-inscrição",html)      # linha do mês seguinte
         self.assertIn("conferir no edital",html)       # projeção sempre declarada
+
+
+    def test_bussola_ordem_e_navegacao(self):
+        """Bússola: sem o topo de navegação (usa hover na arte) e com as caixas
+        na ordem determinada."""
+        import re as _re
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        sec=_re.search(r'<section id="v-bussola".*?\n</section>',html,_re.S).group(0)
+        # navegação por hover, como na página inicial
+        self.assertIn("hotzona-bz",sec)
+        self.assertIn(".hotzona-bz:hover .submenu",html)
+        for item in ("Calendário","Editais Abertos","Bússola","Documentos","Biblioteca"):
+            self.assertIn(item,sec,item)
+        # o topo some quando a vista é a Bússola
+        self.assertIn('const soHover = (v==="bussola")',html)
+        # ordem das caixas
+        ordem=_re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)
+        self.assertEqual([n for n,_ in ordem],["1","2","3","4","5"])
+        rotulos=" ".join(r for _,r in ordem)
+        self.assertIn("MAPA DE OPORTUNIDADES",rotulos)
+        self.assertIn("BÚSSOLA",rotulos)
+        self.assertIn("FONTES COM EDITAL ABERTO",rotulos)
+        self.assertIn("FILTRO DE OPORTUNIDADES",rotulos)
+        self.assertIn("MONITORAMENTOS ENCONTRADOS",rotulos)
+        self.assertLess(sec.find("MAPA DE OPORTUNIDADES"),sec.find("2 · BÚSSOLA"))
+        self.assertLess(sec.find("2 · BÚSSOLA"),sec.find("FONTES COM EDITAL ABERTO"))
+        self.assertLess(sec.find("FONTES COM EDITAL ABERTO"),sec.find("FILTRO DE OPORTUNIDADES"))
+        self.assertLess(sec.find("FILTRO DE OPORTUNIDADES"),sec.find("MONITORAMENTOS ENCONTRADOS"))
+
+    def test_mapa_monitor_etapa1(self):
+        """O Mapa de Oportunidades absorveu o monitor: Encontrado/Ausente por
+        dia, pontos de cor por frente e filtros de navegação."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("Encontrado",html); self.assertIn("Ausente",html)
+        self.assertNotIn(">validado<",html)          # a palavra foi trocada
+        self.assertIn("Monitor de integridade",html) # texto preservado
+        self.assertIn("varredura roda às segundas e sextas",html)
+        for f in ("mp-mes","mp-frente","mp-sit","mp-uf"):
+            self.assertIn(f,html,f)
+        self.assertIn("desenhaMapaMonitor",html)
+        # dia ausente não mostra ponto de cor
+        self.assertIn("reg&&reg.encontrado",html)
+        d=dash_coletar(date(2026,9,2))
+        b=d["bussola"]
+        self.assertIn("frentes_cobertura",b)
+        for dia in b["dias"]:
+            self.assertIn(dia["situacao"],("encontrado","ausente"))
+            self.assertIn(dia["integridade"],("integra","com_falhas"))
+            self.assertIsInstance(dia["categorias_ativas"],list)
+            if not dia["encontrado"]:
+                self.assertEqual(dia["novas"],0)
+        # as seis frentes seguem declaradas, mesmo sem captação
+        for frente in ("site_oficial","api_oficial","plataforma","rede_social",
+                       "imprensa","busca"):
+            self.assertIn(frente,b["categorias"],frente)
+            self.assertIn(frente,b["frentes_cobertura"],frente)
+
+    def test_fontes_regidas_pelo_filtro(self):
+        """As caixas de Fontes com edital aberto e a tabela de Oportunidades
+        respondem ao mesmo filtro; monitoramentos só trazem incompletos."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("function editaisFiltradosBz()",html)
+        self.assertIn("desenhaFontesAbertas()",html)
+        self.assertIn('m.status==="monitorando"&&m.dia<=30',html)  # só em campanha
+        self.assertIn("fa-resumo",html)
+        d=dash_coletar(date(2026,9,2))
+        # as caixas trazem os campos que o filtro usa
+        for f in d["bussola"]["fontes_com_editais"]:
+            for e in f["editais"]:
+                for campo in ("uf","area","nivel","estado_export"):
+                    self.assertIn(campo,e,campo)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
