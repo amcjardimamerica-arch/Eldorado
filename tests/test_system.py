@@ -672,9 +672,8 @@ class SystemTests(unittest.TestCase):
                 self.assertIsNotNone(e["publicado_em"])
         html=open("docs/dashboard.html",encoding="utf-8").read()
         # calendário: barra só com ambas; bandeira de prazo para só-fim; nota p/ excluídos
-        self.assertIn('e.datas==="ambas"',html)
+        self.assertIn("ciclo_do_edital",open("src/dashboard_dados.py",encoding="utf-8").read())
         self.assertIn("gprazo",html)
-        self.assertIn("sem datas de inscrição confirmadas",html)
         self.assertIn("abertura não declarada na fonte",html)
 
     def test_recorte_operacional_do_painel(self):
@@ -945,10 +944,11 @@ class SystemTests(unittest.TestCase):
         self.assertIn("position:absolute",bloco)   # camada própria
         self.assertIn("z-index",bloco)             # acima da barra
         # aparece nas duas formas de linha (barra completa e bandeira de prazo)
-        # três ramos desenham estrelas: período completo, bandeira de prazo e
-        # o mês seguinte com o ciclo pós-inscrição
-        self.assertEqual(html.count("${hoje}${estrelas(e)}"),3)
-        self.assertIn("gestrela recurso",html)     # recurso em cor distinta
+        # o ciclo é desenhado numa única faixa por edital (inscrição, estrela
+        # do resultado e barra de recurso)
+        self.assertIn("<div class=gfaixa>${hoje}${faixa}</div>",html)
+        # o recurso deixou de ser estrela e virou BARRA (regra 3 do titular)
+        self.assertIn("gbarra grecurso",html)
 
     def test_arquivamento_na_biblioteca(self):
         """Edital removido da análise tem as informações arquivadas na pasta
@@ -1416,13 +1416,11 @@ class SystemTests(unittest.TestCase):
         self.assertFalse(m[0]["projetado"])
         self.assertTrue(m[1]["projetado"] and m[2]["projetado"])
         self.assertEqual(m[1]["data"],"2027-01-15")   # +15 dias
-        self.assertEqual(m[2]["data"],"2027-01-20")   # +20 dias
+        self.assertEqual(m[2]["data"],"2027-01-16")   # recurso abre no dia seguinte
         for x in m[1:]: self.assertIn("praxe",x["base"])
         self.assertEqual(_marcos_projetados(None),[])
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn("gestrela projetada",html) if "gestrela projetada" in html else None
         self.assertIn(".gestrela.projetada",html)      # estilo próprio da projeção
-        self.assertIn("ciclo pós-inscrição",html)      # linha do mês seguinte
         self.assertIn("conferir no edital",html)       # projeção sempre declarada
 
 
@@ -1535,6 +1533,60 @@ class SystemTests(unittest.TestCase):
         # o filtro do radar continua regendo o calendário
         self.assertIn("gFiltrados=semFiltro?null:filt",html)
         self.assertIn("desenhaGantt();desenhaFila();",html)
+
+
+    def test_ciclo_do_edital_tres_faixas(self):
+        """Calendário de Editais: inscrição (barra), resultado (estrela) e
+        recurso (barra), na cor da área. Datas publicadas prevalecem."""
+        from src.dashboard_dados import ciclo_do_edital
+        # datas publicadas
+        pub={"inicio":"2026-09-03","fim":"2026-09-18","marcos":[
+            {"tipo":"resultado_preliminar","data":"2026-09-25"},
+            {"tipo":"recurso","data":"2026-09-26","fim":"2026-09-30"}]}
+        c=ciclo_do_edital(pub)
+        self.assertEqual(c["inscricao"],{"inicio":"2026-09-03","fim":"2026-09-18",
+                                         "projetado":False})
+        self.assertEqual(c["resultado"]["data"],"2026-09-25")
+        self.assertFalse(c["resultado"]["projetado"])
+        self.assertEqual((c["recurso"]["inicio"],c["recurso"]["fim"]),
+                         ("2026-09-26","2026-09-30"))
+        self.assertEqual(c["fim_do_ciclo"],"2026-09-30")
+        # sem publicação: projeção declarada, recurso vira PERÍODO de 5 dias
+        from src.dashboard_dados import _marcos_projetados
+        proj={"inicio":None,"fim":"2026-09-18","marcos":_marcos_projetados("2026-09-18")}
+        c2=ciclo_do_edital(proj)
+        self.assertIsNone(c2["inscricao"]["inicio"])
+        self.assertIn("não declarada",c2["inscricao"]["nota"])
+        self.assertTrue(c2["resultado"]["projetado"])
+        self.assertEqual(c2["resultado"]["data"],"2026-10-03")     # +15
+        self.assertEqual(c2["recurso"]["inicio"],"2026-10-04")     # dia seguinte
+        self.assertEqual(c2["recurso"]["fim"],"2026-10-08")        # +5 dias
+        self.assertTrue(c2["recurso"]["projetado"])
+        # sem prazo nenhum
+        c3=ciclo_do_edital({"inicio":None,"fim":None,"marcos":[]})
+        self.assertIsNone(c3["inscricao"]); self.assertIsNone(c3["fim_do_ciclo"])
+        d=dash_coletar(date(2026,9,2))
+        for e in d["editais"]:
+            self.assertIn("ciclo",e,e["id"])
+
+    def test_calendario_so_validados_e_ate_o_fim_do_ciclo(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        # só editais que cumpriram a etapa 2, e enquanto não arquivados
+        self.assertIn('(e.etapa||1)>=2 && estadoDe(e.id)==="em_andamento"',html)
+        # as três faixas
+        self.assertIn("1 · INSCRIÇÃO",html)
+        self.assertIn("2 · RESULTADO",html)
+        self.assertIn("3 · RECURSO",html)
+        self.assertIn("grecurso",html)
+        self.assertIn(".grecurso{",html)
+        # cor da área nas três
+        self.assertIn("const c=e.ciclo, cor=AREA(e.area).cor",html)
+        # permanece no calendário durante o ciclo, mesmo com inscrição encerrada
+        self.assertIn("fim_do_ciclo",html)
+        self.assertIn("em curso",html)
+        # legenda explica as três faixas
+        for rot in ("inscrição</span>","resultado</span>","recurso</span>"):
+            self.assertIn(rot,html,rot)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

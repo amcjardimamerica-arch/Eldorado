@@ -121,6 +121,10 @@ animation:brilho 1.9s ease-in-out infinite}
 @media(prefers-reduced-motion:reduce){.gestrela{animation:none;opacity:1}}
 .gestrela.projetada{animation:none;opacity:.85;font-weight:700}
 .gestrela.recurso{color:#E8503A;text-shadow:0 0 5px #E8503A99,0 0 11px #E8503A55}
+/* faixa do prazo recursal: mesma cor da área, listrada para distinguir da inscrição */
+.grecurso{background-image:repeating-linear-gradient(45deg,#ffffff00 0 5px,#ffffff59 5px 10px);
+font-size:9.5px;letter-spacing:.03em}
+.grecurso.projetada{outline:1px dashed #ffffffaa;outline-offset:-2px}
 .gprazo{border-radius:5px;min-width:20px!important;font-size:12px}
 .gprazorot{position:absolute;top:2px;bottom:2px;display:flex;align-items:center;padding-left:5px;font-size:10px;font-weight:700;color:var(--suave);white-space:nowrap}
 .gbarra{position:absolute;top:2px;bottom:2px;border-radius:11px;color:#fff;font-size:10px;font-weight:600;
@@ -941,109 +945,100 @@ let gAno,gMes,gFiltrados=null;   // gFiltrados = recorte vindo do filtro da pág
 window.mudaMesG=function(dx){gMes+=dx;if(gMes<0){gMes=11;gAno--;}if(gMes>11){gMes=0;gAno++;}desenhaGantt();};
 function desenhaGantt(){
   $("g-mes").textContent=MES[gMes]+" "+gAno;
-  // seletor com TODOS os meses do ano corrente do calendário
   $("g-meses").innerHTML=MES.map((m,i)=>
     `<button data-m="${i}" class="${i===gMes?"on":""}">${m.slice(0,3)}</button>`).join("");
   $("g-meses").querySelectorAll("button").forEach(b=>b.onclick=()=>{gMes=Number(b.dataset.m);desenhaGantt();});
 
   const ini=new Date(gAno,gMes,1),fim=new Date(gAno,gMes+1,0),nd=fim.getDate();
   const SEM=["DOM","SEG","TER","QUA","QUI","SEX","SAB"];
-  // projetos cujo período de inscrição toca o mês
-  const base=gFiltrados||D.editais||[];
-  /* Precisão de datas: barra completa SÓ com início E fim declarados na fonte;
-     com apenas o PRAZO FINAL declarado, marca-se a bandeira do prazo no dia
-     exato; data de publicação NUNCA vira início de inscrição. */
-  const comAmbas=base.filter(e=>e.datas==="ambas");
-  const soFim=base.filter(e=>e.datas==="so_fim");
-  /* marcos do próprio edital (encerramento, resultado e recurso projetados a
-     partir do prazo de inscrição) — desenhados na MESMA COR da área */
-  const marcosDoEdital=e=>(e.marcos||[]).filter(m=>{
-    if(!m.data)return false;
-    const dt=new Date(m.data+"T00:00:00");
-    return dt.getFullYear()===gAno&&dt.getMonth()===gMes;});
-  const semData=base.length-comAmbas.length-soFim.length;
-  const tocaMes=e=>{const a=new Date(e.inicio+"T00:00:00"),b=new Date(e.fim+"T00:00:00");
-    return a<=fim&&b>=ini;};
-  const fimNoMes=e=>{const b=new Date(e.fim+"T00:00:00");return b>=ini&&b<=fim;};
-  /* também entram os editais cujo RESULTADO ou RECURSO cai neste mês, mesmo
-     que a inscrição tenha encerrado antes — é o ciclo completo do certame */
-  const temMarcoNoMes=e=>marcosDoEdital(e).length>0;
-  const noMesBase=[...comAmbas.filter(tocaMes),...soFim.filter(fimNoMes)];
-  const jaTem=new Set(noMesBase.map(e=>e.id));
-  const soMarcos=base.filter(e=>!jaTem.has(e.id)&&temMarcoNoMes(e));
-  const noMes=[...noMesBase,...soMarcos];
-  const eds=[...noMes].sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9))).slice(0,8);
+  const ddmm=iso=>`${iso.slice(8,10)}/${iso.slice(5,7)}`;
+  const dia=iso=>Number(iso.slice(8,10));
+  const dentro=iso=>{const d0=new Date(iso+"T00:00:00");return d0>=ini&&d0<=fim;};
+  const cruza=(a,b)=>{const A=new Date(a+"T00:00:00"),B=new Date(b+"T00:00:00");
+    return A<=fim&&B>=ini;};
+  const recorte=(a,b)=>{const A=new Date(a+"T00:00:00"),B=new Date(b+"T00:00:00");
+    return [Math.max(1,A<ini?1:A.getDate()),Math.min(nd,B>fim?nd:B.getDate()),A<ini,B>fim];};
+  const pct=(d1,d2)=>[((d1-1)/nd*100).toFixed(2),((d2-d1+1)/nd*100).toFixed(2)];
 
-  // cabeçalho: dia + dia da semana, ocupando toda a largura até a margem
+  /* Só editais CONHECIDOS E VALIDADOS (etapa 2 cumprida). O edital permanece
+     enquanto o ciclo estiver em curso — sai apenas quando arquivado pelo
+     titular (inscrição realizada ou descarte). */
+  const base=(gFiltrados||D.editais||[])
+    .filter(e=>(e.etapa||1)>=2 && estadoDe(e.id)==="em_andamento" && e.ciclo);
+  const tocaMes=e=>{
+    const c=e.ciclo;
+    return (c.inscricao&&c.inscricao.inicio&&cruza(c.inscricao.inicio,c.inscricao.fim))
+      || (c.inscricao&&!c.inscricao.inicio&&c.inscricao.fim&&dentro(c.inscricao.fim))
+      || (c.resultado&&dentro(c.resultado.data))
+      || (c.recurso&&cruza(c.recurso.inicio,c.recurso.fim));};
+  const noMes=base.filter(tocaMes);
+  const eds=[...noMes].sort((a,b)=>
+    String(a.ciclo.inscricao&&a.ciclo.inscricao.fim||a.ciclo.fim_do_ciclo)
+      .localeCompare(String(b.ciclo.inscricao&&b.ciclo.inscricao.fim||b.ciclo.fim_do_ciclo))).slice(0,8);
+  const foraDoFiltro=base.length-noMes.length;
+
   const diasCab=Array.from({length:nd},(_,i)=>{
     const dt=new Date(gAno,gMes,i+1);
     return `<span><b>${i+1}</b><i>${SEM[dt.getDay()]}</i></span>`;}).join("");
   let linhas=`<div class=gantt style="--nd:${nd}"><div></div><div class=gdias>${diasCab}</div>`;
-  if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">${gFiltrados?"Nenhum período de inscrição neste mês para o filtro selecionado.":"Nenhum período de inscrição neste mês."}</div>`;
-  const ddmm=iso=>`${iso.slice(8,10)}/${iso.slice(5,7)}`;
-  /* marcos de decisão do mês, por edital: resultado preliminar/final e recurso */
-  const DEC=(D.calendario_decisao||{}).marcos||[];
-  const decDoMes=id=>DEC.filter(m=>{
-    if(m.edital_id!==id||!m.data)return false;
-    const dt=new Date(m.data+"T00:00:00");
-    return dt.getFullYear()===gAno&&dt.getMonth()===gMes;});
-  const estrelasProprias=e=>marcosDoEdital(e).filter(m=>m.tipo!=="encerramento").map(m=>{
-    const dia=Number(m.data.slice(8,10));
-    const rot=(D.tipos_evento||{})[m.tipo]?D.tipos_evento[m.tipo].rotulo:m.tipo;
-    const cor=AREA(e.area).cor;
-    return `<span class="gestrela${m.projetado?" projetada":""}" style="left:${((dia-0.5)/nd*100).toFixed(2)}%;color:${cor};text-shadow:0 0 5px ${cor}99,0 0 11px ${cor}55"
-      title="${esc(rot)} — ${ddmm(m.data)}${m.projetado?" (projeção: "+esc(m.base||"praxe")+"; conferir no edital)":""}">${m.projetado?"☆":"★"}</span>`;}).join("");
-  const estrelas=e=>estrelasProprias(e)+decDoMes(e.id).map(m=>{
-    const dia=Number(m.data.slice(8,10));
-    const cls=m.tipo==="recurso"?"gestrela recurso":"gestrela";
-    const rot=(D.tipos_evento||{})[m.tipo]?D.tipos_evento[m.tipo].rotulo:m.tipo;
-    return `<span class="${cls}" style="left:${((dia-0.5)/nd*100).toFixed(2)}%"
-      data-dec="${esc(m.edital_id)}" title="${esc(rot)} — ${ddmm(m.data)}${m.passou?" (já ocorrido)":""}">★</span>`;
-  }).join("");
+  if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">`
+    +`Nenhum edital validado com ciclo neste mês.`
+    +`${gFiltrados?" (filtro aplicado)":""} O calendário mostra apenas editais que cumpriram a etapa 2.</div>`;
+
   eds.forEach(e=>{
+    const c=e.ciclo, cor=AREA(e.area).cor, tinta=corTexto(cor);
     const hoje=(gAno===HOJE.getFullYear()&&gMes===HOJE.getMonth())
       ?`<span class=ghoje style="left:${((HOJE.getDate()-0.5)/nd*100).toFixed(2)}%"></span>`:"";
-    const nome=nomeObjetivo(e);
-    if(e.datas==="ambas"){
-      // barra exata: do dia de ABERTURA declarado ao ÚLTIMO dia de inscrição
-      const a=new Date(e.inicio+"T00:00:00"),b=new Date(e.fim+"T00:00:00");
-      const d1=Math.max(1,(a<ini?1:a.getDate())),d2=Math.min(nd,(b>fim?nd:b.getDate()));
-      const rot=`${ddmm(e.inicio)} → ${ddmm(e.fim)}`;   // datas REAIS, mesmo cruzando meses
-      const cont=(a<ini?"◂ ":"")+(b>fim?" ▸":"");
-      linhas+=`<div class=grotulo title="${esc(e.titulo)} — inscrições ${ddmm(e.inicio)} a ${ddmm(e.fim)}">${esc(nome.slice(0,40))}</div>
-        <div class=gfaixa>${hoje}${estrelas(e)}
-        <span class=gbarra data-id="${esc(e.id)}" style="left:${((d1-1)/nd*100).toFixed(2)}%;width:${((d2-d1+1)/nd*100).toFixed(2)}%;background:${AREA(e.area).cor};color:${corTexto(AREA(e.area).cor)}">${cont?cont.trim()+" ":""}${rot}</span></div>`;
-    } else if(e.fim && new Date(e.fim+"T00:00:00")>=ini && new Date(e.fim+"T00:00:00")<=fim){
-      // só o prazo final é declarado: bandeira no dia exato, sem inventar início
-      const b=new Date(e.fim+"T00:00:00"),d2=b.getDate();
-      linhas+=`<div class=grotulo title="${esc(e.titulo)} — prazo final ${ddmm(e.fim)}; abertura não declarada na fonte">${esc(nome.slice(0,40))}</div>
-        <div class=gfaixa>${hoje}${estrelas(e)}
-        <span class="gbarra gprazo" data-id="${esc(e.id)}" style="left:${((d2-1)/nd*100).toFixed(2)}%;width:${(1/nd*100).toFixed(2)}%;background:${AREA(e.area).cor}" title="prazo final ${ddmm(e.fim)} — abertura não declarada na fonte">⚑</span>
-        <span class=gprazorot style="left:${(d2/nd*100).toFixed(2)}%">prazo ${ddmm(e.fim)}</span></div>`;
-    } else {
-      // inscrição encerrou em outro mês: aqui aparecem só os marcos do ciclo
-      linhas+=`<div class=grotulo title="${esc(e.titulo)} — inscrições encerradas em ${e.fim?ddmm(e.fim):"data não publicada"}; este mês traz resultado/recurso">${esc(nome.slice(0,40))}</div>
-        <div class=gfaixa>${hoje}${estrelas(e)}
-        <span class=gprazorot style="left:2%;position:absolute">ciclo pós-inscrição</span></div>`;
+    let faixa="";
+    // 1 · INSCRIÇÃO — barra preenchida do primeiro ao último dia
+    if(c.inscricao&&c.inscricao.inicio&&cruza(c.inscricao.inicio,c.inscricao.fim)){
+      const [d1,d2,antes,depois]=recorte(c.inscricao.inicio,c.inscricao.fim);
+      const [l,w]=pct(d1,d2);
+      faixa+=`<span class=gbarra data-id="${esc(e.id)}" style="left:${l}%;width:${w}%;background:${cor};color:${tinta}"
+        title="Inscrições: ${ddmm(c.inscricao.inicio)} a ${ddmm(c.inscricao.fim)}">${antes?"◂ ":""}${ddmm(c.inscricao.inicio)} → ${ddmm(c.inscricao.fim)}${depois?" ▸":""}</span>`;
+    } else if(c.inscricao&&!c.inscricao.inicio&&c.inscricao.fim&&dentro(c.inscricao.fim)){
+      const d2=dia(c.inscricao.fim),[l,w]=pct(d2,d2);
+      faixa+=`<span class="gbarra gprazo" data-id="${esc(e.id)}" style="left:${l}%;width:${w}%;background:${cor}"
+        title="Encerramento das inscrições em ${ddmm(c.inscricao.fim)} — abertura não declarada na fonte">⚑</span>
+        <span class=gprazorot style="left:${(d2/nd*100).toFixed(2)}%">encerra ${ddmm(c.inscricao.fim)}</span>`;
     }
+    // 2 · RESULTADO — estrela na data de divulgação
+    if(c.resultado&&dentro(c.resultado.data)){
+      const d0=dia(c.resultado.data);
+      faixa+=`<span class="gestrela${c.resultado.projetado?" projetada":""}"
+        style="left:${((d0-0.5)/nd*100).toFixed(2)}%;color:${cor};text-shadow:0 0 5px ${cor}99,0 0 11px ${cor}55"
+        title="Divulgação do resultado — ${ddmm(c.resultado.data)}${c.resultado.projetado?" (projeção: "+esc(c.resultado.base||"praxe")+"; conferir no edital)":" (data publicada)"}">${c.resultado.projetado?"☆":"★"}</span>`;
+    }
+    // 3 · RECURSO — barra preenchida do primeiro ao último dia do prazo
+    if(c.recurso&&cruza(c.recurso.inicio,c.recurso.fim)){
+      const [d1,d2,antes,depois]=recorte(c.recurso.inicio,c.recurso.fim);
+      const [l,w]=pct(d1,d2);
+      faixa+=`<span class="gbarra grecurso${c.recurso.projetado?" projetada":""}" data-id="${esc(e.id)}"
+        style="left:${l}%;width:${w}%;background:${cor};color:${tinta}"
+        title="Prazo de recurso: ${ddmm(c.recurso.inicio)} a ${ddmm(c.recurso.fim)}${c.recurso.projetado?" (projeção: "+esc(c.recurso.base||"praxe")+"; conferir no edital)":" (datas publicadas)"}">${antes?"◂ ":""}recurso${depois?" ▸":""}</span>`;
+    }
+    const emCurso=c.fim_do_ciclo&&c.fim_do_ciclo>=HOJE.toISOString().slice(0,10);
+    linhas+=`<div class=grotulo title="${esc(e.titulo)} — ciclo até ${c.fim_do_ciclo?ddmm(c.fim_do_ciclo):"data não publicada"}${emCurso?" (em curso)":""}">${esc(nomeObjetivo(e).slice(0,40))}</div>
+      <div class=gfaixa>${hoje}${faixa}</div>`;
   });
   linhas+="</div>";
   $("g-corpo").innerHTML=linhas;
   $("g-corpo").querySelectorAll(".gbarra").forEach(el=>{
     const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);
-    ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);});
-  // legenda por área (cada área tem matiz próprio, igual ao filtro de Área)
+    if(ed){ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);}});
+
   const cont={};noMes.forEach(e=>cont[e.area]=(cont[e.area]||0)+1);
   const areasG=Object.keys(cont).sort((a,b)=>cont[b]-cont[a]);
-  const nDec=eds.reduce((s,e)=>s+decDoMes(e.id).length,0);
-  const rec=(D.calendario_decisao||{}).recursos_abertos||0;
-  const nProj=eds.reduce((s,e)=>s+marcosDoEdital(e).filter(m=>m.projetado).length,0);
-  $("g-legenda").innerHTML=(nDec?`<span title="Estrela cheia = data publicada de resultado ou recurso"><span class="gestrela" style="position:static;transform:none;animation:none">★</span> ${nDec} marco(s) publicado(s)</span>`:"")
-    +(nProj?`<span title="Estrela vazada = resultado e recurso projetados a partir do prazo de inscrição (praxe); conferir no edital"><span class="gestrela projetada" style="position:static;transform:none">☆</span> ${nProj} projetado(s) a partir do prazo</span>`:"")
-    +areasG.map(a=>
-    `<span title="${esc(AREA(a).rotulo)}: ${cont[a]} no mês"><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave);font-weight:600">${cont[a]}</b></span>`).join("")
-    +(noMes.length>eds.length?`<span class=meta>mostrando ${eds.length} de ${noMes.length} — abra o calendário completo</span>`:"")
-    +(semData?`<span class=meta title="itens sem data de inscrição declarada na fonte não entram no calendário — a data de publicação no diário não é início de inscrição">· ${semData} sem datas de inscrição confirmadas (fora do calendário)</span>`:"");
+  const nProj=eds.filter(e=>(e.ciclo.resultado&&e.ciclo.resultado.projetado)
+                         ||(e.ciclo.recurso&&e.ciclo.recurso.projetado)).length;
+  $("g-legenda").innerHTML=
+    `<span title="Barra preenchida do primeiro ao último dia de inscrição, na cor da área"><span class=gbarra style="position:static;width:22px;height:10px;background:var(--suave);display:inline-block"></span> inscrição</span>`
+    +`<span title="Estrela na data de divulgação do resultado"><span class="gestrela" style="position:static;transform:none;animation:none">★</span> resultado</span>`
+    +`<span title="Barra do primeiro ao último dia do prazo recursal, na cor da área"><span class="gbarra grecurso" style="position:static;width:22px;height:10px;background:var(--suave);display:inline-block"></span> recurso</span>`
+    +areasG.map(a=>`<span title="${esc(AREA(a).rotulo)}: ${cont[a]} no mês"><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave);font-weight:600">${cont[a]}</b></span>`).join("")
+    +(nProj?`<span class=meta title="resultado e recurso projetados pela praxe quando o edital não os publica">· ${nProj} com datas projetadas (☆ e faixa tracejada)</span>`:"")
+    +(noMes.length>eds.length?`<span class=meta>mostrando ${eds.length} de ${noMes.length}</span>`:"")
+    +(foraDoFiltro?`<span class=meta title="editais validados cujo ciclo não toca este mês">· ${foraDoFiltro} fora deste mês</span>`:"");
 }
 /* contraste do rótulo dentro da barra: escuro sobre cor clara, claro sobre escura */
 function corTexto(hex){

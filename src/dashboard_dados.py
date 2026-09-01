@@ -598,13 +598,8 @@ def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
 
 
 def _marcos_projetados(fim: str | None) -> list[dict]:
-    """Resultado e recurso PROJETADOS a partir do prazo de inscrição.
-
-    A maioria dos editais históricos não publica essas datas na ementa. A
-    projeção usa a praxe (resultado ~15 dias após o encerramento; recurso nos
-    5 dias seguintes) e vem SEMPRE marcada como projeção — nunca como data
-    publicada. Serve para o calendário mostrar o ciclo completo do certame.
-    """
+    """Marcos do ciclo, projetados a partir do prazo de inscrição quando o
+    edital não os publica. Projeção vem sempre declarada."""
     if not fim:
         return []
     from datetime import timedelta as _td
@@ -613,9 +608,57 @@ def _marcos_projetados(fim: str | None) -> list[dict]:
         {"tipo": "encerramento", "data": fim, "projetado": False},
         {"tipo": "resultado_preliminar", "data": (d + _td(days=15)).isoformat(),
          "projetado": True, "base": "praxe: ~15 dias após o encerramento"},
-        {"tipo": "recurso", "data": (d + _td(days=20)).isoformat(),
-         "projetado": True, "base": "praxe: 5 dias após o resultado preliminar"},
+        {"tipo": "recurso", "data": (d + _td(days=16)).isoformat(),
+         "projetado": True, "base": "praxe: abre no dia seguinte ao resultado"},
     ]
+
+
+def ciclo_do_edital(e: dict) -> dict:
+    """As três faixas do Calendário de Editais, na cor da área:
+
+      1. INSCRIÇÃO — barra preenchida do dia de abertura ao último dia;
+      2. RESULTADO — estrela na data de divulgação;
+      3. RECURSO   — barra preenchida do primeiro ao último dia do prazo.
+
+    Datas publicadas prevalecem. Sem publicação, projeta-se pela praxe
+    (resultado ~15 dias após o encerramento; recurso nos 5 dias seguintes) e a
+    projeção fica declarada em cada item. O edital permanece no calendário até
+    o ENCERRAMENTO TOTAL do ciclo — não some quando a inscrição fecha.
+    """
+    from datetime import timedelta as _td
+    marcos = {m["tipo"]: m for m in (e.get("marcos") or []) if m.get("data")}
+    fim = e.get("fim")
+    ciclo: dict = {"inscricao": None, "resultado": None, "recurso": None}
+
+    if e.get("inicio") and fim:
+        ciclo["inscricao"] = {"inicio": e["inicio"], "fim": fim, "projetado": False}
+    elif fim:
+        ciclo["inscricao"] = {"inicio": None, "fim": fim, "projetado": False,
+                              "nota": "abertura não declarada na fonte"}
+
+    res = marcos.get("resultado_preliminar") or marcos.get("resultado_final")
+    if res:
+        ciclo["resultado"] = {"data": res["data"],
+                              "projetado": bool(res.get("projetado")),
+                              "base": res.get("base"),
+                              "tipo": ("resultado_final" if "resultado_final" in marcos
+                                       and res is marcos.get("resultado_final")
+                                       else "resultado_preliminar")}
+
+    rec = marcos.get("recurso")
+    if rec:
+        ini = date.fromisoformat(rec["data"])
+        fim_rec = rec.get("fim") or (ini + _td(days=4)).isoformat()
+        ciclo["recurso"] = {"inicio": rec["data"], "fim": fim_rec,
+                            "projetado": bool(rec.get("projetado")),
+                            "base": rec.get("base") or "praxe: 5 dias de prazo recursal"}
+
+    ultimas = [x for x in (
+        (ciclo["recurso"] or {}).get("fim"),
+        (ciclo["resultado"] or {}).get("data"),
+        (ciclo["inscricao"] or {}).get("fim")) if x]
+    ciclo["fim_do_ciclo"] = max(ultimas) if ultimas else None
+    return ciclo
 
 
 def _so_completos(editais: list[dict], hoje: date) -> list[dict]:
@@ -685,6 +728,7 @@ def _marca_etapas(editais: list[dict]) -> list[dict]:
     com_parecer |= conjunto("*/*/conselho.json")
     for e in editais:
         e.update(etapa_do_edital(e, decididos, preparados, com_parecer))
+        e["ciclo"] = ciclo_do_edital(e)
     return editais
 
 
