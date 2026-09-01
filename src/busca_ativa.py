@@ -48,22 +48,69 @@ def _urls_de_fontes(ids: list[str]) -> list[str]:
     return urls
 
 
+_F260 = ROOT / "config/fontes_captacao_260.json"
+_AREA_260 = {"cultura": r"cultura", "esporte": r"esporte", "educacao": r"educa",
+             "saude": r"sa[úu]de", "assistencia_social": r"assist|seguran[çc]a alimentar",
+             "crianca_adolescente": r"crian|adolesc", "pessoa_idosa": r"idos",
+             "meio_ambiente": r"ambiente|difus|cidadania", "emendas_parlamentares": r"emenda"}
+
+
+def sites_das_260(area: str | None, nivel: str | None, uf: str | None = None) -> list[dict]:
+    """Fontes do relatório de 260 que casam com área e nível — Goiás primeiro."""
+    if not _F260.exists():
+        return []
+    fontes = load_json(_F260).get("fontes", [])
+    rx = re.compile(_AREA_260.get(area or "", "$^"), re.I)
+    sel = [f for f in fontes if f["sites"] and (f["nivel"] == nivel or nivel is None)
+           and (rx.search(f["area"]) or rx.search(f["programa"]))]
+    if uf == "GO" or nivel in ("municipal", "estadual"):
+        sel.sort(key=lambda f: not f["goias"])
+    return [{"id": f["id"], "programa": f["programa"], "orgao": f["orgao"],
+             "sites": f["sites"], "confianca": f["confianca_site"]} for f in sel[:12]]
+
+
+_SITES_HIST = ROOT / "biblioteca_alexandria/fontes/sites_historicos.json"
+
+
+def paginas_historicas(uf: str | None, area: str | None, limite: int = 6) -> list[str]:
+    """Páginas de onde editais históricos vieram — Goiás primeiro, sem agregadores."""
+    if not _SITES_HIST.exists():
+        return []
+    d = load_json(_SITES_HIST)
+    agreg = re.compile(r"queridodiario|pncp\.gov|compras|licitanet", re.I)
+    urls = []
+    for pg in d.get("paginas_goias", []) if uf == "GO" else []:
+        if not agreg.search(pg["url"]):
+            urls.append(pg["url"])
+    for s in d.get("sites", []):
+        if agreg.search(s["dominio"]):
+            continue
+        if (uf and s["ufs"].get(uf)) or (area and area in s["areas"]):
+            urls.append(s["exemplo"])
+    return list(dict.fromkeys(urls))[:limite]
+
+
 def local_de_publicacao(area: str | None, nivel: str | None, uf: str | None = None) -> dict:
-    """ONDE procurar: órgão (secretaria/ministério/fundo) e URLs, por área e nível."""
+    """ONDE procurar: órgão (secretaria/ministério/fundo) e URLs, por área e nível.
+    Combina o mapa por área, as fontes do relatório de 260 (Goiás primeiro) e as
+    páginas históricas de onde editais semelhantes vieram."""
     cfg = _cfg()
     nivel = nivel if nivel in ("municipal", "estadual", "federal") else (
         "federal" if not uf else "estadual")
+    das260 = sites_das_260(area, nivel, uf)
+    extra = [u for f in das260 for u in f["sites"]] + paginas_historicas(uf, area)
     regra = (cfg["por_area"].get(area or "") or {}).get(nivel)
     if regra:
-        urls = list(dict.fromkeys(_urls_de_fontes(regra.get("fontes", [])) + regra.get("urls", [])))
+        urls = list(dict.fromkeys(_urls_de_fontes(regra.get("fontes", [])) + regra.get("urls", []) + extra))
         return {"orgao": regra["orgao"], "nivel": nivel, "area": area,
                 "tipo": ("fundo" if "fundo" in regra["orgao"].lower() else
                          "ministerio" if "minist" in regra["orgao"].lower() else
                          "gabinete" if "gabinete" in regra["orgao"].lower() else "secretaria"),
-                "urls": urls, "mapeado": True}
+                "urls": urls, "mapeado": True, "fontes_260": das260}
     g = cfg["generico"][nivel]
     return {"orgao": g["orgao"], "nivel": nivel, "area": area, "tipo": "generico",
-            "urls": g["urls"], "mapeado": False}
+            "urls": list(dict.fromkeys(g["urls"] + extra)), "mapeado": bool(extra),
+            "fontes_260": das260}
 
 
 class _Links(HTMLParser):
@@ -98,7 +145,7 @@ def busca_deterministica(indicio: dict, local: dict) -> dict:
     """Abre as páginas do órgão e procura link que case com o indício."""
     tokens = _tokens(indicio.get("titulo", "") + " " + (indicio.get("objeto") or ""))[:6]
     visitadas, achados, falhas = [], [], []
-    for url in local["urls"][:4]:
+    for url in local["urls"][:8]:
         try:
             html, final = _abrir(url)
         except Exception as exc:

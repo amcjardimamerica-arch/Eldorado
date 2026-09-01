@@ -1922,7 +1922,8 @@ class SystemTests(unittest.TestCase):
         l2=B.local_de_publicacao("crianca_adolescente","federal",None)
         self.assertEqual(l2["tipo"],"fundo"); self.assertIn("Conanda",l2["orgao"])
         l3=B.local_de_publicacao("outros","estadual","MG")
-        self.assertFalse(l3["mapeado"]); self.assertEqual(l3["nivel"],"estadual")
+        self.assertEqual(l3["nivel"],"estadual")
+        self.assertTrue(l3["urls"])                  # nunca fica sem onde procurar
         with tempfile.TemporaryDirectory() as tmp:
             lab=pathlib.Path(tmp)
             (lab/"o.html").write_text('<a href="/ed.pdf">Edital de Chamamento — apoio a '
@@ -1946,6 +1947,86 @@ class SystemTests(unittest.TestCase):
         self.assertIn("*/3",wf); self.assertIn("src.busca_ativa",wf)
         ia_cfg=load_json(pathlib.Path("config/ia.json"))
         self.assertIn("haiku",ia_cfg["modelos"]["busca"]["padrao"])
+
+
+    def test_fontes_260_com_site_oficial(self):
+        """Cada uma das 260 fontes recebe seu site oficial com o grau de
+        confiança declarado; Goiás/Goiânia primeiro; nada inventado."""
+        from src import fontes260 as F
+        r=F.run()
+        self.assertEqual(r["total"],260)
+        self.assertGreaterEqual(r["com_site"],240)
+        self.assertGreaterEqual(r["goias_goiania"],100)
+        cfg=load_json(pathlib.Path("config/fontes_captacao_260.json"))
+        fontes=cfg["fontes"]
+        # todas as de Goiás/Goiânia têm site (a única sem é patrocínio direto)
+        sem=[f for f in fontes if f["goias"] and not f["sites"]]
+        self.assertLessEqual(len(sem),1)
+        for f in fontes:
+            self.assertIn(f["confianca_site"],("confirmada","curada","generica","pendente"))
+            if not f["sites"]: self.assertEqual(f["confianca_site"],"pendente")
+            self.assertIn(f["tipo"],("edital","fundo","emenda","incentivo_fiscal",
+                                     "destinacao_judicial","doacao_patrocinio","grant","outro"))
+        # ordenação: Goiás antes
+        self.assertTrue(fontes[0]["goias"])
+        pnab=[f for f in fontes if "PNAB Goiânia" in f["programa"]]
+        self.assertTrue(pnab and all("goiania.go.gov.br" in " ".join(f["sites"]) for f in pnab))
+        goy=[f for f in fontes if "Goyazes" in f["programa"]][0]
+        self.assertIn("goias.gov.br/cultura", " ".join(goy["sites"]))
+
+    def test_busca_ativa_usa_260_e_sites_historicos(self):
+        from src.busca_ativa import local_de_publicacao, sites_das_260, paginas_historicas
+        s=sites_das_260("cultura","municipal","GO")
+        self.assertTrue(s and s[0]["programa"])
+        self.assertTrue(all(x["confianca"] in ("confirmada","curada","generica") for x in s))
+        l=local_de_publicacao("cultura","estadual","GO")
+        self.assertGreaterEqual(len(l["urls"]),3)
+        self.assertIn("fontes_260",l)
+        self.assertTrue(any("goias.gov.br/cultura" in u for u in l["urls"]))
+        ph=paginas_historicas("GO","cultura")
+        for u in ph: self.assertNotIn("queridodiario",u)   # agregador fora
+
+    def test_destinacao_premios_e_cursos_para_osc(self):
+        from src.destinacao import avaliar_destinacao as A, natureza
+        self.assertEqual(natureza("Prêmio Melhores ONGs 2026"),"premio_reconhecimento")
+        self.assertEqual(natureza("Curso de captação de recursos"),"capacitacao")
+        self.assertEqual(natureza("Edital de fomento cultural"),"recurso")
+        r=A({"titulo":"Prêmio Melhores ONGs do Brasil — inscrições para OSCs","evidencia":""},set())
+        self.assertTrue(r["elegivel"]); self.assertEqual(r["natureza"],"premio_reconhecimento")
+        r2=A({"titulo":"Curso gratuito de captação para associações","evidencia":""},set())
+        self.assertTrue(r2["elegivel"]); self.assertEqual(r2["natureza"],"capacitacao")
+        r3=A({"titulo":"Curso de Excel avançado para empresas","evidencia":""},set())
+        self.assertFalse(r3["elegivel"])                     # não é para o terceiro setor
+        cfg=load_json(pathlib.Path("config/investigacao.json"))
+        self.assertTrue(cfg.get("incluir_dominios_das_260"))
+        self.assertTrue(any(f["id"]=="prosas-premios" for f in cfg["fontes"]))
+
+    def test_onze_itens_na_biblioteca(self):
+        from src.completude_biblioteca import onze_itens, ITENS
+        ficha={"titulo":"Edital X","evidencia":"Objeto: apoio cultural. Ver anexo I. R$ 50.000,00",
+               "inicio":None,"fim":"2025-06-30","valores_citados":["50.000,00"],
+               "financiador":"Secult","uf":"GO","territorio":"GO","nivel":"estadual",
+               "exigencias_detectadas":["cnpj"],"destinacao":{"elegivel":True,"motivo":"fomento"},
+               "marcos":[]}
+        r=onze_itens(ficha)
+        self.assertEqual([i["item"] for i in r["itens"]],list(ITENS))
+        by={i["item"]:i for i in r["itens"]}
+        for ok in ("Objeto","Prazo de inscrição","Valor","Órgão / financiador","Território",
+                   "Esfera","Requisitos","Anexos","Destinação"):
+            self.assertTrue(by[ok]["comprovado"],ok)
+        for lac in ("Resultado","Prazo de recurso"):
+            self.assertFalse(by[lac]["comprovado"]); self.assertIsNone(by[lac]["valor"])
+            self.assertIn("não consta",by[lac]["lacuna"])
+        self.assertEqual(r["comprovados"],9)
+        rel=pathlib.Path("biblioteca_alexandria/historico/completude_11_itens.json")
+        self.assertTrue(rel.exists())
+        d=load_json(rel)
+        self.assertEqual(set(d["completude_por_item"]),set(ITENS))
+        sh=load_json(pathlib.Path("biblioteca_alexandria/fontes/sites_historicos.json"))
+        self.assertGreater(sh["dominios"],50)
+        self.assertTrue(sh["sites"][0]["goias"] or sh["goias"]>=1)   # Goiás primeiro
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        for m in ("src.fontes260","src.completude_biblioteca"): self.assertIn(m,wf)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

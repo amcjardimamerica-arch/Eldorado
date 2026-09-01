@@ -66,6 +66,18 @@ _EXIGE_EMPRESA = re.compile(
     r"certid[ãa]o\s+de\s+registro\s+cadastral\s+de\s+fornecedor|\bsicaf\b", re.I)
 # credenciamento é ambíguo: pode ser de OSC (mantém) ou de fornecedor (descarta)
 _CREDENCIAMENTO = re.compile(r"credenciamento", re.I)
+_PREMIO = re.compile(r"pr[êe]mio|premia[çc][ãa]o|concurso\s+(?:de\s+)?(?:melhores|boas\s+pr[áa]ticas|projetos|iniciativas)|"
+                     r"reconhecimento|selo\b|certifica[çc][ãa]o\s+de\s+(?:osc|entidade)", re.I)
+_CAPACITACAO = re.compile(r"curso|capacita[çc][ãa]o|forma[çc][ãa]o|oficina|mentoria|acelera[çc][ãa]o|workshop", re.I)
+
+
+def natureza(texto: str) -> str:
+    """O que o edital oferece: recurso, prêmio/reconhecimento ou capacitação."""
+    if _PREMIO.search(texto):
+        return "premio_reconhecimento"
+    if _CAPACITACAO.search(texto) and not _FOMENTO.search(texto):
+        return "capacitacao"
+    return "recurso"
 
 
 def _fontes_catalogadas() -> set:
@@ -107,12 +119,21 @@ def avaliar_destinacao(ficha: dict, catalogadas: set | None = None) -> dict:
                              or str(ficha.get("financiador") or "").lower() in catalogadas),
     }
     favoravel = sinais["terceiro_setor"] or sinais["fomento"] or sinais["lei_do_repositorio"]
+    nat = natureza(texto)
+    sinais["natureza"] = nat
 
     # 1. sinal claro de terceiro setor / fomento / lei do repositório → MANTÉM
     if favoravel:
-        return {"elegivel": True, "sinais": sinais,
-                "motivo": "menciona terceiro setor, fomento ou lei do repositório — "
-                          "OSC pode concorrer"}
+        return {"elegivel": True, "sinais": sinais, "natureza": nat,
+                "motivo": ("prêmio/reconhecimento destinado a OSC" if nat == "premio_reconhecimento"
+                           else "capacitação destinada ao terceiro setor" if nat == "capacitacao"
+                           else "menciona terceiro setor, fomento ou lei do repositório — "
+                                "OSC pode concorrer")}
+    # 1b. prêmio ou curso claramente voltado a OSC/associações → MANTÉM (não é só recurso)
+    if nat != "recurso" and re.search(r"\bosc|associa|entidade|terceiro setor|sociedade civil|ong\b",
+                                      texto, re.I):
+        return {"elegivel": True, "sinais": sinais, "natureza": nat,
+                "motivo": "condição sem recurso direto (prêmio/curso), mas destinada ao terceiro setor"}
     # 2. exigência tipicamente empresarial e nenhum sinal favorável → DESCARTA
     if sinais["exige_empresa"]:
         return {"elegivel": False, "sinais": sinais,
@@ -127,8 +148,12 @@ def avaliar_destinacao(ficha: dict, catalogadas: set | None = None) -> dict:
     if sinais["credenciamento"]:
         return {"elegivel": False, "sinais": sinais,
                 "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"}
+    # 4b. curso/prêmio sem NENHUMA menção ao terceiro setor → DESCARTA
+    if nat != "recurso":
+        return {"elegivel": False, "sinais": sinais, "natureza": nat,
+                "motivo": "capacitação/prêmio sem destinação ao terceiro setor"}
     # 5. dúvida: MANTÉM e declara
-    return {"elegivel": True, "sinais": sinais,
+    return {"elegivel": True, "sinais": sinais, "natureza": nat,
             "motivo": "sem sinal comercial e sem sinal de fomento — mantido por "
                       "cautela; conferir a destinação no edital"}
 

@@ -26,8 +26,9 @@ from .nucleo import (ROOT, append_jsonl, canonical_url, load_json, now_iso,
 CFG = ROOT / "config/investigacao.json"
 ESTADO = ROOT / "estado/investigacao"
 
-_EDITAL = re.compile(r"edital|chamada|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|"
-                     r"apoio\s+a\s+projetos|oportunidade", re.I)
+_EDITAL = re.compile(r"edital|chamada|chamamento|sele[çc][ãa]o|pr[êe]mio|premia|concurso|inscri[çc]|"
+                     r"fomento|apoio\s+a\s+projetos|oportunidade|curso|capacita|forma[çc][ãa]o|"
+                     r"reconhecimento|certifica", re.I)
 _FIM = re.compile(r"(?:at[ée]|prazo|encerra\w*|inscri[çc][õo]es[^.]{0,30}?at[ée])\D{0,25}"
                   r"(\d{1,2}/\d{1,2}/20\d{2})", re.I)
 _VALOR = re.compile(r"R\$\s?[\d.]{1,12},\d{2}|R\$\s?[\d.]{3,12}", re.I)
@@ -106,6 +107,18 @@ def investigar_fonte(fonte: dict, profundidade: int = 1, limite_links: int = 40,
 def run(limite_fontes: int | None = None) -> dict:
     cfg = load_json(CFG) if CFG.exists() else {"fontes": []}
     ESTADO.mkdir(parents=True, exist_ok=True)
+    # as 260 fontes de captação também entram na investigação (um site por fonte)
+    if cfg.get("incluir_dominios_das_260"):
+        f260 = ROOT / "config/fontes_captacao_260.json"
+        if f260.exists():
+            vistos = {f["url"] for f in cfg["fontes"]}
+            for f in load_json(f260).get("fontes", []):
+                for u in f["sites"][:1]:
+                    if u not in vistos and f["confianca_site"] in ("confirmada", "curada"):
+                        vistos.add(u)
+                        cfg["fontes"].append({"id": f["id"], "nome": f["programa"], "url": u,
+                                              "territorio": f["uf"] or "BR", "ativa": True,
+                                              "origem": "fontes_260"})
     total, falhas_t, novos = [], [], 0
     from .nucleo import carregar_oportunidades, DB_OPORTUNIDADES
     existentes = carregar_oportunidades()
