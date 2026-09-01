@@ -775,10 +775,17 @@ class SystemTests(unittest.TestCase):
         """Só editais com verificação dupla compõem o Dashboard; a Bússola
         carrega os monitoramentos encontrados."""
         d=dash_coletar(date(2026,9,2))
-        for e in d["editais"]:
+        # dois acervos distintos e declarados: VIVO (verificação dupla, é o que
+        # o Farol trabalha) e HISTÓRICO (catalogado, só compõe «encerradas»)
+        vivos=[e for e in d["editais"] if e.get("acervo")!="historico"]
+        hist=[e for e in d["editais"] if e.get("acervo")=="historico"]
+        for e in vivos:
             self.assertIn("verificacao_dupla",e,e["id"])
+        for e in hist:
+            self.assertEqual(e["estado_export"],"encerrado")
+            self.assertNotIn("verificacao_dupla",e)   # nunca se passa por verificado
         tot=d["bussola_painel"]["totais"]
-        self.assertEqual(tot["completos"],len(d["editais"]))
+        self.assertEqual(tot["completos"],len(vivos))
         mon=d["bussola_painel"]["monitoramentos"]
         self.assertGreaterEqual(mon["encontrados"],tot["completos"])
         self.assertLessEqual(len(mon["amostra"]),40)
@@ -1091,8 +1098,6 @@ class SystemTests(unittest.TestCase):
         self.assertEqual([p["nome"] for p in passos],
                          ["Descobrir","Confirmar","Enquadrar","Decidir","Preparar"])
         self.assertEqual(passos[2]["modulo"],"Eldorado + Farol")
-        html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn('id="funil"',html); self.assertIn("desenhaFunil",html)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.fluxo",wf)
 
@@ -1201,6 +1206,110 @@ class SystemTests(unittest.TestCase):
             finally:
                 (B.OPORTUNIDADES,B.ASSOCIACOES,fluxo.OPORTUNIDADES,fluxo.ASSOCIACOES,
                  FP.OPORTUNIDADES,FP.ASSOCIACOES,FP.PARECERES)=orig
+
+
+    def test_catalogacao_historica_mes_a_mes(self):
+        """Varredura de 5 anos, mês a mês, com relatório por mês. Fases 1 e 2
+        apenas: classifica e extrai o que o texto traz, sem análise."""
+        import tempfile
+        from src import historico as H
+        with tempfile.TemporaryDirectory() as tmp:
+            base=pathlib.Path(tmp)
+            orig=(H.OPORTUNIDADES,H.RELATORIOS)
+            H.OPORTUNIDADES=base/"op"; H.RELATORIOS=base/"rel"
+            try:
+                regs=[
+                    {"id":"h1","titulo":"Diário Oficial de X (GO) 2025-05-10 — edital de "
+                     "chamamento público para cultura","evidencia":"edital de chamamento "
+                     "público. inscrições até 30/06/2025. exige CNPJ e plano de trabalho. "
+                     "R$ 50.000,00","fonte_id":"qd","fonte_nome":"Querido Diário",
+                     "territorio":"GO","tipo_fonte":"diario_oficial_municipal"},
+                    {"id":"h2","titulo":"Página Inicial","evidencia":"navegação do portal",
+                     "fonte_id":"p","fonte_nome":"Portal","territorio":"BR"},
+                ]
+                rel=H.catalogar_mes("2025-05",regs,date(2026,9,1))
+                self.assertEqual(rel["catalogados"],1)
+                self.assertEqual(rel["descartados"],1)     # página inicial é ruído
+                self.assertEqual(rel["erros"],0)
+                self.assertTrue((H.RELATORIOS/"2025-05.json").exists())
+                ficha=load_json(next(H.OPORTUNIDADES.glob("*/*/ficha.json")))
+                self.assertEqual(ficha["fases_aplicadas"],[1,2])
+                self.assertEqual(ficha["area"],"cultura")
+                self.assertEqual(ficha["uf"],"GO")
+                self.assertEqual(ficha["fim"],"2025-06-30")
+                self.assertEqual(ficha["estado_prazo"],"encerrado")
+                self.assertIn("cnpj",ficha["exigencias_detectadas"])
+                self.assertEqual(ficha["valores_citados"],["50.000,00"])
+                # sem resultado publicado → lacuna declarada, nunca vencedor inventado
+                self.assertEqual(ficha["vencedores_identificados"],[])
+                self.assertTrue(any("vencedor" in l for l in ficha["lacunas"]))
+            finally:
+                (H.OPORTUNIDADES,H.RELATORIOS)=orig
+
+    def test_extracao_de_vencedor_rejeita_frase_generica(self):
+        """Vencedor só quando há nome próprio de entidade. Frase genérica
+        ('sociedade civil para a execução de...') não identifica ninguém."""
+        from src.historico import _VENCEDOR, _nome_de_entidade
+        def extrai(txt):
+            m=_VENCEDOR.search(txt)
+            return _nome_de_entidade(m.group(1)) if m else None
+        self.assertEqual(extrai("homologa o resultado em favor da Associação de "
+                                "Jovens Amigos da Natureza"),
+                         "Associação de Jovens Amigos da Natureza")
+        self.assertEqual(extrai("adjudicado ao Instituto Sementes do Amanhã"),
+                         "Instituto Sementes do Amanhã")
+        for generico in ("homologar a Sociedade Civil para a execução do PROJETO",
+                         "homologação — Organização da Sociedade Civil que presta serviços",
+                         "homologo o resultado do edital de credenciamento",
+                         "homologa SOCIEDADE CIVIL - OSC'S A Comissão"):
+            self.assertIsNone(extrai(generico),generico)
+
+    def test_parecer_historico_declara_lacuna(self):
+        """O conselho lê cada caso e declara a força probatória; sem vencedor
+        publicado não há 'fator decisivo' inventado."""
+        from src.historico_parecer import parecer_do_edital
+        seco={"chave":"c","ano":"2025","titulo":"Edital X","financiador":"F",
+              "territorio":"GO","area":"cultura","data_publicacao":"2025-05-10",
+              "estado_prazo":"encerrado","exigencias_detectadas":["cnpj"],
+              "vencedores_identificados":[],"criterios_de_julgamento":[],
+              "tem_resultado_publicado":False,"valores_citados":[],
+              "lacunas":["sem publicação de resultado na evidência"]}
+        p=parecer_do_edital(seco)
+        self.assertEqual(p["vencedores"],[])
+        self.assertIsNone(p["fator_decisivo"])
+        self.assertEqual(p["forca_probatoria"],"baixa")
+        self.assertIn("registro de exigências",p["uso_recomendado"])
+        self.assertEqual(len(p["lentes"]),7)
+        completo={**seco,"vencedores_identificados":["Instituto Alfa Beta"],
+                  "criterios_de_julgamento":["critérios de julgamento: melhor técnica"],
+                  "tem_resultado_publicado":True}
+        p2=parecer_do_edital(completo)
+        self.assertEqual(p2["forca_probatoria"],"alta")
+        self.assertIn("estratégia",p2["uso_recomendado"])
+        self.assertTrue(p2["fator_decisivo"])
+
+    def test_historico_no_banco_e_no_filtro_encerradas(self):
+        """Melhoria do parecer: acervo histórico vive no SQLite (196 MB em
+        arquivos não cabem no Git) e alimenta o filtro «encerradas»."""
+        from src.banco import total_historico, consultar_historico
+        n=total_historico()
+        self.assertGreater(n,1000,"acervo histórico deve estar indexado")
+        amostra=consultar_historico(limite=5)
+        self.assertTrue(amostra)
+        self.assertIn("ficha",amostra[0]); self.assertIn("parecer",amostra[0])
+        d=dash_coletar(date(2026,9,2))
+        hist=[e for e in d["editais"] if e.get("acervo")=="historico"]
+        self.assertTrue(hist,"históricos devem compor o painel")
+        for e in hist:
+            self.assertEqual(e["estado_export"],"encerrado")
+            self.assertEqual(e["status"],"catalogada_historica")
+            self.assertIn("historico",e)
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("catalogação histórica",html)
+        self.assertIn("Fator decisivo",html)
+        # o funil de 5 passos saiu da tela inicial
+        self.assertNotIn('id="funil"',html)
+        self.assertNotIn("desenhaFunil",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

@@ -496,6 +496,71 @@ def _recorte_painel(editais: list[dict], hoje: date) -> list[dict]:
     return painel + recentes
 
 
+def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
+    """Editais históricos catalogados (fases 1 e 2) que compõem o filtro
+    «inscrições encerradas».
+
+    Vêm do SQLite — o acervo completo tem 9.474 registros e não caberia no
+    arquivo publicado. Entram os mais recentes, marcados como catalogados
+    (não confundir com os verificados em dupla, que são os do Dashboard vivo).
+    """
+    try:
+        from .banco import consultar_historico, conectar
+    except Exception:
+        return []
+    try:
+        con = conectar()
+        linhas = con.execute(
+            # valor primeiro: casos com vencedor e com critério ensinam mais
+            "SELECT ficha, parecer FROM historico ORDER BY "
+            "  (vencedores NOT IN ('[]','')) DESC, "
+            "  (criterios NOT IN ('[]','')) DESC, "
+            "  (fim IS NULL), fim DESC, data_publicacao DESC LIMIT ?",
+            (limite,)).fetchall()
+        con.close()
+    except Exception:
+        return []
+    import json as _json
+    saida = []
+    for f, pj in linhas:
+        fi = _json.loads(f)
+        pa = _json.loads(pj or "{}")
+        fim = fi.get("fim")
+        saida.append({
+            "id": fi["id"], "protocolo": fi["id"],
+            "titulo": fi.get("titulo") or "", "url": fi.get("url"),
+            "fonte_id": fi.get("fonte_id"), "fonte_nome": fi.get("financiador"),
+            "territorio": fi.get("territorio"), "uf": fi.get("uf"),
+            "abrangencia": "estadual" if fi.get("uf") else "indefinida",
+            "nivel": fi.get("nivel"), "status": "catalogada_historica",
+            "area": fi.get("area") or "outros",
+            "programa": "—", "lei": "—",
+            "objeto": (fi.get("evidencia") or "")[:160],
+            "inicio": fi.get("inicio"), "fim": fim,
+            "inicio_br": _br(fi.get("inicio")), "fim_br": _br(fim),
+            "datas": "ambas" if fi.get("inicio") and fim else ("so_fim" if fim else "nenhuma"),
+            "publicado_em": fi.get("data_publicacao"),
+            "prazo_prorrogado": False, "estado_export": "encerrado",
+            "resumo": (fi.get("evidencia") or "")[:180],
+            "valor_texto": (fi.get("valores_citados") or [None])[0],
+            "acervo": "historico",
+            "historico": {"vencedores": fi.get("vencedores_identificados") or [],
+                          "fator_decisivo": pa.get("fator_decisivo"),
+                          "forca_probatoria": pa.get("forca_probatoria"),
+                          "uso_recomendado": pa.get("uso_recomendado"),
+                          "leitura_do_conselho": pa.get("leitura_do_conselho")},
+            "detalhes": {"qualificacao": {"nota": None, "classe": "histórico"},
+                         "documentos_exigidos": fi.get("exigencias_detectadas") or [],
+                         "pontuacao": [], "atendidos": [],
+                         "pendencias": fi.get("lacunas") or [],
+                         "evidencia": fi.get("evidencia") or "",
+                         "coletado_em": fi.get("data_publicacao"),
+                         "lacuna": None},
+            "marcos": [], "anexos": [], "ficha": "",
+        })
+    return saida
+
+
 def _so_completos(editais: list[dict], hoje: date) -> list[dict]:
     """REGRA DO TITULAR: apenas editais VERIFICADOS EM DUPLA (fonte + conteúdo
     completo pela campanha de 30 dias) compõem o Dashboard. Datas passam a vir
@@ -636,7 +701,9 @@ def coletar(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
     editais_base = _editais(hoje)
     completos_lista = _so_completos(editais_base, hoje)
-    editais = _recorte_painel(completos_lista, hoje) if len(completos_lista) > 600 else completos_lista
+    historicos = _historicos_encerrados(hoje)
+    vivos = completos_lista
+    editais = (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos
     leis = load_json(ROOT / "biblioteca/leis/catalogo.json")["itens"]
     revisao = load_json(ROOT / "estado/revisao_normativa.json") if (ROOT / "estado/revisao_normativa.json").exists() else {}
     parl = mod_parlamentares.carregar_do_disco(hoje.year)
@@ -677,7 +744,7 @@ def coletar(hoje: date | None = None) -> dict:
     saida_bussola["monitoramentos"] = monit
     saida_bussola["totais"] = {"base_completa": len(editais_base),
         "monitoramentos": monit["encontrados"], "completos": len(completos_lista),
-        "no_painel": len(editais),
+        "no_painel": len(editais), "historicos_catalogados": len(historicos),
         "nota": "o Dashboard publica somente editais completos (verificação dupla); "
                 "o restante segue em monitoramento na Bússola"}
     return {
