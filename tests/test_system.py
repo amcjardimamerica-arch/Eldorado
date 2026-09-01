@@ -392,7 +392,7 @@ class SystemTests(unittest.TestCase):
     def test_pagina_inicial(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for trecho in ("Radar de recursos","Inteligência de decisão","Fila prioritária",
-                       "Calendário de projetos em andamento","arte/cabecalho.png",
+                       "Calendário de Editais","arte/cabecalho.png",
                        "topo oculto","fi-mets","fa-donut","desenhaGantt","desenhaFila"):
             self.assertIn(trecho,html,trecho)
         idx=open("docs/index.html",encoding="utf-8").read()
@@ -933,7 +933,7 @@ class SystemTests(unittest.TestCase):
     def test_estrela_de_decisao_no_calendario_inicial(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         # nome novo do calendário
-        self.assertIn("Calendário de projetos em andamento",html)
+        self.assertIn("Calendário de Editais",html)
         self.assertNotIn("Calendário de projetos em aberto",html)
         # estrela que brilha, em camada própria, sem deslocar as barras
         self.assertIn(".gestrela",html)
@@ -1495,6 +1495,46 @@ class SystemTests(unittest.TestCase):
             for e in f["editais"]:
                 for campo in ("uf","area","nivel","estado_export"):
                     self.assertIn(campo,e,campo)
+
+
+    def test_etapa_do_edital(self):
+        """Cada edital carrega em que etapa do fluxo está — base das métricas
+        do Radar de recursos."""
+        from src.dashboard_dados import etapa_do_edital
+        dec={"c/2026"}; prep={"c/2026"}; par={"c/2026","d/2026"}
+        base={"pasta_farol":"biblioteca_alexandria/oportunidades/c/2026"}
+        self.assertEqual(etapa_do_edital(base,dec,prep,par)["etapa"],5)
+        self.assertEqual(etapa_do_edital(base,dec,set(),par)["etapa"],4)
+        self.assertEqual(etapa_do_edital(base,set(),set(),par)["etapa"],3)
+        confirmado={"verificacao_dupla":{"fonte":True}}
+        self.assertEqual(etapa_do_edital(confirmado,set(),set(),set())["etapa"],2)
+        self.assertEqual(etapa_do_edital({"confirmacao":"confirmado_documental"},
+                                         set(),set(),set())["etapa"],2)
+        self.assertEqual(etapa_do_edital({},set(),set(),set())["etapa"],1)
+        self.assertEqual(etapa_do_edital({},set(),set(),set())["etapa_nome"],"Descobrir")
+        d=dash_coletar(date(2026,9,2))
+        for e in d["editais"]:
+            self.assertIn(e["etapa"],(1,2,3,4,5),e["id"])
+            self.assertIn(e["etapa_nome"],("Descobrir","Confirmar","Enquadrar",
+                                           "Decidir","Preparar"))
+
+    def test_radar_metricas_por_etapa_e_nome_do_calendario(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        # nome novo do calendário
+        self.assertIn("<h3>Calendário de Editais</h3>",html)
+        self.assertNotIn("Calendário de projetos em andamento",html)
+        self.assertNotIn("Calendário de projetos em aberto",html)
+        # métricas amarradas às etapas
+        self.assertIn("const emVer=filt.filter(e=>etapa(e)===1)",html)
+        self.assertIn("const identificadas=filt.filter(e=>etapa(e)>=2)",html)
+        self.assertIn("const eleg=filt.filter(e=>etapa(e)>=4)",html)
+        self.assertIn("const prox=filt.filter(e=>etapa(e)>=5)",html)
+        for texto in ("etapa 2 cumprida","etapa 1 cumprida","etapas 3 e 4 cumpridas",
+                      "etapa 5 cumprida"):
+            self.assertIn(texto,html,texto)
+        # o filtro do radar continua regendo o calendário
+        self.assertIn("gFiltrados=semFiltro?null:filt",html)
+        self.assertIn("desenhaGantt();desenhaFila();",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

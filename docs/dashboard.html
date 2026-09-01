@@ -380,7 +380,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div class="faixa-larga">
 <div class="cartao">
 <div class="gcab">
-<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#2F79D0" stroke-width="1.9" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/></svg><h3>Calendário de projetos em andamento</h3>
+<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#2F79D0" stroke-width="1.9" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/></svg><h3>Calendário de Editais</h3>
 <span style="margin-left:auto"></span>
 <button onclick="mudaMesG(-1)">‹</button><strong id="g-mes" style="min-width:130px;text-align:center"></strong><button onclick="mudaMesG(1)">›</button>
 </div>
@@ -866,17 +866,32 @@ function desenhaRadar(){
       &&(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export)
                        :e.estado_export==="encerrado"));
     const abertos=filt.filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export));
-    const emVer=filt.filter(e=>["capturada","descoberta_nao_verificada","verificacao_pendente"].includes(e.status));
-    const eleg=filt.filter(e=>String(e.status).startsWith("verificada")||e.status==="elegivel");
-    const prox=abertos.filter(e=>dias(e.fim)!==null&&dias(e.fim)>=0&&dias(e.fim)<=15);
+    /* Cada métrica corresponde a uma etapa do fluxo:
+       Em verificação ......... cumpriu a etapa 1 (descoberto, aguarda confirmação)
+       Oportunidades identif. . cumpriu a etapa 2 (confirmado)
+       Elegíveis .............. cumpriu as etapas 3 e 4 (enquadrado e decidido)
+       Prazos próximos ........ cumpriu a etapa 5 (preparado, pronto para envio) */
+    const etapa=e=>e.etapa||1;
+    const emVer=filt.filter(e=>etapa(e)===1);
+    const identificadas=filt.filter(e=>etapa(e)>=2);
+    const eleg=filt.filter(e=>etapa(e)>=4);
+    const prox=filt.filter(e=>etapa(e)>=5);
     const ICO={
       barras:'<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><path d="M4 20V12M9.3 20V6M14.7 20v-6M20 20V9"/></svg>',
       lupa:'<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>',
       escudo:'<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linejoin="round"><path d="M12 2.7l7.5 3v6c0 4.4-3.1 8.3-7.5 9.6-4.4-1.3-7.5-5.2-7.5-9.6v-6l7.5-3z"/><path d="M8.6 11.8l2.4 2.4 4.3-4.5" stroke-linecap="round"/></svg>',
       relogio:'<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.7"/><path d="M12 7v5.2l3.2 2"/></svg>'};
-    $("fi-mets").innerHTML=[[ICO.barras,filt.length,"Oportunidades<br>identificadas"],[ICO.lupa,emVer.length,"Em verificação"],
-      [ICO.escudo,eleg.length,"Elegíveis"],[ICO.relogio,prox.length,"Prazos próximos"]]
-      .map(x=>`<div class="met linha">${x[0]}<div><div class=v>${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
+    const emCampanha=((D.bussola_painel||{}).monitoramentos||{}).monitorando||0;
+    $("fi-mets").innerHTML=[
+      [ICO.barras,identificadas.length,"Oportunidades<br>identificadas",
+       "etapa 2 cumprida — edital confirmado (verificação dupla ou confirmação documental)"],
+      [ICO.lupa,emVer.length,"Em verificação",
+       `etapa 1 cumprida — descoberto, aguardando confirmação. Há ainda ${emCampanha} identificação(ões) em campanha de 30 dias, listadas na Bússola`],
+      [ICO.escudo,eleg.length,"Elegíveis",
+       "etapas 3 e 4 cumpridas — conselho deliberou e a entidade foi escolhida, com a pasta do edital criada"],
+      [ICO.relogio,prox.length,"Prazos próximos",
+       "etapa 5 cumprida — documentos preenchidos e nota técnica emitida, prontos para envio"]]
+      .map(x=>`<div class="met linha" title="${esc(x[3])}">${x[0]}<div><div class=v>${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
     const novas=[...abertos].sort((a,b)=>String(b.detalhes.coletado_em||"").localeCompare(String(a.detalhes.coletado_em||""))).slice(0,5);
     $("fi-novas").innerHTML=novas.length?novas.map(e=>`<div class=item data-id="${esc(e.id)}">
       <span class=ponto style="background:${AREA(e.area).cor}"></span>

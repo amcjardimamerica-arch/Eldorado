@@ -645,6 +645,49 @@ def _so_completos(editais: list[dict], hoje: date) -> list[dict]:
 TIPOS_DECISAO = ("resultado_preliminar", "resultado_final", "recurso")
 
 
+def etapa_do_edital(e: dict, decididos: set, preparados: set,
+                    com_parecer: set) -> dict:
+    """Em que etapa do fluxo este edital está — a mesma numeração do painel.
+
+      1 Descobrir  identificado, aguardando confirmação
+      2 Confirmar  verificação dupla concluída (ou confirmação documental)
+      3 Enquadrar  conselho deliberou (parecer emitido)
+      4 Decidir    entidade escolhida e pasta do edital criada
+      5 Preparar   documentos preenchidos e nota técnica emitida
+    """
+    chave = (e.get("pasta_farol") or "").split("/")
+    ident = f'{chave[-2]}/{chave[-1]}' if len(chave) >= 2 else None
+    if ident and ident in preparados:
+        n = 5
+    elif ident and ident in decididos:
+        n = 4
+    elif ident and ident in com_parecer:
+        n = 3
+    elif e.get("verificacao_dupla") or e.get("confirmacao") == "confirmado_documental":
+        n = 2
+    else:
+        n = 1
+    return {"etapa": n,
+            "etapa_nome": ("Descobrir", "Confirmar", "Enquadrar",
+                           "Decidir", "Preparar")[n - 1]}
+
+
+def _marca_etapas(editais: list[dict]) -> list[dict]:
+    from .biblioteca import OPORTUNIDADES as _OP
+    def conjunto(padrao):
+        return {f"{p.parent.parent.name}/{p.parent.name}"
+                for p in _OP.glob(padrao)} if _OP.exists() else set()
+    decididos = conjunto("*/*/decisao.json")
+    preparados = conjunto("*/*/preparacao.json")
+    praiz = ROOT / "biblioteca_alexandria/pareceres"
+    com_parecer = ({f"{p.parent.parent.name}/{p.parent.name}"
+                    for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
+    com_parecer |= conjunto("*/*/conselho.json")
+    for e in editais:
+        e.update(etapa_do_edital(e, decididos, preparados, com_parecer))
+    return editais
+
+
 def _funil_5_passos(base: list[dict], completos: list[dict], _=None) -> dict:
     """Quantos itens estão em cada um dos 5 passos, agora.
 
@@ -760,7 +803,8 @@ def coletar(hoje: date | None = None) -> dict:
     completos_lista = _so_completos(editais_base, hoje)
     historicos = _historicos_encerrados(hoje)
     vivos = completos_lista
-    editais = (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos
+    editais = _marca_etapas(
+        (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos)
     leis = load_json(ROOT / "biblioteca/leis/catalogo.json")["itens"]
     revisao = load_json(ROOT / "estado/revisao_normativa.json") if (ROOT / "estado/revisao_normativa.json").exists() else {}
     parl = mod_parlamentares.carregar_do_disco(hoje.year)
