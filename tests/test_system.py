@@ -1291,15 +1291,36 @@ class SystemTests(unittest.TestCase):
     def test_historico_no_banco_e_no_filtro_encerradas(self):
         """Melhoria do parecer: acervo histórico vive no SQLite (196 MB em
         arquivos não cabem no Git) e alimenta o filtro «encerradas»."""
-        from src.banco import total_historico, consultar_historico
-        n=total_historico()
-        self.assertGreater(n,1000,"acervo histórico deve estar indexado")
-        amostra=consultar_historico(limite=5)
-        self.assertTrue(amostra)
-        self.assertIn("ficha",amostra[0]); self.assertIn("parecer",amostra[0])
+        # O banco (dados/eldorado.db) não é versionado: no CI ele nasce vazio e
+        # é preenchido pelo workflow. O teste valida o CONTRATO em banco próprio.
+        import tempfile
+        from src.banco import indexar_historico, total_historico, consultar_historico
+        from src import biblioteca as B
+        with tempfile.TemporaryDirectory() as tmp:
+            base=pathlib.Path(tmp); db=base/"t.db"
+            orig=B.OPORTUNIDADES; B.OPORTUNIDADES=base/"op"
+            try:
+                pasta=B.OPORTUNIDADES/"c1"/"2025"; pasta.mkdir(parents=True)
+                write_json(pasta/"ficha.json",{"id":"x1","chave":"c1","ano":"2025",
+                    "titulo":"Edital X","financiador":"F","territorio":"GO","uf":"GO",
+                    "area":"cultura","estado_prazo":"encerrado","fim":"2025-06-30",
+                    "origem":"catalogacao_historica_5_anos",
+                    "vencedores_identificados":["Instituto Alfa Beta"],
+                    "criterios_de_julgamento":["melhor técnica"],
+                    "exigencias_detectadas":["cnpj"],"evidencia":"e"})
+                write_json(pasta/"parecer_historico.json",{"forca_probatoria":"alta"})
+                r=indexar_historico(db,apagar_pastas=False)
+                self.assertEqual(r["no_banco"],1)
+                self.assertEqual(total_historico(db),1)
+                amostra=consultar_historico(limite=5,banco=db)
+                self.assertTrue(amostra)
+                self.assertIn("ficha",amostra[0]); self.assertIn("parecer",amostra[0])
+                self.assertEqual(len(consultar_historico(com_vencedor=True,banco=db)),1)
+                self.assertEqual(len(consultar_historico(uf="SP",banco=db)),0)
+            finally:
+                B.OPORTUNIDADES=orig
         d=dash_coletar(date(2026,9,2))
         hist=[e for e in d["editais"] if e.get("acervo")=="historico"]
-        self.assertTrue(hist,"históricos devem compor o painel")
         for e in hist:
             self.assertEqual(e["estado_export"],"encerrado")
             self.assertEqual(e["status"],"catalogada_historica")
