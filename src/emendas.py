@@ -169,6 +169,7 @@ def oportunidade(tipo: dict, ano: int, lev: dict, hoje: date) -> dict:
         "fonte_id": tipo["id"], "fonte_nome": tipo["casa"],
         "territorio": tipo["territorio"], "uf": tipo.get("uf"),
         "abrangencia": "nacional" if tipo["esfera"] == "federal" else "estadual",
+        "uf_exibicao": tipo.get("descricao_uf") or tipo.get("uf") or tipo["territorio"],
         "nivel": tipo["esfera"], "status": "verificada_regra_anual",
         "area": tipo.get("area", "outros"),
         "programa": "Emenda parlamentar", "lei": tipo["lei"],

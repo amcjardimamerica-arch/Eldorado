@@ -49,7 +49,10 @@ AREAS = {
     "justica":            {"rotulo": "Justiça",              "cor": "#4A5568"},
     "seguranca_alimentar":{"rotulo": "Segurança alimentar",  "cor": "#0E8A74"},
     "outros":             {"rotulo": "Outros",               "cor": "#94A3B8"},
+    "emendas_parlamentares": {"rotulo": "Emendas parlamentares", "cor": "#B8860B"},
 }
+# previsão (não é área): cinza claro, só nos meses futuros
+COR_PREVISAO = "#D5D9DE"
 _PALAVRAS_AREA = [
     ("infraestrutura", r"infraestrutur|pavimenta|ilumina[çc][ãa]o p[úu]blica|obra|saneament|mobilidade urbana|drenagem"),
     ("cultura", r"cultur|audiovisual|artist|patrim[oô]nio|m[uú]sic|teatro|danca|dança|pnab|aldir|paulo gustavo|rouanet|goyazes"),
@@ -575,7 +578,7 @@ def _recorte_painel(editais: list[dict], hoje: date) -> list[dict]:
     return painel + recentes
 
 
-def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
+def _historicos_encerrados(hoje: date, limite: int = 250) -> list[dict]:
     """Editais históricos catalogados (fases 1 e 2) que compõem o filtro
     «inscrições encerradas».
 
@@ -914,6 +917,10 @@ def coletar(hoje: date | None = None) -> dict:
     historicos = _historicos_encerrados(hoje)
     from .emendas import oportunidades_do_painel as _emendas
     emendas = _emendas(hoje)
+    prev_p = ROOT / "biblioteca_alexandria/previsoes/previsoes.json"
+    previsoes = load_json(prev_p) if prev_p.exists() else {"itens": [], "previsoes": 0}
+    dos_p = ROOT / "biblioteca_alexandria/fontes/indice.json"
+    dossies = load_json(dos_p) if dos_p.exists() else {"itens": []}
     vivos = completos_lista
     editais = _marca_etapas(
         (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos)
@@ -972,6 +979,20 @@ def coletar(hoje: date | None = None) -> dict:
         "eventos": _eventos(editais),
         "biblioteca": biblioteca, "pareceres": pareceres,
         "calendario_decisao": decisao, "funil": funil,
+        "previsoes": {"referencia": previsoes.get("referencia"),
+                      "total": previsoes.get("previsoes", 0),
+                      "por_mes": previsoes.get("por_mes", {}),
+                      "cor": COR_PREVISAO,
+                      # só o essencial de cada previsão (o detalhe fica na Biblioteca)
+                      "itens": [{k: i.get(k) for k in
+                                 ("id", "titulo", "orgao", "area", "uf", "nivel", "inicio",
+                                  "fim", "forca", "especial", "base", "status_verificacao",
+                                  "fonte_confirmacao", "lei")}
+                                for i in previsoes.get("itens", [])]},
+        "dossies_fontes": {"total": dossies.get("fontes", 0),
+                           "com_historico": dossies.get("com_historico", 0),
+                           "conselhos": dossies.get("conselhos", 0),
+                           "itens": [i for i in dossies.get("itens", []) if i.get("editais")]},
         "bussola": _bussola(editais),
         "bussola_painel": saida_bussola,
         "farol_resumo": _farol_resumo(editais),

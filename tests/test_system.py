@@ -1792,6 +1792,103 @@ class SystemTests(unittest.TestCase):
         self.assertIn("python -m src.emendas",wf)
         self.assertIn("python -m src.emendas_docs",wf)
 
+
+    def test_previsao_por_recorrencia(self):
+        """Onisciência sobre o futuro provável: padrões órgão×área×mês em 2+
+        anos viram previsões só nos meses adiante; especiais são hipótese."""
+        import sqlite3, tempfile
+        from src import previsao as P
+        con=sqlite3.connect(":memory:")
+        con.execute("CREATE TABLE historico (financiador,area,uf,nivel,data_publicacao,inicio,fim,titulo,chave)")
+        rows=[("Querido Diário","cultura","GO","municipal","2024-10-05",None,None,"Diário Oficial de Goiânia (GO) 2024-10-05 — edital cultura","a"),
+              ("Querido Diário","cultura","GO","municipal","2025-10-07",None,None,"Diário Oficial de Goiânia (GO) 2025-10-07 — edital cultura","b"),
+              ("Querido Diário","esporte","SP","municipal","2025-03-01",None,None,"Diário Oficial de Bauru (SP) 2025-03-01 — edital esporte","c")]
+        con.executemany("INSERT INTO historico VALUES (?,?,?,?,?,?,?,?,?)",rows)
+        pats=P.padroes(con)
+        self.assertEqual(len(pats),1)                      # Goiânia/cultura/out em 2 anos
+        self.assertEqual((pats[0]["orgao"],pats[0]["mes"]),("Prefeitura de Goiânia (GO)","10"))
+        self.assertEqual(pats[0]["forca"],2)
+        saida_orig=P.SAIDA
+        with tempfile.TemporaryDirectory() as tmp:
+            P.SAIDA=pathlib.Path(tmp)
+            try:
+                r=P.prever(date(2026,9,1),con=con)
+            finally:
+                P.SAIDA=saida_orig
+        prevs=[x for x in r["itens"] if not x["especial"]]
+        self.assertEqual(len(prevs),1)
+        self.assertEqual(prevs[0]["inicio"],"2026-10-01")   # próximo outubro
+        self.assertTrue(prevs[0]["previsto"])
+        # a partir do MÊS SEGUINTE: em setembro nada é previsto para setembro
+        self.assertFalse(any(x["inicio"][:7]=="2026-09" for x in r["itens"]))
+        # especiais: Rouanet, Aldir Blanc e Goyazes como hipótese declarada
+        esp={x["id"] for x in r["itens"] if x["especial"]}
+        for k in ("rouanet","aldir-blanc","goyazes"):
+            self.assertTrue(any(k in e for e in esp),k)
+        for x in r["itens"]:
+            if x["especial"]:
+                self.assertEqual((x["inicio"][5:],x["fim"][5:]),("02-01","10-31"))
+                self.assertIn("confirmar",x["status_verificacao"])
+
+    def test_dossie_de_fontes_estrito(self):
+        from src.dossie_fontes import _casa, eh_agregador, _fontes_catalogo
+        fonte={"id":"secult-go","nome":"Secult Goiás — Goyazes"}
+        self.assertTrue(_casa(fonte,"Secult Goiás","Secult Goiás — Goyazes",""))
+        # título genérico NÃO casa (evita Conanda/UNESCO com centenas alheios)
+        self.assertFalse(_casa({"id":"conanda","nome":"Conanda e Fundo da Criança"},
+                               "Prefeitura de X (SP)","Querido Diário",
+                               "edital do fundo da criança de X"))
+        self.assertTrue(eh_agregador({"nome":"Querido Diário — diários oficiais"}))
+        self.assertTrue(eh_agregador({"nome":"PNCP — Portal Nacional"}))
+        self.assertFalse(eh_agregador({"nome":"BNDES — Área Social"}))
+        fontes=_fontes_catalogo()
+        self.assertGreaterEqual(sum(1 for f in fontes if f["origem"]=="conselho"),9)
+        self.assertTrue(any(f["id"]=="cmas-goiania" for f in fontes))
+
+    def test_investigacao_terceiro_setor(self):
+        import tempfile
+        from src.investigacao import investigar_fonte
+        with tempfile.TemporaryDirectory() as tmp:
+            lab=pathlib.Path(tmp)
+            (lab/"a.html").write_text("<h1>Edital 12/2026 — apoio a OSCs</h1><p>Objeto: fomento a "
+                "organizações da sociedade civil. Inscrições até 15/11/2026. R$ 120.000,00</p>",encoding="utf-8")
+            (lab/"p.html").write_text("<h1>Pregão 5/2026</h1><p>Aquisição de material. Menor preço.</p>",encoding="utf-8")
+            (lab/"i.html").write_text('<a href="a.html">Edital de apoio a projetos culturais</a>'
+                                      '<a href="p.html">Edital de pregão para aquisição</a>',encoding="utf-8")
+            ach,fal=investigar_fonte({"id":"lab","nome":"Lab","url":f"file://{lab}/i.html",
+                                      "territorio":"BR"},profundidade=1,pausa=0)
+        self.assertEqual(len(ach),1)                 # pregão barrado pela fase 2
+        self.assertEqual(ach[0]["prazo_texto"],"15/11/2026")
+        self.assertEqual(ach[0]["valor_texto"],"R$ 120.000,00")
+        self.assertIn("fomento",ach[0]["objeto"])
+        self.assertTrue(ach[0]["destinacao"]["elegivel"])
+        cfg=load_json(pathlib.Path("config/investigacao.json"))
+        ids={f["id"] for f in cfg["fontes"]}
+        for f in ("prosas","salic","secult-go"): self.assertIn(f,ids)
+
+    def test_emendas_area_e_brasil_e_previsoes_no_painel(self):
+        d=dash_coletar(date(2026,9,2))
+        em=[e for e in d["editais"] if e.get("sem_edital")]
+        for e in em:
+            self.assertEqual(e["area"],"emendas_parlamentares")
+        fed=[e for e in em if e["abrangencia"]=="nacional"][0]
+        self.assertNotIn("Federal",fed["titulo"])
+        self.assertEqual(fed["uf_exibicao"],"Brasil")
+        from src.dashboard_dados import AREAS
+        self.assertIn("emendas_parlamentares",AREAS)
+        self.assertIn("previsoes",d); self.assertIn("dossies_fontes",d)
+        self.assertEqual(d["previsoes"]["cor"],"#D5D9DE")   # cinza claro
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("gprevisto",html)
+        self.assertIn("mesFuturo",html)                     # só meses adiante
+        self.assertIn("previsto pelo histórico",html)
+        self.assertIn("a confirmar",html)
+        import os
+        self.assertLess(os.path.getsize("docs/dashboard-dados.js"),2_000_000)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        for m in ("src.investigacao","src.previsao","src.dossie_fontes"):
+            self.assertIn(m,wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

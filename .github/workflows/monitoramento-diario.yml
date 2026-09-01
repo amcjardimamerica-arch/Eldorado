@@ -48,6 +48,9 @@ jobs:
           python -m src.destinacao
           python -m src.emendas
           python -m src.emendas_docs
+          python -m src.investigacao || echo "investigacao: falhas de rede registradas"
+          python -m src.previsao
+          python -m src.dossie_fontes
           python -m src.banco
           python -m src.biblioteca
           python -m src.arquivamento

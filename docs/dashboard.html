@@ -128,6 +128,9 @@ font-size:9.5px;letter-spacing:.03em}
 .ginscricao.projetada{outline:1px dashed #ffffffaa;outline-offset:-2px}
 /* emenda parlamentar: sem edital, janela fixa anual */
 .gemenda{background-image:repeating-linear-gradient(90deg,#ffffff00 0 8px,#ffffff40 8px 10px)}
+/* previsão histórica: cinza claro, tracejada, só em meses futuros */
+.gprevisto{opacity:.9;outline:1px dashed #9AA4B2;outline-offset:-2px;font-size:9.5px;letter-spacing:.02em}
+.gprevisto.especial{outline-style:solid;outline-color:#C9A227}
 .gprazo{border-radius:5px;min-width:20px!important;font-size:12px}
 .gprazorot{position:absolute;top:2px;bottom:2px;display:flex;align-items:center;padding-left:5px;font-size:10px;font-weight:700;color:var(--suave);white-space:nowrap}
 .gbarra{position:absolute;top:2px;bottom:2px;border-radius:11px;color:#fff;font-size:10px;font-weight:600;
@@ -1019,11 +1022,22 @@ function desenhaGantt(){
       .localeCompare(String(b.ciclo.inscricao&&b.ciclo.inscricao.fim||b.ciclo.fim_do_ciclo))).slice(0,8);
   const foraDoFiltro=base.length-noMes.length;
 
+  /* PREVISÕES (cinza claro) — apenas nos meses adiante do atual. Ao virar o
+     mês, as previsões daquele mês somem: fica só o que ainda está por vir. */
+  const mesFuturo=(gAno>HOJE.getFullYear())||(gAno===HOJE.getFullYear()&&gMes>HOJE.getMonth());
+  const uf0=$("fi-uf").value,ar0=$("fi-area").value,ni0=$("fi-nivel").value;
+  const prevs=mesFuturo?((D.previsoes||{}).itens||[]).filter(pv=>
+      cruza(pv.inicio,pv.fim)
+      &&(!uf0||uf0==="__nac__"?(!uf0||!pv.uf):(pv.uf===uf0||!pv.uf))
+      &&(!ar0||pv.area===ar0)&&(!ni0||pv.nivel===ni0))
+    .sort((a,b)=>(b.especial?1:0)-(a.especial?1:0)||b.forca-a.forca).slice(0,10):[];
+  const corPrev=(D.previsoes||{}).cor||"#D5D9DE";
+
   const diasCab=Array.from({length:nd},(_,i)=>{
     const dt=new Date(gAno,gMes,i+1);
     return `<span><b>${i+1}</b><i>${SEM[dt.getDay()]}</i></span>`;}).join("");
   let linhas=`<div class=gantt style="--nd:${nd}"><div></div><div class=gdias>${diasCab}</div>`;
-  if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">`
+  if(!eds.length&&!prevs.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">`
     +`Nenhum edital validado com ciclo neste mês.`
     +` O calendário acompanha o filtro do Radar e mostra apenas editais que cumpriram a etapa 2.</div>`;
 
@@ -1064,9 +1078,36 @@ function desenhaGantt(){
     linhas+=`<div class=grotulo title="${esc(e.titulo)} — ciclo até ${c.fim_do_ciclo?ddmm(c.fim_do_ciclo):"data não publicada"}${emCurso?" (em curso)":""}">${esc(nomeObjetivo(e).slice(0,40))}</div>
       <div class=gfaixa>${hoje}${faixa}</div>`;
   });
+  prevs.forEach(pv=>{
+    const [d1,d2,antes,depois]=recorte(pv.inicio,pv.fim);
+    const [l,w]=pct(d1,d2);
+    const rot=pv.especial?"janela histórica — a confirmar":"previsto pelo histórico";
+    linhas+=`<div class=grotulo style="color:var(--suave)" title="${esc(pv.titulo)} — ${esc(pv.base||"")}${pv.status_verificacao?" · "+esc(pv.status_verificacao):""}">
+        <span style="opacity:.75">${esc(pv.titulo.slice(0,40))}</span></div>
+      <div class=gfaixa><span class="gbarra gprevisto${pv.especial?" especial":""}" data-prev="${esc(pv.id)}"
+        style="left:${l}%;width:${w}%;background:${corPrev};color:#556"
+        title="${esc(rot)}: ${ddmm(pv.inicio)} a ${ddmm(pv.fim)} · força ${pv.forca} · ${esc(pv.base||"")}">${antes?"◂ ":""}${rot}${depois?" ▸":""}</span></div>`;
+  });
   linhas+="</div>";
   $("g-corpo").innerHTML=linhas;
-  $("g-corpo").querySelectorAll(".gbarra").forEach(el=>{
+  $("g-corpo").querySelectorAll(".gprevisto").forEach(el=>{
+    const pv=((D.previsoes||{}).itens||[]).find(x=>x.id===el.dataset.prev);
+    if(!pv)return;
+    ligaTip(el,`<strong>${esc(pv.titulo)}</strong><br>${esc(pv.orgao||"")}<br>
+      janela prevista: ${br(pv.inicio)} a ${br(pv.fim)}<br>base: ${esc(pv.base||"")}<br>
+      ${pv.status_verificacao?"<em>"+esc(pv.status_verificacao)+"</em><br>":""}
+      <em>previsão — some quando o mês passa ou quando o edital real for publicado</em>`);
+    el.onclick=()=>abreModal(`<div class=meta>${esc(pv.orgao||"")}</div><h3 style="margin:4px 0 0">${esc(pv.titulo)}</h3>`,
+      `<div class=lin><b>Natureza</b><span>${pv.especial?"janela histórica declarada pelo titular — <strong>a confirmar no edital</strong>":"previsão por recorrência histórica"}</span></div>
+       <div class=lin><b>Janela prevista</b><span>${br(pv.inicio)} a ${br(pv.fim)}</span></div>
+       <div class=lin><b>Base</b><span>${esc(pv.base||"—")}</span></div>
+       <div class=lin><b>Força</b><span>${pv.forca} ano(s) observado(s)</span></div>
+       ${pv.lei?`<div class=lin><b>Lei</b><span>${esc(pv.lei)}</span></div>`:""}
+       ${pv.status_verificacao?`<div class=lin><b>Verificação</b><span>${esc(pv.status_verificacao)}</span></div>`:""}
+       ${pv.fonte_confirmacao?`<p><a href="${esc(pv.fonte_confirmacao)}" target=_blank rel="noopener noreferrer">conferir na fonte oficial ↗</a></p>`:""}
+       <p class=meta>Previsão não é edital. Quando o edital real for publicado, entra pela varredura e esta linha desaparece.</p>`);
+  });
+  $("g-corpo").querySelectorAll(".gbarra:not(.gprevisto)").forEach(el=>{
     const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);
     if(ed){ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);}});
 
@@ -1081,7 +1122,8 @@ function desenhaGantt(){
     +areasG.map(a=>`<span title="${esc(AREA(a).rotulo)}: ${cont[a]} no mês"><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave);font-weight:600">${cont[a]}</b></span>`).join("")
     +(nProj?`<span class=meta title="resultado e recurso projetados pela praxe quando o edital não os publica">· ${nProj} com datas projetadas (☆ e faixa tracejada)</span>`:"")
     +(noMes.length>eds.length?`<span class=meta>mostrando ${eds.length} de ${noMes.length}</span>`:"")
-    +(foraDoFiltro?`<span class=meta title="editais validados cujo ciclo não toca este mês">· ${foraDoFiltro} fora deste mês</span>`:"");
+    +(foraDoFiltro?`<span class=meta title="editais validados cujo ciclo não toca este mês">· ${foraDoFiltro} fora deste mês</span>`:"")
+    +(prevs.length?`<span title="previsão por recorrência histórica — só nos meses adiante"><span class="gbarra gprevisto" style="position:static;width:22px;height:10px;display:inline-block;background:${corPrev}"></span> ${prevs.length} previsto(s) pelo histórico</span>`:"");
 }
 /* contraste do rótulo dentro da barra: escuro sobre cor clara, claro sobre escura */
 function corTexto(hex){
