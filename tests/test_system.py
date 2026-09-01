@@ -1685,10 +1685,12 @@ class SystemTests(unittest.TestCase):
                 self.assertEqual(e["total_itens"],len(e["analise_etapa2"]))
                 self.assertEqual(e["comprovados"],
                                  sum(1 for a in e["analise_etapa2"] if a["comprovado"]))
-                # item não comprovado nunca traz valor inventado
+                # item não comprovado: ou não traz valor, ou o valor se declara
+                # projetado — nunca uma data/quantia apresentada como certa
                 for a in e["analise_etapa2"]:
-                    if not a["comprovado"] and a["item"] in ("Valor","Resultado"):
-                        self.assertIsNone(a["valor"])
+                    if not a["comprovado"] and a["valor"]:
+                        self.assertIn("projet",str(a["valor"]).lower(),
+                                      f'{a["item"]}: {a["valor"]}')
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("an-grade",html); self.assertIn("an-barra",html)
         self.assertIn("itens da etapa 2",html)

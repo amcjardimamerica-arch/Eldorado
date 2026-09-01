@@ -397,11 +397,15 @@ def _bussola(editais: list[dict]) -> dict:
                        + (" (abertura projetada)" if insc.get("projetado") else ""))
                       if insc else None,
              "comprovado": bool(insc.get("fim"))},
-            {"item": "Resultado", "valor": (ciclo.get("resultado") or {}).get("data"),
+            {"item": "Resultado",
+             "valor": ((ciclo["resultado"]["data"]
+                        + (" (projetado)" if ciclo["resultado"].get("projetado") else ""))
+                       if ciclo.get("resultado") else None),
              "comprovado": bool(ciclo.get("resultado")
                                 and not (ciclo["resultado"] or {}).get("projetado"))},
             {"item": "Prazo de recurso",
-             "valor": (f'{ciclo["recurso"]["inicio"]} a {ciclo["recurso"]["fim"]}'
+             "valor": ((f'{ciclo["recurso"]["inicio"]} a {ciclo["recurso"]["fim"]}'
+                        + (" (projetado)" if ciclo["recurso"].get("projetado") else ""))
                        if ciclo.get("recurso") else None),
              "comprovado": bool(ciclo.get("recurso")
                                 and not ciclo["recurso"].get("projetado"))},
