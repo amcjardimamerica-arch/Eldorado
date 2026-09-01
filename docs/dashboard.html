@@ -881,7 +881,16 @@ function detalheEdital(e){
      <div class=lin><b>Objeto</b><span>${esc(e.objeto||"não localizado no texto — conferir edital")}</span></div>
      <div class=lin><b>Período</b><span>${br(e.inicio)} → ${br(e.fim)}</span></div>
      <div class=lin><b>Situação</b><span>${situ}</span></div>
-     ${e.sem_edital?`
+     ${e.sem_edital&&e.regra_anos?`
+       <div class=lin><b>Modalidade</b><span><strong>Sem edital</strong> — pedido administrativo à Receita Federal (Portaria RFB 200/2022)</span></div>
+       <div class=lin><b>Regra de anos</b><span>${e.ano_permitido
+         ?'<span style="color:var(--ok)">ano SEM eleição — captação permitida o ano inteiro</span>'
+         :'<span style="color:var(--urgente)">ano de ELEIÇÃO — doação a OSC vedada (art. 80, I, "a")</span>'}
+         <div class=meta>${esc(e.resumo||"")}</div></span></div>
+       ${(e.detalhes||{}).vedacoes?`<div class=lin><b>Vedações</b><span>${esc(e.detalhes.vedacoes)}</span></div>`:""}
+       ${(e.detalhes||{}).excecao?`<div class=lin><b>Exceção</b><span class=meta>${esc(e.detalhes.excecao)}</span></div>`:""}
+       ${(e.detalhes||{}).documentos_exigidos&&e.detalhes.documentos_exigidos.length?`<p style="margin:10px 0 4px"><strong>Documentos do art. 76</strong></p><ul style="margin:4px 0;padding-left:20px">${e.detalhes.documentos_exigidos.map(x=>`<li>${esc(x.replace(/_/g," "))}</li>`).join("")}</ul>`:""}`
+     :e.sem_edital?`
        <div class=lin><b>Modalidade</b><span><strong>Sem edital</strong> — captação por ofício e projeto em cada gabinete, de 01/10 a 30/11 de todo ano</span></div>
        <div class=lin><b>Levantamento</b><span>${(e.levantamento||{}).total??e.parlamentares_total??0} parlamentar(es) com mandato · ${(e.levantamento||{}).com_contato_completo??0} com gabinete e contato completos${e.parlamentares_total&&!(e.parlamentares||[]).length?" · <em>carregando lista…</em>":""}</span></div>
        <div class=lin><b>Origem dos dados</b><span class=meta>${esc((e.levantamento||{}).origem_dos_dados||"—")}</span></div>

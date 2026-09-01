@@ -214,13 +214,86 @@ def oportunidade(tipo: dict, ano: int, lev: dict, hoje: date) -> dict:
     }
 
 
+def ano_permitido(regra: str | None, ano: int) -> bool:
+    """Fontes com regra de ano: 'impares' = anos sem eleição (Portaria RFB 200/2022,
+    art. 80, I, 'a', veda doação a OSC no ano eleitoral; eleições caem em anos pares)."""
+    if regra == "impares":
+        return ano % 2 == 1
+    if regra == "pares":
+        return ano % 2 == 0
+    return True
+
+
+def oportunidade_extra(f: dict, ano: int, hoje: date) -> dict | None:
+    """Fontes anuais sem edital além das emendas (ex.: doação da Receita Federal)."""
+    permitido = ano_permitido(f.get("regra_anos"), ano)
+    j = f["janela"]
+    inicio, fim = f'{ano}-{j["inicio_mes_dia"]}', f'{ano}-{j["fim_mes_dia"]}'
+    estado = ("aberto" if permitido and inicio <= hoje.isoformat() <= fim
+              else "a_abrir" if permitido and hoje.isoformat() < inicio
+              else "encerrado")
+    oid = f'{f["id"]}-{ano}'
+    docs = f.get("documentos", [])
+    return {
+        "id": oid, "protocolo": oid,
+        "titulo": f'{f["nome"]} — {ano}' + ("" if permitido else " (ano eleitoral: vedado)"),
+        "url": f.get("fonte_dados"), "fonte_id": f["id"], "fonte_nome": f["orgao"],
+        "territorio": f["territorio"], "uf": f.get("uf"),
+        "uf_exibicao": f.get("descricao_uf") or f["territorio"],
+        "abrangencia": "nacional" if f["esfera"] == "federal" else "estadual",
+        "nivel": f["esfera"], "status": "verificada_regra_anual",
+        "area": f.get("area", "outros"), "programa": f["nome"], "lei": f["lei"],
+        "objeto": (f'{f["forma"]}. ' + (f'Vedado em {ano}: ano de eleição (art. 80, I, "a"). '
+                   if not permitido else f'Permitido em {ano}: ano sem eleição. ')
+                   + f'Preferência: {f.get("preferencia", "—")}.'),
+        "inicio": inicio, "fim": fim, "datas": "ambas", "publicado_em": None,
+        "prazo_prorrogado": False, "estado_export": estado, "sem_edital": True,
+        "regra_anos": f.get("regra_anos"), "ano_permitido": permitido,
+        "resumo": (f'Regra: {f["regra_anos_fundamento"]}'),
+        "valor_texto": None,
+        "verificacao_dupla": {"fonte": True, "conteudo": True,
+                              "criterio": "norma vigente + regra anual declarada"},
+        "etapa": 5 if permitido else 2, "etapa_nome": "Preparar" if permitido else "Confirmar",
+        "anexos_modelo": [], "anexos": [], "parlamentares": [],
+        "levantamento": {"total": 0, "com_contato_completo": 0,
+                         "origem_dos_dados": "não se aplica (fonte administrativa, sem gabinetes)",
+                         "pendencias": [], "levantado_em": now_iso()},
+        "ciclo": {"inscricao": {"inicio": inicio, "fim": fim, "projetado": False},
+                  "resultado": None, "recurso": None, "fim_do_ciclo": fim},
+        "marcos": [{"tipo": "abertura", "data": inicio, "projetado": False},
+                   {"tipo": "encerramento", "data": fim, "projetado": False}],
+        "destinacao": {"elegivel": True, "natureza": f.get("natureza", "recurso"),
+                       "motivo": "doação de bens a OSC prevista em norma federal — sem certame comercial"},
+        "confirmacao": "confirmado_documental",
+        "detalhes": {"qualificacao": {"nota": None, "classe": "regra anual"},
+                     "documentos_exigidos": docs, "pontuacao": [], "atendidos": [],
+                     "pendencias": ([] if permitido else
+                                    [f'{ano} é ano de eleição: doação a OSC vedada pelo art. 80, I, "a" '
+                                     f'— exceção só para calamidade/emergência (parágrafo único)']),
+                     "evidencia": f["regra_anos_fundamento"],
+                     "coletado_em": hoje.isoformat(), "lacuna": None,
+                     "vedacoes": f.get("vedacoes"), "excecao": f.get("excecao")},
+        "ficha": "",
+    }
+
+
 def run(ano: int | None = None, hoje: date | None = None) -> dict:
-    """Executa as fases 1 e 2 das três emendas e grava na Biblioteca."""
+    """Executa as fases 1 e 2 das três emendas (e das fontes anuais extras)."""
     hoje = hoje or date.today()
     ano = ano or hoje.year
     cfg = _cfg()
     ESTADO.mkdir(parents=True, exist_ok=True)
     saida = []
+    # fontes anuais extras — geradas para o ano corrente e o seguinte, para o
+    # calendário mostrar desde já o próximo ano permitido
+    for f in cfg.get("fontes_anuais_extras", []):
+        for a in (ano, ano + 1):
+            op = oportunidade_extra(f, a, hoje)
+            write_json(ESTADO / f'{f["id"]}-{a}.json', op)
+            pasta = BIBLIOTECA / f["id"] / str(a)
+            write_json(pasta / "oportunidade.json", op)
+            saida.append({"tipo": f["id"], "ano": a, "permitido": op["ano_permitido"],
+                          "estado": op["estado_export"], "fase": op["etapa"]})
     for tipo in cfg["tipos"]:
         lev = levantar(tipo)
         op = oportunidade(tipo, ano, lev, hoje)
@@ -247,7 +320,7 @@ def oportunidades_do_painel(hoje: date | None = None) -> list[dict]:
     saida = []
     if not ESTADO.exists():
         return saida
-    for arq in sorted(ESTADO.glob("emenda-*.json")):
+    for arq in sorted(list(ESTADO.glob("emenda-*.json")) + list(ESTADO.glob("doacao-*.json"))):
         try:
             saida.append(load_json(arq))
         except Exception:

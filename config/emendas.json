@@ -65,5 +65,40 @@
     "url_perfil",
     "foto"
   ],
-  "nota_dados": "Os dados vêm das APIs oficiais das casas legislativas e do TSE. Onde a casa não publica API, a rota fica declarada como pendência de coleta — nenhum dado de parlamentar é inventado."
+  "nota_dados": "Os dados vêm das APIs oficiais das casas legislativas e do TSE. Onde a casa não publica API, a rota fica declarada como pendência de coleta — nenhum dado de parlamentar é inventado.",
+  "fontes_anuais_extras": [
+    {
+      "id": "doacao-receita-federal",
+      "nome": "Doação de mercadorias apreendidas — Receita Federal",
+      "esfera": "federal",
+      "territorio": "BR",
+      "uf": null,
+      "descricao_uf": "Brasil",
+      "orgao": "Secretaria Especial da Receita Federal do Brasil — Superintendência da 1ª Região Fiscal (GO/DF/MT/MS/TO)",
+      "lei": "Portaria RFB 200/2022 (arts. 14, I, 'b'; 67; 76-78; 80)",
+      "area": "doacao_bens",
+      "natureza": "doacao_de_bens",
+      "sem_edital": true,
+      "regra_anos": "impares",
+      "regra_anos_fundamento": "art. 80, I, 'a', da Portaria RFB 200/2022: vedada a doação a OSC no ano de realização da eleição. Eleições gerais e municipais caem em anos pares; logo, a captação é permanente nos anos ímpares.",
+      "janela": {
+        "inicio_mes_dia": "01-01",
+        "fim_mes_dia": "12-31"
+      },
+      "forma": "pedido do representante legal à unidade da RFB, com os documentos do art. 76; não há edital",
+      "documentos": [
+        "comprovante de investidura do dirigente",
+        "CNPJ ativo há pelo menos 3 anos",
+        "CND ou CPEND",
+        "CRF/FGTS",
+        "CNDT",
+        "estatuto com finalidade do art. 84-C da Lei 13.019/2014",
+        "declaração do art. 76, §2º"
+      ],
+      "preferencia": "entidades de saúde, educação e assistência social (art. 76, §1º)",
+      "vedacoes": "OSC impedida no Siconv, Cepim, CNEP ou Ceis (art. 78)",
+      "fonte_dados": "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias",
+      "excecao": "calamidade pública ou emergência reconhecida pelo Executivo Federal libera a doação mesmo em ano eleitoral (art. 80, parágrafo único)"
+    }
+  ]
 }

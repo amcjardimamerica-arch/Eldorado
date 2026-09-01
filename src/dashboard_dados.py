@@ -50,6 +50,7 @@ AREAS = {
     "seguranca_alimentar":{"rotulo": "Segurança alimentar",  "cor": "#0E8A74"},
     "outros":             {"rotulo": "Outros",               "cor": "#94A3B8"},
     "emendas_parlamentares": {"rotulo": "Emendas parlamentares", "cor": "#B8860B"},
+    "doacao_bens":          {"rotulo": "Doação de bens (Receita Federal)", "cor": "#5C7A3F"},
 }
 # previsão (não é área): cinza claro, só nos meses futuros
 COR_PREVISAO = "#D5D9DE"

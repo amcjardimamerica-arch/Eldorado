@@ -1778,7 +1778,7 @@ class SystemTests(unittest.TestCase):
 
     def test_emendas_no_painel(self):
         d=dash_coletar(date(2026,9,2))
-        em=[e for e in d["editais"] if e.get("sem_edital")]
+        em=[e for e in d["editais"] if e.get("sem_edital") and not e.get("regra_anos")]
         self.assertEqual(len(em),3,"uma linha por tipo de emenda")
         for e in em:
             self.assertEqual((e["inicio"][5:],e["fim"][5:]),("10-01","11-30"))
@@ -1871,7 +1871,7 @@ class SystemTests(unittest.TestCase):
 
     def test_emendas_area_e_brasil_e_previsoes_no_painel(self):
         d=dash_coletar(date(2026,9,2))
-        em=[e for e in d["editais"] if e.get("sem_edital")]
+        em=[e for e in d["editais"] if e.get("sem_edital") and not e.get("regra_anos")]
         for e in em:
             self.assertEqual(e["area"],"emendas_parlamentares")
         fed=[e for e in em if e["abrangencia"]=="nacional"][0]
@@ -2027,6 +2027,54 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(sh["sites"][0]["goias"] or sh["goias"]>=1)   # Goiás primeiro
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         for m in ("src.fontes260","src.completude_biblioteca"): self.assertIn(m,wf)
+
+
+    def test_doacao_receita_federal_anos_impares(self):
+        """Doação de mercadorias apreendidas (Portaria RFB 200/2022): fonte
+        permanente nos anos SEM eleição — art. 80, I, 'a' veda no ano eleitoral."""
+        from src.emendas import ano_permitido, oportunidade_extra, _cfg
+        self.assertTrue(ano_permitido("impares",2025))
+        self.assertFalse(ano_permitido("impares",2026))     # eleição geral
+        self.assertTrue(ano_permitido("impares",2027))
+        self.assertFalse(ano_permitido("impares",2028))     # eleição municipal
+        self.assertTrue(ano_permitido(None,2026))
+        f=[x for x in _cfg()["fontes_anuais_extras"] if x["id"]=="doacao-receita-federal"][0]
+        self.assertEqual(f["regra_anos"],"impares")
+        self.assertIn("art. 80",f["regra_anos_fundamento"])
+        op26=oportunidade_extra(f,2026,date(2026,9,1))
+        self.assertFalse(op26["ano_permitido"]); self.assertEqual(op26["estado_export"],"encerrado")
+        self.assertIn("vedado",op26["titulo"].lower())
+        self.assertTrue(any("eleição" in p for p in op26["detalhes"]["pendencias"]))
+        op27=oportunidade_extra(f,2027,date(2026,9,1))
+        self.assertTrue(op27["ano_permitido"]); self.assertEqual(op27["estado_export"],"a_abrir")
+        self.assertEqual((op27["inicio"],op27["fim"]),("2027-01-01","2027-12-31"))
+        self.assertEqual(op27["etapa"],5); self.assertEqual(op27["area"],"doacao_bens")
+        self.assertEqual(op27["uf_exibicao"],"Brasil")
+        # documentos do art. 76 constam
+        docs=" ".join(op27["detalhes"]["documentos_exigidos"]).lower()
+        for d0 in ("cnpj","cnd","fgts","cndt","84-c"): self.assertIn(d0,docs,d0)
+        # norma no catálogo, no formato padrão, e texto na Biblioteca
+        c=load_json(pathlib.Path("biblioteca/leis/catalogo.json"))
+        n=[i for i in c["itens"] if i["id"]=="port-rfb-200-2022"]
+        self.assertEqual(len(n),1)
+        for campo in ("id","titulo","esfera","tipo","url_oficial","status"):
+            self.assertIn(campo,n[0],campo)
+        self.assertEqual(n[0]["esfera"],"federal")
+        self.assertIn("ano_eleitoral",n[0]["dispositivos_chave"])
+        txt=pathlib.Path(n[0]["texto_na_biblioteca"])
+        self.assertTrue(txt.exists())
+        corpo=txt.read_text(encoding="utf-8")
+        self.assertIn("Art. 80",corpo); self.assertIn("Art. 76",corpo)
+        self.assertNotIn("import_export",corpo)          # artefatos do portal removidos
+        from src.biblioteca import tema_da_norma
+        self.assertEqual(tema_da_norma(n[0]),"parcerias_e_fomento")
+        d=dash_coletar(date(2026,9,2))
+        ids={e["id"] for e in d["editais"]}
+        self.assertIn("doacao-receita-federal-2027",ids)
+        from src.dashboard_dados import AREAS
+        self.assertIn("doacao_bens",AREAS)
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("ano SEM eleição",html); self.assertIn("Documentos do art. 76",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

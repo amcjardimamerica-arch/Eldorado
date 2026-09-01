@@ -55,7 +55,8 @@ TEMAS = (
     ("educacao", r"educa[çc]|ensino|fundeb"),
     ("meio_ambiente", r"ambient|res[íi]duos|reciclagem|clima|amaz[ôo]nia"),
     ("parcerias_e_fomento", r"parceri|mrosc|fomento|conv[êe]nio|emenda|fundo|"
-                            r"13\.?019|13\.?800|8\.?726"),
+                            r"13\.?019|13\.?800|8\.?726|"
+                            r"mercadorias\s+apreendidas|doa[çc][ãa]o\s+a\s+osc|receita\s+federal|rfb\b"),
     ("constituicao_e_direitos", r"constitui|direitos|volunt|qualifica|oscip|9\.?790|9\.?608"),
 )
 _TEMAS_RE = [(tema, re.compile(padrao, re.I)) for tema, padrao in TEMAS]
