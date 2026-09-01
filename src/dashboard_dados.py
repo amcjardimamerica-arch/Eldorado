@@ -511,11 +511,12 @@ def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
     try:
         con = conectar()
         linhas = con.execute(
-            # valor primeiro: casos com vencedor e com critério ensinam mais
+            # prioridade: com data real, depois com vencedor/critério
             "SELECT ficha, parecer FROM historico ORDER BY "
+            "  (fim IS NOT NULL) DESC, "
             "  (vencedores NOT IN ('[]','')) DESC, "
             "  (criterios NOT IN ('[]','')) DESC, "
-            "  (fim IS NULL), fim DESC, data_publicacao DESC LIMIT ?",
+            "  data_publicacao DESC LIMIT ?",
             (limite,)).fetchall()
         con.close()
     except Exception:
@@ -540,7 +541,11 @@ def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
             "inicio_br": _br(fi.get("inicio")), "fim_br": _br(fim),
             "datas": "ambas" if fi.get("inicio") and fim else ("so_fim" if fim else "nenhuma"),
             "publicado_em": fi.get("data_publicacao"),
-            "prazo_prorrogado": False, "estado_export": "encerrado",
+            "prazo_prorrogado": False,
+            "estado_export": fi.get("estado_prazo") or "encerrado",
+            "base_do_prazo": fi.get("base_do_prazo"),
+            "confirmacao": (fi.get("confirmacao") or {}).get("nivel_confirmacao"),
+            "nivel_confirmacao_itens": (fi.get("confirmacao") or {}).get("nao_comprovados", [])[:6],
             "resumo": (fi.get("evidencia") or "")[:180],
             "valor_texto": (fi.get("valores_citados") or [None])[0],
             "acervo": "historico",
@@ -556,9 +561,31 @@ def _historicos_encerrados(hoje: date, limite: int = 400) -> list[dict]:
                          "evidencia": fi.get("evidencia") or "",
                          "coletado_em": fi.get("data_publicacao"),
                          "lacuna": None},
-            "marcos": [], "anexos": [], "ficha": "",
+            "marcos": _marcos_projetados(fim),
+            "anexos": [], "ficha": "",
         })
     return saida
+
+
+def _marcos_projetados(fim: str | None) -> list[dict]:
+    """Resultado e recurso PROJETADOS a partir do prazo de inscrição.
+
+    A maioria dos editais históricos não publica essas datas na ementa. A
+    projeção usa a praxe (resultado ~15 dias após o encerramento; recurso nos
+    5 dias seguintes) e vem SEMPRE marcada como projeção — nunca como data
+    publicada. Serve para o calendário mostrar o ciclo completo do certame.
+    """
+    if not fim:
+        return []
+    from datetime import timedelta as _td
+    d = date.fromisoformat(fim)
+    return [
+        {"tipo": "encerramento", "data": fim, "projetado": False},
+        {"tipo": "resultado_preliminar", "data": (d + _td(days=15)).isoformat(),
+         "projetado": True, "base": "praxe: ~15 dias após o encerramento"},
+        {"tipo": "recurso", "data": (d + _td(days=20)).isoformat(),
+         "projetado": True, "base": "praxe: 5 dias após o resultado preliminar"},
+    ]
 
 
 def _so_completos(editais: list[dict], hoje: date) -> list[dict]:

@@ -168,8 +168,11 @@ def indexar_historico(banco: Path = CAMINHO_BANCO, apagar_pastas: bool = True) -
                  _json.dumps(ficha, ensure_ascii=False),
                  _json.dumps(parecer, ensure_ascii=False)))
             guardados += 1
-            # pasta permanece só para o que o Farol consulta de fato
-            relevante = bool(venc) or bool(crit) or ficha.get("estado_prazo") == "aberto"
+            # Pasta permanece só para o que tem DADO REAL: vencedor, critério
+            # de julgamento ou data de prazo publicada. Presunção de "aberto"
+            # (publicação recente sem data) não justifica arquivo em disco —
+            # o registro continua íntegro no banco.
+            relevante = bool(venc) or bool(crit) or bool(ficha.get("fim"))
             if apagar_pastas and not relevante:
                 import shutil
                 shutil.rmtree(fp.parent, ignore_errors=True)

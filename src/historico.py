@@ -116,6 +116,40 @@ AREAS = (
 
 UFS = ("AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO").split()
 
+# ---------------------------------------------------------------- esfera
+_MUNICIPAL = re.compile(
+    r"munic[íi]pio|prefeitura|c[âa]mara\s+municipal|secretaria\s+municipal|"
+    r"di[áa]rio\s+oficial\s+de\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ]|fundo\s+municipal|cmdca|cmas\b", re.I)
+_ESTADUAL = re.compile(
+    r"governo\s+do\s+estado|secretaria\s+de\s+estado|secretaria\s+estadual|"
+    r"di[áa]rio\s+oficial\s+do\s+estado|fundo\s+estadual|assembleia\s+legislativa|"
+    r"\bsecult\b|\bseduc\b|\bsesp\b", re.I)
+_FEDERAL = re.compile(
+    r"minist[ée]rio|governo\s+federal|uni[ãa]o\b|\bfnde\b|\bbndes\b|\bfunarte\b|"
+    r"\bsalic\b|di[áa]rio\s+oficial\s+da\s+uni[ãa]o|\bdou\b|nacional\b|conanda|\bcnas\b", re.I)
+
+
+def esfera_do_edital(reg: dict, texto: str, uf: str | None) -> str:
+    """Nível do edital: SEMPRE federal, estadual ou municipal.
+
+    A leitura é de ABRANGÊNCIA, que é o que o filtro do painel significa:
+    município identificado → municipal; UF sem município → estadual;
+    alcance nacional / órgão federal → federal. Financiador privado é
+    classificado pela abrangência do certame, não pela natureza da fonte.
+    """
+    territorio = str(reg.get("territorio") or "")
+    tipo = str(reg.get("tipo_fonte") or "")
+    alvo = " ".join((reg.get("titulo") or "", texto[:600], str(reg.get("fonte_nome") or "")))
+    if "/" in territorio:                      # 'GO/Goiânia'
+        return "municipal"
+    if "municipal" in tipo or _MUNICIPAL.search(alvo):
+        return "municipal"
+    if "estadual" in tipo or _ESTADUAL.search(alvo):
+        return "estadual"
+    if "federal" in tipo or _FEDERAL.search(alvo) or territorio.upper() == "BR":
+        return "federal"
+    return "estadual" if uf else "federal"
+
 
 # --------------------------------------------------------------- utilidades
 def _texto(reg: dict) -> str:
@@ -152,14 +186,11 @@ def classificar(reg: dict) -> dict:
     uf = territorio.split("/")[0].strip().upper()
     uf = uf if uf in UFS else None
     if not uf:
-        m = re.search(r"\b([A-Z]{2})\b\s*\)|/([A-Z]{2})\b", reg.get("titulo", ""))
-        cand = (m.group(1) or m.group(2)).upper() if m else None
-        uf = cand if cand in UFS else None
-    nivel = reg.get("nivel") or ((reg.get("caracterizacao") or {}).get("esfera"))
-    if not nivel:
-        tf = str(reg.get("tipo_fonte") or "")
-        nivel = ("municipal" if "municipal" in tf else
-                 "federal" if "federal" in tf or "pncp" in tf else None)
+        for m in re.finditer(r"[(/\s-]([A-Z]{2})\b", (reg.get("titulo") or "") + " " + txt[:400]):
+            if m.group(1) in UFS:
+                uf = m.group(1)
+                break
+    nivel = esfera_do_edital(reg, txt, uf)
     return {"eh_edital": eh_edital, "ruido": ruido, "area": area,
             "uf": uf, "nivel": nivel,
             "programa": (reg.get("caracterizacao") or {}).get("programa_id"),
@@ -195,9 +226,26 @@ def extrair(reg: dict, hoje: date) -> dict:
         lacunas.append("requisitos não detalhados na evidência (título de diário "
                        "costuma trazer só a ementa)")
 
-    estado = ("encerrado" if fim and fim < hoje.isoformat()
-              else "aberto" if fim else "indeterminado")
+    # O filtro do painel só admite ABERTO ou ENCERRADO. Sem data publicada, a
+    # regra é declarada e conservadora: janela de inscrição raramente passa de
+    # 90 dias, então publicação mais antiga que isso está encerrada. Abaixo de
+    # 90 dias o item segue como aberto até a fase 2 confirmar.
+    from datetime import timedelta as _td
+    dt_pub = data_do_evento(reg)
+    base_prazo = "data publicada"
+    if fim:
+        estado = "encerrado" if fim < hoje.isoformat() else "aberto"
+    elif dt_pub and dt_pub < (hoje - _td(days=90)).isoformat():
+        estado = "encerrado"
+        base_prazo = (f"encerramento inferido: publicado em {dt_pub}, há mais de "
+                      "90 dias, sem data no texto")
+        lacunas.append("prazo final não publicado; encerramento inferido pela idade "
+                       "da publicação (>90 dias) — confirmar no edital de origem")
+    else:
+        estado = "aberto"
+        base_prazo = "sem data no texto; presumido aberto até a confirmação (fase 2)"
     return {"inicio": inicio, "fim": fim, "estado_prazo": estado,
+            "base_do_prazo": base_prazo,
             "valores_citados": valores, "exigencias_detectadas": exigencias,
             "tem_resultado_publicado": tem_resultado,
             "vencedores_identificados": vencedores,

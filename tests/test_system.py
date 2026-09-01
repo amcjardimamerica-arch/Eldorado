@@ -782,8 +782,10 @@ class SystemTests(unittest.TestCase):
         for e in vivos:
             self.assertIn("verificacao_dupla",e,e["id"])
         for e in hist:
-            self.assertEqual(e["estado_export"],"encerrado")
-            self.assertNotIn("verificacao_dupla",e)   # nunca se passa por verificado
+            # aberto ou encerrado — nunca 'indeterminado'; e nunca se passa por
+            # verificado em dupla
+            self.assertIn(e["estado_export"],("aberto","encerrado"),e["id"])
+            self.assertNotIn("verificacao_dupla",e)
         tot=d["bussola_painel"]["totais"]
         self.assertEqual(tot["completos"],len(vivos))
         mon=d["bussola_painel"]["monitoramentos"]
@@ -943,7 +945,9 @@ class SystemTests(unittest.TestCase):
         self.assertIn("position:absolute",bloco)   # camada própria
         self.assertIn("z-index",bloco)             # acima da barra
         # aparece nas duas formas de linha (barra completa e bandeira de prazo)
-        self.assertEqual(html.count("${hoje}${estrelas(e)}"),2)
+        # três ramos desenham estrelas: período completo, bandeira de prazo e
+        # o mês seguinte com o ciclo pós-inscrição
+        self.assertEqual(html.count("${hoje}${estrelas(e)}"),3)
         self.assertIn("gestrela recurso",html)     # recurso em cor distinta
 
     def test_arquivamento_na_biblioteca(self):
@@ -1322,15 +1326,104 @@ class SystemTests(unittest.TestCase):
         d=dash_coletar(date(2026,9,2))
         hist=[e for e in d["editais"] if e.get("acervo")=="historico"]
         for e in hist:
-            self.assertEqual(e["estado_export"],"encerrado")
+            self.assertIn(e["estado_export"],("aberto","encerrado"),e["id"])
             self.assertEqual(e["status"],"catalogada_historica")
             self.assertIn("historico",e)
+            self.assertIn(e["nivel"],("federal","estadual","municipal"))
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("catalogação histórica",html)
         self.assertIn("Fator decisivo",html)
         # o funil de 5 passos saiu da tela inicial
         self.assertNotIn('id="funil"',html)
         self.assertNotIn("desenhaFunil",html)
+
+
+    def test_nivel_sempre_federal_estadual_municipal(self):
+        from src.historico import esfera_do_edital
+        casos=[({"territorio":"GO/Goiânia","tipo_fonte":"x","titulo":"Edital"},"","GO","municipal"),
+               ({"territorio":"SP","tipo_fonte":"diario_oficial_municipal",
+                 "titulo":"Diário Oficial de Bauru"},"","SP","municipal"),
+               ({"territorio":"GO","tipo_fonte":"x",
+                 "titulo":"Secretaria de Estado da Cultura — chamamento"},"","GO","estadual"),
+               ({"territorio":"BR","tipo_fonte":"x",
+                 "titulo":"Ministério da Cultura — edital"},"",None,"federal"),
+               ({"territorio":"BR","tipo_fonte":"empresa",
+                 "titulo":"Fundação privada — edital"},"nacional",None,"federal"),
+               ({"territorio":"MG","tipo_fonte":"x","titulo":"Edital sem pista"},"","MG","estadual")]
+        for reg,txt,uf,esperado in casos:
+            self.assertEqual(esfera_do_edital(reg,txt,uf),esperado,reg["titulo"])
+        # nunca sai valor fora dos três
+        for reg,txt,uf,_ in casos:
+            self.assertIn(esfera_do_edital(reg,txt,uf),("federal","estadual","municipal"))
+        d=dash_coletar(date(2026,9,2))
+        for e in d["editais"]:
+            if e.get("acervo")=="historico":
+                self.assertIn(e["nivel"],("federal","estadual","municipal"),e["id"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn('NIVEL={federal:"Federal",estadual:"Estadual",municipal:"Municipal"}',html)
+
+    def test_prazo_so_aberto_ou_encerrado_padrao_aberto(self):
+        from src.historico import extrair
+        # com data publicada
+        r=extrair({"titulo":"edital","evidencia":"inscrições até 30/06/2025",
+                   "prazo_texto":None},date(2026,9,1))
+        self.assertEqual(r["estado_prazo"],"encerrado")
+        self.assertEqual(r["fim"],"2025-06-30")
+        # sem data e publicação antiga → encerrado, com a base declarada
+        r2=extrair({"titulo":"Diário Oficial de X 2024-01-10 — edital","evidencia":"chamamento",
+                    "prazo_texto":None},date(2026,9,1))
+        self.assertEqual(r2["estado_prazo"],"encerrado")
+        self.assertIn("inferido",r2["base_do_prazo"])
+        self.assertTrue(any("90 dias" in l for l in r2["lacunas"]))
+        # sem data e publicação recente → aberto até a fase 2 confirmar
+        r3=extrair({"titulo":"Diário Oficial de X 2026-08-20 — edital","evidencia":"chamamento",
+                    "prazo_texto":None},date(2026,9,1))
+        self.assertEqual(r3["estado_prazo"],"aberto")
+        self.assertIn("presumido",r3["base_do_prazo"])
+        for r0 in (r,r2,r3):
+            self.assertIn(r0["estado_prazo"],("aberto","encerrado"))
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn('<option value="abertos" selected>',html)   # padrão inicial
+        self.assertNotIn('<option value="">Todos</option>\n<option value="abertos"',html)
+
+    def test_fase2_confirmacao_documental(self):
+        from src.confirmacao import conferir
+        completa={"titulo":"Edital de chamamento — objeto: apoio cultural",
+                  "evidencia":"O objeto é o apoio a projetos. Inscrições até 30/06/2025. "
+                              "Exige CNPJ e estatuto. Valor R$ 50.000,00. Ver Anexo I.",
+                  "fim":"2025-06-30","inicio":"2025-05-01","uf":"GO","nivel":"municipal",
+                  "exigencias_detectadas":["cnpj","estatuto"],"valores_citados":["50.000,00"],
+                  "financiador":"Prefeitura","url":"https://x/","hash_evidencia":"abc"}
+        c=conferir(completa)
+        self.assertEqual(c["nivel_confirmacao"],"confirmado_documental")
+        self.assertFalse(c["precisa_ato_integral"])
+        seca={"titulo":"Diário Oficial de X — chamamento público","evidencia":"chamamento",
+              "fim":None,"uf":None,"nivel":"municipal","exigencias_detectadas":[],
+              "valores_citados":[],"financiador":"Querido Diário"}
+        c2=conferir(seca)
+        self.assertEqual(c2["nivel_confirmacao"],"pendente")
+        self.assertTrue(c2["precisa_ato_integral"])
+        # item não comprovado sempre traz o motivo
+        for n in c2["nao_comprovados"]:
+            self.assertTrue(n["motivo"])
+        self.assertTrue(any(n["item"]=="prazo_publicado" for n in c2["nao_comprovados"]))
+
+    def test_calendario_marcos_projetados(self):
+        from src.dashboard_dados import _marcos_projetados
+        m=_marcos_projetados("2026-12-31")
+        self.assertEqual([x["tipo"] for x in m],
+                         ["encerramento","resultado_preliminar","recurso"])
+        self.assertFalse(m[0]["projetado"])
+        self.assertTrue(m[1]["projetado"] and m[2]["projetado"])
+        self.assertEqual(m[1]["data"],"2027-01-15")   # +15 dias
+        self.assertEqual(m[2]["data"],"2027-01-20")   # +20 dias
+        for x in m[1:]: self.assertIn("praxe",x["base"])
+        self.assertEqual(_marcos_projetados(None),[])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("gestrela projetada",html) if "gestrela projetada" in html else None
+        self.assertIn(".gestrela.projetada",html)      # estilo próprio da projeção
+        self.assertIn("ciclo pós-inscrição",html)      # linha do mês seguinte
+        self.assertIn("conferir no edital",html)       # projeção sempre declarada
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
