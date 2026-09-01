@@ -46,12 +46,12 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "TimeoutError"
       },
       {
         "api": "querido_diario",
         "base": "https://queridodiario.ok.org.br/api",
-        "erro": "TimeoutError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -63,7 +63,7 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "TimeoutError"
       },
       {
         "api": "querido_diario",
@@ -80,80 +80,40 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://api.queridodiario.ok.org.br",
-        "erro": "URLError"
+        "erro": "TimeoutError"
       }
     ],
     "2021-12": [
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://api.queridodiario.ok.org.br",
-        "erro": "URLError"
+        "erro": "TimeoutError"
       }
     ],
     "2022-01": [
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://api.queridodiario.ok.org.br",
-        "erro": "URLError"
+        "erro": "TimeoutError"
       }
     ],
     "2022-02": [
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://api.queridodiario.ok.org.br",
-        "erro": "URLError"
+        "erro": "TimeoutError"
       }
     ],
     "2022-03": [
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "TimeoutError"
       },
       {
         "api": "querido_diario",
         "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
+        "erro": "TimeoutError"
       },
       {
         "api": "querido_diario",
@@ -182,7 +142,7 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
+        "erro": "JSONDecodeError"
       },
       {
         "api": "querido_diario",
@@ -452,6 +412,11 @@
     ],
     "2023-09": [
       {
+        "api": "pncp",
+        "base": "https://pncp.gov.br/api/consulta",
+        "erro": "HTTPError"
+      },
+      {
         "api": "querido_diario",
         "base": "https://queridodiario.ok.org.br/api",
         "erro": "HTTPError"
@@ -550,8 +515,30 @@
     "2024-03": [
       {
         "api": "pncp",
-        "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
+        "descartados_fase2": 128,
+        "amostra": [
+          {
+            "objeto": "Credenciamento para eventual e futura contratacao de prestadores de servicos medicos veterinarios  a serem realizados em",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "Credenciamento de Pessoas Jurídicas com domicílio tributário no Município de Foz do Iguaçu/PR, para fins de prestação de",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "Credenciamento de Pessoas Juridicas da area da saude para a prestacao de servicos de consultas  exames e procedimentos e",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "CREDENCIAMENTO PARA CONTRATAÇÃO DE EMPRESAS OBJETIVANDO A PRESTAÇÃO DE SERVIÇOS ESPECIALIZADOS DE ASSENTAMENTO DE TUBO D",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          },
+          {
+            "objeto": "Credenciamento de Grupos Formais, informais ou Agricultores Individuais, para a aquisição de gêneros alimentícios da Agr",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          }
+        ],
+        "nota": "fora do escopo do terceiro setor"
       },
       {
         "api": "querido_diario",
@@ -567,52 +554,88 @@
     "2024-04": [
       {
         "api": "pncp",
-        "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://api.queridodiario.ok.org.br",
-        "erro": "URLError"
+        "descartados_fase2": 116,
+        "amostra": [
+          {
+            "objeto": "[Publicenter] - credenciamento da empresa CENTRO DE PATOLOGIA E ANÁLISES CLÍNICAS LTDA, para prestação de serviços de sa",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "Edital de Credenciamento 005.2024 - Ref. serviços de manutenção preventiva e corretiva de aparelhos de ar condicionado, ",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          },
+          {
+            "objeto": "CREDENCIAMENTO DE PESSOAS JURIDICAS PARA SERVICOS DE FORNECIMENTO DE GENEROS ALIMENTICIOS PARA AGENDAS E EVENTOS INSTITU",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          },
+          {
+            "objeto": "CREDENCIAMENTO DE PESSOAS JURÍDICAS PARA PRESTAÇÃO DE SERVIÇOS ESPECIALIZADOS DE SAÚDE PARA ATENDIMENTO AO PROGRAMA ESTA",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "CREDENCIAMENTO PARA AQUISICAO DE GENEROS ALIMENTICIOS DA AGRICULTURA FAMILIAR E OU EMPREENDEDOR FAMILIAR RURAL PARA ATEN",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          }
+        ],
+        "nota": "fora do escopo do terceiro setor"
       }
     ],
     "2024-05": [
       {
         "api": "pncp",
-        "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://api.queridodiario.ok.org.br",
-        "erro": "URLError"
+        "descartados_fase2": 128,
+        "amostra": [
+          {
+            "objeto": "Constitui objeto do presente Edital o Credenciamento de pessoa jurídica e pessoa física, para prestação de Serviços de M",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          },
+          {
+            "objeto": "[Portal de Compras Públicas] - Credenciamento de pessoas jurídicas, para realização dos serviços de ressonância magnétic",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "Credenciamento para contratacao de empresa especializada na administracao  gerenciamento e fornecimento de cartoes vale ",
+            "motivo": "exigência empresarial (SICAF, CNAE, capital social) sem qualquer menção a OSC — associação não pode concorrer"
+          },
+          {
+            "objeto": "[Portal de Compras Públicas] - Credenciamento para contratação de Leiloeiro Público Oficial, objetivando a realização de",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          },
+          {
+            "objeto": "Credenciamento de pessoas jurídicas para prestação de serviços médicos consistentes na realização de consultas, exames e",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          }
+        ],
+        "nota": "fora do escopo do terceiro setor"
       }
     ],
     "2024-06": [
       {
         "api": "pncp",
-        "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://api.queridodiario.ok.org.br",
-        "erro": "URLError"
+        "descartados_fase2": 138,
+        "amostra": [
+          {
+            "objeto": "CREDENCIAMENTO de pessoa(s) jurídica(s) para prestação de serviços veterinários de castração de animais, de das espécies",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "CREDENCIAMENTO DE PESSOAS JURÍDICAS DE DIREITO PRIVADO QUE PRESTEM SERVIÇOS MÉDICOS EM PEDIATRIA, GINECOLOGIA E OBSTETRÍ",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "Credenciamento Eletrônico tem por objeto o credenciamento de pessoa física ou jurídica para prestação de serviços médico",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "CREDENCIAMENTO DE PESSOAS JURÍDICAS DE DIREITO PRIVADO PARA A PRESTAÇÃO DE SERVIÇOS MÉDICOS GENERALISTAS E GENERALISTAS ",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "CREDENCIAMENTO DE PESSOAS JURÍDICAS DE DIREITO PRIVADO PRESTEM SERVIÇOS MÉDICOS EM PEDIATRIA, CIRURGIA GERAL, CLÍNICA MÉ",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          }
+        ],
+        "nota": "fora do escopo do terceiro setor"
       }
     ],
     "2024-07": [
@@ -620,36 +643,21 @@
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
         "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://api.queridodiario.ok.org.br",
-        "erro": "URLError"
       }
     ],
     "2024-08": [
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
-      },
-      {
-        "api": "querido_diario",
-        "base": "https://api.queridodiario.ok.org.br",
-        "erro": "URLError"
+        "erro": "TimeoutError"
       }
     ],
     "2025-01": [
+      {
+        "api": "pncp",
+        "base": "https://pncp.gov.br/api/consulta",
+        "erro": "TimeoutError"
+      },
       {
         "api": "querido_diario",
         "base": "https://queridodiario.ok.org.br/api",
@@ -665,9 +673,9 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "TimeoutError"
       }
     ]
   },
-  "proximo_ano_dominios": 1
+  "proximo_ano_dominios": 2
 }
