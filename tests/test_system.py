@@ -655,6 +655,44 @@ class SystemTests(unittest.TestCase):
                 self.assertIn(ch,c,ch)
             self.assertLessEqual(c["etapas_prontas"],c["etapas_total"])
 
+
+    def test_precisao_de_datas_dos_editais(self):
+        """A data de publicação no diário NUNCA vira início de inscrição; fim
+        anterior ao início é incoerência: preserva-se o prazo e registra-se a
+        lacuna. O painel classifica cada edital pela confirmação das datas."""
+        d=dash_coletar(date(2026,9,2))
+        for e in d["editais"]:
+            self.assertIn(e["datas"],("ambas","so_fim","so_publicacao","nenhuma"))
+            if e["inicio"] and e["fim"]:
+                self.assertLessEqual(e["inicio"],e["fim"],e["id"])
+            if e["datas"]=="so_publicacao":
+                self.assertIsNone(e["inicio"])          # publicação não é início
+                self.assertIsNotNone(e["publicado_em"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        # calendário: barra só com ambas; bandeira de prazo para só-fim; nota p/ excluídos
+        self.assertIn('e.datas==="ambas"',html)
+        self.assertIn("gprazo",html)
+        self.assertIn("sem datas de inscrição confirmadas",html)
+        self.assertIn("abertura não declarada na fonte",html)
+
+    def test_recorte_operacional_do_painel(self):
+        """Parecer: painel < 2 MB. Com a carga histórica (13 mil+ pistas) o
+        arquivo chegou a 37 MB; o painel passa a publicar só o recorte
+        operacional e a base completa fica no JSONL + SQLite."""
+        import os
+        self.assertLess(os.path.getsize("docs/dashboard-dados.js"),2_000_000,
+                        "painel acima do limite de 2 MB do parecer")
+        d=dash_coletar(date(2026,9,2))
+        tot=d["bussola_painel"]["totais"]
+        self.assertGreaterEqual(tot["base_completa"],tot["no_painel"])
+        self.assertEqual(tot["no_painel"],len(d["editais"]))
+        # todo aberto/a_abrir entra no recorte (o dado decisivo nunca fica de fora)
+        from src.dashboard_dados import _editais,_recorte_painel
+        base=_editais(date(2026,9,2)); painel={e["id"] for e in _recorte_painel(base,date(2026,9,2))}
+        for e in base:
+            if e["estado_export"] in ("aberto","a_abrir"):
+                self.assertIn(e["id"],painel,e["id"])
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

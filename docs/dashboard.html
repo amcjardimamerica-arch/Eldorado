@@ -107,6 +107,8 @@ background:conic-gradient(#0B6BD3 calc(var(--p)*1%),#E3EAF3 0);position:relative
 .gdias i{font-style:normal;font-size:8px;letter-spacing:.02em}
 .gfaixa{position:relative;height:22px;border-radius:7px;
 background:repeating-linear-gradient(90deg,#F5F4F0 0,#F5F4F0 calc(100%/31 - 1px),#EAE8E2 calc(100%/31 - 1px),#EAE8E2 calc(100%/31))}
+.gprazo{border-radius:5px;min-width:20px!important;font-size:12px}
+.gprazorot{position:absolute;top:2px;bottom:2px;display:flex;align-items:center;padding-left:5px;font-size:10px;font-weight:700;color:var(--suave);white-space:nowrap}
 .gbarra{position:absolute;top:2px;bottom:2px;border-radius:11px;color:#fff;font-size:10px;font-weight:600;
 display:flex;align-items:center;justify-content:center;overflow:hidden;white-space:nowrap;cursor:pointer;min-width:16px;
 box-shadow:0 1px 3px #0002}
@@ -761,10 +763,16 @@ function desenhaGantt(){
   const SEM=["DOM","SEG","TER","QUA","QUI","SEX","SAB"];
   // projetos cujo período de inscrição toca o mês
   const base=gFiltrados||D.editais||[];
-  const noMes=base.filter(e=>{
-    const a=e.inicio?new Date(e.inicio+"T00:00:00"):null,b=e.fim?new Date(e.fim+"T00:00:00"):null;
-    return (a&&a<=fim&&(!b||b>=ini))||(b&&b>=ini&&b<=fim);});
-  // as 8 mais urgentes do mês (encerra antes aparece primeiro)
+  /* Precisão de datas: barra completa SÓ com início E fim declarados na fonte;
+     com apenas o PRAZO FINAL declarado, marca-se a bandeira do prazo no dia
+     exato; data de publicação NUNCA vira início de inscrição. */
+  const comAmbas=base.filter(e=>e.datas==="ambas");
+  const soFim=base.filter(e=>e.datas==="so_fim");
+  const semData=base.length-comAmbas.length-soFim.length;
+  const tocaMes=e=>{const a=new Date(e.inicio+"T00:00:00"),b=new Date(e.fim+"T00:00:00");
+    return a<=fim&&b>=ini;};
+  const fimNoMes=e=>{const b=new Date(e.fim+"T00:00:00");return b>=ini&&b<=fim;};
+  const noMes=[...comAmbas.filter(tocaMes),...soFim.filter(fimNoMes)];
   const eds=[...noMes].sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9))).slice(0,8);
 
   // cabeçalho: dia + dia da semana, ocupando toda a largura até a margem
@@ -773,18 +781,28 @@ function desenhaGantt(){
     return `<span><b>${i+1}</b><i>${SEM[dt.getDay()]}</i></span>`;}).join("");
   let linhas=`<div class=gantt style="--nd:${nd}"><div></div><div class=gdias>${diasCab}</div>`;
   if(!eds.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">${gFiltrados?"Nenhum período de inscrição neste mês para o filtro selecionado.":"Nenhum período de inscrição neste mês."}</div>`;
+  const ddmm=iso=>`${iso.slice(8,10)}/${iso.slice(5,7)}`;
   eds.forEach(e=>{
-    // barra: do dia de ABERTURA até o ÚLTIMO dia de inscrição
-    const a=e.inicio?new Date(e.inicio+"T00:00:00"):ini,b=e.fim?new Date(e.fim+"T00:00:00"):fim;
-    const d1=Math.max(1,(a<ini?1:a.getDate())),d2=Math.min(nd,(b>fim?nd:b.getDate()));
-    const mm=String(gMes+1).padStart(2,"0");
-    const rot=`${String(d1).padStart(2,"0")}/${mm} - ${String(d2).padStart(2,"0")}/${mm}`;
     const hoje=(gAno===HOJE.getFullYear()&&gMes===HOJE.getMonth())
       ?`<span class=ghoje style="left:${((HOJE.getDate()-0.5)/nd*100).toFixed(2)}%"></span>`:"";
     const nome=nomeObjetivo(e);
-    linhas+=`<div class=grotulo title="${esc(e.titulo)}">${esc(nome.slice(0,40))}</div>
-      <div class=gfaixa>${hoje}
-      <span class=gbarra data-id="${esc(e.id)}" style="left:${((d1-1)/nd*100).toFixed(2)}%;width:${((d2-d1+1)/nd*100).toFixed(2)}%;background:${AREA(e.area).cor};color:${corTexto(AREA(e.area).cor)}">${rot}</span></div>`;
+    if(e.datas==="ambas"){
+      // barra exata: do dia de ABERTURA declarado ao ÚLTIMO dia de inscrição
+      const a=new Date(e.inicio+"T00:00:00"),b=new Date(e.fim+"T00:00:00");
+      const d1=Math.max(1,(a<ini?1:a.getDate())),d2=Math.min(nd,(b>fim?nd:b.getDate()));
+      const rot=`${ddmm(e.inicio)} → ${ddmm(e.fim)}`;   // datas REAIS, mesmo cruzando meses
+      const cont=(a<ini?"◂ ":"")+(b>fim?" ▸":"");
+      linhas+=`<div class=grotulo title="${esc(e.titulo)} — inscrições ${ddmm(e.inicio)} a ${ddmm(e.fim)}">${esc(nome.slice(0,40))}</div>
+        <div class=gfaixa>${hoje}
+        <span class=gbarra data-id="${esc(e.id)}" style="left:${((d1-1)/nd*100).toFixed(2)}%;width:${((d2-d1+1)/nd*100).toFixed(2)}%;background:${AREA(e.area).cor};color:${corTexto(AREA(e.area).cor)}">${cont?cont.trim()+" ":""}${rot}</span></div>`;
+    } else {
+      // só o prazo final é declarado: bandeira no dia exato, sem inventar início
+      const b=new Date(e.fim+"T00:00:00"),d2=b.getDate();
+      linhas+=`<div class=grotulo title="${esc(e.titulo)} — prazo final ${ddmm(e.fim)}; abertura não declarada na fonte">${esc(nome.slice(0,40))}</div>
+        <div class=gfaixa>${hoje}
+        <span class="gbarra gprazo" data-id="${esc(e.id)}" style="left:${((d2-1)/nd*100).toFixed(2)}%;width:${(1/nd*100).toFixed(2)}%;background:${AREA(e.area).cor}" title="prazo final ${ddmm(e.fim)} — abertura não declarada na fonte">⚑</span>
+        <span class=gprazorot style="left:${(d2/nd*100).toFixed(2)}%">prazo ${ddmm(e.fim)}</span></div>`;
+    }
   });
   linhas+="</div>";
   $("g-corpo").innerHTML=linhas;
@@ -796,7 +814,8 @@ function desenhaGantt(){
   const areasG=Object.keys(cont).sort((a,b)=>cont[b]-cont[a]);
   $("g-legenda").innerHTML=areasG.map(a=>
     `<span title="${esc(AREA(a).rotulo)}: ${cont[a]} no mês"><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave);font-weight:600">${cont[a]}</b></span>`).join("")
-    +(noMes.length>eds.length?`<span class=meta>mostrando ${eds.length} de ${noMes.length} — abra o calendário completo</span>`:"");
+    +(noMes.length>eds.length?`<span class=meta>mostrando ${eds.length} de ${noMes.length} — abra o calendário completo</span>`:"")
+    +(semData?`<span class=meta title="itens sem data de inscrição declarada na fonte não entram no calendário — a data de publicação no diário não é início de inscrição">· ${semData} sem datas de inscrição confirmadas (fora do calendário)</span>`:"");
 }
 /* contraste do rótulo dentro da barra: escuro sobre cor clara, claro sobre escura */
 function corTexto(hex){
@@ -1031,9 +1050,10 @@ function desenhaBzCards(){
     relogio:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><circle cx="12" cy="12" r="8.8"/><path d="M12 7v5.2l3.2 2" stroke-linecap="round"/></svg>`,
     farol:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.7"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M12 2.2v2.2M7 4.4l1.7 1.3M17 4.4l-1.7 1.3M8 21h8"/></svg>`,
     livro:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><path d="M12 5.5C10 4 7.4 3.6 4 3.8v14.7c3.4-.2 6 .2 8 1.7 2-1.5 4.6-1.9 8-1.7V3.8c-3.4-.2-6 .2-8 1.7z" stroke-linejoin="round"/><path d="M12 5.5v14.7"/></svg>`});
-  const abertos=eds.filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export)).length;
+  const total=(bp.totais&&bp.totais.base_completa)||eds.length;
   const cards=[
-    [IC("#C77E12").rosa,"Oportunidades",eds.length,`+${bp.novas_ultima??0} novas`,"vermelho","captadas pelo Eldorado; novas = última varredura"],
+    [IC("#C77E12").rosa,"Oportunidades",total,`+${bp.novas_ultima??0} novas`,"vermelho",
+     `base completa do Eldorado (${total}); o painel publica o recorte operacional de ${eds.length}`],
     [IC("#0B4EA2").banco,"Fontes monitoradas",bp.fontes_ativas??"—","ativas","azul","fontes com varredura ativa no catálogo"],
     [IC("#0B4EA2").escudo,"Editais verificados",bp.verificados??0,`+${bp.verificados_semana??0} esta semana`,"azul","confirmados na página primária (0 até a 1ª verificação)"],
     [IC("#C0392B").relogio,"Prazos urgentes",bp.urgentes_7d??0,"até 7 dias","vermelho","inscrições abertas encerrando em até 7 dias"],

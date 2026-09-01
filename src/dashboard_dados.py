@@ -23,7 +23,7 @@ import json
 import re
 import unicodedata
 from collections import defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from . import parlamentares as mod_parlamentares
 from .programas import caracterizar
@@ -224,8 +224,27 @@ def _editais(hoje: date) -> list[dict]:
             continue
         carac = item.get("caracterizacao") or caracterizar(item, cfg_prog)
         periodo = carac.get("periodo") or {}
+        # INÍCIO só quando a fonte declarou a abertura das inscrições.
+        # Sem declaração, a data que existe é a de PUBLICAÇÃO — vai para
+        # publicado_em e nunca vira início de inscrição (era isso que fazia
+        # o calendário mostrar "abriu mês passado, vigência indeterminada").
+        ini_decl = bool(periodo.get("inicio_declarado"))
+        inicio_iso = periodo.get("inicio") if ini_decl else None
+        publicado_em = None if ini_decl else periodo.get("inicio")
         fim_iso = _iso_de_br(item.get("prazo_texto")) or periodo.get("fim")
-        situ = _situacao(periodo.get("inicio"), fim_iso, hoje)
+        fim_decl = bool(item.get("prazo_texto") or periodo.get("fim_declarado") or periodo.get("fim"))
+        lacuna_datas = None
+        if inicio_iso and fim_iso and fim_iso < inicio_iso:
+            # datas incoerentes na fonte: preserva o PRAZO (o dado decisivo)
+            # e descarta o início, registrando a divergência
+            lacuna_datas = (f"datas divergentes na fonte (início {inicio_iso} "
+                            f"posterior ao fim {fim_iso}); início desconsiderado")
+            inicio_iso = None
+        confirmacao = ("ambas" if inicio_iso and fim_iso
+                       else "so_fim" if fim_iso
+                       else "so_publicacao" if publicado_em
+                       else "nenhuma")
+        situ = _situacao(inicio_iso, fim_iso, hoje)
         q = item.get("qualidade") or {}
         req = item.get("requisitos") or {}
         fonte = _fontes().get(item.get("fonte_id")) or {}
@@ -238,8 +257,9 @@ def _editais(hoje: date) -> list[dict]:
             "status": item.get("status"), "confianca": item.get("confianca"),
             "area": area_do_edital(item), "programa": carac.get("programa"),
             "lei": carac.get("lei"), "objeto": carac.get("modalidade"),
-            "inicio": periodo.get("inicio"), "fim": fim_iso,
-            "inicio_br": _br(periodo.get("inicio")), "fim_br": _br(fim_iso),
+            "inicio": inicio_iso, "fim": fim_iso,
+            "inicio_br": _br(inicio_iso), "fim_br": _br(fim_iso),
+            "publicado_em": publicado_em, "datas": confirmacao,
             "prazo_prorrogado": bool(item.get("prazo_prorrogado")),
             "prazo_original": item.get("prazo_original"),
             "estado_export": situ["estado"],
@@ -436,14 +456,45 @@ def _fila_enquadrados(editais: list[dict]) -> list[dict]:
     fila.sort(key=lambda c: (not c["protocolo_pronto"], -c["etapas_prontas"], c["fim"] or "9999"))
     return fila
 
+def _recorte_painel(editais: list[dict], hoje: date) -> list[dict]:
+    """O painel publica o recorte OPERACIONAL; o acervo completo (13 mil+
+    pistas históricas) permanece no JSONL e no banco SQLite. Critério:
+    inscrições abertas ou por abrir; qualquer prazo futuro; encerradas nos
+    últimos 60 dias; verificadas; e as captadas nos últimos 14 dias.
+    Motivo: com a carga histórica o arquivo do painel chegou a 37 MB — acima
+    do limite de 2 MB definido no parecer de arquitetura."""
+    corte_enc = (hoje - timedelta(days=60)).isoformat()
+    corte_col = (hoje - timedelta(days=14)).isoformat()
+    def col(e): return str((e.get("detalhes") or {}).get("coletado_em") or "")[:10]
+    def nucleo(e):
+        if e["estado_export"] in ("aberto", "a_abrir"):
+            return True
+        if e.get("fim") and e["fim"] >= corte_enc:
+            return True
+        if str(e.get("status", "")).startswith(("verificada", "elegivel")):
+            return True
+        # captura recente entra direto só quando traz data de inscrição
+        return col(e) >= corte_col and e.get("datas") in ("ambas", "so_fim")
+    painel = [e for e in editais if nucleo(e)]
+    # feed de "novas": as capturas mais recentes SEM data entram até um teto,
+    # para o radar mostrar novidade sem estourar o limite de 2 MB do parecer
+    ids = {e["id"] for e in painel}
+    recentes = sorted((e for e in editais if e["id"] not in ids and col(e) >= corte_col),
+                      key=col, reverse=True)[:300]
+    return painel + recentes
+
+
 def coletar(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
-    editais = _editais(hoje)
+    editais_base = _editais(hoje)
+    editais = _recorte_painel(editais_base, hoje)
     leis = load_json(ROOT / "biblioteca/leis/catalogo.json")["itens"]
     revisao = load_json(ROOT / "estado/revisao_normativa.json") if (ROOT / "estado/revisao_normativa.json").exists() else {}
     parl = mod_parlamentares.carregar_do_disco(hoje.year)
     ch = load_json(ROOT / "estado/ultima_carga_historica.json") if (ROOT / "estado/ultima_carga_historica.json").exists() else {"status": "nunca_executada"}
-    saida_bussola = painel_bussola(editais, _bussola(editais), hoje)
+    saida_bussola = painel_bussola(editais_base, _bussola(editais), hoje)
+    saida_bussola["totais"] = {"base_completa": len(editais_base), "no_painel": len(editais),
+        "nota": "o painel publica o recorte operacional; o acervo completo fica no banco local"}
     return {
         "gerado_em": now_iso(), "referencia": hoje.isoformat(),
         "cadencia": {"varredura": "segundas e sextas, 6h de Brasília",
