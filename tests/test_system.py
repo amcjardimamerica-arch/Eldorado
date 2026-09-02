@@ -29,6 +29,19 @@ _acesso=_ilu.module_from_spec(_spec); _spec.loader.exec_module(_acesso)
 from datetime import date
 
 class SystemTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # testes nunca chamam IA real: a credencial do ambiente é escondida
+        # durante a suíte e restaurada ao final
+        import os
+        cls._chave_ci = os.environ.pop("FAROL_AI_API_KEY", None)
+
+    @classmethod
+    def tearDownClass(cls):
+        import os
+        if cls._chave_ci:
+            os.environ["FAROL_AI_API_KEY"] = cls._chave_ci
+
     def test_slug(self): self.assertEqual(slug("Fundação Árvore Viva!"),"fundacao-arvore-viva")
     def test_canonical_url(self): self.assertEqual(canonical_url("HTTPS://EXAMPLE.COM/a/#x"),"https://example.com/a")
     def test_injection(self):

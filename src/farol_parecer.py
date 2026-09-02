@@ -190,6 +190,7 @@ def gerar(chave_edital: str, ano: str, assoc_slug: str | None = None) -> dict:
         parecer["recomendacao"] = ("descartar — requisito eliminatório não atendido"
                                    if bloqueado else "aguardando análise de IA")
     else:
+      try:
         modelos = cfg["modelos"]
         sistema = ("Você analisa editais para organizações da sociedade civil no Brasil. "
                    "Responda SOMENTE com base nos trechos fornecidos. Nunca invente "
@@ -220,6 +221,14 @@ def gerar(chave_edital: str, ano: str, assoc_slug: str | None = None) -> dict:
                          "modelos": modelos}
         m = re.search(r"\b(CONCORRER|REGULARIZAR ANTES|DESCARTAR)\b", final.upper())
         parecer["recomendacao"] = m.group(1).lower() if m else "ver parecer"
+      except Exception as exc:
+        # a IA falhou (modelo, rede, cota): o parecer determinístico segue
+        # valendo e a falha fica declarada — nunca derruba a decisão
+        parecer["ia"] = {"status": f"falha na IA: {type(exc).__name__}",
+                         "nota": "parecer determinístico mantido; nova tentativa na próxima rodada"}
+        bloqueado = all(av["bloqueio_objetivo"] for av in avaliacoes) if avaliacoes else False
+        parecer["recomendacao"] = ("descartar — requisito eliminatório não atendido"
+                                   if bloqueado else "aguardando análise de IA")
 
     destino = PARECERES / chave_edital / ano
     write_json(destino / "parecer.json", parecer)
