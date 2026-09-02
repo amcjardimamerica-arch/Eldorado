@@ -802,6 +802,42 @@ def _marca_etapas(editais: list[dict]) -> list[dict]:
     return editais
 
 
+def _cobertura_260(previsoes: dict, fichas: dict) -> dict:
+    """Quantas das 260 fontes o Calendário de Editais consegue representar hoje,
+    e o motivo de cada ausência. Sem isso o calendário mente por omissão."""
+    from collections import Counter as _C
+    lista = fichas.get("fontes_lista", [])
+    itens = previsoes.get("itens", [])
+    com_prev = {p.get("id", "").replace("prev260-", "").rsplit("-", 1)[0]
+                for p in itens if p.get("das_260")}
+    motivos: _C = _C()
+    por_area: dict[str, dict] = {}
+    for f in lista:
+        area = "cultura" if "cultur" in (f["programa"] + f.get("orgao", "")).lower() else \
+               "esporte" if "esport" in (f["programa"] + f.get("orgao", "")).lower() else \
+               "fundo" if "fundo" in (f["programa"] + f.get("orgao", "")).lower() else "demais"
+        a = por_area.setdefault(area, {"fontes": 0, "no_calendario": 0, "com_historico": 0})
+        a["fontes"] += 1
+        a["com_historico"] += bool(f.get("editais"))
+        if f["id"] in com_prev:
+            a["no_calendario"] += 1
+            motivos["no_calendario"] += 1
+        elif not f.get("editais"):
+            motivos["sem_historico_para_prever"] += 1
+        else:
+            motivos["historico_em_um_unico_ano"] += 1
+    return {
+        "fontes": len(lista), "no_calendario": motivos.get("no_calendario", 0),
+        "motivos": dict(motivos), "por_area": por_area,
+        "explicacao": ("uma fonte só entra no calendário com janela sustentada por "
+                       "publicação no mesmo mês em ANOS DISTINTOS; a coleta começou "
+                       "em ago/2026, então quase todo o histórico está em um único "
+                       "ano — o segundo ano de observação é o que destrava a previsão"),
+        "o_que_destrava": ("extrair as edições do diário (7.094 na fila) recupera "
+                           "datas reais de 2021-2025 e cria o segundo ano de observação"),
+    }
+
+
 def _funil_5_passos(base: list[dict], completos: list[dict], _=None) -> dict:
     """Quantos itens estão em cada um dos 5 passos, agora.
 
@@ -1006,8 +1042,8 @@ def coletar(hoje: date | None = None) -> dict:
                       # só o essencial de cada previsão (o detalhe fica na Biblioteca)
                       "itens": [{k: i.get(k) for k in
                                  ("id", "titulo", "orgao", "area", "uf", "nivel", "inicio",
-                                  "fim", "forca", "especial", "base", "status_verificacao",
-                                  "fonte_confirmacao", "lei")}
+                                  "fim", "forca", "especial", "das_260", "goias", "base",
+                                  "status_verificacao", "fonte_confirmacao", "lei")}
                                 for i in previsoes.get("itens", [])]},
         "esquadra": esquadra,
         "auditoria": {k: auditoria.get(k) for k in
@@ -1015,6 +1051,7 @@ def coletar(hoje: date | None = None) -> dict:
                        "abaixo_de_6", "causas", "itens_que_mais_faltam", "por_ano",
                        "dominios_sem_sensor", "janela")},
         "fontes_tres_tempos": {k: fichas.get(k) for k in ("fontes", "com_passado", "com_presente", "com_futuro")},
+        "cobertura_calendario": _cobertura_260(previsoes, fichas),
         "dossies_fontes": {"total": dossies.get("fontes", 0),
                            "com_historico": dossies.get("com_historico", 0),
                            "conselhos": dossies.get("conselhos", 0),
@@ -1069,7 +1106,8 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
 
     prev = dados.get("previsoes", {}).get("itens", [])
     campos_p = ["id", "titulo", "orgao", "area", "uf", "nivel", "inicio", "fim", "forca",
-                "especial", "base", "status_verificacao", "fonte_confirmacao", "lei"]
+                "especial", "das_260", "goias", "base", "status_verificacao",
+                "fonte_confirmacao", "lei"]
     pacp = compactar([{k: p0.get(k) for k in campos_p} for p0 in prev], campos_p)
     (pasta / "previsoes.json").write_text(json.dumps(pacp, ensure_ascii=False,
                                                      separators=(",", ":")), encoding="utf-8")
@@ -1098,7 +1136,12 @@ def enxugar_nucleo(dados: dict, hoje: date) -> dict:
     """O núcleo fica com o que a abertura precisa; o resto aponta para o fragmento."""
     prev = dados.get("previsoes", {})
     lim = f"{hoje.year + (hoje.month + 1) // 12}-{(hoje.month + 1) % 12 + 1:02d}"
-    prev["itens"] = [p0 for p0 in prev.get("itens", []) if p0["inicio"][:7] <= lim]
+    # no núcleo: os dois meses seguintes + TODAS as janelas especiais (Rouanet,
+    # Aldir Blanc, Goyazes) e as das 260 fontes de Goiás — são a informação que
+    # o titular procura primeiro; o restante vem do fragmento sob demanda
+    prev["itens"] = [p0 for p0 in prev.get("itens", [])
+                     if p0["inicio"][:7] <= lim or p0.get("especial")
+                     or (p0.get("das_260") and p0.get("goias"))]
     prev["completo"] = False
     prev["fragmento"] = "dados/previsoes.json"
     for e in dados.get("editais", []):

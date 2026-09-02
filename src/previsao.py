@@ -143,6 +143,7 @@ def prever(hoje: date | None = None, meses_adiante: int = 12,
             })
             break
     previsoes += _especiais(hoje)
+    previsoes += _janelas_das_260(hoje, {p["id"] for p in previsoes})
     previsoes.sort(key=lambda x: (x["inicio"], -x["forca"]))
     resumo = {"gerado_em": now_iso(), "referencia": hoje.isoformat(),
               "padroes_encontrados": len(pats),
@@ -156,6 +157,65 @@ def prever(hoje: date | None = None, meses_adiante: int = 12,
     write_json(SAIDA / "padroes.json", {"gerado_em": now_iso(), "total": len(pats),
                                         "padroes": pats[:2000]})
     return resumo
+
+
+def _janelas_das_260(hoje: date, ja_tem: set[str]) -> list[dict]:
+    """Janela provável de cada uma das 260 fontes de captação.
+
+    As fichas de três tempos já calculam a próxima janela de cada fonte a
+    partir do dossiê histórico. Elas precisam aparecer NO CALENDÁRIO — é o que
+    o titular chama de "ver as 260 no calendário", especialmente esporte,
+    cultura e os fundos. A duração usa a média observada da fonte (ou 30 dias).
+    """
+    ft = ROOT / "biblioteca_alexandria/fontes/fichas_tres_tempos.json"
+    if not ft.exists():
+        return []
+    from datetime import timedelta as _td
+    saida = []
+    for f in load_json(ft).get("fontes_lista", []):
+        j = f.get("proxima_janela")
+        # só entra janela sustentada por ANOS DISTINTOS — o mês repetido dentro
+        # do mesmo ano é viés da amostra (a coleta começou em ago/2026)
+        if not j or not j.get("mes") or len(j.get("anos_observados") or []) < 2:
+            continue
+        try:
+            ano, mes = (int(x) for x in j["mes"].split("-"))
+        except Exception:
+            continue
+        ini = date(ano, mes, 1)
+        if ini < hoje.replace(day=1):
+            continue
+        fim = ini + _td(days=30)
+        pid = f'prev260-{f["id"]}-{j["mes"]}'
+        if pid in ja_tem:
+            continue
+        saida.append({
+            "id": pid, "previsto": True, "especial": False, "das_260": True,
+            "titulo": f'{f["programa"]} — janela provável',
+            "orgao": f.get("orgao"), "area": _area_da_260(f),
+            "uf": f.get("uf"), "nivel": f.get("nivel"),
+            "inicio": ini.isoformat(), "fim": fim.isoformat(),
+            "forca": 3 if (j.get("confianca") == "alta") else 2,
+            "base": (f'fonte do catálogo de 260 · {j.get("base", "recorrência do dossiê")}'
+                     + (f' · {f["editais"]} edital(is) no histórico' if f.get("editais") else "")),
+            "goias": f.get("goias"),
+            "nota": "janela provável da fonte catalogada; confirmar no órgão",
+        })
+    return saida
+
+
+_AREA_260 = {"cultura": "cultura", "esporte": "esporte", "educa": "educacao",
+             "saude": "saude", "assistencia": "assistencia_social",
+             "crianca": "crianca_adolescente", "idosa": "pessoa_idosa",
+             "ambiente": "meio_ambiente", "emenda": "emendas_parlamentares"}
+
+
+def _area_da_260(f: dict) -> str:
+    alvo = f'{f.get("programa","")} {f.get("orgao","")}'.lower()
+    for chave, area in _AREA_260.items():
+        if chave in alvo:
+            return area
+    return "outros"
 
 
 def _por_mes(previsoes: list[dict]) -> dict:

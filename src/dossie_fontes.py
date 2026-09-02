@@ -111,20 +111,33 @@ def montar(con: sqlite3.Connection | None = None, hoje: date | None = None) -> d
                 duracoes.append((date.fromisoformat(c["fim"]) - date.fromisoformat(c["inicio"])).days)
             areas[c["area"] or "outros"] += 1
             exig.update(c["exigencias"]); venc.update(c["vencedores"])
-        recorrentes = [m for m, n in meses.items() if n >= 2]
+        # VIÉS DA AMOSTRA: a coleta começou em ago/2026, então "agosto" aparece
+        # em quase toda fonte por artefato de captura, não por sazonalidade.
+        # Só vale como recorrência o mês observado em ANOS DISTINTOS.
+        meses_por_ano: dict[int, set] = defaultdict(set)
+        for c in casos:
+            d0 = c["inicio"] or c["pub"]
+            if d0:
+                meses_por_ano[int(d0[5:7])].add(d0[:4])
+        recorrentes = [m for m, anos_m in meses_por_ano.items() if len(anos_m) >= 2]
         proxima = None
         if recorrentes:
             futuros = sorted(m for m in recorrentes if m > hoje.month) or sorted(recorrentes)
             m = futuros[0]
             ano = hoje.year if m > hoje.month else hoje.year + 1
-            proxima = {"mes": f"{ano}-{m:02d}", "base": f"{meses[m]} ocorrência(s) em {_MESES[m-1]}",
-                       "confianca": "alta" if meses[m] >= 3 else "media"}
+            anos_obs = sorted(meses_por_ano[m])
+            proxima = {"mes": f"{ano}-{m:02d}",
+                       "base": (f"{meses[m]} ocorrência(s) em {_MESES[m-1]}, "
+                                f"em {len(anos_obs)} ano(s): {', '.join(anos_obs)}"),
+                       "anos_observados": anos_obs,
+                       "confianca": "alta" if len(anos_obs) >= 3 else "media"}
         dossie = {
             "fonte": fonte, "gerado_em": now_iso(),
             "editais_no_historico": len(casos),
             "anos_com_publicacao": sorted(anos),
             "meses_de_abertura": {_MESES[m-1]: n for m, n in sorted(meses.items())},
             "meses_recorrentes": [_MESES[m-1] for m in sorted(recorrentes)],
+            "meses_por_ano": {_MESES[m-1]: sorted(a) for m, a in sorted(meses_por_ano.items())},
             "duracao_tipica_inscricao_dias": (round(sum(duracoes)/len(duracoes)) if duracoes else None),
             "areas_atendidas": dict(areas.most_common()),
             "exigencias_frequentes": [{"exigencia": e, "n": n} for e, n in exig.most_common(10)],

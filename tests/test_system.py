@@ -2236,6 +2236,49 @@ class SystemTests(unittest.TestCase):
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.edicao",wf); self.assertIn("python -m src.auditoria",wf)
 
+
+    def test_janela_especial_aberta_aparece_no_mes_corrente(self):
+        """Rouanet, Aldir Blanc e Goyazes têm janela fev–out: precisam aparecer
+        no mês corrente quando ela está ABERTA, não só em meses futuros."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("pv.especial && pv.inicio<=hojeISO && pv.fim>=hojeISO",html)
+        self.assertIn("janela ABERTA",html)
+        d=dash_coletar(date(2026,9,2))
+        esp=[p for p in d["previsoes"]["itens"] if p.get("especial")]
+        ids=" ".join(p["id"] for p in esp)
+        for k in ("rouanet","aldir-blanc","goyazes"): self.assertIn(k,ids,k)
+        abertas=[p for p in esp if p["inicio"]<="2026-09-02"<=p["fim"]]
+        self.assertGreaterEqual(len(abertas),3,"as três janelas de 2026 estão abertas hoje")
+
+    def test_previsao_exige_anos_distintos(self):
+        """Viés da amostra: a coleta começou em ago/2026, então o mês repetido
+        dentro do MESMO ano não é sazonalidade. Janela só com 2+ anos."""
+        i=load_json(pathlib.Path("biblioteca_alexandria/fontes/indice.json"))
+        for f in i["itens"]:
+            j=f.get("proxima_janela")
+            if j: self.assertGreaterEqual(len(j.get("anos_observados") or []),2,f["nome"])
+        p=load_json(pathlib.Path("biblioteca_alexandria/previsoes/previsoes.json"))
+        for x in p["itens"]:
+            if x.get("das_260"):
+                self.assertIn("ano", x.get("base",""))
+
+    def test_cobertura_das_260_declarada(self):
+        """O calendário não pode mentir por omissão: declara quantas das 260
+        consegue representar e por que as demais faltam."""
+        d=dash_coletar(date(2026,9,2))
+        c=d["cobertura_calendario"]
+        self.assertEqual(c["fontes"],260)
+        self.assertEqual(c["no_calendario"]+sum(v for k,v in c["motivos"].items()
+                                                if k!="no_calendario"),260)
+        for area in ("cultura","esporte","fundo"):
+            self.assertIn(area,c["por_area"],area)
+            self.assertLessEqual(c["por_area"][area]["no_calendario"],c["por_area"][area]["fontes"])
+        self.assertIn("ANOS DISTINTOS",c["explicacao"])
+        self.assertIn("edições do diário",c["o_que_destrava"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("g-cobertura",html)
+        self.assertIn("Cobertura das ${C.fontes} fontes",html)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
