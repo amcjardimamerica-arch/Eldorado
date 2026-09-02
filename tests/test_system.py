@@ -2076,6 +2076,19 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("ano SEM eleição",html); self.assertIn("Documentos do art. 76",html)
 
+
+    def test_biblioteca_reflete_acervo_do_banco(self):
+        """A tela Biblioteca não pode dizer '0 editais' quando o acervo (SQLite)
+        tem milhares: o índice reflete o banco, não só as pastas em disco."""
+        d=dash_coletar(date(2026,9,2))
+        ac=d["biblioteca"]["acervos"]
+        from src.banco import total_historico
+        if total_historico()>0:
+            self.assertEqual(ac["oportunidades"],total_historico())
+        i=load_json(pathlib.Path("biblioteca_alexandria/oportunidades/indice.json"))
+        self.assertIn("no_banco",i); self.assertIn("em_pasta",i)
+        self.assertGreaterEqual(i["total"],i["em_pasta"])
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

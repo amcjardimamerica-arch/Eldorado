@@ -165,12 +165,33 @@ def indexar_oportunidades() -> dict:
             if n >= 2:
                 recorrencias.append({"financiador": fin, "mes": mes, "ocorrencias": n,
                                      "leitura": "janela recorrente — hipótese a confirmar"})
-    indice = {"atualizado_em": now_iso(), "total": len(registros),
-              "financiadores": len(por_financiador),
+    # o acervo histórico completo mora no SQLite: a tela da Biblioteca precisa
+    # refletir o total real, não só as pastas mantidas em disco
+    total_banco = 0
+    consolidado = {}
+    try:
+        from .banco import total_historico
+        total_banco = total_historico()
+    except Exception:
+        pass
+    cons_p = ROOT / "biblioteca_alexandria/historico/consolidado.json"
+    if cons_p.exists():
+        consolidado = load_json(cons_p)
+    if not exig_global and consolidado.get("exigencias_mais_cobradas"):
+        exig_global.update({x["exigencia"]: x["ocorrencias"]
+                            for x in consolidado["exigencias_mais_cobradas"]})
+    if not recorrencias and consolidado.get("recorrencias_por_financiador"):
+        recorrencias = consolidado["recorrencias_por_financiador"]
+    indice = {"atualizado_em": now_iso(),
+              "total": max(len(registros), total_banco),
+              "em_pasta": len(registros), "no_banco": total_banco,
+              "financiadores": len(por_financiador) or len(
+                  {r.get("financiador") for r in consolidado.get("vencedores_recorrentes", [])}),
               "exigencias_mais_cobradas": [{"exigencia": e, "ocorrencias": n}
                                            for e, n in exig_global.most_common(25)],
               "recorrencias": sorted(recorrencias,
                                      key=lambda r: -r["ocorrencias"])[:30],
+              "vencedores_recorrentes": consolidado.get("vencedores_recorrentes", [])[:15],
               "editais": registros,
               "nota": ("contagens determinísticas; padrões de aprovação e critérios "
                        "de vitória são apurados pela IA a partir deste índice")}
