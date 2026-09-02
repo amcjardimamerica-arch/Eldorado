@@ -411,6 +411,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div class="gmes" id="g-meses" style="margin-bottom:10px"></div>
 <div id="g-corpo"></div>
 <div class="legenda" id="g-legenda" style="margin-top:10px"></div>
+<div class="meta" id="g-abertas" style="margin-top:8px"></div>
+<div class="meta" id="g-cobertura" style="margin-top:8px;border-left:3px solid var(--linha);padding-left:10px"></div>
 <span class="verlink" onclick="modulo('eldorado');mostra('calendario')">Ver calendário completo ›</span>
 </div>
 <div class="cartao">
@@ -1100,14 +1102,13 @@ function desenhaGantt(){
   if(mesFuturo&&D.previsoes&&!D.previsoes.completo&&!D._prevPedido){
     D._prevPedido=true; garantePrevisoes().then(ok=>{if(ok)desenhaGantt();});}
   const uf0=$("fi-uf").value,ar0=$("fi-area").value,ni0=$("fi-nivel").value;
-  /* Regra corrigida: previsão de RECORRÊNCIA só em mês futuro (é estatística);
-     mas janela histórica declarada (Rouanet, Aldir Blanc, Goyazes) aparece
-     também no mês corrente quando a janela está ABERTA hoje — é a informação
-     mais útil do calendário, e escondê-la era o defeito. */
+  /* REGRA DO TITULAR: o mês atual e os anteriores só mostram dado REAL E
+     CONFIRMADO. Projeção — inclusive janela histórica declarada — aparece
+     somente nos meses seguintes. O que está aberto agora sem confirmação vai
+     para o aviso abaixo do calendário, não para dentro dele. */
   const hojeISO=HOJE.toISOString().slice(0,10);
-  const prevs=((D.previsoes||{}).itens||[]).filter(pv=>
-      (mesFuturo || (pv.especial && pv.inicio<=hojeISO && pv.fim>=hojeISO))
-      && cruza(pv.inicio,pv.fim)
+  const prevs=(mesFuturo?((D.previsoes||{}).itens||[]):[]).filter(pv=>
+      cruza(pv.inicio,pv.fim)
       &&(!uf0||uf0==="__nac__"?(!uf0||!pv.uf):(pv.uf===uf0||!pv.uf))
       &&(!ar0||pv.area===ar0)&&(!ni0||pv.nivel===ni0))
     .sort((a,b)=>(b.especial?1:0)-(a.especial?1:0)
@@ -1200,6 +1201,15 @@ function desenhaGantt(){
   const areasG=Object.keys(cont).sort((a,b)=>cont[b]-cont[a]);
   const nProj=eds.filter(e=>(e.ciclo.resultado&&e.ciclo.resultado.projetado)
                          ||(e.ciclo.recurso&&e.ciclo.recurso.projetado)).length;
+  /* janelas históricas abertas hoje: informação útil, mas NÃO confirmada —
+     fica como aviso ao lado do calendário, nunca como faixa dentro dele */
+  if($("g-abertas")){
+    const ab=((D.previsoes||{}).itens||[]).filter(pv=>pv.especial&&pv.inicio<=hojeISO&&pv.fim>=hojeISO);
+    $("g-abertas").innerHTML=ab.length?`<span style="border-left:3px solid #C9A227;padding-left:10px">
+      <strong>Fora do calendário, por não estarem confirmadas:</strong> ${ab.length} janela(s) histórica(s) que estariam abertas hoje —
+      ${ab.map(p=>esc(p.titulo.split("—")[0].trim())+" ("+br(p.inicio)+"→"+br(p.fim)+")").join(" · ")}.
+      Entram no calendário quando o edital do ano for confirmado.</span>`:"";
+  }
   const C=D.cobertura_calendario||{};
   if($("g-cobertura")&&C.fontes){
     const pa=C.por_area||{};

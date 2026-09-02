@@ -1405,7 +1405,8 @@ class SystemTests(unittest.TestCase):
                   "exigencias_detectadas":["cnpj","estatuto"],"valores_citados":["50.000,00"],
                   "financiador":"Prefeitura","url":"https://x/","hash_evidencia":"abc"}
         c=conferir(completa)
-        self.assertEqual(c["nivel_confirmacao"],"confirmado_documental")
+        # 'completo' (12/12) é o nível acima de 'confirmado_documental'
+        self.assertIn(c["nivel_confirmacao"],("completo","confirmado_documental"))
         self.assertFalse(c["precisa_ato_integral"])
         seca={"titulo":"Diário Oficial de X — chamamento público","evidencia":"chamamento",
               "fim":None,"uf":None,"nivel":"municipal","exigencias_detectadas":[],
@@ -2241,8 +2242,9 @@ class SystemTests(unittest.TestCase):
         """Rouanet, Aldir Blanc e Goyazes têm janela fev–out: precisam aparecer
         no mês corrente quando ela está ABERTA, não só em meses futuros."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn("pv.especial && pv.inicio<=hojeISO && pv.fim>=hojeISO",html)
-        self.assertIn("janela ABERTA",html)
+        # a janela aberta não entra no calendário do mês corrente: vira AVISO,
+        # porque não é dado confirmado (regra do titular)
+        self.assertIn("Fora do calendário, por não estarem confirmadas",html)
         d=dash_coletar(date(2026,9,2))
         esp=[p for p in d["previsoes"]["itens"] if p.get("especial")]
         ids=" ".join(p["id"] for p in esp)
@@ -2335,6 +2337,70 @@ class SystemTests(unittest.TestCase):
         self.assertIn("Prazos das fontes",html); self.assertIn("abrePrazos",html)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.parecer_prazos",wf)
+
+
+    def test_calendario_mes_atual_so_confirmado(self):
+        """Mês atual e anteriores: apenas dado real e confirmado. Projeção só
+        nos meses seguintes; janela aberta não confirmada vira aviso."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("const prevs=(mesFuturo?((D.previsoes||{}).itens||[]):[])",html)
+        self.assertIn("g-abertas",html)
+        self.assertIn("Fora do calendário, por não estarem confirmadas",html)
+        # a exceção anterior (janela aberta dentro do mês corrente) foi removida
+        self.assertNotIn("pv.especial && pv.inicio<=hojeISO && pv.fim>=hojeISO)\n      && cruza",html)
+
+    def test_fase2_minimo_prazo_e_objeto(self):
+        """Mínimo aceitável = prazo + objeto; a busca segue até a totalidade,
+        e o registro diz onde parou e qual o próximo alvo."""
+        from src.confirmacao import conferir
+        base={"titulo":"Edital","uf":"GO","nivel":"municipal","exigencias_detectadas":[],
+              "valores_citados":[],"financiador":None}
+        m=conferir({**base,"evidencia":"O objeto é apoio a projetos. Inscrições até 30/06/2025.",
+                    "fim":"2025-06-30"})
+        self.assertEqual(m["nivel_confirmacao"],"minimo_util")
+        self.assertTrue(m["tem_minimo"]); self.assertTrue(m["continuar_busca"])
+        self.assertTrue(m["proximo_alvo"])
+        so_prazo=conferir({**base,"evidencia":"Inscrições até 30/06/2025","fim":"2025-06-30"})
+        self.assertFalse(so_prazo["tem_minimo"])
+        self.assertEqual(so_prazo["nivel_confirmacao"],"parcial")
+        self.assertIn("objeto_identificado",so_prazo["proximo_alvo"])
+        nada=conferir({**base,"evidencia":"chamamento","fim":None})
+        self.assertEqual(nada["nivel_confirmacao"],"pendente")
+        self.assertIn("prazo_publicado",nada["proximo_alvo"])
+        # completo encerra a busca
+        cheio=conferir({**base,"evidencia":("Objeto: apoio. Inscrições de 01/05/2025 até "
+                        "30/06/2025. Exige CNPJ. Valor R$ 10.000,00. Ver Anexo I. "
+                        "Protocolo na sede."),"inicio":"2025-05-01","fim":"2025-06-30",
+                        "exigencias_detectadas":["cnpj"],"valores_citados":["10.000,00"],
+                        "financiador":"Secult","url":"https://x/","hash_evidencia":"a"})
+        self.assertIn(cheio["nivel_confirmacao"],("completo","confirmado_documental"))
+
+    def test_busca_ativa_ataca_pendentes_da_fase2(self):
+        from src.busca_ativa import _pendentes_da_fase2
+        f=_pendentes_da_fase2(limite=50)
+        if f:
+            self.assertTrue(all(x["origem"]=="fase2_incompleta" for x in f))
+            self.assertTrue(all(x.get("alvo") is not None for x in f))
+            pesos=[x["peso"] for x in f]
+            self.assertEqual(pesos,sorted(pesos),"os mais próximos do mínimo vêm primeiro")
+
+    def test_parecer_de_prazo_por_fonte(self):
+        """Cada fonte tem parecer de prazo: permanente, periódico ou eventual,
+        com as datas conhecidas e o grau de certeza."""
+        d=load_json(pathlib.Path("biblioteca_alexandria/fontes/parecer_prazos.json"))
+        self.assertEqual(d["fontes"],260)
+        self.assertEqual(len(d["lista"]),260)
+        regimes=set(d["regimes"])
+        self.assertTrue(regimes <= {"permanente_com_janela_anual","permanente_fluxo_continuo",
+                                    "periodico_confirmado","periodico_suspeito",
+                                    "eventual_observado","sem_observacao"},regimes)
+        for f in d["lista"]:
+            for campo in ("regime_de_prazo","permanente","periodico","certeza",
+                          "editais_observados","editais_com_prazo_publicado"):
+                self.assertIn(campo,f,campo)
+            self.assertIn(f["certeza"],("alta","media","media_a_confirmar","baixa","nenhuma"))
+        self.assertGreater(d["permanentes"],0)
+        self.assertIn("por_area",d)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

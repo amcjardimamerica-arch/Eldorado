@@ -56,12 +56,19 @@ def conferir(ficha: dict) -> dict:
         "url_primaria": bool(ficha.get("url")),
         "evidencia_hasheada": bool(ficha.get("hash_evidencia")),
     }
-    essenciais = ("objeto_identificado", "orgao_identificado", "prazo_publicado",
-                  "requisitos_no_texto")
-    ok_essenciais = sum(1 for k in essenciais if itens[k])
-    if ok_essenciais == len(essenciais):
+    # REGRA DO TITULAR: o MÍNIMO aceitável é prazo + objeto. Abaixo disso o
+    # edital não serve para decidir nada. Acima, a busca continua até a
+    # totalidade — o nível diz exatamente onde parou.
+    MINIMO = ("objeto_identificado", "prazo_publicado")
+    tem_minimo = all(itens[k] for k in MINIMO)
+    total_ok = sum(1 for v in itens.values() if v)
+    if total_ok == len(itens):
+        nivel = "completo"
+    elif tem_minimo and itens["requisitos_no_texto"] and itens["orgao_identificado"]:
         nivel = "confirmado_documental"
-    elif ok_essenciais >= 2:
+    elif tem_minimo:
+        nivel = "minimo_util"          # dá para decidir concorrer; falta detalhe
+    elif itens["objeto_identificado"] or itens["prazo_publicado"]:
         nivel = "parcial"
     else:
         nivel = "pendente"
@@ -81,13 +88,23 @@ def conferir(ficha: dict) -> dict:
         "url_primaria": "sem URL primária",
         "evidencia_hasheada": "evidência sem hash",
     }
+    # o que buscar em seguida, na ordem que mais aproxima da totalidade
+    ordem = ("prazo_publicado", "objeto_identificado", "requisitos_no_texto",
+             "periodo_completo", "valor_publicado", "anexos_mencionados",
+             "forma_de_inscricao")
+    proximos = [k for k in ordem if not itens[k]][:3]
     return {
         "nivel_confirmacao": nivel,
+        "tem_minimo": tem_minimo,
+        "itens_ok": total_ok, "itens_total": len(itens),
+        "completude_pct": round(total_ok / len(itens) * 100),
+        "proximo_alvo": proximos,
+        "continuar_busca": nivel != "completo",
         "itens": itens,
         "comprovados": [k for k, v in itens.items() if v],
         "nao_comprovados": [{"item": k, "motivo": motivos.get(k, k)}
                             for k in nao_comprovados],
-        "precisa_ato_integral": nivel != "confirmado_documental",
+        "precisa_ato_integral": nivel not in ("completo", "confirmado_documental"),
         "conferido_em": now_iso(),
         "nota": ("conferência documental do material capturado; item não "
                  "comprovado nunca é presumido"),
@@ -132,6 +149,8 @@ def run(limite: int | None = None) -> dict:
     con.close()
     resumo = {"executado_em": now_iso(), "conferidos": atualizados,
               "por_nivel": dict(niveis),
+              "com_minimo_util": niveis.get("minimo_util", 0) + niveis.get("confirmado_documental", 0) + niveis.get("completo", 0),
+              "meta": "mínimo = prazo + objeto; a busca segue até a totalidade dos 12 itens",
               "fila_ato_integral": len(pendentes),
               "amostra_fila": pendentes[:20],
               "nota": ("fase 2 documental: confirma o que a evidência prova. "

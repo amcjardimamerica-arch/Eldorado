@@ -201,6 +201,41 @@ def busca_ia(indicio: dict, local: dict) -> dict:
             "modelo": modelo, "resposta": texto[:200]}
 
 
+def _pendentes_da_fase2(limite: int = 200) -> list[dict]:
+    """Editais que já têm sensor e URL mas ainda não alcançaram a totalidade.
+
+    Ordem de ataque: quem está a UM item do mínimo (prazo+objeto) primeiro —
+    é o degrau que transforma registro em decisão. Depois, quem já tem o
+    mínimo e falta detalhe."""
+    try:
+        from .banco import conectar
+        con = conectar()
+        linhas = con.execute(
+            "SELECT chave, ano, id, ficha FROM historico "
+            "WHERE url IS NOT NULL ORDER BY (uf='GO') DESC, data_publicacao DESC "
+            "LIMIT 4000").fetchall()
+        con.close()
+    except Exception:
+        return []
+    fila = []
+    for chave, ano, cid, fj in linhas:
+        f = json.loads(fj)
+        c = f.get("confirmacao") or {}
+        if not c or c.get("nivel_confirmacao") == "completo":
+            continue
+        peso = {"minimo_util": 1, "confirmado_documental": 2,
+                "parcial": 0, "pendente": 3}.get(c.get("nivel_confirmacao"), 3)
+        fila.append({"id": cid, "titulo": f.get("titulo"), "area": f.get("area"),
+                     "nivel": f.get("nivel"), "uf": f.get("uf"),
+                     "territorio": f.get("territorio"), "inicio": f.get("inicio"),
+                     "fim": f.get("fim"), "objeto": f.get("objeto"), "url": f.get("url"),
+                     "origem": "fase2_incompleta", "peso": peso,
+                     "alvo": c.get("proximo_alvo") or [],
+                     "chave": chave, "ano_ref": ano})
+    fila.sort(key=lambda x: (x["peso"], not (x["uf"] == "GO")))
+    return fila[:limite]
+
+
 def _indicios(hoje: date) -> list[dict]:
     """Editais em aberto/por abrir ainda incompletos + previsões a até 60 dias."""
     saida = []
@@ -214,6 +249,7 @@ def _indicios(hoje: date) -> list[dict]:
                 saida.append({**{k: e.get(k) for k in ("id", "titulo", "area", "nivel", "uf",
                                                        "territorio", "inicio", "fim", "objeto", "url")},
                               "origem": "indicio_publicado"})
+    saida += _pendentes_da_fase2()
     pj = ROOT / "biblioteca_alexandria/previsoes/previsoes.json"
     if pj.exists():
         lim = (hoje + timedelta(days=60)).isoformat()
