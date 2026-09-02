@@ -939,6 +939,8 @@ def coletar(hoje: date | None = None) -> dict:
         esquadra = {"erro": type(exc).__name__}
     ft_p = ROOT / "biblioteca_alexandria/fontes/fichas_tres_tempos.json"
     fichas = load_json(ft_p) if ft_p.exists() else {"fontes_lista": []}
+    aud_p = ROOT / "biblioteca_alexandria/historico/auditoria_individual.json"
+    auditoria = load_json(aud_p) if aud_p.exists() else {}
     vivos = completos_lista
     editais = _marca_etapas(
         (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos)
@@ -1008,6 +1010,10 @@ def coletar(hoje: date | None = None) -> dict:
                                   "fonte_confirmacao", "lei")}
                                 for i in previsoes.get("itens", [])]},
         "esquadra": esquadra,
+        "auditoria": {k: auditoria.get(k) for k in
+                      ("editais_auditados", "completos_11_itens", "parciais_6_a_10",
+                       "abaixo_de_6", "causas", "itens_que_mais_faltam", "por_ano",
+                       "dominios_sem_sensor", "janela")},
         "fontes_tres_tempos": {k: fichas.get(k) for k in ("fontes", "com_passado", "com_presente", "com_futuro")},
         "dossies_fontes": {"total": dossies.get("fontes", 0),
                            "com_historico": dossies.get("com_historico", 0),

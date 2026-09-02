@@ -2163,6 +2163,79 @@ class SystemTests(unittest.TestCase):
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.sensores",wf)
 
+
+    def test_doacao_vedada_nao_desenha_faixa(self):
+        """Ano de eleição: a doação da RFB não pode aparecer vigente em mês
+        nenhum do calendário."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("!(e.regra_anos && e.ano_permitido===false)",html)
+        d=dash_coletar(date(2026,9,2))
+        v26=[e for e in d["editais"] if e["id"]=="doacao-receita-federal-2026"]
+        if v26:
+            self.assertFalse(v26[0]["ano_permitido"])
+            self.assertEqual(v26[0]["estado_export"],"encerrado")
+        v27=[e for e in d["editais"] if e["id"]=="doacao-receita-federal-2027"]
+        self.assertTrue(v27 and v27[0]["ano_permitido"])
+
+    def test_auditoria_individual_diagnostica_causa(self):
+        """Auditoria sequencial: cada edital recebe os itens obtidos, a causa
+        da falta e a ação recomendada."""
+        from src.auditoria import diagnosticar, _acao
+        from src.completude_biblioteca import onze_itens
+        sens={"goias.gov.br":"f260-x"}
+        # edição do diário em PDF: a informação está no acervo, só falta abrir
+        f1={"titulo":"Edital","evidencia":"chamamento","url":"https://data.queridodiario.ok.org.br/52/2025-01-02/abc.pdf",
+            "financiador":"QD","uf":"GO","nivel":"municipal","exigencias_detectadas":[],
+            "valores_citados":[],"destinacao":{"elegivel":True,"motivo":"fomento"},"marcos":[]}
+        d1=diagnosticar(f1,onze_itens(f1),sens)
+        self.assertTrue(d1["edicao_pdf"]); self.assertEqual(d1["causa_principal"],"edicao_nao_extraida")
+        self.assertIn("recortar o ato",d1["acao_recomendada"])
+        # sem URL
+        f2={**f1,"url":None}
+        self.assertEqual(diagnosticar(f2,onze_itens(f2),sens)["causa_principal"],"sem_url_primaria")
+        # fora do escopo
+        f3={**f1,"destinacao":{"elegivel":False,"motivo":"comercial"}}
+        self.assertEqual(diagnosticar(f3,onze_itens(f3),sens)["causa_principal"],"fonte_fora_do_escopo")
+        rel=load_json(pathlib.Path("biblioteca_alexandria/historico/auditoria_individual.json"))
+        self.assertGreater(rel["editais_auditados"],1000)
+        self.assertTrue(rel["causas"])
+        self.assertTrue(all(c["causa"] and c["editais"] for c in rel["causas"]))
+        self.assertTrue(pathlib.Path("biblioteca_alexandria/historico/auditoria_editais.jsonl").exists())
+        d=dash_coletar(date(2026,9,2))
+        self.assertIn("auditoria",d)
+        self.assertEqual(d["auditoria"]["editais_auditados"],rel["editais_auditados"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("Auditoria do acervo",html)
+
+    def test_extrai_ato_dentro_da_edicao(self):
+        """O PDF do Querido Diário é a EDIÇÃO do diário: o ato está lá dentro."""
+        try:
+            import pypdf  # noqa
+        except ImportError:
+            self.skipTest("pypdf ausente")
+        import tempfile
+        from src.edicao import processar, recortar_atos, extrair_itens
+        texto=("AVISO DE CHAMAMENTO PUBLICO 007/2026. Objeto: selecao de organizacoes da "
+               "sociedade civil para contraturno escolar, Lei 13.019/2014. Inscricoes a "
+               "partir de 05/09/2026 ate 30/09/2026. Valor de R$ 1.200.000,00. Documentos: "
+               "estatuto social, ata de posse, cartao CNPJ, CNDT, plano de trabalho, ANEXO I. "
+               "Resultado preliminar em 15/10/2026 e recurso ate 20/10/2026.")
+        atos=recortar_atos(texto)
+        self.assertEqual(len(atos),1)
+        it=extrair_itens(atos[0])
+        self.assertIn("sociedade civil",it["objeto"])
+        self.assertEqual((it["inicio"],it["fim"]),("05/09/2026","30/09/2026"))
+        self.assertEqual(it["resultado"],"15/10/2026"); self.assertEqual(it["recurso"],"20/10/2026")
+        self.assertEqual(it["valores"],["R$ 1.200.000,00"])
+        self.assertIn("ANEXO I",it["anexos"])
+        self.assertGreaterEqual(len(it["exigencias"]),5)
+        # edição sem matéria do terceiro setor não vira ato
+        self.assertEqual(recortar_atos("PREGAO ELETRONICO 44 aquisicao de material menor preco"),[])
+        r=processar({"url":"https://exemplo.org/pagina.html"})
+        self.assertFalse(r["ok"]); self.assertIn("PDF",r["motivo"])
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.edicao",wf); self.assertIn("python -m src.auditoria",wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-02T00:37:38+00:00",
+  "gerado_em": "2026-09-02T01:13:09+00:00",
   "referencia": "2026-09-02",
   "cadencia": {
     "varredura": "segundas e sextas, 6h de Brasília",
@@ -23009,7 +23009,7 @@
   ],
   "biblioteca": {
     "biblioteca": "Biblioteca de Alexandria",
-    "atualizado_em": "2026-09-02T00:11:22+00:00",
+    "atualizado_em": "2026-09-02T00:38:43+00:00",
     "acervos": {
       "leis": 27,
       "oportunidades": 9474,
@@ -23023,7 +23023,7 @@
     "alimentacao": "Eldorado alimenta; Farol analisa com IA",
     "detalhe": {
       "leis": {
-        "atualizado_em": "2026-09-02T00:11:22+00:00",
+        "atualizado_em": "2026-09-02T00:38:43+00:00",
         "total": 27,
         "temas": {
           "assistencia_social": 6,
@@ -23217,7 +23217,7 @@
         }
       },
       "oportunidades": {
-        "atualizado_em": "2026-09-02T00:11:22+00:00",
+        "atualizado_em": "2026-09-02T00:38:43+00:00",
         "total": 9474,
         "em_pasta": 0,
         "no_banco": 9474,
@@ -23413,7 +23413,7 @@
         "nota": "contagens determinísticas; padrões de aprovação e critérios de vitória são apurados pela IA a partir deste índice"
       },
       "associacoes": {
-        "atualizado_em": "2026-09-02T00:11:22+00:00",
+        "atualizado_em": "2026-09-02T00:38:43+00:00",
         "total": 1,
         "associacoes": [
           {
@@ -23498,7 +23498,7 @@
         "quantidade": 0
       }
     ],
-    "atualizado_em": "2026-09-02T00:37:35+00:00",
+    "atualizado_em": "2026-09-02T01:13:06+00:00",
     "nota": "etapas 4 e 5 são automáticas; não dependem de ação do titular"
   },
   "previsoes": {
@@ -25803,6 +25803,163 @@
     },
     "ultima_execucao": null,
     "alertas": []
+  },
+  "auditoria": {
+    "editais_auditados": 9474,
+    "completos_11_itens": 0,
+    "parciais_6_a_10": 434,
+    "abaixo_de_6": 9040,
+    "causas": [
+      {
+        "causa": "edicao_nao_extraida",
+        "editais": 7080,
+        "acao": "a URL é o PDF da edição do diário: abrir e recortar o ato (src/edicao.py) — a informação já está no acervo"
+      },
+      {
+        "causa": "fonte_fora_do_escopo",
+        "editais": 1671,
+        "acao": "manter descartado; não é edital para OSC"
+      },
+      {
+        "causa": "url_de_agregador",
+        "editais": 626,
+        "acao": "criar sensor para o órgão de origem (hoje só há None)"
+      },
+      {
+        "causa": "sem_sensor_para_a_fonte",
+        "editais": 67,
+        "acao": "acrescentar None à esquadra de sensores"
+      },
+      {
+        "causa": "ato_nao_baixado",
+        "editais": 26,
+        "acao": "busca ativa: abrir a URL e extrair texto, datas e anexos"
+      },
+      {
+        "causa": "resultado_nao_publicado",
+        "editais": 4,
+        "acao": "monitorar a fonte na janela de resultado (calendário do Farol)"
+      }
+    ],
+    "itens_que_mais_faltam": [
+      {
+        "item": "Resultado",
+        "faltam_em": 9474
+      },
+      {
+        "item": "Prazo de recurso",
+        "faltam_em": 9474
+      },
+      {
+        "item": "Prazo de inscrição",
+        "faltam_em": 9433
+      },
+      {
+        "item": "Valor",
+        "faltam_em": 9170
+      },
+      {
+        "item": "Anexos",
+        "faltam_em": 9123
+      },
+      {
+        "item": "Requisitos",
+        "faltam_em": 8619
+      },
+      {
+        "item": "Objeto",
+        "faltam_em": 8221
+      }
+    ],
+    "por_ano": {
+      "2021": {
+        "editais": 173,
+        "media_itens": 4.29
+      },
+      "2022": {
+        "editais": 84,
+        "media_itens": 4.31
+      },
+      "2023": {
+        "editais": 181,
+        "media_itens": 4.4
+      },
+      "2024": {
+        "editais": 1122,
+        "media_itens": 4.32
+      },
+      "2025": {
+        "editais": 3264,
+        "media_itens": 4.35
+      },
+      "2026": {
+        "editais": 4650,
+        "media_itens": 4.25
+      }
+    },
+    "dominios_sem_sensor": [
+      {
+        "dominio": "data.queridodiario.ok.org.br",
+        "editais": 7084
+      },
+      {
+        "dominio": "app2.licitardigital.com.br",
+        "editais": 75
+      },
+      {
+        "dominio": "bllcompras.com",
+        "editais": 54
+      },
+      {
+        "dominio": "portal.licitanet.com.br",
+        "editais": 44
+      },
+      {
+        "dominio": "bnccompras.com",
+        "editais": 43
+      },
+      {
+        "dominio": "portaldecompraspublicas.com.br",
+        "editais": 37
+      },
+      {
+        "dominio": "licitanet.com.br",
+        "editais": 25
+      },
+      {
+        "dominio": "licitamaisbrasil.com.br",
+        "editais": 17
+      },
+      {
+        "dominio": "portal.tce.rs.gov.br",
+        "editais": 17
+      },
+      {
+        "dominio": "app2.ammlicita.org.br",
+        "editais": 15
+      },
+      {
+        "dominio": "capta.org.br",
+        "editais": 12
+      },
+      {
+        "dominio": "www.portaldecompraspublicas.com.br",
+        "editais": 8
+      },
+      {
+        "dominio": "www.gp.srv.br",
+        "editais": 7
+      },
+      {
+        "dominio": "www1.compras.mg.gov.br",
+        "editais": 6
+      },
+      {
+        "dominio": "transparencia.agilicloud.com.br",
+        "editais": 4
+      }
+    ],
+    "janela": "2021–2026"
   },
   "fontes_tres_tempos": {
     "fontes": 260,

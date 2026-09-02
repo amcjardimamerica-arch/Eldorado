@@ -1074,7 +1074,12 @@ function desenhaGantt(){
      enquanto o ciclo estiver em curso — sai apenas quando arquivado pelo
      titular (inscrição realizada ou descarte). */
   const base=(gFiltrados||D.editais||[])
-    .filter(e=>(e.etapa||1)>=2 && estadoDe(e.id)==="em_andamento" && e.ciclo);
+    .filter(e=>(e.etapa||1)>=2 && estadoDe(e.id)==="em_andamento" && e.ciclo
+      // fonte anual vedada no ano (ex.: doação da RFB em ano eleitoral) não
+      // pode desenhar faixa: a janela existe no calendário, a captação não
+      && !(e.regra_anos && e.ano_permitido===false)
+      // e nada encerrado ocupa faixa fora do próprio ciclo
+      && !(e.estado_export==="encerrado" && e.ciclo.fim_do_ciclo && e.ciclo.fim_do_ciclo < HOJE.toISOString().slice(0,10) && e.sem_edital));
   const tocaMes=e=>{
     const c=e.ciclo;
     return (c.inscricao&&c.inscricao.inicio&&cruza(c.inscricao.inicio,c.inscricao.fim))
@@ -1802,7 +1807,16 @@ function desenhaBiblioteca(){
     } else if(aba==="oportunidades"){
       const o=det.oportunidades||{};
       const exig=o.exigencias_mais_cobradas||[], rec=o.recorrencias||[];
-      $("ba-corpo").innerHTML=`
+      const A=D.auditoria||{};
+      $("ba-corpo").innerHTML=(A.editais_auditados?`
+        <div class="cartao" style="margin-bottom:12px;background:#FCFCFB">
+          <div style="font-weight:800;color:#0B4EA2;margin-bottom:6px">Auditoria do acervo (${esc(A.janela||"")}) — ${A.editais_auditados} editais, um por um</div>
+          <div class=meta style="margin-bottom:8px">${A.completos_11_itens} com os 11 itens · ${A.parciais_6_a_10} parciais (6–10) · ${A.abaixo_de_6} abaixo de 6</div>
+          <table class="bz-tab"><thead><tr><th>Causa da falta</th><th>Editais</th><th>Ação recomendada</th></tr></thead><tbody>
+          ${(A.causas||[]).map(c=>`<tr><td><b>${esc(c.causa.replace(/_/g," "))}</b></td><td>${c.editais}</td><td class=meta>${esc(c.acao||"—")}</td></tr>`).join("")}
+          </tbody></table>
+          <div class=meta style="margin-top:8px">Itens que mais faltam: ${(A.itens_que_mais_faltam||[]).slice(0,4).map(i=>esc(i.item)+" ("+i.faltam_em+")").join(" · ")}</div>
+        </div>`:"")+`
         <p class=meta>Histórico de editais e oportunidades anteriores — base para apurar o que é cobrado, quais janelas se repetem e quais critérios levam à aprovação. A leitura de padrões é feita pela IA a partir deste índice, sem reler os editais inteiros.</p>
         <div class="farol-grade" style="grid-template-columns:1fr 1fr">
           <div><div style="font-weight:800;margin-bottom:6px">Exigências mais cobradas</div>
