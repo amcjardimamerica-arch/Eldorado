@@ -51,19 +51,30 @@ def registro() -> list[dict]:
     cfg = load_json(CFG)
     sens = [dict(s, origem="especial") for s in cfg["sensores_especiais"]]
     vistos = {u for s in sens for u in s["urls"]}
+    por_url: dict[str, dict] = {}
     if F260.exists():
         for f in load_json(F260).get("fontes", []):
+            if f["confianca_site"] == "pendente":
+                continue
             urls = [u for u in f["sites"] if u not in vistos and not _AGREG.search(u)]
-            if not urls or f["confianca_site"] == "pendente":
+            if not urls:
+                # site já coberto por outro motor: este ponto passa a ser atendido por ele
+                for u in f["sites"]:
+                    if u in por_url:
+                        por_url[u].setdefault("fontes_260", []).append(f["id"])
+                        break
                 continue
             vistos.update(urls)
             tipo = {"internacional": "internacional", "privada": "privada"}.get(
                 f["nivel"], "site_oficial")
-            sens.append({"id": f"f260-{f['id']}", "nome": f["programa"], "tipo": tipo,
-                         "nivel": f["nivel"], "uf": f.get("uf"), "territorio": f.get("uf") or "BR",
-                         "urls": urls[:2], "busca": None, "confianca": f["confianca_site"],
-                         "orgao": f.get("orgao"), "area": f.get("area"), "goias": f.get("goias"),
-                         "fonte_260": f["id"], "origem": "fontes_260"})
+            s = {"id": f"f260-{f['id']}", "nome": f["programa"], "tipo": tipo,
+                 "nivel": f["nivel"], "uf": f.get("uf"), "territorio": f.get("uf") or "BR",
+                 "urls": urls[:2], "busca": None, "confianca": f["confianca_site"],
+                 "orgao": f.get("orgao"), "area": f.get("area"), "goias": f.get("goias"),
+                 "fonte_260": f["id"], "fontes_260": [f["id"]], "origem": "fontes_260"}
+            sens.append(s)
+            for u in urls:
+                por_url[u] = s
     if INVEST.exists():
         for p in load_json(INVEST).get("fontes", []):
             if p.get("url") in vistos or not p.get("ativa", True):
@@ -215,6 +226,17 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
 def run(hoje: date | None = None, limite: int | None = None, pausa: float | None = None) -> dict:
     hoje = hoje or date.today()
     escala = escala_do_dia(hoje)
+    # ATIVAÇÃO MANUAL: o titular seleciona pontos no painel e o workflow recebe
+    # os ids em MOTORES_FONTES — só esses motores saem, fora da escala
+    import os
+    pedidos = {x.strip() for x in os.environ.get("MOTORES_FONTES", "").split(",") if x.strip()}
+    if pedidos:
+        todos = registro()
+        saem = [dict(s, motivo="ativação manual pelo titular") for s in todos
+                if s["id"] in pedidos or pedidos & set(s.get("fontes_260") or [])]
+        escala = {"data": hoje.isoformat(), "saem": saem, "ficam": len(todos) - len(saem),
+                  "total": len(todos), "previsoes_ativas": escala["previsoes_ativas"],
+                  "manual": sorted(pedidos)}
     est = load_json(ESTADO) if ESTADO.exists() else {"sensores": {}}
     sens = est["sensores"]
     existentes = carregar_oportunidades()
@@ -241,6 +263,7 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         t = por_tipo.setdefault(s["tipo"], {"sensores": 0, "achados": 0, "falhas": 0})
         t["sensores"] += 1; t["achados"] += len(r["achados"]); t["falhas"] += len(r["falhas"])
     est["ultima_execucao"] = {"data": hoje.isoformat(), "em": now_iso(),
+                              "manual": escala.get("manual"),
                               "sensores_executados": min(len(escala["saem"]), limite or 10**6),
                               "em_espera": escala["ficam"], "total_esquadra": escala["total"],
                               "previsoes_ativas": escala["previsoes_ativas"],

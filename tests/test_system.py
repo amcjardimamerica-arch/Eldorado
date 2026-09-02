@@ -2173,7 +2173,7 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(d["esquadra"]["total"],60)
         self.assertTrue(pathlib.Path("docs/dados/fontes.json").exists())
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("Esquadra de sensores","desenhaEsquadra","abreFontes","passado · presente · futuro"):
+        for x in ("Motores de Busca","desenhaMotores","carregaMotores"):
             self.assertIn(x,html,x)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.sensores",wf)
@@ -2600,6 +2600,53 @@ class SystemTests(unittest.TestCase):
         self.assertIn("registrar_bloqueio",open("src/sensores.py",encoding="utf-8").read())
         wf=open(".github/workflows/busca-ativa.yml",encoding="utf-8").read()
         self.assertIn("run_localizacao",wf)
+
+
+    def test_motores_de_busca_260_por_tipo_e_territorio(self):
+        """Caixa 'Motores de Busca': 260 pontos agregados por tipo e segmentados
+        por território, cada um com as 11 camadas, página e diagnóstico."""
+        from src.motores import familia, segmento, CAMADAS, camadas_da_fonte, diagnostico
+        self.assertEqual(familia("PNAB Goiânia - Audiovisual"),"PNAB / Aldir Blanc")
+        self.assertEqual(familia("Lei Rouanet — PRONAC"),"Lei Rouanet")
+        self.assertEqual(segmento({"nivel":"federal"}),"Nacional")
+        self.assertEqual(segmento({"nivel":"estadual","uf":"GO"}),"Estadual GO")
+        self.assertEqual(segmento({"nivel":"municipal","goias":True}),"Municipal Goiânia")
+        self.assertEqual(len(CAMADAS),11)
+        cam=camadas_da_fonte({"orgao":"X","uf":"GO","nivel":"estadual"},None)
+        self.assertEqual(len(cam),11)
+        self.assertEqual([c["camada"] for c in cam],list(CAMADAS))
+        d=diagnostico({"sites":["https://x/"]},cam,None,None)
+        self.assertEqual(d["estado"],"incompleto"); self.assertIn("não saiu com rede",d["causa"])
+        d2=diagnostico({"sites":["https://x/"]},cam,{"achados_total":0,"vazias_seguidas":3},None)
+        self.assertIn("trocar URL",d2["acao"])
+        d3=diagnostico({"sites":["https://x/"]},cam,None,{"erros":{"HTTPError":3},"bloqueios":3})
+        self.assertIn("bloqueada",d3["causa"]); self.assertIn("escada",d3["acao"])
+        m=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json"))
+        self.assertEqual(m["total"],260)
+        pn=[x for x in m["motores"] if x["familia"]=="PNAB / Aldir Blanc"]
+        self.assertEqual({x["segmento"] for x in pn},{"Estadual GO","Municipal Goiânia"})
+        self.assertTrue(all(len(x["camadas"])==11 for x in m["motores"]))
+        self.assertTrue(pathlib.Path("docs/dados/motores.json").exists())
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("Motores de Busca",html); self.assertNotIn("Esquadra de sensores",html)
+        for f in ("mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca","mtAtivar","mtSelecionar"):
+            self.assertIn(f,html,f)
+        self.assertIn("Run workflow",html)
+
+    def test_ativacao_manual_por_fontes(self):
+        """workflow_dispatch com o campo fontes roda só os motores pedidos; cada
+        motor conhece todas as fontes que atende."""
+        import os
+        from src.sensores import registro
+        r=registro()
+        cob=sum(len(s.get("fontes_260") or []) for s in r)
+        self.assertGreaterEqual(cob,200)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("inputs:",wf); self.assertIn("fontes:",wf)
+        self.assertIn("MOTORES_FONTES",wf); self.assertIn("python -m src.motores",wf)
+        fonte=open("src/sensores.py",encoding="utf-8").read()
+        self.assertIn('os.environ.get("MOTORES_FONTES"',fonte)
+        self.assertIn("ativação manual pelo titular",fonte)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

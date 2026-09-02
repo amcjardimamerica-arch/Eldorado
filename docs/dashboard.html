@@ -174,6 +174,16 @@ box-shadow:0 1px 3px #0002}
 .abas button.on{background:var(--realce);border-color:var(--marca);color:var(--marca);font-weight:700}
 .acoes-ed{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px;padding-top:10px;border-top:1px dashed var(--linha)}
 .acoes-ed button{font-size:11.5px;font-weight:700;padding:7px 11px;border-radius:9px}
+.mt-fam{margin-top:12px}.mt-famt{font-weight:800;color:#0B4EA2;font-family:Georgia,serif;font-size:15px;border-bottom:2px solid #E3E8F1;padding-bottom:4px}
+.mt-seg{margin:8px 0 0 6px}.mt-segt{font-weight:700;color:var(--suave);font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px}
+.mt-item{display:grid;grid-template-columns:26px 1fr;gap:6px;padding:8px 8px;border:1px solid var(--linha);border-radius:10px;margin-bottom:6px;background:#FCFCFB}
+.mt-item.completo{border-color:#A9D6BC}
+.mt-chk input{width:16px;height:16px;margin-top:3px}
+.mt-cam{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px}
+.mt-cam span{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:6px;letter-spacing:.02em}
+.mt-cam .ok{background:#E7F4EC;color:#1E7E4B}.mt-cam .pend{background:#F1F3F5;color:#8a939e;text-decoration:line-through}
+.mt-diag{margin-top:6px;font-size:11.5px;color:#7a4b00;background:#FFF8E6;border-left:3px solid var(--alerta);padding:6px 8px;border-radius:6px}
+.mt-diag.ok{color:#1E7E4B;background:#E7F4EC;border-left-color:var(--ok)}
 .bt-arq{background:#F1F3F5;color:#495057;border-color:#CED4DA}
 .ed-item{margin-top:10px;padding:10px;border:1px solid var(--linha);border-radius:11px;background:#FCFCFB}
 .ed-item + .ed-item{margin-top:8px}
@@ -524,14 +534,28 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <div class="mets" id="bus-mets"></div>
 </div>
 
-<!-- ESQUADRA · um sensor por fonte -->
+<!-- MOTORES DE BUSCA · um motor por ponto de captação -->
 <div class="cartao" style="margin-bottom:16px">
-  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Esquadra de sensores
-    <span class=meta style="font-weight:500" title="Um sensor por fonte. Diários oficiais, Diário da Justiça, legislativos e APIs saem todos os dias; sites de fonte saem em rodízio semanal e passam a diários quando há previsão de edital no mês.">— quem sai hoje, e por quê</span></div>
-  <div class="mets" id="esq-mets" style="margin:10px 0 8px"></div>
-  <div class="legenda" id="esq-tipos"></div>
-  <div id="esq-alertas" class=meta style="margin-top:8px"></div>
-  <div style="margin-top:10px"><span class="verlink" onclick="abreFontes()">Ver as 260 fontes — passado, presente e futuro →</span></div>
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Motores de Busca
+    <span class=meta style="font-weight:500" title="Um motor por ponto de captação. Agregados por tipo e segmentados por território: nacional, estadual, municipal. Cada ponto mostra as 11 camadas, a página de publicação e a validação do conteúdo pelo motor.">— os 260 pontos de captação, por tipo e território</span></div>
+  <div class="mets" id="mt-mets" style="margin:10px 0 8px"></div>
+  <div class="legenda" id="mt-oficiais" style="margin-bottom:8px"></div>
+  <div class="bz-filtros" style="margin:6px 0 10px">
+    <select id="mt-familia"><option value="">Todos os tipos</option></select>
+    <select id="mt-segmento"><option value="">Todos os territórios</option></select>
+    <select id="mt-uf"><option value="">Todos os estados</option></select>
+    <select id="mt-estado"><option value="">Completos e incompletos</option><option value="incompleto">Só com camadas faltando</option><option value="bloqueada">Só páginas bloqueadas</option><option value="completo">Só completos</option></select>
+    <input id="mt-busca" placeholder="buscar edital ou órgão…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
+    <span class="bz-limpar" onclick="mtLimpar()">⨯ Limpar</span>
+  </div>
+  <div class=meta id="mt-conta" style="margin-bottom:6px"></div>
+  <div id="mt-lista"></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--linha)">
+    <button class="bt-ia" onclick="mtAtivar()" title="Gera o pedido com os pontos selecionados e abre a execução manual do motor no GitHub Actions">▶ Ativar motor nos selecionados</button>
+    <button onclick="mtSelecionar(true)">selecionar filtrados</button>
+    <button onclick="mtSelecionar(false)">limpar seleção</button>
+    <span class=meta id="mt-sel"></span>
+  </div>
 </div>
 
 <!-- 2 · FILTRO DE OPORTUNIDADES (tabela) -->
@@ -1605,54 +1629,81 @@ function iniciaMapaMonitor(){
   desenhaMapaMonitor();
 }
 
-/* ================= ESQUADRA ================= */
-function desenhaEsquadra(){
-  const E=D.esquadra||{}; if(!$("esq-mets"))return;
-  const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>`;
-  const u=E.ultima_execucao||{};
-  $("esq-mets").innerHTML=[
-    [IC("#0E2A55"),E.total??"—","Sensores na esquadra"],
-    [IC("#C05E00"),E.saem_hoje??"—","Saem hoje"],
-    [IC("#7B4BE0"),E.previsoes_ativas??0,"Previsões ativas (escalada)"],
-    [IC("#1E7E4B"),u.novos_na_base??0,"Novos na última saída"]]
-    .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
-  const ROT={diario_oficial:"Diários oficiais",diario_justica:"Diário da Justiça",legislativo:"Legislativo",api:"APIs",site_oficial:"Sites oficiais",plataforma:"Plataformas",privada:"Privadas",internacional:"Internacionais"};
-  $("esq-tipos").innerHTML=Object.entries(E.por_tipo||{}).map(([t,n])=>`<span title="${esc(ROT[t]||t)} saindo hoje"><span class=ponto style="background:${t.startsWith("diario")?"#0E2A55":t==="legislativo"?"#7B4BE0":t==="api"?"#2F7FE0":"#94A3B8"}"></span>${esc(ROT[t]||t)} <b style="color:var(--suave);font-weight:600">${n}</b></span>`).join("")
-    +Object.entries(E.motivos||{}).map(([m,n])=>`<span class=meta>· ${esc(m)}: ${n}</span>`).join("");
-  $("esq-alertas").innerHTML=(E.alertas||[]).length?`⚠ ${E.alertas.length} sensor(es) pedem troca de URL: `+E.alertas.slice(0,3).map(a=>esc(a.sensor)).join(", "):
-    (u.em?`última saída ${br(u.em.slice(0,10))}: ${u.sensores_executados} sensores, ${u.achados} achados`:"nenhuma saída registrada ainda — a esquadra parte na próxima execução no GitHub Actions");
+/* ================= MOTORES DE BUSCA ================= */
+let MT=[],mtSel=new Set();
+async function carregaMotores(){
+  const p=await carregaFragmento("motores"); if(!p)return [];
+  MT=expandeCompacto(p); MT._resumo=p.resumo||{}; MT._plat=p.plataformas||[]; MT._of=p.oficiais||[]; return MT;
 }
-window.abrePrazos=async function(){
-  const p=await carregaFragmento("prazos"); const lista=p?expandeCompacto(p):[];
-  const ROT={permanente_com_janela_anual:"permanente · janela anual",permanente_fluxo_continuo:"permanente · fluxo contínuo",
-             periodico_confirmado:"periódico confirmado",periodico_suspeito:"periódico suspeito",
-             eventual_observado:"eventual",sem_observacao:"sem observação"};
-  const ordem={permanente_com_janela_anual:0,periodico_confirmado:1,permanente_fluxo_continuo:2,periodico_suspeito:3,eventual_observado:4,sem_observacao:5};
-  lista.sort((a,b)=>(ordem[a.regime_de_prazo]??9)-(ordem[b.regime_de_prazo]??9)||(b.goias?1:0)-(a.goias?1:0));
-  abreModal(`<h3 style="margin:0">Prazo de cada fonte de recurso</h3>
-    <div class=meta>permanente, periódica ou eventual — com as datas conhecidas e a origem de cada uma</div>`,
-    lista.length?`<table class="bz-tab"><thead><tr><th>Fonte</th><th>Regime</th><th>Certeza</th><th>Observados</th><th>Próxima data</th></tr></thead><tbody>
-      ${lista.map(f=>`<tr><td><b>${esc((f.programa||"").slice(0,46))}</b>${f.goias?' <span class=tag style="border-color:#C9A227;color:#8a6d00;padding:1px 5px">GO</span>':""}
-        <span class=ed>${esc((f.orgao||"").slice(0,42))}</span></td>
-        <td>${esc(ROT[f.regime_de_prazo]||f.regime_de_prazo)}</td>
-        <td class=meta>${esc(f.certeza||"—")}</td>
-        <td class=meta>${f.editais_observados||0} edital(is) · ${f.editais_com_prazo_publicado||0} com prazo</td>
-        <td class=meta>${f.proxima_data?br(f.proxima_data)+(f.proxima_fim?" → "+br(f.proxima_fim):"")+"<br><em>"+esc(f.proxima_origem||"")+"</em>":"—"}</td></tr>`).join("")}
-      </tbody></table>`:'<p class=meta>Parecer de prazos ainda não publicado.</p>');
+function mtFiltrados(){
+  const fa=$("mt-familia").value,sg=$("mt-segmento").value,uf=$("mt-uf").value,es=$("mt-estado").value,q=$("mt-busca").value.toLowerCase();
+  return MT.filter(m=>(!fa||m.familia===fa)&&(!sg||m.segmento===sg)&&(!uf||m.uf===uf)
+    &&(!es||(es==="bloqueada"?m.validacao==="bloqueada":es==="completo"?!m.faltam:!!m.faltam))
+    &&(!q||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q)));
+}
+window.mtLimpar=function(){["mt-familia","mt-segmento","mt-uf","mt-estado"].forEach(id=>$(id).value="");$("mt-busca").value="";desenhaMotores();};
+window.mtSelecionar=function(on){mtFiltrados().forEach(m=>on?mtSel.add(m.id):mtSel.delete(m.id));desenhaMotores();};
+window.mtToggle=function(id){mtSel.has(id)?mtSel.delete(id):mtSel.add(id);$("mt-sel").textContent=`${mtSel.size} selecionado(s)`;};
+function camadasHtml(m){
+  const C=(MT._resumo||{}).camadas||["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação"];
+  return `<div class="mt-cam">${C.map((c,i)=>`<span class="${m.camadas_ok[i]==="1"?"ok":"pend"}" title="${esc(c)}: ${m.camadas_ok[i]==="1"?"obtida":"faltando"}">${esc(c.split(" ")[0].slice(0,9))}</span>`).join("")}</div>`;
+}
+function desenhaMotores(){
+  if(!$("mt-lista"))return;
+  const R=MT._resumo||{};
+  const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>`;
+  $("mt-mets").innerHTML=[[IC("#0E2A55"),R.total??MT.length,"Pontos de captação"],[IC("#1E7E4B"),R.completos??0,"Com as 11 camadas"],
+    [IC("#C05E00"),(R.media_camadas??0).toFixed?R.media_camadas.toFixed(1):R.media_camadas,"Média de camadas obtidas"],
+    [IC("#7B4BE0"),MT.filter(m=>m.validacao==="bloqueada").length,"Páginas bloqueadas"]]
+    .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
+  // diários, justiça, legislativo e plataformas indicadas (Prosas…)
+  const cor=s=>/captando|satisfat/.test(s)?"var(--ok)":/bloque/.test(s)?"var(--urgente)":/sem leitura/.test(s)?"var(--suave)":"var(--alerta)";
+  $("mt-oficiais").innerHTML=(MT._of||[]).map(o=>`<span title="${esc(o.nome)} · ${esc(o.url)} · ${esc(o.situacao)}${o.ultima_leitura?" · última "+br(o.ultima_leitura.slice(0,10)):""}"><span class=ponto style="background:${cor(o.situacao)}"></span>${esc(o.nome.split("—")[0].slice(0,28))}</span>`).join("")
+    +(MT._plat||[]).map(o=>`<span title="${esc(o.nome)} · ${esc(o.url)} · ${esc(o.situacao)} · ${o.achados} edital(is)"><span class=ponto style="background:${cor(o.situacao)}"></span>${esc(o.nome.split("—")[0].slice(0,22))} <b style="color:var(--suave);font-weight:600">${o.achados}</b></span>`).join("");
+  const enche=(id,vals)=>{const s=$(id);const v0=s.value;s.length=1;vals.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v;s.appendChild(o);});s.value=v0;};
+  enche("mt-familia",[...new Set(MT.map(m=>m.familia))].sort());
+  enche("mt-segmento",[...new Set(MT.map(m=>m.segmento))].sort());
+  enche("mt-uf",[...new Set(MT.map(m=>m.uf).filter(Boolean))].sort());
+  const rows=mtFiltrados();
+  $("mt-conta").textContent=`${rows.length} de ${MT.length} pontos · ${rows.filter(m=>m.goias).length} de Goiás/Goiânia`;
+  // agregação por família → segmento
+  const grupos={};rows.forEach(m=>{(grupos[m.familia]=grupos[m.familia]||{})[m.segmento]=(grupos[m.familia][m.segmento]||[]).concat(m);});
+  $("mt-lista").innerHTML=Object.keys(grupos).sort().map(f=>`
+    <div class="mt-fam"><div class="mt-famt">${esc(f)} <span class=meta>${Object.values(grupos[f]).reduce((s,a)=>s+a.length,0)} ponto(s)</span></div>
+    ${Object.keys(grupos[f]).sort().map(sg=>`<div class="mt-seg"><div class="mt-segt">${esc(sg)} <span class=meta>${grupos[f][sg].length}</span></div>
+      ${grupos[f][sg].map(m=>`<div class="mt-item ${m.faltam?"":"completo"}">
+        <label class="mt-chk"><input type="checkbox" ${mtSel.has(m.id)?"checked":""} onchange="mtToggle('${esc(m.id)}')"></label>
+        <div class="mt-corpo">
+          <div><b>${esc(m.programa)}</b> <span class=meta>· ${esc(m.orgao||"")}</span></div>
+          ${camadasHtml(m)}
+          <div class=meta style="margin-top:4px">
+            ${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag title="confiança do endereço">${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"}
+            · validação: <strong style="color:${cor(m.validacao)}">${esc(m.validacao)}</strong>${m.http?" (HTTP "+m.http+")":""}${m.ultima_leitura?" · lida em "+br(m.ultima_leitura.slice(0,10)):""}
+            ${m.ultimo_url?` · <a href="${esc(m.ultimo_url)}" target=_blank rel="noopener noreferrer" title="${esc(m.ultimo_titulo||"")}">último edital ↗</a>`:""}
+            ${m.regime_prazo?` · prazo: ${esc(m.regime_prazo.replace(/_/g," "))} (${esc(m.certeza_prazo||"")})`:""}
+          </div>
+          ${m.faltam?`<div class="mt-diag">⚠ faltam ${m.faltam.split("|").length} camada(s): ${esc(m.faltam.replace(/\|/g," · "))}<br><b>causa:</b> ${esc(m.causa||"")} · <b>ação:</b> ${esc(m.acao||"")}</div>`
+                    :`<div class="mt-diag ok">✓ 11 camadas obtidas — motor pode parar</div>`}
+        </div></div>`).join("")}</div>`).join("")}</div>`).join("")||'<div class=meta>Nenhum ponto neste filtro.</div>';
+  $("mt-sel").textContent=`${mtSel.size} selecionado(s)`;
+}
+window.mtAtivar=function(){
+  const sel=MT.filter(m=>mtSel.has(m.id));
+  if(!sel.length){abreModal("<h3 style=\"margin:0\">Nenhum ponto selecionado</h3>","<p>Marque os pontos que estão dando problema e ative o motor só neles.</p>");return;}
+  const pedido={gerado_em:new Date().toISOString(),fontes:sel.map(m=>m.id),programas:sel.map(m=>m.programa),
+    instrucao:"Rodar apenas os motores destes pontos e devolver diagnóstico: camadas obtidas, faltantes, causa e ação."};
+  const blob=new Blob([JSON.stringify(pedido,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="pedido-motores.json";a.click();URL.revokeObjectURL(a.href);
+  const ids=sel.map(m=>m.id).join(",");
+  abreModal(`<h3 style="margin:0">Ativar motor em ${sel.length} ponto(s)</h3>`,
+    `<p>O motor roda no GitHub Actions, onde a rede alcança os portais. Abra a execução manual e cole no campo <code>fontes</code>:</p>
+     <pre style="white-space:pre-wrap;font-size:12px;background:#F6F7F9;padding:10px;border-radius:8px">${esc(ids)}</pre>
+     <p><a href="https://github.com/amcjardimamerica-arch/Eldorado/actions/workflows/monitoramento-diario.yml" target=_blank rel="noopener noreferrer"><strong>Abrir execução manual → Run workflow ↗</strong></a></p>
+     <p class=meta>O diagnóstico (camadas obtidas, faltantes, causa e ação) aparece nesta caixa após a execução, ponto a ponto. O pedido também foi baixado como <code>pedido-motores.json</code>.</p>
+     <p><strong>Selecionados:</strong> ${sel.map(m=>esc(m.programa)).join(" · ")}</p>`);
 };
-window.abreFontes=async function(){
-  const p=await carregaFragmento("fontes"); const lista=p?expandeCompacto(p):[];
-  const T=D.fontes_tres_tempos||{};
-  abreModal(`<h3 style="margin:0">As 260 fontes — passado · presente · futuro</h3>
-    <div class=meta>${T.com_passado??0} com histórico · ${T.com_presente??0} já lidas pelo sensor · ${T.com_futuro??0} com janela prevista</div>`,
-    lista.length?`<table class="bz-tab"><thead><tr><th>Fonte</th><th>Órgão</th><th>Nível</th><th>Passado</th><th>Presente</th><th>Futuro</th></tr></thead><tbody>
-    ${lista.slice(0,260).map(f=>`<tr><td><b>${esc(f.programa.slice(0,48))}</b>${f.goias?' <span class=tag style="border-color:#C9A227;color:#8a6d00">GO</span>':""}</td>
-      <td class=meta>${esc((f.orgao||"").slice(0,40))}</td><td class=meta>${esc(f.nivel)}</td>
-      <td>${f.editais?f.editais+" edital(is)":"<span class=meta>—</span>"}</td>
-      <td class=meta>${f.ultima_leitura?br(f.ultima_leitura.slice(0,10))+" · "+f.achados+" achado(s)":"aguardando 1ª saída"}${f.alerta?' <span style="color:var(--alerta)">⚠</span>':""}</td>
-      <td class=meta>${f.proxima_janela?esc(f.proxima_janela.mes||""):"—"}</td></tr>`).join("")}</tbody></table>`
-    :'<p class=meta>Fichas ainda não publicadas.</p>');
-};
+async function iniciaMotores(){ await carregaMotores(); desenhaMotores();
+  ["mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca"].forEach(id=>$(id).addEventListener("input",desenhaMotores)); }
 
 /* ================= BÚSSOLA · réplica do modelo ================= */
 let bzUFsel="";
@@ -1785,7 +1836,7 @@ function iniciarBz(){
   [...$("bz-nivel").options].forEach(o=>{if(NIV[o.value])o.textContent=NIV[o.value];});
   ["bz-assoc","bz-uf","bz-area","bz-nivel","bz-prazo"].forEach(id=>$(id).addEventListener("input",()=>{
     bzUFsel=$("bz-uf").value;desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();}));
-  desenhaBzCards();desenhaBzMapa();desenhaBzAtual();desenhaBzAderencia();desenhaBzTabela();desenhaBzMon();desenhaEsquadra();
+  desenhaBzCards();desenhaBzMapa();desenhaBzAtual();desenhaBzAderencia();desenhaBzTabela();desenhaBzMon();iniciaMotores();
   iniciaMapaMonitor();
 }
 function desenhaBzMon(){

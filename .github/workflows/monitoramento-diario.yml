@@ -3,6 +3,11 @@ on:
   schedule:
     - cron: "0 9 * * 1,5" # 06:00 America/Sao_Paulo (UTC-3)
   workflow_dispatch:
+    inputs:
+      fontes:
+        description: "IDs dos pontos de captação a rodar (separados por vírgula). Vazio = escala normal do dia."
+        required: false
+        default: ""
 permissions:
   contents: write
   issues: write
@@ -15,6 +20,7 @@ jobs:
     timeout-minutes: 180
     env:
       FAROL_AI_API_KEY: ${{ secrets.FAROL_AI_API_KEY }}
+      MOTORES_FONTES: ${{ github.event.inputs.fontes }}
       ACESSO_MASTER: ${{ secrets.ACESSO_MASTER }}
     steps:
       - uses: actions/checkout@v4
@@ -58,6 +64,7 @@ jobs:
           python -m src.completude_biblioteca
           python -m src.auditoria
           python -m src.dossie_fontes
+          python -m src.motores
           python -m src.parecer_prazos
           python -m src.banco
           python -m src.biblioteca
