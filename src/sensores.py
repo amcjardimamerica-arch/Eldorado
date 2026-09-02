@@ -159,7 +159,13 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             html, final, status = _abrir(url, max_bytes=lim["bytes_por_pagina"])
             saude.append({"url": url, "http": status, "bytes": len(html)})
         except Exception as exc:
-            falhas.append({"url": url, "erro": type(exc).__name__}); continue
+            falhas.append({"url": url, "erro": type(exc).__name__})
+            try:
+                from .alternativas import registrar_bloqueio
+                registrar_bloqueio(url, type(exc).__name__, sensor.get("nome", ""))
+            except Exception:
+                pass
+            continue
         p = _Links(); p.feed(html)
         corpo = re.sub(r"\s+", " ", " ".join(p.texto))
         for href, rot in p.links[:lim["links_por_pagina"] * 3]:

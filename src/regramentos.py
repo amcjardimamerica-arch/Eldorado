@@ -179,7 +179,19 @@ def parecer_do_conselho(reg: dict, normas: list[dict], hist: dict, hoje: date) -
         "pendencias": ([f'baixar e ler: {p}' for p in pend] + ([] if cal or reg["tipo_recurso"] == "emenda" else ["extrair a regra de calendário do texto"])),
         "prazo_para_completar": "dentro do mês corrente",
     }
+    perm = reg["permanencia"]
+    apresentacao = (
+        {"forma": "linha_o_ano_inteiro", "regra": "permanente: captação aberta todo o ano"}
+        if perm.startswith("permanente") or perm.startswith("fluxo_continuo") else
+        {"forma": "epoca_prevista", "regra": "sazonal: época pelo regramento/histórico; data real quando o edital sair",
+         "epoca": (f'{cal[0]["inicio_mes_dia"]} a {cal[0]["fim_mes_dia"]}' if cal else reg["divulgacao"]["periodo_esperado"])}
+    )
+    if reg["tipo_recurso"].startswith("destinacao_judicial"):
+        from .alternativas import destinacao_judicial
+        apresentacao["judicial"] = destinacao_judicial(reg)
+    estrategia["apresentacao_no_calendario"] = apresentacao
     L["neutro"] = [f'estratégia: {estrategia["quando"]} · procurar em {len(estrategia["onde_procurar_primeiro"])} local(is) oficial(is)',
+                   f'apresentação: {apresentacao["forma"]}' + (" · alvo judicial: varas e juízes" if "judicial" in apresentacao else ""),
                    f'{len(estrategia["pendencias"])} pendência(s) para o mês']
     return {"fonte": reg["fonte"], "id": reg["id"], "gerado_em": now_iso(),
             "conselheiros": cons,

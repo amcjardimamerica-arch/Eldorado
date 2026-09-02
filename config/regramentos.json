@@ -2,68 +2,522 @@
   "versao": 1,
   "doutrina": "Cada fonte de recurso tem uma REGRA — lei, decreto, instrução normativa, resolução, portaria, ato interno ou regulamento privado. O Eldorado precisa conhecer a regra ANTES de procurar o edital: é ela que diz quem pode pedir, como, quando e onde se publica. Nada aqui é presumido: cada norma traz status ('texto_no_repositorio' quando já lida; 'a_baixar' quando só a referência é conhecida) e a busca do texto oficial roda no CI. Regras de calendário só valem como confirmadas quando extraídas do texto.",
   "regramentos": [
-    {"id":"rouanet","fonte":"Lei Rouanet — PRONAC (mecenato e FNC)","orgao":"Ministério da Cultura / SALIC","nivel":"federal","tipo_recurso":"incentivo_fiscal_e_fundo","permanencia":"anual_com_janela",
-     "normas":[{"ref":"Lei 8.313/1991","url":"https://www.planalto.gov.br/ccivil_03/leis/l8313cons.htm","status":"texto_no_repositorio"},
-               {"ref":"Decreto 11.453/2023","url":"https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/decreto/D11453.htm","status":"a_baixar"},
-               {"ref":"Instrução Normativa MinC 1/2023 (procedimentos do PRONAC no SALIC)","url":"https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet-1","status":"a_baixar","o_que_extrair":"período anual de apresentação de propostas; prazos de análise; documentos do proponente"}],
-     "pagina_oficial":"https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet-1","sistema_de_inscricao":"https://salic.cultura.gov.br/",
-     "divulgacao":{"regular":"página do MinC + SALIC; portarias de aprovação no DOU","periodo_esperado":"a extrair da IN 1/2023 (hipótese do titular: 01/02–31/10; confirmado pelo titular para 2026)"},
-     "quem_pode":"pessoa jurídica de natureza cultural, inclusive OSC, cadastrada no SALIC","lexico_proprio":["PRONAC","SALIC","mecenato","proponente","incentivo fiscal","captação","Fundo Nacional da Cultura","IN MinC","plano anual","enquadramento"]},
-    {"id":"aldir-blanc","fonte":"PNAB — Política Nacional Aldir Blanc","orgao":"estados e municípios (recurso descentralizado pelo MinC)","nivel":"federal_descentralizado","tipo_recurso":"fundo_repasse","permanencia":"anual_por_edital_de_cada_ente",
-     "normas":[{"ref":"Lei 14.399/2022","url":"https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/L14399.htm","status":"texto_no_repositorio"},
-               {"ref":"Decreto 11.740/2023","url":"https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/decreto/D11740.htm","status":"a_baixar"}],
-     "pagina_oficial":"https://www.gov.br/cultura/pt-br/assuntos/politica-nacional-aldir-blanc","divulgacao":{"regular":"editais estaduais (Secult-GO) e municipais (Secult Goiânia) com prazo PRÓPRIO — sem janela nacional","periodo_esperado":"nenhum fixo; extrair do edital de cada ente"},
-     "quem_pode":"agentes culturais e OSCs conforme o edital do ente","lexico_proprio":["PNAB","Aldir Blanc","edital PNAB","plano de ação","fomento cultural","agente cultural","Secult"]},
-    {"id":"goyazes","fonte":"Lei Goyazes — incentivo fiscal estadual à cultura","orgao":"Secretaria de Estado da Cultura de Goiás","nivel":"estadual","tipo_recurso":"incentivo_fiscal","permanencia":"por_edital_anual",
-     "normas":[{"ref":"Lei estadual GO 13.613/2000","url":"https://legisla.casacivil.go.gov.br/","status":"a_baixar"},{"ref":"Decreto regulamentador e edital anual do Goyazes","url":"https://goias.gov.br/cultura/","status":"a_baixar","o_que_extrair":"prazo de inscrição do edital vigente"}],
-     "pagina_oficial":"https://goias.gov.br/cultura/","divulgacao":{"regular":"edital anual da Secult-GO + Diário Oficial de Goiás","periodo_esperado":"a extrair do edital do ano"},
-     "quem_pode":"produtores culturais e entidades sediadas em Goiás","lexico_proprio":["Goyazes","incentivo à cultura","ICMS","patrocínio incentivado","Secult Goiás","Diário Oficial de Goiás"]},
-    {"id":"lie","fonte":"Lei de Incentivo ao Esporte","orgao":"Ministério do Esporte","nivel":"federal","tipo_recurso":"incentivo_fiscal","permanencia":"fluxo_continuo_com_aprovacao",
-     "normas":[{"ref":"Lei 11.438/2006 (revogada) e LC 222/2025","url":"https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp222.htm","status":"a_baixar","o_que_extrair":"prazos de apresentação de projetos; requisitos do proponente"}],
-     "pagina_oficial":"https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte","divulgacao":{"regular":"portarias de aprovação de projetos aptos no DOU; lista de projetos aptos","periodo_esperado":"fluxo contínuo"},
-     "quem_pode":"entidades de natureza esportiva sem fins lucrativos","lexico_proprio":["Lei de Incentivo ao Esporte","LIE","projeto desportivo","projetos aptos","captação","manifestação desportiva"]},
-    {"id":"pronon-pronas","fonte":"PRONON e PRONAS/PCD","orgao":"Ministério da Saúde","nivel":"federal","tipo_recurso":"incentivo_fiscal","permanencia":"anual_com_janela",
-     "normas":[{"ref":"Lei 12.715/2012","url":"https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12715.htm","status":"a_baixar","o_que_extrair":"período anual de apresentação de projetos"}],
-     "pagina_oficial":"https://www.gov.br/saude/pt-br/acesso-a-informacao/acoes-e-programas/pronon-pronas","divulgacao":{"regular":"portaria anual de abertura + DOU","periodo_esperado":"a extrair da portaria do ano"},
-     "quem_pode":"instituições de saúde (oncologia; pessoa com deficiência) com CEBAS","lexico_proprio":["PRONON","PRONAS","PCD","oncologia","CEBAS","portaria de abertura"]},
-    {"id":"fmdca-goiania","fonte":"FMDCA Goiânia — Fundo Municipal da Criança e do Adolescente","orgao":"CMDCA Goiânia","nivel":"municipal","tipo_recurso":"fundo","permanencia":"por_edital_e_resolucao",
-     "normas":[{"ref":"Lei 8.069/1990 (ECA), art. 260","url":"https://www.planalto.gov.br/ccivil_03/leis/l8069.htm","status":"texto_no_repositorio"},{"ref":"Resolução CMDCA 77/2021 e 78/2021","url":null,"status":"texto_no_repositorio"}],
-     "pagina_oficial":"https://www.goiania.go.gov.br/","divulgacao":{"regular":"resolução do CMDCA no Diário Oficial de Goiânia; atas das plenárias antecipam","periodo_esperado":"a extrair das resoluções; destinação de IR até dezembro"},
-     "quem_pode":"entidades registradas no CMDCA","lexico_proprio":["CMDCA","FMDCA","registro no conselho","criança e adolescente","chancela","destinação de IR","plenária"]},
-    {"id":"fmas-goiania","fonte":"FMAS Goiânia — Fundo Municipal de Assistência Social","orgao":"SEMASDH / CMAS Goiânia","nivel":"municipal","tipo_recurso":"fundo","permanencia":"por_chamamento",
-     "normas":[{"ref":"Lei 8.742/1993 (LOAS)","status":"texto_no_repositorio"},{"ref":"Lei 13.019/2014 (MROSC)","status":"texto_no_repositorio"},{"ref":"Lei municipal 9.009/2010 (CMAS Goiânia)","status":"texto_no_repositorio"}],
-     "pagina_oficial":"https://www.goiania.go.gov.br/","divulgacao":{"regular":"chamamento público no Diário Oficial de Goiânia","periodo_esperado":"a extrair"},
-     "quem_pode":"entidades inscritas no CMAS","lexico_proprio":["CMAS","FMAS","SEMASDH","inscrição no conselho","SUAS","termo de colaboração","acolhimento"]},
-    {"id":"rfb-doacao","fonte":"Doação de mercadorias apreendidas — Receita Federal","orgao":"RFB — 1ª Região Fiscal","nivel":"federal","tipo_recurso":"doacao_de_bens","permanencia":"permanente_anos_impares",
-     "normas":[{"ref":"Portaria RFB 200/2022 (arts. 14, 67, 76-78, 80)","url":"http://normas.receita.fazenda.gov.br/sijut2consulta/link.action?idAto=125228","status":"texto_no_repositorio"}],
-     "pagina_oficial":"https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias","divulgacao":{"regular":"pedido administrativo; sem edital","periodo_esperado":"todo o ano, exceto ano de eleição (art. 80)"},
-     "quem_pode":"OSC com CNPJ há 3 anos, certidões, estatuto art. 84-C","lexico_proprio":["mercadorias apreendidas","perdimento","destinação","doação","Receita Federal","Portaria RFB 200"]},
-    {"id":"mpgo-destina","fonte":"Programa Destina — MPGO (destinação de recursos de TAC, multas e prestações)","orgao":"Ministério Público do Estado de Goiás","nivel":"estadual","tipo_recurso":"destinacao_judicial_extrajudicial","permanencia":"fluxo_continuo_com_editais",
-     "normas":[{"ref":"Ato PGJ nº 58, de 1º de agosto de 2025 (regulamenta o Programa Destina)","url":"https://www.mpgo.mp.br/","status":"a_baixar","o_que_extrair":"quem pode receber; documentos; forma de habilitação; periodicidade dos editais de destinação"}],
-     "pagina_oficial":"https://www.mpgo.mp.br/","divulgacao":{"regular":"editais de destinação e habilitação no site do MPGO e Diário Oficial Eletrônico do MPGO","periodo_esperado":"a extrair do Ato PGJ 58/2025"},
-     "quem_pode":"entidades sem fins lucrativos habilitadas","lexico_proprio":["Destina","MPGO","Ato PGJ","TAC","destinação","habilitação de entidades","prestação pecuniária","Promotoria"]},
-    {"id":"tjgo-prestacao","fonte":"Destinação de prestações pecuniárias — TJGO","orgao":"Varas de Execução Penal / TJGO","nivel":"estadual","tipo_recurso":"destinacao_judicial","permanencia":"periodico_por_vara",
-     "normas":[{"ref":"Resolução CNJ 154/2012","url":"https://atos.cnj.jus.br/atos/detalhar/1568","status":"a_baixar","o_que_extrair":"art. 2º: requisitos das entidades; edital anual de habilitação; prestação de contas"},{"ref":"provimentos e editais das VEP de Goiânia","url":"https://www.tjgo.jus.br/","status":"a_baixar"}],
-     "pagina_oficial":"https://www.tjgo.jus.br/","divulgacao":{"regular":"edital anual de cadastramento de entidades publicado no DJE","periodo_esperado":"a extrair (a Res. 154 prevê edital anual)"},
-     "quem_pode":"entidades com finalidade social, preferencialmente de segurança pública, educação e saúde","lexico_proprio":["prestação pecuniária","Vara de Execução Penal","Resolução 154","cadastramento de entidades","DJE","penas alternativas"]},
-    {"id":"cnj-destinacoes","fonte":"Destinações nacionais — CNJ","orgao":"CNJ","nivel":"federal","tipo_recurso":"destinacao_judicial","permanencia":"normativa",
-     "normas":[{"ref":"Resolução CNJ 154/2012","url":"https://atos.cnj.jus.br/atos/detalhar/1568","status":"a_baixar"}],"pagina_oficial":"https://www.cnj.jus.br/","divulgacao":{"regular":"resoluções","periodo_esperado":"—"},"quem_pode":"regra geral para os tribunais","lexico_proprio":["Resolução 154","prestação pecuniária","CNJ"]},
-    {"id":"emenda-federal","fonte":"Emendas parlamentares federais","orgao":"Câmara e Senado","nivel":"federal","tipo_recurso":"emenda","permanencia":"anual_com_janela_fixa",
-     "normas":[{"ref":"LC 210/2024","status":"texto_no_repositorio"},{"ref":"Portaria Interministerial 424/2016 (transferências)","status":"a_baixar"}],
-     "pagina_oficial":"https://www.camara.leg.br/","divulgacao":{"regular":"gabinetes; Transferegov","periodo_esperado":"01/10–30/11 (regra do titular — única sem confirmação)"},
-     "quem_pode":"OSC com plano de trabalho no Transferegov","lexico_proprio":["emenda","Transferegov","indicação","beneficiário","plano de trabalho","RP9"]},
-    {"id":"emenda-estadual","fonte":"Emendas parlamentares estaduais — Goiás","orgao":"ALEGO","nivel":"estadual","tipo_recurso":"emenda","permanencia":"anual_com_janela_fixa",
-     "normas":[{"ref":"Lei estadual GO 22.874","status":"texto_no_repositorio"}],"pagina_oficial":"https://portal.al.go.leg.br/","divulgacao":{"regular":"gabinetes; Goiás Social","periodo_esperado":"01/10–30/11 (regra do titular)"},"quem_pode":"OSC habilitada no Estado","lexico_proprio":["emenda impositiva","ALEGO","deputado estadual","indicação de emenda"]},
-    {"id":"emenda-municipal","fonte":"Emendas parlamentares municipais — Goiânia","orgao":"Câmara Municipal de Goiânia","nivel":"municipal","tipo_recurso":"emenda","permanencia":"anual_com_janela_fixa",
-     "normas":[{"ref":"LC municipal 383/2025","status":"texto_no_repositorio"}],"pagina_oficial":"https://www.goiania.go.leg.br/","divulgacao":{"regular":"gabinetes; SRI Goiânia","periodo_esperado":"01/10–30/11 (regra do titular)"},"quem_pode":"OSC habilitada no município","lexico_proprio":["emenda impositiva","vereador","SRI","indicação"]},
-    {"id":"bndes-social","fonte":"BNDES — Área Social e Fundo Amazônia","orgao":"BNDES","nivel":"federal","tipo_recurso":"edital_e_doacao","permanencia":"por_chamada_publica",
-     "normas":[{"ref":"regulamentos das chamadas públicas do BNDES","url":"https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social","status":"a_baixar"}],
-     "pagina_oficial":"https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social","divulgacao":{"regular":"chamadas públicas na página + notícia","periodo_esperado":"eventual"},"quem_pode":"OSCs conforme cada chamada","lexico_proprio":["chamada pública","BNDES","Fundo Amazônia","matchfunding","não reembolsável"]},
-    {"id":"sebrae-go","fonte":"Sebrae Goiás — parcerias com OSC","orgao":"Sebrae/GO","nivel":"estadual","tipo_recurso":"parceria_privada","permanencia":"fluxo_continuo",
-     "normas":[{"ref":"regulamento de parcerias do Sebrae","url":"https://sebraego.com.br/","status":"a_baixar"}],"pagina_oficial":"https://sebraego.com.br/","divulgacao":{"regular":"página institucional; editais eventuais","periodo_esperado":"eventual"},"quem_pode":"OSC com projeto de empreendedorismo","lexico_proprio":["Sebrae","parceria","empreendedorismo","edital Sebrae"]}
+    {
+      "id": "rouanet",
+      "fonte": "Lei Rouanet — PRONAC (mecenato e FNC)",
+      "orgao": "Ministério da Cultura / SALIC",
+      "nivel": "federal",
+      "tipo_recurso": "incentivo_fiscal_e_fundo",
+      "permanencia": "anual_com_janela",
+      "normas": [
+        {
+          "ref": "Lei 8.313/1991",
+          "url": "https://www.planalto.gov.br/ccivil_03/leis/l8313cons.htm",
+          "status": "texto_no_repositorio"
+        },
+        {
+          "ref": "Decreto 11.453/2023",
+          "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/decreto/D11453.htm",
+          "status": "a_baixar"
+        },
+        {
+          "ref": "Instrução Normativa MinC 1/2023 (procedimentos do PRONAC no SALIC)",
+          "url": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet-1",
+          "status": "a_baixar",
+          "o_que_extrair": "período anual de apresentação de propostas; prazos de análise; documentos do proponente"
+        }
+      ],
+      "pagina_oficial": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet-1",
+      "sistema_de_inscricao": "https://salic.cultura.gov.br/",
+      "divulgacao": {
+        "regular": "página do MinC + SALIC; portarias de aprovação no DOU",
+        "periodo_esperado": "a extrair da IN 1/2023 (hipótese do titular: 01/02–31/10; confirmado pelo titular para 2026)"
+      },
+      "quem_pode": "pessoa jurídica de natureza cultural, inclusive OSC, cadastrada no SALIC",
+      "lexico_proprio": [
+        "PRONAC",
+        "SALIC",
+        "mecenato",
+        "proponente",
+        "incentivo fiscal",
+        "captação",
+        "Fundo Nacional da Cultura",
+        "IN MinC",
+        "plano anual",
+        "enquadramento"
+      ]
+    },
+    {
+      "id": "aldir-blanc",
+      "fonte": "PNAB — Política Nacional Aldir Blanc",
+      "orgao": "estados e municípios (recurso descentralizado pelo MinC)",
+      "nivel": "federal_descentralizado",
+      "tipo_recurso": "fundo_repasse",
+      "permanencia": "anual_por_edital_de_cada_ente",
+      "normas": [
+        {
+          "ref": "Lei 14.399/2022",
+          "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/L14399.htm",
+          "status": "texto_no_repositorio"
+        },
+        {
+          "ref": "Decreto 11.740/2023",
+          "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/decreto/D11740.htm",
+          "status": "a_baixar"
+        }
+      ],
+      "pagina_oficial": "https://www.gov.br/cultura/pt-br/assuntos/politica-nacional-aldir-blanc",
+      "divulgacao": {
+        "regular": "editais estaduais (Secult-GO) e municipais (Secult Goiânia) com prazo PRÓPRIO — sem janela nacional",
+        "periodo_esperado": "nenhum fixo; extrair do edital de cada ente"
+      },
+      "quem_pode": "agentes culturais e OSCs conforme o edital do ente",
+      "lexico_proprio": [
+        "PNAB",
+        "Aldir Blanc",
+        "edital PNAB",
+        "plano de ação",
+        "fomento cultural",
+        "agente cultural",
+        "Secult"
+      ]
+    },
+    {
+      "id": "goyazes",
+      "fonte": "Lei Goyazes — incentivo fiscal estadual à cultura",
+      "orgao": "Secretaria de Estado da Cultura de Goiás",
+      "nivel": "estadual",
+      "tipo_recurso": "incentivo_fiscal",
+      "permanencia": "por_edital_anual",
+      "normas": [
+        {
+          "ref": "Lei estadual GO 13.613/2000",
+          "url": "https://legisla.casacivil.go.gov.br/",
+          "status": "a_baixar"
+        },
+        {
+          "ref": "Decreto regulamentador e edital anual do Goyazes",
+          "url": "https://goias.gov.br/cultura/",
+          "status": "a_baixar",
+          "o_que_extrair": "prazo de inscrição do edital vigente"
+        }
+      ],
+      "pagina_oficial": "https://goias.gov.br/cultura/",
+      "divulgacao": {
+        "regular": "edital anual da Secult-GO + Diário Oficial de Goiás",
+        "periodo_esperado": "a extrair do edital do ano"
+      },
+      "quem_pode": "produtores culturais e entidades sediadas em Goiás",
+      "lexico_proprio": [
+        "Goyazes",
+        "incentivo à cultura",
+        "ICMS",
+        "patrocínio incentivado",
+        "Secult Goiás",
+        "Diário Oficial de Goiás"
+      ]
+    },
+    {
+      "id": "lie",
+      "fonte": "Lei de Incentivo ao Esporte",
+      "orgao": "Ministério do Esporte",
+      "nivel": "federal",
+      "tipo_recurso": "incentivo_fiscal",
+      "permanencia": "fluxo_continuo_com_aprovacao",
+      "normas": [
+        {
+          "ref": "Lei 11.438/2006 (revogada) e LC 222/2025",
+          "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp222.htm",
+          "status": "a_baixar",
+          "o_que_extrair": "prazos de apresentação de projetos; requisitos do proponente"
+        }
+      ],
+      "pagina_oficial": "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte",
+      "divulgacao": {
+        "regular": "portarias de aprovação de projetos aptos no DOU; lista de projetos aptos",
+        "periodo_esperado": "fluxo contínuo"
+      },
+      "quem_pode": "entidades de natureza esportiva sem fins lucrativos",
+      "lexico_proprio": [
+        "Lei de Incentivo ao Esporte",
+        "LIE",
+        "projeto desportivo",
+        "projetos aptos",
+        "captação",
+        "manifestação desportiva"
+      ]
+    },
+    {
+      "id": "pronon-pronas",
+      "fonte": "PRONON e PRONAS/PCD",
+      "orgao": "Ministério da Saúde",
+      "nivel": "federal",
+      "tipo_recurso": "incentivo_fiscal",
+      "permanencia": "anual_com_janela",
+      "normas": [
+        {
+          "ref": "Lei 12.715/2012",
+          "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2012/lei/l12715.htm",
+          "status": "a_baixar",
+          "o_que_extrair": "período anual de apresentação de projetos"
+        }
+      ],
+      "pagina_oficial": "https://www.gov.br/saude/pt-br/acesso-a-informacao/acoes-e-programas/pronon-pronas",
+      "divulgacao": {
+        "regular": "portaria anual de abertura + DOU",
+        "periodo_esperado": "a extrair da portaria do ano"
+      },
+      "quem_pode": "instituições de saúde (oncologia; pessoa com deficiência) com CEBAS",
+      "lexico_proprio": [
+        "PRONON",
+        "PRONAS",
+        "PCD",
+        "oncologia",
+        "CEBAS",
+        "portaria de abertura"
+      ]
+    },
+    {
+      "id": "fmdca-goiania",
+      "fonte": "FMDCA Goiânia — Fundo Municipal da Criança e do Adolescente",
+      "orgao": "CMDCA Goiânia",
+      "nivel": "municipal",
+      "tipo_recurso": "fundo",
+      "permanencia": "por_edital_e_resolucao",
+      "normas": [
+        {
+          "ref": "Lei 8.069/1990 (ECA), art. 260",
+          "url": "https://www.planalto.gov.br/ccivil_03/leis/l8069.htm",
+          "status": "texto_no_repositorio"
+        },
+        {
+          "ref": "Resolução CMDCA 77/2021 e 78/2021",
+          "url": null,
+          "status": "texto_no_repositorio"
+        }
+      ],
+      "pagina_oficial": "https://www.goiania.go.gov.br/",
+      "divulgacao": {
+        "regular": "resolução do CMDCA no Diário Oficial de Goiânia; atas das plenárias antecipam",
+        "periodo_esperado": "a extrair das resoluções; destinação de IR até dezembro"
+      },
+      "quem_pode": "entidades registradas no CMDCA",
+      "lexico_proprio": [
+        "CMDCA",
+        "FMDCA",
+        "registro no conselho",
+        "criança e adolescente",
+        "chancela",
+        "destinação de IR",
+        "plenária"
+      ]
+    },
+    {
+      "id": "fmas-goiania",
+      "fonte": "FMAS Goiânia — Fundo Municipal de Assistência Social",
+      "orgao": "SEMASDH / CMAS Goiânia",
+      "nivel": "municipal",
+      "tipo_recurso": "fundo",
+      "permanencia": "por_chamamento",
+      "normas": [
+        {
+          "ref": "Lei 8.742/1993 (LOAS)",
+          "status": "texto_no_repositorio"
+        },
+        {
+          "ref": "Lei 13.019/2014 (MROSC)",
+          "status": "texto_no_repositorio"
+        },
+        {
+          "ref": "Lei municipal 9.009/2010 (CMAS Goiânia)",
+          "status": "texto_no_repositorio"
+        }
+      ],
+      "pagina_oficial": "https://www.goiania.go.gov.br/",
+      "divulgacao": {
+        "regular": "chamamento público no Diário Oficial de Goiânia",
+        "periodo_esperado": "a extrair"
+      },
+      "quem_pode": "entidades inscritas no CMAS",
+      "lexico_proprio": [
+        "CMAS",
+        "FMAS",
+        "SEMASDH",
+        "inscrição no conselho",
+        "SUAS",
+        "termo de colaboração",
+        "acolhimento"
+      ]
+    },
+    {
+      "id": "rfb-doacao",
+      "fonte": "Doação de mercadorias apreendidas — Receita Federal",
+      "orgao": "RFB — 1ª Região Fiscal",
+      "nivel": "federal",
+      "tipo_recurso": "doacao_de_bens",
+      "permanencia": "permanente_anos_impares",
+      "normas": [
+        {
+          "ref": "Portaria RFB 200/2022 (arts. 14, 67, 76-78, 80)",
+          "url": "http://normas.receita.fazenda.gov.br/sijut2consulta/link.action?idAto=125228",
+          "status": "texto_no_repositorio"
+        }
+      ],
+      "pagina_oficial": "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias",
+      "divulgacao": {
+        "regular": "pedido administrativo; sem edital",
+        "periodo_esperado": "todo o ano, exceto ano de eleição (art. 80)"
+      },
+      "quem_pode": "OSC com CNPJ há 3 anos, certidões, estatuto art. 84-C",
+      "lexico_proprio": [
+        "mercadorias apreendidas",
+        "perdimento",
+        "destinação",
+        "doação",
+        "Receita Federal",
+        "Portaria RFB 200"
+      ]
+    },
+    {
+      "id": "mpgo-destina",
+      "fonte": "Programa Destina — MPGO (destinação de recursos de TAC, multas e prestações)",
+      "orgao": "Ministério Público do Estado de Goiás",
+      "nivel": "estadual",
+      "tipo_recurso": "destinacao_judicial_extrajudicial",
+      "permanencia": "permanente_com_editais_de_destinacao",
+      "normas": [
+        {
+          "ref": "Ato PGJ nº 58, de 1º de agosto de 2025 (regulamenta o Programa Destina)",
+          "url": "https://www.mpgo.mp.br/",
+          "status": "a_baixar",
+          "o_que_extrair": "quem pode receber; documentos; forma de habilitação; periodicidade dos editais de destinação"
+        }
+      ],
+      "pagina_oficial": "https://www.mpgo.mp.br/",
+      "divulgacao": {
+        "regular": "editais de destinação e habilitação no site do MPGO e Diário Oficial Eletrônico do MPGO",
+        "periodo_esperado": "captação permanente (linha o ano inteiro); edital anual de cadastramento marca a estrela"
+      },
+      "quem_pode": "entidades sem fins lucrativos habilitadas",
+      "lexico_proprio": [
+        "Destina",
+        "MPGO",
+        "Ato PGJ",
+        "TAC",
+        "destinação",
+        "habilitação de entidades",
+        "prestação pecuniária",
+        "Promotoria"
+      ]
+    },
+    {
+      "id": "tjgo-prestacao",
+      "fonte": "Destinação de prestações pecuniárias — TJGO",
+      "orgao": "Varas de Execução Penal / TJGO",
+      "nivel": "estadual",
+      "tipo_recurso": "destinacao_judicial",
+      "permanencia": "permanente_com_edital_anual_por_vara",
+      "normas": [
+        {
+          "ref": "Resolução CNJ 154/2012",
+          "url": "https://atos.cnj.jus.br/atos/detalhar/1568",
+          "status": "a_baixar",
+          "o_que_extrair": "art. 2º: requisitos das entidades; edital anual de habilitação; prestação de contas"
+        },
+        {
+          "ref": "provimentos e editais das VEP de Goiânia",
+          "url": "https://www.tjgo.jus.br/",
+          "status": "a_baixar"
+        }
+      ],
+      "pagina_oficial": "https://www.tjgo.jus.br/",
+      "divulgacao": {
+        "regular": "edital anual de cadastramento de entidades publicado no DJE",
+        "periodo_esperado": "captação permanente (linha o ano inteiro); edital anual de cadastramento marca a estrela"
+      },
+      "quem_pode": "entidades com finalidade social, preferencialmente de segurança pública, educação e saúde",
+      "lexico_proprio": [
+        "prestação pecuniária",
+        "Vara de Execução Penal",
+        "Resolução 154",
+        "cadastramento de entidades",
+        "DJE",
+        "penas alternativas"
+      ]
+    },
+    {
+      "id": "cnj-destinacoes",
+      "fonte": "Destinações nacionais — CNJ",
+      "orgao": "CNJ",
+      "nivel": "federal",
+      "tipo_recurso": "destinacao_judicial",
+      "permanencia": "permanente_com_editais_de_destinacao",
+      "normas": [
+        {
+          "ref": "Resolução CNJ 154/2012",
+          "url": "https://atos.cnj.jus.br/atos/detalhar/1568",
+          "status": "a_baixar"
+        }
+      ],
+      "pagina_oficial": "https://www.cnj.jus.br/",
+      "divulgacao": {
+        "regular": "resoluções",
+        "periodo_esperado": "captação permanente (linha o ano inteiro); edital anual de cadastramento marca a estrela"
+      },
+      "quem_pode": "regra geral para os tribunais",
+      "lexico_proprio": [
+        "Resolução 154",
+        "prestação pecuniária",
+        "CNJ"
+      ]
+    },
+    {
+      "id": "emenda-federal",
+      "fonte": "Emendas parlamentares federais",
+      "orgao": "Câmara e Senado",
+      "nivel": "federal",
+      "tipo_recurso": "emenda",
+      "permanencia": "anual_com_janela_fixa",
+      "normas": [
+        {
+          "ref": "LC 210/2024",
+          "status": "texto_no_repositorio"
+        },
+        {
+          "ref": "Portaria Interministerial 424/2016 (transferências)",
+          "status": "a_baixar"
+        }
+      ],
+      "pagina_oficial": "https://www.camara.leg.br/",
+      "divulgacao": {
+        "regular": "gabinetes; Transferegov",
+        "periodo_esperado": "01/10–30/11 (regra do titular — única sem confirmação)"
+      },
+      "quem_pode": "OSC com plano de trabalho no Transferegov",
+      "lexico_proprio": [
+        "emenda",
+        "Transferegov",
+        "indicação",
+        "beneficiário",
+        "plano de trabalho",
+        "RP9"
+      ]
+    },
+    {
+      "id": "emenda-estadual",
+      "fonte": "Emendas parlamentares estaduais — Goiás",
+      "orgao": "ALEGO",
+      "nivel": "estadual",
+      "tipo_recurso": "emenda",
+      "permanencia": "anual_com_janela_fixa",
+      "normas": [
+        {
+          "ref": "Lei estadual GO 22.874",
+          "status": "texto_no_repositorio"
+        }
+      ],
+      "pagina_oficial": "https://portal.al.go.leg.br/",
+      "divulgacao": {
+        "regular": "gabinetes; Goiás Social",
+        "periodo_esperado": "01/10–30/11 (regra do titular)"
+      },
+      "quem_pode": "OSC habilitada no Estado",
+      "lexico_proprio": [
+        "emenda impositiva",
+        "ALEGO",
+        "deputado estadual",
+        "indicação de emenda"
+      ]
+    },
+    {
+      "id": "emenda-municipal",
+      "fonte": "Emendas parlamentares municipais — Goiânia",
+      "orgao": "Câmara Municipal de Goiânia",
+      "nivel": "municipal",
+      "tipo_recurso": "emenda",
+      "permanencia": "anual_com_janela_fixa",
+      "normas": [
+        {
+          "ref": "LC municipal 383/2025",
+          "status": "texto_no_repositorio"
+        }
+      ],
+      "pagina_oficial": "https://www.goiania.go.leg.br/",
+      "divulgacao": {
+        "regular": "gabinetes; SRI Goiânia",
+        "periodo_esperado": "01/10–30/11 (regra do titular)"
+      },
+      "quem_pode": "OSC habilitada no município",
+      "lexico_proprio": [
+        "emenda impositiva",
+        "vereador",
+        "SRI",
+        "indicação"
+      ]
+    },
+    {
+      "id": "bndes-social",
+      "fonte": "BNDES — Área Social e Fundo Amazônia",
+      "orgao": "BNDES",
+      "nivel": "federal",
+      "tipo_recurso": "edital_e_doacao",
+      "permanencia": "por_chamada_publica",
+      "normas": [
+        {
+          "ref": "regulamentos das chamadas públicas do BNDES",
+          "url": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social",
+          "status": "a_baixar"
+        }
+      ],
+      "pagina_oficial": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social",
+      "divulgacao": {
+        "regular": "chamadas públicas na página + notícia",
+        "periodo_esperado": "eventual"
+      },
+      "quem_pode": "OSCs conforme cada chamada",
+      "lexico_proprio": [
+        "chamada pública",
+        "BNDES",
+        "Fundo Amazônia",
+        "matchfunding",
+        "não reembolsável"
+      ]
+    },
+    {
+      "id": "sebrae-go",
+      "fonte": "Sebrae Goiás — parcerias com OSC",
+      "orgao": "Sebrae/GO",
+      "nivel": "estadual",
+      "tipo_recurso": "parceria_privada",
+      "permanencia": "fluxo_continuo",
+      "normas": [
+        {
+          "ref": "regulamento de parcerias do Sebrae",
+          "url": "https://sebraego.com.br/",
+          "status": "a_baixar"
+        }
+      ],
+      "pagina_oficial": "https://sebraego.com.br/",
+      "divulgacao": {
+        "regular": "página institucional; editais eventuais",
+        "periodo_esperado": "eventual"
+      },
+      "quem_pode": "OSC com projeto de empreendedorismo",
+      "lexico_proprio": [
+        "Sebrae",
+        "parceria",
+        "empreendedorismo",
+        "edital Sebrae"
+      ]
+    }
   ],
   "regra_de_extracao_de_calendario": {
-    "padroes":["de\\s+1[ºo]?\\s+de\\s+(\\w+)\\s+a\\s+(\\d{1,2})\\s+de\\s+(\\w+)","entre\\s+(\\d{1,2})\\s+de\\s+(\\w+)\\s+e\\s+(\\d{1,2})\\s+de\\s+(\\w+)","(\\d{1,2}/\\d{1,2})\\s+a\\s+(\\d{1,2}/\\d{1,2})","per[íi]odo\\s+de\\s+inscri[çc][ãa]o[^.]{0,80}"],
-    "nota":"o texto da norma é baixado no CI; a janela só vira 'verificado_no_texto' quando um destes padrões casa no artigo que trata de prazo"
+    "padroes": [
+      "de\\s+1[ºo]?\\s+de\\s+(\\w+)\\s+a\\s+(\\d{1,2})\\s+de\\s+(\\w+)",
+      "entre\\s+(\\d{1,2})\\s+de\\s+(\\w+)\\s+e\\s+(\\d{1,2})\\s+de\\s+(\\w+)",
+      "(\\d{1,2}/\\d{1,2})\\s+a\\s+(\\d{1,2}/\\d{1,2})",
+      "per[íi]odo\\s+de\\s+inscri[çc][ãa]o[^.]{0,80}"
+    ],
+    "nota": "o texto da norma é baixado no CI; a janela só vira 'verificado_no_texto' quando um destes padrões casa no artigo que trata de prazo"
   }
 }

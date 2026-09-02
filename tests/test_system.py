@@ -2549,6 +2549,58 @@ class SystemTests(unittest.TestCase):
         self.assertIn('reg["sem_novidade_seguidas"] >= 3',fonte)
         self.assertIn('reg.get("url_edital") or reg.get("parado")',fonte)
 
+
+    def test_escada_de_alternativas_para_bloqueio(self):
+        """Site bloqueado não encerra a busca: escada de alternativas em ordem
+        de custo, judicial mapeia varas e juízes, permanente vira linha anual."""
+        import tempfile, os
+        from src import alternativas as A
+        est_orig=A.ESTADO
+        with tempfile.TemporaryDirectory() as tmp:
+            A.ESTADO=pathlib.Path(tmp)/"b.json"
+            try:
+                d=A.registrar_bloqueio("https://www.tjgo.jus.br/x","HTTPError","TJGO")
+                d=A.registrar_bloqueio("https://www.tjgo.jus.br/y","HTTPError","TJGO")
+                self.assertEqual(d["bloqueios"],2); self.assertEqual(d["erros"]["HTTPError"],2)
+            finally:
+                A.ESTADO=est_orig
+        e=A.escada("https://www.tjgo.jus.br/","prestação pecuniária",
+                   {"id":"tjgo-prestacao","fonte":"TJGO","orgao":"TJGO","tipo_recurso":"destinacao_judicial"})
+        degraus=[x["degrau"] for x in e]
+        self.assertEqual(degraus,sorted(degraus))                 # ordem de custo
+        acoes=" ".join(x["acao"] for x in e)
+        for a in ("registrar bloqueio","espelho institucional","Wayback","IA com busca","LAI"):
+            self.assertIn(a,acoes,a)
+        ia=[x for x in e if x["degrau"]==4][0]
+        self.assertIn("varas e juízes",ia["pergunta"])            # judicial: alvo certo
+        lai=[x for x in e if x["degrau"]==5][0]
+        self.assertIn("12.527/2011",lai["texto"])
+        j=A.destinacao_judicial({"fonte":"TJGO"})
+        self.assertTrue(any("juiz" in x for x in j["o_que_mapear"]))
+        self.assertIn("Resolução 154",j["lexico"])
+        chave=os.environ.pop("FAROL_AI_API_KEY",None)
+        try:
+            self.assertIn("credencial",A.localizar_com_ia({"fonte":"x","orgao":"o","nivel":"estadual"})["status"])
+        finally:
+            if chave: os.environ["FAROL_AI_API_KEY"]=chave
+
+    def test_apresentacao_por_tipo_de_fonte(self):
+        """Permanente → linha o ano inteiro; sazonal → época prevista; judicial → varas."""
+        for f,forma,jud in (("rfb-doacao","linha_o_ano_inteiro",False),
+                            ("tjgo-prestacao","linha_o_ano_inteiro",True),
+                            ("mpgo-destina","linha_o_ano_inteiro",True),
+                            ("rouanet","epoca_prevista",False)):
+            p=load_json(pathlib.Path(f"biblioteca_alexandria/fontes/{f}/parecer_conselho.json"))
+            a=p["estrategia_de_busca"]["apresentacao_no_calendario"]
+            self.assertEqual(a["forma"],forma,f)
+            self.assertEqual(bool(a.get("judicial")),jud,f)
+        fonte=open("src/busca_ativa.py",encoding="utf-8").read()
+        self.assertIn("degrau 1 da escada",fonte)               # espelhos entram na busca
+        self.assertIn("registrar_bloqueio",fonte)
+        self.assertIn("registrar_bloqueio",open("src/sensores.py",encoding="utf-8").read())
+        wf=open(".github/workflows/busca-ativa.yml",encoding="utf-8").read()
+        self.assertIn("run_localizacao",wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

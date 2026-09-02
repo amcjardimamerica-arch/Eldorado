@@ -145,11 +145,30 @@ def busca_deterministica(indicio: dict, local: dict) -> dict:
     """Abre as páginas do órgão e procura link que case com o indício."""
     tokens = _tokens(indicio.get("titulo", "") + " " + (indicio.get("objeto") or ""))[:6]
     visitadas, achados, falhas = [], [], []
-    for url in local["urls"][:8]:
+    # degrau 1 da escada: espelhos institucionais entram na fila logo após a URL principal
+    try:
+        from .alternativas import _ESPELHOS
+        from urllib.parse import quote as _q
+        fila = []
+        for u in local["urls"][:8]:
+            fila.append(u)
+            for esp in _ESPELHOS.get(urlsplit(u).hostname or "", [])[:2]:
+                e2 = esp.replace("{termo}", _q(indicio.get("titulo", "")[:60]))
+                if e2 not in fila:
+                    fila.append(e2)
+    except Exception:
+        fila = local["urls"][:8]
+    for url in fila[:12]:
         try:
             html, final = _abrir(url)
         except Exception as exc:
-            falhas.append({"url": url, "erro": type(exc).__name__}); continue
+            falhas.append({"url": url, "erro": type(exc).__name__})
+            try:
+                from .alternativas import registrar_bloqueio
+                registrar_bloqueio(url, type(exc).__name__, local.get("orgao", ""))
+            except Exception:
+                pass
+            continue
         visitadas.append(final)
         p = _Links(); p.feed(html)
         for href, rot in p.links:

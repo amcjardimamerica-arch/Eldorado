@@ -28,6 +28,7 @@ jobs:
           pip install pypdf --quiet
           python -m src.busca_ativa | tee busca.json
           python -m src.completude | tee completude.json
+          python -m src.alternativas && python -c "from src.alternativas import run_localizacao; print(run_localizacao())" || echo "alternativas: registrado"
           python -m src.dashboard_dados | tee dash.json
       - name: Registrar
         run: |
