@@ -237,13 +237,19 @@ def status_da_fonte(f: dict, fam: str, mencoes: list[dict], prazo: dict, hoje) -
 
 
 def _trinta_dias(reg: dict, hoje) -> list[dict]:
-    """Os últimos 30 dias do sensor: cor e trecho aproveitável de cada dia."""
+    """Calendário do motor: do 1º dia do mês anterior até o fim do mês corrente
+    (o painel recorta o mês que o titular escolher). Cada dia: cor e trecho."""
     from datetime import timedelta as _td
+    import calendar as _cal
+    ini = (hoje.replace(day=1) - _td(days=1)).replace(day=1)
+    fim = hoje.replace(day=_cal.monthrange(hoje.year, hoje.month)[1])
     saida = []
-    for i in range(29, -1, -1):
-        d = (hoje - _td(days=i)).isoformat()
+    d0 = ini
+    while d0 <= fim:
+        d = d0.isoformat(); d0 += _td(days=1)
         r = reg.get(d)
-        saida.append({"d": d, "cor": (r or {}).get("cor", "cinza"), "n": (r or {}).get("achados", 0),
+        saida.append({"d": d, "cor": (r or {}).get("cor", "cinza" if d <= hoje.isoformat() else "futuro"),
+                      "n": (r or {}).get("achados", 0),
                       "t": (r or {}).get("trecho"), "u": (r or {}).get("url"), "http": (r or {}).get("http")})
     return saida
 

@@ -2755,8 +2755,8 @@ class SystemTests(unittest.TestCase):
             self.assertIn("ativa",x); self.assertTrue(x["motivo_status"])
         self.assertTrue(pathlib.Path("estado/ativacao_fontes.json").exists())
         for o in mo["oficiais"]:
-            self.assertEqual(len(o["dias"]),30)
-            self.assertTrue(all(x["cor"] in ("cinza","azul","amarelo","verde","vermelho") for x in o["dias"]))
+            self.assertGreaterEqual(len(o["dias"]),58)             # mês anterior + mês corrente
+            self.assertTrue(all(x["cor"] in ("cinza","futuro","azul","amarelo","verde","vermelho") for x in o["dias"]))
 
     def test_sensores_registro_diario_e_ativacao(self):
         """Diário de 30 dias por sensor com a cor do dia; fonte específica só
@@ -2783,11 +2783,34 @@ class SystemTests(unittest.TestCase):
             if s.get("fontes_260"):
                 self.assertTrue(s["motivo"].startswith(("fonte específica ATIVA","escalada")),s["motivo"])
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("Motores Opressores","mo-area","mo-natureza","mo-esfera","mo-status","mt-ico oleo","mt-dias",
-                  "@keyframes pisca","@keyframes pinga","Novas oportunidades anunciadas","camadas_val"):
+        for x in ("Motores Opressores","mo-area","mo-natureza","mo-esfera","mo-status","mt-ico oleo","mt-cal",
+                  "@keyframes pisca-borda","@keyframes jorra","Novas oportunidades anunciadas","camadas_val"):
             self.assertIn(x,html,x)
         self.assertNotIn("mt-ico tonel",html); self.assertNotIn('class="mt-chk"',html)
+        self.assertNotIn("mt-dias",html.split("const calendarioMotor")[1].split("const trintaDias")[0])
         self.assertNotIn("sem-cinza{",html)
+
+
+    def test_calendario_por_motor_e_opressores_por_area(self):
+        """Cada motor regular tem o calendário do Mapa (dias coloridos); os
+        Motores Opressores agrupam só por área, com ativação pelo ícone."""
+        mo=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json"))
+        for o in mo["oficiais"]:
+            ds=[x["d"] for x in o["dias"]]
+            self.assertGreaterEqual(len(ds),58)                      # mês anterior + mês corrente
+            self.assertTrue(all(x["cor"] in ("cinza","futuro","azul","amarelo","verde","vermelho") for x in o["dias"]))
+        d=dash_coletar(date(2026,9,2))
+        for a in ("justica","direitos_difusos","doacao_bens","assistencia_social","cultura","esporte"):
+            self.assertIn(a,d["areas"],a)
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",".jorro","@keyframes jorra",
+                  "rotArea","Acesos (fogo)","Apagados (poça de óleo)"):
+            self.assertIn(x,html,x)
+        self.assertNotIn("Ativar motor nos marcados",html)          # ativação é individual ou automática
+        self.assertNotIn('class="gota"',html)                       # a poça jorra, não pinga
+        self.assertNotIn("mt-segt",html.split("const listaFontes")[1].split("const novas")[0])   # sem subgrupo de território
+        # ícone reflete a ativação automática quando não há decisão manual
+        self.assertIn("const m=MT.find(x=>x.id===id);return m?!!m.ativa:true;",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
