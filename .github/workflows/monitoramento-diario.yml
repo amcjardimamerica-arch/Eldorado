@@ -17,7 +17,7 @@ concurrency:
 jobs:
   monitorar:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 170
     env:
       FAROL_AI_API_KEY: ${{ secrets.FAROL_AI_API_KEY }}
       MOTORES_FONTES: ${{ github.event.inputs.fontes }}
@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - name: Testes antes da coleta
-        run: python -m unittest discover -s tests -v
+        run: timeout 1200 python -m unittest discover -s tests -v
       - name: Coletar, verificar, acionar Farol e publicar painel
         run: python -m src.executar_diario
       - name: Carga de parlamentares (apenas em outubro e novembro)
@@ -48,24 +48,24 @@ jobs:
         run: |
           pip install pypdf --quiet
           python -m src.completude | tee completude.json
-          python -m src.historico
-          python -m src.historico_parecer
-          python -m src.confirmacao
-          python -m src.destinacao
+          timeout 600 python -m src.historico || echo "src.historico: encerrado no orçamento de 600s ou falhou — registrado"
+          timeout 300 python -m src.historico_parecer || echo "src.historico_parecer: encerrado no orçamento de 300s ou falhou — registrado"
+          timeout 300 python -m src.confirmacao || echo "src.confirmacao: encerrado no orçamento de 300s ou falhou — registrado"
+          timeout 120 python -m src.destinacao || echo "src.destinacao: encerrado no orçamento de 120s ou falhou — registrado"
           python -m src.emendas
           python -m src.emendas_docs
-          python -m src.sensores || echo "esquadra: falhas de rede registradas"
-          python -m src.investigacao || echo "investigacao: falhas de rede registradas"
-          python -m src.regramentos || echo "regramentos: falhas de rede registradas"
+          timeout 1500 python -m src.sensores || echo "src.sensores: encerrado no orçamento de 1500s ou falhou — registrado"
+          timeout 600 python -m src.investigacao || echo "src.investigacao: encerrado no orçamento de 600s ou falhou — registrado"
+          timeout 300 python -m src.regramentos || echo "src.regramentos: encerrado no orçamento de 300s ou falhou — registrado"
           python -m src.previsao
-          python -c "from src.janelas import verificar_por_sensor; verificar_por_sensor()" || echo "janelas: sem rede"
+          timeout 300 python -c "from src.janelas import verificar_por_sensor; verificar_por_sensor()" || echo "janelas: sem rede"
           python -m src.fontes260
-          python -m src.edicao || echo "edicoes: falhas de rede registradas"
-          python -m src.completude_biblioteca
-          python -m src.auditoria
-          python -m src.dossie_fontes
-          python -m src.motores
-          python -m src.parecer_prazos
+          timeout 900 python -m src.edicao || echo "src.edicao: encerrado no orçamento de 900s ou falhou — registrado"
+          timeout 300 python -m src.completude_biblioteca || echo "src.completude_biblioteca: encerrado no orçamento de 300s ou falhou — registrado"
+          timeout 300 python -m src.auditoria || echo "src.auditoria: encerrado no orçamento de 300s ou falhou — registrado"
+          timeout 300 python -m src.dossie_fontes || echo "src.dossie_fontes: encerrado no orçamento de 300s ou falhou — registrado"
+          timeout 300 python -m src.motores || echo "src.motores: encerrado no orçamento de 300s ou falhou — registrado"
+          timeout 120 python -m src.parecer_prazos || echo "src.parecer_prazos: encerrado no orçamento de 120s ou falhou — registrado"
           python -m src.banco
           python -m src.biblioteca
           python -m src.arquivamento
@@ -86,7 +86,7 @@ jobs:
       - name: Rotas dos 260 pontos e cobertura do acervo
         if: always()
         run: |
-          python -m src.rota_monitoramento
+          timeout 300 python -m src.rota_monitoramento || echo "src.rota_monitoramento: encerrado no orçamento de 300s ou falhou — registrado"
           python scripts/cobertura_catalogo.py
       - name: Relatorio de amplitude (canais, tokens, testes, padroes)
         if: always()

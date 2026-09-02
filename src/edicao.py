@@ -51,7 +51,7 @@ _EXIG = re.compile(
     r"dois\s+anos|tr[êe]s\s+anos|regularidade\s+fiscal)", re.I)
 
 
-def baixar_edicao(url: str, timeout: int = 30, max_bytes: int = 25_000_000) -> bytes | None:
+def baixar_edicao(url: str, timeout: int = 20, max_bytes: int = 15_000_000) -> bytes | None:
     """Baixa a edição uma vez; guarda em cache pelo hash da URL."""
     CACHE.mkdir(parents=True, exist_ok=True)
     alvo = CACHE / (sha256(url.encode())[:24] + ".pdf")
@@ -222,4 +222,4 @@ def run(limite: int = 60, uf_primeiro: str = "GO", hoje=None) -> dict:
 
 
 if __name__ == "__main__":
-    print(json.dumps(run(limite=200), ensure_ascii=False, indent=2))
+    print(json.dumps(run(limite=60), ensure_ascii=False, indent=2))

@@ -129,7 +129,8 @@ def escala_do_dia(hoje: date | None = None) -> dict:
             motivo = f"rodízio semanal (dia {dia})"
         (saem if motivo else ficam).append({**s, "motivo": motivo} if motivo else s)
     lim = cfg["limites"]["sensores_por_execucao"]
-    return {"data": hoje.isoformat(), "saem": saem[:lim], "ficam": len(ficam),
+    saem.sort(key=lambda s: (s["tipo"] not in diarios, not s.get("goias"), s["id"]))   # diários e Goiás primeiro
+    return {"data": hoje.isoformat(), "saem": saem[:lim], "ficam": len(ficam) + max(0, len(saem) - lim),
             "total": len(saem) + len(ficam), "previsoes_ativas": len(ativos)}
 
 
@@ -147,7 +148,7 @@ class _Links(HTMLParser):
             self.links.append((self._h, " ".join(self._t).strip())); self._h = None
 
 
-def _abrir(url: str, timeout: int = 25, max_bytes: int = 2_500_000) -> tuple[str, str, int]:
+def _abrir(url: str, timeout: int = 12, max_bytes: int = 2_500_000) -> tuple[str, str, int]:
     from urllib.request import Request, urlopen
     if not url.startswith("file://"):
         validate_public_https(url, urlsplit(url).hostname)
@@ -172,7 +173,7 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
     achados, falhas, saude = [], [], []
     for url in _paginas(sensor)[:lim["paginas_por_sensor"]]:
         try:
-            html, final, status = _abrir(url, max_bytes=lim["bytes_por_pagina"])
+            html, final, status = _abrir(url, timeout=lim.get("timeout_segundos", 12), max_bytes=lim["bytes_por_pagina"])
             saude.append({"url": url, "http": status, "bytes": len(html)})
         except Exception as exc:
             falhas.append({"url": url, "erro": type(exc).__name__})
