@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-02T01:35:06+00:00",
+  "gerado_em": "2026-09-02T09:16:35+00:00",
   "referencia": "2026-09-02",
   "cadencia": {
     "varredura": "segundas e sextas, 6h de Brasília",
@@ -23009,7 +23009,7 @@
   ],
   "biblioteca": {
     "biblioteca": "Biblioteca de Alexandria",
-    "atualizado_em": "2026-09-02T01:13:52+00:00",
+    "atualizado_em": "2026-09-02T01:35:41+00:00",
     "acervos": {
       "leis": 27,
       "oportunidades": 9474,
@@ -23023,7 +23023,7 @@
     "alimentacao": "Eldorado alimenta; Farol analisa com IA",
     "detalhe": {
       "leis": {
-        "atualizado_em": "2026-09-02T01:13:52+00:00",
+        "atualizado_em": "2026-09-02T01:35:41+00:00",
         "total": 27,
         "temas": {
           "assistencia_social": 6,
@@ -23217,7 +23217,7 @@
         }
       },
       "oportunidades": {
-        "atualizado_em": "2026-09-02T01:13:52+00:00",
+        "atualizado_em": "2026-09-02T01:35:41+00:00",
         "total": 9474,
         "em_pasta": 0,
         "no_banco": 9474,
@@ -23413,7 +23413,7 @@
         "nota": "contagens determinísticas; padrões de aprovação e critérios de vitória são apurados pela IA a partir deste índice"
       },
       "associacoes": {
-        "atualizado_em": "2026-09-02T01:13:52+00:00",
+        "atualizado_em": "2026-09-02T01:35:41+00:00",
         "total": 1,
         "associacoes": [
           {
@@ -23464,7 +23464,7 @@
         "nome": "Descobrir",
         "modulo": "Eldorado",
         "descricao": "mapear oportunidades e fontes de recursos",
-        "quantidade": 20956
+        "quantidade": 25382
       },
       {
         "n": 2,
@@ -23498,7 +23498,7 @@
         "quantidade": 0
       }
     ],
-    "atualizado_em": "2026-09-02T01:35:04+00:00",
+    "atualizado_em": "2026-09-02T09:16:32+00:00",
     "nota": "etapas 4 e 5 são automáticas; não dependem de ação do titular"
   },
   "previsoes": {
@@ -26334,6 +26334,46 @@
     },
     "explicacao": "uma fonte só entra no calendário com janela sustentada por publicação no mesmo mês em ANOS DISTINTOS; a coleta começou em ago/2026, então quase todo o histórico está em um único ano — o segundo ano de observação é o que destrava a previsão",
     "o_que_destrava": "extrair as edições do diário (7.094 na fila) recupera datas reais de 2021-2025 e cria o segundo ano de observação"
+  },
+  "parecer_prazos": {
+    "fontes": 260,
+    "permanentes": 77,
+    "periodicos": 0,
+    "com_datas_conhecidas": 43,
+    "regimes": {
+      "sem_observacao": 168,
+      "permanente_com_janela_anual": 43,
+      "permanente_fluxo_continuo": 34,
+      "eventual_observado": 15
+    },
+    "por_area": {
+      "cultura": {
+        "eventual_observado": 15,
+        "sem_observacao": 23,
+        "permanente_com_janela_anual": 3
+      },
+      "demais": {
+        "permanente_com_janela_anual": 31,
+        "permanente_fluxo_continuo": 27,
+        "sem_observacao": 85
+      },
+      "esporte": {
+        "permanente_com_janela_anual": 6,
+        "sem_observacao": 13,
+        "permanente_fluxo_continuo": 2
+      },
+      "fundo": {
+        "permanente_com_janela_anual": 3,
+        "permanente_fluxo_continuo": 5,
+        "sem_observacao": 47
+      }
+    },
+    "goias": {
+      "fontes": 101,
+      "permanentes": 22,
+      "com_datas": 18
+    },
+    "nota": "regime classificado uma fonte por vez; janela de regramento tem certeza alta, janela histórica declarada fica 'a confirmar', e um único ano de observação nunca é tratado como sazonalidade"
   },
   "dossies_fontes": {
     "total": 92,
@@ -47507,7 +47547,7 @@
       "regra": "cada identificação em diário abre campanha de até 30 dias consecutivos atrás do edital integral nos sites oficiais"
     },
     "totais": {
-      "base_completa": 20956,
+      "base_completa": 25382,
       "monitoramentos": 13752,
       "completos": 0,
       "no_painel": 255,
@@ -47800,11 +47840,11 @@
     ]
   },
   "carga_historica": {
-    "executado_em": "2026-09-01T18:06:19+00:00",
+    "executado_em": "2026-09-02T06:07:10+00:00",
     "janelas_totais": 61,
     "janelas_ja_concluidas": 23,
     "janelas_nesta_execucao": 38,
-    "novas": 2571,
+    "novas": 340,
     "falhas": [
       {
         "janela": "2021-09",
@@ -47812,7 +47852,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "TimeoutError"
+            "erro": "JSONDecodeError"
           },
           {
             "api": "querido_diario",
@@ -47832,7 +47872,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "TimeoutError"
+            "erro": "JSONDecodeError"
           },
           {
             "api": "querido_diario",
@@ -47852,7 +47892,17 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "TimeoutError"
+            "erro": "HTTPError"
+          },
+          {
+            "api": "querido_diario",
+            "base": "https://queridodiario.ok.org.br/api",
+            "erro": "HTTPError"
+          },
+          {
+            "api": "querido_diario",
+            "base": "https://api.queridodiario.ok.org.br",
+            "erro": "URLError"
           }
         ]
       },
@@ -47862,7 +47912,17 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "TimeoutError"
+            "erro": "HTTPError"
+          },
+          {
+            "api": "querido_diario",
+            "base": "https://queridodiario.ok.org.br/api",
+            "erro": "HTTPError"
+          },
+          {
+            "api": "querido_diario",
+            "base": "https://api.queridodiario.ok.org.br",
+            "erro": "URLError"
           }
         ]
       },
@@ -47872,7 +47932,17 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "TimeoutError"
+            "erro": "JSONDecodeError"
+          },
+          {
+            "api": "querido_diario",
+            "base": "https://queridodiario.ok.org.br/api",
+            "erro": "HTTPError"
+          },
+          {
+            "api": "querido_diario",
+            "base": "https://api.queridodiario.ok.org.br",
+            "erro": "URLError"
           }
         ]
       },
@@ -47883,6 +47953,16 @@
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
             "erro": "TimeoutError"
+          },
+          {
+            "api": "querido_diario",
+            "base": "https://queridodiario.ok.org.br/api",
+            "erro": "HTTPError"
+          },
+          {
+            "api": "querido_diario",
+            "base": "https://api.queridodiario.ok.org.br",
+            "erro": "URLError"
           }
         ]
       },
@@ -47892,12 +47972,12 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "TimeoutError"
+            "erro": "JSONDecodeError"
           },
           {
             "api": "querido_diario",
             "base": "https://queridodiario.ok.org.br/api",
-            "erro": "TimeoutError"
+            "erro": "HTTPError"
           },
           {
             "api": "querido_diario",
@@ -47932,17 +48012,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "JSONDecodeError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
             "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
           }
         ]
       },
@@ -47952,17 +48022,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "TimeoutError"
           }
         ]
       },
@@ -47972,17 +48032,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "TimeoutError"
           }
         ]
       },
@@ -47993,16 +48043,6 @@
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
             "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
           }
         ]
       },
@@ -48013,16 +48053,6 @@
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
             "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
           }
         ]
       },
@@ -48032,17 +48062,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "TimeoutError"
           }
         ]
       },
@@ -48053,16 +48073,6 @@
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
             "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
           }
         ]
       },
@@ -48072,17 +48082,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "JSONDecodeError"
           }
         ]
       },
@@ -48092,17 +48092,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "JSONDecodeError"
           }
         ]
       },
@@ -48112,17 +48102,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "JSONDecodeError"
           }
         ]
       },
@@ -48132,17 +48112,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "JSONDecodeError"
           }
         ]
       },
@@ -48152,17 +48122,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "JSONDecodeError"
           }
         ]
       },
@@ -48172,17 +48132,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "TimeoutError"
           }
         ]
       },
@@ -48217,7 +48167,7 @@
           {
             "api": "querido_diario",
             "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
+            "erro": "TimeoutError"
           },
           {
             "api": "querido_diario",
@@ -48231,18 +48181,30 @@
         "camadas": [
           {
             "api": "pncp",
-            "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "descartados_fase2": 66,
+            "amostra": [
+              {
+                "objeto": "[Portal de Compras Públicas] - Credenciamento de profissionais ou empresas prestadoras de serviços técnicos de engenhari",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Refere-se a contratação de pessoa jurídica atuante na área da saúde, por meio de credenciamento, sem caráter de exclusiv",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Chamada Pública visando o credenciamento de profissionais de música para atuarem na execução de aulas de canto e de perc",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de Pessoas Juridicas da area da saude para a prestacao de servicos de consultas  exames e procedimentos e",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "O Credenciamento de Leiloeiros Públicos Oficiais para a prestação de serviços de alienação de veículos e eventualmente o",
+                "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+              }
+            ],
+            "nota": "fora do escopo do terceiro setor"
           }
         ]
       },
@@ -48251,18 +48213,30 @@
         "camadas": [
           {
             "api": "pncp",
-            "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "descartados_fase2": 89,
+            "amostra": [
+              {
+                "objeto": "Credenciamento de pessoas jurídicas para a realização de consultas de especialidades, exames clínicos/imagem e procedime",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de instituições para acolhimento institucional de crianças, adolescentes, jovens, adultos e idosos, com o",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE EMPRESA(S) PARA PRESTAÇÃO DE SERVIÇOS DE GERENCIAMENTO, IMPLEMENTAÇÃO, ADMINISTRAÇÃO E DISPONIBILIZAÇÃ",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO NA FORMA CONTINUADA DE EMPRESAS ESPECIALIZADAS EM SERVIÇOS DE ASSISTÊNCIA A SAÚDE NA REALIZAÇÃO DE EXAMES",
+                "motivo": "exigência empresarial (SICAF, CNAE, capital social) sem qualquer menção a OSC — associação não pode concorrer"
+              },
+              {
+                "objeto": "Credenciamento de leiloeiros oficiais para eventual realização de leilão público.",
+                "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+              }
+            ],
+            "nota": "fora do escopo do terceiro setor"
           }
         ]
       },
@@ -48271,18 +48245,30 @@
         "camadas": [
           {
             "api": "pncp",
-            "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "descartados_fase2": 81,
+            "amostra": [
+              {
+                "objeto": "Credenciamento de Pessoas Juridicas da area da saude para a prestacao de servicos de consultas  exames e procedimentos e",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de Pessoas Juridicas da area da saude para a prestacao de servicos de consultas  exames e procedimentos e",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE LEILOEIROS OFICIAIS, PARA REALIZAREM MEDIANTE FUTUROS CONTRATOS DE PROGRAMA ESPECÍFICO, LEILÕES DE SEU",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de pessoas jurídicas para a realização de exames clínicos/imagem.",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de Pessoas Físicas e/ou Pessoas Jurídicas da área da saúde, para atuarem em plantões médicos presenciais ",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              }
+            ],
+            "nota": "fora do escopo do terceiro setor"
           }
         ]
       },
@@ -48291,18 +48277,30 @@
         "camadas": [
           {
             "api": "pncp",
-            "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "descartados_fase2": 89,
+            "amostra": [
+              {
+                "objeto": "[Portal de Compras Públicas] - Credenciamento de pessoas jurídicas para contratação de serviços de administração, gerenc",
+                "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE EMPRESA(S) ESPECIALIZADA OU ENTIDADES ESPECIALIZADAS PARA A REALIZAÇÃO DE EXAMES LABORATORIAIS DE ANÁL",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO de instituições, empresas públicas ou privadas especializadas na prestação de serviço técnico em emissão ",
+                "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+              },
+              {
+                "objeto": "Credenciamento de pessoas jurídicas aptas à prestação de serviços especializados atuando na\r\nrealização de exames eletiv",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de pessoas jurídicas para a prestação dos serviços de saúde, compreendendo (i) FONOAUDIOLOGIA; (ii) NUTRI",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              }
+            ],
+            "nota": "fora do escopo do terceiro setor"
           }
         ]
       },
@@ -48312,17 +48310,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "erro": "JSONDecodeError"
           }
         ]
       },
@@ -48331,18 +48319,30 @@
         "camadas": [
           {
             "api": "pncp",
-            "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "descartados_fase2": 143,
+            "amostra": [
+              {
+                "objeto": "CREDENCIAMENTO pessoa jurídica ou física, visando a prestação de serviços de manutenção preventiva e/ou corretiva de mão",
+                "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE PESSOA JURÍDICA PARA PRESTAÇÃO DE SERVIÇOS MÉDICOS (PLANTÃO TERRA RICA)",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento para aquisição de gêneros alimentícios da Agricultura Familiar e do Empreendedor Familiar rural para prom",
+                "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+              },
+              {
+                "objeto": "Credenciamento tem o objetivo de permitir que todo interessado que preencha os requisitos previstos neste Edital possa p",
+                "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+              },
+              {
+                "objeto": "Credenciamento de Pessoas Juridicas da area da saude para a prestacao de servicos de consultas  exames e procedimentos e",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              }
+            ],
+            "nota": "fora do escopo do terceiro setor"
           }
         ]
       },
@@ -48351,18 +48351,30 @@
         "camadas": [
           {
             "api": "pncp",
-            "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
+            "descartados_fase2": 121,
+            "amostra": [
+              {
+                "objeto": "[Portal de Compras Públicas] - Credenciamento de pessoa jurídica para prestação de serviços médicos, para atuação em pro",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de Profissionais e Técnicos, sendo Pessoas Físicas, para atuarem nas áreas Específicas da Secretaria Muni",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE LEILOEIROS PARA PRESTAÇÕES DE SERVIÇOS DE ALIENAÇÃO DE BENS MÓVEIS, INSERVÍVEIS DE PROPRIEDADE DO MUNI",
+                "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE INSTITUIÇÕES BANCÁRIAS / FINANCEIRAS / COOPERATIVAS DE CRÉDITO, LEGALMENTE CONSTITUÍDAS, PARA A PRESTA",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de pessoas jurídicas especializadas para prestação de serviços de consultas em neurologia e psiquiatria, ",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              }
+            ],
+            "nota": "fora do escopo do terceiro setor"
           }
         ]
       },
@@ -48395,16 +48407,6 @@
               }
             ],
             "nota": "fora do escopo do terceiro setor"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://queridodiario.ok.org.br/api",
-            "erro": "HTTPError"
-          },
-          {
-            "api": "querido_diario",
-            "base": "https://api.queridodiario.ok.org.br",
-            "erro": "URLError"
           }
         ]
       },
@@ -48509,8 +48511,30 @@
         "camadas": [
           {
             "api": "pncp",
-            "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
+            "descartados_fase2": 123,
+            "amostra": [
+              {
+                "objeto": "[Portal de Compras Públicas] - CREDENCIAMENTO VISANDO A CONTRATAÇÃO DE PROFISSIONAL PESSOA JURÍDICA, PARA PRESTAÇÃO DE S",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de empresa para implantação e gestão de solução tecnológica de integração de sistemas tributários/arrecad",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE PESSOAS JURÍDICAS INTERESSADAS NA PRESTAÇÃO DE SERVIÇOS DE EXAMES DE RASTREIO E DIAGNÓSTICO, a fim de ",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE EMPRESA(S) ESPECIALIZADAS (LABORATÓRIOS DE ANÁLISES CLÍNICAS) PARA REALIZAÇÃO DE EXAMES DE PATOLOGIA C",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de Leiloeiro Público Oficial",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              }
+            ],
+            "nota": "fora do escopo do terceiro setor"
           }
         ]
       },
@@ -48519,18 +48543,30 @@
         "camadas": [
           {
             "api": "pncp",
-            "base": "https://pncp.gov.br/api/consulta",
-            "erro": "TimeoutError"
-          }
-        ]
-      },
-      {
-        "janela": "2025-01",
-        "camadas": [
-          {
-            "api": "pncp",
-            "base": "https://pncp.gov.br/api/consulta",
-            "erro": "TimeoutError"
+            "descartados_fase2": 118,
+            "amostra": [
+              {
+                "objeto": "CREDENCIAMENTO DE EMPRESAS PARA PRESTAR SERVIÇOS ESPECIALIZADOS NA CONSULTA/ATENDIMENTO E REALIZAÇÃO DE EXAMES DE IMAGEM",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE EXAME DE ESOFAGOGASTRODUODENOSCOPIA (ENDOSCOPIA DIGESTIVA ALTA) e COLONOSCOPIA (COLOSCOPIA)",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE PESSOA JURÍDICA PARA PRESTAÇÃO DE SERVIÇOS DE HOSPEDAGEM NA CIDADE DE GOVERNADOR VALADARES-MG PARA ATE",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "CREDENCIAMENTO DE EXAME DE VIDEOLARINGOSCOPIA – AUDIOMETRIA E TESTES VESTIBULARES OTONEUROLÓGICOS",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de pessoas físicas e/ou pessoas jurídicas, na área de saúde, para atuarem na realização de pequenos proce",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              }
+            ],
+            "nota": "fora do escopo do terceiro setor"
           },
           {
             "api": "querido_diario",
@@ -48545,12 +48581,44 @@
         ]
       },
       {
+        "janela": "2025-01",
+        "camadas": [
+          {
+            "api": "pncp",
+            "descartados_fase2": 128,
+            "amostra": [
+              {
+                "objeto": "Publicação de Termo de Adesão - Proc. 67/2024 - Credenciamento",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "[Portal de Compras Públicas] - Credenciamento de instituição financeira para prestação de serviços bancários de gerencia",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de empresa especializada de empresa prestadora de serviços de Assistência Odontológica.",
+                "motivo": "exigência empresarial (SICAF, CNAE, capital social) sem qualquer menção a OSC — associação não pode concorrer"
+              },
+              {
+                "objeto": "Credenciamento de empresas para fornecer um sistema completo de benefícios, abrangendo emissão, administração, distribui",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              },
+              {
+                "objeto": "Credenciamento de Organizações Civis de Saúde (OCS) e de Profissionais de Saúde Autônomos (PSA) interessados na prestaçã",
+                "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+              }
+            ],
+            "nota": "fora do escopo do terceiro setor"
+          }
+        ]
+      },
+      {
         "janela": "2026-09",
         "camadas": [
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "TimeoutError"
+            "erro": "HTTPError"
           }
         ]
       }
@@ -48901,8 +48969,8 @@
         "tentativa": 2
       }
     ],
-    "dominios_ano_pesquisado": 2023,
-    "dominios_novas": 5,
+    "dominios_ano_pesquisado": 2025,
+    "dominios_novas": 0,
     "dominios_falhas": 0,
     "status": "em_andamento",
     "janelas_restantes": 38

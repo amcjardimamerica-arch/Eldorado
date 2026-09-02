@@ -2279,6 +2279,63 @@ class SystemTests(unittest.TestCase):
         self.assertIn("g-cobertura",html)
         self.assertIn("Cobertura das ${C.fontes} fontes",html)
 
+
+    def test_parecer_de_prazo_por_fonte(self):
+        """Cada fonte tem parecer de prazo: permanente, periódica ou eventual,
+        com as datas e a origem de cada uma."""
+        from src.parecer_prazos import parecer_da_fonte
+        # janela de regramento (emenda): permanente, certeza alta
+        p1=parecer_da_fonte({"id":"x","programa":"Emenda estadual","orgao":"ALEGO",
+                             "tipo":"emenda","nivel":"estadual","goias":True},{},date(2026,9,2))
+        self.assertEqual(p1["regime_de_prazo"],"permanente_com_janela_anual")
+        self.assertTrue(p1["permanente"]); self.assertEqual(p1["certeza"],"alta")
+        self.assertTrue(any(d["inicio"].endswith("10-01") for d in p1["datas"] if d["inicio"]))
+        # doação RFB: ano par sem janela, ano ímpar com o ano inteiro
+        p2=parecer_da_fonte({"id":"doacao-receita-federal","programa":"Doação RFB",
+                             "orgao":"Receita Federal","tipo":"outro","nivel":"federal"},{},date(2026,9,2))
+        d26=[d for d in p2["datas"] if d.get("ano")==2026][0]
+        self.assertIsNone(d26["inicio"]); self.assertIn("eleição",d26["observacao"])
+        d27=[d for d in p2["datas"] if d.get("ano")==2027][0]
+        self.assertEqual((d27["inicio"],d27["fim"]),("2027-01-01","2027-12-31"))
+        # Rouanet: janela declarada, certeza a confirmar
+        p3=parecer_da_fonte({"id":"r","programa":"Rouanet PRONAC","orgao":"MinC",
+                             "tipo":"incentivo_fiscal","nivel":"federal"},{},date(2026,9,2))
+        self.assertEqual(p3["certeza"],"media_a_confirmar")
+        self.assertTrue(any(d["inicio"].endswith("02-01") for d in p3["datas"] if d["inicio"]))
+        # periódico confirmado exige ANOS DISTINTOS
+        dos={"editais_no_historico":4,"casos":[{"ano":"2024","inicio":"2024-03-01","fim":"2024-04-01"},
+                                               {"ano":"2025","inicio":"2025-03-05","fim":"2025-04-05"}]}
+        p4=parecer_da_fonte({"id":"y","programa":"Fundo X","orgao":"Sec Y","tipo":"fundo",
+                             "nivel":"municipal"},dos,date(2026,9,2))
+        self.assertEqual(p4["regime_de_prazo"],"periodico_confirmado")
+        self.assertTrue(p4["periodico"]); self.assertEqual(p4["meses_recorrentes"],["mar"])
+        # mesmo mês no MESMO ano não é sazonalidade
+        dos2={"editais_no_historico":3,"casos":[{"ano":"2026","inicio":"2026-08-01","fim":"2026-08-20"},
+                                                {"ano":"2026","inicio":"2026-08-10","fim":"2026-08-30"}]}
+        p5=parecer_da_fonte({"id":"z","programa":"Fundo Z","orgao":"Sec Z","tipo":"fundo",
+                             "nivel":"municipal"},dos2,date(2026,9,2))
+        self.assertEqual(p5["regime_de_prazo"],"periodico_suspeito")
+        self.assertEqual(p5["certeza"],"baixa")
+        # sem observação declara a lacuna
+        p6=parecer_da_fonte({"id":"w","programa":"Fonte W","orgao":"Org W","tipo":"edital",
+                             "nivel":"federal"},{},date(2026,9,2))
+        self.assertEqual(p6["regime_de_prazo"],"sem_observacao")
+        self.assertIn("desconhecido",p6["fundamento"])
+        # relatório e painel
+        rel=load_json(pathlib.Path("biblioteca_alexandria/fontes/parecer_prazos.json"))
+        self.assertEqual(rel["fontes"],260)
+        self.assertEqual(sum(rel["regimes"].values()),260)
+        self.assertTrue(pathlib.Path("biblioteca_alexandria/fontes",
+                                     "emenda-estadual-projeto-esportivo/parecer_prazo.json").exists()
+                        or list(pathlib.Path("biblioteca_alexandria/fontes").glob("*/parecer_prazo.json")))
+        d=dash_coletar(date(2026,9,2))
+        self.assertEqual(d["parecer_prazos"]["fontes"],260)
+        self.assertTrue(pathlib.Path("docs/dados/prazos.json").exists())
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("Prazos das fontes",html); self.assertIn("abrePrazos",html)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.parecer_prazos",wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

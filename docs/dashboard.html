@@ -609,6 +609,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <button data-ba="leis" class="on">Leis e normas</button>
     <button data-ba="oportunidades">Oportunidades (histórico)</button>
     <button data-ba="associacoes">Associações</button>
+    <button data-ba="prazos">Prazos das fontes</button>
   </div>
   <div id="ba-corpo"></div>
 </div>
@@ -1607,6 +1608,24 @@ function desenhaEsquadra(){
   $("esq-alertas").innerHTML=(E.alertas||[]).length?`⚠ ${E.alertas.length} sensor(es) pedem troca de URL: `+E.alertas.slice(0,3).map(a=>esc(a.sensor)).join(", "):
     (u.em?`última saída ${br(u.em.slice(0,10))}: ${u.sensores_executados} sensores, ${u.achados} achados`:"nenhuma saída registrada ainda — a esquadra parte na próxima execução no GitHub Actions");
 }
+window.abrePrazos=async function(){
+  const p=await carregaFragmento("prazos"); const lista=p?expandeCompacto(p):[];
+  const ROT={permanente_com_janela_anual:"permanente · janela anual",permanente_fluxo_continuo:"permanente · fluxo contínuo",
+             periodico_confirmado:"periódico confirmado",periodico_suspeito:"periódico suspeito",
+             eventual_observado:"eventual",sem_observacao:"sem observação"};
+  const ordem={permanente_com_janela_anual:0,periodico_confirmado:1,permanente_fluxo_continuo:2,periodico_suspeito:3,eventual_observado:4,sem_observacao:5};
+  lista.sort((a,b)=>(ordem[a.regime_de_prazo]??9)-(ordem[b.regime_de_prazo]??9)||(b.goias?1:0)-(a.goias?1:0));
+  abreModal(`<h3 style="margin:0">Prazo de cada fonte de recurso</h3>
+    <div class=meta>permanente, periódica ou eventual — com as datas conhecidas e a origem de cada uma</div>`,
+    lista.length?`<table class="bz-tab"><thead><tr><th>Fonte</th><th>Regime</th><th>Certeza</th><th>Observados</th><th>Próxima data</th></tr></thead><tbody>
+      ${lista.map(f=>`<tr><td><b>${esc((f.programa||"").slice(0,46))}</b>${f.goias?' <span class=tag style="border-color:#C9A227;color:#8a6d00;padding:1px 5px">GO</span>':""}
+        <span class=ed>${esc((f.orgao||"").slice(0,42))}</span></td>
+        <td>${esc(ROT[f.regime_de_prazo]||f.regime_de_prazo)}</td>
+        <td class=meta>${esc(f.certeza||"—")}</td>
+        <td class=meta>${f.editais_observados||0} edital(is) · ${f.editais_com_prazo_publicado||0} com prazo</td>
+        <td class=meta>${f.proxima_data?br(f.proxima_data)+(f.proxima_fim?" → "+br(f.proxima_fim):"")+"<br><em>"+esc(f.proxima_origem||"")+"</em>":"—"}</td></tr>`).join("")}
+      </tbody></table>`:'<p class=meta>Parecer de prazos ainda não publicado.</p>');
+};
 window.abreFontes=async function(){
   const p=await carregaFragmento("fontes"); const lista=p?expandeCompacto(p):[];
   const T=D.fontes_tres_tempos||{};
@@ -1849,6 +1868,25 @@ function desenhaBiblioteca(){
           <div><div style="font-weight:800;margin-bottom:6px">Janelas recorrentes</div>
             ${rec.length?rec.map(r=>`<div class=lin style="cursor:default"><b>${esc(r.mes)}</b><span>${esc(r.financiador)} — ${r.ocorrencias} anos <span class=meta>(hipótese a confirmar)</span></span></div>`).join(""):'<div class=meta>Recorrência exige o mesmo mês em 2+ anos; ainda não há base.</div>'}</div>
         </div>`;
+    } else if(aba==="prazos"){
+      const P=D.parecer_prazos||{};
+      const ROT={permanente_com_janela_anual:"Permanente, com janela anual fixa",
+                 permanente_fluxo_continuo:"Permanente, em fluxo contínuo",
+                 periodico_confirmado:"Periódico confirmado (mesmo mês em anos distintos)",
+                 periodico_suspeito:"Periódico suspeito (um único ano observado)",
+                 eventual_observado:"Eventual — já publicou, sem padrão",
+                 sem_observacao:"Sem observação — prazo desconhecido"};
+      $("ba-corpo").innerHTML=`
+        <p class=meta>Regime de prazo de cada uma das ${P.fontes||0} fontes de captação, analisada uma por vez.
+        <strong>${P.permanentes||0} permanentes</strong> · <strong>${P.periodicos||0} periódicas confirmadas</strong> ·
+        ${P.com_datas_conhecidas||0} com datas conhecidas. Em Goiás: ${(P.goias||{}).fontes||0} fontes,
+        ${(P.goias||{}).permanentes||0} permanentes, ${(P.goias||{}).com_datas||0} com datas.</p>
+        <table class="bz-tab"><thead><tr><th>Regime</th><th>Fontes</th><th>Cultura</th><th>Esporte</th><th>Fundos</th></tr></thead><tbody>
+        ${Object.entries(P.regimes||{}).map(([r,n])=>`<tr><td><b>${esc(ROT[r]||r)}</b></td><td>${n}</td>
+          <td>${((P.por_area||{}).cultura||{})[r]||0}</td><td>${((P.por_area||{}).esporte||{})[r]||0}</td>
+          <td>${((P.por_area||{}).fundo||{})[r]||0}</td></tr>`).join("")}</tbody></table>
+        <p class=meta style="margin-top:8px">${esc(P.nota||"")}</p>
+        <div style="margin-top:10px"><span class="verlink" onclick="abrePrazos()">Ver fonte por fonte, com as datas →</span></div>`;
     } else {
       const a=(det.associacoes||{}).associacoes||[];
       $("ba-corpo").innerHTML=a.length?a.map(x=>`

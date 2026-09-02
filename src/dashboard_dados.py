@@ -802,6 +802,18 @@ def _marca_etapas(editais: list[dict]) -> list[dict]:
     return editais
 
 
+def _parecer_prazos() -> dict:
+    """Resumo do parecer de prazo das 260 fontes (a lista completa vai em
+    fragmento; aqui só o que o painel mostra de imediato)."""
+    p = ROOT / "biblioteca_alexandria/fontes/parecer_prazos.json"
+    if not p.exists():
+        return {}
+    d = load_json(p)
+    return {k: d.get(k) for k in ("fontes", "permanentes", "periodicos",
+                                  "com_datas_conhecidas", "regimes", "por_area",
+                                  "goias", "nota")}
+
+
 def _cobertura_260(previsoes: dict, fichas: dict) -> dict:
     """Quantas das 260 fontes o Calendário de Editais consegue representar hoje,
     e o motivo de cada ausência. Sem isso o calendário mente por omissão."""
@@ -1052,6 +1064,7 @@ def coletar(hoje: date | None = None) -> dict:
                        "dominios_sem_sensor", "janela")},
         "fontes_tres_tempos": {k: fichas.get(k) for k in ("fontes", "com_passado", "com_presente", "com_futuro")},
         "cobertura_calendario": _cobertura_260(previsoes, fichas),
+        "parecer_prazos": _parecer_prazos(),
         "dossies_fontes": {"total": dossies.get("fontes", 0),
                            "com_historico": dossies.get("com_historico", 0),
                            "conselhos": dossies.get("conselhos", 0),
@@ -1112,6 +1125,17 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
     (pasta / "previsoes.json").write_text(json.dumps(pacp, ensure_ascii=False,
                                                      separators=(",", ":")), encoding="utf-8")
     tamanhos["previsoes.json"] = tamanho(pacp)
+
+    pp = ROOT / "biblioteca_alexandria/fontes/parecer_prazos.json"
+    if pp.exists():
+        lst = load_json(pp).get("lista", [])
+        pacp2 = compactar([{**x, "proxima_data": (x.get("proxima_data") or {}).get("inicio"),
+                            "proxima_fim": (x.get("proxima_data") or {}).get("fim"),
+                            "proxima_origem": (x.get("proxima_data") or {}).get("origem")}
+                           for x in lst]) if lst else {"campos": [], "dic": {}, "linhas": []}
+        (pasta / "prazos.json").write_text(json.dumps(pacp2, ensure_ascii=False,
+                                                      separators=(",", ":")), encoding="utf-8")
+        tamanhos["prazos.json"] = tamanho(pacp2)
 
     ft_p = ROOT / "biblioteca_alexandria/fontes/fichas_tres_tempos.json"
     if ft_p.exists():
