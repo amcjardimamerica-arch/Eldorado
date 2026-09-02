@@ -795,7 +795,7 @@ def _marca_etapas(editais: list[dict]) -> list[dict]:
                     for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
     com_parecer |= conjunto("*/*/conselho.json")
     for e in editais:
-        if e.get("sem_edital"):        # emendas trazem etapa e ciclo próprios
+        if e.get("sem_edital") or e.get("janela_confirmada"):   # etapa e ciclo próprios
             continue
         e.update(etapa_do_edital(e, decididos, preparados, com_parecer))
         e["ciclo"] = ciclo_do_edital(e)
@@ -993,7 +993,12 @@ def coletar(hoje: date | None = None) -> dict:
     editais = _marca_etapas(
         (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos)
     # as três emendas anuais entram como linha própria, já com etapa definida
-    editais = emendas + editais
+    from .janelas import oportunidades as _janelas
+    janelas = _janelas(hoje)
+    editais = emendas + janelas + editais
+    # janela confirmada deixa de ser projeção: sai da lista de previsões do ano
+    conf_ids = {f'prev-{j["fonte_id"]}-{hoje.year}' for j in janelas}
+    previsoes["itens"] = [p0 for p0 in previsoes.get("itens", []) if p0["id"] not in conf_ids]
     leis = load_json(ROOT / "biblioteca/leis/catalogo.json")["itens"]
     revisao = load_json(ROOT / "estado/revisao_normativa.json") if (ROOT / "estado/revisao_normativa.json").exists() else {}
     parl = mod_parlamentares.carregar_do_disco(hoje.year)

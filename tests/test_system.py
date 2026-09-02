@@ -782,7 +782,8 @@ class SystemTests(unittest.TestCase):
         # três acervos: editais vivos (verificação dupla), histórico catalogado
         # e as emendas anuais (regra própria, sem edital)
         vivos=[e for e in d["editais"]
-               if e.get("acervo")!="historico" and not e.get("sem_edital")]
+               if e.get("acervo")!="historico" and not e.get("sem_edital")
+               and not e.get("janela_confirmada")]   # 4º acervo: janelas confirmadas
         hist=[e for e in d["editais"] if e.get("acervo")=="historico"]
         emendas=[e for e in d["editais"] if e.get("sem_edital")]
         for e in emendas:
@@ -2248,9 +2249,12 @@ class SystemTests(unittest.TestCase):
         d=dash_coletar(date(2026,9,2))
         esp=[p for p in d["previsoes"]["itens"] if p.get("especial")]
         ids=" ".join(p["id"] for p in esp)
-        for k in ("rouanet","aldir-blanc","goyazes"): self.assertIn(k,ids,k)
+        for k in ("aldir-blanc","goyazes"): self.assertIn(k,ids,k)
+        self.assertIn("rouanet-2027",ids)     # a de 2027 continua como projeção
+        # Rouanet 2026 foi CONFIRMADA e saiu das projeções; as outras duas seguem
         abertas=[p for p in esp if p["inicio"]<="2026-09-02"<=p["fim"]]
-        self.assertGreaterEqual(len(abertas),3,"as três janelas de 2026 estão abertas hoje")
+        self.assertGreaterEqual(len(abertas),2)
+        self.assertFalse(any("rouanet-2026" in p["id"] for p in abertas))
 
     def test_previsao_exige_anos_distintos(self):
         """Viés da amostra: a coleta começou em ago/2026, então o mês repetido
@@ -2401,6 +2405,41 @@ class SystemTests(unittest.TestCase):
             self.assertIn(f["certeza"],("alta","media","media_a_confirmar","baixa","nenhuma"))
         self.assertGreater(d["permanentes"],0)
         self.assertIn("por_area",d)
+
+
+    def test_janela_confirmada_aparece_como_oportunidade_aberta(self):
+        """A Rouanet está com inscrições abertas e não aparecia: faltava a porta
+        de confirmação. Confirmada (pelo titular ou pelo sensor), a janela
+        vira oportunidade aberta no mês corrente, com a via registrada."""
+        from src.janelas import oportunidades, confirmacoes
+        c=confirmacoes(2026)
+        self.assertIn("rouanet",c); self.assertEqual(c["rouanet"]["via"],"titular")
+        ops=oportunidades(date(2026,9,2))
+        r=[o for o in ops if o["fonte_id"]=="rouanet"]
+        self.assertEqual(len(r),1)
+        self.assertEqual(r[0]["estado_export"],"aberto")
+        self.assertEqual((r[0]["inicio"],r[0]["fim"]),("2026-02-01","2026-10-31"))
+        self.assertFalse(r[0]["ciclo"]["inscricao"]["projetado"])   # barra sólida
+        self.assertEqual(r[0]["janela_confirmada"]["via"],"titular")
+        self.assertTrue(r[0]["detalhes"]["pendencias"])              # verificação automática pendente, declarada
+        # no ano seguinte volta a hipótese: nada confirmado por inércia
+        self.assertEqual([o for o in oportunidades(date(2027,3,1)) if o["fonte_id"]=="rouanet"],[])
+        d=dash_coletar(date(2026,9,2))
+        ids={e["id"] for e in d["editais"]}
+        self.assertIn("janela-rouanet-2026",ids)
+        # e sai da lista de projeções do ano
+        self.assertFalse(any(p["id"]=="prev-rouanet-2026" for p in d["previsoes"]["itens"]))
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("Janela confirmada",html)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("verificar_por_sensor",wf)
+
+    def test_verificacao_por_sensor_exige_texto(self):
+        """O sensor só confirma com evidência textual de inscrição aberta."""
+        from src.janelas import _ABERTA
+        self.assertTrue(_ABERTA.search("Inscrições abertas até 31/10/2026 no SALIC"))
+        self.assertTrue(_ABERTA.search("Período de inscrição: 01/02 a 31/10"))
+        self.assertFalse(_ABERTA.search("Notícias do Ministério da Cultura"))
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
