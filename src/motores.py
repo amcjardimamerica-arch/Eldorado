@@ -77,6 +77,42 @@ def _ultimo_edital_da_fonte(fonte: dict, con) -> dict | None:
     return None
 
 
+def _edital_manual_da_fonte(fonte_id: str) -> dict | None:
+    """Documento enviado pelo titular para esta fonte — fonte MÁXIMA, prevalece."""
+    base = ROOT / "biblioteca_alexandria/oportunidades"
+    melhor = None
+    for fp in base.glob("*/*/ficha.json"):
+        try:
+            f = load_json(fp)
+        except Exception:
+            continue
+        if f.get("origem") == "alimentacao_manual" and f.get("fonte_id") == fonte_id:
+            if melhor is None or (f.get("enviado_em") or "") > (melhor.get("enviado_em") or ""):
+                rc = fp.parent / "requisitos_condicoes_valores.json"
+                f["requisitos_condicoes_valores"] = _camadas_de_itens(f, load_json(rc).get("itens", {})) if rc.exists() else None
+                melhor = f
+    return melhor
+
+
+def _camadas_de_itens(ficha: dict, itens: dict) -> dict:
+    """Converte a extração do documento nos 11 itens do padrão."""
+    marcos = {m.get("tipo"): m for m in ficha.get("marcos") or []}
+    val = [
+        ("Objeto", itens.get("objeto") or ficha.get("objeto")),
+        ("Prazo de inscrição", (f'{ficha.get("inicio") or "?"} a {ficha["fim"]}' if ficha.get("fim") else None)),
+        ("Resultado", (marcos.get("resultado_preliminar") or {}).get("data_texto")),
+        ("Prazo de recurso", (marcos.get("recurso") or {}).get("data_texto")),
+        ("Valor", (ficha.get("valores_citados") or [None])[0]),
+        ("Órgão / financiador", ficha.get("financiador") or ficha.get("fonte_nome")),
+        ("Território", ficha.get("uf") or ficha.get("territorio")),
+        ("Esfera", ficha.get("nivel")),
+        ("Requisitos", ", ".join(ficha.get("exigencias_detectadas") or []) or None),
+        ("Anexos", ", ".join(ficha.get("anexos_no_ato") or ficha.get("modelos") or []) or None),
+        ("Destinação", (ficha.get("destinacao") or {}).get("motivo")),
+    ]
+    return {"itens": [{"item": k, "valor": (str(v)[:200] if v else None), "comprovado": bool(v)} for k, v in val]}
+
+
 def camadas_da_fonte(fonte: dict, edital: dict | None) -> list[dict]:
     """As 11 camadas com o valor real (ou lacuna) — a partir do último edital."""
     itens = ((edital or {}).get("requisitos_condicoes_valores") or {}).get("itens") or []
@@ -142,7 +178,7 @@ def run() -> dict:
         pass
     motores = []
     for f in fontes:
-        edital = _ultimo_edital_da_fonte(f, con) if con else None
+        edital = _edital_manual_da_fonte(f["id"]) or (_ultimo_edital_da_fonte(f, con) if con else None)
         cam = camadas_da_fonte(f, edital)
         sid = motor_da_fonte.get(f["id"], f"f260-{f['id']}")
         s = esq.get(sid)

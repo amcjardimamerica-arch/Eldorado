@@ -2648,6 +2648,79 @@ class SystemTests(unittest.TestCase):
         self.assertIn('os.environ.get("MOTORES_FONTES"',fonte)
         self.assertIn("ativação manual pelo titular",fonte)
 
+
+    def test_motores_caixa_icones_e_acoes(self):
+        """Caixa Motores de Busca: sem legenda de locais; diários como caixas
+        azuis; semáforo à direita; fogo/tonel à esquerda; fósforo, upload e link."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertNotIn('id="mt-oficiais"',html)
+        for x in ("mt-item oficial","mt-lado-esq","mt-lado-dir","mt-sem","iconeMotor","iconesAcao",
+                  "mt-ico fogo","mt-ico tonel","fosforo","mtImediato","mtUpload","mtLink","mtSalvarLink",
+                  "mtExportarAtivacao","entrada_manual/","@keyframes tremula","@keyframes risca",
+                  "prefers-reduced-motion"):
+            self.assertIn(x,html,x)
+        css=html.split("<style>")[1].split("</style>")[0]
+        self.assertIn(".mt-item.oficial{border-left:6px solid #0B4EA2}",css)
+        for c in ("verde","amarelo","vermelho"): self.assertIn(f".mt-sem.{c}",css)
+
+    def test_alimentacao_manual_aciona_fases_2_e_3(self):
+        """O que o titular envia vira fonte máxima: pasta na Biblioteca,
+        11 camadas (fase 2) e parecer (fase 3); modelos preservados em PDF."""
+        try:
+            import pypdf  # noqa
+        except ImportError:
+            self.skipTest("pypdf ausente")
+        import tempfile, shutil
+        from src import manual as M, motores as MO
+        with tempfile.TemporaryDirectory() as tmp:
+            base=pathlib.Path(tmp)
+            orig=(M.ENTRADA,M.OPORT,M.PROCESSADOS)
+            M.ENTRADA=base/"entrada"; M.OPORT=base/"op"; M.PROCESSADOS=base/"p.json"
+            try:
+                lab=M.ENTRADA/"fonte-teste"; lab.mkdir(parents=True)
+                (lab/"edital-07-2026.txt").write_text(
+                    "EDITAL DE CHAMAMENTO 07/2026 - Secretaria Municipal de Cultura\nObjeto: fomento a projetos de "
+                    "organizacoes da sociedade civil. Inscricoes a partir de 05/09/2026 ate 30/09/2026. "
+                    "Valor R$ 120.000,00. Documentos: estatuto social, CNPJ, CNDT, plano de trabalho ANEXO I. "
+                    "Resultado preliminar em 15/10/2026 e recurso ate 20/10/2026.",encoding="utf-8")
+                (lab/"anexo-i-modelo.pdf").write_bytes(b"%PDF-1.4\n%%EOF")
+                r=M.run(date(2026,9,2))
+                f=r["fontes_processadas"][0]
+                self.assertEqual(f["arquivos"],2); self.assertEqual(f["modelos"],1)
+                self.assertEqual(f["fase2"],"confirmado_documental")
+                self.assertGreaterEqual(f["camadas_ok"],9)   # território/esfera/URL não se aplicam a fonte desconhecida
+                pasta=pathlib.Path(f["pasta"]) if pathlib.Path(f["pasta"]).is_absolute() else ROOT/f["pasta"]
+                self.assertTrue((pasta/"edital.txt").exists())
+                self.assertTrue((pasta/"anexos"/"anexo-i-modelo.pdf").exists())     # modelo preservado
+                ficha=load_json(pasta/"ficha.json")
+                self.assertEqual(ficha["origem"],"alimentacao_manual")
+                self.assertEqual(ficha["fim"],"2026-09-30"); self.assertEqual(ficha["inicio"],"2026-09-05")
+                self.assertEqual(ficha["verificacao"]["fonte"],"titular")
+                # reprocessar sem mudança não duplica
+                self.assertEqual(M.run(date(2026,9,2))["fontes_processadas"],[])
+                # nas camadas do motor, o documento enviado prevalece
+                cam=MO._camadas_de_itens(ficha,load_json(pasta/"requisitos_condicoes_valores.json")["itens"])
+                self.assertGreaterEqual(sum(1 for i in cam["itens"] if i["comprovado"]),8)
+            finally:
+                (M.ENTRADA,M.OPORT,M.PROCESSADOS)=orig
+        wf=open(".github/workflows/alimentacao-manual.yml",encoding="utf-8").read()
+        self.assertIn("entrada_manual/**",wf); self.assertIn("src.manual",wf)
+        self.assertTrue(pathlib.Path("entrada_manual/LEIA-ME.md").exists())
+
+    def test_motores_desligados_pelo_titular_nao_saem(self):
+        import tempfile, json as _j
+        from src import sensores as S
+        cfgp=ROOT/"config/motores_ativos.json"
+        existia=cfgp.exists(); antigo=cfgp.read_text(encoding="utf-8") if existia else None
+        try:
+            alvo=[s for s in S.registro() if s["tipo"]=="diario_oficial"][0]["id"]
+            cfgp.write_text(_j.dumps({"inativos":[alvo]}),encoding="utf-8")
+            e=S.escala_do_dia(date(2026,9,7))
+            self.assertNotIn(alvo,{s["id"] for s in e["saem"]})        # tonel: não sai, mesmo sendo diário
+        finally:
+            if existia: cfgp.write_text(antigo,encoding="utf-8")
+            else: cfgp.unlink(missing_ok=True)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

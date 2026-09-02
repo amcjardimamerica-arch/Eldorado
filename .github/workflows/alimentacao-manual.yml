@@ -1,0 +1,40 @@
+name: 06 · Alimentação manual (arquivos e links do titular)
+
+on:
+  push:
+    paths: ["entrada_manual/**", "config/motores_ativos.json"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eldorado-alimentacao-manual
+  cancel-in-progress: false
+
+jobs:
+  alimentar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      FAROL_AI_API_KEY: ${{ secrets.FAROL_AI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Processar o que o titular enviou (fases 2 e 3) e aprender links
+        run: |
+          pip install pypdf --quiet
+          python -m src.manual | tee manual.json
+          python -m src.biblioteca
+          python -m src.motores
+          python -m src.dashboard_dados | tee dash.json
+      - name: Registrar
+        run: |
+          git config user.name "eldorado-bot"
+          git config user.email "eldorado-bot@users.noreply.github.com"
+          git add biblioteca_alexandria estado docs config
+          git diff --cached --quiet && echo "sem alteracoes" || git commit -m "alimentacao manual: $(date -u +%F)"
+          git pull --rebase origin main || true
+          git push

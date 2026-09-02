@@ -112,10 +112,15 @@ def escala_do_dia(hoje: date | None = None) -> dict:
     cfg = load_json(CFG)
     diarios = set(cfg["cadencia"]["diaria"])
     ativos = _previsoes_ativas(hoje)
+    # motores desligados pelo titular no painel (tonel azul) não saem
+    ma = ROOT / "config/motores_ativos.json"
+    desligados = set(load_json(ma).get("inativos", [])) if ma.exists() else set()
     dia = hoje.weekday()
     saem, ficam = [], []
     for s in registro():
         motivo = None
+        if s["id"] in desligados or desligados & set(s.get("fontes_260") or []):
+            ficam.append(dict(s, desligado_pelo_titular=True)); continue
         if s["tipo"] in diarios:
             motivo = "cadência diária"
         elif cfg["cadencia"].get("escalada_por_previsao") and _casa_previsao(s, ativos):
