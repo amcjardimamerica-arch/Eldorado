@@ -1,45 +1,62 @@
 {
   "versao": 1,
-  "aviso": "Janelas históricas informadas pelo titular como HIPÓTESE. Entram no calendário em cinza claro, sempre rotuladas 'a confirmar no edital'. A confirmação exige leitura do edital do ano na fonte oficial — a rede deste ambiente não alcança os portais, então a verificação fica a cargo da varredura no GitHub Actions e do titular.",
+  "aviso": "Janela só entra aqui com regra PRÓPRIA da fonte (norma ou edital do ano) — nunca por analogia com outra fonte. Enquanto 'status_verificacao' não for 'verificado no texto', a janela é hipótese e só aparece em meses futuros.",
   "regras": [
     {
       "id": "rouanet",
       "nome": "Lei Rouanet — Lei 8.313/1991 (PRONAC)",
       "orgao": "Ministério da Cultura — SALIC",
-      "area": "cultura", "uf": null, "nivel": "federal",
+      "area": "cultura",
+      "uf": null,
+      "nivel": "federal",
       "lei": "Lei 8.313/1991; IN Secult/MinC vigente",
-      "inicio_mes_dia": "02-01", "fim_mes_dia": "10-31",
+      "inicio_mes_dia": "02-01",
+      "fim_mes_dia": "10-31",
       "forca": 3,
       "base": "indícios históricos, informados pelo titular, de inscrição de propostas no SALIC entre 01/02 e 31/10 de cada ano",
       "status_verificacao": "a confirmar no edital/IN do ano — não verificado nesta rodada",
       "fonte_confirmacao": "https://www.gov.br/cultura/pt-br/assuntos/editais",
-      "modalidades": ["Mecenato (patrocínio e doação)", "FNC — Fundo Nacional da Cultura"]
+      "modalidades": [
+        "Mecenato (patrocínio e doação)",
+        "FNC — Fundo Nacional da Cultura"
+      ]
     },
     {
       "id": "aldir-blanc",
       "nome": "PNAB — Política Nacional Aldir Blanc, Lei 14.399/2022",
       "orgao": "Estados e municípios (recursos descentralizados)",
-      "area": "cultura", "uf": null, "nivel": "federal",
+      "area": "cultura",
+      "uf": null,
+      "nivel": "federal",
       "lei": "Lei 14.399/2022; Decreto 11.740/2023",
-      "inicio_mes_dia": "02-01", "fim_mes_dia": "10-31",
+      "inicio_mes_dia": null,
+      "fim_mes_dia": null,
       "forca": 2,
-      "base": "premissa do titular: mesma sazonalidade da Rouanet, com um prazo por edital publicado por cada ente",
-      "status_verificacao": "a confirmar em cada edital estadual/municipal do ano",
+      "base": "sem base própria; aguarda o edital do ente",
+      "status_verificacao": "SEM janela definida — a anterior era analogia com a Rouanet e estava errada; cada edital tem prazo próprio, a extrair do edital do ano",
       "fonte_confirmacao": "https://www.gov.br/cultura/pt-br/assuntos/politica-nacional-aldir-blanc",
-      "modalidades": ["editais estaduais", "editais municipais"]
+      "modalidades": [
+        "editais estaduais",
+        "editais municipais"
+      ]
     },
     {
       "id": "goyazes",
       "nome": "Lei Goyazes — Lei GO 13.613/2000",
       "orgao": "Secretaria de Estado da Cultura de Goiás",
-      "area": "cultura", "uf": "GO", "nivel": "estadual",
+      "area": "cultura",
+      "uf": "GO",
+      "nivel": "estadual",
       "lei": "Lei estadual 13.613/2000",
-      "inicio_mes_dia": "02-01", "fim_mes_dia": "10-31",
+      "inicio_mes_dia": null,
+      "fim_mes_dia": null,
       "forca": 2,
-      "base": "premissa do titular: mesma sazonalidade da Rouanet, com um prazo por edital",
-      "status_verificacao": "a confirmar no edital do ano na Secult-GO",
+      "base": "sem base própria; aguarda o edital do ente",
+      "status_verificacao": "SEM janela definida — a anterior era analogia com a Rouanet e estava errada; cada edital tem prazo próprio, a extrair do edital do ano",
       "fonte_confirmacao": "https://goias.gov.br/cultura/",
-      "modalidades": ["incentivo fiscal estadual"]
+      "modalidades": [
+        "incentivo fiscal estadual"
+      ]
     }
   ]
 }

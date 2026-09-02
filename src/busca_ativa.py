@@ -164,7 +164,69 @@ def busca_deterministica(indicio: dict, local: dict) -> dict:
     return {"visitadas": visitadas, "achados": achados[:5], "falhas": falhas}
 
 
+def busca_ia_escalada(indicio: dict, local: dict, alvo: list[str] | None = None) -> dict:
+    """Escalada modelo a modelo: só sobe o degrau se o anterior não atingiu a
+    finalidade. Registra cada degrau, seu modelo e o que rendeu."""
+    import os
+    if not os.environ.get("FAROL_AI_API_KEY"):
+        return {"status": "aguardando credencial FAROL_AI_API_KEY", "url": None, "degraus": []}
+    cfg = load_json(CFG_IA) if CFG_IA.exists() else {}
+    cadeia = (cfg.get("escalada_busca") or {}).get("cadeia") or []
+    degraus, url, itens = [], None, {}
+    for d in cadeia:
+        r = _chamar_modelo(d, indicio, local, alvo or [])
+        degraus.append({"papel": d["papel"], "modelo": d["modelo"], "resultado": r.get("status"),
+                        "uso": r.get("uso")})
+        url = url or r.get("url")
+        itens.update({k: v for k, v in (r.get("itens") or {}).items() if v})
+        atingiu = bool(url) and (not alvo or all(itens.get(a) for a in alvo))
+        if atingiu or d["papel"] == "analise_profunda":
+            break
+    return {"status": "consultado", "url": url, "itens": itens, "degraus": degraus}
+
+
+def _chamar_modelo(d: dict, indicio: dict, local: dict, alvo: list[str]) -> dict:
+    import os, urllib.request
+    prompt = (f"Fonte: {local['orgao']} ({local['nivel']}). Finalidade: {d['finalidade']}.\n"
+              f"Edital/indício: {indicio.get('titulo')}\nÁrea: {indicio.get('area')} · "
+              f"Território: {indicio.get('territorio') or indicio.get('uf')}\n"
+              f"Itens ainda sem dado: {', '.join(alvo) or 'URL oficial'}\n"
+              "Responda SOMENTE em JSON: {\"url\": <URL oficial ou null>, \"itens\": {<item>: <valor ou null>}}. "
+              "Nunca invente: sem fonte oficial, use null.")
+    corpo = {"model": d["modelo"], "max_tokens": d["max_tokens"],
+             "messages": [{"role": "user", "content": prompt}]}
+    if d.get("web_search"):
+        corpo["tools"] = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}]
+    req = urllib.request.Request("https://api.anthropic.com/v1/messages", data=json.dumps(corpo).encode(),
+                                 headers={"content-type": "application/json",
+                                          "x-api-key": os.environ["FAROL_AI_API_KEY"],
+                                          "anthropic-version": "2023-06-01"})
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:
+            dados = json.loads(r.read())
+    except Exception as exc:
+        return {"status": f"falha: {type(exc).__name__}"}
+    texto = " ".join(b.get("text", "") for b in dados.get("content", []) if b.get("type") == "text")
+    with (ROOT / "estado/ia_uso.jsonl").open("a", encoding="utf-8") as h:
+        h.write(json.dumps({"em": now_iso(), "modelo": d["modelo"], "tarefa": d["papel"],
+                            "uso": dados.get("usage", {})}, ensure_ascii=False) + "\n")
+    try:
+        js = json.loads(re.sub(r"^```(?:json)?|```$", "", texto.strip(), flags=re.M).strip())
+        return {"status": "respondeu", "url": js.get("url"), "itens": js.get("itens") or {},
+                "uso": dados.get("usage", {})}
+    except Exception:
+        m = re.search(r"https?://\S+", texto)
+        return {"status": "resposta livre", "url": m.group(0).rstrip(".,)") if m else None,
+                "uso": dados.get("usage", {})}
+
+
 def busca_ia(indicio: dict, local: dict) -> dict:
+    """Compatibilidade: primeiro degrau da escalada."""
+    r = busca_ia_escalada(indicio, local)
+    return {"status": r["status"], "url": r.get("url"), "degraus": r.get("degraus", [])}
+
+
+def _busca_ia_antiga(indicio: dict, local: dict) -> dict:
     """Uma chamada ao modelo MAIS BARATO com busca na web — só a URL oficial."""
     import os, urllib.request
     chave = os.environ.get("FAROL_AI_API_KEY")
@@ -270,7 +332,7 @@ def run(hoje: date | None = None, limite: int = 60, usar_ia: bool = True) -> dic
     processados, achados, pend_ia = 0, 0, 0
     for ind in _indicios(hoje)[:limite * 3]:
         reg = itens.setdefault(ind["id"], {"criado_em": hoje.isoformat(), "tentativas": []})
-        if reg.get("url_edital"):
+        if reg.get("url_edital") or reg.get("parado"):
             continue
         ultima = reg["tentativas"][-1]["data"] if reg["tentativas"] else None
         if ultima and (hoje - date.fromisoformat(ultima)).days < cad:
@@ -284,11 +346,19 @@ def run(hoje: date | None = None, limite: int = 60, usar_ia: bool = True) -> dic
                      "achados": det["achados"], "falhas": det["falhas"]}
         url = det["achados"][0]["url"] if det["achados"] else None
         if not url and usar_ia:
-            ia = busca_ia(ind, local)
-            tentativa["ia"] = ia
+            ia = busca_ia_escalada(ind, local, ind.get("alvo"))
+            tentativa["ia"] = {k: ia.get(k) for k in ("status", "url", "degraus")}
             url = ia.get("url")
+            if ia.get("itens"):
+                reg["itens_obtidos_por_ia"] = {**reg.get("itens_obtidos_por_ia", {}), **ia["itens"]}
             if "credencial" in (ia.get("status") or ""):
                 pend_ia += 1
+        # PARADA: três leituras seguidas dos locais oficiais sem nenhum dado novo
+        sem_novo = not det["achados"] and not (tentativa.get("ia") or {}).get("url")
+        reg["sem_novidade_seguidas"] = (reg.get("sem_novidade_seguidas", 0) + 1) if sem_novo else 0
+        if reg["sem_novidade_seguidas"] >= 3 and not reg.get("url_edital"):
+            reg["parado"] = {"em": now_iso(), "motivo": "três leituras seguidas sem dado novo nos locais oficiais",
+                             "retomar_quando": "a previsão apontar nova janela ou o titular pedir"}
         if url:
             reg["url_edital"] = url
             reg["encontrado_em"] = now_iso()

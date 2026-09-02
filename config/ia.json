@@ -45,5 +45,33 @@
     "telefone_pessoal",
     "documentos_pessoais",
     "fotos_sem_autorizacao"
-  ]
+  ],
+  "escalada_busca": {
+    "regra": "quando o sensor determinístico não obtém o item, escala modelo a modelo; cada degrau só é acionado se o anterior não atingiu a finalidade; o forte só entra em análise profunda",
+    "cadeia": [
+      {
+        "papel": "busca",
+        "modelo": "claude-haiku-4-5",
+        "max_tokens": 300,
+        "web_search": true,
+        "finalidade": "URL oficial do edital / do ato normativo"
+      },
+      {
+        "papel": "extracao",
+        "modelo": "claude-sonnet-4-5",
+        "max_tokens": 900,
+        "web_search": true,
+        "finalidade": "prazo, objeto e documentos a partir da página/PDF do edital"
+      },
+      {
+        "papel": "analise_profunda",
+        "modelo": "claude-opus-4-1",
+        "max_tokens": 1500,
+        "web_search": true,
+        "finalidade": "quando os dois anteriores falharam: leitura completa e reconciliação dos 11 itens"
+      }
+    ],
+    "parar_quando": "11 itens obtidos, OU três leituras seguidas dos locais oficiais sem nenhum dado novo",
+    "cadencia": "1x por dia por fonte com pendência"
+  }
 }

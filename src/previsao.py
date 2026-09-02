@@ -86,8 +86,16 @@ def _especiais(hoje: date) -> list[dict]:
         return []
     cfg = load_json(CFG_ESPECIAIS)
     saida = []
+    encerradas = set()
+    jc = ROOT / "config/janelas_confirmadas.json"
+    if jc.exists():
+        encerradas = {(x["id"], x["ano"]) for x in load_json(jc).get("encerramentos", [])}
     for r in cfg.get("regras", []):
+        if not r.get("inicio_mes_dia") or not r.get("fim_mes_dia"):
+            continue                                   # sem regra própria, sem janela
         for ano in (hoje.year, hoje.year + 1):
+            if (r["id"], ano) in encerradas:
+                continue                               # encerrada: não se projeta
             ini = f'{ano}-{r["inicio_mes_dia"]}'
             fim = f'{ano}-{r["fim_mes_dia"]}'
             if fim < hoje.isoformat():

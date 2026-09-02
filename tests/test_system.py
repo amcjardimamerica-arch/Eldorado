@@ -1826,13 +1826,13 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(prevs[0]["previsto"])
         # a partir do MÊS SEGUINTE: em setembro nada é previsto para setembro
         self.assertFalse(any(x["inicio"][:7]=="2026-09" for x in r["itens"]))
-        # especiais: Rouanet, Aldir Blanc e Goyazes como hipótese declarada
+        # especiais: só quem tem janela PRÓPRIA (Rouanet); analogia é proibida
         esp={x["id"] for x in r["itens"] if x["especial"]}
-        for k in ("rouanet","aldir-blanc","goyazes"):
-            self.assertTrue(any(k in e for e in esp),k)
+        self.assertTrue(any("rouanet" in e for e in esp))
+        for k in ("aldir-blanc","goyazes"):
+            self.assertFalse(any(k in e for e in esp),k)
         for x in r["itens"]:
             if x["especial"]:
-                self.assertEqual((x["inicio"][5:],x["fim"][5:]),("02-01","10-31"))
                 self.assertIn("confirmar",x["status_verificacao"])
 
     def test_dossie_de_fontes_estrito(self):
@@ -2249,12 +2249,13 @@ class SystemTests(unittest.TestCase):
         d=dash_coletar(date(2026,9,2))
         esp=[p for p in d["previsoes"]["itens"] if p.get("especial")]
         ids=" ".join(p["id"] for p in esp)
-        for k in ("aldir-blanc","goyazes"): self.assertIn(k,ids,k)
+        # Aldir Blanc e Goyazes NÃO têm mais janela (era analogia com a Rouanet)
+        for k in ("aldir-blanc","goyazes"): self.assertNotIn(k,ids,k)
         self.assertIn("rouanet-2027",ids)     # a de 2027 continua como projeção
-        # Rouanet 2026 foi CONFIRMADA e saiu das projeções; as outras duas seguem
+        # Rouanet 2026 foi CONFIRMADA e saiu das projeções; nenhuma outra tem
+        # janela própria verificada, logo nada "aberto hoje" resta nas projeções
         abertas=[p for p in esp if p["inicio"]<="2026-09-02"<=p["fim"]]
-        self.assertGreaterEqual(len(abertas),2)
-        self.assertFalse(any("rouanet-2026" in p["id"] for p in abertas))
+        self.assertEqual(abertas,[])
 
     def test_previsao_exige_anos_distintos(self):
         """Viés da amostra: a coleta começou em ago/2026, então o mês repetido
@@ -2440,6 +2441,100 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(_ABERTA.search("Inscrições abertas até 31/10/2026 no SALIC"))
         self.assertTrue(_ABERTA.search("Período de inscrição: 01/02 a 31/10"))
         self.assertFalse(_ABERTA.search("Notícias do Ministério da Cultura"))
+
+
+    def test_portao_de_fidelidade(self):
+        """Padrão de qualidade: presente e passado só com confirmado; futuro
+        estimado e marcado; nada por analogia; remoções registradas."""
+        from src.fidelidade import aplicar, classificar
+        hoje=date(2026,9,2)
+        conf={"id":"a","janela_confirmada":{"via":"titular"},"inicio":"2026-02-01",
+              "ciclo":{"inscricao":{"inicio":"2026-02-01","fim":"2026-10-31","projetado":False}}}
+        hip={"id":"b","status":"capturada","inicio":"2026-08-01",
+             "ciclo":{"inscricao":{"inicio":"2026-08-01","fim":"2026-09-30","projetado":True}}}
+        hist={"id":"c","acervo":"historico","inicio":None,"publicado_em":"2025-03-01",
+              "ciclo":{"inscricao":{"inicio":"2025-03-01","fim":"2025-04-30","projetado":True}}}
+        fut={"id":"d","status":"capturada","inicio":"2026-11-01",
+             "ciclo":{"inscricao":{"inicio":"2026-11-01","fim":"2026-11-30","projetado":True}}}
+        self.assertEqual(classificar(conf,hoje),"confirmado")
+        self.assertEqual(classificar(hip,hoje),"hipotese")
+        self.assertEqual(classificar(hist,hoje),"estimado")
+        dados={"editais":[conf,hip,hist,fut],"previsoes":{"itens":[
+            {"id":"p1","inicio":"2026-09-01","fim":"2026-09-30"},          # mês corrente: sai
+            {"id":"p2","inicio":"2026-11-01","fim":"2026-11-30"},          # futuro: fica
+            {"id":"p3","inicio":"2026-12-01","fim":"2026-12-31","analogia":"rouanet"}]}}  # analogia: sai
+        rel=aplicar(dados,hoje)
+        ids={e["id"] for e in dados["editais"]}
+        self.assertIn("a",ids); self.assertNotIn("b",ids)          # hipótese datada no presente: removida
+        self.assertIn("c",ids)                                     # histórico fica, sem início inventado
+        self.assertIsNone([e for e in dados["editais"] if e["id"]=="c"][0]["ciclo"]["inscricao"]["inicio"])
+        self.assertIn("d",ids)                                     # futuro: permitido
+        self.assertEqual([p["id"] for p in dados["previsoes"]["itens"]],["p2"])
+        self.assertEqual(rel["removidos"],3)
+        self.assertTrue(all(r["motivo"] for r in rel["amostra_removidos"]))
+        # aplicado no pipeline
+        d=dash_coletar(date(2026,9,2))
+        from src.fidelidade import aplicar as ap
+        r2=ap(d,date(2026,9,2))
+        self.assertIn("classes",r2)
+        for e in d["editais"]:
+            self.assertIn(e.get("fidelidade"),("confirmado","confirmado_parcial","estimado","hipotese"))
+
+    def test_janela_por_analogia_removida(self):
+        """Aldir Blanc e Goyazes NÃO herdam a janela da Rouanet."""
+        cfg=load_json(pathlib.Path("config/previsoes_especiais.json"))
+        for r in cfg["regras"]:
+            if r["id"] in ("aldir-blanc","goyazes"):
+                self.assertIsNone(r["inicio_mes_dia"]); self.assertIsNone(r["fim_mes_dia"])
+        enc=load_json(pathlib.Path("config/janelas_confirmadas.json"))["encerramentos"]
+        self.assertEqual({e["id"] for e in enc},{"aldir-blanc","goyazes"})
+        d=dash_coletar(date(2026,9,2))
+        esp={p["id"] for p in d["previsoes"]["itens"] if p.get("especial")}
+        self.assertFalse(any("aldir" in x or "goyazes" in x for x in esp))
+        self.assertFalse(any(e["id"].startswith("janela-aldir") or e["id"].startswith("janela-goyazes")
+                             for e in d["editais"]))
+
+    def test_regramentos_e_parecer_por_fonte(self):
+        from src.regramentos import extrair_calendario, _cfg
+        c=extrair_calendario("As propostas poderão ser apresentadas no período de 1º de fevereiro a 30 de novembro de cada ano.")
+        self.assertEqual((c[0]["inicio_mes_dia"],c[0]["fim_mes_dia"]),("02-01","11-30"))
+        self.assertEqual(extrair_calendario("Esta lei dispõe sobre a cultura."),[])
+        cfg=_cfg(); ids={r["id"] for r in cfg["regramentos"]}
+        for f in ("rouanet","mpgo-destina","rfb-doacao","tjgo-prestacao","emenda-federal","fmdca-goiania"):
+            self.assertIn(f,ids,f)
+        destina=[r for r in cfg["regramentos"] if r["id"]=="mpgo-destina"][0]
+        self.assertTrue(any("Ato PGJ" in n["ref"] and "58" in n["ref"] for n in destina["normas"]))
+        for r in cfg["regramentos"]:
+            for campo in ("tipo_recurso","permanencia","normas","divulgacao","lexico_proprio","pagina_oficial"):
+                self.assertIn(campo,r,f'{r["id"]}: {campo}')
+            for n in r["normas"]:
+                self.assertIn(n["status"],("texto_no_repositorio","a_baixar"))
+        # parecer do conselho gravado na pasta de cada fonte
+        for f in ("rouanet","mpgo-destina"):
+            p=load_json(pathlib.Path(f"biblioteca_alexandria/fontes/{f}/parecer_conselho.json"))
+            self.assertEqual(len(p["lentes"]),7)
+            e=p["estrategia_de_busca"]
+            for k in ("onde_procurar_primeiro","quando","lexico","cadencia","escalada","pendencias"):
+                self.assertIn(k,e,k)
+            self.assertEqual(e["escalada"][0],"sensor determinístico")
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("src.regramentos",wf)
+
+    def test_escalada_de_ia_e_parada(self):
+        import os
+        from src.busca_ativa import busca_ia_escalada
+        cfg=load_json(pathlib.Path("config/ia.json"))["escalada_busca"]
+        self.assertEqual([d["papel"] for d in cfg["cadeia"]],["busca","extracao","analise_profunda"])
+        self.assertIn("haiku",cfg["cadeia"][0]["modelo"]); self.assertIn("opus",cfg["cadeia"][2]["modelo"])
+        chave=os.environ.pop("FAROL_AI_API_KEY",None)
+        try:
+            r=busca_ia_escalada({"titulo":"x"},{"orgao":"o","nivel":"municipal"},["prazo_publicado"])
+            self.assertIsNone(r["url"]); self.assertEqual(r["degraus"],[])
+        finally:
+            if chave: os.environ["FAROL_AI_API_KEY"]=chave
+        fonte=open("src/busca_ativa.py",encoding="utf-8").read()
+        self.assertIn('reg["sem_novidade_seguidas"] >= 3',fonte)
+        self.assertIn('reg.get("url_edital") or reg.get("parado")',fonte)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

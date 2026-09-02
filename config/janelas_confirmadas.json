@@ -1,6 +1,6 @@
 {
   "versao": 1,
-  "regra": "Uma janela histórica (hipótese) vira CONFIRMADA por duas vias: (a) o sensor da fonte encontra evidência textual de inscrições abertas na página oficial; (b) o titular confirma, com data. Confirmada, a janela entra no calendário do mês corrente como oportunidade aberta — com a via da confirmação escrita na ficha. Confirmação vale para o ANO indicado; no ano seguinte volta a hipótese até nova confirmação.",
+  "regra": "Uma janela histórica (hipótese) vira CONFIRMADA por duas vias: (a) o sensor da fonte encontra evidência textual de inscrições abertas na página oficial; (b) o titular confirma, com data. Confirmada, a janela entra no calendário do mês corrente como oportunidade aberta — com a via da confirmação escrita na ficha. Confirmação vale para o ANO indicado; no ano seguinte volta a hipótese até nova confirmação. Uma janela também pode ser ENCERRADA por informação do titular ou do sensor: sai de qualquer projeção do ano e fica registrada como encerrada.",
   "confirmacoes": [
     {
       "id": "rouanet",
@@ -10,9 +10,30 @@
       "evidencia": "declaração do titular em 02/09/2026: 'A Lei Rouanet está com prazo aberto de inscrição'",
       "fonte_a_verificar": "https://www.gov.br/cultura/pt-br/assuntos/editais",
       "verificacao_automatica": "pendente — o sensor SALIC confere a página na próxima saída e anexa a evidência textual",
-      "janela": {"inicio": "2026-02-01", "fim": "2026-10-31"},
+      "janela": {
+        "inicio": "2026-02-01",
+        "fim": "2026-10-31"
+      },
       "url_inscricao": "https://salic.cultura.gov.br/",
       "nota": "inscrição de propostas no SALIC (Sistema de Apoio às Leis de Incentivo à Cultura); a captação junto a patrocinadores segue após a aprovação"
+    }
+  ],
+  "encerramentos": [
+    {
+      "id": "aldir-blanc",
+      "ano": 2026,
+      "informado_por": "titular",
+      "em": "2026-09-02",
+      "evidencia": "declaração do titular em 02/09/2026: inscrições da Aldir Blanc já encerradas",
+      "nota": "a janela 'fev-out' atribuída por analogia com a Rouanet estava ERRADA; cada ente publica prazo próprio"
+    },
+    {
+      "id": "goyazes",
+      "ano": 2026,
+      "informado_por": "titular",
+      "em": "2026-09-02",
+      "evidencia": "declaração do titular em 02/09/2026: inscrições do Goyazes já encerradas",
+      "nota": "a janela 'fev-out' atribuída por analogia com a Rouanet estava ERRADA"
     }
   ]
 }

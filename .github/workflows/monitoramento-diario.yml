@@ -50,6 +50,7 @@ jobs:
           python -m src.emendas_docs
           python -m src.sensores || echo "esquadra: falhas de rede registradas"
           python -m src.investigacao || echo "investigacao: falhas de rede registradas"
+          python -m src.regramentos || echo "regramentos: falhas de rede registradas"
           python -m src.previsao
           python -c "from src.janelas import verificar_por_sensor; verificar_por_sensor()" || echo "janelas: sem rede"
           python -m src.fontes260

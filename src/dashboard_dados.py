@@ -1188,6 +1188,8 @@ def enxugar_nucleo(dados: dict, hoje: date) -> dict:
 def run(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
     dados = coletar(hoje)
+    from .fidelidade import aplicar as _portao
+    portao = _portao(dados, hoje)            # ÚLTIMO passo antes de publicar
     frag = publicar_fragmentos(dados, hoje)
     dados = enxugar_nucleo(dados, hoje)
     write_json(ROOT / "docs/dashboard-dados.json", dados)
@@ -1202,6 +1204,7 @@ def run(hoje: date | None = None) -> dict:
                            "fragmentos_mb": round(frag["total_bytes"] / 1048576, 2),
                            "total_mb": round((nucleo + frag["total_bytes"]) / 1048576, 2),
                            "limite_total_mb": LIMITE_TOTAL_MB,
+                           "portao_fidelidade": {"classes": portao["classes"], "removidos": portao["removidos"]},
                            "limite_nucleo_mb": LIMITE_NUCLEO_MB,
                            **{k: v for k, v in frag.items() if k != "total_bytes"}}}
 

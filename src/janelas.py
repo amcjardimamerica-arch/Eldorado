@@ -90,14 +90,21 @@ def verificar_por_sensor(hoje: date | None = None) -> dict:
     return est
 
 
+def encerramentos(ano: int) -> dict[str, dict]:
+    if not CONFIRMADAS.exists():
+        return {}
+    return {x["id"]: x for x in load_json(CONFIRMADAS).get("encerramentos", []) if x.get("ano") == ano}
+
+
 def oportunidades(hoje: date | None = None) -> list[dict]:
     """Janelas CONFIRMADAS para o ano corrente, como oportunidades abertas."""
     hoje = hoje or date.today()
     conf = confirmacoes(hoje.year)
     saida = []
+    enc = encerramentos(hoje.year)
     for rid, r in _regras().items():
         c = conf.get(rid)
-        if not c:
+        if not c or rid in enc:
             continue
         j = c.get("janela") or {"inicio": f'{hoje.year}-{r["inicio_mes_dia"]}',
                                 "fim": f'{hoje.year}-{r["fim_mes_dia"]}'}
