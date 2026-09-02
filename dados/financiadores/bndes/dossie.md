@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `bndes`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 18
-- Distribuição por ano pesquisado/coletado: {'2023': 11, '2024': 4, '2025': 1, '2026': 2}
+- Pistas aguardando confirmação: 20
+- Distribuição por ano pesquisado/coletado: {'2022': 2, '2023': 11, '2024': 4, '2025': 1, '2026': 2}
 
 ## Padrões
 
@@ -20,8 +20,10 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [BNDES - Catálogo do CFI](https://ws.bndes.gov.br/cfi_catalogo) — coletado em 2026-09-01T18:52:29+00:00
 - [O Canal MPME agora é BNDES Impulso](https://impulso.bndes.gov.br/) — coletado em 2026-09-01T18:52:29+00:00
 - [BNDES - Portal do Cliente](https://portal.bndes.gov.br/) — coletado em 2026-08-31T12:05:51+00:00
+- [BNDES Conexões | Impacto positivo com recursos não reembolsáveis](https://conexoes.bndes.gov.br/) — coletado em 2026-09-02T19:09:46+00:00
 - [BNDES - Brazilian Development Bank](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en) — coletado em 2026-08-31T06:06:38+00:00
 - [About Us - BNDES Investor Relations](https://ri.bndes.gov.br/en/about-bndes/about-us) — coletado em 2026-08-31T18:14:42+00:00
+- [Home - BNDES Relações com Investidores](https://ri.bndes.gov.br/) — coletado em 2026-09-02T19:09:46+00:00
 - [BNDES - Brazilian Development Bank](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en/index.html?page=2) — coletado em 2026-08-31T12:05:51+00:00
 - [BNDES - Hub de Projetos](https://hubdeprojetos.bndes.gov.br/) — coletado em 2026-08-31T06:06:38+00:00
 - [Central de Resultados - BNDES Relações com Investidores](https://ri.bndes.gov.br/informacoes-financeiras/central-de-resultados) — coletado em 2026-09-02T13:08:31+00:00
