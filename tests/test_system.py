@@ -2139,10 +2139,12 @@ class SystemTests(unittest.TestCase):
             for esp in ("do-goiania","do-goias","dou","dje-tjgo","camara-goiania-pl","alego-pl"):
                 self.assertIn(esp,ids_dia,f"{esp} deve sair todo dia")
             saidas.append(frozenset(ids_dia))
-        self.assertGreater(len(set(saidas)),1,"o rodízio deve variar entre os dias")
-        # escalada por previsão em outubro (Rouanet/Goyazes ativas)
+        # fontes específicas saem por ATIVAÇÃO (época/menção), não por rodízio; o que sai
+        # todo dia são os motores regulares — a escala não precisa mais variar
+        self.assertTrue(all(saidas))
+        # em outubro há previsão ativa: fontes específicas saem por escalada ou ativação
         e=escala_do_dia(date(2026,10,5))
-        self.assertTrue(any(s["motivo"].startswith("escalada") for s in e["saem"]))
+        self.assertTrue(any(s["motivo"].startswith(("escalada","fonte específica ATIVA")) for s in e["saem"]))
 
     def test_sensor_le_diario_em_laboratorio(self):
         import tempfile
@@ -2622,14 +2624,14 @@ class SystemTests(unittest.TestCase):
         d3=diagnostico({"sites":["https://x/"]},cam,None,{"erros":{"HTTPError":3},"bloqueios":3})
         self.assertIn("bloqueada",d3["causa"]); self.assertIn("escada",d3["acao"])
         m=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json"))
-        self.assertEqual(m["total"],260)
+        self.assertEqual(m["total"],241)                    # 260 menos as emendas (calendário próprio)
         pn=[x for x in m["motores"] if x["familia"]=="PNAB / Aldir Blanc"]
         self.assertEqual({x["segmento"] for x in pn},{"Estadual GO","Municipal Goiânia"})
         self.assertTrue(all(len(x["camadas"])==11 for x in m["motores"]))
         self.assertTrue(pathlib.Path("docs/dados/motores.json").exists())
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("Motores de Busca",html); self.assertNotIn("Esquadra de sensores",html)
-        for f in ("mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca","mtAtivar","mtSelecionar"):
+        for f in ("mt-busca","mtAtivar","mo-status","mo-area"):
             self.assertIn(f,html,f)
         self.assertIn("Run workflow",html)
 
@@ -2654,14 +2656,15 @@ class SystemTests(unittest.TestCase):
         azuis; semáforo à direita; fogo/tonel à esquerda; fósforo, upload e link."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn('id="mt-oficiais"',html)
-        for x in ("mt-item oficial","mt-lado-esq","mt-lado-dir","mt-sem","iconeMotor","iconesAcao",
-                  "mt-ico fogo","mt-ico tonel","fosforo","mtImediato","mtUpload","mtLink","mtSalvarLink",
+        for x in ("mt-item oficial","mt-lado-esq","mt-lado-dir","iconeMotor","iconesAcao",
+                  "mt-ico fogo","mt-ico oleo","fosforo","mtImediato","mtUpload","mtLink","mtSalvarLink",
                   "mtExportarAtivacao","entrada_manual/","@keyframes tremula","@keyframes risca",
                   "prefers-reduced-motion"):
             self.assertIn(x,html,x)
         css=html.split("<style>")[1].split("</style>")[0]
         self.assertIn(".mt-item.oficial{border-left:6px solid #0B4EA2}",css)
-        for c in ("verde","amarelo","vermelho"): self.assertIn(f".mt-sem.{c}",css)
+        for c in ("verde","vermelho"): self.assertIn(f".mt-item.sem-{c}",css)
+        for c in ("cinza","azul","amarelo","verde","vermelho"): self.assertIn(f".mt-dia.{c}",css)
 
     def test_alimentacao_manual_aciona_fases_2_e_3(self):
         """O que o titular envia vira fonte máxima: pasta na Biblioteca,
@@ -2720,6 +2723,71 @@ class SystemTests(unittest.TestCase):
         finally:
             if existia: cfgp.write_text(antigo,encoding="utf-8")
             else: cfgp.unlink(missing_ok=True)
+
+
+    def test_motores_opressores_ativacao_por_epoca_ou_mencao(self):
+        """Fonte específica só fica ATIVA com menção nos locais oficiais ou na
+        época prevista; emendas não entram; menção exige termos distintivos."""
+        from src.motores import status_da_fonte, _toks, familia
+        hoje=date(2026,9,2)
+        perm=status_da_fonte({"programa":"Doação RFB","orgao":"Receita Federal"},"x",[],
+                             {"regime_de_prazo":"permanente_fluxo_continuo"},hoje)
+        self.assertTrue(perm["ativa"]); self.assertIn("permanente",perm["motivo"])
+        epoca=status_da_fonte({"programa":"Edital Goyazes","orgao":"Secult"},"x",[],
+                              {"regime_de_prazo":"eventual","proxima_data":{"inicio":"2026-09-01","fim":"2026-10-31"}},hoje)
+        self.assertTrue(epoca["ativa"]); self.assertTrue(epoca["em_epoca"])
+        fora=status_da_fonte({"programa":"Edital Goyazes","orgao":"Secult"},"x",[],
+                             {"regime_de_prazo":"eventual","proxima_data":{"inicio":"2027-02-01","fim":"2027-04-30"}},hoje)
+        self.assertFalse(fora["ativa"]); self.assertIn("sem menção",fora["motivo"])
+        # menção: só de motores regulares e com TODOS os termos distintivos
+        m=[{"titulo":"Edital Goyazes 2026 aberto","evidencia":"","coletado_em":"2026-09-01","tipo_fonte":"sensor_diario_oficial"}]
+        men=status_da_fonte({"programa":"Edital Goyazes","orgao":"Secult"},"x",m,{"regime_de_prazo":"eventual"},hoje)
+        self.assertTrue(men["ativa"]); self.assertTrue(men["mencoes"])
+        gen=status_da_fonte({"programa":"Editais de ocupação cultural","orgao":"Secult"},"x",
+                            [{"titulo":"Edital cultural qualquer","evidencia":"","coletado_em":"2026-09-01"}],{"regime_de_prazo":"eventual"},hoje)
+        self.assertFalse(gen["ativa"])                       # 'cultural' é genérico; 'ocupação' não consta
+        self.assertNotIn("cultural",_toks("ocupação cultural"))
+        mo=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json"))
+        self.assertFalse(any(x["familia"]=="Emendas parlamentares" for x in mo["motores"]))
+        for x in mo["motores"]:
+            self.assertIn(x["natureza"],("publica","privada"))
+            self.assertIn(x["esfera"],("Brasil","Estado","Município","Privada/Internacional"))
+            self.assertIn("ativa",x); self.assertTrue(x["motivo_status"])
+        self.assertTrue(pathlib.Path("estado/ativacao_fontes.json").exists())
+        for o in mo["oficiais"]:
+            self.assertEqual(len(o["dias"]),30)
+            self.assertTrue(all(x["cor"] in ("cinza","azul","amarelo","verde","vermelho") for x in o["dias"]))
+
+    def test_sensores_registro_diario_e_ativacao(self):
+        """Diário de 30 dias por sensor com a cor do dia; fonte específica só
+        sai quando ativa; motores regulares saem todo dia."""
+        import tempfile
+        from src import sensores as S
+        self.assertEqual(S.cor_do_dia({"falhas":[{"e":1}],"saude":[]}),"vermelho")
+        self.assertEqual(S.cor_do_dia({"falhas":[],"saude":[{"http":200}],"achados":[]}),"azul")
+        self.assertEqual(S.cor_do_dia({"saude":[{"http":200}],"achados":[{"titulo":"x"}]}),"amarelo")
+        self.assertEqual(S.cor_do_dia({"saude":[{"http":200}],"achados":[{"confirmacao":{"nivel_confirmacao":"completo"}}]}),"verde")
+        orig=S.DIARIO
+        with tempfile.TemporaryDirectory() as tmp:
+            S.DIARIO=pathlib.Path(tmp)/"d.json"
+            try:
+                S.registrar_dia("s1",date(2026,9,2),{"achados":[{"titulo":"Edital X","url":"https://x/","forca_lexica":3}],"saude":[{"http":200}],"falhas":[]})
+                d=load_json(S.DIARIO)["sensores"]["s1"]["2026-09-02"]
+                self.assertEqual(d["cor"],"amarelo"); self.assertEqual(d["trecho"],"Edital X")
+            finally:
+                S.DIARIO=orig
+        e=S.escala_do_dia(date(2026,9,7))
+        motivos={s["motivo"] for s in e["saem"]}
+        self.assertTrue(any("regular e geral" in m for m in motivos))
+        for s in e["saem"]:
+            if s.get("fontes_260"):
+                self.assertTrue(s["motivo"].startswith(("fonte específica ATIVA","escalada")),s["motivo"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("Motores Opressores","mo-area","mo-natureza","mo-esfera","mo-status","mt-ico oleo","mt-dias",
+                  "@keyframes pisca","@keyframes pinga","Novas oportunidades anunciadas","camadas_val"):
+            self.assertIn(x,html,x)
+        self.assertNotIn("mt-ico tonel",html); self.assertNotIn('class="mt-chk"',html)
+        self.assertNotIn("sem-cinza{",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

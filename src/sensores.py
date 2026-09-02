@@ -38,6 +38,39 @@ F260 = ROOT / "config/fontes_captacao_260.json"
 INVEST = ROOT / "config/investigacao.json"
 PREV = ROOT / "biblioteca_alexandria/previsoes/previsoes.json"
 ESTADO = ROOT / "estado/esquadra.json"
+DIARIO = ROOT / "estado/esquadra_diario.json"        # 30 dias por sensor: cor + trecho
+ATIVACAO = ROOT / "estado/ativacao_fontes.json"      # fontes específicas ativas hoje (época/menção)
+
+
+def cor_do_dia(r: dict) -> str:
+    """cinza: não executado · vermelho: falha/inoperante · azul: funcionou sem
+    oportunidade · amarelo: achou, mas faltam camadas · verde: 11 camadas."""
+    if r.get("falhas") and not r.get("saude"):
+        return "vermelho"
+    if not r.get("achados"):
+        return "azul"
+    if any((a.get("confirmacao") or {}).get("nivel_confirmacao") == "completo" for a in r["achados"]):
+        return "verde"
+    return "amarelo"
+
+
+def registrar_dia(sensor_id: str, hoje: date, r: dict) -> None:
+    d = load_json(DIARIO) if DIARIO.exists() else {"sensores": {}}
+    s = d["sensores"].setdefault(sensor_id, {})
+    melhor = max(r.get("achados") or [], key=lambda a: a.get("forca_lexica", 0), default=None)
+    s[hoje.isoformat()] = {
+        "cor": cor_do_dia(r), "achados": len(r.get("achados") or []),
+        "falhas": len(r.get("falhas") or []),
+        "http": ((r.get("saude") or [{}])[0]).get("http"),
+        "trecho": ((melhor or {}).get("titulo") or "")[:160] if melhor else None,
+        "url": (melhor or {}).get("url"),
+    }
+    # janela móvel: só os últimos 45 dias ficam
+    corte = (hoje - timedelta(days=45)).isoformat()
+    for k in [k for k in s if k < corte]:
+        del s[k]
+    d["atualizado_em"] = now_iso()
+    write_json(DIARIO, d)
 DB = ROOT / "dados/oportunidades/oportunidades.jsonl"
 
 _FIM = re.compile(r"(?:at[ée]|prazo|encerra\w*|inscri[çc][õo]es[^.]{0,30}?at[ée])\D{0,25}(\d{1,2}/\d{1,2}/20\d{2})", re.I)
@@ -117,15 +150,18 @@ def escala_do_dia(hoje: date | None = None) -> dict:
     desligados = set(load_json(ma).get("inativos", [])) if ma.exists() else set()
     dia = hoje.weekday()
     saem, ficam = [], []
+    ativas = set((load_json(ATIVACAO).get("ativas") or {}).keys()) if ATIVACAO.exists() else set()
     for s in registro():
         motivo = None
         if s["id"] in desligados or desligados & set(s.get("fontes_260") or []):
             ficam.append(dict(s, desligado_pelo_titular=True)); continue
-        if s["tipo"] in diarios:
-            motivo = "cadência diária"
+        if s["tipo"] in diarios or s["tipo"] == "plataforma":
+            motivo = "motor regular e geral — todo dia"
+        elif s.get("fontes_260") and (set(s["fontes_260"]) & ativas):
+            motivo = "fonte específica ATIVA: época prevista ou menção em local oficial"
         elif cfg["cadencia"].get("escalada_por_previsao") and _casa_previsao(s, ativos):
             motivo = "escalada: previsão de edital neste mês"
-        elif zlib.crc32(s["id"].encode()) % 7 == dia:
+        elif not s.get("fontes_260") and zlib.crc32(s["id"].encode()) % 7 == dia:
             motivo = f"rodízio semanal (dia {dia})"
         (saem if motivo else ficam).append({**s, "motivo": motivo} if motivo else s)
     lim = cfg["limites"]["sensores_por_execucao"]
@@ -262,6 +298,7 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         # três leituras vazias com página respondendo = URL provavelmente é home, não listagem
         reg["alerta"] = ("trocar URL: 3 leituras sem achados com página respondendo"
                          if reg["vazias_seguidas"] >= 3 and r["saude"] and not r["falhas"] else None)
+        registrar_dia(s["id"], hoje, r)
         for a in r["achados"]:
             total_ach += 1
             if a["id"] not in existentes:

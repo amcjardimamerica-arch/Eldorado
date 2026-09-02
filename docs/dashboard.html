@@ -187,9 +187,7 @@ box-shadow:0 1px 3px #0002}
 .mt-item{grid-template-columns:44px 1fr 40px;position:relative}
 .mt-item.oficial{border-left:6px solid #0B4EA2}                     /* detalhe azul: diário / local oficial */
 .mt-item.sem-verde{border-right:6px solid var(--ok)}
-.mt-item.sem-amarelo{border-right:6px solid var(--alerta)}
 .mt-item.sem-vermelho{border-right:6px solid var(--urgente)}
-.mt-item.sem-cinza{border-right:6px solid #C9CED6}
 .mt-lado-esq{display:flex;flex-direction:column;align-items:center;gap:4px}
 .mt-lado-dir{display:flex;flex-direction:column;align-items:center;gap:6px}
 .mt-sem{width:12px;height:12px;border-radius:50%;display:block;box-shadow:0 0 0 2px #fff,0 0 0 3px #E3E8F1}
@@ -202,7 +200,16 @@ box-shadow:0 1px 3px #0002}
 .mt-ico.fogo .fumaca circle:nth-child(2){animation-delay:.7s}.mt-ico.fogo .fumaca circle:nth-child(3){animation-delay:1.4s}
 @keyframes tremula{from{transform:scaleY(.92) skewX(-3deg)}to{transform:scaleY(1.06) skewX(3deg)}}
 @keyframes sobe{0%{transform:translateY(4px);opacity:.75}100%{transform:translateY(-9px) scale(1.5);opacity:0}}
-.mt-ico.tonel svg{fill:#2F79D0}.mt-ico.tonel rect:nth-of-type(2),.mt-ico.tonel rect:nth-of-type(3){fill:#1C56A8}.mt-ico.tonel ellipse{fill:#6FA3E6}
+.mt-ico.oleo .poca{fill:#111318}.mt-ico.oleo .poca2{fill:#2a2f3a}.mt-ico.oleo .gota{fill:#1b1f27;transform-origin:20px 15px;animation:pinga 2.4s ease-in infinite}
+.mt-ico.oleo .brilho{fill:#7fa0c9;opacity:.8}
+@keyframes pinga{0%{transform:translateY(-6px);opacity:0}30%{opacity:1}100%{transform:translateY(8px);opacity:0}}
+.mt-dias{display:flex;gap:2px;margin-top:6px;flex-wrap:wrap}
+.mt-dia{width:11px;height:11px;border-radius:3px;background:#DEE2E8;display:block}
+.mt-dia.cinza{background:#DEE2E8}.mt-dia.azul{background:#2F79D0}.mt-dia.verde{background:var(--ok)}.mt-dia.vermelho{background:var(--urgente)}
+.mt-dia.amarelo{background:var(--alerta);animation:pisca 1s steps(2,start) infinite}
+@keyframes pisca{to{visibility:hidden}}
+.mt-item.sem-neutro{border-right:1px solid var(--linha)}
+.mt-item.nova{border-left:6px solid #7B4BE0}
 .mt-ico.fosforo .palito{fill:#C9A46A}.mt-ico.fosforo .cabeca{fill:#8A2E2E}.mt-ico.fosforo .fogo-f{fill:#F08C1E;opacity:0;transform-origin:10px 9px}
 .mt-ico.fosforo.aceso .cabeca{fill:#3a1c1c}.mt-ico.fosforo.aceso .fogo-f{opacity:1;animation:tremula .5s ease-in-out infinite alternate}
 .mt-ico.fosforo:active{animation:risca .35s ease-out}
@@ -564,20 +571,39 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <span class=meta style="font-weight:500" title="Um motor por ponto de captação. Agregados por tipo e segmentados por território: nacional, estadual, municipal. Cada ponto mostra as 11 camadas, a página de publicação e a validação do conteúdo pelo motor.">— os 260 pontos de captação, por tipo e território</span></div>
   <div class="mets" id="mt-mets" style="margin:10px 0 8px"></div>
   <div class="bz-filtros" style="margin:6px 0 10px">
-    <select id="mt-familia"><option value="">Todos os tipos</option></select>
-    <select id="mt-segmento"><option value="">Todos os territórios</option></select>
-    <select id="mt-uf"><option value="">Todos os estados</option></select>
-    <select id="mt-estado"><option value="">Completos e incompletos</option><option value="incompleto">Só com camadas faltando</option><option value="bloqueada">Só páginas bloqueadas</option><option value="completo">Só completos</option></select>
-    <input id="mt-busca" placeholder="buscar edital ou órgão…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
-    <span class="bz-limpar" onclick="mtLimpar()">⨯ Limpar</span>
+    <input id="mt-busca" placeholder="buscar local de publicação…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
+    <select id="mt-familia" style="display:none"><option value=""></option></select><select id="mt-segmento" style="display:none"><option value=""></option></select>
+    <select id="mt-uf" style="display:none"><option value=""></option></select><select id="mt-estado" style="display:none"><option value=""></option></select>
   </div>
   <div class=meta id="mt-conta" style="margin-bottom:6px"></div>
   <div id="mt-lista"></div>
+  <div class=meta style="margin-top:10px;border-top:1px dashed var(--linha);padding-top:8px">
+    <span class="mt-dia cinza" style="display:inline-block"></span> não executado &nbsp;
+    <span class="mt-dia azul" style="display:inline-block"></span> funcionou, sem oportunidade &nbsp;
+    <span class="mt-dia amarelo" style="display:inline-block"></span> achou, faltam camadas &nbsp;
+    <span class="mt-dia verde" style="display:inline-block"></span> 11 camadas obtidas &nbsp;
+    <span class="mt-dia vermelho" style="display:inline-block"></span> falha / inoperante
+  </div>
+</div>
+
+<!-- MOTORES OPRESSORES · fontes específicas, ativas só na época ou após menção -->
+<div class="cartao" style="margin-bottom:16px">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Motores Opressores
+    <span class=meta style="font-weight:500" title="Cada edital ou fonte específica mapeada. Fica oculto até ser mencionado nos locais de publicação oficial/plataformas ou até a época prevista pelo histórico — então o motor é ativado automaticamente. Os motores regulares (diários, justiça, legislativo, plataformas) rodam sempre e capturam qualquer oportunidade.">— editais e fontes específicas, ativos só na época ou após menção</span></div>
+  <div class="mets" id="mo-mets" style="margin:10px 0 8px"></div>
+  <div class="bz-filtros" style="margin:6px 0 10px">
+    <select id="mo-area"><option value="">Todas as áreas de atuação</option></select>
+    <select id="mo-natureza"><option value="">Pública e privada</option><option value="publica">Fonte pública</option><option value="privada">Fonte privada</option></select>
+    <select id="mo-esfera"><option value="">Todas as esferas</option><option value="Município">Município</option><option value="Estado">Estado</option><option value="Brasil">Brasil</option><option value="Privada/Internacional">Privada / Internacional</option></select>
+    <select id="mo-status"><option value="ativo">Ativos (menção ou época prevista)</option><option value="inativo">Inativos (ocultos até menção ou época)</option><option value="">Todos</option></select>
+    <input id="mo-busca" placeholder="buscar edital ou órgão…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
+    <span class="bz-limpar" onclick="moLimpar()">⨯ Limpar</span>
+  </div>
+  <div class=meta id="mo-conta" style="margin-bottom:6px"></div>
+  <div id="mo-lista"></div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--linha)">
-    <button class="bt-ia" onclick="mtAtivar()" title="Gera o pedido com os pontos selecionados e abre a execução manual do motor no GitHub Actions">▶ Ativar motor nos selecionados</button>
-    <button onclick="mtSelecionar(true)">selecionar filtrados</button>
-    <button onclick="mtSelecionar(false)">limpar seleção</button>
-    <button onclick="mtExportarAtivacao()" title="gera config/motores_ativos.json com os motores que você desativou (tonel)">exportar ativação</button>
+    <button class="bt-ia" onclick="mtAtivar()" title="Roda agora os motores marcados com fogo dentro do filtro atual, no GitHub Actions">▶ Ativar motor nos marcados com fogo</button>
+    <button onclick="mtExportarAtivacao()" title="gera config/motores_ativos.json com os motores que você desligou (poça de óleo)">exportar ativação</button>
     <span class=meta id="mt-sel"></span>
   </div>
 </div>
@@ -1668,8 +1694,10 @@ function iconeMotor(id,ativo){
       <svg viewBox="0 0 32 40" width="30" height="36"><g class="fumaca"><circle cx="16" cy="7" r="3"/><circle cx="21" cy="4" r="2.2"/><circle cx="11" cy="5" r="1.8"/></g>
       <path class="chama" d="M16 12c4 5 8 8 8 15a8 8 0 0 1-16 0c0-4 2-6 3-9 1 3 2 4 3 4 0-4 0-7 2-10z"/>
       <path class="chama2" d="M16 22c2 3 4 4 4 7a4 4 0 0 1-8 0c0-2 1-3 2-5 .5 1.5 1 2 2 2 0-2 0-3 0-4z"/></svg></button>`
-    :`<button class="mt-ico tonel" onclick="mtLigar('${esc(id)}')" title="motor SEM ATIVAÇÃO — clique para ativar nas rotinas automáticas">
-      <svg viewBox="0 0 32 40" width="30" height="36"><rect x="6" y="6" width="20" height="30" rx="5"/><rect x="5" y="12" width="22" height="3" rx="1.5"/><rect x="5" y="26" width="22" height="3" rx="1.5"/><ellipse cx="16" cy="6.5" rx="10" ry="3"/></svg></button>`;
+    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor SEM ATIVAÇÃO (poça de óleo) — clique para acender e ativar nas rotinas automáticas">
+      <svg viewBox="0 0 40 40" width="34" height="34"><path class="gota" d="M20 3c3 5 6 8 6 12a6 6 0 0 1-12 0c0-4 3-7 6-12z"/>
+      <path class="poca" d="M4 30c0-5 8-8 16-8s16 3 16 8-7 7-16 7S4 35 4 30z"/><path class="poca2" d="M9 29c0-3 5-5 11-5s11 2 11 5-5 5-11 5-11-2-11-5z"/>
+      <ellipse class="brilho" cx="14" cy="27.5" rx="4" ry="1.3"/><ellipse class="brilho" cx="26" cy="31" rx="2.2" ry=".8"/></svg></button>`;
 }
 /* fósforo (busca imediata) · upload (alimentar manualmente) · link (aprendizado) */
 function iconesAcao(id,nome){
@@ -1722,20 +1750,26 @@ window.mtExportarAtivacao=function(){const e=mtEstado();const inativos=Object.en
 let MT=[],mtSel=new Set();
 async function carregaMotores(){
   const p=await carregaFragmento("motores"); if(!p)return [];
-  MT=expandeCompacto(p); MT._resumo=p.resumo||{}; MT._plat=p.plataformas||[]; MT._of=p.oficiais||[]; return MT;
+  MT=expandeCompacto(p); MT._resumo=p.resumo||{}; MT._plat=p.plataformas||[]; MT._of=p.oficiais||[]; MT._novas=p.novas||[]; return MT;
 }
 function mtFiltrados(){
   const fa=$("mt-familia").value,sg=$("mt-segmento").value,uf=$("mt-uf").value,es=$("mt-estado").value,q=$("mt-busca").value.toLowerCase();
+  const ar=($("mo-area")||{}).value||"",nt=($("mo-natureza")||{}).value||"",ef=($("mo-esfera")||{}).value||"",stt=$("mo-status")?$("mo-status").value:"ativo",q2=(($("mo-busca")||{}).value||"").toLowerCase();
   return MT.filter(m=>(!fa||m.familia===fa)&&(!sg||m.segmento===sg)&&(!uf||m.uf===uf)
     &&(!es||(es==="bloqueada"?m.validacao==="bloqueada":es==="completo"?!m.faltam:!!m.faltam))
-    &&(!q||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q)));
+    &&(!q||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q))
+    &&(!ar||m.area_atuacao===ar)&&(!nt||m.natureza===nt)&&(!ef||m.esfera===ef)
+    &&(!stt||(stt==="ativo"?m.ativa:!m.ativa))
+    &&(!q2||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q2)));
 }
+window.moLimpar=function(){["mo-area","mo-natureza","mo-esfera"].forEach(id=>$(id).value="");$("mo-status").value="ativo";$("mo-busca").value="";desenhaMotores();};
 window.mtLimpar=function(){["mt-familia","mt-segmento","mt-uf","mt-estado"].forEach(id=>$(id).value="");$("mt-busca").value="";desenhaMotores();};
 window.mtSelecionar=function(on){mtFiltrados().forEach(m=>on?mtSel.add(m.id):mtSel.delete(m.id));desenhaMotores();};
 window.mtToggle=function(id){mtSel.has(id)?mtSel.delete(id):mtSel.add(id);$("mt-sel").textContent=`${mtSel.size} selecionado(s)`;};
 function camadasHtml(m){
   const C=(MT._resumo||{}).camadas||["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação"];
-  return `<div class="mt-cam">${C.map((c,i)=>`<span class="${m.camadas_ok[i]==="1"?"ok":"pend"}" title="${esc(c)}: ${m.camadas_ok[i]==="1"?"obtida":"faltando"}">${esc(c.split(" ")[0].slice(0,9))}</span>`).join("")}</div>`;
+  const vals=(m.camadas_val||"").split("|");
+  return `<div class="mt-cam">${C.map((c,i)=>`<span class="${m.camadas_ok[i]==="1"?"ok":"pend"}" title="${esc(c)}: ${m.camadas_ok[i]==="1"?esc(vals[i]||"obtida"):"ainda não obtida"}">${esc(c.split(" ")[0].slice(0,9))}</span>`).join("")}</div>`;
 }
 function desenhaMotores(){
   if(!$("mt-lista"))return;
@@ -1750,29 +1784,42 @@ function desenhaMotores(){
   enche("mt-familia",[...new Set(MT.map(m=>m.familia))].sort());
   enche("mt-segmento",[...new Set(MT.map(m=>m.segmento))].sort());
   enche("mt-uf",[...new Set(MT.map(m=>m.uf).filter(Boolean))].sort());
+  if($("mo-area"))enche("mo-area",[...new Set(MT.map(m=>m.area_atuacao).filter(Boolean))].sort());
+  if($("mo-mets"))$("mo-mets").innerHTML=[[IC("#1E7E4B"),R.ativas??MT.filter(m=>m.ativa).length,"Ativos hoje (época ou menção)"],
+    [IC("#94A3B8"),R.inativas??MT.filter(m=>!m.ativa).length,"Ocultos até menção ou época"],
+    [IC("#7B4BE0"),(MT._novas||[]).length,"Novas oportunidades anunciadas"],
+    [IC("#C05E00"),MT.filter(m=>m.ativa&&m.faltam).length,"Ativos com camadas faltando"]]
+    .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
   const rows=mtFiltrados();
-  $("mt-conta").textContent=`${rows.length} de ${MT.length} pontos · ${rows.filter(m=>m.goias).length} de Goiás/Goiânia`;
+  $("mt-conta").textContent=`motores regulares e gerais — saem todo dia e capturam qualquer oportunidade`;
+  if($("mo-conta"))$("mo-conta").textContent=`${rows.length} de ${MT.length} fontes específicas no filtro · ${rows.filter(m=>m.goias).length} de Goiás/Goiânia · emendas parlamentares têm calendário próprio e não entram aqui`;
   // diários oficiais, justiça, legislativo e plataformas: caixas próprias (azul à esquerda)
   const oficiais=[...(MT._of||[]),...(MT._plat||[]).map(p=>({...p,tipo:"plataforma"}))];
   const fam0=$("mt-familia").value,uf0=$("mt-uf").value,q0=$("mt-busca").value.toLowerCase();
   const ofRows=(!fam0&&!uf0)?oficiais.filter(o=>!q0||o.nome.toLowerCase().includes(q0)):[];
-  const semaforo=s=>/captando|satisfat/.test(s)?["verde","funcionando adequadamente"]:/bloque|não/.test(s)&&!/sem leitura/.test(s)?["vermelho","não funcionando"]:/sem leitura/.test(s)?["cinza","sem execução ainda"]:["amarelo","parcialmente"];
+  /* borda direita: verde = motor funcionando; vermelho = bloqueio/inoperância que precisa de ação; sem cor nos demais */
+  const semaforo=s=>/captando|satisfat|lida|funcion/.test(s)&&!/bloque/.test(s)?["verde","funcionando"]:/bloque|inoper|não funcion/.test(s)?["vermelho","bloqueio ou inoperância — precisa de ação"]:["neutro",""];
+  const CAM=(MT._resumo||{}).camadas||["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação"];
+  const trintaDias=o=>`<div class="mt-dias" title="últimos 30 dias: cor do dia e trecho aproveitável">${(o.dias||[]).map(x=>`<span class="mt-dia ${x.cor}" title="${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))}${x.http?" · HTTP "+x.http:""}${x.n?" · "+x.n+" achado(s)":""}${x.t?" · "+esc(x.t):x.cor==="cinza"?" · não executado":x.cor==="azul"?" · funcionou, sem oportunidade":x.cor==="vermelho"?" · falha / inoperante":""}"></span>`).join("")}</div>
+    ${(o.dias||[]).filter(x=>x.t).slice(-3).map(x=>`<div class=meta>· ${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} — ${x.u?`<a href="${esc(x.u)}" target=_blank rel="noopener noreferrer">${esc(x.t)}</a>`:esc(x.t)}</div>`).join("")}`;
   const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Locais de publicação oficial e plataformas <span class=meta>${ofRows.length}</span></div>
     ${ofRows.map(o=>{const st=semaforo(o.situacao);const ativo=mtAtivo(o.id);return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
       <div class="mt-corpo"><div><b>${esc(o.nome)}</b> <span class=tag>${esc(o.tipo||"oficial")}</span></div>
-        <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · situação: <strong>${esc(o.situacao)}</strong>${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+" edital(is)":""}</div></div>
-      <div class="mt-lado-dir"><span class="mt-sem ${st[0]}" title="${st[1]}"></span>${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
+        <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · ${esc(o.situacao)}${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+" edital(is)":""}</div>
+        ${trintaDias(o)}</div>
+      <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
   // agregação por família → segmento
   const grupos={};rows.forEach(m=>{(grupos[m.familia]=grupos[m.familia]||{})[m.segmento]=(grupos[m.familia][m.segmento]||[]).concat(m);});
-  $("mt-lista").innerHTML=Object.keys(grupos).sort().map(f=>`
+  const listaFontes=Object.keys(grupos).sort().map(f=>`
     <div class="mt-fam"><div class="mt-famt">${esc(f)} <span class=meta>${Object.values(grupos[f]).reduce((s,a)=>s+a.length,0)} ponto(s)</span></div>
     ${Object.keys(grupos[f]).sort().map(sg=>`<div class="mt-seg"><div class="mt-segt">${esc(sg)} <span class=meta>${grupos[f][sg].length}</span></div>
       ${grupos[f][sg].map(m=>{const st=semaforo(m.validacao==="bloqueada"?"bloqueada":m.validacao.includes("encontrado")?"captando":m.validacao.includes("não lida")?"sem leitura":"parcial");const ativo=mtAtivo(m.id);
         return `<div class="mt-item ${m.faltam?"":"completo"} sem-${st[0]}" data-id="${esc(m.id)}">
-        <div class="mt-lado-esq">${iconeMotor(m.id,ativo)}<label class="mt-chk" title="selecionar"><input type="checkbox" ${mtSel.has(m.id)?"checked":""} onchange="mtToggle('${esc(m.id)}')"></label></div>
+        <div class="mt-lado-esq">${iconeMotor(m.id,ativo)}</div>
         <div class="mt-corpo">
-          <div><b>${esc(m.programa)}</b> <span class=meta>· ${esc(m.orgao||"")}</span></div>
+          <div><b>${esc(m.programa)}</b> <span class=meta>· ${esc(m.orgao||"")}</span> <span class=tag title="${esc(m.motivo_status||"")}">${m.ativa?"ativo":"inativo"}</span> <span class=tag>${esc(m.esfera||"")}</span> <span class=tag>${esc(m.natureza||"")}</span></div>
+          <div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}</div>
           ${camadasHtml(m)}
           <div class=meta style="margin-top:4px">
             ${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag title="confiança do endereço">${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"}
@@ -1784,13 +1831,22 @@ function desenhaMotores(){
                     :`<div class="mt-diag ok">✓ 11 camadas obtidas — motor pode parar</div>`}
           ${mtPendente(m.id)?`<div class=meta style="margin-top:4px">🕯 busca imediata pedida em ${esc(mtPendente(m.id))} — aguardando resultado da próxima execução</div>`:""}
         </div>
-        <div class="mt-lado-dir"><span class="mt-sem ${st[0]}" title="${st[1]}"></span>${iconesAcao(m.id,m.programa)}</div></div>`;}).join("")}</div>`).join("")}</div>`).join("");
-  $("mt-lista").innerHTML=oficiaisHtml+($("mt-lista").innerHTML||'<div class=meta>Nenhum ponto neste filtro.</div>');
-  $("mt-sel").textContent=`${mtSel.size} selecionado(s)`;
+        <div class="mt-lado-dir">${iconesAcao(m.id,m.programa)}</div></div>`;}).join("")}</div>`).join("")}</div>`).join("");
+  // caixa 1 = motores regulares e gerais; caixa 2 = Motores Opressores (fontes específicas) + novas anunciadas
+  const novas=(MT._novas||[]);
+  const novasHtml=novas.length?`<div class="mt-fam"><div class="mt-famt">Novas oportunidades anunciadas — sem referência histórica <span class=meta>${novas.length}</span></div>
+    ${novas.map((n,i)=>`<div class="mt-item nova sem-verde" data-id="nova-${i}"><div class="mt-lado-esq">${iconeMotor("nova-"+i,true)}</div>
+      <div class="mt-corpo"><div><b>${esc(n.titulo)}</b> <span class=tag>nova</span> <span class=tag>${esc(n.uf||"BR")}</span></div>
+        <div class=meta>anunciada em ${esc(n.fonte||"")} em ${n.em?br(n.em):"—"}${n.prazo?" · prazo "+esc(n.prazo):""}${n.valor?" · "+esc(n.valor):""} · <a href="${esc(n.url)}" target=_blank rel="noopener noreferrer">publicação ↗</a></div>
+        <div class="mt-diag">caixa criada automaticamente: oportunidade sem referência nas 260 fontes — o motor persegue as 11 camadas a partir da publicação</div></div>
+      <div class="mt-lado-dir">${iconesAcao("nova-"+i,n.titulo)}</div></div>`).join("")}</div>`:"";
+  $("mt-lista").innerHTML=oficiaisHtml||'<div class=meta>Nenhum local de publicação neste filtro.</div>';
+  if($("mo-lista"))$("mo-lista").innerHTML=(novasHtml+listaFontes)||'<div class=meta>Nenhuma fonte ativa neste filtro — inativas ficam ocultas até menção em local oficial ou época prevista.</div>';
+  if($("mt-sel"))$("mt-sel").textContent=`${mtFiltrados().filter(m=>mtAtivo(m.id)).length} com fogo no filtro atual`;
 }
 window.mtAtivar=function(){
-  const sel=MT.filter(m=>mtSel.has(m.id));
-  if(!sel.length){abreModal("<h3 style=\"margin:0\">Nenhum ponto selecionado</h3>","<p>Marque os pontos que estão dando problema e ative o motor só neles.</p>");return;}
+  const sel=mtFiltrados().filter(m=>mtAtivo(m.id));
+  if(!sel.length){abreModal("<h3 style=\"margin:0\">Nenhum motor com fogo no filtro</h3>","<p>Acenda (fogo) os motores que quer rodar agora — os com poça de óleo ficam de fora.</p>");return;}
   const pedido={gerado_em:new Date().toISOString(),fontes:sel.map(m=>m.id),programas:sel.map(m=>m.programa),
     instrucao:"Rodar apenas os motores destes pontos e devolver diagnóstico: camadas obtidas, faltantes, causa e ação."};
   const blob=new Blob([JSON.stringify(pedido,null,2)],{type:"application/json"});
@@ -1804,7 +1860,7 @@ window.mtAtivar=function(){
      <p><strong>Selecionados:</strong> ${sel.map(m=>esc(m.programa)).join(" · ")}</p>`);
 };
 async function iniciaMotores(){ await carregaMotores(); desenhaMotores();
-  ["mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca"].forEach(id=>$(id).addEventListener("input",desenhaMotores)); }
+  ["mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca","mo-area","mo-natureza","mo-esfera","mo-status","mo-busca"].forEach(id=>{if($(id))$(id).addEventListener("input",desenhaMotores);}); }
 
 /* ================= BÚSSOLA · réplica do modelo ================= */
 let bzUFsel="";

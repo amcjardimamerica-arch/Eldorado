@@ -155,8 +155,120 @@ def diagnostico(fonte: dict, camadas: list[dict], sensor: dict | None, bloqueio:
             "obtidas": len(camadas) - len(faltam), "total": len(camadas)}
 
 
+_AREA_FAM = {"PNAB / Aldir Blanc": "cultura", "Lei Rouanet": "cultura", "Lei Goyazes": "cultura",
+             "Lei de Incentivo ao Esporte": "esporte", "Fundo da Criança (FMDCA/FIA)": "crianca_adolescente",
+             "Assistência social (FMAS/FEAS)": "assistencia_social", "Fundo do Idoso": "pessoa_idosa",
+             "PRONON / PRONAS": "saude", "Destinação judicial": "justica", "Ministério Público": "justica",
+             "Receita Federal (doação)": "doacao_bens"}
+
+
+def area_da_fonte(f: dict, fam: str) -> str:
+    if fam in _AREA_FAM:
+        return _AREA_FAM[fam]
+    a = (f.get("area") or "").lower()
+    for k, v in (("cultura", "cultura"), ("esporte", "esporte"), ("educa", "educacao"), ("saude", "saude"),
+                 ("assist", "assistencia_social"), ("crian", "crianca_adolescente"), ("idos", "pessoa_idosa"),
+                 ("ambiente", "meio_ambiente"), ("difus", "direitos_difusos"), ("legislativo", "justica")):
+        if k in a:
+            return v
+    return "outros"
+
+
+def _mencoes_recentes(dias: int = 60) -> list[dict]:
+    """Oportunidades captadas pelos motores regulares (diários, plataformas, API)
+    nos últimos dias — é a MENÇÃO que ativa uma fonte específica."""
+    from datetime import date as _d, timedelta as _td
+    try:
+        from .nucleo import carregar_oportunidades
+        ops = carregar_oportunidades().values()
+    except Exception:
+        return []
+    corte = (_d.today() - _td(days=dias)).isoformat()
+    # só o que os MOTORES REGULARES (diários, justiça, legislativo, plataformas)
+    # captaram de fato; o acervo histórico do PNCP/Querido Diário não é menção
+    return [o for o in ops if (o.get("coletado_em") or "")[:10] >= corte
+            and str(o.get("tipo_fonte", "")).startswith(("sensor_", "investigacao_"))
+            and (o.get("destinacao") or {}).get("elegivel") is not False]
+
+
+_GENERICOS = {"secretaria", "municipal", "estadual", "federal", "governo", "estado", "goiás", "goiania",
+              "goiânia", "programa", "fundo", "edital", "editais", "projeto", "projetos", "apoio", "recursos",
+              "captação", "captacao", "entidade", "entidades", "social", "sociais", "cultura", "cultural",
+              "culturais", "esporte", "esportivo", "esportivos", "educação", "educacao", "educativo", "saúde",
+              "saude", "ambiente", "ambiental", "pessoa", "pessoas", "física", "fisica", "jurídica", "juridica",
+              "destinação", "destinacao", "chamamento", "público", "publico", "pública", "publica", "termo",
+              "fomento", "convênio", "convenio", "parceria", "emenda", "emendas", "doação", "doacao",
+              "incentivo", "nacional", "brasil", "assistência", "assistencia", "crianças", "criancas",
+              "adolescentes", "idosos", "comunitária", "comunitario", "comunitário"}
+
+
+def _toks(txt: str) -> set:
+    return {t for t in re.findall(r"[a-zà-ú]{5,}", (txt or "").lower()) if t not in _GENERICOS}
+
+
+def status_da_fonte(f: dict, fam: str, mencoes: list[dict], prazo: dict, hoje) -> dict:
+    """ATIVA só quando: há menção a este edital nos locais oficiais/plataformas,
+    OU é a época prevista pelo histórico/regramento. Fora disso, INATIVA (oculta)."""
+    toks = _toks(f["programa"]) | _toks(f.get("orgao") or "")
+    toks_chave = _toks(f["programa"])
+    # menção exige TODOS os termos distintivos do programa (até 3); programa sem
+    # termo distintivo só ativa por época — nunca por casamento genérico
+    chave = sorted(toks_chave, key=len, reverse=True)[:3]
+    mencionada = [m for m in mencoes
+                  if chave and all(t in (m.get("titulo", "") + " " + (m.get("evidencia") or "")).lower() for t in chave)]
+    regime = (prazo or {}).get("regime_de_prazo") or ""
+    pd = (prazo or {}).get("proxima_data") or {}
+    mes = hoje.isoformat()[:7]
+    em_epoca = False; base_epoca = None
+    if regime.startswith("permanente"):
+        em_epoca, base_epoca = True, "fonte permanente: captação o ano inteiro"
+    elif pd.get("inicio") and pd.get("fim") and pd["inicio"][:7] <= mes <= pd["fim"][:7]:
+        em_epoca, base_epoca = True, f'época prevista: {pd["inicio"]} a {pd["fim"]}'
+    elif pd.get("mes") and pd["mes"] == mes:
+        em_epoca, base_epoca = True, f'mês previsto pelo histórico: {pd["mes"]}'
+    ativa = bool(mencionada) or em_epoca
+    return {"ativa": ativa,
+            "motivo": (f'mencionada em {len(mencionada)} publicação(ões) recente(s)' if mencionada
+                       else base_epoca if em_epoca
+                       else "sem menção nos locais oficiais e fora da época prevista"),
+            "mencoes": [{"titulo": (m.get("titulo") or "")[:110], "url": m.get("url"),
+                         "fonte": m.get("fonte_nome"), "em": (m.get("coletado_em") or "")[:10]} for m in mencionada[:3]],
+            "em_epoca": em_epoca, "proxima": pd or None}
+
+
+def _trinta_dias(reg: dict, hoje) -> list[dict]:
+    """Os últimos 30 dias do sensor: cor e trecho aproveitável de cada dia."""
+    from datetime import timedelta as _td
+    saida = []
+    for i in range(29, -1, -1):
+        d = (hoje - _td(days=i)).isoformat()
+        r = reg.get(d)
+        saida.append({"d": d, "cor": (r or {}).get("cor", "cinza"), "n": (r or {}).get("achados", 0),
+                      "t": (r or {}).get("trecho"), "u": (r or {}).get("url"), "http": (r or {}).get("http")})
+    return saida
+
+
+def _novas_sem_referencia(mencoes: list[dict], fontes: list[dict]) -> list[dict]:
+    """Oportunidade anunciada nos locais oficiais que NÃO casa com nenhuma das
+    260: ganha caixa própria (nova oportunidade histórica)."""
+    toks_f = [(_toks(f["programa"]) | _toks(f.get("orgao") or "")) for f in fontes]
+    novas = []
+    for m in mencoes:
+        tm = _toks(m.get("titulo", "") + " " + (m.get("evidencia") or "")[:300])
+        if not tm:
+            continue
+        casa = any(len(tm & tf) >= 2 for tf in toks_f if tf)
+        if not casa:
+            novas.append(m)
+    return novas[:60]
+
+
 def run() -> dict:
+    from datetime import date as _date
+    hoje = _date.today()
     fontes = load_json(ROOT / "config/fontes_captacao_260.json").get("fontes", [])
+    mencoes = _mencoes_recentes()
+    diario = load_json(ROOT / "estado/esquadra_diario.json").get("sensores", {}) if (ROOT / "estado/esquadra_diario.json").exists() else {}
     esq = load_json(ROOT / "estado/esquadra.json").get("sensores", {}) if (ROOT / "estado/esquadra.json").exists() else {}
     blq = load_json(ROOT / "estado/bloqueios.json").get("dominios", {}) if (ROOT / "estado/bloqueios.json").exists() else {}
     prazos = {p["programa"]: p for p in load_json(ROOT / "biblioteca_alexandria/fontes/parecer_prazos.json").get("lista", [])} \
@@ -187,9 +299,16 @@ def run() -> dict:
         pz = prazos.get(f["programa"], {})
         validacao = ("bloqueada" if b else "não lida ainda" if not s else
                      "lida, edital encontrado" if s.get("achados_total") else "lida, sem edital reconhecido")
+        fam = familia(f["programa"])
+        if fam == "Emendas parlamentares":
+            continue                                   # emendas têm calendário próprio; não entram aqui
+        st = status_da_fonte(f, fam, mencoes, pz, hoje)
         motores.append({
             "id": f["id"], "programa": f["programa"], "orgao": f.get("orgao"), "motor": sid,
-            "familia": familia(f["programa"]), "segmento": segmento(f),
+            "familia": fam, "segmento": segmento(f), "area_atuacao": area_da_fonte(f, fam),
+            "natureza": "privada" if f["nivel"] in ("privada", "internacional") else "publica",
+            "esfera": {"federal": "Brasil", "estadual": "Estado", "municipal": "Município"}.get(f["nivel"], "Privada/Internacional"),
+            "ativa": st["ativa"], "motivo_status": st["motivo"], "mencoes": st["mencoes"], "em_epoca": st["em_epoca"],
             "tipo": f["tipo"], "nivel": f["nivel"], "uf": f.get("uf") or ("BR" if f["nivel"] == "federal" else None),
             "goias": bool(f.get("goias")),
             "pagina": f["sites"][0] if f.get("sites") else None,
@@ -206,6 +325,12 @@ def run() -> dict:
         })
     if con:
         con.close()
+    # ativação automática: o que está ativo hoje vai para os sensores
+    ativas = {m["id"]: m["motivo_status"] for m in motores if m["ativa"]}
+    write_json(ROOT / "estado/ativacao_fontes.json", {"data": hoje.isoformat(), "ativas": ativas,
+               "regra": "fonte específica só sai na época prevista ou após menção em local oficial/plataforma; "
+                        "os motores regulares (diários, justiça, legislativo, API, plataformas) saem todo dia"})
+    novas = _novas_sem_referencia(mencoes, fontes)
     # plataformas indicadas pelo titular (Prosas etc.): rodando de forma satisfatória?
     plataformas = []
     inv = load_json(ROOT / "config/investigacao.json").get("fontes", []) if (ROOT / "config/investigacao.json").exists() else []
@@ -213,6 +338,7 @@ def run() -> dict:
         s = esq.get(f"plat-{p['id']}")
         b = blq.get(urlsplit(p["url"]).hostname)
         plataformas.append({"id": p["id"], "nome": p["nome"], "url": p["url"],
+                            "dias": _trinta_dias(diario.get(f"plat-{p['id']}", {}), hoje),
                             "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
                             "leituras": (s or {}).get("leituras", 0),
                             "situacao": ("bloqueada" if b else "sem leitura ainda" if not s else
@@ -224,6 +350,7 @@ def run() -> dict:
     for e in esp:
         s = esq.get(e["id"]); b = blq.get(urlsplit(e["urls"][0]).hostname)
         oficiais.append({"id": e["id"], "nome": e["nome"], "tipo": e["tipo"], "url": e["urls"][0],
+                         "dias": _trinta_dias(diario.get(e["id"], {}), hoje),
                          "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
                          "situacao": ("bloqueado" if b else "sem leitura ainda" if not s else
                                       "ativo — captando" if s.get("achados_total") else "ativo, sem achados")})
@@ -235,6 +362,11 @@ def run() -> dict:
         "completos": sum(1 for m in motores if m["diagnostico"]["estado"] == "completo"),
         "media_camadas": round(sum(m["obtidas"] for m in motores) / len(motores), 2) if motores else 0,
         "plataformas": plataformas, "oficiais": oficiais,
+        "ativas": len(ativas), "inativas": len(motores) - len(ativas),
+        "novas_sem_referencia": [{"titulo": (m.get("titulo") or "")[:120], "url": m.get("url"),
+                                  "fonte": m.get("fonte_nome"), "em": (m.get("coletado_em") or "")[:10],
+                                  "prazo": m.get("prazo_texto"), "valor": m.get("valor_texto"),
+                                  "uf": m.get("uf"), "nivel": m.get("nivel")} for m in novas],
         "camadas": list(CAMADAS),
     }
     write_json(ROOT / "biblioteca_alexandria/fontes/motores.json", {**resumo, "motores": motores})
@@ -242,8 +374,11 @@ def run() -> dict:
     pasta = ROOT / "docs/dados"; pasta.mkdir(parents=True, exist_ok=True)
     leve = [{k: m[k] for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias",
                               "pagina", "confianca_pagina", "validacao", "ultima_leitura", "achados", "http",
-                              "regime_prazo", "certeza_prazo", "obtidas")}
+                              "regime_prazo", "certeza_prazo", "obtidas", "area_atuacao", "natureza", "esfera",
+                              "ativa", "motivo_status", "em_epoca")}
             | {"camadas_ok": "".join("1" if c["ok"] else "0" for c in m["camadas"]),
+               "camadas_val": "|".join((c["valor"] or "").replace("|", "/")[:90] for c in m["camadas"]),
+               "mencoes": " · ".join(x["titulo"][:70] for x in m["mencoes"]) or None,
                "faltam": "|".join(m["diagnostico"]["faltam"]),
                "causa": m["diagnostico"]["causa"], "acao": m["diagnostico"]["acao"],
                "ultimo_titulo": (m["ultimo_edital"] or {}).get("titulo"),
@@ -251,8 +386,8 @@ def run() -> dict:
                "proxima": json.dumps(m["proxima_data"], ensure_ascii=False) if m["proxima_data"] else None}
             for m in motores]
     pac = compactar(leve)
-    pac["resumo"] = {k: v for k, v in resumo.items() if k not in ("plataformas", "oficiais")}
-    pac["plataformas"] = plataformas; pac["oficiais"] = oficiais
+    pac["resumo"] = {k: v for k, v in resumo.items() if k not in ("plataformas", "oficiais", "novas_sem_referencia")}
+    pac["plataformas"] = plataformas; pac["oficiais"] = oficiais; pac["novas"] = resumo["novas_sem_referencia"]
     (pasta / "motores.json").write_text(json.dumps(pac, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return {k: v for k, v in resumo.items() if k not in ("plataformas", "oficiais", "camadas")}
 
