@@ -201,8 +201,12 @@ box-shadow:0 1px 3px #0002}
 @keyframes tremula{from{transform:scaleY(.92) skewX(-3deg)}to{transform:scaleY(1.06) skewX(3deg)}}
 @keyframes sobe{0%{transform:translateY(4px);opacity:.75}100%{transform:translateY(-9px) scale(1.5);opacity:0}}
 .mt-ico.oleo .poca{fill:#111318}.mt-ico.oleo .poca2{fill:#2a2f3a}.mt-ico.oleo .brilho{fill:#7fa0c9;opacity:.8}
-.mt-ico.oleo .jorro{transform-origin:19px 22px;animation:jorra 1.6s ease-in-out infinite}
-@keyframes jorra{0%{transform:scaleY(.55);opacity:.55}50%{transform:scaleY(1.08) translateX(1px);opacity:1}100%{transform:scaleY(.55);opacity:.55}}
+.mt-ico.oleo .pluma{fill:#15181f}.mt-ico.oleo .pluma2{fill:#2b3140}.mt-ico.oleo .gota{fill:#1b1f27}.mt-ico.oleo .reflexo{fill:#8fb0d8;opacity:.75}
+.mt-ico.oleo .jorro{transform-origin:20px 27px;animation:jorra 1.9s ease-in-out infinite}
+.mt-ico.oleo .gota{animation:respinga 1.9s ease-out infinite}
+.mt-ico.oleo .gota:nth-of-type(2){animation-delay:.3s}.mt-ico.oleo .gota:nth-of-type(3){animation-delay:.6s}.mt-ico.oleo .gota:nth-of-type(4){animation-delay:.9s}
+@keyframes jorra{0%,100%{transform:scaleY(.9)}50%{transform:scaleY(1.06)}}
+@keyframes respinga{0%{transform:translateY(6px);opacity:0}30%{opacity:1}100%{transform:translateY(-4px);opacity:.15}}
 .mt-dias{display:flex;gap:2px;margin-top:6px;flex-wrap:wrap}
 .mt-dia{width:11px;height:11px;border-radius:3px;background:#DEE2E8;display:block}
 .mt-dia.cinza{background:#DEE2E8}.mt-dia.azul{background:#2F79D0}.mt-dia.verde{background:var(--ok)}.mt-dia.vermelho{background:var(--urgente)}
@@ -432,6 +436,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div class="mets" id="fi-mets"></div>
 <div style="font-weight:700;font-size:13.5px;margin:4px 0 2px;color:#C05E00">Novas oportunidades</div>
 <div class="novas" id="fi-novas"></div>
+<div class="novas" id="fi-possiveis"></div>
 <span class="verlink" onclick="modulo('eldorado');mostra('editais')">Ver todas oportunidades ›</span>
 </div>
 
@@ -606,7 +611,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <div class="bz-filtros" style="margin:6px 0 10px">
     <select id="mo-area"><option value="">Todas as áreas de atuação</option></select>
     <select id="mo-natureza"><option value="">Pública e privada</option><option value="publica">Fonte pública</option><option value="privada">Fonte privada</option></select>
-    <select id="mo-esfera"><option value="">Todas as esferas</option><option value="Município">Município</option><option value="Estado">Estado</option><option value="Brasil">Brasil</option><option value="Privada/Internacional">Privada / Internacional</option></select>
+    <select id="mo-esfera"><option value="">Todas as esferas</option><option value="Município">Município</option><option value="Estado">Estado</option><option value="Brasil">Brasil</option><option value="Internacional">Internacional</option></select>
     <select id="mo-status"><option value="ativo">Acesos (fogo)</option><option value="inativo">Apagados (poça de óleo)</option><option value="">Todos</option></select>
     <input id="mo-busca" placeholder="buscar edital ou órgão…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
     <span class="bz-limpar" onclick="moLimpar()">⨯ Limpar</span>
@@ -1046,7 +1051,10 @@ function desenhaRadar(){
   const nacionais=eds.filter(e=>!e.uf&&e.abrangencia==="nacional").length;
   // só entram no seletor os estados que têm edital próprio
   const ufs=UFS.filter(u=>porUF[u]>0);
-  const areas=[...new Set(eds.map(e=>e.area))].sort();
+  /* o filtro de Área é o MESMO em todo o painel: áreas canônicas presentes nos
+     editais OU nas fontes ativas dos Motores Opressores */
+  const FA=D.fontes_ativas||[];
+  const areas=[...new Set([...eds.map(e=>e.area),...FA.map(f=>f.area)].filter(Boolean))].sort((a,b)=>AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt"));
   const niveis=[...new Set(eds.map(e=>e.nivel).filter(Boolean))].sort();
   const enche=(id,vals,rot)=>{const s=$(id);s.length=1;vals.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=rot?rot(v):v;s.appendChild(o);});};
   enche("fi-uf",ufs,u=>`${u} (${porUF[u]})`);
@@ -1098,6 +1106,12 @@ function desenhaRadar(){
       [ICO.relogio,prox.length,"Prazos próximos",
        "etapa 5 cumprida — documentos preenchidos e nota técnica emitida, prontos para envio"]]
       .map(x=>`<div class="met linha" title="${esc(x[3])}">${x[0]}<div><div class=v>${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
+    /* EDITAIS POSSÍVEIS — fontes ativas nos Motores Opressores (época prevista ou
+       menção) que casam com o filtro: o mesmo banco alimenta a tela inicial */
+    const casaUFf=f=>!uf?true:uf==="__nac__"?(!f.uf&&f.abrangencia==="nacional"):(f.uf===uf||(!f.uf&&f.abrangencia==="nacional"));
+    const NIV2={federal:"federal",estadual:"estadual",municipal:"municipal"};
+    const possiveis=FA.filter(f=>casaUFf(f)&&(!ar||f.area===ar)&&(!ni||f.nivel===ni));
+    window._possiveis=possiveis;
     const novas=[...abertos].sort((a,b)=>String(b.detalhes.coletado_em||"").localeCompare(String(a.detalhes.coletado_em||""))).slice(0,5);
     $("fi-novas").innerHTML=novas.length?novas.map(e=>`<div class=item data-id="${esc(e.id)}">
       <span class=ponto style="background:${AREA(e.area).cor}"></span>
@@ -1110,6 +1124,18 @@ function desenhaRadar(){
     $("fi-novas").querySelectorAll(".item").forEach(el=>{
       const ed=eds.find(x=>x.id===el.dataset.id);
       ligaTip(el,resumoTip(ed));el.onclick=()=>detalheEdital(ed);});
+    // editais possíveis (fontes ativas) — mesma seleção do Radar
+    const bloco=$("fi-possiveis");
+    if(bloco){bloco.innerHTML=possiveis.length?`<div style="font-weight:700;font-size:13.5px;margin:12px 0 2px;color:#0E2A55">Editais possíveis <span class=meta style="font-weight:500">— fontes ativas nos Motores Opressores (${possiveis.length})</span></div>`
+      +possiveis.slice(0,8).map(f=>`<div class=item data-f="${esc(f.id)}">
+        <span class=ponto style="background:${AREA(f.area).cor}"></span>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(f.programa)}</span>
+        <span class=tag style="flex:none">${esc(AREA(f.area).rotulo)}</span><span class=tag style="flex:none">${esc(f.esfera||"")}</span>
+        <span class=meta style="flex:none">${f.janela?br(f.janela.inicio)+"→"+br(f.janela.fim):esc((f.regime_prazo||"").replace(/_/g," ").slice(0,22))}</span></div>`).join("")
+      +(possiveis.length>8?`<div class=meta style="padding:6px 2px">mostrando 8 de ${possiveis.length} — todas na Bússola → Motores Opressores</div>`:""):"";
+      bloco.querySelectorAll(".item").forEach(el=>{const f=possiveis.find(x=>x.id===el.dataset.f);
+        ligaTip(el,`<strong>${esc(f.programa)}</strong><br>${esc(f.orgao||"")}<br>${esc(AREA(f.area).rotulo)} · ${esc(f.esfera||"")} · ${esc(f.natureza||"")}<br>${esc(f.motivo||"")}${f.janela?"<br>janela: "+br(f.janela.inicio)+" a "+br(f.janela.fim):""}<br><em>fonte ativa — o motor persegue as 11 camadas</em>`);
+        el.onclick=()=>{modulo("eldorado");mostra("bussola");};});}
     /* O Calendário de Editais atua EM CONJUNTO com o Radar: recebe sempre o
        mesmo recorte de UF, área e nível. O critério de prazo fica de fora
        porque o ciclo (resultado e recurso) segue depois do encerramento. */
@@ -1204,12 +1230,16 @@ function desenhaGantt(){
       ||(b.das_260&&b.goias?1:0)-(a.das_260&&a.goias?1:0)
       ||(b.das_260?1:0)-(a.das_260?1:0)||b.forca-a.forca).slice(0,14);
   const corPrev=(D.previsoes||{}).cor||"#D5D9DE";
+  /* fontes ATIVAS com janela prevista: entram como estimativa, só em meses
+     futuros (regra de fidelidade), com a mesma seleção do Radar */
+  const fontesJan=mesFuturo?(D.fontes_ativas||[]).filter(f=>f.janela&&cruza(f.janela.inicio,f.janela.fim)
+      &&(!uf0||uf0==="__nac__"?(!uf0||!f.uf):(f.uf===uf0||!f.uf))&&(!ar0||f.area===ar0)&&(!ni0||f.nivel===ni0)).slice(0,8):[];
 
   const diasCab=Array.from({length:nd},(_,i)=>{
     const dt=new Date(gAno,gMes,i+1);
     return `<span><b>${i+1}</b><i>${SEM[dt.getDay()]}</i></span>`;}).join("");
   let linhas=`<div class=gantt style="--nd:${nd}"><div></div><div class=gdias>${diasCab}</div>`;
-  if(!eds.length&&!prevs.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">`
+  if(!eds.length&&!prevs.length&&!fontesJan.length)linhas+=`<div class=grotulo style="grid-column:1/-1;color:var(--suave)">`
     +`Nenhum edital validado com ciclo neste mês.`
     +` O calendário acompanha o filtro do Radar e mostra apenas editais que cumpriram a etapa 2.</div>`;
 
@@ -1263,9 +1293,20 @@ function desenhaGantt(){
         style="left:${l}%;width:${w}%;background:${aberta?"#F5E6A8":corPrev};color:#4a4326"
         title="${esc(rot)}: ${ddmm(pv.inicio)} a ${ddmm(pv.fim)} · força ${pv.forca} · ${esc(pv.base||"")}">${antes?"◂ ":""}${rot}${depois?" ▸":""}</span></div>`;
   });
+  fontesJan.forEach(f=>{
+    const [d1,d2,antes,depois]=recorte(f.janela.inicio,f.janela.fim);
+    const [l,w]=pct(d1,d2);
+    linhas+=`<div class=grotulo style="color:var(--suave)" title="${esc(f.programa)} — ${esc(f.motivo||"")}"><span style="opacity:.8">${esc(f.programa.slice(0,40))}</span></div>
+      <div class=gfaixa><span class="gbarra gprevisto catalogada" data-fonte="${esc(f.id)}" style="left:${l}%;width:${w}%;background:${AREA(f.area).cor}55;color:#333;outline-color:${AREA(f.area).cor}"
+        title="fonte ativa nos Motores Opressores · janela estimada ${ddmm(f.janela.inicio)} a ${ddmm(f.janela.fim)} (${esc(f.certeza_prazo||"")}) · ${esc(f.motivo||"")}">${antes?"◂ ":""}estimado · ${esc(f.esfera||"")}${depois?" ▸":""}</span></div>`;
+  });
   linhas+="</div>";
   $("g-corpo").innerHTML=linhas;
-  $("g-corpo").querySelectorAll(".gprevisto").forEach(el=>{
+  $("g-corpo").querySelectorAll(".gprevisto[data-fonte]").forEach(el=>{
+    const f=(D.fontes_ativas||[]).find(x=>x.id===el.dataset.fonte); if(!f)return;
+    ligaTip(el,`<strong>${esc(f.programa)}</strong><br>${esc(f.orgao||"")}<br>${esc(AREA(f.area).rotulo)} · ${esc(f.esfera||"")}<br>janela estimada: ${br(f.janela.inicio)} a ${br(f.janela.fim)}<br>${esc(f.motivo||"")}<br><em>estimativa — vira edital quando o motor confirmar</em>`);
+    el.onclick=()=>{modulo("eldorado");mostra("bussola");};});
+  $("g-corpo").querySelectorAll(".gprevisto:not([data-fonte])").forEach(el=>{
     const pv=((D.previsoes||{}).itens||[]).find(x=>x.id===el.dataset.prev);
     if(!pv)return;
     ligaTip(el,`<strong>${esc(pv.titulo)}</strong><br>${esc(pv.orgao||"")}<br>
@@ -1710,12 +1751,16 @@ function iconeMotor(id,ativo){
       <path class="chama" d="M16 12c4 5 8 8 8 15a8 8 0 0 1-16 0c0-4 2-6 3-9 1 3 2 4 3 4 0-4 0-7 2-10z"/>
       <path class="chama2" d="M16 22c2 3 4 4 4 7a4 4 0 0 1-8 0c0-2 1-3 2-5 .5 1.5 1 2 2 2 0-2 0-3 0-4z"/></svg></button>`
     :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (poça de óleo) — clique para acender e ativar nas rotinas automáticas">
-      <svg viewBox="0 0 40 40" width="34" height="34">
-        <g class="jorro"><path d="M19 22c-.6-5 .4-9 1.4-13 .8-3 .2-5-.8-7" stroke="#1b1f27" stroke-width="2.6" stroke-linecap="round" fill="none"/>
-          <circle cx="19.8" cy="4" r="1.7" fill="#1b1f27"/><circle cx="16.5" cy="7.5" r="1.1" fill="#1b1f27"/><circle cx="23.2" cy="9" r="1.3" fill="#1b1f27"/></g>
-        <path class="poca" d="M6 31c-3-3 1-7 6-7 2 0 3-2 6-2 4 0 5 2 9 1 5-1 10 2 9 6-1 3-6 3-9 4-3 1-4 3-8 3-3 0-4-2-7-2-3 0-5 0-6-3z"/>
-        <path class="poca2" d="M11 30c-1-2 2-4 5-3 2 0 3-1 5-1 3 0 4 1 7 1 3 0 5 2 4 4-1 2-4 1-6 2-2 1-3 2-6 2-2 0-3-1-5-1s-4 0-4-4z"/>
-        <ellipse class="brilho" cx="15" cy="29" rx="3.6" ry="1"/><ellipse class="brilho" cx="27" cy="32.5" rx="2" ry=".7"/></svg></button>`;
+      <svg viewBox="0 0 40 44" width="34" height="37">
+        <g class="jorro">
+          <path class="pluma" d="M20 26c-4-6-5-11-2.5-15.5C19 8 20 6 20 3c0 3 1 5 2.5 7.5C25 15 24 20 20 26z"/>
+          <path class="pluma2" d="M20 24c-2-4-2.6-7.5-1-10.5C19.6 12 20 10.5 20 9c0 1.5.4 3 1 4.5 1.6 3 1 6.5-1 10.5z"/>
+          <ellipse class="gota" cx="13.5" cy="12" rx="1.9" ry="2.6"/><ellipse class="gota" cx="27" cy="9.5" rx="2.2" ry="3"/>
+          <ellipse class="gota" cx="9.5" cy="19" rx="1.4" ry="1.9"/><ellipse class="gota" cx="30.5" cy="17" rx="1.6" ry="2.2"/>
+          <ellipse class="reflexo" cx="19" cy="14" rx=".9" ry="3"/></g>
+        <path class="poca" d="M5 34c-2.5-3 1.5-6.5 6.5-6.5 2 0 3-1.5 6-1.5 3.5 0 4.5 1.5 8.5 1 5-.6 10 1.5 9 5.2-.8 3-5.5 3.2-8.5 4-3 .9-4.4 2.8-8 2.8-3 0-4.2-1.8-7-1.8-3 0-5.5.2-6.5-3.2z"/>
+        <path class="poca2" d="M11 33c-1-2 2-3.6 5-3 2 .4 3-.8 5.5-.8 3 0 4 1 7 1 3 0 4.8 1.6 3.8 3.4-1 1.8-4 1.2-6 2-2 .8-3 1.8-6 1.8-2 0-3-.8-5-.8s-3.8 0-4.3-3.6z"/>
+        <ellipse class="brilho" cx="14.5" cy="31.6" rx="3.6" ry="1"/><ellipse class="brilho" cx="27" cy="35.6" rx="2.2" ry=".7"/></svg></button>`;
 }
 /* fósforo (busca imediata) · upload (alimentar manualmente) · link (aprendizado) */
 function iconesAcao(id,nome){
@@ -1790,7 +1835,7 @@ function camadasHtml(m){
   const vals=(m.camadas_val||"").split("|");
   return `<div class="mt-cam">${C.map((c,i)=>`<span class="${m.camadas_ok[i]==="1"?"ok":"pend"}" title="${esc(c)}: ${m.camadas_ok[i]==="1"?esc(vals[i]||"obtida"):"ainda não obtida"}">${esc(c.split(" ")[0].slice(0,9))}</span>`).join("")}</div>`;
 }
-const rotArea0=a=>(D.areas&&D.areas[a]||{}).rotulo||({justica:"Justiça e Ministério Público",outros:"Outros"})[a]||a;
+const rotArea0=a=>(D.areas&&D.areas[a]||{}).rotulo||a;
 function desenhaMotores(){
   if(!$("mt-lista"))return;
   const R=MT._resumo||{};
@@ -1805,7 +1850,7 @@ function desenhaMotores(){
   enche("mt-segmento",[...new Set(MT.map(m=>m.segmento))].sort());
   enche("mt-uf",[...new Set(MT.map(m=>m.uf).filter(Boolean))].sort());
   if($("mo-area")){const s=$("mo-area");const v0=s.value;s.length=1;
-    [...new Set(MT.map(m=>m.area_atuacao).filter(Boolean))].map(a=>[a,rotArea0(a)]).sort((x,y)=>x[1].localeCompare(y[1],"pt"))
+    (D.areas_canonicas||Object.keys(D.areas||{})).map(a=>[a,rotArea0(a)]).sort((x,y)=>x[1].localeCompare(y[1],"pt"))
       .forEach(([a,r])=>{const o=document.createElement("option");o.value=a;o.textContent=r;s.appendChild(o);});s.value=v0;}
   if($("mo-mets"))$("mo-mets").innerHTML=[[IC("#1E7E4B"),MT.filter(m=>mtAtivo(m.id)).length,"Acesos (automático ou manual)"],
     [IC("#94A3B8"),MT.filter(m=>!mtAtivo(m.id)).length,"Apagados (poça de óleo)"],
@@ -1844,7 +1889,7 @@ function desenhaMotores(){
       <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
   // agregação por família → segmento
   /* categorias APENAS por área de atuação (rótulos da página inicial) */
-  const rotArea=a=>(D.areas&&D.areas[a]||{}).rotulo||({justica:"Justiça e Ministério Público",outros:"Outros"})[a]||a;
+  const rotArea=rotArea0;
   const grupos={};rows.forEach(m=>{const k=rotArea(m.area_atuacao);(grupos[k]=grupos[k]||{})["_"]=(grupos[k]["_"]||[]).concat(m);});
   const listaFontes=Object.keys(grupos).sort((a,b)=>a.localeCompare(b,"pt")).map(f=>`
     <div class="mt-fam"><div class="mt-famt"><span class=ponto style="background:${esc((Object.values(D.areas||{}).find(x=>x.rotulo===f)||{}).cor||"#94A3B8")};width:10px;height:10px;margin-right:6px"></span>${esc(f)} <span class=meta>${Object.values(grupos[f]).reduce((s,a)=>s+a.length,0)} edital(is)</span></div>
@@ -1853,7 +1898,8 @@ function desenhaMotores(){
         return `<div class="mt-item ${m.faltam?"":"completo"} sem-${st[0]}" data-id="${esc(m.id)}">
         <div class="mt-lado-esq">${iconeMotor(m.id,ativo)}</div>
         <div class="mt-corpo">
-          <div><b>${esc(m.programa)}</b> <span class=meta>· ${esc(m.orgao||"")}</span> <span class=tag title="${esc(m.motivo_status||"")}">${ativo?"aceso":"apagado"}${(mtEstado().ativos||{})[m.id]===undefined?"":" (manual)"}</span> <span class=tag>${esc(m.esfera||"")}</span> <span class=tag>${esc(m.natureza||"")}</span></div>
+          <div><b>${esc(m.programa)}</b> <span class=meta>· ${esc(m.orgao||"")}</span></div>
+          <div style="margin:3px 0 2px"><span class=tag style="color:${AREA(m.area_atuacao).cor};border-color:${AREA(m.area_atuacao).cor}66">${esc(AREA(m.area_atuacao).rotulo)}</span> <span class=tag>${esc(m.esfera||"")}</span> <span class=tag>${esc(m.natureza==="publica"?"fonte pública":"fonte privada")}</span> <span class=tag title="${esc(m.motivo_status||"")}">${ativo?"aceso":"apagado"}${(mtEstado().ativos||{})[m.id]===undefined?"":" (manual)"}</span></div>
           <div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}</div>
           ${camadasHtml(m)}
           <div class=meta style="margin-top:4px">

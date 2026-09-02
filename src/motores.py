@@ -158,19 +158,44 @@ def diagnostico(fonte: dict, camadas: list[dict], sensor: dict | None, bloqueio:
 _AREA_FAM = {"PNAB / Aldir Blanc": "cultura", "Lei Rouanet": "cultura", "Lei Goyazes": "cultura",
              "Lei de Incentivo ao Esporte": "esporte", "Fundo da Criança (FMDCA/FIA)": "crianca_adolescente",
              "Assistência social (FMAS/FEAS)": "assistencia_social", "Fundo do Idoso": "pessoa_idosa",
-             "PRONON / PRONAS": "saude", "Destinação judicial": "justica", "Ministério Público": "justica",
-             "Receita Federal (doação)": "doacao_bens"}
+             "PRONON / PRONAS": "saude", "Receita Federal (doação)": "doacao_bens"}
+# palavras do programa/órgão que decidem a área quando a família não decide
+_AREA_TXT = (("apreendid|receita federal", "doacao_bens"),
+             ("aliment|fome|nutri|merenda|cesta", "seguranca_alimentar"),
+             ("ambient|clim|reciclag|resíduo|residuo|nascente|horta|compostagem|circular|amaz|catador", "meio_ambiente"),
+             ("assist|suas|feas|fmas|acolhimento|vulnerab", "assistencia_social"),
+             ("crian|adolesc|fmdca|cmdca|conanda", "crianca_adolescente"),
+             ("cultur|artes|audiovisual|patrim[oô]nio|m[uú]sica|teatro|danç|circo|leitura", "cultura"),
+             ("direitos humanos|mulher|lgbt|racial|ind[ií]gena|quilomb|cidadania|difus", "direitos_humanos"),
+             ("educa|escola|alfabetiza|bolsas", "educacao"),
+             ("esport|atleta|paradesport|lazer", "esporte"),
+             ("infraestrutura|obra|reforma|constru|mobilidade|saneamento", "infraestrutura"),
+             ("idos", "pessoa_idosa"),
+             ("sa[uú]de|pronon|pronas|defici|oncol|prevenç", "saude"))
 
 
 def area_da_fonte(f: dict, fam: str) -> str:
+    """Área de atuação nas 13 áreas canônicas da tela inicial — decidida pela
+    família e, quando ela não decide, pelo texto do programa e do órgão."""
     if fam in _AREA_FAM:
         return _AREA_FAM[fam]
-    a = (f.get("area") or "").lower()
-    for k, v in (("cultura", "cultura"), ("esporte", "esporte"), ("educa", "educacao"), ("saude", "saude"),
-                 ("assist", "assistencia_social"), ("crian", "crianca_adolescente"), ("idos", "pessoa_idosa"),
-                 ("ambiente", "meio_ambiente"), ("difus", "direitos_difusos"), ("legislativo", "justica")):
-        if k in a:
-            return v
+    # 1º a área do catálogo de origem (quando é clara), 2º o texto do programa/órgão
+    cat = (f.get("area") or "").lower()
+    for rx, area in (("ambient", "meio_ambiente"), ("cultur", "cultura"), ("esport", "esporte"),
+                     ("educa", "educacao"), ("sa[uú]de", "saude"), ("assist|aliment", "assistencia_social"),
+                     ("crian|adolesc", "crianca_adolescente"), ("idos", "pessoa_idosa")):
+        if re.search(rx, cat):
+            # refina dentro da área do catálogo pelo texto do programa
+            prog = (f.get("programa") or "").lower()
+            if area == "assistencia_social" and re.search(r"aliment|fome|nutri|merenda|cesta", prog):
+                return "seguranca_alimentar"
+            if area == "meio_ambiente" and re.search(r"direitos humanos|mulher|lgbt|racial|ind[ií]gena|quilomb", prog):
+                return "direitos_humanos"
+            return area
+    alvo = f'{f.get("programa","")} {f.get("orgao","")}'.lower()
+    for rx, area in _AREA_TXT:
+        if re.search(rx, alvo):
+            return area
     return "outros"
 
 
@@ -313,7 +338,9 @@ def run() -> dict:
             "id": f["id"], "programa": f["programa"], "orgao": f.get("orgao"), "motor": sid,
             "familia": fam, "segmento": segmento(f), "area_atuacao": area_da_fonte(f, fam),
             "natureza": "privada" if f["nivel"] in ("privada", "internacional") else "publica",
-            "esfera": {"federal": "Brasil", "estadual": "Estado", "municipal": "Município"}.get(f["nivel"], "Privada/Internacional"),
+            "esfera": ({"federal": "Brasil", "estadual": "Estado", "municipal": "Município",
+                        "internacional": "Internacional"}.get(f["nivel"])
+                       or ("Estado" if f.get("uf") else "Brasil")),     # privada nacional → Brasil
             "ativa": st["ativa"], "motivo_status": st["motivo"], "mencoes": st["mencoes"], "em_epoca": st["em_epoca"],
             "tipo": f["tipo"], "nivel": f["nivel"], "uf": f.get("uf") or ("BR" if f["nivel"] == "federal" else None),
             "goias": bool(f.get("goias")),

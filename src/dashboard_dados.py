@@ -46,13 +46,26 @@ AREAS = {
     "crianca_adolescente":{"rotulo": "Criança e adolescente","cor": "#F2B705"},
     "pessoa_idosa":       {"rotulo": "Pessoa idosa",         "cor": "#A9611F"},
     "direitos_humanos":   {"rotulo": "Direitos humanos",     "cor": "#E8503A"},
-    "justica":            {"rotulo": "Justiça e Ministério Público", "cor": "#4A5568"},
-    "direitos_difusos":   {"rotulo": "Direitos difusos e cidadania", "cor": "#6B5B95"},
     "seguranca_alimentar":{"rotulo": "Segurança alimentar",  "cor": "#0E8A74"},
     "outros":             {"rotulo": "Outros",               "cor": "#94A3B8"},
     "emendas_parlamentares": {"rotulo": "Emendas parlamentares", "cor": "#B8860B"},
     "doacao_bens":          {"rotulo": "Doação de bens (Receita Federal)", "cor": "#5C7A3F"},
 }
+# ÁREAS CANÔNICAS — o mesmo vocabulário para todo o painel (Radar, Calendário,
+# Motores Opressores, Biblioteca). Qualquer outro rótulo é traduzido para estas.
+AREAS_CANONICAS = ("assistencia_social", "crianca_adolescente", "cultura", "direitos_humanos",
+                   "doacao_bens", "educacao", "esporte", "infraestrutura", "meio_ambiente",
+                   "outros", "pessoa_idosa", "saude", "seguranca_alimentar")
+_TRADUZ_AREA = {"justica": "outros", "direitos_difusos": "direitos_humanos", "cidadania": "direitos_humanos",
+                "pcd": "saude", "controle": "outros", "legislativo": "outros"}
+
+
+def area_canonica(a: str | None) -> str:
+    a = (a or "outros").lower()
+    a = _TRADUZ_AREA.get(a, a)
+    return a if a in AREAS_CANONICAS or a == "emendas_parlamentares" else "outros"
+
+
 # previsão (não é área): cinza claro, só nos meses futuros
 COR_PREVISAO = "#D5D9DE"
 _PALAVRAS_AREA = [
@@ -796,6 +809,7 @@ def _marca_etapas(editais: list[dict]) -> list[dict]:
                     for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
     com_parecer |= conjunto("*/*/conselho.json")
     for e in editais:
+        e["area"] = area_canonica(e.get("area"))
         if e.get("sem_edital") or e.get("janela_confirmada"):   # etapa e ciclo próprios
             continue
         e.update(etapa_do_edital(e, decididos, preparados, com_parecer))
@@ -990,6 +1004,27 @@ def coletar(hoje: date | None = None) -> dict:
     fichas = load_json(ft_p) if ft_p.exists() else {"fontes_lista": []}
     aud_p = ROOT / "biblioteca_alexandria/historico/auditoria_individual.json"
     auditoria = load_json(aud_p) if aud_p.exists() else {}
+    # ÚNICO BANCO PARA TODO O PAINEL: as fontes ativas dos Motores Opressores
+    # (época prevista ou menção) alimentam também o Radar e o Calendário
+    mot_p = ROOT / "biblioteca_alexandria/fontes/motores.json"
+    motores = load_json(mot_p) if mot_p.exists() else {"motores": []}
+    fontes_ativas = []
+    for m in motores.get("motores", []):
+        if not m.get("ativa"):
+            continue
+        pd = (m.get("proxima_data") or {})
+        fontes_ativas.append({
+            "id": f'fonte-{m["id"]}', "fonte_260": m["id"], "programa": m["programa"],
+            "orgao": m.get("orgao"), "area": area_canonica(m.get("area_atuacao")),
+            "esfera": m.get("esfera"), "natureza": m.get("natureza"),
+            "nivel": m.get("nivel"), "uf": m.get("uf") if m.get("uf") not in ("BR", None) else None,
+            "abrangencia": "nacional" if m.get("nivel") in ("federal", "privada", "internacional") else "estadual",
+            "motivo": m.get("motivo_status"), "em_epoca": m.get("em_epoca"),
+            "regime_prazo": m.get("regime_prazo"), "certeza_prazo": m.get("certeza_prazo"),
+            "janela": ({"inicio": pd.get("inicio"), "fim": pd.get("fim")} if pd.get("inicio") and pd.get("fim") else None),
+            "pagina": m.get("pagina"), "camadas_obtidas": m.get("obtidas"),
+            "ultimo_edital": m.get("ultimo_edital"),
+        })
     vivos = completos_lista
     editais = _marca_etapas(
         (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos)
@@ -1064,6 +1099,8 @@ def coletar(hoje: date | None = None) -> dict:
                                   "status_verificacao", "fonte_confirmacao", "lei")}
                                 for i in previsoes.get("itens", [])]},
         "esquadra": esquadra,
+        "fontes_ativas": fontes_ativas,
+        "areas_canonicas": list(AREAS_CANONICAS),
         "auditoria": {k: auditoria.get(k) for k in
                       ("editais_auditados", "completos_11_itens", "parciais_6_a_10",
                        "abaixo_de_6", "causas", "itens_que_mais_faltam", "por_ano",

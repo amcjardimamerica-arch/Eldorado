@@ -2751,7 +2751,7 @@ class SystemTests(unittest.TestCase):
         self.assertFalse(any(x["familia"]=="Emendas parlamentares" for x in mo["motores"]))
         for x in mo["motores"]:
             self.assertIn(x["natureza"],("publica","privada"))
-            self.assertIn(x["esfera"],("Brasil","Estado","Município","Privada/Internacional"))
+            self.assertIn(x["esfera"],("Brasil","Estado","Município","Internacional"))
             self.assertIn("ativa",x); self.assertTrue(x["motivo_status"])
         self.assertTrue(pathlib.Path("estado/ativacao_fontes.json").exists())
         for o in mo["oficiais"]:
@@ -2800,17 +2800,49 @@ class SystemTests(unittest.TestCase):
             self.assertGreaterEqual(len(ds),58)                      # mês anterior + mês corrente
             self.assertTrue(all(x["cor"] in ("cinza","futuro","azul","amarelo","verde","vermelho") for x in o["dias"]))
         d=dash_coletar(date(2026,9,2))
-        for a in ("justica","direitos_difusos","doacao_bens","assistencia_social","cultura","esporte"):
+        for a in ("direitos_humanos","doacao_bens","assistencia_social","cultura","esporte","seguranca_alimentar"):
             self.assertIn(a,d["areas"],a)
+        self.assertNotIn("justica",d["areas"])          # traduzida para as 13 canônicas
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",".jorro","@keyframes jorra",
                   "rotArea","Acesos (fogo)","Apagados (poça de óleo)"):
             self.assertIn(x,html,x)
         self.assertNotIn("Ativar motor nos marcados",html)          # ativação é individual ou automática
-        self.assertNotIn('class="gota"',html)                       # a poça jorra, não pinga
+        self.assertIn('class="pluma"',html)                          # a poça jorra em pluma, não em fio
         self.assertNotIn("mt-segt",html.split("const listaFontes")[1].split("const novas")[0])   # sem subgrupo de território
         # ícone reflete a ativação automática quando não há decisão manual
         self.assertIn("const m=MT.find(x=>x.id===id);return m?!!m.ativa:true;",html)
+
+
+    def test_areas_canonicas_unificadas_em_todo_o_painel(self):
+        """Um só vocabulário de áreas (as 13 da tela inicial) para editais,
+        fontes ativas, Radar, Calendário e Motores Opressores; esfera sem 'Privada'."""
+        from src.dashboard_dados import AREAS_CANONICAS, area_canonica, AREAS
+        self.assertEqual(len(AREAS_CANONICAS),13)
+        for a in AREAS_CANONICAS: self.assertIn(a,AREAS,a)
+        self.assertEqual(area_canonica("justica"),"outros")
+        self.assertEqual(area_canonica("direitos_difusos"),"direitos_humanos")
+        self.assertEqual(area_canonica("qualquer_coisa"),"outros")
+        self.assertEqual(area_canonica("emendas_parlamentares"),"emendas_parlamentares")
+        mo=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json"))
+        for m in mo["motores"]:
+            self.assertIn(m["area_atuacao"],AREAS_CANONICAS,m["programa"])
+            self.assertIn(m["esfera"],("Município","Estado","Brasil","Internacional"),m["programa"])
+        d=dash_coletar(date(2026,9,2))
+        self.assertIn("fontes_ativas",d); self.assertIn("areas_canonicas",d)
+        for f in d["fontes_ativas"]:
+            self.assertIn(f["area"],AREAS_CANONICAS)
+            self.assertIn(f["esfera"],("Município","Estado","Brasil","Internacional"))
+        for e in d["editais"]:
+            self.assertTrue(e["area"] in AREAS_CANONICAS or e["area"]=="emendas_parlamentares",e["area"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("fi-possiveis","Editais possíveis","D.fontes_ativas","fontesJan","D.areas_canonicas",
+                  '<option value="Internacional">Internacional</option>'):
+            self.assertIn(x,html,x)
+        self.assertNotIn("Privada / Internacional",html)
+        # óleo: pluma com gotas, sem o traço fino
+        self.assertIn('class="pluma"',html); self.assertIn("@keyframes respinga",html)
+        self.assertNotIn('stroke="#1b1f27" stroke-width="2.6"',html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
