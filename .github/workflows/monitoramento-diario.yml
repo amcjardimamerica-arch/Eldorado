@@ -27,7 +27,16 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - name: Testes antes da coleta
-        run: timeout 1200 python -m unittest discover -s tests -v
+        run: |
+          # o resultado fica no repositório (estado/ultimo_teste_ci.txt) para
+          # diagnóstico mesmo quando o log do Actions não é acessível
+          set +e
+          timeout 1200 python -m unittest discover -s tests -v > /tmp/testes.log 2>&1
+          rc=$?
+          { echo "commit: $GITHUB_SHA"; echo "em: $(date -u +%FT%TZ)"; echo "rc: $rc";
+            tail -5 /tmp/testes.log; echo "---- falhas ----";
+            grep -A30 -E "^(FAIL|ERROR):" /tmp/testes.log | head -300; } > estado/ultimo_teste_ci.txt
+          exit $rc
       - name: Coletar, verificar, acionar Farol e publicar painel
         run: python -m src.executar_diario
       - name: Carga de parlamentares (apenas em outubro e novembro)
