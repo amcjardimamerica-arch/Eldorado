@@ -521,6 +521,16 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <div class="mets" id="bus-mets"></div>
 </div>
 
+<!-- ESQUADRA · um sensor por fonte -->
+<div class="cartao" style="margin-bottom:16px">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Esquadra de sensores
+    <span class=meta style="font-weight:500" title="Um sensor por fonte. Diários oficiais, Diário da Justiça, legislativos e APIs saem todos os dias; sites de fonte saem em rodízio semanal e passam a diários quando há previsão de edital no mês.">— quem sai hoje, e por quê</span></div>
+  <div class="mets" id="esq-mets" style="margin:10px 0 8px"></div>
+  <div class="legenda" id="esq-tipos"></div>
+  <div id="esq-alertas" class=meta style="margin-top:8px"></div>
+  <div style="margin-top:10px"><span class="verlink" onclick="abreFontes()">Ver as 260 fontes — passado, presente e futuro →</span></div>
+</div>
+
 <!-- 2 · FILTRO DE OPORTUNIDADES (tabela) -->
 <div class="cartao" style="margin-bottom:16px">
   <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Filtro de Oportunidades
@@ -1550,6 +1560,37 @@ function iniciaMapaMonitor(){
   desenhaMapaMonitor();
 }
 
+/* ================= ESQUADRA ================= */
+function desenhaEsquadra(){
+  const E=D.esquadra||{}; if(!$("esq-mets"))return;
+  const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>`;
+  const u=E.ultima_execucao||{};
+  $("esq-mets").innerHTML=[
+    [IC("#0E2A55"),E.total??"—","Sensores na esquadra"],
+    [IC("#C05E00"),E.saem_hoje??"—","Saem hoje"],
+    [IC("#7B4BE0"),E.previsoes_ativas??0,"Previsões ativas (escalada)"],
+    [IC("#1E7E4B"),u.novos_na_base??0,"Novos na última saída"]]
+    .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
+  const ROT={diario_oficial:"Diários oficiais",diario_justica:"Diário da Justiça",legislativo:"Legislativo",api:"APIs",site_oficial:"Sites oficiais",plataforma:"Plataformas",privada:"Privadas",internacional:"Internacionais"};
+  $("esq-tipos").innerHTML=Object.entries(E.por_tipo||{}).map(([t,n])=>`<span title="${esc(ROT[t]||t)} saindo hoje"><span class=ponto style="background:${t.startsWith("diario")?"#0E2A55":t==="legislativo"?"#7B4BE0":t==="api"?"#2F7FE0":"#94A3B8"}"></span>${esc(ROT[t]||t)} <b style="color:var(--suave);font-weight:600">${n}</b></span>`).join("")
+    +Object.entries(E.motivos||{}).map(([m,n])=>`<span class=meta>· ${esc(m)}: ${n}</span>`).join("");
+  $("esq-alertas").innerHTML=(E.alertas||[]).length?`⚠ ${E.alertas.length} sensor(es) pedem troca de URL: `+E.alertas.slice(0,3).map(a=>esc(a.sensor)).join(", "):
+    (u.em?`última saída ${br(u.em.slice(0,10))}: ${u.sensores_executados} sensores, ${u.achados} achados`:"nenhuma saída registrada ainda — a esquadra parte na próxima execução no GitHub Actions");
+}
+window.abreFontes=async function(){
+  const p=await carregaFragmento("fontes"); const lista=p?expandeCompacto(p):[];
+  const T=D.fontes_tres_tempos||{};
+  abreModal(`<h3 style="margin:0">As 260 fontes — passado · presente · futuro</h3>
+    <div class=meta>${T.com_passado??0} com histórico · ${T.com_presente??0} já lidas pelo sensor · ${T.com_futuro??0} com janela prevista</div>`,
+    lista.length?`<table class="bz-tab"><thead><tr><th>Fonte</th><th>Órgão</th><th>Nível</th><th>Passado</th><th>Presente</th><th>Futuro</th></tr></thead><tbody>
+    ${lista.slice(0,260).map(f=>`<tr><td><b>${esc(f.programa.slice(0,48))}</b>${f.goias?' <span class=tag style="border-color:#C9A227;color:#8a6d00">GO</span>':""}</td>
+      <td class=meta>${esc((f.orgao||"").slice(0,40))}</td><td class=meta>${esc(f.nivel)}</td>
+      <td>${f.editais?f.editais+" edital(is)":"<span class=meta>—</span>"}</td>
+      <td class=meta>${f.ultima_leitura?br(f.ultima_leitura.slice(0,10))+" · "+f.achados+" achado(s)":"aguardando 1ª saída"}${f.alerta?' <span style="color:var(--alerta)">⚠</span>':""}</td>
+      <td class=meta>${f.proxima_janela?esc(f.proxima_janela.mes||""):"—"}</td></tr>`).join("")}</tbody></table>`
+    :'<p class=meta>Fichas ainda não publicadas.</p>');
+};
+
 /* ================= BÚSSOLA · réplica do modelo ================= */
 let bzUFsel="";
 window.bzLimpar=function(){["bz-assoc","bz-uf","bz-area","bz-nivel"].forEach(id=>$(id).value="");
@@ -1681,7 +1722,7 @@ function iniciarBz(){
   [...$("bz-nivel").options].forEach(o=>{if(NIV[o.value])o.textContent=NIV[o.value];});
   ["bz-assoc","bz-uf","bz-area","bz-nivel","bz-prazo"].forEach(id=>$(id).addEventListener("input",()=>{
     bzUFsel=$("bz-uf").value;desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();}));
-  desenhaBzCards();desenhaBzMapa();desenhaBzAtual();desenhaBzAderencia();desenhaBzTabela();desenhaBzMon();
+  desenhaBzCards();desenhaBzMapa();desenhaBzAtual();desenhaBzAderencia();desenhaBzTabela();desenhaBzMon();desenhaEsquadra();
   iniciaMapaMonitor();
 }
 function desenhaBzMon(){

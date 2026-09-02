@@ -922,6 +922,23 @@ def coletar(hoje: date | None = None) -> dict:
     previsoes = load_json(prev_p) if prev_p.exists() else {"itens": [], "previsoes": 0}
     dos_p = ROOT / "biblioteca_alexandria/fontes/indice.json"
     dossies = load_json(dos_p) if dos_p.exists() else {"itens": []}
+    esq_p = ROOT / "estado/esquadra.json"
+    esq = load_json(esq_p) if esq_p.exists() else {}
+    try:
+        from .sensores import escala_do_dia
+        escala = escala_do_dia(hoje)
+        from collections import Counter as _C
+        esquadra = {"total": escala["total"], "saem_hoje": len(escala["saem"]),
+                    "em_espera": escala["ficam"], "previsoes_ativas": escala["previsoes_ativas"],
+                    "por_tipo": dict(_C(s["tipo"] for s in escala["saem"])),
+                    "motivos": dict(_C(s["motivo"].split(":")[0] for s in escala["saem"])),
+                    "ultima_execucao": esq.get("ultima_execucao"),
+                    "alertas": [{"sensor": k, "alerta": v["alerta"]} for k, v in
+                                (esq.get("sensores") or {}).items() if v.get("alerta")][:20]}
+    except Exception as exc:
+        esquadra = {"erro": type(exc).__name__}
+    ft_p = ROOT / "biblioteca_alexandria/fontes/fichas_tres_tempos.json"
+    fichas = load_json(ft_p) if ft_p.exists() else {"fontes_lista": []}
     vivos = completos_lista
     editais = _marca_etapas(
         (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos)
@@ -990,6 +1007,8 @@ def coletar(hoje: date | None = None) -> dict:
                                   "fim", "forca", "especial", "base", "status_verificacao",
                                   "fonte_confirmacao", "lei")}
                                 for i in previsoes.get("itens", [])]},
+        "esquadra": esquadra,
+        "fontes_tres_tempos": {k: fichas.get(k) for k in ("fontes", "com_passado", "com_presente", "com_futuro")},
         "dossies_fontes": {"total": dossies.get("fontes", 0),
                            "com_historico": dossies.get("com_historico", 0),
                            "conselhos": dossies.get("conselhos", 0),
@@ -1049,6 +1068,14 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
     (pasta / "previsoes.json").write_text(json.dumps(pacp, ensure_ascii=False,
                                                      separators=(",", ":")), encoding="utf-8")
     tamanhos["previsoes.json"] = tamanho(pacp)
+
+    ft_p = ROOT / "biblioteca_alexandria/fontes/fichas_tres_tempos.json"
+    if ft_p.exists():
+        lista = load_json(ft_p).get("fontes_lista", [])
+        pacf = compactar(lista) if lista else {"campos": [], "dic": {}, "linhas": []}
+        (pasta / "fontes.json").write_text(json.dumps(pacf, ensure_ascii=False,
+                                                      separators=(",", ":")), encoding="utf-8")
+        tamanhos["fontes.json"] = tamanho(pacf)
 
     parl = {}
     for e in dados.get("editais", []):

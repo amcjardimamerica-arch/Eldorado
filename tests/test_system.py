@@ -2089,6 +2089,80 @@ class SystemTests(unittest.TestCase):
         self.assertIn("no_banco",i); self.assertIn("em_pasta",i)
         self.assertGreaterEqual(i["total"],i["em_pasta"])
 
+
+    def test_lexico_terceiro_setor(self):
+        from src.lexico import casar, total_termos
+        self.assertGreaterEqual(total_termos(),100)
+        sim=["Chamamento público para seleção de OSCs — termo de fomento",
+             "Credenciamento de entidades sem fins lucrativos para acolhimento",
+             "Projeto de lei declara de utilidade pública a Associação dos Moradores",
+             "Destinação de prestação pecuniária a entidades assistenciais",
+             "Doações a organizações da sociedade civil","Edital de fomento a projetos culturais"]
+        nao=["Pregão eletrônico para aquisição de material — menor preço",
+             "Credenciamento de fornecedores — registro de preços","Nota sobre o clima em Goiânia"]
+        for s in sim: self.assertTrue(casar(s)["candidato"],s)
+        for s in nao: self.assertFalse(casar(s)["candidato"],s)
+
+    def test_esquadra_registro_e_escala(self):
+        """Um sensor por fonte: diários/justiça/legislativo/API diários, sites
+        em rodízio semanal, escalada quando há previsão no mês."""
+        from datetime import timedelta
+        from src.sensores import registro, escala_do_dia
+        r=registro()
+        tipos={s["tipo"] for s in r}
+        for t0 in ("diario_oficial","diario_justica","legislativo","api","site_oficial"):
+            self.assertIn(t0,tipos,t0)
+        ids={s["id"] for s in r}
+        for esp in ("do-goiania","do-goias","dou","dje-tjgo","camara-goiania-pl","alego-pl","pncp-api"):
+            self.assertIn(esp,ids,esp)
+        self.assertGreaterEqual(len(r),60)
+        # diários saem todos os dias; rodízio varia ao longo da semana
+        saidas=[]
+        for d0 in range(7):
+            e=escala_do_dia(date(2026,9,7)+timedelta(days=d0))
+            ids_dia={s["id"] for s in e["saem"]}
+            for esp in ("do-goiania","do-goias","dou","dje-tjgo","camara-goiania-pl","alego-pl"):
+                self.assertIn(esp,ids_dia,f"{esp} deve sair todo dia")
+            saidas.append(frozenset(ids_dia))
+        self.assertGreater(len(set(saidas)),1,"o rodízio deve variar entre os dias")
+        # escalada por previsão em outubro (Rouanet/Goyazes ativas)
+        e=escala_do_dia(date(2026,10,5))
+        self.assertTrue(any(s["motivo"].startswith("escalada") for s in e["saem"]))
+
+    def test_sensor_le_diario_em_laboratorio(self):
+        import tempfile
+        from src.sensores import ler
+        with tempfile.TemporaryDirectory() as tmp:
+            lab=pathlib.Path(tmp)
+            (lab/"d.html").write_text("""<a href="/a.pdf">Resolução CMDCA nº 12/2026 — chamamento público para OSCs, inscrições até 20/10/2026, R$ 800.000,00 do FMDCA</a>
+            <a href="/p.pdf">Pregão eletrônico 44/2026 — aquisição de material de limpeza — menor preço</a>
+            <a href="/pl">Projeto de Lei nº 1234/2026 — declara de utilidade pública a Associação dos Moradores</a>
+            <a href="/n">Notícias da cidade</a>""",encoding="utf-8")
+            r=ler({"id":"lab","nome":"Lab","tipo":"diario_oficial","nivel":"municipal","uf":"GO",
+                   "territorio":"GO/Goiânia","urls":[f"file://{lab}/d.html"],"busca":None},pausa=0)
+        self.assertEqual(len(r["achados"]),2)               # pregão e notícia ficam fora
+        cm=[a for a in r["achados"] if "CMDCA" in a["titulo"]][0]
+        self.assertEqual(cm["prazo_texto"],"20/10/2026"); self.assertEqual(cm["valor_texto"],"R$ 800.000,00")
+        pl=[a for a in r["achados"] if "Projeto de Lei" in a["titulo"]][0]
+        self.assertIsNone(pl["prazo_texto"]); self.assertIsNone(pl["valor_texto"])   # sem herança do vizinho
+        self.assertTrue(all(a["destinacao"]["elegivel"] for a in r["achados"]))
+        self.assertEqual(r["saude"][0]["http"],200)
+
+    def test_fichas_tres_tempos_e_painel(self):
+        ft=load_json(pathlib.Path("biblioteca_alexandria/fontes/fichas_tres_tempos.json"))
+        self.assertEqual(ft["fontes"],260)
+        self.assertGreater(ft["com_passado"],50); self.assertGreater(ft["com_futuro"],50)
+        f0=ft["fontes_lista"][0]; self.assertTrue(f0["goias"])   # Goiás primeiro
+        d=dash_coletar(date(2026,9,2))
+        self.assertIn("esquadra",d); self.assertIn("fontes_tres_tempos",d)
+        self.assertGreaterEqual(d["esquadra"]["total"],60)
+        self.assertTrue(pathlib.Path("docs/dados/fontes.json").exists())
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("Esquadra de sensores","desenhaEsquadra","abreFontes","passado · presente · futuro"):
+            self.assertIn(x,html,x)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("python -m src.sensores",wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

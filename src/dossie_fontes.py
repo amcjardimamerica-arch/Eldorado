@@ -149,7 +149,74 @@ def montar(con: sqlite3.Connection | None = None, hoje: date | None = None) -> d
               "conselhos": sum(1 for i in indice if i["origem"] == "conselho"),
               "itens": indice}
     write_json(SAIDA / "indice.json", resumo)
+    fichas_tres_tempos(hoje)
     return resumo
+
+
+def fichas_tres_tempos(hoje: date | None = None) -> dict:
+    """Uma ficha por fonte com PASSADO (dossiê), PRESENTE (sensor) e FUTURO
+    (previsão) — o Eldorado sabe tudo sobre cada fonte, num único arquivo
+    compacto por fonte, e um índice leve para o painel."""
+    hoje = hoje or date.today()
+    est = ROOT / "estado/esquadra.json"
+    sensores = (load_json(est).get("sensores", {}) if est.exists() else {})
+    prev_p = ROOT / "biblioteca_alexandria/previsoes/previsoes.json"
+    previsoes = load_json(prev_p).get("itens", []) if prev_p.exists() else []
+    f260_p = ROOT / "config/fontes_captacao_260.json"
+    f260 = load_json(f260_p).get("fontes", []) if f260_p.exists() else []
+    indice = load_json(SAIDA / "indice.json").get("itens", []) if (SAIDA / "indice.json").exists() else []
+    dos_por_id = {i["id"]: i for i in indice}
+    fichas = []
+    for f in f260:
+        sid = f"f260-{f['id']}"
+        s = sensores.get(sid, {})
+        toks = {t for t in re.findall(r"[a-zà-ú]{5,}", (f.get("orgao") or "").lower())}
+        fut = [p for p in previsoes if toks and sum(1 for t in toks if t in (p.get("orgao") or "").lower()) >= 2]
+        # o dossiê é indexado pelo catálogo de fontes; a 260 é indexada por
+        # programa — ligam-se pelo ÓRGÃO (tokens distintivos em comum)
+        d = dos_por_id.get(f["id"]) or {}
+        if not d and toks:
+            melhor, nota = None, 0
+            for it in indice:
+                alvo = (it.get("nome") or "").lower()
+                n = sum(1 for t in toks if t in alvo)
+                if n > nota and n >= 1 and it.get("editais"):
+                    melhor, nota = it, n
+            d = melhor or {}
+        ficha = {
+            "id": f["id"], "programa": f["programa"], "orgao": f["orgao"], "nivel": f["nivel"],
+            "uf": f.get("uf"), "goias": f.get("goias"), "tipo": f["tipo"],
+            "sites": f["sites"], "confianca_site": f["confianca_site"],
+            "passado": {"editais_no_historico": d.get("editais", 0),
+                        "meses_recorrentes": d.get("meses_recorrentes", []),
+                        "dossie": d.get("pasta")},
+            "presente": {"sensor": sid if s else None, "ultima_leitura": s.get("ultima"),
+                         "leituras": s.get("leituras", 0), "achados_total": s.get("achados_total", 0),
+                         "saude": s.get("saude"), "alerta": s.get("alerta"),
+                         "cadencia": ("diária" if f["tipo"] in ("emenda",) else "rodízio semanal; diária quando há previsão")},
+            "futuro": {"previsoes": [{"inicio": p["inicio"], "fim": p["fim"], "forca": p["forca"],
+                                      "especial": p.get("especial", False)} for p in fut[:3]],
+                       "proxima_janela": (d.get("proxima_janela") or (
+                           {"mes": fut[0]["inicio"][:7], "base": fut[0].get("base")} if fut else None))},
+        }
+        fichas.append(ficha)
+        pasta = SAIDA / slug(f["id"])
+        pasta.mkdir(parents=True, exist_ok=True)
+        write_json(pasta / "ficha.json", ficha)
+    fichas.sort(key=lambda x: (not x["goias"], x["nivel"] != "municipal", x["programa"]))
+    leve = [{k: x[k] for k in ("id", "programa", "orgao", "nivel", "uf", "goias", "tipo", "confianca_site")}
+            | {"editais": x["passado"]["editais_no_historico"],
+               "ultima_leitura": x["presente"]["ultima_leitura"],
+               "achados": x["presente"]["achados_total"],
+               "alerta": x["presente"]["alerta"],
+               "proxima_janela": x["futuro"]["proxima_janela"]} for x in fichas]
+    write_json(SAIDA / "fichas_tres_tempos.json",
+               {"gerado_em": now_iso(), "fontes": len(fichas),
+                "com_passado": sum(1 for x in fichas if x["passado"]["editais_no_historico"]),
+                "com_presente": sum(1 for x in fichas if x["presente"]["ultima_leitura"]),
+                "com_futuro": sum(1 for x in fichas if x["futuro"]["previsoes"] or x["futuro"]["proxima_janela"]),
+                "fontes_lista": leve})
+    return {"fichas": len(fichas)}
 
 
 if __name__ == "__main__":
