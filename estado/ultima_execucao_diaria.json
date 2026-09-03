@@ -1,25 +1,49 @@
 {
-  "executado_em": "2026-08-31T09:04:55+00:00",
+  "executado_em": "2026-09-03T16:25:12+00:00",
   "etapas": {
     "coleta": {
-      "executado_em": "2026-08-31T09:04:55+00:00",
+      "executado_em": "2026-09-03T16:25:13+00:00",
       "fontes_catalogadas": 83,
       "fontes_total": 79,
-      "fontes_ok": 50,
-      "fontes_falha": 29,
+      "fontes_ok": 46,
+      "fontes_falha": 33,
       "fontes_fora_escopo": 0,
       "fontes_manuais": 2,
       "fontes_api": 2,
-      "novas": 106,
-      "atualizadas": 202,
+      "novas": 0,
+      "atualizadas": 27,
       "quarentena": 0,
       "falhas": [
         {
+          "fonte": "capta",
+          "erro": "HTTPError"
+        },
+        {
+          "fonte": "goiania",
+          "erro": "HTTPError"
+        },
+        {
+          "fonte": "goiania-noticias",
+          "erro": "HTTPError"
+        },
+        {
+          "fonte": "portal-rs",
+          "erro": "ValueError"
+        },
+        {
+          "fonte": "fdd",
+          "erro": "HTTPError"
+        },
+        {
           "fonte": "fnma",
-          "erro": "TimeoutError"
+          "erro": "URLError"
         },
         {
           "fonte": "fundacao-bb",
+          "erro": "ValueError"
+        },
+        {
+          "fonte": "gife-mosaico",
           "erro": "ValueError"
         },
         {
@@ -28,7 +52,7 @@
         },
         {
           "fonte": "goias-cultura-raiz",
-          "erro": "ValueError"
+          "erro": "TimeoutError"
         },
         {
           "fonte": "goias-pnab",
@@ -44,42 +68,6 @@
         },
         {
           "fonte": "ministerio-cultura",
-          "erro": "TimeoutError"
-        },
-        {
-          "fonte": "petrobras",
-          "erro": "ValueError"
-        },
-        {
-          "fonte": "portal-es",
-          "erro": "ValueError"
-        },
-        {
-          "fonte": "portal-pa",
-          "erro": "URLError"
-        },
-        {
-          "fonte": "portal-pi",
-          "erro": "ValueError"
-        },
-        {
-          "fonte": "portal-sp",
-          "erro": "HTTPError"
-        },
-        {
-          "fonte": "pronon-pronas",
-          "erro": "RemoteDisconnected"
-        },
-        {
-          "fonte": "transferegov",
-          "erro": "HTTPError"
-        },
-        {
-          "fonte": "fdd",
-          "erro": "HTTPError"
-        },
-        {
-          "fonte": "gife-mosaico",
           "erro": "ValueError"
         },
         {
@@ -87,12 +75,16 @@
           "erro": "HTTPError"
         },
         {
+          "fonte": "petrobras",
+          "erro": "ValueError"
+        },
+        {
           "fonte": "portal-al",
           "erro": "gaierror"
         },
         {
           "fonte": "portal-ap",
-          "erro": "RemoteDisconnected"
+          "erro": "ValueError"
         },
         {
           "fonte": "portal-ce",
@@ -103,7 +95,23 @@
           "erro": "URLError"
         },
         {
+          "fonte": "portal-es",
+          "erro": "ValueError"
+        },
+        {
           "fonte": "portal-mt",
+          "erro": "ValueError"
+        },
+        {
+          "fonte": "portal-pa",
+          "erro": "URLError"
+        },
+        {
+          "fonte": "portal-pb",
+          "erro": "HTTPError"
+        },
+        {
+          "fonte": "portal-pi",
           "erro": "ValueError"
         },
         {
@@ -111,23 +119,31 @@
           "erro": "URLError"
         },
         {
+          "fonte": "portal-rn",
+          "erro": "URLError"
+        },
+        {
           "fonte": "portal-rr",
           "erro": "URLError"
         },
         {
-          "fonte": "portal-rs",
-          "erro": "ValueError"
-        },
-        {
-          "fonte": "portal-se",
-          "erro": "URLError"
+          "fonte": "portal-sp",
+          "erro": "HTTPError"
         },
         {
           "fonte": "portal-to",
           "erro": "URLError"
         },
         {
+          "fonte": "pronon-pronas",
+          "erro": "RemoteDisconnected"
+        },
+        {
           "fonte": "tjgo-banco-projetos",
+          "erro": "HTTPError"
+        },
+        {
+          "fonte": "transferegov",
           "erro": "HTTPError"
         }
       ],
@@ -169,64 +185,60 @@
           "internacional"
         ]
       },
-      "paginas_alteradas": 179
+      "paginas_alteradas": 124,
+      "fora_do_terceiro_setor": 258
     },
     "apis_oficiais": {
-      "executado_em": "2026-08-31T09:36:56+00:00",
-      "novas": 184,
-      "itens": 190,
+      "executado_em": "2026-09-03T16:46:21+00:00",
+      "novas": 39,
+      "itens": 42,
       "falhas": [
         {
-          "api": "querido_diario",
-          "base": "https://queridodiario.ok.org.br/api",
-          "erro": "JSONDecodeError"
-        },
-        {
-          "api": "querido_diario",
-          "base": "https://api.queridodiario.ok.org.br",
-          "erro": "HTTPError"
+          "api": "pncp",
+          "descartados_fase2": 128,
+          "amostra": [
+            {
+              "objeto": "[Portal de Compras Públicas] - Credenciamento de empresas e/ou pessoas físicas especializadas para prestação de serviços",
+              "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+            },
+            {
+              "objeto": "Credenciamento de empresas e/ou pessoas físicas especializadas para prestação de serviços de locação de caminhão-pipa, i",
+              "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+            },
+            {
+              "objeto": "CREDENCIAMENTO DE PESSOAS JURIDICAS ESPECIALIZADAS NA PRESTACAO DE SERVICOS DE APOIO E DIAGNOSTICO PARA REALIZACAO DE EX",
+              "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+            },
+            {
+              "objeto": "CREDENCIAMENTO DE EMPRESAS NÃO FILANTRÓPICAS, PRESTADORAS DE SERVIÇOS DE SAÚDE, PARA POSSÍVEL CONTRATAÇÃO À PRESTAÇÃO DE",
+              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+            },
+            {
+              "objeto": "CREDENCIAMENTO DE PROFISSIONAIS E EMPRESAS ESPECIALIZADAS PARA A ELABORAÇÃO DE LAUDOS DE AVALIAÇÃO IMOBILIÁRIA, ABRANGEN",
+              "motivo": "exigência empresarial (SICAF, CNAE, capital social) sem qualquer menção a OSC — associação não pode concorrer"
+            }
+          ],
+          "nota": "fora do escopo do terceiro setor"
         }
       ]
     },
     "capilaridade": {
-      "executado_em": "2026-08-31T09:37:12+00:00",
+      "executado_em": "2026-09-03T16:47:16+00:00",
       "consultas": 40,
       "consultas_com_falha": 0,
       "pistas_novas": 0
     },
     "diarios_regiao_metropolitana": {
-      "executado_em": "2026-08-31T09:38:12+00:00",
+      "executado_em": "2026-09-03T16:48:16+00:00",
       "municipios_configurados": 21,
-      "municipios_resolvidos": 0,
-      "municipios_pendentes": [
-        "Goiânia/GO",
-        "Abadia de Goiás/GO",
-        "Aparecida de Goiânia/GO",
-        "Aragoiânia/GO",
-        "Bela Vista de Goiás/GO",
-        "Bonfinópolis/GO",
-        "Brazabrantes/GO",
-        "Caldazinha/GO",
-        "Caturaí/GO",
-        "Goianápolis/GO",
-        "Goianira/GO",
-        "Guapó/GO",
-        "Hidrolândia/GO",
-        "Inhumas/GO",
-        "Nerópolis/GO",
-        "Nova Veneza/GO",
-        "Santa Bárbara de Goiás/GO",
-        "Santo Antônio de Goiás/GO",
-        "Senador Canedo/GO",
-        "Terezópolis de Goiás/GO",
-        "Trindade/GO"
-      ],
-      "consultas": 0,
+      "municipios_resolvidos": 21,
+      "municipios_pendentes": [],
+      "consultas": 147,
       "novas": 0,
       "falhas": []
     },
     "redes_indireta": {
-      "executado_em": "2026-08-31T09:38:12+00:00",
+      "executado_em": "2026-09-03T16:49:44+00:00",
       "rota": "indexacao_de_buscador",
       "consultas": 30,
       "pistas_novas": 0,
@@ -245,7 +257,7 @@
       "pistas_acumuladas": 0
     },
     "verificacao_social": {
-      "executado_em": "2026-08-31T09:38:46+00:00",
+      "executado_em": "2026-09-03T16:50:18+00:00",
       "fontes_total": 0,
       "fontes_ok": 0,
       "fontes_falha": 0,
@@ -253,61 +265,70 @@
       "falhas": []
     },
     "verificacao_assistida": {
-      "executado_em": "2026-08-31T09:38:46+00:00",
+      "executado_em": "2026-09-03T16:50:18+00:00",
       "avaliadas": 10,
-      "promovidas": 0,
-      "recusadas": 6,
+      "promovidas": 2,
+      "recusadas": 2,
       "falhas": [
         {
-          "oportunidade": "069d256fbc2901168490",
+          "oportunidade": "0ca64575883fcb221817",
           "erro": "RemoteDisconnected"
         },
         {
-          "oportunidade": "11fb99b7bd5c3aec960c",
-          "erro": "HTTPError"
+          "oportunidade": "3949793b0de8016c914c",
+          "erro": "RemoteDisconnected"
         },
         {
-          "oportunidade": "2dacc601149a0000f87a",
-          "erro": "URLError"
+          "oportunidade": "bbae7c52ba0f59f635da",
+          "erro": "RemoteDisconnected"
         },
         {
-          "oportunidade": "300a36f2dfeac6c8b9f3",
-          "erro": "URLError"
+          "oportunidade": "f3fad19fad472f3fe2a7",
+          "erro": "RemoteDisconnected"
+        },
+        {
+          "oportunidade": "004fceda7be1d992bf8a",
+          "erro": "RemoteDisconnected"
+        },
+        {
+          "oportunidade": "7091888dde754dddff86",
+          "erro": "RemoteDisconnected"
         }
       ]
     },
     "programas": {
-      "executado_em": "2026-08-31T09:42:00+00:00",
-      "avaliados": 299,
-      "identificados": 165,
+      "executado_em": "2026-09-03T16:50:29+00:00",
+      "avaliados": 18629,
+      "identificados": 18547,
       "por_programa": {
-        "Fundo de Defesa de Direitos Difusos": 100,
-        "Chamamento público MROSC": 53,
-        "Lei de Incentivo ao Esporte": 4,
-        "Assistência social — SUAS": 3,
+        "Chamamento público MROSC": 17201,
+        "Lei Rouanet — PRONAC": 13,
+        "PNAB — Política Nacional Aldir Blanc": 799,
+        "Lei de Incentivo ao Esporte": 92,
+        "Lei Paulo Gustavo": 363,
+        "Fundo de Defesa de Direitos Difusos": 67,
         "Fundo dos Direitos da Criança e do Adolescente": 2,
-        "Programa Goyazes (incentivo estadual à cultura em Goiás)": 1,
-        "PNAB — Política Nacional Aldir Blanc": 1,
-        "Fundo de Arte e Cultura de Goiás": 1
+        "Assistência social — SUAS": 10
       }
     },
     "qualidade": {
-      "executado_em": "2026-08-31T09:42:00+00:00",
-      "avaliados": 299,
+      "executado_em": "2026-09-03T16:50:34+00:00",
+      "avaliados": 18629,
       "por_classe": {
-        "apenas_indicio": 281,
-        "insuficiente": 17,
-        "reprovado": 1
+        "apenas_indicio": 10647,
+        "insuficiente": 7419,
+        "suficiente": 562,
+        "completo": 1
       },
-      "nota_media": 26.6
+      "nota_media": 38.1
     },
     "prazos": {
-      "gerado_em": "2026-08-31T09:42:00+00:00",
-      "referencia": "2026-08-31",
+      "gerado_em": "2026-09-03T16:50:37+00:00",
+      "referencia": "2026-09-03",
       "com_prazo": 0,
       "criticos": 0,
       "encerrados": 0,
-      "sem_prazo": 299,
+      "sem_prazo": 18629,
       "faixas_alerta": [
         30,
         15,
@@ -316,15 +337,15 @@
         1
       ]
     },
-    "dossies": 9,
+    "dossies": 5,
     "aprendizado": {
-      "executado_em": "2026-08-31T09:42:00+00:00",
-      "fontes_analisadas": 9,
-      "previsoes": 0,
+      "executado_em": "2026-09-03T16:50:40+00:00",
+      "fontes_analisadas": 5,
+      "previsoes": 2,
       "padroes": 0
     },
     "rotas_monitoramento": {
-      "gerado_em": "2026-08-31T09:42:00+00:00",
+      "gerado_em": "2026-09-03T16:50:41+00:00",
       "total_catalogo": 260,
       "com_rota_de_monitoramento": 260,
       "sem_rota": 0,
@@ -363,7 +384,7 @@
       "casos_criados": 0
     },
     "farol_ia": {
-      "executado_em": "2026-08-31T09:42:00+00:00",
+      "executado_em": "2026-09-03T16:50:42+00:00",
       "casos_pendentes": 0,
       "casos_processados": 0,
       "sem_chances": 0,
@@ -371,21 +392,46 @@
       "falhas": []
     },
     "fichas_html": {
-      "fichas_geradas": 299,
-      "gerado_em": "2026-08-31T09:42:00+00:00"
+      "fichas_geradas": 18629,
+      "gerado_em": "2026-09-03T16:50:47+00:00"
     },
     "resultados_editais": {
-      "executado_em": "2026-08-31T09:42:00+00:00",
-      "consultados": 0,
+      "executado_em": "2026-09-03T16:50:48+00:00",
+      "consultados": 2,
       "eventos_novos": 0,
       "prorrogacoes": 0,
       "falhas": []
     },
     "dashboard": {
-      "gerado_em": "2026-08-31T09:42:00+00:00",
-      "editais": 299,
-      "eventos_calendario": 184,
-      "dias_com_busca": 1
+      "gerado_em": "2026-09-03T16:50:59+00:00",
+      "editais": 256,
+      "eventos_calendario": 52,
+      "dias_com_busca": 3,
+      "publicacao": {
+        "nucleo_mb": 0.9,
+        "fragmentos_mb": 9.19,
+        "total_mb": 10.1,
+        "limite_total_mb": 20,
+        "portao_fidelidade": {
+          "classes": {
+            "confirmado": 6,
+            "estimado": 250,
+            "hipotese": 0
+          },
+          "removidos": 0
+        },
+        "limite_nucleo_mb": 3,
+        "fragmentos": {
+          "historico.json": 4216035,
+          "previsoes.json": 98036,
+          "prazos.json": 30971,
+          "fontes.json": 46331,
+          "abertas.json": 5248694,
+          "parlamentares.json": 2
+        },
+        "historico_publicado": 4000,
+        "previsoes_publicadas": 677
+      }
     },
     "relatorio_datado": {
       "status": "desativado — dashboard interativo é a saída padrão"
