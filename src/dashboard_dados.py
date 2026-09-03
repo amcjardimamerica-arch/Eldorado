@@ -393,10 +393,31 @@ def _bussola(editais: list[dict], hoje: date | None = None) -> dict:
             d["fontes_ok"] += int(ev.get("fontes_ok") or 0)
             d["fontes_falha"] += int(ev.get("fontes_falha") or 0)
             d["novas"] += int(ev.get("novas") or ev.get("pistas_novas") or 0)
+    # OS MOTORES NOVOS registram em estado/esquadra_diario.json (um dia por
+    # sensor) — o monitor de integridade tem de ler as duas fontes, senão os
+    # dias em que só os motores saíram (ex.: 03/09) aparecem como 'sem busca'.
+    esq_d = ROOT / "estado/esquadra_diario.json"
+    if esq_d.exists():
+        for sid, dias_s in (load_json(esq_d).get("sensores") or {}).items():
+            tipo_s = ("diario_oficial" if sid.startswith("do") or sid == "dou" else
+                      "diario_justica" if sid.startswith(("dje", "dj-", "cnj")) else
+                      "legislativo" if sid.endswith("-pl") else
+                      "plataforma" if sid.startswith("plat-") else "api" if sid.startswith("pncp") else "site_oficial")
+            for quando, r in dias_s.items():
+                d = por_dia[quando]
+                d["buscas"].append(f"motor_{tipo_s}")
+                if r.get("http"):
+                    d["fontes_ok"] += 1
+                if r.get("falhas") and not r.get("http"):
+                    d["fontes_falha"] += 1
+                d["novas"] += int(r.get("achados") or 0)
     # Cada camada de busca corresponde a uma frente de coleta (ponto de cor).
     # A pesquisa deve atuar em TODAS as frentes; o dia mostra em quais houve
     # captação e se algo foi ENCONTRADO.
     CAMADA_CATEGORIA = {
+        "motor_diario_oficial": "api_oficial", "motor_diario_justica": "api_oficial",
+        "motor_legislativo": "site_oficial", "motor_plataforma": "plataforma",
+        "motor_api": "api_oficial", "motor_site_oficial": "site_oficial",
         "coleta_diaria": "site_oficial", "verificacao_social": "rede_social",
         "coleta_api": "api_oficial", "rmg_diarios": "api_oficial",
         "capilaridade": "imprensa", "redes_indireta": "rede_social",

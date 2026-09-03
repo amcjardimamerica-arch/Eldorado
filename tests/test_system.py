@@ -599,7 +599,7 @@ class SystemTests(unittest.TestCase):
         for trecho in ("bz-titulo","bz-cidade","bz-logo","bz-cards","bz-mapa",
                        "bz-atual","bz-gauge","bz-dimensoes","bzLimpar",
                        "Mapa de oportunidades","Farol de aderência","Fontes com edital aberto",
-                       "Ver todas as atualizações","Ver detalhes do Farol",
+                       "Ver detalhes do Farol",
                        "Oportunidade aberta","Em verificação","Encerrada",
                        "Ver oportunidade","Abrir ficha","Limpar filtros",
                        "As notas por dimensão serão calculadas na primeira execução do Farol"):
@@ -3007,10 +3007,10 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn('src="arte/rosa-ventos.png"',html)       # PNG quebrado saiu
         for x in ('svg class="bz-rosa"','>N</text>','>S</text>','>L</text>','>O</text>',
                   "function mpDadosUF","function desenhaBzLateral","bz-indices","bz-cidades",
-                  'class="bz-legenda oculto" id="mp-legenda"',"clique para ver as cidades","path.com-abertas"):
+                  "clique para ver as cidades","path.com-abertas"):
             self.assertIn(x,html,x)
         self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado (varredura) <b>",html); self.assertIn("Ausente <b>",html)
-        self.assertNotIn('<svg class="bz-rosa" viewBox="0 0 120 120" role="img" aria-label="rosa dos ventos" style',html)   # sem fundo colorido
+        self.assertNotIn('id="mp-legenda"',html)                       # índices só no detalhe do estado
 
 
     def test_cards_bussola_abas_editais_e_arquivados_em_linha(self):
@@ -3059,6 +3059,25 @@ class SystemTests(unittest.TestCase):
         for x in ("function situacaoDe","casaPrazo",'<option value="ausentes">',"Oportunidades abertas","bzFecharUF",
                   "if(bzUFsel){desenhaBzLateral();return;}","Encontrado (varredura)"): self.assertIn(x,html,x)
         self.assertNotIn('id="bz-lateral"',html)                       # detalhe do estado vai para a coluna da direita
+
+
+    def test_rosa_dourada_filtro_pelo_mapa_e_monitor_unificado(self):
+        """Rosa dos ventos dourada e fina (clássica) na parte inferior do mapa, como
+        botão 'Todos os estados'; filtro de UF só pelo clique; '— captação';
+        sem 'Ver todas as atualizações'; monitor de integridade lê os motores."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ('id="ouro"','id="bz-rosa-marcas"',"bz-rosa-bt","Todos os estados",'viewBox="0 0 160 160"',
+                  "— captação</strong>",'<select id="mp-uf" style="display:none"','<select id="bz-uf" style="display:none"',
+                  "bz-mapa-col","desenhaMapaMonitor();};"):
+            self.assertIn(x,html,x)
+        self.assertNotIn("Ver todas as atualizações",html)
+        self.assertNotIn("— editais</strong>",html)
+        d=dash_coletar(date(2026,9,3))
+        dias={x["data"]:x for x in d["bussola"]["dias"]}
+        self.assertIn("2026-09-03",dias)                                # dia em que só os motores saíram
+        self.assertTrue(any(c.startswith("motor_") for c in dias["2026-09-03"]["camadas"]))
+        src=open("src/dashboard_dados.py",encoding="utf-8").read()
+        self.assertIn("esquadra_diario.json",src); self.assertIn('"motor_diario_oficial": "api_oficial"',src)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
