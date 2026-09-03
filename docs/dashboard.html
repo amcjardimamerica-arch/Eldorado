@@ -237,7 +237,7 @@ box-shadow:0 1px 3px #0002}
 .mt-calt{font-size:11px;font-weight:700;color:var(--suave);letter-spacing:.05em;text-transform:uppercase;margin:8px 0 4px;display:flex;justify-content:space-between;align-items:center}
 .mt-calnav button{border:1px solid var(--linha);background:#fff;border-radius:6px;padding:1px 7px;font-size:11px;cursor:pointer;margin-left:3px}
 .mt-calnav button:disabled{opacity:.35;cursor:default}
-.mt-cal{grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:4px}
+.mt-cal{grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:4px;min-height:52px}
 .mt-cal .bdia{padding:4px 2px;border-radius:8px;cursor:default}
 .mt-cal .bdia .n{font-size:11px}.mt-cal .bdia .s{font-size:8px}.mt-cal .bdia .n .sem{font-size:8px;color:var(--suave)}
 .mt-cal .mt-trecho{font-size:8px;color:var(--tinta);margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
@@ -2025,8 +2025,13 @@ function desenhaMotores(){
   window._mtMes=window._mtMes||{};
   const calendarioMotor=o=>{const off=window._mtMes[o.id]||0;const ref=new Date(HOJE.getFullYear(),HOJE.getMonth()+off,1);
     const mesId=`${ref.getFullYear()}-${String(ref.getMonth()+1).padStart(2,"0")}`;
-    const dias=(o.dias||[]).filter(x=>x.d.startsWith(mesId));
-    const meses=[...new Set((o.dias||[]).map(x=>x.d.slice(0,7)))];
+    /* a grade do mês é SEMPRE desenhada (todos os dias), com a cor vinda do
+       registro do motor quando existe — nunca depende de o fragmento trazer o dia */
+    const reg={};(o.dias||[]).forEach(x=>reg[x.d]=x);
+    const hojeISO=HOJE.toISOString().slice(0,10);
+    const nDias=new Date(ref.getFullYear(),ref.getMonth()+1,0).getDate();
+    const dias=[...Array(nDias)].map((_,i)=>{const dd=`${mesId}-${String(i+1).padStart(2,"0")}`;return reg[dd]||{d:dd,cor:dd<=hojeISO?"cinza":"futuro",n:0,t:null};});
+    const meses=[...new Set([...(o.dias||[]).map(x=>x.d.slice(0,7)),mesId])];
     return `<div class="mt-calt"><span>Calendário do motor — ${MES[ref.getMonth()]} ${ref.getFullYear()}</span>
       <span class="mt-calnav"><button onclick="mtMesMotor('${esc(o.id)}',-1)" ${meses.includes(`${ref.getFullYear()}-${String(ref.getMonth()).padStart(2,"0")}`)||off>0?"":"disabled"} title="mês anterior">◂</button><button onclick="mtMesMotor('${esc(o.id)}',1)" ${off<0?"":"disabled"} title="mês seguinte">▸</button></span></div>
     <div class="bgrade mt-cal">${dias.map(x=>{const dt=new Date(x.d+"T00:00:00");
