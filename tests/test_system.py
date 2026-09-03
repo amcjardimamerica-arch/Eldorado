@@ -2791,7 +2791,7 @@ class SystemTests(unittest.TestCase):
                 self.assertTrue(s["motivo"].startswith(("fonte específica ATIVA","escalada")),s["motivo"])
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("Motores Opressores","mo-area","mo-natureza","mo-esfera","mo-status","mt-ico oleo","mt-cal",
-                  "@keyframes pisca-borda","@keyframes chafariz","Novas oportunidades anunciadas","camadas_val"):
+                  "@keyframes pisca-borda","@keyframes oleo-copa","Novas oportunidades anunciadas","camadas_val"):
             self.assertIn(x,html,x)
         self.assertNotIn("mt-ico tonel",html); self.assertNotIn('class="mt-chk"',html)
         self.assertNotIn("mt-dias",html.split("const calendarioMotor")[1].split("const trintaDias")[0])
@@ -2811,11 +2811,11 @@ class SystemTests(unittest.TestCase):
             self.assertIn(a,d["areas"],a)
         self.assertNotIn("justica",d["areas"])          # traduzida para as 13 canônicas
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",".pluma","@keyframes sobe-pluma",
+        for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",".copa","@keyframes oleo-gota-esq",
                   "rotArea","Acesos (fogo)","Apagados (poça de óleo)"):
             self.assertIn(x,html,x)
         self.assertNotIn("Ativar motor nos marcados",html)          # ativação é individual ou automática
-        self.assertIn('class="pluma"',html)                          # a poça jorra em pluma, não em fio
+        self.assertIn('class="coluna"',html)                         # coluna sobe da poça e abre em copa
         self.assertNotIn("mt-segt",html.split("const listaFontes")[1].split("const novas")[0])   # sem subgrupo de território
         # ícone reflete a ativação automática quando não há decisão manual
         self.assertIn("const m=MT.find(x=>x.id===id);return m?!!m.ativa:true;",html)
@@ -2848,7 +2848,7 @@ class SystemTests(unittest.TestCase):
             self.assertIn(x,html,x)
         self.assertNotIn("Privada / Internacional",html)
         # óleo: pluma com gotas, sem o traço fino
-        self.assertIn('class="pluma"',html); self.assertIn("@keyframes chafariz",html)
+        self.assertIn('class="copa"',html); self.assertIn("@keyframes oleo-gota-dir",html)
         self.assertNotIn('stroke="#1b1f27" stroke-width="2.6"',html)
 
 
@@ -2975,7 +2975,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(inferir_area("Termo de colaboração — pessoa idosa"),"pessoa_idosa")
         self.assertEqual(inferir_area("texto sem pista nenhuma"),"outros")
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("@keyframes chafariz","sobe-pluma","calendarioMotor","mt-mets"): self.assertIn(x,html,x)
+        for x in ("@keyframes oleo-copa","steps(8,end)","calendarioMotor","mt-mets"): self.assertIn(x,html,x)
 
 
     def test_doze_itens_calendario_validado_e_grade_padrao(self):

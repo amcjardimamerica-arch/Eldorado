@@ -216,17 +216,16 @@ box-shadow:0 1px 3px #0002}
 @keyframes tremula{from{transform:scaleY(.92) skewX(-3deg)}to{transform:scaleY(1.06) skewX(3deg)}}
 @keyframes sobe{0%{transform:translateY(4px);opacity:.75}100%{transform:translateY(-9px) scale(1.5);opacity:0}}
 .mt-ico.oleo .poca{fill:#111318}.mt-ico.oleo .poca2{fill:#2a2f3a}.mt-ico.oleo .brilho{fill:#7fa0c9;opacity:.8}
-.mt-ico.oleo .pluma{fill:#15181f}.mt-ico.oleo .pluma2{fill:#2b3140}.mt-ico.oleo .gota{fill:#1b1f27}.mt-ico.oleo .reflexo{fill:#8fb0d8;opacity:.75}
-/* FONTE de óleo: a pluma sobe da poça (cresce para cima a partir da base) e as
-   gotas sobem em arco e recaem — movimento de chafariz, em ciclo contínuo */
-.mt-ico.oleo .pluma,.mt-ico.oleo .pluma2{transform-origin:20px 26px;animation:sobe-pluma 1.8s ease-in-out infinite}
-.mt-ico.oleo .pluma2{animation-delay:.15s}
-.mt-ico.oleo .reflexo{transform-origin:19px 26px;animation:sobe-pluma 1.8s ease-in-out infinite}
-.mt-ico.oleo .gota{transform-origin:20px 26px;animation:chafariz 1.8s ease-in-out infinite}
-.mt-ico.oleo .gota:nth-of-type(1){animation-delay:.1s}.mt-ico.oleo .gota:nth-of-type(2){animation-delay:.35s}
-.mt-ico.oleo .gota:nth-of-type(3){animation-delay:.6s}.mt-ico.oleo .gota:nth-of-type(4){animation-delay:.85s}
-@keyframes sobe-pluma{0%{transform:scaleY(.25);opacity:.6}45%{transform:scaleY(1.05);opacity:1}70%{transform:scaleY(.95);opacity:1}100%{transform:scaleY(.25);opacity:.6}}
-@keyframes chafariz{0%{transform:translate(0,14px) scale(.6);opacity:0}25%{opacity:1}50%{transform:translate(0,-9px) scale(1.05);opacity:1}85%{transform:translate(0,12px) scale(.9);opacity:.6}100%{transform:translate(0,14px) scale(.6);opacity:0}}
+.mt-ico.oleo .coluna{fill:#15181f;transform-origin:32px 52px;animation:oleo-coluna 1.2s steps(8,end) infinite}
+.mt-ico.oleo .copa{stroke:#15181f;transform-origin:32px 13px;animation:oleo-copa 1.2s steps(8,end) infinite}
+.mt-ico.oleo .copa .fina{stroke:#2b3140;stroke-width:2.6}.mt-ico.oleo .nucleo{fill:#15181f}
+.mt-ico.oleo .gotas ellipse{fill:#15181f;animation:oleo-gota-esq 1.2s steps(8,end) infinite}
+.mt-ico.oleo .gotas .g2,.mt-ico.oleo .gotas .g4,.mt-ico.oleo .gotas .g6,.mt-ico.oleo .gotas .g8{animation-name:oleo-gota-dir}
+.mt-ico.oleo .gotas .g3,.mt-ico.oleo .gotas .g4{animation-delay:.3s}.mt-ico.oleo .gotas .g5,.mt-ico.oleo .gotas .g6{animation-delay:.6s}.mt-ico.oleo .gotas .g7,.mt-ico.oleo .gotas .g8{animation-delay:.9s}
+@keyframes oleo-coluna{0%,100%{transform:scaleX(.9)}50%{transform:scaleX(1.12)}}
+@keyframes oleo-copa{0%{transform:scale(.94) rotate(-3deg)}50%{transform:scale(1.05) rotate(3deg)}100%{transform:scale(.94) rotate(-3deg)}}
+@keyframes oleo-gota-esq{0%{transform:translate(8px,-6px) scale(.6);opacity:0}15%{opacity:1}60%{transform:translate(-4px,18px) scale(1)}100%{transform:translate(-9px,36px) scale(.8);opacity:0}}
+@keyframes oleo-gota-dir{0%{transform:translate(-8px,-6px) scale(.6);opacity:0}15%{opacity:1}60%{transform:translate(4px,18px) scale(1)}100%{transform:translate(9px,36px) scale(.8);opacity:0}}
 .mt-dias{display:flex;gap:2px;margin-top:6px;flex-wrap:wrap}
 .mt-dia{width:11px;height:11px;border-radius:3px;background:#DEE2E8;display:block}
 .mt-dia.cinza{background:#DEE2E8}.mt-dia.azul{background:#2F79D0}.mt-dia.verde{background:var(--ok)}.mt-dia.vermelho{background:var(--urgente)}
@@ -1894,17 +1893,30 @@ function iconeMotor(id,ativo){
       <svg viewBox="0 0 32 40" width="30" height="36"><g class="fumaca"><circle cx="16" cy="7" r="3"/><circle cx="21" cy="4" r="2.2"/><circle cx="11" cy="5" r="1.8"/></g>
       <path class="chama" d="M16 12c4 5 8 8 8 15a8 8 0 0 1-16 0c0-4 2-6 3-9 1 3 2 4 3 4 0-4 0-7 2-10z"/>
       <path class="chama2" d="M16 22c2 3 4 4 4 7a4 4 0 0 1-8 0c0-2 1-3 2-5 .5 1.5 1 2 2 2 0-2 0-3 0-4z"/></svg></button>`
-    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (poça de óleo) — clique para acender e ativar nas rotinas automáticas">
-      <svg viewBox="0 0 40 44" width="34" height="37">
-        <g class="jorro">
-          <path class="pluma" d="M20 26c-4-6-5-11-2.5-15.5C19 8 20 6 20 3c0 3 1 5 2.5 7.5C25 15 24 20 20 26z"/>
-          <path class="pluma2" d="M20 24c-2-4-2.6-7.5-1-10.5C19.6 12 20 10.5 20 9c0 1.5.4 3 1 4.5 1.6 3 1 6.5-1 10.5z"/>
-          <ellipse class="gota" cx="13.5" cy="12" rx="1.9" ry="2.6"/><ellipse class="gota" cx="27" cy="9.5" rx="2.2" ry="3"/>
-          <ellipse class="gota" cx="9.5" cy="19" rx="1.4" ry="1.9"/><ellipse class="gota" cx="30.5" cy="17" rx="1.6" ry="2.2"/>
-          <ellipse class="reflexo" cx="19" cy="14" rx=".9" ry="3"/></g>
-        <path class="poca" d="M5 34c-2.5-3 1.5-6.5 6.5-6.5 2 0 3-1.5 6-1.5 3.5 0 4.5 1.5 8.5 1 5-.6 10 1.5 9 5.2-.8 3-5.5 3.2-8.5 4-3 .9-4.4 2.8-8 2.8-3 0-4.2-1.8-7-1.8-3 0-5.5.2-6.5-3.2z"/>
-        <path class="poca2" d="M11 33c-1-2 2-3.6 5-3 2 .4 3-.8 5.5-.8 3 0 4 1 7 1 3 0 4.8 1.6 3.8 3.4-1 1.8-4 1.2-6 2-2 .8-3 1.8-6 1.8-2 0-3-.8-5-.8s-3.8 0-4.3-3.6z"/>
-        <ellipse class="brilho" cx="14.5" cy="31.6" rx="3.6" ry="1"/><ellipse class="brilho" cx="27" cy="35.6" rx="2.2" ry=".7"/></svg></button>`;
+    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (poço de petróleo jorrando) — clique para acender e ativar nas rotinas automáticas">
+      <svg viewBox="0 0 64 68" width="36" height="38">
+        <!-- poça na base -->
+        <path class="poca" d="M6 58c-3-3 2-7 9-7 3 0 4-2 8-2 5 0 6 2 11 1 6-1 12 2 11 6-1 3-7 3-11 4-4 1-5 3-10 3-4 0-5-2-9-2-4 0-7 0-9-3z"/>
+        <path class="poca2" d="M13 57c-1-2 3-4 7-3 2 0 3-1 6-1 4 0 5 1 9 1 4 0 6 2 5 4-1 2-5 1-8 2-3 1-4 2-7 2-3 0-4-1-6-1s-5 0-6-4z"/>
+        <ellipse class="brilho" cx="18" cy="56" rx="4" ry="1.1"/>
+        <!-- coluna que sobe da poça -->
+        <path class="coluna" d="M29 52c.5-8 .2-16 0-24 0-7 .4-13 3-18 2.6 5 3 11 3 18-.2 8-.5 16 0 24z"/>
+        <!-- copa: jatos grossos abrindo como palmeira e caindo -->
+        <g class="copa" fill="none" stroke-linecap="round" stroke-width="4.2">
+          <path d="M32 13c-7-4-15-3-21 3"/><path d="M32 13c7-4 15-3 21 3"/>
+          <path d="M32 12c-8-1-14 3-17 10"/><path d="M32 12c8-1 14 3 17 10"/>
+          <path d="M32 11c-4-4-6-9-5-13"/><path d="M32 11c4-4 6-9 5-13"/>
+          <path class="fina" d="M32 12c-11 0-18 5-22 12"/><path class="fina" d="M32 12c11 0 18 5 22 12"/>
+        </g>
+        <ellipse class="nucleo" cx="32" cy="13" rx="6.5" ry="4"/>
+        <!-- gotas que voam e caem em arco, em quadros sucessivos -->
+        <g class="gotas">
+          <ellipse class="g1" cx="14" cy="16" rx="1.8" ry="3"/><ellipse class="g2" cx="50" cy="16" rx="1.8" ry="3"/>
+          <ellipse class="g3" cx="9" cy="22" rx="1.5" ry="2.6"/><ellipse class="g4" cx="55" cy="22" rx="1.5" ry="2.6"/>
+          <ellipse class="g5" cx="19" cy="10" rx="1.3" ry="2.2"/><ellipse class="g6" cx="45" cy="10" rx="1.3" ry="2.2"/>
+          <ellipse class="g7" cx="6" cy="30" rx="1.2" ry="2"/><ellipse class="g8" cx="58" cy="30" rx="1.2" ry="2"/>
+        </g>
+      </svg></button>`;
 }
 /* fósforo (busca imediata) · upload (alimentar manualmente) · link (aprendizado) */
 function iconesAcao(id,nome){
