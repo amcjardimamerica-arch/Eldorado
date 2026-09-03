@@ -308,7 +308,11 @@ box-shadow:0 1px 3px #0002}
 .s.vermelho{color:#C0392B}.s.azul{color:#0B4EA2}
 .bz-meio{display:grid;grid-template-columns:1.9fr 1fr;gap:16px;margin-bottom:16px}
 .bz-mapa-grade{display:grid;grid-template-columns:auto 1fr 1.05fr;gap:14px;align-items:start}
-.bz-rosa{width:104px;margin-top:26px}
+.bz-rosa{width:120px;height:120px;margin-top:8px;display:block;background:transparent}
+.bz-lateral{border:1px solid var(--linha);border-radius:11px;padding:11px 13px;background:#fff;margin-top:12px;width:250px;max-height:520px;overflow:auto}
+.bz-indices{display:flex;flex-direction:column;gap:7px;margin-top:8px;font-size:12.5px}.bz-indices b{margin-left:auto;color:var(--suave)}.bz-indices>span{display:flex;align-items:center;gap:6px}
+.bz-cidades{display:flex;flex-direction:column;gap:6px}.bz-cidade{border-top:1px dashed var(--linha);padding-top:5px;font-size:12.5px}
+#bz-mapa path.com-abertas{fill:#FBE3C4}#bz-mapa path.com-abertas:hover{fill:#F6C98F}
 #bz-mapa path{fill:#F3E9D8;stroke:#D8C9AC;stroke-width:1;cursor:pointer;transition:fill .12s}
 #bz-mapa path:hover{fill:#EADCC2}
 #bz-mapa path.sel{fill:#E4D2AE;stroke:#C9A227;stroke-width:1.6}
@@ -574,8 +578,19 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <span class="bz-limpar" onclick="mpLimpar()">⨯ Limpar filtros</span>
   </div>
   <div class="bz-mapa-grade">
-    <div><img class="bz-rosa" src="arte/rosa-ventos.png" alt="">
-      <div class="bz-legenda" id="mp-legenda"></div>
+    <div>
+      <svg class="bz-rosa" viewBox="0 0 120 120" role="img" aria-label="rosa dos ventos">
+        <circle cx="60" cy="60" r="56" fill="none" stroke="#0B4EA2" stroke-width="1.2"/>
+        <circle cx="60" cy="60" r="48" fill="none" stroke="#0B4EA2" stroke-width=".6" stroke-dasharray="2 3"/>
+        <g fill="#0B4EA2" opacity=".55"><path d="M60 60 L46 46 L60 24 Z"/><path d="M60 60 L74 46 L96 60 Z"/><path d="M60 60 L74 74 L60 96 Z"/><path d="M60 60 L46 74 L24 60 Z"/></g>
+        <g fill="#0B4EA2"><path d="M60 60 L74 46 L60 24 Z"/><path d="M60 60 L74 74 L96 60 Z"/><path d="M60 60 L46 74 L60 96 Z"/><path d="M60 60 L46 46 L24 60 Z"/></g>
+        <g fill="#C9A227" opacity=".9"><path d="M60 60 L52 44 L60 32 L68 44 Z" opacity="0"/><path d="M60 60 L66 54 L80 40 L66 60 Z" opacity=".55"/><path d="M60 60 L54 54 L40 40 L54 60 Z" opacity=".55"/><path d="M60 60 L66 66 L80 80 L66 60 Z" opacity=".55"/><path d="M60 60 L54 66 L40 80 L54 60 Z" opacity=".55"/></g>
+        <circle cx="60" cy="60" r="4.2" fill="#fff" stroke="#0B4EA2" stroke-width="1.4"/>
+        <g font-family="Georgia,serif" font-size="11" font-weight="700" fill="#0E2A55" text-anchor="middle">
+          <text x="60" y="15">N</text><text x="60" y="113">S</text><text x="110" y="64">L</text><text x="10" y="64">O</text></g>
+      </svg>
+      <div class="bz-legenda oculto" id="mp-legenda"></div>
+      <div class="bz-lateral oculto" id="bz-lateral"></div>
     </div>
     <div id="bz-mapa"></div>
     <div>
@@ -1705,7 +1720,7 @@ function desenhaMapaMonitor(){
     `<span title="${esc(c.rotulo)} — dias com captação nesta frente: ${cob[k]??0}${cob[k]?"":" (frente sem captação no período)"}">
       <span class=ponto style="background:${c.cor};${cob[k]?"":"opacity:.35"}"></span>${esc(c.rotulo)}
       <b style="color:var(--suave);font-weight:600">${cob[k]??0}</b></span>`).join("");
-  $("mp-legenda").innerHTML=
+  if(false)$("mp-legenda").innerHTML=
     `<span><span class=ponto style="background:#F09B2E"></span>Oportunidade aberta</span>
      <span><span class=ponto style="background:#2F79D0"></span>Em verificação</span>
      <span><span class=ponto style="background:#9AA4B2"></span>Encerrada</span>
@@ -2036,24 +2051,62 @@ function bzStatusUF(){
     por[e.uf][s]++;por[e.uf].total++;});
   return por;
 }
+/* dados por UF: núcleo + base ampla (abertas.json) — abertos, por área e por cidade */
+function mpDadosUF(){
+  const hojeISO=HOJE.toISOString().slice(0,10); const por={};
+  const add=(uf,area,cidade,st)=>{if(!uf)return;const p=por[uf]||(por[uf]={aberta:0,verificacao:0,encerrada:0,total:0,areas:{},cidades:{}});
+    p[st]++;p.total++;if(st==="aberta"){p.areas[area]=(p.areas[area]||0)+1;if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
+  const cid=t=>{const m=/Di[áa]rio Oficial de ([^—(]+?)\s*\(([A-Z]{2})\)/.exec(t||"");return m?m[1].trim():null;};
+  (D.editais||[]).forEach(e=>{const st=["aberto","a_abrir","sem_prazo"].includes(e.estado_export)?"aberta"
+      :(String(e.status).startsWith("verificada")||e.status==="capturada")&&e.estado_export!=="encerrado"?"verificacao":"encerrada";
+    add(e.uf,e.area||"outros",e.municipio||cid(e.titulo),st);});
+  const vistos=new Set((D.editais||[]).map(e=>e.id));
+  (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;const st=(o.fim&&o.fim<hojeISO)?"encerrada":"aberta";add(o.uf,o.area||"outros",cid(o.titulo),st);});
+  return por;
+}
+function mpIndicesUF(uf){
+  const dias=diasDaBussola().filter(d=>!uf||!d.uf||d.uf===uf);
+  return {encontrado:dias.filter(d=>d.encontrado).length,ausente:dias.filter(d=>d.encontrado===false||d.ausente).length};
+}
 function desenhaBzMapa(){
   const M=window.MAPA_BR;if(!M){$("bz-mapa").innerHTML="<div class=meta>mapa indisponível</div>";return;}
-  const por=bzStatusUF();
-  const COR={aberta:"#F09B2E",verificacao:"#2F79D0",encerrada:"#9AA4B2"};
+  if(!FA_ABERTAS){garanteAbertas().then(()=>desenhaBzMapa());}
+  const por=mpDadosUF();
   let svg=`<svg viewBox="${M.viewBox}" style="width:100%;height:auto">`;
-  for(const [uf,e] of Object.entries(M.estados))
-    svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}"><title>${uf}</title></path>`;
-  for(const [uf,e] of Object.entries(M.estados)){
-    svg+=`<text x="${e.cx+10}" y="${e.cy+4}">${uf}</text>`;
-    const st=por[uf];if(!st)continue;
-    const dom=st.aberta?"aberta":st.verificacao?"verificacao":"encerrada";
-    svg+=`<g class="bz-pin" data-uf="${uf}"><path d="M${e.cx} ${e.cy-22} c-8.4 0-14 6.2-14 14 0 9.8 14 22.4 14 22.4s14-12.6 14-22.4c0-7.8-5.6-14-14-14z" fill="${COR[dom]}" stroke="#fff" stroke-width="2"/><circle cx="${e.cx}" cy="${e.cy-9}" r="5.4" fill="#fff"/><title>${uf}: ${st.total} (abertas ${st.aberta} · verificação ${st.verificacao} · encerradas ${st.encerrada})</title></g>`;
-  }
+  for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];
+    svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${p&&p.aberta?" com-abertas":""}"></path>`;}
+  for(const [uf,e] of Object.entries(M.estados)) svg+=`<text x="${e.cx-8}" y="${e.cy+4}">${uf}</text>`;
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
-  $("bz-mapa").querySelectorAll("path[data-uf],g.bz-pin").forEach(el=>el.onclick=()=>{
-    bzUFsel=(bzUFsel===el.dataset.uf?"":el.dataset.uf);
-    $("bz-uf").value=bzUFsel;desenhaBzMapa();desenhaBzTabela();});
+  $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
+    const uf=el.dataset.uf,p=por[uf];
+    /* hover: quantos abertos e em quais áreas */
+    ligaTip(el,p&&p.aberta?`<strong>${uf}</strong> · ${p.aberta} edital(is) aberto(s)<br>${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
+      :`<strong>${uf}</strong> · nenhum edital aberto identificado`);
+    el.onclick=()=>{bzUFsel=(bzUFsel===uf?"":uf);$("bz-uf").value=bzUFsel;desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();desenhaBzLateral(por);};
+  });
+  desenhaBzLateral(por);
+}
+/* painel lateral ao mapa: índices (aberta, verificação, encerrada, encontrado, ausente) e cidades por área */
+function desenhaBzLateral(por){
+  const L=$("bz-lateral"); if(!L)return;
+  if(!bzUFsel){L.classList.add("oculto");L.innerHTML="";return;}
+  const p=(por||mpDadosUF())[bzUFsel]||{aberta:0,verificacao:0,encerrada:0,total:0,areas:{},cidades:{}};
+  const ix=mpIndicesUF(bzUFsel);
+  const cidades=Object.entries(p.cidades).sort((a,b)=>b[1].n-a[1].n);
+  L.classList.remove("oculto");
+  L.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(bzUFsel)}</strong><button style="font-size:11px;padding:3px 8px" onclick="bzUFsel='';$('bz-uf').value='';desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas()">fechar</button></div>
+    <div class="bz-indices">
+      <span><span class=ponto style="background:#F09B2E"></span>Oportunidade aberta <b>${p.aberta}</b></span>
+      <span><span class=ponto style="background:#2F79D0"></span>Em verificação <b>${p.verificacao}</b></span>
+      <span><span class=ponto style="background:#9AA4B2"></span>Encerrada <b>${p.encerrada}</b></span>
+      <span><span class=ponto style="background:var(--ok)"></span>Encontrado <b>${ix.encontrado}</b></span>
+      <span><span class=ponto style="background:var(--urgente)"></span>Ausente <b>${ix.ausente}</b></span>
+    </div>
+    ${Object.keys(p.areas).length?`<div class=meta style="margin:8px 0 4px"><strong>Áreas com edital aberto</strong></div><div class="legenda">${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave)">${n}</b></span>`).join("")}</div>`:""}
+    <div class=meta style="margin:10px 0 4px"><strong>Cidades com edital aberto</strong> ${cidades.length?`<span>(${cidades.length})</span>`:"— nenhuma identificada"}</div>
+    <div class="bz-cidades">${cidades.slice(0,40).map(([c,v])=>`<div class="bz-cidade"><b>${esc(c)}</b> <span class=meta>${v.n}</span><div class=meta>${Object.entries(v.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<span class=ponto style="background:${AREA(a).cor};width:8px;height:8px"></span>${esc(AREA(a).rotulo)} ${n}`).join(" · ")}</div></div>`).join("")}
+    ${cidades.length>40?`<div class=meta>… e mais ${cidades.length-40} cidade(s); use o filtro de UF acima para ver todas na lista.</div>`:""}</div>`;
 }
 function desenhaBzAtual(){
   const ats=(D.bussola_painel&&D.bussola_painel.atualizacoes)||[];

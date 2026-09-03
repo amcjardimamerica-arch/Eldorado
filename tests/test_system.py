@@ -2998,6 +2998,20 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(g["do-goiania"]["urls"][0].startswith("https://www.goiania.go.gov.br"))
         self.assertGreaterEqual(len(g["do-goias"]["urls"]),2)
 
+
+    def test_mapa_sem_pinos_hover_lateral_e_rosa(self):
+        """Mapa só com os estados; hover = abertos por área; clique = painel
+        lateral com índices e cidades; rosa dos ventos em SVG, sem fundo."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertNotIn('class="bz-pin"',html)                   # pinos removidos
+        self.assertNotIn('src="arte/rosa-ventos.png"',html)       # PNG quebrado saiu
+        for x in ('svg class="bz-rosa"','>N</text>','>S</text>','>L</text>','>O</text>',
+                  "function mpDadosUF","function desenhaBzLateral",'id="bz-lateral"',"bz-indices","bz-cidades",
+                  'class="bz-legenda oculto" id="mp-legenda"',"clique para ver as cidades","path.com-abertas"):
+            self.assertIn(x,html,x)
+        self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado <b>",html); self.assertIn("Ausente <b>",html)
+        self.assertNotIn('<svg class="bz-rosa" viewBox="0 0 120 120" role="img" aria-label="rosa dos ventos" style',html)   # sem fundo colorido
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
