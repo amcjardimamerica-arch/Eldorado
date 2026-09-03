@@ -3160,6 +3160,18 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn('class="coluna"',html)                       # apagado = só a poça
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.opressores",wf)
 
+
+    def test_calendario_mensal_com_faixa_continua_confirmada(self):
+        """O Calendário do Eldorado mantém a grade de dias da semana e ganha a
+        faixa contínua de inscrição (1º ao último dia), só com prazo CONFIRMADO."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("FAIXAS CONTÍNUAS de inscrição","cfx-trilhos",'class="cfx',".cfx.ini",".cfx.fim","regraConfirmada",
+                  "e.ano_permitido!==false","faixa contínua = prazo de inscrição <b>confirmado</b>","window._calFaixas"):
+            self.assertIn(x,html,x)
+        # regra: só aberta confirmada ou regra anual/janela com ano permitido; projetado nunca
+        self.assertIn("!c.projetado&&e.calendario_ok!==false",html)
+        self.assertIn('situacaoDe(e)==="aberta"||regraConfirmada',html)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

@@ -160,6 +160,11 @@ box-shadow:0 1px 3px #0002}
 .calcab{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .calcab h2{margin:0;font-size:19px}
 .calgrade{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cfx-trilhos{display:flex;flex-direction:column;gap:2px;margin:2px -6px 4px}
+.cfx{height:10px;border-radius:0;color:#fff;font-size:8.5px;line-height:10px;padding-left:4px;overflow:hidden;white-space:nowrap;cursor:pointer;opacity:.92}
+.cfx.ini{border-radius:6px 0 0 6px;margin-left:6px}.cfx.fim{border-radius:0 6px 6px 0;margin-right:6px}.cfx.ini.fim{border-radius:6px}
+.cfx.vazia{background:transparent;cursor:default;color:var(--suave);padding-left:8px}
+.cfx:hover{opacity:1;filter:brightness(1.08)}
 .caldia-h{font-size:11px;letter-spacing:.08em;color:var(--suave);text-align:center;padding:4px 0;text-transform:uppercase}
 .caldia{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;min-height:86px;padding:6px;position:relative}
 .caldia.fora{opacity:.38}
@@ -1507,19 +1512,47 @@ function desenhaCal(){
   (D.eventos||[]).forEach(ev=>{const d=new Date(ev.data+"T00:00:00");
     if(d.getFullYear()===calAno&&d.getMonth()===calMes)(porDia[d.getDate()]||(porDia[d.getDate()]=[])).push(ev);});
   const prim=new Date(calAno,calMes,1),ini=prim.getDay(),nd=new Date(calAno,calMes+1,0).getDate();
+  /* FAIXAS CONTÍNUAS de inscrição — como no Calendário de Editais da tela inicial,
+     mas sobre a grade de dias da semana: uma faixa da área, do primeiro ao último
+     dia do prazo. SÓ prazos CONFIRMADOS: início e fim reais, validados em fonte
+     oficial (calendario_ok), situação 'aberta' ou regra anual/janela confirmada. */
+  const m0=`${calAno}-${String(calMes+1).padStart(2,"0")}-01`, m1=`${calAno}-${String(calMes+1).padStart(2,"0")}-${String(nd).padStart(2,"0")}`;
+  const faixas=(D.editais||[]).filter(e=>{const c=(e.ciclo||{}).inscricao||{};const i0=c.inicio||e.inicio,f0=c.fim||e.fim;
+      const regraConfirmada=["anual","janela_confirmada","permanente"].includes(e.regime_inscricao)&&e.ano_permitido!==false&&situacaoDe(e)!=="encerrada";
+      return i0&&f0&&!c.projetado&&e.calendario_ok!==false&&(situacaoDe(e)==="aberta"||regraConfirmada)
+        &&estadoDe(e.id)==="em_andamento"&&i0<=m1&&f0>=m0;})
+    .map(e=>{const c=(e.ciclo||{}).inscricao||{};return {e,i:c.inicio||e.inicio,f:c.fim||e.fim};})
+    .sort((a,b)=>a.i.localeCompare(b.i)||a.f.localeCompare(b.f));
+  // pistas (linhas) estáveis ao longo do mês
+  const pistas=[];faixas.forEach(x=>{let k=pistas.findIndex(fim=>fim<x.i);if(k<0){k=pistas.length;pistas.push(x.f);}else pistas[k]=x.f;x.pista=k;});
+  const MAXP=4;
+  window._calFaixas=faixas;
   let h=["D","S","T","Q","Q","S","S"].map(x=>`<div class=caldia-h>${x}</div>`).join("");
   for(let i=0;i<ini;i++)h+='<div class="caldia fora"></div>';
   for(let dia=1;dia<=nd;dia++){
     const hoje=(calAno===HOJE.getFullYear()&&calMes===HOJE.getMonth()&&dia===HOJE.getDate());
-    const evs=(porDia[dia]||[]).slice(0,4);
+    const iso=`${calAno}-${String(calMes+1).padStart(2,"0")}-${String(dia).padStart(2,"0")}`;
+    const dow=new Date(calAno,calMes,dia).getDay();
+    const noDia=faixas.filter(x=>x.i<=iso&&x.f>=iso&&x.pista<MAXP);
+    const ocultas=faixas.filter(x=>x.i<=iso&&x.f>=iso&&x.pista>=MAXP).length;
+    const trilhos=[...Array(Math.min(MAXP,pistas.length))].map((_,k)=>{const x=noDia.find(y=>y.pista===k);
+      if(!x)return `<div class="cfx vazia"></div>`;
+      const cor=AREA(x.e.area).cor;const rotulo=(x.i===iso||dow===0||dia===1);
+      return `<div class="cfx${x.i===iso?" ini":""}${x.f===iso?" fim":""}" data-fx="${esc(x.e.id)}" style="background:${cor}" title="${esc(x.e.titulo)} · inscrições ${br(x.i)} → ${br(x.f)} · prazo confirmado">${rotulo?`<span>${esc((x.e.programa||x.e.titulo||"").slice(0,22))}</span>`:""}</div>`;}).join("");
+    const evs=(porDia[dia]||[]).slice(0,3);
     const mais=(porDia[dia]||[]).length-evs.length;
-    h+=`<div class="caldia${hoje?" hoje":""}" data-dia="${dia}"><div class=n>${dia}</div>`+
+    h+=`<div class="caldia${hoje?" hoje":""}" data-dia="${dia}"><div class=n>${dia}</div>`+(trilhos?`<div class=cfx-trilhos>${trilhos}${ocultas?`<div class="cfx vazia meta">+${ocultas}</div>`:""}</div>`:"")+
       evs.map((ev,i)=>`<div class=evt data-ev="${dia}:${i}" style="color:${AREA(ev.area).cor}">
         <span class=ponto style="background:${AREA(ev.area).cor}"></span><i>${TEVT(ev.tipo).simbolo}</i>
         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(ev.titulo.slice(0,26))}</span></div>`).join("")+
       (mais>0?`<div class="evt meta">+${mais} evento(s)</div>`:"")+"</div>";
   }
   $("cal-grade").innerHTML=h;
+  document.querySelectorAll(".cfx[data-fx]").forEach(el=>{
+    const x=(window._calFaixas||[]).find(y=>y.e.id===el.dataset.fx);if(!x)return;
+    ligaTip(el,`<strong>${esc(x.e.titulo)}</strong><br>inscrições <b>${br(x.i)} → ${br(x.f)}</b> · prazo confirmado${x.e.base_situacao?"<br>"+esc(x.e.base_situacao):""}<br>`+resumoTip(x.e));
+    el.onclick=()=>detalheEdital(x.e);
+  });
   document.querySelectorAll(".evt[data-ev]").forEach(el=>{
     const [dia,i]=el.dataset.ev.split(":").map(Number);
     const ev=porDia[dia][i];const ed=(D.editais||[]).find(x=>x.id===ev.edital_id);
@@ -1531,7 +1564,8 @@ function desenhaCal(){
   $("cal-legenda").innerHTML=areasUsadas.length
     ?areasUsadas.map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("")
     :"<span class=meta>Nenhum evento registrado ainda — a primeira varredura de segunda/sexta popula o calendário.</span>";
-  $("cal-simbolos").innerHTML=Object.entries(D.tipos_evento||{}).map(([k,v])=>`<span><i style="font-style:normal;font-weight:700">${v.simbolo}</i> ${esc(v.rotulo)}</span>`).join(" · ");
+  $("cal-simbolos").innerHTML=`<span><span class="cfx" style="display:inline-block;width:26px;height:9px;background:var(--marca);vertical-align:middle;position:static"></span> faixa contínua = prazo de inscrição <b>confirmado</b> (${faixas.length} neste mês)</span> · `
+    +Object.entries(D.tipos_evento||{}).map(([k,v])=>`<span><i style="font-style:normal;font-weight:700">${v.simbolo}</i> ${esc(v.rotulo)}</span>`).join(" · ");
 }
 
 /* ================= EDITAIS ABERTOS ================= */
