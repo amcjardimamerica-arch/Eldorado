@@ -3084,7 +3084,7 @@ class SystemTests(unittest.TestCase):
         """Cada motor de busca tem o seu calendário (com navegação de mês); o
         fósforo fica aceso só enquanto a busca imediata está em curso."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("Calendário do motor —","function mtMesMotor","mt-calnav","window._mtMes",
+        for x in ("Calendário do motor —","window.mtMesMotor=function","mt-calnav","window._mtMes",
                   "apaga quando o","m.ultima_leitura>t","24*3600*1000"):
             self.assertIn(x,html,x)
         m=load_json(pathlib.Path("docs/dados/motores.json"))
