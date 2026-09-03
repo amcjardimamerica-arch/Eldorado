@@ -3006,10 +3006,10 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn('class="bz-pin"',html)                   # pinos removidos
         self.assertNotIn('src="arte/rosa-ventos.png"',html)       # PNG quebrado saiu
         for x in ('svg class="bz-rosa"','>N</text>','>S</text>','>L</text>','>O</text>',
-                  "function mpDadosUF","function desenhaBzLateral",'id="bz-lateral"',"bz-indices","bz-cidades",
+                  "function mpDadosUF","function desenhaBzLateral","bz-indices","bz-cidades",
                   'class="bz-legenda oculto" id="mp-legenda"',"clique para ver as cidades","path.com-abertas"):
             self.assertIn(x,html,x)
-        self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado <b>",html); self.assertIn("Ausente <b>",html)
+        self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado (varredura) <b>",html); self.assertIn("Ausente <b>",html)
         self.assertNotIn('<svg class="bz-rosa" viewBox="0 0 120 120" role="img" aria-label="rosa dos ventos" style',html)   # sem fundo colorido
 
 
@@ -3030,6 +3030,35 @@ class SystemTests(unittest.TestCase):
         # sem descarte na aba de arquivados
         trecho=html.split("Arquivados — Encerrados / Descartados: uma linha por edital, filtros")[1].split("/* ================= BÚSSOLA")[0]
         self.assertNotIn("descartado\",{",trecho); self.assertNotIn("bt-desc",trecho)
+
+
+    def test_curadoria_situacao_inscricao(self):
+        """ABERTA só com período de inscrição vigente e confirmado, cidade/estado e
+        publicação; ENCERRADA quando passou; AUSENTE sem período confirmado."""
+        from src.dashboard_dados import situacao_inscricao as S
+        h=date(2026,9,3)
+        base={"uf":"GO","url":"https://x.gov.br/e","publicado_em":"2026-08-20"}
+        self.assertEqual(S({**base,"inicio":"2026-09-01","fim":"2026-09-30"},h)["situacao"],"aberta")
+        self.assertEqual(S({**base,"fim":"2026-08-01"},h)["situacao"],"encerrada")
+        self.assertEqual(S({**base},h)["situacao"],"ausente")                                   # sem datas
+        self.assertEqual(S({**base,"fim":"2029-11-16"},h)["situacao"],"ausente")                # 'vigência até 2029' não é inscrição
+        self.assertEqual(S({**base,"fim":"2026-09-30"},h)["situacao"],"aberta")                 # fim próximo da publicação: vale
+        self.assertEqual(S({"inicio":"2026-09-01","fim":"2026-09-30","url":"x"},h)["situacao"],"ausente")   # sem cidade/estado
+        self.assertEqual(S({**base,"inicio":"2026-09-01","fim":"2026-09-30","ciclo":{"inscricao":{"projetado":True}}},h)["situacao"],"ausente")
+        # regimes: permanente (RFB, anos ímpares), anual (emendas), janela confirmada (Rouanet)
+        self.assertEqual(S({"regra_anos":"impares","ano_permitido":False,"inicio":"2026-01-01","fim":"2026-12-31"},h)["situacao"],"encerrada")
+        self.assertEqual(S({"regra_anos":"impares","ano_permitido":True,"inicio":"2027-01-01","fim":"2027-12-31"},date(2027,3,1))["regime"],"permanente")
+        self.assertEqual(S({"sem_edital":True,"inicio":"2026-10-01","fim":"2026-11-30"},date(2026,10,15))["situacao"],"aberta")
+        self.assertEqual(S({"janela_confirmada":{"via":"titular"},"inicio":"2026-02-01","fim":"2026-10-31"},h)["situacao"],"aberta")
+        d=dash_coletar(date(2026,9,3))
+        self.assertTrue(all(e.get("situacao_inscricao") in ("aberta","encerrada","ausente") for e in d["editais"]))
+        abertas=[e for e in d["editais"] if e["situacao_inscricao"]=="aberta"]
+        for e in abertas:
+            self.assertTrue(e.get("fim")); self.assertTrue(e.get("uf") or e.get("territorio") or e.get("abrangencia")=="nacional")
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("function situacaoDe","casaPrazo",'<option value="ausentes">',"Oportunidades abertas","bzFecharUF",
+                  "if(bzUFsel){desenhaBzLateral();return;}","Encontrado (varredura)"): self.assertIn(x,html,x)
+        self.assertNotIn('id="bz-lateral"',html)                       # detalhe do estado vai para a coluna da direita
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

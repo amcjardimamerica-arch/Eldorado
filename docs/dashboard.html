@@ -324,7 +324,7 @@ box-shadow:0 1px 3px #0002}
 .bz-meio{display:grid;grid-template-columns:1.9fr 1fr;gap:16px;margin-bottom:16px}
 .bz-mapa-grade{display:grid;grid-template-columns:auto 1fr 1.05fr;gap:14px;align-items:start}
 .bz-rosa{width:120px;height:120px;margin-top:8px;display:block;background:transparent}
-.bz-lateral{border:1px solid var(--linha);border-radius:11px;padding:11px 13px;background:#fff;margin-top:12px;width:250px;max-height:520px;overflow:auto}
+.bz-atual .bz-indices,.bz-atual .bz-cidades{max-height:none}.bz-atual .bz-cidades{max-height:360px;overflow:auto}
 .bz-indices{display:flex;flex-direction:column;gap:7px;margin-top:8px;font-size:12.5px}.bz-indices b{margin-left:auto;color:var(--suave)}.bz-indices>span{display:flex;align-items:center;gap:6px}
 .bz-cidades{display:flex;flex-direction:column;gap:6px}.bz-cidade{border-top:1px dashed var(--linha);padding-top:5px;font-size:12.5px}
 #bz-mapa path.com-abertas{fill:#FBE3C4}#bz-mapa path.com-abertas:hover{fill:#F6C98F}
@@ -609,7 +609,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
           <text x="60" y="15">N</text><text x="60" y="113">S</text><text x="110" y="64">L</text><text x="10" y="64">O</text></g>
       </svg>
       <div class="bz-legenda oculto" id="mp-legenda"></div>
-      <div class="bz-lateral oculto" id="bz-lateral"></div>
+
     </div>
     <div id="bz-mapa"></div>
     <div>
@@ -689,7 +689,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <select id="bz-uf"><option value="">UF</option></select>
     <select id="bz-area"><option value="">Área</option></select>
     <select id="bz-nivel"><option value="">Nível</option></select>
-    <select id="bz-prazo"><option value="abertos">Inscrições abertas</option><option value="encerrados">Inscrições encerradas</option></select>
+    <select id="bz-prazo" title="Curadoria: ABERTA = período de inscrição vigente e confirmado, com cidade/estado e publicação em local oficial; ENCERRADA = o período já passou; AUSENTE = sem período confirmado"><option value="abertos">Inscrições abertas (período vigente confirmado)</option><option value="encerrados">Inscrições encerradas</option><option value="ausentes">Ausentes — sem período confirmado</option><option value="">Todas</option></select>
     <span class="bz-limpar" onclick="bzLimpar()">⨯ Limpar filtros</span>
   </div>
   <div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
@@ -1628,13 +1628,21 @@ function desenhaBussola(){
 }
 /* Fontes com edital aberto: consolidado dos editais VALIDADOS, regido pelo
    mesmo filtro do «Filtro de Oportunidades» logo abaixo. */
+/* SITUAÇÃO DE INSCRIÇÃO (curadoria): aberta · encerrada · ausente.
+   Vem do backend quando há; para linhas da base ampla, vem do campo 'situacao'. */
+function situacaoDe(e){
+  if(e.situacao_inscricao)return e.situacao_inscricao;
+  if(e.situacao)return e.situacao;
+  const h=HOJE.toISOString().slice(0,10);
+  if(!e.fim)return "ausente"; if(e.fim<h)return "encerrada";
+  return (e.uf||e.abrangencia==="nacional")&&(e.url||e.fonte_nome)?"aberta":"ausente";
+}
+const casaPrazo=(e,pz)=>!pz||(pz==="abertos"?situacaoDe(e)==="aberta":pz==="encerrados"?situacaoDe(e)==="encerrada":situacaoDe(e)==="ausente");
 function editaisFiltradosBz(){
   const eds=D.editais||[];
   const uf=$("bz-uf").value,ar=$("bz-area").value,ni=$("bz-nivel").value,pz=$("bz-prazo").value;
   return eds.filter(e=>(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))
-    &&(!ar||e.area===ar)&&(!ni||e.nivel===ni)
-    &&(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export)
-                     :e.estado_export==="encerrado"));
+    &&(!ar||e.area===ar)&&(!ni||e.nivel===ni)&&casaPrazo(e,pz));
 }
 let FA_ABERTAS=null, faPagina={};
 /* GRADE PADRONIZADA — os 12 itens em toda caixa, com ou sem análise da etapa 2:
@@ -1676,14 +1684,14 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
      + o fragmento ABERTAS com a base completa pertinente ao terceiro setor
      (18 mil+), regidas pelo mesmo filtro (UF, área, nível, prazo) */
   const uf=comFiltroBz?$("bz-uf").value:(($("ed-uf")||{}).value||""),ar=comFiltroBz?$("bz-area").value:(($("ed-area")||{}).value||""),ni=comFiltroBz?$("bz-nivel").value:"",pz=comFiltroBz?$("bz-prazo").value:"abertos";
-  const base=comFiltroBz?editaisFiltradosBz():(D.editais||[]).filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export)&&(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))&&(!ar||e.area===ar));
+  const base=comFiltroBz?editaisFiltradosBz():(D.editais||[]).filter(e=>situacaoDe(e)==="aberta"&&(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))&&(!ar||e.area===ar));
   const sel=base.filter(e=>estadoDe(e.id)==="em_andamento");
   const info={};((D.bussola&&D.bussola.fontes_com_editais)||[]).forEach(f=>f.editais.forEach(e=>info[e.id]={...e,_fonte:f}));
   const hojeISO=HOJE.toISOString().slice(0,10);
   const extras=(FA_ABERTAS||[]).filter(o=>estadoDe(o.id)==="em_andamento"
     &&(!uf||o.uf===uf||(!o.uf&&(o.nivel==="federal"||!o.nivel)))&&(!ar||o.area===ar)&&(!ni||o.nivel===ni)
-    &&(pz==="abertos"?(!o.fim||o.fim>=hojeISO):(o.fim&&o.fim<hojeISO)))
-    .map(o=>({e:{...o,fonte_nome:o.orgao&&!/pncp|querido/i.test(o.orgao)?o.orgao:o.fonte_nome,estado_export:o.fim&&o.fim<hojeISO?"encerrado":(o.fim?"aberto":"sem_prazo"),abrangencia:o.nivel==="federal"?"nacional":"estadual"},
+    &&casaPrazo(o,pz))
+    .map(o=>({e:{...o,fonte_nome:o.orgao&&!/pncp|querido/i.test(o.orgao)?o.orgao:o.fonte_nome,estado_export:situacaoDe(o)==="encerrada"?"encerrado":situacaoDe(o)==="aberta"?"aberto":"sem_prazo",abrangencia:o.nivel==="federal"?"nacional":"estadual"},
              b:o.campanha?{campanha:{status:o.campanha,dia:o.campanha_dia,tentativas:null,pendencias:[]},_fonte:{fonte_nome:o.orgao||o.fonte_nome,via:/querido/i.test(o.fonte_nome||"")?"Querido Diário":/pncp/i.test(o.fonte_nome||"")?"PNCP":null,categoria:"api_oficial"},pertinencia:o.pertinencia,analise_etapa2:[],comprovados:null,total_itens:null,anexos:[],pendencias:[]}:null}));
   const itens=sel.map(e=>({e,b:info[e.id]||null})).concat(extras);
   const nCamp=itens.filter(x=>x.b&&x.b.campanha&&x.b.campanha.status==="monitorando").length;
@@ -2087,9 +2095,9 @@ function desenhaBzCards(){
     livro:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><path d="M12 5.5C10 4 7.4 3.6 4 3.8v14.7c3.4-.2 6 .2 8 1.7 2-1.5 4.6-1.9 8-1.7V3.8c-3.4-.2-6 .2-8 1.7z" stroke-linejoin="round"/><path d="M12 5.5v14.7"/></svg>`});
   const mon=bp.monitoramentos||{}; const tot=bp.totais||{};
   const cards=[
-    [IC("#C77E12").rosa,"Oportunidades",mon.encontrados??tot.base_completa??eds.length,
-     `${mon.monitorando??0} em monitoramento`,"vermelho",
-     "monitoramentos encontrados: cada identificação em diário abre campanha de até 30 dias atrás do edital integral"],
+    [IC("#C77E12").rosa,"Oportunidades abertas",eds.filter(e=>situacaoDe(e)==="aberta").length,
+     `${eds.filter(e=>situacaoDe(e)==="encerrada").length} encerradas · ${eds.filter(e=>situacaoDe(e)==="ausente").length} ausentes`,"vermelho",
+     "curadoria: aberta = período de inscrição vigente e confirmado, com cidade/estado e publicação oficial; encerrada = período passou; ausente = sem período confirmado"],
     [IC("#0B4EA2").banco,"Fontes monitoradas",`<span id="bz-motores-ativos">—</span>`,"motores ativos / total","azul",
      "motores de busca ativos no dia (regulares + Opressores acesos) sobre o total de motores"],
     [IC("#0B4EA2").escudo,"Editais verificados",tot.completos??0,"completos p/ o Farol","azul",
@@ -2117,11 +2125,11 @@ function mpDadosUF(){
   const add=(uf,area,cidade,st)=>{if(!uf)return;const p=por[uf]||(por[uf]={aberta:0,verificacao:0,encerrada:0,total:0,areas:{},cidades:{}});
     p[st]++;p.total++;if(st==="aberta"){p.areas[area]=(p.areas[area]||0)+1;if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
   const cid=t=>{const m=/Di[áa]rio Oficial de ([^—(]+?)\s*\(([A-Z]{2})\)/.exec(t||"");return m?m[1].trim():null;};
-  (D.editais||[]).forEach(e=>{const st=["aberto","a_abrir","sem_prazo"].includes(e.estado_export)?"aberta"
-      :(String(e.status).startsWith("verificada")||e.status==="capturada")&&e.estado_export!=="encerrado"?"verificacao":"encerrada";
-    add(e.uf,e.area||"outros",e.municipio||cid(e.titulo),st);});
+  const add2=(uf,area,cidade,st)=>{if(!uf)return;const p=por[uf]||(por[uf]={aberta:0,verificacao:0,encerrada:0,ausente:0,total:0,areas:{},cidades:{}});
+    p[st]=(p[st]||0)+1;p.total++;if(st==="aberta"){p.areas[area]=(p.areas[area]||0)+1;if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
+  (D.editais||[]).forEach(e=>add2(e.uf,e.area||"outros",e.municipio||cid(e.titulo),situacaoDe(e)));
   const vistos=new Set((D.editais||[]).map(e=>e.id));
-  (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;const st=(o.fim&&o.fim<hojeISO)?"encerrada":"aberta";add(o.uf,o.area||"outros",cid(o.titulo),st);});
+  (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;add2(o.uf,o.area||"outros",cid(o.titulo),situacaoDe(o));});
   return por;
 }
 function mpIndicesUF(uf){
@@ -2148,20 +2156,19 @@ function desenhaBzMapa(){
   desenhaBzLateral(por);
 }
 /* painel lateral ao mapa: índices (aberta, verificação, encerrada, encontrado, ausente) e cidades por área */
+window.bzFecharUF=function(){bzUFsel="";$("bz-uf").value="";desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();};
 function desenhaBzLateral(por){
-  const L=$("bz-lateral"); if(!L)return;
-  if(!bzUFsel){L.classList.add("oculto");L.innerHTML="";return;}
-  const p=(por||mpDadosUF())[bzUFsel]||{aberta:0,verificacao:0,encerrada:0,total:0,areas:{},cidades:{}};
+  const L=$("bz-atual"); if(!L)return;
+  if(!bzUFsel){desenhaBzAtual();return;}                 // sem estado selecionado: atualizações
+  const p=(por||mpDadosUF())[bzUFsel]||{aberta:0,verificacao:0,encerrada:0,ausente:0,total:0,areas:{},cidades:{}};
   const ix=mpIndicesUF(bzUFsel);
   const cidades=Object.entries(p.cidades).sort((a,b)=>b[1].n-a[1].n);
-  L.classList.remove("oculto");
-  L.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(bzUFsel)}</strong><button style="font-size:11px;padding:3px 8px" onclick="bzUFsel='';$('bz-uf').value='';desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas()">fechar</button></div>
+  L.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(bzUFsel)} — editais</strong><button style="font-size:11px;padding:3px 8px" onclick="bzFecharUF()">fechar</button></div>
     <div class="bz-indices">
-      <span><span class=ponto style="background:#F09B2E"></span>Oportunidade aberta <b>${p.aberta}</b></span>
-      <span><span class=ponto style="background:#2F79D0"></span>Em verificação <b>${p.verificacao}</b></span>
-      <span><span class=ponto style="background:#9AA4B2"></span>Encerrada <b>${p.encerrada}</b></span>
-      <span><span class=ponto style="background:var(--ok)"></span>Encontrado <b>${ix.encontrado}</b></span>
-      <span><span class=ponto style="background:var(--urgente)"></span>Ausente <b>${ix.ausente}</b></span>
+      <span title="período de inscrição vigente e confirmado, com cidade/estado e publicação oficial"><span class=ponto style="background:#F09B2E"></span>Oportunidade aberta <b>${p.aberta}</b></span>
+      <span title="o período de inscrição já passou"><span class=ponto style="background:#9AA4B2"></span>Encerrada <b>${p.encerrada}</b></span>
+      <span title="sem período de inscrição confirmado — não conta como aberta"><span class=ponto style="background:#C9CED6"></span>Ausente <b>${p.ausente||0}</b></span>
+      <span title="dias de varredura com indício captado"><span class=ponto style="background:var(--ok)"></span>Encontrado (varredura) <b>${ix.encontrado}</b></span>
     </div>
     ${Object.keys(p.areas).length?`<div class=meta style="margin:8px 0 4px"><strong>Áreas com edital aberto</strong></div><div class="legenda">${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave)">${n}</b></span>`).join("")}</div>`:""}
     <div class=meta style="margin:10px 0 4px"><strong>Cidades com edital aberto</strong> ${cidades.length?`<span>(${cidades.length})</span>`:"— nenhuma identificada"}</div>
@@ -2169,6 +2176,7 @@ function desenhaBzLateral(por){
     ${cidades.length>40?`<div class=meta>… e mais ${cidades.length-40} cidade(s); use o filtro de UF acima para ver todas na lista.</div>`:""}</div>`;
 }
 function desenhaBzAtual(){
+  if(bzUFsel){desenhaBzLateral();return;}                 // estado selecionado: detalhe do estado na coluna
   const ats=(D.bussola_painel&&D.bussola_painel.atualizacoes)||[];
   const IC={novo:["#F09B2E",'●'],verificada:["#2F79D0",'●'],prazo:["#C0392B",'◷']};
   $("bz-atual").innerHTML=ats.length?ats.slice(0,4).map(a=>{

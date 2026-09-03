@@ -879,7 +879,8 @@ def etapa_do_edital(e: dict, decididos: set, preparados: set,
                            "Decidir", "Preparar")[n - 1]}
 
 
-def _marca_etapas(editais: list[dict]) -> list[dict]:
+def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
+    hoje = hoje or date.today()
     from .biblioteca import OPORTUNIDADES as _OP
     def conjunto(padrao):
         return {f"{p.parent.parent.name}/{p.parent.name}"
@@ -893,6 +894,8 @@ def _marca_etapas(editais: list[dict]) -> list[dict]:
     for e in editais:
         e["area"] = area_canonica(e.get("area"))
         e["calendario_ok"] = _apto_ao_calendario(e)
+        si = situacao_inscricao(e, hoje)
+        e["situacao_inscricao"] = si["situacao"]; e["regime_inscricao"] = si["regime"]; e["base_situacao"] = si["base"]
         if e.get("sem_edital") or e.get("janela_confirmada"):   # etapa e ciclo próprios
             continue
         e.update(etapa_do_edital(e, decididos, preparados, com_parecer))
@@ -913,6 +916,63 @@ def _parecer_prazos() -> dict:
 
 
 _OFICIAL_RX = re.compile(r"\.gov\.br|\.jus\.br|\.leg\.br|\.mp\.br|\.org\.br|queridodiario|pncp\.gov|salic|transferegov", re.I)
+
+
+def situacao_inscricao(e: dict, hoje: date) -> dict:
+    """CURADORIA da possibilidade de inscrição — a classificação que define o que
+    é oportunidade ABERTA:
+      aberta ....... período de inscrição VIGENTE e confirmado (início ≤ hoje ≤ fim,
+                     não projetado), com cidade/estado e publicação em local oficial
+                     (site, diário, imprensa, API); ou regra anual/normativa dentro
+                     da janela (emendas 01/10–30/11, doação RFB em ano ímpar,
+                     janela confirmada pelo titular ou pelo sensor);
+      encerrada .... o período de inscrição já passou;
+      ausente ...... sem período de inscrição confirmado (sem datas) — não conta
+                     como aberta em nenhuma tela.
+    Devolve também o REGIME: permanente, anual, janela_confirmada,
+    periodo_determinado, sem_periodo."""
+    h = hoje.isoformat()
+    ini, fim = e.get("inicio"), e.get("fim")
+    c = (e.get("ciclo") or {}).get("inscricao") or {}
+    projetado = bool(c.get("projetado"))
+    tem_local = bool(e.get("uf") or e.get("territorio") or e.get("abrangencia") == "nacional")
+    publicado = bool(e.get("url")) or bool(e.get("fonte_nome")) or bool(e.get("sem_edital"))
+    if e.get("regra_anos"):                                   # ex.: doação RFB — permanente nos anos ímpares
+        if e.get("ano_permitido") and ini and fim and ini <= h <= fim:
+            return {"situacao": "aberta", "regime": "permanente", "base": "regra normativa do ano"}
+        return {"situacao": "encerrada" if (fim and fim < h) or e.get("ano_permitido") is False else "ausente",
+                "regime": "permanente", "base": "fora do ano/janela permitido"}
+    if e.get("sem_edital"):                                   # emendas: janela anual fixa
+        if ini and fim and ini <= h <= fim:
+            return {"situacao": "aberta", "regime": "anual", "base": "janela anual 01/10–30/11"}
+        return {"situacao": "encerrada" if (fim and fim < h) else "ausente", "regime": "anual", "base": "fora da janela anual"}
+    if e.get("janela_confirmada"):
+        if ini and fim and ini <= h <= fim:
+            return {"situacao": "aberta", "regime": "janela_confirmada", "base": f'confirmada por {e["janela_confirmada"].get("via")}'}
+        return {"situacao": "encerrada" if (fim and fim < h) else "ausente", "regime": "janela_confirmada", "base": "fora da janela"}
+    if not fim:
+        return {"situacao": "ausente", "regime": "sem_periodo", "base": "sem período de inscrição confirmado na publicação"}
+    if fim < h:
+        return {"situacao": "encerrada", "regime": "periodo_determinado", "base": f"inscrições encerradas em {fim}"}
+    if projetado:
+        return {"situacao": "ausente", "regime": "sem_periodo", "base": "início apenas projetado — não confirmado"}
+    # data isolada sem início: só vale como prazo de inscrição se estiver a até
+    # 180 dias da publicação — 'vigência até 2029' de um termo não é inscrição
+    pub = e.get("publicado_em") or e.get("coletado_em") or ""
+    if not ini and pub:
+        try:
+            if (date.fromisoformat(fim[:10]) - date.fromisoformat(pub[:10])).days > 180:
+                return {"situacao": "ausente", "regime": "sem_periodo",
+                        "base": "data isolada distante da publicação — não confirmada como prazo de inscrição"}
+        except ValueError:
+            pass
+    if not tem_local:
+        return {"situacao": "ausente", "regime": "periodo_determinado", "base": "sem cidade/estado identificado"}
+    if not publicado:
+        return {"situacao": "ausente", "regime": "periodo_determinado", "base": "sem local de publicação para validar"}
+    if ini and ini > h:
+        return {"situacao": "aberta", "regime": "periodo_determinado", "base": f"inscrições abrem em {ini} (a abrir)"}
+    return {"situacao": "aberta", "regime": "periodo_determinado", "base": f"inscrições vigentes até {fim}"}
 
 
 def _apto_ao_calendario(e: dict) -> bool:
@@ -1141,11 +1201,16 @@ def coletar(hoje: date | None = None) -> dict:
         })
     vivos = completos_lista
     editais = _marca_etapas(
-        (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos)
+        (_recorte_painel(vivos, hoje) if len(vivos) > 600 else vivos) + historicos, hoje)
     # as três emendas anuais entram como linha própria, já com etapa definida
     from .janelas import oportunidades as _janelas
     janelas = _janelas(hoje)
     editais = emendas + janelas + editais
+    for e in emendas + janelas:                       # curadoria também nas regras anuais
+        e["area"] = area_canonica(e.get("area"))
+        si = situacao_inscricao(e, hoje)
+        e["situacao_inscricao"] = si["situacao"]; e["regime_inscricao"] = si["regime"]; e["base_situacao"] = si["base"]
+        e.setdefault("calendario_ok", _apto_ao_calendario(e))
     # janela confirmada deixa de ser projeção: sai da lista de previsões do ano
     conf_ids = {f'prev-{j["fonte_id"]}-{hoje.year}' for j in janelas}
     previsoes["itens"] = [p0 for p0 in previsoes.get("itens", []) if p0["id"] not in conf_ids]
@@ -1273,7 +1338,7 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                 "uf", "abrangencia", "nivel", "status", "area", "objeto", "inicio", "fim",
                 "datas", "publicado_em", "estado_export", "resumo", "valor_texto", "acervo",
                 "confirmacao", "etapa", "etapa_nome"]
-    hist_l = _marca_etapas(hist)
+    hist_l = _marca_etapas(hist, hoje)
     pac = compactar([{k: e.get(k) for k in campos_h} for e in hist_l], campos_h)
     pac["ciclos"] = {e["id"]: e.get("ciclo") for e in hist_l if e.get("ciclo")}
     pac["historico"] = {e["id"]: e.get("historico") for e in hist_l}
@@ -1326,8 +1391,6 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
         for o in ops.values():
             if o["id"] in ids_nucleo:
                 continue
-            if (o.get("fim") and o["fim"] < hoje_iso):
-                continue
             v = _pert(o)
             if not v["ok"]:
                 continue
@@ -1343,12 +1406,13 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                 "campanha": (c.get("status") or None),
                 "campanha_dia": (min((hoje - date.fromisoformat(c["criado_em"])).days + 1, 30) if c.get("criado_em") else None),
                 "pertinencia": v["motivo"][:60],
+                "situacao": situacao_inscricao(o, hoje)["situacao"],
                 "objeto": (o.get("objeto") or "")[:200] or None,
                 "confirmacao": (o.get("confirmacao") or {}).get("nivel_confirmacao") if isinstance(o.get("confirmacao"), dict) else None,
             })
         abertas.sort(key=lambda x: (x["area"] == "outros", x.get("uf") != "GO", x.get("coletado_em") or ""), )
         campos_a = ["id", "titulo", "url", "fonte_nome", "orgao", "uf", "nivel", "area", "fim", "prazo_texto",
-                    "valor_texto", "coletado_em", "campanha", "campanha_dia", "pertinencia", "objeto", "confirmacao"]
+                    "valor_texto", "coletado_em", "campanha", "campanha_dia", "pertinencia", "situacao", "objeto", "confirmacao"]
         pac_a = compactar(abertas, campos_a)
         pac_a["total"] = len(abertas)
         (pasta / "abertas.json").write_text(json.dumps(pac_a, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
