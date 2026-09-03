@@ -817,7 +817,7 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         # a tabela 'Monitoramentos encontrados' foi UNIFICADA em 'Fontes com edital aberto'
         for trecho in ("monitoramentos em campanha de 30 dias","campanha de completude","dia \"+camp.dia+\"/30",
-                       "verificação dupla","sites oficiais"):
+                       "verificação dupla","motores ativos / total"):
             self.assertIn(trecho,html,trecho)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.completude",wf)
@@ -913,7 +913,7 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for trecho in ("Aprimorar análise com IA","Inscrição realizada","Descartar",
                        "arquivarInscrito","descartarEdital","pedirParecer",
-                       "Em andamento","Arquivados","Encerrados / descartados",
+                       "Em andamento","Arquivados","Arquivados — Encerrados / Descartados",
                        "Biblioteca de Alexandria","Oportunidades (histórico)",
                        "Associações","exportarDecisoes"):
             self.assertIn(trecho,html,trecho)
@@ -2931,7 +2931,7 @@ class SystemTests(unittest.TestCase):
         edital aberto: todas as oportunidades, por área de atuação, 5 colunas."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn('id="bz-tab"',html); self.assertNotIn('id="bz-mon"',html)
-        for x in ("fa-area","fa-areat","fa-grade","faixa-total","editaisFiltradosBz().filter","grupos[a]=grupos[a]||[]",
+        for x in ("fa-area","fa-areat","fa-grade","faixa-total","montaOportunidadesPorArea","grupos[a]=grupos[a]||[]",
                   "repeat(5,1fr)","Abrir ficha"): self.assertIn(x,html,x)
         self.assertIn("organizadas por <strong>área de atuação</strong>",html)
 
@@ -3011,6 +3011,25 @@ class SystemTests(unittest.TestCase):
             self.assertIn(x,html,x)
         self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado <b>",html); self.assertIn("Ausente <b>",html)
         self.assertNotIn('<svg class="bz-rosa" viewBox="0 0 120 120" role="img" aria-label="rosa dos ventos" style',html)   # sem fundo colorido
+
+
+    def test_cards_bussola_abas_editais_e_arquivados_em_linha(self):
+        """'Base legal' (normas) no lugar de 'Fontes'; 'Fontes monitoradas' = motores
+        ativos/total; abas centralizadas com ícones e nomes novos; Em andamento
+        usa o mesmo motor da Bússola; arquivados em linha, com filtros, sem descarte."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ('"Base legal"',"normas na Biblioteca",'id="bz-motores-ativos"',"motores ativos / total","function atualizaMotoresAtivos",
+                  '<span>Em andamento</span>','<span>Inscrição realizada</span>','<span>Arquivados — Encerrados / Descartados</span>',
+                  'class="abas abas-ed"',"function montaOportunidadesPorArea","montaOportunidadesPorArea(g,null,false",
+                  'id="ed-filtros"','id="ed-area"','id="ed-uf"',"ed-linha",'data-acao="detalhe"','data-acao="recuperar"',
+                  'salvaDecisao(e.id,"em_andamento"'):
+            self.assertIn(x,html,x)
+        self.assertNotIn("Arquivados — inscrição realizada</button>",html)
+        self.assertNotIn(">Encerrados / descartados</button>",html)
+        self.assertNotIn('"Fontes",bp.sites',html)
+        # sem descarte na aba de arquivados
+        trecho=html.split("Arquivados — Encerrados / Descartados: uma linha por edital, filtros")[1].split("/* ================= BÚSSOLA")[0]
+        self.assertNotIn("descartado\",{",trecho); self.assertNotIn("bt-desc",trecho)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

@@ -172,6 +172,21 @@ box-shadow:0 1px 3px #0002}
 .abas{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .abas button{font-size:13px;padding:8px 15px;border-radius:11px}
 .abas button.on{background:var(--realce);border-color:var(--marca);color:var(--marca);font-weight:700}
+.abas-ed{justify-content:center;gap:14px;margin:6px 0 18px}
+.abas-ed button{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:150px;padding:12px 18px;border-radius:16px;border:1.5px solid var(--linha);background:#fff;color:var(--suave);font-weight:600;transition:transform .12s,box-shadow .12s}
+.abas-ed button:hover{transform:translateY(-2px);box-shadow:0 6px 16px #23272E14}
+.abas-ed button svg{width:26px;height:26px}
+.abas-ed button.on{background:linear-gradient(180deg,#FFF9EC,#FBEED2);border-color:#C9A227;color:#7a5a00}
+.abas-ed button span{font-size:12.5px;line-height:1.2;text-align:center;max-width:200px}
+/* Arquivados — Encerrados / Descartados: uma linha por edital */
+.ed-linhas{display:flex;flex-direction:column;gap:6px}
+.ed-linha{display:grid;grid-template-columns:1fr auto auto auto;gap:14px;align-items:center;padding:8px 12px;border:1px solid var(--linha);border-radius:10px;background:#FCFCFB;font-size:13px}
+.ed-linha:hover{border-color:#9FC1E8;background:#fff}
+.ed-linha .tit{font-weight:700;color:var(--tinta);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ed-linha .dt,.ed-linha .loc{color:var(--suave);font-size:12px;white-space:nowrap}
+.ed-linha .ico{display:flex;gap:6px}
+.ed-linha .ico button{border:1px solid var(--linha);background:#fff;border-radius:8px;padding:5px 7px;line-height:0;cursor:pointer;color:#0B4EA2}
+.ed-linha .ico button:hover{background:#EAF2FB}
 .acoes-ed{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px;padding-top:10px;border-top:1px dashed var(--linha)}
 .acoes-ed button{font-size:11.5px;font-weight:700;padding:7px 11px;border-radius:9px}
 .mt-fam{margin-top:12px}.mt-famt{font-weight:800;color:#0B4EA2;font-family:Georgia,serif;font-size:15px;border-bottom:2px solid #E3E8F1;padding-bottom:4px}
@@ -522,12 +537,16 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 
 <!-- ============ ELDORADO · EDITAIS ============ -->
 <section id="v-editais" class="oculto" style="margin-top:14px">
-<div class="abas" id="ed-abas">
-  <button data-aba="em_andamento" class="on">Em andamento</button>
-  <button data-aba="inscrito">Arquivados — inscrição realizada</button>
-  <button data-aba="encerrado">Encerrados / descartados</button>
+<div class="abas abas-ed" id="ed-abas">
+  <button data-aba="em_andamento" class="on"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.5v4.8l3 1.8"/></svg><span>Em andamento</span></button>
+  <button data-aba="inscrito"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg><span>Inscrição realizada</span></button>
+  <button data-aba="encerrado"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11z"/><path d="M5 4.5h14l1.5 3h-17z"/><path d="M10 12h4"/></svg><span>Arquivados — Encerrados / Descartados</span></button>
 </div>
 <div class="legenda" style="margin-bottom:12px" id="ed-legenda"></div>
+<div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
+  <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
+  <select id="ed-uf"><option value="">Todos os estados</option></select>
+</div>
 <div class="grade-ed" id="ed-grade"></div>
 </section>
 
@@ -1532,25 +1551,52 @@ function caixaEdital(e){
   return div;
 }
 function desenhaEditais(){
-  const filtroEstado=window._abaEd||"em_andamento";
-  const abertos=(D.editais||[])
-    .filter(e=>{const st=estadoDe(e.id);
-      return filtroEstado==="em_andamento"
-        ? (st==="em_andamento" && ["aberto","a_abrir","sem_prazo"].includes(e.estado_export))
-        : filtroEstado==="inscrito" ? st==="inscrito"
-        : (st==="descartado" || e.estado_export==="encerrado");})
-    .sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9)));
-  const g=$("ed-grade");g.innerHTML="";
-  if(!abertos.length){g.innerHTML=`<div class=cartao>Nenhum edital COMPLETO aberto ainda. O padrão de qualidade exige verificação dupla (texto integral + datas + documentos-modelo); ${((D.bussola_painel||{}).monitoramentos||{}).monitorando??0} identificações estão em campanha de completude na Bússola.</div>`;}
-  abertos.forEach(e=>g.appendChild(caixaEdital(e)));
-  const areas=[...new Set(abertos.map(e=>e.area))];
-  $("ed-legenda").innerHTML=areas.map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("");
-  const fg=$("fed-grade");fg.innerHTML=g.innerHTML===""?"":"";
-  const prioridade={verificada_humana:0,verificada_dupla:1,verificada_primaria:2};
-  const farolOrd=[...abertos].sort((a,b)=>(prioridade[a.status]??9)-(prioridade[b.status]??9));
-  fg.innerHTML="";if(!farolOrd.length)fg.innerHTML='<div class=cartao>Nenhum edital aberto.</div>';
-  farolOrd.forEach(e=>fg.appendChild(caixaEdital(e)));
+  const aba=window._abaEd||"em_andamento";
+  const g=$("ed-grade");g.innerHTML="";g.className=aba==="encerrado"?"ed-linhas faixa-total":"grade-ed";
+  $("ed-filtros").classList.toggle("oculto",aba!=="encerrado");
+  if(aba==="em_andamento"){
+    /* conciliado com a Bússola: mesmos dados e mesmo layout de «Fontes com edital aberto» */
+    g.className="faixa-total"; $("ed-legenda").innerHTML="";
+    montaOportunidadesPorArea(g,null,false,()=>desenhaEditais());
+    return;
+  }
+  if(aba==="inscrito"){
+    const lista=(D.editais||[]).filter(e=>estadoDe(e.id)==="inscrito").sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9)));
+    if(!lista.length){g.innerHTML=`<div class=cartao>Nenhuma inscrição realizada registrada ainda.</div>`;return;}
+    lista.forEach(e=>g.appendChild(caixaEdital(e)));
+    $("ed-legenda").innerHTML=[...new Set(lista.map(e=>e.area))].map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("");
+    return;
+  }
+  /* Arquivados — Encerrados / Descartados: uma linha por edital, filtros de área e estado */
+  const uf=$("ed-uf").value, ar=$("ed-area").value;
+  const hojeISO=HOJE.toISOString().slice(0,10);
+  const cid=t=>{const m=/Di[áa]rio Oficial de ([^—(]+?)\s*\(([A-Z]{2})\)/.exec(t||"");return m?m[1].trim():null;};
+  const arq=(D.editais||[]).filter(e=>estadoDe(e.id)==="descartado"||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO))
+    .filter(e=>(!uf||e.uf===uf)&&(!ar||e.area===ar))
+    .sort((a,b)=>String(b.fim||"").localeCompare(String(a.fim||"")));
+  const enche=(id,vals,rot)=>{const s=$(id);const v0=s.value;s.length=1;vals.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=rot(v);s.appendChild(o);});s.value=v0;};
+  const todosArq=(D.editais||[]).filter(e=>estadoDe(e.id)==="descartado"||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO));
+  enche("ed-area",[...new Set(todosArq.map(e=>e.area).filter(Boolean))].sort((a,b)=>AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt")),a=>AREA(a).rotulo);
+  enche("ed-uf",[...new Set(todosArq.map(e=>e.uf).filter(Boolean))].sort(),u=>u);
+  $("ed-legenda").innerHTML=`<span class=meta>${arq.length} edital(is) arquivado(s) — encerrados ou descartados. Sem descarte aqui: só abrir detalhes ou recuperar para «Em andamento».</span>`;
+  if(!arq.length){g.innerHTML=`<div class=cartao>Nenhum edital arquivado neste filtro.</div>`;return;}
+  arq.forEach(e=>{
+    const li=document.createElement("div");li.className="ed-linha";li.style.borderLeft=`4px solid ${AREA(e.area).cor}`;
+    const mun=e.municipio||cid(e.titulo);
+    li.innerHTML=`<div class=tit title="${esc(e.titulo)}">${esc(e.titulo)}</div>
+      <div class=dt>${e.inicio?br(e.inicio):"?"} → ${e.fim?br(e.fim):"sem prazo"}</div>
+      <div class=loc>${mun?esc(mun)+" · ":""}${esc(e.uf||(e.abrangencia==="nacional"?"Brasil":"—"))}</div>
+      <div class=ico>
+        <button title="Abrir detalhes" data-acao="detalhe"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button>
+        <button title="Recuperar — volta para Em andamento" data-acao="recuperar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/></svg></button>
+      </div>`;
+    li.querySelector('[data-acao="detalhe"]').onclick=()=>detalheEdital(e);
+    li.querySelector('[data-acao="recuperar"]').onclick=()=>{salvaDecisao(e.id,"em_andamento",{titulo:e.titulo,acao:"recuperado"});desenhaEditais();};
+    li.onclick=ev=>{if(!ev.target.closest("button"))detalheEdital(e);};
+    g.appendChild(li);
+  });
 }
+["ed-area","ed-uf"].forEach(id=>{const s=$(id);if(s)s.addEventListener("input",desenhaEditais);});
 
 /* ================= BÚSSOLA ================= */
 let busAno,busMes;
@@ -1618,16 +1664,20 @@ async function garanteAbertas(){
   const p=await carregaFragmento("abertas"); if(!p){FA_ABERTAS=[];return FA_ABERTAS;}
   FA_ABERTAS=expandeCompacto(p); FA_ABERTAS._total=p.total||FA_ABERTAS.length; return FA_ABERTAS;
 }
-window.faMais=function(area){faPagina[area]=(faPagina[area]||10)+20;desenhaFontesAbertas();};
-function desenhaFontesAbertas(){
+window.faMais=function(area){faPagina[area]=(faPagina[area]||10)+20;desenhaFontesAbertas();if(!$("v-editais").classList.contains("oculto"))desenhaEditais();};
+function desenhaFontesAbertas(){ montaOportunidadesPorArea($("bus-fontes"),$("fa-resumo"),true,()=>desenhaFontesAbertas()); }
+/* MOTOR ÚNICO de apresentação: usado pela Bússola (Fontes com edital aberto) e
+   pela aba Editais Abertos (Em andamento) — mesmos dados, mesmo layout. */
+function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
   const cat=(D.bussola&&D.bussola.categorias)||{};
-  const fx=$("bus-fontes");fx.innerHTML="";
-  if(!FA_ABERTAS){garanteAbertas().then(()=>desenhaFontesAbertas());}
+  if(!fx)return; fx.innerHTML="";
+  if(!FA_ABERTAS){garanteAbertas().then(()=>rerender());}
   /* TODAS as oportunidades identificadas: as do núcleo (verificadas e históricas)
      + o fragmento ABERTAS com a base completa pertinente ao terceiro setor
      (18 mil+), regidas pelo mesmo filtro (UF, área, nível, prazo) */
-  const uf=$("bz-uf").value,ar=$("bz-area").value,ni=$("bz-nivel").value,pz=$("bz-prazo").value;
-  const sel=editaisFiltradosBz().filter(e=>estadoDe(e.id)==="em_andamento");
+  const uf=comFiltroBz?$("bz-uf").value:(($("ed-uf")||{}).value||""),ar=comFiltroBz?$("bz-area").value:(($("ed-area")||{}).value||""),ni=comFiltroBz?$("bz-nivel").value:"",pz=comFiltroBz?$("bz-prazo").value:"abertos";
+  const base=comFiltroBz?editaisFiltradosBz():(D.editais||[]).filter(e=>["aberto","a_abrir","sem_prazo"].includes(e.estado_export)&&(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))&&(!ar||e.area===ar));
+  const sel=base.filter(e=>estadoDe(e.id)==="em_andamento");
   const info={};((D.bussola&&D.bussola.fontes_com_editais)||[]).forEach(f=>f.editais.forEach(e=>info[e.id]={...e,_fonte:f}));
   const hojeISO=HOJE.toISOString().slice(0,10);
   const extras=(FA_ABERTAS||[]).filter(o=>estadoDe(o.id)==="em_andamento"
@@ -1638,7 +1688,7 @@ function desenhaFontesAbertas(){
   const itens=sel.map(e=>({e,b:info[e.id]||null})).concat(extras);
   const nCamp=itens.filter(x=>x.b&&x.b.campanha&&x.b.campanha.status==="monitorando").length;
   const fontesN=new Set(itens.map(x=>x.b?x.b._fonte.fonte_nome:x.e.fonte_nome)).size;
-  $("fa-resumo").textContent=`${itens.length} oportunidade(s) · ${fontesN} fonte(s) · ${nCamp} em campanha de 30 dias${FA_ABERTAS?"":" · carregando a base completa…"}${FA_ABERTAS&&FA_ABERTAS._total?" · base identificada: "+FA_ABERTAS._total:""}`;
+  if(resumoEl)resumoEl.textContent=`${itens.length} oportunidade(s) · ${fontesN} fonte(s) · ${nCamp} em campanha de 30 dias${FA_ABERTAS?"":" · carregando a base completa…"}${FA_ABERTAS&&FA_ABERTAS._total?" · base identificada: "+FA_ABERTAS._total:""}`;
   if(!itens.length){fx.innerHTML='<div class=meta style="padding:10px 2px">Nenhuma oportunidade nesta seleção.</div>';return;}
   // organização temática: área de atuação (rótulos canônicos da tela inicial)
   const grupos={};itens.forEach(x=>{const a=x.e.area||"outros";(grupos[a]=grupos[a]||[]).push(x);});
@@ -1676,7 +1726,7 @@ function desenhaFontesAbertas(){
       detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:ed.objeto||ed.titulo||"",coletado_em:ed.coletado_em,lacuna:null},...ed});
     bloco.querySelectorAll(".bt-ia").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)investigarEdital(completaEd(ed));});
     bloco.querySelectorAll(".bt-arq").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);
-      if(ed){salvaDecisao(ed.id,"inscrito",{titulo:ed.titulo,acao:"arquivado na Bússola"});desenhaFontesAbertas();}});
+      if(ed){salvaDecisao(ed.id,"inscrito",{titulo:ed.titulo,acao:"arquivado"});rerender();}});
     bloco.querySelectorAll(".ficha").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)detalheEdital(completaEd(ed));});
     bloco.querySelectorAll(".ed-item").forEach(el=>{
       const par=lista.find(x=>x.e.id===el.dataset.id); if(!par)return; const {e,b}=par; const f=b?b._fonte:{fonte_nome:e.fonte_nome};
@@ -1804,7 +1854,7 @@ function mtSalva(e){try{localStorage.setItem("amc_motores",JSON.stringify(e));}c
 function mtAtivo(id){const e=mtEstado();const man=(e.ativos||{})[id];if(man===true||man===false)return man;
   const m=MT.find(x=>x.id===id);return m?!!m.ativa:true;}
 function mtPendente(id){const e=mtEstado();const t=(e.imediatos||{})[id];return t?br(t.slice(0,10)):null;}
-window.mtLigar=function(id){const e=mtEstado();e.ativos=e.ativos||{};e.ativos[id]=!mtAtivo(id);mtSalva(e);desenhaMotores();};
+window.mtLigar=function(id){const e=mtEstado();e.ativos=e.ativos||{};e.ativos[id]=!mtAtivo(id);mtSalva(e);desenhaMotores();atualizaMotoresAtivos();};
 /* fogo com fumaça (ativo) / tonel azul (inativo) — clique alterna */
 function iconeMotor(id,ativo){
   return ativo?`<button class="mt-ico fogo" onclick="mtLigar('${esc(id)}')" title="motor ATIVO — roda nas rotinas automáticas; clique para desativar">
@@ -2010,7 +2060,16 @@ window.mtAtivar=function(){
      <p class=meta>O diagnóstico (camadas obtidas, faltantes, causa e ação) aparece nesta caixa após a execução, ponto a ponto. O pedido também foi baixado como <code>pedido-motores.json</code>.</p>
      <p><strong>Selecionados:</strong> ${sel.map(m=>esc(m.programa)).join(" · ")}</p>`);
 };
-async function iniciaMotores(){ await carregaMotores(); desenhaMotores();
+/* Fontes monitoradas = motores ativos no dia / total (regulares + Opressores) */
+function atualizaMotoresAtivos(){
+  const el=$("bz-motores-ativos"); if(!el)return;
+  if(!MT||!MT.length){el.textContent="…";return;}
+  const regulares=[...(MT._of||[]),...(MT._plat||[])];
+  const ativos=regulares.filter(o=>mtAtivo(o.id)).length+MT.filter(m=>mtAtivo(m.id)).length;
+  const total=regulares.length+MT.length;
+  el.textContent=`${ativos}/${total}`; el.title=`${regulares.filter(o=>mtAtivo(o.id)).length} regulares + ${MT.filter(m=>mtAtivo(m.id)).length} Opressores acesos, de ${total}`;
+}
+async function iniciaMotores(){ await carregaMotores(); desenhaMotores(); atualizaMotoresAtivos();
   ["mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca","mo-area","mo-natureza","mo-esfera","mo-status","mo-busca"].forEach(id=>{if($(id))$(id).addEventListener("input",desenhaMotores);}); }
 
 /* ================= BÚSSOLA · réplica do modelo ================= */
@@ -2031,14 +2090,15 @@ function desenhaBzCards(){
     [IC("#C77E12").rosa,"Oportunidades",mon.encontrados??tot.base_completa??eds.length,
      `${mon.monitorando??0} em monitoramento`,"vermelho",
      "monitoramentos encontrados: cada identificação em diário abre campanha de até 30 dias atrás do edital integral"],
-    [IC("#0B4EA2").banco,"Fontes monitoradas",bp.fontes_ativas??"—","sites oficiais","azul",
-     "sites oficiais onde os editais são publicados: secretarias, prefeituras, governos, ministérios e empresas"],
+    [IC("#0B4EA2").banco,"Fontes monitoradas",`<span id="bz-motores-ativos">—</span>`,"motores ativos / total","azul",
+     "motores de busca ativos no dia (regulares + Opressores acesos) sobre o total de motores"],
     [IC("#0B4EA2").escudo,"Editais verificados",tot.completos??0,"completos p/ o Farol","azul",
      "verificação DUPLA: fonte identificada + edital integral com texto, datas e documentos-modelo — só estes compõem o Dashboard"],
     [IC("#C0392B").relogio,"Prazos urgentes",bp.urgentes_7d??0,"até 7 dias","vermelho","inscrições abertas encerrando em até 7 dias"],
     [IC("#0B4EA2").farol,"Casos no Farol",bp.casos_farol??0,bp.casos_nota||"em análise","azul","casos em preparação de documentação"],
-    [IC("#0B4EA2").livro,"Fontes",bp.sites??"—","sites","azul","pontos de coleta no catálogo de rotas"]];
+    [IC("#0B4EA2").livro,"Base legal",((D.biblioteca||{}).acervos||{}).leis??"—","normas na Biblioteca","azul","leis, decretos, portarias, resoluções e atos que regem as fontes de recurso"]];
   $("bz-cards").innerHTML=cards.map(c=>`<div class="bz-card" title="${esc(c[5])}">${c[0]}<div class=r>${c[1]}</div><div class=v>${c[2]}</div><div class="s ${c[4]}">${esc(String(c[3]))}</div></div>`).join("");
+  atualizaMotoresAtivos();
   const na=$("bz-cards").children[0];
   // honestidade: 305 "novas" hoje = carga inicial de 31/08
 }
