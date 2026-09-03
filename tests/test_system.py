@@ -3079,6 +3079,17 @@ class SystemTests(unittest.TestCase):
         src=open("src/dashboard_dados.py",encoding="utf-8").read()
         self.assertIn("esquadra_diario.json",src); self.assertIn('"motor_diario_oficial": "api_oficial"',src)
 
+
+    def test_calendario_individual_por_motor_e_fosforo_temporario(self):
+        """Cada motor de busca tem o seu calendário (com navegação de mês); o
+        fósforo fica aceso só enquanto a busca imediata está em curso."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("Calendário do motor —","function mtMesMotor","mt-calnav","window._mtMes",
+                  "apaga quando o","m.ultima_leitura>t","24*3600*1000"):
+            self.assertIn(x,html,x)
+        m=load_json(pathlib.Path("docs/dados/motores.json"))
+        self.assertTrue(all(o.get("dias") for o in m["oficiais"]+m["plataformas"]))   # dados para cada calendário
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
