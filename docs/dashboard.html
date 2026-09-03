@@ -239,6 +239,8 @@ box-shadow:0 1px 3px #0002}
 .dj-mini{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
 .dj-nome{display:flex;flex-direction:column;min-width:0}.dj-nome b{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta)}
 .dj-leg{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;border:1px solid var(--linha)}.dj-leg.rosa{background:#FCE4EC;border-color:#F3B6CB}.dj-leg.cinza{background:#F1F3F5}
+.dj-area{margin-top:10px}
+.dj-areat{display:flex;align-items:center;gap:7px;font-family:Georgia,serif;font-weight:800;font-size:13.5px;border-bottom:1.5px solid #E3E8F1;padding-bottom:4px;margin-bottom:6px}
 .mt-calt{font-size:11px;font-weight:700;color:var(--suave);letter-spacing:.05em;text-transform:uppercase;margin:8px 0 4px;display:flex;justify-content:space-between;align-items:center}
 .mt-calnav button{border:1px solid var(--linha);background:#fff;border-radius:6px;padding:1px 7px;font-size:11px;cursor:pointer;margin-left:3px}
 .mt-calnav button:disabled{opacity:.35;cursor:default}
@@ -2134,7 +2136,7 @@ const NOMES_CURTOS=[[/destina|mpgo.*tac|tac.*mpgo/i,"Destina MP-GO"],[/mpf/i,"MP
 function nomeCurto(p){for(const [rx,n] of NOMES_CURTOS)if(rx.test(p)){
     // famílias com vários editais (PNAB, LIE, fundos): acrescenta a linguagem/segmento após o hífen
     const seg=(p.split(/ - | — /)[1]||"").replace(/^(projeto|edital|linha)\s+/i,"").trim();
-    return seg&&/aldir|esporte|fundo|pnab|fmdca|feia|fmas|feas/i.test(n)?`${n} · ${seg.length>22?seg.slice(0,21).replace(/\s+\S*$/,"")+"…":seg}`:n;}
+    return seg?`${n} · ${seg.length>22?seg.slice(0,21).replace(/\s+\S*$/,"")+"…":seg}`:n;}
   let s=p.replace(/^(Edital(?:is)? de |Programa |Projeto de |Lei |Chamamento |Emenda (?:municipal|estadual|federal) para )/i,"").split(/ — | - |:/)[0].trim();
   return s.length>26?s.slice(0,25).replace(/\s+\S*$/,"")+"…":s;}
 function desenhaDisjuntores(){
@@ -2149,8 +2151,12 @@ function desenhaDisjuntores(){
     <div class=meta style="margin:4px 0 8px">Ligado: busca diária por 30 dias · IA sob medida no 3º e 6º dia · no 9º, conselho Fable 5.1 sobre por que não achou · desliga sozinho ao completar os 12 itens ou ao fim dos 30 dias.
       <span class="dj-leg rosa"></span> época chegando &nbsp; <span class="dj-leg cinza"></span> sem época prevista</div>
     ${ligados.length?`<div class=meta style="margin-bottom:8px"><strong>${ligados.length} ligado(s):</strong> ${ligados.slice(0,12).map(({m,d})=>`<span class=tag title="${esc(d.origem||"")}">${esc(nomeCurto(m.programa))} · dia ${d.dias}/30${d.ia?" · IA×"+d.ia:""}${d.conselho?" · conselho":""}</span>`).join(" ")}${ligados.length>12?` <span class=meta>+${ligados.length-12}</span>`:""}</div>`:""}
-    ${rosa.length?`<div class="dj-grade">${rosa.map(chip).join("")}</div>`:""}
-    <div class="dj-grade">${cinza.map(chip).join("")}</div>`;
+    ${rosa.length?`<div class="dj-areat" style="color:#9a3d5a"><span class=ponto style="background:#F3B6CB;width:10px;height:10px"></span>Época chegando <span class=meta>${rosa.length}</span></div><div class="dj-grade">${rosa.map(chip).join("")}</div>`:""}
+    ${(()=>{ /* organização POR ÁREA de atuação (rótulos canônicos), cada área com seus motores em ordem alfabética */
+      const porArea={};cinza.forEach(m=>{(porArea[m.area_atuacao||"outros"]=porArea[m.area_atuacao||"outros"]||[]).push(m);});
+      const ordem=Object.keys(porArea).sort((a,b)=>(a==="outros")-(b==="outros")||AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt"));
+      return ordem.map(a=>`<div class="dj-area"><div class="dj-areat" style="color:${AREA(a).cor}"><span class=ponto style="background:${AREA(a).cor};width:10px;height:10px"></span>${esc(AREA(a).rotulo)} <span class=meta>${porArea[a].length} motor(es)</span></div>
+        <div class="dj-grade">${porArea[a].map(chip).join("")}</div></div>`).join("");})()}`;
 }
 window.mtLigar30=function(id){const e=mtEstado();e.ativos=e.ativos||{};e.ativos[id]=true;e.ligados_em=e.ligados_em||{};e.ligados_em[id]=new Date().toISOString();mtSalva(e);desenhaMotores();atualizaMotoresAtivos();};
 window.mtAtivar=function(){

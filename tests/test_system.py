@@ -3251,6 +3251,12 @@ class SystemTests(unittest.TestCase):
             self.assertIn(x,arte,x)
         self.assertNotIn('<circle cx="80" cy="80" r="76"',arte)                                  # rosa sem círculo externo
 
+
+    def test_disjuntores_organizados_por_area(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("dj-area","dj-areat","organização POR ÁREA de atuação","porArea[m.area_atuacao","Época chegando"):
+            self.assertIn(x,html,x)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
