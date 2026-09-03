@@ -3076,7 +3076,7 @@ class SystemTests(unittest.TestCase):
         botão 'Todos os estados'; filtro de UF só pelo clique; '— captação';
         sem 'Ver todas as atualizações'; monitor de integridade lê os motores."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ('id="ouro"','id="bz-rosa-marcas"',"bz-rosa-bt","Todos os estados",'viewBox="0 0 160 160"',
+        for x in ('id="ouro"','id="bz-rosa-marcas"',"bz-rosa-bt","Brasil · nível nacional",'viewBox="0 0 200 200"',
                   "— captação</strong>",'<select id="mp-uf" style="display:none"','<select id="bz-uf" title="UF — também sincronizada pelo clique no mapa',
                   "bz-mapa-col","desenhaMapaMonitor();};"):
             self.assertIn(x,html,x)
@@ -3209,6 +3209,19 @@ class SystemTests(unittest.TestCase):
         self.assertEqual([x["id"] for x in candidatos(d,10)],["a"])
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.prazos_ia",wf)
         dd=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("prazos_ia",dd)
+
+
+    def test_mapa_com_dados_de_editais_abertos_e_rosa_nautica(self):
+        """Mapa usa a MESMA fonte de Editais Abertos (núcleo + base ampla), com
+        número e intensidade por estado; rosa de carta náutica mostra só o nível
+        nacional (Brasil), sem os estados."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("MESMA FONTE DE DADOS de «Editais Abertos»",'"__nac__"',"uf-n","rgba(240,155,46","window.bzNacional",
+                  "Brasil · nível nacional","Oportunidades de nível nacional",'id="perg"','id="bz-rosa-ondas"','id="bz-rosa-sol"',
+                  "flor-de-lis no norte","BRASIL · CAPTAÇÃO",'<option value="__nac__">'):
+            self.assertIn(x,html,x)
+        self.assertNotIn("Todos os estados</span>",html)
+        self.assertNotIn("Array(12)",html)                                 # nenhum template solto no HTML
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

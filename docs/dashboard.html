@@ -334,11 +334,12 @@ box-shadow:0 1px 3px #0002}
 .bz-rosa-bt{position:absolute;left:6px;bottom:6px;border:0;background:transparent;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
 .bz-rosa-bt:hover .bz-rosa{filter:drop-shadow(0 0 4px #C9A22766)}
 .bz-rosa-rot{font-family:Georgia,serif;font-size:10.5px;letter-spacing:.08em;color:#9A7A22;text-transform:uppercase}
-.bz-rosa{width:128px;height:128px;display:block;background:transparent}
+.bz-rosa{width:150px;height:150px;display:block;background:transparent;filter:drop-shadow(0 2px 3px #0002)}
 .bz-atual .bz-indices,.bz-atual .bz-cidades{max-height:none}.bz-atual .bz-cidades{max-height:360px;overflow:auto}
 .bz-indices{display:flex;flex-direction:column;gap:7px;margin-top:8px;font-size:12.5px}.bz-indices b{margin-left:auto;color:var(--suave)}.bz-indices>span{display:flex;align-items:center;gap:6px}
 .bz-cidades{display:flex;flex-direction:column;gap:6px}.bz-cidade{border-top:1px dashed var(--linha);padding-top:5px;font-size:12.5px}
-#bz-mapa path.com-abertas{fill:#FBE3C4}#bz-mapa path.com-abertas:hover{fill:#F6C98F}
+#bz-mapa path.com-abertas:hover{filter:brightness(.92)}
+#bz-mapa text.uf-n{font-size:9px;font-weight:800;fill:#7E2A1E;pointer-events:none}#bz-mapa text.uf-sigla{pointer-events:none}
 #bz-mapa path{fill:#F3E9D8;stroke:#D8C9AC;stroke-width:1;cursor:pointer;transition:fill .12s}
 #bz-mapa path:hover{fill:#EADCC2}
 #bz-mapa path.sel{fill:#E4D2AE;stroke:#C9A227;stroke-width:1.6}
@@ -564,7 +565,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <p class="meta" style="margin:6px 0 10px">Todas as oportunidades levantadas, numa caixa cada, organizadas por <strong>área de atuação</strong>. O órgão que publica aparece dentro da caixa (PNCP e Querido Diário são só a via de captura). Passe o mouse para o resumo. Filtro do terceiro setor aplicado: só o que uma associação pode aproveitar.</p>
   <div class="bz-filtros" style="margin:0 0 12px">
     <select id="bz-assoc"><option value="">Associação</option></select>
-    <select id="bz-uf" title="UF — também sincronizada pelo clique no mapa da Bússola"><option value="">Todo o Brasil</option></select>
+    <select id="bz-uf" title="UF — também sincronizada pelo clique no mapa da Bússola"><option value="">Todo o Brasil</option><option value="__nac__">Brasil · nível nacional</option></select>
     <select id="bz-area"><option value="">Área</option></select>
     <select id="bz-nivel"><option value="">Nível</option></select>
     <select id="bz-prazo" title="Curadoria: ABERTA = período de inscrição vigente e confirmado, com cidade/estado e publicação oficial; POSSÍVEL = encontrada, sem prazo confirmado — em investigação até validar ou descartar; ENCERRADA = o período já passou"><option value="vivas">Abertas + possíveis (em investigação)</option><option value="abertos">Só abertas confirmadas</option><option value="possiveis">Só possíveis — sem prazo confirmado</option><option value="encerrados">Encerradas</option><option value="">Todas</option></select>
@@ -629,26 +630,49 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <div class="bz-mapa-grade">
     <div class="bz-mapa-col">
       <div id="bz-mapa"></div>
-      <button class="bz-rosa-bt" onclick="bzFecharUF()" title="Todos os estados — limpa a seleção do mapa">
-        <svg class="bz-rosa" viewBox="0 0 160 160" role="img" aria-label="rosa dos ventos — todos os estados">
-          <defs><linearGradient id="ouro" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8C766"/><stop offset=".5" stop-color="#B8912E"/><stop offset="1" stop-color="#E2BE5C"/></linearGradient></defs>
-          <g fill="none" stroke="url(#ouro)" stroke-width=".8">
-            <circle cx="80" cy="80" r="76"/><circle cx="80" cy="80" r="70"/><circle cx="80" cy="80" r="44"/>
-            <g stroke-width=".55" opacity=".85" id="bz-rosa-marcas"></g>
+      <button class="bz-rosa-bt" onclick="bzNacional()" title="Brasil — oportunidades de nível nacional (federais e sem estado), sem os dados dos estados">
+        <svg class="bz-rosa" viewBox="0 0 200 200" role="img" aria-label="rosa dos ventos — Brasil, nível nacional">
+          <defs><linearGradient id="ouro" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8C766"/><stop offset=".5" stop-color="#B8912E"/><stop offset="1" stop-color="#E2BE5C"/></linearGradient>
+            <radialGradient id="perg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FBF3DF"/><stop offset="1" stop-color="#EAD9A8"/></radialGradient>
+            <linearGradient id="verm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B8412F"/><stop offset="1" stop-color="#7E2A1E"/></linearGradient>
+            <linearGradient id="azul" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F5C8F"/><stop offset="1" stop-color="#1B3A5E"/></linearGradient></defs>
+          <!-- pergaminho e anéis -->
+          <circle cx="100" cy="100" r="96" fill="url(#perg)" stroke="url(#ouro)" stroke-width="1.2"/>
+          <circle cx="100" cy="100" r="90" fill="none" stroke="#B8912E" stroke-width=".7"/>
+          <circle cx="100" cy="100" r="84" fill="none" stroke="#B8912E" stroke-width=".5" stroke-dasharray="1.5 2.5"/>
+          <!-- ondas decorativas no anel externo -->
+          <g fill="none" stroke="#2F5C8F" stroke-width=".8" opacity=".55" id="bz-rosa-ondas"></g>
+          <!-- marcas de rumo -->
+          <g fill="none" stroke="#7A5A1F" stroke-width=".6" id="bz-rosa-marcas"></g>
+          <!-- estrela de 16 pontas (secundárias) -->
+          <g stroke="#7A5A1F" stroke-width=".5">
+            <path fill="#1B3A5E" d="M100 100 L95 88 L128 32 L105 95 Z M100 100 L105 88 L72 32 L95 95 Z M100 100 L112 95 L168 128 L105 105 Z M100 100 L112 105 L168 72 L105 95 Z M100 100 L105 112 L72 168 L95 105 Z M100 100 L95 112 L128 168 L105 105 Z M100 100 L88 105 L32 72 L95 95 Z M100 100 L88 95 L32 128 L95 105 Z" opacity=".85"/>
           </g>
-          <g fill="none" stroke="url(#ouro)" stroke-width=".9" stroke-linejoin="miter">
-            <path d="M80 80 L74 74 L60 34 L80 46 Z"/><path d="M80 80 L86 74 L100 34 L80 46 Z" opacity=".6"/>
-            <path d="M80 80 L86 86 L126 100 L114 80 Z"/><path d="M80 80 L86 74 L126 60 L114 80 Z" opacity=".6"/>
-            <path d="M80 80 L86 86 L100 126 L80 114 Z"/><path d="M80 80 L74 86 L60 126 L80 114 Z" opacity=".6"/>
-            <path d="M80 80 L74 86 L34 100 L46 80 Z"/><path d="M80 80 L74 74 L34 60 L46 80 Z" opacity=".6"/>
+          <!-- estrela de 8 pontas (principais): metades claras e escuras -->
+          <g stroke="#3a2a0a" stroke-width=".7">
+            <path fill="url(#verm)" d="M100 100 L92 80 L100 12 Z"/><path fill="#F6E9C4" d="M100 100 L108 80 L100 12 Z"/>
+            <path fill="url(#azul)" d="M100 100 L120 92 L188 100 Z"/><path fill="#F6E9C4" d="M100 100 L120 108 L188 100 Z"/>
+            <path fill="url(#azul)" d="M100 100 L108 120 L100 188 Z"/><path fill="#F6E9C4" d="M100 100 L92 120 L100 188 Z"/>
+            <path fill="url(#azul)" d="M100 100 L80 108 L12 100 Z"/><path fill="#F6E9C4" d="M100 100 L80 92 L12 100 Z"/>
+            <path fill="url(#ouro)" d="M100 100 L106 84 L146 54 L116 94 Z"/><path fill="#F6E9C4" d="M100 100 L116 94 L146 54 L106 84 Z" opacity=".55"/>
+            <path fill="url(#ouro)" d="M100 100 L116 106 L146 146 L106 116 Z"/><path fill="#F6E9C4" d="M100 100 L106 116 L146 146 L116 106 Z" opacity=".55"/>
+            <path fill="url(#ouro)" d="M100 100 L94 116 L54 146 L84 106 Z"/><path fill="#F6E9C4" d="M100 100 L84 106 L54 146 L94 116 Z" opacity=".55"/>
+            <path fill="url(#ouro)" d="M100 100 L84 94 L54 54 L94 84 Z"/><path fill="#F6E9C4" d="M100 100 L94 84 L54 54 L84 94 Z" opacity=".55"/>
           </g>
-          <g fill="url(#ouro)"><path d="M80 12 L84 42 L80 46 L76 42 Z"/><path d="M80 148 L84 118 L80 114 L76 118 Z" opacity=".75"/><path d="M148 80 L118 84 L114 80 L118 76 Z" opacity=".75"/><path d="M12 80 L42 84 L46 80 L42 76 Z" opacity=".75"/>
-            <path d="M80 6 c2.4 3.2 2.4 5.8 0 8 c-2.4-2.2-2.4-4.8 0-8z"/></g>
-          <circle cx="80" cy="80" r="3.4" fill="none" stroke="url(#ouro)" stroke-width="1.1"/><circle cx="80" cy="80" r="1" fill="#B8912E"/>
-          <g font-family="Georgia,'Times New Roman',serif" font-size="9.5" fill="#9A7A22" text-anchor="middle" letter-spacing=".6">
-            <text x="80" y="30" font-weight="700">N</text><text x="80" y="134">S</text><text x="130" y="83">L</text><text x="30" y="83">O</text></g>
+          <!-- flor-de-lis no norte -->
+          <g fill="url(#verm)" stroke="#3a2a0a" stroke-width=".5" transform="translate(100,14) scale(.9)">
+            <path d="M0-8 C3-4 3 0 0 3 C-3 0 -3-4 0-8z"/><path d="M0 3 C4 1 8 2 9 6 C6 6 3 5 0 3z"/><path d="M0 3 C-4 1 -8 2 -9 6 C-6 6 -3 5 0 3z"/><rect x="-1.2" y="3" width="2.4" height="5"/></g>
+          <!-- sol e lua nos cantos, como nas cartas antigas -->
+          <g transform="translate(160,40)"><circle r="7" fill="url(#ouro)" stroke="#7A5A1F" stroke-width=".5"/><g stroke="#B8912E" stroke-width=".8" id="bz-rosa-sol"></g><circle cx="-2" cy="-1.5" r=".8" fill="#7A5A1F"/><circle cx="2" cy="-1.5" r=".8" fill="#7A5A1F"/><path d="M-2.5 2 Q0 4 2.5 2" fill="none" stroke="#7A5A1F" stroke-width=".6"/></g>
+          <g transform="translate(40,160)"><path d="M0-8 A8 8 0 1 0 0 8 A6 6 0 1 1 0-8z" fill="#F6E9C4" stroke="#7A5A1F" stroke-width=".5"/><circle cx="-2" cy="-1" r=".7" fill="#7A5A1F"/><path d="M-3.5 2.5 Q-2 3.5 -.5 2.5" fill="none" stroke="#7A5A1F" stroke-width=".5"/></g>
+          <!-- centro -->
+          <circle cx="100" cy="100" r="6" fill="#F6E9C4" stroke="#7A5A1F" stroke-width=".8"/><circle cx="100" cy="100" r="2.2" fill="url(#verm)"/>
+          <!-- pontos cardeais em serifa antiga -->
+          <g font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="700" fill="#7E2A1E" text-anchor="middle">
+            <text x="100" y="36">N</text><text x="100" y="172">S</text><text x="165" y="104" fill="#1B3A5E">L</text><text x="35" y="104" fill="#1B3A5E">O</text></g>
+          <g font-family="Georgia,serif" font-size="7" fill="#7A5A1F" text-anchor="middle" letter-spacing="1"><text x="100" y="192">BRASIL · CAPTAÇÃO</text></g>
         </svg>
-        <span class="bz-rosa-rot">Todos os estados</span>
+        <span class="bz-rosa-rot">Brasil · nível nacional</span>
       </button>
     </div>
     <div>
@@ -2229,21 +2253,31 @@ function bzStatusUF(){
   return por;
 }
 /* marcas de grau da rosa dos ventos (72 traços finos, a cada 5°) */
-(function(){const g=document.getElementById("bz-rosa-marcas");if(!g)return;let s="";
-  for(let i=0;i<72;i++){const a=i*5*Math.PI/180,r1=i%18===0?64:i%6===0?67:69.2;
-    s+=`<line x1="${(80+Math.cos(a)*r1).toFixed(2)}" y1="${(80+Math.sin(a)*r1).toFixed(2)}" x2="${(80+Math.cos(a)*70).toFixed(2)}" y2="${(80+Math.sin(a)*70).toFixed(2)}"/>`;}
-  g.innerHTML=s;})();
+(function(){const g=document.getElementById("bz-rosa-marcas");if(g){let s="";
+  for(let i=0;i<72;i++){const a=i*5*Math.PI/180,r1=i%18===0?80:i%6===0?82:84;
+    s+=`<line x1="${(100+Math.cos(a)*r1).toFixed(2)}" y1="${(100+Math.sin(a)*r1).toFixed(2)}" x2="${(100+Math.cos(a)*87).toFixed(2)}" y2="${(100+Math.sin(a)*87).toFixed(2)}"/>`;}
+  g.innerHTML=s;}
+  const o=document.getElementById("bz-rosa-ondas");if(o){let s="";
+  for(let i=0;i<36;i++){const a0=i*10*Math.PI/180,a1=(i*10+5)*Math.PI/180,a2=(i*10+10)*Math.PI/180,r=93;
+    s+=`<path d="M${(100+Math.cos(a0)*r).toFixed(1)} ${(100+Math.sin(a0)*r).toFixed(1)} Q${(100+Math.cos(a1)*(r-2.2)).toFixed(1)} ${(100+Math.sin(a1)*(r-2.2)).toFixed(1)} ${(100+Math.cos(a2)*r).toFixed(1)} ${(100+Math.sin(a2)*r).toFixed(1)}"/>`;}
+  o.innerHTML=s;}
+  const sl=document.getElementById("bz-rosa-sol");if(sl){let s="";for(let i=0;i<12;i++){const a=i*Math.PI/6;s+=`<line x1="${(8.5*Math.cos(a)).toFixed(1)}" y1="${(8.5*Math.sin(a)).toFixed(1)}" x2="${(11*Math.cos(a)).toFixed(1)}" y2="${(11*Math.sin(a)).toFixed(1)}"/>`;}sl.innerHTML=s;}})();
 /* dados por UF: núcleo + base ampla (abertas.json) — abertos, por área e por cidade */
 function mpDadosUF(){
   const hojeISO=HOJE.toISOString().slice(0,10); const por={};
   const add=(uf,area,cidade,st)=>{if(!uf)return;const p=por[uf]||(por[uf]={aberta:0,verificacao:0,encerrada:0,total:0,areas:{},cidades:{}});
     p[st]++;p.total++;if(st==="aberta"){p.areas[area]=(p.areas[area]||0)+1;if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
   const cid=t=>{const m=/Di[áa]rio Oficial de ([^—(]+?)\s*\(([A-Z]{2})\)/.exec(t||"");return m?m[1].trim():null;};
-  const add2=(uf,area,cidade,st)=>{if(!uf)return;const p=por[uf]||(por[uf]={aberta:0,verificacao:0,encerrada:0,ausente:0,total:0,areas:{},cidades:{}});
-    p[st]=(p[st]||0)+1;p.total++;if(st==="aberta"||st==="possivel"){p.areas[area]=(p.areas[area]||0)+1;if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
-  (D.editais||[]).forEach(e=>add2(e.uf,e.area||"outros",e.municipio||cid(e.titulo),situacaoDe(e)));
+  /* MESMA FONTE DE DADOS de «Editais Abertos»: núcleo + base ampla. Cada
+     oportunidade vai para o seu estado; as de nível nacional (sem UF ou
+     federais) vão para o bucket __nac__ — mostrado pela rosa dos ventos. */
+  const add2=(uf,area,cidade,st,item)=>{const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});
+    p[st]=(p[st]||0)+1;p.total++;if(st==="aberta"||st==="possivel"){p.areas[area]=(p.areas[area]||0)+1;if(item&&p.itens.length<400)p.itens.push(item);
+      if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
+  const nac=e=>(!e.uf||e.nivel==="federal"||e.abrangencia==="nacional")?null:e.uf;
+  (D.editais||[]).forEach(e=>{if(estadoDe(e.id)!=="em_andamento")return;add2(nac(e),e.area||"outros",e.municipio||cid(e.titulo),situacaoDe(e),e);});
   const vistos=new Set((D.editais||[]).map(e=>e.id));
-  (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;add2(o.uf,o.area||"outros",cid(o.titulo),situacaoDe(o));});
+  (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;add2(nac(o),o.area||"outros",cid(o.titulo),situacaoDe(o),o);});
   return por;
 }
 function mpIndicesUF(uf){
@@ -2255,29 +2289,35 @@ function desenhaBzMapa(){
   if(!FA_ABERTAS){garanteAbertas().then(()=>desenhaBzMapa());}
   const por=mpDadosUF();
   let svg=`<svg viewBox="${M.viewBox}" style="width:100%;height:auto">`;
-  for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];
-    svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${p&&(p.aberta||p.possivel)?" com-abertas":""}"></path>`;}
-  for(const [uf,e] of Object.entries(M.estados)) svg+=`<text x="${e.cx-8}" y="${e.cy+4}">${uf}</text>`;
+  const maxN=Math.max(1,...Object.entries(por).filter(([k])=>k!=="__nac__").map(([,p])=>(p.aberta||0)+(p.possivel||0)));
+  for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
+    const alfa=n?0.18+0.72*Math.sqrt(n/maxN):0;
+    svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${n?" com-abertas":""}" style="${n?`fill:rgba(240,155,46,${alfa.toFixed(2)})`:""}"></path>`;}
+  for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
+    svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-8}" y="${e.cy+13}" class="uf-n">${n}</text>`:""}`;}
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */
-    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · ${p.aberta} aberto(s) confirmado(s) · ${p.possivel||0} possível(is) em investigação<br>${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
+    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · ${p.aberta} aberto(s) confirmado(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Editais Abertos»<br>${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
       :`<strong>${uf}</strong> · nenhuma oportunidade identificada`);
     el.onclick=()=>{bzUFsel=(bzUFsel===uf?"":uf);$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value=bzUFsel;if(typeof mpFiltro==="object")mpFiltro.uf=bzUFsel;}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();desenhaBzLateral(por);if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
   });
   desenhaBzLateral(por);
 }
 /* painel lateral ao mapa: índices (aberta, verificação, encerrada, encontrado, ausente) e cidades por área */
+/* rosa dos ventos: oportunidades de NÍVEL NACIONAL (Brasil), sem os estados */
+window.bzNacional=function(){bzUFsel=(bzUFsel==="__nac__"?"":"__nac__");$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value="";if(typeof mpFiltro==="object")mpFiltro.uf="";}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
 window.bzFecharUF=function(){bzUFsel="";$("bz-uf").value="";if($("mp-uf")){$("mp-uf").value="";if(typeof mpFiltro==="object")mpFiltro.uf="";}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
 function desenhaBzLateral(por){
   const L=$("bz-atual"); if(!L)return;
   if(!bzUFsel){desenhaBzAtual();return;}                 // sem estado selecionado: atualizações
-  const p=(por||mpDadosUF())[bzUFsel]||{aberta:0,verificacao:0,encerrada:0,ausente:0,total:0,areas:{},cidades:{}};
+  const p=(por||mpDadosUF())[bzUFsel]||{aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]};
+  const nacional=bzUFsel==="__nac__"; const rotUF=nacional?"Brasil · nível nacional":bzUFsel;
   const ix=mpIndicesUF(bzUFsel);
   const cidades=Object.entries(p.cidades).sort((a,b)=>b[1].n-a[1].n);
-  L.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(bzUFsel)} — captação</strong><button style="font-size:11px;padding:3px 8px" onclick="bzFecharUF()">fechar</button></div>
+  L.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(rotUF)} — captação</strong><button style="font-size:11px;padding:3px 8px" onclick="bzFecharUF()">fechar</button></div>
     <div class="bz-indices">
       <span title="período de inscrição vigente e confirmado, com cidade/estado e publicação oficial"><span class=ponto style="background:#F09B2E"></span>Oportunidade aberta <b>${p.aberta}</b></span>
       <span title="o período de inscrição já passou"><span class=ponto style="background:#9AA4B2"></span>Encerrada <b>${p.encerrada}</b></span>
@@ -2285,9 +2325,12 @@ function desenhaBzLateral(por){
       <span title="dias de varredura com indício captado"><span class=ponto style="background:var(--ok)"></span>Encontrado (varredura) <b>${ix.encontrado}</b></span>
     </div>
     ${Object.keys(p.areas).length?`<div class=meta style="margin:8px 0 4px"><strong>Áreas com edital aberto</strong></div><div class="legenda">${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave)">${n}</b></span>`).join("")}</div>`:""}
-    <div class=meta style="margin:10px 0 4px"><strong>Cidades com edital aberto</strong> ${cidades.length?`<span>(${cidades.length})</span>`:"— nenhuma identificada"}</div>
+    ${nacional?`<div class=meta style="margin:10px 0 4px"><strong>Oportunidades de nível nacional</strong> (${(p.itens||[]).length})</div>
+    <div class="bz-cidades">${(p.itens||[]).slice(0,40).map(e=>`<div class="bz-cidade" data-op="${esc(e.id)}"><b>${esc((e.programa||e.titulo||"").slice(0,70))}</b> <span class=tag style="font-size:10px">${situacaoDe(e)==="aberta"?"aberta":"possível"}</span><div class=meta>${esc(AREA(e.area).rotulo)} · ${esc(e.fonte_nome||e.orgao||"")}${e.fim?" · até "+br(e.fim):""}</div></div>`).join("")}</div>`
+    :`<div class=meta style="margin:10px 0 4px"><strong>Cidades com oportunidade</strong> ${cidades.length?`<span>(${cidades.length})</span>`:"— nenhuma identificada"}</div>
     <div class="bz-cidades">${cidades.slice(0,40).map(([c,v])=>`<div class="bz-cidade"><b>${esc(c)}</b> <span class=meta>${v.n}</span><div class=meta>${Object.entries(v.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<span class=ponto style="background:${AREA(a).cor};width:8px;height:8px"></span>${esc(AREA(a).rotulo)} ${n}`).join(" · ")}</div></div>`).join("")}
-    ${cidades.length>40?`<div class=meta>… e mais ${cidades.length-40} cidade(s); use o filtro de UF acima para ver todas na lista.</div>`:""}</div>`;
+    ${cidades.length>40?`<div class=meta>… e mais ${cidades.length-40} cidade(s); use o filtro de UF em Editais Abertos para ver todas.</div>`:""}</div>`}`;
+  L.querySelectorAll(".bz-cidade[data-op]").forEach(el=>{el.style.cursor="pointer";el.onclick=()=>{const e=(p.itens||[]).find(x=>x.id===el.dataset.op);if(e)detalheEdital({programa:e.fonte_nome,lei:"—",protocolo:e.id,resumo:e.objeto||"",territorio:"Brasil",detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:e.objeto||e.titulo||"",coletado_em:e.coletado_em,lacuna:null},...e});};});
 }
 function desenhaBzAtual(){
   if(bzUFsel){desenhaBzLateral();return;}                 // estado selecionado: detalhe do estado na coluna
