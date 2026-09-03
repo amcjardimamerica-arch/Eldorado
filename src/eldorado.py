@@ -179,6 +179,13 @@ def run() -> dict:
             for item in rows:
                 if item["status"].startswith("quarentena"):
                     report["quarentena"]+=1; append_jsonl(ROOT/"estado/quarentena.jsonl",item); continue
+                # pertinência ao terceiro setor: edital para empresa não entra na base
+                try:
+                    from .pertinencia import pertinente as _pert
+                    if not _pert(item)["ok"]:
+                        report["fora_do_terceiro_setor"]=report.get("fora_do_terceiro_setor",0)+1; continue
+                except Exception:
+                    pass
                 previous=existing.get(item["id"])
                 merged=merge_registro(previous,item)
                 if previous is None: report["novas"]+=1

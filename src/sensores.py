@@ -242,6 +242,9 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             dest = avaliar_destinacao({"titulo": rot, "evidencia": ctx, "fonte_id": sensor["id"]})
             if not dest["elegivel"]:
                 continue
+            from .pertinencia import pertinente as _pert
+            if not _pert({"titulo": rot, "evidencia": ctx})["ok"]:
+                continue
             fim = _FIM.search(ctx); val = _VALOR.search(ctx)
             achados.append({
                 "id": sha256(("sens|" + u).encode())[:20], "status": "capturada",

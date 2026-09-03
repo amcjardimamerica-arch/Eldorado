@@ -232,7 +232,9 @@ box-shadow:0 1px 3px #0002}
 @keyframes risca{0%{transform:translateX(0) rotate(0)}40%{transform:translateX(-8px) rotate(-25deg)}100%{transform:translateX(0) rotate(0)}}
 @media(prefers-reduced-motion:reduce){.mt-ico .chama,.mt-ico .chama2,.mt-ico .fumaca circle,.mt-ico .fogo-f{animation:none}}
 .bt-arq{background:#F1F3F5;color:#495057;border-color:#CED4DA}
-.ed-item{margin-top:10px;padding:10px;border:1px solid var(--linha);border-radius:11px;background:#FCFCFB}
+.ed-item{margin-top:10px;padding:10px;border:1px solid var(--linha);border-radius:11px;background:#FCFCFB;cursor:default;transition:box-shadow .12s}
+.ed-item:hover{box-shadow:0 3px 12px #23272E1c;border-color:#9FC1E8}
+.ed-item.em-campanha{border-style:dashed;border-color:#B8A5E8}
 .ed-item + .ed-item{margin-top:8px}
 .an-barra{position:relative;height:16px;border-radius:8px;background:#EDEFF2;margin:8px 0 7px;overflow:hidden;display:flex;align-items:center}
 .an-barra i{position:absolute;left:0;top:0;bottom:0;background:#A9D6BC;border-radius:8px}
@@ -633,23 +635,14 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </tr></thead><tbody></tbody></table>
 </div>
 
-<!-- 3 · MONITORAMENTOS ENCONTRADOS (indícios ainda incompletos) -->
-<div class="cartao" style="margin-bottom:16px">
-  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Monitoramentos encontrados
-    <span class=meta style="font-weight:500" title="Indícios de edital ainda INCOMPLETOS: cada identificação abre campanha de até 30 dias atrás do edital integral. Sai desta lista quando completa (vira edital verificado) ou quando expira para revisão humana.">— indícios em campanha de 30 dias</span></div>
-  <p class="meta" id="bz-mon-nota" style="margin:6px 0 10px"></p>
-  <table class="bz-tab" id="bz-mon"><thead><tr>
-    <th>Identificação</th><th>Fonte</th><th>Campanha</th><th>Tentativas</th><th>Prazo detectado</th><th>Pendências</th>
-  </tr></thead><tbody></tbody></table>
-</div>
-
 <!-- 4 · FONTES COM EDITAL ABERTO (última) -->
 <div class="cartao" style="margin-bottom:16px">
   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
     <h3 style="margin:0;font-size:16px">Fontes com edital aberto</h3>
+    <span class=meta title="Inclui os indícios em campanha de completude (até 30 dias atrás do edital integral). Só entra o que passou pelo léxico do terceiro setor: oportunidades aproveitáveis por associações, ONGs e entidades — captação, premiação, capacitação. Editais para empresas são eliminados da base.">— e monitoramentos em campanha de 30 dias</span>
     <span class=meta style="margin-left:auto" id="fa-resumo"></span>
   </div>
-  <p class="meta" style="margin:6px 0 10px">Editais já validados, consolidados por fonte, com link de acesso e anexos conhecidos. O filtro abaixo rege esta lista.</p>
+  <p class="meta" style="margin:6px 0 10px">Cada edital numa caixa própria, consolidado pelo órgão que publica (PNCP e Querido Diário são só a via de captura). Passe o mouse para o resumo. Filtro do terceiro setor aplicado: só oportunidades que uma associação pode aproveitar.</p>
   <div class="bz-filtros" style="margin:0 0 12px">
     <select id="bz-assoc"><option value="">Associação</option></select>
     <select id="bz-uf"><option value="">UF</option></select>
@@ -1580,20 +1573,23 @@ function desenhaFontesAbertas(){
     .map(f=>({...f,editais:f.editais.filter(e=>sel.has(e.id))}))
     .filter(f=>f.editais.length);
   const nEd=fontes.reduce((s,f)=>s+f.editais.length,0);
-  $("fa-resumo").textContent=`${fontes.length} fonte(s) · ${nEd} edital(is) na seleção`;
+  const nCamp=fontes.reduce((s,f)=>s+f.editais.filter(e=>e.campanha&&e.campanha.status==="monitorando").length,0);
+  $("fa-resumo").textContent=`${fontes.length} fonte(s) · ${nEd} edital(is) na seleção · ${nCamp} em campanha de 30 dias`;
   if(!fontes.length)fx.innerHTML='<div class=cartao style="grid-column:1/-1">Nenhuma fonte com edital nesta seleção.</div>';
   fontes.forEach(f=>{
     const c=(cat[f.categoria]||{cor:"#607086",rotulo:f.categoria});
     const div=document.createElement("div");div.className="cartao";div.style.borderTop=`4px solid ${c.cor}`;
     div.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
       <strong>${esc(f.fonte_nome)}</strong><span class=ponto title="${esc(c.rotulo)}" style="background:${c.cor}"></span></div>
-      <div class=meta>${esc(c.rotulo)} · <a href="${esc(f.url_fonte)}" target=_blank rel="noopener noreferrer">acessar fonte ↗</a></div>
+      <div class=meta>${esc(c.rotulo)}${f.via?` · captado via ${esc(f.via)}`:""} · <a href="${esc(f.url_fonte)}" target=_blank rel="noopener noreferrer">acessar fonte ↗</a></div>
       ${f.editais.map(e=>{
         const an=e.analise_etapa2||[];
         const pct=e.total_itens?Math.round(e.comprovados/e.total_itens*100):0;
-        return `<div class="ed-item" data-id="${esc(e.id)}">
+        const camp=e.campanha;
+        return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}" data-id="${esc(e.id)}">
         <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">${esc(e.titulo.slice(0,90))}</a>
-        <div class=meta>${esc(e.uf||"—")} · ${esc((D.areas&&D.areas[e.area]||{}).rotulo||e.area||"—")} · ${esc(e.nivel||"—")}${e.fim?" · encerra "+br(e.fim):""}</div>
+        ${camp?`<span class="st ${camp.status==="monitorando"?"cap":camp.status==="completo"?"ok":"acao"}" style="margin-left:6px" title="${camp.status==="monitorando"?"indício em campanha de completude: dia "+camp.dia+" de 30, "+camp.tentativas+" tentativa(s) atrás do edital integral":camp.status==="completo"?"campanha concluída: edital integral obtido":"campanha expirada — revisão humana"}">${camp.status==="monitorando"?"monitorando · dia "+camp.dia+"/30":camp.status}</span>`:""}
+        <div class=meta>${esc(e.uf||"—")} · ${esc((D.areas&&D.areas[e.area]||{}).rotulo||e.area||"—")} · ${esc(e.nivel||"—")}${e.fim?" · encerra "+br(e.fim):""}${e.pertinencia?` · <span title="por que esta oportunidade é do terceiro setor">${esc(e.pertinencia)}</span>`:""}</div>
         <div class="an-barra" title="itens da etapa 2 comprovados na evidência"><i style="width:${pct}%"></i>
           <b>${e.comprovados}/${e.total_itens} itens da etapa 2</b></div>
         <div class="an-grade">${an.map(a=>`<div class="an-item ${a.comprovado?"ok":"pend"}"
@@ -1601,6 +1597,7 @@ function desenhaFontesAbertas(){
             <span class=an-rot>${esc(a.item)}</span>
             <span class=an-val>${a.valor?esc(String(a.valor).slice(0,64)):"<em>não comprovado</em>"}</span></div>`).join("")}</div>
         ${e.pendencias&&e.pendencias.length?`<div class=meta style="margin-top:6px">⚠ ${e.pendencias.map(esc).join(" · ")}</div>`:""}
+        ${camp&&camp.pendencias&&camp.pendencias.length?`<div class=meta style="margin-top:4px">campanha: ${camp.pendencias.map(esc).join(" · ")}</div>`:""}
         <div class=meta>${e.anexos&&e.anexos.length
           ? "anexos: "+e.anexos.map(a=>`<a href="${esc(a.url||a)}" target=_blank rel="noopener noreferrer">${esc(a.nome||"documento")}</a>`).join(" · ")
           : "anexos ainda não catalogados — <em>pendência declarada; validar na página do edital</em>"}</div>
@@ -1624,11 +1621,16 @@ function desenhaFontesAbertas(){
       const an=(be.analise_etapa2||[]);
       // detalhe completo da oportunidade ao passar o cursor
       ligaTip(el,`<strong>${esc(be.titulo||"")}</strong><br>
-        <span style="opacity:.85">${esc(be.uf||"—")} · ${esc((D.areas&&D.areas[be.area]||{}).rotulo||be.area||"—")} · ${esc(be.nivel||"—")}</span><br>
-        <span style="opacity:.85">confirmação: ${esc(be.confirmacao||"—")} · ${be.comprovados}/${be.total_itens} itens comprovados</span>
+        <span style="opacity:.85">${esc(f.fonte_nome)}${f.via?" (via "+esc(f.via)+")":""} · ${esc(be.uf||"—")} · ${esc((D.areas&&D.areas[be.area]||{}).rotulo||be.area||"—")} · ${esc(be.nivel||"—")}</span><br>
+        ${be.objeto?`<span style="opacity:.9">${esc(String(be.objeto).slice(0,160))}</span><br>`:""}
+        <span style="opacity:.85">confirmação: ${esc(be.confirmacao||"—")} · ${be.comprovados}/${be.total_itens} itens comprovados${be.fim?" · encerra "+br(be.fim):""}${be.valor_texto?" · "+esc(be.valor_texto):""}</span>
+        ${be.campanha?`<br><span style="opacity:.85">campanha de completude: ${be.campanha.status==="monitorando"?"dia "+be.campanha.dia+"/30, "+be.campanha.tentativas+" tentativa(s)":be.campanha.status}</span>`:""}
+        ${be.pertinencia?`<br><span style="opacity:.85">terceiro setor: ${esc(be.pertinencia)}</span>`:""}
         <hr style="border:0;border-top:1px solid #ffffff33;margin:5px 0">
         ${an.map(a=>`${a.comprovado?"✓":"○"} <strong>${esc(a.item)}</strong>: ${a.valor?esc(String(a.valor).slice(0,70)):"<em>não comprovado</em>"}`).join("<br>")}
-        <br><em>clique nos botões para investigar ou arquivar</em>`);});
+        <br><em>clique nos botões para investigar ou arquivar</em>`);
+      el.addEventListener("mousemove",ev=>ev.stopPropagation());   // o resumo do edital prevalece sobre o da fonte
+    });
     fx.appendChild(div);
   });
 }
@@ -2078,6 +2080,7 @@ function iniciarBz(){
   iniciaMapaMonitor();
 }
 function desenhaBzMon(){
+  if(!$("bz-mon"))return;   // caixa unificada em «Fontes com edital aberto»
   const mon=(D.bussola_painel||{}).monitoramentos||{};
   const tb=$("bz-mon").querySelector("tbody");
   // apenas indícios AINDA INCOMPLETOS, dentro da janela de 30 dias

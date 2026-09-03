@@ -338,7 +338,10 @@ def run(limite: int | None = None, hoje: date | None = None) -> dict:
     itens = {i["id"]: i for i in carregar_oportunidades().values()}
 
     # abre campanha para toda identificação ainda não completa
+    from .pertinencia import pertinente as _pert
     for oid, item in itens.items():
+        if not _pert(item)["ok"]:
+            continue                      # edital para empresa não abre campanha
         if oid in campanhas:
             continue
         campanhas[oid] = {"criado_em": hoje.isoformat(), "status": "monitorando",

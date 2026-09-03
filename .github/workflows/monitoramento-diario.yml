@@ -60,7 +60,8 @@ jobs:
           timeout 600 python -m src.historico || echo "src.historico: encerrado no orçamento de 600s ou falhou — registrado"
           timeout 300 python -m src.historico_parecer || echo "src.historico_parecer: encerrado no orçamento de 300s ou falhou — registrado"
           timeout 300 python -m src.confirmacao || echo "src.confirmacao: encerrado no orçamento de 300s ou falhou — registrado"
-          timeout 120 python -m src.destinacao || echo "src.destinacao: encerrado no orçamento de 120s ou falhou — registrado"
+          timeout 120 python -m src.destinacao || echo "destinacao: registrado"
+          timeout 180 python -m src.pertinencia || echo "pertinencia: registrado" || echo "src.destinacao: encerrado no orçamento de 120s ou falhou — registrado"
           python -m src.emendas
           python -m src.emendas_docs
           timeout 1500 python -m src.sensores || echo "src.sensores: encerrado no orçamento de 1500s ou falhou — registrado"

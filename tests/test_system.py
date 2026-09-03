@@ -1,4 +1,4 @@
-import json, pathlib, tempfile, unittest
+import json, pathlib, re, tempfile, unittest
 from unittest.mock import patch
 
 from src.eldorado import candidates, source_in_scope
@@ -815,7 +815,8 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(mon["encontrados"],tot["completos"])
         self.assertLessEqual(len(mon["amostra"]),40)
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for trecho in ("Monitoramentos encontrados","campanha de completude","Dia ${m.dia}/30",
+        # a tabela 'Monitoramentos encontrados' foi UNIFICADA em 'Fontes com edital aberto'
+        for trecho in ("monitoramentos em campanha de 30 dias","campanha de completude","dia \"+camp.dia+\"/30",
                        "verificação dupla","sites oficiais"):
             self.assertIn(trecho,html,trecho)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
@@ -1464,15 +1465,14 @@ class SystemTests(unittest.TestCase):
         self.assertIn('const soHover = (v==="bussola")',html)
         # ordem das caixas
         ordem=_re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)
-        self.assertEqual([n for n,_ in ordem],["1","2","3","4"])
+        self.assertEqual([n for n,_ in ordem],["1","2","4"])   # a caixa 3 (Monitoramentos) foi unificada na 4
         rotulos=" ".join(r for _,r in ordem)
         self.assertIn("MAPA DE OPORTUNIDADES",rotulos)
         self.assertIn("FILTRO DE OPORTUNIDADES",rotulos)
-        self.assertIn("MONITORAMENTOS ENCONTRADOS",rotulos)
+        self.assertNotIn("MONITORAMENTOS ENCONTRADOS",rotulos)   # unificada em Fontes com edital aberto
         self.assertIn("FONTES COM EDITAL ABERTO",rotulos)
         self.assertLess(sec.find("MAPA DE OPORTUNIDADES"),sec.find("FILTRO DE OPORTUNIDADES"))
-        self.assertLess(sec.find("FILTRO DE OPORTUNIDADES"),sec.find("MONITORAMENTOS ENCONTRADOS"))
-        self.assertLess(sec.find("MONITORAMENTOS ENCONTRADOS"),sec.find("FONTES COM EDITAL ABERTO"))
+        self.assertLess(sec.find("FILTRO DE OPORTUNIDADES"),sec.find("FONTES COM EDITAL ABERTO"))
 
     def test_mapa_monitor_etapa1(self):
         """O Mapa de Oportunidades absorveu o monitor: Encontrado/Ausente por
@@ -1686,10 +1686,10 @@ class SystemTests(unittest.TestCase):
             self.assertIn(m,html,m)
         # Fontes com edital aberto é a última caixa de conteúdo
         ordem=[n for n,_ in _re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)]
-        self.assertEqual(ordem,["1","2","3","4"])
+        self.assertEqual(ordem,["1","2","4"])   # caixa 3 unificada na 4
         self.assertIn("4 · FONTES COM EDITAL ABERTO",sec)
         # cada edital em bloco próprio, com os dois botões
-        self.assertIn('class="ed-item"',html)
+        self.assertIn('class="ed-item${',html)          # uma caixa por edital (classe dinâmica: em-campanha)
         self.assertIn("Investigar com IA",html)
         self.assertIn("bt-arq",html)
         self.assertIn("investigarEdital",html)
@@ -2843,6 +2843,45 @@ class SystemTests(unittest.TestCase):
         # óleo: pluma com gotas, sem o traço fino
         self.assertIn('class="pluma"',html); self.assertIn("@keyframes respinga",html)
         self.assertNotIn('stroke="#1b1f27" stroke-width="2.6"',html)
+
+
+    def test_pertinencia_terceiro_setor(self):
+        """Só entra o que uma associação pode aproveitar; edital para empresa
+        é eliminado da base e nunca aparece nas fontes com edital aberto."""
+        from src.pertinencia import pertinente
+        sai=["CREDENCIAMENTO DE FARMÁCIA PARA ENTREGA DE MEDICAMENTOS COM MENOR PREÇO (ASSOCIAÇÃO BRASILEIRA)",
+             "Pregão eletrônico 44/2026 aquisição de material",
+             "Chamamento Público de prestadores de serviços (pessoa jurídica) para prestação complementar",
+             "CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO / CONTRATAÇÃO, DE PESSOAS JURÍDICAS, PARA PRESTAÇÃO DE SERVIÇOS",
+             "CHAMAMENTO PUBLICO PARA CAPTAÇÃO DE COTAS DE PATROCÍNIO DE EMPRESAS (PESSOA JURÍDICA)",
+             "Curso de capacitação para empresas exportadoras",
+             "Chamamento Público para inscrição de pessoas jurídicas visando contrato de comodato"]
+        fica=["Chamamento público para seleção de organizações da sociedade civil — termo de fomento",
+              "Credenciamento de entidades sem fins lucrativos para acolhimento institucional",
+              "Prêmio de boas práticas para entidades sociais",
+              "Capacitação para gestores de organizações da sociedade civil",
+              "CELEBRACAO DE TERMO DE FOMENTO ENTRE O MUNICIPIO E A APAE, ASSOCIACAO DE PAIS E AMIGOS",
+              "TERMO DE COLABORAÇÃO COM ORGANIZAÇÃO DA SOCIEDADE CIVIL (PESSOA JURÍDICA SEM FINS LUCRATIVOS)"]
+        for s in sai: self.assertFalse(pertinente({"titulo":s,"evidencia":""})["ok"],s)
+        for s in fica: self.assertTrue(pertinente({"titulo":s,"evidencia":""})["ok"],s)
+        # fonte do titular nunca se descarta
+        self.assertTrue(pertinente({"titulo":"Pregão","origem":"alimentacao_manual"})["ok"])
+        d=dash_coletar(date(2026,9,2))
+        for f in d["bussola"]["fontes_com_editais"]:
+            self.assertFalse(re.search(r"pncp|querido di[áa]rio",f["fonte_nome"],re.I),f["fonte_nome"])   # órgão real, não a via
+            for e in f["editais"]:
+                self.assertIn("campanha",e)                                # caixas unificadas
+                self.assertFalse(re.search(r"farm[áa]cia|preg[ãa]o|pessoas? jur[íi]dicas?,? para|comodato|leiloeir|registro de pre[çc]os",
+                                           e["titulo"],re.I),e["titulo"])
+        rel=load_json(pathlib.Path("estado/pertinencia.json"))
+        self.assertGreater(rel["descartados"]+rel["mantidos"],0)
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertNotIn('id="bz-mon"',html)                              # tabela separada removida
+        self.assertIn("monitoramentos em campanha de 30 dias",html)
+        self.assertIn("em-campanha",html); self.assertIn("captado via",html)
+        for f in ("src/sensores.py","src/eldorado.py","src/completude.py"):
+            self.assertIn("pertinente",open(f,encoding="utf-8").read(),f)
+        self.assertIn("src.pertinencia",open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read())
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

@@ -351,7 +351,8 @@ CATEGORIAS_FONTE = {
 def _categoria_fonte(tipo: str | None) -> str:
     return _CAMADA_FONTE.get(tipo or "", "site_oficial")
 
-def _bussola(editais: list[dict]) -> dict:
+def _bussola(editais: list[dict], hoje: date | None = None) -> dict:
+    hoje = hoje or date.today()
     auditoria = ROOT / "estado/auditoria.jsonl"
     por_dia: dict[str, dict] = defaultdict(lambda: {"buscas": [], "fontes_ok": 0, "fontes_falha": 0, "novas": 0})
     if auditoria.exists():
@@ -396,11 +397,26 @@ def _bussola(editais: list[dict]) -> dict:
     # fontes com edital aberto: caixa própria com links e anexos
     # a caixa consolida por fonte; o filtro do painel decide o que exibir
     por_fonte: dict[str, dict] = {}
+    from .pertinencia import pertinente as _pert
     for e in editais:
+        # pertinência ao terceiro setor: edital para empresa não entra nesta caixa
+        if not _pert(e)["ok"]:
+            continue
         f = _fontes().get(e["fonte_id"]) or {}
-        cx = por_fonte.setdefault(e["fonte_id"], {
-            "fonte_id": e["fonte_id"], "fonte_nome": e["fonte_nome"],
-            "url_fonte": f.get("url"), "tipo": f.get("tipo"),
+        # o ÓRGÃO REAL é a fonte; PNCP e Querido Diário são apenas a via de captura
+        via = None
+        orgao = e.get("fonte_nome") or ""
+        if e["fonte_id"] in ("pncp", "querido-diario") or re.search(r"pncp|querido di[áa]rio", orgao, re.I):
+            via = "PNCP" if "pncp" in (e["fonte_id"] + orgao).lower() else "Querido Diário"
+            orgao = (e.get("orgao_real") or e.get("financiador") or e.get("orgao") or "").strip()
+            if not orgao or re.search(r"pncp|querido", orgao, re.I):
+                m = re.search(r"Di[áa]rio Oficial de ([^—(]+)(\(([A-Z]{2})\))?", e.get("titulo") or "")
+                orgao = (f'Prefeitura de {m.group(1).strip()}' + (f' ({m.group(3)})' if m.group(3) else "")) if m else \
+                        (e.get("titulo") or "").split("—")[0].strip()[:60]
+        chave = f'{e["fonte_id"]}|{orgao.lower()}'
+        cx = por_fonte.setdefault(chave, {
+            "fonte_id": e["fonte_id"], "fonte_nome": orgao or e["fonte_nome"],
+            "via": via, "url_fonte": (e.get("url") if via else f.get("url")), "tipo": f.get("tipo"),
             "categoria": _categoria_fonte(f.get("tipo")),
             "editais": []})
         det = e.get("detalhes") or {}
@@ -445,7 +461,12 @@ def _bussola(editais: list[dict]) -> dict:
              "valor": (e.get("destinacao") or {}).get("motivo"),
              "comprovado": (e.get("destinacao") or {}).get("elegivel") is True},
         ]
+        camp = _campanhas_idx().get(e["id"])
         cx["editais"].append({"id": e["id"], "titulo": e["titulo"], "url": e["url"],
+                              "campanha": ({"status": camp["status"], "dia": min((hoje - date.fromisoformat(camp["criado_em"])).days + 1, 30),
+                                            "tentativas": len(camp.get("tentativas", [])),
+                                            "pendencias": (camp.get("pendencias") or [])[:3]} if camp else None),
+                              "pertinencia": (e.get("pertinencia") or {}).get("motivo"),
                               "uf": e.get("uf"), "area": e.get("area"),
                               "nivel": e.get("nivel"), "fim": e.get("fim"),
                               "estado_export": e.get("estado_export"),
@@ -941,6 +962,14 @@ def _calendario_decisao(editais: list[dict], hoje: date) -> dict:
             "nota": "datas conforme publicadas na fonte; ausência vira alerta, nunca estimativa"}
 
 
+_CAMP_CACHE: dict = {}
+def _campanhas_idx() -> dict:
+    if not _CAMP_CACHE:
+        from . import completude as _comp
+        _CAMP_CACHE.update(_comp._estado().get("campanhas", {}))
+    return _CAMP_CACHE
+
+
 def _monitoramentos(hoje: date) -> dict:
     """Bússola: os MONITORAMENTOS encontrados — cada identificação com sua
     campanha diária de completude (dia X/30, tentativas, pendências)."""
@@ -1071,7 +1100,7 @@ def coletar(hoje: date | None = None) -> dict:
     decisao = _calendario_decisao(completos_lista, hoje)
     funil = _funil_5_passos(editais_base, completos_lista, monit_prev := None)
     monit = _monitoramentos(hoje)
-    saida_bussola = painel_bussola(completos_lista, _bussola(editais), hoje)
+    saida_bussola = painel_bussola(completos_lista, _bussola(editais, hoje), hoje)
     saida_bussola["monitoramentos"] = monit
     saida_bussola["totais"] = {"base_completa": len(editais_base),
         "monitoramentos": monit["encontrados"], "completos": len(completos_lista),
@@ -1112,7 +1141,7 @@ def coletar(hoje: date | None = None) -> dict:
                            "com_historico": dossies.get("com_historico", 0),
                            "conselhos": dossies.get("conselhos", 0),
                            "itens": [i for i in dossies.get("itens", []) if i.get("editais")]},
-        "bussola": _bussola(editais),
+        "bussola": _bussola(editais, hoje),
         "bussola_painel": saida_bussola,
         "farol_resumo": _farol_resumo(editais),
         "farol": {
