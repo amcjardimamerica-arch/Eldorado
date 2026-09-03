@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `bndes`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 20
-- Distribuição por ano pesquisado/coletado: {'2022': 2, '2023': 11, '2024': 4, '2025': 1, '2026': 2}
+- Pistas aguardando confirmação: 21
+- Distribuição por ano pesquisado/coletado: {'2022': 2, '2023': 12, '2024': 4, '2025': 1, '2026': 2}
 
 ## Padrões
 
@@ -30,5 +30,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [BNDES Crédito Pequenas e Médias Empresas](https://www.bndes.gov.br/wps/portal/site/home/financiamento/produto/bndes-credito-pequenas-e-medias-empresas) — coletado em 2026-09-01T18:52:29+00:00
 - [The BNDES - BNDES](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en/Institucional/The_BNDES) — coletado em 2026-08-31T12:05:51+00:00
 - [Home - BNDES Investor Relations](https://ri.bndes.gov.br/en) — coletado em 2026-08-31T06:06:38+00:00
+- [BNDES - Brazilian Development Bank](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en/index.html) — coletado em 2026-09-03T01:33:14+00:00
 - [BNDES - Portal do Cliente](https://portal.bndes.gov.br/prc) — coletado em 2026-08-31T06:06:38+00:00
 - [BNDES](https://web.bndes.gov.br/ConsultaFINEM) — coletado em 2026-09-01T18:52:29+00:00

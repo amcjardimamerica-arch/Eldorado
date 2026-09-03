@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `pncp`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 6019
-- Distribuição por ano pesquisado/coletado: {'2022': 8, '2023': 446, '2024': 1941, '2025': 2045, '2026': 1579}
+- Pistas aguardando confirmação: 6047
+- Distribuição por ano pesquisado/coletado: {'2022': 8, '2023': 474, '2024': 1941, '2025': 2045, '2026': 1579}
 
 ## Padrões
 
@@ -54,7 +54,7 @@ Chamamento Público para premiação de Pontos de Cultura, para o desenvolviment
 - [Chamamento Público nº 001/2023 - Credenciamento de pessoas jurídicas para a realização de  terapias.](https://pncp.gov.br/app/editais/00136858000188/2024/299) — coletado em 2026-09-01T06:24:55+00:00
 - [[Portal de Compras Públicas] - Credenciamento de profissionais ou empresas prestadoras de serviços técnicos de engenharia e arquitetura, nas atividades de: Elaboração e Análise de Projetos, Elaboração e Análise de Orçamentos, conforme edital.](https://portaldecompraspublicas.com.br/processos/MG/Prefeitura-Municipal-de-Juiz-de-Fora-13/CRED-003-2023-2023-248881) — coletado em 2026-09-01T13:03:49+00:00
 - [CREDENCIAMENTO DA EMPRESA MARCELLE ROPKE DE CAMPOS LTDA, PARA PRESTAÇÃO DE SERVIÇOS MÉDICOS NA ESPECIALIDADE DE CLÍNICA GERAL, EM HORÁRIO COMERCIAL, VISANDO AO ATENDIMENTO DAS DEMANDAS DA REDE PÚBLICA DE SAÚDE DO MUNICÍPIO DE GUARACIABA/SC, CONFORME PROCESSO LICITATÓRIO Nº 23/2026, INEXIGIBILIDADE N](https://pncp.gov.br/app/editais/11355924000127/2026/48) — coletado em 2026-09-01T06:45:56+00:00
-- [Chamamento Público n.º 001/2023 - Credenciamento e contratação de pessoa jurídica para a realização de exames laboratoriais.](https://pncp.gov.br/app/editais/00136858000188/2024/142) — coletado em 2026-09-02T07:33:11+00:00
+- [Chamamento Público n.º 001/2023 - Credenciamento e contratação de pessoa jurídica para a realização de exames laboratoriais.](https://pncp.gov.br/app/editais/00136858000188/2024/142) — coletado em 2026-09-03T01:23:46+00:00
 - [Chamamento Público para o credenciamento de pessoas jurídicas visando à prestação de serviços técnicos especializados em avaliação imobiliária, compreendendo exclusivamente a elaboração de Pareceres Técnicos de Avaliação Mercadológica (PTAM), sob demanda - Conforme Termo de Referência -  Proc. Admin](https://pncp.gov.br/app/editais/46634127000163/2026/1678) — coletado em 2026-09-01T06:45:19+00:00
 - [Chamamento público objetivando o credenciamento de pessoas jurídicas para prestação de serviço de internamento/acolhimento de pessoa idosa desassistida pela família e/ou em situação de risco social e pessoal, com grau de dependência 1.](https://pncp.gov.br/app/editais/76972082000106/2025/51) — coletado em 2026-09-01T06:34:12+00:00
 - [CREDENCIAMENTO DE PESSOAS JURÍDICAS PARA PRESTAÇÃO DE SERVIÇOS NA ÁREA DA SAÚDE, A SEREM REALIZADOS NOS AMBULATÓRIOS DE ESPECIALIDADES - AME´s DO CIS/AMUNPAR, NA ESPECIALIDADE DE GINECOLOGIA - EXERCÍCIO 2.024.](https://pncp.gov.br/app/editais/73966913000130/2024/14) — coletado em 2026-09-01T00:52:45+00:00
