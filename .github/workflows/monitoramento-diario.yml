@@ -159,6 +159,12 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           rm -f dash.json
+      - name: Busca imediata de prazo por IA (chamamentos sem prazo confirmado)
+        if: always()
+        run: |
+          if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 600 python -m src.prazos_ia || echo "prazos_ia: registrado"
+          fi
       - name: Relatório de funcionamento do bloco
         if: always()
         run: |

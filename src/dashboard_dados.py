@@ -1300,6 +1300,9 @@ def coletar(hoje: date | None = None) -> dict:
                                   "status_verificacao", "fonte_confirmacao", "lei")}
                                 for i in previsoes.get("itens", [])]},
         "esquadra": esquadra,
+        "prazos_ia": {k: {"status": v.get("status"), "fim": v.get("fim"), "inicio": v.get("inicio"), "url": v.get("url"), "conselho": bool(v.get("conselho"))}
+                      for k, v in (load_json(ROOT / "estado/prazos_ia.json") if (ROOT / "estado/prazos_ia.json").exists() else {}).items()
+                      if not k.startswith("_") and isinstance(v, dict)},
         "fontes_ativas": fontes_ativas,
         "areas_canonicas": list(AREAS_CANONICAS),
         "auditoria": {k: auditoria.get(k) for k in

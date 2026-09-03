@@ -3155,7 +3155,7 @@ class SystemTests(unittest.TestCase):
                 O.ESTADO=orig
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn("A ativação é individual — fogo aceso roda nas rotinas",html)
-        for x in ("Quadro de disjuntores","function desenhaDisjuntores","dj-grade","dj.rosa","dj.cinza","dj-mini","nomeCurto",
+        for x in ("Quadro de disjuntores","function desenhaDisjuntores","dj-grade","dj.rosa","dj.cinza","nomeCurto",
                   "ligados_em","@keyframes oleo-reflexo",'class="reflexo"',"ligado · dia"): self.assertIn(x,html,x)
         self.assertNotIn('class="coluna"',html)                       # apagado = só a poça
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.opressores",wf)
@@ -3185,6 +3185,30 @@ class SystemTests(unittest.TestCase):
             self.assertIn(f,sec_e,f)
         self.assertIn('cx.classList.toggle("oculto",aba!=="em_andamento")',html)
         self.assertIn('if(!$("bus-fontes"))return; montaOportunidadesPorArea',html)
+
+
+    def test_icones_na_faixa_prazos_ia_e_disjuntores_so_nome(self):
+        """Marcos do edital dentro da faixa (contorno branco), sem repetição; ícone
+        solto = chamamento sem prazo → busca de prazo por IA em níveis; disjuntores
+        só com o nome curado e a poça."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("cfx-ico","const comFaixa=new Set","!comFaixa.has(ev.edital_id)","busca de prazo por IA","D.prazos_ia",
+                  "NOMES_CURTOS","Destina MP-GO","Penas TJ-GO","Aldir Blanc Estadual","Aldir Blanc Municipal","Goyazes"):
+            self.assertIn(x,html,x)
+        self.assertNotIn('class="dj-mini"',html)                           # ícone quadrado removido
+        # busca de prazo: prompts e escalada
+        from src.prazos_ia import _prompt_simples, _prompt_conselho, candidatos
+        e={"titulo":"Chamamento X","fonte_nome":"Prefeitura Y","uf":"GO","nivel":"municipal","url":"https://x"}
+        ps=_prompt_simples(e); self.assertIn("local de publicação ORIGINAL",ps); self.assertIn("PERÍODO DE INSCRIÇÃO",ps); self.assertIn("Nunca invente",ps)
+        pc=_prompt_conselho(e,[{"nivel":"simples","resumo":"sem prazo"}]); self.assertIn("POR QUE",pc); self.assertIn("sete lentes",pc)
+        d={"eventos":[{"edital_id":"a"},{"edital_id":"b"},{"edital_id":"c"}],
+           "editais":[{"id":"a","situacao_inscricao":"possivel","uf":"GO"},
+                      {"id":"b","situacao_inscricao":"possivel","sem_edital":True},          # regra anual: fora
+                      {"id":"c","situacao_inscricao":"aberta"},                              # já tem prazo: fora
+                      {"id":"d","situacao_inscricao":"possivel"}]}                          # sem evento: fora
+        self.assertEqual([x["id"] for x in candidatos(d,10)],["a"])
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.prazos_ia",wf)
+        dd=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("prazos_ia",dd)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

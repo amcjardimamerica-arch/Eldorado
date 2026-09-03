@@ -165,6 +165,7 @@ box-shadow:0 1px 3px #0002}
 .cfx.ini{border-radius:6px 0 0 6px;margin-left:6px}.cfx.fim{border-radius:0 6px 6px 0;margin-right:6px}.cfx.ini.fim{border-radius:6px}
 .cfx.vazia{background:transparent;cursor:default;color:var(--suave);padding-left:8px}
 .cfx:hover{opacity:1;filter:brightness(1.08)}
+.cfx-ico{display:inline-block;font-style:normal;font-weight:800;font-size:9px;line-height:9px;width:11px;height:11px;border-radius:50%;background:#fff;color:#222;text-align:center;margin:0 3px 0 -1px;vertical-align:top;box-shadow:0 0 0 1.5px #fff,0 0 0 2.5px currentColor}
 .caldia-h{font-size:11px;letter-spacing:.08em;color:var(--suave);text-align:center;padding:4px 0;text-transform:uppercase}
 .caldia{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;min-height:86px;padding:6px;position:relative}
 .caldia.fora{opacity:.38}
@@ -231,12 +232,12 @@ box-shadow:0 1px 3px #0002}
 @keyframes pisca{to{visibility:hidden}}
 .mt-item.sem-neutro{border-right:1px solid var(--linha)}
 .mt-item.nova{border-left:6px solid #7B4BE0}
-.dj-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;margin-bottom:8px}
-.dj{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;border:1px solid var(--linha);background:#F6F7F9}
+.dj-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px;margin-bottom:8px}
+.dj{display:flex;align-items:center;gap:6px;padding:4px 8px 4px 4px;border-radius:9px;border:1px solid var(--linha);background:#F6F7F9}
 .dj.rosa{background:#FCE4EC;border-color:#F3B6CB}.dj.cinza{background:#F1F3F5}
 .dj .mt-ico{transform:scale(.8)}.dj .mt-ico svg{width:32px;height:22px}
 .dj-mini{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
-.dj-nome{display:flex;flex-direction:column;min-width:0}.dj-nome b{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dj-nome small{font-size:10px;color:var(--suave)}
+.dj-nome{display:flex;flex-direction:column;min-width:0}.dj-nome b{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta)}
 .dj-leg{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;border:1px solid var(--linha)}.dj-leg.rosa{background:#FCE4EC;border-color:#F3B6CB}.dj-leg.cinza{background:#F1F3F5}
 .mt-calt{font-size:11px;font-weight:700;color:var(--suave);letter-spacing:.05em;text-transform:uppercase;margin:8px 0 4px;display:flex;justify-content:space-between;align-items:center}
 .mt-calnav button{border:1px solid var(--linha);background:#fff;border-radius:6px;padding:1px 7px;font-size:11px;cursor:pointer;margin-left:3px}
@@ -1536,12 +1537,17 @@ function desenhaCal(){
     const dow=new Date(calAno,calMes,dia).getDay();
     const noDia=faixas.filter(x=>x.i<=iso&&x.f>=iso&&x.pista<MAXP);
     const ocultas=faixas.filter(x=>x.i<=iso&&x.f>=iso&&x.pista>=MAXP).length;
+    const comFaixa=new Set(faixas.map(x=>x.e.id));
     const trilhos=[...Array(Math.min(MAXP,pistas.length))].map((_,k)=>{const x=noDia.find(y=>y.pista===k);
       if(!x)return `<div class="cfx vazia"></div>`;
       const cor=AREA(x.e.area).cor;const rotulo=(x.i===iso||dow===0||dia===1);
-      return `<div class="cfx${x.i===iso?" ini":""}${x.f===iso?" fim":""}" data-fx="${esc(x.e.id)}" style="background:${cor}" title="${esc(x.e.titulo)} · inscrições ${br(x.i)} → ${br(x.f)} · prazo confirmado">${rotulo?`<span>${esc((x.e.programa||x.e.titulo||"").slice(0,22))}</span>`:""}</div>`;}).join("");
-    const evs=(porDia[dia]||[]).slice(0,3);
-    const mais=(porDia[dia]||[]).length-evs.length;
+      /* ícones dos eventos deste edital neste dia entram DENTRO da faixa, com contorno branco */
+      const icos=(porDia[dia]||[]).filter(ev=>ev.edital_id===x.e.id).map(ev=>`<i class=cfx-ico title="${esc(TEVT(ev.tipo).rotulo)} · ${br(ev.data)}">${TEVT(ev.tipo).simbolo}</i>`).join("");
+      return `<div class="cfx${x.i===iso?" ini":""}${x.f===iso?" fim":""}" data-fx="${esc(x.e.id)}" style="background:${cor}" title="${esc(x.e.titulo)} · inscrições ${br(x.i)} → ${br(x.f)} · prazo confirmado">${icos}${rotulo?`<span>${esc((x.e.programa||x.e.titulo||"").slice(0,22))}</span>`:""}</div>`;}).join("");
+    // eventos SEM faixa (edital sem prazo confirmado): continuam como ícone — e disparam a busca de prazo por IA
+    const soltos=(porDia[dia]||[]).filter(ev=>!comFaixa.has(ev.edital_id));
+    const evs=soltos.slice(0,3);
+    const mais=soltos.length-evs.length;
     h+=`<div class="caldia${hoje?" hoje":""}" data-dia="${dia}"><div class=n>${dia}</div>`+(trilhos?`<div class=cfx-trilhos>${trilhos}${ocultas?`<div class="cfx vazia meta">+${ocultas}</div>`:""}</div>`:"")+
       evs.map((ev,i)=>`<div class=evt data-ev="${dia}:${i}" style="color:${AREA(ev.area).cor}">
         <span class=ponto style="background:${AREA(ev.area).cor}"></span><i>${TEVT(ev.tipo).simbolo}</i>
@@ -1556,16 +1562,19 @@ function desenhaCal(){
   });
   document.querySelectorAll(".evt[data-ev]").forEach(el=>{
     const [dia,i]=el.dataset.ev.split(":").map(Number);
-    const ev=porDia[dia][i];const ed=(D.editais||[]).find(x=>x.id===ev.edital_id);
+    const comFaixaIds=new Set((window._calFaixas||[]).map(x=>x.e.id));
+    const ev=(porDia[dia]||[]).filter(e0=>!comFaixaIds.has(e0.edital_id))[i];if(!ev)return;const ed=(D.editais||[]).find(x=>x.id===ev.edital_id);
     const extra=ev.tipo==="encerramento"&&ev.prorrogado?`<br>⟳ prorrogado (original: ${br(ev.data_original)})`:"";
-    ligaTip(el,`<strong>${esc(TEVT(ev.tipo).rotulo)}</strong> · ${br(ev.data)}${extra}<br>`+(ed?resumoTip(ed):esc(ev.titulo)));
+    const pi=(D.prazos_ia||{})[ev.edital_id];
+    ligaTip(el,`<strong>${esc(TEVT(ev.tipo).rotulo)}</strong> · ${br(ev.data)}${extra}<br>`+(ed?resumoTip(ed):esc(ev.titulo))
+      +`<br><em>sem prazo confirmado — busca de prazo por IA ${pi?"acionada: "+esc(pi.status||"")+(pi.conselho?" · conselho emitido":""):"na fila"}</em>`);
     el.onclick=()=>ed?detalheEdital(ed):null;
   });
   const areasUsadas=[...new Set((D.eventos||[]).map(e=>e.area))];
   $("cal-legenda").innerHTML=areasUsadas.length
     ?areasUsadas.map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("")
     :"<span class=meta>Nenhum evento registrado ainda — a primeira varredura de segunda/sexta popula o calendário.</span>";
-  $("cal-simbolos").innerHTML=`<span><span class="cfx" style="display:inline-block;width:26px;height:9px;background:var(--marca);vertical-align:middle;position:static"></span> faixa contínua = prazo de inscrição <b>confirmado</b> (${faixas.length} neste mês)</span> · `
+  $("cal-simbolos").innerHTML=`<span><span class="cfx" style="display:inline-block;width:26px;height:9px;background:var(--marca);vertical-align:middle;position:static"></span> faixa contínua = prazo de inscrição <b>confirmado</b> (${faixas.length} neste mês); os marcos do edital aparecem <b>dentro</b> da faixa com contorno branco · ícone solto = chamamento identificado <b>sem prazo confirmado</b> (busca de prazo por IA acionada)</span> · `
     +Object.entries(D.tipos_evento||{}).map(([k,v])=>`<span><i style="font-style:normal;font-weight:700">${v.simbolo}</i> ${esc(v.rotulo)}</span>`).join(" · ");
 }
 
@@ -2123,15 +2132,27 @@ function desenhaMotores(){
    ligar (30 dias de busca diária, IA a cada 3 dias, conselho Fable 5.1 no 9º).
    Cinza: sem época prevista · Rosa: época chegando (ainda não ligado). */
 const MINI={cultura:"🎭",esporte:"⚽",educacao:"📚",saude:"🩺",assistencia_social:"🤝",crianca_adolescente:"🧒",pessoa_idosa:"🧓",meio_ambiente:"🌱",direitos_humanos:"✊",infraestrutura:"🏗️",seguranca_alimentar:"🍲",doacao_bens:"📦",outros:"◇"};
-function nomeCurto(p){return p.replace(/^(Edital(?:is)? de |Programa |Lei |Fundo |Chamamento |Emenda )/i,"").split(/ — | - /)[0].slice(0,34);}
+/* nomes curados: claros e curtos, como se fala no dia a dia */
+const NOMES_CURTOS=[[/destina|mpgo.*tac|tac.*mpgo/i,"Destina MP-GO"],[/mpf/i,"MPF – bens e valores"],[/tjgo.*(pena|pecuni)|pena.*tjgo/i,"Penas TJ-GO"],[/trf1|justi[çc]a federal/i,"Penas Justiça Federal"],[/cnj/i,"CNJ – destinações"],
+  [/rouanet|pronac/i,"Rouanet"],[/pnab goi[áa]s|aldir blanc.*estad/i,"Aldir Blanc Estadual"],[/pnab goi[âa]nia|aldir blanc.*munic/i,"Aldir Blanc Municipal"],[/goyazes/i,"Goyazes"],
+  [/incentivo ao esporte|\blie\b/i,"Lei de Incentivo ao Esporte"],[/pronon/i,"PRONON"],[/pronas/i,"PRONAS"],[/receita federal|apreendid/i,"Doação Receita Federal"],
+  [/fmdca|cmdca.*goi[âa]nia|fundo municipal.*crian/i,"FMDCA Goiânia"],[/cedca|fundo estadual.*crian|feia\b/i,"FEIA Goiás"],[/conanda|fundo nacional.*crian/i,"Fundo Nacional Criança"],
+  [/fundo municipal do idoso|cmi goi/i,"Fundo do Idoso Goiânia"],[/fundo estadual do idoso|cei-?go/i,"Fundo do Idoso Goiás"],[/fundo nacional do idoso/i,"Fundo Nacional do Idoso"],
+  [/fmas|cmas goi/i,"FMAS Goiânia"],[/feas|ceas-?go/i,"FEAS Goiás"],[/fnas|cnas/i,"FNAS"],[/fundo de arte e cultura/i,"Fundo de Arte e Cultura GO"],[/bndes/i,"BNDES"],[/sebrae/i,"Sebrae Goiás"],
+  [/petrobras/i,"Petrobras"],[/ita[úu] social/i,"Itaú Social"],[/funda[çc][ãa]o banco do brasil|fbb/i,"Fundação BB"],[/mds\b/i,"MDS"],[/ses-?go/i,"SES Goiás"],[/seduc|educa[çc][ãa]o.*goi[áa]s/i,"Seduc Goiás"]];
+function nomeCurto(p){for(const [rx,n] of NOMES_CURTOS)if(rx.test(p)){
+    // famílias com vários editais (PNAB, LIE, fundos): acrescenta a linguagem/segmento após o hífen
+    const seg=(p.split(/ - | — /)[1]||"").replace(/^(projeto|edital|linha)\s+/i,"").trim();
+    return seg&&/aldir|esporte|fundo|pnab|fmdca|feia|fmas|feas/i.test(n)?`${n} · ${seg.length>22?seg.slice(0,21).replace(/\s+\S*$/,"")+"…":seg}`:n;}
+  let s=p.replace(/^(Edital(?:is)? de |Programa |Projeto de |Lei |Chamamento |Emenda (?:municipal|estadual|federal) para )/i,"").split(/ — | - |:/)[0].trim();
+  return s.length>26?s.slice(0,25).replace(/\s+\S*$/,"")+"…":s;}
 function desenhaDisjuntores(){
   const box=$("mo-disjuntores"); if(!box)return;
-  const inativos=MT.filter(m=>!mtAtivo(m.id));
+  const inativos=MT.filter(m=>!mtAtivo(m.id)).sort((a,b)=>nomeCurto(a.programa).localeCompare(nomeCurto(b.programa),"pt"));
   const rosa=inativos.filter(m=>m.proximidade==="rosa"), cinza=inativos.filter(m=>m.proximidade!=="rosa");
   const ligados=MT.filter(m=>mtAtivo(m.id)&&m.disjuntor).map(m=>({m,d:JSON.parse(m.disjuntor)}));
-  const chip=m=>`<div class="dj ${m.proximidade==="rosa"?"rosa":"cinza"}" data-id="${esc(m.id)}" title="${esc(m.programa)} · ${esc(m.orgao||"")} · ${esc(m.motivo_status||"")}${m.proximidade==="rosa"?" · época chegando":" · sem época prevista"}">
-      ${iconeMotor(m.id,false)}<span class="dj-mini" style="background:${AREA(m.area_atuacao).cor}22;color:${AREA(m.area_atuacao).cor}">${MINI[m.area_atuacao]||"◇"}</span>
-      <span class="dj-nome"><b>${esc(nomeCurto(m.programa))}</b><small>${esc(AREA(m.area_atuacao).rotulo)} · ${esc(m.esfera||"")}</small></span></div>`;
+  const chip=m=>`<div class="dj ${m.proximidade==="rosa"?"rosa":"cinza"}" data-id="${esc(m.id)}" style="border-left:4px solid ${AREA(m.area_atuacao).cor}" title="${esc(m.programa)} · ${esc(m.orgao||"")} · ${esc(AREA(m.area_atuacao).rotulo)} · ${esc(m.esfera||"")} · ${esc(m.motivo_status||"")}${m.proximidade==="rosa"?" · época chegando":" · sem época prevista"}">
+      ${iconeMotor(m.id,false)}<span class="dj-nome"><b>${esc(nomeCurto(m.programa))}</b></span></div>`;
   box.innerHTML=`<div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif;font-size:15px">Quadro de disjuntores
       <span class=meta style="font-weight:500">— ${inativos.length} recurso(s) inativo(s); clique na poça para ligar por 30 dias</span></div>
     <div class=meta style="margin:4px 0 8px">Ligado: busca diária por 30 dias · IA sob medida no 3º e 6º dia · no 9º, conselho Fable 5.1 sobre por que não achou · desliga sozinho ao completar os 12 itens ou ao fim dos 30 dias.
