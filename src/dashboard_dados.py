@@ -948,8 +948,9 @@ def situacao_inscricao(e: dict, hoje: date) -> dict:
                      da janela (emendas 01/10–30/11, doação RFB em ano ímpar,
                      janela confirmada pelo titular ou pelo sensor);
       encerrada .... o período de inscrição já passou;
-      ausente ...... sem período de inscrição confirmado (sem datas) — não conta
-                     como aberta em nenhuma tela.
+      possivel ..... sem período de inscrição confirmado (sem datas): NÃO se
+                     elimina — fica como POSSIBILIDADE em investigação (campanha
+                     de completude) até validação ou descarte.
     Devolve também o REGIME: permanente, anual, janela_confirmada,
     periodo_determinado, sem_periodo."""
     h = hoje.isoformat()
@@ -961,36 +962,36 @@ def situacao_inscricao(e: dict, hoje: date) -> dict:
     if e.get("regra_anos"):                                   # ex.: doação RFB — permanente nos anos ímpares
         if e.get("ano_permitido") and ini and fim and ini <= h <= fim:
             return {"situacao": "aberta", "regime": "permanente", "base": "regra normativa do ano"}
-        return {"situacao": "encerrada" if (fim and fim < h) or e.get("ano_permitido") is False else "ausente",
+        return {"situacao": "encerrada" if (fim and fim < h) or e.get("ano_permitido") is False else "possivel",
                 "regime": "permanente", "base": "fora do ano/janela permitido"}
     if e.get("sem_edital"):                                   # emendas: janela anual fixa
         if ini and fim and ini <= h <= fim:
             return {"situacao": "aberta", "regime": "anual", "base": "janela anual 01/10–30/11"}
-        return {"situacao": "encerrada" if (fim and fim < h) else "ausente", "regime": "anual", "base": "fora da janela anual"}
+        return {"situacao": "encerrada" if (fim and fim < h) else "possivel", "regime": "anual", "base": "fora da janela anual"}
     if e.get("janela_confirmada"):
         if ini and fim and ini <= h <= fim:
             return {"situacao": "aberta", "regime": "janela_confirmada", "base": f'confirmada por {e["janela_confirmada"].get("via")}'}
-        return {"situacao": "encerrada" if (fim and fim < h) else "ausente", "regime": "janela_confirmada", "base": "fora da janela"}
+        return {"situacao": "encerrada" if (fim and fim < h) else "possivel", "regime": "janela_confirmada", "base": "fora da janela"}
     if not fim:
-        return {"situacao": "ausente", "regime": "sem_periodo", "base": "sem período de inscrição confirmado na publicação"}
+        return {"situacao": "possivel", "regime": "sem_periodo", "base": "sem período de inscrição confirmado — possibilidade em investigação"}
     if fim < h:
         return {"situacao": "encerrada", "regime": "periodo_determinado", "base": f"inscrições encerradas em {fim}"}
     if projetado:
-        return {"situacao": "ausente", "regime": "sem_periodo", "base": "início apenas projetado — não confirmado"}
+        return {"situacao": "possivel", "regime": "sem_periodo", "base": "início apenas projetado — possibilidade em investigação"}
     # data isolada sem início: só vale como prazo de inscrição se estiver a até
     # 180 dias da publicação — 'vigência até 2029' de um termo não é inscrição
     pub = e.get("publicado_em") or e.get("coletado_em") or ""
     if not ini and pub:
         try:
             if (date.fromisoformat(fim[:10]) - date.fromisoformat(pub[:10])).days > 180:
-                return {"situacao": "ausente", "regime": "sem_periodo",
-                        "base": "data isolada distante da publicação — não confirmada como prazo de inscrição"}
+                return {"situacao": "possivel", "regime": "sem_periodo",
+                        "base": "data isolada distante da publicação — prazo a confirmar; possibilidade em investigação"}
         except ValueError:
             pass
     if not tem_local:
-        return {"situacao": "ausente", "regime": "periodo_determinado", "base": "sem cidade/estado identificado"}
+        return {"situacao": "possivel", "regime": "periodo_determinado", "base": "prazo vigente, mas sem cidade/estado identificado — validar"}
     if not publicado:
-        return {"situacao": "ausente", "regime": "periodo_determinado", "base": "sem local de publicação para validar"}
+        return {"situacao": "possivel", "regime": "periodo_determinado", "base": "prazo vigente, sem local de publicação para validar"}
     if ini and ini > h:
         return {"situacao": "aberta", "regime": "periodo_determinado", "base": f"inscrições abrem em {ini} (a abrir)"}
     return {"situacao": "aberta", "regime": "periodo_determinado", "base": f"inscrições vigentes até {fim}"}

@@ -703,7 +703,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <select id="bz-uf" style="display:none" title="a UF é escolhida clicando no mapa"><option value="">UF</option></select>
     <select id="bz-area"><option value="">Área</option></select>
     <select id="bz-nivel"><option value="">Nível</option></select>
-    <select id="bz-prazo" title="Curadoria: ABERTA = período de inscrição vigente e confirmado, com cidade/estado e publicação em local oficial; ENCERRADA = o período já passou; AUSENTE = sem período confirmado"><option value="abertos">Inscrições abertas (período vigente confirmado)</option><option value="encerrados">Inscrições encerradas</option><option value="ausentes">Ausentes — sem período confirmado</option><option value="">Todas</option></select>
+    <select id="bz-prazo" title="Curadoria: ABERTA = período de inscrição vigente e confirmado, com cidade/estado e publicação oficial; POSSÍVEL = encontrada, sem prazo confirmado — em investigação até validar ou descartar; ENCERRADA = o período já passou"><option value="vivas">Abertas + possíveis (em investigação)</option><option value="abertos">Só abertas confirmadas</option><option value="possiveis">Só possíveis — sem prazo confirmado</option><option value="encerrados">Encerradas</option><option value="">Todas</option></select>
     <span class="bz-limpar" onclick="bzLimpar()">⨯ Limpar filtros</span>
   </div>
   <div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
@@ -1645,13 +1645,16 @@ function desenhaBussola(){
 /* SITUAÇÃO DE INSCRIÇÃO (curadoria): aberta · encerrada · ausente.
    Vem do backend quando há; para linhas da base ampla, vem do campo 'situacao'. */
 function situacaoDe(e){
-  if(e.situacao_inscricao)return e.situacao_inscricao;
-  if(e.situacao)return e.situacao;
+  let s=e.situacao_inscricao||e.situacao;
+  if(s==="ausente")s="possivel";                         // compatibilidade com dados antigos
+  if(s)return s;
   const h=HOJE.toISOString().slice(0,10);
-  if(!e.fim)return "ausente"; if(e.fim<h)return "encerrada";
-  return (e.uf||e.abrangencia==="nacional")&&(e.url||e.fonte_nome)?"aberta":"ausente";
+  if(!e.fim)return "possivel"; if(e.fim<h)return "encerrada";
+  return (e.uf||e.abrangencia==="nacional")&&(e.url||e.fonte_nome)?"aberta":"possivel";
 }
-const casaPrazo=(e,pz)=>!pz||(pz==="abertos"?situacaoDe(e)==="aberta":pz==="encerrados"?situacaoDe(e)==="encerrada":situacaoDe(e)==="ausente");
+/* REGRA: encontrada sem prazo NÃO se elimina — é possibilidade em investigação.
+   O filtro padrão mostra abertas + possíveis. */
+const casaPrazo=(e,pz)=>{const s=situacaoDe(e);return !pz||(pz==="vivas"?(s==="aberta"||s==="possivel"):pz==="abertos"?s==="aberta":pz==="possiveis"?s==="possivel":pz==="encerrados"?s==="encerrada":true);};
 function editaisFiltradosBz(){
   const eds=D.editais||[];
   const uf=$("bz-uf").value,ar=$("bz-area").value,ni=$("bz-nivel").value,pz=$("bz-prazo").value;
@@ -1698,7 +1701,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
      + o fragmento ABERTAS com a base completa pertinente ao terceiro setor
      (18 mil+), regidas pelo mesmo filtro (UF, área, nível, prazo) */
   const uf=comFiltroBz?$("bz-uf").value:(($("ed-uf")||{}).value||""),ar=comFiltroBz?$("bz-area").value:(($("ed-area")||{}).value||""),ni=comFiltroBz?$("bz-nivel").value:"",pz=comFiltroBz?$("bz-prazo").value:"abertos";
-  const base=comFiltroBz?editaisFiltradosBz():(D.editais||[]).filter(e=>situacaoDe(e)==="aberta"&&(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))&&(!ar||e.area===ar));
+  const base=comFiltroBz?editaisFiltradosBz():(D.editais||[]).filter(e=>["aberta","possivel"].includes(situacaoDe(e))&&(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))&&(!ar||e.area===ar));
   const sel=base.filter(e=>estadoDe(e.id)==="em_andamento");
   const info={};((D.bussola&&D.bussola.fontes_com_editais)||[]).forEach(f=>f.editais.forEach(e=>info[e.id]={...e,_fonte:f}));
   const hojeISO=HOJE.toISOString().slice(0,10);
@@ -1732,7 +1735,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
         <div class="fa-fonte"><span class=ponto style="background:${c.cor};width:8px;height:8px" title="${esc(c.rotulo)}"></span><strong style="color:var(--tinta)">${esc(f.fonte_nome||"—")}</strong>${f.via?`<span class=meta>· via ${esc(f.via)}</span>`:""}</div>
         <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">${esc((e.titulo||"").slice(0,90))}</a>
         ${camp?`<span class="st ${camp.status==="monitorando"?"cap":camp.status==="completo"?"ok":"acao"}" style="margin-left:6px" title="${camp.status==="monitorando"?"indício em campanha de completude: dia "+camp.dia+" de 30, "+camp.tentativas+" tentativa(s) atrás do edital integral":camp.status==="completo"?"campanha concluída: edital integral obtido":"campanha expirada — revisão humana"}">${camp.status==="monitorando"?"monitorando · dia "+camp.dia+"/30":camp.status}</span>`:""}
-        <div class=meta>${esc(e.uf||"BR")} · ${esc(e.nivel||"—")}${e.fim?" · encerra "+br(e.fim)+(dz!=null&&dz>=0?" ("+dz+" dia"+(dz===1?"":"s")+")":""):" · sem prazo na fonte"}${e.valor_texto?" · "+esc(e.valor_texto):""}</div>
+        <div class=meta><span class=tag style="${situacaoDe(e)==="aberta"?"border-color:#F09B2E;color:#9a5a00":situacaoDe(e)==="possivel"?"border-color:#2F79D0;color:#0B4EA2":""}" title="${esc(e.base_situacao||"")}">${situacaoDe(e)==="aberta"?"aberta confirmada":situacaoDe(e)==="possivel"?"possível · em investigação":"encerrada"}</span> ${esc(e.uf||"BR")} · ${esc(e.nivel||"—")}${e.fim?" · encerra "+br(e.fim)+(dz!=null&&dz>=0?" ("+dz+" dia"+(dz===1?"":"s")+")":""):" · sem prazo na fonte"}${e.valor_texto?" · "+esc(e.valor_texto):""}</div>
         <div class="an-barra" title="itens comprovados dos 12"><i style="width:${pct}%"></i><b>${comp}/${tot} itens comprovados</b></div>
         <div class="an-grade">${an.map(a=>`<div class="an-item ${a.comprovado?"ok":"pend"}" title="${esc(a.item)}: ${a.comprovado?esc(String(a.valor||"")):"não comprovado — o motor segue atrás"}"><span class=an-rot>${esc(a.item)}</span><span class=an-val>${a.valor?esc(String(a.valor).slice(0,64)):"<em>não comprovado</em>"}</span></div>`).join("")}</div>
         ${b&&b.pendencias&&b.pendencias.length?`<div class=meta style="margin-top:6px">⚠ ${b.pendencias.map(esc).join(" · ")}</div>`:""}
@@ -2128,9 +2131,9 @@ function desenhaBzCards(){
     livro:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><path d="M12 5.5C10 4 7.4 3.6 4 3.8v14.7c3.4-.2 6 .2 8 1.7 2-1.5 4.6-1.9 8-1.7V3.8c-3.4-.2-6 .2-8 1.7z" stroke-linejoin="round"/><path d="M12 5.5v14.7"/></svg>`});
   const mon=bp.monitoramentos||{}; const tot=bp.totais||{};
   const cards=[
-    [IC("#C77E12").rosa,"Oportunidades abertas",eds.filter(e=>situacaoDe(e)==="aberta").length,
-     `${eds.filter(e=>situacaoDe(e)==="encerrada").length} encerradas · ${eds.filter(e=>situacaoDe(e)==="ausente").length} ausentes`,"vermelho",
-     "curadoria: aberta = período de inscrição vigente e confirmado, com cidade/estado e publicação oficial; encerrada = período passou; ausente = sem período confirmado"],
+    [IC("#C77E12").rosa,"Oportunidades",`${eds.filter(e=>situacaoDe(e)==="aberta").length} <span style="font-size:14px;color:var(--suave)">abertas</span>`,
+     `${eds.filter(e=>situacaoDe(e)==="possivel").length} possíveis em investigação · ${eds.filter(e=>situacaoDe(e)==="encerrada").length} encerradas`,"vermelho",
+     "aberta = período de inscrição vigente e confirmado, com cidade/estado e publicação oficial; possível = encontrada sem prazo confirmado — fica em investigação até validar ou descartar; encerrada = período passou"],
     [IC("#0B4EA2").banco,"Fontes monitoradas",`<span id="bz-motores-ativos">—</span>`,"motores ativos / total","azul",
      "motores de busca ativos no dia (regulares + Opressores acesos) sobre o total de motores"],
     [IC("#0B4EA2").escudo,"Editais verificados",tot.completos??0,"completos p/ o Farol","azul",
@@ -2164,7 +2167,7 @@ function mpDadosUF(){
     p[st]++;p.total++;if(st==="aberta"){p.areas[area]=(p.areas[area]||0)+1;if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
   const cid=t=>{const m=/Di[áa]rio Oficial de ([^—(]+?)\s*\(([A-Z]{2})\)/.exec(t||"");return m?m[1].trim():null;};
   const add2=(uf,area,cidade,st)=>{if(!uf)return;const p=por[uf]||(por[uf]={aberta:0,verificacao:0,encerrada:0,ausente:0,total:0,areas:{},cidades:{}});
-    p[st]=(p[st]||0)+1;p.total++;if(st==="aberta"){p.areas[area]=(p.areas[area]||0)+1;if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
+    p[st]=(p[st]||0)+1;p.total++;if(st==="aberta"||st==="possivel"){p.areas[area]=(p.areas[area]||0)+1;if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
   (D.editais||[]).forEach(e=>add2(e.uf,e.area||"outros",e.municipio||cid(e.titulo),situacaoDe(e)));
   const vistos=new Set((D.editais||[]).map(e=>e.id));
   (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;add2(o.uf,o.area||"outros",cid(o.titulo),situacaoDe(o));});
@@ -2180,15 +2183,15 @@ function desenhaBzMapa(){
   const por=mpDadosUF();
   let svg=`<svg viewBox="${M.viewBox}" style="width:100%;height:auto">`;
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];
-    svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${p&&p.aberta?" com-abertas":""}"></path>`;}
+    svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${p&&(p.aberta||p.possivel)?" com-abertas":""}"></path>`;}
   for(const [uf,e] of Object.entries(M.estados)) svg+=`<text x="${e.cx-8}" y="${e.cy+4}">${uf}</text>`;
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */
-    ligaTip(el,p&&p.aberta?`<strong>${uf}</strong> · ${p.aberta} edital(is) aberto(s)<br>${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
-      :`<strong>${uf}</strong> · nenhum edital aberto identificado`);
+    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · ${p.aberta} aberto(s) confirmado(s) · ${p.possivel||0} possível(is) em investigação<br>${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
+      :`<strong>${uf}</strong> · nenhuma oportunidade identificada`);
     el.onclick=()=>{bzUFsel=(bzUFsel===uf?"":uf);$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value=bzUFsel;if(typeof mpFiltro==="object")mpFiltro.uf=bzUFsel;}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();desenhaBzLateral(por);if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
   });
   desenhaBzLateral(por);
@@ -2205,7 +2208,7 @@ function desenhaBzLateral(por){
     <div class="bz-indices">
       <span title="período de inscrição vigente e confirmado, com cidade/estado e publicação oficial"><span class=ponto style="background:#F09B2E"></span>Oportunidade aberta <b>${p.aberta}</b></span>
       <span title="o período de inscrição já passou"><span class=ponto style="background:#9AA4B2"></span>Encerrada <b>${p.encerrada}</b></span>
-      <span title="sem período de inscrição confirmado — não conta como aberta"><span class=ponto style="background:#C9CED6"></span>Ausente <b>${p.ausente||0}</b></span>
+      <span title="encontrada sem prazo confirmado — em investigação até validar ou descartar"><span class=ponto style="background:#2F79D0"></span>Possível (em investigação) <b>${p.possivel||0}</b></span>
       <span title="dias de varredura com indício captado"><span class=ponto style="background:var(--ok)"></span>Encontrado (varredura) <b>${ix.encontrado}</b></span>
     </div>
     ${Object.keys(p.areas).length?`<div class=meta style="margin:8px 0 4px"><strong>Áreas com edital aberto</strong></div><div class="legenda">${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave)">${n}</b></span>`).join("")}</div>`:""}

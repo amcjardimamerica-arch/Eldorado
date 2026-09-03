@@ -264,6 +264,19 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
                 pass
             continue
         p = _Links(); p.feed(html)
+        # DOU (leiturajornal): as matérias do dia vêm num JSON embutido, não em <a>;
+        # cada matéria vira um link para a íntegra em /web/dou/-/<urlTitle>
+        mj = re.search(r'<script[^>]+id="params"[^>]*>(.*?)</script>', html, re.S)
+        if mj and "in.gov.br" in url:
+            try:
+                dados_dou = json.loads(mj.group(1))
+                for mat in (dados_dou.get("jsonArray") or [])[:600]:
+                    tit = (mat.get("title") or "").strip(); slug_ = mat.get("urlTitle")
+                    if tit and slug_:
+                        p.links.append((f"https://www.in.gov.br/web/dou/-/{slug_}", tit))
+                        p.texto.append(" " + tit + " " + (mat.get("content") or "")[:300] + " ")
+            except Exception:
+                pass
         corpo = re.sub(r"\s+", " ", " ".join(p.texto))
         for href, rot in p.links[:lim["links_por_pagina"] * 3]:
             if not rot or len(rot) < 10:

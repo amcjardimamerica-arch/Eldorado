@@ -447,6 +447,10 @@ class SystemTests(unittest.TestCase):
 
 
     def test_ajustes_visuais_do_demonstrativo(self):
+        try:
+            import PIL  # noqa
+        except ImportError:
+            self.skipTest("PIL ausente no runner")
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn("PAINEL DE CAPTAÇÃO",html)
         # cabeçalho é a ARTE EXTRAÍDA da referência, não uma recriação em HTML
@@ -535,6 +539,10 @@ class SystemTests(unittest.TestCase):
 
     def test_hotspot_dentro_do_desenho(self):
         """A área de clique do Eldorado não pode ultrapassar a pílula desenhada."""
+        try:
+            import PIL  # noqa
+        except ImportError:
+            self.skipTest("PIL ausente no runner")
         from PIL import Image
         import re as _re
         html=open("docs/dashboard.html",encoding="utf-8").read()
@@ -3009,7 +3017,7 @@ class SystemTests(unittest.TestCase):
                   "function mpDadosUF","function desenhaBzLateral","bz-indices","bz-cidades",
                   "clique para ver as cidades","path.com-abertas"):
             self.assertIn(x,html,x)
-        self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado (varredura) <b>",html); self.assertIn("Ausente <b>",html)
+        self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado (varredura) <b>",html); self.assertIn("Possível (em investigação) <b>",html)
         self.assertNotIn('id="mp-legenda"',html)                       # índices só no detalhe do estado
 
 
@@ -3040,23 +3048,25 @@ class SystemTests(unittest.TestCase):
         base={"uf":"GO","url":"https://x.gov.br/e","publicado_em":"2026-08-20"}
         self.assertEqual(S({**base,"inicio":"2026-09-01","fim":"2026-09-30"},h)["situacao"],"aberta")
         self.assertEqual(S({**base,"fim":"2026-08-01"},h)["situacao"],"encerrada")
-        self.assertEqual(S({**base},h)["situacao"],"ausente")                                   # sem datas
-        self.assertEqual(S({**base,"fim":"2029-11-16"},h)["situacao"],"ausente")                # 'vigência até 2029' não é inscrição
+        self.assertEqual(S({**base},h)["situacao"],"possivel")                                   # sem datas
+        self.assertEqual(S({**base,"fim":"2029-11-16"},h)["situacao"],"possivel")                # 'vigência até 2029' não é inscrição
         self.assertEqual(S({**base,"fim":"2026-09-30"},h)["situacao"],"aberta")                 # fim próximo da publicação: vale
-        self.assertEqual(S({"inicio":"2026-09-01","fim":"2026-09-30","url":"x"},h)["situacao"],"ausente")   # sem cidade/estado
-        self.assertEqual(S({**base,"inicio":"2026-09-01","fim":"2026-09-30","ciclo":{"inscricao":{"projetado":True}}},h)["situacao"],"ausente")
+        self.assertEqual(S({"inicio":"2026-09-01","fim":"2026-09-30","url":"x"},h)["situacao"],"possivel")   # sem cidade/estado
+        self.assertEqual(S({**base,"inicio":"2026-09-01","fim":"2026-09-30","ciclo":{"inscricao":{"projetado":True}}},h)["situacao"],"possivel")
         # regimes: permanente (RFB, anos ímpares), anual (emendas), janela confirmada (Rouanet)
         self.assertEqual(S({"regra_anos":"impares","ano_permitido":False,"inicio":"2026-01-01","fim":"2026-12-31"},h)["situacao"],"encerrada")
         self.assertEqual(S({"regra_anos":"impares","ano_permitido":True,"inicio":"2027-01-01","fim":"2027-12-31"},date(2027,3,1))["regime"],"permanente")
         self.assertEqual(S({"sem_edital":True,"inicio":"2026-10-01","fim":"2026-11-30"},date(2026,10,15))["situacao"],"aberta")
         self.assertEqual(S({"janela_confirmada":{"via":"titular"},"inicio":"2026-02-01","fim":"2026-10-31"},h)["situacao"],"aberta")
         d=dash_coletar(date(2026,9,3))
-        self.assertTrue(all(e.get("situacao_inscricao") in ("aberta","encerrada","ausente") for e in d["editais"]))
+        self.assertTrue(all(e.get("situacao_inscricao") in ("aberta","encerrada","possivel") for e in d["editais"]))
+        # REGRA: sem prazo não se elimina — fica como possibilidade em investigação
+        self.assertGreater(sum(1 for e in d["editais"] if e["situacao_inscricao"]=="possivel"),0)
         abertas=[e for e in d["editais"] if e["situacao_inscricao"]=="aberta"]
         for e in abertas:
             self.assertTrue(e.get("fim")); self.assertTrue(e.get("uf") or e.get("territorio") or e.get("abrangencia")=="nacional")
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("function situacaoDe","casaPrazo",'<option value="ausentes">',"Oportunidades abertas","bzFecharUF",
+        for x in ("function situacaoDe","casaPrazo",'<option value="possiveis">','<option value="vivas">',"possíveis em investigação","bzFecharUF",
                   "if(bzUFsel){desenhaBzLateral();return;}","Encontrado (varredura)"): self.assertIn(x,html,x)
         self.assertNotIn('id="bz-lateral"',html)                       # detalhe do estado vai para a coluna da direita
 
@@ -3089,6 +3099,24 @@ class SystemTests(unittest.TestCase):
             self.assertIn(x,html,x)
         m=load_json(pathlib.Path("docs/dados/motores.json"))
         self.assertTrue(all(o.get("dias") for o in m["oficiais"]+m["plataformas"]))   # dados para cada calendário
+
+
+    def test_dou_por_json_embutido_e_pil_opcional(self):
+        """O DOU (leiturajornal) traz as matérias num JSON embutido: o sensor as lê
+        e filtra pelo léxico; testes com PIL pulam quando a biblioteca falta."""
+        import tempfile
+        from src.sensores import ler
+        with tempfile.TemporaryDirectory() as tmp:
+            lab=pathlib.Path(tmp)/"in.gov.br"; lab.mkdir()
+            js=json.dumps({"jsonArray":[{"title":"EDITAL DE CHAMAMENTO PÚBLICO Nº 3/2026 — seleção de organizações da sociedade civil","urlTitle":"e3","content":"Inscrições até 30/09/2026."},
+                                        {"title":"PREGÃO ELETRÔNICO Nº 90/2026 — aquisição de material","urlTitle":"p90","content":""}]})
+            (lab/"dou.html").write_text(f'<html><body><script id="params" type="application/json">{js}</script></body></html>',encoding="utf-8")
+            r=ler({"id":"dou","nome":"DOU","tipo":"diario_oficial","nivel":"federal","territorio":"BR","urls":[f"file://{lab}/dou.html"],"busca":None},pausa=0)
+        self.assertEqual(len(r["achados"]),1)
+        self.assertEqual(r["achados"][0]["prazo_texto"],"30/09/2026")
+        self.assertTrue(r["achados"][0]["url"].startswith("https://www.in.gov.br/web/dou/-/"))
+        src=open("tests/test_system.py",encoding="utf-8").read()
+        self.assertGreaterEqual(src.count('self.skipTest("PIL ausente no runner")'),2)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
