@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `bndes`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 21
-- Distribuição por ano pesquisado/coletado: {'2022': 2, '2023': 12, '2024': 4, '2025': 1, '2026': 2}
+- Pistas aguardando confirmação: 22
+- Distribuição por ano pesquisado/coletado: {'2022': 2, '2023': 12, '2024': 5, '2025': 1, '2026': 2}
 
 ## Padrões
 
@@ -14,6 +14,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 - [BNDES - Sistemas](https://sistemas.bndes.gov.br/) — coletado em 2026-08-31T06:06:38+00:00
 - [BNDES | Agência BNDES de Notícias Página Inicial | Agência BNDES de ...](https://agenciadenoticias.bndes.gov.br/) — coletado em 2026-08-31T06:06:38+00:00
+- [The BNDES System - BNDES](https://bndes.gov.br/SiteBNDES/bndes/bndes_en/Institucional/The_BNDES/the_BNDES_system.html) — coletado em 2026-09-03T07:20:26+00:00
 - [BNDES - O banco nacional do desenvolvimento](https://www.bndes.gov.br/wps/portal/site/home) — coletado em 2026-08-31T12:05:51+00:00
 - [BNDES Conexões | Editais e chamadas abertos](https://conexoes.bndes.gov.br/chamadas-e-editais) — coletado em 2026-09-01T18:52:29+00:00
 - [BNDES - Portal do Cliente](https://web.bndes.gov.br/CFI/login/bemVindo.faces) — coletado em 2026-09-02T13:08:31+00:00
