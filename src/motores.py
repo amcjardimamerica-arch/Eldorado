@@ -410,10 +410,20 @@ def run() -> dict:
     write_json(ROOT / "biblioteca_alexandria/fontes/motores.json", {**resumo, "motores": motores})
     from .compacto import compactar
     pasta = ROOT / "docs/dados"; pasta.mkdir(parents=True, exist_ok=True)
+    from .opressores import proximidade as _prox, _estado as _est_op
+    lig = _est_op().get("ligados", {})
+    for m in motores:
+        m["proximidade"] = "ligado" if m["id"] in lig else _prox(m, hoje)
+        r = lig.get(m["id"])
+        m["disjuntor"] = ({"dias": r.get("dias"), "ate": r.get("ate"), "origem": r.get("origem"),
+                           "ia": len(r.get("ia", [])), "conselho": bool(r.get("conselho")),
+                           "proxima_ia_em": (3 - (r.get("dias") or 0) % 3) % 3 or 3,
+                           "itens_ia": len(r.get("itens", {}))} if r else None)
     leve = [{k: m[k] for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias",
                               "pagina", "confianca_pagina", "validacao", "ultima_leitura", "achados", "http",
                               "regime_prazo", "certeza_prazo", "obtidas", "area_atuacao", "natureza", "esfera",
-                              "ativa", "motivo_status", "em_epoca")}
+                              "ativa", "motivo_status", "em_epoca", "proximidade")}
+            | {"disjuntor": json.dumps(m["disjuntor"], ensure_ascii=False) if m.get("disjuntor") else None}
             | {"camadas_ok": "".join("1" if c["ok"] else "0" for c in m["camadas"]),
                "camadas_val": "|".join((c["valor"] or "").replace("|", "/")[:90] for c in m["camadas"]),
                "mencoes": " · ".join(x["titulo"][:70] for x in m["mencoes"]) or None,

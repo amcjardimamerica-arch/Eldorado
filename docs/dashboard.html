@@ -215,17 +215,10 @@ box-shadow:0 1px 3px #0002}
 .mt-ico.fogo .fumaca circle:nth-child(2){animation-delay:.7s}.mt-ico.fogo .fumaca circle:nth-child(3){animation-delay:1.4s}
 @keyframes tremula{from{transform:scaleY(.92) skewX(-3deg)}to{transform:scaleY(1.06) skewX(3deg)}}
 @keyframes sobe{0%{transform:translateY(4px);opacity:.75}100%{transform:translateY(-9px) scale(1.5);opacity:0}}
-.mt-ico.oleo .poca{fill:#111318}.mt-ico.oleo .poca2{fill:#2a2f3a}.mt-ico.oleo .brilho{fill:#7fa0c9;opacity:.8}
-.mt-ico.oleo .coluna{fill:#15181f;transform-origin:32px 52px;animation:oleo-coluna 1.2s steps(8,end) infinite}
-.mt-ico.oleo .copa{stroke:#15181f;transform-origin:32px 13px;animation:oleo-copa 1.2s steps(8,end) infinite}
-.mt-ico.oleo .copa .fina{stroke:#2b3140;stroke-width:2.6}.mt-ico.oleo .nucleo{fill:#15181f}
-.mt-ico.oleo .gotas ellipse{fill:#15181f;animation:oleo-gota-esq 1.2s steps(8,end) infinite}
-.mt-ico.oleo .gotas .g2,.mt-ico.oleo .gotas .g4,.mt-ico.oleo .gotas .g6,.mt-ico.oleo .gotas .g8{animation-name:oleo-gota-dir}
-.mt-ico.oleo .gotas .g3,.mt-ico.oleo .gotas .g4{animation-delay:.3s}.mt-ico.oleo .gotas .g5,.mt-ico.oleo .gotas .g6{animation-delay:.6s}.mt-ico.oleo .gotas .g7,.mt-ico.oleo .gotas .g8{animation-delay:.9s}
-@keyframes oleo-coluna{0%,100%{transform:scaleX(.9)}50%{transform:scaleX(1.12)}}
-@keyframes oleo-copa{0%{transform:scale(.94) rotate(-3deg)}50%{transform:scale(1.05) rotate(3deg)}100%{transform:scale(.94) rotate(-3deg)}}
-@keyframes oleo-gota-esq{0%{transform:translate(8px,-6px) scale(.6);opacity:0}15%{opacity:1}60%{transform:translate(-4px,18px) scale(1)}100%{transform:translate(-9px,36px) scale(.8);opacity:0}}
-@keyframes oleo-gota-dir{0%{transform:translate(-8px,-6px) scale(.6);opacity:0}15%{opacity:1}60%{transform:translate(4px,18px) scale(1)}100%{transform:translate(9px,36px) scale(.8);opacity:0}}
+.mt-ico.oleo .poca{fill:#111318}.mt-ico.oleo .poca2{fill:#2a2f3a}
+.mt-ico.oleo .reflexo,.mt-ico.oleo .reflexo2{fill:#8fb0d8;opacity:0;animation:oleo-reflexo 3.2s ease-in-out infinite}
+.mt-ico.oleo .reflexo2{animation-delay:1.1s}
+@keyframes oleo-reflexo{0%,70%,100%{opacity:0;transform:translateX(-3px)}80%{opacity:.85;transform:translateX(0)}90%{opacity:.3;transform:translateX(3px)}}
 .mt-dias{display:flex;gap:2px;margin-top:6px;flex-wrap:wrap}
 .mt-dia{width:11px;height:11px;border-radius:3px;background:#DEE2E8;display:block}
 .mt-dia.cinza{background:#DEE2E8}.mt-dia.azul{background:#2F79D0}.mt-dia.verde{background:var(--ok)}.mt-dia.vermelho{background:var(--urgente)}
@@ -233,6 +226,13 @@ box-shadow:0 1px 3px #0002}
 @keyframes pisca{to{visibility:hidden}}
 .mt-item.sem-neutro{border-right:1px solid var(--linha)}
 .mt-item.nova{border-left:6px solid #7B4BE0}
+.dj-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;margin-bottom:8px}
+.dj{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;border:1px solid var(--linha);background:#F6F7F9}
+.dj.rosa{background:#FCE4EC;border-color:#F3B6CB}.dj.cinza{background:#F1F3F5}
+.dj .mt-ico{transform:scale(.8)}.dj .mt-ico svg{width:32px;height:22px}
+.dj-mini{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+.dj-nome{display:flex;flex-direction:column;min-width:0}.dj-nome b{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dj-nome small{font-size:10px;color:var(--suave)}
+.dj-leg{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;border:1px solid var(--linha)}.dj-leg.rosa{background:#FCE4EC;border-color:#F3B6CB}.dj-leg.cinza{background:#F1F3F5}
 .mt-calt{font-size:11px;font-weight:700;color:var(--suave);letter-spacing:.05em;text-transform:uppercase;margin:8px 0 4px;display:flex;justify-content:space-between;align-items:center}
 .mt-calnav button{border:1px solid var(--linha);background:#fff;border-radius:6px;padding:1px 7px;font-size:11px;cursor:pointer;margin-left:3px}
 .mt-calnav button:disabled{opacity:.35;cursor:default}
@@ -683,10 +683,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </div>
   <div class=meta id="mo-conta" style="margin-bottom:6px"></div>
   <div id="mo-lista"></div>
-  <div class=meta style="margin-top:12px;padding-top:10px;border-top:1px dashed var(--linha)">
-    A ativação é individual — fogo aceso roda nas rotinas, poça de óleo não — ou automática pelo sistema na época prevista ou após menção. O fósforo pede busca imediata de um edital.
-    <button onclick="mtExportarAtivacao()" style="margin-left:8px" title="gera config/motores_ativos.json com as suas decisões manuais de acender/apagar">exportar ativação</button>
-  </div>
+  <!-- QUADRO DE DISJUNTORES · recursos inativos, prontos para ligar -->
+  <div id="mo-disjuntores" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--linha)"></div>
 </div>
 
 <!-- 2 · FONTES COM EDITAL ABERTO — todas as oportunidades, por área de atuação -->
@@ -1886,36 +1884,18 @@ function mtPendente(id){const e=mtEstado();const t=(e.imediatos||{})[id];if(!t)r
   if(lida||expirou){delete e.imediatos[id];mtSalva(e);return null;}
   return br(t.slice(0,10));}
 window.mtMesMotor=function(id,dx){window._mtMes[id]=(window._mtMes[id]||0)+dx;desenhaMotores();};
-window.mtLigar=function(id){const e=mtEstado();e.ativos=e.ativos||{};e.ativos[id]=!mtAtivo(id);mtSalva(e);desenhaMotores();atualizaMotoresAtivos();};
+window.mtLigar=function(id){const e=mtEstado();e.ativos=e.ativos||{};const liga=!mtAtivo(id);e.ativos[id]=liga;e.ligados_em=e.ligados_em||{};if(liga)e.ligados_em[id]=new Date().toISOString();mtSalva(e);desenhaMotores();atualizaMotoresAtivos();};
 /* fogo com fumaça (ativo) / tonel azul (inativo) — clique alterna */
 function iconeMotor(id,ativo){
   return ativo?`<button class="mt-ico fogo" onclick="mtLigar('${esc(id)}')" title="motor ATIVO — roda nas rotinas automáticas; clique para desativar">
       <svg viewBox="0 0 32 40" width="30" height="36"><g class="fumaca"><circle cx="16" cy="7" r="3"/><circle cx="21" cy="4" r="2.2"/><circle cx="11" cy="5" r="1.8"/></g>
       <path class="chama" d="M16 12c4 5 8 8 8 15a8 8 0 0 1-16 0c0-4 2-6 3-9 1 3 2 4 3 4 0-4 0-7 2-10z"/>
       <path class="chama2" d="M16 22c2 3 4 4 4 7a4 4 0 0 1-8 0c0-2 1-3 2-5 .5 1.5 1 2 2 2 0-2 0-3 0-4z"/></svg></button>`
-    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (poço de petróleo jorrando) — clique para acender e ativar nas rotinas automáticas">
-      <svg viewBox="0 0 64 68" width="36" height="38">
-        <!-- poça na base -->
-        <path class="poca" d="M6 58c-3-3 2-7 9-7 3 0 4-2 8-2 5 0 6 2 11 1 6-1 12 2 11 6-1 3-7 3-11 4-4 1-5 3-10 3-4 0-5-2-9-2-4 0-7 0-9-3z"/>
-        <path class="poca2" d="M13 57c-1-2 3-4 7-3 2 0 3-1 6-1 4 0 5 1 9 1 4 0 6 2 5 4-1 2-5 1-8 2-3 1-4 2-7 2-3 0-4-1-6-1s-5 0-6-4z"/>
-        <ellipse class="brilho" cx="18" cy="56" rx="4" ry="1.1"/>
-        <!-- coluna que sobe da poça -->
-        <path class="coluna" d="M29 52c.5-8 .2-16 0-24 0-7 .4-13 3-18 2.6 5 3 11 3 18-.2 8-.5 16 0 24z"/>
-        <!-- copa: jatos grossos abrindo como palmeira e caindo -->
-        <g class="copa" fill="none" stroke-linecap="round" stroke-width="4.2">
-          <path d="M32 13c-7-4-15-3-21 3"/><path d="M32 13c7-4 15-3 21 3"/>
-          <path d="M32 12c-8-1-14 3-17 10"/><path d="M32 12c8-1 14 3 17 10"/>
-          <path d="M32 11c-4-4-6-9-5-13"/><path d="M32 11c4-4 6-9 5-13"/>
-          <path class="fina" d="M32 12c-11 0-18 5-22 12"/><path class="fina" d="M32 12c11 0 18 5 22 12"/>
-        </g>
-        <ellipse class="nucleo" cx="32" cy="13" rx="6.5" ry="4"/>
-        <!-- gotas que voam e caem em arco, em quadros sucessivos -->
-        <g class="gotas">
-          <ellipse class="g1" cx="14" cy="16" rx="1.8" ry="3"/><ellipse class="g2" cx="50" cy="16" rx="1.8" ry="3"/>
-          <ellipse class="g3" cx="9" cy="22" rx="1.5" ry="2.6"/><ellipse class="g4" cx="55" cy="22" rx="1.5" ry="2.6"/>
-          <ellipse class="g5" cx="19" cy="10" rx="1.3" ry="2.2"/><ellipse class="g6" cx="45" cy="10" rx="1.3" ry="2.2"/>
-          <ellipse class="g7" cx="6" cy="30" rx="1.2" ry="2"/><ellipse class="g8" cx="58" cy="30" rx="1.2" ry="2"/>
-        </g>
+    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (poça de óleo) — clique para ligar por 30 dias">
+      <svg viewBox="0 0 64 40" width="36" height="24">
+        <path class="poca" d="M6 24c-3-4 2-9 10-9 3 0 4-2 9-2 6 0 7 3 13 2 7-1 14 3 13 8-1 4-8 4-13 5-5 1-6 4-12 4-5 0-6-3-11-3-5 0-8 0-9-5z"/>
+        <path class="poca2" d="M14 23c-1-3 4-5 9-4 2 0 4-1 7-1 5 0 6 2 11 2 5 0 7 3 6 5-1 3-6 2-9 3-4 1-5 3-9 3-3 0-4-2-7-2s-7 0-8-6z"/>
+        <ellipse class="reflexo" cx="20" cy="22" rx="6" ry="1.4"/><ellipse class="reflexo2" cx="40" cy="27" rx="3" ry=".9"/>
       </svg></button>`;
 }
 /* fósforo (busca imediata) · upload (alimentar manualmente) · link (aprendizado) */
@@ -1964,7 +1944,7 @@ window.mtSalvarLink=function(id){const u=(document.getElementById("mt-url")||{})
 window.mtExportarLinks=function(){const e=mtEstado();const blob=new Blob([JSON.stringify({gerado_em:new Date().toISOString(),links:e.links||{}},null,2)],{type:"application/json"});
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="links.json";a.click();URL.revokeObjectURL(a.href);};
 window.mtExportarAtivacao=function(){const e=mtEstado();const inativos=Object.entries(e.ativos||{}).filter(([k,v])=>v===false).map(([k])=>k);
-  const acesos=Object.entries(e.ativos||{}).filter(([k,v])=>v===true).map(([k])=>k);
+  const acesos=Object.entries(e.ativos||{}).filter(([k,v])=>v===true).map(([k])=>({id:k,em:(e.ligados_em||{})[k]||new Date().toISOString()}));
   const blob=new Blob([JSON.stringify({gerado_em:new Date().toISOString(),inativos,acesos_manualmente:acesos,nota:"decisões manuais do titular no painel; sem decisão manual vale a ativação automática (época/menção)"},null,2)],{type:"application/json"});
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="motores_ativos.json";a.click();URL.revokeObjectURL(a.href);};
 let MT=[],mtSel=new Set();
@@ -2076,7 +2056,7 @@ function desenhaMotores(){
         <div class="mt-corpo">
           <div><b>${esc(m.programa)}</b> <span class=meta>· ${esc(m.orgao||"")}</span></div>
           <div style="margin:3px 0 2px"><span class=tag style="color:${AREA(m.area_atuacao).cor};border-color:${AREA(m.area_atuacao).cor}66">${esc(AREA(m.area_atuacao).rotulo)}</span> <span class=tag>${esc(m.esfera||"")}</span> <span class=tag>${esc(m.natureza==="publica"?"fonte pública":"fonte privada")}</span> <span class=tag title="${esc(m.motivo_status||"")}">${ativo?"aceso":"apagado"}${(mtEstado().ativos||{})[m.id]===undefined?"":" (manual)"}</span></div>
-          <div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}</div>
+          <div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}${m.disjuntor?(d=>` · <strong>ligado · dia ${d.dias}/30</strong> · próxima IA em ${d.proxima_ia_em} dia(s)${d.ia?" · IA acionada "+d.ia+"×":""}${d.conselho?" · conselho Fable 5.1 emitido":""}`)(JSON.parse(m.disjuntor)):""}</div>
           ${camadasHtml(m)}
           <div class=meta style="margin-top:4px">
             ${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag title="confiança do endereço">${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"}
@@ -2100,7 +2080,30 @@ function desenhaMotores(){
   $("mt-lista").innerHTML=oficiaisHtml||'<div class=meta>Nenhum local de publicação neste filtro.</div>';
   if($("mo-lista"))$("mo-lista").innerHTML=(novasHtml+listaFontes)||'<div class=meta>Nenhuma fonte ativa neste filtro — inativas ficam ocultas até menção em local oficial ou época prevista.</div>';
   if($("mt-sel"))$("mt-sel").textContent=`${mtFiltrados().filter(m=>mtAtivo(m.id)).length} com fogo no filtro atual`;
+  desenhaDisjuntores();
 }
+/* QUADRO DE DISJUNTORES — todos os recursos INATIVOS, com a poça à esquerda para
+   ligar (30 dias de busca diária, IA a cada 3 dias, conselho Fable 5.1 no 9º).
+   Cinza: sem época prevista · Rosa: época chegando (ainda não ligado). */
+const MINI={cultura:"🎭",esporte:"⚽",educacao:"📚",saude:"🩺",assistencia_social:"🤝",crianca_adolescente:"🧒",pessoa_idosa:"🧓",meio_ambiente:"🌱",direitos_humanos:"✊",infraestrutura:"🏗️",seguranca_alimentar:"🍲",doacao_bens:"📦",outros:"◇"};
+function nomeCurto(p){return p.replace(/^(Edital(?:is)? de |Programa |Lei |Fundo |Chamamento |Emenda )/i,"").split(/ — | - /)[0].slice(0,34);}
+function desenhaDisjuntores(){
+  const box=$("mo-disjuntores"); if(!box)return;
+  const inativos=MT.filter(m=>!mtAtivo(m.id));
+  const rosa=inativos.filter(m=>m.proximidade==="rosa"), cinza=inativos.filter(m=>m.proximidade!=="rosa");
+  const ligados=MT.filter(m=>mtAtivo(m.id)&&m.disjuntor).map(m=>({m,d:JSON.parse(m.disjuntor)}));
+  const chip=m=>`<div class="dj ${m.proximidade==="rosa"?"rosa":"cinza"}" data-id="${esc(m.id)}" title="${esc(m.programa)} · ${esc(m.orgao||"")} · ${esc(m.motivo_status||"")}${m.proximidade==="rosa"?" · época chegando":" · sem época prevista"}">
+      ${iconeMotor(m.id,false)}<span class="dj-mini" style="background:${AREA(m.area_atuacao).cor}22;color:${AREA(m.area_atuacao).cor}">${MINI[m.area_atuacao]||"◇"}</span>
+      <span class="dj-nome"><b>${esc(nomeCurto(m.programa))}</b><small>${esc(AREA(m.area_atuacao).rotulo)} · ${esc(m.esfera||"")}</small></span></div>`;
+  box.innerHTML=`<div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif;font-size:15px">Quadro de disjuntores
+      <span class=meta style="font-weight:500">— ${inativos.length} recurso(s) inativo(s); clique na poça para ligar por 30 dias</span></div>
+    <div class=meta style="margin:4px 0 8px">Ligado: busca diária por 30 dias · IA sob medida no 3º e 6º dia · no 9º, conselho Fable 5.1 sobre por que não achou · desliga sozinho ao completar os 12 itens ou ao fim dos 30 dias.
+      <span class="dj-leg rosa"></span> época chegando &nbsp; <span class="dj-leg cinza"></span> sem época prevista</div>
+    ${ligados.length?`<div class=meta style="margin-bottom:8px"><strong>${ligados.length} ligado(s):</strong> ${ligados.slice(0,12).map(({m,d})=>`<span class=tag title="${esc(d.origem||"")}">${esc(nomeCurto(m.programa))} · dia ${d.dias}/30${d.ia?" · IA×"+d.ia:""}${d.conselho?" · conselho":""}</span>`).join(" ")}${ligados.length>12?` <span class=meta>+${ligados.length-12}</span>`:""}</div>`:""}
+    ${rosa.length?`<div class="dj-grade">${rosa.map(chip).join("")}</div>`:""}
+    <div class="dj-grade">${cinza.map(chip).join("")}</div>`;
+}
+window.mtLigar30=function(id){const e=mtEstado();e.ativos=e.ativos||{};e.ativos[id]=true;e.ligados_em=e.ligados_em||{};e.ligados_em[id]=new Date().toISOString();mtSalva(e);desenhaMotores();atualizaMotoresAtivos();};
 window.mtAtivar=function(){
   const sel=mtFiltrados().filter(m=>mtAtivo(m.id));
   if(!sel.length){abreModal("<h3 style=\"margin:0\">Nenhum motor com fogo no filtro</h3>","<p>Acenda (fogo) os motores que quer rodar agora — os com poça de óleo ficam de fora.</p>");return;}

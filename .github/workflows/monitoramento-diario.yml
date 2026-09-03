@@ -101,6 +101,9 @@ jobs:
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             python -m src.emendas_docs
           fi
+          if [ "$MOTORES_BLOCO" = "opressores" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 600 python -m src.opressores || echo "disjuntores: registrado"
+          fi
           if [ "$MOTORES_BLOCO" = "diarios" ] || [ "$MOTORES_BLOCO" = "justica_legislativo" ] || [ "$MOTORES_BLOCO" = "plataformas_api" ] || [ "$MOTORES_BLOCO" = "opressores" ] || [ "$MOTORES_BLOCO" = "manual" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 1500 python -m src.sensores || echo "src.sensores: encerrado no orçamento de 1500s ou falhou — registrado"
           fi

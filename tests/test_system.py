@@ -2791,7 +2791,7 @@ class SystemTests(unittest.TestCase):
                 self.assertTrue(s["motivo"].startswith(("fonte específica ATIVA","escalada")),s["motivo"])
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("Motores Opressores","mo-area","mo-natureza","mo-esfera","mo-status","mt-ico oleo","mt-cal",
-                  "@keyframes pisca-borda","@keyframes oleo-copa","Novas oportunidades anunciadas","camadas_val"):
+                  "@keyframes pisca-borda","@keyframes oleo-reflexo","Novas oportunidades anunciadas","camadas_val"):
             self.assertIn(x,html,x)
         self.assertNotIn("mt-ico tonel",html); self.assertNotIn('class="mt-chk"',html)
         self.assertNotIn("mt-dias",html.split("const calendarioMotor")[1].split("const trintaDias")[0])
@@ -2811,11 +2811,11 @@ class SystemTests(unittest.TestCase):
             self.assertIn(a,d["areas"],a)
         self.assertNotIn("justica",d["areas"])          # traduzida para as 13 canônicas
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",".copa","@keyframes oleo-gota-esq",
+        for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",".reflexo","@keyframes oleo-reflexo",
                   "rotArea","Acesos (fogo)","Apagados (poça de óleo)"):
             self.assertIn(x,html,x)
         self.assertNotIn("Ativar motor nos marcados",html)          # ativação é individual ou automática
-        self.assertIn('class="coluna"',html)                         # coluna sobe da poça e abre em copa
+        self.assertIn('class="reflexo"',html)                        # apagado = só a poça, com reflexo periódico
         self.assertNotIn("mt-segt",html.split("const listaFontes")[1].split("const novas")[0])   # sem subgrupo de território
         # ícone reflete a ativação automática quando não há decisão manual
         self.assertIn("const m=MT.find(x=>x.id===id);return m?!!m.ativa:true;",html)
@@ -2848,7 +2848,7 @@ class SystemTests(unittest.TestCase):
             self.assertIn(x,html,x)
         self.assertNotIn("Privada / Internacional",html)
         # óleo: pluma com gotas, sem o traço fino
-        self.assertIn('class="copa"',html); self.assertIn("@keyframes oleo-gota-dir",html)
+        self.assertIn('class="reflexo2"',html); self.assertIn("@keyframes oleo-reflexo",html)
         self.assertNotIn('stroke="#1b1f27" stroke-width="2.6"',html)
 
 
@@ -2975,7 +2975,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(inferir_area("Termo de colaboração — pessoa idosa"),"pessoa_idosa")
         self.assertEqual(inferir_area("texto sem pista nenhuma"),"outros")
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("@keyframes oleo-copa","steps(8,end)","calendarioMotor","mt-mets"): self.assertIn(x,html,x)
+        for x in ("@keyframes oleo-reflexo","calendarioMotor","mt-mets"): self.assertIn(x,html,x)
 
 
     def test_doze_itens_calendario_validado_e_grade_padrao(self):
@@ -3117,6 +3117,48 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(r["achados"][0]["url"].startswith("https://www.in.gov.br/web/dou/-/"))
         src=open("tests/test_system.py",encoding="utf-8").read()
         self.assertGreaterEqual(src.count('self.skipTest("PIL ausente no runner")'),2)
+
+
+    def test_disjuntores_opressores_30_dias_ia_e_conselho(self):
+        """Quadro de disjuntores: inativos com poça (cinza sem época, rosa chegando);
+        ligado = 30 dias, IA sob medida a cada 3 dias, conselho Fable 5.1 na 3ª IA."""
+        import os, tempfile
+        from src import opressores as O
+        from datetime import timedelta
+        h=date(2026,9,3)
+        self.assertEqual(O.proximidade({"proxima_data":None},h),"cinza")
+        self.assertEqual(O.proximidade({"proxima_data":{"inicio":"2026-09-20","fim":"2026-10-20"}},h),"rosa")
+        self.assertEqual(O.proximidade({"proxima_data":{"inicio":"2027-03-01","fim":"2027-04-01"}},h),"cinza")
+        f={"programa":"Edital Goyazes","orgao":"Secult GO","esfera":"Estado","natureza":"publica","pagina":"https://x"}
+        pr=O.prompt_para_fonte(f,None,["Prazo de inscrição","Valor"],[{"resumo":"haiku: 0 itens"}])
+        self.assertIn("Goyazes",pr); self.assertIn("Prazo de inscrição, Valor",pr); self.assertIn("Tentativas anteriores",pr); self.assertIn("Nunca invente",pr)
+        pc=O.prompt_conselho(f,None,[{"dia":3},{"dia":6}],["Valor"])
+        self.assertIn("sete lentes",pc); self.assertIn("POR QUE",pc)
+        cfg=load_json(pathlib.Path("config/ia.json"))
+        self.assertEqual(cfg["modelos"]["conselho_recursos"],"claude-fable-5-1")
+        self.assertEqual(cfg["disjuntores"]["duracao_dias"],30); self.assertEqual(cfg["disjuntores"]["ia_a_cada_dias"],3)
+        orig=O.ESTADO
+        with tempfile.TemporaryDirectory() as tmp:
+            O.ESTADO=pathlib.Path(tmp)/"o.json"
+            try:
+                chave=os.environ.pop("FAROL_AI_API_KEY",None)
+                try:
+                    r=O.run(h)                       # sem credencial: liga, conta dias, IA fica 'aguardando'
+                    self.assertGreater(r["ligados"],0)
+                    est=load_json(O.ESTADO); fid=next(iter(est["ligados"]))
+                    self.assertEqual(est["ligados"][fid]["ate"],(h+timedelta(days=30)).isoformat())
+                    r3=O.run(h+timedelta(days=2))    # dia 3: IA acionada (registrada mesmo sem credencial)
+                    est=load_json(O.ESTADO); self.assertTrue(any(t["dia"]==3 for t in est["ligados"][fid]["ia"]))
+                finally:
+                    if chave: os.environ["FAROL_AI_API_KEY"]=chave
+            finally:
+                O.ESTADO=orig
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertNotIn("A ativação é individual — fogo aceso roda nas rotinas",html)
+        for x in ("Quadro de disjuntores","function desenhaDisjuntores","dj-grade","dj.rosa","dj.cinza","dj-mini","nomeCurto",
+                  "ligados_em","@keyframes oleo-reflexo",'class="reflexo"',"ligado · dia"): self.assertIn(x,html,x)
+        self.assertNotIn('class="coluna"',html)                       # apagado = só a poça
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.opressores",wf)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

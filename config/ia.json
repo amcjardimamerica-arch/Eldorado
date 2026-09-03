@@ -24,7 +24,8 @@
       "env": "FAROL_MODELO_BUSCA",
       "padrao": "claude-haiku-4-5",
       "nota": "busca ativa de URL de edital com busca na web: tarefa curta, modelo mais barato"
-    }
+    },
+    "conselho_recursos": "claude-fable-5-1"
   },
   "nota_modelos": "IDs padrão registrados em 30/08/2026. Atualize os padrões (ou defina as variáveis de ambiente) quando modelos mais novos estiverem disponíveis; o código nunca traz modelo gravado em fonte.",
   "verificacao_assistida": {
@@ -73,5 +74,11 @@
     ],
     "parar_quando": "11 itens obtidos, OU três leituras seguidas dos locais oficiais sem nenhum dado novo",
     "cadencia": "1x por dia por fonte com pendência"
+  },
+  "disjuntores": {
+    "duracao_dias": 30,
+    "ia_a_cada_dias": 3,
+    "conselho_na_ia_numero": 3,
+    "regra": "motor opressor acionado (automático ou manual) fica ligado 30 dias; IA barata no 3º dia, intermediária no 6º, conselho Fable 5.1 no 9º com opinião sobre as falhas anteriores; prompt sob medida por recurso, só com os itens que faltam"
   }
 }
