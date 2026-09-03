@@ -3267,6 +3267,17 @@ class SystemTests(unittest.TestCase):
         self.assertRegex(html,r'dashboard-dados\.js\?v=\d{8,}')
         src=open("src/dashboard_dados.py",encoding="utf-8").read(); self.assertIn("def _versionar_scripts",src)
 
+
+    def test_opressores_acesos_como_botoes_por_area(self):
+        """Acesos e apagados com o mesmo desenho de botão (fogo/poça + nome curado),
+        ambos agrupados por área; o detalhe completo abre no clique do nome."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("MOTORES OPRESSORES como BOTÕES","const chipAceso=","dj aceso","window.mtDetalhe=function","dj-acoes",
+                  "mtDetalhe('${esc(m.id)}')"):
+            self.assertIn(x,html,x)
+        # o cartão grande dos Opressores não é mais montado na lista
+        self.assertNotIn('return `<div class="mt-item ${m.faltam?"":"completo"} sem-${st[0]}" data-id="${esc(m.id)}">',html)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

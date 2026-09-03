@@ -232,12 +232,13 @@ box-shadow:0 1px 3px #0002}
 @keyframes pisca{to{visibility:hidden}}
 .mt-item.sem-neutro{border-right:1px solid var(--linha)}
 .mt-item.nova{border-left:6px solid #7B4BE0}
-.dj-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px;margin-bottom:8px}
+.dj-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px;margin-bottom:8px}
 .dj{display:flex;align-items:center;gap:6px;padding:4px 8px 4px 4px;border-radius:9px;border:1px solid var(--linha);background:#F6F7F9}
 .dj.rosa{background:#FCE4EC;border-color:#F3B6CB}.dj.cinza{background:#F1F3F5}
 .dj .mt-ico{transform:scale(.8)}.dj .mt-ico svg{width:32px;height:22px}
 .dj-mini{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
-.dj-nome{display:flex;flex-direction:column;min-width:0}.dj-nome b{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta)}
+.dj-nome{display:flex;flex-direction:column;min-width:0;flex:1;cursor:pointer}.dj-nome b{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta)}.dj-nome small{font-size:10px;color:var(--suave)}
+.dj.aceso{background:#FFF7EC;border-color:#F3D9B0}.dj-acoes{display:flex;gap:2px}.dj-acoes .mt-ico{transform:scale(.7)}.dj-acoes .mt-ico.fosforo svg{height:24px}
 .dj-leg{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;border:1px solid var(--linha)}.dj-leg.rosa{background:#FCE4EC;border-color:#F3B6CB}.dj-leg.cinza{background:#F1F3F5}
 .dj-area{margin-top:10px}
 .dj-areat{display:flex;align-items:center;gap:7px;font-family:Georgia,serif;font-weight:800;font-size:13.5px;border-bottom:1.5px solid #E3E8F1;padding-bottom:4px;margin-bottom:6px}
@@ -1950,6 +1951,13 @@ function iconesAcao(id,nome){
     <button class="mt-ico link" onclick="mtLink('${esc(id)}','${esc(nome).replace(/'/g,"&#39;")}')" title="indicar o link dos documentos desta fonte para o sistema buscar atualizações, extrair dados e aprender onde procurar">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5"/></svg></button>`;
 }
+window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id===id);if(!m)return;const ativo=mtAtivo(m.id);const d=m.disjuntor?JSON.parse(m.disjuntor):null;
+  abreModal(`<h3 style="margin:0">${esc(m.programa)}</h3><div class=meta>${esc(m.orgao||"")} · ${esc(AREA(m.area_atuacao).rotulo)} · ${esc(m.esfera||"")} · ${esc(m.natureza==="publica"?"fonte pública":"fonte privada")}</div>`,
+    `<div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}${d?` · <strong>ligado · dia ${d.dias}/30</strong> · próxima IA em ${d.proxima_ia_em} dia(s)${d.ia?" · IA acionada "+d.ia+"×":""}${d.conselho?" · conselho Fable 5.1 emitido":""}`:""}</div>
+     ${camadasHtml(m)}
+     <div class=meta style="margin-top:8px">${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag>${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"} · validação: <strong>${esc(m.validacao)}</strong>${m.http?" (HTTP "+m.http+")":""}${m.ultima_leitura?" · lida em "+br(m.ultima_leitura.slice(0,10)):""}${m.ultimo_url?` · <a href="${esc(m.ultimo_url)}" target=_blank rel="noopener noreferrer">último edital ↗</a>`:""}${m.regime_prazo?` · prazo: ${esc(m.regime_prazo.replace(/_/g," "))} (${esc(m.certeza_prazo||"")})`:""}</div>
+     ${m.faltam?`<div class="mt-diag">⚠ faltam ${m.faltam.split("|").length} camada(s): ${esc(m.faltam.replace(/\|/g," · "))}<br><b>causa:</b> ${esc(m.causa||"")} · <b>ação:</b> ${esc(m.acao||"")}</div>`:`<div class="mt-diag ok">✓ 12 itens obtidos — motor pode parar</div>`}
+     <div style="margin-top:10px;display:flex;gap:8px;align-items:center">${iconesAcao(m.id,m.programa)} <span class=meta>fósforo: busca imediata · upload: alimentar manualmente · link: ensinar onde publica</span></div>`);};
 window.mtImediato=function(id,nome){
   const e=mtEstado();e.imediatos=e.imediatos||{};e.imediatos[id]=new Date().toISOString();mtSalva(e);desenhaMotores();
   abreModal(`<h3 style="margin:0">Fósforo riscado — busca imediata</h3><div class=meta>${esc(nome)}</div>`,
@@ -2089,28 +2097,18 @@ function desenhaMotores(){
   /* categorias APENAS por área de atuação (rótulos da página inicial) */
   const rotArea=rotArea0;
   const grupos={};rows.forEach(m=>{const k=rotArea(m.area_atuacao);(grupos[k]=grupos[k]||{})["_"]=(grupos[k]["_"]||[]).concat(m);});
-  const listaFontes=Object.keys(grupos).sort((a,b)=>a.localeCompare(b,"pt")).map(f=>`
-    <div class="mt-fam"><div class="mt-famt"><span class=ponto style="background:${esc((Object.values(D.areas||{}).find(x=>x.rotulo===f)||{}).cor||"#94A3B8")};width:10px;height:10px;margin-right:6px"></span>${esc(f)} <span class=meta>${Object.values(grupos[f]).reduce((s,a)=>s+a.length,0)} edital(is)</span></div>
-    ${Object.keys(grupos[f]).map(sg=>`<div class="mt-seg">
-      ${grupos[f][sg].map(m=>{const st=semaforo(m.validacao==="bloqueada"?"bloqueada":m.validacao.includes("encontrado")?"captando":m.validacao.includes("não lida")?"sem leitura":"parcial");const ativo=mtAtivo(m.id);
-        return `<div class="mt-item ${m.faltam?"":"completo"} sem-${st[0]}" data-id="${esc(m.id)}">
-        <div class="mt-lado-esq">${iconeMotor(m.id,ativo)}</div>
-        <div class="mt-corpo">
-          <div><b>${esc(m.programa)}</b> <span class=meta>· ${esc(m.orgao||"")}</span></div>
-          <div style="margin:3px 0 2px"><span class=tag style="color:${AREA(m.area_atuacao).cor};border-color:${AREA(m.area_atuacao).cor}66">${esc(AREA(m.area_atuacao).rotulo)}</span> <span class=tag>${esc(m.esfera||"")}</span> <span class=tag>${esc(m.natureza==="publica"?"fonte pública":"fonte privada")}</span> <span class=tag title="${esc(m.motivo_status||"")}">${ativo?"aceso":"apagado"}${(mtEstado().ativos||{})[m.id]===undefined?"":" (manual)"}</span></div>
-          <div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}${m.disjuntor?(d=>` · <strong>ligado · dia ${d.dias}/30</strong> · próxima IA em ${d.proxima_ia_em} dia(s)${d.ia?" · IA acionada "+d.ia+"×":""}${d.conselho?" · conselho Fable 5.1 emitido":""}`)(JSON.parse(m.disjuntor)):""}</div>
-          ${camadasHtml(m)}
-          <div class=meta style="margin-top:4px">
-            ${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag title="confiança do endereço">${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"}
-            · validação: <strong style="color:${cor(m.validacao)}">${esc(m.validacao)}</strong>${m.http?" (HTTP "+m.http+")":""}${m.ultima_leitura?" · lida em "+br(m.ultima_leitura.slice(0,10)):""}
-            ${m.ultimo_url?` · <a href="${esc(m.ultimo_url)}" target=_blank rel="noopener noreferrer" title="${esc(m.ultimo_titulo||"")}">último edital ↗</a>`:""}
-            ${m.regime_prazo?` · prazo: ${esc(m.regime_prazo.replace(/_/g," "))} (${esc(m.certeza_prazo||"")})`:""}
-          </div>
-          ${m.faltam?`<div class="mt-diag">⚠ faltam ${m.faltam.split("|").length} camada(s): ${esc(m.faltam.replace(/\|/g," · "))}<br><b>causa:</b> ${esc(m.causa||"")} · <b>ação:</b> ${esc(m.acao||"")}</div>`
-                    :`<div class="mt-diag ok">✓ 12 itens obtidos — motor pode parar</div>`}
-          ${mtPendente(m.id)?`<div class=meta style="margin-top:4px">🕯 busca imediata pedida em ${esc(mtPendente(m.id))} — aguardando resultado da próxima execução</div>`:""}
-        </div>
-        <div class="mt-lado-dir">${iconesAcao(m.id,m.programa)}</div></div>`;}).join("")}</div>`).join("")}</div>`).join("");
+  /* MOTORES OPRESSORES como BOTÕES (o mesmo desenho do quadro de disjuntores):
+     fogo à esquerda para desligar, nome curado, dia N/30 do disjuntor; agrupados
+     por ÁREA. O detalhe completo (12 itens, página, diagnóstico) abre no clique. */
+  window._mtPorId=window._mtPorId||{}; rows.forEach(m=>window._mtPorId[m.id]=m);
+  const chipAceso=m=>{const d=m.disjuntor?JSON.parse(m.disjuntor):null;
+    return `<div class="dj aceso" data-id="${esc(m.id)}" style="border-left:4px solid ${AREA(m.area_atuacao).cor}" title="${esc(m.programa)} · ${esc(m.orgao||"")} · ${esc(m.motivo_status||"")}${d?` · ligado dia ${d.dias}/30`:""} — clique no nome para o detalhe">
+      ${iconeMotor(m.id,true)}<span class="dj-nome" onclick="mtDetalhe('${esc(m.id)}')"><b>${esc(nomeCurto(m.programa))}</b>${d?`<small>dia ${d.dias}/30${d.ia?" · IA×"+d.ia:""}${d.conselho?" · conselho":""}</small>`:`<small>${m.faltam?m.faltam.split("|").length+" camada(s) faltando":"12 itens"}</small>`}</span>
+      <span class="dj-acoes">${iconesAcao(m.id,m.programa)}</span></div>`;};
+  const listaFontes=(()=>{const porArea={};rows.forEach(m=>{(porArea[m.area_atuacao||"outros"]=porArea[m.area_atuacao||"outros"]||[]).push(m);});
+    const ordem=Object.keys(porArea).sort((a,b)=>(a==="outros")-(b==="outros")||AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt"));
+    return ordem.map(a=>`<div class="dj-area"><div class="dj-areat" style="color:${AREA(a).cor}"><span class=ponto style="background:${AREA(a).cor};width:10px;height:10px"></span>${esc(AREA(a).rotulo)} <span class=meta>${porArea[a].length} motor(es)</span></div>
+      <div class="dj-grade">${porArea[a].sort((x,y)=>nomeCurto(x.programa).localeCompare(nomeCurto(y.programa),"pt")).map(chipAceso).join("")}</div></div>`).join("");})();
   // caixa 1 = motores regulares e gerais; caixa 2 = Motores Opressores (fontes específicas) + novas anunciadas
   const novas=(MT._novas||[]);
   const novasHtml=novas.length?`<div class="mt-fam"><div class="mt-famt">Novas oportunidades anunciadas — sem referência histórica <span class=meta>${novas.length}</span></div>
