@@ -336,7 +336,7 @@ class SystemTests(unittest.TestCase):
 
     def test_dashboard_html_estatico_e_offline(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn('src="dashboard-dados.js"',html)   # funciona local via file://
+        self.assertRegex(html,r'src="dashboard-dados\.js(\?v=\d+)?"')   # funciona local via file://
         self.assertNotIn("http://",html)
         self.assertNotIn("cdn.",html)                     # sem dependência externa
         self.assertIn("AES-256-GCM",html)
@@ -3242,7 +3242,7 @@ class SystemTests(unittest.TestCase):
         Nordeste e criaturas; rosa dos ventos sem círculo."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         arte=open("docs/mapa-arte.js",encoding="utf-8").read()
-        self.assertIn('<script src="mapa-arte.js"></script>',html)
+        self.assertRegex(html,r'<script src="mapa-arte\.js(\?v=\d+)?"></script>')
         for x in ("GRAVURA RENASCENTISTA sobre fundo transparente","ART.ilustracoes()","ART.fita(","background:transparent",'id="bz-rosa-svg"'):
             self.assertIn(x,html,x)
         self.assertNotIn('id="mp-perg"',html); self.assertNotIn('rect x="${vx-30}"',html)          # sem quadrado/pergaminho
@@ -3256,6 +3256,16 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("dj-area","dj-areat","organização POR ÁREA de atuação","porArea[m.area_atuacao","Época chegando"):
             self.assertIn(x,html,x)
+
+
+    def test_fragmentos_sem_cache_e_scripts_versionados(self):
+        """O navegador nunca reaproveita dados antigos: fragmentos com ?v= e
+        no-cache; scripts do painel carimbados com a geração."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn('".json?v="+v,{cache:"no-cache"}',html)
+        self.assertNotIn('{cache:"force-cache"}',html)
+        self.assertRegex(html,r'dashboard-dados\.js\?v=\d{8,}')
+        src=open("src/dashboard_dados.py",encoding="utf-8").read(); self.assertIn("def _versionar_scripts",src)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

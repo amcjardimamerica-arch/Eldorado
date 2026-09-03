@@ -761,10 +761,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js"></script>
-<script src="mapa-arte.js"></script>
-<script src="dashboard-dados.enc.js"></script>
-<script src="dashboard-dados.js"></script>
+<script src="mapa-brasil.js?v=20260903221032"></script>
+<script src="mapa-arte.js?v=20260903221032"></script>
+<script src="dashboard-dados.enc.js?v=20260903221032"></script>
+<script src="dashboard-dados.js?v=20260903221032"></script>
 <script>
 (function(){
 "use strict";
@@ -849,7 +849,10 @@ function expandeCompacto(p){
 async function carregaFragmento(nome){
   if(_frag[nome]) return _frag[nome];
   try{
-    const r=await fetch("dados/"+nome+".json",{cache:"force-cache"});
+    /* versão do painel na URL: a cada publicação o navegador busca o fragmento novo
+       (o cache antigo mostrava, p.ex., 258 recursos de uma versão anterior) */
+    const v=encodeURIComponent((D&&D.gerado_em)||Date.now());
+    const r=await fetch("dados/"+nome+".json?v="+v,{cache:"no-cache"});
     if(!r.ok) throw new Error(r.status);
     _frag[nome]=await r.json(); return _frag[nome];
   }catch(e){ _frag[nome]=null; return null; }

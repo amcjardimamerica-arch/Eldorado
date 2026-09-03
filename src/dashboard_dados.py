@@ -1337,6 +1337,20 @@ LIMITE_TOTAL_MB = 20      # orçamento total do painel (núcleo + fragmentos)
 LIMITE_NUCLEO_MB = 3      # o que carrega na abertura; o resto vem sob demanda
 
 
+def _versionar_scripts(versao: str) -> None:
+    """Carimba ?v=<geração> nos scripts do painel: o navegador nunca reaproveita
+    dados ou arte de uma publicação anterior."""
+    html = ROOT / "docs/dashboard.html"
+    if not html.exists():
+        return
+    v = re.sub(r"[^0-9]", "", versao)[:14]
+    t = html.read_text(encoding="utf-8")
+    t2 = re.sub(r'<script src="(dashboard-dados(?:\.enc)?\.js|mapa-brasil\.js|mapa-arte\.js)(?:\?v=\d+)?"></script>',
+                lambda m: f'<script src="{m.group(1)}?v={v}"></script>', t)
+    if t2 != t:
+        html.write_text(t2, encoding="utf-8")
+
+
 def _preservar_se_vazio(caminho, novo: dict, chave: str = "linhas") -> bool:
     """Nunca substitui um fragmento com conteúdo por um vazio (CI sem banco)."""
     if novo.get(chave):
@@ -1487,6 +1501,7 @@ def run(hoje: date | None = None) -> dict:
     dados = coletar(hoje)
     from .fidelidade import aplicar as _portao
     portao = _portao(dados, hoje)            # ÚLTIMO passo antes de publicar
+    _versionar_scripts(dados.get("gerado_em") or now_iso())
     frag = publicar_fragmentos(dados, hoje)
     dados = enxugar_nucleo(dados, hoje)
     write_json(ROOT / "docs/dashboard-dados.json", dados)
