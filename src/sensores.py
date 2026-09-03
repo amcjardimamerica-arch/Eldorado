@@ -194,12 +194,19 @@ def _abrir(url: str, timeout: int = 12, max_bytes: int = 2_500_000) -> tuple[str
         return r.read(max_bytes).decode("utf-8", "replace"), r.geturl(), getattr(r, "status", 200) or 200
 
 
-def _paginas(sensor: dict) -> list[str]:
-    """URLs a ler: fixas, ou uma por termo de busca quando o portal tem busca."""
-    if sensor.get("busca") == "termo":
-        return [u.replace("{termo}", quote(t)) for u in sensor["urls"]
-                for t in sensor.get("termos_busca", [])[:4]]
-    return sensor["urls"]
+def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
+    """URLs a ler: fixas; por termo quando o portal tem busca; por DATA do dia
+    quando o diário publica por edição (DOU: leiturajornal?data=DD-MM-AAAA)."""
+    hoje = hoje or date.today()
+    saida = []
+    for u in sensor["urls"]:
+        if "{data}" in u:
+            saida.append(u.replace("{data}", hoje.strftime("%d-%m-%Y")))
+        elif "{termo}" in u:
+            saida += [u.replace("{termo}", quote(t)) for t in sensor.get("termos_busca", [])[:4]]
+        else:
+            saida.append(u)
+    return saida
 
 
 _LEX_ESP: dict = {}

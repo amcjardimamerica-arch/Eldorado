@@ -1717,7 +1717,7 @@ class SystemTests(unittest.TestCase):
                                       f'{a["item"]}: {a["valor"]}')
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("an-grade",html); self.assertIn("an-barra",html)
-        self.assertIn("itens da etapa 2",html)
+        self.assertIn("itens comprovados",html)
         self.assertIn("clique nos botões para investigar, arquivar ou abrir a ficha",html)
 
     def test_pncp_filtra_na_coleta(self):
@@ -2031,7 +2031,7 @@ class SystemTests(unittest.TestCase):
         for lac in ("Resultado","Prazo de recurso"):
             self.assertFalse(by[lac]["comprovado"]); self.assertIsNone(by[lac]["valor"])
             self.assertIn("não consta",by[lac]["lacuna"])
-        self.assertEqual(r["comprovados"],9)
+        self.assertEqual(r["comprovados"],10)   # 9 + Área de atuação (12º item)
         rel=pathlib.Path("biblioteca_alexandria/historico/completude_11_itens.json")
         self.assertTrue(rel.exists())
         d=load_json(rel)
@@ -2612,9 +2612,9 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(segmento({"nivel":"federal"}),"Nacional")
         self.assertEqual(segmento({"nivel":"estadual","uf":"GO"}),"Estadual GO")
         self.assertEqual(segmento({"nivel":"municipal","goias":True}),"Municipal Goiânia")
-        self.assertEqual(len(CAMADAS),11)
+        self.assertEqual(len(CAMADAS),12); self.assertEqual(CAMADAS[-1],"Área de atuação")
         cam=camadas_da_fonte({"orgao":"X","uf":"GO","nivel":"estadual"},None)
-        self.assertEqual(len(cam),11)
+        self.assertEqual(len(cam),12)
         self.assertEqual([c["camada"] for c in cam],list(CAMADAS))
         d=diagnostico({"sites":["https://x/"]},cam,None,None)
         self.assertEqual(d["estado"],"incompleto"); self.assertIn("não saiu com rede",d["causa"])
@@ -2626,7 +2626,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(m["total"],241)                    # 260 menos as emendas (calendário próprio)
         pn=[x for x in m["motores"] if x["familia"]=="PNAB / Aldir Blanc"]
         self.assertEqual({x["segmento"] for x in pn},{"Estadual GO","Municipal Goiânia"})
-        self.assertTrue(all(len(x["camadas"])==11 for x in m["motores"]))
+        self.assertTrue(all(len(x["camadas"])==12 for x in m["motores"]))
         self.assertTrue(pathlib.Path("docs/dados/motores.json").exists())
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("Motores de Busca",html); self.assertNotIn("Esquadra de sensores",html)
@@ -2968,6 +2968,35 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(inferir_area("texto sem pista nenhuma"),"outros")
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("@keyframes chafariz","sobe-pluma","calendarioMotor","mt-mets"): self.assertIn(x,html,x)
+
+
+    def test_doze_itens_calendario_validado_e_grade_padrao(self):
+        """12º item (Área de atuação); Calendário só com início/fim validados em
+        site oficial + Prazo/Território/Esfera; grade padronizada em toda caixa."""
+        from src.completude_biblioteca import ITENS, onze_itens
+        from src.dashboard_dados import _apto_ao_calendario as A
+        self.assertEqual(len(ITENS),12); self.assertEqual(ITENS[-1],"Área de atuação")
+        r=onze_itens({"titulo":"Edital de fomento a projetos culturais","evidencia":"","area":"cultura","uf":"GO","nivel":"estadual","fim":"2026-09-30"})
+        it={i["item"]:i for i in r["itens"]}
+        self.assertTrue(it["Área de atuação"]["comprovado"]); self.assertEqual(it["Área de atuação"]["valor"],"Cultura")
+        self.assertFalse(onze_itens({"titulo":"x","evidencia":""})["itens"][-1]["comprovado"])
+        base={"url":"https://x.gov.br/e","fim":"2026-09-30","uf":"GO","nivel":"estadual"}
+        self.assertTrue(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))
+        self.assertFalse(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":True}}}))   # projetado não entra
+        self.assertFalse(A({**base,"ciclo":{"inscricao":{"inicio":None,"fim":"2026-09-30","projetado":False}}}))          # sem início
+        self.assertFalse(A({**base,"url":"https://blog.qualquer.com/e","ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))  # não oficial
+        self.assertFalse(A({**base,"nivel":None,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))    # sem esfera
+        self.assertTrue(A({"sem_edital":True})); self.assertTrue(A({"janela_confirmada":{"via":"titular"}}))
+        d=dash_coletar(date(2026,9,3))
+        self.assertTrue(all("calendario_ok" in e for e in d["editais"] if not e.get("sem_edital") and not e.get("janela_confirmada")))
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("e.calendario_ok!==false","function gradeDoze","const DOZE=",'"Área de atuação"',"12 itens obtidos"): self.assertIn(x,html,x)
+        from src.sensores import _paginas
+        self.assertIn("data=03-09-2026",_paginas({"urls":["https://www.in.gov.br/leiturajornal?data={data}&secao=do3"]},date(2026,9,3))[0])
+        s=load_json(pathlib.Path("config/sensores.json"))
+        g={x["id"]:x for x in s["sensores_especiais"]}
+        self.assertTrue(g["do-goiania"]["urls"][0].startswith("https://www.goiania.go.gov.br"))
+        self.assertGreaterEqual(len(g["do-goias"]["urls"]),2)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

@@ -24,7 +24,8 @@ from datetime import date
 from .nucleo import ROOT, load_json, now_iso, slug, write_json
 
 CAMADAS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor",
-           "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação")
+           "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação",
+           "Área de atuação")
 
 _FAMILIAS = [
     (r"pnab|aldir", "PNAB / Aldir Blanc"), (r"rouanet|pronac", "Lei Rouanet"),
@@ -109,6 +110,7 @@ def _camadas_de_itens(ficha: dict, itens: dict) -> dict:
         ("Requisitos", ", ".join(ficha.get("exigencias_detectadas") or []) or None),
         ("Anexos", ", ".join(ficha.get("anexos_no_ato") or ficha.get("modelos") or []) or None),
         ("Destinação", (ficha.get("destinacao") or {}).get("motivo")),
+        ("Área de atuação", (lambda a: None if a in (None, "outros") else a)(ficha.get("area"))),
     ]
     return {"itens": [{"item": k, "valor": (str(v)[:200] if v else None), "comprovado": bool(v)} for k, v in val]}
 
@@ -128,6 +130,9 @@ def camadas_da_fonte(fonte: dict, edital: dict | None) -> list[dict]:
             saida.append({"camada": c, "ok": True, "valor": fonte.get("uf") or "Brasil"})
         elif c == "Esfera":
             saida.append({"camada": c, "ok": fonte.get("nivel") in ("federal", "estadual", "municipal"), "valor": fonte.get("nivel")})
+        elif c == "Área de atuação":
+            a = area_da_fonte(fonte, familia(fonte.get("programa", "")))
+            saida.append({"camada": c, "ok": a != "outros", "valor": a})
         else:
             saida.append({"camada": c, "ok": False, "valor": None})
     return saida

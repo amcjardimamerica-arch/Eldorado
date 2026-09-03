@@ -892,6 +892,7 @@ def _marca_etapas(editais: list[dict]) -> list[dict]:
     com_parecer |= conjunto("*/*/conselho.json")
     for e in editais:
         e["area"] = area_canonica(e.get("area"))
+        e["calendario_ok"] = _apto_ao_calendario(e)
         if e.get("sem_edital") or e.get("janela_confirmada"):   # etapa e ciclo próprios
             continue
         e.update(etapa_do_edital(e, decididos, preparados, com_parecer))
@@ -909,6 +910,29 @@ def _parecer_prazos() -> dict:
     return {k: d.get(k) for k in ("fontes", "permanentes", "periodicos",
                                   "com_datas_conhecidas", "regimes", "por_area",
                                   "goias", "nota")}
+
+
+_OFICIAL_RX = re.compile(r"\.gov\.br|\.jus\.br|\.leg\.br|\.mp\.br|\.org\.br|queridodiario|pncp\.gov|salic|transferegov", re.I)
+
+
+def _apto_ao_calendario(e: dict) -> bool:
+    """Regra do titular para a tela inicial: só entra no Calendário o edital com
+    início E fim determinados e validados em site oficial, e com ao menos
+    Prazo, Território e Esfera comprovados entre os 12 itens."""
+    if e.get("sem_edital") or e.get("janela_confirmada"):
+        return True                                       # regra anual / confirmação registrada
+    c = (e.get("ciclo") or {}).get("inscricao") or {}
+    if not (c.get("inicio") and c.get("fim")) or c.get("projetado"):
+        return False
+    if not _OFICIAL_RX.search(e.get("url") or ""):
+        return False
+    itens = ((e.get("requisitos_condicoes_valores") or {}).get("itens")
+             or (e.get("detalhes") or {}).get("itens_11") or [])
+    ok = {i["item"] for i in itens if i.get("comprovado")}
+    if itens:
+        return {"Prazo de inscrição", "Território", "Esfera"} <= ok
+    # sem grade de itens: exige os campos equivalentes na ficha
+    return bool(e.get("fim") and (e.get("uf") or e.get("territorio")) and e.get("nivel") in ("federal", "estadual", "municipal"))
 
 
 def _cobertura_260(previsoes: dict, fichas: dict) -> dict:

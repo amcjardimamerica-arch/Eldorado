@@ -603,7 +603,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <!-- MOTORES DE BUSCA · um motor por ponto de captação -->
 <div class="cartao" style="margin-bottom:16px">
   <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Motores de Busca
-    <span class=meta style="font-weight:500" title="Um motor por ponto de captação. Agregados por tipo e segmentados por território: nacional, estadual, municipal. Cada ponto mostra as 11 camadas, a página de publicação e a validação do conteúdo pelo motor.">— os 260 pontos de captação, por tipo e território</span></div>
+    <span class=meta style="font-weight:500" title="Um motor por ponto de captação. Agregados por tipo e segmentados por território: nacional, estadual, municipal. Cada ponto mostra as 12 itens, a página de publicação e a validação do conteúdo pelo motor.">— os 260 pontos de captação, por tipo e território</span></div>
   <div class="mets" id="mt-mets" style="margin:10px 0 8px"></div>
   <div class="bz-filtros" style="margin:6px 0 10px">
     <input id="mt-busca" placeholder="buscar local de publicação…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
@@ -616,7 +616,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <span class="mt-dia cinza" style="display:inline-block"></span> não executado &nbsp;
     <span class="mt-dia azul" style="display:inline-block"></span> funcionou, sem oportunidade &nbsp;
     <span class="mt-dia amarelo" style="display:inline-block"></span> achou, faltam camadas &nbsp;
-    <span class="mt-dia verde" style="display:inline-block"></span> 11 camadas obtidas &nbsp;
+    <span class="mt-dia verde" style="display:inline-block"></span> 12 itens obtidos &nbsp;
     <span class="mt-dia vermelho" style="display:inline-block"></span> falha / inoperante
   </div>
 </div>
@@ -1134,7 +1134,7 @@ function desenhaRadar(){
         <span class=meta style="flex:none">${f.janela?br(f.janela.inicio)+"→"+br(f.janela.fim):esc((f.regime_prazo||"").replace(/_/g," ").slice(0,22))}</span></div>`).join("")
       +(possiveis.length>8?`<div class=meta style="padding:6px 2px">mostrando 8 de ${possiveis.length} — todas na Bússola → Motores Opressores</div>`:""):"";
       bloco.querySelectorAll(".item").forEach(el=>{const f=possiveis.find(x=>x.id===el.dataset.f);
-        ligaTip(el,`<strong>${esc(f.programa)}</strong><br>${esc(f.orgao||"")}<br>${esc(AREA(f.area).rotulo)} · ${esc(f.esfera||"")} · ${esc(f.natureza||"")}<br>${esc(f.motivo||"")}${f.janela?"<br>janela: "+br(f.janela.inicio)+" a "+br(f.janela.fim):""}<br><em>fonte ativa — o motor persegue as 11 camadas</em>`);
+        ligaTip(el,`<strong>${esc(f.programa)}</strong><br>${esc(f.orgao||"")}<br>${esc(AREA(f.area).rotulo)} · ${esc(f.esfera||"")} · ${esc(f.natureza||"")}<br>${esc(f.motivo||"")}${f.janela?"<br>janela: "+br(f.janela.inicio)+" a "+br(f.janela.fim):""}<br><em>fonte ativa — o motor persegue as 12 itens</em>`);
         el.onclick=()=>{modulo("eldorado");mostra("bussola");};});}
     /* O Calendário de Editais atua EM CONJUNTO com o Radar: recebe sempre o
        mesmo recorte de UF, área e nível. O critério de prazo fica de fora
@@ -1197,6 +1197,10 @@ function desenhaGantt(){
       // fonte anual vedada no ano (ex.: doação da RFB em ano eleitoral) não
       // pode desenhar faixa: a janela existe no calendário, a captação não
       && !(e.regra_anos && e.ano_permitido===false)
+      // REGRA DO TITULAR: só entra no Calendário o edital com início e fim
+      // determinados e validados em site oficial, e com ao menos Prazo,
+      // Território e Esfera comprovados entre os 12 itens
+      && e.calendario_ok!==false
       // e nada encerrado ocupa faixa fora do próprio ciclo
       && !(e.estado_export==="encerrado" && e.ciclo.fim_do_ciclo && e.ciclo.fim_do_ciclo < HOJE.toISOString().slice(0,10) && e.sem_edital));
   const tocaMes=e=>{
@@ -1572,6 +1576,28 @@ function editaisFiltradosBz(){
                      :e.estado_export==="encerrado"));
 }
 let FA_ABERTAS=null, faPagina={};
+/* GRADE PADRONIZADA — os 12 itens em toda caixa, com ou sem análise da etapa 2:
+   usa a análise quando existe; senão monta cada item a partir dos campos do
+   registro, marcando 'não comprovado' onde falta. Apresentação sempre completa. */
+const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
+function gradeDoze(e,b){
+  const an=(b&&b.analise_etapa2)||[]; const por={}; an.forEach(a=>por[a.item]=a);
+  const marcos={}; (e.marcos||[]).forEach(m=>marcos[m.tipo]=m);
+  const val={
+    "Objeto":e.objeto||null,
+    "Prazo de inscrição":e.fim?((e.inicio?br(e.inicio):"?")+" a "+br(e.fim)):(e.prazo_texto||null),
+    "Resultado":(marcos.resultado_preliminar||marcos.resultado_final||{}).data||null,
+    "Prazo de recurso":(marcos.recurso||{}).data||null,
+    "Valor":e.valor_texto||null,
+    "Órgão / financiador":(b&&b._fonte&&!/pncp|querido/i.test(b._fonte.fonte_nome||"")?b._fonte.fonte_nome:null)||(e.orgao&&!/pncp|querido/i.test(e.orgao)?e.orgao:null)||(e.fonte_nome&&!/pncp|querido/i.test(e.fonte_nome)?e.fonte_nome:null),
+    "Território":e.uf||(e.abrangencia==="nacional"?"Brasil":null),
+    "Esfera":["federal","estadual","municipal"].includes(e.nivel)?e.nivel:null,
+    "Requisitos":(e.detalhes&&e.detalhes.documentos_exigidos&&e.detalhes.documentos_exigidos.length)?e.detalhes.documentos_exigidos.map(d=>d.replace(/_/g," ")).join(", "):null,
+    "Anexos":(e.anexos&&e.anexos.length)?e.anexos.length+" anexo(s)":((b&&b.anexos&&b.anexos.length)?b.anexos.length+" anexo(s)":null),
+    "Destinação":(e.destinacao&&e.destinacao.elegivel)?(e.destinacao.natureza||"recurso")+(e.destinacao.motivo?" — "+e.destinacao.motivo:""):(b&&b.pertinencia)||null,
+    "Área de atuação":(e.area&&e.area!=="outros")?AREA(e.area).rotulo:null};
+  return DOZE.map(item=>{const a=por[item];if(a&&a.comprovado)return {item,comprovado:true,valor:a.valor};const v=val[item];return {item,comprovado:!!v,valor:v||null};});
+}
 async function garanteAbertas(){
   if(FA_ABERTAS) return FA_ABERTAS;
   const p=await carregaFragmento("abertas"); if(!p){FA_ABERTAS=[];return FA_ABERTAS;}
@@ -1612,17 +1638,16 @@ function desenhaFontesAbertas(){
       <div class="fa-grade">${lista.map(({e,b})=>{
         const f=b?b._fonte:{fonte_nome:e.fonte_nome,via:null,categoria:null};
         const c=(cat[f.categoria]||{cor:"#607086",rotulo:f.categoria||"fonte"});
-        const an=(b&&b.analise_etapa2)||[]; const comp=b?b.comprovados:null, tot=b?b.total_itens:null;
-        const pct=tot?Math.round(comp/tot*100):0; const camp=b&&b.campanha;
+        const an=gradeDoze(e,b); const comp=an.filter(a=>a.comprovado).length, tot=an.length;
+        const pct=Math.round(comp/tot*100); const camp=b&&b.campanha;
         const dz=dias(e.fim);
         return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}" data-id="${esc(e.id)}">
         <div class="fa-fonte"><span class=ponto style="background:${c.cor};width:8px;height:8px" title="${esc(c.rotulo)}"></span><strong style="color:var(--tinta)">${esc(f.fonte_nome||"—")}</strong>${f.via?`<span class=meta>· via ${esc(f.via)}</span>`:""}</div>
         <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">${esc((e.titulo||"").slice(0,90))}</a>
         ${camp?`<span class="st ${camp.status==="monitorando"?"cap":camp.status==="completo"?"ok":"acao"}" style="margin-left:6px" title="${camp.status==="monitorando"?"indício em campanha de completude: dia "+camp.dia+" de 30, "+camp.tentativas+" tentativa(s) atrás do edital integral":camp.status==="completo"?"campanha concluída: edital integral obtido":"campanha expirada — revisão humana"}">${camp.status==="monitorando"?"monitorando · dia "+camp.dia+"/30":camp.status}</span>`:""}
         <div class=meta>${esc(e.uf||"BR")} · ${esc(e.nivel||"—")}${e.fim?" · encerra "+br(e.fim)+(dz!=null&&dz>=0?" ("+dz+" dia"+(dz===1?"":"s")+")":""):" · sem prazo na fonte"}${e.valor_texto?" · "+esc(e.valor_texto):""}</div>
-        ${tot?`<div class="an-barra" title="itens da etapa 2 comprovados na evidência"><i style="width:${pct}%"></i><b>${comp}/${tot} itens da etapa 2</b></div>
-        <div class="an-grade">${an.map(a=>`<div class="an-item ${a.comprovado?"ok":"pend"}" title="${esc(a.item)}: ${a.comprovado?esc(String(a.valor||"")):"não comprovado na evidência"}"><span class=an-rot>${esc(a.item)}</span><span class=an-val>${a.valor?esc(String(a.valor).slice(0,64)):"<em>não comprovado</em>"}</span></div>`).join("")}</div>`
-        :`<div class=meta style="margin-top:6px">${esc(e.objeto||"objeto: conferir na fonte")}</div>`}
+        <div class="an-barra" title="itens comprovados dos 12"><i style="width:${pct}%"></i><b>${comp}/${tot} itens comprovados</b></div>
+        <div class="an-grade">${an.map(a=>`<div class="an-item ${a.comprovado?"ok":"pend"}" title="${esc(a.item)}: ${a.comprovado?esc(String(a.valor||"")):"não comprovado — o motor segue atrás"}"><span class=an-rot>${esc(a.item)}</span><span class=an-val>${a.valor?esc(String(a.valor).slice(0,64)):"<em>não comprovado</em>"}</span></div>`).join("")}</div>
         ${b&&b.pendencias&&b.pendencias.length?`<div class=meta style="margin-top:6px">⚠ ${b.pendencias.map(esc).join(" · ")}</div>`:""}
         ${camp&&camp.pendencias&&camp.pendencias.length?`<div class=meta style="margin-top:4px">campanha: ${camp.pendencias.map(esc).join(" · ")}</div>`:""}
         <div class=meta>${b&&b.anexos&&b.anexos.length?"anexos: "+b.anexos.map(a=>`<a href="${esc(a.url||a)}" target=_blank rel="noopener noreferrer">${esc(a.nome||"documento")}</a>`).join(" · "):"anexos ainda não catalogados — <em>pendência declarada</em>"}</div>
@@ -1640,7 +1665,7 @@ function desenhaFontesAbertas(){
     bloco.querySelectorAll(".ficha").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)detalheEdital(completaEd(ed));});
     bloco.querySelectorAll(".ed-item").forEach(el=>{
       const par=lista.find(x=>x.e.id===el.dataset.id); if(!par)return; const {e,b}=par; const f=b?b._fonte:{fonte_nome:e.fonte_nome};
-      const an=(b&&b.analise_etapa2)||[];
+      const an=gradeDoze(e,b);
       ligaTip(el,`<strong>${esc(e.titulo||"")}</strong><br>
         <span style="opacity:.85">${esc(f.fonte_nome||"")}${f.via?" (via "+esc(f.via)+")":""} · ${esc(e.uf||"BR")} · ${esc(AREA(e.area).rotulo)} · ${esc(e.nivel||"—")}</span><br>
         ${e.objeto?`<span style="opacity:.9">${esc(String(e.objeto).slice(0,160))}</span><br>`:""}
@@ -1804,7 +1829,7 @@ window.mtImediato=function(id,nome){
 window.mtUpload=function(id,nome){
   const pasta=`entrada_manual/${id}/`;
   abreModal(`<h3 style="margin:0">Alimentar manualmente — ${esc(nome)}</h3>`,
-    `<p>Envie o edital e os documentos que você buscou. Eles vão para a pasta do edital na <strong>Biblioteca de Alexandria</strong>, acionam a <strong>fase 2</strong> (validação das 11 camadas) e seguem para a <strong>fase 3</strong> (enquadrar).</p>
+    `<p>Envie o edital e os documentos que você buscou. Eles vão para a pasta do edital na <strong>Biblioteca de Alexandria</strong>, acionam a <strong>fase 2</strong> (validação das 12 itens) e seguem para a <strong>fase 3</strong> (enquadrar).</p>
      <p><strong>Como enviar:</strong> arraste os arquivos (PDF, DOCX, TXT, HTML) para a pasta <code>${esc(pasta)}</code> do repositório — o sistema processa sozinho no próximo minuto e registra o resultado aqui.</p>
      <p><a href="https://github.com/amcjardimamerica-arch/Eldorado/upload/main/${esc(pasta)}" target=_blank rel="noopener noreferrer"><strong>Abrir a pasta para enviar arquivos ↗</strong></a></p>
      <input type=file id="mt-arq" multiple style="margin-top:8px">
@@ -1862,7 +1887,7 @@ function desenhaMotores(){
   if(!$("mt-lista"))return;
   const R=MT._resumo||{};
   const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>`;
-  $("mt-mets").innerHTML=[[IC("#0E2A55"),R.total??MT.length,"Pontos de captação"],[IC("#1E7E4B"),R.completos??0,"Com as 11 camadas"],
+  $("mt-mets").innerHTML=[[IC("#0E2A55"),R.total??MT.length,"Pontos de captação"],[IC("#1E7E4B"),R.completos??0,"Com os 12 itens"],
     [IC("#C05E00"),(R.media_camadas??0).toFixed?R.media_camadas.toFixed(1):R.media_camadas,"Média de camadas obtidas"],
     [IC("#7B4BE0"),MT.filter(m=>m.validacao==="bloqueada").length,"Páginas bloqueadas"]]
     .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
@@ -1900,13 +1925,13 @@ function desenhaMotores(){
   /* calendário do motor — mesmo desenho do Mapa de oportunidades, um por motor */
   const SEMd=["DOM","SEG","TER","QUA","QUI","SEX","SAB"];
   const mesRef=`${HOJE.getFullYear()}-${String(HOJE.getMonth()+1).padStart(2,"0")}`;
-  const ROT={cinza:"não executado",futuro:"a executar",azul:"funcionou, sem oportunidade",amarelo:"achou — faltam camadas",verde:"11 camadas obtidas",vermelho:"falha / inoperante"};
+  const ROT={cinza:"não executado",futuro:"a executar",azul:"funcionou, sem oportunidade",amarelo:"achou — faltam camadas",verde:"12 itens obtidos",vermelho:"falha / inoperante"};
   const calendarioMotor=o=>{const dias=(o.dias||[]).filter(x=>x.d.startsWith(mesRef));
     return `<div class="mt-calt">${MES[HOJE.getMonth()]} ${HOJE.getFullYear()}</div>
     <div class="bgrade mt-cal">${dias.map(x=>{const dt=new Date(x.d+"T00:00:00");
       return `<div class="bdia mtd-${x.cor}" title="${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} · ${ROT[x.cor]||x.cor}${x.http?" · HTTP "+x.http:""}${x.n?" · "+x.n+" achado(s)":""}${x.t?" · "+esc(x.t):""}">
         <div class=n>${dt.getDate()}<span class=sem>${SEMd[dt.getDay()]}</span></div>
-        <div class="s">${x.cor==="amarelo"?"Parcial":x.cor==="verde"?"11 camadas":x.cor==="azul"?"Sem oport.":x.cor==="vermelho"?"Falha":x.cor==="futuro"?"—":"Não exec."}</div>
+        <div class="s">${x.cor==="amarelo"?"Parcial":x.cor==="verde"?"12 itens":x.cor==="azul"?"Sem oport.":x.cor==="vermelho"?"Falha":x.cor==="futuro"?"—":"Não exec."}</div>
         ${x.t?`<div class=mt-trecho title="${esc(x.t)}">${esc(x.t.slice(0,26))}…</div>`:""}</div>`;}).join("")}</div>
     ${dias.filter(x=>x.t).slice(-3).map(x=>`<div class=meta>· ${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} — ${x.u?`<a href="${esc(x.u)}" target=_blank rel="noopener noreferrer">${esc(x.t)}</a>`:esc(x.t)}</div>`).join("")}`;};
   const trintaDias=calendarioMotor;
@@ -1939,7 +1964,7 @@ function desenhaMotores(){
             ${m.regime_prazo?` · prazo: ${esc(m.regime_prazo.replace(/_/g," "))} (${esc(m.certeza_prazo||"")})`:""}
           </div>
           ${m.faltam?`<div class="mt-diag">⚠ faltam ${m.faltam.split("|").length} camada(s): ${esc(m.faltam.replace(/\|/g," · "))}<br><b>causa:</b> ${esc(m.causa||"")} · <b>ação:</b> ${esc(m.acao||"")}</div>`
-                    :`<div class="mt-diag ok">✓ 11 camadas obtidas — motor pode parar</div>`}
+                    :`<div class="mt-diag ok">✓ 12 itens obtidos — motor pode parar</div>`}
           ${mtPendente(m.id)?`<div class=meta style="margin-top:4px">🕯 busca imediata pedida em ${esc(mtPendente(m.id))} — aguardando resultado da próxima execução</div>`:""}
         </div>
         <div class="mt-lado-dir">${iconesAcao(m.id,m.programa)}</div></div>`;}).join("")}</div>`).join("")}</div>`).join("");
@@ -1949,7 +1974,7 @@ function desenhaMotores(){
     ${novas.map((n,i)=>`<div class="mt-item nova sem-verde" data-id="nova-${i}"><div class="mt-lado-esq">${iconeMotor("nova-"+i,true)}</div>
       <div class="mt-corpo"><div><b>${esc(n.titulo)}</b> <span class=tag>nova</span> <span class=tag>${esc(n.uf||"BR")}</span></div>
         <div class=meta>anunciada em ${esc(n.fonte||"")} em ${n.em?br(n.em):"—"}${n.prazo?" · prazo "+esc(n.prazo):""}${n.valor?" · "+esc(n.valor):""} · <a href="${esc(n.url)}" target=_blank rel="noopener noreferrer">publicação ↗</a></div>
-        <div class="mt-diag">caixa criada automaticamente: oportunidade sem referência nas 260 fontes — o motor persegue as 11 camadas a partir da publicação</div></div>
+        <div class="mt-diag">caixa criada automaticamente: oportunidade sem referência nas 260 fontes — o motor persegue as 12 itens a partir da publicação</div></div>
       <div class="mt-lado-dir">${iconesAcao("nova-"+i,n.titulo)}</div></div>`).join("")}</div>`:"";
   $("mt-lista").innerHTML=oficiaisHtml||'<div class=meta>Nenhum local de publicação neste filtro.</div>';
   if($("mo-lista"))$("mo-lista").innerHTML=(novasHtml+listaFontes)||'<div class=meta>Nenhuma fonte ativa neste filtro — inativas ficam ocultas até menção em local oficial ou época prevista.</div>';
@@ -2190,7 +2215,7 @@ function desenhaBiblioteca(){
       $("ba-corpo").innerHTML=(A.editais_auditados?`
         <div class="cartao" style="margin-bottom:12px;background:#FCFCFB">
           <div style="font-weight:800;color:#0B4EA2;margin-bottom:6px">Auditoria do acervo (${esc(A.janela||"")}) — ${A.editais_auditados} editais, um por um</div>
-          <div class=meta style="margin-bottom:8px">${A.completos_11_itens} com os 11 itens · ${A.parciais_6_a_10} parciais (6–10) · ${A.abaixo_de_6} abaixo de 6</div>
+          <div class=meta style="margin-bottom:8px">${A.completos_11_itens} com os 12 itens · ${A.parciais_6_a_10} parciais (6–10) · ${A.abaixo_de_6} abaixo de 6</div>
           <table class="bz-tab"><thead><tr><th>Causa da falta</th><th>Editais</th><th>Ação recomendada</th></tr></thead><tbody>
           ${(A.causas||[]).map(c=>`<tr><td><b>${esc(c.causa.replace(/_/g," "))}</b></td><td>${c.editais}</td><td class=meta>${esc(c.acao||"—")}</td></tr>`).join("")}
           </tbody></table>

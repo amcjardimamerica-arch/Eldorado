@@ -30,11 +30,24 @@ from .nucleo import ROOT, load_json, now_iso, write_json
 SAIDA = ROOT / "biblioteca_alexandria/fontes"
 RELATORIO = ROOT / "biblioteca_alexandria/historico/completude_11_itens.json"
 
+# 12 itens: os 11 originais + Área de atuação (educação, esporte, cultura…)
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor",
-         "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação")
+         "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
 
 _ANEXO = re.compile(r"\banexos?\b|\bmodelos?\b|\bformul[áa]rios?\b", re.I)
 _OBJETO = re.compile(r"\bobjeto\b|\bfinalidade\b|\bdestina\w*\s+a\b|\bvisa\b", re.I)
+
+
+def _area_do_edital(ficha: dict, texto: str) -> str | None:
+    """Área de atuação canônica (educação, esporte, cultura…). 'outros' não comprova."""
+    try:
+        from .dashboard_dados import area_canonica, inferir_area, AREAS
+        a = area_canonica(ficha.get("area")) if ficha.get("area") else "outros"
+        if a == "outros":
+            a = inferir_area(texto)
+        return AREAS.get(a, {}).get("rotulo") if a != "outros" else None
+    except Exception:
+        return None
 
 
 def onze_itens(ficha: dict, parecer: dict | None = None) -> dict:
@@ -56,6 +69,7 @@ def onze_itens(ficha: dict, parecer: dict | None = None) -> dict:
         ("Requisitos", ", ".join(ficha.get("exigencias_detectadas") or []) or None),
         ("Anexos", "menciona anexos/modelos" if _ANEXO.search(texto) else None),
         ("Destinação", dest.get("motivo") if dest.get("elegivel") is not None else None),
+        ("Área de atuação", _area_do_edital(ficha, texto)),
     ]
     saida = []
     for nome, valor in itens:

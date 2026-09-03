@@ -17,7 +17,7 @@
     "escalada_por_previsao": true
   },
   "limites": {
-    "paginas_por_sensor": 2,
+    "paginas_por_sensor": 3,
     "links_por_pagina": 60,
     "bytes_por_pagina": 2500000,
     "pausa_segundos": 0.5,
@@ -33,11 +33,13 @@
       "uf": "GO",
       "territorio": "GO/Goiânia",
       "urls": [
+        "https://www.goiania.go.gov.br/diario-oficial/",
         "https://diariooficial.goiania.go.gov.br/"
       ],
       "busca": null,
       "confianca": "curada",
-      "o_que_procurar": "chamamentos, termos de fomento, resoluções do CMDCA/CMAS/CMI, subvenções, declarações de utilidade pública"
+      "o_que_procurar": "chamamentos, termos de fomento, resoluções do CMDCA/CMAS/CMI, subvenções, declarações de utilidade pública",
+      "nota_rede": "03/09: o host diariooficial.goiania.go.gov.br não resolveu no DNS do CI (gaierror); a página institucional do Diário entra como principal e a antiga como espelho, até o sensor confirmar"
     },
     {
       "id": "do-goias",
@@ -47,11 +49,14 @@
       "uf": "GO",
       "territorio": "GO",
       "urls": [
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://diariooficial.abc.go.gov.br/portal/edicoes",
+        "https://diariooficial.abc.go.gov.br/portal/visualizacoes/pesquisa"
       ],
       "busca": null,
       "confianca": "curada",
-      "o_que_procurar": "chamamentos da Secult/SEDS/SEEL/SES/Seduc, resoluções do CEDCA/CEAS/CEI, Goyazes, PNAB estadual, emendas"
+      "o_que_procurar": "chamamentos da Secult/SEDS/SEEL/SES/Seduc, resoluções do CEDCA/CEAS/CEI, Goyazes, PNAB estadual, emendas",
+      "nota_rede": "03/09: a home respondeu 200 (17 KB) sem links de edital — é portal, não listagem; listagem de edições e pesquisa entram como páginas 2 e 3"
     },
     {
       "id": "dou",
@@ -61,9 +66,10 @@
       "uf": null,
       "territorio": "BR",
       "urls": [
+        "https://www.in.gov.br/leiturajornal?data={data}&secao=do3",
         "https://www.in.gov.br/consulta/-/buscar/dou?q={termo}&s=todos&exactDate=dia&sortType=0"
       ],
-      "busca": "termo",
+      "busca": "data_e_termo",
       "confianca": "confirmada",
       "termos_busca": [
         "chamamento público organizações da sociedade civil",
@@ -71,7 +77,8 @@
         "edital projetos sociais",
         "doação entidades sem fins lucrativos"
       ],
-      "o_que_procurar": "chamamentos de ministérios e fundos nacionais, portarias de destinação, editais Rouanet/PNAB/LIE"
+      "o_que_procurar": "chamamentos de ministérios e fundos nacionais, portarias de destinação, editais Rouanet/PNAB/LIE",
+      "nota_rede": "03/09: a busca /consulta devolveu HTTPError às duas consultas; a leitura por seção do dia (Seção 3 = editais) passa a ser a via principal"
     },
     {
       "id": "dje-tjgo",
