@@ -174,6 +174,14 @@ def indexar_oportunidades() -> dict:
         total_banco = total_historico()
     except Exception:
         pass
+    if not total_banco:
+        # CI sem SQLite: mantém o total já publicado em vez de zerar o acervo
+        ant = OPORTUNIDADES / "indice.json"
+        if ant.exists():
+            try:
+                total_banco = load_json(ant).get("no_banco") or 0
+            except Exception:
+                pass
     cons_p = ROOT / "biblioteca_alexandria/historico/consolidado.json"
     if cons_p.exists():
         consolidado = load_json(cons_p)

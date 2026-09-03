@@ -2783,7 +2783,7 @@ class SystemTests(unittest.TestCase):
                 self.assertTrue(s["motivo"].startswith(("fonte específica ATIVA","escalada")),s["motivo"])
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("Motores Opressores","mo-area","mo-natureza","mo-esfera","mo-status","mt-ico oleo","mt-cal",
-                  "@keyframes pisca-borda","@keyframes jorra","Novas oportunidades anunciadas","camadas_val"):
+                  "@keyframes pisca-borda","@keyframes chafariz","Novas oportunidades anunciadas","camadas_val"):
             self.assertIn(x,html,x)
         self.assertNotIn("mt-ico tonel",html); self.assertNotIn('class="mt-chk"',html)
         self.assertNotIn("mt-dias",html.split("const calendarioMotor")[1].split("const trintaDias")[0])
@@ -2803,7 +2803,7 @@ class SystemTests(unittest.TestCase):
             self.assertIn(a,d["areas"],a)
         self.assertNotIn("justica",d["areas"])          # traduzida para as 13 canônicas
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",".jorro","@keyframes jorra",
+        for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",".pluma","@keyframes sobe-pluma",
                   "rotArea","Acesos (fogo)","Apagados (poça de óleo)"):
             self.assertIn(x,html,x)
         self.assertNotIn("Ativar motor nos marcados",html)          # ativação é individual ou automática
@@ -2840,7 +2840,7 @@ class SystemTests(unittest.TestCase):
             self.assertIn(x,html,x)
         self.assertNotIn("Privada / Internacional",html)
         # óleo: pluma com gotas, sem o traço fino
-        self.assertIn('class="pluma"',html); self.assertIn("@keyframes respinga",html)
+        self.assertIn('class="pluma"',html); self.assertIn("@keyframes chafariz",html)
         self.assertNotIn('stroke="#1b1f27" stroke-width="2.6"',html)
 
 
@@ -2934,6 +2934,40 @@ class SystemTests(unittest.TestCase):
         for x in ("fa-area","fa-areat","fa-grade","faixa-total","editaisFiltradosBz().filter","grupos[a]=grupos[a]||[]",
                   "repeat(5,1fr)","Abrir ficha"): self.assertIn(x,html,x)
         self.assertIn("organizadas por <strong>área de atuação</strong>",html)
+
+
+    def test_painel_nao_esvazia_sem_banco(self):
+        """O CI não tem o SQLite: o núcleo e o fragmento histórico vêm do que já
+        está publicado, e um fragmento com conteúdo nunca é sobrescrito por vazio."""
+        from src.dashboard_dados import _historicos_do_fragmento, _preservar_se_vazio
+        h=_historicos_do_fragmento(date(2026,9,3),limite=50)
+        self.assertGreater(len(h),0)
+        for e in h[:5]:
+            self.assertEqual(e.get("acervo"),"historico"); self.assertIn("detalhes",e)
+        self.assertTrue(_preservar_se_vazio(ROOT/"docs/dados/historico.json",{"linhas":[]}))
+        self.assertFalse(_preservar_se_vazio(ROOT/"docs/dados/historico.json",{"linhas":[1]}))
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("garanteAbertas",html); self.assertIn("faMais",html)
+        a=load_json(pathlib.Path("docs/dados/abertas.json"))
+        self.assertGreater(a["total"],1000)                          # tudo que foi identificado
+        from src.compacto import expandir
+        rows=expandir(a)
+        from collections import Counter
+        c=Counter(r["area"] for r in rows)
+        self.assertLess(c["outros"]/len(rows),0.5)                   # área inferida pelo texto
+        self.assertTrue(all(r["area"] for r in rows))
+        d=load_json(pathlib.Path("docs/dashboard-dados.json"))
+        self.assertGreater(len(d["editais"]),100)                    # núcleo íntegro
+
+    def test_inferir_area_pelo_texto(self):
+        from src.dashboard_dados import inferir_area
+        self.assertEqual(inferir_area("Edital de fomento a projetos culturais e artes visuais"),"cultura")
+        self.assertEqual(inferir_area("Chamamento para entidades de acolhimento de crianças e adolescentes"),"crianca_adolescente")
+        self.assertEqual(inferir_area("Aquisição de gêneros alimentícios da agricultura familiar para merenda"),"seguranca_alimentar")
+        self.assertEqual(inferir_area("Termo de colaboração — pessoa idosa"),"pessoa_idosa")
+        self.assertEqual(inferir_area("texto sem pista nenhuma"),"outros")
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("@keyframes chafariz","sobe-pluma","calendarioMotor","mt-mets"): self.assertIn(x,html,x)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

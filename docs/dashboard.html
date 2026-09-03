@@ -202,11 +202,16 @@ box-shadow:0 1px 3px #0002}
 @keyframes sobe{0%{transform:translateY(4px);opacity:.75}100%{transform:translateY(-9px) scale(1.5);opacity:0}}
 .mt-ico.oleo .poca{fill:#111318}.mt-ico.oleo .poca2{fill:#2a2f3a}.mt-ico.oleo .brilho{fill:#7fa0c9;opacity:.8}
 .mt-ico.oleo .pluma{fill:#15181f}.mt-ico.oleo .pluma2{fill:#2b3140}.mt-ico.oleo .gota{fill:#1b1f27}.mt-ico.oleo .reflexo{fill:#8fb0d8;opacity:.75}
-.mt-ico.oleo .jorro{transform-origin:20px 27px;animation:jorra 1.9s ease-in-out infinite}
-.mt-ico.oleo .gota{animation:respinga 1.9s ease-out infinite}
-.mt-ico.oleo .gota:nth-of-type(2){animation-delay:.3s}.mt-ico.oleo .gota:nth-of-type(3){animation-delay:.6s}.mt-ico.oleo .gota:nth-of-type(4){animation-delay:.9s}
-@keyframes jorra{0%,100%{transform:scaleY(.9)}50%{transform:scaleY(1.06)}}
-@keyframes respinga{0%{transform:translateY(6px);opacity:0}30%{opacity:1}100%{transform:translateY(-4px);opacity:.15}}
+/* FONTE de óleo: a pluma sobe da poça (cresce para cima a partir da base) e as
+   gotas sobem em arco e recaem — movimento de chafariz, em ciclo contínuo */
+.mt-ico.oleo .pluma,.mt-ico.oleo .pluma2{transform-origin:20px 26px;animation:sobe-pluma 1.8s ease-in-out infinite}
+.mt-ico.oleo .pluma2{animation-delay:.15s}
+.mt-ico.oleo .reflexo{transform-origin:19px 26px;animation:sobe-pluma 1.8s ease-in-out infinite}
+.mt-ico.oleo .gota{transform-origin:20px 26px;animation:chafariz 1.8s ease-in-out infinite}
+.mt-ico.oleo .gota:nth-of-type(1){animation-delay:.1s}.mt-ico.oleo .gota:nth-of-type(2){animation-delay:.35s}
+.mt-ico.oleo .gota:nth-of-type(3){animation-delay:.6s}.mt-ico.oleo .gota:nth-of-type(4){animation-delay:.85s}
+@keyframes sobe-pluma{0%{transform:scaleY(.25);opacity:.6}45%{transform:scaleY(1.05);opacity:1}70%{transform:scaleY(.95);opacity:1}100%{transform:scaleY(.25);opacity:.6}}
+@keyframes chafariz{0%{transform:translate(0,14px) scale(.6);opacity:0}25%{opacity:1}50%{transform:translate(0,-9px) scale(1.05);opacity:1}85%{transform:translate(0,12px) scale(.9);opacity:.6}100%{transform:translate(0,14px) scale(.6);opacity:0}}
 .mt-dias{display:flex;gap:2px;margin-top:6px;flex-wrap:wrap}
 .mt-dia{width:11px;height:11px;border-radius:3px;background:#DEE2E8;display:block}
 .mt-dia.cinza{background:#DEE2E8}.mt-dia.azul{background:#2F79D0}.mt-dia.verde{background:var(--ok)}.mt-dia.vermelho{background:var(--urgente)}
@@ -1566,27 +1571,44 @@ function editaisFiltradosBz(){
     &&(pz==="abertos"?["aberto","a_abrir","sem_prazo"].includes(e.estado_export)
                      :e.estado_export==="encerrado"));
 }
+let FA_ABERTAS=null, faPagina={};
+async function garanteAbertas(){
+  if(FA_ABERTAS) return FA_ABERTAS;
+  const p=await carregaFragmento("abertas"); if(!p){FA_ABERTAS=[];return FA_ABERTAS;}
+  FA_ABERTAS=expandeCompacto(p); FA_ABERTAS._total=p.total||FA_ABERTAS.length; return FA_ABERTAS;
+}
+window.faMais=function(area){faPagina[area]=(faPagina[area]||10)+20;desenhaFontesAbertas();};
 function desenhaFontesAbertas(){
   const cat=(D.bussola&&D.bussola.categorias)||{};
   const fx=$("bus-fontes");fx.innerHTML="";
-  /* TODAS as oportunidades da seleção (o antigo «Filtro de Oportunidades» e os
-     monitoramentos em campanha estão aqui), enriquecidas com a análise da
-     etapa 2 e a campanha quando existirem */
+  if(!FA_ABERTAS){garanteAbertas().then(()=>desenhaFontesAbertas());}
+  /* TODAS as oportunidades identificadas: as do núcleo (verificadas e históricas)
+     + o fragmento ABERTAS com a base completa pertinente ao terceiro setor
+     (18 mil+), regidas pelo mesmo filtro (UF, área, nível, prazo) */
+  const uf=$("bz-uf").value,ar=$("bz-area").value,ni=$("bz-nivel").value,pz=$("bz-prazo").value;
   const sel=editaisFiltradosBz().filter(e=>estadoDe(e.id)==="em_andamento");
   const info={};((D.bussola&&D.bussola.fontes_com_editais)||[]).forEach(f=>f.editais.forEach(e=>info[e.id]={...e,_fonte:f}));
-  const itens=sel.map(e=>({e,b:info[e.id]||null}));
+  const hojeISO=HOJE.toISOString().slice(0,10);
+  const extras=(FA_ABERTAS||[]).filter(o=>estadoDe(o.id)==="em_andamento"
+    &&(!uf||o.uf===uf||(!o.uf&&(o.nivel==="federal"||!o.nivel)))&&(!ar||o.area===ar)&&(!ni||o.nivel===ni)
+    &&(pz==="abertos"?(!o.fim||o.fim>=hojeISO):(o.fim&&o.fim<hojeISO)))
+    .map(o=>({e:{...o,fonte_nome:o.orgao&&!/pncp|querido/i.test(o.orgao)?o.orgao:o.fonte_nome,estado_export:o.fim&&o.fim<hojeISO?"encerrado":(o.fim?"aberto":"sem_prazo"),abrangencia:o.nivel==="federal"?"nacional":"estadual"},
+             b:o.campanha?{campanha:{status:o.campanha,dia:o.campanha_dia,tentativas:null,pendencias:[]},_fonte:{fonte_nome:o.orgao||o.fonte_nome,via:/querido/i.test(o.fonte_nome||"")?"Querido Diário":/pncp/i.test(o.fonte_nome||"")?"PNCP":null,categoria:"api_oficial"},pertinencia:o.pertinencia,analise_etapa2:[],comprovados:null,total_itens:null,anexos:[],pendencias:[]}:null}));
+  const itens=sel.map(e=>({e,b:info[e.id]||null})).concat(extras);
   const nCamp=itens.filter(x=>x.b&&x.b.campanha&&x.b.campanha.status==="monitorando").length;
   const fontesN=new Set(itens.map(x=>x.b?x.b._fonte.fonte_nome:x.e.fonte_nome)).size;
-  $("fa-resumo").textContent=`${itens.length} oportunidade(s) · ${fontesN} fonte(s) · ${nCamp} em campanha de 30 dias`;
+  $("fa-resumo").textContent=`${itens.length} oportunidade(s) · ${fontesN} fonte(s) · ${nCamp} em campanha de 30 dias${FA_ABERTAS?"":" · carregando a base completa…"}${FA_ABERTAS&&FA_ABERTAS._total?" · base identificada: "+FA_ABERTAS._total:""}`;
   if(!itens.length){fx.innerHTML='<div class=meta style="padding:10px 2px">Nenhuma oportunidade nesta seleção.</div>';return;}
   // organização temática: área de atuação (rótulos canônicos da tela inicial)
   const grupos={};itens.forEach(x=>{const a=x.e.area||"outros";(grupos[a]=grupos[a]||[]).push(x);});
   const ordem=Object.keys(grupos).sort((a,b)=>grupos[b].length-grupos[a].length||AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt"));
   ordem.forEach(area=>{
     const bloco=document.createElement("div");bloco.className="fa-area";
-    const lista=grupos[area].sort((x,y)=>((dias(x.e.fim)??9e9)-(dias(y.e.fim)??9e9)));
+    const todas=grupos[area].sort((x,y)=>((x.b&&x.b.analise_etapa2&&x.b.analise_etapa2.length)?0:1)-((y.b&&y.b.analise_etapa2&&y.b.analise_etapa2.length)?0:1)||((dias(x.e.fim)??9e9)-(dias(y.e.fim)??9e9)));
+    const lim=faPagina[area]||10; const lista=todas.slice(0,lim);
     bloco.innerHTML=`<div class="fa-areat"><span class=ponto style="background:${AREA(area).cor};width:12px;height:12px"></span>${esc(AREA(area).rotulo)}
-        <span class=meta style="font-weight:500">${lista.length} oportunidade(s)</span></div>
+        <span class=meta style="font-weight:500">${todas.length} oportunidade(s)${todas.length>lim?" · mostrando "+lim:""}</span>
+        ${todas.length>lim?`<button style="margin-left:auto;font-size:11.5px;padding:5px 11px" onclick="faMais('${esc(area)}')">ver mais 20 ›</button>`:""}</div>
       <div class="fa-grade">${lista.map(({e,b})=>{
         const f=b?b._fonte:{fonte_nome:e.fonte_nome,via:null,categoria:null};
         const c=(cat[f.categoria]||{cor:"#607086",rotulo:f.categoria||"fonte"});
@@ -1609,12 +1631,15 @@ function desenhaFontesAbertas(){
           <button class="bt-arq" data-id="${esc(e.id)}" title="Arquivar este edital — sai das listas ativas">🗄 Arquivar</button>
           <button class="bz-acao ficha" data-id="${esc(e.id)}">Abrir ficha</button>
         </div></div>`;}).join("")}</div>`;
-    bloco.querySelectorAll(".bt-ia").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=(D.editais||[]).find(x=>x.id===bt.dataset.id);if(ed)investigarEdital(ed);});
-    bloco.querySelectorAll(".bt-arq").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=(D.editais||[]).find(x=>x.id===bt.dataset.id);
+    const achaEd=id=>(D.editais||[]).find(x=>x.id===id)||(lista.find(x=>x.e.id===id)||{}).e;
+    const completaEd=ed=>({programa:ed.fonte_nome,lei:"—",protocolo:ed.id,resumo:ed.objeto||"",territorio:ed.uf||"BR",
+      detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:ed.objeto||ed.titulo||"",coletado_em:ed.coletado_em,lacuna:null},...ed});
+    bloco.querySelectorAll(".bt-ia").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)investigarEdital(completaEd(ed));});
+    bloco.querySelectorAll(".bt-arq").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);
       if(ed){salvaDecisao(ed.id,"inscrito",{titulo:ed.titulo,acao:"arquivado na Bússola"});desenhaFontesAbertas();}});
-    bloco.querySelectorAll(".ficha").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=(D.editais||[]).find(x=>x.id===bt.dataset.id);if(ed)detalheEdital(ed);});
+    bloco.querySelectorAll(".ficha").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)detalheEdital(completaEd(ed));});
     bloco.querySelectorAll(".ed-item").forEach(el=>{
-      const {e,b}=lista.find(x=>x.e.id===el.dataset.id); const f=b?b._fonte:{fonte_nome:e.fonte_nome};
+      const par=lista.find(x=>x.e.id===el.dataset.id); if(!par)return; const {e,b}=par; const f=b?b._fonte:{fonte_nome:e.fonte_nome};
       const an=(b&&b.analise_etapa2)||[];
       ligaTip(el,`<strong>${esc(e.titulo||"")}</strong><br>
         <span style="opacity:.85">${esc(f.fonte_nome||"")}${f.via?" (via "+esc(f.via)+")":""} · ${esc(e.uf||"BR")} · ${esc(AREA(e.area).rotulo)} · ${esc(e.nivel||"—")}</span><br>

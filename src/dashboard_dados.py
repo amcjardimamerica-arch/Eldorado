@@ -60,6 +60,32 @@ _TRADUZ_AREA = {"justica": "outros", "direitos_difusos": "direitos_humanos", "ci
                 "pcd": "saude", "controle": "outros", "legislativo": "outros"}
 
 
+_AREA_TXT_RX = (
+    (r"aliment|\bfome\b|nutri[çc]|merenda|cesta b[áa]sica|seguran[çc]a alimentar|agricultura familiar", "seguranca_alimentar"),
+    (r"crian[çc]|adolesc|fmdca|cmdca|conanda|conselho tutelar|acolhimento institucional", "crianca_adolescente"),
+    (r"idos[oa]|pessoa idosa|terceira idade", "pessoa_idosa"),
+    (r"cultur|artes|audiovisual|patrim[ôo]nio|m[úu]sica|teatro|dan[çc]a|circo|literatura|cinema|artesanato|carnaval|festival", "cultura"),
+    (r"esport|atleta|paradesport|lazer|futebol|jud[ôo]|ol[íi]mpic", "esporte"),
+    (r"sa[úu]de|hospital|m[ée]dic|cl[íi]nic|oncol|defici[êe]ncia|reabilita|psicossoc|caps|sus\b|aps\b", "saude"),
+    (r"educa|escola|alfabetiza|creche|ensino|pedag|universit|estudant|bolsa", "educacao"),
+    (r"assist[êe]ncia social|suas\b|creas|cras|vulnerab|acolhimento|popula[çc][ãa]o de rua|benef[íi]cio eventual", "assistencia_social"),
+    (r"meio ambiente|ambient|clim[áa]|reciclag|res[íi]duo|nascente|horta|compostagem|sustentab|floresta|fauna|catador", "meio_ambiente"),
+    (r"direitos humanos|mulher|lgbt|racial|ind[íi]gena|quilomb|cidadania|viol[êe]ncia dom[ée]stica|igualdade|refugiad", "direitos_humanos"),
+    (r"infraestrutura|obra|reforma|constru|pavimenta|saneamento|mobilidade|habita[çc]", "infraestrutura"),
+    (r"mercadorias apreendidas|receita federal", "doacao_bens"),
+)
+
+
+def inferir_area(texto: str | None) -> str:
+    """Área canônica inferida do texto (título, objeto, evidência) quando o
+    registro não a traz — para que nada caia em 'outros' por omissão."""
+    tl = (texto or "").lower()
+    for rx, area in _AREA_TXT_RX:
+        if re.search(rx, tl):
+            return area
+    return "outros"
+
+
 def area_canonica(a: str | None) -> str:
     a = (a or "outros").lower()
     a = _TRADUZ_AREA.get(a, a)
@@ -614,6 +640,33 @@ def _recorte_painel(editais: list[dict], hoje: date) -> list[dict]:
     return painel + recentes
 
 
+def _historicos_do_fragmento(hoje: date, limite: int = 250) -> list[dict]:
+    """Reidrata os históricos do fragmento publicado (docs/dados/historico.json)."""
+    fp = ROOT / "docs/dados/historico.json"
+    if not fp.exists():
+        return []
+    try:
+        from .compacto import expandir
+        p = load_json(fp)
+        if not p.get("linhas"):
+            return []
+        rows = expandir(p)
+    except Exception:
+        return []
+    saida = []
+    for e in rows[:limite]:
+        e = dict(e)
+        e.setdefault("acervo", "historico"); e.setdefault("anexos", []); e.setdefault("marcos", [])
+        e.setdefault("prazo_prorrogado", False); e.setdefault("ficha", "")
+        e["ciclo"] = (p.get("ciclos") or {}).get(e["id"])
+        e["historico"] = (p.get("historico") or {}).get(e["id"], {})
+        e.setdefault("detalhes", {"qualificacao": {"nota": None, "classe": "histórico"}, "documentos_exigidos": [],
+                                  "pontuacao": [], "atendidos": [], "pendencias": [], "evidencia": e.get("resumo") or "",
+                                  "coletado_em": e.get("publicado_em"), "lacuna": None})
+        saida.append(e)
+    return saida
+
+
 def _historicos_encerrados(hoje: date, limite: int = 250) -> list[dict]:
     """Editais históricos catalogados (fases 1 e 2) que compõem o filtro
     «inscrições encerradas».
@@ -623,9 +676,17 @@ def _historicos_encerrados(hoje: date, limite: int = 250) -> list[dict]:
     (não confundir com os verificados em dupla, que são os do Dashboard vivo).
     """
     try:
-        from .banco import consultar_historico, conectar
+        from .banco import consultar_historico, conectar, total_historico
     except Exception:
         return []
+    # SEM BANCO (CI): o acervo vem do fragmento já publicado — o painel nunca
+    # esvazia por falta do SQLite, que fica fora do Git
+    try:
+        vazio = total_historico() == 0
+    except Exception:
+        vazio = True
+    if vazio:
+        return _historicos_do_fragmento(hoje, limite)
     try:
         con = conectar()
         linhas = con.execute(
@@ -1162,6 +1223,13 @@ LIMITE_TOTAL_MB = 20      # orçamento total do painel (núcleo + fragmentos)
 LIMITE_NUCLEO_MB = 3      # o que carrega na abertura; o resto vem sob demanda
 
 
+def _preservar_se_vazio(caminho, novo: dict, chave: str = "linhas") -> bool:
+    """Nunca substitui um fragmento com conteúdo por um vazio (CI sem banco)."""
+    if novo.get(chave):
+        return False
+    return caminho.exists() and bool(load_json(caminho).get(chave))
+
+
 def publicar_fragmentos(dados: dict, hoje: date) -> dict:
     """Publicação em CAMADAS: o núcleo carrega na abertura; fragmentos
     compactados por dicionário são buscados sob demanda pelo painel.
@@ -1185,8 +1253,11 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
     pac = compactar([{k: e.get(k) for k in campos_h} for e in hist_l], campos_h)
     pac["ciclos"] = {e["id"]: e.get("ciclo") for e in hist_l if e.get("ciclo")}
     pac["historico"] = {e["id"]: e.get("historico") for e in hist_l}
-    (pasta / "historico.json").write_text(json.dumps(pac, ensure_ascii=False,
-                                                     separators=(",", ":")), encoding="utf-8")
+    if _preservar_se_vazio(pasta / "historico.json", pac):
+        pac = load_json(pasta / "historico.json")          # CI sem banco: mantém o publicado
+    else:
+        (pasta / "historico.json").write_text(json.dumps(pac, ensure_ascii=False,
+                                                         separators=(",", ":")), encoding="utf-8")
     tamanhos["historico.json"] = tamanho(pac)
 
     prev = dados.get("previsoes", {}).get("itens", [])
@@ -1216,6 +1287,52 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
         (pasta / "fontes.json").write_text(json.dumps(pacf, ensure_ascii=False,
                                                       separators=(",", ":")), encoding="utf-8")
         tamanhos["fontes.json"] = tamanho(pacf)
+
+    # ABERTAS.JSON — TODAS as oportunidades identificadas e pertinentes ao
+    # terceiro setor (base completa), para a caixa «Fontes com edital aberto».
+    # Nada identificado fica de fora; o painel pagina por área.
+    try:
+        from .pertinencia import pertinente as _pert
+        from . import completude as _comp
+        camp = _comp._estado().get("campanhas", {})
+        ops = carregar_oportunidades()
+        ids_nucleo = {e["id"] for e in dados.get("editais", [])}
+        abertas = []
+        hoje_iso = hoje.isoformat()
+        for o in ops.values():
+            if o["id"] in ids_nucleo:
+                continue
+            if (o.get("fim") and o["fim"] < hoje_iso):
+                continue
+            v = _pert(o)
+            if not v["ok"]:
+                continue
+            c = camp.get(o["id"]) or {}
+            abertas.append({
+                "id": o["id"], "titulo": (o.get("titulo") or "")[:140], "url": o.get("url"),
+                "fonte_nome": o.get("fonte_nome"), "orgao": (o.get("orgao_real") or o.get("financiador") or ""),
+                "uf": o.get("uf"), "nivel": o.get("nivel"),
+                "area": (area_canonica(o.get("area")) if o.get("area") and area_canonica(o.get("area")) != "outros"
+                         else inferir_area(f'{o.get("titulo","")} {o.get("objeto","")} {(o.get("evidencia") or "")[:400]}')),
+                "fim": o.get("fim"), "prazo_texto": o.get("prazo_texto"), "valor_texto": o.get("valor_texto"),
+                "coletado_em": (o.get("coletado_em") or "")[:10],
+                "campanha": (c.get("status") or None),
+                "campanha_dia": (min((hoje - date.fromisoformat(c["criado_em"])).days + 1, 30) if c.get("criado_em") else None),
+                "pertinencia": v["motivo"][:60],
+                "objeto": (o.get("objeto") or "")[:200] or None,
+                "confirmacao": (o.get("confirmacao") or {}).get("nivel_confirmacao") if isinstance(o.get("confirmacao"), dict) else None,
+            })
+        abertas.sort(key=lambda x: (x["area"] == "outros", x.get("uf") != "GO", x.get("coletado_em") or ""), )
+        campos_a = ["id", "titulo", "url", "fonte_nome", "orgao", "uf", "nivel", "area", "fim", "prazo_texto",
+                    "valor_texto", "coletado_em", "campanha", "campanha_dia", "pertinencia", "objeto", "confirmacao"]
+        pac_a = compactar(abertas, campos_a)
+        pac_a["total"] = len(abertas)
+        (pasta / "abertas.json").write_text(json.dumps(pac_a, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        tamanhos["abertas.json"] = tamanho(pac_a)
+        dados["abertas_total"] = len(abertas)
+    except Exception as exc:
+        dados["abertas_total"] = None
+        dados["abertas_erro"] = type(exc).__name__
 
     parl = {}
     for e in dados.get("editais", []):
