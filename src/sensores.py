@@ -202,11 +202,48 @@ def _paginas(sensor: dict) -> list[str]:
     return sensor["urls"]
 
 
+_LEX_ESP: dict = {}
+def lexico_especifico(sensor: dict) -> list[str]:
+    """2ª etapa (Motores Opressores): termos ESPECÍFICOS do recurso — o léxico
+    próprio do regramento quando existe, senão os termos distintivos do
+    programa. Casam de forma cirúrgica, onde o léxico geral seria vago."""
+    if not sensor.get("fontes_260"):
+        return []
+    genericos = {"edital", "editais", "projeto", "projetos", "apoio", "cultura", "cultural", "esporte", "fomento",
+                 "programa", "municipal", "estadual", "federal", "goiás", "goiania", "goiânia", "secretaria",
+                 "destinação", "destinacao", "doação", "doacao", "incentivo", "fiscal", "nacional", "estado",
+                 "recursos", "captação", "entidades", "social", "sociais", "pessoa", "física", "fisica", "jurídica"}
+    if not _LEX_ESP:
+        rg = ROOT / "config/regramentos.json"
+        if rg.exists():
+            for r in load_json(rg).get("regramentos", []):
+                toks = {t for t in re.findall(r"[a-zà-ú]{5,}", r["fonte"].lower()) if t not in genericos}
+                _LEX_ESP[r["id"]] = {"toks": toks, "lex": r.get("lexico_proprio", [])}
+    nome = (sensor.get("nome") or "").lower()
+    ntoks = {t for t in re.findall(r"[a-zà-ú]{5,}", nome) if t not in genericos}
+    # UM regramento só: o de maior sobreposição de termos distintivos (mín. 1 termo forte)
+    melhor, nota = None, 0
+    for rid, r in _LEX_ESP.items():
+        n = len(ntoks & r["toks"])
+        if n > nota:
+            melhor, nota = r, n
+    termos = list(melhor["lex"]) if melhor else []
+    termos += sorted(ntoks)
+    return sorted(set(termos))[:24]
+
+
+def casa_especifico(texto: str, termos: list[str]) -> list[str]:
+    tl = texto.lower()
+    return [t for t in termos if t.lower() in tl]
+
+
 def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -> dict:
-    """Uma leitura do sensor: páginas → links → léxico → destinação → achados."""
+    """Uma leitura do sensor: páginas → links → léxico → destinação → achados.
+    Motores Opressores (fontes_260) também casam pelo léxico ESPECÍFICO."""
     lim = limites or load_json(CFG)["limites"]
     pausa = lim["pausa_segundos"] if pausa is None else pausa
     achados, falhas, saude = [], [], []
+    especifico = lexico_especifico(sensor)
     for url in _paginas(sensor)[:lim["paginas_por_sensor"]]:
         try:
             html, final, status = _abrir(url, timeout=lim.get("timeout_segundos", 12), max_bytes=lim["bytes_por_pagina"])
@@ -225,8 +262,10 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             if not rot or len(rot) < 10:
                 continue
             lx = casar(rot)
-            if not lx["candidato"]:
+            esp = casa_especifico(rot, especifico) if especifico else []
+            if not lx["candidato"] and not esp:
                 continue
+            lx["termos"]["especificos"] = esp
             u = canonical_url(urljoin(final, href))
             if urlsplit(u).scheme not in ("https", "file"):
                 continue
@@ -275,6 +314,19 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
     # os ids em MOTORES_FONTES — só esses motores saem, fora da escala
     import os
     pedidos = {x.strip() for x in os.environ.get("MOTORES_FONTES", "").split(",") if x.strip()}
+    # BLOCO DA HORA (config/horarios.json): 00h diários · 01h justiça/legislativo ·
+    # 02h plataformas/API · 04h Motores Opressores ativos. Fora do bloco, o motor
+    # espera a sua hora — nada de sobrecarga.
+    bloco = os.environ.get("MOTORES_BLOCO", "completo")
+    hz = ROOT / "config/horarios.json"
+    tipos_bloco = None
+    if bloco not in ("completo", "manual") and hz.exists():
+        for b in load_json(hz).get("blocos", []):
+            if b["bloco"] == bloco:
+                tipos_bloco = set(b["tipos"])
+        if tipos_bloco is not None:
+            escala["saem"] = [s for s in escala["saem"] if s["tipo"] in tipos_bloco]
+            escala["bloco"] = bloco
     if pedidos:
         todos = registro()
         saem = [dict(s, motivo="ativação manual pelo titular") for s in todos
@@ -309,7 +361,7 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         t = por_tipo.setdefault(s["tipo"], {"sensores": 0, "achados": 0, "falhas": 0})
         t["sensores"] += 1; t["achados"] += len(r["achados"]); t["falhas"] += len(r["falhas"])
     est["ultima_execucao"] = {"data": hoje.isoformat(), "em": now_iso(),
-                              "manual": escala.get("manual"),
+                              "manual": escala.get("manual"), "bloco": escala.get("bloco", bloco),
                               "sensores_executados": min(len(escala["saem"]), limite or 10**6),
                               "em_espera": escala["ficam"], "total_esquadra": escala["total"],
                               "previsoes_ativas": escala["previsoes_ativas"],

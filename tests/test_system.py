@@ -597,8 +597,8 @@ class SystemTests(unittest.TestCase):
         Números sempre reais; sem Farol executado, aderência declara a lacuna."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for trecho in ("bz-titulo","bz-cidade","bz-logo","bz-cards","bz-mapa",
-                       "bz-atual","bz-gauge","bz-dimensoes","bz-tab","bzLimpar",
-                       "Mapa de oportunidades","Farol de aderência","Filtro de Oportunidades",
+                       "bz-atual","bz-gauge","bz-dimensoes","bzLimpar",
+                       "Mapa de oportunidades","Farol de aderência","Fontes com edital aberto",
                        "Ver todas as atualizações","Ver detalhes do Farol",
                        "Oportunidade aberta","Em verificação","Encerrada",
                        "Ver oportunidade","Abrir ficha","Limpar filtros",
@@ -1465,14 +1465,13 @@ class SystemTests(unittest.TestCase):
         self.assertIn('const soHover = (v==="bussola")',html)
         # ordem das caixas
         ordem=_re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)
-        self.assertEqual([n for n,_ in ordem],["1","2","4"])   # a caixa 3 (Monitoramentos) foi unificada na 4
+        self.assertEqual([n for n,_ in ordem],["1","2"])   # Monitoramentos e Filtro unificados em Fontes com edital aberto (2)
         rotulos=" ".join(r for _,r in ordem)
         self.assertIn("MAPA DE OPORTUNIDADES",rotulos)
-        self.assertIn("FILTRO DE OPORTUNIDADES",rotulos)
-        self.assertNotIn("MONITORAMENTOS ENCONTRADOS",rotulos)   # unificada em Fontes com edital aberto
+        self.assertNotIn("FILTRO DE OPORTUNIDADES",rotulos)     # unificado em Fontes com edital aberto
+        self.assertNotIn("MONITORAMENTOS ENCONTRADOS",rotulos)   # idem
         self.assertIn("FONTES COM EDITAL ABERTO",rotulos)
-        self.assertLess(sec.find("MAPA DE OPORTUNIDADES"),sec.find("FILTRO DE OPORTUNIDADES"))
-        self.assertLess(sec.find("FILTRO DE OPORTUNIDADES"),sec.find("FONTES COM EDITAL ABERTO"))
+        self.assertLess(sec.find("MAPA DE OPORTUNIDADES"),sec.find("FONTES COM EDITAL ABERTO"))
 
     def test_mapa_monitor_etapa1(self):
         """O Mapa de Oportunidades absorveu o monitor: Encontrado/Ausente por
@@ -1686,8 +1685,8 @@ class SystemTests(unittest.TestCase):
             self.assertIn(m,html,m)
         # Fontes com edital aberto é a última caixa de conteúdo
         ordem=[n for n,_ in _re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)]
-        self.assertEqual(ordem,["1","2","4"])   # caixa 3 unificada na 4
-        self.assertIn("4 · FONTES COM EDITAL ABERTO",sec)
+        self.assertEqual(ordem,["1","2"])   # caixas 3 e antiga 2 unificadas
+        self.assertIn("2 · FONTES COM EDITAL ABERTO",sec)
         # cada edital em bloco próprio, com os dois botões
         self.assertIn('class="ed-item${',html)          # uma caixa por edital (classe dinâmica: em-campanha)
         self.assertIn("Investigar com IA",html)
@@ -1719,7 +1718,7 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("an-grade",html); self.assertIn("an-barra",html)
         self.assertIn("itens da etapa 2",html)
-        self.assertIn("detalhe completo da oportunidade ao passar o cursor",html)
+        self.assertIn("clique nos botões para investigar, arquivar ou abrir a ficha",html)
 
     def test_pncp_filtra_na_coleta(self):
         """O filtro da etapa 2 roda já na coleta do PNCP."""
@@ -2878,10 +2877,63 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn('id="bz-mon"',html)                              # tabela separada removida
         self.assertIn("monitoramentos em campanha de 30 dias",html)
-        self.assertIn("em-campanha",html); self.assertIn("captado via",html)
+        self.assertIn("em-campanha",html); self.assertIn("via ${esc(f.via)}",html)
         for f in ("src/sensores.py","src/eldorado.py","src/completude.py"):
             self.assertIn("pertinente",open(f,encoding="utf-8").read(),f)
         self.assertIn("src.pertinencia",open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read())
+
+
+    def test_horarios_por_bloco_e_dupla_etapa(self):
+        """Cada tipo de motor tem a sua hora entre 00h e 06h BRT; Opressores às 04h
+        só os ativos e com léxico ESPECÍFICO (2ª etapa); relatório diário por bloco."""
+        import os
+        hz=load_json(pathlib.Path("config/horarios.json"))
+        blocos={b["bloco"]:b for b in hz["blocos"]}
+        for b in ("diarios","justica_legislativo","plataformas_api","completude","opressores","busca_ativa","relatorio"):
+            self.assertIn(b,blocos,b)
+        horas=[b["hora_brt"] for b in hz["blocos"]]
+        self.assertTrue(all("00:00"<=h<="06:00" for h in horas),horas)
+        self.assertEqual(len(set(horas)),len(horas))                       # alternados, sem sobreposição
+        self.assertIn("site_oficial",blocos["opressores"]["tipos"]); self.assertEqual(blocos["opressores"]["hora_brt"],"04:00")
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        for c in ("0 3 * * *","0 4 * * *","0 5 * * *","0 6 * * *","0 7 * * *","0 9 * * *"): self.assertIn(c,wf,c)
+        self.assertIn("MOTORES_BLOCO",wf); self.assertIn("src.relatorio_diario",wf)
+        self.assertGreater(wf.count('[ "$MOTORES_BLOCO"'),30)
+        # bloco filtra a escala
+        from src import sensores as S
+        os.environ["MOTORES_BLOCO"]="diarios"
+        try:
+            pass
+        finally:
+            os.environ.pop("MOTORES_BLOCO",None)
+        # léxico específico: um regramento por fonte, sem vazamento
+        r=S.registro()
+        rou=[x for x in r if x.get("fontes_260") and "rouanet" in (x.get("nome") or "").lower()]
+        if rou:
+            lx=S.lexico_especifico(rou[0])
+            self.assertIn("SALIC",lx); self.assertNotIn("FMDCA",lx); self.assertNotIn("Portaria RFB 200",lx)
+        self.assertEqual(S.lexico_especifico({"nome":"Diário Oficial","tipo":"diario_oficial"}),[])   # regulares: só o geral
+        self.assertEqual(S.casa_especifico("Edital do SALIC aberto",["SALIC","PRONAC"]),["SALIC"])
+        # relatório diário
+        from src import relatorio_diario as R
+        os.environ["MOTORES_BLOCO"]="diarios"
+        try:
+            rel=R.run(date(2026,9,3))
+        finally:
+            os.environ.pop("MOTORES_BLOCO",None)
+        self.assertIn("diarios",rel["consolidado"]["blocos_executados"])
+        self.assertTrue(pathlib.Path("estado/relatorios/indice.json").exists())
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("sai às","saem às 04:00","dupla etapa","relatório de hoje"): self.assertIn(x,html,x)
+
+    def test_fontes_com_edital_aberto_unifica_por_area(self):
+        """Filtro de Oportunidades e Monitoramentos foram unificados em Fontes com
+        edital aberto: todas as oportunidades, por área de atuação, 5 colunas."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertNotIn('id="bz-tab"',html); self.assertNotIn('id="bz-mon"',html)
+        for x in ("fa-area","fa-areat","fa-grade","faixa-total","editaisFiltradosBz().filter","grupos[a]=grupos[a]||[]",
+                  "repeat(5,1fr)","Abrir ficha"): self.assertIn(x,html,x)
+        self.assertIn("organizadas por <strong>área de atuação</strong>",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

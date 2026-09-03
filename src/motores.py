@@ -421,6 +421,12 @@ def run() -> dict:
     pac = compactar(leve)
     pac["resumo"] = {k: v for k, v in resumo.items() if k not in ("plataformas", "oficiais", "novas_sem_referencia")}
     pac["plataformas"] = plataformas; pac["oficiais"] = oficiais; pac["novas"] = resumo["novas_sem_referencia"]
+    hz = ROOT / "config/horarios.json"
+    pac["horarios"] = load_json(hz) if hz.exists() else {}
+    ri = ROOT / "estado/relatorios/indice.json"
+    pac["relatorios"] = load_json(ri) if ri.exists() else {"dias": []}
+    hoje_rel = ROOT / "estado/relatorios" / f"{hoje.isoformat()}.json"
+    pac["relatorio_hoje"] = load_json(hoje_rel) if hoje_rel.exists() else None
     (pasta / "motores.json").write_text(json.dumps(pac, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return {k: v for k, v in resumo.items() if k not in ("plataformas", "oficiais", "camadas")}
 

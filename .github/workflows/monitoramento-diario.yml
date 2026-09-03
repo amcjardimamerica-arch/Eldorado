@@ -1,4 +1,4 @@
-name: 01 · Eldorado — varredura profunda segunda e quarta
+name: 01 · Eldorado — motores por hora (00h–06h BRT)
 on:
   schedule:
     - cron: "0 9 * * 1,5" # 06:00 America/Sao_Paulo (UTC-3)
@@ -8,6 +8,10 @@ on:
         description: "IDs dos pontos de captação a rodar (separados por vírgula). Vazio = escala normal do dia."
         required: false
         default: ""
+      bloco:
+        description: "Bloco a executar: diarios | justica_legislativo | plataformas_api | completude | opressores | relatorio | completo"
+        required: false
+        default: "completo"
 permissions:
   contents: write
   issues: write
@@ -21,11 +25,28 @@ jobs:
     env:
       FAROL_AI_API_KEY: ${{ secrets.FAROL_AI_API_KEY }}
       MOTORES_FONTES: ${{ github.event.inputs.fontes }}
+      MOTORES_BLOCO_INPUT: ${{ github.event.inputs.bloco }}
+      AGENDA_CRON: ${{ github.event.schedule }}
       ACESSO_MASTER: ${{ secrets.ACESSO_MASTER }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
+      - name: Decidir o bloco da hora (00h–06h BRT)
+        id: bloco
+        run: |
+          case "$AGENDA_CRON" in
+            "0 3 * * *") B=diarios;;
+            "0 4 * * *") B=justica_legislativo;;
+            "0 5 * * *") B=plataformas_api;;
+            "0 6 * * *") B=completude;;
+            "0 7 * * *") B=opressores;;
+            "0 9 * * *") B=relatorio;;
+            *) B="${MOTORES_BLOCO_INPUT:-completo}";;
+          esac
+          [ -n "$MOTORES_FONTES" ] && B=manual
+          echo "bloco=$B" >> "$GITHUB_OUTPUT"; echo "MOTORES_BLOCO=$B" >> "$GITHUB_ENV"
+          echo "Bloco desta saída: $B"
       - name: Testes antes da coleta
         run: |
           # o resultado fica no repositório (estado/ultimo_teste_ci.txt) para
@@ -56,31 +77,73 @@ jobs:
         if: always()
         run: |
           pip install pypdf --quiet
-          python -m src.completude | tee completude.json
-          timeout 600 python -m src.historico || echo "src.historico: encerrado no orçamento de 600s ou falhou — registrado"
-          timeout 300 python -m src.historico_parecer || echo "src.historico_parecer: encerrado no orçamento de 300s ou falhou — registrado"
-          timeout 300 python -m src.confirmacao || echo "src.confirmacao: encerrado no orçamento de 300s ou falhou — registrado"
-          timeout 120 python -m src.destinacao || echo "destinacao: registrado"
-          timeout 180 python -m src.pertinencia || echo "pertinencia: registrado" || echo "src.destinacao: encerrado no orçamento de 120s ou falhou — registrado"
-          python -m src.emendas
-          python -m src.emendas_docs
-          timeout 1500 python -m src.sensores || echo "src.sensores: encerrado no orçamento de 1500s ou falhou — registrado"
-          timeout 600 python -m src.investigacao || echo "src.investigacao: encerrado no orçamento de 600s ou falhou — registrado"
-          timeout 300 python -m src.regramentos || echo "src.regramentos: encerrado no orçamento de 300s ou falhou — registrado"
-          python -m src.previsao
-          timeout 300 python -c "from src.janelas import verificar_por_sensor; verificar_por_sensor()" || echo "janelas: sem rede"
+          if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            python -m src.completude | tee completude.json
+          fi
+          if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 600 python -m src.historico || echo "src.historico: encerrado no orçamento de 600s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 300 python -m src.historico_parecer || echo "src.historico_parecer: encerrado no orçamento de 300s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 300 python -m src.confirmacao || echo "src.confirmacao: encerrado no orçamento de 300s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 120 python -m src.destinacao || echo "destinacao: registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 180 python -m src.pertinencia || echo "pertinencia: registrado" || echo "src.destinacao: encerrado no orçamento de 120s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            python -m src.emendas
+          fi
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            python -m src.emendas_docs
+          fi
+          if [ "$MOTORES_BLOCO" = "diarios" ] || [ "$MOTORES_BLOCO" = "justica_legislativo" ] || [ "$MOTORES_BLOCO" = "plataformas_api" ] || [ "$MOTORES_BLOCO" = "opressores" ] || [ "$MOTORES_BLOCO" = "manual" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 1500 python -m src.sensores || echo "src.sensores: encerrado no orçamento de 1500s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "plataformas_api" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 600 python -m src.investigacao || echo "src.investigacao: encerrado no orçamento de 600s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 300 python -m src.regramentos || echo "src.regramentos: encerrado no orçamento de 300s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            python -m src.previsao
+          fi
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 300 python -c "from src.janelas import verificar_por_sensor; verificar_por_sensor()" || echo "janelas: sem rede"
+          fi
           python -m src.fontes260
-          timeout 900 python -m src.edicao || echo "src.edicao: encerrado no orçamento de 900s ou falhou — registrado"
-          timeout 300 python -m src.completude_biblioteca || echo "src.completude_biblioteca: encerrado no orçamento de 300s ou falhou — registrado"
-          timeout 300 python -m src.auditoria || echo "src.auditoria: encerrado no orçamento de 300s ou falhou — registrado"
-          timeout 300 python -m src.dossie_fontes || echo "src.dossie_fontes: encerrado no orçamento de 300s ou falhou — registrado"
+          if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 900 python -m src.edicao || echo "src.edicao: encerrado no orçamento de 900s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 300 python -m src.completude_biblioteca || echo "src.completude_biblioteca: encerrado no orçamento de 300s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 300 python -m src.auditoria || echo "src.auditoria: encerrado no orçamento de 300s ou falhou — registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 300 python -m src.dossie_fontes || echo "src.dossie_fontes: encerrado no orçamento de 300s ou falhou — registrado"
+          fi
           timeout 300 python -m src.motores || echo "src.motores: encerrado no orçamento de 300s ou falhou — registrado"
-          timeout 120 python -m src.parecer_prazos || echo "src.parecer_prazos: encerrado no orçamento de 120s ou falhou — registrado"
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 120 python -m src.parecer_prazos || echo "src.parecer_prazos: encerrado no orçamento de 120s ou falhou — registrado"
+          fi
           python -m src.banco
           python -m src.biblioteca
-          python -m src.arquivamento
-          python -m src.fluxo || echo "fluxo 4-5: sem editais completos"
-          python -m src.farol_parecer || echo "parecer: sem credencial ou sem pedidos"
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            python -m src.arquivamento
+          fi
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            python -m src.fluxo || echo "fluxo 4-5: sem editais completos"
+          fi
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            python -m src.farol_parecer || echo "parecer: sem credencial ou sem pedidos"
+          fi
           python -m src.dashboard_dados | tee dash.json
           python -m src.banco
           pip install cryptography --quiet
@@ -93,6 +156,10 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           rm -f dash.json
+      - name: Relatório de funcionamento do bloco
+        if: always()
+        run: |
+          python -m src.relatorio_diario || echo "relatorio registrado com falha"
       - name: Rotas dos 260 pontos e cobertura do acervo
         if: always()
         run: |
