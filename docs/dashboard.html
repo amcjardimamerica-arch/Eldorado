@@ -553,6 +553,25 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <button data-aba="encerrado"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11z"/><path d="M5 4.5h14l1.5 3h-17z"/><path d="M10 12h4"/></svg><span>Arquivados — Encerrados / Descartados</span></button>
 </div>
 <div class="legenda" style="margin-bottom:12px" id="ed-legenda"></div>
+<!-- EM ANDAMENTO — unificação: aqui vive a antiga «Fontes com edital aberto» da Bússola, com todos os seus filtros -->
+<div class="cartao faixa-total" id="ed-abertos-caixa" style="margin-bottom:16px">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <h3 style="margin:0;font-size:16px">Em andamento</h3>
+    <span class=meta title="Inclui os indícios em campanha de completude (até 30 dias atrás do edital integral). Só entra o que passou pelo léxico do terceiro setor: oportunidades aproveitáveis por associações, ONGs e entidades — captação, premiação, capacitação. Editais para empresas são eliminados da base.">— e monitoramentos em campanha de 30 dias</span>
+    <span class=meta style="margin-left:auto" id="fa-resumo"></span>
+  </div>
+  <p class="meta" style="margin:6px 0 10px">Todas as oportunidades levantadas, numa caixa cada, organizadas por <strong>área de atuação</strong>. O órgão que publica aparece dentro da caixa (PNCP e Querido Diário são só a via de captura). Passe o mouse para o resumo. Filtro do terceiro setor aplicado: só o que uma associação pode aproveitar.</p>
+  <div class="bz-filtros" style="margin:0 0 12px">
+    <select id="bz-assoc"><option value="">Associação</option></select>
+    <select id="bz-uf" title="UF — também sincronizada pelo clique no mapa da Bússola"><option value="">Todo o Brasil</option></select>
+    <select id="bz-area"><option value="">Área</option></select>
+    <select id="bz-nivel"><option value="">Nível</option></select>
+    <select id="bz-prazo" title="Curadoria: ABERTA = período de inscrição vigente e confirmado, com cidade/estado e publicação oficial; POSSÍVEL = encontrada, sem prazo confirmado — em investigação até validar ou descartar; ENCERRADA = o período já passou"><option value="vivas">Abertas + possíveis (em investigação)</option><option value="abertos">Só abertas confirmadas</option><option value="possiveis">Só possíveis — sem prazo confirmado</option><option value="encerrados">Encerradas</option><option value="">Todas</option></select>
+    <span class="bz-limpar" onclick="bzLimpar()">⨯ Limpar filtros</span>
+  </div>
+  <div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
+  <div id="bus-fontes"></div>
+</div>
 <div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
   <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
   <select id="ed-uf"><option value="">Todos os estados</option></select>
@@ -692,25 +711,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <div id="mo-disjuntores" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--linha)"></div>
 </div>
 
-<!-- 2 · FONTES COM EDITAL ABERTO — todas as oportunidades, por área de atuação -->
-<div class="cartao faixa-total" style="margin-bottom:16px">
-  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-    <h3 style="margin:0;font-size:16px">Fontes com edital aberto</h3>
-    <span class=meta title="Inclui os indícios em campanha de completude (até 30 dias atrás do edital integral). Só entra o que passou pelo léxico do terceiro setor: oportunidades aproveitáveis por associações, ONGs e entidades — captação, premiação, capacitação. Editais para empresas são eliminados da base.">— e monitoramentos em campanha de 30 dias</span>
-    <span class=meta style="margin-left:auto" id="fa-resumo"></span>
-  </div>
-  <p class="meta" style="margin:6px 0 10px">Todas as oportunidades levantadas, numa caixa cada, organizadas por <strong>área de atuação</strong>. O órgão que publica aparece dentro da caixa (PNCP e Querido Diário são só a via de captura). Passe o mouse para o resumo. Filtro do terceiro setor aplicado: só o que uma associação pode aproveitar.</p>
-  <div class="bz-filtros" style="margin:0 0 12px">
-    <select id="bz-assoc"><option value="">Associação</option></select>
-    <select id="bz-uf" style="display:none" title="a UF é escolhida clicando no mapa"><option value="">UF</option></select>
-    <select id="bz-area"><option value="">Área</option></select>
-    <select id="bz-nivel"><option value="">Nível</option></select>
-    <select id="bz-prazo" title="Curadoria: ABERTA = período de inscrição vigente e confirmado, com cidade/estado e publicação oficial; POSSÍVEL = encontrada, sem prazo confirmado — em investigação até validar ou descartar; ENCERRADA = o período já passou"><option value="vivas">Abertas + possíveis (em investigação)</option><option value="abertos">Só abertas confirmadas</option><option value="possiveis">Só possíveis — sem prazo confirmado</option><option value="encerrados">Encerradas</option><option value="">Todas</option></select>
-    <span class="bz-limpar" onclick="bzLimpar()">⨯ Limpar filtros</span>
-  </div>
-  <div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
-  <div id="bus-fontes"></div>
-</div>
+<!-- (Fontes com edital aberto foi UNIFICADA em Eldorado › Editais Abertos › Em andamento) -->
 
 <!-- Farol de aderência -->
 <div class="cartao">
@@ -1599,10 +1600,12 @@ function desenhaEditais(){
   const aba=window._abaEd||"em_andamento";
   const g=$("ed-grade");g.innerHTML="";g.className=aba==="encerrado"?"ed-linhas faixa-total":"grade-ed";
   $("ed-filtros").classList.toggle("oculto",aba!=="encerrado");
+  const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
   if(aba==="em_andamento"){
-    /* conciliado com a Bússola: mesmos dados e mesmo layout de «Fontes com edital aberto» */
-    g.className="faixa-total"; $("ed-legenda").innerHTML="";
-    montaOportunidadesPorArea(g,null,false,()=>desenhaEditais());
+    /* UNIFICADA: a antiga «Fontes com edital aberto» da Bússola vive aqui, com
+       todos os seus filtros (associação, UF, área, nível, situação) e o resumo */
+    g.innerHTML=""; g.className="oculto"; $("ed-legenda").innerHTML="";
+    desenhaFontesAbertas();
     return;
   }
   if(aba==="inscrito"){
@@ -1721,7 +1724,7 @@ async function garanteAbertas(){
   FA_ABERTAS=expandeCompacto(p); FA_ABERTAS._total=p.total||FA_ABERTAS.length; return FA_ABERTAS;
 }
 window.faMais=function(area){faPagina[area]=(faPagina[area]||10)+20;desenhaFontesAbertas();if(!$("v-editais").classList.contains("oculto"))desenhaEditais();};
-function desenhaFontesAbertas(){ montaOportunidadesPorArea($("bus-fontes"),$("fa-resumo"),true,()=>desenhaFontesAbertas()); }
+function desenhaFontesAbertas(){ if(!$("bus-fontes"))return; montaOportunidadesPorArea($("bus-fontes"),$("fa-resumo"),true,()=>desenhaFontesAbertas()); }
 /* MOTOR ÚNICO de apresentação: usado pela Bússola (Fontes com edital aberto) e
    pela aba Editais Abertos (Em andamento) — mesmos dados, mesmo layout. */
 function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){

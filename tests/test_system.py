@@ -1473,13 +1473,13 @@ class SystemTests(unittest.TestCase):
         self.assertIn('const soHover = (v==="bussola")',html)
         # ordem das caixas
         ordem=_re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)
-        self.assertEqual([n for n,_ in ordem],["1","2"])   # Monitoramentos e Filtro unificados em Fontes com edital aberto (2)
+        self.assertEqual([n for n,_ in ordem],["1"])   # Fontes com edital aberto foi unificada em Editais Abertos
         rotulos=" ".join(r for _,r in ordem)
         self.assertIn("MAPA DE OPORTUNIDADES",rotulos)
         self.assertNotIn("FILTRO DE OPORTUNIDADES",rotulos)     # unificado em Fontes com edital aberto
         self.assertNotIn("MONITORAMENTOS ENCONTRADOS",rotulos)   # idem
-        self.assertIn("FONTES COM EDITAL ABERTO",rotulos)
-        self.assertLess(sec.find("MAPA DE OPORTUNIDADES"),sec.find("FONTES COM EDITAL ABERTO"))
+        self.assertNotIn("FONTES COM EDITAL ABERTO",rotulos)   # unificada em Editais Abertos
+        self.assertNotIn("FONTES COM EDITAL ABERTO",sec)   # migrada para Editais Abertos
 
     def test_mapa_monitor_etapa1(self):
         """O Mapa de Oportunidades absorveu o monitor: Encontrado/Ausente por
@@ -1693,8 +1693,8 @@ class SystemTests(unittest.TestCase):
             self.assertIn(m,html,m)
         # Fontes com edital aberto é a última caixa de conteúdo
         ordem=[n for n,_ in _re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)]
-        self.assertEqual(ordem,["1","2"])   # caixas 3 e antiga 2 unificadas
-        self.assertIn("2 · FONTES COM EDITAL ABERTO",sec)
+        self.assertEqual(ordem,["1"])   # a caixa 2 migrou para Editais Abertos
+        self.assertIn("UNIFICADA em Eldorado",sec)
         # cada edital em bloco próprio, com os dois botões
         self.assertIn('class="ed-item${',html)          # uma caixa por edital (classe dinâmica: em-campanha)
         self.assertIn("Investigar com IA",html)
@@ -3028,7 +3028,7 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ('"Base legal"',"normas na Biblioteca",'id="bz-motores-ativos"',"motores ativos / total","function atualizaMotoresAtivos",
                   '<span>Em andamento</span>','<span>Inscrição realizada</span>','<span>Arquivados — Encerrados / Descartados</span>',
-                  'class="abas abas-ed"',"function montaOportunidadesPorArea","montaOportunidadesPorArea(g,null,false",
+                  'class="abas abas-ed"',"function montaOportunidadesPorArea","desenhaFontesAbertas();",
                   'id="ed-filtros"','id="ed-area"','id="ed-uf"',"ed-linha",'data-acao="detalhe"','data-acao="recuperar"',
                   'salvaDecisao(e.id,"em_andamento"'):
             self.assertIn(x,html,x)
@@ -3077,7 +3077,7 @@ class SystemTests(unittest.TestCase):
         sem 'Ver todas as atualizações'; monitor de integridade lê os motores."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ('id="ouro"','id="bz-rosa-marcas"',"bz-rosa-bt","Todos os estados",'viewBox="0 0 160 160"',
-                  "— captação</strong>",'<select id="mp-uf" style="display:none"','<select id="bz-uf" style="display:none"',
+                  "— captação</strong>",'<select id="mp-uf" style="display:none"','<select id="bz-uf" title="UF — também sincronizada pelo clique no mapa',
                   "bz-mapa-col","desenhaMapaMonitor();};"):
             self.assertIn(x,html,x)
         self.assertNotIn("Ver todas as atualizações",html)
@@ -3171,6 +3171,20 @@ class SystemTests(unittest.TestCase):
         # regra: só aberta confirmada ou regra anual/janela com ano permitido; projetado nunca
         self.assertIn("!c.projetado&&e.calendario_ok!==false",html)
         self.assertIn('situacaoDe(e)==="aberta"||regraConfirmada',html)
+
+
+    def test_fontes_com_edital_aberto_unificada_em_editais_abertos(self):
+        """A caixa da Bússola foi unificada em Eldorado › Editais Abertos › Em andamento,
+        prevalecendo o lado mais completo (todos os filtros + resumo)."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        sec_b=html.split('<section id="v-bussola"')[1].split("</section>")[0]
+        sec_e=html.split('<section id="v-editais"')[1].split("</section>")[0]
+        self.assertNotIn('id="ed-abertos-caixa"',sec_b); self.assertNotIn("Fontes com edital aberto</h3>",sec_b)
+        self.assertIn('id="ed-abertos-caixa"',sec_e)
+        for f in ('id="bz-assoc"','id="bz-uf"','id="bz-area"','id="bz-nivel"','id="bz-prazo"','id="fa-resumo"','id="bus-fontes"'):
+            self.assertIn(f,sec_e,f)
+        self.assertIn('cx.classList.toggle("oculto",aba!=="em_andamento")',html)
+        self.assertIn('if(!$("bus-fontes"))return; montaOportunidadesPorArea',html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
