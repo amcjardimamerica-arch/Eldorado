@@ -338,11 +338,16 @@ box-shadow:0 1px 3px #0002}
 .bz-atual .bz-indices,.bz-atual .bz-cidades{max-height:none}.bz-atual .bz-cidades{max-height:360px;overflow:auto}
 .bz-indices{display:flex;flex-direction:column;gap:7px;margin-top:8px;font-size:12.5px}.bz-indices b{margin-left:auto;color:var(--suave)}.bz-indices>span{display:flex;align-items:center;gap:6px}
 .bz-cidades{display:flex;flex-direction:column;gap:6px}.bz-cidade{border-top:1px dashed var(--linha);padding-top:5px;font-size:12.5px}
-#bz-mapa path.com-abertas:hover{filter:brightness(.92)}
-#bz-mapa text.uf-n{font-size:9px;font-weight:800;fill:#7E2A1E;pointer-events:none}#bz-mapa text.uf-sigla{pointer-events:none}
-#bz-mapa path{fill:#F3E9D8;stroke:#D8C9AC;stroke-width:1;cursor:pointer;transition:fill .12s}
+.bz-op{margin:4px 0 2px 2px;padding:5px 7px;border-radius:8px;background:#FCFCFB;border:1px solid var(--linha)}.bz-op:hover{border-color:#9FC1E8}.bz-op-t{font-size:12px;color:var(--tinta)}
+#bz-mapa path.com-abertas:hover{filter:brightness(.9)}
+#bz-mapa text.uf-n{font-family:Georgia,serif;font-size:9.5px;font-weight:800;fill:#7E2A1E;pointer-events:none}#bz-mapa text.uf-sigla{pointer-events:none}
+#bz-mapa path[data-uf]{stroke:#5A3E10;stroke-width:.9;cursor:pointer;transition:filter .12s}
+#bz-mapa .mapa-antigo text.uf-sigla{font-family:Georgia,'Times New Roman',serif;font-size:10px;fill:#4A3410;font-weight:700;letter-spacing:.5px}
+#bz-mapa .mapa-antigo .mp-alegoria{fill:none;stroke:#5A3E10;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+#bz-mapa .mapa-antigo .mp-tit{font-family:Georgia,serif;font-size:11px;font-weight:700;fill:#5A3E10;letter-spacing:1.5px}
+#bz-mapa .mapa-antigo .mp-sub{font-family:Georgia,serif;font-size:8px;fill:#7A5A1F;letter-spacing:.6px;font-style:italic}
 #bz-mapa path:hover{fill:#EADCC2}
-#bz-mapa path.sel{fill:#E4D2AE;stroke:#C9A227;stroke-width:1.6}
+#bz-mapa path.sel{stroke:#B8412F !important;stroke-width:2.2 !important;filter:drop-shadow(0 0 3px #B8412F66)}
 #bz-mapa text{font-size:11px;fill:#8A7A5C;pointer-events:none}
 .bz-pin{cursor:pointer}
 .bz-legenda{display:flex;flex-direction:column;gap:9px;border:1px solid var(--linha);border-radius:11px;padding:11px 13px;background:#fff;width:max-content;margin-top:12px}
@@ -623,7 +628,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <div class="bz-filtros" id="mp-filtros" style="margin:10px 0 12px">
     <select id="mp-mes"></select>
     <select id="mp-frente"><option value="">Todas as frentes</option></select>
-    <select id="mp-sit"><option value="">Encontrado e ausente</option><option value="encontrado">Só encontrado</option><option value="ausente">Só ausente</option></select>
+    <select id="mp-area" title="área de atuação dos editais mostrados no mapa"><option value="">Todas as áreas de edital</option></select>
+    <select id="mp-sit" style="display:none"><option value=""></option></select>
     <select id="mp-uf" style="display:none"><option value="">Todo o Brasil</option></select>
     <span class="bz-limpar" onclick="mpLimpar()">⨯ Limpar filtros</span>
   </div>
@@ -2271,9 +2277,10 @@ function mpDadosUF(){
   /* MESMA FONTE DE DADOS de «Editais Abertos»: núcleo + base ampla. Cada
      oportunidade vai para o seu estado; as de nível nacional (sem UF ou
      federais) vão para o bucket __nac__ — mostrado pela rosa dos ventos. */
-  const add2=(uf,area,cidade,st,item)=>{const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});
+  const arSel=($("mp-area")||{}).value||"";
+  const add2=(uf,area,cidade,st,item)=>{if(arSel&&area!==arSel)return;const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});
     p[st]=(p[st]||0)+1;p.total++;if(st==="aberta"||st==="possivel"){p.areas[area]=(p.areas[area]||0)+1;if(item&&p.itens.length<400)p.itens.push(item);
-      if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
+      if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{},itens:[]});c.n++;c.areas[area]=(c.areas[area]||0)+1;if(item&&c.itens.length<60)c.itens.push(item);}}};
   const nac=e=>(!e.uf||e.nivel==="federal"||e.abrangencia==="nacional")?null:e.uf;
   (D.editais||[]).forEach(e=>{if(estadoDe(e.id)!=="em_andamento")return;add2(nac(e),e.area||"outros",e.municipio||cid(e.titulo),situacaoDe(e),e);});
   const vistos=new Set((D.editais||[]).map(e=>e.id));
@@ -2284,17 +2291,52 @@ function mpIndicesUF(uf){
   const dias=diasDaBussola().filter(d=>!uf||!d.uf||d.uf===uf);
   return {encontrado:dias.filter(d=>d.encontrado).length,ausente:dias.filter(d=>d.encontrado===false||d.ausente).length};
 }
+/* sépia por intensidade (0..1) em RGB — compatível com qualquer renderizador */
+function sepia(k){const h=34/360,s=0.40+0.35*k,l=0.80-0.32*k;const q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;const f=x=>{x=(x+1)%1;return x<1/6?p+(q-p)*6*x:x<.5?q:x<2/3?p+(q-p)*(2/3-x)*6:p;};
+  const r=Math.round(f(h+1/3)*255),g=Math.round(f(h)*255),b=Math.round(f(h-1/3)*255);return `rgb(${r},${g},${b})`;}
 function desenhaBzMapa(){
   const M=window.MAPA_BR;if(!M){$("bz-mapa").innerHTML="<div class=meta>mapa indisponível</div>";return;}
+  if($("mp-area")&&$("mp-area").options.length<=1){const s=$("mp-area");(D.areas_canonicas||Object.keys(D.areas||{})).map(a=>[a,AREA(a).rotulo]).sort((x,y)=>x[1].localeCompare(y[1],"pt")).forEach(([a,r])=>{const o=document.createElement("option");o.value=a;o.textContent=r;s.appendChild(o);});
+    s.addEventListener("input",()=>{desenhaBzMapa();});}
   if(!FA_ABERTAS){garanteAbertas().then(()=>desenhaBzMapa());}
   const por=mpDadosUF();
-  let svg=`<svg viewBox="${M.viewBox}" style="width:100%;height:auto">`;
+  /* ESTILO CARTA RENASCENTISTA: pergaminho, mar hachurado com ondas, cartela
+     com o título, alegorias regionais desenhadas a traço, estados em sépia
+     (mais escuros onde há mais oportunidades), siglas em serifa antiga. */
+  const [vx,vy,vw,vh]=M.viewBox.split(" ").map(Number);
+  const arSel=($("mp-area")||{}).value||"";
+  let svg=`<svg viewBox="${vx-30} ${vy-30} ${vw+60} ${vh+60}" class="mapa-antigo" style="width:100%;height:auto">
+    <defs><radialGradient id="mp-perg" cx=".5" cy=".5" r=".75"><stop offset="0" stop-color="#F7EBCF"/><stop offset="1" stop-color="#E4CF9E"/></radialGradient>
+      <pattern id="mp-mar" width="26" height="9" patternUnits="userSpaceOnUse"><path d="M0 6 Q6.5 1 13 6 T26 6" fill="none" stroke="#5C7EA6" stroke-width=".7" opacity=".55"/></pattern>
+</defs>
+    <rect x="${vx-30}" y="${vy-30}" width="${vw+60}" height="${vh+60}" fill="url(#mp-perg)"/>
+    <rect x="${vx-30}" y="${vy-30}" width="${vw+60}" height="${vh+60}" fill="url(#mp-mar)"/>
+    <rect x="${vx-22}" y="${vy-22}" width="${vw+44}" height="${vh+44}" fill="none" stroke="#7A5A1F" stroke-width="1.4"/>
+    <rect x="${vx-18}" y="${vy-18}" width="${vw+36}" height="${vh+36}" fill="none" stroke="#7A5A1F" stroke-width=".5" stroke-dasharray="2 3"/>`;
   const maxN=Math.max(1,...Object.entries(por).filter(([k])=>k!=="__nac__").map(([,p])=>(p.aberta||0)+(p.possivel||0)));
+  // terra: sombra de contorno e estados em sépia
+  for(const [uf,e] of Object.entries(M.estados)) svg+=`<path d="${e.d}" fill="none" stroke="#6B4E16" stroke-width="3" opacity=".18" transform="translate(2,2)"/>`;
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
-    const alfa=n?0.18+0.72*Math.sqrt(n/maxN):0;
-    svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${n?" com-abertas":""}" style="${n?`fill:rgba(240,155,46,${alfa.toFixed(2)})`:""}"></path>`;}
+    const k=n?Math.sqrt(n/maxN):0; const fill=n?sepia(k):"#F2E6C8";
+    svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${n?" com-abertas":""}" style="fill:${fill}"></path>`;}
+  // alegorias regionais a traço (mata, sol e cacto, cerrado, montanha e torre, araucária), baleia e caravela no mar
+  const A=(x,y,s,inner)=>`<g transform="translate(${x},${y}) scale(${s})" class="mp-alegoria" pointer-events="none">${inner}</g>`;
+  const arvore=`<path d="M0 14V0"/><path d="M0 0c-7 1-11 6-12 12 5-1 9-4 12-8 3 4 7 7 12 8C11 6 7 1 0 0z"/><path d="M-4 5c-3-1-6 0-8 3M4 5c3-1 6 0 8 3"/>`;
+  const sol=`<circle r="5"/>${[...Array(8)].map((_,i)=>{const a=i*Math.PI/4;return `<line x1="${(7*Math.cos(a)).toFixed(1)}" y1="${(7*Math.sin(a)).toFixed(1)}" x2="${(10*Math.cos(a)).toFixed(1)}" y2="${(10*Math.sin(a)).toFixed(1)}"/>`}).join("")}`;
+  const cacto=`<path d="M0 12V-8M-5 4V-2c0-3 5-3 5 0M5 6V0c0-3-5-3-5 0"/>`;
+  const cerrado=`<path d="M-10 12h20M-6 12c0-6-1-10 2-14M0 12c0-5 1-9-1-13M6 12c0-6 1-10-2-14M-6 3c-3-1-5 0-7 2M6 3c3-1 5 0 7 2"/>`;
+  const montanha=`<path d="M-14 12L-4-6l6 8 4-5 8 15z"/><path d="M-6-2l2 3 2-3"/><path d="M10 12V2h4v10M12 2V-2l2 1v3"/>`;
+  const araucaria=`<path d="M0 14V-6"/><path d="M-9-2c3-3 6-3 9-1 3-2 6-2 9 1M-7 3c2-2 5-2 7 0 2-2 5-2 7 0M-4 8c1-1 3-1 4 0 1-1 3-1 4 0"/>`;
+  const baleia=`<path d="M-16 0c4-5 12-6 20-4 4 1 8 0 10-3 0 4-2 7-6 8 3 3 2 6-2 8H-8c-6 0-9-4-8-9z"/><circle cx="-8" cy="-1" r=".8"/><path d="M-2-6c0-3 1-5 2-7M-2-6c-1-3 0-5 1-7"/>`;
+  const caravela=`<path d="M-14 6h28l-4 6H-10z"/><path d="M0 6V-14M0-13c6 2 9 6 9 12H0zM0-13c-6 2-9 6-9 12h9z"/><path d="M0-14l6 2-6 2"/>`;
+  svg+=A(150,95,1,arvore)+A(230,70,1,arvore)+A(540,150,1,sol)+A(500,205,1,cacto)+A(395,300,1,cerrado)+A(470,380,1,montanha)+A(330,520,1,araucaria)
+      +A(590,400,1.3,baleia)+A(585,520,1.1,caravela)+A(90,560,1.2,caravela);
+  // siglas e números em serifa antiga
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
     svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-8}" y="${e.cy+13}" class="uf-n">${n}</text>`:""}`;}
+  // cartela com o título
+  svg+=`<g class="mp-cartela" pointer-events="none"><rect x="${vx+8}" y="${vy-12}" width="250" height="34" rx="4" fill="#F7EBCF" stroke="#7A5A1F" stroke-width="1"/><rect x="${vx+11}" y="${vy-9}" width="244" height="28" rx="3" fill="none" stroke="#7A5A1F" stroke-width=".5"/>
+    <text x="${vx+133}" y="${vy+3}" text-anchor="middle" class="mp-tit">MAPPA DAS OPORTUNIDADES</text><text x="${vx+133}" y="${vy+15}" text-anchor="middle" class="mp-sub">captação para o terceiro sector · ${arSel?esc(AREA(arSel).rotulo):"todas as áreas"}</text></g>`;
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
@@ -2328,8 +2370,25 @@ function desenhaBzLateral(por){
     ${nacional?`<div class=meta style="margin:10px 0 4px"><strong>Oportunidades de nível nacional</strong> (${(p.itens||[]).length})</div>
     <div class="bz-cidades">${(p.itens||[]).slice(0,40).map(e=>`<div class="bz-cidade" data-op="${esc(e.id)}"><b>${esc((e.programa||e.titulo||"").slice(0,70))}</b> <span class=tag style="font-size:10px">${situacaoDe(e)==="aberta"?"aberta":"possível"}</span><div class=meta>${esc(AREA(e.area).rotulo)} · ${esc(e.fonte_nome||e.orgao||"")}${e.fim?" · até "+br(e.fim):""}</div></div>`).join("")}</div>`
     :`<div class=meta style="margin:10px 0 4px"><strong>Cidades com oportunidade</strong> ${cidades.length?`<span>(${cidades.length})</span>`:"— nenhuma identificada"}</div>
-    <div class="bz-cidades">${cidades.slice(0,40).map(([c,v])=>`<div class="bz-cidade"><b>${esc(c)}</b> <span class=meta>${v.n}</span><div class=meta>${Object.entries(v.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<span class=ponto style="background:${AREA(a).cor};width:8px;height:8px"></span>${esc(AREA(a).rotulo)} ${n}`).join(" · ")}</div></div>`).join("")}
-    ${cidades.length>40?`<div class=meta>… e mais ${cidades.length-40} cidade(s); use o filtro de UF em Editais Abertos para ver todas.</div>`:""}</div>`}`;
+    <div class="bz-cidades">${cidades.slice(0,25).map(([c,v])=>`<div class="bz-cidade"><b>${esc(c)}</b> <span class=meta>${v.n} oportunidade(s) · ${Object.entries(v.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>esc(AREA(a).rotulo)+" "+n).join(", ")}</span>
+        ${(v.itens||[]).slice(0,3).map(e=>{const s=situacaoDe(e);const org=(e.orgao&&!/pncp|querido/i.test(e.orgao))?e.orgao:(e.fonte_nome&&!/pncp|querido/i.test(e.fonte_nome)?e.fonte_nome:"Prefeitura de "+c);
+          return `<div class="bz-op" data-op="${esc(e.id)}"><span class=ponto style="background:${AREA(e.area).cor};width:8px;height:8px"></span>
+            <span class=bz-op-t>${esc((e.objeto||e.titulo||"").replace(/^Diário Oficial de [^—]+—\s*/,"").replace(/"/g,"").slice(0,110))}</span>
+            <div class=meta>${s==="aberta"?"<b style=\"color:#9a5a00\">aberta</b>":"possível · em investigação"} · ${esc(AREA(e.area).rotulo)}${e.fim?" · inscrições até "+br(e.fim):e.prazo_texto?" · prazo "+esc(e.prazo_texto):" · prazo a confirmar"}${e.valor_texto?" · "+esc(e.valor_texto):""} · ${esc(org)}
+            ${e.url?` · <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:""}</div></div>`;}).join("")}
+        ${(v.itens||[]).length>3?`<div class=meta style="padding-left:14px">+${(v.itens||[]).length-3} oportunidade(s) nesta cidade — veja em Editais Abertos</div>`:""}</div>`).join("")}
+    ${cidades.length>25?`<div class=meta>… e mais ${cidades.length-25} cidade(s) em Editais Abertos.</div>`:""}</div>`}`;
+  // relatório simples ao passar o mouse em cada dado do painel
+  const REL={aberta:"Oportunidades com período de inscrição vigente e confirmado, com cidade/estado e publicação em local oficial — dá para decidir concorrer.",
+    encerrada:"O período de inscrição já passou; ficam no histórico para estudo de recorrência.",
+    possivel:"Chamamentos encontrados sem período de inscrição confirmado: não se eliminam — seguem em campanha de completude por 30 dias até validar (viram abertas) ou descartar.",
+    encontrado:"Dias de varredura em que os motores captaram algum indício para este território."};
+  L.querySelectorAll(".bz-indices>span").forEach(sp=>{const k=/aberta/i.test(sp.textContent)?"aberta":/encerrada/i.test(sp.textContent)?"encerrada":/poss/i.test(sp.textContent)?"possivel":"encontrado";
+    ligaTip(sp,`<strong>${esc(sp.textContent.replace(/\d+$/,"").trim())}</strong><br>${REL[k]}<br><em>${esc(rotUF)} · ${sp.textContent.match(/\d+$/)?.[0]||0} registro(s) — mesma base de Editais Abertos</em>`);});
+  L.querySelectorAll(".legenda>span").forEach(sp=>ligaTip(sp,`<strong>${esc(sp.textContent.replace(/\d+$/,"").trim())}</strong><br>oportunidades abertas ou possíveis desta área em ${esc(rotUF)}: ${sp.textContent.match(/\d+$/)?.[0]||0}.<br><em>filtre por área no mapa ou em Editais Abertos</em>`));
+  L.querySelectorAll(".bz-op[data-op]").forEach(el=>{el.style.cursor="pointer";const e=(p.itens||[]).find(x=>x.id===el.dataset.op)||[].concat(...cidades.map(([,v])=>v.itens||[])).find(x=>x.id===el.dataset.op);
+    if(e){ligaTip(el,`<strong>${esc(e.titulo||"")}</strong><br>${esc(e.objeto||"objeto: conferir na publicação")}<br><span style="opacity:.85">${esc(AREA(e.area).rotulo)} · ${situacaoDe(e)} · ${e.fim?"até "+br(e.fim):"prazo a confirmar"}${e.valor_texto?" · "+esc(e.valor_texto):""}</span><br><em>clique para a ficha; o link abre o site oficial</em>`);
+      el.onclick=ev=>{if(ev.target.closest("a"))return;detalheEdital({programa:e.fonte_nome,lei:"—",protocolo:e.id,resumo:e.objeto||"",territorio:e.uf||"BR",detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:e.objeto||e.titulo||"",coletado_em:e.coletado_em,lacuna:null},...e});};}});
   L.querySelectorAll(".bz-cidade[data-op]").forEach(el=>{el.style.cursor="pointer";el.onclick=()=>{const e=(p.itens||[]).find(x=>x.id===el.dataset.op);if(e)detalheEdital({programa:e.fonte_nome,lei:"—",protocolo:e.id,resumo:e.objeto||"",territorio:"Brasil",detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:e.objeto||e.titulo||"",coletado_em:e.coletado_em,lacuna:null},...e});};});
 }
 function desenhaBzAtual(){

@@ -3216,12 +3216,25 @@ class SystemTests(unittest.TestCase):
         número e intensidade por estado; rosa de carta náutica mostra só o nível
         nacional (Brasil), sem os estados."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("MESMA FONTE DE DADOS de «Editais Abertos»",'"__nac__"',"uf-n","rgba(240,155,46","window.bzNacional",
+        for x in ("MESMA FONTE DE DADOS de «Editais Abertos»",'"__nac__"',"uf-n","sepia(k)","window.bzNacional",
                   "Brasil · nível nacional","Oportunidades de nível nacional",'id="perg"','id="bz-rosa-ondas"','id="bz-rosa-sol"',
                   "flor-de-lis no norte","BRASIL · CAPTAÇÃO",'<option value="__nac__">'):
             self.assertIn(x,html,x)
         self.assertNotIn("Todos os estados</span>",html)
         self.assertNotIn("Array(12)",html)                                 # nenhum template solto no HTML
+
+
+    def test_mapa_renascentista_filtro_de_area_e_relatorios_no_painel(self):
+        """Mapa em estilo de carta renascentista (pergaminho, mar, cartela, alegorias),
+        filtro por área no lugar de encontrado/ausente, relatório no hover de cada
+        dado e cidades com as oportunidades escritas, resumo e link oficial."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("ESTILO CARTA RENASCENTISTA",'id="mp-perg"','id="mp-mar"',"mp-alegoria","MAPPA DAS OPORTUNIDADES","function sepia",
+                  'id="mp-area"',"const arSel=","bz-op-t","site oficial ↗","const REL={","mesma base de Editais Abertos"):
+            self.assertIn(x,html,x)
+        self.assertIn('<select id="mp-sit" style="display:none">',html)      # encontrado/ausente removido do mapa
+        self.assertNotIn("hsl(",html.split("function sepia")[1].split("function desenhaBzMapa")[0])
+        self.assertNotIn("mp-hachura",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
