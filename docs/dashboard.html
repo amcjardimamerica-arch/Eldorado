@@ -334,7 +334,7 @@ box-shadow:0 1px 3px #0002}
 .bz-rosa-bt{position:absolute;left:6px;bottom:6px;border:0;background:transparent;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
 .bz-rosa-bt:hover .bz-rosa{filter:drop-shadow(0 0 4px #C9A22766)}
 .bz-rosa-rot{font-family:Georgia,serif;font-size:10.5px;letter-spacing:.08em;color:#9A7A22;text-transform:uppercase}
-.bz-rosa{width:150px;height:150px;display:block;background:transparent;filter:drop-shadow(0 2px 3px #0002)}
+.bz-rosa{width:170px;height:170px;display:block;background:transparent}
 .bz-atual .bz-indices,.bz-atual .bz-cidades{max-height:none}.bz-atual .bz-cidades{max-height:360px;overflow:auto}
 .bz-indices{display:flex;flex-direction:column;gap:7px;margin-top:8px;font-size:12.5px}.bz-indices b{margin-left:auto;color:var(--suave)}.bz-indices>span{display:flex;align-items:center;gap:6px}
 .bz-cidades{display:flex;flex-direction:column;gap:6px}.bz-cidade{border-top:1px dashed var(--linha);padding-top:5px;font-size:12.5px}
@@ -343,7 +343,7 @@ box-shadow:0 1px 3px #0002}
 #bz-mapa text.uf-n{font-family:Georgia,serif;font-size:9.5px;font-weight:800;fill:#7E2A1E;pointer-events:none}#bz-mapa text.uf-sigla{pointer-events:none}
 #bz-mapa path[data-uf]{stroke:#5A3E10;stroke-width:.9;cursor:pointer;transition:filter .12s}
 #bz-mapa .mapa-antigo text.uf-sigla{font-family:Georgia,'Times New Roman',serif;font-size:10px;fill:#4A3410;font-weight:700;letter-spacing:.5px}
-#bz-mapa .mapa-antigo .mp-alegoria{fill:none;stroke:#5A3E10;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+#bz-mapa .mapa-antigo .arte{opacity:.95}
 #bz-mapa .mapa-antigo .mp-tit{font-family:Georgia,serif;font-size:11px;font-weight:700;fill:#5A3E10;letter-spacing:1.5px}
 #bz-mapa .mapa-antigo .mp-sub{font-family:Georgia,serif;font-size:8px;fill:#7A5A1F;letter-spacing:.6px;font-style:italic}
 #bz-mapa path:hover{fill:#EADCC2}
@@ -637,47 +637,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <div class="bz-mapa-col">
       <div id="bz-mapa"></div>
       <button class="bz-rosa-bt" onclick="bzNacional()" title="Brasil — oportunidades de nível nacional (federais e sem estado), sem os dados dos estados">
-        <svg class="bz-rosa" viewBox="0 0 200 200" role="img" aria-label="rosa dos ventos — Brasil, nível nacional">
-          <defs><linearGradient id="ouro" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8C766"/><stop offset=".5" stop-color="#B8912E"/><stop offset="1" stop-color="#E2BE5C"/></linearGradient>
-            <radialGradient id="perg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FBF3DF"/><stop offset="1" stop-color="#EAD9A8"/></radialGradient>
-            <linearGradient id="verm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B8412F"/><stop offset="1" stop-color="#7E2A1E"/></linearGradient>
-            <linearGradient id="azul" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F5C8F"/><stop offset="1" stop-color="#1B3A5E"/></linearGradient></defs>
-          <!-- pergaminho e anéis -->
-          <circle cx="100" cy="100" r="96" fill="url(#perg)" stroke="url(#ouro)" stroke-width="1.2"/>
-          <circle cx="100" cy="100" r="90" fill="none" stroke="#B8912E" stroke-width=".7"/>
-          <circle cx="100" cy="100" r="84" fill="none" stroke="#B8912E" stroke-width=".5" stroke-dasharray="1.5 2.5"/>
-          <!-- ondas decorativas no anel externo -->
-          <g fill="none" stroke="#2F5C8F" stroke-width=".8" opacity=".55" id="bz-rosa-ondas"></g>
-          <!-- marcas de rumo -->
-          <g fill="none" stroke="#7A5A1F" stroke-width=".6" id="bz-rosa-marcas"></g>
-          <!-- estrela de 16 pontas (secundárias) -->
-          <g stroke="#7A5A1F" stroke-width=".5">
-            <path fill="#1B3A5E" d="M100 100 L95 88 L128 32 L105 95 Z M100 100 L105 88 L72 32 L95 95 Z M100 100 L112 95 L168 128 L105 105 Z M100 100 L112 105 L168 72 L105 95 Z M100 100 L105 112 L72 168 L95 105 Z M100 100 L95 112 L128 168 L105 105 Z M100 100 L88 105 L32 72 L95 95 Z M100 100 L88 95 L32 128 L95 105 Z" opacity=".85"/>
-          </g>
-          <!-- estrela de 8 pontas (principais): metades claras e escuras -->
-          <g stroke="#3a2a0a" stroke-width=".7">
-            <path fill="url(#verm)" d="M100 100 L92 80 L100 12 Z"/><path fill="#F6E9C4" d="M100 100 L108 80 L100 12 Z"/>
-            <path fill="url(#azul)" d="M100 100 L120 92 L188 100 Z"/><path fill="#F6E9C4" d="M100 100 L120 108 L188 100 Z"/>
-            <path fill="url(#azul)" d="M100 100 L108 120 L100 188 Z"/><path fill="#F6E9C4" d="M100 100 L92 120 L100 188 Z"/>
-            <path fill="url(#azul)" d="M100 100 L80 108 L12 100 Z"/><path fill="#F6E9C4" d="M100 100 L80 92 L12 100 Z"/>
-            <path fill="url(#ouro)" d="M100 100 L106 84 L146 54 L116 94 Z"/><path fill="#F6E9C4" d="M100 100 L116 94 L146 54 L106 84 Z" opacity=".55"/>
-            <path fill="url(#ouro)" d="M100 100 L116 106 L146 146 L106 116 Z"/><path fill="#F6E9C4" d="M100 100 L106 116 L146 146 L116 106 Z" opacity=".55"/>
-            <path fill="url(#ouro)" d="M100 100 L94 116 L54 146 L84 106 Z"/><path fill="#F6E9C4" d="M100 100 L84 106 L54 146 L94 116 Z" opacity=".55"/>
-            <path fill="url(#ouro)" d="M100 100 L84 94 L54 54 L94 84 Z"/><path fill="#F6E9C4" d="M100 100 L94 84 L54 54 L84 94 Z" opacity=".55"/>
-          </g>
-          <!-- flor-de-lis no norte -->
-          <g fill="url(#verm)" stroke="#3a2a0a" stroke-width=".5" transform="translate(100,14) scale(.9)">
-            <path d="M0-8 C3-4 3 0 0 3 C-3 0 -3-4 0-8z"/><path d="M0 3 C4 1 8 2 9 6 C6 6 3 5 0 3z"/><path d="M0 3 C-4 1 -8 2 -9 6 C-6 6 -3 5 0 3z"/><rect x="-1.2" y="3" width="2.4" height="5"/></g>
-          <!-- sol e lua nos cantos, como nas cartas antigas -->
-          <g transform="translate(160,40)"><circle r="7" fill="url(#ouro)" stroke="#7A5A1F" stroke-width=".5"/><g stroke="#B8912E" stroke-width=".8" id="bz-rosa-sol"></g><circle cx="-2" cy="-1.5" r=".8" fill="#7A5A1F"/><circle cx="2" cy="-1.5" r=".8" fill="#7A5A1F"/><path d="M-2.5 2 Q0 4 2.5 2" fill="none" stroke="#7A5A1F" stroke-width=".6"/></g>
-          <g transform="translate(40,160)"><path d="M0-8 A8 8 0 1 0 0 8 A6 6 0 1 1 0-8z" fill="#F6E9C4" stroke="#7A5A1F" stroke-width=".5"/><circle cx="-2" cy="-1" r=".7" fill="#7A5A1F"/><path d="M-3.5 2.5 Q-2 3.5 -.5 2.5" fill="none" stroke="#7A5A1F" stroke-width=".5"/></g>
-          <!-- centro -->
-          <circle cx="100" cy="100" r="6" fill="#F6E9C4" stroke="#7A5A1F" stroke-width=".8"/><circle cx="100" cy="100" r="2.2" fill="url(#verm)"/>
-          <!-- pontos cardeais em serifa antiga -->
-          <g font-family="Georgia,'Times New Roman',serif" font-size="12" font-weight="700" fill="#7E2A1E" text-anchor="middle">
-            <text x="100" y="36">N</text><text x="100" y="172">S</text><text x="165" y="104" fill="#1B3A5E">L</text><text x="35" y="104" fill="#1B3A5E">O</text></g>
-          <g font-family="Georgia,serif" font-size="7" fill="#7A5A1F" text-anchor="middle" letter-spacing="1"><text x="100" y="192">BRASIL · CAPTAÇÃO</text></g>
-        </svg>
+        <svg class="bz-rosa" viewBox="-100 -100 200 200" role="img" aria-label="rosa dos ventos — Brasil, nível nacional" id="bz-rosa-svg"></svg>
         <span class="bz-rosa-rot">Brasil · nível nacional</span>
       </button>
     </div>
@@ -800,6 +760,7 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
 <script src="mapa-brasil.js"></script>
+<script src="mapa-arte.js"></script>
 <script src="dashboard-dados.enc.js"></script>
 <script src="dashboard-dados.js"></script>
 <script>
@@ -2259,15 +2220,7 @@ function bzStatusUF(){
   return por;
 }
 /* marcas de grau da rosa dos ventos (72 traços finos, a cada 5°) */
-(function(){const g=document.getElementById("bz-rosa-marcas");if(g){let s="";
-  for(let i=0;i<72;i++){const a=i*5*Math.PI/180,r1=i%18===0?80:i%6===0?82:84;
-    s+=`<line x1="${(100+Math.cos(a)*r1).toFixed(2)}" y1="${(100+Math.sin(a)*r1).toFixed(2)}" x2="${(100+Math.cos(a)*87).toFixed(2)}" y2="${(100+Math.sin(a)*87).toFixed(2)}"/>`;}
-  g.innerHTML=s;}
-  const o=document.getElementById("bz-rosa-ondas");if(o){let s="";
-  for(let i=0;i<36;i++){const a0=i*10*Math.PI/180,a1=(i*10+5)*Math.PI/180,a2=(i*10+10)*Math.PI/180,r=93;
-    s+=`<path d="M${(100+Math.cos(a0)*r).toFixed(1)} ${(100+Math.sin(a0)*r).toFixed(1)} Q${(100+Math.cos(a1)*(r-2.2)).toFixed(1)} ${(100+Math.sin(a1)*(r-2.2)).toFixed(1)} ${(100+Math.cos(a2)*r).toFixed(1)} ${(100+Math.sin(a2)*r).toFixed(1)}"/>`;}
-  o.innerHTML=s;}
-  const sl=document.getElementById("bz-rosa-sol");if(sl){let s="";for(let i=0;i<12;i++){const a=i*Math.PI/6;s+=`<line x1="${(8.5*Math.cos(a)).toFixed(1)}" y1="${(8.5*Math.sin(a)).toFixed(1)}" x2="${(11*Math.cos(a)).toFixed(1)}" y2="${(11*Math.sin(a)).toFixed(1)}"/>`;}sl.innerHTML=s;}})();
+(function(){const r=document.getElementById("bz-rosa-svg");if(r&&window.MAPA_ARTE)r.innerHTML=window.MAPA_ARTE.rosa();})();
 /* dados por UF: núcleo + base ampla (abertas.json) — abertos, por área e por cidade */
 function mpDadosUF(){
   const hojeISO=HOJE.toISOString().slice(0,10); const por={};
@@ -2300,43 +2253,34 @@ function desenhaBzMapa(){
     s.addEventListener("input",()=>{desenhaBzMapa();});}
   if(!FA_ABERTAS){garanteAbertas().then(()=>desenhaBzMapa());}
   const por=mpDadosUF();
-  /* ESTILO CARTA RENASCENTISTA: pergaminho, mar hachurado com ondas, cartela
-     com o título, alegorias regionais desenhadas a traço, estados em sépia
-     (mais escuros onde há mais oportunidades), siglas em serifa antiga. */
+  /* GRAVURA RENASCENTISTA sobre fundo transparente: sem borda nem quadrado.
+     O continente em sépia por intensidade, contorno de tinta com sombra,
+     algumas linhas de mar só junto à costa, cartela em fita, marcos famosos
+     (Amazonas, Lençóis, Pão de Açúcar, igreja barroca, Cataratas, Pantanal,
+     araucária), a cidade de Eldorado em Goiás, o Farol de Alexandria na costa
+     do Nordeste e criaturas (serpente marinha, Iara). Arte em docs/mapa-arte.js. */
   const [vx,vy,vw,vh]=M.viewBox.split(" ").map(Number);
   const arSel=($("mp-area")||{}).value||"";
-  let svg=`<svg viewBox="${vx-30} ${vy-30} ${vw+60} ${vh+60}" class="mapa-antigo" style="width:100%;height:auto">
-    <defs><radialGradient id="mp-perg" cx=".5" cy=".5" r=".75"><stop offset="0" stop-color="#F7EBCF"/><stop offset="1" stop-color="#E4CF9E"/></radialGradient>
-      <pattern id="mp-mar" width="26" height="9" patternUnits="userSpaceOnUse"><path d="M0 6 Q6.5 1 13 6 T26 6" fill="none" stroke="#5C7EA6" stroke-width=".7" opacity=".55"/></pattern>
-</defs>
-    <rect x="${vx-30}" y="${vy-30}" width="${vw+60}" height="${vh+60}" fill="url(#mp-perg)"/>
-    <rect x="${vx-30}" y="${vy-30}" width="${vw+60}" height="${vh+60}" fill="url(#mp-mar)"/>
-    <rect x="${vx-22}" y="${vy-22}" width="${vw+44}" height="${vh+44}" fill="none" stroke="#7A5A1F" stroke-width="1.4"/>
-    <rect x="${vx-18}" y="${vy-18}" width="${vw+36}" height="${vh+36}" fill="none" stroke="#7A5A1F" stroke-width=".5" stroke-dasharray="2 3"/>`;
+  const ART=window.MAPA_ARTE;
+  let svg=`<svg viewBox="${vx-40} ${vy-30} ${vw+100} ${vh+60}" class="mapa-antigo" style="width:100%;height:auto;background:transparent">`;
   const maxN=Math.max(1,...Object.entries(por).filter(([k])=>k!=="__nac__").map(([,p])=>(p.aberta||0)+(p.possivel||0)));
-  // terra: sombra de contorno e estados em sépia
-  for(const [uf,e] of Object.entries(M.estados)) svg+=`<path d="${e.d}" fill="none" stroke="#6B4E16" stroke-width="3" opacity=".18" transform="translate(2,2)"/>`;
+  // linhas de mar só junto à costa (contorno repetido e desvanecido)
+  const costa=Object.values(M.estados).map(e=>`<path d="${e.d}"/>`).join("");
+  svg+=`<g fill="none" stroke="${ART?ART.SEA:"#4E6E8E"}" stroke-linejoin="round" pointer-events="none">
+    <g stroke-width="8" opacity=".10">${costa}</g><g stroke-width="14" opacity=".06">${costa}</g><g stroke-width="20" opacity=".035">${costa}</g></g>`;
+  // sombra de tinta do continente
+  for(const [uf,e] of Object.entries(M.estados)) svg+=`<path d="${e.d}" fill="#3B2A14" opacity=".22" transform="translate(2.5,2.5)" pointer-events="none"/>`;
+  // estados em sépia por intensidade
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
-    const k=n?Math.sqrt(n/maxN):0; const fill=n?sepia(k):"#F2E6C8";
+    const k=n?Math.sqrt(n/maxN):0; const fill=n?sepia(k):"#F5EBD3";
     svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${n?" com-abertas":""}" style="fill:${fill}"></path>`;}
-  // alegorias regionais a traço (mata, sol e cacto, cerrado, montanha e torre, araucária), baleia e caravela no mar
-  const A=(x,y,s,inner)=>`<g transform="translate(${x},${y}) scale(${s})" class="mp-alegoria" pointer-events="none">${inner}</g>`;
-  const arvore=`<path d="M0 14V0"/><path d="M0 0c-7 1-11 6-12 12 5-1 9-4 12-8 3 4 7 7 12 8C11 6 7 1 0 0z"/><path d="M-4 5c-3-1-6 0-8 3M4 5c3-1 6 0 8 3"/>`;
-  const sol=`<circle r="5"/>${[...Array(8)].map((_,i)=>{const a=i*Math.PI/4;return `<line x1="${(7*Math.cos(a)).toFixed(1)}" y1="${(7*Math.sin(a)).toFixed(1)}" x2="${(10*Math.cos(a)).toFixed(1)}" y2="${(10*Math.sin(a)).toFixed(1)}"/>`}).join("")}`;
-  const cacto=`<path d="M0 12V-8M-5 4V-2c0-3 5-3 5 0M5 6V0c0-3-5-3-5 0"/>`;
-  const cerrado=`<path d="M-10 12h20M-6 12c0-6-1-10 2-14M0 12c0-5 1-9-1-13M6 12c0-6 1-10-2-14M-6 3c-3-1-5 0-7 2M6 3c3-1 5 0 7 2"/>`;
-  const montanha=`<path d="M-14 12L-4-6l6 8 4-5 8 15z"/><path d="M-6-2l2 3 2-3"/><path d="M10 12V2h4v10M12 2V-2l2 1v3"/>`;
-  const araucaria=`<path d="M0 14V-6"/><path d="M-9-2c3-3 6-3 9-1 3-2 6-2 9 1M-7 3c2-2 5-2 7 0 2-2 5-2 7 0M-4 8c1-1 3-1 4 0 1-1 3-1 4 0"/>`;
-  const baleia=`<path d="M-16 0c4-5 12-6 20-4 4 1 8 0 10-3 0 4-2 7-6 8 3 3 2 6-2 8H-8c-6 0-9-4-8-9z"/><circle cx="-8" cy="-1" r=".8"/><path d="M-2-6c0-3 1-5 2-7M-2-6c-1-3 0-5 1-7"/>`;
-  const caravela=`<path d="M-14 6h28l-4 6H-10z"/><path d="M0 6V-14M0-13c6 2 9 6 9 12H0zM0-13c-6 2-9 6-9 12h9z"/><path d="M0-14l6 2-6 2"/>`;
-  svg+=A(150,95,1,arvore)+A(230,70,1,arvore)+A(540,150,1,sol)+A(500,205,1,cacto)+A(395,300,1,cerrado)+A(470,380,1,montanha)+A(330,520,1,araucaria)
-      +A(590,400,1.3,baleia)+A(585,520,1.1,caravela)+A(90,560,1.2,caravela);
+  // ilustrações (gravura)
+  if(ART) svg+=ART.ilustracoes();
   // siglas e números em serifa antiga
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
     svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-8}" y="${e.cy+13}" class="uf-n">${n}</text>`:""}`;}
-  // cartela com o título
-  svg+=`<g class="mp-cartela" pointer-events="none"><rect x="${vx+8}" y="${vy-12}" width="250" height="34" rx="4" fill="#F7EBCF" stroke="#7A5A1F" stroke-width="1"/><rect x="${vx+11}" y="${vy-9}" width="244" height="28" rx="3" fill="none" stroke="#7A5A1F" stroke-width=".5"/>
-    <text x="${vx+133}" y="${vy+3}" text-anchor="middle" class="mp-tit">MAPPA DAS OPORTUNIDADES</text><text x="${vx+133}" y="${vy+15}" text-anchor="middle" class="mp-sub">captação para o terceiro sector · ${arSel?esc(AREA(arSel).rotulo):"todas as áreas"}</text></g>`;
+  // cartela em fita
+  if(ART) svg+=`<g transform="translate(${vx-20},${vy-26})">${ART.fita("MAPPA DAS OPORTUNIDADES","captação para o terceiro sector · "+(arSel?esc(AREA(arSel).rotulo):"todas as áreas"))}</g>`;
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{

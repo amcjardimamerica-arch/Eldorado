@@ -3013,7 +3013,7 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn('class="bz-pin"',html)                   # pinos removidos
         self.assertNotIn('src="arte/rosa-ventos.png"',html)       # PNG quebrado saiu
-        for x in ('svg class="bz-rosa"','>N</text>','>S</text>','>L</text>','>O</text>',
+        for x in ('svg class="bz-rosa"',
                   "function mpDadosUF","function desenhaBzLateral","bz-indices","bz-cidades",
                   "clique para ver as cidades","path.com-abertas"):
             self.assertIn(x,html,x)
@@ -3076,7 +3076,7 @@ class SystemTests(unittest.TestCase):
         botão 'Todos os estados'; filtro de UF só pelo clique; '— captação';
         sem 'Ver todas as atualizações'; monitor de integridade lê os motores."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ('id="ouro"','id="bz-rosa-marcas"',"bz-rosa-bt","Brasil · nível nacional",'viewBox="0 0 200 200"',
+        for x in ("bz-rosa-bt","Brasil · nível nacional",'viewBox="-100 -100 200 200"',
                   "— captação</strong>",'<select id="mp-uf" style="display:none"','<select id="bz-uf" title="UF — também sincronizada pelo clique no mapa',
                   "bz-mapa-col","desenhaMapaMonitor();};"):
             self.assertIn(x,html,x)
@@ -3217,8 +3217,7 @@ class SystemTests(unittest.TestCase):
         nacional (Brasil), sem os estados."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("MESMA FONTE DE DADOS de «Editais Abertos»",'"__nac__"',"uf-n","sepia(k)","window.bzNacional",
-                  "Brasil · nível nacional","Oportunidades de nível nacional",'id="perg"','id="bz-rosa-ondas"','id="bz-rosa-sol"',
-                  "flor-de-lis no norte","BRASIL · CAPTAÇÃO",'<option value="__nac__">'):
+                  "Brasil · nível nacional","Oportunidades de nível nacional",'id="bz-rosa-svg"','<option value="__nac__">'):
             self.assertIn(x,html,x)
         self.assertNotIn("Todos os estados</span>",html)
         self.assertNotIn("Array(12)",html)                                 # nenhum template solto no HTML
@@ -3229,12 +3228,28 @@ class SystemTests(unittest.TestCase):
         filtro por área no lugar de encontrado/ausente, relatório no hover de cada
         dado e cidades com as oportunidades escritas, resumo e link oficial."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("ESTILO CARTA RENASCENTISTA",'id="mp-perg"','id="mp-mar"',"mp-alegoria","MAPPA DAS OPORTUNIDADES","function sepia",
+        for x in ("GRAVURA RENASCENTISTA","mapa-arte.js","function sepia",
                   'id="mp-area"',"const arSel=","bz-op-t","site oficial ↗","const REL={","mesma base de Editais Abertos"):
             self.assertIn(x,html,x)
         self.assertIn('<select id="mp-sit" style="display:none">',html)      # encontrado/ausente removido do mapa
         self.assertNotIn("hsl(",html.split("function sepia")[1].split("function desenhaBzMapa")[0])
         self.assertNotIn("mp-hachura",html)
+
+
+    def test_gravura_do_mapa_e_rosa_sem_circulo(self):
+        """Mapa em gravura renascentista sobre fundo transparente (sem quadrado),
+        com marcos famosos, Eldorado em Goiás, Farol de Alexandria na costa do
+        Nordeste e criaturas; rosa dos ventos sem círculo."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        arte=open("docs/mapa-arte.js",encoding="utf-8").read()
+        self.assertIn('<script src="mapa-arte.js"></script>',html)
+        for x in ("GRAVURA RENASCENTISTA sobre fundo transparente","ART.ilustracoes()","ART.fita(","background:transparent",'id="bz-rosa-svg"'):
+            self.assertIn(x,html,x)
+        self.assertNotIn('id="mp-perg"',html); self.assertNotIn('rect x="${vx-30}"',html)          # sem quadrado/pergaminho
+        for x in ("paoDeAcucar","cataratas","igreja","dunas","jacare","araucaria","rioAmazonas","eldorado","farol","serpente","iara","caravela",
+                  "ELDORADO","FAROL DE ALEXANDRIA","function rosa","function fita"):
+            self.assertIn(x,arte,x)
+        self.assertNotIn('<circle cx="80" cy="80" r="76"',arte)                                  # rosa sem círculo externo
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
