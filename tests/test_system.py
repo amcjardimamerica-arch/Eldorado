@@ -3461,9 +3461,9 @@ class SystemTests(unittest.TestCase):
         ids={o["id"]:o for o in m["oficiais"]}
         self.assertEqual(ids["motor-gife"]["tipo"],"empresas_fiscal"); self.assertEqual(ids["motor-patrocinio"]["tipo"],"empresas_privado")
         self.assertIn("incentivos fiscais",ids["motor-gife"]["nome"]); self.assertIn("captação privada",ids["motor-patrocinio"]["nome"])
-        self.assertEqual(sorted(reg,key=lambda o:o["rank"])[0]["id"],"do-goiania")            # Goiânia primeiro
+        self.assertEqual(sorted(reg,key=lambda o:o["rank"])[0]["id"],"do-goiania")            # diário de Goiânia primeiro
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("mt-rank","mt-rel","numerados por relevância","(a.rank||99)-(b.rank||99)"): self.assertIn(x,html,x)
+        for x in ("mt-rank","(a.rank||99)-(b.rank||99)"): self.assertIn(x,html,x)
         hz=load_json(pathlib.Path("config/horarios.json")); self.assertTrue(any(b["bloco"]=="empresas" for b in hz["blocos"]))
         # extrator do formato oficial de Goiás e CNPJ da matriz pela raiz
         from src.empresas import extrair_contribuintes, cnpj_matriz_da_raiz
@@ -3472,6 +3472,18 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(r["nome"],"MERCK SHARP & DOHME FARMACEUTICA LTDA."); self.assertEqual(r["municipio_lista"],"Aparecida De Goiania"); self.assertEqual(r["cnpj"],"03.560.974/0001-18")
         d=load_json(pathlib.Path("dados/empresas/go/contribuintes_icms.json"))
         self.assertGreaterEqual(len(d["anos"]["2025"]["empresas"]),290)                           # lista oficial real, limpa
+
+
+    def test_filtros_do_mapa_periodo_historico_frente_e_numeracao_por_tipo(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ('<option value="__hist__">Histórico — antes de agosto de 2026</option>',"const FRENTES=","function frenteDe","function casaPeriodoMapa",
+                  "function dataOportunidade","frenteDe(item)!==frSel","GRUPO_MOTOR","diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado"):
+            self.assertIn(x,html,x)
+        self.assertNotIn("mt-rel",html.split("const oficiaisHtml")[1].split("const listaFontes")[0])   # relevância não exibida
+        m=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json")); reg=sorted(m["oficiais"]+m["plataformas"],key=lambda o:o["rank"])
+        grupos=[o["grupo"] for o in reg]; self.assertEqual(grupos,sorted(grupos))                       # ordem por tipo
+        self.assertEqual(reg[0]["tipo"],"diario_oficial"); self.assertEqual(reg[-1]["tipo"],"empresas_privado"); self.assertEqual(reg[-2]["tipo"],"empresas_fiscal")
+        self.assertEqual([o["id"] for o in reg if o["grupo"]==2],["pncp-api"])
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

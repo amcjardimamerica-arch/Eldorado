@@ -443,9 +443,23 @@ def run() -> dict:
         if o.get("achados"): pts += 1; por.append(f"{o['achados']} achado(s) +1")
         nivel = max(1, min(5, round(pts * 5 / 8)))
         return {"pontos": pts, "nivel": nivel, "por": por}
+    # NUMERAÇÃO POR TIPO (regra do titular): 1 diários oficiais → 2 APIs → 3 secretarias
+    # e órgãos governamentais (legislativo, justiça, sites oficiais) → 4 sites de
+    # captação do terceiro setor → 5 GIFE e Patrocínio Privado. Dentro do grupo:
+    # Goiânia, Goiás, demais.
+    def _grupo(o):
+        t_ = o.get("tipo") or "plataforma"; nm = (o["nome"] or "").lower()
+        if t_ == "diario_oficial": return 1
+        if t_ == "api": return 2
+        if t_ in ("empresas_fiscal", "empresas_privado"): return 5
+        if t_ in ("legislativo", "diario_justica", "site_oficial") or re.search(r"secult|secretaria|minist[ée]rio|governo|prefeitura|c[âa]mara|assembleia|tribunal|justi[çc]a|cnj", nm): return 3
+        return 4
+    def _terr(o):
+        nm = (o["nome"] or "").lower() + " " + o["id"]
+        return 0 if re.search(r"goi[âa]nia|goiania", nm) else 1 if re.search(r"goi[áa]s|goias|tjgo|alego|-go\b", nm) else 2
     for o in oficiais + plataformas:
-        o["relevancia"] = _relevancia(o)
-    ordem = sorted(oficiais + plataformas, key=lambda o: (-o["relevancia"]["pontos"], o["nome"]))
+        o["grupo"] = _grupo(o); o["relevancia"] = _relevancia(o)      # relevância só interna (não exibida)
+    ordem = sorted(oficiais + plataformas, key=lambda o: (o["grupo"], _terr(o), o["nome"]))
     for i, o in enumerate(ordem, 1):
         o["rank"] = i
     motores.sort(key=lambda m: (not m["goias"], m["familia"], m["segmento"], m["programa"]))

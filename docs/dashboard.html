@@ -806,10 +806,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260904161405"></script>
-<script src="mapa-arte.js?v=20260904161405"></script>
-<script src="dashboard-dados.enc.js?v=20260904161405"></script>
-<script src="dashboard-dados.js?v=20260904161405"></script>
+<script src="mapa-brasil.js?v=20260904175902"></script>
+<script src="mapa-arte.js?v=20260904175902"></script>
+<script src="dashboard-dados.enc.js?v=20260904175902"></script>
+<script src="dashboard-dados.js?v=20260904175902"></script>
 <script>
 (function(){
 "use strict";
@@ -1971,7 +1971,7 @@ function mesesComBusca(){
 function desenhaMapaMonitor(){
   const CAT=(D.bussola&&D.bussola.categorias)||{};
   const dias=diasDaBussola();
-  const mes=mpFiltro.mes||(mesesComBusca()[0])||new Date().toISOString().slice(0,7);
+  const mes=(mpFiltro.mes&&mpFiltro.mes!=="__hist__")?mpFiltro.mes:(mesesComBusca()[0])||new Date().toISOString().slice(0,7);
   const [ano,m]=mes.split("-").map(Number);
   const nd=new Date(ano,m,0).getDate();
   const porData={};dias.forEach(d=>porData[d.data]=d);
@@ -1996,7 +1996,7 @@ function desenhaMapaMonitor(){
     const dt=new Date(iso+"T00:00:00");
     // filtros de navegação
     // filtrar por frente esconde também os dias sem execução
-    if(mpFiltro.frente&&!(reg&&(reg.categorias_ativas||[]).includes(mpFiltro.frente)))continue;
+
     if(mpFiltro.sit==="encontrado"&&!(reg&&reg.encontrado))continue;
     if(mpFiltro.sit==="ausente"&&(reg&&reg.encontrado))continue;
     const el=document.createElement("div");
@@ -2033,14 +2033,17 @@ function desenhaMapaMonitor(){
   if(!g.children.length)g.innerHTML='<div class=meta style="grid-column:1/-1">Nenhum dia neste filtro.</div>';
 }
 function iniciaMapaMonitor(){
-  const meses=mesesComBusca();
-  const sm=$("mp-mes");sm.innerHTML=meses.map(x=>{
+  /* PERÍODO: meses com oportunidades (publicação/captura) + HISTÓRICO (antes de
+     agosto de 2026) + todos. Rege o mapa, o painel do estado e o monitor. */
+  const mesesOp=[...new Set([...(D.editais||[]).map(e=>dataOportunidade(e).slice(0,7)),...mesesComBusca()].filter(m=>m&&m>="2026-08"))].sort().reverse();
+  const sm=$("mp-mes");sm.innerHTML=`<option value="">Todo o período</option>`+mesesOp.map(x=>{
     const [a,m]=x.split("-");return `<option value="${x}">${MES[Number(m)-1]} de ${a}</option>`;}).join("")
-    ||`<option value="">sem buscas registradas</option>`;
-  mpFiltro.mes=meses[0]||null;
-  const CAT=(D.bussola&&D.bussola.categorias)||{};
-  $("mp-frente").innerHTML='<option value="">Todas as frentes</option>'
-    +Object.entries(CAT).map(([k,c])=>`<option value="${k}">${esc(c.rotulo)}</option>`).join("");
+    +`<option value="__hist__">Histórico — antes de agosto de 2026</option>`;
+  const mesAtual=`${HOJE.getFullYear()}-${String(HOJE.getMonth()+1).padStart(2,"0")}`;
+  sm.value=mesesOp.includes(mesAtual)?mesAtual:""; mpFiltro.mes=sm.value||null;
+  /* FRENTE = fonte de onde a oportunidade veio */
+  $("mp-frente").innerHTML='<option value="">Todas as frentes (fontes)</option>'
+    +Object.entries(FRENTES).map(([k,c])=>`<option value="${k}">${esc(c)}</option>`).join("");
   const ufs=[...new Set((D.editais||[]).map(e=>e.uf).filter(Boolean))].sort();
   $("mp-uf").innerHTML='<option value="">Todo o Brasil</option>'
     +ufs.map(u=>`<option value="${u}">${u}</option>`).join("");
@@ -2048,7 +2051,7 @@ function iniciaMapaMonitor(){
     mpFiltro={mes:$("mp-mes").value||mpFiltro.mes,frente:$("mp-frente").value,
               sit:$("mp-sit").value,uf:$("mp-uf").value};
     bzUFsel=mpFiltro.uf;
-    if(mpFiltro.mes){const [a,m]=mpFiltro.mes.split("-").map(Number);busAno=a;busMes=m-1;}
+    if(mpFiltro.mes&&/^\d{4}-\d{2}$/.test(mpFiltro.mes)){const [a,m]=mpFiltro.mes.split("-").map(Number);busAno=a;busMes=m-1;}
     desenhaMapaMonitor();desenhaBzMapa();desenhaBussola();}));
   desenhaMapaMonitor();
 }
@@ -2182,6 +2185,7 @@ function camadasHtml(m){
   return `<div class="mt-cam">${C.map((c,i)=>`<span class="${m.camadas_ok[i]==="1"?"ok":"pend"}" title="${esc(c)}: ${m.camadas_ok[i]==="1"?esc(vals[i]||"obtida"):"ainda não obtida"}">${esc(c.split(" ")[0].slice(0,9))}</span>`).join("")}</div>`;
 }
 const rotArea0=a=>(D.areas&&D.areas[a]||{}).rotulo||a;
+const GRUPO_MOTOR={1:"diário oficial",2:"API",3:"secretaria / órgão",4:"site do terceiro setor",5:"empresas"};
 function desenhaMotores(){
   if(!$("mt-lista"))return;
   const R=MT._resumo||{};
@@ -2246,10 +2250,10 @@ function desenhaMotores(){
     ${dias.filter(x=>x.t).slice(-3).map(x=>`<div class=meta>· ${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} — ${x.u?`<a href="${esc(x.u)}" target=_blank rel="noopener noreferrer">${esc(x.t)}</a>`:esc(x.t)}</div>`).join("")}`;};
   const trintaDias=calendarioMotor;
   ofRows.sort((a,b)=>(a.rank||99)-(b.rank||99));
-  const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Locais de publicação oficial, plataformas e motores de empresas <span class=meta>${ofRows.length} · numerados por relevância</span></div>
+  const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Motores regulares <span class=meta>${ofRows.length} · numerados: diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado</span></div>
     ${ofRows.map(o=>{const st=semaforo(o.situacao);const ativo=mtAtivo(o.id);return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
-      <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(o.tipo||"oficial")}</span>${o.relevancia?` <span class="tag mt-rel" title="relevância nível ${o.relevancia.nivel} de 5 · ${esc((o.relevancia.por||[]).join(" · "))}">relevância ${"●".repeat(o.relevancia.nivel)}${"○".repeat(5-o.relevancia.nivel)} nível ${o.relevancia.nivel}</span>`:""}${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
+      <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
         <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · ${esc(o.situacao)}${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+" edital(is)":""}</div>
         ${trintaDias(o)}</div>
@@ -2398,8 +2402,8 @@ function mpDadosUF(){
   /* MESMA FONTE DE DADOS de «Oportunidades Abertas»: núcleo + base ampla. Cada
      oportunidade vai para o seu estado; as de nível nacional (sem UF ou
      federais) vão para o bucket __nac__ — mostrado pela rosa dos ventos. */
-  const arSel=($("mp-area")||{}).value||"";
-  const add2=(uf,area,cidade,st,item)=>{if(arSel&&area!==arSel)return;const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});
+  const arSel=($("mp-area")||{}).value||"", frSel=($("mp-frente")||{}).value||"";
+  const add2=(uf,area,cidade,st,item)=>{if(arSel&&area!==arSel)return;if(item&&frSel&&frenteDe(item)!==frSel)return;if(item&&!casaPeriodoMapa(item))return;const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});
     p[st]=(p[st]||0)+1;p.total++;if(st==="aberta"||st==="possivel"){p.areas[area]=(p.areas[area]||0)+1;if(item&&p.itens.length<400)p.itens.push(item);
       if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{},itens:[]});c.n++;c.areas[area]=(c.areas[area]||0)+1;if(item&&c.itens.length<60)c.itens.push(item);}}};
   const nac=e=>(!e.uf||e.nivel==="federal"||e.abrangencia==="nacional")?null:e.uf;
@@ -2407,6 +2411,27 @@ function mpDadosUF(){
   const vistos=new Set((D.editais||[]).map(e=>e.id));
   (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;add2(nac(o),o.area||"outros",cid(o.titulo),situacaoDe(o),o);});
   return por;
+}
+/* FRENTES (fonte da oportunidade) — usadas pelo filtro do mapa */
+const FRENTES={diario_oficial:"Diários oficiais (municípios, estados, União)",api:"API oficial (PNCP)",plataforma:"Plataformas e sites do terceiro setor",
+  orgao:"Secretarias e órgãos governamentais",justica:"Justiça e Ministério Público",imprensa:"Imprensa e comunicação",regra:"Regras anuais (emendas, RFB, janelas confirmadas)",outra:"Outras fontes"};
+function frenteDe(e){
+  const f=`${e.fonte_id||""} ${e.fonte_nome||""} ${e.tipo_fonte||""}`.toLowerCase();
+  if(e.sem_edital||e.regra_anos||e.janela_confirmada)return "regra";
+  if(/querido|di[áa]rio oficial|diario_oficial|\bdou\b|\bdo-/.test(f))return "diario_oficial";
+  if(/pncp|api/.test(f))return "api";
+  if(/prosas|plataforma|captamos|observat[óo]rio|rede filantropia|mapa das osc|abcr|salic|gife/.test(f))return "plataforma";
+  if(/tjgo|tribunal|justi[çc]a|cnj|trf|mpgo|minist[ée]rio p[úu]blico|promotoria|dje|vara/.test(f))return "justica";
+  if(/imprensa|jornal|r[áa]dio|\btv\b|not[íi]cia|g1|opopular|op[çc][ãa]o/.test(f))return "imprensa";
+  if(/secretaria|prefeitura|governo|minist[ée]rio|fundo|conselho|secult|seds|sees|c[âa]mara|assembleia|alego|site_oficial|investigacao/.test(f))return "orgao";
+  return "outra";
+}
+/* data da oportunidade: publicação; senão a data da edição no título ('Diário
+   Oficial de X (UF) 2023-06-22'); senão a captura */
+function dataOportunidade(e){const mt=/(\d{4}-\d{2}-\d{2})/.exec(e.titulo||"");return (e.publicado_em||(mt&&mt[1])||e.coletado_em||e.inicio||"");}
+function casaPeriodoMapa(e){
+  const m=($("mp-mes")||{}).value||"";const d=dataOportunidade(e).slice(0,7);
+  if(!m)return true; if(m==="__hist__")return !!d&&d<"2026-08"; return d===m||(e.inicio&&e.fim&&e.inicio.slice(0,7)<=m&&e.fim.slice(0,7)>=m);
 }
 /* MOTORES POR TERRITÓRIO — quais estão ligados em cada estado e o que rendem */
 function mpMotoresUF(uf){
