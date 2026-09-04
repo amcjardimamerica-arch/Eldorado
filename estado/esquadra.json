@@ -3,81 +3,620 @@
     "do-goiania": {
       "nome": "Diário Oficial do Município de Goiânia",
       "tipo": "diario_oficial",
-      "leituras": 3,
+      "leituras": 4,
       "achados_total": 0,
-      "vazias_seguidas": 3,
-      "ultima": "2026-09-03T16:51:46+00:00",
-      "motivo": "motor regular e geral — todo dia",
-      "achados_ultima": 0,
-      "falhas_ultima": 1,
-      "saude": [
-        {
-          "url": "https://www.goiania.go.gov.br/diario-oficial/",
-          "http": 200,
-          "bytes": 147336
-        }
-      ],
-      "alerta": null
-    },
-    "do-goias": {
-      "nome": "Diário Oficial do Estado de Goiás",
-      "tipo": "diario_oficial",
-      "leituras": 3,
-      "achados_total": 0,
-      "vazias_seguidas": 3,
-      "ultima": "2026-09-03T16:51:52+00:00",
+      "vazias_seguidas": 4,
+      "ultima": "2026-09-04T19:47:38+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 2,
       "saude": [
         {
-          "url": "https://diariooficial.abc.go.gov.br/",
+          "url": "https://www.goiania.go.gov.br/diario-oficial/",
           "http": 200,
-          "bytes": 17231
+          "bytes": 147344
+        },
+        {
+          "url": "https://www.goiania.go.gov.br/transparencia",
+          "http": 200,
+          "bytes": 144334
         }
       ],
-      "alerta": null
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 5,
+        "links_total": 305,
+        "links_candidatos": 199,
+        "descobertas": [
+          {
+            "de": "https://www.goiania.go.gov.br/diario-oficial/",
+            "para": "https://www.goiania.go.gov.br/transparencia",
+            "rotulo": "Transparência"
+          },
+          {
+            "de": "https://www.goiania.go.gov.br/diario-oficial/",
+            "para": "https://www.goiania.go.gov.br/casa-civil/diario-oficial",
+            "rotulo": "Acessar serviço"
+          },
+          {
+            "de": "https://www.goiania.go.gov.br/diario-oficial/",
+            "para": "https://radardatransparencia.atricon.org.br/",
+            "rotulo": ""
+          },
+          {
+            "de": "https://www.goiania.go.gov.br/diario-oficial/",
+            "para": "https://www.goiania.go.gov.br/transparencia?filtro_simplificado=categoria&categoria=52",
+            "rotulo": "Responsabilidade Fiscal"
+          }
+        ],
+        "pdf_links": 0,
+        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+      }
+    },
+    "do-goias": {
+      "nome": "Diário Oficial do Estado de Goiás",
+      "tipo": "diario_oficial",
+      "leituras": 4,
+      "achados_total": 0,
+      "vazias_seguidas": 4,
+      "ultima": "2026-09-04T19:47:57+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 1,
+      "saude": [
+        {
+          "url": "https://diariooficial.abc.go.gov.br/",
+          "http": 200,
+          "bytes": 17230
+        },
+        {
+          "url": "https://diariooficial.abc.go.gov.br/portal",
+          "http": 200,
+          "bytes": 10201
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 3,
+        "links_total": 59,
+        "links_candidatos": 35,
+        "descobertas": [
+          {
+            "de": "https://diariooficial.abc.go.gov.br/",
+            "para": "https://diariooficial.abc.go.gov.br/portal/edicoes/download/0",
+            "rotulo": "DOWNLOAD"
+          }
+        ],
+        "pdf_links": 0,
+        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+      }
     },
     "dou": {
       "nome": "Diário Oficial da União",
       "tipo": "diario_oficial",
-      "leituras": 3,
+      "leituras": 4,
       "achados_total": 0,
-      "vazias_seguidas": 3,
-      "ultima": "2026-09-03T16:52:03+00:00",
+      "vazias_seguidas": 4,
+      "ultima": "2026-09-04T19:47:59+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 3,
+      "saude": [
+        {
+          "url": "https://www.in.gov.br/leiturajornal?data=04-09-2026&secao=do3",
+          "erro": "RemoteDisconnected"
+        },
+        {
+          "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento%20p%C3%BAblico%20organiza%C3%A7%C3%B5es%20da%20sociedade%20civil&s=todos&exactDate=dia&sortType=0",
+          "erro": "RemoteDisconnected"
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 0,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
+        "pdf_links": 0,
+        "motivo_zero": "falha: RemoteDisconnected"
+      }
+    },
+    "alego-pl": {
+      "nome": "Assembleia Legislativa de Goiás — proposições",
+      "tipo": "legislativo",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:47:02+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
         {
-          "url": "https://www.in.gov.br/leiturajornal?data=03-09-2026&secao=do3",
+          "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 2263449
+          "bytes": 132390
         },
         {
-          "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento%20p%C3%BAblico%20organiza%C3%A7%C3%B5es%20da%20sociedade%20civil&s=todos&exactDate=dia&sortType=0",
+          "url": "https://portal.al.go.leg.br/noticias",
           "http": 200,
-          "bytes": 197399
+          "bytes": 116106
         }
       ],
-      "alerta": "trocar URL: 3 leituras sem achados com página respondendo"
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 7,
+        "links_total": 737,
+        "links_candidatos": 532,
+        "descobertas": [
+          {
+            "de": "https://portal.al.go.leg.br/",
+            "para": "https://transparencia.al.go.leg.br/legislacoes",
+            "rotulo": "Legislação e Regimento"
+          },
+          {
+            "de": "https://portal.al.go.leg.br/",
+            "para": "https://publicacoes.al.go.leg.br/memorial",
+            "rotulo": "Memorial Legislativo"
+          },
+          {
+            "de": "https://portal.al.go.leg.br/",
+            "para": "https://publicacoes.al.go.leg.br/",
+            "rotulo": "Publicações"
+          },
+          {
+            "de": "https://portal.al.go.leg.br/",
+            "para": "https://portal.al.go.leg.br/credenciamento-imprensa",
+            "rotulo": "Credenciamento para a Imprensa"
+          }
+        ],
+        "pdf_links": 40,
+        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+      }
+    },
+    "camara-goiania-pl": {
+      "nome": "Câmara Municipal de Goiânia — projetos de lei",
+      "tipo": "legislativo",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:47:06+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 2,
+      "saude": [
+        {
+          "url": "https://www.goiania.go.leg.br/",
+          "http": 200,
+          "bytes": 15719
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 1,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
+        "pdf_links": 0,
+        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+      }
+    },
+    "cnj-destinacoes": {
+      "nome": "CNJ — destinações de penas e prestações pecuniárias",
+      "tipo": "diario_justica",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:47:20+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 1,
+      "saude": [
+        {
+          "url": "https://www.cnj.jus.br/",
+          "http": 200,
+          "bytes": 368373
+        },
+        {
+          "url": "https://www.cnj.jus.br/transparencia-cnj/licitacoes-e-contratos/",
+          "http": 200,
+          "bytes": 278339
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 6,
+        "links_total": 3473,
+        "links_candidatos": 713,
+        "descobertas": [
+          {
+            "de": "https://www.cnj.jus.br/",
+            "para": "https://www.cnj.jus.br/transparencia-cnj",
+            "rotulo": "Transparência e Prestação de Contas"
+          },
+          {
+            "de": "https://www.cnj.jus.br/",
+            "para": "https://www.cnj.jus.br/dje/djeletronico?visaoId=tjdf.djeletronico.comum.internet.apresentacao.VisaoDiarioEletronicoInternetPorData",
+            "rotulo": "Diário da Justiça eletrônico (DJe)"
+          },
+          {
+            "de": "https://www.cnj.jus.br/",
+            "para": "https://www.cnj.jus.br/publicacoes-2",
+            "rotulo": "Publicações"
+          },
+          {
+            "de": "https://www.cnj.jus.br/",
+            "para": "https://www.cnj.jus.br/campanhas-publicitarias/um-so-coracao",
+            "rotulo": "Um Só Coração"
+          }
+        ],
+        "pdf_links": 776,
+        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+      }
+    },
+    "dj-trf1-go": {
+      "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
+      "tipo": "diario_justica",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:47:26+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 0,
+      "saude": [
+        {
+          "url": "https://www.trf1.jus.br/sjgo/",
+          "http": 200,
+          "bytes": 89003
+        },
+        {
+          "url": "https://www.trf1.jus.br/sjgo/processual/editais-e-portarias",
+          "http": 200,
+          "bytes": 98364
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 5,
+        "links_total": 1846,
+        "links_candidatos": 709,
+        "descobertas": [
+          {
+            "de": "https://www.trf1.jus.br/sjgo/",
+            "para": "https://www.trf1.jus.br/sjgo/processual/editais-e-portarias",
+            "rotulo": "Editais e Portarias"
+          },
+          {
+            "de": "https://www.trf1.jus.br/sjgo/",
+            "para": "https://www.trf1.jus.br/sjgo/imprensa/publicacoes-de-interesse-publico",
+            "rotulo": "Publicações de Interesse Público"
+          },
+          {
+            "de": "https://www.trf1.jus.br/sjgo/",
+            "para": "https://www.trf1.jus.br/sjgo/turmas-recursais-dos-jefs/sumulas-editadas-pelas-turmas-recursais-na-primeira-sessao-conjunta-do-dia-30092015",
+            "rotulo": "Súmulas editadas pelas Turmas Recursais, na primeira sessão "
+          },
+          {
+            "de": "https://www.trf1.jus.br/sjgo/",
+            "para": "https://www.trf1.jus.br/trf1/biblioteca/diarios-da-justica",
+            "rotulo": "Diários da Justiça"
+          }
+        ],
+        "pdf_links": 17,
+        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+      }
+    },
+    "dje-tjgo": {
+      "nome": "Diário da Justiça Eletrônico — TJGO",
+      "tipo": "diario_justica",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:47:27+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 3,
+      "saude": [
+        {
+          "url": "https://www.tjgo.jus.br/index.php/diario-da-justica",
+          "erro": "HTTPError"
+        },
+        {
+          "url": "https://www.tjgo.jus.br/index.php/licitacoes",
+          "erro": "HTTPError"
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 0,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
+        "pdf_links": 0,
+        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
+      }
+    },
+    "pncp-api": {
+      "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
+      "tipo": "api",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:48:00+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 1,
+      "saude": [
+        {
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao",
+          "erro": "HTTPError"
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 0,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
+        "pdf_links": 0,
+        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
+      }
+    },
+    "plat-abcr": {
+      "nome": "ABCR — Associação Brasileira de Captadores",
+      "tipo": "plataforma",
+      "leituras": 1,
+      "achados_total": 4,
+      "vazias_seguidas": 0,
+      "ultima": "2026-09-04T19:48:17+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 4,
+      "falhas_ultima": 0,
+      "saude": [
+        {
+          "url": "https://captadores.org.br/",
+          "http": 200,
+          "bytes": 141998
+        },
+        {
+          "url": "https://captadores.org.br/transparencia",
+          "http": 200,
+          "bytes": 118734
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 3,
+        "links_total": 340,
+        "links_candidatos": 192,
+        "descobertas": [
+          {
+            "de": "https://captadores.org.br/",
+            "para": "https://captadores.org.br/transparencia",
+            "rotulo": "Transparência"
+          },
+          {
+            "de": "https://captadores.org.br/",
+            "para": "https://captadores.org.br/noticias",
+            "rotulo": "Editais"
+          }
+        ],
+        "pdf_links": 0,
+        "motivo_zero": null
+      }
+    },
+    "plat-captamos": {
+      "nome": "Captamos — oportunidades de captação",
+      "tipo": "plataforma",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:48:18+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 1,
+      "saude": [
+        {
+          "url": "https://captamos.org.br/",
+          "erro": "gaierror"
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 0,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
+        "pdf_links": 0,
+        "motivo_zero": "endereço não resolve (DNS) — URL errada"
+      }
+    },
+    "plat-gife": {
+      "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
+      "tipo": "plataforma",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:48:23+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 1,
+      "saude": [
+        {
+          "url": "https://gife.org.br/",
+          "http": 200,
+          "bytes": 169353
+        },
+        {
+          "url": "https://gife.org.br/editais",
+          "http": 200,
+          "bytes": 128868
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 2,
+        "links_total": 181,
+        "links_candidatos": 72,
+        "descobertas": [
+          {
+            "de": "https://gife.org.br/",
+            "para": "https://gife.org.br/transparencia",
+            "rotulo": "Transparência"
+          },
+          {
+            "de": "https://gife.org.br/",
+            "para": "https://gife.org.br/editais",
+            "rotulo": "Editais"
+          }
+        ],
+        "pdf_links": 0,
+        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+      }
+    },
+    "plat-observatorio-3setor": {
+      "nome": "Observatório do Terceiro Setor — editais",
+      "tipo": "plataforma",
+      "leituras": 1,
+      "achados_total": 3,
+      "vazias_seguidas": 0,
+      "ultima": "2026-09-04T19:48:33+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 3,
+      "falhas_ultima": 0,
+      "saude": [
+        {
+          "url": "https://observatorio3setor.org.br/editais/",
+          "http": 200,
+          "bytes": 224230
+        },
+        {
+          "url": "https://observatorio3setor.org.br/secoes_tematicas/editais",
+          "http": 200,
+          "bytes": 224230
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 5,
+        "links_total": 750,
+        "links_candidatos": 402,
+        "descobertas": [
+          {
+            "de": "https://observatorio3setor.org.br/editais/",
+            "para": "https://observatorio3setor.org.br/secoes_tematicas/editais",
+            "rotulo": "Editais"
+          },
+          {
+            "de": "https://observatorio3setor.org.br/editais/",
+            "para": "https://observatorio3setor.org.br/editais",
+            "rotulo": "Central de Editais"
+          },
+          {
+            "de": "https://observatorio3setor.org.br/editais/",
+            "para": "https://observatorio3setor.org.br/edital-alimento-no-prato-oferece-ate-r-800-mil-para-projetos-de-agricultura-urbana",
+            "rotulo": ""
+          },
+          {
+            "de": "https://observatorio3setor.org.br/editais/",
+            "para": "https://observatorio3setor.org.br/floresta-amazonia-abre-edital-de-ate-r-650-mil-para-projetos-de-povos-e-comunidades-da-amazonia-legal",
+            "rotulo": ""
+          }
+        ],
+        "pdf_links": 5,
+        "motivo_zero": null
+      }
+    },
+    "plat-prosas-premios": {
+      "nome": "Prosas — prêmios, concursos e cursos para OSCs",
+      "tipo": "plataforma",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:48:35+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 0,
+      "saude": [
+        {
+          "url": "https://prosas.com.br/editais?natureza=premio",
+          "http": 200,
+          "bytes": 120753
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 1,
+        "links_total": 3,
+        "links_candidatos": 0,
+        "descobertas": [],
+        "pdf_links": 0,
+        "motivo_zero": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
+      }
+    },
+    "plat-rede-filantropia": {
+      "nome": "Rede Filantropia — editais",
+      "tipo": "plataforma",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-04T19:48:38+00:00",
+      "motivo": "motor regular e geral — todo dia",
+      "achados_ultima": 0,
+      "falhas_ultima": 1,
+      "saude": [
+        {
+          "url": "https://www.filantropia.ong/editais",
+          "erro": "HTTPError"
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 0,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
+        "pdf_links": 0,
+        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
+      }
     }
   },
   "ultima_execucao": {
-    "data": "2026-09-03",
-    "em": "2026-09-03T16:52:03+00:00",
+    "data": "2026-09-04",
+    "em": "2026-09-04T19:48:38+00:00",
     "manual": null,
-    "bloco": "diarios",
-    "sensores_executados": 3,
+    "bloco": "regulares",
+    "sensores_executados": 15,
     "em_espera": 42,
     "total_esquadra": 81,
     "previsoes_ativas": 1,
-    "achados": 0,
-    "novos_na_base": 0,
+    "achados": 7,
+    "novos_na_base": 7,
     "por_tipo": {
+      "legislativo": {
+        "sensores": 2,
+        "achados": 0,
+        "falhas": 2
+      },
+      "diario_justica": {
+        "sensores": 3,
+        "achados": 0,
+        "falhas": 4
+      },
       "diario_oficial": {
         "sensores": 3,
         "achados": 0,
+        "falhas": 6
+      },
+      "api": {
+        "sensores": 1,
+        "achados": 0,
+        "falhas": 1
+      },
+      "plataforma": {
+        "sensores": 6,
+        "achados": 7,
         "falhas": 3
       }
     }
