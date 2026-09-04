@@ -3417,6 +3417,12 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn("ART.ilustracoes()",html); self.assertNotIn("ART.fita(",html)
         self.assertNotIn('class="poca"',html.split("mt-ico oleo")[1].split("</svg>")[0])
 
+
+    def test_mapa_indica_motores_por_territorio(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("function mpMotoresUF","Motores de busca neste território","bz-motor-led","ligado(s) de ${mo.total}","mtDetalhe(id)"):
+            self.assertIn(x,html,x)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

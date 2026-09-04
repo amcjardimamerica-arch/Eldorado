@@ -351,7 +351,10 @@ box-shadow:0 1px 3px #0002}
 .bz-atual .bz-indices,.bz-atual .bz-cidades{max-height:none}.bz-atual .bz-cidades{max-height:360px;overflow:auto}
 .bz-indices{display:flex;flex-direction:column;gap:7px;margin-top:8px;font-size:12.5px}.bz-indices b{margin-left:auto;color:var(--suave)}.bz-indices>span{display:flex;align-items:center;gap:6px}
 .bz-cidades{display:flex;flex-direction:column;gap:6px}.bz-cidade{border-top:1px dashed var(--linha);padding-top:5px;font-size:12.5px}
-.bz-op{margin:4px 0 2px 2px;padding:5px 7px;border-radius:8px;background:#FCFCFB;border:1px solid var(--linha)}.bz-op:hover{border-color:#9FC1E8}.bz-op-t{font-size:12px;color:var(--tinta)}
+.bz-op{margin:4px 0 2px 2px;padding:5px 7px;border-radius:8px;background:#FCFCFB;border:1px solid var(--linha)}
+.bz-motores{display:flex;flex-direction:column;gap:3px}.bz-motor{display:flex;align-items:center;gap:7px;padding:4px 7px;border-radius:7px;border:1px solid var(--linha);background:#F6F7F9;font-size:12px}
+.bz-motor.on{background:#FFF7EC;border-color:#F3D9B0}.bz-motor-led{width:8px;height:8px;border-radius:50%;background:#C9CED6;flex:none}.bz-motor.on .bz-motor-led{background:#E8571A;box-shadow:0 0 5px #E8571A88}
+.bz-motor-nome{font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta)}.bz-op:hover{border-color:#9FC1E8}.bz-op-t{font-size:12px;color:var(--tinta)}
 #bz-mapa path.com-abertas:hover{filter:brightness(.9)}
 #bz-mapa text.uf-n{font-family:Georgia,serif;font-size:9.5px;font-weight:800;fill:#7E2A1E;pointer-events:none}#bz-mapa text.uf-sigla{pointer-events:none}
 #bz-mapa path[data-uf]{stroke:#5A3E10;stroke-width:.9;cursor:pointer;transition:filter .12s}
@@ -2306,7 +2309,7 @@ function atualizaMotoresAtivos(){
   const total=regulares.length+MT.length;
   el.textContent=`${ativos}/${total}`; el.title=`${regulares.filter(o=>mtAtivo(o.id)).length} regulares + ${MT.filter(m=>mtAtivo(m.id)).length} Opressores acesos, de ${total}`;
 }
-async function iniciaMotores(){ await carregaMotores(); desenhaMotores(); atualizaMotoresAtivos();
+async function iniciaMotores(){ await carregaMotores(); desenhaMotores(); atualizaMotoresAtivos(); if(typeof desenhaBzMapa==="function"&&$("bz-mapa"))desenhaBzMapa();
   ["mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca","mo-area","mo-natureza","mo-esfera","mo-status","mo-busca"].forEach(id=>{if($(id))$(id).addEventListener("input",desenhaMotores);}); }
 
 /* ================= BÚSSOLA · réplica do modelo ================= */
@@ -2369,6 +2372,17 @@ function mpDadosUF(){
   (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;add2(nac(o),o.area||"outros",cid(o.titulo),situacaoDe(o),o);});
   return por;
 }
+/* MOTORES POR TERRITÓRIO — quais estão ligados em cada estado e o que rendem */
+function mpMotoresUF(uf){
+  const reg=[...(MT._of||[]),...(MT._plat||[])];
+  const nac=uf==="__nac__";
+  const regUF=reg.filter(o=>{const t=(o.id||"")+" "+(o.nome||"");const isGO=/goi[âa]nia|goi[áa]s|tjgo|alego|go\b|-go\b/i.test(t)&&!/uni[ãa]o|dou|cnj|trf1|pncp|prosas/i.test(t);return nac?!isGO:(uf==="GO"?isGO:false);});
+  const opUF=MT.filter(m=>nac?(m.uf==="BR"||!m.uf||m.nivel==="federal"):m.uf===uf);
+  const ligados=[...regUF.filter(o=>mtAtivo(o.id)),...opUF.filter(m=>mtAtivo(m.id))];
+  const res=x=>({nome:x.nome||x.programa,tipo:x.tipo||(x.programa?"opressor":"regular"),aceso:mtAtivo(x.id),lida:x.ultima_leitura,achados:x.achados||0,situacao:x.situacao||x.validacao||"",disjuntor:x.disjuntor?JSON.parse(x.disjuntor):null,id:x.id});
+  return {total:regUF.length+opUF.length,ligados:ligados.length,regulares:regUF.map(res),opressores:opUF.map(res),
+    achados:[...regUF,...opUF].reduce((s,x)=>s+(x.achados||0),0),lidos:[...regUF,...opUF].filter(x=>x.ultima_leitura).length};
+}
 function mpIndicesUF(uf){
   const dias=diasDaBussola().filter(d=>!uf||!d.uf||d.uf===uf);
   return {encontrado:dias.filter(d=>d.encontrado).length,ausente:dias.filter(d=>d.encontrado===false||d.ausente).length};
@@ -2399,7 +2413,8 @@ function desenhaBzMapa(){
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */
-    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · ${p.aberta} aberto(s) confirmado(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Oportunidades Abertas»<br>${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
+    const mo=(MT&&MT.length)?mpMotoresUF(uf):null;
+    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · ${p.aberta} aberto(s) confirmado(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Oportunidades Abertas»<br>${mo?`motores: <b>${mo.ligados}</b> ligado(s) de ${mo.total} · ${mo.lidos} com leitura · ${mo.achados} achado(s)<br>`:""}${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
       :`<strong>${uf}</strong> · nenhuma oportunidade identificada`);
     el.onclick=()=>{bzUFsel=(bzUFsel===uf?"":uf);$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value=bzUFsel;if(typeof mpFiltro==="object")mpFiltro.uf=bzUFsel;}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();desenhaBzLateral(por);if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
   });
@@ -2424,6 +2439,11 @@ function desenhaBzLateral(por){
       <span title="encontrada sem prazo confirmado — em investigação até validar ou descartar"><span class=ponto style="background:#2F79D0"></span>Possível (em investigação) <b>${p.possivel||0}</b></span>
       <span title="dias de varredura com indício captado"><span class=ponto style="background:var(--ok)"></span>Encontrado (varredura) <b>${ix.encontrado}</b></span>
     </div>
+    ${(()=>{if(!MT||!MT.length)return "";const mo=mpMotoresUF(bzUFsel);const lista=[...mo.regulares,...mo.opressores].sort((a,b)=>(b.aceso-a.aceso)||(b.achados-a.achados));
+      return `<div class=meta style="margin:10px 0 4px"><strong>Motores de busca neste território</strong> — <b>${mo.ligados}</b> ligado(s) de ${mo.total} · ${mo.lidos} com leitura · ${mo.achados} achado(s)</div>
+      <div class="bz-motores">${lista.slice(0,14).map(x=>`<div class="bz-motor${x.aceso?" on":""}" data-mid="${esc(x.id)}" title="${esc(x.nome)} · ${x.aceso?"ligado":"apagado"} · ${x.lida?"lida em "+br(String(x.lida).slice(0,10)):"sem leitura ainda"} · ${x.achados} achado(s)${x.disjuntor?" · dia "+x.disjuntor.dias+"/30":""}">
+        <span class="bz-motor-led"></span><span class="bz-motor-nome">${esc(nomeCurto(x.nome))}</span><span class=meta>${x.tipo==="opressor"?"opressor":esc(x.tipo)} · ${x.lida?br(String(x.lida).slice(0,10)):"—"} · ${x.achados}</span></div>`).join("")}
+      ${lista.length>14?`<div class=meta>+${lista.length-14} motor(es) — todos na caixa Motores de Busca / Opressores</div>`:""}</div>`;})()}
     ${Object.keys(p.areas).length?`<div class=meta style="margin:8px 0 4px"><strong>Áreas com edital aberto</strong></div><div class="legenda">${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave)">${n}</b></span>`).join("")}</div>`:""}
     ${nacional?`<div class=meta style="margin:10px 0 4px"><strong>Oportunidades de nível nacional</strong> (${(p.itens||[]).length})</div>
     <div class="bz-cidades">${(p.itens||[]).slice(0,40).map(e=>`<div class="bz-cidade" data-op="${esc(e.id)}"><b>${esc((e.programa||e.titulo||"").slice(0,70))}</b> <span class=tag style="font-size:10px">${situacaoDe(e)==="aberta"?"aberta":"possível"}</span><div class=meta>${esc(AREA(e.area).rotulo)} · ${esc(e.fonte_nome||e.orgao||"")}${e.fim?" · até "+br(e.fim):""}</div></div>`).join("")}</div>`
@@ -2444,6 +2464,7 @@ function desenhaBzLateral(por){
   L.querySelectorAll(".bz-indices>span").forEach(sp=>{const k=/aberta/i.test(sp.textContent)?"aberta":/encerrada/i.test(sp.textContent)?"encerrada":/poss/i.test(sp.textContent)?"possivel":"encontrado";
     ligaTip(sp,`<strong>${esc(sp.textContent.replace(/\d+$/,"").trim())}</strong><br>${REL[k]}<br><em>${esc(rotUF)} · ${sp.textContent.match(/\d+$/)?.[0]||0} registro(s) — mesma base de Oportunidades Abertas</em>`);});
   L.querySelectorAll(".legenda>span").forEach(sp=>ligaTip(sp,`<strong>${esc(sp.textContent.replace(/\d+$/,"").trim())}</strong><br>oportunidades abertas ou possíveis desta área em ${esc(rotUF)}: ${sp.textContent.match(/\d+$/)?.[0]||0}.<br><em>filtre por área no mapa ou em Oportunidades Abertas</em>`));
+  L.querySelectorAll(".bz-motor[data-mid]").forEach(el=>{el.style.cursor="pointer";el.onclick=()=>{const id=el.dataset.mid;if(MT.find(m=>m.id===id))mtDetalhe(id);else{const alvo=document.querySelector(`#mt-lista .mt-item[data-id="${id}"]`);if(alvo){alvo.scrollIntoView({behavior:"smooth",block:"center"});alvo.style.outline="2px solid #C9A227";setTimeout(()=>alvo.style.outline="",2500);}}};});
   L.querySelectorAll(".bz-op[data-op]").forEach(el=>{el.style.cursor="pointer";const e=(p.itens||[]).find(x=>x.id===el.dataset.op)||[].concat(...cidades.map(([,v])=>v.itens||[])).find(x=>x.id===el.dataset.op);
     if(e){ligaTip(el,`<strong>${esc(e.titulo||"")}</strong><br>${esc(e.objeto||"objeto: conferir na publicação")}<br><span style="opacity:.85">${esc(AREA(e.area).rotulo)} · ${situacaoDe(e)} · ${e.fim?"até "+br(e.fim):"prazo a confirmar"}${e.valor_texto?" · "+esc(e.valor_texto):""}</span><br><em>clique para a ficha; o link abre o site oficial</em>`);
       el.onclick=ev=>{if(ev.target.closest("a"))return;detalheEdital({programa:e.fonte_nome,lei:"—",protocolo:e.id,resumo:e.objeto||"",territorio:e.uf||"BR",detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:e.objeto||e.titulo||"",coletado_em:e.coletado_em,lacuna:null},...e});};}});
