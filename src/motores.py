@@ -392,7 +392,9 @@ def run() -> dict:
     oficiais = []
     for e in esp:
         s = esq.get(e["id"]); b = blq.get(urlsplit(e["urls"][0]).hostname)
+        _dg = (esq.get(e["id"]) or {}).get("diagnostico") or {}
         oficiais.append({"id": e["id"], "nome": e["nome"], "tipo": e["tipo"], "url": e["urls"][0],
+                         "diagnostico": {k: _dg.get(k) for k in ("motivo_zero", "paginas_lidas", "links_total", "descobertas", "dou_json_materias") if k in _dg},
                          "dias": _trinta_dias(diario.get(e["id"], {}), hoje),
                          "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
                          "situacao": ("bloqueado" if b else "sem leitura ainda" if not s else

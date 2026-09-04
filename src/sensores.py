@@ -262,7 +262,8 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             continue
         lidas.add(url)
         try:
-            html, final, status = _abrir(url, timeout=lim.get("timeout_segundos", 12), max_bytes=lim["bytes_por_pagina"])
+            tmo = lim.get("timeout_segundos", 12) if sensor.get("tipo") != "api" else max(30, lim.get("timeout_segundos", 12))
+            html, final, status = _abrir(url, timeout=tmo, max_bytes=lim["bytes_por_pagina"])
             saude.append({"url": url, "http": status, "bytes": len(html)}); diag["paginas_lidas"] += 1
         except Exception as exc:
             falhas.append({"url": url, "erro": type(exc).__name__})
@@ -290,9 +291,12 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
         # DOU (leiturajornal): as matérias do dia vêm num JSON embutido, não em <a>;
         # cada matéria vira um link para a íntegra em /web/dou/-/<urlTitle>
         mj = re.search(r'<script[^>]*id="params"[^>]*>(.*?)</script>', html, re.S)
+        if "in.gov.br" in url:
+            diag["dou_json_encontrado"] = bool(mj)
         if mj and "in.gov.br" in url:
             try:
                 dados_dou = json.loads(mj.group(1))
+                diag["dou_json_materias"] = len(dados_dou.get("jsonArray") or [])
                 for mat in (dados_dou.get("jsonArray") or [])[:600]:
                     tit = (mat.get("title") or "").strip(); slug_ = mat.get("urlTitle")
                     if tit and slug_:
