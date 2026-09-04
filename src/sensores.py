@@ -78,11 +78,42 @@ _VALOR = re.compile(r"R\$\s?[\d.]{1,12},\d{2}|R\$\s?[\d.]{3,12}", re.I)
 _AGREG = re.compile(r"queridodiario|pncp\.gov|compras|licitanet", re.I)
 
 
+def _sites_empresas_go(limite: int = 22) -> list[str]:
+    """Sites institucionais das empresas da base (maiores contribuintes do ICMS de
+    GO), inferidos do e-mail corporativo do cadastro RFB; ordem = posição no ICMS."""
+    import gzip
+    b = ROOT / "dados/empresas/base_empresas.jsonl.gz"
+    if not b.exists():
+        return []
+    saida, vistos = [], set()
+    regs = []
+    with gzip.open(b, "rt", encoding="utf-8") as gz:
+        for l in gz:
+            if l.strip():
+                regs.append(json.loads(l))
+    def pos(e):
+        ps = [d.get("icms_posicao") for d in (e.get("anos") or {}).values() if d.get("icms_posicao")]
+        return min(ps) if ps else 999
+    for e in sorted(regs, key=pos):
+        email = ((e.get("cadastro") or {}).get("email") or "").lower()
+        dom = email.split("@")[-1].strip() if "@" in email else None
+        if not dom or any(x in dom for x in ("gmail", "hotmail", "outlook", "yahoo", "uol.", "terra.", "bol.")) or dom in vistos:
+            continue
+        vistos.add(dom); saida.append(f"https://www.{dom}" if not dom.startswith("www.") else f"https://{dom}")
+        if len(saida) >= limite:
+            break
+    return saida
+
+
 # ------------------------------------------------------------------ registro
 def registro() -> list[dict]:
     """Toda a esquadra: especiais + um sensor por fonte das 260 + portais."""
     cfg = load_json(CFG)
     sens = [dict(s, origem="especial") for s in cfg["sensores_especiais"]]
+    # motor de destinação tributária: sites das PRÓPRIAS empresas maiores contribuintes do ICMS de GO
+    for s in sens:
+        if s.get("urls_dinamicas") == "base_empresas_go":
+            s["urls"] = list(s.get("urls") or []) + _sites_empresas_go(limite=max(0, int(s.get("max_paginas") or 24) - len(s.get("urls") or [])))
     vistos = {u for s in sens for u in s["urls"]}
     por_url: dict[str, dict] = {}
     if F260.exists():

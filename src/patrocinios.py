@@ -65,11 +65,70 @@ def extrair_patrocinios(texto: str, fonte: dict, url: str) -> list[dict]:
     return saida
 
 
+def _fontes_descobertas(uf: str) -> dict:
+    arq = ROOT / _cfgp()["estados"][uf]["descoberta_semanal"]["arquivo"]
+    return load_json(arq) if arq.exists() else {"uf": uf, "verificadas": [], "candidatas": {}, "leituras": []}
+
+
+def descobrir_fontes(uf: str, html_por_url: dict, fontes_atuais: list[dict]) -> dict:
+    """SEMANAL: recolhe, nas páginas lidas, links para novos sites de Goiás que
+    divulgam eventos/festivais/shows ou são meios de comunicação; verifica cada
+    candidato (responde e fala de eventos/patrocínio) e só então o inclui."""
+    from html.parser import HTMLParser
+    from urllib.parse import urlsplit, urljoin
+    cfg = _cfgp()["estados"][uf]["descoberta_semanal"]
+    est = _fontes_descobertas(uf)
+    dominios = {urlsplit(f["url"]).hostname.replace("www.", "") for f in fontes_atuais} | {urlsplit(v["url"]).hostname.replace("www.", "") for v in est["verificadas"]}
+    class L(HTMLParser):
+        def __init__(self): super().__init__(); self.l = []; self._h = None; self._t = []
+        def handle_starttag(self, tag, attrs):
+            if tag == "a": self._h = dict(attrs).get("href"); self._t = []
+        def handle_data(self, d):
+            if self._h is not None: self._t.append(d)
+        def handle_endtag(self, tag):
+            if tag == "a" and self._h is not None: self.l.append((self._h, " ".join(self._t).strip())); self._h = None
+    sinais = re.compile("|".join(map(re.escape, cfg["sinais_goias"])), re.I)
+    midia = re.compile(r"festival|show|evento|agenda|r[áa]dio|\btv\b|jornal|portal|not[íi]cias|cultura|esporte|arena|est[áa]dio|teatro|feira", re.I)
+    for url, html in html_por_url.items():
+        p = L()
+        try: p.feed(html)
+        except Exception: continue
+        for h, rot in p.l:
+            if not h or not h.startswith("http"): continue
+            dom = (urlsplit(h).hostname or "").lower().replace("www.", "")
+            if not dom or dom in dominios or any(x in dom for x in ("facebook", "instagram", "twitter", "youtube", "whatsapp", "google", "globo.com", "uol.com", "linkedin", "tiktok", "apple", "spotify")):
+                continue
+            if sinais.search(dom + " " + (rot or "")) and midia.search(dom + " " + (rot or "")):
+                c = est["candidatas"].setdefault(dom, {"dominio": dom, "vista_em": [], "rotulos": [], "de": []})
+                c["vista_em"].append(now_iso()[:10]); c["vista_em"] = sorted(set(c["vista_em"]))[-10:]
+                if rot and rot[:60] not in c["rotulos"]: c["rotulos"] = (c["rotulos"] + [rot[:60]])[-5:]
+                if url not in c["de"]: c["de"] = (c["de"] + [url])[-5:]
+    # verificação: candidato responde e fala de eventos/patrocínio → entra no rol
+    novas = 0
+    for dom, c in sorted(est["candidatas"].items(), key=lambda kv: -len(kv[1]["vista_em"])):
+        if novas >= cfg["maximo_novas_por_semana"] or c.get("verificada") is not None:
+            continue
+        try:
+            html = _get(f"https://{dom}", timeout=15)
+            txt = re.sub(r"<[^>]+>", " ", re.sub(r"<script.*?</script>|<style.*?</style>", " ", html, flags=re.S))
+            ok = bool(re.search(r"patroc[íi]nio|festival|evento|show|agenda cultural|esporte", txt, re.I)) and bool(sinais.search(txt[:20000]))
+            c["verificada"] = ok; c["verificada_em"] = now_iso()
+            if ok:
+                est["verificadas"].append({"nome": dom, "url": f"https://{dom}", "tipo": "descoberta", "incluida_em": now_iso()[:10], "rotulos": c["rotulos"]}); novas += 1
+        except Exception as exc:
+            c["verificada"] = False; c["erro"] = type(exc).__name__
+        time.sleep(0.4)
+    est["leituras"] = (est.get("leituras") or [])[-30:] + [{"em": now_iso(), "candidatas": len(est["candidatas"]), "novas_verificadas": novas, "total_verificadas": len(est["verificadas"])}]
+    write_json(ROOT / cfg["arquivo"], est)
+    return {"candidatas": len(est["candidatas"]), "novas": novas, "verificadas": len(est["verificadas"])}
+
+
 def coletar(uf: str = "GO", limite_paginas: int = 40) -> dict:
     cfg = _cfgp(); est = cfg["estados"][uf]
     destino = PASTA / uf.lower() / "patrocinios.json"
     atual = load_json(destino) if destino.exists() else {"uf": uf, "achados": [], "leituras": [], "cursor": 0}
-    fontes = est["fontes"]; lidas, novos = 0, 0
+    fontes = est["fontes"] + _fontes_descobertas(uf).get("verificadas", [])     # rol configurado + descobertas verificadas
+    lidas, novos = 0, 0; html_lidos = {}
     inicio = atual.get("cursor", 0)
     for i in range(len(fontes)):
         f = fontes[(inicio + i) % len(fontes)]
@@ -78,7 +137,7 @@ def coletar(uf: str = "GO", limite_paginas: int = 40) -> dict:
                 break
             url = f["url"].rstrip("/") + pg
             try:
-                html = _get(url, timeout=15); lidas += 1
+                html = _get(url, timeout=15); lidas += 1; html_lidos[url] = html
                 txt = re.sub(r"<script.*?</script>|<style.*?</style>", " ", html, flags=re.S)
                 txt = re.sub(r"<[^>]+>", " ", txt); txt = re.sub(r"\s+", " ", txt)
                 for a in extrair_patrocinios(txt, f, url):
@@ -88,10 +147,12 @@ def coletar(uf: str = "GO", limite_paginas: int = 40) -> dict:
                 pass
             time.sleep(0.4)
     atual["cursor"] = (inicio + 1) % len(fontes)
+    desc = descobrir_fontes(uf, html_lidos, fontes)
+    atual["descoberta"] = desc
     atual["achados"] = atual["achados"][-3000:]
     atual["leituras"] = (atual.get("leituras") or [])[-30:] + [{"em": now_iso(), "paginas_lidas": lidas, "novos": novos}]
     write_json(destino, atual)
-    return {"paginas_lidas": lidas, "novos": novos, "total": len(atual["achados"])}
+    return {"paginas_lidas": lidas, "novos": novos, "total": len(atual["achados"]), "fontes": len(fontes), "descoberta": desc}
 
 
 def score_patrocinio(pats: list[dict], cad: dict | None) -> dict:

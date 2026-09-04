@@ -416,13 +416,13 @@ def run() -> dict:
                 n = s.get(chave) or 0
                 reg[d] = {"cor": "verde" if n else "azul", "achados": n, "trecho": f"{n} registro(s)" if n else None}
         return _trinta_dias(reg, hoje)
-    oficiais.append({"id": "motor-gife", "nome": "Motor GIFE — incentivos fiscais (empresas)", "tipo": "empresas_fiscal",
+    oficiais.append({"id": "motor-gife", "nome": "Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás)", "tipo": "empresas_fiscal",
                      "url": "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/",
                      "dias": _dias_semanal("novas_agregadas"), "ultima_leitura": (eg.get("gerado_em") or None),
                      "achados": eg.get("total", 0),
                      "situacao": ("sem leitura ainda" if not eg else "ativo — captando" if eg.get("total") else "ativo, sem achados"),
                      "descricao": "empresas do Lucro Real com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS); fontes: maiores contribuintes do ICMS, cadastro RFB, SALIC, GIFE; domingo 03h"})
-    oficiais.append({"id": "motor-patrocinio", "nome": "Motor Patrocínio Privado — captação privada (empresas)", "tipo": "empresas_privado",
+    oficiais.append({"id": "motor-patrocinio", "nome": "Motor Patrocínio Privado — mídia e eventos de Goiás (empresas)", "tipo": "empresas_privado",
                      "url": "https://opopular.com.br/",
                      "dias": _dias_semanal("patrocinios_novos"), "ultima_leitura": (pg.get("gerado_em") or None),
                      "achados": pg.get("total", 0),

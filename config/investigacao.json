@@ -12,20 +12,12 @@
       "ativa": true
     },
     {
-      "id": "captamos",
-      "nome": "Captamos — oportunidades de captação",
-      "url": "https://captadores.org.br/editais/",
-      "territorio": "BR",
-      "ativa": true,
-      "nota_rede": "04/09: /noticias/ devolveu 403; a página /editais/ da ABCR responde (o motor ABCR já a lê) — Captamos passa a apontar para ela",
-      "urls_extra": []
-    },
-    {
       "id": "mapa-osc",
       "nome": "Mapa das OSC — editais",
       "url": "https://mapaosc.ipea.gov.br/",
       "territorio": "BR",
-      "ativa": true
+      "ativa": false,
+      "motivo_inativa": "Mapa das OSC (IPEA) é base cadastral de organizações, não publica editais; útil para parcerias, não como motor de editais"
     },
     {
       "id": "observatorio-3setor",
@@ -39,20 +31,25 @@
       "nome": "Rede Filantropia — editais",
       "url": "https://www.filantropia.ong/editais",
       "territorio": "BR",
-      "ativa": true,
+      "ativa": false,
       "urls_extra": [
         "https://filantropia.ong/editais",
         "https://www.filantropia.ong/",
         "https://filantropia.ong/"
       ],
-      "nota_rede": "04/09: 403 no endereço antigo; alternativas em teste"
+      "nota_rede": "04/09: 403 no endereço antigo; alternativas em teste",
+      "motivo_inativa": "recusa acesso automatizado (403) em todos os endereços testados em 04/09 — não foi possível verificar se publica editais; reativar se o portal abrir"
     },
     {
       "id": "abcr",
       "nome": "ABCR — Associação Brasileira de Captadores",
-      "url": "https://captadores.org.br/",
+      "url": "https://captadores.org.br/editais/",
       "territorio": "BR",
-      "ativa": true
+      "ativa": true,
+      "urls_extra": [
+        "https://captadores.org.br/noticias/"
+      ],
+      "nota": "unifica o antigo motor Captamos: a página /editais/ da ABCR é a fonte"
     },
     {
       "id": "gife",

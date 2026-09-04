@@ -138,7 +138,8 @@
           ]
         },
         "nota": "o motor procura nessas páginas declarações de parceria/patrocínio/apoio e nomes de empresas; nada é inventado — cada parceria registrada traz a URL onde foi lida"
-      }
+      },
+      "escopo_motores": "Motor de destinação tributária e Motor de patrocínio: somente Goiás"
     },
     "DF": {
       "ativo": false,
@@ -399,6 +400,46 @@
             "nome": "Goiânia Cultura (Secult)",
             "url": "https://www.goiania.go.gov.br/cultura/",
             "tipo": "eventos"
+          },
+          {
+            "nome": "A Redação (Goiânia)",
+            "url": "https://aredacao.com.br/",
+            "tipo": "imprensa"
+          },
+          {
+            "nome": "Diário de Goiás",
+            "url": "https://diariodegoias.com.br/",
+            "tipo": "imprensa"
+          },
+          {
+            "nome": "TV Serra Dourada",
+            "url": "https://www.serradourada.com.br/",
+            "tipo": "tv"
+          },
+          {
+            "nome": "Rádio Difusora Goiânia",
+            "url": "https://www.difusoragoiania.com.br/",
+            "tipo": "radio"
+          },
+          {
+            "nome": "Goiânia Cultura — agenda (Secult Goiânia)",
+            "url": "https://www.goiania.go.gov.br/cultura/agenda/",
+            "tipo": "eventos"
+          },
+          {
+            "nome": "Secult Goiás — agenda",
+            "url": "https://goias.gov.br/cultura/",
+            "tipo": "eventos"
+          },
+          {
+            "nome": "Ingresso Nacional — Goiânia",
+            "url": "https://www.ingressonacional.com.br/goiania",
+            "tipo": "eventos"
+          },
+          {
+            "nome": "Portal 6 (Anápolis)",
+            "url": "https://portal6.com.br/",
+            "tipo": "imprensa"
           }
         ],
         "paginas_por_fonte": [
@@ -459,7 +500,30 @@
           "cultura",
           "esporte",
           "educacao"
-        ]
+        ],
+        "descoberta_semanal": {
+          "regra": "a cada semana o motor recolhe, nas páginas lidas, links para novos sites de Goiás que divulgam eventos/festivais/shows ou são meios de comunicação (jornal, rádio, TV, portal); cada candidato é verificado (responde e fala de eventos/patrocínio) e só então entra no rol",
+          "sinais_goias": [
+            "goias",
+            "goiania",
+            "goiânia",
+            "anapolis",
+            "anápolis",
+            "rio verde",
+            "aparecida",
+            ".go.gov.br",
+            "go.leg.br",
+            "catalao",
+            "itumbiara",
+            "jatai",
+            "luziania",
+            "caldas novas",
+            "goiás"
+          ],
+          "arquivo": "dados/empresas/go/fontes_patrocinio_descobertas.json",
+          "maximo_novas_por_semana": 10
+        },
+        "escopo": "somente Goiás"
       }
     },
     "score_patrocinio": {

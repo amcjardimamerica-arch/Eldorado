@@ -3460,7 +3460,7 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(all(1<=o["relevancia"]["nivel"]<=5 for o in reg))
         ids={o["id"]:o for o in m["oficiais"]}
         self.assertEqual(ids["motor-gife"]["tipo"],"empresas_fiscal"); self.assertEqual(ids["motor-patrocinio"]["tipo"],"empresas_privado")
-        self.assertIn("incentivos fiscais",ids["motor-gife"]["nome"]); self.assertIn("captação privada",ids["motor-patrocinio"]["nome"])
+        self.assertIn("Incentivos Fiscais",ids["motor-gife"]["nome"]); self.assertIn("Patrocínio Privado",ids["motor-patrocinio"]["nome"])
         self.assertEqual(sorted(reg,key=lambda o:o["rank"])[0]["id"],"do-goiania")            # diário de Goiânia primeiro
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("mt-rank","(a.rank||99)-(b.rank||99)"): self.assertIn(x,html,x)
@@ -3484,6 +3484,35 @@ class SystemTests(unittest.TestCase):
         grupos=[o["grupo"] for o in reg]; self.assertEqual(grupos,sorted(grupos))                       # ordem por tipo
         self.assertEqual(reg[0]["tipo"],"diario_oficial"); self.assertEqual(reg[-1]["tipo"],"empresas_privado"); self.assertEqual(reg[-2]["tipo"],"empresas_fiscal")
         self.assertEqual([o["id"] for o in reg if o["grupo"]==2],["pncp-api"])
+
+
+    def test_unificacao_captamos_abcr_desativacoes_e_motores_go(self):
+        """Captamos unificado no ABCR; Rede Filantropia e Mapa das OSC desativados com
+        motivo; motor 20 lê os sites das próprias empresas do ICMS de GO; motor de
+        patrocínio só GO, com descoberta semanal de fontes."""
+        c=load_json(pathlib.Path("config/investigacao.json")); lst=c.get("plataformas",c.get("fontes",[])); ids={x["id"]:x for x in lst}
+        self.assertNotIn("captamos",ids); self.assertIn("captadores.org.br/editais",ids["abcr"]["url"])
+        self.assertFalse(ids["rede-filantropia"]["ativa"]); self.assertIn("403",ids["rede-filantropia"]["motivo_inativa"])
+        self.assertFalse(ids["mapa-osc"]["ativa"]); self.assertIn("não publica editais",ids["mapa-osc"]["motivo_inativa"])
+        from src.sensores import registro, _sites_empresas_go
+        r={s["id"]:s for s in registro()}
+        self.assertNotIn("plat-captamos",r); self.assertNotIn("plat-rede-filantropia",r); self.assertNotIn("plat-mapa-osc",r)
+        m=r["empresas-incentivadas"]; self.assertEqual(m["uf"],"GO"); self.assertEqual(m["urls_dinamicas"],"base_empresas_go"); self.assertIn("maiores contribuintes do ICMS de Goiás",m["nome"])
+        self.assertIsInstance(_sites_empresas_go(5),list)
+        e=load_json(pathlib.Path("config/empresas.json")); pp=e["patrocinio_privado"]["estados"]["GO"]
+        self.assertGreaterEqual(len(pp["fontes"]),15); self.assertIn("descoberta_semanal",pp); self.assertIn("goiás",pp["descoberta_semanal"]["sinais_goias"])
+        self.assertEqual(e["patrocinio_privado"]["estados"]["GO"].get("escopo") or e["patrocinio_privado"].get("escopo"),"somente Goiás")
+        from src import patrocinios as P
+        orig=P._get; P._get=lambda u,timeout=15:"<html>Festival — patrocínio — agenda cultural de Goiás</html>"
+        try:
+            arq=ROOT/pp["descoberta_semanal"]["arquivo"]; bk=arq.read_text() if arq.exists() else None
+            d=P.descobrir_fontes("GO",{"https://x/":'<a href="https://festivalgoiania.com.br/">Festival de Goiânia</a><a href="https://radiobrasilcentral.com.br/">Rádio Brasil Central Goiás</a><a href="https://www.facebook.com/x">fb</a>'},[{"url":"https://x/"}])
+            self.assertEqual(d["candidatas"],2); self.assertEqual(d["novas"],2)
+        finally:
+            P._get=orig
+            if bk is not None: arq.write_text(bk)
+            else: arq.unlink(missing_ok=True)
+        mo=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json")) if False else None
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
