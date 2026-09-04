@@ -2190,6 +2190,7 @@ function camadasHtml(m){
 }
 const rotArea0=a=>(D.areas&&D.areas[a]||{}).rotulo||a;
 const GRUPO_MOTOR={1:"diário oficial",2:"API",3:"secretaria / órgão",4:"site do terceiro setor",5:"empresas"};
+const ROT_TIPO={empresas_incentivo:"editais incentivados (empresas)",empresas_fiscal:"GIFE · incentivos fiscais",empresas_privado:"patrocínio privado"};
 function desenhaMotores(){
   if(!$("mt-lista"))return;
   const R=MT._resumo||{};
@@ -2257,7 +2258,7 @@ function desenhaMotores(){
   const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Motores regulares <span class=meta>${ofRows.length} · numerados: diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado</span></div>
     ${ofRows.map(o=>{const st=semaforo(o.situacao);const ativo=mtAtivo(o.id);return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
-      <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
+      <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(ROT_TIPO[o.tipo]||GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
         ${o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag" title="diagnóstico individual da última leitura">⚠ ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
         <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · ${esc(o.situacao)}${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+" edital(is)":""}</div>

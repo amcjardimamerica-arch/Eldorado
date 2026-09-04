@@ -89,14 +89,15 @@
       "uf": "GO",
       "territorio": "GO",
       "urls": [
+        "https://comunicaapi.pje.jus.br/api/v1/comunicacao?siglaTribunal=TJGO&dataDisponibilizacaoInicio={dataiso}&dataDisponibilizacaoFim={dataiso}&itensPorPagina=100&pagina=1",
         "https://www.tjgo.jus.br/index.php/diario-da-justica",
-        "https://www.tjgo.jus.br/index.php/licitacoes",
-        "https://www.tjgo.jus.br/index.php/chamamentos-publicos"
+        "https://www.tjgo.jus.br/index.php/licitacoes"
       ],
       "busca": null,
       "confianca": "curada",
       "o_que_procurar": "editais de destinação de prestação pecuniária, penas de perdimento, doações a entidades pelas varas de execução penal",
-      "nota_rede": " · 04/09: páginas de listagem + descoberta automática a partir da home"
+      "nota_rede": "04/09: tjgo.jus.br recusa robô (403); via principal passa a ser o DJEN (API pública do CNJ) filtrado por TJGO",
+      "max_paginas": 3
     },
     {
       "id": "dj-trf1-go",
@@ -138,13 +139,16 @@
       "territorio": "GO/Goiânia",
       "urls": [
         "https://www.goiania.go.leg.br/",
-        "https://www.goiania.go.leg.br/transparencia/licitacoes",
-        "https://www.goiania.go.leg.br/atividade-legislativa/proposicoes"
+        "https://www.goiania.go.leg.br/feed/",
+        "https://sapl.goiania.go.leg.br/",
+        "https://sapl.goiania.go.leg.br/materia/pesquisar-materia",
+        "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos"
       ],
       "busca": null,
       "confianca": "curada",
       "o_que_procurar": "projetos de lei sobre terceiro setor, utilidade pública, isenções, fundos, subvenções, emendas impositivas a OSCs",
-      "nota_rede": " · 04/09: páginas de listagem + descoberta automática a partir da home"
+      "nota_rede": "04/09: home sem links (script); tenta RSS, SAPL (proposições) e licitações",
+      "max_paginas": 6
     },
     {
       "id": "alego-pl",
@@ -178,8 +182,57 @@
       "confianca": "confirmada",
       "o_que_procurar": "modalidades 12 (credenciamento) e 3 (concurso) com vocabulário de OSC; PDFs do edital via API",
       "nota_rede": "04/09: a API exige dataInicial/dataFinal (AAAAMMDD), modalidade e página; 12 = chamamento público, 3 = concorrência/credenciamento; resposta JSON lida pelo sensor"
+    },
+    {
+      "id": "empresas-incentivadas",
+      "nome": "Editais incentivados de empresas — destinação tributária (Rouanet, LIE, FIA, PRONON)",
+      "tipo": "empresas_incentivo",
+      "nivel": "privada",
+      "territorio": "BR",
+      "uf": null,
+      "max_paginas": 16,
+      "busca": null,
+      "urls": [
+        "https://petrobras.com.br/sustentabilidade/selecoes-publicas",
+        "https://www.bb.com.br/site/patrocinios/",
+        "https://www.caixa.gov.br/sobre-a-caixa/patrocinios/",
+        "https://www.correios.com.br/institucional/patrocinios",
+        "https://eletrobras.com/pt/Paginas/Patrocinios.aspx",
+        "https://www.itaucultural.org.br/rumos",
+        "https://institutoculturalvale.org/",
+        "https://www.institutoccr.com.br/",
+        "https://www.naturamusical.com.br/",
+        "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/cultura-e-economia-criativa",
+        "https://go.equatorialenergia.com.br/",
+        "https://www.saneago.com.br/",
+        "https://www.institutovotorantim.org.br/",
+        "https://www.fundacaobradesco.org.br/"
+      ],
+      "lexico_proprio": [
+        "Rouanet",
+        "Lei de Incentivo",
+        "incentivo fiscal",
+        "incentivado",
+        "Lei do Esporte",
+        "Lei de Incentivo ao Esporte",
+        "FIA",
+        "Fundo da Criança",
+        "Fundo do Idoso",
+        "PRONON",
+        "PRONAS",
+        "seleção pública",
+        "chamada pública",
+        "edital",
+        "inscrições",
+        "patrocínio",
+        "projetos culturais",
+        "projetos esportivos"
+      ],
+      "descricao": "conjunto de sites e iniciativas de empresas que destinam recursos tributários e abrem editais/seleções para projetos de esporte, cultura, criança/idoso e saúde; refinamento do documento do titular (matriz, Lucro Real, score) aplicado no cruzamento com a base de empresas",
+      "nota_rede": "04/09: criado; os endereços dos programas são conhecidos publicamente e a descoberta automática segue 'editais / seleções / patrocínios' em cada site — nada é dado como certo antes da leitura"
     }
   ],
   "nota_rede": "A rede deste ambiente não alcança os domínios; os sensores rodam no GitHub Actions. URLs 'curadas' são conferidas pelo próprio sensor (saúde HTTP) e trocadas quando três leituras seguidas não trazem nada.",
-  "nota_orcamento": "40 sensores por saída (diários sempre primeiro), 2 páginas cada, 12s de timeout: pior caso ~16 min. O rodízio garante que todos saem ao longo da semana."
+  "nota_orcamento": "40 sensores por saída (diários sempre primeiro), 2 páginas cada, 12s de timeout: pior caso ~16 min. O rodízio garante que todos saem ao longo da semana.",
+  "plataformas": []
 }

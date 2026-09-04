@@ -202,6 +202,8 @@ def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
     for u in sensor["urls"]:
         if "{data8}" in u:
             saida.append(u.replace("{data8}", hoje.strftime("%Y%m%d")))
+        elif "{dataiso}" in u:
+            saida.append(u.replace("{dataiso}", hoje.isoformat()))
         elif "{data}" in u:
             saida.append(u.replace("{data}", hoje.strftime("%d-%m-%Y")))
         elif "{termo}" in u:
@@ -216,6 +218,8 @@ def lexico_especifico(sensor: dict) -> list[str]:
     """2ª etapa (Motores Opressores): termos ESPECÍFICOS do recurso — o léxico
     próprio do regramento quando existe, senão os termos distintivos do
     programa. Casam de forma cirúrgica, onde o léxico geral seria vago."""
+    if sensor.get("lexico_proprio"):                 # sensores especiais com léxico próprio (ex.: editais incentivados)
+        return list(sensor["lexico_proprio"])[:30]
     if not sensor.get("fontes_260"):
         return []
     genericos = {"edital", "editais", "projeto", "projetos", "apoio", "cultura", "cultural", "esporte", "fomento",
@@ -254,9 +258,10 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
     achados, falhas, saude = [], [], []
     especifico = lexico_especifico(sensor)
     diag = {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0, "motivo_zero": None}
-    fila = list(_paginas(sensor)[:lim["paginas_por_sensor"]])
+    n_pag = int(sensor.get("max_paginas") or lim["paginas_por_sensor"])
+    fila = list(_paginas(sensor)[:n_pag])
     lidas: set = set()
-    while fila and diag["paginas_lidas"] < lim["paginas_por_sensor"] + 4:
+    while fila and diag["paginas_lidas"] < n_pag + 4:
         url = fila.pop(0)
         if url in lidas:
             continue
@@ -275,7 +280,19 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             continue
         p = _Links()
         # API JSON (PNCP): itens viram links para a página pública do edital
-        if html.lstrip().startswith(("{", "[")) and "pncp" in url:
+        if html.lstrip().startswith(("{", "[")) and "comunicaapi.pje.jus.br" in url:
+            # DJEN (CNJ): comunicações do TJGO do dia — texto vira rótulo; link para a comunicação
+            try:
+                js = json.loads(html); itens = js.get("items") or js.get("content") or []
+                for it in itens[:300]:
+                    txt = re.sub(r"<[^>]+>", " ", str(it.get("texto") or "")); txt = re.sub(r"\s+", " ", txt).strip()
+                    if len(txt) < 20: continue
+                    rot = (it.get("tipoComunicacao") or "Comunicação") + " — " + (it.get("nomeOrgao") or "") + " — " + txt[:240]
+                    p.links.append((it.get("link") or f"https://comunica.pje.jus.br/consulta?siglaTribunal=TJGO", rot)); p.texto.append(" " + txt[:400] + " ")
+                diag["djen_itens"] = len(itens)
+            except Exception:
+                pass
+        elif html.lstrip().startswith(("{", "[")) and "pncp" in url:
             try:
                 js = json.loads(html); itens = js.get("data") if isinstance(js, dict) else js
                 for it in (itens or [])[:200]:
@@ -310,7 +327,7 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
         # DESCOBERTA DA LISTAGEM: se a página não traz editais mas aponta para
         # 'editais / licitações / chamamentos / edições / diário / publicações',
         # segue esses links (até 4) — a home costuma ser só institucional
-        if url in _paginas(sensor)[:lim["paginas_por_sensor"]] and len(diag["descobertas"]) < 4:
+        if url in _paginas(sensor)[:n_pag] and len(diag["descobertas"]) < (8 if n_pag > 6 else 4):
             for h, r in p.links:
                 rl = (r or "").lower(); hl = (h or "").lower()
                 if h and re.search(r"edita|licita|chamament|credenciament|edi[çc][õo]es|di[áa]rio|publica[çc][õo]es|transpar[êe]ncia|jornal|ver todas|mais not", rl + " " + hl) \

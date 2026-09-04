@@ -433,7 +433,7 @@ def run() -> dict:
         pts = 0; por = []
         t_ = o.get("tipo") or "plataforma"; nm = (o["nome"] or "").lower()
         if t_ == "diario_oficial": pts += 3; por.append("diário oficial — fonte primária de editais +3")
-        elif t_ in ("empresas_fiscal", "empresas_privado"): pts += 3; por.append("captação junto a empresas — frente própria +3")
+        elif t_ in ("empresas_fiscal", "empresas_privado", "empresas_incentivo"): pts += 3; por.append("captação junto a empresas — frente própria +3")
         elif t_ == "api": pts += 2; por.append("API oficial (PNCP) +2")
         elif t_ == "diario_justica": pts += 2; por.append("destinações judiciais +2")
         elif t_ == "plataforma": pts += 2; por.append("plataforma de editais +2")
@@ -453,7 +453,7 @@ def run() -> dict:
         t_ = o.get("tipo") or "plataforma"; nm = (o["nome"] or "").lower()
         if t_ == "diario_oficial": return 1
         if t_ == "api": return 2
-        if t_ in ("empresas_fiscal", "empresas_privado"): return 5
+        if t_ in ("empresas_fiscal", "empresas_privado", "empresas_incentivo"): return 5
         if t_ in ("legislativo", "diario_justica", "site_oficial") or re.search(r"secult|secretaria|minist[ée]rio|governo|prefeitura|c[âa]mara|assembleia|tribunal|justi[çc]a|cnj", nm): return 3
         return 4
     def _terr(o):
