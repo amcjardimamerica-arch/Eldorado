@@ -251,10 +251,17 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
     pausa = lim["pausa_segundos"] if pausa is None else pausa
     achados, falhas, saude = [], [], []
     especifico = lexico_especifico(sensor)
-    for url in _paginas(sensor)[:lim["paginas_por_sensor"]]:
+    diag = {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0, "motivo_zero": None}
+    fila = list(_paginas(sensor)[:lim["paginas_por_sensor"]])
+    lidas: set = set()
+    while fila and diag["paginas_lidas"] < lim["paginas_por_sensor"] + 4:
+        url = fila.pop(0)
+        if url in lidas:
+            continue
+        lidas.add(url)
         try:
             html, final, status = _abrir(url, timeout=lim.get("timeout_segundos", 12), max_bytes=lim["bytes_por_pagina"])
-            saude.append({"url": url, "http": status, "bytes": len(html)})
+            saude.append({"url": url, "http": status, "bytes": len(html)}); diag["paginas_lidas"] += 1
         except Exception as exc:
             falhas.append({"url": url, "erro": type(exc).__name__})
             try:
@@ -278,9 +285,23 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             except Exception:
                 pass
         corpo = re.sub(r"\s+", " ", " ".join(p.texto))
+        diag["links_total"] += len(p.links)
+        diag["pdf_links"] += sum(1 for h, _ in p.links if h and h.lower().endswith(".pdf"))
+        # DESCOBERTA DA LISTAGEM: se a página não traz editais mas aponta para
+        # 'editais / licitações / chamamentos / edições / diário / publicações',
+        # segue esses links (até 4) — a home costuma ser só institucional
+        if url in _paginas(sensor)[:lim["paginas_por_sensor"]] and len(diag["descobertas"]) < 4:
+            for h, r in p.links:
+                rl = (r or "").lower(); hl = (h or "").lower()
+                if h and re.search(r"edita|licita|chamament|credenciament|edi[çc][õo]es|di[áa]rio|publica[çc][õo]es|transpar[êe]ncia|jornal|ver todas|mais not", rl + " " + hl) \
+                        and not re.search(r"\.(jpg|png|css|js)$|mailto:|javascript:|#$", hl):
+                    u2 = canonical_url(urljoin(final, h))
+                    if urlsplit(u2).scheme in ("https", "file") and u2 not in lidas and u2 not in fila and len(diag["descobertas"]) < 4:
+                        fila.append(u2); diag["descobertas"].append({"de": url, "para": u2, "rotulo": (r or "")[:60]})
         for href, rot in p.links[:lim["links_por_pagina"] * 3]:
             if not rot or len(rot) < 10:
                 continue
+            diag["links_candidatos"] += 1
             lx = casar(rot)
             esp = casa_especifico(rot, especifico) if especifico else []
             if not lx["candidato"] and not esp:
@@ -322,8 +343,26 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
                 break
         if pausa: time.sleep(pausa)
     unicos = {a["id"]: a for a in achados}
+    # DIAGNÓSTICO INDIVIDUAL — por que este motor rendeu (ou não)
+    if not unicos:
+        if saude and not falhas:
+            if diag["links_total"] == 0 and diag["pdf_links"] == 0:
+                diag["motivo_zero"] = "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
+            elif diag["pdf_links"] and diag["links_candidatos"] < 5:
+                diag["motivo_zero"] = "os editais estão dentro de PDFs (edições inteiras) — a leitura do rótulo não alcança; entra a extração de edição"
+            elif diag["descobertas"]:
+                diag["motivo_zero"] = f"página institucional; seguiu {len(diag['descobertas'])} listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+            else:
+                diag["motivo_zero"] = "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
+        elif falhas and not saude:
+            erros = {f["erro"] for f in falhas}
+            diag["motivo_zero"] = ("endereço não resolve (DNS) — URL errada" if "gaierror" in erros else
+                                   "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas" if "HTTPError" in erros else
+                                   "tempo esgotado / conexão recusada" if erros & {"timeout", "URLError", "TimeoutError"} else f"falha: {', '.join(sorted(erros))}")
+        elif falhas and saude:
+            diag["motivo_zero"] = "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
     return {"sensor": sensor["id"], "achados": list(unicos.values()),
-            "falhas": falhas, "saude": saude, "lido_em": now_iso()}
+            "falhas": falhas, "saude": saude, "diagnostico": diag, "lido_em": now_iso()}
 
 
 # --------------------------------------------------------------- coordenador
@@ -340,7 +379,11 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
     bloco = os.environ.get("MOTORES_BLOCO", "completo")
     hz = ROOT / "config/horarios.json"
     tipos_bloco = None
-    if bloco not in ("completo", "manual") and hz.exists():
+    if bloco == "regulares":
+        escala["saem"] = [s for s in escala["saem"] if not s.get("fontes_260")] + \
+            [s for s in registro() if not s.get("fontes_260") and s["id"] not in {x["id"] for x in escala["saem"]}]
+        escala["bloco"] = bloco
+    elif bloco not in ("completo", "manual") and hz.exists():
         for b in load_json(hz).get("blocos", []):
             if b["bloco"] == bloco:
                 tipos_bloco = set(b["tipos"])
@@ -374,6 +417,7 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         reg["alerta"] = ("trocar URL: 3 leituras sem achados com página respondendo"
                          if reg["vazias_seguidas"] >= 3 and r["saude"] and not r["falhas"] else None)
         registrar_dia(s["id"], hoje, r)
+        est["sensores"].setdefault(s["id"], {})["diagnostico"] = r.get("diagnostico")
         for a in r["achados"]:
             total_ach += 1
             if a["id"] not in existentes:
