@@ -3278,6 +3278,16 @@ class SystemTests(unittest.TestCase):
         # o cartão grande dos Opressores não é mais montado na lista
         self.assertNotIn('return `<div class="mt-item ${m.faltam?"":"completo"} sem-${st[0]}" data-id="${esc(m.id)}">',html)
 
+
+    def test_calendario_inicial_explica_e_mostra_possiveis(self):
+        """O calendário da tela inicial só desenha faixa com prazo confirmado; as
+        'possíveis' de Editais Abertos aparecem pela data real de publicação, com a
+        explicação da diferença e o caminho para a lista."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ('id="g-possiveis"',"POSSÍVEIS SEM PRAZO","Por que «Editais Abertos» mostra mais do que este calendário","g-pubdia",
+                  "data real de publicação","ver todas em Editais Abertos","aberta(s) confirmada(s) ·","possível(is) sem prazo confirmado"):
+            self.assertIn(x,html,x)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

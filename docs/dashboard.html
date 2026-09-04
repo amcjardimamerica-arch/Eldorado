@@ -161,6 +161,10 @@ box-shadow:0 1px 3px #0002}
 .calcab h2{margin:0;font-size:19px}
 .calgrade{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
 .cfx-trilhos{display:flex;flex-direction:column;gap:2px;margin:2px -6px 4px}
+.g-pub{display:grid;grid-template-columns:repeat(31,1fr);gap:2px}
+.g-pubdia{border:1px solid var(--linha);border-radius:5px;min-height:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;color:var(--suave);background:#FCFCFB}
+.g-pubdia.com{background:#EAF2FB;border-color:#9FC1E8;cursor:pointer;color:#0B4EA2}.g-pubdia.com:hover{background:#DCEBFA}
+.g-pubdia .q{font-weight:800;font-size:10px}
 .cfx{height:10px;border-radius:0;color:#fff;font-size:8.5px;line-height:10px;padding-left:4px;overflow:hidden;white-space:nowrap;cursor:pointer;opacity:.92}
 .cfx.ini{border-radius:6px 0 0 6px;margin-left:6px}.cfx.fim{border-radius:0 6px 6px 0;margin-right:6px}.cfx.ini.fim{border-radius:6px}
 .cfx.vazia{background:transparent;cursor:default;color:var(--suave);padding-left:8px}
@@ -527,6 +531,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div id="g-corpo"></div>
 <div class="legenda" id="g-legenda" style="margin-top:10px"></div>
 <div class="meta" id="g-abertas" style="margin-top:8px"></div>
+<div id="g-possiveis" style="margin-top:10px"></div>
 <div class="meta" id="g-cobertura" style="margin-top:8px;border-left:3px solid var(--linha);padding-left:10px"></div>
 <span class="verlink" onclick="modulo('eldorado');mostra('calendario')">Ver calendário completo ›</span>
 </div>
@@ -1393,6 +1398,24 @@ function desenhaGantt(){
       ${ab.map(p=>esc(p.titulo.split("—")[0].trim())+" ("+br(p.inicio)+"→"+br(p.fim)+")").join(" · ")}.
       Entram no calendário quando o edital do ano for confirmado.</span>`:"";
   }
+  /* POSSÍVEIS SEM PRAZO — os "abertos" de Editais Abertos que não desenham faixa:
+     chamamentos identificados sem período de inscrição confirmado. A faixa exige
+     prazo; aqui entram pela DATA REAL DE PUBLICAÇÃO (dado confirmado), como
+     marcação por dia, com a contagem e o caminho para Editais Abertos. */
+  if($("g-possiveis")){
+    const mesIni=new Date(gAno,gMes,1), nd=new Date(gAno,gMes+1,0).getDate(), mesId=`${gAno}-${String(gMes+1).padStart(2,"0")}`;
+    const casaF=e=>(!uf0||uf0==="__nac__"?(!uf0||!e.uf):(e.uf===uf0||(!e.uf&&e.abrangencia==="nacional")))&&(!ar0||e.area===ar0)&&(!ni0||e.nivel===ni0);
+    const pos=(D.editais||[]).filter(e=>situacaoDe(e)==="possivel"&&estadoDe(e.id)==="em_andamento"&&casaF(e)&&((e.publicado_em||e.coletado_em||"").slice(0,7)===mesId));
+    const porDiaP={};pos.forEach(e=>{const dd=+(e.publicado_em||e.coletado_em).slice(8,10);(porDiaP[dd]=porDiaP[dd]||[]).push(e);});
+    const totalPos=(D.editais||[]).filter(e=>situacaoDe(e)==="possivel"&&estadoDe(e.id)==="em_andamento"&&casaF(e)).length;
+    const abertasN=(D.editais||[]).filter(e=>situacaoDe(e)==="aberta"&&estadoDe(e.id)==="em_andamento"&&casaF(e)).length;
+    $("g-possiveis").innerHTML=`<div class=meta style="margin-bottom:4px"><strong>Por que «Editais Abertos» mostra mais do que este calendário:</strong> lá entram as <b>possíveis</b> (${totalPos} nesta seleção) — chamamentos identificados <b>sem período de inscrição confirmado</b>. O calendário só desenha faixa com prazo confirmado (${abertasN} nesta seleção). As possíveis aparecem aqui pela <b>data real de publicação</b> (ou de captura, quando a publicação não traz data), até a fase 2 confirmar o prazo:</div>
+      <div class="g-pub">${[...Array(nd)].map((_,i)=>{const dd=i+1,l=porDiaP[dd]||[];return `<div class="g-pubdia${l.length?" com":""}" data-dia="${dd}" title="${dd}/${String(gMes+1).padStart(2,"0")}: ${l.length?l.length+" chamamento(s) publicado(s) sem prazo confirmado — clique para ver":"nenhum"}"><span class=n>${dd}</span>${l.length?`<span class=q>${l.length}</span>`:""}</div>`;}).join("")}</div>
+      <div class=meta style="margin-top:4px">${pos.length} publicada(s) neste mês · <span class="verlink" onclick="modulo('eldorado');mostra('editais')">ver todas em Editais Abertos ›</span></div>`;
+    $("g-possiveis").querySelectorAll(".g-pubdia.com").forEach(el=>{const l=porDiaP[+el.dataset.dia]||[];
+      ligaTip(el,`<strong>${l.length} chamamento(s) publicado(s) em ${el.dataset.dia}/${String(gMes+1).padStart(2,"0")}</strong> — sem prazo confirmado<br>`+l.slice(0,6).map(e=>`• ${esc((e.fonte_nome||"").replace(/Querido Diário.*|PNCP.*/,"").slice(0,30)||esc(e.uf||""))} · ${esc((e.titulo||"").replace(/^Diário Oficial de [^—]+—\s*/,"").replace(/"/g,"").slice(0,60))}`).join("<br>")+(l.length>6?`<br>… +${l.length-6}`:""));
+      el.onclick=()=>{modulo("eldorado");mostra("editais");};});
+  }
   const C=D.cobertura_calendario||{};
   if($("g-cobertura")&&C.fontes){
     const pa=C.por_area||{};
@@ -1753,7 +1776,8 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
   const itens=sel.map(e=>({e,b:info[e.id]||null})).concat(extras);
   const nCamp=itens.filter(x=>x.b&&x.b.campanha&&x.b.campanha.status==="monitorando").length;
   const fontesN=new Set(itens.map(x=>x.b?x.b._fonte.fonte_nome:x.e.fonte_nome)).size;
-  if(resumoEl)resumoEl.textContent=`${itens.length} oportunidade(s) · ${fontesN} fonte(s) · ${nCamp} em campanha de 30 dias${FA_ABERTAS?"":" · carregando a base completa…"}${FA_ABERTAS&&FA_ABERTAS._total?" · base identificada: "+FA_ABERTAS._total:""}`;
+  if(resumoEl){const nA=itens.filter(x=>situacaoDe(x.e)==="aberta").length,nP=itens.filter(x=>situacaoDe(x.e)==="possivel").length;
+    resumoEl.textContent=`${itens.length} oportunidade(s): ${nA} aberta(s) confirmada(s) · ${nP} possível(is) sem prazo confirmado · ${fontesN} fonte(s) · ${nCamp} em campanha de 30 dias${FA_ABERTAS?"":" · carregando a base completa…"}`;}
   if(!itens.length){fx.innerHTML='<div class=meta style="padding:10px 2px">Nenhuma oportunidade nesta seleção.</div>';return;}
   // organização temática: área de atuação (rótulos canônicos da tela inicial)
   const grupos={};itens.forEach(x=>{const a=x.e.area||"outros";(grupos[a]=grupos[a]||[]).push(x);});
