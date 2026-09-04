@@ -188,7 +188,7 @@ def _abrir(url: str, timeout: int = 12, max_bytes: int = 2_500_000) -> tuple[str
     from urllib.request import Request, urlopen
     if not url.startswith("file://"):
         validate_public_https(url, urlsplit(url).hostname)
-    req = Request(url, headers={"User-Agent": "Eldorado-OSC/1.0 esquadra",
+    req = Request(url, headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 Eldorado-OSC/1.0", "From": "contato-via-repositorio", "Accept-Language": "pt-BR,pt;q=0.9",
                                 "Accept": "text/html,application/rss+xml,application/json;q=0.9,*/*;q=0.5"})
     with urlopen(req, timeout=timeout) as r:
         return r.read(max_bytes).decode("utf-8", "replace"), r.geturl(), getattr(r, "status", 200) or 200
@@ -200,7 +200,9 @@ def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
     hoje = hoje or date.today()
     saida = []
     for u in sensor["urls"]:
-        if "{data}" in u:
+        if "{data8}" in u:
+            saida.append(u.replace("{data8}", hoje.strftime("%Y%m%d")))
+        elif "{data}" in u:
             saida.append(u.replace("{data}", hoje.strftime("%d-%m-%Y")))
         elif "{termo}" in u:
             saida += [u.replace("{termo}", quote(t)) for t in sensor.get("termos_busca", [])[:4]]
@@ -270,7 +272,21 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             except Exception:
                 pass
             continue
-        p = _Links(); p.feed(html)
+        p = _Links()
+        # API JSON (PNCP): itens viram links para a página pública do edital
+        if html.lstrip().startswith(("{", "[")) and "pncp" in url:
+            try:
+                js = json.loads(html); itens = js.get("data") if isinstance(js, dict) else js
+                for it in (itens or [])[:200]:
+                    org = (it.get("orgaoEntidade") or {}); cnpj = re.sub(r"\D", "", str(org.get("cnpj") or ""))
+                    ano = it.get("anoCompra"); seq = it.get("sequencialCompra")
+                    rot = f"{it.get('modalidadeNome') or 'Chamamento'} — {org.get('razaoSocial') or ''} — {(it.get('objetoCompra') or '')[:220]}"
+                    link = f"https://pncp.gov.br/app/editais/{cnpj}/{ano}/{seq}" if cnpj and ano and seq else it.get("linkSistemaOrigem") or url
+                    p.links.append((link, rot)); p.texto.append(" " + rot + f" · encerramento {it.get('dataEncerramentoProposta') or ''} · UF {((it.get('unidadeOrgao') or {}).get('ufSigla') or '')} ")
+            except Exception:
+                pass
+        else:
+            p.feed(html)
         # DOU (leiturajornal): as matérias do dia vêm num JSON embutido, não em <a>;
         # cada matéria vira um link para a íntegra em /web/dou/-/<urlTitle>
         mj = re.search(r'<script[^>]*id="params"[^>]*>(.*?)</script>', html, re.S)

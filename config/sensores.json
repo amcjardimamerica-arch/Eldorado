@@ -79,7 +79,7 @@
         "doação entidades sem fins lucrativos"
       ],
       "o_que_procurar": "chamamentos de ministérios e fundos nacionais, portarias de destinação, editais Rouanet/PNAB/LIE",
-      "nota_rede": "03/09: a busca /consulta devolveu HTTPError às duas consultas; a leitura por seção do dia (Seção 3 = editais) passa a ser a via principal"
+      "nota_rede": "03/09: a busca /consulta devolveu HTTPError às duas consultas; a leitura por seção do dia (Seção 3 = editais) passa a ser a via principal · 04/09: RemoteDisconnected com UA de robô — identificação de navegador"
     },
     {
       "id": "dje-tjgo",
@@ -171,11 +171,13 @@
       "uf": null,
       "territorio": "BR",
       "urls": [
-        "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao"
+        "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50",
+        "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8}&dataFinal={data8}&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=50"
       ],
       "busca": null,
       "confianca": "confirmada",
-      "o_que_procurar": "modalidades 12 (credenciamento) e 3 (concurso) com vocabulário de OSC; PDFs do edital via API"
+      "o_que_procurar": "modalidades 12 (credenciamento) e 3 (concurso) com vocabulário de OSC; PDFs do edital via API",
+      "nota_rede": "04/09: a API exige dataInicial/dataFinal (AAAAMMDD), modalidade e página; 12 = chamamento público, 3 = concorrência/credenciamento; resposta JSON lida pelo sensor"
     }
   ],
   "nota_rede": "A rede deste ambiente não alcança os domínios; os sensores rodam no GitHub Actions. URLs 'curadas' são conferidas pelo próprio sensor (saúde HTTP) e trocadas quando três leituras seguidas não trazem nada.",
