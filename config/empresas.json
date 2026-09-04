@@ -6,14 +6,41 @@
     "capital_social_minimo_exclusivo": 10000000,
     "cnpj_ativo": true,
     "historico_anos": 5,
-    "lucro_real_categorias": ["confirmado", "altamente_provavel", "nao_confirmado"],
-    "fontes_prioritarias": ["Receita Federal (dados públicos de CNPJ)", "REDESIM", "Junta Comercial", "Diário Oficial", "CVM", "B3", "SALIC/MinC", "Ministério do Esporte", "portais de maiores contribuintes"]
+    "lucro_real_categorias": [
+      "confirmado",
+      "altamente_provavel",
+      "nao_confirmado"
+    ],
+    "fontes_prioritarias": [
+      "Receita Federal (dados públicos de CNPJ)",
+      "REDESIM",
+      "Junta Comercial",
+      "Diário Oficial",
+      "CVM",
+      "B3",
+      "SALIC/MinC",
+      "Ministério do Esporte",
+      "portais de maiores contribuintes"
+    ]
   },
   "score": {
-    "lucro_real_confirmado": 20, "historico_destinacao_fiscal": 20, "capital_social": 10, "historico_doacoes": 10,
-    "esg_estruturado": 10, "atuacao_social": 10, "instituto_ou_fundacao": 5, "proximidade_territorial": 5,
-    "decisor_localizado": 5, "compatibilidade_projetos": 5,
-    "classes": {"80": "Prioridade Máxima", "65": "Alta Prioridade", "50": "Média Prioridade", "30": "Baixa Prioridade", "0": "Prospecção Secundária"}
+    "lucro_real_confirmado": 20,
+    "historico_destinacao_fiscal": 20,
+    "capital_social": 10,
+    "historico_doacoes": 10,
+    "esg_estruturado": 10,
+    "atuacao_social": 10,
+    "instituto_ou_fundacao": 5,
+    "proximidade_territorial": 5,
+    "decisor_localizado": 5,
+    "compatibilidade_projetos": 5,
+    "classes": {
+      "80": "Prioridade Máxima",
+      "65": "Alta Prioridade",
+      "50": "Média Prioridade",
+      "30": "Baixa Prioridade",
+      "0": "Prospecção Secundária"
+    }
   },
   "cadastro": {
     "api_primaria": "https://minhareceita.org/{cnpj}",
@@ -23,10 +50,21 @@
     "nota": "Espelhos públicos dos dados abertos de CNPJ da Receita Federal: razão social, matriz/filial, situação, capital social, CNAE, porte, QSA, endereço, opção pelo Simples. IRPJ pago é sigilo fiscal — só aparece quando a própria empresa publica demonstrações."
   },
   "destinacoes": {
-    "rouanet_salic": {"api": "https://api.salic.cultura.gov.br/v1/incentivadores/?cgccpf={cnpj}&limit=100", "nota": "incentivadores da Lei Rouanet por CNPJ, com projeto, ano e valor — fonte oficial do MinC"},
-    "lei_incentivo_esporte": {"pagina": "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte", "nota": "listas de patrocinadores/doadores da LIE publicadas pelo Ministério do Esporte (por ano)"},
-    "pronon_pronas": {"pagina": "https://www.gov.br/saude/pt-br/acesso-a-informacao/acoes-e-programas/pronon-pronas", "nota": "incentivadores publicados pelo Ministério da Saúde"},
-    "fia_fundo_idoso": {"nota": "destinações a FIA/Fundo do Idoso aparecem em prestações de contas dos conselhos (CMDCA/CMI) e em relatórios da empresa; sem lista nacional aberta por CNPJ"}
+    "rouanet_salic": {
+      "api": "https://api.salic.cultura.gov.br/v1/incentivadores/?cgccpf={cnpj}&limit=100",
+      "nota": "incentivadores da Lei Rouanet por CNPJ, com projeto, ano e valor — fonte oficial do MinC"
+    },
+    "lei_incentivo_esporte": {
+      "pagina": "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte",
+      "nota": "listas de patrocinadores/doadores da LIE publicadas pelo Ministério do Esporte (por ano)"
+    },
+    "pronon_pronas": {
+      "pagina": "https://www.gov.br/saude/pt-br/acesso-a-informacao/acoes-e-programas/pronon-pronas",
+      "nota": "incentivadores publicados pelo Ministério da Saúde"
+    },
+    "fia_fundo_idoso": {
+      "nota": "destinações a FIA/Fundo do Idoso aparecem em prestações de contas dos conselhos (CMDCA/CMI) e em relatórios da empresa; sem lista nacional aberta por CNPJ"
+    }
   },
   "estados": {
     "GO": {
@@ -37,20 +75,214 @@
         "fonte": "Secretaria da Economia de Goiás — lista oficial dos maiores contribuintes do ICMS",
         "nota": "a página publica a lista por ano (nome e, quando divulgado, CNPJ/valor); o motor lê a página e os anexos PDF e guarda cada ano"
       },
-      "municipios_prioritarios": ["Goiânia", "Aparecida de Goiânia", "Anápolis", "Rio Verde", "Senador Canedo", "Catalão", "Itumbiara", "Jataí", "Luziânia", "Trindade"],
-      "centro": {"nome": "Goiânia — Jardim América", "lat": -16.7104, "lon": -49.2782, "raio_km": 15}
+      "municipios_prioritarios": [
+        "Goiânia",
+        "Aparecida de Goiânia",
+        "Anápolis",
+        "Rio Verde",
+        "Senador Canedo",
+        "Catalão",
+        "Itumbiara",
+        "Jataí",
+        "Luziânia",
+        "Trindade"
+      ],
+      "centro": {
+        "nome": "Goiânia — Jardim América",
+        "lat": -16.7104,
+        "lon": -49.2782,
+        "raio_km": 15
+      }
     },
-    "DF": {"ativo": false, "nome": "Distrito Federal", "nota": "motor não ativado"},
-    "MG": {"ativo": false, "nome": "Minas Gerais", "nota": "motor não ativado"},
-    "SP": {"ativo": false, "nome": "São Paulo", "nota": "motor não ativado"},
-    "MT": {"ativo": false, "nome": "Mato Grosso", "nota": "motor não ativado"},
-    "TO": {"ativo": false, "nome": "Tocantins", "nota": "motor não ativado"},
-    "BA": {"ativo": false, "nome": "Bahia", "nota": "motor não ativado"}
+    "DF": {
+      "ativo": false,
+      "nome": "Distrito Federal",
+      "nota": "motor não ativado"
+    },
+    "MG": {
+      "ativo": false,
+      "nome": "Minas Gerais",
+      "nota": "motor não ativado"
+    },
+    "SP": {
+      "ativo": false,
+      "nome": "São Paulo",
+      "nota": "motor não ativado"
+    },
+    "MT": {
+      "ativo": false,
+      "nome": "Mato Grosso",
+      "nota": "motor não ativado"
+    },
+    "TO": {
+      "ativo": false,
+      "nome": "Tocantins",
+      "nota": "motor não ativado"
+    },
+    "BA": {
+      "ativo": false,
+      "nome": "Bahia",
+      "nota": "motor não ativado"
+    }
   },
   "lucro_real": {
-    "cnaes_obrigados": ["64", "65", "66"],
+    "cnaes_obrigados": [
+      "64",
+      "65",
+      "66"
+    ],
     "nota_cnaes": "instituições financeiras, seguradoras e afins (Seção K) são obrigadas ao Lucro Real (art. 14, Lei 9.718/1998)",
     "porte_demais_e_capital_alto": "porte 'DEMAIS' + capital > R$ 50 mi + fora do Simples → altamente provável",
     "receita_limite_presumido": 78000000
+  },
+  "gife": {
+    "url": "https://gife.org.br/associados/",
+    "fonte": "GIFE — Grupo de Institutos, Fundações e Empresas (associados: investidores sociais privados)",
+    "nota": "o motor lê a lista pública de associados e cruza com Goiás (sede, unidade ou atuação declarada); ser associado do GIFE é forte indício de cultura de investimento social privado"
+  },
+  "pesquisa_por_ano": {
+    "anos": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "regra": "um ano por vez: o ano seguinte só começa quando o anterior está concluído (lista do ano lida, cadastros consultados, destinações do ano cruzadas, site institucional varrido); cursor em estado/empresas_cursor.json",
+    "por_saida_cadastros": 25,
+    "por_saida_sites": 15
+  },
+  "area_potencial_por_cnae": {
+    "01": {
+      "areas": [
+        "seguranca_alimentar",
+        "meio_ambiente"
+      ],
+      "proposta": "agro: doar alimentos e apoiar hortas comunitárias, cisternas e educação ambiental — marketing de origem e sustentabilidade no campo"
+    },
+    "07": {
+      "areas": [
+        "meio_ambiente",
+        "educacao"
+      ],
+      "proposta": "mineração: compensação socioambiental, educação técnica e projetos de água — licença social para operar e reputação regional"
+    },
+    "10": {
+      "areas": [
+        "seguranca_alimentar",
+        "esporte"
+      ],
+      "proposta": "alimentos e bebidas: combate à fome, merenda e esporte de base — marca ligada a saúde e comunidade"
+    },
+    "19": {
+      "areas": [
+        "meio_ambiente",
+        "educacao"
+      ],
+      "proposta": "combustíveis/energia: educação ambiental e eficiência energética em escolas — ESG visível"
+    },
+    "21": {
+      "areas": [
+        "saude"
+      ],
+      "proposta": "farmacêutica: PRONON/PRONAS, saúde comunitária e PCD — alinhamento direto com o negócio"
+    },
+    "35": {
+      "areas": [
+        "meio_ambiente",
+        "educacao"
+      ],
+      "proposta": "energia elétrica: eficiência, energia solar em entidades e educação ambiental — obrigações de P&D/eficiência e reputação"
+    },
+    "41": {
+      "areas": [
+        "infraestrutura",
+        "assistencia_social"
+      ],
+      "proposta": "construção: reforma de espaços comunitários e capacitação profissional — mão de obra local e marca cidadã"
+    },
+    "42": {
+      "areas": [
+        "infraestrutura",
+        "meio_ambiente"
+      ],
+      "proposta": "obras: infraestrutura comunitária e recuperação de áreas — contrapartida social de contratos"
+    },
+    "45": {
+      "areas": [
+        "esporte",
+        "educacao"
+      ],
+      "proposta": "veículos: esporte de base e educação no trânsito — ativação de marca com público jovem"
+    },
+    "46": {
+      "areas": [
+        "seguranca_alimentar",
+        "assistencia_social"
+      ],
+      "proposta": "atacado/distribuição: doação de excedentes, bancos de alimentos e logística solidária — eficiência tributária e reputação"
+    },
+    "47": {
+      "areas": [
+        "assistencia_social",
+        "esporte",
+        "cultura"
+      ],
+      "proposta": "varejo: campanhas com clientes (arredondamento, troco solidário), esporte e cultura local — marketing positivo direto ao consumidor"
+    },
+    "49": {
+      "areas": [
+        "educacao",
+        "meio_ambiente"
+      ],
+      "proposta": "transporte: educação e mobilidade segura, compensação de emissões — ESG de frota"
+    },
+    "56": {
+      "areas": [
+        "seguranca_alimentar"
+      ],
+      "proposta": "alimentação: doação de refeições e capacitação em gastronomia — marca solidária"
+    },
+    "62": {
+      "areas": [
+        "educacao",
+        "direitos_humanos"
+      ],
+      "proposta": "tecnologia: inclusão digital, formação em programação e acessibilidade — pipeline de talentos e marca inovadora"
+    },
+    "64": {
+      "areas": [
+        "educacao",
+        "cultura"
+      ],
+      "proposta": "bancos: educação financeira, cultura (Rouanet) e FIA — obrigatoriedade de Lucro Real torna a destinação incentivada quase sem custo"
+    },
+    "65": {
+      "areas": [
+        "saude",
+        "pessoa_idosa"
+      ],
+      "proposta": "seguros/previdência: saúde preventiva e pessoa idosa — coerência com o negócio"
+    },
+    "68": {
+      "areas": [
+        "infraestrutura",
+        "cultura"
+      ],
+      "proposta": "imobiliário: espaços culturais e requalificação urbana — valorização do entorno"
+    },
+    "86": {
+      "areas": [
+        "saude"
+      ],
+      "proposta": "saúde: PRONON/PRONAS e atenção comunitária — extensão natural da atividade"
+    },
+    "default": {
+      "areas": [
+        "assistencia_social",
+        "educacao"
+      ],
+      "proposta": "proposta genérica: FIA/Fundo do Idoso (1% do IRPJ devido) e projeto local com prestação de contas pronta — retorno de imagem no território da matriz"
+    }
   }
 }

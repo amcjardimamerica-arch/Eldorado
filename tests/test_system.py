@@ -3340,6 +3340,39 @@ class SystemTests(unittest.TestCase):
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.empresas",wf)
         self.assertTrue(pathlib.Path("docs/dados/empresas.json").exists())
 
+
+    def test_motor_empresas_por_ano_gife_site_predicao(self):
+        """Pesquisa de 5 anos um ano por vez (cursor), GIFE, site institucional,
+        área potencial por CNAE, predição já doou × potencial, pastas por ano."""
+        import tempfile, shutil, json as _j
+        from src import empresas as E
+        self.assertEqual(E._cfg()["pesquisa_por_ano"]["anos"],[2022,2023,2024,2025,2026])
+        self.assertIn("gife.org.br",E._cfg()["gife"]["url"])
+        ap=E.area_potencial({"cnae_codigo":"6422100"}); self.assertIn("educacao",ap["areas"]); self.assertIn("Lucro Real",ap["proposta_de_valor"])
+        self.assertEqual(E.area_potencial({"cnae_codigo":"4711302"})["areas"][0],"assistencia_social")
+        self.assertEqual(E.predicao({"classe":"nao_confirmado"},[{"programa":"Lei Rouanet"}],None,None,True)["classe"],"ja_doou")
+        self.assertEqual(E.predicao({"classe":"confirmado"},[],{"sinais":{"instituto_fundacao":True,"patrocinio":True}},{"nome":"Instituto X"},True)["classe"],"potencial_alto")
+        self.assertEqual(E.predicao({"classe":"nao_confirmado"},[],None,None,True)["classe"],"potencial_baixo")
+        self.assertEqual(E.predicao({"classe":"confirmado"},[],None,None,False)["classe"],"fora_das_regras")
+        self.assertIsNotNone(E.gife_casa("INSTITUTO CERRADO VIVO","",[{"nome":"Instituto Cerrado Vivo","url":None}]))
+        self.assertEqual(E.varrer_site({"email":"contato@gmail.com"})["status"],"sem_site_institucional_inferivel")
+        lab=pathlib.Path(tempfile.mkdtemp()); P,B=E.PASTA,E.BIB; cm,cg=E.coletar_maiores_contribuintes,E.coletar_gife
+        cur=ROOT/"estado/empresas_cursor.json"; backup=cur.read_text() if cur.exists() else None
+        try:
+            E.PASTA=lab/"d"; E.BIB=lab/"b"; (E.PASTA/"go").mkdir(parents=True)
+            _j.dump({"uf":"GO","anos":{"2022":{"empresas":[{"posicao":1,"nome":"ALFA S.A.","cnpj":None}]}}},open(E.PASTA/"go/contribuintes_icms.json","w"))
+            E.coletar_maiores_contribuintes=lambda uf:{}; E.coletar_gife=lambda:{}
+            r=E.run_por_ano("GO")
+            self.assertIn("2022 concluído",r["situacao"]); self.assertTrue((E.BIB/"go/2022/alfa-s-a/ficha.json").exists())
+            self.assertTrue((E.BIB/"go/2022/indice.json").exists()); self.assertTrue((E.BIB/"go/analise_preditiva.json").exists())
+            self.assertEqual(load_json(cur)["GO"]["ano_atual"],2023)
+        finally:
+            E.PASTA,E.BIB=P,B; E.coletar_maiores_contribuintes,E.coletar_gife=cm,cg
+            if backup is not None: cur.write_text(backup)
+            else: cur.unlink(missing_ok=True)
+            shutil.rmtree(lab,ignore_errors=True)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("por-ano GO",wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

@@ -307,6 +307,226 @@ def potencial_destinacao(hist: list[dict], lucro: dict) -> dict:
             "fia_idoso": grau(("FIA", "Fundo do Idoso")), "saude": grau(("PRONON", "PRONAS/PCD"))}
 
 
+# ───────────────────────── 4b. GIFE, site institucional, área potencial, predição ─────────────────────────
+def coletar_gife() -> dict:
+    """Associados do GIFE (investidores sociais privados) — lista pública."""
+    cfg = _cfg()["gife"]; destino = PASTA / "gife_associados.json"
+    atual = load_json(destino) if destino.exists() else {"fonte": cfg["fonte"], "url": cfg["url"], "associados": [], "leituras": []}
+    leitura = {"em": now_iso()}
+    try:
+        html = _get(cfg["url"])
+        p = _Links(); p.feed(html)
+        nomes = []
+        for h, rot in p.links:
+            r = re.sub(r"\s+", " ", rot or "").strip()
+            if 4 <= len(r) <= 90 and re.search(r"instituto|funda[çc][ãa]o|associa|grupo|s\.a\.|ltda|bank|banco|holding|cia|companhia|\bs/a\b", r, re.I):
+                nomes.append({"nome": r, "url": urljoin(cfg["url"], h) if h else None})
+        # e itens de lista/cards sem link
+        for m in re.finditer(r">([^<>]{4,90}(?:Instituto|Funda[çc][ãa]o|Associa[çc][ãa]o)[^<>]{0,60})<", html):
+            nomes.append({"nome": re.sub(r"\s+", " ", m.group(1)).strip(), "url": None})
+        vistos, lista = set(), []
+        for n in nomes:
+            k = n["nome"].upper()
+            if k not in vistos:
+                vistos.add(k); lista.append(n)
+        if lista:
+            atual["associados"] = lista; atual["lido_em"] = now_iso()
+        leitura.update({"http": 200, "associados": len(lista)})
+    except Exception as exc:
+        leitura["erro"] = type(exc).__name__
+    atual["leituras"] = (atual.get("leituras") or [])[-20:] + [leitura]
+    write_json(destino, atual)
+    return {"associados": len(atual.get("associados", [])), "leitura": leitura}
+
+
+def gife_casa(nome: str, fantasia: str | None, gife: list[dict]) -> dict | None:
+    toks = lambda s: {t for t in re.findall(r"[a-zà-ú]{4,}", (s or "").lower()) if t not in ("ltda", "instituto", "fundação", "fundacao", "grupo", "brasil", "associação", "associacao")}
+    alvo = toks(nome) | toks(fantasia)
+    for g in gife:
+        if len(alvo & toks(g["nome"])) >= 1 and toks(g["nome"]):
+            return g
+    return None
+
+
+LEXICO_SITE = re.compile(r"patroc[íi]nio|edital|chamada|inscri[çc][õo]es|doa[çc][ãa]o|instituto|funda[çc][ãa]o|responsabilidade social|"
+                         r"investimento social|volunt[áa]ri|sustentabilidade|ESG|terceiro setor|OSC|projeto social|comunidade|"
+                         r"Rouanet|incentivo ao esporte|FIA|fundo da crian[çc]a|fundo do idoso|PRONON|PRONAS", re.I)
+
+
+def varrer_site(cad: dict) -> dict:
+    """Site institucional (inferido do e-mail corporativo do cadastro): lê a home e
+    páginas de sustentabilidade/notícias/instituto e recorta os trechos que falam
+    de patrocínio, edital, doação, instituto/fundação, ESG."""
+    email = (cad or {}).get("email") or ""
+    dom = email.split("@")[-1].lower().strip() if "@" in email else None
+    if not dom or any(x in dom for x in ("gmail", "hotmail", "outlook", "yahoo", "uol", "terra", "bol.")):
+        return {"status": "sem_site_institucional_inferivel", "dominio": dom}
+    base = f"https://www.{dom}" if not dom.startswith("www.") else f"https://{dom}"
+    achados, lidas, falhas = [], 0, 0
+    for path in ("", "/sustentabilidade", "/responsabilidade-social", "/instituto", "/noticias", "/esg", "/patrocinios", "/editais"):
+        try:
+            html = _get(base + path, timeout=15)
+            lidas += 1
+            txt = re.sub(r"<script.*?</script>|<style.*?</style>", " ", html, flags=re.S)
+            txt = re.sub(r"<[^>]+>", " ", txt); txt = re.sub(r"\s+", " ", txt)
+            for m in LEXICO_SITE.finditer(txt):
+                tr = txt[max(0, m.start() - 90): m.end() + 110].strip()
+                achados.append({"pagina": base + path, "termo": m.group(0), "trecho": tr})
+                if len(achados) >= 40:
+                    break
+        except Exception:
+            falhas += 1
+        time.sleep(0.4)
+        if lidas + falhas >= 5:
+            break
+    termos = sorted({a["termo"].lower() for a in achados})
+    return {"status": "lido" if lidas else "sem_resposta", "site": base, "paginas_lidas": lidas, "falhas": falhas,
+            "termos": termos, "achados": achados[:25], "em": now_iso(),
+            "sinais": {"patrocinio": any("patroc" in t for t in termos), "edital": any(t.startswith(("edital", "chamada", "inscri")) for t in termos),
+                       "instituto_fundacao": any(t.startswith(("instituto", "funda")) for t in termos), "esg": any(t in ("esg", "sustentabilidade") for t in termos)}}
+
+
+def area_potencial(cad: dict) -> dict:
+    tab = _cfg()["area_potencial_por_cnae"]
+    cn = (cad or {}).get("cnae_codigo") or ""
+    reg = tab.get(cn[:2]) or tab["default"]
+    return {"cnae_divisao": cn[:2] or None, "areas": reg["areas"], "proposta_de_valor": reg["proposta"]}
+
+
+def predicao(lucro: dict, hist: list[dict], site: dict | None, gife: dict | None, elegivel) -> dict:
+    """Análise preditiva simples e explicável: quem JÁ DOOU × quem TEM POTENCIAL."""
+    if hist:
+        return {"classe": "ja_doou", "probabilidade": "alta", "base": f"{len(hist)} destinação(ões) registrada(s) em fonte oficial nos últimos 5 anos"}
+    sinais = []
+    if gife: sinais.append("associado do GIFE")
+    if site and site.get("sinais", {}).get("instituto_fundacao"): sinais.append("instituto/fundação no site")
+    if site and site.get("sinais", {}).get("patrocinio"): sinais.append("patrocínio anunciado no site")
+    if site and site.get("sinais", {}).get("edital"): sinais.append("edital/chamada no site")
+    if lucro["classe"] in ("confirmado", "altamente_provavel"): sinais.append("Lucro Real (destinação incentivada possível)")
+    n = len(sinais)
+    if elegivel is False:
+        return {"classe": "fora_das_regras", "probabilidade": "baixa", "base": "inelegível pelas regras do titular", "sinais": sinais}
+    if n >= 3: return {"classe": "potencial_alto", "probabilidade": "alta", "base": "; ".join(sinais), "sinais": sinais}
+    if n >= 1: return {"classe": "potencial_medio", "probabilidade": "média", "base": "; ".join(sinais), "sinais": sinais}
+    return {"classe": "potencial_baixo", "probabilidade": "baixa", "base": "sem sinal público de investimento social; abordar por doação direta", "sinais": []}
+
+
+def _slug(s: str) -> str:
+    import unicodedata
+    s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]+", "-", s).strip("-")[:70] or "empresa"
+
+
+def run_por_ano(uf: str = "GO") -> dict:
+    """Pesquisa de 5 anos, UM ANO POR VEZ: o próximo só começa quando o anterior
+    está concluído. Cada ano: lista do ICMS do ano → cadastros (25/saída) →
+    destinações do ano (SALIC) → site institucional (15/saída) → pasta na
+    Biblioteca (empresas/<uf>/<ano>/<empresa>/ficha.json)."""
+    cfg = _cfg(); anos = cfg["pesquisa_por_ano"]["anos"]
+    cur_p = ROOT / "estado/empresas_cursor.json"
+    cur = load_json(cur_p) if cur_p.exists() else {}
+    c = cur.setdefault(uf, {"ano_atual": anos[0], "concluidos": [], "eventos": []})
+    coletar_maiores_contribuintes(uf); coletar_gife()
+    lista = load_json(PASTA / uf.lower() / "contribuintes_icms.json")
+    gife = load_json(PASTA / "gife_associados.json").get("associados", []) if (PASTA / "gife_associados.json").exists() else []
+    ano = c["ano_atual"]
+    bloco = lista.get("anos", {}).get(str(ano))
+    rel = {"uf": uf, "ano": ano, "em": now_iso()}
+    if not bloco:
+        # sem lista para o ano: tenta o mais próximo já lido; se nada, registra e para
+        disponiveis = sorted(lista.get("anos", {}))
+        rel["situacao"] = f"lista do ICMS de {ano} ainda não obtida (anos lidos: {disponiveis or 'nenhum'})"
+        if not disponiveis:
+            c["eventos"] = (c["eventos"] or [])[-40:] + [rel]; write_json(cur_p, cur); return rel
+        bloco = lista["anos"][disponiveis[-1]]; rel["lista_usada"] = disponiveis[-1]
+    pasta_ano = BIB / uf.lower() / str(ano); pasta_ano.mkdir(parents=True, exist_ok=True)
+    n_cad = n_site = 0; feitos = 0
+    for it in bloco.get("empresas", []):
+        slug = _slug(it["nome"]); fp = pasta_ano / slug / "ficha.json"
+        ficha = load_json(fp) if fp.exists() else {"ano": ano, "uf": uf, "nome_lista": it["nome"], "cnpj": it.get("cnpj"), "icms_posicao": it.get("posicao"), "icms_valor_texto": it.get("icms_valor_texto")}
+        if it.get("cnpj") and not ficha.get("cadastro") and n_cad < cfg["pesquisa_por_ano"]["por_saida_cadastros"]:
+            ficha["cadastro"] = cadastro_cnpj(it["cnpj"]); n_cad += 1
+            if ficha["cadastro"]:
+                todas = destinacoes_rouanet(it["cnpj"]).get("itens", [])
+                ficha["destinacoes_ano"] = [h for h in todas if str(h.get("ano")) == str(ano)]
+                ficha["destinacoes_5_anos"] = todas
+        if ficha.get("cadastro") and "site" not in ficha and n_site < cfg["pesquisa_por_ano"]["por_saida_sites"]:
+            ficha["site"] = varrer_site(ficha["cadastro"]); n_site += 1
+        cad = ficha.get("cadastro") or {}; hist = ficha.get("destinacoes_5_anos", [])
+        ficha["gife"] = gife_casa(cad.get("razao_social") or it["nome"], cad.get("nome_fantasia"), gife)
+        ficha["lucro_real"] = classificar_lucro_real(cad, hist)
+        eleg = None; motivos = []
+        if cad:
+            eleg = True
+            if not cad.get("matriz"): eleg = False; motivos.append("não é matriz")
+            if (cad.get("situacao") or "").upper() not in ("ATIVA", "02", "2"): eleg = False; motivos.append(f"situação {cad.get('situacao')}")
+            if (cad.get("capital_social") or 0) <= cfg["regras_do_titular"]["capital_social_minimo_exclusivo"]: eleg = False; motivos.append("capital ≤ R$ 10 mi")
+        ficha["elegivel"] = eleg; ficha["motivos"] = motivos
+        ficha["area_potencial"] = area_potencial(cad)
+        ficha["predicao"] = predicao(ficha["lucro_real"], hist, ficha.get("site"), ficha["gife"], eleg)
+        sc = score_empresa(cad, hist, ficha["lucro_real"], {"compatibilidade": bool(hist), "instituto_fundacao": bool(ficha["gife"]) or bool((ficha.get("site") or {}).get("sinais", {}).get("instituto_fundacao")),
+                                                             "esg": "moderado" if (ficha.get("site") or {}).get("sinais", {}).get("esg") else None,
+                                                             "atuacao_social": bool((ficha.get("site") or {}).get("sinais", {}).get("patrocinio"))})
+        ficha["score"] = sc["score"]; ficha["classe"] = sc["classe"]; ficha["memoria_score"] = sc["memoria"]
+        ficha["atualizado_em"] = now_iso()
+        write_json(fp, ficha)
+        if (not it.get("cnpj")) or (ficha.get("cadastro") is not None and "site" in ficha) or ficha.get("cadastro") is None and it.get("cnpj") and n_cad >= cfg["pesquisa_por_ano"]["por_saida_cadastros"] and fp.exists():
+            pass
+        if (not it.get("cnpj")) or ("cadastro" in ficha and ("site" in ficha or not ficha.get("cadastro"))):
+            feitos += 1
+    total = len(bloco.get("empresas", []))
+    rel.update({"empresas_no_ano": total, "concluidas": feitos, "cadastros_nesta_saida": n_cad, "sites_nesta_saida": n_site})
+    if total and feitos >= total:
+        c["concluidos"].append(ano)
+        prox = [a for a in anos if a not in c["concluidos"]]
+        c["ano_atual"] = prox[0] if prox else ano
+        rel["situacao"] = f"ano {ano} concluído; próximo: {c['ano_atual'] if prox else 'todos concluídos'}"
+    else:
+        rel["situacao"] = f"ano {ano} em curso: {feitos}/{total} empresas concluídas"
+    c["eventos"] = (c["eventos"] or [])[-40:] + [rel]
+    write_json(cur_p, cur)
+    # índice do ano e análise preditiva consolidada
+    fichas = [load_json(f) for f in sorted(pasta_ano.glob("*/ficha.json"))]
+    ja = [f for f in fichas if f.get("predicao", {}).get("classe") == "ja_doou"]
+    alto = [f for f in fichas if f.get("predicao", {}).get("classe") == "potencial_alto"]
+    medio = [f for f in fichas if f.get("predicao", {}).get("classe") == "potencial_medio"]
+    write_json(pasta_ano / "indice.json", {"uf": uf, "ano": ano, "gerado_em": now_iso(), "total": len(fichas),
+        "ja_doaram": [{"nome": f.get("cadastro", {}).get("razao_social") or f["nome_lista"], "cnpj": f.get("cnpj"), "destinacoes": len(f.get("destinacoes_5_anos", [])), "score": f.get("score")} for f in ja],
+        "potencial_alto": [{"nome": f.get("cadastro", {}).get("razao_social") or f["nome_lista"], "cnpj": f.get("cnpj"), "sinais": f["predicao"].get("sinais"), "score": f.get("score")} for f in alto],
+        "potencial_medio": len(medio), "areas_potenciais": _conta_areas(fichas)})
+    write_json(BIB / uf.lower() / "analise_preditiva.json", _preditiva(uf, anos, cfg))
+    return rel
+
+
+def _conta_areas(fichas):
+    c = {}
+    for f in fichas:
+        for a in (f.get("area_potencial") or {}).get("areas", []):
+            c[a] = c.get(a, 0) + 1
+    return dict(sorted(c.items(), key=lambda kv: -kv[1]))
+
+
+def _preditiva(uf, anos, cfg) -> dict:
+    """Consolida os anos: quem já doou (fonte oficial) × quem tem potencial, por área."""
+    por_cnpj = {}
+    for ano in anos:
+        for fp in (BIB / uf.lower() / str(ano)).glob("*/ficha.json"):
+            f = load_json(fp); k = so_digitos(f.get("cnpj") or "") or _slug(f["nome_lista"])
+            e = por_cnpj.setdefault(k, {"nome": (f.get("cadastro") or {}).get("razao_social") or f["nome_lista"], "cnpj": f.get("cnpj"), "anos_na_lista": [],
+                                        "destinacoes": [], "predicao": None, "score": 0, "area_potencial": f.get("area_potencial"), "lucro_real": f.get("lucro_real", {}).get("classe")})
+            e["anos_na_lista"].append(ano); e["destinacoes"] = f.get("destinacoes_5_anos") or e["destinacoes"]
+            e["predicao"] = f.get("predicao") or e["predicao"]; e["score"] = max(e["score"], f.get("score") or 0)
+    lst = list(por_cnpj.values())
+    return {"uf": uf, "gerado_em": now_iso(), "empresas": len(lst),
+            "ja_doaram": sorted([e for e in lst if (e["predicao"] or {}).get("classe") == "ja_doou"], key=lambda e: -e["score"]),
+            "potencial_alto": sorted([e for e in lst if (e["predicao"] or {}).get("classe") == "potencial_alto"], key=lambda e: -e["score"]),
+            "potencial_medio": sorted([e for e in lst if (e["predicao"] or {}).get("classe") == "potencial_medio"], key=lambda e: -e["score"])[:60],
+            "recorrentes": sorted([e for e in lst if len(e["anos_na_lista"]) >= 3], key=lambda e: -len(e["anos_na_lista"]))[:60],
+            "parametros": {"ja_doou": "destinação registrada em fonte oficial (SALIC/LIE/PRONON) nos últimos 5 anos",
+                           "potencial_alto": "≥3 sinais: GIFE, instituto/fundação, patrocínio ou edital no site, Lucro Real",
+                           "potencial_medio": "1–2 sinais", "potencial_baixo": "nenhum sinal público", "fora_das_regras": "inelegível (filial, inativa, capital ≤ 10 mi)"}}
+
+
 # ───────────────────────── 5. saída ─────────────────────────
 def run(uf: str | None = None, limite_cadastros: int | None = None) -> dict:
     cfg = _cfg()
@@ -374,4 +594,8 @@ def run(uf: str | None = None, limite_cadastros: int | None = None) -> dict:
 
 
 if __name__ == "__main__":
-    print(json.dumps(run(), ensure_ascii=False, indent=2))
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "por-ano":
+        print(json.dumps(run_por_ano(sys.argv[2] if len(sys.argv) > 2 else "GO"), ensure_ascii=False, indent=2))
+    else:
+        print(json.dumps(run(), ensure_ascii=False, indent=2))

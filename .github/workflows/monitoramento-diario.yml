@@ -9,7 +9,7 @@ on:
         required: false
         default: ""
       bloco:
-        description: "Bloco a executar: diarios | justica_legislativo | plataformas_api | completude | opressores | relatorio | completo"
+        description: "Bloco a executar: diarios | justica_legislativo | plataformas_api | completude | opressores | relatorio | empresas | completo"
         required: false
         default: "completo"
 permissions:
@@ -171,6 +171,11 @@ jobs:
           pip install pypdf --quiet
           if [ "$MOTORES_BLOCO" = "plataformas_api" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 900 python -m src.empresas || echo "empresas: registrado"
+          fi
+          if [ "$MOTORES_BLOCO" = "empresas" ]; then
+            # pesquisa de 5 anos, um ano por vez (o cursor decide o ano); repete até 5 anos ou 35 min
+            for i in 1 2 3 4 5; do timeout 420 python -m src.empresas por-ano GO || echo "por-ano: registrado"; done
+            timeout 600 python -m src.empresas || echo "empresas: registrado"
           fi
       - name: Exportar o acervo do banco (volta pelo Git para a próxima saída)
         if: always()
