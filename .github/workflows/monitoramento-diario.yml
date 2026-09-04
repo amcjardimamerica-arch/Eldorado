@@ -201,11 +201,19 @@ jobs:
         run: |
           git config user.name "eldorado-bot"
           git config user.email "eldorado-bot@users.noreply.github.com"
-          git pull --rebase --autostash origin main || true
+          # registra o produzido SEM perder nada, mesmo se a main avançou durante a saída:
+          # commit local → rebase preferindo o que a saída produziu → push com até 3 tentativas
           git add biblioteca_alexandria -A dados estado docs
           git diff --cached --quiet && exit 0
-          git commit -m "dados: varredura profunda $(date -u +%F)"
-          git push
+          git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F)"
+          for i in 1 2 3; do
+            if git pull --rebase -X theirs origin main && git push; then exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main
+            git reset --soft origin/main && git add biblioteca_alexandria -A dados estado docs && git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F) (reaplicada)" || true
+            sleep 15
+          done
+          git push || echo "REGISTRO FALHOU apos 3 tentativas — os dados desta saida ficam no log"
       - name: Abrir issue quando houver alerta
         if: always()
         uses: actions/github-script@v7
