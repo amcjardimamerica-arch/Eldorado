@@ -1,6 +1,13 @@
 name: 01 · Eldorado — motores por hora (00h–06h BRT)
 on:
   schedule:
+    - cron: "0 3 * * *"   # 00h BRT · diários oficiais
+    - cron: "0 4 * * *"   # 01h BRT · justiça e legislativo
+    - cron: "0 5 * * *"   # 02h BRT · plataformas e API
+    - cron: "0 6 * * 1-6" # 03h BRT · completude, edições, regramentos (seg–sáb)
+    - cron: "0 7 * * *"   # 04h BRT · Motores Opressores ativos
+    - cron: "0 9 * * *"   # 06h BRT · relatório e painel
+    - cron: "0 6 * * 0"   # 03h BRT de DOMINGO · motor de empresas (semanal)
   workflow_dispatch:
     inputs:
       fontes:
