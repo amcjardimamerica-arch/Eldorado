@@ -343,5 +343,140 @@
       "setor com afinidade com o terceiro setor (CNAE)",
       "capital social já conhecido > R$ 10 mi"
     ]
+  },
+  "vocabulario": {
+    "organizacao_mapeada": "empresa/organização presente na base histórica do motor (dados/empresas/base_empresas.jsonl.gz)",
+    "fonte_gife": "registrada em fonte GIFE — correspondência por nome, a confirmar pelo cadastro",
+    "nota": "o motor não afirma que uma empresa 'é associada' ou 'pertence' a entidade alguma; registra a FONTE em que o nome foi encontrado"
+  },
+  "patrocinio_privado": {
+    "objetivo": "2º motor — empresas que patrocinam com RECURSOS PRÓPRIOS (marketing, sem benefício fiscal) eventos culturais, esportivos e educacionais da região; fonte: imprensa, rádio, TV, portais de eventos e comunicação das próprias empresas",
+    "refinamento": "mesmos parâmetros do motor GIFE (matriz na região, cadastro RFB, capital, Lucro Real informativo, score, elegibilidade), com finalidade específica: patrocínio privado — por isso Lucro Real NÃO é requisito aqui (patrocínio de marketing independe de regime)",
+    "estados": {
+      "GO": {
+        "fontes": [
+          {
+            "nome": "O Popular (Jornal Opção/Goiânia)",
+            "url": "https://opopular.com.br/",
+            "tipo": "imprensa"
+          },
+          {
+            "nome": "Jornal Opção",
+            "url": "https://www.jornalopcao.com.br/",
+            "tipo": "imprensa"
+          },
+          {
+            "nome": "Diário da Manhã",
+            "url": "https://www.dm.com.br/",
+            "tipo": "imprensa"
+          },
+          {
+            "nome": "Mais Goiás",
+            "url": "https://www.maisgoias.com.br/",
+            "tipo": "imprensa"
+          },
+          {
+            "nome": "G1 Goiás / TV Anhanguera",
+            "url": "https://g1.globo.com/go/goias/",
+            "tipo": "tv"
+          },
+          {
+            "nome": "Sagres 730 (rádio)",
+            "url": "https://sagresonline.com.br/",
+            "tipo": "radio"
+          },
+          {
+            "nome": "Curta Mais Goiânia (eventos)",
+            "url": "https://www.curtamais.com.br/goiania",
+            "tipo": "eventos"
+          },
+          {
+            "nome": "Sympla — eventos em Goiânia",
+            "url": "https://www.sympla.com.br/eventos/goiania-go",
+            "tipo": "eventos"
+          },
+          {
+            "nome": "Goiânia Cultura (Secult)",
+            "url": "https://www.goiania.go.gov.br/cultura/",
+            "tipo": "eventos"
+          }
+        ],
+        "paginas_por_fonte": [
+          "",
+          "/cultura",
+          "/esportes",
+          "/economia",
+          "/eventos",
+          "/agenda"
+        ],
+        "eventos_alvo": [
+          "festival",
+          "show",
+          "exposição",
+          "feira",
+          "corrida",
+          "maratona",
+          "campeonato",
+          "copa",
+          "torneio",
+          "jogos",
+          "olimpíada",
+          "circuito",
+          "virada cultural",
+          "festa literária",
+          "bienal",
+          "semana",
+          "congresso",
+          "seminário",
+          "olimpíada de matemática",
+          "feira de ciências",
+          "formatura",
+          "bolsa"
+        ],
+        "sem_beneficio_fiscal": [
+          "patrocínio",
+          "patrocinado por",
+          "apoio",
+          "apoio cultural",
+          "oferecimento",
+          "realização",
+          "apresenta",
+          "copatrocínio",
+          "parceiro oficial",
+          "naming rights",
+          "marca",
+          "cotas de patrocínio"
+        ],
+        "excluir": [
+          "Rouanet",
+          "incentivo fiscal",
+          "Lei do Esporte",
+          "PRONAC",
+          "renúncia",
+          "edital público"
+        ],
+        "areas": [
+          "cultura",
+          "esporte",
+          "educacao"
+        ]
+      }
+    },
+    "score_patrocinio": {
+      "eventos_patrocinados_5_anos": 30,
+      "recorrencia_anual": 15,
+      "diversidade_de_areas": 10,
+      "cotas_ou_naming": 10,
+      "matriz_na_regiao": 15,
+      "capital_social": 10,
+      "ESG_ou_marketing_social_declarado": 10,
+      "classes": {
+        "80": "Patrocinador estratégico",
+        "60": "Patrocinador recorrente",
+        "40": "Patrocinador pontual",
+        "0": "Sinal de patrocínio"
+      }
+    },
+    "cadencia": "semanal, domingo, junto ao motor GIFE; 5 anos de imprensa por busca nas páginas de arquivo/cultura/esportes, com cursor por fonte"
   }
 }

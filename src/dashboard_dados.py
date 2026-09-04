@@ -1485,6 +1485,11 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                                                     "potencial": x.get("potencial_destinacao"), "destinacoes": x.get("destinacoes_5_anos", [])[:20],
                                                     "icms": x.get("icms"), "qsa": x.get("qsa", [])[:8], "fontes": x.get("fontes", [])}
                                                  for x in (bloco or {}).get("empresas", [])]}
+        for uf in cfg_e.get("estados", {}):
+            pj = emp_dir / f"{uf.lower()}" / "patrocinios.json" if (emp_dir / uf.lower()).is_dir() else emp_dir / f"patrocinios_{uf.lower()}.json"
+            pj2 = emp_dir / uf.lower() / "patrocinios.json"
+            bl = load_json(pj2) if pj2.exists() else None
+            pac_e["estados"][uf]["patrocinios"] = bl or {"total": 0, "empresas": [], "fontes": []}
         (pasta / "empresas.json").write_text(json.dumps(pac_e, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         tamanhos["empresas.json"] = tamanho(pac_e)
         dados["empresas_resumo"] = {uf: {"ativo": v["ativo"], "total": v["total"], "elegiveis": v["elegiveis"]} for uf, v in pac_e["estados"].items()}

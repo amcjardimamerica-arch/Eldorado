@@ -184,6 +184,7 @@ jobs:
             # escolhidas por potencial, com histórico de 5 anos; parcerias declaradas em sites de
             # associações, Sebrae e entidades empresariais do estado
             timeout 2400 python -m src.empresas semanal GO || echo "semanal: registrado"
+            timeout 900 python -m src.patrocinios || echo "patrocinios: registrado"
           fi
       - name: Exportar o acervo do banco (volta pelo Git para a próxima saída)
         if: always()

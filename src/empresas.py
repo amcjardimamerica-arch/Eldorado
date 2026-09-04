@@ -343,7 +343,7 @@ def gife_casa(nome: str, fantasia: str | None, gife: list[dict]) -> dict | None:
     toks = lambda s: {t for t in re.findall(r"[a-zà-ú]{4,}", (s or "").lower()) if t not in ("ltda", "instituto", "fundação", "fundacao", "grupo", "brasil", "associação", "associacao")}
     alvo = toks(nome) | toks(fantasia)
     for g in gife:
-        if len(alvo & toks(g["nome"])) >= 1 and toks(g["nome"]):
+        if len(alvo & toks(g["nome"])) >= 2 and toks(g["nome"]):     # dois termos em comum (decisão do conselho)
             return g
     return None
 
@@ -398,7 +398,7 @@ def predicao(lucro: dict, hist: list[dict], site: dict | None, gife: dict | None
     if hist:
         return {"classe": "ja_doou", "probabilidade": "alta", "base": f"{len(hist)} destinação(ões) registrada(s) em fonte oficial nos últimos 5 anos"}
     sinais = []
-    if gife: sinais.append("associado do GIFE")
+    if gife: sinais.append("registrada em fonte GIFE (a confirmar)")
     if site and site.get("sinais", {}).get("instituto_fundacao"): sinais.append("instituto/fundação no site")
     if site and site.get("sinais", {}).get("patrocinio"): sinais.append("patrocínio anunciado no site")
     if site and site.get("sinais", {}).get("edital"): sinais.append("edital/chamada no site")
@@ -645,7 +645,7 @@ def prioridade_previa(nome: str, cnpj: str | None, icms_pos: int | None, gife: l
         v = 30 if icms_pos <= 20 else 22 if icms_pos <= 50 else 15 if icms_pos <= 100 else 8
         pts += v; por.append(f"{icms_pos}º no ICMS +{v}")
     if gife_casa(nome, None, gife):
-        pts += 25; por.append("associado do GIFE +25")
+        pts += 15; por.append("registrada em fonte GIFE (correspondência por nome, a confirmar) +15")
     ach = [a for a in parcerias.get("achados", []) if len(_toks_nome(a["empresa"]) & _toks_nome(nome)) >= 2]
     if ach:
         pts += 20; por.append(f"parceria declarada por {ach[0]['declarante']} +20")

@@ -3014,7 +3014,7 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn('class="bz-pin"',html)                   # pinos removidos
         self.assertNotIn('src="arte/rosa-ventos.png"',html)       # PNG quebrado saiu
         for x in ('svg class="bz-rosa"',
-                  "function mpDadosUF","function desenhaBzLateral","bz-indices","bz-cidades",
+                  "function mpDadosUF","function desenhaBzLateral","bz-indices","uf-cidades",
                   "clique para ver as cidades","path.com-abertas"):
             self.assertIn(x,html,x)
         self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado (varredura) <b>",html); self.assertIn("Possível (em investigação) <b>",html)
@@ -3354,7 +3354,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(E.predicao({"classe":"confirmado"},[],{"sinais":{"instituto_fundacao":True,"patrocinio":True}},{"nome":"Instituto X"},True)["classe"],"potencial_alto")
         self.assertEqual(E.predicao({"classe":"nao_confirmado"},[],None,None,True)["classe"],"potencial_baixo")
         self.assertEqual(E.predicao({"classe":"confirmado"},[],None,None,False)["classe"],"fora_das_regras")
-        self.assertIsNotNone(E.gife_casa("INSTITUTO CERRADO VIVO","",[{"nome":"Instituto Cerrado Vivo","url":None}]))
+        self.assertIsNotNone(E.gife_casa("CERRADO VIVO S.A.","",[{"nome":"Instituto Cerrado Vivo","url":None}]))
         self.assertEqual(E.varrer_site({"email":"contato@gmail.com"})["status"],"sem_site_institucional_inferivel")
         lab=pathlib.Path(tempfile.mkdtemp()); P,B=E.PASTA,E.BIB; cm,cg=E.coletar_maiores_contribuintes,E.coletar_gife
         cur=ROOT/"estado/empresas_cursor.json"; backup=cur.read_text() if cur.exists() else None
@@ -3422,6 +3422,32 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("function mpMotoresUF","Motores de busca neste território","bz-motor-led","ligado(s) de ${mo.total}","mtDetalhe(id)"):
             self.assertIn(x,html,x)
+
+
+    def test_painel_estado_cidades_e_motor_de_patrocinio_privado(self):
+        """Colisão de classe corrigida (cidades no painel, não no topo); cidades com
+        quantidade; Brasil mostra o status de cada busca ativa; vocabulário
+        'organização mapeada'; 2º motor de patrocínio privado."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        js=html.split("function desenhaBzLateral(por){")[1].split("function desenhaBzAtual(){")[0]
+        self.assertNotIn('class="bz-cidade"',js); self.assertIn('class="uf-cidade"',js); self.assertIn("uf-qtd",js)
+        for x in ("ativa, sem achado","ativa, aguardando saída","organização mapeada","em fonte GIFE (a confirmar)",
+                  "Patrocínio privado — marketing, sem benefício fiscal","function desenhaPatrocinios",'id="pat-lista"'):
+            self.assertIn(x,html,x)
+        self.assertNotIn("associado do GIFE",html)
+        from src.patrocinios import extrair_patrocinios, score_patrocinio, classificar_area
+        txt="A Corrida de Goiânia tem patrocínio da Alfa Distribuidora Ltda. O Festival X conta com patrocínio via Lei Rouanet da Beta S.A."
+        r=extrair_patrocinios(txt,{"nome":"O Popular","tipo":"imprensa"},"https://x/")
+        self.assertEqual([a["empresa"] for a in r],["Alfa Distribuidora Ltda"]); self.assertEqual(r[0]["area"],"esporte"); self.assertFalse(r[0]["beneficio_fiscal"])
+        self.assertEqual(classificar_area("Olimpíada de Matemática nas escolas"),"educacao")
+        self.assertEqual(score_patrocinio(r,{"matriz":True,"uf":"GO","capital_social":80e6})["classe"],"Patrocinador pontual")
+        cfg=load_json(pathlib.Path("config/empresas.json"))
+        self.assertTrue(any(f["tipo"]=="radio" for f in cfg["patrocinio_privado"]["estados"]["GO"]["fontes"]))
+        self.assertIn("Rouanet",cfg["patrocinio_privado"]["estados"]["GO"]["excluir"])
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.patrocinios",wf)
+        from src.empresas import gife_casa
+        self.assertIsNone(gife_casa("INSTITUTO ALFA","",[{"nome":"Instituto Beta Cerrado"}]))          # dois termos exigidos
+        self.assertIsNotNone(gife_casa("ALFA CERRADO S.A.","",[{"nome":"Instituto Alfa Cerrado"}]))
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

@@ -348,9 +348,9 @@ box-shadow:0 1px 3px #0002}
 .bz-rosa-bt:hover .bz-rosa{filter:drop-shadow(0 0 4px #C9A22766)}
 .bz-rosa-rot{font-family:Georgia,serif;font-size:10.5px;letter-spacing:.08em;color:#9A7A22;text-transform:uppercase}
 .bz-rosa{width:170px;height:170px;display:block;background:transparent}
-.bz-atual .bz-indices,.bz-atual .bz-cidades{max-height:none}.bz-atual .bz-cidades{max-height:360px;overflow:auto}
+.bz-atual .bz-indices{max-height:none}.bz-atual .uf-cidades{max-height:420px;overflow:auto}
 .bz-indices{display:flex;flex-direction:column;gap:7px;margin-top:8px;font-size:12.5px}.bz-indices b{margin-left:auto;color:var(--suave)}.bz-indices>span{display:flex;align-items:center;gap:6px}
-.bz-cidades{display:flex;flex-direction:column;gap:6px}.bz-cidade{border-top:1px dashed var(--linha);padding-top:5px;font-size:12.5px}
+.uf-cidades{display:flex;flex-direction:column;gap:6px}.uf-qtd{display:inline-block;min-width:22px;padding:0 6px;border-radius:10px;background:#0E2A55;color:#fff;font-size:11px;font-weight:800;text-align:center}.uf-cidade{border-top:1px dashed var(--linha);padding-top:5px;font-size:12.5px}
 .bz-op{margin:4px 0 2px 2px;padding:5px 7px;border-radius:8px;background:#FCFCFB;border:1px solid var(--linha)}
 .bz-motores{display:flex;flex-direction:column;gap:3px}.bz-motor{display:flex;align-items:center;gap:7px;padding:4px 7px;border-radius:7px;border:1px solid var(--linha);background:#F6F7F9;font-size:12px}
 .bz-motor.on{background:#FFF7EC;border-color:#F3D9B0}.bz-motor-led{width:8px;height:8px;border-radius:50%;background:#C9CED6;flex:none}.bz-motor.on .bz-motor-led{background:#E8571A;box-shadow:0 0 5px #E8571A88}
@@ -614,6 +614,15 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </div>
   <div class=meta id="emp-fonte" style="margin-bottom:8px"></div>
   <div id="emp-lista"></div>
+  <!-- 2º MOTOR · patrocínio privado (marketing, sem benefício fiscal) -->
+  <div style="margin-top:18px;padding-top:12px;border-top:1px dashed var(--linha)">
+    <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif;font-size:15px">Patrocínio privado — marketing, sem benefício fiscal
+      <span class=meta style="font-weight:500" title="2º motor: empresas da região que patrocinam com recursos próprios eventos culturais, esportivos e educacionais. Fontes: imprensa, rádio, TV e portais de eventos de Goiás. Menções a Rouanet, incentivo fiscal ou edital são excluídas — aqui só patrocínio privado. Mesmo refinamento do motor GIFE (matriz, cadastro, capital, elegibilidade), Lucro Real apenas informativo.">— eventos culturais, esportivos e educacionais patrocinados por empresas da região</span></div>
+    <div class="bz-filtros" style="margin:8px 0 10px"><select id="pat-area"><option value="">Todas as áreas</option><option value="cultura">Cultura</option><option value="esporte">Esporte</option><option value="educacao">Educação</option></select>
+      <select id="pat-classe"><option value="">Todas as classes</option><option value="Patrocinador estratégico">Patrocinador estratégico</option><option value="Patrocinador recorrente">Patrocinador recorrente</option><option value="Patrocinador pontual">Patrocinador pontual</option><option value="Sinal de patrocínio">Sinal de patrocínio</option></select>
+      <input id="pat-busca" placeholder="buscar empresa ou evento…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px"></div>
+    <div class=meta id="pat-fonte" style="margin-bottom:8px"></div><div id="pat-lista"></div>
+  </div>
 </div>
 <div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
   <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
@@ -795,10 +804,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260904105046"></script>
-<script src="mapa-arte.js?v=20260904105046"></script>
-<script src="dashboard-dados.enc.js?v=20260904105046"></script>
-<script src="dashboard-dados.js?v=20260904105046"></script>
+<script src="mapa-brasil.js?v=20260904133921"></script>
+<script src="mapa-arte.js?v=20260904133921"></script>
+<script src="dashboard-dados.enc.js?v=20260904133921"></script>
+<script src="dashboard-dados.js?v=20260904133921"></script>
 <script>
 (function(){
 "use strict";
@@ -1784,11 +1793,13 @@ function desenhaEmpresas(){
   const lida=E.ultima_leitura||{};
   $("emp-fonte").innerHTML=`Fonte primária: <strong>${esc(E.fonte_icms||"lista oficial dos maiores contribuintes do ICMS")}</strong>${E.anos_lidos&&E.anos_lidos.length?` · anos lidos: ${E.anos_lidos.join(", ")}`:" · <em>lista ainda não lida pelo motor</em>"}${lida.em?` · última leitura ${br(lida.em.slice(0,10))}${lida.erro?" — <b style='color:var(--urgente)'>"+esc(lida.erro)+"</b> (portal não respondeu; o motor tenta de novo às 02h)":lida.http?" — portal respondeu":""}`:""} · cadastro: dados públicos de CNPJ (Receita Federal) · destinações: SALIC/MinC, Ministério do Esporte · <b>IRPJ pago é sigilo fiscal</b> — só aparece quando a empresa publica demonstrações.`;
   $("emp-resumo").textContent=`${rows.length} empresa(s) na seleção · ${E.total||0} listadas · ${E.com_cadastro||0} com cadastro RFB · ${E.elegiveis||0} elegíveis (matriz, ativa, capital > R$ 10 mi)`;
+  desenhaPatrocinios(E);
   if(!emps.length){box.innerHTML=`<div class=cartao style="background:#F6F7F9">Nenhuma empresa ainda: o motor lê a lista oficial dos maiores contribuintes do ICMS de Goiás na saída das <strong>02h</strong> (bloco plataformas/API) e, a cada saída, consulta o cadastro de até 25 CNPJs e o histórico de destinações. Nada é inventado — quando a lista chegar, as linhas aparecem aqui.</div>`;return;}
+  desenhaPatrocinios(E);
   box.innerHTML=`<div class="emp-cab"><span>Empresa (matriz)</span><span>Município</span><span>ICMS pago</span><span>IRPJ pago</span><span>Lucro Real</span><span>Capital social</span><span>Destinação (5 anos)</span><span>Potencial</span></div>`
     +rows.slice(0,empPagina).map(x=>{const pt=x.potencial||{};const dest5=(x.destinacoes||[]);
       return `<div class="emp-linha${x.elegivel===false?" ineleg":""}" data-id="${esc(x.id)}">
-        <span class=emp-nome><b>${esc(x.nome)}</b>${x.nome_fantasia?`<small>${esc(x.nome_fantasia)}</small>`:""}<small>${x.cnpj?esc(x.cnpj):"CNPJ não divulgado na lista"}${x.cnae?" · "+esc(x.cnae.slice(0,40)):""}</small></span>
+        <span class=emp-nome><b>${esc(x.nome)}</b>${x.nome_fantasia?`<small>${esc(x.nome_fantasia)}</small>`:""}<small>${x.cnpj?esc(x.cnpj):"CNPJ não divulgado na lista"}${x.cnae?" · "+esc(x.cnae.slice(0,40)):""} · <span title="presente na base histórica do motor">organização mapeada</span>${x.gife?" · em fonte GIFE (a confirmar)":""}</small></span>
         <span>${esc(x.municipio||"—")}</span>
         <span title="posição na lista oficial de maiores contribuintes do ICMS">${x.icms_valor_recente?esc(x.icms_valor_recente):x.icms_posicao_recente?`${x.icms_posicao_recente}º maior contribuinte`:"—"}</span>
         <span class=meta title="IRPJ pago é sigilo fiscal; só aparece quando a empresa publica demonstrações">${esc(x.irpj||"não divulgado")}</span>
@@ -1801,6 +1812,27 @@ function desenhaEmpresas(){
   box.querySelectorAll(".emp-linha").forEach(el=>{const x=rows.find(y=>y.id===el.dataset.id);if(!x)return;
     ligaTip(el,`<strong>${esc(x.nome)}</strong> ${x.cnpj?"· "+esc(x.cnpj):""}<br>${esc(x.cnae||"")} · porte ${esc(x.porte||"—")} · situação ${esc(x.situacao||"—")} · ${x.matriz===false?"FILIAL":x.matriz?"matriz":"matriz/filial a confirmar"}<br>${esc(ROT_LUCRO[x.lucro_real]||"")}: ${esc(x.lucro_real_motivo||"")}<br>score ${x.score} — ${esc((x.memoria_score||[]).join("; "))}<br><em>clique para o parecer completo</em>`);
     el.onclick=()=>empDetalhe(x);});
+}
+function desenhaPatrocinios(E){
+  const box=$("pat-lista"); if(!box)return; const P=(E||{}).patrocinios||{total:0,empresas:[],fontes:[]};
+  if(!box.dataset.ligado){box.dataset.ligado="1";["pat-area","pat-classe","pat-busca"].forEach(id=>$(id).addEventListener("input",()=>desenhaPatrocinios(E)));}
+  $("pat-fonte").innerHTML=`Fontes: ${(P.fontes||[]).map(esc).join(" · ")||"imprensa, rádio, TV e portais de eventos de Goiás"} · ${P.coleta?`última coleta: ${P.coleta.paginas_lidas} página(s), ${P.coleta.novos} menção(ões) nova(s)`:"<em>coleta ainda não executada (domingo 03h)</em>"} · <b>sem benefício fiscal</b>: menções a Rouanet/incentivo/edital são excluídas.`;
+  const ar=$("pat-area").value,cl=$("pat-classe").value,q=$("pat-busca").value.toLowerCase();
+  const rows=(P.empresas||[]).filter(x=>(!ar||(x.areas||[]).includes(ar))&&(!cl||x.classe===cl)&&(!q||`${x.nome} ${(x.patrocinios||[]).map(p=>p.evento).join(" ")}`.toLowerCase().includes(q)));
+  if(!rows.length){box.innerHTML=`<div class=cartao style="background:#F6F7F9">Nenhum patrocínio privado registrado ainda${P.total?" nesta seleção":""}. O motor lê as fontes de comunicação aos domingos e agrega cada patrocínio com URL, evento e trecho — nada inventado.</div>`;return;}
+  box.innerHTML=`<div class="emp-cab" style="grid-template-columns:2.2fr 1fr .8fr 1.4fr 2.2fr .9fr"><span>Empresa</span><span>Município</span><span>Eventos</span><span>Áreas</span><span>Último patrocínio (fonte)</span><span>Classe</span></div>`
+    +rows.slice(0,60).map(x=>{const u=(x.patrocinios||[]).slice(-1)[0]||{};return `<div class="emp-linha" style="grid-template-columns:2.2fr 1fr .8fr 1.4fr 2.2fr .9fr" data-pid="${esc(x.id)}">
+      <span class=emp-nome><b>${esc(x.nome)}</b><small>${x.cnpj?esc(x.cnpj):"CNPJ a identificar"} · <span title="presente na base histórica do motor">organização mapeada</span>${x.lucro_real_informativo?" · Lucro Real "+esc(x.lucro_real_informativo).replace("_"," ")+" (informativo)":""}</small></span>
+      <span>${esc(x.municipio||"—")}</span><span>${x.eventos}</span><span>${(x.areas||[]).map(a=>`<span class=tag style="color:${AREA(a).cor};border-color:${AREA(a).cor}66">${esc(AREA(a).rotulo)}</span>`).join(" ")}</span>
+      <span class=meta>${u.evento?esc(u.evento)+" · "+esc(u.fonte)+(u.url?` · <a href="${esc(u.url)}" target=_blank rel="noopener noreferrer">ver ↗</a>`:""):"—"}</span>
+      <span><b class="emp-score">${x.score}</b> <small>${esc(x.classe||"")}</small></span></div>`;}).join("");
+  box.querySelectorAll(".emp-linha").forEach(el=>{const x=rows.find(y=>y.id===el.dataset.pid);if(!x)return;
+    ligaTip(el,`<strong>${esc(x.nome)}</strong><br>${x.eventos} evento(s) · ${(x.areas||[]).map(a=>AREA(a).rotulo).join(", ")}<br>score ${x.score}: ${esc((x.memoria||[]).join("; "))}<br><em>clique para o detalhe</em>`);
+    el.onclick=()=>abreModal(`<h3 style="margin:0">${esc(x.nome)}</h3><div class=meta>patrocínio privado · ${esc(x.classe||"")} · score ${x.score}</div>`,
+      `<p><strong>Por que pontua:</strong> ${esc((x.memoria||[]).join(" · "))}</p>
+       <p><strong>Área potencial de doação/patrocínio:</strong> ${(x.area_potencial||{}).proposta_de_valor?esc(x.area_potencial.proposta_de_valor):"—"}</p>
+       <p><strong>Patrocínios registrados:</strong></p><ul style="margin:0 0 0 16px">${(x.patrocinios||[]).map(p=>`<li>${esc(p.evento)} <span class=tag>${esc(AREA(p.area).rotulo)}</span> — ${esc(p.fonte)} (${esc(p.tipo_fonte)}), ${br(p.em)} · <a href="${esc(p.url)}" target=_blank rel="noopener noreferrer">fonte ↗</a><br><span class=meta>“${esc(p.trecho)}”</span></li>`).join("")}</ul>
+       <p><strong>Como abordar:</strong> patrocínio de marketing — proposta com contrapartidas de imagem (marca no evento, mídia, ativação com público), sem depender de regime tributário; oferecer prestação de contas e relatório de alcance.</p>`);});
 }
 function empDetalhe(x){const pt=x.potencial||{};
   abreModal(`<h3 style="margin:0">${esc(x.nome)}</h3><div class=meta>${x.cnpj?esc(x.cnpj)+" · ":""}${esc(x.municipio||"")} · ${esc(x.cnae||"")} · porte ${esc(x.porte||"—")}</div>`,
@@ -2441,20 +2473,20 @@ function desenhaBzLateral(por){
     </div>
     ${(()=>{if(!MT||!MT.length)return "";const mo=mpMotoresUF(bzUFsel);const lista=[...mo.regulares,...mo.opressores].sort((a,b)=>(b.aceso-a.aceso)||(b.achados-a.achados));
       return `<div class=meta style="margin:10px 0 4px"><strong>Motores de busca neste território</strong> — <b>${mo.ligados}</b> ligado(s) de ${mo.total} · ${mo.lidos} com leitura · ${mo.achados} achado(s)</div>
-      <div class="bz-motores">${lista.slice(0,14).map(x=>`<div class="bz-motor${x.aceso?" on":""}" data-mid="${esc(x.id)}" title="${esc(x.nome)} · ${x.aceso?"ligado":"apagado"} · ${x.lida?"lida em "+br(String(x.lida).slice(0,10)):"sem leitura ainda"} · ${x.achados} achado(s)${x.disjuntor?" · dia "+x.disjuntor.dias+"/30":""}">
-        <span class="bz-motor-led"></span><span class="bz-motor-nome">${esc(nomeCurto(x.nome))}</span><span class=meta>${x.tipo==="opressor"?"opressor":esc(x.tipo)} · ${x.lida?br(String(x.lida).slice(0,10)):"—"} · ${x.achados}</span></div>`).join("")}
-      ${lista.length>14?`<div class=meta>+${lista.length-14} motor(es) — todos na caixa Motores de Busca / Opressores</div>`:""}</div>`;})()}
+      <div class="bz-motores">${(nacional?lista.filter(x=>x.aceso):lista).slice(0,nacional?60:14).map(x=>`<div class="bz-motor${x.aceso?" on":""}" data-mid="${esc(x.id)}" title="${esc(x.nome)} · ${x.aceso?"ligado":"apagado"} · ${x.lida?"lida em "+br(String(x.lida).slice(0,10)):"sem leitura ainda"} · ${x.achados} achado(s)${x.disjuntor?" · dia "+x.disjuntor.dias+"/30":""}">
+        <span class="bz-motor-led"></span><span class="bz-motor-nome">${esc(nomeCurto(x.nome))}</span><span class=meta>${x.tipo==="opressor"?"opressor":esc(x.tipo)} · ${x.lida?"lida "+br(String(x.lida).slice(0,10)):"sem leitura"} · ${x.achados} achado(s)${x.disjuntor?" · dia "+x.disjuntor.dias+"/30":""} · <b>${x.aceso?(x.lida?(x.achados?"rendendo":"ativa, sem achado"):"ativa, aguardando saída"):"apagada"}</b></span></div>`).join("")}
+      ${(nacional?lista.filter(x=>x.aceso).length>60:lista.length>14)?`<div class=meta>+${nacional?lista.filter(x=>x.aceso).length-60:lista.length-14} motor(es) — todos na caixa Motores de Busca / Opressores</div>`:""}</div>`;})()}
     ${Object.keys(p.areas).length?`<div class=meta style="margin:8px 0 4px"><strong>Áreas com edital aberto</strong></div><div class="legenda">${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)} <b style="color:var(--suave)">${n}</b></span>`).join("")}</div>`:""}
     ${nacional?`<div class=meta style="margin:10px 0 4px"><strong>Oportunidades de nível nacional</strong> (${(p.itens||[]).length})</div>
-    <div class="bz-cidades">${(p.itens||[]).slice(0,40).map(e=>`<div class="bz-cidade" data-op="${esc(e.id)}"><b>${esc((e.programa||e.titulo||"").slice(0,70))}</b> <span class=tag style="font-size:10px">${situacaoDe(e)==="aberta"?"aberta":"possível"}</span><div class=meta>${esc(AREA(e.area).rotulo)} · ${esc(e.fonte_nome||e.orgao||"")}${e.fim?" · até "+br(e.fim):""}</div></div>`).join("")}</div>`
+    <div class="uf-cidades">${(p.itens||[]).slice(0,40).map(e=>`<div class="uf-cidade" data-op="${esc(e.id)}"><b>${esc((e.programa||e.titulo||"").slice(0,70))}</b> <span class=tag style="font-size:10px">${situacaoDe(e)==="aberta"?"aberta":"possível"}</span><div class=meta>${esc(AREA(e.area).rotulo)} · ${esc(e.fonte_nome||e.orgao||"")}${e.fim?" · até "+br(e.fim):""}</div></div>`).join("")}</div>`
     :`<div class=meta style="margin:10px 0 4px"><strong>Cidades com oportunidade</strong> ${cidades.length?`<span>(${cidades.length})</span>`:"— nenhuma identificada"}</div>
-    <div class="bz-cidades">${cidades.slice(0,25).map(([c,v])=>`<div class="bz-cidade"><b>${esc(c)}</b> <span class=meta>${v.n} oportunidade(s) · ${Object.entries(v.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>esc(AREA(a).rotulo)+" "+n).join(", ")}</span>
+    <div class="uf-cidades">${cidades.slice(0,25).map(([c,v])=>{const nA=(v.itens||[]).filter(e=>situacaoDe(e)==="aberta").length;return `<div class="uf-cidade"><b>${esc(c)}</b> <span class="uf-qtd" title="oportunidades nesta cidade">${v.n}</span>${nA?` <span class=tag style="border-color:#F09B2E;color:#9a5a00">${nA} aberta(s)</span>`:""} <span class=meta>${Object.entries(v.areas).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([a,n])=>esc(AREA(a).rotulo)+" "+n).join(", ")}</span>
         ${(v.itens||[]).slice(0,3).map(e=>{const s=situacaoDe(e);const org=(e.orgao&&!/pncp|querido/i.test(e.orgao))?e.orgao:(e.fonte_nome&&!/pncp|querido/i.test(e.fonte_nome)?e.fonte_nome:"Prefeitura de "+c);
           return `<div class="bz-op" data-op="${esc(e.id)}"><span class=ponto style="background:${AREA(e.area).cor};width:8px;height:8px"></span>
             <span class=bz-op-t>${esc((e.objeto||e.titulo||"").replace(/^Diário Oficial de [^—]+—\s*/,"").replace(/"/g,"").slice(0,110))}</span>
             <div class=meta>${s==="aberta"?"<b style=\"color:#9a5a00\">aberta</b>":"possível · em investigação"} · ${esc(AREA(e.area).rotulo)}${e.fim?" · inscrições até "+br(e.fim):e.prazo_texto?" · prazo "+esc(e.prazo_texto):" · prazo a confirmar"}${e.valor_texto?" · "+esc(e.valor_texto):""} · ${esc(org)}
             ${e.url?` · <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:""}</div></div>`;}).join("")}
-        ${(v.itens||[]).length>3?`<div class=meta style="padding-left:14px">+${(v.itens||[]).length-3} oportunidade(s) nesta cidade — veja em Oportunidades Abertas</div>`:""}</div>`).join("")}
+        ${(v.itens||[]).length>3?`<div class=meta style="padding-left:14px">+${(v.itens||[]).length-3} oportunidade(s) nesta cidade — veja em Oportunidades Abertas</div>`:""}</div>`;}).join("")}
     ${cidades.length>25?`<div class=meta>… e mais ${cidades.length-25} cidade(s) em Oportunidades Abertas.</div>`:""}</div>`}`;
   // relatório simples ao passar o mouse em cada dado do painel
   const REL={aberta:"Oportunidades com período de inscrição vigente e confirmado, com cidade/estado e publicação em local oficial — dá para decidir concorrer.",
@@ -2468,7 +2500,7 @@ function desenhaBzLateral(por){
   L.querySelectorAll(".bz-op[data-op]").forEach(el=>{el.style.cursor="pointer";const e=(p.itens||[]).find(x=>x.id===el.dataset.op)||[].concat(...cidades.map(([,v])=>v.itens||[])).find(x=>x.id===el.dataset.op);
     if(e){ligaTip(el,`<strong>${esc(e.titulo||"")}</strong><br>${esc(e.objeto||"objeto: conferir na publicação")}<br><span style="opacity:.85">${esc(AREA(e.area).rotulo)} · ${situacaoDe(e)} · ${e.fim?"até "+br(e.fim):"prazo a confirmar"}${e.valor_texto?" · "+esc(e.valor_texto):""}</span><br><em>clique para a ficha; o link abre o site oficial</em>`);
       el.onclick=ev=>{if(ev.target.closest("a"))return;detalheEdital({programa:e.fonte_nome,lei:"—",protocolo:e.id,resumo:e.objeto||"",territorio:e.uf||"BR",detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:e.objeto||e.titulo||"",coletado_em:e.coletado_em,lacuna:null},...e});};}});
-  L.querySelectorAll(".bz-cidade[data-op]").forEach(el=>{el.style.cursor="pointer";el.onclick=()=>{const e=(p.itens||[]).find(x=>x.id===el.dataset.op);if(e)detalheEdital({programa:e.fonte_nome,lei:"—",protocolo:e.id,resumo:e.objeto||"",territorio:"Brasil",detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:e.objeto||e.titulo||"",coletado_em:e.coletado_em,lacuna:null},...e});};});
+  L.querySelectorAll(".uf-cidade[data-op]").forEach(el=>{el.style.cursor="pointer";el.onclick=()=>{const e=(p.itens||[]).find(x=>x.id===el.dataset.op);if(e)detalheEdital({programa:e.fonte_nome,lei:"—",protocolo:e.id,resumo:e.objeto||"",territorio:"Brasil",detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:e.objeto||e.titulo||"",coletado_em:e.coletado_em,lacuna:null},...e});};});
 }
 function desenhaBzAtual(){
   if(bzUFsel){desenhaBzLateral();return;}                 // estado selecionado: detalhe do estado na coluna
