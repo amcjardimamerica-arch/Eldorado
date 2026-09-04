@@ -225,10 +225,10 @@ box-shadow:0 1px 3px #0002}
 .mt-ico.fogo .fumaca circle:nth-child(2){animation-delay:.7s}.mt-ico.fogo .fumaca circle:nth-child(3){animation-delay:1.4s}
 @keyframes tremula{from{transform:scaleY(.92) skewX(-3deg)}to{transform:scaleY(1.06) skewX(3deg)}}
 @keyframes sobe{0%{transform:translateY(4px);opacity:.75}100%{transform:translateY(-9px) scale(1.5);opacity:0}}
-.mt-ico.oleo .brilho-barril{animation:barril-brilho 3.4s ease-in-out infinite}
-.mt-ico.oleo .gota{animation:barril-gota 3.4s ease-in-out infinite;transform-origin:20px 28px}
-@keyframes barril-brilho{0%,55%{transform:translateX(-6px) skewX(-12deg);opacity:0}65%{opacity:.18}80%{transform:translateX(50px) skewX(-12deg);opacity:.14}100%{transform:translateX(52px) skewX(-12deg);opacity:0}}
-@keyframes barril-gota{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.mt-ico.oleo .folha{transform-origin:0 0;animation:folha-vento 7s ease-in-out infinite;opacity:0}
+.mt-ico.oleo .vento{animation:vento-passa 7s ease-in-out infinite}
+@keyframes folha-vento{0%,58%{transform:translate(-8px,14px) rotate(0deg);opacity:0}62%{opacity:1}75%{transform:translate(14px,8px) rotate(60deg);opacity:1}90%{transform:translate(36px,16px) rotate(140deg);opacity:.8}100%{transform:translate(48px,22px) rotate(200deg);opacity:0}}
+@keyframes vento-passa{0%,58%{opacity:0;transform:translateX(-6px)}70%{opacity:.7;transform:translateX(6px)}88%{opacity:0;transform:translateX(24px)}100%{opacity:0}}
 .mt-dias{display:flex;gap:2px;margin-top:6px;flex-wrap:wrap}
 .mt-dia{width:11px;height:11px;border-radius:3px;background:#DEE2E8;display:block}
 .mt-dia.cinza{background:#DEE2E8}.mt-dia.azul{background:#2F79D0}.mt-dia.verde{background:var(--ok)}.mt-dia.vermelho{background:var(--urgente)}
@@ -283,6 +283,12 @@ box-shadow:0 1px 3px #0002}
 @media(max-width:620px){.fa-grade{grid-template-columns:1fr}}
 .fa-grade .ed-item{margin-top:0;height:100%}
 .fa-fonte{font-size:11.5px;color:var(--suave);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.assoc-caixa{border:1px solid var(--linha);border-radius:12px;padding:12px 14px;background:#FCFCFB;margin-bottom:10px}
+.assoc-farol{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 4px var(--linha)}
+.assoc-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;margin-top:10px}
+.assoc-ed{display:flex;align-items:center;gap:9px;padding:7px 9px;border:1px solid var(--linha);border-radius:10px;background:#fff;cursor:pointer}.assoc-ed:hover{border-color:#9FC1E8}
+.assoc-led{width:10px;height:10px;border-radius:50%;flex:none}.assoc-nota{font-weight:800;font-size:16px;color:#0E2A55;min-width:30px;text-align:center}
+.assoc-tit{display:flex;flex-direction:column;min-width:0}.assoc-tit b{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.assoc-tit small{font-size:10.5px;color:var(--suave)}
 .emp-cab,.emp-linha{display:grid;grid-template-columns:2.4fr 1fr 1.1fr 1.1fr 1.2fr 1fr 1.6fr .9fr;gap:10px;align-items:center;padding:8px 12px;font-size:12.5px}
 .emp-cab{font-size:11px;font-weight:700;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid #E3E8F1}
 .emp-linha{border:1px solid var(--linha);border-radius:10px;background:#FCFCFB;margin-top:6px;cursor:pointer}.emp-linha:hover{border-color:#9FC1E8;background:#fff}
@@ -626,6 +632,23 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <div class=meta id="pat-fonte" style="margin-bottom:8px"></div><div id="pat-lista"></div>
   </div>
 </div>
+<!-- ASSOCIAÇÕES CADASTRADAS × EDITAIS · Farol de aderência por associação -->
+<div class="cartao faixa-total" id="ed-assoc-caixa" style="margin-bottom:16px">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <h3 style="margin:0;font-size:16px">Associações cadastradas — enquadramento e Farol de aderência</h3>
+    <span class=meta title="Para cada associação cadastrada, o cruzamento de área, território e documentos com os editais abertos/possíveis; a nota determinística é o piso e a análise de IA do Farol (fase 3) a substitui quando há parecer gravado">— quais editais melhor se enquadram em cada associação</span>
+  </div>
+  <div id="ed-assoc-lista" style="margin-top:10px"></div>
+</div>
+<!-- Farol de aderência -->
+<div class="cartao" id="ed-farol-caixa">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Farol de Alexandria — aderência
+    <span class=meta title="Notas por dimensão calculadas pelo Farol de Alexandria a partir do perfil da associação e dos requisitos de cada edital." style="cursor:help">ⓘ</span></div>
+  <div class="bz-gauge" id="bz-gauge" style="--p:0"><div><span class="g" id="bz-nota">—</span><span class="g100">/100</span><div class=meta style="margin-top:4px">Aderência geral</div><div id="bz-classe" style="font-weight:800;color:#0B4EA2">—</div></div></div>
+  <div id="bz-dimensoes"></div>
+  <button style="width:100%;margin-top:12px;color:#0B4EA2;font-weight:700;border-color:#9FC1E8" onclick="modulo('farol')">⚓ Ver detalhes do Farol</button>
+</div>
+</div>
 <div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
   <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
   <select id="ed-uf"><option value="">Todos os estados</option></select>
@@ -751,14 +774,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 
 <!-- (Fontes com edital aberto foi UNIFICADA em Eldorado › Oportunidades Abertas › Em andamento) -->
 
-<!-- Farol de aderência -->
-<div class="cartao">
-  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Farol de aderência
-    <span class=meta title="Notas por dimensão calculadas pelo Farol de Alexandria a partir do perfil da associação e dos requisitos de cada edital." style="cursor:help">ⓘ</span></div>
-  <div class="bz-gauge" id="bz-gauge" style="--p:0"><div><span class="g" id="bz-nota">—</span><span class="g100">/100</span><div class=meta style="margin-top:4px">Aderência geral</div><div id="bz-classe" style="font-weight:800;color:#0B4EA2">—</div></div></div>
-  <div id="bz-dimensoes"></div>
-  <button style="width:100%;margin-top:12px;color:#0B4EA2;font-weight:700;border-color:#9FC1E8" onclick="modulo('farol')">⚓ Ver detalhes do Farol</button>
-</div>
+<!-- (Farol de aderência migrou para Oportunidades Abertas › Farol de Alexandria) -->
 </section>
 
 <!-- ============ FAROL ============ -->
@@ -806,10 +822,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260904215457"></script>
-<script src="mapa-arte.js?v=20260904215457"></script>
-<script src="dashboard-dados.enc.js?v=20260904215457"></script>
-<script src="dashboard-dados.js?v=20260904215457"></script>
+<script src="mapa-brasil.js?v=20260904224909"></script>
+<script src="mapa-arte.js?v=20260904224909"></script>
+<script src="dashboard-dados.enc.js?v=20260904224909"></script>
+<script src="dashboard-dados.js?v=20260904224909"></script>
 <script>
 (function(){
 "use strict";
@@ -1675,6 +1691,8 @@ function desenhaEditais(){
   $("ed-filtros").classList.toggle("oculto",aba!=="encerrado");
   const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
   const ce=$("emp-caixa"); if(ce){ce.classList.toggle("oculto",aba!=="em_andamento"); if(aba==="em_andamento")desenhaEmpresas();}
+  ["ed-assoc-caixa","ed-farol-caixa"].forEach(id=>{const el=$(id);if(el)el.classList.toggle("oculto",aba!=="em_andamento");});
+  if(aba==="em_andamento")desenhaAssociacoes();
   if(aba==="em_andamento"){
     /* UNIFICADA: a antiga «Fontes com edital aberto» da Bússola vive aqui, com
        todos os seus filtros (associação, UF, área, nível, situação) e o resumo */
@@ -1814,6 +1832,23 @@ function desenhaEmpresas(){
   box.querySelectorAll(".emp-linha").forEach(el=>{const x=rows.find(y=>y.id===el.dataset.id);if(!x)return;
     ligaTip(el,`<strong>${esc(x.nome)}</strong> ${x.cnpj?"· "+esc(x.cnpj):""}<br>${esc(x.cnae||"")} · porte ${esc(x.porte||"—")} · situação ${esc(x.situacao||"—")} · ${x.matriz===false?"FILIAL":x.matriz?"matriz":"matriz/filial a confirmar"}<br>${esc(ROT_LUCRO[x.lucro_real]||"")}: ${esc(x.lucro_real_motivo||"")}<br>score ${x.score} — ${esc((x.memoria_score||[]).join("; "))}<br><em>clique para o parecer completo</em>`);
     el.onclick=()=>empDetalhe(x);});
+}
+function desenhaAssociacoes(){
+  const box=$("ed-assoc-lista"); if(!box)return; const L=D.associacoes_cruzamento||[];
+  if(!L.length){box.innerHTML='<div class=meta>Nenhuma associação cadastrada em dados/associacoes/ (o perfil de exemplo não conta).</div>';return;}
+  const COR={verde:"var(--ok)",amarelo:"var(--alerta)",vermelho:"var(--urgente)",cinza:"#C9CED6"};
+  box.innerHTML=L.map(a=>`<div class="assoc-caixa">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="assoc-farol" style="background:${COR[a.farol]}" title="Farol de aderência da associação: ${a.farol}"></span>
+      <b style="font-size:14.5px">${esc(a.nome||a.id)}</b>${a.cnpj?`<span class=meta>${esc(a.cnpj)}</span>`:""}
+      <span class=tag>${(a.areas||[]).map(x=>AREA(x).rotulo).join(", ")||"áreas não informadas"}</span><span class=tag>${(a.territorios||[]).join(", ")||"—"}</span>
+      <span class=meta style="margin-left:auto">${a.editais_avaliados} edital(is) avaliado(s) · análise de IA: <b>${esc((a.analise_ia||{}).status||"pendente").split(" — ")[0]}</b>${(a.analise_ia||{}).pareceres?" ("+a.analise_ia.pareceres+" parecer(es))":""}</span></div>
+    <div class="assoc-grade">${(a.melhores||[]).map(m=>`<div class="assoc-ed" data-id="${esc(m.id)}" title="${esc((m.por||[]).join(" · "))}${m.analise_ia?" · nota da análise de IA":" · nota determinística (piso)"}">
+        <span class="assoc-led" style="background:${COR[m.farol]}"></span>
+        <span class="assoc-nota">${m.nota}</span>
+        <span class="assoc-tit"><b>${esc((m.titulo||"").slice(0,70))}</b><small>${esc(AREA(m.area).rotulo)} · ${esc(m.uf||"BR")} · ${m.situacao==="aberta"?"aberta":"possível"}${m.fim?" · até "+br(m.fim):""}${m.analise_ia?" · IA":""}</small></span></div>`).join("")}</div>
+    <div class=meta style="margin-top:6px">Farol: <span style="color:var(--ok)">■</span> ≥70 enquadra · <span style="color:var(--alerta)">■</span> 45–69 enquadra com pendências · <span style="color:var(--urgente)">■</span> &lt;45 não enquadra. A nota determinística cruza área, território e documentos; o parecer do Farol de Alexandria (IA) a substitui quando gravado em dados/associacoes/&lt;id&gt;/farol/.</div>
+  </div>`).join("");
+  box.querySelectorAll(".assoc-ed").forEach(el=>{el.onclick=()=>{const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);if(ed)detalheEdital(ed);};});
 }
 function desenhaPatrocinios(E){
   const box=$("pat-lista"); if(!box)return; const P=(E||{}).patrocinios||{total:0,empresas:[],fontes:[]};
@@ -2083,28 +2118,25 @@ function iconeMotor(id,ativo){
       <svg viewBox="0 0 32 40" width="30" height="36"><g class="fumaca"><circle cx="16" cy="7" r="3"/><circle cx="21" cy="4" r="2.2"/><circle cx="11" cy="5" r="1.8"/></g>
       <path class="chama" d="M16 12c4 5 8 8 8 15a8 8 0 0 1-16 0c0-4 2-6 3-9 1 3 2 4 3 4 0-4 0-7 2-10z"/>
       <path class="chama2" d="M16 22c2 3 4 4 4 7a4 4 0 0 1-8 0c0-2 1-3 2-5 .5 1.5 1 2 2 2 0-2 0-3 0-4z"/></svg></button>`
-    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (barril de óleo) — clique para ligar por 30 dias">
-      <svg viewBox="0 0 40 48" width="34" height="41" shape-rendering="geometricPrecision">
-        <defs><linearGradient id="barril-g" x1="0" x2="1"><stop offset="0" stop-color="#1b2130"/><stop offset=".55" stop-color="#3f4b63"/><stop offset="1" stop-color="#151a24"/></linearGradient>
-          <clipPath id="barril-clip"><path d="M5 9c0-3.3 6.7-5.5 15-5.5S35 5.7 35 9v31c0 3.3-6.7 5.5-15 5.5S5 43.3 5 40z"/></clipPath></defs>
-        <!-- corpo -->
-        <path class="corpo" d="M5 9c0-3.3 6.7-5.5 15-5.5S35 5.7 35 9v31c0 3.3-6.7 5.5-15 5.5S5 43.3 5 40z" fill="url(#barril-g)" stroke="#0b0e14" stroke-width="1.2"/>
-        <!-- FAIXA LATERAL BRANCA (a largura toda do barril) com a GOTA -->
-        <g clip-path="url(#barril-clip)"><path d="M4 18c0 3.3 6.7 5.5 16 5.5s16-2.2 16-5.5v14c0 3.3-6.7 5.5-16 5.5S4 35.3 4 32z" fill="#FFFFFF"/>
-          <path d="M4 18c0 3.3 6.7 5.5 16 5.5s16-2.2 16-5.5M4 32c0 3.3 6.7 5.5 16 5.5s16-2.2 16-5.5" fill="none" stroke="#0b0e14" stroke-width=".9"/></g>
-        <path class="gota" d="M20 21.4c3.1 3.9 5 6.6 5 8.8a5 5 0 0 1-10 0c0-2.2 1.9-4.9 5-8.8z" fill="#0b0e14"/>
-        <path d="M18.2 28.8a2.3 2.3 0 0 0 1.3 2.8" fill="none" stroke="#9fc1e8" stroke-width="1" stroke-linecap="round"/>
-        <!-- aros -->
-        <path d="M5 14c0 3.3 6.7 5.5 15 5.5S35 17.3 35 14M5 39c0 3.3 6.7 5.5 15 5.5S35 42.3 35 39" fill="none" stroke="#0b0e14" stroke-width="1.8"/>
-        <path d="M5 13.2c0 3.3 6.7 5.5 15 5.5S35 16.5 35 13.2M5 38.2c0 3.3 6.7 5.5 15 5.5S35 41.5 35 38.2" fill="none" stroke="#9aa6bb" stroke-width=".7"/>
-        <!-- TAMPA detalhada: borda externa branca, disco, rebaixo e tampão -->
-        <ellipse cx="20" cy="9" rx="15" ry="5.5" fill="#4f5c75" stroke="#FFFFFF" stroke-width="1.5"/>
-        <ellipse cx="20" cy="9" rx="15" ry="5.5" fill="none" stroke="#0b0e14" stroke-width=".7"/>
-        <ellipse cx="20" cy="9" rx="11" ry="3.9" fill="#2a3242" stroke="#8b97ad" stroke-width=".6"/>
-        <ellipse cx="25.5" cy="8.2" rx="2.3" ry="1.1" fill="#0b0e14" stroke="#c8d2e0" stroke-width=".5"/>
-        <ellipse cx="14.8" cy="9.8" rx="1.6" ry=".8" fill="#0b0e14" stroke="#c8d2e0" stroke-width=".5"/>
-        <path d="M9 7.6c3-2.2 7.5-3.1 11-3.1" fill="none" stroke="#FFFFFF" stroke-width=".8" opacity=".8" stroke-linecap="round"/>
-        <g clip-path="url(#barril-clip)"><rect class="brilho-barril" x="-16" y="2" width="9" height="46" fill="#ffffff" opacity=".12" transform="skewX(-12)"/></g>
+    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (fogueira sem acender) — clique para ligar por 30 dias">
+      <svg viewBox="0 0 40 40" width="36" height="36" shape-rendering="geometricPrecision">
+        <!-- pedras -->
+        <ellipse cx="20" cy="33.5" rx="16" ry="3.6" fill="#6b6f78" opacity=".35"/>
+        <g fill="#8a8f99" stroke="#3f434b" stroke-width=".7"><ellipse cx="7" cy="32" rx="3.2" ry="2"/><ellipse cx="13" cy="34" rx="3" ry="1.8"/><ellipse cx="27" cy="34" rx="3" ry="1.8"/><ellipse cx="33" cy="32" rx="3.2" ry="2"/><ellipse cx="20" cy="35.2" rx="3" ry="1.6"/></g>
+        <!-- cinzas -->
+        <ellipse cx="20" cy="31" rx="8" ry="2.2" fill="#c7c9ce"/><ellipse cx="19" cy="30.6" rx="4.5" ry="1.2" fill="#e3e4e7"/>
+        <!-- galhos (madeira apagada) -->
+        <g stroke="#3f434b" stroke-width=".7" stroke-linejoin="round">
+          <path d="M6 30 L30 21 L31.5 23.5 L7.5 32.5 Z" fill="#6d4c2f"/><path d="M8 30.6 L29 22.6" stroke="#8b6a45" stroke-width=".9" fill="none"/>
+          <path d="M34 30 L10 21 L8.5 23.5 L32.5 32.5 Z" fill="#7a5533"/><path d="M32 30.6 L11 22.6" stroke="#9a7450" stroke-width=".9" fill="none"/>
+          <path d="M14 29 L26 29 L26 31.6 L14 31.6 Z" fill="#5a3f28"/>
+          <path d="M20 18 L20 28" stroke="#5a3f28" stroke-width="2.6" stroke-linecap="round"/><path d="M20 21 L23 17" stroke="#5a3f28" stroke-width="1.6" stroke-linecap="round"/>
+        </g>
+        <!-- pontas carbonizadas -->
+        <ellipse cx="30.5" cy="22.2" rx="1.6" ry="1.1" fill="#2a2d33"/><ellipse cx="9.5" cy="22.2" rx="1.6" ry="1.1" fill="#2a2d33"/>
+        <!-- folha que o vento leva, de tempos em tempos -->
+        <g class="folha"><path d="M0 0c3-3 7-3 9 0c-2 3-6 3-9 0z" fill="#8fae5c" stroke="#5c7a36" stroke-width=".5"/><path d="M1 0h7" stroke="#5c7a36" stroke-width=".4"/></g>
+        <g class="vento" fill="none" stroke="#9aa3b2" stroke-width=".7" stroke-linecap="round" opacity="0"><path d="M2 10 q4 -2 8 0 t8 0"/><path d="M4 14 q3 -1.5 6 0 t6 0"/></g>
       </svg></button>`;
 }
 /* fósforo (busca imediata) · upload (alimentar manualmente) · link (aprendizado) */

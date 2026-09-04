@@ -20,6 +20,7 @@ Quando o segredo de acesso está configurado, o publicador cifra este conteúdo
 from __future__ import annotations
 
 import json
+import pathlib
 import re
 import unicodedata
 from collections import defaultdict
@@ -1001,6 +1002,54 @@ def situacao_inscricao(e: dict, hoje: date) -> dict:
     return {"situacao": "aberta", "regime": "periodo_determinado", "base": f"inscrições vigentes até {fim}"}
 
 
+def _cruzamento_associacoes(editais: list[dict], hoje: date) -> list[dict]:
+    """Associações cadastradas × editais: para cada associação, os editais que
+    melhor se enquadram (área, território, requisitos atendidos) e o Farol de
+    aderência. A nota determinística é o piso; a análise de IA (Farol, fase 3)
+    substitui quando há parecer gravado."""
+    import glob as _g
+    saida = []
+    for fp in sorted(_g.glob(str(ROOT / "dados/associacoes/*/perfil*.json"))):
+        if "EXEMPLO" in fp:
+            continue
+        a = load_json(pathlib.Path(fp))
+        areas = set(a.get("areas") or []); terr = [t.upper() for t in (a.get("territorios") or [])]
+        docs = set(a.get("documentos_validos") or []); anos = a.get("anos_existencia") or 0
+        pareceres = {}
+        for pf in _g.glob(str(ROOT / "dados/associacoes" / pathlib.Path(fp).parent.name / "farol" / "*.json")):
+            try:
+                pj = load_json(pathlib.Path(pf)); pareceres[pj.get("edital_id") or pathlib.Path(pf).stem] = pj
+            except Exception:
+                pass
+        cand = []
+        for e in editais:
+            if e.get("situacao_inscricao") not in ("aberta", "possivel"):
+                continue
+            pts, por = 0, []
+            if e.get("area") in areas: pts += 40; por.append(f"área {e.get('area')} é da associação")
+            uf = e.get("uf")
+            if (uf and uf in terr) or (not uf and e.get("abrangencia") == "nacional"): pts += 25; por.append("território compatível")
+            elif uf and uf not in terr: continue
+            req = set((e.get("detalhes") or {}).get("documentos_exigidos") or [])
+            if req:
+                ok = len(req & docs) / len(req); pts += round(25 * ok); por.append(f"documentos: {len(req & docs)}/{len(req)}")
+            else:
+                pts += 10; por.append("requisitos ainda não extraídos")
+            if e.get("situacao_inscricao") == "aberta": pts += 10; por.append("inscrição vigente confirmada")
+            ia = pareceres.get(e["id"])
+            nota_ia = (ia or {}).get("aderencia") or (ia or {}).get("nota")
+            nota = nota_ia if isinstance(nota_ia, (int, float)) else pts
+            cand.append({"id": e["id"], "titulo": e.get("titulo"), "area": e.get("area"), "uf": uf, "situacao": e.get("situacao_inscricao"),
+                         "fim": e.get("fim"), "nota": min(100, nota), "farol": "verde" if nota >= 70 else "amarelo" if nota >= 45 else "vermelho",
+                         "por": por, "analise_ia": bool(ia), "url": e.get("url")})
+        cand.sort(key=lambda c: -c["nota"])
+        saida.append({"id": a.get("id") or pathlib.Path(fp).parent.name, "nome": a.get("nome"), "cnpj": a.get("cnpj"), "areas": sorted(areas), "territorios": terr,
+                      "anos_existencia": anos, "documentos_validos": sorted(docs), "editais_avaliados": len(cand),
+                      "melhores": cand[:12], "farol": ("verde" if cand and cand[0]["nota"] >= 70 else "amarelo" if cand and cand[0]["nota"] >= 45 else "vermelho" if cand else "cinza"),
+                      "analise_ia": {"pareceres": len(pareceres), "status": "realizada" if pareceres else "pendente — o Farol (fase 3) grava o parecer por edital quando a credencial de IA está ativa"}})
+    return saida
+
+
 def _apto_ao_calendario(e: dict) -> bool:
     """Regra do titular para a tela inicial: só entra no Calendário o edital com
     início E fim determinados e validados em site oficial, e com ao menos
@@ -1304,6 +1353,7 @@ def coletar(hoje: date | None = None) -> dict:
                                   "status_verificacao", "fonte_confirmacao", "lei")}
                                 for i in previsoes.get("itens", [])]},
         "esquadra": esquadra,
+        "associacoes_cruzamento": _cruzamento_associacoes(editais, hoje),
         "prazos_ia": {k: {"status": v.get("status"), "fim": v.get("fim"), "inicio": v.get("inicio"), "url": v.get("url"), "conselho": bool(v.get("conselho"))}
                       for k, v in (load_json(ROOT / "estado/prazos_ia.json") if (ROOT / "estado/prazos_ia.json").exists() else {}).items()
                       if not k.startswith("_") and isinstance(v, dict)},

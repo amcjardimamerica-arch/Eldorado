@@ -304,10 +304,49 @@ def _novas_sem_referencia(mencoes: list[dict], fontes: list[dict]) -> list[dict]
     return novas[:60]
 
 
+MAPEADAS = ROOT / "dados/oportunidades_mapeadas.json"
+
+
+def mapear_novas(novas: list[dict], fontes: list[dict]) -> list[dict]:
+    """Toda oportunidade anunciada SEM referência histórica passa a compor a
+    Biblioteca (oportunidades mapeadas) e vira fonte dos motores dali em diante."""
+    from .dashboard_dados import inferir_area
+    reg = load_json(MAPEADAS) if MAPEADAS.exists() else {"fontes": []}
+    ids = {f["id"] for f in reg["fontes"]} | {f["id"] for f in fontes}
+    for m in novas:
+        fid = "nova-" + sha_id(m.get("url") or m.get("titulo") or "")
+        if fid in ids:
+            for f in reg["fontes"]:
+                if f["id"] == fid:
+                    f["mencoes"] = f.get("mencoes", 1) + 1; f["ultima_mencao"] = (m.get("coletado_em") or "")[:10]
+            continue
+        ids.add(fid)
+        org = (m.get("fonte_nome") or "").replace("Querido Diário — diários oficiais municipais", "").strip() or "órgão a identificar"
+        reg["fontes"].append({"id": fid, "programa": (m.get("titulo") or "")[:120], "orgao": org, "nivel": m.get("nivel") or ("federal" if not m.get("uf") else "municipal"),
+                              "uf": m.get("uf") or "BR", "area": inferir_area(f'{m.get("titulo","")} {m.get("evidencia","")}'), "sites": [m.get("url")] if m.get("url") else [],
+                              "confianca_site": "primaria", "lexico": [], "origem": "anunciada sem referência histórica", "primeira_mencao": (m.get("coletado_em") or "")[:10],
+                              "ultima_mencao": (m.get("coletado_em") or "")[:10], "mencoes": 1, "fonte_da_mencao": m.get("fonte_nome")})
+        pasta = ROOT / "biblioteca_alexandria/oportunidades_mapeadas" / fid
+        pasta.mkdir(parents=True, exist_ok=True)
+        write_json(pasta / "ficha.json", {"id": fid, "titulo": m.get("titulo"), "url": m.get("url"), "fonte": m.get("fonte_nome"), "uf": m.get("uf"),
+                                          "primeira_mencao": (m.get("coletado_em") or "")[:10], "evidencia": (m.get("evidencia") or "")[:600],
+                                          "nota": "oportunidade anunciada sem referência histórica — mapeada; a partir daqui tem motor próprio e 12 camadas"})
+    write_json(MAPEADAS, reg)
+    return reg["fontes"]
+
+
+def sha_id(s: str) -> str:
+    import hashlib
+    return hashlib.sha256(s.encode()).hexdigest()[:12]
+
+
 def run() -> dict:
     from datetime import date as _date
     hoje = _date.today()
     fontes = load_json(ROOT / "config/fontes_captacao_260.json").get("fontes", [])
+    # oportunidades mapeadas (anunciadas sem referência) entram como fontes
+    if MAPEADAS.exists():
+        fontes = fontes + [f for f in load_json(MAPEADAS).get("fontes", []) if f["id"] not in {x["id"] for x in fontes}]
     mencoes = _mencoes_recentes()
     diario = load_json(ROOT / "estado/esquadra_diario.json").get("sensores", {}) if (ROOT / "estado/esquadra_diario.json").exists() else {}
     esq = load_json(ROOT / "estado/esquadra.json").get("sensores", {}) if (ROOT / "estado/esquadra.json").exists() else {}
@@ -374,6 +413,7 @@ def run() -> dict:
                "regra": "fonte específica só sai na época prevista ou após menção em local oficial/plataforma; "
                         "os motores regulares (diários, justiça, legislativo, API, plataformas) saem todo dia"})
     novas = _novas_sem_referencia(mencoes, fontes)
+    mapear_novas(novas, fontes)          # compõem a Biblioteca e viram fontes dos motores
     # plataformas indicadas pelo titular (Prosas etc.): rodando de forma satisfatória?
     plataformas = []
     inv = load_json(ROOT / "config/investigacao.json").get("fontes", []) if (ROOT / "config/investigacao.json").exists() else []

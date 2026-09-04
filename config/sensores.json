@@ -83,21 +83,24 @@
     },
     {
       "id": "dje-tjgo",
-      "nome": "Diário da Justiça Eletrônico — TJGO",
+      "nome": "TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)",
       "tipo": "diario_justica",
       "nivel": "estadual",
       "uf": "GO",
       "territorio": "GO",
       "urls": [
-        "https://comunicaapi.pje.jus.br/api/v1/comunicacao?siglaTribunal=TJGO&dataDisponibilizacaoInicio={dataiso}&dataDisponibilizacaoFim={dataiso}&itensPorPagina=100&pagina=1",
-        "https://www.tjgo.jus.br/index.php/diario-da-justica",
-        "https://www.tjgo.jus.br/index.php/licitacoes"
+        "https://www.tjgo.jus.br/index.php/execucao-penal",
+        "https://www.tjgo.jus.br/index.php/institucional/centro-de-comunicacao-social/17-tribunal/20140-prestacao-pecuniaria",
+        "https://www.tjgo.jus.br/index.php/coordenadoria-de-execucao-penal",
+        "https://www.tjgo.jus.br/index.php/editais-de-chamamento",
+        "https://www.jusbrasil.com.br/diarios/DJGO/",
+        "https://www.mpgo.mp.br/portal/editais"
       ],
       "busca": null,
       "confianca": "curada",
       "o_que_procurar": "editais de destinação de prestação pecuniária, penas de perdimento, doações a entidades pelas varas de execução penal",
-      "nota_rede": "04/09: tjgo.jus.br recusa robô (403); via principal passa a ser o DJEN (API pública do CNJ) filtrado por TJGO · 04/09 20:59: DJEN também recusou (HTTPError) — pedir parâmetros/aprovação da API ou usar o espelho do CNJ",
-      "max_paginas": 3
+      "nota_rede": "04/09: o Diário (403) é substituído pela busca direta nas páginas das varas de execução penal/prestação pecuniária do TJGO (mesmo domínio — pode manter o 403), pelo espelho do DJGO no Jusbrasil e pelos editais do MPGO (Res. CNJ 154/2012 obriga o chamamento público das entidades); o diagnóstico individual diz qual via respondeu",
+      "max_paginas": 6
     },
     {
       "id": "dj-trf1-go",
