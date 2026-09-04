@@ -67,7 +67,9 @@ jobs:
           exit $rc
       - name: Coletar, verificar, acionar Farol e publicar painel
         run: |
-          timeout 1500 python -m src.executar_diario || echo "executar_diario registrado com falha"
+          if [ "$MOTORES_BLOCO" = "diarios" ] || [ "$MOTORES_BLOCO" = "completo" ] || [ "$MOTORES_BLOCO" = "manual" ]; then
+            timeout 1500 python -m src.executar_diario || echo "executar_diario registrado com falha"
+          fi
       - name: Carga de parlamentares (apenas em outubro e novembro)
         if: always()
         run: |
