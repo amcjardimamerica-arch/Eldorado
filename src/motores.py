@@ -69,12 +69,17 @@ def _ultimo_edital_da_fonte(fonte: dict, con) -> dict | None:
             if t not in ("secretaria", "municipal", "estadual", "federal", "governo", "estado", "goiás", "goiania", "goiânia", "programa", "fundo")]
     if not toks:
         return None
-    rows = con.execute("SELECT ficha FROM historico ORDER BY data_publicacao DESC LIMIT 6000").fetchall()
-    for (fj,) in rows:
-        f = json.loads(fj)
-        alvo = f'{f.get("financiador","")} {f.get("titulo","")}'.lower()
-        if sum(1 for t in toks if t in alvo) >= max(1, min(2, len(toks))):
-            return f
+    # as fichas são carregadas UMA vez por execução (antes: 6.000 fichas decodificadas por fonte)
+    cache = getattr(_ultimo_edital_da_fonte, "_cache", None)
+    if cache is None or cache[0] is not con:
+        rows = con.execute("SELECT financiador, titulo, ficha FROM historico ORDER BY data_publicacao DESC LIMIT 6000").fetchall()
+        cache = (con, [((fin or "") + " " + (tit or "")).lower() for fin, tit, _ in rows], [fj for _, _, fj in rows])
+        _ultimo_edital_da_fonte._cache = cache
+    _, alvos, fichas = cache
+    minimo = max(1, min(2, len(toks)))
+    for alvo, fj in zip(alvos, fichas):
+        if sum(1 for t in toks if t in alvo) >= minimo:
+            return json.loads(fj)
     return None
 
 
@@ -392,6 +397,57 @@ def run() -> dict:
                          "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
                          "situacao": ("bloqueado" if b else "sem leitura ainda" if not s else
                                       "ativo — captando" if s.get("achados_total") else "ativo, sem achados")})
+    # ── dois motores de EMPRESAS como motores regulares individuais ──
+    # GIFE = captação de INCENTIVOS FISCAIS (empresas do Lucro Real, Rouanet/LIE/FIA/PRONON)
+    # Patrocínio Privado = captação PRIVADA (marketing, recursos próprios, sem benefício fiscal)
+    emp_go = ROOT / "biblioteca_alexandria/empresas/go/go.json"
+    pat_go = ROOT / "biblioteca_alexandria/empresas/go/patrocinios.json"
+    sem_p = ROOT / "estado/empresas_semanal.jsonl"
+    sem = [json.loads(l) for l in sem_p.read_text(encoding="utf-8").splitlines() if l.strip()] if sem_p.exists() else []
+    eg = load_json(emp_go) if emp_go.exists() else {}
+    pg = load_json(pat_go) if pat_go.exists() else {}
+    def _dias_semanal(chave):
+        reg = {}
+        for s in sem:
+            d = (s.get("em") or "")[:10]
+            if d:
+                n = s.get(chave) or 0
+                reg[d] = {"cor": "verde" if n else "azul", "achados": n, "trecho": f"{n} registro(s)" if n else None}
+        return _trinta_dias(reg, hoje)
+    oficiais.append({"id": "motor-gife", "nome": "Motor GIFE — incentivos fiscais (empresas)", "tipo": "empresas_fiscal",
+                     "url": "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/",
+                     "dias": _dias_semanal("novas_agregadas"), "ultima_leitura": (eg.get("gerado_em") or None),
+                     "achados": eg.get("total", 0),
+                     "situacao": ("sem leitura ainda" if not eg else "ativo — captando" if eg.get("total") else "ativo, sem achados"),
+                     "descricao": "empresas do Lucro Real com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS); fontes: maiores contribuintes do ICMS, cadastro RFB, SALIC, GIFE; domingo 03h"})
+    oficiais.append({"id": "motor-patrocinio", "nome": "Motor Patrocínio Privado — captação privada (empresas)", "tipo": "empresas_privado",
+                     "url": "https://opopular.com.br/",
+                     "dias": _dias_semanal("patrocinios_novos"), "ultima_leitura": (pg.get("gerado_em") or None),
+                     "achados": pg.get("total", 0),
+                     "situacao": ("sem leitura ainda" if not pg else "ativo — captando" if pg.get("total") else "ativo, sem achados"),
+                     "descricao": "empresas que patrocinam com recursos próprios (marketing, sem benefício fiscal) eventos culturais, esportivos e educacionais; fontes: imprensa, rádio, TV e portais de eventos; domingo 03h"})
+    # ── RELEVÂNCIA de cada motor regular (1 a 5) e numeração pelo nível ──
+    def _relevancia(o):
+        pts = 0; por = []
+        t_ = o.get("tipo") or "plataforma"; nm = (o["nome"] or "").lower()
+        if t_ == "diario_oficial": pts += 3; por.append("diário oficial — fonte primária de editais +3")
+        elif t_ in ("empresas_fiscal", "empresas_privado"): pts += 3; por.append("captação junto a empresas — frente própria +3")
+        elif t_ == "api": pts += 2; por.append("API oficial (PNCP) +2")
+        elif t_ == "diario_justica": pts += 2; por.append("destinações judiciais +2")
+        elif t_ == "plataforma": pts += 2; por.append("plataforma de editais +2")
+        elif t_ == "legislativo": pts += 1; por.append("legislativo (emendas) +1")
+        if "goiânia" in nm or "goiania" in nm: pts += 2; por.append("Goiânia — território da associação +2")
+        elif "goiás" in nm or "goias" in nm or "tjgo" in nm or "alego" in nm or "-go" in o["id"]: pts += 1; por.append("Goiás +1")
+        dep = sum(1 for m in motores if m.get("motor") == o["id"])
+        if dep >= 10: pts += 1; por.append(f"{dep} pontos de captação dependem dele +1")
+        if o.get("achados"): pts += 1; por.append(f"{o['achados']} achado(s) +1")
+        nivel = max(1, min(5, round(pts * 5 / 8)))
+        return {"pontos": pts, "nivel": nivel, "por": por}
+    for o in oficiais + plataformas:
+        o["relevancia"] = _relevancia(o)
+    ordem = sorted(oficiais + plataformas, key=lambda o: (-o["relevancia"]["pontos"], o["nome"]))
+    for i, o in enumerate(ordem, 1):
+        o["rank"] = i
     motores.sort(key=lambda m: (not m["goias"], m["familia"], m["segmento"], m["programa"]))
     resumo = {
         "gerado_em": now_iso(), "total": len(motores),

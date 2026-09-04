@@ -150,7 +150,15 @@ def run(uf: str = "GO") -> dict:
     BIB.mkdir(parents=True, exist_ok=True)
     write_json(BIB / uf.lower() / "patrocinios.json", {"uf": uf, "gerado_em": now_iso(), "fontes": [f["nome"] for f in _cfgp()["estados"][uf]["fontes"]],
                                                      "coleta": col, "total": len(saida), "empresas": saida})
-    return {"uf": uf, **col, "empresas_com_patrocinio": agregadas, "novas_na_base": novas, "executado_em": now_iso()}
+    rel = {"uf": uf, **col, "empresas_com_patrocinio": agregadas, "novas_na_base": novas, "executado_em": now_iso()}
+    # registro no diário semanal (alimenta o calendário do motor no painel)
+    sem_p = ROOT / "estado/empresas_semanal.jsonl"
+    if sem_p.exists():
+        linhas = [l for l in sem_p.read_text(encoding="utf-8").splitlines() if l.strip()]
+        if linhas:
+            ult = json.loads(linhas[-1]); ult["patrocinios_novos"] = col.get("novos", 0); ult["patrocinios_total"] = col.get("total", 0)
+            linhas[-1] = json.dumps(ult, ensure_ascii=False); sem_p.write_text("\n".join(linhas) + "\n", encoding="utf-8")
+    return rel
 
 
 if __name__ == "__main__":

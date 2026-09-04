@@ -3,13 +3,77 @@
   "fuso": "America/Sao_Paulo (UTC-3)",
   "doutrina": "Cada tipo de motor tem a sua hora entre 00h e 06h de Brasília, para não sobrecarregar o sistema nem o workflow. Os motores regulares (Motores de Busca) saem todo dia; os Motores Opressores saem às 04h, mas SÓ os ativos — época histórica de publicação, menção captada pelos motores regulares na madrugada anterior, ou acionamento manual do titular. Às 06h, o relatório de funcionamento e a publicação do painel fecham o ciclo.",
   "blocos": [
-    {"hora_brt": "00:00", "cron_utc": "0 3 * * *",  "bloco": "diarios",           "tipos": ["diario_oficial"],                      "descricao": "Diários Oficiais de Goiânia, Goiás e União"},
-    {"hora_brt": "01:00", "cron_utc": "0 4 * * *",  "bloco": "justica_legislativo","tipos": ["diario_justica", "legislativo"],       "descricao": "Diários da Justiça (TJGO, TRF1, CNJ), Câmara de Goiânia e ALEGO"},
-    {"hora_brt": "02:00", "cron_utc": "0 5 * * *",  "bloco": "plataformas_api",   "tipos": ["plataforma", "api"],                   "descricao": "Prosas e plataformas do terceiro setor; API PNCP"},
-    {"hora_brt": "03:00", "cron_utc": "0 6 * * *",  "bloco": "completude",        "tipos": [],                                      "descricao": "Extração das edições do diário, campanhas de completude, regramentos e limpeza de pertinência"},
-    {"hora_brt": "04:00", "cron_utc": "0 7 * * *",  "bloco": "opressores",        "tipos": ["site_oficial", "privada", "internacional"], "descricao": "Motores Opressores ATIVOS (época, menção ou manual) — busca cirúrgica com o léxico específico de cada recurso"},
-    {"hora_brt": "05:00", "cron_utc": "0 8 * * *",  "bloco": "busca_ativa",       "tipos": [],                                      "descricao": "Busca ativa de resultados, prorrogações e recursos; alternativas para páginas bloqueadas"},
-    {"hora_brt": "06:00", "cron_utc": "0 9 * * *",  "bloco": "relatorio",         "tipos": [],                                      "descricao": "Relatório de funcionamento do dia, previsões, motores, dashboard e publicação do painel"}
+    {
+      "hora_brt": "00:00",
+      "cron_utc": "0 3 * * *",
+      "bloco": "diarios",
+      "tipos": [
+        "diario_oficial"
+      ],
+      "descricao": "Diários Oficiais de Goiânia, Goiás e União"
+    },
+    {
+      "hora_brt": "01:00",
+      "cron_utc": "0 4 * * *",
+      "bloco": "justica_legislativo",
+      "tipos": [
+        "diario_justica",
+        "legislativo"
+      ],
+      "descricao": "Diários da Justiça (TJGO, TRF1, CNJ), Câmara de Goiânia e ALEGO"
+    },
+    {
+      "hora_brt": "02:00",
+      "cron_utc": "0 5 * * *",
+      "bloco": "plataformas_api",
+      "tipos": [
+        "plataforma",
+        "api"
+      ],
+      "descricao": "Prosas e plataformas do terceiro setor; API PNCP"
+    },
+    {
+      "hora_brt": "03:00",
+      "cron_utc": "0 6 * * *",
+      "bloco": "completude",
+      "tipos": [],
+      "descricao": "Extração das edições do diário, campanhas de completude, regramentos e limpeza de pertinência"
+    },
+    {
+      "hora_brt": "04:00",
+      "cron_utc": "0 7 * * *",
+      "bloco": "opressores",
+      "tipos": [
+        "site_oficial",
+        "privada",
+        "internacional"
+      ],
+      "descricao": "Motores Opressores ATIVOS (época, menção ou manual) — busca cirúrgica com o léxico específico de cada recurso"
+    },
+    {
+      "hora_brt": "05:00",
+      "cron_utc": "0 8 * * *",
+      "bloco": "busca_ativa",
+      "tipos": [],
+      "descricao": "Busca ativa de resultados, prorrogações e recursos; alternativas para páginas bloqueadas"
+    },
+    {
+      "hora_brt": "06:00",
+      "cron_utc": "0 9 * * *",
+      "bloco": "relatorio",
+      "tipos": [],
+      "descricao": "Relatório de funcionamento do dia, previsões, motores, dashboard e publicação do painel"
+    },
+    {
+      "hora_brt": "03:00 (domingo)",
+      "cron_utc": "0 6 * * 0",
+      "bloco": "empresas",
+      "tipos": [
+        "empresas_fiscal",
+        "empresas_privado"
+      ],
+      "descricao": "Motor GIFE (incentivos fiscais) e Motor Patrocínio Privado (captação privada) — semanal"
+    }
   ],
   "dupla_etapa": "1ª etapa (Motores de Busca, 00h–02h): termos e menções gerais em diários, justiça, legislativo, plataformas e API. 2ª etapa (Motores Opressores, 04h): para cada recurso ativado, termos e situações ESPECÍFICOS em todos os locais onde ele pode surgir — sites do órgão, espelhos, edições do diário e páginas indicadas pelo titular.",
   "relatorio": "estado/relatorios/AAAA-MM-DD.json — um por dia, com o resultado de cada bloco (sensores executados, achados, falhas, bloqueios, novos na base) e o consolidado publicado no painel"

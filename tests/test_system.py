@@ -3449,6 +3449,30 @@ class SystemTests(unittest.TestCase):
         self.assertIsNone(gife_casa("INSTITUTO ALFA","",[{"nome":"Instituto Beta Cerrado"}]))          # dois termos exigidos
         self.assertIsNotNone(gife_casa("ALFA CERRADO S.A.","",[{"nome":"Instituto Alfa Cerrado"}]))
 
+
+    def test_relevancia_numerada_e_motores_de_empresas_individuais(self):
+        """Motores regulares numerados por relevância; Motor GIFE (incentivos fiscais) e
+        Motor Patrocínio Privado (captação privada) como motores individuais."""
+        m=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json"))
+        reg=m["oficiais"]+m["plataformas"]
+        self.assertTrue(all("rank" in o and "relevancia" in o for o in reg))
+        self.assertEqual(sorted(o["rank"] for o in reg),list(range(1,len(reg)+1)))
+        self.assertTrue(all(1<=o["relevancia"]["nivel"]<=5 for o in reg))
+        ids={o["id"]:o for o in m["oficiais"]}
+        self.assertEqual(ids["motor-gife"]["tipo"],"empresas_fiscal"); self.assertEqual(ids["motor-patrocinio"]["tipo"],"empresas_privado")
+        self.assertIn("incentivos fiscais",ids["motor-gife"]["nome"]); self.assertIn("captação privada",ids["motor-patrocinio"]["nome"])
+        self.assertEqual(sorted(reg,key=lambda o:o["rank"])[0]["id"],"do-goiania")            # Goiânia primeiro
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("mt-rank","mt-rel","numerados por relevância","(a.rank||99)-(b.rank||99)"): self.assertIn(x,html,x)
+        hz=load_json(pathlib.Path("config/horarios.json")); self.assertTrue(any(b["bloco"]=="empresas" for b in hz["blocos"]))
+        # extrator do formato oficial de Goiás e CNPJ da matriz pela raiz
+        from src.empresas import extrair_contribuintes, cnpj_matriz_da_raiz
+        self.assertEqual(cnpj_matriz_da_raiz("33000167"),"33.000.167/0001-01")                 # Petrobras (dígitos reais)
+        r=extrair_contribuintes("6º 03560974 MERCK SHARP & DOHME FARMACEUTICA LTDA. APARECIDA DE GOIANIA GO COMÉRCIO ATACADISTA E DISTRIBUIDOR",2025)[0]
+        self.assertEqual(r["nome"],"MERCK SHARP & DOHME FARMACEUTICA LTDA."); self.assertEqual(r["municipio_lista"],"Aparecida De Goiania"); self.assertEqual(r["cnpj"],"03.560.974/0001-18")
+        d=load_json(pathlib.Path("dados/empresas/go/contribuintes_icms.json"))
+        self.assertGreaterEqual(len(d["anos"]["2025"]["empresas"]),290)                           # lista oficial real, limpa
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

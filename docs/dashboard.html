@@ -247,6 +247,8 @@ box-shadow:0 1px 3px #0002}
 .dj-area{margin-top:10px}
 .dj-areat{display:flex;align-items:center;gap:7px;font-family:Georgia,serif;font-weight:800;font-size:13.5px;border-bottom:1.5px solid #E3E8F1;padding-bottom:4px;margin-bottom:6px}
 .mt-calt{font-size:11px;font-weight:700;color:var(--suave);letter-spacing:.05em;text-transform:uppercase;margin:8px 0 4px;display:flex;justify-content:space-between;align-items:center}
+.mt-rank{display:inline-block;min-width:26px;padding:1px 6px;border-radius:7px;background:#0E2A55;color:#fff;font-weight:800;font-size:12px;text-align:center;font-family:Georgia,serif}
+.mt-rel{color:#7a5a00;border-color:#C9A227}
 .mt-calnav button{border:1px solid var(--linha);background:#fff;border-radius:6px;padding:1px 7px;font-size:11px;cursor:pointer;margin-left:3px}
 .mt-calnav button:disabled{opacity:.35;cursor:default}
 .mt-cal{grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:4px;min-height:52px}
@@ -804,10 +806,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260904140038"></script>
-<script src="mapa-arte.js?v=20260904140038"></script>
-<script src="dashboard-dados.enc.js?v=20260904140038"></script>
-<script src="dashboard-dados.js?v=20260904140038"></script>
+<script src="mapa-brasil.js?v=20260904155627"></script>
+<script src="mapa-arte.js?v=20260904155627"></script>
+<script src="dashboard-dados.enc.js?v=20260904155627"></script>
+<script src="dashboard-dados.js?v=20260904155627"></script>
 <script>
 (function(){
 "use strict";
@@ -2243,10 +2245,12 @@ function desenhaMotores(){
         ${x.t?`<div class=mt-trecho title="${esc(x.t)}">${esc(x.t.slice(0,26))}…</div>`:""}</div>`;}).join("")}</div>
     ${dias.filter(x=>x.t).slice(-3).map(x=>`<div class=meta>· ${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} — ${x.u?`<a href="${esc(x.u)}" target=_blank rel="noopener noreferrer">${esc(x.t)}</a>`:esc(x.t)}</div>`).join("")}`;};
   const trintaDias=calendarioMotor;
-  const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Locais de publicação oficial e plataformas <span class=meta>${ofRows.length}</span></div>
+  ofRows.sort((a,b)=>(a.rank||99)-(b.rank||99));
+  const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Locais de publicação oficial, plataformas e motores de empresas <span class=meta>${ofRows.length} · numerados por relevância</span></div>
     ${ofRows.map(o=>{const st=semaforo(o.situacao);const ativo=mtAtivo(o.id);return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
-      <div class="mt-corpo"><div><b>${esc(o.nome)}</b> <span class=tag>${esc(o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
+      <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(o.tipo||"oficial")}</span>${o.relevancia?` <span class="tag mt-rel" title="relevância nível ${o.relevancia.nivel} de 5 · ${esc((o.relevancia.por||[]).join(" · "))}">relevância ${"●".repeat(o.relevancia.nivel)}${"○".repeat(5-o.relevancia.nivel)} nível ${o.relevancia.nivel}</span>`:""}${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
+        ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
         <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · ${esc(o.situacao)}${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+" edital(is)":""}</div>
         ${trintaDias(o)}</div>
       <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";

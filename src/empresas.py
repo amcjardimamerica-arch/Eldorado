@@ -90,6 +90,47 @@ def _texto_pdf(dados: bytes) -> str:
         return ""
 
 
+def cnpj_matriz_da_raiz(raiz: str) -> str | None:
+    """A matriz é sempre o estabelecimento 0001: calcula os dígitos verificadores."""
+    d = so_digitos(raiz)
+    if len(d) != 8:
+        return None
+    base = d + "0001"
+    def dv(nums, pesos):
+        s = sum(int(n) * p for n, p in zip(nums, pesos)); r = s % 11
+        return "0" if r < 2 else str(11 - r)
+    d1 = dv(base, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]); d2 = dv(base + d1, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
+    return cnpj_fmt(base + d1 + d2)
+
+
+# formato da lista oficial de Goiás: "1º 33000167 PETROLEO BRASILEIRO S A PETROBRAS DIVERSOS BR COMBUSTÍVEL"
+_UFS = "AC|AL|AM|AP|BA|BR|CE|DF|ES|GO|MA|MG|MS|MT|PA|PB|PE|PI|PR|RJ|RN|RO|RR|RS|SC|SE|SP|TO"
+_LINHA_GO = re.compile(r"^(\d{1,3})\s*[ºª°.]?\s+(\d{8})\s+(.+)\s+(" + _UFS + r")\s+([A-ZÀ-Ú][^\n]{2,60})$")
+_SUFIXO_EMP = re.compile(r"^(S\.?A\.?|S/A|LTDA\.?|EIRELI|ME|EPP|CIA\.?|COM\.?|IND\.?|COMERCIO|INDUSTRIA|DISTRIBUIDORA|ATACADISTA|SERVICOS|PARTICIPACOES|HOLDING|BRASIL|.*[0-9/.&].*)$", re.I)
+_PREF_MUN = {"APARECIDA", "SENADOR", "RIO", "SANTO", "SANTA", "SAO", "SÃO", "BOM", "NOVA", "NOVO", "CIDADE", "PORTO", "MONTE", "SANTA", "PIRES", "SAO", "BELA", "ALTO", "CAMPO", "PADRE", "SAO"}
+
+
+def _separa_nome_municipio(miolo: str):
+    """'... S/A GOIANIA' → ('... S/A','Goiânia'); 'LTDA. APARECIDA DE GOIANIA' →
+    município com prefixo composto; 'PETROBRAS DIVERSOS' → 'Diversos'."""
+    toks = miolo.split()
+    if toks and toks[-1].upper() == "DIVERSOS":
+        return " ".join(toks[:-1]), "Diversos (vários estabelecimentos)"
+    # 1 palavra alfabética que não seja sufixo empresarial
+    if not toks or _SUFIXO_EMP.match(toks[-1]):
+        return miolo, None
+    mun = [toks[-1]]; i = len(toks) - 2
+    # prefixos compostos: APARECIDA DE GOIANIA, SENADOR CANEDO, RIO VERDE, SAO LUIS DE MONTES BELOS…
+    while i >= 0 and len(mun) < 5:
+        w = toks[i].upper()
+        if w in ("DE", "DO", "DA", "DOS", "DAS") and i - 1 >= 0 and toks[i - 1].upper() in _PREF_MUN:
+            mun[:0] = [toks[i - 1], toks[i]]; i -= 2; continue
+        if w in _PREF_MUN:
+            mun.insert(0, toks[i]); i -= 1; continue
+        break
+    return " ".join(toks[:i + 1]), " ".join(mun).title()
+
+
 def extrair_contribuintes(texto: str, ano: int | None = None) -> list[dict]:
     """Extrai linhas 'posição — nome — CNPJ — valor' de um texto (HTML ou PDF) de
     lista de maiores contribuintes. Tolerante: nome é obrigatório; CNPJ e valor
@@ -98,6 +139,20 @@ def extrair_contribuintes(texto: str, ano: int | None = None) -> list[dict]:
     for linha in re.split(r"[\r\n]+|(?<=\))\s{2,}", texto):
         l = re.sub(r"\s+", " ", linha).strip()
         if len(l) < 6 or len(l) > 400:
+            continue
+        mg = _LINHA_GO.match(l)
+        if mg:
+            pos, raiz, miolo, uf, setor = mg.groups()
+            nome, mun = _separa_nome_municipio(miolo)
+            mun = mun or "não informado na lista"
+            chave = raiz
+            if chave in vistos:
+                continue
+            vistos.add(chave)
+            saida.append({"posicao": int(pos), "nome": nome.strip()[:160], "cnpj": cnpj_matriz_da_raiz(raiz), "cnpj_raiz": raiz,
+                          "municipio_lista": mun,
+                          "uf_lista": uf, "setor": setor.strip().title(), "icms_valor_texto": None, "ano": ano,
+                          "nota": "CNPJ da matriz calculado a partir da raiz publicada (estabelecimento 0001)"})
             continue
         m_cnpj = CNPJ_RX.search(l)
         m_val = VALOR_RX.search(l)
@@ -111,7 +166,7 @@ def extrair_contribuintes(texto: str, ano: int | None = None) -> list[dict]:
             nome = re.sub(r"[\-–|;:]+$", "", l[:m_cnpj.start()].strip()).strip()
         if not nome or len(nome) < 4 or not re.search(r"[A-Za-zÀ-ú]{3}", nome):
             continue
-        if re.search(r"^(pos|posi[çc][ãa]o|ranking|contribuinte|raz[ãa]o social|cnpj|valor|total|fonte|secretaria)\b", nome, re.I):
+        if re.search(r"^(pos|posi[çc][ãa]o|ranking|contribuinte|raz[ãa]o social|cnpj|valor|total|fonte|secretaria|maiores contribuintes|de janeiro|de fevereiro|de mar[çc]o|de abril|de maio|de junho|de julho|de agosto|de setembro|de outubro|de novembro|de dezembro)\b", nome, re.I):
             continue
         chave = so_digitos(m_cnpj.group(1)) if m_cnpj else nome.upper()
         if chave in vistos:
@@ -317,9 +372,11 @@ def coletar_gife() -> dict:
         html = _get(cfg["url"])
         p = _Links(); p.feed(html)
         nomes = []
+        MENU = re.compile(r"^(investimento social|transpar|not[íi]cias|associados gife|especial|quem somos|contato|home|blog|agenda|eventos|publica|sobre|redegife)", re.I)
         for h, rot in p.links:
             r = re.sub(r"\s+", " ", rot or "").strip()
-            if 4 <= len(r) <= 90 and re.search(r"instituto|funda[çc][ãa]o|associa|grupo|s\.a\.|ltda|bank|banco|holding|cia|companhia|\bs/a\b", r, re.I):
+            r = re.sub(r"\s+[a-z0-9\-]{6,}(\s+[A-ZÀ-Ú].*)?$", lambda m: (m.group(1) or ""), r).strip()   # remove o slug colado ao nome
+            if 4 <= len(r) <= 90 and not MENU.search(r) and re.search(r"instituto|funda[çc][ãa]o|associa[çc][ãa]o|grupo|s\.a\.|ltda|bank|banco|holding|companhia|\bs/a\b|movimento|centro|rede", r, re.I):
                 nomes.append({"nome": r, "url": urljoin(cfg["url"], h) if h else None})
         # e itens de lista/cards sem link
         for m in re.finditer(r">([^<>]{4,90}(?:Instituto|Funda[çc][ãa]o|Associa[çc][ãa]o)[^<>]{0,60})<", html):
