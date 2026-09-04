@@ -225,10 +225,10 @@ box-shadow:0 1px 3px #0002}
 .mt-ico.fogo .fumaca circle:nth-child(2){animation-delay:.7s}.mt-ico.fogo .fumaca circle:nth-child(3){animation-delay:1.4s}
 @keyframes tremula{from{transform:scaleY(.92) skewX(-3deg)}to{transform:scaleY(1.06) skewX(3deg)}}
 @keyframes sobe{0%{transform:translateY(4px);opacity:.75}100%{transform:translateY(-9px) scale(1.5);opacity:0}}
-.mt-ico.oleo .poca{fill:#111318}.mt-ico.oleo .poca2{fill:#2a2f3a}
-.mt-ico.oleo .reflexo,.mt-ico.oleo .reflexo2{fill:#8fb0d8;opacity:0;animation:oleo-reflexo 3.2s ease-in-out infinite}
-.mt-ico.oleo .reflexo2{animation-delay:1.1s}
-@keyframes oleo-reflexo{0%,70%,100%{opacity:0;transform:translateX(-3px)}80%{opacity:.85;transform:translateX(0)}90%{opacity:.3;transform:translateX(3px)}}
+.mt-ico.oleo .brilho-barril{animation:barril-brilho 3.4s ease-in-out infinite}
+.mt-ico.oleo .gota{animation:barril-gota 3.4s ease-in-out infinite;transform-origin:20px 26px}
+@keyframes barril-brilho{0%,55%{transform:translateX(-6px) skewX(-12deg);opacity:0}65%{opacity:.18}80%{transform:translateX(50px) skewX(-12deg);opacity:.14}100%{transform:translateX(52px) skewX(-12deg);opacity:0}}
+@keyframes barril-gota{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .mt-dias{display:flex;gap:2px;margin-top:6px;flex-wrap:wrap}
 .mt-dia{width:11px;height:11px;border-radius:3px;background:#DEE2E8;display:block}
 .mt-dia.cinza{background:#DEE2E8}.mt-dia.azul{background:#2F79D0}.mt-dia.verde{background:var(--ok)}.mt-dia.vermelho{background:var(--urgente)}
@@ -925,6 +925,11 @@ function ligaTip(el,html){
   el.addEventListener("mouseleave",()=>tip.style.display="none");
 }
 function abreModal(cab,corpo){$("m-cab").innerHTML=cab;$("m-corpo").innerHTML=corpo;tip.style.display="none";$("modal").showModal();}
+/* o balão fecha em qualquer clique ou rolagem — um redesenho pode destruir o
+   elemento sob o cursor antes do mouseleave e deixá-lo preso na tela */
+document.addEventListener("click",()=>{tip.style.display="none";},true);
+document.addEventListener("scroll",()=>{tip.style.display="none";},true);
+const escondeTip=()=>{if(typeof tip!=="undefined")tip.style.display="none";};
 
 /* ================= NAVEGAÇÃO ================= */
 const VISTAS=["inicio","calendario","editais","bussola","f-documentos","f-editais","f-biblioteca"];
@@ -2038,11 +2043,24 @@ function iconeMotor(id,ativo){
       <svg viewBox="0 0 32 40" width="30" height="36"><g class="fumaca"><circle cx="16" cy="7" r="3"/><circle cx="21" cy="4" r="2.2"/><circle cx="11" cy="5" r="1.8"/></g>
       <path class="chama" d="M16 12c4 5 8 8 8 15a8 8 0 0 1-16 0c0-4 2-6 3-9 1 3 2 4 3 4 0-4 0-7 2-10z"/>
       <path class="chama2" d="M16 22c2 3 4 4 4 7a4 4 0 0 1-8 0c0-2 1-3 2-5 .5 1.5 1 2 2 2 0-2 0-3 0-4z"/></svg></button>`
-    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (poça de óleo) — clique para ligar por 30 dias">
-      <svg viewBox="0 0 64 40" width="36" height="24">
-        <path class="poca" d="M6 24c-3-4 2-9 10-9 3 0 4-2 9-2 6 0 7 3 13 2 7-1 14 3 13 8-1 4-8 4-13 5-5 1-6 4-12 4-5 0-6-3-11-3-5 0-8 0-9-5z"/>
-        <path class="poca2" d="M14 23c-1-3 4-5 9-4 2 0 4-1 7-1 5 0 6 2 11 2 5 0 7 3 6 5-1 3-6 2-9 3-4 1-5 3-9 3-3 0-4-2-7-2s-7 0-8-6z"/>
-        <ellipse class="reflexo" cx="20" cy="22" rx="6" ry="1.4"/><ellipse class="reflexo2" cx="40" cy="27" rx="3" ry=".9"/>
+    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (barril de óleo) — clique para ligar por 30 dias">
+      <svg viewBox="0 0 40 48" width="30" height="36">
+        <defs><linearGradient id="barril-g" x1="0" x2="1"><stop offset="0" stop-color="#1c2230"/><stop offset=".45" stop-color="#3a4457"/><stop offset="1" stop-color="#151a24"/></linearGradient>
+          <clipPath id="barril-clip"><path d="M6 8c0-3 6-5 14-5s14 2 14 5v32c0 3-6 5-14 5S6 43 6 40z"/></clipPath></defs>
+        <!-- corpo do barril -->
+        <path class="corpo" d="M6 8c0-3 6-5 14-5s14 2 14 5v32c0 3-6 5-14 5S6 43 6 40z" fill="url(#barril-g)" stroke="#0e1219" stroke-width="1"/>
+        <!-- tampa -->
+        <ellipse cx="20" cy="8" rx="14" ry="5" fill="#4a5568" stroke="#0e1219" stroke-width="1"/><ellipse cx="20" cy="8" rx="9" ry="3" fill="#2d3646"/>
+        <ellipse cx="24.5" cy="7.2" rx="2" ry=".9" fill="#7fa0c9"/><ellipse cx="14" cy="8.6" rx="1.4" ry=".7" fill="#0e1219"/>
+        <!-- aros -->
+        <path d="M6 17c0 3 6 5 14 5s14-2 14-5M6 31c0 3 6 5 14 5s14-2 14-5" fill="none" stroke="#0e1219" stroke-width="1.6"/>
+        <path d="M6 16c0 3 6 5 14 5s14-2 14-5M6 30c0 3 6 5 14 5s14-2 14-5" fill="none" stroke="#6b768a" stroke-width=".6"/>
+        <!-- rótulo com a gota de óleo -->
+        <rect x="12.5" y="19.5" width="15" height="11" rx="2" fill="#F2E6C8" stroke="#0e1219" stroke-width=".5"/>
+        <path class="gota" d="M20 20.8c2.2 3 3.6 5 3.6 6.8a3.6 3.6 0 0 1-7.2 0c0-1.8 1.4-3.8 3.6-6.8z" fill="#111318"/>
+        <ellipse cx="18.9" cy="27.6" rx=".7" ry="1.1" fill="#7fa0c9" opacity=".85"/>
+        <!-- brilho que passa pelo barril (decoração; o barril não se move) -->
+        <g clip-path="url(#barril-clip)"><rect class="brilho-barril" x="-14" y="2" width="8" height="44" fill="#ffffff" opacity=".14" transform="skewX(-12)"/></g>
       </svg></button>`;
 }
 /* fósforo (busca imediata) · upload (alimentar manualmente) · link (aprendizado) */
@@ -2359,39 +2377,23 @@ function mpIndicesUF(uf){
 function sepia(k){const h=34/360,s=0.40+0.35*k,l=0.80-0.32*k;const q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;const f=x=>{x=(x+1)%1;return x<1/6?p+(q-p)*6*x:x<.5?q:x<2/3?p+(q-p)*(2/3-x)*6:p;};
   const r=Math.round(f(h+1/3)*255),g=Math.round(f(h)*255),b=Math.round(f(h-1/3)*255);return `rgb(${r},${g},${b})`;}
 function desenhaBzMapa(){
+  escondeTip();
   const M=window.MAPA_BR;if(!M){$("bz-mapa").innerHTML="<div class=meta>mapa indisponível</div>";return;}
   if($("mp-area")&&$("mp-area").options.length<=1){const s=$("mp-area");(D.areas_canonicas||Object.keys(D.areas||{})).map(a=>[a,AREA(a).rotulo]).sort((x,y)=>x[1].localeCompare(y[1],"pt")).forEach(([a,r])=>{const o=document.createElement("option");o.value=a;o.textContent=r;s.appendChild(o);});
     s.addEventListener("input",()=>{desenhaBzMapa();});}
   if(!FA_ABERTAS){garanteAbertas().then(()=>desenhaBzMapa());}
   const por=mpDadosUF();
-  /* GRAVURA RENASCENTISTA sobre fundo transparente: sem borda nem quadrado.
-     O continente em sépia por intensidade, contorno de tinta com sombra,
-     algumas linhas de mar só junto à costa, cartela em fita, marcos famosos
-     (Amazonas, Lençóis, Pão de Açúcar, igreja barroca, Cataratas, Pantanal,
-     araucária), a cidade de Eldorado em Goiás, o Farol de Alexandria na costa
-     do Nordeste e criaturas (serpente marinha, Iara). Arte em docs/mapa-arte.js. */
+  /* MAPA LIMPO: só a delimitação geográfica dos estados (sépia por quantidade de
+     oportunidades), siglas e números; a rosa dos ventos fica ao pé do mapa. */
   const [vx,vy,vw,vh]=M.viewBox.split(" ").map(Number);
   const arSel=($("mp-area")||{}).value||"";
-  const ART=window.MAPA_ARTE;
-  let svg=`<svg viewBox="${vx-40} ${vy-30} ${vw+100} ${vh+60}" class="mapa-antigo" style="width:100%;height:auto;background:transparent">`;
+  let svg=`<svg viewBox="${vx-10} ${vy-10} ${vw+20} ${vh+20}" class="mapa-antigo" style="width:100%;height:auto;background:transparent">`;
   const maxN=Math.max(1,...Object.entries(por).filter(([k])=>k!=="__nac__").map(([,p])=>(p.aberta||0)+(p.possivel||0)));
-  // linhas de mar só junto à costa (contorno repetido e desvanecido)
-  const costa=Object.values(M.estados).map(e=>`<path d="${e.d}"/>`).join("");
-  svg+=`<g fill="none" stroke="${ART?ART.SEA:"#4E6E8E"}" stroke-linejoin="round" pointer-events="none">
-    <g stroke-width="8" opacity=".10">${costa}</g><g stroke-width="14" opacity=".06">${costa}</g><g stroke-width="20" opacity=".035">${costa}</g></g>`;
-  // sombra de tinta do continente
-  for(const [uf,e] of Object.entries(M.estados)) svg+=`<path d="${e.d}" fill="#3B2A14" opacity=".22" transform="translate(2.5,2.5)" pointer-events="none"/>`;
-  // estados em sépia por intensidade
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
     const k=n?Math.sqrt(n/maxN):0; const fill=n?sepia(k):"#F5EBD3";
     svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${n?" com-abertas":""}" style="fill:${fill}"></path>`;}
-  // ilustrações (gravura)
-  if(ART) svg+=ART.ilustracoes();
-  // siglas e números em serifa antiga
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
     svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-8}" y="${e.cy+13}" class="uf-n">${n}</text>`:""}`;}
-  // cartela em fita
-  if(ART) svg+=`<g transform="translate(${vx-20},${vy-26})">${ART.fita("MAPPA DAS OPORTUNIDADES","captação para o terceiro sector · "+(arSel?esc(AREA(arSel).rotulo):"todas as áreas"))}</g>`;
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
@@ -2408,6 +2410,7 @@ function desenhaBzMapa(){
 window.bzNacional=function(){bzUFsel=(bzUFsel==="__nac__"?"":"__nac__");$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value="";if(typeof mpFiltro==="object")mpFiltro.uf="";}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
 window.bzFecharUF=function(){bzUFsel="";$("bz-uf").value="";if($("mp-uf")){$("mp-uf").value="";if(typeof mpFiltro==="object")mpFiltro.uf="";}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
 function desenhaBzLateral(por){
+  escondeTip();
   const L=$("bz-atual"); if(!L)return;
   if(!bzUFsel){desenhaBzAtual();return;}                 // sem estado selecionado: atualizações
   const p=(por||mpDadosUF())[bzUFsel]||{aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]};

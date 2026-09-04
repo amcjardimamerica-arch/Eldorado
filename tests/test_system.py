@@ -2791,7 +2791,7 @@ class SystemTests(unittest.TestCase):
                 self.assertTrue(s["motivo"].startswith(("fonte específica ATIVA","escalada")),s["motivo"])
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("Motores Opressores","mo-area","mo-natureza","mo-esfera","mo-status","mt-ico oleo","mt-cal",
-                  "@keyframes pisca-borda","@keyframes oleo-reflexo","Novas oportunidades anunciadas","camadas_val"):
+                  "@keyframes pisca-borda","@keyframes barril-brilho","Novas oportunidades anunciadas","camadas_val"):
             self.assertIn(x,html,x)
         self.assertNotIn("mt-ico tonel",html); self.assertNotIn('class="mt-chk"',html)
         self.assertNotIn("mt-dias",html.split("const calendarioMotor")[1].split("const trintaDias")[0])
@@ -2811,11 +2811,11 @@ class SystemTests(unittest.TestCase):
             self.assertIn(a,d["areas"],a)
         self.assertNotIn("justica",d["areas"])          # traduzida para as 13 canônicas
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",".reflexo","@keyframes oleo-reflexo",
+        for x in ("calendarioMotor","mt-cal","mtd-amarelo","@keyframes pisca-borda","mt-ico oleo",'class="corpo"',"@keyframes barril-brilho",
                   "rotArea","Acesos (fogo)","Apagados (poça de óleo)"):
             self.assertIn(x,html,x)
         self.assertNotIn("Ativar motor nos marcados",html)          # ativação é individual ou automática
-        self.assertIn('class="reflexo"',html)                        # apagado = só a poça, com reflexo periódico
+        self.assertIn('class="corpo"',html)                          # apagado = barril de óleo com gota
         self.assertNotIn("mt-segt",html.split("const listaFontes")[1].split("const novas")[0])   # sem subgrupo de território
         # ícone reflete a ativação automática quando não há decisão manual
         self.assertIn("const m=MT.find(x=>x.id===id);return m?!!m.ativa:true;",html)
@@ -2848,7 +2848,7 @@ class SystemTests(unittest.TestCase):
             self.assertIn(x,html,x)
         self.assertNotIn("Privada / Internacional",html)
         # óleo: pluma com gotas, sem o traço fino
-        self.assertIn('class="reflexo2"',html); self.assertIn("@keyframes oleo-reflexo",html)
+        self.assertIn('class="gota"',html); self.assertIn("@keyframes barril-gota",html)
         self.assertNotIn('stroke="#1b1f27" stroke-width="2.6"',html)
 
 
@@ -2975,7 +2975,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(inferir_area("Termo de colaboração — pessoa idosa"),"pessoa_idosa")
         self.assertEqual(inferir_area("texto sem pista nenhuma"),"outros")
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("@keyframes oleo-reflexo","calendarioMotor","mt-mets"): self.assertIn(x,html,x)
+        for x in ("@keyframes barril-brilho","calendarioMotor","mt-mets"): self.assertIn(x,html,x)
 
 
     def test_doze_itens_calendario_validado_e_grade_padrao(self):
@@ -3156,7 +3156,7 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn("A ativação é individual — fogo aceso roda nas rotinas",html)
         for x in ("Quadro de disjuntores","function desenhaDisjuntores","dj-grade","dj.rosa","dj.cinza","nomeCurto",
-                  "ligados_em","@keyframes oleo-reflexo",'class="reflexo"',"ligado · dia"): self.assertIn(x,html,x)
+                  "ligados_em","@keyframes barril-brilho",'class="corpo"',"ligado · dia"): self.assertIn(x,html,x)
         self.assertNotIn('class="coluna"',html)                       # apagado = só a poça
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.opressores",wf)
 
@@ -3228,7 +3228,7 @@ class SystemTests(unittest.TestCase):
         filtro por área no lugar de encontrado/ausente, relatório no hover de cada
         dado e cidades com as oportunidades escritas, resumo e link oficial."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("GRAVURA RENASCENTISTA","mapa-arte.js","function sepia",
+        for x in ("MAPA LIMPO","mapa-arte.js","function sepia",
                   'id="mp-area"',"const arSel=","bz-op-t","site oficial ↗","const REL={","mesma base de Oportunidades Abertas"):
             self.assertIn(x,html,x)
         self.assertIn('<select id="mp-sit" style="display:none">',html)      # encontrado/ausente removido do mapa
@@ -3243,7 +3243,7 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         arte=open("docs/mapa-arte.js",encoding="utf-8").read()
         self.assertRegex(html,r'<script src="mapa-arte\.js(\?v=\d+)?"></script>')
-        for x in ("GRAVURA RENASCENTISTA sobre fundo transparente","ART.ilustracoes()","ART.fita(","background:transparent",'id="bz-rosa-svg"'):
+        for x in ("MAPA LIMPO","background:transparent",'id="bz-rosa-svg"'):
             self.assertIn(x,html,x)
         self.assertNotIn('id="mp-perg"',html); self.assertNotIn('rect x="${vx-30}"',html)          # sem quadrado/pergaminho
         for x in ("paoDeAcucar","cataratas","igreja","dunas","jacare","araucaria","rioAmazonas","eldorado","farol","serpente","iara","caravela",
@@ -3407,6 +3407,15 @@ class SystemTests(unittest.TestCase):
         self.assertIn('"0 6 * * 0"',wf); self.assertIn("src.empresas semanal GO",wf)
         self.assertNotIn("timeout 900 python -m src.empresas ||",wf)                            # não roda mais no bloco diário
         self.assertEqual(len(re.findall(r"^\s+python -m src\.",wf,re.M)),0)                    # todo passo python com timeout
+
+
+    def test_balao_nao_fica_preso_mapa_limpo_barril(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("const escondeTip=","document.addEventListener(\"click\",()=>{tip.style.display=\"none\";},true)","MAPA LIMPO",
+                  'class="corpo"','id="barril-clip"',"@keyframes barril-brilho","@keyframes barril-gota","barril de óleo"):
+            self.assertIn(x,html,x)
+        self.assertNotIn("ART.ilustracoes()",html); self.assertNotIn("ART.fita(",html)
+        self.assertNotIn('class="poca"',html.split("mt-ico oleo")[1].split("</svg>")[0])
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
