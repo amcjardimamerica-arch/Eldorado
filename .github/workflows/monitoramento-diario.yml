@@ -1,7 +1,6 @@
 name: 01 · Eldorado — motores por hora (00h–06h BRT)
 on:
   schedule:
-    - cron: "0 9 * * 1,5" # 06:00 America/Sao_Paulo (UTC-3)
   workflow_dispatch:
     inputs:
       fontes:
@@ -42,6 +41,7 @@ jobs:
             "0 6 * * *") B=completude;;
             "0 7 * * *") B=opressores;;
             "0 9 * * *") B=relatorio;;
+            "0 6 * * 0") B=empresas;;
             *) B="${MOTORES_BLOCO_INPUT:-completo}";;
           esac
           [ -n "$MOTORES_FONTES" ] && B=manual
@@ -59,13 +59,14 @@ jobs:
             grep -A30 -E "^(FAIL|ERROR):" /tmp/testes.log | head -300; } > estado/ultimo_teste_ci.txt
           exit $rc
       - name: Coletar, verificar, acionar Farol e publicar painel
-        run: python -m src.executar_diario
+        run: |
+          timeout 1500 python -m src.executar_diario || echo "executar_diario registrado com falha"
       - name: Carga de parlamentares (apenas em outubro e novembro)
         if: always()
         run: |
           MES=$(date -u +%m)
           if [ "$MES" = "10" ] || [ "$MES" = "11" ]; then
-            python -m src.parlamentares || echo "carga de parlamentares falhou; area declara pendencia"
+            timeout 900 python -m src.parlamentares || echo "carga de parlamentares falhou; area declara pendencia"
           else
             echo "Fora da janela de emendas (outubro/novembro) - carga nao executada." >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -78,7 +79,7 @@ jobs:
         run: |
           pip install pypdf --quiet
           if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            python -m src.completude | tee completude.json
+            timeout 900 python -m src.completude | tee completude.json
           fi
           if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 600 python -m src.historico || echo "src.historico: encerrado no orçamento de 600s ou falhou — registrado"
@@ -96,10 +97,10 @@ jobs:
             timeout 180 python -m src.pertinencia || echo "pertinencia: registrado" || echo "src.destinacao: encerrado no orçamento de 120s ou falhou — registrado"
           fi
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            python -m src.emendas
+            timeout 600 python -m src.emendas || echo 'emendas: registrado'
           fi
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            python -m src.emendas_docs
+            timeout 600 python -m src.emendas_docs || echo 'emendas_docs: registrado'
           fi
           if [ "$MOTORES_BLOCO" = "opressores" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 600 python -m src.opressores || echo "disjuntores: registrado"
@@ -114,12 +115,12 @@ jobs:
             timeout 300 python -m src.regramentos || echo "src.regramentos: encerrado no orçamento de 300s ou falhou — registrado"
           fi
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            python -m src.previsao
+            timeout 600 python -m src.previsao || echo 'previsao: registrado'
           fi
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 300 python -c "from src.janelas import verificar_por_sensor; verificar_por_sensor()" || echo "janelas: sem rede"
           fi
-          python -m src.fontes260
+          timeout 600 python -m src.fontes260 || echo 'fontes260: registrado'
           if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 900 python -m src.edicao || echo "src.edicao: encerrado no orçamento de 900s ou falhou — registrado"
           fi
@@ -136,19 +137,19 @@ jobs:
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 120 python -m src.parecer_prazos || echo "src.parecer_prazos: encerrado no orçamento de 120s ou falhou — registrado"
           fi
-          python -m src.banco
-          python -m src.biblioteca
+          timeout 600 python -m src.banco || echo 'banco: registrado'
+          timeout 600 python -m src.biblioteca || echo 'biblioteca: registrado'
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            python -m src.arquivamento
+            timeout 600 python -m src.arquivamento || echo 'arquivamento: registrado'
           fi
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            python -m src.fluxo || echo "fluxo 4-5: sem editais completos"
+            timeout 900 python -m src.fluxo || echo "fluxo 4-5: sem editais completos"
           fi
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            python -m src.farol_parecer || echo "parecer: sem credencial ou sem pedidos"
+            timeout 900 python -m src.farol_parecer || echo "parecer: sem credencial ou sem pedidos"
           fi
-          python -m src.dashboard_dados | tee dash.json
-          python -m src.banco
+          timeout 600 python -m src.dashboard_dados | tee dash.json
+          timeout 600 python -m src.banco || echo 'banco: registrado'
           pip install cryptography --quiet
           python scripts/acesso.py proteger || true
           {
@@ -169,13 +170,11 @@ jobs:
         if: always()
         run: |
           pip install pypdf --quiet
-          if [ "$MOTORES_BLOCO" = "plataformas_api" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            timeout 900 python -m src.empresas || echo "empresas: registrado"
-          fi
           if [ "$MOTORES_BLOCO" = "empresas" ]; then
-            # pesquisa de 5 anos, um ano por vez (o cursor decide o ano); repete até 5 anos ou 35 min
-            for i in 1 2 3 4 5; do timeout 420 python -m src.empresas por-ano GO || echo "por-ano: registrado"; done
-            timeout 600 python -m src.empresas || echo "empresas: registrado"
+            # SEMANAL (domingo 03h BRT): reavalia toda a base + agrega pelo menos 5 empresas novas
+            # escolhidas por potencial, com histórico de 5 anos; parcerias declaradas em sites de
+            # associações, Sebrae e entidades empresariais do estado
+            timeout 2400 python -m src.empresas semanal GO || echo "semanal: registrado"
           fi
       - name: Exportar o acervo do banco (volta pelo Git para a próxima saída)
         if: always()
@@ -184,7 +183,7 @@ jobs:
       - name: Relatório de funcionamento do bloco
         if: always()
         run: |
-          python -m src.relatorio_diario || echo "relatorio registrado com falha"
+          timeout 900 python -m src.relatorio_diario || echo "relatorio registrado com falha"
       - name: Rotas dos 260 pontos e cobertura do acervo
         if: always()
         run: |
@@ -192,7 +191,8 @@ jobs:
           python scripts/cobertura_catalogo.py
       - name: Relatorio de amplitude (canais, tokens, testes, padroes)
         if: always()
-        run: python -m src.relatorio_amplitude
+        run: |
+          timeout 300 python -m src.relatorio_amplitude || echo "amplitude registrado com falha"
       - name: Resumo e decisão de alerta
         if: always()
         run: python -m src.resumo_execucao >> "$GITHUB_STEP_SUMMARY"

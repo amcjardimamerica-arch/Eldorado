@@ -92,6 +92,52 @@
         "lat": -16.7104,
         "lon": -49.2782,
         "raio_km": 15
+      },
+      "parcerias_e_relevancia": {
+        "entidades_empresariais": [
+          {
+            "nome": "Sebrae Goiás",
+            "url": "https://sebrae.com.br/sites/PortalSebrae/ufs/go",
+            "tipo": "sebrae"
+          },
+          {
+            "nome": "FIEG — Federação das Indústrias de Goiás",
+            "url": "https://fieg.com.br/",
+            "tipo": "federacao"
+          },
+          {
+            "nome": "ACIEG — Associação Comercial, Industrial e de Serviços de Goiás",
+            "url": "https://acieg.com.br/",
+            "tipo": "associacao_comercial"
+          },
+          {
+            "nome": "Fecomércio Goiás",
+            "url": "https://www.fecomerciogo.org.br/",
+            "tipo": "federacao"
+          },
+          {
+            "nome": "CDL Goiânia",
+            "url": "https://cdlgoiania.com.br/",
+            "tipo": "associacao_comercial"
+          },
+          {
+            "nome": "Adial Goiás — Associação Pró-Desenvolvimento Industrial",
+            "url": "https://adialbrasil.com.br/",
+            "tipo": "associacao_industrial"
+          }
+        ],
+        "associacoes_do_terceiro_setor": {
+          "origem": "URLs de sites de OSCs de Goiás presentes na base de oportunidades (plataformas e portais) + páginas 'parceiros/apoiadores/patrocinadores'",
+          "paginas": [
+            "/parceiros",
+            "/apoiadores",
+            "/patrocinadores",
+            "/quem-apoia",
+            "/nossos-parceiros",
+            "/transparencia"
+          ]
+        },
+        "nota": "o motor procura nessas páginas declarações de parceria/patrocínio/apoio e nomes de empresas; nada é inventado — cada parceria registrada traz a URL onde foi lida"
       }
     },
     "DF": {
@@ -284,5 +330,18 @@
       ],
       "proposta": "proposta genérica: FIA/Fundo do Idoso (1% do IRPJ devido) e projeto local com prestação de contas pronta — retorno de imagem no território da matriz"
     }
+  },
+  "semanal": {
+    "dia": "domingo 03h BRT",
+    "minimo_novas_por_semana": 5,
+    "regra": "toda semana: (1) reavalia TODA a base — cadastro (se expirado), destinações novas no SALIC, site institucional, parcerias declaradas; (2) agrega pelo menos 5 empresas NOVAS escolhidas por potencial de captação e apoio ao terceiro setor (nunca ao acaso), buscando o histórico dos últimos 5 anos; a base é um registro por CNPJ, agregável e compacto (JSONL gzip), com os anos como deltas",
+    "criterios_de_escolha_das_novas": [
+      "posição na lista de maiores contribuintes do ICMS (quanto mais alta, mais pontos)",
+      "associado do GIFE",
+      "citada como parceira/apoiadora em site de associação ou entidade do estado",
+      "listada por Sebrae/associações comerciais como empresa relevante no estado",
+      "setor com afinidade com o terceiro setor (CNAE)",
+      "capital social já conhecido > R$ 10 mi"
+    ]
   }
 }

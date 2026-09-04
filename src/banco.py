@@ -177,7 +177,7 @@ def consultar(uf: str | None = None, area: str | None = None,
     return [json.loads(l[0]) for l in linhas]
 
 
-def indexar_historico(banco: Path = CAMINHO_BANCO, apagar_pastas: bool = True) -> dict:
+def indexar_historico(banco: Path = CAMINHO_BANCO, apagar_pastas: bool = False) -> dict:
     """Move o acervo histórico para o SQLite (melhoria do parecer).
 
     Motivo: 9.474 editais catalogados viraram 19.915 arquivos e 196 MB — peso

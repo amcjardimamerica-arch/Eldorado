@@ -3371,7 +3371,42 @@ class SystemTests(unittest.TestCase):
             if backup is not None: cur.write_text(backup)
             else: cur.unlink(missing_ok=True)
             shutil.rmtree(lab,ignore_errors=True)
-        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("por-ano GO",wf)
+        self.assertIn("run_por_ano",open("src/empresas.py",encoding="utf-8").read())
+
+
+    def test_motor_empresas_regime_semanal_base_agregavel(self):
+        """Domingo: reavalia a base e agrega ≥5 novas por POTENCIAL (nunca ao acaso);
+        base compacta agregável por CNPJ com anos como deltas; parcerias declaradas."""
+        import tempfile, shutil, json as _j
+        from src import empresas as E
+        cfg=E._cfg(); self.assertEqual(cfg["semanal"]["minimo_novas_por_semana"],5)
+        self.assertTrue(any(x["tipo"]=="sebrae" for x in cfg["estados"]["GO"]["parcerias_e_relevancia"]["entidades_empresariais"]))
+        pr=E.prioridade_previa("DELTA ALIMENTOS LTDA",None,5,[],{"achados":[{"empresa":"Delta Alimentos Ltda","declarante":"APAE"}],"relevantes":[]},None)
+        self.assertEqual(pr["pontos"],50); self.assertTrue(any("parceria" in x for x in pr["por"]))
+        self.assertGreater(E.prioridade_previa("X",None,1,[],{},None)["pontos"],E.prioridade_previa("X",None,300,[],{},None)["pontos"])
+        lab=pathlib.Path(tempfile.mkdtemp()); P,B,BA=E.PASTA,E.BIB,E.BASE; fns=(E.coletar_maiores_contribuintes,E.coletar_gife,E.varrer_parcerias)
+        sem=ROOT/"estado/empresas_semanal.jsonl"; bk=sem.read_text() if sem.exists() else None
+        try:
+            E.PASTA=lab/"d"; E.BIB=lab/"b"; E.BASE=E.PASTA/"base_empresas.jsonl.gz"; (E.PASTA/"go").mkdir(parents=True)
+            _j.dump({"uf":"GO","anos":{"2024":{"empresas":[{"posicao":1,"nome":"ALFA S.A.","cnpj":None},{"posicao":80,"nome":"BETA LTDA","cnpj":None}]},"2025":{"empresas":[{"posicao":2,"nome":"ALFA S.A.","cnpj":None}]}}},open(E.PASTA/"go/contribuintes_icms.json","w"))
+            _j.dump({"associados":[]},open(E.PASTA/"gife_associados.json","w"))
+            E.coletar_maiores_contribuintes=lambda uf:{"leitura":{}}; E.coletar_gife=lambda:{}
+            E.varrer_parcerias=lambda uf,base,limite_paginas=30:(_j.dump({"achados":[],"relevantes":[]},open(E.PASTA/"go/parcerias_declaradas.json","w")) or {})
+            r=E.run_semanal("GO",minimo_novas=1)
+            self.assertEqual(r["novas_agregadas"],1)
+            base=E.carregar_base(); self.assertEqual(list(base.values())[0]["nome"],"ALFA S.A.")     # a de maior potencial primeiro
+            self.assertEqual(sorted(list(base.values())[0]["anos"]),["2024","2025"])               # anos agregados no mesmo registro
+            r2=E.run_semanal("GO",minimo_novas=1); self.assertEqual(len(E.carregar_base()),2)
+            self.assertTrue((E.BIB/"go/2024/alfa-s-a/ano.json").exists()); self.assertTrue((E.BIB/"go/analise_preditiva.json").exists())
+        finally:
+            E.PASTA,E.BIB,E.BASE=P,B,BA; E.coletar_maiores_contribuintes,E.coletar_gife,E.varrer_parcerias=fns
+            if bk is not None: sem.write_text(bk)
+            else: sem.unlink(missing_ok=True)
+            shutil.rmtree(lab,ignore_errors=True)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn('"0 6 * * 0"',wf); self.assertIn("src.empresas semanal GO",wf)
+        self.assertNotIn("timeout 900 python -m src.empresas ||",wf)                            # não roda mais no bloco diário
+        self.assertEqual(len(re.findall(r"^\s+python -m src\.",wf,re.M)),0)                    # todo passo python com timeout
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
