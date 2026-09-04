@@ -2045,7 +2045,7 @@ class SystemTests(unittest.TestCase):
         d=load_json(rel)
         self.assertEqual(set(d["completude_por_item"]),set(ITENS))
         sh=load_json(pathlib.Path("biblioteca_alexandria/fontes/sites_historicos.json"))
-        self.assertGreater(sh["dominios"],50)
+        self.assertGreater(sh["dominios"],25)   # a base pertinente (sem editais de empresa) tem menos domínios
         self.assertTrue(sh["sites"][0]["goias"] or sh["goias"]>=1)   # Goiás primeiro
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         for m in ("src.fontes260","src.completude_biblioteca"): self.assertIn(m,wf)
@@ -3287,6 +3287,24 @@ class SystemTests(unittest.TestCase):
         for x in ('id="g-possiveis"',"POSSÍVEIS SEM PRAZO","Por que «Editais Abertos» mostra mais do que este calendário","g-pubdia",
                   "data real de publicação","ver todas em Editais Abertos","aberta(s) confirmada(s) ·","possível(is) sem prazo confirmado"):
             self.assertIn(x,html,x)
+
+
+    def test_banco_viaja_ao_ci_pelo_export(self):
+        """Sem o SQLite (CI), conectar() reconstrói o acervo do export versionado;
+        o workflow exporta ao fim de cada saída."""
+        import tempfile, gzip, json as _j
+        from src import banco as B
+        exp=pathlib.Path("dados/historico_export.jsonl.gz"); self.assertTrue(exp.exists())
+        with gzip.open(exp,"rt",encoding="utf-8") as gz:
+            primeira=_j.loads(gz.readline())
+        self.assertEqual(primeira["_t"],"__schema__")
+        with tempfile.TemporaryDirectory() as tmp:
+            con=B.conectar(pathlib.Path(tmp)/"novo.db",reconstruir=True)
+            n={tb:con.execute(f"SELECT COUNT(*) FROM {tb}").fetchone()[0] for tb in ("historico","confirmacao","itens11")}
+            con.close()
+        self.assertGreater(n["historico"],9000); self.assertEqual(n["historico"],n["confirmacao"])
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+        self.assertIn("from src.banco import exportar",wf)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

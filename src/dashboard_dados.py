@@ -494,8 +494,10 @@ def _bussola(editais: list[dict], hoje: date | None = None) -> dict:
              "comprovado": bool(e.get("valor_texto"))},
             {"item": "Órgão / financiador", "valor": e.get("fonte_nome"),
              "comprovado": bool(e.get("fonte_nome"))},
-            {"item": "Território", "valor": e.get("territorio"),
-             # alcance nacional é território definido, ainda que sem UF
+            {"item": "Território",
+             # alcance nacional é território definido, ainda que sem UF; sem
+             # comprovação, nenhum valor é apresentado como certo
+             "valor": e.get("territorio") if (e.get("uf") or e.get("abrangencia") == "nacional") else None,
              "comprovado": bool(e.get("uf")) or e.get("abrangencia") == "nacional"},
             {"item": "Esfera", "valor": e.get("nivel"),
              "comprovado": e.get("nivel") in ("federal", "estadual", "municipal")},
@@ -740,9 +742,11 @@ def _historicos_encerrados(hoje: date, limite: int = 250) -> list[dict]:
             "area": fi.get("area") or "outros",
             "programa": "—", "lei": "—",
             "objeto": (fi.get("evidencia") or "")[:160],
-            "inicio": fi.get("inicio"), "fim": fim,
-            "inicio_br": _br(fi.get("inicio")), "fim_br": _br(fim),
-            "datas": "ambas" if fi.get("inicio") and fim else ("so_fim" if fim else "nenhuma"),
+            # coerência: início posterior ao fim é incoerência da extração — preserva-se
+            # o prazo (fim) e o início cai, registrando-se a lacuna
+            "inicio": (fi.get("inicio") if not (fi.get("inicio") and fim and fi["inicio"] > fim) else None), "fim": fim,
+            "inicio_br": _br(fi.get("inicio") if not (fi.get("inicio") and fim and fi["inicio"] > fim) else None), "fim_br": _br(fim),
+            "datas": "ambas" if (fi.get("inicio") and fim and fi["inicio"] <= fim) else ("so_fim" if fim else "nenhuma"),
             "publicado_em": fi.get("data_publicacao"),
             "prazo_prorrogado": False,
             "estado_export": fi.get("estado_prazo") or "encerrado",

@@ -266,7 +266,7 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
         p = _Links(); p.feed(html)
         # DOU (leiturajornal): as matérias do dia vêm num JSON embutido, não em <a>;
         # cada matéria vira um link para a íntegra em /web/dou/-/<urlTitle>
-        mj = re.search(r'<script[^>]+id="params"[^>]*>(.*?)</script>', html, re.S)
+        mj = re.search(r'<script[^>]*id="params"[^>]*>(.*?)</script>', html, re.S)
         if mj and "in.gov.br" in url:
             try:
                 dados_dou = json.loads(mj.group(1))

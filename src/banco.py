@@ -61,13 +61,63 @@ CREATE INDEX IF NOT EXISTS idx_status ON oportunidades(status);
 """
 
 
-def conectar(caminho: Path = CAMINHO_BANCO) -> sqlite3.Connection:
+EXPORT = CAMINHO_BANCO.parent / "historico_export.jsonl.gz"   # 4,8 MB — viaja no Git; o .db (148 MB) não
+_TABELAS_EXPORT = ("historico", "confirmacao", "destinacao", "itens11", "edicoes")
+
+
+def conectar(caminho: Path = CAMINHO_BANCO, reconstruir: bool | None = None) -> sqlite3.Connection:
     caminho.parent.mkdir(parents=True, exist_ok=True)
+    novo = not caminho.exists()
+    if reconstruir is None:
+        reconstruir = (caminho == CAMINHO_BANCO)        # só o banco principal (caso do CI)
     con = sqlite3.connect(caminho)
     con.execute("PRAGMA journal_mode=WAL")
     con.executescript(_ESQUEMA)
     con.executescript(_ESQUEMA_HISTORICO)
+    if novo and reconstruir and EXPORT.exists():
+        # CI sem banco: RECONSTRÓI o acervo a partir do export versionado
+        _reconstruir(con, EXPORT)
     return con
+
+
+def exportar(caminho: Path = EXPORT) -> dict:
+    """Exporta as tabelas do acervo para um JSONL gzip pequeno e versionável —
+    é assim que o banco chega ao CI e volta com o que o CI produziu."""
+    import gzip, json
+    con = sqlite3.connect(CAMINHO_BANCO)
+    con.row_factory = sqlite3.Row
+    n = {}
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+    with gzip.open(caminho, "wt", encoding="utf-8", compresslevel=6) as gz:
+        for tb in _TABELAS_EXPORT:
+            try:
+                rows = con.execute(f"SELECT * FROM {tb}").fetchall()
+            except sqlite3.OperationalError:
+                continue
+            sql = con.execute("SELECT sql FROM sqlite_master WHERE type='table' AND name=?", (tb,)).fetchone()
+            if sql and sql[0]:
+                gz.write(json.dumps({"_t": "__schema__", "tabela": tb, "sql": sql[0].replace("CREATE TABLE", "CREATE TABLE IF NOT EXISTS", 1)}, ensure_ascii=False) + "\n")
+            n[tb] = len(rows)
+            for r in rows:
+                gz.write(json.dumps({"_t": tb, **dict(r)}, ensure_ascii=False) + "\n")
+    con.close()
+    return {"arquivo": str(caminho), "linhas": n, "mb": round(caminho.stat().st_size / 1048576, 2)}
+
+
+def _reconstruir(con: sqlite3.Connection, caminho: Path) -> dict:
+    import gzip, json
+    n = {}
+    with con:
+        with gzip.open(caminho, "rt", encoding="utf-8") as gz:
+            for linha in gz:
+                d = json.loads(linha); tb = d.pop("_t")
+                if tb == "__schema__":
+                    con.execute(d["sql"]); continue
+                cols = list(d.keys())
+                con.execute(f"INSERT OR REPLACE INTO {tb} ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
+                            [d[c] for c in cols])
+                n[tb] = n.get(tb, 0) + 1
+    return n
 
 
 def sincronizar(jsonl: Path = CAMINHO_JSONL, banco: Path = CAMINHO_BANCO) -> dict:

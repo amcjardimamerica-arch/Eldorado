@@ -165,6 +165,10 @@ jobs:
           if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 600 python -m src.prazos_ia || echo "prazos_ia: registrado"
           fi
+      - name: Exportar o acervo do banco (volta pelo Git para a próxima saída)
+        if: always()
+        run: |
+          python -c "from src.banco import exportar; import json; print(json.dumps(exportar(), ensure_ascii=False))" || echo "export: registrado"
       - name: Relatório de funcionamento do bloco
         if: always()
         run: |
