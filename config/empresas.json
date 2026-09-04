@@ -1,0 +1,56 @@
+{
+  "versao": 1,
+  "doutrina": "Motor de empresas com afinidade com o terceiro setor — segmentado por estado. Procura MATRIZES economicamente relevantes com identidade empresarial na região, capazes de doar, destinar incentivo fiscal (cultura, esporte, FIA, idoso, PRONON/PRONAS), patrocinar ou investir socialmente. Nunca inventa: empresa, CNPJ, capital, regime, QSA, doação ou valor sem fonte ficam 'não confirmado'.",
+  "regras_do_titular": {
+    "somente_matrizes": true,
+    "capital_social_minimo_exclusivo": 10000000,
+    "cnpj_ativo": true,
+    "historico_anos": 5,
+    "lucro_real_categorias": ["confirmado", "altamente_provavel", "nao_confirmado"],
+    "fontes_prioritarias": ["Receita Federal (dados públicos de CNPJ)", "REDESIM", "Junta Comercial", "Diário Oficial", "CVM", "B3", "SALIC/MinC", "Ministério do Esporte", "portais de maiores contribuintes"]
+  },
+  "score": {
+    "lucro_real_confirmado": 20, "historico_destinacao_fiscal": 20, "capital_social": 10, "historico_doacoes": 10,
+    "esg_estruturado": 10, "atuacao_social": 10, "instituto_ou_fundacao": 5, "proximidade_territorial": 5,
+    "decisor_localizado": 5, "compatibilidade_projetos": 5,
+    "classes": {"80": "Prioridade Máxima", "65": "Alta Prioridade", "50": "Média Prioridade", "30": "Baixa Prioridade", "0": "Prospecção Secundária"}
+  },
+  "cadastro": {
+    "api_primaria": "https://minhareceita.org/{cnpj}",
+    "api_secundaria": "https://brasilapi.com.br/api/cnpj/v1/{cnpj}",
+    "cache_dias": 90,
+    "por_saida": 25,
+    "nota": "Espelhos públicos dos dados abertos de CNPJ da Receita Federal: razão social, matriz/filial, situação, capital social, CNAE, porte, QSA, endereço, opção pelo Simples. IRPJ pago é sigilo fiscal — só aparece quando a própria empresa publica demonstrações."
+  },
+  "destinacoes": {
+    "rouanet_salic": {"api": "https://api.salic.cultura.gov.br/v1/incentivadores/?cgccpf={cnpj}&limit=100", "nota": "incentivadores da Lei Rouanet por CNPJ, com projeto, ano e valor — fonte oficial do MinC"},
+    "lei_incentivo_esporte": {"pagina": "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte", "nota": "listas de patrocinadores/doadores da LIE publicadas pelo Ministério do Esporte (por ano)"},
+    "pronon_pronas": {"pagina": "https://www.gov.br/saude/pt-br/acesso-a-informacao/acoes-e-programas/pronon-pronas", "nota": "incentivadores publicados pelo Ministério da Saúde"},
+    "fia_fundo_idoso": {"nota": "destinações a FIA/Fundo do Idoso aparecem em prestações de contas dos conselhos (CMDCA/CMI) e em relatórios da empresa; sem lista nacional aberta por CNPJ"}
+  },
+  "estados": {
+    "GO": {
+      "ativo": true,
+      "nome": "Goiás",
+      "maiores_contribuintes_icms": {
+        "url": "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/",
+        "fonte": "Secretaria da Economia de Goiás — lista oficial dos maiores contribuintes do ICMS",
+        "nota": "a página publica a lista por ano (nome e, quando divulgado, CNPJ/valor); o motor lê a página e os anexos PDF e guarda cada ano"
+      },
+      "municipios_prioritarios": ["Goiânia", "Aparecida de Goiânia", "Anápolis", "Rio Verde", "Senador Canedo", "Catalão", "Itumbiara", "Jataí", "Luziânia", "Trindade"],
+      "centro": {"nome": "Goiânia — Jardim América", "lat": -16.7104, "lon": -49.2782, "raio_km": 15}
+    },
+    "DF": {"ativo": false, "nome": "Distrito Federal", "nota": "motor não ativado"},
+    "MG": {"ativo": false, "nome": "Minas Gerais", "nota": "motor não ativado"},
+    "SP": {"ativo": false, "nome": "São Paulo", "nota": "motor não ativado"},
+    "MT": {"ativo": false, "nome": "Mato Grosso", "nota": "motor não ativado"},
+    "TO": {"ativo": false, "nome": "Tocantins", "nota": "motor não ativado"},
+    "BA": {"ativo": false, "nome": "Bahia", "nota": "motor não ativado"}
+  },
+  "lucro_real": {
+    "cnaes_obrigados": ["64", "65", "66"],
+    "nota_cnaes": "instituições financeiras, seguradoras e afins (Seção K) são obrigadas ao Lucro Real (art. 14, Lei 9.718/1998)",
+    "porte_demais_e_capital_alto": "porte 'DEMAIS' + capital > R$ 50 mi + fora do Simples → altamente provável",
+    "receita_limite_presumido": 78000000
+  }
+}

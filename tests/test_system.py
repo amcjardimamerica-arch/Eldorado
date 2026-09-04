@@ -394,7 +394,7 @@ class SystemTests(unittest.TestCase):
 
     def test_dashboard_html_portao_e_estrutura(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for trecho in ("Eldorado","Farol de Alexandria","Calendário","Editais Abertos","Bússola",
+        for trecho in ("Eldorado","Farol de Alexandria","Calendário","Oportunidades Abertas","Bússola",
                        "Documentos","Biblioteca","AES-256-GCM","PBKDF2","noindex","ligaTip",
                        "dashboard-dados.enc.js"):
             self.assertIn(trecho,html,trecho)
@@ -590,7 +590,7 @@ class SystemTests(unittest.TestCase):
         self.assertIn("prefers-reduced-motion",html)
         # subdivisões no hover dos botões da arte
         self.assertIn(".hotzona:hover .submenu",html)
-        for item in ("Calendário","Editais Abertos","Bússola","Documentos","Biblioteca"):
+        for item in ("Calendário","Oportunidades Abertas","Bússola","Documentos","Biblioteca"):
             self.assertIn(item,html,item)
         # painel de monitoramento da Bússola
         self.assertIn("bus-mets",html)
@@ -939,7 +939,7 @@ class SystemTests(unittest.TestCase):
 
 
     def test_calendario_de_resultados_e_recursos(self):
-        """Farol: calendário de resultados e recursos em Editais Abertos, com
+        """Farol: calendário de resultados e recursos em Oportunidades Abertas, com
         contagem de dias. Data ausente vira alerta, nunca estimativa."""
         from src.dashboard_dados import _calendario_decisao
         eds=[{"id":"a","titulo":"Edital A","area":"cultura","fonte_nome":"F",
@@ -1467,19 +1467,19 @@ class SystemTests(unittest.TestCase):
         # navegação por hover, como na página inicial
         self.assertIn("hotzona-bz",sec)
         self.assertIn(".hotzona-bz:hover .submenu",html)
-        for item in ("Calendário","Editais Abertos","Bússola","Documentos","Biblioteca"):
+        for item in ("Calendário","Oportunidades Abertas","Bússola","Documentos","Biblioteca"):
             self.assertIn(item,sec,item)
         # o topo some quando a vista é a Bússola
         self.assertIn('const soHover = (v==="bussola")',html)
         # ordem das caixas
         ordem=_re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)
-        self.assertEqual([n for n,_ in ordem],["1"])   # Fontes com edital aberto foi unificada em Editais Abertos
+        self.assertEqual([n for n,_ in ordem],["1"])   # Fontes com edital aberto foi unificada em Oportunidades Abertas
         rotulos=" ".join(r for _,r in ordem)
         self.assertIn("MAPA DE OPORTUNIDADES",rotulos)
         self.assertNotIn("FILTRO DE OPORTUNIDADES",rotulos)     # unificado em Fontes com edital aberto
         self.assertNotIn("MONITORAMENTOS ENCONTRADOS",rotulos)   # idem
-        self.assertNotIn("FONTES COM EDITAL ABERTO",rotulos)   # unificada em Editais Abertos
-        self.assertNotIn("FONTES COM EDITAL ABERTO",sec)   # migrada para Editais Abertos
+        self.assertNotIn("FONTES COM EDITAL ABERTO",rotulos)   # unificada em Oportunidades Abertas
+        self.assertNotIn("FONTES COM EDITAL ABERTO",sec)   # migrada para Oportunidades Abertas
 
     def test_mapa_monitor_etapa1(self):
         """O Mapa de Oportunidades absorveu o monitor: Encontrado/Ausente por
@@ -1693,7 +1693,7 @@ class SystemTests(unittest.TestCase):
             self.assertIn(m,html,m)
         # Fontes com edital aberto é a última caixa de conteúdo
         ordem=[n for n,_ in _re.findall(r"<!-- (\d) · ([A-ZÀ-Ú][^-]*?) -->",sec)]
-        self.assertEqual(ordem,["1"])   # a caixa 2 migrou para Editais Abertos
+        self.assertEqual(ordem,["1"])   # a caixa 2 migrou para Oportunidades Abertas
         self.assertIn("UNIFICADA em Eldorado",sec)
         # cada edital em bloco próprio, com os dois botões
         self.assertIn('class="ed-item${',html)          # uma caixa por edital (classe dinâmica: em-campanha)
@@ -3174,7 +3174,7 @@ class SystemTests(unittest.TestCase):
 
 
     def test_fontes_com_edital_aberto_unificada_em_editais_abertos(self):
-        """A caixa da Bússola foi unificada em Eldorado › Editais Abertos › Em andamento,
+        """A caixa da Bússola foi unificada em Eldorado › Oportunidades Abertas › Em andamento,
         prevalecendo o lado mais completo (todos os filtros + resumo)."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         sec_b=html.split('<section id="v-bussola"')[1].split("</section>")[0]
@@ -3212,11 +3212,11 @@ class SystemTests(unittest.TestCase):
 
 
     def test_mapa_com_dados_de_editais_abertos_e_rosa_nautica(self):
-        """Mapa usa a MESMA fonte de Editais Abertos (núcleo + base ampla), com
+        """Mapa usa a MESMA fonte de Oportunidades Abertas (núcleo + base ampla), com
         número e intensidade por estado; rosa de carta náutica mostra só o nível
         nacional (Brasil), sem os estados."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("MESMA FONTE DE DADOS de «Editais Abertos»",'"__nac__"',"uf-n","sepia(k)","window.bzNacional",
+        for x in ("MESMA FONTE DE DADOS de «Oportunidades Abertas»",'"__nac__"',"uf-n","sepia(k)","window.bzNacional",
                   "Brasil · nível nacional","Oportunidades de nível nacional",'id="bz-rosa-svg"','<option value="__nac__">'):
             self.assertIn(x,html,x)
         self.assertNotIn("Todos os estados</span>",html)
@@ -3229,7 +3229,7 @@ class SystemTests(unittest.TestCase):
         dado e cidades com as oportunidades escritas, resumo e link oficial."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("GRAVURA RENASCENTISTA","mapa-arte.js","function sepia",
-                  'id="mp-area"',"const arSel=","bz-op-t","site oficial ↗","const REL={","mesma base de Editais Abertos"):
+                  'id="mp-area"',"const arSel=","bz-op-t","site oficial ↗","const REL={","mesma base de Oportunidades Abertas"):
             self.assertIn(x,html,x)
         self.assertIn('<select id="mp-sit" style="display:none">',html)      # encontrado/ausente removido do mapa
         self.assertNotIn("hsl(",html.split("function sepia")[1].split("function desenhaBzMapa")[0])
@@ -3281,11 +3281,11 @@ class SystemTests(unittest.TestCase):
 
     def test_calendario_inicial_explica_e_mostra_possiveis(self):
         """O calendário da tela inicial só desenha faixa com prazo confirmado; as
-        'possíveis' de Editais Abertos aparecem pela data real de publicação, com a
+        'possíveis' de Oportunidades Abertas aparecem pela data real de publicação, com a
         explicação da diferença e o caminho para a lista."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ('id="g-possiveis"',"POSSÍVEIS SEM PRAZO","Por que «Editais Abertos» mostra mais do que este calendário","g-pubdia",
-                  "data real de publicação","ver todas em Editais Abertos","aberta(s) confirmada(s) ·","possível(is) sem prazo confirmado"):
+        for x in ('id="g-possiveis"',"POSSÍVEIS SEM PRAZO","Por que «Oportunidades Abertas» mostra mais do que este calendário","g-pubdia",
+                  "data real de publicação","ver todas em Oportunidades Abertas","aberta(s) confirmada(s) ·","possível(is) sem prazo confirmado"):
             self.assertIn(x,html,x)
 
 
@@ -3305,6 +3305,40 @@ class SystemTests(unittest.TestCase):
         self.assertGreater(n["historico"],9000); self.assertEqual(n["historico"],n["confirmacao"])
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("from src.banco import exportar",wf)
+
+
+    def test_motor_de_empresas_terceiro_setor(self):
+        """Motor de empresas por estado (GO ativo): extrator da lista de maiores
+        contribuintes, cadastro RFB normalizado, Lucro Real em 3 categorias sem
+        deduzir pelo tamanho, score com os pesos do titular, potencial de destinação,
+        elegibilidade (matriz, ativa, capital > 10 mi); caixa no painel."""
+        from src.empresas import extrair_contribuintes, classificar_lucro_real, score_empresa, potencial_destinacao, _normaliza_cadastro
+        cfg=load_json(pathlib.Path("config/empresas.json"))
+        self.assertTrue(cfg["estados"]["GO"]["ativo"]); self.assertFalse(cfg["estados"]["SP"]["ativo"])
+        self.assertEqual(cfg["regras_do_titular"]["capital_social_minimo_exclusivo"],10000000)
+        self.assertIn("goias.gov.br/economia/os-maiores-contribuintes-do-icms",cfg["estados"]["GO"]["maiores_contribuintes_icms"]["url"])
+        r=extrair_contribuintes("1º ALFA MINERACAO S.A. 12.345.678/0001-90 R$ 1.000.000,00\n2º BETA LTDA 98.765.432/0001-10\nTotal 9.999,00\nFonte: Secretaria",2025)
+        self.assertEqual([x["nome"] for x in r],["ALFA MINERACAO S.A.","BETA LTDA"]); self.assertEqual(r[0]["cnpj"],"12.345.678/0001-90"); self.assertEqual(r[0]["ano"],2025)
+        cad=_normaliza_cadastro({"cnpj":"12345678000190","razao_social":"ALFA","identificador_matriz_filial":1,"descricao_situacao_cadastral":"ATIVA","capital_social":250000000,"porte":"DEMAIS","cnae_fiscal":"0729401","opcao_pelo_simples":False,"qsa":[{"nome_socio":"X","qualificacao_socio":"Diretor"}]},"https://minhareceita.org/x")
+        self.assertTrue(cad["matriz"]); self.assertEqual(cad["capital_social"],250000000.0)
+        self.assertEqual(classificar_lucro_real(cad,[])["classe"],"altamente_provavel")                     # porte+capital, não pelo tamanho só
+        self.assertEqual(classificar_lucro_real({"capital_social":300000000,"porte":"DEMAIS","cnae_codigo":"4711","opcao_simples":False},[])["classe"],"altamente_provavel")
+        self.assertEqual(classificar_lucro_real({"capital_social":20000000,"porte":"DEMAIS","cnae_codigo":"4711"},[])["classe"],"nao_confirmado")   # tamanho médio: não deduz
+        self.assertEqual(classificar_lucro_real({"cnae_codigo":"6422"},[])["classe"],"altamente_provavel")   # banco: obrigado
+        self.assertEqual(classificar_lucro_real({"opcao_simples":True,"capital_social":50000000},[])["classe"],"nao_confirmado")
+        h=[{"programa":"Lei Rouanet","ano":"2024","valor":1}]
+        lu=classificar_lucro_real(cad,h); self.assertEqual(lu["classe"],"confirmado")
+        sc=score_empresa(cad,h,lu,{"compatibilidade":True}); self.assertEqual(sc["score"],44); self.assertEqual(sc["classe"],"Baixa Prioridade")
+        self.assertEqual(score_empresa(cad,h,lu,{"compatibilidade":True,"doacoes":True,"esg":"forte","atuacao_social":True,"instituto_fundacao":True,"distancia_km":5,"decisor":True})["classe"],"Prioridade Máxima")
+        self.assertEqual(potencial_destinacao(h,lu),{"cultura":"ja_destina","esporte":"apto","fia_idoso":"apto","saude":"apto"})
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("Oportunidades de Empresas",'id="emp-caixa"','id="emp-uf"','id="emp-mun"','id="emp-pot"','id="emp-dest"','id="emp-lucro"',
+                  "function desenhaEmpresas","emp-linha","ICMS pago","IRPJ pago","motor não ativado neste estado","sigilo fiscal","function empDetalhe"):
+            self.assertIn(x,html,x)
+        self.assertIn('<select id="bz-assoc" style="display:none">',html)     # filtro de associação removido
+        self.assertNotIn(">Editais Abertos<",html); self.assertIn(">Oportunidades Abertas<",html)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.empresas",wf)
+        self.assertTrue(pathlib.Path("docs/dados/empresas.json").exists())
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

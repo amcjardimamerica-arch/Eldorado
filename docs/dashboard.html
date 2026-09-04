@@ -281,6 +281,12 @@ box-shadow:0 1px 3px #0002}
 @media(max-width:620px){.fa-grade{grid-template-columns:1fr}}
 .fa-grade .ed-item{margin-top:0;height:100%}
 .fa-fonte{font-size:11.5px;color:var(--suave);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.emp-cab,.emp-linha{display:grid;grid-template-columns:2.4fr 1fr 1.1fr 1.1fr 1.2fr 1fr 1.6fr .9fr;gap:10px;align-items:center;padding:8px 12px;font-size:12.5px}
+.emp-cab{font-size:11px;font-weight:700;color:var(--suave);text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid #E3E8F1}
+.emp-linha{border:1px solid var(--linha);border-radius:10px;background:#FCFCFB;margin-top:6px;cursor:pointer}.emp-linha:hover{border-color:#9FC1E8;background:#fff}
+.emp-linha.ineleg{opacity:.6}.emp-nome{display:flex;flex-direction:column;min-width:0}.emp-nome b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.emp-nome small{font-size:10.5px;color:var(--suave)}
+.emp-score{font-size:16px;color:#0E2A55}.tag.lr-confirmado{border-color:#1E7E4B;color:#1E7E4B}.tag.lr-altamente_provavel{border-color:#C05E00;color:#C05E00}
+@media(max-width:1100px){.emp-cab{display:none}.emp-linha{grid-template-columns:1fr 1fr;}}
 .an-barra{position:relative;height:16px;border-radius:8px;background:#EDEFF2;margin:8px 0 7px;overflow:hidden;display:flex;align-items:center}
 .an-barra i{position:absolute;left:0;top:0;bottom:0;background:#A9D6BC;border-radius:8px}
 .an-barra b{position:relative;font-size:10px;font-weight:700;color:#23272E;padding-left:7px}
@@ -449,12 +455,12 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 <div class="subnav" id="nav-eldorado">
 <button data-v="calendario" class="on">Calendário</button>
-<button data-v="editais">Editais Abertos</button>
+<button data-v="editais">Oportunidades Abertas</button>
 <button data-v="bussola">Bússola</button>
 </div>
 <div class="subnav oculto" id="nav-farol">
 <button data-v="f-documentos">Documentos</button>
-<button data-v="f-editais" class="on">Editais Abertos</button>
+<button data-v="f-editais" class="on">Oportunidades Abertas</button>
 <button data-v="f-biblioteca">Biblioteca</button>
 </div>
 </header>
@@ -469,7 +475,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <button class="hot" onclick="modulo('eldorado')" aria-label="Abrir Eldorado"></button>
   <nav class="submenu" aria-label="Seções do Eldorado">
     <button onclick="modulo('eldorado');mostra('calendario')">Calendário</button>
-    <button onclick="modulo('eldorado');mostra('editais')">Editais Abertos</button>
+    <button onclick="modulo('eldorado');mostra('editais')">Oportunidades Abertas</button>
     <button onclick="modulo('eldorado');mostra('bussola')">Bússola</button>
   </nav>
 </div>
@@ -477,7 +483,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <button class="hot" onclick="modulo('farol')" aria-label="Abrir Farol de Alexandria"></button>
   <nav class="submenu" aria-label="Seções do Farol">
     <button onclick="modulo('farol');mostra('f-documentos')">Documentos</button>
-    <button onclick="modulo('farol');mostra('f-editais')">Editais Abertos</button>
+    <button onclick="modulo('farol');mostra('f-editais')">Oportunidades Abertas</button>
     <button onclick="modulo('farol');mostra('f-biblioteca')">Biblioteca</button>
   </nav>
 </div>
@@ -577,7 +583,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </div>
   <p class="meta" style="margin:6px 0 10px">Todas as oportunidades levantadas, numa caixa cada, organizadas por <strong>área de atuação</strong>. O órgão que publica aparece dentro da caixa (PNCP e Querido Diário são só a via de captura). Passe o mouse para o resumo. Filtro do terceiro setor aplicado: só o que uma associação pode aproveitar.</p>
   <div class="bz-filtros" style="margin:0 0 12px">
-    <select id="bz-assoc"><option value="">Associação</option></select>
+    <select id="bz-assoc" style="display:none"><option value="">Associação</option></select>
     <select id="bz-uf" title="UF — também sincronizada pelo clique no mapa da Bússola"><option value="">Todo o Brasil</option><option value="__nac__">Brasil · nível nacional</option></select>
     <select id="bz-area"><option value="">Área</option></select>
     <select id="bz-nivel"><option value="">Nível</option></select>
@@ -586,6 +592,25 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </div>
   <div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
   <div id="bus-fontes"></div>
+</div>
+<!-- OPORTUNIDADES DE EMPRESAS · motor de empresas com afinidade com o terceiro setor, por estado -->
+<div class="cartao faixa-total" id="emp-caixa" style="margin-bottom:16px">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <h3 style="margin:0;font-size:16px">Oportunidades de Empresas</h3>
+    <span class=meta title="Motor segmentado por estado: matrizes com CNPJ ativo e capital social superior a R$ 10 milhões, Lucro Real confirmado ou altamente provável, histórico de 5 anos de destinações (Rouanet, Lei do Esporte, PRONON/PRONAS, FIA/Idoso), ESG, decisores e score 0–100. Dados de portais oficiais: maiores contribuintes do ICMS, dados públicos de CNPJ da Receita Federal e SALIC/MinC. IRPJ pago é sigilo fiscal — só aparece quando a empresa publica.">— motor de empresas com afinidade com o terceiro setor · por estado</span>
+    <span class=meta style="margin-left:auto" id="emp-resumo"></span>
+  </div>
+  <div class="bz-filtros" style="margin:8px 0 10px">
+    <select id="emp-uf" title="motor ativado por estado — por enquanto só Goiás"></select>
+    <select id="emp-mun"><option value="">Todos os municípios</option></select>
+    <select id="emp-pot"><option value="">Potencial de captação: todos</option><option value="Prioridade Máxima">Prioridade Máxima (80–100)</option><option value="Alta Prioridade">Alta Prioridade (65–79)</option><option value="Média Prioridade">Média Prioridade (50–64)</option><option value="Baixa Prioridade">Baixa Prioridade (30–49)</option><option value="Prospecção Secundária">Prospecção Secundária (0–29)</option></select>
+    <select id="emp-dest"><option value="">Destinação tributária: todas</option><option value="cultura:ja_destina">Cultura — já destina (Rouanet)</option><option value="cultura:apto">Cultura — apta (Lucro Real)</option><option value="esporte:ja_destina">Esporte — já destina (LIE)</option><option value="esporte:apto">Esporte — apta (Lucro Real)</option><option value="fia_idoso:ja_destina">FIA / Idoso — já destina</option><option value="saude:ja_destina">PRONON/PRONAS — já destina</option></select>
+    <select id="emp-lucro"><option value="">Lucro Real: todos</option><option value="confirmado">Confirmado</option><option value="altamente_provavel">Altamente provável</option><option value="nao_confirmado">Não confirmado</option></select>
+    <input id="emp-busca" placeholder="buscar empresa, CNPJ ou CNAE…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
+    <span class="bz-limpar" onclick="empLimpar()">⨯ Limpar</span>
+  </div>
+  <div class=meta id="emp-fonte" style="margin-bottom:8px"></div>
+  <div id="emp-lista"></div>
 </div>
 <div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
   <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
@@ -609,7 +634,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
       <button class="ativo"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>ELDORADO</button>
       <nav class="submenu" aria-label="Seções do Eldorado">
         <button onclick="modulo('eldorado');mostra('calendario')">Calendário</button>
-        <button onclick="modulo('eldorado');mostra('editais')">Editais Abertos</button>
+        <button onclick="modulo('eldorado');mostra('editais')">Oportunidades Abertas</button>
         <button onclick="modulo('eldorado');mostra('bussola')">Bússola</button>
       </nav>
     </div>
@@ -617,7 +642,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
       <button class="quieto" onclick="modulo('farol')"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#0B4EA2" stroke-width="1.8"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M8 21h8"/></svg>FAROL DE ALEXANDRIA</button>
       <nav class="submenu" aria-label="Seções do Farol">
         <button onclick="modulo('farol');mostra('f-documentos')">Documentos</button>
-        <button onclick="modulo('farol');mostra('f-editais')">Editais Abertos</button>
+        <button onclick="modulo('farol');mostra('f-editais')">Oportunidades Abertas</button>
         <button onclick="modulo('farol');mostra('f-biblioteca')">Biblioteca</button>
       </nav>
     </div>
@@ -710,7 +735,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <div id="mo-disjuntores" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--linha)"></div>
 </div>
 
-<!-- (Fontes com edital aberto foi UNIFICADA em Eldorado › Editais Abertos › Em andamento) -->
+<!-- (Fontes com edital aberto foi UNIFICADA em Eldorado › Oportunidades Abertas › Em andamento) -->
 
 <!-- Farol de aderência -->
 <div class="cartao">
@@ -767,10 +792,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260904012555"></script>
-<script src="mapa-arte.js?v=20260904012555"></script>
-<script src="dashboard-dados.enc.js?v=20260904012555"></script>
-<script src="dashboard-dados.js?v=20260904012555"></script>
+<script src="mapa-brasil.js?v=20260904105046"></script>
+<script src="mapa-arte.js?v=20260904105046"></script>
+<script src="dashboard-dados.enc.js?v=20260904105046"></script>
+<script src="dashboard-dados.js?v=20260904105046"></script>
 <script>
 (function(){
 "use strict";
@@ -1398,10 +1423,10 @@ function desenhaGantt(){
       ${ab.map(p=>esc(p.titulo.split("—")[0].trim())+" ("+br(p.inicio)+"→"+br(p.fim)+")").join(" · ")}.
       Entram no calendário quando o edital do ano for confirmado.</span>`:"";
   }
-  /* POSSÍVEIS SEM PRAZO — os "abertos" de Editais Abertos que não desenham faixa:
+  /* POSSÍVEIS SEM PRAZO — os "abertos" de Oportunidades Abertas que não desenham faixa:
      chamamentos identificados sem período de inscrição confirmado. A faixa exige
      prazo; aqui entram pela DATA REAL DE PUBLICAÇÃO (dado confirmado), como
-     marcação por dia, com a contagem e o caminho para Editais Abertos. */
+     marcação por dia, com a contagem e o caminho para Oportunidades Abertas. */
   if($("g-possiveis")){
     const mesIni=new Date(gAno,gMes,1), nd=new Date(gAno,gMes+1,0).getDate(), mesId=`${gAno}-${String(gMes+1).padStart(2,"0")}`;
     const casaF=e=>(!uf0||uf0==="__nac__"?(!uf0||!e.uf):(e.uf===uf0||(!e.uf&&e.abrangencia==="nacional")))&&(!ar0||e.area===ar0)&&(!ni0||e.nivel===ni0);
@@ -1409,9 +1434,9 @@ function desenhaGantt(){
     const porDiaP={};pos.forEach(e=>{const dd=+(e.publicado_em||e.coletado_em).slice(8,10);(porDiaP[dd]=porDiaP[dd]||[]).push(e);});
     const totalPos=(D.editais||[]).filter(e=>situacaoDe(e)==="possivel"&&estadoDe(e.id)==="em_andamento"&&casaF(e)).length;
     const abertasN=(D.editais||[]).filter(e=>situacaoDe(e)==="aberta"&&estadoDe(e.id)==="em_andamento"&&casaF(e)).length;
-    $("g-possiveis").innerHTML=`<div class=meta style="margin-bottom:4px"><strong>Por que «Editais Abertos» mostra mais do que este calendário:</strong> lá entram as <b>possíveis</b> (${totalPos} nesta seleção) — chamamentos identificados <b>sem período de inscrição confirmado</b>. O calendário só desenha faixa com prazo confirmado (${abertasN} nesta seleção). As possíveis aparecem aqui pela <b>data real de publicação</b> (ou de captura, quando a publicação não traz data), até a fase 2 confirmar o prazo:</div>
+    $("g-possiveis").innerHTML=`<div class=meta style="margin-bottom:4px"><strong>Por que «Oportunidades Abertas» mostra mais do que este calendário:</strong> lá entram as <b>possíveis</b> (${totalPos} nesta seleção) — chamamentos identificados <b>sem período de inscrição confirmado</b>. O calendário só desenha faixa com prazo confirmado (${abertasN} nesta seleção). As possíveis aparecem aqui pela <b>data real de publicação</b> (ou de captura, quando a publicação não traz data), até a fase 2 confirmar o prazo:</div>
       <div class="g-pub">${[...Array(nd)].map((_,i)=>{const dd=i+1,l=porDiaP[dd]||[];return `<div class="g-pubdia${l.length?" com":""}" data-dia="${dd}" title="${dd}/${String(gMes+1).padStart(2,"0")}: ${l.length?l.length+" chamamento(s) publicado(s) sem prazo confirmado — clique para ver":"nenhum"}"><span class=n>${dd}</span>${l.length?`<span class=q>${l.length}</span>`:""}</div>`;}).join("")}</div>
-      <div class=meta style="margin-top:4px">${pos.length} publicada(s) neste mês · <span class="verlink" onclick="modulo('eldorado');mostra('editais')">ver todas em Editais Abertos ›</span></div>`;
+      <div class=meta style="margin-top:4px">${pos.length} publicada(s) neste mês · <span class="verlink" onclick="modulo('eldorado');mostra('editais')">ver todas em Oportunidades Abertas ›</span></div>`;
     $("g-possiveis").querySelectorAll(".g-pubdia.com").forEach(el=>{const l=porDiaP[+el.dataset.dia]||[];
       ligaTip(el,`<strong>${l.length} chamamento(s) publicado(s) em ${el.dataset.dia}/${String(gMes+1).padStart(2,"0")}</strong> — sem prazo confirmado<br>`+l.slice(0,6).map(e=>`• ${esc((e.fonte_nome||"").replace(/Querido Diário.*|PNCP.*/,"").slice(0,30)||esc(e.uf||""))} · ${esc((e.titulo||"").replace(/^Diário Oficial de [^—]+—\s*/,"").replace(/"/g,"").slice(0,60))}`).join("<br>")+(l.length>6?`<br>… +${l.length-6}`:""));
       el.onclick=()=>{modulo("eldorado");mostra("editais");};});
@@ -1630,6 +1655,7 @@ function desenhaEditais(){
   const g=$("ed-grade");g.innerHTML="";g.className=aba==="encerrado"?"ed-linhas faixa-total":"grade-ed";
   $("ed-filtros").classList.toggle("oculto",aba!=="encerrado");
   const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
+  const ce=$("emp-caixa"); if(ce){ce.classList.toggle("oculto",aba!=="em_andamento"); if(aba==="em_andamento")desenhaEmpresas();}
   if(aba==="em_andamento"){
     /* UNIFICADA: a antiga «Fontes com edital aberto» da Bússola vive aqui, com
        todos os seus filtros (associação, UF, área, nível, situação) e o resumo */
@@ -1725,6 +1751,60 @@ function editaisFiltradosBz(){
     &&(!ar||e.area===ar)&&(!ni||e.nivel===ni)&&casaPrazo(e,pz));
 }
 let FA_ABERTAS=null, faPagina={};
+/* ================= OPORTUNIDADES DE EMPRESAS ================= */
+let EMP=null, empPagina=40;
+async function garanteEmpresas(){ if(EMP) return EMP; EMP=(await carregaFragmento("empresas"))||{estados:{}}; return EMP; }
+const brl=v=>v==null?"—":"R$ "+Number(v).toLocaleString("pt-BR",{maximumFractionDigits:0});
+const ROT_LUCRO={confirmado:"Lucro Real confirmado",altamente_provavel:"Lucro Real altamente provável",nao_confirmado:"regime não confirmado"};
+const ROT_POT={ja_destina:"já destina",apto:"apta",nao_confirmado:"não confirmado"};
+window.empLimpar=function(){["emp-mun","emp-pot","emp-dest","emp-lucro"].forEach(id=>$(id).value="");$("emp-busca").value="";desenhaEmpresas();};
+window.empMais=function(){empPagina+=40;desenhaEmpresas();};
+function desenhaEmpresas(){
+  const box=$("emp-lista"); if(!box)return;
+  if(!EMP){box.innerHTML='<div class=meta>carregando o motor de empresas…</div>';garanteEmpresas().then(()=>desenhaEmpresas());return;}
+  const sel=$("emp-uf"); if(!sel.options.length){Object.entries(EMP.estados).sort((a,b)=>(b[1].ativo-a[1].ativo)||a[1].nome.localeCompare(b[1].nome,"pt")).forEach(([uf,e])=>{const o=document.createElement("option");o.value=uf;o.textContent=`${e.nome} (${uf})${e.ativo?"":" — motor não ativado"}`;sel.appendChild(o);});
+    ["emp-uf","emp-mun","emp-pot","emp-dest","emp-lucro","emp-busca"].forEach(id=>$(id).addEventListener("input",()=>{if(id==="emp-uf")$("emp-mun").value="";empPagina=40;desenhaEmpresas();}));}
+  const uf=sel.value||"GO", E=EMP.estados[uf]||{ativo:false,empresas:[]};
+  if(!E.ativo){$("emp-fonte").textContent="";$("emp-resumo").textContent="";box.innerHTML=`<div class=cartao style="background:#F6F7F9"><strong>${esc(E.nome||uf)}</strong> — motor não ativado neste estado. Por enquanto o motor de empresas roda só para <strong>Goiás</strong>; os demais estados serão ativados um a um, cada qual com o seu portal de maiores contribuintes.</div>`;return;}
+  const emps=E.empresas||[];
+  const muns=[...new Set(emps.map(x=>x.municipio).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt"));
+  const ms=$("emp-mun"); const m0=ms.value; ms.length=1; muns.forEach(m=>{const o=document.createElement("option");o.value=m;o.textContent=m;ms.appendChild(o);}); ms.value=m0;
+  const mun=ms.value,pot=$("emp-pot").value,dest=$("emp-dest").value,lu=$("emp-lucro").value,q=$("emp-busca").value.toLowerCase();
+  const rows=emps.filter(x=>(!mun||x.municipio===mun)&&(!pot||x.classe===pot)&&(!lu||x.lucro_real===lu)
+    &&(!dest||(x.potencial||{})[dest.split(":")[0]]===dest.split(":")[1])
+    &&(!q||`${x.nome} ${x.nome_fantasia||""} ${x.cnpj||""} ${x.cnae||""}`.toLowerCase().includes(q)));
+  const lida=E.ultima_leitura||{};
+  $("emp-fonte").innerHTML=`Fonte primária: <strong>${esc(E.fonte_icms||"lista oficial dos maiores contribuintes do ICMS")}</strong>${E.anos_lidos&&E.anos_lidos.length?` · anos lidos: ${E.anos_lidos.join(", ")}`:" · <em>lista ainda não lida pelo motor</em>"}${lida.em?` · última leitura ${br(lida.em.slice(0,10))}${lida.erro?" — <b style='color:var(--urgente)'>"+esc(lida.erro)+"</b> (portal não respondeu; o motor tenta de novo às 02h)":lida.http?" — portal respondeu":""}`:""} · cadastro: dados públicos de CNPJ (Receita Federal) · destinações: SALIC/MinC, Ministério do Esporte · <b>IRPJ pago é sigilo fiscal</b> — só aparece quando a empresa publica demonstrações.`;
+  $("emp-resumo").textContent=`${rows.length} empresa(s) na seleção · ${E.total||0} listadas · ${E.com_cadastro||0} com cadastro RFB · ${E.elegiveis||0} elegíveis (matriz, ativa, capital > R$ 10 mi)`;
+  if(!emps.length){box.innerHTML=`<div class=cartao style="background:#F6F7F9">Nenhuma empresa ainda: o motor lê a lista oficial dos maiores contribuintes do ICMS de Goiás na saída das <strong>02h</strong> (bloco plataformas/API) e, a cada saída, consulta o cadastro de até 25 CNPJs e o histórico de destinações. Nada é inventado — quando a lista chegar, as linhas aparecem aqui.</div>`;return;}
+  box.innerHTML=`<div class="emp-cab"><span>Empresa (matriz)</span><span>Município</span><span>ICMS pago</span><span>IRPJ pago</span><span>Lucro Real</span><span>Capital social</span><span>Destinação (5 anos)</span><span>Potencial</span></div>`
+    +rows.slice(0,empPagina).map(x=>{const pt=x.potencial||{};const dest5=(x.destinacoes||[]);
+      return `<div class="emp-linha${x.elegivel===false?" ineleg":""}" data-id="${esc(x.id)}">
+        <span class=emp-nome><b>${esc(x.nome)}</b>${x.nome_fantasia?`<small>${esc(x.nome_fantasia)}</small>`:""}<small>${x.cnpj?esc(x.cnpj):"CNPJ não divulgado na lista"}${x.cnae?" · "+esc(x.cnae.slice(0,40)):""}</small></span>
+        <span>${esc(x.municipio||"—")}</span>
+        <span title="posição na lista oficial de maiores contribuintes do ICMS">${x.icms_valor_recente?esc(x.icms_valor_recente):x.icms_posicao_recente?`${x.icms_posicao_recente}º maior contribuinte`:"—"}</span>
+        <span class=meta title="IRPJ pago é sigilo fiscal; só aparece quando a empresa publica demonstrações">${esc(x.irpj||"não divulgado")}</span>
+        <span><span class="tag lr-${x.lucro_real}" title="${esc(x.lucro_real_motivo||"")}">${esc(ROT_LUCRO[x.lucro_real]||x.lucro_real||"—")}</span></span>
+        <span>${brl(x.capital_social)}</span>
+        <span>${dest5.length?`${dest5.length} registro(s) · ${[...new Set(dest5.map(d=>d.programa))].join(", ")}`:'<span class=meta>nenhum registro público localizado</span>'}<br><small class=meta>cultura: ${ROT_POT[pt.cultura]||"—"} · esporte: ${ROT_POT[pt.esporte]||"—"}</small></span>
+        <span><b class="emp-score">${x.score}</b> <small>${esc(x.classe||"")}</small>${x.elegivel===false?`<br><small class=meta title="${esc((x.motivos_inelegibilidade||[]).join("; "))}">inelegível</small>`:x.cadastro_obtido?"":'<br><small class=meta>cadastro pendente</small>'}</span>
+      </div>`;}).join("")
+    +(rows.length>empPagina?`<div style="text-align:center;margin-top:8px"><button onclick="empMais()">ver mais 40 ›</button></div>`:"");
+  box.querySelectorAll(".emp-linha").forEach(el=>{const x=rows.find(y=>y.id===el.dataset.id);if(!x)return;
+    ligaTip(el,`<strong>${esc(x.nome)}</strong> ${x.cnpj?"· "+esc(x.cnpj):""}<br>${esc(x.cnae||"")} · porte ${esc(x.porte||"—")} · situação ${esc(x.situacao||"—")} · ${x.matriz===false?"FILIAL":x.matriz?"matriz":"matriz/filial a confirmar"}<br>${esc(ROT_LUCRO[x.lucro_real]||"")}: ${esc(x.lucro_real_motivo||"")}<br>score ${x.score} — ${esc((x.memoria_score||[]).join("; "))}<br><em>clique para o parecer completo</em>`);
+    el.onclick=()=>empDetalhe(x);});
+}
+function empDetalhe(x){const pt=x.potencial||{};
+  abreModal(`<h3 style="margin:0">${esc(x.nome)}</h3><div class=meta>${x.cnpj?esc(x.cnpj)+" · ":""}${esc(x.municipio||"")} · ${esc(x.cnae||"")} · porte ${esc(x.porte||"—")}</div>`,
+    `<p><strong>Situação tributária:</strong> ${esc(ROT_LUCRO[x.lucro_real]||"")} — ${esc(x.lucro_real_motivo||"")}</p>
+     <p><strong>Elegibilidade (regras do titular):</strong> ${x.elegivel===true?"✓ matriz, ativa, capital &gt; R$ 10 mi":x.elegivel===false?"✗ "+esc((x.motivos_inelegibilidade||[]).join("; ")):"cadastro ainda não obtido"} · capital social ${brl(x.capital_social)}</p>
+     <p><strong>Tributos:</strong> ICMS — ${x.icms_valor_recente?esc(x.icms_valor_recente):x.icms_posicao_recente?x.icms_posicao_recente+"º maior contribuinte":"—"} (${Object.keys(x.icms||{}).length} ano(s) na lista: ${Object.entries(x.icms||{}).map(([a,v])=>a+(v.posicao?" · "+v.posicao+"º":"")).join(", ")}) · IRPJ — ${esc(x.irpj||"não divulgado")}</p>
+     <p><strong>Destinações nos últimos 5 anos:</strong> ${(x.destinacoes||[]).length?`<ul style="margin:4px 0 0 16px">${(x.destinacoes||[]).slice(0,12).map(d=>`<li>${esc(d.programa)} ${d.ano?"· "+esc(String(d.ano)):""} — ${esc(d.projeto||"")}${d.valor?" — R$ "+Number(d.valor).toLocaleString("pt-BR"):" — valor não divulgado"} <span class=meta>(${esc(d.fonte||"")})</span></li>`).join("")}</ul>`:"nenhum registro público localizado (SALIC/MinC consultado por CNPJ)"}</p>
+     <p><strong>Potencial de destinação tributária:</strong> cultura ${ROT_POT[pt.cultura]||"—"} · esporte ${ROT_POT[pt.esporte]||"—"} · FIA/Idoso ${ROT_POT[pt.fia_idoso]||"—"} · PRONON/PRONAS ${ROT_POT[pt.saude]||"—"}</p>
+     <p><strong>Score ${x.score} — ${esc(x.classe||"")}:</strong> ${esc((x.memoria_score||[]).join(" · ")||"sem pontuação")}</p>
+     ${(x.qsa||[]).length?`<p><strong>QSA (Receita Federal):</strong> ${(x.qsa||[]).map(q=>esc(q.nome||"")+(q.qualificacao?" ("+esc(q.qualificacao)+")":"")).join("; ")}</p>`:""}
+     <p><strong>Como prospectar:</strong> ${x.lucro_real!=="nao_confirmado"?(pt.cultura==="ja_destina"?"já destina à cultura — propor projeto cultural via Rouanet/Goyazes com prestação de contas pronta; ":"")+(pt.esporte==="ja_destina"?"já destina ao esporte — propor projeto via LIE; ":"")+"mecanismo recomendado: destinação incentivada (dedução do IRPJ devido) — FIA/Fundo do Idoso (1%), Rouanet (4%), LIE (1%/2%); abordagem pela área institucional/ESG.":"regime não confirmado — abordar por doação direta, patrocínio ou parceria; confirmar regime antes de propor incentivo fiscal."}</p>
+     <p class=meta><strong>Fontes:</strong> ${(x.fontes||[]).map(f=>`<a href="${esc(f.url)}" target=_blank rel="noopener noreferrer">${esc(f.tipo)} ↗</a>`).join(" · ")} · nada aqui é inventado: sem fonte, o campo diz "não confirmado".</p>`);}
 /* GRADE PADRONIZADA — os 12 itens em toda caixa, com ou sem análise da etapa 2:
    usa a análise quando existe; senão monta cada item a partir dos campos do
    registro, marcando 'não comprovado' onde falta. Apresentação sempre completa. */
@@ -1755,7 +1835,7 @@ async function garanteAbertas(){
 window.faMais=function(area){faPagina[area]=(faPagina[area]||10)+20;desenhaFontesAbertas();if(!$("v-editais").classList.contains("oculto"))desenhaEditais();};
 function desenhaFontesAbertas(){ if(!$("bus-fontes"))return; montaOportunidadesPorArea($("bus-fontes"),$("fa-resumo"),true,()=>desenhaFontesAbertas()); }
 /* MOTOR ÚNICO de apresentação: usado pela Bússola (Fontes com edital aberto) e
-   pela aba Editais Abertos (Em andamento) — mesmos dados, mesmo layout. */
+   pela aba Oportunidades Abertas (Em andamento) — mesmos dados, mesmo layout. */
 function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
   const cat=(D.bussola&&D.bussola.categorias)||{};
   if(!fx)return; fx.innerHTML="";
@@ -2258,7 +2338,7 @@ function mpDadosUF(){
   const add=(uf,area,cidade,st)=>{if(!uf)return;const p=por[uf]||(por[uf]={aberta:0,verificacao:0,encerrada:0,total:0,areas:{},cidades:{}});
     p[st]++;p.total++;if(st==="aberta"){p.areas[area]=(p.areas[area]||0)+1;if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{}});c.n++;c.areas[area]=(c.areas[area]||0)+1;}}};
   const cid=t=>{const m=/Di[áa]rio Oficial de ([^—(]+?)\s*\(([A-Z]{2})\)/.exec(t||"");return m?m[1].trim():null;};
-  /* MESMA FONTE DE DADOS de «Editais Abertos»: núcleo + base ampla. Cada
+  /* MESMA FONTE DE DADOS de «Oportunidades Abertas»: núcleo + base ampla. Cada
      oportunidade vai para o seu estado; as de nível nacional (sem UF ou
      federais) vão para o bucket __nac__ — mostrado pela rosa dos ventos. */
   const arSel=($("mp-area")||{}).value||"";
@@ -2317,7 +2397,7 @@ function desenhaBzMapa(){
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */
-    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · ${p.aberta} aberto(s) confirmado(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Editais Abertos»<br>${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
+    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · ${p.aberta} aberto(s) confirmado(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Oportunidades Abertas»<br>${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
       :`<strong>${uf}</strong> · nenhuma oportunidade identificada`);
     el.onclick=()=>{bzUFsel=(bzUFsel===uf?"":uf);$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value=bzUFsel;if(typeof mpFiltro==="object")mpFiltro.uf=bzUFsel;}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();desenhaBzLateral(por);if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
   });
@@ -2351,16 +2431,16 @@ function desenhaBzLateral(por){
             <span class=bz-op-t>${esc((e.objeto||e.titulo||"").replace(/^Diário Oficial de [^—]+—\s*/,"").replace(/"/g,"").slice(0,110))}</span>
             <div class=meta>${s==="aberta"?"<b style=\"color:#9a5a00\">aberta</b>":"possível · em investigação"} · ${esc(AREA(e.area).rotulo)}${e.fim?" · inscrições até "+br(e.fim):e.prazo_texto?" · prazo "+esc(e.prazo_texto):" · prazo a confirmar"}${e.valor_texto?" · "+esc(e.valor_texto):""} · ${esc(org)}
             ${e.url?` · <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:""}</div></div>`;}).join("")}
-        ${(v.itens||[]).length>3?`<div class=meta style="padding-left:14px">+${(v.itens||[]).length-3} oportunidade(s) nesta cidade — veja em Editais Abertos</div>`:""}</div>`).join("")}
-    ${cidades.length>25?`<div class=meta>… e mais ${cidades.length-25} cidade(s) em Editais Abertos.</div>`:""}</div>`}`;
+        ${(v.itens||[]).length>3?`<div class=meta style="padding-left:14px">+${(v.itens||[]).length-3} oportunidade(s) nesta cidade — veja em Oportunidades Abertas</div>`:""}</div>`).join("")}
+    ${cidades.length>25?`<div class=meta>… e mais ${cidades.length-25} cidade(s) em Oportunidades Abertas.</div>`:""}</div>`}`;
   // relatório simples ao passar o mouse em cada dado do painel
   const REL={aberta:"Oportunidades com período de inscrição vigente e confirmado, com cidade/estado e publicação em local oficial — dá para decidir concorrer.",
     encerrada:"O período de inscrição já passou; ficam no histórico para estudo de recorrência.",
     possivel:"Chamamentos encontrados sem período de inscrição confirmado: não se eliminam — seguem em campanha de completude por 30 dias até validar (viram abertas) ou descartar.",
     encontrado:"Dias de varredura em que os motores captaram algum indício para este território."};
   L.querySelectorAll(".bz-indices>span").forEach(sp=>{const k=/aberta/i.test(sp.textContent)?"aberta":/encerrada/i.test(sp.textContent)?"encerrada":/poss/i.test(sp.textContent)?"possivel":"encontrado";
-    ligaTip(sp,`<strong>${esc(sp.textContent.replace(/\d+$/,"").trim())}</strong><br>${REL[k]}<br><em>${esc(rotUF)} · ${sp.textContent.match(/\d+$/)?.[0]||0} registro(s) — mesma base de Editais Abertos</em>`);});
-  L.querySelectorAll(".legenda>span").forEach(sp=>ligaTip(sp,`<strong>${esc(sp.textContent.replace(/\d+$/,"").trim())}</strong><br>oportunidades abertas ou possíveis desta área em ${esc(rotUF)}: ${sp.textContent.match(/\d+$/)?.[0]||0}.<br><em>filtre por área no mapa ou em Editais Abertos</em>`));
+    ligaTip(sp,`<strong>${esc(sp.textContent.replace(/\d+$/,"").trim())}</strong><br>${REL[k]}<br><em>${esc(rotUF)} · ${sp.textContent.match(/\d+$/)?.[0]||0} registro(s) — mesma base de Oportunidades Abertas</em>`);});
+  L.querySelectorAll(".legenda>span").forEach(sp=>ligaTip(sp,`<strong>${esc(sp.textContent.replace(/\d+$/,"").trim())}</strong><br>oportunidades abertas ou possíveis desta área em ${esc(rotUF)}: ${sp.textContent.match(/\d+$/)?.[0]||0}.<br><em>filtre por área no mapa ou em Oportunidades Abertas</em>`));
   L.querySelectorAll(".bz-op[data-op]").forEach(el=>{el.style.cursor="pointer";const e=(p.itens||[]).find(x=>x.id===el.dataset.op)||[].concat(...cidades.map(([,v])=>v.itens||[])).find(x=>x.id===el.dataset.op);
     if(e){ligaTip(el,`<strong>${esc(e.titulo||"")}</strong><br>${esc(e.objeto||"objeto: conferir na publicação")}<br><span style="opacity:.85">${esc(AREA(e.area).rotulo)} · ${situacaoDe(e)} · ${e.fim?"até "+br(e.fim):"prazo a confirmar"}${e.valor_texto?" · "+esc(e.valor_texto):""}</span><br><em>clique para a ficha; o link abre o site oficial</em>`);
       el.onclick=ev=>{if(ev.target.closest("a"))return;detalheEdital({programa:e.fonte_nome,lei:"—",protocolo:e.id,resumo:e.objeto||"",territorio:e.uf||"BR",detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:e.objeto||e.titulo||"",coletado_em:e.coletado_em,lacuna:null},...e});};}});

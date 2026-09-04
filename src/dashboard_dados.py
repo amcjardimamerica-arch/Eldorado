@@ -1465,6 +1465,32 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
         dados["abertas_total"] = None
         dados["abertas_erro"] = type(exc).__name__
 
+    # EMPRESAS.JSON — motor de empresas com afinidade com o terceiro setor (por estado)
+    try:
+        emp_dir = ROOT / "biblioteca_alexandria/empresas"
+        pac_e = {"gerado_em": now_iso(), "estados": {}}
+        cfg_e = load_json(ROOT / "config/empresas.json") if (ROOT / "config/empresas.json").exists() else {"estados": {}}
+        for uf, est in cfg_e.get("estados", {}).items():
+            arq = emp_dir / f"{uf.lower()}.json"
+            bloco = load_json(arq) if arq.exists() else None
+            pac_e["estados"][uf] = {"nome": est.get("nome"), "ativo": bool(est.get("ativo")), "nota": est.get("nota"),
+                                    "gerado_em": (bloco or {}).get("gerado_em"), "anos_lidos": (bloco or {}).get("anos_lidos", []),
+                                    "ultima_leitura": (bloco or {}).get("ultima_leitura"), "fonte_icms": (bloco or {}).get("fonte_icms"),
+                                    "total": (bloco or {}).get("total", 0), "com_cadastro": (bloco or {}).get("com_cadastro", 0),
+                                    "elegiveis": (bloco or {}).get("elegiveis", 0),
+                                    "empresas": [{k: x.get(k) for k in ("id", "nome", "nome_fantasia", "cnpj", "municipio", "cnae", "capital_social", "porte",
+                                                                        "matriz", "situacao", "icms_posicao_recente", "icms_valor_recente", "irpj",
+                                                                        "score", "classe", "elegivel", "motivos_inelegibilidade", "cadastro_obtido", "memoria_score")}
+                                                 | {"lucro_real": x.get("lucro_real", {}).get("classe"), "lucro_real_motivo": x.get("lucro_real", {}).get("motivo"),
+                                                    "potencial": x.get("potencial_destinacao"), "destinacoes": x.get("destinacoes_5_anos", [])[:20],
+                                                    "icms": x.get("icms"), "qsa": x.get("qsa", [])[:8], "fontes": x.get("fontes", [])}
+                                                 for x in (bloco or {}).get("empresas", [])]}
+        (pasta / "empresas.json").write_text(json.dumps(pac_e, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        tamanhos["empresas.json"] = tamanho(pac_e)
+        dados["empresas_resumo"] = {uf: {"ativo": v["ativo"], "total": v["total"], "elegiveis": v["elegiveis"]} for uf, v in pac_e["estados"].items()}
+    except Exception as exc:
+        dados["empresas_erro"] = type(exc).__name__
+
     parl = {}
     for e in dados.get("editais", []):
         if e.get("sem_edital") and e.get("parlamentares"):

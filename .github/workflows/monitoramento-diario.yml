@@ -165,6 +165,13 @@ jobs:
           if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 600 python -m src.prazos_ia || echo "prazos_ia: registrado"
           fi
+      - name: Motor de empresas com afinidade com o terceiro setor (por estado)
+        if: always()
+        run: |
+          pip install pypdf --quiet
+          if [ "$MOTORES_BLOCO" = "plataformas_api" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 900 python -m src.empresas || echo "empresas: registrado"
+          fi
       - name: Exportar o acervo do banco (volta pelo Git para a próxima saída)
         if: always()
         run: |
