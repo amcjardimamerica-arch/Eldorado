@@ -170,7 +170,7 @@
         "erros": [
           "home institucional: HTTPError (https://www.goiania.go.leg.br/parlamentares)",
           "página https://www.goiania.go.leg.br/parlamenta: HTTPError",
-          "html: HTTPError"
+          "html: TimeoutError"
         ]
       },
       "regras": null,
@@ -365,15 +365,37 @@
         "fontes": [],
         "kb": 0,
         "erros": [
-          "pncp compra (api): TimeoutError",
-          "pncp arquivos: TimeoutError",
-          "pncp arquivos: HTTPError",
+          "pncp compra (api): HTTPError 503",
+          "pncp arquivos (api): HTTPError 503",
+          "pncp arquivos (pncp-api): HTTPError 503",
           "pncp arquivos: ValueError"
         ]
       },
       "regras": null,
       "requisitos": null,
-      "pontuacao_texto": null
+      "pontuacao_texto": null,
+      "anexos": [
+        {
+          "nome": "arquivo 1 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/01015676000111/compras/2025/1/arquivos/1"
+        },
+        {
+          "nome": "arquivo 2 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/01015676000111/compras/2025/1/arquivos/2"
+        },
+        {
+          "nome": "arquivo 3 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/01015676000111/compras/2025/1/arquivos/3"
+        },
+        {
+          "nome": "arquivo 4 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/01015676000111/compras/2025/1/arquivos/4"
+        },
+        {
+          "nome": "arquivo 5 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/01015676000111/compras/2025/1/arquivos/5"
+        }
+      ]
     },
     "6d1409b829bcb94579bb": {
       "titulo": "Chamamento público visando o credenciamento de empresa para prestação de serviços de limpeza e manutenção de logradouros",
@@ -442,15 +464,37 @@
         "fontes": [],
         "kb": 0,
         "erros": [
-          "pncp compra (api): HTTPError",
-          "pncp arquivos: HTTPError",
-          "pncp arquivos: HTTPError",
+          "pncp compra (api): HTTPError 503",
+          "pncp arquivos (api): HTTPError 503",
+          "pncp arquivos (pncp-api): HTTPError 503",
           "pncp arquivos: ValueError"
         ]
       },
       "regras": null,
       "requisitos": null,
-      "pontuacao_texto": null
+      "pontuacao_texto": null,
+      "anexos": [
+        {
+          "nome": "arquivo 1 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/10842697000100/compras/2025/1/arquivos/1"
+        },
+        {
+          "nome": "arquivo 2 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/10842697000100/compras/2025/1/arquivos/2"
+        },
+        {
+          "nome": "arquivo 3 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/10842697000100/compras/2025/1/arquivos/3"
+        },
+        {
+          "nome": "arquivo 4 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/10842697000100/compras/2025/1/arquivos/4"
+        },
+        {
+          "nome": "arquivo 5 da contratação (PNCP)",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/10842697000100/compras/2025/1/arquivos/5"
+        }
+      ]
     },
     "c407da00f4108d7caae0": {
       "titulo": "Diário Oficial de Uberlândia (MG) 2025-09-10 — \"chamamento público\" \"organizações da sociedade civil\"",
@@ -2006,19 +2050,59 @@
         "Anexos",
         "Destinação"
       ],
-      "tentativas": [],
+      "tentativas": [
+        {
+          "em": "2026-09-05T19:23:22+00:00",
+          "modelo": "claude-haiku-4-5",
+          "status": "aguardando credencial FAROL_AI_API_KEY",
+          "faltavam": [
+            "Prazo de inscrição",
+            "Resultado",
+            "Prazo de recurso",
+            "Território",
+            "Requisitos",
+            "Anexos",
+            "Destinação"
+          ],
+          "uso": null
+        }
+      ],
       "itens_ia": {},
-      "itens": {},
-      "fontes_itens": {},
+      "itens": {
+        "Objeto": "Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática",
+        "Órgão / financiador": "Observatório do Terceiro Setor — editais",
+        "Esfera": "federal",
+        "Área de atuação": "meio_ambiente",
+        "Valor": "500"
+      },
+      "fontes_itens": {
+        "Objeto": "cadastro do edital (motor de busca)",
+        "Órgão / financiador": "cadastro do edital (motor de busca)",
+        "Esfera": "cadastro do edital (motor de busca)",
+        "Área de atuação": "cadastro do edital (motor de busca)",
+        "Valor": "cadastro do edital (motor de busca)"
+      },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": null,
-        "kb": null,
+        "fontes": [
+          {
+            "titulo": "Midia Kit",
+            "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf",
+            "caracteres": 3818
+          }
+        ],
+        "kb": 2.1,
         "erros": []
       },
       "regras": null,
       "requisitos": null,
-      "pontuacao_texto": null
+      "pontuacao_texto": null,
+      "anexos": [
+        {
+          "nome": "Midia Kit",
+          "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf"
+        }
+      ]
     },
     "ea14b1b3f360d2dc8637": {
       "titulo": "Instituto Impactarte abre edital para projetos de impacto social com apoio de até R$ 150 mil",
@@ -2032,19 +2116,58 @@
         "Destinação",
         "Área de atuação"
       ],
-      "tentativas": [],
+      "tentativas": [
+        {
+          "em": "2026-09-05T19:23:29+00:00",
+          "modelo": "claude-haiku-4-5",
+          "status": "aguardando credencial FAROL_AI_API_KEY",
+          "faltavam": [
+            "Prazo de inscrição",
+            "Resultado",
+            "Prazo de recurso",
+            "Território",
+            "Requisitos",
+            "Anexos",
+            "Destinação",
+            "Área de atuação"
+          ],
+          "uso": null
+        }
+      ],
       "itens_ia": {},
-      "itens": {},
-      "fontes_itens": {},
+      "itens": {
+        "Objeto": "Instituto Impactarte abre edital para projetos de impacto social com apoio de até R$ 150 mil",
+        "Órgão / financiador": "Observatório do Terceiro Setor — editais",
+        "Esfera": "federal",
+        "Valor": "150"
+      },
+      "fontes_itens": {
+        "Objeto": "cadastro do edital (motor de busca)",
+        "Órgão / financiador": "cadastro do edital (motor de busca)",
+        "Esfera": "cadastro do edital (motor de busca)",
+        "Valor": "cadastro do edital (motor de busca)"
+      },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": null,
-        "kb": null,
+        "fontes": [
+          {
+            "titulo": "Midia Kit",
+            "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf",
+            "caracteres": 3818
+          }
+        ],
+        "kb": 2.1,
         "erros": []
       },
       "regras": null,
       "requisitos": null,
-      "pontuacao_texto": null
+      "pontuacao_texto": null,
+      "anexos": [
+        {
+          "nome": "Midia Kit",
+          "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf"
+        }
+      ]
     },
     "c5c7e37e2e275d2e69fe": {
       "titulo": "Instituto Lojas Renner abre edital com até R$ 10 mil para fortalecer organizações sociais",
@@ -2059,19 +2182,57 @@
         "Destinação",
         "Área de atuação"
       ],
-      "tentativas": [],
+      "tentativas": [
+        {
+          "em": "2026-09-05T19:23:33+00:00",
+          "modelo": "claude-haiku-4-5",
+          "status": "aguardando credencial FAROL_AI_API_KEY",
+          "faltavam": [
+            "Prazo de inscrição",
+            "Resultado",
+            "Prazo de recurso",
+            "Valor",
+            "Território",
+            "Requisitos",
+            "Anexos",
+            "Destinação",
+            "Área de atuação"
+          ],
+          "uso": null
+        }
+      ],
       "itens_ia": {},
-      "itens": {},
-      "fontes_itens": {},
+      "itens": {
+        "Objeto": "Instituto Lojas Renner abre edital com até R$ 10 mil para fortalecer organizações sociais",
+        "Órgão / financiador": "Observatório do Terceiro Setor — editais",
+        "Esfera": "federal"
+      },
+      "fontes_itens": {
+        "Objeto": "cadastro do edital (motor de busca)",
+        "Órgão / financiador": "cadastro do edital (motor de busca)",
+        "Esfera": "cadastro do edital (motor de busca)"
+      },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": null,
-        "kb": null,
+        "fontes": [
+          {
+            "titulo": "Midia Kit",
+            "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf",
+            "caracteres": 3818
+          }
+        ],
+        "kb": 2.1,
         "erros": []
       },
       "regras": null,
       "requisitos": null,
-      "pontuacao_texto": null
+      "pontuacao_texto": null,
+      "anexos": [
+        {
+          "nome": "Midia Kit",
+          "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf"
+        }
+      ]
     },
     "f359e425734cf4682571": {
       "titulo": "Prêmio MOL reconhece reportagens que inspiram solidariedade e a cultura de doação",
@@ -2085,19 +2246,58 @@
         "Anexos",
         "Destinação"
       ],
-      "tentativas": [],
+      "tentativas": [
+        {
+          "em": "2026-09-05T19:23:38+00:00",
+          "modelo": "claude-haiku-4-5",
+          "status": "aguardando credencial FAROL_AI_API_KEY",
+          "faltavam": [
+            "Prazo de inscrição",
+            "Resultado",
+            "Prazo de recurso",
+            "Valor",
+            "Território",
+            "Requisitos",
+            "Anexos",
+            "Destinação"
+          ],
+          "uso": null
+        }
+      ],
       "itens_ia": {},
-      "itens": {},
-      "fontes_itens": {},
+      "itens": {
+        "Objeto": "Prêmio MOL reconhece reportagens que inspiram solidariedade e a cultura de doação",
+        "Órgão / financiador": "Observatório do Terceiro Setor — editais",
+        "Esfera": "federal",
+        "Área de atuação": "cultura"
+      },
+      "fontes_itens": {
+        "Objeto": "cadastro do edital (motor de busca)",
+        "Órgão / financiador": "cadastro do edital (motor de busca)",
+        "Esfera": "cadastro do edital (motor de busca)",
+        "Área de atuação": "cadastro do edital (motor de busca)"
+      },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": null,
-        "kb": null,
+        "fontes": [
+          {
+            "titulo": "Midia Kit",
+            "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf",
+            "caracteres": 3818
+          }
+        ],
+        "kb": 2.1,
         "erros": []
       },
       "regras": null,
       "requisitos": null,
-      "pontuacao_texto": null
+      "pontuacao_texto": null,
+      "anexos": [
+        {
+          "nome": "Midia Kit",
+          "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf"
+        }
+      ]
     },
     "2c54f6d479346a9e2b1c": {
       "titulo": "1.\tCredenciamento de empresa para aquisição de bolsas coletoras e adjuvantes de proteção e segurança, com valores da Tab",
@@ -2600,6 +2800,13 @@
       "ia_itens": 4,
       "ia_enquadramento": 0,
       "em": "2026-09-05T18:50:23+00:00"
+    },
+    {
+      "associacoes": 1,
+      "editais_abertos": 144,
+      "ia_itens": 4,
+      "ia_enquadramento": 0,
+      "em": "2026-09-05T19:22:17+00:00"
     }
   ]
 }
