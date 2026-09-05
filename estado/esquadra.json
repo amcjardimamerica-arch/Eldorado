@@ -391,80 +391,86 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 4,
+      "leituras": 5,
       "achados_total": 0,
-      "vazias_seguidas": 4,
-      "ultima": "2026-09-04T20:58:52+00:00",
+      "vazias_seguidas": 5,
+      "ultima": "2026-09-05T05:19:27+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260904&dataFinal=20260904&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-          "http": 200,
-          "bytes": 40285
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260905&dataFinal=20260905&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
+          "http": 204,
+          "bytes": 0
         },
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260904&dataFinal=20260904&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260905&dataFinal=20260905&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
           "http": 204,
           "bytes": 0
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 6,
-        "links_total": 20,
-        "links_candidatos": 20,
-        "descobertas": [
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260904&dataFinal=20260904&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-            "para": "https://pncp.gov.br/app/editais/13780770000146/2026/68",
-            "rotulo": "Credenciamento — MUNICIPIO DE BOQUIRA — [LICITANET] - CREDEN"
-          },
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260904&dataFinal=20260904&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-            "para": "https://pncp.gov.br/app/editais/03756178000155/2026/12",
-            "rotulo": "Credenciamento — CAMARA MUNICIPAL DE MIRASSOL D'OESTE - MT —"
-          },
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260904&dataFinal=20260904&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-            "para": "https://pncp.gov.br/app/editais/29898145000133/2026/2",
-            "rotulo": "Credenciamento — FUNDACAO CULTURAL JORNALISTA OSWALDO LIMA —"
-          },
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260904&dataFinal=20260904&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-            "para": "https://pncp.gov.br/app/editais/08741688000172/2026/63",
-            "rotulo": "Credenciamento — MUNICIPIO DE POCINHOS — [LICITANET] - CHAMA"
-          }
-        ],
+        "paginas_lidas": 2,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+        "motivo_zero": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
       }
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
       "tipo": "plataforma",
-      "leituras": 4,
-      "achados_total": 12,
-      "vazias_seguidas": 1,
-      "ultima": "2026-09-04T20:59:24+00:00",
+      "leituras": 5,
+      "achados_total": 16,
+      "vazias_seguidas": 0,
+      "ultima": "2026-09-05T05:19:53+00:00",
       "motivo": "motor regular e geral — todo dia",
-      "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "achados_ultima": 4,
+      "falhas_ultima": 0,
       "saude": [
         {
-          "url": "https://captadores.org.br/",
-          "erro": "HTTPError"
+          "url": "https://captadores.org.br/editais/",
+          "http": 200,
+          "bytes": 137545
+        },
+        {
+          "url": "https://captadores.org.br/transparencia",
+          "http": 200,
+          "bytes": 118734
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 0,
-        "links_total": 0,
-        "links_candidatos": 0,
-        "descobertas": [],
+        "paginas_lidas": 5,
+        "links_total": 652,
+        "links_candidatos": 358,
+        "descobertas": [
+          {
+            "de": "https://captadores.org.br/editais/",
+            "para": "https://captadores.org.br/transparencia",
+            "rotulo": "Transparência"
+          },
+          {
+            "de": "https://captadores.org.br/editais/",
+            "para": "https://captadores.org.br/noticias",
+            "rotulo": "Editais"
+          },
+          {
+            "de": "https://captadores.org.br/editais/",
+            "para": "https://captadores.org.br/category/editais",
+            "rotulo": "Editais"
+          },
+          {
+            "de": "https://captadores.org.br/editais/",
+            "para": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+            "rotulo": ""
+          }
+        ],
         "pdf_links": 0,
-        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
+        "motivo_zero": null
       }
     },
     "plat-captamos": {
@@ -496,10 +502,10 @@
     "plat-gife": {
       "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
       "tipo": "plataforma",
-      "leituras": 4,
+      "leituras": 5,
       "achados_total": 0,
-      "vazias_seguidas": 4,
-      "ultima": "2026-09-04T20:59:29+00:00",
+      "vazias_seguidas": 5,
+      "ultima": "2026-09-05T05:19:57+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -539,10 +545,10 @@
     "plat-observatorio-3setor": {
       "nome": "Observatório do Terceiro Setor — editais",
       "tipo": "plataforma",
-      "leituras": 4,
-      "achados_total": 12,
+      "leituras": 5,
+      "achados_total": 15,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-04T20:59:36+00:00",
+      "ultima": "2026-09-05T05:20:04+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 3,
       "falhas_ultima": 0,
@@ -550,12 +556,12 @@
         {
           "url": "https://observatorio3setor.org.br/editais/",
           "http": 200,
-          "bytes": 224230
+          "bytes": 224101
         },
         {
           "url": "https://observatorio3setor.org.br/secoes_tematicas/editais",
           "http": 200,
-          "bytes": 224230
+          "bytes": 224101
         }
       ],
       "alerta": null,
@@ -592,10 +598,10 @@
     "plat-prosas-premios": {
       "nome": "Prosas — prêmios, concursos e cursos para OSCs",
       "tipo": "plataforma",
-      "leituras": 4,
+      "leituras": 5,
       "achados_total": 0,
-      "vazias_seguidas": 4,
-      "ultima": "2026-09-04T20:59:38+00:00",
+      "vazias_seguidas": 5,
+      "ultima": "2026-09-05T05:20:05+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -698,25 +704,25 @@
   },
   "ultima_execucao": {
     "data": "2026-09-05",
-    "em": "2026-09-05T04:08:15+00:00",
+    "em": "2026-09-05T05:20:05+00:00",
     "manual": null,
-    "bloco": "justica_legislativo",
+    "bloco": "plataformas_api",
     "sensores_executados": 5,
     "em_espera": 41,
     "total_esquadra": 80,
     "previsoes_ativas": 1,
-    "achados": 0,
+    "achados": 7,
     "novos_na_base": 0,
     "por_tipo": {
-      "legislativo": {
-        "sensores": 2,
+      "api": {
+        "sensores": 1,
         "achados": 0,
-        "falhas": 4
+        "falhas": 0
       },
-      "diario_justica": {
-        "sensores": 3,
-        "achados": 0,
-        "falhas": 6
+      "plataforma": {
+        "sensores": 4,
+        "achados": 7,
+        "falhas": 1
       }
     }
   }
