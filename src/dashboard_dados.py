@@ -1347,6 +1347,8 @@ def coletar(hoje: date | None = None) -> dict:
                                 for i in previsoes.get("itens", [])]},
         "esquadra": esquadra,
         "associacoes_cruzamento": _cruzamento_associacoes(editais, hoje),
+        "documentos_associacoes": [dict(load_json(pathlib.Path(f)), parecer_md=(pathlib.Path(f).parent / "parecer.md").read_text(encoding="utf-8") if (pathlib.Path(f).parent / "parecer.md").exists() else "")
+                                   for f in sorted(__import__("glob").glob(str(ROOT / "dados/associacoes/*/documentos/dossie.json"))) if "EXEMPLO" not in f],
         "enquadramento_fila": (lambda q: {"total": len(q.get("fila", {})), "com_faltas": sum(1 for f in q.get("fila", {}).values() if f.get("faltam")),
                                           "ia_tentativas": sum(len(f.get("tentativas", [])) for f in q.get("fila", {}).values()),
                                           "itens_obtidos_ia": sum(len(f.get("itens_ia") or {}) for f in q.get("fila", {}).values()),

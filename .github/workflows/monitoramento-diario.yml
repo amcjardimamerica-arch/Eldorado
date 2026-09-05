@@ -8,6 +8,7 @@ on:
     - cron: "0 7 * * *"   # 04h BRT · Motores Opressores ativos
     - cron: "0 9 * * *"   # 06h BRT · relatório e painel
     - cron: "0 6 * * 0"   # 03h BRT de DOMINGO · motor de empresas (semanal)
+    - cron: "30 6 1 * *"  # 03h30 BRT do DIA 1 · documentos das associações (certidões mensais, expurgo > 90 dias)
   workflow_dispatch:
     inputs:
       fontes:
@@ -15,7 +16,7 @@ on:
         required: false
         default: ""
       bloco:
-        description: "Bloco a executar: diarios | justica_legislativo | plataformas_api | completude | opressores | relatorio | empresas | regulares | completo"
+        description: "Bloco a executar: diarios | justica_legislativo | plataformas_api | completude | opressores | relatorio | empresas | regulares | documentos | completo"
         required: false
         default: "completo"
 permissions:
@@ -49,6 +50,7 @@ jobs:
             "0 7 * * *") B=opressores;;
             "0 9 * * *") B=relatorio;;
             "0 6 * * 0") B=empresas;;
+            "30 6 1 * *") B=documentos;;
             *) B="${MOTORES_BLOCO_INPUT:-completo}";;
           esac
           [ -n "$MOTORES_FONTES" ] && B=manual
@@ -169,6 +171,13 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           rm -f dash.json
+      - name: Documentos das associações (certidões mensais, registrados, dossiê e parecer)
+        if: always()
+        run: |
+          pip install pypdf --quiet
+          if [ "$MOTORES_BLOCO" = "documentos" ] || [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 600 python -m src.documentos || echo "documentos: registrado"
+          fi
       - name: Enquadramento (Farol fases 3 e 4) — associações × editais abertos, IA para os 12 itens e aderência
         if: always()
         run: |

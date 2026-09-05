@@ -1,0 +1,1 @@
+Envie aqui os PDFs das certidões (certidao_federal.pdf, cndt.pdf, crf_fgts.pdf, certidao_estadual.pdf, certidao_municipal.pdf). A data de emissão é lida do PDF; certidões com mais de 90 dias são excluídas automaticamente no 1º de cada mês.

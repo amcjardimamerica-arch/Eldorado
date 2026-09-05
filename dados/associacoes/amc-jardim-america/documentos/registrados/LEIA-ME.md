@@ -1,0 +1,1 @@
+Envie aqui estatuto, atas, cartão CNPJ, comprovante de endereço (PDF). Sem validade: um novo arquivo do mesmo tipo substitui o anterior. ATENÇÃO: o repositório é público — envie versões SEM CPF/RG de dirigentes ou torne o repositório privado.
