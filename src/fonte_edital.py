@@ -77,23 +77,11 @@ def fontes_originais(e: dict) -> dict:
             saida["objeto_pncp"] = js.get("objetoCompra"); saida["encerramento_pncp"] = js.get("dataEncerramentoProposta"); saida["abertura_pncp"] = js.get("dataAberturaProposta")
         except Exception as exc:
             saida["erros"].append(f"pncp compra: {type(exc).__name__}")
-        arqs = None
-        for base in (f"https://pncp.gov.br/api/pncp/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos", f"https://pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos"):
-            try:
-                arqs = json.loads(_get(base, limite=2_000_000)); break
-            except Exception as exc:
-                saida["erros"].append(f"pncp arquivos ({base.split('/')[3]}): {type(exc).__name__} {getattr(exc, 'code', '')}".strip())
-        try:
-            if arqs is None: raise ValueError("sem arquivos")
-            for a in (arqs or [])[:12]:
-                titulo = (a.get("titulo") or a.get("nome") or "arquivo"); tipo = (a.get("tipoDocumentoNome") or "")
-                saida["pdfs"].append({"titulo": titulo, "tipo": tipo, "url": a.get("url") or a.get("uri"), "prioridade": 0 if re.search(r"edital", titulo + tipo, re.I) else 1})
-        except Exception as exc:
-            saida["erros"].append(f"pncp arquivos: {type(exc).__name__}")
-        if not saida["pdfs"]:
-            # último recurso: os arquivos são numerados sequencialmente na API pública de download
-            for n in range(1, 6):
-                saida["pdfs"].append({"titulo": f"arquivo {n} da contratação (PNCP)", "tipo": "download PNCP", "url": f"https://pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos/{n}", "prioridade": 2})
+        # PNCP é portal de DIVULGAÇÃO: nenhum arquivo é baixado dele. A fonte é o órgão
+        # publicador: sistema de origem informado, ou o site institucional deduzido do CNPJ.
+        saida["nota_pncp"] = "PNCP tratado como fonte indireta; documentos buscados no site institucional do órgão"
+        if not saida["site_institucional"]:
+            saida["site_institucional"] = site_institucional_do_orgao(cnpj, saida.get("orgao") or "", saida.get("uf"), saida.get("municipio"))
         if saida["site_institucional"]:
             saida["paginas"].append(saida["site_institucional"])
     elif url.startswith("https://"):
@@ -128,6 +116,29 @@ def fontes_originais(e: dict) -> dict:
             vistos.add(p["url"]); uniq.append(p)
     saida["pdfs"] = uniq
     return saida
+
+
+def site_institucional_do_orgao(cnpj: str, nome: str, uf: str | None, municipio: str | None) -> str | None:
+    """Site oficial do órgão publicador: (a) e-mail corporativo do cadastro público do
+    CNPJ; (b) padrão dos portais municipais (www.<cidade>.<uf>.gov.br); (c) None."""
+    try:
+        js = json.loads(_get(f"https://minhareceita.org/{cnpj}", timeout=15, limite=1_000_000))
+        email = (js.get("email") or "").lower()
+        dom = email.split("@")[-1] if "@" in email else ""
+        if dom and dom.endswith((".gov.br", ".leg.br", ".jus.br", ".mp.br", ".edu.br", ".org.br")) and not dom.startswith(("gmail", "hotmail")):
+            return f"https://www.{dom}" if not dom.startswith("www.") else f"https://{dom}"
+    except Exception:
+        pass
+    import unicodedata
+    cid = municipio or (re.search(r"(?:MUNIC[ÍI]PIO|PREFEITURA(?: MUNICIPAL)?) D[EA] (.+)", nome or "", re.I) or [None, None])[1]
+    if cid and uf:
+        slug = re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", cid).encode("ascii", "ignore").decode().lower())
+        for cand in (f"https://www.{slug}.{uf.lower()}.gov.br", f"https://{slug}.{uf.lower()}.gov.br"):
+            try:
+                _get(cand, timeout=12, limite=200_000); return cand
+            except Exception:
+                continue
+    return None
 
 
 # ───────────── 2. PDF → texto compacto ─────────────
@@ -229,8 +240,10 @@ def conhecimento_regramento(e: dict) -> dict:
         return {}
     alvo = f"{e.get('titulo','')} {e.get('fonte_nome','')} {e.get('programa','')}".lower()
     for g in load_json(cfg).get("regramentos", []):
-        toks = [x for x in re.findall(r"[a-zà-ú]{5,}", g["fonte"].lower()) if x not in ("programa", "nacional", "cultura", "edital")]
-        if toks and any(tk in alvo for tk in toks[:3]) and g.get("itens_conhecidos"):
+        toks = [x[:6] for x in re.findall(r"[a-zà-ú]{5,}", g["fonte"].lower()) if x not in ("programa", "nacional", "cultura", "edital")]
+        esfera = {"federais": ("federal", "câmara", "senado", "união"), "estaduais": ("estadual", "goiás", "alego"), "municipais": ("municipal", "goiânia", "câmara municipal")}
+        chave_esf = next((k for k in esfera if k in g["fonte"].lower()), None)
+        if toks and any(tk in alvo for tk in toks[:2]) and g.get("itens_conhecidos") and (not chave_esf or any(x in alvo for x in esfera[chave_esf])):
             return {"itens": g["itens_conhecidos"], "fonte": f"conhecimento do regramento ({g['fonte']}) — {g.get('nota_itens_conhecidos','')}", "pagina": g.get("pagina_oficial")}
     return {}
 
@@ -241,11 +254,11 @@ def relatorio(reg: dict, e: dict, credencial: bool) -> dict:
     etapas = []
     fontes = reg.get("fontes") or []; erros = reg.get("erros") or []
     if reg.get("origem") == "pncp":
-        etapas.append({"etapa": "PNCP (fonte indireta)", "ok": bool(reg.get("pncp") or reg.get("endpoint_pncp")), "detalhe": "divulgação lida; buscando o órgão publicador" if reg.get("pncp") else "a API do PNCP não respondeu para esta contratação"})
+        etapas.append({"etapa": "PNCP (fonte indireta — só divulgação, nada é baixado dali)", "ok": bool(reg.get("pncp") or reg.get("endpoint_pncp")), "detalhe": "divulgação lida; fonte oficial = órgão publicador" if reg.get("pncp") else "a API do PNCP não respondeu para esta contratação"})
     if reg.get("site_institucional"):
         etapas.append({"etapa": "site institucional do órgão", "ok": True, "detalhe": reg["site_institucional"], "link": reg["site_institucional"]})
     elif reg.get("origem") == "pncp":
-        etapas.append({"etapa": "site institucional do órgão", "ok": False, "detalhe": "o PNCP não informou o sistema de origem; tentadas as páginas descobertas"})
+        etapas.append({"etapa": "site institucional do órgão", "ok": False, "detalhe": "não localizado: o PNCP não informou o sistema de origem e o cadastro do CNPJ não trouxe domínio oficial — indicar o site manualmente"})
     etapas.append({"etapa": "documentos do edital (PDF/anexos)", "ok": bool(fontes), "detalhe": f"{len(fontes)} arquivo(s) lido(s), texto compacto de {reg.get('kb_compacto') or 0} KB" if fontes else "nenhum PDF/anexo acessível: " + ("; ".join(erros[:3]) or "sem link de documento na fonte")})
     itens = reg.get("itens") or {}; fi = reg.get("fontes_itens") or {}
     det = [k for k, v in fi.items() if "texto do edital" in v or "PNCP" in v]; ia = [k for k, v in fi.items() if v.startswith("IA")]; con = [k for k, v in fi.items() if "regramento" in v]; man = [k for k, v in fi.items() if "complemento" in v]
@@ -293,7 +306,7 @@ def prompt_extracao(e: dict, texto: str, faltam: list[str]) -> str:
             "\"confianca\": <0-1>}. Nunca invente: sem base no texto, null.")
 
 
-def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False) -> dict:
+def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False, rede: bool = True) -> dict:
     """Pipeline completo e imediato: fonte original → texto compacto → extração
     determinística → IA barata → IA reforço só se ainda faltar. Guarda em
     dados/editais/extraidos/<id>.json."""
@@ -303,7 +316,7 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False) -> dic
     if reg.get("completo") and not forcar:
         return reg
     texto = texto_guardado(e)
-    if not texto or forcar:
+    if rede and (not texto or forcar):
         ob = obter_texto(e); texto = ob["texto"]
         reg.update({k: ob[k] for k in ("arquivo", "kb_compacto", "fontes", "site_institucional", "origem", "pncp", "erros", "anexos")})
     det = extrair_deterministico(texto, reg.get("pncp")) if texto else {"itens": {}, "fontes": {}, "documentos_exigidos_texto": [], "metodo": "sem texto"}

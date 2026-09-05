@@ -3615,7 +3615,7 @@ class SystemTests(unittest.TestCase):
             E.COMPLEMENTOS=orig; shutil.rmtree(lab,ignore_errors=True)
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn('id="enq-abas"',html)
-        for x in ("enq-assoc","enq-ed-l1","enq-ed-l2","Relatório da IA","subir informação faltante","abrir o edital ↗","Modelos e anexos do edital","enq-cron-mini","filtro geográfico"): self.assertIn(x,html,x)
+        for x in ("enq-assoc","Relatório da IA","subir informação","edital ↗","filtro geográfico","sug-docs"): self.assertIn(x,html,x)
         d=load_json(pathlib.Path("docs/dashboard-dados.json")); q=d["enquadramento"][0]
         self.assertLess(q["compativeis_geograficamente"],q["editais_abertos_total"]); self.assertTrue(all("subir" in e and "faltam" in e for e in q["editais"]))
 
@@ -3646,7 +3646,7 @@ class SystemTests(unittest.TestCase):
         finally:
             (F.EXTRAIDOS/"lab-fe.json").unlink(missing_ok=True); (F.TEXTOS/"lab-fe.txt.gz").unlink(missing_ok=True)
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("Mini-apresentação","Editais enquadrados após o filtro de IA","enq-ck12","Relatório da IA","site institucional ↗","Modelos e anexos do edital"): self.assertIn(x,html,x)
+        for x in ("Mini-apresentação","Editais enquadrados após o filtro de IA","Relatório da IA","site oficial ↗","sug-itens"): self.assertIn(x,html,x)
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"][0]
         self.assertEqual(len(q["itens"]),12); self.assertIn("para_inscricao",q)
 
@@ -3660,7 +3660,7 @@ class SystemTests(unittest.TestCase):
         r2=F.relatorio({"itens":{"Valor":"x"},"fontes_itens":{"Valor":"texto do edital"},"faltam":[],"tentativas":[{"status":"respondeu","modelo":"h"}],"fontes":[{"url":"u"}],"kb_compacto":3},{},credencial=True)
         self.assertEqual(r2["situacao"],"pesquisa completa"); self.assertIsNone(r2["manual"])
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("Relatório da IA — pesquisa fina do edital","enq-etapas","enq-manual","Mini parecer","function desenhaPerfis","perfil-card","Cartão de visitas","registre o segredo FAROL_AI_API_KEY"): self.assertIn(x,html,x)
+        for x in ("Relatório da IA","enq-manual","sug-parecer","function desenhaPerfis","perfil-card","Cartão de visitas"): self.assertIn(x,html,x)
         self.assertNotIn("O que falta para a inscrição",html)
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"][0]
         self.assertEqual(sum(1 for i in q["itens"] if i["valor"]),12); self.assertTrue(q["relatorio_ia"]["completo"])
@@ -3691,6 +3691,22 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn("<b>Local de atuação</b>",html)
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]; self.assertIn("por_nivel",q); self.assertIn("candidatos_aprovacao",q)
         self.assertTrue(pathlib.Path("config/municipios_maiores.json").exists()); self.assertEqual(len(load_json(pathlib.Path("config/municipios_maiores.json"))["maiores"]["GO"]),50)
+
+
+    def test_pncp_so_divulgacao_emendas_pessoais_decisoes_e_visual_dos_sugeridos(self):
+        src=open("src/fonte_edital.py",encoding="utf-8").read()
+        self.assertNotIn("arquivos/{n}",src); self.assertNotIn("/compras/{ano}/{seq}/arquivos",src)        # nada é baixado do PNCP
+        self.assertIn("def site_institucional_do_orgao",src)
+        from src.fonte_edital import conhecimento_regramento
+        c=conhecimento_regramento({"titulo":"Emenda Parlamentar Estadual — Goiás — captação 2026","fonte_nome":"ALEGO"})
+        self.assertIn("2.500.000,00",c["itens"]["Valor"]); self.assertIn("não há publicação de resultado",c["itens"]["Resultado"]); self.assertIn("não se aplica",c["itens"]["Prazo de recurso"])
+        self.assertFalse(conhecimento_regramento({"titulo":"Emenda Parlamentar Estadual — Goiás","fonte_nome":"x"})["itens"].get("Valor","").startswith("variável"))  # não confunde com Rouanet
+        r=load_json(pathlib.Path("config/regramentos.json")); self.assertTrue(all(g.get("tipo_captacao","").startswith("pessoal") for g in r["regramentos"] if "emenda" in g["fonte"].lower()))
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("window.decidirEdital","inscrição realizada","dispensar","sug-titulo","sug-dados","Relatório da IA","Documentos necessários","class=\"dropzone\"","function ligaDropzones","window.alternaLargura","⇔ largura"): self.assertIn(x,html,x)
+        self.assertNotIn("enq-cron-mini",html.split("function htmlEditaisEnquadrados")[1].split("function desenhaEnquadramento")[0])
+        q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]
+        em=[e for e in q["editais"] if "Emenda" in (e["titulo"] or "")]; self.assertTrue(em and all(sum(1 for i in e["itens"] if i["valor"])==12 for e in em))
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

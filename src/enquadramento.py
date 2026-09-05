@@ -310,6 +310,8 @@ def run(limite_ia: int = 8) -> dict:
         # INVESTIGAÇÃO IMEDIATA na fonte original (PNCP → arquivos oficiais / site institucional → PDF → texto compacto → extração → IA barata → reforço)
         if (not ex or not ex.get("completo")) and n_inv < limite_ia and not any(t.get("em", "")[:10] == hoje.isoformat() for t in (ex.get("tentativas") or [])):
             ex = investigar(e, _chamar, modelos_extracao); n_inv += 1
+        elif not ex:
+            ex = investigar(e, lambda *a, **k: {"status": "adiado"}, [], rede=False)      # sem rede/IA: semente + conhecimento do regramento, já
             resumo["ia_itens"] += sum(1 for t in ex.get("tentativas", []) if t.get("em", "")[:10] == hoje.isoformat())
         faltam = itens_faltantes(e); f["faltam"] = faltam
         f["tentativas"] = ex.get("tentativas") or f.get("tentativas") or []
@@ -345,7 +347,9 @@ def run(limite_ia: int = 8) -> dict:
             write_json(fp, par)
     # ESQUELETO por associação: só os editais que passam no filtro geográfico
     for a in assoc:
-        geo = [e for e in abertos if filtro_geografico(a, e)]
+        dec_p = ROOT / "dados/associacoes" / a["_pasta"] / "decisoes_editais.json"
+        dec = load_json(dec_p) if dec_p.exists() else {}
+        geo = [e for e in abertos if filtro_geografico(a, e) and dec.get(e["id"]) != "dispensado"]
         cand = [e for e in abertos if not filtro_geografico(a, e) and candidato_aprovacao(a, e)]
         lista = []
         for e in geo:
@@ -368,6 +372,7 @@ def run(limite_ia: int = 8) -> dict:
                           "fonte_original": f.get("fonte_original"), "documentos_exigidos": f.get("documentos_exigidos_ia") or [],
                           "para_inscricao": _para_inscricao(a, f.get("documentos_exigidos_ia") or [], faltam),
                           "relatorio_ia": (extraido(e) or {}).get("relatorio"), "mini_parecer": (extraido(e) or {}).get("mini_parecer"),
+                          "decisao": dec.get(e["id"]), "valor": (f.get("itens") or {}).get("Valor") or e.get("valor_texto"), "orgao": (f.get("itens") or {}).get("Órgão / financiador") or e.get("fonte_nome"),
                           "subir": f"https://github.com/amcjardimamerica-arch/Eldorado/new/main/dados/editais/complementos/{e['id']}?filename=complemento.md&value="
                                    + __import__("urllib.parse").parse.quote("\n".join(f"- {i}: " for i in faltam) or "- (nada falta)")})
         lista.sort(key=lambda x: (x["situacao"] != "aberta", -x["nota"]))
