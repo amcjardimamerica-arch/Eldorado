@@ -3601,9 +3601,9 @@ class SystemTests(unittest.TestCase):
 
     def test_enquadramento_tela_unica_filtro_geografico_e_complementos(self):
         from src import enquadramento as E
-        a={"territorios":["GO","GO/Goiânia"]}
-        self.assertTrue(E.filtro_geografico(a,{"uf":"GO"})); self.assertFalse(E.filtro_geografico(a,{"uf":"SP"}))
-        self.assertTrue(E.filtro_geografico(a,{"uf":None,"abrangencia":"nacional"})); self.assertFalse(E.filtro_geografico(a,{"uf":None}))
+        a={"_pasta":"amc-jardim-america","territorios":["GO","GO/Goiânia"]}
+        self.assertTrue(E.filtro_geografico(a,{"uf":"GO","nivel":"estadual"})); self.assertFalse(E.filtro_geografico(a,{"uf":"SP"}))
+        self.assertTrue(E.filtro_geografico(a,{"uf":None,"abrangencia":"nacional"})); self.assertFalse(E.filtro_geografico(a,{"uf":None,"nivel":"municipal"}))
         import tempfile, shutil
         orig=E.COMPLEMENTOS; lab=pathlib.Path(tempfile.mkdtemp())
         try:
@@ -3674,6 +3674,23 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(d["presidente"],a["presidente"]); self.assertIn("verificacao",d["utilidade_publica"]["estadual"])
         self.assertIn(d["utilidade_publica"]["estadual"]["verificacao"]["status"][:10],("confirmada","lei locali","não verifi"))   # nunca afirma sem ler a fonte
         html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("<b>Utilidade pública</b>",html)
+
+
+    def test_perfil_caixa_inteira_abrangencia_manual_e_candidatos_rosa(self):
+        from src import enquadramento as E
+        a={"_pasta":"amc-jardim-america","territorios":["GO","GO/Goiânia"]}
+        ab=E.abrangencia(a); self.assertTrue(ab["nacional"]); self.assertIn("GO",ab["estados"]); self.assertIn("GO/Goiânia",ab["municipios_aprovados"]); self.assertIn("GO/Anápolis",ab["municipios_candidatos"])
+        self.assertEqual(E._cidade_de({"titulo":"A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO"}),"Novo Gama")
+        novo_gama={"uf":"GO","nivel":"municipal","abrangencia":"estadual","titulo":"PREFEITURA MUNICIPAL DE NOVO GAMA - GO"}
+        self.assertFalse(E.filtro_geografico(a,novo_gama)); self.assertTrue(E.candidato_aprovacao(a,novo_gama))     # rosa até aprovar
+        self.assertTrue(E.filtro_geografico(a,{"uf":"GO","nivel":"estadual","titulo":"Edital Goyazes"}))
+        self.assertTrue(E.filtro_geografico(a,{"uf":None,"nivel":"federal","titulo":"Rouanet"}))
+        self.assertFalse(E.filtro_geografico(a,{"uf":"SP","nivel":"estadual","titulo":"ProAC"}))
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("perfil-editais","incluir editais relevantes","window.abrirAbrangencia=function","window.aprovarCidade","window.add50","exportarAbrangencia","#FF1493","Editais que enquadram","function htmlEditaisEnquadrados"): self.assertIn(x,html,x)
+        self.assertNotIn("<b>Local de atuação</b>",html)
+        q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]; self.assertIn("por_nivel",q); self.assertIn("candidatos_aprovacao",q)
+        self.assertTrue(pathlib.Path("config/municipios_maiores.json").exists()); self.assertEqual(len(load_json(pathlib.Path("config/municipios_maiores.json"))["maiores"]["GO"]),50)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

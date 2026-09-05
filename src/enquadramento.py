@@ -82,15 +82,67 @@ def complementos(e: dict) -> dict:
     return saida
 
 
+def abrangencia(a: dict) -> dict:
+    arq = ROOT / "dados/associacoes" / a["_pasta"] / "abrangencia.json"
+    base = {"nacional": True, "estados": [], "municipios_aprovados": [], "municipios_candidatos": []}
+    if arq.exists():
+        base.update({k: v for k, v in load_json(arq).items() if k in base})
+    # cidades candidatas: as 50 maiores do estado entram automaticamente (rosa até aprovação)
+    mm = ROOT / "config/municipios_maiores.json"
+    maiores = load_json(mm).get("maiores", {}) if mm.exists() else {}
+    for uf in base["estados"]:
+        for c in maiores.get(uf, []):
+            k = f"{uf}/{c}"
+            if k not in base["municipios_candidatos"] and k not in base["municipios_aprovados"]: base["municipios_candidatos"].append(k)
+    # a atuação do perfil também vale
+    for t in (a.get("territorios") or []):
+        partes = t.split("/")
+        if len(partes) == 1 and partes[0] != "BR" and partes[0] not in base["estados"]: base["estados"].append(partes[0])
+        if len(partes) >= 2 and "/".join(partes[:2]) not in base["municipios_aprovados"]: base["municipios_aprovados"].append("/".join(partes[:2]))
+    return base
+
+
+def _cidade_de(e: dict) -> str | None:
+    """Cidade do edital: campo municipio; 'Diário Oficial de X (UF)'; 'PREFEITURA
+    MUNICIPAL DE X'; 'Município de X'; 'Prefeitura de X' no título/fonte/objeto."""
+    if e.get("municipio"):
+        return e["municipio"]
+    alvo = " ".join(str(e.get(k) or "") for k in ("titulo", "fonte_nome", "objeto"))
+    for rx in (r"Di[áa]rio Oficial de ([^()—\-]+?)\s*\(", r"PREFEITURA (?:MUNICIPAL )?D[EA] ([A-ZÀ-Ú][A-ZÀ-Úa-zà-ú' ]{2,40}?)(?:\s*[-–—/(]|\s+TORNA|\s+GO\b|\s*$|,)",
+               r"MUNIC[ÍI]PIO DE ([A-ZÀ-Ú][A-ZÀ-Úa-zà-ú' ]{2,40}?)(?:\s*[-–—/(,]|\s+[A-Z]{2}\b|\s*$)", r"Prefeitura (?:Municipal )?de ([A-ZÀ-Ú][\wà-ú' ]{2,40}?)(?:\s*[-–—/(,]|\s*$)", r"C[âa]mara Municipal de ([A-ZÀ-Ú][\wà-ú' ]{2,40}?)(?:\s*[-–—/(,]|\s*$)"):
+        m = re.search(rx, alvo)
+        if m:
+            return m.group(1).strip().title().replace(" De ", " de ").replace(" Do ", " do ").replace(" Da ", " da ")
+    return None
+
+
 def filtro_geografico(a: dict, e: dict) -> bool:
-    """Primeiro filtro (regra do titular): a atuação geográfica do edital tem de
-    caber na da associação — UF do edital dentro dos territórios da associação,
-    ou edital nacional."""
-    terr = [t.upper() for t in (a.get("territorios") or [])]
+    """Regra do titular: nacional vale para todo o Brasil; estadual pega editais
+    do estado (inclusive regionais que o contenham); municipal só as cidades
+    aprovadas. Editais de cidades CANDIDATAS (50 maiores) não passam — ficam em
+    rosa choque para aprovação manual (ver candidato_aprovacao)."""
+    ab = abrangencia(a)
     uf = e.get("uf")
     if not uf:
-        return e.get("abrangencia") == "nacional" or e.get("nivel") == "federal" or "BR" in terr
-    return uf in terr or any(t.startswith(uf + "/") for t in terr)
+        return bool(ab["nacional"]) and (e.get("abrangencia") == "nacional" or e.get("nivel") == "federal" or e.get("nivel") is None)
+    ufs = {uf} | set(e.get("ufs") or [])
+    if not (ufs & set(ab["estados"])):
+        return False
+    cidade = _cidade_de(e)
+    if e.get("nivel") in ("estadual", "federal", "regional") or (not cidade and e.get("abrangencia") in ("estadual", "regional")):
+        return True
+    if not cidade:
+        return True                                   # edital do estado sem cidade identificada: vale para o estado
+    return f"{uf}/{cidade}" in ab["municipios_aprovados"] or e.get("nivel") is None and cidade.lower() in {c.split("/")[-1].lower() for c in ab["municipios_aprovados"]}
+
+
+def candidato_aprovacao(a: dict, e: dict) -> bool:
+    """Edital de cidade candidata (não aprovada) do estado da associação."""
+    ab = abrangencia(a); uf = e.get("uf"); cidade = _cidade_de(e)
+    if not uf or not cidade or uf not in ab["estados"]:
+        return False
+    chave = f"{uf}/{cidade}"
+    return chave in ab["municipios_candidatos"] and chave not in ab["municipios_aprovados"]
 
 
 def extraido(e: dict) -> dict:
@@ -294,6 +346,7 @@ def run(limite_ia: int = 8) -> dict:
     # ESQUELETO por associação: só os editais que passam no filtro geográfico
     for a in assoc:
         geo = [e for e in abertos if filtro_geografico(a, e)]
+        cand = [e for e in abertos if not filtro_geografico(a, e) and candidato_aprovacao(a, e)]
         lista = []
         for e in geo:
             fp = ROOT / "dados/associacoes" / a["_pasta"] / "farol" / f"{e['id']}.json"
@@ -320,7 +373,9 @@ def run(limite_ia: int = 8) -> dict:
         lista.sort(key=lambda x: (x["situacao"] != "aberta", -x["nota"]))
         write_json(ROOT / "dados/associacoes" / a["_pasta"] / "enquadramento.json",
                    {"associacao": a.get("id"), "nome": a.get("nome"), "territorios": a.get("territorios"), "areas": a.get("areas"), "gerado_em": now_iso(),
-                    "editais_abertos_total": len(abertos), "compativeis_geograficamente": len(geo),
+                    "editais_abertos_total": len(abertos), "compativeis_geograficamente": len(geo), "abrangencia": abrangencia(a),
+                    "candidatos_aprovacao": [{"id": e["id"], "titulo": e.get("titulo"), "cidade": _cidade_de(e), "uf": e.get("uf"), "area": e.get("area"), "fim": e.get("fim"), "url": e.get("url"), "situacao": e.get("situacao_inscricao")} for e in cand[:60]],
+                    "por_nivel": {"nacional": sum(1 for e in geo if not e.get("uf")), "estadual": sum(1 for e in geo if e.get("uf") and (e.get("nivel") in ("estadual", "regional") or not _cidade_de(e))), "municipal": sum(1 for e in geo if e.get("uf") and _cidade_de(e) and e.get("nivel") not in ("estadual", "regional"))},
                     "filtro": "atuação geográfica do edital ⊆ atuação da associação (UF ou nacional)", "editais": lista})
     est["execucoes"] = (est.get("execucoes") or [])[-30:] + [resumo]
     write_json(ESTADO, est)

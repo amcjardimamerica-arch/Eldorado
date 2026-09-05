@@ -308,6 +308,9 @@ box-shadow:0 1px 3px #0002}
 .enq-manual{margin-top:6px;padding:6px 8px;border:1px solid var(--urgente);border-radius:8px;background:#FDECEC}
 .enq-parecer{margin-top:6px;padding:6px 8px;border-left:3px solid #0E2A55;background:#F4F7FB;border-radius:6px}
 .tag.ok{border-color:var(--ok);color:var(--ok)}.tag.pend{border-color:var(--alerta);color:#8a5a00}
+.perfil-card{grid-template-areas:"foto corpo" "editais editais"}.perfil-card>.perfil-foto{grid-area:foto}.perfil-card>.perfil-corpo{grid-area:corpo}
+.perfil-editais{grid-area:editais;border:1px solid var(--linha);border-radius:12px;padding:10px 12px;background:#fff;margin-top:6px}
+.enq-ed.cand{background:#FFF0F7}
 .enq-mini{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:8px 10px;border:1px solid var(--linha);border-radius:10px;background:#fff;font-size:12.5px;line-height:1.55;margin-top:8px}
 .enq-ck12{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:5px;margin-top:8px}
 .enq-it{display:grid;grid-template-columns:14px 1fr;column-gap:6px;padding:4px 7px;border-radius:7px;background:#F6F7F9;font-size:11.5px;border:1px solid var(--linha)}.enq-it b{font-size:11px}.enq-it small{grid-column:2;color:var(--suave);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -876,10 +879,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260905181100"></script>
-<script src="mapa-arte.js?v=20260905181100"></script>
-<script src="dashboard-dados.enc.js?v=20260905181100"></script>
-<script src="dashboard-dados.js?v=20260905181100"></script>
+<script src="mapa-brasil.js?v=20260905181816"></script>
+<script src="mapa-arte.js?v=20260905181816"></script>
+<script src="dashboard-dados.enc.js?v=20260905181816"></script>
+<script src="dashboard-dados.js?v=20260905181816"></script>
 <script>
 (function(){
 "use strict";
@@ -1929,23 +1932,76 @@ window.fdocCopiar=function(id){const d=(D.documentos_associacoes||[]).find(x=>x.
 function desenhaPerfis(){
   const box=$("farol-perfis"); if(!box)return; const L=D.documentos_associacoes||[]; const E=D.enquadramento||[];
   if(!L.length){box.innerHTML="";return;}
-  box.innerHTML=L.map(d=>{const g=d.governanca||{},s=d.sede||{},c=d.contato||{},q=E.find(x=>x.associacao===d.id)||{};
-    const pres=(g.diretoria||[]).find(m=>/presid/i.test(m.cargo||""));
+  const ROSA="#FF1493";
+  box.innerHTML=L.map(d=>{const g=d.governanca||{},s=d.sede||{},c=d.contato||{},q=E.find(x=>x.associacao===d.id)||{editais:[],por_nivel:{},candidatos_aprovacao:[],abrangencia:{}};
+    const pres=d.presidente||((g.diretoria||[]).find(m=>/presid/i.test(m.cargo||""))||{}).nome;
     const ini=(d.razao_social||d.id).split(/\s+/).filter(w=>/^[A-ZÀ-Ú]/.test(w)).slice(0,3).map(w=>w[0]).join("")||"A";
     const foto=d.imagem_perfil?`<img src="${esc(d.imagem_perfil)}" alt="" class="perfil-foto">`:`<div class="perfil-foto mono" title="sem foto autorizada — informe 'imagem_perfil' no perfil da associação">${esc(ini)}</div>`;
-    return `<div class="perfil-card">
+    const pn=q.por_nivel||{}; const ab=abrangenciaLocal(d.id,q.abrangencia||{});
+    const cand=(q.candidatos_aprovacao||[]).filter(x=>!ab.municipios_aprovados.includes(`${x.uf}/${x.cidade}`));
+    return `<div class="perfil-card" data-assoc="${esc(d.id)}">
       ${foto}
       <div class="perfil-corpo">
         <div class="perfil-nome">${esc(d.razao_social||d.id)}</div>
-        <div class="perfil-linha"><b>CNPJ</b> ${esc(d.cnpj||"—")} · <b>Presidente</b> ${pres?esc(pres.nome):'<span class=meta>pendente — informar na ata de eleição</span>'} · <b>Mandato</b> ${g.mandato&&g.mandato.inicio?br(g.mandato.inicio)+" → "+br(g.mandato.fim):'<span class=meta>pendente</span>'}</div>
-        <div class="perfil-linha"><b>Local de atuação</b> ${(d.atuacao_geografica||[]).map(esc).join(" · ")} · <b>Sede</b> ${esc([s.bairro,s.municipio&&s.uf?s.municipio+"/"+s.uf:null].filter(Boolean).join(", ")||"—")}</div>
+        <div class="perfil-linha"><b>CNPJ</b> ${esc(d.cnpj||"—")} · <b>Presidente</b> ${pres?esc(pres):'<span class=meta>pendente</span>'} · <b>Mandato</b> ${g.mandato&&g.mandato.inicio?br(g.mandato.inicio)+" → "+br(g.mandato.fim):'<span class=meta>pendente</span>'} · <b>Sede</b> ${esc([s.bairro,s.municipio&&s.uf?s.municipio+"/"+s.uf:null].filter(Boolean).join(", ")||"—")}</div>
+        <div class="perfil-linha"><b>Editais que enquadram</b> ${q.compativeis_geograficamente??0} de ${q.editais_abertos_total??0}: <span class=tag>${pn.nacional??0} nacionais</span> <span class=tag>${pn.estadual??0} estaduais</span> <span class=tag>${pn.municipal??0} municipais</span>${cand.length?` <span class=tag style="border-color:${ROSA};color:${ROSA}">${cand.length} em cidades candidatas — aprovar</span>`:""}
+          <button class="fdoc-bt principal" style="margin-left:8px" onclick="abrirAbrangencia('${esc(d.id)}')">＋ incluir editais relevantes</button></div>
         <div class="perfil-linha">${(d.afinidades||[]).map(a=>`<span class=tag style="color:${AREA(a).cor};border-color:${AREA(a).cor}66">${esc(AREA(a).rotulo)}</span>`).join(" ")}</div>
         ${d.utilidade_publica?`<div class="perfil-linha"><b>Utilidade pública</b> ${Object.entries(d.utilidade_publica).map(([k,v])=>`${esc(k)}: ${esc((v||{}).lei||"")} <span class=meta>${esc((v||{}).status||"")}${(v||{}).verificacao?" — "+esc(v.verificacao.status):""}</span>${(v||{}).verificacao&&v.verificacao.url?` <a href="${esc(v.verificacao.url)}" target=_blank rel="noopener noreferrer">fonte ↗</a>`:""}`).join(" · ")}</div>`:""}
-        <div class="perfil-cartao"><b>Cartão de visitas.</b> ${esc(d.razao_social||"")}, ${esc((d.natureza_juridica||"").replace(/_/g," "))} fundada em ${d.fundada_em?br(d.fundada_em):"—"} (${d.anos_existencia??"—"} anos), atua em ${(d.afinidades||[]).slice(0,5).map(a=>AREA(a).rotulo.toLowerCase()).join(", ")}${(d.afinidades||[]).length>5?" e outras áreas":""}, com experiência em ${(d.experiencias||[]).slice(0,4).map(x=>x.replace(/_/g," ")).join(", ")}. Governança: ${(g.cargos||[]).map(x=>x.replace(/_/g," ")).join(", ")}. ${(d.certificacoes||[]).length?"Certificações: "+d.certificacoes.join(", ")+".":""}${(d.certificacoes_a_confirmar||[]).length?" A confirmar: "+d.certificacoes_a_confirmar.join(", ")+".":""} Contato: ${esc(Object.values(c).join(" · ")||"—")}.</div>
-        <div class="perfil-rodape"><span class=meta>${q.compativeis_geograficamente??0} edital(is) enquadrado(s) de ${q.editais_abertos_total??0}</span> · <span class=meta>${(d.prontidao||{}).certidoes_validas??0}/${(d.prontidao||{}).certidoes_total??5} certidões · ${(d.prontidao||{}).registrados_enviados??0}/${(d.prontidao||{}).registrados_total??6} registrados</span> · <span class="verlink" onclick="mostra('f-documentos')">Documentos ›</span></div>
+        <div class="perfil-cartao"><b>Cartão de visitas.</b> ${esc(d.razao_social||"")}, ${esc((d.natureza_juridica||"").replace(/_/g," "))} fundada em ${d.fundada_em?br(d.fundada_em):"—"} (${d.anos_existencia??"—"} anos), atua em ${(d.afinidades||[]).slice(0,5).map(a=>AREA(a).rotulo.toLowerCase()).join(", ")}${(d.afinidades||[]).length>5?" e outras áreas":""}, com experiência em ${(d.experiencias||[]).slice(0,4).map(x=>x.replace(/_/g," ")).join(", ")}. Governança: ${(g.cargos||[]).map(x=>x.replace(/_/g," ")).join(", ")}.${g.remuneracao?" "+esc(g.remuneracao)+".":""} Contato: ${esc(Object.values(c).join(" · ")||"—")}.</div>
+        <div class="perfil-rodape"><span class=meta>${(d.prontidao||{}).certidoes_validas??0}/${(d.prontidao||{}).certidoes_total??5} certidões · ${(d.prontidao||{}).registrados_enviados??0}/${(d.prontidao||{}).registrados_total??6} registrados</span> · <span class="verlink" onclick="mostra('f-documentos')">Documentos ›</span></div>
+      </div>
+      <div class="perfil-editais"><div class="fdoc-t">Editais enquadrados pela IA para esta associação <span class=meta>— ${(q.editais||[]).length} após o filtro geográfico${cand.length?` · <span style="color:${ROSA};font-weight:700">${cand.length} em rosa aguardam sua aprovação</span>`:""}</span></div>
+        <div id="perfil-editais-${esc(d.id)}"></div>
+        ${cand.length?`<div class="fdoc-t" style="margin-top:10px;color:${ROSA}">Cidades candidatas (50 maiores de ${(ab.estados||[]).join(", ")}) com edital identificado — aprovar manualmente</div>
+          ${cand.slice(0,30).map(x=>`<div class="enq-ed cand" style="border-color:${ROSA}"><div class="enq-ed-l1" style="grid-template-columns:1fr auto"><span class="enq-tit"><b style="color:${ROSA}">${esc(x.cidade)}/${esc(x.uf)}</b> <small>${esc((x.titulo||"").slice(0,90))} · ${esc(AREA(x.area).rotulo)}${x.fim?" · até "+br(x.fim):""}</small></span>
+            <span><button class="fdoc-bt" onclick="aprovarCidade('${esc(d.id)}','${esc(x.uf)}/${esc(x.cidade)}')">✓ aprovar cidade</button> ${x.url?`<a class="fdoc-bt" href="${esc(x.url)}" target=_blank rel="noopener noreferrer">edital ↗</a>`:""}</span></div></div>`).join("")}`:""}
       </div></div>`;}).join("");
+  // editais enquadrados: a mesma renderização do Enquadramento, dentro da caixa do perfil
+  E.forEach(a=>{const alvo=$(`perfil-editais-${a.associacao}`); if(alvo)alvo.innerHTML=htmlEditaisEnquadrados(a);});
 }
+/* abrangência manual (nacional / estados / municípios) — editada aqui, exportada para o repositório */
+function abrangenciaLocal(id,base){const e=JSON.parse(localStorage.getItem("amc_abrangencia_"+id)||"null");return e||{nacional:base.nacional!==false,estados:base.estados||[],municipios_aprovados:base.municipios_aprovados||[],municipios_candidatos:base.municipios_candidatos||[]};}
+function salvaAbrangencia(id,ab){ab.atualizado_em=new Date().toISOString().slice(0,10);localStorage.setItem("amc_abrangencia_"+id,JSON.stringify(ab));desenhaPerfis();}
+window.aprovarCidade=function(id,chave){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});if(!ab.municipios_aprovados.includes(chave))ab.municipios_aprovados.push(chave);ab.municipios_candidatos=ab.municipios_candidatos.filter(c=>c!==chave);salvaAbrangencia(id,ab);};
+window.abrirAbrangencia=function(id){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});
+  const UFS=["AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"];
+  abreModal(`<h3 style="margin:0">Incluir editais relevantes — abrangência</h3><div class=meta>nacional = todos os municípios do Brasil · estadual = editais do estado e regionais que o contenham · municipal = cidades aprovadas (as 50 maiores entram como candidatas, em rosa, até você aprovar)</div>`,
+    `<label style="display:block;margin:8px 0"><input type=checkbox id="ab-nac" ${ab.nacional?"checked":""}> Editais de nível nacional (Brasil inteiro)</label>
+     <div><b>Estados</b> <span class=meta>(clique para incluir/retirar)</span><div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0">${UFS.map(u=>`<button class="fdoc-bt ${ab.estados.includes(u)?"principal":""}" onclick="toggleUF('${esc(id)}','${u}')">${u}</button>`).join("")}</div></div>
+     <div><b>Municípios aprovados</b> <span class=meta>${ab.municipios_aprovados.length}</span><div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0">${ab.municipios_aprovados.map(m=>`<span class=tag>${esc(m)} <span style="cursor:pointer" onclick="retiraCidade('${esc(id)}','${esc(m)}')">✕</span></span>`).join("")||'<span class=meta>nenhum</span>'}</div>
+       <input id="ab-cidade" placeholder="UF/Cidade (ex.: GO/Anápolis)" style="padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit;min-width:240px"> <button class="fdoc-bt" onclick="addCidade('${esc(id)}')">＋ adicionar</button>
+       ${ab.estados.map(u=>`<button class="fdoc-bt" onclick="add50('${esc(id)}','${u}')">＋ 50 maiores de ${u} como candidatas</button>`).join(" ")}</div>
+     <div style="margin-top:10px"><b>Cidades candidatas (rosa)</b> <span class=meta>${ab.municipios_candidatos.length}</span> — editais delas aparecem em rosa choque no perfil até a aprovação.</div>
+     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="fdoc-bt principal" onclick="exportarAbrangencia('${esc(id)}')">⬇ exportar abrangencia.json</button><a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="https://github.com/amcjardimamerica-arch/Eldorado/upload/main/dados/associacoes/${esc(id)}/">⬆ enviar ao repositório</a><span class=meta>o filtro do sistema usa o arquivo do repositório na próxima saída</span></div>`);
+  $("ab-nac").onchange=()=>{ab.nacional=$("ab-nac").checked;salvaAbrangencia(id,ab);};};
+window.toggleUF=function(id,u){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});ab.estados=ab.estados.includes(u)?ab.estados.filter(x=>x!==u):[...ab.estados,u];salvaAbrangencia(id,ab);abrirAbrangencia(id);};
+window.addCidade=function(id){const v=($("ab-cidade").value||"").trim();if(!/^[A-Z]{2}\/.+/.test(v)){alert("Use o formato UF/Cidade, ex.: GO/Anápolis");return;}const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});if(!ab.municipios_aprovados.includes(v))ab.municipios_aprovados.push(v);salvaAbrangencia(id,ab);abrirAbrangencia(id);};
+window.retiraCidade=function(id,m){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});ab.municipios_aprovados=ab.municipios_aprovados.filter(x=>x!==m);salvaAbrangencia(id,ab);abrirAbrangencia(id);};
+window.add50=function(id,u){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});
+  const cur=(D.municipios_maiores||{})[u]||[...new Set(FA_ABERTAS?FA_ABERTAS.filter(x=>x.uf===u).map(x=>cid(x.titulo)).filter(Boolean):[])].slice(0,50);
+  cur.forEach(c=>{const k=`${u}/${c}`;if(!ab.municipios_aprovados.includes(k)&&!ab.municipios_candidatos.includes(k))ab.municipios_candidatos.push(k);});salvaAbrangencia(id,ab);abrirAbrangencia(id);};
+window.exportarAbrangencia=function(id){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});ab.nota="Abrangência definida pelo titular no painel";
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(ab,null,2)],{type:"application/json"}));a.download="abrangencia.json";a.click();};
 /* ================= ENQUADRAMENTO (Farol, fases 3 e 4) ================= */
+function htmlEditaisEnquadrados(a){const COR={verde:"var(--ok)",amarelo:"var(--alerta)",vermelho:"var(--urgente)"};
+  return (a.editais||[]).map(e=>{const s=e.simulador||{},cr=e.cronograma||[],ia=e.ia,pi=e.para_inscricao||{},fo=e.fonte_original||{};
+      return `<div class="enq-ed" data-id="${esc(e.id)}">
+        <div class="enq-ed-l1"><span class="assoc-led" style="background:${COR[e.farol]}"></span><b class="assoc-nota" title="aderência ${ia?"(parecer de IA)":"(determinística — piso)"}">${e.nota}</b>
+          <span class="enq-tit"><b>${esc((e.titulo||"").slice(0,90))}</b><small>${esc(AREA(e.area).rotulo)} · ${esc(e.uf||"BR")} · ${e.situacao==="aberta"?'<b style="color:#9a5a00">aberta</b>':"possível"}${e.fim?" · inscrições até "+br(e.fim):""} · ${esc(e.fonte||"")}${fo.site_institucional?` · <a href="${esc(fo.site_institucional)}" target=_blank rel="noopener noreferrer">site institucional ↗</a>`:""}${fo.kb?` · texto do edital guardado (${fo.kb} KB)`:""}</small></span>
+          <span class="enq-ia">${ia?`<b>IA:</b> chances ${esc(String(ia.chances??"—"))} · ${esc(String(ia.pontuacao_estimada||"").slice(0,48))}`:`<b>Simulador:</b> ${s.estimativa??"—"} pts <small>(${esc(s.origem_criterios||"")})</small>`}</span>
+          <span class=meta>${e.fila&&e.fila.tentativas?`IA ${e.fila.tentativas}× · ${esc(e.fila.status||"")}`:"IA: investigação na próxima saída"}</span></div>
+        <div class="enq-ck12">${(e.itens||[]).map(i=>`<div class="enq-it ${i.valor?"ok":"falta"}" title="${esc(i.fonte||"não obtido")}"><span class="ck-st">${i.valor?"✓":"✗"}</span><b>${esc(i.item)}</b><small>${i.valor?esc(String(i.valor).slice(0,60)):"—"}</small></div>`).join("")}</div>
+        ${(e.regras||e.pontuacao_texto||(e.requisitos||[]).length||(e.pontuacao||[]).length)?`<div class="enq-regras">${e.regras?`<div><b>Regras:</b> ${esc(String(e.regras).slice(0,400))}</div>`:""}${(e.requisitos||[]).length?`<div><b>Requisitos:</b> ${e.requisitos.slice(0,8).map(esc).join("; ")}</div>`:""}${(e.pontuacao||[]).length?`<div><b>Pontuação:</b> ${e.pontuacao.map(c=>esc(c.criterio)+(c.peso!=null?" ("+c.peso+")":"")).join(" · ")}</div>`:e.pontuacao_texto?`<div><b>Pontuação (texto):</b> ${esc(String(e.pontuacao_texto).slice(0,300))}</div>`:""}</div>`:""}
+        <div class="enq-ed-l2">
+          <div class="enq-relat"><b>Relatório da IA — pesquisa fina do edital</b> ${(()=>{const r=e.relatorio_ia;if(!r)return '<span class=meta>· ainda não investigado (próxima saída)</span>';return `<span class="tag ${r.completo?"ok":"pend"}">${esc(r.situacao)}</span>`;})()}
+            ${e.relatorio_ia?`<ul class="enq-etapas">${e.relatorio_ia.etapas.map(x=>`<li class="${x.ok?"ok":"falha"}"><span>${x.ok?"✓":"✗"}</span> <b>${esc(x.etapa)}</b> — ${x.link?`<a href="${esc(x.link)}" target=_blank rel="noopener noreferrer">${esc(x.detalhe.slice(0,90))} ↗</a>`:esc(x.detalhe.slice(0,160))}${x.acao==="registrar_credencial"?' <b style="color:var(--urgente)">— registre o segredo FAROL_AI_API_KEY no GitHub para a IA rodar</b>':""}</li>`).join("")}</ul>`:""}
+            ${e.relatorio_ia&&e.relatorio_ia.manual?`<div class="enq-manual"><b>Busca manual necessária</b> — ${esc(e.relatorio_ia.manual.motivo)}.<br>Itens: ${e.relatorio_ia.manual.itens.map(esc).join(", ")}.<br>${e.relatorio_ia.manual.links.map(l=>`<a href="${esc(l)}" target=_blank rel="noopener noreferrer">${esc(l.replace(/^https?:\/\//,"").slice(0,48))} ↗</a>`).join(" · ")}<br><a class="fdoc-bt principal" href="${esc(e.subir)}" target=_blank rel="noopener noreferrer">⬆ subir informação faltante</a></div>`:""}
+            ${e.mini_parecer?`<div class="enq-parecer"><b>Mini parecer${e.ia?" (conselho Fable 5.1)":""}:</b> ${esc(String(e.mini_parecer).slice(0,520))}${e.ia&&e.ia.decisao?`<br><b>Decisão:</b> ${esc(String(e.ia.decisao).slice(0,300))}`:""}${e.ia&&(e.ia.riscos||[]).length?`<br><b>Riscos:</b> ${e.ia.riscos.slice(0,3).map(esc).join("; ")}`:""}</div>`:""}
+            <div style="margin-top:4px">${e.url?`<a class="fdoc-bt" href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir o edital ↗</a> `:""}${(e.para_subir||[]).length?`<span class=meta>para subir a nota: ${e.para_subir.slice(0,3).map(esc).join("; ")}</span>`:""}</div></div>
+          <div class="enq-cron-mini">${cr.slice().reverse().map(c=>`<span class="${c.atrasado?"atrasado":""}" title="${esc(c.marco)}"><b>${br(c.data).slice(0,5)}</b><small>${esc(c.marco.split(" ")[0])}</small></span>`).join("")||'<span class=meta>sem prazo final</span>'}</div>
+          <div class="enq-modelos"><b>Modelos e anexos do edital:</b> ${(e.modelos_documentos||[]).length?e.modelos_documentos.map(m=>`<a href="${esc(m.url||m.href||"#")}" target=_blank rel="noopener noreferrer">${esc((m.nome||m.titulo||"anexo").slice(0,40))}</a>`).join(" · "):'<span class=meta>ainda não identificados na fonte original</span>'}</div>
+        </div></div>`;}).join("")||'<div class=meta>Nenhum edital aberto passa no filtro geográfico desta associação.</div>';}
 function desenhaEnquadramento(){
   const box=$("enq-corpo"); if(!box)return;
   const E=D.enquadramento||[], Q=D.enquadramento_fila||{}, DOCS=D.documentos_associacoes||[];
@@ -1971,23 +2027,7 @@ function desenhaEnquadramento(){
       <div class="fdoc-pront"><b>${p.certidoes_validas??0}/${p.certidoes_total??5}</b><small>certidões válidas</small><b>${p.registrados_enviados??0}/${p.registrados_total??6}</b><small>registrados</small></div>
     </div>
     <div class=meta style="margin:10px 0 4px"><b>Editais enquadrados após o filtro de IA</b> — filtro geográfico → fonte original do edital (PNCP: arquivos oficiais e site institucional) → texto compacto → extração → IA barata → reforço só se faltar</div>
-    ${(a.editais||[]).map(e=>{const s=e.simulador||{},cr=e.cronograma||[],ia=e.ia,pi=e.para_inscricao||{},fo=e.fonte_original||{};
-      return `<div class="enq-ed" data-id="${esc(e.id)}">
-        <div class="enq-ed-l1"><span class="assoc-led" style="background:${COR[e.farol]}"></span><b class="assoc-nota" title="aderência ${ia?"(parecer de IA)":"(determinística — piso)"}">${e.nota}</b>
-          <span class="enq-tit"><b>${esc((e.titulo||"").slice(0,90))}</b><small>${esc(AREA(e.area).rotulo)} · ${esc(e.uf||"BR")} · ${e.situacao==="aberta"?'<b style="color:#9a5a00">aberta</b>':"possível"}${e.fim?" · inscrições até "+br(e.fim):""} · ${esc(e.fonte||"")}${fo.site_institucional?` · <a href="${esc(fo.site_institucional)}" target=_blank rel="noopener noreferrer">site institucional ↗</a>`:""}${fo.kb?` · texto do edital guardado (${fo.kb} KB)`:""}</small></span>
-          <span class="enq-ia">${ia?`<b>IA:</b> chances ${esc(String(ia.chances??"—"))} · ${esc(String(ia.pontuacao_estimada||"").slice(0,48))}`:`<b>Simulador:</b> ${s.estimativa??"—"} pts <small>(${esc(s.origem_criterios||"")})</small>`}</span>
-          <span class=meta>${e.fila&&e.fila.tentativas?`IA ${e.fila.tentativas}× · ${esc(e.fila.status||"")}`:"IA: investigação na próxima saída"}</span></div>
-        <div class="enq-ck12">${(e.itens||[]).map(i=>`<div class="enq-it ${i.valor?"ok":"falta"}" title="${esc(i.fonte||"não obtido")}"><span class="ck-st">${i.valor?"✓":"✗"}</span><b>${esc(i.item)}</b><small>${i.valor?esc(String(i.valor).slice(0,60)):"—"}</small></div>`).join("")}</div>
-        ${(e.regras||e.pontuacao_texto||(e.requisitos||[]).length||(e.pontuacao||[]).length)?`<div class="enq-regras">${e.regras?`<div><b>Regras:</b> ${esc(String(e.regras).slice(0,400))}</div>`:""}${(e.requisitos||[]).length?`<div><b>Requisitos:</b> ${e.requisitos.slice(0,8).map(esc).join("; ")}</div>`:""}${(e.pontuacao||[]).length?`<div><b>Pontuação:</b> ${e.pontuacao.map(c=>esc(c.criterio)+(c.peso!=null?" ("+c.peso+")":"")).join(" · ")}</div>`:e.pontuacao_texto?`<div><b>Pontuação (texto):</b> ${esc(String(e.pontuacao_texto).slice(0,300))}</div>`:""}</div>`:""}
-        <div class="enq-ed-l2">
-          <div class="enq-relat"><b>Relatório da IA — pesquisa fina do edital</b> ${(()=>{const r=e.relatorio_ia;if(!r)return '<span class=meta>· ainda não investigado (próxima saída)</span>';return `<span class="tag ${r.completo?"ok":"pend"}">${esc(r.situacao)}</span>`;})()}
-            ${e.relatorio_ia?`<ul class="enq-etapas">${e.relatorio_ia.etapas.map(x=>`<li class="${x.ok?"ok":"falha"}"><span>${x.ok?"✓":"✗"}</span> <b>${esc(x.etapa)}</b> — ${x.link?`<a href="${esc(x.link)}" target=_blank rel="noopener noreferrer">${esc(x.detalhe.slice(0,90))} ↗</a>`:esc(x.detalhe.slice(0,160))}${x.acao==="registrar_credencial"?' <b style="color:var(--urgente)">— registre o segredo FAROL_AI_API_KEY no GitHub para a IA rodar</b>':""}</li>`).join("")}</ul>`:""}
-            ${e.relatorio_ia&&e.relatorio_ia.manual?`<div class="enq-manual"><b>Busca manual necessária</b> — ${esc(e.relatorio_ia.manual.motivo)}.<br>Itens: ${e.relatorio_ia.manual.itens.map(esc).join(", ")}.<br>${e.relatorio_ia.manual.links.map(l=>`<a href="${esc(l)}" target=_blank rel="noopener noreferrer">${esc(l.replace(/^https?:\/\//,"").slice(0,48))} ↗</a>`).join(" · ")}<br><a class="fdoc-bt principal" href="${esc(e.subir)}" target=_blank rel="noopener noreferrer">⬆ subir informação faltante</a></div>`:""}
-            ${e.mini_parecer?`<div class="enq-parecer"><b>Mini parecer${e.ia?" (conselho Fable 5.1)":""}:</b> ${esc(String(e.mini_parecer).slice(0,520))}${e.ia&&e.ia.decisao?`<br><b>Decisão:</b> ${esc(String(e.ia.decisao).slice(0,300))}`:""}${e.ia&&(e.ia.riscos||[]).length?`<br><b>Riscos:</b> ${e.ia.riscos.slice(0,3).map(esc).join("; ")}`:""}</div>`:""}
-            <div style="margin-top:4px">${e.url?`<a class="fdoc-bt" href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir o edital ↗</a> `:""}${(e.para_subir||[]).length?`<span class=meta>para subir a nota: ${e.para_subir.slice(0,3).map(esc).join("; ")}</span>`:""}</div></div>
-          <div class="enq-cron-mini">${cr.slice().reverse().map(c=>`<span class="${c.atrasado?"atrasado":""}" title="${esc(c.marco)}"><b>${br(c.data).slice(0,5)}</b><small>${esc(c.marco.split(" ")[0])}</small></span>`).join("")||'<span class=meta>sem prazo final</span>'}</div>
-          <div class="enq-modelos"><b>Modelos e anexos do edital:</b> ${(e.modelos_documentos||[]).length?e.modelos_documentos.map(m=>`<a href="${esc(m.url||m.href||"#")}" target=_blank rel="noopener noreferrer">${esc((m.nome||m.titulo||"anexo").slice(0,40))}</a>`).join(" · "):'<span class=meta>ainda não identificados na fonte original</span>'}</div>
-        </div></div>`;}).join("")||'<div class=meta>Nenhum edital aberto passa no filtro geográfico desta associação.</div>'}
+    ${htmlEditaisEnquadrados(a)}
   </div>`;}).join("");
   box.querySelectorAll(".enq-ed .enq-tit b").forEach(el=>{el.style.cursor="pointer";el.onclick=()=>{const id=el.closest(".enq-ed").dataset.id;const ed=(D.editais||[]).find(x=>x.id===id);if(ed)detalheEdital(ed);};});
 }
