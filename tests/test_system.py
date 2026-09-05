@@ -2991,9 +2991,10 @@ class SystemTests(unittest.TestCase):
         base={"url":"https://x.gov.br/e","fim":"2026-09-30","uf":"GO","nivel":"estadual"}
         self.assertTrue(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))
         self.assertFalse(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":True}}}))   # projetado não entra
-        self.assertFalse(A({**base,"ciclo":{"inscricao":{"inicio":None,"fim":"2026-09-30","projetado":False}}}))          # sem início
-        self.assertFalse(A({**base,"url":"https://blog.qualquer.com/e","ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))  # não oficial
-        self.assertFalse(A({**base,"nivel":None,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))    # sem esfera
+        self.assertFalse(A({"url":"x","ciclo":{"inscricao":{"inicio":None,"fim":"2026-09-30","projetado":False}}}))          # sem início: fora
+        # regra de 05/09: basta início e fim conhecidos — site e esfera não são exigidos
+        self.assertTrue(A({"url":"https://blog.qualquer.com/e","ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))
+        self.assertTrue(A({"nivel":None,"inicio":"2026-09-01","fim":"2026-09-30"}))
         self.assertTrue(A({"sem_edital":True})); self.assertTrue(A({"janela_confirmada":{"via":"titular"}}))
         d=dash_coletar(date(2026,9,3))
         self.assertTrue(all("calendario_ok" in e for e in d["editais"] if not e.get("sem_edital") and not e.get("janela_confirmada")))

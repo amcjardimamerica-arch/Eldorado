@@ -822,10 +822,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260905074651"></script>
-<script src="mapa-arte.js?v=20260905074651"></script>
-<script src="dashboard-dados.enc.js?v=20260905074651"></script>
-<script src="dashboard-dados.js?v=20260905074651"></script>
+<script src="mapa-brasil.js?v=20260905092659"></script>
+<script src="mapa-arte.js?v=20260905092659"></script>
+<script src="dashboard-dados.enc.js?v=20260905092659"></script>
+<script src="dashboard-dados.js?v=20260905092659"></script>
 <script>
 (function(){
 "use strict";
@@ -1469,7 +1469,7 @@ function desenhaGantt(){
     const porDiaP={};pos.forEach(e=>{const dd=+(e.publicado_em||e.coletado_em).slice(8,10);(porDiaP[dd]=porDiaP[dd]||[]).push(e);});
     const totalPos=(D.editais||[]).filter(e=>situacaoDe(e)==="possivel"&&estadoDe(e.id)==="em_andamento"&&casaF(e)).length;
     const abertasN=(D.editais||[]).filter(e=>situacaoDe(e)==="aberta"&&estadoDe(e.id)==="em_andamento"&&casaF(e)).length;
-    $("g-possiveis").innerHTML=`<div class=meta style="margin-bottom:4px"><strong>Por que «Oportunidades Abertas» mostra mais do que este calendário:</strong> lá entram as <b>possíveis</b> (${totalPos} nesta seleção) — chamamentos identificados <b>sem período de inscrição confirmado</b>. O calendário só desenha faixa com prazo confirmado (${abertasN} nesta seleção). As possíveis aparecem aqui pela <b>data real de publicação</b> (ou de captura, quando a publicação não traz data), até a fase 2 confirmar o prazo:</div>
+    $("g-possiveis").innerHTML=`<div class=meta style="margin-bottom:4px"><strong>Por que «Oportunidades Abertas» mostra mais do que este calendário:</strong> lá entram as <b>possíveis</b> (${totalPos} nesta seleção) — chamamentos identificados <b>sem período de inscrição confirmado</b>. O calendário desenha faixa para todo edital com <b>início e fim de inscrição conhecidos</b> (${abertasN} aberto(s) nesta seleção). As possíveis aparecem aqui pela <b>data real de publicação</b> (ou de captura, quando a publicação não traz data), até a fase 2 confirmar o prazo:</div>
       <div class="g-pub">${[...Array(nd)].map((_,i)=>{const dd=i+1,l=porDiaP[dd]||[];return `<div class="g-pubdia${l.length?" com":""}" data-dia="${dd}" title="${dd}/${String(gMes+1).padStart(2,"0")}: ${l.length?l.length+" chamamento(s) publicado(s) sem prazo confirmado — clique para ver":"nenhum"}"><span class=n>${dd}</span>${l.length?`<span class=q>${l.length}</span>`:""}</div>`;}).join("")}</div>
       <div class=meta style="margin-top:4px">${pos.length} publicada(s) neste mês · <span class="verlink" onclick="modulo('eldorado');mostra('editais')">ver todas em Oportunidades Abertas ›</span></div>`;
     $("g-possiveis").querySelectorAll(".g-pubdia.com").forEach(el=>{const l=porDiaP[+el.dataset.dia]||[];

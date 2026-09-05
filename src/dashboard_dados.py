@@ -1051,23 +1051,14 @@ def _cruzamento_associacoes(editais: list[dict], hoje: date) -> list[dict]:
 
 
 def _apto_ao_calendario(e: dict) -> bool:
-    """Regra do titular para a tela inicial: só entra no Calendário o edital com
-    início E fim determinados e validados em site oficial, e com ao menos
-    Prazo, Território e Esfera comprovados entre os 12 itens."""
+    """Regra do titular (05/09): entra no Calendário da tela inicial todo edital
+    com PRAZO DE INSCRIÇÃO conhecido — início E fim reais (não projetados).
+    Nenhuma outra exigência (site, território, esfera)."""
     if e.get("sem_edital") or e.get("janela_confirmada"):
         return True                                       # regra anual / confirmação registrada
     c = (e.get("ciclo") or {}).get("inscricao") or {}
-    if not (c.get("inicio") and c.get("fim")) or c.get("projetado"):
-        return False
-    if not _OFICIAL_RX.search(e.get("url") or ""):
-        return False
-    itens = ((e.get("requisitos_condicoes_valores") or {}).get("itens")
-             or (e.get("detalhes") or {}).get("itens_11") or [])
-    ok = {i["item"] for i in itens if i.get("comprovado")}
-    if itens:
-        return {"Prazo de inscrição", "Território", "Esfera"} <= ok
-    # sem grade de itens: exige os campos equivalentes na ficha
-    return bool(e.get("fim") and (e.get("uf") or e.get("territorio")) and e.get("nivel") in ("federal", "estadual", "municipal"))
+    ini = c.get("inicio") or e.get("inicio"); fim = c.get("fim") or e.get("fim")
+    return bool(ini and fim and not c.get("projetado") and str(ini) <= str(fim))
 
 
 def _cobertura_260(previsoes: dict, fichas: dict) -> dict:
