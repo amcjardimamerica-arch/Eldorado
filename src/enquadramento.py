@@ -56,6 +56,43 @@ def editais_abertos(dados: dict) -> list[dict]:
     return [e for e in dados.get("editais", []) if e.get("situacao_inscricao") in ("aberta", "possivel")]
 
 
+COMPLEMENTOS = ROOT / "dados/editais/complementos"
+
+
+def complementos(e: dict) -> dict:
+    """Informações faltantes que o titular subiu à mão para este edital
+    (dados/editais/complementos/<id>/*.json ou *.md): viram itens comprovados
+    com fonte 'complemento manual'."""
+    pasta = COMPLEMENTOS / e["id"]
+    saida = {}
+    if not pasta.exists():
+        return saida
+    for f in sorted(pasta.glob("*")):
+        if f.suffix == ".json":
+            try:
+                for k, v in load_json(f).items():
+                    if v not in (None, ""): saida[k] = {"valor": v, "fonte": f.name}
+            except Exception:
+                pass
+        elif f.suffix in (".md", ".txt"):
+            txt = f.read_text(encoding="utf-8", errors="replace")
+            for item in ITENS:
+                m = re.search(rf"(?im)^\s*[-*]?\s*{re.escape(item)}\s*[:—-]\s*(.+)$", txt)
+                if m: saida[item] = {"valor": m.group(1).strip()[:300], "fonte": f.name}
+    return saida
+
+
+def filtro_geografico(a: dict, e: dict) -> bool:
+    """Primeiro filtro (regra do titular): a atuação geográfica do edital tem de
+    caber na da associação — UF do edital dentro dos territórios da associação,
+    ou edital nacional."""
+    terr = [t.upper() for t in (a.get("territorios") or [])]
+    uf = e.get("uf")
+    if not uf:
+        return e.get("abrangencia") == "nacional" or e.get("nivel") == "federal" or "BR" in terr
+    return uf in terr or any(t.startswith(uf + "/") for t in terr)
+
+
 def itens_faltantes(e: dict) -> list[str]:
     itens = ((e.get("requisitos_condicoes_valores") or {}).get("itens") or (e.get("detalhes") or {}).get("itens_11") or [])
     if not itens:
@@ -64,8 +101,11 @@ def itens_faltantes(e: dict) -> list[str]:
                "Território": bool(e.get("uf") or e.get("abrangencia") == "nacional"), "Esfera": e.get("nivel") in ("federal", "estadual", "municipal"),
                "Área de atuação": e.get("area") not in (None, "outros"), "Valor": bool(e.get("valor_texto")),
                "Requisitos": bool((e.get("detalhes") or {}).get("documentos_exigidos")), "Anexos": bool(e.get("anexos"))}
-        return [i for i in ITENS if not tem.get(i)]
-    return [i["item"] for i in itens if not i.get("comprovado")]
+        comp = complementos(e)
+        return [i for i in ITENS if not tem.get(i) and i not in comp]
+    faltam = [i["item"] for i in itens if not i.get("comprovado")]
+    comp = complementos(e)
+    return [i for i in faltam if i not in comp]
 
 
 # ───────────────────────── IA: completar os 12 itens do edital aberto ─────────────────────────
@@ -180,7 +220,8 @@ def run(limite_ia: int = 8) -> dict:
     est = load_json(ESTADO) if ESTADO.exists() else {"fila": {}, "execucoes": []}
     assoc = associacoes(); abertos = editais_abertos(dados)
     n_ia = 0; resumo = {"associacoes": len(assoc), "editais_abertos": len(abertos), "ia_itens": 0, "ia_enquadramento": 0, "em": now_iso()}
-    for e in sorted(abertos, key=lambda x: (x.get("situacao_inscricao") != "aberta", x.get("uf") != "GO", x.get("fim") or "9")):
+    compat = [e for e in abertos if any(filtro_geografico(a, e) for a in assoc)]     # filtro geográfico ANTES da IA
+    for e in sorted(compat, key=lambda x: (x.get("situacao_inscricao") != "aberta", x.get("uf") != "GO", x.get("fim") or "9")):
         faltam = itens_faltantes(e)
         f = est["fila"].setdefault(e["id"], {"titulo": (e.get("titulo") or "")[:120], "faltam": faltam, "tentativas": []})
         f["faltam"] = faltam
@@ -211,6 +252,31 @@ def run(limite_ia: int = 8) -> dict:
                     par["ia_status"] = r.get("status")
             par.setdefault("aderencia", ad["nota"])
             write_json(fp, par)
+    # ESQUELETO por associação: só os editais que passam no filtro geográfico
+    for a in assoc:
+        geo = [e for e in abertos if filtro_geografico(a, e)]
+        lista = []
+        for e in geo:
+            fp = ROOT / "dados/associacoes" / a["_pasta"] / "farol" / f"{e['id']}.json"
+            par = load_json(fp) if fp.exists() else {}
+            ad = par.get("aderencia_deterministica") or aderencia(a, e)
+            faltam = itens_faltantes(e); comp = complementos(e); f = est["fila"].get(e["id"], {})
+            anexos = (e.get("detalhes") or {}).get("anexos") or e.get("anexos") or []
+            lista.append({"id": e["id"], "titulo": e.get("titulo"), "area": e.get("area"), "uf": e.get("uf"), "situacao": e.get("situacao_inscricao"),
+                          "inicio": e.get("inicio"), "fim": e.get("fim"), "url": e.get("url"), "fonte": e.get("fonte_nome"),
+                          "nota": (par.get("ia") or {}).get("aderencia") or ad["nota"], "farol": ad["farol"], "por": ad["por"], "para_subir": ad["para_subir"],
+                          "ia": par.get("ia"), "ia_status": par.get("ia_status"),
+                          "faltam": faltam, "complementados": sorted(comp), "itens_ia": sorted((f.get("itens_ia") or {}).keys()),
+                          "fila": {"tentativas": len(f.get("tentativas") or []), "status": ((f.get("tentativas") or [{}])[-1]).get("status")},
+                          "cronograma": par.get("cronograma") or cronograma_reverso(e, hoje), "simulador": par.get("simulador") or simulador_pontuacao(a, e, f.get("criterios_pontuacao")),
+                          "modelos_documentos": [x for x in anexos if isinstance(x, dict)][:8],
+                          "subir": f"https://github.com/amcjardimamerica-arch/Eldorado/new/main/dados/editais/complementos/{e['id']}?filename=complemento.md&value="
+                                   + __import__("urllib.parse").parse.quote("\n".join(f"- {i}: " for i in faltam) or "- (nada falta)")})
+        lista.sort(key=lambda x: (x["situacao"] != "aberta", -x["nota"]))
+        write_json(ROOT / "dados/associacoes" / a["_pasta"] / "enquadramento.json",
+                   {"associacao": a.get("id"), "nome": a.get("nome"), "territorios": a.get("territorios"), "areas": a.get("areas"), "gerado_em": now_iso(),
+                    "editais_abertos_total": len(abertos), "compativeis_geograficamente": len(geo),
+                    "filtro": "atuação geográfica do edital ⊆ atuação da associação (UF ou nacional)", "editais": lista})
     est["execucoes"] = (est.get("execucoes") or [])[-30:] + [resumo]
     write_json(ESTADO, est)
     return resumo

@@ -1,0 +1,1 @@
+Uma pasta por edital (id do edital). Dentro, complemento.md com linhas '- Item: valor' (ex.: '- Valor: R$ 50.000,00'); o Enquadramento le e marca o item como comprovado com fonte 'complemento manual'.

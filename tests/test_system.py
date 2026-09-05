@@ -3550,7 +3550,7 @@ class SystemTests(unittest.TestCase):
         nav=html.split('id="nav-farol"')[1].split("</div>")[0]
         self.assertLess(nav.find("Enquadramento"),nav.find("Documentos")); self.assertLess(nav.find("Documentos"),nav.find("Biblioteca"))
         self.assertNotIn(">Oportunidades Abertas<",html.split('id="hot-farol"')[1].split("</nav>")[0])
-        for x in ('id="enq-topo"',"function desenhaEnquadramento",'data-enq="fila"','data-enq="cronograma"','data-enq="simulador"'):
+        for x in ('id="enq-topo"',"function desenhaEnquadramento","enq-assoc"):
             self.assertIn(x,html,x)
         sec=html.split('<section id="v-f-editais"')[1].split("</section>")[0]
         self.assertIn('id="ed-farol-caixa"',sec); self.assertIn('id="ed-assoc-caixa"',sec)
@@ -3597,6 +3597,27 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn('data-enq="checklist"',html)
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn('"30 6 1 * *"',wf); self.assertIn("src.documentos",wf)
         dd=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertGreaterEqual(len(dd["documentos_associacoes"]),1)
+
+
+    def test_enquadramento_tela_unica_filtro_geografico_e_complementos(self):
+        from src import enquadramento as E
+        a={"territorios":["GO","GO/Goiânia"]}
+        self.assertTrue(E.filtro_geografico(a,{"uf":"GO"})); self.assertFalse(E.filtro_geografico(a,{"uf":"SP"}))
+        self.assertTrue(E.filtro_geografico(a,{"uf":None,"abrangencia":"nacional"})); self.assertFalse(E.filtro_geografico(a,{"uf":None}))
+        import tempfile, shutil
+        orig=E.COMPLEMENTOS; lab=pathlib.Path(tempfile.mkdtemp())
+        try:
+            E.COMPLEMENTOS=lab; (lab/"e9").mkdir(); (lab/"e9"/"complemento.md").write_text("- Valor: R$ 50.000,00\n- Resultado: 30/11/2026\n",encoding="utf-8")
+            c=E.complementos({"id":"e9"}); self.assertEqual(c["Valor"]["valor"],"R$ 50.000,00"); self.assertIn("Resultado",c)
+            faltam=E.itens_faltantes({"id":"e9","objeto":"x","fim":"2026-10-01","fonte_nome":"F","uf":"GO","nivel":"estadual","area":"cultura"})
+            self.assertNotIn("Valor",faltam); self.assertNotIn("Resultado",faltam); self.assertIn("Requisitos",faltam)
+        finally:
+            E.COMPLEMENTOS=orig; shutil.rmtree(lab,ignore_errors=True)
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertNotIn('id="enq-abas"',html)
+        for x in ("enq-assoc","enq-ed-l1","enq-ed-l2","O que falta (","subir informação faltante","abrir o edital ↗","Modelos de documentos do edital","enq-cron-mini","filtro geográfico"): self.assertIn(x,html,x)
+        d=load_json(pathlib.Path("docs/dashboard-dados.json")); q=d["enquadramento"][0]
+        self.assertLess(q["compativeis_geograficamente"],q["editais_abertos_total"]); self.assertTrue(all("subir" in e and "faltam" in e for e in q["editais"]))
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

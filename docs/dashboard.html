@@ -291,6 +291,14 @@ box-shadow:0 1px 3px #0002}
 .fdoc-t{font-family:Georgia,serif;font-weight:800;color:#0E2A55;font-size:13.5px;border-bottom:1.5px solid #E3E8F1;padding-bottom:4px;margin-bottom:4px}
 .fdoc-doc{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:8px;background:#F6F7F9}.fdoc-doc .fdoc-nome{display:flex;flex-direction:column;flex:1;min-width:0}.fdoc-doc small{color:var(--suave);font-size:10.5px}.fdoc-doc b{font-size:12px}
 .fdoc-bt{font-size:11.5px;padding:3px 9px;border:1px solid var(--linha);border-radius:8px;background:#fff;text-decoration:none;color:var(--tinta);white-space:nowrap}.fdoc-bt.principal{background:#0E2A55;color:#fff;border-color:#0E2A55;font-weight:700}
+.enq-assoc{border:1px solid var(--linha);border-radius:12px;padding:12px 14px;background:#FCFCFB;margin-bottom:12px}
+.enq-assoc-cab{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1.5px solid #E3E8F1;padding-bottom:8px;margin-bottom:8px}
+.enq-ed{border:1px solid var(--linha);border-radius:10px;background:#fff;padding:8px 10px;margin-top:8px}
+.enq-ed-l1{display:grid;grid-template-columns:14px 44px 1fr 1.1fr .8fr;gap:10px;align-items:center}
+.enq-ia{font-size:12px}.enq-ed-l2{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:12px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--linha);font-size:12px}
+@media(max-width:1100px){.enq-ed-l1,.enq-ed-l2{grid-template-columns:1fr}}
+.enq-falta{line-height:1.5}.enq-cron-mini{display:flex;gap:4px;flex-wrap:wrap;align-content:flex-start}.enq-cron-mini span{display:flex;flex-direction:column;align-items:center;border:1px solid var(--linha);border-radius:7px;padding:3px 6px;font-size:10.5px;min-width:44px}.enq-cron-mini span.atrasado{border-color:var(--urgente);background:#FDECEC}.enq-cron-mini small{color:var(--suave)}
+.enq-modelos{line-height:1.5}
 .enq-lista{display:flex;flex-direction:column;gap:6px}
 .enq-linha{display:grid;grid-template-columns:14px 44px 1fr 1.2fr .9fr;gap:10px;align-items:center;padding:7px 10px;border:1px solid var(--linha);border-radius:10px;background:#fff;cursor:pointer}.enq-linha:hover{border-color:#9FC1E8}
 .enq-tit{display:flex;flex-direction:column;min-width:0}.enq-tit b{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.enq-tit small{font-size:10.5px;color:var(--suave)}
@@ -796,12 +804,6 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <span class=meta style="margin-left:auto" id="enq-resumo"></span>
   </div>
   <div class="mets" id="enq-mets" style="margin:10px 0 6px"></div>
-  <div class="abas abas-ed" id="enq-abas" style="margin:8px 0 12px">
-    <button data-enq="ranking" class="on"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Ranking de êxito</span></button>
-    <button data-enq="fila"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 8v4l3 2"/></svg><span>Fila de investigação IA</span></button>
-    <button data-enq="cronograma"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Cronograma reverso</span></button>
-    <button data-enq="simulador"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 19l5-7 4 4 7-10"/><path d="M15 6h5v5"/></svg><span>Simulador de pontuação</span></button>
-  </div>
   <div id="enq-corpo"></div>
 </div>
 <!-- ASSOCIAÇÕES CADASTRADAS × EDITAIS · Farol de aderência por associação -->
@@ -858,10 +860,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260905151708"></script>
-<script src="mapa-arte.js?v=20260905151708"></script>
-<script src="dashboard-dados.enc.js?v=20260905151708"></script>
-<script src="dashboard-dados.js?v=20260905151708"></script>
+<script src="mapa-brasil.js?v=20260905163450"></script>
+<script src="mapa-arte.js?v=20260905163450"></script>
+<script src="dashboard-dados.enc.js?v=20260905163450"></script>
+<script src="dashboard-dados.js?v=20260905163450"></script>
 <script>
 (function(){
 "use strict";
@@ -1908,47 +1910,34 @@ window.fdocParecer=function(id){const d=(D.documentos_associacoes||[]).find(x=>x
 window.fdocCopiar=function(id){const d=(D.documentos_associacoes||[]).find(x=>x.id===id);if(!d)return;const txt=d.parecer_md||"";
   (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>alert("Checklist e parecer copiados."),()=>abreModal("<h3>Checklist</h3>",`<pre style="white-space:pre-wrap">${esc(txt)}</pre>`));};
 /* ================= ENQUADRAMENTO (Farol, fases 3 e 4) ================= */
-window._enq="ranking";
 function desenhaEnquadramento(){
   const box=$("enq-corpo"); if(!box)return;
-  const L=D.associacoes_cruzamento||[], Q=D.enquadramento_fila||{fila:[]};
-  const pares=L.flatMap(a=>(a.melhores||[]).map(m=>({a,m})));
-  const ult=Q.ultima||{};
-  $("enq-resumo").textContent=`${L.length} associação(ões) · ${(D.editais||[]).filter(e=>situacaoDe(e)==="aberta").length} aberta(s) · ${(D.editais||[]).filter(e=>situacaoDe(e)==="possivel").length} possíveis · IA: ${Q.ia_tentativas||0} tentativa(s), ${Q.itens_obtidos_ia||0} item(ns) obtido(s)${ult.em?" · última "+br(ult.em.slice(0,10)):""}`;
+  const E=D.enquadramento||[], Q=D.enquadramento_fila||{};
   const COR={verde:"var(--ok)",amarelo:"var(--alerta)",vermelho:"var(--urgente)"};
-  const verdes=pares.filter(p=>p.m.farol==="verde").length, amar=pares.filter(p=>p.m.farol==="amarelo").length;
-  $("enq-mets").innerHTML=[["Enquadram (verde)",verdes,"aderência ≥ 70"],["Com pendências (amarelo)",amar,"45–69"],["Editais na fila da IA",Q.com_faltas||0,"com itens faltando"],["Pareceres de IA",pares.filter(p=>p.m.analise_ia).length,"conselho Fable 5.1"]]
+  const ult=Q.ultima||{};
+  $("enq-resumo").textContent=`${E.length} associação(ões) · filtro geográfico: ${E.reduce((s,a)=>s+(a.compativeis_geograficamente||0),0)} de ${E[0]?E[0].editais_abertos_total:0} editais compatíveis · IA: ${Q.ia_tentativas||0} tentativa(s), ${Q.itens_obtidos_ia||0} item(ns)${ult.em?" · última "+br(ult.em.slice(0,10)):""}`;
+  const todos=E.flatMap(a=>a.editais||[]);
+  $("enq-mets").innerHTML=[["Enquadram (verde)",todos.filter(e=>e.farol==="verde").length,"aderência ≥ 70"],["Com pendências",todos.filter(e=>e.farol==="amarelo").length,"45–69"],["Itens faltando",todos.reduce((s,e)=>s+e.faltam.length,0),"nos editais compatíveis"],["Pareceres de IA",todos.filter(e=>e.ia).length,"conselho Fable 5.1"]]
     .map(([r,v,s])=>`<div class="met"><div class=v>${v}</div><div class=r>${esc(r)}</div><div class=s>${esc(s)}</div></div>`).join("");
-  document.querySelectorAll("#enq-abas button").forEach(b=>{b.classList.toggle("on",b.dataset.enq===window._enq);b.onclick=()=>{window._enq=b.dataset.enq;desenhaEnquadramento();};});
-  const v=window._enq;
-  if(v==="ranking"){
-    const top=pares.sort((x,y)=>y.m.nota-x.m.nota).slice(0,20);
-    box.innerHTML=`<div class=meta style="margin-bottom:8px">Os editais que valem a inscrição hoje, por associação — nota de aderência (determinística como piso; parecer de IA a substitui quando gravado), chances e pontuação estimada.</div>
-      <div class="enq-lista">${top.map(({a,m})=>`<div class="enq-linha" data-id="${esc(m.id)}"><span class="assoc-led" style="background:${COR[m.farol]}"></span><b class="assoc-nota">${m.nota}</b>
-        <span class="enq-tit"><b>${esc((m.titulo||"").slice(0,80))}</b><small>${esc(a.nome||"")} · ${esc(AREA(m.area).rotulo)} · ${esc(m.uf||"BR")} · ${m.situacao==="aberta"?"aberta":"possível"}${m.fim?" · até "+br(m.fim):""}</small></span>
-        <span class=meta>${m.ia?`chances ${esc(String(m.ia.chances??"—"))} · ${esc(String(m.ia.pontuacao_estimada||"").slice(0,40))}`:`pontuação estimada ${(m.simulador||{}).estimativa??"—"} · <em>IA pendente</em>`}</span>
-        <span class="enq-subir" title="${esc((m.para_subir||[]).join(" · "))}">${(m.para_subir||[]).length?`↑ ${(m.para_subir||[]).length} ação(ões) sobem a nota`:"—"}</span></div>`).join("")||'<div class=meta>Nenhum par associação × edital avaliado ainda.</div>'}</div>`;
-  }else if(v==="fila"){
-    box.innerHTML=`<div class=meta style="margin-bottom:8px">Cada edital aberto com os itens que faltam dos 12; a IA (modelo intermediário) busca na publicação oficial e o conselho (Fable 5.1) avalia o enquadramento dos que passam de 45. Sem credencial de IA no CI, a fila registra "aguardando credencial".</div>
-      <div class="enq-lista">${(Q.fila||[]).slice(0,60).map(f=>`<div class="enq-linha" data-id="${esc(f.id)}"><span class="assoc-led" style="background:${f.faltam.length?(f.itens_ia?"var(--alerta)":"var(--urgente)"):"var(--ok)"}"></span><b class="assoc-nota">${12-f.faltam.length}<small>/12</small></b>
-        <span class="enq-tit"><b>${esc((f.titulo||"").slice(0,80))}</b><small>faltam: ${f.faltam.map(esc).join(", ")||"nada"}</small></span>
-        <span class=meta>${f.tentativas} tentativa(s)${f.itens_ia?" · "+f.itens_ia+" item(ns) pela IA":""}${f.status?" · "+esc(f.status):""}</span></div>`).join("")||'<div class=meta>Fila vazia.</div>'}</div>`;
-  }else if(v==="checklist_movido_para_documentos"){
-    box.innerHTML=L.map(a=>{const m=(a.melhores||[])[0]; const ck=(m&&m.checklist)||[];
-      return `<div class=meta style="margin:6px 0"><strong>${esc(a.nome)}</strong> — documentos exigidos pelo melhor edital (${esc((m||{}).titulo||"—")}) × válidos no cadastro</div>
-      <div class="enq-ck">${ck.map(c=>`<div class="enq-ck-item ${c.status}"><span class="ck-st">${c.status==="válido"?"✓":c.status==="vencido"?"⚠":c.status==="pendente"?"…":"✗"}</span><span>${esc(c.rotulo)}</span><small>${esc(c.status)}${c.vence_em_dias!=null?" · vence em "+c.vence_em_dias+" d":c.renovacao_dias?" · renovar a cada "+c.renovacao_dias+" d":""}</small></div>`).join("")||'<div class=meta>sem documentos exigidos conhecidos</div>'}</div>
-      <div class=meta>Preencha <code>documentos_validos</code> e <code>documentos_validade</code> no perfil da associação para o checklist ficar verde.</div>`;}).join("");
-  }else if(v==="cronograma"){
-    box.innerHTML=L.map(a=>(a.melhores||[]).filter(m=>m.cronograma&&m.cronograma.length).slice(0,4).map(m=>`<div class=meta style="margin:8px 0 4px"><strong>${esc((m.titulo||"").slice(0,70))}</strong> — prazo final ${br(m.fim)} · ${esc(a.nome)}</div>
-      <div class="enq-cron">${m.cronograma.slice().reverse().map(c=>`<div class="enq-marco ${c.atrasado?"atrasado":""}"><b>${br(c.data)}</b><span>${esc(c.marco)}</span><small>${c.atrasado?"atrasado":c.dias_para+" dia(s)"}</small></div>`).join("")}</div>`).join("")).join("")||'<div class=meta>Nenhum edital com prazo final para montar o cronograma.</div>';
-  }else if(v==="simulador"){
-    box.innerHTML=L.map(a=>(a.melhores||[]).slice(0,3).map(m=>{const s=m.simulador||{criterios:[],estimativa:null,para_subir:[]};
-      return `<div class=meta style="margin:8px 0 4px"><strong>${esc((m.titulo||"").slice(0,70))}</strong> — ${esc(a.nome)} · critérios ${esc(s.origem_criterios||"")}</div>
-      <div class="enq-sim"><div class="enq-sim-nota"><b>${s.estimativa??"—"}</b><small>pontuação estimada</small></div>
-        <div>${(s.criterios||[]).map(c=>`<div class="enq-crit"><span>${esc(c.criterio)}</span><span class=meta>peso ${c.peso??"—"}</span></div>`).join("")}
-        ${(s.para_subir||[]).length?`<div class=meta style="margin-top:6px"><strong>Para subir:</strong> ${(s.para_subir||[]).map(esc).join(" · ")}</div>`:""}</div></div>`;}).join("")).join("")||'<div class=meta>Sem pares avaliados.</div>';
-  }
-  box.querySelectorAll(".enq-linha[data-id]").forEach(el=>{el.onclick=()=>{const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);if(ed)detalheEdital(ed);};});
+  if(!E.length){box.innerHTML='<div class=meta>Nenhuma associação cadastrada.</div>';return;}
+  box.innerHTML=E.map(a=>`<div class="enq-assoc">
+    <div class="enq-assoc-cab"><div><b style="font-size:15px">${esc(a.nome||a.associacao)}</b><div class=meta>atuação: ${(a.territorios||[]).map(esc).join(" · ")} · áreas: ${(a.areas||[]).map(x=>AREA(x).rotulo).join(", ")}</div></div>
+      <div class=meta><b>${a.compativeis_geograficamente}</b> de ${a.editais_abertos_total} editais passam no filtro geográfico<br><small>${esc(a.filtro||"")}</small></div></div>
+    ${(a.editais||[]).map(e=>{const s=e.simulador||{},cr=e.cronograma||[],ia=e.ia;
+      return `<div class="enq-ed" data-id="${esc(e.id)}">
+        <div class="enq-ed-l1"><span class="assoc-led" style="background:${COR[e.farol]}"></span><b class="assoc-nota" title="aderência ${ia?"(parecer de IA)":"(determinística — piso)"}">${e.nota}</b>
+          <span class="enq-tit"><b>${esc((e.titulo||"").slice(0,90))}</b><small>${esc(AREA(e.area).rotulo)} · ${esc(e.uf||"BR")} · ${e.situacao==="aberta"?'<b style="color:#9a5a00">aberta</b>':"possível"}${e.fim?" · inscrições até "+br(e.fim):""} · ${esc(e.fonte||"")}</small></span>
+          <span class="enq-ia">${ia?`<b>IA:</b> chances ${esc(String(ia.chances??"—"))} · ${esc(String(ia.pontuacao_estimada||"").slice(0,48))}`:`<b>Simulador:</b> ${s.estimativa??"—"} pts <small>(${esc(s.origem_criterios||"")})</small>`}</span>
+          <span class=meta>${e.fila&&e.fila.tentativas?`IA ${e.fila.tentativas}× · ${esc(e.fila.status||"")}`:"IA: na fila"}</span></div>
+        <div class="enq-ed-l2">
+          <div class="enq-falta"><b>O que falta (${e.faltam.length}/12):</b> ${e.faltam.length?e.faltam.map(esc).join(", "):"nada — 12 itens comprovados"}${e.complementados.length?` · <span style="color:var(--ok)">você completou: ${e.complementados.map(esc).join(", ")}</span>`:""}${e.itens_ia.length?` · <span style="color:#0B4EA2">IA obteve: ${e.itens_ia.map(esc).join(", ")}</span>`:""}
+            <div style="margin-top:4px">${e.url?`<a class="fdoc-bt" href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir o edital ↗</a> `:""}${e.faltam.length?`<a class="fdoc-bt principal" href="${esc(e.subir)}" target=_blank rel="noopener noreferrer" title="abre um arquivo pronto com os itens que faltam; preencha e salve">⬆ subir informação faltante</a>`:""}
+            ${(e.para_subir||[]).length?`<span class=meta> · para subir a nota: ${e.para_subir.slice(0,3).map(esc).join("; ")}</span>`:""}</div></div>
+          <div class="enq-cron-mini">${cr.slice().reverse().map(c=>`<span class="${c.atrasado?"atrasado":""}" title="${esc(c.marco)}"><b>${br(c.data).slice(0,5)}</b><small>${esc(c.marco.split(" ")[0])}</small></span>`).join("")||'<span class=meta>sem prazo final: cronograma indisponível</span>'}</div>
+          <div class="enq-modelos"><b>Modelos de documentos do edital:</b> ${(e.modelos_documentos||[]).length?e.modelos_documentos.map(m=>`<a href="${esc(m.url||m.href||"#")}" target=_blank rel="noopener noreferrer">${esc((m.nome||m.titulo||"anexo").slice(0,40))}</a>`).join(" · "):'<span class=meta>ainda não identificados — a IA extrai anexos e modelos quando completa os 12 itens; o preenchimento automático (fase 4) entrega os documentos prontos em Documentos</span>'}</div>
+        </div></div>`;}).join("")||'<div class=meta>Nenhum edital aberto passa no filtro geográfico desta associação.</div>'}
+  </div>`).join("");
+  box.querySelectorAll(".enq-ed .enq-tit").forEach(el=>{el.style.cursor="pointer";el.onclick=()=>{const id=el.closest(".enq-ed").dataset.id;const ed=(D.editais||[]).find(x=>x.id===id);if(ed)detalheEdital(ed);};});
 }
 function desenhaAssociacoes(){
   const box=$("ed-assoc-lista"); if(!box)return; const L=D.associacoes_cruzamento||[];
