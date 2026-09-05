@@ -34,7 +34,10 @@ MESES = {m: i for i, m in enumerate(["janeiro", "fevereiro", "março", "abril", 
 
 
 def _get(url: str, timeout: int = 25, binario: bool = False, limite: int = MAX_PDF):
-    req = Request(url, headers=UA)
+    h = dict(UA)
+    if "pncp.gov.br/api" in url or "pncp-api" in url:
+        h["Accept"] = "application/json"; h["User-Agent"] = "Mozilla/5.0 Eldorado-OSC/1.0"
+    req = Request(url, headers=h)
     with urlopen(req, timeout=timeout) as r:
         dados = r.read(limite + 1)
         if len(dados) > limite:
@@ -66,7 +69,7 @@ def fontes_originais(e: dict) -> dict:
             try:
                 js = json.loads(_get(base, limite=2_000_000)); saida["endpoint_pncp"] = base; break
             except Exception as exc:
-                saida["erros"].append(f"pncp compra ({base.split('/')[3]}): {type(exc).__name__}")
+                saida["erros"].append(f"pncp compra ({base.split('/')[3]}): {type(exc).__name__} {getattr(exc, 'code', '')}".strip())
         try:
             if js is None: raise ValueError("sem resposta do PNCP")
             saida["site_institucional"] = js.get("linkSistemaOrigem") or None
@@ -79,7 +82,7 @@ def fontes_originais(e: dict) -> dict:
             try:
                 arqs = json.loads(_get(base, limite=2_000_000)); break
             except Exception as exc:
-                saida["erros"].append(f"pncp arquivos: {type(exc).__name__}")
+                saida["erros"].append(f"pncp arquivos ({base.split('/')[3]}): {type(exc).__name__} {getattr(exc, 'code', '')}".strip())
         try:
             if arqs is None: raise ValueError("sem arquivos")
             for a in (arqs or [])[:12]:
@@ -87,6 +90,10 @@ def fontes_originais(e: dict) -> dict:
                 saida["pdfs"].append({"titulo": titulo, "tipo": tipo, "url": a.get("url") or a.get("uri"), "prioridade": 0 if re.search(r"edital", titulo + tipo, re.I) else 1})
         except Exception as exc:
             saida["erros"].append(f"pncp arquivos: {type(exc).__name__}")
+        if not saida["pdfs"]:
+            # último recurso: os arquivos são numerados sequencialmente na API pública de download
+            for n in range(1, 6):
+                saida["pdfs"].append({"titulo": f"arquivo {n} da contratação (PNCP)", "tipo": "download PNCP", "url": f"https://pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos/{n}", "prioridade": 2})
         if saida["site_institucional"]:
             saida["paginas"].append(saida["site_institucional"])
     elif url.startswith("https://"):

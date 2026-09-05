@@ -190,6 +190,21 @@ def verificar_utilidade_publica(a: dict) -> dict:
                 txt = re.sub(r"<[^>]+>", " ", r.read(600_000).decode("utf-8", "replace"))
             toks = [x for x in re.findall(r"[A-Za-zÀ-ú]{5,}", nome) if x.lower() not in ("associação", "associacao", "moradores", "comerciantes")]
             cita = any(tk.lower() in txt.lower() for tk in toks[:2]) and "utilidade" in txt.lower()
+            if not cita:
+                # a pesquisa pode devolver só a lista: seguir o primeiro link da lei até o texto integral
+                m2 = re.search(r'href="([^"]*(?:%s|lei)[^"]*)"' % num, r.read().decode("utf-8", "replace") if False else "", re.I)
+                for m3 in re.finditer(r'href="([^"]+)"', txt if False else ""):
+                    pass
+            try:
+                if not cita:
+                    html2 = urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 Eldorado-OSC/1.0"}), timeout=20).read(600_000).decode("utf-8", "replace")
+                    links = [urllib.parse.urljoin(url, h) for h in re.findall(r'href="([^"]+)"', html2) if num in h or "lei" in h.lower()]
+                    for l2 in links[:3]:
+                        t2 = re.sub(r"<[^>]+>", " ", urllib.request.urlopen(urllib.request.Request(l2, headers={"User-Agent": "Mozilla/5.0 Eldorado-OSC/1.0"}), timeout=20).read(600_000).decode("utf-8", "replace"))
+                        if any(tk.lower() in t2.lower() for tk in toks[:2]) and "utilidade" in t2.lower():
+                            return {"status": "confirmada na fonte oficial", "url": l2, "em": now_iso(), "lei": lei}
+            except Exception:
+                pass
             return {"status": "confirmada na fonte oficial" if cita else "lei localizada, mas o texto lido não cita a entidade — conferir", "url": url, "em": now_iso(), "lei": lei}
         except Exception as exc:
             ultimo = f"{type(exc).__name__}"
