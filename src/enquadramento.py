@@ -93,7 +93,21 @@ def filtro_geografico(a: dict, e: dict) -> bool:
     return uf in terr or any(t.startswith(uf + "/") for t in terr)
 
 
+def extraido(e: dict) -> dict:
+    from .fonte_edital import EXTRAIDOS
+    arq = EXTRAIDOS / f"{e['id']}.json"
+    return load_json(arq) if arq.exists() else {}
+
+
 def itens_faltantes(e: dict) -> list[str]:
+    ex = extraido(e)
+    if ex.get("itens") is not None and ex.get("tentativas") is not None:
+        comp = complementos(e)
+        return [i for i in (ex.get("faltam") or []) if i not in comp]
+    return _itens_faltantes_basico(e)
+
+
+def _itens_faltantes_basico(e: dict) -> list[str]:
     itens = ((e.get("requisitos_condicoes_valores") or {}).get("itens") or (e.get("detalhes") or {}).get("itens_11") or [])
     if not itens:
         # sem grade: deduz dos campos
@@ -207,6 +221,20 @@ def simulador_pontuacao(a: dict, e: dict, criterios: list[dict] | None) -> dict:
     return {"criterios": crit, "estimativa": round(100 * est / total), "origem_criterios": "edital" if criterios else "estimados (padrão de chamamentos)", "para_subir": [d for d in dicas if d][:5]}
 
 
+def _para_inscricao(a: dict, exigidos: list[str], faltam: list[str]) -> dict:
+    """O que falta, objetivamente, para ter os documentos preenchidos e prontos
+    na tela Documentos: documentos exigidos que a associação não tem válidos +
+    itens do edital ainda não compreendidos."""
+    pasta = ROOT / "dados/associacoes" / a["_pasta"] / "documentos"
+    cert = load_json(pasta / "certidoes.json").get("certidoes", {}) if (pasta / "certidoes.json").exists() else {}
+    regs = load_json(pasta / "registrados.json").get("registrados", {}) if (pasta / "registrados.json").exists() else {}
+    tem = set(cert) | set(regs) | set(a.get("documentos_validos") or [])
+    falta_docs = [d for d in exigidos if d not in tem]
+    return {"documentos_faltantes": falta_docs, "documentos_prontos": [d for d in exigidos if d in tem], "itens_faltantes": faltam,
+            "modelos_a_preencher": [d for d in exigidos if d in ("plano_de_trabalho", "declaracoes", "orcamento", "cronograma")],
+            "pronto": not falta_docs and not faltam}
+
+
 # ───────────────────────── execução ─────────────────────────
 def run(limite_ia: int = 8) -> dict:
     hoje = date.today()
@@ -221,19 +249,30 @@ def run(limite_ia: int = 8) -> dict:
     assoc = associacoes(); abertos = editais_abertos(dados)
     n_ia = 0; resumo = {"associacoes": len(assoc), "editais_abertos": len(abertos), "ia_itens": 0, "ia_enquadramento": 0, "em": now_iso()}
     compat = [e for e in abertos if any(filtro_geografico(a, e) for a in assoc)]     # filtro geográfico ANTES da IA
+    from .fonte_edital import investigar
+    modelos_extracao = [((cfg.get("modelos") or {}).get("extracao_requisitos") or {}).get("padrao", "claude-haiku-4-5"), modelo_itens]
+    n_inv = 0
     for e in sorted(compat, key=lambda x: (x.get("situacao_inscricao") != "aberta", x.get("uf") != "GO", x.get("fim") or "9")):
-        faltam = itens_faltantes(e)
-        f = est["fila"].setdefault(e["id"], {"titulo": (e.get("titulo") or "")[:120], "faltam": faltam, "tentativas": []})
-        f["faltam"] = faltam
-        if faltam and n_ia < limite_ia and not any(t.get("em", "")[:10] == hoje.isoformat() for t in f["tentativas"]):
-            r = _chamar(modelo_itens, prompt_itens(e, faltam), 1200); n_ia += 1; resumo["ia_itens"] += 1
-            obtidos = {k: v for k, v in (r.get("itens") or {}).items() if v}
-            f["tentativas"].append({"em": now_iso(), "modelo": modelo_itens, "status": r.get("status"), "itens_obtidos": len(obtidos), "fonte": r.get("fonte"),
-                                    "uso": r.get("uso")})
-            if obtidos:
-                f["itens_ia"] = {**(f.get("itens_ia") or {}), **obtidos}
-            if r.get("criterios_pontuacao"): f["criterios_pontuacao"] = r["criterios_pontuacao"]
-            if r.get("documentos_exigidos"): f["documentos_exigidos_ia"] = r["documentos_exigidos"]
+        f = est["fila"].setdefault(e["id"], {"titulo": (e.get("titulo") or "")[:120], "faltam": [], "tentativas": []})
+        ex = extraido(e)
+        # INVESTIGAÇÃO IMEDIATA na fonte original (PNCP → arquivos oficiais / site institucional → PDF → texto compacto → extração → IA barata → reforço)
+        if (not ex or not ex.get("completo")) and n_inv < limite_ia and not any(t.get("em", "")[:10] == hoje.isoformat() for t in (ex.get("tentativas") or [])):
+            ex = investigar(e, _chamar, modelos_extracao); n_inv += 1
+            resumo["ia_itens"] += sum(1 for t in ex.get("tentativas", []) if t.get("em", "")[:10] == hoje.isoformat())
+        faltam = itens_faltantes(e); f["faltam"] = faltam
+        f["tentativas"] = ex.get("tentativas") or f.get("tentativas") or []
+        f["itens_ia"] = {k: v for k, v in (ex.get("itens") or {}).items() if "IA" in str((ex.get("fontes_itens") or {}).get(k, ""))}
+        f["itens"] = ex.get("itens") or {}; f["fontes_itens"] = ex.get("fontes_itens") or {}
+        f["fonte_original"] = {"site_institucional": ex.get("site_institucional"), "fontes": ex.get("fontes"), "kb": ex.get("kb_compacto"), "erros": (ex.get("erros") or [])[:4]}
+        f["regras"] = ex.get("regras"); f["requisitos"] = ex.get("requisitos"); f["pontuacao_texto"] = ex.get("pontuacao_texto")
+        if ex.get("pontuacao"): f["criterios_pontuacao"] = ex["pontuacao"]
+        if ex.get("documentos_exigidos"): f["documentos_exigidos_ia"] = ex["documentos_exigidos"]
+        if ex.get("anexos"): f["anexos"] = ex["anexos"]
+        # o edital passa a ter os documentos exigidos conhecidos (alimenta aderência e checklist)
+        if f.get("documentos_exigidos_ia"):
+            e.setdefault("detalhes", {})["documentos_exigidos"] = f["documentos_exigidos_ia"]
+        if f.get("anexos"):
+            e.setdefault("detalhes", {})["anexos"] = f["anexos"]
         # enquadramento por associação (piso determinístico + IA forte para os melhores)
         for a in assoc:
             ad = aderencia(a, e)
@@ -270,6 +309,11 @@ def run(limite_ia: int = 8) -> dict:
                           "fila": {"tentativas": len(f.get("tentativas") or []), "status": ((f.get("tentativas") or [{}])[-1]).get("status")},
                           "cronograma": par.get("cronograma") or cronograma_reverso(e, hoje), "simulador": par.get("simulador") or simulador_pontuacao(a, e, f.get("criterios_pontuacao")),
                           "modelos_documentos": [x for x in anexos if isinstance(x, dict)][:8],
+                          "itens": [{"item": i, "valor": (f.get("itens") or {}).get(i) or (comp.get(i) or {}).get("valor"), "fonte": (f.get("fontes_itens") or {}).get(i) or ("complemento manual" if i in comp else None)}
+                                    for i in ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")],
+                          "regras": f.get("regras"), "requisitos": f.get("requisitos"), "pontuacao": f.get("criterios_pontuacao"), "pontuacao_texto": f.get("pontuacao_texto"),
+                          "fonte_original": f.get("fonte_original"), "documentos_exigidos": f.get("documentos_exigidos_ia") or [],
+                          "para_inscricao": _para_inscricao(a, f.get("documentos_exigidos_ia") or [], faltam),
                           "subir": f"https://github.com/amcjardimamerica-arch/Eldorado/new/main/dados/editais/complementos/{e['id']}?filename=complemento.md&value="
                                    + __import__("urllib.parse").parse.quote("\n".join(f"- {i}: " for i in faltam) or "- (nada falta)")})
         lista.sort(key=lambda x: (x["situacao"] != "aberta", -x["nota"]))

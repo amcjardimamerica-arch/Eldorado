@@ -3615,9 +3615,40 @@ class SystemTests(unittest.TestCase):
             E.COMPLEMENTOS=orig; shutil.rmtree(lab,ignore_errors=True)
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn('id="enq-abas"',html)
-        for x in ("enq-assoc","enq-ed-l1","enq-ed-l2","O que falta (","subir informação faltante","abrir o edital ↗","Modelos de documentos do edital","enq-cron-mini","filtro geográfico"): self.assertIn(x,html,x)
+        for x in ("enq-assoc","enq-ed-l1","enq-ed-l2","O que falta para a inscrição","subir informação faltante","abrir o edital ↗","Modelos e anexos do edital","enq-cron-mini","filtro geográfico"): self.assertIn(x,html,x)
         d=load_json(pathlib.Path("docs/dashboard-dados.json")); q=d["enquadramento"][0]
         self.assertLess(q["compativeis_geograficamente"],q["editais_abertos_total"]); self.assertTrue(all("subir" in e and "faltam" in e for e in q["editais"]))
+
+
+    def test_fonte_original_do_edital_e_extracao_escalonada(self):
+        """PNCP e outras fontes: localizar a fonte original, guardar texto compacto e
+        extrair os 12 itens deterministicamente antes da IA; IA barata → reforço só se faltar."""
+        import gzip, shutil
+        from src import fonte_edital as F
+        texto=("1. DO OBJETO: selecao de organizacoes da sociedade civil para projetos culturais em Goiania, com apoio de ate R$ 80.000,00.\n"
+               "2. DAS INSCRICOES: as inscricoes serao recebidas de 10 de setembro de 2026 ate 30 de setembro de 2026.\n"
+               "3. DO RESULTADO: a divulgacao do resultado preliminar ocorrera em 20/10/2026.\n4. DOS RECURSOS: cabera recurso no prazo de 5 (cinco) dias uteis.\n"
+               "6. DOS REQUISITOS DE HABILITACAO: estatuto social registrado; CNDT; CRF do FGTS.\n\nANEXO I - Plano. ANEXO II - Declaracao.")
+        d=F.extrair_deterministico(texto)
+        self.assertEqual(d["itens"]["Prazo de inscrição"],"2026-09-30"); self.assertEqual(d["itens"]["Resultado"],"2026-10-20"); self.assertEqual(d["itens"]["Valor"],"R$ 80.000,00")
+        self.assertIn("5 dias",d["itens"]["Prazo de recurso"]); self.assertEqual(d["itens"]["Anexos"],"Anexo I, Anexo II")
+        self.assertEqual(F._padroniza_docs(["estatuto social","cndt","crf do fgts"]),["estatuto","cndt","crf_fgts"])
+        e={"id":"lab-fe","titulo":"T","fonte_nome":"F","url":"https://x/e","fim":"2026-09-30","uf":"GO","nivel":"municipal","area":"cultura","objeto":"x"}
+        F.TEXTOS.mkdir(parents=True,exist_ok=True)
+        with gzip.open(F.TEXTOS/"lab-fe.txt.gz","wt",encoding="utf-8") as gz: gz.write(texto)
+        chamados=[]
+        def ia(m,pr,mx): chamados.append(m); return {"status":"respondeu","itens":{"Destinação":"OSCs culturais","Requisitos":"estatuto; CNDT"},"documentos_exigidos":["estatuto","cndt"],"pontuacao":[{"criterio":"experiência","peso":30}]}
+        try:
+            r=F.investigar(e,ia,["haiku","sonnet"])
+            self.assertEqual(chamados,["haiku"])                                   # reforço não foi preciso
+            self.assertTrue(r["completo"]); self.assertEqual(r["documentos_exigidos"],["estatuto","cndt"])
+            self.assertIn("cadastro do edital",r["fontes_itens"]["Esfera"]); self.assertIn("IA (haiku)",r["fontes_itens"]["Destinação"])
+        finally:
+            (F.EXTRAIDOS/"lab-fe.json").unlink(missing_ok=True); (F.TEXTOS/"lab-fe.txt.gz").unlink(missing_ok=True)
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("Mini-apresentação","Editais enquadrados após o filtro de IA","enq-ck12","O que falta para a inscrição","site institucional ↗","Modelos e anexos do edital"): self.assertIn(x,html,x)
+        q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"][0]
+        self.assertEqual(len(q["itens"]),12); self.assertIn("para_inscricao",q)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
