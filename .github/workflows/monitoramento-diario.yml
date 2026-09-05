@@ -169,6 +169,12 @@ jobs:
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           rm -f dash.json
+      - name: Enquadramento (Farol fases 3 e 4) — associações × editais abertos, IA para os 12 itens e aderência
+        if: always()
+        run: |
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 900 python -m src.enquadramento || echo "enquadramento: registrado"
+          fi
       - name: Busca imediata de prazo por IA (chamamentos sem prazo confirmado)
         if: always()
         run: |

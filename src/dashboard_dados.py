@@ -1036,12 +1036,14 @@ def _cruzamento_associacoes(editais: list[dict], hoje: date) -> list[dict]:
             else:
                 pts += 10; por.append("requisitos ainda não extraídos")
             if e.get("situacao_inscricao") == "aberta": pts += 10; por.append("inscrição vigente confirmada")
-            ia = pareceres.get(e["id"])
-            nota_ia = (ia or {}).get("aderencia") or (ia or {}).get("nota")
+            ia = pareceres.get(e["id"]) or {}
+            nota_ia = ((ia.get("ia") or {}).get("aderencia"))
             nota = nota_ia if isinstance(nota_ia, (int, float)) else pts
             cand.append({"id": e["id"], "titulo": e.get("titulo"), "area": e.get("area"), "uf": uf, "situacao": e.get("situacao_inscricao"),
                          "fim": e.get("fim"), "nota": min(100, nota), "farol": "verde" if nota >= 70 else "amarelo" if nota >= 45 else "vermelho",
-                         "por": por, "analise_ia": bool(ia), "url": e.get("url")})
+                         "por": por, "analise_ia": bool(ia.get("ia")), "url": e.get("url"),
+                         "checklist": ia.get("checklist"), "cronograma": ia.get("cronograma"), "simulador": ia.get("simulador"),
+                         "ia": ia.get("ia"), "ia_status": ia.get("ia_status"), "para_subir": (ia.get("aderencia_deterministica") or {}).get("para_subir")})
         cand.sort(key=lambda c: -c["nota"])
         saida.append({"id": a.get("id") or pathlib.Path(fp).parent.name, "nome": a.get("nome"), "cnpj": a.get("cnpj"), "areas": sorted(areas), "territorios": terr,
                       "anos_existencia": anos, "documentos_validos": sorted(docs), "editais_avaliados": len(cand),
@@ -1345,6 +1347,13 @@ def coletar(hoje: date | None = None) -> dict:
                                 for i in previsoes.get("itens", [])]},
         "esquadra": esquadra,
         "associacoes_cruzamento": _cruzamento_associacoes(editais, hoje),
+        "enquadramento_fila": (lambda q: {"total": len(q.get("fila", {})), "com_faltas": sum(1 for f in q.get("fila", {}).values() if f.get("faltam")),
+                                          "ia_tentativas": sum(len(f.get("tentativas", [])) for f in q.get("fila", {}).values()),
+                                          "itens_obtidos_ia": sum(len(f.get("itens_ia") or {}) for f in q.get("fila", {}).values()),
+                                          "ultima": (q.get("execucoes") or [{}])[-1],
+                                          "fila": [{"id": k, "titulo": f.get("titulo"), "faltam": f.get("faltam", []), "tentativas": len(f.get("tentativas", [])),
+                                                    "status": (f.get("tentativas") or [{}])[-1].get("status"), "itens_ia": len(f.get("itens_ia") or {})}
+                                                   for k, f in list(q.get("fila", {}).items())[:60]]})(load_json(ROOT / "estado/enquadramento.json") if (ROOT / "estado/enquadramento.json").exists() else {}),
         "prazos_ia": {k: {"status": v.get("status"), "fim": v.get("fim"), "inicio": v.get("inicio"), "url": v.get("url"), "conselho": bool(v.get("conselho"))}
                       for k, v in (load_json(ROOT / "estado/prazos_ia.json") if (ROOT / "estado/prazos_ia.json").exists() else {}).items()
                       if not k.startswith("_") and isinstance(v, dict)},

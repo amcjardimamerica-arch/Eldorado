@@ -1,0 +1,220 @@
+"""ENQUADRAMENTO — Farol de Alexandria, fases 3 e 4.
+
+Regra inicial do titular: (1) quais associações existem no banco; (2) quais
+editais estão abertos; (3) usar a IA mais eficiente para obter as informações
+que faltam nos 12 itens de cada edital aberto; (4) avaliar o enquadramento de
+cada associação — chances de êxito e pontuação estimada — com o Farol de
+aderência.
+
+Ferramentas que esta parte oferece ao painel (tudo determinístico aqui; a IA
+complementa quando há credencial):
+  • fila de investigação por IA — o que falta em cada edital e o que a IA
+    obteve (modelo, itens, custo em tokens);
+  • aderência 0–100 por par associação × edital (área, território, documentos,
+    tempo de existência, itens comprovados) e Farol (verde/amarelo/vermelho);
+  • simulador de pontuação — critérios do edital (extraídos ou estimados) ×
+    perfil da associação, com "o que sobe a nota";
+  • checklist de documentos — exigidos × válidos × pendentes, com vencimentos;
+  • cronograma reverso — do prazo final para trás: protocolo, revisão do
+    conselho, rascunho, coleta de documentos;
+  • ranking de êxito — os editais que valem a inscrição hoje, por associação.
+
+Estado: dados/associacoes/<id>/farol/<edital_id>.json (parecer por edital,
+lido pelo cruzamento do painel) e estado/enquadramento.json (fila e resumo).
+"""
+from __future__ import annotations
+
+import glob
+import json
+import os
+import re
+from datetime import date, timedelta
+from pathlib import Path
+
+from .nucleo import ROOT, load_json, now_iso, write_json
+from .completude_biblioteca import ITENS
+
+ESTADO = ROOT / "estado/enquadramento.json"
+DOC_ROTULO = {"estatuto": "Estatuto social registrado", "ata_eleicao": "Ata de eleição da diretoria", "cnpj": "Cartão CNPJ ativo",
+              "certidao_federal": "Certidão negativa federal (RFB/PGFN)", "certidao_estadual": "Certidão negativa estadual", "certidao_municipal": "Certidão negativa municipal",
+              "cndt": "CNDT (débitos trabalhistas)", "crf_fgts": "CRF do FGTS", "comprovante_endereco": "Comprovante de endereço da sede",
+              "rg_cpf_dirigente": "RG e CPF do dirigente", "plano_de_trabalho": "Plano de trabalho", "certificacao_utilidade_publica": "Título de utilidade pública",
+              "relatorio_atividades": "Relatório de atividades", "conta_bancaria": "Conta bancária específica", "cebas": "CEBAS", "inscricao_conselho": "Inscrição no conselho de política (CMAS/CMDCA/CMI)"}
+VALIDADE_DIAS = {"certidao_federal": 180, "certidao_estadual": 90, "certidao_municipal": 90, "cndt": 180, "crf_fgts": 30}
+
+
+def associacoes() -> list[dict]:
+    saida = []
+    for fp in sorted(glob.glob(str(ROOT / "dados/associacoes/*/perfil*.json"))):
+        if "EXEMPLO" in fp:
+            continue
+        a = load_json(Path(fp)); a["_pasta"] = Path(fp).parent.name; saida.append(a)
+    return saida
+
+
+def editais_abertos(dados: dict) -> list[dict]:
+    return [e for e in dados.get("editais", []) if e.get("situacao_inscricao") in ("aberta", "possivel")]
+
+
+def itens_faltantes(e: dict) -> list[str]:
+    itens = ((e.get("requisitos_condicoes_valores") or {}).get("itens") or (e.get("detalhes") or {}).get("itens_11") or [])
+    if not itens:
+        # sem grade: deduz dos campos
+        tem = {"Objeto": bool(e.get("objeto")), "Prazo de inscrição": bool(e.get("fim")), "Órgão / financiador": bool(e.get("fonte_nome")),
+               "Território": bool(e.get("uf") or e.get("abrangencia") == "nacional"), "Esfera": e.get("nivel") in ("federal", "estadual", "municipal"),
+               "Área de atuação": e.get("area") not in (None, "outros"), "Valor": bool(e.get("valor_texto")),
+               "Requisitos": bool((e.get("detalhes") or {}).get("documentos_exigidos")), "Anexos": bool(e.get("anexos"))}
+        return [i for i in ITENS if not tem.get(i)]
+    return [i["item"] for i in itens if not i.get("comprovado")]
+
+
+# ───────────────────────── IA: completar os 12 itens do edital aberto ─────────────────────────
+def prompt_itens(e: dict, faltam: list[str]) -> str:
+    return (f"Edital: {e.get('titulo')}\nÓrgão: {e.get('fonte_nome')} — {e.get('uf') or 'Brasil'} ({e.get('nivel')}).\nURL: {e.get('url')}\n"
+            f"Evidência já obtida: {(e.get('objeto') or e.get('resumo') or '')[:400]}\n"
+            f"Faltam EXATAMENTE estes itens: {', '.join(faltam)}.\n"
+            "Abra a publicação oficial (e anexos) e devolva SOMENTE JSON: {\"itens\": {<item>: <valor textual ou null>}, "
+            "\"criterios_pontuacao\": [{\"criterio\": <texto>, \"peso\": <número ou null>}], \"documentos_exigidos\": [<lista>], "
+            "\"fonte\": <URL onde leu>}. Não invente: sem fonte, null.")
+
+
+def prompt_enquadramento(a: dict, e: dict, itens: dict, criterios: list[dict]) -> str:
+    return (f"Associação: {a.get('nome')} — áreas {', '.join(a.get('areas') or [])}; território {', '.join(a.get('territorios') or [])}; "
+            f"{a.get('anos_existencia')} anos; documentos válidos: {', '.join(a.get('documentos_validos') or []) or 'nenhum informado'}; "
+            f"experiências: {json.dumps(a.get('experiencias') or [], ensure_ascii=False)[:600]}.\n"
+            f"Edital: {e.get('titulo')} — itens: {json.dumps(itens, ensure_ascii=False)[:1200]} — critérios: {json.dumps(criterios, ensure_ascii=False)[:600]}.\n"
+            "Como conselho de sete lentes (extremamente pessimista → extremamente otimista, neutro decide): avalie o ENQUADRAMENTO da associação, "
+            "as CHANCES DE ÊXITO (0–100) e a PONTUAÇÃO ESTIMADA pelos critérios, e diga o que faltaria para subir a nota. "
+            "Devolva SOMENTE JSON: {\"aderencia\": <0-100>, \"chances\": <0-100>, \"pontuacao_estimada\": <texto>, \"lentes\": {<lente>: <frase>}, "
+            "\"decisao\": <texto>, \"para_subir\": [<ações>], \"riscos\": [<textos>]}.")
+
+
+def _chamar(modelo: str, prompt: str, max_tokens: int = 1400) -> dict:
+    from .opressores import _chamar as _c
+    return _c(modelo, prompt, max_tokens)
+
+
+# ───────────────────────── avaliação determinística (piso) ─────────────────────────
+def aderencia(a: dict, e: dict) -> dict:
+    areas = set(a.get("areas") or []); terr = [t.upper() for t in (a.get("territorios") or [])]
+    docs = set(a.get("documentos_validos") or []); anos = a.get("anos_existencia") or 0
+    pts, por, subir = 0, [], []
+    if e.get("area") in areas: pts += 35; por.append("área compatível")
+    elif e.get("area") == "outros": pts += 15; por.append("área do edital não classificada")
+    else: subir.append(f"edital de {e.get('area')} — a associação não atua nessa área")
+    uf = e.get("uf")
+    if (uf and uf in terr) or (not uf and e.get("abrangencia") == "nacional"): pts += 20; por.append("território compatível")
+    elif uf: return {"nota": 0, "farol": "vermelho", "por": [f"território {uf} fora da atuação"], "para_subir": [], "elegivel": False}
+    req = set((e.get("detalhes") or {}).get("documentos_exigidos") or [])
+    if req:
+        ok = len(req & docs) / len(req); pts += round(25 * ok); por.append(f"documentos {len(req & docs)}/{len(req)}")
+        for d in sorted(req - docs): subir.append(f"obter {DOC_ROTULO.get(d, d)}")
+    else:
+        pts += 10; por.append("requisitos não extraídos (piso)")
+    if anos >= 3: pts += 10; por.append(f"{anos} anos de existência")
+    else: subir.append("edital pode exigir 3 anos de existência")
+    faltam = itens_faltantes(e)
+    comp = 12 - len(faltam); pts += round(10 * comp / 12); por.append(f"{comp}/12 itens comprovados")
+    if faltam: subir.append(f"completar {len(faltam)} item(ns): {', '.join(faltam[:4])}{'…' if len(faltam) > 4 else ''}")
+    nota = min(100, pts)
+    return {"nota": nota, "farol": "verde" if nota >= 70 else "amarelo" if nota >= 45 else "vermelho", "por": por, "para_subir": subir, "elegivel": True}
+
+
+def checklist(a: dict, e: dict) -> list[dict]:
+    docs = a.get("documentos_validos") or []; pend = a.get("documentos_pendentes") or []
+    validade = a.get("documentos_validade") or {}
+    req = (e.get("detalhes") or {}).get("documentos_exigidos") or list(DOC_ROTULO)[:8]
+    saida = []
+    for d in req:
+        v = validade.get(d); dias = None
+        if v:
+            try: dias = (date.fromisoformat(v[:10]) - date.today()).days
+            except ValueError: pass
+        elif d in VALIDADE_DIAS and d in docs: dias = None
+        saida.append({"documento": d, "rotulo": DOC_ROTULO.get(d, d.replace("_", " ")),
+                      "status": "válido" if d in docs and (dias is None or dias > 0) else "vencido" if d in docs else "pendente" if d in pend else "faltante",
+                      "vence_em_dias": dias, "renovacao_dias": VALIDADE_DIAS.get(d)})
+    return saida
+
+
+def cronograma_reverso(e: dict, hoje: date) -> list[dict]:
+    if not e.get("fim"):
+        return []
+    fim = date.fromisoformat(e["fim"][:10])
+    marcos = [("Protocolo da inscrição", 1), ("Revisão final do conselho (7 lentes)", 3), ("Plano de trabalho e orçamento fechados", 7),
+              ("Documentos e certidões reunidos", 12), ("Rascunho do projeto", 18), ("Decisão de concorrer", 21)]
+    saida = []
+    for nome, d in marcos:
+        data = fim - timedelta(days=d)
+        saida.append({"marco": nome, "data": data.isoformat(), "atrasado": data < hoje, "dias_para": (data - hoje).days})
+    return saida
+
+
+def simulador_pontuacao(a: dict, e: dict, criterios: list[dict] | None) -> dict:
+    crit = criterios or [{"criterio": "Experiência da entidade na área", "peso": 30}, {"criterio": "Qualidade técnica do projeto", "peso": 30},
+                         {"criterio": "Capacidade de execução e equipe", "peso": 20}, {"criterio": "Orçamento e contrapartida", "peso": 10}, {"criterio": "Território e público beneficiado", "peso": 10}]
+    exp = len(a.get("experiencias") or []); cap = a.get("capacidade_execucao") or {}
+    est, dicas = 0, []
+    for c in crit:
+        p = c.get("peso") or 0; nome = (c.get("criterio") or "").lower()
+        if "experi" in nome: f = min(1, 0.4 + 0.15 * exp); dicas.append("anexar relatórios/atestados de projetos anteriores") if exp < 3 else None
+        elif "capacid" in nome or "equipe" in nome: f = 0.7 if cap else 0.4; dicas.append("descrever equipe e estrutura no plano") if not cap else None
+        elif "orçament" in nome or "contrapart" in nome: f = 0.6; dicas.append("detalhar orçamento por rubrica e contrapartida")
+        elif "territ" in nome or "públic" in nome: f = 0.8 if (e.get("uf") in [t.upper() for t in (a.get("territorios") or [])]) else 0.5
+        else: f = 0.6; dicas.append("projeto com metas, indicadores e cronograma físico-financeiro")
+        est += p * f
+    total = sum((c.get("peso") or 0) for c in crit) or 100
+    return {"criterios": crit, "estimativa": round(100 * est / total), "origem_criterios": "edital" if criterios else "estimados (padrão de chamamentos)", "para_subir": [d for d in dicas if d][:5]}
+
+
+# ───────────────────────── execução ─────────────────────────
+def run(limite_ia: int = 8) -> dict:
+    hoje = date.today()
+    dd = ROOT / "docs/dashboard-dados.json"
+    if not dd.exists():
+        return {"erro": "painel ainda não gerado"}
+    dados = load_json(dd)
+    cfg = load_json(ROOT / "config/ia.json") if (ROOT / "config/ia.json").exists() else {}
+    modelo_itens = ((cfg.get("escalada_busca") or {}).get("cadeia") or [{"modelo": "claude-sonnet-4-5"}])[min(1, len((cfg.get("escalada_busca") or {}).get("cadeia") or [1]) - 1)]["modelo"]
+    modelo_forte = (cfg.get("modelos") or {}).get("conselho_recursos", "claude-fable-5-1")
+    est = load_json(ESTADO) if ESTADO.exists() else {"fila": {}, "execucoes": []}
+    assoc = associacoes(); abertos = editais_abertos(dados)
+    n_ia = 0; resumo = {"associacoes": len(assoc), "editais_abertos": len(abertos), "ia_itens": 0, "ia_enquadramento": 0, "em": now_iso()}
+    for e in sorted(abertos, key=lambda x: (x.get("situacao_inscricao") != "aberta", x.get("uf") != "GO", x.get("fim") or "9")):
+        faltam = itens_faltantes(e)
+        f = est["fila"].setdefault(e["id"], {"titulo": (e.get("titulo") or "")[:120], "faltam": faltam, "tentativas": []})
+        f["faltam"] = faltam
+        if faltam and n_ia < limite_ia and not any(t.get("em", "")[:10] == hoje.isoformat() for t in f["tentativas"]):
+            r = _chamar(modelo_itens, prompt_itens(e, faltam), 1200); n_ia += 1; resumo["ia_itens"] += 1
+            obtidos = {k: v for k, v in (r.get("itens") or {}).items() if v}
+            f["tentativas"].append({"em": now_iso(), "modelo": modelo_itens, "status": r.get("status"), "itens_obtidos": len(obtidos), "fonte": r.get("fonte"),
+                                    "uso": r.get("uso")})
+            if obtidos:
+                f["itens_ia"] = {**(f.get("itens_ia") or {}), **obtidos}
+            if r.get("criterios_pontuacao"): f["criterios_pontuacao"] = r["criterios_pontuacao"]
+            if r.get("documentos_exigidos"): f["documentos_exigidos_ia"] = r["documentos_exigidos"]
+        # enquadramento por associação (piso determinístico + IA forte para os melhores)
+        for a in assoc:
+            ad = aderencia(a, e)
+            pasta = ROOT / "dados/associacoes" / a["_pasta"] / "farol"; pasta.mkdir(parents=True, exist_ok=True)
+            fp = pasta / f"{e['id']}.json"
+            par = load_json(fp) if fp.exists() else {}
+            par.update({"edital_id": e["id"], "associacao": a.get("id") or a["_pasta"], "titulo": e.get("titulo"), "atualizado_em": now_iso(),
+                        "aderencia_deterministica": ad, "checklist": checklist(a, e), "cronograma": cronograma_reverso(e, hoje),
+                        "simulador": simulador_pontuacao(a, e, f.get("criterios_pontuacao"))})
+            if ad["elegivel"] and ad["nota"] >= 45 and not par.get("ia") and n_ia < limite_ia and e.get("situacao_inscricao") == "aberta":
+                r = _chamar(modelo_forte, prompt_enquadramento(a, e, f.get("itens_ia") or {}, f.get("criterios_pontuacao") or []), 1600); n_ia += 1
+                if r.get("status") == "respondeu":
+                    par["ia"] = {k: r.get(k) for k in ("aderencia", "chances", "pontuacao_estimada", "lentes", "decisao", "para_subir", "riscos")}
+                    par["ia"]["modelo"] = modelo_forte; par["ia"]["em"] = now_iso(); par["aderencia"] = r.get("aderencia"); resumo["ia_enquadramento"] += 1
+                else:
+                    par["ia_status"] = r.get("status")
+            par.setdefault("aderencia", ad["nota"])
+            write_json(fp, par)
+    est["execucoes"] = (est.get("execucoes") or [])[-30:] + [resumo]
+    write_json(ESTADO, est)
+    return resumo
+
+
+if __name__ == "__main__":
+    print(json.dumps(run(), ensure_ascii=False, indent=2))

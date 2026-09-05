@@ -3542,6 +3542,32 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(len(cz),1); a=cz[0]; self.assertIn(a["farol"],("verde","amarelo","vermelho","cinza")); self.assertTrue(a["melhores"])
         self.assertTrue(all(0<=m["nota"]<=100 and m["farol"] in ("verde","amarelo","vermelho") for m in a["melhores"]))
 
+
+    def test_enquadramento_farol_fases_3_e_4(self):
+        """Enquadramento (Farol): menu reordenado/renomeado; associações × editais abertos;
+        IA para os 12 itens; aderência, checklist, cronograma reverso, simulador."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        nav=html.split('id="nav-farol"')[1].split("</div>")[0]
+        self.assertLess(nav.find("Enquadramento"),nav.find("Documentos")); self.assertLess(nav.find("Documentos"),nav.find("Biblioteca"))
+        self.assertNotIn(">Oportunidades Abertas<",html.split('id="hot-farol"')[1].split("</nav>")[0])
+        for x in ('id="enq-topo"',"function desenhaEnquadramento",'data-enq="fila"','data-enq="checklist"','data-enq="cronograma"','data-enq="simulador"'):
+            self.assertIn(x,html,x)
+        sec=html.split('<section id="v-f-editais"')[1].split("</section>")[0]
+        self.assertIn('id="ed-farol-caixa"',sec); self.assertIn('id="ed-assoc-caixa"',sec)
+        self.assertNotIn('id="ed-assoc-caixa"',html.split('<section id="v-editais"')[1].split("</section>")[0])
+        from src import enquadramento as E
+        from datetime import date
+        a={"nome":"X","areas":["cultura"],"territorios":["GO"],"documentos_validos":["estatuto","cnpj"],"anos_existencia":10,"experiencias":[1,2,3]}
+        e={"id":"e1","titulo":"T","area":"cultura","uf":"GO","fim":"2026-10-31","fonte_nome":"F","nivel":"estadual","objeto":"x","detalhes":{"documentos_exigidos":["estatuto","cnpj","cndt"]}}
+        ad=E.aderencia(a,e); self.assertGreaterEqual(ad["nota"],70); self.assertEqual(ad["farol"],"verde"); self.assertTrue(any("CNDT" in s for s in ad["para_subir"]))
+        self.assertEqual(E.aderencia(a,{**e,"uf":"SP"})["elegivel"],False)
+        ck=E.checklist(a,e); self.assertEqual([c["status"] for c in ck],["válido","válido","faltante"])
+        cr=E.cronograma_reverso(e,date(2026,9,5)); self.assertEqual(cr[0]["data"],"2026-10-30"); self.assertFalse(cr[-1]["atrasado"])
+        s=E.simulador_pontuacao(a,e,None); self.assertTrue(0<=s["estimativa"]<=100); self.assertIn("estimados",s["origem_criterios"])
+        self.assertIn("SOMENTE JSON",E.prompt_itens(e,["Valor"])); self.assertIn("sete lentes",E.prompt_enquadramento(a,e,{},[]))
+        d=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("enquadramento_fila",d)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.enquadramento",wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

@@ -283,6 +283,15 @@ box-shadow:0 1px 3px #0002}
 @media(max-width:620px){.fa-grade{grid-template-columns:1fr}}
 .fa-grade .ed-item{margin-top:0;height:100%}
 .fa-fonte{font-size:11.5px;color:var(--suave);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.enq-lista{display:flex;flex-direction:column;gap:6px}
+.enq-linha{display:grid;grid-template-columns:14px 44px 1fr 1.2fr .9fr;gap:10px;align-items:center;padding:7px 10px;border:1px solid var(--linha);border-radius:10px;background:#fff;cursor:pointer}.enq-linha:hover{border-color:#9FC1E8}
+.enq-tit{display:flex;flex-direction:column;min-width:0}.enq-tit b{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.enq-tit small{font-size:10.5px;color:var(--suave)}
+.enq-subir{font-size:11.5px;color:#0B4EA2}
+.enq-ck{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}.enq-ck-item{display:flex;align-items:center;gap:8px;padding:6px 9px;border:1px solid var(--linha);border-radius:9px;background:#fff;font-size:12.5px}
+.enq-ck-item small{margin-left:auto;color:var(--suave)}.ck-st{font-weight:800;width:16px;text-align:center}.enq-ck-item.válido .ck-st{color:var(--ok)}.enq-ck-item.vencido .ck-st,.enq-ck-item.faltante .ck-st{color:var(--urgente)}.enq-ck-item.pendente .ck-st{color:var(--alerta)}
+.enq-cron{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.enq-marco{border:1px solid var(--linha);border-radius:9px;padding:6px 8px;background:#fff;font-size:11.5px;display:flex;flex-direction:column;gap:2px}.enq-marco.atrasado{border-color:var(--urgente);background:#FDECEC}.enq-marco small{color:var(--suave)}
+.enq-sim{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:start;padding:8px 10px;border:1px solid var(--linha);border-radius:10px;background:#fff}.enq-sim-nota{text-align:center}.enq-sim-nota b{font-size:30px;color:#0E2A55;display:block}.enq-sim-nota small{color:var(--suave)}
+.enq-crit{display:flex;justify-content:space-between;border-bottom:1px dashed var(--linha);padding:3px 0;font-size:12.5px}
 .assoc-caixa{border:1px solid var(--linha);border-radius:12px;padding:12px 14px;background:#FCFCFB;margin-bottom:10px}
 .assoc-farol{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 3px #fff,0 0 0 4px var(--linha)}
 .assoc-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;margin-top:10px}
@@ -470,8 +479,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <button data-v="bussola">Bússola</button>
 </div>
 <div class="subnav oculto" id="nav-farol">
+<button data-v="f-editais" class="on">Enquadramento</button>
 <button data-v="f-documentos">Documentos</button>
-<button data-v="f-editais" class="on">Oportunidades Abertas</button>
 <button data-v="f-biblioteca">Biblioteca</button>
 </div>
 </header>
@@ -493,8 +502,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div class="hotzona" id="hot-farol">
   <button class="hot" onclick="modulo('farol')" aria-label="Abrir Farol de Alexandria"></button>
   <nav class="submenu" aria-label="Seções do Farol">
+    <button onclick="modulo('farol');mostra('f-editais')">Enquadramento</button>
     <button onclick="modulo('farol');mostra('f-documentos')">Documentos</button>
-    <button onclick="modulo('farol');mostra('f-editais')">Oportunidades Abertas</button>
     <button onclick="modulo('farol');mostra('f-biblioteca')">Biblioteca</button>
   </nav>
 </div>
@@ -632,23 +641,6 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <div class=meta id="pat-fonte" style="margin-bottom:8px"></div><div id="pat-lista"></div>
   </div>
 </div>
-<!-- ASSOCIAÇÕES CADASTRADAS × EDITAIS · Farol de aderência por associação -->
-<div class="cartao faixa-total" id="ed-assoc-caixa" style="margin-bottom:16px">
-  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-    <h3 style="margin:0;font-size:16px">Associações cadastradas — enquadramento e Farol de aderência</h3>
-    <span class=meta title="Para cada associação cadastrada, o cruzamento de área, território e documentos com os editais abertos/possíveis; a nota determinística é o piso e a análise de IA do Farol (fase 3) a substitui quando há parecer gravado">— quais editais melhor se enquadram em cada associação</span>
-  </div>
-  <div id="ed-assoc-lista" style="margin-top:10px"></div>
-</div>
-<!-- Farol de aderência -->
-<div class="cartao" id="ed-farol-caixa">
-  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Farol de Alexandria — aderência
-    <span class=meta title="Notas por dimensão calculadas pelo Farol de Alexandria a partir do perfil da associação e dos requisitos de cada edital." style="cursor:help">ⓘ</span></div>
-  <div class="bz-gauge" id="bz-gauge" style="--p:0"><div><span class="g" id="bz-nota">—</span><span class="g100">/100</span><div class=meta style="margin-top:4px">Aderência geral</div><div id="bz-classe" style="font-weight:800;color:#0B4EA2">—</div></div></div>
-  <div id="bz-dimensoes"></div>
-  <button style="width:100%;margin-top:12px;color:#0B4EA2;font-weight:700;border-color:#9FC1E8" onclick="modulo('farol')">⚓ Ver detalhes do Farol</button>
-</div>
-</div>
 <div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
   <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
   <select id="ed-uf"><option value="">Todos os estados</option></select>
@@ -679,7 +671,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
       <button class="quieto" onclick="modulo('farol')"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#0B4EA2" stroke-width="1.8"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M8 21h8"/></svg>FAROL DE ALEXANDRIA</button>
       <nav class="submenu" aria-label="Seções do Farol">
         <button onclick="modulo('farol');mostra('f-documentos')">Documentos</button>
-        <button onclick="modulo('farol');mostra('f-editais')">Oportunidades Abertas</button>
+        <button onclick="modulo('farol');mostra('f-editais')">Enquadramento</button>
         <button onclick="modulo('farol');mostra('f-biblioteca')">Biblioteca</button>
       </nav>
     </div>
@@ -785,6 +777,40 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 </section>
 <section id="v-f-editais" class="oculto" style="margin-top:14px">
+<!-- ENQUADRAMENTO · fases 3 e 4 do Farol de Alexandria -->
+<div class="cartao faixa-total" id="enq-topo" style="margin-bottom:16px">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <h3 style="margin:0;font-size:16px">Enquadramento — investigação com IA e aderência</h3>
+    <span class=meta>regra inicial: quais associações existem · quais editais estão abertos · a IA completa os 12 itens que faltam · o Farol avalia enquadramento, chances de êxito e pontuação</span>
+    <span class=meta style="margin-left:auto" id="enq-resumo"></span>
+  </div>
+  <div class="mets" id="enq-mets" style="margin:10px 0 6px"></div>
+  <div class="abas abas-ed" id="enq-abas" style="margin:8px 0 12px">
+    <button data-enq="ranking" class="on"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Ranking de êxito</span></button>
+    <button data-enq="fila"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 8v4l3 2"/></svg><span>Fila de investigação IA</span></button>
+    <button data-enq="checklist"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg><span>Checklist de documentos</span></button>
+    <button data-enq="cronograma"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Cronograma reverso</span></button>
+    <button data-enq="simulador"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 19l5-7 4 4 7-10"/><path d="M15 6h5v5"/></svg><span>Simulador de pontuação</span></button>
+  </div>
+  <div id="enq-corpo"></div>
+</div>
+<!-- ASSOCIAÇÕES CADASTRADAS × EDITAIS · Farol de aderência por associação -->
+<div class="cartao faixa-total" id="ed-assoc-caixa" style="margin-bottom:16px">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <h3 style="margin:0;font-size:16px">Associações cadastradas — enquadramento e Farol de aderência</h3>
+    <span class=meta title="Para cada associação cadastrada, o cruzamento de área, território e documentos com os editais abertos/possíveis; a nota determinística é o piso e a análise de IA do Farol (fase 3) a substitui quando há parecer gravado">— quais editais melhor se enquadram em cada associação</span>
+  </div>
+  <div id="ed-assoc-lista" style="margin-top:10px"></div>
+</div>
+<!-- Farol de aderência -->
+<div class="cartao" id="ed-farol-caixa">
+  <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Farol de Alexandria — aderência
+    <span class=meta title="Notas por dimensão calculadas pelo Farol de Alexandria a partir do perfil da associação e dos requisitos de cada edital." style="cursor:help">ⓘ</span></div>
+  <div class="bz-gauge" id="bz-gauge" style="--p:0"><div><span class="g" id="bz-nota">—</span><span class="g100">/100</span><div class=meta style="margin-top:4px">Aderência geral</div><div id="bz-classe" style="font-weight:800;color:#0B4EA2">—</div></div></div>
+  <div id="bz-dimensoes"></div>
+  <button style="width:100%;margin-top:12px;color:#0B4EA2;font-weight:700;border-color:#9FC1E8" onclick="modulo('farol')">⚓ Ver detalhes do Farol</button>
+</div>
+</div>
 <div class="cartao" style="margin-bottom:14px">
   <div class="painel-tit farol">
     <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#0B4EA2" stroke-width="1.9" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/><path d="M8.4 15.2l2.3 2.3 4.6-4.7" stroke-linejoin="round"/></svg>
@@ -822,10 +848,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260905092659"></script>
-<script src="mapa-arte.js?v=20260905092659"></script>
-<script src="dashboard-dados.enc.js?v=20260905092659"></script>
-<script src="dashboard-dados.js?v=20260905092659"></script>
+<script src="mapa-brasil.js?v=20260905093752"></script>
+<script src="mapa-arte.js?v=20260905093752"></script>
+<script src="dashboard-dados.enc.js?v=20260905093752"></script>
+<script src="dashboard-dados.js?v=20260905093752"></script>
 <script>
 (function(){
 "use strict";
@@ -1691,8 +1717,7 @@ function desenhaEditais(){
   $("ed-filtros").classList.toggle("oculto",aba!=="encerrado");
   const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
   const ce=$("emp-caixa"); if(ce){ce.classList.toggle("oculto",aba!=="em_andamento"); if(aba==="em_andamento")desenhaEmpresas();}
-  ["ed-assoc-caixa","ed-farol-caixa"].forEach(id=>{const el=$(id);if(el)el.classList.toggle("oculto",aba!=="em_andamento");});
-  if(aba==="em_andamento")desenhaAssociacoes();
+
   if(aba==="em_andamento"){
     /* UNIFICADA: a antiga «Fontes com edital aberto» da Bússola vive aqui, com
        todos os seus filtros (associação, UF, área, nível, situação) e o resumo */
@@ -1832,6 +1857,49 @@ function desenhaEmpresas(){
   box.querySelectorAll(".emp-linha").forEach(el=>{const x=rows.find(y=>y.id===el.dataset.id);if(!x)return;
     ligaTip(el,`<strong>${esc(x.nome)}</strong> ${x.cnpj?"· "+esc(x.cnpj):""}<br>${esc(x.cnae||"")} · porte ${esc(x.porte||"—")} · situação ${esc(x.situacao||"—")} · ${x.matriz===false?"FILIAL":x.matriz?"matriz":"matriz/filial a confirmar"}<br>${esc(ROT_LUCRO[x.lucro_real]||"")}: ${esc(x.lucro_real_motivo||"")}<br>score ${x.score} — ${esc((x.memoria_score||[]).join("; "))}<br><em>clique para o parecer completo</em>`);
     el.onclick=()=>empDetalhe(x);});
+}
+/* ================= ENQUADRAMENTO (Farol, fases 3 e 4) ================= */
+window._enq="ranking";
+function desenhaEnquadramento(){
+  const box=$("enq-corpo"); if(!box)return;
+  const L=D.associacoes_cruzamento||[], Q=D.enquadramento_fila||{fila:[]};
+  const pares=L.flatMap(a=>(a.melhores||[]).map(m=>({a,m})));
+  const ult=Q.ultima||{};
+  $("enq-resumo").textContent=`${L.length} associação(ões) · ${(D.editais||[]).filter(e=>situacaoDe(e)==="aberta").length} aberta(s) · ${(D.editais||[]).filter(e=>situacaoDe(e)==="possivel").length} possíveis · IA: ${Q.ia_tentativas||0} tentativa(s), ${Q.itens_obtidos_ia||0} item(ns) obtido(s)${ult.em?" · última "+br(ult.em.slice(0,10)):""}`;
+  const COR={verde:"var(--ok)",amarelo:"var(--alerta)",vermelho:"var(--urgente)"};
+  const verdes=pares.filter(p=>p.m.farol==="verde").length, amar=pares.filter(p=>p.m.farol==="amarelo").length;
+  $("enq-mets").innerHTML=[["Enquadram (verde)",verdes,"aderência ≥ 70"],["Com pendências (amarelo)",amar,"45–69"],["Editais na fila da IA",Q.com_faltas||0,"com itens faltando"],["Pareceres de IA",pares.filter(p=>p.m.analise_ia).length,"conselho Fable 5.1"]]
+    .map(([r,v,s])=>`<div class="met"><div class=v>${v}</div><div class=r>${esc(r)}</div><div class=s>${esc(s)}</div></div>`).join("");
+  document.querySelectorAll("#enq-abas button").forEach(b=>{b.classList.toggle("on",b.dataset.enq===window._enq);b.onclick=()=>{window._enq=b.dataset.enq;desenhaEnquadramento();};});
+  const v=window._enq;
+  if(v==="ranking"){
+    const top=pares.sort((x,y)=>y.m.nota-x.m.nota).slice(0,20);
+    box.innerHTML=`<div class=meta style="margin-bottom:8px">Os editais que valem a inscrição hoje, por associação — nota de aderência (determinística como piso; parecer de IA a substitui quando gravado), chances e pontuação estimada.</div>
+      <div class="enq-lista">${top.map(({a,m})=>`<div class="enq-linha" data-id="${esc(m.id)}"><span class="assoc-led" style="background:${COR[m.farol]}"></span><b class="assoc-nota">${m.nota}</b>
+        <span class="enq-tit"><b>${esc((m.titulo||"").slice(0,80))}</b><small>${esc(a.nome||"")} · ${esc(AREA(m.area).rotulo)} · ${esc(m.uf||"BR")} · ${m.situacao==="aberta"?"aberta":"possível"}${m.fim?" · até "+br(m.fim):""}</small></span>
+        <span class=meta>${m.ia?`chances ${esc(String(m.ia.chances??"—"))} · ${esc(String(m.ia.pontuacao_estimada||"").slice(0,40))}`:`pontuação estimada ${(m.simulador||{}).estimativa??"—"} · <em>IA pendente</em>`}</span>
+        <span class="enq-subir" title="${esc((m.para_subir||[]).join(" · "))}">${(m.para_subir||[]).length?`↑ ${(m.para_subir||[]).length} ação(ões) sobem a nota`:"—"}</span></div>`).join("")||'<div class=meta>Nenhum par associação × edital avaliado ainda.</div>'}</div>`;
+  }else if(v==="fila"){
+    box.innerHTML=`<div class=meta style="margin-bottom:8px">Cada edital aberto com os itens que faltam dos 12; a IA (modelo intermediário) busca na publicação oficial e o conselho (Fable 5.1) avalia o enquadramento dos que passam de 45. Sem credencial de IA no CI, a fila registra "aguardando credencial".</div>
+      <div class="enq-lista">${(Q.fila||[]).slice(0,60).map(f=>`<div class="enq-linha" data-id="${esc(f.id)}"><span class="assoc-led" style="background:${f.faltam.length?(f.itens_ia?"var(--alerta)":"var(--urgente)"):"var(--ok)"}"></span><b class="assoc-nota">${12-f.faltam.length}<small>/12</small></b>
+        <span class="enq-tit"><b>${esc((f.titulo||"").slice(0,80))}</b><small>faltam: ${f.faltam.map(esc).join(", ")||"nada"}</small></span>
+        <span class=meta>${f.tentativas} tentativa(s)${f.itens_ia?" · "+f.itens_ia+" item(ns) pela IA":""}${f.status?" · "+esc(f.status):""}</span></div>`).join("")||'<div class=meta>Fila vazia.</div>'}</div>`;
+  }else if(v==="checklist"){
+    box.innerHTML=L.map(a=>{const m=(a.melhores||[])[0]; const ck=(m&&m.checklist)||[];
+      return `<div class=meta style="margin:6px 0"><strong>${esc(a.nome)}</strong> — documentos exigidos pelo melhor edital (${esc((m||{}).titulo||"—")}) × válidos no cadastro</div>
+      <div class="enq-ck">${ck.map(c=>`<div class="enq-ck-item ${c.status}"><span class="ck-st">${c.status==="válido"?"✓":c.status==="vencido"?"⚠":c.status==="pendente"?"…":"✗"}</span><span>${esc(c.rotulo)}</span><small>${esc(c.status)}${c.vence_em_dias!=null?" · vence em "+c.vence_em_dias+" d":c.renovacao_dias?" · renovar a cada "+c.renovacao_dias+" d":""}</small></div>`).join("")||'<div class=meta>sem documentos exigidos conhecidos</div>'}</div>
+      <div class=meta>Preencha <code>documentos_validos</code> e <code>documentos_validade</code> no perfil da associação para o checklist ficar verde.</div>`;}).join("");
+  }else if(v==="cronograma"){
+    box.innerHTML=L.map(a=>(a.melhores||[]).filter(m=>m.cronograma&&m.cronograma.length).slice(0,4).map(m=>`<div class=meta style="margin:8px 0 4px"><strong>${esc((m.titulo||"").slice(0,70))}</strong> — prazo final ${br(m.fim)} · ${esc(a.nome)}</div>
+      <div class="enq-cron">${m.cronograma.slice().reverse().map(c=>`<div class="enq-marco ${c.atrasado?"atrasado":""}"><b>${br(c.data)}</b><span>${esc(c.marco)}</span><small>${c.atrasado?"atrasado":c.dias_para+" dia(s)"}</small></div>`).join("")}</div>`).join("")).join("")||'<div class=meta>Nenhum edital com prazo final para montar o cronograma.</div>';
+  }else if(v==="simulador"){
+    box.innerHTML=L.map(a=>(a.melhores||[]).slice(0,3).map(m=>{const s=m.simulador||{criterios:[],estimativa:null,para_subir:[]};
+      return `<div class=meta style="margin:8px 0 4px"><strong>${esc((m.titulo||"").slice(0,70))}</strong> — ${esc(a.nome)} · critérios ${esc(s.origem_criterios||"")}</div>
+      <div class="enq-sim"><div class="enq-sim-nota"><b>${s.estimativa??"—"}</b><small>pontuação estimada</small></div>
+        <div>${(s.criterios||[]).map(c=>`<div class="enq-crit"><span>${esc(c.criterio)}</span><span class=meta>peso ${c.peso??"—"}</span></div>`).join("")}
+        ${(s.para_subir||[]).length?`<div class=meta style="margin-top:6px"><strong>Para subir:</strong> ${(s.para_subir||[]).map(esc).join(" · ")}</div>`:""}</div></div>`;}).join("")).join("")||'<div class=meta>Sem pares avaliados.</div>';
+  }
+  box.querySelectorAll(".enq-linha[data-id]").forEach(el=>{el.onclick=()=>{const ed=(D.editais||[]).find(x=>x.id===el.dataset.id);if(ed)detalheEdital(ed);};});
 }
 function desenhaAssociacoes(){
   const box=$("ed-assoc-lista"); if(!box)return; const L=D.associacoes_cruzamento||[];
@@ -2786,6 +2854,7 @@ function iniciar(){
   gAno=HOJE.getFullYear();gMes=HOJE.getMonth();
   desenhaRadar();desenhaFarolResumo();desenhaGantt();desenhaFila();
   desenhaCal();desenhaEditais();desenhaBussola();iniciarBz();desenhaCalendarioDecisao();desenhaBiblioteca();
+  desenhaEnquadramento();desenhaAssociacoes();
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
 }
