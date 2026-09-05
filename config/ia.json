@@ -25,7 +25,11 @@
       "padrao": "claude-haiku-4-5",
       "nota": "busca ativa de URL de edital com busca na web: tarefa curta, modelo mais barato"
     },
-    "conselho_recursos": "claude-fable-5-1"
+    "conselho_recursos": "claude-fable-5-1",
+    "busca_nivel_1": "claude-haiku-4-5",
+    "busca_nivel_2": "claude-sonnet-5",
+    "busca_nivel_3": "claude-opus-5",
+    "analise_edital": "claude-fable-5-1"
   },
   "nota_modelos": "IDs padrão registrados em 30/08/2026. Atualize os padrões (ou defina as variáveis de ambiente) quando modelos mais novos estiverem disponíveis; o código nunca traz modelo gravado em fonte.",
   "verificacao_assistida": {
@@ -80,5 +84,13 @@
     "ia_a_cada_dias": 3,
     "conselho_na_ia_numero": 3,
     "regra": "motor opressor acionado (automático ou manual) fica ligado 30 dias; IA barata no 3º dia, intermediária no 6º, conselho Fable 5.1 no 9º com opinião sobre as falhas anteriores; prompt sob medida por recurso, só com os itens que faltam"
+  },
+  "escada_edital": {
+    "regra": "busca de informações do edital em três níveis, do mais barato ao mais caro, só sobre o que falta: Haiku 4.5 → Sonnet 5 → Opus 5; a Fable 5.1 é usada exclusivamente para a ANÁLISE do edital (entendimento, parecer, enquadramento), nunca para busca",
+    "sinalizacao": {
+      "verde": "buscou e obteve informação nova",
+      "amarelo": "buscou e não encontrou nada novo",
+      "vermelho": "não buscou ou falhou (sem credencial, erro, sem texto)"
+    }
   }
 }

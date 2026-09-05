@@ -273,6 +273,24 @@ def simulador_pontuacao(a: dict, e: dict, criterios: list[dict] | None) -> dict:
     return {"criterios": crit, "estimativa": round(100 * est / total), "origem_criterios": "edital" if criterios else "estimados (padrão de chamamentos)", "para_subir": [d for d in dicas if d][:5]}
 
 
+def _quadro_ia(ex: dict, par: dict) -> dict:
+    """Luzes por modelo: verde buscou e obteve; amarelo buscou e nada novo; vermelho não buscou/falhou."""
+    cfg = load_json(ROOT / "config/ia.json") if (ROOT / "config/ia.json").exists() else {}
+    mods = cfg.get("modelos") or {}
+    ordem = [("Haiku 4.5", mods.get("busca_nivel_1", "claude-haiku-4-5")), ("Sonnet 5", mods.get("busca_nivel_2", "claude-sonnet-5")),
+             ("Opus 5", mods.get("busca_nivel_3", "claude-opus-5"))]
+    q = []
+    for rot, mid in ordem:
+        ts = [t for t in (ex.get("tentativas") or []) if t.get("modelo") == mid]
+        if not ts: q.append({"modelo": rot, "sinal": "vermelho", "detalhe": "não buscou"})
+        else:
+            u = ts[-1]; q.append({"modelo": rot, "sinal": u.get("sinal") or ("verde" if u.get("itens_obtidos") else "amarelo" if u.get("status") == "respondeu" else "vermelho"),
+                                  "detalhe": f"{u.get('status')} · {u.get('itens_obtidos', 0)} item(ns)"})
+    ia = par.get("ia")
+    q.append({"modelo": "Fable 5.1 (análise)", "sinal": "verde" if ia else "vermelho", "detalhe": "parecer emitido" if ia else (par.get("ia_status") or "não analisou")})
+    return {"luzes": q, "papel": "Haiku → Sonnet → Opus buscam; Fable analisa"}
+
+
 def _para_inscricao(a: dict, exigidos: list[str], faltam: list[str]) -> dict:
     """O que falta, objetivamente, para ter os documentos preenchidos e prontos
     na tela Documentos: documentos exigidos que a associação não tem válidos +
@@ -302,7 +320,9 @@ def run(limite_ia: int = 8) -> dict:
     n_ia = 0; resumo = {"associacoes": len(assoc), "editais_abertos": len(abertos), "ia_itens": 0, "ia_enquadramento": 0, "em": now_iso()}
     compat = [e for e in abertos if any(filtro_geografico(a, e) for a in assoc)]     # filtro geográfico ANTES da IA
     from .fonte_edital import investigar
-    modelos_extracao = [((cfg.get("modelos") or {}).get("extracao_requisitos") or {}).get("padrao", "claude-haiku-4-5"), modelo_itens]
+    mods = cfg.get("modelos") or {}
+    modelos_extracao = [mods.get("busca_nivel_1", "claude-haiku-4-5"), mods.get("busca_nivel_2", "claude-sonnet-5"), mods.get("busca_nivel_3", "claude-opus-5")]
+    modelo_forte = mods.get("analise_edital", modelo_forte)
     n_inv = 0
     for e in sorted(compat, key=lambda x: (x.get("situacao_inscricao") != "aberta", x.get("uf") != "GO", x.get("fim") or "9")):
         f = est["fila"].setdefault(e["id"], {"titulo": (e.get("titulo") or "")[:120], "faltam": [], "tentativas": []})
@@ -372,7 +392,8 @@ def run(limite_ia: int = 8) -> dict:
                           "fonte_original": f.get("fonte_original"), "documentos_exigidos": f.get("documentos_exigidos_ia") or [],
                           "para_inscricao": _para_inscricao(a, f.get("documentos_exigidos_ia") or [], faltam),
                           "relatorio_ia": (extraido(e) or {}).get("relatorio"), "mini_parecer": (extraido(e) or {}).get("mini_parecer"),
-                          "decisao": dec.get(e["id"]), "valor": (f.get("itens") or {}).get("Valor") or e.get("valor_texto"), "orgao": (f.get("itens") or {}).get("Órgão / financiador") or e.get("fonte_nome"),
+                          "decisao": dec.get(e["id"]), "pagina_divulgacao": (extraido(e) or {}).get("pagina_divulgacao") or (extraido(e) or {}).get("site_institucional"),
+                          "quadro_ia": _quadro_ia(extraido(e) or {}, par), "valor": (f.get("itens") or {}).get("Valor") or e.get("valor_texto"), "orgao": (f.get("itens") or {}).get("Órgão / financiador") or e.get("fonte_nome"),
                           "subir": f"https://github.com/amcjardimamerica-arch/Eldorado/new/main/dados/editais/complementos/{e['id']}?filename=complemento.md&value="
                                    + __import__("urllib.parse").parse.quote("\n".join(f"- {i}: " for i in faltam) or "- (nada falta)")})
         lista.sort(key=lambda x: (x["situacao"] != "aberta", -x["nota"]))

@@ -1002,6 +1002,17 @@ def situacao_inscricao(e: dict, hoje: date) -> dict:
     return {"situacao": "aberta", "regime": "periodo_determinado", "base": f"inscrições vigentes até {fim}"}
 
 
+def _imagem_perfil(pasta_assoc) -> str | None:
+    """Copia dados/associacoes/<id>/imagens/perfil.(jpg|png|webp) para docs/imagens/associacoes/ (o Pages só serve docs/)."""
+    import shutil
+    for ext in ("jpg", "jpeg", "png", "webp"):
+        src = pasta_assoc / "imagens" / f"perfil.{ext}"
+        if src.exists():
+            dst = ROOT / "docs/imagens/associacoes" / f"{pasta_assoc.name}.{ext}"; dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(src, dst); return f"imagens/associacoes/{pasta_assoc.name}.{ext}"
+    return None
+
+
 def _cruzamento_associacoes(editais: list[dict], hoje: date) -> list[dict]:
     """Associações cadastradas × editais: para cada associação, os editais que
     melhor se enquadram (área, território, requisitos atendidos) e o Farol de
@@ -1349,7 +1360,7 @@ def coletar(hoje: date | None = None) -> dict:
         "associacoes_cruzamento": _cruzamento_associacoes(editais, hoje),
         "municipios_maiores": (load_json(ROOT / "config/municipios_maiores.json").get("maiores", {}) if (ROOT / "config/municipios_maiores.json").exists() else {}),
         "enquadramento": [load_json(pathlib.Path(f)) for f in sorted(__import__("glob").glob(str(ROOT / "dados/associacoes/*/enquadramento.json"))) if "EXEMPLO" not in f],
-        "documentos_associacoes": [dict(load_json(pathlib.Path(f)), parecer_md=(pathlib.Path(f).parent / "parecer.md").read_text(encoding="utf-8") if (pathlib.Path(f).parent / "parecer.md").exists() else "")
+        "documentos_associacoes": [dict(load_json(pathlib.Path(f)), imagem_perfil=_imagem_perfil(pathlib.Path(f).parent.parent), parecer_md=(pathlib.Path(f).parent / "parecer.md").read_text(encoding="utf-8") if (pathlib.Path(f).parent / "parecer.md").exists() else "")
                                    for f in sorted(__import__("glob").glob(str(ROOT / "dados/associacoes/*/documentos/dossie.json"))) if "EXEMPLO" not in f],
         "enquadramento_fila": (lambda q: {"total": len(q.get("fila", {})), "com_faltas": sum(1 for f in q.get("fila", {}).values() if f.get("faltam")),
                                           "ia_tentativas": sum(len(f.get("tentativas", [])) for f in q.get("fila", {}).values()),

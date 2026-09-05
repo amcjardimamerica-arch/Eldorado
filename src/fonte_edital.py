@@ -184,7 +184,7 @@ def obter_texto(e: dict, maximo_pdfs: int = 3) -> dict:
         with gzip.open(arq, "wt", encoding="utf-8", compresslevel=9) as gz:
             gz.write(texto)
     return {"texto": texto, "arquivo": str(arq.relative_to(ROOT)) if texto else None, "kb_compacto": round(arq.stat().st_size / 1024, 1) if texto else 0,
-            "fontes": usados, "site_institucional": f.get("site_institucional"), "origem": f.get("origem"), "pncp": {k: f.get(k) for k in ("orgao", "uf", "municipio", "objeto_pncp", "encerramento_pncp", "abertura_pncp") if f.get(k)},
+            "fontes": usados, "site_institucional": f.get("site_institucional"), "pagina_divulgacao": f.get("pagina_divulgacao") or (f["paginas"][0] if f.get("paginas") and f["origem"] == "pagina" and not re.search(r"pncp|in\.gov|queridodiario", f["paginas"][0]) else None), "origem": f.get("origem"), "pncp": {k: f.get(k) for k in ("orgao", "uf", "municipio", "objeto_pncp", "encerramento_pncp", "abertura_pncp") if f.get(k)},
             "erros": f["erros"], "anexos": [{"nome": p["titulo"], "url": p["url"]} for p in f["pdfs"][:12]]}
 
 
@@ -318,7 +318,7 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False, rede: 
     texto = texto_guardado(e)
     if rede and (not texto or forcar):
         ob = obter_texto(e); texto = ob["texto"]
-        reg.update({k: ob[k] for k in ("arquivo", "kb_compacto", "fontes", "site_institucional", "origem", "pncp", "erros", "anexos")})
+        reg.update({k: ob[k] for k in ("arquivo", "kb_compacto", "fontes", "site_institucional", "pagina_divulgacao", "origem", "pncp", "erros", "anexos")})
     det = extrair_deterministico(texto, reg.get("pncp")) if texto else {"itens": {}, "fontes": {}, "documentos_exigidos_texto": [], "metodo": "sem texto"}
     itens = dict(reg.get("itens") or {}); fontes = dict(reg.get("fontes_itens") or {})
     # o que o motor já sabe do edital entra como piso (fonte: cadastro do motor)
@@ -339,14 +339,17 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False, rede: 
     for i, modelo in enumerate(modelos):
         if not faltam or not texto:
             break
-        if i > 0 and len(faltam) < 3:
-            break                                     # reforço só se ainda faltar bastante
+        if i == 2 and len(faltam) < 3:
+            break                                     # Opus só se ainda faltarem 3 ou mais itens
         r = chamar(modelo, prompt_extracao(e, texto, faltam), 1600)
-        reg["tentativas"].append({"em": now_iso(), "modelo": modelo, "status": r.get("status"), "faltavam": list(faltam), "uso": r.get("uso")})
+        novos = 0
+        if r.get("status") == "respondeu":
+            for k, v in (r.get("itens") or {}).items():
+                if v and not itens.get(k): itens[k] = v; fontes[k] = f"IA ({modelo}) sobre o texto do edital"; novos += 1
+        reg["tentativas"].append({"em": now_iso(), "modelo": modelo, "status": r.get("status"), "faltavam": list(faltam), "uso": r.get("uso"), "itens_obtidos": novos,
+                                  "sinal": "verde" if novos else ("amarelo" if r.get("status") == "respondeu" else "vermelho")})
         if r.get("status") != "respondeu":
             break
-        for k, v in (r.get("itens") or {}).items():
-            if v and not itens.get(k): itens[k] = v; fontes[k] = f"IA ({modelo}) sobre o texto do edital"
         for k in ("regras", "requisitos", "pontuacao", "documentos_exigidos", "anexos_ia", "confianca", "mini_parecer"):
             src_k = "anexos" if k == "anexos_ia" else k
             if r.get(src_k) not in (None, "", []): reg[k] = r[src_k]

@@ -3615,7 +3615,7 @@ class SystemTests(unittest.TestCase):
             E.COMPLEMENTOS=orig; shutil.rmtree(lab,ignore_errors=True)
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertNotIn('id="enq-abas"',html)
-        for x in ("enq-assoc","Relatório da IA","subir informação","edital ↗","filtro geográfico","sug-docs"): self.assertIn(x,html,x)
+        for x in ("enq-assoc","Considerações da IA","subir informação","filtro geográfico","sug-col"): self.assertIn(x,html,x)
         d=load_json(pathlib.Path("docs/dashboard-dados.json")); q=d["enquadramento"][0]
         self.assertLess(q["compativeis_geograficamente"],q["editais_abertos_total"]); self.assertTrue(all("subir" in e and "faltam" in e for e in q["editais"]))
 
@@ -3646,7 +3646,7 @@ class SystemTests(unittest.TestCase):
         finally:
             (F.EXTRAIDOS/"lab-fe.json").unlink(missing_ok=True); (F.TEXTOS/"lab-fe.txt.gz").unlink(missing_ok=True)
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("Mini-apresentação","Editais enquadrados após o filtro de IA","Relatório da IA","site oficial ↗","sug-itens"): self.assertIn(x,html,x)
+        for x in ("Mini-apresentação","Editais enquadrados após o filtro de IA","Considerações da IA","sug-icones","pontos12"): self.assertIn(x,html,x)
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"][0]
         self.assertEqual(len(q["itens"]),12); self.assertIn("para_inscricao",q)
 
@@ -3660,7 +3660,7 @@ class SystemTests(unittest.TestCase):
         r2=F.relatorio({"itens":{"Valor":"x"},"fontes_itens":{"Valor":"texto do edital"},"faltam":[],"tentativas":[{"status":"respondeu","modelo":"h"}],"fontes":[{"url":"u"}],"kb_compacto":3},{},credencial=True)
         self.assertEqual(r2["situacao"],"pesquisa completa"); self.assertIsNone(r2["manual"])
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("Relatório da IA","enq-manual","sug-parecer","function desenhaPerfis","perfil-card","Cartão de visitas"): self.assertIn(x,html,x)
+        for x in ("Considerações da IA","enq-manual","sug-parecer","function desenhaPerfis","perfil-card","Cartão de visitas"): self.assertIn(x,html,x)
         self.assertNotIn("O que falta para a inscrição",html)
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"][0]
         self.assertEqual(sum(1 for i in q["itens"] if i["valor"]),12); self.assertTrue(q["relatorio_ia"]["completo"])
@@ -3703,10 +3703,24 @@ class SystemTests(unittest.TestCase):
         self.assertFalse(conhecimento_regramento({"titulo":"Emenda Parlamentar Estadual — Goiás","fonte_nome":"x"})["itens"].get("Valor","").startswith("variável"))  # não confunde com Rouanet
         r=load_json(pathlib.Path("config/regramentos.json")); self.assertTrue(all(g.get("tipo_captacao","").startswith("pessoal") for g in r["regramentos"] if "emenda" in g["fonte"].lower()))
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("window.decidirEdital","inscrição realizada","dispensar","sug-titulo","sug-dados","Relatório da IA","Documentos necessários","class=\"dropzone\"","function ligaDropzones","window.alternaLargura","⇔ largura"): self.assertIn(x,html,x)
+        for x in ("window.decidirEdital","inscrição realizada","dispensar","sug-titulo","sug-chips","Considerações da IA","Documentos necessários","class=\"dropzone\"","function ligaDropzones","window.alternaLargura","⇔ largura"): self.assertIn(x,html,x)
         self.assertNotIn("enq-cron-mini",html.split("function htmlEditaisEnquadrados")[1].split("function desenhaEnquadramento")[0])
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]
         em=[e for e in q["editais"] if "Emenda" in (e["titulo"] or "")]; self.assertTrue(em and all(sum(1 for i in e["itens"] if i["valor"])==12 for e in em))
+
+
+    def test_quadro_de_ia_por_edital_escada_de_modelos_e_cartao_redesenhado(self):
+        c=load_json(pathlib.Path("config/ia.json"))["modelos"]
+        self.assertEqual([c["busca_nivel_1"],c["busca_nivel_2"],c["busca_nivel_3"]],["claude-haiku-4-5","claude-sonnet-5","claude-opus-5"]); self.assertEqual(c["analise_edital"],"claude-fable-5-1")
+        from src.enquadramento import _quadro_ia
+        q=_quadro_ia({"tentativas":[{"modelo":"claude-haiku-4-5","status":"respondeu","itens_obtidos":2,"sinal":"verde"},{"modelo":"claude-sonnet-5","status":"respondeu","itens_obtidos":0,"sinal":"amarelo"}]},{"ia":{"decisao":"x"}})
+        self.assertEqual([l["sinal"] for l in q["luzes"]],["verde","amarelo","vermelho","verde"])
+        self.assertEqual(_quadro_ia({},{})["luzes"][3]["sinal"],"vermelho")
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("perfil-trocar","window.trocarImagem","sug-valor","sug-prazo","sug-chips","pontos12","sug-grade3","Checklist do edital","Documentos necessários","Considerações da IA","ia-quadro","página oficial de divulgação do edital","subir documentos desta entidade"): self.assertIn(x,html,x)
+        self.assertNotIn("extração determinística",html.split("function htmlEditaisEnquadrados")[1].split("function desenhaEnquadramento")[0])
+        src=open("src/dashboard_dados.py",encoding="utf-8").read(); self.assertIn("def _imagem_perfil",src)
+        q2=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"][0]; self.assertEqual(len(q2["quadro_ia"]["luzes"]),4); self.assertIn("pagina_divulgacao",q2)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
