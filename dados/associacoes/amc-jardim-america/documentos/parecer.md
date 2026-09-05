@@ -2,9 +2,13 @@
 
 **CNPJ** 02.167.849/0001-80 · **natureza** associacao privada sem fins lucrativos · fundada em 1983-04-24 · CNPJ desde 1987-03-30 · **43 anos**
 
-**Sede:** —, Jardim América, Goiânia/GO (a confirmar no comprovante de endereço)
+**Sede:** Rua C192-A, Quadra 491, Lote 13, Jardim América, Goiânia/GO (último endereço documentado (sede provisória anterior; sede atual de 30 m² — confirmar no comprovante de endereço))
 
-**Governança:** presidencia, vice_presidencia, secretaria, tesouraria, diretoria_eventos, conselho_fiscal · **mandato:** — → — (pendente — informar na ata de eleição)
+**Governança:** Presidência, Vice-Presidência, Secretaria, Tesouraria, Diretoria de Eventos, Conselho Fiscal · **mandato:** 2025-01-01 → 2029-12-31 (declarado no documento de apresentação (mandatos 2021/2025 e 2025/2029); ata de eleição a anexar para comprovação)
+
+**Diretoria:** Presidente: Eduardo Kleber Xavier Lemos · nenhum membro da diretoria é remunerado (Estatuto, art. 1º §1º)
+
+**Utilidade pública:** estadual: Lei Estadual nº 22.137/2023 (Goiás) declarada no documento; verificação automática na Casa Civil de Goiás a cada saída (ver dossiê) — verificação: não verificável automaticamente (HTTPError) — conferir manualmente · federal:  não possui (declarado) · municipal:  'em processo de retirada' — expressão ambígua no documento; esclarecer com a Prefeitura de Goiânia
 
 ## Afinidades e enquadramento
 
@@ -32,4 +36,4 @@
 
 **Prontidão documental:** 0/5 certidões válidas · 1/6 registrados enviados.
 
-_Gerado em 2026-09-05T17:43 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._
+_Gerado em 2026-09-05T18:02 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._

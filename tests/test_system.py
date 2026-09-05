@@ -3665,6 +3665,16 @@ class SystemTests(unittest.TestCase):
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"][0]
         self.assertEqual(sum(1 for i in q["itens"] if i["valor"]),12); self.assertTrue(q["relatorio_ia"]["completo"])
 
+
+    def test_perfil_promovido_do_documento_presidente_mandato_utilidade(self):
+        a=load_json(pathlib.Path("dados/associacoes/amc-jardim-america/perfil_publico.json"))
+        self.assertEqual(a["presidente"],"Eduardo Kleber Xavier Lemos"); self.assertEqual(a["diretoria"]["mandato"]["fim"][:4],"2029")
+        self.assertIn("22.137/2023",a["utilidade_publica"]["estadual"]["lei"])
+        d=load_json(pathlib.Path("dados/associacoes/amc-jardim-america/documentos/dossie.json"))
+        self.assertEqual(d["presidente"],a["presidente"]); self.assertIn("verificacao",d["utilidade_publica"]["estadual"])
+        self.assertIn(d["utilidade_publica"]["estadual"]["verificacao"]["status"][:10],("confirmada","lei locali","não verifi"))   # nunca afirma sem ler a fonte
+        html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("<b>Utilidade pública</b>",html)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

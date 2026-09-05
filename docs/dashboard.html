@@ -876,10 +876,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260905174341"></script>
-<script src="mapa-arte.js?v=20260905174341"></script>
-<script src="dashboard-dados.enc.js?v=20260905174341"></script>
-<script src="dashboard-dados.js?v=20260905174341"></script>
+<script src="mapa-brasil.js?v=20260905180252"></script>
+<script src="mapa-arte.js?v=20260905180252"></script>
+<script src="dashboard-dados.enc.js?v=20260905180252"></script>
+<script src="dashboard-dados.js?v=20260905180252"></script>
 <script>
 (function(){
 "use strict";
@@ -1940,6 +1940,7 @@ function desenhaPerfis(){
         <div class="perfil-linha"><b>CNPJ</b> ${esc(d.cnpj||"—")} · <b>Presidente</b> ${pres?esc(pres.nome):'<span class=meta>pendente — informar na ata de eleição</span>'} · <b>Mandato</b> ${g.mandato&&g.mandato.inicio?br(g.mandato.inicio)+" → "+br(g.mandato.fim):'<span class=meta>pendente</span>'}</div>
         <div class="perfil-linha"><b>Local de atuação</b> ${(d.atuacao_geografica||[]).map(esc).join(" · ")} · <b>Sede</b> ${esc([s.bairro,s.municipio&&s.uf?s.municipio+"/"+s.uf:null].filter(Boolean).join(", ")||"—")}</div>
         <div class="perfil-linha">${(d.afinidades||[]).map(a=>`<span class=tag style="color:${AREA(a).cor};border-color:${AREA(a).cor}66">${esc(AREA(a).rotulo)}</span>`).join(" ")}</div>
+        ${d.utilidade_publica?`<div class="perfil-linha"><b>Utilidade pública</b> ${Object.entries(d.utilidade_publica).map(([k,v])=>`${esc(k)}: ${esc((v||{}).lei||"")} <span class=meta>${esc((v||{}).status||"")}${(v||{}).verificacao?" — "+esc(v.verificacao.status):""}</span>${(v||{}).verificacao&&v.verificacao.url?` <a href="${esc(v.verificacao.url)}" target=_blank rel="noopener noreferrer">fonte ↗</a>`:""}`).join(" · ")}</div>`:""}
         <div class="perfil-cartao"><b>Cartão de visitas.</b> ${esc(d.razao_social||"")}, ${esc((d.natureza_juridica||"").replace(/_/g," "))} fundada em ${d.fundada_em?br(d.fundada_em):"—"} (${d.anos_existencia??"—"} anos), atua em ${(d.afinidades||[]).slice(0,5).map(a=>AREA(a).rotulo.toLowerCase()).join(", ")}${(d.afinidades||[]).length>5?" e outras áreas":""}, com experiência em ${(d.experiencias||[]).slice(0,4).map(x=>x.replace(/_/g," ")).join(", ")}. Governança: ${(g.cargos||[]).map(x=>x.replace(/_/g," ")).join(", ")}. ${(d.certificacoes||[]).length?"Certificações: "+d.certificacoes.join(", ")+".":""}${(d.certificacoes_a_confirmar||[]).length?" A confirmar: "+d.certificacoes_a_confirmar.join(", ")+".":""} Contato: ${esc(Object.values(c).join(" · ")||"—")}.</div>
         <div class="perfil-rodape"><span class=meta>${q.compativeis_geograficamente??0} edital(is) enquadrado(s) de ${q.editais_abertos_total??0}</span> · <span class=meta>${(d.prontidao||{}).certidoes_validas??0}/${(d.prontidao||{}).certidoes_total??5} certidões · ${(d.prontidao||{}).registrados_enviados??0}/${(d.prontidao||{}).registrados_total??6} registrados</span> · <span class="verlink" onclick="mostra('f-documentos')">Documentos ›</span></div>
       </div></div>`;}).join("");

@@ -168,6 +168,34 @@ def atualizar_registrados(a: dict) -> dict:
     return {"tipos": list(reg)}
 
 
+def verificar_utilidade_publica(a: dict) -> dict:
+    """Confere na fonte oficial (Casa Civil de Goiás) se a lei de utilidade pública
+    declarada existe e cita a entidade. Só afirma 'confirmada' quando o texto foi
+    lido; senão registra o motivo e o link para conferência manual."""
+    import urllib.request, urllib.parse
+    up = (a.get("utilidade_publica") or {}).get("estadual") or {}
+    lei = up.get("lei") or ""
+    m = re.search(r"(\d{2}\.?\d{3})\s*/\s*(\d{4})", lei)
+    if not m:
+        return {"status": "sem lei declarada"}
+    num, ano = m.group(1).replace(".", ""), m.group(2)
+    nome = (a.get("nome") or "").split(" — ")[0]
+    candidatos = [f"https://legisla.casacivil.go.gov.br/pesquisa_legislacao/{num}/lei-{num}",
+                  f"https://legisla.casacivil.go.gov.br/api/v2/pesquisa/legislacoes/{num}/lei",
+                  f"https://legisla.casacivil.go.gov.br/pesquisa_legislacao?tipo_legislacao=1&numero={num}&ano={ano}"]
+    for url in candidatos:
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 Eldorado-OSC/1.0", "From": "contato-via-repositorio"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                txt = re.sub(r"<[^>]+>", " ", r.read(600_000).decode("utf-8", "replace"))
+            toks = [x for x in re.findall(r"[A-Za-zÀ-ú]{5,}", nome) if x.lower() not in ("associação", "associacao", "moradores", "comerciantes")]
+            cita = any(tk.lower() in txt.lower() for tk in toks[:2]) and "utilidade" in txt.lower()
+            return {"status": "confirmada na fonte oficial" if cita else "lei localizada, mas o texto lido não cita a entidade — conferir", "url": url, "em": now_iso(), "lei": lei}
+        except Exception as exc:
+            ultimo = f"{type(exc).__name__}"
+    return {"status": f"não verificável automaticamente ({ultimo}) — conferir manualmente", "url": f"https://legisla.casacivil.go.gov.br/pesquisa_legislacao?tipo_legislacao=1&numero={num}&ano={ano}", "em": now_iso(), "lei": lei}
+
+
 def dossie(a: dict, hoje: date) -> dict:
     """Dados resumidos e completos para preencher documentos de qualquer edital."""
     pasta = _pasta(a)
@@ -186,12 +214,17 @@ def dossie(a: dict, hoje: date) -> dict:
                           "alerta": bool(dias is not None and dias <= 15)})
     registrados = [{**r, "status": "enviado" if r["tipo"] in regs else "faltante", **(regs.get(r["tipo"]) or {})} for r in REGISTRADOS]
     dir_ = a.get("diretoria") or {}
+    up = a.get("utilidade_publica") or {}
+    if up.get("estadual"):
+        up["estadual"]["verificacao"] = verificar_utilidade_publica(a)
     d = {
         "id": a.get("id"), "razao_social": a.get("nome"), "cnpj": a.get("cnpj"), "natureza_juridica": a.get("natureza_juridica"),
         "fundada_em": a.get("fundada_em"), "abertura_cnpj_em": a.get("abertura_cnpj_em"), "anos_existencia": a.get("anos_existencia"),
         "sede": a.get("endereco") or {"logradouro": None, "bairro": "Jardim América" if "jardim-america" in a["_pasta"] else None, "municipio": "Goiânia" if "GO/Goiânia" in (a.get("territorios") or []) else None, "uf": "GO" if "GO" in (a.get("territorios") or []) else None, "status": "a confirmar no comprovante de endereço"},
         "contato": a.get("contato_institucional") or {},
-        "governanca": {"cargos": (cap.get("governanca") or []), "diretoria": dir_.get("membros") or [], "mandato": dir_.get("mandato") or {"inicio": None, "fim": None, "status": "pendente — informar na ata de eleição"}},
+        "governanca": {"cargos": dir_.get("cargos") or (cap.get("governanca") or []), "diretoria": dir_.get("membros") or [], "mandato": dir_.get("mandato") or {"inicio": None, "fim": None, "status": "pendente — informar na ata de eleição"},
+                       "remuneracao": dir_.get("remuneracao"), "fonte": dir_.get("fonte")},
+        "presidente": a.get("presidente"), "utilidade_publica": up,
         "afinidades": a.get("areas") or [], "atuacao_geografica": a.get("territorios") or [], "cnaes": a.get("cnaes") or [],
         "certificacoes": a.get("certificacoes") or [], "certificacoes_a_confirmar": a.get("certificacoes_alegadas_pendentes_verificacao") or [],
         "experiencias": a.get("experiencias") or [], "capacidades": {k: cap.get(k) for k in ("infraestrutura_alegada", "metodos", "forcas", "riscos") if k in cap},
@@ -213,7 +246,9 @@ def parecer_md(d: dict) -> str:
     L.append(f"**CNPJ** {d['cnpj']} · **natureza** {d.get('natureza_juridica','').replace('_',' ')} · fundada em {d.get('fundada_em') or '—'} · CNPJ desde {d.get('abertura_cnpj_em') or '—'} · **{d.get('anos_existencia')} anos**\n")
     s = d["sede"]; L.append(f"**Sede:** {s.get('logradouro') or '—'}, {s.get('bairro') or '—'}, {s.get('municipio') or '—'}/{s.get('uf') or '—'} ({s.get('status','')})\n")
     g = d["governanca"]; L.append(f"**Governança:** {', '.join(g['cargos']) or '—'} · **mandato:** {g['mandato'].get('inicio') or '—'} → {g['mandato'].get('fim') or '—'} ({g['mandato'].get('status','')})\n")
-    if g["diretoria"]: L.append("**Diretoria:** " + "; ".join(f"{m.get('cargo')}: {m.get('nome')}" for m in g["diretoria"]) + "\n")
+    if g["diretoria"]: L.append("**Diretoria:** " + "; ".join(f"{m.get('cargo')}: {m.get('nome')}" for m in g["diretoria"]) + (f" · {g.get('remuneracao')}" if g.get("remuneracao") else "") + "\n")
+    up = d.get("utilidade_publica") or {}
+    if up: L.append("**Utilidade pública:** " + " · ".join(f"{k}: {(v or {}).get('lei','')} {(v or {}).get('status','')}".strip() + (f" — verificação: {v['verificacao']['status']}" if isinstance(v, dict) and v.get("verificacao") else "") for k, v in up.items()) + "\n")
     L.append("## Afinidades e enquadramento\n")
     L.append("**Áreas de atuação (afinidades para editais):** " + ", ".join(d["afinidades"]) + "\n")
     L.append("**Atuação geográfica:** " + ", ".join(d["atuacao_geografica"]) + "\n")
