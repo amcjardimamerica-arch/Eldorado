@@ -28,8 +28,8 @@
 - [ ] Ata da última assembleia geral — faltante
 - [ ] Comprovante de inscrição CNPJ — faltante
 - [ ] Comprovante de endereço da sede — faltante
-- [ ] Título/lei de utilidade pública (quando houver) — faltante
+- [x] Título/lei de utilidade pública (quando houver) — enviado (LEIA-ME.md)
 
-**Prontidão documental:** 0/5 certidões válidas · 0/6 registrados enviados.
+**Prontidão documental:** 0/5 certidões válidas · 1/6 registrados enviados.
 
-_Gerado em 2026-09-05T15:15 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._
+_Gerado em 2026-09-05T17:32 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._

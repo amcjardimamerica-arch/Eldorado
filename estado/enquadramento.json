@@ -41,10 +41,7 @@
         "site_institucional": null,
         "fontes": [],
         "kb": 0,
-        "erros": [
-          "página https://salic.cultura.gov.br/: HTTPError",
-          "html: HTTPError"
-        ]
+        "erros": []
       },
       "regras": null,
       "requisitos": null,
@@ -62,11 +59,17 @@
       ],
       "tentativas": [
         {
-          "em": "2026-09-05T15:03:14+00:00",
-          "modelo": "claude-sonnet-4-5",
+          "em": "2026-09-05T17:33:29+00:00",
+          "modelo": "claude-haiku-4-5",
           "status": "aguardando credencial FAROL_AI_API_KEY",
-          "itens_obtidos": 0,
-          "fonte": null,
+          "faltavam": [
+            "Resultado",
+            "Prazo de recurso",
+            "Valor",
+            "Requisitos",
+            "Anexos",
+            "Destinação"
+          ],
           "uso": null
         }
       ],
@@ -89,16 +92,31 @@
       },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": [],
-        "kb": 0,
+        "fontes": [
+          {
+            "titulo": "Mapa do Palácio Maguito Vilela",
+            "url": "https://portal.al.go.leg.br/portal/mapa/mapa_alego_2024.pdf",
+            "caracteres": 848
+          }
+        ],
+        "kb": 0.4,
         "erros": [
-          "página https://portal.al.go.leg.br/deputados: HTTPError",
-          "html: HTTPError"
+          "pdf https://portal.al.go.leg.br/documentos/m: URLError"
         ]
       },
       "regras": null,
       "requisitos": null,
-      "pontuacao_texto": null
+      "pontuacao_texto": null,
+      "anexos": [
+        {
+          "nome": "Mapa do Palácio Maguito Vilela",
+          "url": "https://portal.al.go.leg.br/portal/mapa/mapa_alego_2024.pdf"
+        },
+        {
+          "nome": "Manual de Redação",
+          "url": "https://portal.al.go.leg.br/documentos/manual/manual_de_redacao.pdf"
+        }
+      ]
     },
     "emenda-municipal-goiania-2026": {
       "titulo": "Emenda Parlamentar Municipal — Goiânia — captação 2026",
@@ -164,21 +182,45 @@
       ],
       "tentativas": [
         {
-          "em": "2026-09-05T15:03:14+00:00",
-          "modelo": "claude-sonnet-4-5",
+          "em": "2026-09-05T17:33:34+00:00",
+          "modelo": "claude-haiku-4-5",
           "status": "aguardando credencial FAROL_AI_API_KEY",
-          "itens_obtidos": 0,
-          "fonte": null,
+          "faltavam": [
+            "Prazo de inscrição",
+            "Resultado",
+            "Prazo de recurso",
+            "Valor",
+            "Requisitos",
+            "Anexos",
+            "Destinação",
+            "Área de atuação"
+          ],
           "uso": null
         }
       ],
       "itens_ia": {},
-      "itens": {},
-      "fontes_itens": {},
+      "itens": {
+        "Objeto": "Termo de Fomento nº 01/2026",
+        "Órgão / financiador": "Programa Goyazes — incentivo à cultura de Goiás",
+        "Território": "GO",
+        "Esfera": "estadual"
+      },
+      "fontes_itens": {
+        "Objeto": "cadastro do edital (motor de busca)",
+        "Órgão / financiador": "cadastro do edital (motor de busca)",
+        "Território": "cadastro do edital (motor de busca)",
+        "Esfera": "cadastro do edital (motor de busca)"
+      },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": null,
-        "kb": null,
+        "fontes": [
+          {
+            "titulo": "página institucional",
+            "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf",
+            "caracteres": 50122
+          }
+        ],
+        "kb": 36.2,
         "erros": []
       },
       "regras": null,
@@ -191,34 +233,64 @@
         "Prazo de inscrição",
         "Resultado",
         "Prazo de recurso",
-        "Valor",
         "Requisitos",
         "Anexos",
-        "Destinação",
         "Área de atuação"
       ],
       "tentativas": [
         {
-          "em": "2026-09-05T15:03:14+00:00",
-          "modelo": "claude-sonnet-4-5",
+          "em": "2026-09-05T17:33:46+00:00",
+          "modelo": "claude-haiku-4-5",
           "status": "aguardando credencial FAROL_AI_API_KEY",
-          "itens_obtidos": 0,
-          "fonte": null,
+          "faltavam": [
+            "Prazo de inscrição",
+            "Resultado",
+            "Prazo de recurso",
+            "Requisitos",
+            "Anexos",
+            "Área de atuação"
+          ],
           "uso": null
         }
       ],
       "itens_ia": {},
-      "itens": {},
-      "fontes_itens": {},
+      "itens": {
+        "Objeto": "Termos de Fomento",
+        "Órgão / financiador": "Programa Goyazes — incentivo à cultura de Goiás",
+        "Território": "GO",
+        "Esfera": "estadual",
+        "Valor": "R$ 2.400.000,00",
+        "Destinação": "O valor total deste instrumento será de"
+      },
+      "fontes_itens": {
+        "Objeto": "cadastro do edital (motor de busca)",
+        "Órgão / financiador": "cadastro do edital (motor de busca)",
+        "Território": "cadastro do edital (motor de busca)",
+        "Esfera": "cadastro do edital (motor de busca)",
+        "Valor": "texto do edital (primeiro valor citado — conferir)",
+        "Destinação": "texto do edital"
+      },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": null,
-        "kb": null,
+        "fontes": [
+          {
+            "titulo": "Termo de Fomento nº 01/2026",
+            "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf",
+            "caracteres": 29023
+          }
+        ],
+        "kb": 10.4,
         "erros": []
       },
       "regras": null,
       "requisitos": null,
-      "pontuacao_texto": null
+      "pontuacao_texto": null,
+      "anexos": [
+        {
+          "nome": "Termo de Fomento nº 01/2026",
+          "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf"
+        }
+      ]
     },
     "71f1af059c45f010339a": {
       "titulo": "A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO QUE REALIZARÁ CHAMAMENTO PÚBLICO, POR CREDENCIAMENTO, PARA SELECI",
@@ -243,13 +315,26 @@
         }
       ],
       "itens_ia": {},
-      "itens": {},
-      "fontes_itens": {},
+      "itens": {
+        "Objeto": "A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO QUE REALIZARÁ CHAMAMENTO PÚBLICO, POR CREDENCIAMENTO, PARA SELECIONAR EMPRESA DO RAMO DA CONSTRUÇÃO CIVIL",
+        "Órgão / financiador": "PNCP — MUNICIPIO DE NOVO GAMA",
+        "Território": "GO",
+        "Esfera": "municipal"
+      },
+      "fontes_itens": {
+        "Objeto": "cadastro do edital (motor de busca)",
+        "Órgão / financiador": "cadastro do edital (motor de busca)",
+        "Território": "cadastro do edital (motor de busca)",
+        "Esfera": "cadastro do edital (motor de busca)"
+      },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": null,
-        "kb": null,
-        "erros": []
+        "fontes": [],
+        "kb": 0,
+        "erros": [
+          "pncp compra: TimeoutError",
+          "pncp arquivos: TimeoutError"
+        ]
       },
       "regras": null,
       "requisitos": null,
@@ -277,13 +362,28 @@
         }
       ],
       "itens_ia": {},
-      "itens": {},
-      "fontes_itens": {},
+      "itens": {
+        "Objeto": "A presidente do CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS torna público, aos interessados, que realizará Chamamento Público para seleção e credencia",
+        "Órgão / financiador": "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS",
+        "Território": "GO",
+        "Esfera": "estadual",
+        "Área de atuação": "educacao"
+      },
+      "fontes_itens": {
+        "Objeto": "cadastro do edital (motor de busca)",
+        "Órgão / financiador": "cadastro do edital (motor de busca)",
+        "Território": "cadastro do edital (motor de busca)",
+        "Esfera": "cadastro do edital (motor de busca)",
+        "Área de atuação": "cadastro do edital (motor de busca)"
+      },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": null,
-        "kb": null,
-        "erros": []
+        "fontes": [],
+        "kb": 0,
+        "erros": [
+          "pncp compra: TimeoutError",
+          "pncp arquivos: HTTPError"
+        ]
       },
       "regras": null,
       "requisitos": null,
@@ -312,13 +412,26 @@
         }
       ],
       "itens_ia": {},
-      "itens": {},
-      "fontes_itens": {},
+      "itens": {
+        "Objeto": "Chamamento público visando o credenciamento de empresa para prestação de serviços de limpeza e manutenção de logradouros e prédios públicos, incluindo serviços ",
+        "Órgão / financiador": "PNCP — MUNICIPIO DE NOVA IGUACU DE GOIAS",
+        "Território": "GO",
+        "Esfera": "municipal"
+      },
+      "fontes_itens": {
+        "Objeto": "cadastro do edital (motor de busca)",
+        "Órgão / financiador": "cadastro do edital (motor de busca)",
+        "Território": "cadastro do edital (motor de busca)",
+        "Esfera": "cadastro do edital (motor de busca)"
+      },
       "fonte_original": {
         "site_institucional": null,
-        "fontes": null,
-        "kb": null,
-        "erros": []
+        "fontes": [],
+        "kb": 0,
+        "erros": [
+          "pncp compra: HTTPError",
+          "pncp arquivos: HTTPError"
+        ]
       },
       "regras": null,
       "requisitos": null,
@@ -2252,6 +2365,13 @@
       "ia_itens": 0,
       "ia_enquadramento": 0,
       "em": "2026-09-05T17:08:29+00:00"
+    },
+    {
+      "associacoes": 1,
+      "editais_abertos": 144,
+      "ia_itens": 3,
+      "ia_enquadramento": 0,
+      "em": "2026-09-05T17:32:40+00:00"
     }
   ]
 }
