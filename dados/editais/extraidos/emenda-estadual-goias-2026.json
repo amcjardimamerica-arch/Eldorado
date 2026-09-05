@@ -3,7 +3,7 @@
   "titulo": "Emenda Parlamentar Estadual — Goiás — captação 2026",
   "tentativas": [
     {
-      "em": "2026-09-05T17:33:29+00:00",
+      "em": "2026-09-05T17:42:21+00:00",
       "modelo": "claude-haiku-4-5",
       "status": "aguardando credencial FAROL_AI_API_KEY",
       "faltavam": [
@@ -17,31 +17,52 @@
       "uso": null
     }
   ],
-  "arquivo": "dados/editais/textos/emenda-estadual-goias-2026.txt.gz",
-  "kb_compacto": 0.4,
-  "fontes": [
-    {
-      "titulo": "Mapa do Palácio Maguito Vilela",
-      "url": "https://portal.al.go.leg.br/portal/mapa/mapa_alego_2024.pdf",
-      "caracteres": 848
-    }
-  ],
-  "site_institucional": null,
-  "origem": "pagina",
-  "pncp": {},
-  "erros": [
-    "pdf https://portal.al.go.leg.br/documentos/m: URLError"
-  ],
-  "anexos": [
-    {
-      "nome": "Mapa do Palácio Maguito Vilela",
-      "url": "https://portal.al.go.leg.br/portal/mapa/mapa_alego_2024.pdf"
+  "relatorio": {
+    "etapas": [
+      {
+        "etapa": "documentos do edital (PDF/anexos)",
+        "ok": false,
+        "detalhe": "nenhum PDF/anexo acessível: sem link de documento na fonte"
+      },
+      {
+        "etapa": "extração determinística",
+        "ok": false,
+        "detalhe": "nada extraível do texto"
+      },
+      {
+        "etapa": "IA (haiku → sonnet)",
+        "ok": false,
+        "detalhe": "NÃO EXECUTADA: a credencial FAROL_AI_API_KEY não está registrada nos segredos do repositório (Settings → Secrets and variables → Actions)",
+        "acao": "registrar_credencial"
+      }
+    ],
+    "completo": false,
+    "faltam": [
+      "Resultado",
+      "Prazo de recurso",
+      "Valor",
+      "Requisitos",
+      "Anexos",
+      "Destinação"
+    ],
+    "manual": {
+      "motivo": "sem documentos acessíveis e sem IA",
+      "itens": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "links": [
+        "https://portal.al.go.leg.br/deputados"
+      ],
+      "instrucao": "abra a fonte, localize o edital e use 'subir informação faltante' com os itens listados"
     },
-    {
-      "nome": "Manual de Redação",
-      "url": "https://portal.al.go.leg.br/documentos/manual/manual_de_redacao.pdf"
-    }
-  ],
+    "situacao": "pesquisa incompleta — ação manual indicada"
+  },
+  "mini_parecer": "Objeto: Captação de emenda parlamentar junto aos Deputado(a) Estaduals com mandato. Não há edital: a solicitação é feita por ofício e projeto a cada gabinete, entre 01/. Inscrições até 2026-11-30. Ainda não compreendido: Resultado, Prazo de recurso, Valor, Requisitos, Anexos, Destinação.",
   "itens": {
     "Objeto": "Captação de emenda parlamentar junto aos Deputado(a) Estaduals com mandato. Não há edital: a solicitação é feita por ofício e projeto a cada gabinete, entre 01/10 e 30/11 de 2026.",
     "Prazo de inscrição": "2026-11-30",
@@ -70,6 +91,6 @@
   "metodo": "determinístico",
   "documentos_exigidos": [],
   "pontuacao_texto": null,
-  "atualizado_em": "2026-09-05T17:33:29+00:00",
+  "atualizado_em": "2026-09-05T17:42:21+00:00",
   "caracteres_texto": 904
 }

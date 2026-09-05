@@ -60,15 +60,28 @@ def fontes_originais(e: dict) -> dict:
     m = re.search(r"pncp\.gov\.br/app/editais/(\d{14})/(\d{4})/(\d+)", url)
     if m:
         cnpj, ano, seq = m.groups(); saida["origem"] = "pncp"
+        js = None
+        for base in (f"https://pncp.gov.br/api/pncp/v1/orgaos/{cnpj}/compras/{ano}/{seq}", f"https://pncp.gov.br/api/consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq}",
+                     f"https://pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}"):
+            try:
+                js = json.loads(_get(base, limite=2_000_000)); saida["endpoint_pncp"] = base; break
+            except Exception as exc:
+                saida["erros"].append(f"pncp compra ({base.split('/')[3]}): {type(exc).__name__}")
         try:
-            js = json.loads(_get(f"https://pncp.gov.br/api/pncp/v1/orgaos/{cnpj}/compras/{ano}/{seq}", limite=2_000_000))
+            if js is None: raise ValueError("sem resposta do PNCP")
             saida["site_institucional"] = js.get("linkSistemaOrigem") or None
             saida["orgao"] = (js.get("orgaoEntidade") or {}).get("razaoSocial"); saida["uf"] = (js.get("unidadeOrgao") or {}).get("ufSigla"); saida["municipio"] = (js.get("unidadeOrgao") or {}).get("municipioNome")
             saida["objeto_pncp"] = js.get("objetoCompra"); saida["encerramento_pncp"] = js.get("dataEncerramentoProposta"); saida["abertura_pncp"] = js.get("dataAberturaProposta")
         except Exception as exc:
             saida["erros"].append(f"pncp compra: {type(exc).__name__}")
+        arqs = None
+        for base in (f"https://pncp.gov.br/api/pncp/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos", f"https://pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos"):
+            try:
+                arqs = json.loads(_get(base, limite=2_000_000)); break
+            except Exception as exc:
+                saida["erros"].append(f"pncp arquivos: {type(exc).__name__}")
         try:
-            arqs = json.loads(_get(f"https://pncp.gov.br/api/pncp/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos", limite=2_000_000))
+            if arqs is None: raise ValueError("sem arquivos")
             for a in (arqs or [])[:12]:
                 titulo = (a.get("titulo") or a.get("nome") or "arquivo"); tipo = (a.get("tipoDocumentoNome") or "")
                 saida["pdfs"].append({"titulo": titulo, "tipo": tipo, "url": a.get("url") or a.get("uri"), "prioridade": 0 if re.search(r"edital", titulo + tipo, re.I) else 1})
@@ -78,8 +91,20 @@ def fontes_originais(e: dict) -> dict:
             saida["paginas"].append(saida["site_institucional"])
     elif url.startswith("https://"):
         saida["origem"] = "pagina"; saida["paginas"].append(url)
+    # site institucional: a partir da home do órgão, descobrir a página de editais/licitações/chamamentos
+    novas = []
+    for pg in list(saida["paginas"])[:1]:
+        try:
+            html = _get(pg, limite=3_000_000)
+            for h, rot in re.findall(r'href="([^"]+)"[^>]*>([^<]{0,80})', html):
+                if re.search(r"edita|licita|chamament|credenciament|transpar", (rot or "") + h, re.I) and not re.search(r"\.(pdf|jpg|png)$|mailto:|#", h):
+                    u = urljoin(pg, h)
+                    if u not in saida["paginas"] and u not in novas and len(novas) < 3: novas.append(u)
+        except Exception as exc:
+            saida["erros"].append(f"home institucional: {type(exc).__name__} ({pg[:60]})")
+    saida["paginas"] += novas; saida["paginas_descobertas"] = novas
     # páginas: PDFs de edital linkados
-    for pg in list(saida["paginas"])[:2]:
+    for pg in list(saida["paginas"])[:4]:
         try:
             html = _get(pg, limite=3_000_000)
             for h, rot in re.findall(r'href="([^"]+)"[^>]*>([^<]{0,120})', html):
@@ -189,6 +214,66 @@ def extrair_deterministico(texto: str, pncp: dict | None = None) -> dict:
     return {"itens": itens, "fontes": fontes, "documentos_exigidos_texto": docs[:20], "metodo": "determinístico"}
 
 
+def conhecimento_regramento(e: dict) -> dict:
+    """Itens conhecidos e estáveis de regras permanentes (ex.: Rouanet) registrados
+    em config/regramentos.json — fonte 'conhecimento do regramento'."""
+    cfg = ROOT / "config/regramentos.json"
+    if not cfg.exists():
+        return {}
+    alvo = f"{e.get('titulo','')} {e.get('fonte_nome','')} {e.get('programa','')}".lower()
+    for g in load_json(cfg).get("regramentos", []):
+        toks = [x for x in re.findall(r"[a-zà-ú]{5,}", g["fonte"].lower()) if x not in ("programa", "nacional", "cultura", "edital")]
+        if toks and any(tk in alvo for tk in toks[:3]) and g.get("itens_conhecidos"):
+            return {"itens": g["itens_conhecidos"], "fonte": f"conhecimento do regramento ({g['fonte']}) — {g.get('nota_itens_conhecidos','')}", "pagina": g.get("pagina_oficial")}
+    return {}
+
+
+def relatorio(reg: dict, e: dict, credencial: bool) -> dict:
+    """Relatório da pesquisa fina: o que foi feito, o que rendeu, o que falhou —
+    e o que só cabe a mão humana quando a IA falhou de fato."""
+    etapas = []
+    fontes = reg.get("fontes") or []; erros = reg.get("erros") or []
+    if reg.get("origem") == "pncp":
+        etapas.append({"etapa": "PNCP (fonte indireta)", "ok": bool(reg.get("pncp") or reg.get("endpoint_pncp")), "detalhe": "divulgação lida; buscando o órgão publicador" if reg.get("pncp") else "a API do PNCP não respondeu para esta contratação"})
+    if reg.get("site_institucional"):
+        etapas.append({"etapa": "site institucional do órgão", "ok": True, "detalhe": reg["site_institucional"], "link": reg["site_institucional"]})
+    elif reg.get("origem") == "pncp":
+        etapas.append({"etapa": "site institucional do órgão", "ok": False, "detalhe": "o PNCP não informou o sistema de origem; tentadas as páginas descobertas"})
+    etapas.append({"etapa": "documentos do edital (PDF/anexos)", "ok": bool(fontes), "detalhe": f"{len(fontes)} arquivo(s) lido(s), texto compacto de {reg.get('kb_compacto') or 0} KB" if fontes else "nenhum PDF/anexo acessível: " + ("; ".join(erros[:3]) or "sem link de documento na fonte")})
+    itens = reg.get("itens") or {}; fi = reg.get("fontes_itens") or {}
+    det = [k for k, v in fi.items() if "texto do edital" in v or "PNCP" in v]; ia = [k for k, v in fi.items() if v.startswith("IA")]; con = [k for k, v in fi.items() if "regramento" in v]; man = [k for k, v in fi.items() if "complemento" in v]
+    etapas.append({"etapa": "extração determinística", "ok": bool(det), "detalhe": f"{len(det)} item(ns): {', '.join(det[:6])}" if det else "nada extraível do texto"})
+    tent = reg.get("tentativas") or []
+    if not credencial:
+        etapas.append({"etapa": "IA (haiku → sonnet)", "ok": False, "detalhe": "NÃO EXECUTADA: a credencial FAROL_AI_API_KEY não está registrada nos segredos do repositório (Settings → Secrets and variables → Actions)", "acao": "registrar_credencial"})
+    elif tent:
+        ult = tent[-1]; etapas.append({"etapa": "IA (haiku → sonnet)", "ok": ult.get("status") == "respondeu", "detalhe": f"{len(tent)} chamada(s); última {ult.get('modelo')}: {ult.get('status')}; itens pela IA: {', '.join(ia) or 'nenhum'}"})
+    else:
+        etapas.append({"etapa": "IA (haiku → sonnet)", "ok": False, "detalhe": "sem texto do edital para a IA ler — a fonte não entregou documentos"})
+    if con: etapas.append({"etapa": "conhecimento do regramento", "ok": True, "detalhe": f"{len(con)} item(ns) de regra permanente: {', '.join(con[:6])}"})
+    if man: etapas.append({"etapa": "complemento manual", "ok": True, "detalhe": ", ".join(man)})
+    faltam = reg.get("faltam") or []
+    ia_falhou = (not credencial) or (tent and tent[-1].get("status") != "respondeu") or (not fontes and faltam)
+    manual = None
+    if faltam and ia_falhou:
+        links = [x for x in ([reg.get("site_institucional")] + [p.get("url") for p in (reg.get("anexos") or [])[:3]] + [e.get("url")]) if x]
+        manual = {"motivo": "a IA não conseguiu acessar/extrair os documentos" if fontes or credencial else "sem documentos acessíveis e sem IA", "itens": faltam, "links": links[:4],
+                  "instrucao": "abra a fonte, localize o edital e use 'subir informação faltante' com os itens listados"}
+    return {"etapas": etapas, "completo": not faltam, "faltam": faltam, "manual": manual, "situacao": "pesquisa completa" if not faltam else ("pesquisa incompleta — ação manual indicada" if manual else "pesquisa incompleta — nova tentativa na próxima saída")}
+
+
+def mini_parecer_deterministico(reg: dict, e: dict) -> str:
+    it = reg.get("itens") or {}
+    partes = []
+    if it.get("Objeto"): partes.append(f"Objeto: {str(it['Objeto'])[:160]}.")
+    if it.get("Valor"): partes.append(f"Valor: {str(it['Valor'])[:140]}.")
+    if it.get("Prazo de inscrição"): partes.append(f"Inscrições até {it['Prazo de inscrição']}.")
+    if it.get("Requisitos"): partes.append(f"Requisitos: {str(it['Requisitos'])[:160]}.")
+    if reg.get("pontuacao"): partes.append("Pontuação: " + "; ".join(f"{c.get('criterio')} ({c.get('peso')})" for c in reg["pontuacao"][:4]) + ".")
+    if reg.get("faltam"): partes.append(f"Ainda não compreendido: {', '.join(reg['faltam'])}.")
+    return " ".join(partes) or "Sem elementos suficientes para parecer — a fonte não entregou o edital."
+
+
 def prompt_extracao(e: dict, texto: str, faltam: list[str]) -> str:
     return (f"Você extrai dados de editais para o terceiro setor. Edital: {e.get('titulo')} ({e.get('fonte_nome')}).\n"
             f"Texto do edital (compacto, pode estar truncado):\n\"\"\"\n{texto[:60000]}\n\"\"\"\n"
@@ -197,7 +282,8 @@ def prompt_extracao(e: dict, texto: str, faltam: list[str]) -> str:
             "certidao_federal, certidao_estadual, certidao_municipal, cndt, crf_fgts, comprovante_endereco, plano_de_trabalho, relatorio_atividades, "
             "inscricao_conselho, cebas, conta_bancaria), e anexos/modelos citados. Responda SOMENTE JSON: {\"itens\": {<item>: <valor ou null>}, "
             "\"regras\": <texto>, \"requisitos\": [<lista>], \"pontuacao\": [{\"criterio\": <texto>, \"peso\": <número ou null>}], "
-            "\"documentos_exigidos\": [<lista>], \"anexos\": [<lista>], \"confianca\": <0-1>}. Nunca invente: sem base no texto, null.")
+            "\"documentos_exigidos\": [<lista>], \"anexos\": [<lista>], \"mini_parecer\": <3 a 5 frases sobre as especificidades deste edital para uma OSC: quem pode, o que financia, como pontua, armadilhas>, "
+            "\"confianca\": <0-1>}. Nunca invente: sem base no texto, null.")
 
 
 def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False) -> dict:
@@ -223,6 +309,10 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False) -> dic
         if v and not itens.get(k): itens[k] = str(v)[:300]; fontes[k] = "cadastro do edital (motor de busca)"
     for k, v in det["itens"].items():
         if k not in itens: itens[k] = v; fontes[k] = det["fontes"].get(k, "texto do edital")
+    conh = conhecimento_regramento(e)
+    for k, v in (conh.get("itens") or {}).items():
+        if not itens.get(k): itens[k] = v; fontes[k] = conh["fonte"]
+    if conh.get("pagina") and not reg.get("site_institucional"): reg["site_institucional"] = conh["pagina"]
     alvo = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"]
     faltam = [i for i in alvo if not itens.get(i)]
     # IA em escalada: só sobre o que falta, com o texto compacto
@@ -237,10 +327,13 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False) -> dic
             break
         for k, v in (r.get("itens") or {}).items():
             if v and not itens.get(k): itens[k] = v; fontes[k] = f"IA ({modelo}) sobre o texto do edital"
-        for k in ("regras", "requisitos", "pontuacao", "documentos_exigidos", "anexos_ia", "confianca"):
+        for k in ("regras", "requisitos", "pontuacao", "documentos_exigidos", "anexos_ia", "confianca", "mini_parecer"):
             src_k = "anexos" if k == "anexos_ia" else k
             if r.get(src_k) not in (None, "", []): reg[k] = r[src_k]
         faltam = [i for i in alvo if not itens.get(i)]
+    import os as _os
+    reg["relatorio"] = relatorio({**reg, "itens": itens, "fontes_itens": fontes, "faltam": faltam}, e, bool(_os.environ.get("FAROL_AI_API_KEY")))
+    reg["mini_parecer"] = reg.get("mini_parecer") or mini_parecer_deterministico({**reg, "itens": itens, "faltam": faltam}, e)
     reg.update({"itens": itens, "fontes_itens": fontes, "faltam": faltam, "completo": not faltam, "metodo": det["metodo"],
                 "documentos_exigidos": reg.get("documentos_exigidos") or _padroniza_docs(det["documentos_exigidos_texto"]),
                 "pontuacao_texto": det["itens"].get("Pontuação (regras)"), "atualizado_em": now_iso(), "caracteres_texto": len(texto)})

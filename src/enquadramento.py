@@ -314,6 +314,7 @@ def run(limite_ia: int = 8) -> dict:
                           "regras": f.get("regras"), "requisitos": f.get("requisitos"), "pontuacao": f.get("criterios_pontuacao"), "pontuacao_texto": f.get("pontuacao_texto"),
                           "fonte_original": f.get("fonte_original"), "documentos_exigidos": f.get("documentos_exigidos_ia") or [],
                           "para_inscricao": _para_inscricao(a, f.get("documentos_exigidos_ia") or [], faltam),
+                          "relatorio_ia": (extraido(e) or {}).get("relatorio"), "mini_parecer": (extraido(e) or {}).get("mini_parecer"),
                           "subir": f"https://github.com/amcjardimamerica-arch/Eldorado/new/main/dados/editais/complementos/{e['id']}?filename=complemento.md&value="
                                    + __import__("urllib.parse").parse.quote("\n".join(f"- {i}: " for i in faltam) or "- (nada falta)")})
         lista.sort(key=lambda x: (x["situacao"] != "aberta", -x["nota"]))

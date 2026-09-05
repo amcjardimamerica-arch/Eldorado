@@ -201,6 +201,7 @@ def dossie(a: dict, hoje: date) -> dict:
         "upload": {"certidoes": f"https://github.com/{REPO}/upload/main/dados/associacoes/{a['_pasta']}/documentos/certidoes",
                    "registrados": f"https://github.com/{REPO}/upload/main/dados/associacoes/{a['_pasta']}/documentos/registrados",
                    "aviso": "o repositório é público: certidões trazem só CNPJ e razão social; em estatuto/ata, envie a versão SEM CPF/RG dos dirigentes ou torne o repositório privado"},
+        "imagem_perfil": a.get("imagem_perfil"),
         "gerado_em": now_iso(),
     }
     return d
