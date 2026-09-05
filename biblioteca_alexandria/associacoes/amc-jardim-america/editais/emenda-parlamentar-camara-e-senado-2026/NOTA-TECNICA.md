@@ -2,8 +2,8 @@
 
 **Associação:** Associação dos Moradores e Comerciantes do Jardim América — A.M.C. Jardim América  
 **Janela de captação:** 2026-10-01 a 2026-11-30  
-**Parlamentares com mandato levantados:** 0  
-**Ofícios gerados nesta execução:** 0
+**Parlamentares com mandato levantados:** 81  
+**Ofícios gerados nesta execução:** 40
 
 ## Documentos prontos
 
@@ -21,7 +21,8 @@ Campos marcados **[preencher]** nos documentos dependem de dados que não ficam 
 
 ## Pendências do levantamento
 
-- levantamento pendente — Congresso Nacional (Câmara dos Deputados e Senado Federal) não respondeu ou não há catálogo local; nenhum parlamentar foi inventado
+- 81 parlamentar(es) sem gabinete ou contato completo — confirmar na casa
+- votação de eleição não consta das APIs legislativas — consultar o TSE (fonte configurada)
 
 ---
 
