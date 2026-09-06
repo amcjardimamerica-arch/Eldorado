@@ -144,7 +144,7 @@ jobs:
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 300 python -m src.dossie_fontes || echo "src.dossie_fontes: encerrado no orçamento de 300s ou falhou — registrado"
           fi
-          timeout 300 python -m src.motores || echo "src.motores: encerrado no orçamento de 300s ou falhou — registrado"
+          timeout 600 python -m src.motores || { echo "src.motores FALHOU — o monitor da Bússola não atualiza sem este passo" | tee -a estado/log_motores.txt; python -m src.motores 2>&1 | tail -20 >> estado/log_motores.txt; }
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 120 python -m src.parecer_prazos || echo "src.parecer_prazos: encerrado no orçamento de 120s ou falhou — registrado"
           fi

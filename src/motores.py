@@ -83,21 +83,38 @@ def _ultimo_edital_da_fonte(fonte: dict, con) -> dict | None:
     return None
 
 
-def _edital_manual_da_fonte(fonte_id: str) -> dict | None:
-    """Documento enviado pelo titular para esta fonte — fonte MÁXIMA, prevalece."""
+def _indice_manual() -> dict:
+    """Índice das fichas de alimentação MANUAL, montado UMA vez por execução.
+    (Antes: cada uma das 265 fontes varria e decodificava as ~16 mil fichas da
+    Biblioteca — o gerador estourava os 300 s do CI e o monitor ficava parado.)"""
+    cache = getattr(_indice_manual, "_cache", None)
+    if cache is not None:
+        return cache
     base = ROOT / "biblioteca_alexandria/oportunidades"
-    melhor = None
+    idx: dict = {}
     for fp in base.glob("*/*/ficha.json"):
         try:
+            with open(fp, "rb") as h:
+                cabeca = h.read(4000)
+            if b"alimentacao_manual" not in cabeca:
+                continue
             f = load_json(fp)
         except Exception:
             continue
-        if f.get("origem") == "alimentacao_manual" and f.get("fonte_id") == fonte_id:
-            if melhor is None or (f.get("enviado_em") or "") > (melhor.get("enviado_em") or ""):
-                rc = fp.parent / "requisitos_condicoes_valores.json"
-                f["requisitos_condicoes_valores"] = _camadas_de_itens(f, load_json(rc).get("itens", {})) if rc.exists() else None
-                melhor = f
-    return melhor
+        if f.get("origem") != "alimentacao_manual" or not f.get("fonte_id"):
+            continue
+        atual = idx.get(f["fonte_id"])
+        if atual is None or (f.get("enviado_em") or "") > (atual.get("enviado_em") or ""):
+            rc = fp.parent / "requisitos_condicoes_valores.json"
+            f["requisitos_condicoes_valores"] = _camadas_de_itens(f, load_json(rc).get("itens", {})) if rc.exists() else None
+            idx[f["fonte_id"]] = f
+    _indice_manual._cache = idx
+    return idx
+
+
+def _edital_manual_da_fonte(fonte_id: str) -> dict | None:
+    """Documento enviado pelo titular para esta fonte — fonte MÁXIMA, prevalece."""
+    return _indice_manual().get(fonte_id)
 
 
 def _camadas_de_itens(ficha: dict, itens: dict) -> dict:
@@ -322,7 +339,7 @@ def mapear_novas(novas: list[dict], fontes: list[dict]) -> list[dict]:
             continue
         ids.add(fid)
         org = (m.get("fonte_nome") or "").replace("Querido Diário — diários oficiais municipais", "").strip() or "órgão a identificar"
-        reg["fontes"].append({"id": fid, "programa": (m.get("titulo") or "")[:120], "orgao": org, "nivel": m.get("nivel") or ("federal" if not m.get("uf") else "municipal"),
+        reg["fontes"].append({"id": fid, "programa": (m.get("titulo") or "")[:120], "orgao": org, "tipo": "oportunidade_mapeada", "nivel": m.get("nivel") or ("federal" if not m.get("uf") else "municipal"),
                               "uf": m.get("uf") or "BR", "area": inferir_area(f'{m.get("titulo","")} {m.get("evidencia","")}'), "sites": [m.get("url")] if m.get("url") else [],
                               "confianca_site": "primaria", "lexico": [], "origem": "anunciada sem referência histórica", "primeira_mencao": (m.get("coletado_em") or "")[:10],
                               "ultima_mencao": (m.get("coletado_em") or "")[:10], "mencoes": 1, "fonte_da_mencao": m.get("fonte_nome")})
@@ -386,12 +403,12 @@ def run() -> dict:
         motores.append({
             "id": f["id"], "programa": f["programa"], "orgao": f.get("orgao"), "motor": sid,
             "familia": fam, "segmento": segmento(f), "area_atuacao": area_da_fonte(f, fam),
-            "natureza": "privada" if f["nivel"] in ("privada", "internacional") else "publica",
+            "natureza": "privada" if f.get("nivel") in ("privada", "internacional") else "publica",
             "esfera": ({"federal": "Brasil", "estadual": "Estado", "municipal": "Município",
-                        "internacional": "Internacional"}.get(f["nivel"])
+                        "internacional": "Internacional"}.get(f.get("nivel"))
                        or ("Estado" if f.get("uf") else "Brasil")),     # privada nacional → Brasil
             "ativa": st["ativa"], "motivo_status": st["motivo"], "mencoes": st["mencoes"], "em_epoca": st["em_epoca"],
-            "tipo": f["tipo"], "nivel": f["nivel"], "uf": f.get("uf") or ("BR" if f["nivel"] == "federal" else None),
+            "tipo": f.get("tipo") or "oportunidade_mapeada", "nivel": f.get("nivel") or "municipal", "uf": f.get("uf") or ("BR" if f.get("nivel") == "federal" else None),
             "goias": bool(f.get("goias")),
             "pagina": f["sites"][0] if f.get("sites") else None,
             "paginas": f.get("sites", [])[:3], "confianca_pagina": f.get("confianca_site"),

@@ -3762,6 +3762,22 @@ class SystemTests(unittest.TestCase):
         finally:
             for f in E.RESPOSTAS.glob(f"{eid}.json*"): f.unlink()
 
+
+    def test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas(self):
+        """Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
+        src.motores (a) varria as 16 mil fichas para CADA fonte e (b) quebrava com
+        KeyError 'tipo' nas oportunidades mapeadas. Agora: indice unico e campos opcionais."""
+        import time
+        from src import motores as M
+        M._indice_manual._cache=None if hasattr(M._indice_manual,"_cache") else None
+        t=time.time(); M._indice_manual(); self.assertLess(time.time()-t,20)
+        src=open("src/motores.py",encoding="utf-8").read(); self.assertNotIn('f["tipo"]',src); self.assertIn("def _indice_manual",src)
+        m=load_json(pathlib.Path("docs/dados/motores.json"))
+        dou=[x for x in m["oficiais"] if x["id"]=="dou"][0]
+        hoje=str(date.today()); dias={x["d"]:x["cor"] for x in dou["dias"]}
+        self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("timeout 600 python -m src.motores",wf); self.assertIn("log_motores.txt",wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
