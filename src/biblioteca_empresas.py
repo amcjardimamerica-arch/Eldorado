@@ -169,144 +169,76 @@ def _patrocinios_observados() -> dict:
     return saida
 
 
-SETOR_AFINIDADE = {
-    "Comunicação": (18, "mídia: patrocina eventos e troca por espaço publicitário — a via mais barata para a OSC"),
-    "Comércio Varejista": (14, "varejo: marca voltada ao consumidor local, patrocina eventos de bairro e campanhas"),
-    "Indústria": (12, "indústria: costuma ter Lucro Real e política de investimento social no território onde opera"),
-    "Comércio Atacadista E Distribuidor": (10, "atacado: apoio pontual e doação de produto (segurança alimentar)"),
-    "Combustível": (10, "combustível: Lucro Real quase certo; patrocínio esportivo e cultural"),
-    "Produção Agropecuária": (8, "agro: apoio a projetos rurais e cooperativas; menos afeito a edital urbano"),
-    "Prestação De Serviço": (8, "serviços: apoio institucional e voluntariado corporativo"),
-    "Energia Elétrica": (16, "concessionária: obrigada a programas de eficiência e responsabilidade social no estado"),
-    "Saneamento": (16, "concessionária estadual: programas socioambientais próprios"),
-}
-MUNICIPIOS_GO = {"Goiania", "Aparecida De Goiania", "Anapolis", "Catalao", "Itumbiara", "Senador Canedo", "Rio Verde", "Jatai",
-                 "Trindade", "Luziania", "Formosa", "Caldas Novas", "Goianesia", "Mineiros", "Cristalina", "Inhumas", "Quirinopolis"}
-
-
-def _mencoes_no_acervo(nomes: list[str]) -> dict:
-    """Quantas vezes cada empresa aparece no acervo de 16 mil editais/atos —
-    como financiadora, patrocinadora ou citada em ato de destinação."""
-    try:
-        from .banco import conectar
-        con = conectar()
-        rows = con.execute("SELECT titulo, financiador, url, data_publicacao FROM historico "
-                           "WHERE data_publicacao >= date('now','-5 years') LIMIT 40000").fetchall()
-    except Exception:
-        return {}
-    idx = {}
-    chaves = {n: [x for x in _norm(n).split() if len(x) > 3][:2] for n in nomes}
-    for r in rows:
-        alvo = _norm((r[0] or "") + " " + (r[1] or ""))
-        for n, toks in chaves.items():
-            if toks and all(t in alvo for t in toks):
-                d = idx.setdefault(n, {"mencoes": 0, "anos": set(), "exemplos": []})
-                d["mencoes"] += 1; d["anos"].add((r[3] or "")[:4])
-                if len(d["exemplos"]) < 3:
-                    d["exemplos"].append({"titulo": (r[0] or "")[:90], "data": r[3], "url": r[2]})
-    return {n: {**v, "anos": sorted(v["anos"])} for n, v in idx.items()}
-
-
 def ranking(categoria: str) -> list[dict]:
-    """RANKING REGIONAL DE GOIÁS. Base: a lista oficial dos maiores contribuintes do
-    ICMS de Goiás (300 por ano), cruzada com dez sinais verificáveis. Nada nacional:
-    só quem paga imposto e opera em Goiás entra."""
+    """categoria: 'destinacao_tributaria' ou 'patrocinio_privado'."""
     base = _base_empresas(); gife = _gife(); patr = _patrocinios_observados()
+    icms = {}
+    for e in base:
+        pos = [d.get("icms_posicao") for d in (e.get("anos") or {}).values() if d.get("icms_posicao")]
+        if pos:
+            icms[_norm(e["nome"])] = {"posicao": min(pos), "cnpj": e.get("cnpj"), "nome": e["nome"], "anos": sorted((e.get("anos") or {}).keys())}
+    # lista oficial completa dos maiores contribuintes do ICMS de Goiás (299 por ano)
     lst = ROOT / "dados/empresas/go/contribuintes_icms.json"
-    anos = (load_json(lst).get("anos") or {}) if lst.exists() else {}
-    emp: dict[str, dict] = {}
-    for ano, bloco in sorted(anos.items()):
-        for e in bloco.get("empresas", []):
-            k = _norm(e["nome"])
-            if not k:
-                continue
-            d = emp.setdefault(k, {"nome": e["nome"], "cnpj": e.get("cnpj"), "setor": e.get("setor"), "municipio": e.get("municipio_lista"), "posicoes": {}})
-            d["posicoes"][ano] = e["posicao"]
-            d["setor"] = d["setor"] or e.get("setor"); d["municipio"] = d["municipio"] or e.get("municipio_lista")
-    # cadastro da Receita quando o motor já leu (capital, natureza, porte)
-    cad = {_norm(e["nome"]): (e.get("cadastro") or {}) for e in base if e.get("cadastro")}
-    mencoes = _mencoes_no_acervo([d["nome"] for d in emp.values()])
+    if lst.exists():
+        for ano, bloco in sorted((load_json(lst).get("anos") or {}).items(), reverse=True):
+            for emp in bloco.get("empresas", []):
+                k = _norm(emp["nome"])
+                if k and (k not in icms or emp["posicao"] < icms[k]["posicao"]):
+                    icms[k] = {"posicao": emp["posicao"], "cnpj": emp.get("cnpj"), "nome": emp["nome"], "anos": [ano],
+                               "setor": emp.get("setor"), "municipio": emp.get("municipio_lista")}
     itens = []
-    for k, d in emp.items():
-        pos = sorted(d["posicoes"].items())
-        atual = pos[-1][1]; melhor = min(p for _, p in pos)
-        pontos, sinais = 0, []
-        # 1. porte tributário (posição no ICMS)
-        p1 = 30 if atual <= 20 else 24 if atual <= 50 else 18 if atual <= 100 else 12 if atual <= 200 else 8
-        pontos += p1; sinais.append({"sinal": "porte tributário", "pontos": p1, "evidencia": f"{atual}º maior contribuinte do ICMS de Goiás em {pos[-1][0]} (melhor posição: {melhor}º)", "fonte": "lista oficial Economia-GO"})
-        # 2. recorrência na lista (estabilidade = imposto constante para destinar)
-        if len(pos) >= 2:
-            pontos += 10; sinais.append({"sinal": "recorrência", "pontos": 10, "evidencia": f"presente na lista em {len(pos)} anos ({', '.join(a for a, _ in pos)})", "fonte": "lista oficial Economia-GO"})
-        # 3. trajetória (subiu de posição = crescimento)
-        if len(pos) >= 2 and pos[-1][1] < pos[0][1]:
-            pontos += 5; sinais.append({"sinal": "trajetória", "pontos": 5, "evidencia": f"subiu do {pos[0][1]}º para o {pos[-1][1]}º — faturamento e imposto crescendo", "fonte": "comparação entre anos da lista"})
-        # 4. sede/operação em município de Goiás (proximidade decide patrocínio local)
-        mun = (d.get("municipio") or "")
-        if mun in MUNICIPIOS_GO:
-            p4 = 12 if mun in ("Goiania", "Aparecida De Goiania") else 8
-            pontos += p4; sinais.append({"sinal": "proximidade", "pontos": p4, "evidencia": f"estabelecimento em {mun}/GO — decisão de patrocínio costuma ser local", "fonte": "lista oficial"})
-        elif "Diversos" in mun:
-            pontos += 4; sinais.append({"sinal": "capilaridade", "pontos": 4, "evidencia": "vários estabelecimentos no estado — decisão pode ser regional ou nacional", "fonte": "lista oficial"})
-        # 5. setor e afinidade com o terceiro setor
-        af = SETOR_AFINIDADE.get(d.get("setor") or "")
-        if af:
-            pontos += af[0]; sinais.append({"sinal": "afinidade setorial", "pontos": af[0], "evidencia": af[1], "fonte": "setor declarado na lista oficial"})
-        # 6. investimento social mapeado (GIFE)
-        if any(k in g or g in k for g in gife):
-            pontos += 15; sinais.append({"sinal": "investimento social mapeado", "pontos": 15, "evidencia": "organização mapeada em fonte GIFE", "fonte": "portal GIFE"})
-        # 7. programa conhecido publicamente (instituto/fundação)
-        conhecida = next((c for c in (CONHECIDAS_FISCAL if categoria == "destinacao_tributaria" else CONHECIDAS_PATROCINIO) if _norm(c[0]) in k or k in _norm(c[0])), None)
-        if conhecida:
-            pontos += 14; sinais.append({"sinal": "programa próprio", "pontos": 14, "evidencia": f"{conhecida[1]} — apoia {conhecida[2]}" if categoria == "destinacao_tributaria" else f"patrocina {conhecida[1]}", "fonte": "conhecimento público — a confirmar no site institucional"})
-        # 8. patrocínio observado pelo motor na imprensa de Goiás
-        obs = next((v for kk, v in patr.items() if kk and (kk in k or k in kk)), None)
+    fonte_lista = CONHECIDAS_FISCAL if categoria == "destinacao_tributaria" else CONHECIDAS_PATROCINIO
+    for reg in fonte_lista:
+        nome = reg[0]; n = _norm(nome)
+        casa_icms = next((v for k, v in icms.items() if n in k or k in n), None)
+        no_gife = any(n in g or g in n for g in gife)
+        obs = next((v for k, v in patr.items() if n in k or k in n), None)
+        pontos, por = 0, []
+        if casa_icms:
+            p = 40 if casa_icms["posicao"] <= 20 else 30 if casa_icms["posicao"] <= 100 else 20
+            pontos += p; por.append(f"{p}: {casa_icms['posicao']}º maior contribuinte do ICMS de Goiás (lista oficial)")
+        if no_gife:
+            pontos += 15; por.append("15: organização mapeada em fonte GIFE (investimento social)")
         if obs:
-            pontos += 16; sinais.append({"sinal": "patrocínio observado", "pontos": 16, "evidencia": f"{len(obs)} achado(s) do Motor Patrocínio Privado: " + "; ".join((o.get("evento") or "")[:50] for o in obs[:2]), "fonte": "imprensa e eventos de Goiás"})
-        # 9. já endereçou edital/ato no acervo (aparece como financiador ou citada)
-        men = mencoes.get(d["nome"])
-        if men:
-            p9 = min(14, 4 + 2 * men["mencoes"])
-            pontos += p9; sinais.append({"sinal": "editais já endereçados", "pontos": p9, "evidencia": f"{men['mencoes']} ocorrência(s) no acervo ({', '.join(men['anos'])}): " + "; ".join(x["titulo"][:60] for x in men["exemplos"][:2]), "fonte": "acervo do sistema (16 mil atos)"})
-        # 10. cadastro da Receita lido (capital e natureza confirmam Lucro Real provável)
-        c = cad.get(k)
-        if c:
-            cap = c.get("capital_social") or 0
-            p10 = 8 if cap and float(cap) >= 10_000_000 else 4
-            pontos += p10; sinais.append({"sinal": "cadastro confirmado", "pontos": p10,
-                                          "evidencia": f"CNPJ ativo, {c.get('natureza_juridica') or 'natureza a confirmar'}, capital {('R$ %s' % f'{float(cap):,.2f}').replace(',', '@').replace('.', ',').replace('@', '.') if cap else 'não informado'}",
-                                          "fonte": "dados públicos do CNPJ (Receita Federal)"})
+            pontos += 20; por.append(f"20: patrocínio observado pelo motor ({len(obs)} achado(s) na imprensa de Goiás)")
         if categoria == "destinacao_tributaria":
-            condicao = "só destina quem apura pelo LUCRO REAL e tem IRPJ/CSLL devido; o ICMS destinado ao Goyazes independe do regime"
-            via = (conhecida[3] if conhecida else "relações institucionais / responsabilidade social no site da empresa")
-            incentivos = (conhecida[4] if conhecida else ["Goyazes (ICMS-GO)", "Rouanet", "FIA", "Idoso"])
+            pontos += 20; por.append("20: programa de investimento social conhecido publicamente (instituto/fundação própria) — a confirmar na fonte")
+            if len(reg) > 4 and reg[4]:
+                pontos += min(10, 3 * len(reg[4])); por.append(f"{min(10, 3*len(reg[4]))}: usa {len(reg[4])} mecanismo(s) de incentivo ({', '.join(reg[4])})")
         else:
-            condicao = "verba de marketing: a proposta precisa de contrapartida de marca, público estimado e plano de mídia"
-            via = (conhecida[2] if conhecida else "marketing / comunicação institucional")
-            incentivos = None
-        classe, leitura = _classe(min(100, pontos))
-        itens.append({"nome": d["nome"], "cnpj": d.get("cnpj"), "setor": d.get("setor"), "municipio": d.get("municipio"),
-                      "icms_goias": atual, "icms_melhor": melhor, "anos_na_lista": [a for a, _ in pos],
-                      "pontos": min(100, pontos), "classe": classe, "leitura": leitura, "sinais": sinais,
-                      "por": [f"{s['pontos']}: {s['sinal']} — {s['evidencia'][:110]}" for s in sinais],
-                      "programa": (conhecida[1] if conhecida and categoria == "destinacao_tributaria" else None),
-                      "apoia": (conhecida[2] if conhecida and categoria == "destinacao_tributaria" else (conhecida[1] if conhecida else None)),
-                      "via_de_entrada": via, "incentivos": incentivos, "condicao": condicao,
-                      "gife": any(k in g or g in k for g in gife), "observado_pelo_motor": obs or None,
-                      "mencoes_acervo": men,
-                      "proximo_passo": ("confirmar regime (Lucro Real) e falar com relações institucionais" if categoria == "destinacao_tributaria" and pontos >= 50
-                                        else "apresentar projeto com contrapartida de marca ao marketing" if categoria != "destinacao_tributaria" and pontos >= 50
-                                        else "investigar o site institucional atrás de programa social ou edital")})
-    itens.sort(key=lambda x: (-x["pontos"], x["icms_goias"]))
+            pontos += 15; por.append("15: histórico público de patrocínio de eventos/cultura/esporte — a confirmar na fonte")
+            if re.search(r"goi|sagres|anhanguera|popular|sebrae|fieg|sesc|fecom|equatorial|saneago|comigo|bretas|flamboyant|buriti|passeio", n):
+                pontos += 25; por.append("25: base ou atuação em Goiás (aproximação local pesa no patrocínio)")
+        item = {"nome": nome, "pontos": min(100, pontos), "por": por,
+                "cnpj": (casa_icms or {}).get("cnpj"), "icms_goias": (casa_icms or {}).get("posicao"), "gife": no_gife,
+                "observado_pelo_motor": obs or None}
+        if categoria == "destinacao_tributaria":
+            item.update({"programa": reg[1], "apoia": reg[2], "via_de_entrada": reg[3], "incentivos": reg[4],
+                         "condicao": "só destina quem apura pelo LUCRO REAL e tem imposto devido; confirmar antes de propor"})
+        else:
+            item.update({"apoia": reg[1], "via_de_entrada": reg[2],
+                         "condicao": "verba de marketing: proposta com contrapartida de marca, público e mídia estimada"})
+        itens.append(item)
+    # completa com as empresas da base de Goiás que não estão nas listas conhecidas
+    conhecidos = {_norm(i["nome"]) for i in itens}
+    for k, v in sorted(icms.items(), key=lambda kv: kv[1]["posicao"]):
+        if len(itens) >= 100:
+            break
+        if any(k in c or c in k for c in conhecidos):
+            continue
+        p = 35 if v["posicao"] <= 20 else 28 if v["posicao"] <= 100 else 22
+        itens.append({"nome": v["nome"], "pontos": p, "cnpj": v["cnpj"], "icms_goias": v["posicao"], "gife": False, "observado_pelo_motor": None,
+                      "setor": v.get("setor"), "municipio": v.get("municipio"),
+                      "por": [f"{p}: {v['posicao']}º maior contribuinte do ICMS de Goiás (lista oficial) — porte e imposto compatíveis",
+                              "0: programa de investimento social não identificado ainda — investigar o site institucional"],
+                      "apoia": "a investigar no site institucional", "via_de_entrada": "site institucional / relações institucionais",
+                      "programa": None, "incentivos": None,
+                      "condicao": ("confirmar apuração pelo Lucro Real antes de propor destinação" if categoria == "destinacao_tributaria"
+                                   else "confirmar existência de verba de patrocínio regional")})
+    itens.sort(key=lambda x: (-x["pontos"], x["nome"]))
     for i, x in enumerate(itens[:100], 1):
         x["posicao"] = i
     return itens[:100]
-
-
-def _classe(p: int) -> tuple[str, str]:
-    if p >= 70: return "A", "alta probabilidade: evidências múltiplas e verificáveis — abordar já"
-    if p >= 50: return "B", "probabilidade média: há porte e sinais; confirmar programa e interlocutor"
-    if p >= 35: return "C", "probabilidade a construir: porte compatível, sem programa identificado — investigar o site"
-    return "D", "sem evidência suficiente: manter em observação"
 
 
 def run() -> dict:
@@ -314,12 +246,8 @@ def run() -> dict:
     saida = {}
     for cat, rot in (("destinacao_tributaria", "Destinação tributária (incentivo fiscal)"), ("patrocinio_privado", "Patrocínio privado (marketing)")):
         lista = ranking(cat)
-        ficha = {"categoria": cat, "rotulo": rot + " — Goiás", "escopo": "regional: apenas empresas da lista oficial dos maiores contribuintes do ICMS de Goiás",
-                 "gerado_em": now_iso(), "total": len(lista), "classes": {c: sum(1 for e in lista if e["classe"] == c) for c in "ABCD"},
-                 "sinais": ["porte tributário (posição no ICMS-GO)", "recorrência na lista", "trajetória de posição", "proximidade (município)",
-                            "afinidade setorial", "investimento social mapeado (GIFE)", "programa próprio conhecido", "patrocínio observado pelo motor",
-                            "editais já endereçados (acervo)", "cadastro da Receita confirmado"],
-                 "metodo": "pontuação 0–100 por dez sinais verificáveis: posição no ICMS de Goiás (lista oficial), presença em fonte GIFE, patrocínio observado pelo motor na imprensa de Goiás, "
+        ficha = {"categoria": cat, "rotulo": rot, "gerado_em": now_iso(), "total": len(lista),
+                 "metodo": "pontuação 0–100 por evidência: posição no ICMS de Goiás (lista oficial), presença em fonte GIFE, patrocínio observado pelo motor na imprensa de Goiás, "
                            "programa de investimento social conhecido publicamente (a confirmar) e mecanismos de incentivo usados. Conhecimento público é hipótese, não evidência primária.",
                  "empresas": lista}
         write_json(DESTINO / f"ranking_{cat}.json", ficha)

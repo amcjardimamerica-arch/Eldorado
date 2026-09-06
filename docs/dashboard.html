@@ -340,13 +340,11 @@ box-shadow:0 1px 3px #0002}
 .led{width:10px;height:10px;border-radius:50%;display:inline-block}.led.disp{background:#8FA63A;box-shadow:0 0 0 2px #E6EFC8}.led.ok{background:var(--ok);box-shadow:0 0 4px var(--ok)}.led.no{background:var(--urgente)}
 .ia-quadro{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-bottom:4px}.ia-luz{display:flex;align-items:center;gap:6px;font-size:11.5px;padding:3px 7px;border:1px solid var(--linha);border-radius:8px;background:#fff}.ia-luz i{width:10px;height:10px;border-radius:50%;flex:none}
 .rk-grade{display:flex;flex-direction:column;gap:4px}
-.rk-item{display:grid;grid-template-columns:34px 40px 22px 1.5fr 1.5fr .9fr;gap:10px;align-items:center;padding:6px 8px;border:1px solid var(--linha);border-radius:9px;background:#fff}
+.rk-item{display:grid;grid-template-columns:38px 44px 1.5fr 1.5fr 1fr;gap:10px;align-items:center;padding:6px 8px;border:1px solid var(--linha);border-radius:9px;background:#fff}
 .rk-pos{font-family:Georgia,serif;font-weight:800;color:var(--suave);text-align:right}
 .rk-nota{font-weight:800;color:#0E2A55;text-align:center;background:linear-gradient(90deg,#C9A22733 var(--p),transparent var(--p));border-radius:6px;padding:2px 0}
 .rk-nome{display:flex;flex-direction:column;min-width:0}.rk-nome b{font-size:12.5px}.rk-nome small{font-size:10.5px;color:var(--suave);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rk-tags{display:flex;flex-wrap:wrap;gap:3px}.rk-tags .tag{font-size:10px;padding:1px 6px}
-.rk-classe{font-weight:800;text-align:center;border-radius:6px;font-size:12px;padding:2px 0}
-.rk-classe.A{background:#E6F6EC;color:#1E7E4B}.rk-classe.B{background:#FFF6E5;color:#9a5a00}.rk-classe.C{background:#EEF1F5;color:#5A6473}.rk-classe.D{background:#FDECEC;color:var(--urgente)}
 .rk-via{display:flex;flex-direction:column;font-size:10.5px;color:var(--suave)}
 .enq-mini{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:8px 10px;border:1px solid var(--linha);border-radius:10px;background:#fff;font-size:12.5px;line-height:1.55;margin-top:8px}
 .enq-ck12{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:5px;margin-top:8px}
@@ -927,10 +925,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260906171352"></script>
-<script src="mapa-arte.js?v=20260906171352"></script>
-<script src="dashboard-dados.enc.js?v=20260906171352"></script>
-<script src="dashboard-dados.js?v=20260906171352"></script>
+<script src="mapa-brasil.js?v=20260906192228"></script>
+<script src="mapa-arte.js?v=20260906192228"></script>
+<script src="dashboard-dados.enc.js?v=20260906192228"></script>
+<script src="dashboard-dados.js?v=20260906192228"></script>
 <script>
 (function(){
 "use strict";
@@ -1959,9 +1957,8 @@ window.desenhaRanking=async function(){const box=$("rk-lista"); if(!box)return; 
    <div class="rk-grade">${lista.map(e=>`<div class="rk-item" title="${esc((e.por||[]).join(" · "))}">
      <span class="rk-pos">${e.posicao}</span>
      <span class="rk-nota" style="--p:${e.pontos}%">${e.pontos}</span>
-     <span class="rk-nome"><b>${esc(e.nome)}</b><small>${esc([e.setor,e.municipio,e.programa||e.apoia].filter(Boolean).join(" · ").slice(0,96))}</small><small class=meta>${esc(String(e.proximo_passo||"").slice(0,80))}</small></span>
-     <span class="rk-classe ${esc(e.classe||"")}" title="${esc(e.leitura||"")}">${esc(e.classe||"")}</span>
-     <span class="rk-tags">${e.icms_goias?`<span class=tag title="posição na lista oficial dos maiores contribuintes do ICMS de Goiás${e.anos_na_lista?" · anos: "+e.anos_na_lista.join(", "):""}">ICMS ${e.icms_goias}º</span>`:""}${e.mencoes_acervo?`<span class=tag style="border-color:#0B4EA2;color:#0B4EA2" title="${esc((e.mencoes_acervo.exemplos||[]).map(x=>x.titulo).join(" · "))}">${e.mencoes_acervo.mencoes} no acervo</span>`:""}${e.gife?'<span class=tag>GIFE</span>':""}${e.observado_pelo_motor?`<span class=tag style="border-color:var(--ok);color:var(--ok)" title="${esc((e.observado_pelo_motor||[]).map(o=>o.evento||"").join(" · "))}">patrocínio observado</span>`:""}${(e.incentivos||[]).map(i=>`<span class=tag>${esc(i)}</span>`).join("")}</span>
+     <span class="rk-nome"><b>${esc(e.nome)}</b><small>${esc([e.programa,e.apoia,e.setor].filter(Boolean).join(" · ").slice(0,90))}</small></span>
+     <span class="rk-tags">${e.icms_goias?`<span class=tag title="posição na lista oficial dos maiores contribuintes do ICMS de Goiás">ICMS ${e.icms_goias}º</span>`:""}${e.gife?'<span class=tag>GIFE</span>':""}${e.observado_pelo_motor?`<span class=tag style="border-color:var(--ok);color:var(--ok)" title="${esc((e.observado_pelo_motor||[]).map(o=>o.evento||"").join(" · "))}">patrocínio observado</span>`:""}${(e.incentivos||[]).map(i=>`<span class=tag>${esc(i)}</span>`).join("")}</span>
      <span class="rk-via"><small>${esc(e.via_de_entrada||"")}</small>${e.cnpj?`<small class=meta>${esc(e.cnpj)}</small>`:""}</span></div>`).join("")||'<div class=meta>Nada encontrado.</div>'}</div>`;
 }
 /* ================= DOCUMENTOS DAS ASSOCIAÇÕES ================= */
