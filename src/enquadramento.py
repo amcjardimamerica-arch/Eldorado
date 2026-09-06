@@ -154,8 +154,8 @@ def extraido(e: dict) -> dict:
 def itens_faltantes(e: dict) -> list[str]:
     ex = extraido(e)
     if ex.get("itens") is not None and ex.get("tentativas") is not None:
-        comp = complementos(e)
-        return [i for i in (ex.get("faltam") or []) if i not in comp]
+        comp = complementos(e); disp = ex.get("dispensaveis") or {}
+        return [i for i in (ex.get("faltam") or []) if i not in comp and i not in disp]
     return _itens_faltantes_basico(e)
 
 
@@ -401,7 +401,8 @@ def run(limite_ia: int = 8) -> dict:
                           "fila": {"tentativas": len(f.get("tentativas") or []), "status": ((f.get("tentativas") or [{}])[-1]).get("status")},
                           "cronograma": par.get("cronograma") or cronograma_reverso(e, hoje), "simulador": par.get("simulador") or simulador_pontuacao(a, e, f.get("criterios_pontuacao")),
                           "modelos_documentos": [x for x in anexos if isinstance(x, dict)][:8],
-                          "itens": [{"item": i, "valor": (f.get("itens") or {}).get(i) or (comp.get(i) or {}).get("valor"), "fonte": (f.get("fontes_itens") or {}).get(i) or ("complemento manual" if i in comp else None)}
+                          "itens": [{"item": i, "valor": (f.get("itens") or {}).get(i) or (comp.get(i) or {}).get("valor"), "fonte": (f.get("fontes_itens") or {}).get(i) or ("complemento manual" if i in comp else None),
+                                     "dispensavel": ((extraido(e) or {}).get("dispensaveis") or {}).get(i)}
                                     for i in ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")],
                           "regras": f.get("regras"), "requisitos": f.get("requisitos"), "pontuacao": f.get("criterios_pontuacao"), "pontuacao_texto": f.get("pontuacao_texto"),
                           "fonte_original": f.get("fonte_original"),
@@ -409,6 +410,7 @@ def run(limite_ia: int = 8) -> dict:
                           "documentos_submissao": _documentos_submissao(e, f),
                           "para_inscricao": _para_inscricao(a, f.get("documentos_exigidos_ia") or [], faltam),
                           "relatorio_ia": (extraido(e) or {}).get("relatorio"), "mini_parecer": (extraido(e) or {}).get("mini_parecer"),
+                          "historico_5_anos": (extraido(e) or {}).get("historico_5_anos"), "documentos_pdf": (extraido(e) or {}).get("documentos_pdf"), "condicoes": (extraido(e) or {}).get("condicoes"),
                           "decisao": dec.get(e["id"]), "pagina_divulgacao": (extraido(e) or {}).get("pagina_divulgacao") or (extraido(e) or {}).get("site_institucional"),
                           "quadro_ia": _quadro_ia(extraido(e) or {}, par), "valor": (f.get("itens") or {}).get("Valor") or e.get("valor_texto"), "orgao": (f.get("itens") or {}).get("Órgão / financiador") or e.get("fonte_nome"),
                           "subir": f"https://github.com/amcjardimamerica-arch/Eldorado/new/main/dados/editais/complementos/{e['id']}?filename=complemento.md&value="
@@ -428,6 +430,25 @@ def run(limite_ia: int = 8) -> dict:
 # ───────────────────────── operação por AGENTE CLAUDE (sem API) ─────────────────────────
 PACOTE = ROOT / "estado/pacote_agente.md"
 RESPOSTAS = ROOT / "dados/editais/respostas_agente"
+
+
+def historico_5_anos(nome: str) -> dict:
+    """Recorrência do recurso nos últimos 5 anos no acervo (por financiador/título)."""
+    from .banco import conectar
+    import re as _re
+    toks = [x for x in _re.findall(r"[a-zà-ú]{5,}", (nome or "").lower()) if x not in ("edital", "programa", "chamamento", "público", "publico", "seleção", "selecao")][:3]
+    if not toks:
+        return {"ocorrencias": 0}
+    try:
+        con = conectar()
+        rows = con.execute("SELECT data_publicacao, titulo, financiador, url FROM historico WHERE data_publicacao >= date('now','-5 years') ORDER BY data_publicacao DESC LIMIT 20000").fetchall()
+    except Exception:
+        return {"ocorrencias": 0, "erro": "banco indisponível"}
+    hits = [r for r in rows if sum(1 for t in toks if t in ((r[1] or "") + " " + (r[2] or "")).lower()) >= min(2, len(toks))]
+    por_ano = {}
+    for r in hits:
+        por_ano[(r[0] or "")[:4]] = por_ano.get((r[0] or "")[:4], 0) + 1
+    return {"ocorrencias": len(hits), "por_ano": dict(sorted(por_ano.items())), "ultimas": [{"data": r[0], "titulo": (r[1] or "")[:100], "url": r[3]} for r in hits[:5]], "termos": toks}
 
 
 def pacote(limite: int = 6) -> dict:
@@ -453,9 +474,14 @@ def pacote(limite: int = 6) -> dict:
         except Exception:
             pass
     pend = []
+    edicoes_brutas = 0
     for e in universo:
-        if e["id"] in analisados and analisados[e["id"]].get("completo"):
+        if e["id"] in analisados and (analisados[e["id"]].get("completo") or analisados[e["id"]].get("selo") == "inconformidade"):
             continue
+        # edições INTEIRAS de diário (Querido Diário) sem edital identificado não são analisáveis: só o título da edição existe.
+        # Elas ficam na Bússola e entram no Enquadramento quando a extração de edições (fase 2) identificar o ato.
+        if re.match(r"Di[áa]rio Oficial de .+\d{4}-\d{2}-\d{2}", e.get("titulo") or "") and not (e.get("objeto") or e.get("fim") or texto_guardado(e)):
+            edicoes_brutas += 1; continue
         if not any(filtro_geografico(a, e) for a in assoc):
             continue
         ex = extraido(e)
@@ -463,7 +489,7 @@ def pacote(limite: int = 6) -> dict:
             continue
         pend.append((e, ex))
     pend.sort(key=lambda x: (x[0].get("situacao_inscricao") != "aberta", x[0].get("uf") != "GO", -(len(x[1].get("itens") or {})), str(x[0].get("fim") or "9")))
-    resumo_universo = {"universo": len(universo), "pendentes": len(pend), "ja_analisados": sum(1 for e in universo if e["id"] in analisados)}
+    resumo_universo = {"universo": len(universo), "pendentes": len(pend), "ja_analisados": sum(1 for e in universo if e["id"] in analisados), "edicoes_de_diario_sem_ato": edicoes_brutas}
     L = ["# Pacote para o agente Claude — Enquadramento (Farol de Alexandria)\n",
          "Regras: (1) use SÓ o texto abaixo e o conhecimento do sistema; busque na internet apenas se o texto não trouxer o item; (2) nunca invente — sem base, null; "
          "(3) PNCP e diários são vetores: a fonte é o site do órgão publicador — informe-o em `pagina_divulgacao`; (4) escreva UM arquivo JSON por edital em "
@@ -499,11 +525,17 @@ def ingerir() -> dict:
         eid = arq.stem
         ex_p = EXTRAIDOS / f"{eid}.json"; ex = load_json(ex_p) if ex_p.exists() else {"edital_id": eid, "tentativas": [], "itens": {}, "fontes_itens": {}}
         itens = dict(ex.get("itens") or {}); fontes = dict(ex.get("fontes_itens") or {}); novos = 0
+        disp = dict(ex.get("dispensaveis") or {})
         for k, v in (r.get("itens") or {}).items():
+            if isinstance(v, dict) and v.get("dispensavel"):
+                disp[k] = v.get("motivo") or "dispensado pela análise"; itens.pop(k, None); novos += 1; continue
             if v not in (None, "") and not itens.get(k): itens[k] = v; fontes[k] = "agente Claude (conta do titular) sobre o texto do edital"; novos += 1
-        for k in ("regras", "requisitos", "pontuacao", "documentos_exigidos", "anexos", "pagina_divulgacao", "mini_parecer"):
+        for k, m in (r.get("dispensaveis") or {}).items():
+            disp[k] = m or "dispensado pela análise"
+        for k in ("regras", "requisitos", "pontuacao", "documentos_exigidos", "anexos", "pagina_divulgacao", "mini_parecer", "historico_5_anos", "documentos_pdf", "condicoes"):
             if r.get(k) not in (None, "", []): ex[k] = r[k]
-        alvo = list(ITENS); faltam = [i for i in alvo if not itens.get(i)]
+        ex["dispensaveis"] = disp
+        alvo = list(ITENS); faltam = [i for i in alvo if not itens.get(i) and i not in disp]
         ex["tentativas"] = (ex.get("tentativas") or []) + [{"em": now_iso(), "modelo": "agente-claude", "status": "respondeu", "itens_obtidos": novos, "sinal": "verde" if novos else "amarelo"}]
         ex.update({"itens": itens, "fontes_itens": fontes, "faltam": faltam, "completo": not faltam, "atualizado_em": now_iso()})
         write_json(ex_p, ex)
@@ -520,8 +552,15 @@ def ingerir() -> dict:
         if conf is None:
             enq = r.get("enquadramento") or {}
             conf = any((v or {}).get("aderencia", 0) >= 45 for v in enq.values()) if enq else None
-        an[eid] = {"selo": ("conformidade" if conf else "inconformidade") if conf is not None else "analisado", "em": now_iso(), "motivo": r.get("motivo_conformidade") or (r.get("mini_parecer") or "")[:200],
-                   "completo": not faltam, "por": "agente Claude (conta do titular)"}
+        # 14 verificações: 12 itens (obtidos ou dispensados com motivo) + requisitos/condições compreendidos + documentos de inscrição conhecidos
+        analise_completa = (not faltam) and bool(ex.get("requisitos") or ex.get("regras")) and bool(ex.get("documentos_exigidos"))
+        if conf and not analise_completa:
+            selo = "analise_incompleta"           # só há Conformidade com análise completa
+        else:
+            selo = ("conformidade" if conf else "inconformidade") if conf is not None else "analisado"
+        an[eid] = {"selo": selo, "em": now_iso(), "motivo": r.get("motivo_conformidade") or (r.get("mini_parecer") or "")[:200],
+                   "completo": analise_completa, "verificacoes": {"itens_12": not faltam, "dispensados": sorted(disp), "requisitos_condicoes": bool(ex.get("requisitos") or ex.get("regras")), "documentos": bool(ex.get("documentos_exigidos"))},
+                   "por": "agente Claude (conta do titular)"}
         write_json(an_p, an)
         arq.rename(arq.with_suffix(".json.ingerido")); n += 1
     return {"ingeridos": n}

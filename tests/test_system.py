@@ -2631,9 +2631,9 @@ class SystemTests(unittest.TestCase):
         d3=diagnostico({"sites":["https://x/"]},cam,None,{"erros":{"HTTPError":3},"bloqueios":3})
         self.assertIn("bloqueada",d3["causa"]); self.assertIn("escada",d3["acao"])
         m=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json"))
-        self.assertEqual(m["total"],241)                    # 260 menos as emendas (calendário próprio)
+        self.assertGreaterEqual(m["total"],241)             # 241 fontes das 260 (menos emendas) + oportunidades mapeadas que viram motor
         pn=[x for x in m["motores"] if x["familia"]=="PNAB / Aldir Blanc"]
-        self.assertEqual({x["segmento"] for x in pn},{"Estadual GO","Municipal Goiânia"})
+        self.assertTrue({"Estadual GO","Municipal Goiânia"} <= {x["segmento"] for x in pn})   # + PNABs municipais mapeados de outras cidades
         self.assertTrue(all(len(x["camadas"])==12 for x in m["motores"]))
         self.assertTrue(pathlib.Path("docs/dados/motores.json").exists())
         html=open("docs/dashboard.html",encoding="utf-8").read()
@@ -3706,7 +3706,7 @@ class SystemTests(unittest.TestCase):
         for x in ("window.decidirEdital","inscrição realizada","dispensar","sug-titulo","sug-chips","Considerações da IA","Documentos para a inscrição","class=\"dropzone\"","function ligaDropzones","window.alternaLargura","⇔ largura"): self.assertIn(x,html,x)
         self.assertNotIn("enq-cron-mini",html.split("function htmlEditaisEnquadrados")[1].split("function desenhaEnquadramento")[0])
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]
-        em=[e for e in q["editais"] if "Emenda" in (e["titulo"] or "")]; self.assertTrue(em and all(sum(1 for i in e["itens"] if i["valor"])==12 for e in em))
+        em=[e for e in q["editais"] if "Emenda" in (e["titulo"] or "")]; self.assertTrue(em and all(sum(1 for i in e["itens"] if i["valor"] or i.get("dispensavel"))==12 for e in em))   # obtidos ou dispensados com motivo
 
 
     def test_quadro_de_ia_por_edital_escada_de_modelos_e_cartao_redesenhado(self):
@@ -3777,6 +3777,17 @@ class SystemTests(unittest.TestCase):
         hoje=str(date.today()); dias={x["d"]:x["cor"] for x in dou["dias"]}
         self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("timeout 600 python -m src.motores",wf); self.assertIn("log_motores.txt",wf)
+
+
+    def test_selo_so_com_analise_completa_e_itens_dispensaveis(self):
+        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        for v in an.values():
+            if v["selo"]=="conformidade": self.assertTrue(v["completo"]); self.assertTrue(all(v["verificacoes"][k] for k in ("itens_12","requisitos_condicoes","documentos")))
+        self.assertTrue(any(v["selo"]=="analise_incompleta" for v in an.values()))
+        em=load_json(pathlib.Path("dados/editais/extraidos/emenda-estadual-goias-2026.json")); self.assertIn("Prazo de recurso",em["dispensaveis"]); self.assertEqual(em["faltam"],[])
+        html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("led disp",html.replace('${i.valor?"ok":i.dispensavel?"disp":"no"}','led disp')) if False else self.assertIn('i.dispensavel?"disp"',html)
+        self.assertIn("Arquivos do edital (PDF) — origem para conferência",html); self.assertIn("Histórico 5 anos",html)
+        src=open("src/enquadramento.py",encoding="utf-8").read(); self.assertIn("def historico_5_anos",src); self.assertIn("edicoes_de_diario_sem_ato",src)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
