@@ -178,6 +178,28 @@ def _chamar(modelo: str, prompt: str, max_tokens: int = 900, web: bool = False, 
         return {"status": "resposta não estruturada", "texto": texto[:600]}
 
 
+def _preditiva_da_fonte(fid: str) -> dict:
+    """Preditiva da ficha parametrizada: janela provável, recorrência, local de
+    publicação conhecido — com o aviso de que URL antiga é REFERÊNCIA, não regra."""
+    arq = ROOT / "biblioteca_alexandria/fontes" / fid / "parametros.json"
+    if not arq.exists():
+        return {}
+    f = load_json(arq)
+    lp = f.get("local_publicacao") or {}; ue = f.get("ultimo_edital") or {}
+    return {"janela_provavel": (f.get("preditiva") or {}).get("janela_provavel"),
+            "confianca": (f.get("preditiva") or {}).get("confianca"),
+            "recorrencia": (f.get("historico_5_anos") or {}).get("por_ano"),
+            "antecedencia_dias": (f.get("preditiva") or {}).get("antecedencia_recomendada_dias"),
+            "preparar_antes": (f.get("preditiva") or {}).get("preparar_antes"),
+            "local_publicacao": lp.get("pagina_de_publicacao"),
+            "url_edital_anterior": ue.get("url"),
+            "data_edital_anterior": ue.get("data_publicacao"),
+            "aviso_link": ("A URL do edital anterior é REFERÊNCIA do local de publicação, não regra: a edição nova costuma ter link próprio. "
+                           "Procure na página de publicação (não no link antigo) e confirme a data — se o link antigo abrir um PDF de ano anterior, "
+                           "é a edição passada, não a atual."),
+            "tipo_recurso": f.get("tipo_recurso"), "competitivo": f.get("competitivo")}
+
+
 def run(hoje: date | None = None) -> dict:
     """Um dia de trabalho dos disjuntores: conta o dia de cada ligado; a cada 3
     dias aciona a IA com prompt do caso; na 3ª IA (dia 9) o conselho Fable 5.1."""
@@ -195,6 +217,7 @@ def run(hoje: date | None = None) -> dict:
         f = fontes.get(fid, {"id": fid, "programa": fid})
         d0 = date.fromisoformat(reg["desde"])
         reg["dias"] = (hoje - d0).days + 1
+        reg["preditiva"] = _preditiva_da_fonte(fid)          # janela, recorrência e local conhecido (link antigo = referência)
         faltam = [i for i in ITENS if not reg["itens"].get(i)] or []
         if not faltam:
             resumo["completos"] += 1; continue
