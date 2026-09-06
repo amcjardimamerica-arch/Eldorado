@@ -1,12 +1,46 @@
 bloco=regulares
-Traceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 539, in <module>
-    print(json.dumps(run(), ensure_ascii=False, indent=2))
-                     ^^^^^
-  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 510, in run
-    reg.update({"ultima": r["lido_em"], "motivo": s["motivo"],
-                                                  ~^^^^^^^^^^
-KeyError: 'motivo'
-ultima_execucao: 2026-09-06T07:14:50+00:00 bloco opressores sensores 26 achados 10
+{
+  "data": "2026-09-06",
+  "em": "2026-09-06T20:08:33+00:00",
+  "manual": null,
+  "bloco": "regulares",
+  "sensores_executados": 14,
+  "em_espera": 40,
+  "total_esquadra": 80,
+  "previsoes_ativas": 1,
+  "achados": 5,
+  "novos_na_base": 0,
+  "por_tipo": {
+    "legislativo": {
+      "sensores": 2,
+      "achados": 0,
+      "falhas": 5
+    },
+    "diario_justica": {
+      "sensores": 3,
+      "achados": 0,
+      "falhas": 11
+    },
+    "diario_oficial": {
+      "sensores": 3,
+      "achados": 0,
+      "falhas": 2
+    },
+    "api": {
+      "sensores": 1,
+      "achados": 0,
+      "falhas": 0
+    },
+    "empresas_incentivo": {
+      "sensores": 1,
+      "achados": 0,
+      "falhas": 1
+    },
+    "plataforma": {
+      "sensores": 4,
+      "achados": 5,
+      "falhas": 1
+    }
+  }
+}
+ultima_execucao: 2026-09-06T20:08:33+00:00 bloco regulares sensores 14 achados 5
