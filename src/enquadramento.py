@@ -277,6 +277,44 @@ DOCS_MROSC = ["estatuto", "ata_eleicao", "cnpj", "comprovante_endereco", "certid
               "relatorio_atividades", "plano_de_trabalho", "inscricao_conselho", "declaracao_nao_vedacao", "declaracao_conta_bancaria", "rg_cpf_dirigente"]
 
 
+def parametros_da_fonte(e: dict) -> dict:
+    """Ficha parametrizada da fonte (as 260): documentos, critérios e preditiva."""
+    base = ROOT / "biblioteca_alexandria/fontes"
+    for fid in (e.get("fonte_captacao_id"), e.get("fonte_id")):
+        if fid and (base / str(fid) / "parametros.json").exists():
+            return load_json(base / str(fid) / "parametros.json")
+    # casamento por programa/órgão quando o edital não traz o id do catálogo
+    cache = getattr(parametros_da_fonte, "_idx", None)
+    if cache is None:
+        cache = []
+        for arq in base.glob("*/parametros.json"):
+            f = load_json(arq)
+            PARAR = {"edital", "editais", "programa", "municipal", "estadual", "federal", "projetos", "projeto", "publico", "público", "publica", "pública",
+                     "entidade", "entidades", "secretaria", "nacional", "fomento", "termo", "termos", "apoio", "social", "sociais", "cultura", "cultural",
+                     "parceria", "parcerias", "chamada", "chamamento", "recursos", "fundo", "fundos", "goias", "goiás", "goiania", "goiânia"}
+            prog = {x for x in re.findall(r"[a-zà-ú]{5,}", f["programa"].lower()) if x not in PARAR}
+            org = {x for x in re.findall(r"[a-zà-ú]{5,}", (f["orgao"] or "").lower()) if x not in PARAR}
+            cache.append((prog, org, f))
+        parametros_da_fonte._idx = cache
+    alvo = f"{e.get('programa') or ''} {e.get('titulo') or ''} {e.get('fonte_nome') or ''} {e.get('orgao') or ''}".lower()
+    APELIDOS = [(r"rouanet|pronac|salic", "captacao-036"), (r"lei de incentivo ao esporte|\blie\b", "captacao-040"),
+                (r"goyazes", None), (r"mercadorias apreendidas|receita federal", None)]
+    for rx, fid in APELIDOS:
+        if fid and re.search(rx, alvo) and (base / fid / "parametros.json").exists():
+            return load_json(base / fid / "parametros.json")
+    melhor, nota = None, 0
+    for prog, org, f in cache:
+        np_ = sum(1 for t in prog if t in alvo)
+        no = sum(1 for t in org if t in alvo)
+        # exige casamento distintivo do PROGRAMA (o órgão sozinho não decide o rito)
+        if np_ < max(1, min(2, len(prog))):
+            continue
+        n = np_ * 2 + no
+        if n > nota:
+            melhor, nota = f, n
+    return melhor or {}
+
+
 def _documentos_submissao(e: dict, f: dict) -> dict:
     """Tudo o que a inscrição exige: os documentos lidos do edital quando existem;
     senão o conjunto padrão de habilitação (Lei 13.019/2014, arts. 33-34 e
@@ -285,6 +323,11 @@ def _documentos_submissao(e: dict, f: dict) -> dict:
     req = f.get("requisitos") or []
     if do_edital:
         return {"origem": "edital (extraído da fonte oficial)", "documentos": do_edital, "requisitos": req}
+    par = parametros_da_fonte(e)
+    if par:
+        return {"origem": f"parametrização da fonte ({par['programa'][:60]}) — Lei 13.019/2014 e rito {par['tipo_recurso']}",
+                "documentos": par["documentos_resumo"]["obrigatorios"], "nao_exigidos": par["documentos_resumo"]["nao_exigidos"],
+                "requisitos": req or (par.get("exigencias_observadas") or [])}
     return {"origem": "padrão MROSC (Lei 13.019/2014, arts. 33–34) — até a IA extrair o rol do edital", "documentos": DOCS_MROSC, "requisitos": req}
 
 
@@ -411,6 +454,9 @@ def run(limite_ia: int = 8) -> dict:
                           "documentos_submissao": _documentos_submissao(e, f),
                           "para_inscricao": _para_inscricao(a, f.get("documentos_exigidos_ia") or [], faltam),
                           "relatorio_ia": (extraido(e) or {}).get("relatorio"), "mini_parecer": (extraido(e) or {}).get("mini_parecer"),
+                          "parametros": (lambda pr: {"tipo_recurso": pr.get("tipo_recurso"), "competitivo": pr.get("competitivo"), "rito": pr.get("rito"),
+                                                     "pontuacao": pr.get("pontuacao"), "valores": pr.get("valores"), "preditiva": pr.get("preditiva"),
+                                                     "historico": pr.get("historico_5_anos")} if pr else None)(parametros_da_fonte(e)),
                           "historico_5_anos": (extraido(e) or {}).get("historico_5_anos"), "documentos_pdf": (extraido(e) or {}).get("documentos_pdf"), "condicoes": (extraido(e) or {}).get("condicoes"),
                           "decisao": dec.get(e["id"]), "pagina_divulgacao": (extraido(e) or {}).get("pagina_divulgacao") or (extraido(e) or {}).get("site_institucional"),
                           "quadro_ia": _quadro_ia(extraido(e) or {}, par), "valor": (f.get("itens") or {}).get("Valor") or e.get("valor_texto"), "orgao": (f.get("itens") or {}).get("Órgão / financiador") or e.get("fonte_nome"),

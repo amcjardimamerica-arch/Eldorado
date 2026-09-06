@@ -3815,6 +3815,35 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(pathlib.Path("scripts/coleta_brasil.py").exists()); self.assertTrue(pathlib.Path("scripts/coleta_brasil.bat").exists()); self.assertTrue(pathlib.Path("docs/claude/COLETA-LOCAL-BRASIL.md").exists())
         html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("mt-diag.br",html)
 
+
+    def test_parametrizacao_das_260_fontes(self):
+        """Cada uma das 260 fontes com os 14 itens, documentos da Lei 13.019 (com os
+        não exigidos marcados), faixa de valor, critérios de pontuação e preditiva."""
+        import glob
+        from src.parametros import ITENS_14, DOCS_MROSC, PERFIL_TIPO, parametrizar, documentos
+        self.assertEqual(len(ITENS_14),14); self.assertIn("Requisitos de habilitação",ITENS_14); self.assertIn("Critérios de pontuação",ITENS_14)
+        fichas=[load_json(pathlib.Path(f)) for f in glob.glob("biblioteca_alexandria/fontes/*/parametros.json")]
+        self.assertEqual(len(fichas),260)
+        for f in fichas[:40]:
+            self.assertEqual([i["item"] for i in f["itens_14"]],ITENS_14)
+            self.assertTrue(all(i["situacao"] in ("obtido","previsto","nao_exigido") for i in f["itens_14"]))
+            self.assertTrue(all(i.get("motivo") for i in f["itens_14"] if i["situacao"]=="nao_exigido"))
+            self.assertGreaterEqual(len(f["documentos"]),20); self.assertTrue(all(d["base_legal"] for d in f["documentos"]))
+            self.assertIn("minimo",f["valores"]); self.assertIn("janela_provavel",f["preditiva"]); self.assertIn("preparar_antes",f["preditiva"])
+            self.assertNotEqual(f["tipo_recurso"],"outro")                       # todas classificadas por rito
+        em=[f for f in fichas if f["tipo_recurso"]=="emenda"][0]
+        nao=[i["item"] for i in em["itens_14"] if i["situacao"]=="nao_exigido"]
+        self.assertIn("Prazo de recurso",nao); self.assertIn("Resultado",nao); self.assertIn("Critérios de pontuação",nao)
+        self.assertEqual(em["pontuacao"]["competitivo"],False)
+        ed=[f for f in fichas if f["tipo_recurso"]=="edital"][0]
+        self.assertTrue(ed["pontuacao"]["criterios"]); self.assertEqual(sum(c["peso"] for c in ed["pontuacao"]["criterios"]),100)
+        d=documentos({"tipo":"grant","nivel":"internacional","area":"cultura"})
+        self.assertTrue(any(x["situacao"]=="nao_exigido" and x["documento"]=="certidao_municipal" for x in d))
+        self.assertGreaterEqual(sum(1 for f in fichas if (f["historico_5_anos"].get("ocorrencias") or 0)>0),150)
+        html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("Critérios de pontuação ${",html); self.assertIn("<b>Predição:</b>",html)
+        q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"]
+        self.assertTrue(any(e.get("parametros") for e in q))
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
