@@ -414,61 +414,59 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 5,
+      "leituras": 6,
       "achados_total": 0,
-      "vazias_seguidas": 5,
-      "ultima": "2026-09-05T05:19:27+00:00",
+      "vazias_seguidas": 6,
+      "ultima": "2026-09-06T05:21:14+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
-      "falhas_ultima": 0,
+      "falhas_ultima": 2,
       "saude": [
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260905&dataFinal=20260905&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-          "http": 204,
-          "bytes": 0
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260906&dataFinal=20260906&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
+          "erro": "URLError"
         },
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260905&dataFinal=20260905&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
-          "http": 204,
-          "bytes": 0
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260906&dataFinal=20260906&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
+          "erro": "URLError"
         }
       ],
-      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
+      "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 2,
+        "paginas_lidas": 0,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
+        "motivo_zero": "tempo esgotado / conexão recusada"
       }
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
       "tipo": "plataforma",
-      "leituras": 5,
-      "achados_total": 16,
+      "leituras": 6,
+      "achados_total": 21,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-05T05:19:53+00:00",
+      "ultima": "2026-09-06T05:21:42+00:00",
       "motivo": "motor regular e geral — todo dia",
-      "achados_ultima": 4,
+      "achados_ultima": 5,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://captadores.org.br/editais/",
           "http": 200,
-          "bytes": 137545
+          "bytes": 137598
         },
         {
           "url": "https://captadores.org.br/transparencia",
           "http": 200,
-          "bytes": 118734
+          "bytes": 118898
         }
       ],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 5,
-        "links_total": 652,
+        "links_total": 657,
         "links_candidatos": 358,
         "descobertas": [
           {
@@ -525,10 +523,10 @@
     "plat-gife": {
       "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
       "tipo": "plataforma",
-      "leituras": 5,
+      "leituras": 6,
       "achados_total": 0,
-      "vazias_seguidas": 5,
-      "ultima": "2026-09-05T05:19:57+00:00",
+      "vazias_seguidas": 6,
+      "ultima": "2026-09-06T05:21:47+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -568,10 +566,10 @@
     "plat-observatorio-3setor": {
       "nome": "Observatório do Terceiro Setor — editais",
       "tipo": "plataforma",
-      "leituras": 5,
-      "achados_total": 15,
+      "leituras": 6,
+      "achados_total": 18,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-05T05:20:04+00:00",
+      "ultima": "2026-09-06T05:21:57+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 3,
       "falhas_ultima": 0,
@@ -579,12 +577,12 @@
         {
           "url": "https://observatorio3setor.org.br/editais/",
           "http": 200,
-          "bytes": 224101
+          "bytes": 224383
         },
         {
           "url": "https://observatorio3setor.org.br/secoes_tematicas/editais",
           "http": 200,
-          "bytes": 224101
+          "bytes": 224383
         }
       ],
       "alerta": null,
@@ -621,10 +619,10 @@
     "plat-prosas-premios": {
       "nome": "Prosas — prêmios, concursos e cursos para OSCs",
       "tipo": "plataforma",
-      "leituras": 5,
+      "leituras": 6,
       "achados_total": 0,
-      "vazias_seguidas": 5,
-      "ultima": "2026-09-05T05:20:05+00:00",
+      "vazias_seguidas": 6,
+      "ultima": "2026-09-06T05:21:59+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1791,25 +1789,25 @@
   },
   "ultima_execucao": {
     "data": "2026-09-06",
-    "em": "2026-09-06T04:11:22+00:00",
+    "em": "2026-09-06T05:21:59+00:00",
     "manual": null,
-    "bloco": "justica_legislativo",
+    "bloco": "plataformas_api",
     "sensores_executados": 5,
     "em_espera": 41,
     "total_esquadra": 80,
     "previsoes_ativas": 1,
-    "achados": 0,
-    "novos_na_base": 0,
+    "achados": 8,
+    "novos_na_base": 1,
     "por_tipo": {
-      "legislativo": {
-        "sensores": 2,
+      "api": {
+        "sensores": 1,
         "achados": 0,
-        "falhas": 6
+        "falhas": 2
       },
-      "diario_justica": {
-        "sensores": 3,
-        "achados": 0,
-        "falhas": 8
+      "plataforma": {
+        "sensores": 4,
+        "achados": 8,
+        "falhas": 1
       }
     }
   }
