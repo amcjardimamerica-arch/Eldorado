@@ -918,6 +918,7 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
                     for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
     com_parecer |= conjunto("*/*/conselho.json")
     for e in editais:
+        _integrar_analise(e)                              # Biblioteca (extraídos/complementos) alimenta a Bússola e todos os painéis
         e["area"] = area_canonica(e.get("area"))
         e["calendario_ok"] = _apto_ao_calendario(e)
         si = situacao_inscricao(e, hoje)
@@ -1063,15 +1064,80 @@ def _cruzamento_associacoes(editais: list[dict], hoje: date) -> list[dict]:
     return saida
 
 
+_DATA_RX = [re.compile(r"(\d{4})-(\d{2})-(\d{2})"), re.compile(r"(\d{1,2})/(\d{1,2})/(20\d{2})"),
+            re.compile(r"(\d{1,2})\s+de\s+(janeiro|fevereiro|março|marco|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\s+de\s+(20\d{2})", re.I)]
+_MESES = {"janeiro": 1, "fevereiro": 2, "março": 3, "marco": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8, "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
+
+
+def _data_de(valor) -> str | None:
+    """Data ISO a partir do valor apurado (ISO, dd/mm/aaaa ou 'd de mês de aaaa'). Textos sem data → None."""
+    if not valor or isinstance(valor, dict):
+        return None
+    s = str(valor)
+    for rx in _DATA_RX:
+        m = rx.search(s)
+        if not m:
+            continue
+        g = m.groups()
+        try:
+            if rx is _DATA_RX[0]: return f"{g[0]}-{g[1]}-{g[2]}"
+            if rx is _DATA_RX[1]: return f"{g[2]}-{int(g[1]):02d}-{int(g[0]):02d}"
+            return f"{g[2]}-{_MESES[g[1].lower()]:02d}-{int(g[0]):02d}"
+        except Exception:
+            return None
+    return None
+
+
+def _integrar_analise(e: dict) -> None:
+    """INTEGRAÇÃO REAL: prazos, valor, objeto e resultado apurados pela análise
+    (agente/IA em dados/editais/extraidos) e pelos complementos manuais passam a
+    compor o edital — sem pedir atualização a ninguém. Só sobrescreve o que o
+    edital ainda não tinha; registra a origem."""
+    arq = ROOT / "dados/editais/extraidos" / f"{e['id']}.json"
+    if not arq.exists():
+        return
+    try:
+        ex = load_json(arq)
+    except Exception:
+        return
+    itens = ex.get("itens") or {}; fontes = ex.get("fontes_itens") or {}
+    fim = _data_de(itens.get("Prazo de inscrição")); ini = _data_de(itens.get("Início das inscrições"))
+    origem = fontes.get("Prazo de inscrição") or "análise"
+    if fim and not e.get("fim"):
+        e["fim"] = fim; e["origem_fim"] = origem
+        e.setdefault("ciclo", {}).setdefault("inscricao", {})["fim"] = fim
+        e["ciclo"]["inscricao"]["projetado"] = False
+    if ini and not e.get("inicio"):
+        e["inicio"] = ini; e.setdefault("ciclo", {}).setdefault("inscricao", {})["inicio"] = ini
+    if itens.get("Valor") and not e.get("valor_texto"):
+        e["valor_texto"] = str(itens["Valor"])[:200]; e["origem_valor"] = fontes.get("Valor") or "análise"
+    if itens.get("Objeto") and not e.get("objeto"):
+        e["objeto"] = str(itens["Objeto"])[:400]
+    res = _data_de(itens.get("Resultado"))
+    if res and not (e.get("ciclo") or {}).get("resultado"):
+        e.setdefault("ciclo", {})["resultado"] = {"data": res, "origem": fontes.get("Resultado") or "análise"}
+    if ex.get("pagina_divulgacao"):
+        e["pagina_divulgacao"] = ex["pagina_divulgacao"]
+    e["analise"] = {"itens": len([k for k, v in itens.items() if v]), "completo": ex.get("completo"), "em": (ex.get("atualizado_em") or "")[:10]}
+
+
 def _apto_ao_calendario(e: dict) -> bool:
-    """Regra do titular (05/09): entra no Calendário da tela inicial todo edital
-    com PRAZO DE INSCRIÇÃO conhecido — início E fim reais (não projetados).
-    Nenhuma outra exigência (site, território, esfera)."""
+    """Regra do titular (06/09): o calendário mostra todo edital cujo PRAZO DE
+    INSCRIÇÃO está confirmado (fim conhecido, não projetado). O início é o
+    conhecido ou, na falta, a data de publicação/captura. Recurso e resultado são
+    complementares e não condicionam a exibição."""
     if e.get("sem_edital") or e.get("janela_confirmada"):
-        return True                                       # regra anual / confirmação registrada
+        return True
     c = (e.get("ciclo") or {}).get("inscricao") or {}
-    ini = c.get("inicio") or e.get("inicio"); fim = c.get("fim") or e.get("fim")
-    return bool(ini and fim and not c.get("projetado") and str(ini) <= str(fim))
+    fim = c.get("fim") or e.get("fim")
+    if not fim or c.get("projetado"):
+        return False
+    ini = c.get("inicio") or e.get("inicio") or (e.get("publicado_em") or e.get("coletado_em") or "")[:10]
+    if not ini or str(ini) > str(fim):
+        return False                                       # captura posterior ao fim: não há faixa possível
+    if not e.get("inicio"):
+        e["inicio"] = ini; e["inicio_estimado"] = "publicação/captura (início real não informado)"
+    return True
 
 
 def _cobertura_260(previsoes: dict, fichas: dict) -> dict:

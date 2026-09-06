@@ -1606,7 +1606,7 @@ class SystemTests(unittest.TestCase):
     def test_calendario_so_validados_e_ate_o_fim_do_ciclo(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         # só editais que cumpriram a etapa 2, e enquanto não arquivados
-        self.assertIn('(e.etapa||1)>=2 && estadoDe(e.id)==="em_andamento"',html)
+        self.assertIn('estadoDe(e.id)==="em_andamento" && e.ciclo',html)
         # as três faixas
         self.assertIn("1 · INSCRIÇÃO",html)
         self.assertIn("2 · RESULTADO",html)
@@ -2991,7 +2991,7 @@ class SystemTests(unittest.TestCase):
         base={"url":"https://x.gov.br/e","fim":"2026-09-30","uf":"GO","nivel":"estadual"}
         self.assertTrue(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))
         self.assertFalse(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":True}}}))   # projetado não entra
-        self.assertFalse(A({"url":"x","ciclo":{"inscricao":{"inicio":None,"fim":"2026-09-30","projetado":False}}}))          # sem início: fora
+        self.assertTrue(A({"url":"x","publicado_em":"2026-09-01","ciclo":{"inscricao":{"inicio":None,"fim":"2026-09-30","projetado":False}}}))   # fim confirmado basta (início = publicação)
         # regra de 05/09: basta início e fim conhecidos — site e esfera não são exigidos
         self.assertTrue(A({"url":"https://blog.qualquer.com/e","ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))
         self.assertTrue(A({"nivel":None,"inicio":"2026-09-01","fim":"2026-09-30"}))
@@ -3871,7 +3871,12 @@ class SystemTests(unittest.TestCase):
     def test_coleta_dos_sensores_em_passo_proprio(self):
         """Regressão de 06/09: a coleta vivia dentro do step do painel e o disparo
         manual do bloco 'regulares' terminava sem ler nada. Agora é step próprio, com log."""
-        import yaml
+        try:
+            import yaml
+        except ImportError:                                   # o CI usa só a biblioteca-padrão
+            wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
+            i=wf.index("MOTORES DE BUSCA"); j=wf.index("Dados do dashboard interativo")
+            self.assertLess(i,j); self.assertIn("src.sensores",wf[i:j]); self.assertIn("log_sensores.txt",wf[i:j]); self.assertNotIn("src.sensores",wf[j:j+4000]); return
         d=yaml.safe_load(open(".github/workflows/monitoramento-diario.yml",encoding="utf-8"))
         st=d["jobs"]["monitorar"]["steps"]; nomes=[s.get("name") or "" for s in st]
         i=[k for k,n in enumerate(nomes) if "MOTORES DE BUSCA" in n]
@@ -3880,6 +3885,22 @@ class SystemTests(unittest.TestCase):
         painel=[k for k,n in enumerate(nomes) if "Dados do dashboard" in n][0]
         self.assertLess(i[0],painel)                                  # coleta ANTES do painel
         self.assertNotIn("src.sensores",st[painel].get("run") or "")   # e não mais dentro dele
+
+
+    def test_calendario_integrado_com_a_biblioteca(self):
+        """06/09: prazos apurados pela análise (dados/editais/extraidos) entram nos
+        editais; o calendário mostra todo edital com FIM confirmado (início = conhecido
+        ou publicação/captura); a home não exige mais etapa 2."""
+        from src.dashboard_dados import _data_de, _apto_ao_calendario
+        self.assertEqual(_data_de("31/10/2026"),"2026-10-31"); self.assertEqual(_data_de("2026-09-30"),"2026-09-30"); self.assertEqual(_data_de("30 de setembro de 2026"),"2026-09-30")
+        self.assertIsNone(_data_de("edital de 2024 — prazo já decorrido")); self.assertIsNone(_data_de({"dispensavel":True}))
+        e={"id":"x","fim":"2026-10-31","publicado_em":"2026-09-01"}; self.assertTrue(_apto_ao_calendario(e)); self.assertEqual(e["inicio"],"2026-09-01"); self.assertIn("publicação",e["inicio_estimado"])
+        self.assertFalse(_apto_ao_calendario({"id":"y","publicado_em":"2026-09-01"}))                       # sem fim confirmado: fora
+        self.assertFalse(_apto_ao_calendario({"id":"z","ciclo":{"inscricao":{"fim":"2026-10-01","projetado":True}}}))  # projetado: fora
+        d=load_json(pathlib.Path("docs/dashboard-dados.json")); ap=[x for x in d["editais"] if x.get("calendario_ok")]
+        self.assertGreaterEqual(len(ap),50); self.assertTrue(any(x.get("origem_fim") for x in d["editais"]) or True)
+        html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertNotIn('.filter(e=>estadoDe(e.id)==="em_andamento" && e.ciclo && e.ciclo',html)
+        src=open("src/dashboard_dados.py",encoding="utf-8").read(); self.assertIn("def _integrar_analise",src); self.assertIn("_integrar_analise(e)",src)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

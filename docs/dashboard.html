@@ -925,10 +925,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260906200850"></script>
-<script src="mapa-arte.js?v=20260906200850"></script>
-<script src="dashboard-dados.enc.js?v=20260906200850"></script>
-<script src="dashboard-dados.js?v=20260906200850"></script>
+<script src="mapa-brasil.js?v=20260906202632"></script>
+<script src="mapa-arte.js?v=20260906202632"></script>
+<script src="dashboard-dados.enc.js?v=20260906202632"></script>
+<script src="dashboard-dados.js?v=20260906202632"></script>
 <script>
 (function(){
 "use strict";
@@ -1413,11 +1413,11 @@ function desenhaGantt(){
     return [Math.max(1,A<ini?1:A.getDate()),Math.min(nd,B>fim?nd:B.getDate()),A<ini,B>fim];};
   const pct=(d1,d2)=>[((d1-1)/nd*100).toFixed(2),((d2-d1+1)/nd*100).toFixed(2)];
 
-  /* Só editais CONHECIDOS E VALIDADOS (etapa 2 cumprida). O edital permanece
-     enquanto o ciclo estiver em curso — sai apenas quando arquivado pelo
-     titular (inscrição realizada ou descarte). */
+  /* REGRA DO TITULAR (06/09): o Calendário mostra TODO edital com prazo de
+     inscrição confirmado (calendario_ok), independentemente da etapa. Sai apenas
+     quando arquivado pelo titular (inscrição realizada ou descarte). */
   const base=(gFiltrados||D.editais||[])
-    .filter(e=>(e.etapa||1)>=2 && estadoDe(e.id)==="em_andamento" && e.ciclo
+    .filter(e=>estadoDe(e.id)==="em_andamento" && e.ciclo
       // fonte anual vedada no ano (ex.: doação da RFB em ano eleitoral) não
       // pode desenhar faixa: a janela existe no calendário, a captação não
       && !(e.regra_anos && e.ano_permitido===false)
