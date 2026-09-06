@@ -3801,6 +3801,20 @@ class SystemTests(unittest.TestCase):
         enq=open("src/enquadramento.py",encoding="utf-8").read(); self.assertIn("arquivados.json",enq); self.assertNotIn("if not any(filtro_geografico(a, e) for a in assoc):\n            continue\n        ex = extraido(e)",enq)
         self.assertTrue(pathlib.Path("dados/editais/arquivados.json").exists())
 
+
+    def test_coleta_local_brasil_sem_custo(self):
+        import os
+        cfg=load_json(pathlib.Path("config/sensores.json")); self.assertIn("www.tjgo.jus.br",cfg["exige_brasil"]["dominios"])
+        from src.sensores import ler
+        os.environ["GITHUB_ACTIONS"]="true"; os.environ.pop("ELDORADO_LOCAL_BR",None)
+        try:
+            r=ler({"id":"x","nome":"TJGO","tipo":"diario_justica","urls":["https://www.tjgo.jus.br/index.php/licitacoes"],"busca":None},pausa=0)
+            self.assertTrue(r["diagnostico"]["exige_brasil"]); self.assertIn("coleta local",r["diagnostico"]["motivo_zero"]); self.assertEqual(r["saude"],[])   # o GitHub nem tenta
+        finally:
+            os.environ.pop("GITHUB_ACTIONS",None)
+        self.assertTrue(pathlib.Path("scripts/coleta_brasil.py").exists()); self.assertTrue(pathlib.Path("scripts/coleta_brasil.bat").exists()); self.assertTrue(pathlib.Path("docs/claude/COLETA-LOCAL-BRASIL.md").exists())
+        html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("mt-diag.br",html)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

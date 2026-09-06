@@ -21,6 +21,7 @@ Executar: `python -m src.sensores` (o coordenador decide quem sai hoje).
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 import zlib
@@ -287,6 +288,14 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
     lim = limites or load_json(CFG)["limites"]
     pausa = lim["pausa_segundos"] if pausa is None else pausa
     achados, falhas, saude = [], [], []
+    # portais que exigem IP do Brasil: no GitHub não se tenta; na coleta local (ELDORADO_LOCAL_BR=1) lê-se normalmente
+    exige = set((load_json(CFG).get("exige_brasil") or {}).get("dominios") or [])
+    if os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR"):
+        hosts = {urlsplit(u).hostname for u in _paginas(sensor)}
+        if hosts and hosts <= exige:
+            return {"sensor": sensor["id"], "achados": [], "falhas": [], "saude": [], "lido_em": now_iso(),
+                    "diagnostico": {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0,
+                                    "motivo_zero": "aguardando coleta local (Brasil): este portal recusa IP estrangeiro; é lido quando o titular roda scripts/coleta_brasil.py na sua máquina", "exige_brasil": True}}
     especifico = lexico_especifico(sensor)
     diag = {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0, "motivo_zero": None}
     n_pag = int(sensor.get("max_paginas") or lim["paginas_por_sensor"])

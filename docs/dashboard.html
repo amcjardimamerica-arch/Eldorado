@@ -247,6 +247,7 @@ box-shadow:0 1px 3px #0002}
 .dj-area{margin-top:10px}
 .dj-areat{display:flex;align-items:center;gap:7px;font-family:Georgia,serif;font-weight:800;font-size:13.5px;border-bottom:1.5px solid #E3E8F1;padding-bottom:4px;margin-bottom:6px}
 .mt-calt{font-size:11px;font-weight:700;color:var(--suave);letter-spacing:.05em;text-transform:uppercase;margin:8px 0 4px;display:flex;justify-content:space-between;align-items:center}
+.mt-diag.br{color:#1E7E4B}
 .mt-rank{display:inline-block;min-width:26px;padding:1px 6px;border-radius:7px;background:#0E2A55;color:#fff;font-weight:800;font-size:12px;text-align:center;font-family:Georgia,serif}
 .mt-rel{color:#7a5a00;border-color:#C9A227}
 .mt-calnav button{border:1px solid var(--linha);background:#fff;border-radius:6px;padding:1px 7px;font-size:11px;cursor:pointer;margin-left:3px}
@@ -907,10 +908,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260906120405"></script>
-<script src="mapa-arte.js?v=20260906120405"></script>
-<script src="dashboard-dados.enc.js?v=20260906120405"></script>
-<script src="dashboard-dados.js?v=20260906120405"></script>
+<script src="mapa-brasil.js?v=20260906123016"></script>
+<script src="mapa-arte.js?v=20260906123016"></script>
+<script src="dashboard-dados.enc.js?v=20260906123016"></script>
+<script src="dashboard-dados.js?v=20260906123016"></script>
 <script>
 (function(){
 "use strict";
@@ -2582,7 +2583,7 @@ function desenhaMotores(){
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
       <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(ROT_TIPO[o.tipo]||GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
-        ${o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag" title="diagnóstico individual da última leitura">⚠ ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
+        ${o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag ${o.diagnostico.exige_brasil?"br":""}" title="diagnóstico individual da última leitura">${o.diagnostico.exige_brasil?"🇧🇷":"⚠"} ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
         <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · ${esc(o.situacao)}${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+" edital(is)":""}</div>
         ${trintaDias(o)}</div>
       <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";

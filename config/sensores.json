@@ -226,5 +226,17 @@
   ],
   "nota_rede": "A rede deste ambiente não alcança os domínios; os sensores rodam no GitHub Actions. URLs 'curadas' são conferidas pelo próprio sensor (saúde HTTP) e trocadas quando três leituras seguidas não trazem nada.",
   "nota_orcamento": "40 sensores por saída (diários sempre primeiro), 2 páginas cada, 12s de timeout: pior caso ~16 min. O rodízio garante que todos saem ao longo da semana.",
-  "plataformas": []
+  "plataformas": [],
+  "exige_brasil": {
+    "dominios": [
+      "www.tjgo.jus.br",
+      "www.goiania.go.leg.br",
+      "www.goiania.go.gov.br",
+      "www.goias.gov.br",
+      "www.mpgo.mp.br",
+      "diariooficial.abc.go.gov.br",
+      "projudi.tjgo.jus.br"
+    ],
+    "regra": "portais que recusam IP estrangeiro/datacenter (403 sem WAF ou conexão recusada). No GitHub o motor fica 'aguardando coleta local (Brasil)'; a coleta local (scripts/coleta_brasil.py, na máquina do titular) os lê e envia o resultado ao repositório. Sem custo, sem servidor 24h."
+  }
 }
