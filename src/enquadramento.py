@@ -438,22 +438,40 @@ def pacote(limite: int = 6) -> dict:
     from .fonte_edital import texto_guardado
     dados = load_json(ROOT / "docs/dashboard-dados.json")
     assoc = associacoes()
+    an_p = ROOT / "dados/editais/analises.json"; analisados = load_json(an_p) if an_p.exists() else {}
+    # universo: tudo o que está em Oportunidades Abertas › Em andamento — núcleo + base ampla — com atuação nacional, GO ou município de GO
+    universo = list(editais_abertos(dados))
+    ab = ROOT / "docs/dados/abertas.json"
+    if ab.exists():
+        try:
+            from .compacto import expandir
+            vistos = {e["id"] for e in universo}
+            for o in expandir(load_json(ab)):
+                if o.get("id") in vistos: continue
+                if o.get("uf") == "GO" or (not o.get("uf") and o.get("abrangencia") == "nacional"):
+                    universo.append({**o, "situacao_inscricao": o.get("situacao") or "possivel", "detalhes": {}})
+        except Exception:
+            pass
     pend = []
-    for e in editais_abertos(dados):
+    for e in universo:
+        if e["id"] in analisados and analisados[e["id"]].get("completo"):
+            continue
         if not any(filtro_geografico(a, e) for a in assoc):
             continue
         ex = extraido(e)
         if ex.get("completo") and any((ROOT / "dados/associacoes" / a["_pasta"] / "farol" / f"{e['id']}.json").exists() and load_json(ROOT / "dados/associacoes" / a["_pasta"] / "farol" / f"{e['id']}.json").get("ia") for a in assoc):
             continue
         pend.append((e, ex))
-    pend.sort(key=lambda x: (x[0].get("situacao_inscricao") != "aberta", len(x[1].get("faltam") or ITENS)))
+    pend.sort(key=lambda x: (x[0].get("situacao_inscricao") != "aberta", x[0].get("uf") != "GO", -(len(x[1].get("itens") or {})), str(x[0].get("fim") or "9")))
+    resumo_universo = {"universo": len(universo), "pendentes": len(pend), "ja_analisados": sum(1 for e in universo if e["id"] in analisados)}
     L = ["# Pacote para o agente Claude — Enquadramento (Farol de Alexandria)\n",
          "Regras: (1) use SÓ o texto abaixo e o conhecimento do sistema; busque na internet apenas se o texto não trouxer o item; (2) nunca invente — sem base, null; "
          "(3) PNCP e diários são vetores: a fonte é o site do órgão publicador — informe-o em `pagina_divulgacao`; (4) escreva UM arquivo JSON por edital em "
          "`dados/editais/respostas_agente/<id>.json` com o formato indicado; depois rode `python -m src.enquadramento ingerir`.\n",
          "Formato: {\"itens\": {<item>: <valor|null>}, \"regras\": <texto>, \"requisitos\": [..], \"pontuacao\": [{\"criterio\":..,\"peso\":..}], \"documentos_exigidos\": [..], "
          "\"anexos\": [{\"nome\":..,\"url\":..}], \"pagina_divulgacao\": <url do órgão|null>, \"mini_parecer\": <3-5 frases>, "
-         "\"enquadramento\": {<id_associacao>: {\"aderencia\": 0-100, \"chances\": 0-100, \"pontuacao_estimada\": <texto>, \"decisao\": <texto>, \"para_subir\": [..], \"riscos\": [..]}}}\n",
+         "\"enquadramento\": {<id_associacao>: {\"aderencia\": 0-100, \"chances\": 0-100, \"pontuacao_estimada\": <texto>, \"decisao\": <texto>, \"para_subir\": [..], \"riscos\": [..]}}, "
+         "\"conformidade\": true|false (true = aproveitável em Goiás/Brasil pelas associações; false = sem aproveitamento → vai para Arquivados), \"motivo_conformidade\": <frase>}\n",
          f"Associações: " + "; ".join(f"{a.get('id')} — {a.get('nome')} · áreas {', '.join(a.get('areas') or [])} · atuação {', '.join(a.get('territorios') or [])} · {a.get('anos_existencia')} anos" for a in assoc) + "\n"]
     for e, ex in pend[:limite]:
         texto = texto_guardado(e)
@@ -464,7 +482,7 @@ def pacote(limite: int = 6) -> dict:
         L.append(f"Anúncio: {e.get('url')}\nSite institucional conhecido: {ex.get('site_institucional') or 'não localizado'}\n")
         L.append("Texto do edital (compacto):\n```\n" + (texto[:12000] if texto else "(sem texto — localizar o edital no site do órgão)") + "\n```\n")
     PACOTE.write_text("\n".join(L), encoding="utf-8")
-    return {"pacote": str(PACOTE.relative_to(ROOT)), "editais": len(pend[:limite]), "pendentes_total": len(pend)}
+    return {"pacote": str(PACOTE.relative_to(ROOT)), "editais": len(pend[:limite]), "pendentes_total": len(pend), **resumo_universo}
 
 
 def ingerir() -> dict:
@@ -496,6 +514,15 @@ def ingerir() -> dict:
                     cur = load_json(fp) if fp.exists() else {"edital_id": eid, "associacao": aid}
                     cur["ia"] = {**par, "modelo": "agente-claude (conta do titular)", "em": now_iso()}; cur["aderencia"] = par.get("aderencia", cur.get("aderencia"))
                     write_json(fp, cur)
+        # SELO DE ANÁLISE: conformidade (aproveitável em Goiás/Brasil) ou inconformidade (sem aproveitamento) → arquivado
+        an_p = ROOT / "dados/editais/analises.json"; an = load_json(an_p) if an_p.exists() else {}
+        conf = r.get("conformidade")
+        if conf is None:
+            enq = r.get("enquadramento") or {}
+            conf = any((v or {}).get("aderencia", 0) >= 45 for v in enq.values()) if enq else None
+        an[eid] = {"selo": ("conformidade" if conf else "inconformidade") if conf is not None else "analisado", "em": now_iso(), "motivo": r.get("motivo_conformidade") or (r.get("mini_parecer") or "")[:200],
+                   "completo": not faltam, "por": "agente Claude (conta do titular)"}
+        write_json(an_p, an)
         arq.rename(arq.with_suffix(".json.ingerido")); n += 1
     return {"ingeridos": n}
 

@@ -148,6 +148,9 @@ def _orcamento(tarefa: str | None) -> dict:
 
 def _chamar(modelo: str, prompt: str, max_tokens: int = 900, web: bool = False, tarefa: str | None = None) -> dict:
     import urllib.request
+    if os.environ.get("GITHUB_ACTIONS") or os.environ.get("FAROL_IA_EXTERNA") == "1":
+        # decisão do titular (06/09): o GitHub para na fase 2; a fase 3 (IA) roda por rotina externa (agente Claude)
+        return {"status": "fase 3 por rotina externa — a IA não roda no GitHub"}
     if not os.environ.get("FAROL_AI_API_KEY"):
         return {"status": "aguardando credencial FAROL_AI_API_KEY"}
     orc = _orcamento(tarefa)

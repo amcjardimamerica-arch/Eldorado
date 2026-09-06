@@ -935,7 +935,7 @@ class SystemTests(unittest.TestCase):
         self.assertIn("credencial_ia",d["farol_resumo"])
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         self.assertIn("python -m src.biblioteca",wf)
-        self.assertIn("python -m src.farol_parecer",wf)
+        self.assertIn("farol_parecer: fase 3 por rotina externa",wf)   # IA fora do GitHub
 
 
     def test_calendario_de_resultados_e_recursos(self):
@@ -3208,7 +3208,7 @@ class SystemTests(unittest.TestCase):
                       {"id":"c","situacao_inscricao":"aberta"},                              # já tem prazo: fora
                       {"id":"d","situacao_inscricao":"possivel"}]}                          # sem evento: fora
         self.assertEqual([x["id"] for x in candidatos(d,10)],["a"])
-        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.prazos_ia",wf)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("prazos_ia: fase 3 por rotina externa",wf)   # IA nao roda no GitHub
         dd=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("prazos_ia",dd)
 
 

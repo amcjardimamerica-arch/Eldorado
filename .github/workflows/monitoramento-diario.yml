@@ -157,7 +157,7 @@ jobs:
             timeout 900 python -m src.fluxo || echo "fluxo 4-5: sem editais completos"
           fi
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            timeout 900 python -m src.farol_parecer || echo "parecer: sem credencial ou sem pedidos"
+            echo "farol_parecer: fase 3 por rotina externa (agente Claude) — não roda no GitHub"
           fi
           timeout 600 python -m src.dashboard_dados | tee dash.json
           timeout 600 python -m src.banco || echo 'banco: registrado'
@@ -178,7 +178,7 @@ jobs:
           if [ "$MOTORES_BLOCO" = "documentos" ] || [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 600 python -m src.documentos || echo "documentos: registrado"
           fi
-      - name: Enquadramento (Farol fases 3 e 4) — associações × editais abertos, IA para os 12 itens e aderência
+      - name: Enquadramento — parte determinística (fase 2 → aguarda a fase 3 externa; fase 4 segue)
         if: always()
         run: |
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
@@ -188,7 +188,7 @@ jobs:
         if: always()
         run: |
           if [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            timeout 600 python -m src.prazos_ia || echo "prazos_ia: registrado"
+            echo "prazos_ia: fase 3 por rotina externa (agente Claude) — não roda no GitHub"
           fi
       - name: Motor de empresas com afinidade com o terceiro setor (por estado)
         if: always()
