@@ -5,12 +5,11 @@
       "faltam": [],
       "tentativas": [
         {
-          "em": "2026-09-05T09:37:07+00:00",
-          "modelo": "claude-sonnet-4-5",
-          "status": "aguardando credencial FAROL_AI_API_KEY",
-          "itens_obtidos": 0,
-          "fonte": null,
-          "uso": null
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 1,
+          "sinal": "verde"
         }
       ],
       "itens_ia": {
@@ -33,7 +32,8 @@
         "Prazo de recurso": "recurso administrativo após indeferimento, no prazo fixado na IN vigente (10 dias, a confirmar)",
         "Requisitos": "proponente PJ sem fins lucrativos com cadastro no Salic, atuação cultural comprovada (a confirmar o tempo mínimo na IN), regularidade fiscal e adimplência com o MinC",
         "Anexos": "formulários do Salic: proposta cultural, orçamento analítico, plano de distribuição, plano de divulgação e documentos do proponente",
-        "Destinação": "projetos culturais aprovados; recursos captados por renúncia fiscal (IRPJ/IRPF) junto a empresas e pessoas físicas"
+        "Destinação": "projetos culturais aprovados; recursos captados por renúncia fiscal (IRPJ/IRPF) junto a empresas e pessoas físicas",
+        "Início das inscrições": "2026-02-01"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
@@ -47,7 +47,8 @@
         "Prazo de recurso": "conhecimento do regramento (Lei Rouanet — PRONAC (mecenato e FNC)) — valores e regras conhecidos da Lei 8.313/1991 e da IN do MinC — registrados como 'conhecimento do regramento'; a IA confirma na IN vigente",
         "Requisitos": "conhecimento do regramento (Lei Rouanet — PRONAC (mecenato e FNC)) — valores e regras conhecidos da Lei 8.313/1991 e da IN do MinC — registrados como 'conhecimento do regramento'; a IA confirma na IN vigente",
         "Anexos": "conhecimento do regramento (Lei Rouanet — PRONAC (mecenato e FNC)) — valores e regras conhecidos da Lei 8.313/1991 e da IN do MinC — registrados como 'conhecimento do regramento'; a IA confirma na IN vigente",
-        "Destinação": "conhecimento do regramento (Lei Rouanet — PRONAC (mecenato e FNC)) — valores e regras conhecidos da Lei 8.313/1991 e da IN do MinC — registrados como 'conhecimento do regramento'; a IA confirma na IN vigente"
+        "Destinação": "conhecimento do regramento (Lei Rouanet — PRONAC (mecenato e FNC)) — valores e regras conhecidos da Lei 8.313/1991 e da IN do MinC — registrados como 'conhecimento do regramento'; a IA confirma na IN vigente",
+        "Início das inscrições": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet-1",
@@ -59,27 +60,42 @@
           "html: HTTPError"
         ]
       },
-      "regras": null,
-      "requisitos": null,
-      "pontuacao_texto": null
+      "regras": "Lei 8.313/1991 e IN MinC vigente; a associação submete proposta no Salic, obtém aprovação e depois CAPTA junto a empresas/pessoas físicas incentivadoras — o recurso não vem do governo, vem do mecenato.",
+      "requisitos": [
+        "cadastro no Salic",
+        "atuação cultural comprovada",
+        "regularidade fiscal",
+        "projeto com orçamento analítico"
+      ],
+      "pontuacao_texto": null,
+      "documentos_exigidos_ia": [
+        "estatuto",
+        "ata_eleicao",
+        "cnpj",
+        "comprovante_endereco",
+        "certidao_federal",
+        "cndt",
+        "crf_fgts",
+        "relatorio_atividades",
+        "plano_de_trabalho"
+      ],
+      "anexos": [
+        {
+          "nome": "Salic — propostas",
+          "url": "https://salic.cultura.gov.br"
+        }
+      ]
     },
     "emenda-estadual-goias-2026": {
       "titulo": "Emenda Parlamentar Estadual — Goiás — captação 2026",
       "faltam": [],
       "tentativas": [
         {
-          "em": "2026-09-05T19:20:10+00:00",
-          "modelo": "claude-haiku-4-5",
-          "status": "aguardando credencial FAROL_AI_API_KEY",
-          "faltavam": [
-            "Resultado",
-            "Prazo de recurso",
-            "Valor",
-            "Requisitos",
-            "Anexos",
-            "Destinação"
-          ],
-          "uso": null
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 0,
+          "sinal": "amarelo"
         }
       ],
       "itens_ia": {},
@@ -117,8 +133,12 @@
         "kb": null,
         "erros": []
       },
-      "regras": null,
-      "requisitos": null,
+      "regras": "Captação pessoal: relacionamento com o gabinete, apresentação de projeto e pedido de indicação; a liberação segue o cronograma do órgão pagador; prestação de contas pela plataforma.",
+      "requisitos": [
+        "habilitação na plataforma de transferências",
+        "regularidade fiscal",
+        "plano de trabalho"
+      ],
       "pontuacao_texto": null,
       "anexos": [
         {
@@ -129,6 +149,20 @@
           "nome": "Manual de Redação",
           "url": "https://portal.al.go.leg.br/documentos/manual/manual_de_redacao.pdf"
         }
+      ],
+      "documentos_exigidos_ia": [
+        "estatuto",
+        "ata_eleicao",
+        "cnpj",
+        "comprovante_endereco",
+        "certidao_federal",
+        "certidao_estadual",
+        "certidao_municipal",
+        "cndt",
+        "crf_fgts",
+        "relatorio_atividades",
+        "plano_de_trabalho",
+        "declaracao_conta_bancaria"
       ]
     },
     "emenda-municipal-goiania-2026": {
@@ -136,12 +170,11 @@
       "faltam": [],
       "tentativas": [
         {
-          "em": "2026-09-05T15:03:14+00:00",
-          "modelo": "claude-sonnet-4-5",
-          "status": "aguardando credencial FAROL_AI_API_KEY",
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
           "itens_obtidos": 0,
-          "fonte": null,
-          "uso": null
+          "sinal": "amarelo"
         }
       ],
       "itens_ia": {},
@@ -179,38 +212,38 @@
         "kb": null,
         "erros": []
       },
-      "regras": null,
-      "requisitos": null,
-      "pontuacao_texto": null
+      "regras": "Captação pessoal: relacionamento com o gabinete, apresentação de projeto e pedido de indicação; a liberação segue o cronograma do órgão pagador; prestação de contas pela plataforma.",
+      "requisitos": [
+        "habilitação na plataforma de transferências",
+        "regularidade fiscal",
+        "plano de trabalho"
+      ],
+      "pontuacao_texto": null,
+      "documentos_exigidos_ia": [
+        "estatuto",
+        "ata_eleicao",
+        "cnpj",
+        "comprovante_endereco",
+        "certidao_federal",
+        "certidao_estadual",
+        "certidao_municipal",
+        "cndt",
+        "crf_fgts",
+        "relatorio_atividades",
+        "plano_de_trabalho",
+        "declaracao_conta_bancaria"
+      ]
     },
     "ace2eed82c392c4d36a5": {
       "titulo": "Termo de Fomento nº 01/2026",
-      "faltam": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
+      "faltam": [],
       "tentativas": [
         {
-          "em": "2026-09-05T17:42:22+00:00",
-          "modelo": "claude-haiku-4-5",
-          "status": "aguardando credencial FAROL_AI_API_KEY",
-          "faltavam": [
-            "Prazo de inscrição",
-            "Resultado",
-            "Prazo de recurso",
-            "Valor",
-            "Requisitos",
-            "Anexos",
-            "Destinação",
-            "Área de atuação"
-          ],
-          "uso": null
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 8,
+          "sinal": "verde"
         }
       ],
       "itens_ia": {},
@@ -218,13 +251,29 @@
         "Objeto": "Termo de Fomento nº 01/2026",
         "Órgão / financiador": "Programa Goyazes — incentivo à cultura de Goiás",
         "Território": "GO",
-        "Esfera": "estadual"
+        "Esfera": "estadual",
+        "Prazo de inscrição": "não se aplica — instrumento já celebrado (parceria firmada, Lei 13.019/2014)",
+        "Resultado": "não se aplica",
+        "Prazo de recurso": "não se aplica",
+        "Valor": "não informado no trecho lido do termo (repasse conforme plano de trabalho)",
+        "Requisitos": "não se aplica a terceiros — parceria já formalizada com OSC específica",
+        "Anexos": "Plano de Trabalho do termo (processo SEI 202600042005523)",
+        "Destinação": "evento de artes visuais (FARGO 2026) pela OSC parceira",
+        "Área de atuação": "cultura"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
         "Órgão / financiador": "cadastro do edital (motor de busca)",
         "Território": "cadastro do edital (motor de busca)",
-        "Esfera": "cadastro do edital (motor de busca)"
+        "Esfera": "cadastro do edital (motor de busca)",
+        "Prazo de inscrição": "agente Claude (conta do titular) sobre o texto do edital",
+        "Resultado": "agente Claude (conta do titular) sobre o texto do edital",
+        "Prazo de recurso": "agente Claude (conta do titular) sobre o texto do edital",
+        "Valor": "agente Claude (conta do titular) sobre o texto do edital",
+        "Requisitos": "agente Claude (conta do titular) sobre o texto do edital",
+        "Anexos": "agente Claude (conta do titular) sobre o texto do edital",
+        "Destinação": "agente Claude (conta do titular) sobre o texto do edital",
+        "Área de atuação": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": null,
@@ -232,7 +281,7 @@
         "kb": null,
         "erros": []
       },
-      "regras": null,
+      "regras": "Documento é um TERMO DE FOMENTO assinado (publicidade do instrumento), não um chamamento aberto. Indica que a SECULT-GO celebra fomentos culturais — sinal de recorrência para acompanhar os chamamentos da pasta.",
       "requisitos": null,
       "pontuacao_texto": null
     },
@@ -243,23 +292,15 @@
         "Resultado",
         "Prazo de recurso",
         "Requisitos",
-        "Anexos",
-        "Área de atuação"
+        "Anexos"
       ],
       "tentativas": [
         {
-          "em": "2026-09-05T18:50:28+00:00",
-          "modelo": "claude-haiku-4-5",
-          "status": "aguardando credencial FAROL_AI_API_KEY",
-          "faltavam": [
-            "Prazo de inscrição",
-            "Resultado",
-            "Prazo de recurso",
-            "Requisitos",
-            "Anexos",
-            "Área de atuação"
-          ],
-          "uso": null
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 1,
+          "sinal": "verde"
         }
       ],
       "itens_ia": {},
@@ -269,7 +310,8 @@
         "Território": "GO",
         "Esfera": "estadual",
         "Valor": "R$ 2.400.000,00",
-        "Destinação": "O valor total deste instrumento será de"
+        "Destinação": "O valor total deste instrumento será de",
+        "Área de atuação": "cultura"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
@@ -277,7 +319,8 @@
         "Território": "cadastro do edital (motor de busca)",
         "Esfera": "cadastro do edital (motor de busca)",
         "Valor": "texto do edital (primeiro valor citado — conferir)",
-        "Destinação": "texto do edital"
+        "Destinação": "texto do edital",
+        "Área de atuação": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": null,
@@ -285,14 +328,26 @@
         "kb": null,
         "erros": []
       },
-      "regras": null,
-      "requisitos": null,
+      "regras": "Lei estadual 13.613/2000 (Goyazes): a entidade inscreve o projeto na SECULT-GO nas janelas anuais, obtém aprovação e capta junto a empresas goianas que destinam parte do ICMS; a página lida trouxe um PDF ilegível — o edital anual precisa ser lido no site da SECULT-GO.",
+      "requisitos": [
+        "proponente cultural com sede em Goiás",
+        "projeto cultural",
+        "regularidade fiscal estadual"
+      ],
       "pontuacao_texto": null,
       "anexos": [
         {
           "nome": "Termo de Fomento nº 01/2026",
           "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf"
         }
+      ],
+      "documentos_exigidos_ia": [
+        "estatuto",
+        "ata_eleicao",
+        "cnpj",
+        "certidao_estadual",
+        "certidao_federal",
+        "plano_de_trabalho"
       ]
     },
     "71f1af059c45f010339a": {
@@ -343,12 +398,11 @@
       ],
       "tentativas": [
         {
-          "em": "2026-09-05T15:03:14+00:00",
-          "modelo": "claude-sonnet-4-5",
-          "status": "aguardando credencial FAROL_AI_API_KEY",
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
           "itens_obtidos": 0,
-          "fonte": null,
-          "uso": null
+          "sinal": "amarelo"
         }
       ],
       "itens_ia": {},
@@ -422,7 +476,15 @@
         "Anexos",
         "Destinação"
       ],
-      "tentativas": [],
+      "tentativas": [
+        {
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 0,
+          "sinal": "amarelo"
+        }
+      ],
       "itens_ia": {},
       "itens": {
         "Objeto": "CREDENCIAMENTO/CHAMAMENTO PÚBLICO NA AREA DA SAÚDE.",
@@ -489,18 +551,11 @@
       "faltam": [],
       "tentativas": [
         {
-          "em": "2026-09-05T18:51:32+00:00",
-          "modelo": "claude-haiku-4-5",
-          "status": "aguardando credencial FAROL_AI_API_KEY",
-          "faltavam": [
-            "Resultado",
-            "Prazo de recurso",
-            "Valor",
-            "Requisitos",
-            "Anexos",
-            "Destinação"
-          ],
-          "uso": null
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 0,
+          "sinal": "amarelo"
         }
       ],
       "itens_ia": {},
@@ -538,9 +593,27 @@
         "kb": null,
         "erros": []
       },
-      "regras": null,
-      "requisitos": null,
-      "pontuacao_texto": null
+      "regras": "Captação pessoal: relacionamento com o gabinete, apresentação de projeto e pedido de indicação; a liberação segue o cronograma do órgão pagador; prestação de contas pela plataforma.",
+      "requisitos": [
+        "habilitação na plataforma de transferências",
+        "regularidade fiscal",
+        "plano de trabalho"
+      ],
+      "pontuacao_texto": null,
+      "documentos_exigidos_ia": [
+        "estatuto",
+        "ata_eleicao",
+        "cnpj",
+        "comprovante_endereco",
+        "certidao_federal",
+        "certidao_estadual",
+        "certidao_municipal",
+        "cndt",
+        "crf_fgts",
+        "relatorio_atividades",
+        "plano_de_trabalho",
+        "declaracao_conta_bancaria"
+      ]
     },
     "ed52928dc304f36be0ef": {
       "titulo": "Diário Oficial de Itaporanga (SP) 2025-12-03 — \"edital de chamamento público\" associação",
@@ -618,15 +691,16 @@
     },
     "doacao-receita-federal-2027": {
       "titulo": "Doação de mercadorias apreendidas — Receita Federal — 2027",
-      "faltam": [
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação"
+      "faltam": [],
+      "tentativas": [
+        {
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 6,
+          "sinal": "verde"
+        }
       ],
-      "tentativas": [],
       "itens_ia": {},
       "itens": {
         "Objeto": "pedido do representante legal à unidade da RFB, com os documentos do art. 76; não há edital. Permitido em 2027: ano sem eleição. Preferência: entidades de saúde, educação e assistência social (art. 76, §1º).",
@@ -634,7 +708,13 @@
         "Órgão / financiador": "Secretaria Especial da Receita Federal do Brasil — Superintendência da 1ª Região Fiscal (GO/DF/MT/MS/TO)",
         "Território": "Brasil",
         "Esfera": "federal",
-        "Área de atuação": "doacao_bens"
+        "Área de atuação": "doacao_bens",
+        "Resultado": "publicação do ato de destinação pela RFB e comunicação às entidades habilitadas",
+        "Prazo de recurso": "conforme o edital de destinação",
+        "Valor": "não monetário — bens (mercadorias) conforme lotes disponíveis",
+        "Requisitos": "entidade sem fins lucrativos habilitada no cadastro de destinação da RFB (finalidade assistencial, educacional, de saúde ou cultural), regularidade fiscal, pedido pelo sistema da RFB",
+        "Anexos": "formulário de habilitação/pedido no sistema da RFB; estatuto, ata, CNPJ e certidões",
+        "Destinação": "bens para uso nas atividades finalísticas da entidade (vedada a comercialização)"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
@@ -642,7 +722,13 @@
         "Órgão / financiador": "cadastro do edital (motor de busca)",
         "Território": "cadastro do edital (motor de busca)",
         "Esfera": "cadastro do edital (motor de busca)",
-        "Área de atuação": "cadastro do edital (motor de busca)"
+        "Área de atuação": "cadastro do edital (motor de busca)",
+        "Resultado": "agente Claude (conta do titular) sobre o texto do edital",
+        "Prazo de recurso": "agente Claude (conta do titular) sobre o texto do edital",
+        "Valor": "agente Claude (conta do titular) sobre o texto do edital",
+        "Requisitos": "agente Claude (conta do titular) sobre o texto do edital",
+        "Anexos": "agente Claude (conta do titular) sobre o texto do edital",
+        "Destinação": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": null,
@@ -650,9 +736,21 @@
         "kb": null,
         "erros": []
       },
-      "regras": null,
-      "requisitos": null,
-      "pontuacao_texto": null
+      "regras": "Portaria RFB de destinação de mercadorias apreendidas; a entidade se habilita previamente e pleiteia lotes nos editais periódicos; em ano eleitoral a destinação a entidades é vedada — por isso a janela válida é 2027.",
+      "requisitos": [
+        "habilitação prévia na RFB",
+        "regularidade fiscal",
+        "finalidade assistencial/educacional/cultural"
+      ],
+      "pontuacao_texto": null,
+      "documentos_exigidos_ia": [
+        "estatuto",
+        "ata_eleicao",
+        "cnpj",
+        "certidao_federal",
+        "comprovante_endereco",
+        "utilidade_publica"
+      ]
     },
     "59b9d21886496a6d554a": {
       "titulo": "Diário Oficial de Salvador (BA) 2025-04-09 — \"edital de chamamento público\" associação",
@@ -1795,22 +1893,14 @@
     },
     "0e732756dd062c3ae737": {
       "titulo": "Seleção Pública de Projetos para Patrocínio Cultural nº 01/2025 - Projetos Audiovisuais de Longa-metragem",
-      "faltam": [
-        "Prazo de recurso",
-        "Território",
-        "Destinação"
-      ],
+      "faltam": [],
       "tentativas": [
         {
-          "em": "2026-09-05T18:51:49+00:00",
-          "modelo": "claude-haiku-4-5",
-          "status": "aguardando credencial FAROL_AI_API_KEY",
-          "faltavam": [
-            "Prazo de recurso",
-            "Território",
-            "Destinação"
-          ],
-          "uso": null
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 4,
+          "sinal": "verde"
         }
       ],
       "itens_ia": {},
@@ -1824,7 +1914,11 @@
         "Valor": "R$ 15.000.000,00",
         "Pontuação (regras)": "50",
         "Requisitos": "da MP 2.228-1/01, art. 1º, inciso V.",
-        "Anexos": "Anexo I, Anexo II, Anexo III, Anexo IV, Anexo V"
+        "Anexos": "Anexo I, Anexo II, Anexo III, Anexo IV, Anexo V",
+        "Início das inscrições": "2025-09-26",
+        "Prazo de recurso": "conforme o edital (dúvidas até 2 dias úteis antes do fim das inscrições; recursos na fase de resultado pela página de Patrocínios)",
+        "Território": "Brasil",
+        "Destinação": "patrocínio a produção de longas-metragens (setor audiovisual)"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
@@ -1836,7 +1930,11 @@
         "Valor": "texto do edital (primeiro valor citado — conferir)",
         "Pontuação (regras)": "texto do edital",
         "Requisitos": "texto do edital",
-        "Anexos": "texto do edital"
+        "Anexos": "texto do edital",
+        "Início das inscrições": "agente Claude (conta do titular) sobre o texto do edital",
+        "Prazo de recurso": "agente Claude (conta do titular) sobre o texto do edital",
+        "Território": "agente Claude (conta do titular) sobre o texto do edital",
+        "Destinação": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": null,
@@ -1844,62 +1942,26 @@
         "kb": null,
         "erros": []
       },
-      "regras": null,
-      "requisitos": null,
+      "regras": "Seleção pública de patrocínio cultural do BNDES (Lei 13.303/2016), voltada a produtoras audiovisuais; contrapartidas de marca ao Sistema BNDES; inscrições encerradas em 27/10/2025.",
+      "requisitos": [
+        "produtora audiovisual independente",
+        "obra de longa-metragem",
+        "declaração de não impedimentos e adimplência",
+        "comprovação de recursos captados ou próprios"
+      ],
       "pontuacao_texto": "50",
       "documentos_exigidos_ia": [
-        "certidao_federal",
         "estatuto",
+        "cnpj",
+        "declaracao_nao_vedacao",
+        "certidao_federal",
+        "cndt",
         "crf_fgts"
       ],
       "anexos": [
         {
-          "nome": "Edital&nbsp;",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/00872d2f-967b-40cc-af38-bb7f0a85c3d3/Edital+de+Cinema+2025+-25092025+.pdf?MOD=AJPERES&CVID=pCGjdnc"
-        },
-        {
-          "nome": "Edital - Retificação&nbsp;nº 1",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/978b145c-7918-4ff8-8481-2a8cb02c8589/Edital+de+Cinema+2025+-+Retificacao+n1.pdf?MOD=AJPERES&CVID=pCGluRI"
-        },
-        {
-          "nome": "Edital&nbsp;",
-          "url": "http://www.bndes.gov.br/wps/wcm/connect/site/00872d2f-967b-40cc-af38-bb7f0a85c3d3/Edital+de+Cinema+2025+-25092025+.pdf?MOD=AJPERES&CVID=pCGjdnc"
-        },
-        {
-          "nome": "Edital - Retificação&nbsp;nº 1",
-          "url": "http://www.bndes.gov.br/wps/wcm/connect/site/978b145c-7918-4ff8-8481-2a8cb02c8589/Edital+de+Cinema+2025+-+Retificacao+n1.pdf?MOD=AJPERES&CVID=pCGluRI"
-        },
-        {
-          "nome": "lista dos projetos classificados por segmento",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/803a245b-f789-48a9-b819-fee3527edf04/Lista+de+Classificados+por+Segmento+com+nota+final+m%C3%ADnima-18112025.pdf?MOD=AJPERES&CVID=pGnD.5Z"
-        },
-        {
-          "nome": "lista dos 25 projetos selecionados",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/27c53c74-5421-455c-8fae-12bff1d7024e/Lista+dos+25+Projetos+selecionados-18112025.pdf?MOD=AJPERES&CVID=pGnDUjy"
-        },
-        {
-          "nome": "Código de Ética do Sistema BNDES",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/a93394b5-0d84-4c2a-aa73-b95593933e58/Codigo_de_Etica_BNDES_Atualizado.pdf?MOD=AJPERES&CVID=q0m6NMv"
-        },
-        {
-          "nome": "Anexo I&nbsp;– Minuta de contrato",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/4206c0a8-56f3-4933-aac7-6049f2e0d56c/Anexo+I+-+Minuta+de+contrato.pdf?MOD=AJPERES&CVID=pBZcJVQ"
-        },
-        {
-          "nome": "Anexo II&nbsp;– Contrapartidas",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/38056c6b-2122-4382-a1bb-302d6ff741f0/Anexo+II+-+Contrapartidas+concedidas+ao+BNDES.pdf?MOD=AJPERES&CVID=pCGjj5P"
-        },
-        {
-          "nome": "Anexo&nbsp;V – Manual de prestação de contas",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/689c769c-0608-4678-bc0d-2b831f34931c/Anexo+V+-+Manual+para+Presta%C3%A7%C3%A3o+de+Contas.pdf?MOD=AJPERES&CVID=pBT6SrG"
-        },
-        {
-          "nome": "Aviso de Retificação nº 1",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/cadd8b19-dd84-43ca-b524-92233d0a33fc/Aviso+de+Retifica%C3%A7%C3%A3o+n1.pdf?MOD=AJPERES&CVID=pCGlZyI"
-        },
-        {
-          "nome": "Anexo II - Contrapartidas - Retificação nº 1",
-          "url": "https://www.bndes.gov.br/wps/wcm/connect/site/7ca97669-62c6-46f5-b145-c5464e2585e7/Anexo+II+-+Contrapartidas+-+Retificacao+n1.pdf?MOD=AJPERES&CVID=pCGlD1c"
+          "nome": "Página de Patrocínios — Edital Cultural 2025",
+          "url": "https://www.bndes.gov.br/patrocinios/editalcultural2025"
         }
       ]
     },
@@ -1910,27 +1972,16 @@
         "Resultado",
         "Prazo de recurso",
         "Valor",
-        "Território",
         "Requisitos",
-        "Anexos",
-        "Destinação"
+        "Anexos"
       ],
       "tentativas": [
         {
-          "em": "2026-09-05T18:51:54+00:00",
-          "modelo": "claude-haiku-4-5",
-          "status": "aguardando credencial FAROL_AI_API_KEY",
-          "faltavam": [
-            "Prazo de inscrição",
-            "Resultado",
-            "Prazo de recurso",
-            "Valor",
-            "Território",
-            "Requisitos",
-            "Anexos",
-            "Destinação"
-          ],
-          "uso": null
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 2,
+          "sinal": "verde"
         }
       ],
       "itens_ia": {},
@@ -1938,13 +1989,17 @@
         "Objeto": "2º Prêmio MOL de Jornalismo para Solidariedade reconhecerá reportagens sobre cultura de doação",
         "Órgão / financiador": "Observatório do Terceiro Setor — editais",
         "Esfera": "federal",
-        "Área de atuação": "cultura"
+        "Área de atuação": "cultura",
+        "Território": "Brasil",
+        "Destinação": "jornalistas e veículos (premiação de reportagens)"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
         "Órgão / financiador": "cadastro do edital (motor de busca)",
         "Esfera": "cadastro do edital (motor de busca)",
-        "Área de atuação": "cadastro do edital (motor de busca)"
+        "Área de atuação": "cadastro do edital (motor de busca)",
+        "Território": "agente Claude (conta do titular) sobre o texto do edital",
+        "Destinação": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": null,
@@ -1968,26 +2023,35 @@
         "Prazo de inscrição",
         "Resultado",
         "Prazo de recurso",
-        "Território",
         "Requisitos",
         "Anexos",
         "Destinação"
       ],
-      "tentativas": [],
+      "tentativas": [
+        {
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 1,
+          "sinal": "verde"
+        }
+      ],
       "itens_ia": {},
       "itens": {
         "Objeto": "Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática",
         "Órgão / financiador": "Observatório do Terceiro Setor — editais",
         "Esfera": "federal",
         "Área de atuação": "meio_ambiente",
-        "Valor": "500"
+        "Valor": "500",
+        "Território": "Brasil"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
         "Órgão / financiador": "cadastro do edital (motor de busca)",
         "Esfera": "cadastro do edital (motor de busca)",
         "Área de atuação": "cadastro do edital (motor de busca)",
-        "Valor": "cadastro do edital (motor de busca)"
+        "Valor": "cadastro do edital (motor de busca)",
+        "Território": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": null,
@@ -2005,25 +2069,35 @@
         "Prazo de inscrição",
         "Resultado",
         "Prazo de recurso",
-        "Território",
         "Requisitos",
         "Anexos",
-        "Destinação",
-        "Área de atuação"
+        "Destinação"
       ],
-      "tentativas": [],
+      "tentativas": [
+        {
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 2,
+          "sinal": "verde"
+        }
+      ],
       "itens_ia": {},
       "itens": {
         "Objeto": "Instituto Impactarte abre edital para projetos de impacto social com apoio de até R$ 150 mil",
         "Órgão / financiador": "Observatório do Terceiro Setor — editais",
         "Esfera": "federal",
-        "Valor": "150"
+        "Valor": "150",
+        "Território": "Brasil",
+        "Área de atuação": "assistencia_social"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
         "Órgão / financiador": "cadastro do edital (motor de busca)",
         "Esfera": "cadastro do edital (motor de busca)",
-        "Valor": "cadastro do edital (motor de busca)"
+        "Valor": "cadastro do edital (motor de busca)",
+        "Território": "agente Claude (conta do titular) sobre o texto do edital",
+        "Área de atuação": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": null,
@@ -2041,24 +2115,35 @@
         "Prazo de inscrição",
         "Resultado",
         "Prazo de recurso",
-        "Valor",
-        "Território",
         "Requisitos",
         "Anexos",
-        "Destinação",
-        "Área de atuação"
+        "Destinação"
       ],
-      "tentativas": [],
+      "tentativas": [
+        {
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 3,
+          "sinal": "verde"
+        }
+      ],
       "itens_ia": {},
       "itens": {
         "Objeto": "Instituto Lojas Renner abre edital com até R$ 10 mil para fortalecer organizações sociais",
         "Órgão / financiador": "Observatório do Terceiro Setor — editais",
-        "Esfera": "federal"
+        "Esfera": "federal",
+        "Valor": "até R$ 10.000,00 por organização (anúncio)",
+        "Território": "Brasil",
+        "Área de atuação": "assistencia_social"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
         "Órgão / financiador": "cadastro do edital (motor de busca)",
-        "Esfera": "cadastro do edital (motor de busca)"
+        "Esfera": "cadastro do edital (motor de busca)",
+        "Valor": "agente Claude (conta do titular) sobre o texto do edital",
+        "Território": "agente Claude (conta do titular) sobre o texto do edital",
+        "Área de atuação": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": null,
@@ -2077,24 +2162,34 @@
         "Resultado",
         "Prazo de recurso",
         "Valor",
-        "Território",
         "Requisitos",
-        "Anexos",
-        "Destinação"
+        "Anexos"
       ],
-      "tentativas": [],
+      "tentativas": [
+        {
+          "em": "2026-09-06T01:05:58+00:00",
+          "modelo": "agente-claude",
+          "status": "respondeu",
+          "itens_obtidos": 2,
+          "sinal": "verde"
+        }
+      ],
       "itens_ia": {},
       "itens": {
         "Objeto": "Prêmio MOL reconhece reportagens que inspiram solidariedade e a cultura de doação",
         "Órgão / financiador": "Observatório do Terceiro Setor — editais",
         "Esfera": "federal",
-        "Área de atuação": "cultura"
+        "Área de atuação": "cultura",
+        "Território": "Brasil",
+        "Destinação": "jornalistas e veículos (premiação de reportagens)"
       },
       "fontes_itens": {
         "Objeto": "cadastro do edital (motor de busca)",
         "Órgão / financiador": "cadastro do edital (motor de busca)",
         "Esfera": "cadastro do edital (motor de busca)",
-        "Área de atuação": "cadastro do edital (motor de busca)"
+        "Área de atuação": "cadastro do edital (motor de busca)",
+        "Território": "agente Claude (conta do titular) sobre o texto do edital",
+        "Destinação": "agente Claude (conta do titular) sobre o texto do edital"
       },
       "fonte_original": {
         "site_institucional": null,
@@ -2635,6 +2730,13 @@
       "ia_itens": 0,
       "ia_enquadramento": 0,
       "em": "2026-09-06T00:03:13+00:00"
+    },
+    {
+      "associacoes": 1,
+      "editais_abertos": 144,
+      "ia_itens": 0,
+      "ia_enquadramento": 0,
+      "em": "2026-09-06T01:05:58+00:00"
     }
   ]
 }

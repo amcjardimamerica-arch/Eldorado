@@ -8,292 +8,424 @@ Associações: amc-jardim-america — Associação dos Moradores e Comerciantes 
 
 
 ---
-## janela-rouanet-2026 — Lei Rouanet — Lei 8.313/1991 (PRONAC) — inscrições 2026
+## 443dfeed2a9493ab123d — Termos de Fomento
 
-Fonte (vetor): Ministério da Cultura — SALIC · UF BR · nível federal · situação aberta · fim 2026-10-31
+Fonte (vetor): Programa Goyazes — incentivo à cultura de Goiás · UF GO · nível estadual · situação possivel · fim None
 
-Itens já obtidos: Objeto: Janela anual de inscrição de propostas. Modalidades: Mecenato (patrocínio e doaç, Prazo de inscrição: 2026-10-31, Órgão / financiador: Ministério da Cultura — SALIC, Território: Brasil, Esfera: federal, Área de atuação: cultura, Valor: variável e condicionado à aprovação do projeto no Salic: de R$ 0,01 até R$ 1.500, Resultado: análise contínua pelo MinC dentro da janela; publicação da aprovação no DOU e no, Prazo de recurso: recurso administrativo após indeferimento, no prazo fixado na IN vigente (10 dia, Requisitos: proponente PJ sem fins lucrativos com cadastro no Salic, atuação cultural compro, Anexos: formulários do Salic: proposta cultural, orçamento analítico, plano de distribui, Destinação: projetos culturais aprovados; recursos captados por renúncia fiscal (IRPJ/IRPF) 
+Itens já obtidos: Objeto: Termos de Fomento, Órgão / financiador: Programa Goyazes — incentivo à cultura de Goiás, Território: GO, Esfera: estadual, Valor: R$ 2.400.000,00, Destinação: O valor total deste instrumento será de, Área de atuação: cultura
 
-Itens que FALTAM: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação, Área de atuação
+Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Requisitos, Anexos
 
-Anúncio: https://salic.cultura.gov.br/
-Site institucional conhecido: https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet-1
-
-Texto do edital (compacto):
-```
-(sem texto — localizar o edital no site do órgão)
-```
-
-
----
-## 0e732756dd062c3ae737 — Seleção Pública de Projetos para Patrocínio Cultural nº 01/2025 - Projetos Audiovisuais de Longa-metragem
-
-Fonte (vetor): BNDES — Área Social · UF BR · nível federal · situação possivel · fim None
-
-Itens já obtidos: Objeto: Seleção Pública de Projetos para Patrocínio Cultural nº 01/2025 - Projetos Audio, Órgão / financiador: BNDES — Área Social, Esfera: federal, Área de atuação: cultura, Prazo de inscrição: 2025-10-27, Resultado: 2025-11-18, Valor: R$ 15.000.000,00, Pontuação (regras): 50, Requisitos: da MP 2.228-1/01, art. 1º, inciso V., Anexos: Anexo I, Anexo II, Anexo III, Anexo IV, Anexo V
-
-Itens que FALTAM: Prazo de recurso, Território, Destinação
-
-Anúncio: https://www.bndes.gov.br/wps/portal/site/home/transparencia/patrocinios?1dmy&urile=wcm%3apath%3a%2Fbndes_institucional%2Fhome%2Ftransparencia%2Fpatrocinios%2Fselecao-publica-patrocinio-cultural-01-2025
+Anúncio: https://goias.gov.br/cultura/termos-de-fomento
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
 ```
-### Edital&nbsp; (site institucional)
-Classificação: Documento Controlado até a publicação do Edital (conforme OS PRESI Nº 01/2015- BNDES) 
-Restrição de Acesso: Empresas do Sistema BNDES 
-Unidade Gestora: ARMC/DECULT 
- 
-1 
- 
-BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - 
-BNDES 
-EDITAL 
-Seleção Pública de Projetos para Patrocínio Cultural Nº 01/2025 – BNDES – 
-Projetos Audiovisuais de Longa-Metragem 
- 
-OBJETO: Seleção pública de obras audiovisuais brasileiras de produção 
-independente no formato de longa-metragem , para fins de patrocínio por parte do 
-Sistema BNDES. O valor global da seleção será de at é R$ 15.000.000,00 (quinze 
-milhões de reais). 
+### Termo de Fomento nº 01/2026 (site institucional)
+ESTADO DE GOIÁS
+SECRETARIA DE ESTADO DA CULTURA
  
  
-ANEXO I – MINUTA DE CONTRATO 
-ANEXO II – CONTRAPARTIDAS 
-ANEXO III - DECLARAÇÃO DE NÃO IMPEDIMENTOS E ADIMPL ÊNCIA COM 
-PATROCÍNIOS 
-ANEXO IV – RECURSOS CAPTADOS E/OU RECURSOS PRÓPRIOS JÁ 
-INVESTIDOS 
-ANEXO V – MANUAL PARA PRESTAÇÃO DE CONTAS 
  
-PERÍODO DE INSCRIÇÃO: 26/09/2025 a 27/10/2025. 
- 
-DÚVIDAS SOBRE O EDITAL: As dúvidas acerca do presente Edital deverão ser 
-encaminhadas ao BNDES , até 2 (dois) dias úteis anteriores à data de encerramento 
-das inscrições, através do e-mail editalcultural2025@bndes.gov.br , devendo ser 
-informados, no campo “assunto” Seleção Pública de Projetos para Patrocínio 
-Cultural Nº 01/2025 – BNDES . As respostas serão divulgadas na página de 
-Patrocínios no endereço eletrônico 
-https://www.bndes.gov.br/patrocinios/editalcultural2025 . 
- 
-ACOMPANHAMENTO DOS ATOS DA SELEÇÃO PÚBLICA: Os avisos, as 
-respostas a questionamentos e os resultados da presente Seleção serão divulgados 
-na página de Patrocínios no endereço eletrônico 
-https://www.bndes.gov.br/patrocinios/editalcultural2025 . 
- 
-CRÍTICAS, RECLAMAÇÕES E DENÚNCIAS: Críticas, reclamações e denúncias 
-relativas a irregularidades ou ao descumprimento pe lo BNDES de suas normas 
-internas ou da legislação vigente durante a condução deste procedimento de seleção 
-pública poderão ser apresentadas à Ouvidoria do BNDES , por meio eletrônico 
-(através de preenchimento do formulário disponível no endereço eletrônico 
-www.bndes.gov.br/ouvidoria ), por meio postal (Caixa Postal 15054, CEP nº 20.0 31-
-120, Rio de Janeiro – RJ) ou pelo telefone 0800-702 -6307. 
-Classificação: Documento Controlado até a publicação do Edital (conforme OS PRESI Nº 01/2015- BNDES) 
-Restrição de Acesso: Empresas do Sistema BNDES 
-Unidade Gestora: ARMC/DECULT 
- 
-2 
+Termo de Fomento nº 1/2026 - SECULT
+Processo nº 202600042005523
  
  
-LEGISLAÇÃO APLICÁVEL: Lei nº 13.303, de 01/07/2016, Instrução Normativa 
-SECOM nº 2, de 23/12/2019, e Regulamento de Patrocí nio do Sistema BNDES, de 
-14/08/2023, disponível no endereço eletrônico www.bndes.gov.br . 
  
-TRATAMENTO DE DADOS PESSOAIS: A participação neste procedimento de 
-seleção pública importa na manifestação de inequívoco consentimento do titular, seja 
-ele pessoa física direta ou indiretamente relacionada ao proponente, inclusive sócios, 
-empregados, contratados e/ou terceirizados, quando for o caso, dos dados pessoais 
-que tenham se tornado públicos como condição para participação na seleção pública 
-e para contratação, para tratamento pelo BNDES , na forma da Lei Geral de Proteção 
-de Dados, Lei nº 13.709/2018. 
-Poderão ser solicitados pelo BNDES dados pessoais adicionais a fim de viabilizar o 
-cumprimento de obrigação legal. 
+ TERMO DE FOMENTO
+ 
+ 
+Termo de Fomento nº 1/2026
+Processo nº 
+202600042005523
  
  
  
  
+TERMO DE FOMENTO Nº 1/2026, 
+QUE ENTRE SI CELEBRAM O ESTADO DE GOIÁS, POR
+INTERMÉDIO DA SECRETARIA DE ESTADO DA CULTURA, E O 
+INSTITUTO BRASIL
+CRIATIVO
+, CONFORME DISPOSTO A SEGUIR.
  
+O 
+ESTADO DE GOIÁS
+, pessoa jurídica de direito público interno, por intermédio da
+SECRETARIA DE ESTADO DA CULTURA - SECULT
+, inscrita no CNPJ nº
+32.746.693/0001-52, com sede administrativa situada na Praça Dr. Pedro Ludovico
+Teixeira, nº 26, St. Central, CEP: 74.003-010, Goiânia – GO, ora representada por sua
+titular Sra. YARA NUNES DOS SANTOS, brasileira, solteira, inscrita no CPF sob o nº
+XXX.301.821-XX, residente e domiciliada em Goiânia - GO, neste instrumento
+denominada
  
+ADMINISTRAÇÃO PÚBLICA
+, e o 
+INSTITUTO BRASIL
+CRIATIVO
+,
  
+inscrita no CNPJ sob o nº 
+12.350.038/0001-73
+, pessoa jurídica de direito
+privado, sem ﬁns lucrativos, com a sede na 
+Av Deputado Jamel Cecílio Quadra C-9
+Lote 2/15 Edifício Flamboyant Sala 708
+, representada por seu presidente,
  
+DOUGLAS
+RIBEIRO DE CARVALHO
+, brasileiro, 
+Empresário/Produtor, 
+inscrito no CPF sob o nº
+XXX.
+669.841
+-XX, doravante denominada 
+ORGANIZAÇÃO DA SOCIEDADE CIVIL
+,
+nos termos do processo nº 202600042005523
  
+e
  
-Classificação: Documento Controlado até a publicação do Edital (conforme OS PRESI Nº 01/2015- BNDES) 
-Restrição de Acesso: Empresas do Sistema BNDES 
-Unidade Gestora: ARMC/DECULT 
+da Lei Federal nº 13.019/2014,
+resolvem, de mútuo acordo, celebrar o presente 
+TERMO DE FOMENTO,
+ mediante
+as cláusulas e condições seguintes:
  
-3 
+CLÁUSULA PRIMEIRA
+ – DO OBJETO 
+– 
+Realização da 8ª FARGO – Feira de Arte
+Goiás, evento de artes visuais a ser realizado, entre os dias 13 a 17 de maio de 2026
+no Centro Cultural Oscar Niemeyer, em Goiânia – GO, 
+enquanto a vigência da
+Termo de Fomento 1 /2026 (90351764) SEI 202600042005523 / pg. 1
+parceria será de 120 (cento e vinte) dias, conforme previsto no Plano de Trabalho,
+abrangendo as etapas preparatórias, administrativas, ﬁnanceiras e de prestação de
+contas necessárias à execução integral do objeto.
  
+CLÁUSULA SEGUNDA
+ – DAS OBRIGAÇÕES DAS PARTES
+I - DA ORGANIZAÇÃO DA SOCIEDADE CIVIL:
+1- Providenciar, imediatamente, a aplicação ﬁnanceira da totalidade dos valores do
+fomento - repasse e contrapartida (se houver) - em conta de aplicação do tipo
+poupança e/ou investimento, a ﬁm de evitar responsabilidade pelo ressarcimento de
+eventuais valores não aplicados no período compreendido entre o crédito e a efetiva
+execução do objeto. 
+2- Aplicar o recurso de acordo com o Plano de Trabalho aprovado pela Administração
+Pública, cumprindo fielmente o objeto pactuado;
+3- Observar, na aquisição de produtos e na contratação de serviços com recursos do
+Estado, os princípios da impessoalidade, da moralidade, da publicidade e da
+economicidade, sendo necessário, no mínimo, a realização de cotação prévia de
+preços no mercado antes da formalização da parceria;
+4- Gravar com cláusula de inalienabilidade os equipamentos e materiais
+permanentes adquiridos com recursos da parceria;
+5- Formalizar promessa de transferência da propriedade dos bens adquiridos à
+Administração Pública em caso de extinção da parceria;
+6- Prestar contas dos recursos recebidos nos termos da Lei Federal nº 13.019/2014;
+7- Facilitar os meios necessários para que a Administração Pública e/ou seus
+credenciados exerçam, a qualquer tempo, a ﬁscalização quanto aos aspectos
+técnicos, ﬁnanceiros e administrativos da presente parceria, sem prejuízo ação
+fiscalizadora dos demais órgãos de controle;
+8 - Manter arquivados, em boa ordem, os documentos comprobatórios das despesas
+realizadas no âmbito desta parceria, no próprio local em que foram contabilizados,
+pelo prazo de 10 (dez) anos, contados da aprovação da prestação de contas pelo
+Gestor do órgão;
+9- Aﬁxar carimbo identiﬁcador contendo o título, número e ano do Termo de
+Fomento ou de Colaboração em todas as faturas, notas ﬁscais e demais documentos
+de despesa, obrigatoriamente emitidos em nome da Organização da Sociedade Civil;
+10- Assumir integralmente todos os encargos que porventura venham a incidir
+quando da execução desta parceria, tais como: obrigações civis, ﬁscais,
+trabalhistas ou quaisquer outras correlatas;
+11- Abrir conta bancária em instituição contratada para centralizar a movimentação
+de recursos do Estado;
+12- Depositar os recursos recebidos em decorrência da parceria em conta bancária
+referida no item antecedente, a qual deverá ser isenta de tarifa bancária. Os
+recursos deverão ser mantidos nesta conta especíﬁca e somente poderão ser
+utilizados para o pagamento de despesas constantes do Plano de Trabalho ou para a
+aplicação no mercado financeiro conforme previsto neste termo;
+13- Destinar os rendimentos de ativos ﬁnanceiros ao objeto da parceria, estando
+sujeitos às mesmas regras de prestação de contas aplicáveis aos recursos
+transferidos;
+14- Movimentar os recursos exclusivamente por transferência eletrônica, sujeita à
+Termo de Fomento 1 /2026 (90351764) SEI 202600042005523 / pg. 2
+identiﬁcação do beneﬁciário ﬁnal e à obrigatoriedade de depósito em sua conta
+bancária;
+15- Efetuar os pagamentos diretamente na conta bancária de titularidade dos
+fornecedores e prestadores de serviços, exceto nos casos em que a transferência
+eletrônica seja inviável, situação em que poderá ser admitido o pagamento em
+espécie, nos termos do art. 53, §2º, da Lei nº 13.019/2014;
+1 6 - 
+Restituir à Administração Pública, no prazo improrrogável de 30 (trinta)
+dias, eventuais saldos ﬁnanceiros remanescentes, incluindo receitas de aplicações
+ﬁnanceiras, por ocasião da conclusão, denúncia, rescisão ou extinção da parceria,
+sob pena de imediata instauração de Tomada de Contas Especial. O saldo a ser
+devolvido deverá ser restituído via Documento de Arrecadação de Receitas
+Estaduais (DARE) e deverá observar a proporcionalidade entre os recursos
+transferidos pela Administração Pública e a contrapartida da Organização da
+Sociedade Civil. Procedimento similar será adotado em casos de não execução do
+objeto ou prestação de contas não realizada ou reprovada
+;
+17- Apresentar, na prestação de contas, respeitando a ordem cronológica dos fatos,
+toda a documentação necessária para a comprovação do cumprimento das metas;
+18- Cumprir rigorosamente o cronograma de execução estabelecido no Plano de
+Trabalho, sendo que quaisquer alterações só poderão ocorrer mediante anuência
+expressa da Administração Pública;
+19- Assumir total responsabilidade pelos contratos ﬁrmados para execução dos
+serviços e aquisições relacionadas ao objeto da parceria, respondendo por eventuais
+danos ou prejuízos decorrentes da execução irregular, arcando integralmente com
+custos de serviços ou aquisições que apresentem vícios, defeitos ou
+incorreções, tanto durante quanto após a conclusão da prestação ou aquisição;
+20- Responsabilizar-se pelo gerenciamento administrativo e ﬁnanceiro dos recursos
+recebidos, abrangendo despesas de custeio, investimento e pessoal, sem qualquer
+interferência da Administração Pública;
+21- Assumir exclusivamente o pagamento dos encargos trabalhistas,
+previdenciários, ﬁscais e comerciais relacionados à execução do objeto, sem que
+qualquer inadimplência da organização da sociedade civil gere responsabilidade
+solidária ou subsidiária para a Administração Pública. Além disso, arcar com todos os
+ônus incidentes sobre a parceria e quaisquer prejuízos resultantes de restrições à
+sua execução;
+22- Indicar um Gestor, que será responsável por fornecer informações sobre o
+andamento da execução e encaminhar as demandas à Administração Pública;
+23- Divulgar a parceria celebrada com a Administração Pública na internet e em
+locais visíveis de sua sede social e dos estabelecimentos onde desenvolve suas
+atividades, contendo, no mínimo, as informações exigidas no parágrafo único do art.
+11 da Lei Federal nº 13.019/2014;
+24- Permitir acesso irrestrito aos processos, documentos e informações relacionadas
+ao termo de fomento, bem como aos locais de execução do objeto, para os agentes
+da Administração Pública, órgãos de controle interno e Tribunal de Contas
+competente;
+25 - Apresentar relatório fotográﬁco para comprovar as atividades e a execução do
+objeto pactuado;
+26 - Por meio deste instrumento, a organização tem ciência e declara, nos termos
+da Lei, que:
+Em caso de dissolução da entidade, o respectivo patrimônio líquido será transferido
+Termo de Fomento 1 /2026 (90351764) SEI 202600042005523 / pg. 3
+a outra pessoa jurídica de igual natureza que preencha os requisitos da Lei
+nº13.019/2014, e cujo objeto social seja, preferencialmente, o mesmo da entidade
+extinta (Art.33, III, da Lei 13.019/14);
+Possui objetivos voltados à promoção de atividades e ﬁnalidades de relevância
+pública e social (Art.33, inciso I, Lei 13.019/2014);
+Cumpre o disposto no Art.7º, inciso XXXIII da Constituição Federal, que versa sobre a
+proibição de trabalho noturno, perigoso ou insalubre a menor de 18 (dezoito) anos e
+de qualquer trabalho a menores de 16 (dezesseis) anos, salvo na condição de
+aprendiz, a partir dos 14 (quatorze) anos, na forma da Lei;
+Não tem como dirigente, membro de Poder ou Ministério Público, ou dirigente de
+órgão ou autarquia da administração pública da mesma esfera governamental em
+que será celebrado o termo de fomento, estendendo-se a vedação aos respectivos
+cônjuges ou companheiros, bem como parentes em linha reta, colateral ou por
+aﬁnidade, até o segundo grau (
+Art. 39, inciso III, Lei n. º 13.019/2014 e Art. 45, §3º,
+II, da Lei 22.874/2024 – LDO/25
+);
+Tem experiência prévia na realização, com efetividade, do objeto da parceria ou de
+natureza semelhante (conforme Art.33, V, ‘b’, Lei nº 13.019/14);
+Possui instalações, condições materiais e capacidade técnica operacional para o
+desenvolvimento das atividades e/ou projetos previstos na parceria e o
+cumprimento das metas estabelecidas no ajuste (conforme Art.33, V, ‘c’, da Lei
+13.019/14);
+De que não há sobreposição de objeto em relação a outro instrumento celebrado. 
  
+II - DA ADMINISTRAÇÃO PÚBLICA :
+1- Acompanhar e avaliar de forma global os projetos a serem desenvolvidos no
+âmbito da parceria.;
+2- Designar o gestor responsável pela gestão da parceria, com poderes para exercer
+controle e fiscalização;
+3- Designar Comissão de Monitoramento e Avaliação para veriﬁcar o cumprimento
+do objeto da parceria;
+4- Prorrogar, de ofício, a vigência do fomento em caso de atraso na liberação dos
+recursos, limitada a prorrogação ao período exato do atraso verificado;
+5- Disponibilizar no site da Secretaria de Estado de Relações Institucionais, o Plano
+de Trabalho aprovado e o Termo de Fomento assinado até o quinto dia útil após a
+sua publicação no Diário Oficial do Estado;
+6- Analisar a prestação de contas apresentada pela Organização da Sociedade Civil,
+podendo rejeitá-la caso sejam constatadas irregularidades, tais como:
+a) Não utilização, total ou parcial, dos recursos ﬁnanceiros no objeto da parceria,
+incluindo saldos remanescentes e receitas obtidas com aplicações ﬁnanceiras, sem
+o devido recolhimento conforme previsto neste instrumento;
+b) Ausência de documentos exigidos na prestação de contas, comprometendo a
+verificação da correta e regular aplicação dos recursos;
+7- Assumir a responsabilidade pela continuidade da execução do objeto previsto no
+Plano de Trabalho em caso de paralisação, garantindo que os serviços não sejam
+interrompidos. Nessa hipótese, a prestação de contas deverá considerar a parte
+executada pela Organização da Sociedade Civil até o momento da assunção pela
+Administração Pública;
+Termo de Fomento 1 /2026 (90351764) SEI 202600042005523 / pg. 4
+8- Disponibilizar, na internet, canais de comunicação para denúncias e
+representações sobre a aplicação irregular dos recursos da parceria.
  
-SELEÇÃO PÚBLICA DE PROJETOS PARA PATROCÍNIO CULTURAL Nº 01/2025 – 
-BNDES – PROJETOS AUDIOVISUAIS DE LONGA-METRAGEM 
-EDITAL 
- 
-O BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL – BNDES , 
-por intermédio de sua Área de Relacionamento, Marke ting e Cultura (ARMC), nos 
-termos do disposto na Lei nº 13.303/2016, na Instru ção Normativa nº 02/2019, da 
-Secretaria de Comunicação Social da Presidência da República (SECOM/PR), que 
-disciplina o patrocínio dos órgãos e entidades do P oder Executivo Federal, e na 
-Resolução CA-BNDES nº 07/2023, de 14/08/2023, que a provou o Regulamento de 
-Patrocínio do Sistema BNDES, torna público, para conhecimento dos interessados, que 
-está aberto Edital, na modalidade Seleção Pública, para a seleção de obras 
-audiovisuais brasileiras de produção independente n o formato de longa-
-metragem para fins de patrocínio por parte do BNDES , conforme as especificações 
-deste Edital e de seus Anexos. 
- 
-1 OBJETO 
- 
-1.1 A presente Seleção Pública visa escolher, para fins de patrocínio, até 25 (vinte 
-e cinco) obras audiovisuais brasileiras de produção independente no formato de longa-
-metragem (PROJETOS), destinados à exibição em cinem as ou plataformas digitais, 
-com as características definidas no item 4 deste Edital. 
- 
-1.2 Serão apoiados PROJETOS em estágios finais da cadei a produtiva (por 
-exemplo, pós-produção, finalização, distribuição, c omercialização, promoção). Os 
-PROJETOS inscritos deverão ser lançados até o final de 2026. 
- 
-1.3 O valor global a ser concedido a título de patrocín io por meio desta Seleção 
-Pública será de até R$ 15.000.000,00 (quinze milhõe s de reais) e o valor fixo a ser 
-concedido por PROJETO selecionado será de R$ 600.00 0,00 (seiscentos mil reais), 
-para complementação de recursos necessários a viabi lização de projetos em estágio 
-avançado de captação. 
- 
- 
-2 ETAPAS 
- 
-O processo de seleção observará as seguintes etapas e cronograma: 
- 
- 
- 
- 
- 
- 
-Classificação: Documento Controlado até a publicação do Edital (conforme OS PRESI Nº 01/2015- BNDES) 
-Restrição de Acesso: Empresas do Sistema BNDES 
-Unidade Gestora: ARMC/DECULT 
- 
-4 
- 
- CRONOGRAMA DA SELEÇÃO 
- ETAPA DE INSCRIÇÕES Prazos 
- 1 PUBLICAÇÃO DO EDITAL 26/09/2025 
- 2 ENCERRAMENTO DAS INSCRIÇÕES 27/10/2025 
- 3 PUBLICAÇÃO DA LISTA DE INSCRITOS até 29/10/2025 
- ETAPA DE SELEÇÃO 
- 4 FASE 1 - PRÉ-QUALIFICAÇÃO POR SEGMENTO até 03/11/2025 
- 5 PUBLICAÇÃO DA LISTA DE PRÉ-QUALIFICADOS VÁLIDOS POR 
-SEGMENTO 03/11/2025 
- 
- 6 FASE 2 - CLASSIFICAÇÃO POR SEGMENTO E SELEÇÃO até 14/11/2025 
- 7 PUBLICAÇÃO DA LISTA DE CLASSIFICADOS POR SEGMENTO até 18/11/2025 
- 8 DIVULGAÇÃO DO RESULTADO FINAL - LISTA DE SELECIONADOS até 18/11/2025 
- ETAPA DE ANÁLISE TÉCNICA E CONTRATAÇÃO 
- 9 INÍCIO DA ANÁLISE TÉCNICA E DOS PROCEDIMENTOS PRÉVIOS 
-À CONTRATAÇÃO 
-a partir de 
-18/11/2025 
- 
- 
-3 CONDIÇÕES E VEDAÇÕES PARA PARTICIPAÇÃO 
- 
-3.1 O proponente deverá ser empresa produtora brasilei ra registrada na ANCINE cuja 
-obra audiovisual brasileira de produção independent e satisfaça os requisitos da MP 
-2.228-1/01, art. 1º, inciso V. 
- 
-3.2 Os PROJETOS contratados assumirão a obrigação de iniciar sua exibição pública 
-no período de 01/01/2026 a 31/12/2026 , sem prejuízo de poder o BNDES estender o 
-referido período, mediante comum acordo com o patrocinado. 
- 
-3.2.1 Caso o PROJETO contratado não inicie sua exibição p ública no período 
-definido no item 3.2, o BNDES notificará o contrata do solicitando a devolução 
-total ou proporcional dos valores já pagos, atualizados pela taxa SELIC, pro rata 
-tempore, desde a data da efetivação do pagamento pe lo BNDES até a data de 
-sua devolução, que deverá ocorrer no prazo de até 10 (dez) dias úteis, contados 
-da data da solicitação, sob pena de pagamento de multa de 2% (dois por cento) 
-sobre os valores já pagos, por dia de atraso, até o limite de 30% (trinta por cento), 
-sem prejuízo de aplicação de outras penalidades cabíveis. 
- 
-3.3 Além de outras obrigações previstas no Anexo I - Mi nuta de Contrato, os 
-proponentes que forem selecionados se obrigarão a: 
- 
-a) realizar, no Brasil, evento de pré-estreia ou lançamento do PROJETO no 
-período de 01/01/2026 a 31/12/2026 ; 
-b) executar todas as contrapartidas padrão descrita s no Anexo II deste Edital, além 
-daquelas que poderão ser negociadas na Análise Técn ica, descrita no item 7 
-deste Edital; 
-Classificação: Documento Controlado até a publicação do Edital (conforme OS PRESI Nº 01/2015- BNDES) 
-Restrição de Acesso: Empresas do Sistema BNDES 
-Unidade Gestora: ARMC/DECULT 
- 
-5 
- 
-c) contar com trabalho de assessoria de imprensa; 
-d) apresentar, na prestação de contas ao BNDES , clipagem das menções ao 
-PROJETO na internet (incluindo as redes sociais) e na mídia impressa; e 
-e) apresentar, na prestação de contas ao BNDES , relatório de valoração da mídia 
-espontânea alcançada pelo PROJETO. 
- 
-3.4 É vedada a participação de proponente que se insira em algu ma das situações 
-abaixo: 
-a) pessoa física ou MEI; 
-b) entidades político-partidárias, religiosas, ou q ue promovam, ainda que de forma 
-indireta, personalidades político-partidárias ou religiosas; 
-c) associações de empregados ativos ou aposentados das empresas integrantes 
-do Sistema BNDES ; 
-d) empresa que mantenha contrato de prestação de se rviços de comunicação com 
-o Sistema BNDES , tais como serviços de publicidade, de promoção, d e 
-comunicação digital, de assessoria de imprensa ou de relações públicas; 
-e) que esteja impedido de contratar com o Sistema B NDES; 
-f) cuja pessoa jurídica detenha, entre seus sócios, administradores, associados ou 
-congêneres com poder de direção, cônjuge, companhei ro ou parente, em linha 
-reta ou colateral, por consanguinidade ou afinidade , até o terceiro grau, de 
-pessoa que possua cargo em comissão ou função de co nfiança lotado na Área 
-de Relacionamento, Marketing e Cultura – ARMC, no D epartamento Jurídico de 
-Licitações e Contratos – AJI/JULIC, ou de autoridad e a eles hierarquicamente 
-superiores, incluindo Diretorias Executivas do Sist ema BNDES, e empregados 
-que possuam poderes para firmar os contratos de patrocínio do Sistema BNDES ; 
-g) que não esteja regular nos âmbitos fiscal e prev idenciário, nos termos da lei; 
-h) que explore o trabalho infantil, degradante ou escravo e/ou atente contra a ordem 
-pública; 
-i) que não seja titular ou detentor dos direitos de realização/organização e/ou 
-comercialização do PROJETO; 
-j) que incorra em qualquer vedação de contratação c ontida na Lei 13.303/2016. 
- 
-3.5 O proponente deverá observar o Código de Ética do Sistema BNDES vigente ao 
-tempo da contratação, o qual deverá ser consultado por intermédio do sítio 
-www.bndes.gov.br , assegurando-se de que seus representantes legais e que todos os 
-profissionais envolvidos na execução do objeto paut em seu comportamento e sua 
-atuação pelos princípios nele constantes. 
- 
-3.6 É vedada a inscrição de PROJETOS: 
-a) que promovam discriminação de qualquer natureza, notadamente quanto a raça, 
-Classificação: Documento Controlado até a publicação do Edital (conforme OS PRESI Nº 01/2015- BNDES) 
-Restrição de Acesso: Empresas do Sistema BNDES 
-Unidade Gestora: ARMC/DECULT 
- 
-6 
- 
-etnia, nacionalidade, religião, política, gênero, orientação sexual, condição social 
-e condição física; 
-b) que promovam a criação e/ou disseminação de notí cias falsas – fake news ; 
-c) que causem ou incentivem maus tratos a animais, a exemplo de rodeios e 
-vaquejadas; 
-d) que estimulem a violência e o uso de drogas; 
-e) que violem direitos de terceiros, incluídos os d e propriedade intelectual; 
-f) de cunho político-eleitoraI-partidário, cujos in vestimentos captados a título de 
-patrocínio tenham como finalidade direta ou indireta o apoio a financiamento de 
-campanhas, realização de comícios, discursos, ou qu alquer outra atividade 
-vinculada a partidos políticos, candidatos e/ou sua s coligações, bem como 
-promoção pessoal de autoridade ou de servidor públi co dos governos Federal, 
-Estadual ou Municipal, além de apoio a manifestaçõe s, protestos, passeatas 
-e/ou reivindicações de qualquer natureza; 
-g) que já tenha sido apoiado, por meio de qualquer instrumento ou forma, pelo 
-Sistema BNDES; 
-h) cuja captação de recursos, já incluindo o valor do patrocínio do BNDES por meio 
-desta Seleção Pública, tenha ultrapassado o valor do seu orçamento global. 
- 
-3.7 São vedados PROJETOS que, a critério da Comissão Av aliadora, estejam em 
-desacordo com o Código de Ética do Sistema BNDES , disponível em 
-https://www.bndes.gov.br/wps/portal
+CLÁUSULA TERCEIRA
+ – DO GESTOR DO FOMENTO
+Subcláusula Primeira - 
+Designar Gestor, na qualidade de representante da
+Administração Pública, para acompanhar e ﬁscalizar a execução dos recursos
+repassados, nos termos do art. 61 da Lei Fed
+```
+
+
+---
+## 295af6bb3f2da0a2be71 — 2º Prêmio MOL de Jornalismo para Solidariedade reconhecerá reportagens sobre cultura de doação
+
+Fonte (vetor): Observatório do Terceiro Setor — editais · UF BR · nível federal · situação possivel · fim None
+
+Itens já obtidos: Objeto: 2º Prêmio MOL de Jornalismo para Solidariedade reconhecerá reportagens sobre cul, Órgão / financiador: Observatório do Terceiro Setor — editais, Esfera: federal, Área de atuação: cultura, Território: Brasil, Destinação: jornalistas e veículos (premiação de reportagens)
+
+Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Requisitos, Anexos
+
+Anúncio: https://observatorio3setor.org.br/2-premio-mol-de-jornalismo-para-a-solidariedade-vai-reconhecer-reportagens-sobre-cultura-de-doacao-no-brasil
+Site institucional conhecido: não localizado
+
+Texto do edital (compacto):
+```
+### Midia Kit (site institucional)
+Com seu apoio, podemos apresentar com
+abrangência o que fazem as ONGs do Brasil.
+Uma sociedade mais vibrante e participativa
+passa pela conexão entre pessoas e causas.
+O OBSERVATÓRIO DO 3º SETOR
+ESTÁ EVOLUINDO! 
+Quem somos Por que fazemos Valores 
+Somos o único veículo jornalístico
+brasileiro totalmente dedicado à
+cobertura do Terceiro Setor. 
+Produzimos e divulgamos conteúdo
+jornalístico sobre o Terceiro Setor. 
+Mantemos um portal multimídia,
+atualizado diariamente, com
+reportagens, programas de rádio,
+artigos, vídeos e podcasts. 
+Acreditamos que não existe
+democracia sem uma sociedade civil
+organizada. 
+Queremos fortalecer as ONGs
+conscientizando a sociedade sobre a
+atuação e a importância do Terceiro
+Setor 
+Buscamos fortalecer a cultura de
+doação brasileira dando espaço para
+que organizações possam falar sobre
+suas ações 
+Compromisso com o bem comum
+Paixão pelo social
+Diversidade
+Imparcialidade
+Credibilidade acima de tudo
+Há 12 anos fazendo a cobertura
+e divulgando os direitos
+humanos e iniciativas sociais.
+E AGORA ESTAMOS DE CARA NOVA!
+ANTES DEPOIS
++ 2.9 milhões
+DE ACESSOS POR MÊS EM
+TODAS AS REDES SOCIAIS 
+ 8 MIL
+42 MIL
+514 MIL
+91 MIL
+32 MIL
+SEGUIDORES
+SEGUIDORES
+SEGUIDORES
+SEGUIDORES
+INSCRITOS
+A VOZ DAS ONGS E O
+RETRATO DO 3º SETOR
+BRASILEIRO 
+REDES SOCIAIS
+RÁDIO E PODCASTS:
++ 250 MIL
+650 
+OUVINTES
+ENTREVISTADOS
+Quem dá voz ao nosso rádio atua há mais
+de 40 anos defendendo Direitos Humanos
+JOEL SCALA E
+FRANKLIN VALVERDERADIO E PODCAST
+O podcast Conexão 3 é apresentado por
+Maria Fernanda Garcia e Gabriel Higute.
+Trazendo convidados, que através de
+discussões profundas e inspiradoras com
+uma linguagem coloquial, falam sobre
+direitos humanos, o papel vital dos jovens
+na sociedade e o trabalho do terceiro setor. 
+CONEXÃO 3
+O QUE FAZEMOS
+Cobertura jornalística qualificada e confiável de temas do setor 
+Acompanhamento de eventos e entrevistas 
+Produção de conteúdo para redes sociais 
+Promoção de campanhas temáticas de conscientização 
+Divulgação de eventos, artigos, cursos e descobertas do setor 
+Fortalecimento da sociedade civil sustentando pontes entre os poderes públicos,
+privados e sem fins lucrativos
+1
+2
+3
+4
+5
+6
+PROJETOS
+Observatório em
+Movimento 
+Produção de mini-
+documentários e
+e-books para
+memória do
+terceiro setor
+brasileiro de
+forma acessível 
+Canal oficial de
+divulgação de
+editais via
+Prosas 
+Articulação e reflexão sobre
+diferentes perspectivas e
+causas que englobam a vida
+para criar uma ponte entre
+terceiro setor e a sociedade.
+COMO VOCÊ PODE APOIAR A CONSTRUÇÃO DE
+PONTES ENTRE A SOCIEDADE E AS AÇÕES SOCIAIS?
+Suporte para desenvolvimento da equipe:
+Hoje trabalhamos com uma equipe de profissionais iniciantes e
+estagiários, mas sabemos que profissionais. E acreditamos que
+profissionais bem treinados são essenciais para o nosso
+desenvolvimento.
+Aprimoramento na estrutura para cobertura das pautas:
+Apurar conteúdo e conferir dados demandam tempo e conhecimento
+específico. Para isso, nossos jornalistas precisam se locomover e estar
+presente onde os fatos acontecem.
+Aperfeiçoamento dos projetos em andamento:
+Temos diversos produtos de comunicação que tratam de temas
+extremamente relevantes para proteção dos direitos humanos,
+promoção das ODS e fortalecimento da cultura de doação no Brasil.
+Precisamos traduzir esse conteúdo para as diversas mídias digitais que
+hoje representam a principal forma de consumo de informações. 
+Precisamos do seu apoio
+para produção de conteúdo
+para redes socias. 
+Animais 
+Idosos 
+Cultura 
+Infância 
+Direitos
+Humanos 
+Meio
+ambiente 
+Educação 
+Povos
+originários 
+Esporte Saúde 
+Você pode escolher as pautas que sua marca será apoiadora
+SUA MARCA PATROCINA UMA
+SESSÃO TEMÁTICA
+SEU LOGO INSERIDO NA
+SESSÃO TEMÁTICA
+LOGO
+DEPOIMENTOS
+Diego Henrique Scala
+diego@observatorio3setor.org.br
++55 11 97337-1911
+CONTATO PARA PARCERIA
+
 ```
