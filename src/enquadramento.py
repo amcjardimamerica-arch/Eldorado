@@ -195,9 +195,9 @@ def prompt_enquadramento(a: dict, e: dict, itens: dict, criterios: list[dict]) -
             "\"decisao\": <texto>, \"para_subir\": [<ações>], \"riscos\": [<textos>]}.")
 
 
-def _chamar(modelo: str, prompt: str, max_tokens: int = 1400) -> dict:
+def _chamar(modelo: str, prompt: str, max_tokens: int = 1400, web: bool = False, tarefa: str | None = None) -> dict:
     from .opressores import _chamar as _c
-    return _c(modelo, prompt, max_tokens)
+    return _c(modelo, prompt, max_tokens, web=web, tarefa=tarefa)
 
 
 # ───────────────────────── avaliação determinística (piso) ─────────────────────────
@@ -271,6 +271,21 @@ def simulador_pontuacao(a: dict, e: dict, criterios: list[dict] | None) -> dict:
         est += p * f
     total = sum((c.get("peso") or 0) for c in crit) or 100
     return {"criterios": crit, "estimativa": round(100 * est / total), "origem_criterios": "edital" if criterios else "estimados (padrão de chamamentos)", "para_subir": [d for d in dicas if d][:5]}
+
+
+DOCS_MROSC = ["estatuto", "ata_eleicao", "cnpj", "comprovante_endereco", "certidao_federal", "certidao_estadual", "certidao_municipal", "cndt", "crf_fgts",
+              "relatorio_atividades", "plano_de_trabalho", "inscricao_conselho", "declaracao_nao_vedacao", "declaracao_conta_bancaria", "rg_cpf_dirigente"]
+
+
+def _documentos_submissao(e: dict, f: dict) -> dict:
+    """Tudo o que a inscrição exige: os documentos lidos do edital quando existem;
+    senão o conjunto padrão de habilitação (Lei 13.019/2014, arts. 33-34 e
+    Decreto 8.726/2016) até a IA extrair o rol do edital."""
+    do_edital = list(f.get("documentos_exigidos_ia") or [])
+    req = f.get("requisitos") or []
+    if do_edital:
+        return {"origem": "edital (extraído da fonte oficial)", "documentos": do_edital, "requisitos": req}
+    return {"origem": "padrão MROSC (Lei 13.019/2014, arts. 33–34) — até a IA extrair o rol do edital", "documentos": DOCS_MROSC, "requisitos": req}
 
 
 def _quadro_ia(ex: dict, par: dict) -> dict:
@@ -357,7 +372,7 @@ def run(limite_ia: int = 8) -> dict:
                         "aderencia_deterministica": ad, "checklist": checklist(a, e), "cronograma": cronograma_reverso(e, hoje),
                         "simulador": simulador_pontuacao(a, e, f.get("criterios_pontuacao"))})
             if ad["elegivel"] and ad["nota"] >= 45 and not par.get("ia") and n_ia < limite_ia and e.get("situacao_inscricao") == "aberta":
-                r = _chamar(modelo_forte, prompt_enquadramento(a, e, f.get("itens_ia") or {}, f.get("criterios_pontuacao") or []), 1600); n_ia += 1
+                r = _chamar(modelo_forte, prompt_enquadramento(a, e, f.get("itens") or {}, f.get("criterios_pontuacao") or []), 1600, web=False, tarefa=f"edital:{e['id']}"); n_ia += 1
                 if r.get("status") == "respondeu":
                     par["ia"] = {k: r.get(k) for k in ("aderencia", "chances", "pontuacao_estimada", "lentes", "decisao", "para_subir", "riscos")}
                     par["ia"]["modelo"] = modelo_forte; par["ia"]["em"] = now_iso(); par["aderencia"] = r.get("aderencia"); resumo["ia_enquadramento"] += 1
@@ -389,7 +404,9 @@ def run(limite_ia: int = 8) -> dict:
                           "itens": [{"item": i, "valor": (f.get("itens") or {}).get(i) or (comp.get(i) or {}).get("valor"), "fonte": (f.get("fontes_itens") or {}).get(i) or ("complemento manual" if i in comp else None)}
                                     for i in ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")],
                           "regras": f.get("regras"), "requisitos": f.get("requisitos"), "pontuacao": f.get("criterios_pontuacao"), "pontuacao_texto": f.get("pontuacao_texto"),
-                          "fonte_original": f.get("fonte_original"), "documentos_exigidos": f.get("documentos_exigidos_ia") or [],
+                          "fonte_original": f.get("fonte_original"),
+                          "documentos_exigidos": f.get("documentos_exigidos_ia") or [],
+                          "documentos_submissao": _documentos_submissao(e, f),
                           "para_inscricao": _para_inscricao(a, f.get("documentos_exigidos_ia") or [], faltam),
                           "relatorio_ia": (extraido(e) or {}).get("relatorio"), "mini_parecer": (extraido(e) or {}).get("mini_parecer"),
                           "decisao": dec.get(e["id"]), "pagina_divulgacao": (extraido(e) or {}).get("pagina_divulgacao") or (extraido(e) or {}).get("site_institucional"),

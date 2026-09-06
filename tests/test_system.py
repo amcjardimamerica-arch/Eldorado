@@ -3637,7 +3637,7 @@ class SystemTests(unittest.TestCase):
         F.TEXTOS.mkdir(parents=True,exist_ok=True)
         with gzip.open(F.TEXTOS/"lab-fe.txt.gz","wt",encoding="utf-8") as gz: gz.write(texto)
         chamados=[]
-        def ia(m,pr,mx): chamados.append(m); return {"status":"respondeu","itens":{"Destinação":"OSCs culturais","Requisitos":"estatuto; CNDT"},"documentos_exigidos":["estatuto","cndt"],"pontuacao":[{"criterio":"experiência","peso":30}]}
+        def ia(m,pr,mx,**kw): chamados.append(m); return {"status":"respondeu","itens":{"Destinação":"OSCs culturais","Requisitos":"estatuto; CNDT"},"documentos_exigidos":["estatuto","cndt"],"pontuacao":[{"criterio":"experiência","peso":30}]}
         try:
             r=F.investigar(e,ia,["haiku","sonnet"])
             self.assertEqual(chamados,["haiku"])                                   # reforço não foi preciso
@@ -3703,7 +3703,7 @@ class SystemTests(unittest.TestCase):
         self.assertFalse(conhecimento_regramento({"titulo":"Emenda Parlamentar Estadual — Goiás","fonte_nome":"x"})["itens"].get("Valor","").startswith("variável"))  # não confunde com Rouanet
         r=load_json(pathlib.Path("config/regramentos.json")); self.assertTrue(all(g.get("tipo_captacao","").startswith("pessoal") for g in r["regramentos"] if "emenda" in g["fonte"].lower()))
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("window.decidirEdital","inscrição realizada","dispensar","sug-titulo","sug-chips","Considerações da IA","Documentos necessários","class=\"dropzone\"","function ligaDropzones","window.alternaLargura","⇔ largura"): self.assertIn(x,html,x)
+        for x in ("window.decidirEdital","inscrição realizada","dispensar","sug-titulo","sug-chips","Considerações da IA","Documentos para a inscrição","class=\"dropzone\"","function ligaDropzones","window.alternaLargura","⇔ largura"): self.assertIn(x,html,x)
         self.assertNotIn("enq-cron-mini",html.split("function htmlEditaisEnquadrados")[1].split("function desenhaEnquadramento")[0])
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]
         em=[e for e in q["editais"] if "Emenda" in (e["titulo"] or "")]; self.assertTrue(em and all(sum(1 for i in e["itens"] if i["valor"])==12 for e in em))
@@ -3717,10 +3717,27 @@ class SystemTests(unittest.TestCase):
         self.assertEqual([l["sinal"] for l in q["luzes"]],["verde","amarelo","vermelho","verde"])
         self.assertEqual(_quadro_ia({},{})["luzes"][3]["sinal"],"vermelho")
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("perfil-trocar","window.trocarImagem","sug-valor","sug-prazo","sug-chips","pontos12","sug-grade3","Checklist do edital","Documentos necessários","Considerações da IA","ia-quadro","página oficial de divulgação do edital","subir documentos desta entidade"): self.assertIn(x,html,x)
+        for x in ("perfil-trocar","window.trocarImagem","sug-valor","sug-prazo","sug-chips","pontos12","sug-grade3","Checklist do edital","Documentos para a inscrição","Considerações da IA","ia-quadro","página oficial de divulgação do edital","subir documentos desta entidade"): self.assertIn(x,html,x)
         self.assertNotIn("extração determinística",html.split("function htmlEditaisEnquadrados")[1].split("function desenhaEnquadramento")[0])
         src=open("src/dashboard_dados.py",encoding="utf-8").read(); self.assertIn("def _imagem_perfil",src)
         q2=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"][0]; self.assertEqual(len(q2["quadro_ia"]["luzes"]),4); self.assertIn("pagina_divulgacao",q2)
+
+
+    def test_orcamento_de_ia_sem_repeticao_e_documentos_de_submissao(self):
+        import os
+        from src.opressores import _orcamento, _chamar
+        c=load_json(pathlib.Path("config/ia.json"))["orcamento"]; self.assertEqual(c["percentual_por_edital"],0.05)
+        o=_orcamento("edital:teste-x"); self.assertEqual(o["teto_tarefa"],int(o["limite_periodo"]*0.05))
+        chave=os.environ.pop("FAROL_AI_API_KEY",None)
+        try: self.assertIn("aguardando credencial",_chamar("claude-haiku-4-5","x",100,web=False,tarefa="edital:t")["status"])
+        finally:
+            if chave: os.environ["FAROL_AI_API_KEY"]=chave
+        from src.enquadramento import _documentos_submissao, DOCS_MROSC
+        self.assertEqual(_documentos_submissao({},{})["documentos"],DOCS_MROSC); self.assertIn("MROSC",_documentos_submissao({},{})["origem"])
+        self.assertEqual(_documentos_submissao({},{"documentos_exigidos_ia":["estatuto","cndt"]})["documentos"],["estatuto","cndt"])
+        src=open("src/fonte_edital.py",encoding="utf-8").read(); self.assertIn("web=(len(texto) < 800)",src); self.assertIn("sem avanço nas duas últimas tentativas",src)
+        self.assertIn("web=False, tarefa=",open("src/enquadramento.py",encoding="utf-8").read())      # Fable sem internet
+        html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("Documentos para a inscrição",html); self.assertIn("grid-template-columns:12px max-content 1fr",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

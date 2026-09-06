@@ -125,13 +125,38 @@ def prompt_conselho(fonte: dict, reg: dict | None, tentativas: list[dict], falta
               "{\"lentes\": {<lente>: <frase>}, \"decisao\": <texto>, \"url_edital\": <URL ou null>, \"itens\": {<item>: <valor ou null>}}.")
 
 
-def _chamar(modelo: str, prompt: str, max_tokens: int = 900) -> dict:
+def _orcamento(tarefa: str | None) -> dict:
+    """5% do limite do período por edital/tarefa (regra do titular). Lê o consumo já
+    registrado em estado/ia_uso.jsonl no mês corrente."""
+    cfg = load_json(ROOT / "config/ia.json") if (ROOT / "config/ia.json").exists() else {}
+    o = cfg.get("orcamento") or {}
+    limite = int(os.environ.get((o.get("limite_tokens_periodo") or {}).get("env", "FAROL_AI_LIMITE_TOKENS"), 0) or (o.get("limite_tokens_periodo") or {}).get("padrao", 2_000_000))
+    teto = int(limite * float(o.get("percentual_por_edital", 0.05)))
+    gasto = 0
+    arq = ROOT / "estado/ia_uso.jsonl"
+    mes = now_iso()[:7]
+    if arq.exists() and tarefa:
+        for l in arq.read_text(encoding="utf-8").splitlines():
+            try:
+                r = json.loads(l)
+                if r.get("tarefa") == tarefa and (r.get("em") or "")[:7] == mes:
+                    u = r.get("uso") or {}; gasto += int(u.get("input_tokens", 0)) + int(u.get("output_tokens", 0))
+            except Exception:
+                pass
+    return {"limite_periodo": limite, "teto_tarefa": teto, "gasto_tarefa": gasto, "disponivel": max(0, teto - gasto)}
+
+
+def _chamar(modelo: str, prompt: str, max_tokens: int = 900, web: bool = False, tarefa: str | None = None) -> dict:
     import urllib.request
     if not os.environ.get("FAROL_AI_API_KEY"):
         return {"status": "aguardando credencial FAROL_AI_API_KEY"}
-    corpo = {"model": modelo, "max_tokens": max_tokens,
-             "tools": [{"type": "web_search_20250305", "name": "web_search", "max_uses": 4}],
+    orc = _orcamento(tarefa)
+    if tarefa and orc["disponivel"] < 500:
+        return {"status": f"orçamento do edital esgotado ({orc['gasto_tarefa']}/{orc['teto_tarefa']} tokens no período)", "orcamento": orc}
+    corpo = {"model": modelo, "max_tokens": min(max_tokens, max(300, orc["disponivel"]) if tarefa else max_tokens),
              "messages": [{"role": "user", "content": prompt}]}
+    if web:
+        corpo["tools"] = [{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}]
     req = urllib.request.Request("https://api.anthropic.com/v1/messages", data=json.dumps(corpo).encode(),
                                  headers={"content-type": "application/json", "x-api-key": os.environ["FAROL_AI_API_KEY"],
                                           "anthropic-version": "2023-06-01"})
@@ -142,7 +167,7 @@ def _chamar(modelo: str, prompt: str, max_tokens: int = 900) -> dict:
         return {"status": f"falha: {type(exc).__name__}"}
     texto = " ".join(b.get("text", "") for b in dados.get("content", []) if b.get("type") == "text")
     with (ROOT / "estado/ia_uso.jsonl").open("a", encoding="utf-8") as h:
-        h.write(json.dumps({"em": now_iso(), "modelo": modelo, "tarefa": "opressor", "uso": dados.get("usage", {})}, ensure_ascii=False) + "\n")
+        h.write(json.dumps({"em": now_iso(), "modelo": modelo, "tarefa": tarefa or "opressor", "uso": dados.get("usage", {})}, ensure_ascii=False) + "\n")
     try:
         js = json.loads(re.sub(r"^```(?:json)?|```$", "", texto.strip(), flags=re.M).strip())
         return {"status": "respondeu", **js, "uso": dados.get("usage", {})}
@@ -176,13 +201,13 @@ def run(hoje: date | None = None) -> dict:
             regr = _regramento(f)
             n_ia = len(reg["ia"]) + 1
             if n_ia >= 3 and not reg.get("conselho"):
-                r = _chamar(modelo_conselho, prompt_conselho(f, regr, reg["ia"], faltam), 1600)
+                r = _chamar(modelo_conselho, prompt_conselho(f, regr, reg["ia"], faltam), 1600, web=True, tarefa=f"opressor:{fid}")
                 reg["conselho"] = {"dia": reg["dias"], "modelo": modelo_conselho, "em": now_iso(),
                                    "lentes": r.get("lentes"), "decisao": r.get("decisao"), "status": r.get("status")}
                 resumo["conselho_hoje"] += 1
             else:
                 modelo = modelo_barato if n_ia == 1 else modelo_medio
-                r = _chamar(modelo, prompt_para_fonte(f, regr, faltam, reg["ia"]))
+                r = _chamar(modelo, prompt_para_fonte(f, regr, faltam, reg["ia"]), web=True, tarefa=f"opressor:{fid}")
                 resumo["ia_hoje"] += 1
             obtidos = {k: v for k, v in (r.get("itens") or {}).items() if v}
             reg["itens"].update(obtidos)

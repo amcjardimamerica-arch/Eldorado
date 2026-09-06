@@ -315,6 +315,11 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False, rede: 
     reg = load_json(arq) if arq.exists() else {"edital_id": e["id"], "titulo": e.get("titulo"), "tentativas": []}
     if reg.get("completo") and not forcar:
         return reg
+    # sem repetição: se as duas últimas tentativas não avançaram e nada mudou (sem texto novo nem complemento), aguarda
+    ult = (reg.get("tentativas") or [])[-2:]
+    if not forcar and len(ult) == 2 and all(t.get("itens_obtidos", 0) == 0 for t in ult) and reg.get("caracteres_texto") == len(texto_guardado(e)) and not complementos_mudaram(e, reg):
+        reg["aguardando"] = "sem avanço nas duas últimas tentativas — aguardando texto novo ou complemento manual"
+        return reg
     texto = texto_guardado(e)
     if rede and (not texto or forcar):
         ob = obter_texto(e); texto = ob["texto"]
@@ -341,7 +346,7 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False, rede: 
             break
         if i == 2 and len(faltam) < 3:
             break                                     # Opus só se ainda faltarem 3 ou mais itens
-        r = chamar(modelo, prompt_extracao(e, texto, faltam), 1600)
+        r = chamar(modelo, prompt_extracao(e, texto, faltam), 1600, web=(len(texto) < 800), tarefa=f"edital:{e['id']}")
         novos = 0
         if r.get("status") == "respondeu":
             for k, v in (r.get("itens") or {}).items():
@@ -362,6 +367,11 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False, rede: 
                 "pontuacao_texto": det["itens"].get("Pontuação (regras)"), "atualizado_em": now_iso(), "caracteres_texto": len(texto)})
     write_json(arq, reg)
     return reg
+
+
+def complementos_mudaram(e: dict, reg: dict) -> bool:
+    from .enquadramento import complementos
+    return bool(set(complementos(e)) - set(reg.get("itens") or {}))
 
 
 def _padroniza_docs(lista: list[str]) -> list[str]:

@@ -92,5 +92,19 @@
       "amarelo": "buscou e não encontrou nada novo",
       "vermelho": "não buscou ou falhou (sem credencial, erro, sem texto)"
     }
+  },
+  "orcamento": {
+    "limite_tokens_periodo": {
+      "env": "FAROL_AI_LIMITE_TOKENS",
+      "padrao": 2000000,
+      "nota": "tokens (entrada+saída) que o titular aceita gastar por mês; informe o valor real do seu plano/limite na variável FAROL_AI_LIMITE_TOKENS (segredo ou variável do repositório)"
+    },
+    "percentual_por_edital": 0.05,
+    "regras": [
+      "cada edital pode consumir até 5% do limite do período; ao atingir, a IA para para aquele edital e o relatório registra 'orçamento do edital esgotado'",
+      "a análise de um edital não se repete: só volta a chamar a IA se ainda faltarem itens e houver novidade (texto novo, complemento manual) — nunca no mesmo dia",
+      "foco: completar a Biblioteca de Alexandria (12 itens, requisitos, documentos, anexos, regras); depois, raciocinar só com os dados do sistema",
+      "busca na internet apenas quando necessário: a extração usa o texto já guardado; a ferramenta de busca só entra se não há texto do edital; a análise da Fable nunca usa internet"
+    ]
   }
 }

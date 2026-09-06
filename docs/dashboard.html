@@ -331,7 +331,7 @@ box-shadow:0 1px 3px #0002}
 .sug-icones{display:flex;gap:6px;margin-top:2px}.ico{width:32px;height:32px;border:1px solid var(--linha);border-radius:9px;display:flex;align-items:center;justify-content:center;color:#0E2A55;background:#fff}.ico:hover{border-color:#9FC1E8}.ico.off{color:#C9CED6}
 .sug-grade3{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:12px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--linha)}@media(max-width:1000px){.sug-grade3{grid-template-columns:1fr}}
 .sug-col{font-size:12px}.sug-col-t{font-family:Georgia,serif;font-weight:800;color:#0E2A55;font-size:13px;border-bottom:1.5px solid #E3E8F1;padding-bottom:3px;margin-bottom:5px}
-.ck-linha{display:grid;grid-template-columns:12px 1fr 1.1fr;gap:6px;align-items:center;padding:2px 0;border-bottom:1px dotted #EEF1F5}.ck-nome{font-weight:700;font-size:11.5px}.ck-val{color:var(--suave);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ck-linha{display:grid;grid-template-columns:12px max-content 1fr;column-gap:8px;align-items:start;padding:3px 0;border-bottom:1px dotted #EEF1F5}.ck-nome{font-weight:700;font-size:11.5px;white-space:nowrap}.ck-val{color:var(--tinta);font-size:11px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .led{width:10px;height:10px;border-radius:50%;display:inline-block}.led.ok{background:var(--ok);box-shadow:0 0 4px var(--ok)}.led.no{background:var(--urgente)}
 .ia-quadro{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-bottom:4px}.ia-luz{display:flex;align-items:center;gap:6px;font-size:11.5px;padding:3px 7px;border:1px solid var(--linha);border-radius:8px;background:#fff}.ia-luz i{width:10px;height:10px;border-radius:50%;flex:none}
 .enq-mini{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:8px 10px;border:1px solid var(--linha);border-radius:10px;background:#fff;font-size:12.5px;line-height:1.55;margin-top:8px}
@@ -902,10 +902,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260905233822"></script>
-<script src="mapa-arte.js?v=20260905233822"></script>
-<script src="dashboard-dados.enc.js?v=20260905233822"></script>
-<script src="dashboard-dados.js?v=20260905233822"></script>
+<script src="mapa-brasil.js?v=20260906000344"></script>
+<script src="mapa-arte.js?v=20260906000344"></script>
+<script src="dashboard-dados.enc.js?v=20260906000344"></script>
+<script src="dashboard-dados.js?v=20260906000344"></script>
 <script>
 (function(){
 "use strict";
@@ -2027,7 +2027,7 @@ window.add50=function(id,u){const q=(D.enquadramento||[]).find(x=>x.associacao==
 window.exportarAbrangencia=function(id){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});ab.nota="Abrangência definida pelo titular no painel";
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(ab,null,2)],{type:"application/json"}));a.download="abrangencia.json";a.click();};
 /* ================= ENQUADRAMENTO (Farol, fases 3 e 4) ================= */
-const DOCR={estatuto:"Estatuto registrado",ata_eleicao:"Ata de eleição",cnpj:"Cartão CNPJ",certidao_federal:"Certidão federal",certidao_estadual:"Certidão estadual",certidao_municipal:"Certidão municipal",cndt:"CNDT",crf_fgts:"CRF/FGTS",comprovante_endereco:"Comprovante de endereço",plano_de_trabalho:"Plano de trabalho",relatorio_atividades:"Relatório de atividades",inscricao_conselho:"Inscrição no conselho",cebas:"CEBAS",conta_bancaria:"Conta bancária",balanco_patrimonial:"Balanço patrimonial",utilidade_publica:"Utilidade pública",ata_assembleia:"Ata de assembleia"};
+const DOCR={declaracao_nao_vedacao:"Declaração de não incidência de vedações",declaracao_conta_bancaria:"Declaração/abertura de conta específica",rg_cpf_dirigente:"RG e CPF do dirigente",estatuto:"Estatuto registrado",ata_eleicao:"Ata de eleição",cnpj:"Cartão CNPJ",certidao_federal:"Certidão federal",certidao_estadual:"Certidão estadual",certidao_municipal:"Certidão municipal",cndt:"CNDT",crf_fgts:"CRF/FGTS",comprovante_endereco:"Comprovante de endereço",plano_de_trabalho:"Plano de trabalho",relatorio_atividades:"Relatório de atividades",inscricao_conselho:"Inscrição no conselho",cebas:"CEBAS",conta_bancaria:"Conta bancária",balanco_patrimonial:"Balanço patrimonial",utilidade_publica:"Utilidade pública",ata_assembleia:"Ata de assembleia"};
 function decisoesLocal(id){return JSON.parse(localStorage.getItem("amc_decisoes_"+id)||"{}");}
 window.decidirEdital=function(assoc,id,dec){const d=decisoesLocal(assoc);if(dec)d[id]=dec;else delete d[id];localStorage.setItem("amc_decisoes_"+assoc,JSON.stringify(d));desenhaPerfis();desenhaEnquadramento();};
 window.exportarDecisoes=function(assoc){const d=decisoesLocal(assoc);const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(d,null,2)],{type:"application/json"}));a.download="decisoes_editais.json";a.click();};
@@ -2068,8 +2068,10 @@ function htmlEditaisEnquadrados(a){const COR={verde:"var(--ok)",amarelo:"var(--a
         <div class="sug-col"><div class="sug-col-t">Checklist do edital <span class=meta>${itensOk}/12</span></div>
           ${itens.map(i=>`<div class="ck-linha" title="${esc(i.fonte||"não obtido")}"><i class="led ${i.valor?"ok":"no"}"></i><span class="ck-nome">${esc(i.item)}</span><span class="ck-val">${i.valor?esc(String(i.valor).slice(0,54)):"—"}</span></div>`).join("")}
           ${e.faltam&&e.faltam.length?`<a class="fdoc-bt" style="margin-top:6px;display:inline-block" href="${esc(e.subir)}" target=_blank rel="noopener noreferrer">⬆ subir informação faltante</a>`:""}</div>
-        <div class="sug-col"><div class="sug-col-t">Documentos necessários <span class=meta>${docs.length?docs.filter(d=>tem.has(d)).length+"/"+docs.length:"não extraídos"}</span></div>
-          ${docs.length?docs.map(d=>`<div class="ck-linha"><i class="led ${tem.has(d)?"ok":"no"}"></i><span class="ck-nome">${esc(DOCR[d]||d)}</span><span class="ck-val">${tem.has(d)?"em Documentos":"a obter"}</span></div>`).join(""):'<div class=meta>o edital ainda não foi lido na fonte oficial; os documentos exigidos aparecem aqui quando a IA extrair</div>'}
+        <div class="sug-col">${(()=>{const sb=e.documentos_submissao||{documentos:docs,origem:"",requisitos:[]};const dl=sb.documentos||[];return `<div class="sug-col-t">Documentos para a inscrição <span class=meta>${dl.filter(d=>tem.has(d)).length}/${dl.length}</span></div>
+          <div class=meta style="margin-bottom:4px">${esc(sb.origem||"")}</div>
+          ${dl.map(d=>`<div class="ck-linha"><i class="led ${tem.has(d)?"ok":"no"}"></i><span class="ck-nome">${esc(DOCR[d]||d.replace(/_/g," "))}</span><span class="ck-val">${tem.has(d)?"pronto em Documentos":"a obter / anexar"}</span></div>`).join("")}
+          ${(sb.requisitos||[]).length?`<div class=meta style="margin-top:6px"><b>Requisitos do edital:</b> ${sb.requisitos.slice(0,8).map(esc).join("; ")}</div>`:""}`;})()}
           <div class="dropzone" data-assoc="${esc(a.associacao)}" data-edital="${esc(e.id)}">arraste aqui os PDFs da entidade<div class="drop-status"></div></div></div>
         <div class="sug-col"><div class="sug-col-t">Considerações da IA</div>
           <div class="ia-quadro">${(q.luzes||[]).map(l=>`<span class="ia-luz" title="${esc(l.detalhe||"")}"><i style="background:${LUZ[l.sinal]||"#ccc"}"></i>${esc(l.modelo)}</span>`).join("")}</div>
