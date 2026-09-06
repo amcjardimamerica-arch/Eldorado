@@ -226,11 +226,25 @@ def _abrir(url: str, timeout: int = 12, max_bytes: int = 2_500_000) -> tuple[str
         return r.read(max_bytes).decode("utf-8", "replace"), r.geturl(), getattr(r, "status", 200) or 200
 
 
+def _local_conhecido(sensor: dict) -> list[str]:
+    """Fonte das 260 com parametrização: lê primeiro a página onde o último edital
+    saiu de fato (nunca o vetor)."""
+    sid = sensor.get("id") or ""
+    fid = sensor.get("fonte_id") or (sid[5:] if sid.startswith("f260-") else None)
+    if not fid:
+        return []
+    arq = ROOT / "biblioteca_alexandria/fontes" / fid / "parametros.json"
+    if not arq.exists():
+        return []
+    lp = (load_json(arq).get("local_publicacao") or {})
+    return [u for u in (lp.get("pagina_de_publicacao"), lp.get("url_ultimo_edital")) if u]
+
+
 def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
     """URLs a ler: fixas; por termo quando o portal tem busca; por DATA do dia
     quando o diário publica por edição (DOU: leiturajornal?data=DD-MM-AAAA)."""
     hoje = hoje or date.today()
-    saida = []
+    saida = list(_local_conhecido(sensor))
     for u in sensor["urls"]:
         if "{data8}" in u:
             saida.append(u.replace("{data8}", hoje.strftime("%Y%m%d")))

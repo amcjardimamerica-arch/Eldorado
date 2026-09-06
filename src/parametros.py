@@ -332,6 +332,40 @@ def _tipo_efetivo(fonte: dict) -> tuple[str, str | None]:
     return novo, (f"tipo inferido do modo de divulgação ({fonte.get('forma_divulgacao')}) — confirmar no primeiro edital lido" if novo != "outro" else None)
 
 
+VETOR_RX = re.compile(r"pncp\.gov\.br|queridodiario|data\.queridodiario|in\.gov\.br|diariooficial|portaldecompraspublicas|licitamaisbrasil|bllcompras|bnccompras|observatorio3setor", re.I)
+
+
+def local_de_publicacao(fonte: dict, hist: dict) -> dict:
+    """LOCAL DE PUBLICAÇÃO CONHECIDO: a URL onde o último edital desta fonte
+    apareceu de fato (excluídos os vetores de divulgação) e, na falta dela, os
+    sites do catálogo. É para cá que o motor aponta quando lê esta fonte."""
+    from urllib.parse import urlsplit
+    ultimos = hist.get("ultimas") or []
+    oficiais = [u["url"] for u in ultimos if u.get("url") and not VETOR_RX.search(u["url"])]
+    vetores = [u["url"] for u in ultimos if u.get("url") and VETOR_RX.search(u["url"])]
+    alvo = oficiais[0] if oficiais else None
+    pagina = None
+    if alvo:
+        pr = urlsplit(alvo)
+        pagina = f"{pr.scheme}://{pr.netloc}{pr.path.rsplit('/', 1)[0]}/" if pr.path.count("/") > 1 else f"{pr.scheme}://{pr.netloc}/"
+    sites = [s for s in (fonte.get("sites") or []) if not VETOR_RX.search(s)]
+    return {"url_ultimo_edital": alvo, "pagina_de_publicacao": pagina or (sites[0] if sites else None),
+            "dominio": urlsplit(alvo or (sites[0] if sites else "")).hostname or None,
+            "sites_catalogo": sites[:4], "vetores_observados": vetores[:3],
+            "confianca": "observado no último edital" if alvo else ("catálogo (a confirmar na primeira leitura)" if sites else "desconhecido"),
+            "instrucao_motor": ("ler primeiro esta página; os vetores (PNCP/diário) servem só para saber que saiu" if alvo or sites else
+                                "sem local conhecido: descobrir pelo órgão publicador na primeira menção")}
+
+
+def ultimo_edital(fonte: dict, hist: dict) -> dict | None:
+    u = (hist.get("ultimas") or [None])[0]
+    if not u:
+        return None
+    return {"titulo": u.get("titulo"), "data_publicacao": u.get("data"), "url": u.get("url"),
+            "e_vetor": bool(u.get("url") and VETOR_RX.search(u["url"])),
+            "nota": "referência para o refinamento: exigências e critérios desta edição prevalecem sobre a previsão do rito"}
+
+
 def parametrizar(fonte: dict, con=None) -> dict:
     tipo_ef, nota_tipo = _tipo_efetivo(fonte)
     fonte = {**fonte, "tipo": tipo_ef}
@@ -354,6 +388,8 @@ def parametrizar(fonte: dict, con=None) -> dict:
                       "nota": "critérios previstos pelo rito; os observados em edições anteriores (quando houver) prevalecem sobre a previsão"},
         "exigencias_observadas": hist.get("exigencias_observadas") or None,
         "historico_5_anos": {k: hist.get(k) for k in ("ocorrencias", "por_ano", "por_mes", "ultimas") if k in hist},
+        "local_publicacao": local_de_publicacao(fonte, hist),
+        "ultimo_edital": ultimo_edital(fonte, hist),
         "preditiva": preditiva(fonte, hist),
         "parametrizado_em": now_iso(), "versao": 1,
         "aviso": "parametrização derivada da norma e do acervo; o edital de cada edição prevalece. Itens 'previsto' são hipóteses fundamentadas, não fatos.",

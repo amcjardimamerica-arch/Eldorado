@@ -339,6 +339,13 @@ box-shadow:0 1px 3px #0002}
 .ck-linha{display:grid;grid-template-columns:12px max-content 1fr;column-gap:8px;align-items:start;padding:3px 0;border-bottom:1px dotted #EEF1F5}.ck-nome{font-weight:700;font-size:11.5px;white-space:nowrap}.ck-val{color:var(--tinta);font-size:11px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .led{width:10px;height:10px;border-radius:50%;display:inline-block}.led.disp{background:#8FA63A;box-shadow:0 0 0 2px #E6EFC8}.led.ok{background:var(--ok);box-shadow:0 0 4px var(--ok)}.led.no{background:var(--urgente)}
 .ia-quadro{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-bottom:4px}.ia-luz{display:flex;align-items:center;gap:6px;font-size:11.5px;padding:3px 7px;border:1px solid var(--linha);border-radius:8px;background:#fff}.ia-luz i{width:10px;height:10px;border-radius:50%;flex:none}
+.rk-grade{display:flex;flex-direction:column;gap:4px}
+.rk-item{display:grid;grid-template-columns:38px 44px 1.5fr 1.5fr 1fr;gap:10px;align-items:center;padding:6px 8px;border:1px solid var(--linha);border-radius:9px;background:#fff}
+.rk-pos{font-family:Georgia,serif;font-weight:800;color:var(--suave);text-align:right}
+.rk-nota{font-weight:800;color:#0E2A55;text-align:center;background:linear-gradient(90deg,#C9A22733 var(--p),transparent var(--p));border-radius:6px;padding:2px 0}
+.rk-nome{display:flex;flex-direction:column;min-width:0}.rk-nome b{font-size:12.5px}.rk-nome small{font-size:10.5px;color:var(--suave);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk-tags{display:flex;flex-wrap:wrap;gap:3px}.rk-tags .tag{font-size:10px;padding:1px 6px}
+.rk-via{display:flex;flex-direction:column;font-size:10.5px;color:var(--suave)}
 .enq-mini{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:8px 10px;border:1px solid var(--linha);border-radius:10px;background:#fff;font-size:12.5px;line-height:1.55;margin-top:8px}
 .enq-ck12{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:5px;margin-top:8px}
 .enq-it{display:grid;grid-template-columns:14px 1fr;column-gap:6px;padding:4px 7px;border-radius:7px;background:#F6F7F9;font-size:11.5px;border:1px solid var(--linha)}.enq-it b{font-size:11px}.enq-it small{grid-column:2;color:var(--suave);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -653,6 +660,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <button data-aba="em_andamento" class="on"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.5v4.8l3 1.8"/></svg><span>Em andamento</span></button>
   <button data-aba="inscrito"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg><span>Inscrição realizada</span></button>
   <button data-aba="encerrado"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11z"/><path d="M5 4.5h14l1.5 3h-17z"/><path d="M10 12h4"/></svg><span>Arquivados — Encerrados / Descartados</span></button>
+  <button data-aba="ranking_empresas"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Ranking de empresas</span></button>
   <button onclick="exportarArquivados()" title="exportar a lista de arquivados para dados/editais/arquivados.json — o sistema inteiro passa a ignorá-los" style="margin-left:auto"><span>⬇ exportar arquivados</span></button>
 </div>
 <div class="legenda" style="margin-bottom:12px" id="ed-legenda"></div>
@@ -702,6 +710,15 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
       <input id="pat-busca" placeholder="buscar empresa ou evento…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px"></div>
     <div class=meta id="pat-fonte" style="margin-bottom:8px"></div><div id="pat-lista"></div>
   </div>
+</div>
+<div class="cartao faixa-total oculto" id="emp-ranking-caixa" style="margin-bottom:16px">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <h3 style="margin:0;font-size:16px">Ranking de empresas — quem destina recurso a entidades</h3>
+    <span class=meta>resultado dos motores privados: 100 empresas de destinação tributária (incentivo fiscal, Lucro Real) e 100 de patrocínio privado (marketing)</span>
+    <span style="margin-left:auto"><button class="fdoc-bt principal" id="rk-bt-fiscal">Destinação tributária</button> <button class="fdoc-bt" id="rk-bt-patroc">Patrocínio privado</button></span>
+  </div>
+  <input id="rk-busca" placeholder="filtrar por nome, setor ou o que apoia" style="width:100%;max-width:420px;margin:10px 0;padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit">
+  <div id="rk-lista"></div>
 </div>
 <div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
   <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
@@ -1784,6 +1801,8 @@ function desenhaEditais(){
   $("ed-filtros").classList.toggle("oculto",aba!=="encerrado");
   const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
   const ce=$("emp-caixa"); if(ce){ce.classList.toggle("oculto",aba!=="em_andamento"); if(aba==="em_andamento")desenhaEmpresas();}
+  const rk=$("emp-ranking-caixa"); if(rk){rk.classList.toggle("oculto",aba!=="ranking_empresas"); if(aba==="ranking_empresas")window.desenhaRanking();}
+  ["ed-abertos-caixa","ed-filtros","ed-lista","ed-grade"].forEach(id=>{const el=$(id);if(el&&aba==="ranking_empresas")el.classList.add("oculto");});
 
   if(aba==="em_andamento"){
     /* UNIFICADA: a antiga «Fontes com edital aberto» da Bússola vive aqui, com
@@ -1924,6 +1943,23 @@ function desenhaEmpresas(){
   box.querySelectorAll(".emp-linha").forEach(el=>{const x=rows.find(y=>y.id===el.dataset.id);if(!x)return;
     ligaTip(el,`<strong>${esc(x.nome)}</strong> ${x.cnpj?"· "+esc(x.cnpj):""}<br>${esc(x.cnae||"")} · porte ${esc(x.porte||"—")} · situação ${esc(x.situacao||"—")} · ${x.matriz===false?"FILIAL":x.matriz?"matriz":"matriz/filial a confirmar"}<br>${esc(ROT_LUCRO[x.lucro_real]||"")}: ${esc(x.lucro_real_motivo||"")}<br>score ${x.score} — ${esc((x.memoria_score||[]).join("; "))}<br><em>clique para o parecer completo</em>`);
     el.onclick=()=>empDetalhe(x);});
+}
+/* ================= RANKING DE EMPRESAS (motores privados) ================= */
+window._rkCat="destinacao_tributaria"; window._rkDados={};
+async function carregaRanking(cat){ if(window._rkDados[cat])return window._rkDados[cat];
+  try{const r=await fetch(`dados/ranking_${cat}.json?v=${encodeURIComponent(D.gerado_em||"")}`,{cache:"no-cache"});window._rkDados[cat]=await r.json();}catch(e){window._rkDados[cat]={empresas:[],erro:String(e)};}
+  return window._rkDados[cat];}
+window.desenhaRanking=async function(){const box=$("rk-lista"); if(!box)return; const d=await carregaRanking(window._rkCat);
+  $("rk-bt-fiscal").className="fdoc-bt"+(window._rkCat==="destinacao_tributaria"?" principal":""); $("rk-bt-patroc").className="fdoc-bt"+(window._rkCat==="patrocinio_privado"?" principal":"");
+  const q=($("rk-busca").value||"").toLowerCase();
+  const lista=(d.empresas||[]).filter(e=>!q||JSON.stringify(e).toLowerCase().includes(q));
+  box.innerHTML=`<div class=meta style="margin-bottom:6px">${esc(d.rotulo||"")} · ${lista.length} de ${(d.empresas||[]).length} · <span title="${esc(d.metodo||"")}">como a nota é calculada ⓘ</span></div>
+   <div class="rk-grade">${lista.map(e=>`<div class="rk-item" title="${esc((e.por||[]).join(" · "))}">
+     <span class="rk-pos">${e.posicao}</span>
+     <span class="rk-nota" style="--p:${e.pontos}%">${e.pontos}</span>
+     <span class="rk-nome"><b>${esc(e.nome)}</b><small>${esc([e.programa,e.apoia,e.setor].filter(Boolean).join(" · ").slice(0,90))}</small></span>
+     <span class="rk-tags">${e.icms_goias?`<span class=tag title="posição na lista oficial dos maiores contribuintes do ICMS de Goiás">ICMS ${e.icms_goias}º</span>`:""}${e.gife?'<span class=tag>GIFE</span>':""}${e.observado_pelo_motor?`<span class=tag style="border-color:var(--ok);color:var(--ok)" title="${esc((e.observado_pelo_motor||[]).map(o=>o.evento||"").join(" · "))}">patrocínio observado</span>`:""}${(e.incentivos||[]).map(i=>`<span class=tag>${esc(i)}</span>`).join("")}</span>
+     <span class="rk-via"><small>${esc(e.via_de_entrada||"")}</small>${e.cnpj?`<small class=meta>${esc(e.cnpj)}</small>`:""}</span></div>`).join("")||'<div class=meta>Nada encontrado.</div>'}</div>`;
 }
 /* ================= DOCUMENTOS DAS ASSOCIAÇÕES ================= */
 function desenhaDocumentos(){
@@ -3090,6 +3126,7 @@ function iniciar(){
   desenhaRadar();desenhaFarolResumo();desenhaGantt();desenhaFila();
   desenhaCal();desenhaEditais();desenhaBussola();iniciarBz();desenhaCalendarioDecisao();desenhaBiblioteca();
   desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
+  if($("rk-bt-fiscal")){$("rk-bt-fiscal").onclick=()=>{window._rkCat="destinacao_tributaria";window.desenhaRanking();};$("rk-bt-patroc").onclick=()=>{window._rkCat="patrocinio_privado";window.desenhaRanking();};$("rk-busca").addEventListener("input",()=>window.desenhaRanking());}
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
 }

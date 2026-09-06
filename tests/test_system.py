@@ -3844,6 +3844,29 @@ class SystemTests(unittest.TestCase):
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]["editais"]
         self.assertTrue(any(e.get("parametros") for e in q))
 
+
+    def test_refinamento_local_publicacao_e_biblioteca_de_empresas(self):
+        import glob
+        fs=[load_json(pathlib.Path(f)) for f in glob.glob("biblioteca_alexandria/fontes/*/parametros.json")]
+        self.assertEqual(len(fs),260)
+        self.assertTrue(all("local_publicacao" in f for f in fs))
+        obs=[f for f in fs if f["local_publicacao"]["confianca"].startswith("observado")]
+        self.assertGreaterEqual(len(obs),30)
+        for f in obs[:10]:
+            self.assertNotRegex(f["local_publicacao"]["url_ultimo_edital"],r"pncp\.gov\.br|queridodiario|in\.gov\.br")   # nunca o vetor
+        self.assertGreaterEqual(sum(1 for f in fs if f.get("ultimo_edital")),150)
+        src=open("src/sensores.py",encoding="utf-8").read(); self.assertIn("def _local_conhecido",src)
+        for cat in ("destinacao_tributaria","patrocinio_privado"):
+            r=load_json(pathlib.Path(f"biblioteca_alexandria/empresas/ranking_{cat}.json"))
+            self.assertEqual(r["total"],100); self.assertEqual(r["empresas"][0]["posicao"],1)
+            self.assertTrue(all(e["pontos"]>=r["empresas"][i+1]["pontos"] for i,e in enumerate(r["empresas"][:-1])))
+            self.assertTrue(all(e.get("por") for e in r["empresas"][:20]))
+            self.assertTrue(pathlib.Path(f"docs/dados/ranking_{cat}.json").exists())
+        fiscal=load_json(pathlib.Path("biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json"))["empresas"]
+        self.assertTrue(any(e.get("incentivos") for e in fiscal)); self.assertTrue(all("LUCRO REAL" in (e.get("condicao") or "").upper() for e in fiscal[:10]))
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ('data-aba="ranking_empresas"',"Ranking de empresas","window.desenhaRanking","rk-item","Destinação tributária","Patrocínio privado"): self.assertIn(x,html,x)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
