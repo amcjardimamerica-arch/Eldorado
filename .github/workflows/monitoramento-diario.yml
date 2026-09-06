@@ -37,6 +37,18 @@ jobs:
       ACESSO_MASTER: ${{ secrets.ACESSO_MASTER }}
     steps:
       - uses: actions/checkout@v4
+      - name: Saída pelo Brasil (túnel WireGuard até servidor do titular, se configurado)
+        env:
+          WG_CONFIG_BR: ${{ secrets.WG_CONFIG_BR }}
+        run: |
+          if [ -n "$WG_CONFIG_BR" ]; then
+            sudo apt-get install -y -qq wireguard-tools resolvconf >/dev/null 2>&1 || sudo apt-get install -y -qq wireguard-tools >/dev/null 2>&1
+            echo "$WG_CONFIG_BR" | sudo tee /etc/wireguard/br.conf >/dev/null
+            sudo chmod 600 /etc/wireguard/br.conf
+            sudo wg-quick up br && echo "túnel BR ativo — IP de saída: $(curl -s --max-time 10 https://api.ipify.org || echo desconhecido)" | tee estado/saida_brasil.txt
+          else
+            echo "sem WG_CONFIG_BR: robô sai pelos EUA (GitHub); portais que bloqueiam IP estrangeiro continuam fechados" | tee estado/saida_brasil.txt
+          fi
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - name: Decidir o bloco da hora (00h–06h BRT)

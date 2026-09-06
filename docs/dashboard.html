@@ -313,6 +313,7 @@ box-shadow:0 1px 3px #0002}
 .enq-ed.cand{background:#FFF0F7}
 .sug{border:1px solid var(--linha);border-radius:10px;background:#fff;padding:8px 10px;margin-top:8px;position:relative}
 .sug.analisado,.ed-item.analisado{background:#EEF9F0;border-color:#9BD3B0}
+.ed-analise{display:flex;gap:8px;align-items:center;margin-bottom:6px;font-size:12px}
 .selo{position:absolute;top:-9px;right:12px;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 9px;border-radius:10px;border:1px solid;background:#fff}
 .selo.conformidade{color:#1E7E4B;border-color:#1E7E4B}.selo.inconformidade{color:var(--urgente);border-color:var(--urgente)}.selo.analisado,.selo.analise_incompleta{color:#0E2A55;border-color:#0E2A55}.sug.realizada{border-color:var(--ok);background:#F2FBF6}
 .sug-l1{display:grid;grid-template-columns:14px 44px 1fr auto;gap:10px;align-items:center}.sug-titulo{font-weight:700;font-size:13px;white-space:normal;word-break:break-word;line-height:1.35}
@@ -651,6 +652,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <button data-aba="em_andamento" class="on"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.5v4.8l3 1.8"/></svg><span>Em andamento</span></button>
   <button data-aba="inscrito"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg><span>Inscrição realizada</span></button>
   <button data-aba="encerrado"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11z"/><path d="M5 4.5h14l1.5 3h-17z"/><path d="M10 12h4"/></svg><span>Arquivados — Encerrados / Descartados</span></button>
+  <button onclick="exportarArquivados()" title="exportar a lista de arquivados para dados/editais/arquivados.json — o sistema inteiro passa a ignorá-los" style="margin-left:auto"><span>⬇ exportar arquivados</span></button>
 </div>
 <div class="legenda" style="margin-bottom:12px" id="ed-legenda"></div>
 <!-- EM ANDAMENTO — unificação: aqui vive a antiga «Fontes com edital aberto» da Bússola, com todos os seus filtros -->
@@ -905,10 +907,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260906110121"></script>
-<script src="mapa-arte.js?v=20260906110121"></script>
-<script src="dashboard-dados.enc.js?v=20260906110121"></script>
-<script src="dashboard-dados.js?v=20260906110121"></script>
+<script src="mapa-brasil.js?v=20260906120405"></script>
+<script src="mapa-arte.js?v=20260906120405"></script>
+<script src="dashboard-dados.enc.js?v=20260906120405"></script>
+<script src="dashboard-dados.js?v=20260906120405"></script>
 <script>
 (function(){
 "use strict";
@@ -1098,7 +1100,12 @@ function salvaDecisao(id,estado,extra){
 }
 function seloDe(id){return (D.analise_editais||{})[id]||null;}
 /* selo de INCONFORMIDADE (análise do agente) arquiva automaticamente, salvo decisão manual do titular */
-const estadoDe=id=>{const d=(decisoes()[id]||{}).estado;if(d)return d;const s=seloDe(id);return (s&&s.selo==="inconformidade")?"descartado":"em_andamento";};
+const estadoDe=id=>{const d=(decisoes()[id]||{}).estado;if(d)return d;if((D.arquivados_eldorado||{})[id])return "descartado";const s=seloDe(id);return (s&&s.selo==="inconformidade")?"descartado":"em_andamento";};
+/* exclusão em Oportunidades Abertas é SISTÊMICA: exportável para dados/editais/arquivados.json (o CI retira do mapa, do enquadramento e das análises).
+   A dispensa no Enquadramento é só da associação (dados/associacoes/<id>/decisoes_editais.json). */
+window.exportarArquivados=function(){const d=decisoes();const arq={};Object.entries(d).forEach(([id,v])=>{if(v.estado==="descartado"||v.estado==="encerrado")arq[id]={estado:v.estado,em:v.em||new Date().toISOString().slice(0,10),por:"titular (Oportunidades Abertas)"};});
+  Object.entries(D.arquivados_eldorado||{}).forEach(([id,v])=>{if(!arq[id]&&!(d[id]||{}).estado)arq[id]=v;});
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(arq,null,2)],{type:"application/json"}));a.download="arquivados.json";a.click();};
 window.arquivarInscrito=function(e){
   salvaDecisao(e.id,"inscrito",{titulo:e.titulo,acao:"inscrição realizada"});
   abreModal("<h3 style=\"margin:0\">Inscrição registrada</h3>",
@@ -2240,7 +2247,9 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
         const an=gradeDoze(e,b); const comp=an.filter(a=>a.comprovado).length, tot=an.length;
         const pct=Math.round(comp/tot*100); const camp=b&&b.campanha;
         const dz=dias(e.fim);
-        return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}" data-id="${esc(e.id)}">
+        const _s=seloDe(e.id); const _q=((D.enquadramento||[])[0]||{editais:[]}).editais.find(x=>x.id===e.id);
+        const _an=_s?`<div class="ed-analise"><span class="selo ${_s.selo}" style="position:static">Análise: ${_s.selo==="conformidade"?"Conformidade":_s.selo==="inconformidade"?"Inconformidade":_s.selo==="analise_incompleta"?"incompleta":"realizada"}</span> <span class=meta>${_q?_q.itens.filter(i=>i.valor||i.dispensavel).length+"/12 itens · ":""}${esc(String((_q&&_q.mini_parecer)||_s.motivo||"").slice(0,170))}</span></div>`:"";
+        return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}${_s?" analisado":""}" data-id="${esc(e.id)}">${_an}
         <div class="fa-fonte"><span class=ponto style="background:${c.cor};width:8px;height:8px" title="${esc(c.rotulo)}"></span><strong style="color:var(--tinta)">${esc(f.fonte_nome||"—")}</strong>${f.via?`<span class=meta>· via ${esc(f.via)}</span>`:""}</div>
         <a href="${esc(linkOficial(e)||e.url)}" target=_blank rel="noopener noreferrer" title="${VETOR_RX.test(linkOficial(e)||e.url||"")?"anúncio no vetor de divulgação — a fonte oficial ainda não foi localizada":"site oficial"}">${esc((e.titulo||"").slice(0,90))}</a>
         ${camp?`<span class="st ${camp.status==="monitorando"?"cap":camp.status==="completo"?"ok":"acao"}" style="margin-left:6px" title="${camp.status==="monitorando"?"indício em campanha de completude: dia "+camp.dia+" de 30, "+camp.tentativas+" tentativa(s) atrás do edital integral":camp.status==="completo"?"campanha concluída: edital integral obtido":"campanha expirada — revisão humana"}">${camp.status==="monitorando"?"monitorando · dia "+camp.dia+"/30":camp.status}</span>`:""}
@@ -2252,7 +2261,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
         <div class=meta>${b&&b.anexos&&b.anexos.length?"anexos: "+b.anexos.map(a=>`<a href="${esc(a.url||a)}" target=_blank rel="noopener noreferrer">${esc(a.nome||"documento")}</a>`).join(" · "):"anexos ainda não catalogados — <em>pendência declarada</em>"}</div>
         <div class="acoes-ed">
           <button class="bt-ia" data-id="${esc(e.id)}" title="Relatório sobre os parâmetros deste edital">✦ Investigar com IA</button>
-          <button class="bt-arq" data-id="${esc(e.id)}" title="Arquivar este edital — sai das listas ativas">🗄 Arquivar</button>
+          <button class="bt-arq" data-id="${esc(e.id)}" title="Arquivar este edital — exclusão SISTÊMICA: sai do mapa, do enquadramento e das análises (exporte arquivados.json para o repositório)">🗄 Arquivar</button>
           <button class="bz-acao ficha" data-id="${esc(e.id)}">Abrir ficha</button>
         </div></div>`;}).join("")}</div>`;
     const achaEd=id=>(D.editais||[]).find(x=>x.id===id)||(lista.find(x=>x.e.id===id)||{}).e;

@@ -1,7 +1,7 @@
 name: 04 · Publicar painel Eldorado
 on:
   schedule:
-    - cron: "45 9 * * *"
+    - cron: "45 */6 * * *"   # a cada 6 horas: o monitor dos motores nunca fica mais de 6h defasado
   workflow_dispatch:
 permissions:
   contents: read

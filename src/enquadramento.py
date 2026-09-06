@@ -384,7 +384,8 @@ def run(limite_ia: int = 8) -> dict:
     for a in assoc:
         dec_p = ROOT / "dados/associacoes" / a["_pasta"] / "decisoes_editais.json"
         dec = load_json(dec_p) if dec_p.exists() else {}
-        geo = [e for e in abertos if filtro_geografico(a, e) and dec.get(e["id"]) != "dispensado"]
+        arq_p = ROOT / "dados/editais/arquivados.json"; arquivados = load_json(arq_p) if arq_p.exists() else {}
+        geo = [e for e in abertos if e["id"] not in arquivados and filtro_geografico(a, e) and dec.get(e["id"]) != "dispensado"]
         cand = [e for e in abertos if not filtro_geografico(a, e) and candidato_aprovacao(a, e)]
         lista = []
         for e in geo:
@@ -475,19 +476,23 @@ def pacote(limite: int = 6) -> dict:
             pass
     pend = []
     edicoes_brutas = 0
+    arq_p = ROOT / "dados/editais/arquivados.json"; arquivados = load_json(arq_p) if arq_p.exists() else {}
     for e in universo:
+        if e["id"] in arquivados:
+            continue                                          # exclusão manual em Oportunidades Abertas: sai do sistema inteiro
         if e["id"] in analisados and (analisados[e["id"]].get("completo") or analisados[e["id"]].get("selo") == "inconformidade"):
             continue
         # edições INTEIRAS de diário (Querido Diário) sem edital identificado não são analisáveis: só o título da edição existe.
         # Elas ficam na Bússola e entram no Enquadramento quando a extração de edições (fase 2) identificar o ato.
         if re.match(r"Di[áa]rio Oficial de .+\d{4}-\d{2}-\d{2}", e.get("titulo") or "") and not (e.get("objeto") or e.get("fim") or texto_guardado(e)):
             edicoes_brutas += 1; continue
-        if not any(filtro_geografico(a, e) for a in assoc):
+        # regra do titular: Brasil inteiro (nacionais) e Goiás entram na análise, independentemente da associação
+        if e.get("uf") and e.get("uf") != "GO":
             continue
         ex = extraido(e)
         if ex.get("completo") and any((ROOT / "dados/associacoes" / a["_pasta"] / "farol" / f"{e['id']}.json").exists() and load_json(ROOT / "dados/associacoes" / a["_pasta"] / "farol" / f"{e['id']}.json").get("ia") for a in assoc):
             continue
-        pend.append((e, ex))
+        pend.append((e, ex))                                  # regra: Brasil inteiro (nacionais) + Goiás; sem filtro por associação
     pend.sort(key=lambda x: (x[0].get("situacao_inscricao") != "aberta", x[0].get("uf") != "GO", -(len(x[1].get("itens") or {})), str(x[0].get("fim") or "9")))
     resumo_universo = {"universo": len(universo), "pendentes": len(pend), "ja_analisados": sum(1 for e in universo if e["id"] in analisados), "edicoes_de_diario_sem_ato": edicoes_brutas}
     L = ["# Pacote para o agente Claude — Enquadramento (Farol de Alexandria)\n",

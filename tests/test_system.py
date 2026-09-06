@@ -3789,6 +3789,18 @@ class SystemTests(unittest.TestCase):
         self.assertIn("Arquivos do edital (PDF) — origem para conferência",html); self.assertIn("Histórico 5 anos",html)
         src=open("src/enquadramento.py",encoding="utf-8").read(); self.assertIn("def historico_5_anos",src); self.assertIn("edicoes_de_diario_sem_ato",src)
 
+
+    def test_bloqueios_causa_exata_saida_brasil_publicacao_6h_e_arquivamento_sistemico(self):
+        src=open("src/sensores.py",encoding="utf-8").read()
+        for x in ('"code": code','"waf": waf','"causa": causa',"bloqueio geográfico","Cloudflare"): self.assertIn(x,src,x)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("WG_CONFIG_BR",wf); self.assertIn("wg-quick up br",wf)
+        pub=open(".github/workflows/publicar-painel.yml",encoding="utf-8").read(); self.assertIn('"45 */6 * * *"',pub)
+        self.assertTrue(pathlib.Path("docs/claude/BLOQUEIOS-CAUSAS.md").exists())
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("ed-analise","window.exportarArquivados","arquivados_eldorado","exclusão SISTÊMICA"): self.assertIn(x,html,x)
+        enq=open("src/enquadramento.py",encoding="utf-8").read(); self.assertIn("arquivados.json",enq); self.assertNotIn("if not any(filtro_geografico(a, e) for a in assoc):\n            continue\n        ex = extraido(e)",enq)
+        self.assertTrue(pathlib.Path("dados/editais/arquivados.json").exists())
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

@@ -302,7 +302,17 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             html, final, status = _abrir(url, timeout=tmo, max_bytes=lim["bytes_por_pagina"])
             saude.append({"url": url, "http": status, "bytes": len(html)}); diag["paginas_lidas"] += 1
         except Exception as exc:
-            falhas.append({"url": url, "erro": type(exc).__name__})
+            code = getattr(exc, "code", None); hdrs = getattr(exc, "headers", None)
+            servidor = (hdrs.get("Server") or hdrs.get("server") or "") if hdrs else ""
+            waf = "Cloudflare" if (hdrs and (hdrs.get("cf-ray") or "cloudflare" in servidor.lower())) else "Akamai" if (hdrs and (hdrs.get("x-akamai-request-id") or "akamai" in servidor.lower())) else \
+                  "Imperva/Incapsula" if (hdrs and hdrs.get("x-iinfo")) else "BIG-IP/F5" if "big-ip" in servidor.lower() else None
+            causa = ("bloqueio de robô pelo WAF " + waf) if waf and code in (403, 429, 503) else \
+                    ("acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter" if code == 403 else
+                     "endereço não resolve (DNS) — URL errada ou domínio desativado" if type(exc).__name__ == "gaierror" else
+                     "conexão recusada/derrubada — filtro de rede ou IP estrangeiro" if type(exc).__name__ in ("URLError", "RemoteDisconnected", "ConnectionResetError") else
+                     "tempo esgotado — servidor lento ou filtrando o IP" if "Timeout" in type(exc).__name__ else
+                     f"HTTP {code}" if code else type(exc).__name__)
+            falhas.append({"url": url, "erro": type(exc).__name__, "code": code, "waf": waf, "causa": causa})
             try:
                 from .alternativas import registrar_bloqueio
                 registrar_bloqueio(url, type(exc).__name__, sensor.get("nome", ""))

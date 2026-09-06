@@ -1358,6 +1358,7 @@ def coletar(hoje: date | None = None) -> dict:
                                 for i in previsoes.get("itens", [])]},
         "esquadra": esquadra,
         "associacoes_cruzamento": _cruzamento_associacoes(editais, hoje),
+        "arquivados_eldorado": (load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}),
         "analise_editais": (load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}),
         "municipios_maiores": (load_json(ROOT / "config/municipios_maiores.json").get("maiores", {}) if (ROOT / "config/municipios_maiores.json").exists() else {}),
         "enquadramento": [load_json(pathlib.Path(f)) for f in sorted(__import__("glob").glob(str(ROOT / "dados/associacoes/*/enquadramento.json"))) if "EXEMPLO" not in f],
