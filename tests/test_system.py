@@ -3867,6 +3867,20 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ('data-aba="ranking_empresas"',"Ranking de empresas","window.desenhaRanking","rk-item","Destinação tributária","Patrocínio privado"): self.assertIn(x,html,x)
 
+
+    def test_coleta_dos_sensores_em_passo_proprio(self):
+        """Regressão de 06/09: a coleta vivia dentro do step do painel e o disparo
+        manual do bloco 'regulares' terminava sem ler nada. Agora é step próprio, com log."""
+        import yaml
+        d=yaml.safe_load(open(".github/workflows/monitoramento-diario.yml",encoding="utf-8"))
+        st=d["jobs"]["monitorar"]["steps"]; nomes=[s.get("name") or "" for s in st]
+        i=[k for k,n in enumerate(nomes) if "MOTORES DE BUSCA" in n]
+        self.assertEqual(len(i),1)
+        passo=st[i[0]]; self.assertIn("src.sensores",passo["run"]); self.assertIn("log_sensores.txt",passo["run"]); self.assertIn("regulares",passo["run"])
+        painel=[k for k,n in enumerate(nomes) if "Dados do dashboard" in n][0]
+        self.assertLess(i[0],painel)                                  # coleta ANTES do painel
+        self.assertNotIn("src.sensores",st[painel]["run"])             # e não mais dentro dele
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
