@@ -3739,6 +3739,29 @@ class SystemTests(unittest.TestCase):
         self.assertIn("web=False, tarefa=",open("src/enquadramento.py",encoding="utf-8").read())      # Fable sem internet
         html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("Documentos para a inscrição",html); self.assertIn("grid-template-columns:12px max-content 1fr",html)
 
+
+    def test_pncp_nunca_e_fonte_e_operacao_por_agente_claude(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("function linkOficial",html); self.assertIn("VETOR_RX",html); self.assertIn("fonte oficial a localizar",html); self.assertIn("não é a fonte do edital",html)
+        src=open("src/fonte_edital.py",encoding="utf-8").read(); self.assertIn("nunca aparecem como fonte do edital",src)
+        from src.fonte_edital import relatorio
+        r=relatorio({"origem":"pncp","itens":{},"fontes_itens":{},"faltam":["Valor"],"tentativas":[],"anexos":[{"url":"https://pncp.gov.br/x.pdf"}]},{"url":"https://pncp.gov.br/app/editais/1/2026/1"},credencial=True)
+        self.assertEqual(r["manual"]["links"],[]); self.assertIn("agregador",r["manual"]["instrucao"])
+        import tempfile, shutil
+        from src import enquadramento as E
+        r2=E.pacote(2); self.assertTrue((ROOT/"estado/pacote_agente.md").exists()); self.assertGreaterEqual(r2["editais"],1)
+        txt=(ROOT/"estado/pacote_agente.md").read_text(encoding="utf-8"); self.assertIn("respostas_agente",txt); self.assertIn("vetores",txt)
+        # ingestão: resposta do agente vira extraído + parecer
+        eid=[l for l in txt.splitlines() if l.startswith("## ")][0][3:].split(" — ")[0]
+        E.RESPOSTAS.mkdir(parents=True,exist_ok=True); resp=E.RESPOSTAS/f"{eid}.json"
+        resp.write_text(json.dumps({"itens":{"Valor":"R$ 10.000,00"},"mini_parecer":"teste","pagina_divulgacao":"https://orgao.gov.br/editais","enquadramento":{"amc-jardim-america":{"aderencia":77,"chances":60,"decisao":"concorrer"}}}),encoding="utf-8")
+        try:
+            n=E.ingerir(); self.assertEqual(n["ingeridos"],1)
+            ex=E.extraido({"id":eid}); self.assertEqual(ex["tentativas"][-1]["modelo"],"agente-claude"); self.assertEqual(ex["pagina_divulgacao"],"https://orgao.gov.br/editais"); self.assertEqual(ex["mini_parecer"],"teste")
+            par=load_json(ROOT/"dados/associacoes/amc-jardim-america/farol"/f"{eid}.json"); self.assertEqual(par["ia"]["aderencia"],77)
+        finally:
+            for f in E.RESPOSTAS.glob(f"{eid}.json*"): f.unlink()
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

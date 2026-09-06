@@ -425,5 +425,86 @@ def run(limite_ia: int = 8) -> dict:
     return resumo
 
 
+# ───────────────────────── operação por AGENTE CLAUDE (sem API) ─────────────────────────
+PACOTE = ROOT / "estado/pacote_agente.md"
+RESPOSTAS = ROOT / "dados/editais/respostas_agente"
+
+
+def pacote(limite: int = 6) -> dict:
+    """Monta um pacote compacto com os editais pendentes (texto guardado, itens
+    que faltam, associação) para um agente Claude — este chat ou o Claude Code
+    na conta do titular — analisar SEM API: o agente lê o pacote, escreve um JSON
+    por edital em dados/editais/respostas_agente/<id>.json e roda 'ingerir'."""
+    from .fonte_edital import texto_guardado
+    dados = load_json(ROOT / "docs/dashboard-dados.json")
+    assoc = associacoes()
+    pend = []
+    for e in editais_abertos(dados):
+        if not any(filtro_geografico(a, e) for a in assoc):
+            continue
+        ex = extraido(e)
+        if ex.get("completo") and any((ROOT / "dados/associacoes" / a["_pasta"] / "farol" / f"{e['id']}.json").exists() and load_json(ROOT / "dados/associacoes" / a["_pasta"] / "farol" / f"{e['id']}.json").get("ia") for a in assoc):
+            continue
+        pend.append((e, ex))
+    pend.sort(key=lambda x: (x[0].get("situacao_inscricao") != "aberta", len(x[1].get("faltam") or ITENS)))
+    L = ["# Pacote para o agente Claude — Enquadramento (Farol de Alexandria)\n",
+         "Regras: (1) use SÓ o texto abaixo e o conhecimento do sistema; busque na internet apenas se o texto não trouxer o item; (2) nunca invente — sem base, null; "
+         "(3) PNCP e diários são vetores: a fonte é o site do órgão publicador — informe-o em `pagina_divulgacao`; (4) escreva UM arquivo JSON por edital em "
+         "`dados/editais/respostas_agente/<id>.json` com o formato indicado; depois rode `python -m src.enquadramento ingerir`.\n",
+         "Formato: {\"itens\": {<item>: <valor|null>}, \"regras\": <texto>, \"requisitos\": [..], \"pontuacao\": [{\"criterio\":..,\"peso\":..}], \"documentos_exigidos\": [..], "
+         "\"anexos\": [{\"nome\":..,\"url\":..}], \"pagina_divulgacao\": <url do órgão|null>, \"mini_parecer\": <3-5 frases>, "
+         "\"enquadramento\": {<id_associacao>: {\"aderencia\": 0-100, \"chances\": 0-100, \"pontuacao_estimada\": <texto>, \"decisao\": <texto>, \"para_subir\": [..], \"riscos\": [..]}}}\n",
+         f"Associações: " + "; ".join(f"{a.get('id')} — {a.get('nome')} · áreas {', '.join(a.get('areas') or [])} · atuação {', '.join(a.get('territorios') or [])} · {a.get('anos_existencia')} anos" for a in assoc) + "\n"]
+    for e, ex in pend[:limite]:
+        texto = texto_guardado(e)
+        L.append(f"\n---\n## {e['id']} — {e.get('titulo')}\n")
+        L.append(f"Fonte (vetor): {e.get('fonte_nome')} · UF {e.get('uf') or 'BR'} · nível {e.get('nivel')} · situação {e.get('situacao_inscricao')} · fim {e.get('fim')}\n")
+        L.append("Itens já obtidos: " + (", ".join(f"{k}: {str(v)[:80]}" for k, v in (ex.get('itens') or {}).items()) or "nenhum") + "\n")
+        L.append("Itens que FALTAM: " + ", ".join(ex.get("faltam") or list(ITENS)) + "\n")
+        L.append(f"Anúncio: {e.get('url')}\nSite institucional conhecido: {ex.get('site_institucional') or 'não localizado'}\n")
+        L.append("Texto do edital (compacto):\n```\n" + (texto[:12000] if texto else "(sem texto — localizar o edital no site do órgão)") + "\n```\n")
+    PACOTE.write_text("\n".join(L), encoding="utf-8")
+    return {"pacote": str(PACOTE.relative_to(ROOT)), "editais": len(pend[:limite]), "pendentes_total": len(pend)}
+
+
+def ingerir() -> dict:
+    """Lê as respostas do agente e grava como se a IA da API tivesse respondido:
+    itens/regras/documentos no extraído do edital, parecer por associação no Farol."""
+    from .fonte_edital import EXTRAIDOS
+    RESPOSTAS.mkdir(parents=True, exist_ok=True)
+    n = 0
+    for arq in sorted(RESPOSTAS.glob("*.json")):
+        try:
+            r = load_json(arq)
+        except Exception:
+            continue
+        eid = arq.stem
+        ex_p = EXTRAIDOS / f"{eid}.json"; ex = load_json(ex_p) if ex_p.exists() else {"edital_id": eid, "tentativas": [], "itens": {}, "fontes_itens": {}}
+        itens = dict(ex.get("itens") or {}); fontes = dict(ex.get("fontes_itens") or {}); novos = 0
+        for k, v in (r.get("itens") or {}).items():
+            if v not in (None, "") and not itens.get(k): itens[k] = v; fontes[k] = "agente Claude (conta do titular) sobre o texto do edital"; novos += 1
+        for k in ("regras", "requisitos", "pontuacao", "documentos_exigidos", "anexos", "pagina_divulgacao", "mini_parecer"):
+            if r.get(k) not in (None, "", []): ex[k] = r[k]
+        alvo = list(ITENS); faltam = [i for i in alvo if not itens.get(i)]
+        ex["tentativas"] = (ex.get("tentativas") or []) + [{"em": now_iso(), "modelo": "agente-claude", "status": "respondeu", "itens_obtidos": novos, "sinal": "verde" if novos else "amarelo"}]
+        ex.update({"itens": itens, "fontes_itens": fontes, "faltam": faltam, "completo": not faltam, "atualizado_em": now_iso()})
+        write_json(ex_p, ex)
+        for aid, par in (r.get("enquadramento") or {}).items():
+            for a in associacoes():
+                if (a.get("id") or a["_pasta"]) == aid:
+                    fp = ROOT / "dados/associacoes" / a["_pasta"] / "farol" / f"{eid}.json"; fp.parent.mkdir(parents=True, exist_ok=True)
+                    cur = load_json(fp) if fp.exists() else {"edital_id": eid, "associacao": aid}
+                    cur["ia"] = {**par, "modelo": "agente-claude (conta do titular)", "em": now_iso()}; cur["aderencia"] = par.get("aderencia", cur.get("aderencia"))
+                    write_json(fp, cur)
+        arq.rename(arq.with_suffix(".json.ingerido")); n += 1
+    return {"ingeridos": n}
+
+
 if __name__ == "__main__":
-    print(json.dumps(run(), ensure_ascii=False, indent=2))
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "pacote":
+        print(json.dumps(pacote(int(sys.argv[2]) if len(sys.argv) > 2 else 6), ensure_ascii=False, indent=2))
+    elif len(sys.argv) > 1 and sys.argv[1] == "ingerir":
+        print(json.dumps(ingerir(), ensure_ascii=False, indent=2))
+    else:
+        print(json.dumps(run(), ensure_ascii=False, indent=2))

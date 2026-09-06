@@ -276,9 +276,13 @@ def relatorio(reg: dict, e: dict, credencial: bool) -> dict:
     ia_falhou = (not credencial) or (tent and tent[-1].get("status") != "respondeu") or (not fontes and faltam)
     manual = None
     if faltam and ia_falhou:
-        links = [x for x in ([reg.get("site_institucional")] + [p.get("url") for p in (reg.get("anexos") or [])[:3]] + [e.get("url")]) if x]
+        vetor = re.compile(r"pncp\.gov\.br|queridodiario|in\.gov\.br|diariooficial", re.I)
+        links = [x for x in ([reg.get("pagina_divulgacao"), reg.get("site_institucional")] + [p.get("url") for p in (reg.get("anexos") or [])[:3]]) if x and not vetor.search(x)]
+        if not links:
+            links = []   # PNCP e diários são vetores de divulgação: nunca aparecem como fonte do edital
         manual = {"motivo": "a IA não conseguiu acessar/extrair os documentos" if fontes or credencial else "sem documentos acessíveis e sem IA", "itens": faltam, "links": links[:4],
-                  "instrucao": "abra a fonte, localize o edital e use 'subir informação faltante' com os itens listados"}
+                  "instrucao": ("abra a fonte oficial, localize o edital e use 'subir informação faltante' com os itens listados" if links else
+                                "o edital só foi anunciado em vetor de divulgação (PNCP/diário); localize o site do órgão que o publicou e informe-o em 'subir informação faltante' — o sistema não aponta para o agregador")}
     return {"etapas": etapas, "completo": not faltam, "faltam": faltam, "manual": manual, "situacao": "pesquisa completa" if not faltam else ("pesquisa incompleta — ação manual indicada" if manual else "pesquisa incompleta — nova tentativa na próxima saída")}
 
 

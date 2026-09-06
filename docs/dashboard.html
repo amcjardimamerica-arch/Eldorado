@@ -902,10 +902,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260906000344"></script>
-<script src="mapa-arte.js?v=20260906000344"></script>
-<script src="dashboard-dados.enc.js?v=20260906000344"></script>
-<script src="dashboard-dados.js?v=20260906000344"></script>
+<script src="mapa-brasil.js?v=20260906002840"></script>
+<script src="mapa-arte.js?v=20260906002840"></script>
+<script src="dashboard-dados.enc.js?v=20260906002840"></script>
+<script src="dashboard-dados.js?v=20260906002840"></script>
 <script>
 (function(){
 "use strict";
@@ -1159,7 +1159,7 @@ window.investigarEdital=function(e){
     +lista("Documentos exigidos identificados",d.documentos_exigidos)
     +lista("Pendências declaradas",d.pendencias)
     +`<p class=meta style="border-left:3px solid #7B4BE0;padding-left:10px">Pedido registrado. O Farol aprofunda este relatório na próxima rodada, com o conselho de 7 lentes${(D.farol_resumo||{}).credencial_ia?"":" — a execução automática aguarda o secret FAROL_AI_API_KEY"}.</p>
-     <p><a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir na fonte primária ↗</a></p>`);
+     <p>${linkOficial(e)?`<a href="${esc(linkOficial(e))}" target=_blank rel="noopener noreferrer">abrir no site oficial do órgão ↗</a> · `:""}${e.url&&VETOR_RX.test(e.url)?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" class=meta>ver o anúncio no vetor de divulgação (PNCP/diário — não é a fonte do edital) ↗</a>`:e.url?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir na fonte ↗</a>`:""}</p>`);
 };
 
 /* ================= DETALHE DE EDITAL ================= */
@@ -1226,7 +1226,7 @@ function detalheEdital(e){
      ${d.lacuna?`<p class=meta style="border-left:3px solid var(--alerta);padding-left:10px">${esc(d.lacuna)}</p>`:""}
      <p style="margin:10px 0 4px"><strong>Evidência capturada</strong></p>
      <blockquote class=meta style="margin:4px 0;border-left:3px solid var(--linha);padding-left:10px">${esc(d.evidencia)}</blockquote>
-     <p><a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir na fonte primária ↗</a></p>`);
+     <p>${linkOficial(e)?`<a href="${esc(linkOficial(e))}" target=_blank rel="noopener noreferrer">abrir no site oficial do órgão ↗</a> · `:""}${e.url&&VETOR_RX.test(e.url)?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" class=meta>ver o anúncio no vetor de divulgação (PNCP/diário — não é a fonte do edital) ↗</a>`:e.url?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">abrir na fonte ↗</a>`:""}</p>`);
 }
 function resumoTip(e){
   const s=dias(e.fim);
@@ -2027,6 +2027,9 @@ window.add50=function(id,u){const q=(D.enquadramento||[]).find(x=>x.associacao==
 window.exportarAbrangencia=function(id){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});ab.nota="Abrangência definida pelo titular no painel";
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(ab,null,2)],{type:"application/json"}));a.download="abrangencia.json";a.click();};
 /* ================= ENQUADRAMENTO (Farol, fases 3 e 4) ================= */
+/* PNCP e diários são VETORES de divulgação — jamais aparecem como fonte/link do edital */
+const VETOR_RX=/pncp\.gov\.br|queridodiario|in\.gov\.br|diariooficial/i;
+function linkOficial(e){const cands=[e.pagina_divulgacao,(e.fonte_original||{}).site_institucional,e.url];for(const u of cands){if(u&&!VETOR_RX.test(u))return u;}return null;}
 const DOCR={declaracao_nao_vedacao:"Declaração de não incidência de vedações",declaracao_conta_bancaria:"Declaração/abertura de conta específica",rg_cpf_dirigente:"RG e CPF do dirigente",estatuto:"Estatuto registrado",ata_eleicao:"Ata de eleição",cnpj:"Cartão CNPJ",certidao_federal:"Certidão federal",certidao_estadual:"Certidão estadual",certidao_municipal:"Certidão municipal",cndt:"CNDT",crf_fgts:"CRF/FGTS",comprovante_endereco:"Comprovante de endereço",plano_de_trabalho:"Plano de trabalho",relatorio_atividades:"Relatório de atividades",inscricao_conselho:"Inscrição no conselho",cebas:"CEBAS",conta_bancaria:"Conta bancária",balanco_patrimonial:"Balanço patrimonial",utilidade_publica:"Utilidade pública",ata_assembleia:"Ata de assembleia"};
 function decisoesLocal(id){return JSON.parse(localStorage.getItem("amc_decisoes_"+id)||"{}");}
 window.decidirEdital=function(assoc,id,dec){const d=decisoesLocal(assoc);if(dec)d[id]=dec;else delete d[id];localStorage.setItem("amc_decisoes_"+assoc,JSON.stringify(d));desenhaPerfis();desenhaEnquadramento();};
@@ -2041,7 +2044,7 @@ function htmlEditaisEnquadrados(a){const COR={verde:"var(--ok)",amarelo:"var(--a
    +lista.map(e=>{const ia=e.ia,r=e.relatorio_ia,itens=e.itens||[],itensOk=itens.filter(i=>i.valor).length,docs=e.documentos_exigidos||[],real=(dec[e.id]||e.decisao)==="inscricao_realizada";
     const objeto=(itens.find(i=>i.item==="Objeto")||{}).valor||""; const q=e.quadro_ia||{luzes:[]};
     const valor=e.valor?String(e.valor):null; const valorCurto=valor?(valor.match(/R\$\s?[\d\.]+(?:,\d{2})?(?:\s*(?:a|até)\s*R\$\s?[\d\.]+(?:,\d{2})?)?/)||[valor.slice(0,60)])[0]:"a confirmar";
-    const pub=e.pagina_divulgacao||(e.fonte_original||{}).site_institucional;
+    const pub=linkOficial(e);
     return `<div class="sug ${real?"realizada":""}" data-id="${esc(e.id)}">
       <div class="sug-top">
         <div class="sug-esq"><span class="assoc-led" style="background:${COR[e.farol]}"></span><b class="assoc-nota" title="aderência">${e.nota}</b></div>
@@ -2231,7 +2234,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
         const dz=dias(e.fim);
         return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}" data-id="${esc(e.id)}">
         <div class="fa-fonte"><span class=ponto style="background:${c.cor};width:8px;height:8px" title="${esc(c.rotulo)}"></span><strong style="color:var(--tinta)">${esc(f.fonte_nome||"—")}</strong>${f.via?`<span class=meta>· via ${esc(f.via)}</span>`:""}</div>
-        <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">${esc((e.titulo||"").slice(0,90))}</a>
+        <a href="${esc(linkOficial(e)||e.url)}" target=_blank rel="noopener noreferrer" title="${VETOR_RX.test(linkOficial(e)||e.url||"")?"anúncio no vetor de divulgação — a fonte oficial ainda não foi localizada":"site oficial"}">${esc((e.titulo||"").slice(0,90))}</a>
         ${camp?`<span class="st ${camp.status==="monitorando"?"cap":camp.status==="completo"?"ok":"acao"}" style="margin-left:6px" title="${camp.status==="monitorando"?"indício em campanha de completude: dia "+camp.dia+" de 30, "+camp.tentativas+" tentativa(s) atrás do edital integral":camp.status==="completo"?"campanha concluída: edital integral obtido":"campanha expirada — revisão humana"}">${camp.status==="monitorando"?"monitorando · dia "+camp.dia+"/30":camp.status}</span>`:""}
         <div class=meta><span class=tag style="${situacaoDe(e)==="aberta"?"border-color:#F09B2E;color:#9a5a00":situacaoDe(e)==="possivel"?"border-color:#2F79D0;color:#0B4EA2":""}" title="${esc(e.base_situacao||"")}">${situacaoDe(e)==="aberta"?"aberta confirmada":situacaoDe(e)==="possivel"?"possível · em investigação":"encerrada"}</span> ${esc(e.uf||"BR")} · ${esc(e.nivel||"—")}${e.fim?" · encerra "+br(e.fim)+(dz!=null&&dz>=0?" ("+dz+" dia"+(dz===1?"":"s")+")":""):" · sem prazo na fonte"}${e.valor_texto?" · "+esc(e.valor_texto):""}</div>
         <div class="an-barra" title="itens comprovados dos 12"><i style="width:${pct}%"></i><b>${comp}/${tot} itens comprovados</b></div>
@@ -2822,7 +2825,7 @@ function desenhaBzLateral(por){
           return `<div class="bz-op" data-op="${esc(e.id)}"><span class=ponto style="background:${AREA(e.area).cor};width:8px;height:8px"></span>
             <span class=bz-op-t>${esc((e.objeto||e.titulo||"").replace(/^Diário Oficial de [^—]+—\s*/,"").replace(/"/g,"").slice(0,110))}</span>
             <div class=meta>${s==="aberta"?"<b style=\"color:#9a5a00\">aberta</b>":"possível · em investigação"} · ${esc(AREA(e.area).rotulo)}${e.fim?" · inscrições até "+br(e.fim):e.prazo_texto?" · prazo "+esc(e.prazo_texto):" · prazo a confirmar"}${e.valor_texto?" · "+esc(e.valor_texto):""} · ${esc(org)}
-            ${e.url?` · <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:""}</div></div>`;}).join("")}
+            ${(u=>u?` · <a href="${esc(u)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:` · <span class=meta title="PNCP e diários são só vetores de divulgação; o site do órgão publicador ainda não foi localizado">fonte oficial a localizar</span>`)(linkOficial(e))}</div></div>`;}).join("")}
         ${(v.itens||[]).length>3?`<div class=meta style="padding-left:14px">+${(v.itens||[]).length-3} oportunidade(s) nesta cidade — veja em Oportunidades Abertas</div>`:""}</div>`;}).join("")}
     ${cidades.length>25?`<div class=meta>… e mais ${cidades.length-25} cidade(s) em Oportunidades Abertas.</div>`:""}</div>`}`;
   // relatório simples ao passar o mouse em cada dado do painel
