@@ -3879,7 +3879,7 @@ class SystemTests(unittest.TestCase):
         passo=st[i[0]]; self.assertIn("src.sensores",passo["run"]); self.assertIn("log_sensores.txt",passo["run"]); self.assertIn("regulares",passo["run"])
         painel=[k for k,n in enumerate(nomes) if "Dados do dashboard" in n][0]
         self.assertLess(i[0],painel)                                  # coleta ANTES do painel
-        self.assertNotIn("src.sensores",st[painel]["run"])             # e não mais dentro dele
+        self.assertNotIn("src.sensores",st[painel].get("run") or "")   # e não mais dentro dele
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

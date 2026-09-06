@@ -482,7 +482,8 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
     tipos_bloco = None
     if bloco == "regulares":
         escala["saem"] = [s for s in escala["saem"] if not s.get("fontes_260")] + \
-            [s for s in registro() if not s.get("fontes_260") and s["id"] not in {x["id"] for x in escala["saem"]}]
+            [{**s, "motivo": "bloco regulares: teste de todos os motores"} for s in registro()
+             if not s.get("fontes_260") and s["id"] not in {x["id"] for x in escala["saem"]}]
         escala["bloco"] = bloco
     elif bloco not in ("completo", "manual") and hz.exists():
         for b in load_json(hz).get("blocos", []):
@@ -507,7 +508,7 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         r = ler(s, pausa=pausa)
         reg = sens.setdefault(s["id"], {"nome": s["nome"], "tipo": s["tipo"], "leituras": 0,
                                         "achados_total": 0, "vazias_seguidas": 0})
-        reg.update({"ultima": r["lido_em"], "motivo": s["motivo"],
+        reg.update({"ultima": r["lido_em"], "motivo": s.get("motivo") or f"bloco {escala.get('bloco') or 'manual'}",
                     "leituras": reg["leituras"] + 1,
                     "achados_ultima": len(r["achados"]),
                     "achados_total": reg["achados_total"] + len(r["achados"]),
