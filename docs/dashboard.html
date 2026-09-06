@@ -326,7 +326,9 @@ box-shadow:0 1px 3px #0002}
 .sug-doclist{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}.sug-doc{border:1px solid var(--linha);border-radius:12px;padding:1px 8px;font-size:11px}.sug-doc.ok{border-color:var(--ok);color:var(--ok)}.sug-doc.falta{border-color:var(--urgente);color:var(--urgente)}
 .dropzone{margin-top:6px;border:2px dashed #9FC1E8;border-radius:10px;padding:10px;text-align:center;font-size:11.5px;color:#0B4EA2;background:#F7FBFF}.dropzone.over{background:#E3F0FF;border-color:#0B4EA2}.drop-status{margin-top:6px;text-align:left}
 .perfil-card.sem-clip{overflow:visible}
-.perfil-foto-wrap{position:relative;width:132px}.perfil-trocar{position:absolute;left:0;right:0;bottom:0;background:#0E2A55dd;color:#fff;font-size:11px;text-align:center;padding:4px;border-radius:0 0 14px 14px;cursor:pointer}
+.perfil-foto-wrap{position:relative;width:132px;display:flex;flex-direction:column;gap:8px}.perfil-foto-wrap .perfil-trocar{bottom:auto;position:static;border-radius:0 0 14px 14px;margin-top:-8px}
+.perfil-incluir{background:#0E2A55;color:#fff;border:0;border-radius:10px;padding:9px 10px;font-weight:800;font-size:12.5px;cursor:pointer;box-shadow:0 2px 8px #0E2A5544}.perfil-incluir:hover{background:#2F5C8F}
+.inc-item{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-bottom:1px dotted #EEF1F5;font-size:12.5px}.inc-item small{display:block;color:var(--suave);font-size:11px}.perfil-trocar{position:absolute;left:0;right:0;bottom:0;background:#0E2A55dd;color:#fff;font-size:11px;text-align:center;padding:4px;border-radius:0 0 14px 14px;cursor:pointer}
 .sug-top{display:grid;grid-template-columns:60px 1fr 220px;gap:12px;align-items:start}@media(max-width:900px){.sug-top{grid-template-columns:1fr}}
 .sug-esq{display:flex;align-items:center;gap:6px}.sug-objeto{font-size:12px;margin-top:3px;line-height:1.45}.sug-objeto b{color:var(--suave)}
 .sug-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.chip{display:inline-flex;flex-direction:column;padding:4px 9px;border:1px solid var(--linha);border-radius:9px;font-size:12px;font-weight:700;background:#F6F7F9;line-height:1.2}.chip small{font-weight:600;font-size:9.5px;color:var(--suave);text-transform:uppercase;letter-spacing:.04em}
@@ -656,12 +658,10 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 
 <!-- ============ ELDORADO · EDITAIS ============ -->
 <section id="v-editais" class="oculto" style="margin-top:14px">
-<div class="abas abas-ed" id="ed-abas">
+<div class="abas abas-ed" id="ed-abas" style="justify-content:center">
   <button data-aba="em_andamento" class="on"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.5v4.8l3 1.8"/></svg><span>Em andamento</span></button>
-  <button data-aba="inscrito"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/></svg><span>Inscrição realizada</span></button>
   <button data-aba="encerrado"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11z"/><path d="M5 4.5h14l1.5 3h-17z"/><path d="M10 12h4"/></svg><span>Arquivados — Encerrados / Descartados</span></button>
   <button data-aba="ranking_empresas"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Ranking de empresas</span></button>
-  <button onclick="exportarArquivados()" title="exportar a lista de arquivados para dados/editais/arquivados.json — o sistema inteiro passa a ignorá-los" style="margin-left:auto"><span>⬇ exportar arquivados</span></button>
 </div>
 <div class="legenda" style="margin-bottom:12px" id="ed-legenda"></div>
 <!-- EM ANDAMENTO — unificação: aqui vive a antiga «Fontes com edital aberto» da Bússola, com todos os seus filtros -->
@@ -674,10 +674,10 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <p class="meta" style="margin:6px 0 10px">Todas as oportunidades levantadas, numa caixa cada, organizadas por <strong>área de atuação</strong>. O órgão que publica aparece dentro da caixa (PNCP e Querido Diário são só a via de captura). Passe o mouse para o resumo. Filtro do terceiro setor aplicado: só o que uma associação pode aproveitar.</p>
   <div class="bz-filtros" style="margin:0 0 12px">
     <select id="bz-assoc" style="display:none"><option value="">Associação</option></select>
-    <select id="bz-uf" title="UF — também sincronizada pelo clique no mapa da Bússola"><option value="">Todo o Brasil</option><option value="__nac__">Brasil · nível nacional</option></select>
+    <select id="bz-uf" title="UF — também sincronizada pelo clique no mapa da Bússola"><option value="">Todo o Brasil (todos os estados)</option><option value="__nac__">Brasil · só editais de nível nacional</option></select>
     <select id="bz-area"><option value="">Área</option></select>
-    <select id="bz-nivel"><option value="">Nível</option></select>
-    <select id="bz-prazo" title="Curadoria: ABERTA = período de inscrição vigente e confirmado, com cidade/estado e publicação oficial; POSSÍVEL = encontrada, sem prazo confirmado — em investigação até validar ou descartar; ENCERRADA = o período já passou"><option value="vivas">Abertas + possíveis (em investigação)</option><option value="abertos">Só abertas confirmadas</option><option value="possiveis">Só possíveis — sem prazo confirmado</option><option value="encerrados">Encerradas</option><option value="">Todas</option></select>
+    <select id="bz-nivel" style="display:none"><option value="">Nível</option></select>
+    <select id="bz-prazo" style="display:none"><option value="abertos" selected>Abertas + possíveis</option></select>
     <span class="bz-limpar" onclick="bzLimpar()">⨯ Limpar filtros</span>
   </div>
   <div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
@@ -925,10 +925,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260906202632"></script>
-<script src="mapa-arte.js?v=20260906202632"></script>
-<script src="dashboard-dados.enc.js?v=20260906202632"></script>
-<script src="dashboard-dados.js?v=20260906202632"></script>
+<script src="mapa-brasil.js?v=20260906223601"></script>
+<script src="mapa-arte.js?v=20260906223601"></script>
+<script src="dashboard-dados.enc.js?v=20260906223601"></script>
+<script src="dashboard-dados.js?v=20260906223601"></script>
 <script>
 (function(){
 "use strict";
@@ -1434,9 +1434,11 @@ function desenhaGantt(){
       || (c.resultado&&dentro(c.resultado.data))
       || (c.recurso&&cruza(c.recurso.inicio,c.recurso.fim));};
   const noMes=base.filter(tocaMes);
-  const eds=[...noMes].sort((a,b)=>
-    String(a.ciclo.inscricao&&a.ciclo.inscricao.fim||a.ciclo.fim_do_ciclo)
-      .localeCompare(String(b.ciclo.inscricao&&b.ciclo.inscricao.fim||b.ciclo.fim_do_ciclo))).slice(0,8);
+  /* REGRA DO TITULAR (06/09): primeiro os editais do BRASIL (nível nacional), depois GOIÁS, depois os demais;
+     dentro de cada grupo, pelo prazo de vencimento/encerramento mais próximo */
+  const grupo=e=>(!e.uf||e.abrangencia==="nacional"||e.nivel==="federal")?0:(e.uf==="GO"?1:2);
+  const fimDe=e=>String(e.ciclo.inscricao&&e.ciclo.inscricao.fim||e.ciclo.fim_do_ciclo||"9999");
+  const eds=[...noMes].sort((a,b)=>grupo(a)-grupo(b)||fimDe(a).localeCompare(fimDe(b))).slice(0,12);
   const foraDoFiltro=base.length-noMes.length;
 
   /* PREVISÕES (cinza claro) — apenas nos meses adiante do atual. Ao virar o
@@ -1895,7 +1897,8 @@ const casaPrazo=(e,pz)=>{const s=situacaoDe(e);return !pz||(pz==="vivas"?(s==="a
 function editaisFiltradosBz(){
   const eds=D.editais||[];
   const uf=$("bz-uf").value,ar=$("bz-area").value,ni=$("bz-nivel").value,pz=$("bz-prazo").value;
-  return eds.filter(e=>(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))
+  const nacional=e=>!e.uf||e.abrangencia==="nacional"||e.nivel==="federal";
+  return eds.filter(e=>(!uf||(uf==="__nac__"?nacional(e):(e.uf===uf||nacional(e))))
     &&(!ar||e.area===ar)&&(!ni||e.nivel===ni)&&casaPrazo(e,pz));
 }
 let FA_ABERTAS=null, faPagina={};
@@ -2010,7 +2013,8 @@ function desenhaPerfis(){
     const ini=(d.razao_social||d.id).split(/\s+/).filter(w=>/^[A-ZÀ-Ú]/.test(w)).slice(0,3).map(w=>w[0]).join("")||"A";
     const local=localStorage.getItem("amc_imagem_"+d.id);
     const foto=`<div class="perfil-foto-wrap">${(local||d.imagem_perfil)?`<img src="${esc(local||d.imagem_perfil)}" alt="" class="perfil-foto">`:`<div class="perfil-foto mono">${esc(ini)}</div>`}
-      <label class="perfil-trocar" title="trocar a imagem do perfil"><input type=file accept="image/*" style="display:none" onchange="trocarImagem('${esc(d.id)}',this)">✎ trocar imagem</label></div>`;
+      <label class="perfil-trocar" title="trocar a imagem do perfil"><input type=file accept="image/*" style="display:none" onchange="trocarImagem('${esc(d.id)}',this)">✎ trocar imagem</label>
+      <button class="perfil-incluir" onclick="abrirIncluirEditais('${esc(d.id)}')" title="escolher, no banco do Eldorado, editais abertos para esta associação">＋ incluir editais relevantes</button></div>`;
     const pn=q.por_nivel||{}; const ab=abrangenciaLocal(d.id,q.abrangencia||{});
     const cand=(q.candidatos_aprovacao||[]).filter(x=>!ab.municipios_aprovados.includes(`${x.uf}/${x.cidade}`));
     return `<div class="perfil-card" data-assoc="${esc(d.id)}">
@@ -2019,13 +2023,13 @@ function desenhaPerfis(){
         <div class="perfil-nome">${esc(d.razao_social||d.id)}</div>
         <div class="perfil-linha"><b>CNPJ</b> ${esc(d.cnpj||"—")} · <b>Presidente</b> ${pres?esc(pres):'<span class=meta>pendente</span>'} · <b>Mandato</b> ${g.mandato&&g.mandato.inicio?br(g.mandato.inicio)+" → "+br(g.mandato.fim):'<span class=meta>pendente</span>'} · <b>Sede</b> ${esc([s.bairro,s.municipio&&s.uf?s.municipio+"/"+s.uf:null].filter(Boolean).join(", ")||"—")}</div>
         <div class="perfil-linha"><b>Editais que enquadram</b> ${q.compativeis_geograficamente??0} de ${q.editais_abertos_total??0}: <span class=tag>${pn.nacional??0} nacionais</span> <span class=tag>${pn.estadual??0} estaduais</span> <span class=tag>${pn.municipal??0} municipais</span>${cand.length?` <span class=tag style="border-color:${ROSA};color:${ROSA}">${cand.length} em cidades candidatas — aprovar</span>`:""}
-          <button class="fdoc-bt principal" style="margin-left:8px" onclick="abrirAbrangencia('${esc(d.id)}')">＋ incluir editais relevantes</button></div>
+          <button class="fdoc-bt" style="margin-left:8px" onclick="abrirAbrangencia('${esc(d.id)}')">abrangência (estados e cidades)</button></div>
         <div class="perfil-linha">${(d.afinidades||[]).map(a=>`<span class=tag style="color:${AREA(a).cor};border-color:${AREA(a).cor}66">${esc(AREA(a).rotulo)}</span>`).join(" ")}</div>
         ${d.utilidade_publica?`<div class="perfil-linha"><b>Utilidade pública</b> ${Object.entries(d.utilidade_publica).map(([k,v])=>`${esc(k)}: ${esc((v||{}).lei||"")} <span class=meta>${esc((v||{}).status||"")}${(v||{}).verificacao?" — "+esc(v.verificacao.status):""}</span>${(v||{}).verificacao&&v.verificacao.url?` <a href="${esc(v.verificacao.url)}" target=_blank rel="noopener noreferrer">fonte ↗</a>`:""}`).join(" · ")}</div>`:""}
         <div class="perfil-cartao"><b>Cartão de visitas.</b> ${esc(d.razao_social||"")}, ${esc((d.natureza_juridica||"").replace(/_/g," "))} fundada em ${d.fundada_em?br(d.fundada_em):"—"} (${d.anos_existencia??"—"} anos), atua em ${(d.afinidades||[]).slice(0,5).map(a=>AREA(a).rotulo.toLowerCase()).join(", ")}${(d.afinidades||[]).length>5?" e outras áreas":""}, com experiência em ${(d.experiencias||[]).slice(0,4).map(x=>x.replace(/_/g," ")).join(", ")}. Governança: ${(g.cargos||[]).map(x=>x.replace(/_/g," ")).join(", ")}.${g.remuneracao?" "+esc(g.remuneracao)+".":""} Contato: ${esc(Object.values(c).join(" · ")||"—")}.</div>
         <div class="perfil-rodape"><span class=meta>${(d.prontidao||{}).certidoes_validas??0}/${(d.prontidao||{}).certidoes_total??5} certidões · ${(d.prontidao||{}).registrados_enviados??0}/${(d.prontidao||{}).registrados_total??6} registrados</span> · <span class="verlink" onclick="mostra('f-documentos')">Documentos ›</span></div>
       </div>
-      <div class="perfil-editais" id="perfil-editais-caixa-${esc(d.id)}"><div class="fdoc-t"><button class="fdoc-bt" style="float:right" onclick="alternaLargura('perfil-editais-caixa-${esc(d.id)}')" title="expandir até os limites da página">⇔ largura</button>Editais enquadrados pela IA para esta associação <span class=meta>— ${(q.editais||[]).length} após o filtro geográfico${cand.length?` · <span style="color:${ROSA};font-weight:700">${cand.length} em rosa aguardam sua aprovação</span>`:""}</span></div>
+      <div class="perfil-editais faixa-total" id="perfil-editais-caixa-${esc(d.id)}"><div class="fdoc-t">Editais enquadrados pela IA para esta associação <span class=meta>— ${(q.editais||[]).length} após o filtro geográfico${cand.length?` · <span style="color:${ROSA};font-weight:700">${cand.length} em rosa aguardam sua aprovação</span>`:""}</span></div>
         <div id="perfil-editais-${esc(d.id)}"></div>
         ${cand.length?`<div class="fdoc-t" style="margin-top:10px;color:${ROSA}">Cidades candidatas (50 maiores de ${(ab.estados||[]).join(", ")}) com edital identificado — aprovar manualmente</div>
           ${cand.slice(0,30).map(x=>`<div class="enq-ed cand" style="border-color:${ROSA}"><div class="enq-ed-l1" style="grid-template-columns:1fr auto"><span class="enq-tit"><b style="color:${ROSA}">${esc(x.cidade)}/${esc(x.uf)}</b> <small>${esc((x.titulo||"").slice(0,90))} · ${esc(AREA(x.area).rotulo)}${x.fim?" · até "+br(x.fim):""}</small></span>
@@ -2055,6 +2059,30 @@ window.trocarImagem=function(id,input){const f=input.files&&input.files[0];if(!f
 window.alternaLargura=function(id){const el=$(id);if(!el)return;el.classList.toggle("faixa-total");const c=el.closest(".perfil-card");if(c)c.classList.toggle("sem-clip",el.classList.contains("faixa-total"));};
 function abrangenciaLocal(id,base){const e=JSON.parse(localStorage.getItem("amc_abrangencia_"+id)||"null");return e||{nacional:base.nacional!==false,estados:base.estados||[],municipios_aprovados:base.municipios_aprovados||[],municipios_candidatos:base.municipios_candidatos||[]};}
 function salvaAbrangencia(id,ab){ab.atualizado_em=new Date().toISOString().slice(0,10);localStorage.setItem("amc_abrangencia_"+id,JSON.stringify(ab));desenhaPerfis();}
+/* INCLUIR EDITAIS RELEVANTES: pop-up com todos os editais ABERTOS do banco do Eldorado
+   (núcleo + base ampla); o titular filtra e marca o edital exato; a escolha vale para a associação
+   (dados/associacoes/<id>/incluidos_editais.json) e o CI passa a considerá-lo mesmo fora do filtro geográfico */
+function incluidosLocal(id){return JSON.parse(localStorage.getItem("amc_incluidos_"+id)||"[]");}
+window.incluirEdital=function(id,eid,on){let l=incluidosLocal(id);l=on?[...new Set([...l,eid])]:l.filter(x=>x!==eid);localStorage.setItem("amc_incluidos_"+id,JSON.stringify(l));const n=$("inc-n");if(n)n.textContent=l.length;};
+window.exportarIncluidos=function(id){const l=incluidosLocal(id);const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({editais:l,em:new Date().toISOString().slice(0,10),por:"titular"},null,2)],{type:"application/json"}));a.download="incluidos_editais.json";a.click();};
+window.abrirIncluirEditais=async function(id){
+  if(!FA_ABERTAS){try{await garanteAbertas();}catch(e){}}
+  const nucleo=(D.editais||[]).filter(e=>["aberta","possivel"].includes(situacaoDe(e)));
+  const ampla=(FA_ABERTAS||[]).filter(o=>["aberta","possivel"].includes(situacaoDe(o)));
+  const vistos=new Set(nucleo.map(e=>e.id)); const todos=[...nucleo,...ampla.filter(o=>!vistos.has(o.id))];
+  const UFS=[...new Set(todos.map(e=>e.uf).filter(Boolean))].sort(); const AREAS=[...new Set(todos.map(e=>e.area).filter(Boolean))].sort();
+  abreModal(`<h3 style="margin:0">Incluir editais relevantes</h3><div class=meta>${todos.length} editais abertos/possíveis no banco do Eldorado · marcados: <b id="inc-n">${incluidosLocal(id).length}</b></div>`,
+   `<div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0"><input id="inc-q" placeholder="filtrar pelo nome exato do edital, órgão ou cidade" style="flex:1;min-width:220px;padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit">
+      <select id="inc-uf" style="padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit"><option value="">todos os estados</option><option value="__nac__">Brasil (nacional)</option>${UFS.map(u=>`<option>${u}</option>`).join("")}</select>
+      <select id="inc-area" style="padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit"><option value="">todas as áreas</option>${AREAS.map(a=>`<option value="${esc(a)}">${esc(AREA(a).rotulo)}</option>`).join("")}</select></div>
+    <div id="inc-lista" style="max-height:52vh;overflow:auto"></div>
+    <div style="margin-top:10px;display:flex;gap:8px"><button class="fdoc-bt principal" onclick="exportarIncluidos('${esc(id)}')">⬇ exportar incluidos_editais.json</button><a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="https://github.com/amcjardimamerica-arch/Eldorado/upload/main/dados/associacoes/${esc(id)}/">⬆ enviar ao repositório</a><span class=meta>o Enquadramento passa a considerar os marcados na próxima saída</span></div>`);
+  const desenha=()=>{const q=($("inc-q").value||"").toLowerCase(),uf=$("inc-uf").value,ar=$("inc-area").value,marc=new Set(incluidosLocal(id));
+    const nac=e=>!e.uf||e.abrangencia==="nacional"||e.nivel==="federal";
+    const lista=todos.filter(e=>(!q||`${e.titulo} ${e.fonte_nome||""} ${e.orgao||""} ${e.municipio||""}`.toLowerCase().includes(q))&&(!uf||(uf==="__nac__"?nac(e):e.uf===uf))&&(!ar||e.area===ar)).slice(0,200);
+    $("inc-lista").innerHTML=lista.map(e=>`<label class="inc-item"><input type=checkbox ${marc.has(e.id)?"checked":""} onchange="incluirEdital('${esc(id)}','${esc(e.id)}',this.checked)"><span><b>${esc(e.titulo||"")}</b><small>${esc(AREA(e.area).rotulo)} · ${esc(e.uf||"Brasil")} · ${esc(e.fonte_nome||e.orgao||"")}${e.fim?" · até "+br(e.fim):""} · ${situacaoDe(e)==="aberta"?"aberta":"possível"}</small></span></label>`).join("")||'<div class=meta>nenhum edital com esse filtro</div>';};
+  ["inc-q","inc-uf","inc-area"].forEach(i=>$(i).addEventListener("input",desenha)); desenha();
+};
 window.aprovarCidade=function(id,chave){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});if(!ab.municipios_aprovados.includes(chave))ab.municipios_aprovados.push(chave);ab.municipios_candidatos=ab.municipios_candidatos.filter(c=>c!==chave);salvaAbrangencia(id,ab);};
 window.abrirAbrangencia=function(id){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});
   const UFS=["AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"];
@@ -2263,7 +2291,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
   const info={};((D.bussola&&D.bussola.fontes_com_editais)||[]).forEach(f=>f.editais.forEach(e=>info[e.id]={...e,_fonte:f}));
   const hojeISO=HOJE.toISOString().slice(0,10);
   const extras=(FA_ABERTAS||[]).filter(o=>estadoDe(o.id)==="em_andamento"
-    &&(!uf||o.uf===uf||(!o.uf&&(o.nivel==="federal"||!o.nivel)))&&(!ar||o.area===ar)&&(!ni||o.nivel===ni)
+    &&(!uf||(uf==="__nac__"?(!o.uf||o.nivel==="federal"):(o.uf===uf||!o.uf||o.nivel==="federal")))&&(!ar||o.area===ar)
     &&casaPrazo(o,pz))
     .map(o=>({e:{...o,fonte_nome:o.orgao&&!/pncp|querido/i.test(o.orgao)?o.orgao:o.fonte_nome,estado_export:situacaoDe(o)==="encerrada"?"encerrado":situacaoDe(o)==="aberta"?"aberto":"sem_prazo",abrangencia:o.nivel==="federal"?"nacional":"estadual"},
              b:o.campanha?{campanha:{status:o.campanha,dia:o.campanha_dia,tentativas:null,pendencias:[]},_fonte:{fonte_nome:o.orgao||o.fonte_nome,via:/querido/i.test(o.fonte_nome||"")?"Querido Diário":/pncp/i.test(o.fonte_nome||"")?"PNCP":null,categoria:"api_oficial"},pertinencia:o.pertinencia,analise_etapa2:[],comprovados:null,total_itens:null,anexos:[],pendencias:[]}:null}));
@@ -2966,7 +2994,9 @@ function iniciarBz(){
   const eds=D.editais||[];
   const porUF={};eds.forEach(e=>{if(e.uf)porUF[e.uf]=(porUF[e.uf]||0)+1;});
   const sel=$("bz-uf");sel.length=1;
-  Object.keys(porUF).sort().forEach(u=>{const o=document.createElement("option");o.value=u;o.textContent=`${u} (${porUF[u]})`;sel.appendChild(o);});
+  const nac=eds.filter(e=>!e.uf||e.abrangencia==="nacional"||e.nivel==="federal").length;
+  {const o=document.createElement("option");o.value="__nac__";o.textContent=`Brasil · só editais de nível nacional (${nac})`;sel.appendChild(o);}
+  Object.keys(porUF).sort().forEach(u=>{const o=document.createElement("option");o.value=u;o.textContent=`${u} (${porUF[u]} + ${nac} nacionais)`;o.title="editais do estado + os de nível nacional (valem para todo o Brasil)";sel.appendChild(o);});
   const areas=[...new Set(eds.map(e=>e.area))].sort();
   const sa=$("bz-area");sa.length=1;areas.forEach(a=>{const o=document.createElement("option");o.value=a;o.textContent=AREA(a).rotulo;sa.appendChild(o);});
   const sn=$("bz-nivel");sn.length=1;[...new Set(eds.map(e=>e.nivel).filter(Boolean))].sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;sn.appendChild(o);});

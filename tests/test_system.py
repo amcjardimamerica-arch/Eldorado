@@ -3028,7 +3028,7 @@ class SystemTests(unittest.TestCase):
         usa o mesmo motor da Bússola; arquivados em linha, com filtros, sem descarte."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ('"Base legal"',"normas na Biblioteca",'id="bz-motores-ativos"',"motores ativos / total","function atualizaMotoresAtivos",
-                  '<span>Em andamento</span>','<span>Inscrição realizada</span>','<span>Arquivados — Encerrados / Descartados</span>',
+                  '<span>Em andamento</span>','<span>Arquivados — Encerrados / Descartados</span>',
                   'class="abas abas-ed"',"function montaOportunidadesPorArea","desenhaFontesAbertas();",
                   'id="ed-filtros"','id="ed-area"','id="ed-uf"',"ed-linha",'data-acao="detalhe"','data-acao="recuperar"',
                   'salvaDecisao(e.id,"em_andamento"'):
@@ -3067,7 +3067,7 @@ class SystemTests(unittest.TestCase):
         for e in abertas:
             self.assertTrue(e.get("fim")); self.assertTrue(e.get("uf") or e.get("territorio") or e.get("abrangencia")=="nacional")
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("function situacaoDe","casaPrazo",'<option value="possiveis">','<option value="vivas">',"possíveis em investigação","bzFecharUF",
+        for x in ("function situacaoDe","casaPrazo",'id="bz-prazo" style="display:none"',"bzFecharUF",
                   "if(bzUFsel){desenhaBzLateral();return;}","Encontrado (varredura)"): self.assertIn(x,html,x)
         self.assertNotIn('id="bz-lateral"',html)                       # detalhe do estado vai para a coluna da direita
 
@@ -3703,7 +3703,7 @@ class SystemTests(unittest.TestCase):
         self.assertFalse(conhecimento_regramento({"titulo":"Emenda Parlamentar Estadual — Goiás","fonte_nome":"x"})["itens"].get("Valor","").startswith("variável"))  # não confunde com Rouanet
         r=load_json(pathlib.Path("config/regramentos.json")); self.assertTrue(all(g.get("tipo_captacao","").startswith("pessoal") for g in r["regramentos"] if "emenda" in g["fonte"].lower()))
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("window.decidirEdital","inscrição realizada","dispensar","sug-titulo","sug-chips","Considerações da IA","Documentos para a inscrição","class=\"dropzone\"","function ligaDropzones","window.alternaLargura","⇔ largura"): self.assertIn(x,html,x)
+        for x in ("window.decidirEdital","inscrição realizada","dispensar","sug-titulo","sug-chips","Considerações da IA","Documentos para a inscrição","class=\"dropzone\"","function ligaDropzones","window.alternaLargura"): self.assertIn(x,html,x)
         self.assertNotIn("enq-cron-mini",html.split("function htmlEditaisEnquadrados")[1].split("function desenhaEnquadramento")[0])
         q=load_json(pathlib.Path("docs/dashboard-dados.json"))["enquadramento"][0]
         em=[e for e in q["editais"] if "Emenda" in (e["titulo"] or "")]; self.assertTrue(em and all(sum(1 for i in e["itens"] if i["valor"] or i.get("dispensavel"))==12 for e in em))   # obtidos ou dispensados com motivo
@@ -3901,6 +3901,17 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(len(ap),50); self.assertTrue(any(x.get("origem_fim") for x in d["editais"]) or True)
         html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertNotIn('.filter(e=>estadoDe(e.id)==="em_andamento" && e.ciclo && e.ciclo',html)
         src=open("src/dashboard_dados.py",encoding="utf-8").read(); self.assertIn("def _integrar_analise",src); self.assertIn("_integrar_analise(e)",src)
+
+
+    def test_oportunidades_abertas_reorganizadas_e_incluir_editais(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertNotIn('data-aba="inscrito"',html); self.assertNotIn('onclick="exportarArquivados()"',html)
+        self.assertIn('id="ed-abas" style="justify-content:center"',html)
+        self.assertIn('<select id="bz-nivel" style="display:none">',html); self.assertIn('<select id="bz-prazo" style="display:none">',html)
+        self.assertIn("Brasil · só editais de nível nacional",html); self.assertIn("nacionais)",html)
+        for x in ("const grupo=e=>","e.uf===\"GO\"?1:2","window.abrirIncluirEditais","perfil-incluir","incluidos_editais.json","inc-item"): self.assertIn(x,html,x)
+        self.assertNotIn("⇔ largura",html); self.assertIn('class="perfil-editais faixa-total"',html)
+        src=open("src/enquadramento.py",encoding="utf-8").read(); self.assertIn("incluidos_editais.json",src); self.assertIn('e["id"] in incluidos',src)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

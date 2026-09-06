@@ -428,7 +428,9 @@ def run(limite_ia: int = 8) -> dict:
         dec_p = ROOT / "dados/associacoes" / a["_pasta"] / "decisoes_editais.json"
         dec = load_json(dec_p) if dec_p.exists() else {}
         arq_p = ROOT / "dados/editais/arquivados.json"; arquivados = load_json(arq_p) if arq_p.exists() else {}
-        geo = [e for e in abertos if e["id"] not in arquivados and filtro_geografico(a, e) and dec.get(e["id"]) != "dispensado"]
+        inc_p = ROOT / "dados/associacoes" / a["_pasta"] / "incluidos_editais.json"
+        incluidos = set((load_json(inc_p).get("editais") or [])) if inc_p.exists() else set()
+        geo = [e for e in abertos if e["id"] not in arquivados and (filtro_geografico(a, e) or e["id"] in incluidos) and dec.get(e["id"]) != "dispensado"]
         cand = [e for e in abertos if not filtro_geografico(a, e) and candidato_aprovacao(a, e)]
         lista = []
         for e in geo:
