@@ -2631,7 +2631,7 @@ class SystemTests(unittest.TestCase):
         d3=diagnostico({"sites":["https://x/"]},cam,None,{"erros":{"HTTPError":3},"bloqueios":3})
         self.assertIn("bloqueada",d3["causa"]); self.assertIn("escada",d3["acao"])
         m=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json"))
-        self.assertGreaterEqual(m["total"],241)             # 241 fontes das 260 (menos emendas) + oportunidades mapeadas que viram motor
+        self.assertEqual(m["total"],241)                    # 260 menos as emendas (calendário próprio)
         pn=[x for x in m["motores"] if x["familia"]=="PNAB / Aldir Blanc"]
         self.assertEqual({x["segmento"] for x in pn},{"Estadual GO","Municipal Goiânia"})
         self.assertTrue(all(len(x["camadas"])==12 for x in m["motores"]))

@@ -1,9 +1,31 @@
-commit: 33496051c29024d0e9fc5df76b0467215a8633f7
-em: 2026-09-06T09:10:14Z
-rc: 0
+commit: 7d29097b89927cae78b10692db0b9f075e501fba
+em: 2026-09-06T10:26:49Z
+rc: 1
 
 ----------------------------------------------------------------------
-Ran 192 tests in 311.086s
+Ran 193 tests in 311.792s
 
-OK (skipped=9)
+FAILED (failures=2, skipped=9)
 ---- falhas ----
+FAIL: test_motores_de_busca_260_por_tipo_e_territorio (test_system.SystemTests.test_motores_de_busca_260_por_tipo_e_territorio)
+Caixa 'Motores de Busca': 260 pontos agregados por tipo e segmentados
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 2634, in test_motores_de_busca_260_por_tipo_e_territorio
+    self.assertEqual(m["total"],241)                    # 260 menos as emendas (calendário próprio)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 246 != 241
+
+======================================================================
+FAIL: test_orcamento_de_ia_sem_repeticao_e_documentos_de_submissao (test_system.SystemTests.test_orcamento_de_ia_sem_repeticao_e_documentos_de_submissao)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3732, in test_orcamento_de_ia_sem_repeticao_e_documentos_de_submissao
+    try: self.assertIn("aguardando credencial",_chamar("claude-haiku-4-5","x",100,web=False,tarefa="edital:t")["status"])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'aguardando credencial' not found in 'fase 3 por rotina externa — a IA não roda no GitHub'
+
+----------------------------------------------------------------------
+Ran 193 tests in 311.792s
+
+FAILED (failures=2, skipped=9)
