@@ -503,6 +503,37 @@ def historico_5_anos(nome: str) -> dict:
 FILA_VERIF = ROOT / "estado/fila_verificacao.json"
 
 
+def _mapa_maiores() -> dict:
+    arq = ROOT / "config/municipios_maiores.json"
+    m = load_json(arq).get("maiores", {}) if arq.exists() else {}
+    import unicodedata
+    def n(s): return re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", s.lower()).encode("ascii", "ignore").decode())
+    return {uf: {n(c): c for c in cid} for uf, cid in m.items()}
+
+
+def classificar_geografia(e: dict, maiores: dict) -> dict:
+    """Regra do titular (07/09): (a) oportunidade sem UF/região definida é NACIONAL,
+    sem restrição geográfica — prioridade máxima; (b) com UF, só entra se a cidade
+    for uma das 50 maiores do estado (ou se for estadual/regional, sem cidade);
+    (c) cidade fora das 50 maiores fica em ROSA para aprovação manual."""
+    import unicodedata
+    def n(s): return re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", (s or "").lower()).encode("ascii", "ignore").decode())
+    uf = e.get("uf")
+    if not uf or e.get("abrangencia") == "nacional" or e.get("nivel") == "federal":
+        return {"escopo": "nacional", "prioridade_geo": 0, "motivo": "sem restrição geográfica declarada — vale para todo o Brasil"}
+    cidade = _cidade_de(e)
+    if not cidade:
+        return {"escopo": "estadual", "prioridade_geo": 1, "uf": uf, "motivo": f"abrangência estadual em {uf} (sem cidade identificada)"}
+    lista = maiores.get(uf, {})
+    chave = n(cidade)
+    achou = next((v for k, v in lista.items() if k == chave or (len(chave) > 5 and (chave in k or k in chave))), None)
+    if achou:
+        return {"escopo": "municipal", "prioridade_geo": 2, "uf": uf, "cidade": achou, "entre_50_maiores": True,
+                "motivo": f"{achou}/{uf} está entre as 50 maiores do estado"}
+    return {"escopo": "municipal_fora", "prioridade_geo": 9, "uf": uf, "cidade": cidade, "entre_50_maiores": False,
+            "motivo": f"{cidade}/{uf} não está entre as 50 maiores do estado — fica em rosa para aprovação manual"}
+
+
 def fila_verificacao() -> dict:
     """Todo edital aberto/possível cujas informações NÃO estão completas: o que falta,
     o link oficial para validação e a prioridade. É esta fila que a IA de domingo
@@ -522,12 +553,19 @@ def fila_verificacao() -> dict:
     arq = load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}
     itens = []
     edicoes_brutas = 0
+    maiores = _mapa_maiores()
+    fora_das_50 = []
     for e in universo:
         if e["id"] in arq:
             continue
         # edição inteira de diário sem ato identificado: fica para a extração de edições (fase 2), não para a IA
         if re.match(r"Di[áa]rio Oficial de .+\d{4}-\d{2}-\d{2}", e.get("titulo") or "") and not (e.get("objeto") or e.get("fim")):
             edicoes_brutas += 1; continue
+        geo = classificar_geografia(e, maiores)
+        if geo["escopo"] == "municipal_fora":
+            fora_das_50.append({"id": e["id"], "titulo": (e.get("titulo") or "")[:120], "uf": e.get("uf"), "cidade": geo.get("cidade"),
+                                "motivo": geo["motivo"], "url": e.get("url")})
+            continue                                   # depuração: sai da fila; volta em rosa quando o titular aprovar a cidade
         ex = load_json(EXTRAIDOS / f"{e['id']}.json") if (EXTRAIDOS / f"{e['id']}.json").exists() else {}
         faltam = ex.get("faltam") if ex else None
         ciclo = e.get("ciclo") or {}
@@ -539,18 +577,21 @@ def fila_verificacao() -> dict:
         if not oficial and e.get("url") and not VETOR_RX.search(e["url"]):
             oficial = e["url"]
         motivo = ("sem prazo de inscrição confirmado" if sem_prazo else "informações incompletas")
-        prio = (0 if e.get("uf") == "GO" or not e.get("uf") else 1) + (0 if sem_prazo else 1)
+        # prioridade: nacionais (sem restrição geográfica) primeiro, depois Goiás, depois os demais
+        base_prio = 0 if geo["escopo"] == "nacional" else (0 if e.get("uf") == "GO" else 2)
+        prio = base_prio + (0 if sem_prazo else 1)
         itens.append({"id": e["id"], "titulo": (e.get("titulo") or "")[:140], "uf": e.get("uf"), "area": e.get("area"),
                       "fonte": e.get("fonte_nome") or e.get("orgao"), "situacao": e.get("situacao_inscricao") or e.get("situacao"),
                       "sem_prazo": sem_prazo, "faltam": faltam if faltam is not None else list(ITENS),
                       "link_oficial": oficial, "link_anuncio": e.get("url"),
                       "anuncio_e_vetor": bool(e.get("url") and VETOR_RX.search(e["url"])),
-                      "motivo": motivo, "prioridade": prio, "ja_investigado": bool(ex)})
+                      "motivo": motivo, "prioridade": prio, "ja_investigado": bool(ex),
+                      "escopo": geo["escopo"], "cidade": geo.get("cidade"), "geo_motivo": geo["motivo"]})
     # MODO por regra do titular: Goiás e nacionais = automação completa (12 itens, parecer, selo);
     # demais estados = verificação LEVE: objeto, início e fim das inscrições e o link oficial do edital, para avaliação manual
     ITENS_LEVES = ["Objeto", "Início das inscrições", "Prazo de inscrição", "Página oficial do edital"]
     for x in itens:
-        x["modo"] = "completo" if x["prioridade"] == 0 else "leve"
+        x["modo"] = "completo" if (x["escopo"] == "nacional" or x.get("uf") == "GO") else "leve"
         if x["modo"] == "leve":
             x["faltam"] = [i for i in ITENS_LEVES if i not in (("Objeto",) if not x["sem_prazo"] else ())]
             x["instrucao"] = "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular"
@@ -578,6 +619,9 @@ def fila_verificacao() -> dict:
            "nunca_investigados": sum(1 for x in itens if not x["ja_investigado"]),
            "edicoes_de_diario_sem_ato": edicoes_brutas,
            "por_uf": {u: sum(1 for x in itens if (x.get("uf") or "BR") == u) for u in sorted({(x.get("uf") or "BR") for x in itens})},
+           "fora_das_50_maiores": {"total": len(fora_das_50), "itens": fora_das_50[:400],
+                                   "regra": "excluídas da fila por não estarem entre as 50 maiores cidades do estado; voltam em ROSA quando o titular aprovar a cidade"},
+           "escopo": {k: sum(1 for x in itens if x["escopo"] == k) for k in ("nacional", "estadual", "municipal")},
            "modo": {"completo": sum(1 for x in itens if x["modo"] == "completo"), "leve": sum(1 for x in itens if x["modo"] == "leve")},
            "marcados_para_ia": len(vivos),
            "regra": "a IA de domingo executa esta fila na ordem; a varredura imediata percorre os mesmos itens e emite parecer de cada um",

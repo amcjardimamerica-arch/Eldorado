@@ -13,13 +13,13 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## ba62bfc2d3ecc4281773 — Termos de Fomento
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 2× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 3× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
-Itens já obtidos: nenhum
+Itens já obtidos: Valor: R$ 10.000,00
 
-Itens que FALTAM: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação, Área de atuação
+Itens que FALTAM: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação, Área de atuação
 
 Anúncio: https://goias.gov.br/cultura/termos-de-fomento
 Site institucional conhecido: não localizado
@@ -33,7 +33,7 @@ Texto do edital (compacto):
 ---
 ## d476c6a5e3d568b26228 — Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 2× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 3× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Observatório do Terceiro Setor — editais · UF BR · nível federal · situação possivel · fim None
 

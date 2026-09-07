@@ -3978,6 +3978,33 @@ class SystemTests(unittest.TestCase):
         self.assertIn("prazo de encerramento da inscrição",html)
         self.assertIn("/* 07/09: o mapa não filtra por mês",html)
 
+
+    def test_depuracao_50_maiores_nacionais_e_fichas_sem_prazo(self):
+        import glob
+        mm=load_json(pathlib.Path("config/municipios_maiores.json"))["maiores"]
+        self.assertEqual(len(mm),27); self.assertGreaterEqual(sum(len(v) for v in mm.values()),1100)
+        self.assertEqual(len(mm["SP"]),50); self.assertEqual(mm["DF"],["Brasília"]); self.assertIn("Goiânia",mm["GO"])
+        from src.enquadramento import classificar_geografia, _mapa_maiores
+        M=_mapa_maiores()
+        self.assertEqual(classificar_geografia({"uf":None,"titulo":"Edital nacional"},M)["escopo"],"nacional")
+        self.assertEqual(classificar_geografia({"uf":"SP","titulo":"PREFEITURA MUNICIPAL DE CAMPINAS"},M)["escopo"],"municipal")
+        fora=classificar_geografia({"uf":"GO","titulo":"PREFEITURA MUNICIPAL DE CAVALCANTE"},M)
+        self.assertEqual(fora["escopo"],"municipal_fora"); self.assertIn("rosa",fora["motivo"])
+        self.assertEqual(classificar_geografia({"uf":"GO","titulo":"Edital estadual de cultura"},M)["escopo"],"estadual")
+        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        self.assertGreater(f["fora_das_50_maiores"]["total"],50); self.assertIn("escopo",f)
+        self.assertTrue(all(x["escopo"]!="municipal_fora" for x in f["itens"]))
+        self.assertTrue(all(x["modo"]=="completo" for x in f["itens"] if x["escopo"]=="nacional"))
+        fichas=glob.glob("biblioteca_alexandria/oportunidades_sem_prazo/*/ficha.json")
+        self.assertEqual(len(fichas),f["total"])
+        fi=load_json(pathlib.Path(fichas[0]))
+        self.assertEqual([i["item"] for i in fi["itens_14"]],__import__("src.parametros",fromlist=["ITENS_14"]).ITENS_14)
+        self.assertGreaterEqual(len(fi["documentos"]),20); self.assertIn("passos",fi["confirmacao_do_prazo"])
+        self.assertTrue(all(p.get("onde") and p.get("o_que") for p in fi["confirmacao_do_prazo"]["passos"]))
+        self.assertIn("nunca como fonte do prazo",json.dumps(fi["confirmacao_do_prazo"],ensure_ascii=False)) if fi.get("id") else None
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("fora das 50 maiores do estado foram retiradas da fila",html); self.assertIn("nacionais (sem restrição geográfica, prioridade)",html)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
