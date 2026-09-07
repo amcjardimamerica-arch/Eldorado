@@ -4072,6 +4072,23 @@ class SystemTests(unittest.TestCase):
         guia=open("docs/claude/COLETA-PELO-NAVEGADOR.md",encoding="utf-8").read()
         self.assertIn("fila_verificacao.json",guia); self.assertIn("Nunca use PNCP",guia); self.assertIn("ingerir_navegador",guia)
 
+
+    def test_envio_de_documentos_no_proprio_painel(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("window.abrirEnvio","env-zona","window.desenhaEnvio","window.validadeDoc","window.identificaTipo","TIPOS_DOC","REGRA_TIPO",
+                  "window.confirmarEnvio","pasta de documentos no Drive","multiple accept"): self.assertIn(x,html,x)
+        # a dropzone não abre mais o GitHub
+        bloco=html.split("class=\"dropzone\"")[1][:400]
+        self.assertIn("abrirEnvio",bloco); self.assertNotIn("github.com",bloco)
+        self.assertNotIn('window.open(`https://github.com/amcjardimamerica-arch/Eldorado/upload/main/dados/associacoes/${z.dataset.assoc}',html)
+        # tipos e validades da regra
+        self.assertIn('["crf_fgts","CRF do FGTS",30]',html); self.assertIn('["certidao_federal","Certidão negativa federal (RFB/PGFN)",180]',html)
+        self.assertIn('["certidao_estadual","Certidão negativa estadual",90]',html)
+        dr=load_json(pathlib.Path("config/drive.json"))
+        a=dr["associacoes"]["amc-jardim-america"]
+        for k in ("pasta","documentos","editais"): self.assertTrue(a[k]["url"].startswith("https://drive.google.com/drive/folders/"))
+        d=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("drive",d); self.assertIn("amc-jardim-america",d["drive"]["associacoes"])
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
