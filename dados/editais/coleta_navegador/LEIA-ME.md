@@ -1,0 +1,1 @@
+Cole aqui os JSON produzidos pela extensão do Claude no navegador (um arquivo por sessão, ex.: 2026-09-07.json). Formato: {"<id>": {"objeto","inicio","fim","pagina_oficial","observacao"}}. Depois rode: python -m src.enquadramento ingerir_navegador

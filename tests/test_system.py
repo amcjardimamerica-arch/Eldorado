@@ -4038,6 +4038,30 @@ class SystemTests(unittest.TestCase):
         if ex: self.assertIn("600.000,00",ex["itens"]["Valor"])   # BNDES: valor real por projeto
         html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("Informações mínimas exigidas",html)
 
+
+    def test_ingestao_da_coleta_pelo_navegador(self):
+        import json as J
+        from src.enquadramento import ingerir_navegador
+        from src.fonte_edital import EXTRAIDOS
+        pasta=ROOT/"dados/editais/coleta_navegador"; pasta.mkdir(parents=True,exist_ok=True)
+        arq=pasta/"teste_unit.json"
+        arq.write_text(J.dumps({"lab-t1":{"objeto":"Chamamento de cultura","inicio":"2026-10-01","fim":"2026-11-30","pagina_oficial":"https://orgao.gov.br/editais"},
+                                "lab-t2":{"objeto":"y","fim":"2026-12-01","pagina_oficial":"https://pncp.gov.br/app/editais/9"}}),encoding="utf-8")
+        try:
+            r=ingerir_navegador()
+            self.assertGreaterEqual(r["ingeridos"],2)
+            self.assertTrue(any("vetor" in x["motivo"] for x in r["recusados"]))          # PNCP recusado como página oficial
+            e1=load_json(EXTRAIDOS/"lab-t1.json"); self.assertEqual(e1["itens"]["Prazo de inscrição"],"2026-11-30")
+            self.assertEqual(e1["pagina_divulgacao"],"https://orgao.gov.br/editais")
+            self.assertIn("navegador",e1["fontes_itens"]["Objeto"])
+            e2=load_json(EXTRAIDOS/"lab-t2.json"); self.assertIsNone(e2.get("pagina_divulgacao"))
+        finally:
+            for f in pasta.glob("teste_unit.json*"): f.unlink()
+            for i in ("lab-t1","lab-t2"): (EXTRAIDOS/f"{i}.json").unlink(missing_ok=True)
+        self.assertTrue(pathlib.Path("docs/claude/COLETA-PELO-NAVEGADOR.md").exists())
+        guia=open("docs/claude/COLETA-PELO-NAVEGADOR.md",encoding="utf-8").read()
+        self.assertIn("fila_verificacao.json",guia); self.assertIn("Nunca use PNCP",guia); self.assertIn("ingerir_navegador",guia)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

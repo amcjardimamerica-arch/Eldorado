@@ -779,12 +779,52 @@ def ingerir() -> dict:
     return {"ingeridos": n}
 
 
+def ingerir_navegador() -> dict:
+    """Incorpora o JSON simples produzido pela extensão do Claude no navegador:
+    {"<id>": {"objeto","inicio","fim","pagina_oficial","observacao"}}.
+    Só grava o que veio da fonte oficial — descarta vetores e veículos."""
+    from .fonte_edital import EXTRAIDOS
+    VET = re.compile(r"pncp\.gov|queridodiario|in\.gov\.br|diariooficial|observatorio3setor|captadores\.org|bussolasocial|prosas\.com", re.I)
+    pasta = ROOT / "dados/editais/coleta_navegador"
+    if not pasta.exists():
+        return {"ingeridos": 0, "nota": "pasta dados/editais/coleta_navegador não existe"}
+    n, recusados = 0, []
+    for arq in sorted(pasta.glob("*.json")):
+        try:
+            dados = load_json(arq)
+        except Exception:
+            continue
+        for eid, v in (dados.items() if isinstance(dados, dict) else []):
+            if not isinstance(v, dict):
+                continue
+            pag = (v.get("pagina_oficial") or "").strip()
+            if pag and VET.search(pag):
+                recusados.append({"id": eid, "motivo": "página informada é vetor/veículo, não a fonte oficial", "url": pag}); pag = ""
+            fp = EXTRAIDOS / f"{eid}.json"
+            reg = load_json(fp) if fp.exists() else {"edital_id": eid, "tentativas": [], "itens": {}, "fontes_itens": {}}
+            itens = dict(reg.get("itens") or {}); fontes = dict(reg.get("fontes_itens") or {})
+            if v.get("objeto"): itens["Objeto"] = str(v["objeto"])[:400]; fontes["Objeto"] = "coleta pelo navegador (titular) — página oficial"
+            if v.get("fim"): itens["Prazo de inscrição"] = str(v["fim"])[:40]; fontes["Prazo de inscrição"] = "coleta pelo navegador (titular) — edital"
+            if v.get("inicio"): itens["Início das inscrições"] = str(v["inicio"])[:40]
+            if pag: reg["pagina_divulgacao"] = pag
+            if v.get("observacao"): reg.setdefault("observacoes", []).append({"em": now_iso()[:10], "texto": str(v["observacao"])[:300]})
+            faltam = [i for i in ITENS if not itens.get(i)]
+            reg.update({"itens": itens, "fontes_itens": fontes, "faltam": faltam, "completo": not faltam, "atualizado_em": now_iso()})
+            reg["tentativas"] = (reg.get("tentativas") or []) + [{"em": now_iso(), "modelo": "navegador-titular", "status": "respondeu",
+                                                                  "itens_obtidos": sum(1 for k in ("objeto", "fim", "inicio") if v.get(k)), "sinal": "verde"}]
+            write_json(fp, reg); n += 1
+        arq.rename(arq.with_suffix(".json.ingerido"))
+    return {"ingeridos": n, "recusados": recusados[:10]}
+
+
 if __name__ == "__main__":
     import sys
     if len(sys.argv) > 1 and sys.argv[1] == "pacote":
         print(json.dumps(pacote(int(sys.argv[2]) if len(sys.argv) > 2 else 6), ensure_ascii=False, indent=2))
     elif len(sys.argv) > 1 and sys.argv[1] == "fila":
         print(json.dumps(fila_verificacao(), ensure_ascii=False, indent=2))
+    elif len(sys.argv) > 1 and sys.argv[1] == "ingerir_navegador":
+        print(json.dumps(ingerir_navegador(), ensure_ascii=False, indent=2))
     elif len(sys.argv) > 1 and sys.argv[1] == "ingerir":
         print(json.dumps(ingerir(), ensure_ascii=False, indent=2))
     else:
