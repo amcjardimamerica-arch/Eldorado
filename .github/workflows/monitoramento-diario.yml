@@ -110,6 +110,12 @@ jobs:
               ;;
           esac
           python -c "import json;e=json.load(open('estado/esquadra.json'));u=e.get('ultima_execucao',{});print('ultima_execucao:',u.get('em'),'bloco',u.get('bloco'),'sensores',u.get('sensores_executados'),'achados',u.get('achados'))" | tee -a estado/log_sensores.txt
+      - name: Coleta dirigida dos editais do modo completo (documento na fonte oficial)
+        if: always()
+        run: |
+          if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 900 python -m src.coleta_editais 2>&1 | tee estado/log_coleta_editais.txt || echo "coleta_editais: registrado" | tee -a estado/log_coleta_editais.txt
+          fi
       - name: Dados do dashboard interativo
         if: always()
         run: |

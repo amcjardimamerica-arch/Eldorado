@@ -3944,7 +3944,7 @@ class SystemTests(unittest.TestCase):
         from src.enquadramento import fila_verificacao
         r=fila_verificacao()
         self.assertIn("modo",r); self.assertGreater(r["modo"]["completo"],0); self.assertGreater(r["modo"]["leve"],0)
-        self.assertEqual(r["marcados_para_ia"],r["total"]) if r["marcados_para_ia"]<=r["total"] else None
+        self.assertLessEqual(r["marcados_para_ia"],r["total"])   # marcados: os que ainda faltam confirmar (os já resolvidos saem)
         m=load_json(pathlib.Path("dados/editais/marcacoes_ia.json")); self.assertGreater(len(m),100)
         um=next(iter(m.values())); self.assertIn("desde",um); self.assertIn("modo",um); self.assertIn("faltam",um)
         f=load_json(pathlib.Path("estado/fila_verificacao.json"))
@@ -4004,6 +4004,22 @@ class SystemTests(unittest.TestCase):
         self.assertIn("nunca como fonte do prazo",json.dumps(fi["confirmacao_do_prazo"],ensure_ascii=False)) if fi.get("id") else None
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("fora das 50 maiores do estado foram retiradas da fila",html); self.assertIn("nacionais (sem restrição geográfica, prioridade)",html)
+
+
+    def test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida(self):
+        src=open("src/fonte_edital.py",encoding="utf-8").read()
+        for x in ("VEICULO = re.compile","m[íi]dia kit","conteúdo binário de PDF","PDF sem extração de texto"): self.assertIn(x,src,x)
+        from src.coleta_editais import VEICULO, run
+        self.assertTrue(VEICULO.search("https://observatorio3setor.org.br/x")); self.assertTrue(VEICULO.search("https://pncp.gov.br/app/editais/1"))
+        self.assertFalse(VEICULO.search("https://goias.gov.br/cultura/editais"))
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.coleta_editais",wf)
+        import gzip, glob
+        for f in glob.glob("dados/editais/textos/*.txt.gz"):
+            t0=gzip.open(f,"rt",encoding="utf-8").read(400)
+            self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
+        an=load_json(pathlib.Path("dados/editais/analises.json")); self.assertGreaterEqual(len(an),45)
+        ex=load_json(pathlib.Path("dados/editais/extraidos/443dfeed2a9493ab123d.json"))
+        self.assertIn("2.400.000,00",ex["itens"]["Valor"])                        # valor confirmado no texto real
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

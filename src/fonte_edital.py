@@ -166,19 +166,29 @@ def obter_texto(e: dict, maximo_pdfs: int = 3) -> dict:
         try:
             dados = _get(p["url"], binario=True, timeout=40)
             t = texto_do_pdf(dados)
+            if t.count("%PDF") or t.count("endobj") > 3:
+                t = ""                       # extração falhou: veio o binário, não o texto
+            if not t:
+                f["erros"].append(f"PDF sem extração de texto (provável PDF de imagem): {p['url'][:60]}")
             if len(t) > 200:
                 textos.append(f"### {p['titulo']} ({p['tipo']})\n{t}"); usados.append({"titulo": p["titulo"], "url": p["url"], "caracteres": len(t)})
         except Exception as exc:
             f["erros"].append(f"pdf {p['url'][:40]}: {type(exc).__name__}")
-    if not textos and f.get("paginas"):
+    VEICULO = re.compile(r"observatorio3setor|captadores\.org|bussolasocial|prosas\.com|mapaosc|filantropia\.ong|gife\.org", re.I)
+    if not textos and f.get("paginas") and not VEICULO.search(f["paginas"][0]):
         try:
             html = _get(f["paginas"][0], limite=3_000_000)
             t = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", re.sub(r"<script.*?</script>|<style.*?</style>", " ", html, flags=re.S)))
-            if len(t) > 300:
+            # descarta página de apresentação/mídia kit: não é o edital
+            if len(t) > 300 and not re.search(r"m[íi]dia kit|quem somos|nossos valores|apresenta[çc][ãa]o institucional|seguidores|patroc[íi]nio de sess[ãa]o", t[:4000], re.I):
                 textos.append("### página institucional\n" + t[:MAX_TXT]); usados.append({"titulo": "página institucional", "url": f["paginas"][0], "caracteres": len(t)})
+            else:
+                f["erros"].append("página do veículo/apresentação descartada: não é o documento do edital")
         except Exception as exc:
             f["erros"].append(f"html: {type(exc).__name__}")
     texto = "\n\n".join(textos)[:MAX_TXT]
+    if texto.count("endobj") > 3 or texto.startswith("%PDF"):
+        f["erros"].append("texto descartado: conteúdo binário de PDF"); texto = ""; usados = []
     arq = TEXTOS / f"{e['id']}.txt.gz"
     if texto:
         with gzip.open(arq, "wt", encoding="utf-8", compresslevel=9) as gz:
