@@ -11,17 +11,17 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 
 
 ---
-## ba62bfc2d3ecc4281773 — Termos de Fomento
+## c5c7e37e2e275d2e69fe — Instituto Lojas Renner abre edital com até R$ 10 mil para fortalecer organizações sociais
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 9× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 4× · motivo: sem prazo de inscrição confirmado
 
-Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
+Fonte (vetor): Observatório do Terceiro Setor — editais · UF BR · nível federal · situação aberta · fim 2026-09-13
 
-Itens já obtidos: Valor: R$ 10.000,00
+Itens já obtidos: Objeto: Edital Encantando Comunidades: Recursos Flexiveis - 2a edicao, do Instituto Loja, Órgão / financiador: Instituto Lojas Renner, Esfera: privada (investimento social empresarial), Valor: até R$ 10.000,00 por organização (anúncio), Território: Brasil, Área de atuação: assistencia_social, Destinação: fortalecimento institucional de organizações sociais, Prazo de inscrição: 2026-09-13, Início das inscrições: 2026-08-12
 
-Itens que FALTAM: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação, Área de atuação
+Itens que FALTAM: Resultado, Prazo de recurso, Requisitos, Anexos
 
-Anúncio: https://goias.gov.br/cultura/termos-de-fomento
+Anúncio: https://observatorio3setor.org.br/instituto-lojas-renner-abre-edital-com-ate-r-10-mil-para-fortalecer-organizacoes-sociais
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
@@ -31,17 +31,17 @@ Texto do edital (compacto):
 
 
 ---
-## ea14b1b3f360d2dc8637 — Instituto Impactarte abre edital para projetos de impacto social com apoio de até R$ 150 mil
+## ba62bfc2d3ecc4281773 — Termos de Fomento
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 7× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 12× · motivo: sem prazo de inscrição confirmado
 
-Fonte (vetor): Observatório do Terceiro Setor — editais · UF BR · nível federal · situação possivel · fim None
+Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
-Itens já obtidos: Objeto: Anúncio, no Observatório do Terceiro Setor, de edital do Instituto Impactarte pa, Órgão / financiador: Instituto Impactarte, Esfera: privada (filantropia), Valor: 150, Território: Brasil, Área de atuação: assistencia_social, Destinação: projetos de impacto social por OSCs
+Itens já obtidos: Objeto: Pagina de transparencia 'Termos de Fomento' da Secretaria de Estado da Cultura d
 
-Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Requisitos, Anexos
+Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação, Área de atuação
 
-Anúncio: https://observatorio3setor.org.br/instituto-impactarte-abre-edital-para-projetos-de-impacto-social-com-apoio-de-ate-r-150-mil
+Anúncio: https://goias.gov.br/cultura/termos-de-fomento
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):

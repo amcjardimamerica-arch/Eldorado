@@ -148,7 +148,7 @@ def run(inicio: int = 0, quantidade: int = 100) -> dict:
             feitas += 1
         except Exception as exc:
             erros.append({"id": it.get("id"), "erro": f"{type(exc).__name__}: {exc}"})
-    total = len(list(DESTINO.glob("*/ficha.json")))
+    total = len([x for x in DESTINO.glob("*/ficha.json") if not x.parent.name.startswith("_")])
     write_json(DESTINO / "indice.json", {"gerado_em": now_iso(), "total_fichas": total, "fila": len(itens),
                                          "regra": "uma ficha por oportunidade sem prazo, no mesmo método das 260 fontes"})
     return {"parametrizadas_agora": feitas, "erros": erros[:3], "total_fichas": total, "fila": len(itens)}

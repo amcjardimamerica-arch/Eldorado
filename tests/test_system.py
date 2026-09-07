@@ -3754,6 +3754,10 @@ class SystemTests(unittest.TestCase):
         # ingestão: resposta do agente vira extraído + parecer
         eid=[l for l in txt.splitlines() if l.startswith("## ")][0][3:].split(" — ")[0]
         E.RESPOSTAS.mkdir(parents=True,exist_ok=True); resp=E.RESPOSTAS/f"{eid}.json"
+        from src.fonte_edital import EXTRAIDOS as _EX
+        _bk_ex=(_EX/f"{eid}.json").read_text(encoding="utf-8") if (_EX/f"{eid}.json").exists() else None
+        _fp=ROOT/"dados/associacoes/amc-jardim-america/farol"/f"{eid}.json"
+        _bk_par=_fp.read_text(encoding="utf-8") if _fp.exists() else None
         resp.write_text(json.dumps({"itens":{"Valor":"R$ 10.000,00"},"mini_parecer":"teste","pagina_divulgacao":"https://orgao.gov.br/editais","enquadramento":{"amc-jardim-america":{"aderencia":77,"chances":60,"decisao":"concorrer"}}}),encoding="utf-8")
         try:
             n=E.ingerir(); self.assertEqual(n["ingeridos"],1)
@@ -3761,6 +3765,11 @@ class SystemTests(unittest.TestCase):
             par=load_json(ROOT/"dados/associacoes/amc-jardim-america/farol"/f"{eid}.json"); self.assertEqual(par["ia"]["aderencia"],77)
         finally:
             for f in E.RESPOSTAS.glob(f"{eid}.json*"): f.unlink()
+            # o teste não pode deixar rastro nos dados reais (parecer "teste" e página falsa)
+            if _bk_ex is not None: (_EX/f"{eid}.json").write_text(_bk_ex,encoding="utf-8")
+            else: (_EX/f"{eid}.json").unlink(missing_ok=True)
+            if _bk_par is not None: _fp.write_text(_bk_par,encoding="utf-8")
+            else: _fp.unlink(missing_ok=True)
 
 
     def test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas(self):
@@ -3951,7 +3960,8 @@ class SystemTests(unittest.TestCase):
         leve=[x for x in f["itens"] if x["modo"]=="leve"][0]
         self.assertLessEqual(len(leve["faltam"]),4); self.assertIn("verificação leve",leve["instrucao"])   # outros estados: objeto, prazo e link
         comp=[x for x in f["itens"] if x["modo"]=="completo"][0]; self.assertIn("automação completa",comp["instrucao"])
-        self.assertTrue(all(x["prioridade"]==0 for x in f["itens"] if x["modo"]=="completo"))
+        self.assertTrue(all(x["prioridade"]<=1 for x in f["itens"] if x["modo"]=="completo"))   # completos antes (o motor soma +1 quando o prazo já foi confirmado)
+        self.assertTrue(all(x["prioridade"]>=2 for x in f["itens"] if x["modo"]=="leve"))       # leves sempre depois
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("_semPrazoHome","prazo a confirmar — marcado para a IA",'id="cal-sem-prazo"',"Abertos sem prazo final confirmado",
                   'Oportunidades ativas',"Oportunidades inativas (prazo encerrado","editais, emendas, leis de incentivo, doações, fundos"): self.assertIn(x,html,x)
@@ -3995,7 +4005,7 @@ class SystemTests(unittest.TestCase):
         self.assertGreater(f["fora_das_50_maiores"]["total"],50); self.assertIn("escopo",f)
         self.assertTrue(all(x["escopo"]!="municipal_fora" for x in f["itens"]))
         self.assertTrue(all(x["modo"]=="completo" for x in f["itens"] if x["escopo"]=="nacional"))
-        fichas=glob.glob("biblioteca_alexandria/oportunidades_sem_prazo/*/ficha.json")
+        fichas=[x for x in glob.glob("biblioteca_alexandria/oportunidades_sem_prazo/*/ficha.json") if "/_" not in x]
         self.assertEqual(len(fichas),f["total"])
         fi=load_json(pathlib.Path(fichas[0]))
         self.assertEqual([i["item"] for i in fi["itens_14"]],__import__("src.parametros",fromlist=["ITENS_14"]).ITENS_14)
