@@ -679,7 +679,12 @@ def ingerir() -> dict:
         for k, v in (r.get("itens") or {}).items():
             if isinstance(v, dict) and v.get("dispensavel"):
                 disp[k] = v.get("motivo") or "dispensado pela análise"; itens.pop(k, None); novos += 1; continue
-            if v not in (None, "") and not itens.get(k): itens[k] = v; fontes[k] = "agente Claude (conta do titular) sobre o texto do edital"; novos += 1
+            if v in (None, ""):
+                continue
+            anterior = (fontes.get(k) or "")
+            # a leitura do agente prevalece sobre a semente do cadastro do motor
+            if not itens.get(k) or anterior.startswith("cadastro do edital") or anterior.startswith("PNCP"):
+                itens[k] = v; fontes[k] = "agente Claude (conta do titular) sobre o texto do edital"; novos += 1
         for k, m in (r.get("dispensaveis") or {}).items():
             disp[k] = m or "dispensado pela análise"
         for k in ("regras", "requisitos", "pontuacao", "documentos_exigidos", "anexos", "pagina_divulgacao", "mini_parecer", "historico_5_anos", "documentos_pdf", "condicoes"):

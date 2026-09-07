@@ -3954,9 +3954,29 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(all(x["prioridade"]==0 for x in f["itens"] if x["modo"]=="completo"))
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("_semPrazoHome","prazo a confirmar — marcado para a IA",'id="cal-sem-prazo"',"Abertos sem prazo final confirmado",
-                  'Oportunidades ativas',"Arquivadas (encerradas/descartadas)","editais, emendas, leis de incentivo, doações, fundos"): self.assertIn(x,html,x)
+                  'Oportunidades ativas',"Oportunidades inativas (prazo encerrado","editais, emendas, leis de incentivo, doações, fundos"): self.assertIn(x,html,x)
         self.assertNotIn("Todas as frentes (fontes)",html)
         d=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("marcacoes_ia",d); self.assertGreater(len(d["marcacoes_ia"]),50)
+
+
+    def test_verificacao_de_prazos_e_mapa_sem_filtro_de_meses(self):
+        """Rodada de prazos de 07/09: cada oportunidade verificada individualmente;
+        mapa sem filtro de meses, com ativas x inativas."""
+        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        self.assertGreaterEqual(len(an),30)
+        ex=load_json(pathlib.Path("dados/editais/extraidos/443dfeed2a9493ab123d.json"))
+        self.assertIn("Prazo de inscrição",ex["dispensaveis"])                       # termo já celebrado: prazo dispensado com motivo
+        self.assertIn("FARGO",ex["itens"]["Objeto"]); self.assertIn("cotação prévia",ex["regras"])
+        pnab=load_json(pathlib.Path("dados/editais/extraidos/6a0a02d985e917bbcdd7.json"))
+        self.assertIn("Prazo de inscrição",pnab["dispensaveis"]); self.assertIn("PNAB",pnab["itens"]["Objeto"])
+        mun=load_json(pathlib.Path("dados/editais/extraidos/22ca6714458b99faf7a9.json"))
+        self.assertIn("PRAZO NÃO CONFIRMADO",mun["mini_parecer"]); self.assertIn("Porangatu",mun["itens"]["Objeto"])
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn('<select id="mp-mes" style="display:none"',html)
+        self.assertIn("Oportunidades ativas (inscrição em curso ou possível)",html)
+        self.assertIn("Oportunidades inativas (prazo encerrado ou descartadas em Oportunidades Abertas)",html)
+        self.assertIn("prazo de encerramento da inscrição",html)
+        self.assertIn("/* 07/09: o mapa não filtra por mês",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

@@ -776,7 +776,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Mapa de oportunidades
     <span class=meta style="font-weight:500" title="Monitor da ETAPA 1 (levantamento). Mostra onde e quando a varredura encontrou indícios de edital, por frente de busca. Ainda sem a confirmação da etapa 2.">— levantamento por dia, frente e território</span></div>
   <div class="bz-filtros" id="mp-filtros" style="margin:10px 0 12px">
-    <select id="mp-mes"></select>
+    <select id="mp-mes" style="display:none"></select>
     <select id="mp-frente"><option value="">Todas as frentes</option></select>
     <select id="mp-area" title="área de atuação dos editais mostrados no mapa"><option value="">Todas as áreas de edital</option></select>
     <select id="mp-sit" style="display:none"><option value=""></option></select>
@@ -925,10 +925,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260907101037"></script>
-<script src="mapa-arte.js?v=20260907101037"></script>
-<script src="dashboard-dados.enc.js?v=20260907101037"></script>
-<script src="dashboard-dados.js?v=20260907101037"></script>
+<script src="mapa-brasil.js?v=20260907104302"></script>
+<script src="mapa-arte.js?v=20260907104302"></script>
+<script src="dashboard-dados.enc.js?v=20260907104302"></script>
+<script src="dashboard-dados.js?v=20260907104302"></script>
 <script>
 (function(){
 "use strict";
@@ -2483,14 +2483,14 @@ function iniciaMapaMonitor(){
   /* PERÍODO: meses com oportunidades (publicação/captura) + HISTÓRICO (antes de
      agosto de 2026) + todos. Rege o mapa, o painel do estado e o monitor. */
   const mesesOp=[...new Set([...(D.editais||[]).map(e=>dataOportunidade(e).slice(0,7)),...mesesComBusca()].filter(m=>m&&m>="2026-08"))].sort().reverse();
-  const sm=$("mp-mes");sm.innerHTML=`<option value="">Todo o período</option>`+mesesOp.map(x=>{
+  const sm=$("mp-mes");sm.style.display="none";sm.innerHTML=`<option value="">Todo o período</option>`+mesesOp.map(x=>{
     const [a,m]=x.split("-");return `<option value="${x}">${MES[Number(m)-1]} de ${a}</option>`;}).join("")
     +`<option value="__hist__">Histórico — antes de agosto de 2026</option>`;
   sm.value=""; mpFiltro.mes=null;      // padrão: TODO o período — o número no mapa é o total de abertos + possíveis do estado
   /* FRENTE = fonte de onde a oportunidade veio */
   /* FILTRO SIMPLES (07/09): oportunidades ATIVAS ou ARQUIVADAS. O mapa mostra todas as
      formas de captação — edital, emenda, lei de incentivo, doação, fundo, destinação judicial. */
-  $("mp-frente").innerHTML='<option value="ativas">Oportunidades ativas</option><option value="arquivadas">Arquivadas (encerradas/descartadas)</option>';
+  $("mp-frente").innerHTML='<option value="ativas">Oportunidades ativas (inscrição em curso ou possível)</option><option value="arquivadas">Oportunidades inativas (prazo encerrado ou descartadas em Oportunidades Abertas)</option>';
   $("mp-frente").value="ativas";
   const ufs=[...new Set((D.editais||[]).map(e=>e.uf).filter(Boolean))].sort();
   $("mp-uf").innerHTML='<option value="">Todo o Brasil</option>'
@@ -2877,6 +2877,7 @@ function frenteDe(e){
    Oficial de X (UF) 2023-06-22'); senão a captura */
 function dataOportunidade(e){const mt=/(\d{4}-\d{2}-\d{2})/.exec(e.titulo||"");return (e.publicado_em||(mt&&mt[1])||e.coletado_em||e.inicio||"");}
 function casaPeriodoMapa(e){
+  return true;   /* 07/09: o mapa não filtra por mês — mostra ativas e inativas, com a área vigente */
   const m=($("mp-mes")||{}).value||"";const d=dataOportunidade(e).slice(0,7);
   if(!m)return true; if(m==="__hist__")return !!d&&d<"2026-08"; return d===m||(e.inicio&&e.fim&&e.inicio.slice(0,7)<=m&&e.fim.slice(0,7)>=m);
 }
@@ -2922,7 +2923,7 @@ function desenhaBzMapa(){
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */
     const mo=(MT&&MT.length)?mpMotoresUF(uf):null;
-    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · <b>${(p.aberta||0)+(p.possivel||0)} oportunidade(s)</b> (editais, emendas, leis de incentivo, doações, fundos): ${p.aberta||0} aberta(s) confirmada(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Oportunidades Abertas»<br>${mo?`motores: <b>${mo.ligados}</b> ligado(s) de ${mo.total} · ${mo.lidos} com leitura · ${mo.achados} achado(s)<br>`:""}${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
+    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · <b>${(p.aberta||0)+(p.possivel||0)} oportunidade(s)</b> (editais, emendas, leis de incentivo, doações, fundos) — critério: prazo de encerramento da inscrição: ${p.aberta||0} aberta(s) confirmada(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Oportunidades Abertas»<br>${mo?`motores: <b>${mo.ligados}</b> ligado(s) de ${mo.total} · ${mo.lidos} com leitura · ${mo.achados} achado(s)<br>`:""}${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
       :`<strong>${uf}</strong> · nenhuma oportunidade identificada`);
     el.onclick=()=>{bzUFsel=(bzUFsel===uf?"":uf);$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value=bzUFsel;if(typeof mpFiltro==="object")mpFiltro.uf=bzUFsel;}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();desenhaBzLateral(por);if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
   });
