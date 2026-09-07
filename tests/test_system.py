@@ -4089,6 +4089,29 @@ class SystemTests(unittest.TestCase):
         for k in ("pasta","documentos","editais"): self.assertTrue(a[k]["url"].startswith("https://drive.google.com/drive/folders/"))
         d=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("drive",d); self.assertIn("amc-jardim-america",d["drive"]["associacoes"])
 
+
+    def test_mapa_so_com_oportunidades_reais(self):
+        """07/09: o Mapa mostrava 310 em Goiás porque contava 306 edições inteiras de
+        diário oficial. Agora só entram registros classificados como edital/chamamento."""
+        from src.dashboard_dados import classificar_registro
+        self.assertEqual(classificar_registro({"titulo":"Diário Oficial de Goiânia (GO) — 2026-09-01"})["tipo_registro"],"edicao_diario")
+        self.assertEqual(classificar_registro({"titulo":"PREGÃO ELETRÔNICO Nº 12/2026 — aquisição de material"})["tipo_registro"],"licitacao")
+        self.assertEqual(classificar_registro({"titulo":"CREDENCIAMENTO de profissionais de saúde"})["tipo_registro"],"credenciamento")
+        self.assertEqual(classificar_registro({"titulo":"CHAMAMENTO PÚBLICO Nº 02/2026 — seleção de OSC"})["tipo_registro"],"edital")
+        self.assertTrue(all(classificar_registro({"titulo":x})["motivo_tipo"] for x in ("Diário Oficial de X — 2026-01-01","qualquer coisa")))
+        from src.compacto import expandir
+        amp=expandir(load_json(pathlib.Path("docs/dados/abertas.json")))
+        self.assertTrue(all("tipo_registro" in x for x in amp[:50]))
+        go=[x for x in amp if x.get("uf")=="GO"]
+        editais=[x for x in go if x["tipo_registro"]=="edital"]
+        self.assertLess(len(editais),40); self.assertGreater(len(go),200)          # o ruído existe, mas não conta como oportunidade
+        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        nao_diario=[x for x in go if x["tipo_registro"]!="edicao_diario"]
+        self.assertTrue(all(x["id"] in an for x in nao_diario))                     # TODAS as de Goiás verificadas uma a uma
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn('item.tipo_registro!=="edital"',html); self.assertIn('id="mp-triagem"',html)
+        self.assertIn("não entram neste mapa",html)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

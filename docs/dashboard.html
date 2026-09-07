@@ -791,7 +791,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </div>
   <div class="bz-mapa-grade">
     <div class="bz-mapa-col">
-      <div id="bz-mapa"></div>
+      <div id="mp-triagem" class="meta" style="margin:6px 0"></div>
+<div id="bz-mapa"></div>
       <button class="bz-rosa-bt" onclick="bzNacional()" title="Brasil — oportunidades de nível nacional (federais e sem estado), sem os dados dos estados">
         <svg class="bz-rosa" viewBox="-100 -100 200 200" role="img" aria-label="rosa dos ventos — Brasil, nível nacional" id="bz-rosa-svg"></svg>
         <span class="bz-rosa-rot">Brasil · nível nacional</span>
@@ -931,10 +932,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260907211918"></script>
-<script src="mapa-arte.js?v=20260907211918"></script>
-<script src="dashboard-dados.enc.js?v=20260907211918"></script>
-<script src="dashboard-dados.js?v=20260907211918"></script>
+<script src="mapa-brasil.js?v=20260907230856"></script>
+<script src="mapa-arte.js?v=20260907230856"></script>
+<script src="dashboard-dados.enc.js?v=20260907230856"></script>
+<script src="dashboard-dados.js?v=20260907230856"></script>
 <script>
 (function(){
 "use strict";
@@ -2931,7 +2932,11 @@ function mpDadosUF(){
      oportunidade vai para o seu estado; as de nível nacional (sem UF ou
      federais) vão para o bucket __nac__ — mostrado pela rosa dos ventos. */
   const arSel=($("mp-area")||{}).value||"", frSel=($("mp-frente")||{}).value||"";
+  /* MAPA DE OPORTUNIDADES (07/09): só entra o que É oportunidade — registros classificados
+     como edital/chamamento. Edição inteira de diário, licitação de compras e credenciamento de
+     serviços ficam fora e são contados à parte como "a triar". */
   const add2=(uf,area,cidade,st,item)=>{if(arSel&&area!==arSel)return;
+    if(item&&item.tipo_registro&&item.tipo_registro!=="edital"){window._mpTriagem=(window._mpTriagem||{});window._mpTriagem[item.tipo_registro]=(window._mpTriagem[item.tipo_registro]||0)+1;return;}
     if(item){const arq=estadoDe(item.id)!=="em_andamento"||situacaoDe(item)==="encerrada";
       if((frSel||"ativas")==="ativas"?arq:!arq)return;}
     if(item&&!casaPeriodoMapa(item))return;const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});
@@ -2983,7 +2988,7 @@ function mpIndicesUF(uf){
 /* sépia por intensidade (0..1) em RGB — compatível com qualquer renderizador */
 function sepia(k){const h=34/360,s=0.40+0.35*k,l=0.80-0.32*k;const q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;const f=x=>{x=(x+1)%1;return x<1/6?p+(q-p)*6*x:x<.5?q:x<2/3?p+(q-p)*(2/3-x)*6:p;};
   const r=Math.round(f(h+1/3)*255),g=Math.round(f(h)*255),b=Math.round(f(h-1/3)*255);return `rgb(${r},${g},${b})`;}
-function desenhaBzMapa(){
+function desenhaBzMapa(){ window._mpTriagem={};
   escondeTip();
   const M=window.MAPA_BR;if(!M){$("bz-mapa").innerHTML="<div class=meta>mapa indisponível</div>";return;}
   if($("mp-area")&&$("mp-area").options.length<=1){const s=$("mp-area");(D.areas_canonicas||Object.keys(D.areas||{})).map(a=>[a,AREA(a).rotulo]).sort((x,y)=>x[1].localeCompare(y[1],"pt")).forEach(([a,r])=>{const o=document.createElement("option");o.value=a;o.textContent=r;s.appendChild(o);});
@@ -3012,6 +3017,9 @@ function desenhaBzMapa(){
     el.onclick=()=>{bzUFsel=(bzUFsel===uf?"":uf);$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value=bzUFsel;if(typeof mpFiltro==="object")mpFiltro.uf=bzUFsel;}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();desenhaBzLateral(por);if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
   });
   desenhaBzLateral(por);
+  {const tr=window._mpTriagem||{};const soma=Object.values(tr).reduce((a,b)=>a+b,0);const el=$("mp-triagem");
+   if(el)el.innerHTML=soma?`<b>${soma.toLocaleString("pt-BR")} registro(s) capturados não entram neste mapa</b> porque não são oportunidades: ${tr.edicao_diario?`${tr.edicao_diario.toLocaleString("pt-BR")} edições inteiras de diário oficial (o ato ainda precisa ser identificado dentro delas)`:""}${tr.licitacao?` · ${tr.licitacao} compras/licitações`:""}${tr.credenciamento?` · ${tr.credenciamento} credenciamentos de serviço`:""}${tr.indefinido?` · ${tr.indefinido} sem classificação pelo título`:""}. Ficam na Bússola para triagem.`:"";}
+
 }
 /* painel lateral ao mapa: índices (aberta, verificação, encerrada, encontrado, ausente) e cidades por área */
 /* rosa dos ventos: oportunidades de NÍVEL NACIONAL (Brasil), sem os estados */

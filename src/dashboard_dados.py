@@ -918,6 +918,7 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
                     for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
     com_parecer |= conjunto("*/*/conselho.json")
     for e in editais:
+        e.update(classificar_registro(e))
         _integrar_analise(e)                              # Biblioteca (extraídos/complementos) alimenta a Bússola e todos os painéis
         e["area"] = area_canonica(e.get("area"))
         e["calendario_ok"] = _apto_ao_calendario(e)
@@ -1119,6 +1120,24 @@ def _integrar_analise(e: dict) -> None:
     if ex.get("pagina_divulgacao"):
         e["pagina_divulgacao"] = ex["pagina_divulgacao"]
     e["analise"] = {"itens": len([k for k, v in itens.items() if v]), "completo": ex.get("completo"), "em": (ex.get("atualizado_em") or "")[:10]}
+
+
+TIPO_RX = [
+    (re.compile(r"^Di[áa]rio Oficial de .+\d{4}-\d{2}-\d{2}"), "edicao_diario", "edição inteira do diário oficial — não é oportunidade; o ato ainda precisa ser identificado dentro dela"),
+    (re.compile(r"preg[ãa]o|dispensa de licita|inexigibilidade|ata de registro de pre|aquisi[çc][ãa]o de|contrata[çc][ãa]o de empresa|tomada de pre[çc]o|concorr[êe]ncia p[úu]blica", re.I), "licitacao", "compra pública / licitação de bens e serviços — não é fomento a OSC"),
+    (re.compile(r"credenciamento", re.I), "credenciamento", "credenciamento de prestadores — habilitação para prestar serviço, não fomento a projeto"),
+    (re.compile(r"chamamento p[úu]blico|termo de (fomento|colabora)|edital|sele[çc][ãa]o p[úu]blica|pr[êe]mio|chamada p[úu]blica|fomento", re.I), "edital", "chamamento/edital: candidato a oportunidade"),
+]
+
+
+def classificar_registro(e: dict) -> dict:
+    """Classifica objetivamente o que é cada registro, pelo próprio título publicado.
+    Só 'edital' pode figurar como oportunidade no Mapa; o resto é ruído de captura."""
+    titulo = e.get("titulo") or ""
+    for rx, tipo, motivo in TIPO_RX:
+        if rx.search(titulo):
+            return {"tipo_registro": tipo, "motivo_tipo": motivo}
+    return {"tipo_registro": "indefinido", "motivo_tipo": "título não permite classificar — precisa de leitura na fonte"}
 
 
 def _apto_ao_calendario(e: dict) -> bool:
@@ -1592,10 +1611,12 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                 "situacao": situacao_inscricao(o, hoje)["situacao"],
                 "objeto": (o.get("objeto") or "")[:200] or None,
                 "confirmacao": (o.get("confirmacao") or {}).get("nivel_confirmacao") if isinstance(o.get("confirmacao"), dict) else None,
+                **classificar_registro(o),
             })
         abertas.sort(key=lambda x: (x["area"] == "outros", x.get("uf") != "GO", x.get("coletado_em") or ""), )
         campos_a = ["id", "titulo", "url", "fonte_nome", "orgao", "uf", "nivel", "area", "fim", "prazo_texto",
-                    "valor_texto", "coletado_em", "campanha", "campanha_dia", "pertinencia", "situacao", "objeto", "confirmacao"]
+                    "valor_texto", "coletado_em", "campanha", "campanha_dia", "pertinencia", "situacao", "objeto", "confirmacao",
+                    "tipo_registro", "motivo_tipo"]
         pac_a = compactar(abertas, campos_a)
         pac_a["total"] = len(abertas)
         (pasta / "abertas.json").write_text(json.dumps(pac_a, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
