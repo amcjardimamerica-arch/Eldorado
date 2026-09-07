@@ -39,3 +39,22 @@ ou patrocinador; nunca o PNCP, o diário ou o portal onde foi encontrada).
 ## Alternativa sem digitar nada: script de um clique
 `scripts/coleta_brasil.bat` (duplo clique) faz a coleta dos portais goianos que o robô do GitHub
 não alcança, com o seu IP, e envia sozinho ao repositório. Guia: `docs/claude/COLETA-LOCAL-BRASIL.md`.
+
+## Integração automática: a extensão salva sozinha no repositório
+
+Não existe ligação direta entre esta conversa e a extensão — são sessões separadas. A ponte é o
+**repositório**: a extensão grava o arquivo lá, e a conversa (ou o CI) lê de lá. O titular não
+precisa mexer no GitHub: a própria extensão faz o caminho, porque o navegador já está logado.
+
+Acrescente este trecho ao final do prompt da extensão:
+
+> Depois de montar o JSON, salve-o no repositório sem me pedir nada:
+> 1. abra https://github.com/amcjardimamerica-arch/Eldorado/new/main/dados/editais/coleta_navegador
+> 2. no campo do nome do arquivo escreva a data de hoje seguida de .json (ex.: 2026-09-07.json)
+> 3. cole o JSON no editor
+> 4. desça até o fim e clique em "Commit changes" e depois em "Commit changes" de novo
+> 5. me confirme o endereço do arquivo criado.
+
+Se o GitHub pedir login, faça-o uma vez no navegador; a extensão usa a mesma sessão daí em diante.
+Na sessão desta conversa, basta dizer "a extensão salvou" — o arquivo é lido e ingerido com
+`python -m src.enquadramento ingerir_navegador`.
