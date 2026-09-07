@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## ba62bfc2d3ecc4281773 — Termos de Fomento
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 6× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 7× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
@@ -33,7 +33,7 @@ Texto do edital (compacto):
 ---
 ## ea14b1b3f360d2dc8637 — Instituto Impactarte abre edital para projetos de impacto social com apoio de até R$ 150 mil
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 4× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 5× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Observatório do Terceiro Setor — editais · UF BR · nível federal · situação possivel · fim None
 
