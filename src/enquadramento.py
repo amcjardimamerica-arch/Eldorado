@@ -614,7 +614,21 @@ def fila_verificacao() -> dict:
         if k not in vivos:
             marc[k]["resolvido_em"] = marc[k].get("resolvido_em") or now_iso()[:10]
     write_json(marc_p, marc)
-    res = {"gerado_em": now_iso(), "total": len(itens), "sem_prazo": sum(1 for x in itens if x["sem_prazo"]),
+    MINIMAS = ["Objeto", "Prazo de inscrição", "Página oficial do edital"]
+    for x in itens:
+        ex = load_json(EXTRAIDOS / f"{x['id']}.json") if (EXTRAIDOS / f"{x['id']}.json").exists() else {}
+        it = ex.get("itens") or {}
+        tem = {"Objeto": bool(it.get("Objeto")), "Prazo de inscrição": bool(it.get("Prazo de inscrição")) or not x["sem_prazo"],
+               "Página oficial do edital": bool(ex.get("pagina_divulgacao") or x.get("link_oficial"))}
+        x["minimas"] = {"exigidas": MINIMAS, "tem": [k for k, v in tem.items() if v], "faltam": [k for k, v in tem.items() if not v],
+                        "completa": all(tem.values())}
+    res = {"gerado_em": now_iso(), "total": len(itens),
+           "informacoes_minimas": {"regra": "toda oportunidade precisa de OBJETO, PRAZO DE INSCRIÇÃO e PÁGINA OFICIAL DO EDITAL (site do órgão/patrocinador, nunca o vetor onde foi encontrada)",
+                                   "completas": sum(1 for x in itens if x["minimas"]["completa"]),
+                                   "incompletas": sum(1 for x in itens if not x["minimas"]["completa"]),
+                                   "falta_objeto": sum(1 for x in itens if "Objeto" in x["minimas"]["faltam"]),
+                                   "falta_prazo": sum(1 for x in itens if "Prazo de inscrição" in x["minimas"]["faltam"]),
+                                   "falta_pagina": sum(1 for x in itens if "Página oficial do edital" in x["minimas"]["faltam"])}, "sem_prazo": sum(1 for x in itens if x["sem_prazo"]),
            "goias_ou_nacional": sum(1 for x in itens if x["prioridade"] == 0),
            "nunca_investigados": sum(1 for x in itens if not x["ja_investigado"]),
            "edicoes_de_diario_sem_ato": edicoes_brutas,

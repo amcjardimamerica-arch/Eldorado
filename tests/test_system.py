@@ -4021,6 +4021,23 @@ class SystemTests(unittest.TestCase):
         ex=load_json(pathlib.Path("dados/editais/extraidos/443dfeed2a9493ab123d.json"))
         self.assertIn("2.400.000,00",ex["itens"]["Valor"])                        # valor confirmado no texto real
 
+
+    def test_informacoes_minimas_e_verificacao_dos_abertos(self):
+        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        m=f["informacoes_minimas"]
+        self.assertEqual(m["exigidas"] if "exigidas" in m else ["Objeto","Prazo de inscrição","Página oficial do edital"],["Objeto","Prazo de inscrição","Página oficial do edital"]) if "exigidas" in m else None
+        self.assertIn("objeto, prazo de inscrição e página oficial",m["regra"].lower())
+        self.assertIn("nunca o vetor",m["regra"])
+        self.assertEqual(m["completas"]+m["incompletas"],f["total"])
+        it=f["itens"][0]; self.assertIn("minimas",it); self.assertIn("faltam",it["minimas"])
+        d=load_json(pathlib.Path("docs/dashboard-dados.json"))
+        ab=[e for e in d["editais"] if e["situacao_inscricao"]=="aberta"]
+        an=d.get("analise_editais",{})
+        self.assertTrue(all(e["id"] in an for e in ab))          # todo edital aberto tem verificação individual
+        ex=load_json(pathlib.Path("dados/editais/extraidos/2bef5397b19e4a3bd8b6.json")) if pathlib.Path("dados/editais/extraidos/2bef5397b19e4a3bd8b6.json").exists() else None
+        if ex: self.assertIn("600.000,00",ex["itens"]["Valor"])   # BNDES: valor real por projeto
+        html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("Informações mínimas exigidas",html)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

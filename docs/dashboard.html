@@ -925,10 +925,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260907134223"></script>
-<script src="mapa-arte.js?v=20260907134223"></script>
-<script src="dashboard-dados.enc.js?v=20260907134223"></script>
-<script src="dashboard-dados.js?v=20260907134223"></script>
+<script src="mapa-brasil.js?v=20260907163824"></script>
+<script src="mapa-arte.js?v=20260907163824"></script>
+<script src="dashboard-dados.enc.js?v=20260907163824"></script>
+<script src="dashboard-dados.js?v=20260907163824"></script>
 <script>
 (function(){
 "use strict";
@@ -1823,6 +1823,7 @@ function desenhaFilaVerificacao(){
     <span style="margin-left:auto"><a class="fdoc-bt" href="dados/fila_verificacao.json" target=_blank rel="noopener noreferrer">ver a fila completa</a>
     <button class="fdoc-bt principal" onclick="varreduraImediata()" title="gera agora o pacote da varredura para a análise de IA (a rotina de domingo executa a mesma fila)">⚡ varredura imediata</button></span></div>
     ${(D.fora_das_50&&D.fora_das_50.total)?`<div class=meta style="margin-top:6px;color:#FF1493"><b>${D.fora_das_50.total}</b> oportunidade(s) de cidades fora das 50 maiores do estado foram retiradas da fila (depuração) — aparecem em rosa para aprovação manual: ${(D.fora_das_50.itens||[]).slice(0,6).map(x=>esc((x.cidade||"?")+"/"+(x.uf||""))).join(" · ")}${D.fora_das_50.total>6?" …":""}</div>`:""}
+    ${f.informacoes_minimas?`<div class=meta style="margin-top:6px"><b>Informações mínimas exigidas:</b> objeto, prazo de inscrição e página oficial do edital (site do órgão ou patrocinador — nunca o vetor onde foi encontrada). Hoje: <b>${f.informacoes_minimas.completas}</b> completas · ${f.informacoes_minimas.incompletas} incompletas (faltam: objeto em ${f.informacoes_minimas.falta_objeto}, prazo em ${f.informacoes_minimas.falta_prazo}, página oficial em ${f.informacoes_minimas.falta_pagina}).</div>`:""}
     <div class=meta style="margin-top:6px">A rotina de domingo executa esta fila na ordem de prioridade: Goiás e nacionais primeiro, depois o que tem mais itens faltando. ${f.edicoes_de_diario_sem_ato?`${f.edicoes_de_diario_sem_ato.toLocaleString("pt-BR")} edições inteiras de diário sem ato identificado ficam fora — dependem da extração de edições, não da IA.`:""}</div>`;
 }
 window.varreduraImediata=async function(){
