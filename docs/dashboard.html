@@ -677,7 +677,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <select id="bz-uf" title="UF — também sincronizada pelo clique no mapa da Bússola"><option value="">Todo o Brasil (todos os estados)</option><option value="__nac__">Brasil · só editais de nível nacional</option></select>
     <select id="bz-area"><option value="">Área</option></select>
     <select id="bz-nivel" style="display:none"><option value="">Nível</option></select>
-    <select id="bz-prazo" style="display:none"><option value="abertos" selected>Abertas + possíveis</option></select>
+    <select id="bz-prazo" style="display:none"><option value="vivas" selected>Abertas + possíveis</option></select>
     <span class="bz-limpar" onclick="bzLimpar()">⨯ Limpar filtros</span>
   </div>
   <div class="legenda" id="bus-legenda" style="margin-bottom:12px"></div>
@@ -888,16 +888,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <button style="width:100%;margin-top:12px;color:#0B4EA2;font-weight:700;border-color:#9FC1E8" onclick="modulo('farol')">⚓ Ver detalhes do Farol</button>
 </div>
 </div>
-<div class="cartao" style="margin-bottom:14px">
-  <div class="painel-tit farol">
-    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#0B4EA2" stroke-width="1.9" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/><path d="M8.4 15.2l2.3 2.3 4.6-4.7" stroke-linejoin="round"/></svg>
-    Calendário de resultados e recursos
-    <span class=meta style="font-weight:500" title="Marcos que decidem o destino da inscrição: divulgação de resultado preliminar, resultado final e a fase de recurso. Datas conforme publicadas na fonte — ausência vira alerta, nunca estimativa.">— prazos de divulgação e de recurso</span>
-  </div>
-  <div class="mets" id="fd-mets" style="margin:10px 0 12px"></div>
-  <div id="fd-lista"></div>
-  <div id="fd-alertas" style="margin-top:10px"></div>
-</div>
+<!-- (Calendário de resultados e recursos removido em 06/09 a pedido do titular) -->
 <p class="meta" style="margin:0 0 10px">Editais abertos sob a ótica do Farol — os mesmos registros do Eldorado, priorizados pelos já verificados.</p>
 <div class="grade-ed" id="fed-grade"></div>
 </section>
@@ -925,10 +916,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260906223601"></script>
-<script src="mapa-arte.js?v=20260906223601"></script>
-<script src="dashboard-dados.enc.js?v=20260906223601"></script>
-<script src="dashboard-dados.js?v=20260906223601"></script>
+<script src="mapa-brasil.js?v=20260907005343"></script>
+<script src="mapa-arte.js?v=20260907005343"></script>
+<script src="dashboard-dados.enc.js?v=20260907005343"></script>
+<script src="dashboard-dados.js?v=20260907005343"></script>
 <script>
 (function(){
 "use strict";
@@ -2285,7 +2276,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
   /* TODAS as oportunidades identificadas: as do núcleo (verificadas e históricas)
      + o fragmento ABERTAS com a base completa pertinente ao terceiro setor
      (18 mil+), regidas pelo mesmo filtro (UF, área, nível, prazo) */
-  const uf=comFiltroBz?$("bz-uf").value:(($("ed-uf")||{}).value||""),ar=comFiltroBz?$("bz-area").value:(($("ed-area")||{}).value||""),ni=comFiltroBz?$("bz-nivel").value:"",pz=comFiltroBz?$("bz-prazo").value:"abertos";
+  const uf=comFiltroBz?$("bz-uf").value:(($("ed-uf")||{}).value||""),ar=comFiltroBz?$("bz-area").value:(($("ed-area")||{}).value||""),ni=comFiltroBz?$("bz-nivel").value:"",pz=comFiltroBz?$("bz-prazo").value:"vivas";
   const base=comFiltroBz?editaisFiltradosBz():(D.editais||[]).filter(e=>["aberta","possivel"].includes(situacaoDe(e))&&(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))&&(!ar||e.area===ar));
   const sel=base.filter(e=>estadoDe(e.id)==="em_andamento");
   const info={};((D.bussola&&D.bussola.fontes_com_editais)||[]).forEach(f=>f.editais.forEach(e=>info[e.id]={...e,_fonte:f}));
@@ -2753,7 +2744,7 @@ async function iniciaMotores(){ await carregaMotores(); desenhaMotores(); atuali
 /* ================= BÚSSOLA · réplica do modelo ================= */
 let bzUFsel="";
 window.bzLimpar=function(){["bz-assoc","bz-uf","bz-area","bz-nivel"].forEach(id=>$(id).value="");
-  $("bz-prazo").value="abertos";bzUFsel="";desenhaBzTabela();desenhaBzMapa();desenhaFontesAbertas();};
+  $("bz-prazo").value="vivas";bzUFsel="";desenhaBzTabela();desenhaBzMapa();desenhaFontesAbertas();};
 function desenhaBzCards(){
   const bp=D.bussola_painel||{}; const eds=D.editais||[];
   const IC=c=>({
@@ -2996,7 +2987,7 @@ function iniciarBz(){
   const sel=$("bz-uf");sel.length=1;
   const nac=eds.filter(e=>!e.uf||e.abrangencia==="nacional"||e.nivel==="federal").length;
   {const o=document.createElement("option");o.value="__nac__";o.textContent=`Brasil · só editais de nível nacional (${nac})`;sel.appendChild(o);}
-  Object.keys(porUF).sort().forEach(u=>{const o=document.createElement("option");o.value=u;o.textContent=`${u} (${porUF[u]} + ${nac} nacionais)`;o.title="editais do estado + os de nível nacional (valem para todo o Brasil)";sel.appendChild(o);});
+  Object.keys(porUF).sort().forEach(u=>{const o=document.createElement("option");o.value=u;o.textContent=`${u} (${porUF[u]} do núcleo + ${nac} nacionais; a base ampla soma na lista)`;o.title="editais do estado + os de nível nacional (valem para todo o Brasil); a lista inclui também a base ampla do estado";sel.appendChild(o);});
   const areas=[...new Set(eds.map(e=>e.area))].sort();
   const sa=$("bz-area");sa.length=1;areas.forEach(a=>{const o=document.createElement("option");o.value=a;o.textContent=AREA(a).rotulo;sa.appendChild(o);});
   const sn=$("bz-nivel");sn.length=1;[...new Set(eds.map(e=>e.nivel).filter(Boolean))].sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;sn.appendChild(o);});
@@ -3034,7 +3025,7 @@ function desenhaBzMon(){
 }
 
 /* ============ FAROL · CALENDÁRIO DE RESULTADOS E RECURSOS ============ */
-function desenhaCalendarioDecisao(){
+function desenhaCalendarioDecisao(){ if(!$("fd-lista"))return;   // caixa removida em 06/09
   const C=D.calendario_decisao||{}, marcos=C.marcos||[], prox=C.proximos||[];
   const passados=marcos.filter(m=>m.passou).length;
   const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.7"/><path d="M12 7v5.2l3.2 2"/></svg>`;

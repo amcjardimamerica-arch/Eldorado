@@ -3913,6 +3913,14 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn("⇔ largura",html); self.assertIn('class="perfil-editais faixa-total"',html)
         src=open("src/enquadramento.py",encoding="utf-8").read(); self.assertIn("incluidos_editais.json",src); self.assertIn('e["id"] in incluidos',src)
 
+
+    def test_em_andamento_mostra_abertas_e_possiveis_sem_calendario_de_recursos(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertNotIn("    Calendário de resultados e recursos\n",html)
+        self.assertIn('<select id="bz-prazo" style="display:none"><option value="vivas" selected>',html)
+        self.assertIn('pz=comFiltroBz?$("bz-prazo").value:"vivas"',html); self.assertIn('$("bz-prazo").value="vivas"',html)
+        self.assertIn('if(!$("fd-lista"))return;',html)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
