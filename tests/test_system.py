@@ -3477,8 +3477,8 @@ class SystemTests(unittest.TestCase):
 
     def test_filtros_do_mapa_periodo_historico_frente_e_numeracao_por_tipo(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ('<option value="__hist__">Histórico — antes de agosto de 2026</option>',"const FRENTES=","function frenteDe","function casaPeriodoMapa",
-                  "function dataOportunidade","frenteDe(item)!==frSel","GRUPO_MOTOR","diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado"):
+        for x in ('<option value="__hist__">Histórico — antes de agosto de 2026</option>',"function casaPeriodoMapa",
+                  "function dataOportunidade",'value="ativas">Oportunidades ativas',"GRUPO_MOTOR","diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado"):
             self.assertIn(x,html,x)
         self.assertNotIn("mt-rel",html.split("const oficiaisHtml")[1].split("const listaFontes")[0])   # relevância não exibida
         m=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json")); reg=sorted(m["oficiais"]+m["plataformas"],key=lambda o:o["rank"])
@@ -3938,6 +3938,25 @@ class SystemTests(unittest.TestCase):
         self.assertIn('sm.value=""; mpFiltro.mes=null;',html)                              # mapa: total do estado, não só o mês
         d=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("fila_verificacao",d); self.assertNotIn("itens",d["fila_verificacao"])
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("enquadramento fila",wf)
+
+
+    def test_home_calendario_todos_abertos_marcacao_ia_e_mapa_simples(self):
+        from src.enquadramento import fila_verificacao
+        r=fila_verificacao()
+        self.assertIn("modo",r); self.assertGreater(r["modo"]["completo"],0); self.assertGreater(r["modo"]["leve"],0)
+        self.assertEqual(r["marcados_para_ia"],r["total"]) if r["marcados_para_ia"]<=r["total"] else None
+        m=load_json(pathlib.Path("dados/editais/marcacoes_ia.json")); self.assertGreater(len(m),100)
+        um=next(iter(m.values())); self.assertIn("desde",um); self.assertIn("modo",um); self.assertIn("faltam",um)
+        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        leve=[x for x in f["itens"] if x["modo"]=="leve"][0]
+        self.assertLessEqual(len(leve["faltam"]),4); self.assertIn("verificação leve",leve["instrucao"])   # outros estados: objeto, prazo e link
+        comp=[x for x in f["itens"] if x["modo"]=="completo"][0]; self.assertIn("automação completa",comp["instrucao"])
+        self.assertTrue(all(x["prioridade"]==0 for x in f["itens"] if x["modo"]=="completo"))
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("_semPrazoHome","prazo a confirmar — marcado para a IA",'id="cal-sem-prazo"',"Abertos sem prazo final confirmado",
+                  'Oportunidades ativas',"Arquivadas (encerradas/descartadas)","editais, emendas, leis de incentivo, doações, fundos"): self.assertIn(x,html,x)
+        self.assertNotIn("Todas as frentes (fontes)",html)
+        d=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("marcacoes_ia",d); self.assertGreater(len(d["marcacoes_ia"]),50)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

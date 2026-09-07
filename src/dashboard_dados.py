@@ -1424,6 +1424,8 @@ def coletar(hoje: date | None = None) -> dict:
                                 for i in previsoes.get("itens", [])]},
         "esquadra": esquadra,
         "associacoes_cruzamento": _cruzamento_associacoes(editais, hoje),
+        "marcacoes_ia": (lambda m: {k: {kk: v[kk] for kk in ("titulo", "uf", "modo", "motivo", "desde", "vezes_vistas", "link_oficial") if kk in v} for k, v in m.items() if not v.get("resolvido_em")}
+                          if m else {})(load_json(ROOT / "dados/editais/marcacoes_ia.json") if (ROOT / "dados/editais/marcacoes_ia.json").exists() else None),
         "fila_verificacao": (lambda f: {k: v for k, v in f.items() if k != "itens"} if f else None)(
             load_json(ROOT / "estado/fila_verificacao.json") if (ROOT / "estado/fila_verificacao.json").exists() else None),
         "arquivados_eldorado": (load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}),

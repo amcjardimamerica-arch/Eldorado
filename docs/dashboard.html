@@ -108,6 +108,8 @@ background:conic-gradient(#0B6BD3 calc(var(--p)*1%),#E3EAF3 0);position:relative
 .gdias{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;color:var(--suave);font-size:9px;text-align:center;line-height:1.15}
 .gdias b{display:block;font-weight:700;font-size:10px;color:var(--tinta)}
 .gdias i{font-style:normal;font-size:8px;letter-spacing:.02em}
+.gfaixa.sem-prazo{background:repeating-linear-gradient(45deg,#FFF8E8,#FFF8E8 6px,#FDF1D6 6px,#FDF1D6 12px);border:1px dashed #E0B060;border-radius:8px}
+.gfaixa.sem-prazo .marcado{font-size:11px;color:#8a5a00;padding:3px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gfaixa{position:relative;height:22px;border-radius:7px;
 background:repeating-linear-gradient(90deg,#F5F4F0 0,#F5F4F0 calc(100%/31 - 1px),#EAE8E2 calc(100%/31 - 1px),#EAE8E2 calc(100%/31))}
 /* marco de decisão (resultado ou recurso): estrela que pulsa, em camada
@@ -350,6 +352,9 @@ box-shadow:0 1px 3px #0002}
 .rk-nome{display:flex;flex-direction:column;min-width:0}.rk-nome b{font-size:12.5px}.rk-nome small{font-size:10.5px;color:var(--suave);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rk-tags{display:flex;flex-wrap:wrap;gap:3px}.rk-tags .tag{font-size:10px;padding:1px 6px}
 .rk-via{display:flex;flex-direction:column;font-size:10.5px;color:var(--suave)}
+.cal-sp-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;margin-top:6px}
+.cal-sp{display:flex;align-items:center;gap:8px;padding:5px 8px;border:1px dashed #E0B060;border-radius:9px;background:#FFF8E8;font-size:12px}
+.cal-sp .pt{width:9px;height:9px;border-radius:50%;flex:none}.cal-sp .tt{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cal-sp small{margin-left:auto;color:var(--suave);white-space:nowrap}
 .enq-mini{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:8px 10px;border:1px solid var(--linha);border-radius:10px;background:#fff;font-size:12.5px;line-height:1.55;margin-top:8px}
 .enq-ck12{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:5px;margin-top:8px}
 .enq-it{display:grid;grid-template-columns:14px 1fr;column-gap:6px;padding:4px 7px;border-radius:7px;background:#F6F7F9;font-size:11.5px;border:1px solid var(--linha)}.enq-it b{font-size:11px}.enq-it small{grid-column:2;color:var(--suave);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -653,6 +658,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <button onclick="mudaMes(1)">seguinte ›</button>
 </div>
 <div class="legenda" id="cal-legenda" style="margin-bottom:10px"></div>
+<div id="cal-sem-prazo" style="margin:8px 0 12px"></div>
 <div class="legenda meta" id="cal-simbolos" style="margin-bottom:12px"></div>
 <div class="calgrade" id="cal-grade"></div>
 </div>
@@ -919,10 +925,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260907092215"></script>
-<script src="mapa-arte.js?v=20260907092215"></script>
-<script src="dashboard-dados.enc.js?v=20260907092215"></script>
-<script src="dashboard-dados.js?v=20260907092215"></script>
+<script src="mapa-brasil.js?v=20260907101037"></script>
+<script src="mapa-arte.js?v=20260907101037"></script>
+<script src="dashboard-dados.enc.js?v=20260907101037"></script>
+<script src="dashboard-dados.js?v=20260907101037"></script>
 <script>
 (function(){
 "use strict";
@@ -1433,6 +1439,10 @@ function desenhaGantt(){
   const grupo=e=>(!e.uf||e.abrangencia==="nacional"||e.nivel==="federal")?0:(e.uf==="GO"?1:2);
   const fimDe=e=>String(e.ciclo.inscricao&&e.ciclo.inscricao.fim||e.ciclo.fim_do_ciclo||"9999");
   const eds=[...noMes].sort((a,b)=>grupo(a)-grupo(b)||fimDe(a).localeCompare(fimDe(b))).slice(0,12);
+  /* REGRA DO TITULAR (07/09): a home mostra TODOS os editais abertos. Os que ainda não
+     têm prazo final entram numa faixa própria, marcados para a IA externa. */
+  window._semPrazoHome=(D.editais||[]).filter(e=>estadoDe(e.id)==="em_andamento"&&situacaoDe(e)!=="encerrada"&&!(e.fim||((e.ciclo||{}).inscricao||{}).fim))
+    .sort((a,b)=>grupo(a)-grupo(b)).slice(0,10);
   const foraDoFiltro=base.length-noMes.length;
 
   /* PREVISÕES (cinza claro) — apenas nos meses adiante do atual. Ao virar o
@@ -1524,6 +1534,13 @@ function desenhaGantt(){
       <div class=gfaixa><span class="gbarra gprevisto catalogada" data-fonte="${esc(f.id)}" style="left:${l}%;width:${w}%;background:${AREA(f.area).cor}55;color:#333;outline-color:${AREA(f.area).cor}"
         title="fonte ativa nos Motores Opressores · janela estimada ${ddmm(f.janela.inicio)} a ${ddmm(f.janela.fim)} (${esc(f.certeza_prazo||"")}) · ${esc(f.motivo||"")}">${antes?"◂ ":""}estimado · ${esc(f.esfera||"")}${depois?" ▸":""}</span></div>`;
   });
+  /* REGRA DO TITULAR (07/09): todos os editais ABERTOS aparecem. Os que ainda não têm
+     prazo final entram em faixa própria, marcados para a IA externa. */
+  {const marc=D.marcacoes_ia||{};
+   const sp=(window._semPrazoHome||[]);
+   sp.forEach(e=>{const m=marc[e.id]||{};
+     linhas+=`<div class=grotulo title="${esc(e.titulo||"")}"><span class="gpt" style="background:${AREA(e.area).cor}"></span>${esc((e.titulo||"").slice(0,44))}</div>
+       <div class="gfaixa sem-prazo"><span class="marcado" title="marcado para a IA externa${m.desde?" desde "+br(m.desde):""}${m.vezes_vistas?" · visto "+m.vezes_vistas+"×":""}">prazo a confirmar — marcado para a IA${m.modo==="leve"?" (leve)":""}${m.link_oficial?` · <a href="${esc(m.link_oficial)}" target=_blank rel="noopener noreferrer">fonte oficial ↗</a>`:""}</span></div>`;});}
   linhas+="</div>";
   $("g-corpo").innerHTML=linhas;
   $("g-corpo").querySelectorAll(".gprevisto[data-fonte]").forEach(el=>{
@@ -1760,6 +1777,10 @@ function desenhaCal(){
   $("cal-legenda").innerHTML=areasUsadas.length
     ?areasUsadas.map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("")
     :"<span class=meta>Nenhum evento registrado ainda — a primeira varredura de segunda/sexta popula o calendário.</span>";
+  {const marc=D.marcacoes_ia||{};
+   const sp=(D.editais||[]).filter(e=>estadoDe(e.id)==="em_andamento"&&situacaoDe(e)!=="encerrada"&&!(e.fim||((e.ciclo||{}).inscricao||{}).fim));
+   const cx=$("cal-sem-prazo"); if(cx){cx.innerHTML=sp.length?`<div class="fdoc-t">Abertos sem prazo final confirmado <span class=meta>${sp.length} — marcados para a IA externa; entram no calendário assim que o prazo for confirmado na fonte</span></div>
+     <div class="cal-sp-grade">${sp.slice(0,60).map(e=>{const m=marc[e.id]||{};return `<div class="cal-sp" data-id="${esc(e.id)}" title="${esc(e.titulo||"")}"><span class="pt" style="background:${AREA(e.area).cor}"></span><span class="tt">${esc((e.titulo||"").slice(0,64))}</span><small>${esc(e.uf||"Brasil")} · ${m.modo==="leve"?"leve":"completo"}${m.desde?" · desde "+br(m.desde):""}${m.link_oficial?` · <a href="${esc(m.link_oficial)}" target=_blank rel="noopener noreferrer">fonte ↗</a>`:""}</small></div>`;}).join("")}</div>`:"";}}
   $("cal-simbolos").innerHTML=`<span><span class="cfx" style="display:inline-block;width:26px;height:9px;background:var(--marca);vertical-align:middle;position:static"></span> faixa contínua = prazo de inscrição <b>confirmado</b> (${faixas.length} neste mês); os marcos do edital aparecem <b>dentro</b> da faixa com contorno branco · ícone solto = chamamento identificado <b>sem prazo confirmado</b> (busca de prazo por IA acionada)</span> · `
     +Object.entries(D.tipos_evento||{}).map(([k,v])=>`<span><i style="font-style:normal;font-weight:700">${v.simbolo}</i> ${esc(v.rotulo)}</span>`).join(" · ");
 }
@@ -2467,8 +2488,10 @@ function iniciaMapaMonitor(){
     +`<option value="__hist__">Histórico — antes de agosto de 2026</option>`;
   sm.value=""; mpFiltro.mes=null;      // padrão: TODO o período — o número no mapa é o total de abertos + possíveis do estado
   /* FRENTE = fonte de onde a oportunidade veio */
-  $("mp-frente").innerHTML='<option value="">Todas as frentes (fontes)</option>'
-    +Object.entries(FRENTES).map(([k,c])=>`<option value="${k}">${esc(c)}</option>`).join("");
+  /* FILTRO SIMPLES (07/09): oportunidades ATIVAS ou ARQUIVADAS. O mapa mostra todas as
+     formas de captação — edital, emenda, lei de incentivo, doação, fundo, destinação judicial. */
+  $("mp-frente").innerHTML='<option value="ativas">Oportunidades ativas</option><option value="arquivadas">Arquivadas (encerradas/descartadas)</option>';
+  $("mp-frente").value="ativas";
   const ufs=[...new Set((D.editais||[]).map(e=>e.uf).filter(Boolean))].sort();
   $("mp-uf").innerHTML='<option value="">Todo o Brasil</option>'
     +ufs.map(u=>`<option value="${u}">${u}</option>`).join("");
@@ -2824,11 +2847,14 @@ function mpDadosUF(){
      oportunidade vai para o seu estado; as de nível nacional (sem UF ou
      federais) vão para o bucket __nac__ — mostrado pela rosa dos ventos. */
   const arSel=($("mp-area")||{}).value||"", frSel=($("mp-frente")||{}).value||"";
-  const add2=(uf,area,cidade,st,item)=>{if(arSel&&area!==arSel)return;if(item&&frSel&&frenteDe(item)!==frSel)return;if(item&&!casaPeriodoMapa(item))return;const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});
+  const add2=(uf,area,cidade,st,item)=>{if(arSel&&area!==arSel)return;
+    if(item){const arq=estadoDe(item.id)!=="em_andamento"||situacaoDe(item)==="encerrada";
+      if((frSel||"ativas")==="ativas"?arq:!arq)return;}
+    if(item&&!casaPeriodoMapa(item))return;const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});
     p[st]=(p[st]||0)+1;p.total++;if(st==="aberta"||st==="possivel"){p.areas[area]=(p.areas[area]||0)+1;if(item&&p.itens.length<400)p.itens.push(item);
       if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{},itens:[]});c.n++;c.areas[area]=(c.areas[area]||0)+1;if(item&&c.itens.length<60)c.itens.push(item);}}};
   const nac=e=>(!e.uf||e.nivel==="federal"||e.abrangencia==="nacional")?null:e.uf;
-  (D.editais||[]).forEach(e=>{if(estadoDe(e.id)!=="em_andamento")return;add2(nac(e),e.area||"outros",e.municipio||cid(e.titulo),situacaoDe(e),e);});
+  (D.editais||[]).forEach(e=>{add2(nac(e),e.area||"outros",e.municipio||cid(e.titulo),situacaoDe(e),e);});
   const vistos=new Set((D.editais||[]).map(e=>e.id));
   (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;add2(nac(o),o.area||"outros",cid(o.titulo),situacaoDe(o),o);});
   return por;
@@ -2896,7 +2922,7 @@ function desenhaBzMapa(){
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */
     const mo=(MT&&MT.length)?mpMotoresUF(uf):null;
-    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · <b>${(p.aberta||0)+(p.possivel||0)} oportunidade(s)</b>: ${p.aberta||0} aberta(s) confirmada(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Oportunidades Abertas»<br>${mo?`motores: <b>${mo.ligados}</b> ligado(s) de ${mo.total} · ${mo.lidos} com leitura · ${mo.achados} achado(s)<br>`:""}${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
+    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · <b>${(p.aberta||0)+(p.possivel||0)} oportunidade(s)</b> (editais, emendas, leis de incentivo, doações, fundos): ${p.aberta||0} aberta(s) confirmada(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Oportunidades Abertas»<br>${mo?`motores: <b>${mo.ligados}</b> ligado(s) de ${mo.total} · ${mo.lidos} com leitura · ${mo.achados} achado(s)<br>`:""}${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
       :`<strong>${uf}</strong> · nenhuma oportunidade identificada`);
     el.onclick=()=>{bzUFsel=(bzUFsel===uf?"":uf);$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value=bzUFsel;if(typeof mpFiltro==="object")mpFiltro.uf=bzUFsel;}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();desenhaBzLateral(por);if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
   });

@@ -546,12 +546,40 @@ def fila_verificacao() -> dict:
                       "link_oficial": oficial, "link_anuncio": e.get("url"),
                       "anuncio_e_vetor": bool(e.get("url") and VETOR_RX.search(e["url"])),
                       "motivo": motivo, "prioridade": prio, "ja_investigado": bool(ex)})
+    # MODO por regra do titular: Goiás e nacionais = automação completa (12 itens, parecer, selo);
+    # demais estados = verificação LEVE: objeto, início e fim das inscrições e o link oficial do edital, para avaliação manual
+    ITENS_LEVES = ["Objeto", "Início das inscrições", "Prazo de inscrição", "Página oficial do edital"]
+    for x in itens:
+        x["modo"] = "completo" if x["prioridade"] == 0 else "leve"
+        if x["modo"] == "leve":
+            x["faltam"] = [i for i in ITENS_LEVES if i not in (("Objeto",) if not x["sem_prazo"] else ())]
+            x["instrucao"] = "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular"
+        else:
+            x["instrucao"] = "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo"
     itens.sort(key=lambda x: (x["prioridade"], -len(x["faltam"] or []), str(x.get("uf") or "")))
+    # MARCAÇÃO persistente: cada edital sem prazo final fica marcado, com data e contagem de vezes que a IA o viu
+    marc_p = ROOT / "dados/editais/marcacoes_ia.json"
+    marc = load_json(marc_p) if marc_p.exists() else {}
+    vivos = set()
+    for x in itens:
+        if not x["sem_prazo"] and x["ja_investigado"]:
+            continue
+        vivos.add(x["id"])
+        m = marc.get(x["id"]) or {"desde": now_iso()[:10], "vezes_vistas": 0}
+        m.update({"titulo": x["titulo"], "uf": x["uf"], "modo": x["modo"], "motivo": x["motivo"], "faltam": x["faltam"],
+                  "link_oficial": x["link_oficial"], "link_anuncio": x["link_anuncio"], "ultima_marcacao": now_iso()[:10]})
+        marc[x["id"]] = m
+    for k in list(marc):
+        if k not in vivos:
+            marc[k]["resolvido_em"] = marc[k].get("resolvido_em") or now_iso()[:10]
+    write_json(marc_p, marc)
     res = {"gerado_em": now_iso(), "total": len(itens), "sem_prazo": sum(1 for x in itens if x["sem_prazo"]),
            "goias_ou_nacional": sum(1 for x in itens if x["prioridade"] == 0),
            "nunca_investigados": sum(1 for x in itens if not x["ja_investigado"]),
            "edicoes_de_diario_sem_ato": edicoes_brutas,
            "por_uf": {u: sum(1 for x in itens if (x.get("uf") or "BR") == u) for u in sorted({(x.get("uf") or "BR") for x in itens})},
+           "modo": {"completo": sum(1 for x in itens if x["modo"] == "completo"), "leve": sum(1 for x in itens if x["modo"] == "leve")},
+           "marcados_para_ia": len(vivos),
            "regra": "a IA de domingo executa esta fila na ordem; a varredura imediata percorre os mesmos itens e emite parecer de cada um",
            "itens": itens[:2000]}
     write_json(FILA_VERIF, res)
@@ -611,15 +639,25 @@ def pacote(limite: int = 6) -> dict:
          "\"enquadramento\": {<id_associacao>: {\"aderencia\": 0-100, \"chances\": 0-100, \"pontuacao_estimada\": <texto>, \"decisao\": <texto>, \"para_subir\": [..], \"riscos\": [..]}}, "
          "\"conformidade\": true|false (true = aproveitável em Goiás/Brasil pelas associações; false = sem aproveitamento → vai para Arquivados), \"motivo_conformidade\": <frase>}\n",
          f"Associações: " + "; ".join(f"{a.get('id')} — {a.get('nome')} · áreas {', '.join(a.get('areas') or [])} · atuação {', '.join(a.get('territorios') or [])} · {a.get('anos_existencia')} anos" for a in assoc) + "\n"]
+    marc_p = ROOT / "dados/editais/marcacoes_ia.json"; marc = load_json(marc_p) if marc_p.exists() else {}
+    L.append("\nMARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados — devolva SÓ objeto, início/fim das inscrições e a página oficial "
+             "(`itens` com essas chaves e `pagina_divulgacao`); não faça parecer nem enquadramento. Os COMPLETOS (Goiás e nacionais) recebem tudo.\n")
     for e, ex in pend[:limite]:
         texto = texto_guardado(e)
+        mm = marc.get(e["id"]) or {}
+        if mm:
+            mm["vezes_vistas"] = mm.get("vezes_vistas", 0) + 1; marc[e["id"]] = mm
+        modo = "completo" if (e.get("uf") == "GO" or not e.get("uf") or e.get("abrangencia") == "nacional" or e.get("nivel") == "federal") else "leve"
         L.append(f"\n---\n## {e['id']} — {e.get('titulo')}\n")
+        L.append(f"MODO: {modo.upper()}" + (f" · marcado desde {mm.get('desde')} · visto pela IA {mm.get('vezes_vistas')}× · motivo: {mm.get('motivo')}" if mm else "") + "\n")
         L.append(f"Fonte (vetor): {e.get('fonte_nome')} · UF {e.get('uf') or 'BR'} · nível {e.get('nivel')} · situação {e.get('situacao_inscricao')} · fim {e.get('fim')}\n")
         L.append("Itens já obtidos: " + (", ".join(f"{k}: {str(v)[:80]}" for k, v in (ex.get('itens') or {}).items()) or "nenhum") + "\n")
         L.append("Itens que FALTAM: " + ", ".join(ex.get("faltam") or list(ITENS)) + "\n")
         L.append(f"Anúncio: {e.get('url')}\nSite institucional conhecido: {ex.get('site_institucional') or 'não localizado'}\n")
         L.append("Texto do edital (compacto):\n```\n" + (texto[:12000] if texto else "(sem texto — localizar o edital no site do órgão)") + "\n```\n")
     PACOTE.write_text("\n".join(L), encoding="utf-8")
+    if marc:
+        write_json(marc_p, marc)
     return {"pacote": str(PACOTE.relative_to(ROOT)), "editais": len(pend[:limite]), "pendentes_total": len(pend), **resumo_universo}
 
 
