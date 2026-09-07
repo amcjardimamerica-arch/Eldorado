@@ -500,6 +500,65 @@ def historico_5_anos(nome: str) -> dict:
     return {"ocorrencias": len(hits), "por_ano": dict(sorted(por_ano.items())), "ultimas": [{"data": r[0], "titulo": (r[1] or "")[:100], "url": r[3]} for r in hits[:5]], "termos": toks}
 
 
+FILA_VERIF = ROOT / "estado/fila_verificacao.json"
+
+
+def fila_verificacao() -> dict:
+    """Todo edital aberto/possível cujas informações NÃO estão completas: o que falta,
+    o link oficial para validação e a prioridade. É esta fila que a IA de domingo
+    executa — e que a varredura imediata percorre."""
+    from .fonte_edital import EXTRAIDOS
+    VETOR_RX = re.compile(r"pncp\.gov\.br|queridodiario|in\.gov\.br|diariooficial|portaldecompraspublicas|licitamaisbrasil", re.I)
+    dados = load_json(ROOT / "docs/dashboard-dados.json")
+    universo = list(editais_abertos(dados))
+    ab = ROOT / "docs/dados/abertas.json"
+    if ab.exists():
+        try:
+            from .compacto import expandir
+            vistos = {e["id"] for e in universo}
+            universo += [{**o, "situacao_inscricao": o.get("situacao") or "possivel"} for o in expandir(load_json(ab)) if o.get("id") not in vistos]
+        except Exception:
+            pass
+    arq = load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}
+    itens = []
+    edicoes_brutas = 0
+    for e in universo:
+        if e["id"] in arq:
+            continue
+        # edição inteira de diário sem ato identificado: fica para a extração de edições (fase 2), não para a IA
+        if re.match(r"Di[áa]rio Oficial de .+\d{4}-\d{2}-\d{2}", e.get("titulo") or "") and not (e.get("objeto") or e.get("fim")):
+            edicoes_brutas += 1; continue
+        ex = load_json(EXTRAIDOS / f"{e['id']}.json") if (EXTRAIDOS / f"{e['id']}.json").exists() else {}
+        faltam = ex.get("faltam") if ex else None
+        ciclo = e.get("ciclo") or {}
+        sem_prazo = not (e.get("fim") or ((ciclo.get("inscricao") or {}).get("fim")))
+        completo = bool(ex.get("completo"))
+        if completo and not sem_prazo:
+            continue
+        oficial = ex.get("pagina_divulgacao") or ex.get("site_institucional")
+        if not oficial and e.get("url") and not VETOR_RX.search(e["url"]):
+            oficial = e["url"]
+        motivo = ("sem prazo de inscrição confirmado" if sem_prazo else "informações incompletas")
+        prio = (0 if e.get("uf") == "GO" or not e.get("uf") else 1) + (0 if sem_prazo else 1)
+        itens.append({"id": e["id"], "titulo": (e.get("titulo") or "")[:140], "uf": e.get("uf"), "area": e.get("area"),
+                      "fonte": e.get("fonte_nome") or e.get("orgao"), "situacao": e.get("situacao_inscricao") or e.get("situacao"),
+                      "sem_prazo": sem_prazo, "faltam": faltam if faltam is not None else list(ITENS),
+                      "link_oficial": oficial, "link_anuncio": e.get("url"),
+                      "anuncio_e_vetor": bool(e.get("url") and VETOR_RX.search(e["url"])),
+                      "motivo": motivo, "prioridade": prio, "ja_investigado": bool(ex)})
+    itens.sort(key=lambda x: (x["prioridade"], -len(x["faltam"] or []), str(x.get("uf") or "")))
+    res = {"gerado_em": now_iso(), "total": len(itens), "sem_prazo": sum(1 for x in itens if x["sem_prazo"]),
+           "goias_ou_nacional": sum(1 for x in itens if x["prioridade"] == 0),
+           "nunca_investigados": sum(1 for x in itens if not x["ja_investigado"]),
+           "edicoes_de_diario_sem_ato": edicoes_brutas,
+           "por_uf": {u: sum(1 for x in itens if (x.get("uf") or "BR") == u) for u in sorted({(x.get("uf") or "BR") for x in itens})},
+           "regra": "a IA de domingo executa esta fila na ordem; a varredura imediata percorre os mesmos itens e emite parecer de cada um",
+           "itens": itens[:2000]}
+    write_json(FILA_VERIF, res)
+    write_json(ROOT / "docs/dados/fila_verificacao.json", res)
+    return {k: v for k, v in res.items() if k != "itens"}
+
+
 def pacote(limite: int = 6) -> dict:
     """Monta um pacote compacto com os editais pendentes (texto guardado, itens
     que faltam, associação) para um agente Claude — este chat ou o Claude Code
@@ -623,6 +682,8 @@ if __name__ == "__main__":
     import sys
     if len(sys.argv) > 1 and sys.argv[1] == "pacote":
         print(json.dumps(pacote(int(sys.argv[2]) if len(sys.argv) > 2 else 6), ensure_ascii=False, indent=2))
+    elif len(sys.argv) > 1 and sys.argv[1] == "fila":
+        print(json.dumps(fila_verificacao(), ensure_ascii=False, indent=2))
     elif len(sys.argv) > 1 and sys.argv[1] == "ingerir":
         print(json.dumps(ingerir(), ensure_ascii=False, indent=2))
     else:

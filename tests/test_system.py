@@ -3921,6 +3921,24 @@ class SystemTests(unittest.TestCase):
         self.assertIn('pz=comFiltroBz?$("bz-prazo").value:"vivas"',html); self.assertIn('$("bz-prazo").value="vivas"',html)
         self.assertIn('if(!$("fd-lista"))return;',html)
 
+
+    def test_fila_de_verificacao_e_suspeitas_com_link_oficial(self):
+        from src.enquadramento import fila_verificacao, FILA_VERIF
+        r=fila_verificacao()
+        self.assertGreater(r["total"],100); self.assertLess(r["total"],5000)              # editais de fato, não as 18 mil edições de diário
+        self.assertGreater(r["edicoes_de_diario_sem_ato"],1000); self.assertIn("GO",r["por_uf"])
+        f=load_json(FILA_VERIF); it=f["itens"][0]
+        self.assertEqual(it["prioridade"],0)                                              # Goiás/nacional primeiro
+        self.assertTrue(all(x.get("motivo") for x in f["itens"][:20]))
+        self.assertTrue(any(x.get("link_oficial") for x in f["itens"][:50]))
+        self.assertTrue(all("anuncio_e_vetor" in x for x in f["itens"][:20]))
+        self.assertTrue(pathlib.Path("docs/dados/fila_verificacao.json").exists())
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("Aguardando verificação da IA","varreduraImediata","ed-suspeita","não comprovado","validar no site oficial","function desenhaFilaVerificacao"): self.assertIn(x,html,x)
+        self.assertIn('sm.value=""; mpFiltro.mes=null;',html)                              # mapa: total do estado, não só o mês
+        d=load_json(pathlib.Path("docs/dashboard-dados.json")); self.assertIn("fila_verificacao",d); self.assertNotIn("itens",d["fila_verificacao"])
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("enquadramento fila",wf)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
