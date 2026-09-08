@@ -4112,6 +4112,29 @@ class SystemTests(unittest.TestCase):
         self.assertIn('item.tipo_registro!=="edital"',html); self.assertIn('id="mp-triagem"',html)
         self.assertIn("não entram neste mapa",html)
 
+
+    def test_selo_validada_x_nao_verificada(self):
+        """Regra do titular (07/09): VALIDADA (verde) exige objeto + prazo + site oficial;
+        sem qualquer um, NÃO VERIFICADA (amarelo) e vai para a verificação semanal da IA."""
+        from src.dashboard_dados import selo_validacao
+        ok=selo_validacao({"id":"x","objeto":"Seleção de projetos","fim":"2026-10-30"},{"pagina_divulgacao":"https://orgao.gov.br/editais"})
+        self.assertEqual(ok["selo_validacao"],"validada"); self.assertEqual(ok["validacao"]["faltam"],[])
+        vet=selo_validacao({"id":"y","objeto":"x","fim":"2026-10-30"},{"pagina_divulgacao":"https://pncp.gov.br/app/editais/1"})
+        self.assertEqual(vet["selo_validacao"],"nao_verificada"); self.assertIn("site oficial",vet["validacao"]["faltam"])   # vetor não vale
+        semp=selo_validacao({"id":"z","objeto":"x"},{"pagina_divulgacao":"https://orgao.gov.br"})
+        self.assertIn("prazo de inscrição",semp["validacao"]["faltam"]); self.assertTrue(semp["validacao"]["para_ia_semanal"])
+        disp=selo_validacao({"id":"w","objeto":"x"},{"pagina_divulgacao":"https://orgao.gov.br","dispensaveis":{"Prazo de inscrição":"instrumento já celebrado"}})
+        self.assertEqual(disp["selo_validacao"],"validada")                     # prazo dispensado com motivo conta como resolvido
+        d=load_json(pathlib.Path("docs/dashboard-dados.json"))
+        n=[e for e in d["editais"] if e.get("tipo_registro")=="edital"]
+        self.assertTrue(all("selo_validacao" in e for e in n))
+        self.assertGreaterEqual(sum(1 for e in n if e["selo_validacao"]=="validada"),5)
+        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        self.assertIn("selos",f); self.assertEqual(f["selos"]["validadas"]+f["selos"]["nao_verificadas"],f["total"])
+        self.assertTrue(all(x.get("selo_validacao")=="nao_verificada" for x in f["itens"] if x["minimas"]["faltam"]))
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ("function seloVal","✔ VALIDADA","⚠ NÃO VERIFICADA","selo-val.val-ok","selo-val.val-nao","na fila da verificação semanal da IA"): self.assertIn(x,html,x)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

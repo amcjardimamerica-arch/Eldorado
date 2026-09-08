@@ -919,7 +919,9 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
     com_parecer |= conjunto("*/*/conselho.json")
     for e in editais:
         e.update(classificar_registro(e))
-        _integrar_analise(e)                              # Biblioteca (extraídos/complementos) alimenta a Bússola e todos os painéis
+        _integrar_analise(e)
+        _ex = load_json(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{e['id']}.json").exists() else {}
+        e.update(selo_validacao(e, _ex))                              # Biblioteca (extraídos/complementos) alimenta a Bússola e todos os painéis
         e["area"] = area_canonica(e.get("area"))
         e["calendario_ok"] = _apto_ao_calendario(e)
         si = situacao_inscricao(e, hoje)
@@ -1128,6 +1130,30 @@ TIPO_RX = [
     (re.compile(r"credenciamento", re.I), "credenciamento", "credenciamento de prestadores — habilitação para prestar serviço, não fomento a projeto"),
     (re.compile(r"chamamento p[úu]blico|termo de (fomento|colabora)|edital|sele[çc][ãa]o p[úu]blica|pr[êe]mio|chamada p[úu]blica|fomento", re.I), "edital", "chamamento/edital: candidato a oportunidade"),
 ]
+
+
+def selo_validacao(e: dict, ex: dict | None = None) -> dict:
+    """Selo por oportunidade (regra do titular, 07/09):
+    VALIDADA (verde) só com as três informações mínimas comprovadas — objeto, prazo de
+    inscrição e site oficial que divulga a oportunidade. Sem qualquer uma delas:
+    NÃO VERIFICADA (amarelo), e o item vai para a verificação semanal da IA externa."""
+    ex = ex or {}
+    itens = ex.get("itens") or {}
+    ciclo = (e.get("ciclo") or {}).get("inscricao") or {}
+    objeto = itens.get("Objeto") or e.get("objeto")
+    prazo = itens.get("Prazo de inscrição") or e.get("fim") or ciclo.get("fim")
+    site = ex.get("pagina_divulgacao") or e.get("pagina_divulgacao")
+    if site and re.search(r"pncp\.gov|queridodiario|in\.gov\.br|diariooficial|observatorio3setor|captadores\.org|bussolasocial|prosas\.com", str(site), re.I):
+        site = None                                  # vetor/veículo não vale como site oficial
+    faltam = [k for k, v in (("objeto", objeto), ("prazo de inscrição", prazo), ("site oficial", site)) if not v]
+    disp = ex.get("dispensaveis") or {}
+    if "Prazo de inscrição" in disp and "prazo de inscrição" in faltam:
+        faltam.remove("prazo de inscrição")          # dispensado com motivo pela análise
+    return {"selo_validacao": "validada" if not faltam else "nao_verificada",
+            "validacao": {"objeto": bool(objeto), "prazo": bool(prazo) or "Prazo de inscrição" in disp, "site_oficial": bool(site),
+                          "faltam": faltam, "site": site, "prazo_valor": prazo if isinstance(prazo, str) else None,
+                          "prazo_dispensado": disp.get("Prazo de inscrição"),
+                          "para_ia_semanal": bool(faltam)}}
 
 
 def classificar_registro(e: dict) -> dict:
@@ -1612,11 +1638,12 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                 "objeto": (o.get("objeto") or "")[:200] or None,
                 "confirmacao": (o.get("confirmacao") or {}).get("nivel_confirmacao") if isinstance(o.get("confirmacao"), dict) else None,
                 **classificar_registro(o),
+                **{k: v for k, v in selo_validacao(o, load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}).items()},
             })
         abertas.sort(key=lambda x: (x["area"] == "outros", x.get("uf") != "GO", x.get("coletado_em") or ""), )
         campos_a = ["id", "titulo", "url", "fonte_nome", "orgao", "uf", "nivel", "area", "fim", "prazo_texto",
                     "valor_texto", "coletado_em", "campanha", "campanha_dia", "pertinencia", "situacao", "objeto", "confirmacao",
-                    "tipo_registro", "motivo_tipo"]
+                    "tipo_registro", "motivo_tipo", "selo_validacao", "validacao"]
         pac_a = compactar(abertas, campos_a)
         pac_a["total"] = len(abertas)
         (pasta / "abertas.json").write_text(json.dumps(pac_a, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

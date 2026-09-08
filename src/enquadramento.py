@@ -622,7 +622,11 @@ def fila_verificacao() -> dict:
                "Página oficial do edital": bool(ex.get("pagina_divulgacao") or x.get("link_oficial"))}
         x["minimas"] = {"exigidas": MINIMAS, "tem": [k for k, v in tem.items() if v], "faltam": [k for k, v in tem.items() if not v],
                         "completa": all(tem.values())}
+        x["selo_validacao"] = "validada" if all(tem.values()) else "nao_verificada"
     res = {"gerado_em": now_iso(), "total": len(itens),
+           "selos": {"validadas": sum(1 for x in itens if x.get("selo_validacao") == "validada"),
+                     "nao_verificadas": sum(1 for x in itens if x.get("selo_validacao") != "validada"),
+                     "regra": "VALIDADA (verde) exige objeto + prazo de inscrição + site oficial que divulga; sem qualquer um deles o selo é NÃO VERIFICADA (amarelo) e o item entra na verificação semanal da IA externa"},
            "informacoes_minimas": {"regra": "toda oportunidade precisa de OBJETO, PRAZO DE INSCRIÇÃO e PÁGINA OFICIAL DO EDITAL (site do órgão/patrocinador, nunca o vetor onde foi encontrada)",
                                    "completas": sum(1 for x in itens if x["minimas"]["completa"]),
                                    "incompletas": sum(1 for x in itens if not x["minimas"]["completa"]),

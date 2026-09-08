@@ -318,6 +318,12 @@ box-shadow:0 1px 3px #0002}
 .sug.analisado,.ed-item.analisado{background:#EEF9F0;border-color:#9BD3B0}
 .ed-item.suspeita{border-left:3px solid var(--alerta)}
 .ed-suspeita{font-size:11.5px;background:#FFF8E8;border:1px solid #F3C58A;border-radius:8px;padding:4px 8px;margin-bottom:6px}
+.linha-val{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.selo-val{font-size:10.5px;font-weight:800;letter-spacing:.03em;padding:2px 8px;border-radius:10px;border:1px solid;white-space:nowrap}
+.selo-val.val-ok{color:#1E7E4B;border-color:#1E7E4B;background:#E9F7EF}
+.selo-val.val-nao{color:#8a5a00;border-color:#E0B060;background:#FFF8E8}
+.selo-val-det{font-size:11px;color:var(--suave)}
+.sug.nao-verificada,.ed-item.nao-verificada{border-left:3px solid #E0B060}
 .ed-analise{display:flex;gap:8px;align-items:center;margin-bottom:6px;font-size:12px}
 .selo{position:absolute;top:-9px;right:12px;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 9px;border-radius:10px;border:1px solid;background:#fff}
 .selo.conformidade{color:#1E7E4B;border-color:#1E7E4B}.selo.inconformidade{color:var(--urgente);border-color:var(--urgente)}.selo.analisado,.selo.analise_incompleta{color:#0E2A55;border-color:#0E2A55}.sug.realizada{border-color:var(--ok);background:#F2FBF6}
@@ -932,10 +938,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260907230856"></script>
-<script src="mapa-arte.js?v=20260907230856"></script>
-<script src="dashboard-dados.enc.js?v=20260907230856"></script>
-<script src="dashboard-dados.js?v=20260907230856"></script>
+<script src="mapa-brasil.js?v=20260907235449"></script>
+<script src="mapa-arte.js?v=20260907235449"></script>
+<script src="dashboard-dados.enc.js?v=20260907235449"></script>
+<script src="dashboard-dados.js?v=20260907235449"></script>
 <script>
 (function(){
 "use strict";
@@ -1124,6 +1130,11 @@ function salvaDecisao(id,estado,extra){
        if(typeof desenhaBzTabela==="function") desenhaBzTabela(); }catch(e){}
 }
 function seloDe(id){return (D.analise_editais||{})[id]||null;}
+function seloVal(e){const v=e.validacao||{};const ok=e.selo_validacao==="validada";
+  const det=ok?`objeto ✓ · prazo ${e.validacao.prazo_dispensado?"dispensado ("+esc(String(e.validacao.prazo_dispensado).slice(0,40))+")":(br(e.validacao.prazo_valor||e.fim||"")||"✓")} · site oficial ✓`
+             :`falta: ${(v.faltam||[]).join(", ")} — na fila da verificação semanal da IA`;
+  const site=v.site?` · <a href="${esc(v.site)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:"";
+  return `<span class="selo-val ${ok?"val-ok":"val-nao"}" title="${esc(det)}">${ok?"✔ VALIDADA":"⚠ NÃO VERIFICADA"}</span><span class="selo-val-det">${det}${site}</span>`;}
 /* selo de INCONFORMIDADE (análise do agente) arquiva automaticamente, salvo decisão manual do titular */
 const estadoDe=id=>{const d=(decisoes()[id]||{}).estado;if(d)return d;if((D.arquivados_eldorado||{})[id])return "descartado";const s=seloDe(id);return (s&&s.selo==="inconformidade")?"descartado":"em_andamento";};
 /* exclusão em Oportunidades Abertas é SISTÊMICA: exportável para dados/editais/arquivados.json (o CI retira do mapa, do enquadramento e das análises).
@@ -2251,7 +2262,7 @@ function htmlEditaisEnquadrados(a){const COR={verde:"var(--ok)",amarelo:"var(--a
     const valor=e.valor?String(e.valor):null; const valorCurto=valor?(valor.match(/R\$\s?[\d\.]+(?:,\d{2})?(?:\s*(?:a|até)\s*R\$\s?[\d\.]+(?:,\d{2})?)?/)||[valor.slice(0,60)])[0]:"a confirmar";
     const pub=linkOficial(e);
     const selo=seloDe(e.id);
-    return `<div class="sug ${real?"realizada":""} ${selo?"analisado":""}" data-id="${esc(e.id)}">${selo?`<div class="selo ${selo.selo}" title="${esc(selo.motivo||"")} · ${br((selo.em||"").slice(0,10))} · ${esc(selo.por||"")}">Análise: ${selo.selo==="conformidade"?"Conformidade":selo.selo==="inconformidade"?"Inconformidade":selo.selo==="analise_incompleta"?"incompleta — sem selo":"realizada"}</div>`:""}
+    return `<div class="sug ${real?"realizada":""} ${selo?"analisado":""} ${e.selo_validacao==="nao_verificada"?"nao-verificada":""}" data-id="${esc(e.id)}"><div class="linha-val">${seloVal(e)}</div>${selo?`<div class="selo ${selo.selo}" title="${esc(selo.motivo||"")} · ${br((selo.em||"").slice(0,10))} · ${esc(selo.por||"")}">Análise: ${selo.selo==="conformidade"?"Conformidade":selo.selo==="inconformidade"?"Inconformidade":selo.selo==="analise_incompleta"?"incompleta — sem selo":"realizada"}</div>`:""}
       <div class="sug-top">
         <div class="sug-esq"><span class="assoc-led" style="background:${COR[e.farol]}"></span><b class="assoc-nota" title="aderência">${e.nota}</b></div>
         <div class="sug-meio"><div class="sug-titulo">${esc(e.titulo||"")}</div>
@@ -2449,7 +2460,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
         const _an=_s?`<div class="ed-analise"><span class="selo ${_s.selo}" style="position:static">Análise: ${_s.selo==="conformidade"?"Conformidade":_s.selo==="inconformidade"?"Inconformidade":_s.selo==="analise_incompleta"?"incompleta":"realizada"}</span> <span class=meta>${_q?_q.itens.filter(i=>i.valor||i.dispensavel).length+"/12 itens · ":""}${esc(String((_q&&_q.mini_parecer)||_s.motivo||"").slice(0,170))}</span></div>`:"";
         const _naoComp=situacaoDe(e)==="possivel"; const _ofc=linkOficial(e);
         const _sus=_naoComp?`<div class="ed-suspeita"><b>não comprovado</b> — sem prazo de inscrição confirmado na fonte oficial; em investigação${_ofc?` · <a href="${esc(_ofc)}" target=_blank rel="noopener noreferrer">validar no site oficial ↗</a>`:e.url?` · <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" class=meta>anúncio no vetor (não é fonte) ↗</a> · <span class=meta>site do órgão a localizar</span>`:""}</div>`:"";
-        return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}${_s?" analisado":""}${_naoComp?" suspeita":""}" data-id="${esc(e.id)}">${_an}${_sus}
+        return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}${_s?" analisado":""}${_naoComp?" suspeita":""}${e.selo_validacao==="nao_verificada"?" nao-verificada":""}" data-id="${esc(e.id)}"><div class="linha-val">${seloVal(e)}</div>${_an}${_sus}
         <div class="fa-fonte"><span class=ponto style="background:${c.cor};width:8px;height:8px" title="${esc(c.rotulo)}"></span><strong style="color:var(--tinta)">${esc(f.fonte_nome||"—")}</strong>${f.via?`<span class=meta>· via ${esc(f.via)}</span>`:""}</div>
         <a href="${esc(linkOficial(e)||e.url)}" target=_blank rel="noopener noreferrer" title="${VETOR_RX.test(linkOficial(e)||e.url||"")?"anúncio no vetor de divulgação — a fonte oficial ainda não foi localizada":"site oficial"}">${esc((e.titulo||"").slice(0,90))}</a>
         ${camp?`<span class="st ${camp.status==="monitorando"?"cap":camp.status==="completo"?"ok":"acao"}" style="margin-left:6px" title="${camp.status==="monitorando"?"indício em campanha de completude: dia "+camp.dia+" de 30, "+camp.tentativas+" tentativa(s) atrás do edital integral":camp.status==="completo"?"campanha concluída: edital integral obtido":"campanha expirada — revisão humana"}">${camp.status==="monitorando"?"monitorando · dia "+camp.dia+"/30":camp.status}</span>`:""}
