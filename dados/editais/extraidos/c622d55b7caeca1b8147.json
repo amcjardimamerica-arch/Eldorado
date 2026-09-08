@@ -1,100 +1,78 @@
 {
-  "edital_id": "c622d55b7caeca1b8147",
-  "titulo": "CREDENCIAMENTO/CHAMAMENTO PÚBLICO NA AREA DA SAÚDE.",
-  "tentativas": [
-    {
-      "em": "2026-09-06T01:05:58+00:00",
-      "modelo": "agente-claude",
-      "status": "respondeu",
-      "itens_obtidos": 0,
-      "sinal": "amarelo"
-    },
-    {
-      "em": "2026-09-06T10:58:48+00:00",
-      "modelo": "agente-claude",
-      "status": "respondeu",
-      "itens_obtidos": 0,
-      "sinal": "amarelo"
-    },
-    {
-      "em": "2026-09-07T20:56:33+00:00",
-      "modelo": "navegador-titular",
-      "status": "respondeu",
-      "itens_obtidos": 1,
-      "sinal": "verde"
-    }
+ "edital_id": "c622d55b7caeca1b8147",
+ "titulo": "CREDENCIAMENTO/CHAMAMENTO PÚBLICO NA AREA DA SAÚDE.",
+ "tentativas": [
+  {
+   "em": "2026-09-06T01:05:58+00:00",
+   "modelo": "agente-claude",
+   "status": "respondeu",
+   "itens_obtidos": 0,
+   "sinal": "amarelo"
+  },
+  {
+   "em": "2026-09-06T10:58:48+00:00",
+   "modelo": "agente-claude",
+   "status": "respondeu",
+   "itens_obtidos": 0,
+   "sinal": "amarelo"
+  },
+  {
+   "em": "2026-09-07T20:56:33+00:00",
+   "modelo": "navegador-titular",
+   "status": "respondeu",
+   "itens_obtidos": 1,
+   "sinal": "verde"
+  },
+  {
+   "em": "2026-09-08T10:49:14+00:00",
+   "modelo": "navegador-titular",
+   "status": "respondeu",
+   "itens_obtidos": 1,
+   "sinal": "verde"
+  }
+ ],
+ "relatorio": {
+  "etapas": [
+   {
+    "etapa": "PNCP (fonte indireta — só divulgação, nada é baixado dali)",
+    "ok": true,
+    "detalhe": "divulgação lida; fonte oficial = órgão publicador"
+   },
+   {
+    "etapa": "site institucional do órgão",
+    "ok": false,
+    "detalhe": "não localizado: o PNCP não informou o sistema de origem e o cadastro do CNPJ não trouxe domínio oficial — indicar o site manualmente"
+   },
+   {
+    "etapa": "documentos do edital (PDF/anexos)",
+    "ok": false,
+    "detalhe": "nenhum PDF/anexo acessível: pncp compra (api): HTTPError 301"
+   },
+   {
+    "etapa": "extração determinística",
+    "ok": false,
+    "detalhe": "nada extraível do texto"
+   },
+   {
+    "etapa": "IA (haiku → sonnet)",
+    "ok": false,
+    "detalhe": "NÃO EXECUTADA: a credencial FAROL_AI_API_KEY não está registrada nos segredos do repositório (Settings → Secrets and variables → Actions)",
+    "acao": "registrar_credencial"
+   }
   ],
-  "relatorio": {
-    "etapas": [
-      {
-        "etapa": "PNCP (fonte indireta — só divulgação, nada é baixado dali)",
-        "ok": true,
-        "detalhe": "divulgação lida; fonte oficial = órgão publicador"
-      },
-      {
-        "etapa": "site institucional do órgão",
-        "ok": false,
-        "detalhe": "não localizado: o PNCP não informou o sistema de origem e o cadastro do CNPJ não trouxe domínio oficial — indicar o site manualmente"
-      },
-      {
-        "etapa": "documentos do edital (PDF/anexos)",
-        "ok": false,
-        "detalhe": "nenhum PDF/anexo acessível: pncp compra (api): HTTPError 301"
-      },
-      {
-        "etapa": "extração determinística",
-        "ok": false,
-        "detalhe": "nada extraível do texto"
-      },
-      {
-        "etapa": "IA (haiku → sonnet)",
-        "ok": false,
-        "detalhe": "NÃO EXECUTADA: a credencial FAROL_AI_API_KEY não está registrada nos segredos do repositório (Settings → Secrets and variables → Actions)",
-        "acao": "registrar_credencial"
-      }
-    ],
-    "completo": false,
-    "faltam": [
-      "Prazo de inscrição",
-      "Resultado",
-      "Prazo de recurso",
-      "Valor",
-      "Requisitos",
-      "Anexos",
-      "Destinação"
-    ],
-    "manual": {
-      "motivo": "sem documentos acessíveis e sem IA",
-      "itens": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação"
-      ],
-      "links": [],
-      "instrucao": "o edital só foi anunciado em vetor de divulgação (PNCP/diário); localize o site do órgão que o publicou e informe-o em 'subir informação faltante' — o sistema não aponta para o agregador"
-    },
-    "situacao": "pesquisa incompleta — ação manual indicada"
-  },
-  "mini_parecer": "Credenciamento de prestadores de saúde por município do interior (Palestina de Goiás), fora da atuação territorial da A.M.C. e voltado a serviços, não a fomento de OSC. Não enquadra.",
-  "itens": {
-    "Objeto": "CREDENCIAMENTO/CHAMAMENTO PUBLICO NA AREA DA SAUDE, do Fundo Municipal de Saude de PALESTINA DE GOIAS/GO (CNPJ 10.842.697/0001-00).",
-    "Órgão / financiador": "PNCP — FUNDO MUNICIPAL DE SAUDE DE PALESTINA DE GOIAS",
-    "Território": "GO",
-    "Esfera": "municipal",
-    "Área de atuação": "saude"
-  },
-  "fontes_itens": {
-    "Objeto": "coleta pelo navegador (titular) — página oficial",
-    "Órgão / financiador": "cadastro do edital (motor de busca)",
-    "Território": "cadastro do edital (motor de busca)",
-    "Esfera": "cadastro do edital (motor de busca)",
-    "Área de atuação": "cadastro do edital (motor de busca)"
-  },
+  "completo": false,
   "faltam": [
+   "Prazo de inscrição",
+   "Resultado",
+   "Prazo de recurso",
+   "Valor",
+   "Requisitos",
+   "Anexos",
+   "Destinação"
+  ],
+  "manual": {
+   "motivo": "sem documentos acessíveis e sem IA",
+   "itens": [
     "Prazo de inscrição",
     "Resultado",
     "Prazo de recurso",
@@ -102,55 +80,96 @@
     "Requisitos",
     "Anexos",
     "Destinação"
-  ],
-  "completo": false,
-  "metodo": "sem texto",
-  "documentos_exigidos": [],
-  "pontuacao_texto": null,
-  "atualizado_em": "2026-09-08T09:23:54+00:00",
-  "caracteres_texto": 0,
-  "historico_5_anos": {
-    "ocorrencias": 1,
-    "por_ano": {
-      "2026": 1
-    },
-    "ultimas": [
-      {
-        "data": "2026-09-03",
-        "titulo": "CREDENCIAMENTO/CHAMAMENTO PÚBLICO NA AREA DA SAÚDE.",
-        "url": "https://pncp.gov.br/app/editais/10842697000100/2025/1"
-      }
-    ],
-    "termos": [
-      "palestina",
-      "goiás",
-      "saúde"
-    ],
-    "nota_recorrencia": null
+   ],
+   "links": [],
+   "instrucao": "o edital só foi anunciado em vetor de divulgação (PNCP/diário); localize o site do órgão que o publicou e informe-o em 'subir informação faltante' — o sistema não aponta para o agregador"
   },
-  "dispensaveis": {},
-  "pagina_divulgacao": null,
-  "observacoes": [
-    {
-      "em": "2026-09-07",
-      "texto": "PAGINA OFICIAL LOCALIZADA E ACESSIVEL (Portal do Cidadao da Prefeitura de Palestina de Goias/GO) - era uma das informacoes minimas que faltavam. Edital de 2025; o prazo nao consta na fonte oficial e NAO FOI ESTIMADO. TIPO: credenciamento de prestadores de servicos de saude, normalmente destinado a p"
-    }
-  ],
-  "arquivo": null,
-  "kb_compacto": 0,
-  "fontes": [],
-  "site_institucional": null,
-  "origem": "pncp",
-  "pncp": {
-    "orgao": "FUNDO MUNICIPAL DE SAUDE DE PALESTINA DE GOIAS",
-    "uf": "GO",
-    "municipio": "Palestina de Goiás",
-    "objeto_pncp": "CREDENCIAMENTO/CHAMAMENTO PÚBLICO NA AREA DA SAÚDE.",
-    "encerramento_pncp": "2025-01-07T09:00:00",
-    "abertura_pncp": "2025-01-07T09:00:00"
+  "situacao": "pesquisa incompleta — ação manual indicada"
+ },
+ "mini_parecer": "VERIFICAÇÃO EXTERNA (07-08/09/2026, coleta pelo navegador do titular): TRIAGEM: PAGINA OFICIAL LOCALIZADA E ACESSIVEL (Portal do Cidadao da Prefeitura de Palestina de Goias/GO) - era uma das informacoes minimas que faltavam. Edital de 2025; o prazo nao consta na fonte oficial e NAO FOI ESTIMADO. TIPO: credenciamento de prestadores de servicos de saude, normalmente destinado a profissionais e clinicas, com aproveitamento limitado por associacao comunitaria - verificar o objeto detalhado antes de investir tempo. Registro classificado como oportunidade verificável.",
+ "itens": {
+  "Objeto": "CREDENCIAMENTO/CHAMAMENTO PUBLICO NA AREA DA SAUDE, do Fundo Municipal de Saude de PALESTINA DE GOIAS/GO (CNPJ 10.842.697/0001-00).",
+  "Órgão / financiador": "PNCP — FUNDO MUNICIPAL DE SAUDE DE PALESTINA DE GOIAS",
+  "Território": "GO",
+  "Esfera": "municipal",
+  "Área de atuação": "saude"
+ },
+ "fontes_itens": {
+  "Objeto": "coleta pelo navegador (titular) — página oficial",
+  "Órgão / financiador": "cadastro do edital (motor de busca)",
+  "Território": "cadastro do edital (motor de busca)",
+  "Esfera": "cadastro do edital (motor de busca)",
+  "Área de atuação": "cadastro do edital (motor de busca)"
+ },
+ "faltam": [
+  "Prazo de inscrição",
+  "Resultado",
+  "Prazo de recurso",
+  "Valor",
+  "Requisitos",
+  "Anexos",
+  "Destinação"
+ ],
+ "completo": false,
+ "metodo": "sem texto",
+ "documentos_exigidos": [],
+ "pontuacao_texto": null,
+ "atualizado_em": "2026-09-08T10:49:32+00:00",
+ "caracteres_texto": 0,
+ "historico_5_anos": {
+  "ocorrencias": 1,
+  "por_ano": {
+   "2026": 1
   },
-  "erros": [
-    "pncp compra (api): HTTPError 301"
+  "ultimas": [
+   {
+    "data": "2026-09-03",
+    "titulo": "CREDENCIAMENTO/CHAMAMENTO PÚBLICO NA AREA DA SAÚDE.",
+    "url": "https://pncp.gov.br/app/editais/10842697000100/2025/1"
+   }
   ],
-  "anexos": []
+  "termos": [
+   "palestina",
+   "goiás",
+   "saúde"
+  ],
+  "nota_recorrencia": null
+ },
+ "dispensaveis": {},
+ "pagina_divulgacao": "https://acessoainformacao.palestinadegoias.go.gov.br/cidadao/informacao/licitacoes_mg",
+ "observacoes": [
+  {
+   "em": "2026-09-07",
+   "texto": "PAGINA OFICIAL LOCALIZADA E ACESSIVEL (Portal do Cidadao da Prefeitura de Palestina de Goias/GO) - era uma das informacoes minimas que faltavam. Edital de 2025; o prazo nao consta na fonte oficial e NAO FOI ESTIMADO. TIPO: credenciamento de prestadores de servicos de saude, normalmente destinado a p"
+  },
+  {
+   "em": "2026-09-08",
+   "texto": "PAGINA OFICIAL LOCALIZADA E ACESSIVEL (Portal do Cidadao da Prefeitura de Palestina de Goias/GO) - era uma das informacoes minimas que faltavam. Edital de 2025; o prazo nao consta na fonte oficial e NAO FOI ESTIMADO. TIPO: credenciamento de prestadores de servicos de saude, normalmente destinado a p"
+  }
+ ],
+ "arquivo": null,
+ "kb_compacto": 0,
+ "fontes": [],
+ "site_institucional": null,
+ "origem": "pncp",
+ "pncp": {
+  "orgao": "FUNDO MUNICIPAL DE SAUDE DE PALESTINA DE GOIAS",
+  "uf": "GO",
+  "municipio": "Palestina de Goiás",
+  "objeto_pncp": "CREDENCIAMENTO/CHAMAMENTO PÚBLICO NA AREA DA SAÚDE.",
+  "encerramento_pncp": "2025-01-07T09:00:00",
+  "abertura_pncp": "2025-01-07T09:00:00"
+ },
+ "erros": [
+  "pncp compra (api): HTTPError 301"
+ ],
+ "anexos": [],
+ "verificacao_externa": {
+  "em": "2026-09-08",
+  "por": "titular via navegador",
+  "prazo": null,
+  "inicio": null,
+  "pagina_oficial": "https://acessoainformacao.palestinadegoias.go.gov.br/cidadao/informacao/licitacoes_mg",
+  "observacao": "PAGINA OFICIAL LOCALIZADA E ACESSIVEL (Portal do Cidadao da Prefeitura de Palestina de Goias/GO) - era uma das informacoes minimas que faltavam. Edital de 2025; o prazo nao consta na fonte oficial e NAO FOI ESTIMADO. TIPO: credenciamento de prestadores de servicos de saude, normalmente destinado a p"
+ }
 }

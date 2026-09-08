@@ -1106,6 +1106,14 @@ def _integrar_analise(e: dict) -> None:
     itens = ex.get("itens") or {}; fontes = ex.get("fontes_itens") or {}
     fim = _data_de(itens.get("Prazo de inscrição")); ini = _data_de(itens.get("Início das inscrições"))
     origem = fontes.get("Prazo de inscrição") or "análise"
+    ver = ex.get("verificacao_externa") or {}
+    if ver.get("prazo"):                                   # verificação na fonte oficial prevalece
+        fim = _data_de(ver["prazo"]) or fim; ini = _data_de(ver.get("inicio") or "") or ini
+        origem = "verificação externa pelo titular (site oficial)"
+        e["fim"] = fim or e.get("fim"); e.setdefault("ciclo", {}).setdefault("inscricao", {})["fim"] = e.get("fim")
+        e["ciclo"]["inscricao"]["projetado"] = False
+        if ini: e["inicio"] = ini; e["ciclo"]["inscricao"]["inicio"] = ini
+        e["origem_fim"] = origem
     if fim and not e.get("fim"):
         e["fim"] = fim; e["origem_fim"] = origem
         e.setdefault("ciclo", {}).setdefault("inscricao", {})["fim"] = fim
@@ -1648,7 +1656,13 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                 "situacao": situacao_inscricao(o, hoje)["situacao"],
                 "objeto": (o.get("objeto") or "")[:200] or None,
                 "confirmacao": (o.get("confirmacao") or {}).get("nivel_confirmacao") if isinstance(o.get("confirmacao"), dict) else None,
-                **classificar_registro(o, load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}),
+                **(lambda _ex: {**classificar_registro(o, _ex),
+                                **({"fim": _data_de((_ex.get("verificacao_externa") or {}).get("prazo") or ""),
+                                    "inicio": _data_de((_ex.get("verificacao_externa") or {}).get("inicio") or ""),
+                                    "situacao": ("aberta" if (_data_de((_ex.get("verificacao_externa") or {}).get("prazo") or "") or "") >= hoje.isoformat() else "encerrada"),
+                                    "origem_fim": "verificação externa pelo titular (site oficial)"}
+                                   if (_ex.get("verificacao_externa") or {}).get("prazo") else {})}
+                  )(load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}),
                 **{k: v for k, v in selo_validacao(o, load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}).items()},
             })
         abertas.sort(key=lambda x: (x["area"] == "outros", x.get("uf") != "GO", x.get("coletado_em") or ""), )

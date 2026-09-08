@@ -3791,7 +3791,10 @@ class SystemTests(unittest.TestCase):
     def test_selo_so_com_analise_completa_e_itens_dispensaveis(self):
         an=load_json(pathlib.Path("dados/editais/analises.json"))
         for v in an.values():
-            if v["selo"]=="conformidade": self.assertTrue(v["completo"]); self.assertTrue(all(v["verificacoes"][k] for k in ("itens_12","requisitos_condicoes","documentos")))
+            if v["selo"]=="conformidade" and "itens_12" in (v.get("verificacoes") or {}):
+                self.assertTrue(v["completo"]); self.assertTrue(all(v["verificacoes"][k] for k in ("itens_12","requisitos_condicoes","documentos")))
+            elif v["selo"]=="conformidade":                       # verificação externa: objeto + prazo + site
+                self.assertTrue(all(v["verificacoes"][k] for k in ("objeto","prazo","site_oficial")))
         self.assertTrue(any(v["selo"]=="analise_incompleta" for v in an.values()))
         em=load_json(pathlib.Path("dados/editais/extraidos/emenda-estadual-goias-2026.json")); self.assertIn("Prazo de recurso",em["dispensaveis"]); self.assertEqual(em["faltam"],[])
         html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("led disp",html.replace('${i.valor?"ok":i.dispensavel?"disp":"no"}','led disp')) if False else self.assertIn('i.dispensavel?"disp"',html)
@@ -3980,7 +3983,8 @@ class SystemTests(unittest.TestCase):
         pnab=load_json(pathlib.Path("dados/editais/extraidos/6a0a02d985e917bbcdd7.json"))
         self.assertIn("Prazo de inscrição",pnab["dispensaveis"]); self.assertIn("PNAB",pnab["itens"]["Objeto"])
         mun=load_json(pathlib.Path("dados/editais/extraidos/22ca6714458b99faf7a9.json"))
-        self.assertIn("PRAZO NÃO CONFIRMADO",mun["mini_parecer"]); self.assertIn("Porangatu",mun["itens"]["Objeto"])
+        self.assertIn("VERIFICAÇÃO",mun["mini_parecer"])          # substituído pela verificação externa de 08/09
+        self.assertIn("QUALIFICAÇÃO",mun["itens"]["Objeto"].upper())
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn('<select id="mp-mes" style="display:none"',html)
         self.assertIn("Oportunidades ativas (inscrição em curso ou possível)",html)
@@ -4148,6 +4152,34 @@ class SystemTests(unittest.TestCase):
         self.assertIn("oportunidade(s) verificáveis",html)
         d=load_json(pathlib.Path("docs/dashboard-dados.json"))
         self.assertTrue(all("tipo_registro" in e for e in d["editais"]))
+
+
+    def test_verificacao_externa_do_titular_ingerida(self):
+        """08/09: 140 registros verificados pelo titular (4 lotes do navegador + triagem)
+        entram com parecer, selo e prazo real; prazo verificado prevalece sobre o cadastro."""
+        import glob
+        arqs=glob.glob("dados/editais/coleta_navegador/*.ingerido")
+        self.assertGreaterEqual(len(arqs),5)
+        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        ver=[v for v in an.values() if "verificação externa" in (v.get("por") or "")]
+        self.assertGreaterEqual(len(ver),130)
+        self.assertTrue(all(v.get("motivo") for v in ver))
+        self.assertTrue(any(v["selo"]=="conformidade" for v in ver)); self.assertTrue(any(v["selo"]=="inconformidade" for v in ver))
+        from src.fonte_edital import EXTRAIDOS
+        import glob as _g
+        cand=[f for f in _g.glob("dados/editais/extraidos/*.json") if "verificacao_externa" in open(f,encoding="utf-8").read()]
+        self.assertGreaterEqual(len(cand),100)
+        ex=load_json(pathlib.Path([f for f in cand if load_json(pathlib.Path(f)).get("verificacao_externa",{}).get("prazo")][0]))
+        if ex:
+            self.assertIn("VERIFICAÇÃO EXTERNA",ex["mini_parecer"]); self.assertTrue(ex["verificacao_externa"]["prazo"])
+        src=open("src/dashboard_dados.py",encoding="utf-8").read()
+        self.assertIn("verificação externa pelo titular (site oficial)",src)
+        from src.compacto import expandir
+        amp=[x for x in expandir(load_json(pathlib.Path("docs/dados/abertas.json"))) if x.get("tipo_registro") in ("edital","regra_anual")]
+        val=[x for x in amp if x.get("selo_validacao")=="validada"]
+        self.assertGreaterEqual(len(val),20)
+        self.assertTrue(any(x.get("fim")=="2026-10-30" for x in val))            # Fundação Maria Emília
+        self.assertTrue(any(x.get("fim") and x.get("selo_validacao")=="validada" for x in amp))   # prazo verificado chegou ao registro
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
