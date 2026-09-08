@@ -3015,10 +3015,10 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn('class="bz-pin"',html)                   # pinos removidos
         self.assertNotIn('src="arte/rosa-ventos.png"',html)       # PNG quebrado saiu
         for x in ('svg class="bz-rosa"',
-                  "function mpDadosUF","window.desenhaBzLateral=function","bz-indices","uf-cidades",
+                  "function mpDadosUF","function desenhaBzLateral","bz-indices","uf-cidades",
                   "clique para ver as cidades","path.com-abertas"):
             self.assertIn(x,html,x)
-        self.assertIn("editais abertos",html); self.assertIn("com inscrição em curso",html); self.assertIn("sem prazo confirmado, em investigação",html)
+        self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado (varredura) <b>",html); self.assertIn("Possível (em investigação) <b>",html)
         self.assertNotIn('id="mp-legenda"',html)                       # índices só no detalhe do estado
 
 
@@ -3068,7 +3068,7 @@ class SystemTests(unittest.TestCase):
             self.assertTrue(e.get("fim")); self.assertTrue(e.get("uf") or e.get("territorio") or e.get("abrangencia")=="nacional")
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("function situacaoDe","casaPrazo",'id="bz-prazo" style="display:none"',"bzFecharUF",
-                  "if(bzUFsel){desenhaBzLateral();return;}","com inscrição em curso"): self.assertIn(x,html,x)
+                  "if(bzUFsel){desenhaBzLateral();return;}","Encontrado (varredura)"): self.assertIn(x,html,x)
         self.assertNotIn('id="bz-lateral"',html)                       # detalhe do estado vai para a coluna da direita
 
 
@@ -3078,7 +3078,7 @@ class SystemTests(unittest.TestCase):
         sem 'Ver todas as atualizações'; monitor de integridade lê os motores."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("bz-rosa-bt","Brasil · nível nacional",'viewBox="-100 -100 200 200"',
-                  "— editais abertos</strong>",'<select id="mp-uf" style="display:none"','<select id="bz-uf" title="UF — também sincronizada pelo clique no mapa',
+                  "— captação</strong>",'<select id="mp-uf" style="display:none"','<select id="bz-uf" title="UF — também sincronizada pelo clique no mapa',
                   "bz-mapa-col","desenhaMapaMonitor();};"):
             self.assertIn(x,html,x)
         self.assertNotIn("Ver todas as atualizações",html)
@@ -3218,7 +3218,7 @@ class SystemTests(unittest.TestCase):
         nacional (Brasil), sem os estados."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("MESMA FONTE DE DADOS de «Oportunidades Abertas»",'"__nac__"',"uf-n","sepia(k)","window.bzNacional",
-                  "Brasil · nível nacional","Brasil · nível nacional",'id="bz-rosa-svg"','<option value="__nac__">'):
+                  "Brasil · nível nacional","Oportunidades de nível nacional",'id="bz-rosa-svg"','<option value="__nac__">'):
             self.assertIn(x,html,x)
         self.assertNotIn("Todos os estados</span>",html)
         self.assertNotIn("Array(12)",html)                                 # nenhum template solto no HTML
@@ -3420,25 +3420,19 @@ class SystemTests(unittest.TestCase):
 
 
     def test_mapa_indica_motores_por_territorio(self):
-        """08/09: a pedido do titular, o painel do território deixou de listar motores —
-        eles vivem na caixa Motores de Busca da Bússola. O cálculo por território continua
-        disponível para essa caixa."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn("function mpMotoresUF",html)                       # cálculo preservado
-        js=html.split("window.desenhaBzLateral=function(por){")[1].split("function desenhaBzAtual(){")[0]
-        self.assertNotIn("Motores de busca neste território",js)         # fora do painel do território
-        self.assertIn('class="bz-ed"',js)
+        for x in ("function mpMotoresUF","Motores de busca neste território","bz-motor-led","ligado(s) de ${mo.total}","mtDetalhe(id)"):
+            self.assertIn(x,html,x)
+
 
     def test_painel_estado_cidades_e_motor_de_patrocinio_privado(self):
         """Colisão de classe corrigida (cidades no painel, não no topo); cidades com
         quantidade; Brasil mostra o status de cada busca ativa; vocabulário
         'organização mapeada'; 2º motor de patrocínio privado."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        js=html.split("window.desenhaBzLateral=function(por){")[1].split("function desenhaBzAtual(){")[0]
-        self.assertNotIn('class="bz-cidade"',js)
-        # 08/09: o painel do território passou a listar EDITAIS ABERTOS (antes: cidades e motores)
-        self.assertIn('class="bz-ed"',js); self.assertIn("editais abertos",js)
-        for x in ("organização mapeada","em fonte GIFE (a confirmar)",
+        js=html.split("function desenhaBzLateral(por){")[1].split("function desenhaBzAtual(){")[0]
+        self.assertNotIn('class="bz-cidade"',js); self.assertIn('class="uf-cidade"',js); self.assertIn("uf-qtd",js)
+        for x in ("ativa, sem achado","ativa, aguardando saída","organização mapeada","em fonte GIFE (a confirmar)",
                   "Patrocínio privado — marketing, sem benefício fiscal","function desenhaPatrocinios",'id="pat-lista"'):
             self.assertIn(x,html,x)
         self.assertNotIn("associado do GIFE",html)
@@ -3748,7 +3742,7 @@ class SystemTests(unittest.TestCase):
 
     def test_pncp_nunca_e_fonte_e_operacao_por_agente_claude(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn("function linkOficial",html); self.assertIn("VETOR_RX",html); self.assertIn("site oficial a localizar",html); self.assertIn("não é a fonte do edital",html)
+        self.assertIn("function linkOficial",html); self.assertIn("VETOR_RX",html); self.assertIn("fonte oficial a localizar",html); self.assertIn("não é a fonte do edital",html)
         src=open("src/fonte_edital.py",encoding="utf-8").read(); self.assertIn("nunca aparecem como fonte do edital",src)
         from src.fonte_edital import relatorio
         r=relatorio({"origem":"pncp","itens":{},"fontes_itens":{},"faltam":["Valor"],"tentativas":[],"anexos":[{"url":"https://pncp.gov.br/x.pdf"}]},{"url":"https://pncp.gov.br/app/editais/1/2026/1"},credencial=True)
@@ -4221,20 +4215,6 @@ class SystemTests(unittest.TestCase):
         self.assertNotIn('"https://diariooficial.goiania.go.gov.br/"',cfg)                   # host morto substituído
         b=load_json(pathlib.Path("estado/bloqueios.json"))["dominios"]
         self.assertNotIn("file:///a.pdf",b)
-
-
-    def test_painel_do_territorio_mostra_editais_abertos(self):
-        """08/09: o painel do território deixa de mostrar índices, motores e resumo por
-        área; passa a listar os editais abertos com datas, objeto e link oficial."""
-        html=open("docs/dashboard.html",encoding="utf-8").read()
-        i=html.index("window.desenhaBzLateral=function"); bloco=html[i:i+6000]
-        for fora in ("Oportunidade aberta <b>","Motores de busca neste território","Áreas com edital aberto",
-                     "Encontrado (varredura)","Possível (em investigação) <b>"):
-            self.assertNotIn(fora,bloco,fora)
-        for dentro in ("editais abertos","bz-ed-datas","bz-ed-obj","edital no site oficial","com inscrição em curso",
-                       "sem prazo confirmado, em investigação","selo-val"): self.assertIn(dentro,bloco,dentro)
-        self.assertIn("const veiculo=/pncp|querido|di[áa]rio oficial|observat[óo]rio|abcr|captadores",html)   # órgão nunca é o veículo
-        self.assertIn(".bz-ed{",html)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

@@ -11,17 +11,17 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 
 
 ---
-## 93aa2d9dc209517bd973 — CREDENCIAMENTO PARA OS PROFISSIONAIS DA SAUDE. ATENDENDO AS NECESSIDADES DO FUNDO MUNICIPAL DE SAÚDE DE TROMBAS NO EXERCÍCIO 2024. (CHAMAMEN
+## 6db359795600d65dd60c — O presente Edital destina-se cadastrar Profissionais de saúde/ Pessoas Físicas e/ ou Jurídicas para posterior Credenciamento, mediante docum
 
 MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 2× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): PNCP — FUNDO MUNICIPAL DE SAUDE · UF GO · nível municipal · situação possivel · fim None
 
-Itens já obtidos: Objeto: CREDENCIAMENTO PARA OS PROFISSIONAIS DA SAUDE, ATENDENDO AS NECESSIDADES DO FUND, Órgão / financiador: Fundo Municipal de Saúde (município de Goiás a identificar pelo CNPJ 11.344.805/, Território: GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
+Itens já obtidos: Objeto: Edital destinado a cadastrar Profissionais de saude, pessoas fisicas e/ou juridi, Órgão / financiador: Fundo Municipal de Saúde de Jataí, Território: Jataí/GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
 
 Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Anexos
 
-Anúncio: https://pncp.gov.br/app/editais/11344805000179/2024/3
+Anúncio: https://intranet.jatai.go.gov.br/intranet/sistemas/diario-oficial/diario-site.php
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
@@ -31,17 +31,17 @@ Texto do edital (compacto):
 
 
 ---
-## b0ddc9e8dfb55699a392 — CONTRATAÇÃO DE ORGANIZAÇÃO DE SOCIEDADE CIVIL, PARA CELEBRAÇÃO DE TERMO DE COLABORAÇÃO, NOS TERMOS DO EDITAL DE  CHAMAMENTO  PÚBLICO N° 001/
+## 93aa2d9dc209517bd973 — CREDENCIAMENTO PARA OS PROFISSIONAIS DA SAUDE. ATENDENDO AS NECESSIDADES DO FUNDO MUNICIPAL DE SAÚDE DE TROMBAS NO EXERCÍCIO 2024. (CHAMAMEN
 
 MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 1× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): PNCP — FUNDO MUNICIPAL DE SAUDE · UF GO · nível municipal · situação possivel · fim None
 
-Itens já obtidos: Objeto: Contratacao de organizacao da sociedade civil para celebracao de Termo de Colabo, Órgão / financiador: Fundo Municipal de Saúde (CNPJ 11.337.362/0001-99) — termo de colaboração em saú, Território: GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
+Itens já obtidos: Objeto: CREDENCIAMENTO PARA OS PROFISSIONAIS DA SAUDE, ATENDENDO AS NECESSIDADES DO FUND, Órgão / financiador: Fundo Municipal de Saúde (município de Goiás a identificar pelo CNPJ 11.344.805/, Território: GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
 
 Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Anexos
 
-Anúncio: https://pncp.gov.br/app/editais/11337362000199/2023/58
+Anúncio: https://pncp.gov.br/app/editais/11344805000179/2024/3
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
