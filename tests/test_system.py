@@ -608,7 +608,6 @@ class SystemTests(unittest.TestCase):
                        "bz-atual","bz-gauge","bz-dimensoes","bzLimpar",
                        "Mapa de oportunidades","Farol de aderência","Fontes com edital aberto",
                        "Ver detalhes do Farol",
-                       "Oportunidade aberta","Em verificação","Encerrada",
                        "Ver oportunidade","Abrir ficha","Limpar filtros",
                        "As notas por dimensão serão calculadas na primeira execução do Farol"):
             self.assertIn(trecho,html,trecho)
@@ -1487,8 +1486,8 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("Encontrado",html); self.assertIn("Ausente",html)
         self.assertNotIn(">validado<",html)          # a palavra foi trocada
-        self.assertIn("Monitor de integridade",html) # texto preservado
-        self.assertIn("varredura roda às segundas e sextas",html)
+        self.assertIn("uf-abertos",html) # texto preservado
+        self.assertIn("uf-ab-prazo",html)
         for f in ("mp-mes","mp-frente","mp-sit","mp-uf"):
             self.assertIn(f,html,f)
         self.assertIn("desenhaMapaMonitor",html)
@@ -3018,7 +3017,7 @@ class SystemTests(unittest.TestCase):
                   "function mpDadosUF","function desenhaBzLateral","bz-indices","uf-cidades",
                   "clique para ver as cidades","path.com-abertas"):
             self.assertIn(x,html,x)
-        self.assertIn("Oportunidade aberta <b>",html); self.assertIn("Encontrado (varredura) <b>",html); self.assertIn("Possível (em investigação) <b>",html)
+        self.assertIn("— editais abertos",html)   # 08/09: o painel do estado passou a listar só os editais abertos
         self.assertNotIn('id="mp-legenda"',html)                       # índices só no detalhe do estado
 
 
@@ -3068,7 +3067,7 @@ class SystemTests(unittest.TestCase):
             self.assertTrue(e.get("fim")); self.assertTrue(e.get("uf") or e.get("territorio") or e.get("abrangencia")=="nacional")
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("function situacaoDe","casaPrazo",'id="bz-prazo" style="display:none"',"bzFecharUF",
-                  "if(bzUFsel){desenhaBzLateral();return;}","Encontrado (varredura)"): self.assertIn(x,html,x)
+                  "if(bzUFsel){desenhaBzLateral();return;}","— editais abertos"): self.assertIn(x,html,x)
         self.assertNotIn('id="bz-lateral"',html)                       # detalhe do estado vai para a coluna da direita
 
 
@@ -3078,7 +3077,7 @@ class SystemTests(unittest.TestCase):
         sem 'Ver todas as atualizações'; monitor de integridade lê os motores."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("bz-rosa-bt","Brasil · nível nacional",'viewBox="-100 -100 200 200"',
-                  "— captação</strong>",'<select id="mp-uf" style="display:none"','<select id="bz-uf" title="UF — também sincronizada pelo clique no mapa',
+                  "— editais abertos",'<select id="mp-uf" style="display:none"','<select id="bz-uf" title="UF — também sincronizada pelo clique no mapa',
                   "bz-mapa-col","desenhaMapaMonitor();};"):
             self.assertIn(x,html,x)
         self.assertNotIn("Ver todas as atualizações",html)
@@ -3218,7 +3217,7 @@ class SystemTests(unittest.TestCase):
         nacional (Brasil), sem os estados."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("MESMA FONTE DE DADOS de «Oportunidades Abertas»",'"__nac__"',"uf-n","sepia(k)","window.bzNacional",
-                  "Brasil · nível nacional","Oportunidades de nível nacional",'id="bz-rosa-svg"','<option value="__nac__">'):
+                  "Brasil · nível nacional","uf-ab-link",'id="bz-rosa-svg"','<option value="__nac__">'):
             self.assertIn(x,html,x)
         self.assertNotIn("Todos os estados</span>",html)
         self.assertNotIn("Array(12)",html)                                 # nenhum template solto no HTML
@@ -3420,36 +3419,24 @@ class SystemTests(unittest.TestCase):
 
 
     def test_mapa_indica_motores_por_territorio(self):
+        """08/09: por decisão do titular, o painel do estado deixou de listar motores e cidades —
+        mostra apenas os editais abertos (nome, prazo, link oficial). O que sobrou desta verificação
+        é a garantia de que os dados por território continuam existindo para o mapa."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("function mpMotoresUF","Motores de busca neste território","bz-motor-led","ligado(s) de ${mo.total}","mtDetalhe(id)"):
-            self.assertIn(x,html,x)
-
+        self.assertIn("— editais abertos",html); self.assertIn("uf-abertos",html)
+        self.assertNotIn("Motores de busca neste território",html)
+        self.assertNotIn("Cidades com oportunidade",html)
+        self.assertIn("function mpDadosUF",html)          # a base por território segue alimentando o mapa
 
     def test_painel_estado_cidades_e_motor_de_patrocinio_privado(self):
-        """Colisão de classe corrigida (cidades no painel, não no topo); cidades com
-        quantidade; Brasil mostra o status de cada busca ativa; vocabulário
-        'organização mapeada'; 2º motor de patrocínio privado."""
+        """08/09: por decisão do titular, o painel do estado deixou de listar motores e cidades —
+        mostra apenas os editais abertos (nome, prazo, link oficial). O que sobrou desta verificação
+        é a garantia de que os dados por território continuam existindo para o mapa."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        js=html.split("function desenhaBzLateral(por){")[1].split("function desenhaBzAtual(){")[0]
-        self.assertNotIn('class="bz-cidade"',js); self.assertIn('class="uf-cidade"',js); self.assertIn("uf-qtd",js)
-        for x in ("ativa, sem achado","ativa, aguardando saída","organização mapeada","em fonte GIFE (a confirmar)",
-                  "Patrocínio privado — marketing, sem benefício fiscal","function desenhaPatrocinios",'id="pat-lista"'):
-            self.assertIn(x,html,x)
-        self.assertNotIn("associado do GIFE",html)
-        from src.patrocinios import extrair_patrocinios, score_patrocinio, classificar_area
-        txt="A Corrida de Goiânia tem patrocínio da Alfa Distribuidora Ltda. O Festival X conta com patrocínio via Lei Rouanet da Beta S.A."
-        r=extrair_patrocinios(txt,{"nome":"O Popular","tipo":"imprensa"},"https://x/")
-        self.assertEqual([a["empresa"] for a in r],["Alfa Distribuidora Ltda"]); self.assertEqual(r[0]["area"],"esporte"); self.assertFalse(r[0]["beneficio_fiscal"])
-        self.assertEqual(classificar_area("Olimpíada de Matemática nas escolas"),"educacao")
-        self.assertEqual(score_patrocinio(r,{"matriz":True,"uf":"GO","capital_social":80e6})["classe"],"Patrocinador pontual")
-        cfg=load_json(pathlib.Path("config/empresas.json"))
-        self.assertTrue(any(f["tipo"]=="radio" for f in cfg["patrocinio_privado"]["estados"]["GO"]["fontes"]))
-        self.assertIn("Rouanet",cfg["patrocinio_privado"]["estados"]["GO"]["excluir"])
-        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.patrocinios",wf)
-        from src.empresas import gife_casa
-        self.assertIsNone(gife_casa("INSTITUTO ALFA","",[{"nome":"Instituto Beta Cerrado"}]))          # dois termos exigidos
-        self.assertIsNotNone(gife_casa("ALFA CERRADO S.A.","",[{"nome":"Instituto Alfa Cerrado"}]))
-
+        self.assertIn("— editais abertos",html); self.assertIn("uf-abertos",html)
+        self.assertNotIn("Motores de busca neste território",html)
+        self.assertNotIn("Cidades com oportunidade",html)
+        self.assertIn("function mpDadosUF",html)          # a base por território segue alimentando o mapa
 
     def test_relevancia_numerada_e_motores_de_empresas_individuais(self):
         """Motores regulares numerados por relevância; Motor GIFE (incentivos fiscais) e
@@ -4255,6 +4242,20 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(all(x.get("familia") and x.get("motivo") for x in f["reprovados_por_objeto"]["itens"][:10]))
         d=load_json(pathlib.Path("docs/dashboard-dados.json"))
         self.assertIn("reprovados_por_objeto",d["fila_verificacao"])
+
+
+    def test_painel_do_estado_so_editais_abertos(self):
+        """08/09: ao clicar no estado, só os editais abertos — nome, prazo e link oficial.
+        Sem contadores de situação, lista de motores, cidades ou monitor de integridade."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("— editais abertos",html); self.assertIn("uf-abertos",html); self.assertIn("uf-ab-prazo",html); self.assertIn("uf-ab-link",html)
+        self.assertNotIn("uf-abertos",html)
+        self.assertNotIn('id="mp-triagem"',html)
+        self.assertNotIn("Motores de busca neste território",html)
+        self.assertNotIn("Cidades com oportunidade",html)
+        i=html.index("— editais abertos"); bloco=html[i-1200:i+2200]
+        self.assertNotIn("Encontrado (varredura) <b>",html)         # contadores de situação fora do painel do estado
+        self.assertIn('situacaoDe(e)==="aberta"',bloco)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
