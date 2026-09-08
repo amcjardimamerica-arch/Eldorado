@@ -371,13 +371,18 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             p.feed(html)
         # DOU (leiturajornal): as matérias do dia vêm num JSON embutido, não em <a>;
         # cada matéria vira um link para a íntegra em /web/dou/-/<urlTitle>
-        mj = re.search(r'<script[^>]*id="params"[^>]*>(.*?)</script>', html, re.S)
+        mj = (re.search(r'<script[^>]*id="params"[^>]*>(.*?)</script>', html, re.S)
+              or re.search(r'<script[^>]*id="_pesquisa_params"[^>]*>(.*?)</script>', html, re.S)
+              or re.search(r'var\s+params\s*=\s*(\{.*?\});', html, re.S)
+              or re.search(r'"jsonArray"\s*:\s*(\[.*?\])\s*[,}]', html, re.S))
         if "in.gov.br" in url:
             diag["dou_json_encontrado"] = bool(mj)
         if mj and "in.gov.br" in url:
             try:
-                dados_dou = json.loads(mj.group(1))
+                bruto = json.loads(mj.group(1))
+                dados_dou = {"jsonArray": bruto} if isinstance(bruto, list) else bruto
                 diag["dou_json_materias"] = len(dados_dou.get("jsonArray") or [])
+                diag["dou_json_encontrado"] = True
                 for mat in (dados_dou.get("jsonArray") or [])[:600]:
                     tit = (mat.get("title") or "").strip(); slug_ = mat.get("urlTitle")
                     if tit and slug_:

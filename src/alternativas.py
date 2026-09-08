@@ -63,7 +63,14 @@ _AGREGADORES = {
 _JUDICIAL = re.compile(r"tjgo|trf1|jus\.br|vara|juiz|prestação pecuniária|execução penal|cnj", re.I)
 
 
+def _ruido_de_laboratorio(url: str) -> bool:
+    """URLs de teste não são bloqueio real e não devem sujar o diagnóstico."""
+    return str(url).startswith(("file:", "http://localhost", "http://127.")) or "exemplo.invalido" in str(url)
+
+
 def registrar_bloqueio(url: str, erro: str, contexto: str = "") -> dict:
+    if _ruido_de_laboratorio(url):
+        return {"ignorado": "url de laboratório"}
     est = load_json(ESTADO) if ESTADO.exists() else {"dominios": {}}
     dom = urlsplit(url).hostname or url
     d = est["dominios"].setdefault(dom, {"bloqueios": 0, "erros": {}, "ultimo": None, "urls": []})

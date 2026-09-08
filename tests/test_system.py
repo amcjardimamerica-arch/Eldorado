@@ -4200,6 +4200,22 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(len(curso),8)
         self.assertTrue(any(x.get("uf")=="RS" for x in curso))       # municipais do RS confirmados no PDF oficial
 
+
+    def test_diagnostico_dos_motores_08_09(self):
+        """Defeitos encontrados na auditoria de 08/09: (a) o JSON do DOU deixou de ser
+        localizado (0 matérias, antes 368); (b) URLs de laboratório sujavam o registro de
+        bloqueios; (c) host de DNS morto continuava configurado."""
+        src=open("src/sensores.py",encoding="utf-8").read()
+        self.assertIn('id="_pesquisa_params"',src); self.assertIn('"jsonArray"\\s*:',src)     # variações do seletor
+        self.assertIn('dados_dou = {"jsonArray": bruto} if isinstance(bruto, list) else bruto',src)
+        from src.alternativas import _ruido_de_laboratorio, registrar_bloqueio
+        self.assertTrue(_ruido_de_laboratorio("file:///a.pdf")); self.assertFalse(_ruido_de_laboratorio("https://www.tjgo.jus.br/"))
+        self.assertEqual(registrar_bloqueio("file:///a.pdf","URLError","Lab"),{"ignorado":"url de laboratório"})
+        cfg=open("config/sensores.json",encoding="utf-8").read()
+        self.assertNotIn('"https://diariooficial.goiania.go.gov.br/"',cfg)                   # host morto substituído
+        b=load_json(pathlib.Path("estado/bloqueios.json"))["dominios"]
+        self.assertNotIn("file:///a.pdf",b)
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")
