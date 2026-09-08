@@ -45,33 +45,19 @@
       "status": "respondeu",
       "itens_obtidos": 3,
       "sinal": "verde"
-    },
-    {
-      "em": "2026-09-08T07:30:09+00:00",
-      "modelo": "claude-haiku-4-5",
-      "status": "fase 3 por rotina externa — a IA não roda no GitHub",
-      "faltavam": [
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Anexos"
-      ],
-      "uso": null,
-      "itens_obtidos": 0,
-      "sinal": "vermelho"
     }
   ],
   "relatorio": {
     "etapas": [
       {
         "etapa": "documentos do edital (PDF/anexos)",
-        "ok": true,
-        "detalhe": "1 arquivo(s) lido(s), texto compacto de 2.1 KB"
+        "ok": false,
+        "detalhe": "nenhum PDF/anexo acessível: sem link de documento na fonte"
       },
       {
         "etapa": "extração determinística",
         "ok": true,
-        "detalhe": "6 item(ns): Órgão / financiador, Esfera, Valor, Território, Área de atuação, Destinação"
+        "detalhe": "3 item(ns): Valor, Território, Área de atuação"
       },
       {
         "etapa": "IA (haiku → sonnet)",
@@ -82,22 +68,25 @@
     ],
     "completo": false,
     "faltam": [
+      "Prazo de inscrição",
       "Resultado",
       "Prazo de recurso",
       "Requisitos",
-      "Anexos"
+      "Anexos",
+      "Destinação"
     ],
     "manual": {
-      "motivo": "a IA não conseguiu acessar/extrair os documentos",
+      "motivo": "sem documentos acessíveis e sem IA",
       "itens": [
+        "Prazo de inscrição",
         "Resultado",
         "Prazo de recurso",
         "Requisitos",
-        "Anexos"
+        "Anexos",
+        "Destinação"
       ],
       "links": [
-        "https://observatorio3setor.org.br/instituto-lojas-renner-abre-edital-com-ate-r-10-mil-para-fortalecer-organizacoes-sociais",
-        "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf"
+        "https://www.institutolojasrenner.org.br/"
       ],
       "instrucao": "abra a fonte oficial, localize o edital e use 'subir informação faltante' com os itens listados"
     },
@@ -135,9 +124,9 @@
   "metodo": "determinístico",
   "documentos_exigidos": [],
   "pontuacao_texto": null,
-  "atualizado_em": "2026-09-08T07:30:09+00:00",
-  "caracteres_texto": 3853,
-  "pagina_divulgacao": "https://observatorio3setor.org.br/instituto-lojas-renner-abre-edital-com-ate-r-10-mil-para-fortalecer-organizacoes-sociais",
+  "atualizado_em": "2026-09-07T20:56:33+00:00",
+  "caracteres_texto": 0,
+  "pagina_divulgacao": "https://www.institutolojasrenner.org.br/edital-encantando-comunidades/",
   "historico_5_anos": {
     "ocorrencias": 1,
     "por_ano": {
@@ -166,29 +155,15 @@
       "origem": "não lido: arquivo guardado é o mídia kit do veículo"
     }
   ],
-  "kb_compacto": 2.1,
-  "fontes": [
-    {
-      "titulo": "Midia Kit",
-      "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf",
-      "caracteres": 3818
-    }
+  "kb_compacto": 0,
+  "fontes": [],
+  "erros": [
+    "texto anterior descartado em 07/09: era mídia kit do veículo ou PDF binário"
   ],
-  "erros": [],
   "observacoes": [
     {
       "em": "2026-09-07",
       "texto": "REGISTRO DUPLICADO do item 7e4d2f0cf2bee7a138b8. Territorios RS/RJ/SP - nao alcanca Goias. OBSERVACAO UTIL: o Instituto Lojas Renner mantem tambem um BANCO DE PROJETOS INCENTIVADOS em fluxo continuo, para cadastro de iniciativas ja aprovadas em leis de incentivo fiscal, sem restricao territorial dec"
-    }
-  ],
-  "arquivo": "dados/editais/textos/c5c7e37e2e275d2e69fe.txt.gz",
-  "site_institucional": null,
-  "origem": "pagina",
-  "pncp": {},
-  "anexos": [
-    {
-      "nome": "Midia Kit",
-      "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf"
     }
   ]
 }

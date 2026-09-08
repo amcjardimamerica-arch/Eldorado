@@ -27,13 +27,13 @@
 - [ ] CRF — Certificado de Regularidade do FGTS — faltante — emitir: https://consulta-crf.caixa.gov.br/consultacrf/pages/consultaEmpregador.jsf
 - [ ] Certidão Negativa Estadual (Economia-GO) — faltante — emitir: https://www.sefaz.go.gov.br/Certidao/Emissao/default.asp
 - [ ] Certidão Negativa Municipal (Goiânia) — faltante — emitir: https://www.goiania.go.gov.br/sing/certidao-negativa/
-- [x] Estatuto social registrado (versão consolidada) — enviado (01 - Estatuto 2025.pdf)
-- [x] Ata de eleição e posse da diretoria vigente — enviado (02 - Ata de Eleição 2026-2029.pdf)
+- [ ] Estatuto social registrado (versão consolidada) — faltante
+- [ ] Ata de eleição e posse da diretoria vigente — faltante
 - [ ] Ata da última assembleia geral — faltante
-- [x] Comprovante de inscrição CNPJ — enviado (03 - CNPJ Associacao.pdf)
-- [x] Comprovante de endereço da sede — enviado (04 -Endereço AMC Jardim América.pdf)
+- [ ] Comprovante de inscrição CNPJ — faltante
+- [ ] Comprovante de endereço da sede — faltante
 - [x] Título/lei de utilidade pública (quando houver) — enviado (LEIA-ME.md)
 
-**Prontidão documental:** 0/5 certidões válidas · 5/6 registrados enviados.
+**Prontidão documental:** 0/5 certidões válidas · 1/6 registrados enviados.
 
-_Gerado em 2026-09-08T07:30 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._
+_Gerado em 2026-09-07T17:00 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._
