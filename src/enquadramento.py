@@ -802,7 +802,7 @@ def ingerir_navegador() -> dict:
             if not isinstance(v, dict):
                 continue
             pag = (v.get("pagina_oficial") or "").strip()
-            if pag and VET.search(pag):
+            if pag and VET.search(pag) and not re.search(r"pncp\.gov[^ ]*/arquivos/", pag, re.I):
                 recusados.append({"id": eid, "motivo": "página informada é vetor/veículo, não a fonte oficial", "url": pag}); pag = ""
             fp = EXTRAIDOS / f"{eid}.json"
             reg = load_json(fp) if fp.exists() else {"edital_id": eid, "tentativas": [], "itens": {}, "fontes_itens": {}}

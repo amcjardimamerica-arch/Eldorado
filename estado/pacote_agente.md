@@ -11,29 +11,9 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 
 
 ---
-## e6801d299530f293e1b5 — PNAB - EDITAL Nº 003/2024 (FOMENTO)
-
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 2× · motivo: sem prazo de inscrição confirmado
-
-Fonte (vetor): PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC · UF GO · nível municipal · situação possivel · fim None
-
-Itens já obtidos: Objeto: PNAB - Edital de Chamamento Publico no 003/2024 (FOMENTO) do Municipio de Senado, Órgão / financiador: Fundo Municipal de Educação e Cultura — FMEC (município de Goiás a identificar p, Território: GO (município a identificar), Esfera: municipal, Área de atuação: cultura, Prazo de inscrição: edital de 2024 — ciclo encerrado, Requisitos: proponentes culturais sediados no município (PNAB), Destinação: fomento a projetos culturais locais
-
-Itens que FALTAM: Resultado, Prazo de recurso, Valor, Anexos
-
-Anúncio: https://pncp.gov.br/app/editais/25107525000151/2024/82
-Site institucional conhecido: não localizado
-
-Texto do edital (compacto):
-```
-(sem texto — localizar o edital no site do órgão)
-```
-
-
----
 ## 443dfeed2a9493ab123d — Termos de Fomento
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 4× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 5× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Programa Goyazes — incentivo à cultura de Goiás · UF GO · nível estadual · situação possivel · fim None
 
@@ -287,4 +267,24 @@ Subcláusula Primeira -
 Designar Gestor, na qualidade de representante da
 Administração Pública, para acompanhar e ﬁscalizar a execução dos recursos
 repassados, nos termos do art. 61 da Lei Fed
+```
+
+
+---
+## 2dd2d9b5ffa96b7bbc90 — CHAMAMENTO PÚBLICO DESTINADO AO CREDENCIAMENTO DE ESTABELECIMENTOS DE SAÚDE E PRESTADORES DE SERVIÇOS DE SAÚDE, PESSOAS FÍSICAS OU JURÍDICAS
+
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 1× · motivo: sem prazo de inscrição confirmado
+
+Fonte (vetor): PNCP — FUNDO MUNICIPAL DA SAUDE IPAMERI · UF GO · nível municipal · situação possivel · fim None
+
+Itens já obtidos: Objeto: CHAMAMENTO PUBLICO DESTINADO AO CREDENCIAMENTO DE ESTABELECIMENTOS DE SAUDE E PR, Órgão / financiador: Fundo Municipal de Saúde de Ipameri, Território: Ipameri/GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
+
+Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Anexos
+
+Anúncio: https://pncp.gov.br/app/editais/07777639000127/2026/58
+Site institucional conhecido: não localizado
+
+Texto do edital (compacto):
+```
+(sem texto — localizar o edital no site do órgão)
 ```

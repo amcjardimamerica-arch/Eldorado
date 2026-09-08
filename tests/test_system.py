@@ -4181,6 +4181,25 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(any(x.get("fim")=="2026-10-30" for x in val))            # Fundação Maria Emília
         self.assertTrue(any(x.get("fim") and x.get("selo_validacao")=="validada" for x in amp))   # prazo verificado chegou ao registro
 
+
+    def test_pdf_do_edital_no_pncp_vale_como_documento_oficial(self):
+        """08/09: a PÁGINA de anúncio do PNCP nunca é fonte, mas o ARQUIVO do edital do
+        próprio órgão hospedado lá é o documento oficial."""
+        from src.dashboard_dados import selo_validacao
+        pagina=selo_validacao({"id":"a","objeto":"x","fim":"2026-10-01"},{"pagina_divulgacao":"https://pncp.gov.br/app/editais/1/2026/1"})
+        self.assertEqual(pagina["selo_validacao"],"nao_verificada")
+        arquivo=selo_validacao({"id":"b","objeto":"x","fim":"2026-10-01"},{"pagina_divulgacao":"https://pncp.gov.br/pncp-api/v1/orgaos/876/compras/2026/373/arquivos/1"})
+        self.assertEqual(arquivo["selo_validacao"],"validada")
+        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        self.assertGreaterEqual(sum(1 for v in an.values() if v["selo"]=="conformidade"),60)
+        from src.compacto import expandir
+        amp=[x for x in expandir(load_json(pathlib.Path("docs/dados/abertas.json"))) if x.get("tipo_registro") in ("edital","regra_anual")]
+        val=[x for x in amp if x.get("selo_validacao")=="validada"]
+        self.assertGreaterEqual(len(val),50)
+        curso=[x for x in val if x.get("fim") and x["fim"]>="2026-09-08"]
+        self.assertGreaterEqual(len(curso),8)
+        self.assertTrue(any(x.get("uf")=="RS" for x in curso))       # municipais do RS confirmados no PDF oficial
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

@@ -1152,7 +1152,10 @@ def selo_validacao(e: dict, ex: dict | None = None) -> dict:
     prazo = itens.get("Prazo de inscrição") or e.get("fim") or ciclo.get("fim")
     site = ex.get("pagina_divulgacao") or e.get("pagina_divulgacao")
     if site and re.search(r"pncp\.gov|queridodiario|in\.gov\.br|diariooficial|observatorio3setor|captadores\.org|bussolasocial|prosas\.com", str(site), re.I):
-        site = None                                  # vetor/veículo não vale como site oficial
+        # exceção: o ARQUIVO do edital do órgão hospedado no PNCP é o documento oficial;
+        # o que nunca vale é a PÁGINA de anúncio (o portal não é fonte).
+        if not re.search(r"pncp\.gov[^ ]*/arquivos/", str(site), re.I):
+            site = None
     faltam = [k for k, v in (("objeto", objeto), ("prazo de inscrição", prazo), ("site oficial", site)) if not v]
     disp = ex.get("dispensaveis") or {}
     if "Prazo de inscrição" in disp and "prazo de inscrição" in faltam:
