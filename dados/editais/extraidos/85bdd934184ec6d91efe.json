@@ -22,19 +22,46 @@
       "status": "respondeu",
       "itens_obtidos": 1,
       "sinal": "verde"
+    },
+    {
+      "em": "2026-09-08T07:30:28+00:00",
+      "modelo": "claude-haiku-4-5",
+      "status": "fase 3 por rotina externa — a IA não roda no GitHub",
+      "faltavam": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "uso": null,
+      "itens_obtidos": 0,
+      "sinal": "vermelho"
     }
   ],
   "relatorio": {
     "etapas": [
       {
+        "etapa": "PNCP (fonte indireta — só divulgação, nada é baixado dali)",
+        "ok": true,
+        "detalhe": "divulgação lida; fonte oficial = órgão publicador"
+      },
+      {
+        "etapa": "site institucional do órgão",
+        "ok": true,
+        "detalhe": "https://www.goiania.go.gov.br",
+        "link": "https://www.goiania.go.gov.br"
+      },
+      {
         "etapa": "documentos do edital (PDF/anexos)",
-        "ok": false,
-        "detalhe": "nenhum PDF/anexo acessível: sem link de documento na fonte"
+        "ok": true,
+        "detalhe": "1 arquivo(s) lido(s), texto compacto de 10.8 KB"
       },
       {
         "etapa": "extração determinística",
-        "ok": false,
-        "detalhe": "nada extraível do texto"
+        "ok": true,
+        "detalhe": "1 item(ns): Prazo de inscrição"
       },
       {
         "etapa": "IA (haiku → sonnet)",
@@ -45,7 +72,6 @@
     ],
     "completo": false,
     "faltam": [
-      "Prazo de inscrição",
       "Resultado",
       "Prazo de recurso",
       "Valor",
@@ -54,9 +80,8 @@
       "Destinação"
     ],
     "manual": {
-      "motivo": "sem documentos acessíveis e sem IA",
+      "motivo": "a IA não conseguiu acessar/extrair os documentos",
       "itens": [
-        "Prazo de inscrição",
         "Resultado",
         "Prazo de recurso",
         "Valor",
@@ -65,9 +90,11 @@
         "Destinação"
       ],
       "links": [
-        "https://pncp.gov.br/app/editais/01015676000111/2025/1"
+        "https://www.goiania.go.gov.br",
+        "https://www.goiania.go.gov.br/procuradoria/wp-content/uploads/sites/11/2022/03/2022-Manual-de-Orientacao-dos-Agentes-Publicos.pdf",
+        "https://www.goiania.go.gov.br/wp-content/uploads/2022/04/Cartilha-de-Prevencao-e-Combate-ao-Assedio-Moral-Prefeitura-de-Goiania_compressed.pdf"
       ],
-      "instrucao": "abra a fonte, localize o edital e use 'subir informação faltante' com os itens listados"
+      "instrucao": "abra a fonte oficial, localize o edital e use 'subir informação faltante' com os itens listados"
     },
     "situacao": "pesquisa incompleta — ação manual indicada"
   },
@@ -77,17 +104,18 @@
     "Órgão / financiador": "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS",
     "Território": "GO",
     "Esfera": "estadual",
-    "Área de atuação": "educacao"
+    "Área de atuação": "educacao",
+    "Prazo de inscrição": "2025-07-30"
   },
   "fontes_itens": {
     "Objeto": "coleta pelo navegador (titular) — página oficial",
     "Órgão / financiador": "cadastro do edital (motor de busca)",
     "Território": "cadastro do edital (motor de busca)",
     "Esfera": "cadastro do edital (motor de busca)",
-    "Área de atuação": "cadastro do edital (motor de busca)"
+    "Área de atuação": "cadastro do edital (motor de busca)",
+    "Prazo de inscrição": "PNCP (divulgação)"
   },
   "faltam": [
-    "Prazo de inscrição",
     "Resultado",
     "Prazo de recurso",
     "Valor",
@@ -96,12 +124,12 @@
     "Destinação"
   ],
   "completo": false,
-  "metodo": "sem texto",
+  "metodo": "determinístico",
   "documentos_exigidos": [],
   "pontuacao_texto": null,
-  "atualizado_em": "2026-09-07T20:56:33+00:00",
-  "caracteres_texto": 0,
-  "pagina_divulgacao": "https://crcgo.org.br/editais-diversos/",
+  "atualizado_em": "2026-09-08T07:30:28+00:00",
+  "caracteres_texto": 52132,
+  "pagina_divulgacao": null,
   "historico_5_anos": {
     "ocorrencias": 3,
     "por_ano": {
@@ -137,6 +165,39 @@
     {
       "em": "2026-09-07",
       "texto": "NAO E FINANCIAMENTO A OSC: os chamamentos publicos do CRCGO sao para inscricao de contadores em comissoes tematicas, conselhos municipais de contribuintes e eleicoes - nao ha repasse de recursos a organizacoes da sociedade civil. O edital especifico de 2025 registrado no cadastro ja nao consta na pa"
+    }
+  ],
+  "arquivo": "dados/editais/textos/85bdd934184ec6d91efe.txt.gz",
+  "kb_compacto": 10.8,
+  "fontes": [
+    {
+      "titulo": "Cartilha-de-Prevencao-e-Combate-ao-Assedio-Moral-Prefeitura-de-Goiania_compressed.pdf",
+      "url": "https://www.goiania.go.gov.br/wp-content/uploads/2022/04/Cartilha-de-Prevencao-e-Combate-ao-Assedio-Moral-Prefeitura-de-Goiania_compressed.pdf",
+      "caracteres": 52021
+    }
+  ],
+  "site_institucional": "https://www.goiania.go.gov.br",
+  "origem": "pncp",
+  "pncp": {
+    "orgao": "CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS",
+    "uf": "GO",
+    "municipio": "Goiânia",
+    "objeto_pncp": "A presidente do CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS torna público, aos interessados, que realizará Chamamento Público para seleção e credenciamento de Instituições de Ensino Superior para celebração de Acordo de Cooperação e Parceria, no âmbito do Programa de Educação Profissional Continuada da Entidade.",
+    "encerramento_pncp": "2025-07-30T18:00:00",
+    "abertura_pncp": "2024-01-24T18:00:00"
+  },
+  "erros": [
+    "pncp compra (api): HTTPError 301",
+    "pdf https://www.goiania.go.gov.br/procurador: HTTPError"
+  ],
+  "anexos": [
+    {
+      "nome": "2022-Manual-de-Orientacao-dos-Agentes-Publicos.pdf",
+      "url": "https://www.goiania.go.gov.br/procuradoria/wp-content/uploads/sites/11/2022/03/2022-Manual-de-Orientacao-dos-Agentes-Publicos.pdf"
+    },
+    {
+      "nome": "Cartilha-de-Prevencao-e-Combate-ao-Assedio-Moral-Prefeitura-de-Goiania_compressed.pdf",
+      "url": "https://www.goiania.go.gov.br/wp-content/uploads/2022/04/Cartilha-de-Prevencao-e-Combate-ao-Assedio-Moral-Prefeitura-de-Goiania_compressed.pdf"
     }
   ]
 }

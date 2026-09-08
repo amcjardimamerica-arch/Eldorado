@@ -29,19 +29,34 @@
       "status": "respondeu",
       "itens_obtidos": 3,
       "sinal": "verde"
+    },
+    {
+      "em": "2026-09-08T07:30:17+00:00",
+      "modelo": "claude-haiku-4-5",
+      "status": "fase 3 por rotina externa — a IA não roda no GitHub",
+      "faltavam": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos"
+      ],
+      "uso": null,
+      "itens_obtidos": 0,
+      "sinal": "vermelho"
     }
   ],
   "relatorio": {
     "etapas": [
       {
         "etapa": "documentos do edital (PDF/anexos)",
-        "ok": false,
-        "detalhe": "nenhum PDF/anexo acessível: sem link de documento na fonte"
+        "ok": true,
+        "detalhe": "1 arquivo(s) lido(s), texto compacto de 2.1 KB"
       },
       {
         "etapa": "extração determinística",
-        "ok": false,
-        "detalhe": "nada extraível do texto"
+        "ok": true,
+        "detalhe": "5 item(ns): Órgão / financiador, Esfera, Área de atuação, Território, Destinação"
       },
       {
         "etapa": "IA (haiku → sonnet)",
@@ -52,31 +67,26 @@
     ],
     "completo": false,
     "faltam": [
-      "Prazo de inscrição",
       "Resultado",
       "Prazo de recurso",
       "Valor",
-      "Território",
       "Requisitos",
-      "Anexos",
-      "Destinação"
+      "Anexos"
     ],
     "manual": {
-      "motivo": "sem documentos acessíveis e sem IA",
+      "motivo": "a IA não conseguiu acessar/extrair os documentos",
       "itens": [
-        "Prazo de inscrição",
         "Resultado",
         "Prazo de recurso",
         "Valor",
-        "Território",
         "Requisitos",
-        "Anexos",
-        "Destinação"
+        "Anexos"
       ],
       "links": [
-        "https://observatorio3setor.org.br/premio-mol-reconhece-reportagens-que-inspiram-solidariedade-e-a-cultura-de-doacao"
+        "https://observatorio3setor.org.br/premio-mol-reconhece-reportagens-que-inspiram-solidariedade-e-a-cultura-de-doacao",
+        "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf"
       ],
-      "instrucao": "abra a fonte, localize o edital e use 'subir informação faltante' com os itens listados"
+      "instrucao": "abra a fonte oficial, localize o edital e use 'subir informação faltante' com os itens listados"
     },
     "situacao": "pesquisa incompleta — ação manual indicada"
   },
@@ -111,8 +121,8 @@
   "metodo": "determinístico",
   "documentos_exigidos": [],
   "pontuacao_texto": null,
-  "atualizado_em": "2026-09-07T20:56:33+00:00",
-  "caracteres_texto": 0,
+  "atualizado_em": "2026-09-08T07:30:17+00:00",
+  "caracteres_texto": 3853,
   "historico_5_anos": {
     "ocorrencias": 1,
     "por_ano": {
@@ -139,7 +149,7 @@
     "Prazo de recurso": "não se aplica"
   },
   "regras": "Prêmio de jornalismo: proponente é pessoa física (jornalista/estudante) ou veículo; OSC não é elegível.",
-  "pagina_divulgacao": "https://premiodejornalismo.institutomol.org.br/",
+  "pagina_divulgacao": "https://observatorio3setor.org.br/premio-mol-reconhece-reportagens-que-inspiram-solidariedade-e-a-cultura-de-doacao",
   "documentos_pdf": [
     {
       "nome": "regulamento (não obtido)",
@@ -149,15 +159,29 @@
       "origem": "não lido: o arquivo guardado para este id é o mídia kit do Observatório do Terceiro Setor"
     }
   ],
-  "kb_compacto": 0,
-  "fontes": [],
-  "erros": [
-    "texto anterior descartado em 07/09: era mídia kit do veículo ou PDF binário"
+  "kb_compacto": 2.1,
+  "fontes": [
+    {
+      "titulo": "Midia Kit",
+      "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf",
+      "caracteres": 3818
+    }
   ],
+  "erros": [],
   "observacoes": [
     {
       "em": "2026-09-07",
       "texto": "REGISTRO DUPLICADO do item 295af6bb3f2da0a2be71. Inscricoes de 08/09/2026 a 28/12/2026. Publico-alvo: jornalistas e comunicadores, nao OSCs."
+    }
+  ],
+  "arquivo": "dados/editais/textos/f359e425734cf4682571.txt.gz",
+  "site_institucional": null,
+  "origem": "pagina",
+  "pncp": {},
+  "anexos": [
+    {
+      "nome": "Midia Kit",
+      "url": "https://observatorio3setor.org.br/wp-content/uploads/2024/06/Midia-kit-Portal-Observatorio.pdf"
     }
   ]
 }

@@ -27,9 +27,19 @@
   "relatorio": {
     "etapas": [
       {
+        "etapa": "PNCP (fonte indireta — só divulgação, nada é baixado dali)",
+        "ok": true,
+        "detalhe": "divulgação lida; fonte oficial = órgão publicador"
+      },
+      {
+        "etapa": "site institucional do órgão",
+        "ok": false,
+        "detalhe": "não localizado: o PNCP não informou o sistema de origem e o cadastro do CNPJ não trouxe domínio oficial — indicar o site manualmente"
+      },
+      {
         "etapa": "documentos do edital (PDF/anexos)",
         "ok": false,
-        "detalhe": "nenhum PDF/anexo acessível: sem link de documento na fonte"
+        "detalhe": "nenhum PDF/anexo acessível: pncp compra (api): HTTPError 301"
       },
       {
         "etapa": "extração determinística",
@@ -64,10 +74,8 @@
         "Anexos",
         "Destinação"
       ],
-      "links": [
-        "https://pncp.gov.br/app/editais/10842697000100/2025/1"
-      ],
-      "instrucao": "abra a fonte, localize o edital e use 'subir informação faltante' com os itens listados"
+      "links": [],
+      "instrucao": "o edital só foi anunciado em vetor de divulgação (PNCP/diário); localize o site do órgão que o publicou e informe-o em 'subir informação faltante' — o sistema não aponta para o agregador"
     },
     "situacao": "pesquisa incompleta — ação manual indicada"
   },
@@ -99,7 +107,7 @@
   "metodo": "sem texto",
   "documentos_exigidos": [],
   "pontuacao_texto": null,
-  "atualizado_em": "2026-09-07T20:56:33+00:00",
+  "atualizado_em": "2026-09-08T07:30:34+00:00",
   "caracteres_texto": 0,
   "historico_5_anos": {
     "ocorrencias": 1,
@@ -121,11 +129,28 @@
     "nota_recorrencia": null
   },
   "dispensaveis": {},
-  "pagina_divulgacao": "https://acessoainformacao.palestinadegoias.go.gov.br/cidadao/informacao/licitacoes_mg",
+  "pagina_divulgacao": null,
   "observacoes": [
     {
       "em": "2026-09-07",
       "texto": "PAGINA OFICIAL LOCALIZADA E ACESSIVEL (Portal do Cidadao da Prefeitura de Palestina de Goias/GO) - era uma das informacoes minimas que faltavam. Edital de 2025; o prazo nao consta na fonte oficial e NAO FOI ESTIMADO. TIPO: credenciamento de prestadores de servicos de saude, normalmente destinado a p"
     }
-  ]
+  ],
+  "arquivo": null,
+  "kb_compacto": 0,
+  "fontes": [],
+  "site_institucional": null,
+  "origem": "pncp",
+  "pncp": {
+    "orgao": "FUNDO MUNICIPAL DE SAUDE DE PALESTINA DE GOIAS",
+    "uf": "GO",
+    "municipio": "Palestina de Goiás",
+    "objeto_pncp": "CREDENCIAMENTO/CHAMAMENTO PÚBLICO NA AREA DA SAÚDE.",
+    "encerramento_pncp": "2025-01-07T09:00:00",
+    "abertura_pncp": "2025-01-07T09:00:00"
+  },
+  "erros": [
+    "pncp compra (api): HTTPError 301"
+  ],
+  "anexos": []
 }
