@@ -11,17 +11,17 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 
 
 ---
-## 2dd2d9b5ffa96b7bbc90 — CHAMAMENTO PÚBLICO DESTINADO AO CREDENCIAMENTO DE ESTABELECIMENTOS DE SAÚDE E PRESTADORES DE SERVIÇOS DE SAÚDE, PESSOAS FÍSICAS OU JURÍDICAS
+## 93aa2d9dc209517bd973 — CREDENCIAMENTO PARA OS PROFISSIONAIS DA SAUDE. ATENDENDO AS NECESSIDADES DO FUNDO MUNICIPAL DE SAÚDE DE TROMBAS NO EXERCÍCIO 2024. (CHAMAMEN
 
 MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 2× · motivo: sem prazo de inscrição confirmado
 
-Fonte (vetor): PNCP — FUNDO MUNICIPAL DA SAUDE IPAMERI · UF GO · nível municipal · situação possivel · fim None
+Fonte (vetor): PNCP — FUNDO MUNICIPAL DE SAUDE · UF GO · nível municipal · situação possivel · fim None
 
-Itens já obtidos: Objeto: CHAMAMENTO PUBLICO DESTINADO AO CREDENCIAMENTO DE ESTABELECIMENTOS DE SAUDE E PR, Órgão / financiador: Fundo Municipal de Saúde de Ipameri, Território: Ipameri/GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
+Itens já obtidos: Objeto: CREDENCIAMENTO PARA OS PROFISSIONAIS DA SAUDE, ATENDENDO AS NECESSIDADES DO FUND, Órgão / financiador: Fundo Municipal de Saúde (município de Goiás a identificar pelo CNPJ 11.344.805/, Território: GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
 
 Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Anexos
 
-Anúncio: https://pncp.gov.br/app/editais/07777639000127/2026/58
+Anúncio: https://pncp.gov.br/app/editais/11344805000179/2024/3
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
@@ -31,17 +31,17 @@ Texto do edital (compacto):
 
 
 ---
-## 6db359795600d65dd60c — O presente Edital destina-se cadastrar Profissionais de saúde/ Pessoas Físicas e/ ou Jurídicas para posterior Credenciamento, mediante docum
+## b0ddc9e8dfb55699a392 — CONTRATAÇÃO DE ORGANIZAÇÃO DE SOCIEDADE CIVIL, PARA CELEBRAÇÃO DE TERMO DE COLABORAÇÃO, NOS TERMOS DO EDITAL DE  CHAMAMENTO  PÚBLICO N° 001/
 
 MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 1× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): PNCP — FUNDO MUNICIPAL DE SAUDE · UF GO · nível municipal · situação possivel · fim None
 
-Itens já obtidos: Objeto: Edital destinado a cadastrar Profissionais de saude, pessoas fisicas e/ou juridi, Órgão / financiador: Fundo Municipal de Saúde de Jataí, Território: Jataí/GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
+Itens já obtidos: Objeto: Contratacao de organizacao da sociedade civil para celebracao de Termo de Colabo, Órgão / financiador: Fundo Municipal de Saúde (CNPJ 11.337.362/0001-99) — termo de colaboração em saú, Território: GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
 
 Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Anexos
 
-Anúncio: https://intranet.jatai.go.gov.br/intranet/sistemas/diario-oficial/diario-site.php
+Anúncio: https://pncp.gov.br/app/editais/11337362000199/2023/58
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
