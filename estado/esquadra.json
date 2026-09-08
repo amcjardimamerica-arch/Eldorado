@@ -355,37 +355,39 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 8,
+      "leituras": 9,
       "achados_total": 0,
-      "vazias_seguidas": 8,
-      "ultima": "2026-09-07T05:22:37+00:00",
+      "vazias_seguidas": 9,
+      "ultima": "2026-09-08T05:20:50+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
+      "falhas_ultima": 0,
       "saude": [
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260907&dataFinal=20260907&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-          "erro": "URLError",
-          "code": null,
-          "waf": null,
-          "causa": "conexão recusada/derrubada — filtro de rede ou IP estrangeiro"
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260908&dataFinal=20260908&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
+          "http": 200,
+          "bytes": 1934
         },
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260907&dataFinal=20260907&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
-          "erro": "URLError",
-          "code": null,
-          "waf": null,
-          "causa": "conexão recusada/derrubada — filtro de rede ou IP estrangeiro"
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260908&dataFinal=20260908&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
+          "http": 204,
+          "bytes": 0
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 0,
-        "links_total": 0,
-        "links_candidatos": 0,
-        "descobertas": [],
+        "paginas_lidas": 3,
+        "links_total": 1,
+        "links_candidatos": 1,
+        "descobertas": [
+          {
+            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260908&dataFinal=20260908&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
+            "para": "https://pncp.gov.br/app/editais/76205699000198/2026/98",
+            "rotulo": "Credenciamento — MUNICIPIO DE SALGADO FILHO — Credenciamento"
+          }
+        ],
         "pdf_links": 0,
-        "motivo_zero": "tempo esgotado / conexão recusada"
+        "motivo_zero": "página institucional; seguiu 1 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
       }
     },
     "plat-abcr": {
@@ -2026,25 +2028,20 @@
   },
   "ultima_execucao": {
     "data": "2026-09-08",
-    "em": "2026-09-08T04:09:00+00:00",
+    "em": "2026-09-08T05:20:50+00:00",
     "manual": null,
-    "bloco": "justica_legislativo",
-    "sensores_executados": 5,
+    "bloco": "plataformas_api",
+    "sensores_executados": 1,
     "em_espera": 40,
     "total_esquadra": 80,
     "previsoes_ativas": 1,
     "achados": 0,
     "novos_na_base": 0,
     "por_tipo": {
-      "legislativo": {
-        "sensores": 2,
+      "api": {
+        "sensores": 1,
         "achados": 0,
-        "falhas": 5
-      },
-      "diario_justica": {
-        "sensores": 3,
-        "achados": 0,
-        "falhas": 7
+        "falhas": 0
       }
     }
   }
