@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `observatorio-terceiro-setor`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 10
-- Distribuição por ano pesquisado/coletado: {'2026': 10}
+- Pistas aguardando confirmação: 9
+- Distribuição por ano pesquisado/coletado: {'2026': 9}
 
 ## Padrões
 
@@ -14,7 +14,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 - [2º Prêmio MOL de Jornalismo para Solidariedade reconhecerá reportagens sobre cultura de doação](https://observatorio3setor.org.br/2-premio-mol-de-jornalismo-para-a-solidariedade-vai-reconhecer-reportagens-sobre-cultura-de-doacao-no-brasil) — coletado em 2026-09-08T11:51:02+00:00
 - [Instituto Center Norte e APAS Show 2026 unem forças em doação de 6 toneladas de alimentos](https://observatorio3setor.org.br/instituto-center-norte-e-apas-show-2026-unem-forcas-em-doacao-de-6-toneladas-de-alimentos) — coletado em 2026-09-08T11:51:17+00:00
-- [Podcast AISYN!, do Instituto SYN, debate a Cultura de Doação e o Investimento Social Privado no Brasil com líderes do IDIS e Instituto MOL](https://observatorio3setor.org.br/podcast-aisyn-do-instituto-syn-debate-a-cultura-de-doacao-e-o-investimento-social-privado-no-brasil-com-lideres-do-idis-e-instituto-mol) — coletado em 2026-09-08T11:50:19+00:00
 - [Doação e projetos sociais](https://observatorio3setor.org.br/doacao-e-projetos-sociais) — coletado em 2026-09-08T11:51:21+00:00
 - [Retrato da solidariedade: pesquisa do Instituto Pensi retrata a cultura de doação no Brasil](https://observatorio3setor.org.br/retrato-da-solidariedade-pesquisa-do-instituto-pensi-retrata-a-cultura-de-doacao-no-brasil) — coletado em 2026-09-08T11:50:34+00:00
 - [Instituto Lojas Renner abre edital com até R$ 10 mil para fortalecer organizações sociais](https://observatorio3setor.org.br/instituto-lojas-renner-abre-edital-com-ate-r-10-mil-para-fortalecer-organizacoes-sociais) — coletado em 2026-09-08T11:51:45+00:00

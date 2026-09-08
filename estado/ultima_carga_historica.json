@@ -1,9 +1,9 @@
 {
-  "executado_em": "2026-09-08T12:07:38+00:00",
+  "executado_em": "2026-09-08T18:06:52+00:00",
   "janelas_totais": 61,
   "janelas_ja_concluidas": 23,
   "janelas_nesta_execucao": 38,
-  "novas": 390,
+  "novas": 342,
   "falhas": [
     {
       "janela": "2021-09",
@@ -91,7 +91,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "JSONDecodeError"
+          "erro": "HTTPError"
         },
         {
           "api": "querido_diario",
@@ -111,7 +111,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "JSONDecodeError"
+          "erro": "HTTPError"
         },
         {
           "api": "querido_diario",
@@ -311,12 +311,12 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "erro": "JSONDecodeError"
         },
         {
           "api": "querido_diario",
           "base": "https://queridodiario.ok.org.br/api",
-          "erro": "HTTPError"
+          "erro": "TimeoutError"
         },
         {
           "api": "querido_diario",
@@ -331,7 +331,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "erro": "JSONDecodeError"
         },
         {
           "api": "querido_diario",
@@ -351,7 +351,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "erro": "JSONDecodeError"
         },
         {
           "api": "querido_diario",
@@ -371,7 +371,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "erro": "JSONDecodeError"
         },
         {
           "api": "querido_diario",
@@ -590,30 +590,8 @@
       "camadas": [
         {
           "api": "pncp",
-          "descartados_fase2": 121,
-          "amostra": [
-            {
-              "objeto": "[Portal de Compras Públicas] - Credenciamento de pessoa jurídica para prestação de serviços médicos, para atuação em pro",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            },
-            {
-              "objeto": "Credenciamento de Profissionais e Técnicos, sendo Pessoas Físicas, para atuarem nas áreas Específicas da Secretaria Muni",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            },
-            {
-              "objeto": "CREDENCIAMENTO DE LEILOEIROS PARA PRESTAÇÕES DE SERVIÇOS DE ALIENAÇÃO DE BENS MÓVEIS, INSERVÍVEIS DE PROPRIEDADE DO MUNI",
-              "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
-            },
-            {
-              "objeto": "CREDENCIAMENTO DE INSTITUIÇÕES BANCÁRIAS / FINANCEIRAS / COOPERATIVAS DE CRÉDITO, LEGALMENTE CONSTITUÍDAS, PARA A PRESTA",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            },
-            {
-              "objeto": "Credenciamento de pessoas jurídicas especializadas para prestação de serviços de consultas em neurologia e psiquiatria, ",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            }
-          ],
-          "nota": "fora do escopo do terceiro setor"
+          "base": "https://pncp.gov.br/api/consulta",
+          "erro": "HTTPError"
         },
         {
           "api": "querido_diario",
@@ -632,30 +610,8 @@
       "camadas": [
         {
           "api": "pncp",
-          "descartados_fase2": 128,
-          "amostra": [
-            {
-              "objeto": "Credenciamento para eventual e futura contratacao de prestadores de servicos medicos veterinarios  a serem realizados em",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            },
-            {
-              "objeto": "Credenciamento de Pessoas Jurídicas com domicílio tributário no Município de Foz do Iguaçu/PR, para fins de prestação de",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            },
-            {
-              "objeto": "Credenciamento de Pessoas Juridicas da area da saude para a prestacao de servicos de consultas  exames e procedimentos e",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            },
-            {
-              "objeto": "CREDENCIAMENTO PARA CONTRATAÇÃO DE EMPRESAS OBJETIVANDO A PRESTAÇÃO DE SERVIÇOS ESPECIALIZADOS DE ASSENTAMENTO DE TUBO D",
-              "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
-            },
-            {
-              "objeto": "Credenciamento de Grupos Formais, informais ou Agricultores Individuais, para a aquisição de gêneros alimentícios da Agr",
-              "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
-            }
-          ],
-          "nota": "fora do escopo do terceiro setor"
+          "base": "https://pncp.gov.br/api/consulta",
+          "erro": "HTTPError"
         },
         {
           "api": "querido_diario",
@@ -702,7 +658,7 @@
         {
           "api": "querido_diario",
           "base": "https://queridodiario.ok.org.br/api",
-          "erro": "TimeoutError"
+          "erro": "HTTPError"
         },
         {
           "api": "querido_diario",
@@ -824,6 +780,16 @@
             }
           ],
           "nota": "fora do escopo do terceiro setor"
+        },
+        {
+          "api": "querido_diario",
+          "base": "https://queridodiario.ok.org.br/api",
+          "erro": "HTTPError"
+        },
+        {
+          "api": "querido_diario",
+          "base": "https://api.queridodiario.ok.org.br",
+          "erro": "URLError"
         }
       ]
     },
@@ -860,7 +826,7 @@
         {
           "api": "querido_diario",
           "base": "https://queridodiario.ok.org.br/api",
-          "erro": "TimeoutError"
+          "erro": "HTTPError"
         },
         {
           "api": "querido_diario",
@@ -1290,8 +1256,8 @@
       "tentativa": 2
     }
   ],
-  "dominios_ano_pesquisado": 2025,
-  "dominios_novas": 0,
+  "dominios_ano_pesquisado": 2026,
+  "dominios_novas": 3,
   "dominios_falhas": 0,
   "status": "em_andamento",
   "janelas_restantes": 38
