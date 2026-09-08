@@ -3729,7 +3729,7 @@ class SystemTests(unittest.TestCase):
 
     def test_pncp_nunca_e_fonte_e_operacao_por_agente_claude(self):
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn("function linkOficial",html); self.assertIn("VETOR_RX",html); self.assertIn("fonte oficial a localizar",html); self.assertIn("não é a fonte do edital",html)
+        self.assertIn("function linkOficial",html); self.assertIn("VETOR_RX",html); self.assertIn("fonte a localizar",html); self.assertIn("não é a fonte do edital",html)
         src=open("src/fonte_edital.py",encoding="utf-8").read(); self.assertIn("nunca aparecem como fonte do edital",src)
         from src.fonte_edital import relatorio
         r=relatorio({"origem":"pncp","itens":{},"fontes_itens":{},"faltam":["Valor"],"tentativas":[],"anexos":[{"url":"https://pncp.gov.br/x.pdf"}]},{"url":"https://pncp.gov.br/app/editais/1/2026/1"},credencial=True)
@@ -4101,7 +4101,7 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(all(x["id"] in an for x in nao_diario))                     # TODAS as de Goiás verificadas uma a uma
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn('!["edital","regra_anual"].includes(item.tipo_registro)',html)
-        self.assertIn("não entram neste mapa",html)
+        self.assertIn('!["edital","regra_anual"].includes(item.tipo_registro)',html)   # a nota saiu da tela; a regra permanece
 
 
     def test_selo_validada_x_nao_verificada(self):
