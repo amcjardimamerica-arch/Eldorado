@@ -7,7 +7,14 @@ que envolva o terceiro setor. Edital voltado a empresas (fornecimento,
 credenciamento de prestadores, pregão, registro de preços, obras, concurso
 público) é desqualificado e ELIMINADO da base.
 
-Combina os dois filtros já existentes, na ordem certa:
+Combina três filtros, na ordem certa:
+  0. inconformidade de objeto (`inconformidade.avaliar_item`) — isto é uma
+     CHAMADA ABERTA que repassa recurso a uma entidade? Contrato decorrente de
+     edital já julgado, parceria nominal, qualificação prévia como OS, órgão
+     buscando patrocinador e compra pública saem aqui. Este passo foi
+     acrescentado depois da verificação de 08/09/2026, em que 82 dos 210
+     registros da base não eram edital de fomento e nenhum foi barrado pelos
+     filtros abaixo — todos citavam OSC o suficiente para atravessá-los;
   1. léxico do terceiro setor (`lexico.casar`) — o texto fala de OSC/edital de
      fomento? Se não fala nem de entidade nem de instrumento, sai;
   2. destinação (`destinacao.avaliar_destinacao`) — natureza do recurso;
@@ -22,6 +29,7 @@ import json
 import re
 
 from .destinacao import avaliar_destinacao
+from .inconformidade import avaliar_item as avaliar_inconformidade
 from .lexico import casar
 from .nucleo import ROOT, carregar_oportunidades, now_iso, write_json
 
@@ -58,6 +66,14 @@ def pertinente(item: dict) -> dict:
     # documento enviado pelo titular é fonte máxima: nunca se descarta
     if item.get("origem") == "alimentacao_manual" or item.get("sem_edital") or item.get("janela_confirmada"):
         return {"ok": True, "motivo": "fonte do titular / regra anual", "natureza": "recurso"}
+    # inconformidade de objeto (aprendida na verificação de 08/09/2026): antes de
+    # perguntar se o texto fala de terceiro setor, perguntar se isto é uma chamada
+    # aberta que repassa recurso. 82 dos 210 registros verificados não eram, e
+    # todos falavam de OSC o suficiente para atravessar o filtro antigo.
+    inc = avaliar_inconformidade(item)
+    if not inc["ok"]:
+        return {"ok": False, "motivo": f'{inc["motivo"]} [{inc["familia"]}]',
+                "natureza": None, "familia": inc["familia"]}
     # veto absoluto: contratar/credenciar pessoa jurídica para prestar ou fornecer
     # é edital de empresa, mesmo que o texto fale de cultura ou projetos
     if _VETO_ABSOLUTO.search(texto) and not _OSC_EXPLICITA.search(texto):
@@ -71,7 +87,11 @@ def pertinente(item: dict) -> dict:
     dest = avaliar_destinacao(item)
     if dest.get("elegivel") is False:
         return {"ok": False, "motivo": dest.get("motivo") or "destinação incompatível", "natureza": dest.get("natureza")}
-    return {"ok": True, "motivo": dest.get("motivo") or "pertinente ao terceiro setor", "natureza": dest.get("natureza") or "recurso"}
+    veredito = {"ok": True, "motivo": dest.get("motivo") or "pertinente ao terceiro setor",
+                "natureza": dest.get("natureza") or "recurso"}
+    if inc.get("atencao"):
+        veredito["atencao"] = inc["atencao"]
+    return veredito
 
 
 def limpar_base() -> dict:
@@ -84,10 +104,13 @@ def limpar_base() -> dict:
         v = pertinente(it)
         if v["ok"]:
             it["pertinencia"] = {"ok": True, "motivo": v["motivo"], "em": now_iso()}
+            if v.get("atencao"):
+                it["pertinencia"]["atencao"] = v["atencao"]
             mantidos[oid] = it
         else:
             descartados.append({"id": oid, "titulo": (it.get("titulo") or "")[:120],
-                                "fonte": it.get("fonte_nome"), "motivo": v["motivo"]})
+                                "fonte": it.get("fonte_nome"), "motivo": v["motivo"],
+                                "familia": v.get("familia")})
     db.parent.mkdir(parents=True, exist_ok=True)
     db.write_text("".join(json.dumps(x, ensure_ascii=False, separators=(",", ":")) + "\n"
                           for x in sorted(mantidos.values(), key=lambda v: v["id"])), encoding="utf-8")
