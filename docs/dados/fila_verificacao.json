@@ -1,52 +1,117 @@
 {
-  "gerado_em": "2026-09-08T14:22:39+00:00",
-  "total": 356,
+  "gerado_em": "2026-09-08T15:57:03+00:00",
+  "total": 337,
   "selos": {
     "validadas": 86,
-    "nao_verificadas": 270,
+    "nao_verificadas": 251,
     "regra": "VALIDADA (verde) exige objeto + prazo de inscrição + site oficial que divulga; sem qualquer um deles o selo é NÃO VERIFICADA (amarelo) e o item entra na verificação semanal da IA externa"
   },
   "informacoes_minimas": {
     "regra": "toda oportunidade precisa de OBJETO, PRAZO DE INSCRIÇÃO e PÁGINA OFICIAL DO EDITAL (site do órgão/patrocinador, nunca o vetor onde foi encontrada)",
     "completas": 86,
-    "incompletas": 270,
-    "falta_objeto": 224,
-    "falta_prazo": 262,
-    "falta_pagina": 193
+    "incompletas": 251,
+    "falta_objeto": 206,
+    "falta_prazo": 243,
+    "falta_pagina": 178
   },
-  "sem_prazo": 269,
-  "goias_ou_nacional": 39,
-  "nunca_investigados": 209,
-  "edicoes_de_diario_sem_ato": 17066,
+  "sem_prazo": 250,
+  "goias_ou_nacional": 38,
+  "nunca_investigados": 191,
+  "edicoes_de_diario_sem_ato": 16955,
   "por_uf": {
     "AL": 6,
-    "AM": 7,
-    "BA": 15,
+    "AM": 3,
+    "BA": 12,
     "BR": 46,
     "CE": 13,
     "DF": 6,
     "ES": 11,
-    "GO": 16,
+    "GO": 15,
     "MA": 3,
-    "MG": 28,
-    "MS": 3,
-    "MT": 9,
+    "MG": 25,
+    "MS": 2,
+    "MT": 8,
     "PA": 3,
     "PB": 4,
     "PE": 5,
     "PI": 1,
     "PR": 30,
     "RJ": 24,
-    "RN": 2,
+    "RN": 1,
     "RO": 7,
-    "RS": 41,
-    "SC": 44,
+    "RS": 40,
+    "SC": 41,
     "SE": 4,
-    "SP": 25,
+    "SP": 24,
     "TO": 3
   },
+  "reprovados_por_objeto": {
+    "total": 9,
+    "por_familia": {
+      "busca_patrocinador": 1,
+      "compra_publica": 7,
+      "empresa_ou_mercado": 1
+    },
+    "itens": [
+      {
+        "id": "2c54f6d479346a9e2b1c",
+        "titulo": "1.\tCredenciamento de empresa para aquisição de bolsas coletoras e adjuvantes de proteção e segurança, com valo",
+        "familia": "compra_publica",
+        "motivo": "compra ou credenciamento de fornecedor: a entidade recebe por venda, não por fomento"
+      },
+      {
+        "id": "71f1af059c45f010339a",
+        "titulo": "A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO QUE REALIZARÁ CHAMAMENTO PÚBLICO, POR CREDENCIAMENTO, P",
+        "familia": "empresa_ou_mercado",
+        "motivo": "seleção de empresa, de serviço técnico ou de imóvel — fora do terceiro setor"
+      },
+      {
+        "id": "a5e0b0ee43bfd9340988",
+        "titulo": "CHAMAMENTO PÚBLICO DE PESSOAS JURÍDICAS, VISANDO O CREDENCIAMENTO PARA A OFERTA DE COTAS DE PATROCÍNIO PARA A ",
+        "familia": "busca_patrocinador",
+        "motivo": "o órgão busca patrocinador: o recurso entra no órgão, não é repassado à entidade"
+      },
+      {
+        "id": "2fbffd7866d6f49f5ff9",
+        "titulo": "CHAMAMENTO PÚBLICO NA FORMA DE CREDENCIAMENTO DE PESSOA JURÍDICA PARA PRESTAÇÃO DE SERVIÇOS MÉDICOS PARA ATEND",
+        "familia": "compra_publica",
+        "motivo": "compra ou credenciamento de fornecedor: a entidade recebe por venda, não por fomento"
+      },
+      {
+        "id": "96691cdc03e3105f64fd",
+        "titulo": "CHAMAMENTO PÚBLICO O CREDENCIAMENTO DE LEILOEIROS OFICIAIS PARA A REALIZAÇÃO DE LEILÕES EM ATENDIMENTO DAS NEC",
+        "familia": "compra_publica",
+        "motivo": "compra ou credenciamento de fornecedor: a entidade recebe por venda, não por fomento"
+      },
+      {
+        "id": "1dcb5c588d6398f211b0",
+        "titulo": "CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE EMPRESAS QUE TENHAM INTERESSE NA COMERCIALIZAÇÃO DE ALIMENTOS E BEBI",
+        "familia": "compra_publica",
+        "motivo": "compra ou credenciamento de fornecedor: a entidade recebe por venda, não por fomento"
+      },
+      {
+        "id": "7db335c94a4c70df5f50",
+        "titulo": "CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE LEILOEIROS PÚBLICOS OFICIAIS PARA REALIZAÇÃO DE LEILÃO PARA ALIENAÇÃ",
+        "familia": "compra_publica",
+        "motivo": "compra ou credenciamento de fornecedor: a entidade recebe por venda, não por fomento"
+      },
+      {
+        "id": "6d1409b829bcb94579bb",
+        "titulo": "Chamamento público visando o credenciamento de empresa para prestação de serviços de limpeza e manutenção de l",
+        "familia": "compra_publica",
+        "motivo": "compra ou credenciamento de fornecedor: a entidade recebe por venda, não por fomento"
+      },
+      {
+        "id": "26695accebebc01bd541",
+        "titulo": "Constitui objeto deste Edital o Credenciamento de profissionais médicos,\r\npessoa física e/ou jurídica prestaçã",
+        "familia": "compra_publica",
+        "motivo": "compra ou credenciamento de fornecedor: a entidade recebe por venda, não por fomento"
+      }
+    ],
+    "regra": "filtro de objeto (inconformidade.py): não é chamada aberta que repasse recurso a entidade — sai da fila e não vira alerta"
+  },
   "fora_das_50_maiores": {
-    "total": 138,
+    "total": 134,
     "itens": [
       {
         "id": "53e71a383009af79ad42",
@@ -353,28 +418,12 @@
         "url": "https://pncp.gov.br/app/editais/88363189000128/2024/399"
       },
       {
-        "id": "a5e0b0ee43bfd9340988",
-        "titulo": "CHAMAMENTO PÚBLICO DE PESSOAS JURÍDICAS, VISANDO O CREDENCIAMENTO PARA A OFERTA DE COTAS DE PATROCÍNIO PARA A REALIZAÇÃO",
-        "uf": "SC",
-        "cidade": "Luiz Alves Chamamento Público",
-        "motivo": "Luiz Alves Chamamento Público/SC não está entre as 50 maiores do estado — fica em rosa para aprovação manual",
-        "url": "https://pncp.gov.br/app/editais/83102319000155/2023/106"
-      },
-      {
         "id": "49c734d4418b4a6a17fd",
         "titulo": "CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE RESTAURANTES PARA PRESTAÇÃO DE SERVIÇOS DE PREPARAÇÃO DE ALIMENTAÇÃO PRONTA (Q",
         "uf": "BA",
         "cidade": "Itagibá",
         "motivo": "Itagibá/BA não está entre as 50 maiores do estado — fica em rosa para aprovação manual",
         "url": "https://pncp.gov.br/app/editais/13701966000106/2023/77"
-      },
-      {
-        "id": "6d1409b829bcb94579bb",
-        "titulo": "Chamamento público visando o credenciamento de empresa para prestação de serviços de limpeza e manutenção de logradouros",
-        "uf": "GO",
-        "cidade": "Nova Iguacu",
-        "motivo": "Nova Iguacu/GO não está entre as 50 maiores do estado — fica em rosa para aprovação manual",
-        "url": "https://pncp.gov.br/app/editais/33331661000159/2023/130"
       },
       {
         "id": "e5fd8bf5192f6bfbd126",
@@ -519,14 +568,6 @@
         "cidade": "Planalto Alegre",
         "motivo": "Planalto Alegre/SC não está entre as 50 maiores do estado — fica em rosa para aprovação manual",
         "url": "https://pncp.gov.br/app/editais/95990255000155/2024/60"
-      },
-      {
-        "id": "498e3904958ec32833f2",
-        "titulo": "EDITAL PARA CREDENCIAMENTO DE ARTISTAS E GRUPOS CULTURAIS LOCAIS, POR MEIO DE FOMENTO DIRETO À EXECUÇÃO DE AÇÕES. PARA R",
-        "uf": "BA",
-        "cidade": "Itacare",
-        "motivo": "Itacare/BA não está entre as 50 maiores do estado — fica em rosa para aprovação manual",
-        "url": "https://pncp.gov.br/app/editais/13846902000195/2024/104"
       },
       {
         "id": "4c15d746b94be0c7f647",
@@ -727,14 +768,6 @@
         "cidade": "Nova Esperanca",
         "motivo": "Nova Esperanca/PR não está entre as 50 maiores do estado — fica em rosa para aprovação manual",
         "url": "https://pncp.gov.br/app/editais/75730994000109/2024/280"
-      },
-      {
-        "id": "d822aeee1fbca5f50812",
-        "titulo": "Credenciamento de empresas privadas ou Organizacoes da Sociedade Civil interessadas em patrocinar os eventos  acoes e cu",
-        "uf": "RS",
-        "cidade": "Tres Coroas",
-        "motivo": "Tres Coroas/RS não está entre as 50 maiores do estado — fica em rosa para aprovação manual",
-        "url": "https://pncp.gov.br/app/editais/88199971000153/2025/118"
       },
       {
         "id": "dc73999357ed4e37d07f",
@@ -1157,14 +1190,14 @@
   },
   "escopo": {
     "nacional": 46,
-    "estadual": 122,
-    "municipal": 188
+    "estadual": 115,
+    "municipal": 176
   },
   "modo": {
-    "completo": 62,
-    "leve": 294
+    "completo": 61,
+    "leve": 276
   },
-  "marcados_para_ia": 269,
+  "marcados_para_ia": 250,
   "regra": "a IA de domingo executa esta fila na ordem; a varredura imediata percorre os mesmos itens e emite parecer de cada um",
   "itens": [
     {
@@ -2282,50 +2315,6 @@
       "escopo": "estadual",
       "cidade": null,
       "geo_motivo": "abrangência estadual em GO (sem cidade identificada)",
-      "modo": "completo",
-      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [
-          "Objeto",
-          "Página oficial do edital"
-        ],
-        "faltam": [
-          "Prazo de inscrição"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "71f1af059c45f010339a",
-      "titulo": "A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO QUE REALIZARÁ CHAMAMENTO PÚBLICO, POR CREDENCIAMENTO, PARA SELECIONAR EMPRESA DO RAMO",
-      "uf": "GO",
-      "area": "outros",
-      "fonte": "PNCP — MUNICIPIO DE NOVO GAMA",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos"
-      ],
-      "link_oficial": "https://acessoainformacao.novogama.go.gov.br/cidadao/informacao/licitacoes_mg",
-      "link_anuncio": "https://pncp.gov.br/app/editais/01629276000104/2024/3",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 0,
-      "ja_investigado": true,
-      "escopo": "municipal",
-      "cidade": "Novo Gama",
-      "geo_motivo": "Novo Gama/GO está entre as 50 maiores do estado",
       "modo": "completo",
       "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
       "minimas": {
@@ -4221,252 +4210,6 @@
       "selo_validacao": "nao_verificada"
     },
     {
-      "id": "8c033878be7141246f37",
-      "titulo": "CREDENCIAMENTO DE AVALIADORES/PARECERISTAS DE PROJETOS CULTURAIS PNAB/PARINTINS (REF. Credenciamento nº 1/2024 - Secretaria Municipal de Cul",
-      "uf": "AM",
-      "area": "cultura",
-      "fonte": "PNCP — MUNICIPIO DE PARINTINS",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/04329736000169/2024/81",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Parintins",
-      "geo_motivo": "Parintins/AM está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "daec72158219a11884af",
-      "titulo": "Credenciamento de interessados para a captação e seleção de cotas de patrocínio por pessoas físicas e/ou jurídicas de direito privado, com o",
-      "uf": "AM",
-      "area": "cultura",
-      "fonte": "PNCP — MUNICIPIO DE COARI",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/04262432000121/2025/153",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Coari",
-      "geo_motivo": "Coari/AM está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "36d3f5a995b9aa4b1f24",
-      "titulo": "CREDENCIAMENTO PARA A CAPTAÇÃO DE COTAS DE PATROCÍNIO POR PESSOAS FÍSICAS E/OU JURÍDICAS DE DIREITO PRIVADO, COM OU SEM FINS LUCRATIVOS, PAR",
-      "uf": "AM",
-      "area": "outros",
-      "fonte": "PNCP — MUNICIPIO DE PARINTINS",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/04329736000169/2026/8",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Parintins",
-      "geo_motivo": "Parintins/AM está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "6675d8346cc0f80fa698",
-      "titulo": "CREDENCIAMENTO DE INTERESSADOS PARA A CAPTAÇÃO E SELEÇÃO DE COTAS DE PATROCÍNIO POR PESSOAS FÍSICAS E/OU JURÍDICAS DE DIREITO PRIVADO, COM O",
-      "uf": "AM",
-      "area": "outros",
-      "fonte": "PNCP — MUNICIPIO DE PARINTINS",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/04329736000169/2025/138",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Parintins",
-      "geo_motivo": "Parintins/AM está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "2c54f6d479346a9e2b1c",
-      "titulo": "1.\tCredenciamento de empresa para aquisição de bolsas coletoras e adjuvantes de proteção e segurança, com valores da Tabela SUS, em atendime",
-      "uf": "BA",
-      "area": "outros",
-      "fonte": "PNCP — MUNICIPIO DE ITABERABA",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/13719646000175/2024/4",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "estadual",
-      "cidade": null,
-      "geo_motivo": "abrangência estadual em BA (sem cidade identificada)",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "26695accebebc01bd541",
-      "titulo": "Constitui objeto deste Edital o Credenciamento de profissionais médicos,\r\npessoa física e/ou jurídica prestação de Serviços Médicos de Urgên",
-      "uf": "BA",
-      "area": "saude",
-      "fonte": "PNCP — MUNICIPIO DE ELISIO MEDRADO",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/13693379000104/2024/82",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "estadual",
-      "cidade": null,
-      "geo_motivo": "abrangência estadual em BA (sem cidade identificada)",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
       "id": "6a15cb79016572930cd8",
       "titulo": "Constitui objeto do presente Edital de chamamento Público locação de imóvel urbano não residencial, para instalação da Sede do Conselho Tute",
       "uf": "BA",
@@ -4530,47 +4273,6 @@
       "escopo": "estadual",
       "cidade": null,
       "geo_motivo": "abrangência estadual em BA (sem cidade identificada)",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "0811d2f6a3fb5fe0413a",
-      "titulo": "CHAMAMENTO PÚBLICO PARA FINS DE CREDENCIAMENTO DE PROFISSIONAIS (PESSOA FÍSICA) PARA ATUAÇÃO NOS PROGRAMAS DE ATENÇÃO INTEGRAL À SAÚDE DA PE",
-      "uf": "BA",
-      "area": "pessoa_idosa",
-      "fonte": "PNCP — MUNICIPIO DE POCOES",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/14242200000165/2026/162",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Poções",
-      "geo_motivo": "Poções/BA está entre as 50 maiores do estado",
       "modo": "leve",
       "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
       "minimas": {
@@ -6195,47 +5897,6 @@
       "selo_validacao": "nao_verificada"
     },
     {
-      "id": "2f0dc7a5063afb5dee95",
-      "titulo": "Credenciamento de profissionais para compor banco de pareceristas a fim de atuar na análise e seleção de projetos culturais inscritos nos ed",
-      "uf": "MG",
-      "area": "cultura",
-      "fonte": "PNCP — MUNICIPIO DE GOVERNADOR VALADARES",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/20622890000180/2024/100",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Governador Valadares",
-      "geo_motivo": "Governador Valadares/MG está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
       "id": "5bab6e9df6c7569e94f6",
       "titulo": "FORNECIMENTO DE DE PRODUTOS LÁCTEOS (IOGURTE, LEITE E MANTEIGA) ORIUNDOS DA AGRICULTURA FAMILIAR, SOB A FORMA DE ENTREGA PARCELADA ATENDENDO",
       "uf": "MG",
@@ -6258,47 +5919,6 @@
       "escopo": "municipal",
       "cidade": "Uberaba",
       "geo_motivo": "Uberaba/MG está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "7d423b1b58384e6559da",
-      "titulo": "Credenciamento para prestação de serviços Socioassistenciais de Proteção Social Especial de Alta Complexidade de acolhimento Institucional d",
-      "uf": "MG",
-      "area": "crianca_adolescente",
-      "fonte": "PNCP — CONSORCIO INTERMUNICIPAL DE SAUDE E DE POLITICAS DE DESENVOLVIMENTO DA REGIAO DO CALCARIO - CISREC",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/01272081000141/2024/72",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "estadual",
-      "cidade": null,
-      "geo_motivo": "abrangência estadual em MG (sem cidade identificada)",
       "modo": "leve",
       "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
       "minimas": {
@@ -6651,48 +6271,6 @@
       "selo_validacao": "nao_verificada"
     },
     {
-      "id": "dd35e8e7de82327f84cd",
-      "titulo": "Credenciamento de profissionais especializados para prestação de serviços técnicos de análise de mérito cultural, avaliação técnica, classif",
-      "uf": "MG",
-      "area": "cultura",
-      "fonte": "PNCP — MUNICIPIO DE RIBEIRAO DAS NEVES",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": "https://app2.ammlicita.org.br/pesquisa/112532",
-      "link_anuncio": "https://app2.ammlicita.org.br/pesquisa/112532",
-      "anuncio_e_vetor": false,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Ribeirão das Neves",
-      "geo_motivo": "Ribeirão das Neves/MG está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [
-          "Página oficial do edital"
-        ],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
       "id": "355c4786aaf951b8ab9a",
       "titulo": "Credenciamento de pessoas jurídicas de direito público ou privado sem fins lucrativos, elencadas no art.3º, inciso III da Política de Patroc",
       "uf": "MG",
@@ -6816,47 +6394,6 @@
       "selo_validacao": "nao_verificada"
     },
     {
-      "id": "2fbffd7866d6f49f5ff9",
-      "titulo": "CHAMAMENTO PÚBLICO NA FORMA DE CREDENCIAMENTO DE PESSOA JURÍDICA PARA PRESTAÇÃO DE SERVIÇOS MÉDICOS PARA ATENDIMENTO NAS ESPECIALIDADES DE C",
-      "uf": "MS",
-      "area": "saude",
-      "fonte": "PNCP — FUNDACAO SERVICOS DE SAUDE DE NOVA ANDRADINA",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/12600146000157/2024/111",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "estadual",
-      "cidade": null,
-      "geo_motivo": "abrangência estadual em MS (sem cidade identificada)",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
       "id": "5381c7209ae23d750fa8",
       "titulo": "Diário Oficial de Cuiabá (MT) 2026-04-22 — \"edital de chamamento público\" associação",
       "uf": "MT",
@@ -6892,48 +6429,6 @@
           "Objeto",
           "Prazo de inscrição",
           "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "1dcb5c588d6398f211b0",
-      "titulo": "CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE EMPRESAS QUE TENHAM INTERESSE NA COMERCIALIZAÇÃO DE ALIMENTOS E BEBIDAS DE EMPRESAS PÚBLICAS E/OU ",
-      "uf": "MT",
-      "area": "outros",
-      "fonte": "PNCP — MUNICIPIO DE SINOP",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": "https://www.gp.srv.br/transparencia_sinop/servlet/licitacoes_v2?1",
-      "link_anuncio": "https://www.gp.srv.br/transparencia_sinop/servlet/licitacoes_v2?1",
-      "anuncio_e_vetor": false,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "estadual",
-      "cidade": null,
-      "geo_motivo": "abrangência estadual em MT (sem cidade identificada)",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [
-          "Página oficial do edital"
-        ],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição"
         ],
         "completa": false
       },
@@ -9453,47 +8948,6 @@
       "selo_validacao": "nao_verificada"
     },
     {
-      "id": "96691cdc03e3105f64fd",
-      "titulo": "CHAMAMENTO PÚBLICO O CREDENCIAMENTO DE LEILOEIROS OFICIAIS PARA A REALIZAÇÃO DE LEILÕES EM ATENDIMENTO DAS NECESSIDADES DO MUNICÍPIO DE SANT",
-      "uf": "RN",
-      "area": "outros",
-      "fonte": "PNCP — MUNICIPIO DE SANTA CRUZ",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/08358889000195/2024/177",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Santa Cruz",
-      "geo_motivo": "Santa Cruz/RN está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
       "id": "a8d4a669e256d81e9e43",
       "titulo": "credenciamento de instituições reconhecidas como Organizações da Sociedade Civil (OSC) junto à Secretaria Municipal de Saúde para possíveis ",
       "uf": "RN",
@@ -10192,48 +9646,6 @@
           "Objeto",
           "Prazo de inscrição",
           "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "d01d56d20d38bc5b00f1",
-      "titulo": "Credenciamento de pareceristas para exercerem as atividades de análise e emissão\r\nde parecer técnico, sobre projetos culturais inscritos atr",
-      "uf": "RS",
-      "area": "cultura",
-      "fonte": "PNCP — MUNICIPIO DE CANOAS",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": "https://portal.tce.rs.gov.br/aplicprod/f?p=50500:10:::NO:10:P10_ID_LICITACAO,P10_PAG_RETORNO,F50500_CD_ORGAO:1485086,14,44500&cs=1bEOKZcJrXj1dM1aD96j0aBHJTz0",
-      "link_anuncio": "https://portal.tce.rs.gov.br/aplicprod/f?p=50500:10:::NO:10:P10_ID_LICITACAO,P10_PAG_RETORNO,F50500_CD_ORGAO:1485086,14,44500&cs=1bEOKZcJrXj1dM1aD96j0aBHJTz0",
-      "anuncio_e_vetor": false,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Canoas",
-      "geo_motivo": "Canoas/RS está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [
-          "Página oficial do edital"
-        ],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição"
         ],
         "completa": false
       },
@@ -11722,47 +11134,6 @@
       "selo_validacao": "nao_verificada"
     },
     {
-      "id": "7042e5df6724ab70d55c",
-      "titulo": "Seleção de projetos que contemplem as mais variadas formas de atividades artísticas e culturais, garantindo o fomento aos artistas e a reali",
-      "uf": "SC",
-      "area": "cultura",
-      "fonte": "PNCP — MUNICIPIO DE BALNEARIO DE PICARRAS",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/83102335000148/2023/101",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "Balneário Camboriú",
-      "geo_motivo": "Balneário Camboriú/SC está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
       "id": "7895a614dca5280de279",
       "titulo": "Contratação objetivando a recepção e seleção de instituições/ Organizações da Sociedade Civil - OSC's visando o CREDENCIAMENTO e futura cele",
       "uf": "SC",
@@ -11819,88 +11190,6 @@
       ],
       "link_oficial": null,
       "link_anuncio": "https://pncp.gov.br/app/editais/11301658000150/2023/28",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "estadual",
-      "cidade": null,
-      "geo_motivo": "abrangência estadual em SC (sem cidade identificada)",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "d35919bc6ea9d0076346",
-      "titulo": "Constitui objeto deste Edital o credenciamento de profissionais para análise e emissão de pareceres técnicos das propostas inscritas nos edi",
-      "uf": "SC",
-      "area": "cultura",
-      "fonte": "PNCP — MUNICIPIO DE SAO JOSE",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/82892274000105/2023/46",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "municipal",
-      "cidade": "São José",
-      "geo_motivo": "São José/SC está entre as 50 maiores do estado",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "e0ba0a9d3eaa7f12813b",
-      "titulo": "CREDENCIAMENTO DE PROFISSIONAIS PARA EXERCER AS ATIVIDADES DE AVALIAÇÃO DE MÉRITO E EMISSÃO DE PARECER TÉCNICO SOBRE PRODUTOS E PROJETOS CUL",
-      "uf": "SC",
-      "area": "cultura",
-      "fonte": "PNCP — FUNDACAO CULTURAL DE BRUSQUE",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/04894677000171/2023/3",
       "anuncio_e_vetor": true,
       "motivo": "sem prazo de inscrição confirmado",
       "prioridade": 2,
@@ -12847,47 +12136,6 @@
       ],
       "link_oficial": null,
       "link_anuncio": "https://pncp.gov.br/app/editais/66998014000154/2024/21",
-      "anuncio_e_vetor": true,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 2,
-      "ja_investigado": false,
-      "escopo": "estadual",
-      "cidade": null,
-      "geo_motivo": "abrangência estadual em SP (sem cidade identificada)",
-      "modo": "leve",
-      "instrucao": "verificação leve: confirmar objeto, prazo de inscrição (início/fim) e a página oficial onde o edital está; o restante fica para avaliação manual do titular",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
-      "id": "7db335c94a4c70df5f50",
-      "titulo": "CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE LEILOEIROS PÚBLICOS OFICIAIS PARA REALIZAÇÃO DE LEILÃO PARA ALIENAÇÃO DE BEM IMÓVEL",
-      "uf": "SP",
-      "area": "outros",
-      "fonte": "PNCP — MUNICIPIO DE SERRA NEGRA",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Início das inscrições",
-        "Prazo de inscrição",
-        "Página oficial do edital"
-      ],
-      "link_oficial": null,
-      "link_anuncio": "https://pncp.gov.br/app/editais/44847663000111/2024/3",
       "anuncio_e_vetor": true,
       "motivo": "sem prazo de inscrição confirmado",
       "prioridade": 2,

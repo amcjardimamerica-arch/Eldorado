@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## 71f1af059c45f010339a — A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO QUE REALIZARÁ CHAMAMENTO PÚBLICO, POR CREDENCIAMENTO, PARA SELECIONAR EMPRESA DO RAMO DA CONSTRUÇÃO CIVIL, COM COMPROVADA CAPACIDADE TÉCNICA, INTERESSADA EM APRESENTAR PROJETOS E CONSTRUIR UNIDADES HABITACIONAIS EM LOTES E ÁREA DE PROPRIEDADE DO
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 9× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 11× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): PNCP — MUNICIPIO DE NOVO GAMA · UF GO · nível municipal · situação possivel · fim None
 
@@ -26,14 +26,15 @@ Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
 ```
-(sem texto — localizar o edital no site do órgão)
+### página institucional
+ Licitações - Prefeitura de Novo Gama - GO Habilite o JavaScript para utilizar o NúcleoGov. Menu Início Atos Norm. Portarias Decretos Leis Resoluções Instrução Normativa Conselhos Municipais Atas de Reunião Receitas Receitas Receitas 2018 até 2012 Inscritos em Dívida Ativa Despesas Despesas Rec. Humanos Folha de Pagamento Padrão Remuneratório Lista de Estagiários Lista de Terceirizados Concursos Públicos Processos Seletivos Eleição de Conselhos Municipais Licitações Licitações Licitações Fracassadas e Desertas Dispensas e Inexigibilidades Plano de Contratações Anual (PCA) Sanções Administrativas Avisos de Dispensas Contratos Contratos Fiscais de Contratos Atas de Registro de Preço Ordem Cronológica de Pagamentos Prest. Contas Prestação de Contas (Balanço Anual) Relatório de Gestão ou Atividades Parecer do Tribunal de Contas Julgamento de Contas pelo legislativo Relatórios de Gestão Fiscal Relatórios Resumido de Execução Orçamentária Plano Estratégico Planejamento Orçamentário SIC SIC - Serviço de Informação ao Cidadão Regulamentação da LAI Relatório Estatístico do e-SIC Informações Classificadas como Sigilosas Informações Desclassificadas como Sigilosas Ouvidoria Início Solicitação Elogios Sugestões Reclamações Denúncias Carta de Serviços aos Usuários Ver mais ACESSIBILIDADE A+ A A- Licitações VOCÊ ESTÁ AQUI: &nbsp; PÁGINA INICIAL &nbsp; > &nbsp; Licitações &nbsp; > &nbsp; Licitações . . Portal do Cidadão da Prefeitura de Novo Gama - GO A+ A A- Acessibilidade Alto Contraste Mapa do Site --> Portal do Cidadão Licitações FILTRO Licitações Licitações Fracassadas e Desertas Dispensas e Inexigibilidades Plano de Contratações Anual (PCA) Sanções Administrativas Avisos de Dispensas Declaração de Não Adesão SRP --> --> --> FILTRAR --> --> --> --> Atualizado em 08/09/2026 --> 
 ```
 
 
 ---
 ## 5b991f651a1905c579de — Realização de Chamamento Público visando a Seleção de Agentes Culturais de Audiovisual que tenham prestado relevante contribuição ao desenvo
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 6× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 8× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): PNCP — MUNICIPIO DE ALVORADA DO NORTE · UF GO · nível municipal · situação possivel · fim None
 

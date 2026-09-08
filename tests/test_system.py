@@ -4238,6 +4238,24 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(len(curso),8); self.assertTrue({"RJ","RO","RS"} <= {x.get("uf") for x in curso})
         self.assertTrue(pathlib.Path("biblioteca_alexandria/RELATORIO-VERIFICACAO-2026-09-08.md").exists())
 
+
+    def test_publicacao_destaques_e_links_dos_motores(self):
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        for x in ('http-equiv="Cache-Control"','id="versao-painel"',"recarregue com Ctrl+F5",
+                  "⚠ INCOMPLETA","selo.analise_incompleta{","function achadosDoMotor","mt-achados","mt-ach a"): self.assertIn(x,html,x)
+        self.assertIn("oportunidade(s) encontrada(s)",html)
+        from src.inconformidade import avaliar
+        for t0 in ("CREDENCIAMENTO DE AVALIADORES/PARECERISTAS DE PROJETOS CULTURAIS",
+                   "Credenciamento de empresa para aquisição de bolsas coletoras",
+                   "CREDENCIAMENTO PARA A CAPTAÇÃO E SELEÇÃO DE COTAS DE PATROCÍNIO"):
+            self.assertFalse(avaliar(t0)["ok"],t0)
+        self.assertTrue(avaliar("Chamamento público para seleção de OSC para termo de fomento em cultura")["ok"])
+        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        self.assertIn("reprovados_por_objeto",f); self.assertGreaterEqual(f["reprovados_por_objeto"]["total"],8)
+        self.assertTrue(all(x.get("familia") and x.get("motivo") for x in f["reprovados_por_objeto"]["itens"][:10]))
+        d=load_json(pathlib.Path("docs/dashboard-dados.json"))
+        self.assertIn("reprovados_por_objeto",d["fila_verificacao"])
+
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado
         self.assertEqual(valor_citado("Valor: R$ 1.200.000,00"),"R$ 1.200.000,00")

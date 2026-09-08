@@ -2,6 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Painel · A.M.C. Jardim América</title>
@@ -250,6 +253,11 @@ box-shadow:0 1px 3px #0002}
 .dj-areat{display:flex;align-items:center;gap:7px;font-family:Georgia,serif;font-weight:800;font-size:13.5px;border-bottom:1.5px solid #E3E8F1;padding-bottom:4px;margin-bottom:6px}
 .mt-calt{font-size:11px;font-weight:700;color:var(--suave);letter-spacing:.05em;text-transform:uppercase;margin:8px 0 4px;display:flex;justify-content:space-between;align-items:center}
 .mt-diag.br{color:#1E7E4B}
+.mt-achados{margin-top:6px;padding:6px 8px;background:#F7FBFF;border:1px solid #DCE7F5;border-radius:8px;font-size:11.5px}
+.mt-ach{display:flex;align-items:center;gap:6px;padding:2px 0;border-bottom:1px dotted #E8EEF6}
+.mt-ach .pt{width:8px;height:8px;border-radius:50%;flex:none}.mt-ach .pt.ok{background:var(--ok)}.mt-ach .pt.nv{background:#E0B060}
+.mt-ach a{color:#0B4EA2;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mt-ach a:hover{text-decoration:underline}
+.mt-ach small{margin-left:auto;color:var(--suave);white-space:nowrap}
 .mt-rank{display:inline-block;min-width:26px;padding:1px 6px;border-radius:7px;background:#0E2A55;color:#fff;font-weight:800;font-size:12px;text-align:center;font-family:Georgia,serif}
 .mt-rel{color:#7a5a00;border-color:#C9A227}
 .mt-calnav button{border:1px solid var(--linha);background:#fff;border-radius:6px;padding:1px 7px;font-size:11px;cursor:pointer;margin-left:3px}
@@ -326,7 +334,10 @@ box-shadow:0 1px 3px #0002}
 .sug.nao-verificada,.ed-item.nao-verificada{border-left:3px solid #E0B060}
 .ed-analise{display:flex;gap:8px;align-items:center;margin-bottom:6px;font-size:12px}
 .selo{position:absolute;top:-9px;right:12px;font-size:10.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 9px;border-radius:10px;border:1px solid;background:#fff}
-.selo.conformidade{color:#1E7E4B;border-color:#1E7E4B}.selo.inconformidade{color:var(--urgente);border-color:var(--urgente)}.selo.analisado,.selo.analise_incompleta{color:#0E2A55;border-color:#0E2A55}.sug.realizada{border-color:var(--ok);background:#F2FBF6}
+.selo.conformidade{color:#1E7E4B;border-color:#1E7E4B}.selo.inconformidade{color:var(--urgente);border-color:var(--urgente)}.selo.analisado{color:#0E2A55;border-color:#0E2A55}
+.selo.analise_incompleta{color:#8a5a00;border-color:#E0B060;background:#FFF3D6;font-weight:900;animation:pulsa 2.4s ease-in-out infinite}
+@keyframes pulsa{0%,100%{box-shadow:0 0 0 0 #E0B06066}50%{box-shadow:0 0 0 5px #E0B06000}}
+.sug.incompleta,.ed-item.incompleta{border-left:4px solid #E0B060;background:#FFFDF6}.sug.realizada{border-color:var(--ok);background:#F2FBF6}
 .sug-l1{display:grid;grid-template-columns:14px 44px 1fr auto;gap:10px;align-items:center}.sug-titulo{font-weight:700;font-size:13px;white-space:normal;word-break:break-word;line-height:1.35}
 .sug-acoes{display:flex;gap:6px;white-space:nowrap}
 .sug-dados{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--linha)}.sug-dados b{color:var(--suave);font-weight:700;margin-right:3px}
@@ -797,7 +808,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </div>
   <div class="bz-mapa-grade">
     <div class="bz-mapa-col">
-      <div id="mp-triagem" class="meta" style="margin:6px 0"></div>
+      <div id="versao-painel" class="meta" style="text-align:right;font-size:11px"></div>
+<div id="mp-triagem" class="meta" style="margin:6px 0"></div>
 <div id="bz-mapa"></div>
       <button class="bz-rosa-bt" onclick="bzNacional()" title="Brasil — oportunidades de nível nacional (federais e sem estado), sem os dados dos estados">
         <svg class="bz-rosa" viewBox="-100 -100 200 200" role="img" aria-label="rosa dos ventos — Brasil, nível nacional" id="bz-rosa-svg"></svg>
@@ -938,10 +950,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260908142147"></script>
-<script src="mapa-arte.js?v=20260908142147"></script>
-<script src="dashboard-dados.enc.js?v=20260908142147"></script>
-<script src="dashboard-dados.js?v=20260908142147"></script>
+<script src="mapa-brasil.js?v=20260908160132"></script>
+<script src="mapa-arte.js?v=20260908160132"></script>
+<script src="dashboard-dados.enc.js?v=20260908160132"></script>
+<script src="dashboard-dados.js?v=20260908160132"></script>
 <script>
 (function(){
 "use strict";
@@ -1840,6 +1852,7 @@ function desenhaFilaVerificacao(){
     <span class=meta><b>${f.total}</b> oportunidade(s) sem informação completa · ${f.sem_prazo} sem prazo confirmado · escopo: <b>${(f.escopo||{}).nacional||0}</b> nacionais (sem restrição geográfica, prioridade) · ${(f.escopo||{}).estadual||0} estaduais · ${(f.escopo||{}).municipal||0} municipais (50 maiores) · modo: ${(f.modo||{}).completo||0} completo / ${(f.modo||{}).leve||0} leve</span>
     <span style="margin-left:auto"><a class="fdoc-bt" href="dados/fila_verificacao.json" target=_blank rel="noopener noreferrer">ver a fila completa</a>
     <button class="fdoc-bt principal" onclick="varreduraImediata()" title="gera agora o pacote da varredura para a análise de IA (a rotina de domingo executa a mesma fila)">⚡ varredura imediata</button></span></div>
+    ${(f.reprovados_por_objeto&&f.reprovados_por_objeto.total)?`<div class=meta style="margin-top:6px"><b>${f.reprovados_por_objeto.total}</b> registro(s) saíram da fila pelo filtro de objeto (não são chamada aberta de fomento): ${Object.entries(f.reprovados_por_objeto.por_familia||{}).map(([k,v])=>`${v} ${esc(k.replace(/_/g," "))}`).join(" · ")}.</div>`:""}
     ${(D.fora_das_50&&D.fora_das_50.total)?`<div class=meta style="margin-top:6px;color:#FF1493"><b>${D.fora_das_50.total}</b> oportunidade(s) de cidades fora das 50 maiores do estado foram retiradas da fila (depuração) — aparecem em rosa para aprovação manual: ${(D.fora_das_50.itens||[]).slice(0,6).map(x=>esc((x.cidade||"?")+"/"+(x.uf||""))).join(" · ")}${D.fora_das_50.total>6?" …":""}</div>`:""}
     ${f.informacoes_minimas?`<div class=meta style="margin-top:6px"><b>Informações mínimas exigidas:</b> objeto, prazo de inscrição e página oficial do edital (site do órgão ou patrocinador — nunca o vetor onde foi encontrada). Hoje: <b>${f.informacoes_minimas.completas}</b> completas · ${f.informacoes_minimas.incompletas} incompletas (faltam: objeto em ${f.informacoes_minimas.falta_objeto}, prazo em ${f.informacoes_minimas.falta_prazo}, página oficial em ${f.informacoes_minimas.falta_pagina}).</div>`:""}
     <div class=meta style="margin-top:6px">A rotina de domingo executa esta fila na ordem de prioridade: Goiás e nacionais primeiro, depois o que tem mais itens faltando. ${f.edicoes_de_diario_sem_ato?`${f.edicoes_de_diario_sem_ato.toLocaleString("pt-BR")} edições inteiras de diário sem ato identificado ficam fora — dependem da extração de edições, não da IA.`:""}</div>`;
@@ -2262,7 +2275,7 @@ function htmlEditaisEnquadrados(a){const COR={verde:"var(--ok)",amarelo:"var(--a
     const valor=e.valor?String(e.valor):null; const valorCurto=valor?(valor.match(/R\$\s?[\d\.]+(?:,\d{2})?(?:\s*(?:a|até)\s*R\$\s?[\d\.]+(?:,\d{2})?)?/)||[valor.slice(0,60)])[0]:"a confirmar";
     const pub=linkOficial(e);
     const selo=seloDe(e.id);
-    return `<div class="sug ${real?"realizada":""} ${selo?"analisado":""} ${e.selo_validacao==="nao_verificada"?"nao-verificada":""}" data-id="${esc(e.id)}"><div class="linha-val">${seloVal(e)}</div>${selo?`<div class="selo ${selo.selo}" title="${esc(selo.motivo||"")} · ${br((selo.em||"").slice(0,10))} · ${esc(selo.por||"")}">Análise: ${selo.selo==="conformidade"?"Conformidade":selo.selo==="inconformidade"?"Inconformidade":selo.selo==="analise_incompleta"?"incompleta — sem selo":"realizada"}</div>`:""}
+    return `<div class="sug ${real?"realizada":""} ${selo?"analisado":""} ${selo&&selo.selo==="analise_incompleta"?"incompleta":""} ${e.selo_validacao==="nao_verificada"?"nao-verificada":""}" data-id="${esc(e.id)}"><div class="linha-val">${seloVal(e)}</div>${selo?`<div class="selo ${selo.selo}" title="${esc(selo.motivo||"")} · ${br((selo.em||"").slice(0,10))} · ${esc(selo.por||"")}">Análise: ${selo.selo==="conformidade"?"Conformidade":selo.selo==="inconformidade"?"Inconformidade":selo.selo==="analise_incompleta"?"⚠ INCOMPLETA — esclarecer na próxima busca":"realizada"}</div>`:""}
       <div class="sug-top">
         <div class="sug-esq"><span class="assoc-led" style="background:${COR[e.farol]}"></span><b class="assoc-nota" title="aderência">${e.nota}</b></div>
         <div class="sug-meio"><div class="sug-titulo">${esc(e.titulo||"")}</div>
@@ -2464,7 +2477,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
         const _an=_s?`<div class="ed-analise"><span class="selo ${_s.selo}" style="position:static">Análise: ${_s.selo==="conformidade"?"Conformidade":_s.selo==="inconformidade"?"Inconformidade":_s.selo==="analise_incompleta"?"incompleta":"realizada"}</span> <span class=meta>${_q?_q.itens.filter(i=>i.valor||i.dispensavel).length+"/12 itens · ":""}${esc(String((_q&&_q.mini_parecer)||_s.motivo||"").slice(0,170))}</span></div>`:"";
         const _naoComp=situacaoDe(e)==="possivel"; const _ofc=linkOficial(e);
         const _sus=_naoComp?`<div class="ed-suspeita"><b>não comprovado</b> — sem prazo de inscrição confirmado na fonte oficial; em investigação${_ofc?` · <a href="${esc(_ofc)}" target=_blank rel="noopener noreferrer">validar no site oficial ↗</a>`:e.url?` · <a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" class=meta>anúncio no vetor (não é fonte) ↗</a> · <span class=meta>site do órgão a localizar</span>`:""}</div>`:"";
-        return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}${_s?" analisado":""}${_naoComp?" suspeita":""}${e.selo_validacao==="nao_verificada"?" nao-verificada":""}" data-id="${esc(e.id)}"><div class="linha-val">${seloVal(e)}</div>${_an}${_sus}
+        return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}${_s?" analisado":""}${_s&&_s.selo==="analise_incompleta"?" incompleta":""}${_naoComp?" suspeita":""}${e.selo_validacao==="nao_verificada"?" nao-verificada":""}" data-id="${esc(e.id)}"><div class="linha-val">${seloVal(e)}</div>${_an}${_sus}
         <div class="fa-fonte"><span class=ponto style="background:${c.cor};width:8px;height:8px" title="${esc(c.rotulo)}"></span><strong style="color:var(--tinta)">${esc(f.fonte_nome||"—")}</strong>${f.via?`<span class=meta>· via ${esc(f.via)}</span>`:""}</div>
         <a href="${esc(linkOficial(e)||e.url)}" target=_blank rel="noopener noreferrer" title="${VETOR_RX.test(linkOficial(e)||e.url||"")?"anúncio no vetor de divulgação — a fonte oficial ainda não foi localizada":"site oficial"}">${esc((e.titulo||"").slice(0,90))}</a>
         ${camp?`<span class="st ${camp.status==="monitorando"?"cap":camp.status==="completo"?"ok":"acao"}" style="margin-left:6px" title="${camp.status==="monitorando"?"indício em campanha de completude: dia "+camp.dia+" de 30, "+camp.tentativas+" tentativa(s) atrás do edital integral":camp.status==="completo"?"campanha concluída: edital integral obtido":"campanha expirada — revisão humana"}">${camp.status==="monitorando"?"monitorando · dia "+camp.dia+"/30":camp.status}</span>`:""}
@@ -2729,6 +2742,18 @@ function camadasHtml(m){
 const rotArea0=a=>(D.areas&&D.areas[a]||{}).rotulo||a;
 const GRUPO_MOTOR={1:"diário oficial",2:"API",3:"secretaria / órgão",4:"site do terceiro setor",5:"empresas"};
 const ROT_TIPO={empresas_incentivo:"editais incentivados (empresas)",empresas_fiscal:"GIFE · incentivos fiscais",empresas_privado:"patrocínio privado"};
+/* Oportunidades que ESTE motor encontrou, com o link direto da página do edital
+   (site oficial quando conhecido; nunca o vetor de divulgação). */
+function achadosDoMotor(o){
+  const eds=(D.editais||[]).concat(FA_ABERTAS||[]).filter(e=>ehOportunidade(e)&&(e.fonte_id===o.id||e.fonte_nome===o.nome));
+  if(!eds.length)return "";
+  const ord=eds.sort((a,b)=>String(b.coletado_em||b.publicado_em||"").localeCompare(String(a.coletado_em||a.publicado_em||""))).slice(0,6);
+  return `<div class="mt-achados"><b>${eds.length} oportunidade(s) encontrada(s)</b>${eds.length>6?" — 6 mais recentes:":":"}
+    ${ord.map(e=>{const u=linkOficial(e)||e.url;const val=e.selo_validacao==="validada";
+      return `<div class="mt-ach"><span class="pt ${val?"ok":"nv"}" title="${val?"validada: objeto, prazo e site oficial":"não verificada"}"></span>
+        ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</a>`:`<span title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</span>`}
+        <small>${e.fim?"até "+br(e.fim):"prazo a confirmar"}${e.uf?" · "+esc(e.uf):""}</small></div>`;}).join("")}</div>`;
+}
 function desenhaMotores(){
   if(!$("mt-lista"))return;
   const R=MT._resumo||{};
@@ -2800,7 +2825,8 @@ function desenhaMotores(){
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
         ${o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag ${o.diagnostico.exige_brasil?"br":""}" title="diagnóstico individual da última leitura">${o.diagnostico.exige_brasil?"🇧🇷":"⚠"} ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
         <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · ${esc(o.situacao)}${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+" edital(is)":""}</div>
-        ${trintaDias(o)}</div>
+        ${trintaDias(o)}
+        ${achadosDoMotor(o)}</div>
       <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
   // agregação por família → segmento
   /* categorias APENAS por área de atuação (rótulos da página inicial) */
@@ -3312,6 +3338,9 @@ function iniciar(){
   gAno=HOJE.getFullYear();gMes=HOJE.getMonth();
   desenhaRadar();desenhaFarolResumo();desenhaGantt();desenhaFila();
   desenhaCal();desenhaEditais();desenhaBussola();iniciarBz();desenhaCalendarioDecisao();desenhaBiblioteca();
+  {const el=$("versao-painel"); if(el){const g=(D.gerado_em||"").slice(0,16).replace("T"," ");
+     const dias=Math.round((Date.now()-new Date(D.gerado_em||Date.now()))/864e5);
+     el.innerHTML=`dados gerados em <b>${esc(g)}</b>${dias>1?` · <span style="color:var(--urgente)">${dias} dias atrás — recarregue com Ctrl+F5</span>`:" · atualizado"}`;}}
   desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
   if($("rk-bt-fiscal")){$("rk-bt-fiscal").onclick=()=>{window._rkCat="destinacao_tributaria";window.desenhaRanking();};$("rk-bt-patroc").onclick=()=>{window._rkCat="patrocinio_privado";window.desenhaRanking();};$("rk-busca").addEventListener("input",()=>window.desenhaRanking());}
   document.body.classList.add("inicial");trocaVista("inicio");

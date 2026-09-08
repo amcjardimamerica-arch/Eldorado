@@ -107,6 +107,11 @@ _COMPRA = re.compile(
     r"interessados\s+em\s+fornecer\s+g[êe]neros\s+aliment[íi]cios|"
     r"chamada\s+p[úu]blica[^.]{0,60}?agricultura\s+familiar|"
     r"credenciamento[^.]{0,60}?recebimento\s+de\s+res[íi]duos\s+recicl[áa]veis|"
+    # casos medidos na fila em 08/09: credenciamento de PESSOAS ou de EMPRESAS para prestar/fornecer,
+    # e credenciamento para CAPTAR patrocínio para o próprio órgão
+    r"credenciamento\s+de\s+(?:avaliadores|pareceristas|profissionais|peritos|leiloeiros|instrutores|oficineiros|artistas|empresas?|pessoas?\s+jur[íi]dicas?\s+para\s+presta)|"
+    r"credenciamento[^.]{0,50}?(?:para\s+)?(?:a\s+)?capta[çc][ãa]o\s+(?:e\s+sele[çc][ãa]o\s+)?de\s+cotas\s+de\s+patroc[íi]nio|"
+    r"credenciamento\s+de\s+empresa\s+para\s+aquisi[çc][ãa]o|"
     r"credenciamento\s+para\s+(?:a\s+)?contrata[çc][ãa]o\s+de[^.]{0,60}?servi[çc]os\s+ambulatoriais|"
     r"contratar\s+as?\s+entidades?\s+privadas?[^.]{0,60}?para\s+presta[çc][ãa]o", re.I)
 

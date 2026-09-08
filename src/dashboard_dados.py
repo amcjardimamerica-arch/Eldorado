@@ -1495,7 +1495,7 @@ def coletar(hoje: date | None = None) -> dict:
                           if m else {})(load_json(ROOT / "dados/editais/marcacoes_ia.json") if (ROOT / "dados/editais/marcacoes_ia.json").exists() else None),
         "fora_das_50": (lambda f: (f or {}).get("fora_das_50_maiores"))(
             load_json(ROOT / "estado/fila_verificacao.json") if (ROOT / "estado/fila_verificacao.json").exists() else None),
-        "fila_verificacao": (lambda f: {k: v for k, v in f.items() if k != "itens"} if f else None)(
+        "fila_verificacao": (lambda f: {k: (v if k != "reprovados_por_objeto" else {kk: vv for kk, vv in v.items() if kk != "itens"}) for k, v in f.items() if k != "itens"} if f else None)(
             load_json(ROOT / "estado/fila_verificacao.json") if (ROOT / "estado/fila_verificacao.json").exists() else None),
         "drive": (load_json(ROOT / "config/drive.json") if (ROOT / "config/drive.json").exists() else {}),
         "arquivados_eldorado": (load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}),

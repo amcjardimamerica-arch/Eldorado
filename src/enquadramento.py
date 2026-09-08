@@ -553,6 +553,7 @@ def fila_verificacao() -> dict:
     arq = load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}
     itens = []
     edicoes_brutas = 0
+    reprovados_objeto: list = []
     maiores = _mapa_maiores()
     fora_das_50 = []
     for e in universo:
@@ -561,6 +562,12 @@ def fila_verificacao() -> dict:
         # edição inteira de diário sem ato identificado: fica para a extração de edições (fase 2), não para a IA
         if re.match(r"Di[áa]rio Oficial de .+\d{4}-\d{2}-\d{2}", e.get("titulo") or "") and not (e.get("objeto") or e.get("fim")):
             edicoes_brutas += 1; continue
+        # filtro de objeto (src/inconformidade.py): o que não é chamada aberta de fomento sai da fila
+        from .inconformidade import avaliar as _avaliar_objeto
+        _av = _avaliar_objeto(f"{e.get('titulo') or ''} {e.get('objeto') or ''}")
+        if not _av["ok"]:
+            reprovados_objeto.append({"id": e["id"], "titulo": (e.get("titulo") or "")[:110], "familia": _av["familia"], "motivo": _av["motivo"]})
+            continue
         geo = classificar_geografia(e, maiores)
         if geo["escopo"] == "municipal_fora":
             fora_das_50.append({"id": e["id"], "titulo": (e.get("titulo") or "")[:120], "uf": e.get("uf"), "cidade": geo.get("cidade"),
@@ -637,6 +644,9 @@ def fila_verificacao() -> dict:
            "nunca_investigados": sum(1 for x in itens if not x["ja_investigado"]),
            "edicoes_de_diario_sem_ato": edicoes_brutas,
            "por_uf": {u: sum(1 for x in itens if (x.get("uf") or "BR") == u) for u in sorted({(x.get("uf") or "BR") for x in itens})},
+           "reprovados_por_objeto": {"total": len(reprovados_objeto), "por_familia": {k: sum(1 for x in reprovados_objeto if x["familia"] == k) for k in sorted({x["familia"] for x in reprovados_objeto})},
+                                     "itens": reprovados_objeto[:300],
+                                     "regra": "filtro de objeto (inconformidade.py): não é chamada aberta que repasse recurso a entidade — sai da fila e não vira alerta"},
            "fora_das_50_maiores": {"total": len(fora_das_50), "itens": fora_das_50[:400],
                                    "regra": "excluídas da fila por não estarem entre as 50 maiores cidades do estado; voltam em ROSA quando o titular aprovar a cidade"},
            "escopo": {k: sum(1 for x in itens if x["escopo"] == k) for k in ("nacional", "estadual", "municipal")},
