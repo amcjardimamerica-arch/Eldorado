@@ -4109,7 +4109,7 @@ class SystemTests(unittest.TestCase):
         nao_diario=[x for x in go if x["tipo_registro"]!="edicao_diario"]
         self.assertTrue(all(x["id"] in an for x in nao_diario))                     # TODAS as de Goiás verificadas uma a uma
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn('item.tipo_registro!=="edital"',html); self.assertIn('id="mp-triagem"',html)
+        self.assertIn('!["edital","regra_anual"].includes(item.tipo_registro)',html)
         self.assertIn("não entram neste mapa",html)
 
 
@@ -4134,6 +4134,20 @@ class SystemTests(unittest.TestCase):
         self.assertTrue(all(x.get("selo_validacao")=="nao_verificada" for x in f["itens"] if x["minimas"]["faltam"]))
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("function seloVal","✔ VALIDADA","⚠ NÃO VERIFICADA","selo-val.val-ok","selo-val.val-nao","na fila da verificação semanal da IA"): self.assertIn(x,html,x)
+
+
+    def test_regra_unica_de_oportunidade_em_todo_o_painel(self):
+        """07/09: nenhuma contagem do sistema pode incluir edição de diário, licitação
+        de compras ou credenciamento de serviços como 'oportunidade'."""
+        html=open("docs/dashboard.html",encoding="utf-8").read()
+        self.assertIn("const ehOportunidade=",html)
+        self.assertIn("ehOportunidade(e)&&[\"aberta\",\"possivel\"]",html)      # resumo/listas
+        self.assertIn("ehOportunidade(e)&&(!uf||",html)                          # filtro por estado
+        self.assertIn("ehOportunidade(o)&&(!uf||",html)                          # base ampla
+        self.assertIn('!["edital","regra_anual"].includes(item.tipo_registro)',html)
+        self.assertIn("oportunidade(s) verificáveis",html)
+        d=load_json(pathlib.Path("docs/dashboard-dados.json"))
+        self.assertTrue(all("tipo_registro" in e for e in d["editais"]))
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

@@ -938,10 +938,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260908092232"></script>
-<script src="mapa-arte.js?v=20260908092232"></script>
-<script src="dashboard-dados.enc.js?v=20260908092232"></script>
-<script src="dashboard-dados.js?v=20260908092232"></script>
+<script src="mapa-brasil.js?v=20260908104053"></script>
+<script src="mapa-arte.js?v=20260908104053"></script>
+<script src="dashboard-dados.enc.js?v=20260908104053"></script>
+<script src="dashboard-dados.js?v=20260908104053"></script>
 <script>
 (function(){
 "use strict";
@@ -1961,7 +1961,7 @@ function editaisFiltradosBz(){
   const eds=D.editais||[];
   const uf=$("bz-uf").value,ar=$("bz-area").value,ni=$("bz-nivel").value,pz=$("bz-prazo").value;
   const nacional=e=>!e.uf||e.abrangencia==="nacional"||e.nivel==="federal";
-  return eds.filter(e=>(!uf||(uf==="__nac__"?nacional(e):(e.uf===uf||nacional(e))))
+  return eds.filter(e=>ehOportunidade(e)&&(!uf||(uf==="__nac__"?nacional(e):(e.uf===uf||nacional(e))))
     &&(!ar||e.area===ar)&&(!ni||e.nivel===ni)&&casaPrazo(e,pz));
 }
 let FA_ABERTAS=null, faPagina={};
@@ -2417,6 +2417,10 @@ window.faMais=function(area){faPagina[area]=(faPagina[area]||10)+20;desenhaFonte
 function desenhaFontesAbertas(){ if(!$("bus-fontes"))return; montaOportunidadesPorArea($("bus-fontes"),$("fa-resumo"),true,()=>desenhaFontesAbertas()); }
 /* MOTOR ÚNICO de apresentação: usado pela Bússola (Fontes com edital aberto) e
    pela aba Oportunidades Abertas (Em andamento) — mesmos dados, mesmo layout. */
+/* REGRA ÚNICA (07/09): oportunidade é o registro classificado como edital/chamamento.
+   Edição inteira de diário, licitação de compras e credenciamento de serviços são
+   capturas dos motores — ficam fora de qualquer contagem de oportunidade. */
+const ehOportunidade=e=>!e.tipo_registro||e.tipo_registro==="edital"||e.tipo_registro==="regra_anual";
 function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
   const cat=(D.bussola&&D.bussola.categorias)||{};
   if(!fx)return; fx.innerHTML="";
@@ -2425,12 +2429,12 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
      + o fragmento ABERTAS com a base completa pertinente ao terceiro setor
      (18 mil+), regidas pelo mesmo filtro (UF, área, nível, prazo) */
   const uf=comFiltroBz?$("bz-uf").value:(($("ed-uf")||{}).value||""),ar=comFiltroBz?$("bz-area").value:(($("ed-area")||{}).value||""),ni=comFiltroBz?$("bz-nivel").value:"",pz=comFiltroBz?$("bz-prazo").value:"vivas";
-  const base=comFiltroBz?editaisFiltradosBz():(D.editais||[]).filter(e=>["aberta","possivel"].includes(situacaoDe(e))&&(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))&&(!ar||e.area===ar));
+  const base=comFiltroBz?editaisFiltradosBz():(D.editais||[]).filter(e=>ehOportunidade(e)&&["aberta","possivel"].includes(situacaoDe(e))&&(!uf||e.uf===uf||(!e.uf&&e.abrangencia==="nacional"))&&(!ar||e.area===ar));
   const sel=base.filter(e=>estadoDe(e.id)==="em_andamento");
   const info={};((D.bussola&&D.bussola.fontes_com_editais)||[]).forEach(f=>f.editais.forEach(e=>info[e.id]={...e,_fonte:f}));
   const hojeISO=HOJE.toISOString().slice(0,10);
   const extras=(FA_ABERTAS||[]).filter(o=>estadoDe(o.id)==="em_andamento"
-    &&(!uf||(uf==="__nac__"?(!o.uf||o.nivel==="federal"):(o.uf===uf||!o.uf||o.nivel==="federal")))&&(!ar||o.area===ar)
+    &&ehOportunidade(o)&&(!uf||(uf==="__nac__"?(!o.uf||o.nivel==="federal"):(o.uf===uf||!o.uf||o.nivel==="federal")))&&(!ar||o.area===ar)
     &&casaPrazo(o,pz))
     .map(o=>({e:{...o,fonte_nome:o.orgao&&!/pncp|querido/i.test(o.orgao)?o.orgao:o.fonte_nome,estado_export:situacaoDe(o)==="encerrada"?"encerrado":situacaoDe(o)==="aberta"?"aberto":"sem_prazo",abrangencia:o.nivel==="federal"?"nacional":"estadual"},
              b:o.campanha?{campanha:{status:o.campanha,dia:o.campanha_dia,tentativas:null,pendencias:[]},_fonte:{fonte_nome:o.orgao||o.fonte_nome,via:/querido/i.test(o.fonte_nome||"")?"Querido Diário":/pncp/i.test(o.fonte_nome||"")?"PNCP":null,categoria:"api_oficial"},pertinencia:o.pertinencia,analise_etapa2:[],comprovados:null,total_itens:null,anexos:[],pendencias:[]}:null}));
@@ -2438,7 +2442,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
   const nCamp=itens.filter(x=>x.b&&x.b.campanha&&x.b.campanha.status==="monitorando").length;
   const fontesN=new Set(itens.map(x=>x.b?x.b._fonte.fonte_nome:x.e.fonte_nome)).size;
   if(resumoEl){const nA=itens.filter(x=>situacaoDe(x.e)==="aberta").length,nP=itens.filter(x=>situacaoDe(x.e)==="possivel").length;
-    resumoEl.textContent=`${itens.length} oportunidade(s): ${nA} aberta(s) confirmada(s) · ${nP} possível(is) sem prazo confirmado · ${fontesN} fonte(s) · ${nCamp} em campanha de 30 dias${FA_ABERTAS?"":" · carregando a base completa…"}`;}
+    resumoEl.textContent=`${itens.length} oportunidade(s) verificáveis: ${nA} aberta(s) confirmada(s) · ${nP} possível(is) sem prazo confirmado · ${fontesN} fonte(s) · ${nCamp} em campanha de 30 dias${FA_ABERTAS?"":" · carregando a base completa…"}`;}
   if(!itens.length){fx.innerHTML='<div class=meta style="padding:10px 2px">Nenhuma oportunidade nesta seleção.</div>';return;}
   // organização temática: área de atuação (rótulos canônicos da tela inicial)
   const grupos={};itens.forEach(x=>{const a=x.e.area||"outros";(grupos[a]=grupos[a]||[]).push(x);});
@@ -2947,7 +2951,7 @@ function mpDadosUF(){
      como edital/chamamento. Edição inteira de diário, licitação de compras e credenciamento de
      serviços ficam fora e são contados à parte como "a triar". */
   const add2=(uf,area,cidade,st,item)=>{if(arSel&&area!==arSel)return;
-    if(item&&item.tipo_registro&&item.tipo_registro!=="edital"){window._mpTriagem=(window._mpTriagem||{});window._mpTriagem[item.tipo_registro]=(window._mpTriagem[item.tipo_registro]||0)+1;return;}
+    if(item&&item.tipo_registro&&!["edital","regra_anual"].includes(item.tipo_registro)){window._mpTriagem=(window._mpTriagem||{});window._mpTriagem[item.tipo_registro]=(window._mpTriagem[item.tipo_registro]||0)+1;return;}
     if(item){const arq=estadoDe(item.id)!=="em_andamento"||situacaoDe(item)==="encerrada";
       if((frSel||"ativas")==="ativas"?arq:!arq)return;}
     if(item&&!casaPeriodoMapa(item))return;const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});

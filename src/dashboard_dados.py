@@ -918,9 +918,9 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
                     for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
     com_parecer |= conjunto("*/*/conselho.json")
     for e in editais:
-        e.update(classificar_registro(e))
-        _integrar_analise(e)
         _ex = load_json(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{e['id']}.json").exists() else {}
+        e.update(classificar_registro(e, _ex))
+        _integrar_analise(e)
         e.update(selo_validacao(e, _ex))                              # Biblioteca (extraídos/complementos) alimenta a Bússola e todos os painéis
         e["area"] = area_canonica(e.get("area"))
         e["calendario_ok"] = _apto_ao_calendario(e)
@@ -1156,9 +1156,18 @@ def selo_validacao(e: dict, ex: dict | None = None) -> dict:
                           "para_ia_semanal": bool(faltam)}}
 
 
-def classificar_registro(e: dict) -> dict:
-    """Classifica objetivamente o que é cada registro, pelo próprio título publicado.
-    Só 'edital' pode figurar como oportunidade no Mapa; o resto é ruído de captura."""
+def classificar_registro(e: dict, ex: dict | None = None) -> dict:
+    """Classifica objetivamente o que é cada registro. Ordem: (1) oportunidade por
+    regramento (Rouanet, emendas, RFB) é sempre oportunidade; (2) se a análise já
+    identificou o ATO dentro da publicação, vale o ato — mesmo que o título seja o do
+    diário; (3) senão, classifica pelo título publicado."""
+    if e.get("sem_edital") or e.get("regra_anos") or e.get("janela_confirmada"):
+        return {"tipo_registro": "regra_anual", "motivo_tipo": "oportunidade por regramento (janela anual conhecida), não depende de publicação de edital"}
+    ex = ex or {}
+    objeto = ((ex.get("itens") or {}).get("Objeto") or "")
+    if objeto and re.search(r"chamamento|edital|sele[çc][ãa]o|termo de (fomento|colabora)|credenciamento|fomento|pr[êe]mio", objeto, re.I):
+        tipo = "credenciamento" if re.search(r"credenciamento", objeto, re.I) else "edital"
+        return {"tipo_registro": tipo, "motivo_tipo": f"ato identificado pela análise dentro da publicação ({tipo})"}
     titulo = e.get("titulo") or ""
     for rx, tipo, motivo in TIPO_RX:
         if rx.search(titulo):
@@ -1398,6 +1407,8 @@ def coletar(hoje: date | None = None) -> dict:
     editais = emendas + janelas + editais
     for e in emendas + janelas:                       # curadoria também nas regras anuais
         e["area"] = area_canonica(e.get("area"))
+        _exr = load_json(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{e['id']}.json").exists() else {}
+        e.update(classificar_registro(e, _exr)); e.update(selo_validacao(e, _exr))
         si = situacao_inscricao(e, hoje)
         e["situacao_inscricao"] = si["situacao"]; e["regime_inscricao"] = si["regime"]; e["base_situacao"] = si["base"]
         e.setdefault("calendario_ok", _apto_ao_calendario(e))
@@ -1637,7 +1648,7 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                 "situacao": situacao_inscricao(o, hoje)["situacao"],
                 "objeto": (o.get("objeto") or "")[:200] or None,
                 "confirmacao": (o.get("confirmacao") or {}).get("nivel_confirmacao") if isinstance(o.get("confirmacao"), dict) else None,
-                **classificar_registro(o),
+                **classificar_registro(o, load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}),
                 **{k: v for k, v in selo_validacao(o, load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}).items()},
             })
         abertas.sort(key=lambda x: (x["area"] == "outros", x.get("uf") != "GO", x.get("coletado_em") or ""), )
