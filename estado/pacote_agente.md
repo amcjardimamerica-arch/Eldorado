@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## c5c7e37e2e275d2e69fe — Instituto Lojas Renner abre edital com até R$ 10 mil para fortalecer organizações sociais
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 7× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 8× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Observatório do Terceiro Setor — editais · UF BR · nível federal · situação aberta · fim 2026-09-13
 
@@ -33,7 +33,7 @@ Texto do edital (compacto):
 ---
 ## ba62bfc2d3ecc4281773 — Termos de Fomento
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 15× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 16× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
