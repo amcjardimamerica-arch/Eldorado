@@ -11,17 +11,17 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 
 
 ---
-## 6db359795600d65dd60c — O presente Edital destina-se cadastrar Profissionais de saúde/ Pessoas Físicas e/ ou Jurídicas para posterior Credenciamento, mediante docum
+## 71f1af059c45f010339a — A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO QUE REALIZARÁ CHAMAMENTO PÚBLICO, POR CREDENCIAMENTO, PARA SELECIONAR EMPRESA DO RAMO DA CONSTRUÇÃO CIVIL, COM COMPROVADA CAPACIDADE TÉCNICA, INTERESSADA EM APRESENTAR PROJETOS E CONSTRUIR UNIDADES HABITACIONAIS EM LOTES E ÁREA DE PROPRIEDADE DO
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 2× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 6× · motivo: sem prazo de inscrição confirmado
 
-Fonte (vetor): PNCP — FUNDO MUNICIPAL DE SAUDE · UF GO · nível municipal · situação possivel · fim None
+Fonte (vetor): PNCP — MUNICIPIO DE NOVO GAMA · UF GO · nível municipal · situação possivel · fim None
 
-Itens já obtidos: Objeto: Edital destinado a cadastrar Profissionais de saude, pessoas fisicas e/ou juridi, Órgão / financiador: Fundo Municipal de Saúde de Jataí, Território: Jataí/GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
+Itens já obtidos: Objeto: Chamamento publico, por credenciamento, da PREFEITURA MUNICIPAL DE NOVO GAMA/GO , Órgão / financiador: Município de Novo Gama (GO), Território: Novo Gama/GO, Esfera: municipal, Destinação: organizações da sociedade civil do município, Área de atuação: outros
 
-Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Anexos
+Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Requisitos, Anexos
 
-Anúncio: https://intranet.jatai.go.gov.br/intranet/sistemas/diario-oficial/diario-site.php
+Anúncio: https://pncp.gov.br/app/editais/01629276000104/2024/3
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
@@ -31,17 +31,17 @@ Texto do edital (compacto):
 
 
 ---
-## 93aa2d9dc209517bd973 — CREDENCIAMENTO PARA OS PROFISSIONAIS DA SAUDE. ATENDENDO AS NECESSIDADES DO FUNDO MUNICIPAL DE SAÚDE DE TROMBAS NO EXERCÍCIO 2024. (CHAMAMEN
+## 5b991f651a1905c579de — Realização de Chamamento Público visando a Seleção de Agentes Culturais de Audiovisual que tenham prestado relevante contribuição ao desenvo
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 1× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 3× · motivo: sem prazo de inscrição confirmado
 
-Fonte (vetor): PNCP — FUNDO MUNICIPAL DE SAUDE · UF GO · nível municipal · situação possivel · fim None
+Fonte (vetor): PNCP — MUNICIPIO DE ALVORADA DO NORTE · UF GO · nível municipal · situação possivel · fim None
 
-Itens já obtidos: Objeto: CREDENCIAMENTO PARA OS PROFISSIONAIS DA SAUDE, ATENDENDO AS NECESSIDADES DO FUND, Órgão / financiador: Fundo Municipal de Saúde (município de Goiás a identificar pelo CNPJ 11.344.805/, Território: GO, Esfera: municipal, Área de atuação: saude, Destinação: serviços de saúde ao SUS municipal (prestadores/OSC de saúde), Requisitos: prestador habilitado em saúde (CNES, alvará sanitário) — não é o perfil de assoc
+Itens já obtidos: Objeto: Edital de Chamamento Publico no 003/2023 do Municipio de Alvorada do Norte/GO - , Órgão / financiador: Município de Alvorada do Norte (GO), Território: Alvorada do Norte/GO, Esfera: municipal, Destinação: organizações da sociedade civil do município, Área de atuação: outros
 
-Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Anexos
+Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Requisitos, Anexos
 
-Anúncio: https://pncp.gov.br/app/editais/11344805000179/2024/3
+Anúncio: https://pncp.gov.br/app/editais/02367597000132/2023/423
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
