@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `abcr`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 15
-- Distribuição por ano pesquisado/coletado: {'2026': 15}
+- Pistas aguardando confirmação: 16
+- Distribuição por ano pesquisado/coletado: {'2026': 16}
 
 ## Padrões
 
@@ -24,6 +24,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Conheça os Profissionais Certificados pela Certificadora Social](https://captadores.org.br/profissionais-certificados) — coletado em 2026-09-05T05:20:44+00:00
 - [Associados da ABCR terão 25% de desconto nas certificações profissionais de captação durante o Festival ABCR](https://captadores.org.br/abcr/associados-da-abcr-terao-25-de-desconto-nas-certificacoes-profissionais-de-captacao-durante-o-festival-abcr) — coletado em 2026-09-05T05:22:13+00:00
 - [Continue lendo Fundação Tide Setubal abre inscrições para edital de saúde mental nas periferias de São Paulo](https://captadores.org.br/editais/fundacao-tide-setubal-abre-inscricoes-para-edital-de-saude-mental-nas-periferias-de-sao-paulo) — coletado em 2026-09-05T05:21:26+00:00
+- [Edital vai destinar R$ 6 milhões a projetos de proteção dos direitos de crianças ​e adolescentes](https://captadores.org.br/editais/edital-vai-destinar-r-6-milhoes-a-projetos-de-protecao-dos-direitos-de-criancas-e-adolescentes) — coletado em 2026-09-08T05:23:20+00:00
 - [Continue lendo Edital Futuro Bem Maior vai selecionar 33 organizações e coletivos de pequeno porte](https://captadores.org.br/editais/edital-futuro-bem-maior-vai-selecionar-33-organizacoes-e-coletivos-de-pequeno-porte) — coletado em 2026-09-05T05:22:05+00:00
 - [Continue lendo Edital de apoio a organizações sociais da Região Metropolitana de São Paulo está com inscrições abertas](https://captadores.org.br/editais/edital-de-apoio-a-organizacoes-sociais-da-regiao-metropolitana-de-sao-paulo-esta-com-inscricoes-abertas) — coletado em 2026-09-05T05:21:33+00:00
 - [Continue lendo Santa Luzia do Paruá abre edital para impulsionar projetos socioambientais com recursos internacionais](https://captadores.org.br/editais/santa-luzia-do-parua-abre-edital-para-impulsionar-projetos-socioambientais-com-recursos-internacionais) — coletado em 2026-09-05T05:21:57+00:00

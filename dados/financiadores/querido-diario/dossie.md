@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `querido-diario`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 18615
-- Distribuição por ano pesquisado/coletado: {'2021': 935, '2022': 3798, '2023': 3824, '2024': 3849, '2025': 3803, '2026': 2406}
+- Pistas aguardando confirmação: 18267
+- Distribuição por ano pesquisado/coletado: {'2021': 918, '2022': 3647, '2023': 3706, '2024': 3803, '2025': 3787, '2026': 2406}
 
 ## Padrões
 
@@ -19,7 +19,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Diário Oficial de Salvador (BA) 2022-10-14 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2927408/2022-10-14/d34833d25c565a2dd3f689e12bd7a95797d6f1f6.pdf) — coletado em 2026-09-06T18:54:42+00:00
 - [Diário Oficial de João Pessoa (PB) 2023-11-20 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2507507/2023-11-20/9c96ce73f971b3658261fe0ca3859dbe72e2af3b.pdf) — coletado em 2026-09-07T19:28:58+00:00
 - [Diário Oficial de Sumaré (SP) 2022-01-27 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3552403/2022-01-27/26a954fdae149bfda61c9e90d22730e4070f2c3a.pdf) — coletado em 2026-09-07T18:20:53+00:00
-- [Diário Oficial de Santos (SP) 2025-01-06 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3548500/2025-01-06/32bdd7e8528931a6ecd7bbb12eb436894fdd6ebe.pdf) — coletado em 2026-09-08T00:19:29+00:00
+- [Diário Oficial de Santos (SP) 2025-01-06 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3548500/2025-01-06/32bdd7e8528931a6ecd7bbb12eb436894fdd6ebe.pdf) — coletado em 2026-09-08T12:32:02+00:00
 - [Diário Oficial de São Luís (MA) 2023-12-26 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2111300/2023-12-26/cc863d0639424cc0812cbf2bba5e6808031d85a1.pdf) — coletado em 2026-09-07T19:32:28+00:00
 - [Diário Oficial de Duque de Caxias (RJ) 2024-08-16 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3301702/2024-08-16/4f445d9a2d9ce66cac8516dab3ceb24b26de4afa.pdf) — coletado em 2026-09-08T00:16:30+00:00
 - [Diário Oficial de Itariri (SP) 2023-06-30 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3523305/2023-06-30/ee222a5aa0a9f7bd9627bf988653a265a91227a4.pdf) — coletado em 2026-09-07T19:14:02+00:00
@@ -46,7 +46,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Diário Oficial de Belo Horizonte (MG) 2023-05-26 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3106200/2023-05-26/7e0d584fdd579b2c4de291bac74cfa299660e532.pdf) — coletado em 2026-09-06T19:20:36+00:00
 - [Diário Oficial de Teresina (PI) 2023-12-07 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2211001/2023-12-07/cbb0e69bcd364f6671edbd756d9170f624368818.pdf) — coletado em 2026-09-07T19:32:26+00:00
 - [Diário Oficial de Birigui (SP) 2025-09-12 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3506508/2025-09-12/c1a9aa0f0b391a869b5ff7afb8751fb64a24f79b.pdf) — coletado em 2026-09-01T06:37:16+00:00
-- [Diário Oficial de Itajubá (MG) 2024-07-23 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3132404/2024-07-23/ae15e043d98c7e8c7bf778533bee23470f412044.pdf) — coletado em 2026-09-08T00:13:52+00:00
+- [Diário Oficial de Itajubá (MG) 2024-07-23 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3132404/2024-07-23/ae15e043d98c7e8c7bf778533bee23470f412044.pdf) — coletado em 2026-09-08T12:26:18+00:00
 - [Diário Oficial de Monte Santo (BA) 2022-05-30 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2921500/2022-05-30/0147728c531116aa87cf83eb883caaac99e8d00c.pdf) — coletado em 2026-09-07T18:36:21+00:00
 - [Diário Oficial de Rio de Janeiro (RJ) 2026-08-21 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3304557/2026-08-21/70389a0c3c04aaefed2b38f9e5bcae28d1fdac84.pdf) — coletado em 2026-09-01T06:46:31+00:00
 - [Diário Oficial de Valinhos (SP) 2021-11-23 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3556206/2021-11-23/2076a2b8bfbfe6f29c01755215031d79d3ac9e71.pdf) — coletado em 2026-09-07T18:13:48+00:00
@@ -54,7 +54,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Diário Oficial de Junqueiro (AL) 2021-11-01 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2700000/2021-11-01/07d93c17b274f823866fb2b0a244b05f78143d27.pdf) — coletado em 2026-09-07T18:13:24+00:00
 - [Diário Oficial de Maceió (AL) 2023-06-02 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2704302/2023-06-02/59b3a074327b5b392b062443e8b1383546d68e1b.pdf) — coletado em 2026-09-07T19:14:02+00:00
 - [Diário Oficial de Teresina (PI) 2022-11-11 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2211001/2022-11-11/c1481c8bf9afc1b97f7dd1974748904f2e62b533.pdf) — coletado em 2026-09-07T18:55:09+00:00
-- [Diário Oficial de Nova Iorque (MA) 2024-07-23 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2107308/2024-07-23/dba1ab0e4c64465433dfa3f6b07aeaf8a90e5e08.pdf) — coletado em 2026-09-07T19:52:04+00:00
+- [Diário Oficial de Nova Iorque (MA) 2024-07-23 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2107308/2024-07-23/dba1ab0e4c64465433dfa3f6b07aeaf8a90e5e08.pdf) — coletado em 2026-09-08T12:26:58+00:00
 - [Diário Oficial de Acajutiba (BA) 2021-12-16 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2900306/2021-12-16/d99832e632d894f6ce79bfd8e78cf8e1d2add57a.pdf) — coletado em 2026-09-07T18:18:17+00:00
 - [Diário Oficial de Uberaba (MG) 2025-10-31 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3170107/2025-10-31/5eb4c8805ab77a3990911ab3ebce5359f0b45dcf.pdf) — coletado em 2026-09-01T06:38:13+00:00
 - [Diário Oficial de Jequiá da Praia (AL) 2026-01-07 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2700000/2026-01-07/29dafa3bc5a534f0454173565ac566c327bcc28e.pdf) — coletado em 2026-09-01T06:41:11+00:00
