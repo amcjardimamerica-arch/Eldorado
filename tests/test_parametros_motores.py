@@ -82,6 +82,28 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
         arq = json.loads((ROOT / "estado/auditoria_cega.json").read_text(encoding="utf-8"))
         self.assertTrue(all(x.get("conferir") for x in arq["itens"][:5]))
 
+    def test_bloqueio_e_da_ultima_leitura_nao_do_historico(self):
+        """09/09: motores apareciam como 'bloqueado' por causa do histórico acumulado do
+        domínio. A ABCR, com 23 editais encontrados e resposta 200, aparecia bloqueada
+        por 2 recusas antigas. Agora o rótulo vem da ÚLTIMA leitura."""
+        from src.motores import _bloqueio_vigente
+        reg = {"bloqueios": 60, "ultimo": "2026-09-09T00:00:00+00:00", "erros": {"HTTPError": 60}}
+        respondeu = {"ultima": "2026-09-09T03:00:00+00:00", "saude": [{"http": 200}], "achados_total": 0}
+        self.assertIsNone(_bloqueio_vigente(reg, respondeu))                      # respondeu agora
+        entregando = {"ultima": "2026-09-09T03:00:00+00:00", "saude": [], "achados_total": 23}
+        self.assertIsNone(_bloqueio_vigente(reg, entregando))                     # está achando editais
+        falhou = {"ultima": "2026-09-09T03:00:00+00:00", "saude": [{"erro": "HTTPError", "code": 403}], "achados_total": 0}
+        v = _bloqueio_vigente(reg, falhou)
+        self.assertTrue(v and v["vigente"]); self.assertIn("falharam na última leitura", v["base"])
+        self.assertIsNone(_bloqueio_vigente(None, falhou))
+        self.assertIsNone(_bloqueio_vigente(reg, {}))                             # sem sensor não se afirma bloqueio
+        m = json.loads((ROOT / "docs/dados/motores.json").read_text(encoding="utf-8"))
+        todos = (m.get("oficiais") or []) + (m.get("plataformas") or [])
+        bloq = [o for o in todos if "bloq" in str(o.get("situacao") or "").lower()]
+        self.assertLessEqual(len(bloq), 6)                                        # eram 13
+        for o in bloq:
+            self.assertEqual(o.get("achados") or 0, 0)                            # nenhum bloqueado está entregando editais
+
     def test_parametros_e_evidencias_no_repositorio(self):
         p = json.loads((ROOT / "config/PARAMETROS-MOTORES-2026-09-09.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(p["parametros"]), 30)

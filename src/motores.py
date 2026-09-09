@@ -288,6 +288,34 @@ def status_da_fonte(f: dict, fam: str, mencoes: list[dict], prazo: dict, hoje) -
             "em_epoca": em_epoca, "proxima": pd or None}
 
 
+def _bloqueio_vigente(reg: dict | None, sensor: dict | None) -> dict | None:
+    """Um motor só está BLOQUEADO se a ÚLTIMA leitura falhou.
+    Antes, o rótulo vinha do histórico acumulado do domínio: a ABCR aparecia como
+    'bloqueada' com 23 editais encontrados, porque tinha 2 recusas em setembro; e o DOU,
+    que responde 200, aparecia igual por causa de 60 falhas antigas nas páginas de busca.
+    O histórico continua guardado — mas não decide mais o estado de hoje."""
+    if not reg:
+        return None
+    s = sensor or {}
+    if (s.get("achados_total") or 0) > 0 and (s.get("ultima") or "")[:10] >= (reg.get("ultimo") or "")[:10]:
+        return None                          # está entregando editais: não é bloqueio
+    saude = s.get("saude") or []
+    if saude:
+        respondeu = any(x.get("http") in (200, 201, 202, 204) for x in saude)
+        falhou_tudo = bool(saude) and all(x.get("erro") for x in saude)
+        if respondeu:
+            return None                      # respondeu agora: não está bloqueado
+        if falhou_tudo:
+            return {**reg, "vigente": True, "base": "todas as páginas falharam na última leitura"}
+        return None
+    ult = (s.get("ultima") or "")[:10]
+    if ult and (reg.get("ultimo") or "")[:10] < ult:
+        return None                          # a última leitura é mais recente que o último bloqueio
+    if not s:
+        return None                          # sem sensor correspondente: não afirmar bloqueio
+    return {**reg, "vigente": True, "base": "sem leitura bem-sucedida registrada"}
+
+
 def _trinta_dias(reg: dict, hoje) -> list[dict]:
     """Calendário do motor: do 1º dia do mês anterior até o fim do mês corrente
     (o painel recorta o mês que o titular escolher). Cada dia: cor e trecho."""
@@ -392,7 +420,7 @@ def run() -> dict:
         sid = motor_da_fonte.get(f["id"], f"f260-{f['id']}")
         s = esq.get(sid)
         dom = urlsplit(f["sites"][0]).hostname if f.get("sites") else None
-        b = blq.get(dom) if dom else None
+        b = _bloqueio_vigente(blq.get(dom) if dom else None, s)
         pz = prazos.get(f["programa"], {})
         validacao = ("bloqueada" if b else "não lida ainda" if not s else
                      "lida, edital encontrado" if s.get("achados_total") else "lida, sem edital reconhecido")
@@ -436,7 +464,7 @@ def run() -> dict:
     inv = load_json(ROOT / "config/investigacao.json").get("fontes", []) if (ROOT / "config/investigacao.json").exists() else []
     for p in inv:
         s = esq.get(f"plat-{p['id']}")
-        b = blq.get(urlsplit(p["url"]).hostname)
+        b = _bloqueio_vigente(blq.get(urlsplit(p["url"]).hostname), esq.get(p.get("id")))
         plataformas.append({"id": p["id"], "nome": p["nome"], "url": p["url"],
                             "dias": _trinta_dias(diario.get(f"plat-{p['id']}", {}), hoje),
                             "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
@@ -448,8 +476,8 @@ def run() -> dict:
     esp = load_json(ROOT / "config/sensores.json").get("sensores_especiais", [])
     oficiais = []
     for e in esp:
-        s = esq.get(e["id"]); b = blq.get(urlsplit(e["urls"][0]).hostname)
-        _dg = (esq.get(e["id"]) or {}).get("diagnostico") or {}
+        s = esq.get(e["id"]); b = _bloqueio_vigente(blq.get(urlsplit(e["urls"][0]).hostname), s)
+        _dg = (s or {}).get("diagnostico") or {}
         oficiais.append({"id": e["id"], "nome": e["nome"], "tipo": e["tipo"], "url": e["urls"][0],
                          "diagnostico": {k: _dg.get(k) for k in ("motivo_zero", "paginas_lidas", "links_total", "descobertas", "dou_json_materias", "exige_brasil", "origem") if k in _dg},
                          "dias": _trinta_dias(diario.get(e["id"], {}), hoje),
