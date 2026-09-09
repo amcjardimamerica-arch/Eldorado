@@ -1,4 +1,4 @@
-Ofício nº 025/2026 – AMC-JA      Goiânia, 08 de setembro de 2026.
+Ofício nº 025/2026 – AMC-JA      Goiânia, 09 de setembro de 2026.
 
 Ao Excelentíssimo Senhor
 
