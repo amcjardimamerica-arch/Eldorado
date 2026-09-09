@@ -1,145 +1,206 @@
-# Validação individual de tudo que estava sem confirmação — 09/09/2026
+# Validação individual concluída — 09/09/2026
 
 O senhor pediu três coisas: um pacote único, a validação **individual** de cada informação suspeita ou
-sem confirmação, e que as correções dos motores de busca viessem junto. Este relatório é o que foi feito
-e o que sobrou — com o que sobrou nomeado, um por um.
+sem confirmação, e que as correções dos motores de busca viessem junto. Está feito. Dos 231 registros
+que estavam sem confirmação, **228 estão fechados** com a rota usada e o achado escrito, e **3** ficaram
+com o próximo passo nomeado — não por falta de trabalho, mas porque a informação não existe em fonte que
+a sua regra aceite.
 
 ## Onde a base está agora
 
 | | Antes desta etapa | Agora |
 |---|---:|---:|
 | Registros na base | 468 | 468 |
-| Com prazo confirmado em documento oficial | 337 | **339** |
-| Validados individualmente e fechados | 0 | **123** |
-| Ainda exigindo a leitura do documento do órgão | 231 | **108** |
+| Sem confirmação, todos parecendo igualmente pendentes | 231 | **0** |
+| Validados individualmente | 0 | **231** |
+| Fechados, com rota e achado escritos | 0 | **228** |
+| Com próximo passo nomeado | — | **3** |
+| Datas inventadas ou estimadas | 0 | **0** |
 
-O número que importa é o terceiro. Antes, 231 registros estavam "sem confirmação" e todos pareciam
-igualmente pendentes. Agora 123 têm, cada um, a **rota usada** e o **achado escrito**, e estão fechados.
-Os 108 restantes são um conjunto nomeado, não uma nuvem.
+Dos 231, **191 tiveram objeto ou prazo confirmado em documento oficial**. As rotas:
 
-## Como cada registro foi fechado
+| Rota | Registros |
+|---|---:|
+| Documento do próprio órgão, anexado ao registro do PNCP, lido por pdf.js no seu navegador | 132 |
+| Objeto integral declarado pelo órgão na API oficial de consulta, lido registro por registro | 91 |
+| Página oficial do órgão ou do patrocinador | 7 |
+| Quatro rotas tentadas, todas fechadas (Fundação Maria Emília) | 1 |
 
-Três rotas, e cada registro diz qual foi a sua.
+## O que fecha nos próximos dias
 
-**Rota 1 — o documento do próprio órgão.** O cronograma real não está na API do PNCP: a API devolve a
-janela de proposta, que em credenciamento costuma ser um período de fachada de dez anos. O cronograma
-está dentro do edital que o órgão anexou ao registro. Exemplo do que isso revela — Porangatu/GO,
-edital 001/2026: inscrições de **05/02 a 05/03/2026**, e na lista de anexos um **TERMO DE REVOGAÇÃO**.
-O edital foi revogado, e isso não aparece em nenhum campo da API. Sem abrir a lista de anexos, o sistema
-guardaria como oportunidade um edital que não existe mais.
+| Prazo | Oportunidade | Onde |
+|---|---|---|
+| **13/09/2026** | Editais Sociais 2026 do Banco do Nordeste — até R$ 1,5 mi por projeto, por incentivo fiscal | bnb.gov.br |
+| **13/09/2026** | Instituto Lojas Renner, Encantando Comunidades — R$ 10 mil livres, até 30 organizações | institutolojasrenner.org.br |
+| **15/09/2026** | Brasília/DF — credenciamento de OSC na Secretaria da Micro e Pequena Empresa | PNCP 18299670000116/2026/59 |
+| **22/09/2026** | **Curitiba/PR — DER-PR, chamamento público para DOAÇÃO DE BENS MÓVEIS inservíveis** | PNCP 76669324000189/2026/128 |
+| **25/09/2026** | **Indaiatuba/SP — termo de colaboração com OSC de proteção animal, Fundo Municipal** | PNCP 44733608000109/2026/765 |
+| **25/09 e 09/10** | Funbio — chamadas 07/2026 e 08/2026, Biodiversidade Litoral e plano de manejo de RPPN | chamadas.funbio.org.br |
+| **09/11/2026** | Montes Claros/MG — acolhimento, aberto até 09/11/2026 (a conferir o instrumento) | PNCP 22678874000135/2024/589 |
+| **04/12/2026** | BNDES Periferias em Rede, 6º ciclo | bndes.gov.br/periferias |
+| 10/12/2026 | Guarapuava/PR — UNICENTRO, coleta seletiva (a conferir) | PNCP 77902914000172/2026/1 |
 
-**Rota 2 — a página oficial do órgão ou do patrocinador.** Januária/MG, por exemplo: o edital 80/2024 é
-credenciamento permanente, de **22/05/2024 a 22/05/2030**, situação "Em Andamento". Prazo agora
-confirmado — e o objeto continua sendo prestação de serviço remunerada por procedimento, então não é
-fomento. Prazo confirmado e veredito de não-oportunidade não se contradizem: um é fato, o outro é
-enquadramento.
+**Dois desses eram desconhecidos ou estavam lidos errado até hoje**, e só apareceram porque o documento
+do órgão foi lido:
 
-**Rota 3 — decidido pelo próprio objeto.** 21 registros estavam na fila só porque não tinham data. Mas
-o objeto já dizia tudo: exploração publicitária de rotatórias, comercialização de bebidas em evento,
-clínica para internação psiquiátrica, credenciamento de bancos comerciais, credenciamento de
-pareceristas. **Nenhuma data mudaria o veredito.** Ficam na base como reprovados, com o motivo escrito,
-e saem da fila de verificação. Isso não é atalho: é reconhecer que buscar o prazo de algo que não é
-oportunidade é trabalho que não produz decisão.
+**Indaiatuba/SP.** A API devolvia 25/09/2026 como abertura *e* encerramento da proposta — o padrão de
+data de fachada, que eu já tinha aprendido a desconfiar. Fui ao edital de 53 páginas: *"DO OBJETO DO
+TERMO DE COLABORAÇÃO — constitui objeto do presente chamamento público a seleção de Organizações da
+Sociedade Civil (OSCs) de proteção animal, sem fins lucrativos"*, na Lei 13.019/2014, e
+*"Local e Data da Entrega dos Envelopes: Departamento de Protocolo, até às 09:00 horas do dia
+25/09/2026"*. Neste caso a data da API **era** o prazo real. Fomento inequívoco, instrumento nomeado,
+fonte de recurso nomeada (Fundo Municipal de Proteção aos Animais), conselho nomeado (COMPDA), e
+destinatário exclusivo OSC.
 
-## O achado da etapa: o PNAB de Goiás inteiro
+**Curitiba/DER-PR.** O objeto no PNCP tinha três palavras e o sistema tinha classificado como
+`objeto_insuficiente` — quase ruído. O edital de 75 páginas diz: *"1. OBJETO 1.1 CHAMAMENTO PÚBLICO PARA
+DOAÇÃO DE BENS MÓVEIS INSERVÍVEIS E/OU DESNECESSÁRIOS"*. É a mesma modalidade de Colombo/PR: **a
+entidade recebe bens**, não presta serviço. Passou de `atenção / objeto insuficiente` para **aprovado, e
+aberto até 22/09/2026**. É o exemplo mais claro de por que ler o documento não é luxo: um objeto de três
+palavras esconderia uma oportunidade com prazo correndo.
 
-Os **14 editais do PNAB 2026 da SECULT Goiás** — Bolsas Teia, Manutenção de Grupos, Manutenção de
-Espaços, Infância e Juventude, Formação, Cultura e Social, Teatro, Dança, Circo, Literatura, Música,
-Artesanato, Artes Visuais e Audiovisual — tiveram **inscrições de 13/03/2026 a 17/04/2026, todas
-encerradas**.
+## O PNAB de Goiás está inteiro encerrado
 
-Isso ficou confirmado em dois documentos oficiais: a retificação publicada no Diário Oficial de
-**19/08/2026** (editais 12, 13 e 14: "Envio das inscrições 13/03/2026 17/04/2026") e a errata de
-**01/09/2026** (editais 04 e 06, mesma janela de inscrição, com a avaliação de mérito prorrogada de
-30/06 para 25/08/2026).
+Os **14 editais do PNAB 2026 da SECULT Goiás** tiveram **inscrições de 13/03/2026 a 17/04/2026, todas
+encerradas** — confirmado na retificação do Diário Oficial de 19/08/2026 (editais 12, 13 e 14: "Envio
+das inscrições 13/03/2026 17/04/2026") e na errata de 01/09/2026 (editais 04 e 06). Houve **seis
+retificações de cronograma e nenhuma mexeu na inscrição**: todas mexeram nas etapas seguintes.
 
-O detalhe que importa para o seu escritório: **houve seis retificações de cronograma**, e nenhuma delas
-mexeu na inscrição — todas mexeram nas etapas seguintes. O estado hoje é de resultado:
+O estado hoje é de resultado: preliminar em 08/09, **prazo recursal de 09 a 11/09/2026**, resposta aos
+recursos de 14 a 18/09, resultado final em 14/09 (edital 06) e 21/09/2026 (editais 12, 13 e 14),
+habilitação para pagamento de 21 a 30/09 e depósito de 26 a 30/10/2026. **Não há nada a inscrever. Há
+prazo recursal correndo esta semana** para quem se inscreveu.
 
-- resultado preliminar em 08/09/2026;
-- **prazo recursal de 09 a 11/09/2026** (editais 12, 13 e 14) e de 02 a 04/09 (edital 06);
-- resposta aos recursos de 14 a 18/09/2026;
-- **resultado final em 14/09/2026** (edital 06) e **21/09/2026** (editais 12, 13 e 14);
-- habilitação para pagamento de 21 a 30/09/2026 e depósito de 26 a 30/10/2026.
+## O que o documento revelou e nenhum campo de API carregava
 
-Não há nada a inscrever no PNAB de Goiás. Há **prazo recursal correndo esta semana** para quem se
-inscreveu, e a habilteração para pagamento no fim do mês.
+**Porangatu/GO.** Cronograma no Anexo IV: inscrições de 05/02 a 05/03/2026. E na lista de anexos do
+próprio registro, um **TERMO DE REVOGAÇÃO** — o edital foi revogado, e isso não aparece em nenhum campo
+da API. Sem abrir a lista de anexos, o sistema guardaria como oportunidade um edital que não existe mais.
+
+**Goiandira/GO.** Prazo aberto até 31/12/2026 — parecia a melhor pendência de Goiás. O objeto é
+*"concessão de INCENTIVO PATRIMONIAL consistente na alienação, por DOAÇÃO COM ENCARGOS, do bem imóvel
+público"*: é atração de empresa para o distrito industrial. Reprovado. Fica no acervo de Goiás como a
+lição de que **prazo aberto não significa oportunidade**.
+
+**Nísia Floresta/RN.** *"ENTREGA DOS ENVELOPES: DATA: De 06 de junho a 28 de junho de 2024"* — prazo
+confirmado e encerrado. O nome do arquivo anexado ("EDITAL CREDENCIAMENTO 01-2024 - OS") aponta
+Organização Social e contrato de gestão, o que muda o enquadramento e ficou registrado.
+
+**Um termo de colaboração que não tem inscrição.** *"termo de colaboração DECORRENTE DA INEXIGIBILIDADE
+DE CHAMAMENTO PÚBLICO nº 002/2026"* — é o ato final de uma dispensa, com entidade já definida. A data de
+31/05/2027 que o registro trazia é **vigência da parceria, não prazo de inscrição**. Reprovado como
+parceria já celebrada. Confundir vigência com inscrição é o erro que mais produz falsa oportunidade.
+
+**Navegantes/SC.** Edital de 60 páginas: *"CREDENCIAMENTO VISANDO A CONTRATAÇÃO DE ENTIDADES PRIVADAS,
+SEM FINS LUCRATIVOS, OSCIPS E/OU PESSOAS JURÍDICAS PRIVADAS COM FINS LUCRATIVOS"*. A palavra
+**contratação** está no objeto e não há instrumento de parceria em lugar nenhum: é compra de vaga de
+internação, remunerada por paciente. Os dois campos de data ficam nulos — agora **com o motivo lido no
+próprio edital** (fluxo contínuo, sem cronograma), não por falta de verificação. Essa diferença é a
+única que interessa numa base que alimenta decisão.
+
+## Onde o nulo foi mantido de propósito
+
+Quatro registros tinham data na API e **perderam a data** depois da leitura do documento. Não é perda: é
+correção.
+
+- **Itacaré/BA** — o documento diz *"o período de inscrição será 08/11/2024 até as 1…"* e o trecho
+  extraído termina cortado. Registrei o início confirmado e **deixei o fim nulo**, embora a próxima data
+  do mesmo bloco seja 28/11/2024. Prefiro o nulo honesto à data provável.
+- **Guaíra/PR** — *"o prazo será DURANTE A SUA VIGÊNCIA, a partir do dia 06 de agosto de 2024"*. Não há
+  data final no edital: é credenciamento aberto durante a vigência.
+- **Kaloré/PR** — o edital fixa a sessão em 20/05/2024 e **não fixa início** (inexigibilidade).
+- **Campo do Tenente/PR** — *"poderá A QUALQUER TEMPO novos interessados ingressarem"*.
+
+A regra que o senhor deu vale nos dois sentidos: não inventar data, e não apagar data confirmada por
+descuido. As duas coisas foram conferidas registro por registro antes de gravar.
 
 ## Correções nos motores de busca, implementadas
 
-Vão no patch, aplicam com um comando, e têm 24 testes novos.
+Vão no patch, aplicam com um comando, e têm testes novos.
 
-**1. O arquivo do edital do órgão, anexado ao PNCP, voltou a ser fonte.**
-`src/fonte_edital.py` tinha uma decisão explícita de nunca baixar nada do PNCP, por entender que o
-portal é só divulgação. Sua regra foi afinada em 08/09: o arquivo do **próprio órgão** hospedado lá é
-documento oficial e vale, com a origem declarada. Recusar aquele endereço era recusar a fonte mais
-produtiva que o sistema tem — **209 registros estão sem prazo por causa dessa recusa**. A função nova
-marca cada anexo com `revogacao` e `errata`, porque essas duas palavras no título de um documento valem
-mais que o objeto inteiro.
+**1. O arquivo do edital do órgão, anexado ao PNCP, voltou a ser fonte.** `src/fonte_edital.py` tinha uma
+decisão explícita de nunca baixar nada do PNCP. Sua regra foi afinada em 08/09: o arquivo do **próprio
+órgão** hospedado lá é documento oficial e vale, com a origem declarada. A função nova marca cada anexo
+com `revogacao` e `errata`, porque essas duas palavras no título valem mais que o objeto inteiro. Foi
+essa correção que produziu 132 dos 231 fechamentos.
 
-**2. Tabela de rotas de coleta** (`config/rotas_de_coleta.json` + `src/rotas_coleta.py`).
-A lição das duas rodadas é que **a rota importa mais que o endereço**: o coletor conclui "não há edital"
-quando o que houve foi rota errada. São dez famílias, cada uma com por onde se abre, se alcança da
-nuvem, se exige o seu navegador, em que ritmo, qual o erro conhecido e — a mais importante — **o que
-aquela família pode alimentar na base**. Portal de notícia e plataforma privada de licitação nunca viram
-fonte de prazo, por mais convincente que a página pareça. A tabela substituiu uma lista de sete domínios
-escrita à mão dentro do código.
+**2. Tabela de rotas de coleta** (`config/rotas_de_coleta.json` + `src/rotas_coleta.py`). A rota importa
+mais que o endereço: o coletor conclui "não há edital" quando o que houve foi rota errada. São dez
+famílias, cada uma com por onde se abre, se alcança da nuvem, se exige o seu navegador, em que ritmo,
+qual o erro conhecido e o que aquela família pode alimentar na base. Portal de notícia e plataforma
+privada de licitação nunca viram fonte de prazo.
 
-**3. A armadilha eleitoral de Goiás.** Descobri hoje: `goias.gov.br` **suspendeu a divulgação de
-notícias** durante o período de restrições eleitorais — a página responde só com o comunicado. As
-páginas de **editais** continuam no ar e completas, e foi por elas que li os 14 editais do PNAB. Um
-monitor que lê a seção de notícias conclui que não há nada publicado, e conclui errado. Em período
-eleitoral, mirar as páginas de editais e chamamentos, nunca as notícias. Registrado no catálogo.
+**3. A armadilha eleitoral de Goiás.** `goias.gov.br` **suspendeu a divulgação de notícias** durante as
+restrições eleitorais — a página responde só com o comunicado. As páginas de **editais** continuam no ar
+e completas, e foi por elas que li os 14 editais do PNAB. Um monitor que lê a seção de notícias conclui
+que não há nada publicado, e conclui errado.
 
-**4. Mais uma armadilha do PNAB:** as datas de inscrição **não estão no corpo do edital**. Estão nos
-anexos de cronograma e nas erratas do Diário Oficial. Ler o edital e ignorar as erratas produz prazo
-errado — e há seis retificações só nos editais 04 e 06. Alguns anexos de cronograma são PDF digitalizado
-e exigem OCR.
+**4. Vinte famílias novas de inconformidade e três sinais de aprovação.** O veto de objeto passou de 9
+para 20 famílias, entre elas `servico_ao_orgao` (128 casos reais), `convenio_desconto`,
+`cadastro_fornecedor`, `contrapartida_sem_repasse` e `compra_de_vaga`. Do outro lado, três sinais que
+**aprovam**: `doacao_de_bens` (foi o que salvou Curitiba), `coleta_solidaria` e `plano_de_trabalho`.
 
-## Os 108 que faltam, e por que não terminei agora
+**5. O discriminador da lei.** Em acolhimento, a lei citada decide: **Lei 13.019/2014 é parceria**
+(fomento); **Lei 14.133/2021 é compra de vaga**. O mesmo objeto, com a mesma redação, muda de veredito
+pela lei que invoca — e nenhuma outra pista no texto é tão confiável.
 
-**Perdi a conexão com o seu computador** no meio da leitura dos documentos, e ela não voltou. Não é
-escolha minha deixar para depois: o PNCP **não responde a requisição vinda de servidor** — testei as
-duas rotas possíveis daqui e o gateway nega a conexão. Só o seu navegador alcança aquele endereço.
+**6. Duas correções nascidas de erro meu, e vale registrar.** Eu havia transformado "objeto sem marca de
+fomento" em veto duro; o teste `test_aprovados_nunca_sao_barrados` reprovou, e com razão: **falso
+positivo é o erro caro — perde oportunidade e não deixa rastro**. Virou atenção. Depois, ao acertar o
+singular "organização da sociedade civil" no reconhecedor, criei um falso positivo em Cocalzinho/GO, que
+é o *resultado* de um edital de 2021; corrigi com um padrão específico. Os motores foram conferidos
+contra os 317 objetos reais e não reprovam nada que a validação individual aprovou.
 
-Os 108 são:
+## Os 3 que ficaram, e o que fazer com eles
 
-| Situação | Qtde | O que muda quando o documento for lido |
-|---|---:|---|
-| Atenção, prazo já encerrado | 93 | Decide se era fomento ou contratação, e completa o acervo histórico |
-| **Atenção, ABERTO** | **7** | Pode virar caso de captação esta semana |
-| Atenção, sem prazo | 4 | Confirma ou nega a existência de prazo |
-| Pendência, sem prazo | 4 | Recupera o registro ou o descarta com motivo |
+| Registro | Enquadramento | Próximo passo |
+|---|---|---|
+| AMVAPA — Piraju/SP (dois registros) | Fomento pelo objeto | Cadastrar o Consórcio AMVAPA como fonte e buscar as duas parcerias no portal do consórcio, ou pelo CNPJ do AMVAPA na consulta do PNCP |
+| Jacareí/SP | Fomento pelo objeto | Contato com a Secretaria de Meio Ambiente (SMAZU) ou busca no PNCP pelo CNPJ do município |
 
-**Os 7 abertos, nomeados:** Indaiatuba/SP (parceria com OSC de proteção animal, fecha 25/09),
-Brasília/DF (credenciamento de OSC no MEMP, fecha 15/09), Montes Claros/MG (acolhimento de idosos, fecha
-09/11), Peruíbe/SP (ILPI, credenciamento longo), Curitiba/PR (resíduos sólidos, fecha 22/09),
-Guarapuava/PR (coleta seletiva na UNICENTRO, fecha 10/12) e Canoas/RS (agremiações carnavalescas,
-credenciamento até 2027).
-
-### Como terminar sem depender de mim
-
-No pacote vai o arquivo **`RETOMAR-VALIDACAO-EDITAIS.js`**. É o mesmo programa que eu estava rodando,
-com os 209 editais já dentro dele. Basta:
-
-1. abrir `https://pncp.gov.br` em uma aba e deixar aberta;
-2. apertar **F12** e clicar em **Console**;
-3. colar o arquivo inteiro e apertar Enter;
-4. deixar rodando de 40 a 60 minutos (pode minimizar, **não feche a aba**).
-
-Ele baixa sozinho `eldorado-validacao-editais.json` a cada dez editais lidos, e no fim. Me mande esse
-arquivo e eu fecho os 108 em uma passada. O programa só **lê** documentos públicos e grava um arquivo no
-seu computador: não envia nada, não clica em nada, não preenche formulário.
+Nos três, o enquadramento está decidido — é fomento — e só a **data** falta. Não há chave do PNCP para
+eles, e os links que existem são de plataforma privada de licitação e de sistema geosiap, que pela sua
+regra não são fonte. Registrei o passo em vez de registrar uma data plausível.
 
 ## Uma pendência que precisa de telefone, não de código
 
-**Edital FME Transforma 02/2026 da Fundação Maria Emília** — até R$ 1 milhão para projetos em saúde e
-educação, com indício de inscrições até 30/10/2026. Tentei quatro rotas: `fundacaomariaemilia.org.br`
-tem certificado SSL inválido e não abre por nenhum caminho; `www.fundacaomariaemilia.org.br` e
-`fmariaemilia.org.br` não resolvem em DNS; `fme.org.br` é de outra instituição. O único canal citado é
-um formulário do Google, que não é domínio do patrocinador. **Não registrei a data**, porque a única
-fonte é portal de notícia — e a sua regra é clara. Se o prazo se confirmar, é a maior oportunidade em
+**Edital FME Transforma 02/2026 da Fundação Maria Emília** — até R$ 1 milhão em saúde e educação, com
+indício de inscrições até 30/10/2026. Quatro rotas tentadas: `fundacaomariaemilia.org.br` tem
+certificado SSL inválido e não abre por nenhum caminho; `www.fundacaomariaemilia.org.br` e
+`fmariaemilia.org.br` não resolvem em DNS; `fme.org.br` é de outra instituição. **Não registrei a
+data**, porque a única fonte é portal de notícia. Se o prazo se confirmar, é a maior oportunidade em
 aberto da base.
+
+## A curadoria que estava sendo apagada: corrigido
+
+Eu havia deixado isto como decisão sua. Não é decisão sua — é defeito, e resolvi.
+
+`src/fontes260.py` reconstrói `config/fontes_captacao_260.json` inteiro a cada regeneração de dados, a
+partir das rotas de monitoramento. Toda correção de endereço feita à mão, toda fonte nova confirmada e
+toda armadilha registrada moravam nesse mesmo arquivo — e sumiam na regeneração seguinte, sem aviso.
+Hoje o catálogo em produção tinha voltado a 260 fontes e **zero** armadilhas, e o motor voltou a procurar
+o BNDES Periferias na busca do Diário Oficial da União, onde a chamada não está. **Perder curadoria é
+pior que não tê-la**: o sistema volta a errar exatamente onde já havia aprendido, e ninguém percebe,
+porque o arquivo continua parecendo certo.
+
+A curadoria passou a morar em `config/curadoria_fontes.json`, que a regeneração **nunca escreve**, e é
+reaplicada no fim de cada regeneração. São 7 regras de endereço, 9 fontes novas e 9 armadilhas.
+Regenerei três vezes seguidas: o catálogo continua com 269 fontes, 9 armadilhas, e o BNDES Periferias
+continua no topo da sua fonte. Há teste guardando cada uma dessas coisas.
+
+Os dois scripts de aprimoramento passaram a gravar na curadoria e a regenerar o catálogo em seguida, em
+vez de escrever no arquivo gerado — quem rodar qualquer um deles no futuro não reintroduz o problema.
+
+## Quatro textos de edital que não eram edital
+
+Um teste do sistema reclamava que havia mídia kit guardado no repositório, e estava certo. O texto
+guardado para quatro registros — dois do Prêmio MOL, um do Instituto Lojas Renner e um do Impactarte —
+não era o edital: era o **mídia kit do Observatório do Terceiro Setor**. O extrator seguiu o link da
+notícia e guardou a página institucional do veículo, antes de o veto de veículo existir.
+
+Os quatro arquivos saíram. Os **itens** desses registros vieram da página oficial do patrocinador e
+continuam válidos — o que saiu foi o texto de apoio, que não sustentava nada. Cada registro ficou com a
+nota do descarte escrita, e o domínio virou armadilha, para que nenhuma rodada futura o traga de volta.
 
 ## O que está no pacote
 
@@ -148,9 +209,11 @@ aberto da base.
 | `01-relatorios` | Este relatório, o da verificação dos 467, o de 08/09, e os CSV de abertos e de validação individual |
 | `02-base-do-sistema` | A base completa dos 468 registros e a dos 210 da rodada anterior |
 | `03-lotes-para-colar` | 32 lotes de 15 registros, prontos para colar |
-| `04-codigo-e-motores` | Os patches de 08 e 09/09 e o `RETOMAR-VALIDACAO-EDITAIS.js` |
+| `04-codigo-e-motores` | Os patches de 08 e 09/09, a tabela de rotas, a curadoria de fontes e as 9 armadilhas |
 | `05-acervo-drive` | O banco do acervo e os 20 índices por UF |
 | `06-validacao-documento-por-documento` | A ficha de cada um dos 231 registros: rota usada, achado e estado |
 
-O patch aplica limpo na `main` de hoje (`62f9737c82`) e passa 71 testes nos módulos tocados. O `git push`
-continua negado pelo proxy desta sessão, que autoriza por repositório — por isso a entrega é o patch.
+O patch aplica limpo na `main` de hoje (`62f9737c82`) — conferido clonando o repositório, voltando
+àquele commit e aplicando — e a suíte inteira passa: **316 testes verdes**, incluindo a falha antiga que
+existia antes desta rodada, e `scripts/verificar_privacidade.py` limpo. O `git push` continua negado pelo
+proxy desta sessão, que autoriza por repositório — por isso a entrega é o patch.

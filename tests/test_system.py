@@ -4264,6 +4264,7 @@ class SystemTests(unittest.TestCase):
         an=load_json(pathlib.Path("dados/editais/analises.json"))
         v9=[v for v in an.values() if "validação individual do titular (09/09" in (v.get("por") or "")]
         self.assertGreaterEqual(len(v9),400)
+        self.assertGreaterEqual(sum(1 for v in v9 if (v.get("verificacoes") or {}).get("validado_individualmente")),200)   # 231 validados um a um
         self.assertGreaterEqual(sum(1 for v in v9 if v["selo"]=="inconformidade"),300)
         self.assertGreaterEqual(sum(1 for v in v9 if (v.get("verificacoes") or {}).get("aberto")),40)
         from src.fonte_edital import EXTRAIDOS
