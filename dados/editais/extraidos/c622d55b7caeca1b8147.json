@@ -29,22 +29,6 @@
       "status": "respondeu",
       "itens_obtidos": 1,
       "sinal": "verde"
-    },
-    {
-      "em": "2026-09-09T07:15:23+00:00",
-      "modelo": "claude-haiku-4-5",
-      "status": "fase 3 por rotina externa — a IA não roda no GitHub",
-      "faltavam": [
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação"
-      ],
-      "uso": null,
-      "itens_obtidos": 0,
-      "sinal": "vermelho"
     }
   ],
   "relatorio": {
@@ -61,13 +45,13 @@
       },
       {
         "etapa": "documentos do edital (PDF/anexos)",
-        "ok": true,
-        "detalhe": "1 arquivo(s) lido(s), texto compacto de 0.9 KB"
+        "ok": false,
+        "detalhe": "nenhum PDF/anexo acessível: pncp compra (api): HTTPError 301"
       },
       {
         "etapa": "extração determinística",
-        "ok": true,
-        "detalhe": "1 item(ns): Prazo de inscrição"
+        "ok": false,
+        "detalhe": "nada extraível do texto"
       },
       {
         "etapa": "IA (haiku → sonnet)",
@@ -78,6 +62,7 @@
     ],
     "completo": false,
     "faltam": [
+      "Prazo de inscrição",
       "Resultado",
       "Prazo de recurso",
       "Valor",
@@ -86,8 +71,9 @@
       "Destinação"
     ],
     "manual": {
-      "motivo": "a IA não conseguiu acessar/extrair os documentos",
+      "motivo": "sem documentos acessíveis e sem IA",
       "itens": [
+        "Prazo de inscrição",
         "Resultado",
         "Prazo de recurso",
         "Valor",
@@ -95,10 +81,8 @@
         "Anexos",
         "Destinação"
       ],
-      "links": [
-        "https://acessoainformacao.palestinadegoias.go.gov.br/cidadao/informacao/licitacoes_mg"
-      ],
-      "instrucao": "abra a fonte oficial, localize o edital e use 'subir informação faltante' com os itens listados"
+      "links": [],
+      "instrucao": "o edital só foi anunciado em vetor de divulgação (PNCP/diário); localize o site do órgão que o publicou e informe-o em 'subir informação faltante' — o sistema não aponta para o agregador"
     },
     "situacao": "pesquisa incompleta — ação manual indicada"
   },
@@ -108,18 +92,17 @@
     "Órgão / financiador": "PNCP — FUNDO MUNICIPAL DE SAUDE DE PALESTINA DE GOIAS",
     "Território": "GO",
     "Esfera": "municipal",
-    "Área de atuação": "saude",
-    "Prazo de inscrição": "2025-01-07"
+    "Área de atuação": "saude"
   },
   "fontes_itens": {
     "Objeto": "coleta pelo navegador (titular) — página oficial",
     "Órgão / financiador": "cadastro do edital (motor de busca)",
     "Território": "cadastro do edital (motor de busca)",
     "Esfera": "cadastro do edital (motor de busca)",
-    "Área de atuação": "cadastro do edital (motor de busca)",
-    "Prazo de inscrição": "PNCP (divulgação)"
+    "Área de atuação": "cadastro do edital (motor de busca)"
   },
   "faltam": [
+    "Prazo de inscrição",
     "Resultado",
     "Prazo de recurso",
     "Valor",
@@ -128,13 +111,11 @@
     "Destinação"
   ],
   "completo": false,
-  "metodo": "determinístico",
-  "documentos_exigidos": [
-    "balanco_patrimonial"
-  ],
+  "metodo": "sem texto",
+  "documentos_exigidos": [],
   "pontuacao_texto": null,
-  "atualizado_em": "2026-09-09T07:15:23+00:00",
-  "caracteres_texto": 1788,
+  "atualizado_em": "2026-09-08T10:49:32+00:00",
+  "caracteres_texto": 0,
   "historico_5_anos": {
     "ocorrencias": 1,
     "por_ano": {
