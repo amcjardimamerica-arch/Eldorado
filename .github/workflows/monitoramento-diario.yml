@@ -212,6 +212,7 @@ jobs:
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completude" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 900 python -m src.enquadramento || echo "enquadramento: registrado"
             timeout 300 python -m src.enquadramento fila || echo "fila de verificacao: registrado"
+            timeout 300 python -m src.parametros_motores || echo "parametros dos motores: registrado"
           fi
       - name: Busca imediata de prazo por IA (chamamentos sem prazo confirmado)
         if: always()

@@ -1,0 +1,480 @@
+{
+  "gerado_em": "2026-09-09",
+  "regras": {
+    "com_ou_sem_fins_lucrativos": {
+      "regex": "com\\s+ou\\s+sem\\s+fins\\s+lucrativos",
+      "casos": 38,
+      "veredito": {
+        "reprovado": 34,
+        "aprovado": 1,
+        "atencao": 3
+      },
+      "na_zona_de_atencao": 10
+    },
+    "credenciamento_de_pessoas_juridicas": {
+      "regex": "credenciamento\\s+(?:de\\s+)?pessoas?\\s+jur[íi]dicas?",
+      "casos": 91,
+      "veredito": {
+        "reprovado": 88,
+        "atencao": 2,
+        "aprovado": 1
+      },
+      "na_zona_de_atencao": 15
+    },
+    "pessoas_juridicas_para_realizacao": {
+      "regex": "pessoas?\\s+jur[íi]dicas?[^.]{0,60}?para\\s+(?:a\\s+)?(?:realiza[çc][ãa]o|presta[çc][ãa]o|execu[çc][ãa]o\\s+de\\s+servi)",
+      "casos": 71,
+      "veredito": {
+        "reprovado": 71
+      },
+      "na_zona_de_atencao": 11
+    },
+    "prestadoras_de_servico": {
+      "regex": "prestador(?:a|as|es)?\\s+de\\s+servi[çc]o",
+      "casos": 29,
+      "veredito": {
+        "reprovado": 29
+      },
+      "na_zona_de_atencao": 8
+    },
+    "fundo_municipal_de_saude_credenciamento": {
+      "regex": "credenciamento[^.]{0,120}fundo\\s+municipal\\s+d[ae]\\s+sa[úu]de|fundo\\s+municipal\\s+d[ae]\\s+sa[úu]de[^.]{0,120}credenciamento",
+      "casos": 7,
+      "veredito": {
+        "reprovado": 7
+      },
+      "na_zona_de_atencao": 1
+    },
+    "apoio_financeiro_a_osc": {
+      "regex": "apoio\\s+financeiro",
+      "casos": 8,
+      "veredito": {
+        "aprovado": 8
+      },
+      "na_zona_de_atencao": 8
+    },
+    "aldir_blanc": {
+      "regex": "aldir\\s+blanc|pol[íi]tica\\s+nacional\\s+aldir",
+      "casos": 9,
+      "veredito": {
+        "reprovado": 3,
+        "aprovado": 6
+      },
+      "na_zona_de_atencao": 6
+    },
+    "fortalecimento_institucional": {
+      "regex": "necessidades\\s+institucionais|fortalec\\w+\\s+sua\\s+atua[çc][ãa]o|fortalecimento\\s+institucional",
+      "casos": 6,
+      "veredito": {
+        "aprovado": 6
+      },
+      "na_zona_de_atencao": 6
+    }
+  },
+  "vocabulario_discriminante": {
+    "reprova": [
+      [
+        "credenciamento",
+        0.4,
+        0.775,
+        -0.375,
+        28,
+        286
+      ],
+      [
+        "chamamento",
+        0.143,
+        0.507,
+        -0.364,
+        10,
+        187
+      ],
+      [
+        "serviços",
+        0.071,
+        0.417,
+        -0.346,
+        5,
+        154
+      ],
+      [
+        "prestação",
+        0.0,
+        0.285,
+        -0.285,
+        0,
+        105
+      ],
+      [
+        "saúde",
+        0.057,
+        0.32,
+        -0.263,
+        4,
+        118
+      ],
+      [
+        "público",
+        0.171,
+        0.431,
+        -0.259,
+        12,
+        159
+      ],
+      [
+        "jurídicas",
+        0.029,
+        0.247,
+        -0.218,
+        2,
+        91
+      ],
+      [
+        "pessoas",
+        0.1,
+        0.317,
+        -0.217,
+        7,
+        117
+      ],
+      [
+        "municipal",
+        0.143,
+        0.295,
+        -0.153,
+        10,
+        109
+      ],
+      [
+        "contratação",
+        0.014,
+        0.138,
+        -0.124,
+        1,
+        51
+      ],
+      [
+        "atendimento",
+        0.029,
+        0.152,
+        -0.123,
+        2,
+        56
+      ],
+      [
+        "atender",
+        0.014,
+        0.133,
+        -0.119,
+        1,
+        49
+      ],
+      [
+        "exames",
+        0.0,
+        0.117,
+        -0.117,
+        0,
+        43
+      ],
+      [
+        "complementar",
+        0.014,
+        0.1,
+        -0.086,
+        1,
+        37
+      ],
+      [
+        "empresas",
+        0.0,
+        0.084,
+        -0.084,
+        0,
+        31
+      ],
+      [
+        "especialidades",
+        0.0,
+        0.079,
+        -0.079,
+        0,
+        29
+      ],
+      [
+        "para",
+        0.7,
+        0.778,
+        -0.078,
+        49,
+        287
+      ],
+      [
+        "profissionais",
+        0.0,
+        0.076,
+        -0.076,
+        0,
+        28
+      ],
+      [
+        "especializados",
+        0.0,
+        0.073,
+        -0.073,
+        0,
+        27
+      ],
+      [
+        "médicos",
+        0.0,
+        0.068,
+        -0.068,
+        0,
+        25
+      ],
+      [
+        "sistema",
+        0.0,
+        0.065,
+        -0.065,
+        0,
+        24
+      ],
+      [
+        "secretaria",
+        0.071,
+        0.136,
+        -0.064,
+        5,
+        50
+      ],
+      [
+        "pessoa",
+        0.043,
+        0.106,
+        -0.063,
+        3,
+        39
+      ],
+      [
+        "suas",
+        0.014,
+        0.076,
+        -0.062,
+        1,
+        28
+      ],
+      [
+        "privadas",
+        0.014,
+        0.076,
+        -0.062,
+        1,
+        28
+      ]
+    ],
+    "aprova": [
+      [
+        "sociedade",
+        0.429,
+        0.027,
+        0.401,
+        30,
+        10
+      ],
+      [
+        "civil",
+        0.429,
+        0.033,
+        0.396,
+        30,
+        12
+      ],
+      [
+        "projetos",
+        0.286,
+        0.033,
+        0.253,
+        20,
+        12
+      ],
+      [
+        "organizacoes",
+        0.243,
+        0.003,
+        0.24,
+        17,
+        1
+      ],
+      [
+        "execução",
+        0.243,
+        0.035,
+        0.208,
+        17,
+        13
+      ],
+      [
+        "organizações",
+        0.214,
+        0.038,
+        0.176,
+        15,
+        14
+      ],
+      [
+        "atuacao",
+        0.157,
+        0.0,
+        0.157,
+        11,
+        0
+      ],
+      [
+        "fomento",
+        0.171,
+        0.019,
+        0.152,
+        12,
+        7
+      ],
+      [
+        "seleção",
+        0.186,
+        0.038,
+        0.148,
+        13,
+        14
+      ],
+      [
+        "apoio",
+        0.157,
+        0.011,
+        0.146,
+        11,
+        4
+      ],
+      [
+        "parceria",
+        0.143,
+        0.005,
+        0.137,
+        10,
+        2
+      ],
+      [
+        "cultural",
+        0.157,
+        0.022,
+        0.135,
+        11,
+        8
+      ],
+      [
+        "termo",
+        0.186,
+        0.062,
+        0.123,
+        13,
+        23
+      ],
+      [
+        "financeiro",
+        0.114,
+        0.003,
+        0.112,
+        8,
+        1
+      ],
+      [
+        "celebração",
+        0.114,
+        0.016,
+        0.098,
+        8,
+        6
+      ],
+      [
+        "organização",
+        0.114,
+        0.019,
+        0.095,
+        8,
+        7
+      ],
+      [
+        "ações",
+        0.114,
+        0.019,
+        0.095,
+        8,
+        7
+      ],
+      [
+        "pnab",
+        0.1,
+        0.008,
+        0.092,
+        7,
+        3
+      ],
+      [
+        "meio",
+        0.143,
+        0.051,
+        0.091,
+        10,
+        19
+      ],
+      [
+        "federal",
+        0.114,
+        0.024,
+        0.09,
+        8,
+        9
+      ],
+      [
+        "recursos",
+        0.114,
+        0.027,
+        0.087,
+        8,
+        10
+      ],
+      [
+        "decreto",
+        0.1,
+        0.014,
+        0.086,
+        7,
+        5
+      ],
+      [
+        "aldir",
+        0.086,
+        0.008,
+        0.078,
+        6,
+        3
+      ],
+      [
+        "oeste",
+        0.086,
+        0.008,
+        0.078,
+        6,
+        3
+      ],
+      [
+        "blanc",
+        0.086,
+        0.008,
+        0.078,
+        6,
+        3
+      ]
+    ]
+  }
+}

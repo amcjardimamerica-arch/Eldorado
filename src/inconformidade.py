@@ -436,6 +436,7 @@ _ATENCAO = (
 
 
 def avaliar(texto: str) -> dict:
+
     """Veredito de conformidade de objeto.
 
     Três níveis, porque a verificação mostrou que nem tudo é sim ou não:
@@ -530,6 +531,21 @@ def avaliar(texto: str) -> dict:
         return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC",
                 "atencao": ("nomeia instrumento de fomento mas não diz se admite OSC: conferir no edital "
                             "quem pode se inscrever")}
+    # P04-P09 (auditoria de 09/09): as regras com acerto medido decidem o que as famílias
+    # acima deixaram passar. Entram DEPOIS para preservar os rótulos já validados, e só
+    # reprovam por sinal POSITIVO de inconformidade (P24 — falso positivo é o erro caro).
+    try:
+        from .parametros_motores import avaliar_medido
+        _m = avaliar_medido(texto)
+        if _m.get("veredito") == "reprovado":
+            return {"ok": False, "familia": "medida_auditoria",
+                    "motivo": _m["motivo"] + (f" [{_m['parametro']}, {_m['medida']}]" if _m.get("medida") else f" [{_m['parametro']}]"),
+                    "atencao": None}
+        if _m.get("veredito") == "atencao":
+            return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC",
+                    "atencao": _m["motivo"]}
+    except Exception:
+        pass
     return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC", "atencao": None}
 
 
