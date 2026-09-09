@@ -1,0 +1,108 @@
+{
+  "versao": 1,
+  "gerado_em": "2026-09-09",
+  "para_que_serve": "Diz ao coletor COMO chegar em cada familia de fonte, nao apenas onde. A licao das rodadas de 08 e 09/09/2026 e que a rota importa mais que a URL: o mesmo endereco responde por um caminho e falha por outro, e sem essa tabela o coletor conclui 'nao ha edital' quando o que houve foi rota errada.",
+  "rotas": [
+    {
+      "familia": "pncp_api_consulta",
+      "padrao_dominio": ["pncp.gov.br"],
+      "rota": "api_oficial",
+      "endereco": "https://pncp.gov.br/api/consulta/v1/orgaos/{cnpj}/compras/{ano}/{sequencial}",
+      "devolve": ["objetoCompra", "dataAberturaProposta", "dataEncerramentoProposta", "numeroCompra", "processo", "orgaoEntidade", "unidadeOrgao", "linkSistemaOrigem", "situacaoCompraNome"],
+      "alcancavel_da_nuvem": false,
+      "alcancavel_do_navegador_do_titular": true,
+      "ritmo": "uma requisicao a cada 2,5 s, em fila, nunca em paralelo",
+      "erro_conhecido": "HTTP 429 a partir de cerca de 14 requisicoes rapidas; recuar progressivamente e devolver o item para a frente da fila",
+      "medido_em": "2026-09-09",
+      "nota": "317 consultas com zero erro nesse ritmo. Da nuvem a requisicao expira: so o navegador do titular alcanca."
+    },
+    {
+      "familia": "pncp_api_arquivos",
+      "padrao_dominio": ["pncp.gov.br"],
+      "rota": "api_oficial",
+      "endereco": "https://pncp.gov.br/api/pncp/v1/orgaos/{cnpj}/compras/{ano}/{sequencial}/arquivos",
+      "devolve": ["lista de documentos do proprio orgao, com titulo e uri"],
+      "alcancavel_da_nuvem": false,
+      "alcancavel_do_navegador_do_titular": true,
+      "ritmo": "uma requisicao a cada 2,2 s, com limite de 40 s por documento",
+      "medido_em": "2026-09-09",
+      "nota": "E aqui que esta o cronograma real. A consulta devolve a janela de proposta, que em credenciamento costuma ser um periodo longo de fachada; o cronograma do edital esta no documento. Ler com pdf.js; ZIP com JSZip; DOCX por word/document.xml; PDF digitalizado exige OCR."
+    },
+    {
+      "familia": "pncp_busca",
+      "padrao_dominio": ["pncp.gov.br"],
+      "rota": "api_oficial",
+      "endereco": "https://pncp.gov.br/api/search/?q={termos}&tipos_documento=edital&pagina=1&tam_pagina=5",
+      "devolve": ["item_url no formato /compras/{cnpj}/{ano}/{sequencial}", "data_inicio_vigencia", "data_fim_vigencia"],
+      "alcancavel_da_nuvem": false,
+      "alcancavel_do_navegador_do_titular": true,
+      "quando_usar": "sempre que o link capturado for de plataforma privada e nao tiver a chave do PNCP no endereco",
+      "medido_em": "2026-09-09",
+      "nota": "Melhor termo de busca: primeiras 12 palavras do objeto mais o nome do municipio. Recuperou 12 de 14 registros perdidos."
+    },
+    {
+      "familia": "plataforma_privada_de_licitacao",
+      "padrao_dominio": ["portaldecompraspublicas.com.br", "bllcompras.com", "bnccompras.com", "licitamaisbrasil.com.br", "licitanet.com.br", "portal.licitanet.com.br", "app2.licitardigital.com.br", "app2.ammlicita.org.br", "imcompras.org", "imaq.diretriz.net", "governotransparente.com.br", "transparencia.agilicloud.com.br", "gp.srv.br", "geosiap.net.br"],
+      "rota": "nao_serve_como_fonte",
+      "alcancavel_da_nuvem": false,
+      "alcancavel_do_navegador_do_titular": "parcialmente",
+      "erro_conhecido": "HTTP 403 para requisicao de servidor, robots.txt proibindo, certificado SSL com hostname invalido e conteudo montado por JavaScript. Nenhuma abre por requisicao simples.",
+      "quando_usar": "apenas para descobrir o numero do processo e o nome do orgao, como manda a regra do titular",
+      "saida": "relocalizar o registro pela busca oficial do PNCP (familia pncp_busca) e usar a pagina do PNCP como pagina oficial, com a origem declarada",
+      "medido_em": "2026-09-09",
+      "nota": "86 dos 408 registros do PNCP tinham o link capturado apontando para uma destas. E defeito de captura, nao ausencia de edital."
+    },
+    {
+      "familia": "portal_municipal_que_responde_a_requisicao",
+      "padrao_dominio": ["januaria.mg.gov.br", "santaluziadoparua.ma.gov.br", "goias.gov.br", "bnb.gov.br", "bndes.gov.br", "funbio.org.br", "chamadas.funbio.org.br"],
+      "rota": "requisicao_simples",
+      "alcancavel_da_nuvem": true,
+      "alcancavel_do_navegador_do_titular": true,
+      "medido_em": "2026-09-09",
+      "nota": "Estes respondem a requisicao de servidor e podem ser lidos da nuvem, sem depender do navegador do titular. Preferir sempre esta rota quando existir: e mais rapida e nao consome a maquina do titular."
+    },
+    {
+      "familia": "portal_em_javascript",
+      "padrao_dominio": ["bndes.gov.br/wps/portal", "impactarte.org.br", "bnb.gov.br/web/guest"],
+      "rota": "navegador_obrigatorio",
+      "alcancavel_da_nuvem": false,
+      "alcancavel_do_navegador_do_titular": true,
+      "erro_conhecido": "requisicao de servidor devolve apenas metadados; o conteudo aparece so com navegador. No BNB, o texto do informe fica atras de um 'Ler Mais' e exige seguir o link do asset publisher.",
+      "medido_em": "2026-09-09"
+    },
+    {
+      "familia": "portal_de_noticia_do_terceiro_setor",
+      "padrao_dominio": ["captadores.org.br", "observatorio3setor.org.br", "bussolasocial.com.br", "blog.bussolasocial.com.br", "mapaosc.ipea.gov.br"],
+      "rota": "so_para_descobrir_nome",
+      "alcancavel_da_nuvem": true,
+      "proibido_como_fonte_de": ["prazo", "objeto", "pagina_oficial"],
+      "erro_conhecido": "datas defasadas em relacao a pagina oficial (duas chamadas do Funbio estavam vencidas por prorrogacao nao refletida) e edital inexistente atribuido a municipio (Santa Luzia do Parua/MA)",
+      "medido_em": "2026-09-09",
+      "nota": "Serve, e serve bem, para descobrir o nome do patrocinador e do edital. Dai em diante a fonte e o site do proprio patrocinador."
+    },
+    {
+      "familia": "site_do_patrocinador_privado",
+      "padrao_dominio": ["institutolojasrenner.org.br", "climaesociedade.org", "banrisulcultural.com.br", "editais.movimentobemmaior.org.br", "rededobem.org.br", "fundacaotidesetubal.org.br", "conteudo.fundacaotidesetubal.org.br", "institutomol.org.br"],
+      "rota": "requisicao_simples",
+      "alcancavel_da_nuvem": true,
+      "medido_em": "2026-09-09",
+      "nota": "Mirar a SECAO de editais, nunca a pagina da edicao: a landing page de um edital sai do ar quando ele fecha (Fundacao Tide Setubal devolveu 404 no dia seguinte ao encerramento)."
+    },
+    {
+      "familia": "dominio_com_certificado_invalido",
+      "padrao_dominio": ["fundacaomariaemilia.org.br", "pmjacarei.geosiap.net.br"],
+      "rota": "bloqueado",
+      "erro_conhecido": "SSL: CERTIFICATE_VERIFY_FAILED, hostname mismatch. Nao abre por requisicao nem por navegador.",
+      "saida": "registrar como pendencia de fonte oficial, sem data, e resolver por telefone ou e-mail com o orgao ou patrocinador",
+      "medido_em": "2026-09-09"
+    },
+    {
+      "familia": "diario_oficial_municipal_agregado",
+      "padrao_dominio": ["queridodiario.ok.org.br", "data.queridodiario.ok.org.br"],
+      "rota": "edicao_inteira_precisa_de_recorte",
+      "alcancavel_da_nuvem": true,
+      "medido_em": "2026-09-09",
+      "nota": "O que vem nao e edital: e a edicao inteira do diario, achada por palavra-chave. Antes de virar registro, e preciso localizar o aviso dentro do PDF e extrair as paginas em volta. Sem esse recorte, o registro nasce com qualidade apenas_indicio e nunca tem prazo. Sao 18.615 pendentes."
+    }
+  ]
+}

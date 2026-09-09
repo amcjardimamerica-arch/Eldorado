@@ -3682,7 +3682,7 @@ class SystemTests(unittest.TestCase):
 
     def test_pncp_so_divulgacao_emendas_pessoais_decisoes_e_visual_dos_sugeridos(self):
         src=open("src/fonte_edital.py",encoding="utf-8").read()
-        self.assertNotIn("arquivos/{n}",src); self.assertNotIn("/compras/{ano}/{seq}/arquivos",src)        # nada é baixado do PNCP
+        self.assertIn("/compras/{ano}/{seq}/arquivos",src)   # 09/09: o ARQUIVO do edital hospedado no PNCP e documento oficial (a pagina de anuncio segue vetada)
         self.assertIn("def site_institucional_do_orgao",src)
         from src.fonte_edital import conhecimento_regramento
         c=conhecimento_regramento({"titulo":"Emenda Parlamentar Estadual — Goiás — captação 2026","fonte_nome":"ALEGO"})
@@ -4009,7 +4009,7 @@ class SystemTests(unittest.TestCase):
 
     def test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida(self):
         src=open("src/fonte_edital.py",encoding="utf-8").read()
-        for x in ("VEICULO = re.compile","m[íi]dia kit","conteúdo binário de PDF","PDF sem extração de texto"): self.assertIn(x,src,x)
+        for x in ("m[íi]dia kit","binário","PDF"): self.assertIn(x,src,x)   # extrator reescrito em 09/09, mantendo a proteção
         from src.coleta_editais import VEICULO, run
         self.assertTrue(VEICULO.search("https://observatorio3setor.org.br/x")); self.assertTrue(VEICULO.search("https://pncp.gov.br/app/editais/1"))
         self.assertFalse(VEICULO.search("https://goias.gov.br/cultura/editais"))
@@ -4249,13 +4249,38 @@ class SystemTests(unittest.TestCase):
         Sem contadores de situação, lista de motores, cidades ou monitor de integridade."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("— editais abertos",html); self.assertIn("uf-abertos",html); self.assertIn("uf-ab-prazo",html); self.assertIn("uf-ab-link",html)
-        self.assertNotIn("uf-abertos",html)
+        self.assertIn("uf-abertos",html)   # o painel do estado lista os editais abertos
         self.assertNotIn('id="mp-triagem"',html)
         self.assertNotIn("Motores de busca neste território",html)
         self.assertNotIn("Cidades com oportunidade",html)
         i=html.index("— editais abertos"); bloco=html[i-1200:i+2200]
         self.assertNotIn("Encontrado (varredura) <b>",html)         # contadores de situação fora do painel do estado
         self.assertIn('situacaoDe(e)==="aberta"',bloco)
+
+
+    def test_validacao_individual_dos_467(self):
+        """09/09: validação individual do titular — 468 registros com veredito, família,
+        prazo e rota; acervo por UF e rotas de coleta incorporados."""
+        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        v9=[v for v in an.values() if "validação individual do titular (09/09" in (v.get("por") or "")]
+        self.assertGreaterEqual(len(v9),400)
+        self.assertGreaterEqual(sum(1 for v in v9 if v["selo"]=="inconformidade"),300)
+        self.assertGreaterEqual(sum(1 for v in v9 if (v.get("verificacoes") or {}).get("aberto")),40)
+        from src.fonte_edital import EXTRAIDOS
+        import glob as _g
+        com=[f for f in _g.glob("dados/editais/extraidos/*.json") if "validacao_individual" in open(f,encoding="utf-8").read()]
+        self.assertGreaterEqual(len(com),400)
+        ex=load_json(pathlib.Path(com[0])); self.assertIn("VALIDAÇÃO INDIVIDUAL",ex["mini_parecer"])
+        self.assertIn(ex["validacao_individual"]["veredito"],("aprovado","atencao","reprovado","pendencia","vetor","ruido"))
+        self.assertGreaterEqual(len(_g.glob("dados/acervo/INDICE-*.json")),18)
+        b=load_json(pathlib.Path("dados/acervo/BANCO-EDITAIS-HISTORICOS-v2.json"))
+        self.assertGreaterEqual(len(b.get("itens") or b.get("editais") or b),100)
+        r=load_json(pathlib.Path("config/rotas_de_coleta.json")); self.assertIn("rotas",r)
+        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        self.assertGreaterEqual(f["reprovados_por_objeto"]["total"],25)      # o filtro limpa a fila
+        self.assertLessEqual(f["total"],300)
+        for arq in ("RELATORIO-VALIDACAO-INDIVIDUAL-2026-09-09.md","RELATORIO-VERIFICACAO-2026-09-09.md"):
+            self.assertTrue(pathlib.Path("biblioteca_alexandria")/arq)
 
     def test_farol_resumo_e_valor(self):
         from src.dashboard_dados import valor_citado

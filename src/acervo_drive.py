@@ -48,6 +48,51 @@ BANCO = ROOT / "dados/acervo/banco_editais_historicos.json"
 PASTA_ACERVO_DRIVE = "1CF1VdDgGxsVhxlmYum1_erCtd8A3T2o8"
 PASTA_GO_DRIVE = "17oInKWlCCcDIyhV7QjcZfOmUHYVwG-4p"
 
+# Segunda regra do titular, de 09/09/2026: "cada edital obtido deve ter uma
+# pasta criada no drive para armazenamento, independente do prazo". Mudou o
+# formato do acervo: antes era um documento por edital solto na pasta da UF,
+# agora é UMA PASTA POR EDITAL, dentro da pasta da UF, com o dossiê dentro.
+# O prazo deixou de ser filtro — edital encerrado também é arquivado, porque o
+# acervo serve à busca histórica, não só à captação em curso.
+UMA_PASTA_POR_EDITAL = True
+
+# Pastas de UF criadas em 09/09/2026 dentro de Editais Históricos. Ficam aqui
+# porque `scripts/espelhar_editais_drive.py` precisa saber onde depositar o PDF
+# de cada edital sem consultar o Drive.
+PASTAS_UF_DRIVE = {
+    "GO": "17oInKWlCCcDIyhV7QjcZfOmUHYVwG-4p",
+    "SP": "1Phi5VaT8cqByxWUmpOcUlrZNz2ULs-oj",
+    "CE": "1MLwxNt09UjwYNTolmHTjtG7fG7t3m8Wm",
+    "PR": "1wKWmm3y-FP3juegT6uAYNpFwEVyUi_o9",
+    "MG": "1pDoRTsyx6qJl0PoPXgJthe7rTZ8qnhst",
+    "SC": "1EyJWYvZhj5BDznxHEVau9s-hokBFZYWu",
+    "RS": "1dFtiIme7R1KDGOs0qK2gp4b0RgQNV7Ru",
+    "BA": "1fV_7taMzngoPcnkFtrcRM6DYboP6VhHZ",
+    "PE": "1JhyfO44DMr8bTCkdO8jbh0KVinntUAbI",
+    "MT": "1b4P7fufIuqCrOJUdoh9wH5m5Ndv3SGgB",
+    "PA": "1BS66mW2D3QtKSQjeOqOaVdR6_gcBCvtm",
+    "RJ": "10yjiLuqhI3yfpDP5MIfk5GKKPYT6nHT7",
+    "DF": "1S0GP2Z5Uu11G0iFoNQyZCH_WtmYUGmQv",
+    "ES": "1C4hnVLi2klzBH5XwEkPs70tjbWBlcC8C",
+    "PB": "1suUNTQJPfgx_NU1SAnxOcxHf98wRFvWz",
+    "RN": "1twWZl4Rxnno4BcQRH0Rahjt171jDBWC0",
+    "RO": "1JFRWMtjw61P-Yyz71L3APQ0mhGWBsYdi",
+    "AL": "1TJS6bj17Jq2LaBG2cT9AVxvXxDhzw_ah",
+    "MA": "1HRjUvTP9o8-F9sDWqO30dFjjNMQQF1GN",
+    # Editais nacionais e de patrocinador privado, que não têm UF.
+    "ND": "1mtmx3C2WGX6S-UnVeJIPUkDpwR2QvZVO",
+}
+
+
+def pasta_da_uf(uf: str | None) -> str:
+    """Pasta de UF onde a pasta do edital deve ser criada.
+
+    Editais nacionais e de patrocinador privado caem em "Nacional e multi-UF" —
+    e não na pasta de Goiás, como acontecia antes: um edital do BNDES aberto a
+    todo o país não é um edital goiano, ainda que admita proponente de Goiás.
+    """
+    return PASTAS_UF_DRIVE.get((uf or "").strip().upper(), PASTAS_UF_DRIVE["ND"])
+
 # Fontes estaduais de Goiás conferidas com navegador em 08/09/2026.
 FONTES_GOIAS = (
     "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",

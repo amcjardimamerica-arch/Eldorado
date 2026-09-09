@@ -22,6 +22,7 @@ from urllib.parse import urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 from .nucleo import ROOT, load_json, now_iso, write_json
+from .rotas_coleta import serve_como_fonte as _serve_como_fonte
 
 TEXTOS = ROOT / "dados/editais/textos"
 EXTRAIDOS = ROOT / "dados/editais/extraidos"
@@ -54,6 +55,37 @@ def _iso(m) -> str | None:
         return None
 
 
+def _arquivos_do_orgao_no_pncp(cnpj: str, ano: str, seq: str, erros: list) -> list[dict]:
+    """Documentos que o próprio órgão anexou ao registro do PNCP.
+
+    O endpoint devolve uma lista com título e uri de cada peça — edital, anexos,
+    errata, termo de revogação. O termo de revogação é informação de ouro: um
+    edital revogado não é oportunidade, e isso não aparece em nenhum outro campo.
+    """
+    url = f"https://pncp.gov.br/api/pncp/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos"
+    try:
+        lista = json.loads(_get(url, limite=2_000_000))
+    except Exception as exc:
+        erros.append(f"arquivos do órgão no PNCP: {type(exc).__name__} {getattr(exc, 'code', '')}".strip())
+        return []
+    if not isinstance(lista, list):
+        return []
+    saida = []
+    for a in lista:
+        titulo = str(a.get("titulo") or a.get("nomeArquivo") or "").strip()
+        uri = a.get("uri") or a.get("url")
+        if not uri:
+            continue
+        principal = bool(re.search(r"edital|chamamento|chamada|aviso", titulo, re.I))
+        saida.append({"titulo": titulo[:100] or "documento do órgão",
+                      "tipo": "arquivo do órgão anexado ao PNCP (origem declarada)",
+                      "url": uri,
+                      "prioridade": 0 if principal else 2,
+                      "revogacao": bool(re.search(r"revoga|anula|cancela", titulo, re.I)),
+                      "errata": bool(re.search(r"errata|retifica|republica", titulo, re.I))})
+    return saida
+
+
 # ───────────── 1. localizar a fonte original ─────────────
 def fontes_originais(e: dict) -> dict:
     """PNCP: arquivos oficiais da contratação + linkSistemaOrigem (site
@@ -77,9 +109,20 @@ def fontes_originais(e: dict) -> dict:
             saida["objeto_pncp"] = js.get("objetoCompra"); saida["encerramento_pncp"] = js.get("dataEncerramentoProposta"); saida["abertura_pncp"] = js.get("dataAberturaProposta")
         except Exception as exc:
             saida["erros"].append(f"pncp compra: {type(exc).__name__}")
-        # PNCP é portal de DIVULGAÇÃO: nenhum arquivo é baixado dele. A fonte é o órgão
-        # publicador: sistema de origem informado, ou o site institucional deduzido do CNPJ.
-        saida["nota_pncp"] = "PNCP tratado como fonte indireta; documentos buscados no site institucional do órgão"
+        # CORREÇÃO DE 09/09/2026. Até aqui o módulo não baixava NADA do PNCP, por
+        # entender que o portal é só divulgação. A regra do titular foi afinada em
+        # 08/09: o ARQUIVO DO EDITAL DO PRÓPRIO ÓRGÃO, hospedado no registro do
+        # PNCP, é documento oficial e vale como fonte, desde que a origem seja
+        # declarada e o domínio do órgão continue sendo procurado para a página
+        # oficial. E é ali que está o cronograma real: a consulta devolve a janela
+        # de proposta, que em credenciamento costuma ser um período de fachada de
+        # dez anos, enquanto o edital traz "abertura do prazo de inscrições" e
+        # "encerramento". Recusar esse endpoint era recusar a fonte mais produtiva
+        # que o sistema tem — 209 registros ficaram sem prazo por isso.
+        saida["nota_pncp"] = ("arquivos do próprio órgão anexados ao registro do PNCP tratados como fonte, "
+                              "com a origem declarada; o domínio do órgão continua sendo procurado para a página oficial")
+        for arq in _arquivos_do_orgao_no_pncp(cnpj, ano, seq, saida["erros"]):
+            saida["pdfs"].append(arq)
         if not saida["site_institucional"]:
             saida["site_institucional"] = site_institucional_do_orgao(cnpj, saida.get("orgao") or "", saida.get("uf"), saida.get("municipio"))
         if saida["site_institucional"]:
@@ -174,8 +217,15 @@ def obter_texto(e: dict, maximo_pdfs: int = 3) -> dict:
                 textos.append(f"### {p['titulo']} ({p['tipo']})\n{t}"); usados.append({"titulo": p["titulo"], "url": p["url"], "caracteres": len(t)})
         except Exception as exc:
             f["erros"].append(f"pdf {p['url'][:40]}: {type(exc).__name__}")
-    VEICULO = re.compile(r"observatorio3setor|captadores\.org|bussolasocial|prosas\.com|mapaosc|filantropia\.ong|gife\.org", re.I)
-    if not textos and f.get("paginas") and not VEICULO.search(f["paginas"][0]):
+    # Antes havia aqui uma lista de domínios escrita na mão. Agora quem decide é
+    # config/rotas_de_coleta.json, que diz o que cada família de fonte pode
+    # alimentar na base — e a lista cresce sem mexer neste arquivo.
+    pode_ler_pagina = True
+    if f.get("paginas"):
+        pode_ler_pagina, motivo_rota = _serve_como_fonte(f["paginas"][0])
+        if not pode_ler_pagina:
+            f["erros"].append(f"página não serve como fonte — {motivo_rota[:180]}")
+    if not textos and f.get("paginas") and pode_ler_pagina:
         try:
             html = _get(f["paginas"][0], limite=3_000_000)
             t = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", re.sub(r"<script.*?</script>|<style.*?</style>", " ", html, flags=re.S)))
