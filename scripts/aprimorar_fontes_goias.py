@@ -13,6 +13,10 @@ inexigibilidade, que não tem inscrição e nunca terá prazo.
 Este script acrescenta às fontes de cultura de Goiás os endereços verificados,
 sem remover nada do que já existe, e é idempotente: rodar duas vezes não
 duplica. Rodar com `python scripts/aprimorar_fontes_goias.py`.
+
+Desde 09/09/2026 grava em `config/curadoria_fontes.json` — o arquivo que a
+regeneração de dados não reescreve — e regenera o catálogo em seguida. Antes
+gravava no catálogo gerado, e a regeneração seguinte apagava tudo.
 """
 from __future__ import annotations
 
@@ -21,7 +25,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONFIG = ROOT / "config/fontes_captacao_260.json"
+sys.path.insert(0, str(ROOT))
 
 # Endereços conferidos em 08/09/2026, com navegador, um a um.
 SITES_PNAB_GO = [
@@ -51,51 +55,33 @@ ARMADILHAS = [
 ]
 
 
-def _acrescentar(lista: list, novos) -> tuple[list, int]:
-    atual = list(lista or [])
-    add = [x for x in novos if x not in atual]
-    return atual + add, len(add)
+# Critério das fontes ESTADUAIS de cultura de Goiás. As municipais de Goiânia
+# têm portal próprio e não publicam nas páginas do Estado — colar URL estadual
+# nelas foi o erro de 08/09/2026, e há teste guardando contra ele.
+_ESTADUAL_GO_CULTURA = {"uf": "GO", "area": "cultura", "nivel": "estadual"}
+
+REGRAS = [
+    {"quando": dict(_ESTADUAL_GO_CULTURA, programa_contem=["pnab"]),
+     "sites_acrescentar": SITES_PNAB_GO, "verificado_em": "2026-09-08"},
+    {"quando": dict(_ESTADUAL_GO_CULTURA, programa_contem=["fica"]),
+     "sites_acrescentar": SITES_FICA + SITES_PNAB_GO[:1], "verificado_em": "2026-09-08"},
+    {"quando": dict(_ESTADUAL_GO_CULTURA,
+                    programa_contem=["fundo de arte e cultura", "goyazes"]),
+     "sites_acrescentar": SITES_PNAB_GO[:1], "verificado_em": "2026-09-08"},
+]
 
 
-def aprimorar(caminho: Path = CONFIG) -> dict:
-    dados = json.loads(caminho.read_text(encoding="utf-8"))
-    tocadas, novos_sites = [], 0
-    for fonte in dados["fontes"]:
-        if fonte.get("uf") != "GO" or fonte.get("area") != "cultura":
-            continue
-        # só as fontes ESTADUAIS: as municipais de Goiânia têm portal próprio e
-        # não publicam nas páginas do Estado
-        if fonte.get("nivel") != "estadual":
-            continue
-        programa = (fonte.get("programa") or "").lower()
-        alvo = []
-        if "pnab" in programa:
-            alvo = SITES_PNAB_GO
-        elif "fica" in programa:
-            alvo = SITES_FICA + SITES_PNAB_GO[:1]
-        elif "fundo de arte e cultura" in programa or "goyazes" in programa:
-            alvo = SITES_PNAB_GO[:1]
-        if not alvo:
-            continue
-        fonte["sites"], n = _acrescentar(fonte.get("sites"), alvo)
-        if n:
-            novos_sites += n
-            tocadas.append(fonte["id"])
-        dominios = set(fonte.get("dominios") or [])
-        for url in alvo:
-            host = url.split("//", 1)[-1].split("/", 1)[0]
-            if host in DOMINIOS_NOVOS:
-                dominios.add(host)
-        fonte["dominios"] = sorted(dominios)
+def aprimorar() -> dict:
+    from src import curadoria_fontes, fontes260
 
-    dados.setdefault("armadilhas", [])
-    for a in ARMADILHAS:
-        if not any(x.get("url") == a["url"] for x in dados["armadilhas"]):
-            dados["armadilhas"].append(a)
-
-    caminho.write_text(json.dumps(dados, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return {"fontes_atualizadas": sorted(set(tocadas)), "sites_acrescentados": novos_sites,
-            "armadilhas_registradas": len(dados["armadilhas"])}
+    rel = curadoria_fontes.registrar(regras=REGRAS, armadilhas=ARMADILHAS,
+                                     atualizada_em="2026-09-08")
+    resumo = fontes260.run()
+    cur = resumo.get("curadoria", {})
+    return {"curadoria_acrescentada": rel,
+            "fontes_corrigidas": sorted(set(cur.get("fontes_corrigidas") or [])),
+            "sites_reaplicados": cur.get("sites_reaplicados", 0),
+            "armadilhas_registradas": cur.get("armadilhas", 0)}
 
 
 if __name__ == "__main__":

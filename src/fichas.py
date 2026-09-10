@@ -10,6 +10,18 @@ fonte não disse aparece como pendência declarada, nunca como texto inventado.
 
 A carga histórica de cinco anos NÃO chama este módulo — ela é levantamento de
 padrão, não análise de oportunidade viva.
+
+APARÊNCIA: a paleta vem de `config/identidade_visual.json`, que é a fonte única
+da identidade visual de toda saída do sistema. Até 10/09/2026 este módulo trazia
+a paleta escrita à mão dentro do código — fundo azul-marinho `#081426` com texto
+claro —, e gerava com ela as quase dezenove mil fichas do acervo, em violação
+direta da diretriz permanente do titular: "somente tons claros", com "fundo
+escuro ou modo noturno" na lista de proibições. Foi o mesmo defeito da curadoria
+de fontes: regra registrada em arquivo, e código que não a lê.
+
+Enquanto os tokens do arquivo estiverem nulos — o design de referência ainda não
+foi capturado —, vale a paleta clara provisória, a mesma já em uso no painel.
+Quando os tokens forem preenchidos, passam a valer sem alteração de código.
 """
 from __future__ import annotations
 
@@ -20,24 +32,71 @@ from .nucleo import ROOT, carregar_oportunidades, load_json, now_iso, write_json
 
 PASTA = ROOT / "docs/editais"
 
-ESTILO = """<style>
-:root{--gold:#f5c451;--navy:#081426;--ink:#eaf1f8;--muted:#9eb0c5;--ok:#47d7ac;--bad:#ff7373;--warn:#ffb547}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#173a5f,var(--navy) 42%);color:var(--ink);font:15px/1.55 system-ui,sans-serif}
-main{max-width:900px;margin:auto;padding:24px}h1{color:var(--gold);font-size:clamp(21px,3.6vw,32px);margin:.3em 0}
-h2{margin-top:28px;font-size:18px;border-bottom:1px solid #244766;padding-bottom:6px}
-.card{background:#0d223b;border:1px solid #244766;border-radius:14px;padding:16px;margin:12px 0}
-.meta{color:var(--muted);font-size:13px}a{color:#8ed5ff;word-break:break-word}
-.tag{display:inline-block;border:1px solid #3a607e;border-radius:20px;padding:3px 10px;margin:4px 4px 0 0;font-size:13px}
-.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
-table{width:100%;border-collapse:collapse;margin-top:8px}td,th{text-align:left;padding:7px 6px;border-bottom:1px solid #1d3a57;vertical-align:top;font-size:14px}
-blockquote{margin:8px 0;padding:10px 14px;background:#0a1b2f;border-left:3px solid #3a607e;border-radius:0 8px 8px 0;font-size:14px}
-th{color:var(--muted);font-weight:600;width:34%}
-.barra{height:9px;background:#0a1b2f;border-radius:6px;overflow:hidden;border:1px solid #2b4c6b}
-.barra>i{display:block;height:100%;background:var(--gold)}
-ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
-footer{color:var(--muted);padding:30px 0;font-size:13px}
-.aviso{border-left:3px solid var(--warn);padding-left:12px}
+# Paleta clara provisoria: os mesmos tokens do painel (docs/dashboard.html).
+# Vale enquanto config/identidade_visual.json tiver os tokens nulos. Nenhuma cor
+# aqui e inventada: sao as que ja estao em uso na saida visual do sistema.
+PALETA_PROVISORIA = {
+    "fundo": "#FBFBFA", "cartao": "#FFFFFF", "tinta": "#23272E", "suave": "#68707C",
+    "linha": "#E4E1D8", "marca": "#1F5B99", "realce": "#EEF3F9",
+    "ok": "#1E7E4B", "alerta": "#B8860B", "urgente": "#B8433A",
+}
+
+# Nomes dos tokens no arquivo de identidade -> nomes usados na folha de estilo.
+_DE_PARA = {
+    "fundo": "fundo", "superficie": "cartao", "superficie_alt": "realce",
+    "tinta": "tinta", "tinta_suave": "suave", "marca_primaria": "marca",
+    "realce": "realce", "linha": "linha", "sucesso": "ok",
+    "alerta": "alerta", "urgente": "urgente",
+}
+
+
+def paleta() -> dict:
+    """A paleta em vigor, sempre a partir da fonte unica da identidade visual.
+
+    Token preenchido no arquivo vence; token nulo cai na paleta clara
+    provisoria. Nunca se inventa cor aqui, e nunca se volta ao fundo escuro:
+    a diretriz permanente do titular proibe modo noturno.
+    """
+    cores = dict(PALETA_PROVISORIA)
+    try:
+        identidade = load_json(ROOT / "config/identidade_visual.json")
+    except (OSError, json.JSONDecodeError):
+        return cores
+    declaradas = ((identidade.get("tokens") or {}).get("cores") or {})
+    for nome_arquivo, nome_estilo in _DE_PARA.items():
+        valor = declaradas.get(nome_arquivo)
+        if isinstance(valor, str) and valor.strip():
+            cores[nome_estilo] = valor.strip()
+    return cores
+
+
+def estilo() -> str:
+    c = paleta()
+    return f"""<style>
+:root{{--fundo:{c['fundo']};--cartao:{c['cartao']};--tinta:{c['tinta']};--suave:{c['suave']};
+--linha:{c['linha']};--marca:{c['marca']};--realce:{c['realce']};
+--ok:{c['ok']};--alerta:{c['alerta']};--urgente:{c['urgente']}}}
+*{{box-sizing:border-box}}
+body{{margin:0;background:var(--fundo);color:var(--tinta);font:15px/1.55 system-ui,-apple-system,sans-serif}}
+main{{max-width:900px;margin:auto;padding:24px}}
+h1{{color:var(--marca);font-size:clamp(21px,3.6vw,32px);margin:.3em 0}}
+h2{{margin-top:28px;font-size:18px;border-bottom:1px solid var(--linha);padding-bottom:6px}}
+.card{{background:var(--cartao);border:1px solid var(--linha);border-radius:14px;padding:16px;margin:12px 0}}
+.meta{{color:var(--suave);font-size:13px}}
+a{{color:var(--marca);word-break:break-word}}
+.tag{{display:inline-block;border:1px solid var(--linha);border-radius:20px;padding:3px 10px;margin:4px 4px 0 0;font-size:13px}}
+.ok{{color:var(--ok)}}.bad{{color:var(--urgente)}}.warn{{color:var(--alerta)}}
+table{{width:100%;border-collapse:collapse;margin-top:8px}}
+td,th{{text-align:left;padding:7px 6px;border-bottom:1px solid var(--linha);vertical-align:top;font-size:14px}}
+blockquote{{margin:8px 0;padding:10px 14px;background:var(--realce);border-left:3px solid var(--marca);border-radius:0 8px 8px 0;font-size:14px}}
+th{{color:var(--suave);font-weight:600;width:34%}}
+.barra{{height:9px;background:var(--realce);border-radius:6px;overflow:hidden;border:1px solid var(--linha)}}
+.barra>i{{display:block;height:100%;background:var(--marca)}}
+ul{{margin:6px 0;padding-left:20px}}li{{margin:3px 0}}
+footer{{color:var(--suave);padding:30px 0;font-size:13px}}
+.aviso{{border-left:3px solid var(--alerta);padding-left:12px}}
 </style>"""
+
 
 def _e(valor) -> str:
     return html.escape(str(valor if valor not in (None, "") else "—"), quote=True)
@@ -99,7 +158,7 @@ def render(item: dict, aprendizado: dict | None = None) -> str:
 
     return f"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{_e(item.get('titulo'))[:90]} · Eldorado</title>{ESTILO}</head><body><main>
+<title>{_e(item.get('titulo'))[:90]} · Eldorado</title>{estilo()}</head><body><main>
 <div class=meta><a href="../dashboard.html">← painel</a> · ficha de edital</div>
 <h1>{_e(item.get('titulo'))}</h1>
 <p><a href="{_e(item.get('url'))}" target=_blank rel="noopener noreferrer">{_e(item.get('url'))}</a></p>

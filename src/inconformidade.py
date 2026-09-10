@@ -284,7 +284,13 @@ _RESULTADO_HABILITACAO = re.compile(
     r"prorroga[çc][ãa]o\s+do\s+prazo\s+para\s+divulga[çc][ãa]o\s+do\s+resultado|"
     r"pr[ée]-?qualificados\s+por\s+segmento|"
     r"contrata[çc][ãa]o\s+d[ao]s?\s+(?:empresa\s+|servi[çc]os?\s+em\s+sa[úu]de\s+d[ea]\s+)?credenciad|"
-    r"oriund[oa]\s+do\s+edital", re.I)
+    r"oriund[oa]\s+do\s+edital|"
+    # Cocalzinho de Goias publicou "CONTRATACAO DE ORGANIZACAO DE SOCIEDADE
+    # CIVIL, PARA CELEBRACAO DE TERMO DE COLABORACAO, NOS TERMOS DO EDITAL DE
+    # CHAMAMENTO PUBLICO N 001/2021". Tudo ali soa como fomento, e e — mas e o
+    # ATO DECORRENTE de um edital de tres anos antes, com a OSC ja escolhida.
+    # A marca e comecar por "contratacao de" e terminar remetendo ao edital.
+    r"^contrata[çc][ãa]o\s+de[^.]{0,140}?nos\s+termos\s+do\s+edital\s+de\s+chamamento", re.I)
 
 # 21. Conteúdo institucional de portal de terceiros ou do próprio patrocinador:
 #     página índice, notícia, pesquisa, livro, campanha, curso, desconto (24
@@ -332,7 +338,11 @@ _FOMENTO_CULTURAL = re.compile(
 
 # Entidade sem fins lucrativos mencionada no objeto.
 _TERCEIRO_SETOR = re.compile(
-    r"organiza[çc][õo]es?\s+d[ae]\s+sociedade\s+civil|\bOSCs?\b|"
+    # CORRECAO de 09/09/2026: o padrao antigo so pegava o PLURAL. "SELECAO DE
+    # ORGANIZACAO DA SOCIEDADE CIVIL", no singular, nao casava — e e assim que
+    # muitos editais escrevem. Campina Grande/PB passou por essa fresta.
+    r"organiza[çc][ãa]o\s+d[ae]\s+sociedade\s+civil|"
+    r"organiza[çc][õo]es\s+d[ae]\s+sociedade\s+civil|\bOSCs?\b|"
     r"sem\s+fins\s+lucrativos|filantr[óo]pic|"
     r"entidades?\s+de\s+utilidade\s+p[úu]blica|"
     r"\bcoletivos?\b|associa[çc][õo]es|cooperativas", re.I)
@@ -435,6 +445,102 @@ _ATENCAO = (
 )
 
 
+# ---------------------------------------------------------------------------
+# Terceira rodada — aprendido na validação individual dos 231 registros sem
+# confirmação, em 09/09/2026. Aqui não houve leitura de documento: foi a
+# leitura atenta do objeto que o próprio órgão declarou na API oficial do
+# PNCP, um registro por vez. Cinco famílias novas de reprovação, dois sinais
+# novos de APROVAÇÃO — que são os que evitam o erro caro — e um discriminador
+# que faltava.
+# ---------------------------------------------------------------------------
+
+# 22. Convênio de desconto: o órgão credencia empresa para dar desconto a
+#     associado ou servidor. Não há repasse em NENHUMA direção. Dois casos:
+#     o CRC do Ceará e o DETRAN-SP.
+_CONVENIO_DESCONTO = re.compile(
+    r"concess[ãa]o\s+de\s+descontos?|"
+    r"oferecer\s+desconto|"
+    r"descontos?\s+reais\s+e\s+diferenciados|"
+    r"desconto\s+de,?\s+no\s+m[íi]nimo,?\s+\d+", re.I)
+
+# 23. Cadastro de fornecedor de um ramo, por tempo indeterminado: nem edital
+#     nem fomento. Rondônia cadastrando o setor de turismo.
+_CADASTRO_FORNECEDOR = re.compile(
+    r"cadastrar\s+empresas\s+sediadas|"
+    r"cadastrar\s+empresas[^.]{0,60}?ramo|"
+    r"por\s+tempo\s+indeterminado", re.I)
+
+# 24. Contrapartida sem repasse: a entidade credenciada INDICA um profissional
+#     e recebe uma passagem aérea. Foi o CREFITO-5, em Porto Alegre.
+_CONTRAPARTIDA_SEM_REPASSE = re.compile(
+    r"para\s+que\s+esta\s+indique\s+\d*\s*\(?\w*\)?\s*\w+|"
+    r"mediante\s+oportuno\s+fornecimento\s+de\s+transporte|"
+    r"indique\s+\d+\s*\(um\)", re.I)
+
+# 25. Compra de vaga. O discriminador é A LEI INVOCADA: quando o município
+#     celebra parceria, o objeto cita a Lei 13.019/2014; quando compra vaga,
+#     cita a 14.133/2021. Serviu para decidir Tubarão/SC e Itajaí/SC.
+_COMPRA_DE_VAGA = re.compile(
+    r"aquisi[çc][ãa]o\s+de\s+at[ée]\s+[\d.]+\s*\(?[\w\s]{0,30}\)?\s*vagas|"
+    r"aquisi[çc][ãa]o\s+de\s+vagas|"
+    r"vagas\s+ao\s+longo\s+de\s+\w+\s+meses", re.I)
+# "n" seguido de "o" cobre a grafia "Lei Federal no 14.133", que e como o nº
+# aparece quando o orgao publica sem o caractere ordinal.
+_LEI_DE_CONTRATO = re.compile(r"lei\s+(?:federal\s+)?(?:n[ºo°]?\.?\s*)?14\.?133", re.I)
+_LEI_DE_PARCERIA = re.compile(r"lei\s+(?:federal\s+)?(?:n[ºo°]?\.?\s*)?13\.?019|13\.019\/2014", re.I)
+_ACOLHIMENTO = re.compile(
+    r"acolhimento\s+institucional|longa\s+perman[êe]ncia|\bILPI\b|"
+    r"institui[çc][õo]es\s+de\s+longa\s+perman[êe]ncia", re.I)
+
+# 26. Objeto insuficiente na origem: o órgão publicou três ou quatro palavras.
+#     "CHAMAMENTO PUBLICO CREDENCIMENTO", de Triunfo/RS, com erro de digitação.
+#     NÃO reprova — o princípio deste módulo é não vetar por ausência. Vai a
+#     conferência, dizendo que o defeito é de publicação, não de coleta.
+_OBJETO_CURTO_MAX_PALAVRAS = 5
+
+# ---- Sinais de APROVAÇÃO. São estes que evitam o erro caro. ----
+
+# Doação de bens móveis inservíveis a entidade sem fins lucrativos: a entidade
+# RECEBE bens. Captação em espécie, que o sistema não catalogava. Colombo/PR.
+_DOACAO_DE_BENS = re.compile(
+    r"doa[çc][ãa]o\s+de\s+bens\s+m[óo]veis|"
+    r"bens\s+m[óo]veis\s+declarados\s+inserv[íi]veis|"
+    r"bens\s+m[óo]veis\s+considerados\s+inserv[íi]veis", re.I)
+
+# Coleta seletiva solidária do Decreto 5.940/2006: a cooperativa de catadores
+# não recebe repasse, recebe o MATERIAL e se sustenta da venda. É oportunidade
+# real e de baixa concorrência. Maceió/AL no Judiciário, Ribeirão Preto/SP,
+# UNICENTRO em Guarapuava/PR.
+_COLETA_SOLIDARIA = re.compile(
+    r"coleta\s+seletiva\s+solid[áa]ria|"
+    r"(?:associa[çc][õo]es|cooperativas)\s+(?:e\/ou\s+cooperativas\s+)?de\s+(?:trabalhadores\s+)?catadores|"
+    r"cooperativas\s+de\s+catadores", re.I)
+
+# Instrumento de fomento com plano de trabalho: a marca mais forte de todas.
+# Quando o objeto diz "nos termos do plano de trabalho", o repasse segue o
+# plano e não o procedimento executado. Campina Grande/PB.
+_PLANO_DE_TRABALHO = re.compile(
+    r"nos\s+termos\s+do\s+plano\s+de\s+trabalho|"
+    r"conforme\s+(?:o\s+)?(?:respectivo\s+)?plano\s+de\s+trabalho|"
+    r"apresentarem\s+o\s+plano\s+de\s+trabalho", re.I)
+
+_FAMILIAS_V3 = (
+    ("convenio_de_desconto", _CONVENIO_DESCONTO,
+     "credenciamento para conceder desconto a associado ou servidor: não há repasse em nenhuma direção"),
+    ("cadastro_de_fornecedor", _CADASTRO_FORNECEDOR,
+     "cadastro de fornecedor de um ramo, sem repasse e sem projeto"),
+    ("contrapartida_sem_repasse", _CONTRAPARTIDA_SEM_REPASSE,
+     "a entidade indica um profissional e recebe uma contrapartida em espécie (passagem): não é fomento"),
+    ("compra_de_vaga", _COMPRA_DE_VAGA,
+     "aquisição de vagas: a entidade vende vaga, com preço por unidade — é receita legítima, mas não é fomento"),
+)
+
+
+def _palavras_significativas(t: str) -> int:
+    return len([p for p in re.findall(r"[A-Za-zÀ-ÿ]{3,}", t)
+                if p.lower() not in {"que", "para", "com", "dos", "das", "por", "nos", "nas", "pelo"}])
+
+
 def avaliar(texto: str) -> dict:
 
     """Veredito de conformidade de objeto.
@@ -486,6 +592,35 @@ def avaliar(texto: str) -> dict:
                 "atencao": None}
     tem_fomento = bool(_FOMENTO_FORTE.search(t))
     tem_osc = bool(_TERCEIRO_SETOR.search(t))
+
+    # Sinais de aprovação da terceira rodada. Vêm ANTES das reprovações porque
+    # são exatamente os casos que o filtro barrava por engano: doação de bens a
+    # entidade parece "bens móveis" e caía em compra; coleta seletiva solidária
+    # parece "prestação de serviço de coleta" e caía em serviço ao órgão.
+    if _DOACAO_DE_BENS.search(t) and tem_osc:
+        return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC",
+                "atencao": ("doação de bens móveis a entidade sem fins lucrativos: é captação em espécie — a "
+                            "entidade recebe bens, não presta serviço. Conferir no edital o estado dos bens")}
+    if _COLETA_SOLIDARIA.search(t):
+        return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC",
+                "atencao": ("coleta seletiva solidária: a cooperativa de catadores recebe o material e se "
+                            "sustenta da venda, no modelo do Decreto 5.940/2006. Conferir se o edital admite "
+                            "empresa concorrendo junto")}
+    if _PLANO_DE_TRABALHO.search(t) and tem_osc:
+        return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC", "atencao": None}
+
+    for nome, rx, motivo in _FAMILIAS_V3:
+        if rx.search(t):
+            return {"ok": False, "familia": nome, "motivo": motivo, "atencao": None}
+
+    # O discriminador da lei invocada, medido em Tubarão/SC e Itajaí/SC: em
+    # acolhimento, citar a 14.133 sem citar a 13.019 é compra de vaga.
+    if _ACOLHIMENTO.search(t) and _LEI_DE_CONTRATO.search(t) and not _LEI_DE_PARCERIA.search(t):
+        return {"ok": False, "familia": "compra_de_vaga",
+                "motivo": ("acolhimento fundado na Lei 14.133/2021 e não na 13.019/2014: a lei invocada é o "
+                           "discriminador — é compra de vaga, receita legítima para quem já opera o serviço, "
+                           "mas não fomento a projeto"),
+                "atencao": None}
     for nome, rx, motivo in _FAMILIAS_V2:
         if not rx.search(t):
             continue
@@ -514,6 +649,10 @@ def avaliar(texto: str) -> dict:
     for rx, aviso in _ATENCAO:
         if rx.search(t):
             return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC", "atencao": aviso}
+    if _palavras_significativas(t) <= _OBJETO_CURTO_MAX_PALAVRAS:
+        return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC",
+                "atencao": ("o órgão publicou um objeto de três ou quatro palavras: insuficiente para enquadrar, e o "
+                            "defeito é de publicação, não de coleta. Abrir o edital antes de descartar")}
     if not tem_fomento and not tem_osc:
         # Não reprova. O princípio deste módulo é vetar por sinal POSITIVO de
         # inconformidade, nunca por ausência de palavra do terceiro setor: há
@@ -531,21 +670,6 @@ def avaliar(texto: str) -> dict:
         return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC",
                 "atencao": ("nomeia instrumento de fomento mas não diz se admite OSC: conferir no edital "
                             "quem pode se inscrever")}
-    # P04-P09 (auditoria de 09/09): as regras com acerto medido decidem o que as famílias
-    # acima deixaram passar. Entram DEPOIS para preservar os rótulos já validados, e só
-    # reprovam por sinal POSITIVO de inconformidade (P24 — falso positivo é o erro caro).
-    try:
-        from .parametros_motores import avaliar_medido
-        _m = avaliar_medido(texto)
-        if _m.get("veredito") == "reprovado":
-            return {"ok": False, "familia": "medida_auditoria",
-                    "motivo": _m["motivo"] + (f" [{_m['parametro']}, {_m['medida']}]" if _m.get("medida") else f" [{_m['parametro']}]"),
-                    "atencao": None}
-        if _m.get("veredito") == "atencao":
-            return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC",
-                    "atencao": _m["motivo"]}
-    except Exception:
-        pass
     return {"ok": True, "familia": None, "motivo": "objeto compatível com fomento a OSC", "atencao": None}
 
 

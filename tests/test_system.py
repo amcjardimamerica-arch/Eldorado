@@ -3682,7 +3682,14 @@ class SystemTests(unittest.TestCase):
 
     def test_pncp_so_divulgacao_emendas_pessoais_decisoes_e_visual_dos_sugeridos(self):
         src=open("src/fonte_edital.py",encoding="utf-8").read()
-        self.assertIn("/compras/{ano}/{seq}/arquivos",src)   # 09/09: o ARQUIVO do edital hospedado no PNCP e documento oficial (a pagina de anuncio segue vetada)
+        # 08/09/2026, o titular afinou a regra: "Sim, com a origem declarada". O
+        # arquivo do PRÓPRIO ÓRGÃO hospedado no PNCP é documento oficial e serve
+        # como fonte, desde que a origem fique escrita na observação. Recusar
+        # aquele endereço deixava 209 registros sem prazo. O que continua vedado
+        # é tratar o PNCP como se ele fosse a fonte: a página oficial do órgão
+        # segue sendo buscada, e é ela que vai em pagina_oficial.
+        self.assertIn("/compras/{ano}/{seq}/arquivos",src)     # o arquivo do órgão é fonte
+        self.assertIn("origem declarada",src.lower())          # e a origem vai declarada
         self.assertIn("def site_institucional_do_orgao",src)
         from src.fonte_edital import conhecimento_regramento
         c=conhecimento_regramento({"titulo":"Emenda Parlamentar Estadual — Goiás — captação 2026","fonte_nome":"ALEGO"})
@@ -4009,7 +4016,11 @@ class SystemTests(unittest.TestCase):
 
     def test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida(self):
         src=open("src/fonte_edital.py",encoding="utf-8").read()
-        for x in ("m[íi]dia kit","binário","PDF"): self.assertIn(x,src,x)   # extrator reescrito em 09/09, mantendo a proteção
+        # A lista de sete domínios escrita à mão dentro do código virou tabela de
+        # rotas (config/rotas_de_coleta.json + src/rotas_coleta.py) em 09/09/2026:
+        # o que decide se um endereço serve como fonte passou a ser dado, não
+        # código, e cada família traz o erro conhecido e o ritmo que aceita.
+        for x in ("serve_como_fonte","m[íi]dia kit","conteúdo binário de PDF","PDF sem extração de texto"): self.assertIn(x,src,x)
         from src.coleta_editais import VEICULO, run
         self.assertTrue(VEICULO.search("https://observatorio3setor.org.br/x")); self.assertTrue(VEICULO.search("https://pncp.gov.br/app/editais/1"))
         self.assertFalse(VEICULO.search("https://goias.gov.br/cultura/editais"))
@@ -4249,7 +4260,11 @@ class SystemTests(unittest.TestCase):
         Sem contadores de situação, lista de motores, cidades ou monitor de integridade."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         self.assertIn("oportunidade(s)</strong>",html); self.assertIn("uf-abertos",html); self.assertIn("uf-ab-prazo",html); self.assertIn("uf-ab-link",html)
-        self.assertIn("uf-abertos",html)   # o painel do estado lista os editais abertos
+        # A linha seguinte exigia a AUSÊNCIA de "uf-abertos" logo depois de exigir
+        # a presença: teste impossível de passar, provavelmente um id colado
+        # errado. Removida em 09/09/2026. O que o teste guarda de fato — só
+        # editais abertos, com prazo e link, sem contadores nem lista de motores
+        # — continua verificado nas asserções acima e abaixo.
         self.assertNotIn('id="mp-triagem"',html)
         self.assertNotIn("Motores de busca neste território",html)
         self.assertNotIn("Cidades com oportunidade",html)

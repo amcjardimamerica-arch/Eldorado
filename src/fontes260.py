@@ -23,6 +23,7 @@ import re
 from collections import Counter, defaultdict
 from urllib.parse import urlsplit
 
+from .curadoria_fontes import aplicar as _aplicar_curadoria
 from .nucleo import ROOT, load_json, now_iso, slug, write_json
 
 ROTAS = ROOT / "estado/rotas_monitoramento.json"
@@ -217,60 +218,6 @@ def resolver(rota: dict, fontes: dict) -> dict:
     }
 
 
-CURADORIA = ROOT / "config/curadoria_fontes.json"
-
-
-SCRIPTS_CURADORIA = ("scripts/aprimorar_fontes_goias.py", "scripts/aprimorar_fontes_2026_09.py")
-
-
-def reaplicar_scripts_de_curadoria() -> dict:
-    """P51: os scripts que conferiram endereço a endereço no navegador são a fonte da
-    verdade da curadoria. Em vez de reimplementar as regras finas de cada um (ordem dos
-    sites, notas, exclusões por família), a regeneração os executa de novo — assim
-    nenhuma conferência se perde e os testes deixam de derrubar o CI."""
-    import subprocess
-    import sys
-    feitos = []
-    for s in SCRIPTS_CURADORIA:
-        caminho = ROOT / s
-        if not caminho.exists():
-            continue
-        r = subprocess.run([sys.executable, str(caminho)], capture_output=True, text=True, timeout=180)
-        feitos.append({"script": s, "codigo": r.returncode, "erro": (r.stderr or "")[-200:] if r.returncode else None})
-    return {"scripts": feitos}
-
-
-def aplicar_curadoria(itens: list) -> dict:
-    """P51 (auditoria de 09/09): a regeneração do catálogo apagava os endereços
-    conferidos um a um no navegador — e com isso os testes de Goiás ficavam vermelhos
-    e derrubavam TODA a saída do CI. A curadoria vive em arquivo próprio e é
-    reaplicada aqui, ao fim de cada regeneração."""
-    if not CURADORIA.exists():
-        return {"aplicada": False}
-    cur = load_json(CURADORIA)
-    por_id = {i["id"]: i for i in itens}
-    n = 0
-    for nova in (cur.get("fontes_novas") or []):
-        if isinstance(nova, dict) and nova.get("id") and nova["id"] not in por_id:
-            itens.append(nova); por_id[nova["id"]] = nova
-    for fid, reg in (cur.get("fontes") or {}).items():
-        alvo = por_id.get(fid)
-        if not alvo:
-            continue
-        conferidos = reg.get("sites_conferidos") or []
-        if conferidos:
-            restantes = [s for s in alvo.get("sites", []) if s not in conferidos]
-            novos = [s for s in conferidos if s not in alvo.get("sites", [])]
-            alvo["sites"] = conferidos + restantes        # o endereço conferido é por onde o coletor começa
-            n += len(novos)
-        if reg.get("nota") and not alvo.get("nota"):
-            alvo["nota"] = reg["nota"]
-        from urllib.parse import urlsplit
-        alvo["dominios"] = sorted({d for d in (alvo.get("dominios") or [])} |
-                                  {urlsplit(s).hostname for s in alvo["sites"] if urlsplit(s).hostname})
-        alvo["curadoria"] = {"conferido_em": reg.get("conferido_em"), "por": reg.get("por")}
-    return {"aplicada": True, "sites_reaplicados": n, "fontes": len(cur.get("fontes") or {}),
-            "armadilhas": cur.get("armadilhas") or []}
 
 
 def run() -> dict:
@@ -280,12 +227,10 @@ def run() -> dict:
     # prioridade Goiás/Goiânia primeiro, depois federal e demais
     itens.sort(key=lambda i: (not i["goias"], i["nivel"] != "municipal",
                               i["nivel"] != "estadual", i["programa"]))
-    curadoria = aplicar_curadoria(itens)          # P51: a curadoria sobrevive à regeneração
     dominios = Counter(d for i in itens for d in i["dominios"])
     conf = Counter(i["confianca_site"] for i in itens)
     resumo = {
         "gerado_em": now_iso(), "total": len(itens),
-        "curadoria": {**curadoria, "armadilhas": len(curadoria.get("armadilhas") or [])},
         "goias_goiania": sum(1 for i in itens if i["goias"]),
         "com_site": sum(1 for i in itens if i["sites"]),
         "confianca": dict(conf),
@@ -296,14 +241,20 @@ def run() -> dict:
         "regra": ("site confirmado > curado > genérico; sem correspondência fica pendente — "
                   "nenhum endereço é inventado. A busca ativa confere cada site ao abrir."),
     }
-    _armad = curadoria.get("armadilhas") or []
-    _res_scripts = None
-    write_json(SAIDA_CFG, {"versao": 1, "armadilhas": _armad, "resumo": {k: v for k, v in resumo.items()
-                                                    if k not in ("pendentes_de_localizacao",)},
-                           "fontes": itens})
+    pacote = {"versao": 1,
+              "resumo": {k: v for k, v in resumo.items()
+                         if k not in ("pendentes_de_localizacao",)},
+              "fontes": itens}
+    # A curadoria conferida a mao e reaplicada AQUI, depois de gerar e antes de
+    # gravar. Sem esta linha, regenerar apaga endereco corrigido, fonte nova e
+    # armadilha registrada — foi o que aconteceu em 09/09/2026, quando o
+    # catalogo voltou a 260 fontes e zero armadilhas e o motor voltou a procurar
+    # o BNDES Periferias na busca do Diario Oficial.
+    resumo["curadoria"] = _aplicar_curadoria(pacote)
+    write_json(SAIDA_CFG, pacote)
     SAIDA_BIB.parent.mkdir(parents=True, exist_ok=True)
-    write_json(SAIDA_BIB, {**resumo, "fontes": itens})
-    resumo["curadoria_scripts"] = reaplicar_scripts_de_curadoria()
+    write_json(SAIDA_BIB, {**resumo, "fontes": pacote["fontes"],
+                           "armadilhas": pacote.get("armadilhas") or []})
     return resumo
 
 
