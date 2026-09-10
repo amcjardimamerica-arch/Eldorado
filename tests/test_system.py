@@ -3017,7 +3017,7 @@ class SystemTests(unittest.TestCase):
                   "function mpDadosUF","function desenhaBzLateral","bz-indices","uf-cidades",
                   "clique para ver as cidades","path.com-abertas"):
             self.assertIn(x,html,x)
-        self.assertIn("— editais abertos",html)   # 08/09: o painel do estado passou a listar só os editais abertos
+        self.assertIn("oportunidade(s)</strong>",html)   # 08/09: o painel do estado passou a listar só os editais abertos
         self.assertNotIn('id="mp-legenda"',html)                       # índices só no detalhe do estado
 
 
@@ -3067,7 +3067,7 @@ class SystemTests(unittest.TestCase):
             self.assertTrue(e.get("fim")); self.assertTrue(e.get("uf") or e.get("territorio") or e.get("abrangencia")=="nacional")
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("function situacaoDe","casaPrazo",'id="bz-prazo" style="display:none"',"bzFecharUF",
-                  "if(bzUFsel){desenhaBzLateral();return;}","— editais abertos"): self.assertIn(x,html,x)
+                  "if(bzUFsel){desenhaBzLateral();return;}","oportunidade(s)</strong>"): self.assertIn(x,html,x)
         self.assertNotIn('id="bz-lateral"',html)                       # detalhe do estado vai para a coluna da direita
 
 
@@ -3077,7 +3077,7 @@ class SystemTests(unittest.TestCase):
         sem 'Ver todas as atualizações'; monitor de integridade lê os motores."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("bz-rosa-bt","Brasil · nível nacional",'viewBox="-100 -100 200 200"',
-                  "— editais abertos",'<select id="mp-uf" style="display:none"','<select id="bz-uf" title="UF — também sincronizada pelo clique no mapa',
+                  "oportunidade(s)</strong>",'<select id="mp-uf" style="display:none"','<select id="bz-uf" title="UF — também sincronizada pelo clique no mapa',
                   "bz-mapa-col","desenhaMapaMonitor();};"):
             self.assertIn(x,html,x)
         self.assertNotIn("Ver todas as atualizações",html)
@@ -3423,7 +3423,7 @@ class SystemTests(unittest.TestCase):
         mostra apenas os editais abertos (nome, prazo, link oficial). O que sobrou desta verificação
         é a garantia de que os dados por território continuam existindo para o mapa."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn("— editais abertos",html); self.assertIn("uf-abertos",html)
+        self.assertIn("oportunidade(s)</strong>",html); self.assertIn("uf-abertos",html)
         self.assertNotIn("Motores de busca neste território",html)
         self.assertNotIn("Cidades com oportunidade",html)
         self.assertIn("function mpDadosUF",html)          # a base por território segue alimentando o mapa
@@ -3433,7 +3433,7 @@ class SystemTests(unittest.TestCase):
         mostra apenas os editais abertos (nome, prazo, link oficial). O que sobrou desta verificação
         é a garantia de que os dados por território continuam existindo para o mapa."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn("— editais abertos",html); self.assertIn("uf-abertos",html)
+        self.assertIn("oportunidade(s)</strong>",html); self.assertIn("uf-abertos",html)
         self.assertNotIn("Motores de busca neste território",html)
         self.assertNotIn("Cidades com oportunidade",html)
         self.assertIn("function mpDadosUF",html)          # a base por território segue alimentando o mapa
@@ -4248,12 +4248,12 @@ class SystemTests(unittest.TestCase):
         """08/09: ao clicar no estado, só os editais abertos — nome, prazo e link oficial.
         Sem contadores de situação, lista de motores, cidades ou monitor de integridade."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        self.assertIn("— editais abertos",html); self.assertIn("uf-abertos",html); self.assertIn("uf-ab-prazo",html); self.assertIn("uf-ab-link",html)
+        self.assertIn("oportunidade(s)</strong>",html); self.assertIn("uf-abertos",html); self.assertIn("uf-ab-prazo",html); self.assertIn("uf-ab-link",html)
         self.assertIn("uf-abertos",html)   # o painel do estado lista os editais abertos
         self.assertNotIn('id="mp-triagem"',html)
         self.assertNotIn("Motores de busca neste território",html)
         self.assertNotIn("Cidades com oportunidade",html)
-        i=html.index("— editais abertos"); bloco=html[i-1200:i+2200]
+        i=html.index("oportunidade(s)</strong>"); bloco=html[i-1200:i+2200]
         self.assertNotIn("Encontrado (varredura) <b>",html)         # contadores de situação fora do painel do estado
         self.assertIn('situacaoDe(e)==="aberta"',bloco)
 

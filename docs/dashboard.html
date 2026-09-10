@@ -474,6 +474,7 @@ box-shadow:0 1px 3px #0002}
 .uf-ab-prazo{color:#9a5a00;font-weight:700;white-space:nowrap}
 .uf-ab-link{color:#0B4EA2;text-decoration:none;white-space:nowrap}.uf-ab-link:hover{text-decoration:underline}
 .uf-ab-nv{grid-column:2/-1;font-size:10.5px;color:#8a5a00}
+.uf-ab.nv{background:#FFFDF6;border-color:#E8D9B0}
 .uf-cidade{border-top:1px dashed var(--linha);padding-top:5px;font-size:12.5px}
 .bz-op{margin:4px 0 2px 2px;padding:5px 7px;border-radius:8px;background:#FCFCFB;border:1px solid var(--linha)}
 .bz-motores{display:flex;flex-direction:column;gap:3px}.bz-motor{display:flex;align-items:center;gap:7px;padding:4px 7px;border-radius:7px;border:1px solid var(--linha);background:#F6F7F9;font-size:12px}
@@ -953,10 +954,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260910100802"></script>
-<script src="mapa-arte.js?v=20260910100802"></script>
-<script src="dashboard-dados.enc.js?v=20260910100802"></script>
-<script src="dashboard-dados.js?v=20260910100802"></script>
+<script src="mapa-brasil.js?v=20260910102807"></script>
+<script src="mapa-arte.js?v=20260910102807"></script>
+<script src="dashboard-dados.enc.js?v=20260910102807"></script>
+<script src="dashboard-dados.js?v=20260910102807"></script>
 <script>
 (function(){
 "use strict";
@@ -1857,6 +1858,11 @@ function desenhaFilaVerificacao(){
     <button class="fdoc-bt principal" onclick="varreduraImediata()" title="gera agora o pacote da varredura para a análise de IA (a rotina de domingo executa a mesma fila)">⚡ varredura imediata</button></span></div>
     ${(f.reprovados_por_objeto&&f.reprovados_por_objeto.total)?`<div class=meta style="margin-top:6px"><b>${f.reprovados_por_objeto.total}</b> registro(s) saíram da fila pelo filtro de objeto (não são chamada aberta de fomento): ${Object.entries(f.reprovados_por_objeto.por_familia||{}).map(([k,v])=>`${v} ${esc(k.replace(/_/g," "))}`).join(" · ")}.</div>`:""}
     ${(D.fora_das_50&&D.fora_das_50.total)?`<div class=meta style="margin-top:6px;color:#FF1493"><b>${D.fora_das_50.total}</b> oportunidade(s) de cidades fora das 50 maiores do estado foram retiradas da fila (depuração) — aparecem em rosa para aprovação manual: ${(D.fora_das_50.itens||[]).slice(0,6).map(x=>esc((x.cidade||"?")+"/"+(x.uf||""))).join(" · ")}${D.fora_das_50.total>6?" …":""}</div>`:""}
+    ${(()=>{const F=D.fluxo_verificacao;if(!F)return "";const T=F.totais||{},A=F.aguardando_acao_externa||{};
+      const MOT={ip_estrangeiro:"portal recusa IP estrangeiro",so_vetor:"só o anúncio; site do órgão a localizar",exige_navegador:"página exige navegador",pdf_imagem:"PDF é imagem (precisa OCR)",portal_fora:"portal fora do ar",formato_fechado:"formato proprietário",sem_cronograma:"edital sem cronograma"};
+      return `<div class=meta style="margin-top:6px"><b>Fluxo de verificação:</b>
+        ${Object.entries(T).map(([k,v])=>`${v} ${esc(k)}`).join(" · ")}
+        ${A.total?` · <b style="color:var(--alerta)">${A.total} aguardando ação externa</b> (${Object.entries(A.por_motivo||{}).map(([m,v])=>`${v} ${esc(MOT[m]||m)}`).join(" · ")}) — <a href="dados/fluxo_verificacao.json" target=_blank rel="noopener noreferrer">ver a lista</a>`:""}</div>`;})()}
     ${(()=>{const P=D.parametros_motores;if(!P)return "";const z=P.zona_de_atencao||{},c=P.cadencia_das_fontes||{},a=P.auditoria_cega||{};
       return `<div class=meta style="margin-top:6px"><b>Parâmetros dos motores (auditoria de 09/09):</b>
         zona de atenção <b style="color:${z.dentro_da_meta?"var(--ok)":"var(--alerta)"}">${((z.proporcao||0)*100).toFixed(1)}%</b> (meta ${((z.meta||0)*100).toFixed(0)}% · ${z.em_atencao||0} leitura(s) pendente(s)) ·
@@ -3083,11 +3089,16 @@ function desenhaBzLateral(por){
   const cidades=Object.entries(p.cidades).sort((a,b)=>b[1].n-a[1].n);
   /* PAINEL DO ESTADO (08/09, regra do titular): só os EDITAIS ABERTOS, resumidos —
      nome, prazo e link oficial. Sem contadores, motores, cidades ou monitor. */
-  const abertosUF=(p.itens||[]).filter(e=>ehOportunidade(e)&&situacaoDe(e)==="aberta"&&estadoDe(e.id)==="em_andamento")
-    .sort((a,b)=>String(a.fim||"9").localeCompare(String(b.fim||"9")));
+  /* mesmo universo que o mapa conta: abertas confirmadas E possíveis em verificação.
+     Antes o mapa somava as duas e o painel listava só as abertas — daí "GO 10" e
+     "nenhum edital aberto" ao clicar. */
+  const univUF=(p.itens||[]).filter(e=>ehOportunidade(e)&&estadoDe(e.id)==="em_andamento"&&["aberta","possivel"].includes(situacaoDe(e)));
+  const abertosUF=univUF.filter(e=>situacaoDe(e)==="aberta").sort((a,b)=>String(a.fim||"9").localeCompare(String(b.fim||"9")));
+  const possiveisUF=univUF.filter(e=>situacaoDe(e)!=="aberta").sort((a,b)=>String(a.titulo||"").localeCompare(String(b.titulo||"")));
   L.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center">
-      <strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(rotUF)} — editais abertos</strong>
+      <strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(rotUF)} — ${univUF.length} oportunidade(s)</strong>
       <button class="fdoc-bt" onclick="bzFecharUF()">fechar</button></div>
+    <div class=meta style="margin:4px 0 6px">${abertosUF.length} com inscrição aberta · ${possiveisUF.length} em verificação (prazo ainda não confirmado na fonte)</div>
     ${abertosUF.length?`<div class="uf-abertos">${abertosUF.map(e=>{const u=linkOficial(e)||e.url;const val=e.selo_validacao==="validada";
       return `<div class="uf-ab" data-op="${esc(e.id)}">
         <span class="pt" style="background:${AREA(e.area).cor}"></span>
@@ -3095,7 +3106,14 @@ function desenhaBzLateral(por){
         <span class="uf-ab-prazo">${e.fim?"at\u00e9 "+br(e.fim):"prazo a confirmar"}</span>
         ${u?`<a class="uf-ab-link" href="${esc(u)}" target=_blank rel="noopener noreferrer">p\u00e1gina do edital \u2197</a>`:`<span class="uf-ab-link meta">fonte a localizar</span>`}
         ${val?"":`<span class="uf-ab-nv">n\u00e3o verificada</span>`}</div>`;}).join("")}</div>`
-      :`<div class=meta style="margin-top:8px">Nenhum edital aberto neste territ\u00f3rio agora.</div>`}`;
+      :`<div class=meta style="margin-top:8px">Nenhum edital com inscri\u00e7\u00e3o aberta confirmada neste territ\u00f3rio agora.</div>`}
+    ${possiveisUF.length?`<div class="fdoc-t" style="margin-top:10px">Em verifica\u00e7\u00e3o <span class=meta>${possiveisUF.length} — descobertos pelos motores, aguardando confirma\u00e7\u00e3o do prazo na fonte oficial</span></div>
+      <div class="uf-abertos">${possiveisUF.map(e=>{const u=linkOficial(e)||e.url;
+      return `<div class="uf-ab nv" data-op="${esc(e.id)}">
+        <span class="pt" style="background:${AREA(e.area).cor};opacity:.5"></span>
+        <span class="uf-ab-nome" title="${esc(e.titulo||"")}">${esc((e.objeto||e.titulo||"").replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"").replace(/"/g,"").slice(0,90))}</span>
+        <span class="uf-ab-prazo" style="color:var(--suave)">prazo a confirmar</span>
+        ${u?`<a class="uf-ab-link" href="${esc(u)}" target=_blank rel="noopener noreferrer">p\u00e1gina ${VETOR_RX.test(u)?"do an\u00fancio":"oficial"} \u2197</a>`:`<span class="uf-ab-link meta">fonte a localizar</span>`}</div>`;}).join("")}</div>`:""}`;
   // relatório simples ao passar o mouse em cada dado do painel
   const REL={aberta:"Oportunidades com período de inscrição vigente e confirmado, com cidade/estado e publicação em local oficial — dá para decidir concorrer.",
     encerrada:"O período de inscrição já passou; ficam no histórico para estudo de recorrência.",

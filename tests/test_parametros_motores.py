@@ -170,6 +170,44 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
         self.assertGreaterEqual(len(subiram), 20)
         self.assertTrue(all(e.get("verificado_em") for e in subiram[:5]))
 
+    def test_fluxo_de_verificacao_com_etapa_de_espera(self):
+        """10/09: o registro que o robô não consegue confirmar passa a ter etapa própria —
+        'aguardando ação externa' — com o motivo da parada e a instrução da rodada manual."""
+        from src.fluxo_verificacao import etapa_de_verificacao, ETAPAS, MOTIVOS
+        self.assertEqual(ETAPAS[3], "aguardando ação externa")
+        # classificado: já tem parecer
+        r = etapa_de_verificacao({"id": "a"}, {}, {"selo": "conformidade", "por": "titular", "em": "2026-09-09T00:00:00"})
+        self.assertEqual(r["etapa_verificacao"], 5)
+        # verificado: objeto, prazo e site oficial
+        r = etapa_de_verificacao({"id": "b", "fim": "2026-10-01", "objeto": "x"}, {"pagina_divulgacao": "https://orgao.gov.br/editais"})
+        self.assertEqual(r["etapa_verificacao"], 4)
+        # aguardando ação externa: portal que recusa IP estrangeiro
+        r = etapa_de_verificacao({"id": "c", "url": "https://www.tjgo.jus.br/x"}, {"tentativas": [{}], "erros": []})
+        self.assertEqual(r["etapa_verificacao"], 3); self.assertEqual(r["motivo"], "ip_estrangeiro")
+        self.assertIn("IP brasileiro", r["acao_externa"]); self.assertIn("prazo", r["falta"])
+        # PDF que é imagem
+        r = etapa_de_verificacao({"id": "d"}, {"tentativas": [{}], "erros": ["PDF sem camada de texto (digitalização)"]})
+        self.assertEqual(r["motivo"], "pdf_imagem"); self.assertIn("OCR", r["acao_externa"])
+        # descoberto: ninguém tentou ainda
+        self.assertEqual(etapa_de_verificacao({"id": "e"}, {})["etapa_verificacao"], 1)
+        self.assertTrue(all(len(v) == 2 for v in MOTIVOS.values()))
+        f = json.loads((ROOT / "estado/fluxo_verificacao.json").read_text(encoding="utf-8"))
+        self.assertIn("aguardando ação externa", f["totais"])
+        self.assertTrue(all(x.get("acao") and x.get("motivo_texto") for x in f["aguardando_acao_externa"]["itens"][:5]))
+        d = json.loads((ROOT / "docs/dashboard-dados.json").read_text(encoding="utf-8"))
+        self.assertIn("fluxo_verificacao", d)
+        html = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn("Fluxo de verificação:", html); self.assertIn("aguardando ação externa", html)
+
+    def test_painel_do_estado_bate_com_o_numero_do_mapa(self):
+        """10/09: o mapa contava abertas + possíveis e o painel listava só as abertas —
+        'GO 10' e, ao clicar, 'nenhum edital aberto'."""
+        html = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn("const univUF=", html)
+        self.assertIn('["aberta","possivel"].includes(situacaoDe(e))', html)
+        self.assertIn("oportunidade(s)</strong>", html)
+        self.assertIn("com inscrição aberta ·", html); self.assertIn("em verificação (prazo ainda não confirmado", html)
+
     def test_parametros_e_evidencias_no_repositorio(self):
         p = json.loads((ROOT / "config/PARAMETROS-MOTORES-2026-09-09.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(p["parametros"]), 30)
