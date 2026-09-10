@@ -350,37 +350,33 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 11,
+      "leituras": 12,
       "achados_total": 0,
-      "vazias_seguidas": 11,
-      "ultima": "2026-09-10T00:20:46+00:00",
+      "vazias_seguidas": 12,
+      "ultima": "2026-09-10T01:19:43+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260910&dataFinal=20260910&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-          "erro": "TimeoutError",
-          "code": null,
-          "waf": null,
-          "causa": "tempo esgotado — servidor lento ou filtrando o IP"
+          "http": 204,
+          "bytes": 0
         },
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260910&dataFinal=20260910&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
-          "erro": "TimeoutError",
-          "code": null,
-          "waf": null,
-          "causa": "tempo esgotado — servidor lento ou filtrando o IP"
+          "http": 204,
+          "bytes": 0
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 0,
+        "paginas_lidas": 2,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "tempo esgotado / conexão recusada"
+        "motivo_zero": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
       }
     },
     "plat-abcr": {
@@ -2035,12 +2031,12 @@
   },
   "ultima_execucao": {
     "data": "2026-09-10",
-    "em": "2026-09-10T00:20:46+00:00",
+    "em": "2026-09-10T01:19:43+00:00",
     "manual": null,
     "bloco": "plataformas_api",
     "sensores_executados": 1,
-    "em_espera": 41,
-    "total_esquadra": 81,
+    "em_espera": 52,
+    "total_esquadra": 92,
     "previsoes_ativas": 1,
     "achados": 0,
     "novos_na_base": 0,
@@ -2048,7 +2044,7 @@
       "api": {
         "sensores": 1,
         "achados": 0,
-        "falhas": 2
+        "falhas": 0
       }
     }
   }
