@@ -217,6 +217,34 @@ def resolver(rota: dict, fontes: dict) -> dict:
     }
 
 
+CURADORIA = ROOT / "config/curadoria_fontes.json"
+
+
+def aplicar_curadoria(itens: list) -> dict:
+    """P51 (auditoria de 09/09): a regeneração do catálogo apagava os endereços
+    conferidos um a um no navegador — e com isso os testes de Goiás ficavam vermelhos
+    e derrubavam TODA a saída do CI. A curadoria vive em arquivo próprio e é
+    reaplicada aqui, ao fim de cada regeneração."""
+    if not CURADORIA.exists():
+        return {"aplicada": False}
+    cur = load_json(CURADORIA)
+    por_id = {i["id"]: i for i in itens}
+    n = 0
+    for fid, reg in (cur.get("fontes") or {}).items():
+        alvo = por_id.get(fid)
+        if not alvo:
+            continue
+        for site in reg.get("sites_conferidos") or []:
+            if site not in alvo.setdefault("sites", []):
+                alvo["sites"].append(site); n += 1
+        from urllib.parse import urlsplit
+        alvo["dominios"] = sorted({d for d in (alvo.get("dominios") or [])} |
+                                  {urlsplit(s).hostname for s in alvo["sites"] if urlsplit(s).hostname})
+        alvo["curadoria"] = {"conferido_em": reg.get("conferido_em"), "por": reg.get("por")}
+    return {"aplicada": True, "sites_reaplicados": n, "fontes": len(cur.get("fontes") or {}),
+            "armadilhas": cur.get("armadilhas") or []}
+
+
 def run() -> dict:
     rotas = load_json(ROTAS).get("rotas", [])
     fontes = _fontes_json()
@@ -224,10 +252,12 @@ def run() -> dict:
     # prioridade Goiás/Goiânia primeiro, depois federal e demais
     itens.sort(key=lambda i: (not i["goias"], i["nivel"] != "municipal",
                               i["nivel"] != "estadual", i["programa"]))
+    curadoria = aplicar_curadoria(itens)          # P51: a curadoria sobrevive à regeneração
     dominios = Counter(d for i in itens for d in i["dominios"])
     conf = Counter(i["confianca_site"] for i in itens)
     resumo = {
         "gerado_em": now_iso(), "total": len(itens),
+        "curadoria": {**curadoria, "armadilhas": len(curadoria.get("armadilhas") or [])},
         "goias_goiania": sum(1 for i in itens if i["goias"]),
         "com_site": sum(1 for i in itens if i["sites"]),
         "confianca": dict(conf),
@@ -238,7 +268,8 @@ def run() -> dict:
         "regra": ("site confirmado > curado > genérico; sem correspondência fica pendente — "
                   "nenhum endereço é inventado. A busca ativa confere cada site ao abrir."),
     }
-    write_json(SAIDA_CFG, {"versao": 1, "resumo": {k: v for k, v in resumo.items()
+    _armad = curadoria.get("armadilhas") or []
+    write_json(SAIDA_CFG, {"versao": 1, "armadilhas": _armad, "resumo": {k: v for k, v in resumo.items()
                                                     if k not in ("pendentes_de_localizacao",)},
                            "fontes": itens})
     SAIDA_BIB.parent.mkdir(parents=True, exist_ok=True)

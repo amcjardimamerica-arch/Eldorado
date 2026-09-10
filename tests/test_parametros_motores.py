@@ -104,6 +104,48 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
         for o in bloq:
             self.assertEqual(o.get("achados") or 0, 0)                            # nenhum bloqueado está entregando editais
 
+    def test_p51_curadoria_sobrevive_a_regeneracao(self):
+        """P51: a regeneração do catálogo apagava os endereços conferidos, os testes de
+        Goiás ficavam vermelhos e derrubavam TODA a saída do CI (6 falhas em 09/09)."""
+        from src.fontes260 import aplicar_curadoria, CURADORIA
+        self.assertTrue(CURADORIA.exists())
+        cur = json.loads(CURADORIA.read_text(encoding="utf-8"))
+        self.assertGreaterEqual(len(cur["fontes"]), 20); self.assertGreaterEqual(len(cur["armadilhas"]), 3)
+        itens = [{"id": list(cur["fontes"])[0], "sites": [], "dominios": []}]
+        r = aplicar_curadoria(itens)
+        self.assertTrue(r["aplicada"]); self.assertGreater(r["sites_reaplicados"], 0)
+        self.assertTrue(itens[0]["sites"])                       # o endereço conferido voltou
+        cat = json.loads((ROOT / "config/fontes_captacao_260.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(len(cat.get("armadilhas") or []), 3)
+        self.assertTrue(any("termos-de-fomento" in a["url"] for a in cat["armadilhas"]))
+
+    def test_duplicatas_consolidadas(self):
+        """09/09: o mesmo edital aparecia 5 vezes (Lojas Renner) e 2 vezes (Prêmio MOL),
+        captado por portais diferentes. O canônico conta; os demais viram duplicata."""
+        d = json.loads((ROOT / "dados/editais/duplicatas.json").read_text(encoding="utf-8"))
+        gr = {g["titulo"][:20]: g for g in d["grupos"]}
+        renner = [g for g in d["grupos"] if "Renner" in g["titulo"]][0]
+        self.assertEqual(len(renner["duplicatas"]), 4); self.assertEqual(renner["canonico"], "c5c7e37e2e275d2e69fe")
+        mol = [g for g in d["grupos"] if "MOL" in g["titulo"]][0]
+        self.assertEqual(len(mol["duplicatas"]), 1)
+        from src.compacto import expandir
+        amp = expandir(json.loads((ROOT / "docs/dados/abertas.json").read_text(encoding="utf-8")))
+        self.assertGreaterEqual(sum(1 for x in amp if x.get("tipo_registro") == "duplicata"), 4)
+        curso = [x for x in amp if x.get("tipo_registro") in ("edital", "regra_anual")
+                 and x.get("selo_validacao") == "validada" and (x.get("fim") or "") >= "2026-09-09"]
+        self.assertLessEqual(sum(1 for x in curso if "Renner" in (x.get("titulo") or "")), 1)
+
+    def test_restricao_territorial_do_renner(self):
+        """O edital Encantando Comunidades é real e aberto, mas restrito a municípios de
+        RJ, SP e RS — Goiás não é elegível (confirmado pelo titular no site oficial)."""
+        ex = json.loads((ROOT / "dados/editais/extraidos/c5c7e37e2e275d2e69fe.json").read_text(encoding="utf-8"))
+        self.assertEqual(ex["pagina_divulgacao"], "https://www.institutolojasrenner.org.br/edital-encantando-comunidades/")
+        self.assertEqual(ex["restricao_territorial"]["ufs"], ["RJ", "SP", "RS"])
+        self.assertIn("GOIÁS NÃO ELEGÍVEL", ex["itens"]["Território"])
+        an = json.loads((ROOT / "dados/editais/analises.json").read_text(encoding="utf-8"))
+        self.assertEqual(an["c5c7e37e2e275d2e69fe"]["selo"], "inconformidade")
+        self.assertTrue(an["c5c7e37e2e275d2e69fe"]["verificacoes"]["territorio_incompativel"])
+
     def test_parametros_e_evidencias_no_repositorio(self):
         p = json.loads((ROOT / "config/PARAMETROS-MOTORES-2026-09-09.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(p["parametros"]), 30)

@@ -1,8 +1,61 @@
 {
   "versao": 1,
+  "armadilhas": [
+    {
+      "url": "https://goias.gov.br/cultura/termos-de-fomento",
+      "motivo": "lista de termos JÁ CELEBRADOS por inexigibilidade: não há fase de inscrição e nunca haverá prazo",
+      "verificado_em": "2026-09-08"
+    },
+    {
+      "url": "https://goias.gov.br/cultura/ (secao de noticias)",
+      "motivo": "durante o periodo de restricoes eleitorais o portal SUSPENDE a divulgacao de noticias: a pagina responde com o comunicado 'em cumprimento a legislacao eleitoral, este portal tera a divulgacao de noticias temporariamente suspensa'. As paginas de EDITAIS continuam no ar e completas — foi por elas que os 14 editais do PNAB 2026 e os cronogramas retificados foram lidos. Um monitor que le a secao de noticias conclui que nao ha nada publicado, e conclui errado. Em periodo eleitoral, mirar /cultura/pnab/edital-2026-pnab/ e /cultura/chamamentos-publicos-*, nunca as noticias.",
+      "verificado_em": "2026-09-09"
+    },
+    {
+      "url": "https://goias.gov.br/cultura/pnab/edital-2026-pnab/",
+      "motivo": "nao e armadilha, e a rota certa: esta pagina lista os 14 editais do PNAB 2026 com o PDF de cada um e TODAS as retificacoes de cronograma. As datas de inscricao nao estao no corpo do edital, estao nos anexos de cronograma e nas erratas publicadas no Diario Oficial — e ha seis retificacoes so nos editais 04 e 06. Ler o edital e ignorar as erratas produz prazo errado. Alguns anexos de cronograma sao PDF digitalizado e exigem OCR.",
+      "verificado_em": "2026-09-09"
+    },
+    {
+      "url": "https://fundacaomariaemilia.org.br/",
+      "motivo": "certificado SSL inválido (hostname mismatch): não abre nem por requisição nem por navegador. O Edital FME Transforma 02/2026 existe e a imprensa especializada informa inscrições até 30/10/2026, mas o único canal citado é um formulário do Google, que não é domínio do patrocinador. Fica como pendência de fonte oficial, sem data registrada.",
+      "verificado_em": "2026-09-09"
+    },
+    {
+      "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/patrocinios",
+      "motivo": "portal em JavaScript: requisição simples devolve só metadados, e o conteúdo só aparece com navegador. É vetor permanente, não edital — a Escolha Direta é fluxo contínuo por formulário, e os ciclos indicativos de 2026 (limites 08/02, 08/03, 12/04, 07/06 e 09/08) já venceram. Revisitar quando saírem os de 2027.",
+      "verificado_em": "2026-09-09"
+    },
+    {
+      "url": "https://pncp.gov.br/api/consulta/v1/",
+      "motivo": "a API oficial do PNCP devolve HTTP 429 a partir de cerca de 14 requisições seguidas em ritmo rápido. Com intervalo de 2,5 s e recuo progressivo no 429, 317 consultas passaram sem um único erro. Consultar em fila, nunca em paralelo.",
+      "verificado_em": "2026-09-09"
+    },
+    {
+      "url": "https://captadores.org.br/editais/",
+      "motivo": "útil só para descobrir o NOME do patrocinador e do edital, como manda a regra do titular. Nesta rodada as datas de duas chamadas do Funbio estavam vencidas em relação à página oficial (prorrogação não refletida), e um edital de Santa Luzia do Paruá/MA descrito como 'Diálogo Competitivo 002/2026' não existe no portal de licitações do município. Nunca usar como fonte de prazo.",
+      "verificado_em": "2026-09-09"
+    },
+    {
+      "url": "portaldecompraspublicas.com.br | bllcompras.com | licitamaisbrasil.com.br | bnccompras.com | licitanet.com.br | licitardigital.com.br",
+      "motivo": "plataformas privadas de licitação: 86 dos 408 registros do PNCP tinham o link capturado apontando para uma delas, sem a chave do PNCP no endereço. A saída é a busca oficial `pncp.gov.br/api/search/?q=<termos>&tipos_documento=edital`, que devolve `item_url` no formato /compras/{cnpj}/{ano}/{sequencial}` — foi assim que 12 registros voltaram a ter página oficial.",
+      "verificado_em": "2026-09-09"
+    },
+    {
+      "url": "https://observatorio3setor.org.br",
+      "motivo": "veiculo jornalistico. Em 09/09/2026 quatro textos de edital guardados no repositorio eram o MIDIA KIT deste site, nao o edital: o extrator seguiu o link da noticia e guardou a pagina institucional do veiculo. Os arquivos foram descartados. Serve para descobrir o nome do patrocinador e do edital; nunca como fonte de prazo nem de texto.",
+      "verificado_em": "2026-09-09"
+    }
+  ],
   "resumo": {
-    "gerado_em": "2026-09-09T21:09:41+00:00",
+    "gerado_em": "2026-09-10T00:14:00+00:00",
     "total": 260,
+    "curadoria": {
+      "aplicada": true,
+      "sites_reaplicados": 39,
+      "fontes": 21,
+      "armadilhas": 9
+    },
     "goias_goiania": 101,
     "com_site": 248,
     "confianca": {
@@ -11,7 +64,7 @@
       "pendente": 12,
       "generica": 9
     },
-    "dominios_distintos": 63,
+    "dominios_distintos": 67,
     "top_dominios": [
       [
         "goias.gov.br",
@@ -42,8 +95,16 @@
         31
       ],
       [
+        "www.goias.gov.br",
+        21
+      ],
+      [
         "www.in.gov.br",
         18
+      ],
+      [
+        "pnab.cultura.go.gov.br",
+        16
       ],
       [
         "www.bndes.gov.br",
@@ -64,14 +125,6 @@
       [
         "www.mpgo.mp.br",
         6
-      ],
-      [
-        "www.tjgo.jus.br",
-        5
-      ],
-      [
-        "www.trt18.jus.br",
-        5
       ]
     ],
     "regra": "site confirmado > curado > genérico; sem correspondência fica pendente — nenhum endereço é inventado. A busca ativa confere cada site ao abrir."
@@ -1501,17 +1554,27 @@
       "orgao": "FICA — Festival Internacional de Cinema e Vídeo Ambiental (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://fica.go.gov.br",
+        "https://web.ufg.br/plateia-editais/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "fica.go.gov.br",
+        "goias.gov.br",
+        "web.ufg.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -1807,17 +1870,23 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -1892,17 +1961,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -1918,17 +1995,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -1944,17 +2029,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -1970,17 +2063,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -1996,17 +2097,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2022,17 +2131,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2048,17 +2165,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2074,17 +2199,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2100,17 +2233,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2126,17 +2267,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2152,17 +2301,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2178,17 +2335,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2204,17 +2369,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2230,17 +2403,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2256,17 +2437,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2282,17 +2471,25 @@
       "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
       "sites": [
         "https://goias.gov.br/cultura/",
-        "https://diariooficial.abc.go.gov.br/"
+        "https://diariooficial.abc.go.gov.br/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+        "https://pnab.cultura.go.gov.br"
       ],
       "dominios": [
         "diariooficial.abc.go.gov.br",
-        "goias.gov.br"
+        "goias.gov.br",
+        "pnab.cultura.go.gov.br",
+        "www.goias.gov.br"
       ],
       "confianca_site": "curada",
       "padrao": {
         "natureza": "recurso",
         "canal": "portais_estaduais + querido_diario",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2313,11 +2510,13 @@
         "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndi",
         "https://www.goiania.go.gov.br/semasdh/",
         "https://www.gov.br/mds/pt-br/orgaos-colegiados/conselho-nacional-de-assistencia-social-cnas",
-        "https://goias.gov.br/cultura/"
+        "https://goias.gov.br/cultura/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/"
       ],
       "dominios": [
         "goias.gov.br",
         "www.goiania.go.gov.br",
+        "www.goias.gov.br",
         "www.gov.br"
       ],
       "confianca_site": "confirmada",
@@ -2325,6 +2524,10 @@
         "natureza": "recurso",
         "canal": "querido_diario + varredura_html",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2345,11 +2548,13 @@
         "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndi",
         "https://www.goiania.go.gov.br/semasdh/",
         "https://www.gov.br/mds/pt-br/orgaos-colegiados/conselho-nacional-de-assistencia-social-cnas",
-        "https://goias.gov.br/cultura/"
+        "https://goias.gov.br/cultura/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/"
       ],
       "dominios": [
         "goias.gov.br",
         "www.goiania.go.gov.br",
+        "www.goias.gov.br",
         "www.gov.br"
       ],
       "confianca_site": "confirmada",
@@ -2357,6 +2562,10 @@
         "natureza": "recurso",
         "canal": "querido_diario + varredura_html",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {
@@ -2377,11 +2586,13 @@
         "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndi",
         "https://www.goiania.go.gov.br/semasdh/",
         "https://www.gov.br/mds/pt-br/orgaos-colegiados/conselho-nacional-de-assistencia-social-cnas",
-        "https://goias.gov.br/cultura/"
+        "https://goias.gov.br/cultura/",
+        "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/"
       ],
       "dominios": [
         "goias.gov.br",
         "www.goiania.go.gov.br",
+        "www.goias.gov.br",
         "www.gov.br"
       ],
       "confianca_site": "confirmada",
@@ -2389,6 +2600,10 @@
         "natureza": "recurso",
         "canal": "querido_diario + varredura_html",
         "confianca_rota": "primaria"
+      },
+      "curadoria": {
+        "conferido_em": "2026-09-08",
+        "por": "navegador do titular"
       }
     },
     {

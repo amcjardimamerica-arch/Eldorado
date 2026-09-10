@@ -917,11 +917,15 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
     com_parecer = ({f"{p.parent.parent.name}/{p.parent.name}"
                     for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
     com_parecer |= conjunto("*/*/conselho.json")
+    _dups = _duplicatas()
     for e in editais:
         _ex = load_json(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{e['id']}.json").exists() else {}
         e.update(classificar_registro(e, _ex))
         _integrar_analise(e)
-        e.update(selo_validacao(e, _ex))                              # Biblioteca (extraídos/complementos) alimenta a Bússola e todos os painéis
+        e.update(selo_validacao(e, _ex))
+        if e["id"] in _dups:                                  # duplicata prevalece sobre a classificação
+            e["tipo_registro"] = "duplicata"; e["duplicata_de"] = _dups[e["id"]]["canonico"]
+            e["motivo_tipo"] = f"mesmo edital de {_dups[e['id']]['titulo']} — captado por outra fonte"                              # Biblioteca (extraídos/complementos) alimenta a Bússola e todos os painéis
         e["area"] = area_canonica(e.get("area"))
         e["calendario_ok"] = _apto_ao_calendario(e)
         si = situacao_inscricao(e, hoje)
@@ -1138,6 +1142,18 @@ TIPO_RX = [
     (re.compile(r"credenciamento", re.I), "credenciamento", "credenciamento de prestadores — habilitação para prestar serviço, não fomento a projeto"),
     (re.compile(r"chamamento p[úu]blico|termo de (fomento|colabora)|edital|sele[çc][ãa]o p[úu]blica|pr[êe]mio|chamada p[úu]blica|fomento", re.I), "edital", "chamamento/edital: candidato a oportunidade"),
 ]
+
+
+def _duplicatas() -> dict:
+    """Registros que são o MESMO edital captado por fontes diferentes: só o canônico conta."""
+    arq = ROOT / "dados/editais/duplicatas.json"
+    if not arq.exists():
+        return {}
+    fora = {}
+    for g in load_json(arq).get("grupos", []):
+        for d in g.get("duplicatas", []):
+            fora[d] = {"canonico": g["canonico"], "titulo": g.get("titulo"), "motivo": g.get("motivo")}
+    return fora
 
 
 def selo_validacao(e: dict, ex: dict | None = None) -> dict:
@@ -1660,6 +1676,7 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                 "situacao": situacao_inscricao(o, hoje)["situacao"],
                 "objeto": (o.get("objeto") or "")[:200] or None,
                 "confirmacao": (o.get("confirmacao") or {}).get("nivel_confirmacao") if isinstance(o.get("confirmacao"), dict) else None,
+
                 **(lambda _ex: {**classificar_registro(o, _ex),
                                 **({"fim": _data_de((_ex.get("verificacao_externa") or {}).get("prazo") or ""),
                                     "inicio": _data_de((_ex.get("verificacao_externa") or {}).get("inicio") or ""),
@@ -1667,6 +1684,8 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                                     "origem_fim": "verificação externa pelo titular (site oficial)"}
                                    if (_ex.get("verificacao_externa") or {}).get("prazo") else {})}
                   )(load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}),
+                **({"tipo_registro": "duplicata", "duplicata_de": _duplicatas()[o["id"]]["canonico"],
+                    "motivo_tipo": "mesmo edital captado por outra fonte"} if o["id"] in _duplicatas() else {}),
                 **{k: v for k, v in selo_validacao(o, load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}).items()},
             })
         abertas.sort(key=lambda x: (x["area"] == "outros", x.get("uf") != "GO", x.get("coletado_em") or ""), )
