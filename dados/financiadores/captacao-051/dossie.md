@@ -12,6 +12,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Chamamento público](https://goias.gov.br/esporte/chamamento-publico) — coletado em 2026-09-10T00:29:57+00:00
-- [Copa Quilombola premia campeões da 5ª edição em fase final realizada em Caldas Novas](https://goias.gov.br/esporte/copa-quilombola-premia-campeoes-da-5a-edicao-em-fase-final-realizada-em-caldas-novas) — coletado em 2026-09-10T00:30:26+00:00
-- [Aviso de Chamamento Público – Complexo Serra Dourada](https://goias.gov.br/esporte/aviso-de-chamamento-publico-complexo-serra-dourada) — coletado em 2026-09-10T00:30:04+00:00
+- [Chamamento público](https://goias.gov.br/esporte/chamamento-publico) — coletado em 2026-09-05T05:29:21+00:00
+- [Copa Quilombola premia campeões da 5ª edição em fase final realizada em Caldas Novas](https://goias.gov.br/esporte/copa-quilombola-premia-campeoes-da-5a-edicao-em-fase-final-realizada-em-caldas-novas) — coletado em 2026-09-05T05:29:38+00:00
+- [Aviso de Chamamento Público – Complexo Serra Dourada](https://goias.gov.br/esporte/aviso-de-chamamento-publico-complexo-serra-dourada) — coletado em 2026-09-05T05:29:25+00:00
