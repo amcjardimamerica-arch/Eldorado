@@ -154,6 +154,22 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
         self.assertEqual(an["c5c7e37e2e275d2e69fe"]["selo"], "inconformidade")
         self.assertTrue(an["c5c7e37e2e275d2e69fe"]["verificacoes"]["territorio_incompativel"])
 
+    def test_etapa_sobe_com_a_verificacao_individual(self):
+        """09/09: 27 editais já verificados continuavam contados como 'em verificação'
+        na tela inicial, porque a etapa só subia por verificação dupla do robô."""
+        from src.dashboard_dados import etapa_do_edital
+        base = dict(decididos=set(), preparados=set(), com_parecer=set())
+        self.assertEqual(etapa_do_edital({"id": "x"}, **base)["etapa"], 1)
+        self.assertEqual(etapa_do_edital({"id": "x", "_verificado": True}, **base)["etapa"], 2)
+        self.assertEqual(etapa_do_edital({"id": "x", "verificacao_dupla": True}, **base)["etapa"], 2)
+        d = json.loads((ROOT / "docs/dashboard-dados.json").read_text(encoding="utf-8"))
+        an = d.get("analise_editais", {})
+        em_ver = [e for e in d["editais"] if (e.get("etapa") or 1) == 1 and e.get("estado_export") in ("aberto", "a_abrir", "sem_prazo")]
+        self.assertEqual(sum(1 for e in em_ver if e["id"] in an), 0)      # nenhum analisado fica em verificação
+        subiram = [e for e in d["editais"] if (e.get("etapa") or 1) >= 2 and e.get("verificado_por")]
+        self.assertGreaterEqual(len(subiram), 20)
+        self.assertTrue(all(e.get("verificado_em") for e in subiram[:5]))
+
     def test_parametros_e_evidencias_no_repositorio(self):
         p = json.loads((ROOT / "config/PARAMETROS-MOTORES-2026-09-09.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(p["parametros"]), 30)

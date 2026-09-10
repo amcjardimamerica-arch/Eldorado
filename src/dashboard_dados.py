@@ -878,6 +878,11 @@ def _so_completos(editais: list[dict], hoje: date) -> list[dict]:
 TIPOS_DECISAO = ("resultado_preliminar", "resultado_final", "recurso")
 
 
+def _carrega_analises() -> dict:
+    arq = ROOT / "dados/editais/analises.json"
+    return load_json(arq) if arq.exists() else {}
+
+
 def etapa_do_edital(e: dict, decididos: set, preparados: set,
                     com_parecer: set) -> dict:
     """Em que etapa do fluxo este edital está — a mesma numeração do painel.
@@ -897,6 +902,11 @@ def etapa_do_edital(e: dict, decididos: set, preparados: set,
     elif ident and ident in com_parecer:
         n = 3
     elif e.get("verificacao_dupla") or e.get("confirmacao") == "confirmado_documental":
+        n = 2
+    elif e.get("_verificado"):
+        # 09/09: a verificação individual (do titular ou do agente) CONFIRMA o registro.
+        # Antes, 27 editais já analisados continuavam contados como "em verificação"
+        # na tela inicial, porque a etapa só subia por verificação dupla do robô.
         n = 2
     else:
         n = 1
@@ -918,6 +928,7 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
                     for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
     com_parecer |= conjunto("*/*/conselho.json")
     _dups = _duplicatas()
+    etapa_do_edital._an = _carrega_analises()
     for e in editais:
         _ex = load_json(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{e['id']}.json").exists() else {}
         e.update(classificar_registro(e, _ex))
@@ -932,7 +943,12 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
         e["situacao_inscricao"] = si["situacao"]; e["regime_inscricao"] = si["regime"]; e["base_situacao"] = si["base"]
         if e.get("sem_edital") or e.get("janela_confirmada"):   # etapa e ciclo próprios
             continue
+        _an = (load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}).get(e["id"]) if not hasattr(etapa_do_edital, "_an") else etapa_do_edital._an.get(e["id"])
+        e["_verificado"] = bool(_an and _an.get("selo") in ("conformidade", "inconformidade", "analise_incompleta"))
+        if _an:
+            e["verificado_em"] = _an.get("em", "")[:10]; e["verificado_por"] = _an.get("por")
         e.update(etapa_do_edital(e, decididos, preparados, com_parecer))
+        e.pop("_verificado", None)
         e["ciclo"] = ciclo_do_edital(e)
     return editais
 
@@ -1133,6 +1149,8 @@ def _integrar_analise(e: dict) -> None:
         e.setdefault("ciclo", {})["resultado"] = {"data": res, "origem": fontes.get("Resultado") or "análise"}
     if ex.get("pagina_divulgacao"):
         e["pagina_divulgacao"] = ex["pagina_divulgacao"]
+        if ex.get("pagina_travada"):
+            e["pagina_travada"] = ex["pagina_travada"]
     e["analise"] = {"itens": len([k for k, v in itens.items() if v]), "completo": ex.get("completo"), "em": (ex.get("atualizado_em") or "")[:10]}
 
 

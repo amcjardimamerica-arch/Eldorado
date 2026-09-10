@@ -820,7 +820,8 @@ def ingerir_navegador() -> dict:
             if v.get("objeto"): itens["Objeto"] = str(v["objeto"])[:400]; fontes["Objeto"] = "coleta pelo navegador (titular) — página oficial"
             if v.get("fim"): itens["Prazo de inscrição"] = str(v["fim"])[:40]; fontes["Prazo de inscrição"] = "coleta pelo navegador (titular) — edital"
             if v.get("inicio"): itens["Início das inscrições"] = str(v["inicio"])[:40]
-            if pag: reg["pagina_divulgacao"] = pag
+            if pag and not reg.get("pagina_travada"):
+                reg["pagina_divulgacao"] = pag
             if v.get("observacao"): reg.setdefault("observacoes", []).append({"em": now_iso()[:10], "texto": str(v["observacao"])[:300]})
             faltam = [i for i in ITENS if not itens.get(i)]
             reg.update({"itens": itens, "fontes_itens": fontes, "faltam": faltam, "completo": not faltam, "atualizado_em": now_iso()})
