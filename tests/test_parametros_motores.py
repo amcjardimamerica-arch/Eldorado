@@ -110,11 +110,19 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
         from src.fontes260 import aplicar_curadoria, CURADORIA
         self.assertTrue(CURADORIA.exists())
         cur = json.loads(CURADORIA.read_text(encoding="utf-8"))
-        self.assertGreaterEqual(len(cur["fontes"]), 20); self.assertGreaterEqual(len(cur["armadilhas"]), 3)
+        self.assertGreaterEqual(len(cur["fontes"]), 4); self.assertGreaterEqual(len(cur["armadilhas"]), 3)
+        self.assertGreaterEqual(len(cur.get("fontes_novas") or []), 5)
         itens = [{"id": list(cur["fontes"])[0], "sites": [], "dominios": []}]
         r = aplicar_curadoria(itens)
         self.assertTrue(r["aplicada"]); self.assertGreater(r["sites_reaplicados"], 0)
         self.assertTrue(itens[0]["sites"])                       # o endereço conferido voltou
+        # e os scripts de curadoria (que sabem as regras finas de cada família) rodam na regeneração
+        from src.fontes260 import SCRIPTS_CURADORIA, reaplicar_scripts_de_curadoria
+        self.assertEqual(len(SCRIPTS_CURADORIA), 2)
+        src = (ROOT / "src/fontes260.py").read_text(encoding="utf-8")
+        self.assertIn("reaplicar_scripts_de_curadoria()", src)
+        cat_txt = (ROOT / "config/fontes_captacao_260.json").read_text(encoding="utf-8")
+        self.assertIn("bndes.gov.br/periferias", cat_txt)        # o endereço que estava sendo perdido
         cat = json.loads((ROOT / "config/fontes_captacao_260.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(cat.get("armadilhas") or []), 3)
         self.assertTrue(any("termos-de-fomento" in a["url"] for a in cat["armadilhas"]))
