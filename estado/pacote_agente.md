@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## 71f1af059c45f010339a — A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO QUE REALIZARÁ CHAMAMENTO PÚBLICO, POR CREDENCIAMENTO, PARA SELECIONAR EMPRESA DO RAMO DA CONSTRUÇÃO CIVIL, COM COMPROVADA CAPACIDADE TÉCNICA, INTERESSADA EM APRESENTAR PROJETOS E CONSTRUIR UNIDADES HABITACIONAIS EM LOTES E ÁREA DE PROPRIEDADE DO
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 32× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 33× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): PNCP — MUNICIPIO DE NOVO GAMA · UF GO · nível municipal · situação possivel · fim None
 
@@ -34,7 +34,7 @@ Texto do edital (compacto):
 ---
 ## 5b991f651a1905c579de — Realização de Chamamento Público visando a Seleção de Agentes Culturais de Audiovisual que tenham prestado relevante contribuição ao desenvo
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 29× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 30× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): PNCP — MUNICIPIO DE ALVORADA DO NORTE · UF GO · nível municipal · situação possivel · fim None
 
