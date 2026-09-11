@@ -1,11 +1,11 @@
-commit: b1226de00248d82b8e87d225fa2c2b342144b9f6
-em: 2026-09-11T03:06:31Z
+commit: 1cf57aab97c870e017abd5366ae7c9e870129bc8
+em: 2026-09-11T04:07:56Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 344 tests in 312.003s
+Ran 344 tests in 266.826s
 
-FAILED (failures=1, errors=1, skipped=9)
+FAILED (errors=1, skipped=9)
 ---- falhas ----
 ERROR: test_p51_curadoria_sobrevive_a_regeneracao (test_parametros_motores.TesteParametrosDaAuditoria.test_p51_curadoria_sobrevive_a_regeneracao)
 P51: a regeneração do catálogo apagava os endereços conferidos, os testes de
@@ -15,17 +15,7 @@ Traceback (most recent call last):
     from src.fontes260 import aplicar_curadoria, CURADORIA
 ImportError: cannot import name 'aplicar_curadoria' from 'src.fontes260' (/home/runner/work/Eldorado/Eldorado/src/fontes260.py)
 
-======================================================================
-FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
-Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3781, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
-    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'futuro' == 'futuro'
+Ran 344 tests in 266.826s
 
-----------------------------------------------------------------------
-Ran 344 tests in 312.003s
-
-FAILED (failures=1, errors=1, skipped=9)
+FAILED (errors=1, skipped=9)
