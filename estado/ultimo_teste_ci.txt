@@ -1,11 +1,11 @@
-commit: baab83cc5ce411622f5e6ab078f74e142f926331
-em: 2026-09-11T09:09:12Z
+commit: ed72c4bf8259dfc0f6daa7d763bf2108e66f0a2a
+em: 2026-09-12T07:28:49Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 344 tests in 238.402s
+Ran 344 tests in 362.999s
 
-FAILED (failures=1, errors=1, skipped=9)
+FAILED (failures=4, errors=1, skipped=9)
 ---- falhas ----
 ERROR: test_p51_curadoria_sobrevive_a_regeneracao (test_parametros_motores.TesteParametrosDaAuditoria.test_p51_curadoria_sobrevive_a_regeneracao)
 P51: a regeneração do catálogo apagava os endereços conferidos, os testes de
@@ -14,6 +14,37 @@ Traceback (most recent call last):
   File "/home/runner/work/Eldorado/Eldorado/tests/test_parametros_motores.py", line 110, in test_p51_curadoria_sobrevive_a_regeneracao
     from src.fontes260 import aplicar_curadoria, CURADORIA
 ImportError: cannot import name 'aplicar_curadoria' from 'src.fontes260' (/home/runner/work/Eldorado/Eldorado/src/fontes260.py)
+
+======================================================================
+FAIL: test_restricao_territorial_do_renner (test_parametros_motores.TesteParametrosDaAuditoria.test_restricao_territorial_do_renner)
+O edital Encantando Comunidades é real e aberto, mas restrito a municípios de
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_parametros_motores.py", line 150, in test_restricao_territorial_do_renner
+    self.assertEqual(ex["pagina_divulgacao"], "https://www.institutolojasrenner.org.br/edital-encantando-comunidades/")
+AssertionError: 'https://observatorio3setor.org.br/instituto-lojas[69 chars]iais' != 'https://www.institutolojasrenner.org.br/edital-en[17 chars]des/'
+- https://observatorio3setor.org.br/instituto-lojas-renner-abre-edital-com-ate-r-10-mil-para-fortalecer-organizacoes-sociais
++ https://www.institutolojasrenner.org.br/edital-encantando-comunidades/
+
+
+======================================================================
+FAIL: test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida (test_system.SystemTests.test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4031, in test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida
+    self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
+
+======================================================================
+FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
+Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3781, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
+    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'futuro' == 'futuro'
 
 ======================================================================
 FAIL: test_mapa_so_com_oportunidades_reais (test_system.SystemTests.test_mapa_so_com_oportunidades_reais)
@@ -26,6 +57,6 @@ Traceback (most recent call last):
 AssertionError: False is not true
 
 ----------------------------------------------------------------------
-Ran 344 tests in 238.402s
+Ran 344 tests in 362.999s
 
-FAILED (failures=1, errors=1, skipped=9)
+FAILED (failures=4, errors=1, skipped=9)
