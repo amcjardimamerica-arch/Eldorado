@@ -3,8 +3,8 @@
 - Classe: `doadores`
 - Fonte: `petrobras`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 5
-- Distribuição por ano pesquisado/coletado: {'2022': 5}
+- Pistas aguardando confirmação: 6
+- Distribuição por ano pesquisado/coletado: {'2022': 5, '2023': 1}
 
 ## Padrões
 
@@ -17,3 +17,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Acesso à Informação e Contas Abertas | Portal da Transparência Petrobras](https://transparencia.petrobras.com.br/) — coletado em 2026-09-11T21:10:28+00:00
 - [Brazilian Energy | Petrobras](https://petrobras.com.br/en) — coletado em 2026-09-11T21:10:28+00:00
 - [O Brasil é a nossa Energia | Petrobras](https://petrobras.com.br/) — coletado em 2026-09-11T21:10:28+00:00
+- [Petrobras News Agency - Agência](https://agencia.petrobras.com.br/en) — coletado em 2026-09-12T02:27:37+00:00
