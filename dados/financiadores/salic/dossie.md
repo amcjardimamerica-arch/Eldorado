@@ -12,8 +12,8 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Apoio a projetos incentivados](https://www.gov.br/cultura/pt-br/assuntos/lei-rouanet) — coletado em 2026-09-10T00:22:05+00:00
-- [Política Nacional Aldir Blanc de Fomento à Cultura](https://www.gov.br/cultura/pt-br/acesso-a-informacao/perguntas-frequentes/politica-nacional-aldir-blanc) — coletado em 2026-09-10T00:22:13+00:00
-- [Política Nacional Aldir Blanc de Fomento à Cultura](https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/politica-nacional-aldir-blanc-de-fomento-a-cultura) — coletado em 2026-09-10T00:22:19+00:00
-- [Editais de Chamamento Público](https://www.gov.br/cultura/pt-br/assuntos/editais) — coletado em 2026-09-10T00:22:08+00:00
-- [Secretaria de Fomento e Incentivo à Cultura](https://www.gov.br/cultura/pt-br/composicao/secretaria-de-economia-criativa-e-fomento-cultural) — coletado em 2026-09-10T00:22:29+00:00
+- [Apoio a projetos incentivados](https://www.gov.br/cultura/pt-br/assuntos/lei-rouanet) — coletado em 2026-09-12T09:18:38+00:00
+- [Política Nacional Aldir Blanc de Fomento à Cultura](https://www.gov.br/cultura/pt-br/acesso-a-informacao/perguntas-frequentes/politica-nacional-aldir-blanc) — coletado em 2026-09-12T09:18:44+00:00
+- [Política Nacional Aldir Blanc de Fomento à Cultura](https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/politica-nacional-aldir-blanc-de-fomento-a-cultura) — coletado em 2026-09-12T09:18:49+00:00
+- [Editais de Chamamento Público](https://www.gov.br/cultura/pt-br/assuntos/editais) — coletado em 2026-09-12T09:18:40+00:00
+- [Secretaria de Fomento e Incentivo à Cultura](https://www.gov.br/cultura/pt-br/composicao/secretaria-de-economia-criativa-e-fomento-cultural) — coletado em 2026-09-12T09:18:58+00:00
