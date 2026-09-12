@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `abcr`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 16
-- Distribuição por ano pesquisado/coletado: {'2026': 16}
+- Pistas aguardando confirmação: 17
+- Distribuição por ano pesquisado/coletado: {'2026': 17}
 
 ## Padrões
 
@@ -17,6 +17,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Fundação Maria Emília abre edital com apoio de até R$ 1 milhão para projetos em saúde e educação](https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao) — coletado em 2026-09-05T05:22:07+00:00
 - [Continue lendo Banrisul abre edital para premiar 50 organizações do Rio Grande do Sul](https://captadores.org.br/editais/banrisul-abre-edital-para-premiar-50-organizacoes-do-rio-grande-do-sul) — coletado em 2026-09-05T05:21:49+00:00
 - [Certificadora Social](https://captadores.org.br/certificadora-social) — coletado em 2026-09-05T05:20:38+00:00
+- [ACTC – Casa do Coração abre vaga para Assistente Pleno de Captação de Recursos](https://captadores.org.br/vagas/actc-casa-do-coracao-abre-vaga-para-assistente-pleno-de-captacao-de-recursos) — coletado em 2026-09-12T09:17:56+00:00
 - [Curso gratuito vai apoiar organizações de base na mobilização da generosidade local](https://captadores.org.br/noticias/curso-gratuito-vai-apoiar-organizacoes-de-base-na-mobilizacao-da-generosidade-local) — coletado em 2026-09-11T05:22:24+00:00
 - [Continue lendo Instituto Lojas Renner abre edital para fortalecer organizações sociais em três estados](https://captadores.org.br/editais/instituto-lojas-renner-abre-edital-para-fortalecer-organizacoes-sociais-em-tres-estados) — coletado em 2026-09-05T05:21:02+00:00
 - [Continue lendo ONGs e coletivos periféricos do Nordeste podem se inscrever em edital que oferece apoio de R$ 300 mil até o dia 12](https://captadores.org.br/editais/ongs-e-coletivos-perifericos-do-nordeste-podem-se-inscrever-em-edital-que-oferece-apoio-de-r-300-mil-ate-o-dia-12) — coletado em 2026-09-05T05:21:41+00:00
