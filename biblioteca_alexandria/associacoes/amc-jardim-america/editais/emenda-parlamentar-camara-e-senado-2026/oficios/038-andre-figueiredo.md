@@ -1,4 +1,4 @@
-Ofício nº 038/2026 – AMC-JA      Goiânia, 11 de setembro de 2026.
+Ofício nº 038/2026 – AMC-JA      Goiânia, 12 de setembro de 2026.
 
 Ao Excelentíssimo Senhor
 

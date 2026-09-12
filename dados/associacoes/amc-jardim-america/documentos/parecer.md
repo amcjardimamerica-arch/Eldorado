@@ -36,4 +36,4 @@
 
 **Prontidão documental:** 0/5 certidões válidas · 5/6 registrados enviados.
 
-_Gerado em 2026-09-11T09:19 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._
+_Gerado em 2026-09-12T11:09 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._
