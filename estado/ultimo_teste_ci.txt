@@ -1,11 +1,11 @@
-commit: 8b77cb7918ba6bc29fb0ef58c3ad5793583d372d
-em: 2026-09-12T12:38:25Z
+commit: 9f1bbf51f34e986a77aaf083a072c555d627095d
+em: 2026-09-13T06:23:54Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 344 tests in 320.139s
+Ran 344 tests in 377.466s
 
-FAILED (failures=3, errors=1, skipped=9)
+FAILED (failures=4, errors=1, skipped=9)
 ---- falhas ----
 ERROR: test_p51_curadoria_sobrevive_a_regeneracao (test_parametros_motores.TesteParametrosDaAuditoria.test_p51_curadoria_sobrevive_a_regeneracao)
 P51: a regeneração do catálogo apagava os endereços conferidos, os testes de
@@ -37,6 +37,16 @@ Traceback (most recent call last):
 AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
 
 ======================================================================
+FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
+Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3781, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
+    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'futuro' == 'futuro'
+
+======================================================================
 FAIL: test_mapa_so_com_oportunidades_reais (test_system.SystemTests.test_mapa_so_com_oportunidades_reais)
 07/09: o Mapa mostrava 310 em Goiás porque contava 306 edições inteiras de
 ----------------------------------------------------------------------
@@ -47,6 +57,6 @@ Traceback (most recent call last):
 AssertionError: False is not true
 
 ----------------------------------------------------------------------
-Ran 344 tests in 320.139s
+Ran 344 tests in 377.466s
 
-FAILED (failures=3, errors=1, skipped=9)
+FAILED (failures=4, errors=1, skipped=9)
