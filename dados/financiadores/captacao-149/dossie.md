@@ -12,7 +12,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [EDITAL CHAMAMENTO PÚBLICO Nº 001/2026 (OSS)](https://saude.goiania.go.gov.br/editas-de-chamamento-publico/edital-de-chamamento-publico-no-001-2026) — coletado em 2026-09-13T10:17:32+00:00
-- [Editais de Chamamento](https://saude.goiania.go.gov.br/editas-de-chamamento-publico) — coletado em 2026-09-13T10:17:36+00:00
-- [EDITAL CHAMAMENTO PÚBLICO Nº 003/2025](https://saude.goiania.go.gov.br/editas-de-chamamento-publico/edital-de-chamamento-publico-no-003-2025) — coletado em 2026-09-13T10:17:34+00:00
-- [Aviso de Chamamento Público](https://saude.goiania.go.gov.br/editas-de-chamamento-publico/aviso-de-chamamento-publico-3) — coletado em 2026-09-13T10:17:40+00:00
+- [EDITAL CHAMAMENTO PÚBLICO Nº 001/2026 (OSS)](https://saude.goiania.go.gov.br/editas-de-chamamento-publico/edital-de-chamamento-publico-no-001-2026) — coletado em 2026-09-14T10:39:31+00:00
+- [Editais de Chamamento](https://saude.goiania.go.gov.br/editas-de-chamamento-publico) — coletado em 2026-09-14T10:39:35+00:00
+- [EDITAL CHAMAMENTO PÚBLICO Nº 003/2025](https://saude.goiania.go.gov.br/editas-de-chamamento-publico/edital-de-chamamento-publico-no-003-2025) — coletado em 2026-09-14T10:39:33+00:00
+- [Aviso de Chamamento Público](https://saude.goiania.go.gov.br/editas-de-chamamento-publico/aviso-de-chamamento-publico-3) — coletado em 2026-09-14T10:39:39+00:00
