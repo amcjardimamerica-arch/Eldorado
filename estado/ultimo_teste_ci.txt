@@ -1,9 +1,9 @@
-commit: 690b910c0a29f3291655e3a382ee0fc94f8b608c
-em: 2026-09-15T11:22:03Z
+commit: b719b23ec7a6b6507ea0d2467031eac6d7c34d4f
+em: 2026-09-15T12:29:31Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 344 tests in 291.845s
+Ran 344 tests in 343.523s
 
 FAILED (failures=2, errors=1, skipped=9)
 ---- falhas ----
@@ -28,16 +28,15 @@ AssertionError: 'https://observatorio3setor.org.br/instituto-lojas[69 chars]iais
 
 
 ======================================================================
-FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
-Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
+FAIL: test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida (test_system.SystemTests.test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3781, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
-    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'futuro' == 'futuro'
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4031, in test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida
+    self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
 
 ----------------------------------------------------------------------
-Ran 344 tests in 291.845s
+Ran 344 tests in 343.523s
 
 FAILED (failures=2, errors=1, skipped=9)
