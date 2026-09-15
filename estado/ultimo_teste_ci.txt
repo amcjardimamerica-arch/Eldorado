@@ -1,11 +1,11 @@
-commit: 85c6f71b75cec6cf16ffa39715f3f66f45065b06
-em: 2026-09-15T09:59:42Z
+commit: 690b910c0a29f3291655e3a382ee0fc94f8b608c
+em: 2026-09-15T11:22:03Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 344 tests in 292.389s
+Ran 344 tests in 291.845s
 
-FAILED (failures=3, errors=1, skipped=9)
+FAILED (failures=2, errors=1, skipped=9)
 ---- falhas ----
 ERROR: test_p51_curadoria_sobrevive_a_regeneracao (test_parametros_motores.TesteParametrosDaAuditoria.test_p51_curadoria_sobrevive_a_regeneracao)
 P51: a regeneração do catálogo apagava os endereços conferidos, os testes de
@@ -28,25 +28,16 @@ AssertionError: 'https://observatorio3setor.org.br/instituto-lojas[69 chars]iais
 
 
 ======================================================================
-FAIL: test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida (test_system.SystemTests.test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida)
+FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
+Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4031, in test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida
-    self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
-
-======================================================================
-FAIL: test_mapa_so_com_oportunidades_reais (test_system.SystemTests.test_mapa_so_com_oportunidades_reais)
-07/09: o Mapa mostrava 310 em Goiás porque contava 306 edições inteiras de
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4112, in test_mapa_so_com_oportunidades_reais
-    self.assertTrue(all(x["id"] in an for x in nao_diario))                     # TODAS as de Goiás verificadas uma a uma
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: False is not true
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3781, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
+    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'futuro' == 'futuro'
 
 ----------------------------------------------------------------------
-Ran 344 tests in 292.389s
+Ran 344 tests in 291.845s
 
-FAILED (failures=3, errors=1, skipped=9)
+FAILED (failures=2, errors=1, skipped=9)
