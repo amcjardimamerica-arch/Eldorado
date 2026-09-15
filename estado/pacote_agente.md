@@ -11,38 +11,38 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 
 
 ---
-## 71f1af059c45f010339a — A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO QUE REALIZARÁ CHAMAMENTO PÚBLICO, POR CREDENCIAMENTO, PARA SELECIONAR EMPRESA DO RAMO DA CONSTRUÇÃO CIVIL, COM COMPROVADA CAPACIDADE TÉCNICA, INTERESSADA EM APRESENTAR PROJETOS E CONSTRUIR UNIDADES HABITACIONAIS EM LOTES E ÁREA DE PROPRIEDADE DO
+## db0bf83f4df2fe2c618a — PNAB 2026: Retificado cronograma dos editais nº 12, 13 e 14/2026
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 68× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 3× · motivo: sem prazo de inscrição confirmado
 
-Fonte (vetor): PNCP — MUNICIPIO DE NOVO GAMA · UF GO · nível municipal · situação possivel · fim None
+Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
-Itens já obtidos: Objeto: Chamamento publico, por credenciamento, da PREFEITURA MUNICIPAL DE NOVO GAMA/GO , Órgão / financiador: Município de Novo Gama (GO), Território: Novo Gama/GO, Esfera: municipal, Destinação: organizações da sociedade civil do município, Área de atuação: outros
+Itens já obtidos: Objeto: Retificação de cronograma dos Editais PNAB 2026 da Secult-GO nº 12, 13 e 14/2026, Órgão / financiador: Secretaria de Estado da Cultura de Goiás (Secult-GO) — Política Nacional Aldir B, Território: GO, Esfera: estadual, Destinação: agentes culturais, coletivos e organizações da sociedade civil de Goiás, Área de atuação: cultura
 
 Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Requisitos, Anexos
 
-Anúncio: https://pncp.gov.br/app/editais/01629276000104/2024/3
+Anúncio: https://goias.gov.br/cultura/pnab-2026-retificado-cronograma-dos-editais-no-12-13-e-14-2026
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
 ```
 ### página institucional
- Licitações - Prefeitura de Novo Gama - GO Habilite o JavaScript para utilizar o NúcleoGov. Menu Início Atos Norm. Portarias Decretos Leis Resoluções Instrução Normativa Conselhos Municipais Atas de Reunião Receitas Receitas Receitas 2018 até 2012 Inscritos em Dívida Ativa Despesas Despesas Rec. Humanos Folha de Pagamento Padrão Remuneratório Lista de Estagiários Lista de Terceirizados Concursos Públicos Processos Seletivos Eleição de Conselhos Municipais Licitações Licitações Licitações Fracassadas e Desertas Dispensas e Inexigibilidades Plano de Contratações Anual (PCA) Sanções Administrativas Avisos de Dispensas Contratos Contratos Fiscais de Contratos Atas de Registro de Preço Ordem Cronológica de Pagamentos Prest. Contas Prestação de Contas (Balanço Anual) Relatório de Gestão ou Atividades Parecer do Tribunal de Contas Julgamento de Contas pelo legislativo Relatórios de Gestão Fiscal Relatórios Resumido de Execução Orçamentária Plano Estratégico Planejamento Orçamentário SIC SIC - Serviço de Informação ao Cidadão Regulamentação da LAI Relatório Estatístico do e-SIC Informações Classificadas como Sigilosas Informações Desclassificadas como Sigilosas Ouvidoria Início Solicitação Elogios Sugestões Reclamações Denúncias Carta de Serviços aos Usuários Ver mais ACESSIBILIDADE A+ A A- Licitações VOCÊ ESTÁ AQUI: &nbsp; PÁGINA INICIAL &nbsp; > &nbsp; Licitações &nbsp; > &nbsp; Licitações . . Portal do Cidadão da Prefeitura de Novo Gama - GO A+ A A- Acessibilidade Alto Contraste Mapa do Site --> Portal do Cidadão Licitações FILTRO Licitações Licitações Fracassadas e Desertas Dispensas e Inexigibilidades Plano de Contratações Anual (PCA) Sanções Administrativas Avisos de Dispensas Declaração de Não Adesão SRP --> --> --> FILTRAR --> --> --> --> Atualizado em 08/09/2026 --> 
+ COMUNICADO &#8211; Cumprimento à Legislação Eleitoral &#8211; Portal Goiás Buscar por: GOIAS.GOV.BR Ir para conteúdo 1 Ir para menu 2 Ir para busca 3 Ir para rodapé 4 A- A A+ Alto contraste Acessibilidade Mapa do site Buscar por: Governo Administração Direta Autarquias e Fundações Empresas Públicas SIGA - Sistema de Gestão Administrativa Conheça Goiás Turismo História Geografia Cultura Economia Municípios Símbolos Estaduais Notícias Legislação Governança Portal da Transparência Dados Abertos e-SIC Ouvidoria Denúncias contra Corrupção LGPD Radar da Transparência Código de Ética PCP SIGA Diário Oficial Acesso à Informação Governo Back Administração Direta Autarquias e Fundações Empresas Públicas SIGA - Sistema de Gestão Administrativa Conheça Goiás Back Turismo História Geografia Cultura Economia Municípios Símbolos Estaduais Notícias Legislação Governança Back Portal da Transparência Dados Abertos e-SIC Ouvidoria Denúncias contra Corrupção LGPD Radar da Transparência Código de Ética PCP SIGA Diário Oficial Acesso à Informação Home &nbsp; &nbsp; Institucional &nbsp; &nbsp; COMUNICADO &#8211; Cumprimento à Legislação Eleitoral COMUNICADO &#8211; Cumprimento à Legislação Eleitoral Publicado em 26 junho 2026 Última Atualização em 26 de junho de 2026 Categoria Institucional Em cumprimento à legislação eleitoral, este portal terá a divulgação de notícias temporariamente suspensa durante o período de restrições previsto para as eleições. A medida tem como objetivo assegurar o pleno atendimento às normas que disciplinam a comunicação institucional dos órgãos públicos durante o período eleitoral, garantindo a observância dos princípios da legalidade, da impessoalidade, da moralidade e da igualdade de oportunidades entre os candidatos. As notícias e demais conteúdos institucionais voltarão a ser publicados após o encerramento do período de restrições estabelecido pela legislação eleitoral. Agradecemos a compreensão. Governo na palma da mão Serviços Expresso Goiás Expresso Aplicações Expresso Servidor SEI Governadoria Cadastro de Autoridades Escola de Governo Outros Sites Governo Federal Assembleia Legislativa do Estado de Goiás Tribunal de Justiça do Estado de Goiás Ministério Público do Estado de Goiás Procuradoria-Geral do Estado de Goiás Controladoria-Geral do Estado de Goiás Diário Oficial Transparência e Ouvidoria LGPD Goiás Transparência Dados Abertos Goiás SIC &#8211; Serviço de Informação ao Cidadão e-SIC &#8211; Serviço Eletrônico de Informação ao Cidadão Regulamentação da LAI Relatório Estatístico da Ouvidoria Canal Telefônico Gratuito &#8211; 162 ou 0800 000 0333 Palácio Pedro Ludovico Teixeira, Rua 82, nº 400 – Setor Central Goiânia/ GO 
 ```
 
 
 ---
-## 5b991f651a1905c579de — Realização de Chamamento Público visando a Seleção de Agentes Culturais de Audiovisual que tenham prestado relevante contribuição ao desenvo
+## ea14b1b3f360d2dc8637 — Instituto Impactarte abre edital para projetos de impacto social com apoio de até R$ 150 mil
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 65× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 10× · motivo: sem prazo de inscrição confirmado
 
-Fonte (vetor): PNCP — MUNICIPIO DE ALVORADA DO NORTE · UF GO · nível municipal · situação possivel · fim None
+Fonte (vetor): Observatório do Terceiro Setor — editais · UF BR · nível federal · situação possivel · fim None
 
-Itens já obtidos: Objeto: Edital de Chamamento Publico no 003/2023 do Municipio de Alvorada do Norte/GO - , Órgão / financiador: Município de Alvorada do Norte (GO), Território: Alvorada do Norte/GO, Esfera: municipal, Destinação: organizações da sociedade civil do município, Área de atuação: outros
+Itens já obtidos: Objeto: Edital Continuo de Apoio do Instituto Impactarte: selecionar e apoiar organizaco, Órgão / financiador: Instituto Impactarte, Esfera: privada (filantropia), Valor: Até R$ 150.000,00 por iniciativa, em aporte direto, sem uso de mecanismo de ince, Território: Brasil, Área de atuação: assistencia_social, Destinação: projetos de impacto social por OSCs, Prazo de inscrição: Fluxo contínuo — inscrições abertas durante todo o ano, sem data de encerramento, Requisitos: CNPJ ativo; no mínimo três anos de existência comprovada; constituição como asso
 
-Itens que FALTAM: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Requisitos, Anexos
+Itens que FALTAM: Anexos
 
-Anúncio: https://pncp.gov.br/app/editais/02367597000132/2023/423
+Anúncio: https://observatorio3setor.org.br/instituto-impactarte-abre-edital-para-projetos-de-impacto-social-com-apoio-de-ate-r-150-mil
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):

@@ -8,7 +8,7 @@
 
 **Diretoria:** Presidente: Eduardo Kleber Xavier Lemos · nenhum membro da diretoria é remunerado (Estatuto, art. 1º §1º)
 
-**Utilidade pública:** estadual: Lei Estadual nº 22.137/2023 (Goiás) declarada no documento; verificação automática na Casa Civil de Goiás a cada saída (ver dossiê) — verificação: lei localizada, mas o texto lido não cita a entidade — conferir · federal:  não possui (declarado) · municipal:  'em processo de retirada' — expressão ambígua no documento; esclarecer com a Prefeitura de Goiânia
+**Utilidade pública:** estadual: Lei Estadual nº 22.137/2023 (Goiás) declarada no documento; verificação automática na Casa Civil de Goiás a cada saída (ver dossiê) — verificação: não verificável automaticamente (URLError) — conferir manualmente · federal:  não possui (declarado) · municipal:  'em processo de retirada' — expressão ambígua no documento; esclarecer com a Prefeitura de Goiânia
 
 ## Afinidades e enquadramento
 
@@ -36,4 +36,4 @@
 
 **Prontidão documental:** 0/5 certidões válidas · 5/6 registrados enviados.
 
-_Gerado em 2026-09-14T15:45 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._
+_Gerado em 2026-09-13T06:09 — dados autodeclarados não recebem pontuação documental até a evidência ser anexada._
