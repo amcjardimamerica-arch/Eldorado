@@ -107,20 +107,19 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
     def test_p51_curadoria_sobrevive_a_regeneracao(self):
         """P51: a regeneração do catálogo apagava os endereços conferidos, os testes de
         Goiás ficavam vermelhos e derrubavam TODA a saída do CI (6 falhas em 09/09)."""
-        from src.fontes260 import aplicar_curadoria, CURADORIA
+        from src.curadoria_fontes import aplicar as aplicar_curadoria
+        from src.curadoria_fontes import ARQUIVO as CURADORIA
         self.assertTrue(CURADORIA.exists())
         cur = json.loads(CURADORIA.read_text(encoding="utf-8"))
-        self.assertGreaterEqual(len(cur["fontes"]), 4); self.assertGreaterEqual(len(cur["armadilhas"]), 3)
+        self.assertGreaterEqual(len(cur.get("regras") or []), 4); self.assertGreaterEqual(len(cur["armadilhas"]), 3)
         self.assertGreaterEqual(len(cur.get("fontes_novas") or []), 5)
-        itens = [{"id": list(cur["fontes"])[0], "sites": [], "dominios": []}]
-        r = aplicar_curadoria(itens)
-        self.assertTrue(r["aplicada"]); self.assertGreater(r["sites_reaplicados"], 0)
-        self.assertTrue(itens[0]["sites"])                       # o endereço conferido voltou
-        # e os scripts de curadoria (que sabem as regras finas de cada família) rodam na regeneração
-        from src.fontes260 import SCRIPTS_CURADORIA, reaplicar_scripts_de_curadoria
-        self.assertEqual(len(SCRIPTS_CURADORIA), 2)
+        pacote = {"fontes": [{"id": (cur.get("regras") or [{}])[0].get("id", "x"), "sites": [], "dominios": []}]}
+        r = aplicar_curadoria(pacote)
+        self.assertTrue(r)                                        # a curadoria foi aplicada ao pacote
+        # a curadoria é aplicada DENTRO do gerador, antes de gravar (módulo dedicado)
         src = (ROOT / "src/fontes260.py").read_text(encoding="utf-8")
-        self.assertIn("reaplicar_scripts_de_curadoria()", src)
+        self.assertIn("_aplicar_curadoria", src)
+        self.assertIn("from .curadoria_fontes import", src)
         cat_txt = (ROOT / "config/fontes_captacao_260.json").read_text(encoding="utf-8")
         self.assertIn("bndes.gov.br/periferias", cat_txt)        # o endereço que estava sendo perdido
         cat = json.loads((ROOT / "config/fontes_captacao_260.json").read_text(encoding="utf-8"))

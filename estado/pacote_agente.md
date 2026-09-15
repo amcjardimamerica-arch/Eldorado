@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## db0bf83f4df2fe2c618a — PNAB 2026: Retificado cronograma dos editais nº 12, 13 e 14/2026
 
-MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 6× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 10× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
@@ -32,168 +32,20 @@ Texto do edital (compacto):
 
 
 ---
-## ea14b1b3f360d2dc8637 — Instituto Impactarte abre edital para projetos de impacto social com apoio de até R$ 150 mil
+## doacao-receita-federal-2027 — Doação de mercadorias apreendidas — Receita Federal — 2027
 
-MODO: COMPLETO · marcado desde 2026-09-07 · visto pela IA 13× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO
 
-Fonte (vetor): Observatório do Terceiro Setor — editais · UF BR · nível federal · situação possivel · fim None
+Fonte (vetor): Secretaria Especial da Receita Federal do Brasil — Superintendência da 1ª Região Fiscal (GO/DF/MT/MS/TO) · UF BR · nível federal · situação possivel · fim 2027-12-31
 
-Itens já obtidos: Objeto: Edital Continuo de Apoio do Instituto Impactarte: selecionar e apoiar organizaco, Órgão / financiador: Instituto Impactarte, Esfera: privada (filantropia), Valor: Até R$ 150.000,00 por iniciativa, em aporte direto, sem uso de mecanismo de ince, Território: Brasil, Área de atuação: assistencia_social, Destinação: projetos de impacto social por OSCs, Prazo de inscrição: Fluxo contínuo — inscrições abertas durante todo o ano, sem data de encerramento, Requisitos: CNPJ ativo; no mínimo três anos de existência comprovada; constituição como asso
+Itens já obtidos: Objeto: Destinacao por doacao de mercadorias apreendidas ou abandonadas pela Receita Fed, Prazo de inscrição: 2027-12-31, Órgão / financiador: Secretaria Especial da Receita Federal do Brasil — Superintendência da 1ª Região, Território: Brasil, Esfera: federal, Área de atuação: doacao_bens, Resultado: publicação do ato de destinação pela RFB e comunicação às entidades habilitadas, Valor: não monetário — bens (mercadorias) conforme lotes disponíveis, Requisitos: entidade sem fins lucrativos habilitada no cadastro de destinação da RFB (finali, Anexos: formulário de habilitação/pedido no sistema da RFB; estatuto, ata, CNPJ e certid, Destinação: bens para uso nas atividades finalísticas da entidade (vedada a comercialização)
 
-Itens que FALTAM: Resultado, Prazo de recurso, Anexos
+Itens que FALTAM: Prazo de recurso
 
-Anúncio: https://observatorio3setor.org.br/instituto-impactarte-abre-edital-para-projetos-de-impacto-social-com-apoio-de-ate-r-150-mil
+Anúncio: https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
 ```
-### Midia Kit (site institucional)
-Com seu apoio, podemos apresentar com
-abrangência o que fazem as ONGs do Brasil.
-Uma sociedade mais vibrante e participativa
-passa pela conexão entre pessoas e causas.
-O OBSERVATÓRIO DO 3º SETOR
-ESTÁ EVOLUINDO! 
-Quem somos Por que fazemos Valores 
-Somos o único veículo jornalístico
-brasileiro totalmente dedicado à
-cobertura do Terceiro Setor. 
-Produzimos e divulgamos conteúdo
-jornalístico sobre o Terceiro Setor. 
-Mantemos um portal multimídia,
-atualizado diariamente, com
-reportagens, programas de rádio,
-artigos, vídeos e podcasts. 
-Acreditamos que não existe
-democracia sem uma sociedade civil
-organizada. 
-Queremos fortalecer as ONGs
-conscientizando a sociedade sobre a
-atuação e a importância do Terceiro
-Setor 
-Buscamos fortalecer a cultura de
-doação brasileira dando espaço para
-que organizações possam falar sobre
-suas ações 
-Compromisso com o bem comum
-Paixão pelo social
-Diversidade
-Imparcialidade
-Credibilidade acima de tudo
-Há 12 anos fazendo a cobertura
-e divulgando os direitos
-humanos e iniciativas sociais.
-E AGORA ESTAMOS DE CARA NOVA!
-ANTES DEPOIS
-+ 2.9 milhões
-DE ACESSOS POR MÊS EM
-TODAS AS REDES SOCIAIS 
- 8 MIL
-42 MIL
-514 MIL
-91 MIL
-32 MIL
-SEGUIDORES
-SEGUIDORES
-SEGUIDORES
-SEGUIDORES
-INSCRITOS
-A VOZ DAS ONGS E O
-RETRATO DO 3º SETOR
-BRASILEIRO 
-REDES SOCIAIS
-RÁDIO E PODCASTS:
-+ 250 MIL
-650 
-OUVINTES
-ENTREVISTADOS
-Quem dá voz ao nosso rádio atua há mais
-de 40 anos defendendo Direitos Humanos
-JOEL SCALA E
-FRANKLIN VALVERDERADIO E PODCAST
-O podcast Conexão 3 é apresentado por
-Maria Fernanda Garcia e Gabriel Higute.
-Trazendo convidados, que através de
-discussões profundas e inspiradoras com
-uma linguagem coloquial, falam sobre
-direitos humanos, o papel vital dos jovens
-na sociedade e o trabalho do terceiro setor. 
-CONEXÃO 3
-O QUE FAZEMOS
-Cobertura jornalística qualificada e confiável de temas do setor 
-Acompanhamento de eventos e entrevistas 
-Produção de conteúdo para redes sociais 
-Promoção de campanhas temáticas de conscientização 
-Divulgação de eventos, artigos, cursos e descobertas do setor 
-Fortalecimento da sociedade civil sustentando pontes entre os poderes públicos,
-privados e sem fins lucrativos
-1
-2
-3
-4
-5
-6
-PROJETOS
-Observatório em
-Movimento 
-Produção de mini-
-documentários e
-e-books para
-memória do
-terceiro setor
-brasileiro de
-forma acessível 
-Canal oficial de
-divulgação de
-editais via
-Prosas 
-Articulação e reflexão sobre
-diferentes perspectivas e
-causas que englobam a vida
-para criar uma ponte entre
-terceiro setor e a sociedade.
-COMO VOCÊ PODE APOIAR A CONSTRUÇÃO DE
-PONTES ENTRE A SOCIEDADE E AS AÇÕES SOCIAIS?
-Suporte para desenvolvimento da equipe:
-Hoje trabalhamos com uma equipe de profissionais iniciantes e
-estagiários, mas sabemos que profissionais. E acreditamos que
-profissionais bem treinados são essenciais para o nosso
-desenvolvimento.
-Aprimoramento na estrutura para cobertura das pautas:
-Apurar conteúdo e conferir dados demandam tempo e conhecimento
-específico. Para isso, nossos jornalistas precisam se locomover e estar
-presente onde os fatos acontecem.
-Aperfeiçoamento dos projetos em andamento:
-Temos diversos produtos de comunicação que tratam de temas
-extremamente relevantes para proteção dos direitos humanos,
-promoção das ODS e fortalecimento da cultura de doação no Brasil.
-Precisamos traduzir esse conteúdo para as diversas mídias digitais que
-hoje representam a principal forma de consumo de informações. 
-Precisamos do seu apoio
-para produção de conteúdo
-para redes socias. 
-Animais 
-Idosos 
-Cultura 
-Infância 
-Direitos
-Humanos 
-Meio
-ambiente 
-Educação 
-Povos
-originários 
-Esporte Saúde 
-Você pode escolher as pautas que sua marca será apoiadora
-SUA MARCA PATROCINA UMA
-SESSÃO TEMÁTICA
-SEU LOGO INSERIDO NA
-SESSÃO TEMÁTICA
-LOGO
-DEPOIMENTOS
-Diego Henrique Scala
-diego@observatorio3setor.org.br
-+55 11 97337-1911
-CONTATO PARA PARCERIA
-
+(sem texto — localizar o edital no site do órgão)
 ```

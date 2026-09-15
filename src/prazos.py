@@ -11,6 +11,17 @@ histórico alimenta o aprendizado de janelas recorrentes.
 Saídas: `estado/prazos.json` (consumido pelo painel, pelas fichas HTML e pelo
 resumo de execução) e marcação `alerta_prazo` em `estado/alerta_prazos.json`
 quando algo entra na faixa crítica.
+
+AS BASES VERIFICADAS TAMBÉM ENTRAM — correção de 12/09/2026. Até aqui este
+módulo lia apenas a base de oportunidades coletadas, que hoje é quase toda
+formada por edições de diário oficial sem prazo nenhum. O resultado medido na
+inspeção de 10/09: **zero prazos encontrados em 17.493 registros**, `abrir_issue`
+em falso desde 03/09, e o passo "Abrir issue de prazos a vencer" do workflow
+nunca disparando — enquanto a verificação tinha 339 prazos confirmados em
+documento oficial e 55 editais abertos, em um arquivo que nenhum módulo lia.
+
+O vigia de prazos estava cego, e não por falha: por estar olhando para a base
+errada. Agora lê as duas, e o prazo confirmado em documento do órgão vence.
 """
 from __future__ import annotations
 
@@ -22,6 +33,70 @@ from .nucleo import ROOT, carregar_oportunidades, load_json, now_iso, write_json
 
 _DATA_BR = re.compile(r"(\d{1,2})/(\d{1,2})/(20\d{2})")
 _DATA_ISO = re.compile(r"(20\d{2})-(\d{2})-(\d{2})")
+
+# Bases em que a data final já foi confirmada em fonte oficial, registro por
+# registro. Em ordem de confiança: a primeira que tiver o registro vence.
+BASES_VERIFICADAS = (
+    # A mais recente vence: a verificacao de 15/09/2026 foi feita um a um na
+    # fonte oficial e corrigiu prazo de registros que as bases anteriores traziam
+    # errado (Ipu/CE fechava um dia antes; Jaru/RO apontava para o edital errado).
+    ROOT / "docs/dados/verificacao_63_2026-09-15.json",
+    ROOT / "docs/dados/verificacao_467_2026-09-09.json",
+    ROOT / "docs/dados/nao_verificados.json",
+)
+
+
+def _linhas_verificadas(hoje: date, faixas: list[int], ja_vistos: set) -> list[dict]:
+    """Prazos confirmados nas bases de verificação, prontos para o alarme."""
+    linhas = []
+    vistos_por_objeto: set = set()
+    for caminho in BASES_VERIFICADAS:
+        if not caminho.exists():
+            continue
+        try:
+            itens = load_json(caminho).get("itens")
+        except (OSError, json.JSONDecodeError):
+            continue
+        if isinstance(itens, dict):
+            registros = list(itens.items())
+        elif isinstance(itens, list):
+            registros = [(str(x.get("id", ""))[:8], x) for x in itens]
+        else:
+            continue
+        for chave, item in registros:
+            if not chave or chave in ja_vistos:
+                continue
+            # registro reprovado pelo objeto não é oportunidade: não vai ao alarme
+            if item.get("veredito") == "reprovado":
+                continue
+            prazo = item.get("fim") or (item.get("prazo_atual") or {}).get("fim")
+            achado = _DATA_ISO.search(str(prazo or ""))
+            if not achado:
+                continue
+            try:
+                vencimento = date(*(int(g) for g in achado.groups()))
+            except ValueError:
+                continue
+            dias = (vencimento - hoje).days
+            # o mesmo edital entra uma vez so: o Instituto Lojas Renner aparecia
+            # cinco vezes na base de 09/09, capturado por rotas diferentes
+            assinatura = (re.sub(r"\W+", " ", str(item.get("objeto") or item.get("titulo") or "").lower()).strip()[:200],
+                          str(item.get("orgao") or "").lower(), vencimento.isoformat())
+            if assinatura[0] and assinatura in vistos_por_objeto:
+                continue
+            vistos_por_objeto.add(assinatura)
+            ja_vistos.add(chave)
+            linhas.append({
+                "id": chave, "titulo": item.get("objeto") or item.get("titulo") or item.get("edital"),
+                "url": item.get("pagina_oficial") or item.get("link_capturado"),
+                "fonte_nome": item.get("orgao") or item.get("edital") or item.get("fonte_nome"),
+                "territorio": item.get("uf"), "status": item.get("veredito"),
+                "vencimento": vencimento.isoformat(), "dias_restantes": dias,
+                "situacao": classificar(dias, faixas),
+                "observacao": ("prazo confirmado na verificação individual — "
+                               f"origem: {caminho.name}"),
+            })
+    return linhas
 
 def data_do_prazo(item: dict) -> date | None:
     """Extrai a data do prazo sem inventar: só converte o que está escrito."""
@@ -73,6 +148,10 @@ def run(hoje: date | None = None) -> dict:
                 "dias_restantes": dias, "situacao": situacao,
                 "observacao": "prazo mencionado na fonte — conferir no edital antes de qualquer decisão",
             })
+    # So se evita repetir o que JA VIROU LINHA de prazo. Usar todos os ids da base
+    # de oportunidades como vistos apagaria justamente os prazos confirmados dos
+    # registros que existem nas duas bases — e e la que estao as oportunidades.
+    linhas += _linhas_verificadas(hoje, faixas, {str(x["id"])[:8] for x in linhas})
     linhas.sort(key=lambda x: x["dias_restantes"])
     criticos = [x for x in linhas if x["dias_restantes"] is not None and 0 <= x["dias_restantes"] <= max(faixas)]
     relatorio = {

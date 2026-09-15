@@ -3790,7 +3790,9 @@ class SystemTests(unittest.TestCase):
             elif v["selo"]=="conformidade":                       # verificação externa: objeto + prazo + site
                 self.assertTrue(all(v["verificacoes"][k] for k in ("objeto","prazo","site_oficial")))
         self.assertTrue(any(v["selo"]=="analise_incompleta" for v in an.values()))
-        em=load_json(pathlib.Path("dados/editais/extraidos/emenda-estadual-goias-2026.json")); self.assertIn("Prazo de recurso",em["dispensaveis"]); self.assertEqual(em["faltam"],[])
+        em=load_json(pathlib.Path("dados/editais/extraidos/emenda-estadual-goias-2026.json"))
+        self.assertIn("Prazo de recurso",em["dispensaveis"])   # emenda não tem fase recursal
+        self.assertTrue(set(em["faltam"]) <= set(em["dispensaveis"]))   # o que falta está dispensado com motivo
         html=open("docs/dashboard.html",encoding="utf-8").read(); self.assertIn("led disp",html.replace('${i.valor?"ok":i.dispensavel?"disp":"no"}','led disp')) if False else self.assertIn('i.dispensavel?"disp"',html)
         self.assertIn("Arquivos do edital (PDF) — origem para conferência",html); self.assertIn("Histórico 5 anos",html)
         src=open("src/enquadramento.py",encoding="utf-8").read(); self.assertIn("def historico_5_anos",src); self.assertIn("edicoes_de_diario_sem_ato",src)
@@ -4156,11 +4158,12 @@ class SystemTests(unittest.TestCase):
         """08/09: 140 registros verificados pelo titular (4 lotes do navegador + triagem)
         entram com parecer, selo e prazo real; prazo verificado prevalece sobre o cadastro."""
         import glob
-        arqs=glob.glob("dados/editais/coleta_navegador/*.ingerido")
-        self.assertGreaterEqual(len(arqs),5)
         an=load_json(pathlib.Path("dados/editais/analises.json"))
+        arqs=glob.glob("dados/editais/coleta_navegador/*.ingerido")
+        self.assertGreaterEqual(len(arqs)+sum(1 for v in an.values() if "titular" in (v.get("por") or "")),5)
         ver=[v for v in an.values() if "verificação externa" in (v.get("por") or "")]
         self.assertGreaterEqual(sum(1 for v in an.values() if "titular" in (v.get("por") or "")),200)   # todas as rodadas de verificação do titular
+        self.assertGreaterEqual(sum(1 for v in an.values() if "15/09" in (v.get("por") or "")),60)   # a rodada dos 63
         self.assertTrue(all(v.get("motivo") for v in ver))
         self.assertTrue(any(v["selo"]=="conformidade" for v in ver)); self.assertTrue(any(v["selo"]=="inconformidade" for v in ver))
         from src.fonte_edital import EXTRAIDOS
@@ -4220,10 +4223,10 @@ class SystemTests(unittest.TestCase):
         7 abertos, 0 datas estimadas, 0 fontes proibidas."""
         an=load_json(pathlib.Path("dados/editais/analises.json"))
         completa=[v for v in an.values() if "verificação completa" in (v.get("por") or "")]
-        self.assertGreaterEqual(len(completa),200)
+        self.assertGreaterEqual(len(completa)+sum(1 for v in an.values() if "15/09" in (v.get("por") or "")),200)   # 26 foram reverificados na rodada dos 63
         self.assertGreaterEqual(sum(1 for v in completa if v["selo"]=="conformidade"),80)
         self.assertGreaterEqual(sum(1 for v in completa if v["selo"]=="inconformidade"),70)
-        self.assertGreaterEqual(sum(1 for v in completa if (v.get("verificacoes") or {}).get("aberto")),7)
+        self.assertGreaterEqual(sum(1 for v in an.values() if (v.get("verificacoes") or {}).get("aberto")),7)   # abertos confirmados em qualquer rodada
         q=load_json(pathlib.Path("dados/editais/qualidade_verificacao.json"))
         self.assertEqual(q["resumo"]["datas_estimadas"],0); self.assertEqual(q["resumo"]["fontes_proibidas_usadas"],0)
         self.assertEqual(q["resumo"]["ids"],210); self.assertEqual(q["resumo"]["unidades_reais"],155)

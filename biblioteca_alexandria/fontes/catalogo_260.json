@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-15T14:14:17+00:00",
+  "gerado_em": "2026-09-15T18:38:02+00:00",
   "total": 260,
   "goias_goiania": 101,
   "com_site": 248,
@@ -173,9 +173,11 @@
       "curadoria-006",
       "curadoria-007",
       "curadoria-008",
-      "curadoria-009"
+      "curadoria-009",
+      "curadoria-010",
+      "curadoria-011"
     ],
-    "armadilhas": 9
+    "armadilhas": 12
   },
   "fontes": [
     {
@@ -7433,6 +7435,58 @@
         "canal": "site_oficial",
         "confianca_rota": "primaria"
       }
+    },
+    {
+      "programa": "MDHC / CONANDA — Chamamentos publicos de fomento a OSC",
+      "nivel": "federal",
+      "area": "crianca_adolescente",
+      "tipo": "edital",
+      "forma_divulgacao": "site_oficial",
+      "publicacao_obrigatoria": true,
+      "uf": null,
+      "goias": false,
+      "orgao": "Ministerio dos Direitos Humanos e da Cidadania — Conselho Nacional dos Direitos da Crianca e do Adolescente",
+      "sites": [
+        "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais"
+      ],
+      "nota": "pagina oficial de editais do MDHC/CONANDA. Em 2026 o Edital 01/2026 abriu R$ 6 milhoes, ate R$ 1 mi por projeto, por termo de fomento da Lei 13.019/2014, com propostas pelo Transferegov.br. ATENCAO: as RETIFICACOES ficam listadas ao lado do edital, em PDF proprio, e mudam o cronograma — a de 2026 prorrogou o envio de 17/09 para 11/10 e elevou a abrangencia exigida de 3 para 5 regioes.",
+      "id": "curadoria-010",
+      "padrao": {
+        "natureza": "edital",
+        "canal": "site_oficial",
+        "confianca_rota": "primaria"
+      },
+      "confianca_site": "confirmada",
+      "dominios": [
+        "www.gov.br"
+      ]
+    },
+    {
+      "programa": "Fundacao Maria Emilia — Edital FME Transforma",
+      "nivel": "privada",
+      "area": "saude_educacao",
+      "tipo": "grant",
+      "forma_divulgacao": "site_oficial",
+      "publicacao_obrigatoria": false,
+      "uf": null,
+      "goias": false,
+      "orgao": "Fundacao Maria Emilia",
+      "sites": [
+        "https://mariaemilia.org.br/edital-fme-transforma/",
+        "https://mariaemilia.org.br"
+      ],
+      "nota": "ATENCAO AO DOMINIO: o endereco antigo fundacaomariaemilia.org.br tem certificado SSL invalido e nao abre; o dominio vivo e mariaemilia.org.br. O edital 02/2026 apoia projetos de Saude e Educacao em tres faixas, ate R$ 1.000.000,00, inscricoes de 24/08 a 30/10/2026 as 23h59, exigida OSC constituida ha pelo menos 2 anos, sem restricao de UF.",
+      "id": "curadoria-011",
+      "padrao": {
+        "natureza": "grant",
+        "canal": "site_oficial",
+        "confianca_rota": "primaria"
+      },
+      "confianca_site": "confirmada",
+      "dominios": [
+        "mariaemilia.org.br",
+        "mariaemilia.org.br"
+      ]
     }
   ],
   "armadilhas": [
@@ -7453,8 +7507,8 @@
     },
     {
       "url": "https://fundacaomariaemilia.org.br/",
-      "motivo": "certificado SSL inválido (hostname mismatch): não abre nem por requisição nem por navegador. O Edital FME Transforma 02/2026 existe e a imprensa especializada informa inscrições até 30/10/2026, mas o único canal citado é um formulário do Google, que não é domínio do patrocinador. Fica como pendência de fonte oficial, sem data registrada.",
-      "verificado_em": "2026-09-09"
+      "motivo": "dominio antigo da Fundacao Maria Emilia, com certificado SSL invalido; nao abre por nenhum caminho, e as variantes www. e fmariaemilia.org.br nao resolvem em DNS. O DOMINIO VIVO, confirmado em 15/09/2026, e mariaemilia.org.br — foi por ele que o edital FME Transforma 02/2026 (ate R$ 1 milhao, inscricoes ate 30/10/2026) finalmente foi lido. Manter o endereco antigo no catalogo produz falha de coleta que parece ausencia de edital.",
+      "verificado_em": "2026-09-15"
     },
     {
       "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/patrocinios",
@@ -7480,6 +7534,21 @@
       "url": "https://observatorio3setor.org.br",
       "motivo": "veiculo jornalistico. Em 09/09/2026 quatro textos de edital guardados no repositorio eram o MIDIA KIT deste site, nao o edital: o extrator seguiu o link da noticia e guardou a pagina institucional do veiculo. Os arquivos foram descartados. Serve para descobrir o nome do patrocinador e do edital; nunca como fonte de prazo nem de texto.",
       "verificado_em": "2026-09-09"
+    },
+    {
+      "url": "https://pncp.gov.br/api/consulta/v1/ (campo amparoLegal)",
+      "motivo": "o amparo legal declarado no PNCP NAO serve de filtro de enquadramento. Na verificacao de 15/09/2026, praticamente todos os 45 registros do PNCP vieram como \"Lei 14.133/2021, Art. 79, I\" mesmo quando o objeto declarava expressamente a Lei 13.019/2014 e termo de colaboracao — o municipio publica sob a lei do portal de compras, nao sob a lei do ato. So o objeto separa fomento de contratacao.",
+      "verificado_em": "2026-09-15"
+    },
+    {
+      "url": "pncp.gov.br — registro unico com varios editais dentro",
+      "motivo": "um unico registro do PNCP pode carregar varios editais distintos. Porto Feliz/SP (2026/203) traz CINCO editais PNAB (n. 10 a 14: formacao cultural, iniciativas perifericas, ineditas, continuadas e trajetoria artistica) sob uma janela unica de 09/09 a 09/10/2026. Cada um pode ter cronograma e valor proprios: o registro precisa ser desdobrado antes de qualquer inscricao.",
+      "verificado_em": "2026-09-15"
+    },
+    {
+      "url": "pncp.gov.br — datas anteriores a propria publicacao",
+      "motivo": "sete dos 63 registros verificados em 15/09/2026 declaram encerramento ANTERIOR a data em que foram publicados no PNCP: Crateus/CE foi divulgado seis horas depois de fechar a janela, Araquari/SC entrou tres meses e meio depois, Vila Rica/MT sete meses depois. Quando a fonte se contradiz, a data vai nula: nao ha prazo a apresentar.",
+      "verificado_em": "2026-09-15"
     }
   ]
 }
