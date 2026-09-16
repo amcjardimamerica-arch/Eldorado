@@ -3,10 +3,10 @@
     "do-goiania": {
       "nome": "Diário Oficial do Município de Goiânia",
       "tipo": "diario_oficial",
-      "leituras": 24,
+      "leituras": 25,
       "achados_total": 0,
-      "vazias_seguidas": 24,
-      "ultima": "2026-09-16T08:02:19+00:00",
+      "vazias_seguidas": 25,
+      "ultima": "2026-09-16T11:07:14+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -25,10 +25,10 @@
     "do-goias": {
       "nome": "Diário Oficial do Estado de Goiás",
       "tipo": "diario_oficial",
-      "leituras": 24,
+      "leituras": 25,
       "achados_total": 0,
-      "vazias_seguidas": 24,
-      "ultima": "2026-09-16T08:02:19+00:00",
+      "vazias_seguidas": 25,
+      "ultima": "2026-09-16T11:07:14+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -47,10 +47,10 @@
     "dou": {
       "nome": "Diário Oficial da União",
       "tipo": "diario_oficial",
-      "leituras": 24,
+      "leituras": 25,
       "achados_total": 0,
-      "vazias_seguidas": 24,
-      "ultima": "2026-09-16T08:02:38+00:00",
+      "vazias_seguidas": 25,
+      "ultima": "2026-09-16T11:07:34+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -58,7 +58,7 @@
         {
           "url": "https://www.in.gov.br/leiturajornal?data=16-09-2026&secao=do3",
           "http": 200,
-          "bytes": 2401241
+          "bytes": 2401194
         },
         {
           "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento%20p%C3%BAblico%20organiza%C3%A7%C3%B5es%20da%20sociedade%20civil&s=todos&exactDate=dia&sortType=0",
@@ -102,10 +102,10 @@
     "alego-pl": {
       "nome": "Assembleia Legislativa de Goiás — proposições",
       "tipo": "legislativo",
-      "leituras": 20,
-      "achados_total": 1,
+      "leituras": 21,
+      "achados_total": 2,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-16T09:01:39+00:00",
+      "ultima": "2026-09-16T11:06:22+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -113,12 +113,12 @@
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 132273
+          "bytes": 132336
         },
         {
           "url": "https://portal.al.go.leg.br/noticias",
           "http": 200,
-          "bytes": 113426
+          "bytes": 112852
         }
       ],
       "alerta": null,
@@ -155,10 +155,10 @@
     "camara-goiania-pl": {
       "nome": "Câmara Municipal de Goiânia — projetos de lei",
       "tipo": "legislativo",
-      "leituras": 20,
+      "leituras": 21,
       "achados_total": 0,
-      "vazias_seguidas": 20,
-      "ultima": "2026-09-16T09:01:44+00:00",
+      "vazias_seguidas": 21,
+      "ultima": "2026-09-16T11:06:45+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 4,
@@ -167,25 +167,51 @@
           "url": "https://www.goiania.go.leg.br/",
           "http": 200,
           "bytes": 15864
+        },
+        {
+          "url": "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos",
+          "http": 200,
+          "bytes": 201761
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 1,
-        "links_total": 0,
-        "links_candidatos": 0,
-        "descobertas": [],
-        "pdf_links": 0,
+        "paginas_lidas": 5,
+        "links_total": 954,
+        "links_candidatos": 379,
+        "descobertas": [
+          {
+            "de": "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos",
+            "para": "https://camaragoiania.nucleogov.com.br/",
+            "rotulo": "Portal da Transparência"
+          },
+          {
+            "de": "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos",
+            "para": "https://www.goiania.go.leg.br/transparencia",
+            "rotulo": "Transparência"
+          },
+          {
+            "de": "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos",
+            "para": "https://www.goiania.go.leg.br/institucional",
+            "rotulo": "Atos regulamentadores da Lei de Licitações e Contratos (Lei "
+          },
+          {
+            "de": "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos",
+            "para": "https://transparencia.camaragyn.go.gov.br/files/Legislacao-compilada/Resolucao-6-2005_Codigo-de-Etica-e-Decoro-Parlamentar.htm",
+            "rotulo": "Código de Ética e Decoro Parlamentar"
+          }
+        ],
+        "pdf_links": 130,
         "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
       }
     },
     "cnj-destinacoes": {
       "nome": "CNJ — destinações de penas e prestações pecuniárias",
       "tipo": "diario_justica",
-      "leituras": 20,
+      "leituras": 21,
       "achados_total": 0,
-      "vazias_seguidas": 20,
-      "ultima": "2026-09-16T09:01:53+00:00",
+      "vazias_seguidas": 21,
+      "ultima": "2026-09-16T11:06:55+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -235,10 +261,10 @@
     "dj-trf1-go": {
       "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
       "tipo": "diario_justica",
-      "leituras": 20,
+      "leituras": 21,
       "achados_total": 0,
-      "vazias_seguidas": 20,
-      "ultima": "2026-09-16T09:01:58+00:00",
+      "vazias_seguidas": 21,
+      "ultima": "2026-09-16T11:07:00+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -288,81 +314,73 @@
     "dje-tjgo": {
       "nome": "Diário da Justiça Eletrônico — TJGO",
       "tipo": "diario_justica",
-      "leituras": 20,
+      "leituras": 21,
       "achados_total": 0,
-      "vazias_seguidas": 20,
-      "ultima": "2026-09-16T09:02:15+00:00",
+      "vazias_seguidas": 21,
+      "ultima": "2026-09-16T11:07:14+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 6,
       "saude": [
         {
-          "url": "https://www.jusbrasil.com.br/diarios/DJGO/",
-          "http": 200,
-          "bytes": 56068
+          "url": "https://www.tjgo.jus.br/index.php/execucao-penal",
+          "erro": "HTTPError",
+          "code": 403,
+          "waf": "Cloudflare",
+          "causa": "bloqueio de robô pelo WAF Cloudflare"
         },
         {
-          "url": "https://www.jusbrasil.com.br/diarios",
-          "http": 200,
-          "bytes": 216805
+          "url": "https://www.tjgo.jus.br/index.php/institucional/centro-de-comunicacao-social/17-tribunal/20140-prestacao-pecuniaria",
+          "erro": "HTTPError",
+          "code": 403,
+          "waf": "Cloudflare",
+          "causa": "bloqueio de robô pelo WAF Cloudflare"
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 4,
-        "links_total": 1520,
-        "links_candidatos": 237,
-        "descobertas": [
-          {
-            "de": "https://www.jusbrasil.com.br/diarios/DJGO/",
-            "para": "https://www.jusbrasil.com.br/diarios",
-            "rotulo": "Diários"
-          },
-          {
-            "de": "https://www.jusbrasil.com.br/diarios/DJGO/",
-            "para": "https://www.jusbrasil.com.br/diarios/12CJM",
-            "rotulo": "12CJM"
-          },
-          {
-            "de": "https://www.jusbrasil.com.br/diarios/DJGO/",
-            "para": "https://www.jusbrasil.com.br/diarios/AAM",
-            "rotulo": "AAM"
-          },
-          {
-            "de": "https://www.jusbrasil.com.br/diarios/DJGO/",
-            "para": "https://www.jusbrasil.com.br/diarios/AEMERJ",
-            "rotulo": "AEMERJ"
-          }
-        ],
+        "paginas_lidas": 0,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
       }
     },
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 22,
+      "leituras": 23,
       "achados_total": 0,
-      "vazias_seguidas": 22,
-      "ultima": "2026-09-16T09:52:51+00:00",
+      "vazias_seguidas": 23,
+      "ultima": "2026-09-16T11:08:36+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 2,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260916&dataFinal=20260916&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-          "http": 204,
-          "bytes": 0
+          "erro": "TimeoutError",
+          "code": null,
+          "waf": null,
+          "causa": "tempo esgotado — servidor lento ou filtrando o IP"
+        },
+        {
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260916&dataFinal=20260916&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
+          "erro": "TimeoutError",
+          "code": null,
+          "waf": null,
+          "causa": "tempo esgotado — servidor lento ou filtrando o IP"
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 1,
+        "paginas_lidas": 0,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+        "motivo_zero": "tempo esgotado / conexão recusada"
       }
     },
     "plat-abcr": {
@@ -623,10 +641,10 @@
     "f260-captacao-051": {
       "nome": "Programa estadual de eventos esportivos",
       "tipo": "site_oficial",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:30:57+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:10:15+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -634,7 +652,7 @@
         {
           "url": "https://goias.gov.br/esporte/",
           "http": 200,
-          "bytes": 171913
+          "bytes": 173024
         },
         {
           "url": "https://goias.gov.br/esporte/solicitacao-de-transporte",
@@ -676,10 +694,10 @@
     "f260-captacao-098": {
       "nome": "FEAS-GO - cofinanciamento da assistência social",
       "tipo": "site_oficial",
-      "leituras": 13,
-      "achados_total": 13,
+      "leituras": 14,
+      "achados_total": 14,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-15T12:31:42+00:00",
+      "ultima": "2026-09-16T11:11:06+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -692,14 +710,14 @@
         {
           "url": "https://goias.gov.br/social/",
           "http": 200,
-          "bytes": 192309
+          "bytes": 193201
         }
       ],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 6,
-        "links_total": 1230,
-        "links_candidatos": 746,
+        "links_total": 1232,
+        "links_candidatos": 747,
         "descobertas": [
           {
             "de": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
@@ -729,10 +747,10 @@
     "f260-captacao-118": {
       "nome": "Destinação de IR pessoa física para FMDCA",
       "tipo": "site_oficial",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:31:55+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:11:19+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -745,14 +763,14 @@
         {
           "url": "https://www.gov.br/pt-br/temas/transparencia-fiscal-orcamento-nacional",
           "http": 200,
-          "bytes": 63569
+          "bytes": 63745
         }
       ],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 4,
-        "links_total": 837,
-        "links_candidatos": 513,
+        "links_total": 831,
+        "links_candidatos": 508,
         "descobertas": [
           {
             "de": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
@@ -777,23 +795,23 @@
     "f260-captacao-151": {
       "nome": "Emenda estadual para saúde comunitária",
       "tipo": "site_oficial",
-      "leituras": 13,
-      "achados_total": 13,
+      "leituras": 14,
+      "achados_total": 15,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-15T12:32:22+00:00",
+      "ultima": "2026-09-16T11:11:47+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
-      "achados_ultima": 1,
+      "achados_ultima": 2,
       "falhas_ultima": 1,
       "saude": [
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 131986
+          "bytes": 132336
         },
         {
           "url": "https://goias.gov.br/saude/",
           "http": 200,
-          "bytes": 312244
+          "bytes": 309753
         }
       ],
       "alerta": null,
@@ -830,30 +848,30 @@
     "f260-captacao-190": {
       "nome": "TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia",
       "tipo": "site_oficial",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:32:30+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:11:54+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
+      "falhas_ultima": 1,
       "saude": [
         {
           "url": "https://www.cnj.jus.br/",
           "http": 200,
-          "bytes": 363206
+          "bytes": 364751
         },
         {
-          "url": "https://www.cnj.jus.br/transparencia-cnj",
+          "url": "https://www.trt18.jus.br/portal/",
           "http": 200,
-          "bytes": 292478
+          "bytes": 211851
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 5,
-        "links_total": 2969,
-        "links_candidatos": 571,
+        "paginas_lidas": 6,
+        "links_total": 3357,
+        "links_candidatos": 718,
         "descobertas": [
           {
             "de": "https://www.cnj.jus.br/",
@@ -876,17 +894,17 @@
             "rotulo": "Um Só Coração"
           }
         ],
-        "pdf_links": 767,
+        "pdf_links": 771,
         "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
       }
     },
     "f260-captacao-196": {
       "nome": "MPGO - TAC com destinação social",
       "tipo": "site_oficial",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:32:49+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:12:15+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -894,7 +912,7 @@
         {
           "url": "https://www.mpf.mp.br/",
           "http": 200,
-          "bytes": 247819
+          "bytes": 247599
         },
         {
           "url": "https://transparencia.mpf.mp.br/",
@@ -936,10 +954,10 @@
     "f260-captacao-238": {
       "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
       "tipo": "site_oficial",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:32:51+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:12:17+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -965,10 +983,10 @@
     "f260-captacao-035": {
       "nome": "Lei Rouanet - doação de pessoa física",
       "tipo": "site_oficial",
-      "leituras": 13,
-      "achados_total": 26,
+      "leituras": 14,
+      "achados_total": 28,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-15T12:33:00+00:00",
+      "ultima": "2026-09-16T11:12:36+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 2,
       "falhas_ultima": 0,
@@ -976,18 +994,18 @@
         {
           "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
           "http": 200,
-          "bytes": 124114
+          "bytes": 125242
         },
         {
           "url": "https://www.gov.br/cultura/pt-br/acesso-a-informacao/licitacoes-e-contratos",
           "http": 200,
-          "bytes": 140692
+          "bytes": 141826
         }
       ],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 5,
-        "links_total": 2149,
+        "links_total": 2169,
         "links_candidatos": 805,
         "descobertas": [
           {
@@ -1018,10 +1036,10 @@
     "f260-captacao-044": {
       "nome": "Projetos aptos à captação na LIE",
       "tipo": "site_oficial",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:33:00+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:12:36+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1047,10 +1065,10 @@
     "f260-captacao-060": {
       "nome": "Escolinha de natação/paradesporto adaptado",
       "tipo": "site_oficial",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:33:10+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:12:46+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1100,10 +1118,10 @@
     "f260-captacao-119": {
       "nome": "Destinação de IR pessoa jurídica para Fundo da Criança",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:33:11+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:12:47+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1127,10 +1145,10 @@
     "f260-captacao-208": {
       "nome": "Cessão de bens móveis apreendidos",
       "tipo": "site_oficial",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:33:37+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:13:20+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1143,14 +1161,14 @@
         {
           "url": "https://www.gov.br/pt-br/servicos/consultar-editais-e-atos-declaratorios-executivos-da-receita-federal",
           "http": 200,
-          "bytes": 102723
+          "bytes": 106095
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 5,
-        "links_total": 2850,
-        "links_candidatos": 788,
+        "links_total": 2856,
+        "links_candidatos": 792,
         "descobertas": [
           {
             "de": "https://www.gov.br/receitafederal/pt-br",
@@ -1180,10 +1198,10 @@
     "f260-captacao-216": {
       "nome": "Mapa das OSC - área de editais",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 5,
-      "vazias_seguidas": 8,
-      "ultima": "2026-09-15T12:33:42+00:00",
+      "vazias_seguidas": 9,
+      "ultima": "2026-09-16T11:13:26+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1196,7 +1214,7 @@
         {
           "url": "https://mapaosc.ipea.gov.br/editais",
           "http": 200,
-          "bytes": 34872
+          "bytes": 34859
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
@@ -1223,10 +1241,10 @@
     "f260-captacao-217": {
       "nome": "Bússola Social - Bússola Editais",
       "tipo": "privada",
-      "leituras": 13,
-      "achados_total": 47,
+      "leituras": 14,
+      "achados_total": 50,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-15T12:33:47+00:00",
+      "ultima": "2026-09-16T11:13:33+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 3,
       "falhas_ultima": 0,
@@ -1271,10 +1289,10 @@
     "f260-captacao-218": {
       "nome": "Capta - oportunidades e editais",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:33:48+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:13:34+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1314,10 +1332,10 @@
     "f260-captacao-223": {
       "nome": "Fundação Bradesco",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:34:15+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:14:06+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1367,10 +1385,10 @@
     "f260-captacao-227": {
       "nome": "Instituto Coca-Cola Brasil",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:34:16+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:14:07+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1396,10 +1414,10 @@
     "f260-captacao-229": {
       "nome": "Instituto Votorantim",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:34:22+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:14:12+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1428,10 +1446,10 @@
     "f260-captacao-230": {
       "nome": "Fundação ArcelorMittal",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:34:33+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:14:25+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1481,10 +1499,10 @@
     "f260-captacao-231": {
       "nome": "Fundação Vale",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:34:45+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:14:39+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1534,10 +1552,10 @@
     "f260-captacao-232": {
       "nome": "Instituto Neoenergia",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:34:54+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:14:47+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1577,10 +1595,10 @@
     "f260-captacao-233": {
       "nome": "Instituto Sicoob",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:35:09+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:15:02+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1609,10 +1627,10 @@
     "f260-captacao-234": {
       "nome": "Instituto Unibanco",
       "tipo": "privada",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-15T12:35:12+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-16T11:15:07+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1641,10 +1659,10 @@
     "f260-captacao-235": {
       "nome": "Instituto Lojas Renner",
       "tipo": "privada",
-      "leituras": 12,
+      "leituras": 13,
       "achados_total": 0,
-      "vazias_seguidas": 12,
-      "ultima": "2026-09-15T12:35:27+00:00",
+      "vazias_seguidas": 13,
+      "ultima": "2026-09-16T11:15:25+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1785,18 +1803,18 @@
     "f260-captacao-038": {
       "nome": "Editais FICA Goiás - artes visuais/exposição",
       "tipo": "site_oficial",
-      "leituras": 11,
+      "leituras": 12,
       "achados_total": 22,
-      "vazias_seguidas": 0,
-      "ultima": "2026-09-15T12:30:13+00:00",
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-16T11:09:20+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
-      "achados_ultima": 1,
+      "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://goias.gov.br/cultura/",
           "http": 200,
-          "bytes": 229724
+          "bytes": 231376
         },
         {
           "url": "https://fica.go.gov.br",
@@ -1808,7 +1826,7 @@
       "diagnostico": {
         "paginas_lidas": 6,
         "links_total": 827,
-        "links_candidatos": 460,
+        "links_candidatos": 461,
         "descobertas": [
           {
             "de": "https://goias.gov.br/cultura/",
@@ -1832,16 +1850,16 @@
           }
         ],
         "pdf_links": 4,
-        "motivo_zero": null
+        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
       }
     },
     "f260-captacao-039": {
       "nome": "Editais de ocupação cultural municipal",
       "tipo": "site_oficial",
-      "leituras": 11,
+      "leituras": 12,
       "achados_total": 0,
-      "vazias_seguidas": 11,
-      "ultima": "2026-09-15T12:30:28+00:00",
+      "vazias_seguidas": 12,
+      "ultima": "2026-09-16T11:09:37+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1891,23 +1909,23 @@
     "f260-captacao-068": {
       "nome": "Emenda estadual para projeto educativo em Goiás",
       "tipo": "site_oficial",
-      "leituras": 11,
-      "achados_total": 0,
-      "vazias_seguidas": 11,
-      "ultima": "2026-09-15T12:31:23+00:00",
+      "leituras": 12,
+      "achados_total": 1,
+      "vazias_seguidas": 0,
+      "ultima": "2026-09-16T11:10:46+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
-      "achados_ultima": 0,
+      "achados_ultima": 1,
       "falhas_ultima": 1,
       "saude": [
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 131986
+          "bytes": 132336
         },
         {
           "url": "https://goias.gov.br/educacao/",
           "http": 200,
-          "bytes": 251565
+          "bytes": 251166
         }
       ],
       "alerta": null,
@@ -1938,16 +1956,16 @@
           }
         ],
         "pdf_links": 44,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+        "motivo_zero": null
       }
     },
     "f260-captacao-207": {
       "nome": "Acordo de cooperação sem transferência financeira",
       "tipo": "site_oficial",
-      "leituras": 11,
+      "leituras": 12,
       "achados_total": 0,
-      "vazias_seguidas": 11,
-      "ultima": "2026-09-15T12:33:30+00:00",
+      "vazias_seguidas": 12,
+      "ultima": "2026-09-16T11:13:13+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1955,19 +1973,19 @@
         {
           "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
           "http": 200,
-          "bytes": 231354
+          "bytes": 232436
         },
         {
           "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1",
           "http": 200,
-          "bytes": 232527
+          "bytes": 232917
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 6,
-        "links_total": 714,
-        "links_candidatos": 455,
+        "links_total": 709,
+        "links_candidatos": 436,
         "descobertas": [
           {
             "de": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
@@ -1999,10 +2017,10 @@
     "f260-captacao-222": {
       "nome": "Fundação Itaú",
       "tipo": "privada",
-      "leituras": 11,
+      "leituras": 12,
       "achados_total": 0,
-      "vazias_seguidas": 11,
-      "ultima": "2026-09-15T12:34:01+00:00",
+      "vazias_seguidas": 12,
+      "ultima": "2026-09-16T11:13:49+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2052,37 +2070,63 @@
     "f260-curadoria-006": {
       "nome": "Instituto Clima e Sociedade (iCS) — chamadas de comunicação e clima",
       "tipo": "privada",
-      "leituras": 8,
-      "achados_total": 14,
-      "vazias_seguidas": 1,
-      "ultima": "2026-09-15T12:32:52+00:00",
+      "leituras": 9,
+      "achados_total": 16,
+      "vazias_seguidas": 0,
+      "ultima": "2026-09-16T11:12:27+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
-      "achados_ultima": 0,
+      "achados_ultima": 2,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://climaesociedade.org/editais/",
-          "http": 202,
-          "bytes": 178
+          "http": 200,
+          "bytes": 98860
+        },
+        {
+          "url": "https://climaesociedade.org/editais",
+          "http": 200,
+          "bytes": 98860
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 1,
-        "links_total": 0,
-        "links_candidatos": 0,
-        "descobertas": [],
-        "pdf_links": 0,
-        "motivo_zero": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
+        "paginas_lidas": 5,
+        "links_total": 605,
+        "links_candidatos": 340,
+        "descobertas": [
+          {
+            "de": "https://climaesociedade.org/editais/",
+            "para": "https://climaesociedade.org/editais",
+            "rotulo": "PT"
+          },
+          {
+            "de": "https://climaesociedade.org/editais/",
+            "para": "https://climaesociedade.org/publicacoes",
+            "rotulo": "Publicações"
+          },
+          {
+            "de": "https://climaesociedade.org/editais/",
+            "para": "https://climaesociedade.org/como-solicitar-uma-doacao",
+            "rotulo": "Como Solicitar uma Doação"
+          },
+          {
+            "de": "https://climaesociedade.org/editais/",
+            "para": "https://climaesociedade.org/edital/comunicacao-para-acao-climatica-no-brasil",
+            "rotulo": "Comunicação para Ação Climática no Brasil"
+          }
+        ],
+        "pdf_links": 3,
+        "motivo_zero": null
       }
     },
     "f260-curadoria-008": {
       "nome": "Instituto Impactarte — cadastro de proponente em fluxo contínuo",
       "tipo": "privada",
-      "leituras": 8,
+      "leituras": 9,
       "achados_total": 0,
-      "vazias_seguidas": 8,
-      "ultima": "2026-09-15T12:32:53+00:00",
+      "vazias_seguidas": 9,
+      "ultima": "2026-09-16T11:12:28+00:00",
       "motivo": "fonte específica ATIVA: época prevista ou menção em local oficial",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2106,20 +2150,45 @@
   },
   "ultima_execucao": {
     "data": "2026-09-16",
-    "em": "2026-09-16T09:52:51+00:00",
+    "em": "2026-09-16T11:15:25+00:00",
     "manual": null,
-    "bloco": "plataformas_api",
-    "sensores_executados": 1,
+    "bloco": "completo",
+    "sensores_executados": 40,
     "em_espera": 54,
     "total_esquadra": 94,
     "previsoes_ativas": 1,
-    "achados": 0,
+    "achados": 12,
     "novos_na_base": 0,
     "por_tipo": {
+      "legislativo": {
+        "sensores": 2,
+        "achados": 1,
+        "falhas": 4
+      },
+      "diario_justica": {
+        "sensores": 3,
+        "achados": 0,
+        "falhas": 7
+      },
+      "diario_oficial": {
+        "sensores": 3,
+        "achados": 0,
+        "falhas": 0
+      },
       "api": {
         "sensores": 1,
         "achados": 0,
-        "falhas": 1
+        "falhas": 2
+      },
+      "site_oficial": {
+        "sensores": 15,
+        "achados": 6,
+        "falhas": 8
+      },
+      "privada": {
+        "sensores": 16,
+        "achados": 5,
+        "falhas": 4
       }
     }
   }

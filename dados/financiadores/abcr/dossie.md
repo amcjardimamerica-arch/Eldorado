@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `abcr`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 20
-- Distribuição por ano pesquisado/coletado: {'2026': 20}
+- Pistas aguardando confirmação: 19
+- Distribuição por ano pesquisado/coletado: {'2026': 19}
 
 ## Padrões
 
@@ -23,7 +23,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Continue lendo ONGs e coletivos periféricos do Nordeste podem se inscrever em edital que oferece apoio de R$ 300 mil até o dia 12](https://captadores.org.br/editais/ongs-e-coletivos-perifericos-do-nordeste-podem-se-inscrever-em-edital-que-oferece-apoio-de-r-300-mil-ate-o-dia-12) — coletado em 2026-09-05T05:21:41+00:00
 - [Continue lendo Banco do Nordeste abre inscrições para editais sociais com aportes de até R$ 1,5 milhão por projeto](https://captadores.org.br/editais/banco-do-nordeste-abre-inscricoes-para-editais-sociais-com-aportes-de-ate-r-15-milhao-por-projeto) — coletado em 2026-09-05T05:21:10+00:00
 - [Médicos Sem Fronteiras abre vaga para Pessoa Captadora de Recursos no Rio de Janeiro](https://captadores.org.br/vagas/medicos-sem-fronteiras-abre-vaga-para-pessoa-captadora-de-recursos-no-rio-de-janeiro) — coletado em 2026-09-15T10:02:41+00:00
-- [Conheça os Profissionais Certificados pela Certificadora Social](https://captadores.org.br/profissionais-certificados) — coletado em 2026-09-16T09:53:48+00:00
 - [Continue lendo Fundação Tide Setubal abre inscrições para edital de saúde mental nas periferias de São Paulo](https://captadores.org.br/editais/fundacao-tide-setubal-abre-inscricoes-para-edital-de-saude-mental-nas-periferias-de-sao-paulo) — coletado em 2026-09-05T05:21:26+00:00
 - [FIFE 2027 abre chamada para seleção de palestrantes](https://captadores.org.br/noticias/fife-2027-abre-chamada-para-selecao-de-palestrantes) — coletado em 2026-09-15T10:02:35+00:00
 - [Edital vai destinar R$ 6 milhões a projetos de proteção dos direitos de crianças ​e adolescentes](https://captadores.org.br/editais/edital-vai-destinar-r-6-milhoes-a-projetos-de-protecao-dos-direitos-de-criancas-e-adolescentes) — coletado em 2026-09-08T05:23:20+00:00

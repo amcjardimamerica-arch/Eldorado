@@ -1,22 +1,22 @@
 {
-  "gerado_em": "2026-09-16T09:50:50+00:00",
-  "total": 257,
+  "gerado_em": "2026-09-16T12:00:14+00:00",
+  "total": 255,
   "selos": {
-    "validadas": 102,
-    "nao_verificadas": 155,
+    "validadas": 99,
+    "nao_verificadas": 156,
     "regra": "VALIDADA (verde) exige objeto + prazo de inscrição + site oficial que divulga; sem qualquer um deles o selo é NÃO VERIFICADA (amarelo) e o item entra na verificação semanal da IA externa"
   },
   "informacoes_minimas": {
     "regra": "toda oportunidade precisa de OBJETO, PRAZO DE INSCRIÇÃO e PÁGINA OFICIAL DO EDITAL (site do órgão/patrocinador, nunca o vetor onde foi encontrada)",
-    "completas": 102,
-    "incompletas": 155,
-    "falta_objeto": 120,
-    "falta_prazo": 145,
+    "completas": 99,
+    "incompletas": 156,
+    "falta_objeto": 121,
+    "falta_prazo": 146,
     "falta_pagina": 105
   },
-  "sem_prazo": 169,
-  "goias_ou_nacional": 40,
-  "nunca_investigados": 110,
+  "sem_prazo": 170,
+  "goias_ou_nacional": 41,
+  "nunca_investigados": 111,
   "edicoes_de_diario_sem_ato": 16365,
   "por_uf": {
     "AL": 6,
@@ -26,7 +26,7 @@
     "CE": 7,
     "DF": 5,
     "ES": 2,
-    "GO": 16,
+    "GO": 14,
     "MA": 2,
     "MG": 17,
     "MS": 2,
@@ -1075,14 +1075,14 @@
   },
   "escopo": {
     "nacional": 48,
-    "estadual": 62,
+    "estadual": 60,
     "municipal": 147
   },
   "modo": {
-    "completo": 64,
+    "completo": 62,
     "leve": 193
   },
-  "marcados_para_ia": 169,
+  "marcados_para_ia": 170,
   "regra": "a IA de domingo executa esta fila na ordem; a varredura imediata percorre os mesmos itens e emite parecer de cada um",
   "itens": [
     {
@@ -1809,6 +1809,56 @@
       ],
       "link_oficial": "https://captadores.org.br/noticias/fife-2027-abre-chamada-para-selecao-de-palestrantes",
       "link_anuncio": "https://captadores.org.br/noticias/fife-2027-abre-chamada-para-selecao-de-palestrantes",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "f9cfc877a0b16b7beda9",
+      "titulo": "Quatro iniciativas vencem premiação do CNJ em gestão de pessoas do Judiciário",
+      "uf": null,
+      "area": "outros",
+      "fonte": "TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://www.cnj.jus.br/quatro-iniciativas-vencem-premiacao-do-cnj-em-gestao-de-pessoas-do-judiciario",
+      "link_anuncio": "https://www.cnj.jus.br/quatro-iniciativas-vencem-premiacao-do-cnj-em-gestao-de-pessoas-do-judiciario",
       "anuncio_e_vetor": false,
       "motivo": "sem prazo de inscrição confirmado",
       "prioridade": 0,
@@ -3855,123 +3905,6 @@
       "selo_validacao": "validada"
     },
     {
-      "id": "emenda-federal-2026",
-      "titulo": "Emenda Parlamentar — Câmara e Senado — captação 2026",
-      "uf": null,
-      "area": "emendas_parlamentares",
-      "fonte": "Congresso Nacional (Câmara dos Deputados e Senado Federal)",
-      "situacao": "possivel",
-      "sem_prazo": false,
-      "faltam": [
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "link_oficial": "https://www.gov.br/transferegov/pt-br",
-      "link_anuncio": "https://dadosabertos.camara.leg.br/api/v2/deputados",
-      "anuncio_e_vetor": false,
-      "motivo": "informações incompletas",
-      "prioridade": 1,
-      "ja_investigado": true,
-      "escopo": "nacional",
-      "cidade": null,
-      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
-      "modo": "completo",
-      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "faltam": [],
-        "completa": true
-      },
-      "selo_validacao": "validada"
-    },
-    {
-      "id": "emenda-estadual-goias-2026",
-      "titulo": "Emenda Parlamentar Estadual — Goiás — captação 2026",
-      "uf": "GO",
-      "area": "emendas_parlamentares",
-      "fonte": "Assembleia Legislativa do Estado de Goiás (ALEGO)",
-      "situacao": "possivel",
-      "sem_prazo": false,
-      "faltam": [
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "link_oficial": "https://portal.al.go.leg.br/",
-      "link_anuncio": "https://portal.al.go.leg.br/deputados",
-      "anuncio_e_vetor": false,
-      "motivo": "informações incompletas",
-      "prioridade": 1,
-      "ja_investigado": true,
-      "escopo": "estadual",
-      "cidade": null,
-      "geo_motivo": "abrangência estadual em GO (sem cidade identificada)",
-      "modo": "completo",
-      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "faltam": [],
-        "completa": true
-      },
-      "selo_validacao": "validada"
-    },
-    {
-      "id": "emenda-municipal-goiania-2026",
-      "titulo": "Emenda Parlamentar Municipal — Goiânia — captação 2026",
-      "uf": "GO",
-      "area": "emendas_parlamentares",
-      "fonte": "Câmara Municipal de Goiânia",
-      "situacao": "possivel",
-      "sem_prazo": false,
-      "faltam": [
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "link_oficial": "https://www.goiania.go.leg.br/",
-      "link_anuncio": "https://www.goiania.go.leg.br/parlamentares",
-      "anuncio_e_vetor": false,
-      "motivo": "informações incompletas",
-      "prioridade": 1,
-      "ja_investigado": true,
-      "escopo": "estadual",
-      "cidade": null,
-      "geo_motivo": "abrangência estadual em GO (sem cidade identificada)",
-      "modo": "completo",
-      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "faltam": [],
-        "completa": true
-      },
-      "selo_validacao": "validada"
-    },
-    {
       "id": "doacao-receita-federal-2027",
       "titulo": "Doação de mercadorias apreendidas — Receita Federal — 2027",
       "uf": null,
@@ -3982,7 +3915,7 @@
       "faltam": [
         "Prazo de recurso"
       ],
-      "link_oficial": "https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/leilao/pdm/doacoes",
+      "link_oficial": "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias",
       "link_anuncio": "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias",
       "anuncio_e_vetor": false,
       "motivo": "informações incompletas",

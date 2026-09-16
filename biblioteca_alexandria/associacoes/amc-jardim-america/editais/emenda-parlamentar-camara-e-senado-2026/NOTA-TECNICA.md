@@ -21,7 +21,7 @@ Campos marcados **[preencher]** nos documentos dependem de dados que não ficam 
 
 ## Pendências do levantamento
 
-- 83 parlamentar(es) sem gabinete ou contato completo — confirmar na casa
+- 82 parlamentar(es) sem gabinete ou contato completo — confirmar na casa
 - votação de eleição não consta das APIs legislativas — consultar o TSE (fonte configurada)
 
 ---
