@@ -102,26 +102,26 @@
     "alego-pl": {
       "nome": "Assembleia Legislativa de Goiás — proposições",
       "tipo": "legislativo",
-      "leituras": 19,
-      "achados_total": 0,
-      "vazias_seguidas": 19,
-      "ultima": "2026-09-15T11:22:29+00:00",
+      "leituras": 20,
+      "achados_total": 1,
+      "vazias_seguidas": 0,
+      "ultima": "2026-09-16T09:01:39+00:00",
       "motivo": "motor regular e geral — todo dia",
-      "achados_ultima": 0,
+      "achados_ultima": 1,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 131954
+          "bytes": 132273
         },
         {
           "url": "https://portal.al.go.leg.br/noticias",
           "http": 200,
-          "bytes": 118249
+          "bytes": 113426
         }
       ],
-      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
+      "alerta": null,
       "diagnostico": {
         "paginas_lidas": 7,
         "links_total": 737,
@@ -149,16 +149,16 @@
           }
         ],
         "pdf_links": 40,
-        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+        "motivo_zero": null
       }
     },
     "camara-goiania-pl": {
       "nome": "Câmara Municipal de Goiânia — projetos de lei",
       "tipo": "legislativo",
-      "leituras": 19,
+      "leituras": 20,
       "achados_total": 0,
-      "vazias_seguidas": 19,
-      "ultima": "2026-09-15T11:22:47+00:00",
+      "vazias_seguidas": 20,
+      "ultima": "2026-09-16T09:01:44+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 4,
@@ -166,7 +166,7 @@
         {
           "url": "https://www.goiania.go.leg.br/",
           "http": 200,
-          "bytes": 15741
+          "bytes": 15864
         }
       ],
       "alerta": null,
@@ -182,10 +182,10 @@
     "cnj-destinacoes": {
       "nome": "CNJ — destinações de penas e prestações pecuniárias",
       "tipo": "diario_justica",
-      "leituras": 19,
+      "leituras": 20,
       "achados_total": 0,
-      "vazias_seguidas": 19,
-      "ultima": "2026-09-15T11:22:58+00:00",
+      "vazias_seguidas": 20,
+      "ultima": "2026-09-16T09:01:53+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -193,12 +193,12 @@
         {
           "url": "https://www.cnj.jus.br/",
           "http": 200,
-          "bytes": 363585
+          "bytes": 364073
         },
         {
           "url": "https://www.cnj.jus.br/transparencia-cnj/licitacoes-e-contratos/",
           "http": 200,
-          "bytes": 275678
+          "bytes": 275650
         }
       ],
       "alerta": null,
@@ -235,10 +235,10 @@
     "dj-trf1-go": {
       "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
       "tipo": "diario_justica",
-      "leituras": 19,
+      "leituras": 20,
       "achados_total": 0,
-      "vazias_seguidas": 19,
-      "ultima": "2026-09-15T11:23:03+00:00",
+      "vazias_seguidas": 20,
+      "ultima": "2026-09-16T09:01:58+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -288,18 +288,18 @@
     "dje-tjgo": {
       "nome": "Diário da Justiça Eletrônico — TJGO",
       "tipo": "diario_justica",
-      "leituras": 19,
+      "leituras": 20,
       "achados_total": 0,
-      "vazias_seguidas": 19,
-      "ultima": "2026-09-15T11:23:18+00:00",
+      "vazias_seguidas": 20,
+      "ultima": "2026-09-16T09:02:15+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
-      "falhas_ultima": 8,
+      "falhas_ultima": 6,
       "saude": [
         {
           "url": "https://www.jusbrasil.com.br/diarios/DJGO/",
           "http": 200,
-          "bytes": 56070
+          "bytes": 56068
         },
         {
           "url": "https://www.jusbrasil.com.br/diarios",
@@ -309,9 +309,9 @@
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 2,
-        "links_total": 690,
-        "links_candidatos": 195,
+        "paginas_lidas": 4,
+        "links_total": 1520,
+        "links_candidatos": 237,
         "descobertas": [
           {
             "de": "https://www.jusbrasil.com.br/diarios/DJGO/",
@@ -2115,20 +2115,25 @@
   },
   "ultima_execucao": {
     "data": "2026-09-16",
-    "em": "2026-09-16T08:02:38+00:00",
+    "em": "2026-09-16T09:02:15+00:00",
     "manual": null,
-    "bloco": "diarios",
-    "sensores_executados": 3,
+    "bloco": "justica_legislativo",
+    "sensores_executados": 5,
     "em_espera": 54,
     "total_esquadra": 94,
     "previsoes_ativas": 1,
-    "achados": 0,
-    "novos_na_base": 0,
+    "achados": 1,
+    "novos_na_base": 1,
     "por_tipo": {
-      "diario_oficial": {
+      "legislativo": {
+        "sensores": 2,
+        "achados": 1,
+        "falhas": 4
+      },
+      "diario_justica": {
         "sensores": 3,
         "achados": 0,
-        "falhas": 0
+        "falhas": 7
       }
     }
   }
