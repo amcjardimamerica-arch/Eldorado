@@ -341,37 +341,28 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 21,
+      "leituras": 22,
       "achados_total": 0,
-      "vazias_seguidas": 21,
-      "ultima": "2026-09-15T11:24:37+00:00",
+      "vazias_seguidas": 22,
+      "ultima": "2026-09-16T09:52:51+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
+      "falhas_ultima": 1,
       "saude": [
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260915&dataFinal=20260915&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-          "erro": "TimeoutError",
-          "code": null,
-          "waf": null,
-          "causa": "tempo esgotado — servidor lento ou filtrando o IP"
-        },
-        {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260915&dataFinal=20260915&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
-          "erro": "TimeoutError",
-          "code": null,
-          "waf": null,
-          "causa": "tempo esgotado — servidor lento ou filtrando o IP"
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260916&dataFinal=20260916&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
+          "http": 204,
+          "bytes": 0
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 0,
+        "paginas_lidas": 1,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "tempo esgotado / conexão recusada"
+        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
       }
     },
     "plat-abcr": {
@@ -2115,25 +2106,20 @@
   },
   "ultima_execucao": {
     "data": "2026-09-16",
-    "em": "2026-09-16T09:02:15+00:00",
+    "em": "2026-09-16T09:52:51+00:00",
     "manual": null,
-    "bloco": "justica_legislativo",
-    "sensores_executados": 5,
+    "bloco": "plataformas_api",
+    "sensores_executados": 1,
     "em_espera": 54,
     "total_esquadra": 94,
     "previsoes_ativas": 1,
-    "achados": 1,
-    "novos_na_base": 1,
+    "achados": 0,
+    "novos_na_base": 0,
     "por_tipo": {
-      "legislativo": {
-        "sensores": 2,
-        "achados": 1,
-        "falhas": 4
-      },
-      "diario_justica": {
-        "sensores": 3,
+      "api": {
+        "sensores": 1,
         "achados": 0,
-        "falhas": 7
+        "falhas": 1
       }
     }
   }
