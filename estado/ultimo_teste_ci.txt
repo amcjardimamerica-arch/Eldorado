@@ -1,12 +1,21 @@
-commit: e766868ab29821d2dd998ba52250085aa411513f
-em: 2026-09-16T11:05:55Z
+commit: 1e47fa0158d6457b7e112423e6368964558d10ab
+em: 2026-09-16T12:26:41Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 386 tests in 343.561s
+Ran 386 tests in 340.870s
 
-FAILED (failures=1, skipped=9)
+FAILED (failures=2, skipped=9)
 ---- falhas ----
+FAIL: test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida (test_system.SystemTests.test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4033, in test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida
+    self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
+
+======================================================================
 FAIL: test_mapa_so_com_oportunidades_reais (test_system.SystemTests.test_mapa_so_com_oportunidades_reais)
 07/09: o Mapa mostrava 310 em Goiás porque contava 306 edições inteiras de
 ----------------------------------------------------------------------
@@ -17,6 +26,6 @@ Traceback (most recent call last):
 AssertionError: False is not true
 
 ----------------------------------------------------------------------
-Ran 386 tests in 343.561s
+Ran 386 tests in 340.870s
 
-FAILED (failures=1, skipped=9)
+FAILED (failures=2, skipped=9)
