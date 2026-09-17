@@ -1,22 +1,22 @@
 {
-  "gerado_em": "2026-09-17T09:03:40+00:00",
-  "total": 255,
+  "gerado_em": "2026-09-17T09:58:48+00:00",
+  "total": 256,
   "selos": {
     "validadas": 99,
-    "nao_verificadas": 156,
+    "nao_verificadas": 157,
     "regra": "VALIDADA (verde) exige objeto + prazo de inscrição + site oficial que divulga; sem qualquer um deles o selo é NÃO VERIFICADA (amarelo) e o item entra na verificação semanal da IA externa"
   },
   "informacoes_minimas": {
     "regra": "toda oportunidade precisa de OBJETO, PRAZO DE INSCRIÇÃO e PÁGINA OFICIAL DO EDITAL (site do órgão/patrocinador, nunca o vetor onde foi encontrada)",
     "completas": 99,
-    "incompletas": 156,
-    "falta_objeto": 121,
-    "falta_prazo": 146,
+    "incompletas": 157,
+    "falta_objeto": 122,
+    "falta_prazo": 147,
     "falta_pagina": 105
   },
-  "sem_prazo": 170,
-  "goias_ou_nacional": 41,
-  "nunca_investigados": 110,
+  "sem_prazo": 171,
+  "goias_ou_nacional": 42,
+  "nunca_investigados": 111,
   "edicoes_de_diario_sem_ato": 16380,
   "por_uf": {
     "AL": 6,
@@ -26,7 +26,7 @@
     "CE": 7,
     "DF": 5,
     "ES": 2,
-    "GO": 14,
+    "GO": 15,
     "MA": 2,
     "MG": 17,
     "MS": 2,
@@ -1075,14 +1075,14 @@
   },
   "escopo": {
     "nacional": 48,
-    "estadual": 60,
+    "estadual": 61,
     "municipal": 147
   },
   "modo": {
-    "completo": 62,
+    "completo": 63,
     "leve": 193
   },
-  "marcados_para_ia": 170,
+  "marcados_para_ia": 171,
   "regra": "a IA de domingo executa esta fila na ordem; a varredura imediata percorre os mesmos itens e emite parecer de cada um",
   "itens": [
     {
@@ -1866,6 +1866,56 @@
       "escopo": "nacional",
       "cidade": null,
       "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "c5be5b3ffd220f988d84",
+      "titulo": "15:32 \n                   \n                   Requerimentos, títulos de cidadania e utilidades públicas são aprovados em bloco",
+      "uf": "GO",
+      "area": "direitos_humanos",
+      "fonte": "Assembleia Legislativa de Goiás — proposições",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://portal.al.go.leg.br/noticias/167417/requerimentos-titulos-de-cidadania-e-utilidades-publicas-sao-aprovados-em-bloco",
+      "link_anuncio": "https://portal.al.go.leg.br/noticias/167417/requerimentos-titulos-de-cidadania-e-utilidades-publicas-sao-aprovados-em-bloco",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "estadual",
+      "cidade": null,
+      "geo_motivo": "abrangência estadual em GO (sem cidade identificada)",
       "modo": "completo",
       "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
       "minimas": {
