@@ -1,11 +1,11 @@
-commit: 935072c2fa249ceb59a160f96881c053e5ee9d77
-em: 2026-09-17T08:07:58Z
+commit: 1a60f0e3cd43266ca7469fe19d8b11b810dfe60f
+em: 2026-09-17T09:05:28Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 386 tests in 406.506s
+Ran 386 tests in 349.486s
 
-FAILED (failures=3, skipped=9)
+FAILED (failures=2, skipped=9)
 ---- falhas ----
 FAIL: test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida (test_system.SystemTests.test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida)
 ----------------------------------------------------------------------
@@ -14,16 +14,6 @@ Traceback (most recent call last):
     self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
-
-======================================================================
-FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
-Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3781, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
-    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'futuro' == 'futuro'
 
 ======================================================================
 FAIL: test_mapa_so_com_oportunidades_reais (test_system.SystemTests.test_mapa_so_com_oportunidades_reais)
@@ -36,6 +26,6 @@ Traceback (most recent call last):
 AssertionError: False is not true
 
 ----------------------------------------------------------------------
-Ran 386 tests in 406.506s
+Ran 386 tests in 349.486s
 
-FAILED (failures=3, skipped=9)
+FAILED (failures=2, skipped=9)
