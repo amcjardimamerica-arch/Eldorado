@@ -1,9 +1,9 @@
-commit: 11028c058f97f661bb38f336412844bd7a270833
-em: 2026-09-18T12:04:08Z
+commit: 431f266f0f580636851b8eed7f4fd1654eeebfb3
+em: 2026-09-18T13:22:45Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 386 tests in 232.972s
+Ran 386 tests in 330.832s
 
 FAILED (failures=3, skipped=9)
 ---- falhas ----
@@ -16,15 +16,6 @@ Traceback (most recent call last):
 AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
 
 ======================================================================
-FAIL: test_informacoes_minimas_e_verificacao_dos_abertos (test_system.SystemTests.test_informacoes_minimas_e_verificacao_dos_abertos)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4050, in test_informacoes_minimas_e_verificacao_dos_abertos
-    self.assertTrue(all(e["id"] in an for e in ab))          # todo edital aberto tem verificação individual
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: False is not true
-
-======================================================================
 FAIL: test_mapa_so_com_oportunidades_reais (test_system.SystemTests.test_mapa_so_com_oportunidades_reais)
 07/09: o Mapa mostrava 310 em Goiás porque contava 306 edições inteiras de
 ----------------------------------------------------------------------
@@ -34,7 +25,16 @@ Traceback (most recent call last):
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: False is not true
 
+======================================================================
+FAIL: test_relatorio_da_ia_rouanet_conhecida_e_perfil_da_associacao (test_system.SystemTests.test_relatorio_da_ia_rouanet_conhecida_e_perfil_da_associacao)
 ----------------------------------------------------------------------
-Ran 386 tests in 232.972s
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3653, in test_relatorio_da_ia_rouanet_conhecida_e_perfil_da_associacao
+    self.assertEqual(sum(1 for i in q["itens"] if i["valor"]),12); self.assertTrue(q["relatorio_ia"]["completo"])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 7 != 12
+
+----------------------------------------------------------------------
+Ran 386 tests in 330.832s
 
 FAILED (failures=3, skipped=9)
