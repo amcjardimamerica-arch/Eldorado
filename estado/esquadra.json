@@ -348,44 +348,33 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 27,
+      "leituras": 28,
       "achados_total": 0,
-      "vazias_seguidas": 27,
-      "ultima": "2026-09-18T10:51:08+00:00",
+      "vazias_seguidas": 28,
+      "ultima": "2026-09-19T09:26:06+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260918&dataFinal=20260918&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-          "http": 200,
-          "bytes": 3782
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260919&dataFinal=20260919&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
+          "http": 204,
+          "bytes": 0
         },
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260918&dataFinal=20260918&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260919&dataFinal=20260919&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
           "http": 204,
           "bytes": 0
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 4,
-        "links_total": 2,
-        "links_candidatos": 2,
-        "descobertas": [
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260918&dataFinal=20260918&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-            "para": "https://pncp.gov.br/app/editais/77001311000108/2026/559",
-            "rotulo": "Credenciamento — MUNICIPIO DE CASTRO — Credenciamento de pes"
-          },
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260918&dataFinal=20260918&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-            "para": "https://pncp.gov.br/app/editais/13912506000119/2026/79",
-            "rotulo": "Credenciamento — MUNICIPIO DE SANTA MARIA DA VITORIA — [LICI"
-          }
-        ],
+        "paginas_lidas": 2,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "página institucional; seguiu 2 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+        "motivo_zero": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
       }
     },
     "plat-abcr": {
@@ -2160,25 +2149,20 @@
   },
   "ultima_execucao": {
     "data": "2026-09-19",
-    "em": "2026-09-19T08:28:22+00:00",
+    "em": "2026-09-19T09:26:06+00:00",
     "manual": null,
-    "bloco": "justica_legislativo",
-    "sensores_executados": 5,
+    "bloco": "plataformas_api",
+    "sensores_executados": 1,
     "em_espera": 54,
     "total_esquadra": 94,
     "previsoes_ativas": 1,
-    "achados": 2,
+    "achados": 0,
     "novos_na_base": 0,
     "por_tipo": {
-      "legislativo": {
-        "sensores": 2,
-        "achados": 2,
-        "falhas": 4
-      },
-      "diario_justica": {
-        "sensores": 3,
+      "api": {
+        "sensores": 1,
         "achados": 0,
-        "falhas": 6
+        "falhas": 0
       }
     }
   }
