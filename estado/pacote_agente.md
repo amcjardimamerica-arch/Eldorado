@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## 0ca63e4466bb7edeb266 — EXTRATO DE TERMO DE FOMENTO
 
-MODO: COMPLETO · marcado desde 2026-09-18 · visto pela IA 2× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-18 · visto pela IA 3× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Diário Oficial da União · UF BR · nível federal · situação aberta · fim 2026-09-18
 
@@ -34,7 +34,7 @@ Texto do edital (compacto):
 ---
 ## db0bf83f4df2fe2c618a — PNAB 2026: Retificado cronograma dos editais nº 12, 13 e 14/2026
 
-MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 28× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 29× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
