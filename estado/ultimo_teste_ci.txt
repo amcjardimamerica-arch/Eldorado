@@ -1,11 +1,11 @@
-commit: 868c2ff41665cd89f9f26aa8060a03c6ccff453e
-em: 2026-09-19T11:50:02Z
+commit: a85cdc2472875bc74f01f17f81cc397d78fefde8
+em: 2026-09-19T12:52:19Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 386 tests in 353.310s
+Ran 386 tests in 263.308s
 
-FAILED (failures=3, skipped=9)
+FAILED (failures=2, skipped=9)
 ---- falhas ----
 FAIL: test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida (test_system.SystemTests.test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida)
 ----------------------------------------------------------------------
@@ -25,16 +25,7 @@ Traceback (most recent call last):
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: False is not true
 
-======================================================================
-FAIL: test_relatorio_da_ia_rouanet_conhecida_e_perfil_da_associacao (test_system.SystemTests.test_relatorio_da_ia_rouanet_conhecida_e_perfil_da_associacao)
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3653, in test_relatorio_da_ia_rouanet_conhecida_e_perfil_da_associacao
-    self.assertEqual(sum(1 for i in q["itens"] if i["valor"]),12); self.assertTrue(q["relatorio_ia"]["completo"])
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 7 != 12
+Ran 386 tests in 263.308s
 
-----------------------------------------------------------------------
-Ran 386 tests in 353.310s
-
-FAILED (failures=3, skipped=9)
+FAILED (failures=2, skipped=9)
