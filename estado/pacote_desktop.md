@@ -62,6 +62,8 @@ Ele lê com o seu IP e envia ao repositório. Motores atendidos:
     - abrir https://goias.gov.br/cultura/chamamentos-publicos-2026/ e procurar: chamamento público, edital, PNAB, Goyazes, Fundo de Arte e Cultura, Lei Paulo Gustavo
     - abrir https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/ e procurar: chamamento público, edital, PNAB, Goyazes, Fundo de Arte e Cultura, Lei Paulo Gustavo
     - abrir https://pnab.cultura.go.gov.br e procurar: chamamento público, edital, PNAB, Goyazes, Fundo de Arte e Cultura, Lei Paulo Gustavo
+- **Motor de Recorrência — revisita as oportunidades identificadas** — nunca rodou. Ação: conferir se o sensor está na escala; se for novo, esperar a próxima saída.
+    - abrir https://observatorio3setor.org.br/editais/ e procurar: retificação, prorrogação, errata, resultado, homologação, classificados
 - **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 2 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://observatorio3setor.org.br/editais/ e procurar: edital, seleção de projetos, investimento social, responsabilidade social, patrocínio, incentivo fiscal
 

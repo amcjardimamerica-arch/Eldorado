@@ -1532,6 +1532,16 @@ def coletar(hoje: date | None = None) -> dict:
         "fluxo_verificacao": (lambda f: {k: (v if k != "aguardando_acao_externa" else {kk: vv for kk, vv in v.items() if kk != "itens"}) for k, v in f.items()} if f else None)(
             load_json(ROOT / "estado/fluxo_verificacao.json") if (ROOT / "estado/fluxo_verificacao.json").exists() else None),
         "achados_dia_fragmento": "dados/achados_dia.json",
+        "evolucao_busca": {
+            "lexico_aprendido": (lambda d: {"positivos": len(d.get("positivos") or {}), "vetos": len(d.get("vetos") or {}), "candidatos": len(d.get("candidatos") or {}), "base": d.get("base"), "em": d.get("em")} if d else None)(
+                load_json(ROOT / "config/lexico_aprendido.json") if (ROOT / "config/lexico_aprendido.json").exists() else None),
+            "recorrencia": (lambda d: {"total": d.get("total"), "por_cadencia": d.get("por_cadencia")} if d else None)(
+                load_json(ROOT / "estado/rotas_recorrencia.json") if (ROOT / "estado/rotas_recorrencia.json").exists() else None),
+            "empresas_rotas": (lambda d: {"empresas": d.get("total_empresas"), "rotas": sum(len(r.get("rotas") or []) for r in d.get("empresas") or [])} if d else None)(
+                load_json(ROOT / "config/rotas_empresas.json") if (ROOT / "config/rotas_empresas.json").exists() else None),
+            "finalidade": (lambda d: {"descoberta": sum(1 for v in (d.get("motores") or {}).values() if v.get("finalidade") == "descoberta"), "insumo": sum(1 for v in (d.get("motores") or {}).values() if v.get("finalidade") == "insumo"), "espalhados": (d.get("espalhamento") or {}).get("total_novos")} if d else None)(
+                load_json(ROOT / "config/finalidade_motores.json") if (ROOT / "config/finalidade_motores.json").exists() else None),
+            "acervo_compacto": (load_json(ROOT / "estado/acervo_compacto.json") if (ROOT / "estado/acervo_compacto.json").exists() else None)},
         "alerta_motores": (load_json(ROOT / "estado/alerta_motores.json") if (ROOT / "estado/alerta_motores.json").exists() else None),
         "validacao_motores_mes": (lambda v: {k: v[k] for k in ("mes", "ate", "dias_no_periodo", "resumo")} | {"motores": {k: {kk: vv for kk, vv in g.items() if kk != "dias"} for k, g in v["motores"].items()}} if v else None)(
             load_json(ROOT / "estado/validacao_motores_mes.json") if (ROOT / "estado/validacao_motores_mes.json").exists() else None),

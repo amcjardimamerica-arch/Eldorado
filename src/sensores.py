@@ -153,6 +153,18 @@ def registro() -> list[dict]:
                          "nivel": "privada", "uf": None, "territorio": p.get("territorio", "BR"),
                          "urls": [p["url"]], "busca": None, "confianca": "confirmada",
                          "origem": "investigacao"})
+    # MOTOR DE RECORRÊNCIA (20/09): revisita a página oficial de cada oportunidade validada
+    rec = ROOT / "estado/rotas_recorrencia.json"
+    if rec.exists():
+        from datetime import date as _date
+        hoje_iso = _date.today().isoformat()
+        rotas = [r for r in (load_json(rec).get("rotas") or []) if (r.get("proxima_leitura") or hoje_iso) <= hoje_iso]
+        if rotas:
+            sens.append({"id": "recorrencia", "nome": "Motor de Recorrência — revisita as oportunidades identificadas", "tipo": "recorrencia",
+                         "nivel": "misto", "uf": None, "territorio": "BR", "urls": [r["url"] for r in rotas[:40]], "busca": None,
+                         "confianca": "confirmada", "origem": "finalidade_motores", "max_paginas": 40,
+                         "lexico_proprio": ["retificação", "prorrogação", "errata", "resultado", "homologação", "classificados", "recurso", "suspensão", "revogação", "novo edital", "inscrições", "cronograma"],
+                         "rotas_recorrencia": [{"edital_id": r["edital_id"], "url": r["url"]} for r in rotas[:40]]})
     return sens
 
 
@@ -191,7 +203,7 @@ def escala_do_dia(hoje: date | None = None) -> dict:
         motivo = None
         if s["id"] in desligados or desligados & set(s.get("fontes_260") or []):
             ficam.append(dict(s, desligado_pelo_titular=True)); continue
-        if s["tipo"] in diarios or s["tipo"] == "plataforma":
+        if s["tipo"] in diarios or s["tipo"] in ("plataforma", "recorrencia"):
             motivo = "motor regular e geral — todo dia"
         elif s.get("fontes_260") and (set(s["fontes_260"]) & ativas):
             motivo = "fonte específica ATIVA: época prevista ou menção em local oficial"
@@ -271,6 +283,15 @@ def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
             saida += [u.replace("{termo}", quote(t)) for t in sensor.get("termos_busca", [])[:4]]
         else:
             saida.append(u)
+    # 20/09: o motor de editais de EMPRESAS lê os sites/páginas de RSE das empresas mapeadas pelos motores 27/28
+    if sensor.get("id") == "plat-empresas-editais-incentivados":
+        try:
+            from .empresas_rotas import rotas_para_sensor
+            for u in rotas_para_sensor(24):
+                if u not in saida:
+                    saida.append(u)
+        except Exception:
+            pass
     # 20/09: as ROTAS ALTERNATIVAS declaradas (diário + secretaria + conselho…) entram DEPOIS das
     # páginas próprias do motor, para nunca deslocá-las do limite de leitura
     for r in rotas_alternativas(sensor):
@@ -300,6 +321,14 @@ def lexico_camada1(sensor: dict) -> tuple[list[str], list[str]]:
     cfg = _rotas_cfg(); m = (cfg.get("motores") or {}).get(sensor.get("id")) or {}
     termos = [x.lower() for x in (m.get("lexico_camada1") or [])] + [x.lower() for x in (cfg.get("camada_1_geral") or [])]
     vetos = [x.lower() for x in (m.get("veto_camada1") or [])] + [x.lower() for x in (cfg.get("camada_1_veto") or [])]
+    # 20/09: o LÉXICO APRENDIDO (config/lexico_aprendido.json) soma-se à camada 1 de todo motor de descoberta
+    try:
+        from .aprendizado_lexico import termos_aprendidos
+        ap_pos, ap_veto = termos_aprendidos()
+        termos += [x for x in ap_pos if x not in termos]
+        vetos += [x for x in ap_veto if x not in vetos]
+    except Exception:
+        pass
     return termos, vetos
 
 
@@ -359,6 +388,22 @@ def lexico_especifico(sensor: dict) -> list[str]:
 def casa_especifico(texto: str, termos: list[str]) -> list[str]:
     tl = texto.lower()
     return [t for t in termos if t.lower() in tl]
+
+
+def reprogramar_recorrencia(sensor: dict, resultado: dict) -> None:
+    """Após a leitura do motor de recorrência, cada rota lida ganha a próxima data pela sua cadência."""
+    if sensor.get("id") != "recorrencia":
+        return
+    arq = ROOT / "estado/rotas_recorrencia.json"
+    if not arq.exists():
+        return
+    d = load_json(arq); lidas = {r["url"] for r in (sensor.get("rotas_recorrencia") or [])}
+    hoje = date.today()
+    for r in d.get("rotas", []):
+        if r["url"] in lidas:
+            r["ultima_leitura"] = hoje.isoformat()
+            r["proxima_leitura"] = (hoje + timedelta(days=int(r.get("cadencia_dias") or 7))).isoformat()
+    write_json(arq, d)
 
 
 def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, data: date | None = None) -> dict:

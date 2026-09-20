@@ -217,6 +217,10 @@ jobs:
             timeout 300 python -m src.auditoria_motores || echo "auditoria dos motores: registrada"
             timeout 600 python -m src.retroativo || echo "varredura retroativa: registrada"
             timeout 300 python -m src.achados_dia || echo "achados do dia: registrado"
+            timeout 300 python -m src.empresas_rotas || echo "rotas de empresas: registradas"
+            timeout 300 python -m src.finalidade_motores || echo "finalidade/recorrencia: registrada"
+            timeout 300 python -m src.aprendizado_lexico || echo "lexico aprendido: registrado"
+            timeout 600 python -m src.acervo_compacto construir || echo "acervo compacto: construido"
             timeout 300 python -m src.alerta_motores || echo "alerta dos motores: registrado"
             timeout 300 python -m src.pacote_desktop || echo "pacote do desktop: gerado"
           fi
