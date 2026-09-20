@@ -1,4 +1,4 @@
-Ofício nº 011/2026 – AMC-JA      Goiânia, 19 de setembro de 2026.
+Ofício nº 011/2026 – AMC-JA      Goiânia, 20 de setembro de 2026.
 
 Ao Excelentíssimo Senhor
 
