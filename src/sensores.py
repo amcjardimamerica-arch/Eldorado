@@ -258,7 +258,7 @@ def _local_conhecido(sensor: dict) -> list[str]:
 def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
     """URLs a ler: fixas; por termo quando o portal tem busca; por DATA do dia
     quando o diário publica por edição (DOU: leiturajornal?data=DD-MM-AAAA)."""
-    hoje = hoje or date.today()
+    hoje = hoje or sensor.get("_data") or date.today()      # retroativo: a edição de outro dia
     saida = list(_local_conhecido(sensor))
     for u in sensor["urls"]:
         if "{data8}" in u:
@@ -361,9 +361,11 @@ def casa_especifico(texto: str, termos: list[str]) -> list[str]:
     return [t for t in termos if t.lower() in tl]
 
 
-def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -> dict:
+def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, data: date | None = None) -> dict:
     """Uma leitura do sensor: páginas → links → léxico → destinação → achados.
     Motores Opressores (fontes_260) também casam pelo léxico ESPECÍFICO."""
+    if data:
+        sensor = dict(sensor, _data=data)
     lim = limites or load_json(CFG)["limites"]
     pausa = lim["pausa_segundos"] if pausa is None else pausa
     achados, falhas, saude = [], [], []

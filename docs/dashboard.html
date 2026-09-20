@@ -958,10 +958,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260920184815"></script>
-<script src="mapa-arte.js?v=20260920184815"></script>
-<script src="dashboard-dados.enc.js?v=20260920184815"></script>
-<script src="dashboard-dados.js?v=20260920184815"></script>
+<script src="mapa-brasil.js?v=20260920190507"></script>
+<script src="mapa-arte.js?v=20260920190507"></script>
+<script src="dashboard-dados.enc.js?v=20260920190507"></script>
+<script src="dashboard-dados.js?v=20260920190507"></script>
 <script>
 (function(){
 "use strict";
@@ -2556,7 +2556,11 @@ function diasDaBussola(){return (D.bussola&&D.bussola.dias)||[];}
 function mesesComBusca(){
   return [...new Set(diasDaBussola().map(d=>d.data.slice(0,7)))].sort().reverse();
 }
+let ACHADOS_DIA=null;
+async function carregaAchadosDia(){ if(ACHADOS_DIA)return ACHADOS_DIA; try{const r=await fetch("dados/achados_dia.json?v="+Date.now());if(r.ok)ACHADOS_DIA=await r.json();}catch(e){} return ACHADOS_DIA||{dias:{}}; }
+const MOTOR_ROTULO={"pncp-api":"PNCP (descoberta)","diarios-municipais":"Diários municipais (Querido Diário)","plat-observatorio-3setor":"Observatório do Terceiro Setor","plat-abcr":"ABCR / Captadores","plat-gife":"GIFE","plat-prosas":"Prosas","dou":"Diário Oficial da União","alego-pl":"ALEGO","empresas-incentivadas":"Empresas incentivadas","do-goias":"Diário Oficial de Goiás","do-goiania":"Diário Oficial de Goiânia"};
 function desenhaMapaMonitor(){
+  carregaAchadosDia().then(()=>{ if(window._mpMonitorPronto)return; window._mpMonitorPronto=true; desenhaMapaMonitor(); });
   const CAT=(D.bussola&&D.bussola.categorias)||{};
   const dias=diasDaBussola();
   const mes=(mpFiltro.mes&&mpFiltro.mes!=="__hist__")?mpFiltro.mes:(mesesComBusca()[0])||new Date().toISOString().slice(0,7);
@@ -2593,16 +2597,22 @@ function desenhaMapaMonitor(){
     const pontos=reg&&reg.encontrado
       ? (reg.categorias_ativas||[]).map(c=>`<span class=ponto title="${esc((CAT[c]||{}).rotulo||c)}" style="background:${(CAT[c]||{}).cor||"#607086"};width:8px;height:8px"></span>`).join("")
       : "";
+    const AD=(ACHADOS_DIA&&ACHADOS_DIA.dias&&ACHADOS_DIA.dias[iso])||null;
+    const novos=AD?AD.total:0, reap=AD?AD.reapresentados:0;
+    // 20/09: o dia diz quantas oportunidades NOVAS (primeira vez) e por qual motor; reapresentação = sem oportunidade nova
+    const rotDia=AD&&novos?`${novos} nov${novos>1?"as":"a"}`:(reg?(reg.houve_busca===false?"—":"Sem oport."):"—");
     el.innerHTML=`<div class=n>${dia}<span class=sem>${SEM[dt.getDay()]}</span></div>
-      <div class="s ${situ}">${reg?(reg.encontrado?"Encontrado":"Ausente"):"—"}</div>
-      <div class=pts>${pontos}</div>`;
+      <div class="s ${novos?"encontrado":(reg?"ausente":"vazio")}">${rotDia}</div>
+      <div class=pts>${AD&&novos?Object.keys(AD.motores).slice(0,4).map(m=>`<span class=ponto title="${esc(MOTOR_ROTULO[m]||m)}" style="background:${CAT[m]?CAT[m].cor:"#0B4EA2"};width:8px;height:8px"></span>`).join(""):pontos}</div>`;
     if(reg){
-      ligaTip(el,`<strong>${br(iso)}</strong> — ${reg.encontrado?"<span style='color:#7CE0A8'>ENCONTRADO</span>":"<span style='color:#FF9C93'>AUSENTE</span>"}<br>
+      ligaTip(el,`<strong>${br(iso)}</strong> — ${novos?`<span style='color:#7CE0A8'>${novos} oportunidade(s) nova(s)</span>`:"<span style='color:#FF9C93'>sem oportunidade nova</span>"}${reap?` · ${reap} reapresentada(s) (já vistas antes)`:""}<br>
+        ${AD&&novos?Object.entries(AD.motores).map(([m,l])=>`${esc(MOTOR_ROTULO[m]||m)}: ${l.length}`).join(" · ")+"<br>":""}
         frentes que captaram: ${(reg.categorias_ativas||[]).map(c=>esc((CAT[c]||{}).rotulo||c)).join(", ")||"nenhuma"}<br>
         integridade: ${reg.integridade==="integra"?"íntegra":"com falhas"} · fontes ok ${reg.fontes_ok} · falhas ${reg.fontes_falha}<br>
         indícios novos: ${reg.novas}<br><em>clique para detalhes</em>`);
-      el.onclick=()=>abreModal(`<h3 style="margin:0">Levantamento de ${br(iso)}</h3>
-         <div class=meta>etapa 1 — sem confirmação ainda</div>`,
+      el.onclick=()=>abreModal(`<h3 style="margin:0">Achado do dia — ${br(iso)}</h3>
+         <div class=meta>${novos} oportunidade(s) nova(s)${reap?` · ${reap} reapresentada(s), já vistas em dias anteriores`:""}</div>`,
+        (AD&&novos?`<div class="uf-abertos" style="margin-bottom:10px">${Object.entries(AD.motores).map(([m,l])=>`<div class="fdoc-t" style="margin-top:6px">${esc(MOTOR_ROTULO[m]||m)} <span class=meta>${l.length}</span></div>`+l.map(x=>`<div class="uf-ab ${x.validada?"":"nv"}"><span class="pt" style="background:${AREA(x.area).cor}"></span><span class="uf-ab-nome" title="${esc(x.titulo)}">${esc(x.titulo.slice(0,86))}</span><span class="uf-ab-prazo">${x.fim?"até "+br(x.fim):"prazo a confirmar"}${x.uf?" · "+esc(x.uf):""}</span>${x.url?`<a class="uf-ab-link" href="${esc(x.url)}" target=_blank rel="noopener noreferrer">${VETOR_RX.test(x.url)?"anúncio":"página oficial"} ↗</a>`:""}</div>`).join("")).join("")}</div>`:"")+
         `<div class=lin><b>Situação</b><span>${reg.encontrado
             ?'<span style="color:var(--ok)">Encontrado — houve indício de edital</span>'
             :'<span style="color:var(--urgente)">Ausente — nada encontrado neste dia</span>'}</span></div>
@@ -2773,6 +2783,9 @@ const ROT_TIPO={empresas_incentivo:"editais incentivados (empresas)",empresas_fi
 /* Oportunidades que ESTE motor encontrou, com o link direto da página do edital
    (site oficial quando conhecido; nunca o vetor de divulgação). */
 function achadosDoMotor(o){
+  if(o.produto==="empresas"){const L=o.empresas||[];if(!L.length)return "";
+    return `<div class="mt-achados"><b>${o.achados||L.length} empresa(s) mapeada(s)</b> — candidatas a destinação/patrocínio (não são editais); as ${L.length} de maior pontuação:
+      ${L.map(e=>`<div class="mt-ach"><span class="pt" style="background:#0B4EA2"></span>${e.url?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" title="${esc(e.motivo||"")}">${esc((e.nome||"").slice(0,54))}</a>`:esc((e.nome||"").slice(0,54))}<small>${e.score!=null?"score "+e.score:""}${e.classe?" · "+esc(e.classe):""}</small></div>`).join("")}</div>`;}
   const eds=(D.editais||[]).concat(FA_ABERTAS||[]).filter(e=>ehOportunidade(e)&&(e.fonte_id===o.id||e.fonte_nome===o.nome));
   if(!eds.length)return "";
   const ord=eds.sort((a,b)=>String(b.coletado_em||b.publicado_em||"").localeCompare(String(a.coletado_em||a.publicado_em||""))).slice(0,6);
@@ -2852,7 +2865,7 @@ function desenhaMotores(){
       <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(ROT_TIPO[o.tipo]||GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
         ${o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag ${o.diagnostico.exige_brasil?"br":""}" title="diagnóstico individual da última leitura">${o.diagnostico.exige_brasil?"🇧🇷":"⚠"} ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
-        <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · ${esc(o.situacao)}${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+" edital(is)":""}</div>
+        <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · ${esc(o.situacao)}${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+(o.produto==="empresas"?" empresa(s) mapeada(s)":" edital(is)"):""}</div>
         ${trintaDias(o)}
         ${achadosDoMotor(o)}</div>
       <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";

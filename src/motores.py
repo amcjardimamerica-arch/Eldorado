@@ -514,16 +514,35 @@ def run() -> dict:
                 n = s.get(chave) or 0
                 reg[d] = {"cor": "verde" if n else "azul", "achados": n, "trecho": f"{n} registro(s)" if n else None}
         return _trinta_dias(reg, hoje)
+    # 20/09: o produto destes dois motores são EMPRESAS mapeadas (candidatas a destinação/patrocínio),
+    # não editais. O painel rotulava "52 editais" — falso. Passam a listar as empresas, com o link.
+    def _empresas_top(n=8):
+        import gzip as _gz
+        arq = ROOT / "dados/empresas/base_empresas.jsonl.gz"
+        if not arq.exists():
+            return []
+        base = [json.loads(l) for l in _gz.open(arq, "rt", encoding="utf-8") if l.strip()]
+        base.sort(key=lambda x: -(x.get("score") or 0))
+        out = []
+        for x in base[:n]:
+            site = (x.get("site") or {}) if isinstance(x.get("site"), dict) else {"dominio": x.get("site")}
+            dom = site.get("dominio")
+            out.append({"nome": (x.get("cadastro") or {}).get("nome_fantasia") or x["nome"], "cnpj": x.get("cnpj"),
+                        "score": x.get("score"), "classe": x.get("classe"),
+                        "url": (f"https://{dom}" if dom and not str(dom).startswith("http") else dom) or f"https://cnpj.biz/{(x.get('cnpj') or '').replace('.', '').replace('/', '').replace('-', '')}",
+                        "motivo": (x.get("lucro_real") or {}).get("motivo") or "; ".join(x.get("origens") or [])})
+        return out
     oficiais.append({"id": "motor-gife", "nome": "Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás)", "tipo": "empresas_fiscal",
                      "url": "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/",
                      "dias": _dias_semanal("novas_agregadas"), "ultima_leitura": (eg.get("gerado_em") or None),
-                     "achados": eg.get("total", 0),
+                     "achados": eg.get("total", 0), "produto": "empresas", "empresas": _empresas_top(8),
                      "situacao": ("sem leitura ainda" if not eg else "ativo — captando" if eg.get("total") else "ativo, sem achados"),
                      "descricao": "empresas do Lucro Real com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS); fontes: maiores contribuintes do ICMS, cadastro RFB, SALIC, GIFE; domingo 03h"})
     oficiais.append({"id": "motor-patrocinio", "nome": "Motor Patrocínio Privado — mídia e eventos de Goiás (empresas)", "tipo": "empresas_privado",
                      "url": "https://opopular.com.br/",
                      "dias": _dias_semanal("patrocinios_novos"), "ultima_leitura": (pg.get("gerado_em") or None),
-                     "achados": pg.get("total", 0),
+                     "achados": pg.get("total", 0), "produto": "empresas",
+                     "empresas": [{"nome": a.get("empresa") or a.get("nome") or "", "url": a.get("url") or a.get("fonte"), "motivo": (a.get("evento") or a.get("trecho") or "")[:90]} for a in (pg.get("achados") or [])[:8]],
                      "situacao": ("sem leitura ainda" if not pg else "ativo — captando" if pg.get("total") else "ativo, sem achados"),
                      "descricao": "empresas que patrocinam com recursos próprios (marketing, sem benefício fiscal) eventos culturais, esportivos e educacionais; fontes: imprensa, rádio, TV e portais de eventos; domingo 03h"})
     # ── RELEVÂNCIA de cada motor regular (1 a 5) e numeração pelo nível ──
