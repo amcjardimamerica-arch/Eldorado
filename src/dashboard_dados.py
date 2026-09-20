@@ -1531,6 +1531,8 @@ def coletar(hoje: date | None = None) -> dict:
             load_json(ROOT / "estado/fila_verificacao.json") if (ROOT / "estado/fila_verificacao.json").exists() else None),
         "fluxo_verificacao": (lambda f: {k: (v if k != "aguardando_acao_externa" else {kk: vv for kk, vv in v.items() if kk != "itens"}) for k, v in f.items()} if f else None)(
             load_json(ROOT / "estado/fluxo_verificacao.json") if (ROOT / "estado/fluxo_verificacao.json").exists() else None),
+        "auditoria_motores": (lambda a: {k: v for k, v in a.items() if k != "itens"} | {"itens": [{k: v for k, v in x.items() if k != "conselho"} | {"decide": (x.get("conselho") or {}).get("neutro_decide")} for x in a["itens"]]} if a else None)(
+            load_json(ROOT / "estado/auditoria_motores.json") if (ROOT / "estado/auditoria_motores.json").exists() else None),
         "parametros_motores": (load_json(ROOT / "estado/parametros_motores.json") if (ROOT / "estado/parametros_motores.json").exists() else None),
         "fila_verificacao": (lambda f: {k: (v if k != "reprovados_por_objeto" else {kk: vv for kk, vv in v.items() if kk != "itens"}) for k, v in f.items() if k != "itens"} if f else None)(
             load_json(ROOT / "estado/fila_verificacao.json") if (ROOT / "estado/fila_verificacao.json").exists() else None),

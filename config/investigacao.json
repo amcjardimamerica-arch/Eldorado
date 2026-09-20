@@ -1,71 +1,138 @@
 {
-  "versao": 1,
-  "regra": "Varredura PROFUNDA (segue os links de edital) em portais que concentram oportunidades para OSCs. Roda no GitHub Actions após a varredura padrão. Cada achado passa pelo filtro de destinação da fase 2. Inclui prêmios, concursos de melhores associações e cursos de captação destinados ao terceiro setor — condições que não envolvem só recurso financeiro.",
-  "profundidade": 1,
-  "limite_links_por_fonte": 40,
-  "fontes": [
-    {
-      "id": "prosas",
-      "nome": "Prosas — editais para o terceiro setor",
-      "url": "https://prosas.com.br/editais",
-      "territorio": "BR",
-      "ativa": true
-    },
-    {
-      "id": "mapa-osc",
-      "nome": "Mapa das OSC — editais",
-      "url": "https://mapaosc.ipea.gov.br/",
-      "territorio": "BR",
-      "ativa": false,
-      "motivo_inativa": "Mapa das OSC (IPEA) é base cadastral de organizações, não publica editais; útil para parcerias, não como motor de editais"
-    },
-    {
-      "id": "observatorio-3setor",
-      "nome": "Observatório do Terceiro Setor — editais",
-      "url": "https://observatorio3setor.org.br/editais/",
-      "territorio": "BR",
-      "ativa": true
-    },
-    {
-      "id": "abcr",
-      "nome": "ABCR — Associação Brasileira de Captadores",
-      "url": "https://captadores.org.br/editais/",
-      "territorio": "BR",
-      "ativa": true,
-      "urls_extra": [
-        "https://captadores.org.br/noticias/"
-      ],
-      "nota": "unifica o antigo motor Captamos: a página /editais/ da ABCR é a fonte"
-    },
-    {
-      "id": "gife",
-      "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
-      "url": "https://gife.org.br/",
-      "territorio": "BR",
-      "ativa": true
-    },
-    {
-      "id": "salic",
-      "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
-      "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
-      "territorio": "BR",
-      "ativa": true
-    },
-    {
-      "id": "secult-go",
-      "nome": "Secult Goiás — Goyazes e Aldir Blanc",
-      "url": "https://goias.gov.br/cultura/",
-      "territorio": "GO",
-      "ativa": true
-    },
-    {
-      "id": "prosas-premios",
-      "nome": "Prosas — prêmios, concursos e cursos para OSCs",
-      "url": "https://prosas.com.br/editais?natureza=premio",
-      "territorio": "BR",
-      "ativa": true,
-      "natureza": "reconhecimento_e_capacitacao"
-    }
-  ],
-  "incluir_dominios_das_260": true
+ "versao": 1,
+ "regra": "Varredura PROFUNDA (segue os links de edital) em portais que concentram oportunidades para OSCs. Roda no GitHub Actions após a varredura padrão. Cada achado passa pelo filtro de destinação da fase 2. Inclui prêmios, concursos de melhores associações e cursos de captação destinados ao terceiro setor — condições que não envolvem só recurso financeiro.",
+ "profundidade": 1,
+ "limite_links_por_fonte": 40,
+ "fontes": [
+  {
+   "id": "prosas",
+   "nome": "Prosas — editais para o terceiro setor",
+   "url": "https://prosas.com.br/editais",
+   "territorio": "BR",
+   "ativa": true
+  },
+  {
+   "id": "mapa-osc",
+   "nome": "Mapa das OSC — editais",
+   "url": "https://mapaosc.ipea.gov.br/",
+   "territorio": "BR",
+   "ativa": false,
+   "motivo_inativa": "Mapa das OSC (IPEA) é base cadastral de organizações, não publica editais; útil para parcerias, não como motor de editais"
+  },
+  {
+   "id": "observatorio-3setor",
+   "nome": "Observatório do Terceiro Setor — editais",
+   "url": "https://observatorio3setor.org.br/editais/",
+   "territorio": "BR",
+   "ativa": true
+  },
+  {
+   "id": "abcr",
+   "nome": "ABCR — Associação Brasileira de Captadores",
+   "url": "https://captadores.org.br/editais/",
+   "territorio": "BR",
+   "ativa": true,
+   "urls_extra": [
+    "https://captadores.org.br/noticias/"
+   ],
+   "nota": "unifica o antigo motor Captamos: a página /editais/ da ABCR é a fonte"
+  },
+  {
+   "id": "gife",
+   "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
+   "url": "https://gife.org.br/",
+   "territorio": "BR",
+   "ativa": true
+  },
+  {
+   "id": "salic",
+   "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
+   "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
+   "territorio": "BR",
+   "ativa": true
+  },
+  {
+   "id": "secult-go",
+   "nome": "Secult Goiás — Goyazes e Aldir Blanc",
+   "url": "https://goias.gov.br/cultura/",
+   "territorio": "GO",
+   "ativa": true
+  },
+  {
+   "id": "prosas-premios",
+   "nome": "Prosas — prêmios, concursos e cursos para OSCs",
+   "url": "https://prosas.com.br/editais?natureza=premio",
+   "territorio": "BR",
+   "ativa": true,
+   "natureza": "reconhecimento_e_capacitacao"
+  },
+  {
+   "id": "ovg",
+   "nome": "OVG — Organização das Voluntárias de Goiás: editais e chamamentos",
+   "url": "https://www.ovg.org.br/",
+   "territorio": "GO",
+   "ativa": true,
+   "o_que_procurar": "editais, chamamentos públicos, credenciamento de entidades parceiras, Mais Social, convênios com as secretarias",
+   "origem": "radar InvisibiliDOWN 16/09 + auditoria 20/09: maior operador de repasses a entidades do estado, com UMA só fonte no catálogo"
+  },
+  {
+   "id": "goias-social",
+   "nome": "Goiás Social — programas e editais para entidades",
+   "url": "https://goias.gov.br/social/",
+   "territorio": "GO",
+   "ativa": true,
+   "o_que_procurar": "Auxílio Nutricional, editais de cofinanciamento, chamamentos das secretarias sociais"
+  },
+  {
+   "id": "fundos-estaduais-go",
+   "nome": "Fundos estaduais de Goiás com conselho — FIA, Idoso, FUNJUVE, Meio Ambiente",
+   "url": "https://goias.gov.br/desenvolvimento-social/",
+   "territorio": "GO",
+   "ativa": true,
+   "o_que_procurar": "editais dos fundos estaduais (FIA-GO, Fundo do Idoso, FUNJUVE, FEMA), resoluções dos conselhos estaduais (CEDCA, CEI, CEJ)"
+  },
+  {
+   "id": "fapeg",
+   "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
+   "url": "https://goias.gov.br/fapeg/",
+   "territorio": "GO",
+   "ativa": true,
+   "o_que_procurar": "chamadas com componente de extensão ou parceria com OSC; radar mostrou FAPERGS e FAPESC financiando terceiro setor"
+  },
+  {
+   "id": "prefeituras-50-go",
+   "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
+   "url": "https://www.goiania.go.gov.br/",
+   "territorio": "GO",
+   "ativa": true,
+   "o_que_procurar": "chamamentos públicos e termos de fomento publicados no portal da prefeitura (7 dos 25 editais do radar vieram de prefeituras de cidades médias); as 50 estão em config/municipios_maiores.json"
+  },
+  {
+   "id": "empresas-editais-incentivados",
+   "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
+   "url": "https://www.portoitapoa.com/",
+   "territorio": "BR",
+   "ativa": true,
+   "o_que_procurar": "editais publicados pela própria empresa para distribuir a renúncia fiscal (o motor 18 procura o site da empresa; este procura o EDITAL que a empresa publica) — cruzar com o ranking de 100 empresas de Goiás"
+  },
+  {
+   "id": "mp-destinacoes-reparacao",
+   "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
+   "url": "https://www.mpgo.mp.br/",
+   "territorio": "BR",
+   "ativa": true,
+   "o_que_procurar": "editais de destinação (MPGO, MPF, MPT), fundos de reparação e de reconstituição de bens lesados; radar mostrou MPMG, MPF e MPSE distribuindo a OSC"
+  },
+  {
+   "id": "cnpq-extensao",
+   "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
+   "url": "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/acoes-e-programas/programas/chamadas-publicas",
+   "territorio": "BR",
+   "ativa": true,
+   "o_que_procurar": "chamadas públicas de extensão, popularização da ciência e inovação social que aceitam OSC como parceira ou proponente"
+  }
+ ],
+ "incluir_dominios_das_260": true,
+ "atualizado_em": "2026-09-20",
+ "nota_auditoria": "20/09: reestruturação dos motores — 4 plataformas que nunca rodaram passam a ter sensor próprio; 8 motores novos a partir do radar InvisibiliDOWN de 16/09 e da lacuna medida no catálogo (0 prefeituras diretas, 0 FAPs, 0 CNPq, 0 empresas incentivadoras, 1 só fonte da OVG)"
 }

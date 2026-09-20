@@ -142,8 +142,12 @@ def registro() -> list[dict]:
                 por_url[u] = s
     if INVEST.exists():
         for p in load_json(INVEST).get("fontes", []):
-            if p.get("url") in vistos or not p.get("ativa", True):
+            if not p.get("ativa", True):
                 continue
+            # AUDITORIA 20/09: uma plataforma é MOTOR REGULAR (todo dia). Antes, se a URL já
+            # constava entre os 260 pontos, a plataforma era descartada e ficava "sem leitura
+            # ainda" para sempre — foi o caso de Prosas, Mapa das OSC, SALIC e Secult-GO,
+            # numerados no painel como motores 8, 11, 14 e 16 sem nunca ter rodado.
             vistos.add(p["url"])
             sens.append({"id": f"plat-{p['id']}", "nome": p["nome"], "tipo": "plataforma",
                          "nivel": "privada", "uf": None, "territorio": p.get("territorio", "BR"),
@@ -197,9 +201,20 @@ def escala_do_dia(hoje: date | None = None) -> dict:
             motivo = f"rodízio semanal (dia {dia})"
         (saem if motivo else ficam).append({**s, "motivo": motivo} if motivo else s)
     lim = cfg["limites"]["sensores_por_execucao"]
-    saem.sort(key=lambda s: (s["tipo"] not in diarios, not s.get("goias"), s["id"]))   # diários e Goiás primeiro
-    return {"data": hoje.isoformat(), "saem": saem[:lim], "ficam": len(ficam) + max(0, len(saem) - lim),
-            "total": len(saem) + len(ficam), "previsoes_ativas": len(ativos)}
+    # AUDITORIA 20/09: os motores REGULARES (diários, plataformas, API, legislativo, justiça,
+    # empresas) nunca podem ser cortados pelo limite — antes a ordenação "Goiás primeiro"
+    # empurrava as plataformas nacionais para o fim e o corte de 40 as deixou 14 dias sem
+    # rodar (ABCR, GIFE, Observatório, Prosas). O limite vale só para os 260 pontos.
+    regulares = [s for s in saem if not s.get("fontes_260")]
+    pontos = [s for s in saem if s.get("fontes_260")]
+    pontos.sort(key=lambda s: (not s.get("goias"), s["id"]))            # entre os pontos, Goiás primeiro
+    sobra = max(0, lim - len(regulares))
+    saem = regulares + pontos[:sobra]
+    saem.sort(key=lambda s: (s["tipo"] not in diarios, s.get("fontes_260") is not None, not s.get("goias"), s["id"]))
+    cortados = max(0, len(pontos) - sobra)
+    return {"data": hoje.isoformat(), "saem": saem, "ficam": len(ficam) + cortados,
+            "total": len(saem) + len(ficam) + cortados, "previsoes_ativas": len(ativos),
+            "regulares_garantidos": len(regulares), "pontos_cortados_pelo_limite": cortados}
 
 
 # ------------------------------------------------------------------- leitura
