@@ -1,31 +1,9 @@
-commit: 9f63cbb2ca2cd04bb710e0f1e9171af429491e0e
-em: 2026-09-20T10:48:07Z
-rc: 1
+commit: 06cc1cc7790641a0539068e7c194b3fb92002652
+em: 2026-09-20T11:45:14Z
+rc: 0
 
 ----------------------------------------------------------------------
-Ran 386 tests in 378.412s
+Ran 390 tests in 373.574s
 
-FAILED (failures=2, skipped=9)
+OK (skipped=9)
 ---- falhas ----
-FAIL: test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida (test_system.SystemTests.test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4033, in test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida
-    self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
-
-======================================================================
-FAIL: test_mapa_so_com_oportunidades_reais (test_system.SystemTests.test_mapa_so_com_oportunidades_reais)
-07/09: o Mapa mostrava 310 em Goiás porque contava 306 edições inteiras de
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4114, in test_mapa_so_com_oportunidades_reais
-    self.assertTrue(all(x["id"] in an for x in nao_diario))                     # TODAS as de Goiás verificadas uma a uma
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: False is not true
-
-----------------------------------------------------------------------
-Ran 386 tests in 378.412s
-
-FAILED (failures=2, skipped=9)
