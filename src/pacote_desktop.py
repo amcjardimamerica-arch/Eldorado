@@ -58,7 +58,13 @@ def montar() -> dict:
           "Para cada uma, abra a página oficial (nunca PNCP, diário ou portal de notícia; exceção: o arquivo do edital do órgão hospedado no PNCP, em `/arquivos/`), extraia OBJETO, PRAZO (início e fim) e URL oficial, e dê o veredito: aprovado (chamada aberta de fomento a OSC), atenção (serve, mas o enquadramento exige conferência) ou reprovado (com a família: resultado de edital, seleção de empresa, serviço ao órgão, qualificação como OS, órgão buscando patrocinador, parceria já celebrada).", ""]
     for x in parciais:
         L.append(f"- `{x['id']}` — {x['titulo'][:90]} · falta: {', '.join(x['minimas']['faltam'])}" + (f" · {x['link_oficial']}" if x.get("link_oficial") else ""))
-    L += ["", "## Etapa 5 — fechar o ciclo", "",
+    L += ["", "## Etapa 4½ — IA local (organização automática, sem gastar Claude)", "",
+          "Se a pasta `ia_local/` ainda não existe: `python scripts/ia_local_instalar.py` (uma vez, ~2 GB; `--leve` para 1 GB).",
+          "Suba o servidor local (`ia_local/iniciar.bat` ou `.sh`, deixe a janela aberta) e rode:", "", "```",
+          "python -m src.ia_local ciclo      # classifica os incompletos, extrai objeto/prazo com trecho literal, propõe léxico, diagnostica motores 'lendo sem achar'",
+          "python -m src.ia_local aplicar    # grava só o que passou na validação — como PROPOSTA, nunca sobrescrevendo dado confirmado", "```", "",
+          "As sugestões de rota ficam em `estado/rotas_sugeridas_ia.json` com status 'a confirmar pelo titular'; as extrações entram em `proposta_ia` no registro para o Opus 5 validar na Etapa 4.",
+          "", "## Etapa 5 — fechar o ciclo", "",
           "```", "python -m src.enquadramento ingerir_navegador", "python -m src.enquadramento", "python -m src.enquadramento fila",
           "python -m src.alerta_motores", "python -m src.auditoria_motores", "python -m src.dashboard_dados",
           "python -m unittest tests.test_system  # só siga com tudo verde",

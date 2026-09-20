@@ -1,0 +1,85 @@
+{
+ "versao": 1,
+ "atualizado_em": "2026-09-20",
+ "regra": "a IA local PROPÕE; nada entra no banco sem validação determinística; toda proposta leva origem, modelo e trecho literal que a sustenta",
+ "motor": {
+  "nome": "llama.cpp",
+  "licenca": "MIT",
+  "release": "b11064",
+  "downloads": {
+   "linux-x64": "https://github.com/ggml-org/llama.cpp/releases/download/b11064/llama-b11064-bin-ubuntu-x64.tar.gz",
+   "windows-x64": "https://github.com/ggml-org/llama.cpp/releases/download/b11064/llama-b11064-bin-win-cpu-x64.zip",
+   "macos-arm64": "https://github.com/ggml-org/llama.cpp/releases/download/b11064/llama-b11064-bin-macos-arm64.tar.gz"
+  },
+  "tamanho_mb": 17
+ },
+ "modelos": {
+  "principal": {
+   "nome": "Qwen2.5-3B-Instruct",
+   "arquivo": "qwen2.5-3b-instruct-q4_k_m.gguf",
+   "tamanho_gb": 2.0,
+   "licenca": "Apache-2.0",
+   "url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf",
+   "ram_minima_gb": 4
+  },
+  "leve": {
+   "nome": "Qwen2.5-1.5B-Instruct",
+   "arquivo": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+   "tamanho_gb": 1.0,
+   "licenca": "Apache-2.0",
+   "url": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+   "ram_minima_gb": 3,
+   "nota": "pen drive / PC modesto"
+  },
+  "alternativa": {
+   "nome": "Gemma-2-2B-it",
+   "arquivo": "gemma-2-2b-it-Q4_K_M.gguf",
+   "tamanho_gb": 1.6,
+   "licenca": "Gemma",
+   "url": "https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q4_K_M.gguf"
+  }
+ },
+ "servidor": {
+  "host": "127.0.0.1",
+  "porta": 8080,
+  "contexto": 4096,
+  "threads": "auto",
+  "api": "OpenAI-compatível (/v1/chat/completions)"
+ },
+ "pasta": "ia_local",
+ "tarefas_permitidas": [
+  "classificar_objeto",
+  "extrair_objeto_prazo",
+  "propor_lexico",
+  "diagnosticar_rota",
+  "catalogar_achado"
+ ],
+ "limites": {
+  "itens_por_ciclo": 120,
+  "tokens_resposta": 400,
+  "temperatura": 0.1,
+  "tempo_maximo_s": 25
+ },
+ "validacao": {
+  "json_com_esquema": true,
+  "trecho_literal_obrigatorio_para": [
+   "prazo",
+   "valor",
+   "pagina_oficial",
+   "objeto"
+  ],
+  "familias_validas": [
+   "fomento_osc",
+   "atencao",
+   "resultado_de_edital",
+   "empresa_ou_mercado",
+   "servico_ao_orgao",
+   "qualificacao_os",
+   "busca_patrocinador",
+   "parceria_celebrada",
+   "nao_edital"
+  ],
+  "vetos_da_ia_nunca_barram_aprovado_humano": true,
+  "origem": "ia_local"
+ }
+}

@@ -129,6 +129,18 @@ Para cada uma, abra a página oficial (nunca PNCP, diário ou portal de notícia
 - `93aa2d9dc209517bd973` — CREDENCIAMENTO PARA OS PROFISSIONAIS DA SAUDE. ATENDENDO AS NECESSIDADES DO FUNDO MUNICIPA · falta: Prazo de inscrição · https://trombas.megasofttransparencia.com.br/contratos-convenios-e-licitacoes
 - `9d21d4e6a4ccab244aed` — Pnab 2026: Publicada errata e retificação de cronograma dos Editais nº 4 e nº 6 · falta: Prazo de inscrição · https://goias.gov.br/cultura/pnab-2026-publicada-errata-e-retificacao-de-cronograma-dos-editais-no-4-e-no-6
 
+## Etapa 4½ — IA local (organização automática, sem gastar Claude)
+
+Se a pasta `ia_local/` ainda não existe: `python scripts/ia_local_instalar.py` (uma vez, ~2 GB; `--leve` para 1 GB).
+Suba o servidor local (`ia_local/iniciar.bat` ou `.sh`, deixe a janela aberta) e rode:
+
+```
+python -m src.ia_local ciclo      # classifica os incompletos, extrai objeto/prazo com trecho literal, propõe léxico, diagnostica motores 'lendo sem achar'
+python -m src.ia_local aplicar    # grava só o que passou na validação — como PROPOSTA, nunca sobrescrevendo dado confirmado
+```
+
+As sugestões de rota ficam em `estado/rotas_sugeridas_ia.json` com status 'a confirmar pelo titular'; as extrações entram em `proposta_ia` no registro para o Opus 5 validar na Etapa 4.
+
 ## Etapa 5 — fechar o ciclo
 
 ```

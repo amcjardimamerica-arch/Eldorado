@@ -1541,6 +1541,9 @@ def coletar(hoje: date | None = None) -> dict:
                 load_json(ROOT / "config/rotas_empresas.json") if (ROOT / "config/rotas_empresas.json").exists() else None),
             "finalidade": (lambda d: {"descoberta": sum(1 for v in (d.get("motores") or {}).values() if v.get("finalidade") == "descoberta"), "insumo": sum(1 for v in (d.get("motores") or {}).values() if v.get("finalidade") == "insumo"), "espalhados": (d.get("espalhamento") or {}).get("total_novos")} if d else None)(
                 load_json(ROOT / "config/finalidade_motores.json") if (ROOT / "config/finalidade_motores.json").exists() else None),
+            "ia_local": (lambda d: {"configurada": True, "modelo": d["modelos"]["principal"]["nome"], "motor": d["motor"]["nome"],
+                                     "ultimo_ciclo": (lambda p: (load_json(p) if p else None))(max((ROOT / "estado/ia_local").glob("propostas-*.json"), default=None)),
+                                     "rotas_sugeridas": len((load_json(ROOT / "estado/rotas_sugeridas_ia.json") if (ROOT / "estado/rotas_sugeridas_ia.json").exists() else {}).get("sugestoes") or [])})(load_json(ROOT / "config/ia_local.json")) if (ROOT / "config/ia_local.json").exists() else None,
             "acervo_compacto": (load_json(ROOT / "estado/acervo_compacto.json") if (ROOT / "estado/acervo_compacto.json").exists() else None)},
         "alerta_motores": (load_json(ROOT / "estado/alerta_motores.json") if (ROOT / "estado/alerta_motores.json").exists() else None),
         "validacao_motores_mes": (lambda v: {k: v[k] for k in ("mes", "ate", "dias_no_periodo", "resumo")} | {"motores": {k: {kk: vv for kk, vv in g.items() if kk != "dias"} for k, g in v["motores"].items()}} if v else None)(
