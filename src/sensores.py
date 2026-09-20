@@ -271,10 +271,60 @@ def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
             saida += [u.replace("{termo}", quote(t)) for t in sensor.get("termos_busca", [])[:4]]
         else:
             saida.append(u)
+    # 20/09: as ROTAS ALTERNATIVAS declaradas (diário + secretaria + conselho…) entram DEPOIS das
+    # páginas próprias do motor, para nunca deslocá-las do limite de leitura
+    for r in rotas_alternativas(sensor):
+        if r.get("exige_brasil") and os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR"):
+            continue
+        if r["url"] not in saida:
+            saida.append(r["url"])
     return saida
 
 
 _LEX_ESP: dict = {}
+ROTAS_MOTORES = ROOT / "config/rotas_motores.json"
+_ROTAS: dict = {}
+
+
+def _rotas_cfg() -> dict:
+    global _ROTAS
+    if not _ROTAS and ROTAS_MOTORES.exists():
+        _ROTAS = load_json(ROTAS_MOTORES)
+    return _ROTAS
+
+
+def lexico_camada1(sensor: dict) -> tuple[list[str], list[str]]:
+    """CAMADA 1 — direcionamento (20/09): corre nos rótulos dos links e decide QUAIS páginas
+    abrir. Termos do perfil do motor + termos gerais; vetos do motor + vetos gerais.
+    Aplicada ANTES do léxico de contexto, para gastar leitura só no que tem cara de edital."""
+    cfg = _rotas_cfg(); m = (cfg.get("motores") or {}).get(sensor.get("id")) or {}
+    termos = [x.lower() for x in (m.get("lexico_camada1") or [])] + [x.lower() for x in (cfg.get("camada_1_geral") or [])]
+    vetos = [x.lower() for x in (m.get("veto_camada1") or [])] + [x.lower() for x in (cfg.get("camada_1_veto") or [])]
+    return termos, vetos
+
+
+def lexico_camada2(sensor: dict) -> list[str]:
+    """CAMADA 2 — contexto: corre no TEXTO do documento e confirma se é oportunidade."""
+    m = ((_rotas_cfg().get("motores") or {}).get(sensor.get("id")) or {})
+    return [x.lower() for x in (m.get("lexico_camada2") or [])]
+
+
+def rotas_alternativas(sensor: dict) -> list[dict]:
+    """Rotas onde o mesmo recurso divulga (≥2 por motor). O sensor lê TODAS as que não exigem
+    Brasil quando roda no GitHub; as que exigem ficam para a coleta local."""
+    m = ((_rotas_cfg().get("motores") or {}).get(sensor.get("id")) or {})
+    return [r for r in (m.get("rotas") or []) if r.get("url") and str(r["url"]).startswith("http")]
+
+
+def casa_camada1(rotulo: str, termos: list[str], vetos: list[str]) -> dict:
+    r = (rotulo or "").lower()
+    veto = [v for v in vetos if v in r]
+    if veto:
+        return {"passa": False, "veto": veto[:3], "termos": []}
+    hit = [x for x in termos if x in r]
+    return {"passa": bool(hit), "veto": [], "termos": hit[:5]}
+
+
 def lexico_especifico(sensor: dict) -> list[str]:
     """2ª etapa (Motores Opressores): termos ESPECÍFICOS do recurso — o léxico
     próprio do regramento quando existe, senão os termos distintivos do
@@ -320,13 +370,22 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
     # portais que exigem IP do Brasil: no GitHub não se tenta; na coleta local (ELDORADO_LOCAL_BR=1) lê-se normalmente
     exige = set((load_json(CFG).get("exige_brasil") or {}).get("dominios") or [])
     if os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR"):
-        hosts = {urlsplit(u).hostname for u in _paginas(sensor)}
+        todas = _paginas(sensor)
+        hosts = {urlsplit(u).hostname for u in todas}
+        # 20/09: se há rotas alternativas fora do Brasil-only, lê ESSAS e deixa as outras para a coleta local
+        alternativas = [u for u in todas if urlsplit(u).hostname not in exige]
+        if alternativas and hosts & exige:
+            sensor = dict(sensor, urls=alternativas, _rotas_pendentes_local=[u for u in todas if urlsplit(u).hostname in exige])
+            hosts = {urlsplit(u).hostname for u in alternativas}
         if hosts and hosts <= exige:
             return {"sensor": sensor["id"], "achados": [], "falhas": [], "saude": [], "lido_em": now_iso(),
+                    "pulado_exige_brasil": True,
                     "diagnostico": {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0,
                                     "motivo_zero": "aguardando coleta local (Brasil): este portal recusa IP estrangeiro; é lido quando o titular roda scripts/coleta_brasil.py na sua máquina", "exige_brasil": True}}
     especifico = lexico_especifico(sensor)
-    diag = {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0, "motivo_zero": None}
+    c1_termos, c1_vetos = lexico_camada1(sensor)
+    diag = {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0, "motivo_zero": None,
+            "camada1_vetados": 0, "camada1_direcionados": 0}
     n_pag = int(sensor.get("max_paginas") or lim["paginas_por_sensor"])
     fila = list(_paginas(sensor)[:n_pag])
     lidas: set = set()
@@ -423,8 +482,16 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None) -
             if not rot or len(rot) < 10:
                 continue
             diag["links_candidatos"] += 1
+            # CAMADA 1 (direcionamento): veto elimina; acerto direciona. Só depois o léxico geral.
+            c1 = casa_camada1(rot, c1_termos, c1_vetos) if c1_termos else {"passa": None, "veto": [], "termos": []}
+            if c1["veto"]:
+                diag["camada1_vetados"] += 1
+                continue
             lx = casar(rot)
             esp = casa_especifico(rot, especifico) if especifico else []
+            if c1["passa"]:
+                diag["camada1_direcionados"] += 1
+                lx["candidato"] = True
             if not lx["candidato"] and not esp:
                 continue
             lx["termos"]["especificos"] = esp

@@ -288,6 +288,19 @@ def status_da_fonte(f: dict, fam: str, mencoes: list[dict], prazo: dict, hoje) -
             "em_epoca": em_epoca, "proxima": pd or None}
 
 
+def _aguarda_local(sensor: dict | None, cfg_motor: dict | None = None) -> bool:
+    """O robô do GitHub NÃO tenta portais que recusam IP estrangeiro: ele os pula e registra
+    'aguardando coleta local'. Isso não é bloqueio — é uma escolha, e o rótulo tem de dizer
+    isso. Bloqueado é só quem foi tentado e falhou."""
+    s = sensor or {}
+    dg = s.get("diagnostico") or {}
+    if s.get("pulado_exige_brasil"):
+        return True
+    if "aguardando coleta local" in str(dg.get("motivo_zero") or "") and not (s.get("saude") or []):
+        return True
+    return False
+
+
 def _bloqueio_vigente(reg: dict | None, sensor: dict | None) -> dict | None:
     """Um motor só está BLOQUEADO se a ÚLTIMA leitura falhou.
     Antes, o rótulo vinha do histórico acumulado do domínio: a ABCR aparecia como
@@ -482,7 +495,7 @@ def run() -> dict:
                          "diagnostico": {k: _dg.get(k) for k in ("motivo_zero", "paginas_lidas", "links_total", "descobertas", "dou_json_materias", "exige_brasil", "origem") if k in _dg},
                          "dias": _trinta_dias(diario.get(e["id"], {}), hoje),
                          "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
-                         "situacao": ("bloqueado" if b else "sem leitura ainda" if not s else
+                         "situacao": ("aguardando coleta local" if _aguarda_local(s, e) else "bloqueado" if b else "sem leitura ainda" if not s else
                                       "ativo — captando" if s.get("achados_total") else "ativo, sem achados")})
     # ── dois motores de EMPRESAS como motores regulares individuais ──
     # GIFE = captação de INCENTIVOS FISCAIS (empresas do Lucro Real, Rouanet/LIE/FIA/PRONON)

@@ -43,3 +43,17 @@ todas as oportunidades da fila, sem o titular tocar em GitHub ou terminal.
 
 ## Repetir toda semana sem digitar
 No Cowork, **Tarefas agendadas** → nova tarefa → domingo, 05h → cole o mesmo prompt.
+
+
+## A partir de 20/09: o pacote pronto
+
+Não é mais preciso montar o prompt: a cada saída do CI o sistema grava `estado/pacote_desktop.md`
+com tudo o que o robô não conseguiu — motores que aguardam coleta local, motores em alerta com as
+rotas a abrir e o léxico a procurar, oportunidades aguardando ação externa e as parciais do modo
+completo para validar com Opus 5. No Cowork, cole:
+
+> Clone ou atualize https://github.com/amcjardimamerica-arch/Eldorado, abra `estado/pacote_desktop.md`
+> e execute as etapas na ordem, usando o modelo mais forte disponível (Opus 5) para as validações.
+> Devolva os arquivos nos formatos indicados, feche o ciclo (Etapa 5) e me dê o resumo final.
+
+Para deixar automático: **Tarefas agendadas** → todo dia às 07h → o mesmo texto.
