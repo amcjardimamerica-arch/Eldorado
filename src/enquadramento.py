@@ -785,12 +785,15 @@ def ingerir() -> dict:
             selo = "analise_incompleta"           # só há Conformidade com análise completa
         else:
             selo = ("conformidade" if conf else "inconformidade") if conf is not None else "analisado"
-        an[eid] = {"selo": selo, "em": now_iso(), "motivo": r.get("motivo_conformidade") or (r.get("mini_parecer") or "")[:200],
+        an[eid] = {"selo": selo, "em": now_iso(), "modelo": r.get("modelo") or MODELO_PADRAO, "motivo": r.get("motivo_conformidade") or (r.get("mini_parecer") or "")[:200],
                    "completo": analise_completa, "verificacoes": {"itens_12": not faltam, "dispensados": sorted(disp), "requisitos_condicoes": bool(ex.get("requisitos") or ex.get("regras")), "documentos": bool(ex.get("documentos_exigidos"))},
                    "por": "agente Claude (conta do titular)"}
         write_json(an_p, an)
         arq.rename(arq.with_suffix(".json.ingerido")); n += 1
     return {"ingeridos": n}
+
+
+MODELO_PADRAO = "Claude Fable 5.1"
 
 
 def ingerir_navegador() -> dict:

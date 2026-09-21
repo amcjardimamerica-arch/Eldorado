@@ -69,8 +69,12 @@ class IALocal:
             return False
 
     def perguntar(self, prompt: str, esquema_hint: str) -> dict | None:
-        payload = {"messages": [{"role": "system", "content": SISTEMA + " Esquema: " + esquema_hint},
-                                {"role": "user", "content": prompt[:6000]}],
+        # Gemma não aceita a role 'system': o sistema vai dentro da mensagem do usuário
+        if getattr(self, "sem_system", False):
+            msgs = [{"role": "user", "content": SISTEMA + " Esquema: " + esquema_hint + "\n\n" + prompt[:6000]}]
+        else:
+            msgs = [{"role": "system", "content": SISTEMA + " Esquema: " + esquema_hint}, {"role": "user", "content": prompt[:6000]}]
+        payload = {"messages": msgs,
                    "temperature": CFG["limites"]["temperatura"], "max_tokens": CFG["limites"]["tokens_resposta"],
                    "response_format": {"type": "json_object"}}
         try:
@@ -90,14 +94,29 @@ class IALocal:
 
 # ─────────────────────────────────────────────────────────────── tarefas
 def t_classificar_objeto(ia: IALocal, e: dict, texto: str) -> dict | None:
+    """DUAS PERGUNTAS BINÁRIAS (21/09) em vez de três classes — modelos pequenos acertam
+    mais respondendo sim/não do que escolhendo entre categorias ambíguas:
+      (1) é uma chamada ABERTA que repassa recurso a organização sem fins lucrativos?
+      (2) há SINAL DE VETO? (resultado de edital já julgado, seleção/credenciamento de
+          empresa ou prestador, qualificação como OS, órgão buscando patrocinador,
+          parceria já celebrada, licitação de compra)
+    Veredito derivado: veto → reprovado; fomento e sem veto → aprovado; o resto → atenção."""
     r = ia.perguntar(f"TÍTULO: {e.get('titulo')}\nTEXTO: {texto[:2500]}",
-                     '{"familia": uma de ' + str(sorted(FAMILIAS)) + ', "confianca": 0..1, "trecho": "frase literal do texto que justifica", "motivo": "uma frase"}')
-    if not r or r.get("familia") not in FAMILIAS:
+                     '{"e_fomento_a_osc": true|false, "trecho_fomento": "frase literal ou null", '
+                     '"sinal_de_veto": null | "resultado_de_edital" | "empresa_ou_mercado" | "servico_ao_orgao" | "qualificacao_os" | "busca_patrocinador" | "parceria_celebrada" | "nao_edital", '
+                     '"trecho_veto": "frase literal ou null", "confianca": 0..1}')
+    if not r or not isinstance(r, dict) or "e_fomento_a_osc" not in r:
         return None
-    ok = _trecho_existe(r.get("trecho"), f"{e.get('titulo')} {texto}")
-    return {"tarefa": "classificar_objeto", "id": e["id"], "familia": r["familia"], "confianca": float(r.get("confianca") or 0),
-            "trecho": r.get("trecho"), "motivo": r.get("motivo"), "valido": ok and float(r.get("confianca") or 0) >= 0.6,
-            "invalido_por": None if ok else "trecho não encontrado no texto"}
+    veto = r.get("sinal_de_veto") if r.get("sinal_de_veto") in FAMILIAS else None
+    fomento = bool(r.get("e_fomento_a_osc"))
+    familia = veto or ("fomento_osc" if fomento else "atencao")
+    trecho = r.get("trecho_veto") if veto else r.get("trecho_fomento")
+    ok = _trecho_existe(trecho, f"{e.get('titulo')} {texto}") if (veto or fomento) else True
+    conf = float(r.get("confianca") or 0)
+    return {"tarefa": "classificar_objeto", "id": e["id"], "familia": familia, "confianca": conf, "trecho": trecho,
+            "motivo": ("veto: " + veto) if veto else ("fomento a OSC" if fomento else "sem sinal claro — atenção"),
+            "perguntas": {"e_fomento_a_osc": fomento, "sinal_de_veto": veto},
+            "valido": ok and conf >= 0.6, "invalido_por": None if ok else "trecho não encontrado no texto"}
 
 
 def t_extrair_objeto_prazo(ia: IALocal, e: dict, texto: str) -> dict | None:

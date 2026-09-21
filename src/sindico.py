@@ -41,14 +41,16 @@ PASTA.mkdir(parents=True, exist_ok=True)
 CANDIDATOS = [
     {"id": "qwen2.5-3b", "nome": "Qwen2.5-3B-Instruct", "arquivo": "qwen2.5-3b-instruct-q4_k_m.gguf", "gb": 2.0, "licenca": "Apache-2.0",
      "url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf"},
-    {"id": "qwen2.5-7b", "nome": "Qwen2.5-7B-Instruct", "arquivo": "qwen2.5-7b-instruct-q4_k_m.gguf", "gb": 4.7, "licenca": "Apache-2.0",
-     "url": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF/resolve/main/qwen2.5-7b-instruct-q4_k_m.gguf"},
+    {"id": "qwen2.5-7b", "nome": "Qwen2.5-7B-Instruct", "arquivo": "Qwen2.5-7B-Instruct-Q4_K_M.gguf", "gb": 4.7, "licenca": "Apache-2.0",
+     "url": "https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+     "nota": "o repositório oficial da Alibaba distribui o 7B fatiado em 2 arquivos; esta é a versão em arquivo único"},
     {"id": "gemma-2-2b", "nome": "Gemma-2-2B-it", "arquivo": "gemma-2-2b-it-Q4_K_M.gguf", "gb": 1.6, "licenca": "Gemma",
      "url": "https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q4_K_M.gguf"},
     {"id": "llama-3.2-3b", "nome": "Llama-3.2-3B-Instruct", "arquivo": "Llama-3.2-3B-Instruct-Q4_K_M.gguf", "gb": 2.0, "licenca": "Llama-3.2-Community",
      "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf"},
 ]
 MAPA_VEREDITO = {"fomento_osc": "aprovado", "atencao": "atencao"}      # famílias de inconformidade → reprovado
+# métricas que importam para o síndico: FALSO POSITIVO (reprovado→aprovado) é o erro caro; FALSO NEGATIVO (aprovado→reprovado) perde oportunidade
 
 
 def cfg() -> dict:
@@ -84,16 +86,22 @@ def _servidor(modelo: Path, porta: int = 8081) -> subprocess.Popen | None:
     if not Path(motor).exists():
         return None
     env = dict(os.environ, LD_LIBRARY_PATH=str(Path(motor).parent))
-    p = subprocess.Popen([motor, "-m", str(modelo), "--port", str(porta), "--host", "127.0.0.1", "-c", "4096", "--jinja", "-t", str(os.cpu_count() or 4)],
-                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env)
-    for _ in range(120):
-        try:
-            with urllib.request.urlopen(f"http://127.0.0.1:{porta}/health", timeout=2) as r:
-                if r.status == 200:
-                    return p
-        except Exception:
-            time.sleep(1)
-    p.kill(); return None
+    log = open(PASTA / f"servidor-{modelo.stem[:30]}.log", "w")
+    def _sobe(args):
+        pr = subprocess.Popen([motor, "-m", str(modelo), "--port", str(porta), "--host", "127.0.0.1", "-c", "4096", "-t", str(os.cpu_count() or 4), *args],
+                              stdout=log, stderr=subprocess.STDOUT, env=env)
+        for _ in range(300):                                   # até 5 min: um 7B leva mais de 2 min para carregar no CPU
+            if pr.poll() is not None:
+                return None                                    # morreu: tentar a próxima variante
+            try:
+                with urllib.request.urlopen(f"http://127.0.0.1:{porta}/health", timeout=2) as r:
+                    if r.status == 200:
+                        return pr
+            except Exception:
+                time.sleep(1)
+        pr.kill(); return None
+    # 1ª tentativa com o template do arquivo (--jinja); 2ª sem, para modelos cujo template recusa 'system' (Gemma)
+    return _sobe(["--jinja"]) or _sobe([])
 
 
 def avaliar_modelo(cand: dict, itens: list[dict], porta: int = 8081) -> dict:
@@ -104,7 +112,8 @@ def avaliar_modelo(cand: dict, itens: list[dict], porta: int = 8081) -> dict:
     t0 = time.time(); srv = _servidor(modelo, porta)
     if not srv:
         return {**cand, "erro": "servidor não subiu", "elegivel": False}
-    ia = IALocal(porta=porta, timeout=60)
+    ia = IALocal(porta=porta, timeout=90)
+    ia.sem_system = cand["id"].startswith("gemma")           # Gemma recusa a role 'system'
     acertos = total = prazos_ok = prazos_inventados = tokens = 0
     confusao: dict = {}
     t_inf = 0.0
@@ -133,7 +142,10 @@ def avaliar_modelo(cand: dict, itens: list[dict], porta: int = 8081) -> dict:
     finally:
         srv.kill()
     dur = time.time() - t0
-    return {**cand, "itens": total, "acerto": round(acertos / total, 3) if total else 0, "confusao": confusao,
+    fp = confusao.get("reprovado->aprovado", 0); fn = confusao.get("aprovado->reprovado", 0)
+    n_rep = sum(v for k, v in confusao.items() if k.startswith("reprovado->")); n_apr = sum(v for k, v in confusao.items() if k.startswith("aprovado->"))
+    return {**cand, "itens": total, "respondeu_de": len(itens), "acerto": round(acertos / total, 3) if total else 0, "confusao": confusao,
+            "falso_positivo": round(fp / n_rep, 3) if n_rep else None, "falso_negativo": round(fn / n_apr, 3) if n_apr else None,
             "prazos_confirmados": prazos_ok, "prazos_inventados": prazos_inventados,
             "tokens_por_s": round(tokens / t_inf, 1) if t_inf else None, "minutos": round(dur / 60, 1),
             "elegivel": prazos_inventados == 0 and total > 0}
@@ -147,10 +159,13 @@ def benchmark(limite: int | None = None) -> dict:
     for c in CANDIDATOS:
         r = avaliar_modelo(c, itens); res["candidatos"].append(r)
         write_json(PASTA / "benchmark.json", res)                    # parcial a cada modelo
-    eleg = [c for c in res["candidatos"] if c.get("elegivel")]
-    eleg.sort(key=lambda c: (-c["acerto"], -(c.get("tokens_por_s") or 0)))
+    eleg = [c for c in res["candidatos"] if c.get("elegivel") and (c.get("falso_positivo") is None or c["falso_positivo"] <= 0.25)]
+    for c in eleg:
+        c["nota"] = round(c["acerto"] * (c["itens"] / max(1, c.get("respondeu_de") or c["itens"])), 3)   # acerto × taxa de resposta
+    eleg.sort(key=lambda c: (-c["nota"], -(c.get("tokens_por_s") or 0)))
+    res["criterio"] = "elegível = 0 prazos inventados e falso positivo ≤ 25%; nota = acerto × taxa de resposta; desempate por tokens/s"
     res["vencedor"] = eleg[0]["id"] if eleg else None
-    res["motivo"] = (f"{eleg[0]['nome']}: acerto {eleg[0]['acerto']}, 0 prazos inventados, {eleg[0].get('tokens_por_s')} tok/s"
+    res["motivo"] = (f"{eleg[0]['nome']}: nota {eleg[0]['nota']} (acerto {eleg[0]['acerto']} em {eleg[0]['itens']}/{eleg[0].get('respondeu_de')}), FP {eleg[0].get('falso_positivo')}, 0 prazos inventados, {eleg[0].get('tokens_por_s')} tok/s"
                      if eleg else "nenhum candidato elegível (todos inventaram prazo ou não subiram)")
     write_json(PASTA / "benchmark.json", res)
     if eleg:

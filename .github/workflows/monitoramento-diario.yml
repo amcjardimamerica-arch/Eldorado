@@ -277,7 +277,13 @@ jobs:
             if git pull --rebase -X theirs origin main && git push; then exit 0; fi
             git rebase --abort 2>/dev/null || true
             git fetch origin main
-            git reset --soft origin/main && git add biblioteca_alexandria -A dados estado docs && git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F) (reaplicada)" || true
+            git reset --soft origin/main
+            # PROTEÇÃO (21/09): restaura do origin o que o Síndico/conselho gravaram enquanto este job rodava —
+            # sem isto, a árvore antiga do job marcava esses arquivos como deletados (foi assim que o benchmark sumiu)
+            for P in estado/sindico estado/ia_local config/sindico.json estado/rotas_sugeridas_ia.json estado/pacote_conselho.md estado/pacote_conselho.json docs/dados/sindico.json docs/dados/pacote_conselho.md; do
+              git checkout origin/main -- "$P" 2>/dev/null || true
+            done
+            git add biblioteca_alexandria -A dados estado docs && git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F) (reaplicada)" || true
             sleep 15
           done
           git push || echo "REGISTRO FALHOU apos 3 tentativas — os dados desta saida ficam no log"

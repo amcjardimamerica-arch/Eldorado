@@ -15,14 +15,19 @@ TEXTO = ("EDITAL DE CHAMAMENTO PÚBLICO Nº 05/2026. DO OBJETO: seleção de org
 
 class TesteValidacaoPorTrecho(unittest.TestCase):
     def test_classificacao_so_vale_com_trecho_no_texto(self):
-        ok = IALocal(transporte=falso({"familia": "fomento_osc", "confianca": 0.9, "trecho": "seleção de organização da sociedade civil para termo de fomento", "motivo": "x"}))
+        """21/09: duas perguntas binárias (é fomento? há veto?) em vez de três classes."""
+        ok = IALocal(transporte=falso({"e_fomento_a_osc": True, "trecho_fomento": "seleção de organização da sociedade civil para termo de fomento", "sinal_de_veto": None, "confianca": 0.9}))
         p = t_classificar_objeto(ok, {"id": "a", "titulo": "Edital 05/2026"}, TEXTO)
-        self.assertTrue(p["valido"]); self.assertEqual(p["familia"], "fomento_osc")
-        ruim = IALocal(transporte=falso({"familia": "fomento_osc", "confianca": 0.95, "trecho": "frase que não existe no documento nenhum", "motivo": "x"}))
+        self.assertTrue(p["valido"]); self.assertEqual(p["familia"], "fomento_osc"); self.assertTrue(p["perguntas"]["e_fomento_a_osc"])
+        veto = IALocal(transporte=falso({"e_fomento_a_osc": False, "sinal_de_veto": "servico_ao_orgao", "trecho_veto": "DAS INSCRIÇÕES: as propostas serão recebidas", "confianca": 0.8}))
+        p1 = t_classificar_objeto(veto, {"id": "a", "titulo": ""}, TEXTO)
+        self.assertEqual(p1["familia"], "servico_ao_orgao"); self.assertTrue(p1["valido"])          # veto com trecho real
+        ruim = IALocal(transporte=falso({"e_fomento_a_osc": True, "trecho_fomento": "frase que não existe no documento nenhum", "sinal_de_veto": None, "confianca": 0.95}))
         p2 = t_classificar_objeto(ruim, {"id": "a", "titulo": "Edital 05/2026"}, TEXTO)
         self.assertFalse(p2["valido"]); self.assertIn("trecho", p2["invalido_por"])
-        fam = IALocal(transporte=falso({"familia": "categoria_inventada", "confianca": 0.9, "trecho": "DO OBJETO"}))
-        self.assertIsNone(t_classificar_objeto(fam, {"id": "a", "titulo": ""}, TEXTO))
+        inc = IALocal(transporte=falso({"e_fomento_a_osc": False, "sinal_de_veto": None, "confianca": 0.7}))
+        self.assertEqual(t_classificar_objeto(inc, {"id": "a", "titulo": ""}, TEXTO)["familia"], "atencao")   # sem sinal claro → atenção
+        self.assertIsNone(t_classificar_objeto(IALocal(transporte=falso({"familia": "x"})), {"id": "a", "titulo": ""}, TEXTO))  # fora do esquema
 
     def test_prazo_inventado_e_descartado(self):
         inv = IALocal(transporte=falso({"objeto": "seleção de organização da sociedade civil", "objeto_trecho": "seleção de organização da sociedade civil",
