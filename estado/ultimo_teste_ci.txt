@@ -1,11 +1,11 @@
-commit: 5e7e61af4fed7d1d9c3fa27bcb924c26f3c9ec92
-em: 2026-09-21T12:20:03Z
+commit: 6c3c5ace8f5a67423793950cbe6adedf0fee844d
+em: 2026-09-21T13:36:32Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 428 tests in 401.124s
+Ran 428 tests in 302.291s
 
-FAILED (failures=4, skipped=9)
+FAILED (failures=6, skipped=9)
 ---- falhas ----
 FAIL: test_acervo_fts5_zstd (test_evolucao_busca.TesteAcervoCompacto.test_acervo_fts5_zstd)
 ----------------------------------------------------------------------
@@ -32,6 +32,15 @@ Traceback (most recent call last):
 AssertionError: 4 != 1
 
 ======================================================================
+FAIL: test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida (test_system.SystemTests.test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4033, in test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida
+    self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
+
+======================================================================
 FAIL: test_mapa_so_com_oportunidades_reais (test_system.SystemTests.test_mapa_so_com_oportunidades_reais)
 07/09: o Mapa mostrava 310 em Goiás porque contava 306 edições inteiras de
 ----------------------------------------------------------------------
@@ -41,7 +50,16 @@ Traceback (most recent call last):
     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: False is not true
 
+======================================================================
+FAIL: test_validacao_individual_dos_467 (test_system.SystemTests.test_validacao_individual_dos_467)
+09/09: validação individual do titular — 468 registros com veredito, família,
 ----------------------------------------------------------------------
-Ran 428 tests in 401.124s
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4300, in test_validacao_individual_dos_467
+    self.assertLessEqual(f["total"],300)
+AssertionError: 307 not less than or equal to 300
 
-FAILED (failures=4, skipped=9)
+----------------------------------------------------------------------
+Ran 428 tests in 302.291s
+
+FAILED (failures=6, skipped=9)
