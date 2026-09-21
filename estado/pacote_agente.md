@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## db0bf83f4df2fe2c618a — PNAB 2026: Retificado cronograma dos editais nº 12, 13 e 14/2026
 
-MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 55× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 56× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
@@ -32,17 +32,17 @@ Texto do edital (compacto):
 
 
 ---
-## doacao-receita-federal-2027 — Doação de mercadorias apreendidas — Receita Federal — 2027
+## cf69e17d99f0e53210f7 — Chamamentos Públicos
 
-MODO: COMPLETO
+MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 1× · motivo: sem prazo de inscrição confirmado
 
-Fonte (vetor): Secretaria Especial da Receita Federal do Brasil — Superintendência da 1ª Região Fiscal (GO/DF/MT/MS/TO) · UF BR · nível federal · situação possivel · fim 2027-12-31
+Fonte (vetor): Diário Oficial do Estado de Goiás · UF GO · nível estadual · situação possivel · fim None
 
-Itens já obtidos: Objeto: Destinacao por doacao de mercadorias apreendidas ou abandonadas pela Receita Fed, Prazo de inscrição: 2027-12-31, Órgão / financiador: Secretaria Especial da Receita Federal do Brasil — Superintendência da 1ª Região, Território: Brasil, Esfera: federal, Área de atuação: doacao_bens, Resultado: publicação do ato de destinação pela RFB e comunicação às entidades habilitadas, Valor: não monetário — bens (mercadorias) conforme lotes disponíveis, Requisitos: entidade sem fins lucrativos habilitada no cadastro de destinação da RFB (finali, Anexos: formulário de habilitação/pedido no sistema da RFB; estatuto, ata, CNPJ e certid, Destinação: bens para uso nas atividades finalísticas da entidade (vedada a comercialização)
+Itens já obtidos: nenhum
 
-Itens que FALTAM: Prazo de recurso
+Itens que FALTAM: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação, Área de atuação
 
-Anúncio: https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias
+Anúncio: https://goias.gov.br/cultura/chamamentos-publicos-secult
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
