@@ -1,0 +1,97 @@
+name: 07 · Síndico — IA local da Biblioteca (benchmark e ciclos)
+on:
+  schedule:
+    - cron: "0 4,10,16,22 * * *"    # 4 ciclos por dia (repositório público: minutos ilimitados)
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "benchmark (elege o modelo) | ciclo (curadoria + mineração)"
+        default: "ciclo"
+      limite_gabarito:
+        description: "benchmark: quantos itens do gabarito (vazio = todos)"
+        default: ""
+permissions:
+  contents: write
+concurrency:
+  group: sindico
+  cancel-in-progress: false
+jobs:
+  sindico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 1}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Dependências
+        run: pip install -q -r requirements.txt
+      - name: Motor llama.cpp (17 MB, release fixa)
+        run: |
+          mkdir -p ia_local/motor ia_local/modelos
+          curl -sL -o /tmp/l.tgz https://github.com/ggml-org/llama.cpp/releases/download/b11064/llama-b11064-bin-ubuntu-x64.tar.gz
+          tar xzf /tmp/l.tgz -C /tmp && cp -r /tmp/llama-b11064/* ia_local/motor/
+          echo "LLAMA_SERVER=$PWD/ia_local/motor/llama-server" >> $GITHUB_ENV
+          ia_local/motor/llama-server --version 2>&1 | head -2
+      - name: Modelo(s) — cache do Actions (10 GB por repositório)
+        uses: actions/cache@v4
+        with:
+          path: ia_local/modelos
+          key: modelos-gguf-v1-${{ hashFiles('config/sindico.json') }}
+          restore-keys: modelos-gguf-v1-
+      - name: Baixar modelos que faltam
+        env:
+          MODO: ${{ github.event.inputs.modo || 'ciclo' }}
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, urllib.request
+          from src.sindico import CANDIDATOS
+          cfg = json.load(open("config/sindico.json"))
+          modo = os.environ.get("MODO", "ciclo")
+          alvo = CANDIDATOS if (modo == "benchmark" or not cfg.get("modelo_vencedor")) else [c for c in CANDIDATOS if c["id"] == cfg["modelo_vencedor"]]
+          for c in alvo:
+              p = pathlib.Path("ia_local/modelos") / c["arquivo"]
+              if p.exists() and p.stat().st_size > 500_000_000:
+                  print("cache:", c["id"]); continue
+              print("baixando", c["id"], c["gb"], "GB …")
+              urllib.request.urlretrieve(c["url"], p)
+              print("  ok", round(p.stat().st_size/1e9, 2), "GB")
+          PY
+      - name: Benchmark (elege o modelo pelo gabarito do titular)
+        if: ${{ github.event.inputs.modo == 'benchmark' }}
+        env:
+          LIMITE: ${{ github.event.inputs.limite_gabarito }}
+        run: |
+          timeout 20000 python -m src.sindico benchmark $LIMITE || echo "benchmark: registrado o que deu"
+      - name: Ciclo do síndico (entender → curar → afiar → minerar → anunciar)
+        if: ${{ github.event.inputs.modo != 'benchmark' }}
+        run: |
+          python - <<'PY'
+          import json, subprocess, os, time, urllib.request, sys
+          cfg = json.load(open("config/sindico.json"))
+          from src.sindico import CANDIDATOS
+          vid = cfg.get("modelo_vencedor")
+          if not vid:
+              print("sem modelo eleito — rode o benchmark primeiro"); sys.exit(0)
+          c = [x for x in CANDIDATOS if x["id"] == vid][0]
+          env = dict(os.environ, LD_LIBRARY_PATH=os.path.abspath("ia_local/motor"))
+          srv = subprocess.Popen(["ia_local/motor/llama-server", "-m", f"ia_local/modelos/{c['arquivo']}", "--port", str(cfg.get("porta", 8081)),
+                                  "--host", "127.0.0.1", "-c", "4096", "--jinja", "-t", str(os.cpu_count() or 4)], env=env)
+          for _ in range(180):
+              try:
+                  if urllib.request.urlopen(f"http://127.0.0.1:{cfg.get('porta', 8081)}/health", timeout=2).status == 200: break
+              except Exception: time.sleep(1)
+          from src.sindico import ciclo
+          print(json.dumps(ciclo(porta=cfg.get("porta", 8081)), ensure_ascii=False, indent=1))
+          srv.kill()
+          PY
+      - name: Regenerar painel e commitar
+        env:
+          MODO: ${{ github.event.inputs.modo || 'ciclo' }}
+        run: |
+          timeout 300 python -m src.dashboard_dados || true
+          git config user.name "sindico-eldorado" && git config user.email "sindico@eldorado"
+          git add -A estado/sindico config/sindico.json docs/dados/sindico.json docs/dashboard-dados.js docs/dados dados/editais/extraidos config/lexico_aprendido.json estado/rotas_sugeridas_ia.json 2>/dev/null || true
+          git commit -q -m "sindico: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"
+          git pull --rebase -q origin main || true
+          git push -q origin main || echo "push falhou"

@@ -1541,6 +1541,10 @@ def coletar(hoje: date | None = None) -> dict:
                 load_json(ROOT / "config/rotas_empresas.json") if (ROOT / "config/rotas_empresas.json").exists() else None),
             "finalidade": (lambda d: {"descoberta": sum(1 for v in (d.get("motores") or {}).values() if v.get("finalidade") == "descoberta"), "insumo": sum(1 for v in (d.get("motores") or {}).values() if v.get("finalidade") == "insumo"), "espalhados": (d.get("espalhamento") or {}).get("total_novos")} if d else None)(
                 load_json(ROOT / "config/finalidade_motores.json") if (ROOT / "config/finalidade_motores.json").exists() else None),
+            "sindico": {"config": load_json(ROOT / "config/sindico.json") if (ROOT / "config/sindico.json").exists() else None,
+                        "benchmark": (lambda b: {k: v for k, v in b.items() if k != "candidatos"} | {"resumo": [{k: c.get(k) for k in ("id", "acerto", "prazos_inventados", "tokens_por_s", "minutos", "elegivel", "erro")} for c in b.get("candidatos", [])]} if b else None)(
+                            load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+                        "ultimo": load_json(ROOT / "docs/dados/sindico.json") if (ROOT / "docs/dados/sindico.json").exists() else None},
             "ia_local": (lambda d: {"configurada": True, "modelo": d["modelos"]["principal"]["nome"], "motor": d["motor"]["nome"],
                                      "ultimo_ciclo": (lambda p: (load_json(p) if p else None))(max((ROOT / "estado/ia_local").glob("propostas-*.json"), default=None)),
                                      "rotas_sugeridas": len((load_json(ROOT / "estado/rotas_sugeridas_ia.json") if (ROOT / "estado/rotas_sugeridas_ia.json").exists() else {}).get("sugestoes") or [])})(load_json(ROOT / "config/ia_local.json")) if (ROOT / "config/ia_local.json").exists() else None,
