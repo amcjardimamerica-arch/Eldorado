@@ -347,7 +347,11 @@ box-shadow:0 1px 3px #0002}
 .sug-dados{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--linha)}.sug-dados b{color:var(--suave);font-weight:700;margin-right:3px}
 .sug-itens i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#E3E8F1;margin-right:2px;vertical-align:middle}.sug-itens i.ok{background:var(--ok)}
 .sug-l3{display:grid;grid-template-columns:1.3fr 1fr;gap:12px;margin-top:8px}@media(max-width:1000px){.sug-l3{grid-template-columns:1fr}}
-.sug-ia,.sug-docs{font-size:12px;line-height:1.5}.sug-parecer{margin-top:4px;padding:5px 8px;border-left:3px solid #0E2A55;background:#F4F7FB;border-radius:6px}
+.sug-ia,.sug-docs{font-size:12px;line-height:1.5}.rel-bt{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:10px;border:1px solid #9FC1E8;background:#F3F8FF;cursor:pointer;font:inherit;font-size:12.5px;text-align:left}
+.rel-bt:hover{background:#E3F0FF}.rel-bt.sindico{border-color:#B9A25A;background:#FBF7E8}.rel-bt.sindico:hover{background:#F5EDCF}
+.rel-quem{font-weight:800;color:#0E2A55}.rel-bt.sindico .rel-quem{color:#6B5A12}.rel-data{color:var(--suave)}.rel-abrir{margin-left:auto;color:#0B4EA2;font-size:11.5px}
+.rel-janela{font-size:13px;line-height:1.55}.rel-linha{padding:3px 0}.rel-texto{white-space:pre-wrap;background:#F7FBFF;border:1px solid #DCE7F5;border-radius:9px;padding:10px}.rel-lista{margin:4px 0 0 18px}
+.sug-parecer{margin-top:4px;padding:5px 8px;border-left:3px solid #0E2A55;background:#F4F7FB;border-radius:6px}
 .sug-doclist{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}.sug-doc{border:1px solid var(--linha);border-radius:12px;padding:1px 8px;font-size:11px}.sug-doc.ok{border-color:var(--ok);color:var(--ok)}.sug-doc.falta{border-color:var(--urgente);color:var(--urgente)}
 .env-zona{border:2px dashed #9FC1E8;border-radius:12px;padding:18px;text-align:center;background:#F7FBFF}.env-zona.over{background:#E3F0FF;border-color:#0B4EA2}
 .env-item{display:grid;grid-template-columns:12px 1.4fr 1.2fr 1.1fr auto;gap:8px;align-items:center;padding:6px;border-bottom:1px dotted #EEF1F5;font-size:12.5px}
@@ -2341,15 +2345,46 @@ function htmlEditaisEnquadrados(a){const COR={verde:"var(--ok)",amarelo:"var(--a
           ${pc.competitivo===false?`<div class=meta>${esc(String(pc.base||"não há julgamento por nota"))}. ${esc(String(P.rito||""))}</div>`:crit.map(c=>`<div class="ck-linha"><i class="led ${c.peso?"ok":"disp"}"></i><span class="ck-nome">${esc(String(c.criterio).slice(0,44))}</span><span class="ck-val">${c.peso!=null?"peso "+c.peso:"peso no edital"}</span></div>`).join("")||'<div class=meta>critérios não conhecidos para esta fonte</div>'}
           ${P.preditiva?`<div class=meta style="margin-top:6px"><b>Predição:</b> janela ${esc(P.preditiva.janela_provavel)} (confiança ${esc(P.preditiva.confianca)}) · começar ${P.preditiva.antecedencia_recomendada_dias} dias antes${P.historico&&P.historico.ocorrencias?` · ${P.historico.ocorrencias} edição(ões) em ${Object.keys(P.historico.por_ano||{}).join(", ")}`:""}</div>`:""}
           ${P.valores&&(P.valores.minimo||P.valores.maximo)?`<div class=meta><b>Faixa:</b> ${esc(String(P.valores.base).slice(0,80))}</div>`:""}`;})()}</div>
-        <div class="sug-col"><div class="sug-col-t">Considerações da IA</div>
-          <div class="ia-quadro">${(q.luzes||[]).map(l=>`<span class="ia-luz" title="${esc(l.detalhe||"")}"><i style="background:${LUZ[l.sinal]||"#ccc"}"></i>${esc(l.modelo)}</span>`).join("")}</div>
-          ${r?`<div class="meta" style="margin:4px 0"><span class="tag ${r.completo?"ok":"pend"}">${esc(r.situacao)}</span></div>`:""}
-          ${e.mini_parecer?`<div class="sug-parecer">${esc(String(e.mini_parecer).slice(0,460))}</div>`:'<div class=meta>sem parecer ainda</div>'}
-          ${ia&&ia.decisao?`<div class="sug-parecer"><b>Decisão do conselho:</b> ${esc(String(ia.decisao).slice(0,260))}</div>`:""}
-          ${r&&r.manual?`<div class="enq-manual" style="margin-top:4px"><b>Busca manual:</b> ${r.manual.links.map(l=>`<a href="${esc(l)}" target=_blank rel="noopener noreferrer">${esc(l.replace(/^https?:\/\//,"").slice(0,36))} ↗</a>`).join(" · ")}</div>`:""}
+        <div class="sug-col"><div class="sug-col-t">Relatório do edital</div>
+          ${(()=>{const R=relatorioDoEdital(e,ia,r);if(!R)return '<div class=meta>sem relatório ainda — entra na próxima verificação</div>';
+            return `<button class="rel-bt ${R.quem==="Síndico"?"sindico":"claude"}" data-rel="${esc(e.id)}" title="${esc(R.resumo)}" onclick="abrirRelatorio('${esc(e.id)}')">
+              <span class="rel-quem">${esc(R.quem)}</span><span class="rel-data">${esc(R.data)}</span><span class="rel-abrir">ver relatório ↗</span></button>
+              ${R.decisao?`<div class="sug-parecer" style="margin-top:6px"><b>Decisão:</b> ${esc(R.decisao.slice(0,180))}</div>`:""}`;})()}
         </div>
       </div></div>`;}).join("");
 }
+/* RELATÓRIO DO EDITAL (20/09): um botão com quem analisou (Síndico ou Claude) e a data;
+   hover = considerações resumidas; clique = janela com o relatório completo. */
+window._REL={};
+function relatorioDoEdital(e,ia,r){
+  const an=(D.analise_editais||{})[e.id]||{};
+  const parecer=String(e.mini_parecer||"").trim();
+  const decisao=ia&&ia.decisao?String(ia.decisao):"";
+  if(!parecer&&!decisao&&!an.selo)return null;
+  const por=String(an.por||e.verificado_por||"").toLowerCase();
+  const quem=/s[ií]ndico|ia_local/.test(por)?"Síndico":"Claude";
+  const data=br((an.em||e.verificado_em||e.analisado_em||"").slice(0,10))||"—";
+  const resumo=(parecer||decisao||an.motivo||"").replace(/\s+/g," ").slice(0,220)+(((parecer||decisao||"").length>220)?"…":"");
+  const R={quem,data,resumo,decisao,parecer,selo:an.selo,motivo:an.motivo,por:an.por||e.verificado_por,
+    ia:ia||{},luzes:(D.enquadramento_fila&&D.enquadramento_fila.itens?((D.enquadramento_fila.itens.find(q=>q.id===e.id)||{}).luzes):null),
+    titulo:e.titulo,valor:e.valor_texto||e.valor,fim:e.fim,link:linkOficial(e)||e.url};
+  window._REL[e.id]=R; return R;
+}
+window.abrirRelatorio=function(id){const R=window._REL[id];if(!R)return;
+  const A=R.ia||{};
+  abreModal(`<h3 style="margin:0">Relatório do edital — ${esc(R.quem)} · ${esc(R.data)}</h3><div class=meta>${esc((R.titulo||"").slice(0,120))}</div>`,
+   `<div class="rel-janela">
+      <div class="rel-linha"><b>Selo da análise:</b> ${esc(R.selo||"—")}${R.motivo?` — ${esc(R.motivo)}`:""}</div>
+      ${R.fim?`<div class="rel-linha"><b>Prazo:</b> até ${br(R.fim)}</div>`:""}${R.valor?`<div class="rel-linha"><b>Valor:</b> ${esc(String(R.valor))}</div>`:""}
+      ${R.link?`<div class="rel-linha"><b>Página oficial:</b> <a href="${esc(R.link)}" target=_blank rel="noopener noreferrer">${esc(R.link.slice(0,90))} ↗</a></div>`:""}
+      <div class="fdoc-t" style="margin-top:10px">Considerações completas</div>
+      <div class="rel-texto">${esc(R.parecer||"sem parecer registrado")}</div>
+      ${R.decisao?`<div class="fdoc-t" style="margin-top:10px">Decisão do conselho</div><div class="rel-texto">${esc(R.decisao)}</div>`:""}
+      ${(A.para_subir&&A.para_subir.length)?`<div class="fdoc-t" style="margin-top:10px">Para subir a aderência</div><ul class="rel-lista">${A.para_subir.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+      ${(A.riscos&&A.riscos.length)?`<div class="fdoc-t" style="margin-top:10px">Riscos</div><ul class="rel-lista">${A.riscos.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+      ${A.aderencia!=null?`<div class="rel-linha" style="margin-top:8px"><b>Aderência:</b> ${A.aderencia} · <b>Chances:</b> ${A.chances!=null?A.chances:"—"}${A.pontuacao_estimada?` · <b>Pontuação estimada:</b> ${esc(String(A.pontuacao_estimada))}`:""}</div>`:""}
+      <div class=meta style="margin-top:10px">Analisado por <b>${esc(R.quem)}</b>${R.por?` (${esc(R.por)})`:""} em ${esc(R.data)}.</div>
+    </div>`);};
 function desenhaEnquadramento(){
   const box=$("enq-corpo"); if(!box)return;
   const E=D.enquadramento||[], Q=D.enquadramento_fila||{}, DOCS=D.documentos_associacoes||[];

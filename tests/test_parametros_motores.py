@@ -207,6 +207,16 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
         self.assertIn("oportunidade(s)</strong>", html)
         self.assertIn("com inscrição aberta ·", html); self.assertIn("em verificação (prazo ainda não confirmado", html)
 
+    def test_relatorio_do_edital_substitui_consideracoes_da_ia(self):
+        """20/09: no lugar de 'Considerações da IA' (luzes por modelo), um botão com quem
+        analisou (Síndico ou Claude) e a data; hover = resumo; clique = janela completa."""
+        html = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertNotIn("Considerações da IA", html)
+        for x in ("Relatório do edital", "function relatorioDoEdital", "window.abrirRelatorio", 'class="rel-bt', "rel-quem", "rel-data",
+                  "ver relatório", "Considerações completas", "Decisão do conselho", 'quem=/s[ií]ndico|ia_local/.test(por)?"Síndico":"Claude"'):
+            self.assertIn(x, html, x)
+        self.assertIn('title="${esc(R.resumo)}"', html)                 # hover com o resumo
+
     def test_parametros_e_evidencias_no_repositorio(self):
         p = json.loads((ROOT / "config/PARAMETROS-MOTORES-2026-09-09.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(p["parametros"]), 30)
