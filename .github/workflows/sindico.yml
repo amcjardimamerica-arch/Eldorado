@@ -39,24 +39,29 @@ jobs:
           path: ia_local/modelos
           key: modelos-gguf-v1-${{ hashFiles('config/sindico.json') }}
           restore-keys: modelos-gguf-v1-
-      - name: Baixar modelos que faltam
+      - name: Baixar modelos que faltam (curl -L, com retentativas; falha de um modelo não derruba o job)
         env:
           MODO: ${{ github.event.inputs.modo || 'ciclo' }}
         run: |
-          python - <<'PY'
-          import json, os, pathlib, urllib.request
+          python - <<'PY' > /tmp/alvos.txt
+          import json, os
           from src.sindico import CANDIDATOS
           cfg = json.load(open("config/sindico.json"))
           modo = os.environ.get("MODO", "ciclo")
           alvo = CANDIDATOS if (modo == "benchmark" or not cfg.get("modelo_vencedor")) else [c for c in CANDIDATOS if c["id"] == cfg["modelo_vencedor"]]
           for c in alvo:
-              p = pathlib.Path("ia_local/modelos") / c["arquivo"]
-              if p.exists() and p.stat().st_size > 500_000_000:
-                  print("cache:", c["id"]); continue
-              print("baixando", c["id"], c["gb"], "GB …")
-              urllib.request.urlretrieve(c["url"], p)
-              print("  ok", round(p.stat().st_size/1e9, 2), "GB")
+              print(c["arquivo"], c["url"])
           PY
+          while read -r ARQ URL; do
+            DEST="ia_local/modelos/$ARQ"
+            if [ -s "$DEST" ] && [ "$(stat -c%s "$DEST")" -gt 500000000 ]; then echo "cache: $ARQ"; continue; fi
+            echo "baixando $ARQ …"
+            curl -L --retry 4 --retry-delay 10 --fail --silent --show-error -o "$DEST" "$URL" \
+              && echo "  ok: $(du -h "$DEST" | cut -f1)" \
+              || { echo "  FALHOU: $ARQ (HTTP/rede) — o benchmark marcará 'modelo não disponível'"; rm -f "$DEST"; }
+          done < /tmp/alvos.txt
+          ls -la ia_local/modelos/ || true
+          df -h / | tail -1
       - name: Benchmark (elege o modelo pelo gabarito do titular)
         if: ${{ github.event.inputs.modo == 'benchmark' }}
         env:
