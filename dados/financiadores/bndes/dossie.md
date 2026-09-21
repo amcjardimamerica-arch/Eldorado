@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `bndes`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 8
-- Distribuição por ano pesquisado/coletado: {'2023': 6, '2024': 2}
+- Pistas aguardando confirmação: 7
+- Distribuição por ano pesquisado/coletado: {'2026': 7}
 
 ## Padrões
 
@@ -12,11 +12,10 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [BNDES | Agência BNDES de Notícias Página Inicial | Agência BNDES de ...](https://agenciadenoticias.bndes.gov.br/) — coletado em 2026-09-21T03:13:05+00:00
-- [BNDES - O banco nacional do desenvolvimento](https://www.bndes.gov.br/wps/portal/site/home) — coletado em 2026-09-20T22:06:51+00:00
-- [BNDES - Portal do Cliente](https://web.bndes.gov.br/CFI/login/bemVindo.xhtml) — coletado em 2026-09-20T22:06:51+00:00
-- [BNDES - Brazilian Development Bank](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en) — coletado em 2026-09-20T22:06:51+00:00
-- [About Us - BNDES Investor Relations](https://ri.bndes.gov.br/en/about-bndes/about-us) — coletado em 2026-09-20T22:06:51+00:00
-- [The BNDES - BNDES](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en/Institucional/The_BNDES) — coletado em 2026-09-21T03:13:05+00:00
-- [Home - BNDES Investor Relations](https://ri.bndes.gov.br/en) — coletado em 2026-09-20T22:06:51+00:00
-- [BNDES - Portal do Cliente](https://portal.bndes.gov.br/prc) — coletado em 2026-09-20T22:06:51+00:00
+- [BNDES | Agência BNDES de Notícias Página Inicial | Agência BNDES de ...](https://agenciadenoticias.bndes.gov.br/) — coletado em 2026-09-21T17:51:54+00:00
+- [BNDES - O banco nacional do desenvolvimento](https://www.bndes.gov.br/wps/portal/site/home) — coletado em 2026-09-21T17:51:54+00:00
+- [BNDES - Brazilian Development Bank](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en) — coletado em 2026-09-21T17:51:54+00:00
+- [About Us - BNDES Investor Relations](https://ri.bndes.gov.br/en/about-bndes/about-us) — coletado em 2026-09-21T17:51:54+00:00
+- [The BNDES - BNDES](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en/Institucional/The_BNDES) — coletado em 2026-09-21T17:51:54+00:00
+- [Home - BNDES Investor Relations](https://ri.bndes.gov.br/en) — coletado em 2026-09-21T17:51:54+00:00
+- [BNDES - Portal do Cliente](https://portal.bndes.gov.br/prc) — coletado em 2026-09-21T17:51:54+00:00
