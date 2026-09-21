@@ -1,0 +1,33 @@
+{
+ "versao": 1,
+ "atualizado_em": "2026-09-21",
+ "premissa": "Encontrar o ouro: as oportunidades de captação de recursos. Estudar para aprender, aumentar a Biblioteca de Alexandria e o banco de dados a cada ciclo. Nunca ociosidade: ao concluir uma tarefa, o sistema declara 'ocioso' e esse estado dispara uma nova pesquisa autônoma.",
+ "regra_inegociavel": "o Síndico PROPÕE; a validação determinística DECIDE. Prazo, valor, objeto e página só entram com trecho literal presente no texto. Tudo leva origem, modelo e data. Nada sobrescreve dado confirmado pelo titular ou pelo Claude.",
+ "prioridades": [
+  {"nivel": 1, "nome": "Completar os editais desatualizados",
+   "tarefas": ["localizar o link de divulgação OFICIAL (site do órgão ou patrocinador; nunca vetor)", "identificar a forma de inscrição (plataforma, e-mail, protocolo, presencial) e o prazo com trecho literal",
+               "extrair a lista de documentos exigidos e os anexos/modelos do edital", "marcar o que não foi possível e por quê (PDF imagem, portal fora, IP estrangeiro, sem cronograma)"],
+   "gatilho": "todo edital novo identificado pelos motores aciona a IA local imediatamente; todo edital com selo 'análise incompleta' ou 'não verificada' entra na fila do nível 1",
+   "saida": "registro completo (objeto, prazo, página oficial, forma de inscrição, documentos) ou motivo da parada, em estado/sindico/nivel1-<data>.json"},
+  {"nivel": 2, "nome": "Classificar, enquadrar e preparar a inscrição",
+   "tarefas": ["entender requisitos e critérios de pontuação do edital", "cruzar com as associações cadastradas e apontar qual GANHARIA (aderência por critério, não por impressão)",
+               "preparar os documentos conforme os MODELOS OFICIAIS extraídos do edital, preenchidos com os dados do dossiê da associação", "criar o PROJETO de inscrição a partir das informações do edital + histórico e portfólio da associação (43 anos, Jardim América, Nova Suíça, Conjunto Oásis)",
+               "deixar tudo pronto no Farol de Alexandria: checklist, documentos preenchidos, projeto, o que falta assinar"],
+   "gatilho": "todo edital que sair do nível 1 completo e com selo de conformidade",
+   "saida": "pasta do edital em dados/associacoes/<assoc>/inscricoes/<edital>/ com documentos e projeto; estado 'pronto para assinar' ou lista do que falta"},
+  {"nivel": 3, "nome": "Otimizar a busca e minerar o desconhecido",
+   "tarefas": ["criar PROMPTS de forma autônoma para melhorar a biblioteca: onde cada financiador publica, em que época (alimenta o motor preditivo), quais órgãos vizinhos fazem o mesmo",
+               "buscar oportunidades que o sistema DESCONHECE: sites de empresas (Lucro Real em Goiás primeiro), sites do terceiro setor ainda não catalogados, captação internacional (fundações, embaixadas, agências)",
+               "rotina de pesquisa: INICIAR → AVALIAR → APRENDER → CONCLUIR; ao concluir, declarar 'ocioso' e esse estado dispara a próxima pesquisa, que lê os aprendizados anteriores antes de escolher o caminho",
+               "resultado negativo é registrado em uma linha (caminho, data, por que não rendeu) para nunca repetir; resultado positivo vira rota candidata a confirmar"],
+   "gatilho": "sistema ocioso (níveis 1 e 2 sem trabalho pendente) ou orçamento de tempo sobrando no ciclo",
+   "saida": "estado/sindico/memoria_mineracao.jsonl (uma linha por pesquisa) e estado/rotas_sugeridas_ia.json (pistas a confirmar)"}
+ ],
+ "divisao_de_trabalho": {
+  "sindico_github": "4 ciclos por dia (04h, 10h, 16h, 22h), até 5h cada; cumpre os três níveis em ordem; nunca ocioso",
+  "claude_a_cada_3_dias": "valida, corrige e atualiza o que o Síndico não obteve; lê o RELATÓRIO DE APRENDIZADO E BLOQUEIOS; convoca o conselho; aponta o modelo com que fez a análise",
+  "claude_desktop_diario": "ao ligar o Claude no computador, rotina diária: abre estado/pacote_desktop.md e atualiza o que está desatualizado (coleta local, navegador, IP brasileiro)"
+ },
+ "relatorio_de_aprendizado": {"arquivo": "estado/sindico/aprendizado.jsonl", "regra": "todo bloqueio, impedimento ou hipótese descartada vira uma linha: data, tarefa, o que tentou, o que impediu, o que aprendeu; o Claude lê a cada 3 dias e o conselho decide"},
+ "identificacao_do_modelo": "todo relatório diz com que modelo foi feito: o Síndico com o modelo eleito no benchmark; o Claude com o nome do modelo da sessão (Claude Fable 5.1 nesta implantação)"
+}

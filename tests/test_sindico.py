@@ -47,3 +47,31 @@ class TesteSindico(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteConstituicaoEConselho(unittest.TestCase):
+    def test_constituicao_tres_niveis_e_regra(self):
+        c = json.loads((ROOT / "config/constituicao_sindico.json").read_text(encoding="utf-8"))
+        self.assertEqual([p["nivel"] for p in c["prioridades"]], [1, 2, 3])
+        self.assertIn("trecho literal", c["regra_inegociavel"])
+        self.assertIn("ocioso", c["premissa"].lower())
+        self.assertIn("Lucro Real", " ".join(" ".join(p["tarefas"]) for p in c["prioridades"]))
+        self.assertIn("claude_a_cada_3_dias", c["divisao_de_trabalho"]); self.assertIn("claude_desktop_diario", c["divisao_de_trabalho"])
+
+    def test_acionamento_automatico_e_pacote_do_conselho(self):
+        wf = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
+        self.assertIn("Acionar o Sindico quando houver edital novo", wf); self.assertIn("actions: write", wf)
+        wc = (ROOT / ".github/workflows/conselho.yml").read_text(encoding="utf-8"); self.assertIn("*/3", wc)
+        from src.pacote_conselho import montar
+        r = montar(3); self.assertIn("bloqueios", r)
+        t = (ROOT / "estado/pacote_conselho.md").read_text(encoding="utf-8")
+        for x in ("Relatório de aprendizado e bloqueios", "Perguntas para o conselho", "anota o modelo"): self.assertIn(x, t)
+
+    def test_relatorio_aponta_o_modelo(self):
+        an = json.loads((ROOT / "dados/editais/analises.json").read_text(encoding="utf-8"))
+        self.assertTrue(all(v.get("modelo") for v in an.values()))
+        self.assertTrue(any(v["modelo"] == "Claude Fable 5.1" for v in an.values()))
+        html = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn("com o modelo <b>${esc(R.modelo)}</b>", html); self.assertIn("Constituição:", html)
+        from src.sindico import aprender, fila_nivel1
+        self.assertTrue(callable(aprender)); self.assertIsInstance(fila_nivel1(), list)

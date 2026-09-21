@@ -1,0 +1,24 @@
+name: 08 · Pacote do conselho (validação do Claude a cada 3 dias)
+on:
+  schedule:
+    - cron: "30 6 */3 * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  conselho:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -q -r requirements.txt
+      - name: Montar o pacote do conselho
+        run: python -m src.pacote_conselho
+      - name: Commitar
+        run: |
+          git config user.name "sindico-eldorado" && git config user.email "sindico@eldorado"
+          git add estado/pacote_conselho.md estado/pacote_conselho.json docs/dados/pacote_conselho.md
+          git commit -q -m "conselho: pacote de validacao $(date -u +%F)" || echo "nada"
+          git pull --rebase -q origin main || true; git push -q origin main || true

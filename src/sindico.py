@@ -211,6 +211,50 @@ def minerar(ia: IALocal, ja_feitos: set[str]) -> dict:
     return {"prompt": None, "negativo": True, "aprendizado": "todos os prompts de mineração já rodaram hoje"}
 
 
+# ─────────────────────────────────────────────────────────────── aprendizado / bloqueios
+def aprender(tarefa: str, tentou: str, impediu: str, aprendeu: str, nivel: int | None = None) -> None:
+    """Todo bloqueio ou hipótese descartada vira UMA LINHA — o Claude lê a cada 3 dias."""
+    with open(PASTA / "aprendizado.jsonl", "a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"d": now_iso()[:16], "n": nivel, "t": tarefa, "tentou": tentou[:160], "impediu": impediu[:160], "aprendeu": aprendeu[:200]}, ensure_ascii=False) + "\n")
+
+
+def fila_nivel1() -> list[str]:
+    """Editais que precisam de complementação: novos sem análise, incompletos, não verificados."""
+    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    dados = load_json(ROOT / "docs/dashboard-dados.json")
+    ids = []
+    for e in dados.get("editais") or []:
+        if e.get("tipo_registro") not in ("edital", "regra_anual"):
+            continue
+        a = an.get(e["id"]) or {}
+        if not a or a.get("selo") == "analise_incompleta" or e.get("selo_validacao") == "nao_verificada":
+            ids.append(e["id"])
+    return ids
+
+
+def nivel2_enquadrar(ia: IALocal, limite: int = 20) -> dict:
+    """Editais conformes e completos → aderência por critério às associações + esqueleto do projeto."""
+    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    dados = load_json(ROOT / "docs/dashboard-dados.json")
+    assocs = dados.get("documentos_associacoes") or []
+    from .fonte_edital import EXTRAIDOS
+    feitos = []
+    for e in [x for x in dados.get("editais") or [] if (an.get(x["id"]) or {}).get("selo") == "conformidade"][:limite]:
+        ex = load_json(EXTRAIDOS / f"{e['id']}.json") if (EXTRAIDOS / f"{e['id']}.json").exists() else {}
+        if ex.get("enquadramento_sindico"):
+            continue
+        for a in assocs:
+            r = ia.perguntar(f"EDITAL: {e.get('titulo')}\nREQUISITOS: {json.dumps(ex.get('requisitos') or (ex.get('itens') or {}).get('Requisitos'), ensure_ascii=False)[:1500]}\nPONTUAÇÃO: {json.dumps(ex.get('pontuacao'), ensure_ascii=False)[:1200]}\nDOCUMENTOS EXIGIDOS: {ex.get('documentos_exigidos')}\n"
+                             f"ASSOCIAÇÃO: {a.get('razao_social')} — {a.get('perfil') or ''} — anos de atuação: {a.get('anos_atuacao') or '43'} — área: {a.get('areas') or 'assistência social, cultura, esporte comunitário'}",
+                             '{"cumpre_requisitos": true|false|null, "requisitos_nao_cumpridos": [...], "pontuacao_estimada_por_criterio": [{"criterio":..., "pontos":..., "porque":...}], "documentos_faltantes": [...], "ganharia": "provavel|possivel|improvavel", "projeto_esqueleto": {"titulo":..., "objetivo":..., "publico":..., "acoes":[...], "resultados_esperados":[...]}}')
+            if not r or r.get("ganharia") not in ("provavel", "possivel", "improvavel"):
+                aprender("nivel2_enquadrar", f"{e['id']} x {a.get('id')}", "resposta fora do esquema", "reforçar esquema no prompt", 2); continue
+            ex.setdefault("enquadramento_sindico", {})[a.get("id") or a.get("razao_social")] = {**r, "em": now_iso(), "origem": "sindico", "status": "proposta — validar pelo Claude"}
+            feitos.append({"edital": e["id"], "assoc": a.get("id"), "ganharia": r["ganharia"]})
+        write_json(EXTRAIDOS / f"{e['id']}.json", ex)
+    return {"enquadrados": len(feitos), "itens": feitos[:20]}
+
+
 # ─────────────────────────────────────────────────────────────── ciclo
 def ciclo(porta: int | None = None) -> dict:
     c = cfg()
@@ -228,6 +272,14 @@ def ciclo(porta: int | None = None) -> dict:
     r2 = aplicar_ia()
     rel["curadoria"] = {k: r1.get(k) for k in ("total", "validas", "invalidas", "por_tarefa")}
     rel["afiar"] = r2
+    rel["nivel1_fila"] = len(fila_nivel1())
+    # NÍVEL 2 — classificar, enquadrar e preparar (só editais conformes e completos)
+    try:
+        rel["nivel2"] = nivel2_enquadrar(ia, limite=int(orc.get("enquadramentos_por_ciclo", 20)))
+    except Exception as ex_:
+        aprender("nivel2", "enquadrar conformes", f"{type(ex_).__name__}: {ex_}", "revisar dados das associações", 2); rel["nivel2"] = {"erro": str(ex_)[:120]}
+    if (rel["curadoria"] or {}).get("invalidas"):
+        aprender("nivel1_curadoria", f"{rel['curadoria']['total']} propostas", f"{rel['curadoria']['invalidas']} sem trecho literal ou fora do esquema", "o modelo precisa citar o texto; propostas sem citação são descartadas", 1)
     # 2) MINERAR até o orçamento de tempo: sem ociosidade
     feitos: set[str] = set()
     limite_s = int(orc.get("minutos_por_ciclo", 300)) * 60
@@ -250,8 +302,9 @@ def ciclo(porta: int | None = None) -> dict:
             rot["sugestoes"].append({"tarefa": "mineracao_sindico", **d, "em": now_iso(), "status": "a_confirmar_pelo_titular", "origem": "sindico"})
         write_json(rot_p, rot)
     rel["minutos"] = round((time.time() - t0) / 60, 1)
-    rel["anuncio"] = (f"Síndico {hoje}: {rel['curadoria']['validas'] if rel['curadoria'] else 0} propostas válidas de curadoria, "
-                      f"{len(rel['descobertas'])} pista(s) mineradas em {len(rel['mineracao'])} prompt(s), {rel['minutos']} min de trabalho.")
+    rel["anuncio"] = (f"Síndico {hoje} ({rel.get('modelo') or 'modelo não eleito'}): nível 1 — {rel['curadoria']['validas'] if rel['curadoria'] else 0} propostas válidas, {rel['nivel1_fila']} na fila; "
+                      f"nível 2 — {(rel.get('nivel2') or {}).get('enquadrados', 0)} enquadramento(s); nível 3 — {len(rel['descobertas'])} pista(s) em {len(rel['mineracao'])} pesquisa(s); {rel['minutos']} min.")
+    rel["estado_final"] = "ocioso → próxima pesquisa autônoma no próximo ciclo" if len(feitos) >= len(PROMPTS_MINERACAO) else "orçamento de tempo esgotado com pesquisas pendentes"
     write_json(PASTA / f"relatorio-{hoje}.json", rel)
     write_json(ROOT / "docs/dados/sindico.json", {k: v for k, v in rel.items() if k != "mineracao"} | {"prompts_rodados": [m["prompt"] for m in rel["mineracao"]]})
     return {k: v for k, v in rel.items() if k not in ("mineracao", "descobertas")} | {"descobertas": len(rel["descobertas"])}

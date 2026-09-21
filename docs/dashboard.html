@@ -962,10 +962,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260921002122"></script>
-<script src="mapa-arte.js?v=20260921002122"></script>
-<script src="dashboard-dados.enc.js?v=20260921002122"></script>
-<script src="dashboard-dados.js?v=20260921002122"></script>
+<script src="mapa-brasil.js?v=20260921015048"></script>
+<script src="mapa-arte.js?v=20260921015048"></script>
+<script src="dashboard-dados.enc.js?v=20260921015048"></script>
+<script src="dashboard-dados.js?v=20260921015048"></script>
 <script>
 (function(){
 "use strict";
@@ -1866,6 +1866,19 @@ function desenhaFilaVerificacao(){
     <button class="fdoc-bt principal" onclick="varreduraImediata()" title="gera agora o pacote da varredura para a análise de IA (a rotina de domingo executa a mesma fila)">⚡ varredura imediata</button></span></div>
     ${(f.reprovados_por_objeto&&f.reprovados_por_objeto.total)?`<div class=meta style="margin-top:6px"><b>${f.reprovados_por_objeto.total}</b> registro(s) saíram da fila pelo filtro de objeto (não são chamada aberta de fomento): ${Object.entries(f.reprovados_por_objeto.por_familia||{}).map(([k,v])=>`${v} ${esc(k.replace(/_/g," "))}`).join(" · ")}.</div>`:""}
     ${(D.fora_das_50&&D.fora_das_50.total)?`<div class=meta style="margin-top:6px;color:#FF1493"><b>${D.fora_das_50.total}</b> oportunidade(s) de cidades fora das 50 maiores do estado foram retiradas da fila (depuração) — aparecem em rosa para aprovação manual: ${(D.fora_das_50.itens||[]).slice(0,6).map(x=>esc((x.cidade||"?")+"/"+(x.uf||""))).join(" · ")}${D.fora_das_50.total>6?" …":""}</div>`:""}
+    ${(()=>{const S=(D.evolucao_busca||{}).sindico;if(!S)return "";const c=S.config||{},b=S.benchmark||{},u=S.ultimo||{};
+      return `<div class="alerta-motores" style="border-color:#9FC1E8;background:#F3F8FF"><b>O SÍNDICO — IA local no GitHub Actions:</b>
+        ${c.modelo_vencedor?`modelo eleito <b>${esc(c.modelo_vencedor)}</b> (${esc(c.benchmark||"")})`:`<b style="color:var(--alerta)">sem modelo eleito ainda</b> — o benchmark está em execução no GitHub`}
+        ${b.resumo&&b.resumo.length?`<ul>${b.resumo.map(x=>`<li><b>${esc(x.id)}</b> — ${x.erro?esc(x.erro):`acerto ${((x.acerto||0)*100).toFixed(0)}% · prazos inventados ${x.prazos_inventados} · ${x.tokens_por_s||"—"} tok/s · ${x.minutos||"—"} min`}${x.elegivel?"":' <span style="color:var(--urgente)">eliminado</span>'}</li>`).join("")}</ul>`:""}
+        ${u.anuncio?`<div class=meta style="margin-top:4px">${esc(u.anuncio)}</div>`:""}
+        <div class=meta><b>Constituição:</b> nível 1 completar editais desatualizados · nível 2 classificar, enquadrar e preparar a inscrição · nível 3 otimizar a busca e minerar o desconhecido — ocioso dispara nova pesquisa. <a href="dados/pacote_conselho.md" target=_blank rel="noopener noreferrer">Pacote do conselho</a> (validação do Claude a cada 3 dias).</div>
+        <div class=meta>4 ciclos por dia (04h·10h·16h·22h): entender a Biblioteca → curar → afiar os motores → minerar → anunciar. Propõe; a validação decide. Edital novo aciona o Síndico na hora.</div></div>`;})()}
+    ${(()=>{const E=D.evolucao_busca;if(!E)return "";const L=E.lexico_aprendido||{},R=E.recorrencia||{},M=E.empresas_rotas||{},F=E.finalidade||{},A=E.acervo_compacto||{};
+      return `<div class=meta style="margin-top:6px"><b>Evolução da busca:</b> ${F.descoberta||0} motores de descoberta · ${F.insumo||0} de insumo · <b>1 de recorrência</b> com ${R.total||0} rotas ·
+        léxico aprendido <b>${L.positivos||0}</b> termos e <b>${L.vetos||0}</b> vetos (base: ${(L.base||{}).aprovados||0} aprovados / ${(L.base||{}).reprovados||0} reprovados) ·
+        ${M.empresas||0} empresas → ${M.rotas||0} rotas · ${F.espalhados||0} financiadores espalhados ao catálogo ·
+        acervo compacto <b>${A.docs?A.docs.toLocaleString("pt-BR"):"—"}</b> docs em ${A.bytes_acervo?(A.bytes_acervo/1048576).toFixed(1)+" MB":"—"} (FTS5+zstd)
+        ${E.ia_local?` · <b>IA local:</b> ${esc(E.ia_local.modelo)} via ${esc(E.ia_local.motor)}`:""}</div>`;})()}
     ${(()=>{const AL=D.alerta_motores;if(!AL)return "";const al=AL.alertas||[];
       return `<div class="alerta-motores ${al.length?"tem":""}"><b>ALERTA DIÁRIO DOS MOTORES (${esc(AL.data||"")}):</b> ${AL.funcionando} de ${AL.total} funcionando${al.length?` · <b>${al.length} em alerta</b>`:" · todos íntegros"}
         ${al.length?`<ul>${al.slice(0,12).map(a=>`<li><span class="grav ${a.gravidade}"></span><b>${esc(a.nome.slice(0,44))}</b> — ${esc(a.problema)}<small> → ${esc(a.acao)}</small></li>`).join("")}${al.length>12?`<li class=meta>+${al.length-12} — ver <a href="dados/alerta_motores.json" target=_blank rel="noopener noreferrer">lista completa</a></li>`:""}</ul>`:""}
@@ -2348,7 +2361,7 @@ function htmlEditaisEnquadrados(a){const COR={verde:"var(--ok)",amarelo:"var(--a
         <div class="sug-col"><div class="sug-col-t">Relatório do edital</div>
           ${(()=>{const R=relatorioDoEdital(e,ia,r);if(!R)return '<div class=meta>sem relatório ainda — entra na próxima verificação</div>';
             return `<button class="rel-bt ${R.quem==="Síndico"?"sindico":"claude"}" data-rel="${esc(e.id)}" title="${esc(R.resumo)}" onclick="abrirRelatorio('${esc(e.id)}')">
-              <span class="rel-quem">${esc(R.quem)}</span><span class="rel-data">${esc(R.data)}</span><span class="rel-abrir">ver relatório ↗</span></button>
+              <span class="rel-quem">${esc(R.quem)}</span><span class="rel-data">${esc(R.data)} · ${esc(R.modelo)}</span><span class="rel-abrir">ver relatório ↗</span></button>
               ${R.decisao?`<div class="sug-parecer" style="margin-top:6px"><b>Decisão:</b> ${esc(R.decisao.slice(0,180))}</div>`:""}`;})()}
         </div>
       </div></div>`;}).join("");
@@ -2365,7 +2378,8 @@ function relatorioDoEdital(e,ia,r){
   const quem=/s[ií]ndico|ia_local/.test(por)?"Síndico":"Claude";
   const data=br((an.em||e.verificado_em||e.analisado_em||"").slice(0,10))||"—";
   const resumo=(parecer||decisao||an.motivo||"").replace(/\s+/g," ").slice(0,220)+(((parecer||decisao||"").length>220)?"…":"");
-  const R={quem,data,resumo,decisao,parecer,selo:an.selo,motivo:an.motivo,por:an.por||e.verificado_por,
+  const modelo=an.modelo||(quem==="Síndico"?((D.evolucao_busca||{}).sindico||{}).config?.modelo_vencedor:"Claude Fable 5.1")||"—";
+  const R={quem,data,resumo,decisao,parecer,selo:an.selo,motivo:an.motivo,por:an.por||e.verificado_por,modelo,
     ia:ia||{},luzes:(D.enquadramento_fila&&D.enquadramento_fila.itens?((D.enquadramento_fila.itens.find(q=>q.id===e.id)||{}).luzes):null),
     titulo:e.titulo,valor:e.valor_texto||e.valor,fim:e.fim,link:linkOficial(e)||e.url};
   window._REL[e.id]=R; return R;
@@ -2383,7 +2397,7 @@ window.abrirRelatorio=function(id){const R=window._REL[id];if(!R)return;
       ${(A.para_subir&&A.para_subir.length)?`<div class="fdoc-t" style="margin-top:10px">Para subir a aderência</div><ul class="rel-lista">${A.para_subir.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
       ${(A.riscos&&A.riscos.length)?`<div class="fdoc-t" style="margin-top:10px">Riscos</div><ul class="rel-lista">${A.riscos.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
       ${A.aderencia!=null?`<div class="rel-linha" style="margin-top:8px"><b>Aderência:</b> ${A.aderencia} · <b>Chances:</b> ${A.chances!=null?A.chances:"—"}${A.pontuacao_estimada?` · <b>Pontuação estimada:</b> ${esc(String(A.pontuacao_estimada))}`:""}</div>`:""}
-      <div class=meta style="margin-top:10px">Analisado por <b>${esc(R.quem)}</b>${R.por?` (${esc(R.por)})`:""} em ${esc(R.data)}.</div>
+      <div class=meta style="margin-top:10px">Analisado por <b>${esc(R.quem)}</b> com o modelo <b>${esc(R.modelo)}</b>${R.por?` (${esc(R.por)})`:""} em ${esc(R.data)}.</div>
     </div>`);};
 function desenhaEnquadramento(){
   const box=$("enq-corpo"); if(!box)return;
