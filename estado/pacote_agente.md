@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## db0bf83f4df2fe2c618a — PNAB 2026: Retificado cronograma dos editais nº 12, 13 e 14/2026
 
-MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 57× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 58× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
@@ -34,7 +34,7 @@ Texto do edital (compacto):
 ---
 ## 7687884b6cb584db3410 — Chamamentos Públicos 2026 (Lei 13.019/14)
 
-MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 1× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 2× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Diário Oficial do Estado de Goiás · UF GO · nível estadual · situação possivel · fim None
 
