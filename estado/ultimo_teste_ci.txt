@@ -1,9 +1,37 @@
-commit: 0a7a437bfb0e34125055ed91f42dd0e5045cb20b
-em: 2026-09-20T19:18:45Z
-rc: 0
+commit: 342c4119fa7e340e5bbbc89edf42ac167b429bfa
+em: 2026-09-21T08:19:28Z
+rc: 1
 
 ----------------------------------------------------------------------
-Ran 403 tests in 299.593s
+Ran 428 tests in 258.974s
 
-OK (skipped=9)
+FAILED (failures=3, skipped=9)
 ---- falhas ----
+FAIL: test_acervo_fts5_zstd (test_evolucao_busca.TesteAcervoCompacto.test_acervo_fts5_zstd)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_evolucao_busca.py", line 86, in test_acervo_fts5_zstd
+    self.assertTrue(ACERVO.exists())
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_relatorio_aponta_o_modelo (test_sindico.TesteConstituicaoEConselho.test_relatorio_aponta_o_modelo)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_sindico.py", line 72, in test_relatorio_aponta_o_modelo
+    self.assertTrue(all(v.get("modelo") for v in an.values()))
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_dou_por_json_embutido_e_pil_opcional (test_system.SystemTests.test_dou_por_json_embutido_e_pil_opcional)
+O DOU (leiturajornal) traz as matérias num JSON embutido: o sensor as lê
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3115, in test_dou_por_json_embutido_e_pil_opcional
+    self.assertEqual(len(r["achados"]),1)
+AssertionError: 4 != 1
+
+----------------------------------------------------------------------
+Ran 428 tests in 258.974s
+
+FAILED (failures=3, skipped=9)

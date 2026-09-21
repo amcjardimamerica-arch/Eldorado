@@ -15,8 +15,10 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (3)
+### Rotas e pistas sugeridas (5)
 
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
