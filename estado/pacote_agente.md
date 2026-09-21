@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## db0bf83f4df2fe2c618a — PNAB 2026: Retificado cronograma dos editais nº 12, 13 e 14/2026
 
-MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 56× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-11 · visto pela IA 57× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Editais FICA Goiás - artes visuais/exposição · UF GO · nível estadual · situação possivel · fim None
 
@@ -32,7 +32,7 @@ Texto do edital (compacto):
 
 
 ---
-## cf69e17d99f0e53210f7 — Chamamentos Públicos
+## 7687884b6cb584db3410 — Chamamentos Públicos 2026 (Lei 13.019/14)
 
 MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 1× · motivo: sem prazo de inscrição confirmado
 
@@ -42,7 +42,7 @@ Itens já obtidos: nenhum
 
 Itens que FALTAM: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação, Área de atuação
 
-Anúncio: https://goias.gov.br/cultura/chamamentos-publicos-secult
+Anúncio: https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
