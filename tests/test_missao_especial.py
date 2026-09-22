@@ -31,9 +31,14 @@ class TesteFilaDeResgate(unittest.TestCase):
         self.assertGreater(r["total_incompletos"], 50)
         self.assertLessEqual(r["na_fila"], 60)
         self.assertIn("ANTES de explorar", r["regra"])
-        p = proximo()
+        p = proximo(reservar=False)                                                # espiar não reserva
         self.assertTrue(p and p.get("falta") and p.get("titulo"))
         self.assertEqual(p["estado"], "aguardando")
+        a = proximo(); b = proximo()                                               # reservar dá itens DIFERENTES
+        self.assertNotEqual(a["id"], b["id"], "sem reserva o voo sairia com um resgate só")
+        from src.missao_especial import devolver_a_fila
+        devolver_a_fila(a["id"]); devolver_a_fila(b["id"])
+        self.assertEqual(proximo(reservar=False)["estado"], "aguardando")           # devolvidos à fila
 
     def test_plano_de_voo_da_missao_especial(self):
         ia = _IA({"consultas": ["edital fundo municipal saúde página oficial"],
@@ -51,14 +56,15 @@ class TesteFilaDeResgate(unittest.TestCase):
         antes = FILA.read_text(encoding="utf-8")
         try:
             d = json.loads(antes)
-            k = next(k for k, v in d["itens"].items() if v.get("estado") == "aguardando")
+            k = next(k for k, v in d["itens"].items() if v.get("estado") in ("aguardando", "em_resgate"))
             it = registrar_resgate(k, {"pagina_oficial": "https://x.gov.br/edital", "prazo": "2099-01-01",
                                        "quem_pode": "OSC", "documentos": ["estatuto", "CNPJ"],
                                        "valor": "R$ 100 mil", "como_inscrever": "formulário online"}, True)
             self.assertEqual(it["estado"], "resgatado"); self.assertEqual(it["falta"], [])
-            self.assertEqual(it["tentativas"], 1)
+            self.assertGreaterEqual(it["tentativas"], 1)
+            n = it["tentativas"]
             it2 = registrar_resgate(k, {}, False)                                  # tentativa falha conta
-            self.assertEqual(it2["tentativas"], 2)
+            self.assertEqual(it2["tentativas"], n + 1)
             self.assertIn("por_estado", publicar())
         finally:
             FILA.write_text(antes, encoding="utf-8")
