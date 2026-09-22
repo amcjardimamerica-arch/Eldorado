@@ -159,7 +159,10 @@ jobs:
           # 1) guarda o que o Síndico produziu
           rm -rf /tmp/sind && mkdir -p /tmp/sind
           for P in estado/sindico config/sindico.json docs/dados/sindico.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
-            [ -e "$P" ] && mkdir -p "/tmp/sind/$(dirname $P)" && cp -r "$P" "/tmp/sind/$P" || true
+            # cp -r PASTA DESTINO copia PARA DENTRO quando o destino ja existe (gerava docs/dados/dados).
+            # Com diretorio, copiamos o CONTEUDO; com arquivo, o arquivo.
+            if [ -d "$P" ]; then mkdir -p "/tmp/sind/$P" && cp -r "$P/." "/tmp/sind/$P/" || true
+            elif [ -e "$P" ]; then mkdir -p "/tmp/sind/$(dirname $P)" && cp "$P" "/tmp/sind/$P" || true; fi
           done
           # 2) volta para o origin atual (sem rebase, sem conflito) e reaplica por cima
           git config user.name "sindico-eldorado" && git config user.email "sindico@eldorado"
