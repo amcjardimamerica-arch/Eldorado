@@ -1,11 +1,11 @@
-commit: 2ba129276c13741614af817410398e36f8b111a6
-em: 2026-09-21T15:37:36Z
+commit: 075089c26cf5c41f22821eb0a7f3e0a467cb11c3
+em: 2026-09-22T08:04:19Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 428 tests in 368.489s
+Ran 428 tests in 329.517s
 
-FAILED (failures=6, skipped=9)
+FAILED (failures=3, skipped=9)
 ---- falhas ----
 FAIL: test_acervo_fts5_zstd (test_evolucao_busca.TesteAcervoCompacto.test_acervo_fts5_zstd)
 ----------------------------------------------------------------------
@@ -15,51 +15,25 @@ Traceback (most recent call last):
 AssertionError: False is not true
 
 ======================================================================
-FAIL: test_relatorio_aponta_o_modelo (test_sindico.TesteConstituicaoEConselho.test_relatorio_aponta_o_modelo)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_sindico.py", line 72, in test_relatorio_aponta_o_modelo
-    self.assertTrue(all(v.get("modelo") for v in an.values()))
-AssertionError: False is not true
-
-======================================================================
 FAIL: test_dou_por_json_embutido_e_pil_opcional (test_system.SystemTests.test_dou_por_json_embutido_e_pil_opcional)
 O DOU (leiturajornal) traz as matérias num JSON embutido: o sensor as lê
 ----------------------------------------------------------------------
 Traceback (most recent call last):
   File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3115, in test_dou_por_json_embutido_e_pil_opcional
     self.assertEqual(len(r["achados"]),1)
-AssertionError: 4 != 1
+AssertionError: 2 != 1
 
 ======================================================================
-FAIL: test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida (test_system.SystemTests.test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida)
+FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
+Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4033, in test_extrator_nao_guarda_veiculo_nem_pdf_binario_e_coleta_dirigida
-    self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'Midia Kit' unexpectedly found in '### Midia Kit (site institucional)\nCom seu apoio, podemos apresentar com\nabrangência o que fazem as ONGs do Brasil.\nUma sociedade mais vibrante e participativa\npassa pela conexão entre pessoas e causas.\nO OBSERVATÓRIO DO 3º SETOR\nESTÁ EVOLUINDO! \nQuem somos Por que fazemos Valores \nSomos o único veículo jornalístico\nbrasileiro totalmente dedicado à\ncobertura do Terceiro Setor. \nProduzimos e divulg'
-
-======================================================================
-FAIL: test_mapa_so_com_oportunidades_reais (test_system.SystemTests.test_mapa_so_com_oportunidades_reais)
-07/09: o Mapa mostrava 310 em Goiás porque contava 306 edições inteiras de
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4114, in test_mapa_so_com_oportunidades_reais
-    self.assertTrue(all(x["id"] in an for x in nao_diario))                     # TODAS as de Goiás verificadas uma a uma
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: False is not true
-
-======================================================================
-FAIL: test_validacao_individual_dos_467 (test_system.SystemTests.test_validacao_individual_dos_467)
-09/09: validação individual do titular — 468 registros com veredito, família,
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 4300, in test_validacao_individual_dos_467
-    self.assertLessEqual(f["total"],300)
-AssertionError: 307 not less than or equal to 300
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3781, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
+    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'futuro' == 'futuro'
 
 ----------------------------------------------------------------------
-Ran 428 tests in 368.489s
+Ran 428 tests in 329.517s
 
-FAILED (failures=6, skipped=9)
+FAILED (failures=3, skipped=9)
