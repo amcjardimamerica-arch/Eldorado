@@ -30,7 +30,7 @@ class TesteAviaoEmTravessia(unittest.TestCase):
 
     def test_balao_nao_vira_junto_com_o_aviao(self):
         self.assertIn('</div>` +\n      `<span class="pil-balao">', H)      # o balão está fora do que gira
-        self.assertIn(".pil-balao{position:absolute;right:0", H)
+        self.assertIn(".pil-errante .pil-balao{position:absolute;left:68px", H)
 
     def test_patrulha_quando_nao_ha_missao(self):
         self.assertIn("patrulha", H)
@@ -66,3 +66,31 @@ class TestePostoSoEmDuasPaginas(unittest.TestCase):
     def test_texto_do_rodape_nao_fala_mais_de_horarios(self):
         self.assertNotIn("04h", H); self.assertNotIn("10h · 16h", H)
         self.assertIn("o próximo voo decola em segundos", H)
+
+
+class TesteAviaoMantemOLayoutDoCanto(unittest.TestCase):
+    """O desenho sempre foi o mesmo SVG. O que distinguia o avião do canto era o LAYOUT:
+    balanço próprio, sombra, ampliação no hover e o rótulo ao lado. O que viaja recuperou isso."""
+
+    def test_balanco_proprio_alem_da_travessia(self):
+        self.assertIn("animation:pil-balanco 3.6s ease-in-out infinite", H)
+        k = re.search(r"@keyframes pil-balanco\{[\s\S]*?\}\}", H).group(0)
+        self.assertIn("rotate(-2deg)", k); self.assertIn("translateY(-4px)", k)
+        self.assertNotIn("translateX", k)                      # o balanço é vertical: quem anda é o trilho
+
+    def test_sombra_e_hover_como_no_canto(self):
+        self.assertIn("filter:drop-shadow(0 2px 3px rgba(11,78,162,.25))", H)
+        self.assertIn(".pil-errante .pil-aviao:hover{animation-play-state:paused;transform:scale(1.12)}", H)
+        self.assertIn("abrirPostoPiloto(", H)                   # continua clicável
+
+    def test_rotulo_ao_lado_sem_espelhar(self):
+        self.assertIn(".pil-errante .pil-balao{position:absolute;left:68px", H)
+        self.assertIn("animation:pil-acompanha", H)
+        k = re.search(r"@keyframes pil-acompanha\{[\s\S]*?\}\}", H).group(0)
+        self.assertNotIn("scaleX", k)                           # acompanha o avião, mas não vira com ele
+        self.assertIn('</div>` +\n      `<span class="pil-balao">', H)   # é irmão, não filho
+
+    def test_o_desenho_e_o_mesmo_de_sempre(self):
+        for parte in ('class="pil-helice"', 'class="pil-tiro"', 'class="pil-luneta"',
+                      'class="pil-rastro"', 'viewBox="0 0 62 34"'):
+            self.assertIn(parte, H, parte)

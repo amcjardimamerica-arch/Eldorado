@@ -4,7 +4,7 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 
 ## O que o Síndico fez
 
-- 2026-09-22T18:21 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 13 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 6.6 min de voo.
+- 2026-09-22T19:48 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 13 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 12.9 min de voo.
 
 ## Relatório de aprendizado e bloqueios (4)
 
@@ -18,7 +18,7 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (25)
+### Rotas e pistas sugeridas (23)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
@@ -41,9 +41,7 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
-- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
-- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
-- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- empresas-incentivadas → [{"tipo": "url", "valor": "https://observatorio3setor.org.br/editais/", "porque": "Portais do terceiro setor onde a empresa anuncia (Observatório, ABCR, GIFE)",
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 
 ### Enquadramentos propostos (0)

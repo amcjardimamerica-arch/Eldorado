@@ -310,11 +310,24 @@ box-shadow:0 1px 3px #0002}
 .pil-voando-ic{color:#0B4EA2;margin-right:4px}
 .pil-errante{position:absolute;z-index:40;pointer-events:none;height:34px}
 .pil-errante.patrulha{opacity:.72}
+/* o TRILHO leva o conjunto de uma ponta à outra e vira o nariz na borda */
 .pil-voa{position:relative;width:62px;height:34px;transform-origin:50% 50%;
   animation:pil-travessia var(--pil-tempo,11s) ease-in-out infinite}
-.pil-errante .pil-aviao{position:absolute;left:0;top:0;pointer-events:auto}
-@media (prefers-reduced-motion:reduce){.pil-voa{animation:none}}
-.pil-balao{position:absolute;right:0;top:5px;background:#0E2A55;color:#fff;font-size:10.5px;padding:2px 9px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+/* o AVIÃO mantém o balanço que ele tinha no canto: sobe, desce e inclina sozinho,
+   com a mesma sombra e a mesma ampliação ao passar o mouse */
+.pil-errante .pil-aviao{position:absolute;left:0;top:0;pointer-events:auto;
+  filter:drop-shadow(0 2px 3px rgba(11,78,162,.25));animation:pil-balanco 3.6s ease-in-out infinite}
+.pil-errante .pil-aviao:hover{animation-play-state:paused;transform:scale(1.12)}
+/* o rótulo fica ao lado do avião, como ficava ao lado do título no canto. Ele é IRMÃO do
+   avião, não filho: assim viaja junto pelo trilho sem ser espelhado na meia-volta. */
+.pil-errante .pil-balao{position:absolute;left:68px;top:5px;
+  animation:pil-acompanha var(--pil-tempo,11s) ease-in-out infinite}
+@keyframes pil-balanco{0%{transform:translateY(0) rotate(-2deg)}25%{transform:translateY(-3px) rotate(1deg)}
+  50%{transform:translateY(0) rotate(-1deg)}75%{transform:translateY(-4px) rotate(2deg)}100%{transform:translateY(0) rotate(-2deg)}}
+@keyframes pil-acompanha{0%{transform:translateX(0)}44%,50%{transform:translateX(var(--pil-dist,240px))}
+  94%,100%{transform:translateX(0)}}
+@media (prefers-reduced-motion:reduce){.pil-voa,.pil-errante .pil-aviao,.pil-errante .pil-balao{animation:none}}
+.pil-balao{position:absolute;left:68px;top:5px;background:#0E2A55;color:#fff;font-size:10.5px;padding:2px 9px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .pil-balao b{color:#9FE3B8}
 /* ida com o nariz para a direita, meia-volta na borda, volta com o nariz para a esquerda,
    e outra meia-volta ao chegar — o sentido troca a cada ponta da travessia */

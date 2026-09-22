@@ -186,6 +186,17 @@ jobs:
           cp -r /tmp/sind/. .
           # PROTEÇÃO DO PAINEL: arquivos de autoria nunca são sobrescritos por job de dados
           git checkout origin/main -- docs/dashboard.html 2>/dev/null || true
+          # PROTEGER O ORCAMENTO: teto_minutos e o encadeamento sao decisao do titular,
+          # nao estado de execucao — o voo nao pode reescreve-los.
+          python - <<'PY' || true
+          import json, subprocess
+          orig = json.loads(subprocess.run(["git","show","origin/main:config/sindico.json"],capture_output=True,text=True).stdout or "{}")
+          try: atual = json.load(open("config/sindico.json"))
+          except Exception: atual = {}
+          for c in ("orcamento","encadeamento","voos_por_dia"):
+              if c in orig: atual[c] = orig[c]
+          json.dump(atual, open("config/sindico.json","w"), ensure_ascii=False, indent=1)
+          PY
           git add -A estado/sindico config/sindico.json docs/dados/sindico.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados 2>/dev/null || git add -A
           git status --short | head -20
           git commit -q -m "sindico: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"
