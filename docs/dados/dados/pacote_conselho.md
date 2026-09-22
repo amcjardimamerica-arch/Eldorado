@@ -1,21 +1,22 @@
-# Pacote do conselho — validação do Claude (2026-09-21, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-09-22, últimos 3 dias)
 
-Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
+Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
 
-## O que o Síndico fez
+## O que o Piloto fez
 
-- nenhum ciclo concluído no período
+- 2026-09-22T11:33 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 7 missão(ões) — 0 alvo(s) novo(s) abatido(s), 1 proposta(s) ao todo, 4.5 min de voo.
 
-## Relatório de aprendizado e bloqueios (0)
+## Relatório de aprendizado e bloqueios (2)
 
-- nenhum bloqueio registrado
+- 2026-09-22T11:02 · nível — · **missao** — tentou: afiar_motor · impediu: ValueError: could not convert string to float: 'null' · aprendeu: revisar prompt/esquema
+- 2026-09-22T11:03 · nível — · **missao** — tentou: afiar_motor · impediu: ValueError: could not convert string to float: 'null' · aprendeu: revisar prompt/esquema
 
 ## Pesquisas autônomas do nível 3 (0)
 
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (13)
+### Rotas e pistas sugeridas (16)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
@@ -30,6 +31,9 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- empresas-incentivadas → [{"tipo": "url", "valor": "https://observatorio3setor.org.br/editais/", "porque": "Portais do terceiro setor onde a empresa anuncia (Observatório, ABCR, GIFE)",
 
 ### Enquadramentos propostos (0)
 
