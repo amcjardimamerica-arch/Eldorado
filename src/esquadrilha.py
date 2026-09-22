@@ -31,6 +31,9 @@ def _cfg() -> dict:
     return (load_json(ROOT / "config/cargo_sindico.json") or {}).get("parametros", {})
 
 
+LAB_PROIBIDO = ("lab-motor", "lab", "teste", "test")
+
+
 def bordo() -> dict:
     return load_json(BORDO) if BORDO.exists() else {"missao_atual": None, "missoes": [], "abates": {}, "total_abates": 0, "iniciado_em": now_iso()}
 
@@ -77,7 +80,9 @@ def fechar_missao(resultado: str, achados: list[dict] | None = None, licao: str 
            "achados": len(achados), "abates": len(novos), "licao": licao[:160],
            "alvos": [{"titulo": (a.get("titulo") or "")[:90], "onde": a.get("onde"), "url": a.get("url"), "uf": a.get("uf")} for a in achados[:6]]}
     b["missoes"] = ([reg] + b.get("missoes", []))[:60]
-    if m.get("motor") and novos:
+    # dado de laboratório nunca entra na métrica do painel: foi assim que um "abate" de teste
+    # ficou semanas contando como descoberta real
+    if m.get("motor") and novos and str(m["motor"]).lower() not in LAB_PROIBIDO:
         e = b["abates"].setdefault(m["motor"], {"n": 0, "ultimos": []})
         e["n"] += len(novos)
         e["ultimos"] = ([{"titulo": (a.get("titulo") or "")[:80], "url": a.get("url"), "em": date.today().isoformat()} for a in novos] + e["ultimos"])[:8]

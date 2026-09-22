@@ -19,11 +19,11 @@ class TesteMissoes(unittest.TestCase):
         antes = BORDO.read_text(encoding="utf-8") if BORDO.exists() else None
         BORDO.unlink(missing_ok=True)                                   # teste isolado: bordo limpo
         try:
-            abrir_missao({"tipo": "cacar_oportunidade", "motor": "lab-motor", "ordem": 1}, "teste")
+            abrir_missao({"tipo": "cacar_oportunidade", "motor": "ensaio-motor", "ordem": 1}, "teste")
             r = fechar_missao("2 alvos", [{"titulo": "Instituto Novo", "onde": "https://x.org/editais", "url": "https://x.org/editais", "novo": True},
                                           {"titulo": "Já conhecido", "onde": "y", "novo": False}], "lição")
             self.assertEqual(r["abates"], 1); self.assertEqual(r["achados"], 2)
-            b = bordo(); self.assertEqual(b["abates"]["lab-motor"]["n"], 1)
+            b = bordo(); self.assertEqual(b["abates"]["ensaio-motor"]["n"], 1)
             self.assertIsNone(b["missao_atual"]); self.assertEqual(b["missoes"][0]["estado"], "pousou")
             pub = json.loads(PUB.read_text(encoding="utf-8"))
             self.assertIn("legenda", pub); self.assertIn("cacar_oportunidade", pub["legenda"])

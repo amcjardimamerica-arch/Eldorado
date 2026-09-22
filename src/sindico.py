@@ -570,6 +570,11 @@ def ciclo(porta: int | None = None) -> dict:
         rel["missoes"].append({"tipo": m["tipo"], "motor": m.get("motor"), "alvo": alvo, "achados": len(ach), "abates": reg["abates"], "licao": licao[:90]})
         rel["abates"] += reg["abates"]; rel["propostas"] += len(ach)
         from .radar_piloto import registrar as _radar
+        from .aprendizados_piloto import avaliar as _avaliar, ja_tratado as _ja
+        ach = [a for a in ach if not _ja(a.get("url") or a.get("titulo"))]   # não se volta no que já foi abordado
+        _r = _avaliar(ia, {**m, "licao": licao}, ach)
+        rel.setdefault("avaliacoes", []).append(_r["avaliacao"])
+        ach = _r["uteis"]                                   # só o que serve entra no sistema
         for a in [x for x in ach if x.get("novo")]:
             with open(PASTA / "alvos_novos.jsonl", "a", encoding="utf-8") as fh:
                 fh.write(json.dumps({"d": hoje, "motor": m.get("motor"), "titulo": a["titulo"], "onde": a["onde"], "uf": a.get("uf")}, ensure_ascii=False) + "\n")
@@ -591,6 +596,8 @@ def ciclo(porta: int | None = None) -> dict:
     rel["minutos"] = round((time.time() - t0) / 60, 1)
     rel["bordo"] = resumo()
     rel["ao_vivo"] = _vivo_montar()
+    from .aprendizados_piloto import publicar as _pub_apr
+    rel["aprendizados"] = _pub_apr()
     rel["anuncio"] = (f"Esquadrilha {hoje} ({rel['ocupante']}): {len(rel['missoes'])} missão(ões) — "
                       f"{rel['abates']} alvo(s) novo(s) abatido(s), {rel['propostas']} proposta(s) ao todo, {rel['minutos']} min de voo.")
     write_json(PASTA / f"relatorio-{hoje}.json", rel)

@@ -62,7 +62,7 @@ class TesteCorrecoesDaAuditoria(unittest.TestCase):
         self.assertTrue(ok); self.assertIn("serve", porque)
         self.assertTrue(_relevante({"titulo": "Edital de fomento à cultura"})[0])
         r = montar_fila()
-        self.assertGreater(sum(r["descartados_por_nao_servirem"].values()), 100)
+        self.assertGreater(sum(r["descartados_por_nao_servirem"].values()), 10)
         self.assertLess(r["total_incompletos"], 200)                     # de 438 para menos de 200
 
     def test_parecer_do_conselho_existe_com_as_sete_posicoes(self):

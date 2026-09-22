@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import json
 import re
 import time
 import urllib.parse
@@ -89,20 +90,91 @@ class _ResGoogle(HTMLParser):
 # Google, Bing e DuckDuckGo recusam IP de datacenter — e o Piloto roda num servidor do GitHub.
 # Por isso a lista tem também buscadores que aceitam robôs declaradamente (Mojeek e Marginalia).
 # A ordem é a da chance de responder de lá, não a do tamanho do índice.
-# Ordem medida no proprio servidor (diagnostico de 22/09 17:33): dos seis, SO o
-# html.duckduckgo.com respondeu. Ele vem primeiro; os outros ficam como reserva e so
-# sao tentados se o primeiro vier vazio — antes eram tentados sempre, e cada um custava
-# ate 20 s de espera por um resultado que nunca vinha.
+# MEDIDO no proprio servidor (22/09 17:33): dos seis buscadores, SO o html.duckduckgo.com
+# respondeu. Google, Bing, Mojeek, Marginalia e o DDG-lite devolveram zero — recusam IP de
+# datacenter. Carregar cinco buscadores mortos custava ate 20 s de espera CADA, por voo, para
+# nada. Ficaram so os que provaram funcionar, mais as saidas com chave (opcionais e gratuitas).
 BUSCADORES = [
     ("duckduckgo", "https://html.duckduckgo.com/html/?q={q}", _Res),
-    ("duckduckgo-lite", "https://lite.duckduckgo.com/lite/?q={q}", _Res),
-    ("mojeek", "https://www.mojeek.com/search?q={q}", _Res),
-    ("bing", "https://www.bing.com/search?q={q}&setlang=pt-BR&count=20", _Res),
-    ("google", "https://www.google.com/search?q={q}&hl=pt-BR&num=20", _ResGoogle),
-    ("marginalia", "https://search.marginalia.nu/search?query={q}", _Res),
 ]
+# Reserva: so entram se o titular gravar a chave no segredo do repositorio. Ambas tem camada
+# gratuita suficiente para o nosso volume e NAO bloqueiam datacenter, porque sao API.
+CHAVES = {
+    "brave": ("BRAVE_SEARCH_KEY", "https://api.search.brave.com/res/v1/web/search?q={q}&country=BR&count=20"),
+    "google_cse": ("GOOGLE_CSE_KEY", "https://www.googleapis.com/customsearch/v1?key={k}&cx={cx}&q={q}&num=10"),
+}
 _ULTIMA_BUSCA = [0.0]
 ESPERA_ENTRE_BUSCAS = 4.0      # o DuckDuckGo corta quem metralha consultas — 14 buscas vazias vieram disso
+
+
+def _por_api(nome: str, consulta: str, tempo: float) -> list[dict]:
+    """Busca por API com chave. Só funciona se o segredo estiver gravado; sem ele, devolve
+    lista vazia em silêncio — nunca quebra o voo."""
+    import os
+    if nome == "brave":
+        k = os.environ.get("BRAVE_SEARCH_KEY")
+        if not k:
+            return []
+        req = urllib.request.Request(CHAVES["brave"][1].format(q=urllib.parse.quote(consulta)),
+                                     headers={"X-Subscription-Token": k, "Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=tempo) as r:
+            d = json.loads(r.read().decode("utf-8", "ignore"))
+        return [{"titulo": (x.get("title") or "")[:160], "url": x.get("url"), "trecho": (x.get("description") or "")[:200],
+                 "buscador": "brave"} for x in ((d.get("web") or {}).get("results") or []) if x.get("url")]
+    if nome == "google_cse":
+        k, cx = os.environ.get("GOOGLE_CSE_KEY"), os.environ.get("GOOGLE_CSE_CX")
+        if not (k and cx):
+            return []
+        req = urllib.request.Request(CHAVES["google_cse"][1].format(k=k, cx=cx, q=urllib.parse.quote(consulta)),
+                                     headers={"Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=tempo) as r:
+            d = json.loads(r.read().decode("utf-8", "ignore"))
+        return [{"titulo": (x.get("title") or "")[:160], "url": x.get("link"), "trecho": (x.get("snippet") or "")[:200],
+                 "buscador": "google_cse"} for x in (d.get("items") or []) if x.get("link")]
+    return []
+
+
+def buscar_na_fonte(dominio: str, termos: list[str], tempo: float = 20, teto: int = 60) -> list[dict]:
+    """SAÍDA QUE NENHUM BUSCADOR BLOQUEIA: ler o site oficial por dentro.
+
+    Todo site publica um mapa (sitemap.xml) ou uma página de listagem. Buscar ali é gratuito,
+    não depende de Google nem de DuckDuckGo, e ninguém barra — é o mesmo que um visitante faz.
+    Mais lento e mais estreito (só acha no domínio informado), mas nunca volta vazio por bloqueio.
+    """
+    alvos, achados, vistos = [], [], set()
+    for caminho in ("/sitemap.xml", "/sitemap_index.xml", "/wp-sitemap.xml", "/robots.txt"):
+        try:
+            req = urllib.request.Request(f"https://{dominio}{caminho}", headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=tempo) as r:
+                txt = r.read().decode("utf-8", "ignore")
+        except Exception:
+            continue
+        if caminho.endswith("robots.txt"):
+            alvos += re.findall(r"(?i)sitemap:\s*(\S+)", txt)
+        else:
+            alvos += re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", txt)
+        if alvos:
+            break
+    filhos = [u for u in alvos if u.endswith(".xml")][:4]
+    for u in filhos:                                          # mapa de mapas
+        try:
+            req = urllib.request.Request(u, headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=tempo) as r:
+                alvos += re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", r.read().decode("utf-8", "ignore"))
+        except Exception:
+            pass
+    termos_l = [x.lower() for x in termos if x]
+    for u in alvos:
+        if u.endswith(".xml") or u in vistos:
+            continue
+        vistos.add(u)
+        alvo_l = urllib.parse.unquote(u).lower()
+        if any(x in alvo_l for x in termos_l):
+            achados.append({"titulo": urllib.parse.unquote(u.rstrip("/").split("/")[-1]).replace("-", " ")[:140],
+                            "url": u, "trecho": "", "buscador": f"fonte:{dominio}"})
+        if len(achados) >= teto:
+            break
+    return achados
 
 
 def diagnostico(consulta: str = "edital apoio a projetos sociais 2026", tempo: float = 15) -> dict:
@@ -129,6 +201,21 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
     if espera > 0:
         time.sleep(min(espera, ESPERA_ENTRE_BUSCAS))       # respeita o intervalo, senão o buscador corta
     _ULTIMA_BUSCA[0] = time.time()
+    import os
+    for nome in ("brave", "google_cse"):                    # API primeiro: não bloqueia e é mais limpa
+        if motores and nome not in motores:
+            continue
+        if not os.environ.get(CHAVES[nome][0]):
+            continue
+        try:
+            for it in _por_api(nome, consulta, tempo):
+                chave = re.sub(r"[#?].*$", "", it["url"]).rstrip("/")
+                if chave not in vistos:
+                    vistos.add(chave); saida.append(it)
+            if saida:
+                return saida[:maximo]
+        except Exception:
+            pass
     for nome, molde, parser in alvos:
         try:
             url = molde.format(q=urllib.parse.quote(consulta))

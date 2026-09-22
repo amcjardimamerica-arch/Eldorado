@@ -6,9 +6,14 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class TesteBuscaMultipla(unittest.TestCase):
-    def test_google_somado_ao_duckduckgo(self):
+    def test_so_ficam_os_buscadores_que_respondem(self):
+        """Google, Bing, Mojeek e Marginalia saíram: o diagnóstico no servidor provou que
+        recusam nosso endereço, e cada um custava até 20 s de espera por voo. O parser do
+        Google fica no código, pronto para voltar se a via por API for contratada."""
+        from src.piloto_busca import CHAVES
         nomes = [b[0] for b in BUSCADORES]
-        self.assertIn("google", nomes); self.assertIn("duckduckgo", nomes); self.assertIn("bing", nomes)
+        self.assertEqual(nomes, ["duckduckgo"])
+        self.assertIn("brave", CHAVES); self.assertIn("google_cse", CHAVES)
         p = _ResGoogle(); p.feed('<a href="/url?q=https://institutox.org.br/edital&sa=U">Instituto X — Edital 2026 de apoio</a>')
         self.assertEqual(p.itens[0]["url"], "https://institutox.org.br/edital")
         p2 = _ResGoogle(); p2.feed('<a href="/url?q=https://www.google.com/search?q=x&sa=U">busca</a>')
