@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `observatorio-3setor`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 5
-- Distribuição por ano pesquisado/coletado: {'2026': 5}
+- Pistas aguardando confirmação: 6
+- Distribuição por ano pesquisado/coletado: {'2026': 6}
 
 ## Padrões
 
@@ -13,6 +13,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 ## Eventos e pistas
 
 - [Prêmio LED Globo 2027 abre inscrições com R$ 1,2 milhão em premiação](https://observatorio3setor.org.br/premio-led-globo-2027-abre-inscricoes-com-r-12-milhao-em-premiacao) — coletado em 2026-09-17T10:01:47+00:00
+- [Parque Bondinho Pão de Açúcar abre edital para projetos culturais incentivados](https://observatorio3setor.org.br/parque-bondinho-pao-de-acucar-abre-edital-para-projetos-culturais-incentivados) — coletado em 2026-09-22T09:59:28+00:00
 - [Instituto Impactarte abre edital para projetos de impacto social com apoio de até R$ 150 mil](https://observatorio3setor.org.br/instituto-impactarte-abre-edital-para-projetos-de-impacto-social-com-apoio-de-ate-r-150-mil) — coletado em 2026-09-05T05:20:31+00:00
 - [Redion abre seleção para projetos sociais e culturais com captação via leis de incentivo](https://observatorio3setor.org.br/redion-abre-selecao-para-projetos-sociais-e-culturais-com-captacao-via-leis-de-incentivo) — coletado em 2026-09-10T00:20:53+00:00
 - [Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática](https://observatorio3setor.org.br/instituto-clima-e-sociedade-abre-edital-de-ate-r-500-mil-para-projetos-de-comunicacao-climatica) — coletado em 2026-09-05T05:20:26+00:00
