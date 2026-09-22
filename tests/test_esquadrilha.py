@@ -1,4 +1,4 @@
-"""Esquadrilha do Síndico (22/09): missões sorteadas, abates, avião e posto de comando."""
+"""Esquadrilha do Piloto (22/09): missões sorteadas, abates, avião e posto de comando."""
 import json, pathlib, unittest
 from src.esquadrilha import sortear, abrir_missao, fechar_missao, bordo, resumo, MISSOES, BORDO, PUB
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -11,7 +11,7 @@ class TesteMissoes(unittest.TestCase):
         self.assertTrue(all(x["tipo"] in MISSOES for x in m))
         self.assertGreaterEqual(len({x["tipo"] for x in m}), 2)          # não é sempre a mesma tarefa
         self.assertGreaterEqual(len({x["motor"] for x in m}), 3)          # rodízio entre motores
-        p = json.loads((ROOT / "config/cargo_sindico.json").read_text(encoding="utf-8"))["parametros"]
+        p = json.loads((ROOT / "config/cargo_piloto.json").read_text(encoding="utf-8"))["parametros"]
         n = len(sortear(None, ["a", "b"]))
         self.assertGreaterEqual(n, p["tarefas_por_ciclo"]["minimo"]); self.assertLessEqual(n, p["tarefas_por_ciclo"]["maximo"])
 
@@ -31,11 +31,11 @@ class TesteMissoes(unittest.TestCase):
             if antes: BORDO.write_text(antes, encoding="utf-8")
 
     def test_escopo_atual_sem_verificacao_de_prazo(self):
-        c = json.loads((ROOT / "config/cargo_sindico.json").read_text(encoding="utf-8"))
+        c = json.loads((ROOT / "config/cargo_piloto.json").read_text(encoding="utf-8"))
         self.assertTrue(any("prazo" in x for x in c["missao"]["nao_faz_agora"]))
         self.assertTrue(any("motor" in x for x in c["missao"]["faz_agora"]))
         self.assertIn("aleat", c["missao"]["ritmo"].lower())
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         for f in ("def missao_cacar", "def missao_afiar", "def missao_local", "sortear()", "fechar_missao"):
             self.assertIn(f, src, f)
 
@@ -57,17 +57,17 @@ if __name__ == "__main__":
 
 class TesteMotor29EFoco(unittest.TestCase):
     def test_sindico_voa_so_nos_quatro_motores(self):
-        c = json.loads((ROOT / "config/cargo_sindico.json").read_text(encoding="utf-8"))
-        ids = c["parametros"]["motores_do_sindico"]["ids"]
+        c = json.loads((ROOT / "config/cargo_piloto.json").read_text(encoding="utf-8"))
+        ids = c["parametros"]["motores_do_piloto"]["ids"]
         self.assertEqual(set(ids), {"empresas-incentivadas", "motor-gife", "motor-patrocinio", "sindico-aberto"})
-        self.assertIn("releem o que já está mapeado", c["parametros"]["motores_do_sindico"]["porque"])
+        self.assertIn("releem o que já está mapeado", c["parametros"]["motores_do_piloto"]["porque"])
         m = sortear(10)
-        self.assertTrue({x["motor"] for x in m} <= set(ids), "o Síndico saiu do escopo")
+        self.assertTrue({x["motor"] for x in m} <= set(ids), "o Piloto saiu do escopo")
         src = (ROOT / "src/esquadrilha.py").read_text(encoding="utf-8")
-        self.assertIn("motores_do_sindico", src)
+        self.assertIn("motores_do_piloto", src)
 
     def test_motor29_tem_lexico_angulos_e_exige_site_oficial(self):
-        m = json.loads((ROOT / "config/motor_sindico.json").read_text(encoding="utf-8"))
+        m = json.loads((ROOT / "config/motor_piloto.json").read_text(encoding="utf-8"))
         self.assertEqual(m["rank"], 29)
         self.assertGreaterEqual(len(m["lexico_camada1_positivos"]), 30)
         self.assertGreaterEqual(len(m["lexico_camada1_veto"]), 10)
@@ -87,7 +87,7 @@ class TesteMotor29EFoco(unittest.TestCase):
         s = [x for x in registro() if x["id"] == "plat-sindico-aberto"]
         self.assertTrue(s, "o motor 29 precisa existir como sensor")
         t, v = lexico_camada1(s[0]); self.assertGreaterEqual(len(t), 40)
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertIn("def missao_motor29", src); self.assertIn("def _angulo_do_dia", src)
         pb = (ROOT / "src/piloto_busca.py").read_text(encoding="utf-8")
         self.assertIn("_oficial(b[\"url\"])", pb)                              # abate só com site oficial

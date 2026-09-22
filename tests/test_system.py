@@ -4297,7 +4297,7 @@ class SystemTests(unittest.TestCase):
         r=load_json(pathlib.Path("config/rotas_de_coleta.json")); self.assertIn("rotas",r)
         f=load_json(pathlib.Path("estado/fila_verificacao.json"))
         self.assertGreaterEqual(f["reprovados_por_objeto"]["total"],25)      # o filtro limpa a fila
-        self.assertLessEqual(f["total"],400)   # a fila cresce quando os motores novos capturam (16 de Goiás em 21/09) — e encolhe quando o Sindico completa
+        self.assertLessEqual(f["total"],400)   # a fila cresce quando os motores novos capturam (16 de Goiás em 21/09) — e encolhe quando o Piloto completa
         for arq in ("RELATORIO-VALIDACAO-INDIVIDUAL-2026-09-09.md","RELATORIO-VERIFICACAO-2026-09-09.md"):
             self.assertTrue(pathlib.Path("biblioteca_alexandria")/arq)
 

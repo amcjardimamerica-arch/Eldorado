@@ -2,7 +2,7 @@
 
 Três coisas vivem aqui:
 
-  ocupante() ........... quem exerce o cargo hoje (config/cargo_sindico.json → ocupante_atual)
+  ocupante() ........... quem exerce o cargo hoje (config/cargo_piloto.json → ocupante_atual)
   memoria_de_erros ..... o que o ocupante errou, virando instrução para a rodada seguinte.
                          É assim que ele evolui sem trocar de modelo: cada falso positivo,
                          falso negativo e resposta fora do esquema vira um exemplo curto que
@@ -22,8 +22,8 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-CARGO = ROOT / "config/cargo_sindico.json"
-MEM = ROOT / "estado/sindico/memoria_erros.json"
+CARGO = ROOT / "config/cargo_piloto.json"
+MEM = ROOT / "estado/piloto/memoria_erros.json"
 MAX_NO_PROMPT = 12
 
 
@@ -102,7 +102,7 @@ def aprovado_no_criterio(r: dict) -> tuple[bool, str]:
 
 
 def trocar_ocupante(novo: dict, resultado: dict, motivo: str) -> dict:
-    """A troca é UMA escrita em config/cargo_sindico.json. Nada mais do sistema muda."""
+    """A troca é UMA escrita em config/cargo_piloto.json. Nada mais do sistema muda."""
     c = cargo()
     antigo = c["ocupante_atual"]
     c.setdefault("ex_ocupantes", []).insert(0, {**antigo, "demitido_em": date.today().isoformat(), "motivo_da_demissao": motivo})
@@ -114,7 +114,7 @@ def trocar_ocupante(novo: dict, resultado: dict, motivo: str) -> dict:
     c["atualizado_em"] = date.today().isoformat()
     write_json(CARGO, c)
     # o config operacional aponta para o novo arquivo — é o que o workflow baixa
-    op = ROOT / "config/sindico.json"
+    op = ROOT / "config/piloto.json"
     s = load_json(op) if op.exists() else {}
     s.update({"modelo_vencedor": novo["id"], "arquivo": c["ocupante_atual"]["arquivo"], "url": novo["url"],
               "eleito_em": now_iso(), "benchmark": motivo})
@@ -124,7 +124,7 @@ def trocar_ocupante(novo: dict, resultado: dict, motivo: str) -> dict:
 
 def avaliar_candidato(cand_id: str, limite: int = 120, porta: int = 8082) -> dict:
     """Mede um reserva contra o gabarito; troca se for melhor que o ocupante."""
-    from .sindico import gabarito, avaliar_modelo
+    from .piloto import gabarito, avaliar_modelo
     c = cargo()
     cand = next((x for x in c["banco_de_reserva"] if x["id"] == cand_id), None)
     if not cand:
@@ -139,7 +139,7 @@ def avaliar_candidato(cand_id: str, limite: int = 120, porta: int = 8082) -> dic
              "ocupante_hoje": {"id": ocupante()["id"], "acerto": atual.get("acerto")}}
     if melhor:
         saida["troca"] = trocar_ocupante(cand, r, f"{cand['nome']}: acerto {r.get('acerto')} contra {atual.get('acerto')} do ocupante, {r.get('tokens_por_s')} tok/s, {cand.get('gb')} GB")
-    write_json(ROOT / "estado/sindico" / f"avaliacao-{cand_id}-{date.today().isoformat()}.json", saida)
+    write_json(ROOT / "estado/piloto" / f"avaliacao-{cand_id}-{date.today().isoformat()}.json", saida)
     return saida
 
 

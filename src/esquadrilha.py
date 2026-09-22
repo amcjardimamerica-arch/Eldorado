@@ -8,7 +8,7 @@ ABATE = oportunidade NOVA na base, com objeto e onde procurar. É o que vira est
 lado do motor onde foi encontrada — como os aviões de guerra marcavam no fuselagem.
 
 Saídas:
-  estado/sindico/bordo.json ....... missão atual, últimas missões, abates por motor
+  estado/piloto/bordo.json ....... missão atual, últimas missões, abates por motor
   docs/dados/esquadrilha.json ..... o mesmo, enxuto, para o painel
 """
 from __future__ import annotations
@@ -22,13 +22,13 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-BORDO = ROOT / "estado/sindico/bordo.json"
+BORDO = ROOT / "estado/piloto/bordo.json"
 PUB = ROOT / "docs/dados/esquadrilha.json"
 MISSOES = ("cacar_oportunidade", "afiar_motor", "descobrir_local")
 
 
 def _cfg() -> dict:
-    return (load_json(ROOT / "config/cargo_sindico.json") or {}).get("parametros", {})
+    return (load_json(ROOT / "config/cargo_piloto.json") or {}).get("parametros", {})
 
 
 LAB_PROIBIDO = ("lab-motor", "lab", "teste", "test")
@@ -46,9 +46,9 @@ def sortear(n: int | None = None, motores: list[str] | None = None) -> list[dict
     b = bordo()
     visitados = {m["motor"] for m in b.get("missoes", [])[-40:] if m.get("motor")}
     if motores is None:
-        # 22/09: o Síndico voa SÓ sobre os motores onde há oportunidade nova (26, 27, 28 e o 29).
+        # 22/09: o Piloto voa SÓ sobre os motores onde há oportunidade nova (26, 27, 28 e o 29).
         # Rouanet, diários e portais conhecidos releem o que já está mapeado — não são dele.
-        motores = list((_cfg().get("motores_do_sindico") or {}).get("ids") or [])
+        motores = list((_cfg().get("motores_do_piloto") or {}).get("ids") or [])
         if not motores:
             from .sensores import registro
             motores = [x["id"] for x in registro() if not x.get("fontes_260")]

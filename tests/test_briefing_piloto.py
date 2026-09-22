@@ -11,19 +11,19 @@ class _IA:
 
 class TesteCicloDeTresSegundos(unittest.TestCase):
     def test_pousa_e_decola_em_tres_segundos(self):
-        w = yaml.safe_load((ROOT / ".github/workflows/sindico.yml").read_text(encoding="utf-8"))
-        txt = (ROOT / ".github/workflows/sindico.yml").read_text(encoding="utf-8")
+        w = yaml.safe_load((ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8"))
+        txt = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         self.assertIn("Pousar 3 segundos e decolar de novo", txt)
         self.assertIn("sleep 3", txt)
         job = list(w["jobs"].values())[0]
         self.assertLessEqual(job["timeout-minutes"], 30)                    # uma pesquisa por execução
-        c = json.loads((ROOT / "config/sindico.json").read_text(encoding="utf-8"))
+        c = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
         self.assertEqual(c["encadeamento"]["pausa_no_patio_s"], 3)
         self.assertEqual(c["encadeamento"]["teto_execucao_min"], 30)
         self.assertLessEqual(c["orcamento"]["teto_minutos"], 28)            # teto, não meta: cabe nos 30 do job
 
     def test_travas_para_nao_estourar_o_github(self):
-        txt = (ROOT / ".github/workflows/sindico.yml").read_text(encoding="utf-8")
+        txt = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         self.assertIn("estado/piloto_pausado", txt)                          # o titular segura o Piloto
         self.assertIn("teto do dia atingido", txt)
         self.assertIn("in_progress", txt)                                    # nunca dois voos no ar
@@ -64,7 +64,7 @@ class TesteBriefing(unittest.TestCase):
         p = ia.perguntas[0]
         self.assertIn("VOOS ANTERIORES", p)                                  # lê o que já fez
         self.assertIn("JÁ APOSTEI NESTES LUGARES", p)                        # e não repete
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertIn("_brief(ia)", src); self.assertIn("_fechar(brief", src)
 
 

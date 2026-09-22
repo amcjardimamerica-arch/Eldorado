@@ -23,7 +23,7 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-FILA = ROOT / "estado/sindico/fila_resgate.json"
+FILA = ROOT / "estado/piloto/fila_resgate.json"
 PUB = ROOT / "docs/dados/resgates_piloto.json"
 MINIMO = ("pagina_oficial", "prazo", "quem_pode", "documentos", "valor", "como_inscrever")
 PESO = {"pagina_oficial": 5, "prazo": 5, "documentos": 3, "como_inscrever": 3, "quem_pode": 2, "valor": 2}

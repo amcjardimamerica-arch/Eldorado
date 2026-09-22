@@ -272,7 +272,7 @@ jobs:
           # commit local → rebase preferindo o que a saída produziu → push com até 3 tentativas
           # PROTEÇÃO DO PAINEL (22/09): docs/dashboard.html e os arquivos do Piloto são de autoria
           # do titular/Claude — o job de dados nunca os sobrescreve com a árvore que clonou no início.
-          git checkout origin/main -- docs/dashboard.html config/cargo_sindico.json config/motor_sindico.json src/piloto_busca.py src/radar_piloto.py src/ranking_apoiadores.py 2>/dev/null || true
+          git checkout origin/main -- docs/dashboard.html config/cargo_piloto.json config/motor_piloto.json src/piloto_busca.py src/radar_piloto.py src/ranking_apoiadores.py 2>/dev/null || true
           git add biblioteca_alexandria -A dados estado docs
           git diff --cached --quiet && exit 0
           git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F)"
@@ -281,9 +281,9 @@ jobs:
             git rebase --abort 2>/dev/null || true
             git fetch origin main
             git reset --soft origin/main
-            # PROTEÇÃO (21/09): restaura do origin o que o Síndico/conselho gravaram enquanto este job rodava —
+            # PROTEÇÃO (21/09): restaura do origin o que o Piloto/conselho gravaram enquanto este job rodava —
             # sem isto, a árvore antiga do job marcava esses arquivos como deletados (foi assim que o benchmark sumiu)
-            for P in estado/sindico estado/ia_local config/sindico.json estado/rotas_sugeridas_ia.json estado/pacote_conselho.md estado/pacote_conselho.json docs/dados/sindico.json docs/dados/pacote_conselho.md; do
+            for P in estado/piloto estado/ia_local config/piloto.json estado/rotas_sugeridas_ia.json estado/pacote_conselho.md estado/pacote_conselho.json docs/dados/piloto.json docs/dados/pacote_conselho.md; do
               git checkout origin/main -- "$P" 2>/dev/null || true
             done
             git add biblioteca_alexandria -A dados estado docs && git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F) (reaplicada)" || true
@@ -317,7 +317,7 @@ jobs:
             const {data} = await github.rest.issues.listForRepo({...context.repo, state: 'open', labels: 'prazo'});
             if (data.some(i => i.title === alerta.titulo)) return;
             await github.rest.issues.create({...context.repo, title: alerta.titulo, body: alerta.corpo, labels: ['prazo']});
-      - name: Acionar o Sindico quando houver edital novo (nivel 1 imediato)
+      - name: Acionar o Piloto quando houver edital novo (nivel 1 imediato)
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
@@ -331,6 +331,6 @@ jobs:
           echo "editais novos nesta saida: $NOVOS"
           if [ "${NOVOS:-0}" -gt 0 ]; then
             curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/sindico.yml/dispatches" \
-              -d '{"ref":"main","inputs":{"modo":"ciclo"}}' -w "sindico acionado: %{http_code}\n"
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/piloto.yml/dispatches" \
+              -d '{"ref":"main","inputs":{"modo":"ciclo"}}' -w "piloto acionado: %{http_code}\n"
           fi

@@ -83,29 +83,29 @@ class TesteFilaDeResgate(unittest.TestCase):
 
 class TestePrioridadeETempo(unittest.TestCase):
     def test_resgate_vem_antes_da_exploracao(self):
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertLess(src.index("montar_fila()"), src.index("plano += sortear()"))
         self.assertIn('plano.append({"tipo": "resgate"', src)
         self.assertIn("PRIMEIRO os resgates", src)
         self.assertIn("def missao_resgate", src)
-        cg = json.loads((ROOT / "config/cargo_sindico.json").read_text(encoding="utf-8"))
+        cg = json.loads((ROOT / "config/cargo_piloto.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(cg["parametros"]["resgates_por_voo"], 3)
         self.assertIn("primeiro", cg["parametros"]["prioridade"])   # verificar e alimentar antes de explorar
 
     def test_voo_dura_o_que_a_tarefa_exigir(self):
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertIn("O VOO DURA O QUE A TAREFA EXIGIR", src)
         self.assertIn("teto_s", src); self.assertNotIn("limite_s", src)
         self.assertIn('rel["encerrou_por"] = "teto de tempo"', src)
         self.assertIn('rel.setdefault("encerrou_por", "tarefa concluída")', src)
         self.assertIn('rel["minutos_de_voo"]', src)
-        c = json.loads((ROOT / "config/sindico.json").read_text(encoding="utf-8"))
+        c = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
         self.assertLessEqual(c["orcamento"]["teto_minutos"], 28)                   # cabe nos 30 do job
         self.assertIn("nao uma meta", c["orcamento"]["regra_de_tempo"])
         self.assertNotIn("minutos_por_ciclo", c["orcamento"])
 
     def test_resgate_nao_inventa_dado(self):
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertIn("Não invente data nem documento", src)
         self.assertIn("trecho inventado: não aceito", src)                          # confere na página
         self.assertIn('re.fullmatch', src)                                          # prazo só em formato de data

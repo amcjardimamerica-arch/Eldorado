@@ -454,8 +454,8 @@ box-shadow:0 1px 3px #0002}
 .sug-itens i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#E3E8F1;margin-right:2px;vertical-align:middle}.sug-itens i.ok{background:var(--ok)}
 .sug-l3{display:grid;grid-template-columns:1.3fr 1fr;gap:12px;margin-top:8px}@media(max-width:1000px){.sug-l3{grid-template-columns:1fr}}
 .sug-ia,.sug-docs{font-size:12px;line-height:1.5}.rel-bt{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:10px;border:1px solid #9FC1E8;background:#F3F8FF;cursor:pointer;font:inherit;font-size:12.5px;text-align:left}
-.rel-bt:hover{background:#E3F0FF}.rel-bt.sindico{border-color:#B9A25A;background:#FBF7E8}.rel-bt.sindico:hover{background:#F5EDCF}
-.rel-quem{font-weight:800;color:#0E2A55}.rel-bt.sindico .rel-quem{color:#6B5A12}.rel-data{color:var(--suave)}.rel-abrir{margin-left:auto;color:#0B4EA2;font-size:11.5px}
+.rel-bt:hover{background:#E3F0FF}.rel-bt.piloto{border-color:#B9A25A;background:#FBF7E8}.rel-bt.piloto:hover{background:#F5EDCF}
+.rel-quem{font-weight:800;color:#0E2A55}.rel-bt.piloto .rel-quem{color:#6B5A12}.rel-data{color:var(--suave)}.rel-abrir{margin-left:auto;color:#0B4EA2;font-size:11.5px}
 .rel-janela{font-size:13px;line-height:1.55}.rel-linha{padding:3px 0}.rel-texto{white-space:pre-wrap;background:#F7FBFF;border:1px solid #DCE7F5;border-radius:9px;padding:10px}.rel-lista{margin:4px 0 0 18px}
 .sug-parecer{margin-top:4px;padding:5px 8px;border-left:3px solid #0E2A55;background:#F4F7FB;border-radius:6px}
 .sug-doclist{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}.sug-doc{border:1px solid var(--linha);border-radius:12px;padding:1px 8px;font-size:11px}.sug-doc.ok{border-color:var(--ok);color:var(--ok)}.sug-doc.falta{border-color:var(--urgente);color:var(--urgente)}
@@ -1980,7 +1980,7 @@ function desenhaFilaVerificacao(){
     <button class="fdoc-bt principal" onclick="varreduraImediata()" title="gera agora o pacote da varredura para a análise de IA (a rotina de domingo executa a mesma fila)">⚡ varredura imediata</button></span></div>
     ${(f.reprovados_por_objeto&&f.reprovados_por_objeto.total)?`<div class=meta style="margin-top:6px"><b>${f.reprovados_por_objeto.total}</b> registro(s) saíram da fila pelo filtro de objeto (não são chamada aberta de fomento): ${Object.entries(f.reprovados_por_objeto.por_familia||{}).map(([k,v])=>`${v} ${esc(k.replace(/_/g," "))}`).join(" · ")}.</div>`:""}
     ${(D.fora_das_50&&D.fora_das_50.total)?`<div class=meta style="margin-top:6px;color:#FF1493"><b>${D.fora_das_50.total}</b> oportunidade(s) de cidades fora das 50 maiores do estado foram retiradas da fila (depuração) — aparecem em rosa para aprovação manual: ${(D.fora_das_50.itens||[]).slice(0,6).map(x=>esc((x.cidade||"?")+"/"+(x.uf||""))).join(" · ")}${D.fora_das_50.total>6?" …":""}</div>`:""}
-    ${(()=>{const S=(D.evolucao_busca||{}).sindico;if(!S)return "";const c=S.config||{},b=S.benchmark||{},u=S.ultimo||{};
+    ${(()=>{const S=(D.evolucao_busca||{}).piloto;if(!S)return "";const c=S.config||{},b=S.benchmark||{},u=S.ultimo||{};
       return `<div class="alerta-motores" style="border-color:#9FC1E8;background:#F3F8FF"><b>O PILOTO — IA local no GitHub Actions:</b>
         ${(()=>{const K=S.cargo;if(!K)return c.modelo_vencedor?`modelo <b>${esc(c.modelo_vencedor)}</b>`:"sem ocupante";const o=K.ocupante,d=o.desempenho||{};
           return `no comando: <b>${esc(o.nome)}</b> (${o.gb} GB · ${d.tokens_por_s||"—"} tok/s) — acerto <b>${((d.acerto||0)*100).toFixed(0)}%</b>, ${d.prazos_inventados||0} prazo(s) inventado(s), contratado em ${esc(o.contratado_em||"")}
@@ -2478,7 +2478,7 @@ function htmlEditaisEnquadrados(a){const COR={verde:"var(--ok)",amarelo:"var(--a
           ${P.valores&&(P.valores.minimo||P.valores.maximo)?`<div class=meta><b>Faixa:</b> ${esc(String(P.valores.base).slice(0,80))}</div>`:""}`;})()}</div>
         <div class="sug-col"><div class="sug-col-t">Relatório do edital</div>
           ${(()=>{const R=relatorioDoEdital(e,ia,r);if(!R)return '<div class=meta>sem relatório ainda — entra na próxima verificação</div>';
-            return `<button class="rel-bt ${R.quem==="Piloto"?"sindico":"claude"}" data-rel="${esc(e.id)}" title="${esc(R.resumo)}" onclick="abrirRelatorio('${esc(e.id)}')">
+            return `<button class="rel-bt ${R.quem==="Piloto"?"piloto":"claude"}" data-rel="${esc(e.id)}" title="${esc(R.resumo)}" onclick="abrirRelatorio('${esc(e.id)}')">
               <span class="rel-quem">${esc(R.quem)}</span><span class="rel-data">${esc(R.data)} · ${esc(R.modelo)}</span><span class="rel-abrir">ver relatório ↗</span></button>
               ${R.decisao?`<div class="sug-parecer" style="margin-top:6px"><b>Decisão:</b> ${esc(R.decisao.slice(0,180))}</div>`:""}`;})()}
         </div>
@@ -2496,7 +2496,7 @@ function relatorioDoEdital(e,ia,r){
   const quem=/s[ií]ndico|ia_local/.test(por)?"Piloto":"Claude";
   const data=br((an.em||e.verificado_em||e.analisado_em||"").slice(0,10))||"—";
   const resumo=(parecer||decisao||an.motivo||"").replace(/\s+/g," ").slice(0,220)+(((parecer||decisao||"").length>220)?"…":"");
-  const modelo=an.modelo||(quem==="Piloto"?((D.evolucao_busca||{}).sindico||{}).config?.modelo_vencedor:"Claude Fable 5.1")||"—";
+  const modelo=an.modelo||(quem==="Piloto"?((D.evolucao_busca||{}).piloto||{}).config?.modelo_vencedor:"Claude Fable 5.1")||"—";
   const R={quem,data,resumo,decisao,parecer,selo:an.selo,motivo:an.motivo,por:an.por||e.verificado_por,modelo,
     ia:ia||{},luzes:(D.enquadramento_fila&&D.enquadramento_fila.itens?((D.enquadramento_fila.itens.find(q=>q.id===e.id)||{}).luzes):null),
     titulo:e.titulo,valor:e.valor_texto||e.valor,fim:e.fim,link:linkOficial(e)||e.url};
@@ -3008,8 +3008,8 @@ function desenhaPostoPiloto(alvo){
           <span title="empresas descobertas"><b>${V.total_abates||0}</b> abate(s)</span></div>
         ${U?`<div class="pil-vivo-u"><b>Última missão:</b> ${esc(U.tipo||"")}${U.motor?" · "+esc(U.motor):""} — ${esc(String(U.licao||"").slice(0,120))}</div>`:""}
         ${(V.achados_recentes||[]).length?`<div class="pil-vivo-u"><b>Trouxe:</b> ${(V.achados_recentes||[]).slice(0,3).map(a=>esc(String(a.titulo||a).slice(0,60))).join(" · ")}</div>`:""}
-        ${est==="parado"?`<div class="pil-acionar"><b>Ele não está voando.</b> Acione em ${esc(V.como_acionar||"Actions → Síndico → Run workflow")}.
-           <a class="pil-bt-acionar" href="https://github.com/amcjardimamerica-arch/Eldorado/actions/workflows/sindico.yml" target=_blank rel="noopener noreferrer">acionar o Piloto ↗</a></div>`:""}
+        ${est==="parado"?`<div class="pil-acionar"><b>Ele não está voando.</b> Acione em ${esc(V.como_acionar||"Actions → Piloto → Run workflow")}.
+           <a class="pil-bt-acionar" href="https://github.com/amcjardimamerica-arch/Eldorado/actions/workflows/piloto.yml" target=_blank rel="noopener noreferrer">acionar o Piloto ↗</a></div>`:""}
       </div>`;})()}
     ${(()=>{const G=window._RESG;if(!G||!G.total)return "";
       const P=G.por_estado||{}, esp=(G.fila||[]).filter(x=>x.estado==="aguardando").slice(0,6);

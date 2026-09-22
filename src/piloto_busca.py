@@ -26,7 +26,7 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-CFG = ROOT / "config/motor_sindico.json"
+CFG = ROOT / "config/motor_piloto.json"
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
 VETOR = re.compile(r"observatorio3setor|captadores\.org|prosas\.com|gife\.org\.br/noticias|g1\.globo|uol\.com|facebook|instagram|linkedin|youtube|twitter|x\.com|wikipedia", re.I)
 LIXO = re.compile(r"duckduckgo|bing\.com|google\.|/search\?|javascript:|mailto:", re.I)
@@ -106,7 +106,7 @@ CHAVES = {
 # REVEZAMENTO DAS VIAS. Cada consulta usa UMA via, e a seguinte usa a próxima da roda. Assim
 # nenhuma apanha o volume inteiro — que foi o que fez o DuckDuckGo começar a cortar. A via só
 # é pulada quando está BLOQUEADA: falhou, entra em descanso e a roda segue sem ela até voltar.
-VIAS = ROOT / "estado/sindico/vias.json"
+VIAS = ROOT / "estado/piloto/vias.json"
 DESCANSO_MIN = 25          # quanto tempo uma via fica de fora depois de bloquear
 
 
@@ -337,7 +337,7 @@ def inedita(c: str, usadas: list[str], teto: float | None = None) -> bool:
 def caçar(ia, angulo: dict, conhecidos: set[str], max_consultas: int = 3, max_paginas: int = 4) -> tuple[list[dict], str, list[str]]:
     """O voo completo: o Piloto cria as consultas, busca, lê e decide.
     Devolve (achados, lição, consultas usadas)."""
-    from .cargo_sindico import licoes_para_o_prompt
+    from .cargo_piloto import licoes_para_o_prompt
     cfg = load_json(CFG)
     lic = licoes_para_o_prompt()
     # 1) o Piloto CRIA um QUESTIONAMENTO NOVO — nunca repete consulta nem variação próxima

@@ -20,7 +20,7 @@ from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, write_json
 
 VIVO = ROOT / "docs/dados/piloto_ao_vivo.json"
-BORDO = ROOT / "estado/sindico/bordo.json"
+BORDO = ROOT / "estado/piloto/bordo.json"
 SEM_SINAL_MIN = 35          # um voo cabe em 26 min; passou disso sem sinal, a corrente quebrou
 
 
@@ -54,8 +54,8 @@ def montar() -> dict:
     atual = b.get("missao_atual")
     ms = b.get("missoes") or []
     ultima = ms[0] if ms else None
-    voos = load_json(ROOT / "estado/sindico/voos.json") if (ROOT / "estado/sindico/voos.json").exists() else {}
-    fila = load_json(ROOT / "estado/sindico/fila_resgate.json") if (ROOT / "estado/sindico/fila_resgate.json").exists() else {}
+    voos = load_json(ROOT / "estado/piloto/voos.json") if (ROOT / "estado/piloto/voos.json").exists() else {}
+    fila = load_json(ROOT / "estado/piloto/fila_resgate.json") if (ROOT / "estado/piloto/fila_resgate.json").exists() else {}
     its = (fila.get("itens") or {}).values()
     brief = load_json(ROOT / "docs/dados/briefings_piloto.json") if (ROOT / "docs/dados/briefings_piloto.json").exists() else {}
     bv = (brief.get("voos") or [{}])[0]
@@ -93,7 +93,7 @@ def montar() -> dict:
         "plano_do_voo": {"aposta": bv.get("aposta"), "pergunta": bv.get("pergunta"),
                          "resultado": bv.get("resultado")},
         "pode_acionar": estado == "parado" and not pausado,
-        "como_acionar": "Actions → 07 · Síndico → Run workflow (modo: ciclo)",
+        "como_acionar": "Actions → 07 · Piloto → Run workflow (modo: ciclo)",
     }
     write_json(VIVO, d)
     return d

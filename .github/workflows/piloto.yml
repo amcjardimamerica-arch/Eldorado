@@ -1,4 +1,4 @@
-name: 07 · Síndico — IA local da Biblioteca (benchmark e ciclos)
+name: 07 · Piloto — IA local da Biblioteca (benchmark e ciclos)
 on:
   schedule:
     - cron: "0 */2 * * *"     # rede de segurança a cada 2h; o normal é o próprio Piloto encadear o voo seguinte
@@ -23,10 +23,10 @@ permissions:
   contents: write
   actions: write
 concurrency:
-  group: sindico
+  group: piloto
   cancel-in-progress: false
 jobs:
-  sindico:
+  piloto:
     runs-on: ubuntu-latest
     timeout-minutes: 30      # teto duro: UMA pesquisa por execução, nunca mais que 30 min
     steps:
@@ -47,7 +47,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ia_local/modelos
-          key: modelos-gguf-v1-${{ hashFiles('config/sindico.json') }}
+          key: modelos-gguf-v1-${{ hashFiles('config/piloto.json') }}
           restore-keys: modelos-gguf-v1-
       - name: Baixar modelos que faltam (curl -L, com retentativas; falha de um modelo não derruba o job)
         env:
@@ -56,10 +56,10 @@ jobs:
         run: |
           python - <<'PY' > /tmp/alvos.txt
           import json, os
-          from src.sindico import CANDIDATOS
-          cfg = json.load(open("config/sindico.json"))
+          from src.piloto import CANDIDATOS
+          cfg = json.load(open("config/piloto.json"))
           modo = os.environ.get("MODO", "ciclo")
-          from src.cargo_sindico import cargo
+          from src.cargo_piloto import cargo
           cg = cargo(); oc = cg["ocupante_atual"]
           if modo == "benchmark":
               alvo = CANDIDATOS
@@ -88,13 +88,13 @@ jobs:
           CANDIDATO: ${{ github.event.inputs.candidato }}
           LIMITE: ${{ github.event.inputs.limite_gabarito }}
         run: |
-          timeout 12000 python -m src.cargo_sindico avaliar "$CANDIDATO" "${LIMITE:-120}" || echo "avaliação: registrado o que deu"
+          timeout 12000 python -m src.cargo_piloto avaliar "$CANDIDATO" "${LIMITE:-120}" || echo "avaliação: registrado o que deu"
       - name: Benchmark de todos (só quando pedido)
         if: ${{ github.event.inputs.modo == 'benchmark' }}
         env:
           LIMITE: ${{ github.event.inputs.limite_gabarito }}
         run: |
-          timeout 20000 python -m src.sindico benchmark $LIMITE || echo "benchmark: registrado o que deu"
+          timeout 20000 python -m src.piloto benchmark $LIMITE || echo "benchmark: registrado o que deu"
       - name: Diagnóstico dos buscadores (de onde o Piloto realmente está)
         if: ${{ github.event.inputs.diagnostico == 'true' }}
         run: |
@@ -102,13 +102,13 @@ jobs:
           import json, pathlib
           from src.piloto_busca import diagnostico
           d = diagnostico()
-          pathlib.Path("estado/sindico").mkdir(parents=True, exist_ok=True)
-          pathlib.Path("estado/sindico/diagnostico_busca.json").write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+          pathlib.Path("estado/piloto").mkdir(parents=True, exist_ok=True)
+          pathlib.Path("estado/piloto/diagnostico_busca.json").write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
           print(json.dumps(d, ensure_ascii=False, indent=1))
           PY
           git config user.name "piloto" && git config user.email "piloto@eldorado"
-          git add estado/sindico/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
-      - name: Ciclo do síndico (entender → curar → afiar → minerar → anunciar)
+          git add estado/piloto/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
+      - name: Ciclo do piloto (entender → curar → afiar → minerar → anunciar)
         env:
           BRAVE_SEARCH_KEY: ${{ secrets.BRAVE_SEARCH_KEY }}
           GOOGLE_CSE_KEY: ${{ secrets.GOOGLE_CSE_KEY }}
@@ -117,9 +117,9 @@ jobs:
         run: |
           python - <<'PY'
           import json, subprocess, os, time, urllib.request, sys
-          cfg = json.load(open("config/sindico.json"))
-          from src.sindico import CANDIDATOS
-          from src.cargo_sindico import ocupante
+          cfg = json.load(open("config/piloto.json"))
+          from src.piloto import CANDIDATOS
+          from src.cargo_piloto import ocupante
           c = ocupante()
           print("ocupante do cargo:", c["nome"], c["gb"], "GB")
           env = dict(os.environ, LD_LIBRARY_PATH=os.path.abspath("ia_local/motor"))
@@ -129,7 +129,7 @@ jobs:
               try:
                   if urllib.request.urlopen(f"http://127.0.0.1:{cfg.get('porta', 8081)}/health", timeout=2).status == 200: break
               except Exception: time.sleep(1)
-          from src.sindico import ciclo
+          from src.piloto import ciclo
           print(json.dumps(ciclo(porta=cfg.get("porta", 8081)), ensure_ascii=False, indent=1))
           srv.kill()
           PY
@@ -144,48 +144,48 @@ jobs:
           if [ -f estado/piloto_pausado ]; then echo "pausado pelo titular — o Piloto fica em terra"; exit 0; fi
           VOOS=$(python - <<'PY'
           import json, pathlib, datetime
-          p = pathlib.Path("estado/sindico/voos.json")
+          p = pathlib.Path("estado/piloto/voos.json")
           d = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
           print(int(d.get(datetime.date.today().isoformat(), 0)))
           PY
           )
-          TETO=$(python -c "import json;print(json.load(open('config/sindico.json')).get('voos_por_dia',40))" 2>/dev/null || echo 40)
+          TETO=$(python -c "import json;print(json.load(open('config/piloto.json')).get('voos_por_dia',40))" 2>/dev/null || echo 40)
           echo "voo ${VOOS} de ${TETO} hoje"
           if [ "${VOOS:-0}" -ge "${TETO:-40}" ]; then echo "teto do dia atingido — retoma amanhã"; exit 0; fi
           # nunca dois voos no ar ao mesmo tempo: se já há um na fila ou rodando, este não chama outro
           EMVOO=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/sindico.yml/runs?per_page=12" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/piloto.yml/runs?per_page=12" \
             | python -c "import json,sys;print(sum(1 for r in (json.load(sys.stdin).get('workflow_runs') or []) if r.get('status') in ('queued','in_progress','waiting') and str(r.get('id'))!='${{ github.run_id }}'))")
           if [ "${EMVOO:-0}" -gt 0 ]; then echo "já há ${EMVOO} voo(s) no ar — este não chama outro"; exit 0; fi
           echo "3 segundos no pátio..."; sleep 3
           curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/sindico.yml/dispatches" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/piloto.yml/dispatches" \
             -d '{"ref":"main","inputs":{"modo":"ciclo","encadeado":"true"}}' -w "decolou o próximo: %{http_code}\n"
       - name: Guardar o resultado como ARTEFATO (independe de push — nunca mais se perde)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: sindico-${{ github.run_id }}
+          name: piloto-${{ github.run_id }}
           path: |
-            estado/sindico/
-            config/sindico.json
+            estado/piloto/
+            config/piloto.json
           retention-days: 90
-      - name: Regenerar painel e commitar — a prova de conflito, os arquivos do Sindico mandam nos seus caminhos
+      - name: Regenerar painel e commitar — a prova de conflito, os arquivos do Piloto mandam nos seus caminhos
         if: always()
         env:
           MODO: ${{ github.event.inputs.modo || 'ciclo' }}
         run: |
           timeout 300 python -m src.dashboard_dados || true
-          # 1) guarda o que o Síndico produziu
+          # 1) guarda o que o Piloto produziu
           rm -rf /tmp/sind && mkdir -p /tmp/sind
-          for P in estado/sindico config/sindico.json docs/dados/sindico.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
+          for P in estado/piloto config/piloto.json docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
             # cp -r PASTA DESTINO copia PARA DENTRO quando o destino ja existe (gerava docs/dados/dados).
             # Com diretorio, copiamos o CONTEUDO; com arquivo, o arquivo.
             if [ -d "$P" ]; then mkdir -p "/tmp/sind/$P" && cp -r "$P/." "/tmp/sind/$P/" || true
             elif [ -e "$P" ]; then mkdir -p "/tmp/sind/$(dirname $P)" && cp "$P" "/tmp/sind/$P" || true; fi
           done
           # 2) volta para o origin atual (sem rebase, sem conflito) e reaplica por cima
-          git config user.name "sindico-eldorado" && git config user.email "sindico@eldorado"
+          git config user.name "piloto-eldorado" && git config user.email "piloto@eldorado"
           git fetch -q origin main && git reset -q --hard origin/main
           cp -r /tmp/sind/. .
           # PROTEÇÃO DO PAINEL: arquivos de autoria nunca são sobrescritos por job de dados
@@ -194,15 +194,15 @@ jobs:
           # nao estado de execucao — o voo nao pode reescreve-los.
           python - <<'PY' || true
           import json, subprocess
-          orig = json.loads(subprocess.run(["git","show","origin/main:config/sindico.json"],capture_output=True,text=True).stdout or "{}")
-          try: atual = json.load(open("config/sindico.json"))
+          orig = json.loads(subprocess.run(["git","show","origin/main:config/piloto.json"],capture_output=True,text=True).stdout or "{}")
+          try: atual = json.load(open("config/piloto.json"))
           except Exception: atual = {}
           for c in ("orcamento","encadeamento","voos_por_dia"):
               if c in orig: atual[c] = orig[c]
-          json.dump(atual, open("config/sindico.json","w"), ensure_ascii=False, indent=1)
+          json.dump(atual, open("config/piloto.json","w"), ensure_ascii=False, indent=1)
           PY
-          git add -A estado/sindico config/sindico.json docs/dados/sindico.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados 2>/dev/null || git add -A
+          git add -A estado/piloto config/piloto.json docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados 2>/dev/null || git add -A
           git status --short | head -20
-          git commit -q -m "sindico: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"
-          for i in 1 2 3; do git push -q origin main && break; echo "push $i falhou; recompondo…"; git fetch -q origin main; git reset -q --soft origin/main; cp -r /tmp/sind/. .; git add -A; git commit -q -m "sindico: $(date -u +%F) ${MODO:-ciclo}" || true; sleep 10; done
+          git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"
+          for i in 1 2 3; do git push -q origin main && break; echo "push $i falhou; recompondo…"; git fetch -q origin main; git reset -q --soft origin/main; cp -r /tmp/sind/. .; git add -A; git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || true; sleep 10; done
           git log --oneline -1

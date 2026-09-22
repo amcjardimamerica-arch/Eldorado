@@ -27,7 +27,7 @@ class TesteBuscaMultipla(unittest.TestCase):
         usadas = ["edital instituto apoio projetos sociais 2026"]
         self.assertFalse(inedita("edital instituto apoio a projetos sociais 2026", usadas))
         self.assertTrue(inedita("relatório ESG usina de açúcar Goiás projeto social", usadas))
-        cfg = json.loads((ROOT / "config/motor_sindico.json").read_text(encoding="utf-8"))
+        cfg = json.loads((ROOT / "config/motor_piloto.json").read_text(encoding="utf-8"))
         self.assertLessEqual(cfg["prompt_unico"]["similaridade_maxima"], 0.8)
         src = (ROOT / "src/piloto_busca.py").read_text(encoding="utf-8")
         self.assertIn("JÁ PERGUNTEI ISTO ANTES", src)                     # o histórico vai no prompt
@@ -35,7 +35,7 @@ class TesteBuscaMultipla(unittest.TestCase):
     def test_foco_em_empresa_esg_e_nos_vazios_dos_motores(self):
         """Saiu o nível 'estadual': era onde os motores públicos já atuam. O Piloto ficou
         com regional, nacional e internacional, que é onde o dinheiro privado está."""
-        m = json.loads((ROOT / "config/motor_sindico.json").read_text(encoding="utf-8"))
+        m = json.loads((ROOT / "config/motor_piloto.json").read_text(encoding="utf-8"))
         niveis = {a["nivel"] for a in m["angulos_de_ataque"]}
         self.assertTrue(niveis <= {"regional", "estadual", "nacional", "internacional"})
         self.assertIn("regional", niveis); self.assertIn("internacional", niveis)
@@ -82,7 +82,7 @@ class TesteRadarDeCaptacao(unittest.TestCase):
         self.assertTrue(all(e.get("marcador") in MARCADORES for e in rd["empresas"]))
         pc = (ROOT / "src/pacote_conselho.py").read_text(encoding="utf-8")
         self.assertIn("Radar de captação", pc); self.assertIn("para_o_claude", pc)
-        sd = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        sd = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertIn("from .radar_piloto import registrar", sd)
 
     def test_posto_so_na_inicial_e_na_bussola(self):

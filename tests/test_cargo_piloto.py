@@ -1,6 +1,6 @@
-"""O cargo de Síndico (22/09): ocupante trocável, escopo de sniper, memória de erros."""
+"""O cargo de Piloto (22/09): ocupante trocável, escopo de sniper, memória de erros."""
 import json, pathlib, unittest
-from src.cargo_sindico import cargo, ocupante, criterio, aprovado_no_criterio, registrar_erro, licoes_para_o_prompt, estatistica, MEM
+from src.cargo_piloto import cargo, ocupante, criterio, aprovado_no_criterio, registrar_erro, licoes_para_o_prompt, estatistica, MEM
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
@@ -13,8 +13,8 @@ class TesteCargo(unittest.TestCase):
         self.assertLessEqual(o["gb"], c["tamanho_maximo_gb"])                            # leve
         self.assertGreaterEqual(o["desempenho"]["tokens_por_s"], c["velocidade_minima_tokens_s"])
         self.assertTrue(o["por_que"] and o["fraqueza_conhecida"])
-        cfg = json.loads((ROOT / "config/sindico.json").read_text(encoding="utf-8"))
-        from src.sindico import cfg as cfg_op
+        cfg = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
+        from src.piloto import cfg as cfg_op
         self.assertEqual(cfg_op()["modelo_vencedor"], "llama-3.2-3b")                    # o cargo manda no operacional
 
     def test_escopo_de_sniper_sem_projetos_nem_documentos(self):
@@ -23,7 +23,7 @@ class TesteCargo(unittest.TestCase):
         self.assertTrue(any("assertividade dos motores" in x for x in e["faz"]))
         for proibido in ("elaborar projeto", "preencher documentos", "plano de trabalho", "decidir inscrição"):
             self.assertTrue(any(proibido.split()[0] in x for x in e["nao_faz"]), proibido)
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertIn("def nivel2_classificar", src); self.assertNotIn("def nivel2_enquadrar", src)
         self.assertIn("projeto e documentos não são do cargo", src)
 
@@ -32,7 +32,7 @@ class TesteCargo(unittest.TestCase):
         self.assertGreaterEqual(len(c["banco_de_reserva"]), 4)
         for r in c["banco_de_reserva"]:
             self.assertTrue(r["url"].startswith("https://") and r["gb"] <= 3.0 and r["porque"])
-        self.assertIn("ex_ocupantes", c); self.assertEqual(len(c["como_trocar_o_sindico"]), 3)
+        self.assertIn("ex_ocupantes", c); self.assertEqual(len(c["como_trocar_o_piloto"]), 3)
         ok, _ = aprovado_no_criterio({"acerto": 0.62, "prazos_inventados": 0, "falso_positivo": 0.2, "gb": 1.1, "tokens_por_s": 25})
         self.assertTrue(ok)
         for ruim in ({"acerto": 0.62, "prazos_inventados": 1, "gb": 1.1, "tokens_por_s": 25},
@@ -53,17 +53,17 @@ class TesteCargo(unittest.TestCase):
             self.assertEqual(estatistica()["por_tipo"]["falso_positivo"], 2)
             ia = (ROOT / "src/ia_local.py").read_text(encoding="utf-8")
             self.assertIn("licoes_para_o_prompt", ia)                                    # entra no prompt da classificação
-            sd = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+            sd = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
             self.assertIn('registrar_erro("falso_positivo"', sd)                          # e o erro medido volta para a memória
         finally:
             if antes is None: MEM.unlink(missing_ok=True)
             else: MEM.write_text(antes, encoding="utf-8")
 
     def test_workflow_roda_so_o_ocupante_no_dia_a_dia(self):
-        w = (ROOT / ".github/workflows/sindico.yml").read_text(encoding="utf-8")
+        w = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         self.assertIn("alvo = [oc]", w); self.assertIn("modo == \"avaliar\"", w)
         self.assertIn("upload-artifact", w); self.assertIn("reset -q --hard origin/main", w)
-        self.assertIn("src.cargo_sindico avaliar", w)
+        self.assertIn("src.cargo_piloto avaliar", w)
 
 
 if __name__ == "__main__":

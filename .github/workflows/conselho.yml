@@ -23,7 +23,7 @@ jobs:
         run: python -m src.pacote_conselho
       - name: Commitar
         run: |
-          git config user.name "sindico-eldorado" && git config user.email "sindico@eldorado"
+          git config user.name "piloto-eldorado" && git config user.email "piloto@eldorado"
           git add estado/pacote_conselho.md estado/pacote_conselho.json docs/dados/pacote_conselho.md
           git commit -q -m "conselho: pacote de validacao $(date -u +%F)" || echo "nada"
           git pull --rebase -q origin main || true; git push -q origin main || true

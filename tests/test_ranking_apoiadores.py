@@ -38,21 +38,21 @@ class TesteRanking(unittest.TestCase):
 
 class TesteCicloContinuoEAviao(unittest.TestCase):
     def test_encadeamento_sem_esperar_horario(self):
-        w = (ROOT / ".github/workflows/sindico.yml").read_text(encoding="utf-8")
+        w = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         self.assertIn("Pousar 3 segundos e decolar de novo", w)
         self.assertIn("estado/piloto_pausado", w)                              # trava manual
         self.assertIn("teto do dia atingido", w)
         self.assertIn("in_progress", w)                                      # não empilha voo
         self.assertIn('cron: "0 */2 * * *"', w)                                # rede de segurança
-        c = json.loads((ROOT / "config/sindico.json").read_text(encoding="utf-8"))
+        c = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(c["voos_por_dia"], 10); self.assertLessEqual(c["orcamento"]["teto_minutos"], 40)
 
     def test_piloto_escolhe_o_rumo_lendo_a_biblioteca(self):
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertIn("def escolher_rumo", src); self.assertIn("def _contar_voo", src)
         self.assertIn("BIBLIOTECA HOJE", src); self.assertIn("ÂNGULOS QUE VIERAM SECOS", src)
         self.assertIn("Pense em quem PAGA", src)
-        m = json.loads((ROOT / "config/motor_sindico.json").read_text(encoding="utf-8"))
+        m = json.loads((ROOT / "config/motor_piloto.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(m["angulos_de_ataque"]), 12)
 
     def test_aviao_passeia_sobre_o_trabalho(self):

@@ -5,7 +5,7 @@ Duas funções neste módulo:
   benchmark ..... roda cada modelo candidato, UM POR VEZ, contra o GABARITO (os 531 editais
                   validados pelo titular em 09/09 e 15/09) e mede: acerto na classificação,
                   prazos inventados (eliminatório), tokens/s, memória. Grava
-                  estado/sindico/benchmark.json e fixa o vencedor em config/sindico.json.
+                  estado/piloto/benchmark.json e fixa o vencedor em config/piloto.json.
 
   ciclo ......... o dia a dia: (1) ENTENDER — lê a Biblioteca inteira (editais, leis, fontes,
                   empresas, rotas) e mantém um catálogo compacto do que sabe; (2) CURAR —
@@ -17,7 +17,7 @@ Duas funções neste módulo:
                   quando negativo, para não repetir o caminho; (5) ANUNCIAR — relatório do dia.
 
 Regra que nunca muda: o Piloto PROPÕE, a validação determinística DECIDE. Prazo, valor,
-objeto e página só entram com trecho literal presente no texto. Tudo leva origem=sindico.
+objeto e página só entram com trecho literal presente no texto. Tudo leva origem=piloto.
 """
 from __future__ import annotations
 
@@ -34,8 +34,8 @@ from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, write_json
 from .ia_local import IALocal, t_classificar_objeto, t_extrair_objeto_prazo, t_propor_lexico, t_diagnosticar_rota, t_catalogar_achado, _trecho_existe, _norm
 
-CFG_P = ROOT / "config/sindico.json"
-PASTA = ROOT / "estado/sindico"
+CFG_P = ROOT / "config/piloto.json"
+PASTA = ROOT / "estado/piloto"
 PASTA.mkdir(parents=True, exist_ok=True)
 
 CANDIDATOS = [
@@ -56,7 +56,7 @@ MAPA_VEREDITO = {"fomento_osc": "aprovado", "atencao": "atencao"}      # famíli
 def cfg() -> dict:
     c = load_json(CFG_P) if CFG_P.exists() else {"modelo_vencedor": None, "orcamento": {"minutos_por_ciclo": 300, "registros_por_ciclo": 150}}
     try:                                            # o cargo manda: o ocupante atual é quem roda
-        from .cargo_sindico import ocupante
+        from .cargo_piloto import ocupante
         o = ocupante(); c["modelo_vencedor"] = o["id"]; c["arquivo"] = o["arquivo"]; c["url"] = o["url"]; c["ocupante"] = o["nome"]
     except Exception:
         pass
@@ -135,7 +135,7 @@ def avaliar_modelo(cand: dict, itens: list[dict], porta: int = 8081) -> dict:
                 if pred == esperado or (esperado == "atencao" and pred == "aprovado"):
                     acertos += 1
                 else:
-                    from .cargo_sindico import registrar_erro
+                    from .cargo_piloto import registrar_erro
                     if esperado == "reprovado" and pred == "aprovado":
                         registrar_erro("falso_positivo", it["titulo"], "reprovado", "aprovado", f"família correta: {it.get('familia') or 'não é fomento a OSC'}")
                     elif esperado == "aprovado" and pred == "reprovado":
@@ -143,7 +143,7 @@ def avaliar_modelo(cand: dict, itens: list[dict], porta: int = 8081) -> dict:
                 confusao[f"{esperado}->{pred}"] = confusao.get(f"{esperado}->{pred}", 0) + 1
                 tokens += 120
             else:
-                from .cargo_sindico import registrar_erro
+                from .cargo_piloto import registrar_erro
                 registrar_erro("fora_do_esquema", it["titulo"], "JSON do esquema", "resposta inválida")
             if it.get("fim") and len(it["texto"]) > 200:
                 t1 = time.time()
@@ -268,17 +268,17 @@ def nivel2_classificar(ia: IALocal, limite: int = 30) -> dict:
     an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
     dados = load_json(ROOT / "docs/dashboard-dados.json")
     from .fonte_edital import EXTRAIDOS
-    from .cargo_sindico import licoes_para_o_prompt, registrar_erro
+    from .cargo_piloto import licoes_para_o_prompt, registrar_erro
     feitos = []
     for e in [x for x in dados.get("editais") or [] if (an.get(x["id"]) or {}).get("selo") == "conformidade"][:limite]:
         ex = load_json(EXTRAIDOS / f"{e['id']}.json") if (EXTRAIDOS / f"{e['id']}.json").exists() else {}
-        if ex.get("classificacao_sindico"):
+        if ex.get("classificacao_piloto"):
             continue
         r = ia.perguntar(f"{licoes_para_o_prompt()}\n\nEDITAL: {e.get('titulo')}\nOBJETO: {str((ex.get('itens') or {}).get('Objeto'))[:900]}\nREQUISITOS: {json.dumps(ex.get('requisitos') or (ex.get('itens') or {}).get('Requisitos'), ensure_ascii=False)[:900]}",
                          '{"quem_pode_concorrer": "...", "exige_tempo_minimo_de_existencia": "anos ou null", "exige_certificacao": [...], "criterios_de_pontuacao": [{"criterio":..., "peso":...}], "area": "...", "territorio": "..."}')
         if not r or not isinstance(r, dict) or "quem_pode_concorrer" not in r:
             registrar_erro("fora_do_esquema", e.get("titulo") or e["id"], "JSON do esquema", "resposta inválida"); continue
-        ex["classificacao_sindico"] = {**r, "em": now_iso(), "origem": "sindico", "status": "proposta — validar pelo Claude"}
+        ex["classificacao_piloto"] = {**r, "em": now_iso(), "origem": "piloto", "status": "proposta — validar pelo Claude"}
         write_json(EXTRAIDOS / f"{e['id']}.json", ex); feitos.append(e["id"])
     return {"classificados": len(feitos), "itens": feitos[:20], "nota": "só classificação; projeto e documentos não são do cargo"}
 
@@ -292,7 +292,7 @@ def _titulos_conhecidos() -> set[str]:
     return из
 
 
-MOTOR29 = ROOT / "config/motor_sindico.json"
+MOTOR29 = ROOT / "config/motor_piloto.json"
 
 
 def _angulo_do_dia() -> dict:
@@ -300,7 +300,7 @@ def _angulo_do_dia() -> dict:
     import random as _r
     m = load_json(MOTOR29)
     secos = {x["id"] for x in (m.get("memoria_negativa") or {}).get("itens", [])}
-    b = load_json(ROOT / "estado/sindico/bordo.json") if (ROOT / "estado/sindico/bordo.json").exists() else {}
+    b = load_json(ROOT / "estado/piloto/bordo.json") if (ROOT / "estado/piloto/bordo.json").exists() else {}
     recentes = {x.get("alvo") for x in (b.get("missoes") or [])[:8]}
     fila = [a for a in m["angulos_de_ataque"] if a["id"] not in secos and a["id"] not in recentes] or \
            [a for a in m["angulos_de_ataque"] if a["id"] not in secos] or m["angulos_de_ataque"]
@@ -351,9 +351,9 @@ def missao_cacar_motor(ia: IALocal, motor_id: str, conhecidos: set[str]) -> tupl
 
 def missao_cacar(ia: IALocal, conhecidos: set[str]) -> tuple[str, list[dict], str]:
     """Caça oportunidade que o sistema NÃO conhece. Abate = título inédito com onde procurar."""
-    from .cargo_sindico import licoes_para_o_prompt
-    from .sindico import PROMPTS_MINERACAO
-    b = load_json(ROOT / "estado/sindico/bordo.json") if (ROOT / "estado/sindico/bordo.json").exists() else {}
+    from .cargo_piloto import licoes_para_o_prompt
+    from .piloto import PROMPTS_MINERACAO
+    b = load_json(ROOT / "estado/piloto/bordo.json") if (ROOT / "estado/piloto/bordo.json").exists() else {}
     feitos = {m.get("alvo") for m in (b.get("missoes") or [])[:10]}
     chave, prompt = next(((k, p) for k, p in PROMPTS_MINERACAO if k not in feitos), PROMPTS_MINERACAO[0])
     r = ia.perguntar((licoes_para_o_prompt() + "\n\n" if licoes_para_o_prompt() else "") + prompt,
@@ -383,7 +383,7 @@ def missao_afiar(ia: IALocal, motor_id: str) -> tuple[str, list[dict], str]:
     ach = [{"titulo": f"{x['tipo']}: {str(x['valor'])[:80]}", "onde": x.get("porque", "")[:120], "url": x["valor"] if x["tipo"] == "url" else None, "novo": False}
            for x in p["tentar"] if x.get("valido")]
     rot_p = ROOT / "estado/rotas_sugeridas_ia.json"; rot = load_json(rot_p) if rot_p.exists() else {"sugestoes": []}
-    rot["sugestoes"].append({**p, "em": now_iso(), "status": "a_confirmar_pelo_titular", "origem": "sindico"})
+    rot["sugestoes"].append({**p, "em": now_iso(), "status": "a_confirmar_pelo_titular", "origem": "piloto"})
     write_json(rot_p, rot)
     return motor_id, ach, (p.get("causa_provavel") or "")[:150]
 
@@ -419,7 +419,7 @@ def escolher_rumo(ia: IALocal, ent: dict) -> dict:
     """ANTES de voar, o Piloto lê a Biblioteca e decide ONDE procurar — não sorteia no vazio.
     Ele olha o que já tem, o que falta, o que rendeu e o que veio seco, e propõe o rumo do voo."""
     m = load_json(MOTOR29)
-    b = load_json(ROOT / "estado/sindico/bordo.json") if (ROOT / "estado/sindico/bordo.json").exists() else {}
+    b = load_json(ROOT / "estado/piloto/bordo.json") if (ROOT / "estado/piloto/bordo.json").exists() else {}
     rad = load_json(ROOT / "dados/empresas/radar_piloto.json") if (ROOT / "dados/empresas/radar_piloto.json").exists() else {}
     ultimas = [{"angulo": x.get("alvo"), "abates": x.get("abates", 0)} for x in (b.get("missoes") or [])[:12]]
     secos = [x["id"] for x in (m.get("memoria_negativa") or {}).get("itens", [])]
@@ -503,12 +503,67 @@ def missao_resgate(ia, alvo: dict, conhecidos: set[str]) -> tuple[str, list[dict
     return f"resgate:{alvo['id']}", achados, licao
 
 
+def missao_prospeccao(ia, angulo: dict, conhecidos: set[str]) -> tuple[str, list[dict], str]:
+    """MISSÃO DE EXPANSÃO: descobrir LUGARES novos, não editais.
+
+    O Piloto procura o rastro (quem patrocina alguém), acha a empresa, e valida no site DELA
+    o que ela oferece — sem buscador, lendo as trilhas do próprio site. A fonte validada entra
+    no catálogo; se tiver edital próprio, vira motor e sai da lista de voo para sempre."""
+    from .piloto_busca import buscar, ler_pagina
+    from .prospeccao import (catalogar_patrocinadores, validar_empresa, registrar,
+                             promover_a_motor, publicar as pub_prosp, NIVEIS)
+    from .cobertura import ja_coberto
+
+    nivel = angulo.get("nivel") if angulo.get("nivel") in NIVEIS else "federal"
+    r = ia.perguntar(
+        f"MISSÃO DE EXPANSÃO — nível {nivel} ({NIVEIS[nivel]['rotulo']}).\n"
+        f"OBJETIVO: {angulo.get('pergunta')}\n"
+        f"ONDE COSTUMA ESTAR: {', '.join(NIVEIS[nivel]['onde_procurar'])}\n\n"
+        "Não procure editais. Procure PÁGINAS QUE LISTAM APOIADORES: 'nossos parceiros', "
+        "'quem nos apoia', 'patrocinadores', 'apoio', no site de associações, ONGs, hospitais "
+        "filantrópicos, festivais e projetos culturais. É ali que as empresas que financiam "
+        "terceiro setor se declaram.",
+        '{"consultas": ["consulta 1", "consulta 2"]}')
+    consultas = [c for c in ((r or {}).get("consultas") or []) if isinstance(c, str)][:2] or \
+                [f"\"nossos parceiros\" OR \"quem nos apoia\" associação {NIVEIS[nivel]['rotulo']}"]
+
+    novas, validadas, motores, paginas = [], 0, [], 0
+    for c in consultas:
+        for b in buscar(c, maximo=5):
+            if paginas >= 4:
+                break
+            html = ler_pagina(b["url"], limite=20000)
+            if len(html) < 400:
+                continue
+            paginas += 1
+            for emp in catalogar_patrocinadores(html, b["url"])[:6]:
+                if ja_coberto(emp["site"])[0]:
+                    continue
+                v = validar_empresa(emp["dominio"])
+                it = registrar(emp, v, nivel=nivel, angulo=angulo.get("id", ""))
+                if v.get("tem_programa"):
+                    validadas += 1
+                    novas.append({"titulo": f"{emp['nome']} — {', '.join(it.get('tipos') or [])}",
+                                  "onde": emp["site"], "url": emp["site"],
+                                  "trecho": next(iter(v["tipos"].values()), {}).get("trecho", "")[:180],
+                                  "porque": f"fonte nova de recurso ({nivel})", "novo": True,
+                                  "confirmado_na_pagina": True, "fonte_nova": True})
+                if v.get("vira_motor"):
+                    m = promover_a_motor(emp["dominio"])
+                    if m.get("motor_criado"):
+                        motores.append(m["motor_criado"])
+    pub_prosp()
+    licao = (f"expansão {nivel}: {paginas} página(s) de apoiadores lida(s) → {validadas} empresa(s) com programa"
+             + (f" → {len(motores)} motor(es) novo(s): {', '.join(motores)}" if motores else " → nenhum motor novo"))
+    return f"expansao:{nivel}", novas, licao
+
+
 def ciclo(porta: int | None = None) -> dict:
     """VOO DO PILOTO: missões sorteadas, uma de cada vez, com diário de bordo."""
     from .esquadrilha import sortear, abrir_missao, fechar_missao, resumo
-    from .cargo_sindico import ocupante
+    from .cargo_piloto import ocupante
     c = cfg(); hoje = date.today().isoformat(); t0 = time.time()
-    orc = c.get("orcamento", {}); par = (load_json(ROOT / "config/cargo_sindico.json") or {}).get("parametros", {})
+    orc = c.get("orcamento", {}); par = (load_json(ROOT / "config/cargo_piloto.json") or {}).get("parametros", {})
     ent = entender()
     ia = IALocal(porta=porta) if porta else IALocal()
     rel = {"em": now_iso(), "modelo": c.get("modelo_vencedor"), "ocupante": ocupante().get("nome"),
@@ -552,9 +607,9 @@ def ciclo(porta: int | None = None) -> dict:
             if m["tipo"] == "resgate":
                 alvo, ach, licao = missao_resgate(ia, m["_alvo"], conhecidos)
             elif m.get("motor") == "sindico-aberto":
-                if rumo and (m["ordem"] % 2 == 1):                     # alterna rumo do Piloto e ângulo do catálogo
-                    from .piloto_busca import caçar as _cacar
-                    ach, licao, _c = _cacar(ia, rumo, conhecidos); alvo = rumo["id"]
+                _ang = rumo if rumo else {}
+                if (_ang.get("alvo") in ("rastro", "site", "empresa")) or (m["ordem"] % 2 == 0):
+                    alvo, ach, licao = missao_prospeccao(ia, {**_ang, "nivel": _ang.get("nivel") or "federal"}, conhecidos)
                 else:
                     alvo, ach, licao = missao_motor29(ia, conhecidos)
             elif m["tipo"] == "cacar_oportunidade":
@@ -608,10 +663,12 @@ def ciclo(porta: int | None = None) -> dict:
     rel["ao_vivo"] = _vivo_montar()
     from .aprendizados_piloto import publicar as _pub_apr
     rel["aprendizados"] = _pub_apr()
+    from .prospeccao import publicar as _pub_pro
+    rel["prospeccao"] = _pub_pro()
     rel["anuncio"] = (f"Esquadrilha {hoje} ({rel['ocupante']}): {len(rel['missoes'])} missão(ões) — "
                       f"{rel['abates']} alvo(s) novo(s) abatido(s), {rel['propostas']} proposta(s) ao todo, {rel['minutos']} min de voo.")
     write_json(PASTA / f"relatorio-{hoje}.json", rel)
-    write_json(ROOT / "docs/dados/sindico.json", rel)
+    write_json(ROOT / "docs/dados/piloto.json", rel)
     return rel
 
 

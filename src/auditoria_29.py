@@ -155,10 +155,10 @@ def limpar_acervo() -> dict:
     d["itens"] = itens
     d["total"] = len(itens)
     d["limpeza"] = {"em": now_iso(), "removidos": len(fora), "motivos": dict(motivos.most_common(10)),
-                    "onde_ficaram": "estado/sindico/aprendizados/acervo_fora_do_objeto.json",
+                    "onde_ficaram": "estado/piloto/aprendizados/acervo_fora_do_objeto.json",
                     "regra": "não se apaga sem guardar: o descartado vira matéria de estudo, não lixo"}
     write_json(arq, d)
-    pasta = ROOT / "estado/sindico/aprendizados"
+    pasta = ROOT / "estado/piloto/aprendizados"
     pasta.mkdir(parents=True, exist_ok=True)
     write_json(pasta / "acervo_fora_do_objeto.json",
                {"em": now_iso(), "total": len(fora), "motivos": dict(motivos), "itens": fora})

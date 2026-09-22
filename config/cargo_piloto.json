@@ -1,7 +1,7 @@
 {
  "versao": 2,
  "atualizado_em": "2026-09-22",
- "cargo": "PILOTO — sniper de oportunidades (antes: Síndico)",
+ "cargo": "PILOTO — sniper de oportunidades (antes: Piloto)",
  "principio": "O CARGO é do sistema; a IA é o ocupante. Trocar o ocupante é trocar uma linha em 'ocupante_atual'. Nenhum outro arquivo muda: o contrato (tarefas, esquema de resposta, validação, métricas) é do cargo, não do modelo.",
  "escopo": {
   "faz": [
@@ -19,7 +19,7 @@
    "decidir inscrição",
    "qualquer juízo sobre mérito da associação"
   ],
-  "quem_faz_o_resto": "o Claude (a cada 3 dias) e o titular — elaboração de projeto e documentos saiu do Síndico em 22/09/2026 por decisão do titular"
+  "quem_faz_o_resto": "o Claude (a cada 3 dias) e o titular — elaboração de projeto e documentos saiu do Piloto em 22/09/2026 por decisão do titular"
  },
  "criterio_de_contratacao": {
   "assertividade_minima": 0.5,
@@ -46,7 +46,7 @@
    "minutos_120_itens": 20.5
   },
   "por_que": "único candidato medido acima dos 50% exigidos, com zero prazos inventados, 2 GB e o mais rápido dos testados. O Qwen2.5-3B foi reprovado por 58 falsos positivos em 78 reprovados; o 7B é pesado e lento demais para 4 ciclos diários; o Gemma não subiu.",
-  "fraqueza_conhecida": "cauteloso: reprovou 8 de 10 aprovados no teste. Mitigação: o veredito 'reprovado' do Síndico nunca arquiva sozinho — vira proposta; e a memória de erros corrige o prompt a cada rodada."
+  "fraqueza_conhecida": "cauteloso: reprovou 8 de 10 aprovados no teste. Mitigação: o veredito 'reprovado' do Piloto nunca arquiva sozinho — vira proposta; e a memória de erros corrige o prompt a cada rodada."
  },
  "banco_de_reserva": [
   {
@@ -82,14 +82,14 @@
    "porque": "licença MIT e forte em instrução; português a verificar"
   }
  ],
- "como_trocar_o_sindico": [
-  "1. rodar o workflow sindico.yml em modo 'avaliar' apontando o candidato (ou deixar o ciclo noturno avaliar o reserva do dia)",
+ "como_trocar_o_piloto": [
+  "1. rodar o workflow piloto.yml em modo 'avaliar' apontando o candidato (ou deixar o ciclo noturno avaliar o reserva do dia)",
   "2. se o candidato bater o ocupante nas métricas do critério, o próprio sistema grava a troca em 'ocupante_atual' e arquiva o anterior em 'ex_ocupantes'",
   "3. nada mais muda: tarefas, esquemas, validação, painel e o resto do Eldorado continuam iguais"
  ],
  "ex_ocupantes": [],
  "memoria_de_erros": {
-  "arquivo": "estado/sindico/memoria_erros.json",
+  "arquivo": "estado/piloto/memoria_erros.json",
   "regra": "cada erro medido (falso positivo, falso negativo, resposta fora do esquema) vira uma linha com o exemplo; as 12 mais frequentes entram no prompt como 'erros a não repetir' na rodada seguinte — é assim que o ocupante evolui sem trocar de modelo"
  },
  "missao": {
@@ -117,7 +117,7 @@
    "cacar_oportunidade": 0.55,
    "afiar_motor": 0.25,
    "descobrir_local": 0.2,
-   "regra": "sorteio entre os 4 motores do Síndico; no motor 29 o ângulo de ataque também é sorteado, com rodízio e memória negativa"
+   "regra": "sorteio entre os 4 motores do Piloto; no motor 29 o ângulo de ataque também é sorteado, com rodízio e memória negativa"
   },
   "confianca_minima_para_propor": 0.6,
   "maximo_propostas_por_ciclo": 25,
@@ -133,7 +133,7 @@
    "propor URL malformada",
    "afirmar prazo (fora do escopo atual)"
   ],
-  "motores_do_sindico": {
+  "motores_do_piloto": {
    "ids": [
     "empresas-incentivadas",
     "motor-gife",
@@ -141,7 +141,7 @@
     "sindico-aberto"
    ],
    "porque": "Rouanet, diários e portais conhecidos só releem o que já está mapeado. O dinheiro novo está nas empresas incentivadoras (26), na base ICMS/Lucro Real (27), no patrocínio privado (28) e no que ninguém catalogou ainda (29, busca aberta).",
-   "fora_do_escopo": "diários oficiais, Rouanet/Salic, PNCP, plataformas já conhecidas — esses são trabalho dos motores regulares, não do Síndico"
+   "fora_do_escopo": "diários oficiais, Rouanet/Salic, PNCP, plataformas já conhecidas — esses são trabalho dos motores regulares, não do Piloto"
   },
   "resgates_por_voo": 8,
   "prioridade": "verificar e alimentar primeiro; explorar so o que sobrar do voo",

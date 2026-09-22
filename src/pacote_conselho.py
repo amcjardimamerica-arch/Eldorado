@@ -1,6 +1,6 @@
-"""PACOTE DO CONSELHO — a cada 3 dias, o Claude valida o que o Síndico não obteve.
+"""PACOTE DO CONSELHO — a cada 3 dias, o Claude valida o que o Piloto não obteve.
 
-Gera estado/pacote_conselho.md com: o que o Síndico fez nos últimos 3 dias (por nível), o que
+Gera estado/pacote_conselho.md com: o que o Piloto fez nos últimos 3 dias (por nível), o que
 ficou sem solução, o RELATÓRIO DE APRENDIZADO E BLOQUEIOS (uma linha por evento), as propostas
 que aguardam validação (enquadramentos, rotas sugeridas, extrações), e as perguntas que o
 conselho precisa responder. O Claude abre o arquivo, valida, corrige e anota o modelo com que
@@ -12,7 +12,7 @@ from datetime import date, timedelta
 from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-P = ROOT / "estado/sindico"
+P = ROOT / "estado/piloto"
 
 
 def montar(dias: int = 3) -> dict:
@@ -29,13 +29,13 @@ def montar(dias: int = 3) -> dict:
     enq = []
     for f in EXTRAIDOS.glob("*.json"):
         d = load_json(f)
-        for a, v in (d.get("enquadramento_sindico") or {}).items():
+        for a, v in (d.get("enquadramento_piloto") or {}).items():
             if str(v.get("status", "")).startswith("proposta"):
                 enq.append({"edital": d.get("edital_id") or f.stem, "assoc": a, "ganharia": v.get("ganharia"), "faltam": v.get("documentos_faltantes")})
-    cfg = load_json(ROOT / "config/sindico.json") if (ROOT / "config/sindico.json").exists() else {}
+    cfg = load_json(ROOT / "config/piloto.json") if (ROOT / "config/piloto.json").exists() else {}
     L = [f"# Pacote do conselho — validação do Claude ({hoje.isoformat()}, últimos {dias} dias)", "",
-         f"Síndico: modelo **{cfg.get('modelo_vencedor') or 'não eleito'}**. Ao responder, o Claude anota o modelo com que trabalhou.", "",
-         "## O que o Síndico fez", ""]
+         f"Piloto: modelo **{cfg.get('modelo_vencedor') or 'não eleito'}**. Ao responder, o Claude anota o modelo com que trabalhou.", "",
+         "## O que o Piloto fez", ""]
     for r in rels:
         L.append(f"- {r.get('em','')[:16]} — {r.get('anuncio','')}")
     if not rels: L.append("- nenhum ciclo concluído no período")
@@ -69,7 +69,7 @@ def montar(dias: int = 3) -> dict:
           "2. Quais enquadramentos avançam para preparação de documentos e projeto (nível 2)?",
           "3. Que bloqueios exigem ação do titular (coleta local, documento ao órgão, decisão)?",
           "4. O modelo eleito deve continuar? (reexecutar o benchmark se a taxa de propostas inválidas subir)",
-          "", "_Ao final, registrar em `estado/sindico/validacoes_claude.jsonl`: data, modelo do Claude, decisões._"]
+          "", "_Ao final, registrar em `estado/piloto/validacoes_claude.jsonl`: data, modelo do Claude, decisões._"]
     (ROOT / "estado/pacote_conselho.md").write_text("\n".join(L), encoding="utf-8")
     (ROOT / "docs/dados/pacote_conselho.md").write_text("\n".join(L), encoding="utf-8")
     res = {"em": now_iso(), "dias": dias, "ciclos": len(rels), "bloqueios": len(apr), "pesquisas": len(mem), "rotas_pendentes": len(pend), "enquadramentos_pendentes": len(enq)}

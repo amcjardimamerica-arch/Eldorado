@@ -62,9 +62,9 @@ Para deixar automático: **Tarefas agendadas** → todo dia às 07h → o mesmo 
 ## ROTINA DIÁRIA (a partir de 21/09): ao ligar o Claude no computador
 
 > Atualize o repositório Eldorado, abra `estado/pacote_desktop.md` e execute a rotina diária: o que estiver
-> desatualizado (motores aguardando coleta local, oportunidades parciais, extrações propostas pelo Síndico)
+> desatualizado (motores aguardando coleta local, oportunidades parciais, extrações propostas pelo Piloto)
 > é atualizado com o navegador e o IP brasileiro. A cada 3 dias, abra também `estado/pacote_conselho.md`,
-> convoque o conselho, valide/corrija o que o Síndico não obteve e registre em
-> `estado/sindico/validacoes_claude.jsonl` a data, o modelo com que trabalhou e as decisões.
+> convoque o conselho, valide/corrija o que o Piloto não obteve e registre em
+> `estado/piloto/validacoes_claude.jsonl` a data, o modelo com que trabalhou e as decisões.
 
 Para automatizar: **Tarefas agendadas** → todo dia às 07h → o texto acima.

@@ -52,7 +52,7 @@ de Engenharia da Computação — todos com produção em Python e sistemas dist
 > que **a métrica principal do painel está contaminada por dado de laboratório**. Recomendo
 > suspender o ciclo contínuo: 18 voos que produzem zero são 18 oportunidades de o sistema
 > gravar lixo por cima de dado bom — e isso já aconteceu três vezes hoje com o painel e uma
-> com o `config/sindico.json`.
+> com o `config/piloto.json`.
 
 ### 2.2 Pessimista — *Marcos Villela, chief engineer (busca)*
 
@@ -144,7 +144,7 @@ de Engenharia da Computação — todos com produção em Python e sistemas dist
 | 5 | Voo saía com 1 resgate em vez de 6 | reserva gravada em memória, não em arquivo | reserva persistida; item não atendido volta à fila | **corrigido** |
 | 6 | Caixa do Piloto em todas as páginas | seção fora da lista `VISTAS` que controla as abas | escondida em toda vista que não seja a inicial | **corrigido** |
 | 7 | Painel decorativo: movimento sem informação | estado publicado só ao fim do voo, sem carimbo para o painel julgar | bloco ao vivo com carimbo de hora; o painel recalcula pelo relógio de quem olha e mostra SEM SINAL + botão de acionamento | **corrigido** |
-| 8 | `config/sindico.json` sobrescrito por um voo | orçamento tratado como estado de execução | protegido no workflow | **corrigido** |
+| 8 | `config/piloto.json` sobrescrito por um voo | orçamento tratado como estado de execução | protegido no workflow | **corrigido** |
 | 9 | `docs/dados/dados/` criado a cada voo | `cp -r` copia para dentro quando o destino existe | copia o conteúdo, não a pasta | **corrigido** |
 | 10 | Painel perdido 3× | job de dados e resolução de rebase com `--ours` | proteção nos dois workflows | **corrigido** |
 | 11 | Abate falso (`lab-motor`) inflando o painel | dado de teste nunca removido | **pendente** — remover hoje | aberto |
@@ -175,5 +175,5 @@ dez dados ausentes.
 ---
 
 *Parecer emitido pelo conselho de sete posições a pedido do titular. Os números foram lidos
-de `estado/sindico/bordo.json`, `estado/sindico/fila_resgate.json`,
-`estado/sindico/diagnostico_busca.json` e `dados/editais/2026-09-09-eldorado-467-completo.json`.*
+de `estado/piloto/bordo.json`, `estado/piloto/fila_resgate.json`,
+`estado/piloto/diagnostico_busca.json` e `dados/editais/2026-09-09-eldorado-467-completo.json`.*

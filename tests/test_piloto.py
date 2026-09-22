@@ -1,6 +1,6 @@
-"""O Síndico (21/09): gabarito, benchmark eliminatório, mineração sem ociosidade e memória curta."""
+"""O Piloto (21/09): gabarito, benchmark eliminatório, mineração sem ociosidade e memória curta."""
 import json, pathlib, unittest
-from src.sindico import gabarito, CANDIDATOS, MAPA_VEREDITO, PROMPTS_MINERACAO, minerar, entender
+from src.piloto import gabarito, CANDIDATOS, MAPA_VEREDITO, PROMPTS_MINERACAO, minerar, entender
 from src.ia_local import IALocal
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
@@ -8,7 +8,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 def falso(resp): return lambda payload: {"model": "sim", "choices": [{"message": {"content": json.dumps(resp, ensure_ascii=False)}}]}
 
 
-class TesteSindico(unittest.TestCase):
+class TestePiloto(unittest.TestCase):
     def test_gabarito_vem_das_validacoes_do_titular(self):
         g = gabarito()
         self.assertGreaterEqual(len(g), 400)
@@ -20,10 +20,10 @@ class TesteSindico(unittest.TestCase):
         self.assertEqual({c["id"] for c in CANDIDATOS}, {"qwen2.5-3b", "qwen2.5-7b", "gemma-2-2b", "llama-3.2-3b"})
         self.assertTrue(all(c["gb"] <= 5 and c["url"].startswith("https://huggingface.co/") for c in CANDIDATOS))
         self.assertEqual(MAPA_VEREDITO["fomento_osc"], "aprovado")
-        wf = (ROOT / ".github/workflows/sindico.yml").read_text(encoding="utf-8")
+        wf = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         self.assertIn("actions/cache@v4", wf); self.assertIn("ia_local/modelos", wf); self.assertIn("benchmark", wf)
         self.assertIn("Pousar 3 segundos e decolar de novo", wf)                         # ciclo contínuo: um voo chama o seguinte
-        self.assertIn("prazo inventado", (ROOT / "src/sindico.py").read_text(encoding="utf-8").lower().replace("prazos inventados", "prazo inventado"))
+        self.assertIn("prazo inventado", (ROOT / "src/piloto.py").read_text(encoding="utf-8").lower().replace("prazos inventados", "prazo inventado"))
 
     def test_mineracao_gera_prompt_diferente_e_registra_negativo(self):
         self.assertGreaterEqual(len(PROMPTS_MINERACAO), 5)
@@ -40,8 +40,8 @@ class TesteSindico(unittest.TestCase):
         e = entender()
         for k in ("editais", "analises", "fontes", "leis", "motores", "empresas"):
             self.assertIn(k, e); self.assertTrue(e[k].get("total") is not None)
-        self.assertTrue((ROOT / "estado/sindico/catalogo_entendimento.json").exists())
-        cfg = json.loads((ROOT / "config/sindico.json").read_text(encoding="utf-8"))
+        self.assertTrue((ROOT / "estado/piloto/catalogo_entendimento.json").exists())
+        cfg = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
         self.assertIn("orcamento", cfg); self.assertIn("prazo inventado", cfg["regra"])
 
 
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
 class TesteConstituicaoEConselho(unittest.TestCase):
     def test_constituicao_tres_niveis_e_regra(self):
-        c = json.loads((ROOT / "config/constituicao_sindico.json").read_text(encoding="utf-8"))
+        c = json.loads((ROOT / "config/constituicao_piloto.json").read_text(encoding="utf-8"))
         self.assertEqual([p["nivel"] for p in c["prioridades"]], [1, 2, 3])
         self.assertIn("trecho literal", c["regra_inegociavel"])
         self.assertIn("ocioso", c["premissa"].lower())
@@ -60,7 +60,7 @@ class TesteConstituicaoEConselho(unittest.TestCase):
 
     def test_acionamento_automatico_e_pacote_do_conselho(self):
         wf = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
-        self.assertIn("Acionar o Sindico quando houver edital novo", wf); self.assertIn("actions: write", wf)
+        self.assertIn("Acionar o Piloto quando houver edital novo", wf); self.assertIn("actions: write", wf)
         wc = (ROOT / ".github/workflows/conselho.yml").read_text(encoding="utf-8"); self.assertIn("*/3", wc)
         from src.pacote_conselho import montar
         r = montar(3); self.assertIn("bloqueios", r)
@@ -73,5 +73,5 @@ class TesteConstituicaoEConselho(unittest.TestCase):
         self.assertTrue(any(v["modelo"] == "Claude Fable 5.1" for v in an.values()))
         html = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn("com o modelo <b>${esc(R.modelo)}</b>", html); self.assertIn("Constituição:", html)
-        from src.sindico import aprender, fila_nivel1
+        from src.piloto import aprender, fila_nivel1
         self.assertTrue(callable(aprender)); self.assertIsInstance(fila_nivel1(), list)

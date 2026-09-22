@@ -6,7 +6,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 class TesteFinalidade(unittest.TestCase):
     def test_o_piloto_nao_concorre_com_os_motores(self):
-        c = json.loads((ROOT / "config/cargo_sindico.json").read_text(encoding="utf-8"))
+        c = json.loads((ROOT / "config/cargo_piloto.json").read_text(encoding="utf-8"))
         f = c["finalidade"]
         self.assertIn("NAO concorre com os motores", f["resumo"])
         self.assertIn("1_verificar_e_alimentar", f["duas_missoes"])
@@ -18,7 +18,7 @@ class TesteFinalidade(unittest.TestCase):
         self.assertGreaterEqual(c["parametros"]["resgates_por_voo"], 6)      # verificar vem primeiro
 
     def test_angulos_procuram_o_que_motor_nao_ve(self):
-        m = json.loads((ROOT / "config/motor_sindico.json").read_text(encoding="utf-8"))
+        m = json.loads((ROOT / "config/motor_piloto.json").read_text(encoding="utf-8"))
         self.assertIn("so vale o que os 29 motores NAO cobrem", m["regra_de_ouro"])
         alvos = {a["alvo"] for a in m["angulos_de_ataque"]}
         self.assertIn("rastro", alvos)                                       # rastro de edital futuro
@@ -53,7 +53,7 @@ class TesteMapaDeCobertura(unittest.TestCase):
     def test_achado_coberto_por_motor_vai_para_quarentena(self):
         from src.aprendizados_piloto import MOTIVOS
         self.assertIn("ja_coberto_por_motor", MOTIVOS)
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertIn('_quar(_a, "ja_coberto_por_motor"', src)
         self.assertIn("não é trabalho do Piloto", MOTIVOS["ja_coberto_por_motor"])
 
@@ -94,5 +94,5 @@ class TesteRevezamentoDasVias(unittest.TestCase):
         self.assertEqual(CHAVES["brave"][0], "BRAVE_SEARCH_KEY")
         self.assertIn("api.search.brave.com", CHAVES["brave"][1])
         self.assertEqual(_por_api("brave", "x", 5), [])                        # sem chave não quebra o voo
-        w = (ROOT / ".github/workflows/sindico.yml").read_text(encoding="utf-8")
+        w = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         self.assertIn("BRAVE_SEARCH_KEY: ${{ secrets.BRAVE_SEARCH_KEY }}", w)

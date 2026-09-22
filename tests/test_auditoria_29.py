@@ -39,7 +39,7 @@ class TesteAuditoriaDosMotores(unittest.TestCase):
     def test_acervo_foi_limpo_do_que_nao_serve(self):
         e = _efetividade_do_acervo()
         self.assertGreater(e["efetividade"], 0.9, "depois da limpeza o acervo tem de ser quase todo pertinente")
-        f = json.loads((ROOT / "estado/sindico/aprendizados/acervo_fora_do_objeto.json").read_text(encoding="utf-8"))
+        f = json.loads((ROOT / "estado/piloto/aprendizados/acervo_fora_do_objeto.json").read_text(encoding="utf-8"))
         self.assertGreater(f["total"], 200)                               # o descartado ficou guardado
         self.assertTrue(all(v.get("motivo") for v in f["itens"].values()))  # cada um com seu motivo
 
@@ -78,7 +78,7 @@ class TesteAprendizadosDoPiloto(unittest.TestCase):
         self.assertTrue(ja_tratado("https://ja.org/e"))
         t = json.loads(TRATADOS.read_text(encoding="utf-8"))["itens"]["https://ja.org/e"]
         self.assertTrue(t["entregue_ao_claude"])                          # passa a ser avaliação do Claude
-        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
         self.assertIn("não se volta no que já foi abordado", src)
         self.assertIn('ach = _r["uteis"]', src)                           # só o que serve entra no sistema
 

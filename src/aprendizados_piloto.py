@@ -4,7 +4,7 @@ Regra de ouro: **só informação correta entra na Biblioteca**. Insucesso não 
 mistura ao acervo — vai para a pasta própria do Piloto, onde serve de base para melhorar e
 não contamina o que é bom.
 
-    estado/sindico/aprendizados/
+    estado/piloto/aprendizados/
         avaliacoes/     o julgamento de cada missão: serviu? por quê não?
         quarentena/     achados sem efetividade, com o motivo do descarte
         licoes.json     o que o Piloto aprendeu, em forma de regra
@@ -23,7 +23,7 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-PASTA = ROOT / "estado/sindico/aprendizados"
+PASTA = ROOT / "estado/piloto/aprendizados"
 AVAL = PASTA / "avaliacoes"
 QUAR = PASTA / "quarentena"
 LICOES = PASTA / "licoes.json"

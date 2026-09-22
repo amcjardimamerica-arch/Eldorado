@@ -10,7 +10,7 @@ Nenhum voo começa no escuro. A cada decolagem o Piloto:
      e por quê;
   5. dessa aposta nasce o PROMPT da pesquisa daquele voo.
 
-O briefing fica guardado em estado/sindico/briefings/ e alimenta o voo seguinte — é assim que
+O briefing fica guardado em estado/piloto/briefings/ e alimenta o voo seguinte — é assim que
 a linha de pesquisa evolui em vez de girar em círculo.
 """
 from __future__ import annotations
@@ -22,7 +22,7 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-PASTA = ROOT / "estado/sindico/briefings"
+PASTA = ROOT / "estado/piloto/briefings"
 PUB = ROOT / "docs/dados/briefings_piloto.json"
 LIMITE_HISTORICO = 8
 
@@ -57,7 +57,7 @@ def _estado_do_banco() -> dict:
         f["empresas_no_radar"] = len(emp)
         f["radar_a_pesquisar"] = sum(1 for e in emp.values() if e.get("marcador") == "a_pesquisar")
         f["setores_ja_vistos"] = sorted({a for e in emp.values() for a in (e.get("angulos") or [])})[:14]
-    fr = ROOT / "estado/sindico/fila_resgate.json"
+    fr = ROOT / "estado/piloto/fila_resgate.json"
     if fr.exists():
         its = (load_json(fr).get("itens") or {}).values()
         f["editais_incompletos_na_fila"] = sum(1 for v in its if v.get("estado") == "aguardando")

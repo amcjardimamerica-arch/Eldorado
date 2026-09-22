@@ -67,7 +67,7 @@ ninguém tinha dito a ele qual é o nosso objeto.
 
 **Filtro de objeto na captura** (`pncp-api`): o que não serve à associação não entra mais no
 acervo. Removidos 334 editais que já estavam lá — guardados em
-`estado/sindico/aprendizados/acervo_fora_do_objeto.json` com o motivo de cada descarte,
+`estado/piloto/aprendizados/acervo_fora_do_objeto.json` com o motivo de cada descarte,
 porque descartado não é lixo: é matéria de estudo.
 
 **Cinco motores marcados para coleta local**: `do-goiania`, `do-goias`, `dje-tjgo`,
@@ -82,7 +82,7 @@ edital de apoio, fomento, patrocínio, prêmio, organizações da sociedade civi
 
 ## 4. O Piloto: aprender com o insucesso
 
-Criada a pasta `estado/sindico/aprendizados/`, que é só dele:
+Criada a pasta `estado/piloto/aprendizados/`, que é só dele:
 
 | pasta | o que guarda |
 |---|---|

@@ -102,7 +102,7 @@ def t_classificar_objeto(ia: IALocal, e: dict, texto: str) -> dict | None:
           parceria já celebrada, licitação de compra)
     Veredito derivado: veto → reprovado; fomento e sem veto → aprovado; o resto → atenção."""
     try:
-        from .cargo_sindico import licoes_para_o_prompt
+        from .cargo_piloto import licoes_para_o_prompt
         licoes = licoes_para_o_prompt()
     except Exception:
         licoes = ""
