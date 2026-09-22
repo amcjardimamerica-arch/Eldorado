@@ -1,0 +1,382 @@
+{
+  "em": "2026-09-21T15:42:44+00:00",
+  "cadencia_dias": 7,
+  "total": 26,
+  "por_estado": {
+    "BLOQUEADO": 1,
+    "PARADO": 0,
+    "NUNCA RODOU": 0,
+    "LENDO SEM ACHAR": 12,
+    "FUNCIONANDO": 13
+  },
+  "correcoes_de_hoje": [
+    "regulares nunca mais são cortados pelo limite de 40 por execução (as 4 plataformas ficaram 14 dias sem rodar por isso)",
+    "toda plataforma configurada vira sensor próprio (Prosas, SALIC e Secult-GO nunca tinham rodado por deduplicação de URL)",
+    "8 motores novos a partir do radar de 16/09 e da lacuna medida: OVG, Goiás Social, fundos estaduais GO, FAPEG, prefeituras das 50 maiores, editais de empresas incentivadoras, MPs de reparação, CNPq/Setec de extensão",
+    "Mapa das OSC mantido desativado com motivo (base cadastral, não publica edital)"
+  ],
+  "itens": [
+    {
+      "id": "pncp-api",
+      "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
+      "tipo": "api",
+      "estado": "BLOQUEADO",
+      "base": "todas as páginas falharam em 2026-09-21",
+      "ultima": "2026-09-21T12:23",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "311 de 317 registros citam a Lei 14.133 e nenhum a 13.019: a via do PNCP é a da contratação.",
+        "otimista": "é o único lugar onde 5.570 municípios publicam de forma padronizada; o arquivo do edital hospedado lá é documento oficial.",
+        "neutro_decide": "manter como DESCOBERTA (número do processo + órgão), nunca como fonte; o filtro de objeto já barra o ruído."
+      }
+    },
+    {
+      "id": "camara-goiania-pl",
+      "nome": "Câmara Municipal de Goiânia — projetos de lei",
+      "tipo": "legislativo",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:20",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "lê e não acha: projetos de utilidade pública raramente vêm com edital.",
+        "otimista": "é onde nascem as declarações de utilidade pública municipal, requisito de vários editais.",
+        "neutro_decide": "manter em cadência semanal, não diária: é insumo de habilitação, não de captação."
+      }
+    },
+    {
+      "id": "cnj-destinacoes",
+      "nome": "CNJ — destinações de penas e prestações pecuniárias",
+      "tipo": "diario_justica",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:20",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "lê 200 e nunca achou: a página do CNJ é institucional, não lista destinações.",
+        "otimista": "as destinações de pena são a família mais subexplorada do sistema.",
+        "neutro_decide": "TROCAR a rota: a fonte real são os tribunais estaduais (TJGO já coberto) — CNJ vira referência, não motor."
+      }
+    },
+    {
+      "id": "dj-trf1-go",
+      "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
+      "tipo": "diario_justica",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:20",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "zero achados sempre; destinações de pena federais são raras em Goiás.",
+        "otimista": "quando vem, vem sem edital e sem disputa.",
+        "neutro_decide": "reduzir para cadência semanal."
+      }
+    },
+    {
+      "id": "dje-tjgo",
+      "nome": "TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)",
+      "tipo": "diario_justica",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:20",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "50 recusas do WAF Cloudflare; não lê há semanas.",
+        "otimista": "as varas de execução penal de Goiânia destinam prestações pecuniárias a entidades — dinheiro certo, sem edital.",
+        "neutro_decide": "manter; só a coleta local desbloqueia — junto com o DO-Goiânia é a prioridade 1."
+      }
+    },
+    {
+      "id": "do-goiania",
+      "nome": "Diário Oficial do Município de Goiânia",
+      "tipo": "diario_oficial",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:20",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "recusa IP estrangeiro há semanas; só lê pela coleta local, que nunca foi rodada.",
+        "otimista": "é o diário da cidade da associação: todo chamamento da SEMASDH, CMDCA e CMAS passa aqui.",
+        "neutro_decide": "manter; a coleta local (.bat) é o único desbloqueio real — prioridade 1 do titular."
+      }
+    },
+    {
+      "id": "plat-cnpq-extensao",
+      "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
+      "tipo": "plataforma",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:24",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "novo; chamadas exigem ICT proponente.",
+        "otimista": "extensão e popularização da ciência aceitam OSC parceira; Setec/MEC idem.",
+        "neutro_decide": "INCLUÍDO hoje em cadência semanal."
+      }
+    },
+    {
+      "id": "plat-empresas-editais-incentivados",
+      "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
+      "tipo": "plataforma",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:24",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "novo; poucas empresas publicam edital próprio.",
+        "otimista": "quem publica (Porto Itapoá, Renner, Maria Emília) distribui milhões sem disputa política.",
+        "neutro_decide": "INCLUÍDO hoje; cruzar com o ranking de 100 empresas de Goiás."
+      }
+    },
+    {
+      "id": "plat-fapeg",
+      "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
+      "tipo": "plataforma",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:25",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "novo; FAP financia pesquisa, OSC só entra como parceira.",
+        "otimista": "FAPERGS e FAPESC apareceram no radar financiando terceiro setor.",
+        "neutro_decide": "INCLUÍDO hoje em cadência semanal."
+      }
+    },
+    {
+      "id": "plat-gife",
+      "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
+      "tipo": "plataforma",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:26",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "lê a home institucional, nunca achou edital.",
+        "otimista": "os associados do GIFE são os maiores investidores sociais do país.",
+        "neutro_decide": "TROCAR a URL para a agenda/oportunidades dos associados; a home não serve."
+      }
+    },
+    {
+      "id": "plat-prefeituras-50-go",
+      "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
+      "tipo": "plataforma",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:29",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "novo; 50 portais heterogêneos, muitos bloqueiam IP estrangeiro.",
+        "otimista": "7 dos 25 editais do radar vieram de prefeituras médias — é a lacuna de cobertura nº 1 (zero fontes diretas).",
+        "neutro_decide": "INCLUÍDO hoje; começa por Goiânia, Aparecida, Anápolis, Rio Verde, Luziânia; coleta local para os bloqueados."
+      }
+    },
+    {
+      "id": "plat-prosas",
+      "nome": "Prosas — editais para o terceiro setor",
+      "tipo": "plataforma",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:29",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "nunca rodou: descartada por deduplicação de URL contra os 260 pontos.",
+        "otimista": "é a maior plataforma de editais do terceiro setor no Brasil.",
+        "neutro_decide": "CORRIGIDO hoje: passa a ter sensor próprio e roda todo dia."
+      }
+    },
+    {
+      "id": "plat-prosas-premios",
+      "nome": "Prosas — prêmios, concursos e cursos para OSCs",
+      "tipo": "plataforma",
+      "estado": "LENDO SEM ACHAR",
+      "base": "leu em 2026-09-21; nunca reconheceu edital",
+      "ultima": "2026-09-21T12:29",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "lê e não reconhece: prêmios a pessoa física não são fomento a OSC.",
+        "otimista": "alguns prêmios aceitam OSC e pagam bem.",
+        "neutro_decide": "manter com o filtro de objeto ativo."
+      }
+    },
+    {
+      "id": "alego-pl",
+      "nome": "Assembleia Legislativa de Goiás — proposições",
+      "tipo": "legislativo",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 17 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:20",
+      "achados_total": 17,
+      "conselho": {
+        "pessimista": "14 achados, todos de projetos de lei — não de editais.",
+        "otimista": "as emendas impositivas estaduais (janela out-nov) nascem aqui.",
+        "neutro_decide": "manter; reclassificar os achados como 'insumo de emenda', não como oportunidade."
+      }
+    },
+    {
+      "id": "do-goias",
+      "nome": "Diário Oficial do Estado de Goiás",
+      "tipo": "diario_oficial",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 22 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:22",
+      "achados_total": 22,
+      "conselho": {
+        "pessimista": "lê 200 mas zero achado em 20 dias: ou o léxico não casa com o formato do ABC, ou o ato fica no PDF.",
+        "otimista": "é onde saem os editais da SECULT, SEDS, SES e os decretos de emenda impositiva.",
+        "neutro_decide": "manter e abrir o PDF da edição: o ato está dentro, não no índice."
+      }
+    },
+    {
+      "id": "dou",
+      "nome": "Diário Oficial da União",
+      "tipo": "diario_oficial",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 8 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:22",
+      "achados_total": 8,
+      "conselho": {
+        "pessimista": "regrediu de 368 matérias/dia para zero por mudança de seletor; corrigido, mas só 2 achados desde então.",
+        "otimista": "é a fonte federal: MDHC, CONANDA, Rouanet, MinC, emendas.",
+        "neutro_decide": "manter; validar por 7 dias se o JSON volta a trazer matérias — se não, ler a seção 3 pela busca avançada."
+      }
+    },
+    {
+      "id": "empresas-incentivadas",
+      "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
+      "tipo": "empresas_incentivo",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-18; 1 achado(s) acumulado(s)",
+      "ultima": "2026-09-18T10:54",
+      "achados_total": 1,
+      "conselho": {
+        "pessimista": "1 achado em 20 dias procurando o SITE da empresa.",
+        "otimista": "o radar mostrou o Porto Itapoá publicando EDITAL próprio de renúncia fiscal — modelo replicável.",
+        "neutro_decide": "manter e SOMAR o motor novo 'empresas-editais-incentivados', que procura o edital e não o site."
+      }
+    },
+    {
+      "id": "plat-abcr",
+      "nome": "ABCR — Associação Brasileira de Captadores",
+      "tipo": "plataforma",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 37 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:24",
+      "achados_total": 37,
+      "conselho": {
+        "pessimista": "idem: vetor de divulgação, 2 recusas em setembro.",
+        "otimista": "23 achados, o segundo mais produtivo.",
+        "neutro_decide": "manter como descoberta; nunca como fonte."
+      }
+    },
+    {
+      "id": "plat-fundos-estaduais-go",
+      "nome": "Fundos estaduais de Goiás com conselho — FIA, Idoso, FUNJUVE, Meio Ambiente",
+      "tipo": "plataforma",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 2 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:26",
+      "achados_total": 2,
+      "conselho": {
+        "pessimista": "novo; fundos publicam via conselho, em resolução, não em edital.",
+        "otimista": "FIA-GO, Idoso, FUNJUVE e FEMA são recursos com destinatário obrigatório: entidades.",
+        "neutro_decide": "INCLUÍDO hoje; ler também as resoluções dos conselhos."
+      }
+    },
+    {
+      "id": "plat-goias-social",
+      "nome": "Goiás Social — programas e editais para entidades",
+      "tipo": "plataforma",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 2 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:27",
+      "achados_total": 2,
+      "conselho": {
+        "pessimista": "novo; risco de página institucional sem edital.",
+        "otimista": "abriga o Auxílio Nutricional que já validamos.",
+        "neutro_decide": "INCLUÍDO hoje."
+      }
+    },
+    {
+      "id": "plat-mp-destinacoes-reparacao",
+      "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
+      "tipo": "plataforma",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 4 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:27",
+      "achados_total": 4,
+      "conselho": {
+        "pessimista": "novo; cada MP tem portal próprio.",
+        "otimista": "MPMG, MPF e MPSE distribuíram reparação a OSC no radar; MPGO tem edital próprio.",
+        "neutro_decide": "INCLUÍDO hoje; MPGO primeiro."
+      }
+    },
+    {
+      "id": "plat-observatorio-3setor",
+      "nome": "Observatório do Terceiro Setor — editais",
+      "tipo": "plataforma",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 35 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:27",
+      "achados_total": 35,
+      "conselho": {
+        "pessimista": "portal de notícia: anuncia, não publica; guardou mídia kit como se fosse edital.",
+        "otimista": "foi o motor mais produtivo em achados (21) — é onde o privado nacional aparece primeiro.",
+        "neutro_decide": "manter como DESCOBERTA; a fonte oficial é sempre localizada depois."
+      }
+    },
+    {
+      "id": "plat-ovg",
+      "nome": "OVG — Organização das Voluntárias de Goiás: editais e chamamentos",
+      "tipo": "plataforma",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 2 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:28",
+      "achados_total": 2,
+      "conselho": {
+        "pessimista": "novo: sem histórico, sem léxico calibrado.",
+        "otimista": "maior operador de repasses a entidades de Goiás com UMA fonte no catálogo — a lacuna mais cara.",
+        "neutro_decide": "INCLUÍDO hoje; primeira leitura na próxima saída."
+      }
+    },
+    {
+      "id": "plat-salic",
+      "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
+      "tipo": "plataforma",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 10 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:29",
+      "achados_total": 10,
+      "conselho": {
+        "pessimista": "nunca rodou (mesma deduplicação); a página do MinC não declara a data-limite.",
+        "otimista": "Rouanet é a oportunidade nacional mais relevante para a A.M.C.",
+        "neutro_decide": "CORRIGIDO hoje; ler a IN vigente para a janela."
+      }
+    },
+    {
+      "id": "plat-secult-go",
+      "nome": "Secult Goiás — Goyazes e Aldir Blanc",
+      "tipo": "plataforma",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 26 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:29",
+      "achados_total": 26,
+      "conselho": {
+        "pessimista": "nunca rodou; e a página de termos de fomento é armadilha (já celebrados).",
+        "otimista": "os 18 editais do PNAB Goiás Ciclo 2 saíram daqui e o sistema não viu.",
+        "neutro_decide": "CORRIGIDO hoje; as 5 rotas (Chamamentos, Goyazes, Fundo, PNAB, LPG) já estão na curadoria."
+      }
+    },
+    {
+      "id": "recorrencia",
+      "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
+      "tipo": "recorrencia",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-09-21; 12 achado(s) acumulado(s)",
+      "ultima": "2026-09-21T12:32",
+      "achados_total": 12,
+      "conselho": {
+        "neutro_decide": "sem parecer registrado — avaliar na próxima auditoria"
+      }
+    }
+  ]
+}
