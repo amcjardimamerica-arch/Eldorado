@@ -1,24 +1,22 @@
-# Pacote do conselho — validação do Claude (2026-09-22, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-09-21, últimos 3 dias)
 
-Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
+Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
 
-## O que o Piloto fez
+## O que o Síndico fez
 
-- 2026-09-22T11:02 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 7 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 1.1 min de voo.
+- nenhum ciclo concluído no período
 
-## Relatório de aprendizado e bloqueios (2)
+## Relatório de aprendizado e bloqueios (0)
 
-- 2026-09-22T11:02 · nível — · **missao** — tentou: afiar_motor · impediu: ValueError: could not convert string to float: 'null' · aprendeu: revisar prompt/esquema
-- 2026-09-22T11:03 · nível — · **missao** — tentou: afiar_motor · impediu: ValueError: could not convert string to float: 'null' · aprendeu: revisar prompt/esquema
+- nenhum bloqueio registrado
 
 ## Pesquisas autônomas do nível 3 (0)
 
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (14)
+### Rotas e pistas sugeridas (13)
 
-- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
