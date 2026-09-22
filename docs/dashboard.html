@@ -307,11 +307,23 @@ box-shadow:0 1px 3px #0002}
 .rk-marc.em_pesquisa{color:#0B4EA2;border-color:#9FC1E8;background:#F3F8FF}
 .rk-marc.concluido{color:#1E7E4B;border-color:#7CE0A8;background:#EAF8F0}
 .rk-pts{text-align:right;font-weight:800;color:#0E2A55}
-.pil-errante{position:absolute;z-index:40;pointer-events:none;animation:pil-passeia 9s ease-in-out infinite}
-.pil-errante .pil-aviao{pointer-events:auto}
-.pil-balao{position:absolute;left:66px;top:4px;background:#0E2A55;color:#fff;font-size:10.5px;padding:2px 9px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.pil-voando-ic{color:#0B4EA2;margin-right:4px}
+.pil-errante{position:absolute;z-index:40;pointer-events:none;height:34px}
+.pil-errante.patrulha{opacity:.72}
+.pil-voa{position:relative;width:62px;height:34px;transform-origin:50% 50%;
+  animation:pil-travessia var(--pil-tempo,11s) ease-in-out infinite}
+.pil-errante .pil-aviao{position:absolute;left:0;top:0;pointer-events:auto}
+@media (prefers-reduced-motion:reduce){.pil-voa{animation:none}}
+.pil-balao{position:absolute;right:0;top:5px;background:#0E2A55;color:#fff;font-size:10.5px;padding:2px 9px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .pil-balao b{color:#9FE3B8}
-@keyframes pil-passeia{0%{transform:translateX(0)}25%{transform:translateX(38%)}50%{transform:translateX(72%)}75%{transform:translateX(30%)}100%{transform:translateX(0)}}
+/* ida com o nariz para a direita, meia-volta na borda, volta com o nariz para a esquerda,
+   e outra meia-volta ao chegar — o sentido troca a cada ponta da travessia */
+@keyframes pil-travessia{
+  0%   {transform:translateX(0)              scaleX(1)}
+  44%  {transform:translateX(var(--pil-dist,240px)) scaleX(1)}
+  50%  {transform:translateX(var(--pil-dist,240px)) scaleX(-1)}
+  94%  {transform:translateX(0)              scaleX(-1)}
+  100% {transform:translateX(0)              scaleX(1)}}
 .pil-resg{background:#FFF8EC;border:1px solid #EAD6A8;border-radius:10px;padding:8px 10px;margin:8px 0}
 .pil-resg-l{display:grid;grid-template-columns:26px 1fr auto;gap:7px;align-items:center;font-size:11.5px;padding:2px 0;border-bottom:1px dotted #EDE0C4}
 .pil-urg{display:inline-flex;align-items:center;justify-content:center;background:#C8961E;color:#fff;border-radius:7px;font-size:10px;font-weight:800;padding:1px 0}
@@ -2939,7 +2951,7 @@ function desenhaPostoPiloto(alvo){
   const at=E.missao_atual, L=E.ultimas||[], tot=E.total_abates||0;
   const motores=Object.entries(E.abates||{}).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
   el.innerHTML=`<div class="pil-posto">
-    <h4>${aviaoDoPiloto(at&&at.motor?at.motor:"", at?"em missão":"esquadrilha em terra")} Esquadrilha do Piloto <span class=meta style="font-weight:400">— patrulha dos motores 26, 27, 28 e 29</span>
+    <h4>${at?'<span class="pil-voando-ic" title="em missão">✈</span>':""} Esquadrilha do Piloto <span class=meta style="font-weight:400">— patrulha dos motores 26, 27, 28 e 29</span>
       <button class="pil-partida ${at?"girando":""}" id="${(alvo||"pil-posto")}-helice-bt" onclick="darPartida('${(alvo||"pil-posto")}')" title="dar a partida: o Piloto decola no próximo ciclo do GitHub">
         <svg viewBox="0 0 24 24" aria-hidden="true"><g class="pil-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.6" fill="#0E2A55"/><circle class="pil-fumaca" cx="19" cy="6" r="2" fill="#B9C6D6"/></svg>
         <span id="${(alvo||"pil-posto")}-helice-txt">${at?"em voo":"dar a partida"}</span></button></h4>
@@ -3074,25 +3086,44 @@ window.fichaApoiador=function(pos){
       ${(c.a_completar||[]).length?`<div class=meta style="margin-top:8px">A completar: ${(c.a_completar||[]).join(", ")} — entra na fila do Claude externo.</div>`:""}
     </div>`);
 };
-/* o avião só pousa onde o Piloto tem lugar: os dois postos e o ranking. Em nenhuma outra tela. */
-const ONDE_POUSAR={cacar_oportunidade:["#rank-apoiadores","#pil-posto","#pil-posto-bussola"],
+/* O AVIÃO EM TRAVESSIA. Ele não fica pousado num canto: sobrevoa de ponta a ponta a faixa
+   onde o Piloto trabalha, vai até a borda, VIRA O NARIZ e volta — e assim sem parar. A faixa
+   muda conforme a tarefa: o ranking quando caça empresa, o posto quando afia motor ou estuda. */
+const ONDE_POUSAR={cacar_oportunidade:["#rank-apoiadores","#emp-ranking-caixa","#pil-posto","#pil-posto-bussola"],
                    afiar_motor:["#pil-posto-bussola","#pil-posto"],
-                   descobrir_local:["#pil-posto-bussola","#pil-posto"]};
-function pousarAviaoErrante(){
-  const E=window._ESQ||{}, at=E.missao_atual;
+                   descobrir_local:["#pil-posto-bussola","#pil-posto"],
+                   resgate:["#pil-posto","#pil-posto-bussola"]};
+window.pousarAviaoErrante=function(){
+  const E=window._ESQ||{};
+  // se não há missão em curso, ele patrulha a última faixa conhecida em vez de sumir
+  const at=E.missao_atual||(E.missoes&&E.missoes[0]?{tipo:E.missoes[0].tipo,motor:E.missoes[0].motor,patrulha:true}:null);
   let av=document.getElementById("pil-errante");
   if(!at){ if(av)av.remove(); return; }
   const alvos=ONDE_POUSAR[at.tipo]||["#pil-posto"];
-  let el=null; for(const s of alvos){ const c=document.querySelector(s); if(c&&c.offsetParent!==null){el=c;break;} }
+  let el=null, reserva=null;
+  for(const s of alvos){ const c=document.querySelector(s); if(!c||c.offsetParent===null)continue;
+    if(!reserva)reserva=c;
+    if(c.getBoundingClientRect().width>120){el=c;break;} }
+  el=el||reserva;
   if(!el){ if(av)av.remove(); return; }
-  if(!av){ av=document.createElement("div"); av.id="pil-errante"; av.className="pil-errante";
-    av.innerHTML=aviaoDoPiloto(at.motor||"", `${(E.legenda||{})[at.tipo]||at.tipo}${at.motor?" · "+at.motor:""}`)+
-      `<span class="pil-balao">${esc((E.legenda||{})[at.tipo]||at.tipo)}${at.motor?` · <b>${esc(at.motor)}</b>`:""}</span>`;
-    document.body.appendChild(av); }
+  const legenda=(E.legenda||{})[at.tipo]||at.tipo;
+  if(!av){
+    av=document.createElement("div"); av.id="pil-errante"; av.className="pil-errante";
+    av.innerHTML=`<div class="pil-voa">${aviaoDoPiloto(at.motor||"", `${legenda}${at.motor?" · "+at.motor:""}`)}</div>` +
+      `<span class="pil-balao">${esc(legenda)}${at.motor?` · <b>${esc(at.motor)}</b>`:""}</span>`;
+    document.body.appendChild(av);
+  }
   const r=el.getBoundingClientRect();
-  av.style.top=(window.scrollY+r.top-26)+"px"; av.style.left=(window.scrollX+Math.max(12,r.left+12))+"px";
-  av.style.width=Math.max(160,Math.min(r.width-24,420))+"px";
-}
+  const largura=Math.max(200,r.width-16);
+  av.style.top=(window.scrollY+r.top-24)+"px";
+  av.style.left=(window.scrollX+r.left+8)+"px";
+  av.style.width=largura+"px";
+  const voa=av.firstElementChild;
+  const travessia=Math.max(80,largura-190);                 // espaço livre até a outra borda
+  voa.style.setProperty("--pil-dist", travessia+"px");
+  voa.style.setProperty("--pil-tempo",(travessia/26).toFixed(1)+"s");   // ~26 px por segundo, ida e volta
+  av.classList.toggle("patrulha", !!at.patrulha);
+};
 window.addEventListener("scroll",()=>{ if(document.getElementById("pil-errante"))pousarAviaoErrante(); },{passive:true});
 window.addEventListener("resize",()=>{ if(document.getElementById("pil-errante"))pousarAviaoErrante(); });
 setInterval(()=>{ if(window._ESQ)pousarAviaoErrante(); },7000);

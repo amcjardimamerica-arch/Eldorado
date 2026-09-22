@@ -57,7 +57,7 @@ class TesteCicloContinuoEAviao(unittest.TestCase):
 
     def test_aviao_passeia_sobre_o_trabalho(self):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        for x in ("pil-errante", "ONDE_POUSAR", "pousarAviaoErrante", "pil-balao", "@keyframes pil-passeia"):
+        for x in ("pil-errante", "ONDE_POUSAR", "pousarAviaoErrante", "pil-balao", "pil-voa", "@keyframes pil-travessia"):
             self.assertIn(x, h, x)
         self.assertIn('cacar_oportunidade:["#rank-apoiadores"', h)             # caçando → sobrevoa o ranking
         self.assertIn('afiar_motor:["#pil-posto-bussola"', h)                  # afiando → sobrevoa o posto da Bússola
