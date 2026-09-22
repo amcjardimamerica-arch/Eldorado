@@ -90,10 +90,53 @@ NIVEIS = {
 }
 
 # Caminhos que quase toda empresa usa para essas páginas — testados direto no site dela
-TRILHAS = ["/sustentabilidade", "/esg", "/responsabilidade-social", "/instituto", "/fundacao",
-           "/patrocinio", "/patrocinios", "/editais", "/edital", "/doacoes", "/doe",
-           "/investimento-social", "/impacto-social", "/quem-somos/sustentabilidade",
-           "/relatorios", "/relatorio-de-sustentabilidade", "/projetos-sociais", "/parcerias"]
+# TRILHAS — os caminhos que empresas usam para estas páginas. Quanto mais larga a lista,
+# menos fonte escapa. Vão em português e inglês (multinacional publica em inglês), com e sem
+# hífen, no singular e no plural, e com os prefixos de seção mais comuns (/institucional,
+# /quem-somos, /sobre, /ri para relações com investidores, onde mora o relatório anual).
+_RAIZ = ["", "/institucional", "/quem-somos", "/sobre", "/sobre-nos", "/a-empresa", "/ri",
+         "/relacoes-com-investidores", "/pt-br", "/pt", "/br"]
+_FOLHA = [
+    # responsabilidade social e ESG
+    "/sustentabilidade", "/esg", "/responsabilidade-social", "/responsabilidade-socioambiental",
+    "/impacto-social", "/impacto", "/investimento-social", "/investimento-social-privado",
+    "/cidadania", "/cidadania-corporativa", "/compromisso-social", "/acao-social", "/acoes-sociais",
+    "/sustainability", "/social-impact", "/corporate-responsibility", "/csr", "/community",
+    # instituto, fundação e braço social
+    "/instituto", "/fundacao", "/nosso-instituto", "/instituto-social", "/foundation",
+    # editais, chamadas e seleção
+    "/editais", "/edital", "/chamadas", "/chamada-publica", "/selecao-de-projetos", "/inscricoes",
+    "/projetos-apoiados", "/projetos-selecionados", "/edicoes-anteriores", "/como-participar",
+    "/submissao", "/regulamento", "/grants", "/apply", "/call-for-proposals",
+    # patrocínio e apoio
+    "/patrocinio", "/patrocinios", "/apoio-a-projetos", "/apoio-cultural", "/proposta-de-patrocinio",
+    "/seja-patrocinador", "/parcerias", "/parceiros", "/sponsorship", "/partnerships",
+    # incentivo fiscal
+    "/incentivo-fiscal", "/incentivos-fiscais", "/lei-de-incentivo", "/lei-rouanet",
+    "/renuncia-fiscal", "/destinacao-de-imposto", "/imposto-de-renda",
+    # doação e voluntariado
+    "/doacoes", "/doacao", "/doe", "/quero-doar", "/voluntariado", "/seja-voluntario",
+    "/campanhas", "/donate", "/volunteering",
+    # documentos onde o número aparece
+    "/relatorios", "/relatorio-anual", "/relatorio-de-sustentabilidade", "/relatorio-social",
+    "/balanco-social", "/transparencia", "/publicacoes", "/reports", "/annual-report",
+    # a porta de entrada, quando existe
+    "/contato", "/fale-conosco", "/imprensa", "/noticias", "/blog",
+]
+TRILHAS = _FOLHA + [r + f for r in _RAIZ[1:6] for f in
+                    ("/sustentabilidade", "/esg", "/responsabilidade-social", "/instituto",
+                     "/editais", "/patrocinio", "/doacoes", "/relatorios")]
+
+# Para onde cada tipo de recurso manda a fonte. Uma empresa que so tem ESG nao merece motor
+# proprio — mas ENGORDA o motor que ja vigia esse tipo de coisa, virando mais uma rota dele.
+MOTOR_DO_TIPO = {
+    "incentivo_fiscal": "empresas-incentivadas",
+    "patrocinio": "motor-patrocinio",
+    "doacao": "motor-patrocinio",
+    "esg": "motor-gife",
+    "instituto_fundacao": "motor-gife",
+    "edital_proprio": None,      # este ganha motor proprio: tem pagina que se repete
+}
 
 # Os domínios são ancorados no início do host (depois de // ou de um ponto). Sem isso, o
 # padrão do Twitter ("x.com") casava dentro de "bancox.com.br" e descartava a empresa.
@@ -249,6 +292,106 @@ def promover_a_motor(dominio: str) -> dict:
     it["promovida_em"] = date.today().isoformat()
     write_json(FONTES, d)
     return {"motor_criado": mid, "rota": pagina}
+
+
+def agregar_a_motor(dominio: str) -> dict:
+    """A fonte que não tem edital próprio ENGORDA o motor que já vigia aquele tipo de recurso.
+
+    Uma empresa com relatório ESG não merece motor só dela — mas vira mais uma rota do motor
+    que lê ESG todo dia. É assim que a descoberta de hoje vira colheita de amanhã sem inchar
+    o sistema com motores de uma página só.
+    """
+    d = fontes()
+    it = d["itens"].get(dominio)
+    if not it:
+        return {"erro": "fonte desconhecida"}
+    cfg = load_json(ROOT / "config/rotas_motores.json")
+    motores = cfg.get("motores") or cfg
+    v = it.get("validacao") or {}
+    ganhos, termos_novos = [], set()
+    for tipo in (it.get("tipos") or []):
+        mid = MOTOR_DO_TIPO.get(tipo)
+        if not mid or mid not in motores:
+            continue
+        mc = motores[mid]
+        pagina = (v.get("tipos", {}).get(tipo) or {}).get("pagina") or it["site"]
+        rotas = mc.setdefault("rotas", [])
+        if any((r.get("url") if isinstance(r, dict) else r) == pagina for r in rotas):
+            continue
+        rotas.append({"url": pagina, "tipo": "pagina", "origem": f"prospecção do Piloto ({tipo})",
+                      "empresa": it["nome"], "nivel": it.get("nivel"), "desde": date.today().isoformat()})
+        mc["rotas_do_piloto"] = mc.get("rotas_do_piloto", 0) + 1
+        ganhos.append({"motor": mid, "tipo": tipo, "rota": pagina})
+        # o que a página usou para se identificar vira termo candidato do motor
+        pista = (v.get("tipos", {}).get(tipo) or {}).get("pista")
+        if pista and pista not in (mc.get("lexico_camada1") or []):
+            termos_novos.add((mid, pista))
+    for mid, termo in termos_novos:
+        motores[mid].setdefault("lexico_candidatos", [])
+        if termo not in motores[mid]["lexico_candidatos"]:
+            motores[mid]["lexico_candidatos"].append(termo)
+    if ganhos:
+        cfg["motores"] = motores
+        write_json(ROOT / "config/rotas_motores.json", cfg)
+        it["agregada_a"] = [g["motor"] for g in ganhos]
+        it["estado"] = "agregada_a_motor" if it.get("estado") != "promovida_a_motor" else it["estado"]
+        write_json(FONTES, d)
+    return {"rotas_acrescentadas": ganhos, "termos_candidatos": sorted({t for _, t in termos_novos})}
+
+
+def encaminhar(dominio: str) -> dict:
+    """Decide o destino da fonte: motor próprio se tem edital, senão engorda o motor do tipo."""
+    it = fontes()["itens"].get(dominio) or {}
+    if it.get("vira_motor"):
+        r = promover_a_motor(dominio)
+        r.update(agregar_a_motor(dominio))          # e ainda engorda os motores dos outros tipos
+        return r
+    return agregar_a_motor(dominio)
+
+
+def para_biblioteca(dominio: str) -> dict:
+    """Empresa validada entra na Biblioteca de Alexandria como ficha própria.
+
+    A Biblioteca guarda oportunidades; uma empresa com programa É uma oportunidade — só que
+    de porta aberta o ano inteiro em vez de prazo fechado. A ficha traz o que se sabe e o que
+    falta descobrir, para quando o relatório completo da empresa for montado.
+    """
+    it = fontes()["itens"].get(dominio)
+    if not it or not it.get("tipos"):
+        return {}
+    pasta = (ROOT / "biblioteca_alexandria/empresas/fichas" /
+             re.sub(r"[^a-z0-9-]", "-", dominio.replace(".", "-"))[:60])
+    pasta.mkdir(parents=True, exist_ok=True)
+    v = it.get("validacao") or {}
+    ficha = {
+        "nome": it["nome"], "site": it["site"], "dominio": dominio, "nivel": it.get("nivel"),
+        "descoberta_em": it.get("descoberto_em"), "descoberta_por": "Piloto (prospecção)",
+        "como_foi_achada": it.get("rastros"),
+        "o_que_oferece": [{"tipo": tp, "rotulo": TIPOS[tp]["rotulo"], "porta_de_entrada": TIPOS[tp]["porta"],
+                           "pagina": (v.get("tipos", {}).get(tp) or {}).get("pagina"),
+                           "prova": (v.get("tipos", {}).get(tp) or {}).get("trecho")}
+                          for tp in it["tipos"] if tp in TIPOS],
+        "pontos": it.get("pontos"), "virou_motor": it.get("motor"),
+        "a_descobrir": ["quem decide (nome e cargo)", "projetos já apoiados e valores",
+                        "contato direto do responsável", "calendário de abertura",
+                        "se aceita OSC de Goiás", "exigências documentais"],
+        "nota": "ficha aberta: o relatório completo da empresa entra aqui quando o titular enviar o material",
+        "em": now_iso()}
+    write_json(pasta / "ficha.json", ficha)
+    it["na_biblioteca"] = str(pasta.relative_to(ROOT))
+    d = fontes(); d["itens"][dominio] = it; write_json(FONTES, d)
+    return {"ficha": it["na_biblioteca"], "tipos": it["tipos"]}
+
+
+def incorporar(dominio: str) -> dict:
+    """Tudo o que uma fonte validada desencadeia, de uma vez: motor, Biblioteca e ranking."""
+    r = {"encaminhamento": encaminhar(dominio), "biblioteca": para_biblioteca(dominio)}
+    try:
+        from .ranking_apoiadores import montar
+        r["ranking"] = montar()
+    except Exception as e:
+        r["ranking"] = {"erro": str(e)[:80]}
+    return r
 
 
 def publicar() -> dict:

@@ -511,7 +511,7 @@ def missao_prospeccao(ia, angulo: dict, conhecidos: set[str]) -> tuple[str, list
     no catálogo; se tiver edital próprio, vira motor e sai da lista de voo para sempre."""
     from .piloto_busca import buscar, ler_pagina
     from .prospeccao import (catalogar_patrocinadores, validar_empresa, registrar,
-                             promover_a_motor, publicar as pub_prosp, NIVEIS)
+                             incorporar, publicar as pub_prosp, NIVEIS)
     from .cobertura import ja_coberto
 
     nivel = angulo.get("nivel") if angulo.get("nivel") in NIVEIS else "federal"
@@ -527,7 +527,7 @@ def missao_prospeccao(ia, angulo: dict, conhecidos: set[str]) -> tuple[str, list
     consultas = [c for c in ((r or {}).get("consultas") or []) if isinstance(c, str)][:2] or \
                 [f"\"nossos parceiros\" OR \"quem nos apoia\" associação {NIVEIS[nivel]['rotulo']}"]
 
-    novas, validadas, motores, paginas = [], 0, [], 0
+    novas, validadas, motores, paginas, rotas_novas = [], 0, [], 0, []
     for c in consultas:
         for b in buscar(c, maximo=5):
             if paginas >= 4:
@@ -548,13 +548,19 @@ def missao_prospeccao(ia, angulo: dict, conhecidos: set[str]) -> tuple[str, list
                                   "trecho": next(iter(v["tipos"].values()), {}).get("trecho", "")[:180],
                                   "porque": f"fonte nova de recurso ({nivel})", "novo": True,
                                   "confirmado_na_pagina": True, "fonte_nova": True})
-                if v.get("vira_motor"):
-                    m = promover_a_motor(emp["dominio"])
-                    if m.get("motor_criado"):
-                        motores.append(m["motor_criado"])
+                if v.get("tem_programa"):
+                    # a fonte validada desencadeia tudo: motor (próprio ou engordando o do tipo),
+                    # ficha na Biblioteca e entrada no ranking de empresas
+                    inc = incorporar(emp["dominio"])
+                    enc = inc.get("encaminhamento") or {}
+                    if enc.get("motor_criado"):
+                        motores.append(enc["motor_criado"])
+                    rotas_novas.extend(g["motor"] for g in (enc.get("rotas_acrescentadas") or []))
     pub_prosp()
     licao = (f"expansão {nivel}: {paginas} página(s) de apoiadores lida(s) → {validadas} empresa(s) com programa"
-             + (f" → {len(motores)} motor(es) novo(s): {', '.join(motores)}" if motores else " → nenhum motor novo"))
+             + (f" → {len(motores)} motor(es) novo(s): {', '.join(motores)}" if motores else "")
+             + (f" → {len(rotas_novas)} rota(s) nova(s) em {', '.join(sorted(set(rotas_novas)))}" if rotas_novas else "")
+             + ("" if (motores or rotas_novas) else " → nada a acrescentar aos motores"))
     return f"expansao:{nivel}", novas, licao
 
 

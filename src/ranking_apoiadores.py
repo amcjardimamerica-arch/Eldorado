@@ -117,6 +117,23 @@ def montar() -> dict:
              {"por": [f"descoberto pelo Piloto ({', '.join(e.get('angulos') or [])})"], "site": e.get("site"),
               "marcador_pesquisa": e.get("marcador"), "nivel": e.get("nivel"), "esg": e.get("esg"),
               "editais": e.get("editais"), "leitura": (e.get("porque") or "")[:140], "classe": "radar"})
+    fon = ROOT / "estado/piloto/fontes_descobertas.json"
+    if fon.exists():
+        for dom, e in (load_json(fon).get("itens") or {}).items():
+            if not e.get("tipos"):
+                continue
+            # pontuação da prospecção: tipo de recurso vale mais que menção solta
+            p = (5 * len(e["tipos"]) + (12 if "edital_proprio" in e["tipos"] else 0)
+                 + (8 if "incentivo_fiscal" in e["tipos"] else 0)
+                 + (5 if e.get("nivel") in ("local", "estadual") else 0)
+                 + min(6, 2 * ((e.get("vezes_vista") or 1) - 1)))
+            _add(e.get("nome") or dom, p, "prospecção do Piloto",
+                 {"por": [f"{t}: {(e.get('validacao') or {}).get('tipos', {}).get(t, {}).get('pagina', '')}"
+                          for t in e["tipos"]],
+                  "site": e.get("site"), "nivel": e.get("nivel"), "tipos_de_recurso": e["tipos"],
+                  "portas": e.get("portas"), "virou_motor": e.get("motor"),
+                  "ficha": e.get("na_biblioteca"), "classe": "prospecção",
+                  "leitura": f"descoberta pelo Piloto em {e.get('descoberto_em')}: oferece {', '.join(e['tipos'])}"})
     for e in itens:
         e.update({"cadastro": _cadastro_de(e, base)})
         if not e.get("site"):

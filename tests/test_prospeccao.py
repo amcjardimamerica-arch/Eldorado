@@ -102,7 +102,7 @@ class TesteFonteViraMotor(unittest.TestCase):
         self.assertIn("def missao_prospeccao", src)
         self.assertIn("descobrir LUGARES novos, não editais", src)
         self.assertIn("PÁGINAS QUE LISTAM APOIADORES", src)
-        self.assertIn("promover_a_motor", src)
+        self.assertIn("incorporar(emp[\"dominio\"])", src)   # motor + Biblioteca + ranking de uma vez
 
 
 class TesteRenomeacao(unittest.TestCase):
