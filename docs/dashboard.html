@@ -283,6 +283,15 @@ box-shadow:0 1px 3px #0002}
 .sind-atual{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #E6DAB4;margin-top:8px}
 .sind-atual .voando{font-weight:800;color:#0E2A55}.sind-atual .alvo{color:var(--suave);font-size:12px}
 .sind-placar{margin-left:auto;text-align:right}.sind-placar b{font-size:20px;color:#C8961E;font-family:Georgia,serif}
+.sind-partida{display:inline-flex;align-items:center;gap:7px;margin-left:auto;padding:5px 11px;border-radius:20px;border:1px solid #C9B37A;background:#fff;cursor:pointer;font:inherit;font-size:12px;font-weight:700;color:#6B5A12}
+.sind-partida:hover{background:#FBF3DC}.sind-partida.girando{background:#F2FBF5;border-color:#7CE0A8;color:#1E7E4B}
+.sind-partida svg{width:20px;height:20px}
+.sind-pa{transform-origin:12px 12px}
+.sind-partida.girando .sind-pa{animation:sind-pa-gira .28s linear infinite}
+.sind-partida.acelera .sind-pa{animation:sind-pa-gira .09s linear infinite}
+@keyframes sind-pa-gira{to{transform:rotate(360deg)}}
+.sind-fumaca{opacity:0}.sind-partida.girando .sind-fumaca{animation:sind-fuma 1.4s ease-out infinite}
+@keyframes sind-fuma{0%{opacity:.8;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(9px,-7px) scale(1.5)}}
 .sind-log{margin-top:8px;max-height:210px;overflow:auto}
 .sind-log-l{display:grid;grid-template-columns:18px 1fr auto;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px dotted #EDE3C8;font-size:12px}
 .sind-log-l .ic{font-size:13px}.sind-log-l small{color:var(--suave);display:block}
@@ -996,10 +1005,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260922100941"></script>
-<script src="mapa-arte.js?v=20260922100941"></script>
-<script src="dashboard-dados.enc.js?v=20260922100941"></script>
-<script src="dashboard-dados.js?v=20260922100941"></script>
+<script src="mapa-brasil.js?v=20260922102516"></script>
+<script src="mapa-arte.js?v=20260922102516"></script>
+<script src="dashboard-dados.enc.js?v=20260922102516"></script>
+<script src="dashboard-dados.js?v=20260922102516"></script>
 <script>
 (function(){
 "use strict";
@@ -2900,7 +2909,10 @@ function desenhaPostoSindico(){
   const at=E.missao_atual, L=E.ultimas||[], tot=E.total_abates||0;
   const motores=Object.entries(E.abates||{}).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
   el.innerHTML=`<div class="sind-posto">
-    <h4>${aviaoDoSindico(at&&at.motor?at.motor:"", at?"em missão":"esquadrilha em terra")} Esquadrilha do Síndico <span class=meta style="font-weight:400">— patrulha dos motores de busca</span></h4>
+    <h4>${aviaoDoSindico(at&&at.motor?at.motor:"", at?"em missão":"esquadrilha em terra")} Esquadrilha do Síndico <span class=meta style="font-weight:400">— patrulha dos motores 26, 27, 28 e 29</span>
+      <button class="sind-partida ${at?"girando":""}" id="sind-helice-bt" onclick="darPartida()" title="dar a partida: o síndico decola no próximo ciclo do GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><g class="sind-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.6" fill="#0E2A55"/><circle class="sind-fumaca" cx="19" cy="6" r="2" fill="#B9C6D6"/></svg>
+        <span id="sind-helice-txt">${at?"em voo":"dar a partida"}</span></button></h4>
     <div class="sind-atual">
       ${at?`<span class=voando>✈ agora:</span><span>${esc((E.legenda||{})[at.tipo]||at.tipo)}${at.motor?` sobre <b>${esc(at.motor)}</b>`:""}</span><span class=alvo>${esc(at.alvo||"")}</span>`
           :`<span class=voando>🛬 em terra</span><span class=alvo>aguardando o próximo ciclo (04h · 10h · 16h · 22h)</span>`}
@@ -2911,6 +2923,28 @@ function desenhaPostoSindico(){
               :'<div class=sind-vazio>O síndico ainda não decolou. O primeiro voo sai no próximo ciclo — ele sorteia as missões entre caçar oportunidade nova, afiar um motor e procurar um local novo de publicação.</div>'}
     <div class=meta style="margin-top:6px">Clique no avião sobre qualquer motor (aba Bússola) para ver o que ele fez ali.</div></div>`;
 }
+window.darPartida=function(){
+  const bt=$("sind-helice-bt"), tx=$("sind-helice-txt"); if(!bt)return;
+  if(bt.classList.contains("girando")){ bt.classList.toggle("acelera"); tx.textContent=bt.classList.contains("acelera")?"a todo vapor":"em voo"; return; }
+  bt.classList.add("girando"); tx.textContent="contato!";
+  setTimeout(()=>{ tx.textContent="decolando…"; bt.classList.add("acelera"); },900);
+  setTimeout(()=>{
+    bt.classList.remove("acelera"); tx.textContent="motores ligados";
+    abreModal('<h3 style="margin:0">Motores ligados ✈</h3><div class=meta>Esquadrilha do Síndico — patrulha dos motores 26, 27, 28 e 29</div>',
+     `<div class="rel-janela">
+        <p>A hélice girou. O Síndico decola no <b>próximo ciclo</b> (04h · 10h · 16h · 22h) — ou agora, se o titular disparar o voo no GitHub:</p>
+        <div class="rel-texto">Actions → <b>07 · Síndico</b> → Run workflow → modo <b>ciclo</b></div>
+        <div class="fdoc-t" style="margin-top:10px">Onde ele vai caçar</div>
+        <ul class="rel-lista">
+          <li><b>26</b> Editais incentivados — sites das maiores contribuintes do ICMS de Goiás</li>
+          <li><b>27</b> Incentivos fiscais — base ICMS/RFB/SALIC (Lucro Real)</li>
+          <li><b>28</b> Patrocínio privado — mídia e eventos de Goiás</li>
+          <li><b>29</b> <b>Busca aberta</b> — o que nenhum outro motor alcança: institutos e fundações novos, editais sazonais de municípios e estados, chamadas internacionais</li>
+        </ul>
+        <div class=meta>Rouanet, diários oficiais e portais conhecidos ficam fora: eles releem o que já está mapeado.</div>
+      </div>`);
+  },2100);
+};
 window.abrirPostoSindico=function(motorId){
   const E=window._ESQ||{}; const ab=(E.abates||{})[motorId]||{n:0,ultimos:[]};
   const missoes=(E.ultimas||[]).filter(m=>!motorId||m.motor===motorId);

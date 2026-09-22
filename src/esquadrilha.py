@@ -43,8 +43,12 @@ def sortear(n: int | None = None, motores: list[str] | None = None) -> list[dict
     b = bordo()
     visitados = {m["motor"] for m in b.get("missoes", [])[-40:] if m.get("motor")}
     if motores is None:
-        from .sensores import registro
-        motores = [x["id"] for x in registro() if not x.get("fontes_260")]
+        # 22/09: o Síndico voa SÓ sobre os motores onde há oportunidade nova (26, 27, 28 e o 29).
+        # Rouanet, diários e portais conhecidos releem o que já está mapeado — não são dele.
+        motores = list((_cfg().get("motores_do_sindico") or {}).get("ids") or [])
+        if not motores:
+            from .sensores import registro
+            motores = [x["id"] for x in registro() if not x.get("fontes_260")]
     fila = [m for m in motores if m not in visitados] or list(motores)
     rnd = random.Random(f"{date.today()}-{len(b.get('missoes', []))}")
     rnd.shuffle(fila)

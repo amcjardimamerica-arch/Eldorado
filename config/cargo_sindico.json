@@ -114,10 +114,10 @@
    "maximo": 12
   },
   "sorteio": {
-   "cacar_oportunidade": 0.5,
-   "afiar_motor": 0.35,
-   "descobrir_local": 0.15,
-   "regra": "semente do dia + rodízio: um motor só repete depois que todos tiverem sido visitados"
+   "cacar_oportunidade": 0.55,
+   "afiar_motor": 0.25,
+   "descobrir_local": 0.2,
+   "regra": "sorteio entre os 4 motores do Síndico; no motor 29 o ângulo de ataque também é sorteado, com rodízio e memória negativa"
   },
   "confianca_minima_para_propor": 0.6,
   "maximo_propostas_por_ciclo": 25,
@@ -132,6 +132,16 @@
    "repetir um caminho já registrado como negativo na memória de mineração",
    "propor URL malformada",
    "afirmar prazo (fora do escopo atual)"
-  ]
+  ],
+  "motores_do_sindico": {
+   "ids": [
+    "empresas-incentivadas",
+    "motor-gife",
+    "motor-patrocinio",
+    "sindico-aberto"
+   ],
+   "porque": "Rouanet, diários e portais conhecidos só releem o que já está mapeado. O dinheiro novo está nas empresas incentivadoras (26), na base ICMS/Lucro Real (27), no patrocínio privado (28) e no que ninguém catalogou ainda (29, busca aberta).",
+   "fora_do_escopo": "diários oficiais, Rouanet/Salic, PNCP, plataformas já conhecidas — esses são trabalho dos motores regulares, não do Síndico"
+  }
  }
 }

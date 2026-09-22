@@ -292,6 +292,74 @@ def _titulos_conhecidos() -> set[str]:
     return из
 
 
+MOTOR29 = ROOT / "config/motor_sindico.json"
+
+
+def _angulo_do_dia() -> dict:
+    """Sorteia o ângulo de ataque do motor 29, pulando os que estão na memória negativa."""
+    import random as _r
+    m = load_json(MOTOR29)
+    secos = {x["id"] for x in (m.get("memoria_negativa") or {}).get("itens", [])}
+    b = load_json(ROOT / "estado/sindico/bordo.json") if (ROOT / "estado/sindico/bordo.json").exists() else {}
+    recentes = {x.get("alvo") for x in (b.get("missoes") or [])[:8]}
+    fila = [a for a in m["angulos_de_ataque"] if a["id"] not in secos and a["id"] not in recentes] or \
+           [a for a in m["angulos_de_ataque"] if a["id"] not in secos] or m["angulos_de_ataque"]
+    return _r.Random(f"{date.today()}-{len(b.get('missoes') or [])}").choice(fila)
+
+
+def missao_motor29(ia: IALocal, conhecidos: set[str]) -> tuple[str, list[dict], str]:
+    """MOTOR 29 — busca aberta: um ângulo por vez, site oficial obrigatório para contar abate."""
+    from .cargo_sindico import licoes_para_o_prompt
+    m = load_json(MOTOR29); ang = _angulo_do_dia()
+    lic = licoes_para_o_prompt()
+    r = ia.perguntar((lic + "\n\n" if lic else "") + ang["pergunta"] +
+                     "\nResponda só o que você tem certeza que existe. Sem site oficial, deixe o campo nulo — é melhor vazio que inventado.",
+                     '[{"nome": "nome da oportunidade ou do financiador", "site_oficial": "https://dominio-proprio.org ou null", '
+                     '"pista": "onde mais procurar (url ou termo)", "uf": "sigla ou null", "area": "...", "quando": "época do ano, se souber"}]')
+    itens = r if isinstance(r, list) else ((r or {}).get("itens") or (r or {}).get("resultado") or [])
+    ach, sem_site = [], 0
+    for x in itens if isinstance(itens, list) else []:
+        nome = str((x or {}).get("nome") or "")[:110]
+        site = str((x or {}).get("site_oficial") or "")
+        pista = str((x or {}).get("pista") or "")
+        if not nome:
+            continue
+        oficial = site.startswith("http") and not re.search(r"observatorio3setor|captadores\.org|gife\.org\.br/noticias|prosas\.com|g1\.globo|facebook|instagram|linkedin", site, re.I)
+        if not oficial:
+            sem_site += 1
+        chave = re.sub(r"[^a-z0-9 ]", "", nome.lower())[:60]
+        ach.append({"titulo": nome, "onde": (site if oficial else pista or site)[:140], "url": site if oficial else None,
+                    "uf": (x or {}).get("uf"), "quando": (x or {}).get("quando"),
+                    "novo": oficial and chave not in conhecidos,          # ABATE exige site oficial
+                    "sem_site_oficial": not oficial})
+    novos = sum(1 for a in ach if a["novo"])
+    # memória negativa: ângulo seco três vezes sai do rodízio
+    if novos == 0:
+        neg = m.setdefault("memoria_negativa", {"itens": []})
+        it = next((x for x in neg["itens"] if x["id"] == ang["id"]), None)
+        if it:
+            it["secas"] = it.get("secas", 1) + 1
+        else:
+            neg["itens"].append({"id": ang["id"], "secas": 1, "desde": date.today().isoformat()})
+        neg["itens"] = [x for x in neg["itens"] if x.get("secas", 0) >= 3]
+        write_json(MOTOR29, m)
+    else:
+        # termos candidatos ao léxico, a partir do que apareceu nas descobertas confirmadas
+        palavras = {}
+        for a in [x for x in ach if x["novo"]]:
+            for w in re.findall(r"[a-zà-ú]{5,}", (a["titulo"] + " " + (a.get("onde") or "")).lower()):
+                if w not in [t.lower() for t in m["lexico_camada1_positivos"]]:
+                    palavras[w] = palavras.get(w, 0) + 1
+        for w, n in palavras.items():
+            if n >= 2:
+                prop = m["aprendizado"].setdefault("termos_propostos", [])
+                if not any(p["termo"] == w for p in prop):
+                    prop.append({"termo": w, "vezes": n, "angulo": ang["id"], "em": date.today().isoformat(), "status": "a confirmar pelo Claude"})
+        write_json(MOTOR29, m)
+    licao = (f"ângulo '{ang['id']}': {novos} com site oficial" + (f", {sem_site} sem site (viram pista)" if sem_site else "")) if ach else f"ângulo '{ang['id']}' seco"
+    return ang["id"], ach[:12], licao
+
+
 def missao_cacar(ia: IALocal, conhecidos: set[str]) -> tuple[str, list[dict], str]:
     """Caça oportunidade que o sistema NÃO conhece. Abate = título inédito com onde procurar."""
     from .cargo_sindico import licoes_para_o_prompt
@@ -368,7 +436,9 @@ def ciclo(porta: int | None = None) -> dict:
             break
         abrir_missao(m, m.get("motor") or "")
         try:
-            if m["tipo"] == "cacar_oportunidade":
+            if m.get("motor") == "sindico-aberto":
+                alvo, ach, licao = missao_motor29(ia, conhecidos)      # motor 29: busca aberta por ângulo
+            elif m["tipo"] == "cacar_oportunidade":
                 alvo, ach, licao = missao_cacar(ia, conhecidos)
             elif m["tipo"] == "afiar_motor":
                 alvo, ach, licao = missao_afiar(ia, m["motor"])

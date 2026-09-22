@@ -1,0 +1,61 @@
+{
+ "versao": 1,
+ "criado_em": "2026-09-22",
+ "motor": "sindico-aberto",
+ "rank": 29,
+ "nome": "Motor do Síndico — busca aberta e aleatória no terceiro setor",
+ "perfil": "Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
+ "porque_existe": "Rouanet, diários oficiais e portais conhecidos só releem o que já está mapeado. O dinheiro novo aparece onde ninguém está olhando: o instituto que a empresa acabou de criar, a fundação familiar que publica edital uma vez por ano, o programa internacional que aceita OSC brasileira.",
+
+ "lexico_camada1_positivos": [
+  "edital", "chamada pública", "chamamento", "seleção de projetos", "seleção pública", "inscrições abertas",
+  "apoio a projetos", "apoio institucional", "fomento", "financiamento de projetos", "patrocínio", "doação",
+  "investimento social privado", "responsabilidade social", "sustentabilidade", "ESG", "impacto social",
+  "instituto", "fundação", "programa social", "prêmio", "concurso de projetos", "aceleração", "incubação",
+  "grant", "grants", "call for proposals", "request for proposals", "funding opportunity", "open call",
+  "convocatoria", "cooperação internacional", "edital internacional", "fundo socioambiental",
+  "Lei Rouanet", "Lei de Incentivo ao Esporte", "FIA", "Fundo do Idoso", "PRONAS", "PRONON", "incentivo fiscal",
+  "organizações da sociedade civil", "OSC", "entidade sem fins lucrativos", "associação comunitária", "ONG"
+ ],
+ "lexico_camada1_veto": [
+  "pregão", "licitação", "aquisição de", "contratação de empresa", "ata de registro", "tomada de preços",
+  "vaga de emprego", "processo seletivo simplificado", "concurso público", "estágio", "bolsa de estudo individual",
+  "curso pago", "inscrições para o evento", "ingresso", "venda", "leilão", "consórcio", "financiamento imobiliário"
+ ],
+ "lexico_camada2_confirmacao": [
+  "quem pode participar", "podem se inscrever", "proponente", "critérios de seleção", "cronograma",
+  "valor do apoio", "recursos disponíveis", "regulamento", "termo de fomento", "termo de colaboração",
+  "sem fins lucrativos", "CNPJ", "prestação de contas", "plano de trabalho"
+ ],
+
+ "angulos_de_ataque": [
+  {"id": "empresa_nova_instituto", "pergunta": "Que empresas brasileiras criaram instituto, fundação ou programa de investimento social nos últimos 3 anos e já publicam edital ou seleção de projetos? Priorize Goiás e Centro-Oeste.", "alvo": "empresa"},
+  {"id": "fundacao_familiar", "pergunta": "Que fundações e institutos familiares brasileiros apoiam projetos de assistência social, cultura ou esporte comunitário com edital anual? Onde publicam?", "alvo": "fundacao"},
+  {"id": "lucro_real_goias", "pergunta": "Empresas de Goiás no regime de Lucro Real (grandes contribuintes de ICMS) que destinam incentivo fiscal a projetos: quais são, e onde anunciam a escolha dos projetos?", "alvo": "empresa"},
+  {"id": "patrocinio_evento_go", "pergunta": "Que empresas patrocinam eventos culturais, esportivos e comunitários em Goiânia e no interior de Goiás? Onde a decisão de patrocínio é anunciada?", "alvo": "empresa"},
+  {"id": "sazonal_municipal", "pergunta": "Que municípios brasileiros de médio porte abrem edital de fomento a OSC uma vez por ano, fora de calendário fixo? Em que mês e em que página publicam?", "alvo": "municipio"},
+  {"id": "sazonal_estadual", "pergunta": "Que secretarias estaduais (fora de Goiás) abrem chamamento para OSC de forma sazonal, e em que época? Onde publicam?", "alvo": "estado"},
+  {"id": "internacional_br", "pergunta": "Que fundações, embaixadas e agências internacionais aceitam organizações brasileiras sem fins lucrativos como proponentes, com chamada aberta? Qual o site oficial?", "alvo": "internacional"},
+  {"id": "plataforma_desconhecida", "pergunta": "Que plataformas, boletins e newsletters brasileiras divulgam editais para o terceiro setor além de Prosas, ABCR, GIFE e Observatório do Terceiro Setor?", "alvo": "plataforma"},
+  {"id": "cooperativa_sistema_s", "pergunta": "Que cooperativas (Sicredi, Sicoob, Unimed), sistema S (Sesc, Sesi, Senar) e bancos com fundo socioambiental publicam edital para OSC? Onde?", "alvo": "empresa"},
+  {"id": "conselho_fundo", "pergunta": "Que conselhos e fundos (FIA, Idoso, Juventude, Meio Ambiente, Cultura) de capitais e cidades médias publicam resolução de repasse a entidades? Em que página?", "alvo": "fundo"},
+  {"id": "religioso_comunitario", "pergunta": "Que redes religiosas, maçônicas, rotárias e de clubes de serviço financiam projetos comunitários no Brasil com processo aberto?", "alvo": "rede"},
+  {"id": "premio_reconhecimento", "pergunta": "Que prêmios brasileiros reconhecem organizações da sociedade civil com recurso financeiro (não apenas troféu)? Quem organiza e onde inscrever?", "alvo": "premio"}
+ ],
+
+ "regra_de_abate": "só conta como descoberta se trouxer NOME da oportunidade ou do financiador + SITE OFICIAL (domínio próprio da organização; portal de notícia não serve, vale apenas como pista a confirmar)",
+ "territorio_preferencial": ["GO", "Centro-Oeste", "BR", "internacional com proponente brasileiro"],
+ "areas": ["assistência social", "cultura", "esporte comunitário", "educação", "saúde", "meio ambiente", "direitos humanos", "infância e juventude", "pessoa idosa"],
+
+ "aprendizado": {
+  "pode_criar_termos": true,
+  "regra": "o Síndico pode PROPOR novos termos para este léxico quando um termo aparecer em 2 ou mais descobertas confirmadas e não estiver na lista; a proposta entra em 'termos_propostos' com os exemplos, e é promovida quando o Claude confirmar na rotina de 3 dias",
+  "termos_propostos": [],
+  "termos_promovidos": [],
+  "angulos_propostos": []
+ },
+ "memoria_negativa": {
+  "regra": "ângulo que não rendeu nada em 3 execuções seguidas entra aqui e sai do rodízio por 30 dias — o Síndico não cava duas vezes no mesmo buraco seco",
+  "itens": []
+ }
+}

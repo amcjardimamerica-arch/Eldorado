@@ -17,6 +17,7 @@ class TesteMissoes(unittest.TestCase):
 
     def test_abate_so_conta_alvo_novo(self):
         antes = BORDO.read_text(encoding="utf-8") if BORDO.exists() else None
+        BORDO.unlink(missing_ok=True)                                   # teste isolado: bordo limpo
         try:
             abrir_missao({"tipo": "cacar_oportunidade", "motor": "lab-motor", "ordem": 1}, "teste")
             r = fechar_missao("2 alvos", [{"titulo": "Instituto Novo", "onde": "https://x.org/editais", "url": "https://x.org/editais", "novo": True},
@@ -51,3 +52,41 @@ class TesteMissoes(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteMotor29EFoco(unittest.TestCase):
+    def test_sindico_voa_so_nos_quatro_motores(self):
+        c = json.loads((ROOT / "config/cargo_sindico.json").read_text(encoding="utf-8"))
+        ids = c["parametros"]["motores_do_sindico"]["ids"]
+        self.assertEqual(set(ids), {"empresas-incentivadas", "motor-gife", "motor-patrocinio", "sindico-aberto"})
+        self.assertIn("releem o que já está mapeado", c["parametros"]["motores_do_sindico"]["porque"])
+        m = sortear(10)
+        self.assertTrue({x["motor"] for x in m} <= set(ids), "o Síndico saiu do escopo")
+        src = (ROOT / "src/esquadrilha.py").read_text(encoding="utf-8")
+        self.assertIn("motores_do_sindico", src)
+
+    def test_motor29_tem_lexico_angulos_e_exige_site_oficial(self):
+        m = json.loads((ROOT / "config/motor_sindico.json").read_text(encoding="utf-8"))
+        self.assertEqual(m["rank"], 29)
+        self.assertGreaterEqual(len(m["lexico_camada1_positivos"]), 30)
+        self.assertGreaterEqual(len(m["lexico_camada1_veto"]), 10)
+        self.assertGreaterEqual(len(m["angulos_de_ataque"]), 10)
+        self.assertTrue(all(a.get("pergunta") and a.get("alvo") for a in m["angulos_de_ataque"]))
+        self.assertTrue(any("lucro real" in a["pergunta"].lower() for a in m["angulos_de_ataque"]))
+        self.assertTrue(any("sazonal" in a["id"] for a in m["angulos_de_ataque"]))
+        self.assertTrue(any("internacional" in a["id"] for a in m["angulos_de_ataque"]))
+        self.assertIn("SITE OFICIAL", m["regra_de_abate"])
+        self.assertTrue(m["aprendizado"]["pode_criar_termos"])            # pode propor termos novos
+        self.assertIn("3 execuções", m["memoria_negativa"]["regra"])
+        from src.sensores import registro, lexico_camada1
+        s = [x for x in registro() if x["id"] == "plat-sindico-aberto"]
+        self.assertTrue(s, "o motor 29 precisa existir como sensor")
+        t, v = lexico_camada1(s[0]); self.assertGreaterEqual(len(t), 40)
+        src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
+        self.assertIn("def missao_motor29", src); self.assertIn("def _angulo_do_dia", src)
+        self.assertIn('"novo": oficial and chave not in conhecidos', src)   # abate só com site oficial
+
+    def test_helice_clicavel(self):
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        for x in ("window.darPartida", "sind-helice-bt", "sind-pa", "@keyframes sind-pa-gira", "sind-fumaca",
+                  "contato!", "Motores ligados", "motores 26, 27, 28 e 29"): self.assertIn(x, h, x)
