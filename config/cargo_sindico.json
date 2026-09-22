@@ -1,0 +1,49 @@
+{
+ "versao": 2,
+ "atualizado_em": "2026-09-22",
+ "cargo": "SÍNDICO — sniper de oportunidades",
+ "principio": "O CARGO é do sistema; a IA é o ocupante. Trocar o ocupante é trocar uma linha em 'ocupante_atual'. Nenhum outro arquivo muda: o contrato (tarefas, esquema de resposta, validação, métricas) é do cargo, não do modelo.",
+ "escopo": {
+  "faz": ["encontrar oportunidades que o sistema desconhece", "validar as encontradas (objeto, prazo, página oficial) com trecho literal",
+          "catalogar no banco e na Biblioteca", "descobrir ONDE se publica (novas fontes, novas rotas) e QUANDO (época, para o preditivo)",
+          "aumentar a assertividade dos motores: propor URL, termo de camada 1, cadência", "perguntar sem parar: cada ciclo gera perguntas novas a partir do que já sabe"],
+  "nao_faz": ["interpretar edital para elaborar projeto", "redigir ou preencher documentos de inscrição", "montar plano de trabalho",
+              "decidir inscrição", "qualquer juízo sobre mérito da associação"],
+  "quem_faz_o_resto": "o Claude (a cada 3 dias) e o titular — elaboração de projeto e documentos saiu do Síndico em 22/09/2026 por decisão do titular"
+ },
+ "criterio_de_contratacao": {
+  "assertividade_minima": 0.50,
+  "prazos_inventados": 0,
+  "falso_positivo_maximo": 0.30,
+  "tamanho_maximo_gb": 3.0,
+  "velocidade_minima_tokens_s": 10,
+  "licenca": "aberta (Apache-2.0, MIT, Gemma ou Llama Community)",
+  "nota": "leve e rápido vence pesado e lento: um modelo que roda 4 ciclos por dia e aprende com o erro vale mais que um que roda um e acerta pouco mais"
+ },
+ "ocupante_atual": {
+  "id": "llama-3.2-3b",
+  "nome": "Llama-3.2-3B-Instruct",
+  "arquivo": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+  "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+  "gb": 2.0,
+  "licenca": "Llama-3.2-Community",
+  "contratado_em": "2026-09-22",
+  "medido_em": "benchmark 1 (2026-09-21, 120 editais do gabarito do titular)",
+  "desempenho": {"acerto": 0.597, "prazos_inventados": 0, "tokens_por_s": 16.0, "minutos_120_itens": 20.5},
+  "por_que": "único candidato medido acima dos 50% exigidos, com zero prazos inventados, 2 GB e o mais rápido dos testados. O Qwen2.5-3B foi reprovado por 58 falsos positivos em 78 reprovados; o 7B é pesado e lento demais para 4 ciclos diários; o Gemma não subiu.",
+  "fraqueza_conhecida": "cauteloso: reprovou 8 de 10 aprovados no teste. Mitigação: o veredito 'reprovado' do Síndico nunca arquiva sozinho — vira proposta; e a memória de erros corrige o prompt a cada rodada."
+ },
+ "banco_de_reserva": [
+  {"id": "qwen3-1.7b", "nome": "Qwen3-1.7B", "gb": 1.1, "licenca": "Apache-2.0", "url": "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf", "porque": "geração seguinte do Qwen, metade do tamanho, modo de raciocínio opcional; candidato natural à próxima avaliação"},
+  {"id": "llama-3.2-1b", "nome": "Llama-3.2-1B-Instruct", "gb": 0.8, "licenca": "Llama-3.2-Community", "url": "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf", "porque": "irmão menor do ocupante: 3x mais rápido; testar se mantém 50% com o prompt já calibrado"},
+  {"id": "gemma-2-2b", "nome": "Gemma-2-2B-it", "gb": 1.6, "licenca": "Gemma", "url": "https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q4_K_M.gguf", "porque": "não chegou a ser medido; correção do boot já implantada"},
+  {"id": "phi-3.5-mini", "nome": "Phi-3.5-mini-instruct", "gb": 2.3, "licenca": "MIT", "url": "https://huggingface.co/bartowski/Phi-3.5-mini-instruct-GGUF/resolve/main/Phi-3.5-mini-instruct-Q4_K_M.gguf", "porque": "licença MIT e forte em instrução; português a verificar"}
+ ],
+ "como_trocar_o_sindico": [
+  "1. rodar o workflow sindico.yml em modo 'avaliar' apontando o candidato (ou deixar o ciclo noturno avaliar o reserva do dia)",
+  "2. se o candidato bater o ocupante nas métricas do critério, o próprio sistema grava a troca em 'ocupante_atual' e arquiva o anterior em 'ex_ocupantes'",
+  "3. nada mais muda: tarefas, esquemas, validação, painel e o resto do Eldorado continuam iguais"
+ ],
+ "ex_ocupantes": [],
+ "memoria_de_erros": {"arquivo": "estado/sindico/memoria_erros.json", "regra": "cada erro medido (falso positivo, falso negativo, resposta fora do esquema) vira uma linha com o exemplo; as 12 mais frequentes entram no prompt como 'erros a não repetir' na rodada seguinte — é assim que o ocupante evolui sem trocar de modelo"}
+}

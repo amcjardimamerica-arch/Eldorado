@@ -5,11 +5,14 @@ on:
   workflow_dispatch:
     inputs:
       modo:
-        description: "benchmark (elege o modelo) | ciclo (curadoria + mineração)"
+        description: "ciclo (o ocupante trabalha) | avaliar (mede um reserva e troca se for melhor) | benchmark (todos)"
         default: "ciclo"
+      candidato:
+        description: "avaliar: id do reserva (qwen3-1.7b, llama-3.2-1b, gemma-2-2b, phi-3.5-mini)"
+        default: "qwen3-1.7b"
       limite_gabarito:
-        description: "benchmark: quantos itens do gabarito (vazio = todos)"
-        default: ""
+        description: "quantos itens do gabarito (vazio = todos)"
+        default: "120"
 permissions:
   contents: write
 concurrency:
@@ -42,13 +45,23 @@ jobs:
       - name: Baixar modelos que faltam (curl -L, com retentativas; falha de um modelo não derruba o job)
         env:
           MODO: ${{ github.event.inputs.modo || 'ciclo' }}
+          CANDIDATO: ${{ github.event.inputs.candidato }}
         run: |
           python - <<'PY' > /tmp/alvos.txt
           import json, os
           from src.sindico import CANDIDATOS
           cfg = json.load(open("config/sindico.json"))
           modo = os.environ.get("MODO", "ciclo")
-          alvo = CANDIDATOS if (modo == "benchmark" or not cfg.get("modelo_vencedor")) else [c for c in CANDIDATOS if c["id"] == cfg["modelo_vencedor"]]
+          from src.cargo_sindico import cargo
+          cg = cargo(); oc = cg["ocupante_atual"]
+          if modo == "benchmark":
+              alvo = CANDIDATOS
+          elif modo == "avaliar":
+              cid = os.environ.get("CANDIDATO") or ""
+              res = [dict(r, arquivo=r.get("arquivo") or r["url"].split("/")[-1]) for r in cg["banco_de_reserva"] if r["id"] == cid]
+              alvo = [oc] + res                      # o ocupante também, para a comparação ser justa
+          else:
+              alvo = [oc]                            # dia a dia: só o ocupante (2 GB)
           for c in alvo:
               print(c["arquivo"], c["url"])
           PY
@@ -62,23 +75,29 @@ jobs:
           done < /tmp/alvos.txt
           ls -la ia_local/modelos/ || true
           df -h / | tail -1
-      - name: Benchmark (elege o modelo pelo gabarito do titular)
+      - name: Avaliar um reserva (troca o ocupante se for melhor)
+        if: ${{ github.event.inputs.modo == 'avaliar' }}
+        env:
+          CANDIDATO: ${{ github.event.inputs.candidato }}
+          LIMITE: ${{ github.event.inputs.limite_gabarito }}
+        run: |
+          timeout 12000 python -m src.cargo_sindico avaliar "$CANDIDATO" "${LIMITE:-120}" || echo "avaliação: registrado o que deu"
+      - name: Benchmark de todos (só quando pedido)
         if: ${{ github.event.inputs.modo == 'benchmark' }}
         env:
           LIMITE: ${{ github.event.inputs.limite_gabarito }}
         run: |
           timeout 20000 python -m src.sindico benchmark $LIMITE || echo "benchmark: registrado o que deu"
       - name: Ciclo do síndico (entender → curar → afiar → minerar → anunciar)
-        if: ${{ github.event.inputs.modo != 'benchmark' }}
+        if: ${{ (github.event.inputs.modo || 'ciclo') == 'ciclo' }}
         run: |
           python - <<'PY'
           import json, subprocess, os, time, urllib.request, sys
           cfg = json.load(open("config/sindico.json"))
           from src.sindico import CANDIDATOS
-          vid = cfg.get("modelo_vencedor")
-          if not vid:
-              print("sem modelo eleito — rode o benchmark primeiro"); sys.exit(0)
-          c = [x for x in CANDIDATOS if x["id"] == vid][0]
+          from src.cargo_sindico import ocupante
+          c = ocupante()
+          print("ocupante do cargo:", c["nome"], c["gb"], "GB")
           env = dict(os.environ, LD_LIBRARY_PATH=os.path.abspath("ia_local/motor"))
           srv = subprocess.Popen(["ia_local/motor/llama-server", "-m", f"ia_local/modelos/{c['arquivo']}", "--port", str(cfg.get("porta", 8081)),
                                   "--host", "127.0.0.1", "-c", "4096", "--jinja", "-t", str(os.cpu_count() or 4)], env=env)

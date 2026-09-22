@@ -54,7 +54,13 @@ MAPA_VEREDITO = {"fomento_osc": "aprovado", "atencao": "atencao"}      # famíli
 
 
 def cfg() -> dict:
-    return load_json(CFG_P) if CFG_P.exists() else {"modelo_vencedor": None, "orcamento": {"minutos_por_ciclo": 300, "registros_por_ciclo": 150}}
+    c = load_json(CFG_P) if CFG_P.exists() else {"modelo_vencedor": None, "orcamento": {"minutos_por_ciclo": 300, "registros_por_ciclo": 150}}
+    try:                                            # o cargo manda: o ocupante atual é quem roda
+        from .cargo_sindico import ocupante
+        o = ocupante(); c["modelo_vencedor"] = o["id"]; c["arquivo"] = o["arquivo"]; c["url"] = o["url"]; c["ocupante"] = o["nome"]
+    except Exception:
+        pass
+    return c
 
 
 # ─────────────────────────────────────────────────────────────── gabarito
@@ -128,8 +134,17 @@ def avaliar_modelo(cand: dict, itens: list[dict], porta: int = 8081) -> dict:
                 total += 1
                 if pred == esperado or (esperado == "atencao" and pred == "aprovado"):
                     acertos += 1
+                else:
+                    from .cargo_sindico import registrar_erro
+                    if esperado == "reprovado" and pred == "aprovado":
+                        registrar_erro("falso_positivo", it["titulo"], "reprovado", "aprovado", f"família correta: {it.get('familia') or 'não é fomento a OSC'}")
+                    elif esperado == "aprovado" and pred == "reprovado":
+                        registrar_erro("falso_negativo", it["titulo"], "aprovado", "reprovado", "chamamento com termo de fomento/colaboração para OSC conta como oportunidade")
                 confusao[f"{esperado}->{pred}"] = confusao.get(f"{esperado}->{pred}", 0) + 1
                 tokens += 120
+            else:
+                from .cargo_sindico import registrar_erro
+                registrar_erro("fora_do_esquema", it["titulo"], "JSON do esquema", "resposta inválida")
             if it.get("fim") and len(it["texto"]) > 200:
                 t1 = time.time()
                 q = t_extrair_objeto_prazo(ia, {"id": it["id"]}, it["texto"])
@@ -247,27 +262,25 @@ def fila_nivel1() -> list[str]:
     return ids
 
 
-def nivel2_enquadrar(ia: IALocal, limite: int = 20) -> dict:
-    """Editais conformes e completos → aderência por critério às associações + esqueleto do projeto."""
+def nivel2_classificar(ia: IALocal, limite: int = 30) -> dict:
+    """NÍVEL 2 (escopo de 22/09): apenas CLASSIFICAR e pontuar a oportunidade — requisitos,
+    critérios e a quem se destina. A elaboração de projeto e de documentos SAIU do cargo."""
     an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
     dados = load_json(ROOT / "docs/dashboard-dados.json")
-    assocs = dados.get("documentos_associacoes") or []
     from .fonte_edital import EXTRAIDOS
+    from .cargo_sindico import licoes_para_o_prompt, registrar_erro
     feitos = []
     for e in [x for x in dados.get("editais") or [] if (an.get(x["id"]) or {}).get("selo") == "conformidade"][:limite]:
         ex = load_json(EXTRAIDOS / f"{e['id']}.json") if (EXTRAIDOS / f"{e['id']}.json").exists() else {}
-        if ex.get("enquadramento_sindico"):
+        if ex.get("classificacao_sindico"):
             continue
-        for a in assocs:
-            r = ia.perguntar(f"EDITAL: {e.get('titulo')}\nREQUISITOS: {json.dumps(ex.get('requisitos') or (ex.get('itens') or {}).get('Requisitos'), ensure_ascii=False)[:1500]}\nPONTUAÇÃO: {json.dumps(ex.get('pontuacao'), ensure_ascii=False)[:1200]}\nDOCUMENTOS EXIGIDOS: {ex.get('documentos_exigidos')}\n"
-                             f"ASSOCIAÇÃO: {a.get('razao_social')} — {a.get('perfil') or ''} — anos de atuação: {a.get('anos_atuacao') or '43'} — área: {a.get('areas') or 'assistência social, cultura, esporte comunitário'}",
-                             '{"cumpre_requisitos": true|false|null, "requisitos_nao_cumpridos": [...], "pontuacao_estimada_por_criterio": [{"criterio":..., "pontos":..., "porque":...}], "documentos_faltantes": [...], "ganharia": "provavel|possivel|improvavel", "projeto_esqueleto": {"titulo":..., "objetivo":..., "publico":..., "acoes":[...], "resultados_esperados":[...]}}')
-            if not r or r.get("ganharia") not in ("provavel", "possivel", "improvavel"):
-                aprender("nivel2_enquadrar", f"{e['id']} x {a.get('id')}", "resposta fora do esquema", "reforçar esquema no prompt", 2); continue
-            ex.setdefault("enquadramento_sindico", {})[a.get("id") or a.get("razao_social")] = {**r, "em": now_iso(), "origem": "sindico", "status": "proposta — validar pelo Claude"}
-            feitos.append({"edital": e["id"], "assoc": a.get("id"), "ganharia": r["ganharia"]})
-        write_json(EXTRAIDOS / f"{e['id']}.json", ex)
-    return {"enquadrados": len(feitos), "itens": feitos[:20]}
+        r = ia.perguntar(f"{licoes_para_o_prompt()}\n\nEDITAL: {e.get('titulo')}\nOBJETO: {str((ex.get('itens') or {}).get('Objeto'))[:900]}\nREQUISITOS: {json.dumps(ex.get('requisitos') or (ex.get('itens') or {}).get('Requisitos'), ensure_ascii=False)[:900]}",
+                         '{"quem_pode_concorrer": "...", "exige_tempo_minimo_de_existencia": "anos ou null", "exige_certificacao": [...], "criterios_de_pontuacao": [{"criterio":..., "peso":...}], "area": "...", "territorio": "..."}')
+        if not r or not isinstance(r, dict) or "quem_pode_concorrer" not in r:
+            registrar_erro("fora_do_esquema", e.get("titulo") or e["id"], "JSON do esquema", "resposta inválida"); continue
+        ex["classificacao_sindico"] = {**r, "em": now_iso(), "origem": "sindico", "status": "proposta — validar pelo Claude"}
+        write_json(EXTRAIDOS / f"{e['id']}.json", ex); feitos.append(e["id"])
+    return {"classificados": len(feitos), "itens": feitos[:20], "nota": "só classificação; projeto e documentos não são do cargo"}
 
 
 # ─────────────────────────────────────────────────────────────── ciclo
@@ -288,9 +301,9 @@ def ciclo(porta: int | None = None) -> dict:
     rel["curadoria"] = {k: r1.get(k) for k in ("total", "validas", "invalidas", "por_tarefa")}
     rel["afiar"] = r2
     rel["nivel1_fila"] = len(fila_nivel1())
-    # NÍVEL 2 — classificar, enquadrar e preparar (só editais conformes e completos)
+    # NÍVEL 2 — apenas classificar (projeto e documentos saíram do cargo em 22/09)
     try:
-        rel["nivel2"] = nivel2_enquadrar(ia, limite=int(orc.get("enquadramentos_por_ciclo", 20)))
+        rel["nivel2"] = nivel2_classificar(ia, limite=int(orc.get("classificacoes_por_ciclo", 30)))
     except Exception as ex_:
         aprender("nivel2", "enquadrar conformes", f"{type(ex_).__name__}: {ex_}", "revisar dados das associações", 2); rel["nivel2"] = {"erro": str(ex_)[:120]}
     if (rel["curadoria"] or {}).get("invalidas"):
@@ -318,7 +331,7 @@ def ciclo(porta: int | None = None) -> dict:
         write_json(rot_p, rot)
     rel["minutos"] = round((time.time() - t0) / 60, 1)
     rel["anuncio"] = (f"Síndico {hoje} ({rel.get('modelo') or 'modelo não eleito'}): nível 1 — {rel['curadoria']['validas'] if rel['curadoria'] else 0} propostas válidas, {rel['nivel1_fila']} na fila; "
-                      f"nível 2 — {(rel.get('nivel2') or {}).get('enquadrados', 0)} enquadramento(s); nível 3 — {len(rel['descobertas'])} pista(s) em {len(rel['mineracao'])} pesquisa(s); {rel['minutos']} min.")
+                      f"nível 2 — {(rel.get('nivel2') or {}).get('classificados', 0)} classificação(ões); nível 3 — {len(rel['descobertas'])} pista(s) em {len(rel['mineracao'])} pesquisa(s); {rel['minutos']} min.")
     rel["estado_final"] = "ocioso → próxima pesquisa autônoma no próximo ciclo" if len(feitos) >= len(PROMPTS_MINERACAO) else "orçamento de tempo esgotado com pesquisas pendentes"
     write_json(PASTA / f"relatorio-{hoje}.json", rel)
     write_json(ROOT / "docs/dados/sindico.json", {k: v for k, v in rel.items() if k != "mineracao"} | {"prompts_rodados": [m["prompt"] for m in rel["mineracao"]]})

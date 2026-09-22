@@ -101,7 +101,12 @@ def t_classificar_objeto(ia: IALocal, e: dict, texto: str) -> dict | None:
           empresa ou prestador, qualificação como OS, órgão buscando patrocinador,
           parceria já celebrada, licitação de compra)
     Veredito derivado: veto → reprovado; fomento e sem veto → aprovado; o resto → atenção."""
-    r = ia.perguntar(f"TÍTULO: {e.get('titulo')}\nTEXTO: {texto[:2500]}",
+    try:
+        from .cargo_sindico import licoes_para_o_prompt
+        licoes = licoes_para_o_prompt()
+    except Exception:
+        licoes = ""
+    r = ia.perguntar((licoes + "\n\n" if licoes else "") + f"TÍTULO: {e.get('titulo')}\nTEXTO: {texto[:2500]}",
                      '{"e_fomento_a_osc": true|false, "trecho_fomento": "frase literal ou null", '
                      '"sinal_de_veto": null | "resultado_de_edital" | "empresa_ou_mercado" | "servico_ao_orgao" | "qualificacao_os" | "busca_patrocinador" | "parceria_celebrada" | "nao_edital", '
                      '"trecho_veto": "frase literal ou null", "confianca": 0..1}')

@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-22T08:05:51+00:00",
+  "gerado_em": "2026-09-22T09:04:23+00:00",
   "referencia": "2026-09-22",
   "cadencia": {
     "varredura": "segundas e sextas, 6h de Brasília",
@@ -39367,7 +39367,7 @@
         "quantidade": 0
       }
     ],
-    "atualizado_em": "2026-09-22T08:05:50+00:00",
+    "atualizado_em": "2026-09-22T09:04:21+00:00",
     "nota": "etapas 4 e 5 são automáticas; não dependem de ação do titular"
   },
   "previsoes": {
@@ -52305,6 +52305,77 @@
       "espalhados": 23
     },
     "sindico": {
+      "cargo": {
+        "ocupante": {
+          "id": "llama-3.2-3b",
+          "nome": "Llama-3.2-3B-Instruct",
+          "arquivo": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+          "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+          "gb": 2.0,
+          "licenca": "Llama-3.2-Community",
+          "contratado_em": "2026-09-22",
+          "medido_em": "benchmark 1 (2026-09-21, 120 editais do gabarito do titular)",
+          "desempenho": {
+            "acerto": 0.597,
+            "prazos_inventados": 0,
+            "tokens_por_s": 16.0,
+            "minutos_120_itens": 20.5
+          },
+          "por_que": "único candidato medido acima dos 50% exigidos, com zero prazos inventados, 2 GB e o mais rápido dos testados. O Qwen2.5-3B foi reprovado por 58 falsos positivos em 78 reprovados; o 7B é pesado e lento demais para 4 ciclos diários; o Gemma não subiu.",
+          "fraqueza_conhecida": "cauteloso: reprovou 8 de 10 aprovados no teste. Mitigação: o veredito 'reprovado' do Síndico nunca arquiva sozinho — vira proposta; e a memória de erros corrige o prompt a cada rodada."
+        },
+        "criterio": {
+          "assertividade_minima": 0.5,
+          "prazos_inventados": 0,
+          "falso_positivo_maximo": 0.3,
+          "tamanho_maximo_gb": 3.0,
+          "velocidade_minima_tokens_s": 10,
+          "licenca": "aberta (Apache-2.0, MIT, Gemma ou Llama Community)",
+          "nota": "leve e rápido vence pesado e lento: um modelo que roda 4 ciclos por dia e aprende com o erro vale mais que um que roda um e acerta pouco mais"
+        },
+        "escopo": {
+          "faz": [
+            "encontrar oportunidades que o sistema desconhece",
+            "validar as encontradas (objeto, prazo, página oficial) com trecho literal",
+            "catalogar no banco e na Biblioteca",
+            "descobrir ONDE se publica (novas fontes, novas rotas) e QUANDO (época, para o preditivo)",
+            "aumentar a assertividade dos motores: propor URL, termo de camada 1, cadência",
+            "perguntar sem parar: cada ciclo gera perguntas novas a partir do que já sabe"
+          ],
+          "nao_faz": [
+            "interpretar edital para elaborar projeto",
+            "redigir ou preencher documentos de inscrição",
+            "montar plano de trabalho",
+            "decidir inscrição",
+            "qualquer juízo sobre mérito da associação"
+          ],
+          "quem_faz_o_resto": "o Claude (a cada 3 dias) e o titular — elaboração de projeto e documentos saiu do Síndico em 22/09/2026 por decisão do titular"
+        },
+        "reservas": [
+          {
+            "id": "qwen3-1.7b",
+            "gb": 1.1,
+            "porque": "geração seguinte do Qwen, metade do tamanho, modo de raciocínio opcional; candidato natura"
+          },
+          {
+            "id": "llama-3.2-1b",
+            "gb": 0.8,
+            "porque": "irmão menor do ocupante: 3x mais rápido; testar se mantém 50% com o prompt já calibrado"
+          },
+          {
+            "id": "gemma-2-2b",
+            "gb": 1.6,
+            "porque": "não chegou a ser medido; correção do boot já implantada"
+          },
+          {
+            "id": "phi-3.5-mini",
+            "gb": 2.3,
+            "porque": "licença MIT e forte em instrução; português a verificar"
+          }
+        ],
+        "ex_ocupantes": 0
+      },
+      "memoria_erros": null,
       "config": {
         "modelo_vencedor": null,
         "eleito_em": null,
@@ -52319,7 +52390,55 @@
         "porta": 8081,
         "constituicao": "config/constituicao_sindico.json"
       },
-      "benchmark": null,
+      "benchmark": {
+        "em": "2026-09-21T08:35:56+00:00",
+        "gabarito": 120,
+        "runner": {
+          "cpus": 4,
+          "publico": true
+        },
+        "regra": "acerto na classificação contra o veredito do titular; QUALQUER prazo inventado (data sem trecho literal) elimina; desempate por tokens/s",
+        "vencedor": "llama-3.2-3b",
+        "motivo": "Llama-3.2-3B-Instruct: acerto 0.597, 0 prazos inventados, 16.0 tok/s",
+        "resumo": [
+          {
+            "id": "qwen2.5-3b",
+            "acerto": 0.342,
+            "prazos_inventados": 0,
+            "tokens_por_s": 15.1,
+            "minutos": 29.4,
+            "elegivel": true,
+            "erro": null
+          },
+          {
+            "id": "qwen2.5-7b",
+            "acerto": null,
+            "prazos_inventados": null,
+            "tokens_por_s": null,
+            "minutos": null,
+            "elegivel": false,
+            "erro": "modelo não disponível no runner"
+          },
+          {
+            "id": "gemma-2-2b",
+            "acerto": null,
+            "prazos_inventados": null,
+            "tokens_por_s": null,
+            "minutos": null,
+            "elegivel": false,
+            "erro": "servidor não subiu"
+          },
+          {
+            "id": "llama-3.2-3b",
+            "acerto": 0.597,
+            "prazos_inventados": 0,
+            "tokens_por_s": 16.0,
+            "minutos": 20.5,
+            "elegivel": true,
+            "erro": null
+          }
+        ]
+      },
       "ultimo": null
     },
     "ia_local": {
@@ -52327,11 +52446,11 @@
       "modelo": "Qwen2.5-3B-Instruct",
       "motor": "llama.cpp",
       "ultimo_ciclo": {
-        "em": "2026-09-22T07:58:50+00:00",
+        "em": "2026-09-21T20:34:35+00:00",
         "disponivel": false,
         "nota": "servidor local não está de pé — rode ia_local/iniciar (bat|sh)"
       },
-      "rotas_sugeridas": 15
+      "rotas_sugeridas": 14
     },
     "acervo_compacto": {
       "em": "2026-09-21T15:42:48+00:00",
@@ -95902,7 +96021,7 @@
     "Detecção de resultado/prorrogação é textual — conferir na página."
   ],
   "portao_fidelidade": {
-    "aplicado_em": "2026-09-22T08:05:52+00:00",
+    "aplicado_em": "2026-09-22T09:04:23+00:00",
     "classes": {
       "confirmado": 130,
       "estimado": 128,

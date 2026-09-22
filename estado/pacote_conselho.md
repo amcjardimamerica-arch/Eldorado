@@ -1,4 +1,4 @@
-# Pacote do conselho — validação do Claude (2026-09-21, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-09-22, últimos 3 dias)
 
 Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
 
@@ -15,8 +15,9 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (13)
+### Rotas e pistas sugeridas (14)
 
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
