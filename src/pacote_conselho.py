@@ -53,6 +53,18 @@ def montar(dias: int = 3) -> dict:
     L += ["", f"### Enquadramentos propostos ({len(enq)})", ""]
     for x in enq[:40]:
         L.append(f"- `{x['edital']}` × {x['assoc']} — ganharia: **{x['ganharia']}** · faltam: {x['faltam']}")
+    try:
+        from .radar_piloto import para_o_claude
+        fila = para_o_claude(40)
+    except Exception:
+        fila = []
+    L += ["", f"## Radar de captação — empresas descobertas pelo Piloto, a pesquisar ({len(fila)})", "",
+          "Para cada uma: abrir o site, procurar relatório ESG e o que declara financiar, editais anteriores (indicam recorrência), edital aberto hoje, como pleitear e se aceita OSC de Goiás.",
+          "Ao concluir: `python -m src.radar_piloto` e marcar como concluído em dados/empresas/radar_piloto.json.", ""]
+    for x in fila:
+        L.append(f"- `{x['chave']}` **{x['nome']}** ({x.get('nivel')}) — {x.get('site')} · falta: {', '.join((x.get('a_descobrir') or [])[:3])}")
+    if not fila:
+        L.append("- nenhuma empresa aguardando pesquisa")
     L += ["", "## Perguntas para o conselho", "",
           "1. Quais rotas sugeridas confirmar (entram no catálogo) e quais descartar (entram na memória negativa)?",
           "2. Quais enquadramentos avançam para preparação de documentos e projeto (nível 2)?",

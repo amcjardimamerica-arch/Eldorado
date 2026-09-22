@@ -729,7 +729,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </section>
 
 <!-- ============ ESQUADRILHA DO SÍNDICO — posto de comando ============ -->
-<section id="v-sindico-posto" style="margin-top:14px"><div id="pil-posto"></div></section>
+<section id="v-piloto-posto" style="margin-top:14px"><div id="pil-posto"></div></section>
 
 <!-- ============ ELDORADO · CALENDÁRIO ============ -->
 <section id="v-calendario" style="margin-top:14px">
@@ -820,6 +820,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 
 <!-- ============ ELDORADO · BÚSSOLA ============ -->
 <section id="v-bussola" class="oculto" style="margin-top:14px">
+<div id="pil-posto-bussola" style="margin-bottom:12px"></div>
 
 <!-- topo do modelo: título, logotipo, cidade dourada e navegação por hover -->
 <div class="bz-topo">
@@ -1005,10 +1006,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260922112436"></script>
-<script src="mapa-arte.js?v=20260922112436"></script>
-<script src="dashboard-dados.enc.js?v=20260922112436"></script>
-<script src="dashboard-dados.js?v=20260922112436"></script>
+<script src="mapa-brasil.js?v=20260922120522"></script>
+<script src="mapa-arte.js?v=20260922120522"></script>
+<script src="dashboard-dados.enc.js?v=20260922120522"></script>
+<script src="dashboard-dados.js?v=20260922120522"></script>
 <script>
 (function(){
 "use strict";
@@ -2903,28 +2904,39 @@ function estrelasDeAbate(n, novos){
   const mostra=Math.min(n,8);
   return `<div class="mt-abates" title="${n} oportunidade(s) nova(s) descoberta(s) por este motor">${Array.from({length:mostra},(_,i)=>EST.replace('class="est"', i<(novos||0)?'class="est nova"':'class="est"')).join("")}${n>8?`<span class=mais>+${n-8}</span>`:""}</div>`;
 }
-function desenhaPostoPiloto(){
-  const el=$("pil-posto"); if(!el)return; const E=window._ESQ;
-  if(!E){ carregaEsquadrilha().then(()=>desenhaPostoPiloto()); return; }
+function desenhaPostoPiloto(alvo){
+  const el=$(alvo||"pil-posto"); if(!el)return; const E=window._ESQ;
+  if(!E){ carregaEsquadrilha().then(()=>desenhaPostoPiloto(alvo)); return; }
   const at=E.missao_atual, L=E.ultimas||[], tot=E.total_abates||0;
   const motores=Object.entries(E.abates||{}).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
   el.innerHTML=`<div class="pil-posto">
     <h4>${aviaoDoPiloto(at&&at.motor?at.motor:"", at?"em missão":"esquadrilha em terra")} Esquadrilha do Piloto <span class=meta style="font-weight:400">— patrulha dos motores 26, 27, 28 e 29</span>
-      <button class="pil-partida ${at?"girando":""}" id="pil-helice-bt" onclick="darPartida()" title="dar a partida: o Piloto decola no próximo ciclo do GitHub">
+      <button class="pil-partida ${at?"girando":""}" id="${(alvo||"pil-posto")}-helice-bt" onclick="darPartida('${(alvo||"pil-posto")}')" title="dar a partida: o Piloto decola no próximo ciclo do GitHub">
         <svg viewBox="0 0 24 24" aria-hidden="true"><g class="pil-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.6" fill="#0E2A55"/><circle class="pil-fumaca" cx="19" cy="6" r="2" fill="#B9C6D6"/></svg>
-        <span id="pil-helice-txt">${at?"em voo":"dar a partida"}</span></button></h4>
+        <span id="${(alvo||"pil-posto")}-helice-txt">${at?"em voo":"dar a partida"}</span></button></h4>
     <div class="pil-atual">
       ${at?`<span class=voando>✈ agora:</span><span>${esc((E.legenda||{})[at.tipo]||at.tipo)}${at.motor?` sobre <b>${esc(at.motor)}</b>`:""}</span><span class=alvo>${esc(at.alvo||"")}</span>`
           :`<span class=voando>🛬 em terra</span><span class=alvo>aguardando o próximo ciclo (04h · 10h · 16h · 22h)</span>`}
       <span class=pil-placar><b>${tot}</b><br><span class=meta>alvo(s) novo(s)</span></span></div>
     ${motores.length?`<div class=meta style="margin-top:8px">Marcas na fuselagem: ${motores.map(([m,v])=>`<b>${esc(m)}</b> ★${v.n}`).join(" · ")}</div>`:""}
+    ${(()=>{const R=window._RADAR;if(!R||!R.total)return "";const M=R.por_marcador||{};
+      const cor={a_pesquisar:"#C8961E",em_pesquisa:"#0B4EA2",concluido:"var(--ok)"};
+      const rot={a_pesquisar:"a pesquisar",em_pesquisa:"em pesquisa",concluido:"concluído"};
+      return `<div class="fdoc-t" style="margin-top:12px">Radar de captação <span class=meta>${R.total} empresa(s) no radar · ${Object.entries(M).filter(([k,v])=>v).map(([k,v])=>`<b style="color:${cor[k]}">${v}</b> ${rot[k]}`).join(" · ")}</span></div>
+        <div class="uf-abertos">${(R.empresas||[]).slice(0,10).map(e=>`<div class="uf-ab ${e.marcador==="a_pesquisar"?"nv":""}">
+          <span class="pt" style="background:${cor[e.marcador]||"#999"}" title="${esc(rot[e.marcador]||e.marcador)}"></span>
+          <span class="uf-ab-nome" title="${esc(e.porque||"")}">${esc(e.nome)}</span>
+          <span class="uf-ab-prazo" style="color:${cor[e.marcador]}">${esc(rot[e.marcador]||"")}${e.falta?` · faltam ${e.falta} dado(s)`:""}</span>
+          ${e.site?`<a class="uf-ab-link" href="${esc(e.site)}" target=_blank rel="noopener noreferrer">site ↗</a>`:""}</div>`).join("")}</div>
+        <div class=meta>As marcadas como <b style="color:#C8961E">a pesquisar</b> vão no pacote do conselho para o Claude externo investigar ESG, editais anteriores e como pleitear.</div>`;})()}
     <div class="fdoc-t" style="margin-top:10px">Missões anteriores <span class=meta>${L.length} registrada(s)</span></div>
     ${L.length?`<div class="pil-log">${L.map(m=>linhaBordo(m,E)).join("")}</div>`
               :'<div class=pil-vazio>O Piloto ainda não decolou. O primeiro voo sai no próximo ciclo — ele sorteia as missões entre caçar oportunidade nova, afiar um motor e procurar um local novo de publicação.</div>'}
     <div class=meta style="margin-top:6px">Clique no avião sobre qualquer motor (aba Bússola) para ver o que ele fez ali.</div></div>`;
 }
-window.darPartida=function(){
-  const bt=$("pil-helice-bt"), tx=$("pil-helice-txt"); if(!bt)return;
+window.darPartida=function(base){
+  base=base||"pil-posto";
+  const bt=$(base+"-helice-bt"), tx=$(base+"-helice-txt"); if(!bt)return;
   if(bt.classList.contains("girando")){ bt.classList.toggle("acelera"); tx.textContent=bt.classList.contains("acelera")?"a todo vapor":"em voo"; return; }
   bt.classList.add("girando"); tx.textContent="contato!";
   setTimeout(()=>{ tx.textContent="decolando…"; bt.classList.add("acelera"); },900);
@@ -2977,9 +2989,10 @@ function achadosDoMotor(o){
         ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</a>`:`<span title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</span>`}
         <small>${e.fim?"até "+br(e.fim):"prazo a confirmar"}${e.uf?" · "+esc(e.uf):""}</small></div>`;}).join("")}</div>`;
 }
-async function carregaEsquadrilha(){ try{const r=await fetch("dados/esquadrilha.json?v="+Date.now()); if(r.ok)window._ESQ=await r.json();}catch(e){window._ESQ=window._ESQ||{};} return window._ESQ||{}; }
+async function carregaRadar(){ try{const r=await fetch("dados/radar_piloto.json?v="+Date.now()); if(r.ok)window._RADAR=await r.json();}catch(e){} return window._RADAR||{}; }
+async function carregaEsquadrilha(){ carregaRadar().then(()=>{ if(window._RADAR&&!window._radarPronto){window._radarPronto=true; desenhaPostoPiloto("pil-posto"); desenhaPostoPiloto("pil-posto-bussola");} }); try{const r=await fetch("dados/esquadrilha.json?v="+Date.now()); if(r.ok)window._ESQ=await r.json();}catch(e){window._ESQ=window._ESQ||{};} return window._ESQ||{}; }
 function desenhaMotores(){
-  if(!window._ESQ){ carregaEsquadrilha().then(()=>{ if(!window._esqPronta){window._esqPronta=true; desenhaMotores(); desenhaPostoPiloto();} }); }
+  if(!window._ESQ){ carregaEsquadrilha().then(()=>{ if(!window._esqPronta){window._esqPronta=true; desenhaMotores(); desenhaPostoPiloto("pil-posto"); desenhaPostoPiloto("pil-posto-bussola");} }); }
   if(!$("mt-lista"))return;
   const R=MT._resumo||{};
   const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>`;
@@ -3570,7 +3583,7 @@ function iniciar(){
   {const el=$("versao-painel"); if(el){const g=(D.gerado_em||"").slice(0,16).replace("T"," ");
      const dias=Math.round((Date.now()-new Date(D.gerado_em||Date.now()))/864e5);
      el.innerHTML=`dados gerados em <b>${esc(g)}</b>${dias>1?` · <span style="color:var(--urgente)">${dias} dias atrás — recarregue com Ctrl+F5</span>`:" · atualizado"}`;}}
-  desenhaPostoPiloto();desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
+  desenhaPostoPiloto("pil-posto");desenhaPostoPiloto("pil-posto-bussola");desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
   if($("rk-bt-fiscal")){$("rk-bt-fiscal").onclick=()=>{window._rkCat="destinacao_tributaria";window.desenhaRanking();};$("rk-bt-patroc").onclick=()=>{window._rkCat="patrocinio_privado";window.desenhaRanking();};$("rk-busca").addEventListener("input",()=>window.desenhaRanking());}
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");

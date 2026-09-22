@@ -439,9 +439,13 @@ def ciclo(porta: int | None = None) -> dict:
         reg = fechar_missao(licao, ach, licao)
         rel["missoes"].append({"tipo": m["tipo"], "motor": m.get("motor"), "alvo": alvo, "achados": len(ach), "abates": reg["abates"], "licao": licao[:90]})
         rel["abates"] += reg["abates"]; rel["propostas"] += len(ach)
+        from .radar_piloto import registrar as _radar
         for a in [x for x in ach if x.get("novo")]:
             with open(PASTA / "alvos_novos.jsonl", "a", encoding="utf-8") as fh:
                 fh.write(json.dumps({"d": hoje, "motor": m.get("motor"), "titulo": a["titulo"], "onde": a["onde"], "uf": a.get("uf")}, ensure_ascii=False) + "\n")
+            _radar(a, alvo, m.get("motor") or "")          # entra no radar de captação como 'a pesquisar' 
+    from .radar_piloto import publicar as _pub_radar
+    rel["radar"] = _pub_radar()
     rel["minutos"] = round((time.time() - t0) / 60, 1)
     rel["bordo"] = resumo()
     rel["anuncio"] = (f"Esquadrilha {hoje} ({rel['ocupante']}): {len(rel['missoes'])} missão(ões) — "

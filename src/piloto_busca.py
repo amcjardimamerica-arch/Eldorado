@@ -63,19 +63,63 @@ class _Res(HTMLParser):
             self._sn = False
 
 
-def buscar(consulta: str, maximo: int = 10, tempo: float = 20) -> list[dict]:
-    """Busca real na internet, sem API paga. Devolve [{titulo, url, trecho}]."""
-    for base in ("https://html.duckduckgo.com/html/?q=", "https://lite.duckduckgo.com/lite/?q="):
+class _ResGoogle(HTMLParser):
+    """Resultados do Google HTML: links em /url?q=<destino>&sa=..."""
+    def __init__(self):
+        super().__init__(); self.itens = []; self._a = None; self._t = []
+    def handle_starttag(self, tag, attrs):
+        if tag != "a":
+            return
+        h = dict(attrs).get("href") or ""
+        if h.startswith("/url?q="):
+            u = urllib.parse.unquote(h[7:].split("&")[0])
+            if u.startswith("http") and not LIXO.search(u):
+                self._a = u; self._t = []
+    def handle_data(self, s):
+        if self._a is not None:
+            self._t.append(s)
+    def handle_endtag(self, tag):
+        if tag == "a" and self._a is not None:
+            tit = re.sub(r"\s+", " ", "".join(self._t)).strip()
+            if len(tit) > 8:
+                self.itens.append({"titulo": tit[:160], "url": self._a, "trecho": ""})
+            self._a = None
+
+
+BUSCADORES = [
+    ("duckduckgo", "https://html.duckduckgo.com/html/?q={q}", _Res),
+    ("google", "https://www.google.com/search?q={q}&hl=pt-BR&num=20", _ResGoogle),
+    ("duckduckgo-lite", "https://lite.duckduckgo.com/lite/?q={q}", _Res),
+    ("bing", "https://www.bing.com/search?q={q}&setlang=pt-BR&count=20", _Res),
+]
+
+
+def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str] | None = None) -> list[dict]:
+    """Busca real na internet em VÁRIOS buscadores (DuckDuckGo + Google + Bing), sem API paga.
+    Os resultados são misturados e deduplicados por URL; cada item traz de onde veio."""
+    saida, vistos = [], set()
+    alvos = [b for b in BUSCADORES if not motores or b[0] in motores]
+    for nome, molde, parser in alvos:
         try:
-            req = urllib.request.Request(base + urllib.parse.quote(consulta), headers={"User-Agent": UA, "Accept-Language": "pt-BR,pt;q=0.9"})
+            url = molde.format(q=urllib.parse.quote(consulta))
+            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "pt-BR,pt;q=0.9",
+                                                       "Accept": "text/html,application/xhtml+xml"})
             with urllib.request.urlopen(req, timeout=tempo) as r:
-                html = r.read().decode("utf-8", "ignore")
-            p = _Res(); p.feed(html)
-            if p.itens:
-                return p.itens[:maximo]
+                bruto = r.read()
+                if (r.headers.get("Content-Encoding") or "") == "gzip":
+                    bruto = gzip.decompress(bruto)
+                html = bruto.decode("utf-8", "ignore")
+            p = parser(); p.feed(html)
+            for it in p.itens:
+                chave = re.sub(r"[#?].*$", "", it["url"]).rstrip("/")
+                if chave in vistos:
+                    continue
+                vistos.add(chave); saida.append({**it, "buscador": nome})
+            if len(saida) >= maximo * 2:
+                break
         except Exception:
-            time.sleep(1.5)
-    return []
+            time.sleep(1.2)
+    return saida[:maximo]
 
 
 def ler_pagina(url: str, limite: int = 6000, tempo: float = 20) -> str:
@@ -97,22 +141,55 @@ def _oficial(url: str) -> bool:
     return bool(url) and url.startswith("http") and not VETOR.search(url)
 
 
+def _similar(a: str, b: str) -> float:
+    """Jaccard entre conjuntos de palavras — barato e suficiente para barrar consulta repetida."""
+    A = {w for w in re.findall(r"[a-zà-ú0-9]{4,}", (a or "").lower())}
+    B = {w for w in re.findall(r"[a-zà-ú0-9]{4,}", (b or "").lower())}
+    return len(A & B) / len(A | B) if A and B else 0.0
+
+
+def consultas_ja_usadas(n: int = 60) -> list[str]:
+    cfg = load_json(CFG) if CFG.exists() else {}
+    fora = []
+    for r in (cfg.get("consultas_usadas") or [])[:n]:
+        fora += [c for c in (r.get("consultas") or [])]
+    return fora[:n]
+
+
+def inedita(c: str, usadas: list[str], teto: float | None = None) -> bool:
+    teto = teto if teto is not None else ((load_json(CFG).get("prompt_unico") or {}).get("similaridade_maxima") or 0.72)
+    return all(_similar(c, u) < teto for u in usadas)
+
+
 def caçar(ia, angulo: dict, conhecidos: set[str], max_consultas: int = 3, max_paginas: int = 4) -> tuple[list[dict], str, list[str]]:
     """O voo completo: o Piloto cria as consultas, busca, lê e decide.
     Devolve (achados, lição, consultas usadas)."""
     from .cargo_sindico import licoes_para_o_prompt
     cfg = load_json(CFG)
     lic = licoes_para_o_prompt()
-    # 1) o Piloto CRIA as consultas de busca
+    # 1) o Piloto CRIA um QUESTIONAMENTO NOVO — nunca repete consulta nem variação próxima
+    usadas = consultas_ja_usadas()
+    amostra = usadas[:18]
     r = ia.perguntar((lic + "\n\n" if lic else "") +
-                     f"OBJETIVO DA MISSÃO: {angulo['pergunta']}\n"
-                     "Escreva consultas de busca na web (português do Brasil) que encontrem PÁGINAS OFICIAIS dessas oportunidades. "
-                     "Use termos que apareceriam no site do financiador, não em notícia. Exemplos de bons termos: \"edital\", \"chamada pública\", "
-                     "\"seleção de projetos\", \"inscrições\", \"instituto\", \"fundação\", \"organizações da sociedade civil\", mais o recorte do objetivo.",
-                     '{"consultas": ["consulta 1", "consulta 2", "consulta 3"]}')
-    consultas = [c for c in ((r or {}).get("consultas") or []) if isinstance(c, str) and len(c) > 8][:max_consultas]
-    if not consultas:                                   # rede de segurança: consulta montada do próprio ângulo
-        consultas = [re.sub(r"\s+", " ", angulo["pergunta"])[:110] + " edital site oficial"]
+                     f"OBJETIVO DA MISSÃO ({angulo.get('nivel','')}): {angulo['pergunta']}\n\n"
+                     + ("JÁ PERGUNTEI ISTO ANTES (não repita, nem com palavras parecidas):\n- " + "\n- ".join(amostra) + "\n\n" if amostra else "")
+                     + "Escreva consultas de busca NOVAS, em português do Brasil, que encontrem PÁGINAS OFICIAIS. "
+                       "Foque em EMPRESA PRIVADA: instituto próprio, fundação, programa social, relatório ESG, patrocínio declarado, edital de anos anteriores. "
+                       "Varie o ângulo a cada consulta (setor, região, tipo de documento, ano) — consultas parecidas entre si não servem.",
+                     '{"consultas": ["consulta 1", "consulta 2", "consulta 3"], "porque_sao_novas": "uma frase"}')
+    brutas = [c for c in ((r or {}).get("consultas") or []) if isinstance(c, str) and len(c) > 8]
+    consultas, descartadas = [], 0
+    for c in brutas:
+        if inedita(c, usadas + consultas):
+            consultas.append(c)
+        else:
+            descartadas += 1
+        if len(consultas) >= max_consultas:
+            break
+    if not consultas:                                   # rede de segurança com variação do ângulo e do ano
+        import random as _rr
+        tempero = _rr.Random(f"{date.today()}-{angulo['id']}").choice(["site oficial", "edital 2026", "programa social", "relatório ESG", "seleção de projetos", "instituto"])
+        consultas = [re.sub(r"\s+", " ", angulo["pergunta"])[:100] + " " + tempero]
     # 2) BUSCA DE VERDADE
     brutos, vistos = [], set()
     for c in consultas:
@@ -148,7 +225,9 @@ def caçar(ia, angulo: dict, conhecidos: set[str], max_consultas: int = 3, max_p
                         "consulta": b["consulta"][:90], "confirmado_na_pagina": ok,
                         "novo": ok and _oficial(b["url"]) and chave not in conhecidos})
     novos = sum(1 for a in achados if a["novo"])
-    licao = (f"ângulo '{angulo['id']}': {len(consultas)} consulta(s) → {len(brutos)} resultado(s) → {len(achados)} lido(s) → {novos} confirmado(s) na página"
+    fontes = ", ".join(sorted({b.get("buscador", "?") for b in brutos}))
+    licao = (f"ângulo '{angulo['id']}': {len(consultas)} consulta(s) nova(s)" + (f" ({descartadas} repetida(s) descartada(s))" if descartadas else "") +
+             f" → {len(brutos)} resultado(s) [{fontes}] → {len(achados)} lido(s) → {novos} confirmado(s) na página"
              if achados else f"ângulo '{angulo['id']}': busca voltou {len(brutos)} resultados, nenhum passou no crivo")
     return achados, licao, consultas
 

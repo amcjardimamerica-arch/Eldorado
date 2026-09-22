@@ -87,9 +87,9 @@ class TesteMotor29EFoco(unittest.TestCase):
         pb = (ROOT / "src/piloto_busca.py").read_text(encoding="utf-8")
         self.assertIn("_oficial(b[\"url\"])", pb)                              # abate só com site oficial
         self.assertIn("def buscar(", pb); self.assertIn("def ler_pagina(", pb)  # busca REAL na internet
-        self.assertIn("o Piloto CRIA as consultas", pb)
+        self.assertIn("QUESTIONAMENTO NOVO", pb)
 
     def test_helice_clicavel(self):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        for x in ("window.darPartida", "pil-helice-bt", "pil-pa", "@keyframes pil-pa-gira", "pil-fumaca",
+        for x in ("window.darPartida", "-helice-bt", "pil-pa", "@keyframes pil-pa-gira", "pil-fumaca",
                   "contato!", "Motores ligados", "motores 26, 27, 28 e 29"): self.assertIn(x, h, x)
