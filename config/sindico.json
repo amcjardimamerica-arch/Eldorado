@@ -3,10 +3,11 @@
  "eleito_em": null,
  "regra": "o vencedor e fixado pelo benchmark contra as validacoes do titular; qualquer prazo inventado elimina",
  "orcamento": {
-  "minutos_por_ciclo": 22,
   "registros_por_ciclo": 150,
   "ciclos_por_dia": 4,
-  "enquadramentos_por_ciclo": 20
+  "enquadramentos_por_ciclo": 20,
+  "teto_minutos": 26,
+  "regra_de_tempo": "o voo dura o que a tarefa exigir (1 min ou 26); 26 e o TETO para caber nos 30 do job, nao uma meta"
  },
  "motor": "llama.cpp b11064",
  "porta": 8081,
@@ -22,5 +23,9 @@
    "teto diario",
    "nunca dois voos no ar"
   ]
- }
+ },
+ "encaminhamento_prioridade": [
+  "missao especial de resgate (editais incompletos)",
+  "exploracao (briefing e motores 26-29)"
+ ]
 }
