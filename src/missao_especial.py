@@ -47,6 +47,38 @@ def _falta(e: dict) -> list[str]:
     return f
 
 
+# A associação é de assistência social e cultura. Um credenciamento de leiloeiros ou um
+# cadastro de profissionais de saúde é edital incompleto, sim — mas nao serve para nada aqui.
+# Sem este filtro, 25 das 60 missoes foram gastas resgatando papel que nunca seria usado.
+SERVE = ("assistência social", "assistencia social", "cultura", "cultural", "esporte", "lazer",
+         "criança", "crianca", "adolescente", "idoso", "juventude", "pessoa com deficiência",
+         "organização da sociedade civil", "organizacao da sociedade civil", "osc", "terceiro setor",
+         "fomento", "colaboração", "colaboracao", "parceria", "mrosc", "chamamento público de projetos",
+         "seleção de projetos", "selecao de projetos", "subvenção", "subvencao", "emenda",
+         "oficina", "capacitação", "capacitacao", "inclusão", "inclusao", "vulnerabilidade",
+         "convivência", "convivencia", "socioeducativ", "socioassistencial", "cras", "creas",
+         "patrocínio", "patrocinio", "edital de apoio", "prêmio", "premio")
+NAO_SERVE = ("leiloeiro", "profissionais de saúde", "profissionais de saude", "médico", "medico",
+             "medicamento", "insumo hospitalar", "órtese", "ortese", "prótese", "protese",
+             "locação de veículo", "locacao de veiculo", "combustível", "combustivel",
+             "obra", "pavimentação", "pavimentacao", "reforma predial", "merenda", "gênero alimentício",
+             "genero alimenticio", "material de expediente", "coleta de lixo", "engenharia",
+             "estabelecimento de saúde", "estabelecimento de saude", "laboratório", "laboratorio",
+             "exames", "consulta médica", "consulta medica", "transporte escolar", "vigilância", "vigilancia")
+
+
+def _relevante(e: dict) -> tuple[bool, str]:
+    """Este edital serve à nossa associação? Devolve (serve, por quê)."""
+    txt = " ".join(str(e.get(c) or "") for c in ("titulo", "objeto", "orgao", "familia")).lower()
+    for n in NAO_SERVE:
+        if n in txt:
+            return False, f"fora do nosso objeto ({n})"
+    achou = [s for s in SERVE if s in txt]
+    if achou:
+        return True, "serve: " + ", ".join(achou[:3])
+    return False, "não diz respeito a projeto de OSC"
+
+
 def _urgencia(e: dict, falta: list[str]) -> int:
     """Quanto este resgate importa. Falta grave pesa mais; edital de Goiás e recente pesa mais."""
     p = sum(PESO.get(x, 1) for x in falta)
@@ -86,6 +118,7 @@ def _acervo() -> list[dict]:
 def montar_fila(limite: int = 60) -> dict:
     """Varre o acervo e separa o que está incompleto, do mais urgente ao menos."""
     ja = load_json(FILA) if FILA.exists() else {}
+    descartados: dict[str, int] = {}
     feitos = {k for k, v in (ja.get("itens") or {}).items() if v.get("estado") == "resgatado"}
     tentados = {k: v.get("tentativas", 0) for k, v in (ja.get("itens") or {}).items()}
     itens = {}
@@ -95,10 +128,15 @@ def montar_fila(limite: int = 60) -> dict:
         f = _falta(e)
         if not f or not e.get("titulo"):
             continue
-        itens[e["id"]] = {**e, "falta": f, "urgencia": _urgencia(e, f),
+        serve, porque = _relevante(e)
+        if not serve:
+            descartados[porque[:40]] = descartados.get(porque[:40], 0) + 1
+            continue
+        itens[e["id"]] = {**e, "falta": f, "urgencia": _urgencia(e, f), "serve_porque": porque,
                           "estado": "aguardando", "tentativas": tentados.get(e["id"], 0)}
     ordenada = dict(sorted(itens.items(), key=lambda kv: -kv[1]["urgencia"])[:limite])
     d = {"em": now_iso(), "total_incompletos": len(itens), "na_fila": len(ordenada),
+         "descartados_por_nao_servirem": descartados,
          "regra": "o Piloto atende esta fila ANTES de explorar: completar um edital que já temos vale mais que achar outro pela metade",
          "itens": {**{k: v for k, v in (ja.get("itens") or {}).items() if v.get("estado") == "resgatado"}, **ordenada}}
     write_json(FILA, d)

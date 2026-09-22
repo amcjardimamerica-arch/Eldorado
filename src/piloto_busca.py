@@ -89,14 +89,20 @@ class _ResGoogle(HTMLParser):
 # Google, Bing e DuckDuckGo recusam IP de datacenter — e o Piloto roda num servidor do GitHub.
 # Por isso a lista tem também buscadores que aceitam robôs declaradamente (Mojeek e Marginalia).
 # A ordem é a da chance de responder de lá, não a do tamanho do índice.
+# Ordem medida no proprio servidor (diagnostico de 22/09 17:33): dos seis, SO o
+# html.duckduckgo.com respondeu. Ele vem primeiro; os outros ficam como reserva e so
+# sao tentados se o primeiro vier vazio — antes eram tentados sempre, e cada um custava
+# ate 20 s de espera por um resultado que nunca vinha.
 BUSCADORES = [
-    ("mojeek", "https://www.mojeek.com/search?q={q}", _Res),
-    ("duckduckgo-lite", "https://lite.duckduckgo.com/lite/?q={q}", _Res),
     ("duckduckgo", "https://html.duckduckgo.com/html/?q={q}", _Res),
-    ("google", "https://www.google.com/search?q={q}&hl=pt-BR&num=20", _ResGoogle),
+    ("duckduckgo-lite", "https://lite.duckduckgo.com/lite/?q={q}", _Res),
+    ("mojeek", "https://www.mojeek.com/search?q={q}", _Res),
     ("bing", "https://www.bing.com/search?q={q}&setlang=pt-BR&count=20", _Res),
+    ("google", "https://www.google.com/search?q={q}&hl=pt-BR&num=20", _ResGoogle),
     ("marginalia", "https://search.marginalia.nu/search?query={q}", _Res),
 ]
+_ULTIMA_BUSCA = [0.0]
+ESPERA_ENTRE_BUSCAS = 4.0      # o DuckDuckGo corta quem metralha consultas — 14 buscas vazias vieram disso
 
 
 def diagnostico(consulta: str = "edital apoio a projetos sociais 2026", tempo: float = 15) -> dict:
@@ -119,6 +125,10 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
     Os resultados são misturados e deduplicados por URL; cada item traz de onde veio."""
     saida, vistos = [], set()
     alvos = [b for b in BUSCADORES if not motores or b[0] in motores]
+    espera = ESPERA_ENTRE_BUSCAS - (time.time() - _ULTIMA_BUSCA[0])
+    if espera > 0:
+        time.sleep(min(espera, ESPERA_ENTRE_BUSCAS))       # respeita o intervalo, senão o buscador corta
+    _ULTIMA_BUSCA[0] = time.time()
     for nome, molde, parser in alvos:
         try:
             url = molde.format(q=urllib.parse.quote(consulta))
@@ -135,8 +145,8 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
                 if chave in vistos:
                     continue
                 vistos.add(chave); saida.append({**it, "buscador": nome})
-            if len(saida) >= maximo * 2:
-                break
+            if saida:
+                break                                       # quem entregou, entregou: não gasta tempo com os mortos
         except Exception:
             time.sleep(1.2)
     return saida[:maximo]

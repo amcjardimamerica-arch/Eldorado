@@ -18,7 +18,7 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (23)
+### Rotas e pistas sugeridas (24)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
@@ -42,6 +42,7 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - empresas-incentivadas → [{"tipo": "url", "valor": "https://observatorio3setor.org.br/editais/", "porque": "Portais do terceiro setor onde a empresa anuncia (Observatório, ABCR, GIFE)",
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 
 ### Enquadramentos propostos (0)

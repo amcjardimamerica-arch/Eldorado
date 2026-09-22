@@ -579,6 +579,8 @@ def ciclo(porta: int | None = None) -> dict:
     for _m in plano:
         if _m["tipo"] == "resgate" and _m["alvo_id"] not in _atendidos:
             _devolver(_m["alvo_id"])                      # reservado e não atendido volta a aguardar
+    from .piloto_ao_vivo import marcar as _vivo2, montar as _vivo_montar
+    _vivo2("pousou", detalhe=f"{sum(len(m.get('achados') or []) for m in (rel.get('missoes') or []))} achado(s)")
     rel.setdefault("encerrou_por", "tarefa concluída")   # o normal: acabou o que havia para fazer
     rel["minutos_de_voo"] = round((time.time() - t0) / 60, 1)
     from .radar_piloto import publicar as _pub_radar
@@ -588,6 +590,7 @@ def ciclo(porta: int | None = None) -> dict:
             arquivadas=sum(1 for a in _todos if a.get("situacao") == "arquivada"))
     rel["minutos"] = round((time.time() - t0) / 60, 1)
     rel["bordo"] = resumo()
+    rel["ao_vivo"] = _vivo_montar()
     rel["anuncio"] = (f"Esquadrilha {hoje} ({rel['ocupante']}): {len(rel['missoes'])} missão(ões) — "
                       f"{rel['abates']} alvo(s) novo(s) abatido(s), {rel['propostas']} proposta(s) ao todo, {rel['minutos']} min de voo.")
     write_json(PASTA / f"relatorio-{hoje}.json", rel)

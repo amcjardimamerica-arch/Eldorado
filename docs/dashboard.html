@@ -337,6 +337,19 @@ box-shadow:0 1px 3px #0002}
   50%  {transform:translateX(var(--pil-dist,240px)) scaleX(-1)}
   94%  {transform:translateX(0)              scaleX(-1)}
   100% {transform:translateX(0)              scaleX(1)}}
+.pil-vivo{border-radius:10px;padding:9px 11px;margin:8px 0;border:1px solid}
+.pil-vivo.em_voo{background:#EAF8F0;border-color:#7CE0A8}
+.pil-vivo.pousado{background:#F3F8FF;border-color:#9FC1E8}
+.pil-vivo.parado{background:#FDECEA;border-color:#F0A9A2}
+.pil-vivo.pausado{background:#FFF8E8;border-color:#E0B060}
+.pil-vivo-cab{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pil-selo{color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em;padding:2px 9px;border-radius:9px}
+.pil-vivo-f{font-size:12px}
+.pil-vivo-n{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--suave);margin-top:6px}
+.pil-vivo-n b{color:var(--tinta);font-size:12.5px}
+.pil-vivo-u{font-size:11px;margin-top:5px;line-height:1.45}
+.pil-acionar{margin-top:7px;font-size:11.5px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.pil-bt-acionar{background:#B3261E;color:#fff;text-decoration:none;font-weight:800;font-size:11px;padding:3px 11px;border-radius:14px}
 .pil-resg{background:#FFF8EC;border:1px solid #EAD6A8;border-radius:10px;padding:8px 10px;margin:8px 0}
 .pil-resg-l{display:grid;grid-template-columns:26px 1fr auto;gap:7px;align-items:center;font-size:11.5px;padding:2px 0;border-bottom:1px dotted #EDE0C4}
 .pil-urg{display:inline-flex;align-items:center;justify-content:center;background:#C8961E;color:#fff;border-radius:7px;font-size:10px;font-weight:800;padding:1px 0}
@@ -2971,6 +2984,33 @@ function desenhaPostoPiloto(alvo){
       <button class="pil-partida ${at?"girando":""}" id="${(alvo||"pil-posto")}-helice-bt" onclick="darPartida('${(alvo||"pil-posto")}')" title="dar a partida: o Piloto decola no próximo ciclo do GitHub">
         <svg viewBox="0 0 24 24" aria-hidden="true"><g class="pil-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.6" fill="#0E2A55"/><circle class="pil-fumaca" cx="19" cy="6" r="2" fill="#B9C6D6"/></svg>
         <span id="${(alvo||"pil-posto")}-helice-txt">${at?"em voo":"dar a partida"}</span></button></h4>
+    ${(()=>{const V=window._VIVO;if(!V)return "";
+      const idade=V.sinal_em?Math.round((Date.now()-new Date(V.sinal_em))/60000):null;
+      // o painel NÃO confia no rótulo gravado: recalcula pelo relógio de quem está olhando
+      const est = V.estado==="pausado_pelo_titular" ? "pausado"
+                : (V.missao_atual && idade!==null && idade<=30) ? "em_voo"
+                : (idade!==null && idade<=V.sem_sinal_a_partir_de_min) ? "pousado" : "parado";
+      const C={em_voo:["#1E7E4B","✈","EM VOO"],pousado:["#0B4EA2","🛬","POUSADO"],
+               parado:["#B3261E","⚠","SEM SINAL"],pausado:["#8a5a00","⏸","EM TERRA POR ORDEM SUA"]}[est];
+      const M=V.missao_atual, U=V.ultima_missao;
+      return `<div class="pil-vivo ${est}">
+        <div class="pil-vivo-cab"><span class="pil-selo" style="background:${C[0]}">${C[1]} ${C[2]}</span>
+          <span class="pil-vivo-f">${est==="em_voo"
+             ? `motor <b>${esc(M.motor||M.alvo||"—")}</b> · ${esc(M.tipo||"")} · há ${M.ha_minutos!=null?Math.round(M.ha_minutos):idade} min`
+             : est==="pousado" ? `último voo há ${idade} min · o próximo decola em segundos`
+             : est==="parado" ? `sem sinal há <b>${idade} min</b> — a corrente de voos parou`
+             : "o Piloto está em terra porque você o pausou"}</span></div>
+        <div class="pil-vivo-n">
+          <span title="voos hoje"><b>${V.voos_hoje||0}</b> voo(s) hoje</span>
+          <span title="missões que trouxeram algo"><b>${V.missoes_com_achado||0}</b> de ${V.missoes_registradas||0} com achado</span>
+          <span title="editais incompletos aguardando resgate"><b>${(V.resgate||{}).aguardando||0}</b> a resgatar</span>
+          <span title="editais completados"><b>${(V.resgate||{}).resgatados||0}</b> resgatado(s)</span>
+          <span title="empresas descobertas"><b>${V.total_abates||0}</b> abate(s)</span></div>
+        ${U?`<div class="pil-vivo-u"><b>Última missão:</b> ${esc(U.tipo||"")}${U.motor?" · "+esc(U.motor):""} — ${esc(String(U.licao||"").slice(0,120))}</div>`:""}
+        ${(V.achados_recentes||[]).length?`<div class="pil-vivo-u"><b>Trouxe:</b> ${(V.achados_recentes||[]).slice(0,3).map(a=>esc(String(a.titulo||a).slice(0,60))).join(" · ")}</div>`:""}
+        ${est==="parado"?`<div class="pil-acionar"><b>Ele não está voando.</b> Acione em ${esc(V.como_acionar||"Actions → Síndico → Run workflow")}.
+           <a class="pil-bt-acionar" href="https://github.com/amcjardimamerica-arch/Eldorado/actions/workflows/sindico.yml" target=_blank rel="noopener noreferrer">acionar o Piloto ↗</a></div>`:""}
+      </div>`;})()}
     ${(()=>{const G=window._RESG;if(!G||!G.total)return "";
       const P=G.por_estado||{}, esp=(G.fila||[]).filter(x=>x.estado==="aguardando").slice(0,6);
       return `<div class="pil-resg">
@@ -3144,7 +3184,9 @@ window.pousarAviaoErrante=function(){
 window.addEventListener("scroll",()=>{ if(document.getElementById("pil-errante"))pousarAviaoErrante(); },{passive:true});
 window.addEventListener("resize",()=>{ if(document.getElementById("pil-errante"))pousarAviaoErrante(); });
 setInterval(()=>{ if(window._ESQ)pousarAviaoErrante(); },7000);
-async function carregaResgates(){ try{const r=await fetch("dados/resgates_piloto.json?v="+Date.now()); if(r.ok)window._RESG=await r.json();}catch(e){} return window._RESG||{}; }
+async function carregaVivo(){ try{const r=await fetch("dados/piloto_ao_vivo.json?v="+Date.now()); if(r.ok)window._VIVO=await r.json();}catch(e){} return window._VIVO||null; }
+setInterval(()=>{ carregaVivo().then(()=>{desenhaPostoPiloto("pil-posto");desenhaPostoPiloto("pil-posto-bussola");}); },60000);
+async function carregaResgates(){ carregaVivo(); try{const r=await fetch("dados/resgates_piloto.json?v="+Date.now()); if(r.ok)window._RESG=await r.json();}catch(e){} return window._RESG||{}; }
 async function carregaBrief(){ carregaResgates(); try{const r=await fetch("dados/briefings_piloto.json?v="+Date.now()); if(r.ok)window._BRIEF=await r.json();}catch(e){} return window._BRIEF||{}; }
 async function carregaRadar(){ carregaBrief().then(()=>{ if(window._BRIEF&&!window._briefPronto){window._briefPronto=true; desenhaPostoPiloto("pil-posto"); desenhaPostoPiloto("pil-posto-bussola");} }); try{const r=await fetch("dados/radar_piloto.json?v="+Date.now()); if(r.ok)window._RADAR=await r.json();}catch(e){} return window._RADAR||{}; }
 async function carregaEsquadrilha(){ carregaRadar().then(()=>{ if(window._RADAR&&!window._radarPronto){window._radarPronto=true; desenhaPostoPiloto("pil-posto"); desenhaPostoPiloto("pil-posto-bussola");} }); try{const r=await fetch("dados/esquadrilha.json?v="+Date.now()); if(r.ok)window._ESQ=await r.json();}catch(e){window._ESQ=window._ESQ||{};} return window._ESQ||{}; }
