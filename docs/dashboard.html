@@ -260,17 +260,17 @@ box-shadow:0 1px 3px #0002}
 
 /* ===== ESQUADRILHA DO SÍNDICO (22/09) — o avião voa sobre o motor em que está trabalhando ===== */
 .mt-item{position:relative}
-.sind-aviao{position:absolute;left:-6px;top:-16px;width:62px;height:34px;z-index:6;cursor:pointer;filter:drop-shadow(0 2px 3px rgba(11,78,162,.25));animation:sind-voo 3.6s ease-in-out infinite}
-.sind-aviao:hover{animation-play-state:paused;transform:scale(1.12)}
-@keyframes sind-voo{0%{transform:translate(0,0) rotate(-2deg)}25%{transform:translate(10px,-3px) rotate(1deg)}50%{transform:translate(20px,0) rotate(-1deg)}75%{transform:translate(10px,-4px) rotate(2deg)}100%{transform:translate(0,0) rotate(-2deg)}}
-.sind-helice{transform-origin:53px 17px;animation:sind-gira .12s linear infinite}
-@keyframes sind-gira{to{transform:rotate(360deg)}}
-.sind-tiro{animation:sind-pisca 1.1s steps(2) infinite}
-@keyframes sind-pisca{0%,70%{opacity:0}75%,100%{opacity:1}}
-.sind-luneta{animation:sind-olha 2.4s ease-in-out infinite}
-@keyframes sind-olha{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
-.sind-rastro{stroke-dasharray:3 4;animation:sind-rastro 1s linear infinite}
-@keyframes sind-rastro{to{stroke-dashoffset:-14}}
+.pil-aviao{position:absolute;left:-6px;top:-16px;width:62px;height:34px;z-index:6;cursor:pointer;filter:drop-shadow(0 2px 3px rgba(11,78,162,.25));animation:pil-voo 3.6s ease-in-out infinite}
+.pil-aviao:hover{animation-play-state:paused;transform:scale(1.12)}
+@keyframes pil-voo{0%{transform:translate(0,0) rotate(-2deg)}25%{transform:translate(10px,-3px) rotate(1deg)}50%{transform:translate(20px,0) rotate(-1deg)}75%{transform:translate(10px,-4px) rotate(2deg)}100%{transform:translate(0,0) rotate(-2deg)}}
+.pil-helice{transform-origin:53px 17px;animation:pil-gira .12s linear infinite}
+@keyframes pil-gira{to{transform:rotate(360deg)}}
+.pil-tiro{animation:pil-pisca 1.1s steps(2) infinite}
+@keyframes pil-pisca{0%,70%{opacity:0}75%,100%{opacity:1}}
+.pil-luneta{animation:pil-olha 2.4s ease-in-out infinite}
+@keyframes pil-olha{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
+.pil-rastro{stroke-dasharray:3 4;animation:pil-rastro 1s linear infinite}
+@keyframes pil-rastro{to{stroke-dashoffset:-14}}
 /* estrelas de abate — na borda ESQUERDA externa da caixa do motor, como na fuselagem */
 .mt-abates{position:absolute;left:-26px;top:6px;display:flex;flex-direction:column;gap:2px;align-items:center;z-index:5}
 .mt-abates .est{width:13px;height:13px;color:#C8961E;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18))}
@@ -278,25 +278,25 @@ box-shadow:0 1px 3px #0002}
 @keyframes est-nasce{0%{transform:scale(0) rotate(-120deg);opacity:0}60%{transform:scale(1.5) rotate(10deg);opacity:1}100%{transform:scale(1) rotate(0)}}
 .mt-abates .mais{font-size:9.5px;font-weight:800;color:#C8961E}
 /* posto de comando na tela inicial */
-.sind-posto{border:1px solid #C9B37A;border-radius:12px;background:linear-gradient(180deg,#FFFDF5,#FBF6E6);padding:12px 14px;margin:12px 0}
-.sind-posto h4{margin:0 0 2px;font-family:Georgia,serif;color:#6B5A12;font-size:15px;display:flex;align-items:center;gap:8px}
-.sind-atual{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #E6DAB4;margin-top:8px}
-.sind-atual .voando{font-weight:800;color:#0E2A55}.sind-atual .alvo{color:var(--suave);font-size:12px}
-.sind-placar{margin-left:auto;text-align:right}.sind-placar b{font-size:20px;color:#C8961E;font-family:Georgia,serif}
-.sind-partida{display:inline-flex;align-items:center;gap:7px;margin-left:auto;padding:5px 11px;border-radius:20px;border:1px solid #C9B37A;background:#fff;cursor:pointer;font:inherit;font-size:12px;font-weight:700;color:#6B5A12}
-.sind-partida:hover{background:#FBF3DC}.sind-partida.girando{background:#F2FBF5;border-color:#7CE0A8;color:#1E7E4B}
-.sind-partida svg{width:20px;height:20px}
-.sind-pa{transform-origin:12px 12px}
-.sind-partida.girando .sind-pa{animation:sind-pa-gira .28s linear infinite}
-.sind-partida.acelera .sind-pa{animation:sind-pa-gira .09s linear infinite}
-@keyframes sind-pa-gira{to{transform:rotate(360deg)}}
-.sind-fumaca{opacity:0}.sind-partida.girando .sind-fumaca{animation:sind-fuma 1.4s ease-out infinite}
-@keyframes sind-fuma{0%{opacity:.8;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(9px,-7px) scale(1.5)}}
-.sind-log{margin-top:8px;max-height:210px;overflow:auto}
-.sind-log-l{display:grid;grid-template-columns:18px 1fr auto;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px dotted #EDE3C8;font-size:12px}
-.sind-log-l .ic{font-size:13px}.sind-log-l small{color:var(--suave);display:block}
-.sind-log-l .ab{color:#C8961E;font-weight:800;white-space:nowrap}
-.sind-vazio{font-size:12.5px;color:var(--suave);padding:6px 0}
+.pil-posto{border:1px solid #C9B37A;border-radius:12px;background:linear-gradient(180deg,#FFFDF5,#FBF6E6);padding:12px 14px;margin:12px 0}
+.pil-posto h4{margin:0 0 2px;font-family:Georgia,serif;color:#6B5A12;font-size:15px;display:flex;align-items:center;gap:8px}
+.pil-atual{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #E6DAB4;margin-top:8px}
+.pil-atual .voando{font-weight:800;color:#0E2A55}.pil-atual .alvo{color:var(--suave);font-size:12px}
+.pil-placar{margin-left:auto;text-align:right}.pil-placar b{font-size:20px;color:#C8961E;font-family:Georgia,serif}
+.pil-partida{display:inline-flex;align-items:center;gap:7px;margin-left:auto;padding:5px 11px;border-radius:20px;border:1px solid #C9B37A;background:#fff;cursor:pointer;font:inherit;font-size:12px;font-weight:700;color:#6B5A12}
+.pil-partida:hover{background:#FBF3DC}.pil-partida.girando{background:#F2FBF5;border-color:#7CE0A8;color:#1E7E4B}
+.pil-partida svg{width:20px;height:20px}
+.pil-pa{transform-origin:12px 12px}
+.pil-partida.girando .pil-pa{animation:pil-pa-gira .28s linear infinite}
+.pil-partida.acelera .pil-pa{animation:pil-pa-gira .09s linear infinite}
+@keyframes pil-pa-gira{to{transform:rotate(360deg)}}
+.pil-fumaca{opacity:0}.pil-partida.girando .pil-fumaca{animation:pil-fuma 1.4s ease-out infinite}
+@keyframes pil-fuma{0%{opacity:.8;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(9px,-7px) scale(1.5)}}
+.pil-log{margin-top:8px;max-height:210px;overflow:auto}
+.pil-log-l{display:grid;grid-template-columns:18px 1fr auto;gap:8px;align-items:baseline;padding:4px 0;border-bottom:1px dotted #EDE3C8;font-size:12px}
+.pil-log-l .ic{font-size:13px}.pil-log-l small{color:var(--suave);display:block}
+.pil-log-l .ab{color:#C8961E;font-weight:800;white-space:nowrap}
+.pil-vazio{font-size:12.5px;color:var(--suave);padding:6px 0}
 .mt-achados{margin-top:6px;padding:6px 8px;background:#F7FBFF;border:1px solid #DCE7F5;border-radius:8px;font-size:11.5px}
 .mt-ach{display:flex;align-items:center;gap:6px;padding:2px 0;border-bottom:1px dotted #E8EEF6}
 .mt-ach .pt{width:8px;height:8px;border-radius:50%;flex:none}.mt-ach .pt.ok{background:var(--ok)}.mt-ach .pt.nv{background:#E0B060}
@@ -729,7 +729,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </section>
 
 <!-- ============ ESQUADRILHA DO SÍNDICO — posto de comando ============ -->
-<section id="v-sindico-posto" style="margin-top:14px"><div id="sind-posto"></div></section>
+<section id="v-sindico-posto" style="margin-top:14px"><div id="pil-posto"></div></section>
 
 <!-- ============ ELDORADO · CALENDÁRIO ============ -->
 <section id="v-calendario" style="margin-top:14px">
@@ -1005,10 +1005,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260922105536"></script>
-<script src="mapa-arte.js?v=20260922105536"></script>
-<script src="dashboard-dados.enc.js?v=20260922105536"></script>
-<script src="dashboard-dados.js?v=20260922105536"></script>
+<script src="mapa-brasil.js?v=20260922112436"></script>
+<script src="mapa-arte.js?v=20260922112436"></script>
+<script src="dashboard-dados.enc.js?v=20260922112436"></script>
+<script src="dashboard-dados.js?v=20260922112436"></script>
 <script>
 (function(){
 "use strict";
@@ -1910,16 +1910,16 @@ function desenhaFilaVerificacao(){
     ${(f.reprovados_por_objeto&&f.reprovados_por_objeto.total)?`<div class=meta style="margin-top:6px"><b>${f.reprovados_por_objeto.total}</b> registro(s) saíram da fila pelo filtro de objeto (não são chamada aberta de fomento): ${Object.entries(f.reprovados_por_objeto.por_familia||{}).map(([k,v])=>`${v} ${esc(k.replace(/_/g," "))}`).join(" · ")}.</div>`:""}
     ${(D.fora_das_50&&D.fora_das_50.total)?`<div class=meta style="margin-top:6px;color:#FF1493"><b>${D.fora_das_50.total}</b> oportunidade(s) de cidades fora das 50 maiores do estado foram retiradas da fila (depuração) — aparecem em rosa para aprovação manual: ${(D.fora_das_50.itens||[]).slice(0,6).map(x=>esc((x.cidade||"?")+"/"+(x.uf||""))).join(" · ")}${D.fora_das_50.total>6?" …":""}</div>`:""}
     ${(()=>{const S=(D.evolucao_busca||{}).sindico;if(!S)return "";const c=S.config||{},b=S.benchmark||{},u=S.ultimo||{};
-      return `<div class="alerta-motores" style="border-color:#9FC1E8;background:#F3F8FF"><b>O SÍNDICO — IA local no GitHub Actions:</b>
+      return `<div class="alerta-motores" style="border-color:#9FC1E8;background:#F3F8FF"><b>O PILOTO — IA local no GitHub Actions:</b>
         ${(()=>{const K=S.cargo;if(!K)return c.modelo_vencedor?`modelo <b>${esc(c.modelo_vencedor)}</b>`:"sem ocupante";const o=K.ocupante,d=o.desempenho||{};
-          return `ocupante do cargo: <b>${esc(o.nome)}</b> (${o.gb} GB · ${d.tokens_por_s||"—"} tok/s) — acerto <b>${((d.acerto||0)*100).toFixed(0)}%</b>, ${d.prazos_inventados||0} prazo(s) inventado(s), contratado em ${esc(o.contratado_em||"")}
+          return `no comando: <b>${esc(o.nome)}</b> (${o.gb} GB · ${d.tokens_por_s||"—"} tok/s) — acerto <b>${((d.acerto||0)*100).toFixed(0)}%</b>, ${d.prazos_inventados||0} prazo(s) inventado(s), contratado em ${esc(o.contratado_em||"")}
             <div class=meta style="margin-top:3px">${esc(o.por_que||"")}</div>
             <div class=meta><b>Sniper:</b> encontra, valida e cataloga oportunidades e afia os motores. Não elabora projeto nem documento — isso é do Claude e do titular.</div>
             <div class=meta>Reservas prontos para substituir sem mexer no sistema: ${K.reservas.map(r=>esc(r.id)+" ("+r.gb+" GB)").join(" · ")}${S.memoria_erros?` · memória de erros: <b>${S.memoria_erros.total}</b> lições`:""}</div>`;})()}
         ${b.resumo&&b.resumo.length?`<ul>${b.resumo.map(x=>`<li><b>${esc(x.id)}</b> — ${x.erro?esc(x.erro):`acerto ${((x.acerto||0)*100).toFixed(0)}% · prazos inventados ${x.prazos_inventados} · ${x.tokens_por_s||"—"} tok/s · ${x.minutos||"—"} min`}${x.elegivel?"":' <span style="color:var(--urgente)">eliminado</span>'}</li>`).join("")}</ul>`:""}
         ${u.anuncio?`<div class=meta style="margin-top:4px">${esc(u.anuncio)}</div>`:""}
         <div class=meta><b>Constituição:</b> nível 1 completar editais desatualizados · nível 2 classificar, enquadrar e preparar a inscrição · nível 3 otimizar a busca e minerar o desconhecido — ocioso dispara nova pesquisa. <a href="dados/pacote_conselho.md" target=_blank rel="noopener noreferrer">Pacote do conselho</a> (validação do Claude a cada 3 dias).</div>
-        <div class=meta>4 ciclos por dia (04h·10h·16h·22h): entender a Biblioteca → curar → afiar os motores → minerar → anunciar. Propõe; a validação decide. Edital novo aciona o Síndico na hora.</div></div>`;})()}
+        <div class=meta>4 ciclos por dia (04h·10h·16h·22h): entender a Biblioteca → curar → afiar os motores → minerar → anunciar. Propõe; a validação decide. Edital novo aciona o Piloto na hora.</div></div>`;})()}
     ${(()=>{const E=D.evolucao_busca;if(!E)return "";const L=E.lexico_aprendido||{},R=E.recorrencia||{},M=E.empresas_rotas||{},F=E.finalidade||{},A=E.acervo_compacto||{};
       return `<div class=meta style="margin-top:6px"><b>Evolução da busca:</b> ${F.descoberta||0} motores de descoberta · ${F.insumo||0} de insumo · <b>1 de recorrência</b> com ${R.total||0} rotas ·
         léxico aprendido <b>${L.positivos||0}</b> termos e <b>${L.vetos||0}</b> vetos (base: ${(L.base||{}).aprovados||0} aprovados / ${(L.base||{}).reprovados||0} reprovados) ·
@@ -2407,13 +2407,13 @@ function htmlEditaisEnquadrados(a){const COR={verde:"var(--ok)",amarelo:"var(--a
           ${P.valores&&(P.valores.minimo||P.valores.maximo)?`<div class=meta><b>Faixa:</b> ${esc(String(P.valores.base).slice(0,80))}</div>`:""}`;})()}</div>
         <div class="sug-col"><div class="sug-col-t">Relatório do edital</div>
           ${(()=>{const R=relatorioDoEdital(e,ia,r);if(!R)return '<div class=meta>sem relatório ainda — entra na próxima verificação</div>';
-            return `<button class="rel-bt ${R.quem==="Síndico"?"sindico":"claude"}" data-rel="${esc(e.id)}" title="${esc(R.resumo)}" onclick="abrirRelatorio('${esc(e.id)}')">
+            return `<button class="rel-bt ${R.quem==="Piloto"?"sindico":"claude"}" data-rel="${esc(e.id)}" title="${esc(R.resumo)}" onclick="abrirRelatorio('${esc(e.id)}')">
               <span class="rel-quem">${esc(R.quem)}</span><span class="rel-data">${esc(R.data)} · ${esc(R.modelo)}</span><span class="rel-abrir">ver relatório ↗</span></button>
               ${R.decisao?`<div class="sug-parecer" style="margin-top:6px"><b>Decisão:</b> ${esc(R.decisao.slice(0,180))}</div>`:""}`;})()}
         </div>
       </div></div>`;}).join("");
 }
-/* RELATÓRIO DO EDITAL (20/09): um botão com quem analisou (Síndico ou Claude) e a data;
+/* RELATÓRIO DO EDITAL (20/09): um botão com quem analisou (Piloto ou Claude) e a data;
    hover = considerações resumidas; clique = janela com o relatório completo. */
 window._REL={};
 function relatorioDoEdital(e,ia,r){
@@ -2422,10 +2422,10 @@ function relatorioDoEdital(e,ia,r){
   const decisao=ia&&ia.decisao?String(ia.decisao):"";
   if(!parecer&&!decisao&&!an.selo)return null;
   const por=String(an.por||e.verificado_por||"").toLowerCase();
-  const quem=/s[ií]ndico|ia_local/.test(por)?"Síndico":"Claude";
+  const quem=/s[ií]ndico|ia_local/.test(por)?"Piloto":"Claude";
   const data=br((an.em||e.verificado_em||e.analisado_em||"").slice(0,10))||"—";
   const resumo=(parecer||decisao||an.motivo||"").replace(/\s+/g," ").slice(0,220)+(((parecer||decisao||"").length>220)?"…":"");
-  const modelo=an.modelo||(quem==="Síndico"?((D.evolucao_busca||{}).sindico||{}).config?.modelo_vencedor:"Claude Fable 5.1")||"—";
+  const modelo=an.modelo||(quem==="Piloto"?((D.evolucao_busca||{}).sindico||{}).config?.modelo_vencedor:"Claude Fable 5.1")||"—";
   const R={quem,data,resumo,decisao,parecer,selo:an.selo,motivo:an.motivo,por:an.por||e.verificado_por,modelo,
     ia:ia||{},luzes:(D.enquadramento_fila&&D.enquadramento_fila.itens?((D.enquadramento_fila.itens.find(q=>q.id===e.id)||{}).luzes):null),
     titulo:e.titulo,valor:e.valor_texto||e.valor,fim:e.fim,link:linkOficial(e)||e.url};
@@ -2879,11 +2879,11 @@ const ROT_TIPO={empresas_incentivo:"editais incentivados (empresas)",empresas_fi
 /* Oportunidades que ESTE motor encontrou, com o link direto da página do edital
    (site oficial quando conhecido; nunca o vetor de divulgação). */
 
-/* O SÍNDICO (22/09): avião de patrulha com o síndico de binóculos. Pousa sobre o motor em
+/* O SÍNDICO (22/09): avião de patrulha com o Piloto de binóculos. Pousa sobre o motor em
    que está trabalhando; clicar abre o posto de observação daquele motor. */
-function aviaoDoSindico(motorId, titulo){
-  return `<svg class="sind-aviao" viewBox="0 0 62 34" onclick="event.stopPropagation();abrirPostoSindico('${esc(motorId)}')" role="img" aria-label="Síndico sobrevoando ${esc(titulo||motorId)}"><title>${esc(titulo||"Síndico em missão")} — clique para acompanhar</title>
-    <path class="sind-rastro" d="M2 24 H16" stroke="#9FC1E8" stroke-width="2" fill="none" stroke-linecap="round"/>
+function aviaoDoPiloto(motorId, titulo){
+  return `<svg class="pil-aviao" viewBox="0 0 62 34" onclick="event.stopPropagation();abrirPostoPiloto('${esc(motorId)}')" role="img" aria-label="Piloto sobrevoando ${esc(titulo||motorId)}"><title>${esc(titulo||"Piloto em missão")} — clique para acompanhar</title>
+    <path class="pil-rastro" d="M2 24 H16" stroke="#9FC1E8" stroke-width="2" fill="none" stroke-linecap="round"/>
     <ellipse cx="30" cy="19" rx="18" ry="6.2" fill="#0E2A55"/>
     <path d="M14 19 L4 26 L15 23 Z" fill="#0B4EA2"/>
     <path d="M22 15 L34 6 L37 15 Z" fill="#2F79D0"/>
@@ -2891,10 +2891,10 @@ function aviaoDoSindico(motorId, titulo){
     <circle cx="33" cy="13.5" r="5.6" fill="#DCEBFF" stroke="#0E2A55" stroke-width="1.1"/>
     <circle cx="33" cy="14" r="3.1" fill="#F6C98A"/>
     <path d="M31 16.6 q2 1.2 4 0" stroke="#8a5a00" stroke-width=".8" fill="none" stroke-linecap="round"/>
-    <g class="sind-luneta"><rect x="34.2" y="12.1" width="4.3" height="3" rx="1.4" fill="#173E6B"/><circle cx="38.6" cy="13.6" r="1.5" fill="#7CE0A8"/></g>
-    <g class="sind-helice"><rect x="51.6" y="8" width="2.2" height="18" rx="1.1" fill="#173E6B" opacity=".85"/></g>
+    <g class="pil-luneta"><rect x="34.2" y="12.1" width="4.3" height="3" rx="1.4" fill="#173E6B"/><circle cx="38.6" cy="13.6" r="1.5" fill="#7CE0A8"/></g>
+    <g class="pil-helice"><rect x="51.6" y="8" width="2.2" height="18" rx="1.1" fill="#173E6B" opacity=".85"/></g>
     <circle cx="52.7" cy="17" r="2" fill="#0E2A55"/>
-    <g class="sind-tiro"><circle cx="58" cy="17" r="2.4" fill="#F2A33C"/><circle cx="61" cy="17" r="1.2" fill="#FFD98A"/></g>
+    <g class="pil-tiro"><circle cx="58" cy="17" r="2.4" fill="#F2A33C"/><circle cx="61" cy="17" r="1.2" fill="#FFD98A"/></g>
   </svg>`;
 }
 function estrelasDeAbate(n, novos){
@@ -2903,37 +2903,37 @@ function estrelasDeAbate(n, novos){
   const mostra=Math.min(n,8);
   return `<div class="mt-abates" title="${n} oportunidade(s) nova(s) descoberta(s) por este motor">${Array.from({length:mostra},(_,i)=>EST.replace('class="est"', i<(novos||0)?'class="est nova"':'class="est"')).join("")}${n>8?`<span class=mais>+${n-8}</span>`:""}</div>`;
 }
-function desenhaPostoSindico(){
-  const el=$("sind-posto"); if(!el)return; const E=window._ESQ;
-  if(!E){ carregaEsquadrilha().then(()=>desenhaPostoSindico()); return; }
+function desenhaPostoPiloto(){
+  const el=$("pil-posto"); if(!el)return; const E=window._ESQ;
+  if(!E){ carregaEsquadrilha().then(()=>desenhaPostoPiloto()); return; }
   const at=E.missao_atual, L=E.ultimas||[], tot=E.total_abates||0;
   const motores=Object.entries(E.abates||{}).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
-  el.innerHTML=`<div class="sind-posto">
-    <h4>${aviaoDoSindico(at&&at.motor?at.motor:"", at?"em missão":"esquadrilha em terra")} Esquadrilha do Síndico <span class=meta style="font-weight:400">— patrulha dos motores 26, 27, 28 e 29</span>
-      <button class="sind-partida ${at?"girando":""}" id="sind-helice-bt" onclick="darPartida()" title="dar a partida: o síndico decola no próximo ciclo do GitHub">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><g class="sind-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.6" fill="#0E2A55"/><circle class="sind-fumaca" cx="19" cy="6" r="2" fill="#B9C6D6"/></svg>
-        <span id="sind-helice-txt">${at?"em voo":"dar a partida"}</span></button></h4>
-    <div class="sind-atual">
+  el.innerHTML=`<div class="pil-posto">
+    <h4>${aviaoDoPiloto(at&&at.motor?at.motor:"", at?"em missão":"esquadrilha em terra")} Esquadrilha do Piloto <span class=meta style="font-weight:400">— patrulha dos motores 26, 27, 28 e 29</span>
+      <button class="pil-partida ${at?"girando":""}" id="pil-helice-bt" onclick="darPartida()" title="dar a partida: o Piloto decola no próximo ciclo do GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><g class="pil-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.6" fill="#0E2A55"/><circle class="pil-fumaca" cx="19" cy="6" r="2" fill="#B9C6D6"/></svg>
+        <span id="pil-helice-txt">${at?"em voo":"dar a partida"}</span></button></h4>
+    <div class="pil-atual">
       ${at?`<span class=voando>✈ agora:</span><span>${esc((E.legenda||{})[at.tipo]||at.tipo)}${at.motor?` sobre <b>${esc(at.motor)}</b>`:""}</span><span class=alvo>${esc(at.alvo||"")}</span>`
           :`<span class=voando>🛬 em terra</span><span class=alvo>aguardando o próximo ciclo (04h · 10h · 16h · 22h)</span>`}
-      <span class=sind-placar><b>${tot}</b><br><span class=meta>alvo(s) novo(s)</span></span></div>
+      <span class=pil-placar><b>${tot}</b><br><span class=meta>alvo(s) novo(s)</span></span></div>
     ${motores.length?`<div class=meta style="margin-top:8px">Marcas na fuselagem: ${motores.map(([m,v])=>`<b>${esc(m)}</b> ★${v.n}`).join(" · ")}</div>`:""}
     <div class="fdoc-t" style="margin-top:10px">Missões anteriores <span class=meta>${L.length} registrada(s)</span></div>
-    ${L.length?`<div class="sind-log">${L.map(m=>linhaBordo(m,E)).join("")}</div>`
-              :'<div class=sind-vazio>O síndico ainda não decolou. O primeiro voo sai no próximo ciclo — ele sorteia as missões entre caçar oportunidade nova, afiar um motor e procurar um local novo de publicação.</div>'}
+    ${L.length?`<div class="pil-log">${L.map(m=>linhaBordo(m,E)).join("")}</div>`
+              :'<div class=pil-vazio>O Piloto ainda não decolou. O primeiro voo sai no próximo ciclo — ele sorteia as missões entre caçar oportunidade nova, afiar um motor e procurar um local novo de publicação.</div>'}
     <div class=meta style="margin-top:6px">Clique no avião sobre qualquer motor (aba Bússola) para ver o que ele fez ali.</div></div>`;
 }
 window.darPartida=function(){
-  const bt=$("sind-helice-bt"), tx=$("sind-helice-txt"); if(!bt)return;
+  const bt=$("pil-helice-bt"), tx=$("pil-helice-txt"); if(!bt)return;
   if(bt.classList.contains("girando")){ bt.classList.toggle("acelera"); tx.textContent=bt.classList.contains("acelera")?"a todo vapor":"em voo"; return; }
   bt.classList.add("girando"); tx.textContent="contato!";
   setTimeout(()=>{ tx.textContent="decolando…"; bt.classList.add("acelera"); },900);
   setTimeout(()=>{
     bt.classList.remove("acelera"); tx.textContent="motores ligados";
-    abreModal('<h3 style="margin:0">Motores ligados ✈</h3><div class=meta>Esquadrilha do Síndico — patrulha dos motores 26, 27, 28 e 29</div>',
+    abreModal('<h3 style="margin:0">Motores ligados ✈</h3><div class=meta>Esquadrilha do Piloto — patrulha dos motores 26, 27, 28 e 29</div>',
      `<div class="rel-janela">
-        <p>A hélice girou. O Síndico decola no <b>próximo ciclo</b> (04h · 10h · 16h · 22h) — ou agora, se o titular disparar o voo no GitHub:</p>
-        <div class="rel-texto">Actions → <b>07 · Síndico</b> → Run workflow → modo <b>ciclo</b></div>
+        <p>A hélice girou. O Piloto decola no <b>próximo ciclo</b> (04h · 10h · 16h · 22h) — ou agora, se o titular disparar o voo no GitHub:</p>
+        <div class="rel-texto">Actions → <b>07 · Piloto</b> → Run workflow → modo <b>ciclo</b></div>
         <div class="fdoc-t" style="margin-top:10px">Onde ele vai caçar</div>
         <ul class="rel-lista">
           <li><b>26</b> Editais incentivados — sites das maiores contribuintes do ICMS de Goiás</li>
@@ -2945,21 +2945,21 @@ window.darPartida=function(){
       </div>`);
   },2100);
 };
-window.abrirPostoSindico=function(motorId){
+window.abrirPostoPiloto=function(motorId){
   const E=window._ESQ||{}; const ab=(E.abates||{})[motorId]||{n:0,ultimos:[]};
   const missoes=(E.ultimas||[]).filter(m=>!motorId||m.motor===motorId);
   const at=E.missao_atual;
   abreModal(`<h3 style="margin:0">Posto de observação — ${esc(motorId||"esquadrilha")}</h3>
     <div class=meta>${ab.n} oportunidade(s) nova(s) marcada(s) na fuselagem deste motor</div>`,
-   `${at&&at.motor===motorId?`<div class="sind-atual"><span class=voando>✈ Em voo agora:</span> <span>${esc((E.legenda||{})[at.tipo]||at.tipo)}</span><span class=alvo>${esc(at.alvo||"")}</span></div>`:""}
+   `${at&&at.motor===motorId?`<div class="pil-atual"><span class=voando>✈ Em voo agora:</span> <span>${esc((E.legenda||{})[at.tipo]||at.tipo)}</span><span class=alvo>${esc(at.alvo||"")}</span></div>`:""}
     ${ab.ultimos&&ab.ultimos.length?`<div class="fdoc-t" style="margin-top:10px">Alvos abatidos</div>
       <div class="uf-abertos">${ab.ultimos.map(x=>`<div class="uf-ab"><span class="pt" style="background:#C8961E"></span><span class="uf-ab-nome">${esc(x.titulo)}</span><span class="uf-ab-prazo">${esc(x.em||"")}</span>${x.url?`<a class="uf-ab-link" href="${esc(x.url)}" target=_blank rel="noopener noreferrer">onde ↗</a>`:""}</div>`).join("")}</div>`:""}
     <div class="fdoc-t" style="margin-top:12px">Diário de bordo deste motor</div>
-    ${missoes.length?`<div class="sind-log">${missoes.map(m=>linhaBordo(m,E)).join("")}</div>`:'<div class=sind-vazio>ainda sem missão registrada aqui.</div>'}`);
+    ${missoes.length?`<div class="pil-log">${missoes.map(m=>linhaBordo(m,E)).join("")}</div>`:'<div class=pil-vazio>ainda sem missão registrada aqui.</div>'}`);
 };
 function linhaBordo(m,E){
   const IC={cacar_oportunidade:"🔭",afiar_motor:"🛠",descobrir_local:"🧭"}[m.tipo]||"✈";
-  return `<div class="sind-log-l"><span class=ic>${IC}</span>
+  return `<div class="pil-log-l"><span class=ic>${IC}</span>
     <span><b>${esc((E.legenda||{})[m.tipo]||m.tipo)}</b>${m.motor?` · ${esc(m.motor)}`:""}
       <small>${esc(m.resultado||m.licao||"")}${m.alvos&&m.alvos.length?" — "+m.alvos.slice(0,2).map(a=>esc((a.titulo||"").slice(0,54))+(a.onde?` <i>(${esc(String(a.onde).slice(0,48))})</i>`:"")).join(" · "):""}</small></span>
     <span class=ab>${m.abates?`★ ${m.abates}`:""}</span></div>`;
@@ -2979,7 +2979,7 @@ function achadosDoMotor(o){
 }
 async function carregaEsquadrilha(){ try{const r=await fetch("dados/esquadrilha.json?v="+Date.now()); if(r.ok)window._ESQ=await r.json();}catch(e){window._ESQ=window._ESQ||{};} return window._ESQ||{}; }
 function desenhaMotores(){
-  if(!window._ESQ){ carregaEsquadrilha().then(()=>{ if(!window._esqPronta){window._esqPronta=true; desenhaMotores(); desenhaPostoSindico();} }); }
+  if(!window._ESQ){ carregaEsquadrilha().then(()=>{ if(!window._esqPronta){window._esqPronta=true; desenhaMotores(); desenhaPostoPiloto();} }); }
   if(!$("mt-lista"))return;
   const R=MT._resumo||{};
   const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>`;
@@ -3045,7 +3045,7 @@ function desenhaMotores(){
   ofRows.sort((a,b)=>(a.rank||99)-(b.rank||99));
   const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Motores regulares <span class=meta>${ofRows.length} · numerados: diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado</span></div>
     ${ofRows.map(o=>{const st=semaforo(o.situacao);const ativo=mtAtivo(o.id);const E=window._ESQ||{};const ab=(E.abates||{})[o.id];const voa=E.missao_atual&&E.missao_atual.motor===o.id;
-      return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">${voa?aviaoDoSindico(o.id,o.nome):""}${ab&&ab.n?estrelasDeAbate(ab.n,(ab.ultimos||[]).filter(x=>x.em===new Date().toISOString().slice(0,10)).length):""}
+      return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">${voa?aviaoDoPiloto(o.id,o.nome):""}${ab&&ab.n?estrelasDeAbate(ab.n,(ab.ultimos||[]).filter(x=>x.em===new Date().toISOString().slice(0,10)).length):""}
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
       <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(ROT_TIPO[o.tipo]||GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
@@ -3570,7 +3570,7 @@ function iniciar(){
   {const el=$("versao-painel"); if(el){const g=(D.gerado_em||"").slice(0,16).replace("T"," ");
      const dias=Math.round((Date.now()-new Date(D.gerado_em||Date.now()))/864e5);
      el.innerHTML=`dados gerados em <b>${esc(g)}</b>${dias>1?` · <span style="color:var(--urgente)">${dias} dias atrás — recarregue com Ctrl+F5</span>`:" · atualizado"}`;}}
-  desenhaPostoSindico();desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
+  desenhaPostoPiloto();desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
   if($("rk-bt-fiscal")){$("rk-bt-fiscal").onclick=()=>{window._rkCat="destinacao_tributaria";window.desenhaRanking();};$("rk-bt-patroc").onclick=()=>{window._rkCat="patrocinio_privado";window.desenhaRanking();};$("rk-busca").addEventListener("input",()=>window.desenhaRanking());}
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");

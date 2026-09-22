@@ -1,6 +1,6 @@
-"""PACOTE DO CONSELHO — a cada 3 dias, o Claude valida o que o Síndico não obteve.
+"""PACOTE DO CONSELHO — a cada 3 dias, o Claude valida o que o Piloto não obteve.
 
-Gera estado/pacote_conselho.md com: o que o Síndico fez nos últimos 3 dias (por nível), o que
+Gera estado/pacote_conselho.md com: o que o Piloto fez nos últimos 3 dias (por nível), o que
 ficou sem solução, o RELATÓRIO DE APRENDIZADO E BLOQUEIOS (uma linha por evento), as propostas
 que aguardam validação (enquadramentos, rotas sugeridas, extrações), e as perguntas que o
 conselho precisa responder. O Claude abre o arquivo, valida, corrige e anota o modelo com que
@@ -34,8 +34,8 @@ def montar(dias: int = 3) -> dict:
                 enq.append({"edital": d.get("edital_id") or f.stem, "assoc": a, "ganharia": v.get("ganharia"), "faltam": v.get("documentos_faltantes")})
     cfg = load_json(ROOT / "config/sindico.json") if (ROOT / "config/sindico.json").exists() else {}
     L = [f"# Pacote do conselho — validação do Claude ({hoje.isoformat()}, últimos {dias} dias)", "",
-         f"Síndico: modelo **{cfg.get('modelo_vencedor') or 'não eleito'}**. Ao responder, o Claude anota o modelo com que trabalhou.", "",
-         "## O que o Síndico fez", ""]
+         f"Piloto: modelo **{cfg.get('modelo_vencedor') or 'não eleito'}**. Ao responder, o Claude anota o modelo com que trabalhou.", "",
+         "## O que o Piloto fez", ""]
     for r in rels:
         L.append(f"- {r.get('em','')[:16]} — {r.get('anuncio','')}")
     if not rels: L.append("- nenhum ciclo concluído no período")

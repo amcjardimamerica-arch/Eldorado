@@ -1,4 +1,4 @@
-"""O CARGO DE SÍNDICO — o ocupante é trocável; o contrato é do sistema.
+"""O CARGO DE PILOTO — o ocupante é trocável; o contrato é do sistema.
 
 Três coisas vivem aqui:
 
@@ -10,7 +10,7 @@ Três coisas vivem aqui:
   avaliar_candidato() .. mede um reserva contra o gabarito e, se bater o ocupante nas métricas
                          do critério, faz a troca sozinho — sem tocar em mais nada do sistema.
 
-ESCOPO (decisão do titular, 22/09/2026): o Síndico é SNIPER DE OPORTUNIDADES. Encontra, valida,
+ESCOPO (decisão do titular, 22/09/2026): o Piloto é SNIPER DE OPORTUNIDADES. Encontra, valida,
 cataloga, descobre onde e quando se publica, e afia os motores. NÃO interpreta edital para
 elaborar projeto nem redige documentos de inscrição — isso saiu do cargo.
 """
