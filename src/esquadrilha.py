@@ -1,6 +1,6 @@
-"""ESQUADRILHA DO PILOTO — missões sorteadas, abates e diário de bordo.
+"""ESQUADRILHA DO SÍNDICO — missões sorteadas, abates e diário de bordo.
 
-O Piloto voa sobre os motores. A cada ciclo sorteia missões (caçar oportunidade nova,
+O Síndico voa sobre os motores. A cada ciclo sorteia missões (caçar oportunidade nova,
 afiar um motor, descobrir um local novo de publicação), executa uma por vez e registra
 tudo num DIÁRIO DE BORDO que o painel lê para animar o avião e contar as estrelas.
 
