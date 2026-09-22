@@ -1,5 +1,5 @@
 {
-  "em": "2026-09-22T23:42:52+00:00",
+  "em": "2026-09-22T23:55:57+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "sindico-aberto": {
@@ -35,43 +35,17 @@
       "achados": 0,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 2,
-        "busca_vazia": 1
+        "busca_vazia": 1,
+        "nada_no_crivo": 2
       },
       "efetividade": 0.0
     },
     "missao-especial": {
-      "missoes": 16,
+      "missoes": 19,
       "achados": 0,
       "uteis": 0,
       "motivos": {
-        "pagina_nao_confirma": 13,
-        "nada_no_crivo": 3
-      },
-      "efetividade": 0.0
-    },
-    "m-teste": {
-      "missoes": 1,
-      "achados": 2,
-      "uteis": 1,
-      "motivos": {},
-      "efetividade": 0.5
-    },
-    "m-seco": {
-      "missoes": 1,
-      "achados": 0,
-      "uteis": 0,
-      "motivos": {
-        "busca_vazia": 1
-      },
-      "efetividade": 0.0
-    },
-    "m-repete": {
-      "missoes": 1,
-      "achados": 0,
-      "uteis": 0,
-      "motivos": {
-        "busca_vazia": 1
+        "pagina_nao_confirma": 19
       },
       "efetividade": 0.0
     }
@@ -89,6 +63,17 @@
       "regra": "o motor 'm-repete' falha por o buscador não devolveu nada (bloqueio ou rede) há 54 vezes — precisa de correção, não de mais tentativas"
     },
     {
+      "motor": "missao-especial",
+      "motivo": "pagina_nao_confirma",
+      "vezes": 20,
+      "tipos": [
+        "resgate"
+      ],
+      "ultima": "2026-09-22",
+      "explicacao": "a página aberta não confirmou o que o resultado prometia",
+      "regra": "o motor 'missao-especial' falha por a página aberta não confirmou o que o resultado prometia há 20 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
       "motor": "m-seco",
       "motivo": "busca_vazia",
       "vezes": 18,
@@ -100,72 +85,71 @@
       "regra": "o motor 'm-seco' falha por o buscador não devolveu nada (bloqueio ou rede) há 18 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "missao-especial",
-      "motivo": "pagina_nao_confirma",
-      "vezes": 13,
-      "tipos": [
-        "resgate"
-      ],
-      "ultima": "2026-09-22",
-      "explicacao": "a página aberta não confirmou o que o resultado prometia",
-      "regra": "o motor 'missao-especial' falha por a página aberta não confirmou o que o resultado prometia há 13 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
       "motor": "motor-gife",
       "motivo": "nada_no_crivo",
-      "vezes": 4,
+      "vezes": 6,
       "tipos": [
         "descobrir_local",
         "afiar_motor"
       ],
       "ultima": "2026-09-22",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'motor-gife' falha por vieram resultados, mas nenhum era oportunidade de verdade há 4 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'motor-gife' falha por vieram resultados, mas nenhum era oportunidade de verdade há 6 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "sindico-aberto",
+      "motivo": "nada_no_crivo",
+      "vezes": 6,
+      "tipos": [
+        "cacar_oportunidade",
+        "descobrir_local"
+      ],
+      "ultima": "2026-09-22",
+      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
+      "regra": "o motor 'sindico-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 6 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "missao-especial",
+      "motivo": "nada_no_crivo",
+      "vezes": 4,
+      "tipos": [
+        "resgate"
+      ],
+      "ultima": "2026-09-22",
+      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
+      "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 4 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "empresas-incentivadas",
       "motivo": "nada_no_crivo",
       "vezes": 4,
       "tipos": [
-        "cacar_oportunidade",
-        "descobrir_local"
+        "descobrir_local",
+        "cacar_oportunidade"
       ],
       "ultima": "2026-09-22",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
       "regra": "o motor 'empresas-incentivadas' falha por vieram resultados, mas nenhum era oportunidade de verdade há 4 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "sindico-aberto",
-      "motivo": "nada_no_crivo",
-      "vezes": 4,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir_local"
-      ],
-      "ultima": "2026-09-22",
-      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'sindico-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 4 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "missao-especial",
-      "motivo": "nada_no_crivo",
-      "vezes": 3,
-      "tipos": [
-        "resgate"
-      ],
-      "ultima": "2026-09-22",
-      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 3 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "motor-patrocinio",
-      "motivo": "nada_no_crivo",
+      "motor": "empresas-incentivadas",
+      "motivo": "busca_vazia",
       "vezes": 2,
       "tipos": [
         "cacar_oportunidade"
       ],
       "ultima": "2026-09-22",
-      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade"
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)"
+    },
+    {
+      "motor": "motor-patrocinio",
+      "motivo": "busca_vazia",
+      "vezes": 2,
+      "tipos": [
+        "cacar_oportunidade"
+      ],
+      "ultima": "2026-09-22",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)"
     },
     {
       "motor": "sindico-aberto",
@@ -176,9 +160,26 @@
       ],
       "ultima": "2026-09-22",
       "explicacao": "o buscador não devolveu nada (bloqueio ou rede)"
+    },
+    {
+      "motor": "motor-patrocinio",
+      "motivo": "nada_no_crivo",
+      "vezes": 1,
+      "tipos": [
+        "cacar_oportunidade"
+      ],
+      "ultima": "2026-09-22",
+      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade"
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "m-teste",
+      "sugestao": "filtrar por 'chamamento' no título",
+      "efetividade_na_hora": 0.5,
+      "em": "2026-09-22T22:26",
+      "aplicada": false
+    },
     {
       "motor": "m-teste",
       "sugestao": "filtrar por 'chamamento' no título",
