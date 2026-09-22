@@ -312,6 +312,10 @@ box-shadow:0 1px 3px #0002}
 .pil-balao{position:absolute;left:66px;top:4px;background:#0E2A55;color:#fff;font-size:10.5px;padding:2px 9px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .pil-balao b{color:#9FE3B8}
 @keyframes pil-passeia{0%{transform:translateX(0)}25%{transform:translateX(38%)}50%{transform:translateX(72%)}75%{transform:translateX(30%)}100%{transform:translateX(0)}}
+.pil-resg{background:#FFF8EC;border:1px solid #EAD6A8;border-radius:10px;padding:8px 10px;margin:8px 0}
+.pil-resg-l{display:grid;grid-template-columns:26px 1fr auto;gap:7px;align-items:center;font-size:11.5px;padding:2px 0;border-bottom:1px dotted #EDE0C4}
+.pil-urg{display:inline-flex;align-items:center;justify-content:center;background:#C8961E;color:#fff;border-radius:7px;font-size:10px;font-weight:800;padding:1px 0}
+.pil-resg-n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pil-brief{background:#F7FAFF;border:1px solid #DDE7F5;border-radius:10px;padding:8px 10px;margin:8px 0}
 .pil-brief-t{font-weight:800;font-size:12px;color:#0E2A55;margin-bottom:4px}
 .pil-brief-l{font-size:11.5px;line-height:1.45;margin:3px 0}
@@ -2939,6 +2943,15 @@ function desenhaPostoPiloto(alvo){
       <button class="pil-partida ${at?"girando":""}" id="${(alvo||"pil-posto")}-helice-bt" onclick="darPartida('${(alvo||"pil-posto")}')" title="dar a partida: o Piloto decola no próximo ciclo do GitHub">
         <svg viewBox="0 0 24 24" aria-hidden="true"><g class="pil-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.6" fill="#0E2A55"/><circle class="pil-fumaca" cx="19" cy="6" r="2" fill="#B9C6D6"/></svg>
         <span id="${(alvo||"pil-posto")}-helice-txt">${at?"em voo":"dar a partida"}</span></button></h4>
+    ${(()=>{const G=window._RESG;if(!G||!G.total)return "";
+      const P=G.por_estado||{}, esp=(G.fila||[]).filter(x=>x.estado==="aguardando").slice(0,6);
+      return `<div class="pil-resg">
+        <div class="pil-brief-t">Missões especiais <span class=meta>resgate de edital incompleto · tem prioridade sobre a exploração</span></div>
+        <div class=meta style="margin-bottom:4px">${Object.entries(P).map(([k,v])=>`<b>${v}</b> ${esc(k.replace("_"," "))}`).join(" · ")}</div>
+        ${esp.map(x=>`<div class="pil-resg-l" title="${esc((x.orgao||"")+" · falta: "+(x.falta||[]).join(", "))}">
+          <span class="pil-urg">${x.urgencia}</span><span class="pil-resg-n">${esc((x.titulo||"").slice(0,64))}</span>
+          <span class=meta>${(x.falta||[]).length} dado(s) em falta${x.uf?" · "+esc(x.uf):""}</span></div>`).join("")}
+      </div>`;})()}
     ${(()=>{const B=(window._BRIEF||{}).voos&&window._BRIEF.voos[0];if(!B)return "";
       const cf={alta:"#1E7E4B",media:"#C8961E",baixa:"#9AA7B4"}[(B.aposta||{}).confianca]||"#5B7A9E";
       const R=B.resultado||{};
@@ -3083,7 +3096,8 @@ function pousarAviaoErrante(){
 window.addEventListener("scroll",()=>{ if(document.getElementById("pil-errante"))pousarAviaoErrante(); },{passive:true});
 window.addEventListener("resize",()=>{ if(document.getElementById("pil-errante"))pousarAviaoErrante(); });
 setInterval(()=>{ if(window._ESQ)pousarAviaoErrante(); },7000);
-async function carregaBrief(){ try{const r=await fetch("dados/briefings_piloto.json?v="+Date.now()); if(r.ok)window._BRIEF=await r.json();}catch(e){} return window._BRIEF||{}; }
+async function carregaResgates(){ try{const r=await fetch("dados/resgates_piloto.json?v="+Date.now()); if(r.ok)window._RESG=await r.json();}catch(e){} return window._RESG||{}; }
+async function carregaBrief(){ carregaResgates(); try{const r=await fetch("dados/briefings_piloto.json?v="+Date.now()); if(r.ok)window._BRIEF=await r.json();}catch(e){} return window._BRIEF||{}; }
 async function carregaRadar(){ carregaBrief().then(()=>{ if(window._BRIEF&&!window._briefPronto){window._briefPronto=true; desenhaPostoPiloto("pil-posto"); desenhaPostoPiloto("pil-posto-bussola");} }); try{const r=await fetch("dados/radar_piloto.json?v="+Date.now()); if(r.ok)window._RADAR=await r.json();}catch(e){} return window._RADAR||{}; }
 async function carregaEsquadrilha(){ carregaRadar().then(()=>{ if(window._RADAR&&!window._radarPronto){window._radarPronto=true; desenhaPostoPiloto("pil-posto"); desenhaPostoPiloto("pil-posto-bussola");} }); try{const r=await fetch("dados/esquadrilha.json?v="+Date.now()); if(r.ok)window._ESQ=await r.json();}catch(e){window._ESQ=window._ESQ||{};} return window._ESQ||{}; }
 function desenhaMotores(){

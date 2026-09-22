@@ -57,6 +57,11 @@ def _estado_do_banco() -> dict:
         f["empresas_no_radar"] = len(emp)
         f["radar_a_pesquisar"] = sum(1 for e in emp.values() if e.get("marcador") == "a_pesquisar")
         f["setores_ja_vistos"] = sorted({a for e in emp.values() for a in (e.get("angulos") or [])})[:14]
+    fr = ROOT / "estado/sindico/fila_resgate.json"
+    if fr.exists():
+        its = (load_json(fr).get("itens") or {}).values()
+        f["editais_incompletos_na_fila"] = sum(1 for v in its if v.get("estado") == "aguardando")
+        f["editais_ja_resgatados"] = sum(1 for v in its if v.get("estado") == "resgatado")
     rk = ROOT / "docs/dados/ranking_apoiadores.json"
     if rk.exists():
         d = load_json(rk)
@@ -95,6 +100,9 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
         + ("VOOS ANTERIORES:\n- " + "\n- ".join(_resumo_dos_anteriores(hist)) + "\n\n" if hist else "")
         + (f"JÁ APOSTEI NESTES LUGARES (não repita): {[x for x in já_apostou if x]}\n" if já_apostou else "")
         + (f"ESTES VIERAM SECOS: {[x for x in secos if x]}\n\n" if secos else "\n")
+        + ("ATENÇÃO: há editais incompletos esperando resgate. Eles são atendidos ANTES desta exploração — "
+           "o que você planeja aqui é o que sobra de tempo depois deles.\n\n"
+           if banco.get("editais_incompletos_na_fila") else "")
         + "Pense como quem caça a FONTE do dinheiro, não o edital: que empresa deduz imposto, que empresa patrocina "
           "evento, quem tem instituto ou fundação, quem publica relatório ESG, quem aparece como apoiadora no site de "
           "outra entidade, que setor da economia está com caixa e ainda não foi procurado por ninguém daqui.\n"

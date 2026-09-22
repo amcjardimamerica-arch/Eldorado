@@ -449,6 +449,60 @@ def escolher_rumo(ia: IALocal, ent: dict) -> dict:
 
 
 
+def missao_resgate(ia, alvo: dict, conhecidos: set[str]) -> tuple[str, list[dict], str]:
+    """MISSÃO ESPECIAL: completar um edital que os outros motores acharam pela metade.
+    Tem prioridade sobre qualquer exploração — de nada adianta descobrir mais um edital
+    se os que já temos não têm prazo, documento nem página oficial."""
+    from .missao_especial import plano_de_voo, registrar_resgate
+    from .piloto_busca import buscar, ler_pagina
+
+    plano = plano_de_voo(ia, alvo)                     # o Piloto decide como achar o que falta
+    consultas = plano["consultas_sugeridas"] or [
+        f"{alvo.get('titulo','')[:70]} {alvo.get('orgao') or ''} edital página oficial".strip()]
+    achados, dados, paginas = [], {}, 0
+    for c in consultas[:3]:
+        for b in buscar(c, maximo=6):
+            if paginas >= 5:
+                break
+            texto = ler_pagina(b["url"])
+            if len(texto) < 300:
+                continue
+            paginas += 1
+            r = ia.perguntar(
+                f"PROCURO ESTE EDITAL: {alvo.get('titulo')}\nÓRGÃO: {alvo.get('orgao') or '?'}\n"
+                f"FALTA SABER: {alvo.get('falta')}\n\nPÁGINA: {b['url']}\nTEXTO: {texto[:3500]}\n\n"
+                "Esta página é do edital que procuro? Se for, extraia SÓ o que estiver escrito nela. "
+                "Não invente data nem documento: o que não estiver na página, deixe null.",
+                '{"e_este_edital": true|false, "prazo": "AAAA-MM-DD ou null", "quem_pode": "... ou null", '
+                '"documentos": ["..."] , "valor": "... ou null", "como_inscrever": "... ou null", '
+                '"trecho": "frase literal que comprova ser este edital"}')
+            if not (r and r.get("e_este_edital") and r.get("trecho")):
+                continue
+            tr = re.sub(r"\s+", " ", str(r["trecho"]).lower())[:45]
+            if tr and tr not in re.sub(r"\s+", " ", texto.lower()):
+                continue                               # trecho inventado: não aceito
+            dados = {"pagina_oficial": b["url"],
+                     "prazo": r.get("prazo") if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(r.get("prazo") or "")) else None,
+                     "quem_pode": r.get("quem_pode"), "documentos": r.get("documentos") or [],
+                     "valor": r.get("valor"), "como_inscrever": r.get("como_inscrever")}
+            achados.append({"titulo": alvo.get("titulo", "")[:110], "onde": b["url"], "url": b["url"],
+                            "trecho": str(r["trecho"])[:180], "porque": "resgate de edital incompleto",
+                            "situacao": "aberta" if (dados["prazo"] or "") >= date.today().isoformat() else
+                                        ("arquivada" if dados["prazo"] else "sem_prazo_na_pagina"),
+                            "prazo": dados["prazo"], "documentos": dados["documentos"],
+                            "confirmado_na_pagina": True, "novo": False, "resgate": True})
+            break
+        if dados:
+            break
+    it = registrar_resgate(alvo["id"], dados, bool(dados))
+    faltava = len(alvo.get("falta") or [])
+    resta = len((it or {}).get("falta") or [])
+    licao = (f"resgate '{alvo.get('titulo','')[:40]}': {paginas} página(s) lida(s) — "
+             + (f"completou {faltava - resta} de {faltava} dado(s); estado {it.get('estado')}" if dados
+                else "não achei a página oficial"))
+    return f"resgate:{alvo['id']}", achados, licao
+
+
 def ciclo(porta: int | None = None) -> dict:
     """VOO DO PILOTO: missões sorteadas, uma de cada vez, com diário de bordo."""
     from .esquadrilha import sortear, abrir_missao, fechar_missao, resumo
@@ -464,7 +518,11 @@ def ciclo(porta: int | None = None) -> dict:
         rel["nota"] = "o avião não decolou: servidor do modelo fora do ar neste job"
         write_json(PASTA / f"relatorio-{hoje}.json", rel); return rel
     conhecidos = _titulos_conhecidos()
-    limite_s = int(orc.get("minutos_por_ciclo", 25)) * 60
+    # O VOO DURA O QUE A TAREFA EXIGIR. Isto não é uma meta de tempo: é o TETO de segurança
+    # para não estourar os 30 minutos do job. Um voo pode durar 1 minuto — se a fila de
+    # resgate estiver vazia e o rumo render rápido — ou ir até o teto. O que não pode é
+    # ficar parado: acabou o trabalho, o voo encerra e o próximo decola em 3 segundos.
+    teto_s = int(orc.get("teto_minutos", orc.get("minutos_por_ciclo", 25))) * 60
     rel["voo_do_dia"] = _contar_voo()
     from .briefing_piloto import escrever as _brief, fechar as _fechar
     brief = _brief(ia)                                # RELATÓRIO DE CONTEXTO: lê o banco e os voos anteriores
@@ -474,12 +532,27 @@ def ciclo(porta: int | None = None) -> dict:
             "alvo": "empresa", "porque": (brief.get("aposta") or {}).get("porque"), "origem": "briefing"}
     if rumo:
         rel["rumo"] = {k: rumo[k] for k in ("rumo", "nivel", "alvo", "porque") if k in rumo}
-    for m in sortear():
-        if time.time() - t0 > limite_s:
+    from .missao_especial import montar_fila, proximo as _proximo_resgate
+    montar_fila()
+    plano = []
+    while len(plano) < int(par.get("resgates_por_voo", 6)):        # PRIMEIRO os resgates
+        alvo_r = _proximo_resgate()
+        if not alvo_r or any(x.get("alvo_id") == alvo_r["id"] for x in plano):
+            break
+        plano.append({"tipo": "resgate", "motor": "missao-especial", "ordem": len(plano) + 1,
+                      "alvo_id": alvo_r["id"], "_alvo": alvo_r})
+        alvo_r["estado"] = "em_resgate"
+    rel["resgates_na_fila"] = len(plano)
+    plano += sortear()                                              # depois a exploração
+    for m in plano:
+        if time.time() - t0 > teto_s:
+            rel["encerrou_por"] = "teto de tempo"
             break
         abrir_missao(m, m.get("motor") or "")
         try:
-            if m.get("motor") == "sindico-aberto":
+            if m["tipo"] == "resgate":
+                alvo, ach, licao = missao_resgate(ia, m["_alvo"], conhecidos)
+            elif m.get("motor") == "sindico-aberto":
                 if rumo and (m["ordem"] % 2 == 1):                     # alterna rumo do Piloto e ângulo do catálogo
                     from .piloto_busca import caçar as _cacar
                     ach, licao, _c = _cacar(ia, rumo, conhecidos); alvo = rumo["id"]
@@ -502,6 +575,8 @@ def ciclo(porta: int | None = None) -> dict:
             with open(PASTA / "alvos_novos.jsonl", "a", encoding="utf-8") as fh:
                 fh.write(json.dumps({"d": hoje, "motor": m.get("motor"), "titulo": a["titulo"], "onde": a["onde"], "uf": a.get("uf")}, ensure_ascii=False) + "\n")
             _radar(a, alvo, m.get("motor") or "")          # entra no radar de captação como 'a pesquisar' 
+    rel.setdefault("encerrou_por", "tarefa concluída")   # o normal: acabou o que havia para fazer
+    rel["minutos_de_voo"] = round((time.time() - t0) / 60, 1)
     from .radar_piloto import publicar as _pub_radar
     rel["radar"] = _pub_radar()
     _todos = [a for m in (rel.get("missoes") or []) for a in (m.get("achados") or [])]

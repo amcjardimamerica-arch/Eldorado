@@ -20,7 +20,7 @@ class TesteCicloDeTresSegundos(unittest.TestCase):
         c = json.loads((ROOT / "config/sindico.json").read_text(encoding="utf-8"))
         self.assertEqual(c["encadeamento"]["pausa_no_patio_s"], 3)
         self.assertEqual(c["encadeamento"]["teto_execucao_min"], 30)
-        self.assertLessEqual(c["orcamento"]["minutos_por_ciclo"], 26)       # cabe nos 30 com margem de commit
+        self.assertLessEqual(c["orcamento"]["teto_minutos"], 28)            # teto, não meta: cabe nos 30 do job
 
     def test_travas_para_nao_estourar_o_github(self):
         txt = (ROOT / ".github/workflows/sindico.yml").read_text(encoding="utf-8")

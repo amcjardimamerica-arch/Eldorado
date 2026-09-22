@@ -45,7 +45,7 @@ class TesteCicloContinuoEAviao(unittest.TestCase):
         self.assertIn("in_progress", w)                                      # não empilha voo
         self.assertIn('cron: "0 */2 * * *"', w)                                # rede de segurança
         c = json.loads((ROOT / "config/sindico.json").read_text(encoding="utf-8"))
-        self.assertGreaterEqual(c["voos_por_dia"], 10); self.assertLessEqual(c["orcamento"]["minutos_por_ciclo"], 40)
+        self.assertGreaterEqual(c["voos_por_dia"], 10); self.assertLessEqual(c["orcamento"]["teto_minutos"], 40)
 
     def test_piloto_escolhe_o_rumo_lendo_a_biblioteca(self):
         src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
