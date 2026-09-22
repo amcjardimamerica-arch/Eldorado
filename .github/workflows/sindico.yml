@@ -90,17 +90,32 @@ jobs:
           print(json.dumps(ciclo(porta=cfg.get("porta", 8081)), ensure_ascii=False, indent=1))
           srv.kill()
           PY
-      - name: Regenerar painel e commitar
+      - name: Guardar o resultado como ARTEFATO (independe de push — nunca mais se perde)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sindico-${{ github.run_id }}
+          path: |
+            estado/sindico/
+            config/sindico.json
+          retention-days: 90
+      - name: Regenerar painel e commitar — a prova de conflito, os arquivos do Sindico mandam nos seus caminhos
+        if: always()
         env:
           MODO: ${{ github.event.inputs.modo || 'ciclo' }}
         run: |
           timeout 300 python -m src.dashboard_dados || true
-          git config user.name "sindico-eldorado" && git config user.email "sindico@eldorado"
-          # um caminho inexistente derrubava o 'git add' inteiro em silêncio (foi assim que o 1º benchmark se perdeu)
-          for P in estado/sindico config/sindico.json docs/dados/sindico.json docs/dashboard-dados.js docs/dados dados/editais/extraidos config/lexico_aprendido.json estado/rotas_sugeridas_ia.json; do
-            [ -e "$P" ] && git add -A "$P" || true
+          # 1) guarda o que o Síndico produziu
+          rm -rf /tmp/sind && mkdir -p /tmp/sind
+          for P in estado/sindico config/sindico.json docs/dados/sindico.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
+            [ -e "$P" ] && mkdir -p "/tmp/sind/$(dirname $P)" && cp -r "$P" "/tmp/sind/$P" || true
           done
+          # 2) volta para o origin atual (sem rebase, sem conflito) e reaplica por cima
+          git config user.name "sindico-eldorado" && git config user.email "sindico@eldorado"
+          git fetch -q origin main && git reset -q --hard origin/main
+          cp -r /tmp/sind/. .
+          git add -A estado/sindico config/sindico.json docs/dados/sindico.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados 2>/dev/null || git add -A
           git status --short | head -20
           git commit -q -m "sindico: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"
-          git pull --rebase -q origin main || true
-          git push -q origin main || echo "push falhou"
+          for i in 1 2 3; do git push -q origin main && break; echo "push $i falhou; recompondo…"; git fetch -q origin main; git reset -q --soft origin/main; cp -r /tmp/sind/. .; git add -A; git commit -q -m "sindico: $(date -u +%F) ${MODO:-ciclo}" || true; sleep 10; done
+          git log --oneline -1
