@@ -105,8 +105,10 @@ def montar_fila(limite: int = 60) -> dict:
     return {k: v for k, v in d.items() if k != "itens"}
 
 
-def proximo() -> dict | None:
-    """O edital mais urgente à espera de resgate."""
+def proximo(reservar: bool = True) -> dict | None:
+    """O edital mais urgente à espera de resgate. Por padrão RESERVA o item (grava
+    'em_resgate' no arquivo), senão a próxima chamada devolveria o mesmo de novo — foi
+    assim que o voo saía com um resgate só em vez dos seis."""
     if not FILA.exists():
         montar_fila()
     d = load_json(FILA)
@@ -114,6 +116,9 @@ def proximo() -> dict | None:
     if not pend:
         return None
     k, v = max(pend, key=lambda kv: kv[1].get("urgencia", 0))
+    if reservar:
+        d["itens"][k]["estado"] = "em_resgate"
+        write_json(FILA, d)
     return {"id": k, **v}
 
 
@@ -140,6 +145,17 @@ def plano_de_voo(ia, alvo: dict) -> dict:
             "onde_procurar": (r or {}).get("onde_provavelmente_esta"),
             "o_que_ler": (r or {}).get("o_que_ler_na_pagina") or list(alvo.get("falta") or []),
             "nivel": "resgate", "alvo": "edital", "origem": "missao_especial", "edital": alvo}
+
+
+def devolver_a_fila(alvo_id: str) -> None:
+    """Item reservado mas não atendido (o voo acabou antes) volta a aguardar."""
+    if not FILA.exists():
+        return
+    d = load_json(FILA)
+    it = (d.get("itens") or {}).get(alvo_id)
+    if it and it.get("estado") == "em_resgate":
+        it["estado"] = "aguardando"
+        write_json(FILA, d)
 
 
 def registrar_resgate(alvo_id: str, dados: dict, achou: bool) -> dict:

@@ -86,12 +86,32 @@ class _ResGoogle(HTMLParser):
             self._a = None
 
 
+# Google, Bing e DuckDuckGo recusam IP de datacenter — e o Piloto roda num servidor do GitHub.
+# Por isso a lista tem também buscadores que aceitam robôs declaradamente (Mojeek e Marginalia).
+# A ordem é a da chance de responder de lá, não a do tamanho do índice.
 BUSCADORES = [
+    ("mojeek", "https://www.mojeek.com/search?q={q}", _Res),
+    ("duckduckgo-lite", "https://lite.duckduckgo.com/lite/?q={q}", _Res),
     ("duckduckgo", "https://html.duckduckgo.com/html/?q={q}", _Res),
     ("google", "https://www.google.com/search?q={q}&hl=pt-BR&num=20", _ResGoogle),
-    ("duckduckgo-lite", "https://lite.duckduckgo.com/lite/?q={q}", _Res),
     ("bing", "https://www.bing.com/search?q={q}&setlang=pt-BR&count=20", _Res),
+    ("marginalia", "https://search.marginalia.nu/search?query={q}", _Res),
 ]
+
+
+def diagnostico(consulta: str = "edital apoio a projetos sociais 2026", tempo: float = 15) -> dict:
+    """Testa cada buscador de onde o Piloto realmente está e diz quem respondeu.
+    É a única forma honesta de saber: aqui no contêiner tudo falha por bloqueio de rede."""
+    saida = {}
+    for nome, molde, parser in BUSCADORES:
+        try:
+            r = buscar(consulta, maximo=5, tempo=tempo, motores=[nome])
+            saida[nome] = {"resultados": len(r), "exemplo": (r[0]["url"][:90] if r else None)}
+        except Exception as ex:
+            saida[nome] = {"resultados": 0, "erro": f"{type(ex).__name__}: {ex}"[:120]}
+    vivos = [k for k, v in saida.items() if v.get("resultados")]
+    return {"em": now_iso(), "consulta": consulta, "responderam": vivos,
+            "nenhum_respondeu": not vivos, "detalhe": saida}
 
 
 def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str] | None = None) -> list[dict]:

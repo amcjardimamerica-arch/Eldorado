@@ -769,7 +769,6 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </section>
 
 <!-- ============ ESQUADRILHA DO SÍNDICO — posto de comando ============ -->
-<section id="v-piloto-posto" style="margin-top:14px"><div id="pil-posto"></div></section>
 
 <!-- ============ ELDORADO · CALENDÁRIO ============ -->
 <section id="v-calendario" style="margin-top:14px">
@@ -785,6 +784,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div class="calgrade" id="cal-grade"></div>
 </div>
 </section>
+<section id="v-piloto-posto" style="margin-top:14px"><div id="pil-posto"></div></section>
 
 <!-- ============ ELDORADO · EDITAIS ============ -->
 <section id="v-editais" class="oculto" style="margin-top:14px">
@@ -3096,7 +3096,8 @@ const ONDE_POUSAR={cacar_oportunidade:["#rank-apoiadores","#emp-ranking-caixa","
 window.pousarAviaoErrante=function(){
   const E=window._ESQ||{};
   // se não há missão em curso, ele patrulha a última faixa conhecida em vez de sumir
-  const at=E.missao_atual||(E.missoes&&E.missoes[0]?{tipo:E.missoes[0].tipo,motor:E.missoes[0].motor,patrulha:true}:null);
+  const u=(E.ultimas||E.missoes||[])[0];
+  const at=E.missao_atual||(u?{tipo:u.tipo,motor:u.motor,patrulha:true}:null);
   let av=document.getElementById("pil-errante");
   if(!at){ if(av)av.remove(); return; }
   const alvos=ONDE_POUSAR[at.tipo]||["#pil-posto"];

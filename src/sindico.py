@@ -541,7 +541,6 @@ def ciclo(porta: int | None = None) -> dict:
             break
         plano.append({"tipo": "resgate", "motor": "missao-especial", "ordem": len(plano) + 1,
                       "alvo_id": alvo_r["id"], "_alvo": alvo_r})
-        alvo_r["estado"] = "em_resgate"
     rel["resgates_na_fila"] = len(plano)
     plano += sortear()                                              # depois a exploração
     for m in plano:
@@ -575,6 +574,11 @@ def ciclo(porta: int | None = None) -> dict:
             with open(PASTA / "alvos_novos.jsonl", "a", encoding="utf-8") as fh:
                 fh.write(json.dumps({"d": hoje, "motor": m.get("motor"), "titulo": a["titulo"], "onde": a["onde"], "uf": a.get("uf")}, ensure_ascii=False) + "\n")
             _radar(a, alvo, m.get("motor") or "")          # entra no radar de captação como 'a pesquisar' 
+    from .missao_especial import devolver_a_fila as _devolver
+    _atendidos = {str(m.get("alvo", "")).replace("resgate:", "") for m in (rel.get("missoes") or []) if m.get("tipo") == "resgate"}
+    for _m in plano:
+        if _m["tipo"] == "resgate" and _m["alvo_id"] not in _atendidos:
+            _devolver(_m["alvo_id"])                      # reservado e não atendido volta a aguardar
     rel.setdefault("encerrou_por", "tarefa concluída")   # o normal: acabou o que havia para fazer
     rel["minutos_de_voo"] = round((time.time() - t0) / 60, 1)
     from .radar_piloto import publicar as _pub_radar

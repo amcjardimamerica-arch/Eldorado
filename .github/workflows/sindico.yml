@@ -7,6 +7,9 @@ on:
       modo:
         description: "ciclo (o ocupante trabalha) | avaliar (mede um reserva e troca se for melhor) | benchmark (todos)"
         default: "ciclo"
+      diagnostico:
+        description: "true testa os buscadores a partir do servidor e para"
+        default: "false"
       encadeado:
         description: "true quando o voo anterior chamou este (uso interno)"
         default: "false"
@@ -92,6 +95,19 @@ jobs:
           LIMITE: ${{ github.event.inputs.limite_gabarito }}
         run: |
           timeout 20000 python -m src.sindico benchmark $LIMITE || echo "benchmark: registrado o que deu"
+      - name: Diagnóstico dos buscadores (de onde o Piloto realmente está)
+        if: ${{ github.event.inputs.diagnostico == 'true' }}
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          from src.piloto_busca import diagnostico
+          d = diagnostico()
+          pathlib.Path("estado/sindico").mkdir(parents=True, exist_ok=True)
+          pathlib.Path("estado/sindico/diagnostico_busca.json").write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+          print(json.dumps(d, ensure_ascii=False, indent=1))
+          PY
+          git config user.name "piloto" && git config user.email "piloto@eldorado"
+          git add estado/sindico/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
       - name: Ciclo do síndico (entender → curar → afiar → minerar → anunciar)
         if: ${{ (github.event.inputs.modo || 'ciclo') == 'ciclo' }}
         run: |
