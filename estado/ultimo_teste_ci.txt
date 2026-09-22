@@ -1,39 +1,309 @@
-commit: 075089c26cf5c41f22821eb0a7f3e0a467cb11c3
-em: 2026-09-22T08:04:19Z
+commit: 99a528f6c366e129620760b139120a1e34d85c65
+em: 2026-09-22T08:57:45Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 428 tests in 329.517s
+Ran 428 tests in 288.452s
 
-FAILED (failures=3, skipped=9)
+FAILED (failures=2, errors=38, skipped=9)
 ---- falhas ----
-FAIL: test_acervo_fts5_zstd (test_evolucao_busca.TesteAcervoCompacto.test_acervo_fts5_zstd)
+ERROR: test_analise_etapa2_por_edital_nas_fontes (test_system.SystemTests.test_analise_etapa2_por_edital_nas_fontes)
+Cada edital da caixa de fontes traz a análise da etapa 2 item a
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_evolucao_busca.py", line 86, in test_acervo_fts5_zstd
-    self.assertTrue(ACERVO.exists())
-AssertionError: False is not true
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 1707, in test_analise_etapa2_por_edital_nas_fontes
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 
 ======================================================================
-FAIL: test_dou_por_json_embutido_e_pil_opcional (test_system.SystemTests.test_dou_por_json_embutido_e_pil_opcional)
-O DOU (leiturajornal) traz as matérias num JSON embutido: o sensor as lê
+ERROR: test_areas_canonicas_unificadas_em_todo_o_painel (test_system.SystemTests.test_areas_canonicas_unificadas_em_todo_o_painel)
+Um só vocabulário de áreas (as 13 da tela inicial) para editais,
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3115, in test_dou_por_json_embutido_e_pil_opcional
-    self.assertEqual(len(r["achados"]),1)
-AssertionError: 2 != 1
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 2837, in test_areas_canonicas_unificadas_em_todo_o_painel
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 
 ======================================================================
-FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
-Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
+ERROR: test_auditoria_individual_diagnostica_causa (test_system.SystemTests.test_auditoria_individual_diagnostica_causa)
+Auditoria sequencial: cada edital recebe os itens obtidos, a causa
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3781, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
-    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'futuro' == 'futuro'
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 2227, in test_auditoria_individual_diagnostica_causa
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 
+======================================================================
+ERROR: test_biblioteca_reflete_acervo_do_banco (test_system.SystemTests.test_biblioteca_reflete_acervo_do_banco)
+A tela Biblioteca não pode dizer '0 editais' quando o acervo (SQLite)
 ----------------------------------------------------------------------
-Ran 428 tests in 329.517s
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 2104, in test_biblioteca_reflete_acervo_do_banco
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 
-FAILED (failures=3, skipped=9)
+======================================================================
+ERROR: test_botoes_do_edital_e_biblioteca_no_painel (test_system.SystemTests.test_botoes_do_edital_e_biblioteca_no_painel)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 932, in test_botoes_do_edital_e_biblioteca_no_painel
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_bussola_painel_dados_reais (test_system.SystemTests.test_bussola_painel_dados_reais)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 625, in test_bussola_painel_dados_reais
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_calendario_por_motor_e_opressores_por_area (test_system.SystemTests.test_calendario_por_motor_e_opressores_por_area)
+Cada motor regular tem o calendário do Mapa (dias coloridos); os
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 2808, in test_calendario_por_motor_e_opressores_por_area
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_ciclo_do_edital_tres_faixas (test_system.SystemTests.test_ciclo_do_edital_tres_faixas)
+Calendário de Editais: inscrição (barra), resultado (estrela) e
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 1601, in test_ciclo_do_edital_tres_faixas
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_cobertura_das_260_declarada (test_system.SystemTests.test_cobertura_das_260_declarada)
+O calendário não pode mentir por omissão: declara quantas das 260
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 2296, in test_cobertura_das_260_declarada
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_curadoria_situacao_inscricao (test_system.SystemTests.test_curadoria_situacao_inscricao)
+ABERTA só com período de inscrição vigente e confirmado, cidade/estado e
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3061, in test_curadoria_situacao_inscricao
+    d=dash_coletar(date(2026,9,3))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_dashboard_dados_estrutura (test_system.SystemTests.test_dashboard_dados_estrutura)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 331, in test_dashboard_dados_estrutura
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_dashboard_somente_completos (test_system.SystemTests.test_dashboard_somente_completos)
+Só editais com verificação dupla compõem o Dashboard; a Bússola
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 799, in test_dashboard_somente_completos
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 338, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py", line 356, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_dashboard_v2_estrutura (test_system.SystemTests.test_dashboard_v2_estrutura)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 362, in test_dashboard_v2_estrutura
+    d=dash_coletar(date(2026,9,2))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/dashboard_dados.py", line 1546, in coletar
+    load_json(ROOT / "estado/sindico/benchmark.json") if (ROOT / "estado/sindico/benchmark.json").exists() else None),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/nucleo.py", line 152, in load_json
+    return json.loads(path.read_text(encoding="utf-8"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
