@@ -40,6 +40,7 @@ MOTIVOS = {
     "ja_conhecido": "já estava no acervo",
     "fonte_sem_mapa": "o site não publica sitemap nem listagem legível",
     "modelo_mudo": "o modelo local não respondeu ao pedido",
+    "ja_coberto_por_motor": "a fonte já é lida todo dia por um motor — não é trabalho do Piloto",
 }
 
 

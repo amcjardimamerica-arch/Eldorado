@@ -572,6 +572,16 @@ def ciclo(porta: int | None = None) -> dict:
         from .radar_piloto import registrar as _radar
         from .aprendizados_piloto import avaliar as _avaliar, ja_tratado as _ja
         ach = [a for a in ach if not _ja(a.get("url") or a.get("titulo"))]   # não se volta no que já foi abordado
+        from .cobertura import ja_coberto as _cob
+        from .aprendizados_piloto import quarentenar as _quar
+        _sobra = []
+        for _a in ach:                                   # o que um motor já vigia não é trabalho do Piloto
+            _c, _mid = _cob(_a.get("url") or "")
+            if _c:
+                _quar(_a, "ja_coberto_por_motor", f"{m.get('motor')}/{m['tipo']} → motor {_mid}")
+            else:
+                _sobra.append(_a)
+        ach = _sobra
         _r = _avaliar(ia, {**m, "licao": licao}, ach)
         rel.setdefault("avaliacoes", []).append(_r["avaliacao"])
         ach = _r["uteis"]                                   # só o que serve entra no sistema

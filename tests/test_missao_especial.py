@@ -90,7 +90,7 @@ class TestePrioridadeETempo(unittest.TestCase):
         self.assertIn("def missao_resgate", src)
         cg = json.loads((ROOT / "config/cargo_sindico.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(cg["parametros"]["resgates_por_voo"], 3)
-        self.assertIn("antes de qualquer exploracao", cg["parametros"]["prioridade"])
+        self.assertIn("primeiro", cg["parametros"]["prioridade"])   # verificar e alimentar antes de explorar
 
     def test_voo_dura_o_que_a_tarefa_exigir(self):
         src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")

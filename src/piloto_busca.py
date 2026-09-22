@@ -103,6 +103,55 @@ CHAVES = {
     "brave": ("BRAVE_SEARCH_KEY", "https://api.search.brave.com/res/v1/web/search?q={q}&country=BR&count=20"),
     "google_cse": ("GOOGLE_CSE_KEY", "https://www.googleapis.com/customsearch/v1?key={k}&cx={cx}&q={q}&num=10"),
 }
+# REVEZAMENTO DAS VIAS. Cada consulta usa UMA via, e a seguinte usa a próxima da roda. Assim
+# nenhuma apanha o volume inteiro — que foi o que fez o DuckDuckGo começar a cortar. A via só
+# é pulada quando está BLOQUEADA: falhou, entra em descanso e a roda segue sem ela até voltar.
+VIAS = ROOT / "estado/sindico/vias.json"
+DESCANSO_MIN = 25          # quanto tempo uma via fica de fora depois de bloquear
+
+
+def _vias_estado() -> dict:
+    d = load_json(VIAS) if VIAS.exists() else {}
+    d.setdefault("roda", 0)
+    d.setdefault("situacao", {})
+    return d
+
+
+def _via_disponivel(nome: str, d: dict) -> bool:
+    s = (d.get("situacao") or {}).get(nome) or {}
+    if not s.get("bloqueada_em"):
+        return True
+    return (time.time() - s["bloqueada_em"]) > DESCANSO_MIN * 60
+
+
+def _marcar_via(nome: str, ok: bool, quantos: int = 0) -> None:
+    d = _vias_estado()
+    s = d.setdefault("situacao", {}).setdefault(nome, {"usos": 0, "entregas": 0, "bloqueios": 0})
+    s["usos"] += 1
+    if ok:
+        s["entregas"] += 1
+        s["resultados"] = s.get("resultados", 0) + quantos
+        s["bloqueada_em"] = None
+        s["ultima_boa"] = now_iso()[:16]
+    else:
+        s["bloqueios"] += 1
+        s["bloqueada_em"] = time.time()
+        s["descansa_ate"] = now_iso()[:16] + f" +{DESCANSO_MIN}min"
+    write_json(VIAS, d)
+
+
+def vias_da_roda() -> list[str]:
+    """Todas as vias disponíveis, na ordem da roda a partir de onde parou."""
+    import os
+    todas = [b[0] for b in BUSCADORES] + [n for n in CHAVES if os.environ.get(CHAVES[n][0])]
+    d = _vias_estado()
+    livres = [v for v in todas if _via_disponivel(v, d)] or todas      # todas bloqueadas: tenta assim mesmo
+    i = d.get("roda", 0) % len(livres)
+    d["roda"] = (i + 1) % max(1, len(livres))
+    write_json(VIAS, d)
+    return livres[i:] + livres[:i]
+
+
 _ULTIMA_BUSCA = [0.0]
 ESPERA_ENTRE_BUSCAS = 4.0      # o DuckDuckGo corta quem metralha consultas — 14 buscas vazias vieram disso
 
@@ -193,30 +242,35 @@ def diagnostico(consulta: str = "edital apoio a projetos sociais 2026", tempo: f
 
 
 def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str] | None = None) -> list[dict]:
-    """Busca real na internet em VÁRIOS buscadores (DuckDuckGo + Google + Bing), sem API paga.
-    Os resultados são misturados e deduplicados por URL; cada item traz de onde veio."""
+    """Busca real na internet pelas vias disponíveis, EM REVEZAMENTO.
+
+    Cada consulta começa por uma via diferente, para que nenhuma apanhe o volume inteiro —
+    foi o excesso numa só que fez o DuckDuckGo começar a cortar. A via seguinte só é usada
+    quando a atual não entrega; quem falha entra em descanso e sai da roda por um tempo."""
     saida, vistos = [], set()
-    alvos = [b for b in BUSCADORES if not motores or b[0] in motores]
     espera = ESPERA_ENTRE_BUSCAS - (time.time() - _ULTIMA_BUSCA[0])
     if espera > 0:
         time.sleep(min(espera, ESPERA_ENTRE_BUSCAS))       # respeita o intervalo, senão o buscador corta
     _ULTIMA_BUSCA[0] = time.time()
-    import os
-    for nome in ("brave", "google_cse"):                    # API primeiro: não bloqueia e é mais limpa
-        if motores and nome not in motores:
+    ordem = [v for v in vias_da_roda() if not motores or v in motores] or [b[0] for b in BUSCADORES]
+    porMolde = {b[0]: (b[1], b[2]) for b in BUSCADORES}
+    for nome in ordem:
+        if nome in CHAVES:                                   # via por API
+            try:
+                itens = _por_api(nome, consulta, tempo)
+                for it in itens:
+                    chave = re.sub(r"[#?].*$", "", it["url"]).rstrip("/")
+                    if chave not in vistos:
+                        vistos.add(chave); saida.append(it)
+                _marcar_via(nome, bool(itens), len(itens))
+                if saida:
+                    return saida[:maximo]
+            except Exception:
+                _marcar_via(nome, False)
             continue
-        if not os.environ.get(CHAVES[nome][0]):
+        molde, parser = porMolde.get(nome, (None, None))
+        if not molde:
             continue
-        try:
-            for it in _por_api(nome, consulta, tempo):
-                chave = re.sub(r"[#?].*$", "", it["url"]).rstrip("/")
-                if chave not in vistos:
-                    vistos.add(chave); saida.append(it)
-            if saida:
-                return saida[:maximo]
-        except Exception:
-            pass
-    for nome, molde, parser in alvos:
         try:
             url = molde.format(q=urllib.parse.quote(consulta))
             req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "pt-BR,pt;q=0.9",
@@ -232,9 +286,11 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
                 if chave in vistos:
                     continue
                 vistos.add(chave); saida.append({**it, "buscador": nome})
+            _marcar_via(nome, bool(p.itens), len(p.itens))
             if saida:
-                break                                       # quem entregou, entregou: não gasta tempo com os mortos
+                break                          # entregou: a roda para aqui e a próxima consulta começa na via seguinte
         except Exception:
+            _marcar_via(nome, False)           # bloqueou: descansa e a roda segue sem ela
             time.sleep(1.2)
     return saida[:maximo]
 

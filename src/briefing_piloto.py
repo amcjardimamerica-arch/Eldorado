@@ -85,6 +85,16 @@ def _resumo_dos_anteriores(hist: list[dict]) -> list[str]:
     return L
 
 
+def _cobertura() -> str:
+    """O Piloto não repete o trabalho dos motores: precisa saber onde eles já olham."""
+    try:
+        from .cobertura import instrucao_para_o_piloto, mapa
+        mapa()
+        return instrucao_para_o_piloto()
+    except Exception:
+        return ""
+
+
 def escrever(ia, motor_cfg: dict | None = None) -> dict:
     """Escreve o briefing deste voo e devolve o prompt de pesquisa que ele gerou."""
     banco = _estado_do_banco()
@@ -103,6 +113,7 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
         + ("ATENÇÃO: há editais incompletos esperando resgate. Eles são atendidos ANTES desta exploração — "
            "o que você planeja aqui é o que sobra de tempo depois deles.\n\n"
            if banco.get("editais_incompletos_na_fila") else "")
+        + (_cobertura() + "\n\n")
         + "Pense como quem caça a FONTE do dinheiro, não o edital: que empresa deduz imposto, que empresa patrocina "
           "evento, quem tem instituto ou fundação, quem publica relatório ESG, quem aparece como apoiadora no site de "
           "outra entidade, que setor da economia está com caixa e ainda não foi procurado por ninguém daqui.\n"

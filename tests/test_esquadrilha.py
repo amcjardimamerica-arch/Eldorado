@@ -73,9 +73,13 @@ class TesteMotor29EFoco(unittest.TestCase):
         self.assertGreaterEqual(len(m["lexico_camada1_veto"]), 10)
         self.assertGreaterEqual(len(m["angulos_de_ataque"]), 10)
         self.assertTrue(all(a.get("pergunta") and a.get("alvo") for a in m["angulos_de_ataque"]))
-        self.assertTrue(any("lucro real" in a["pergunta"].lower() for a in m["angulos_de_ataque"]))
-        self.assertTrue(any("sazonal" in a["id"] for a in m["angulos_de_ataque"]))
+        # Os ângulos mudaram com a finalidade: o Piloto deixou de caçar o que os motores já
+        # cobrem (sazonal público, Lucro Real) e passou a procurar o que ninguém busca —
+        # rastro de edital futuro, patrocinador no rodapé, instituto sem divulgação.
+        self.assertTrue(any(a["alvo"] == "rastro" for a in m["angulos_de_ataque"]))
+        self.assertTrue(any(a["alvo"] == "site" for a in m["angulos_de_ataque"]))
         self.assertTrue(any("internacional" in a["id"] for a in m["angulos_de_ataque"]))
+        self.assertIn("NAO cobrem", m["regra_de_ouro"])
         self.assertIn("SITE OFICIAL", m["regra_de_abate"])
         self.assertTrue(m["aprendizado"]["pode_criar_termos"])            # pode propor termos novos
         self.assertIn("3 execuções", m["memoria_negativa"]["regra"])

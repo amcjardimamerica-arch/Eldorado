@@ -109,6 +109,10 @@ jobs:
           git config user.name "piloto" && git config user.email "piloto@eldorado"
           git add estado/sindico/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
       - name: Ciclo do síndico (entender → curar → afiar → minerar → anunciar)
+        env:
+          BRAVE_SEARCH_KEY: ${{ secrets.BRAVE_SEARCH_KEY }}
+          GOOGLE_CSE_KEY: ${{ secrets.GOOGLE_CSE_KEY }}
+          GOOGLE_CSE_CX: ${{ secrets.GOOGLE_CSE_CX }}
         if: ${{ (github.event.inputs.modo || 'ciclo') == 'ciclo' }}
         run: |
           python - <<'PY'

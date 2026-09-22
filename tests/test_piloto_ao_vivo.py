@@ -52,7 +52,7 @@ class TesteCorrecoesDaAuditoria(unittest.TestCase):
         self.assertEqual(BUSCADORES[0][0], "duckduckgo")                 # o único que respondeu
         self.assertGreaterEqual(ESPERA_ENTRE_BUSCAS, 3)                  # não metralha o buscador
         src = (ROOT / "src/piloto_busca.py").read_text(encoding="utf-8")
-        self.assertIn("não gasta tempo com os mortos", src)
+        self.assertIn("a roda para aqui", src)          # entregou, para; não varre as vias mortas
 
     def test_fila_so_aceita_edital_que_serve(self):
         self.assertFalse(_relevante({"titulo": "CHAMAMENTO PARA CREDENCIAMENTO DE LEILOEIROS OFICIAIS"})[0])

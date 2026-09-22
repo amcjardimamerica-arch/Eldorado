@@ -1,0 +1,75 @@
+{
+  "em": "2026-09-22T21:48:14+00:00",
+  "dominios_cobertos": 26,
+  "por_dominio": {
+    "goiania.go.gov.br": "do-goiania",
+    "diariooficial.abc.go.gov.br": "do-goias",
+    "goias.gov.br": "do-goias",
+    "ovg.org.br": "do-goias",
+    "in.gov.br": "dou",
+    "gov.br": "dou",
+    "pncp.gov.br": "pncp-api",
+    "goiania.go.leg.br": "camara-goiania-pl",
+    "portal.al.go.leg.br": "alego-pl",
+    "economia.go.gov.br": "alego-pl",
+    "trf1.jus.br": "dj-trf1-go",
+    "tjgo.jus.br": "dje-tjgo",
+    "corregedoria.tjgo.jus.br": "dje-tjgo",
+    "cnj.jus.br": "cnj-destinacoes",
+    "observatorio3setor.org.br": "empresas-incentivadas",
+    "captadores.org.br": "plat-abcr",
+    "gife.org.br": "plat-gife",
+    "prosas.com.br": "plat-prosas",
+    "salic.cultura.gov.br": "plat-salic",
+    "pnab.cultura.go.gov.br": "plat-secult-go",
+    "queridodiario.ok.org.br": "plat-prefeituras-50-go",
+    "mpgo.mp.br": "plat-mp-destinacoes-reparacao",
+    "mpf.mp.br": "plat-mp-destinacoes-reparacao",
+    "prt18.mpt.mp.br": "plat-mp-destinacoes-reparacao",
+    "html.duckduckgo.com": "plat-sindico-aberto",
+    "opopular.com.br": "motor-patrocinio"
+  },
+  "regra": "o Piloto não vai a domínio já coberto por motor: o motor lê aquilo todo dia, mais rápido e sem depender de buscador",
+  "vazios_conhecidos": [
+    {
+      "vazio": "instituto ou fundação empresarial que seleciona por formulário no próprio site",
+      "porque": "não publica em diário oficial nem em plataforma agregadora"
+    },
+    {
+      "vazio": "patrocínio declarado no rodapé do site de outra entidade",
+      "porque": "é rastro, não é edital: nenhum motor procura rodapé de site alheio"
+    },
+    {
+      "vazio": "relatório ESG com o valor investido e onde",
+      "porque": "documento corporativo, fora de qualquer portal de editais"
+    },
+    {
+      "vazio": "edital de anos anteriores de um financiador privado",
+      "porque": "já encerrado, some dos agregadores — mas indica quando o próximo sai"
+    },
+    {
+      "vazio": "notícia que anuncia edital ainda não lançado",
+      "porque": "o motor só vê o edital depois de publicado; a notícia vem antes"
+    },
+    {
+      "vazio": "ata de conselho municipal que aprova repasse",
+      "porque": "o repasse aprovado vira edital semanas depois, e ninguém lê atas"
+    },
+    {
+      "vazio": "programa de doação de multinacional com inscrição local",
+      "porque": "publicado em inglês, no site global, fora do radar brasileiro"
+    },
+    {
+      "vazio": "portal especializado em captação que agrega editais",
+      "porque": "é fonte de fontes: se for bom, vira motor próprio e sai da mão do Piloto"
+    }
+  ],
+  "tipos_ja_cobertos": [
+    "diário oficial",
+    "PNCP",
+    "Rouanet/SALIC",
+    "plataformas agregadoras conhecidas",
+    "editais de secretaria estadual e municipal",
+    "fundos públicos"
+  ]
+}

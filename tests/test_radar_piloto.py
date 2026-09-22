@@ -32,16 +32,22 @@ class TesteBuscaMultipla(unittest.TestCase):
         src = (ROOT / "src/piloto_busca.py").read_text(encoding="utf-8")
         self.assertIn("JÁ PERGUNTEI ISTO ANTES", src)                     # o histórico vai no prompt
 
-    def test_foco_em_empresa_esg_e_quatro_niveis(self):
+    def test_foco_em_empresa_esg_e_nos_vazios_dos_motores(self):
+        """Saiu o nível 'estadual': era onde os motores públicos já atuam. O Piloto ficou
+        com regional, nacional e internacional, que é onde o dinheiro privado está."""
         m = json.loads((ROOT / "config/motor_sindico.json").read_text(encoding="utf-8"))
         niveis = {a["nivel"] for a in m["angulos_de_ataque"]}
-        self.assertEqual(niveis, {"regional", "estadual", "nacional", "internacional"})
+        self.assertTrue(niveis <= {"regional", "estadual", "nacional", "internacional"})
+        self.assertIn("regional", niveis); self.assertIn("internacional", niveis)
         perguntas = " ".join(a["pergunta"].lower() for a in m["angulos_de_ataque"])
-        for termo in ("esg", "patrocinadora", "edital de seleção de projetos sociais em anos anteriores", "instituto"):
-            self.assertIn(termo.split()[0], perguntas)
-        self.assertTrue(any("anos anteriores" in a["pergunta"] for a in m["angulos_de_ataque"]))   # edital passado indica recorrência
+        for termo in ("esg", "patrocinador", "instituto", "fundacoes"):
+            self.assertIn(termo, perguntas, termo)
+        self.assertTrue(any("anteriores" in a["pergunta"].lower() for a in m["angulos_de_ataque"]))   # edital passado indica recorrência
         self.assertIn("edital de anos anteriores", " ".join(m["foco"]["sempre_procurar"]))
-        self.assertGreaterEqual(sum(1 for a in m["angulos_de_ataque"] if a["alvo"] == "empresa"), 7)
+        # alvo 'empresa' cedeu espaço para 'rastro' e 'site', que é onde os motores não chegam
+        alvos = [a["alvo"] for a in m["angulos_de_ataque"]]
+        self.assertGreaterEqual(alvos.count("empresa"), 3)
+        self.assertGreaterEqual(alvos.count("rastro"), 3)
 
 
 class TesteRadarDeCaptacao(unittest.TestCase):
