@@ -283,59 +283,113 @@ def nivel2_classificar(ia: IALocal, limite: int = 30) -> dict:
     return {"classificados": len(feitos), "itens": feitos[:20], "nota": "só classificação; projeto e documentos não são do cargo"}
 
 
-# ─────────────────────────────────────────────────────────────── ciclo
+# ─────────────────────────────────────────────────────────────── ciclo (missões sorteadas)
+def _titulos_conhecidos() -> set[str]:
+    dados = load_json(ROOT / "docs/dashboard-dados.json")
+    из = set()
+    for e in dados.get("editais") or []:
+        из.add(re.sub(r"[^a-z0-9 ]", "", (e.get("titulo") or "").lower())[:60])
+    return из
+
+
+def missao_cacar(ia: IALocal, conhecidos: set[str]) -> tuple[str, list[dict], str]:
+    """Caça oportunidade que o sistema NÃO conhece. Abate = título inédito com onde procurar."""
+    from .cargo_sindico import licoes_para_o_prompt
+    from .sindico import PROMPTS_MINERACAO
+    b = load_json(ROOT / "estado/sindico/bordo.json") if (ROOT / "estado/sindico/bordo.json").exists() else {}
+    feitos = {m.get("alvo") for m in (b.get("missoes") or [])[:10]}
+    chave, prompt = next(((k, p) for k, p in PROMPTS_MINERACAO if k not in feitos), PROMPTS_MINERACAO[0])
+    r = ia.perguntar((licoes_para_o_prompt() + "\n\n" if licoes_para_o_prompt() else "") + prompt,
+                     "lista JSON de objetos com os campos nome/empresa/fundo, onde_procurar (url ou termo) e uf quando houver")
+    itens = r if isinstance(r, list) else ((r or {}).get("itens") or (r or {}).get("resultado") or [])
+    ach = []
+    for x in itens if isinstance(itens, list) else []:
+        onde = str((x or {}).get("onde_procurar") or "")
+        titulo = str((x or {}).get("empresa") or (x or {}).get("fundo") or (x or {}).get("mecanismo") or (x or {}).get("nome") or "")[:110]
+        if not titulo or not onde or len(onde) < 8:
+            continue
+        chave_t = re.sub(r"[^a-z0-9 ]", "", titulo.lower())[:60]
+        ach.append({"titulo": titulo, "onde": onde[:140], "url": onde if onde.startswith("http") else None,
+                    "uf": (x or {}).get("uf"), "novo": chave_t not in conhecidos})
+    licao = "caminho sem retorno — registrado para não repetir" if not ach else f"{sum(1 for a in ach if a['novo'])} alvo(s) inédito(s)"
+    return chave, ach[:12], licao
+
+
+def missao_afiar(ia: IALocal, motor_id: str) -> tuple[str, list[dict], str]:
+    """Olha o que o motor leu e propõe como ele acha mais da próxima vez."""
+    rotas = (load_json(ROOT / "config/rotas_motores.json").get("motores") or {}).get(motor_id, {})
+    esq = (load_json(ROOT / "estado/esquadra.json").get("sensores") or {}).get(motor_id, {})
+    p = t_diagnosticar_rota(ia, {"id": motor_id, "nome": rotas.get("perfil") or motor_id, "perfil": rotas.get("perfil"),
+                                 "rotas": rotas.get("rotas"), "diagnostico": esq.get("diagnostico"), "lexico": rotas.get("lexico_camada1") or []})
+    if not p or not p.get("valido"):
+        return motor_id, [], "sem proposta aproveitável nesta passagem"
+    ach = [{"titulo": f"{x['tipo']}: {str(x['valor'])[:80]}", "onde": x.get("porque", "")[:120], "url": x["valor"] if x["tipo"] == "url" else None, "novo": False}
+           for x in p["tentar"] if x.get("valido")]
+    rot_p = ROOT / "estado/rotas_sugeridas_ia.json"; rot = load_json(rot_p) if rot_p.exists() else {"sugestoes": []}
+    rot["sugestoes"].append({**p, "em": now_iso(), "status": "a_confirmar_pelo_titular", "origem": "sindico"})
+    write_json(rot_p, rot)
+    return motor_id, ach, (p.get("causa_provavel") or "")[:150]
+
+
+def missao_local(ia: IALocal, motor_id: str, conhecidos: set[str]) -> tuple[str, list[dict], str]:
+    """Procura um LOCAL novo de publicação para a família daquele motor."""
+    rotas = (load_json(ROOT / "config/rotas_motores.json").get("motores") or {}).get(motor_id, {})
+    r = ia.perguntar(f"PERFIL DO MOTOR: {rotas.get('perfil')}\nROTAS QUE JÁ CONHEÇO: {[x.get('nome') for x in (rotas.get('rotas') or [])]}\n"
+                     "Que OUTROS lugares publicam o mesmo tipo de oportunidade no Brasil e que não estão na lista? Órgãos vizinhos, plataformas, boletins, conselhos.",
+                     '[{"local": "nome", "onde_procurar": "url ou termo de busca", "porque": "uma frase"}]')
+    itens = r if isinstance(r, list) else ((r or {}).get("itens") or [])
+    ach = []
+    for x in itens if isinstance(itens, list) else []:
+        onde = str((x or {}).get("onde_procurar") or ""); nome = str((x or {}).get("local") or "")[:100]
+        if nome and len(onde) > 8:
+            ach.append({"titulo": nome, "onde": onde[:140], "url": onde if onde.startswith("http") else None,
+                        "novo": re.sub(r"[^a-z0-9 ]", "", nome.lower())[:60] not in conhecidos})
+    return motor_id, ach[:8], f"{len(ach)} local(is) candidato(s)"
+
+
 def ciclo(porta: int | None = None) -> dict:
-    c = cfg()
-    hoje = date.today().isoformat()
-    t0 = time.time(); orc = c.get("orcamento", {})
+    """VOO DO SÍNDICO: missões sorteadas, uma de cada vez, com diário de bordo."""
+    from .esquadrilha import sortear, abrir_missao, fechar_missao, resumo
+    from .cargo_sindico import ocupante
+    c = cfg(); hoje = date.today().isoformat(); t0 = time.time()
+    orc = c.get("orcamento", {}); par = (load_json(ROOT / "config/cargo_sindico.json") or {}).get("parametros", {})
     ent = entender()
     ia = IALocal(porta=porta) if porta else IALocal()
-    rel = {"em": now_iso(), "modelo": c.get("modelo_vencedor"), "entendimento": {k: (v if not isinstance(v, dict) else {kk: vv for kk, vv in v.items() if kk in ("total",)}) for k, v in ent.items() if k != "acervo_compacto"},
-           "curadoria": None, "afiar": None, "mineracao": [], "descobertas": [], "ocioso_s": 0}
+    rel = {"em": now_iso(), "modelo": c.get("modelo_vencedor"), "ocupante": ocupante().get("nome"),
+           "entendimento": {k: (v.get("total") if isinstance(v, dict) else v) for k, v in ent.items() if k != "acervo_compacto"},
+           "missoes": [], "abates": 0, "propostas": 0}
     if not ia.disponivel():
-        rel["nota"] = "servidor do modelo não está de pé neste job"; write_json(PASTA / f"relatorio-{hoje}.json", rel); return rel
-    # 1) CURAR + AFIAR: usa o ciclo do ia_local (mesmas tarefas e validação)
-    from .ia_local import ciclo as ciclo_ia, aplicar as aplicar_ia
-    r1 = ciclo_ia(ia, limite=int(orc.get("registros_por_ciclo", 150)))
-    r2 = aplicar_ia()
-    rel["curadoria"] = {k: r1.get(k) for k in ("total", "validas", "invalidas", "por_tarefa")}
-    rel["afiar"] = r2
-    rel["nivel1_fila"] = len(fila_nivel1())
-    # NÍVEL 2 — apenas classificar (projeto e documentos saíram do cargo em 22/09)
-    try:
-        rel["nivel2"] = nivel2_classificar(ia, limite=int(orc.get("classificacoes_por_ciclo", 30)))
-    except Exception as ex_:
-        aprender("nivel2", "enquadrar conformes", f"{type(ex_).__name__}: {ex_}", "revisar dados das associações", 2); rel["nivel2"] = {"erro": str(ex_)[:120]}
-    if (rel["curadoria"] or {}).get("invalidas"):
-        aprender("nivel1_curadoria", f"{rel['curadoria']['total']} propostas", f"{rel['curadoria']['invalidas']} sem trecho literal ou fora do esquema", "o modelo precisa citar o texto; propostas sem citação são descartadas", 1)
-    # 2) MINERAR até o orçamento de tempo: sem ociosidade
-    feitos: set[str] = set()
+        rel["nota"] = "o avião não decolou: servidor do modelo fora do ar neste job"
+        write_json(PASTA / f"relatorio-{hoje}.json", rel); return rel
+    conhecidos = _titulos_conhecidos()
     limite_s = int(orc.get("minutos_por_ciclo", 300)) * 60
-    while time.time() - t0 < limite_s and len(feitos) < len(PROMPTS_MINERACAO):
-        m = minerar(ia, feitos)
-        if not m.get("prompt"):
+    for m in sortear():
+        if time.time() - t0 > limite_s:
             break
-        feitos.add(m["prompt"]); rel["mineracao"].append(m)
-        if not m["negativo"]:
-            rel["descobertas"].extend(m["pistas"])
-    # 3) memória curta: pistas negativas ficam num arquivo só, em uma linha cada
-    mem_p = PASTA / "memoria_mineracao.jsonl"
-    with open(mem_p, "a", encoding="utf-8") as fh:
-        for m in rel["mineracao"]:
-            fh.write(json.dumps({"d": hoje, "p": m["prompt"], "n": len(m.get("pistas") or []), "neg": m["negativo"]}, ensure_ascii=False) + "\n")
-    # pistas positivas viram sugestões de rota a confirmar
-    if rel["descobertas"]:
-        rot_p = ROOT / "estado/rotas_sugeridas_ia.json"; rot = load_json(rot_p) if rot_p.exists() else {"sugestoes": []}
-        for d in rel["descobertas"]:
-            rot["sugestoes"].append({"tarefa": "mineracao_sindico", **d, "em": now_iso(), "status": "a_confirmar_pelo_titular", "origem": "sindico"})
-        write_json(rot_p, rot)
+        abrir_missao(m, m.get("motor") or "")
+        try:
+            if m["tipo"] == "cacar_oportunidade":
+                alvo, ach, licao = missao_cacar(ia, conhecidos)
+            elif m["tipo"] == "afiar_motor":
+                alvo, ach, licao = missao_afiar(ia, m["motor"])
+            else:
+                alvo, ach, licao = missao_local(ia, m["motor"], conhecidos)
+        except Exception as ex_:
+            aprender("missao", m["tipo"], f"{type(ex_).__name__}: {ex_}", "revisar prompt/esquema", None)
+            alvo, ach, licao = m.get("motor") or "", [], f"falhou: {type(ex_).__name__}"
+        reg = fechar_missao(licao, ach, licao)
+        rel["missoes"].append({"tipo": m["tipo"], "motor": m.get("motor"), "alvo": alvo, "achados": len(ach), "abates": reg["abates"], "licao": licao[:90]})
+        rel["abates"] += reg["abates"]; rel["propostas"] += len(ach)
+        for a in [x for x in ach if x.get("novo")]:
+            with open(PASTA / "alvos_novos.jsonl", "a", encoding="utf-8") as fh:
+                fh.write(json.dumps({"d": hoje, "motor": m.get("motor"), "titulo": a["titulo"], "onde": a["onde"], "uf": a.get("uf")}, ensure_ascii=False) + "\n")
     rel["minutos"] = round((time.time() - t0) / 60, 1)
-    rel["anuncio"] = (f"Síndico {hoje} ({rel.get('modelo') or 'modelo não eleito'}): nível 1 — {rel['curadoria']['validas'] if rel['curadoria'] else 0} propostas válidas, {rel['nivel1_fila']} na fila; "
-                      f"nível 2 — {(rel.get('nivel2') or {}).get('classificados', 0)} classificação(ões); nível 3 — {len(rel['descobertas'])} pista(s) em {len(rel['mineracao'])} pesquisa(s); {rel['minutos']} min.")
-    rel["estado_final"] = "ocioso → próxima pesquisa autônoma no próximo ciclo" if len(feitos) >= len(PROMPTS_MINERACAO) else "orçamento de tempo esgotado com pesquisas pendentes"
+    rel["bordo"] = resumo()
+    rel["anuncio"] = (f"Esquadrilha {hoje} ({rel['ocupante']}): {len(rel['missoes'])} missão(ões) — "
+                      f"{rel['abates']} alvo(s) novo(s) abatido(s), {rel['propostas']} proposta(s) ao todo, {rel['minutos']} min de voo.")
     write_json(PASTA / f"relatorio-{hoje}.json", rel)
-    write_json(ROOT / "docs/dados/sindico.json", {k: v for k, v in rel.items() if k != "mineracao"} | {"prompts_rodados": [m["prompt"] for m in rel["mineracao"]]})
-    return {k: v for k, v in rel.items() if k not in ("mineracao", "descobertas")} | {"descobertas": len(rel["descobertas"])}
+    write_json(ROOT / "docs/dados/sindico.json", rel)
+    return rel
 
 
 if __name__ == "__main__":
