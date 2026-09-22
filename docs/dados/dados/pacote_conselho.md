@@ -38,6 +38,13 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 ### Enquadramentos propostos (0)
 
 
+## Radar de captação — empresas descobertas pelo Piloto, a pesquisar (1)
+
+Para cada uma: abrir o site, procurar relatório ESG e o que declara financiar, editais anteriores (indicam recorrência), edital aberto hoje, como pleitear e se aceita OSC de Goiás.
+Ao concluir: `python -m src.radar_piloto` e marcar como concluído em dados/empresas/radar_piloto.json.
+
+- `fundacaoagrogo.org.br` **Fundação Agro Goiás** (regional) — https://fundacaoagrogo.org.br/programa · falta: relatório ESG e o que declara financiar, editais anteriores (indicam recorrência), edital aberto hoje
+
 ## Perguntas para o conselho
 
 1. Quais rotas sugeridas confirmar (entram no catálogo) e quais descartar (entram na memória negativa)?
