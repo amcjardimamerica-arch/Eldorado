@@ -165,6 +165,8 @@ jobs:
           git config user.name "sindico-eldorado" && git config user.email "sindico@eldorado"
           git fetch -q origin main && git reset -q --hard origin/main
           cp -r /tmp/sind/. .
+          # PROTEÇÃO DO PAINEL: arquivos de autoria nunca são sobrescritos por job de dados
+          git checkout origin/main -- docs/dashboard.html 2>/dev/null || true
           git add -A estado/sindico config/sindico.json docs/dados/sindico.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados 2>/dev/null || git add -A
           git status --short | head -20
           git commit -q -m "sindico: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"
