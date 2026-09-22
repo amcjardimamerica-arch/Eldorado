@@ -22,7 +22,7 @@ class TesteSindico(unittest.TestCase):
         self.assertEqual(MAPA_VEREDITO["fomento_osc"], "aprovado")
         wf = (ROOT / ".github/workflows/sindico.yml").read_text(encoding="utf-8")
         self.assertIn("actions/cache@v4", wf); self.assertIn("ia_local/modelos", wf); self.assertIn("benchmark", wf)
-        self.assertIn("4,10,16,22", wf)                                     # 4 ciclos por dia
+        self.assertIn("Pousar 3 segundos e decolar de novo", wf)                         # ciclo contínuo: um voo chama o seguinte
         self.assertIn("prazo inventado", (ROOT / "src/sindico.py").read_text(encoding="utf-8").lower().replace("prazos inventados", "prazo inventado"))
 
     def test_mineracao_gera_prompt_diferente_e_registra_negativo(self):

@@ -41,11 +41,12 @@ class TesteMissoes(unittest.TestCase):
 
     def test_aviao_estrelas_e_posto(self):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        for x in ("function aviaoDoSindico", "sind-helice", "sind-luneta", "sind-tiro", "@keyframes sind-voo",
+        for x in ("function aviaoDoPiloto", "pil-helice", "pil-luneta", "pil-tiro", "@keyframes pil-voo",
                   "function estrelasDeAbate", "mt-abates", "@keyframes est-nasce",
-                  "window.abrirPostoSindico", "function desenhaPostoSindico", 'id="sind-posto"',
-                  "Esquadrilha do Síndico", "Diário de bordo deste motor", "carregaEsquadrilha"): self.assertIn(x, h, x)
-        self.assertIn("aviaoDoSindico(o.id,o.nome)", h)                   # o avião pousa no motor ativo
+                  "window.abrirPostoPiloto", "function desenhaPostoPiloto", 'id="pil-posto"',
+                  "Esquadrilha do Piloto", "Diário de bordo deste motor", "carregaEsquadrilha"): self.assertIn(x, h, x)
+        self.assertIn("function aviaoDoPiloto", h)                          # o avião existe...
+        self.assertNotIn("voa?aviaoDoPiloto", h)                            # ...mas não dentro de cada motor da lista                   # o avião pousa no motor ativo
         self.assertIn("estrelasDeAbate(ab.n", h)                          # estrelas à esquerda, fora da caixa
         self.assertIn("left:-26px", h)
 
@@ -84,9 +85,12 @@ class TesteMotor29EFoco(unittest.TestCase):
         t, v = lexico_camada1(s[0]); self.assertGreaterEqual(len(t), 40)
         src = (ROOT / "src/sindico.py").read_text(encoding="utf-8")
         self.assertIn("def missao_motor29", src); self.assertIn("def _angulo_do_dia", src)
-        self.assertIn('"novo": oficial and chave not in conhecidos', src)   # abate só com site oficial
+        pb = (ROOT / "src/piloto_busca.py").read_text(encoding="utf-8")
+        self.assertIn("_oficial(b[\"url\"])", pb)                              # abate só com site oficial
+        self.assertIn("def buscar(", pb); self.assertIn("def ler_pagina(", pb)  # busca REAL na internet
+        self.assertIn("QUESTIONAMENTO NOVO", pb)
 
     def test_helice_clicavel(self):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        for x in ("window.darPartida", "sind-helice-bt", "sind-pa", "@keyframes sind-pa-gira", "sind-fumaca",
+        for x in ("window.darPartida", "-helice-bt", "pil-pa", "@keyframes pil-pa-gira", "pil-fumaca",
                   "contato!", "Motores ligados", "motores 26, 27, 28 e 29"): self.assertIn(x, h, x)

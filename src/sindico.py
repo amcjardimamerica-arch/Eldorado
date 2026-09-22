@@ -1,4 +1,4 @@
-"""O SÍNDICO — curador da Biblioteca de Alexandria, rodando no GitHub Actions.
+"""O PILOTO — curador da Biblioteca de Alexandria, rodando no GitHub Actions.
 
 Duas funções neste módulo:
 
@@ -16,7 +16,7 @@ Duas funções neste módulo:
                   de incentivo fiscal) e registra o resultado da forma mais curta possível, mesmo
                   quando negativo, para não repetir o caminho; (5) ANUNCIAR — relatório do dia.
 
-Regra que nunca muda: o síndico PROPÕE, a validação determinística DECIDE. Prazo, valor,
+Regra que nunca muda: o Piloto PROPÕE, a validação determinística DECIDE. Prazo, valor,
 objeto e página só entram com trecho literal presente no texto. Tudo leva origem=sindico.
 """
 from __future__ import annotations
@@ -50,7 +50,7 @@ CANDIDATOS = [
      "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf"},
 ]
 MAPA_VEREDITO = {"fomento_osc": "aprovado", "atencao": "atencao"}      # famílias de inconformidade → reprovado
-# métricas que importam para o síndico: FALSO POSITIVO (reprovado→aprovado) é o erro caro; FALSO NEGATIVO (aprovado→reprovado) perde oportunidade
+# métricas que importam para o Piloto: FALSO POSITIVO (reprovado→aprovado) é o erro caro; FALSO NEGATIVO (aprovado→reprovado) perde oportunidade
 
 
 def cfg() -> dict:
@@ -191,7 +191,7 @@ def benchmark(limite: int | None = None) -> dict:
 
 # ─────────────────────────────────────────────────────────────── entender
 def entender() -> dict:
-    """Catálogo compacto do que a Biblioteca contém — o síndico só orienta o que conhece."""
+    """Catálogo compacto do que a Biblioteca contém — o Piloto só orienta o que conhece."""
     from collections import Counter
     dados = load_json(ROOT / "docs/dashboard-dados.json")
     an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
@@ -308,56 +308,45 @@ def _angulo_do_dia() -> dict:
 
 
 def missao_motor29(ia: IALocal, conhecidos: set[str]) -> tuple[str, list[dict], str]:
-    """MOTOR 29 — busca aberta: um ângulo por vez, site oficial obrigatório para contar abate."""
-    from .cargo_sindico import licoes_para_o_prompt
+    """MOTOR 29 — o Piloto cria a consulta, BUSCA NA INTERNET e lê o que achou.
+    (Antes ele respondia de memória e vinha sempre seco: o modelo local não tem rede.)"""
+    from .piloto_busca import caçar
     m = load_json(MOTOR29); ang = _angulo_do_dia()
-    lic = licoes_para_o_prompt()
-    r = ia.perguntar((lic + "\n\n" if lic else "") + ang["pergunta"] +
-                     "\nResponda só o que você tem certeza que existe. Sem site oficial, deixe o campo nulo — é melhor vazio que inventado.",
-                     '[{"nome": "nome da oportunidade ou do financiador", "site_oficial": "https://dominio-proprio.org ou null", '
-                     '"pista": "onde mais procurar (url ou termo)", "uf": "sigla ou null", "area": "...", "quando": "época do ano, se souber"}]')
-    itens = r if isinstance(r, list) else ((r or {}).get("itens") or (r or {}).get("resultado") or [])
-    ach, sem_site = [], 0
-    for x in itens if isinstance(itens, list) else []:
-        nome = str((x or {}).get("nome") or "")[:110]
-        site = str((x or {}).get("site_oficial") or "")
-        pista = str((x or {}).get("pista") or "")
-        if not nome:
-            continue
-        oficial = site.startswith("http") and not re.search(r"observatorio3setor|captadores\.org|gife\.org\.br/noticias|prosas\.com|g1\.globo|facebook|instagram|linkedin", site, re.I)
-        if not oficial:
-            sem_site += 1
-        chave = re.sub(r"[^a-z0-9 ]", "", nome.lower())[:60]
-        ach.append({"titulo": nome, "onde": (site if oficial else pista or site)[:140], "url": site if oficial else None,
-                    "uf": (x or {}).get("uf"), "quando": (x or {}).get("quando"),
-                    "novo": oficial and chave not in conhecidos,          # ABATE exige site oficial
-                    "sem_site_oficial": not oficial})
-    novos = sum(1 for a in ach if a["novo"])
-    # memória negativa: ângulo seco três vezes sai do rodízio
+    ach, licao, consultas = caçar(ia, ang, conhecidos)
+    novos = sum(1 for a in ach if a.get("novo"))
     if novos == 0:
         neg = m.setdefault("memoria_negativa", {"itens": []})
         it = next((x for x in neg["itens"] if x["id"] == ang["id"]), None)
-        if it:
-            it["secas"] = it.get("secas", 1) + 1
-        else:
-            neg["itens"].append({"id": ang["id"], "secas": 1, "desde": date.today().isoformat()})
+        if it: it["secas"] = it.get("secas", 1) + 1
+        else: neg["itens"].append({"id": ang["id"], "secas": 1, "desde": date.today().isoformat()})
         neg["itens"] = [x for x in neg["itens"] if x.get("secas", 0) >= 3]
-        write_json(MOTOR29, m)
     else:
-        # termos candidatos ao léxico, a partir do que apareceu nas descobertas confirmadas
-        palavras = {}
         for a in [x for x in ach if x["novo"]]:
-            for w in re.findall(r"[a-zà-ú]{5,}", (a["titulo"] + " " + (a.get("onde") or "")).lower()):
-                if w not in [t.lower() for t in m["lexico_camada1_positivos"]]:
-                    palavras[w] = palavras.get(w, 0) + 1
-        for w, n in palavras.items():
-            if n >= 2:
+            for w in re.findall(r"[a-zà-ú]{5,}", (a["titulo"] + " " + (a.get("porque") or "")).lower()):
+                if w in {t_.lower() for t_ in m["lexico_camada1_positivos"]}:
+                    continue
                 prop = m["aprendizado"].setdefault("termos_propostos", [])
-                if not any(p["termo"] == w for p in prop):
-                    prop.append({"termo": w, "vezes": n, "angulo": ang["id"], "em": date.today().isoformat(), "status": "a confirmar pelo Claude"})
-        write_json(MOTOR29, m)
-    licao = (f"ângulo '{ang['id']}': {novos} com site oficial" + (f", {sem_site} sem site (viram pista)" if sem_site else "")) if ach else f"ângulo '{ang['id']}' seco"
+                e = next((x for x in prop if x["termo"] == w), None)
+                if e: e["vezes"] = e.get("vezes", 1) + 1
+                elif len(w) > 5: prop.append({"termo": w, "vezes": 1, "angulo": ang["id"], "em": date.today().isoformat(), "status": "a confirmar pelo Claude"})
+        m["aprendizado"]["termos_propostos"] = [x for x in m["aprendizado"]["termos_propostos"] if x.get("vezes", 0) >= 2][:60]
+    m.setdefault("consultas_usadas", []).insert(0, {"em": now_iso()[:16], "angulo": ang["id"], "consultas": consultas, "achados": len(ach), "novos": novos})
+    m["consultas_usadas"] = m["consultas_usadas"][:40]
+    write_json(MOTOR29, m)
     return ang["id"], ach[:12], licao
+
+
+def missao_cacar_motor(ia: IALocal, motor_id: str, conhecidos: set[str]) -> tuple[str, list[dict], str]:
+    """Caça nos motores 26/27/28 com busca real, a partir do perfil declarado do motor."""
+    from .piloto_busca import caçar
+    rotas = (load_json(ROOT / "config/rotas_motores.json").get("motores") or {}).get(motor_id, {})
+    perguntas = {
+        "empresas-incentivadas": "Que empresas de Goiás publicam edital ou seleção de projetos com recursos de incentivo fiscal (Rouanet, FIA, Idoso, Esporte, PRONAS) e em que página oficial?",
+        "motor-gife": "Que grandes contribuintes de ICMS de Goiás (Lucro Real) têm instituto, fundação ou programa que apoia projetos de organizações sem fins lucrativos? Qual o site oficial?",
+        "motor-patrocinio": "Que empresas patrocinam eventos culturais, esportivos e comunitários em Goiânia e no interior de Goiás, e onde anunciam como pedir patrocínio?"}
+    ang = {"id": f"cacar-{motor_id}", "pergunta": perguntas.get(motor_id) or (rotas.get("perfil") or motor_id)}
+    ach, licao, _ = caçar(ia, ang, conhecidos, max_consultas=2, max_paginas=3)
+    return ang["id"], ach, licao
 
 
 def missao_cacar(ia: IALocal, conhecidos: set[str]) -> tuple[str, list[dict], str]:
@@ -415,8 +404,53 @@ def missao_local(ia: IALocal, motor_id: str, conhecidos: set[str]) -> tuple[str,
     return motor_id, ach[:8], f"{len(ach)} local(is) candidato(s)"
 
 
+def _contar_voo() -> int:
+    arq = PASTA / "voos.json"
+    d = load_json(arq) if arq.exists() else {}
+    hoje = date.today().isoformat()
+    d[hoje] = int(d.get(hoje, 0)) + 1
+    d = {k: v for k, v in sorted(d.items())[-14:]}
+    write_json(arq, d)
+    return d[hoje]
+
+
+
+def escolher_rumo(ia: IALocal, ent: dict) -> dict:
+    """ANTES de voar, o Piloto lê a Biblioteca e decide ONDE procurar — não sorteia no vazio.
+    Ele olha o que já tem, o que falta, o que rendeu e o que veio seco, e propõe o rumo do voo."""
+    m = load_json(MOTOR29)
+    b = load_json(ROOT / "estado/sindico/bordo.json") if (ROOT / "estado/sindico/bordo.json").exists() else {}
+    rad = load_json(ROOT / "dados/empresas/radar_piloto.json") if (ROOT / "dados/empresas/radar_piloto.json").exists() else {}
+    ultimas = [{"angulo": x.get("alvo"), "abates": x.get("abates", 0)} for x in (b.get("missoes") or [])[:12]]
+    secos = [x["id"] for x in (m.get("memoria_negativa") or {}).get("itens", [])]
+    setores_ja = sorted({(e.get("angulos") or ["?"])[0] for e in (rad.get("empresas") or {}).values()})
+    r = ia.perguntar(
+        "VOCÊ É O PILOTO do Eldorado. Antes de sair para o voo, olhe o que a casa já tem e decida ONDE procurar recurso novo.\n\n"
+        f"BIBLIOTECA HOJE: {json.dumps({k: (v.get('total') if isinstance(v, dict) else v) for k, v in ent.items() if k != 'acervo_compacto'}, ensure_ascii=False)}\n"
+        f"ÚLTIMOS VOOS (ângulo → alvos novos): {json.dumps(ultimas, ensure_ascii=False)}\n"
+        f"ÂNGULOS QUE VIERAM SECOS: {secos}\n"
+        f"SETORES JÁ NO RADAR: {setores_ja[:20]}\n\n"
+        "Onde há recurso que ainda não mapeamos? Pense em quem PAGA: empresa que deduz imposto, que patrocina evento, "
+        "que tem instituto, que publica relatório ESG, que aparece como apoiadora no site de outra entidade. "
+        "Proponha o rumo deste voo — setor, região e tipo de fonte — e diga por quê.",
+        '{"rumo": "uma frase", "setor": "...", "regiao": "GO|Centro-Oeste|BR|internacional", '
+        '"tipo_de_fonte": "empresa|instituto|fundacao|cooperativa|multinacional|programa_publico", '
+        '"pergunta_de_busca": "a pergunta que o voo deve responder", "porque": "uma frase"}')
+    if not r or not r.get("pergunta_de_busca"):
+        return {}
+    rumo = {"id": "rumo-" + re.sub(r"[^a-z0-9]+", "-", str(r.get("setor") or "livre").lower())[:28],
+            "pergunta": str(r["pergunta_de_busca"])[:400], "nivel": {"GO": "regional", "Centro-Oeste": "regional",
+            "BR": "nacional", "internacional": "internacional"}.get(str(r.get("regiao")), "nacional"),
+            "alvo": r.get("tipo_de_fonte") or "empresa", "rumo": r.get("rumo"), "porque": r.get("porque"), "origem": "rumo_do_piloto"}
+    m.setdefault("rumos_escolhidos", []).insert(0, {**rumo, "em": now_iso()[:16]})
+    m["rumos_escolhidos"] = m["rumos_escolhidos"][:40]
+    write_json(MOTOR29, m)
+    return rumo
+
+
+
 def ciclo(porta: int | None = None) -> dict:
-    """VOO DO SÍNDICO: missões sorteadas, uma de cada vez, com diário de bordo."""
+    """VOO DO PILOTO: missões sorteadas, uma de cada vez, com diário de bordo."""
     from .esquadrilha import sortear, abrir_missao, fechar_missao, resumo
     from .cargo_sindico import ocupante
     c = cfg(); hoje = date.today().isoformat(); t0 = time.time()
@@ -430,16 +464,29 @@ def ciclo(porta: int | None = None) -> dict:
         rel["nota"] = "o avião não decolou: servidor do modelo fora do ar neste job"
         write_json(PASTA / f"relatorio-{hoje}.json", rel); return rel
     conhecidos = _titulos_conhecidos()
-    limite_s = int(orc.get("minutos_por_ciclo", 300)) * 60
+    limite_s = int(orc.get("minutos_por_ciclo", 25)) * 60
+    rel["voo_do_dia"] = _contar_voo()
+    from .briefing_piloto import escrever as _brief, fechar as _fechar
+    brief = _brief(ia)                                # RELATÓRIO DE CONTEXTO: lê o banco e os voos anteriores
+    rel["briefing"] = {k: brief.get(k) for k in ("diagnostico", "aposta", "pergunta_de_pesquisa", "nivel")}
+    rumo = {"id": "briefing-" + re.sub(r"[^a-z0-9]+", "-", str((brief.get("aposta") or {}).get("onde") or "livre").lower())[:28],
+            "pergunta": brief["pergunta_de_pesquisa"], "nivel": brief.get("nivel") or "nacional",
+            "alvo": "empresa", "porque": (brief.get("aposta") or {}).get("porque"), "origem": "briefing"}
+    if rumo:
+        rel["rumo"] = {k: rumo[k] for k in ("rumo", "nivel", "alvo", "porque") if k in rumo}
     for m in sortear():
         if time.time() - t0 > limite_s:
             break
         abrir_missao(m, m.get("motor") or "")
         try:
             if m.get("motor") == "sindico-aberto":
-                alvo, ach, licao = missao_motor29(ia, conhecidos)      # motor 29: busca aberta por ângulo
+                if rumo and (m["ordem"] % 2 == 1):                     # alterna rumo do Piloto e ângulo do catálogo
+                    from .piloto_busca import caçar as _cacar
+                    ach, licao, _c = _cacar(ia, rumo, conhecidos); alvo = rumo["id"]
+                else:
+                    alvo, ach, licao = missao_motor29(ia, conhecidos)
             elif m["tipo"] == "cacar_oportunidade":
-                alvo, ach, licao = missao_cacar(ia, conhecidos)
+                alvo, ach, licao = missao_cacar_motor(ia, m["motor"], conhecidos)
             elif m["tipo"] == "afiar_motor":
                 alvo, ach, licao = missao_afiar(ia, m["motor"])
             else:
@@ -450,9 +497,16 @@ def ciclo(porta: int | None = None) -> dict:
         reg = fechar_missao(licao, ach, licao)
         rel["missoes"].append({"tipo": m["tipo"], "motor": m.get("motor"), "alvo": alvo, "achados": len(ach), "abates": reg["abates"], "licao": licao[:90]})
         rel["abates"] += reg["abates"]; rel["propostas"] += len(ach)
+        from .radar_piloto import registrar as _radar
         for a in [x for x in ach if x.get("novo")]:
             with open(PASTA / "alvos_novos.jsonl", "a", encoding="utf-8") as fh:
                 fh.write(json.dumps({"d": hoje, "motor": m.get("motor"), "titulo": a["titulo"], "onde": a["onde"], "uf": a.get("uf")}, ensure_ascii=False) + "\n")
+            _radar(a, alvo, m.get("motor") or "")          # entra no radar de captação como 'a pesquisar' 
+    from .radar_piloto import publicar as _pub_radar
+    rel["radar"] = _pub_radar()
+    _todos = [a for m in (rel.get("missoes") or []) for a in (m.get("achados") or [])]
+    _fechar(brief, _todos, abertas=sum(1 for a in _todos if a.get("situacao") == "aberta"),
+            arquivadas=sum(1 for a in _todos if a.get("situacao") == "arquivada"))
     rel["minutos"] = round((time.time() - t0) / 60, 1)
     rel["bordo"] = resumo()
     rel["anuncio"] = (f"Esquadrilha {hoje} ({rel['ocupante']}): {len(rel['missoes'])} missão(ões) — "

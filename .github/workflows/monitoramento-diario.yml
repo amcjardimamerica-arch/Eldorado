@@ -270,6 +270,9 @@ jobs:
           git config user.email "eldorado-bot@users.noreply.github.com"
           # registra o produzido SEM perder nada, mesmo se a main avançou durante a saída:
           # commit local → rebase preferindo o que a saída produziu → push com até 3 tentativas
+          # PROTEÇÃO DO PAINEL (22/09): docs/dashboard.html e os arquivos do Piloto são de autoria
+          # do titular/Claude — o job de dados nunca os sobrescreve com a árvore que clonou no início.
+          git checkout origin/main -- docs/dashboard.html config/cargo_sindico.json config/motor_sindico.json src/piloto_busca.py src/radar_piloto.py src/ranking_apoiadores.py 2>/dev/null || true
           git add biblioteca_alexandria -A dados estado docs
           git diff --cached --quiet && exit 0
           git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F)"

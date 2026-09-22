@@ -1,12 +1,15 @@
 name: 07 · Síndico — IA local da Biblioteca (benchmark e ciclos)
 on:
   schedule:
-    - cron: "0 4,10,16,22 * * *"    # 4 ciclos por dia (repositório público: minutos ilimitados)
+    - cron: "0 */2 * * *"     # rede de segurança a cada 2h; o normal é o próprio Piloto encadear o voo seguinte
   workflow_dispatch:
     inputs:
       modo:
         description: "ciclo (o ocupante trabalha) | avaliar (mede um reserva e troca se for melhor) | benchmark (todos)"
         default: "ciclo"
+      encadeado:
+        description: "true quando o voo anterior chamou este (uso interno)"
+        default: "false"
       candidato:
         description: "avaliar: id do reserva (qwen3-1.7b, llama-3.2-1b, gemma-2-2b, phi-3.5-mini)"
         default: "qwen3-1.7b"
@@ -15,13 +18,14 @@ on:
         default: "120"
 permissions:
   contents: write
+  actions: write
 concurrency:
   group: sindico
   cancel-in-progress: false
 jobs:
   sindico:
     runs-on: ubuntu-latest
-    timeout-minutes: 350
+    timeout-minutes: 30      # teto duro: UMA pesquisa por execução, nunca mais que 30 min
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 1}
@@ -109,6 +113,34 @@ jobs:
           print(json.dumps(ciclo(porta=cfg.get("porta", 8081)), ensure_ascii=False, indent=1))
           srv.kill()
           PY
+      - name: Pousar 3 segundos e decolar de novo
+        if: ${{ always() && (github.event.inputs.modo || 'ciclo') == 'ciclo' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # O LUGAR DO PILOTO É NO AR. Cada voo é uma execução SEPARADA e curta (teto de 30 min).
+          # Terminou, ele fica 3 segundos no pátio e decola de novo — não existe tarefa eterna
+          # segurando um executor, o que estouraria o limite do GitHub. É uma corrente de voos curtos.
+          if [ -f estado/piloto_pausado ]; then echo "pausado pelo titular — o Piloto fica em terra"; exit 0; fi
+          VOOS=$(python - <<'PY'
+          import json, pathlib, datetime
+          p = pathlib.Path("estado/sindico/voos.json")
+          d = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+          print(int(d.get(datetime.date.today().isoformat(), 0)))
+          PY
+          )
+          TETO=$(python -c "import json;print(json.load(open('config/sindico.json')).get('voos_por_dia',40))" 2>/dev/null || echo 40)
+          echo "voo ${VOOS} de ${TETO} hoje"
+          if [ "${VOOS:-0}" -ge "${TETO:-40}" ]; then echo "teto do dia atingido — retoma amanhã"; exit 0; fi
+          # nunca dois voos no ar ao mesmo tempo: se já há um na fila ou rodando, este não chama outro
+          EMVOO=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/sindico.yml/runs?per_page=12" \
+            | python -c "import json,sys;print(sum(1 for r in (json.load(sys.stdin).get('workflow_runs') or []) if r.get('status') in ('queued','in_progress','waiting') and str(r.get('id'))!='${{ github.run_id }}'))")
+          if [ "${EMVOO:-0}" -gt 0 ]; then echo "já há ${EMVOO} voo(s) no ar — este não chama outro"; exit 0; fi
+          echo "3 segundos no pátio..."; sleep 3
+          curl -s -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/sindico.yml/dispatches" \
+            -d '{"ref":"main","inputs":{"modo":"ciclo","encadeado":"true"}}' -w "decolou o próximo: %{http_code}\n"
       - name: Guardar o resultado como ARTEFATO (independe de push — nunca mais se perde)
         if: always()
         uses: actions/upload-artifact@v4
