@@ -4,7 +4,7 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 
 ## O que o Síndico fez
 
-- 2026-09-22T15:42 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 7 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 3.6 min de voo.
+- 2026-09-22T18:21 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 13 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 6.6 min de voo.
 
 ## Relatório de aprendizado e bloqueios (4)
 

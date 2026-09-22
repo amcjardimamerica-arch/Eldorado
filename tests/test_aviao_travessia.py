@@ -35,3 +35,34 @@ class TesteAviaoEmTravessia(unittest.TestCase):
     def test_patrulha_quando_nao_ha_missao(self):
         self.assertIn("patrulha", H)
         self.assertIn("ele patrulha a última faixa conhecida", H)
+
+
+class TestePostoSoEmDuasPaginas(unittest.TestCase):
+    """A CAUSA de a caixa aparecer em toda página: a seção v-piloto-posto não estava em
+    VISTAS, então trocaVista() nunca lhe punha a classe 'oculto'. Mudar a caixa de lugar
+    no arquivo não resolvia — ela seguia visível em qualquer aba."""
+
+    def test_o_posto_entra_no_controle_de_abas(self):
+        self.assertIn('const pp=$("v-piloto-posto"); if(pp)pp.classList.toggle("oculto", v!=="inicio");', H)
+        # e continua fora de VISTAS de propósito: não é uma vista, é o rodapé da inicial
+        vistas = re.search(r"const VISTAS=\[([^\]]*)\]", H).group(1)
+        self.assertNotIn("piloto-posto", vistas)
+
+    def test_existe_um_posto_em_cada_uma_das_duas_paginas(self):
+        self.assertEqual(H.count('id="pil-posto"'), 1)
+        self.assertEqual(H.count('id="pil-posto-bussola"'), 1)
+
+    def test_o_posto_fica_no_fim_das_duas_paginas(self):
+        L = H.split("\n")
+        i_cal = next(k for k, l in enumerate(L) if 'id="v-calendario"' in l)
+        i_posto = next(k for k, l in enumerate(L) if 'id="v-piloto-posto"' in l)
+        self.assertGreater(i_posto, i_cal, "na inicial o posto vem depois do calendário")
+        i_bus = next(k for k, l in enumerate(L) if 'id="v-bussola"' in l)
+        i_pb = next(k for k, l in enumerate(L) if 'id="pil-posto-bussola"' in l)
+        fim_bus = next(k for k, l in enumerate(L) if k > i_pb and l.strip() == "</section>")
+        self.assertTrue(i_bus < i_pb < fim_bus)
+        self.assertEqual(fim_bus, i_pb + 1, "na Bússola o posto é a última coisa da seção")
+
+    def test_texto_do_rodape_nao_fala_mais_de_horarios(self):
+        self.assertNotIn("04h", H); self.assertNotIn("10h · 16h", H)
+        self.assertIn("o próximo voo decola em segundos", H)

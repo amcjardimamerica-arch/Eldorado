@@ -1189,7 +1189,10 @@ const escondeTip=()=>{if(typeof tip!=="undefined")tip.style.display="none";};
 /* ================= NAVEGAÇÃO ================= */
 const VISTAS=["inicio","calendario","editais","bussola","f-documentos","f-editais","f-biblioteca"];
 let vAtual=null;
-function trocaVista(v){VISTAS.forEach(x=>$("v-"+x).classList.toggle("oculto",x!==v));
+window.trocaVista=function(v){VISTAS.forEach(x=>$("v-"+x).classList.toggle("oculto",x!==v));
+  // O posto do Piloto não é uma vista: é um rodapé. Aparece SÓ no fim da página inicial
+  // (na Bússola ele tem a própria cópia, #pil-posto-bussola, dentro da seção dela).
+  const pp=$("v-piloto-posto"); if(pp)pp.classList.toggle("oculto", v!=="inicio");
   // a Bússola tem navegação própria por hover (como a página inicial)
   const soHover = (v==="bussola");
   $("topo-modulos").classList.toggle("oculto",soHover||v==="inicio");
@@ -1961,7 +1964,7 @@ function desenhaFilaVerificacao(){
         ${b.resumo&&b.resumo.length?`<ul>${b.resumo.map(x=>`<li><b>${esc(x.id)}</b> — ${x.erro?esc(x.erro):`acerto ${((x.acerto||0)*100).toFixed(0)}% · prazos inventados ${x.prazos_inventados} · ${x.tokens_por_s||"—"} tok/s · ${x.minutos||"—"} min`}${x.elegivel?"":' <span style="color:var(--urgente)">eliminado</span>'}</li>`).join("")}</ul>`:""}
         ${u.anuncio?`<div class=meta style="margin-top:4px">${esc(u.anuncio)}</div>`:""}
         <div class=meta><b>Constituição:</b> nível 1 completar editais desatualizados · nível 2 classificar, enquadrar e preparar a inscrição · nível 3 otimizar a busca e minerar o desconhecido — ocioso dispara nova pesquisa. <a href="dados/pacote_conselho.md" target=_blank rel="noopener noreferrer">Pacote do conselho</a> (validação do Claude a cada 3 dias).</div>
-        <div class=meta>4 ciclos por dia (04h·10h·16h·22h): entender a Biblioteca → curar → afiar os motores → minerar → anunciar. Propõe; a validação decide. Edital novo aciona o Piloto na hora.</div></div>`;})()}
+        <div class=meta>voo contínuo — pousa, espera 3 segundos e decola de novo: entender a Biblioteca → curar → afiar os motores → minerar → anunciar. Propõe; a validação decide. Edital novo aciona o Piloto na hora.</div></div>`;})()}
     ${(()=>{const E=D.evolucao_busca;if(!E)return "";const L=E.lexico_aprendido||{},R=E.recorrencia||{},M=E.empresas_rotas||{},F=E.finalidade||{},A=E.acervo_compacto||{};
       return `<div class=meta style="margin-top:6px"><b>Evolução da busca:</b> ${F.descoberta||0} motores de descoberta · ${F.insumo||0} de insumo · <b>1 de recorrência</b> com ${R.total||0} rotas ·
         léxico aprendido <b>${L.positivos||0}</b> termos e <b>${L.vetos||0}</b> vetos (base: ${(L.base||{}).aprovados||0} aprovados / ${(L.base||{}).reprovados||0} reprovados) ·
@@ -2976,7 +2979,7 @@ function desenhaPostoPiloto(alvo){
       </div>`;})()}
     <div class="pil-atual">
       ${at?`<span class=voando>✈ agora:</span><span>${esc((E.legenda||{})[at.tipo]||at.tipo)}${at.motor?` sobre <b>${esc(at.motor)}</b>`:""}</span><span class=alvo>${esc(at.alvo||"")}</span>`
-          :`<span class=voando>🛬 em terra</span><span class=alvo>aguardando o próximo ciclo (04h · 10h · 16h · 22h)</span>`}
+          :`<span class=voando>🛬 em terra</span><span class=alvo>pousado — o próximo voo decola em segundos</span>`}
       <span class=pil-placar><b>${tot}</b><br><span class=meta>alvo(s) novo(s)</span></span></div>
     ${motores.length?`<div class=meta style="margin-top:8px">Marcas na fuselagem: ${motores.map(([m,v])=>`<b>${esc(m)}</b> ★${v.n}`).join(" · ")}</div>`:""}
     ${(()=>{const R=window._RADAR;if(!R||!R.total)return "";const M=R.por_marcador||{};
@@ -3004,7 +3007,7 @@ window.darPartida=function(base){
     bt.classList.remove("acelera"); tx.textContent="motores ligados";
     abreModal('<h3 style="margin:0">Motores ligados ✈</h3><div class=meta>Esquadrilha do Piloto — patrulha dos motores 26, 27, 28 e 29</div>',
      `<div class="rel-janela">
-        <p>A hélice girou. O Piloto decola no <b>próximo ciclo</b> (04h · 10h · 16h · 22h) — ou agora, se o titular disparar o voo no GitHub:</p>
+        <p>A hélice girou. O Piloto decola em <b>segundos</b> — ele não espera horário, e só fica em terra se o titular disparar o voo no GitHub:</p>
         <div class="rel-texto">Actions → <b>07 · Piloto</b> → Run workflow → modo <b>ciclo</b></div>
         <div class="fdoc-t" style="margin-top:10px">Onde ele vai caçar</div>
         <ul class="rel-lista">
