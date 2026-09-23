@@ -1,4 +1,4 @@
-# Motor do Piloto — busca aberta no terceiro setor
+# Motor do Síndico — busca aberta no terceiro setor
 
 - Classe: `financiadores`
 - Fonte: `plat-sindico-aberto`
