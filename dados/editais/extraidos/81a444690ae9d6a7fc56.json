@@ -48,17 +48,5 @@
   "familia_de_rota": null,
   "exige_navegador": null,
   "observacao": "Rota (a), API de consulta do PNCP (https://pncp.gov.br/api/consulta/v1/orgaos/88814181000130/compras/2026/450), fonte oficial do próprio Município de Osório. Objeto transcrito na íntegra acima. A API declara dataAberturaProposta '2026-09-08T00:00:00' e dataEncerramentoProposta '2026-10-07T00:00:00' — janela real de vinte e nove dias, ABERTA hoje, 15/09/2026, com vinte e dois dias restantes. numero"
- },
- "fim": "2026-10-07",
- "alerta": "NAO VERIFICADO NESTA RODADA - nenhuma fonte abriu. Nada do registro do PNCP (prazo 08/09-07/10/2026, objeto, valor) pode ser confirmado nem desmentido hoje. Tratar a data de 07/10 como NAO reconfirmada desde 15/09.",
- "alcance": "fora_de_abrangencia",
- "observacao_reverificacao": "Cinco rotas tentadas, todas falharam. (1) https://pncp.gov.br/api/pncp/v1/orgaos/88866396000155/compras/2026/122 devolve HTTP 301 com a mensagem 'Este endpoint foi movido para: https://pncp.gov.br/api/consulta/v1/orgaos/{cnpj}/compras/{ano}/{sequencial}'. (2) O endpoint novo /api/consulta/v1/orgaos/88866396000155/compras/2026/122 deu 'Read timeout while fetching the URL' em SEIS tentativas, inclusive com os cache-busters ?v=2, ?v=3, ?v=9, ?cache=bust23set e ?v=final - o timeout nao e o cache de 15 min do WebFetch nem 429, e falha do proprio servidor. (3) O endpoint de anexos https://pncp.gov.br/api/pncp/v1/orgaos/88866396000155/compras/2026/122/arquivos devolveu HTTP 400 duas vezes (esse mesmo padrao de URL funcionou para Guaira e Porto Feliz, logo o 400 e especifico deste registro). (4) https://www.osorio.rs.gov.br confirma o historico de TLS quebrado: '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for www.osorio.rs.gov.br'. (5) https://osorio.rs.gov.br (sem www) devolveu HTTP 403. UNICO avanco: o portal real do municipio e https://osorio.atende.net, que abriu, mas a lista de editais visivel traz apenas 'CREDENCIAMENTO 072025', 'CHAMAMENTO OFICINEIROS 042025' e 'EDITAIS - IMOVEIS MUNICIPAIS' - nenhum chamamento de 2026 para pessoa idosa. A secao de editais fica em https://osorio.atende.net/?pg=autoatendimento#!/tipo/servico/perfil/36/padrao/1, que e app JavaScript e nao renderiza via WebFetch. Valor do repasse, exigen",
- "rota_usada": "PNCP api/pncp (301) -> PNCP api/consulta (6x read timeout, com ?v=2/3/9/cache/final) -> PNCP arquivos (400 x2) -> www.osorio.rs.gov.br (TLS hostname mismatch) -> osorio.rs.gov.br (403) -> osorio.atende.net (abriu, sem o edital)",
- "reverificado_em": "2026-09-23",
- "reverificado_por": "parecer de oportunidades 23/09 — leitura da fonte",
- "ativo": false,
- "rebaixado_em": "2026-09-23",
- "rebaixado_porque": "fora da abrangencia aprovada pelo titular (nacional + GO + Goiania): edital municipal de outra UF, cujo proponente precisa ter sede ou atuacao no municipio",
- "uf_do_edital": "RS",
- "volta_se": "a abrangência aprovada passar a incluir esta UF ou município"
+ }
 }

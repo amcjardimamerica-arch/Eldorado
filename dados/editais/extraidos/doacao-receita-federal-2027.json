@@ -1,173 +1,165 @@
 {
- "edital_id": "doacao-receita-federal-2027",
- "titulo": "Doação de mercadorias apreendidas — Receita Federal — 2027",
- "tentativas": [
-  {
-   "em": "2026-09-06T01:05:58+00:00",
-   "modelo": "agente-claude",
-   "status": "respondeu",
-   "itens_obtidos": 6,
-   "sinal": "verde"
+  "edital_id": "doacao-receita-federal-2027",
+  "titulo": "Doação de mercadorias apreendidas — Receita Federal — 2027",
+  "tentativas": [
+    {
+      "em": "2026-09-06T01:05:58+00:00",
+      "modelo": "agente-claude",
+      "status": "respondeu",
+      "itens_obtidos": 6,
+      "sinal": "verde"
+    },
+    {
+      "em": "2026-09-06T10:58:48+00:00",
+      "modelo": "agente-claude",
+      "status": "respondeu",
+      "itens_obtidos": 1,
+      "sinal": "verde"
+    },
+    {
+      "em": "2026-09-15T18:20:59+00:00",
+      "modelo": "navegador-titular",
+      "status": "respondeu",
+      "itens_obtidos": 1,
+      "sinal": "verde"
+    }
+  ],
+  "relatorio": {
+    "etapas": [
+      {
+        "etapa": "documentos do edital (PDF/anexos)",
+        "ok": false,
+        "detalhe": "nenhum PDF/anexo acessível: home institucional: HTTPError (https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-d); página https://www.gov.br/receitafederal/pt-br/: HTTPError; html: HTTPError"
+      },
+      {
+        "etapa": "extração determinística",
+        "ok": true,
+        "detalhe": "6 item(ns): Resultado, Prazo de recurso, Valor, Requisitos, Anexos, Destinação"
+      },
+      {
+        "etapa": "IA (haiku → sonnet)",
+        "ok": false,
+        "detalhe": "NÃO EXECUTADA: a credencial FAROL_AI_API_KEY não está registrada nos segredos do repositório (Settings → Secrets and variables → Actions)",
+        "acao": "registrar_credencial"
+      }
+    ],
+    "completo": false,
+    "faltam": [
+      "Prazo de recurso"
+    ],
+    "manual": {
+      "motivo": "sem documentos acessíveis e sem IA",
+      "itens": [
+        "Prazo de recurso"
+      ],
+      "links": [
+        "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias"
+      ],
+      "instrucao": "abra a fonte oficial, localize o edital e use 'subir informação faltante' com os itens listados"
+    },
+    "situacao": "pesquisa incompleta — ação manual indicada"
   },
-  {
-   "em": "2026-09-06T10:58:48+00:00",
-   "modelo": "agente-claude",
-   "status": "respondeu",
-   "itens_obtidos": 1,
-   "sinal": "verde"
+  "mini_parecer": "VERIFICAÇÃO DOS 63 (15/09/2026, titular, fonte oficial): APROVADO — chamada aberta de fomento a OSC. Sem prazo confirmado — motivo registrado. MECANISMO PERMANENTE, EM FLUXO CONTINUO - NAO HA EDITAL NEM PRAZO. Confirmado na fonte oficial: a pagina afirma que as OSC 'podem receber mercadorias por meio de doacao', com base no 'art. 2o, I, da Lei no 13.019, de 2014'. A subpagina de doacoes detalha os documentos exigidos da entidade: 'Estatuto registrado e suas alteracoes', 'Ata de ",
+  "itens": {
+    "Objeto": "Destinacao por doacao de mercadorias apreendidas ou abandonadas pela Receita Federal a Organizacoes da Sociedade Civil. Sao elegiveis, conforme a pagina oficial, 'associacoes e fundacoes sem fins lucrativos, cooperativas de interesse social e organizacoes religiosas que desenvolvam atividades ou projetos de interesse publico e social'. Nao ha edital: o pedido e feito por requerimento da entidade.",
+    "Prazo de inscrição": "2027-12-31",
+    "Órgão / financiador": "Secretaria Especial da Receita Federal do Brasil — Superintendência da 1ª Região Fiscal (GO/DF/MT/MS/TO)",
+    "Território": "Brasil",
+    "Esfera": "federal",
+    "Área de atuação": "doacao_bens",
+    "Resultado": "publicação do ato de destinação pela RFB e comunicação às entidades habilitadas",
+    "Valor": "não monetário — bens (mercadorias) conforme lotes disponíveis",
+    "Requisitos": "entidade sem fins lucrativos habilitada no cadastro de destinação da RFB (finalidade assistencial, educacional, de saúde ou cultural), regularidade fiscal, pedido pelo sistema da RFB",
+    "Anexos": "formulário de habilitação/pedido no sistema da RFB; estatuto, ata, CNPJ e certidões",
+    "Destinação": "bens para uso nas atividades finalísticas da entidade (vedada a comercialização)"
   },
-  {
-   "em": "2026-09-15T18:20:59+00:00",
-   "modelo": "navegador-titular",
-   "status": "respondeu",
-   "itens_obtidos": 1,
-   "sinal": "verde"
-  }
- ],
- "relatorio": {
-  "etapas": [
-   {
-    "etapa": "documentos do edital (PDF/anexos)",
-    "ok": false,
-    "detalhe": "nenhum PDF/anexo acessível: home institucional: HTTPError (https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-d); página https://www.gov.br/receitafederal/pt-br/: HTTPError; html: HTTPError"
-   },
-   {
-    "etapa": "extração determinística",
-    "ok": true,
-    "detalhe": "6 item(ns): Resultado, Prazo de recurso, Valor, Requisitos, Anexos, Destinação"
-   },
-   {
-    "etapa": "IA (haiku → sonnet)",
-    "ok": false,
-    "detalhe": "NÃO EXECUTADA: a credencial FAROL_AI_API_KEY não está registrada nos segredos do repositório (Settings → Secrets and variables → Actions)",
-    "acao": "registrar_credencial"
-   }
+  "fontes_itens": {
+    "Objeto": "coleta pelo navegador (titular) — página oficial",
+    "Prazo de inscrição": "verificação individual do titular (15/09/2026)",
+    "Órgão / financiador": "cadastro do edital (motor de busca)",
+    "Território": "cadastro do edital (motor de busca)",
+    "Esfera": "cadastro do edital (motor de busca)",
+    "Área de atuação": "cadastro do edital (motor de busca)",
+    "Resultado": "agente Claude (conta do titular) sobre o texto do edital",
+    "Prazo de recurso": "agente Claude (conta do titular) sobre o texto do edital",
+    "Valor": "agente Claude (conta do titular) sobre o texto do edital",
+    "Requisitos": "agente Claude (conta do titular) sobre o texto do edital",
+    "Anexos": "agente Claude (conta do titular) sobre o texto do edital",
+    "Destinação": "agente Claude (conta do titular) sobre o texto do edital"
+  },
+  "faltam": [
+    "Prazo de recurso"
   ],
   "completo": false,
-  "faltam": [
-   "Prazo de recurso"
+  "metodo": "sem texto",
+  "documentos_exigidos": [
+    "estatuto",
+    "ata_eleicao",
+    "cnpj",
+    "certidao_federal",
+    "comprovante_endereco",
+    "utilidade_publica"
   ],
-  "manual": {
-   "motivo": "sem documentos acessíveis e sem IA",
-   "itens": [
-    "Prazo de recurso"
-   ],
-   "links": [
-    "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias"
-   ],
-   "instrucao": "abra a fonte oficial, localize o edital e use 'subir informação faltante' com os itens listados"
+  "pontuacao_texto": null,
+  "atualizado_em": "2026-09-23T14:13:15+00:00",
+  "caracteres_texto": 0,
+  "regras": "Portaria RFB de destinação de mercadorias apreendidas; a entidade se habilita previamente e pleiteia lotes nos editais periódicos; em ano eleitoral a destinação a entidades é vedada — por isso a janela válida é 2027.",
+  "requisitos": [
+    "habilitação prévia na RFB",
+    "regularidade fiscal",
+    "finalidade assistencial/educacional/cultural"
+  ],
+  "pagina_divulgacao": "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias",
+  "historico_5_anos": {
+    "ocorrencias": 0,
+    "por_ano": {},
+    "ultimas": [],
+    "termos": [
+      "receita",
+      "federal",
+      "destinação"
+    ],
+    "nota_recorrencia": "editais de destinação da 1ª RF são periódicos (vários por ano fora de ano eleitoral); o acervo do sistema ainda não os cataloga — fonte: gov.br/receitafederal"
   },
-  "situacao": "pesquisa incompleta — ação manual indicada"
- },
- "mini_parecer": "VERIFICAÇÃO DOS 63 (15/09/2026, titular, fonte oficial): APROVADO — chamada aberta de fomento a OSC. Sem prazo confirmado — motivo registrado. MECANISMO PERMANENTE, EM FLUXO CONTINUO - NAO HA EDITAL NEM PRAZO. Confirmado na fonte oficial: a pagina afirma que as OSC 'podem receber mercadorias por meio de doacao', com base no 'art. 2o, I, da Lei no 13.019, de 2014'. A subpagina de doacoes detalha os documentos exigidos da entidade: 'Estatuto registrado e suas alteracoes', 'Ata de ",
- "itens": {
-  "Objeto": "Destinacao por doacao de mercadorias apreendidas ou abandonadas pela Receita Federal a Organizacoes da Sociedade Civil. Sao elegiveis, conforme a pagina oficial, 'associacoes e fundacoes sem fins lucrativos, cooperativas de interesse social e organizacoes religiosas que desenvolvam atividades ou projetos de interesse publico e social'. Nao ha edital: o pedido e feito por requerimento da entidade.",
-  "Prazo de inscrição": "2027-12-31",
-  "Órgão / financiador": "Secretaria Especial da Receita Federal do Brasil — Superintendência da 1ª Região Fiscal (GO/DF/MT/MS/TO)",
-  "Território": "Brasil",
-  "Esfera": "federal",
-  "Área de atuação": "doacao_bens",
-  "Resultado": "publicação do ato de destinação pela RFB e comunicação às entidades habilitadas",
-  "Valor": "não monetário — bens (mercadorias) conforme lotes disponíveis",
-  "Requisitos": "entidade sem fins lucrativos habilitada no cadastro de destinação da RFB (finalidade assistencial, educacional, de saúde ou cultural), regularidade fiscal, pedido pelo sistema da RFB",
-  "Anexos": "formulário de habilitação/pedido no sistema da RFB; estatuto, ata, CNPJ e certidões",
-  "Destinação": "bens para uso nas atividades finalísticas da entidade (vedada a comercialização)"
- },
- "fontes_itens": {
-  "Objeto": "coleta pelo navegador (titular) — página oficial",
-  "Prazo de inscrição": "verificação individual do titular (15/09/2026)",
-  "Órgão / financiador": "cadastro do edital (motor de busca)",
-  "Território": "cadastro do edital (motor de busca)",
-  "Esfera": "cadastro do edital (motor de busca)",
-  "Área de atuação": "cadastro do edital (motor de busca)",
-  "Resultado": "agente Claude (conta do titular) sobre o texto do edital",
-  "Prazo de recurso": "agente Claude (conta do titular) sobre o texto do edital",
-  "Valor": "agente Claude (conta do titular) sobre o texto do edital",
-  "Requisitos": "agente Claude (conta do titular) sobre o texto do edital",
-  "Anexos": "agente Claude (conta do titular) sobre o texto do edital",
-  "Destinação": "agente Claude (conta do titular) sobre o texto do edital"
- },
- "faltam": [
-  "Prazo de recurso"
- ],
- "completo": false,
- "metodo": "sem texto",
- "documentos_exigidos": [
-  "estatuto",
-  "ata_eleicao",
-  "cnpj",
-  "certidao_federal",
-  "comprovante_endereco",
-  "utilidade_publica"
- ],
- "pontuacao_texto": null,
- "atualizado_em": "2026-09-22T14:00:53+00:00",
- "caracteres_texto": 0,
- "regras": "Portaria RFB de destinação de mercadorias apreendidas; a entidade se habilita previamente e pleiteia lotes nos editais periódicos; em ano eleitoral a destinação a entidades é vedada — por isso a janela válida é 2027.",
- "requisitos": [
-  "habilitação prévia na RFB",
-  "regularidade fiscal",
-  "finalidade assistencial/educacional/cultural"
- ],
- "pagina_divulgacao": "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias",
- "historico_5_anos": {
-  "ocorrencias": 0,
-  "por_ano": {},
-  "ultimas": [],
-  "termos": [
-   "receita",
-   "federal",
-   "destinação"
+  "documentos_pdf": [
+    {
+      "nome": "Portaria/edital de destinação e formulário de habilitação",
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/leilao/destinacao-de-mercadorias",
+      "data_disponibilizacao": null,
+      "local": "gov.br/receitafederal",
+      "origem": "página oficial da RFB — o edital de 2027 ainda não foi publicado"
+    }
   ],
-  "nota_recorrencia": "editais de destinação da 1ª RF são periódicos (vários por ano fora de ano eleitoral); o acervo do sistema ainda não os cataloga — fonte: gov.br/receitafederal"
- },
- "documentos_pdf": [
-  {
-   "nome": "Portaria/edital de destinação e formulário de habilitação",
-   "url": "https://www.gov.br/receitafederal/pt-br/assuntos/leilao/destinacao-de-mercadorias",
-   "data_disponibilizacao": null,
-   "local": "gov.br/receitafederal",
-   "origem": "página oficial da RFB — o edital de 2027 ainda não foi publicado"
-  }
- ],
- "condicoes": "habilitação prévia no sistema de destinação da RFB; pedido por lote; bens de uso finalístico, vedada comercialização; termo de responsabilidade",
- "dispensaveis": {
-  "Prazo de recurso": "não há fase recursal: a destinação é ato discricionário da RFB por edital; cabe pedido de reconsideração administrativo genérico"
- },
- "observacoes": [
-  {
-   "em": "2026-09-15",
-   "texto": "MECANISMO PERMANENTE, EM FLUXO CONTINUO - NAO HA EDITAL NEM PRAZO. Confirmado na fonte oficial: a pagina afirma que as OSC 'podem receber mercadorias por meio de doacao', com base no 'art. 2o, I, da Lei no 13.019, de 2014'. A subpagina de doacoes detalha os documentos exigidos da entidade: 'Estatuto"
-  }
- ],
- "verificacao_63": {
-  "em": "2026-09-15",
-  "por": "titular",
-  "veredito": "aprovado",
-  "prazo": null,
-  "pagina_oficial": "https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/leilao/pdm/doacoes",
-  "familia_de_rota": null,
-  "exige_navegador": null,
-  "observacao": "MECANISMO PERMANENTE, EM FLUXO CONTINUO - NAO HA EDITAL NEM PRAZO. Confirmado na fonte oficial: a pagina afirma que as OSC 'podem receber mercadorias por meio de doacao', com base no 'art. 2o, I, da Lei no 13.019, de 2014'. A subpagina de doacoes detalha os documentos exigidos da entidade: 'Estatuto registrado e suas alteracoes', 'Ata de eleicao do quadro dirigente atual', 'Comprovante do endereco"
- },
- "arquivo": null,
- "kb_compacto": 0,
- "fontes": [],
- "site_institucional": null,
- "origem": "pagina",
- "pncp": {},
- "erros": [
-  "home institucional: HTTPError (https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-d)",
-  "página https://www.gov.br/receitafederal/pt-br/: HTTPError",
-  "html: HTTPError"
- ],
- "anexos": [],
- "continua_aberto": true,
- "natureza": "mecanismo permanente",
- "como_se_habilita": "Protocolar requerimento no sistema 'Requerimentos Web' do Portal e-CAC, area 'Legislação e Processo'. Onde o servico nao estiver disponivel no estado, o pedido vai direto a unidade local da Receita Federal 'por meio eletrônico ou presencialmente'. Documentos exigidos, alem de nome, CNPJ, endereco e justificativa: estatuto registrado e alteracoes; ata de eleicao da diretoria; comprovante de endereco de funcionamento; e 'Declaração de regularidade e conformidade da entidade e seus dirigentes'. Aprovado o pedido, formaliza-se processo digital acompanhavel pelo e-Processo.",
- "alcance": "dentro_nacional",
- "observacao_reverificacao": "Unica fonte do lote que abriu com conteudo integral: https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/leilao/pdm/doacoes. Elegibilidade: entidades sem fins lucrativos qualificadas como OSC pela Lei 13.019/2014, incluindo 'associações e fundações sem fins lucrativos, cooperativas de interesse social' e organizacoes religiosas. Sem prazo: o fluxo e continuo, os requerimentos sao avaliados pela autoridade competente conforme chegam. ALERTA DECISIVO, e a razao do veredito: a propria pagina registra que 'Em ano eleitoral, é proibida a doação ou a entrega de mercadorias apreendidas a OSC', com excecoes limitadas a calamidade publica ou programas sociais preexistentes. Como 2026 e ano eleitoral no Brasil, a entrega esta vedada agora, ainda que o cadastro/requerimento siga aberto — convem protocolar mirando a retomada. Nota sobre a natureza do beneficio: o repasse existe mas e EM BENS (mercadorias apreendidas), nao em dinheiro; nao e recurso financeiro para custeio.",
- "rota_usada": "WebFetch https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/leilao/pdm/doacoes = OK, conteudo integral",
- "reverificado_em": "2026-09-23",
- "reverificado_por": "parecer de oportunidades 23/09 — leitura da fonte"
+  "condicoes": "habilitação prévia no sistema de destinação da RFB; pedido por lote; bens de uso finalístico, vedada comercialização; termo de responsabilidade",
+  "dispensaveis": {
+    "Prazo de recurso": "não há fase recursal: a destinação é ato discricionário da RFB por edital; cabe pedido de reconsideração administrativo genérico"
+  },
+  "observacoes": [
+    {
+      "em": "2026-09-15",
+      "texto": "MECANISMO PERMANENTE, EM FLUXO CONTINUO - NAO HA EDITAL NEM PRAZO. Confirmado na fonte oficial: a pagina afirma que as OSC 'podem receber mercadorias por meio de doacao', com base no 'art. 2o, I, da Lei no 13.019, de 2014'. A subpagina de doacoes detalha os documentos exigidos da entidade: 'Estatuto"
+    }
+  ],
+  "verificacao_63": {
+    "em": "2026-09-15",
+    "por": "titular",
+    "veredito": "aprovado",
+    "prazo": null,
+    "pagina_oficial": "https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/leilao/pdm/doacoes",
+    "familia_de_rota": null,
+    "exige_navegador": null,
+    "observacao": "MECANISMO PERMANENTE, EM FLUXO CONTINUO - NAO HA EDITAL NEM PRAZO. Confirmado na fonte oficial: a pagina afirma que as OSC 'podem receber mercadorias por meio de doacao', com base no 'art. 2o, I, da Lei no 13.019, de 2014'. A subpagina de doacoes detalha os documentos exigidos da entidade: 'Estatuto registrado e suas alteracoes', 'Ata de eleicao do quadro dirigente atual', 'Comprovante do endereco"
+  },
+  "arquivo": null,
+  "kb_compacto": 0,
+  "fontes": [],
+  "site_institucional": null,
+  "origem": "pagina",
+  "pncp": {},
+  "erros": [
+    "home institucional: HTTPError (https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-d)",
+    "página https://www.gov.br/receitafederal/pt-br/: HTTPError",
+    "html: HTTPError"
+  ],
+  "anexos": []
 }
