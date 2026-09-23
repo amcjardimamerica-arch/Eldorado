@@ -137,10 +137,10 @@
     "alego-pl": {
       "nome": "Assembleia Legislativa de Goiás — proposições",
       "tipo": "legislativo",
-      "leituras": 32,
+      "leituras": 33,
       "achados_total": 17,
-      "vazias_seguidas": 2,
-      "ultima": "2026-09-22T11:14:06+00:00",
+      "vazias_seguidas": 3,
+      "ultima": "2026-09-23T09:01:39+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -148,15 +148,15 @@
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 132204
+          "bytes": 132284
         },
         {
           "url": "https://portal.al.go.leg.br/noticias",
           "http": 200,
-          "bytes": 116353
+          "bytes": 115412
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 7,
         "links_total": 737,
@@ -185,46 +185,72 @@
         ],
         "pdf_links": 40,
         "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
-        "camada1_vetados": 9,
-        "camada1_direcionados": 10
+        "camada1_vetados": 10,
+        "camada1_direcionados": 11
       }
     },
     "camara-goiania-pl": {
       "nome": "Câmara Municipal de Goiânia — projetos de lei",
       "tipo": "legislativo",
-      "leituras": 32,
+      "leituras": 33,
       "achados_total": 0,
-      "vazias_seguidas": 32,
-      "ultima": "2026-09-22T11:14:22+00:00",
+      "vazias_seguidas": 33,
+      "ultima": "2026-09-23T09:02:11+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
-      "falhas_ultima": 3,
+      "falhas_ultima": 5,
       "saude": [
         {
           "url": "https://www.goiania.go.leg.br/",
           "http": 200,
-          "bytes": 15375
+          "bytes": 100342
+        },
+        {
+          "url": "https://camaragoiania.nucleogov.com.br/",
+          "http": 200,
+          "bytes": 207185
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 1,
-        "links_total": 0,
-        "links_candidatos": 0,
-        "descobertas": [],
-        "pdf_links": 0,
+        "paginas_lidas": 3,
+        "links_total": 772,
+        "links_candidatos": 386,
+        "descobertas": [
+          {
+            "de": "https://www.goiania.go.leg.br/",
+            "para": "https://camaragoiania.nucleogov.com.br/",
+            "rotulo": "Portal da Transparência"
+          },
+          {
+            "de": "https://www.goiania.go.leg.br/",
+            "para": "https://www.goiania.go.leg.br/institucional",
+            "rotulo": "Atos regulamentadores da Lei de Licitações e Contratos (Lei "
+          },
+          {
+            "de": "https://www.goiania.go.leg.br/",
+            "para": "https://transparencia.camaragyn.go.gov.br/files/Legislacao-compilada/Resolucao-6-2005_Codigo-de-Etica-e-Decoro-Parlamentar.htm",
+            "rotulo": "Código de Ética e Decoro Parlamentar"
+          },
+          {
+            "de": "https://www.goiania.go.leg.br/",
+            "para": "https://transparencia.camaragyn.go.gov.br/files/Legislacao-compilada/Resolucao-26-1991_Regimento-Interno_redacao-vigente.htm",
+            "rotulo": "Regimento Interno"
+          }
+        ],
+        "pdf_links": 22,
         "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
-        "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_vetados": 13,
+        "camada1_direcionados": 8
       }
     },
     "cnj-destinacoes": {
       "nome": "CNJ — destinações de penas e prestações pecuniárias",
       "tipo": "diario_justica",
-      "leituras": 32,
+      "leituras": 33,
       "achados_total": 0,
-      "vazias_seguidas": 32,
-      "ultima": "2026-09-22T11:14:32+00:00",
+      "vazias_seguidas": 33,
+      "ultima": "2026-09-23T09:02:23+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -232,12 +258,12 @@
         {
           "url": "https://www.cnj.jus.br/",
           "http": 200,
-          "bytes": 365222
+          "bytes": 364426
         },
         {
           "url": "https://www.cnj.jus.br/transparencia-cnj/licitacoes-e-contratos/",
           "http": 200,
-          "bytes": 275648
+          "bytes": 275649
         }
       ],
       "alerta": null,
@@ -276,10 +302,10 @@
     "dj-trf1-go": {
       "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
       "tipo": "diario_justica",
-      "leituras": 32,
+      "leituras": 33,
       "achados_total": 0,
-      "vazias_seguidas": 32,
-      "ultima": "2026-09-22T11:14:38+00:00",
+      "vazias_seguidas": 33,
+      "ultima": "2026-09-23T09:02:30+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -292,7 +318,7 @@
         {
           "url": "https://www.trf1.jus.br/",
           "http": 200,
-          "bytes": 126259
+          "bytes": 126263
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
@@ -331,56 +357,32 @@
     "dje-tjgo": {
       "nome": "Diário da Justiça Eletrônico — TJGO",
       "tipo": "diario_justica",
-      "leituras": 32,
+      "leituras": 33,
       "achados_total": 0,
-      "vazias_seguidas": 32,
-      "ultima": "2026-09-22T11:14:42+00:00",
+      "vazias_seguidas": 33,
+      "ultima": "2026-09-23T09:02:30+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
+      "falhas_ultima": 1,
       "saude": [
         {
           "url": "https://www.jusbrasil.com.br/diarios/DJGO/",
-          "http": 200,
-          "bytes": 55963
-        },
-        {
-          "url": "https://www.jusbrasil.com.br/diarios",
-          "http": 200,
-          "bytes": 216926
+          "erro": "HTTPError",
+          "code": 403,
+          "waf": "Cloudflare",
+          "causa": "bloqueio de robô pelo WAF Cloudflare"
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 3,
-        "links_total": 1095,
-        "links_candidatos": 216,
-        "descobertas": [
-          {
-            "de": "https://www.jusbrasil.com.br/diarios/DJGO/",
-            "para": "https://www.jusbrasil.com.br/diarios",
-            "rotulo": "Diários"
-          },
-          {
-            "de": "https://www.jusbrasil.com.br/diarios/DJGO/",
-            "para": "https://www.jusbrasil.com.br/diarios/12CJM",
-            "rotulo": "12CJM"
-          },
-          {
-            "de": "https://www.jusbrasil.com.br/diarios/DJGO/",
-            "para": "https://www.jusbrasil.com.br/diarios/AAM",
-            "rotulo": "AAM"
-          },
-          {
-            "de": "https://www.jusbrasil.com.br/diarios/DJGO/",
-            "para": "https://www.jusbrasil.com.br/diarios/AEMERJ",
-            "rotulo": "AEMERJ"
-          }
-        ],
+        "paginas_lidas": 0,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas",
         "camada1_vetados": 0,
-        "camada1_direcionados": 2
+        "camada1_direcionados": 0
       }
     },
     "pncp-api": {
@@ -3002,26 +3004,26 @@
     }
   },
   "ultima_execucao": {
-    "data": "2026-09-22",
-    "em": "2026-09-22T12:24:30+00:00",
+    "data": "2026-09-23",
+    "em": "2026-09-23T09:02:30+00:00",
     "manual": null,
-    "bloco": "opressores",
-    "sensores_executados": 14,
+    "bloco": "justica_legislativo",
+    "sensores_executados": 5,
     "em_espera": 89,
     "total_esquadra": 129,
     "previsoes_ativas": 1,
-    "achados": 18,
+    "achados": 0,
     "novos_na_base": 0,
     "por_tipo": {
-      "site_oficial": {
-        "sensores": 12,
-        "achados": 13,
+      "legislativo": {
+        "sensores": 2,
+        "achados": 0,
         "falhas": 5
       },
-      "privada": {
-        "sensores": 2,
-        "achados": 5,
-        "falhas": 0
+      "diario_justica": {
+        "sensores": 3,
+        "achados": 0,
+        "falhas": 2
       }
     }
   }
