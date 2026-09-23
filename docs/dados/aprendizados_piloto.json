@@ -1,5 +1,5 @@
 {
-  "em": "2026-09-23T04:40:49+00:00",
+  "em": "2026-09-23T02:56:12+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "motor-gife": {
@@ -7,7 +7,8 @@
       "achados": 0,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 6
+        "nada_no_crivo": 2,
+        "busca_vazia": 4
       },
       "efetividade": 0.0
     },
@@ -40,27 +41,17 @@
     },
     "missao-especial": {
       "missoes": 22,
-      "achados": 0,
+      "achados": 1,
       "uteis": 0,
       "motivos": {
-        "pagina_nao_confirma": 21,
-        "nada_no_crivo": 1
+        "pagina_nao_confirma": 18,
+        "nada_no_crivo": 3,
+        "fora_do_objeto": 1
       },
       "efetividade": 0.0
     }
   },
   "licoes": [
-    {
-      "motor": "missao-especial",
-      "motivo": "pagina_nao_confirma",
-      "vezes": 63,
-      "tipos": [
-        "resgate"
-      ],
-      "ultima": "2026-09-23",
-      "explicacao": "a página aberta não confirmou o que o resultado prometia",
-      "regra": "o motor 'missao-especial' falha por a página aberta não confirmou o que o resultado prometia há 63 vezes — precisa de correção, não de mais tentativas"
-    },
     {
       "motor": "m-repete",
       "motivo": "busca_vazia",
@@ -71,6 +62,17 @@
       "ultima": "2026-09-22",
       "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
       "regra": "o motor 'm-repete' falha por o buscador não devolveu nada (bloqueio ou rede) há 54 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "missao-especial",
+      "motivo": "pagina_nao_confirma",
+      "vezes": 46,
+      "tipos": [
+        "resgate"
+      ],
+      "ultima": "2026-09-23",
+      "explicacao": "a página aberta não confirmou o que o resultado prometia",
+      "regra": "o motor 'missao-especial' falha por a página aberta não confirmou o que o resultado prometia há 46 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "m-seco",
@@ -84,21 +86,9 @@
       "regra": "o motor 'm-seco' falha por o buscador não devolveu nada (bloqueio ou rede) há 18 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "empresas-incentivadas",
-      "motivo": "nada_no_crivo",
-      "vezes": 18,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir_local"
-      ],
-      "ultima": "2026-09-23",
-      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'empresas-incentivadas' falha por vieram resultados, mas nenhum era oportunidade de verdade há 18 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
       "motor": "motor-gife",
       "motivo": "nada_no_crivo",
-      "vezes": 14,
+      "vezes": 12,
       "tipos": [
         "descobrir_local",
         "afiar_motor",
@@ -106,12 +96,35 @@
       ],
       "ultima": "2026-09-23",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'motor-gife' falha por vieram resultados, mas nenhum era oportunidade de verdade há 14 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'motor-gife' falha por vieram resultados, mas nenhum era oportunidade de verdade há 12 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "empresas-incentivadas",
+      "motivo": "nada_no_crivo",
+      "vezes": 12,
+      "tipos": [
+        "descobrir_local",
+        "cacar_oportunidade"
+      ],
+      "ultima": "2026-09-23",
+      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
+      "regra": "o motor 'empresas-incentivadas' falha por vieram resultados, mas nenhum era oportunidade de verdade há 12 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "missao-especial",
+      "motivo": "nada_no_crivo",
+      "vezes": 10,
+      "tipos": [
+        "resgate"
+      ],
+      "ultima": "2026-09-23",
+      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
+      "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 10 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "sindico-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 12,
+      "vezes": 10,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -119,51 +132,49 @@
       ],
       "ultima": "2026-09-23",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'sindico-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 12 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'sindico-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 10 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-patrocinio",
       "motivo": "nada_no_crivo",
-      "vezes": 9,
+      "vezes": 5,
       "tipos": [
         "cacar_oportunidade",
         "afiar_motor"
       ],
       "ultima": "2026-09-23",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'motor-patrocinio' falha por vieram resultados, mas nenhum era oportunidade de verdade há 9 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'motor-patrocinio' falha por vieram resultados, mas nenhum era oportunidade de verdade há 5 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "missao-especial",
-      "motivo": "nada_no_crivo",
-      "vezes": 7,
+      "motor": "empresas-incentivadas",
+      "motivo": "busca_vazia",
+      "vezes": 2,
       "tipos": [
-        "resgate"
+        "cacar_oportunidade"
       ],
-      "ultima": "2026-09-23",
-      "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 7 vezes — precisa de correção, não de mais tentativas"
+      "ultima": "2026-09-22",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)"
+    },
+    {
+      "motor": "motor-patrocinio",
+      "motivo": "busca_vazia",
+      "vezes": 2,
+      "tipos": [
+        "cacar_oportunidade"
+      ],
+      "ultima": "2026-09-22",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)"
     },
     {
       "motor": "motor-gife",
       "motivo": "busca_vazia",
-      "vezes": 4,
+      "vezes": 2,
       "tipos": [
         "cacar_oportunidade"
       ],
       "ultima": "2026-09-23",
-      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'motor-gife' falha por o buscador não devolveu nada (bloqueio ou rede) há 4 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "missao-especial",
-      "motivo": "fora_do_objeto",
-      "vezes": 2,
-      "tipos": [
-        "resgate"
-      ],
-      "ultima": "2026-09-23",
-      "explicacao": "o que veio não serve à finalidade da associação"
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)"
     },
     {
       "motor": "sindico-aberto",
@@ -177,6 +188,13 @@
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "m-teste",
+      "sugestao": "filtrar por 'chamamento' no título",
+      "efetividade_na_hora": 0.5,
+      "em": "2026-09-22T22:26",
+      "aplicada": false
+    },
     {
       "motor": "m-teste",
       "sugestao": "filtrar por 'chamamento' no título",
@@ -311,8 +329,8 @@
       "aplicada": false
     }
   ],
-  "editais_tratados": 7,
-  "entregues_ao_claude": 5,
+  "editais_tratados": 5,
+  "entregues_ao_claude": 3,
   "ultima_faxina": {
     "em": "2026-09-22T22:01:28+00:00",
     "dias": 3,
