@@ -103,15 +103,21 @@ jobs:
             DEST="ia_local/modelos/$ARQ"
             if [ -s "$DEST" ] && [ "$(stat -c%s "$DEST")" -gt 500000000 ]; then echo "cache: $ARQ"; continue; fi
             echo "baixando $ARQ …"
-            # ESPELHOS: se o endereço principal cair, tenta os outros antes de desistir. Um
-          # endereço só é ponto único de falha, e foi o que matou a avaliação do Qwen3 em 23/09.
-          ESPELHOS=$(python3 -c "import json,sys;d=json.load(open('config/espelhos_gguf.json'))['espelhos'];print(' '.join(d.get(sys.argv[1],[])))" "$ID" 2>/dev/null || true)
-          BAIXOU=""
-          for U in "$URL" $ESPELHOS; do
-            [ -n "$BAIXOU" ] && break
-            curl -L --retry 3 --retry-delay 8 --fail --silent --show-error -o "$DEST" "$U" && BAIXOU="$U" && [ "$U" != "$URL" ] && echo "  (pelo espelho: $U)"
-          done
-          [ -n "$BAIXOU" ] \
+            # ESPELHOS: se o endereço principal cair, tenta os outros antes de desistir.
+            # Um endereço só é ponto único de falha — foi o que matou a avaliação do Qwen3.
+            # DOIS BUGS MEUS, corrigidos: $ID não existia neste laço (que lê ARQ e URL), e a
+            # cadeia com && devolvia erro justamente quando o PRIMEIRO endereço funcionava.
+            MID=$(python3 -c "import json,sys,os;d=json.load(open('config/espelhos_gguf.json'))['espelhos'];a=sys.argv[1];print(next((k for k,us in d.items() if any(u.rsplit('/',1)[-1]==a for u in us)),''))" "$ARQ" 2>/dev/null || echo "")
+            ESPELHOS=$(python3 -c "import json,sys;d=json.load(open('config/espelhos_gguf.json'))['espelhos'];print(' '.join(d.get(sys.argv[1],[])))" "$MID" 2>/dev/null || echo "")
+            BAIXOU=""
+            for U in "$URL" $ESPELHOS; do
+              if [ -n "$BAIXOU" ]; then break; fi
+              if curl -L --retry 3 --retry-delay 8 --fail --silent --show-error -o "$DEST" "$U"; then
+                BAIXOU="$U"
+                if [ "$U" != "$URL" ]; then echo "  (pelo espelho: $U)"; fi
+              fi
+            done
+            [ -n "$BAIXOU" ] \
               && echo "  ok: $(du -h "$DEST" | cut -f1)" \
               || { COD=$(curl -L -o /dev/null -s -w "%{http_code}" --max-time 40 "$URL" || echo "sem-resposta"); mkdir -p estado/piloto; printf '%s\t%s\t%s\n' "$ARQ" "$COD" "$URL" >> estado/piloto/downloads_falhos.tsv; echo "  FALHOU: $ARQ — HTTP $COD em $URL"; rm -f "$DEST"; }
           done < /tmp/alvos.txt
