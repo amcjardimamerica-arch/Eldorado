@@ -80,6 +80,33 @@ def novo_id(url: str) -> str:
     diferentes recebe o mesmo id (deduplicação entre fontes)."""
     return sha256(("opp|" + canonical_url(url)).encode())[:20]
 
+
+ID_LONGO = re.compile(r"^[0-9a-f]{16,}$")
+
+
+def chave_curta(identificador) -> str:
+    """A identidade de um registro: os oito primeiros caracteres do id.
+
+    `novo_id` devolve vinte caracteres, mas a base de oportunidades e as bases
+    de verificação nunca combinaram como guardá-los: umas gravam a chave
+    inteira, outras só os oito primeiros. O mesmo edital passava então a existir
+    duas vezes, uma por grafia — o Instituto Impactarte, o Osório/RS e mais
+    cinco chegaram assim à fila de pesquisa de 23/09/2026, sem que a
+    deduplicação por objeto os alcançasse: os textos vinham de rotas diferentes
+    e não batiam entre si.
+
+    Toda leitura de base passa por aqui, e as duas grafias voltam a ser o mesmo
+    registro. Só id hexadecimal é truncado; chave escrita à mão
+    (`planaltina-esporte-2026`) fica inteira, porque oito caracteres dela não
+    identificam coisa nenhuma.
+
+    Truncar só é seguro enquanto nenhum prefixo de oito caracteres servir a dois
+    ids diferentes. Em 23/09/2026 não havia um único caso em mais de dezessete
+    mil registros, e há teste cobrando que continue assim.
+    """
+    bruto = "" if identificador is None else str(identificador).strip()
+    return bruto[:8] if ID_LONGO.match(bruto) else bruto
+
 def merge_registro(anterior: dict | None, novo: dict) -> dict:
     """Funde uma observação nova com o registro existente sem destruir trabalho
     humano: status protegido nunca regride e campos preservados permanecem."""

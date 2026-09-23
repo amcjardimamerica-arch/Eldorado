@@ -5,7 +5,7 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 ## O que o Piloto fez
 
 - 2026-09-22T23:58 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 15 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 21.7 min de voo.
-- 2026-09-23T16:43 — Esquadrilha 2026-09-23 (Llama-3.2-3B-Instruct): 6 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 3.6 min de voo.
+- 2026-09-23T16:56 — Esquadrilha 2026-09-23 (Llama-3.2-3B-Instruct): 6 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 4.1 min de voo.
 
 ## Relatório de aprendizado e bloqueios (4)
 

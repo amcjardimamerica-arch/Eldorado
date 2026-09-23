@@ -29,7 +29,8 @@ import json
 import re
 from datetime import date, datetime
 
-from .nucleo import ROOT, carregar_oportunidades, load_json, now_iso, write_json
+from .nucleo import (ROOT, carregar_oportunidades, chave_curta, load_json, now_iso,
+                     write_json)
 
 _DATA_BR = re.compile(r"(\d{1,2})/(\d{1,2})/(20\d{2})")
 _DATA_ISO = re.compile(r"(20\d{2})-(\d{2})-(\d{2})")
@@ -37,9 +38,10 @@ _DATA_ISO = re.compile(r"(20\d{2})-(\d{2})-(\d{2})")
 # Bases em que a data final já foi confirmada em fonte oficial, registro por
 # registro. Em ordem de confiança: a primeira que tiver o registro vence.
 BASES_VERIFICADAS = (
-    # A mais recente vence: a verificacao de 15/09/2026 foi feita um a um na
-    # fonte oficial e corrigiu prazo de registros que as bases anteriores traziam
-    # errado (Ipu/CE fechava um dia antes; Jaru/RO apontava para o edital errado).
+    # A mais recente vence. O fechamento de 23/09/2026 foi lido pelo NAVEGADOR
+    # LOCAL do titular — unica rota que alcancou o PNCP naquele dia — e corrigiu
+    # a chave de Osorio/RS, que na base apontava para um registro inexistente.
+    ROOT / "docs/dados/verificacao_fechamento_2026-09-23.json",
     ROOT / "docs/dados/verificacao_63_2026-09-15.json",
     ROOT / "docs/dados/verificacao_467_2026-09-09.json",
     ROOT / "docs/dados/nao_verificados.json",
@@ -58,9 +60,9 @@ def _linhas_verificadas(hoje: date, faixas: list[int], ja_vistos: set) -> list[d
         except (OSError, json.JSONDecodeError):
             continue
         if isinstance(itens, dict):
-            registros = list(itens.items())
+            registros = [(chave_curta(c), v) for c, v in itens.items()]
         elif isinstance(itens, list):
-            registros = [(str(x.get("id", ""))[:8], x) for x in itens]
+            registros = [(chave_curta(x.get("id")), x) for x in itens]
         else:
             continue
         for chave, item in registros:
@@ -151,7 +153,7 @@ def run(hoje: date | None = None) -> dict:
     # So se evita repetir o que JA VIROU LINHA de prazo. Usar todos os ids da base
     # de oportunidades como vistos apagaria justamente os prazos confirmados dos
     # registros que existem nas duas bases — e e la que estao as oportunidades.
-    linhas += _linhas_verificadas(hoje, faixas, {str(x["id"])[:8] for x in linhas})
+    linhas += _linhas_verificadas(hoje, faixas, {chave_curta(x["id"]) for x in linhas})
     linhas.sort(key=lambda x: x["dias_restantes"])
     criticos = [x for x in linhas if x["dias_restantes"] is not None and 0 <= x["dias_restantes"] <= max(faixas)]
     relatorio = {

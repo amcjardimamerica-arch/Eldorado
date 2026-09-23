@@ -12,6 +12,7 @@ um na fonte oficial. Dois resultados desta rodada nao podem se perder:
   Essa pendencia estava aberta desde 09/09 como "precisa de telefone".
 """
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -83,8 +84,16 @@ class TesteLigacaoComAsRotinas(unittest.TestCase):
         from src import prazos
         nomes = [c.name for c in prazos.BASES_VERIFICADAS]
         self.assertIn("verificacao_63_2026-09-15.json", nomes)
-        self.assertEqual(nomes[0], "verificacao_63_2026-09-15.json",
-                         "a verificacao mais recente tem de vencer as anteriores")
+        # A regra e "a mais recente vence", nao "a de 15/09 vence". Fixar o nome
+        # da base de 15/09 aqui fez este teste quebrar em 23/09, quando o
+        # fechamento novo — que corrige a chave de Osorio/RS — assumiu a frente.
+        # O que se cobra e a ORDEM: da mais nova para a mais velha.
+        datas = [re.search(r"(\d{4}-\d{2}-\d{2})", n) for n in nomes]
+        datadas = [m.group(1) for m in datas if m]
+        self.assertEqual(datadas, sorted(datadas, reverse=True),
+                         f"bases fora de ordem de recencia: {nomes}")
+        self.assertGreaterEqual(datadas[0], "2026-09-15",
+                                "a verificacao mais recente tem de vencer as anteriores")
 
     def test_a_fila_de_pesquisa_le_esta_base(self):
         from src import abertos_sem_informacao

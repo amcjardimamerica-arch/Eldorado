@@ -58,7 +58,8 @@ import re
 from datetime import date
 
 from .inconformidade import avaliar
-from .nucleo import ROOT, carregar_oportunidades, load_json, now_iso, write_json
+from .nucleo import (ROOT, carregar_oportunidades, chave_curta, load_json, now_iso,
+                     write_json)
 from .rotas_coleta import exige_navegador, ritmo_de, rota_de, serve_como_fonte
 
 SAIDA_JSON = ROOT / "docs/dados/abertos_sem_informacao.json"
@@ -68,9 +69,10 @@ CARIMBO = ROOT / "estado/abertos_sem_informacao.json"
 # Bases de verificação lidas além da base de oportunidades. A primeira que
 # tiver o registro vence — estão em ordem de confiança.
 BASES_VERIFICADAS = (
-    # A mais recente vence: a verificacao de 15/09/2026 foi feita um a um na
-    # fonte oficial e corrigiu prazo de registros que as bases anteriores traziam
-    # errado (Ipu/CE fechava um dia antes; Jaru/RO apontava para o edital errado).
+    # A mais recente vence. O fechamento de 23/09/2026 foi lido pelo NAVEGADOR
+    # LOCAL do titular — unica rota que alcancou o PNCP naquele dia — e corrigiu
+    # a chave de Osorio/RS, que na base apontava para um registro inexistente.
+    ROOT / "docs/dados/verificacao_fechamento_2026-09-23.json",
     ROOT / "docs/dados/verificacao_63_2026-09-15.json",
     ROOT / "docs/dados/verificacao_467_2026-09-09.json",
     ROOT / "docs/dados/nao_verificados.json",
@@ -87,6 +89,24 @@ DIAS_URGENTE = 30
 # Edição inteira de diário, sem ato identificado dentro dela. Mesmo padrão que
 # src/enquadramento.py já usa, para que os dois módulos contem a mesma coisa.
 EDICAO_DE_DIARIO = re.compile(r"Di[áa]rio Oficial de .+\d{4}-\d{2}-\d{2}")
+
+# Mecanismo permanente nao e edital sem prazo: e mecanismo que NAO TEM prazo por
+# natureza — emenda parlamentar, destinacao de bens da Receita Federal, penas
+# pecuniarias, Rouanet, cadastro de proponente em fluxo continuo. Entravam na
+# fila como "falta prazo" e nunca saiam, porque a informacao que se cobrava
+# deles nao existe. O que eles tem e PORTA DE ENTRADA, e o campo certo e
+# `como_se_habilita`.
+MECANISMO_PERMANENTE = re.compile(
+    r"fluxo\s+cont[íi]nuo|mecanismo\s+permanente|a\s+qualquer\s+tempo|"
+    r"emenda\s+parlamentar|penas?\s+pecuni[áa]ria|presta[çc][õo]es\s+pecuni[áa]rias|"
+    r"(?:destina|doa)[çc][ãa]o\s+de\s+mercadorias|cadastro\s+de\s+proponente|"
+    r"janela\s+or[çc]ament[áa]ria", re.I)
+
+
+def e_mecanismo_permanente(registro: dict) -> bool:
+    """Tem porta de entrada, nao prazo. Cobrar prazo dele e cobrar o que nao existe."""
+    campos = " ".join(_texto(registro.get(c)) for c in ("objeto", "titulo", "observacao"))
+    return bool(MECANISMO_PERMANENTE.search(campos))
 
 
 def _e_edicao_de_diario(registro: dict) -> bool:
@@ -151,9 +171,9 @@ def _verificadas() -> dict:
             continue
         itens = dados.get("itens")
         if isinstance(itens, dict):
-            registros = [(chave, valor) for chave, valor in itens.items()]
+            registros = [(chave_curta(chave), valor) for chave, valor in itens.items()]
         elif isinstance(itens, list):
-            registros = [(str(x.get("id", ""))[:8], x) for x in itens]
+            registros = [(chave_curta(x.get("id")), x) for x in itens]
         else:
             continue
         for chave, valor in registros:
@@ -244,7 +264,7 @@ def _unificar(hoje: date) -> list[dict]:
 
     # 1) base de oportunidades coletadas
     for item in carregar_oportunidades().values():
-        chave = str(item.get("id", ""))[:8]
+        chave = chave_curta(item.get("id"))
         if not chave:
             continue
         _somar(chave, {
@@ -304,12 +324,68 @@ def _prioridade(situacao: str, dias: int | None, veredito: str) -> tuple[int, st
     return 5, "sem objeto para decidir — precisa do documento"
 
 
+def colapsar_permanentes(permanentes: list) -> list:
+    """Uma porta de entrada aparece uma vez, com todos os endereços que tem.
+
+    O BNDES foi capturado duas vezes em cada uma das suas duas portas, e o
+    Instituto Impactarte duas vezes em dois domínios diferentes — `.com.br` e
+    `.org.br`. São rotas de coleta distintas chegando ao mesmo lugar, e a
+    deduplicação por objeto não as alcançava: ela roda sobre a fila, e mecanismo
+    permanente sai da fila antes.
+
+    O endereço divergente não é descartado. Quando a mesma porta chega por dois
+    domínios, os dois ficam listados em `portas` e a porta é marcada para
+    conferência — qual dos dois é o site do patrocinador é pergunta que só a
+    leitura responde, e inventar a resposta aqui seria pior que registrar a
+    dúvida.
+    """
+    reunidos: dict[tuple, dict] = {}
+    for item in permanentes:
+        chave = (_chave_de_duplicata(item.get("titulo") or item.get("objeto")),
+                 _texto(item.get("orgao")).lower())
+        porta = item.get("pagina_oficial")
+        if chave in reunidos and chave[0]:
+            alvo = reunidos[chave]
+            alvo["capturado_como"].append(item.get("id"))
+            if porta and porta not in alvo["portas"]:
+                alvo["portas"].append(porta)
+            continue
+        item = dict(item)
+        item["portas"] = [porta] if porta else []
+        item["capturado_como"] = [item.get("id")]
+        reunidos[chave] = item
+    saida = []
+    for item in reunidos.values():
+        if len(item["portas"]) > 1:
+            item["conferir_porta"] = ("a mesma porta chegou por endereços diferentes: "
+                                      "confirmar qual é o do patrocinador antes de usar")
+        saida.append(item)
+    return saida
+
+
+# Reprovação por prazo vencido não é reprovação por objeto. A verificação de
+# 15/09/2026 fechou 27 registros porque a janela já tinha passado — natureza de
+# fomento legítima, só fora do tempo — e o contador os somava junto com os que
+# não são edital de fomento a OSC. Somados, davam ao titular a leitura errada de
+# que o motor derruba por objeto quatro vezes mais do que derruba de fato.
+REPROVACAO_TEMPORAL = re.compile(
+    r"prazo\s+encerrad|j[áa]\s+julgad|homologa|adjudica|vencid|encerrado\s+em", re.I)
+
+
+def motivo_da_reprovacao(familia) -> str:
+    """Separa a reprovação temporal da reprovação por objeto."""
+    return ("reprovado_por_prazo_vencido" if REPROVACAO_TEMPORAL.search(_texto(familia))
+            else "reprovado_por_objeto")
+
+
 def run(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
-    fila, descartados = [], {"reprovado_por_objeto": 0, "encerrado": 0, "completo": 0,
-                             "edicao_de_diario_sem_ato": 0}
+    fila, descartados = [], {"reprovado_por_objeto": 0, "reprovado_por_prazo_vencido": 0,
+                             "encerrado": 0, "completo": 0,
+                             "edicao_de_diario_sem_ato": 0, "mecanismo_permanente": 0}
     familias_descartadas: dict[str, int] = {}
     diarios_por_uf: dict[str, int] = {}
+    permanentes: list = []
 
     for registro in _unificar(hoje):
         if _e_edicao_de_diario(registro):
@@ -318,8 +394,18 @@ def run(hoje: date | None = None) -> dict:
             diarios_por_uf[uf] = diarios_por_uf.get(uf, 0) + 1
             continue
         veredito, familia = _veredito(registro)
+        if veredito != "reprovado" and e_mecanismo_permanente(registro):
+            descartados["mecanismo_permanente"] += 1
+            permanentes.append({
+                "id": registro.get("id") or registro.get("id_curto"),
+                "titulo": registro.get("titulo"), "orgao": registro.get("orgao"),
+                "uf": registro.get("uf"), "objeto": _texto(registro.get("objeto"))[:400] or None,
+                "pagina_oficial": registro.get("pagina_oficial") or registro.get("url"),
+                "observacao": _texto(registro.get("observacao"))[:600] or None,
+            })
+            continue
         if veredito == "reprovado":
-            descartados["reprovado_por_objeto"] += 1
+            descartados[motivo_da_reprovacao(familia)] += 1
             familias_descartadas[familia or "sem familia"] = \
                 familias_descartadas.get(familia or "sem familia", 0) + 1
             continue
@@ -389,6 +475,8 @@ def run(hoje: date | None = None) -> dict:
         vistos[chave] = item
     fila = list(vistos.values())
 
+    permanentes = colapsar_permanentes(permanentes)
+
     resumo = {
         "total": len(fila),
         "por_prioridade": {},
@@ -403,6 +491,14 @@ def run(hoje: date | None = None) -> dict:
         "duplicados_colapsados": duplicados,
         "descartados": descartados,
         "familias_descartadas": dict(sorted(familias_descartadas.items(), key=lambda i: -i[1])),
+        "mecanismos_permanentes": {
+            "total": len(permanentes),
+            "capturas": descartados["mecanismo_permanente"],
+            "destino": ("nao tem prazo por natureza: o que eles tem e porta de entrada. Ficam em lista "
+                        "propria, com o campo como_se_habilita no lugar do prazo, e nunca mais aparecem "
+                        "como 'falta prazo'."),
+            "itens": permanentes,
+        },
         "edicoes_de_diario_sem_ato": {
             "total": descartados["edicao_de_diario_sem_ato"],
             "destino": ("extrair o ato de dentro da edição para descobrir o nome do órgão e o número "
