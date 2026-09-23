@@ -121,28 +121,15 @@ def montar() -> dict:
     # aceita empresa qualificada: com origem conhecida e cadastro. Fonte recém-achada fica no
     # posto do Piloto até ser validada e classificada numa das duas listas.
     from .potencial_fiscal import estimar
-    from .programas_sociais import programas_de, pontos_sociais
     for e in itens:
         e.update({"cadastro": _cadastro_de(e, base)})
         e["potencial"] = estimar(e["cadastro"])
-        e["programas"] = programas_de(e)                 # por quais leis já destinou
-        e["social"] = pontos_sociais(e, e["programas"])  # a nota que ordena: evidência de doação
         if not e.get("site"):
             e["site"] = e["cadastro"].get("site")
-    # A ORDEM É SOCIAL/ESG: quem já doou vem antes de quem só poderia. A pontuação antiga
-    # (tamanho, ICMS) entra apenas como desempate, porque mede capacidade e não disposição.
-    itens.sort(key=lambda x: (-(x["social"]["pontos"]), -(x.get("pontos") or 0), x["nome"]))
+    itens.sort(key=lambda x: (-(x.get("pontos") or 0), x["nome"]))
     for i, e in enumerate(itens, 1):
         e["posicao"] = i
-        e["pontos_sociais"] = e["social"]["pontos"]
         e["faixa"] = "A" if i <= 50 else "B" if i <= 150 else "C" if i <= 300 else "D"
-    # NUMERAÇÃO POR LISTA: a posição global saltava (8 → 10) porque a tela filtra por
-    # origem. Cada lista passa a ter a sua própria contagem, de 1 a N, sem buracos.
-    contador: dict[str, int] = {}
-    for e in itens:
-        o = e["origem"]
-        contador[o] = contador.get(o, 0) + 1
-        e["n_na_lista"] = contador[o]
     paginas = [{"de": i + 1, "ate": min(i + POR_PAGINA, len(itens))} for i in range(0, len(itens), POR_PAGINA)]
     res = {"gerado_em": now_iso(), "total": len(itens), "por_pagina": POR_PAGINA, "paginas": paginas,
            "regra": "uma lista só, ordenada por pontuação: destinação tributária + patrocínio privado + radar do Piloto; "
@@ -153,11 +140,6 @@ def montar() -> dict:
            "com_contato": sum(1 for e in itens if e["cadastro"].get("telefone") or e["cadastro"].get("email")),
            "com_site": sum(1 for e in itens if e.get("site")),
            "com_potencial": sum(1 for e in itens if (e.get("potencial") or {}).get("apurou")),
-           "com_programa": sum(1 for e in itens if e.get("programas")),
-           "com_historico_de_lei": sum(1 for e in itens if e["social"]["leis_com_historico"]),
-           "por_lei": {k: sum(1 for e in itens for p in e["programas"] if p["chave"] == k and p["historico"])
-                       for k in __import__("src.programas_sociais", fromlist=["LEIS"]).LEIS},
-           "ordem": "por evidência social/ESG: histórico de destinação, instituto próprio, relatório publicado",
            "potencial_total": {
                "min": sum(((e.get("potencial") or {}).get("irpj") or {}).get("direcionavel_min") or 0 for e in itens),
                "max": sum(((e.get("potencial") or {}).get("irpj") or {}).get("direcionavel_max") or 0 for e in itens),
