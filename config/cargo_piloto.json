@@ -1,204 +1,221 @@
 {
-  "versao": 2,
-  "atualizado_em": "2026-09-22",
-  "cargo": "PILOTO — sniper de oportunidades (antes: Piloto)",
-  "principio": "O CARGO é do sistema; a IA é o ocupante. Trocar o ocupante é trocar uma linha em 'ocupante_atual'. Nenhum outro arquivo muda: o contrato (tarefas, esquema de resposta, validação, métricas) é do cargo, não do modelo.",
-  "escopo": {
-    "faz": [
-      "encontrar oportunidades que o sistema desconhece",
-      "validar as encontradas (objeto, prazo, página oficial) com trecho literal",
-      "catalogar no banco e na Biblioteca",
-      "descobrir ONDE se publica (novas fontes, novas rotas) e QUANDO (época, para o preditivo)",
-      "aumentar a assertividade dos motores: propor URL, termo de camada 1, cadência",
-      "perguntar sem parar: cada ciclo gera perguntas novas a partir do que já sabe"
-    ],
-    "nao_faz": [
-      "interpretar edital para elaborar projeto",
-      "redigir ou preencher documentos de inscrição",
-      "montar plano de trabalho",
-      "decidir inscrição",
-      "qualquer juízo sobre mérito da associação"
-    ],
-    "quem_faz_o_resto": "o Claude (a cada 3 dias) e o titular — elaboração de projeto e documentos saiu do Piloto em 22/09/2026 por decisão do titular"
-  },
-  "criterio_de_contratacao": {
-    "assertividade_minima": 0.5,
-    "prazos_inventados": 0,
-    "falso_positivo_maximo": 0.3,
-    "tamanho_maximo_gb": 3.0,
-    "velocidade_minima_tokens_s": 10,
-    "licenca": "aberta (Apache-2.0, MIT, Gemma ou Llama Community)",
-    "nota": "leve e rápido vence pesado e lento: um modelo que roda 4 ciclos por dia e aprende com o erro vale mais que um que roda um e acerta pouco mais"
-  },
-  "ocupante_atual": {
-    "nome": null,
-    "vago": true,
-    "desde": "2026-09-23T22:20",
-    "motivo": "nenhum substituto medido: o Qwen3 nao baixou no runner e os demais nunca foram executados; o ocupante responde a 24% em voo",
-    "anterior": "Llama-3.2-3B-Instruct",
-    "como_o_piloto_voa": "rede determinística: rumo sorteado do catálogo de ângulos, sem repetir os últimos. O voo perde a leitura da página, não a direção.",
-    "desempenho_em_voo": {
-      "pedidos": 33,
-      "mudos": 25,
-      "taxa_de_resposta": 0.242,
-      "avaliado_ate": "2026-09-23T22:21",
-      "alerta": "responde em 24% dos pedidos, abaixo dos 50% que o cargo exige — candidato a substituição pelo banco de reserva"
-    }
-  },
-  "banco_de_reserva": [
-    {
-      "id": "llama-3.2-3b",
-      "nome": "Llama-3.2-3B-Instruct",
-      "gb": 2.0,
-      "licenca": "Llama-3.2-Community",
-      "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-      "desempenho": {
-        "acerto": 0.597,
-        "prazos_inventados": 0,
-        "tokens_por_s": 16.0,
-        "minutos_120_itens": 20.5
-      },
-      "porque": "ocupou o cargo até 2026-09-23 e saiu: nenhum substituto medido: o Qwen3 nao baixou no runner e os demais nunca foram executados; o ocupante responde a 24% em ",
-      "serve_de_regua": "é contra ele que se mede quem quer o cargo"
-    },
-    {
-      "id": "qwen3-1.7b",
-      "nome": "Qwen3-1.7B",
-      "gb": 1.1,
-      "licenca": "Apache-2.0",
-      "url": "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf",
-      "porque": "geração seguinte do Qwen, metade do tamanho, modo de raciocínio opcional; candidato natural à próxima avaliação"
-    },
-    {
-      "id": "llama-3.2-1b",
-      "nome": "Llama-3.2-1B-Instruct",
-      "gb": 0.8,
-      "licenca": "Llama-3.2-Community",
-      "url": "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf",
-      "porque": "irmão menor do ocupante: 3x mais rápido; testar se mantém 50% com o prompt já calibrado"
-    },
-    {
-      "id": "gemma-2-2b",
-      "nome": "Gemma-2-2B-it",
-      "gb": 1.6,
-      "licenca": "Gemma",
-      "url": "https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q4_K_M.gguf",
-      "porque": "não chegou a ser medido; correção do boot já implantada"
-    },
-    {
-      "id": "phi-3.5-mini",
-      "nome": "Phi-3.5-mini-instruct",
-      "gb": 2.3,
-      "licenca": "MIT",
-      "url": "https://huggingface.co/bartowski/Phi-3.5-mini-instruct-GGUF/resolve/main/Phi-3.5-mini-instruct-Q4_K_M.gguf",
-      "porque": "licença MIT e forte em instrução; português a verificar"
-    }
+ "versao": 2,
+ "atualizado_em": "2026-09-22",
+ "cargo": "PILOTO — sniper de oportunidades (antes: Piloto)",
+ "principio": "O CARGO é do sistema; a IA é o ocupante. Trocar o ocupante é trocar uma linha em 'ocupante_atual'. Nenhum outro arquivo muda: o contrato (tarefas, esquema de resposta, validação, métricas) é do cargo, não do modelo.",
+ "escopo": {
+  "faz": [
+   "encontrar oportunidades que o sistema desconhece",
+   "validar as encontradas (objeto, prazo, página oficial) com trecho literal",
+   "catalogar no banco e na Biblioteca",
+   "descobrir ONDE se publica (novas fontes, novas rotas) e QUANDO (época, para o preditivo)",
+   "aumentar a assertividade dos motores: propor URL, termo de camada 1, cadência",
+   "perguntar sem parar: cada ciclo gera perguntas novas a partir do que já sabe"
   ],
-  "como_trocar_o_piloto": [
-    "1. rodar o workflow piloto.yml em modo 'avaliar' apontando o candidato (ou deixar o ciclo noturno avaliar o reserva do dia)",
-    "2. se o candidato bater o ocupante nas métricas do critério, o próprio sistema grava a troca em 'ocupante_atual' e arquiva o anterior em 'ex_ocupantes'",
-    "3. nada mais muda: tarefas, esquemas, validação, painel e o resto do Eldorado continuam iguais"
+  "nao_faz": [
+   "interpretar edital para elaborar projeto",
+   "redigir ou preencher documentos de inscrição",
+   "montar plano de trabalho",
+   "decidir inscrição",
+   "qualquer juízo sobre mérito da associação"
   ],
-  "ex_ocupantes": [],
-  "memoria_de_erros": {
-    "arquivo": "estado/piloto/memoria_erros.json",
-    "regra": "cada erro medido (falso positivo, falso negativo, resposta fora do esquema) vira uma linha com o exemplo; as 12 mais frequentes entram no prompt como 'erros a não repetir' na rodada seguinte — é assim que o ocupante evolui sem trocar de modelo"
-  },
-  "missao": {
-    "frase": "Afiar e aumentar os motores de busca. Voar sobre eles, ver o que não estão vendo, trazer alvo novo e ensinar o motor a achar sozinho da próxima vez.",
-    "faz_agora": [
-      "avaliar cada motor: o que leu, o que achou, o que deixou passar",
-      "incluir novos locais de busca (fontes, rotas, páginas onde se publica)",
-      "identificar oportunidades novas que o sistema desconhece",
-      "catalogar o que encontra e aprender para a pesquisa seguinte",
-      "propor ao motor: nova URL, novo termo de camada 1, nova cadência"
-    ],
-    "nao_faz_agora": [
-      "verificar prazo e detalhe de edital (é do Claude, a cada 3 dias)",
-      "enquadrar associação (é do Claude)",
-      "elaborar projeto ou documento"
-    ],
-    "ritmo": "tarefas ALEATÓRIAS a cada ciclo, sorteadas entre caçar oportunidade nova e afiar um motor — nunca a mesma ordem, para não cavar sempre no mesmo lugar"
-  },
-  "parametros": {
-    "tarefas_por_ciclo": {
-      "minimo": 4,
-      "maximo": 12
-    },
-    "sorteio": {
-      "cacar_oportunidade": 0.55,
-      "afiar_motor": 0.25,
-      "descobrir_local": 0.2,
-      "regra": "sorteio entre os 4 motores do Piloto; no motor 29 o ângulo de ataque também é sorteado, com rodízio e memória negativa"
-    },
-    "confianca_minima_para_propor": 0.6,
-    "maximo_propostas_por_ciclo": 25,
-    "tempo_por_tarefa_s": 90,
-    "abate_conta_quando": "a oportunidade é NOVA na base (id inédito ou título que não casa com nenhum registro) e tem ao menos objeto + onde procurar",
-    "prioridade_de_territorio": [
-      "GO",
-      "BR",
-      "demais"
-    ],
-    "nunca": [
-      "repetir um caminho já registrado como negativo na memória de mineração",
-      "propor URL malformada",
-      "afirmar prazo (fora do escopo atual)"
-    ],
-    "motores_do_piloto": {
-      "ids": [
-        "empresas-incentivadas",
-        "motor-gife",
-        "motor-patrocinio",
-        "sindico-aberto"
-      ],
-      "porque": "Rouanet, diários e portais conhecidos só releem o que já está mapeado. O dinheiro novo está nas empresas incentivadoras (26), na base ICMS/Lucro Real (27), no patrocínio privado (28) e no que ninguém catalogou ainda (29, busca aberta).",
-      "fora_do_escopo": "diários oficiais, Rouanet/Salic, PNCP, plataformas já conhecidas — esses são trabalho dos motores regulares, não do Piloto"
-    },
-    "resgates_por_voo": 8,
-    "prioridade": "missao 1 primeiro se houver alvo nao-PNCP; o resto do voo e missao 2",
-    "exploracao_por_voo": 3
-  },
-  "renomeado_em": "2026-09-22",
-  "finalidade": {
-    "resumo": "o Piloto NAO concorre com os motores: tem duas missoes proprias — resgatar UMA VEZ o que os motores trouxeram incompleto (sem PNCP) e reconhecer quem financia o terceiro setor onde nao houve edital nenhum",
-    "missao_1_especial": {
-      "o_que": "analisar, UMA UNICA VEZ, os editais pendentes de informacao trazidos pelos motores, achando site oficial e os dados minimos do sistema",
-      "nao_toca": "PNCP e portais de compras publicas — dado generico, analisado pelo Claude por fora, com acesso a maquina do titular (Claude Desktop)",
-      "uma_vez": "tentou e nao achou, passa ao Claude em vez de voltar a fila: repetir o mesmo metodo daria o mesmo nada"
-    },
-    "missao_2_regular": {
-      "o_que": "analisar sites de entidades do terceiro setor — associacoes, ONGs, fundacoes, institutos, APAEs — e a imprensa que divulga o que elas fizeram, para descobrir QUEM PAGOU",
-      "porque_os_motores_nao_acham": "nao houve edital publicado: houve patrocinio, doacao, destinacao de imposto ou verba de marketing",
-      "vias_procuradas": [
-        "destinacao tributaria",
-        "incentivo fiscal",
-        "doacao",
-        "patrocinio",
-        "marketing social"
-      ],
-      "altera_o_plano_de_voo": "cada financiador descoberto vira alvo de investigacao nos voos seguintes"
-    },
-    "proibido": "repetir o trabalho dos 29 motores e tocar em PNCP: e desperdicio de voo. Fonte ja coberta por motor, ou dado generico de compras publicas, nao e trabalho dele",
-    "duas_missoes": {
-      "1_verificar_e_alimentar": "PRIORIDADE quando houver alvo nao-PNCP: analisar, UMA UNICA VEZ, os editais pendentes de informacao trazidos pelos motores, achando site oficial e os dados minimos do sistema",
-      "2_descobrir_o_que_ninguem_busca": "analisar sites de entidades do terceiro setor — associacoes, ONGs, fundacoes, institutos, APAEs — e a imprensa que divulga o que elas fizeram, para descobrir QUEM PAGOU"
-    },
-    "rastro_de_edital": [
-      "site oficial",
-      "prazo",
-      "quem pode concorrer",
-      "documentos exigidos",
-      "valor",
-      "como se inscreve"
-    ],
-    "sites_especializados": [
-      "site de entidade do terceiro setor (apoiadores, parceiros, transparencia)",
-      "imprensa e portal de noticias local que cobre projeto social",
-      "agenda de evento social (cartaz, programacao, cotas de patrocinio)",
-      "prestacao de contas e balanco social de entidade",
-      "instituto ou fundacao de empresa",
-      "relatorio ESG e de sustentabilidade"
-    ]
+  "quem_faz_o_resto": "o Claude (a cada 3 dias) e o titular — elaboração de projeto e documentos saiu do Piloto em 22/09/2026 por decisão do titular"
+ },
+ "criterio_de_contratacao": {
+  "assertividade_minima": 0.5,
+  "prazos_inventados": 0,
+  "falso_positivo_maximo": 0.3,
+  "tamanho_maximo_gb": 3.0,
+  "velocidade_minima_tokens_s": 10,
+  "licenca": "aberta (Apache-2.0, MIT, Gemma ou Llama Community)",
+  "nota": "leve e rápido vence pesado e lento: um modelo que roda 4 ciclos por dia e aprende com o erro vale mais que um que roda um e acerta pouco mais"
+ },
+ "ocupante_atual": {
+  "nome": null,
+  "vago": true,
+  "desde": "2026-09-23T22:20",
+  "motivo": "nenhum substituto medido: o Qwen3 nao baixou no runner e os demais nunca foram executados; o ocupante responde a 24% em voo",
+  "anterior": "Llama-3.2-3B-Instruct",
+  "como_o_piloto_voa": "rede determinística: rumo sorteado do catálogo de ângulos, sem repetir os últimos. O voo perde a leitura da página, não a direção.",
+  "desempenho_em_voo": {
+   "pedidos": 33,
+   "mudos": 25,
+   "taxa_de_resposta": 0.242,
+   "avaliado_ate": "2026-09-23T22:21",
+   "alerta": "responde em 24% dos pedidos, abaixo dos 50% que o cargo exige — candidato a substituição pelo banco de reserva"
   }
+ },
+ "banco_de_reserva": [
+  {
+   "id": "llama-3.2-3b",
+   "nome": "Llama-3.2-3B-Instruct",
+   "gb": 2.0,
+   "licenca": "Llama-3.2-Community",
+   "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+   "desempenho": {
+    "acerto": 0.597,
+    "prazos_inventados": 0,
+    "tokens_por_s": 16.0,
+    "minutos_120_itens": 20.5
+   },
+   "porque": "ocupou o cargo até 2026-09-23 e saiu: nenhum substituto medido: o Qwen3 nao baixou no runner e os demais nunca foram executados; o ocupante responde a 24% em ",
+   "serve_de_regua": "é contra ele que se mede quem quer o cargo",
+   "arquivo": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+   "gb_medido": 2.02,
+   "url_confirmada_em": "2026-09-23 (sondagem: HTTP 200)"
+  },
+  {
+   "id": "qwen3-1.7b",
+   "nome": "Qwen3-1.7B",
+   "gb": 1.1,
+   "licenca": "Apache-2.0",
+   "url": "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf",
+   "porque": "geração seguinte do Qwen, metade do tamanho, modo de raciocínio opcional; candidato natural à próxima avaliação",
+   "url_anterior": "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf",
+   "porque_mudou_url": "a anterior devolveu HTTP 404 na sondagem de 23/09: o arquivo não existe nesse endereço",
+   "arquivo": "Qwen3-1.7B-Q4_K_M.gguf",
+   "gb_medido": 1.11,
+   "url_confirmada_em": "2026-09-23 (sondagem: HTTP 200)"
+  },
+  {
+   "id": "llama-3.2-1b",
+   "nome": "Llama-3.2-1B-Instruct",
+   "gb": 0.8,
+   "licenca": "Llama-3.2-Community",
+   "url": "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf",
+   "porque": "irmão menor do ocupante: 3x mais rápido; testar se mantém 50% com o prompt já calibrado",
+   "arquivo": "Llama-3.2-1B-Instruct-Q4_K_M.gguf",
+   "gb_medido": 0.81,
+   "url_confirmada_em": "2026-09-23 (sondagem: HTTP 200)"
+  },
+  {
+   "id": "gemma-2-2b",
+   "nome": "Gemma-2-2B-it",
+   "gb": 1.6,
+   "licenca": "Gemma",
+   "url": "https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q4_K_M.gguf",
+   "porque": "não chegou a ser medido; correção do boot já implantada",
+   "arquivo": "gemma-2-2b-it-Q4_K_M.gguf",
+   "gb_medido": 1.71,
+   "url_confirmada_em": "2026-09-23 (sondagem: HTTP 200)"
+  },
+  {
+   "id": "phi-3.5-mini",
+   "nome": "Phi-3.5-mini-instruct",
+   "gb": 2.3,
+   "licenca": "MIT",
+   "url": "https://huggingface.co/bartowski/Phi-3.5-mini-instruct-GGUF/resolve/main/Phi-3.5-mini-instruct-Q4_K_M.gguf",
+   "porque": "licença MIT e forte em instrução; português a verificar",
+   "arquivo": "Phi-3.5-mini-instruct-Q4_K_M.gguf",
+   "gb_medido": 2.39,
+   "url_confirmada_em": "2026-09-23 (sondagem: HTTP 200)"
+  }
+ ],
+ "como_trocar_o_piloto": [
+  "1. rodar o workflow piloto.yml em modo 'avaliar' apontando o candidato (ou deixar o ciclo noturno avaliar o reserva do dia)",
+  "2. se o candidato bater o ocupante nas métricas do critério, o próprio sistema grava a troca em 'ocupante_atual' e arquiva o anterior em 'ex_ocupantes'",
+  "3. nada mais muda: tarefas, esquemas, validação, painel e o resto do Eldorado continuam iguais"
+ ],
+ "ex_ocupantes": [],
+ "memoria_de_erros": {
+  "arquivo": "estado/piloto/memoria_erros.json",
+  "regra": "cada erro medido (falso positivo, falso negativo, resposta fora do esquema) vira uma linha com o exemplo; as 12 mais frequentes entram no prompt como 'erros a não repetir' na rodada seguinte — é assim que o ocupante evolui sem trocar de modelo"
+ },
+ "missao": {
+  "frase": "Afiar e aumentar os motores de busca. Voar sobre eles, ver o que não estão vendo, trazer alvo novo e ensinar o motor a achar sozinho da próxima vez.",
+  "faz_agora": [
+   "avaliar cada motor: o que leu, o que achou, o que deixou passar",
+   "incluir novos locais de busca (fontes, rotas, páginas onde se publica)",
+   "identificar oportunidades novas que o sistema desconhece",
+   "catalogar o que encontra e aprender para a pesquisa seguinte",
+   "propor ao motor: nova URL, novo termo de camada 1, nova cadência"
+  ],
+  "nao_faz_agora": [
+   "verificar prazo e detalhe de edital (é do Claude, a cada 3 dias)",
+   "enquadrar associação (é do Claude)",
+   "elaborar projeto ou documento"
+  ],
+  "ritmo": "tarefas ALEATÓRIAS a cada ciclo, sorteadas entre caçar oportunidade nova e afiar um motor — nunca a mesma ordem, para não cavar sempre no mesmo lugar"
+ },
+ "parametros": {
+  "tarefas_por_ciclo": {
+   "minimo": 4,
+   "maximo": 12
+  },
+  "sorteio": {
+   "cacar_oportunidade": 0.55,
+   "afiar_motor": 0.25,
+   "descobrir_local": 0.2,
+   "regra": "sorteio entre os 4 motores do Piloto; no motor 29 o ângulo de ataque também é sorteado, com rodízio e memória negativa"
+  },
+  "confianca_minima_para_propor": 0.6,
+  "maximo_propostas_por_ciclo": 25,
+  "tempo_por_tarefa_s": 90,
+  "abate_conta_quando": "a oportunidade é NOVA na base (id inédito ou título que não casa com nenhum registro) e tem ao menos objeto + onde procurar",
+  "prioridade_de_territorio": [
+   "GO",
+   "BR",
+   "demais"
+  ],
+  "nunca": [
+   "repetir um caminho já registrado como negativo na memória de mineração",
+   "propor URL malformada",
+   "afirmar prazo (fora do escopo atual)"
+  ],
+  "motores_do_piloto": {
+   "ids": [
+    "empresas-incentivadas",
+    "motor-gife",
+    "motor-patrocinio",
+    "sindico-aberto"
+   ],
+   "porque": "Rouanet, diários e portais conhecidos só releem o que já está mapeado. O dinheiro novo está nas empresas incentivadoras (26), na base ICMS/Lucro Real (27), no patrocínio privado (28) e no que ninguém catalogou ainda (29, busca aberta).",
+   "fora_do_escopo": "diários oficiais, Rouanet/Salic, PNCP, plataformas já conhecidas — esses são trabalho dos motores regulares, não do Piloto"
+  },
+  "resgates_por_voo": 8,
+  "prioridade": "missao 1 primeiro se houver alvo nao-PNCP; o resto do voo e missao 2",
+  "exploracao_por_voo": 3
+ },
+ "renomeado_em": "2026-09-22",
+ "finalidade": {
+  "resumo": "o Piloto NAO concorre com os motores: tem duas missoes proprias — resgatar UMA VEZ o que os motores trouxeram incompleto (sem PNCP) e reconhecer quem financia o terceiro setor onde nao houve edital nenhum",
+  "missao_1_especial": {
+   "o_que": "analisar, UMA UNICA VEZ, os editais pendentes de informacao trazidos pelos motores, achando site oficial e os dados minimos do sistema",
+   "nao_toca": "PNCP e portais de compras publicas — dado generico, analisado pelo Claude por fora, com acesso a maquina do titular (Claude Desktop)",
+   "uma_vez": "tentou e nao achou, passa ao Claude em vez de voltar a fila: repetir o mesmo metodo daria o mesmo nada"
+  },
+  "missao_2_regular": {
+   "o_que": "analisar sites de entidades do terceiro setor — associacoes, ONGs, fundacoes, institutos, APAEs — e a imprensa que divulga o que elas fizeram, para descobrir QUEM PAGOU",
+   "porque_os_motores_nao_acham": "nao houve edital publicado: houve patrocinio, doacao, destinacao de imposto ou verba de marketing",
+   "vias_procuradas": [
+    "destinacao tributaria",
+    "incentivo fiscal",
+    "doacao",
+    "patrocinio",
+    "marketing social"
+   ],
+   "altera_o_plano_de_voo": "cada financiador descoberto vira alvo de investigacao nos voos seguintes"
+  },
+  "proibido": "repetir o trabalho dos 29 motores e tocar em PNCP: e desperdicio de voo. Fonte ja coberta por motor, ou dado generico de compras publicas, nao e trabalho dele",
+  "duas_missoes": {
+   "1_verificar_e_alimentar": "PRIORIDADE quando houver alvo nao-PNCP: analisar, UMA UNICA VEZ, os editais pendentes de informacao trazidos pelos motores, achando site oficial e os dados minimos do sistema",
+   "2_descobrir_o_que_ninguem_busca": "analisar sites de entidades do terceiro setor — associacoes, ONGs, fundacoes, institutos, APAEs — e a imprensa que divulga o que elas fizeram, para descobrir QUEM PAGOU"
+  },
+  "rastro_de_edital": [
+   "site oficial",
+   "prazo",
+   "quem pode concorrer",
+   "documentos exigidos",
+   "valor",
+   "como se inscreve"
+  ],
+  "sites_especializados": [
+   "site de entidade do terceiro setor (apoiadores, parceiros, transparencia)",
+   "imprensa e portal de noticias local que cobre projeto social",
+   "agenda de evento social (cartaz, programacao, cotas de patrocinio)",
+   "prestacao de contas e balanco social de entidade",
+   "instituto ou fundacao de empresa",
+   "relatorio ESG e de sustentabilidade"
+  ]
+ }
 }
