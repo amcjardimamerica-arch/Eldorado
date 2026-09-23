@@ -1,4 +1,4 @@
-# Pacote do conselho — validação do Claude (2026-09-22, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-09-23, últimos 3 dias)
 
 Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
 
@@ -18,7 +18,7 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (27)
+### Rotas e pistas sugeridas (33)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
@@ -41,7 +41,13 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
-- empresas-incentivadas → [{"tipo": "url", "valor": "https://observatorio3setor.org.br/editais/", "porque": "Portais do terceiro setor onde a empresa anuncia (Observatório, ABCR, GIFE)",
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]

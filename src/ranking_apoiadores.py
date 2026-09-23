@@ -134,8 +134,10 @@ def montar() -> dict:
                   "portas": e.get("portas"), "virou_motor": e.get("motor"),
                   "ficha": e.get("na_biblioteca"), "classe": "prospecção",
                   "leitura": f"descoberta pelo Piloto em {e.get('descoberto_em')}: oferece {', '.join(e['tipos'])}"})
+    from .potencial_fiscal import estimar
     for e in itens:
         e.update({"cadastro": _cadastro_de(e, base)})
+        e["potencial"] = estimar(e["cadastro"])
         if not e.get("site"):
             e["site"] = e["cadastro"].get("site")
     itens.sort(key=lambda x: (-(x.get("pontos") or 0), x["nome"]))
@@ -151,6 +153,11 @@ def montar() -> dict:
            "com_qsa": sum(1 for e in itens if e["cadastro"].get("qsa")),
            "com_contato": sum(1 for e in itens if e["cadastro"].get("telefone") or e["cadastro"].get("email")),
            "com_site": sum(1 for e in itens if e.get("site")),
+           "com_potencial": sum(1 for e in itens if (e.get("potencial") or {}).get("apurou")),
+           "potencial_total": {
+               "min": sum(((e.get("potencial") or {}).get("irpj") or {}).get("direcionavel_min") or 0 for e in itens),
+               "max": sum(((e.get("potencial") or {}).get("irpj") or {}).get("direcionavel_max") or 0 for e in itens),
+               "base": "soma das faixas estimadas de IRPJ direcionável; ordem de grandeza, não valor de ofício"},
            "por_origem": {o: sum(1 for e in itens if e["origem"] == o) for o in {e["origem"] for e in itens}},
            "empresas": itens}
     write_json(SAIDA, res)

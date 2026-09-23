@@ -292,58 +292,87 @@ box-shadow:0 1px 3px #0002}
 @keyframes pil-pa-gira{to{transform:rotate(360deg)}}
 .pil-fumaca{opacity:0}.pil-partida.girando .pil-fumaca{animation:pil-fuma 1.4s ease-out infinite}
 @keyframes pil-fuma{0%{opacity:.8;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(9px,-7px) scale(1.5)}}
-/* RANKING DE APOIADORES — livro-razão de quem pode financiar.
-   Cada linha é uma porta que se pode bater; a cor da trilha diz de que tipo de dinheiro se
-   trata, e a barra dá a leitura da força do candidato sem exigir que se leia o número. */
-.rk2-topo{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:10px;border-bottom:2px solid #0E2A55}
-.rk2-conta{display:flex;align-items:baseline;gap:7px}
-.rk2-n{font-size:30px;font-weight:800;color:#0E2A55;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.rk2-l{font-size:12.5px;color:var(--suave)}.rk2-l i{font-style:normal;opacity:.7}
-.rk2-cob{margin-left:auto;font-size:11px;color:var(--suave);text-align:right;max-width:44ch;line-height:1.5}
-.rk2-filtros{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 4px}
-.rk2-campo{flex:1 1 260px;min-width:200px;padding:6px 11px;border:1px solid var(--linha);border-radius:7px;font:inherit;font-size:12.5px}
-.rk2-sel{padding:6px 9px;border:1px solid var(--linha);border-radius:7px;font:inherit;font-size:12px;background:#fff}
-.rk2-campo:focus,.rk2-sel:focus{outline:2px solid #0E2A55;outline-offset:1px}
-.rk2-ck{font-size:12px;color:var(--suave);display:flex;align-items:center;gap:5px;cursor:pointer}
-.rk2-limpa{border:0;background:none;color:#0B4EA2;font:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
-.rk2-trilha{margin-top:20px}
-.rk2-cab{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;border-left:4px solid var(--tr);padding-left:10px}
-.rk2-cab h4{margin:0;font-size:14.5px;color:var(--tr);display:flex;align-items:baseline;gap:7px}
-.rk2-qt{background:var(--trf);color:var(--tr);font-size:11px;font-weight:800;padding:1px 8px;border-radius:9px;font-variant-numeric:tabular-nums}
-.rk2-cab p{margin:0;font-size:11.5px;color:var(--suave);flex:1 1 220px}
-.rk2-pgs{display:flex;gap:4px;flex-wrap:wrap}
-.rk2-pg{padding:3px 10px;border:1px solid var(--linha);border-radius:13px;background:#fff;font:inherit;font-size:11.5px;cursor:pointer;font-variant-numeric:tabular-nums}
-.rk2-pg.on{background:var(--tr);color:#fff;border-color:var(--tr)}
-.rk2-lista{list-style:none;margin:8px 0 0;padding:0;max-height:620px;overflow:auto}
-.rk2-linha{display:grid;grid-template-columns:38px minmax(150px,1.6fr) auto auto minmax(90px,.7fr) 104px;
-  gap:10px;align-items:center;padding:8px 9px;border-bottom:1px solid #EEF2F7;cursor:pointer}
-.rk2-linha:hover,.rk2-linha:focus{background:var(--trf);outline:none}
-.rk2-linha:focus{box-shadow:inset 3px 0 0 var(--tr)}
-.rk2-pos{font-variant-numeric:tabular-nums;font-weight:800;font-size:12px;color:var(--suave);text-align:right}
-.rk2-id b{display:block;font-size:13px;color:var(--tinta);line-height:1.3}
-.rk2-id small{display:block;font-size:10.5px;color:var(--suave);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:34ch}
-.rk2-portas{display:flex;gap:4px;flex-wrap:wrap}
-.rk2-porta{font-style:normal;font-size:9.5px;font-weight:700;color:var(--pc);border:1px solid var(--pc);border-radius:8px;padding:1px 7px;white-space:nowrap}
-.rk2-porta.motor{--pc:#0E2A55;background:#0E2A55;color:#fff}
-.rk2-marcas{display:flex;gap:4px}
-.rk2-marcas i{font-style:normal;font-size:9px;color:#9AA7B4;border:1px dotted #C9D4E0;border-radius:7px;padding:1px 6px}
-.rk2-marcas i.tem{color:#1E7E4B;border-color:#7CE0A8;border-style:solid}
-.rk2-contato{font-size:11.5px}
-.rk2-contato a{color:#0B4EA2}.rk2-contato em{color:#C0C8D2;font-style:normal}
-.rk2-nota{display:flex;align-items:center;gap:7px;justify-content:flex-end}
-.rk2-barra{flex:1;height:5px;background:#EDF1F6;border-radius:3px;overflow:hidden;min-width:34px}
-.rk2-barra i{display:block;height:100%;background:var(--tr)}
-.rk2-nota b{font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--tinta);min-width:22px;text-align:right}
-.rk2-vazio{font-size:12px;color:var(--suave);padding:14px 4px}
-.rk2-selo{color:#fff;font-size:10px;font-weight:800;padding:1px 8px;border-radius:9px;margin-right:6px}
-.rk2-futuro{margin-top:12px;padding:10px 12px;border:1px dashed #C9B37A;border-radius:9px;background:#FDF9EF}
-.rk2-futuro b{font-size:12.5px;color:#8a5a00}
-.rk2-futuro p{margin:4px 0 0;font-size:11.5px;line-height:1.5}
-@media(max-width:760px){
-  .rk2-linha{grid-template-columns:30px 1fr 84px;grid-template-areas:"p i n" ". o o" ". c c";row-gap:5px}
-  .rk2-pos{grid-area:p}.rk2-id{grid-area:i}.rk2-nota{grid-area:n}.rk2-portas{grid-area:o}
-  .rk2-contato{grid-area:c}.rk2-marcas{display:none}.rk2-cob{margin-left:0;text-align:left}}
-@media(prefers-reduced-motion:reduce){.rk2-linha{transition:none}}
+/* MESA DE CAPTAÇÃO. Sem rolagem interna: a lista corre na página. A hierarquia visual põe o
+   DINHEIRO no lugar de maior peso, porque é isso que decide a quem pedir primeiro; a
+   pontuação vira coadjuvante. Os cadernos numerados dão a sensação de arquivo que cresce. */
+.mesa{--tc:#1E7E4B;--tf:#EAF6EF}
+.mz-trilhas{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid #E3E9F1;padding-bottom:0}
+.mz-tr{position:relative;top:2px;border:1px solid var(--linha);border-bottom:0;background:#F7F9FC;
+  color:var(--suave);font:inherit;font-size:12.5px;padding:7px 15px 8px;border-radius:9px 9px 0 0;cursor:pointer;
+  display:flex;align-items:baseline;gap:7px}
+.mz-tr b{font-size:11px;font-variant-numeric:tabular-nums;opacity:.75}
+.mz-tr.on{background:#fff;color:var(--c);border-color:#E3E9F1;border-top:3px solid var(--c);font-weight:700;top:0}
+.mz-tr.on b{opacity:1}
+.mz-tr:focus-visible{outline:2px solid #0E2A55;outline-offset:2px}
+.mz-linha{margin:9px 0 0;font-size:12px;color:var(--suave);max-width:72ch}
+.mz-painel{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0 4px}
+.mz-valor{flex:2 1 300px;background:var(--tf);border-left:5px solid var(--tc);border-radius:0 11px 11px 0;padding:12px 15px}
+.mz-icms{flex:1 1 210px;background:#FAFBFD;border:1px dashed #C9D4E0;border-radius:11px;padding:12px 15px}
+.mz-rot{display:block;font-size:10.5px;color:var(--suave);margin-bottom:3px}
+.mz-cifra{display:block;font-size:26px;font-weight:800;color:var(--tc);letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;line-height:1.15}
+.mz-cifra .mz-ate{font-size:14px;font-weight:400;color:var(--suave);margin:0 3px}
+.mz-icms-v{display:block;font-size:19px;font-weight:700;color:#9AA7B4;letter-spacing:-.01em}
+.mz-nota{display:block;font-size:10.5px;color:var(--suave);margin-top:5px;line-height:1.5}
+.mz-busca{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 2px}
+.mz-campo{flex:1 1 240px;min-width:190px;padding:7px 12px;border:1px solid var(--linha);border-radius:8px;font:inherit;font-size:12.5px}
+.mz-sel{padding:7px 10px;border:1px solid var(--linha);border-radius:8px;font:inherit;font-size:12px;background:#fff}
+.mz-campo:focus,.mz-sel:focus{outline:2px solid var(--tc);outline-offset:1px}
+.mz-ck{font-size:12px;color:var(--suave);display:flex;align-items:center;gap:5px;cursor:pointer}
+.mz-limpa{border:0;background:none;color:#0B4EA2;font:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
+.mz-cadernos{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:14px 0 2px}
+.mz-cadernos .mz-rot{margin:0 4px 0 0}
+.mz-cd{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:58px;padding:5px 9px;
+  border:1px solid var(--linha);border-radius:9px;background:#fff;font:inherit;cursor:pointer}
+.mz-cd b{font-size:15px;color:var(--tinta);font-variant-numeric:tabular-nums;line-height:1}
+.mz-cd span{font-size:9.5px;color:var(--suave);font-variant-numeric:tabular-nums}
+.mz-cd.on{background:var(--tc);border-color:var(--tc)}
+.mz-cd.on b,.mz-cd.on span{color:#fff}
+.mz-cd:focus-visible{outline:2px solid #0E2A55;outline-offset:2px}
+.mz-lista{list-style:none;margin:10px 0 0;padding:0}
+.mz-l{display:grid;grid-template-columns:40px minmax(160px,1.5fr) auto minmax(160px,1fr) 78px;gap:12px;
+  align-items:center;padding:10px;border-bottom:1px solid #EEF2F7;cursor:pointer}
+.mz-l:hover,.mz-l:focus{background:var(--tf);outline:none;box-shadow:inset 3px 0 0 var(--tc)}
+.mz-pos{font-variant-numeric:tabular-nums;font-weight:800;font-size:12.5px;color:#B9C3CE;text-align:right}
+.mz-nome b{display:block;font-size:13.5px;color:var(--tinta);line-height:1.3}
+.mz-nome small{display:block;font-size:10.5px;color:var(--suave);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40ch}
+.mz-portas{display:flex;gap:4px;flex-wrap:wrap;max-width:190px}
+.mz-portas i{font-style:normal;font-size:9.5px;font-weight:700;color:var(--pc);border:1px solid var(--pc);
+  border-radius:8px;padding:1px 7px;white-space:nowrap}
+.mz-portas i.motor{--pc:#0E2A55;background:#0E2A55;color:#fff}
+.mz-pot b{display:block;font-size:13px;color:var(--tc);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.mz-pot .mz-ate{font-size:10.5px;font-weight:400;color:var(--suave);margin:0 2px}
+.mz-pot small{display:block;font-size:9.5px;color:var(--suave);margin-top:2px}
+.mz-bar{display:block;height:4px;background:#E8EEF4;border-radius:2px;overflow:hidden;margin:4px 0 0}
+.mz-bar i{display:block;height:100%;background:var(--tc)}
+.mz-sem{font-style:normal;font-size:10.5px;color:#B9C3CE;line-height:1.4}
+.mz-ct{text-align:right;font-size:11.5px}
+.mz-ct a{color:#0B4EA2}.mz-ct em{color:#C6CED8;font-style:normal}
+.mz-vazio{font-size:12.5px;color:var(--suave);padding:22px 6px;text-align:center}
+.mz-rodape{margin-top:14px;padding-top:10px;border-top:1px solid #EEF2F7;font-size:10.5px;color:var(--suave);line-height:1.6;max-width:86ch}
+.mz-selo{color:#fff;font-size:10px;font-weight:800;padding:1px 8px;border-radius:9px;margin-right:6px}
+/* a conta, dentro da ficha */
+.mz-conta{background:#F6FAF8;border:1px solid #CFE6DA;border-radius:11px;padding:12px 14px}
+.mz-conta.sem{background:#FAFBFD;border-color:#E3E9F1;font-size:12.5px}
+.mz-conta-t{font-size:11px;color:var(--suave);margin-bottom:3px}
+.mz-conta-v{font-size:24px;font-weight:800;color:#1E7E4B;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.mz-leis{width:100%;border-collapse:collapse;margin-top:9px;font-size:11.5px}
+.mz-leis td{padding:3px 6px;border-bottom:1px dotted #DCE8E1;vertical-align:top}
+.mz-leis td.pct{color:var(--suave);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mz-leis td.v{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mz-leis td.sv{color:var(--suave);font-size:10.5px}
+.mz-passos{margin:4px 0 0;padding-left:20px;font-size:11.5px;line-height:1.65}
+.mz-icms-box{margin-top:9px;padding:7px 10px;background:#fff;border:1px dashed #C9D4E0;border-radius:8px;font-size:11.5px;line-height:1.5}
+.mz-aviso{margin:8px 0 0;font-size:10.5px;color:var(--suave);line-height:1.5}
+.mz-futuro{margin-top:14px;padding:11px 13px;border:1px dashed #C9B37A;border-radius:10px;background:#FDF9EF}
+.mz-futuro b{font-size:12.5px;color:#8a5a00}
+.mz-futuro p{margin:4px 0 0;font-size:11.5px;line-height:1.55}
+@media(max-width:780px){
+  .mz-l{grid-template-columns:32px 1fr;grid-template-areas:"p n" ". o" ". v" ". c";row-gap:6px}
+  .mz-pos{grid-area:p}.mz-nome{grid-area:n}.mz-portas{grid-area:o;max-width:none}
+  .mz-pot{grid-area:v}.mz-ct{grid-area:c;text-align:left}
+  .mz-cifra{font-size:22px}.mz-nome small{max-width:30ch}}
+@media(prefers-reduced-motion:reduce){.mz-l,.mz-cd{transition:none}}
 .pil-voando-ic{color:#0B4EA2;margin-right:4px}
 .pil-errante{position:absolute;z-index:40;pointer-events:none;height:34px}
 .pil-errante.patrulha{opacity:.72}
@@ -3142,132 +3171,182 @@ function achadosDoMotor(o){
         ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</a>`:`<span title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</span>`}
         <small>${e.fim?"até "+br(e.fim):"prazo a confirmar"}${e.uf?" · "+esc(e.uf):""}</small></div>`;}).join("")}</div>`;
 }
-window.APOIA=null; window.APOIA_PAG={tributaria:0,privado:0,prospeccao:0};
-window.APOIA_F={busca:"",nivel:"",tipo:"",so_contato:false};
-const TRILHA={
-  "destinação tributária":{id:"tributaria",cor:"#1E7E4B",fundo:"#EAF6EF",rotulo:"Destinação tributária",
-    explica:"imposto que a empresa já deve ao fisco e pode direcionar — o pedido vai ao setor fiscal"},
-  "patrocínio privado":{id:"privado",cor:"#0B4EA2",fundo:"#EFF5FD",rotulo:"Patrocínio privado",
-    explica:"verba própria da empresa — o pedido vai ao marketing ou ao instituto"},
-  "prospecção do Piloto":{id:"prospeccao",cor:"#C8961E",fundo:"#FDF6E7",rotulo:"Descobertas do Piloto",
-    explica:"fontes novas achadas na expansão, ainda sendo qualificadas"},
-  "radar do Piloto":{id:"prospeccao",cor:"#C8961E",fundo:"#FDF6E7",rotulo:"Descobertas do Piloto",
-    explica:"fontes novas achadas na expansão, ainda sendo qualificadas"}};
+/* MESA DE CAPTAÇÃO — o ranking de quem pode financiar.
+   Uma trilha por vez, listas de cem numeradas como cadernos, e a lista corre na própria
+   página: sem barra de rolagem interna, que é o que quebra a navegação. A leitura central
+   não é a pontuação abstrata, é o DINHEIRO — quanto cada empresa poderia direcionar. */
+window.APOIA=null;
+window.MESA={trilha:"tributaria",caderno:0,busca:"",nivel:"",tipo:"",so_contato:false};
+const TRILHAS_MESA={
+  tributaria:{rotulo:"Destinação tributária",cor:"#1E7E4B",fundo:"#EAF6EF",origens:["destinação tributária"],
+    linha:"imposto que a empresa já deve ao fisco e pode direcionar — o pedido vai ao setor fiscal ou contábil"},
+  privado:{rotulo:"Patrocínio privado",cor:"#0B4EA2",fundo:"#EFF5FD",origens:["patrocínio privado"],
+    linha:"verba própria da empresa — o pedido vai ao marketing, ao instituto ou à fundação"},
+  descobertas:{rotulo:"Descobertas do Piloto",cor:"#C8961E",fundo:"#FDF6E7",
+    origens:["prospecção do Piloto","radar do Piloto"],
+    linha:"fontes novas achadas na expansão, ainda sendo qualificadas"}};
 const PORTA={incentivo_fiscal:["Incentivo fiscal","#1E7E4B"],patrocinio:["Patrocínio","#0B4EA2"],
   edital_proprio:["Edital próprio","#7B4BE0"],instituto_fundacao:["Instituto","#B3261E"],
   esg:["ESG","#0E7C7B"],doacao:["Doação","#C8961E"]};
 
+function _rs(v){ v=Number(v||0);
+  if(v>=1e9)return "R$ "+(v/1e9).toFixed(1).replace(".",",")+" bi";
+  if(v>=1e6)return "R$ "+(v/1e6).toFixed(1).replace(".",",")+" mi";
+  if(v>=1e3)return "R$ "+Math.round(v/1e3)+" mil";
+  return "R$ "+Math.round(v); }
+function _faixa(a,b){ return b?`${_rs(a)} <span class="mz-ate">a</span> ${_rs(b)}`:"—"; }
+
 window.carregaApoiadores=async function(){ if(window.APOIA)return window.APOIA;
   try{const r=await fetch("dados/ranking_apoiadores.json?v="+Date.now()); if(r.ok)window.APOIA=await r.json();}catch(e){}
   return window.APOIA||{empresas:[]}; };
-window.filtraApoiadores=function(campo,valor){ window.APOIA_F[campo]=valor;
-  for(const k in window.APOIA_PAG)window.APOIA_PAG[k]=0; window.desenhaApoiadores(); };
-window.paginaApoiadores=function(trilha,p){ window.APOIA_PAG[trilha]=p; window.desenhaApoiadores(); };
+window.mesaTrilha=function(k){ window.MESA.trilha=k; window.MESA.caderno=0; window.desenhaApoiadores(); };
+window.mesaCaderno=function(n){ window.MESA.caderno=n; window.desenhaApoiadores();
+  const el=$("rank-apoiadores"); if(el)el.scrollIntoView({behavior:"smooth",block:"start"}); };
+window.mesaFiltro=function(c,v){ window.MESA[c]=v; window.MESA.caderno=0; window.desenhaApoiadores(); };
+window.paginaApoiadores=function(t,p){ window.mesaCaderno(p); };   // compatibilidade
 
-function _passaFiltro(e){ const F=window.APOIA_F, c=e.cadastro||{};
+function _daTrilha(e,k){ return (TRILHAS_MESA[k].origens||[]).includes(e.origem); }
+function _passaFiltro(e){ const F=window.MESA, c=e.cadastro||{};
   if(F.nivel && (e.nivel||"")!==F.nivel) return false;
   if(F.tipo && !((e.tipos_de_recurso||[]).includes(F.tipo))) return false;
   if(F.so_contato && !(c.telefone||c.email||e.site)) return false;
-  if(F.busca){ const s=(e.nome+" "+(c.razao_social||"")+" "+(c.cnae_principal||"")+" "+(e.apoia||"")+" "+(e.programa||"")).toLowerCase();
+  if(F.busca){ const s=(e.nome+" "+(c.razao_social||"")+" "+(c.cnae_principal||"")+" "+(e.apoia||"")+" "+(e.programa||"")+" "+(c.municipio||"")).toLowerCase();
     if(!s.includes(F.busca.toLowerCase())) return false; }
   return true; }
 
 window.desenhaApoiadores=function(){
   const el=$("rank-apoiadores"); if(!el)return;
   if(!window.APOIA){ window.carregaApoiadores().then(()=>window.desenhaApoiadores()); return; }
-  const R=window.APOIA, todas=(R.empresas||[]).filter(_passaFiltro);
-  const maxPts=Math.max(1,...(R.empresas||[]).map(x=>x.pontos||0));
-  const grupos={};
-  for(const e of todas){ const tr=TRILHA[e.origem]||TRILHA["prospecção do Piloto"];
-    (grupos[tr.id]=grupos[tr.id]||{tr,itens:[]}).itens.push(e); }
-  const niveis=[...new Set((R.empresas||[]).map(x=>x.nivel).filter(Boolean))];
-  const tipos=[...new Set((R.empresas||[]).flatMap(x=>x.tipos_de_recurso||[]))];
-  const F=window.APOIA_F;
+  const R=window.APOIA, F=window.MESA, T=TRILHAS_MESA[F.trilha];
+  const daTrilha=(R.empresas||[]).filter(e=>_daTrilha(e,F.trilha));
+  const lista=daTrilha.filter(_passaFiltro);
+  const cadernos=[]; for(let i=0;i<lista.length;i+=100)cadernos.push({n:cadernos.length+1,de:i+1,ate:Math.min(i+100,lista.length)});
+  const cad=cadernos[F.caderno]||cadernos[0]||{n:1,de:1,ate:0};
+  const fatia=lista.slice(cad.de-1,cad.ate);
+  const somaMin=fatia.reduce((s,e)=>s+(((e.potencial||{}).irpj||{}).direcionavel_min||0),0);
+  const somaMax=fatia.reduce((s,e)=>s+(((e.potencial||{}).irpj||{}).direcionavel_max||0),0);
+  const tetoBarra=Math.max(1,...fatia.map(e=>((e.potencial||{}).irpj||{}).direcionavel_max||0));
+  const comValor=fatia.filter(e=>(e.potencial||{}).apurou).length;
+  const niveis=[...new Set(daTrilha.map(x=>x.nivel).filter(Boolean))];
+  const tipos=[...new Set(daTrilha.flatMap(x=>x.tipos_de_recurso||[]))];
 
   el.innerHTML=`
-   <div class="rk2-topo">
-     <div class="rk2-conta"><span class="rk2-n">${todas.length}</span><span class="rk2-l">entidades no mapa${todas.length!==(R.empresas||[]).length?` <i>de ${(R.empresas||[]).length}</i>`:""}</span></div>
-     <div class="rk2-cob">${R.com_cnpj} com CNPJ · ${R.com_cnae} com atividade · ${R.com_qsa} com sócios · ${R.com_contato} com contato direto</div>
-   </div>
-   <div class="rk2-filtros">
-     <input id="rk2-busca" class="rk2-campo" placeholder="nome, razão social, atividade ou o que apoia" value="${esc(F.busca)}">
-     <select id="rk2-nivel" class="rk2-sel"><option value="">todo alcance</option>${niveis.map(n=>`<option ${F.nivel===n?"selected":""} value="${esc(n)}">${esc(n)}</option>`).join("")}</select>
-     ${tipos.length?`<select id="rk2-tipo" class="rk2-sel"><option value="">toda porta de entrada</option>${tipos.map(x=>`<option ${F.tipo===x?"selected":""} value="${esc(x)}">${esc((PORTA[x]||[x])[0])}</option>`).join("")}</select>`:""}
-     <label class="rk2-ck"><input type="checkbox" id="rk2-ct" ${F.so_contato?"checked":""}> só com contato</label>
-     ${(F.busca||F.nivel||F.tipo||F.so_contato)?`<button class="rk2-limpa" onclick="['busca','nivel','tipo'].forEach(k=>window.APOIA_F[k]='');window.APOIA_F.so_contato=false;window.desenhaApoiadores()">limpar filtros</button>`:""}
-   </div>
-   ${["tributaria","privado","prospeccao"].filter(k=>grupos[k]).map(k=>{
-      const g=grupos[k], pgs=[]; for(let i=0;i<g.itens.length;i+=100)pgs.push({de:i+1,ate:Math.min(i+100,g.itens.length)});
-      const pg=pgs[window.APOIA_PAG[k]]||pgs[0]||{de:1,ate:0};
-      const fatia=g.itens.slice(pg.de-1,pg.ate);
-      return `<section class="rk2-trilha" style="--tr:${g.tr.cor};--trf:${g.tr.fundo}">
-        <header class="rk2-cab">
-          <h4>${esc(g.tr.rotulo)}<span class="rk2-qt">${g.itens.length}</span></h4>
-          <p>${esc(g.tr.explica)}</p>
-          ${pgs.length>1?`<nav class="rk2-pgs">${pgs.map((x,i)=>`<button class="rk2-pg ${i===(window.APOIA_PAG[k]||0)?"on":""}" onclick="paginaApoiadores('${k}',${i})">${x.de}–${x.ate}</button>`).join("")}</nav>`:""}
-        </header>
-        <ol class="rk2-lista" start="${pg.de}">
-        ${fatia.map(e=>{const c=e.cadastro||{}, larg=Math.round(100*(e.pontos||0)/maxPts);
-          return `<li class="rk2-linha" onclick="fichaApoiador('${esc(String(e.posicao))}')" tabindex="0"
-            onkeydown="if(event.key==='Enter')fichaApoiador('${esc(String(e.posicao))}')">
-            <span class="rk2-pos">${e.posicao}</span>
-            <span class="rk2-id">
-              <b>${esc(e.nome)}</b>
-              <small>${esc(c.cnae_principal||c.razao_social||e.leitura||e.apoia||"atividade ainda não levantada")}</small>
-            </span>
-            <span class="rk2-portas">${(e.tipos_de_recurso||[]).map(x=>`<i class="rk2-porta" style="--pc:${(PORTA[x]||["","#777"])[1]}">${esc((PORTA[x]||[x])[0])}</i>`).join("")}${e.virou_motor?`<i class="rk2-porta motor" title="virou motor: lido todo dia">motor</i>`:""}</span>
-            <span class="rk2-marcas">${c.cnpj?`<i title="CNPJ ${esc(c.cnpj)}">cnpj</i>`:""}${(c.qsa||[]).length?`<i title="${(c.qsa||[]).length} sócios no quadro">sócios</i>`:""}${(c.telefone||c.email)?`<i class="tem" title="${esc(c.telefone||c.email)}">contato</i>`:""}</span>
-            <span class="rk2-contato">${
-              e.site?`<a href="${esc(e.site)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">site da empresa</a>`
-              : c.email?`<a href="mailto:${esc(c.email)}" onclick="event.stopPropagation()">${esc(c.email)}</a>`
-              : c.telefone?`<a href="tel:${esc(String(c.telefone).replace(/\D/g,""))}" onclick="event.stopPropagation()">${esc(c.telefone)}</a>`
-              : `<em>contato a levantar</em>`}</span>
-            <span class="rk2-nota"><span class="rk2-barra"><i style="width:${larg}%"></i></span><b>${e.pontos}</b></span>
-          </li>`;}).join("")}
-        </ol>
-        ${!fatia.length?`<p class="rk2-vazio">Nenhuma entidade desta trilha passa pelos filtros. Limpe um filtro para ver o resto.</p>`:""}
-      </section>`;}).join("")}
-   ${!todas.length?`<p class="rk2-vazio">Nada encontrado com esses filtros.</p>`:""}`;
+  <div class="mesa" style="--tc:${T.cor};--tf:${T.fundo}">
+    <nav class="mz-trilhas" role="tablist">
+      ${Object.entries(TRILHAS_MESA).map(([k,v])=>{const n=(R.empresas||[]).filter(e=>_daTrilha(e,k)).length;
+        return `<button role="tab" aria-selected="${k===F.trilha}" class="mz-tr ${k===F.trilha?"on":""}"
+          style="--c:${v.cor}" onclick="mesaTrilha('${k}')">${esc(v.rotulo)}<b>${n}</b></button>`;}).join("")}
+    </nav>
+    <p class="mz-linha">${esc(T.linha)}</p>
 
-  const b=$("rk2-busca"); if(b){ b.oninput=()=>{clearTimeout(window._rkT);window._rkT=setTimeout(()=>filtraApoiadores("busca",b.value),260);} }
-  const n=$("rk2-nivel"); if(n)n.onchange=()=>filtraApoiadores("nivel",n.value);
-  const tp=$("rk2-tipo"); if(tp)tp.onchange=()=>filtraApoiadores("tipo",tp.value);
-  const ct=$("rk2-ct"); if(ct)ct.onchange=()=>filtraApoiadores("so_contato",ct.checked);
+    <div class="mz-painel">
+      <div class="mz-valor">
+        <span class="mz-rot">Potencial desta lista</span>
+        <span class="mz-cifra">${_faixa(somaMin,somaMax)}</span>
+        <span class="mz-nota">${comValor} de ${fatia.length} empresas com estimativa · IRPJ direcionável por ano</span>
+      </div>
+      <div class="mz-icms">
+        <span class="mz-rot">ICMS</span>
+        <span class="mz-icms-v">a confirmar</span>
+        <span class="mz-nota">depende de programa estadual; a regra de Goiás precisa ser conferida na fonte oficial antes de virar número</span>
+      </div>
+    </div>
+
+    <div class="mz-busca">
+      <input id="mz-q" class="mz-campo" placeholder="nome, razão social, atividade ou cidade" value="${esc(F.busca)}">
+      <select id="mz-nv" class="mz-sel"><option value="">todo alcance</option>${niveis.map(n=>`<option ${F.nivel===n?"selected":""} value="${esc(n)}">${esc(n)}</option>`).join("")}</select>
+      ${tipos.length?`<select id="mz-tp" class="mz-sel"><option value="">toda porta</option>${tipos.map(x=>`<option ${F.tipo===x?"selected":""} value="${esc(x)}">${esc((PORTA[x]||[x])[0])}</option>`).join("")}</select>`:""}
+      <label class="mz-ck"><input type="checkbox" id="mz-ct" ${F.so_contato?"checked":""}> só com contato</label>
+      ${(F.busca||F.nivel||F.tipo||F.so_contato)?`<button class="mz-limpa" onclick="['busca','nivel','tipo'].forEach(k=>window.MESA[k]='');window.MESA.so_contato=false;window.MESA.caderno=0;window.desenhaApoiadores()">limpar</button>`:""}
+    </div>
+
+    ${cadernos.length>1?`<div class="mz-cadernos"><span class="mz-rot">Listas</span>
+      ${cadernos.map((c,i)=>`<button class="mz-cd ${i===F.caderno?"on":""}" onclick="mesaCaderno(${i})">
+        <b>${c.n}</b><span>${c.de}–${c.ate}</span></button>`).join("")}</div>`:""}
+
+    <ol class="mz-lista" start="${cad.de}">
+    ${fatia.map(e=>{const c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
+      const larg=ir.direcionavel_max?Math.max(3,Math.round(100*ir.direcionavel_max/tetoBarra)):0;
+      return `<li class="mz-l" tabindex="0" onclick="fichaApoiador('${esc(String(e.posicao))}')"
+        onkeydown="if(event.key==='Enter')fichaApoiador('${esc(String(e.posicao))}')">
+        <span class="mz-pos">${e.posicao}</span>
+        <span class="mz-nome"><b>${esc(e.nome)}</b>
+          <small>${esc(c.cnae_principal||c.razao_social||e.leitura||e.apoia||"atividade a levantar")}${c.municipio?` · ${esc(c.municipio)}${c.uf?"/"+esc(c.uf):""}`:""}</small></span>
+        <span class="mz-portas">${(e.tipos_de_recurso||[]).map(x=>`<i style="--pc:${(PORTA[x]||["","#777"])[1]}">${esc((PORTA[x]||[x])[0])}</i>`).join("")}${e.virou_motor?'<i class="motor" title="virou motor: lido todo dia">motor</i>':""}</span>
+        <span class="mz-pot">${pt.apurou
+          ? `<b>${_faixa(ir.direcionavel_min,ir.direcionavel_max)}</b>
+             <span class="mz-bar"><i style="width:${larg}%"></i></span>
+             <small>${ir.teto_pct}% do IRPJ · confiança ${esc(pt.confianca||"baixa")}</small>`
+          : `<em class="mz-sem">${esc((pt.motivo||"sem estimativa").slice(0,46))}</em>`}</span>
+        <span class="mz-ct">${
+          e.site?`<a href="${esc(e.site)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">site</a>`
+          : c.email?`<a href="mailto:${esc(c.email)}" onclick="event.stopPropagation()">e-mail</a>`
+          : c.telefone?`<a href="tel:${esc(String(c.telefone).replace(/\D/g,""))}" onclick="event.stopPropagation()">${esc(c.telefone)}</a>`
+          : `<em>a levantar</em>`}</span>
+      </li>`;}).join("")}
+    </ol>
+    ${!fatia.length?`<p class="mz-vazio">Nenhuma empresa nesta trilha com esses filtros. Troque a trilha acima ou limpe um filtro.</p>`:""}
+    <p class="mz-rodape">Os valores são estimativa a partir do porte e do capital social declarados na Receita, com margem de ${R.empresas&&R.empresas[0]&&R.empresas[0].potencial?R.empresas[0].potencial.margem_usada_pct||8:8}% de lucro presumido. Servem para ordenar a quem pedir primeiro, não para escrever em ofício.</p>
+  </div>`;
+
+  const q=$("mz-q"); if(q){q.oninput=()=>{clearTimeout(window._mzT);window._mzT=setTimeout(()=>mesaFiltro("busca",q.value),260);};}
+  const nv=$("mz-nv"); if(nv)nv.onchange=()=>mesaFiltro("nivel",nv.value);
+  const tp=$("mz-tp"); if(tp)tp.onchange=()=>mesaFiltro("tipo",tp.value);
+  const ct=$("mz-ct"); if(ct)ct.onchange=()=>mesaFiltro("so_contato",ct.checked);
 };
 
 window.fichaApoiador=function(pos){
-  const R=window.APOIA||{}, e=(R.empresas||[]).find(x=>String(x.posicao)===String(pos)); if(!e)return; const c=e.cadastro||{};
-  const tr=TRILHA[e.origem]||TRILHA["prospecção do Piloto"];
+  const R=window.APOIA||{}, e=(R.empresas||[]).find(x=>String(x.posicao)===String(pos)); if(!e)return;
+  const c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
+  const tk=Object.keys(TRILHAS_MESA).find(k=>_daTrilha(e,k))||"descobertas", T=TRILHAS_MESA[tk];
   const L=(r,v)=>v?`<div class="rel-linha"><b>${r}:</b> ${esc(String(v))}</div>`:"";
   abreModal(
    `<h3 style="margin:0">${esc(e.nome)}</h3>
-    <div class=meta><span class="rk2-selo" style="background:${tr.cor}">${esc(tr.rotulo)}</span>
+    <div class=meta><span class="mz-selo" style="background:${T.cor}">${esc(T.rotulo)}</span>
       posição ${e.posicao} · ${e.pontos} ponto(s)${e.nivel?" · alcance "+esc(e.nivel):""}</div>`,
    `<div class="rel-janela">
-      ${(e.tipos_de_recurso||[]).length?`<div class="fdoc-t">Por qual porta se entra</div>
+      ${pt.apurou?`<div class="mz-conta">
+        <div class="mz-conta-t">Quanto pode direcionar, por ano</div>
+        <div class="mz-conta-v">${_faixa(ir.direcionavel_min,ir.direcionavel_max)}</div>
+        <table class="mz-leis"><tbody>
+          ${Object.values(ir.por_lei||{}).map(l=>`<tr><td>${esc(l.nome)}</td><td class=pct>${l.limite_pct}%</td>
+            <td class=v>${_faixa(l.min,l.max)}</td><td class=sv>${esc(l.serve_para)}</td></tr>`).join("")}
+        </tbody></table>
+        <div class="mz-conta-t" style="margin-top:9px">Como se chegou a isso</div>
+        <ol class="mz-passos">
+          <li>${esc(pt.base_do_calculo)}</li>
+          <li>faturamento estimado de ${_rs(pt.faturamento.min)} a ${_rs(pt.faturamento.max)} por ano</li>
+          <li>margem de ${pt.margem_usada_pct}% → lucro de ${_rs(pt.lucro_estimado.min)} a ${_rs(pt.lucro_estimado.max)}</li>
+          <li>IRPJ devido de ${_rs(ir.devido_min)} a ${_rs(ir.devido_max)} (15% + 10% sobre o que passa de R$ 240 mil)</li>
+          <li>até ${ir.teto_pct}% disso pode ir para as leis de incentivo</li>
+        </ol>
+        <div class="mz-icms-box"><b>ICMS:</b> ${esc(pt.icms.situacao)} — ${esc(pt.icms.porque)}</div>
+        <p class="mz-aviso">${esc(pt.aviso)}</p>
+      </div>`:`<div class="mz-conta sem"><b>Sem estimativa de valor.</b> ${esc(pt.motivo||"dados insuficientes")}.</div>`}
+
+      ${(e.tipos_de_recurso||[]).length?`<div class="fdoc-t" style="margin-top:12px">Por qual porta se entra</div>
         <ul class="rel-lista">${(e.tipos_de_recurso||[]).map((x,i)=>`<li><b style="color:${(PORTA[x]||["","#777"])[1]}">${esc((PORTA[x]||[x])[0])}</b>${(e.portas||[])[i]?` — ${esc((e.portas||[])[i])}`:""}</li>`).join("")}</ul>`:""}
-      <div class="fdoc-t" style="margin-top:10px">Identificação</div>
+      <div class="fdoc-t" style="margin-top:12px">Identificação</div>
       ${L("Razão social",c.razao_social)}${L("Nome fantasia",c.nome_fantasia)}${L("CNPJ",c.cnpj)}
       ${L("Atividade principal",(c.cnae_codigo?c.cnae_codigo+" — ":"")+(c.cnae_principal||""))}
       ${(c.cnaes_secundarios||[]).length?`<div class="rel-linha"><b>Outras atividades:</b> ${(c.cnaes_secundarios||[]).map(esc).join(" · ")}</div>`:""}
       ${L("Natureza jurídica",c.natureza_juridica)}${L("Porte",c.porte)}${L("Situação",c.situacao)}${L("Capital social",c.capital_social)}
       ${L("Município",[c.municipio,c.uf].filter(Boolean).join("/"))}${L("Endereço",c.endereco)}
-      <div class="fdoc-t" style="margin-top:10px">Como chegar até ela</div>
+      <div class="fdoc-t" style="margin-top:12px">Como chegar até ela</div>
       ${L("Telefone",c.telefone)}${L("E-mail",c.email)}
       ${e.site?`<div class="rel-linha"><b>Site:</b> <a href="${esc(e.site)}" target=_blank rel="noopener noreferrer">${esc(e.site)}</a></div>`:""}
-      ${(c.qsa||[]).length?`<div class="fdoc-t" style="margin-top:10px">Quem responde pela empresa</div>
+      ${(c.qsa||[]).length?`<div class="fdoc-t" style="margin-top:12px">Quem responde pela empresa</div>
         <ul class="rel-lista">${(c.qsa||[]).map(s=>`<li>${esc(s.nome)}${s.qualificacao?` — <span class=meta>${esc(s.qualificacao)}</span>`:""}</li>`).join("")}</ul>`:""}
-      ${(e.por||[]).length?`<div class="fdoc-t" style="margin-top:10px">O que sustenta a pontuação</div>
+      ${(e.por||[]).length?`<div class="fdoc-t" style="margin-top:12px">O que sustenta a pontuação</div>
         <ul class="rel-lista">${(e.por||[]).map(x=>`<li>${esc(String(x))}</li>`).join("")}</ul>`:""}
-      ${(e.programa||e.apoia||e.via_de_entrada)?`<div class="fdoc-t" style="margin-top:10px">Investimento social</div>${L("Programa",e.programa)}${L("Apoia",e.apoia)}${L("Via de entrada",e.via_de_entrada)}`:""}
+      ${(e.programa||e.apoia||e.via_de_entrada)?`<div class="fdoc-t" style="margin-top:12px">Investimento social</div>${L("Programa",e.programa)}${L("Apoia",e.apoia)}${L("Via de entrada",e.via_de_entrada)}`:""}
       ${e.ficha?`<div class="rel-linha" style="margin-top:8px"><b>Ficha na Biblioteca:</b> <code>${esc(e.ficha)}</code></div>`:""}
-      <div class="rk2-futuro">
-        <b>Relatório completo desta empresa</b>
-        <p>Quem decide, projetos já apoiados e contatos diretos entram aqui quando você enviar o material. A ficha já está aberta na Biblioteca e aguarda o conteúdo.</p>
-        ${(c.a_completar||[]).length?`<p class=meta>Dados ainda em falta: ${(c.a_completar||[]).join(", ")}.</p>`:""}
-      </div>
+      <div class="mz-futuro"><b>Relatório completo desta empresa</b>
+        <p>Quem decide, projetos já apoiados e contatos diretos entram aqui quando você enviar o material.</p>
+        ${(c.a_completar||[]).length?`<p class=meta>Ainda falta: ${(c.a_completar||[]).join(", ")}.</p>`:""}</div>
     </div>`);
 };
+
 /* o avião em travessia sobre a faixa onde o Piloto trabalha */
 const ONDE_POUSAR={cacar_oportunidade:["#rank-apoiadores","#emp-ranking-caixa","#pil-posto","#pil-posto-bussola"],
                    afiar_motor:["#pil-posto-bussola","#pil-posto"],

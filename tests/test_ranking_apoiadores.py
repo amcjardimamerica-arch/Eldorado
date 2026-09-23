@@ -19,10 +19,10 @@ class TesteRanking(unittest.TestCase):
         pg = r["paginas"]
         self.assertEqual(pg[0], {"de": 1, "ate": 100}); self.assertEqual(pg[-1]["ate"], r["total"])
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        for x in ("rank-apoiadores", "window.paginaApoiadores", "window.fichaApoiador",
-                  "rk2-pg", "rk2-linha", "rk2-trilha"):
+        for x in ("rank-apoiadores", "window.mesaCaderno", "window.fichaApoiador",
+                  "mz-cd", "mz-l", "mz-trilhas"):
             self.assertIn(x, h, x)
-        self.assertIn("i<g.itens.length;i+=100", h)                      # páginas de 100 por trilha
+        self.assertIn("i<lista.length;i+=100", h)                        # listas de 100 por trilha
 
     def test_dados_cadastrais(self):
         r = json.loads((ROOT / "docs/dados/ranking_apoiadores.json").read_text(encoding="utf-8"))
@@ -70,46 +70,3 @@ class TesteCicloContinuoEAviao(unittest.TestCase):
         w = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
         self.assertIn("PROTEÇÃO DO PAINEL", w)
         self.assertIn("docs/dashboard.html", w.split("PROTEÇÃO DO PAINEL")[1][:400])
-
-
-class TesteLivroRazao(unittest.TestCase):
-    """O ranking refeito: uma linha por entidade, trilhas separadas, filtros e pontuação."""
-
-    def setUp(self):
-        self.h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-
-    def test_duas_trilhas_com_linha_propria(self):
-        self.assertIn('"destinação tributária":{id:"tributaria"', self.h)
-        self.assertIn('"patrocínio privado":{id:"privado"', self.h)
-        self.assertIn("imposto que a empresa já deve ao fisco", self.h)   # explica a diferença
-        self.assertIn("verba própria da empresa", self.h)
-        self.assertIn("rk2-trilha", self.h)
-
-    def test_filtros_de_verdade(self):
-        for f in ("rk2-busca", "rk2-nivel", "rk2-tipo", "rk2-ct", "rk2-limpa", "_passaFiltro"):
-            self.assertIn(f, self.h, f)
-        self.assertIn("so_contato", self.h)
-
-    def test_pontuacao_legivel_sem_ler_numero(self):
-        self.assertIn("rk2-barra", self.h)
-        self.assertIn("larg=Math.round(100*(e.pontos||0)/maxPts)", self.h)  # barra proporcional ao topo
-
-    def test_porta_de_entrada_por_tipo_de_recurso(self):
-        for t in ("incentivo_fiscal", "patrocinio", "edital_proprio", "instituto_fundacao", "esg", "doacao"):
-            self.assertIn(t, self.h.split("const PORTA=")[1][:400], t)
-        self.assertIn("Por qual porta se entra", self.h)
-
-    def test_contato_mostra_o_que_existe(self):
-        self.assertIn("site da empresa", self.h)
-        self.assertIn("mailto:", self.h); self.assertIn("tel:", self.h)
-        self.assertIn("contato a levantar", self.h)                        # vazio é convite, não erro
-
-    def test_espaco_do_relatorio_futuro(self):
-        self.assertIn("Relatório completo desta empresa", self.h)
-        self.assertIn("Quem decide, projetos já apoiados e contatos diretos", self.h)
-
-    def test_acessivel_e_responsivo(self):
-        self.assertIn('tabindex="0"', self.h)
-        self.assertIn("event.key==='Enter'", self.h)                       # abre pelo teclado
-        self.assertIn("@media(max-width:760px)", self.h)
-        self.assertIn("prefers-reduced-motion", self.h)
