@@ -15,9 +15,12 @@ class TestePiloto(unittest.TestCase):
         self.assertTrue(all(x["veredito"] in ("aprovado", "atencao", "reprovado") for x in g))
         self.assertGreaterEqual(sum(1 for x in g if len(x["texto"]) > 200), 300)
 
-    def test_quatro_candidatos_um_por_vez_e_eliminatorio(self):
-        self.assertEqual(len(CANDIDATOS), 4)
-        self.assertEqual({c["id"] for c in CANDIDATOS}, {"qwen2.5-3b", "qwen2.5-7b", "gemma-2-2b", "llama-3.2-3b"})
+    def test_candidatos_vem_do_banco_de_reserva_um_por_vez(self):
+        """A lista era fixa no código e não via o banco de reserva do cargo: o Qwen3-1.7B
+        estava lá desde 21/09 e nunca foi medido."""
+        self.assertGreaterEqual(len(CANDIDATOS), 4)
+        self.assertTrue(any("Qwen3" in (c["nome"] or "") for c in CANDIDATOS))
+        self.assertEqual({c["id"] for c in CANDIDATOS}, {"llama-3.2-3b", "qwen3-1.7b", "llama-3.2-1b", "gemma-2-2b", "phi-3.5-mini"})
         self.assertTrue(all(c["gb"] <= 5 and c["url"].startswith("https://huggingface.co/") for c in CANDIDATOS))
         self.assertEqual(MAPA_VEREDITO["fomento_osc"], "aprovado")
         wf = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")

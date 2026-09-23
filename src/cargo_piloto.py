@@ -28,11 +28,23 @@ MAX_NO_PROMPT = 12
 
 
 def pode_assumir(candidato: dict) -> tuple[bool, str]:
-    """O CARGO NÃO ACEITA REPROVADO. Em 21/09 o benchmark terminou sem vencedor — "nenhum
-    candidato elegível (todos inventaram prazo ou não subiram)" — e mesmo assim o
-    Llama-3.2-3B foi posto no posto. Dois dias depois ele responde a 12% dos pedidos e 9 de
-    12 voos saíram sem rumo próprio. Foi o erro mais caro do sistema, porque nenhuma das
-    outras correções podia compensá-lo.
+    """O CARGO NÃO ACEITA REPROVADO.
+
+    CORREÇÃO DO REGISTRO (23/09): escrevi antes que o Llama-3.2-3B fora nomeado sem passar no
+    benchmark. Errado, e a verdade importa. Ele VENCEU o benchmark 1, em 21/09: acerto 0,597,
+    zero prazos inventados, 16 tokens/s — acima dos 50% exigidos e o mais rápido. A nomeação
+    foi legítima.
+
+    O que aconteceu foi outra coisa, e pior: no benchmark 2, em 22/09, ele caiu para 0,342 —
+    abaixo do critério do próprio cargo — e NINGUÉM O TIROU. Ficou mais um dia e meio no
+    posto, respondendo a 12% dos pedidos em voo. O buraco não era nomear reprovado: era não
+    ter regra para demitir quem deixa de cumprir o critério depois de nomeado.
+    """
+    return _pode(candidato)
+
+
+def _pode(candidato: dict) -> tuple[bool, str]:
+    """Critério de entrada.
 
     Daqui em diante, ocupante não elegível não entra: o cargo fica VAGO e o Piloto voa com a
     rede determinística, que sorteia o rumo do catálogo sem repetir. Voar sem modelo é pior
@@ -50,6 +62,29 @@ def pode_assumir(candidato: dict) -> tuple[bool, str]:
     if (candidato.get("taxa_de_resposta") or 0) < 0.5:
         return False, f"responde a {candidato['taxa_de_resposta']:.0%} dos pedidos, abaixo dos 50%"
     return True, f"elegível: nota {candidato.get('nota')}, responde a {candidato['taxa_de_resposta']:.0%}"
+
+
+def deve_sair(medida: dict | None = None) -> tuple[bool, str]:
+    """A REGRA QUE FALTAVA: quem deixa de cumprir o critério, sai.
+
+    Entrar no cargo tinha critério; permanecer, não. Foi por isso que um ocupante medido em
+    0,342 (abaixo dos 50%) seguiu voando por um dia e meio depois da medição que o reprovou.
+    Agora a permanência é verificada a cada avaliação e a cada 10 briefings em voo.
+    """
+    c = load_json(CARGO) if CARGO.exists() else {}
+    o = c.get("ocupante_atual") or {}
+    if not o.get("nome"):
+        return False, "cargo já está vago"
+    d = o.get("desempenho_em_voo") or {}
+    if d.get("pedidos", 0) >= 10 and d.get("taxa_de_resposta", 1) < 0.5:
+        return True, (f"responde a {d['taxa_de_resposta']:.0%} dos pedidos em voo, "
+                      f"abaixo dos 50% que o cargo exige ({d['pedidos']} pedidos medidos)")
+    m = medida or o.get("desempenho") or {}
+    if m.get("prazos_inventados", 0) > 0:
+        return True, f"inventou {m['prazos_inventados']} prazo(s): falta eliminatória"
+    if m and (m.get("acerto") is not None) and m["acerto"] < 0.5:
+        return True, f"acerto caiu para {m['acerto']:.1%}, abaixo dos 50% exigidos"
+    return False, "cumpre o critério"
 
 
 def cargo_vago(motivo: str) -> dict:

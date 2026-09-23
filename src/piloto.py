@@ -38,17 +38,32 @@ CFG_P = ROOT / "config/piloto.json"
 PASTA = ROOT / "estado/piloto"
 PASTA.mkdir(parents=True, exist_ok=True)
 
-CANDIDATOS = [
-    {"id": "qwen2.5-3b", "nome": "Qwen2.5-3B-Instruct", "arquivo": "qwen2.5-3b-instruct-q4_k_m.gguf", "gb": 2.0, "licenca": "Apache-2.0",
-     "url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf"},
-    {"id": "qwen2.5-7b", "nome": "Qwen2.5-7B-Instruct", "arquivo": "Qwen2.5-7B-Instruct-Q4_K_M.gguf", "gb": 4.7, "licenca": "Apache-2.0",
-     "url": "https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf",
-     "nota": "o repositório oficial da Alibaba distribui o 7B fatiado em 2 arquivos; esta é a versão em arquivo único"},
-    {"id": "gemma-2-2b", "nome": "Gemma-2-2B-it", "arquivo": "gemma-2-2b-it-Q4_K_M.gguf", "gb": 1.6, "licenca": "Gemma",
-     "url": "https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q4_K_M.gguf"},
-    {"id": "llama-3.2-3b", "nome": "Llama-3.2-3B-Instruct", "arquivo": "Llama-3.2-3B-Instruct-Q4_K_M.gguf", "gb": 2.0, "licenca": "Llama-3.2-Community",
-     "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf"},
-]
+# DUAS LISTAS QUE NÃO CONVERSAVAM. O benchmark lia esta lista, fixa no código, enquanto o
+# banco de reserva do cargo vivia em config/cargo_piloto.json — com nomes diferentes. Por isso
+# o Qwen3-1.7B, o Llama-3.2-1B e o Phi-3.5-mini estavam no banco de reserva desde 21/09 e
+# NUNCA foram medidos: o benchmark simplesmente não sabia que existiam. A lista passa a ser
+# uma só, lida do arquivo do cargo, com o ocupante junto para servir de régua.
+def _candidatos() -> list[dict]:
+    from .nucleo import load_json as _lj
+    arq = ROOT / "config/cargo_piloto.json"
+    if not arq.exists():
+        return []
+    c = _lj(arq)
+    saida, vistos = [], set()
+    for m in ([c.get("ocupante_atual") or {}] + list(c.get("banco_de_reserva") or [])):
+        i = m.get("id")
+        if not i or i in vistos or not m.get("url"):
+            continue
+        vistos.add(i)
+        saida.append({"id": i, "nome": m.get("nome"), "url": m["url"],
+                      "arquivo": m.get("arquivo") or m["url"].rsplit("/", 1)[-1],
+                      "gb": m.get("gb"), "licenca": m.get("licenca"),
+                      "e_ocupante": m is (c.get("ocupante_atual") or {}),
+                      "nota": m.get("porque") or m.get("nota")})
+    return saida
+
+
+CANDIDATOS = _candidatos()
 MAPA_VEREDITO = {"fomento_osc": "aprovado", "atencao": "atencao"}      # famílias de inconformidade → reprovado
 # métricas que importam para o Piloto: FALSO POSITIVO (reprovado→aprovado) é o erro caro; FALSO NEGATIVO (aprovado→reprovado) perde oportunidade
 

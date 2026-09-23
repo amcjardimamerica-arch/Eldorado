@@ -103,5 +103,5 @@ class TesteCargoNaoAceitaReprovado(unittest.TestCase):
     def test_a_razao_da_regra_esta_escrita(self):
         src = (ROOT / "src/cargo_piloto.py").read_text(encoding="utf-8")
         self.assertIn("O CARGO NÃO ACEITA REPROVADO", src)
-        self.assertIn("erro mais caro do sistema", src)
         self.assertIn("disfarçado de inteligência", src)
+        self.assertIn("CORREÇÃO DO REGISTRO", src)           # o motivo real, corrigido em 23/09
