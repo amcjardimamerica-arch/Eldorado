@@ -96,8 +96,20 @@ jobs:
               alvo = [oc] + res                      # o ocupante também, para a comparação ser justa
           else:
               alvo = [oc]                            # dia a dia: só o ocupante (2 GB)
+          # CARGO VAGO NÃO TEM ARQUIVO. Desde 23/09 o posto pode estar vago, e o ocupante
+          # vira um registro sem url nem arquivo. Ler esses campos direto quebrava o passo
+          # inteiro — o download falhava antes de tentar baixar coisa alguma, e a avaliação
+          # do reserva morria junto, por um motivo que nada tinha a ver com ela.
+          vistos = set()
           for c in alvo:
-              print(c["arquivo"], c["url"])
+              u = (c or {}).get("url")
+              if not u:
+                  continue
+              a = c.get("arquivo") or u.rsplit("/", 1)[-1]
+              if a in vistos:
+                  continue
+              vistos.add(a)
+              print(a, u)
           PY
           while read -r ARQ URL; do
             DEST="ia_local/modelos/$ARQ"
