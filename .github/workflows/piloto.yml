@@ -54,6 +54,28 @@ jobs:
           path: ia_local/modelos
           key: modelos-gguf-v1-${{ hashFiles('config/piloto.json') }}
           restore-keys: modelos-gguf-v1-
+      - name: SONDAR os enderecos dos GGUF (nao baixa; mede o cabecalho)
+        if: ${{ github.event.inputs.modo == 'sondar' }}
+        run: |
+          # Uma requisicao de cabecalho por endereco: diz se o arquivo existe e o tamanho,
+          # sem gastar os minutos de um download. E o que faltava em 23/09, quando a avaliacao
+          # do Qwen3 morreu sem dizer se era URL errada, nome mudado na origem ou rede.
+          mkdir -p estado/piloto
+          echo "modelo	url	http	tamanho_bytes" > estado/piloto/sondagem_gguf.tsv
+          python3 -c "import json;d=json.load(open('config/espelhos_gguf.json'))['espelhos'];[print(k+'	'+u) for k,us in d.items() for u in us]" > /tmp/urls.tsv
+          while IFS=$'\t' read -r MOD URL; do
+            [ -z "$URL" ] && continue
+            R=$(curl -sIL --max-time 45 -o /dev/null -w "%{http_code}	%{size_download}	%{content_type}" "$URL" || echo "sem-resposta	0	-")
+            COD=$(echo "$R" | cut -f1)
+            LEN=$(curl -sIL --max-time 45 "$URL" 2>/dev/null | grep -i "^content-length:" | tail -1 | tr -d " \r" | cut -d: -f2)
+            printf '%s\t%s\t%s\t%s\n' "$MOD" "$URL" "$COD" "${LEN:-0}" >> estado/piloto/sondagem_gguf.tsv
+            echo "  $MOD  HTTP $COD  ${LEN:-0} bytes  $URL"
+          done < /tmp/urls.tsv
+          git config user.name "piloto" && git config user.email "piloto@eldorado"
+          git add estado/piloto/sondagem_gguf.tsv
+          git commit -q -m "sondagem dos enderecos GGUF $(date -u +%H:%M)" || true
+          git pull --rebase -q origin main || true
+          git push -q origin main || true
       - name: Baixar modelos que faltam (curl -L, com retentativas; falha de um modelo não derruba o job)
         env:
           MODO: ${{ github.event.inputs.modo || 'ciclo' }}
