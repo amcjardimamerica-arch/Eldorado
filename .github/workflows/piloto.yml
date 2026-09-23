@@ -28,7 +28,12 @@ concurrency:
 jobs:
   piloto:
     runs-on: ubuntu-latest
-    timeout-minutes: 30      # teto duro: UMA pesquisa por execução, nunca mais que 30 min
+    # TETO POR MODO. Os 30 minutos foram desenhados para o VOO: uma pesquisa por execução,
+    # para que nenhum voo monopolize o runner. O benchmark é outra coisa — cinco modelos
+    # contra 120 itens em 4 CPUs — e em 23/09 foi cancelado no meio por esse mesmo teto,
+    # depois de 30 minutos de trabalho perdidos. Cada modo passa a ter o seu.
+    timeout-minutes: ${{ github.event.inputs.modo == 'benchmark' && 330 || (github.event.inputs.modo == 'avaliar' && 240 || 30) }}
+    # (o comentário original) teto duro: UMA pesquisa por execução, nunca mais que 30 min
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 1}
