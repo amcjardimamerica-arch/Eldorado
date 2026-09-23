@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-09-23
+# Pacote para o Claude Desktop — 2026-09-22
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
@@ -15,12 +15,11 @@ Ele lê com o seu IP e envia ao repositório. Motores atendidos:
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
-- **TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)** — todas as páginas falharam em 2026-09-23. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
-    - abrir https://www.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-    - abrir https://www.tjgo.jus.br/index.php/dje e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-    - abrir https://corregedoria.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 5 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 4 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://observatorio3setor.org.br/editais/ e procurar: edital, seleção de projetos, investimento social, responsabilidade social, patrocínio, incentivo fiscal
+- **PNCP — API de contratações (chamamentos e credenciamentos)** — todas as páginas falharam em 2026-09-22. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
+    - abrir https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao e procurar: chamamento público, termo de fomento, termo de colaboração, organização da sociedade civil, Lei 13.019, seleção de OSC
+    - abrir https://pncp.gov.br/pncp-api/v1/orgaos/ e procurar: chamamento público, termo de fomento, termo de colaboração, organização da sociedade civil, Lei 13.019, seleção de OSC
 
 Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `dados/editais/`. Devolva em `dados/editais/coleta_navegador/<data>-motores.json` no formato `{"<id ou novo>": {"objeto":..., "inicio":..., "fim":..., "pagina_oficial":..., "observacao":...}}`.
 
@@ -74,17 +73,17 @@ Para cada uma, abra a página oficial (nunca PNCP, diário ou portal de notícia
 - `cb12fd7ab9600a4cec12` — Edital  para Seleção de  Organizações   da   Sociedade   Civil  para o Desenvolvimento de  · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Funaids.org.br%2Fwp%2Dcontent%2Fuploads%2F2026%2F01%2F2026_Edital_UNAIDS_DATHI_Sociedade_Civil.pdf&rut=72de7c14c56224031c1bfffe6714e1c30cd81007daf1a909b5dd17abf9c1e0e6
 - `e0372d60014c5c6d46be` — O  Edital  nº 7/2026 tem como objetivo selecionar  organizações   da   sociedade   civil   · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.gov.br%2Fmulheres%2Fpt%2Dbr%2Facesso%2Da%2Dinformacao%2Feditais%2F2026%2Fedital%2Dno%2D7%2D2026%2Dselecao%2Dde%2Dorganizacoes%2Dda%2Dsociedade%2Dcivil%2Dpara%2Dcomposicao%2Ddo%2Dforum%2Dnacional%2Dpelo%2Dprotagonismo%2Ddas%2Dmulheres%2Didosas&rut=a2b32931f929949207cc0d25c6d1f32b815f187877fe8988906708bce9601b87
 - `f2a7f6ce188bcc297d5c` — Os  editais  aqui disponibilizados são oportunidades voltadas ao desenvolvimento instituci · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.itausocial.org.br%2Feditais%2F&rut=178675466b10ac3a74943b9cd2117d86099f5bbc5e0471269afd1890a45a6b10
-- `3186c66b3eea66113826` — Parque Bondinho Pão de Açúcar abre edital para projetos culturais incentivados Iniciativas · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fobservatorio3setor.org.br%2Fsecoes_tematicas%2Feditais%2F&rut=71e76025cf29251e29b331a6fd2f94e7215aff028875a7f549e64f491361f1f3
-- `50a1c1b837c01e854607` — Explore  editais  públicos e privados abertos para ONGs, projetos sociais, cultura, educaç · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Falteditais.com.br%2Foportunidades&rut=354178836f862682b94f171188dede4fcfb28bf24338f564e67873af2327a698
-- `8993bf97c9f30b0693b8` — Edital  para Seleção de  Organizações   da   Sociedade   Civil  para o Desenvolvimento de  · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Funaids.org.br%2Fwp%2Dcontent%2Fuploads%2F2026%2F01%2F2026_Edital_UNAIDS_DATHI_Sociedade_Civil.pdf&rut=0c3d849f487e52ade729eccb3e795d1c962c3111ccdeae0fa58e486dd8f888f1
-- `8a6b25cb0d7024bad623` — O UNAIDS publicou  edital  para seleção de  Organizações   da   Sociedade   Civil  para de · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fbrasil.un.org%2Fpt%2Dbr%2F308564%2Dunaids%2De%2Dminist%25C3%25A9rio%2Dda%2Dsa%25C3%25BAde%2Dabrem%2Dsele%25C3%25A7%25C3%25A3o%2Dde%2Dorganiza%25C3%25A7%25C3%25B5es%2Dda%2Dsociedade%2Dcivil%2Dvoltadas%2Da%25C3%25A7%25C3%25B5es&rut=89173c11252d4918b33561b96a3a2cff1ea3644f7114677d14a8be37a203d3d9
-- `e8978d129f2f0e1aaa8e` — O  Edital  nº 7/2026 tem como objetivo selecionar  organizações   da   sociedade   civil   · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.gov.br%2Fmulheres%2Fpt%2Dbr%2Facesso%2Da%2Dinformacao%2Feditais%2F2026%2Fedital%2Dno%2D7%2D2026%2Dselecao%2Dde%2Dorganizacoes%2Dda%2Dsociedade%2Dcivil%2Dpara%2Dcomposicao%2Ddo%2Dforum%2Dnacional%2Dpelo%2Dprotagonismo%2Ddas%2Dmulheres%2Didosas&rut=b344638a7913779ead02f3b7baf2d15fc7867709341dc505efe63441381a5b12
-- `fdade18228dbd15fb9fb` — Edital Conta que soma oferece formação gratuita em educação financeira para jovens · falta: Objeto, Prazo de inscrição · https://observatorio3setor.org.br/edital-conta-que-soma-oferece-formacao-gratuita-em-educacao-financeira-para-jovens
 - `0b74c8f7131e75e09a15` — Captação de Recursos · falta: Objeto, Prazo de inscrição · https://captadores.org.br/captacao-de-recursos
 - `1a298f0b5d7cbe0b2d76` — Certificadora Social · falta: Objeto, Prazo de inscrição · https://captadores.org.br/certificadora-social
 - `2df7efe2328e78c1df66` — Bússola Investimento Social · falta: Objeto, Prazo de inscrição · https://www.bussolasocial.com.br/investidores-sociais
 - `5b0575f3f6f5ab2aea82` — Bússola Gestão · falta: Objeto, Prazo de inscrição · https://www.bussolasocial.com.br/bussola-gestao
 - `6ace1b0d40a5cca52c51` — Bússola Financeiro · falta: Objeto, Prazo de inscrição · https://www.bussolasocial.com.br/bussola-financeiro
+- `616661aee9a7bc91e944` — Doação e projetos sociais · falta: Objeto, Prazo de inscrição · https://observatorio3setor.org.br/doacao-e-projetos-sociais
+- `281b8ce0f96a2b9219a9` — Curso gratuito vai apoiar organizações de base na mobilização da generosidade local · falta: Objeto, Prazo de inscrição · https://captadores.org.br/noticias/curso-gratuito-vai-apoiar-organizacoes-de-base-na-mobilizacao-da-generosidade-local
+- `d118fef09161e9e8e0c7` — WoMakersCode abre vaga para Captadora de Recursos · falta: Objeto, Prazo de inscrição · https://captadores.org.br/vagas/womakerscode-abre-vaga-para-captadora-de-recursos
+- `d89282fe7b230341381a` — Casa dos Curumins abre vaga para Especialista em Captação de Recursos · falta: Objeto, Prazo de inscrição · https://captadores.org.br/vagas/casa-dos-curumins-abre-vaga-para-especialista-em-captacao-de-recursos
+- `1f9233fbd12b1abd9cde` — ACTC – Casa do Coração abre vaga para Assistente Pleno de Captação de Recursos · falta: Objeto, Prazo de inscrição · https://captadores.org.br/vagas/actc-casa-do-coracao-abre-vaga-para-assistente-pleno-de-captacao-de-recursos
+- `93509f326fb7440b52cd` — FIFE 2027 abre chamada para seleção de palestrantes · falta: Objeto, Prazo de inscrição · https://captadores.org.br/noticias/fife-2027-abre-chamada-para-selecao-de-palestrantes
 
 ## Etapa 4½ — IA local (organização automática, sem gastar Claude)
 
