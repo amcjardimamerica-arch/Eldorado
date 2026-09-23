@@ -28,7 +28,8 @@ class TesteFilaDeResgate(unittest.TestCase):
 
     def test_fila_montada_do_acervo_real(self):
         r = montar_fila()
-        self.assertGreater(r["total_incompletos"], 50)
+        # caiu de 438 para 39 com os filtros de objeto e de credenciamento (23/09)
+        self.assertGreater(r["total_incompletos"], 20)
         self.assertLessEqual(r["na_fila"], 60)
         self.assertIn("ANTES de explorar", r["regra"])
         p = proximo(reservar=False)                                                # espiar não reserva

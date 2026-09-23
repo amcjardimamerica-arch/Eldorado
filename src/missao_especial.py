@@ -58,7 +58,8 @@ SERVE = ("assistência social", "assistencia social", "cultura", "cultural", "es
          "oficina", "capacitação", "capacitacao", "inclusão", "inclusao", "vulnerabilidade",
          "convivência", "convivencia", "socioeducativ", "socioassistencial", "cras", "creas",
          "patrocínio", "patrocinio", "edital de apoio", "prêmio", "premio")
-NAO_SERVE = ("leiloeiro", "profissionais de saúde", "profissionais de saude", "médico", "medico",
+NAO_SERVE = ("aquisicao de genero", "aquisicao de material", "aquisicao de equipamento",
+             "generos alimenticios", "leiloeiro", "profissionais de saúde", "profissionais de saude", "médico", "medico",
              "medicamento", "insumo hospitalar", "órtese", "ortese", "prótese", "protese",
              "locação de veículo", "locacao de veiculo", "combustível", "combustivel",
              "obra", "pavimentação", "pavimentacao", "reforma predial", "merenda", "gênero alimentício",
@@ -67,13 +68,41 @@ NAO_SERVE = ("leiloeiro", "profissionais de saúde", "profissionais de saude", "
              "exames", "consulta médica", "consulta medica", "transporte escolar", "vigilância", "vigilancia")
 
 
+def _sem_acento(s: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", str(s or "").lower())
+                   if unicodedata.category(c) != "Mn")
+
+
+# CREDENCIAMENTO NÃO É CAPTAÇÃO. A entidade se cadastra para PRESTAR serviço ao município e
+# ser paga por isso — é habilitação de fornecedor, com outro rito, outro contrato e outra
+# finalidade. No banco de provas de 23/09, 53 dos 60 alvos da fila eram credenciamento: o
+# Piloto gastava quase todo o esforço de resgate em papel que nunca viraria fomento.
+# Fica de fora, salvo quando o texto também fala de fomento, colaboração ou apoio a projeto.
+CREDENCIAMENTO = ("credenciamento", "credenciar", "cadastramento de prestador",
+                  "habilitacao de fornecedor", "chamamento para credenciamento")
+# A exceção tem de ser o OBJETO do edital, não uma palavra de passagem: "credenciamento de
+# empresa especializada em captação de patrocínio" mencionava patrocínio e não era fomento.
+# Só termos que nomeiam o instrumento de repasse abrem exceção ao veto de credenciamento.
+FOMENTO_MESMO = ("termo de fomento", "termo de colaboracao", "subvencao social",
+                 "selecao de projeto", "apoio a projeto", "emenda parlamentar",
+                 "fomento a projeto", "chamamento publico de projeto")
+
+
 def _relevante(e: dict) -> tuple[bool, str]:
-    """Este edital serve à nossa associação? Devolve (serve, por quê)."""
-    txt = " ".join(str(e.get(c) or "") for c in ("titulo", "objeto", "orgao", "familia")).lower()
+    """Este edital serve à nossa associação? Devolve (serve, por quê).
+
+    O casamento ignora acento e plural: em 23/09 a fila tinha "AQUISIÇÃO EXCLUSIVA DE GÊNEROS
+    ALIMENTÍCIOS" porque a lista dizia "gênero alimentício", no singular e com acento.
+    """
+    txt = _sem_acento(" ".join(str(e.get(c) or "") for c in ("titulo", "objeto", "orgao", "familia")))
     for n in NAO_SERVE:
-        if n in txt:
+        raiz = _sem_acento(n).rstrip("s")          # "generos alimenticios" casa com "genero alimenticio"
+        if raiz and raiz in txt:
             return False, f"fora do nosso objeto ({n})"
-    achou = [s for s in SERVE if s in txt]
+    if any(c in txt for c in CREDENCIAMENTO) and not any(f in txt for f in FOMENTO_MESMO):
+        return False, "credenciamento: habilitação para prestar serviço, não captação"
+    achou = [s for s in SERVE if _sem_acento(s).rstrip("s") in txt]
     if achou:
         return True, "serve: " + ", ".join(achou[:3])
     return False, "não diz respeito a projeto de OSC"
@@ -153,7 +182,15 @@ def proximo(reservar: bool = True) -> dict | None:
     pend = [(k, v) for k, v in (d.get("itens") or {}).items() if v.get("estado") == "aguardando"]
     if not pend:
         return None
-    k, v = max(pend, key=lambda kv: kv[1].get("urgencia", 0))
+    # A FILA PRECISA ANDAR. No banco de provas de 23/09, os 10 voos reservaram o MESMO alvo:
+    # max() por urgência devolve sempre o primeiro do empate, e quem falha volta a "aguardando"
+    # com a mesma urgência. O Piloto martelava um edital insolúvel e os outros 59 esperavam.
+    # Agora quem já foi tentado cai na ordem, e o empate é desfeito por quem esperou mais.
+    def _ordem(kv):
+        _k, _v = kv
+        return (-(_v.get("urgencia", 0) - 7 * _v.get("tentativas", 0)),
+                _v.get("ultima_tentativa") or "", _k)
+    k, v = min(pend, key=_ordem)
     if reservar:
         d["itens"][k]["estado"] = "em_resgate"
         write_json(FILA, d)
@@ -185,14 +222,18 @@ def plano_de_voo(ia, alvo: dict) -> dict:
             "nivel": "resgate", "alvo": "edital", "origem": "missao_especial", "edital": alvo}
 
 
-def devolver_a_fila(alvo_id: str) -> None:
-    """Item reservado mas não atendido (o voo acabou antes) volta a aguardar."""
+def devolver_a_fila(alvo_id: str, tentado: bool = False) -> None:
+    """Item reservado volta a aguardar. Se chegou a ser tentado, a tentativa fica contada —
+    senão ele volta ao topo e é reservado de novo no voo seguinte, para sempre."""
     if not FILA.exists():
         return
     d = load_json(FILA)
     it = (d.get("itens") or {}).get(alvo_id)
     if it and it.get("estado") == "em_resgate":
         it["estado"] = "aguardando"
+        if tentado:
+            it["tentativas"] = it.get("tentativas", 0) + 1
+            it["ultima_tentativa"] = now_iso()[:16]
         write_json(FILA, d)
 
 
@@ -202,6 +243,7 @@ def registrar_resgate(alvo_id: str, dados: dict, achou: bool) -> dict:
     if not it:
         return {}
     it["tentativas"] = it.get("tentativas", 0) + 1
+    it["ultima_tentativa"] = now_iso()[:16]
     if achou:
         it.update({k: v for k, v in dados.items() if v})
         it["falta"] = _falta(it)

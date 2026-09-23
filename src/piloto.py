@@ -465,6 +465,9 @@ def missao_resgate(ia, alvo: dict, conhecidos: set[str]) -> tuple[str, list[dict
     # falharam por não achar a página oficial — e não é de espantar: o chamamento de um
     # município está no portal dele, não no índice de um buscador. Se sabemos o órgão,
     # lemos o site dele por dentro, que ninguém bloqueia e onde o documento realmente está.
+    # VETOR NÃO É FONTE: PNCP e diários são onde o edital foi ANUNCIADO, e os motores já
+    # os leem todo dia. Ler o sitemap deles é repetir trabalho e não acha o documento.
+    VETOR_DOM = ("pncp.gov.br", "in.gov.br", "queridodiario.ok.org.br", "diariooficial")
     from .piloto_busca import buscar_na_fonte
     candidatos = []
     for campo in ("pagina_oficial", "site", "url"):
@@ -472,7 +475,7 @@ def missao_resgate(ia, alvo: dict, conhecidos: set[str]) -> tuple[str, list[dict
         if u and str(u).startswith("http"):
             from urllib.parse import urlsplit
             h = (urlsplit(str(u)).hostname or "").replace("www.", "")
-            if h and h not in candidatos:
+            if h and h not in candidatos and not any(v in h for v in VETOR_DOM):
                 candidatos.append(h)
     termos = [w for w in re.findall(r"[a-zà-ú0-9]{5,}", str(alvo.get("titulo") or "").lower())][:6]
     termos += ["edital", "chamamento", "chamada", "selecao", "seleção", "inscricoes", "inscrições"]
@@ -704,7 +707,7 @@ def ciclo(porta: int | None = None) -> dict:
     _atendidos = {str(m.get("alvo", "")).replace("resgate:", "") for m in (rel.get("missoes") or []) if m.get("tipo") == "resgate"}
     for _m in plano:
         if _m["tipo"] == "resgate" and _m["alvo_id"] not in _atendidos:
-            _devolver(_m["alvo_id"])                      # reservado e não atendido volta a aguardar
+            _devolver(_m["alvo_id"], tentado=False)                      # reservado e não atendido volta a aguardar
     from .piloto_ao_vivo import marcar as _vivo2, montar as _vivo_montar
     _vivo2("pousou", detalhe=f"{sum(len(m.get('achados') or []) for m in (rel.get('missoes') or []))} achado(s)")
     rel.setdefault("encerrou_por", "tarefa concluída")   # o normal: acabou o que havia para fazer
