@@ -57,47 +57,57 @@ class TestePotencialFiscal(unittest.TestCase):
         self.assertEqual(faixa_texto(None, None), "—")
 
 
-class TesteMesaDeCaptacao(unittest.TestCase):
-    def test_sem_rolagem_interna_na_lista(self):
-        bloco = H.split(".mz-lista{")[1].split("}")[0]
-        self.assertNotIn("overflow:auto", bloco)
-        self.assertNotIn("max-height", bloco)
+class TesteTelaDeEmpresas(unittest.TestCase):
+    """A tela refeita do zero: duas listas, sem duplicação, sem rolagem interna."""
 
-    def test_listas_numeradas_de_cem_em_cem(self):
-        self.assertIn("for(let i=0;i<lista.length;i+=100)", H)
-        self.assertIn("n:cadernos.length+1", H)                          # 1, 2, 3...
-        self.assertIn("mz-cd", H); self.assertIn("mesaCaderno", H)
-        self.assertIn("<b>${c.n}</b><span>${c.de}–${c.ate}</span>", H)   # nº da lista e o intervalo
+    def test_existe_uma_unica_lista_na_tela(self):
+        self.assertEqual(H.count('id="rank-apoiadores"'), 1)
+        for velho in ("rk-lista", "rk-busca", "rk-bt-fiscal", "desenhaRanking", "_rkDados",
+                      "mz-lista", "rk2-linha"):
+            self.assertNotIn(velho, H, f"resto do ranking antigo: {velho}")
 
-    def test_botao_para_cada_trilha(self):
-        self.assertIn("tributaria:{rotulo:\"Destinação tributária\"", H)
-        self.assertIn("privado:{rotulo:\"Patrocínio privado\"", H)
-        self.assertIn("window.mesaTrilha", H)
-        self.assertIn('role="tablist"', H); self.assertIn('aria-selected', H)
-        self.assertIn("uma trilha por vez", H.lower().replace("\n", " "))
+    def test_so_duas_listas_sem_o_piloto(self):
+        self.assertIn('tributaria:{rot:"Destinação tributária"', H)
+        self.assertIn('doadoras:{rot:"Empresas doadoras"', H)
+        bloco = H.split("const LISTAS={")[1].split("};")[0]
+        self.assertNotIn("Piloto", bloco)
+        self.assertNotIn("prospecção", bloco)
+        src = (ROOT / "src/ranking_apoiadores.py").read_text(encoding="utf-8")
+        self.assertIn("As descobertas do Piloto NÃO entram aqui", src)
+        r = json.loads((ROOT / "docs/dados/ranking_apoiadores.json").read_text(encoding="utf-8"))
+        self.assertEqual(set(r["por_origem"]), {"destinação tributária", "patrocínio privado"})
 
-    def test_dinheiro_no_lugar_de_maior_peso(self):
-        self.assertIn("Potencial desta lista", H)
-        self.assertIn("mz-cifra", H)
-        self.assertIn("IRPJ direcionável por ano", H)
-        self.assertIn("somaMin", H); self.assertIn("somaMax", H)          # soma da lista visível
-        self.assertIn("mz-icms", H)
+    def test_paginas_numeradas_de_cem_em_cem(self):
+        self.assertIn("for(let i=0;i<filtradas.length;i+=100)", H)
+        self.assertIn("n:paginas.length+1", H)
+        self.assertIn("<b>${x.n}</b><span>${x.de}–${x.ate}</span>", H)
+        self.assertIn("window.empPagina", H)
 
-    def test_a_conta_aparece_na_ficha(self):
-        self.assertIn("Quanto pode direcionar, por ano", H)
-        self.assertIn("Como se chegou a isso", H)
-        self.assertIn("mz-leis", H); self.assertIn("mz-passos", H)
-        self.assertIn("15% + 10% sobre o que passa de R$ 240 mil", H)
-        self.assertIn("mz-aviso", H)
+    def test_sem_rolagem_interna(self):
+        bloco = H.split(".ep-lista{")[1].split("}")[0]
+        self.assertNotIn("overflow", bloco); self.assertNotIn("max-height", bloco)
 
-    def test_nao_promete_o_que_nao_sabe(self):
-        self.assertIn("a confirmar", H)
-        self.assertIn("mz-sem", H)                                       # empresa sem estimativa diz por quê
-        self.assertIn("não para escrever em ofício", H)
-        self.assertIn("a levantar", H)                                   # contato vazio é convite
+    def test_cada_linha_traz_o_que_decide(self):
+        for campo in ("ep-pos", "ep-nome", "ep-ativ", "ep-porte", "ep-valor", "ep-ct"):
+            self.assertIn(campo, H, campo)
+        self.assertIn("c.cnpj", H); self.assertIn("c.cnae_principal", H)
+        self.assertIn("c.municipio", H); self.assertIn("capital", H)
+        self.assertIn("direcionavel_min", H)
 
-    def test_acessivel_e_responsivo(self):
-        self.assertIn('tabindex="0"', H); self.assertIn("event.key==='Enter'", H)
-        self.assertIn("@media(max-width:780px)", H)
-        self.assertIn("prefers-reduced-motion", H)
-        self.assertIn("focus-visible", H)
+    def test_filtros_relevantes(self):
+        for f in ("ep-q", "ep-uf", "ep-pt", "ep-so", "empLimpa"):
+            self.assertIn(f, H, f)
+        self.assertIn('value="contato"', H); self.assertIn('value="valor"', H); self.assertIn('value="goias"', H)
+
+    def test_clique_e_teclado_sem_erro(self):
+        self.assertIn("onclick=\"fichaEmpresa(${e.posicao})\"", H)
+        self.assertIn("window.fichaEmpresa", H)
+        self.assertIn("window.fichaApoiador=window.fichaEmpresa", H)   # nome antigo não quebra
+        self.assertIn("event.stopPropagation()", H)                     # link não dispara a ficha
+        self.assertIn('role="button"', H); self.assertIn("aria-label=", H)
+
+    def test_nao_perdeu_funcao_vizinha(self):
+        for f in ("desenhaDocumentos", "desenhaPerfis", "ligaDropzones", "TIPOS_DOC", "abrangenciaLocal"):
+            self.assertIn(f, H, f)
+
+

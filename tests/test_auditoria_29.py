@@ -37,8 +37,14 @@ class TesteAuditoriaDosMotores(unittest.TestCase):
                 self.assertEqual(m[b].get("coleta"), "local", b)
 
     def test_acervo_foi_limpo_do_que_nao_serve(self):
-        e = _efetividade_do_acervo()
-        self.assertGreater(e["efetividade"], 0.9, "depois da limpeza o acervo tem de ser quase todo pertinente")
+        # Os 334 fora do objeto NÃO são apagados: ficam marcados. Apagar esvaziava as
+        # estatísticas históricas de que o fluxo de decisão depende.
+        import json as _j, glob as _g
+        base = sorted(_g.str if False else _g.glob(str(ROOT / "dados/editais/*-eldorado-*-completo.json")))[-1]
+        d = _j.loads(open(base, encoding="utf-8").read())
+        marcados = [v for v in d["itens"].values() if v.get("fora_do_objeto")]
+        self.assertGreater(len(marcados), 200, "o que não serve fica marcado, não apagado")
+        self.assertTrue(all(v.get("motivo_fora") for v in marcados))
         f = json.loads((ROOT / "estado/piloto/aprendizados/acervo_fora_do_objeto.json").read_text(encoding="utf-8"))
         self.assertGreater(f["total"], 200)                               # o descartado ficou guardado
         self.assertTrue(all(v.get("motivo") for v in f["itens"].values()))  # cada um com seu motivo

@@ -1,4 +1,4 @@
-import json, pathlib, re, tempfile, unittest
+import datetime, json, pathlib, re, tempfile, unittest
 from unittest.mock import patch
 
 from src.eldorado import candidates, source_in_scope
@@ -1023,8 +1023,12 @@ class SystemTests(unittest.TestCase):
             "certidao negativa federal, CRF do FGTS, CNDT, balanco patrimonial, "
             "plano de trabalho. Entidade com no minimo dois (2) anos.",encoding="utf-8")
         write_json(pasta/"ficha.json",{"id":"lab777","chave":"lab-ed-777","ano":"2026",
-            "titulo":"Edital 777/2026","fonte_nome":"Secult","inicio":"2026-09-05",
-            "fim":"2026-09-30","modelos":["anexo.pdf"]})
+            "titulo":"Edital 777/2026","fonte_nome":"Secult",
+            # datas RELATIVAS: com prazo fixo o teste apodrecia — ao passar a faltar 7 dias,
+            # o conselho passava a decidir "regularizar antes" e a etapa 4 não escolhia ninguém
+            "inicio":(datetime.date.today()-datetime.timedelta(days=18)).isoformat(),
+            "fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),
+            "modelos":["anexo.pdf"]})
         w=PdfWriter();w.add_blank_page(612,792)
         fonte=DictionaryObject({NameObject("/Type"):NameObject("/Font"),
             NameObject("/Subtype"):NameObject("/Type1"),NameObject("/BaseFont"):NameObject("/Helvetica")})
@@ -1146,7 +1150,7 @@ class SystemTests(unittest.TestCase):
                                          sorteia_conselheiros, ARQUETIPOS)
         self.assertEqual(len(PONTOS_DE_VISTA),7)
         self.assertEqual([PESOS[p] for p in PONTOS_DE_VISTA],[-3,-2,-1,0,1,2,3])
-        edital={"chave":"c","ano":"2026","titulo":"Edital","fim":"2026-09-30",
+        edital={"chave":"c","ano":"2026","titulo":"Edital","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),
                 "valor_texto":"R$ 100.000,00"}
         ctx={"documentos_faltantes":[{"documento":"certidao_fgts","como_obter":"CRF na Caixa"}],
              "historico_ocorrencias":2,"modelos":1,"area_aderente":True,"perfil_completo":True}
@@ -1573,6 +1577,7 @@ class SystemTests(unittest.TestCase):
         # datas publicadas
         pub={"inicio":"2026-09-03","fim":"2026-09-18","marcos":[
             {"tipo":"resultado_preliminar","data":"2026-09-25"},
+            # aritmética de ciclo: a data fixa É o que se testa
             {"tipo":"recurso","data":"2026-09-26","fim":"2026-09-30"}]}
         c=ciclo_do_edital(pub)
         self.assertEqual(c["inscricao"],{"inicio":"2026-09-03","fim":"2026-09-18",
@@ -2472,7 +2477,7 @@ class SystemTests(unittest.TestCase):
         conf={"id":"a","janela_confirmada":{"via":"titular"},"inicio":"2026-02-01",
               "ciclo":{"inscricao":{"inicio":"2026-02-01","fim":"2026-10-31","projetado":False}}}
         hip={"id":"b","status":"capturada","inicio":"2026-08-01",
-             "ciclo":{"inscricao":{"inicio":"2026-08-01","fim":"2026-09-30","projetado":True}}}
+             "ciclo":{"inscricao":{"inicio":"2026-08-01","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),"projetado":True}}}
         hist={"id":"c","acervo":"historico","inicio":None,"publicado_em":"2025-03-01",
               "ciclo":{"inscricao":{"inicio":"2025-03-01","fim":"2025-04-30","projetado":True}}}
         fut={"id":"d","status":"capturada","inicio":"2026-11-01",
@@ -2481,7 +2486,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(classificar(hip,hoje),"hipotese")
         self.assertEqual(classificar(hist,hoje),"estimado")
         dados={"editais":[conf,hip,hist,fut],"previsoes":{"itens":[
-            {"id":"p1","inicio":"2026-09-01","fim":"2026-09-30"},          # mês corrente: sai
+            {"id":"p1","inicio":"2026-09-01","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat()},          # mês corrente: sai
             {"id":"p2","inicio":"2026-11-01","fim":"2026-11-30"},          # futuro: fica
             {"id":"p3","inicio":"2026-12-01","fim":"2026-12-31","analogia":"rouanet"}]}}  # analogia: sai
         rel=aplicar(dados,hoje)
@@ -2983,17 +2988,17 @@ class SystemTests(unittest.TestCase):
         from src.completude_biblioteca import ITENS, onze_itens
         from src.dashboard_dados import _apto_ao_calendario as A
         self.assertEqual(len(ITENS),12); self.assertEqual(ITENS[-1],"Área de atuação")
-        r=onze_itens({"titulo":"Edital de fomento a projetos culturais","evidencia":"","area":"cultura","uf":"GO","nivel":"estadual","fim":"2026-09-30"})
+        r=onze_itens({"titulo":"Edital de fomento a projetos culturais","evidencia":"","area":"cultura","uf":"GO","nivel":"estadual","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat()})
         it={i["item"]:i for i in r["itens"]}
         self.assertTrue(it["Área de atuação"]["comprovado"]); self.assertEqual(it["Área de atuação"]["valor"],"Cultura")
         self.assertFalse(onze_itens({"titulo":"x","evidencia":""})["itens"][-1]["comprovado"])
-        base={"url":"https://x.gov.br/e","fim":"2026-09-30","uf":"GO","nivel":"estadual"}
-        self.assertTrue(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))
-        self.assertFalse(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":True}}}))   # projetado não entra
-        self.assertTrue(A({"url":"x","publicado_em":"2026-09-01","ciclo":{"inscricao":{"inicio":None,"fim":"2026-09-30","projetado":False}}}))   # fim confirmado basta (início = publicação)
+        base={"url":"https://x.gov.br/e","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),"uf":"GO","nivel":"estadual"}
+        self.assertTrue(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),"projetado":False}}}))
+        self.assertFalse(A({**base,"ciclo":{"inscricao":{"inicio":"2026-09-01","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),"projetado":True}}}))   # projetado não entra
+        self.assertTrue(A({"url":"x","publicado_em":"2026-09-01","ciclo":{"inscricao":{"inicio":None,"fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),"projetado":False}}}))   # fim confirmado basta (início = publicação)
         # regra de 05/09: basta início e fim conhecidos — site e esfera não são exigidos
-        self.assertTrue(A({"url":"https://blog.qualquer.com/e","ciclo":{"inscricao":{"inicio":"2026-09-01","fim":"2026-09-30","projetado":False}}}))
-        self.assertTrue(A({"nivel":None,"inicio":"2026-09-01","fim":"2026-09-30"}))
+        self.assertTrue(A({"url":"https://blog.qualquer.com/e","ciclo":{"inscricao":{"inicio":"2026-09-01","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),"projetado":False}}}))
+        self.assertTrue(A({"nivel":None,"inicio":"2026-09-01","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat()}))
         self.assertTrue(A({"sem_edital":True})); self.assertTrue(A({"janela_confirmada":{"via":"titular"}}))
         d=dash_coletar(date(2026,9,3))
         self.assertTrue(all("calendario_ok" in e for e in d["editais"] if not e.get("sem_edital") and not e.get("janela_confirmada")))
@@ -3046,13 +3051,13 @@ class SystemTests(unittest.TestCase):
         from src.dashboard_dados import situacao_inscricao as S
         h=date(2026,9,3)
         base={"uf":"GO","url":"https://x.gov.br/e","publicado_em":"2026-08-20"}
-        self.assertEqual(S({**base,"inicio":"2026-09-01","fim":"2026-09-30"},h)["situacao"],"aberta")
+        self.assertEqual(S({**base,"inicio":"2026-09-01","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat()},h)["situacao"],"aberta")
         self.assertEqual(S({**base,"fim":"2026-08-01"},h)["situacao"],"encerrada")
         self.assertEqual(S({**base},h)["situacao"],"possivel")                                   # sem datas
         self.assertEqual(S({**base,"fim":"2029-11-16"},h)["situacao"],"possivel")                # 'vigência até 2029' não é inscrição
-        self.assertEqual(S({**base,"fim":"2026-09-30"},h)["situacao"],"aberta")                 # fim próximo da publicação: vale
-        self.assertEqual(S({"inicio":"2026-09-01","fim":"2026-09-30","url":"x"},h)["situacao"],"possivel")   # sem cidade/estado
-        self.assertEqual(S({**base,"inicio":"2026-09-01","fim":"2026-09-30","ciclo":{"inscricao":{"projetado":True}}},h)["situacao"],"possivel")
+        self.assertEqual(S({**base,"fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat()},h)["situacao"],"aberta")                 # fim próximo da publicação: vale
+        self.assertEqual(S({"inicio":"2026-09-01","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),"url":"x"},h)["situacao"],"possivel")   # sem cidade/estado
+        self.assertEqual(S({**base,"inicio":"2026-09-01","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),"ciclo":{"inscricao":{"projetado":True}}},h)["situacao"],"possivel")
         # regimes: permanente (RFB, anos ímpares), anual (emendas), janela confirmada (Rouanet)
         self.assertEqual(S({"regra_anos":"impares","ano_permitido":False,"inicio":"2026-01-01","fim":"2026-12-31"},h)["situacao"],"encerrada")
         self.assertEqual(S({"regra_anos":"impares","ano_permitido":True,"inicio":"2027-01-01","fim":"2027-12-31"},date(2027,3,1))["regime"],"permanente")
@@ -3620,7 +3625,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(d["itens"]["Prazo de inscrição"],"2026-09-30"); self.assertEqual(d["itens"]["Resultado"],"2026-10-20"); self.assertEqual(d["itens"]["Valor"],"R$ 80.000,00")
         self.assertIn("5 dias",d["itens"]["Prazo de recurso"]); self.assertEqual(d["itens"]["Anexos"],"Anexo I, Anexo II")
         self.assertEqual(F._padroniza_docs(["estatuto social","cndt","crf do fgts"]),["estatuto","cndt","crf_fgts"])
-        e={"id":"lab-fe","titulo":"T","fonte_nome":"F","url":"https://x/e","fim":"2026-09-30","uf":"GO","nivel":"municipal","area":"cultura","objeto":"x"}
+        e={"id":"lab-fe","titulo":"T","fonte_nome":"F","url":"https://x/e","fim":(datetime.date.today()+datetime.timedelta(days=60)).isoformat(),"uf":"GO","nivel":"municipal","area":"cultura","objeto":"x"}
         F.TEXTOS.mkdir(parents=True,exist_ok=True)
         with gzip.open(F.TEXTOS/"lab-fe.txt.gz","wt",encoding="utf-8") as gz: gz.write(texto)
         chamados=[]
@@ -3873,7 +3878,8 @@ class SystemTests(unittest.TestCase):
         fiscal=load_json(pathlib.Path("biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json"))["empresas"]
         self.assertTrue(any(e.get("incentivos") for e in fiscal)); self.assertTrue(all("LUCRO REAL" in (e.get("condicao") or "").upper() for e in fiscal[:10]))
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ('data-aba="ranking_empresas"',"Ranking de empresas","window.desenhaRanking","rk-item","Destinação tributária","Patrocínio privado"): self.assertIn(x,html,x)
+        for x in ('data-aba="ranking_empresas"',"window.desenhaApoiadores","ep-l","Destinação tributária","Empresas doadoras"):
+            self.assertIn(x,html,x)
 
 
     def test_coleta_dos_sensores_em_passo_proprio(self):

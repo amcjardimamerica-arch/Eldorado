@@ -292,87 +292,83 @@ box-shadow:0 1px 3px #0002}
 @keyframes pil-pa-gira{to{transform:rotate(360deg)}}
 .pil-fumaca{opacity:0}.pil-partida.girando .pil-fumaca{animation:pil-fuma 1.4s ease-out infinite}
 @keyframes pil-fuma{0%{opacity:.8;transform:translate(0,0) scale(.5)}100%{opacity:0;transform:translate(9px,-7px) scale(1.5)}}
-/* MESA DE CAPTAÇÃO. Sem rolagem interna: a lista corre na página. A hierarquia visual põe o
-   DINHEIRO no lugar de maior peso, porque é isso que decide a quem pedir primeiro; a
-   pontuação vira coadjuvante. Os cadernos numerados dão a sensação de arquivo que cresce. */
-.mesa{--tc:#1E7E4B;--tf:#EAF6EF}
-.mz-trilhas{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid #E3E9F1;padding-bottom:0}
-.mz-tr{position:relative;top:2px;border:1px solid var(--linha);border-bottom:0;background:#F7F9FC;
-  color:var(--suave);font:inherit;font-size:12.5px;padding:7px 15px 8px;border-radius:9px 9px 0 0;cursor:pointer;
-  display:flex;align-items:baseline;gap:7px}
-.mz-tr b{font-size:11px;font-variant-numeric:tabular-nums;opacity:.75}
-.mz-tr.on{background:#fff;color:var(--c);border-color:#E3E9F1;border-top:3px solid var(--c);font-weight:700;top:0}
-.mz-tr.on b{opacity:1}
-.mz-tr:focus-visible{outline:2px solid #0E2A55;outline-offset:2px}
-.mz-linha{margin:9px 0 0;font-size:12px;color:var(--suave);max-width:72ch}
-.mz-painel{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0 4px}
-.mz-valor{flex:2 1 300px;background:var(--tf);border-left:5px solid var(--tc);border-radius:0 11px 11px 0;padding:12px 15px}
-.mz-icms{flex:1 1 210px;background:#FAFBFD;border:1px dashed #C9D4E0;border-radius:11px;padding:12px 15px}
-.mz-rot{display:block;font-size:10.5px;color:var(--suave);margin-bottom:3px}
-.mz-cifra{display:block;font-size:26px;font-weight:800;color:var(--tc);letter-spacing:-.02em;
-  font-variant-numeric:tabular-nums;line-height:1.15}
-.mz-cifra .mz-ate{font-size:14px;font-weight:400;color:var(--suave);margin:0 3px}
-.mz-icms-v{display:block;font-size:19px;font-weight:700;color:#9AA7B4;letter-spacing:-.01em}
-.mz-nota{display:block;font-size:10.5px;color:var(--suave);margin-top:5px;line-height:1.5}
-.mz-busca{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 2px}
-.mz-campo{flex:1 1 240px;min-width:190px;padding:7px 12px;border:1px solid var(--linha);border-radius:8px;font:inherit;font-size:12.5px}
-.mz-sel{padding:7px 10px;border:1px solid var(--linha);border-radius:8px;font:inherit;font-size:12px;background:#fff}
-.mz-campo:focus,.mz-sel:focus{outline:2px solid var(--tc);outline-offset:1px}
-.mz-ck{font-size:12px;color:var(--suave);display:flex;align-items:center;gap:5px;cursor:pointer}
-.mz-limpa{border:0;background:none;color:#0B4EA2;font:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
-.mz-cadernos{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:14px 0 2px}
-.mz-cadernos .mz-rot{margin:0 4px 0 0}
-.mz-cd{display:flex;flex-direction:column;align-items:center;gap:1px;min-width:58px;padding:5px 9px;
+/* EMPRESAS QUE PODEM FINANCIAR. Tabela, não cartões: a decisão aqui é comparativa — ler a
+   coluna inteira de cima a baixo. Sem rolagem interna, sem repetição de cabeçalho. */
+.ep{--c:#1E7E4B;--f:#EAF6EF}
+.ep-abas{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid #E3E9F1}
+.ep-aba{position:relative;top:2px;display:flex;align-items:baseline;gap:8px;padding:8px 16px 9px;
+  border:1px solid var(--linha);border-bottom:0;border-radius:10px 10px 0 0;background:#F7F9FC;
+  color:var(--suave);font:inherit;font-size:13px;cursor:pointer}
+.ep-aba b{font-size:11px;font-variant-numeric:tabular-nums;opacity:.7}
+.ep-aba.on{top:0;background:#fff;color:var(--ac);border-color:#E3E9F1;border-top:3px solid var(--ac);font-weight:700}
+.ep-aba.on b{opacity:1}
+.ep-aba:focus-visible{outline:2px solid #0E2A55;outline-offset:2px}
+.ep-sub{margin:10px 0 0;font-size:12px;color:var(--suave);max-width:74ch}
+.ep-resumo{display:flex;gap:26px;flex-wrap:wrap;margin:14px 0 2px;padding:12px 15px;
+  background:var(--f);border-left:5px solid var(--c);border-radius:0 11px 11px 0}
+.ep-resumo>div{min-width:130px}
+.ep-rot{display:block;font-size:10.5px;color:var(--suave);margin-bottom:2px}
+.ep-resumo b{font-size:21px;font-weight:800;color:var(--tinta);letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.2}
+.ep-resumo b.ep-din{color:var(--c);font-size:19px}
+.ep-resumo b.ep-pend{color:#9AA7B4;font-size:17px;font-weight:600}
+.ep-resumo small{display:block;font-size:10.5px;color:var(--suave);margin-top:2px}
+.ep-filtros{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0 0}
+.ep-campo{flex:1 1 250px;min-width:190px;padding:7px 12px;border:1px solid var(--linha);border-radius:8px;font:inherit;font-size:12.5px}
+.ep-sel{padding:7px 10px;border:1px solid var(--linha);border-radius:8px;font:inherit;font-size:12px;background:#fff}
+.ep-campo:focus,.ep-sel:focus{outline:2px solid var(--c);outline-offset:1px}
+.ep-limpa{border:0;background:none;color:#0B4EA2;font:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
+.ep-paginas{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:14px 0 0}
+.ep-paginas .ep-rot{margin:0 4px 0 0}
+.ep-pg{display:flex;flex-direction:column;align-items:center;min-width:60px;padding:5px 10px;
   border:1px solid var(--linha);border-radius:9px;background:#fff;font:inherit;cursor:pointer}
-.mz-cd b{font-size:15px;color:var(--tinta);font-variant-numeric:tabular-nums;line-height:1}
-.mz-cd span{font-size:9.5px;color:var(--suave);font-variant-numeric:tabular-nums}
-.mz-cd.on{background:var(--tc);border-color:var(--tc)}
-.mz-cd.on b,.mz-cd.on span{color:#fff}
-.mz-cd:focus-visible{outline:2px solid #0E2A55;outline-offset:2px}
-.mz-lista{list-style:none;margin:10px 0 0;padding:0}
-.mz-l{display:grid;grid-template-columns:40px minmax(160px,1.5fr) auto minmax(160px,1fr) 78px;gap:12px;
-  align-items:center;padding:10px;border-bottom:1px solid #EEF2F7;cursor:pointer}
-.mz-l:hover,.mz-l:focus{background:var(--tf);outline:none;box-shadow:inset 3px 0 0 var(--tc)}
-.mz-pos{font-variant-numeric:tabular-nums;font-weight:800;font-size:12.5px;color:#B9C3CE;text-align:right}
-.mz-nome b{display:block;font-size:13.5px;color:var(--tinta);line-height:1.3}
-.mz-nome small{display:block;font-size:10.5px;color:var(--suave);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:40ch}
-.mz-portas{display:flex;gap:4px;flex-wrap:wrap;max-width:190px}
-.mz-portas i{font-style:normal;font-size:9.5px;font-weight:700;color:var(--pc);border:1px solid var(--pc);
-  border-radius:8px;padding:1px 7px;white-space:nowrap}
-.mz-portas i.motor{--pc:#0E2A55;background:#0E2A55;color:#fff}
-.mz-pot b{display:block;font-size:13px;color:var(--tc);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
-.mz-pot .mz-ate{font-size:10.5px;font-weight:400;color:var(--suave);margin:0 2px}
-.mz-pot small{display:block;font-size:9.5px;color:var(--suave);margin-top:2px}
-.mz-bar{display:block;height:4px;background:#E8EEF4;border-radius:2px;overflow:hidden;margin:4px 0 0}
-.mz-bar i{display:block;height:100%;background:var(--tc)}
-.mz-sem{font-style:normal;font-size:10.5px;color:#B9C3CE;line-height:1.4}
-.mz-ct{text-align:right;font-size:11.5px}
-.mz-ct a{color:#0B4EA2}.mz-ct em{color:#C6CED8;font-style:normal}
-.mz-vazio{font-size:12.5px;color:var(--suave);padding:22px 6px;text-align:center}
-.mz-rodape{margin-top:14px;padding-top:10px;border-top:1px solid #EEF2F7;font-size:10.5px;color:var(--suave);line-height:1.6;max-width:86ch}
-.mz-selo{color:#fff;font-size:10px;font-weight:800;padding:1px 8px;border-radius:9px;margin-right:6px}
-/* a conta, dentro da ficha */
-.mz-conta{background:#F6FAF8;border:1px solid #CFE6DA;border-radius:11px;padding:12px 14px}
-.mz-conta.sem{background:#FAFBFD;border-color:#E3E9F1;font-size:12.5px}
-.mz-conta-t{font-size:11px;color:var(--suave);margin-bottom:3px}
-.mz-conta-v{font-size:24px;font-weight:800;color:#1E7E4B;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.mz-leis{width:100%;border-collapse:collapse;margin-top:9px;font-size:11.5px}
-.mz-leis td{padding:3px 6px;border-bottom:1px dotted #DCE8E1;vertical-align:top}
-.mz-leis td.pct{color:var(--suave);font-variant-numeric:tabular-nums;white-space:nowrap}
-.mz-leis td.v{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
-.mz-leis td.sv{color:var(--suave);font-size:10.5px}
-.mz-passos{margin:4px 0 0;padding-left:20px;font-size:11.5px;line-height:1.65}
-.mz-icms-box{margin-top:9px;padding:7px 10px;background:#fff;border:1px dashed #C9D4E0;border-radius:8px;font-size:11.5px;line-height:1.5}
-.mz-aviso{margin:8px 0 0;font-size:10.5px;color:var(--suave);line-height:1.5}
-.mz-futuro{margin-top:14px;padding:11px 13px;border:1px dashed #C9B37A;border-radius:10px;background:#FDF9EF}
-.mz-futuro b{font-size:12.5px;color:#8a5a00}
-.mz-futuro p{margin:4px 0 0;font-size:11.5px;line-height:1.55}
-@media(max-width:780px){
-  .mz-l{grid-template-columns:32px 1fr;grid-template-areas:"p n" ". o" ". v" ". c";row-gap:6px}
-  .mz-pos{grid-area:p}.mz-nome{grid-area:n}.mz-portas{grid-area:o;max-width:none}
-  .mz-pot{grid-area:v}.mz-ct{grid-area:c;text-align:left}
-  .mz-cifra{font-size:22px}.mz-nome small{max-width:30ch}}
-@media(prefers-reduced-motion:reduce){.mz-l,.mz-cd{transition:none}}
+.ep-pg b{font-size:15px;color:var(--tinta);font-variant-numeric:tabular-nums;line-height:1.1}
+.ep-pg span{font-size:9.5px;color:var(--suave);font-variant-numeric:tabular-nums}
+.ep-pg.on{background:var(--c);border-color:var(--c)}.ep-pg.on b,.ep-pg.on span{color:#fff}
+.ep-pg:focus-visible{outline:2px solid #0E2A55;outline-offset:2px}
+.ep-cab,.ep-l{display:grid;grid-template-columns:38px minmax(130px,1.2fr) minmax(140px,1.4fr) 108px minmax(120px,1fr) 112px;gap:12px;align-items:center}
+.ep-cab{margin-top:14px;padding:0 10px 6px;border-bottom:2px solid #E3E9F1;font-size:10px;color:var(--suave)}
+.ep-cab span:first-child,.ep-cab span:nth-child(6){text-align:right}
+.ep-lista{list-style:none;margin:0;padding:0}
+.ep-l{padding:9px 10px;border-bottom:1px solid #F0F3F7;cursor:pointer}
+.ep-l:hover,.ep-l:focus{background:var(--f);outline:none;box-shadow:inset 3px 0 0 var(--c)}
+.ep-pos{font-variant-numeric:tabular-nums;font-weight:800;font-size:12px;color:#B9C3CE;text-align:right}
+.ep-l b{display:block;font-size:13px;color:var(--tinta);line-height:1.3}
+.ep-l small{display:block;font-size:10px;color:var(--suave);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ep-nome small{font-variant-numeric:tabular-nums}
+.ep-nome small.ep-falta{color:#C6CED8}
+.ep-ativ{font-size:11.5px;color:var(--tinta);overflow:hidden}
+.ep-ativ{white-space:nowrap;text-overflow:ellipsis}
+.ep-porte{font-size:11.5px;color:var(--suave)}
+.ep-valor b{color:var(--c);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ep-valor em{font-style:normal;font-size:10.5px;color:#B9C3CE}
+.ep-ct{text-align:right;font-size:11.5px;overflow:hidden;text-overflow:ellipsis}
+.ep-ct a{color:#0B4EA2}.ep-ct em{font-style:normal;color:#C6CED8}
+.ep-vazio,.ep-carrega{font-size:12.5px;color:var(--suave);padding:26px 6px;text-align:center}
+.ep-pe{margin-top:14px;padding-top:10px;border-top:1px solid #F0F3F7;font-size:10.5px;color:var(--suave);line-height:1.6;max-width:88ch}
+.ep-selo{color:#fff;font-size:10px;font-weight:800;padding:1px 8px;border-radius:9px;margin-right:6px}
+.ep-conta{background:#F6FAF8;border:1px solid #CFE6DA;border-radius:11px;padding:13px 15px}
+.ep-conta.sem{background:#FAFBFD;border-color:#E3E9F1;font-size:12.5px}
+.ep-conta-v{font-size:25px;font-weight:800;color:#1E7E4B;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ep-leis{width:100%;border-collapse:collapse;margin-top:10px;font-size:11.5px}
+.ep-leis td{padding:3px 6px;border-bottom:1px dotted #DCE8E1;vertical-align:top}
+.ep-leis td.p{color:var(--suave);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ep-leis td.v{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ep-leis td.s{color:var(--suave);font-size:10.5px}
+.ep-como{margin-top:10px;font-size:11.5px}
+.ep-como summary{cursor:pointer;color:#0B4EA2}
+.ep-como ol{margin:6px 0 0;padding-left:20px;line-height:1.65}
+.ep-como p{margin:7px 0 0;color:var(--suave);font-size:10.5px;line-height:1.5}
+.ep-icms{margin:10px 0 0;padding:7px 10px;background:#fff;border:1px dashed #C9D4E0;border-radius:8px;font-size:11.5px;line-height:1.5}
+.ep-futuro{margin-top:16px;padding:11px 13px;border:1px dashed #C9B37A;border-radius:10px;background:#FDF9EF}
+.ep-futuro b{font-size:12.5px;color:#8a5a00}
+.ep-futuro p{margin:4px 0 0;font-size:11.5px;line-height:1.55}
+@media(max-width:820px){
+  .ep-cab{display:none}
+  .ep-l{grid-template-columns:32px 1fr;grid-template-areas:"p n" ". a" ". v" ". c";row-gap:5px}
+  .ep-pos{grid-area:p}.ep-nome{grid-area:n}.ep-ativ{grid-area:a;white-space:normal}
+  .ep-porte{display:none}.ep-valor{grid-area:v}.ep-ct{grid-area:c;text-align:left}
+  .ep-resumo{gap:16px}}
+@media(prefers-reduced-motion:reduce){.ep-l,.ep-pg{transition:none}}
 .pil-voando-ic{color:#0B4EA2;margin-right:4px}
 .pil-errante{position:absolute;z-index:40;pointer-events:none;height:34px}
 .pil-errante.patrulha{opacity:.72}
@@ -935,14 +931,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </div>
 </div>
 <div class="cartao faixa-total oculto" id="emp-ranking-caixa" style="margin-bottom:16px">
-  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-    <h3 style="margin:0;font-size:16px">Ranking de empresas — quem destina recurso a entidades</h3>
-<div id="rank-apoiadores" style="margin-top:10px"></div>
-    <span class=meta>resultado dos motores privados: 100 empresas de destinação tributária (incentivo fiscal, Lucro Real) e 100 de patrocínio privado (marketing)</span>
-    <span style="margin-left:auto"><button class="fdoc-bt principal" id="rk-bt-fiscal">Destinação tributária</button> <button class="fdoc-bt" id="rk-bt-patroc">Patrocínio privado</button></span>
-  </div>
-  <input id="rk-busca" placeholder="filtrar por nome, setor ou o que apoia" style="width:100%;max-width:420px;margin:10px 0;padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit">
-  <div id="rk-lista"></div>
+  <div id="rank-apoiadores"></div>
 </div>
 <div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
   <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
@@ -2108,7 +2097,7 @@ function desenhaEditais(){
   const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
   const ce=$("emp-caixa"); if(ce){ce.classList.toggle("oculto",aba!=="em_andamento"); if(aba==="em_andamento")desenhaEmpresas();}
   desenhaFilaVerificacao();
-  const rk=$("emp-ranking-caixa"); if(rk){rk.classList.toggle("oculto",aba!=="ranking_empresas"); if(aba==="ranking_empresas"){window.desenhaRanking();if(window.desenhaApoiadores)window.desenhaApoiadores();}}
+  const rk=$("emp-ranking-caixa"); if(rk){rk.classList.toggle("oculto",aba!=="ranking_empresas"); if(aba==="ranking_empresas"&&window.desenhaApoiadores)window.desenhaApoiadores();}
   ["ed-abertos-caixa","ed-filtros","ed-lista","ed-grade"].forEach(id=>{const el=$(id);if(el&&aba==="ranking_empresas")el.classList.add("oculto");});
 
   if(aba==="em_andamento"){
@@ -2253,215 +2242,6 @@ function desenhaEmpresas(){
     el.onclick=()=>empDetalhe(x);});
 }
 /* ================= RANKING DE EMPRESAS (motores privados) ================= */
-window._rkCat="destinacao_tributaria"; window._rkDados={};
-async function carregaRanking(cat){ if(window._rkDados[cat])return window._rkDados[cat];
-  try{const r=await fetch(`dados/ranking_${cat}.json?v=${encodeURIComponent(D.gerado_em||"")}`,{cache:"no-cache"});window._rkDados[cat]=await r.json();}catch(e){window._rkDados[cat]={empresas:[],erro:String(e)};}
-  return window._rkDados[cat];}
-window.desenhaRanking=async function(){const box=$("rk-lista"); if(!box)return; const d=await carregaRanking(window._rkCat);
-  $("rk-bt-fiscal").className="fdoc-bt"+(window._rkCat==="destinacao_tributaria"?" principal":""); $("rk-bt-patroc").className="fdoc-bt"+(window._rkCat==="patrocinio_privado"?" principal":"");
-  const q=($("rk-busca").value||"").toLowerCase();
-  const lista=(d.empresas||[]).filter(e=>!q||JSON.stringify(e).toLowerCase().includes(q));
-  box.innerHTML=`<div class=meta style="margin-bottom:6px">${esc(d.rotulo||"")} · ${lista.length} de ${(d.empresas||[]).length} · <span title="${esc(d.metodo||"")}">como a nota é calculada ⓘ</span></div>
-   <div class="rk-grade">${lista.map(e=>`<div class="rk-item" title="${esc((e.por||[]).join(" · "))}">
-     <span class="rk-pos">${e.posicao}</span>
-     <span class="rk-nota" style="--p:${e.pontos}%">${e.pontos}</span>
-     <span class="rk-nome"><b>${esc(e.nome)}</b><small>${esc([e.programa,e.apoia,e.setor].filter(Boolean).join(" · ").slice(0,90))}</small></span>
-     <span class="rk-tags">${e.icms_goias?`<span class=tag title="posição na lista oficial dos maiores contribuintes do ICMS de Goiás">ICMS ${e.icms_goias}º</span>`:""}${e.gife?'<span class=tag>GIFE</span>':""}${e.observado_pelo_motor?`<span class=tag style="border-color:var(--ok);color:var(--ok)" title="${esc((e.observado_pelo_motor||[]).map(o=>o.evento||"").join(" · "))}">patrocínio observado</span>`:""}${(e.incentivos||[]).map(i=>`<span class=tag>${esc(i)}</span>`).join("")}</span>
-     <span class="rk-via"><small>${esc(e.via_de_entrada||"")}</small>${e.cnpj?`<small class=meta>${esc(e.cnpj)}</small>`:""}</span></div>`).join("")||'<div class=meta>Nada encontrado.</div>'}</div>`;
-}
-/* ================= DOCUMENTOS DAS ASSOCIAÇÕES ================= */
-function desenhaDocumentos(){
-  const box=$("fdoc-lista"); if(!box)return; const L=D.documentos_associacoes||[];
-  if(!L.length){box.innerHTML='<div class=meta>Nenhuma associação cadastrada (o perfil de exemplo não conta).</div>';return;}
-  const ST={"válida":["✓","var(--ok)"],"vencida":["⚠","var(--urgente)"],"faltante":["✗","var(--urgente)"],"enviado":["✓","var(--ok)"]};
-  box.innerHTML=L.map(d=>{const g=d.governanca||{},s=d.sede||{},p=d.prontidao||{};
-    return `<div class="fdoc-caixa">
-      <div class="fdoc-cab"><div><b style="font-size:15px">${esc(d.razao_social||d.id)}</b><div class=meta>CNPJ ${esc(d.cnpj||"—")} · ${esc((d.natureza_juridica||"").replace(/_/g," "))} · fundada em ${d.fundada_em?br(d.fundada_em):"—"} · ${d.anos_existencia??"—"} anos</div></div>
-        <div class="fdoc-pront" title="prontidão documental"><b>${p.certidoes_validas}/${p.certidoes_total}</b><small>certidões válidas</small><b>${p.registrados_enviados}/${p.registrados_total}</b><small>registrados</small></div></div>
-      <div class="fdoc-grade">
-        <div class="fdoc-bloco"><div class="fdoc-t">Dados da entidade</div>
-          <div><b>Sede:</b> ${esc([s.logradouro,s.bairro,s.municipio&&s.uf?s.municipio+"/"+s.uf:null].filter(Boolean).join(", ")||"—")} <span class=meta>${esc(s.status||"")}</span></div>
-          <div><b>Governança:</b> ${(g.cargos||[]).map(c=>esc(c.replace(/_/g," "))).join(", ")||"—"}</div>
-          <div><b>Diretoria:</b> ${(g.diretoria||[]).length?(g.diretoria||[]).map(m=>esc(m.cargo+": "+m.nome)).join("; "):'<span class=meta>pendente — informar na ata de eleição</span>'}</div>
-          <div><b>Mandato:</b> ${g.mandato&&g.mandato.inicio?br(g.mandato.inicio)+" → "+br(g.mandato.fim):'<span class=meta>'+esc((g.mandato||{}).status||"pendente")+'</span>'}</div>
-          <div><b>Contato:</b> ${esc(Object.values(d.contato||{}).join(" · ")||"—")}</div>
-          <div><b>CNAEs:</b> ${(d.cnaes||[]).map(esc).join(", ")||"—"}</div></div>
-        <div class="fdoc-bloco"><div class="fdoc-t">Afinidades e atuação geográfica</div>
-          <div>${(d.afinidades||[]).map(a=>`<span class=tag style="color:${AREA(a).cor};border-color:${AREA(a).cor}66">${esc(AREA(a).rotulo)}</span>`).join(" ")}</div>
-          <div style="margin-top:6px"><b>Territórios:</b> ${(d.atuacao_geografica||[]).map(esc).join(" · ")}</div>
-          <div style="margin-top:6px"><b>Certificações:</b> ${(d.certificacoes||[]).map(esc).join(", ")||"nenhuma comprovada"}${(d.certificacoes_a_confirmar||[]).length?` · <span class=meta>a confirmar: ${d.certificacoes_a_confirmar.map(esc).join(", ")}</span>`:""}</div>
-          <div style="margin-top:6px"><b>Experiências:</b> ${(d.experiencias||[]).map(e=>esc(e.replace(/_/g," "))).join(", ")}</div></div>
-      </div>
-      <div class="fdoc-grade">
-        <div class="fdoc-bloco"><div class="fdoc-t">Certidões <span class=meta>— atualizadas no 1º do mês; > 90 dias são excluídas</span></div>
-          ${(d.certidoes||[]).map(c=>`<div class="fdoc-doc ${c.status.replace("á","a")}"><span class="ck-st" style="color:${ST[c.status][1]}">${ST[c.status][0]}</span><span class="fdoc-nome"><b>${esc(c.rotulo)}</b><small>${c.emitida_em?`emitida ${br(c.emitida_em)} · vence ${br(c.vence_em)} (${c.dias} d)`:`não enviada · validade ${c.validade_dias} d${c.automatica?" · automática (o sistema tenta no 1º do mês)":""}`}${c.alerta?' · <b style="color:var(--urgente)">renovar</b>':""}</small></span>
-            <a href="${esc(c.emissao)}" target=_blank rel="noopener noreferrer" class="fdoc-bt" title="emitir no órgão (${esc(c.orgao)})">emitir ↗</a></div>`).join("")}
-          <div style="margin-top:8px"><a class="fdoc-bt principal" href="${esc((d.upload||{}).certidoes||"#")}" target=_blank rel="noopener noreferrer">⬆ enviar certidões</a> <span class=meta>PDFs com o nome do tipo (ex.: certidao_federal.pdf); a data de emissão é lida do próprio PDF</span></div></div>
-        <div class="fdoc-bloco"><div class="fdoc-t">Registrados <span class=meta>— sem validade; o novo substitui o anterior</span></div>
-          ${(d.registrados||[]).map(r=>`<div class="fdoc-doc ${r.status}"><span class="ck-st" style="color:${(ST[r.status]||["✗","var(--urgente)"])[1]}">${(ST[r.status]||["✗"])[0]}</span><span class="fdoc-nome"><b>${esc(r.rotulo)}</b><small>${r.arquivo?esc(r.arquivo)+" · enviado "+br(r.enviado_em):"não enviado"}</small></span></div>`).join("")}
-          <div style="margin-top:8px"><a class="fdoc-bt principal" href="${esc((d.upload||{}).registrados||"#")}" target=_blank rel="noopener noreferrer">⬆ enviar estatuto / ata</a> <span class=meta style="color:var(--urgente)">${esc((d.upload||{}).aviso||"")}</span></div></div>
-      </div>
-      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button onclick="fdocParecer('${esc(d.id)}')">Parecer completo</button><button onclick="fdocCopiar('${esc(d.id)}')">Copiar checklist pronto</button></div>
-    </div>`;}).join("");
-}
-window.fdocParecer=function(id){const d=(D.documentos_associacoes||[]).find(x=>x.id===id);if(!d)return;
-  abreModal(`<h3 style="margin:0">Parecer institucional</h3><div class=meta>${esc(d.razao_social)}</div>`,`<pre style="white-space:pre-wrap;font:12.5px/1.5 ui-monospace,Menlo,monospace">${esc(d.parecer_md||"")}</pre>`);};
-window.fdocCopiar=function(id){const d=(D.documentos_associacoes||[]).find(x=>x.id===id);if(!d)return;const txt=d.parecer_md||"";
-  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>alert("Checklist e parecer copiados."),()=>abreModal("<h3>Checklist</h3>",`<pre style="white-space:pre-wrap">${esc(txt)}</pre>`));};
-/* ================= HOME / PERFIL DAS ASSOCIAÇÕES (Farol) ================= */
-function desenhaPerfis(){
-  const box=$("farol-perfis"); if(!box)return; const L=D.documentos_associacoes||[]; const E=D.enquadramento||[];
-  if(!L.length){box.innerHTML="";return;}
-  const ROSA="#FF1493";
-  box.innerHTML=L.map(d=>{const g=d.governanca||{},s=d.sede||{},c=d.contato||{},q=E.find(x=>x.associacao===d.id)||{editais:[],por_nivel:{},candidatos_aprovacao:[],abrangencia:{}};
-    const pres=d.presidente||((g.diretoria||[]).find(m=>/presid/i.test(m.cargo||""))||{}).nome;
-    const ini=(d.razao_social||d.id).split(/\s+/).filter(w=>/^[A-ZÀ-Ú]/.test(w)).slice(0,3).map(w=>w[0]).join("")||"A";
-    const local=localStorage.getItem("amc_imagem_"+d.id);
-    const foto=`<div class="perfil-foto-wrap">${(local||d.imagem_perfil)?`<img src="${esc(local||d.imagem_perfil)}" alt="" class="perfil-foto">`:`<div class="perfil-foto mono">${esc(ini)}</div>`}
-      <label class="perfil-trocar" title="trocar a imagem do perfil"><input type=file accept="image/*" style="display:none" onchange="trocarImagem('${esc(d.id)}',this)">✎ trocar imagem</label>
-      <button class="perfil-incluir" onclick="abrirIncluirEditais('${esc(d.id)}')" title="escolher, no banco do Eldorado, editais abertos para esta associação">＋ incluir editais relevantes</button></div>`;
-    const pn=q.por_nivel||{}; const ab=abrangenciaLocal(d.id,q.abrangencia||{});
-    const cand=(q.candidatos_aprovacao||[]).filter(x=>!ab.municipios_aprovados.includes(`${x.uf}/${x.cidade}`));
-    return `<div class="perfil-card" data-assoc="${esc(d.id)}">
-      ${foto}
-      <div class="perfil-corpo">
-        <div class="perfil-nome">${esc(d.razao_social||d.id)}</div>
-        <div class="perfil-linha"><b>CNPJ</b> ${esc(d.cnpj||"—")} · <b>Presidente</b> ${pres?esc(pres):'<span class=meta>pendente</span>'} · <b>Mandato</b> ${g.mandato&&g.mandato.inicio?br(g.mandato.inicio)+" → "+br(g.mandato.fim):'<span class=meta>pendente</span>'} · <b>Sede</b> ${esc([s.bairro,s.municipio&&s.uf?s.municipio+"/"+s.uf:null].filter(Boolean).join(", ")||"—")}</div>
-        <div class="perfil-linha"><b>Editais que enquadram</b> ${q.compativeis_geograficamente??0} de ${q.editais_abertos_total??0}: <span class=tag>${pn.nacional??0} nacionais</span> <span class=tag>${pn.estadual??0} estaduais</span> <span class=tag>${pn.municipal??0} municipais</span>${cand.length?` <span class=tag style="border-color:${ROSA};color:${ROSA}">${cand.length} em cidades candidatas — aprovar</span>`:""}
-          <button class="fdoc-bt" style="margin-left:8px" onclick="abrirAbrangencia('${esc(d.id)}')">abrangência (estados e cidades)</button></div>
-        <div class="perfil-linha">${(d.afinidades||[]).map(a=>`<span class=tag style="color:${AREA(a).cor};border-color:${AREA(a).cor}66">${esc(AREA(a).rotulo)}</span>`).join(" ")}</div>
-        ${d.utilidade_publica?`<div class="perfil-linha"><b>Utilidade pública</b> ${Object.entries(d.utilidade_publica).map(([k,v])=>`${esc(k)}: ${esc((v||{}).lei||"")} <span class=meta>${esc((v||{}).status||"")}${(v||{}).verificacao?" — "+esc(v.verificacao.status):""}</span>${(v||{}).verificacao&&v.verificacao.url?` <a href="${esc(v.verificacao.url)}" target=_blank rel="noopener noreferrer">fonte ↗</a>`:""}`).join(" · ")}</div>`:""}
-        <div class="perfil-cartao"><b>Cartão de visitas.</b> ${esc(d.razao_social||"")}, ${esc((d.natureza_juridica||"").replace(/_/g," "))} fundada em ${d.fundada_em?br(d.fundada_em):"—"} (${d.anos_existencia??"—"} anos), atua em ${(d.afinidades||[]).slice(0,5).map(a=>AREA(a).rotulo.toLowerCase()).join(", ")}${(d.afinidades||[]).length>5?" e outras áreas":""}, com experiência em ${(d.experiencias||[]).slice(0,4).map(x=>x.replace(/_/g," ")).join(", ")}. Governança: ${(g.cargos||[]).map(x=>x.replace(/_/g," ")).join(", ")}.${g.remuneracao?" "+esc(g.remuneracao)+".":""} Contato: ${esc(Object.values(c).join(" · ")||"—")}.</div>
-        <div class="perfil-rodape"><span class=meta>${(d.prontidao||{}).certidoes_validas??0}/${(d.prontidao||{}).certidoes_total??5} certidões · ${(d.prontidao||{}).registrados_enviados??0}/${(d.prontidao||{}).registrados_total??6} registrados</span> · <span class="verlink" onclick="mostra('f-documentos')">Documentos ›</span></div>
-      </div>
-      <div class="perfil-editais faixa-total" id="perfil-editais-caixa-${esc(d.id)}"><div class="fdoc-t">Editais enquadrados pela IA para esta associação <span class=meta>— ${(q.editais||[]).length} após o filtro geográfico${cand.length?` · <span style="color:${ROSA};font-weight:700">${cand.length} em rosa aguardam sua aprovação</span>`:""}</span></div>
-        <div id="perfil-editais-${esc(d.id)}"></div>
-        ${cand.length?`<div class="fdoc-t" style="margin-top:10px;color:${ROSA}">Cidades candidatas (50 maiores de ${(ab.estados||[]).join(", ")}) com edital identificado — aprovar manualmente</div>
-          ${cand.slice(0,30).map(x=>`<div class="enq-ed cand" style="border-color:${ROSA}"><div class="enq-ed-l1" style="grid-template-columns:1fr auto"><span class="enq-tit"><b style="color:${ROSA}">${esc(x.cidade)}/${esc(x.uf)}</b> <small>${esc((x.titulo||"").slice(0,90))} · ${esc(AREA(x.area).rotulo)}${x.fim?" · até "+br(x.fim):""}</small></span>
-            <span><button class="fdoc-bt" onclick="aprovarCidade('${esc(d.id)}','${esc(x.uf)}/${esc(x.cidade)}')">✓ aprovar cidade</button> ${x.url?`<a class="fdoc-bt" href="${esc(x.url)}" target=_blank rel="noopener noreferrer">edital ↗</a>`:""}</span></div></div>`).join("")}`:""}
-      </div></div>`;}).join("");
-  // editais enquadrados: a mesma renderização do Enquadramento, dentro da caixa do perfil
-  E.forEach(a=>{const alvo=$(`perfil-editais-${a.associacao}`); if(alvo)alvo.innerHTML=htmlEditaisEnquadrados(a);});
-  ligaDropzones();
-}
-/* abrangência manual (nacional / estados / municípios) — editada aqui, exportada para o repositório */
-/* arrastar e soltar documentos no portal: identifica o tipo pelo nome, registra a
-   intenção e abre a pasta do repositório (o GitHub Pages não recebe arquivos — o
-   envio final é confirmado na pasta aberta, com o mesmo arquivo) */
-function tipoDoc(nome){const n=nome.toLowerCase();for(const [k,rx] of [["certidao_federal",/federal|rfb|pgfn|conjunta/],["cndt",/cndt|trabalhista/],["crf_fgts",/crf|fgts/],["certidao_estadual",/estadual|sefaz|economia/],["certidao_municipal",/municipal|prefeitura|iss/],["estatuto",/estatuto/],["ata_eleicao",/elei|posse/],["ata_assembleia",/assembleia/],["cnpj",/cnpj/],["comprovante_endereco",/endere/],["utilidade_publica",/utilidade|lei/]])if(rx.test(n))return k;return null;}
-function ligaDropzones(){document.querySelectorAll(".dropzone").forEach(z=>{if(z.dataset.ligada)return;z.dataset.ligada="1";
-  z.addEventListener("dragover",ev=>{ev.preventDefault();z.classList.add("over");});z.addEventListener("dragleave",()=>z.classList.remove("over"));
-  z.addEventListener("drop",async ev=>{ev.preventDefault();z.classList.remove("over");
-    abrirEnvio(z.dataset.assoc,z.dataset.edital);
-    for(const f of [...ev.dataTransfer.files]){const texto=await textoDoArquivo(f);const tp=identificaTipo(f.name,texto);
-      window._envArquivos.push({nome:f.name,bytes:f.size,tipo:tp,auto:!!tp,datas:datasDoTexto(f.name,texto),texto_lido:texto.length>200});}
-    desenhaEnvio();});});}
-/* troca de imagem: mostra na hora (guardada no navegador, reduzida) e abre a pasta
-   imagens/ do repositório para enviar o mesmo arquivo como perfil.jpg */
-/* ============ ENVIO DE DOCUMENTOS (popup do próprio painel) ============ */
-const TIPOS_DOC=[["estatuto","Estatuto social registrado",null],["ata_eleicao","Ata de eleição/posse da diretoria",null],["ata_assembleia","Ata de assembleia",null],
- ["cnpj","Cartão CNPJ",null],["comprovante_endereco","Comprovante de endereço da sede",null],["rg_cpf_dirigente","RG/CPF do dirigente",null],
- ["certidao_federal","Certidão negativa federal (RFB/PGFN)",180],["certidao_estadual","Certidão negativa estadual",90],["certidao_municipal","Certidão negativa municipal",90],
- ["cndt","CNDT — débitos trabalhistas",180],["crf_fgts","CRF do FGTS",30],["relatorio_atividades","Relatório de atividades",null],
- ["plano_de_trabalho","Plano de trabalho",null],["balanco_patrimonial","Balanço patrimonial",null],["inscricao_conselho","Inscrição no conselho (CMAS/CMDCA/CMI)",null],
- ["utilidade_publica","Título/lei de utilidade pública",null],["cebas","CEBAS",null],["conta_bancaria","Comprovante de conta bancária",null],
- ["declaracao_nao_vedacao","Declaração de não vedação",null],["formulario_edital","Formulário/anexo do edital",null],["outro","Outro documento",null]];
-const REGRA_TIPO=[[/estatuto/i,"estatuto"],[/ata.*(elei|posse)|posse.*diretoria/i,"ata_eleicao"],[/ata.*assembl/i,"ata_assembleia"],[/cart.*cnpj|comprovante.*inscri|cnpj/i,"cnpj"],
- [/endere|comprovante.*resid/i,"comprovante_endereco"],[/\b(rg|cpf|identidade)\b/i,"rg_cpf_dirigente"],[/federal|rfb|pgfn/i,"certidao_federal"],
- [/estadual|sefaz|economia/i,"certidao_estadual"],[/municipal|prefeitura|iss\b/i,"certidao_municipal"],[/cndt|trabalhist/i,"cndt"],[/crf|fgts/i,"crf_fgts"],
- [/relat[óo]rio.*atividade/i,"relatorio_atividades"],[/plano.*trabalho/i,"plano_de_trabalho"],[/balan[çc]o|demonstra[çc]/i,"balanco_patrimonial"],
- [/cmas|cmdca|cmi\b|conselho/i,"inscricao_conselho"],[/utilidade.*p[úu]blica/i,"utilidade_publica"],[/cebas/i,"cebas"],
- [/conta|banc[áa]ri|extrato/i,"conta_bancaria"],[/declara/i,"declaracao_nao_vedacao"],[/formul[áa]rio|anexo\s*[ivx0-9]/i,"formulario_edital"]];
-window.identificaTipo=function(nome,texto){const alvo=`${nome} ${(texto||"").slice(0,4000)}`;for(const [rx,tipo] of REGRA_TIPO)if(rx.test(alvo))return tipo;return null;};
-window.datasDoTexto=function(nome,texto){const alvo=`${nome} ${(texto||"").slice(0,8000)}`;const out=[];let m;
-  const rx1=/(\d{2})\/(\d{2})\/(20\d{2})/g,rx2=/(20\d{2})-(\d{2})-(\d{2})/g;
-  while((m=rx1.exec(alvo)))out.push(`${m[3]}-${m[2]}-${m[1]}`); while((m=rx2.exec(alvo)))out.push(`${m[1]}-${m[2]}-${m[3]}`);
-  return [...new Set(out)].sort();};
-window.textoDoArquivo=async function(f){ if(f.type==="text/plain"||/\.(txt|md|json)$/i.test(f.name))return await f.text();
-  if(/\.pdf$/i.test(f.name)||f.type==="application/pdf"){try{const b=new Uint8Array(await f.arrayBuffer());let s="";
-    for(let i=0;i<Math.min(b.length,600000);i++){const c=b[i];s+=((c>=32&&c<127)||c===10)?String.fromCharCode(c):" ";}
-    const leg=(s.match(/[A-Za-zÀ-ú]{4,}/g)||[]).join(" ");return leg.length>200?leg:"";}catch(e){return "";}}
-  return "";};
-window.validadeDoc=function(tipo,datas){const t=TIPOS_DOC.find(x=>x[0]===tipo);const dias=t&&t[2];
-  if(!dias)return {status:"sem validade",detalhe:"documento sem prazo de validade"};
-  const hoje=new Date().toISOString().slice(0,10);
-  const emissao=(datas||[]).filter(d=>d<=hoje).pop();
-  if(!emissao)return {status:"data não identificada",detalhe:"confira a data de emissão no arquivo"};
-  const venc=new Date(new Date(emissao+"T00:00:00").getTime()+dias*864e5).toISOString().slice(0,10);
-  const dd=Math.round((new Date(venc)-new Date(hoje))/864e5);
-  return {status:dd>0?(dd<=15?"vence em breve":"válida"):"vencida",detalhe:`emitida em ${br(emissao)} · vence em ${br(venc)} (${dd} dia(s))`,emissao,vencimento:venc};};
-window.desenhaEnvio=function(){const box=$("env-lista");if(!box)return;const L=window._envArquivos||[];
-  if($("env-acoes"))$("env-acoes").style.display=L.length?"flex":"none";
-  box.innerHTML=L.map((a,i)=>{const v=validadeDoc(a.tipo,a.datas);
-    return `<div class="env-item ${a.tipo?"ok":"pendente"}"><span class="led ${a.tipo&&v.status!=="vencida"?"ok":"no"}"></span>
-      <span class="env-nome"><b>${esc(a.nome)}</b><small>${(a.bytes/1024).toFixed(0)} KB · ${a.texto_lido?"conteúdo lido":"identificado pelo nome"}${a.auto?" · automático":""}</small></span>
-      <select onchange="window._envArquivos[${i}].tipo=this.value;window._envArquivos[${i}].auto=false;desenhaEnvio()">
-        <option value="">— selecione o documento —</option>${TIPOS_DOC.map(([k,r])=>`<option value="${k}" ${a.tipo===k?"selected":""}>${esc(r)}</option>`).join("")}</select>
-      <span class="env-val ${v.status.replace(/ /g,"-")}">${esc(v.status)}<small>${esc(v.detalhe)}</small></span>
-      <button class="fdoc-bt" onclick="window._envArquivos.splice(${i},1);desenhaEnvio()">remover</button></div>`;}).join("");};
-window.abrirEnvio=function(assoc,edital){
-  const d=(D.documentos_associacoes||[]).find(x=>x.id===assoc)||{}; const dr=((D.drive||{}).associacoes||{})[assoc]||{};
-  abreModal(`<h3 style="margin:0">Enviar documentos</h3><div class=meta>${esc(d.razao_social||assoc)}${edital?" · vinculado ao edital selecionado":""} — vários arquivos de uma vez; o sistema identifica cada um e valida as datas</div>`,
-   `<div class="env-zona" id="env-zona"><b>Arraste os arquivos aqui</b> ou <label class="fdoc-bt principal" style="display:inline-block">escolher arquivos<input type=file id="env-file" multiple accept=".pdf,.jpg,.jpeg,.png,.txt,.doc,.docx" style="display:none"></label>
-      <div class=meta style="margin-top:6px">PDF, imagem ou texto. Os arquivos ficam no seu navegador até você mandar guardar.</div></div>
-    <div id="env-lista" style="margin-top:10px"></div>
-    <div id="env-acoes" style="margin-top:12px;display:none;gap:8px;flex-wrap:wrap">
-      <button class="fdoc-bt principal" onclick="confirmarEnvio('${esc(assoc)}','${esc(edital||"")}')">✓ validar e registrar no sistema</button>
-      <a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="${esc(dr.documentos?dr.documentos.url:"#")}">📁 pasta de documentos no Drive</a>
-      ${edital?`<a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="${esc(dr.editais?dr.editais.url:"#")}">📁 pasta do edital no Drive</a>`:""}</div>`);
-  window._envArquivos=[];
-  const zona=$("env-zona"),inp=$("env-file");
-  const receber=async(files)=>{for(const f of files){const texto=await textoDoArquivo(f);const tp=identificaTipo(f.name,texto);
-      window._envArquivos.push({nome:f.name,bytes:f.size,tipo:tp,auto:!!tp,datas:datasDoTexto(f.name,texto),texto_lido:texto.length>200});}
-    desenhaEnvio();};
-  inp.onchange=()=>receber(inp.files);
-  zona.addEventListener("dragover",ev=>{ev.preventDefault();zona.classList.add("over");});
-  zona.addEventListener("dragleave",()=>zona.classList.remove("over"));
-  zona.addEventListener("drop",ev=>{ev.preventDefault();zona.classList.remove("over");receber(ev.dataTransfer.files);});};
-window.confirmarEnvio=function(assoc,edital){const L=(window._envArquivos||[]).filter(x=>x.tipo);
-  if(!L.length){alert("Selecione o tipo de pelo menos um documento.");return;}
-  const reg=JSON.parse(localStorage.getItem("amc_docs_"+assoc)||"{}");
-  L.forEach(a=>{const v=validadeDoc(a.tipo,a.datas);reg[a.tipo]={arquivo:a.nome,emitida_em:v.emissao||null,vence_em:v.vencimento||null,status:v.status,edital:edital||null,registrado_em:new Date().toISOString().slice(0,10)};});
-  localStorage.setItem("amc_docs_"+assoc,JSON.stringify(reg));
-  const dr=((D.drive||{}).associacoes||{})[assoc]||{}; const pend=(window._envArquivos||[]).filter(x=>!x.tipo).length;
-  desenhaEnquadramento();desenhaDocumentos();
-  abreModal("<h3 style='margin:0'>Documentos validados</h3>",
-   `<p><b>${L.length}</b> documento(s) registrado(s) e já refletidos no checklist.${pend?` ${pend} sem tipo não foram registrados.`:""}</p>
-    <ul style="font-size:12.5px;line-height:1.6">${L.map(a=>{const v=validadeDoc(a.tipo,a.datas);const rot=(TIPOS_DOC.find(x=>x[0]===a.tipo)||[])[1]||a.tipo;return `<li><b>${esc(rot)}</b> — ${esc(a.nome)} · <b>${esc(v.status)}</b> ${esc(v.detalhe)}</li>`;}).join("")}</ul>
-    <p>Para guardar os arquivos, abra a pasta e solte-os lá:</p>
-    <p><a class="fdoc-bt principal" target=_blank rel="noopener noreferrer" href="${esc(dr.documentos?dr.documentos.url:"#")}">📁 Documentos da associação</a>
-       ${edital?` <a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="${esc(dr.editais?dr.editais.url:"#")}">📁 Editais — inscrições</a>`:""}</p>`);};
-window.trocarImagem=function(id,input){const f=input.files&&input.files[0];if(!f)return;const img=new Image();const rd=new FileReader();
-  rd.onload=()=>{img.onload=()=>{const c=document.createElement("canvas");const s=Math.min(1,420/Math.max(img.width,img.height));c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
-    try{localStorage.setItem("amc_imagem_"+id,c.toDataURL("image/jpeg",.85));}catch(e){}
-    desenhaPerfis();abreModal("<h3 style='margin:0'>Imagem trocada</h3>",`<p>A nova imagem já aparece no seu navegador. Para valer para todos, envie o mesmo arquivo com o nome <code>perfil.jpg</code> na pasta <code>imagens</code> da associação:</p><a class="fdoc-bt principal" target=_blank rel="noopener noreferrer" href="https://github.com/amcjardimamerica-arch/Eldorado/upload/main/dados/associacoes/${esc(id)}/imagens">abrir a pasta imagens ↗</a><p class=meta>na próxima saída o painel passa a usar essa imagem.</p>`);};img.src=rd.result;};rd.readAsDataURL(f);};
-window.alternaLargura=function(id){const el=$(id);if(!el)return;el.classList.toggle("faixa-total");const c=el.closest(".perfil-card");if(c)c.classList.toggle("sem-clip",el.classList.contains("faixa-total"));};
-function abrangenciaLocal(id,base){const e=JSON.parse(localStorage.getItem("amc_abrangencia_"+id)||"null");return e||{nacional:base.nacional!==false,estados:base.estados||[],municipios_aprovados:base.municipios_aprovados||[],municipios_candidatos:base.municipios_candidatos||[]};}
-function salvaAbrangencia(id,ab){ab.atualizado_em=new Date().toISOString().slice(0,10);localStorage.setItem("amc_abrangencia_"+id,JSON.stringify(ab));desenhaPerfis();}
-/* INCLUIR EDITAIS RELEVANTES: pop-up com todos os editais ABERTOS do banco do Eldorado
-   (núcleo + base ampla); o titular filtra e marca o edital exato; a escolha vale para a associação
-   (dados/associacoes/<id>/incluidos_editais.json) e o CI passa a considerá-lo mesmo fora do filtro geográfico */
-function incluidosLocal(id){return JSON.parse(localStorage.getItem("amc_incluidos_"+id)||"[]");}
-window.incluirEdital=function(id,eid,on){let l=incluidosLocal(id);l=on?[...new Set([...l,eid])]:l.filter(x=>x!==eid);localStorage.setItem("amc_incluidos_"+id,JSON.stringify(l));const n=$("inc-n");if(n)n.textContent=l.length;};
-window.exportarIncluidos=function(id){const l=incluidosLocal(id);const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({editais:l,em:new Date().toISOString().slice(0,10),por:"titular"},null,2)],{type:"application/json"}));a.download="incluidos_editais.json";a.click();};
-window.abrirIncluirEditais=async function(id){
-  if(!FA_ABERTAS){try{await garanteAbertas();}catch(e){}}
-  const nucleo=(D.editais||[]).filter(e=>["aberta","possivel"].includes(situacaoDe(e)));
-  const ampla=(FA_ABERTAS||[]).filter(o=>["aberta","possivel"].includes(situacaoDe(o)));
-  const vistos=new Set(nucleo.map(e=>e.id)); const todos=[...nucleo,...ampla.filter(o=>!vistos.has(o.id))];
-  const UFS=[...new Set(todos.map(e=>e.uf).filter(Boolean))].sort(); const AREAS=[...new Set(todos.map(e=>e.area).filter(Boolean))].sort();
-  abreModal(`<h3 style="margin:0">Incluir editais relevantes</h3><div class=meta>${todos.length} editais abertos/possíveis no banco do Eldorado · marcados: <b id="inc-n">${incluidosLocal(id).length}</b></div>`,
-   `<div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0"><input id="inc-q" placeholder="filtrar pelo nome exato do edital, órgão ou cidade" style="flex:1;min-width:220px;padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit">
-      <select id="inc-uf" style="padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit"><option value="">todos os estados</option><option value="__nac__">Brasil (nacional)</option>${UFS.map(u=>`<option>${u}</option>`).join("")}</select>
-      <select id="inc-area" style="padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit"><option value="">todas as áreas</option>${AREAS.map(a=>`<option value="${esc(a)}">${esc(AREA(a).rotulo)}</option>`).join("")}</select></div>
-    <div id="inc-lista" style="max-height:52vh;overflow:auto"></div>
-    <div style="margin-top:10px;display:flex;gap:8px"><button class="fdoc-bt principal" onclick="exportarIncluidos('${esc(id)}')">⬇ exportar incluidos_editais.json</button><a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="https://github.com/amcjardimamerica-arch/Eldorado/upload/main/dados/associacoes/${esc(id)}/">⬆ enviar ao repositório</a><span class=meta>o Enquadramento passa a considerar os marcados na próxima saída</span></div>`);
-  const desenha=()=>{const q=($("inc-q").value||"").toLowerCase(),uf=$("inc-uf").value,ar=$("inc-area").value,marc=new Set(incluidosLocal(id));
-    const nac=e=>!e.uf||e.abrangencia==="nacional"||e.nivel==="federal";
-    const lista=todos.filter(e=>(!q||`${e.titulo} ${e.fonte_nome||""} ${e.orgao||""} ${e.municipio||""}`.toLowerCase().includes(q))&&(!uf||(uf==="__nac__"?nac(e):e.uf===uf))&&(!ar||e.area===ar)).slice(0,200);
-    $("inc-lista").innerHTML=lista.map(e=>`<label class="inc-item"><input type=checkbox ${marc.has(e.id)?"checked":""} onchange="incluirEdital('${esc(id)}','${esc(e.id)}',this.checked)"><span><b>${esc(e.titulo||"")}</b><small>${esc(AREA(e.area).rotulo)} · ${esc(e.uf||"Brasil")} · ${esc(e.fonte_nome||e.orgao||"")}${e.fim?" · até "+br(e.fim):""} · ${situacaoDe(e)==="aberta"?"aberta":"possível"}</small></span></label>`).join("")||'<div class=meta>nenhum edital com esse filtro</div>';};
-  ["inc-q","inc-uf","inc-area"].forEach(i=>$(i).addEventListener("input",desenha)); desenha();
-};
 window.aprovarCidade=function(id,chave){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});if(!ab.municipios_aprovados.includes(chave))ab.municipios_aprovados.push(chave);ab.municipios_candidatos=ab.municipios_candidatos.filter(c=>c!==chave);salvaAbrangencia(id,ab);};
 window.abrirAbrangencia=function(id){const q=(D.enquadramento||[]).find(x=>x.associacao===id)||{};const ab=abrangenciaLocal(id,q.abrangencia||{});
   const UFS=["AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"];
@@ -3171,181 +2951,377 @@ function achadosDoMotor(o){
         ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</a>`:`<span title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</span>`}
         <small>${e.fim?"até "+br(e.fim):"prazo a confirmar"}${e.uf?" · "+esc(e.uf):""}</small></div>`;}).join("")}</div>`;
 }
-/* MESA DE CAPTAÇÃO — o ranking de quem pode financiar.
-   Uma trilha por vez, listas de cem numeradas como cadernos, e a lista corre na própria
-   página: sem barra de rolagem interna, que é o que quebra a navegação. A leitura central
-   não é a pontuação abstrata, é o DINHEIRO — quanto cada empresa poderia direcionar. */
-window.APOIA=null;
-window.MESA={trilha:"tributaria",caderno:0,busca:"",nivel:"",tipo:"",so_contato:false};
-const TRILHAS_MESA={
-  tributaria:{rotulo:"Destinação tributária",cor:"#1E7E4B",fundo:"#EAF6EF",origens:["destinação tributária"],
-    linha:"imposto que a empresa já deve ao fisco e pode direcionar — o pedido vai ao setor fiscal ou contábil"},
-  privado:{rotulo:"Patrocínio privado",cor:"#0B4EA2",fundo:"#EFF5FD",origens:["patrocínio privado"],
-    linha:"verba própria da empresa — o pedido vai ao marketing, ao instituto ou à fundação"},
-  descobertas:{rotulo:"Descobertas do Piloto",cor:"#C8961E",fundo:"#FDF6E7",
-    origens:["prospecção do Piloto","radar do Piloto"],
-    linha:"fontes novas achadas na expansão, ainda sendo qualificadas"}};
-const PORTA={incentivo_fiscal:["Incentivo fiscal","#1E7E4B"],patrocinio:["Patrocínio","#0B4EA2"],
-  edital_proprio:["Edital próprio","#7B4BE0"],instituto_fundacao:["Instituto","#B3261E"],
-  esg:["ESG","#0E7C7B"],doacao:["Doação","#C8961E"]};
+/* código vizinho que saiu junto com o ranking antigo — devolvido ao lugar */
+/* ================= DOCUMENTOS DAS ASSOCIAÇÕES ================= */
+function desenhaDocumentos(){
+  const box=$("fdoc-lista"); if(!box)return; const L=D.documentos_associacoes||[];
+  if(!L.length){box.innerHTML='<div class=meta>Nenhuma associação cadastrada (o perfil de exemplo não conta).</div>';return;}
+  const ST={"válida":["✓","var(--ok)"],"vencida":["⚠","var(--urgente)"],"faltante":["✗","var(--urgente)"],"enviado":["✓","var(--ok)"]};
+  box.innerHTML=L.map(d=>{const g=d.governanca||{},s=d.sede||{},p=d.prontidao||{};
+    return `<div class="fdoc-caixa">
+      <div class="fdoc-cab"><div><b style="font-size:15px">${esc(d.razao_social||d.id)}</b><div class=meta>CNPJ ${esc(d.cnpj||"—")} · ${esc((d.natureza_juridica||"").replace(/_/g," "))} · fundada em ${d.fundada_em?br(d.fundada_em):"—"} · ${d.anos_existencia??"—"} anos</div></div>
+        <div class="fdoc-pront" title="prontidão documental"><b>${p.certidoes_validas}/${p.certidoes_total}</b><small>certidões válidas</small><b>${p.registrados_enviados}/${p.registrados_total}</b><small>registrados</small></div></div>
+      <div class="fdoc-grade">
+        <div class="fdoc-bloco"><div class="fdoc-t">Dados da entidade</div>
+          <div><b>Sede:</b> ${esc([s.logradouro,s.bairro,s.municipio&&s.uf?s.municipio+"/"+s.uf:null].filter(Boolean).join(", ")||"—")} <span class=meta>${esc(s.status||"")}</span></div>
+          <div><b>Governança:</b> ${(g.cargos||[]).map(c=>esc(c.replace(/_/g," "))).join(", ")||"—"}</div>
+          <div><b>Diretoria:</b> ${(g.diretoria||[]).length?(g.diretoria||[]).map(m=>esc(m.cargo+": "+m.nome)).join("; "):'<span class=meta>pendente — informar na ata de eleição</span>'}</div>
+          <div><b>Mandato:</b> ${g.mandato&&g.mandato.inicio?br(g.mandato.inicio)+" → "+br(g.mandato.fim):'<span class=meta>'+esc((g.mandato||{}).status||"pendente")+'</span>'}</div>
+          <div><b>Contato:</b> ${esc(Object.values(d.contato||{}).join(" · ")||"—")}</div>
+          <div><b>CNAEs:</b> ${(d.cnaes||[]).map(esc).join(", ")||"—"}</div></div>
+        <div class="fdoc-bloco"><div class="fdoc-t">Afinidades e atuação geográfica</div>
+          <div>${(d.afinidades||[]).map(a=>`<span class=tag style="color:${AREA(a).cor};border-color:${AREA(a).cor}66">${esc(AREA(a).rotulo)}</span>`).join(" ")}</div>
+          <div style="margin-top:6px"><b>Territórios:</b> ${(d.atuacao_geografica||[]).map(esc).join(" · ")}</div>
+          <div style="margin-top:6px"><b>Certificações:</b> ${(d.certificacoes||[]).map(esc).join(", ")||"nenhuma comprovada"}${(d.certificacoes_a_confirmar||[]).length?` · <span class=meta>a confirmar: ${d.certificacoes_a_confirmar.map(esc).join(", ")}</span>`:""}</div>
+          <div style="margin-top:6px"><b>Experiências:</b> ${(d.experiencias||[]).map(e=>esc(e.replace(/_/g," "))).join(", ")}</div></div>
+      </div>
+      <div class="fdoc-grade">
+        <div class="fdoc-bloco"><div class="fdoc-t">Certidões <span class=meta>— atualizadas no 1º do mês; > 90 dias são excluídas</span></div>
+          ${(d.certidoes||[]).map(c=>`<div class="fdoc-doc ${c.status.replace("á","a")}"><span class="ck-st" style="color:${ST[c.status][1]}">${ST[c.status][0]}</span><span class="fdoc-nome"><b>${esc(c.rotulo)}</b><small>${c.emitida_em?`emitida ${br(c.emitida_em)} · vence ${br(c.vence_em)} (${c.dias} d)`:`não enviada · validade ${c.validade_dias} d${c.automatica?" · automática (o sistema tenta no 1º do mês)":""}`}${c.alerta?' · <b style="color:var(--urgente)">renovar</b>':""}</small></span>
+            <a href="${esc(c.emissao)}" target=_blank rel="noopener noreferrer" class="fdoc-bt" title="emitir no órgão (${esc(c.orgao)})">emitir ↗</a></div>`).join("")}
+          <div style="margin-top:8px"><a class="fdoc-bt principal" href="${esc((d.upload||{}).certidoes||"#")}" target=_blank rel="noopener noreferrer">⬆ enviar certidões</a> <span class=meta>PDFs com o nome do tipo (ex.: certidao_federal.pdf); a data de emissão é lida do próprio PDF</span></div></div>
+        <div class="fdoc-bloco"><div class="fdoc-t">Registrados <span class=meta>— sem validade; o novo substitui o anterior</span></div>
+          ${(d.registrados||[]).map(r=>`<div class="fdoc-doc ${r.status}"><span class="ck-st" style="color:${(ST[r.status]||["✗","var(--urgente)"])[1]}">${(ST[r.status]||["✗"])[0]}</span><span class="fdoc-nome"><b>${esc(r.rotulo)}</b><small>${r.arquivo?esc(r.arquivo)+" · enviado "+br(r.enviado_em):"não enviado"}</small></span></div>`).join("")}
+          <div style="margin-top:8px"><a class="fdoc-bt principal" href="${esc((d.upload||{}).registrados||"#")}" target=_blank rel="noopener noreferrer">⬆ enviar estatuto / ata</a> <span class=meta style="color:var(--urgente)">${esc((d.upload||{}).aviso||"")}</span></div></div>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button onclick="fdocParecer('${esc(d.id)}')">Parecer completo</button><button onclick="fdocCopiar('${esc(d.id)}')">Copiar checklist pronto</button></div>
+    </div>`;}).join("");
+}
+window.fdocParecer=function(id){const d=(D.documentos_associacoes||[]).find(x=>x.id===id);if(!d)return;
+  abreModal(`<h3 style="margin:0">Parecer institucional</h3><div class=meta>${esc(d.razao_social)}</div>`,`<pre style="white-space:pre-wrap;font:12.5px/1.5 ui-monospace,Menlo,monospace">${esc(d.parecer_md||"")}</pre>`);};
+window.fdocCopiar=function(id){const d=(D.documentos_associacoes||[]).find(x=>x.id===id);if(!d)return;const txt=d.parecer_md||"";
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>alert("Checklist e parecer copiados."),()=>abreModal("<h3>Checklist</h3>",`<pre style="white-space:pre-wrap">${esc(txt)}</pre>`));};
+/* ================= HOME / PERFIL DAS ASSOCIAÇÕES (Farol) ================= */
+function desenhaPerfis(){
+  const box=$("farol-perfis"); if(!box)return; const L=D.documentos_associacoes||[]; const E=D.enquadramento||[];
+  if(!L.length){box.innerHTML="";return;}
+  const ROSA="#FF1493";
+  box.innerHTML=L.map(d=>{const g=d.governanca||{},s=d.sede||{},c=d.contato||{},q=E.find(x=>x.associacao===d.id)||{editais:[],por_nivel:{},candidatos_aprovacao:[],abrangencia:{}};
+    const pres=d.presidente||((g.diretoria||[]).find(m=>/presid/i.test(m.cargo||""))||{}).nome;
+    const ini=(d.razao_social||d.id).split(/\s+/).filter(w=>/^[A-ZÀ-Ú]/.test(w)).slice(0,3).map(w=>w[0]).join("")||"A";
+    const local=localStorage.getItem("amc_imagem_"+d.id);
+    const foto=`<div class="perfil-foto-wrap">${(local||d.imagem_perfil)?`<img src="${esc(local||d.imagem_perfil)}" alt="" class="perfil-foto">`:`<div class="perfil-foto mono">${esc(ini)}</div>`}
+      <label class="perfil-trocar" title="trocar a imagem do perfil"><input type=file accept="image/*" style="display:none" onchange="trocarImagem('${esc(d.id)}',this)">✎ trocar imagem</label>
+      <button class="perfil-incluir" onclick="abrirIncluirEditais('${esc(d.id)}')" title="escolher, no banco do Eldorado, editais abertos para esta associação">＋ incluir editais relevantes</button></div>`;
+    const pn=q.por_nivel||{}; const ab=abrangenciaLocal(d.id,q.abrangencia||{});
+    const cand=(q.candidatos_aprovacao||[]).filter(x=>!ab.municipios_aprovados.includes(`${x.uf}/${x.cidade}`));
+    return `<div class="perfil-card" data-assoc="${esc(d.id)}">
+      ${foto}
+      <div class="perfil-corpo">
+        <div class="perfil-nome">${esc(d.razao_social||d.id)}</div>
+        <div class="perfil-linha"><b>CNPJ</b> ${esc(d.cnpj||"—")} · <b>Presidente</b> ${pres?esc(pres):'<span class=meta>pendente</span>'} · <b>Mandato</b> ${g.mandato&&g.mandato.inicio?br(g.mandato.inicio)+" → "+br(g.mandato.fim):'<span class=meta>pendente</span>'} · <b>Sede</b> ${esc([s.bairro,s.municipio&&s.uf?s.municipio+"/"+s.uf:null].filter(Boolean).join(", ")||"—")}</div>
+        <div class="perfil-linha"><b>Editais que enquadram</b> ${q.compativeis_geograficamente??0} de ${q.editais_abertos_total??0}: <span class=tag>${pn.nacional??0} nacionais</span> <span class=tag>${pn.estadual??0} estaduais</span> <span class=tag>${pn.municipal??0} municipais</span>${cand.length?` <span class=tag style="border-color:${ROSA};color:${ROSA}">${cand.length} em cidades candidatas — aprovar</span>`:""}
+          <button class="fdoc-bt" style="margin-left:8px" onclick="abrirAbrangencia('${esc(d.id)}')">abrangência (estados e cidades)</button></div>
+        <div class="perfil-linha">${(d.afinidades||[]).map(a=>`<span class=tag style="color:${AREA(a).cor};border-color:${AREA(a).cor}66">${esc(AREA(a).rotulo)}</span>`).join(" ")}</div>
+        ${d.utilidade_publica?`<div class="perfil-linha"><b>Utilidade pública</b> ${Object.entries(d.utilidade_publica).map(([k,v])=>`${esc(k)}: ${esc((v||{}).lei||"")} <span class=meta>${esc((v||{}).status||"")}${(v||{}).verificacao?" — "+esc(v.verificacao.status):""}</span>${(v||{}).verificacao&&v.verificacao.url?` <a href="${esc(v.verificacao.url)}" target=_blank rel="noopener noreferrer">fonte ↗</a>`:""}`).join(" · ")}</div>`:""}
+        <div class="perfil-cartao"><b>Cartão de visitas.</b> ${esc(d.razao_social||"")}, ${esc((d.natureza_juridica||"").replace(/_/g," "))} fundada em ${d.fundada_em?br(d.fundada_em):"—"} (${d.anos_existencia??"—"} anos), atua em ${(d.afinidades||[]).slice(0,5).map(a=>AREA(a).rotulo.toLowerCase()).join(", ")}${(d.afinidades||[]).length>5?" e outras áreas":""}, com experiência em ${(d.experiencias||[]).slice(0,4).map(x=>x.replace(/_/g," ")).join(", ")}. Governança: ${(g.cargos||[]).map(x=>x.replace(/_/g," ")).join(", ")}.${g.remuneracao?" "+esc(g.remuneracao)+".":""} Contato: ${esc(Object.values(c).join(" · ")||"—")}.</div>
+        <div class="perfil-rodape"><span class=meta>${(d.prontidao||{}).certidoes_validas??0}/${(d.prontidao||{}).certidoes_total??5} certidões · ${(d.prontidao||{}).registrados_enviados??0}/${(d.prontidao||{}).registrados_total??6} registrados</span> · <span class="verlink" onclick="mostra('f-documentos')">Documentos ›</span></div>
+      </div>
+      <div class="perfil-editais faixa-total" id="perfil-editais-caixa-${esc(d.id)}"><div class="fdoc-t">Editais enquadrados pela IA para esta associação <span class=meta>— ${(q.editais||[]).length} após o filtro geográfico${cand.length?` · <span style="color:${ROSA};font-weight:700">${cand.length} em rosa aguardam sua aprovação</span>`:""}</span></div>
+        <div id="perfil-editais-${esc(d.id)}"></div>
+        ${cand.length?`<div class="fdoc-t" style="margin-top:10px;color:${ROSA}">Cidades candidatas (50 maiores de ${(ab.estados||[]).join(", ")}) com edital identificado — aprovar manualmente</div>
+          ${cand.slice(0,30).map(x=>`<div class="enq-ed cand" style="border-color:${ROSA}"><div class="enq-ed-l1" style="grid-template-columns:1fr auto"><span class="enq-tit"><b style="color:${ROSA}">${esc(x.cidade)}/${esc(x.uf)}</b> <small>${esc((x.titulo||"").slice(0,90))} · ${esc(AREA(x.area).rotulo)}${x.fim?" · até "+br(x.fim):""}</small></span>
+            <span><button class="fdoc-bt" onclick="aprovarCidade('${esc(d.id)}','${esc(x.uf)}/${esc(x.cidade)}')">✓ aprovar cidade</button> ${x.url?`<a class="fdoc-bt" href="${esc(x.url)}" target=_blank rel="noopener noreferrer">edital ↗</a>`:""}</span></div></div>`).join("")}`:""}
+      </div></div>`;}).join("");
+  // editais enquadrados: a mesma renderização do Enquadramento, dentro da caixa do perfil
+  E.forEach(a=>{const alvo=$(`perfil-editais-${a.associacao}`); if(alvo)alvo.innerHTML=htmlEditaisEnquadrados(a);});
+  ligaDropzones();
+}
+/* abrangência manual (nacional / estados / municípios) — editada aqui, exportada para o repositório */
+/* arrastar e soltar documentos no portal: identifica o tipo pelo nome, registra a
+   intenção e abre a pasta do repositório (o GitHub Pages não recebe arquivos — o
+   envio final é confirmado na pasta aberta, com o mesmo arquivo) */
+function tipoDoc(nome){const n=nome.toLowerCase();for(const [k,rx] of [["certidao_federal",/federal|rfb|pgfn|conjunta/],["cndt",/cndt|trabalhista/],["crf_fgts",/crf|fgts/],["certidao_estadual",/estadual|sefaz|economia/],["certidao_municipal",/municipal|prefeitura|iss/],["estatuto",/estatuto/],["ata_eleicao",/elei|posse/],["ata_assembleia",/assembleia/],["cnpj",/cnpj/],["comprovante_endereco",/endere/],["utilidade_publica",/utilidade|lei/]])if(rx.test(n))return k;return null;}
+function ligaDropzones(){document.querySelectorAll(".dropzone").forEach(z=>{if(z.dataset.ligada)return;z.dataset.ligada="1";
+  z.addEventListener("dragover",ev=>{ev.preventDefault();z.classList.add("over");});z.addEventListener("dragleave",()=>z.classList.remove("over"));
+  z.addEventListener("drop",async ev=>{ev.preventDefault();z.classList.remove("over");
+    abrirEnvio(z.dataset.assoc,z.dataset.edital);
+    for(const f of [...ev.dataTransfer.files]){const texto=await textoDoArquivo(f);const tp=identificaTipo(f.name,texto);
+      window._envArquivos.push({nome:f.name,bytes:f.size,tipo:tp,auto:!!tp,datas:datasDoTexto(f.name,texto),texto_lido:texto.length>200});}
+    desenhaEnvio();});});}
+/* troca de imagem: mostra na hora (guardada no navegador, reduzida) e abre a pasta
+   imagens/ do repositório para enviar o mesmo arquivo como perfil.jpg */
+/* ============ ENVIO DE DOCUMENTOS (popup do próprio painel) ============ */
+const TIPOS_DOC=[["estatuto","Estatuto social registrado",null],["ata_eleicao","Ata de eleição/posse da diretoria",null],["ata_assembleia","Ata de assembleia",null],
+ ["cnpj","Cartão CNPJ",null],["comprovante_endereco","Comprovante de endereço da sede",null],["rg_cpf_dirigente","RG/CPF do dirigente",null],
+ ["certidao_federal","Certidão negativa federal (RFB/PGFN)",180],["certidao_estadual","Certidão negativa estadual",90],["certidao_municipal","Certidão negativa municipal",90],
+ ["cndt","CNDT — débitos trabalhistas",180],["crf_fgts","CRF do FGTS",30],["relatorio_atividades","Relatório de atividades",null],
+ ["plano_de_trabalho","Plano de trabalho",null],["balanco_patrimonial","Balanço patrimonial",null],["inscricao_conselho","Inscrição no conselho (CMAS/CMDCA/CMI)",null],
+ ["utilidade_publica","Título/lei de utilidade pública",null],["cebas","CEBAS",null],["conta_bancaria","Comprovante de conta bancária",null],
+ ["declaracao_nao_vedacao","Declaração de não vedação",null],["formulario_edital","Formulário/anexo do edital",null],["outro","Outro documento",null]];
+const REGRA_TIPO=[[/estatuto/i,"estatuto"],[/ata.*(elei|posse)|posse.*diretoria/i,"ata_eleicao"],[/ata.*assembl/i,"ata_assembleia"],[/cart.*cnpj|comprovante.*inscri|cnpj/i,"cnpj"],
+ [/endere|comprovante.*resid/i,"comprovante_endereco"],[/\b(rg|cpf|identidade)\b/i,"rg_cpf_dirigente"],[/federal|rfb|pgfn/i,"certidao_federal"],
+ [/estadual|sefaz|economia/i,"certidao_estadual"],[/municipal|prefeitura|iss\b/i,"certidao_municipal"],[/cndt|trabalhist/i,"cndt"],[/crf|fgts/i,"crf_fgts"],
+ [/relat[óo]rio.*atividade/i,"relatorio_atividades"],[/plano.*trabalho/i,"plano_de_trabalho"],[/balan[çc]o|demonstra[çc]/i,"balanco_patrimonial"],
+ [/cmas|cmdca|cmi\b|conselho/i,"inscricao_conselho"],[/utilidade.*p[úu]blica/i,"utilidade_publica"],[/cebas/i,"cebas"],
+ [/conta|banc[áa]ri|extrato/i,"conta_bancaria"],[/declara/i,"declaracao_nao_vedacao"],[/formul[áa]rio|anexo\s*[ivx0-9]/i,"formulario_edital"]];
+window.identificaTipo=function(nome,texto){const alvo=`${nome} ${(texto||"").slice(0,4000)}`;for(const [rx,tipo] of REGRA_TIPO)if(rx.test(alvo))return tipo;return null;};
+window.datasDoTexto=function(nome,texto){const alvo=`${nome} ${(texto||"").slice(0,8000)}`;const out=[];let m;
+  const rx1=/(\d{2})\/(\d{2})\/(20\d{2})/g,rx2=/(20\d{2})-(\d{2})-(\d{2})/g;
+  while((m=rx1.exec(alvo)))out.push(`${m[3]}-${m[2]}-${m[1]}`); while((m=rx2.exec(alvo)))out.push(`${m[1]}-${m[2]}-${m[3]}`);
+  return [...new Set(out)].sort();};
+window.textoDoArquivo=async function(f){ if(f.type==="text/plain"||/\.(txt|md|json)$/i.test(f.name))return await f.text();
+  if(/\.pdf$/i.test(f.name)||f.type==="application/pdf"){try{const b=new Uint8Array(await f.arrayBuffer());let s="";
+    for(let i=0;i<Math.min(b.length,600000);i++){const c=b[i];s+=((c>=32&&c<127)||c===10)?String.fromCharCode(c):" ";}
+    const leg=(s.match(/[A-Za-zÀ-ú]{4,}/g)||[]).join(" ");return leg.length>200?leg:"";}catch(e){return "";}}
+  return "";};
+window.validadeDoc=function(tipo,datas){const t=TIPOS_DOC.find(x=>x[0]===tipo);const dias=t&&t[2];
+  if(!dias)return {status:"sem validade",detalhe:"documento sem prazo de validade"};
+  const hoje=new Date().toISOString().slice(0,10);
+  const emissao=(datas||[]).filter(d=>d<=hoje).pop();
+  if(!emissao)return {status:"data não identificada",detalhe:"confira a data de emissão no arquivo"};
+  const venc=new Date(new Date(emissao+"T00:00:00").getTime()+dias*864e5).toISOString().slice(0,10);
+  const dd=Math.round((new Date(venc)-new Date(hoje))/864e5);
+  return {status:dd>0?(dd<=15?"vence em breve":"válida"):"vencida",detalhe:`emitida em ${br(emissao)} · vence em ${br(venc)} (${dd} dia(s))`,emissao,vencimento:venc};};
+window.desenhaEnvio=function(){const box=$("env-lista");if(!box)return;const L=window._envArquivos||[];
+  if($("env-acoes"))$("env-acoes").style.display=L.length?"flex":"none";
+  box.innerHTML=L.map((a,i)=>{const v=validadeDoc(a.tipo,a.datas);
+    return `<div class="env-item ${a.tipo?"ok":"pendente"}"><span class="led ${a.tipo&&v.status!=="vencida"?"ok":"no"}"></span>
+      <span class="env-nome"><b>${esc(a.nome)}</b><small>${(a.bytes/1024).toFixed(0)} KB · ${a.texto_lido?"conteúdo lido":"identificado pelo nome"}${a.auto?" · automático":""}</small></span>
+      <select onchange="window._envArquivos[${i}].tipo=this.value;window._envArquivos[${i}].auto=false;desenhaEnvio()">
+        <option value="">— selecione o documento —</option>${TIPOS_DOC.map(([k,r])=>`<option value="${k}" ${a.tipo===k?"selected":""}>${esc(r)}</option>`).join("")}</select>
+      <span class="env-val ${v.status.replace(/ /g,"-")}">${esc(v.status)}<small>${esc(v.detalhe)}</small></span>
+      <button class="fdoc-bt" onclick="window._envArquivos.splice(${i},1);desenhaEnvio()">remover</button></div>`;}).join("");};
+window.abrirEnvio=function(assoc,edital){
+  const d=(D.documentos_associacoes||[]).find(x=>x.id===assoc)||{}; const dr=((D.drive||{}).associacoes||{})[assoc]||{};
+  abreModal(`<h3 style="margin:0">Enviar documentos</h3><div class=meta>${esc(d.razao_social||assoc)}${edital?" · vinculado ao edital selecionado":""} — vários arquivos de uma vez; o sistema identifica cada um e valida as datas</div>`,
+   `<div class="env-zona" id="env-zona"><b>Arraste os arquivos aqui</b> ou <label class="fdoc-bt principal" style="display:inline-block">escolher arquivos<input type=file id="env-file" multiple accept=".pdf,.jpg,.jpeg,.png,.txt,.doc,.docx" style="display:none"></label>
+      <div class=meta style="margin-top:6px">PDF, imagem ou texto. Os arquivos ficam no seu navegador até você mandar guardar.</div></div>
+    <div id="env-lista" style="margin-top:10px"></div>
+    <div id="env-acoes" style="margin-top:12px;display:none;gap:8px;flex-wrap:wrap">
+      <button class="fdoc-bt principal" onclick="confirmarEnvio('${esc(assoc)}','${esc(edital||"")}')">✓ validar e registrar no sistema</button>
+      <a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="${esc(dr.documentos?dr.documentos.url:"#")}">📁 pasta de documentos no Drive</a>
+      ${edital?`<a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="${esc(dr.editais?dr.editais.url:"#")}">📁 pasta do edital no Drive</a>`:""}</div>`);
+  window._envArquivos=[];
+  const zona=$("env-zona"),inp=$("env-file");
+  const receber=async(files)=>{for(const f of files){const texto=await textoDoArquivo(f);const tp=identificaTipo(f.name,texto);
+      window._envArquivos.push({nome:f.name,bytes:f.size,tipo:tp,auto:!!tp,datas:datasDoTexto(f.name,texto),texto_lido:texto.length>200});}
+    desenhaEnvio();};
+  inp.onchange=()=>receber(inp.files);
+  zona.addEventListener("dragover",ev=>{ev.preventDefault();zona.classList.add("over");});
+  zona.addEventListener("dragleave",()=>zona.classList.remove("over"));
+  zona.addEventListener("drop",ev=>{ev.preventDefault();zona.classList.remove("over");receber(ev.dataTransfer.files);});};
+window.confirmarEnvio=function(assoc,edital){const L=(window._envArquivos||[]).filter(x=>x.tipo);
+  if(!L.length){alert("Selecione o tipo de pelo menos um documento.");return;}
+  const reg=JSON.parse(localStorage.getItem("amc_docs_"+assoc)||"{}");
+  L.forEach(a=>{const v=validadeDoc(a.tipo,a.datas);reg[a.tipo]={arquivo:a.nome,emitida_em:v.emissao||null,vence_em:v.vencimento||null,status:v.status,edital:edital||null,registrado_em:new Date().toISOString().slice(0,10)};});
+  localStorage.setItem("amc_docs_"+assoc,JSON.stringify(reg));
+  const dr=((D.drive||{}).associacoes||{})[assoc]||{}; const pend=(window._envArquivos||[]).filter(x=>!x.tipo).length;
+  desenhaEnquadramento();desenhaDocumentos();
+  abreModal("<h3 style='margin:0'>Documentos validados</h3>",
+   `<p><b>${L.length}</b> documento(s) registrado(s) e já refletidos no checklist.${pend?` ${pend} sem tipo não foram registrados.`:""}</p>
+    <ul style="font-size:12.5px;line-height:1.6">${L.map(a=>{const v=validadeDoc(a.tipo,a.datas);const rot=(TIPOS_DOC.find(x=>x[0]===a.tipo)||[])[1]||a.tipo;return `<li><b>${esc(rot)}</b> — ${esc(a.nome)} · <b>${esc(v.status)}</b> ${esc(v.detalhe)}</li>`;}).join("")}</ul>
+    <p>Para guardar os arquivos, abra a pasta e solte-os lá:</p>
+    <p><a class="fdoc-bt principal" target=_blank rel="noopener noreferrer" href="${esc(dr.documentos?dr.documentos.url:"#")}">📁 Documentos da associação</a>
+       ${edital?` <a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="${esc(dr.editais?dr.editais.url:"#")}">📁 Editais — inscrições</a>`:""}</p>`);};
+window.trocarImagem=function(id,input){const f=input.files&&input.files[0];if(!f)return;const img=new Image();const rd=new FileReader();
+  rd.onload=()=>{img.onload=()=>{const c=document.createElement("canvas");const s=Math.min(1,420/Math.max(img.width,img.height));c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+    try{localStorage.setItem("amc_imagem_"+id,c.toDataURL("image/jpeg",.85));}catch(e){}
+    desenhaPerfis();abreModal("<h3 style='margin:0'>Imagem trocada</h3>",`<p>A nova imagem já aparece no seu navegador. Para valer para todos, envie o mesmo arquivo com o nome <code>perfil.jpg</code> na pasta <code>imagens</code> da associação:</p><a class="fdoc-bt principal" target=_blank rel="noopener noreferrer" href="https://github.com/amcjardimamerica-arch/Eldorado/upload/main/dados/associacoes/${esc(id)}/imagens">abrir a pasta imagens ↗</a><p class=meta>na próxima saída o painel passa a usar essa imagem.</p>`);};img.src=rd.result;};rd.readAsDataURL(f);};
+window.alternaLargura=function(id){const el=$(id);if(!el)return;el.classList.toggle("faixa-total");const c=el.closest(".perfil-card");if(c)c.classList.toggle("sem-clip",el.classList.contains("faixa-total"));};
+function abrangenciaLocal(id,base){const e=JSON.parse(localStorage.getItem("amc_abrangencia_"+id)||"null");return e||{nacional:base.nacional!==false,estados:base.estados||[],municipios_aprovados:base.municipios_aprovados||[],municipios_candidatos:base.municipios_candidatos||[]};}
+function salvaAbrangencia(id,ab){ab.atualizado_em=new Date().toISOString().slice(0,10);localStorage.setItem("amc_abrangencia_"+id,JSON.stringify(ab));desenhaPerfis();}
+/* INCLUIR EDITAIS RELEVANTES: pop-up com todos os editais ABERTOS do banco do Eldorado
+   (núcleo + base ampla); o titular filtra e marca o edital exato; a escolha vale para a associação
+   (dados/associacoes/<id>/incluidos_editais.json) e o CI passa a considerá-lo mesmo fora do filtro geográfico */
+function incluidosLocal(id){return JSON.parse(localStorage.getItem("amc_incluidos_"+id)||"[]");}
+window.incluirEdital=function(id,eid,on){let l=incluidosLocal(id);l=on?[...new Set([...l,eid])]:l.filter(x=>x!==eid);localStorage.setItem("amc_incluidos_"+id,JSON.stringify(l));const n=$("inc-n");if(n)n.textContent=l.length;};
+window.exportarIncluidos=function(id){const l=incluidosLocal(id);const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify({editais:l,em:new Date().toISOString().slice(0,10),por:"titular"},null,2)],{type:"application/json"}));a.download="incluidos_editais.json";a.click();};
+window.abrirIncluirEditais=async function(id){
+  if(!FA_ABERTAS){try{await garanteAbertas();}catch(e){}}
+  const nucleo=(D.editais||[]).filter(e=>["aberta","possivel"].includes(situacaoDe(e)));
+  const ampla=(FA_ABERTAS||[]).filter(o=>["aberta","possivel"].includes(situacaoDe(o)));
+  const vistos=new Set(nucleo.map(e=>e.id)); const todos=[...nucleo,...ampla.filter(o=>!vistos.has(o.id))];
+  const UFS=[...new Set(todos.map(e=>e.uf).filter(Boolean))].sort(); const AREAS=[...new Set(todos.map(e=>e.area).filter(Boolean))].sort();
+  abreModal(`<h3 style="margin:0">Incluir editais relevantes</h3><div class=meta>${todos.length} editais abertos/possíveis no banco do Eldorado · marcados: <b id="inc-n">${incluidosLocal(id).length}</b></div>`,
+   `<div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0"><input id="inc-q" placeholder="filtrar pelo nome exato do edital, órgão ou cidade" style="flex:1;min-width:220px;padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit">
+      <select id="inc-uf" style="padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit"><option value="">todos os estados</option><option value="__nac__">Brasil (nacional)</option>${UFS.map(u=>`<option>${u}</option>`).join("")}</select>
+      <select id="inc-area" style="padding:8px;border:1px solid var(--linha);border-radius:8px;font:inherit"><option value="">todas as áreas</option>${AREAS.map(a=>`<option value="${esc(a)}">${esc(AREA(a).rotulo)}</option>`).join("")}</select></div>
+    <div id="inc-lista" style="max-height:52vh;overflow:auto"></div>
+    <div style="margin-top:10px;display:flex;gap:8px"><button class="fdoc-bt principal" onclick="exportarIncluidos('${esc(id)}')">⬇ exportar incluidos_editais.json</button><a class="fdoc-bt" target=_blank rel="noopener noreferrer" href="https://github.com/amcjardimamerica-arch/Eldorado/upload/main/dados/associacoes/${esc(id)}/">⬆ enviar ao repositório</a><span class=meta>o Enquadramento passa a considerar os marcados na próxima saída</span></div>`);
+  const desenha=()=>{const q=($("inc-q").value||"").toLowerCase(),uf=$("inc-uf").value,ar=$("inc-area").value,marc=new Set(incluidosLocal(id));
+    const nac=e=>!e.uf||e.abrangencia==="nacional"||e.nivel==="federal";
+    const lista=todos.filter(e=>(!q||`${e.titulo} ${e.fonte_nome||""} ${e.orgao||""} ${e.municipio||""}`.toLowerCase().includes(q))&&(!uf||(uf==="__nac__"?nac(e):e.uf===uf))&&(!ar||e.area===ar)).slice(0,200);
+    $("inc-lista").innerHTML=lista.map(e=>`<label class="inc-item"><input type=checkbox ${marc.has(e.id)?"checked":""} onchange="incluirEdital('${esc(id)}','${esc(e.id)}',this.checked)"><span><b>${esc(e.titulo||"")}</b><small>${esc(AREA(e.area).rotulo)} · ${esc(e.uf||"Brasil")} · ${esc(e.fonte_nome||e.orgao||"")}${e.fim?" · até "+br(e.fim):""} · ${situacaoDe(e)==="aberta"?"aberta":"possível"}</small></span></label>`).join("")||'<div class=meta>nenhum edital com esse filtro</div>';};
+  ["inc-q","inc-uf","inc-area"].forEach(i=>$(i).addEventListener("input",desenha)); desenha();
+};
 
-function _rs(v){ v=Number(v||0);
+/* EMPRESAS QUE PODEM FINANCIAR — reconstruído do zero em 22/09.
+   Duas listas, e só duas: quem doa com verba própria e quem direciona imposto. As descobertas
+   do Piloto ficam no posto dele, não aqui — esta tela é para decidir a quem pedir, e só entra
+   empresa já qualificada. Cada linha carrega o máximo de informação útil sem virar parágrafo,
+   e a lista corre na página, sem rolagem interna. */
+window.EMP=null;
+window.EMPV={lista:"tributaria",pagina:0,q:"",uf:"",porte:"",so:""};
+const LISTAS={
+  tributaria:{rot:"Destinação tributária",cor:"#1E7E4B",fundo:"#EAF6EF",origem:"destinação tributária",
+    sub:"imposto que a empresa já deve e pode direcionar — o pedido vai ao setor fiscal ou à contabilidade"},
+  doadoras:{rot:"Empresas doadoras",cor:"#0B4EA2",fundo:"#EFF5FD",origem:"patrocínio privado",
+    sub:"verba própria da empresa — o pedido vai ao marketing, ao instituto ou à fundação"}};
+
+function _din(v){ v=Number(v||0);
   if(v>=1e9)return "R$ "+(v/1e9).toFixed(1).replace(".",",")+" bi";
   if(v>=1e6)return "R$ "+(v/1e6).toFixed(1).replace(".",",")+" mi";
   if(v>=1e3)return "R$ "+Math.round(v/1e3)+" mil";
   return "R$ "+Math.round(v); }
-function _faixa(a,b){ return b?`${_rs(a)} <span class="mz-ate">a</span> ${_rs(b)}`:"—"; }
+function _fx(a,b){ return b?_din(a)+" a "+_din(b):""; }
+function _capital(v){ const n=Number(String(v||"").replace(/[^\d]/g,"")); return n?_din(n):""; }
 
-window.carregaApoiadores=async function(){ if(window.APOIA)return window.APOIA;
-  try{const r=await fetch("dados/ranking_apoiadores.json?v="+Date.now()); if(r.ok)window.APOIA=await r.json();}catch(e){}
-  return window.APOIA||{empresas:[]}; };
-window.mesaTrilha=function(k){ window.MESA.trilha=k; window.MESA.caderno=0; window.desenhaApoiadores(); };
-window.mesaCaderno=function(n){ window.MESA.caderno=n; window.desenhaApoiadores();
-  const el=$("rank-apoiadores"); if(el)el.scrollIntoView({behavior:"smooth",block:"start"}); };
-window.mesaFiltro=function(c,v){ window.MESA[c]=v; window.MESA.caderno=0; window.desenhaApoiadores(); };
-window.paginaApoiadores=function(t,p){ window.mesaCaderno(p); };   // compatibilidade
+window.carregaEmpresas=async function(){ if(window.EMP)return window.EMP;
+  try{const r=await fetch("dados/ranking_apoiadores.json?v="+Date.now()); if(r.ok)window.EMP=await r.json();}
+  catch(e){ window.EMP={empresas:[],erro:true}; }
+  return window.EMP||{empresas:[]}; };
 
-function _daTrilha(e,k){ return (TRILHAS_MESA[k].origens||[]).includes(e.origem); }
-function _passaFiltro(e){ const F=window.MESA, c=e.cadastro||{};
-  if(F.nivel && (e.nivel||"")!==F.nivel) return false;
-  if(F.tipo && !((e.tipos_de_recurso||[]).includes(F.tipo))) return false;
-  if(F.so_contato && !(c.telefone||c.email||e.site)) return false;
-  if(F.busca){ const s=(e.nome+" "+(c.razao_social||"")+" "+(c.cnae_principal||"")+" "+(e.apoia||"")+" "+(e.programa||"")+" "+(c.municipio||"")).toLowerCase();
-    if(!s.includes(F.busca.toLowerCase())) return false; }
+window.empLista=function(k){ window.EMPV.lista=k; window.EMPV.pagina=0; window.desenhaApoiadores(); };
+window.empPagina=function(n){ window.EMPV.pagina=n; window.desenhaApoiadores();
+  const c=$("emp-ranking-caixa"); if(c&&c.scrollIntoView)c.scrollIntoView({block:"start"}); };
+window.empFiltro=function(c,v){ window.EMPV[c]=v; window.EMPV.pagina=0; window.desenhaApoiadores(); };
+window.empLimpa=function(){ window.EMPV.q="";window.EMPV.uf="";window.EMPV.porte="";window.EMPV.so="";
+  window.EMPV.pagina=0; window.desenhaApoiadores(); };
+
+function _filtra(e){ const F=window.EMPV, c=e.cadastro||{}, pt=e.potencial||{};
+  if(F.uf && (c.uf||"")!==F.uf) return false;
+  if(F.porte && !String(c.porte||"").toUpperCase().includes(F.porte)) return false;
+  if(F.so==="contato" && !(c.telefone||c.email||e.site)) return false;
+  if(F.so==="valor" && !pt.apurou) return false;
+  if(F.so==="goias" && (c.uf||"")!=="GO") return false;
+  if(F.q){ const s=[e.nome,c.razao_social,c.nome_fantasia,c.cnae_principal,c.municipio,e.apoia,e.programa]
+      .filter(Boolean).join(" ").toLowerCase();
+    if(!s.includes(F.q.toLowerCase())) return false; }
   return true; }
 
 window.desenhaApoiadores=function(){
   const el=$("rank-apoiadores"); if(!el)return;
-  if(!window.APOIA){ window.carregaApoiadores().then(()=>window.desenhaApoiadores()); return; }
-  const R=window.APOIA, F=window.MESA, T=TRILHAS_MESA[F.trilha];
-  const daTrilha=(R.empresas||[]).filter(e=>_daTrilha(e,F.trilha));
-  const lista=daTrilha.filter(_passaFiltro);
-  const cadernos=[]; for(let i=0;i<lista.length;i+=100)cadernos.push({n:cadernos.length+1,de:i+1,ate:Math.min(i+100,lista.length)});
-  const cad=cadernos[F.caderno]||cadernos[0]||{n:1,de:1,ate:0};
-  const fatia=lista.slice(cad.de-1,cad.ate);
+  if(!window.EMP){ el.innerHTML='<p class="ep-carrega">Carregando as empresas mapeadas…</p>';
+    window.carregaEmpresas().then(()=>window.desenhaApoiadores()); return; }
+  const R=window.EMP;
+  if(R.erro||!(R.empresas||[]).length){
+    el.innerHTML='<p class="ep-vazio">A lista de empresas ainda não foi gerada. Ela aparece aqui assim que o sistema publicar o ranking.</p>'; return; }
+
+  const F=window.EMPV, L=LISTAS[F.lista];
+  const daLista=(R.empresas||[]).filter(e=>e.origem===L.origem);
+  const filtradas=daLista.filter(_filtra);
+  const paginas=[]; for(let i=0;i<filtradas.length;i+=100)
+    paginas.push({n:paginas.length+1,de:i+1,ate:Math.min(i+100,filtradas.length)});
+  const pg=paginas[F.pagina]||paginas[0]||{n:1,de:1,ate:0};
+  const fatia=filtradas.slice(pg.de-1,pg.ate);
   const somaMin=fatia.reduce((s,e)=>s+(((e.potencial||{}).irpj||{}).direcionavel_min||0),0);
   const somaMax=fatia.reduce((s,e)=>s+(((e.potencial||{}).irpj||{}).direcionavel_max||0),0);
-  const tetoBarra=Math.max(1,...fatia.map(e=>((e.potencial||{}).irpj||{}).direcionavel_max||0));
+  const ufs=[...new Set(daLista.map(e=>(e.cadastro||{}).uf).filter(Boolean))].sort();
   const comValor=fatia.filter(e=>(e.potencial||{}).apurou).length;
-  const niveis=[...new Set(daTrilha.map(x=>x.nivel).filter(Boolean))];
-  const tipos=[...new Set(daTrilha.flatMap(x=>x.tipos_de_recurso||[]))];
 
   el.innerHTML=`
-  <div class="mesa" style="--tc:${T.cor};--tf:${T.fundo}">
-    <nav class="mz-trilhas" role="tablist">
-      ${Object.entries(TRILHAS_MESA).map(([k,v])=>{const n=(R.empresas||[]).filter(e=>_daTrilha(e,k)).length;
-        return `<button role="tab" aria-selected="${k===F.trilha}" class="mz-tr ${k===F.trilha?"on":""}"
-          style="--c:${v.cor}" onclick="mesaTrilha('${k}')">${esc(v.rotulo)}<b>${n}</b></button>`;}).join("")}
-    </nav>
-    <p class="mz-linha">${esc(T.linha)}</p>
+  <section class="ep" style="--c:${L.cor};--f:${L.fundo}">
+    <div class="ep-abas" role="tablist">
+      ${Object.entries(LISTAS).map(([k,v])=>{const n=(R.empresas||[]).filter(e=>e.origem===v.origem).length;
+        return `<button role="tab" aria-selected="${k===F.lista}" class="ep-aba ${k===F.lista?"on":""}"
+          style="--ac:${v.cor}" onclick="empLista('${k}')"><span>${esc(v.rot)}</span><b>${n}</b></button>`;}).join("")}
+    </div>
+    <p class="ep-sub">${esc(L.sub)}</p>
 
-    <div class="mz-painel">
-      <div class="mz-valor">
-        <span class="mz-rot">Potencial desta lista</span>
-        <span class="mz-cifra">${_faixa(somaMin,somaMax)}</span>
-        <span class="mz-nota">${comValor} de ${fatia.length} empresas com estimativa · IRPJ direcionável por ano</span>
-      </div>
-      <div class="mz-icms">
-        <span class="mz-rot">ICMS</span>
-        <span class="mz-icms-v">a confirmar</span>
-        <span class="mz-nota">depende de programa estadual; a regra de Goiás precisa ser conferida na fonte oficial antes de virar número</span>
-      </div>
+    <div class="ep-resumo">
+      <div><span class="ep-rot">Nesta página</span><b>${fatia.length}</b><small>de ${filtradas.length} na lista${filtradas.length!==daLista.length?` (${daLista.length} sem filtro)`:""}</small></div>
+      ${somaMax?`<div><span class="ep-rot">IRPJ direcionável por ano</span><b class="ep-din">${_fx(somaMin,somaMax)}</b><small>estimado em ${comValor} das ${fatia.length}</small></div>`:""}
+      <div><span class="ep-rot">ICMS</span><b class="ep-pend">a confirmar</b><small>depende de programa estadual de Goiás</small></div>
     </div>
 
-    <div class="mz-busca">
-      <input id="mz-q" class="mz-campo" placeholder="nome, razão social, atividade ou cidade" value="${esc(F.busca)}">
-      <select id="mz-nv" class="mz-sel"><option value="">todo alcance</option>${niveis.map(n=>`<option ${F.nivel===n?"selected":""} value="${esc(n)}">${esc(n)}</option>`).join("")}</select>
-      ${tipos.length?`<select id="mz-tp" class="mz-sel"><option value="">toda porta</option>${tipos.map(x=>`<option ${F.tipo===x?"selected":""} value="${esc(x)}">${esc((PORTA[x]||[x])[0])}</option>`).join("")}</select>`:""}
-      <label class="mz-ck"><input type="checkbox" id="mz-ct" ${F.so_contato?"checked":""}> só com contato</label>
-      ${(F.busca||F.nivel||F.tipo||F.so_contato)?`<button class="mz-limpa" onclick="['busca','nivel','tipo'].forEach(k=>window.MESA[k]='');window.MESA.so_contato=false;window.MESA.caderno=0;window.desenhaApoiadores()">limpar</button>`:""}
+    <div class="ep-filtros">
+      <input id="ep-q" class="ep-campo" placeholder="nome, razão social, atividade ou cidade" value="${esc(F.q)}">
+      <select id="ep-uf" class="ep-sel"><option value="">todos os estados</option>${ufs.map(u=>`<option ${F.uf===u?"selected":""} value="${esc(u)}">${esc(u)}</option>`).join("")}</select>
+      <select id="ep-pt" class="ep-sel"><option value="">todo porte</option>
+        <option ${F.porte==="DEMAIS"?"selected":""} value="DEMAIS">grande porte</option>
+        <option ${F.porte==="EPP"?"selected":""} value="EPP">pequeno porte</option>
+        <option ${F.porte==="ME"?"selected":""} value="ME">microempresa</option></select>
+      <select id="ep-so" class="ep-sel"><option value="">todas</option>
+        <option ${F.so==="contato"?"selected":""} value="contato">com contato</option>
+        <option ${F.so==="valor"?"selected":""} value="valor">com valor estimado</option>
+        <option ${F.so==="goias"?"selected":""} value="goias">só de Goiás</option></select>
+      ${(F.q||F.uf||F.porte||F.so)?`<button class="ep-limpa" onclick="empLimpa()">limpar filtros</button>`:""}
     </div>
 
-    ${cadernos.length>1?`<div class="mz-cadernos"><span class="mz-rot">Listas</span>
-      ${cadernos.map((c,i)=>`<button class="mz-cd ${i===F.caderno?"on":""}" onclick="mesaCaderno(${i})">
-        <b>${c.n}</b><span>${c.de}–${c.ate}</span></button>`).join("")}</div>`:""}
+    ${paginas.length>1?`<div class="ep-paginas"><span class="ep-rot">Páginas</span>
+      ${paginas.map((x,i)=>`<button class="ep-pg ${i===F.pagina?"on":""}" onclick="empPagina(${i})"
+        title="empresas ${x.de} a ${x.ate}"><b>${x.n}</b><span>${x.de}–${x.ate}</span></button>`).join("")}</div>`:""}
 
-    <ol class="mz-lista" start="${cad.de}">
+    <div class="ep-cab" aria-hidden="true">
+      <span>#</span><span>Empresa</span><span>Atividade e sede</span><span>Porte e capital</span>
+      <span>Pode direcionar</span><span>Contato</span></div>
+
+    <ol class="ep-lista" start="${pg.de}">
     ${fatia.map(e=>{const c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
-      const larg=ir.direcionavel_max?Math.max(3,Math.round(100*ir.direcionavel_max/tetoBarra)):0;
-      return `<li class="mz-l" tabindex="0" onclick="fichaApoiador('${esc(String(e.posicao))}')"
-        onkeydown="if(event.key==='Enter')fichaApoiador('${esc(String(e.posicao))}')">
-        <span class="mz-pos">${e.posicao}</span>
-        <span class="mz-nome"><b>${esc(e.nome)}</b>
-          <small>${esc(c.cnae_principal||c.razao_social||e.leitura||e.apoia||"atividade a levantar")}${c.municipio?` · ${esc(c.municipio)}${c.uf?"/"+esc(c.uf):""}`:""}</small></span>
-        <span class="mz-portas">${(e.tipos_de_recurso||[]).map(x=>`<i style="--pc:${(PORTA[x]||["","#777"])[1]}">${esc((PORTA[x]||[x])[0])}</i>`).join("")}${e.virou_motor?'<i class="motor" title="virou motor: lido todo dia">motor</i>':""}</span>
-        <span class="mz-pot">${pt.apurou
-          ? `<b>${_faixa(ir.direcionavel_min,ir.direcionavel_max)}</b>
-             <span class="mz-bar"><i style="width:${larg}%"></i></span>
-             <small>${ir.teto_pct}% do IRPJ · confiança ${esc(pt.confianca||"baixa")}</small>`
-          : `<em class="mz-sem">${esc((pt.motivo||"sem estimativa").slice(0,46))}</em>`}</span>
-        <span class="mz-ct">${
-          e.site?`<a href="${esc(e.site)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">site</a>`
-          : c.email?`<a href="mailto:${esc(c.email)}" onclick="event.stopPropagation()">e-mail</a>`
-          : c.telefone?`<a href="tel:${esc(String(c.telefone).replace(/\D/g,""))}" onclick="event.stopPropagation()">${esc(c.telefone)}</a>`
+      const contato=e.site?{h:e.site,t:"site",e:true}
+        :c.email?{h:"mailto:"+c.email,t:c.email,e:false}
+        :c.telefone?{h:"tel:"+String(c.telefone).replace(/\D/g,""),t:String(c.telefone),e:false}:null;
+      return `<li class="ep-l" tabindex="0" role="button" aria-label="abrir ficha de ${esc(e.nome)}"
+        onclick="fichaEmpresa(${e.posicao})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fichaEmpresa(${e.posicao})}">
+        <span class="ep-pos">${e.posicao}</span>
+        <span class="ep-nome"><b>${esc(e.nome)}</b>${c.cnpj?`<small>${esc(c.cnpj)}</small>`:`<small class="ep-falta">CNPJ a levantar</small>`}</span>
+        <span class="ep-ativ">${esc(c.cnae_principal||e.apoia||e.programa||"atividade a levantar")}${c.municipio?`<small>${esc(c.municipio)}${c.uf?"/"+esc(c.uf):""}</small>`:""}</span>
+        <span class="ep-porte">${esc(String(c.porte||"—").toLowerCase())}${_capital(c.capital_social)?`<small>capital ${_capital(c.capital_social)}</small>`:""}</span>
+        <span class="ep-valor">${pt.apurou
+          ? `<b>${_fx(ir.direcionavel_min,ir.direcionavel_max)}</b><small>${ir.teto_pct}% do IRPJ</small>`
+          : `<em>${esc((pt.motivo||"sem estimativa").split("—")[0].trim().slice(0,34))}</em>`}</span>
+        <span class="ep-ct">${contato
+          ? `<a href="${esc(contato.h)}"${contato.e?' target="_blank" rel="noopener noreferrer"':""} onclick="event.stopPropagation()">${esc(contato.t)}</a>`
           : `<em>a levantar</em>`}</span>
       </li>`;}).join("")}
     </ol>
-    ${!fatia.length?`<p class="mz-vazio">Nenhuma empresa nesta trilha com esses filtros. Troque a trilha acima ou limpe um filtro.</p>`:""}
-    <p class="mz-rodape">Os valores são estimativa a partir do porte e do capital social declarados na Receita, com margem de ${R.empresas&&R.empresas[0]&&R.empresas[0].potencial?R.empresas[0].potencial.margem_usada_pct||8:8}% de lucro presumido. Servem para ordenar a quem pedir primeiro, não para escrever em ofício.</p>
-  </div>`;
+    ${!fatia.length?`<p class="ep-vazio">Nenhuma empresa desta lista passa pelos filtros. ${(F.q||F.uf||F.porte||F.so)?'<button class="ep-limpa" onclick="empLimpa()">Limpar filtros</button>':""}</p>`:""}
+    <p class="ep-pe">Valores estimados a partir do porte e do capital social registrados na Receita Federal. Servem para ordenar a quem pedir primeiro, não para escrever em ofício.</p>
+  </section>`;
 
-  const q=$("mz-q"); if(q){q.oninput=()=>{clearTimeout(window._mzT);window._mzT=setTimeout(()=>mesaFiltro("busca",q.value),260);};}
-  const nv=$("mz-nv"); if(nv)nv.onchange=()=>mesaFiltro("nivel",nv.value);
-  const tp=$("mz-tp"); if(tp)tp.onchange=()=>mesaFiltro("tipo",tp.value);
-  const ct=$("mz-ct"); if(ct)ct.onchange=()=>mesaFiltro("so_contato",ct.checked);
+  const q=$("ep-q"); if(q){ q.oninput=()=>{clearTimeout(window._epT);window._epT=setTimeout(()=>empFiltro("q",q.value),250);};
+    if(F.q){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); } }
+  const uf=$("ep-uf"); if(uf)uf.onchange=()=>empFiltro("uf",uf.value);
+  const pt=$("ep-pt"); if(pt)pt.onchange=()=>empFiltro("porte",pt.value);
+  const so=$("ep-so"); if(so)so.onchange=()=>empFiltro("so",so.value);
 };
 
-window.fichaApoiador=function(pos){
-  const R=window.APOIA||{}, e=(R.empresas||[]).find(x=>String(x.posicao)===String(pos)); if(!e)return;
+window.fichaEmpresa=function(pos){
+  const R=window.EMP||{}, e=(R.empresas||[]).find(x=>Number(x.posicao)===Number(pos)); if(!e)return;
   const c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
-  const tk=Object.keys(TRILHAS_MESA).find(k=>_daTrilha(e,k))||"descobertas", T=TRILHAS_MESA[tk];
-  const L=(r,v)=>v?`<div class="rel-linha"><b>${r}:</b> ${esc(String(v))}</div>`:"";
+  const L=Object.values(LISTAS).find(v=>v.origem===e.origem)||LISTAS.doadoras;
+  const li=(r,v)=>v?`<div class="rel-linha"><b>${r}:</b> ${esc(String(v))}</div>`:"";
   abreModal(
    `<h3 style="margin:0">${esc(e.nome)}</h3>
-    <div class=meta><span class="mz-selo" style="background:${T.cor}">${esc(T.rotulo)}</span>
-      posição ${e.posicao} · ${e.pontos} ponto(s)${e.nivel?" · alcance "+esc(e.nivel):""}</div>`,
+    <div class=meta><span class="ep-selo" style="background:${L.cor}">${esc(L.rot)}</span>posição ${e.posicao}${c.uf?" · "+esc(c.uf):""}</div>`,
    `<div class="rel-janela">
-      ${pt.apurou?`<div class="mz-conta">
-        <div class="mz-conta-t">Quanto pode direcionar, por ano</div>
-        <div class="mz-conta-v">${_faixa(ir.direcionavel_min,ir.direcionavel_max)}</div>
-        <table class="mz-leis"><tbody>
-          ${Object.values(ir.por_lei||{}).map(l=>`<tr><td>${esc(l.nome)}</td><td class=pct>${l.limite_pct}%</td>
-            <td class=v>${_faixa(l.min,l.max)}</td><td class=sv>${esc(l.serve_para)}</td></tr>`).join("")}
-        </tbody></table>
-        <div class="mz-conta-t" style="margin-top:9px">Como se chegou a isso</div>
-        <ol class="mz-passos">
-          <li>${esc(pt.base_do_calculo)}</li>
-          <li>faturamento estimado de ${_rs(pt.faturamento.min)} a ${_rs(pt.faturamento.max)} por ano</li>
-          <li>margem de ${pt.margem_usada_pct}% → lucro de ${_rs(pt.lucro_estimado.min)} a ${_rs(pt.lucro_estimado.max)}</li>
-          <li>IRPJ devido de ${_rs(ir.devido_min)} a ${_rs(ir.devido_max)} (15% + 10% sobre o que passa de R$ 240 mil)</li>
-          <li>até ${ir.teto_pct}% disso pode ir para as leis de incentivo</li>
-        </ol>
-        <div class="mz-icms-box"><b>ICMS:</b> ${esc(pt.icms.situacao)} — ${esc(pt.icms.porque)}</div>
-        <p class="mz-aviso">${esc(pt.aviso)}</p>
-      </div>`:`<div class="mz-conta sem"><b>Sem estimativa de valor.</b> ${esc(pt.motivo||"dados insuficientes")}.</div>`}
-
-      ${(e.tipos_de_recurso||[]).length?`<div class="fdoc-t" style="margin-top:12px">Por qual porta se entra</div>
-        <ul class="rel-lista">${(e.tipos_de_recurso||[]).map((x,i)=>`<li><b style="color:${(PORTA[x]||["","#777"])[1]}">${esc((PORTA[x]||[x])[0])}</b>${(e.portas||[])[i]?` — ${esc((e.portas||[])[i])}`:""}</li>`).join("")}</ul>`:""}
-      <div class="fdoc-t" style="margin-top:12px">Identificação</div>
-      ${L("Razão social",c.razao_social)}${L("Nome fantasia",c.nome_fantasia)}${L("CNPJ",c.cnpj)}
-      ${L("Atividade principal",(c.cnae_codigo?c.cnae_codigo+" — ":"")+(c.cnae_principal||""))}
+      ${pt.apurou?`<div class="ep-conta">
+        <span class="ep-rot">Pode direcionar por ano</span>
+        <div class="ep-conta-v">${_fx(ir.direcionavel_min,ir.direcionavel_max)}</div>
+        <table class="ep-leis"><tbody>${Object.values(ir.por_lei||{}).map(l=>
+          `<tr><td>${esc(l.nome)}</td><td class=p>${l.limite_pct}%</td><td class=v>${_fx(l.min,l.max)}</td><td class=s>${esc(l.serve_para)}</td></tr>`).join("")}</tbody></table>
+        <details class="ep-como"><summary>Como se chegou a esses valores</summary>
+          <ol><li>${esc(pt.base_do_calculo)}</li>
+            <li>faturamento estimado de ${_din(pt.faturamento.min)} a ${_din(pt.faturamento.max)} por ano</li>
+            <li>margem de ${pt.margem_usada_pct}% → lucro de ${_din(pt.lucro_estimado.min)} a ${_din(pt.lucro_estimado.max)}</li>
+            <li>IRPJ devido de ${_din(ir.devido_min)} a ${_din(ir.devido_max)}, somando 15% mais o adicional de 10% sobre o que passa de R$ 240 mil</li>
+            <li>até ${ir.teto_pct}% disso pode ir para as leis de incentivo</li></ol>
+          <p>${esc(pt.aviso)}</p></details>
+        <p class="ep-icms"><b>ICMS:</b> ${esc(pt.icms.porque)}</p>
+      </div>`:`<div class="ep-conta sem"><b>Sem estimativa de valor.</b> ${esc(pt.motivo||"dados do cadastro insuficientes")}.</div>`}
+      <div class="fdoc-t" style="margin-top:14px">Identificação</div>
+      ${li("Razão social",c.razao_social)}${li("Nome fantasia",c.nome_fantasia)}${li("CNPJ",c.cnpj)}
+      ${li("Atividade principal",(c.cnae_codigo?c.cnae_codigo+" — ":"")+(c.cnae_principal||""))}
       ${(c.cnaes_secundarios||[]).length?`<div class="rel-linha"><b>Outras atividades:</b> ${(c.cnaes_secundarios||[]).map(esc).join(" · ")}</div>`:""}
-      ${L("Natureza jurídica",c.natureza_juridica)}${L("Porte",c.porte)}${L("Situação",c.situacao)}${L("Capital social",c.capital_social)}
-      ${L("Município",[c.municipio,c.uf].filter(Boolean).join("/"))}${L("Endereço",c.endereco)}
-      <div class="fdoc-t" style="margin-top:12px">Como chegar até ela</div>
-      ${L("Telefone",c.telefone)}${L("E-mail",c.email)}
+      ${li("Natureza jurídica",c.natureza_juridica)}${li("Porte",c.porte)}${li("Situação cadastral",c.situacao)}
+      ${li("Capital social",_capital(c.capital_social))}${li("Início de atividade",c.abertura)}
+      ${li("Município",[c.municipio,c.uf].filter(Boolean).join("/"))}${li("Endereço",c.endereco)}
+      <div class="fdoc-t" style="margin-top:14px">Como chegar até ela</div>
+      ${li("Telefone",c.telefone)}${li("E-mail",c.email)}
       ${e.site?`<div class="rel-linha"><b>Site:</b> <a href="${esc(e.site)}" target=_blank rel="noopener noreferrer">${esc(e.site)}</a></div>`:""}
-      ${(c.qsa||[]).length?`<div class="fdoc-t" style="margin-top:12px">Quem responde pela empresa</div>
+      ${!(c.telefone||c.email||e.site)?`<div class="rel-linha meta">Nenhum contato no cadastro. O primeiro passo é levantar o canal de responsabilidade social no site da empresa.</div>`:""}
+      ${(c.qsa||[]).length?`<div class="fdoc-t" style="margin-top:14px">Quem responde pela empresa</div>
         <ul class="rel-lista">${(c.qsa||[]).map(s=>`<li>${esc(s.nome)}${s.qualificacao?` — <span class=meta>${esc(s.qualificacao)}</span>`:""}</li>`).join("")}</ul>`:""}
-      ${(e.por||[]).length?`<div class="fdoc-t" style="margin-top:12px">O que sustenta a pontuação</div>
-        <ul class="rel-lista">${(e.por||[]).map(x=>`<li>${esc(String(x))}</li>`).join("")}</ul>`:""}
-      ${(e.programa||e.apoia||e.via_de_entrada)?`<div class="fdoc-t" style="margin-top:12px">Investimento social</div>${L("Programa",e.programa)}${L("Apoia",e.apoia)}${L("Via de entrada",e.via_de_entrada)}`:""}
-      ${e.ficha?`<div class="rel-linha" style="margin-top:8px"><b>Ficha na Biblioteca:</b> <code>${esc(e.ficha)}</code></div>`:""}
-      <div class="mz-futuro"><b>Relatório completo desta empresa</b>
+      ${(e.por||[]).length?`<div class="fdoc-t" style="margin-top:14px">Por que está nesta lista</div>
+        <ul class="rel-lista">${(e.por||[]).slice(0,8).map(x=>`<li>${esc(String(x))}</li>`).join("")}</ul>`:""}
+      ${(e.programa||e.apoia||e.via_de_entrada)?`<div class="fdoc-t" style="margin-top:14px">Investimento social conhecido</div>${li("Programa",e.programa)}${li("Apoia",e.apoia)}${li("Via de entrada",e.via_de_entrada)}`:""}
+      <div class="ep-futuro"><b>Relatório completo desta empresa</b>
         <p>Quem decide, projetos já apoiados e contatos diretos entram aqui quando você enviar o material.</p>
-        ${(c.a_completar||[]).length?`<p class=meta>Ainda falta: ${(c.a_completar||[]).join(", ")}.</p>`:""}</div>
+        ${(c.a_completar||[]).length?`<p class=meta>Ainda falta no cadastro: ${(c.a_completar||[]).join(", ")}.</p>`:""}</div>
     </div>`);
 };
+window.fichaApoiador=window.fichaEmpresa;   // nome antigo, para não quebrar chamada remanescente
 
 /* o avião em travessia sobre a faixa onde o Piloto trabalha */
 const ONDE_POUSAR={cacar_oportunidade:["#rank-apoiadores","#emp-ranking-caixa","#pil-posto","#pil-posto-bussola"],
@@ -3987,7 +3963,6 @@ function iniciar(){
      const dias=Math.round((Date.now()-new Date(D.gerado_em||Date.now()))/864e5);
      el.innerHTML=`dados gerados em <b>${esc(g)}</b>${dias>1?` · <span style="color:var(--urgente)">${dias} dias atrás — recarregue com Ctrl+F5</span>`:" · atualizado"}`;}}
   if(window.desenhaApoiadores)window.desenhaApoiadores();setTimeout(pousarAviaoErrante,700);desenhaPostoPiloto("pil-posto");desenhaPostoPiloto("pil-posto-bussola");desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
-  if($("rk-bt-fiscal")){$("rk-bt-fiscal").onclick=()=>{window._rkCat="destinacao_tributaria";window.desenhaRanking();};$("rk-bt-patroc").onclick=()=>{window._rkCat="patrocinio_privado";window.desenhaRanking();};$("rk-busca").addEventListener("input",()=>window.desenhaRanking());}
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
 }

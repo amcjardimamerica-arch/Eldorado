@@ -14,6 +14,9 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - run: pip install -q -r requirements.txt
+      - name: Vigia das datas dos testes (avisa antes de apodrecer)
+        continue-on-error: true
+        run: python3 scripts/datas_dos_testes.py || true
       - name: Faxina dos aprendizados e auditoria dos motores (a cada 3 dias)
         run: |
           python -m src.aprendizados_piloto faxina || true

@@ -19,10 +19,10 @@ class TesteRanking(unittest.TestCase):
         pg = r["paginas"]
         self.assertEqual(pg[0], {"de": 1, "ate": 100}); self.assertEqual(pg[-1]["ate"], r["total"])
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        for x in ("rank-apoiadores", "window.mesaCaderno", "window.fichaApoiador",
-                  "mz-cd", "mz-l", "mz-trilhas"):
+        for x in ("rank-apoiadores", "window.empPagina", "window.fichaEmpresa",
+                  "ep-pg", "ep-l", "ep-abas"):
             self.assertIn(x, h, x)
-        self.assertIn("i<lista.length;i+=100", h)                        # listas de 100 por trilha
+        self.assertIn("i<filtradas.length;i+=100", h)                    # páginas de 100 por lista
 
     def test_dados_cadastrais(self):
         r = json.loads((ROOT / "docs/dados/ranking_apoiadores.json").read_text(encoding="utf-8"))
@@ -35,7 +35,7 @@ class TesteRanking(unittest.TestCase):
         self.assertTrue(all("a_completar" in e["cadastro"] for e in r["empresas"]))   # o que falta é declarado
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         for x in ("Quem responde pela empresa", "Atividade principal", "Outras atividades",
-                  "Natureza jurídica", "Como chegar até ela"):
+                  "Natureza jurídica", "Como chegar até ela", "Identificação"):
             self.assertIn(x, h, x)
 
 
