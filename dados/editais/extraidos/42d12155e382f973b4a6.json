@@ -49,5 +49,20 @@
   "familia_de_rota": null,
   "exige_navegador": null,
   "observacao": "Rota (a), API de consulta do PNCP: objetoCompra transcrito integralmente acima; numeroCompra \"23 | Processo 13159\"; processo \"23\"; modalidadeNome \"Credenciamento\"; situacaoCompraNome \"Divulgada no PNCP\"; amparoLegal.nome \"Lei 14.133/2021, Art. 79, II\"; linkSistemaOrigem vazio; orgaoEntidade.razaoSocial \"MUNICIPIO DE PORTO FELIZ\"; unidadeOrgao.nomeUnidade \"PREFEITURA MUNICIPAL\"; municipioNome \"Port"
- }
+ },
+ "fim": "2026-10-09",
+ "fim_confirmado_em": "2026-09-23",
+ "continua_aberto": true,
+ "alerta": "Armadilha de cadastro na base: o registro unico do PNCP (chave 46634481000198/2026/203) NAO e um edital, e um envelope com CINCO editais autonomos. Tratar como um so item leva a perder quatro oportunidades ou a inscrever no edital errado. Alem disso a data de fim 09/10/2026 vale para o conjunto conforme a pagina do municipio, mas os cronogramas individuais de cada edital nao puderam ser conferidos um a um.",
+ "requisitos": "NAO CONFIRMADO se OSC pode se inscrever - esta e a pendencia critica deste item. O texto dos cinco editais nao pode ser lido (ver observacao). O que esta confirmado: a inscricao NAO e por protocolo na prefeitura, e exclusivamente online pela plataforma federal CultBR / Mapa da Cultura, e cada um dos cinco editais tem sua PROPRIA pagina de oportunidade e seu proprio formulario, logo sao cinco inscricoes separadas. Pelo desenho tipico de premios PNAB, editais de 'trajetoria artistica' costumam ser restritos a pessoa fisica e os de 'iniciativas' costumam aceitar pessoa juridica sem fins lucrativos, mas isso NAO foi verificado no texto e nao deve ser assumido.",
+ "alcance": "fora_de_abrangencia",
+ "observacao_reverificacao": "ANEXOS LISTADOS E IDENTIFICADOS UM A UM. O endpoint https://pncp.gov.br/api/pncp/v1/orgaos/46634481000198/compras/2026/203/arquivos devolveu SEIS documentos, todos statusAtivo true, todos publicados em 04/09/2026: sequencial 1 = 'EDITAL No 10 PREMIO DE INCENTIVO A INICIATIVAS DE FORMACAO CULTURAL' (16:21:14); sequencial 2 = 'PARECER JURIDICO', tipo 'Outros Documentos' (16:21:35) - este NAO e edital; sequencial 3 = 'EDITAL No 11 PREMIO DE INCENTIVO A INICIATIVAS CULTURAIS PERIFERICAS' (16:21:55); sequencial 4 = 'EDITAL No 12 PREMIO DE INCENTIVO A INICIATIVAS CULTURAIS INEDITAS' (16:22:14); sequencial 5 = 'EDITAL No 13 PREMIO DE INCENTIVO A INICIATIVAS CULTURAIS CONTINUADAS' (16:22:31); sequencial 6 = 'EDITAL No 14 PREMIO DE TRAJETORIA ARTISTICA CULTURAL' (16:22:48). Confirma-se portanto CINCO editais + 1 parecer, exatamente como a base registrava. CADA EDITAL TEM PAGINA PROPRIA NA PLATAFORMA FEDERAL, localizadas via https://www.portofeliz.sp.gov.br/servicos/cultura: n 10 Formacao Cultural = https://culteditais.cultura.gov.br/oportunidade/10476/; n 11 Iniciativas Perifericas = .../10479/; n 12 Iniciativas Ineditas = .../10482/; n 13 Iniciativas Continuadas = .../10485/; n 14 Trajetoria Artistica = .../10488/. A mesma pagina do municipio informa prazo de inscricao ate 09/10/2026 e que o cadastro e 'exclusivo online' via 'Mapa da Cultura / CultBR Editais'. O QUE NAO ABRIU: os PDFs dos cinco editais no PNCP (https://pncp.gov.br/pncp-api/v1/orgaos/46634481000198/compras/2026/203/ar",
+ "rota_usada": "PNCP /api/pncp/.../arquivos (lista completa dos 6 anexos - rota que funcionou) -> PDFs do PNCP (binario ilegivel; ?v=2 = 422) -> portofeliz.sp.gov.br (/editais 404, /licitacoes 404, /cultura 403) -> portal transparencia cidade360 (sem resultado) -> portofeliz.sp.gov.br/servicos/cultura (achou os 5 links CultBR e o prazo 09/10) -> 5 paginas culteditais.cultura.gov.br (JS nao renderizado)",
+ "reverificado_em": "2026-09-23",
+ "reverificado_por": "parecer de oportunidades 23/09 — leitura da fonte",
+ "ativo": false,
+ "rebaixado_em": "2026-09-23",
+ "rebaixado_porque": "fora da abrangencia aprovada pelo titular (nacional + GO + Goiania): edital municipal de outra UF, cujo proponente precisa ter sede ou atuacao no municipio",
+ "uf_do_edital": "SP",
+ "volta_se": "a abrangência aprovada passar a incluir esta UF ou município"
 }

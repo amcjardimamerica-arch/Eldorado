@@ -49,5 +49,17 @@
   "familia_de_rota": null,
   "exige_navegador": null,
   "observacao": "Rota (a), API de consulta do PNCP: objetoCompra transcrito integralmente acima; numeroCompra \"11\"; processo \"2534/2026\" (note a divergencia com o processo administrativo citado dentro do proprio objeto, \"2.654/2026\" - dois numeros diferentes no mesmo registro, a conferir com o orgao antes de peticionar); modalidadeNome \"Credenciamento\"; situacaoCompraNome \"Divulgada no PNCP\"; amparoLegal.nome \"Lei"
- }
+ },
+ "fim": "2026-10-02",
+ "alerta": "Historico registra 4 eventos de RETIFICACAO em 2026-09-03 (12:00:43 a 12:00:45), sobre a propria Contratacao e sobre os itens 1, 2 e 3 - ANTERIORES a verificacao de 15/09, portanto nao sao mudanca do periodo, mas indicam que o edital ja foi retificado uma vez e o texto vigente pode divergir do publicado as 11:53",
+ "alcance": "fora_de_abrangencia",
+ "observacao_reverificacao": "NAO FOI POSSIVEL CONFIRMAR A DATA DE ENCERRAMENTO. O endpoint https://pncp.gov.br/api/consulta/v1/orgaos/46634127000163/compras/2026/1974 foi chamado 6 vezes, com cache-buster ?v=2/3/7/22/33/41 e pela rota /contratacoes/publicacao?cnpj=46634127000163, devolvendo \"Read timeout while fetching the URL\" (e um 429). Logo fim_confirmado = null: a data 02/10/2026 da base NAO foi verificada por leitura direta e nao foi estimada. O que FOI confirmado: /arquivos devolveu duas pecas, ambas statusAtivo true - \"Chamamento0112026PROC20826ALDIRBLANC.pdf\" (2026-09-03T11:53:45) e \"Planilha Orcamentaria  ITATINGA.xlsx\" (2026-09-03T11:54:08) - nenhum titulo com REVOGACAO/ERRATA/PRORROGACAO/SUSPENSAO. O nome do arquivo confirma tratar-se do Chamamento 011/2026, processo 208/26, linha ALDIR BLANC (PNAB), coerente com a base. O /historico devolveu 7 eventos: 3 \"Inclusao\" e 4 \"Retificacao\", TODOS em 2026-09-03, o mais recente as 12:00:45 - NENHUM evento apos 03/09/2026, o que descarta prorrogacao, revogacao ou nova errata entre 15/09 e 23/09 (por isso mudou_desde_15_09 = false com prova). DUVIDA SOBRE ELEGIBILIDADE DE OSC CONTINUA EM ABERTO: nao foi possivel ler o edital. O PDF foi buscado por duas rotas (/pncp-api/v1/.../arquivos/1 e /api/pncp/v1/.../arquivos/1) e em ambas o WebFetch devolveu conteudo binario nao interpretavel; o site oficial www.itatinga.sp.gov.br respondeu ROBOTS_DISALLOWED. Portanto nao se afirma nem se nega que pessoa juridica sem fins lucrativos esteja entre os proponentes el",
+ "rota_usada": "WebFetch: /api/pncp/v1/orgaos/46634127000163/compras/2026/1974/arquivos + /historico (OK); /api/consulta/v1/... e /contratacoes/publicacao (timeout/429); PDF do edital por 2 rotas (binario ilegivel); www.itatinga.sp.gov.br (robots.txt bloqueia)",
+ "reverificado_em": "2026-09-23",
+ "reverificado_por": "parecer de oportunidades 23/09 — leitura da fonte",
+ "ativo": false,
+ "rebaixado_em": "2026-09-23",
+ "rebaixado_porque": "fora da abrangencia aprovada pelo titular (nacional + GO + Goiania): edital municipal de outra UF, cujo proponente precisa ter sede ou atuacao no municipio",
+ "uf_do_edital": "SP",
+ "volta_se": "a abrangência aprovada passar a incluir esta UF ou município"
 }

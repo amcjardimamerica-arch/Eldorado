@@ -92,5 +92,18 @@
   "familia_de_rota": null,
   "exige_navegador": null,
   "observacao": "ALERTA DE PRAZO — A BASE ESTAVA UM DIA ATRASADA. A ficha registrava fim 24/09/2026; o campo dataEncerramentoProposta declarado pelo Município de Ipu no PNCP é \"2026-09-23T17:00:00\", isto é, 23/09/2026 às 17h. Um dia a menos do que a base supunha, e faltam 8 dias contados de hoje (15/09/2026). Quem se programasse pelo 24/09 perderia o prazo. ENQUADRAMENTO: é fomento a OSC. O objeto declara MROSC ex"
- }
+ },
+ "fim": "2026-09-23",
+ "fim_confirmado_em": "2026-09-23",
+ "continua_aberto": true,
+ "alcance": "fora_de_abrangencia",
+ "observacao_reverificacao": "API de consulta do PNCP devolveu \"dataAberturaProposta\": \"2026-08-27T18:00:00\", \"dataEncerramentoProposta\": \"2026-09-23T17:00:00\", \"situacaoCompraNome\": \"Divulgada no PNCP\", numeroCompra \"2026001/01 - SME\", objeto \"CHAMAMENTO PUBLICO DESTINADO A CELEBRACAO DE TERMO DE COLABORACAO COM O MUNICIPIO DE IPU, ESTADO DO CEARA, POR INTERMEDIO DA SECRETARIA MUNICIPAL DE EDUCACAO (...) CONFORME LEI 13.019/2014\". CONFIRMA a base: encerra HOJE 23/09/2026 as 17h00. Lista de arquivos tem 8 pecas, todas statusAtivo true e todas publicadas em 2026-08-27 - nenhum titulo com REVOGACAO, ERRATA, RETIFICACAO, PRORROGACAO ou SUSPENSAO. Endpoint /historico mostra 10 eventos, o mais recente \"Retificacao | Item de Contratacao | 2026-08-27T17:41:36\" - ou seja, NENHUM evento apos 27/08, o que descarta qualquer alteracao entre 15/09 e hoje. Site oficial www.ipu.ce.gov.br ainda lista \"Chamamento Publico 2026001/001/2026 - CELEBRAR TERMO DE COLABORACAO COM O MUNICIPIO DE IPU, ESTADO DO CEARA, POR INTERMEDIO DA S[...]\" com abertura \"25/08/2026 08:00\", sem aviso de revogacao. ATENCAO OPERACIONAL: prazo expira hoje as 17h00.",
+ "rota_usada": "WebFetch: pncp.gov.br/api/consulta/v1/orgaos/07679723000108/compras/2026/56 + /api/pncp/v1/.../arquivos + /api/pncp/v1/.../historico + www.ipu.ce.gov.br",
+ "reverificado_em": "2026-09-23",
+ "reverificado_por": "parecer de oportunidades 23/09 — leitura da fonte",
+ "ativo": false,
+ "rebaixado_em": "2026-09-23",
+ "rebaixado_porque": "fora da abrangencia aprovada pelo titular (nacional + GO + Goiania): edital municipal de outra UF, cujo proponente precisa ter sede ou atuacao no municipio",
+ "uf_do_edital": "CE",
+ "volta_se": "a abrangência aprovada passar a incluir esta UF ou município"
 }

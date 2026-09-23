@@ -1,0 +1,112 @@
+{
+ "em": "2026-09-23T16:54:22+00:00",
+ "origem": "parecer de oportunidades e desempenho dos motores, 23/09/2026",
+ "a_licao_que_governa": "o sistema decidia pelo QUE A FONTE É e precisa decidir pelo QUE O EDITAL DIZ. Fonte nacional publica edital de um município só; edital de fomento exige doutorado; um registro anuncia cinco editais. Três dos oito erros vinham daí.",
+ "rendimento_por_origem": {
+  "pncp_consultado": {
+   "total": 310,
+   "aprovado": 37,
+   "reprovado": 257,
+   "dentro_abrangencia": 15,
+   "atencao": 16
+  },
+  "outro": {
+   "total": 176,
+   "reprovado": 7,
+   "dentro_abrangencia": 8,
+   "sem": 169
+  },
+  "pncp_sem_chave": {
+   "total": 73,
+   "reprovado": 69,
+   "aprovado": 4,
+   "dentro_abrangencia": 2
+  },
+  "verificacao_63": {
+   "total": 63,
+   "atencao": 17,
+   "reprovado": 42,
+   "aprovado": 4,
+   "dentro_abrangencia": 11
+  },
+  "outras_fontes": {
+   "total": 56,
+   "aprovado": 22,
+   "dentro_abrangencia": 28,
+   "reprovado": 27,
+   "ruido": 3,
+   "vetor": 2,
+   "atencao": 2
+  },
+  "pncp_relocalizado": {
+   "total": 12,
+   "aprovado": 6,
+   "atencao": 4,
+   "reprovado": 2,
+   "dentro_abrangencia": 1
+  },
+  "pncp_barrado_no_titulo": {
+   "total": 5,
+   "reprovado": 5,
+   "dentro_abrangencia": 2
+  }
+ },
+ "regras_novas": [
+  {
+   "id": "M1",
+   "regra": "filtrar abrangência ANTES de verificar",
+   "ganho": "85,8% menos verificação",
+   "prova": "o filtro, sozinho, reproduziu os mesmos 238 rebaixados pelo parecer"
+  },
+  {
+   "id": "M2",
+   "regra": "ler o território no OBJETO, mesmo em fonte nacional",
+   "erro_que_corrige": "Funbio aprovado por ser nacional, fechado ao litoral do Paraná"
+  },
+  {
+   "id": "M3",
+   "regra": "requisito de habilitação é eliminatório ANTES do mérito",
+   "erro_que_corrige": "o FME foi chamado de maior oportunidade aberta em 09 e 15/09, e exige doutorado"
+  },
+  {
+   "id": "M4",
+   "regra": "registrar valor mínimo e distinguir proponente de executor",
+   "erro_que_corrige": "BNDES Periferias como inscrição, sendo projeto de R$ 20 milhões"
+  },
+  {
+   "id": "M5",
+   "regra": "desdobrar registro com vários editais numerados",
+   "erro_que_corrige": "Porto Feliz contava 1 onde havia 5"
+  },
+  {
+   "id": "M6",
+   "regra": "mecanismo permanente sai da fila de prazo",
+   "erro_que_corrige": "Receita, penas, Impactarte e emendas entravam na fila e nunca saíam"
+  },
+  {
+   "id": "M7",
+   "regra": "guardar hora de encerramento",
+   "erro_que_corrige": "o painel dizia 'hoje' quando já eram 18h de um edital que fechou às 17h"
+  },
+  {
+   "id": "M8",
+   "regra": "restrição eleitoral suspende a entrega, não a habilitação",
+   "erro_que_corrige": "a vedação da Receita em ano eleitoral não estava em lugar nenhum"
+  }
+ ],
+ "tres_autocorrecoes_do_parecer": [
+  "o FME Transforma não é a maior oportunidade aberta: exige doutorado do coordenador",
+  "o BNDES Periferias não é inscrição: a associação entra como organização de base",
+  "o Funbio é nacional na fonte e territorial no objeto — armadilha que o motor não distinguia"
+ ],
+ "funil_depois_da_limpeza": {
+  "acervo": 812,
+  "fora_do_objeto": 409,
+  "fora_de_abrangencia": 238,
+  "ativos": 165
+ },
+ "o_que_ainda_nao_sabemos": [
+  "sete registros não puderam ser reverificados: a API do PNCP esteve instável",
+  "nenhuma data foi estimada; onde não houve confirmação, o campo está nulo com o motivo escrito"
+ ]
+}

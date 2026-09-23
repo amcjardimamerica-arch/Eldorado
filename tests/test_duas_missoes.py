@@ -66,10 +66,14 @@ class TesteMissao2_Reconhecimento(unittest.TestCase):
                                      "marketing_social", "convenio"})
 
     def test_cada_descoberta_altera_o_plano_de_voo(self):
-        registrar({"empresa": "Teste Reconhecimento SA", "via": "patrocinio",
-                   "trecho": "patrocínio da Teste", "onde_vi": "https://x.org"}, "imprensa", "regional")
+        # nome único por corrida: um alvo já investigado numa corrida anterior sairia do
+        # plano e o teste falharia por estado herdado, não por defeito
+        import uuid
+        nome = f"Teste Reconhecimento {uuid.uuid4().hex[:8].upper()}"
+        registrar({"empresa": nome, "via": "patrocinio",
+                   "trecho": f"patrocínio da {nome}", "onde_vi": "https://x.org"}, "imprensa", "regional")
         p = proximo_do_plano()
-        self.assertTrue(p)
+        self.assertTrue(p, "o alvo recém-registrado deveria estar no plano")
         self.assertIn("financia no terceiro setor", p["pergunta"])
         self.assertGreaterEqual(len(p["a_investigar"]), 5)
         pub = publicar()
