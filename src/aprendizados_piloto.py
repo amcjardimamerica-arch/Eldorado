@@ -31,6 +31,16 @@ TRATADOS = PASTA / "tratados.json"
 MELHORIAS = PASTA / "melhorias.json"
 PUB = ROOT / "docs/dados/aprendizados_piloto.json"
 
+# MOTORES DE ENSAIO: nomes usados pelos testes. Nada que venha deles entra na base real —
+# em 23/09 as estatísticas apareceram com 26 missões de 'm-teste', 'm-seco' e 'm-repete',
+# que não existem, e qualquer leitura daquela base estava errada.
+ENSAIO = ("m-teste", "m-seco", "m-repete", "teste", "lab", "lab-motor", "ensaio-motor", "m-")
+
+def _e_ensaio(motor: str) -> bool:
+    m = str(motor or "").lower()
+    return m in ENSAIO or m.startswith("m-teste") or m.startswith("m-seco") or m.startswith("m-repete")
+
+
 MOTIVOS = {
     "busca_vazia": "o buscador não devolveu nada (bloqueio ou rede)",
     "nada_no_crivo": "vieram resultados, mas nenhum era oportunidade de verdade",
@@ -113,6 +123,9 @@ def avaliar(ia, missao: dict, achados: list[dict]) -> dict:
         sugestao = ""
 
     motivo = _motivo_do_insucesso(licao, achados, uteis)
+    if _e_ensaio(motor):                      # missão de ensaio não entra na base
+        return {"avaliacao": {"motor": motor, "ensaio": True, "uteis": len(uteis),
+                              "nota": "missão de ensaio — não gravada na base"}, "uteis": uteis}
     av = {"em": now_iso(), "motor": motor, "missao": missao.get("tipo"), "alvo": missao.get("alvo"),
           "achados": len(achados), "uteis": len(uteis), "descartados": len(descartados),
           "efetividade": round(len(uteis) / len(achados), 2) if achados else 0.0,
@@ -150,6 +163,8 @@ def _motivo_do_insucesso(licao: str, achados: list, uteis: list) -> str:
 
 
 def _guardar_licao(motor: str, motivo: str, tipo: str) -> None:
+    if _e_ensaio(motor):
+        return
     d = load_json(LICOES) if LICOES.exists() else {"itens": {}}
     k = f"{motor}|{motivo}"
     it = d.setdefault("itens", {}).setdefault(k, {"motor": motor, "motivo": motivo, "vezes": 0, "tipos": []})
@@ -165,6 +180,8 @@ def _guardar_licao(motor: str, motivo: str, tipo: str) -> None:
 
 
 def _guardar_melhoria(motor: str, sugestao: str, efetividade: float) -> None:
+    if _e_ensaio(motor):
+        return
     d = load_json(MELHORIAS) if MELHORIAS.exists() else {"itens": []}
     d.setdefault("itens", []).insert(0, {"motor": motor, "sugestao": sugestao,
                                          "efetividade_na_hora": efetividade, "em": now_iso()[:16],

@@ -95,6 +95,27 @@ def _cobertura() -> str:
         return ""
 
 
+def _registrar_mudez(mudo: bool) -> None:
+    """O cargo exige do ocupante ≥50% de acerto. Um modelo que não responde entrega zero —
+    então a mudez é medida e fica no arquivo do cargo, para a avaliação poder decidir."""
+    arq = ROOT / "config/cargo_piloto.json"
+    if not arq.exists():
+        return
+    c = load_json(arq)
+    o = c.setdefault("ocupante_atual", {})
+    d = o.setdefault("desempenho_em_voo", {"pedidos": 0, "mudos": 0})
+    d["pedidos"] += 1
+    d["mudos"] += 1 if mudo else 0
+    d["taxa_de_resposta"] = round(1 - d["mudos"] / d["pedidos"], 3)
+    d["avaliado_ate"] = now_iso()[:16]
+    if d["pedidos"] >= 10 and d["taxa_de_resposta"] < 0.5:
+        d["alerta"] = (f"responde em {d['taxa_de_resposta']*100:.0f}% dos pedidos, abaixo dos 50% "
+                       "que o cargo exige — candidato a substituição pelo banco de reserva")
+    else:
+        d.pop("alerta", None)
+    write_json(arq, c)
+
+
 def escrever(ia, motor_cfg: dict | None = None) -> dict:
     """Escreve o briefing deste voo e devolve o prompt de pesquisa que ele gerou."""
     banco = _estado_do_banco()
@@ -132,12 +153,37 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
          "o_que_procurar": (r or {}).get("o_que_procurar") or [],
          "nivel": (r or {}).get("nivel") or "nacional",
          "resultado": {"achados": None}}
-    if not b["pergunta_de_pesquisa"]:                       # rede de segurança: o voo não sai sem pergunta
-        b["pergunta_de_pesquisa"] = ("Que empresas com caixa e programa social ainda não estão na nossa lista, "
-                                     "e onde publicam seus editais ou patrocínios?")
-        b["aposta"] = {"onde": "livre", "porque": "o modelo não respondeu; rumo genérico", "confianca": "baixa"}
+    if not b["pergunta_de_pesquisa"]:
+        # REDE DE SEGURANÇA COM RUMO DE VERDADE (23/09). Antes ela devolvia sempre a mesma
+        # pergunta genérica: em 12 voos houve 2 apostas distintas, porque o modelo ficou mudo
+        # em 9 deles. Agora o rumo sai do catálogo de ângulos, rodando por sorteio sem
+        # repetição — o voo perde a inteligência do modelo, mas não perde a direção.
+        import random
+        from .nucleo import load_json as _lj
+        cfg = _lj(ROOT / "config/motor_piloto.json") if (ROOT / "config/motor_piloto.json").exists() else {}
+        angs = cfg.get("angulos_de_ataque") or []
+        usados = [x.get("aposta", {}).get("onde") for x in hist if x.get("aposta")]
+        livres = [a for a in angs if a.get("id") not in usados] or angs
+        if livres:
+            a = random.Random(f"{now_iso()[:13]}-{len(hist)}").choice(livres)
+            b["pergunta_de_pesquisa"] = a["pergunta"]
+            b["nivel"] = a.get("nivel") or "nacional"
+            b["aposta"] = {"onde": a["id"], "confianca": "baixa",
+                           "porque": "o modelo não respondeu; rumo sorteado do catálogo, sem repetir os últimos"}
+            b["o_que_procurar"] = [a.get("alvo") or "empresa"]
+        else:
+            b["pergunta_de_pesquisa"] = ("Que empresas com caixa e programa social ainda não estão na nossa "
+                                         "lista, e onde publicam seus editais ou patrocínios?")
+            b["aposta"] = {"onde": "livre", "porque": "o modelo não respondeu e o catálogo está vazio",
+                           "confianca": "baixa"}
+        b["modelo_mudo"] = True
+        _registrar_mudez(True)
+    else:
+        _registrar_mudez(False)
     PASTA.mkdir(parents=True, exist_ok=True)
-    write_json(PASTA / f"{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}.json", b)
+    # o carimbo vai ao milissegundo: dois briefings no mesmo segundo colidiam no mesmo
+    # arquivo, e o histórico deixava de crescer — a rede de segurança repetia o rumo
+    write_json(PASTA / f"{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S-%f')}.json", b)
     return b
 
 

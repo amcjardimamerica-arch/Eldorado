@@ -59,11 +59,26 @@ class TesteAuditoriaDosMotores(unittest.TestCase):
 
 
 class TesteAprendizadosDoPiloto(unittest.TestCase):
+    """Usa motores REAIS e devolve a base ao estado anterior — motor de ensaio é bloqueado
+    desde 23/09, justamente para os testes não contaminarem as estatísticas."""
+
+    def setUp(self):
+        from src.aprendizados_piloto import LICOES, MELHORIAS, AVAL
+        self._bk = {p: p.read_text(encoding="utf-8") for p in (LICOES, MELHORIAS) if p.exists()}
+        self._avs = set(AVAL.glob("*.json")) if AVAL.exists() else set()
+
+    def tearDown(self):
+        from src.aprendizados_piloto import AVAL
+        for p, txt in self._bk.items():
+            p.write_text(txt, encoding="utf-8")
+        for a in (set(AVAL.glob("*.json")) - self._avs):
+            a.unlink()
+
     def test_avalia_efetividade_depois_da_missao(self):
         ia = _IA({"itens": [{"n": 0, "serve": True, "porque": "edital de fomento"},
                             {"n": 1, "serve": False, "porque": "licitação de merenda"}],
                   "o_que_melhorar_no_motor": "filtrar por 'chamamento' no título"})
-        r = avaliar(ia, {"motor": "m-teste", "tipo": "cacar_oportunidade", "licao": "2 lidos"},
+        r = avaliar(ia, {"motor": "motor-gife", "tipo": "cacar_oportunidade", "licao": "2 lidos"},
                     [{"titulo": "Edital", "url": "https://t1.org"}, {"titulo": "Merenda", "url": "https://t2.gov"}])
         a = r["avaliacao"]
         self.assertEqual(a["uteis"], 1); self.assertEqual(a["descartados"], 1); self.assertEqual(a["efetividade"], 0.5)
@@ -72,7 +87,7 @@ class TesteAprendizadosDoPiloto(unittest.TestCase):
         self.assertIn("porque_serve", r["uteis"][0])
 
     def test_indica_o_motivo_do_insucesso(self):
-        r = avaliar(_IA(), {"motor": "m-seco", "tipo": "cacar_oportunidade",
+        r = avaliar(_IA(), {"motor": "motor-patrocinio", "tipo": "cacar_oportunidade",
                             "licao": "a busca não devolveu resultado (rede ou bloqueio)"}, [])
         a = r["avaliacao"]
         self.assertEqual(a["motivo_do_insucesso"], "busca_vazia")
@@ -99,10 +114,10 @@ class TesteAprendizadosDoPiloto(unittest.TestCase):
 
     def test_tres_falhas_iguais_viram_regra(self):
         for _ in range(3):
-            avaliar(_IA(), {"motor": "m-repete", "tipo": "cacar_oportunidade",
+            avaliar(_IA(), {"motor": "empresas-incentivadas", "tipo": "cacar_oportunidade",
                             "licao": "a busca não devolveu resultado (rede ou bloqueio)"}, [])
         d = json.loads(LICOES.read_text(encoding="utf-8"))["itens"]
-        it = d["m-repete|busca_vazia"]
+        it = d["empresas-incentivadas|busca_vazia"]
         self.assertGreaterEqual(it["vezes"], 3)
         self.assertIn("precisa de correção, não de mais tentativas", it["regra"])
 

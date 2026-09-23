@@ -460,7 +460,56 @@ def missao_resgate(ia, alvo: dict, conhecidos: set[str]) -> tuple[str, list[dict
     consultas = plano["consultas_sugeridas"] or [
         f"{alvo.get('titulo','')[:70]} {alvo.get('orgao') or ''} edital página oficial".strip()]
     achados, dados, paginas = [], {}, 0
-    for c in consultas[:3]:
+
+    # PRIMEIRO O SITE DO ÓRGÃO, DEPOIS O BUSCADOR (23/09). Em 24 horas, 30 de 32 resgates
+    # falharam por não achar a página oficial — e não é de espantar: o chamamento de um
+    # município está no portal dele, não no índice de um buscador. Se sabemos o órgão,
+    # lemos o site dele por dentro, que ninguém bloqueia e onde o documento realmente está.
+    from .piloto_busca import buscar_na_fonte
+    candidatos = []
+    for campo in ("pagina_oficial", "site", "url"):
+        u = alvo.get(campo)
+        if u and str(u).startswith("http"):
+            from urllib.parse import urlsplit
+            h = (urlsplit(str(u)).hostname or "").replace("www.", "")
+            if h and h not in candidatos:
+                candidatos.append(h)
+    termos = [w for w in re.findall(r"[a-zà-ú0-9]{5,}", str(alvo.get("titulo") or "").lower())][:6]
+    termos += ["edital", "chamamento", "chamada", "selecao", "seleção", "inscricoes", "inscrições"]
+    for dom in candidatos[:2]:
+        try:
+            for it in buscar_na_fonte(dom, termos, teto=12):
+                texto = ler_pagina(it["url"])
+                if len(texto) < 300:
+                    continue
+                paginas += 1
+                r = ia.perguntar(
+                    f"PROCURO ESTE EDITAL: {alvo.get('titulo')}\nPÁGINA DO PRÓPRIO ÓRGÃO: {it['url']}\n"
+                    f"TEXTO: {texto[:3000]}\n\nÉ este edital? Extraia só o que estiver escrito.",
+                    '{"e_este_edital": true|false, "prazo": "AAAA-MM-DD ou null", "quem_pode": "... ou null", '
+                    '"documentos": ["..."], "valor": "... ou null", "como_inscrever": "... ou null", '
+                    '"trecho": "frase literal"}')
+                if r and r.get("e_este_edital") and r.get("trecho"):
+                    tr = re.sub(r"\s+", " ", str(r["trecho"]).lower())[:45]
+                    if tr and tr in re.sub(r"\s+", " ", texto.lower()):
+                        dados = {"pagina_oficial": it["url"],
+                                 "prazo": r.get("prazo") if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(r.get("prazo") or "")) else None,
+                                 "quem_pode": r.get("quem_pode"), "documentos": r.get("documentos") or [],
+                                 "valor": r.get("valor"), "como_inscrever": r.get("como_inscrever")}
+                        achados.append({"titulo": alvo.get("titulo", "")[:110], "onde": it["url"], "url": it["url"],
+                                        "trecho": str(r["trecho"])[:180], "porque": "resgate pelo site do próprio órgão",
+                                        "situacao": "aberta" if (dados["prazo"] or "") >= date.today().isoformat() else
+                                                    ("arquivada" if dados["prazo"] else "sem_prazo_na_pagina"),
+                                        "prazo": dados["prazo"], "documentos": dados["documentos"],
+                                        "confirmado_na_pagina": True, "novo": False, "resgate": True,
+                                        "via": "site do órgão"})
+                        break
+        except Exception:
+            pass
+        if dados:
+            break
+    # o buscador vira segunda via: só entra se o site do órgão não resolveu
+    for c in (consultas[:3] if not dados else []):
         for b in buscar(c, maximo=6):
             if paginas >= 5:
                 break
@@ -497,7 +546,8 @@ def missao_resgate(ia, alvo: dict, conhecidos: set[str]) -> tuple[str, list[dict
     it = registrar_resgate(alvo["id"], dados, bool(dados))
     faltava = len(alvo.get("falta") or [])
     resta = len((it or {}).get("falta") or [])
-    licao = (f"resgate '{alvo.get('titulo','')[:40]}': {paginas} página(s) lida(s) — "
+    via = (achados[0].get("via") if achados else None) or "buscador"
+    licao = (f"resgate '{alvo.get('titulo','')[:40]}' [{via}]: {paginas} página(s) lida(s) — "
              + (f"completou {faltava - resta} de {faltava} dado(s); estado {it.get('estado')}" if dados
                 else "não achei a página oficial"))
     return f"resgate:{alvo['id']}", achados, licao
