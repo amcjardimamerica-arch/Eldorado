@@ -108,6 +108,10 @@ jobs:
           PY
           git config user.name "piloto" && git config user.email "piloto@eldorado"
           git add estado/piloto/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
+      - name: Trilha do cargo (banco) — valida as provas antes de gastar runner
+        if: github.event.inputs.modo == 'benchmark' || github.event.inputs.modo == 'avaliar'
+        continue-on-error: true
+        run: python3 scripts/trilha_do_cargo.py || true
       - name: BATIMENTO — avisar que o voo COMEÇOU, antes de decolar
         run: |
           # Sem isto o painel só sabia do voo quando ele terminava, e entre um commit e outro

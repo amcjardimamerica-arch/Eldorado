@@ -27,6 +27,44 @@ MEM = ROOT / "estado/piloto/memoria_erros.json"
 MAX_NO_PROMPT = 12
 
 
+def pode_assumir(candidato: dict) -> tuple[bool, str]:
+    """O CARGO NÃO ACEITA REPROVADO. Em 21/09 o benchmark terminou sem vencedor — "nenhum
+    candidato elegível (todos inventaram prazo ou não subiram)" — e mesmo assim o
+    Llama-3.2-3B foi posto no posto. Dois dias depois ele responde a 12% dos pedidos e 9 de
+    12 voos saíram sem rumo próprio. Foi o erro mais caro do sistema, porque nenhuma das
+    outras correções podia compensá-lo.
+
+    Daqui em diante, ocupante não elegível não entra: o cargo fica VAGO e o Piloto voa com a
+    rede determinística, que sorteia o rumo do catálogo sem repetir. Voar sem modelo é pior
+    que voar com um bom modelo, mas melhor que voar com um que não responde — porque assim o
+    vazio fica visível, em vez de disfarçado de inteligência.
+    """
+    if not candidato:
+        return False, "sem candidato"
+    if candidato.get("eliminado_por"):
+        return False, f"eliminado em prova decisiva: {', '.join(candidato['eliminado_por'])}"
+    if candidato.get("nao_provou"):
+        return False, f"não provou nas eliminatórias: {', '.join(candidato['nao_provou'])}"
+    if not candidato.get("elegivel"):
+        return False, "reprovado na trilha do cargo"
+    if (candidato.get("taxa_de_resposta") or 0) < 0.5:
+        return False, f"responde a {candidato['taxa_de_resposta']:.0%} dos pedidos, abaixo dos 50%"
+    return True, f"elegível: nota {candidato.get('nota')}, responde a {candidato['taxa_de_resposta']:.0%}"
+
+
+def cargo_vago(motivo: str) -> dict:
+    """Declara o posto vago e registra por quê, para que ninguém o preencha por inércia."""
+    c = load_json(CARGO) if CARGO.exists() else {}
+    anterior = (c.get("ocupante_atual") or {}).get("nome")
+    c["ocupante_atual"] = {"nome": None, "vago": True, "desde": now_iso()[:16], "motivo": motivo,
+                           "anterior": anterior,
+                           "como_o_piloto_voa": "rede determinística: rumo sorteado do catálogo de "
+                                                "ângulos, sem repetir os últimos. O voo perde a "
+                                                "leitura da página, não a direção."}
+    write_json(CARGO, c)
+    return c["ocupante_atual"]
+
+
 def cargo() -> dict:
     return load_json(CARGO)
 
