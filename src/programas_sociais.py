@@ -20,41 +20,49 @@ import re
 # As leis pelas quais uma empresa pode destinar, com o que cada uma exige
 LEIS = {
     "rouanet": {
+        "cor": "#C2185B", "curto": "Rouanet",
         "nome": "Lei Rouanet", "lei": "Lei 8.313/1991", "area": "cultura",
         "orgao": "Ministério da Cultura (SALIC)", "teto": "4% do IRPJ devido",
         "porta": "projeto precisa estar aprovado no SALIC antes de a empresa destinar",
         "apelidos": ["rouanet", "lei rouanet", "incentivo à cultura", "salic", "cultura"]},
     "esporte": {
+        "cor": "#1E8E3E", "curto": "Esporte",
         "nome": "Lei de Incentivo ao Esporte", "lei": "Lei 11.438/2006", "area": "esporte",
         "orgao": "Ministério do Esporte", "teto": "1% do IRPJ devido",
         "porta": "projeto aprovado no Ministério do Esporte; inclui paradesporto",
         "apelidos": ["esporte", "lie", "lei do esporte", "incentivo ao esporte"]},
     "fia": {
+        "cor": "#E8890C", "curto": "FIA",
         "nome": "Fundo da Criança e do Adolescente", "lei": "Lei 8.069/1990 (ECA)", "area": "criança e adolescente",
         "orgao": "CMDCA do município", "teto": "1% do IRPJ devido",
         "porta": "a entidade precisa estar inscrita no CMDCA; a destinação é ao fundo, não à entidade",
         "apelidos": ["fia", "fumcad", "criança", "crianca", "adolescente", "cmdca", "eca"]},
     "idoso": {
+        "cor": "#8E24AA", "curto": "Idoso",
         "nome": "Fundo do Idoso", "lei": "Lei 12.213/2010", "area": "pessoa idosa",
         "orgao": "Conselho Municipal do Idoso", "teto": "1% do IRPJ devido",
         "porta": "inscrição no conselho do idoso; destinação ao fundo municipal",
         "apelidos": ["idoso", "fundo do idoso", "cmi"]},
     "pronon": {
+        "cor": "#D2492A", "curto": "PRONON",
         "nome": "PRONON", "lei": "Lei 12.715/2012", "area": "oncologia",
         "orgao": "Ministério da Saúde", "teto": "1% do IRPJ devido",
         "porta": "projeto de atenção oncológica credenciado no Ministério da Saúde",
         "apelidos": ["pronon", "oncologia", "câncer", "cancer"]},
     "pronas": {
+        "cor": "#00838F", "curto": "PRONAS",
         "nome": "PRONAS/PCD", "lei": "Lei 12.715/2012", "area": "pessoa com deficiência",
         "orgao": "Ministério da Saúde", "teto": "1% do IRPJ devido",
         "porta": "projeto de reabilitação ou inclusão da pessoa com deficiência credenciado",
         "apelidos": ["pronas", "pcd", "deficiência", "deficiencia"]},
     "pat": {
+        "cor": "#6D4C41", "curto": "PAT",
         "nome": "Programa de Alimentação do Trabalhador", "lei": "Lei 6.321/1976", "area": "alimentação",
         "orgao": "Ministério do Trabalho", "teto": "dedução sobre despesa",
         "porta": "benefício do próprio quadro de empregados; não financia projeto externo",
         "apelidos": ["pat", "alimentação do trabalhador"]},
     "goyazes": {
+        "cor": "#0B4EA2", "curto": "Goyazes",
         "nome": "Fundo de Cultura de Goiás (Goyazes)", "lei": "Lei estadual 15.633/2006", "area": "cultura",
         "orgao": "Secult-GO", "teto": "conforme edital estadual",
         "porta": "seleção por edital estadual; alcance restrito a Goiás",
@@ -71,6 +79,15 @@ PESOS = {
     "esg_relatorio": 10,          # publica relatório
     "contato_conhecido": 3,       # dá para chegar nela
 }
+
+
+# A ordem na tela: as de maior teto e maior uso primeiro, para a leitura começar pelo que pesa.
+ORDEM = ["rouanet", "fia", "esporte", "idoso", "pronon", "pronas", "goyazes", "pat"]
+
+
+def catalogo() -> list[dict]:
+    """As oito leis, na ordem da tela, com cor, nome curto e a porta de cada uma."""
+    return [{"chave": k, **LEIS[k]} for k in ORDEM if k in LEIS]
 
 
 def _norm(s: str) -> str:

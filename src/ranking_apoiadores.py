@@ -144,7 +144,12 @@ def montar() -> dict:
                 e["tambem_em"] = {"lista": outra, "posicao": nas_duas[e["_chave"]][outra]}
 
     todas = [e for itens in listas.values() for e in itens]
+    from .programas_sociais import catalogo
     res = {"gerado_em": now_iso(), "por_pagina": POR_PAGINA,
+           "catalogo_de_leis": [{"chave": c["chave"], "curto": c["curto"], "nome": c["nome"],
+                                 "cor": c["cor"], "lei": c["lei"], "area": c["area"],
+                                 "orgao": c["orgao"], "teto": c["teto"], "porta": c["porta"]}
+                                for c in catalogo()],
            "regra": "duas listas independentes, com pontuação própria; a mesma empresa pode estar nas duas",
            "listas": {cat: {"rotulo": ("destinação tributária" if cat == "destinacao_tributaria" else "doação e patrocínio"),
                             "total": len(itens),

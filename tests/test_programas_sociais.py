@@ -99,7 +99,7 @@ class TesteTelaDeProgramas(unittest.TestCase):
         self.assertIn('e.n_na_lista||e.posicao', H)                         # número da lista, não o global
 
     def test_ficha_abre_a_tela_dos_programas(self):
-        self.assertIn("Programas que esta empresa já apoiou", H)
+        self.assertIn("Programas de incentivo", H)   # a ficha lista as 8, com e sem registro
         self.assertIn("Como se entra:", H)                                  # a porta de cada lei
         self.assertIn("ep-prog-l", H); self.assertIn("já destinou", H)
         self.assertIn("citado — a confirmar", H)                            # distingue comprovado de citado
@@ -111,6 +111,54 @@ class TesteTelaDeProgramas(unittest.TestCase):
         self.assertIn("Nota média desta página", H)
 
     def test_empresa_sem_programa_nao_finge(self):
-        self.assertIn("nenhuma lei levantada", H)
-        self.assertIn("nada levantado ainda", H)
+        # as leis sem registro agora aparecem apagadas, em vez de a célula ficar vazia
+        self.assertIn("nenhuma destinação registrada", H)
+        self.assertIn("Sem registro de destinação", H)
         self.assertIn("não levantado", H)
+
+
+class TesteCoresDosProgramas(unittest.TestCase):
+    """Todas as leis sempre à vista: colorida quando há destinação, apagada quando não há."""
+
+    def test_cada_lei_tem_cor_e_nome_curto_proprios(self):
+        from src.programas_sociais import catalogo, ORDEM, LEIS
+        cat = catalogo()
+        self.assertEqual(len(cat), len(LEIS))
+        self.assertEqual([c["chave"] for c in cat], ORDEM)
+        cores = [c["cor"] for c in cat]
+        self.assertEqual(len(cores), len(set(cores)), "cada programa precisa de uma cor própria")
+        for c in cat:
+            self.assertRegex(c["cor"], r"^#[0-9A-Fa-f]{6}$")
+            self.assertTrue(c["curto"] and len(c["curto"]) <= 10, c["chave"])
+
+    def test_a_primeira_e_a_de_maior_teto(self):
+        from src.programas_sociais import ORDEM
+        self.assertEqual(ORDEM[0], "rouanet")                  # 4% do IRPJ, a maior
+        self.assertEqual(ORDEM[1], "fia")                      # a mais usada no levantamento
+
+    def test_o_catalogo_vai_para_a_tela(self):
+        self.assertIn("catalogo_de_leis", R)
+        self.assertEqual(len(R["catalogo_de_leis"]), 8)
+        for L in R["catalogo_de_leis"]:
+            for c in ("chave", "curto", "nome", "cor", "lei", "orgao", "teto", "porta"):
+                self.assertIn(c, L, c)
+
+    def test_a_linha_mostra_todas_as_leis(self):
+        self.assertIn("R.catalogo_de_leis||[]).map(L=>", H)
+        self.assertIn("TODAS as leis sempre à vista", H)
+        self.assertIn('nenhuma destinação registrada', H)      # o título da apagada explica
+        self.assertIn("--lc:${L.cor}", H)
+
+    def test_apagada_e_colorida_se_distinguem(self):
+        self.assertIn(".ep-lei.fez{color:#fff", H); self.assertIn("background:var(--lc)", H)
+        self.assertIn(".ep-lei.nao{color:#B9C3CE;background:#F5F7F9", H)
+        self.assertIn(".ep-lei.cit{color:var(--lc)", H)         # citado: cor, mas tracejado
+
+    def test_a_lista_de_doacao_tambem_usa_cores(self):
+        self.assertIn("CRIT_COR", H); self.assertIn("CRIT_CURTO", H)
+        self.assertIn("_corCrit", H); self.assertIn("_curtoCrit", H)
+
+    def test_a_ficha_separa_com_registro_de_sem_registro(self):
+        self.assertIn("com registro · ", H)
+        self.assertIn("Sem registro de destinação", H)
+        self.assertIn("não achamos registro público", H)

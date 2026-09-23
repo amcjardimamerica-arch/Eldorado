@@ -349,6 +349,21 @@ box-shadow:0 1px 3px #0002}
 .ep-conta{background:#F6FAF8;border:1px solid #CFE6DA;border-radius:11px;padding:13px 15px}
 .ep-conta.sem{background:#FAFBFD;border-color:#E3E9F1;font-size:12.5px}
 .ep-conta-v{font-size:25px;font-weight:800;color:#1E7E4B;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+/* CADA PROGRAMA TEM A SUA COR. Todas as leis aparecem sempre: a que tem destinação
+   registrada vem colorida e sólida; a que não tem fica apagada, no lugar dela, para que
+   a linha mostre ao mesmo tempo o que a empresa já fez e o que ainda não fez. */
+.ep-prog{display:flex;gap:3px;flex-wrap:wrap}
+.ep-lei{font-style:normal;font-size:9.5px;font-weight:700;border-radius:9px;padding:1.5px 7px;
+  white-space:nowrap;border:1px solid;letter-spacing:.01em;line-height:1.5}
+.ep-lei.fez{color:#fff;background:var(--lc);border-color:var(--lc)}
+.ep-lei.cit{color:var(--lc);background:#fff;border-color:var(--lc);border-style:dashed}
+.ep-lei.nao{color:#B9C3CE;background:#F5F7F9;border-color:#E3E8ED;font-weight:600}
+.ep-l:hover .ep-lei.nao{border-color:#D6DDE4}
+.ep-lei.mais{color:var(--suave);border-color:var(--linha)}
+.ep-progs-sem{margin-top:10px;padding-top:9px;border-top:1px dashed #DCE8E1;font-size:11.5px}
+.ep-progs-sem b{display:block;margin-bottom:5px;color:var(--suave);font-size:11px}
+.ep-progs-sem i{margin:0 3px 3px 0;display:inline-block}
+.ep-progs-sem p{margin:7px 0 0;font-size:10.5px;color:var(--suave);line-height:1.5}
 .ep-leis{width:100%;border-collapse:collapse;margin-top:10px;font-size:11.5px}
 .ep-leis td{padding:3px 6px;border-bottom:1px dotted #DCE8E1;vertical-align:top}
 .ep-leis td.p{color:var(--suave);font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -3170,6 +3185,12 @@ function _din(v){ v=Number(v||0);
   if(v>=1e3)return "R$ "+Math.round(v/1e3)+" mil";
   return "R$ "+Math.round(v); }
 function _fx(a,b){ return b?_din(a)+" a "+_din(b):""; }
+const CRIT_COR={patrocinio:"#C2185B",recorrencia:"#1E8E3E",instituto:"#8E24AA",
+  area_afim:"#E8890C",investimento_social:"#00838F",marketing_social:"#D2492A",valor_percentual:"#0B4EA2"};
+const CRIT_CURTO={patrocinio:"Patrocínio",recorrencia:"Recorrente",instituto:"Instituto",
+  area_afim:"Área afim",investimento_social:"Inv. social",marketing_social:"Marketing",valor_percentual:"Valores"};
+function _corCrit(k){ return CRIT_COR[k]||"#5B7A9E"; }
+function _curtoCrit(k){ return CRIT_CURTO[k]||k; }
 function _curto(n){ return String(n||"")
   .replace("Fundo da Criança e do Adolescente","FIA · criança")
   .replace("Lei de Incentivo ao Esporte","Lei do Esporte")
@@ -3274,11 +3295,19 @@ window.desenhaApoiadores=function(){
         <span class="ep-pos">${e.n_na_lista||e.posicao}</span>
         <span class="ep-nome"><b>${esc(e.nome)}</b>${c.cnpj?`<small>${esc(c.cnpj)}</small>`:`<small class="ep-falta">CNPJ a levantar</small>`}</span>
         <span class="ep-prog">${(()=>{const A=e.avaliacao||{};
-          const chips=F.lista==="tributaria"
-            ? (e.programas||[]).map(p=>`<i class="ep-lei ${p.historico?"fez":"cit"}" title="${esc(p.lei)} · ${esc(p.orgao)} · ${esc(p.porta)}">${esc(_curto(p.nome))}</i>`)
-            : (A.criterios||[]).filter(c=>c.pontos>0&&c.chave!=="valor_percentual").map(c=>`<i class="ep-lei fez" title="${esc(c.porque)}">${esc(c.rotulo)}</i>`);
-          return chips.length?chips.slice(0,3).join("")+(chips.length>3?`<i class="ep-lei mais">+${chips.length-3}</i>`:"")
-                             :`<em class="ep-sem">${F.lista==="tributaria"?"nenhuma lei levantada":"nada levantado ainda"}</em>`;})()}</span>
+          if(F.lista==="tributaria"){
+            // TODAS as leis sempre à vista: colorida quando há destinação registrada,
+            // apagada quando não há. Assim a linha mostra o que existe E o que falta.
+            const meus={}; (e.programas||[]).forEach(p=>meus[p.chave]=p);
+            return (R.catalogo_de_leis||[]).map(L=>{const m=meus[L.chave];
+              const cls=!m?"nao":(m.historico?"fez":"cit");
+              const t=!m?`${L.nome} — nenhuma destinação registrada. ${L.lei} · ${L.orgao} · até ${L.teto}`
+                       :`${L.nome} — ${m.historico?"já destinou":"citado, a confirmar"}. ${L.lei} · ${L.orgao} · até ${L.teto}. Como se entra: ${L.porta}`;
+              return `<i class="ep-lei ${cls}" style="--lc:${L.cor}" title="${esc(t)}">${esc(L.curto)}</i>`;}).join("");
+          }
+          return (A.criterios||[]).map(c=>`<i class="ep-lei ${c.pontos>0?"fez":"nao"}" style="--lc:${_corCrit(c.chave)}"
+            title="${esc(c.rotulo)} — ${c.pontos>0?esc(String(c.valor)):"sem registro"}. ${esc(c.porque)}">${esc(_curtoCrit(c.chave))}</i>`).join("");
+          })()}</span>
         <span class="ep-esg"><b class="n-${esc((e.avaliacao||{}).nivel||"").replace(/\s/g,"-")}">${(e.avaliacao||{}).pontos||0}</b>
           <small>de ${(e.avaliacao||{}).teto||100} · ${esc((e.avaliacao||{}).nivel||"—")}</small></span>
         <span class="ep-valor">${F.lista==="tributaria"
@@ -3333,8 +3362,22 @@ window.fichaEmpresa=function(uid){
             <span class="ep-nota-r">${esc(c.rotulo)} <small>${esc(c.porque)}</small></span>
             <span class="ep-nota-v">${esc(c.valor)} <small>vale até ${c.peso}</small></span></div>`).join("")}</div>
           ${(A.falta_levantar||[]).length?`<p class="ep-crit-f"><b>Falta levantar:</b> ${(A.falta_levantar||[]).map(f=>esc(f.rotulo)).join(" · ")}. Sem esses dados a nota fica abaixo do que a empresa talvez mereça — o vazio é do nosso levantamento, não dela.</p>`:""}`;})()}
-      ${(e.programas||[]).length?`<div class="ep-progs" style="margin-top:14px">
-        <div class="ep-progs-t">Programas que esta empresa já apoiou</div>
+      ${(()=>{const meus={};(e.programas||[]).forEach(x=>meus[x.chave]=x);
+        const cat=(R.catalogo_de_leis||[]); if(!cat.length)return "";
+        const com=cat.filter(L=>meus[L.chave]), sem=cat.filter(L=>!meus[L.chave]);
+        return `<div class="ep-progs" style="margin-top:14px">
+          <div class="ep-progs-t">Programas de incentivo
+            <span class=meta>${com.length} com registro · ${sem.length} sem registro</span></div>
+          ${com.map(L=>{const m=meus[L.chave];return `<div class="ep-prog-l ${m.historico?"fez":"cit"}" style="--lc:${L.cor}">
+            <div class="ep-prog-c"><b style="color:${L.cor}">${esc(L.nome)}</b><span class="ep-prog-s">${m.historico?"já destinou":"citado — a confirmar"}</span></div>
+            <div class="ep-prog-d"><span>${esc(L.lei)}</span><span>${esc(L.orgao)}</span><span>até ${esc(L.teto)}</span></div>
+            <div class="ep-prog-p"><b>Como se entra:</b> ${esc(L.porta)}</div>
+            ${m.prova?`<div class="ep-prog-e">${esc(m.prova)}</div>`:""}</div>`;}).join("")}
+          ${sem.length?`<div class="ep-progs-sem"><b>Sem registro de destinação:</b>
+            ${sem.map(L=>`<i class="ep-lei nao" style="--lc:${L.cor}" title="${esc(L.nome)} · ${esc(L.lei)} · ${esc(L.orgao)} · até ${esc(L.teto)}. Como se entra: ${esc(L.porta)}">${esc(L.curto)}</i>`).join("")}
+            <p>Não quer dizer que a empresa não possa: quer dizer que não achamos registro público. Cada uma tem teto próprio e soma ao que ela já faz.</p></div>`:""}
+        </div>`;})()}
+      ${false?`<div class="ep-progs">
         ${(e.programas||[]).map(pr=>`<div class="ep-prog-l ${pr.historico?"fez":"cit"}">
           <div class="ep-prog-c"><b>${esc(pr.nome)}</b><span class="ep-prog-s">${pr.historico?"já destinou":"citado — a confirmar"}</span></div>
           <div class="ep-prog-d"><span>${esc(pr.lei)}</span><span>${esc(pr.orgao)}</span><span>até ${esc(pr.teto)}</span></div>
