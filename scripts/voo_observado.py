@@ -100,14 +100,47 @@ def _resposta_plausivel(p: str, esquema=None, r: random.Random | None = None):
     return None
 
 
+# PÁGINAS DE BANCO. Textos verossímeis no formato em que as coisas realmente aparecem: uma
+# matéria de jornal local, uma página de apoiadores de ONG, um cartaz de evento, um balanço.
+# Nenhum dado real de empresa — o que se testa é a LEITURA, não o conteúdo.
+PAGINAS = [
+ ("imprensa", "https://jornaldacidade.com.br/oficina-musica",
+  "A Associação Jardim Feliz inaugurou ontem sua oficina de música, que atende 120 crianças "
+  "do bairro. O projeto teve patrocínio da Agroluz Alimentos e contou com o apoio da "
+  "Construtora Meridiano. A reforma da quadra foi viabilizada pelo Instituto Bandeirante, com "
+  "recursos da Lei de Incentivo ao Esporte. A doação dos instrumentos foi feita pelo "
+  "Supermercado Cerrado."),
+ ("entidade", "https://ongsemearfuturo.org.br/parceiros",
+  "Quem caminha conosco. Nossas atividades em 2025 só foram possíveis graças ao apoio de "
+  "parceiros. Realização da Fundação Vale Verde. Com o apoio da Cooperativa Central do "
+  "Cerrado e da Transportadora Rio Claro. O programa de alfabetização é financiado pela "
+  "Mineradora Serra Azul através do Fundo da Criança e do Adolescente."),
+ ("evento", "https://festivalsolidario.com.br/programacao",
+  "12º Festival Solidário — programação completa. Patrocínio da Energisa Goiás e da "
+  "Distribuidora Planalto. Apoio institucional do Banco Meridiano. A praça de alimentação tem "
+  "realização da Rede Bom Preço. Cotas de patrocínio ainda disponíveis para a edição de 2026."),
+ ("prestacao", "https://institutoraizes.org.br/transparencia",
+  "Demonstrativo de receitas 2025. Doações de pessoas jurídicas: R$ 480.000,00. Entre os "
+  "doadores, destaque para a Indústria Química Pantanal e a Usina São Bento. O projeto de "
+  "capacitação foi custeado pela Seguradora Goiás Vida. Convênio com a Fundação Bradesco "
+  "para material didático."),
+ ("imprensa", "https://portalregional.com.br/apae-reforma",
+  "A APAE de Anápolis entregou nesta semana o novo bloco de atendimento. A obra foi bancada "
+  "pela Frigorífico Boi Forte, com projeto doado pelo Escritório Andrade Arquitetura. O "
+  "mobiliário teve doação da Móveis Planalto. A entidade informa que a manutenção anual é "
+  "financiada pela Cimento Araguaia através do Fundo do Idoso."),
+]
+
+
 def voo(n: int, ia) -> dict:
-    """Um voo completo, anotado etapa a etapa."""
+    """Um voo completo, anotado etapa a etapa, nas DUAS missões como o titular definiu."""
     from src.briefing_piloto import escrever as brief, fechar as fecha_brief
-    from src.missao_especial import montar_fila, proximo, devolver_a_fila
+    from src.missao_especial import montar_fila, proximo, PARA_O_CLAUDE, _e_pncp
     from src.cobertura import ja_coberto, mapa
+    from src.reconhecimento import ler_rastros, registrar, proximo_do_plano, marcar, publicar as pub_rec
 
     print(f"\n── VOO {n:02d} · cabine: {ia.nome}")
-    res = {"voo": n, "cabine": ia.nome, "etapas": 0, "achados": 0, "parou_em": None}
+    res = {"voo": n, "cabine": ia.nome, "etapas": 0, "financiadores": 0, "parou_em": None}
 
     # 1 · BRIEFING
     b = brief(ia)
@@ -115,76 +148,73 @@ def voo(n: int, ia) -> dict:
     anota(n, "briefing", "rumo definido" if not mudo else "modelo mudo → rumo sorteado",
           f"{(b.get('aposta') or {}).get('onde')} · {b.get('nivel')}", ok=not mudo)
     res["rumo"] = (b.get("aposta") or {}).get("onde")
-    res["modelo_mudo_no_briefing"] = mudo
     res["etapas"] += 1
 
-    # 2 · MAPA DE COBERTURA
-    m = mapa()
-    anota(n, "cobertura", f"{m['dominios_cobertos']} domínios a evitar", "não repetir o que os motores já leem", ok=True)
+    # 2 · MISSÃO 1 — especial. PNCP não é dele.
+    r = montar_fila()
+    fila = r.get("na_fila", 0)
+    anota(n, "missão 1 · triagem", f"{fila} alvo(s) para o Piloto · {r.get('para_o_claude', 0)} ao Claude",
+          "PNCP é dado genérico: quem analisa é o Claude, por fora", ok=True)
     res["etapas"] += 1
-
-    # 3 · FILA DE RESGATE
-    montar_fila()
     alvo = proximo()
     if alvo:
-        anota(n, "fila de resgate", f"reservou «{str(alvo.get('titulo'))[:46]}»",
-              f"urgência {alvo.get('urgencia')} · falta {len(alvo.get('falta') or [])} dado(s)", ok=True)
-        res["etapas"] += 1
-        # 4 · RESGATE: primeiro o site do órgão
-        VETOR_DOM = ("pncp.gov.br", "in.gov.br", "queridodiario.ok.org.br", "diariooficial")
-        dominio = None
-        for campo in ("pagina_oficial", "site", "url"):
-            u = alvo.get(campo)
-            if u and str(u).startswith("http"):
-                from urllib.parse import urlsplit
-                h = (urlsplit(str(u)).hostname or "").replace("www.", "")
-                if h and not any(v in h for v in VETOR_DOM):
-                    dominio = h
-                    break
-        if dominio:
-            anota(n, "resgate·site do órgão", f"tentaria ler {dominio}", "sitemap do próprio portal",
-                  ok=False, impedimento="sem rede no contêiner")
-            res["parou_em"] = "rede: leitura do site do órgão"
-        else:
-            anota(n, "resgate·site do órgão", "sem domínio conhecido no alvo",
-                  "o edital não trouxe página oficial — é justamente o que falta", ok=False)
-            res["parou_em"] = "alvo sem domínio: nada para ler"
-        anota(n, "resgate·buscador", "segunda via não acionada",
-              "o buscador só entra se o site do órgão falhar por conteúdo, não por rede",
-              ok=False, impedimento="sem rede no contêiner")
-        devolver_a_fila(alvo["id"], tentado=True)
+        assert not _e_pncp(alvo), "PNCP vazou para a fila do Piloto"
+        anota(n, "missão 1 · resgate", f"reservou «{str(alvo.get('titulo'))[:40]}»",
+              "uma única vez: se não achar, passa ao Claude", ok=True)
         res["etapas"] += 1
     else:
-        anota(n, "fila de resgate", "fila vazia", "nada a resgatar", ok=False)
-        res["parou_em"] = "fila vazia"
+        anota(n, "missão 1 · resgate", "nada a resgatar",
+              "o acervo é todo PNCP e já foi entregue — o voo inteiro vai para a missão 2", ok=True)
 
-    # 5 · PROSPECÇÃO
-    from src.piloto_busca import buscar
-    consulta = f"\"nossos parceiros\" associação {n}"
-    r = buscar(consulta, maximo=3, tempo=5)
-    anota(n, "prospecção·busca", f"{len(r)} resultado(s)", consulta, ok=bool(r),
-          impedimento="" if r else "sem rede no contêiner")
-    if not res["parou_em"]:
-        res["parou_em"] = "rede: busca de apoiadores"
+    # 3 · MISSÃO 2 — reconhecimento. O plano de voo manda primeiro.
+    pend = proximo_do_plano()
+    if pend:
+        anota(n, "missão 2 · plano", f"investigar {pend['empresa']}",
+              f"descoberto antes · {', '.join(pend.get('vias') or [])}", ok=True)
+        res["investigando"] = pend["empresa"]
+    else:
+        anota(n, "missão 2 · plano", "plano vazio → frente nova",
+              "primeira passada: ainda não há financiador a investigar", ok=True)
     res["etapas"] += 1
 
-    # 6 · CRIVO DE COBERTURA (funciona sem rede)
-    amostra = ["https://www.in.gov.br/dou/edital", "https://institutodesconhecido.org.br/apoio"]
-    descartados = [u for u in amostra if ja_coberto(u)[0]]
-    anota(n, "crivo de cobertura", f"{len(descartados)} de {len(amostra)} descartado(s)",
-          "domínio já lido por motor não é trabalho do Piloto", ok=True)
+    frente, url, texto = PAGINAS[(n - 1) % len(PAGINAS)]
+    coberto, por = ja_coberto(url)
+    anota(n, "missão 2 · crivo", "página aceita" if not coberto else f"descartada ({por})",
+          f"{frente} · {url[:52]}", ok=not coberto)
     res["etapas"] += 1
 
-    # 7 · AVALIAÇÃO E APRENDIZADO
+    rastros = ler_rastros(texto, url)
+    vias = sorted({x["via"] for x in rastros})
+    anota(n, "missão 2 · leitura", f"{len(rastros)} financiador(es)",
+          f"vias: {', '.join(vias)}" if vias else "nenhum rastro", ok=bool(rastros),
+          impedimento="página do banco: sem rede para buscar a real")
+    for x in rastros:
+        it = registrar(x, frente, "regional")
+        if it:
+            res["financiadores"] += 1
+    if pend and rastros:
+        marcar(pend["alvo"], "investigado")
+    res["etapas"] += 1
+
+    pub = pub_rec()
+    anota(n, "missão 2 · catálogo", f"{pub['total']} no radar · {pub['no_plano_de_voo']} a investigar",
+          f"por via: {pub['por_via']}", ok=True)
+    res["no_radar"] = pub["total"]
+    res["no_plano"] = pub["no_plano_de_voo"]
+    res["etapas"] += 1
+
+    # 4 · APRENDIZADO
     from src.aprendizados_piloto import avaliar
-    a = avaliar(ia, {"motor": "sindico-aberto", "tipo": "cacar_oportunidade",
-                     "licao": "a busca não devolveu resultado (rede ou bloqueio)"}, [])
-    av = a["avaliacao"]
-    anota(n, "aprendizado", f"motivo registrado: {av.get('motivo_do_insucesso')}",
-          av.get("explicacao") or "", ok=True)
-    res["motivo"] = av.get("motivo_do_insucesso")
+    a = avaliar(ia, {"motor": "sindico-aberto", "tipo": "reconhecimento",
+                     "licao": f"{frente}: {len(rastros)} financiador(es)"},
+                [{"titulo": x["empresa"], "url": url, "trecho": x["trecho"],
+                  "confirmado_na_pagina": True} for x in rastros])
+    anota(n, "aprendizado", f"efetividade {a['avaliacao'].get('efetividade')}",
+          a["avaliacao"].get("explicacao") or "", ok=True)
     res["etapas"] += 1
 
+    if not res["financiadores"]:
+        res["parou_em"] = "leitura sem rastro"
     fecha_brief(b, [])
     res["pedidos_ao_modelo"] = ia.pedidos
     res["respostas_do_modelo"] = ia.respostas
@@ -225,6 +255,9 @@ def main() -> int:
                                        "etapas_medias": round(sum(v["etapas"] for v in falantes) / len(falantes), 1)},
         },
         "onde_pararam": {},
+        "radar": {"financiadores": sum(v["financiadores"] for v in voos),
+                  "no_radar_ao_final": voos[-1].get("no_radar"),
+                  "no_plano_ao_final": voos[-1].get("no_plano")},
     }
     for v in voos:
         rel["onde_pararam"][v["parou_em"] or "concluiu"] = rel["onde_pararam"].get(v["parou_em"] or "concluiu", 0) + 1
@@ -238,6 +271,8 @@ def main() -> int:
     print(f"  rumos distintos — modelo mudo: {rel['comparacao']['com_modelo_mudo']['rumos_distintos']}/5"
           f" · modelo respondendo: {rel['comparacao']['com_modelo_respondendo']['rumos_distintos']}/5")
     print(f"  onde os voos pararam: {rel['onde_pararam']}")
+    print(f"  radar: {rel['radar']['financiadores']} financiador(es) registrados · "
+          f"{rel['radar']['no_radar_ao_final']} no radar · {rel['radar']['no_plano_ao_final']} a investigar")
     print(f"  diário: {len(DIARIO)} decisões anotadas → {saida.relative_to(RAIZ)}")
     return 0
 

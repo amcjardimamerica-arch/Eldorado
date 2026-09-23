@@ -97,12 +97,51 @@ def quarentenar(achado: dict, motivo: str, missao: str = "") -> None:
                              "trecho": (achado.get("trecho") or "")[:140]}, ensure_ascii=False) + "\n")
 
 
+# A MISSÃO 2 TEM OUTRA FINALIDADE. O crivo foi escrito para edital: exige prazo, inscrição,
+# objeto compatível. Um financiador não tem prazo nem inscrição — ele É o achado. Sem esta
+# distinção, todo voo de reconhecimento bem-sucedido era marcado com efetividade zero.
+def _e_reconhecimento(missao: dict) -> bool:
+    return (str(missao.get("tipo") or "").startswith("reconhecimento")
+            or str(missao.get("motor") or "").startswith("reconhecimento"))
+
+
+def _util_no_reconhecimento(a: dict) -> tuple[bool, str]:
+    """No reconhecimento, serve o achado que nomeia QUEM pagou e mostra a prova na página."""
+    if not a.get("confirmado_na_pagina"):
+        return False, "nome sem trecho que o comprove na página"
+    if not (a.get("titulo") or "").strip():
+        return False, "sem nome de financiador"
+    if len(str(a.get("trecho") or "")) < 20:
+        return False, "trecho curto demais para servir de prova"
+    return True, "financiador nomeado, com o trecho que o credita"
+
+
 def avaliar(ia, missao: dict, achados: list[dict]) -> dict:
     """Depois de cada missão: o que veio serve? Se não veio nada, por quê? E o que melhorar
     no motor que foi usado?"""
     _garantir()
     motor = missao.get("motor") or missao.get("alvo") or "?"
     licao = missao.get("licao") or ""
+
+    # MISSÃO 2 tem outra finalidade: financiador não tem prazo nem inscrição — ele É o achado
+    if _e_reconhecimento(missao):
+        uteis, descartados = [], []
+        for a in achados:
+            ok, porque = _util_no_reconhecimento(a)
+            (uteis if ok else descartados).append({**a, "porque": porque})
+        ef = round(len(uteis) / len(achados), 2) if achados else 0.0
+        motivo = None if uteis else ("sem_rastro" if not achados else "rastro_sem_prova")
+        av = {"em": now_iso(), "motor": motor, "tipo": "reconhecimento", "achados": len(achados),
+              "uteis": len(uteis), "efetividade": ef, "motivo_do_insucesso": motivo,
+              "explicacao": (f"{len(uteis)} financiador(es) nomeado(s), com o trecho que os credita"
+                             if uteis else "a página não creditou ninguém"),
+              "licao": licao}
+        if not _e_ensaio(motor):
+            AVAL.mkdir(parents=True, exist_ok=True)
+            write_json(AVAL / f"{now_iso()[:19].replace(':', '')}-{motor}.json", av)
+            if motivo:
+                _guardar_licao(motor, motivo, "reconhecimento")
+        return {"avaliacao": av, "uteis": uteis, "descartados": descartados}
     uteis, descartados = [], []
 
     if achados:

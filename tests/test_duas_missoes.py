@@ -95,3 +95,83 @@ class TesteCargoDeclaraAsDuas(unittest.TestCase):
         self.assertIn("QUEM PAGOU", f["missao_2_regular"]["o_que"])
         self.assertGreaterEqual(len(f["missao_2_regular"]["vias_procuradas"]), 5)
         self.assertIn("altera_o_plano_de_voo", f["missao_2_regular"])
+
+
+class TesteExtracaoComFrasesDificeis(unittest.TestCase):
+    """O conselho pediu frases adversariais: os quatro defeitos de 23/09 eram todos de leitura
+    de texto e passariam despercebidos em produção, porque produziriam nomes certos com vias
+    erradas — e ninguém olharia."""
+
+    def _vias(self, texto):
+        return {x["empresa"]: x["via"] for x in ler_rastros(texto, "https://t.org/x")}
+
+    def test_a_via_nao_vaza_da_frase_vizinha(self):
+        v = self._vias("O evento teve apoio da Construtora Meridiano. A quadra foi viabilizada "
+                       "pelo Instituto Raiz, com recursos da Lei de Incentivo ao Esporte.")
+        self.assertEqual(v["Construtora Meridiano"], "patrocinio")     # não herda do vizinho
+        self.assertEqual(v["Instituto Raiz"], "incentivo_fiscal")
+
+    def test_ponto_final_nao_entra_no_nome(self):
+        v = self._vias("Teve patrocínio da Alfa Meridiano. A entidade agradece.")
+        self.assertIn("Alfa Meridiano", v)
+        self.assertNotIn("Alfa Meridiano. A", str(v))
+
+    def test_abreviatura_sobrevive(self):
+        r = ler_rastros("O projeto teve patrocínio da Alfa S.A e apoio do Banco Beta.", "https://t.org")
+        nomes = [x["empresa"] for x in r]
+        self.assertTrue(any(n.startswith("Alfa") for n in nomes), nomes)
+        self.assertIn("Banco Beta", nomes)
+
+    def test_lei_por_extenso_define_a_via(self):
+        """A matéria escreve o nome inteiro; a lista dizia só a sigla."""
+        for texto, esperado in (
+                ("financiado pela Cimento Araguaia através do Fundo do Idoso.", "incentivo_fiscal"),
+                ("financiado pela Usina Boa Vista pelo Fundo da Criança e do Adolescente.", "incentivo_fiscal"),
+                ("patrocinado pela Rede Norte com renúncia fiscal do município.", "incentivo_fiscal"),
+                ("doação da Padaria Central para a campanha.", "doacao")):
+            v = self._vias(texto)
+            self.assertEqual(list(v.values())[0], esperado, texto)
+
+    def test_dois_creditos_na_mesma_frase(self):
+        v = self._vias("Realização da Fundação Alfa e apoio institucional do Banco Beta.")
+        self.assertEqual(set(v), {"Fundação Alfa", "Banco Beta"})
+
+    def test_caixa_alta_no_credito(self):
+        r = ler_rastros("PATROCÍNIO DA AGROLUZ ALIMENTOS. Evento gratuito.", "https://t.org")
+        self.assertTrue(any("AGROLUZ" in x["empresa"] for x in r), [x["empresa"] for x in r])
+
+    def test_nao_confunde_orgao_publico_com_empresa(self):
+        r = ler_rastros("Com apoio da Prefeitura Municipal de Anápolis e da Secretaria de Cultura.",
+                        "https://t.org")
+        self.assertEqual(r, [], [x["empresa"] for x in r])
+
+
+class TesteAprendizadoDoReconhecimento(unittest.TestCase):
+    """O crivo foi escrito para edital: exige prazo e inscrição, que um financiador não tem.
+    Sem ramo próprio, todo voo de reconhecimento bem-sucedido marcava efetividade zero."""
+
+    class _Mudo:
+        def perguntar(self, p, e=None): return None
+
+    def test_financiador_nomeado_com_prova_conta_como_util(self):
+        from src.aprendizados_piloto import avaliar
+        r = avaliar(self._Mudo(), {"motor": "sindico-aberto", "tipo": "reconhecimento", "licao": "x"},
+                    [{"titulo": "Agroluz Alimentos", "url": "https://j.com",
+                      "trecho": "patrocínio da Agroluz Alimentos no projeto", "confirmado_na_pagina": True}])
+        self.assertEqual(r["avaliacao"]["efetividade"], 1.0)
+        self.assertEqual(r["avaliacao"]["tipo"], "reconhecimento")
+        self.assertIsNone(r["avaliacao"]["motivo_do_insucesso"])
+        self.assertIn("credita", r["avaliacao"]["explicacao"])
+
+    def test_nome_sem_prova_nao_conta(self):
+        from src.aprendizados_piloto import avaliar
+        r = avaliar(self._Mudo(), {"motor": "sindico-aberto", "tipo": "reconhecimento", "licao": "x"},
+                    [{"titulo": "Empresa X", "trecho": "", "confirmado_na_pagina": False}])
+        self.assertEqual(r["avaliacao"]["efetividade"], 0.0)
+        self.assertEqual(r["avaliacao"]["motivo_do_insucesso"], "rastro_sem_prova")
+
+    def test_pagina_sem_credito_registra_o_motivo(self):
+        from src.aprendizados_piloto import avaliar
+        r = avaliar(self._Mudo(), {"motor": "sindico-aberto", "tipo": "reconhecimento", "licao": "x"}, [])
+        self.assertEqual(r["avaliacao"]["motivo_do_insucesso"], "sem_rastro")
+        self.assertIn("não creditou ninguém", r["avaliacao"]["explicacao"])

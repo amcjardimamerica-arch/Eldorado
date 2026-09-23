@@ -67,8 +67,12 @@ FRENTES = {
 VIAS = {
     "patrocinio": ["patrocínio", "patrocinado por", "patrocinador", "cota de patrocínio"],
     "doacao": ["doação", "doou", "doado por", "campanha de arrecadação"],
-    "incentivo_fiscal": ["lei de incentivo", "rouanet", "lei do esporte", "fia", "fundo do idoso",
-                         "pronon", "pronas", "incentivo fiscal", "dedução"],
+    # os nomes por extenso importam: a matéria escreve "Fundo da Criança e do Adolescente",
+    # não "FIA" — e sem isso o repasse era classificado como patrocínio comum
+    "incentivo_fiscal": ["lei de incentivo", "rouanet", "lei do esporte", "lei federal de incentivo",
+                         "fia", "fundo da criança", "fundo da crianca", "fundo do idoso",
+                         "fundo municipal", "pronon", "pronas", "incentivo fiscal", "dedução",
+                         "deducao", "renúncia fiscal", "abatimento no imposto"],
     "marketing_social": ["ação de marketing", "responsabilidade social", "voluntariado corporativo",
                          "dia do voluntário", "ativação"],
     "convenio": ["convênio", "termo de fomento", "termo de colaboração", "parceria com o poder público"],
@@ -108,16 +112,26 @@ def ler_rastros(texto: str, url: str) -> list[dict]:
     # O NOME vai em bloco sensível a maiúscula (?-i:...): com re.I a classe [A-ZÀ-Ú] aceitava
     # minúscula e a captura engolia a frase inteira — "Agroluz Alimentos e contou com" —,
     # comendo o crédito do patrocinador seguinte.
-    NOME = r"(?-i:([A-ZÀ-Ú][\w&.\-]*(?: [A-ZÀ-Ú][\w&.\-]*){0,4}))"
+    # O PONTO SÓ VALE DENTRO DE ABREVIATURA. Com "." livre na classe, "Meridiano. A" virava
+    # um nome só, a captura passava do fim da frase e a janela ia buscar a via na frase
+    # seguinte — quatro empresas viraram "incentivo fiscal" por contágio do vizinho.
+    # Agora o ponto só entra se a letra seguinte for maiúscula: "S.A" sim, "Meridiano. A" não.
+    # a sigla continua depois do ponto: "Alfa S.A" é um nome só, "Meridiano. A" não é
+    _P = r"[A-ZÀ-Ú][\w&\-]*(?:\.[A-ZÀ-Ú][\w&\-]*)*"
+    NOME = rf"(?-i:({_P}(?: {_P}){{0,4}}))"
     CREDITO = (r"patroc[íi]nio d[eoa]s?|patrocinad[oa]s? p[eo]l[oa]s?|"
-               r"(?:contou )?com [oa]s? apoios? d[eoa]s?|apoio institucional d[eoa]s?|"
+               # "teve apoio do X" também credita: sem esta forma, metade dos apoios escapava
+               r"(?:contou )?(?:com |teve |tem )?[oa]?s? ?apoios? d[eoa]s?|"
+               r"apoio institucional d[eoa]s?|"
                r"realiza[çc][ãa]o d[eoa]s?|viabilizad[oa] p[eo]l[oa]s?|"
                r"doa[çc][ãa]o d[eoa]s?|doad[oa]s? p[eo]l[oa]s?|"
                r"(?:foi )?(?:feit[oa]|entregue|custead[oa]|bancad[oa])s? p[eo]l[oa]s?|"
                r"financiad[oa] p[eo]l[oa]s?|recursos d[eoa]s?")
     padrao = re.compile(rf"({CREDITO})\s+{NOME}", re.I)
     for m in padrao.finditer(t):
-        nome = m.group(2).split(".")[0]                       # o ponto encerra o nome
+        # o padrão já decide onde o nome acaba: cortar no primeiro ponto aqui destruiria a
+        # sigla ("Alfa S.A" virava "Alfa S")
+        nome = m.group(2)
         nome = re.sub(r"\s+(e|para|que|com|no|na|em|durante|através|atraves)\b.*$", "", nome).strip(" .,;")
         # com re.I a captura aceita minúscula: exige-se que comece por maiúscula de verdade
         if not nome[:1].isupper():
@@ -125,9 +139,14 @@ def ler_rastros(texto: str, url: str) -> list[dict]:
         if NAO_E_EMPRESA.search(nome) or len(nome) < 3 or _chave(nome) in vistos:
             continue
         i = m.start()
-        # janela curta e de propósito: com janela larga, o "patrocínio" de uma frase vizinha
-        # roubava a via de um repasse que era, na verdade, incentivo fiscal
-        volta = t[max(0, i - 40):i + 150].lower()
+        # A JANELA PARA NO PONTO FINAL. Mesmo curta, ela atravessava a fronteira da frase:
+        # "apoio da Construtora Meridiano. A quadra foi viabilizada [...] com recursos da Lei
+        # de Incentivo" fazia a Construtora virar incentivo fiscal por contágio do vizinho.
+        # Cada crédito é uma frase, e a via tem de sair de dentro dela.
+        ini = t.rfind(".", max(0, i - 120), i) + 1
+        fim = t.find(".", m.end())
+        fim = (fim if fim != -1 else len(t))
+        volta = t[max(ini, i - 120):min(fim + 1, m.end() + 130)].lower()
         # a ordem importa: quem cita lei de incentivo está dizendo COMO pagou, e isso vence
         # a palavra "patrocínio", que aparece em quase toda matéria
         via = next((k for k in ("incentivo_fiscal", "convenio", "doacao", "marketing_social", "patrocinio")
