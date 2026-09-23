@@ -3,6 +3,35 @@ import json, pathlib, unittest
 from src.missao_especial import _relevante, montar_fila, proximo, devolver_a_fila, CREDENCIAMENTO
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
+def _alvo_nao_pncp(n: int = 3) -> list[str]:
+    """Injeta alvos NÃO-PNCP na fila. Desde 23/09 o acervo real é 100% PNCP, que não é
+    trabalho do Piloto — então o teste precisa construir o caso que quer exercitar."""
+    import json
+    from src.missao_especial import FILA
+    d = json.loads(FILA.read_text(encoding="utf-8")) if FILA.exists() else {"itens": {}}
+    ids = []
+    for i in range(n):
+        k = f"teste-nao-pncp-{i}"
+        d["itens"][k] = {"id": k, "titulo": f"Edital de fomento cultural {i}",
+                         "orgao": "Secult", "uf": "GO", "origem": "acervo motores",
+                         "pagina_oficial": f"https://secult{i}.goias.gov.br/edital",
+                         "falta": ["prazo", "quem_pode"], "urgencia": 20 - i,
+                         "estado": "aguardando", "tentativas": 0}
+        ids.append(k)
+    FILA.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    return ids
+
+
+def _limpar_alvos_de_teste() -> None:
+    import json
+    from src.missao_especial import FILA
+    if not FILA.exists():
+        return
+    d = json.loads(FILA.read_text(encoding="utf-8"))
+    d["itens"] = {k: v for k, v in (d.get("itens") or {}).items() if not k.startswith("teste-nao-pncp-")}
+    FILA.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+
+
 
 class TesteFilaAvanca(unittest.TestCase):
     """Os 10 voos reservaram o MESMO alvo: max() por urgência devolve o primeiro do empate,
@@ -10,6 +39,7 @@ class TesteFilaAvanca(unittest.TestCase):
 
     def test_dez_reservas_dao_dez_alvos(self):
         montar_fila()
+        _alvo_nao_pncp(10)
         ids = []
         for _ in range(10):
             a = proximo()
@@ -17,6 +47,7 @@ class TesteFilaAvanca(unittest.TestCase):
             ids.append(a["id"])
         self.assertGreaterEqual(len(set(ids)), 8, f"a fila não anda: {len(set(ids))} distintos")
         for i in ids: devolver_a_fila(i)
+        _limpar_alvos_de_teste()
 
     def test_tentativa_rebaixa_a_prioridade(self):
         src = (ROOT / "src/missao_especial.py").read_text(encoding="utf-8")
@@ -26,11 +57,13 @@ class TesteFilaAvanca(unittest.TestCase):
 
     def test_devolver_conta_a_tentativa_quando_houve(self):
         montar_fila()
+        _alvo_nao_pncp(1)
         a = proximo()
         devolver_a_fila(a["id"], tentado=True)
         d = json.loads((ROOT / "estado/piloto/fila_resgate.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(d["itens"][a["id"]]["tentativas"], 1)
         self.assertTrue(d["itens"][a["id"]].get("ultima_tentativa"))
+        _limpar_alvos_de_teste()
 
 
 class TesteFiltroCorrigido(unittest.TestCase):
@@ -49,8 +82,10 @@ class TesteFiltroCorrigido(unittest.TestCase):
 
     def test_a_fila_ficou_so_com_captacao(self):
         r = montar_fila()
+        # desde que o PNCP saiu da mão do Piloto, o descarte por objeto passou a ser residual:
+        # o que não serve já foi entregue ao Claude antes de chegar ao filtro de pertinência
         self.assertLess(r["total_incompletos"], 60)          # era 153, com 88% de credenciamento
-        self.assertGreater(sum(r["descartados_por_nao_servirem"].values()), 300)
+        self.assertGreater(r["para_o_claude"], 300)
         d = json.loads((ROOT / "estado/piloto/fila_resgate.json").read_text(encoding="utf-8"))
         cred = [str(v.get("titulo", "")).lower() for v in d["itens"].values()
                 if v.get("estado") == "aguardando" and "credencia" in str(v.get("titulo", "")).lower()]

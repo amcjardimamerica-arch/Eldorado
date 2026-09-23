@@ -48,10 +48,10 @@
     "por_que": "único candidato medido acima dos 50% exigidos, com zero prazos inventados, 2 GB e o mais rápido dos testados. O Qwen2.5-3B foi reprovado por 58 falsos positivos em 78 reprovados; o 7B é pesado e lento demais para 4 ciclos diários; o Gemma não subiu.",
     "fraqueza_conhecida": "cauteloso: reprovou 8 de 10 aprovados no teste. Mitigação: o veredito 'reprovado' do Piloto nunca arquiva sozinho — vira proposta; e a memória de erros corrige o prompt a cada rodada.",
     "desempenho_em_voo": {
-      "pedidos": 160,
-      "mudos": 124,
-      "taxa_de_resposta": 0.225,
-      "avaliado_ate": "2026-09-23T12:00",
+      "pedidos": 270,
+      "mudos": 212,
+      "taxa_de_resposta": 0.215,
+      "avaliado_ate": "2026-09-23T12:33",
       "alerta": "responde em 22% dos pedidos, abaixo dos 50% que o cargo exige — candidato a substituição pelo banco de reserva"
     }
   },
@@ -151,26 +151,49 @@
       "fora_do_escopo": "diários oficiais, Rouanet/Salic, PNCP, plataformas já conhecidas — esses são trabalho dos motores regulares, não do Piloto"
     },
     "resgates_por_voo": 8,
-    "prioridade": "verificar e alimentar primeiro; explorar so o que sobrar do voo",
+    "prioridade": "missao 1 primeiro se houver alvo nao-PNCP; o resto do voo e missao 2",
     "exploracao_por_voo": 3
   },
   "renomeado_em": "2026-09-22",
   "finalidade": {
-    "resumo": "o Piloto NAO concorre com os motores: ele completa o que eles acham e procura onde eles nao olham",
-    "duas_missoes": {
-      "1_verificar_e_alimentar": "pegar edital que os motores trouxeram incompleto e completar os dados minimos (pagina oficial, prazo, quem pode, documentos, valor, como inscrever). E a missao especial, e tem PRIORIDADE.",
-      "2_descobrir_o_que_ninguem_busca": "achar fonte de recurso que nenhum dos 29 motores cobre — empresa com instituto proprio, site especializado em captacao, rastro de edital novo, patrocinador declarado no site de outra entidade, programa que nunca foi publicado em diario oficial"
+    "resumo": "o Piloto NAO concorre com os motores: tem duas missoes proprias — resgatar UMA VEZ o que os motores trouxeram incompleto (sem PNCP) e reconhecer quem financia o terceiro setor onde nao houve edital nenhum",
+    "missao_1_especial": {
+      "o_que": "analisar, UMA UNICA VEZ, os editais pendentes de informacao trazidos pelos motores, achando site oficial e os dados minimos do sistema",
+      "nao_toca": "PNCP e portais de compras publicas — dado generico, analisado pelo Claude por fora, com acesso a maquina do titular (Claude Desktop)",
+      "uma_vez": "tentou e nao achou, passa ao Claude em vez de voltar a fila: repetir o mesmo metodo daria o mesmo nada"
     },
-    "proibido": "repetir o trabalho dos motores. Se a fonte ja e coberta por um motor, o Piloto passa adiante — gastar voo em Rouanet, PNCP ou diario oficial e desperdicio, porque o motor ja le aquilo todo dia",
+    "missao_2_regular": {
+      "o_que": "analisar sites de entidades do terceiro setor — associacoes, ONGs, fundacoes, institutos, APAEs — e a imprensa que divulga o que elas fizeram, para descobrir QUEM PAGOU",
+      "porque_os_motores_nao_acham": "nao houve edital publicado: houve patrocinio, doacao, destinacao de imposto ou verba de marketing",
+      "vias_procuradas": [
+        "destinacao tributaria",
+        "incentivo fiscal",
+        "doacao",
+        "patrocinio",
+        "marketing social"
+      ],
+      "altera_o_plano_de_voo": "cada financiador descoberto vira alvo de investigacao nos voos seguintes"
+    },
+    "proibido": "repetir o trabalho dos 29 motores e tocar em PNCP: e desperdicio de voo. Fonte ja coberta por motor, ou dado generico de compras publicas, nao e trabalho dele",
+    "duas_missoes": {
+      "1_verificar_e_alimentar": "PRIORIDADE quando houver alvo nao-PNCP: analisar, UMA UNICA VEZ, os editais pendentes de informacao trazidos pelos motores, achando site oficial e os dados minimos do sistema",
+      "2_descobrir_o_que_ninguem_busca": "analisar sites de entidades do terceiro setor — associacoes, ONGs, fundacoes, institutos, APAEs — e a imprensa que divulga o que elas fizeram, para descobrir QUEM PAGOU"
+    },
     "rastro_de_edital": [
-      "mencao em noticia a edital que ainda nao saiu",
-      "pagina de 'editais anteriores' de um financiador",
-      "relatorio ESG que cita quanto a empresa investiu e onde",
-      "lista de apoiadores no rodape de site de ONG",
-      "agenda de evento patrocinado",
-      "ata de conselho que aprova repasse",
-      "calendario de chamadas de fundacao"
+      "site oficial",
+      "prazo",
+      "quem pode concorrer",
+      "documentos exigidos",
+      "valor",
+      "como se inscreve"
     ],
-    "sites_especializados": "catalogar portais que agregam edital de terceiro setor — quando um se mostra bom, vira candidato a motor proprio, e ai sai da mao do Piloto"
+    "sites_especializados": [
+      "site de entidade do terceiro setor (apoiadores, parceiros, transparencia)",
+      "imprensa e portal de noticias local que cobre projeto social",
+      "agenda de evento social (cartaz, programacao, cotas de patrocinio)",
+      "prestacao de contas e balanco social de entidade",
+      "instituto ou fundacao de empresa",
+      "relatorio ESG e de sustentabilidade"
+    ]
   }
 }

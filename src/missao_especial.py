@@ -24,6 +24,17 @@ from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, write_json
 
 FILA = ROOT / "estado/piloto/fila_resgate.json"
+PARA_O_CLAUDE = ROOT / "estado/piloto/fila_do_claude.json"
+
+# O PNCP NÃO É TRABALHO DO PILOTO. São dados genéricos de compras públicas: quem os analisa é
+# o Claude, por fora, com acesso à máquina do titular. Em 23/09 a fila do Piloto tinha 57
+# alvos e TODOS eram PNCP — ele passou dois dias inteiros no que não lhe cabe.
+PNCP = re.compile(r"pncp|portal de compras|compras\.gov|comprasnet", re.I)
+
+
+def _e_pncp(e: dict) -> bool:
+    return bool(PNCP.search(" ".join(str(e.get(c) or "") for c in
+                                     ("origem", "pagina_oficial", "url", "titulo", "orgao", "fonte"))))
 PUB = ROOT / "docs/dados/resgates_piloto.json"
 MINIMO = ("pagina_oficial", "prazo", "quem_pode", "documentos", "valor", "como_inscrever")
 PESO = {"pagina_oficial": 5, "prazo": 5, "documentos": 3, "como_inscrever": 3, "quem_pode": 2, "valor": 2}
@@ -148,14 +159,22 @@ def montar_fila(limite: int = 60) -> dict:
     """Varre o acervo e separa o que está incompleto, do mais urgente ao menos."""
     ja = load_json(FILA) if FILA.exists() else {}
     descartados: dict[str, int] = {}
+    para_claude: dict[str, dict] = {}
     feitos = {k for k, v in (ja.get("itens") or {}).items() if v.get("estado") == "resgatado"}
     tentados = {k: v.get("tentativas", 0) for k, v in (ja.get("itens") or {}).items()}
     itens = {}
     for e in _acervo():
-        if e["id"] in feitos or tentados.get(e["id"], 0) >= 3:      # três tentativas e a gente desiste
+        # UMA ÚNICA VEZ. Cada edital é analisado uma vez pelo Piloto; se não achou, passa ao
+        # Claude em vez de voltar à fila. Tentar de novo com o mesmo método daria o mesmo nada.
+        if e["id"] in feitos or tentados.get(e["id"], 0) >= 1:
             continue
         f = _falta(e)
         if not f or not e.get("titulo"):
+            continue
+        if _e_pncp(e):
+            para_claude[e["id"]] = {"titulo": (e.get("titulo") or "")[:130], "orgao": e.get("orgao"),
+                                    "uf": e.get("uf"), "falta": _falta(e),
+                                    "porque": "PNCP: dado genérico de compras públicas — análise externa do Claude"}
             continue
         serve, porque = _relevante(e)
         if not serve:
@@ -169,6 +188,12 @@ def montar_fila(limite: int = 60) -> dict:
          "regra": "o Piloto atende esta fila ANTES de explorar: completar um edital que já temos vale mais que achar outro pela metade",
          "itens": {**{k: v for k, v in (ja.get("itens") or {}).items() if v.get("estado") == "resgatado"}, **ordenada}}
     write_json(FILA, d)
+    write_json(PARA_O_CLAUDE, {
+        "em": now_iso(), "total": len(para_claude),
+        "regra": "o Piloto não toca PNCP: dado genérico de compras públicas. Quem analisa é o "
+                 "Claude por fora, com acesso à máquina do titular (Claude Desktop).",
+        "itens": para_claude})
+    d["para_o_claude"] = len(para_claude)
     return {k: v for k, v in d.items() if k != "itens"}
 
 
@@ -252,7 +277,8 @@ def registrar_resgate(alvo_id: str, dados: dict, achou: bool) -> dict:
         if it["estado"] == "resgatado":
             _para_biblioteca(alvo_id, it)
     else:
-        it["estado"] = "aguardando" if it["tentativas"] < 3 else "sem_sucesso"
+        it["estado"] = "entregue_ao_claude"
+        it["porque"] = "o Piloto analisou uma vez e não achou a página oficial — passa ao Claude"
     d["em"] = now_iso()
     write_json(FILA, d)
     publicar()

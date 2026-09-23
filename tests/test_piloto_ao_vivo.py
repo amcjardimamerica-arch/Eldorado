@@ -66,11 +66,13 @@ class TesteCorrecoesDaAuditoria(unittest.TestCase):
         self.assertFalse(_relevante({"titulo": "CHAMAMENTO PARA CREDENCIAMENTO DE LEILOEIROS OFICIAIS"})[0])
         self.assertFalse(_relevante({"titulo": "cadastrar Profissionais de saúde"})[0])
         self.assertFalse(_relevante({"titulo": "aquisição de medicamentos"})[0])
-        ok, porque = _relevante({"titulo": "Seleção de propostas para celebração de parceria com OSC"})
+        ok, porque = _relevante({"titulo": "Seleção de propostas para termo de colaboração com OSC"})
         self.assertTrue(ok); self.assertIn("serve", porque)
         self.assertTrue(_relevante({"titulo": "Edital de fomento à cultura"})[0])
         r = montar_fila()
-        self.assertGreater(sum(r["descartados_por_nao_servirem"].values()), 10)
+        # desde 23/09 o PNCP sai ANTES do filtro de objeto: o descarte por pertinência ficou
+        # residual porque o acervo inteiro é PNCP e vai direto para a fila do Claude
+        self.assertGreater(r["para_o_claude"], 300)
         self.assertLess(r["total_incompletos"], 200)                     # de 438 para menos de 200
 
     def test_parecer_do_conselho_existe_com_as_sete_posicoes(self):

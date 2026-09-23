@@ -617,6 +617,73 @@ def missao_prospeccao(ia, angulo: dict, conhecidos: set[str]) -> tuple[str, list
     return f"expansao:{nivel}", novas, licao
 
 
+def missao_reconhecimento(ia, rumo: dict, conhecidos: set[str]) -> tuple[str, list[dict], str]:
+    """MISSÃO REGULAR — reconhecimento do terceiro setor e de quem o financia.
+
+    Não procura edital: procura ATIVIDADE JÁ FEITA e pergunta quem pagou. Oficina numa
+    associação, festival de uma ONG, reforma de uma APAE — tudo isso teve financiador, e
+    quase nunca houve edital. Por isso nenhum dos 29 motores acha: motor lê edital publicado.
+    A imprensa é fonte de primeira ordem aqui, porque a matéria nomeia o patrocinador — ele
+    exige que nomeie.
+    """
+    from .piloto_busca import buscar, ler_pagina
+    from .reconhecimento import (ler_rastros, registrar, proximo_do_plano, publicar as pub_rec,
+                                 FRENTES, marcar)
+    from .cobertura import ja_coberto
+
+    # 1 · O PLANO DE VOO MANDA: se há alvo a investigar de um voo anterior, ele vem primeiro
+    pendente = proximo_do_plano()
+    if pendente:
+        anda = f"investigar {pendente['empresa']}"
+        consultas = [f"{pendente['empresa']} instituto OR fundação OR patrocínio projeto social",
+                     f"{pendente['empresa']} responsabilidade social relatório"]
+        frente = "investigacao"
+    else:
+        frente = (rumo.get("frente") if rumo.get("frente") in FRENTES else
+                  ("imprensa" if (rumo.get("ordem") or 0) % 2 else "entidade"))
+        f = FRENTES[frente]
+        r = ia.perguntar(
+            f"MISSÃO DE RECONHECIMENTO — {f['rotulo']}.\n"
+            f"PROCURO: atividade do terceiro setor que JÁ ACONTECEU e quem pagou por ela.\n"
+            f"ONDE COSTUMA ESTAR: {', '.join(f['procurar'])}\n"
+            f"O QUE LER NA PÁGINA: {', '.join(f['onde_olhar'])}\n\n"
+            "Escreva consultas que levem a PÁGINAS DE ENTIDADE do terceiro setor ou a MATÉRIAS "
+            "sobre projetos sociais realizados, onde o patrocinador seja citado. Não procure "
+            "edital: procure o que já foi feito e quem bancou.",
+            '{"consultas": ["consulta 1", "consulta 2"]}')
+        consultas = [c for c in ((r or {}).get("consultas") or []) if isinstance(c, str)][:2] or [
+            f"\"projeto social\" \"com o apoio\" {f['procurar'][0]} Goiás"]
+        anda = f"reconhecimento · {f['rotulo']}"
+
+    achados, paginas, empresas = [], 0, 0
+    for c in consultas[:2]:
+        for b in buscar(c, maximo=5):
+            if paginas >= 4:
+                break
+            if ja_coberto(b["url"])[0]:
+                continue
+            texto = ler_pagina(b["url"])
+            if len(texto) < 400:
+                continue
+            paginas += 1
+            for ra in ler_rastros(texto, b["url"]):
+                it = registrar(ra, frente, rumo.get("nivel") or "regional")
+                if not it:
+                    continue
+                empresas += 1
+                achados.append({"titulo": f"{ra['empresa']} — {ra['via']}", "onde": b["url"],
+                                "url": b["url"], "trecho": ra["trecho"][:180],
+                                "porque": f"financiou atividade do terceiro setor ({ra['via']})",
+                                "novo": True, "confirmado_na_pagina": True,
+                                "reconhecimento": True, "via": ra["via"]})
+    if pendente and paginas:
+        marcar(pendente["alvo"], "investigado")
+    pub_rec()
+    licao = (f"{anda}: {paginas} página(s) lida(s) → {empresas} financiador(es) identificado(s)"
+             + (f" — entram no plano dos próximos voos" if empresas else " — nenhum rastro"))
+    return f"reconhecimento:{frente}", achados, licao
+
+
 def ciclo(porta: int | None = None) -> dict:
     """VOO DO PILOTO: missões sorteadas, uma de cada vez, com diário de bordo."""
     from .esquadrilha import sortear, abrir_missao, fechar_missao, resumo
@@ -666,6 +733,9 @@ def ciclo(porta: int | None = None) -> dict:
             if m["tipo"] == "resgate":
                 alvo, ach, licao = missao_resgate(ia, m["_alvo"], conhecidos)
             elif m.get("motor") == "sindico-aberto":
+                # MISSÃO 2 — reconhecimento: o que os motores não acham porque não houve edital
+                alvo, ach, licao = missao_reconhecimento(ia, {**(rumo or {}), "ordem": m["ordem"]}, conhecidos)
+            elif False:
                 _ang = rumo if rumo else {}
                 if (_ang.get("alvo") in ("rastro", "site", "empresa")) or (m["ordem"] % 2 == 0):
                     alvo, ach, licao = missao_prospeccao(ia, {**_ang, "nivel": _ang.get("nivel") or "federal"}, conhecidos)
@@ -724,6 +794,8 @@ def ciclo(porta: int | None = None) -> dict:
     rel["aprendizados"] = _pub_apr()
     from .prospeccao import publicar as _pub_pro
     rel["prospeccao"] = _pub_pro()
+    from .reconhecimento import publicar as _pub_rec
+    rel["reconhecimento"] = _pub_rec()
     rel["anuncio"] = (f"Esquadrilha {hoje} ({rel['ocupante']}): {len(rel['missoes'])} missão(ões) — "
                       f"{rel['abates']} alvo(s) novo(s) abatido(s), {rel['propostas']} proposta(s) ao todo, {rel['minutos']} min de voo.")
     write_json(PASTA / f"relatorio-{hoje}.json", rel)
