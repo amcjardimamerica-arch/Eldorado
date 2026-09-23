@@ -1,10 +1,11 @@
-# Pacote do conselho — validação do Claude (2026-09-22, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-09-23, últimos 3 dias)
 
-Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
+Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
 
-## O que o Síndico fez
+## O que o Piloto fez
 
-- 2026-09-22T19:48 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 13 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 12.9 min de voo.
+- 2026-09-22T23:58 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 15 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 21.7 min de voo.
+- 2026-09-23T10:53 — Esquadrilha 2026-09-23 (Llama-3.2-3B-Instruct): 14 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 23.6 min de voo.
 
 ## Relatório de aprendizado e bloqueios (4)
 
@@ -18,7 +19,7 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (23)
+### Rotas e pistas sugeridas (32)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
@@ -42,6 +43,15 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - empresas-incentivadas → [{"tipo": "url", "valor": "https://observatorio3setor.org.br/editais/", "porque": "Portais do terceiro setor onde a empresa anuncia (Observatório, ABCR, GIFE)",
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
+- motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
+- motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
+- motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 
 ### Enquadramentos propostos (0)
@@ -60,4 +70,4 @@ Para cada uma: abrir o site, procurar relatório ESG e o que declara financiar, 
 3. Que bloqueios exigem ação do titular (coleta local, documento ao órgão, decisão)?
 4. O modelo eleito deve continuar? (reexecutar o benchmark se a taxa de propostas inválidas subir)
 
-_Ao final, registrar em `estado/sindico/validacoes_claude.jsonl`: data, modelo do Claude, decisões._
+_Ao final, registrar em `estado/piloto/validacoes_claude.jsonl`: data, modelo do Claude, decisões._
