@@ -3203,6 +3203,12 @@ window.EMPV={lista:"tributaria",pagina:0,q:"",uf:"",porte:"",so:""};
 /* Duas listas INDEPENDENTES, cada uma com a sua pontuação. A mesma empresa pode estar nas
    duas, com posição própria em cada: o que a qualifica para direcionar imposto não é o que
    a qualifica para doar do próprio caixa. */
+/* CATÁLOGO DE RESERVA. As oito leis são referência estável, não dado de varredura: ficam
+   aqui dentro para que a coluna nunca dependa de o arquivo de dados trazê-las. Já houve
+   um caso em que uma varredura do CI regenerou o ranking sem esta chave e a coluna da
+   destinação tributária ficou vazia — a de doação seguiu, porque lê outro campo. */
+const LEIS_PADRAO=[{"chave": "rouanet", "curto": "Rouanet", "nome": "Lei Rouanet", "cor": "#C2185B", "lei": "Lei 8.313/1991", "orgao": "Ministério da Cultura (SALIC)", "teto": "4% do IRPJ devido", "porta": "projeto precisa estar aprovado no SALIC antes de a empresa destinar"}, {"chave": "fia", "curto": "FIA", "nome": "Fundo da Criança e do Adolescente", "cor": "#E8890C", "lei": "Lei 8.069/1990 (ECA)", "orgao": "CMDCA do município", "teto": "1% do IRPJ devido", "porta": "a entidade precisa estar inscrita no CMDCA; a destinação é ao fundo, não à entidade"}, {"chave": "esporte", "curto": "Esporte", "nome": "Lei de Incentivo ao Esporte", "cor": "#1E8E3E", "lei": "Lei 11.438/2006", "orgao": "Ministério do Esporte", "teto": "1% do IRPJ devido", "porta": "projeto aprovado no Ministério do Esporte; inclui paradesporto"}, {"chave": "idoso", "curto": "Idoso", "nome": "Fundo do Idoso", "cor": "#8E24AA", "lei": "Lei 12.213/2010", "orgao": "Conselho Municipal do Idoso", "teto": "1% do IRPJ devido", "porta": "inscrição no conselho do idoso; destinação ao fundo municipal"}, {"chave": "pronon", "curto": "PRONON", "nome": "PRONON", "cor": "#D2492A", "lei": "Lei 12.715/2012", "orgao": "Ministério da Saúde", "teto": "1% do IRPJ devido", "porta": "projeto de atenção oncológica credenciado no Ministério da Saúde"}, {"chave": "pronas", "curto": "PRONAS", "nome": "PRONAS/PCD", "cor": "#00838F", "lei": "Lei 12.715/2012", "orgao": "Ministério da Saúde", "teto": "1% do IRPJ devido", "porta": "projeto de reabilitação ou inclusão da pessoa com deficiência credenciado"}, {"chave": "goyazes", "curto": "Goyazes", "nome": "Fundo de Cultura de Goiás (Goyazes)", "cor": "#0B4EA2", "lei": "Lei estadual 15.633/2006", "orgao": "Secult-GO", "teto": "conforme edital estadual", "porta": "seleção por edital estadual; alcance restrito a Goiás"}, {"chave": "pat", "curto": "PAT", "nome": "Programa de Alimentação do Trabalhador", "cor": "#6D4C41", "lei": "Lei 6.321/1976", "orgao": "Ministério do Trabalho", "teto": "dedução sobre despesa", "porta": "benefício do próprio quadro de empregados; não financia projeto externo"}];
+function leis(R){ const c=(R&&R.catalogo_de_leis)||[]; return c.length?c:LEIS_PADRAO; }
 const LISTAS={
   tributaria:{rot:"Destinação tributária",cor:"#1E7E4B",fundo:"#EAF6EF",cat:"destinacao_tributaria",
     origem:"destinação tributária",
@@ -3331,7 +3337,7 @@ window.desenhaApoiadores=function(){
             // TODAS as leis sempre à vista: colorida quando há destinação registrada,
             // apagada quando não há. Assim a linha mostra o que existe E o que falta.
             const meus={}; (e.programas||[]).forEach(p=>meus[p.chave]=p);
-            return (R.catalogo_de_leis||[]).map(L=>{const m=meus[L.chave];
+            return leis(R).map(L=>{const m=meus[L.chave];
               const cls=!m?"nao":(m.historico?"fez":"cit");
               const t=!m?`${L.nome} — nenhuma destinação registrada. ${L.lei} · ${L.orgao} · até ${L.teto}`
                        :`${L.nome} — ${m.historico?"já destinou":"citado, a confirmar"}. ${L.lei} · ${L.orgao} · até ${L.teto}. Como se entra: ${L.porta}`;
@@ -3415,7 +3421,7 @@ window.fichaEmpresa=function(uid){
           </div>`:""}
           ${semProva.length?`<p class="ep-crit-f">Os ${semProva.length} critério(s) sem prova valem até ${semProva.reduce((s,c)=>s+c.peso,0)} pontos. Enquanto não forem levantados, a nota fica abaixo do que a empresa talvez mereça — o vazio é do nosso levantamento, não dela.</p>`:""}`;})()}
       ${(()=>{const meus={};(e.programas||[]).forEach(x=>meus[x.chave]=x);
-        const cat=(R.catalogo_de_leis||[]); if(!cat.length)return "";
+        const cat=leis(R); if(!cat.length)return "";
         const com=cat.filter(L=>meus[L.chave]), sem=cat.filter(L=>!meus[L.chave]);
         return `<div class="ep-progs" style="margin-top:14px">
           <div class="ep-progs-t">Programas de incentivo

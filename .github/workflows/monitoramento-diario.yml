@@ -272,12 +272,27 @@ jobs:
           # commit local → rebase preferindo o que a saída produziu → push com até 3 tentativas
           # PROTEÇÃO DO PAINEL (22/09): docs/dashboard.html e os arquivos do Piloto são de autoria
           # do titular/Claude — o job de dados nunca os sobrescreve com a árvore que clonou no início.
-          git checkout origin/main -- docs/dashboard.html config/cargo_piloto.json config/motor_piloto.json src/piloto_busca.py src/radar_piloto.py src/ranking_apoiadores.py 2>/dev/null || true
+          # PROTEÇÃO DE CÓDIGO (23/09): este job produz DADOS. Nenhuma linha de código é dele.
+          # A árvore que ele clonou no início envelhece durante a execução, e ao commitar
+          # levava junto versões velhas de src/, tests/ e do painel — foi assim que o
+          # catálogo de leis sumiu do ranking e a coluna da destinação tributária ficou vazia.
+          # Antes de commitar, tudo que é código volta a ser o da main.
+          git checkout origin/main -- src tests scripts config docs/dashboard.html docs/mapa-brasil.js docs/mapa-arte.js .github 2>/dev/null || true
+          git reset -q -- src tests scripts config docs/dashboard.html docs/mapa-brasil.js docs/mapa-arte.js .github 2>/dev/null || true
           git add biblioteca_alexandria -A dados estado docs
           git diff --cached --quiet && exit 0
           git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F)"
           for i in 1 2 3; do
-            if git pull --rebase -X theirs origin main && git push; then exit 0; fi
+            # sem -X theirs: a cópia do job não pode vencer o que a main recebeu durante a
+            # execução. Conflito em arquivo de dados resolve-se pela versão do job; em
+            # qualquer outro, pela da main.
+            if git pull --rebase origin main 2>/dev/null || \
+               { for f in $(git diff --name-only --diff-filter=U); do
+                   case "$f" in dados/*|estado/*|docs/dados/*|biblioteca_alexandria/*) git checkout --theirs -- "$f";;
+                                *) git checkout --ours -- "$f";; esac; git add "$f"; done
+                 GIT_EDITOR=true git rebase --continue; }; then
+              if git push; then exit 0; fi
+            fi
             git rebase --abort 2>/dev/null || true
             git fetch origin main
             git reset --soft origin/main

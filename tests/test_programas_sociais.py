@@ -144,7 +144,7 @@ class TesteCoresDosProgramas(unittest.TestCase):
                 self.assertIn(c, L, c)
 
     def test_a_linha_mostra_todas_as_leis(self):
-        self.assertIn("R.catalogo_de_leis||[]).map(L=>", H)
+        self.assertIn("return leis(R).map(L=>", H)
         self.assertIn("TODAS as leis sempre à vista", H)
         self.assertIn('nenhuma destinação registrada', H)      # o título da apagada explica
         self.assertIn("--lc:${L.cor}", H)
@@ -162,3 +162,29 @@ class TesteCoresDosProgramas(unittest.TestCase):
         self.assertIn("com registro · ", H)
         self.assertIn("Sem registro de destinação", H)
         self.assertIn("não achamos registro público", H)
+
+
+class TesteColunaNaoDependeDoArquivo(unittest.TestCase):
+    """DEFEITO DE 23/09: a coluna da destinação tributária apareceu vazia porque uma varredura
+    do CI regenerou o ranking sem a chave catalogo_de_leis. A de doação seguiu funcionando,
+    porque lê critérios que ficam dentro de cada empresa. A lição: dado de referência estável
+    não pode depender de um arquivo que uma rotina regenera."""
+
+    def test_o_painel_tem_catalogo_de_reserva(self):
+        self.assertIn("LEIS_PADRAO", H)
+        self.assertIn("function leis(R){", H)
+        self.assertIn("nunca dependa de o arquivo de dados trazê-las", H)
+        # as oito leis embutidas, com cor e porta
+        for chave in ("rouanet", "fia", "esporte", "idoso", "pronon", "pronas", "goyazes", "pat"):
+            self.assertIn(f'"chave": "{chave}"', H, chave)
+
+    def test_a_coluna_usa_a_reserva_e_nao_o_arquivo_direto(self):
+        self.assertIn("return leis(R).map(L=>", H)
+        self.assertNotIn("(R.catalogo_de_leis||[]).map(L=>", H)
+
+    def test_o_ci_nao_reverte_codigo(self):
+        w = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
+        self.assertIn("PROTEÇÃO DE CÓDIGO", w)
+        self.assertIn("git checkout origin/main -- src tests scripts config docs/dashboard.html", w)
+        self.assertNotIn("pull --rebase -X theirs", w)   # fazia a cópia velha do job vencer a main
+        self.assertIn("pela versão do job; em", w)
