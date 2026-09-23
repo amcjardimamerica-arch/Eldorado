@@ -307,3 +307,76 @@ class TesteLimpezaDosDiarios(unittest.TestCase):
                 pass
         for f in ("pncp", "observatorio-3setor", "abcr"):
             self.assertIn(f, fontes, f)
+
+
+class TesteLeiturasLocaisAplicadas(unittest.TestCase):
+    """O pacote trouxe o arquivo com as 14 leituras do navegador local. Copiá-lo para
+    docs/dados não faz nada: o motor lê os REGISTROS. Enquanto a leitura não descer até
+    eles, a próxima varredura reverifica o que o titular já verificou à mão."""
+
+    @classmethod
+    def setUpClass(cls):
+        import json as _j
+        cls.an = _j.loads((ROOT / "dados/editais/analises.json").read_text(encoding="utf-8"))
+        cls.reg = _j.loads((ROOT / "estado/leituras_locais_23_09_aplicadas.json").read_text(encoding="utf-8"))
+
+    def test_as_catorze_desceram_aos_registros(self):
+        self.assertEqual(self.reg["aplicadas"], 14)
+        self.assertEqual(self.reg["com_hora"], 14)
+        com_hora = [v for v in self.an.values() if isinstance(v, dict) and v.get("hora_encerramento")]
+        self.assertGreaterEqual(len(com_hora), 14)
+
+    def test_a_hora_decide_se_ainda_esta_aberto(self):
+        """Formosa encerrou 22/07 às 16h45, não 'em 22/07'."""
+        f = next(v for v in self.an.values() if isinstance(v, dict)
+                 and "FORMOSA" in str(v.get("orgao", "")).upper())
+        self.assertEqual(f["hora_encerramento"], "16:45")
+        self.assertEqual(f["fim"], "2026-07-22")
+
+    def test_a_pagina_oficial_e_a_do_orgao_nao_a_divulgacao(self):
+        for v in self.an.values():
+            if isinstance(v, dict) and v.get("verificado_por", "").startswith("navegador local"):
+                self.assertIn("divulgação do PNCP", v["divulgacao_nao_vale"])
+                self.assertIn("nunca para confirmar prazo", v["divulgacao_nao_vale"])
+
+    def test_a_chave_de_osorio_foi_trocada_em_todo_lugar(self):
+        """A chave antiga devolvia HTTP 400. Trocar só numa base deixaria as outras
+        apontando para o vazio, e a varredura seguinte voltaria a usar a errada."""
+        import json as _j
+        o = self.an["81a444690ae9d6a7fc56"]
+        self.assertIn("88814181000130", str(o["chave_pncp"]))
+        self.assertIn("88866396000155", o["chave_pncp_anterior"])
+        self.assertIn("HTTP 400", o["porque_mudou"])
+        self.assertEqual(self.reg["corrigiu_chave"], ["81a44469"])
+
+        # e em nenhum arquivo a chave velha sobra como ponteiro ativo
+        def ativos(o, cam=""):
+            s = []
+            if isinstance(o, dict):
+                for k, v in o.items():
+                    s += ativos(v, f"{cam}.{k}")
+            elif isinstance(o, list):
+                for i, v in enumerate(o):
+                    s += ativos(v, f"{cam}[{i}]")
+            elif "88866396000155" in str(o):
+                s.append(cam)
+            return s
+        for arq in ("dados/editais/analises.json", "dados/editais/marcacoes_ia.json"):
+            campos = ativos(_j.loads((ROOT / arq).read_text(encoding="utf-8")))
+            vivos = [c for c in campos
+                     if not any(x in c for x in ("anterior", "porque_mudou", "observacao"))]
+            self.assertEqual(vivos, [], f"{arq}: {vivos[:2]}")
+
+    def test_os_dois_registros_novos_de_planaltina_entraram(self):
+        for k in ("planaltina-esporte-2026", "planaltina-cultura-2025"):
+            self.assertIn(k, self.an, k)
+            self.assertIn("registro novo", self.an[k]["origem"])
+        self.assertEqual(sorted(self.reg["novos"]),
+                         ["planaltina-cultura-2025", "planaltina-esporte-2026"])
+
+    def test_chave_escrita_a_mao_nao_e_truncada(self):
+        """Sem isto, 'planaltina-esporte-2026' viraria 'planalti' e colidiria com qualquer
+        outro registro de Planaltina."""
+        from src.nucleo import chave_curta
+        self.assertEqual(chave_curta("planaltina-esporte-2026"), "planaltina-esporte-2026")
+        self.assertEqual(chave_curta("81a444690ae9d6a7fc56"), "81a44469")
