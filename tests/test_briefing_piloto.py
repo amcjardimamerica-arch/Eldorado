@@ -16,7 +16,11 @@ class TesteCicloDeTresSegundos(unittest.TestCase):
         self.assertIn("Pousar 3 segundos e decolar de novo", txt)
         self.assertIn("sleep 3", txt)
         job = list(w["jobs"].values())[0]
-        self.assertLessEqual(job["timeout-minutes"], 30)                    # uma pesquisa por execução
+        # o teto virou expressão por modo em 23/09 — o benchmark precisa de mais que um voo.
+        # O que se cobra é que o VOO continue em 30: é ele que não pode monopolizar o runner.
+        teto = str(job["timeout-minutes"])
+        self.assertIn("||30", teto.replace(" ", "")) if "$" in teto else self.assertLessEqual(int(teto), 30)
+        self.assertIn("benchmark", teto) if "$" in teto else None                    # uma pesquisa por execução
         c = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
         self.assertEqual(c["encadeamento"]["pausa_no_patio_s"], 3)
         self.assertEqual(c["encadeamento"]["teto_execucao_min"], 30)

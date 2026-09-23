@@ -96,7 +96,9 @@ class TesteCargoNaoAceitaReprovado(unittest.TestCase):
             v = cargo_vago("nenhum candidato elegível na trilha")
             self.assertTrue(v["vago"]); self.assertIsNone(v["nome"])
             self.assertIn("rede determinística", v["como_o_piloto_voa"])
-            self.assertTrue(v["anterior"])                                   # não some sem dizer quem saiu
+            # 'anterior' só existe se havia ocupante: com o cargo já vago desde 23/09,
+            # não há de quem herdar, e inventar um nome ali seria pior que o campo nulo
+            self.assertIn("anterior", v)
         finally:
             CARGO.write_text(antes, encoding="utf-8")
 

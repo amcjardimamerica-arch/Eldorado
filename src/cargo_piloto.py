@@ -27,6 +27,26 @@ MEM = ROOT / "estado/piloto/memoria_erros.json"
 MAX_NO_PROMPT = 12
 
 
+def _porque_faltou(cand_id: str) -> str:
+    """UM ERRO QUE NÃO DIZ A CAUSA CUSTA UMA RODADA INTEIRA. Em 23/09 a avaliação do Qwen3
+    devolveu só 'modelo não disponível no runner' — sem código HTTP, sem endereço — e sem
+    acesso ao log do Actions não dava para saber se era URL errada, arquivo renomeado na
+    origem ou rede. O download passa a anotar, e aqui se lê a anotação."""
+    a = ROOT / "estado/piloto/downloads_falhos.tsv"
+    if not a.exists():
+        return "o download não deixou registro: verificar o log do Actions"
+    for linha in reversed(a.read_text(encoding="utf-8").strip().split("\n")):
+        partes = linha.split("\t")
+        if len(partes) == 3 and cand_id.lower().replace("-", "") in partes[0].lower().replace("-", ""):
+            arq, cod, url = partes
+            leitura = {"404": "o arquivo não existe nesse endereço: o nome mudou na origem",
+                       "401": "o repositório exige autenticação",
+                       "403": "o repositório recusou o acesso",
+                       "sem-resposta": "sem resposta: rede ou tempo esgotado"}.get(cod, f"HTTP {cod}")
+            return f"{arq}: {leitura} ({url})"
+    return "o download não registrou falha para este candidato"
+
+
 def pode_assumir(candidato: dict) -> tuple[bool, str]:
     """O CARGO NÃO ACEITA REPROVADO.
 
@@ -90,7 +110,18 @@ def deve_sair(medida: dict | None = None) -> tuple[bool, str]:
 def cargo_vago(motivo: str) -> dict:
     """Declara o posto vago e registra por quê, para que ninguém o preencha por inércia."""
     c = load_json(CARGO) if CARGO.exists() else {}
-    anterior = (c.get("ocupante_atual") or {}).get("nome")
+    saindo = c.get("ocupante_atual") or {}
+    anterior = saindo.get("nome")
+    # QUEM SAI VOLTA AO BANCO. Sem isto o modelo que deixou o cargo desaparece da lista de
+    # candidatos, e o benchmark seguinte perde a régua: não dá para dizer que um reserva é
+    # melhor sem ter contra quem comparar. Ele volta como reserva, com o motivo da saída.
+    if saindo.get("id") and saindo.get("url"):
+        banco = c.setdefault("banco_de_reserva", [])
+        if not any(r.get("id") == saindo["id"] for r in banco):
+            banco.insert(0, {k: v for k, v in saindo.items()
+                             if k in ("id", "nome", "url", "arquivo", "gb", "licenca", "desempenho")}
+                         | {"porque": f"ocupou o cargo até {now_iso()[:10]} e saiu: {motivo[:120]}",
+                            "serve_de_regua": "é contra ele que se mede quem quer o cargo"})
     c["ocupante_atual"] = {"nome": None, "vago": True, "desde": now_iso()[:16], "motivo": motivo,
                            "anterior": anterior,
                            "como_o_piloto_voa": "rede determinística: rumo sorteado do catálogo de "

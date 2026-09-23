@@ -6,7 +6,14 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 class TesteCargo(unittest.TestCase):
     def test_ocupante_eleito_cumpre_o_criterio_do_titular(self):
+        """O cargo pode estar VAGO — é estado legítimo desde 23/09, quando o ocupante caiu
+        abaixo do critério e nenhum substituto havia sido medido. Vago não é falha: é a
+        recusa de manter um reprovado por inércia."""
         o = ocupante(); c = criterio()
+        if o.get("vago"):
+            self.assertIsNone(o["nome"]); self.assertTrue(o["motivo"])
+            self.assertIn("rede determinística", o["como_o_piloto_voa"])
+            return
         self.assertEqual(o["id"], "llama-3.2-3b")
         self.assertGreaterEqual(o["desempenho"]["acerto"], c["assertividade_minima"])   # ≥ 50%
         self.assertEqual(o["desempenho"]["prazos_inventados"], 0)
@@ -43,8 +50,12 @@ class TesteCargo(unittest.TestCase):
             self.assertFalse(aprovado_no_criterio(ruim)[0], ruim)
 
     def test_memoria_de_erros_vira_licao_no_prompt(self):
+        # com o cargo vago o prompt não traz nome de ocupante, mas as lições continuam
         antes = MEM.read_text(encoding="utf-8") if MEM.exists() else None
         try:
+            # parte do zero: o prompt só carrega as lições mais recentes, e com a memória
+            # acumulada de muitos voos a lição recém-registrada não entrava no corte
+            MEM.write_text(json.dumps({"erros": {}, "total": 0}, ensure_ascii=False), encoding="utf-8")
             registrar_erro("falso_positivo", "CREDENCIAMENTO DE EMPRESAS para exames", "reprovado", "aprovado", "é contratação de serviço")
             registrar_erro("falso_positivo", "CREDENCIAMENTO DE EMPRESAS para exames", "reprovado", "aprovado", "é contratação de serviço")
             registrar_erro("falso_negativo", "Chamamento 05/2026 termo de fomento", "aprovado", "reprovado")

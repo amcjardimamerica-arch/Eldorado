@@ -22,10 +22,15 @@ class TesteUmaListaSo(unittest.TestCase):
         self.assertEqual(q["licenca"], "Apache-2.0")
         self.assertLess(q["gb"], 2.0)                       # 1,1 GB: cabe no runner
 
-    def test_o_ocupante_entra_como_regua(self):
-        oc = [c for c in CANDIDATOS if c["e_ocupante"]]
-        self.assertEqual(len(oc), 1)
-        self.assertEqual(oc[0]["nome"], "Llama-3.2-3B-Instruct")
+    def test_quem_saiu_do_cargo_continua_servindo_de_regua(self):
+        """Com o cargo vago, o modelo que saiu volta ao banco: sem ele o benchmark perde
+        contra quem comparar."""
+        nomes = [c["nome"] for c in CANDIDATOS]
+        self.assertIn("Llama-3.2-3B-Instruct", nomes)
+        c = json.loads(CARGO.read_text(encoding="utf-8"))
+        saiu = next(r for r in c["banco_de_reserva"] if r["id"] == "llama-3.2-3b")
+        self.assertIn("ocupou o cargo até", saiu["porque"])
+        self.assertIn("é contra ele que se mede", saiu["serve_de_regua"])
 
     def test_candidato_sem_url_nao_entra(self):
         self.assertTrue(all(c.get("url") for c in _candidatos()))
@@ -41,15 +46,26 @@ class TestePermanencia(unittest.TestCase):
     um dia e meio depois da medição que o reprovou."""
 
     def test_quem_nao_responde_em_voo_sai(self):
-        sai, porque = deve_sair()
-        self.assertTrue(sai)                                 # o ocupante de hoje: 25%
-        self.assertIn("abaixo dos 50%", porque)
+        """O cargo está vago desde 23/09, então o caso é construído: a regra vale para
+        qualquer ocupante, não para um em particular."""
+        antes = CARGO.read_text(encoding="utf-8")
+        try:
+            c = json.loads(antes)
+            c["ocupante_atual"] = {"nome": "X", "id": "x",
+                                   "desempenho_em_voo": {"pedidos": 40, "taxa_de_resposta": 0.24}}
+            CARGO.write_text(json.dumps(c, ensure_ascii=False), encoding="utf-8")
+            sai, porque = deve_sair()
+            self.assertTrue(sai)
+            self.assertIn("abaixo dos 50%", porque)
+        finally:
+            CARGO.write_text(antes, encoding="utf-8")
 
     def test_prazo_inventado_derruba(self):
         antes = CARGO.read_text(encoding="utf-8")
         try:
             c = json.loads(antes)
-            c["ocupante_atual"]["desempenho_em_voo"] = {"pedidos": 20, "taxa_de_resposta": 0.9}
+            c["ocupante_atual"] = {"nome": "X", "id": "x",
+                                   "desempenho_em_voo": {"pedidos": 20, "taxa_de_resposta": 0.9}}
             CARGO.write_text(json.dumps(c, ensure_ascii=False), encoding="utf-8")
             sai, porque = deve_sair({"acerto": 0.95, "prazos_inventados": 2})
             self.assertTrue(sai); self.assertIn("eliminatória", porque)
@@ -64,7 +80,8 @@ class TestePermanencia(unittest.TestCase):
         antes = CARGO.read_text(encoding="utf-8")
         try:
             c = json.loads(antes)
-            c["ocupante_atual"]["desempenho_em_voo"] = {"pedidos": 4, "taxa_de_resposta": 0.0}
+            c["ocupante_atual"] = {"nome": "X", "id": "x",
+                                   "desempenho_em_voo": {"pedidos": 4, "taxa_de_resposta": 0.0}}
             CARGO.write_text(json.dumps(c, ensure_ascii=False), encoding="utf-8")
             self.assertFalse(deve_sair({"acerto": 0.8})[0])   # 4 pedidos não decidem nada
         finally:

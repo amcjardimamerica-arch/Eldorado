@@ -83,7 +83,7 @@ jobs:
             echo "baixando $ARQ …"
             curl -L --retry 4 --retry-delay 10 --fail --silent --show-error -o "$DEST" "$URL" \
               && echo "  ok: $(du -h "$DEST" | cut -f1)" \
-              || { echo "  FALHOU: $ARQ (HTTP/rede) — o benchmark marcará 'modelo não disponível'"; rm -f "$DEST"; }
+              || { COD=$(curl -L -o /dev/null -s -w "%{http_code}" --max-time 40 "$URL" || echo "sem-resposta"); mkdir -p estado/piloto; printf '%s\t%s\t%s\n' "$ARQ" "$COD" "$URL" >> estado/piloto/downloads_falhos.tsv; echo "  FALHOU: $ARQ — HTTP $COD em $URL"; rm -f "$DEST"; }
           done < /tmp/alvos.txt
           ls -la ia_local/modelos/ || true
           df -h / | tail -1

@@ -31,31 +31,36 @@
     "nota": "leve e rápido vence pesado e lento: um modelo que roda 4 ciclos por dia e aprende com o erro vale mais que um que roda um e acerta pouco mais"
   },
   "ocupante_atual": {
-    "id": "llama-3.2-3b",
-    "nome": "Llama-3.2-3B-Instruct",
-    "arquivo": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-    "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-    "gb": 2.0,
-    "licenca": "Llama-3.2-Community",
-    "contratado_em": "2026-09-22",
-    "medido_em": "benchmark 1 (2026-09-21, 120 editais do gabarito do titular)",
-    "desempenho": {
-      "acerto": 0.597,
-      "prazos_inventados": 0,
-      "tokens_por_s": 16.0,
-      "minutos_120_itens": 20.5
-    },
-    "por_que": "único candidato medido acima dos 50% exigidos, com zero prazos inventados, 2 GB e o mais rápido dos testados. O Qwen2.5-3B foi reprovado por 58 falsos positivos em 78 reprovados; o 7B é pesado e lento demais para 4 ciclos diários; o Gemma não subiu.",
-    "fraqueza_conhecida": "cauteloso: reprovou 8 de 10 aprovados no teste. Mitigação: o veredito 'reprovado' do Piloto nunca arquiva sozinho — vira proposta; e a memória de erros corrige o prompt a cada rodada.",
+    "nome": null,
+    "vago": true,
+    "desde": "2026-09-23T22:20",
+    "motivo": "nenhum substituto medido: o Qwen3 nao baixou no runner e os demais nunca foram executados; o ocupante responde a 24% em voo",
+    "anterior": "Llama-3.2-3B-Instruct",
+    "como_o_piloto_voa": "rede determinística: rumo sorteado do catálogo de ângulos, sem repetir os últimos. O voo perde a leitura da página, não a direção.",
     "desempenho_em_voo": {
-      "pedidos": 453,
-      "mudos": 344,
-      "taxa_de_resposta": 0.241,
-      "avaliado_ate": "2026-09-23T18:15",
+      "pedidos": 33,
+      "mudos": 25,
+      "taxa_de_resposta": 0.242,
+      "avaliado_ate": "2026-09-23T22:21",
       "alerta": "responde em 24% dos pedidos, abaixo dos 50% que o cargo exige — candidato a substituição pelo banco de reserva"
     }
   },
   "banco_de_reserva": [
+    {
+      "id": "llama-3.2-3b",
+      "nome": "Llama-3.2-3B-Instruct",
+      "gb": 2.0,
+      "licenca": "Llama-3.2-Community",
+      "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+      "desempenho": {
+        "acerto": 0.597,
+        "prazos_inventados": 0,
+        "tokens_por_s": 16.0,
+        "minutos_120_itens": 20.5
+      },
+      "porque": "ocupou o cargo até 2026-09-23 e saiu: nenhum substituto medido: o Qwen3 nao baixou no runner e os demais nunca foram executados; o ocupante responde a 24% em ",
+      "serve_de_regua": "é contra ele que se mede quem quer o cargo"
+    },
     {
       "id": "qwen3-1.7b",
       "nome": "Qwen3-1.7B",
