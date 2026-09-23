@@ -3153,11 +3153,16 @@ window.abrirIncluirEditais=async function(id){
    e a lista corre na página, sem rolagem interna. */
 window.EMP=null;
 window.EMPV={lista:"tributaria",pagina:0,q:"",uf:"",porte:"",so:""};
+/* Duas listas INDEPENDENTES, cada uma com a sua pontuação. A mesma empresa pode estar nas
+   duas, com posição própria em cada: o que a qualifica para direcionar imposto não é o que
+   a qualifica para doar do próprio caixa. */
 const LISTAS={
-  tributaria:{rot:"Destinação tributária",cor:"#1E7E4B",fundo:"#EAF6EF",origem:"destinação tributária",
-    sub:"imposto que a empresa já deve e pode direcionar — o pedido vai ao setor fiscal ou à contabilidade"},
-  doadoras:{rot:"Empresas doadoras",cor:"#0B4EA2",fundo:"#EFF5FD",origem:"patrocínio privado",
-    sub:"verba própria da empresa — o pedido vai ao marketing, ao instituto ou à fundação"}};
+  tributaria:{rot:"Destinação tributária",cor:"#1E7E4B",fundo:"#EAF6EF",cat:"destinacao_tributaria",
+    origem:"destinação tributária",
+    sub:"imposto que a empresa já deve ao fisco e escolhe para onde vai — não sai do caixa dela. O pedido vai ao setor fiscal ou à contabilidade, depende de Lucro Real e tem teto por lei."},
+  doadoras:{rot:"Doação e patrocínio",cor:"#0B4EA2",fundo:"#EFF5FD",cat:"patrocinio_privado",
+    origem:"doação e patrocínio",
+    sub:"dinheiro do próprio bolso: patrocínio de evento, projeto social, verba de marketing no terceiro setor. O pedido vai ao marketing, ao instituto ou à diretoria, e a conversa é de contrapartida."}};
 
 function _din(v){ v=Number(v||0);
   if(v>=1e9)return "R$ "+(v/1e9).toFixed(1).replace(".",",")+" bi";
@@ -3165,6 +3170,11 @@ function _din(v){ v=Number(v||0);
   if(v>=1e3)return "R$ "+Math.round(v/1e3)+" mil";
   return "R$ "+Math.round(v); }
 function _fx(a,b){ return b?_din(a)+" a "+_din(b):""; }
+function _curto(n){ return String(n||"")
+  .replace("Fundo da Criança e do Adolescente","FIA · criança")
+  .replace("Lei de Incentivo ao Esporte","Lei do Esporte")
+  .replace("Fundo de Cultura de Goiás (Goyazes)","Goyazes")
+  .replace("Programa de Alimentação do Trabalhador","PAT"); }
 function _capital(v){ const n=Number(String(v||"").replace(/[^\d]/g,"")); return n?_din(n):""; }
 
 window.carregaEmpresas=async function(){ if(window.EMP)return window.EMP;
@@ -3200,6 +3210,7 @@ window.desenhaApoiadores=function(){
 
   const F=window.EMPV, L=LISTAS[F.lista];
   const daLista=(R.empresas||[]).filter(e=>e.origem===L.origem);
+  const cfg=((R.listas||{})[L.cat])||{};
   const filtradas=daLista.filter(_filtra);
   const paginas=[]; for(let i=0;i<filtradas.length;i+=100)
     paginas.push({n:paginas.length+1,de:i+1,ate:Math.min(i+100,filtradas.length)});
@@ -3222,9 +3233,14 @@ window.desenhaApoiadores=function(){
     <div class="ep-resumo">
       <div><span class="ep-rot">Nesta página</span><b>${fatia.length}</b><small>de ${filtradas.length} na lista${filtradas.length!==daLista.length?` (${daLista.length} sem filtro)`:""}</small></div>
       ${somaMax?`<div><span class="ep-rot">IRPJ direcionável por ano</span><b class="ep-din">${_fx(somaMin,somaMax)}</b><small>estimado em ${comValor} das ${fatia.length}</small></div>`:""}
-      <div><span class="ep-rot">ICMS</span><b class="ep-pend">a confirmar</b><small>depende de programa estadual de Goiás</small></div>
+      <div><span class="ep-rot">Nota média desta página</span><b>${Math.round(fatia.reduce((s,e)=>s+((e.avaliacao||{}).pontos||0),0)/(fatia.length||1))}</b><small>de ${cfg.teto||100} possíveis nos critérios desta lista</small></div>
+      <div><span class="ep-rot">Dados levantados</span><b class="ep-conf">${Math.round((cfg.confianca_media||0)*100)}%</b><small>dos critérios têm dado; o resto aparece como não levantado</small></div>
     </div>
 
+    ${(cfg.criterios||[]).length?`<details class="ep-crit"><summary>Como esta lista é pontuada — ${(cfg.criterios||[]).length} critérios, ${cfg.teto} pontos</summary>
+      <table class="ep-crit-t"><tbody>${(cfg.criterios||[]).map(c=>`<tr><td class=p>${c.peso}</td><td class=r>${esc(c.rotulo)}</td><td class=q>${esc(c.porque)}</td></tr>`).join("")}</tbody></table>
+      ${(cfg.criterios_sem_dado||[]).length?`<p class="ep-crit-f"><b>Ainda sem dado em parte das empresas:</b> ${(cfg.criterios_sem_dado||[]).join(" · ")}. Um critério sem dado não vira zero: fica como <i>não levantado</i>, e a nota carrega essa ressalva.</p>`:""}
+    </details>`:""}
     <div class="ep-filtros">
       <input id="ep-q" class="ep-campo" placeholder="nome, razão social, atividade ou cidade" value="${esc(F.q)}">
       <select id="ep-uf" class="ep-sel"><option value="">todos os estados</option>${ufs.map(u=>`<option ${F.uf===u?"selected":""} value="${esc(u)}">${esc(u)}</option>`).join("")}</select>
@@ -3244,30 +3260,38 @@ window.desenhaApoiadores=function(){
         title="empresas ${x.de} a ${x.ate}"><b>${x.n}</b><span>${x.de}–${x.ate}</span></button>`).join("")}</div>`:""}
 
     <div class="ep-cab" aria-hidden="true">
-      <span>#</span><span>Empresa</span><span>Atividade e sede</span><span>Porte e capital</span>
-      <span>Pode direcionar</span><span>Contato</span></div>
+      <span>#</span><span>Empresa</span><span>${F.lista==="tributaria"?"Já destinou por":"Como apoia"}</span>
+      <span>Nota da lista</span><span>${F.lista==="tributaria"?"Pode direcionar":"Levantado"}</span><span>Contato</span></div>
+
 
     <ol class="ep-lista" start="${pg.de}">
     ${fatia.map(e=>{const c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
       const contato=e.site?{h:e.site,t:"site",e:true}
         :c.email?{h:"mailto:"+c.email,t:c.email,e:false}
         :c.telefone?{h:"tel:"+String(c.telefone).replace(/\D/g,""),t:String(c.telefone),e:false}:null;
-      return `<li class="ep-l" tabindex="0" role="button" aria-label="abrir ficha de ${esc(e.nome)}"
-        onclick="fichaEmpresa(${e.posicao})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fichaEmpresa(${e.posicao})}">
-        <span class="ep-pos">${e.posicao}</span>
+      return `<li class="ep-l" tabindex="0" role="button" aria-label="abrir ficha de ${esc(e.nome)}, ${e.n_na_lista}ª da lista"
+        onclick="fichaEmpresa('${esc(e.uid)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fichaEmpresa('${esc(e.uid)}')}">
+        <span class="ep-pos">${e.n_na_lista||e.posicao}</span>
         <span class="ep-nome"><b>${esc(e.nome)}</b>${c.cnpj?`<small>${esc(c.cnpj)}</small>`:`<small class="ep-falta">CNPJ a levantar</small>`}</span>
-        <span class="ep-ativ">${esc(c.cnae_principal||e.apoia||e.programa||"atividade a levantar")}${c.municipio?`<small>${esc(c.municipio)}${c.uf?"/"+esc(c.uf):""}</small>`:""}</span>
-        <span class="ep-porte">${esc(String(c.porte||"—").toLowerCase())}${_capital(c.capital_social)?`<small>capital ${_capital(c.capital_social)}</small>`:""}</span>
-        <span class="ep-valor">${pt.apurou
-          ? `<b>${_fx(ir.direcionavel_min,ir.direcionavel_max)}</b><small>${ir.teto_pct}% do IRPJ</small>`
-          : `<em>${esc((pt.motivo||"sem estimativa").split("—")[0].trim().slice(0,34))}</em>`}</span>
+        <span class="ep-prog">${(()=>{const A=e.avaliacao||{};
+          const chips=F.lista==="tributaria"
+            ? (e.programas||[]).map(p=>`<i class="ep-lei ${p.historico?"fez":"cit"}" title="${esc(p.lei)} · ${esc(p.orgao)} · ${esc(p.porta)}">${esc(_curto(p.nome))}</i>`)
+            : (A.criterios||[]).filter(c=>c.pontos>0&&c.chave!=="valor_percentual").map(c=>`<i class="ep-lei fez" title="${esc(c.porque)}">${esc(c.rotulo)}</i>`);
+          return chips.length?chips.slice(0,3).join("")+(chips.length>3?`<i class="ep-lei mais">+${chips.length-3}</i>`:"")
+                             :`<em class="ep-sem">${F.lista==="tributaria"?"nenhuma lei levantada":"nada levantado ainda"}</em>`;})()}</span>
+        <span class="ep-esg"><b class="n-${esc((e.avaliacao||{}).nivel||"").replace(/\s/g,"-")}">${(e.avaliacao||{}).pontos||0}</b>
+          <small>de ${(e.avaliacao||{}).teto||100} · ${esc((e.avaliacao||{}).nivel||"—")}</small></span>
+        <span class="ep-valor">${F.lista==="tributaria"
+          ? (pt.apurou?`<b>${_fx(ir.direcionavel_min,ir.direcionavel_max)}</b><small>${ir.teto_pct}% do IRPJ</small>`
+                      :`<em>${esc((pt.motivo||"sem estimativa").split("—")[0].trim().slice(0,34))}</em>`)
+          : `<b class="ep-conf">${(e.avaliacao||{}).apurados||0}/${(e.avaliacao||{}).total_criterios||0}</b><small>critérios levantados</small>`}</span>
         <span class="ep-ct">${contato
           ? `<a href="${esc(contato.h)}"${contato.e?' target="_blank" rel="noopener noreferrer"':""} onclick="event.stopPropagation()">${esc(contato.t)}</a>`
           : `<em>a levantar</em>`}</span>
       </li>`;}).join("")}
     </ol>
     ${!fatia.length?`<p class="ep-vazio">Nenhuma empresa desta lista passa pelos filtros. ${(F.q||F.uf||F.porte||F.so)?'<button class="ep-limpa" onclick="empLimpa()">Limpar filtros</button>':""}</p>`:""}
-    <p class="ep-pe">Valores estimados a partir do porte e do capital social registrados na Receita Federal. Servem para ordenar a quem pedir primeiro, não para escrever em ofício.</p>
+    <p class="ep-pe"><b>A ordem é por evidência social, e cada lista tem a sua:</b> nesta trilha vale ${F.lista==="tributaria"?"o histórico de destinação por lei, a variedade de mecanismos e o porte tributário":"o patrocínio já feito, a recorrência, o instituto próprio e a verba de marketing aplicada em causa social"}. Quem já fez vem antes de quem apenas poderia, porque o caminho interno já existe. Valores estimados a partir do porte e do capital social registrados na Receita Federal.</p>
   </section>`;
 
   const q=$("ep-q"); if(q){ q.oninput=()=>{clearTimeout(window._epT);window._epT=setTimeout(()=>empFiltro("q",q.value),250);};
@@ -3277,8 +3301,8 @@ window.desenhaApoiadores=function(){
   const so=$("ep-so"); if(so)so.onchange=()=>empFiltro("so",so.value);
 };
 
-window.fichaEmpresa=function(pos){
-  const R=window.EMP||{}, e=(R.empresas||[]).find(x=>Number(x.posicao)===Number(pos)); if(!e)return;
+window.fichaEmpresa=function(uid){
+  const R=window.EMP||{}, e=(R.empresas||[]).find(x=>x.uid===uid); if(!e)return;
   const c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
   const L=Object.values(LISTAS).find(v=>v.origem===e.origem)||LISTAS.doadoras;
   const li=(r,v)=>v?`<div class="rel-linha"><b>${r}:</b> ${esc(String(v))}</div>`:"";
@@ -3300,6 +3324,25 @@ window.fichaEmpresa=function(pos){
           <p>${esc(pt.aviso)}</p></details>
         <p class="ep-icms"><b>ICMS:</b> ${esc(pt.icms.porque)}</p>
       </div>`:`<div class="ep-conta sem"><b>Sem estimativa de valor.</b> ${esc(pt.motivo||"dados do cadastro insuficientes")}.</div>`}
+      ${(()=>{const A=e.avaliacao||{};if(!A.criterios)return "";
+        return `<div class="fdoc-t" style="margin-top:4px">Nota nesta lista: ${A.pontos} de ${A.teto}
+            <span class=meta>${A.apurados} de ${A.total_criterios} critérios levantados · ${esc(A.nivel||"")}</span></div>
+          <div class=meta style="margin-bottom:6px"><b>Porta de entrada:</b> ${esc(A.porta_de_entrada||"")}</div>
+          <div class="ep-notas">${(A.criterios||[]).map(c=>`<div class="ep-nota-l ${c.apurado?"":"nao"}">
+            <b>${c.apurado?c.pontos:"—"}</b>
+            <span class="ep-nota-r">${esc(c.rotulo)} <small>${esc(c.porque)}</small></span>
+            <span class="ep-nota-v">${esc(c.valor)} <small>vale até ${c.peso}</small></span></div>`).join("")}</div>
+          ${(A.falta_levantar||[]).length?`<p class="ep-crit-f"><b>Falta levantar:</b> ${(A.falta_levantar||[]).map(f=>esc(f.rotulo)).join(" · ")}. Sem esses dados a nota fica abaixo do que a empresa talvez mereça — o vazio é do nosso levantamento, não dela.</p>`:""}`;})()}
+      ${(e.programas||[]).length?`<div class="ep-progs" style="margin-top:14px">
+        <div class="ep-progs-t">Programas que esta empresa já apoiou</div>
+        ${(e.programas||[]).map(pr=>`<div class="ep-prog-l ${pr.historico?"fez":"cit"}">
+          <div class="ep-prog-c"><b>${esc(pr.nome)}</b><span class="ep-prog-s">${pr.historico?"já destinou":"citado — a confirmar"}</span></div>
+          <div class="ep-prog-d"><span>${esc(pr.lei)}</span><span>${esc(pr.orgao)}</span><span>até ${esc(pr.teto)}</span></div>
+          <div class="ep-prog-p"><b>Como se entra:</b> ${esc(pr.porta)}</div>
+          ${pr.prova?`<div class="ep-prog-e">${esc(pr.prova)}</div>`:""}</div>`).join("")}
+      </div>`:""}
+      ${e.tambem_em?`<div class="ep-dupla-box"><b>Esta empresa também está na outra lista</b>
+        <p>Aparece em <b>${esc(e.tambem_em.lista==="destinacao_tributaria"?"Destinação tributária":"Doação e patrocínio")}</b>, na ${e.tambem_em.posicao}ª posição de lá. São caminhos diferentes e podem ser pedidos separadamente — um pelo setor fiscal, outro pelo marketing.</p></div>`:""}
       <div class="fdoc-t" style="margin-top:14px">Identificação</div>
       ${li("Razão social",c.razao_social)}${li("Nome fantasia",c.nome_fantasia)}${li("CNPJ",c.cnpj)}
       ${li("Atividade principal",(c.cnae_codigo?c.cnae_codigo+" — ":"")+(c.cnae_principal||""))}

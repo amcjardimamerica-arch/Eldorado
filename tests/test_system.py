@@ -3878,7 +3878,7 @@ class SystemTests(unittest.TestCase):
         fiscal=load_json(pathlib.Path("biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json"))["empresas"]
         self.assertTrue(any(e.get("incentivos") for e in fiscal)); self.assertTrue(all("LUCRO REAL" in (e.get("condicao") or "").upper() for e in fiscal[:10]))
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ('data-aba="ranking_empresas"',"window.desenhaApoiadores","ep-l","Destinação tributária","Empresas doadoras"):
+        for x in ('data-aba="ranking_empresas"',"window.desenhaApoiadores","ep-l","Destinação tributária","Doação e patrocínio"):
             self.assertIn(x,html,x)
 
 

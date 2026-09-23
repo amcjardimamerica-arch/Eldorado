@@ -88,64 +88,86 @@ def _cadastro_de(e: dict, base: dict) -> dict:
 
 
 def montar() -> dict:
+    """Monta DUAS listas independentes. A mesma empresa pode estar nas duas, com posição
+    própria em cada — o que a qualifica para direcionar imposto não é o que a qualifica
+    para doar do próprio caixa."""
+    from .potencial_fiscal import estimar
+    from .programas_sociais import programas_de
+    from .ranking_duplo import avaliar_fiscal, avaliar_doadora, CRITERIOS_FISCAL, CRITERIOS_DOADORA
     base = _base_cadastral()
-    itens, vistos = [], set()
 
-    def _add(nome, pontos, origem, extra):
-        chave = re.sub(r"[^a-z0-9]", "", (nome or "").lower())[:40]
-        if not chave or chave in vistos:
-            return
-        vistos.add(chave)
-        itens.append({"nome": nome[:120], "pontos": pontos or 0, "origem": origem, **extra})
-
-    for cat, rot in (("destinacao_tributaria", "destinação tributária"), ("patrocinio_privado", "patrocínio privado")):
+    # As descobertas do Piloto NÃO entram aqui: esta tela lê apenas os dois rankings
+    # qualificados. Fonte recém-achada fica no posto do Piloto até ser classificada.
+    def _carregar(cat: str) -> list[dict]:
         arq = ROOT / f"biblioteca_alexandria/empresas/ranking_{cat}.json"
         if not arq.exists():
-            continue
+            return []
+        saida, vistos = [], set()
         for e in load_json(arq).get("empresas", []):
-            _add(e.get("nome"), e.get("pontos"), rot,
-                 {"por": e.get("por") or [], "cnpj": e.get("cnpj"), "icms_goias": e.get("icms_goias"),
-                  "programa": e.get("programa"), "apoia": e.get("apoia"), "via_de_entrada": e.get("via_de_entrada"),
-                  "incentivos": e.get("incentivos"), "classe": e.get("classe"), "site": e.get("site")})
-    rad = {}
-    for e in (rad.get("empresas") or {}).values():
-        # descoberta do Piloto pontua pelo que se sabe: sinal declarado, ESG, edital visto, recorrência
-        p = 4 + 3 * len(e.get("angulos") or []) + (6 if (e.get("esg") or {}).get("tem_relatorio") else 0) \
-            + (8 if (e.get("editais") or {}).get("abertos") else 0) + (5 if (e.get("editais") or {}).get("anteriores") else 0) \
-            + (2 * min(3, (e.get("vezes_vista") or 1) - 1)) + (6 if e.get("marcador") == "concluido" else 0)
-        _add(e.get("nome"), p, "radar do Piloto",
-             {"por": [f"descoberto pelo Piloto ({', '.join(e.get('angulos') or [])})"], "site": e.get("site"),
-              "marcador_pesquisa": e.get("marcador"), "nivel": e.get("nivel"), "esg": e.get("esg"),
-              "editais": e.get("editais"), "leitura": (e.get("porque") or "")[:140], "classe": "radar"})
-    # As descobertas do Piloto NÃO entram aqui. Esta tela é para decidir a quem pedir, e só
-    # aceita empresa qualificada: com origem conhecida e cadastro. Fonte recém-achada fica no
-    # posto do Piloto até ser validada e classificada numa das duas listas.
-    from .potencial_fiscal import estimar
-    for e in itens:
-        e.update({"cadastro": _cadastro_de(e, base)})
-        e["potencial"] = estimar(e["cadastro"])
-        if not e.get("site"):
-            e["site"] = e["cadastro"].get("site")
-    itens.sort(key=lambda x: (-(x.get("pontos") or 0), x["nome"]))
-    for i, e in enumerate(itens, 1):
-        e["posicao"] = i
-        e["faixa"] = "A" if i <= 50 else "B" if i <= 150 else "C" if i <= 300 else "D"
-    paginas = [{"de": i + 1, "ate": min(i + POR_PAGINA, len(itens))} for i in range(0, len(itens), POR_PAGINA)]
-    res = {"gerado_em": now_iso(), "total": len(itens), "por_pagina": POR_PAGINA, "paginas": paginas,
-           "regra": "uma lista só, ordenada por pontuação: destinação tributária + patrocínio privado + radar do Piloto; "
-                    "os dados cadastrais (CNPJ, CNAE, QSA, contatos) vêm do que já foi coletado — o que falta fica em 'a_completar', nunca inventado",
-           "com_cnpj": sum(1 for e in itens if e["cadastro"].get("cnpj")),
-           "com_cnae": sum(1 for e in itens if e["cadastro"].get("cnae_principal")),
-           "com_qsa": sum(1 for e in itens if e["cadastro"].get("qsa")),
-           "com_contato": sum(1 for e in itens if e["cadastro"].get("telefone") or e["cadastro"].get("email")),
-           "com_site": sum(1 for e in itens if e.get("site")),
-           "com_potencial": sum(1 for e in itens if (e.get("potencial") or {}).get("apurou")),
-           "potencial_total": {
-               "min": sum(((e.get("potencial") or {}).get("irpj") or {}).get("direcionavel_min") or 0 for e in itens),
-               "max": sum(((e.get("potencial") or {}).get("irpj") or {}).get("direcionavel_max") or 0 for e in itens),
-               "base": "soma das faixas estimadas de IRPJ direcionável; ordem de grandeza, não valor de ofício"},
-           "por_origem": {o: sum(1 for e in itens if e["origem"] == o) for o in {e["origem"] for e in itens}},
-           "empresas": itens}
+            chave = re.sub(r"[^a-z0-9]", "", str(e.get("nome") or "").lower())[:40]
+            if not chave or chave in vistos:          # duplicata DENTRO da mesma lista
+                continue
+            vistos.add(chave)
+            saida.append({**e, "_chave": chave})
+        return saida
+
+    listas = {}
+    for cat, rot, avaliar in (("destinacao_tributaria", "destinação tributária", avaliar_fiscal),
+                              ("patrocinio_privado", "doação e patrocínio", avaliar_doadora)):
+        itens = _carregar(cat)
+        for e in itens:
+            e["origem"] = rot
+            e["cadastro"] = _cadastro_de(e, base)
+            e["potencial"] = estimar(e["cadastro"])
+            e["programas"] = programas_de(e)
+            e["avaliacao"] = avaliar(e)
+            e["pontos_lista"] = e["avaliacao"]["pontos"]
+        # ordem PRÓPRIA da lista: a nota daquela finalidade, não uma nota geral
+        itens.sort(key=lambda x: (-x["pontos_lista"], -(x.get("pontos") or 0), x["nome"]))
+        for n, e in enumerate(itens, 1):
+            e["n_na_lista"] = n
+            # a posição já não é única: cada lista tem a sua 1ª. O uid identifica a linha
+            e["uid"] = f"{cat}:{n}"
+            e["faixa"] = "A" if n <= 25 else "B" if n <= 60 else "C"
+        listas[cat] = itens
+
+    # quem está nas duas listas ganha a marca, com a posição em cada uma
+    por_nome = {}
+    for cat, itens in listas.items():
+        for e in itens:
+            por_nome.setdefault(e["_chave"], {})[cat] = e["n_na_lista"]
+    nas_duas = {k: v for k, v in por_nome.items() if len(v) == 2}
+    for cat, itens in listas.items():
+        for e in itens:
+            if e["_chave"] in nas_duas:
+                outra = next(c for c in nas_duas[e["_chave"]] if c != cat)
+                e["tambem_em"] = {"lista": outra, "posicao": nas_duas[e["_chave"]][outra]}
+
+    todas = [e for itens in listas.values() for e in itens]
+    res = {"gerado_em": now_iso(), "por_pagina": POR_PAGINA,
+           "regra": "duas listas independentes, com pontuação própria; a mesma empresa pode estar nas duas",
+           "listas": {cat: {"rotulo": ("destinação tributária" if cat == "destinacao_tributaria" else "doação e patrocínio"),
+                            "total": len(itens),
+                            "paginas": [{"n": i // POR_PAGINA + 1, "de": i + 1,
+                                         "ate": min(i + POR_PAGINA, len(itens))}
+                                        for i in range(0, len(itens), POR_PAGINA)],
+                            "criterios": [{"chave": c[0], "peso": c[1], "rotulo": c[2], "porque": c[3]}
+                                          for c in (CRITERIOS_FISCAL if cat == "destinacao_tributaria" else CRITERIOS_DOADORA)],
+                            "teto": sum(c[1] for c in (CRITERIOS_FISCAL if cat == "destinacao_tributaria" else CRITERIOS_DOADORA)),
+                            "confianca_media": round(sum(e["avaliacao"]["confianca"] for e in itens) / len(itens), 2) if itens else 0,
+                            "criterios_sem_dado": sorted({f["rotulo"] for e in itens for f in e["avaliacao"]["falta_levantar"]})}
+                      for cat, itens in listas.items()},
+           "total": len(todas), "nas_duas_listas": len(nas_duas),
+           "com_cnpj": sum(1 for e in todas if e["cadastro"].get("cnpj")),
+           "com_cnae": sum(1 for e in todas if e["cadastro"].get("cnae_principal")),
+           "com_qsa": sum(1 for e in todas if e["cadastro"].get("qsa")),
+           "com_contato": sum(1 for e in todas if e["cadastro"].get("telefone") or e["cadastro"].get("email")),
+           "com_site": sum(1 for e in todas if e.get("site")),
+           "com_programa": sum(1 for e in todas if e.get("programas")),
+           "com_potencial": sum(1 for e in todas if (e.get("potencial") or {}).get("apurou")),
+           "por_origem": {("destinação tributária" if c == "destinacao_tributaria" else "doação e patrocínio"): len(i)
+                          for c, i in listas.items()},
+           "empresas": todas}
     write_json(SAIDA, res)
     return {k: v for k, v in res.items() if k != "empresas"}
 

@@ -68,14 +68,14 @@ class TesteTelaDeEmpresas(unittest.TestCase):
 
     def test_so_duas_listas_sem_o_piloto(self):
         self.assertIn('tributaria:{rot:"Destinação tributária"', H)
-        self.assertIn('doadoras:{rot:"Empresas doadoras"', H)
+        self.assertIn('doadoras:{rot:"Doação e patrocínio"', H)
         bloco = H.split("const LISTAS={")[1].split("};")[0]
         self.assertNotIn("Piloto", bloco)
         self.assertNotIn("prospecção", bloco)
         src = (ROOT / "src/ranking_apoiadores.py").read_text(encoding="utf-8")
         self.assertIn("As descobertas do Piloto NÃO entram aqui", src)
         r = json.loads((ROOT / "docs/dados/ranking_apoiadores.json").read_text(encoding="utf-8"))
-        self.assertEqual(set(r["por_origem"]), {"destinação tributária", "patrocínio privado"})
+        self.assertEqual(set(r["por_origem"]), {"destinação tributária", "doação e patrocínio"})
 
     def test_paginas_numeradas_de_cem_em_cem(self):
         self.assertIn("for(let i=0;i<filtradas.length;i+=100)", H)
@@ -100,7 +100,7 @@ class TesteTelaDeEmpresas(unittest.TestCase):
         self.assertIn('value="contato"', H); self.assertIn('value="valor"', H); self.assertIn('value="goias"', H)
 
     def test_clique_e_teclado_sem_erro(self):
-        self.assertIn("onclick=\"fichaEmpresa(${e.posicao})\"", H)
+        self.assertIn("fichaEmpresa('${esc(e.uid)}')", H)   # posicao repetia entre as listas
         self.assertIn("window.fichaEmpresa", H)
         self.assertIn("window.fichaApoiador=window.fichaEmpresa", H)   # nome antigo não quebra
         self.assertIn("event.stopPropagation()", H)                     # link não dispara a ficha

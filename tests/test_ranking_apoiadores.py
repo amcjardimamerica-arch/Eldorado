@@ -5,19 +5,22 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class TesteRanking(unittest.TestCase):
-    def test_lista_unica_ordenada_por_pontuacao(self):
+    def test_duas_listas_cada_uma_ordenada_pela_sua_nota(self):
         r = json.loads((ROOT / "docs/dados/ranking_apoiadores.json").read_text(encoding="utf-8"))
         E = r["empresas"]
-        self.assertGreater(r["total"], 100)                                   # ampliado além das 100
-        self.assertTrue(all(E[i]["pontos"] >= E[i + 1]["pontos"] for i in range(len(E) - 1)))
-        self.assertEqual([e["posicao"] for e in E[:3]], [1, 2, 3])
-        self.assertGreaterEqual(len(r["por_origem"]), 2)
+        self.assertEqual(r["total"], 200)                                     # duas listas inteiras
+        for origem in r["por_origem"]:
+            L = [x for x in E if x["origem"] == origem]
+            self.assertTrue(all(L[i]["pontos_lista"] >= L[i+1]["pontos_lista"] for i in range(len(L)-1)), origem)
+        self.assertEqual([e["n_na_lista"] for e in E[:3]], [1, 2, 3])
+        self.assertEqual(len(r["por_origem"]), 2)
 
     def test_paginas_de_cem(self):
         r = json.loads((ROOT / "docs/dados/ranking_apoiadores.json").read_text(encoding="utf-8"))
         self.assertEqual(r["por_pagina"], 100); self.assertEqual(POR_PAGINA, 100)
-        pg = r["paginas"]
-        self.assertEqual(pg[0], {"de": 1, "ate": 100}); self.assertEqual(pg[-1]["ate"], r["total"])
+        for cat, l in r["listas"].items():                      # páginas por LISTA, não globais
+            self.assertEqual(l["paginas"][0], {"n": 1, "de": 1, "ate": min(100, l["total"])}, cat)
+            self.assertEqual(l["paginas"][-1]["ate"], l["total"], cat)
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         for x in ("rank-apoiadores", "window.empPagina", "window.fichaEmpresa",
                   "ep-pg", "ep-l", "ep-abas"):
