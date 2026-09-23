@@ -19,11 +19,17 @@ from __future__ import annotations
 import json
 import re
 from datetime import date, datetime, timedelta, timezone
+import pathlib
 from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-PASTA = ROOT / "estado/piloto/aprendizados"
+# A BASE PODE SER REDIRECIONADA. Sem isto os testes escreviam na base de produção: em 23/09
+# havia 568 avaliações para 60 missões reais, e as estatísticas não valiam nada. Os testes
+# apontam ELDORADO_APRENDIZADOS para uma pasta temporária e a base real fica intocada.
+import os as _os
+PASTA = pathlib.Path(_os.environ["ELDORADO_APRENDIZADOS"]) if _os.environ.get("ELDORADO_APRENDIZADOS") \
+        else ROOT / "estado/piloto/aprendizados"
 AVAL = PASTA / "avaliacoes"
 QUAR = PASTA / "quarentena"
 LICOES = PASTA / "licoes.json"

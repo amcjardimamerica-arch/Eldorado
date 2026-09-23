@@ -108,6 +108,26 @@ jobs:
           PY
           git config user.name "piloto" && git config user.email "piloto@eldorado"
           git add estado/piloto/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
+      - name: BATIMENTO — avisar que o voo COMEÇOU, antes de decolar
+        run: |
+          # Sem isto o painel só sabia do voo quando ele terminava, e entre um commit e outro
+          # dizia "em terra" com 16 voos no dia. Um sinal no início custa um commit leve e
+          # torna o estado verdadeiro: quem olha vê o voo em curso, não o silêncio dele.
+          python - <<'PY'
+          import json, pathlib, datetime
+          a = pathlib.Path("docs/dados/piloto_ao_vivo.json")
+          d = json.loads(a.read_text(encoding="utf-8")) if a.exists() else {}
+          agora = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+          d.update({"estado": "em_voo", "frase": "voo em curso", "sinal_em": agora,
+                    "decolou_em": agora, "minutos_sem_sinal": 0.0,
+                    "missao_atual": {"tipo": "decolando", "motor": None, "inicio": agora, "ha_minutos": 0},
+                    "batimento": "início do voo"})
+          a.parent.mkdir(parents=True, exist_ok=True)
+          a.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+          PY
+          git config user.name "piloto" && git config user.email "piloto@eldorado"
+          git add docs/dados/piloto_ao_vivo.json
+          git commit -q -m "piloto: decolou $(date -u +%H:%M)" && git push -q origin main || true
       - name: Ciclo do piloto (entender → curar → afiar → minerar → anunciar)
         env:
           BRAVE_SEARCH_KEY: ${{ secrets.BRAVE_SEARCH_KEY }}

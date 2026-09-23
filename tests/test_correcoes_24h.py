@@ -1,8 +1,24 @@
 """Correções apontadas pelo conselho em 23/09, depois de 24 h de voo."""
-import json, pathlib, unittest
+import json, os, pathlib, tempfile, unittest
 from src.aprendizados_piloto import _e_ensaio, avaliar, ENSAIO
 from src.briefing_piloto import escrever, _registrar_mudez
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+
+def setUpModule():
+    """A base de aprendizados vai para uma pasta temporária: teste não escreve em produção."""
+    global _TMP
+    _TMP = tempfile.mkdtemp(prefix="aprendizados-")
+    os.environ["ELDORADO_APRENDIZADOS"] = _TMP
+    import importlib, src.aprendizados_piloto as A
+    importlib.reload(A)
+
+
+def tearDownModule():
+    import importlib, shutil, src.aprendizados_piloto as A
+    os.environ.pop("ELDORADO_APRENDIZADOS", None)
+    importlib.reload(A)
+    shutil.rmtree(_TMP, ignore_errors=True)
+
 
 
 class _Mudo:

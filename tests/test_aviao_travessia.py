@@ -65,7 +65,7 @@ class TestePostoSoEmDuasPaginas(unittest.TestCase):
 
     def test_texto_do_rodape_nao_fala_mais_de_horarios(self):
         self.assertNotIn("04h", H); self.assertNotIn("10h · 16h", H)
-        self.assertIn("o próximo voo decola em segundos", H)
+        self.assertIn("o próximo decola em segundos", H)   # a frase do rodapé foi absorvida pelo bloco ao vivo
 
 
 class TesteAviaoMantemOLayoutDoCanto(unittest.TestCase):

@@ -62,19 +62,31 @@ def montar() -> dict:
 
     sinal = (atual or {}).get("inicio") or (ultima or {}).get("fim") or b.get("em")
     idade = _min_desde(sinal)
-    if atual:
-        estado, frase = "em_voo", f"voando no motor {atual.get('motor') or atual.get('alvo') or '—'}"
-    elif idade is not None and idade <= SEM_SINAL_MIN:
-        estado, frase = "pousado", "pousado entre dois voos — o próximo decola em segundos"
+    # O MOTOR E O VOO SÃO COISAS DIFERENTES, e confundi-los era a origem da disparidade:
+    # o painel dizia "em terra" com 16 voos no dia, porque lia a missão, que só existe
+    # enquanto o processo roda. O motor está LIGADO enquanto a corrente de voos se
+    # reencadeia; o voo é o que acontece dentro de cada elo dessa corrente.
+    pausado = (ROOT / "estado/piloto_pausado").exists()
+    motor = "desligado" if pausado else ("parado" if (idade is None or idade > SEM_SINAL_MIN) else "ligado")
+    if atual and idade is not None and idade <= 30:
+        estado, frase = "em_voo", (f"voando no motor {atual.get('motor')}" if atual.get("motor")
+                                   else "decolando — escolhendo o rumo")
+    elif motor == "ligado":
+        estado, frase = "entre_voos", "entre um voo e outro — o próximo decola em segundos"
     else:
-        estado, frase = "parado", "sem sinal: a corrente de voos parou"
+        estado, frase = "parado", "a corrente de voos parou"
 
     achados_voo = [a for m in ms[:8] for a in (m.get("alvos") or [])][:8]
-    pausado = (ROOT / "estado/piloto_pausado").exists()
     d = {
+        "motor": motor,
+        "motor_frase": {"ligado": "a corrente de voos está ativa: cada voo chama o seguinte",
+                        "parado": f"sem sinal há {idade if idade is not None else '—'} min — ninguém reencadeou",
+                        "desligado": "em terra por ordem do titular (estado/piloto_pausado)"}[motor],
         "em": now_iso(), "sinal_em": sinal, "minutos_sem_sinal": idade,
         "estado": "pausado_pelo_titular" if pausado else estado,
         "frase": "em terra por ordem do titular" if pausado else frase,
+        "proximo_voo": ("em segundos, assim que o atual pousar" if motor == "ligado"
+                        else "só quando o titular acionar"),
         "sem_sinal_a_partir_de_min": SEM_SINAL_MIN,
         "missao_atual": atual and {"tipo": atual.get("tipo"), "motor": atual.get("motor"),
                                    "alvo": atual.get("alvo"), "inicio": atual.get("inicio"),

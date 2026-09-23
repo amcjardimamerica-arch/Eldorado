@@ -7,6 +7,30 @@ from src.missao_especial import _relevante
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
+def setUpModule():
+    """A base de aprendizados vai para pasta temporária: teste não escreve em produção."""
+    global _TMP
+    import os, tempfile, importlib
+    _TMP = tempfile.mkdtemp(prefix="aprendizados-")
+    os.environ["ELDORADO_APRENDIZADOS"] = _TMP
+    import src.aprendizados_piloto as A
+    importlib.reload(A)
+    g = globals()
+    for nome in ("avaliar", "ja_tratado", "marcar_tratado", "quarentenar", "faxina",
+                 "publicar", "QUAR", "LICOES", "TRATADOS", "MOTIVOS"):
+        if hasattr(A, nome):
+            g[nome] = getattr(A, nome)
+
+
+def tearDownModule():
+    import os, shutil, importlib
+    os.environ.pop("ELDORADO_APRENDIZADOS", None)
+    import src.aprendizados_piloto as A
+    importlib.reload(A)
+    shutil.rmtree(_TMP, ignore_errors=True)
+
+
+
 class _IA:
     def __init__(self, r=None): self.r = r; self.perguntas = []
     def perguntar(self, p, e=None): self.perguntas.append(p); return self.r
@@ -107,7 +131,7 @@ class TesteAprendizadosDoPiloto(unittest.TestCase):
         quarentenar({"titulo": "x", "url": "https://x"}, "fora_do_objeto", "m/t")
         arqs = list(QUAR.glob("*.jsonl"))
         self.assertTrue(arqs)
-        self.assertTrue(str(QUAR).endswith("aprendizados/quarentena"))
+        self.assertTrue(str(QUAR).endswith("quarentena"))   # a base pode estar redirecionada
         self.assertNotIn("quarentena", str(ROOT / "biblioteca_alexandria"))
         p = publicar()
         self.assertIn("só informação correta entra na Biblioteca", p["regra"])

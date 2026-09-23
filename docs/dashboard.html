@@ -283,6 +283,11 @@ box-shadow:0 1px 3px #0002}
 .pil-atual{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #E6DAB4;margin-top:8px}
 .pil-atual .voando{font-weight:800;color:#0E2A55}.pil-atual .alvo{color:var(--suave);font-size:12px}
 .pil-placar{margin-left:auto;text-align:right}.pil-placar b{font-size:20px;color:#C8961E;font-family:Georgia,serif}
+.pil-partida.m-ligado{border-color:#7CE0A8;background:#F2FBF5;color:#1E7E4B}
+.pil-partida.m-parado{border-color:#F0A9A2;background:#FDECEA;color:#B3261E}
+.pil-partida.m-desligado{border-color:#E0B060;background:#FFF8E8;color:#8a5a00}
+.pil-partida.m-ligado .pil-pa{animation:pil-pa-gira .28s linear infinite}
+.pil-partida.m-parado .pil-pa,.pil-partida.m-desligado .pil-pa{animation:none;opacity:.45}
 .pil-partida{display:inline-flex;align-items:center;gap:7px;margin-left:auto;padding:5px 11px;border-radius:20px;border:1px solid #C9B37A;background:#fff;cursor:pointer;font:inherit;font-size:12px;font-weight:700;color:#6B5A12}
 .pil-partida:hover{background:#FBF3DC}.pil-partida.girando{background:#F2FBF5;border-color:#7CE0A8;color:#1E7E4B}
 .pil-partida svg{width:20px;height:20px}
@@ -448,7 +453,7 @@ box-shadow:0 1px 3px #0002}
   100% {transform:translateX(0)              scaleX(1)}}
 .pil-vivo{border-radius:10px;padding:9px 11px;margin:8px 0;border:1px solid}
 .pil-vivo.em_voo{background:#EAF8F0;border-color:#7CE0A8}
-.pil-vivo.pousado{background:#F3F8FF;border-color:#9FC1E8}
+.pil-vivo.entre_voos{background:#F3F8FF;border-color:#9FC1E8}
 .pil-vivo.parado{background:#FDECEA;border-color:#F0A9A2}
 .pil-vivo.pausado{background:#FFF8E8;border-color:#E0B060}
 .pil-vivo-cab{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -2874,24 +2879,33 @@ function desenhaPostoPiloto(alvo){
   const motores=Object.entries(E.abates||{}).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
   el.innerHTML=`<div class="pil-posto">
     <h4>${at?'<span class="pil-voando-ic" title="em missão">✈</span>':""} Esquadrilha do Piloto <span class=meta style="font-weight:400">— patrulha dos motores 26, 27, 28 e 29</span>
-      <button class="pil-partida ${at?"girando":""}" id="${(alvo||"pil-posto")}-helice-bt" onclick="darPartida('${(alvo||"pil-posto")}')" title="dar a partida: o Piloto decola no próximo ciclo do GitHub">
+      ${(()=>{const V=window._VIVO||{};const m=V.motor||"parado";
+        const R={ligado:["girando","MOTOR LIGADO","#1E7E4B"],parado:["","MOTOR PARADO","#B3261E"],
+                 desligado:["","EM TERRA POR ORDEM SUA","#8a5a00"]}[m]||["","MOTOR PARADO","#B3261E"];
+        return `<button class="pil-partida ${R[0]} m-${m}" id="${(alvo||"pil-posto")}-helice-bt"
+          onclick="darPartida('${(alvo||"pil-posto")}')" style="--mc:${R[2]}"
+          title="${esc(V.motor_frase||"")}">`;})()}
         <svg viewBox="0 0 24 24" aria-hidden="true"><g class="pil-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.6" fill="#0E2A55"/><circle class="pil-fumaca" cx="19" cy="6" r="2" fill="#B9C6D6"/></svg>
-        <span id="${(alvo||"pil-posto")}-helice-txt">${at?"em voo":"dar a partida"}</span></button></h4>
+        <span id="${(alvo||"pil-posto")}-helice-txt">${(()=>{const m=(window._VIVO||{}).motor||"parado";
+          return m==="ligado"?"MOTOR LIGADO":m==="desligado"?"EM TERRA POR ORDEM SUA":"MOTOR PARADO";})()}</span></button></h4>
     ${(()=>{const V=window._VIVO;if(!V)return "";
       const idade=V.sinal_em?Math.round((Date.now()-new Date(V.sinal_em))/60000):null;
       // o painel NÃO confia no rótulo gravado: recalcula pelo relógio de quem está olhando
+      // MOTOR e VOO são estados diferentes: o motor é a corrente que reencadeia os voos;
+      // o voo é o que acontece dentro de um elo. Dizer "em terra" entre dois voos, com 16
+      // no dia, era a disparidade que o titular apontou.
       const est = V.estado==="pausado_pelo_titular" ? "pausado"
                 : (V.missao_atual && idade!==null && idade<=30) ? "em_voo"
-                : (idade!==null && idade<=V.sem_sinal_a_partir_de_min) ? "pousado" : "parado";
-      const C={em_voo:["#1E7E4B","✈","EM VOO"],pousado:["#0B4EA2","🛬","POUSADO"],
-               parado:["#B3261E","⚠","SEM SINAL"],pausado:["#8a5a00","⏸","EM TERRA POR ORDEM SUA"]}[est];
+                : (idade!==null && idade<=V.sem_sinal_a_partir_de_min) ? "entre_voos" : "parado";
+      const C={em_voo:["#1E7E4B","✈","EM VOO"],entre_voos:["#0B4EA2","↻","ENTRE VOOS"],
+               parado:["#B3261E","⚠","MOTOR PARADO"],pausado:["#8a5a00","⏸","EM TERRA POR ORDEM SUA"]}[est];
       const M=V.missao_atual, U=V.ultima_missao;
       return `<div class="pil-vivo ${est}">
         <div class="pil-vivo-cab"><span class="pil-selo" style="background:${C[0]}">${C[1]} ${C[2]}</span>
           <span class="pil-vivo-f">${est==="em_voo"
              ? `motor <b>${esc(M.motor||M.alvo||"—")}</b> · ${esc(M.tipo||"")} · há ${M.ha_minutos!=null?Math.round(M.ha_minutos):idade} min`
-             : est==="pousado" ? `último voo há ${idade} min · o próximo decola em segundos`
-             : est==="parado" ? `sem sinal há <b>${idade} min</b> — a corrente de voos parou`
+             : est==="entre_voos" ? `último voo há ${idade} min · <b>o motor está ligado</b>, o próximo decola em segundos`
+             : est==="parado" ? `sem sinal há <b>${idade} min</b> — <b>o motor parou</b>: ninguém reencadeou o próximo voo`
              : "o Piloto está em terra porque você o pausou"}</span></div>
         <div class="pil-vivo-n">
           <span title="voos hoje"><b>${V.voos_hoje||0}</b> voo(s) hoje</span>
@@ -2923,10 +2937,8 @@ function desenhaPostoPiloto(alvo){
         ${B.pergunta?`<div class="pil-brief-l"><b>Pergunta:</b> <i>${esc(B.pergunta)}</i></div>`:""}
         ${R.achados!=null?`<div class="pil-brief-l"><b>Trouxe:</b> ${R.achados} achado(s)${R.oportunidades_abertas?` · <span style="color:#1E7E4B">${R.oportunidades_abertas} aberta(s)</span>`:""}${R.arquivadas?` · <span class=meta>${R.arquivadas} arquivada(s)</span>`:""}</div>`:'<div class="pil-brief-l meta">voo em andamento</div>'}
       </div>`;})()}
-    <div class="pil-atual">
-      ${at?`<span class=voando>✈ agora:</span><span>${esc((E.legenda||{})[at.tipo]||at.tipo)}${at.motor?` sobre <b>${esc(at.motor)}</b>`:""}</span><span class=alvo>${esc(at.alvo||"")}</span>`
-          :`<span class=voando>🛬 em terra</span><span class=alvo>pousado — o próximo voo decola em segundos</span>`}
-      <span class=pil-placar><b>${tot}</b><br><span class=meta>alvo(s) novo(s)</span></span></div>
+    ${(()=>{const V=window._VIVO||{};const tot=(window._ESQ||{}).total_abates||0;
+      return `<div class="pil-atual"><span class=pil-placar><b>${tot}</b><br><span class=meta>alvo(s) novo(s)</span></span></div>`;})()}
     ${motores.length?`<div class=meta style="margin-top:8px">Marcas na fuselagem: ${motores.map(([m,v])=>`<b>${esc(m)}</b> ★${v.n}`).join(" · ")}</div>`:""}
     ${(()=>{const R=window._RADAR;if(!R||!R.total)return "";const M=R.por_marcador||{};
       const cor={a_pesquisar:"#C8961E",em_pesquisa:"#0B4EA2",concluido:"var(--ok)"};

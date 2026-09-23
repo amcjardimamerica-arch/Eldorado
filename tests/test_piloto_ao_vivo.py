@@ -13,7 +13,11 @@ class TesteEstadoAoVivo(unittest.TestCase):
         for c in ("estado", "frase", "sinal_em", "minutos_sem_sinal", "missao_atual",
                   "ultima_missao", "voos_hoje", "missoes_com_achado", "resgate", "pode_acionar"):
             self.assertIn(c, d, c)
-        self.assertIn(d["estado"], ("em_voo", "pousado", "parado", "pausado_pelo_titular"))
+        self.assertIn(d["estado"], ("em_voo", "entre_voos", "parado", "pausado_pelo_titular"))
+        # MOTOR e VOO são estados distintos — confundi-los fazia o painel dizer "em terra"
+        # com 16 voos no dia
+        self.assertIn(d["motor"], ("ligado", "parado", "desligado"))
+        self.assertTrue(d["motor_frase"]); self.assertTrue(d["proximo_voo"])
 
     def test_tudo_tem_carimbo_para_o_painel_julgar(self):
         d = montar()
@@ -24,7 +28,11 @@ class TesteEstadoAoVivo(unittest.TestCase):
 
     def test_mostra_o_motor_ligado(self):
         self.assertIn('motor <b>${esc(M.motor||M.alvo||"—")}</b>', H)
-        self.assertIn("EM VOO", H); self.assertIn("SEM SINAL", H); self.assertIn("POUSADO", H)
+        self.assertIn("EM VOO", H); self.assertIn("ENTRE VOOS", H); self.assertIn("MOTOR PARADO", H)
+        # a hélice é o interruptor: gira quando a corrente está ativa, para quando não está
+        self.assertIn("MOTOR LIGADO", H)
+        self.assertIn(".pil-partida.m-ligado .pil-pa{animation:pil-pa-gira", H)
+        self.assertIn(".pil-partida.m-parado .pil-pa,.pil-partida.m-desligado .pil-pa{animation:none", H)
 
     def test_oferece_acionamento_quando_parado(self):
         self.assertIn("pil-bt-acionar", H); self.assertIn("acionar o Piloto", H)
