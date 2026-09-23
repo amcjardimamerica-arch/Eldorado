@@ -9,7 +9,8 @@ class TesteRanking(unittest.TestCase):
         r = json.loads((ROOT / "docs/dados/ranking_apoiadores.json").read_text(encoding="utf-8"))
         E = r["empresas"]
         self.assertGreater(r["total"], 100)                                   # ampliado além das 100
-        self.assertTrue(all(E[i]["pontos"] >= E[i + 1]["pontos"] for i in range(len(E) - 1)))
+        # a ordem passou a ser por EVIDÊNCIA SOCIAL; 'pontos' (tamanho, ICMS) virou desempate
+        self.assertTrue(all(E[i]["pontos_sociais"] >= E[i + 1]["pontos_sociais"] for i in range(len(E) - 1)))
         self.assertEqual([e["posicao"] for e in E[:3]], [1, 2, 3])
         self.assertGreaterEqual(len(r["por_origem"]), 2)
 
