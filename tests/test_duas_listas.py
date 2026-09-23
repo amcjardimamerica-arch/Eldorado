@@ -94,7 +94,7 @@ class TesteTela(unittest.TestCase):
 
     def test_declara_o_que_nao_foi_levantado(self):
         self.assertIn("não levantado", H)
-        self.assertIn("Falta levantar", H)
+        self.assertIn("Faltou prova", H)   # o rótulo ficou mais direto na janela da nota
         self.assertIn("o vazio é do nosso levantamento, não dela", H)
         self.assertIn("Dados levantados", H)
 
@@ -106,3 +106,40 @@ class TesteTela(unittest.TestCase):
     def test_as_duas_listas_explicam_sua_finalidade(self):
         self.assertIn("não sai do caixa dela", H)
         self.assertIn("dinheiro do próprio bolso", H)
+
+
+class TesteJanelaDaNota(unittest.TestCase):
+    """A janela da nota separa o que pontuou do que não pontuou, com marcador de cor."""
+
+    def test_dois_blocos_separados(self):
+        self.assertIn("O que fez pontuar", H)
+        self.assertIn("O que não pontuou", H)
+        self.assertIn("ep-nt-bloco fez", H); self.assertIn("ep-nt-bloco falta", H)
+        self.assertIn("ponto(s) deixados na mesa", H)          # o custo de não ter levantado
+
+    def test_tres_estados_e_nao_dois(self):
+        """Dentro do que não pontuou, verificado é diferente de sem prova: um é desistir,
+        o outro é procurar."""
+        self.assertIn("const fez=(A.criterios||[]).filter(c=>c.pontos>0);", H)
+        self.assertIn("c.pontos<=0&&c.apurado", H)              # verificado: a empresa não tem
+        self.assertIn("c.pontos<=0&&!c.apurado", H)             # sem prova: ninguém olhou
+        self.assertIn("Faltou prova — ninguém levantou ainda, e é trabalho nosso", H)
+        self.assertIn("Verificado — a empresa não tem", H)
+
+    def test_icone_verde_para_quem_tem_cinza_para_quem_nao(self):
+        self.assertIn(".ep-nt.fez .ep-nt-ico{background:#1E7E4B;color:#fff}", H)
+        self.assertIn(".ep-nt.nao .ep-nt-ico{background:#E3E8ED;color:#9AA7B4}", H)
+        self.assertIn(".ep-nt.sem .ep-nt-ico{background:#fff;color:#B9C3CE;border:1px dashed", H)
+        self.assertIn(".ep-nt-bola.v{background:#1E7E4B", H)    # bolinha do cabeçalho
+        self.assertIn(".ep-nt-bola.c{background:#C6CED8", H)
+
+    def test_mostra_quanto_cada_criterio_valeria(self):
+        self.assertIn('tipo==="fez"?"+"+c.pontos', H)
+        self.assertIn("de ${c.peso}", H)                        # o que deixou de ganhar
+        self.assertIn("critério(s) sem prova valem até", H)
+
+    def test_nao_culpa_a_empresa_pelo_nosso_vazio(self):
+        self.assertIn("o vazio é do nosso levantamento, não dela", H)
+
+    def test_responsivo_e_legivel_em_tela_pequena(self):
+        self.assertIn("@media(max-width:620px){.ep-nt{", H)

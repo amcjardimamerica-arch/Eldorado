@@ -346,6 +346,38 @@ box-shadow:0 1px 3px #0002}
 .ep-vazio,.ep-carrega{font-size:12.5px;color:var(--suave);padding:26px 6px;text-align:center}
 .ep-pe{margin-top:14px;padding-top:10px;border-top:1px solid #F0F3F7;font-size:10.5px;color:var(--suave);line-height:1.6;max-width:88ch}
 .ep-selo{color:#fff;font-size:10px;font-weight:800;padding:1px 8px;border-radius:9px;margin-right:6px}
+/* A NOTA, SEPARADA EM DOIS BLOCOS. Verde: pontuou. Cinza: nao pontuou — e dentro do cinza
+   distinguimos o que foi verificado (a empresa nao tem) do que ainda nao foi levantado
+   (trabalho nosso). Essa diferenca muda o proximo passo: um e desistir, o outro e procurar. */
+.ep-nt-bloco{border:1px solid;border-radius:11px;padding:10px 12px;margin-top:8px}
+.ep-nt-bloco.fez{border-color:#BFE3CE;background:#F4FBF7}
+.ep-nt-bloco.falta{border-color:#E1E6EC;background:#FAFBFC}
+.ep-nt-cab{display:flex;align-items:center;gap:8px;font-weight:800;font-size:12.5px;color:#0E2A55;padding-bottom:7px;margin-bottom:4px;border-bottom:1px solid #E6EDF2}
+.ep-nt-cab b{margin-left:auto;font-variant-numeric:tabular-nums;font-size:12px}
+.ep-nt-bloco.fez .ep-nt-cab b{color:#1E7E4B}
+.ep-nt-bloco.falta .ep-nt-cab b{color:#9AA7B4;font-weight:600}
+.ep-nt-bola{width:11px;height:11px;border-radius:50%;flex:none}
+.ep-nt-bola.v{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}
+.ep-nt-bola.c{background:#C6CED8;box-shadow:0 0 0 3px #C6CED822}
+.ep-nt-sub{font-size:10.5px;color:var(--suave);margin:7px 0 2px;letter-spacing:.02em}
+.ep-nt{display:grid;grid-template-columns:20px 1fr auto 62px;gap:9px;align-items:center;padding:5px 0;border-bottom:1px dotted #E6EDF2}
+.ep-nt:last-child{border-bottom:0}
+.ep-nt-ico{width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;line-height:1}
+.ep-nt.fez .ep-nt-ico{background:#1E7E4B;color:#fff}
+.ep-nt.nao .ep-nt-ico{background:#E3E8ED;color:#9AA7B4}
+.ep-nt.sem .ep-nt-ico{background:#fff;color:#B9C3CE;border:1px dashed #C6CED8}
+.ep-nt-txt b{display:block;font-size:12px;color:var(--tinta);font-weight:600}
+.ep-nt.nao .ep-nt-txt b,.ep-nt.sem .ep-nt-txt b{color:#8A94A0}
+.ep-nt-txt small{display:block;font-size:10px;color:var(--suave);line-height:1.4}
+.ep-nt-val{font-size:10.5px;color:var(--suave);text-align:right;max-width:24ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ep-nt.sem .ep-nt-val{font-style:italic;color:#B9C3CE}
+.ep-nt-pt{text-align:right;font-variant-numeric:tabular-nums;font-size:12px;font-weight:800}
+.ep-nt.fez .ep-nt-pt{color:#1E7E4B}
+.ep-nt.nao .ep-nt-pt,.ep-nt.sem .ep-nt-pt{color:#C6CED8;font-weight:600;font-size:10.5px}
+.ep-nt-pt i{font-style:normal;font-weight:800;font-size:12px}
+.ep-nt-vazio{margin:6px 0 0;font-size:11.5px;color:var(--suave)}
+@media(max-width:620px){.ep-nt{grid-template-columns:20px 1fr 54px;grid-template-areas:"i t p" ". v v";row-gap:2px}
+  .ep-nt-ico{grid-area:i}.ep-nt-txt{grid-area:t}.ep-nt-val{grid-area:v;text-align:left;max-width:none}.ep-nt-pt{grid-area:p}}
 .ep-conta{background:#F6FAF8;border:1px solid #CFE6DA;border-radius:11px;padding:13px 15px}
 .ep-conta.sem{background:#FAFBFD;border-color:#E3E9F1;font-size:12.5px}
 .ep-conta-v{font-size:25px;font-weight:800;color:#1E7E4B;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
@@ -3354,14 +3386,34 @@ window.fichaEmpresa=function(uid){
         <p class="ep-icms"><b>ICMS:</b> ${esc(pt.icms.porque)}</p>
       </div>`:`<div class="ep-conta sem"><b>Sem estimativa de valor.</b> ${esc(pt.motivo||"dados do cadastro insuficientes")}.</div>`}
       ${(()=>{const A=e.avaliacao||{};if(!A.criterios)return "";
+        // TRÊS ESTADOS, e a diferença entre os dois últimos decide o próximo passo:
+        //   pontuou        há prova e ela vale ponto
+        //   verificado     olhamos e a empresa não tem — não adianta insistir
+        //   sem prova      ninguém olhou ainda — é trabalho nosso, não falta dela
+        const fez=(A.criterios||[]).filter(c=>c.pontos>0);
+        const naoTem=(A.criterios||[]).filter(c=>c.pontos<=0&&c.apurado);
+        const semProva=(A.criterios||[]).filter(c=>c.pontos<=0&&!c.apurado);
+        const perdidos=[...naoTem,...semProva].reduce((s,c)=>s+c.peso,0);
+        const item=(c,tipo)=>`<div class="ep-nt ${tipo}">
+            <span class="ep-nt-ico" aria-hidden="true">${tipo==="fez"?"&#10003;":tipo==="nao"?"&#8722;":"?"}</span>
+            <span class="ep-nt-txt"><b>${esc(c.rotulo)}</b><small>${esc(c.porque)}</small></span>
+            <span class="ep-nt-val">${esc(c.valor)}</span>
+            <span class="ep-nt-pt">${tipo==="fez"?"+"+c.pontos:`<i>0</i> de ${c.peso}`}</span></div>`;
         return `<div class="fdoc-t" style="margin-top:4px">Nota nesta lista: ${A.pontos} de ${A.teto}
-            <span class=meta>${A.apurados} de ${A.total_criterios} critérios levantados · ${esc(A.nivel||"")}</span></div>
-          <div class=meta style="margin-bottom:6px"><b>Porta de entrada:</b> ${esc(A.porta_de_entrada||"")}</div>
-          <div class="ep-notas">${(A.criterios||[]).map(c=>`<div class="ep-nota-l ${c.apurado?"":"nao"}">
-            <b>${c.apurado?c.pontos:"—"}</b>
-            <span class="ep-nota-r">${esc(c.rotulo)} <small>${esc(c.porque)}</small></span>
-            <span class="ep-nota-v">${esc(c.valor)} <small>vale até ${c.peso}</small></span></div>`).join("")}</div>
-          ${(A.falta_levantar||[]).length?`<p class="ep-crit-f"><b>Falta levantar:</b> ${(A.falta_levantar||[]).map(f=>esc(f.rotulo)).join(" · ")}. Sem esses dados a nota fica abaixo do que a empresa talvez mereça — o vazio é do nosso levantamento, não dela.</p>`:""}`;})()}
+            <span class=meta>${esc(A.nivel||"")} · ${fez.length} de ${A.total_criterios} critérios pontuaram</span></div>
+          <div class=meta style="margin-bottom:8px"><b>Porta de entrada:</b> ${esc(A.porta_de_entrada||"")}</div>
+          <div class="ep-nt-bloco fez">
+            <div class="ep-nt-cab"><span class="ep-nt-bola v"></span>O que fez pontuar
+              <b>+${A.pontos}</b></div>
+            ${fez.length?fez.map(c=>item(c,"fez")).join(""):`<p class="ep-nt-vazio">Nenhum critério pontuou nesta lista.</p>`}
+          </div>
+          ${(naoTem.length||semProva.length)?`<div class="ep-nt-bloco falta">
+            <div class="ep-nt-cab"><span class="ep-nt-bola c"></span>O que não pontuou
+              <b>${perdidos} ponto(s) deixados na mesa</b></div>
+            ${semProva.length?`<div class="ep-nt-sub">Faltou prova — ninguém levantou ainda, e é trabalho nosso</div>`+semProva.map(c=>item(c,"sem")).join(""):""}
+            ${naoTem.length?`<div class="ep-nt-sub">Verificado — a empresa não tem</div>`+naoTem.map(c=>item(c,"nao")).join(""):""}
+          </div>`:""}
+          ${semProva.length?`<p class="ep-crit-f">Os ${semProva.length} critério(s) sem prova valem até ${semProva.reduce((s,c)=>s+c.peso,0)} pontos. Enquanto não forem levantados, a nota fica abaixo do que a empresa talvez mereça — o vazio é do nosso levantamento, não dela.</p>`:""}`;})()}
       ${(()=>{const meus={};(e.programas||[]).forEach(x=>meus[x.chave]=x);
         const cat=(R.catalogo_de_leis||[]); if(!cat.length)return "";
         const com=cat.filter(L=>meus[L.chave]), sem=cat.filter(L=>!meus[L.chave]);

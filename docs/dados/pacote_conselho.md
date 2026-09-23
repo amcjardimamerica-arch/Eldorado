@@ -5,6 +5,7 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 ## O que o Piloto fez
 
 - 2026-09-22T23:45 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 15 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 10.5 min de voo.
+- 2026-09-23T10:05 — Esquadrilha 2026-09-23 (Llama-3.2-3B-Instruct): 14 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 22.8 min de voo.
 
 ## Relatório de aprendizado e bloqueios (4)
 
@@ -18,7 +19,7 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (33)
+### Rotas e pistas sugeridas (34)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
@@ -53,6 +54,7 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
+- motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
 
 ### Enquadramentos propostos (0)
 
