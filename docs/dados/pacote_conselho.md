@@ -1,4 +1,4 @@
-# Pacote do conselho — validação do Claude (2026-09-23, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-09-24, últimos 3 dias)
 
 Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
 
@@ -19,7 +19,7 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (33)
+### Rotas e pistas sugeridas (34)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
@@ -52,6 +52,7 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 - motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
 - motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
 - motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 
