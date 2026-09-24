@@ -178,7 +178,8 @@ jobs:
             timeout 300 python -m src.auditoria || echo "src.auditoria: encerrado no orçamento de 300s ou falhou — registrado"
           fi
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            timeout 300 python -m src.dossie_fontes || echo "src.dossie_fontes: encerrado no orçamento de 300s ou falhou — registrado"
+            timeout 120 python scripts/construir_base.py >/dev/null || echo "base da Biblioteca: falhou"   # base leve: histórico, recorrência, critérios de pontuação
+          timeout 300 python -m src.dossie_fontes || echo "src.dossie_fontes: encerrado no orçamento de 300s ou falhou — registrado"
           fi
           timeout 600 python -m src.motores || { echo "src.motores FALHOU — o monitor da Bússola não atualiza sem este passo" | tee -a estado/log_motores.txt; python -m src.motores 2>&1 | tail -20 >> estado/log_motores.txt; }
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
