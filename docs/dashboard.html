@@ -1233,10 +1233,24 @@ async function tentarSessao(){
     D=await decifrar(chave);return true;
   }catch(e){localStorage.removeItem("amc_k");return false;}
 }
+/* SENHA DO MÊS — projetada, pronta, DESLIGADA (titular, 24/09). Quando for a hora de ativar:
+   1) SENHA_ATIVA = true aqui; 2) rodar o workflow acesso-mensal (gera a senha do mês, recifra os
+   dados e a envia ao WhatsApp cadastrado; scripts/acesso.py); 3) republicar o painel.
+   Com a senha ativa, só a senha decifra os dados (AES-256-GCM, chave derivada por PBKDF2) e a
+   sessão expira no último dia do mês. A verificação de IP de Goiânia ficou desligada por decisão
+   do titular: os dados são públicos. */
+const SENHA_ATIVA=false;
 async function portao(){
-  // SEM TRAVAS (titular, 24/09): os dados são públicos e pesquisáveis. O painel abre direto,
-  // em qualquer lugar e em qualquer aparelho — sem bloqueio de celular, sem exigir IP de
-  // Goiânia e sem a senha do mês. A cifragem só é usada se os dados abertos faltarem.
+  // ACESSO SÓ PELO COMPUTADOR (titular, 24/09): o sistema não abre em celular.
+  if(ehCelular()){$("portao-msg").innerHTML="<strong>Acesso por celular não é permitido.</strong><br>Abra este painel em um computador.";return;}
+  if(SENHA_ATIVA){
+    if(!window.DADOS_ENC){$("portao-msg").textContent="Dados protegidos ainda não publicados. Execute a rotina de acesso.";return;}
+    if(await tentarSessao()){iniciar();return;}
+    $("portao-msg").textContent="Informe a senha do mês:";
+    $("portao-form").classList.remove("oculto");$("senha").focus();
+    $("senha").addEventListener("keydown",e=>{if(e.key==="Enter")window.entrar();});
+    return;
+  }
   if(window.DADOS){ D=window.DADOS; iniciar(); return; }
   if(window.DADOS_ENC && await tentarSessao()){ iniciar(); return; }
   $("portao-msg").textContent="Os dados do painel não foram encontrados nesta publicação.";

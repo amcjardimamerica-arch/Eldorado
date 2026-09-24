@@ -88,6 +88,15 @@ def coletar_pncp(inicio: date, fim: date, escopo: dict, cfg: dict | None = None)
                             descartados.append({"objeto": objeto[:120],
                                                 "motivo": dest["motivo"]})
                             continue
+                        # FINALIDADE DA PROPOSTA (24/09): léxico positivo primeiro, léxico de
+                        # CONTROLE depois (destino a empresa), exceção para parceria MROSC explícita.
+                        # No corpus de 768 publicações, só 24,6% serviam ao terceiro setor.
+                        from .pncp_terceiro_setor import classificar as _finalidade
+                        _f = _finalidade(objeto)
+                        if not _f["terceiro_setor"]:
+                            descartados.append({"objeto": objeto[:120],
+                                                "motivo": f"{_f['passo']}: {_f['finalidade']}"})
+                            continue
                         url = _pncp_url_publica(item)
                         if not url: continue
                         orgao = ((item.get("orgaoEntidade") or {}).get("razaoSocial") or "órgão público").strip()
@@ -102,6 +111,7 @@ def coletar_pncp(inicio: date, fim: date, escopo: dict, cfg: dict | None = None)
                             "areas_fonte": [], "prazo_texto": None,
                             "ano_referencia": int(publicado[:4]) if publicado else None,
                             "data_publicacao": publicado,
+                            "finalidade_pncp": _f["finalidade"], "pertinencia_pncp": _f["pertinencia"],
                             "evidencia": objeto[:500], "hash_evidencia": sha256(objeto.encode()),
                             "modalidade_pncp": modalidade,
                             "destinacao": dest,

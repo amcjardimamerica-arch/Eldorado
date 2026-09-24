@@ -1,0 +1,26 @@
+name: 08 · Agenda dos motores — cada motor na hora em que sua fonte publica
+# Roda aos minutos :23 e :53, nunca na virada da hora (quando o GitHub atrasa e descarta
+# execuções agendadas). Dispara a coleta só com os motores da vez (config/agenda_motores.json).
+on:
+  schedule:
+    - cron: "23 * * * *"
+    - cron: "53 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
+jobs:
+  agenda:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Motores da vez
+        run: |
+          IDS=$(python3 scripts/agenda_motores.py)
+          echo "motores da vez: ${IDS:-nenhum}"
+          if [ -n "$IDS" ]; then
+            curl -s -o /dev/null -w "coleta disparada: %{http_code}\n" -X POST \
+              -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/monitoramento-diario.yml/dispatches" \
+              -d "{\"ref\":\"main\",\"inputs\":{\"fontes\":\"$IDS\"}}"
+          fi

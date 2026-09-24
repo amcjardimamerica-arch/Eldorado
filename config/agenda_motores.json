@@ -1,0 +1,366 @@
+{
+ "em": "2026-09-24",
+ "regra": "cada motor roda na hora em que sua fonte publica; minuto :23/:53 para não cair na virada da hora, quando o GitHub atrasa e descarta execuções agendadas",
+ "motores": {
+  "do-goiania": {
+   "horarios_brt": "08:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "o Diário de Goiânia publica pela manhã em dias úteis; coleta pelo computador do titular",
+   "coleta": "local",
+   "objetivo": "encontrar oportunidade aberta para OSC em diário oficial municipal — a fonte primária de Goiânia",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "do-goias": {
+   "horarios_brt": "07:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "a edição do Diário de Goiás fica disponível no começo da manhã, em dias úteis",
+   "coleta": "local",
+   "objetivo": "encontrar oportunidade aberta para OSC em diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "dou": {
+   "horarios_brt": "06:23,19:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "o DOU sai de madrugada e tem edições extras à tarde; duas passagens pegam as duas",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em diário federal — MDHC, CONANDA, MinC, MDS, emendas e Rouanet",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "pncp-api": {
+   "horarios_brt": "12:23,20:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "o PNCP recebe publicações o dia todo em horário comercial; duas passagens incrementais",
+   "coleta": "nuvem",
+   "objetivo": "encontrar no PNCP as publicações que se destinam ao terceiro setor",
+   "verificacao": {
+    "etapa_1": "classificador de finalidade: léxico positivo, depois o de controle (destino a empresa), com exceção para parceria MROSC explícita",
+    "etapa_2": "abrir o edital anexado pelo órgão e confirmar objeto, prazo e habilitação de OSC"
+   }
+  },
+  "camara-goiania-pl": {
+   "horarios_brt": "20:23",
+   "dias": "qui",
+   "cadencia_dias": 7,
+   "por_que_esta_hora": "as sessões da Câmara vão de terça a quinta; coleta local",
+   "coleta": "local",
+   "objetivo": "alimentar o sistema com utilidade pública, a partir de insumo de HABILITAÇÃO — declarações de utilidade pública municipal (requisito de editais), não fonte de captação",
+   "verificacao": {
+    "etapa_1": "na captura: o ato é do tipo esperado (lei, resolução, título de utilidade pública)",
+    "etapa_2": "na fonte oficial: número e data do ato conferidos no texto publicado"
+   }
+  },
+  "alego-pl": {
+   "horarios_brt": "20:23",
+   "dias": "qui",
+   "cadencia_dias": 7,
+   "por_que_esta_hora": "proposições e leis de utilidade pública saem das sessões de terça a quinta",
+   "coleta": "nuvem",
+   "objetivo": "alimentar o sistema com emenda parlamentar, a partir de insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais",
+   "verificacao": {
+    "etapa_1": "na captura: o ato é do tipo esperado (lei, resolução, título de utilidade pública)",
+    "etapa_2": "na fonte oficial: número e data do ato conferidos no texto publicado"
+   }
+  },
+  "dj-trf1-go": {
+   "horarios_brt": "07:53",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "o diário da Justiça Federal sai durante a noite; coleta local",
+   "coleta": "local",
+   "objetivo": "encontrar oportunidade aberta para OSC em destinações de pena federais — raras em Goiás",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "dje-tjgo": {
+   "horarios_brt": "07:53",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "o Diário da Justiça sai durante a noite; coleta local por causa do WAF",
+   "coleta": "local",
+   "objetivo": "encontrar oportunidade aberta para OSC em varas de execução penal de Goiânia — prestações pecuniárias destinadas a entidades, sem edital e sem disputa",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "cnj-destinacoes": {
+   "horarios_brt": "09:23",
+   "dias": "dia 2",
+   "cadencia_dias": 30,
+   "por_que_esta_hora": "referência normativa: muda pouco, basta uma leitura por mês",
+   "coleta": "nuvem",
+   "objetivo": "alimentar o sistema com referência normativa, a partir de REFERÊNCIA, não motor — a fonte real de destinações são os tribunais estaduais (decisão da auditoria de 20/09)",
+   "verificacao": {
+    "etapa_1": "na captura: o ato é do tipo esperado (lei, resolução, título de utilidade pública)",
+    "etapa_2": "na fonte oficial: número e data do ato conferidos no texto publicado"
+   }
+  },
+  "empresas-incentivadas": {
+   "horarios_brt": "03:53",
+   "dias": "dom",
+   "cadencia_dias": 7,
+   "por_que_esta_hora": "a lista do ICMS e o SALIC mudam por mês; semanal basta",
+   "coleta": "nuvem",
+   "objetivo": "identificar empresa que já financiou o terceiro setor, e por qual via",
+   "verificacao": {
+    "etapa_1": "a empresa aparece numa lista de referência (ICMS de Goiás, SALIC, GIFE, patrocínio publicado)",
+    "etapa_2": "CNPJ ativo e prova da destinação ou do patrocínio (projeto, valor ou matéria que a credita)"
+   }
+  },
+  "plat-observatorio-3setor": {
+   "horarios_brt": "10:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "plataforma de alto rendimento: atualiza em horário comercial",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em vetor de DESCOBERTA nacional — anuncia, não publica; a fonte oficial é localizada depois",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-abcr": {
+   "horarios_brt": "10:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "plataforma de alto rendimento: atualiza em horário comercial",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em vetor de DESCOBERTA nacional (Captadores/ABCR)",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-gife": {
+   "horarios_brt": "10:23",
+   "dias": "seg,qua,sex",
+   "cadencia_dias": 2,
+   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em associados do GIFE são os maiores investidores sociais privados — a home não lista editais (TROCAR a rota)",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-prosas": {
+   "horarios_brt": "10:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "plataforma de alto rendimento: atualiza em horário comercial",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em maior plataforma de editais do terceiro setor no Brasil",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-prosas-premios": {
+   "horarios_brt": "10:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "plataforma de alto rendimento: atualiza em horário comercial",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em prêmios e concursos — muitos a pessoa física; o filtro de objeto barra",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-salic": {
+   "horarios_brt": "10:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "plataforma de alto rendimento: atualiza em horário comercial",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em Lei Rouanet — janela anual no Salic (1º/02 a 31/10, confirmar IN vigente)",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-secult-go": {
+   "horarios_brt": "10:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "plataforma de alto rendimento: atualiza em horário comercial",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em cinco portas da SECULT-GO — Chamamentos, Goyazes, Fundo de Arte e Cultura, PNAB, Lei Paulo Gustavo",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-ovg": {
+   "horarios_brt": "10:23",
+   "dias": "seg,qua,sex",
+   "cadencia_dias": 2,
+   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em OVG — maior operador de repasses a entidades de Goiás",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-goias-social": {
+   "horarios_brt": "10:23",
+   "dias": "seg,qua,sex",
+   "cadencia_dias": 2,
+   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em programas sociais do Estado com repasse a entidades (Auxílio Nutricional já validado)",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-fundos-estaduais-go": {
+   "horarios_brt": "10:23",
+   "dias": "seg,qua,sex",
+   "cadencia_dias": 2,
+   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em fundos estaduais com conselho — publicam por RESOLUÇÃO, não só por edital",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-fapeg": {
+   "horarios_brt": "10:23",
+   "dias": "seg,qua,sex",
+   "cadencia_dias": 2,
+   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em FAP de Goiás — OSC entra como parceira em chamadas de extensão e inovação social",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-prefeituras-50-go": {
+   "horarios_brt": "10:23",
+   "dias": "seg,qua,sex",
+   "cadencia_dias": 2,
+   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em 50 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-empresas-editais-incentivados": {
+   "horarios_brt": "10:23",
+   "dias": "seg,qua,sex",
+   "cadencia_dias": 2,
+   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em EDITAL publicado pela própria empresa para distribuir renúncia fiscal (modelo Porto Itapoá, Renner, Maria Emília)",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-mp-destinacoes-reparacao": {
+   "horarios_brt": "10:23",
+   "dias": "seg,qua,sex",
+   "cadencia_dias": 2,
+   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em Ministérios Públicos — destinação de reparação, TAC, bens lesados e multas a projetos sociais",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "plat-cnpq-extensao": {
+   "horarios_brt": "10:23",
+   "dias": "seg,qua,sex",
+   "cadencia_dias": 2,
+   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em CNPq / MCTI / Setec-MEC — chamadas com componente de extensão que aceitam OSC como parceira",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "recorrencia": {
+   "horarios_brt": "05:23",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "revisita as oportunidades conhecidas antes do dia útil começar",
+   "coleta": "nuvem",
+   "objetivo": "acompanhar as oportunidades já conhecidas: prorrogação, resultado, novo prazo",
+   "verificacao": {
+    "etapa_1": "a página da oportunidade mudou desde a última leitura",
+    "etapa_2": "a mudança é de prazo, resultado ou retificação, confirmada no documento oficial"
+   }
+  },
+  "plat-sindico-aberto": {
+   "horarios_brt": "10:23",
+   "dias": "seg,ter,qua,qui,sex",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "plataforma de alto rendimento: atualiza em horário comercial",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  },
+  "motor-gife": {
+   "horarios_brt": "03:23",
+   "dias": "dom",
+   "cadencia_dias": 7,
+   "por_que_esta_hora": "cadastro de empresas muda devagar; leitura semanal no domingo",
+   "coleta": "nuvem",
+   "objetivo": "identificar empresa que já financiou o terceiro setor, e por qual via",
+   "verificacao": {
+    "etapa_1": "a empresa aparece numa lista de referência (ICMS de Goiás, SALIC, GIFE, patrocínio publicado)",
+    "etapa_2": "CNPJ ativo e prova da destinação ou do patrocínio (projeto, valor ou matéria que a credita)"
+   }
+  },
+  "motor-patrocinio": {
+   "horarios_brt": "03:23",
+   "dias": "dom",
+   "cadencia_dias": 7,
+   "por_que_esta_hora": "patrocínio de evento é anunciado com semanas de antecedência",
+   "coleta": "nuvem",
+   "objetivo": "identificar empresa que já financiou o terceiro setor, e por qual via",
+   "verificacao": {
+    "etapa_1": "a empresa aparece numa lista de referência (ICMS de Goiás, SALIC, GIFE, patrocínio publicado)",
+    "etapa_2": "CNPJ ativo e prova da destinação ou do patrocínio (projeto, valor ou matéria que a credita)"
+   }
+  },
+  "sindico-aberto": {
+   "horarios_brt": "contínuo",
+   "dias": "com o Piloto",
+   "cadencia_dias": 0,
+   "por_que_esta_hora": "é a missão 2 do Piloto: voa na corrente de voos, não na agenda",
+   "coleta": "nuvem",
+   "objetivo": "encontrar oportunidade aberta para OSC em Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   }
+  }
+ }
+}
