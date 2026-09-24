@@ -103,10 +103,22 @@ def fechar_missao(resultado: str, achados: list[dict] | None = None, licao: str 
     # dado de laboratório nunca entra na métrica do painel: foi assim que um "abate" de teste
     # ficou semanas contando como descoberta real
     if m.get("motor") and novos and str(m["motor"]).lower() not in LAB_PROIBIDO:
-        e = b["abates"].setdefault(m["motor"], {"n": 0, "ultimos": []})
-        e["n"] += len(novos)
-        e["ultimos"] = ([{"titulo": (a.get("titulo") or "")[:80], "url": a.get("url"), "em": date.today().isoformat()} for a in novos] + e["ultimos"])[:8]
-    b["total_abates"] = sum(v["n"] for v in b["abates"].values())
+        e = b["abates"].setdefault(m["motor"], {"n": 0, "ouro": 0, "prata": 0, "ultimos": []})
+        # UM ABATE POR URL, COM TIPO (titular, 24/09): edital ABERTO = OURO; empresa = PRATA;
+        # achado sem prazo e sem empresa não vale estrela. O mesmo artigo virou 62 abates antes.
+        vistos = {x.get("url") for x in e.get("ultimos", []) if x.get("url")}
+        for a in novos:
+            u = a.get("url")
+            if not u or u in vistos:
+                continue
+            tipo = tipo_de_abate(a)
+            if not tipo:
+                continue
+            vistos.add(u); e[tipo] = e.get(tipo, 0) + 1
+            e["ultimos"] = ([{"titulo": (a.get("titulo") or "")[:80], "url": u, "tipo": tipo,
+                             "em": date.today().isoformat()}] + e.get("ultimos", []))[:40]
+        e["n"] = e.get("ouro", 0) + e.get("prata", 0)
+    b["total_abates"] = sum(v.get("n", 0) for v in b["abates"].values())
     b["missao_atual"] = None
     write_json(BORDO, b); _publicar(b)
     return reg

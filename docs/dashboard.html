@@ -2798,13 +2798,36 @@ window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id
      <div class=meta style="margin-top:8px">${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag>${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"} · validação: <strong>${esc(m.validacao)}</strong>${m.http?" (HTTP "+m.http+")":""}${m.ultima_leitura?" · lida em "+br(m.ultima_leitura.slice(0,10)):""}${m.ultimo_url?` · <a href="${esc(m.ultimo_url)}" target=_blank rel="noopener noreferrer">último edital ↗</a>`:""}${m.regime_prazo?` · prazo: ${esc(m.regime_prazo.replace(/_/g," "))} (${esc(m.certeza_prazo||"")})`:""}</div>
      ${m.faltam?`<div class="mt-diag">⚠ faltam ${m.faltam.split("|").length} camada(s): ${esc(m.faltam.replace(/\|/g," · "))}<br><b>causa:</b> ${esc(m.causa||"")} · <b>ação:</b> ${esc(m.acao||"")}</div>`:`<div class="mt-diag ok">✓ 12 itens obtidos — motor pode parar</div>`}
      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">${iconesAcao(m.id,m.programa)} <span class=meta>fósforo: busca imediata · upload: alimentar manualmente · link: ensinar onde publica</span></div>`);};
-window.mtImediato=function(id,nome){
+/* DISPARO DIRETO (titular, 24/09): o fósforo e a partida do Piloto acionam o GitHub Actions daqui,
+   sem abrir o GitHub. Na primeira vez pedem um token (fine-grained, só este repositório, permissão
+   Actions: read and write), guardado só neste navegador. */
+const GH_REPO="amcjardimamerica-arch/Eldorado";
+window.ghToken=function(pedir){
+  let t=""; try{ t=localStorage.getItem("eldorado_gh_token")||""; }catch(e){}
+  if(!t&&pedir){ t=(prompt("Cole o token do GitHub para acionar as buscas daqui (fine-grained, só este repositório, permissão Actions: read and write). Fica guardado apenas neste navegador.")||"").trim();
+    if(t){ try{ localStorage.setItem("eldorado_gh_token",t); }catch(e){} } }
+  return t;
+};
+window.ghDispatch=async function(workflow,inputs){
+  const tok=ghToken(true); if(!tok) return {ok:false,motivo:"sem token"};
+  try{
+    const r=await fetch(`https://api.github.com/repos/${GH_REPO}/actions/workflows/${workflow}/dispatches`,{method:"POST",
+      headers:{"Authorization":"Bearer "+tok,"Accept":"application/vnd.github+json","Content-Type":"application/json","X-GitHub-Api-Version":"2022-11-28"},
+      body:JSON.stringify({ref:"main",inputs:inputs||{}})});
+    if(r.status===204) return {ok:true};
+    if(r.status===401||r.status===403){ try{ localStorage.removeItem("eldorado_gh_token"); }catch(e){} return {ok:false,motivo:"token recusado ("+r.status+") — ele foi esquecido; clique de novo para informar outro"}; }
+    return {ok:false,motivo:"HTTP "+r.status};
+  }catch(e){ return {ok:false,motivo:String(e).slice(0,80)}; }
+};
+window.mtImediato=async function(id,nome){
   const e=mtEstado();e.imediatos=e.imediatos||{};e.imediatos[id]=new Date().toISOString();mtSalva(e);desenhaMotores();
   abreModal(`<h3 style="margin:0">Fósforo riscado — busca imediata</h3><div class=meta>${esc(nome)}</div>`,
-    `<p>O motor deste ponto vai rodar <strong>agora</strong>, sem interromper a rotina programada. A execução acontece no GitHub Actions; cole o id no campo <code>fontes</code>:</p>
-     <pre style="background:#F6F7F9;padding:10px;border-radius:8px">${esc(id)}</pre>
-     <p><a href="https://github.com/amcjardimamerica-arch/Eldorado/actions/workflows/monitoramento-diario.yml" target=_blank rel="noopener noreferrer"><strong>Abrir execução manual → Run workflow ↗</strong></a></p>
-     <p class=meta>O fósforo fica aceso até o resultado chegar; o diagnóstico aparece na caixa deste ponto na próxima atualização.</p>`);
+    `<p id="mt-imediato-st">Disparando a busca do motor <code>${esc(id)}</code>…</p>
+     <p class=meta>A execução acontece no GitHub Actions e leva alguns minutos; o fósforo fica aceso até o resultado chegar, e o diagnóstico aparece na caixa deste ponto na próxima atualização.</p>`);
+  const r=await ghDispatch("monitoramento-diario.yml",{fontes:id});
+  const st=document.getElementById("mt-imediato-st"); if(!st) return;
+  st.innerHTML=r.ok?`<b style="color:#1E7E4B">Busca disparada.</b> O motor <code>${esc(id)}</code> roda agora, sem interromper a rotina programada.`
+                   :`<b style="color:#B3261E">Não disparou:</b> ${esc(r.motivo||"")}`;
 };
 window.mtUpload=function(id,nome){
   const pasta=`entrada_manual/${id}/`;
@@ -2987,10 +3010,10 @@ window.darPartida=function(base){
   setTimeout(()=>{ tx.textContent="decolando…"; bt.classList.add("acelera"); },900);
   setTimeout(()=>{
     bt.classList.remove("acelera"); tx.textContent="motores ligados";
+    ghDispatch("piloto.yml",{modo:"ciclo"}).then(r=>{ const st=document.getElementById("pil-partida-st"); if(st) st.innerHTML=r.ok?'<b style="color:#1E7E4B">Voo disparado.</b> O Piloto decola em segundos.':'<b style="color:#B3261E">Não disparou:</b> '+esc(r.motivo||""); });
     abreModal('<h3 style="margin:0">Motores ligados ✈</h3><div class=meta>Esquadrilha do Piloto — patrulha dos motores 26, 27, 28 e 29</div>',
      `<div class="rel-janela">
-        <p>A hélice girou. O Piloto decola em <b>segundos</b> — ele não espera horário, e só fica em terra se o titular disparar o voo no GitHub:</p>
-        <div class="rel-texto">Actions → <b>07 · Piloto</b> → Run workflow → modo <b>ciclo</b></div>
+        <p id="pil-partida-st">A hélice girou. Disparando o voo…</p>
         <div class="fdoc-t" style="margin-top:10px">Onde ele vai caçar</div>
         <ul class="rel-lista">
           <li><b>26</b> Editais incentivados — sites das maiores contribuintes do ICMS de Goiás</li>

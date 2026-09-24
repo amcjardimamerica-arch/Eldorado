@@ -63,7 +63,18 @@ def proximo_site() -> dict | None:
         if (v.get("lido_em") or "") < limite and v.get("url"):
             candidatos.append((v.get("lido_em") or "", {"url": v["url"], "nome": v.get("nome") or k, "tipo": v.get("tipo") or "descoberto"}))
     candidatos.sort(key=lambda x: x[0])
-    return candidatos[0][1] if candidatos else None
+    if candidatos:
+        return candidatos[0][1]
+    # PÁGINAS PARA ENTIDADES (24/09): esgotadas as sementes, o Piloto desce um nível — visita as páginas
+    # voltadas a OSC que ele mesmo catalogou (editais, parcerias, inscrições). É onde a oportunidade está.
+    lidas = {k for k in cat["sites"]}
+    for k, v in sorted(cat["sites"].items(), key=lambda kv: kv[1].get("lido_em") or ""):
+        for pg in v.get("paginas_para_entidades") or []:
+            u = pg.get("url") or ""
+            ck = _chave(u) + urlsplit(u).path.rstrip("/")[:60]
+            if u.startswith("http") and ck not in lidas and (cat["sites"].get(ck) or {}).get("lido_em", "") < limite:
+                return {"url": u, "nome": f"{v.get('nome')} · {pg.get('rotulo') or 'página para entidades'}"[:90], "tipo": "pagina-de-entidades", "_chave": ck}
+    return None
 
 
 def catalogar(site: dict, texto: str, links: list[tuple[str, str]]) -> dict:
@@ -89,7 +100,7 @@ def catalogar(site: dict, texto: str, links: list[tuple[str, str]]) -> dict:
     m = RX_ESG.search(texto or "")
     esg = {"declarado": bool(m), "trecho": (texto[max(0, m.start() - 60): m.end() + 80].strip() if m else None)}
     cat = catalogo()
-    k = _chave(url)
+    k = site.get("_chave") or _chave(url)
     anterior = cat["sites"].get(k) or {}
     cat["sites"][k] = {"url": url, "nome": site.get("nome") or k, "tipo": site.get("tipo"), "lido_em": now_iso(),
                        "leituras": (anterior.get("leituras") or 0) + 1,
