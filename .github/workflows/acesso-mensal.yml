@@ -5,8 +5,7 @@ name: acesso-mensal
 # no GitHub (Actions > acesso-mensal > Run workflow) e recebe a senha vigente
 # de novo no WhatsApp — fluxo de recuperação sem expor nada em texto claro.
 on:
-  schedule:
-    - cron: "0 9 1 * *"
+  # schedule removido em 24/09: dados públicos, sem senha do mês
   workflow_dispatch:
     inputs:
       motivo:

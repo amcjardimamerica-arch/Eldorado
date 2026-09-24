@@ -82,10 +82,10 @@ jobs:
           # O PORTÃO SÓ FECHA PARA TESTE CRÍTICO (24/09). Antes, qualquer falha barrava a coleta
           # inteira: nos 20 dias anteriores, falhas de texto de painel, data fixa apodrecida e
           # um import de yaml impediram TODOS os motores de rodar na maioria dos dias. Agora a
-          # coleta só para se falhar teste de privacidade, segredo, injeção de prompt ou data
+          # coleta só para se falhar teste de credencial publicada, injeção de prompt ou data
           # inventada — o que põe em risco o que se publica. O resto fica registrado e avisado.
           if [ "$rc" != "0" ]; then
-            CRIT=$(grep -E "^(FAIL|ERROR):" /tmp/testes.log | grep -iE "privacidade|segredo|token|injection|injecao|injeção|inventad" || true)
+            CRIT=$(grep -E "^(FAIL|ERROR):" /tmp/testes.log | grep -iE "credencial|token_github|chave_privada|injection|injecao|injeção|inventad" || true)
             if [ -n "$CRIT" ]; then echo "falha CRÍTICA — a coleta não roda:"; echo "$CRIT"; exit 1; fi
             echo "::warning::testes não críticos falharam (ver estado/ultimo_teste_ci.txt); a coleta segue"
           fi
