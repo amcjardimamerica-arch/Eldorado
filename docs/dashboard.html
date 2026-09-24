@@ -441,11 +441,11 @@ box-shadow:0 1px 3px #0002}
 .mt-desc b{color:#9FE3B8;font-size:10px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-top:7px}.mt-desc b:first-child{margin-top:0}
 .mt-desc ul{margin:2px 0 0 16px;padding:0}.mt-desc li{margin:1px 0}.mt-desc .mt-desc-evo{color:#FFE6A8}
 @media (hover:none){.mt-item>.mt-desc{display:none}}
-.pil-aviao-vivo{position:absolute;left:0;top:0;width:130px;height:130px;z-index:60;
+.pil-aviao-vivo{position:absolute;left:0;top:0;width:130px;height:130px;z-index:60;backface-visibility:hidden;
   pointer-events:auto;cursor:pointer;opacity:0;transition:opacity .45s ease;will-change:transform}
 .pil-aviao-vivo.visivel{opacity:1}
 .pil-aviao-vivo img{width:100%;height:100%;display:block;
-  filter:drop-shadow(0 4px 5px rgba(14,42,85,.28));transform-origin:50% 55%;transition:transform .2s ease}
+  filter:drop-shadow(0 4px 5px rgba(14,42,85,.28));transform-origin:50% 55%}
 .pil-aviao-vivo:hover img{filter:drop-shadow(0 6px 8px rgba(14,42,85,.38))}
 .pil-aviao-vivo .pil-balao{position:absolute;left:50%;bottom:calc(100% + 2px);top:auto;
   transform:translateX(-50%);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -3551,28 +3551,39 @@ function corredor(el){
   const r=el.getBoundingClientRect(), x0=r.left+window.scrollX, y0=r.top+window.scrollY;
   return {x0:x0-AV_T*.08, x1:Math.max(x0-AV_T*.08, x0+r.width-AV_T*.92), y:y0-AV_T*.62};
 }
+/* O GIF MANDA NO RITMO (titular, 24/09): o arquivo original tem 64 quadros e um ciclo de ~4,5 s.
+   Cada travessia do motor dura exatamente um ciclo, e o gif recomeça na meia-volta — ida e volta
+   casadas com a animação. O nariz vira sem transição, para não borrar a virada. */
+const GIF_CICLO_MS=4480, GIF_SRC="img/aviao-amc.webp";
+function reiniciarGif(){ const img=AV.el&&AV.el.firstElementChild; if(img) img.src=GIF_SRC+"#r"+Date.now(); }  // o fragmento não vai à rede: recomeça do cache
 function desenharAviao(){
-  const bal=Math.sin(performance.now()/480)*3;                // o balanço de quem está no ar
-  AV.el.style.transform=`translate3d(${AV.x.toFixed(1)}px,${(AV.y+bal).toFixed(1)}px,0)`;
-  AV.el.firstElementChild.style.transform=AV.esq?"scaleX(-1)":"none";   // o nariz aponta para onde vai
+  const bal=Math.sin(performance.now()/480)*3;
+  AV.el.style.transform=`translate3d(${AV.x.toFixed(2)}px,${(AV.y+bal).toFixed(2)}px,0)`;
+  AV.el.firstElementChild.style.transform=AV.esq?"scaleX(-1)":"none";
 }
 function voarAviao(t){
   AV.raf=requestAnimationFrame(voarAviao);
   if(!AV.alvo||!AV.el||document.hidden) return;
-  if(!document.body.contains(AV.alvo)||AV.alvo.offsetParent===null){ pousarAviao(); return; }
+  if(!document.body.contains(AV.alvo)){                      // o quadro foi redesenhado: reencontra pelo id
+    const P=window._POS||{}; const novo=P.missao&&lugarDoTrabalho(P.missao);
+    if(novo&&novo.getAttribute("data-id")===AV.alvoId){ AV.alvo=novo; novo.classList.add("pil-trabalhando"); }
+    else { pousarAviao(); return; }
+  }
+  if(AV.alvo.offsetParent===null){ pousarAviao(); return; }
   const dt=Math.min(.05,(t-(AV.ultimo||t))/1000); AV.ultimo=t;
-  const c=corredor(AV.alvo); AV.y=c.y;
-  AV.x=Math.min(Math.max(AV.x,c.x0),c.x1);                  // nunca fora do motor
+  if(!AV.corr||t-AV.corrEm>400){ AV.corr=corredor(AV.alvo); AV.corrEm=t; }   // mede o quadro a cada 0,4 s, não a cada quadro
+  const c=AV.corr; AV.y=c.y;
   if(t<AV.pausaAte){ desenharAviao(); return; }
-  AV.x+=AV.dir*200*dt;                                      // 200 px/s: sinal de alerta, não passeio
-  if(AV.x>=c.x1){ AV.x=c.x1; AV.dir=-1; AV.pausaAte=t+260; } // meia-volta na borda
-  else if(AV.x<=c.x0){ AV.x=c.x0; AV.dir=1; AV.pausaAte=t+260; }
+  const largura=Math.max(1,c.x1-c.x0), vel=largura/(GIF_CICLO_MS/1000);   // uma travessia = um ciclo do gif
+  AV.x+=AV.dir*vel*dt;
+  if(AV.x>=c.x1){ AV.x=c.x1; AV.dir=-1; AV.pausaAte=t+120; reiniciarGif(); }
+  else if(AV.x<=c.x0){ AV.x=c.x0; AV.dir=1; AV.pausaAte=t+120; reiniciarGif(); }
   AV.esq=AV.dir<0;
   desenharAviao();
 }
 function pousarAviao(){
   if(AV.alvo) AV.alvo.classList.remove("pil-trabalhando");
-  AV.alvo=null;
+  AV.alvo=null; AV.alvoId=null; AV.corr=null;
   if(AV.el) AV.el.classList.remove("visivel","mostra-balao");
   if(AV.raf){ cancelAnimationFrame(AV.raf); AV.raf=0; }
 }
@@ -3588,10 +3599,13 @@ window.atualizarAviao=function(){
   av.querySelector(".pil-balao").innerHTML=`${esc(TRABALHO[trab]||trab||"")}`+
     `${m.tipo==="resgate"?(m.alvo_titulo?` · <b>${esc(m.alvo_titulo.slice(0,40))}</b>`:""):(m.motor?` · <b>${esc(m.motor)}</b>`:"")}`+
     `${m.ordem&&m.de?` · missão ${m.ordem}/${m.de}`:""}`;
-  if(AV.alvo!==el){
+  const idAlvo=el.getAttribute("data-id");
+  if(AV.alvoId!==idAlvo){                       // mudou de MOTOR: começa da borda
     if(AV.alvo) AV.alvo.classList.remove("pil-trabalhando");
+    AV.alvo=el; AV.alvoId=idAlvo; el.classList.add("pil-trabalhando");
+    const c=corredor(el); AV.x=c.x0; AV.y=c.y; AV.dir=1; reiniciarGif();
+  }else if(AV.alvo!==el){                       // mesmo motor, quadro redesenhado: só troca a referência, sem pular
     AV.alvo=el; el.classList.add("pil-trabalhando");
-    const c=corredor(el); AV.x=c.x0; AV.y=c.y; AV.dir=1;
   }
   av.classList.add("visivel");
   if(AV.reduz){ const c=corredor(el); AV.x=c.x0; AV.y=c.y; AV.esq=false; desenharAviao(); return; }
