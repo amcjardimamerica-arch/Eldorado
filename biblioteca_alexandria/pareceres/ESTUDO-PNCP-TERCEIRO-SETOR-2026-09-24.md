@@ -110,7 +110,20 @@ de parecer técnico → **contratação de pessoa para serviço ao órgão**
 - cada achado carrega `finalidade_pncp` e `pertinencia_pncp`
 - modalidades consultadas: 12, 3 e 10
 
-## 5. O conselho
+## 5. Medido contra os acertos e erros reais
+
+O classificador foi confrontado com o gabarito do parecer de 23/09 — os editais do PNCP que o titular **aprovou**
+(17) e os que **excluiu por objeto** (49; os excluídos por prazo vencido ou resultado publicado ficam de fora,
+porque não dizem nada sobre o objeto). Antes da calibração: 68% de acerto, recall 63%, precisão 81%. Depois:
+
+- **acerto: 89%** · reconhece **88%** dos pertinentes · **75%** do que aceita é pertinente
+- perdeu 2 pertinente(s); aceitou 5 indevido(s) — listados em `estado/pncp_avaliacao_gabarito.json`
+
+O que a calibração mudou: "com ou sem fins lucrativos", cooperativas e agremiações passaram a ser sinal de terceiro
+setor, e o credenciamento de entidade sem fins lucrativos deixou de ser tratado como cadastro de prestador. O gabarito
+fica no repositório (`dados/verificacao/parecer_2026-09-23/`) para toda mudança futura ser medida contra ele.
+
+## 6. O conselho
 
 **Extremamente pessimista — chief engineer.** O PNCP entrega três quartos de ruído e só 11 publicações de Goiás em
 todo o corpus. É o motor que mais consome leitura e o que menos devolve para a abrangência aprovada.

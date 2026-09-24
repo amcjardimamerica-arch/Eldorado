@@ -426,6 +426,21 @@ box-shadow:0 1px 3px #0002}
 /* O AVIÃO DO PILOTO vai e volta SÓ por cima do motor da Bússola em que está trabalhando agora,
    como um sinal de alerta. Nenhuma outra parte do site recebe o avião.
    Sem missão em curso, ou com o lugar fora da tela, ele simplesmente não aparece. */
+.cfg .fdoc-t{margin-top:12px}.cfg p{margin:4px 0;font-size:12.5px;line-height:1.5}
+.cfg-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.cfg-tags span{font-size:10.5px;border:1px solid var(--linha);border-radius:8px;padding:1px 7px;background:#FAFBFD}
+.cfg-t{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:4px}.cfg-t td{padding:3px 6px;border-bottom:1px dotted #E3E9F1;vertical-align:top}
+.cfg-etapas{margin:4px 0 0 18px;padding:0;font-size:12.5px;line-height:1.5}.cfg-etapas li{margin:3px 0}
+.ed-motor{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--suave);margin:2px 0 4px;cursor:pointer}
+.ed-motor svg,.ed-motor img{width:14px;height:14px}
+.ed-motor:hover span{text-decoration:underline;color:#0B4EA2}
+.bz-rosa-n{font-size:15px;color:#0B4EA2;font-variant-numeric:tabular-nums}
+.uf-n{font-variant-numeric:tabular-nums}
+/* DESCRIÇÃO INTERNA DO MOTOR: aparece só com o mouse parado sobre o quadro, sem clique. */
+.mt-item>.mt-desc{position:absolute;top:10px;right:56px;width:min(460px,70%);z-index:40;background:#0E2A55;color:#EAF1FB;border-radius:12px;padding:12px 14px;font-size:11.5px;line-height:1.5;box-shadow:0 10px 28px rgba(14,42,85,.35);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-4px);transition:opacity .18s ease,transform .18s ease,visibility 0s linear .18s}
+.mt-item:hover>.mt-desc{opacity:1;visibility:visible;transform:none;transition-delay:.45s,.45s,.45s}
+.mt-desc b{color:#9FE3B8;font-size:10px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-top:7px}.mt-desc b:first-child{margin-top:0}
+.mt-desc ul{margin:2px 0 0 16px;padding:0}.mt-desc li{margin:1px 0}.mt-desc .mt-desc-evo{color:#FFE6A8}
+@media (hover:none){.mt-item>.mt-desc{display:none}}
 .pil-aviao-vivo{position:absolute;left:0;top:0;width:130px;height:130px;z-index:60;
   pointer-events:auto;cursor:pointer;opacity:0;transition:opacity .45s ease;will-change:transform}
 .pil-aviao-vivo.visivel{opacity:1}
@@ -1032,6 +1047,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
       <div id="versao-painel" class="meta" style="text-align:right;font-size:11px"></div>
 
 <div id="bz-mapa"></div>
+<div id="bz-mapa-legenda" style="text-align:center;margin:4px 0 2px"></div>
       <button class="bz-rosa-bt" onclick="bzNacional()" title="Brasil — oportunidades de nível nacional (federais e sem estado), sem os dados dos estados">
         <svg class="bz-rosa" viewBox="-100 -100 200 200" role="img" aria-label="rosa dos ventos — Brasil, nível nacional" id="bz-rosa-svg"></svg>
         <span class="bz-rosa-rot">Brasil · nível nacional</span>
@@ -2555,7 +2571,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
   ordem.forEach(area=>{
     const bloco=document.createElement("div");bloco.className="fa-area";
     const todas=grupos[area].sort((x,y)=>((x.b&&x.b.analise_etapa2&&x.b.analise_etapa2.length)?0:1)-((y.b&&y.b.analise_etapa2&&y.b.analise_etapa2.length)?0:1)||((dias(x.e.fim)??9e9)-(dias(y.e.fim)??9e9)));
-    const lim=faPagina[area]||10; const lista=todas.slice(0,lim);
+    const lim=todas.length; const lista=todas;   // 24/09 (titular): nenhuma oportunidade oculta — todas à vista
     bloco.innerHTML=`<div class="fa-areat"><span class=ponto style="background:${AREA(area).cor};width:12px;height:12px"></span>${esc(AREA(area).rotulo)}
         <span class=meta style="font-weight:500">${todas.length} oportunidade(s)${todas.length>lim?" · mostrando "+lim:""}</span>
         ${todas.length>lim?`<button style="margin-left:auto;font-size:11.5px;padding:5px 11px" onclick="faMais('${esc(area)}')">ver mais 20 ›</button>`:""}</div>
@@ -2572,6 +2588,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
         return `<div class="ed-item${camp&&camp.status==="monitorando"?" em-campanha":""}${_s?" analisado":""}${_s&&_s.selo==="analise_incompleta"?" incompleta":""}${_naoComp?" suspeita":""}${e.selo_validacao==="nao_verificada"?" nao-verificada":""}" data-id="${esc(e.id)}"><div class="linha-val">${seloVal(e)}</div>${_an}${_sus}
         <div class="fa-fonte"><span class=ponto style="background:${c.cor};width:8px;height:8px" title="${esc(c.rotulo)}"></span><strong style="color:var(--tinta)">${esc(f.fonte_nome||"—")}</strong>${f.via?`<span class=meta>· via ${esc(f.via)}</span>`:""}</div>
         <a href="${esc(linkOficial(e)||e.url)}" target=_blank rel="noopener noreferrer" title="${VETOR_RX.test(linkOficial(e)||e.url||"")?"anúncio no vetor de divulgação — a fonte oficial ainda não foi localizada":"site oficial"}">${esc((e.titulo||"").slice(0,90))}</a>
+        ${motorDaOportunidade(e,f)}
         ${camp?`<span class="st ${camp.status==="monitorando"?"cap":camp.status==="completo"?"ok":"acao"}" style="margin-left:6px" title="${camp.status==="monitorando"?"indício em campanha de completude: dia "+camp.dia+" de 30, "+camp.tentativas+" tentativa(s) atrás do edital integral":camp.status==="completo"?"campanha concluída: edital integral obtido":"campanha expirada — revisão humana"}">${camp.status==="monitorando"?"monitorando · dia "+camp.dia+"/30":camp.status}</span>`:""}
         <div class=meta><span class=tag style="${situacaoDe(e)==="aberta"?"border-color:#F09B2E;color:#9a5a00":situacaoDe(e)==="possivel"?"border-color:#2F79D0;color:#0B4EA2":""}" title="${esc(e.base_situacao||"")}">${situacaoDe(e)==="aberta"?"aberta confirmada":situacaoDe(e)==="possivel"?"possível · em investigação":"encerrada"}</span> ${esc(e.uf||"BR")} · ${esc(e.nivel||"—")}${e.fim?" · encerra "+br(e.fim)+(dz!=null&&dz>=0?" ("+dz+" dia"+(dz===1?"":"s")+")":""):" · sem prazo na fonte"}${e.valor_texto?" · "+esc(e.valor_texto):""}</div>
         <div class="an-barra" title="itens comprovados dos 12"><i style="width:${pct}%"></i><b>${comp}/${tot} itens comprovados</b></div>
@@ -3587,6 +3604,72 @@ window._aviaoDiag=function(){
   return {x:AV.x,y:AV.y,dir:AV.dir,esq:AV.esq,alvo:AV.alvo&&AV.alvo.getAttribute("data-id"),
           dentro:!!c&&AV.x>=c.x0-.5&&AV.x<=c.x1+.5, x0:c&&c.x0, x1:c&&c.x1, via:(window._POS||{})._via||null};
 };
+/* ── DESCRIÇÃO E CONFIGURAÇÃO DOS MOTORES ──────────────────────────────────────────────────
+   Mouse parado sobre o quadro: resumo. Clique no quadro: janela com a configuração completa.
+   Tudo em window, porque a lista da Bússola e a das oportunidades vivem em outro escopo. */
+window._DESC=null; window._DESC_GERAL={};
+window.carregaDescricoes=async function(){ try{ const r=await fetch("dados/descricao_motores.json?v="+Date.now());
+  if(r.ok){ const j=await r.json(); window._DESC=j.motores||{}; window._DESC_GERAL={veto_geral:j.veto_geral||[],lexico_geral:j.lexico_geral||[]}; } }catch(e){}
+  window.anexarDescricoes(); };
+window.motorDaOportunidade=function(e,f){
+  // QUEM ACHOU: o motor responsável aparece sob o nome da oportunidade (titular, 24/09)
+  const fid=(e&&(e.fonte_id||e.motor||e.fonte))||(f&&(f.fonte_id||f.id))||""; const D=window._DESC||{};
+  // fontes registradas com outro nome do motor que as lê
+  const ALIAS={"observatorio-terceiro-setor":"plat-observatorio-3setor","observatorio-3setor":"plat-observatorio-3setor",
+    "rouanet":"plat-salic","salic":"plat-salic","goyazes-programa":"plat-secult-go","secult-go":"plat-secult-go","abcr":"plat-abcr",
+    "prosas":"plat-prosas","gife":"plat-gife","fapeg":"plat-fapeg","ovg":"plat-ovg","goias-social":"plat-goias-social",
+    "pncp":"pncp-api","querido-diario":"do-goiania","emenda-estadual-goias":"alego-pl","emenda-municipal-goiania":"camara-goiania-pl"};
+  const id=D[fid]?fid:D[ALIAS[fid]]?ALIAS[fid]:D[fid+"-api"]?fid+"-api":D["plat-"+fid]?"plat-"+fid:null;
+  if(!id) return fid?`<div class="ed-motor" title="fonte ${esc(fid)}"><span class=ponto style="background:#B9C3CE;width:7px;height:7px"></span>fonte ${esc(fid)}</div>`:"";
+  return `<div class="ed-motor" title="motor que encontrou esta oportunidade — clique para ver a configuração" onclick="event.preventDefault();event.stopPropagation();abreConfigMotor('${esc(id)}')">${typeof iconeMotor==="function"?iconeMotor(id,true):""}<span>${esc(D[id].nome||id)}</span></div>`;
+};
+window.abreConfigMotor=function(id){
+  const D=window._DESC||{}; const d=D[id]; if(!d) return;
+  const n=d.numeros||{}, ms=n.mes||{}, ac=n.acervo||{}, ad=d.agenda_detalhe||{}, V=d.verificacao||{};
+  const lista=(xs,vazio)=>xs&&xs.length?`<div class="cfg-tags">${xs.map(x=>`<span>${esc(x)}</span>`).join("")}</div>`:`<span class=meta>${vazio}</span>`;
+  abreModal(`<div><span class="ep-selo" style="background:#0E2A55">motor</span> ${esc(d.nome||id)} <span class=meta>· ${esc(id)} · ${esc(d.coleta||"nuvem")}</span></div>`,
+   `<div class="cfg">
+    <div class="fdoc-t">Objetivo</div><p>${esc(d.objetivo||"")}</p>
+    <div class="fdoc-t">Quando roda</div><p><b>${esc(ad.horarios_brt||"—")}</b> · ${esc(ad.dias||"—")} · a cada ${esc(String(ad.cadencia_dias??"—"))} dia(s)<br><span class=meta>${esc(ad.por_que_esta_hora||"")}</span></p>
+    <div class="fdoc-t">Sites e endereços (${(d.rotas||[]).length})</div>
+    ${(d.rotas||[]).length?`<table class="cfg-t"><tbody>${d.rotas.map(r=>`<tr><td>${esc(r.nome||"—")}</td><td><a href="${esc(r.url)}" target=_blank rel="noopener noreferrer">${esc(String(r.url).replace(/^https?:\/\//,"").slice(0,70))}</a></td><td class=meta>${esc(r.tipo||"")}</td></tr>`).join("")}</tbody></table>`:`<span class=meta>${d.coleta==="local"?"rotas lidas pelo computador do titular":"nenhuma rota cadastrada"}</span>`}
+    <div class="fdoc-t">Verificação em duas etapas</div>
+    <ol class="cfg-etapas"><li><b>1ª — na captura:</b> ${esc(V.etapa_1||"—")}</li><li><b>2ª — na fonte oficial:</b> ${esc(V.etapa_2||"—")}</li></ol>
+    <div class="fdoc-t">Léxico — camada 1 (abre a leitura, ${(d.lexico_1||[]).length})</div>${lista(d.lexico_1,"sem termos próprios: usa só o léxico geral")}
+    <div class="fdoc-t">Léxico — camada 2 (confirma no texto, ${(d.lexico_2||[]).length})</div>${lista(d.lexico_2,"sem camada 2")}
+    <div class="fdoc-t">Veto (${(d.veto_motor||[]).length} do motor + ${(window._DESC_GERAL.veto_geral||[]).length} gerais)</div>${lista([...(d.veto_motor||[]),...(window._DESC_GERAL.veto_geral||[])],"—")}
+    <div class="fdoc-t">Números</div>
+    <p>Setembro: rodou <b>${ms.executados??"—"}</b> de ${ms.esperados??"—"} dias · falhas ${ms.falhas??"—"} · achados ${ms.encontrados??"—"} · auditoria: <b>${esc(n.estado||"—")}</b><br>
+       Acervo: <b>${ac.ativo??0}</b> não eliminado(s) de ${ac.total??0} · fora do objeto ${ac.fora_do_objeto??0} · fora da abrangência ${ac.fora_de_abrangencia??0}${ac.pct_eliminado!=null?` · <b>${ac.pct_eliminado}% eliminado</b>`:""}</p>
+    <div class="fdoc-t">Onde para hoje</div><p>${esc(d.onde_para||"—")}</p>
+    ${(d.para_afiar||[]).length?`<div class="fdoc-t">Para afiar</div><ul>${d.para_afiar.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+    <div class="fdoc-t">Evolução gratuita</div><p>${esc(d.evolucao_gratuita||"")}</p>
+   </div>`);
+};
+window.anexarDescricoes=function(){
+  const D=window._DESC; if(!D) return;
+  document.querySelectorAll("#mt-lista .mt-item[data-id]").forEach(el=>{
+    const id0=el.getAttribute("data-id"); const id=D[id0]?id0:D["plat-"+id0]?"plat-"+id0:D[id0.replace(/^plat-/,"")]?id0.replace(/^plat-/,""):null;
+    if(!id) return;
+    if(!el.dataset.cfgClique){ el.dataset.cfgClique="1"; el.style.cursor="pointer";
+      el.addEventListener("click",ev=>{ if(ev.target.closest("a,button,.mt-lado-dir,.ed-motor,summary,select,input,label")) return; abreConfigMotor(id); }); }
+    if(el.querySelector(":scope>.mt-desc")) return;
+    const d=D[id], V=d.verificacao||{};
+    const box=document.createElement("div"); box.className="mt-desc"; box.setAttribute("role","tooltip");
+    box.innerHTML=`<b>Objetivo</b>${esc(d.objetivo||"")}<b>Quando roda</b>${esc(d.agenda||"—")}<b>Como funciona</b>${esc(d.como_funciona||"")}`+
+      (V.etapa_1?`<b>Verificação em 2 etapas</b><ul><li><i>1ª</i> ${esc(V.etapa_1)}</li><li><i>2ª</i> ${esc(V.etapa_2||"")}</li></ul>`:"")+
+      `<b>Onde para hoje</b>${esc(d.onde_para||"—")}`+
+      ((d.para_afiar||[]).length?`<b>Para afiar</b><ul>${d.para_afiar.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"")+
+      `<b>Evolução gratuita</b><span class="mt-desc-evo">${esc(d.evolucao_gratuita||"")}</span><b style="color:#9FC1E8">clique no quadro para a configuração completa</b>`;
+    el.appendChild(box);
+  });
+};
+(function vigiarLista(){
+  const alvo=document.getElementById("mt-lista");
+  if(!alvo){ setTimeout(vigiarLista,800); return; }
+  new MutationObserver(()=>window.anexarDescricoes()).observe(alvo,{childList:true,subtree:true});
+  window.carregaDescricoes();
+})();
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
@@ -3893,9 +3976,14 @@ function desenhaBzMapa(){ window._mpTriagem={};
     const k=n?Math.sqrt(n/maxN):0; const fill=n?sepia(k):"#F5EBD3";
     svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${n?" com-abertas":""}" style="fill:${fill}"></path>`;}
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
-    svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-8}" y="${e.cy+13}" class="uf-n">${n}</text>`:""}`;}
+    // 24/09 (titular): confirmadas/possíveis — datas e objeto verificados / identificadas sem os dados mínimos
+    svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-11}" y="${e.cy+13}" class="uf-n"><title>${p.aberta||0} confirmada(s) com data e objeto / ${p.possivel||0} possível(is) sem os dados mínimos</title>${p.aberta||0}/${p.possivel||0}</text>`:""}`;}
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
+  // a rosa dos ventos carrega o nível nacional no mesmo formato: confirmadas/possíveis
+  const _nac=por["__nac__"]||{}; const _rot=$("bz-rosa-svg")&&$("bz-rosa-svg").parentElement&&$("bz-rosa-svg").parentElement.querySelector(".bz-rosa-rot");
+  if(_rot) _rot.innerHTML=`Brasil · nível nacional<br><b class="bz-rosa-n" title="${_nac.aberta||0} confirmada(s) com data e objeto / ${_nac.possivel||0} possível(is) sem os dados mínimos">${_nac.aberta||0}/${_nac.possivel||0}</b>`;
+  const _leg=$("bz-mapa-legenda"); if(_leg) _leg.innerHTML=`<span class=meta>em cada estado e na rosa: <b>confirmadas</b> (data e objeto verificados) / <b>possíveis</b> (identificadas, sem os dados mínimos)</span>`;
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */

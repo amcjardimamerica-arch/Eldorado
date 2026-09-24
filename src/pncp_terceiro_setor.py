@@ -36,9 +36,12 @@ POSITIVO = {
     "parceria_mrosc": ["organizacao da sociedade civil", "organizacoes da sociedade civil", " osc ", " oscs ",
                        "termo de fomento", "termo de colaboracao", "acordo de cooperacao", "lei 13.019",
                        "lei n 13.019", "13.019/2014", "mrosc", "chamamento publico de osc"],
-    "entidade_sem_fins": ["entidade sem fins lucrativos", "entidades sem fins lucrativos",
-                          "instituicao sem fins lucrativos", "entidades privadas sem fins lucrativos",
-                          "entidade filantropica", "entidades filantropicas", "entidade beneficente"],
+    # calibrado contra o gabarito de 23/09: "com ou sem fins lucrativos", cooperativas e agremiações
+    # eram pertinentes e passavam despercebidos
+    "entidade_sem_fins": ["sem fins lucrativos", "entidade filantropica", "entidades filantropicas",
+                          "entidade beneficente", "cooperativa", "agremiac", "organizacoes comunitarias",
+                          "organizacoes de pequeno porte", "coletivos", "instituicoes de longa permanencia",
+                          "subprojeto", "selecao de propostas", "apoio a iniciativas"],
     "fomento_cultural": ["lei paulo gustavo", "pnab", "aldir blanc", "politica nacional aldir blanc",
                          "agentes culturais", "agente cultural", "projetos culturais", "premiacao",
                          "premio", "fomento a cultura", "fomento cultural", "mestres da cultura"],
@@ -71,7 +74,8 @@ CONTROLE = {
     "obra_ou_imovel": ["execucao de obra", "reforma de", "construcao de", "locacao de imovel",
                        "permissao de uso", "concessao de uso", "alienacao"],
     "pessoa_fisica_servico": ["pareceristas", "parecerista", "jurados", "cache", "apresentacoes artisticas",
-                              "contratacao artistica", "instrutores", "oficineiros"],
+                              "contratacao artistica", "instrutores", "oficineiros",
+                              "confeccao, entrega", "montagem e desmontagem", "execucao dos servicos"],
 }
 
 # 3 · EXCEÇÃO — parceria MROSC explícita vence o controle
@@ -107,7 +111,7 @@ def classificar(objeto: str, titulo: str = "") -> dict:
     # CREDENCIAMENTO SEM FOMENTO É HABILITAÇÃO DE PRESTADOR — a regra que o sistema já adota na
     # missão especial: credenciamento só serve à OSC quando nomeia o instrumento de repasse ou o
     # fomento cultural/social. Sem isso, é cadastro para vender serviço ao órgão.
-    forte = exc or pos.get("fomento_cultural") or pos.get("fundo_social")
+    forte = exc or pos.get("fomento_cultural") or pos.get("fundo_social") or pos.get("entidade_sem_fins")
     if "credenciament" in _n(texto) and not forte and "servico_ao_orgao" not in ctrl:
         ctrl["servico_ao_orgao"] = ["credenciamento sem instrumento de fomento"]
     melhor = min(pos, key=lambda g: ["parceria_mrosc", "fomento_cultural", "fundo_social",
