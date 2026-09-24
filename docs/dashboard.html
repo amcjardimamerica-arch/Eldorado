@@ -440,12 +440,6 @@ box-shadow:0 1px 3px #0002}
 .ed-motor:hover span{text-decoration:underline;color:#0B4EA2}
 .bz-rosa-n{font-size:15px;color:#0B4EA2;font-variant-numeric:tabular-nums}
 .uf-n{font-variant-numeric:tabular-nums}
-/* DESCRIÇÃO INTERNA DO MOTOR: aparece só com o mouse parado sobre o quadro, sem clique. */
-.mt-item>.mt-desc{position:absolute;top:10px;right:56px;width:min(460px,70%);z-index:40;background:#0E2A55;color:#EAF1FB;border-radius:12px;padding:12px 14px;font-size:11.5px;line-height:1.5;box-shadow:0 10px 28px rgba(14,42,85,.35);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-4px);transition:opacity .18s ease,transform .18s ease,visibility 0s linear .18s}
-.mt-item:hover>.mt-desc{opacity:1;visibility:visible;transform:none;transition-delay:.45s,.45s,.45s}
-.mt-desc b{color:#9FE3B8;font-size:10px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-top:7px}.mt-desc b:first-child{margin-top:0}
-.mt-desc ul{margin:2px 0 0 16px;padding:0}.mt-desc li{margin:1px 0}.mt-desc .mt-desc-evo{color:#FFE6A8}
-@media (hover:none){.mt-item>.mt-desc{display:none}}
 @keyframes pil-vaivem{from{transform:translate3d(var(--x0),var(--y),0)}to{transform:translate3d(var(--x1),var(--y),0)}}
 @keyframes pil-balanco{0%,100%{translate:0 0}50%{translate:0 3px}}
 .pil-aviao-vivo{transform:translate3d(var(--x0,0px),var(--y,0px),0)}
@@ -3680,6 +3674,7 @@ window.abreConfigMotor=function(id){
     <div class="fdoc-t">Onde para hoje</div><p>${esc(d.onde_para||"—")}</p>
     ${(d.para_afiar||[]).length?`<div class="fdoc-t">Para afiar</div><ul>${d.para_afiar.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
     <div class="fdoc-t">Evolução gratuita</div><p>${esc(d.evolucao_gratuita||"")}</p>
+    <p class=meta style="margin-top:10px">Clique no quadro de qualquer motor para ver a configuração dele.</p>
    </div>`);
 };
 window.anexarDescricoes=function(){
@@ -3689,15 +3684,7 @@ window.anexarDescricoes=function(){
     if(!id) return;
     if(!el.dataset.cfgClique){ el.dataset.cfgClique="1"; el.style.cursor="pointer";
       el.addEventListener("click",ev=>{ if(ev.target.closest("a,button,.mt-lado-dir,.ed-motor,summary,select,input,label")) return; abreConfigMotor(id); }); }
-    if(el.querySelector(":scope>.mt-desc")) return;
-    const d=D[id], V=d.verificacao||{};
-    const box=document.createElement("div"); box.className="mt-desc"; box.setAttribute("role","tooltip");
-    box.innerHTML=`<b>Objetivo</b>${esc(d.objetivo||"")}<b>Quando roda</b>${esc(d.agenda||"—")}<b>Como funciona</b>${esc(d.como_funciona||"")}`+
-      (V.etapa_1?`<b>Verificação em 2 etapas</b><ul><li><i>1ª</i> ${esc(V.etapa_1)}</li><li><i>2ª</i> ${esc(V.etapa_2||"")}</li></ul>`:"")+
-      `<b>Onde para hoje</b>${esc(d.onde_para||"—")}`+
-      ((d.para_afiar||[]).length?`<b>Para afiar</b><ul>${d.para_afiar.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"")+
-      `<b>Evolução gratuita</b><span class="mt-desc-evo">${esc(d.evolucao_gratuita||"")}</span><b style="color:#9FC1E8">clique no quadro para a configuração completa</b>`;
-    el.appendChild(box);
+    // 24/09 (titular): nada aparece ao passar o mouse; a configuração completa abre só no clique
   });
 };
 (function vigiarLista(){
