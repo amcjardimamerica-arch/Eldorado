@@ -8,13 +8,17 @@ WF = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8", errors=
 class TesteCargoVago(unittest.TestCase):
     def test_o_cargo_esta_vago_e_diz_por_que(self):
         o = json.loads(CARGO.read_text(encoding="utf-8"))["ocupante_atual"]
+        if not o.get("vago"):                       # 24/09: o titular empossou o Qwen3 sem benchmark
+            self.assertIn("decisão do titular", o["empossado_por"]); return
         self.assertTrue(o["vago"]); self.assertIsNone(o["nome"])
         self.assertEqual(o["anterior"], "Llama-3.2-3B-Instruct")
         self.assertIn("nenhum substituto medido", o["motivo"])
         self.assertIn("rede determinística", o["como_o_piloto_voa"])
 
     def test_vago_nao_dispara_nova_saida(self):
-        self.assertFalse(deve_sair()[0])
+        o = json.loads(CARGO.read_text(encoding="utf-8"))["ocupante_atual"]
+        if o.get("vago"):
+            self.assertFalse(deve_sair()[0])
 
     def test_ninguem_assume_sem_medicao(self):
         """O Qwen3 não baixou: não há número real sobre ele."""

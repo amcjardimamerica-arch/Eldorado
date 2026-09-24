@@ -68,15 +68,32 @@ class IALocal:
         except Exception:
             return False
 
+    def _e_qwen3(self) -> bool:
+        if not hasattr(self, "_qwen3"):
+            try:
+                from .cargo_piloto import ocupante
+                self._qwen3 = str((ocupante() or {}).get("id", "")).startswith("qwen3")
+            except Exception:
+                self._qwen3 = False
+        return self._qwen3
+
     def perguntar(self, prompt: str, esquema_hint: str) -> dict | None:
         # Gemma não aceita a role 'system': o sistema vai dentro da mensagem do usuário
         if getattr(self, "sem_system", False):
             msgs = [{"role": "user", "content": SISTEMA + " Esquema: " + esquema_hint + "\n\n" + prompt[:6000]}]
         else:
             msgs = [{"role": "system", "content": SISTEMA + " Esquema: " + esquema_hint}, {"role": "user", "content": prompt[:6000]}]
+        # QWEN3 SEM RACIOCÍNIO. O Qwen3 pensa em voz alta antes de responder, e isso triplicou o
+        # tempo por pergunta na avaliação de 23/09 — com o teto de 26 min, o voo não fecharia as
+        # missões. '/no_think' é a chave oficial do modelo; enable_thinking=false é a do
+        # template no llama-server. Qualquer bloco <think> que escape é removido antes do JSON.
+        if self._e_qwen3():
+            msgs[-1] = {**msgs[-1], "content": msgs[-1]["content"] + " /no_think"}
         payload = {"messages": msgs,
                    "temperature": CFG["limites"]["temperatura"], "max_tokens": CFG["limites"]["tokens_resposta"],
                    "response_format": {"type": "json_object"}}
+        if self._e_qwen3():
+            payload["chat_template_kwargs"] = {"enable_thinking": False}
         try:
             if self._transporte:
                 data = self._transporte(payload)
@@ -86,6 +103,7 @@ class IALocal:
                     data = json.loads(r.read().decode("utf-8"))
             self.modelo = data.get("model") or self.modelo
             txt = data["choices"][0]["message"]["content"]
+            txt = re.sub(r"<think>[\s\S]*?</think>", "", txt or "")           # raciocínio que escapou
             txt = re.sub(r"^```(?:json)?|```$", "", txt.strip(), flags=re.M).strip()
             return json.loads(txt)
         except Exception:
