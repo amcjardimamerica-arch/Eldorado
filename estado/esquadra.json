@@ -386,52 +386,63 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 36,
+      "leituras": 37,
       "achados_total": 0,
-      "vazias_seguidas": 36,
-      "ultima": "2026-09-23T09:56:56+00:00",
+      "vazias_seguidas": 37,
+      "ultima": "2026-09-24T09:52:58+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
+      "falhas_ultima": 1,
       "saude": [
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260923&dataFinal=20260923&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260924&dataFinal=20260924&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
+          "http": 200,
+          "bytes": 1805
+        },
+        {
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260924&dataFinal=20260924&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20",
           "http": 204,
           "bytes": 0
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 1,
-        "links_total": 0,
-        "links_candidatos": 0,
-        "descobertas": [],
+        "paginas_lidas": 3,
+        "links_total": 1,
+        "links_candidatos": 1,
+        "descobertas": [
+          {
+            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260924&dataFinal=20260924&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
+            "para": "https://pncp.gov.br/app/editais/76205699000198/2026/101",
+            "rotulo": "Credenciamento — MUNICIPIO DE SALGADO FILHO — “Credenciar Em"
+          }
+        ],
         "pdf_links": 0,
         "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
-        "camada1_vetados": 0,
+        "camada1_vetados": 1,
         "camada1_direcionados": 0
       }
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
       "tipo": "plataforma",
-      "leituras": 13,
-      "achados_total": 65,
+      "leituras": 14,
+      "achados_total": 72,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-23T09:57:25+00:00",
+      "ultima": "2026-09-24T09:53:28+00:00",
       "motivo": "motor regular e geral — todo dia",
-      "achados_ultima": 6,
+      "achados_ultima": 7,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://captadores.org.br/editais/",
           "http": 200,
-          "bytes": 137465
+          "bytes": 137467
         },
         {
           "url": "https://captadores.org.br/transparencia",
           "http": 200,
-          "bytes": 118930
+          "bytes": 118916
         }
       ],
       "alerta": null,
@@ -464,7 +475,7 @@
         "pdf_links": 0,
         "motivo_zero": null,
         "camada1_vetados": 0,
-        "camada1_direcionados": 60
+        "camada1_direcionados": 58
       }
     },
     "plat-captamos": {
@@ -496,10 +507,10 @@
     "plat-gife": {
       "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
       "tipo": "plataforma",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-23T09:59:00+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-24T09:55:10+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -512,7 +523,7 @@
         {
           "url": "https://gife.org.br/agenda/",
           "http": 200,
-          "bytes": 187165
+          "bytes": 187180
         }
       ],
       "alerta": null,
@@ -541,23 +552,23 @@
     "plat-observatorio-3setor": {
       "nome": "Observatório do Terceiro Setor — editais",
       "tipo": "plataforma",
-      "leituras": 13,
-      "achados_total": 65,
+      "leituras": 14,
+      "achados_total": 73,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-23T10:00:14+00:00",
+      "ultima": "2026-09-24T09:56:04+00:00",
       "motivo": "motor regular e geral — todo dia",
-      "achados_ultima": 9,
+      "achados_ultima": 8,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://observatorio3setor.org.br/editais/",
           "http": 200,
-          "bytes": 223933
+          "bytes": 224019
         },
         {
           "url": "https://observatorio3setor.org.br/secoes_tematicas/editais",
           "http": 200,
-          "bytes": 223933
+          "bytes": 224019
         }
       ],
       "alerta": null,
@@ -590,16 +601,16 @@
         "pdf_links": 5,
         "motivo_zero": null,
         "camada1_vetados": 5,
-        "camada1_direcionados": 48
+        "camada1_direcionados": 46
       }
     },
     "plat-prosas-premios": {
       "nome": "Prosas — prêmios, concursos e cursos para OSCs",
       "tipo": "plataforma",
-      "leituras": 13,
+      "leituras": 14,
       "achados_total": 0,
-      "vazias_seguidas": 13,
-      "ultima": "2026-09-23T10:00:46+00:00",
+      "vazias_seguidas": 14,
+      "ultima": "2026-09-24T09:56:34+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2173,10 +2184,10 @@
     "plat-cnpq-extensao": {
       "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
       "tipo": "plataforma",
-      "leituras": 6,
+      "leituras": 7,
       "achados_total": 0,
-      "vazias_seguidas": 6,
-      "ultima": "2026-09-23T09:57:47+00:00",
+      "vazias_seguidas": 7,
+      "ultima": "2026-09-24T09:53:48+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -2184,18 +2195,18 @@
         {
           "url": "https://www.gov.br/mcti/pt-br",
           "http": 200,
-          "bytes": 205226
+          "bytes": 206194
         },
         {
           "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/chamamento-oceano",
           "http": 200,
-          "bytes": 199828
+          "bytes": 199004
         }
       ],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 5,
-        "links_total": 2805,
+        "links_total": 2806,
         "links_candidatos": 765,
         "descobertas": [
           {
@@ -2228,10 +2239,10 @@
     "plat-empresas-editais-incentivados": {
       "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
       "tipo": "plataforma",
-      "leituras": 6,
+      "leituras": 7,
       "achados_total": 0,
-      "vazias_seguidas": 6,
-      "ultima": "2026-09-23T09:57:54+00:00",
+      "vazias_seguidas": 7,
+      "ultima": "2026-09-24T09:53:53+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -2239,12 +2250,12 @@
         {
           "url": "https://www.portoitapoa.com/",
           "http": 200,
-          "bytes": 274720
+          "bytes": 273817
         },
         {
           "url": "https://html.duckduckgo.com/html/?q=GRUPO+CASAS+BAHIA+S.A.+site+oficial",
           "http": 200,
-          "bytes": 32069
+          "bytes": 32581
         }
       ],
       "alerta": null,
@@ -2260,7 +2271,7 @@
           },
           {
             "de": "https://html.duckduckgo.com/html/?q=GRUPO+CASAS+BAHIA+S.A.+site+oficial",
-            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.grupocasasbahia.com.br%2Fquem%2Dsomos%2F&rut=de3c8b1403d641f8036a9cb314e3123f3b91e3cebe3062476ad3a191ef829f22",
+            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.grupocasasbahia.com.br%2Fquem%2Dsomos%2F&rut=625a385e3a9d89a46e4c57e609fb7511b924a763568700bc49758369099cabb7",
             "rotulo": "GRUPO   CASAS   BAHIA  Quem somos Somos reconhecidos por acr"
           }
         ],
@@ -2273,10 +2284,10 @@
     "plat-fapeg": {
       "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
       "tipo": "plataforma",
-      "leituras": 6,
+      "leituras": 7,
       "achados_total": 0,
-      "vazias_seguidas": 6,
-      "ultima": "2026-09-23T09:58:25+00:00",
+      "vazias_seguidas": 7,
+      "ultima": "2026-09-24T09:54:34+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2284,7 +2295,7 @@
         {
           "url": "https://goias.gov.br/fapeg/",
           "http": 200,
-          "bytes": 208593
+          "bytes": 207744
         },
         {
           "url": "https://goias.gov.br/fapeg/editais",
@@ -2328,10 +2339,10 @@
     "plat-fundos-estaduais-go": {
       "nome": "Fundos estaduais de Goiás com conselho — FIA, Idoso, FUNJUVE, Meio Ambiente",
       "tipo": "plataforma",
-      "leituras": 6,
-      "achados_total": 6,
+      "leituras": 7,
+      "achados_total": 7,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-23T09:58:52+00:00",
+      "ultima": "2026-09-24T09:55:01+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -2383,10 +2394,10 @@
     "plat-goias-social": {
       "nome": "Goiás Social — programas e editais para entidades",
       "tipo": "plataforma",
-      "leituras": 6,
-      "achados_total": 6,
+      "leituras": 7,
+      "achados_total": 7,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-23T09:59:36+00:00",
+      "ultima": "2026-09-24T09:55:31+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -2394,7 +2405,7 @@
         {
           "url": "https://goias.gov.br/social/",
           "http": 200,
-          "bytes": 191926
+          "bytes": 192911
         },
         {
           "url": "https://goias.gov.br/desenvolvimento-social/",
@@ -2438,10 +2449,10 @@
     "plat-mp-destinacoes-reparacao": {
       "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
       "tipo": "plataforma",
-      "leituras": 6,
-      "achados_total": 12,
+      "leituras": 7,
+      "achados_total": 14,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-23T10:00:02+00:00",
+      "ultima": "2026-09-24T09:55:56+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 2,
       "falhas_ultima": 1,
@@ -2449,12 +2460,12 @@
         {
           "url": "https://www.mpf.mp.br/",
           "http": 200,
-          "bytes": 249728
+          "bytes": 250101
         },
         {
           "url": "https://www.prt18.mpt.mp.br/",
           "http": 200,
-          "bytes": 64780
+          "bytes": 64976
         }
       ],
       "alerta": null,
@@ -2493,10 +2504,10 @@
     "plat-ovg": {
       "nome": "OVG — Organização das Voluntárias de Goiás: editais e chamamentos",
       "tipo": "plataforma",
-      "leituras": 6,
-      "achados_total": 6,
+      "leituras": 7,
+      "achados_total": 7,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-23T10:00:34+00:00",
+      "ultima": "2026-09-24T09:56:22+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 1,
       "falhas_ultima": 1,
@@ -2504,12 +2515,12 @@
         {
           "url": "https://www.ovg.org.br/",
           "http": 200,
-          "bytes": 84574
+          "bytes": 85439
         },
         {
           "url": "https://goias.gov.br/social/",
           "http": 200,
-          "bytes": 191926
+          "bytes": 192911
         }
       ],
       "alerta": null,
@@ -2548,10 +2559,10 @@
     "plat-prefeituras-50-go": {
       "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
       "tipo": "plataforma",
-      "leituras": 6,
+      "leituras": 7,
       "achados_total": 0,
-      "vazias_seguidas": 6,
-      "ultima": "2026-09-23T10:00:43+00:00",
+      "vazias_seguidas": 7,
+      "ultima": "2026-09-24T09:56:31+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2564,7 +2575,7 @@
         {
           "url": "https://pncp.gov.br/",
           "http": 200,
-          "bytes": 326112
+          "bytes": 325718
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
@@ -2593,10 +2604,10 @@
     "plat-prosas": {
       "nome": "Prosas — editais para o terceiro setor",
       "tipo": "plataforma",
-      "leituras": 6,
+      "leituras": 7,
       "achados_total": 0,
-      "vazias_seguidas": 6,
-      "ultima": "2026-09-23T10:00:45+00:00",
+      "vazias_seguidas": 7,
+      "ultima": "2026-09-24T09:56:33+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -2604,12 +2615,12 @@
         {
           "url": "https://prosas.com.br/editais",
           "http": 200,
-          "bytes": 34748
+          "bytes": 34760
         },
         {
           "url": "https://produtos.prosas.com.br/editais",
           "http": 200,
-          "bytes": 34748
+          "bytes": 34760
         }
       ],
       "alerta": null,
@@ -2638,10 +2649,10 @@
     "plat-salic": {
       "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
       "tipo": "plataforma",
-      "leituras": 6,
-      "achados_total": 30,
+      "leituras": 7,
+      "achados_total": 35,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-23T10:01:00+00:00",
+      "ultima": "2026-09-24T09:56:46+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 5,
       "falhas_ultima": 0,
@@ -2654,7 +2665,7 @@
         {
           "url": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet",
           "http": 200,
-          "bytes": 53781
+          "bytes": 53775
         }
       ],
       "alerta": null,
@@ -2693,10 +2704,10 @@
     "plat-secult-go": {
       "nome": "Secult Goiás — Goyazes e Aldir Blanc",
       "tipo": "plataforma",
-      "leituras": 6,
-      "achados_total": 77,
+      "leituras": 7,
+      "achados_total": 89,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-23T10:01:45+00:00",
+      "ultima": "2026-09-24T09:57:32+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 12,
       "falhas_ultima": 0,
@@ -2704,19 +2715,19 @@
         {
           "url": "https://goias.gov.br/cultura/",
           "http": 200,
-          "bytes": 229524
+          "bytes": 228915
         },
         {
           "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026/",
           "http": 200,
-          "bytes": 161748
+          "bytes": 161747
         }
       ],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 7,
-        "links_total": 989,
-        "links_candidatos": 582,
+        "links_total": 988,
+        "links_candidatos": 581,
         "descobertas": [
           {
             "de": "https://goias.gov.br/cultura/",
@@ -2913,10 +2924,10 @@
     "plat-sindico-aberto": {
       "nome": "Motor do Piloto — busca aberta no terceiro setor",
       "tipo": "plataforma",
-      "leituras": 3,
-      "achados_total": 54,
+      "leituras": 4,
+      "achados_total": 72,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-23T10:01:51+00:00",
+      "ultima": "2026-09-24T09:57:37+00:00",
       "motivo": "motor regular e geral — todo dia",
       "achados_ultima": 18,
       "falhas_ultima": 0,
@@ -2924,7 +2935,7 @@
         {
           "url": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
           "http": 200,
-          "bytes": 39058
+          "bytes": 37140
         },
         {
           "url": "https://html.duckduckgo.com/html/?q=",
@@ -2940,53 +2951,53 @@
         "descobertas": [
           {
             "de": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
-            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.gov.br%2Fmulheres%2Fpt%2Dbr%2Facesso%2Da%2Dinformacao%2Feditais%2F2026%2Fedital%2Dno%2D7%2D2026%2Dselecao%2Dde%2Dorganizacoes%2Dda%2Dsociedade%2Dcivil%2Dpara%2Dcomposicao%2Ddo%2Dforum%2Dnacional%2Dpelo%2Dprotagonismo%2Ddas%2Dmulheres%2Didosas&rut=b344638a7913779ead02f3b7baf2d15fc7867709341dc505efe63441381a5b12",
+            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.gov.br%2Fmulheres%2Fpt%2Dbr%2Facesso%2Da%2Dinformacao%2Feditais%2F2026%2Fedital%2Dno%2D7%2D2026%2Dselecao%2Dde%2Dorganizacoes%2Dda%2Dsociedade%2Dcivil%2Dpara%2Dcomposicao%2Ddo%2Dforum%2Dnacional%2Dpelo%2Dprotagonismo%2Ddas%2Dmulheres%2Didosas&rut=f6218d317ae4271294cf735463967dc351151cf41a3ea3c73a2a156499caa7cd",
             "rotulo": "Edital Nº 7/2026 - Seleção de organizações da sociedade civi"
           },
           {
             "de": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
-            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fmapaosc.ipea.gov.br%2Feditais&rut=3fd1f5e5054ea00dc87917bb31aca961a43d9e97637a67e8985abaf07f8e9737",
+            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fparceirosvoluntarios.org.br%2Fwp%2Dcontent%2Fuploads%2F2026%2F01%2FEdital%2DPrograma%2DImpulsionar%2D2026.pdf&rut=9e8ed409546502b6b0269714fa8ba1e28c8d1623e335ed009c084481b1d60008",
+            "rotulo": "PDF  EDITAL - parceirosvoluntarios.org.br"
+          },
+          {
+            "de": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
+            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fmapaosc.ipea.gov.br%2Feditais&rut=e4db437af65ef52d5efa9ff6a175e7976b2df60f6ac5ae937af1f163882b66d2",
             "rotulo": "Mapa das OSC - Editais"
           },
           {
             "de": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
-            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Funaids.org.br%2F2026%2F04%2Funaids%2Dpublica%2Dedital%2Dpara%2Dselecao%2Dde%2Dprojetos%2Dfocados%2Dno%2Ddesenvolvimento%2Dde%2Dacoes%2Dde%2Dbase%2Dcomunitaria%2F&rut=e31e9c743d2f8f81d3c8740bfbf1852039f5aa1279567711066e0c2db027de0a",
-            "rotulo": "UNAIDS publica Edital para seleção de projetos focados no .."
-          },
-          {
-            "de": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
-            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fcapitaai.com.br%2Feditais%2Dabertos%2Fpara%2Dong&rut=f6633aa262d7279ca5e22cdaaf92c0719cd5881b496d290207de1331c22ab1ca",
-            "rotulo": "Editais abertos para ONGs e OSCs em 2026 · Capitaai"
+            "para": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.gov.br%2Fmdh%2Fpt%2Dbr%2Fnavegue%2Dpor%2Dtemas%2Fparticipacao%2Dsocial%2Feditais&rut=5c647477f5cae553c847b300371447d660d3172f4262cb90c97c14e6630155c6",
+            "rotulo": "Editais — Ministério dos Direitos Humanos e da Cidadania"
           }
         ],
         "pdf_links": 0,
         "motivo_zero": null,
-        "camada1_vetados": 3,
-        "camada1_direcionados": 22
+        "camada1_vetados": 2,
+        "camada1_direcionados": 24
       }
     }
   },
   "ultima_execucao": {
     "data": "2026-09-24",
-    "em": "2026-09-24T08:55:37+00:00",
+    "em": "2026-09-24T09:57:37+00:00",
     "manual": null,
-    "bloco": "justica_legislativo",
-    "sensores_executados": 5,
+    "bloco": "plataformas_api",
+    "sensores_executados": 17,
     "em_espera": 89,
     "total_esquadra": 129,
     "previsoes_ativas": 1,
-    "achados": 0,
-    "novos_na_base": 0,
+    "achados": 55,
+    "novos_na_base": 19,
     "por_tipo": {
-      "legislativo": {
-        "sensores": 2,
+      "api": {
+        "sensores": 1,
         "achados": 0,
-        "falhas": 3
+        "falhas": 1
       },
-      "diario_justica": {
-        "sensores": 3,
-        "achados": 0,
-        "falhas": 2
+      "plataforma": {
+        "sensores": 16,
+        "achados": 55,
+        "falhas": 7
       }
     }
   }

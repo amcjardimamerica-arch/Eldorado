@@ -1,9 +1,9 @@
-commit: 70dfc9be8fa72db26142c9116baeca6877ba1c07
-em: 2026-09-24T08:54:21Z
+commit: f62670acd8a5539101ab34bc74cf0c9de217b2ab
+em: 2026-09-24T09:52:50Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 725 tests in 238.310s
+Ran 726 tests in 235.474s
 
 FAILED (failures=3, errors=3, skipped=9)
 ---- falhas ----
@@ -48,6 +48,15 @@ Traceback (most recent call last):
 AssertionError: False is not true
 
 ======================================================================
+FAIL: test_entendimento_cobre_a_biblioteca_inteira (test_piloto.TestePiloto.test_entendimento_cobre_a_biblioteca_inteira)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_piloto.py", line 48, in test_entendimento_cobre_a_biblioteca_inteira
+    self.assertIn("orcamento", cfg); self.assertIn("prazo inventado", cfg["regra"])
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'prazo inventado' not found in 'ocupante empossado pelo titular; só ele roda nos voos'
+
+======================================================================
 FAIL: test_dou_por_json_embutido_e_pil_opcional (test_system.SystemTests.test_dou_por_json_embutido_e_pil_opcional)
 O DOU (leiturajornal) traz as matérias num JSON embutido: o sensor as lê
 ----------------------------------------------------------------------
@@ -56,17 +65,7 @@ Traceback (most recent call last):
     self.assertEqual(len(r["achados"]),1)
 AssertionError: 3 != 1
 
-======================================================================
-FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
-Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3786, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
-    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'futuro' == 'futuro'
-
-----------------------------------------------------------------------
-Ran 725 tests in 238.310s
+Ran 726 tests in 235.474s
 
 FAILED (failures=3, errors=3, skipped=9)
