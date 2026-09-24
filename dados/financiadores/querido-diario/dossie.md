@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `querido-diario`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 16809
-- Distribuição por ano pesquisado/coletado: {'2021': 1126, '2022': 3238, '2023': 3263, '2024': 3281, '2025': 3383, '2026': 2518}
+- Pistas aguardando confirmação: 16948
+- Distribuição por ano pesquisado/coletado: {'2021': 1126, '2022': 3261, '2023': 3330, '2024': 3330, '2025': 3383, '2026': 2518}
 
 ## Padrões
 
@@ -31,10 +31,10 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Diário Oficial de Brasília (DF) 2024-11-27 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/5300108/2024-11-27/55c669c71d4be98e7654c7cd89614ffcf88195df.pdf) — coletado em 2026-09-01T06:26:19+00:00
 - [Diário Oficial de Joinville (SC) 2026-02-20 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/4209102/2026-02-20/e677c3bad0ddd3cfd162e827d24c2c686aef2de8.pdf) — coletado em 2026-09-01T06:41:58+00:00
 - [Diário Oficial de Uberaba (MG) 2022-03-18 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3170107/2022-03-18/6cf330fff8b2e2ff08ed7e793f39d7ba46a37418.pdf) — coletado em 2026-09-21T21:55:23+00:00
-- [Diário Oficial de Cafelândia (PR) 2023-02-24 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/4103453/2023-02-24/12aaf6531c8cc36965936ecad700e1519d367561.pdf) — coletado em 2026-09-23T10:43:12+00:00
+- [Diário Oficial de Cafelândia (PR) 2023-02-24 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/4103453/2023-02-24/12aaf6531c8cc36965936ecad700e1519d367561.pdf) — coletado em 2026-09-24T02:37:16+00:00
 - [Diário Oficial de Juazeiro do Norte (CE) 2023-05-30 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2307304/2023-05-30/92cad4f366040de4dc7993f36c35b18f87c31beb.pdf) — coletado em 2026-09-20T21:17:25+00:00
 - [Diário Oficial de Campo Belo (MG) 2026-09-11 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3111200/2026-09-11/66bbd1b71c44e98fe9bf8df7639860d078057fd2.pdf) — coletado em 2026-09-21T23:35:50+00:00
-- [Diário Oficial de Belém (PA) 2023-02-24 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/1501402/2023-02-24/3c08e9546eb3c8d61b8077d0e1ee3b920bc0cadb.pdf) — coletado em 2026-09-21T22:30:40+00:00
+- [Diário Oficial de Belém (PA) 2023-02-24 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/1501402/2023-02-24/3c08e9546eb3c8d61b8077d0e1ee3b920bc0cadb.pdf) — coletado em 2026-09-24T02:37:29+00:00
 - [Diário Oficial de Campo Mourão (PR) 2026-02-26 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/4104303/2026-02-26/97b211f80b9112ec6d030cf9fc153133c1d11ba6.pdf) — coletado em 2026-09-01T06:41:49+00:00
 - [Diário Oficial de Itapevi (SP) 2025-02-19 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3522505/2025-02-19/f81056fa73cb0d98d38526cd6dc07cb013e14990.pdf) — coletado em 2026-09-01T06:30:07+00:00
 - [Diário Oficial de Uberaba (MG) 2023-09-12 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3170107/2023-09-12/ad72196f127bd5cbd89b0db698f4c90633103be6.pdf) — coletado em 2026-09-22T03:39:46+00:00
@@ -60,5 +60,5 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Diário Oficial de Jequiá da Praia (AL) 2026-01-07 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2700000/2026-01-07/29dafa3bc5a534f0454173565ac566c327bcc28e.pdf) — coletado em 2026-09-01T06:41:11+00:00
 - [Diário Oficial de Teresina (PI) 2024-06-03 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2211001/2024-06-03/bace9ebc5ff3bc67954d0f36933a29111ae1cdfe.pdf) — coletado em 2026-09-21T23:25:49+00:00
 - [Diário Oficial de Jaboticabal (SP) 2022-01-07 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3524303/2022-01-07/8443c852d5e387831aad5ed51d091c6da07c27a9.pdf) — coletado em 2026-09-21T21:48:15+00:00
-- [Diário Oficial de Taubaté (SP) 2022-12-13 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3554102/2022-12-13/a0dffad95c1489492cedaf7a06310a3f778a33a5.pdf) — coletado em 2026-09-21T22:23:57+00:00
+- [Diário Oficial de Taubaté (SP) 2022-12-13 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3554102/2022-12-13/a0dffad95c1489492cedaf7a06310a3f778a33a5.pdf) — coletado em 2026-09-24T02:33:36+00:00
 - [Diário Oficial de Curitiba (PR) 2025-12-11 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/4106902/2025-12-11/fb71b5e800ae449b8c86f2444b773ea3882c5bea.pdf) — coletado em 2026-09-01T06:40:21+00:00
