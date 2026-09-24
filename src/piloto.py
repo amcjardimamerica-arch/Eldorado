@@ -739,11 +739,15 @@ def ciclo(porta: int | None = None) -> dict:
                       "alvo_id": alvo_r["id"], "_alvo": alvo_r})
     rel["resgates_na_fila"] = len(plano)
     plano += sortear()                                              # depois a exploração
+    # POSIÇÃO AO VIVO: o painel só é republicado a cada 6 h; a posição vai por um ramo
+    # próprio, lido direto pelo navegador, para o avião aparecer onde o trabalho está AGORA
+    from .posicao_piloto import anunciar as _anunciar, pousar as _pousar_pos, registro as _reg_pos
     for m in plano:
         if time.time() - t0 > teto_s:
             rel["encerrou_por"] = "teto de tempo"
             break
         abrir_missao(m, m.get("motor") or "")
+        _anunciar(m, voo=rel.get("voo_do_dia"), de=len(plano))
         try:
             if m["tipo"] == "resgate":
                 alvo, ach, licao = missao_resgate(ia, m["_alvo"], conhecidos)
@@ -795,6 +799,8 @@ def ciclo(porta: int | None = None) -> dict:
             _devolver(_m["alvo_id"], tentado=False)                      # reservado e não atendido volta a aguardar
     from .piloto_ao_vivo import marcar as _vivo2, montar as _vivo_montar
     _vivo2("pousou", detalhe=f"{sum(len(m.get('achados') or []) for m in (rel.get('missoes') or []))} achado(s)")
+    _pousar_pos(f"voo {rel.get('voo_do_dia')} pousou")
+    rel["posicao_ao_vivo"] = _reg_pos()                 # prova de que o anúncio chegou (ou não)
     rel.setdefault("encerrou_por", "tarefa concluída")   # o normal: acabou o que havia para fazer
     rel["minutos_de_voo"] = round((time.time() - t0) / 60, 1)
     from .radar_piloto import publicar as _pub_radar

@@ -423,34 +423,22 @@ box-shadow:0 1px 3px #0002}
 @media(prefers-reduced-motion:reduce){.ep-l,.ep-pg{transition:none}}
 .pil-voando-ic{color:#0B4EA2;margin-right:4px}
 .pil-errante{position:absolute;z-index:40;pointer-events:none;height:34px}
-.pil-errante.patrulha{opacity:.72}
-/* o TRILHO leva o conjunto de uma ponta à outra e vira o nariz na borda */
-.pil-voa{position:relative;width:62px;height:34px;transform-origin:50% 50%;
-  animation:pil-travessia var(--pil-tempo,11s) ease-in-out infinite}
-/* o AVIÃO mantém o balanço que ele tinha no canto: sobe, desce e inclina sozinho,
-   com a mesma sombra e a mesma ampliação ao passar o mouse */
-.pil-errante .pil-aviao{position:absolute;left:0;top:0;pointer-events:auto;
-  filter:drop-shadow(0 2px 3px rgba(11,78,162,.25));animation:pil-balanco 3.6s ease-in-out infinite}
-.pil-errante .pil-aviao:hover{animation-play-state:paused;transform:scale(1.12)}
-/* o rótulo fica ao lado do avião, como ficava ao lado do título no canto. Ele é IRMÃO do
-   avião, não filho: assim viaja junto pelo trilho sem ser espelhado na meia-volta. */
-.pil-errante .pil-balao{position:absolute;left:68px;top:5px;
-  animation:pil-acompanha var(--pil-tempo,11s) ease-in-out infinite}
-@keyframes pil-balanco{0%{transform:translateY(0) rotate(-2deg)}25%{transform:translateY(-3px) rotate(1deg)}
-  50%{transform:translateY(0) rotate(-1deg)}75%{transform:translateY(-4px) rotate(2deg)}100%{transform:translateY(0) rotate(-2deg)}}
-@keyframes pil-acompanha{0%{transform:translateX(0)}44%,50%{transform:translateX(var(--pil-dist,240px))}
-  94%,100%{transform:translateX(0)}}
-@media (prefers-reduced-motion:reduce){.pil-voa,.pil-errante .pil-aviao,.pil-errante .pil-balao{animation:none}}
-.pil-balao{position:absolute;left:68px;top:5px;background:#0E2A55;color:#fff;font-size:10.5px;padding:2px 9px;border-radius:12px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.18)}
-.pil-balao b{color:#9FE3B8}
-/* ida com o nariz para a direita, meia-volta na borda, volta com o nariz para a esquerda,
-   e outra meia-volta ao chegar — o sentido troca a cada ponta da travessia */
-@keyframes pil-travessia{
-  0%   {transform:translateX(0)              scaleX(1)}
-  44%  {transform:translateX(var(--pil-dist,240px)) scaleX(1)}
-  50%  {transform:translateX(var(--pil-dist,240px)) scaleX(-1)}
-  94%  {transform:translateX(0)              scaleX(-1)}
-  100% {transform:translateX(0)              scaleX(1)}}
+/* O AVIÃO DO PILOTO vai e volta SÓ por cima do motor da Bússola em que está trabalhando agora,
+   como um sinal de alerta. Nenhuma outra parte do site recebe o avião.
+   Sem missão em curso, ou com o lugar fora da tela, ele simplesmente não aparece. */
+.pil-aviao-vivo{position:absolute;left:0;top:0;width:130px;height:130px;z-index:60;
+  pointer-events:auto;cursor:pointer;opacity:0;transition:opacity .45s ease;will-change:transform}
+.pil-aviao-vivo.visivel{opacity:1}
+.pil-aviao-vivo img{width:100%;height:100%;display:block;
+  filter:drop-shadow(0 4px 5px rgba(14,42,85,.28));transform-origin:50% 55%;transition:transform .2s ease}
+.pil-aviao-vivo:hover img{filter:drop-shadow(0 6px 8px rgba(14,42,85,.38))}
+.pil-aviao-vivo .pil-balao{position:absolute;left:50%;bottom:calc(100% + 2px);top:auto;
+  transform:translateX(-50%);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+.pil-aviao-vivo:hover .pil-balao,.pil-aviao-vivo.mostra-balao .pil-balao{opacity:1}
+/* o lugar de trabalho ganha um contorno discreto enquanto ele está lá */
+.pil-trabalhando{outline:2px dashed rgba(11,78,162,.45);outline-offset:3px;border-radius:8px;
+  transition:outline-color .4s}
+@media (prefers-reduced-motion:reduce){.pil-aviao-vivo{transition:none}}
 .pil-vivo{border-radius:10px;padding:9px 11px;margin:8px 0;border:1px solid}
 .pil-vivo.em_voo{background:#EAF8F0;border-color:#7CE0A8}
 .pil-vivo.entre_voos{background:#F3F8FF;border-color:#9FC1E8}
@@ -2923,7 +2911,7 @@ function desenhaPostoPiloto(alvo){
       return `<div class="pil-resg">
         <div class="pil-brief-t">Missões especiais <span class=meta>resgate de edital incompleto · tem prioridade sobre a exploração</span></div>
         <div class=meta style="margin-bottom:4px">${Object.entries(P).map(([k,v])=>`<b>${v}</b> ${esc(k.replace("_"," "))}`).join(" · ")}</div>
-        ${esp.map(x=>`<div class="pil-resg-l" title="${esc((x.orgao||"")+" · falta: "+(x.falta||[]).join(", "))}">
+        ${esp.map(x=>`<div class="pil-resg-l" data-id="${esc(x.id||"")}" title="${esc((x.orgao||"")+" · falta: "+(x.falta||[]).join(", "))}">
           <span class="pil-urg">${x.urgencia}</span><span class="pil-resg-n">${esc((x.titulo||"").slice(0,64))}</span>
           <span class=meta>${(x.falta||[]).length} dado(s) em falta${x.uf?" · "+esc(x.uf):""}</span></div>`).join("")}
       </div>`;})()}
@@ -3479,46 +3467,120 @@ window.fichaEmpresa=function(uid){
 };
 window.fichaApoiador=window.fichaEmpresa;   // nome antigo, para não quebrar chamada remanescente
 
-/* o avião em travessia sobre a faixa onde o Piloto trabalha */
-const ONDE_POUSAR={cacar_oportunidade:["#rank-apoiadores","#emp-ranking-caixa","#pil-posto","#pil-posto-bussola"],
-                   afiar_motor:["#pil-posto-bussola","#pil-posto"],
-                   descobrir_local:["#pil-posto-bussola","#pil-posto"],
-                   resgate:["#pil-posto","#pil-posto-bussola"]};
-window.pousarAviaoErrante=function(){
-  const E=window._ESQ||{};
-  // se não há missão em curso, ele patrulha a última faixa conhecida em vez de sumir
-  const u=(E.ultimas||E.missoes||[])[0];
-  const at=E.missao_atual||(u?{tipo:u.tipo,motor:u.motor,patrulha:true}:null);
-  let av=document.getElementById("pil-errante");
-  if(!at){ if(av)av.remove(); return; }
-  const alvos=ONDE_POUSAR[at.tipo]||["#pil-posto"];
-  let el=null, reserva=null;
-  for(const s of alvos){ const c=document.querySelector(s); if(!c||c.offsetParent===null)continue;
-    if(!reserva)reserva=c;
-    if(c.getBoundingClientRect().width>120){el=c;break;} }
-  el=el||reserva;
-  if(!el){ if(av)av.remove(); return; }
-  const legenda=(E.legenda||{})[at.tipo]||at.tipo;
-  if(!av){
-    av=document.createElement("div"); av.id="pil-errante"; av.className="pil-errante";
-    av.innerHTML=`<div class="pil-voa">${aviaoDoPiloto(at.motor||"", `${legenda}${at.motor?" · "+at.motor:""}`)}</div>` +
-      `<span class="pil-balao">${esc(legenda)}${at.motor?` · <b>${esc(at.motor)}</b>`:""}</span>`;
-    document.body.appendChild(av);
+/* ── O AVIÃO DO PILOTO, AO VIVO ────────────────────────────────────────────────────────
+   Aparece SÓ sobre o lugar exato onde o Piloto está trabalhando agora — a linha do motor na
+   Bússola, o edital em resgate — e em lugar nenhum mais. Sem missão em curso, ou com esse
+   lugar fora da vista aberta, ele não aparece.
+   A POSIÇÃO vem do ramo piloto-ao-vivo, lida direto do repositório: o site só é republicado
+   a cada 6 horas, e com esse atraso o avião estaria sempre sobre o lugar errado. */
+const POS_API="https://api.github.com/repos/amcjardimamerica-arch/Eldorado/contents/docs/dados/piloto_posicao.json?ref=piloto-ao-vivo";
+const POS_RAW="https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/piloto-ao-vivo/docs/dados/piloto_posicao.json";
+window._POS=null; let _apiDescansaAte=0;
+async function lerPosicao(){
+  // 1º a API: resposta fresca, e a revalidação com ETag (304) não gasta cota — medido.
+  // Se a cota do IP acabar (403/429), 15 min de descanso e o raw, que atrasa até 5 min.
+  if(Date.now()>_apiDescansaAte){
+    try{ const r=await fetch(POS_API,{cache:"no-cache",headers:{Accept:"application/vnd.github.raw+json"}});
+      if(r.ok){ const d=await r.json(); d._via="api"; window._POS=d; return d; }
+      if(r.status===403||r.status===429) _apiDescansaAte=Date.now()+15*60*1000;
+    }catch(e){}
   }
-  const r=el.getBoundingClientRect();
-  const largura=Math.max(200,r.width-16);
-  av.style.top=(window.scrollY+r.top-24)+"px";
-  av.style.left=(window.scrollX+r.left+8)+"px";
-  av.style.width=largura+"px";
-  const voa=av.firstElementChild;
-  const travessia=Math.max(80,largura-190);                 // espaço livre até a outra borda
-  voa.style.setProperty("--pil-dist", travessia+"px");
-  voa.style.setProperty("--pil-tempo",(travessia/26).toFixed(1)+"s");   // ~26 px por segundo, ida e volta
-  av.classList.toggle("patrulha", !!at.patrulha);
+  try{ const r=await fetch(POS_RAW,{cache:"no-cache"}); if(r.ok){ const d=await r.json(); d._via="raw"; window._POS=d; } }catch(e){}
+  return window._POS;
+}
+function posicaoValida(P){
+  if(!P||P.estado!=="em_voo"||!P.missao) return false;
+  const idade=(Date.now()-new Date(P.atualizado_em).getTime())/1000;
+  // relógio do computador pode estar alguns minutos adiantado ou atrasado
+  return idade>-300 && idade<=(P.validade_s||480);
+}
+function _ce(v){ return (window.CSS&&CSS.escape)?CSS.escape(String(v)):String(v).replace(/["\\\]\[]/g,"\\$&"); }
+function _visivel(el){ if(!el||el.offsetParent===null) return false;
+  const r=el.getBoundingClientRect(); return r.width>40&&r.height>8; }
+/* O LUGAR EXATO. Quem sabe onde cada coisa fica na tela é o painel; o voo só diz o que faz. */
+window.lugarDoTrabalho=function(m){
+  // SÓ OS MOTORES DA BÚSSOLA (titular, 24/09): nenhuma outra parte do site recebe o avião.
+  // Missão sem linha de motor na Bússola — o resgate, por exemplo — não mostra avião.
+  if(!m||!m.motor) return null;
+  const el=document.querySelector(`#mt-lista .mt-item[data-id="${_ce(m.motor)}"]`);
+  return _visivel(el)?el:null;
 };
-window.addEventListener("scroll",()=>{ if(document.getElementById("pil-errante"))pousarAviaoErrante(); },{passive:true});
-window.addEventListener("resize",()=>{ if(document.getElementById("pil-errante"))pousarAviaoErrante(); });
-setInterval(()=>{ if(window._ESQ)pousarAviaoErrante(); },7000);
+const AV={el:null,alvo:null,x:0,y:0,dir:1,esq:false,pausaAte:0,raf:0,ultimo:0,reduz:false};
+const AV_T=130;                      // caixa do avião na tela; o ARQUIVO é o original, sem redução
+function montarAviao(){
+  if(AV.el) return AV.el;
+  AV.reduz=!!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const d=document.createElement("div"); d.className="pil-aviao-vivo"; d.id="pil-aviao-vivo"; d.setAttribute("role","img");
+  d.innerHTML=`<img src="img/aviao-amc.webp" alt="" draggable="false"><span class="pil-balao"></span>`;
+  d.addEventListener("mouseenter",()=>{AV.pausaAte=Infinity;});
+  d.addEventListener("mouseleave",()=>{AV.pausaAte=performance.now()+400;});
+  d.addEventListener("click",e=>{e.stopPropagation(); d.classList.toggle("mostra-balao");});
+  document.body.appendChild(d); AV.el=d; return d;
+}
+/* O CORREDOR: a faixa logo acima do topo do motor, de ponta a ponta do cartão. Ele vai e
+   volta ali em cima, como um sinal de alerta apontando onde a missão está acontecendo. */
+function corredor(el){
+  const r=el.getBoundingClientRect(), x0=r.left+window.scrollX, y0=r.top+window.scrollY;
+  return {x0:x0-AV_T*.08, x1:Math.max(x0-AV_T*.08, x0+r.width-AV_T*.92), y:y0-AV_T*.62};
+}
+function desenharAviao(){
+  const bal=Math.sin(performance.now()/480)*3;                // o balanço de quem está no ar
+  AV.el.style.transform=`translate3d(${AV.x.toFixed(1)}px,${(AV.y+bal).toFixed(1)}px,0)`;
+  AV.el.firstElementChild.style.transform=AV.esq?"scaleX(-1)":"none";   // o nariz aponta para onde vai
+}
+function voarAviao(t){
+  AV.raf=requestAnimationFrame(voarAviao);
+  if(!AV.alvo||!AV.el||document.hidden) return;
+  if(!document.body.contains(AV.alvo)||AV.alvo.offsetParent===null){ pousarAviao(); return; }
+  const dt=Math.min(.05,(t-(AV.ultimo||t))/1000); AV.ultimo=t;
+  const c=corredor(AV.alvo); AV.y=c.y;
+  AV.x=Math.min(Math.max(AV.x,c.x0),c.x1);                  // nunca fora do motor
+  if(t<AV.pausaAte){ desenharAviao(); return; }
+  AV.x+=AV.dir*200*dt;                                      // 200 px/s: sinal de alerta, não passeio
+  if(AV.x>=c.x1){ AV.x=c.x1; AV.dir=-1; AV.pausaAte=t+260; } // meia-volta na borda
+  else if(AV.x<=c.x0){ AV.x=c.x0; AV.dir=1; AV.pausaAte=t+260; }
+  AV.esq=AV.dir<0;
+  desenharAviao();
+}
+function pousarAviao(){
+  if(AV.alvo) AV.alvo.classList.remove("pil-trabalhando");
+  AV.alvo=null;
+  if(AV.el) AV.el.classList.remove("visivel","mostra-balao");
+  if(AV.raf){ cancelAnimationFrame(AV.raf); AV.raf=0; }
+}
+const TRABALHO={afiar_motor:"afiando o motor",cacar_oportunidade:"caçando oportunidade",
+  descobrir_local:"procurando fonte local",resgate:"resgatando edital",reconhecimento:"reconhecendo o terceiro setor"};
+window.atualizarAviao=function(){
+  const P=window._POS;
+  if(!posicaoValida(P)){ pousarAviao(); return; }
+  const m=P.missao, el=lugarDoTrabalho(m);
+  if(!el){ pousarAviao(); return; }
+  const av=montarAviao();
+  const trab=m.motor==="sindico-aberto"?"reconhecimento":m.tipo;     // a missão 2 corre sob este motor
+  av.querySelector(".pil-balao").innerHTML=`${esc(TRABALHO[trab]||trab||"")}`+
+    `${m.tipo==="resgate"?(m.alvo_titulo?` · <b>${esc(m.alvo_titulo.slice(0,40))}</b>`:""):(m.motor?` · <b>${esc(m.motor)}</b>`:"")}`+
+    `${m.ordem&&m.de?` · missão ${m.ordem}/${m.de}`:""}`;
+  if(AV.alvo!==el){
+    if(AV.alvo) AV.alvo.classList.remove("pil-trabalhando");
+    AV.alvo=el; el.classList.add("pil-trabalhando");
+    const c=corredor(el); AV.x=c.x0; AV.y=c.y; AV.dir=1;
+  }
+  av.classList.add("visivel");
+  if(AV.reduz){ const c=corredor(el); AV.x=c.x0; AV.y=c.y; AV.esq=false; desenharAviao(); return; }
+  if(!AV.raf){ AV.ultimo=0; AV.raf=requestAnimationFrame(voarAviao); }
+};
+/* diagnóstico só de leitura: no console, _aviaoDiag() diz onde ele está, para onde vai e se
+   está dentro do lugar de trabalho — sem isso, conferir o voo exigia adivinhar */
+window._aviaoDiag=function(){
+  const c=AV.alvo?corredor(AV.alvo):null;
+  return {x:AV.x,y:AV.y,dir:AV.dir,esq:AV.esq,alvo:AV.alvo&&AV.alvo.getAttribute("data-id"),
+          dentro:!!c&&AV.x>=c.x0-.5&&AV.x<=c.x1+.5, x0:c&&c.x0, x1:c&&c.x1, via:(window._POS||{})._via||null};
+};
+window._lerPosicao=()=>lerPosicao();
+lerPosicao().then(atualizarAviao);
+setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
+setInterval(()=>{ atualizarAviao(); },3000);                       // o lugar (troca de vista, filtro)
+document.addEventListener("click",()=>setTimeout(()=>atualizarAviao(),350),true);
 
 async function carregaVivo(){ try{const r=await fetch("dados/piloto_ao_vivo.json?v="+Date.now()); if(r.ok)window._VIVO=await r.json();}catch(e){} return window._VIVO||null; }
 setInterval(()=>{ carregaVivo().then(()=>{desenhaPostoPiloto("pil-posto");desenhaPostoPiloto("pil-posto-bussola");}); },60000);
@@ -4118,7 +4180,7 @@ function iniciar(){
   {const el=$("versao-painel"); if(el){const g=(D.gerado_em||"").slice(0,16).replace("T"," ");
      const dias=Math.round((Date.now()-new Date(D.gerado_em||Date.now()))/864e5);
      el.innerHTML=`dados gerados em <b>${esc(g)}</b>${dias>1?` · <span style="color:var(--urgente)">${dias} dias atrás — recarregue com Ctrl+F5</span>`:" · atualizado"}`;}}
-  if(window.desenhaApoiadores)window.desenhaApoiadores();setTimeout(pousarAviaoErrante,700);desenhaPostoPiloto("pil-posto");desenhaPostoPiloto("pil-posto-bussola");desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
+  if(window.desenhaApoiadores)window.desenhaApoiadores();setTimeout(()=>window.atualizarAviao&&atualizarAviao(),700);desenhaPostoPiloto("pil-posto");desenhaPostoPiloto("pil-posto-bussola");desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
 }

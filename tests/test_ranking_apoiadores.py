@@ -62,12 +62,12 @@ class TesteCicloContinuoEAviao(unittest.TestCase):
         self.assertGreaterEqual(len(m["angulos_de_ataque"]), 12)
 
     def test_aviao_passeia_sobre_o_trabalho(self):
+        """24/09: a regra se inverteu por ordem do titular — o avião passou a voar SOBRE a
+        linha exata do motor em que o Piloto trabalha, e só ali."""
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        for x in ("pil-errante", "ONDE_POUSAR", "pousarAviaoErrante", "pil-balao", "pil-voa", "@keyframes pil-travessia"):
-            self.assertIn(x, h, x)
-        self.assertIn('cacar_oportunidade:["#rank-apoiadores"', h)             # caçando → sobrevoa o ranking
-        self.assertIn('afiar_motor:["#pil-posto-bussola"', h)                  # afiando → sobrevoa o posto da Bússola
-        self.assertNotIn(".mt-item.oficial", h.split("ONDE_POUSAR")[1][:300])   # nunca sobre a lista de motores
+        self.assertIn("window.lugarDoTrabalho=function(m)", h)
+        self.assertIn('.mt-item[data-id="${_ce(m.motor)}"]', h)
+        self.assertNotIn("ONDE_POUSAR", h)
 
     def test_painel_protegido_do_job_de_dados(self):
         w = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
