@@ -272,11 +272,14 @@ box-shadow:0 1px 3px #0002}
 .pil-rastro{stroke-dasharray:3 4;animation:pil-rastro 1s linear infinite}
 @keyframes pil-rastro{to{stroke-dashoffset:-14}}
 /* estrelas de abate — na borda ESQUERDA externa da caixa do motor, como na fuselagem */
-.mt-abates{position:absolute;left:-26px;top:6px;display:flex;flex-direction:column;gap:2px;align-items:center;z-index:5}
-.mt-abates .est{width:13px;height:13px;color:#C8961E;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18))}
+/* ESTRELAS DE ABATE (titular, 24/09): maiores, fora do quadro, à esquerda, e crescendo PARA FORA —
+   a primeira coluna encosta no quadro; quando ela enche, a seguinte nasce mais à esquerda. */
+.mt-abates{position:absolute;right:calc(100% + 10px);top:8px;display:flex;flex-direction:column;flex-wrap:wrap-reverse;
+  align-content:flex-start;max-height:calc(100% - 16px);gap:4px 6px;z-index:5}
+.mt-abates .est{width:22px;height:22px;color:#C8961E;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
 .mt-abates .est.nova{animation:est-nasce .9s ease-out}
 @keyframes est-nasce{0%{transform:scale(0) rotate(-120deg);opacity:0}60%{transform:scale(1.5) rotate(10deg);opacity:1}100%{transform:scale(1) rotate(0)}}
-.mt-abates .mais{font-size:9.5px;font-weight:800;color:#C8961E}
+.mt-abates .mais{font-size:12px;font-weight:800;color:#C8961E;align-self:center}
 /* posto de comando na tela inicial */
 .pil-posto{border:1px solid #C9B37A;border-radius:12px;background:linear-gradient(180deg,#FFFDF5,#FBF6E6);padding:12px 14px;margin:12px 0}
 .pil-posto h4{margin:0 0 2px;font-family:Georgia,serif;color:#6B5A12;font-size:15px;display:flex;align-items:center;gap:8px}
@@ -2885,7 +2888,7 @@ function aviaoDoPiloto(motorId, titulo){
 function estrelasDeAbate(n, novos){
   if(!n)return "";
   const EST='<svg class="est" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>';
-  const mostra=Math.min(n,8);
+  const mostra=Math.min(n,60);           // todas à vista até 60; só depois resume em "+N"
   return `<div class="mt-abates" title="${n} oportunidade(s) nova(s) descoberta(s) por este motor">${Array.from({length:mostra},(_,i)=>EST.replace('class="est"', i<(novos||0)?'class="est nova"':'class="est"')).join("")}${n>8?`<span class=mais>+${n-8}</span>`:""}</div>`;
 }
 function desenhaPostoPiloto(alvo){
