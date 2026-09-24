@@ -1,6 +1,6 @@
 # Relatório individual dos motores de busca
 
-**Gerado em:** 2026-09-24 10:22 UTC · **30 motores** · números lidos dos arquivos do sistema; onde não há dado, está escrito *sem dado*.
+**Gerado em:** 2026-09-24 10:06 UTC · **30 motores** · números lidos dos arquivos do sistema; onde não há dado, está escrito *sem dado*.
 
 ## Como ler
 
@@ -62,9 +62,9 @@ Cada motor percorre o mesmo caminho: **agenda → leitura → léxico → captur
 
 **Onde busca.** 4 rota(s) em 3 domínio(s): Diário Oficial do Estado (ABC) (`diariooficial.abc.go.gov.br`); SECULT-GO — Chamamentos Públicos (`goias.gov.br`); SEDS — Goiás Social e cofinanciamento (`goias.gov.br`); OVG — editais e credenciamento de parceiras (`ovg.org.br`).
 
-**Léxico.** Camada 1 (34 termos, abre a leitura): *chamamento público*, *termo de fomento*, *termo de colaboração*, *PNAB*, *Goyazes*, *Fundo de Arte e Cultura*, *Lei Paulo Gustavo*, *FEAS*, *cofinanciamento*, *Goiás Social* … +24. Camada 2 (11 termos, confirma): *Lei 13.019*, *Lei Estadual*, *SECULT*, *SEDS*, *SES-GO*, *SEEL*, *plano de trabalho*, *das inscrições* … +3. Veto geral: 37 termos.
+**Léxico.** Camada 1 (13 termos, abre a leitura): *chamamento público*, *termo de fomento*, *termo de colaboração*, *PNAB*, *Goyazes*, *Fundo de Arte e Cultura*, *Lei Paulo Gustavo*, *FEAS*, *cofinanciamento*, *Goiás Social* … +3. Camada 2 (11 termos, confirma): *Lei 13.019*, *Lei Estadual*, *SECULT*, *SEDS*, *SES-GO*, *SEEL*, *plano de trabalho*, *das inscrições* … +3. Veto geral: 12 termos.
 
-**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-22; 44 achado(s) acumulado(s). Domínios com recusa registrada: `diariooficial.abc.go.gov.br` (4), `goias.gov.br` (39), `www.goias.gov.br` (6), `www.ovg.org.br` (9)
+**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-22; 44 achado(s) acumulado(s). Domínios com recusa registrada: `diariooficial.abc.go.gov.br` (4), `goias.gov.br` (39), `www.goias.gov.br` (6), `www.ovg.org.br` (8)
 
 **Setembro.** rodou 20 de 21 dias (95%); dias por estado: nao exec 3, sem oport 18, encontrado 2; achados no mês: 2; veredito da validação: *lacunas*.
 
@@ -77,8 +77,8 @@ Cada motor percorre o mesmo caminho: **agenda → leitura → léxico → captur
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>20/21 dias"]
-  L["LEITURA<br/>4 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 58"]
-  X["LÉXICO<br/>34+11 termos<br/>dias com achado: 2"]
+  L["LEITURA<br/>4 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 57"]
+  X["LÉXICO<br/>13+11 termos<br/>dias com achado: 2"]
   C["CAPTURA<br/>44 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
   B["BIBLIOTECA<br/>9 restante(s) de 9"]
@@ -98,9 +98,9 @@ flowchart LR
 
 **Onde busca.** 4 rota(s) em 2 domínio(s): DOU Seção 3 (edição do dia, JSON) (`in.gov.br`); MDHC / CONANDA — chamamentos do FNCA (`gov.br`); MinC — editais e Salic (`gov.br`); MDS — editais SUAS (`gov.br`).
 
-**Léxico.** Camada 1 (13 termos, abre a leitura): *chamamento público*, *edital de chamamento*, *seleção pública*, *FNCA*, *CONANDA*, *Fundo Nacional do Idoso*, *Lei Rouanet*, *PRONAS*, *PRONON*, *Lei de Incentivo ao Esporte* … +3. Camada 2 (9 termos, confirma): *Lei 13.019*, *Decreto 8.726*, *organizações da sociedade civil*, *Transferegov*, *plano de trabalho*, *das inscrições*, *do objeto*, *recursos do fundo* … +1. Veto geral: 37 termos.
+**Léxico.** Camada 1 (13 termos, abre a leitura): *chamamento público*, *edital de chamamento*, *seleção pública*, *FNCA*, *CONANDA*, *Fundo Nacional do Idoso*, *Lei Rouanet*, *PRONAS*, *PRONON*, *Lei de Incentivo ao Esporte* … +3. Camada 2 (9 termos, confirma): *Lei 13.019*, *Decreto 8.726*, *organizações da sociedade civil*, *Transferegov*, *plano de trabalho*, *das inscrições*, *do objeto*, *recursos do fundo* … +1. Veto geral: 12 termos.
 
-**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-22; 10 achado(s) acumulado(s). Domínios com recusa registrada: `diariooficial.goiania.go.gov.br` (14), `www.in.gov.br` (293), `diariooficial.abc.go.gov.br` (4), `www.goiania.go.gov.br` (33), `www.goias.gov.br` (6), `pncp.gov.br` (44), `www.caixa.gov.br` (1), `transparencia.camaragyn.go.gov.br` (21), `goias.gov.br` (39), `www.gov.br` (112), `mapaosc.ipea.gov.br` (2), `cnetmobile.estaleiro.serpro.gov.br` (4), `www.bndes.gov.br` (2), `rouanet.cultura.gov.br` (2), `www.novohamburgo.rs.gov.br` (2), `sistema.mirassoldoeste.mt.gov.br` (2), `www.arapongas.pr.gov.br` (1)
+**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-22; 10 achado(s) acumulado(s). Domínios com recusa registrada: `diariooficial.goiania.go.gov.br` (14), `www.in.gov.br` (286), `diariooficial.abc.go.gov.br` (4), `www.goiania.go.gov.br` (33), `www.goias.gov.br` (6), `pncp.gov.br` (43), `www.caixa.gov.br` (1), `transparencia.camaragyn.go.gov.br` (21), `goias.gov.br` (39), `www.gov.br` (107), `mapaosc.ipea.gov.br` (2), `cnetmobile.estaleiro.serpro.gov.br` (4), `www.bndes.gov.br` (2), `rouanet.cultura.gov.br` (2), `www.novohamburgo.rs.gov.br` (2), `sistema.mirassoldoeste.mt.gov.br` (2), `www.arapongas.pr.gov.br` (1)
 
 **Setembro.** rodou 22 de 23 dias (96%); dias por estado: encontrado 4, sem oport 18, nao exec 1; achados no mês: 4; veredito da validação: *lacunas*.
 
@@ -113,7 +113,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>22/23 dias"]
-  L["LEITURA<br/>4 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 582"]
+  L["LEITURA<br/>4 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 569"]
   X["LÉXICO<br/>13+9 termos<br/>dias com achado: 4"]
   C["CAPTURA<br/>10 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
@@ -132,11 +132,11 @@ flowchart LR
 
 **Parâmetros.** fundos estaduais com conselho — publicam por RESOLUÇÃO, não só por edital. Tipo: plataforma · finalidade: descoberta · cadência: a cada 1 dia(s) · coleta: **nuvem**.
 
-**Onde busca.** 3 rota(s) em 1 domínio(s): CEDCA-GO — FIA estadual (resoluções e editais) (`goias.gov.br`); Conselho Estadual do Idoso — Fundo do Idoso (`goias.gov.br`); SEMAD — FEMA (`goias.gov.br`).
+**Onde busca.** 4 rota(s) em 2 domínio(s): CEDCA-GO — FIA estadual (resoluções e editais) (`goias.gov.br`); Conselho Estadual do Idoso — Fundo do Idoso (`goias.gov.br`); SEMAD — FEMA (`goias.gov.br`); Diário Oficial do Estado (resoluções dos conselhos) (`diariooficial.abc.go.gov.br`).
 
-**Léxico.** Camada 1 (19 termos, abre a leitura): *FIA*, *Fundo da Infância*, *Fundo do Idoso*, *FUNJUVE*, *FEMA*, *resolução*, *CEDCA*, *CEI*, *edital*, *chamamento* … +9. Camada 2 (5 termos, confirma): *entidades registradas*, *plano de aplicação*, *das inscrições*, *organizações da sociedade civil*, *conselho estadual*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (19 termos, abre a leitura): *FIA*, *Fundo da Infância*, *Fundo do Idoso*, *FUNJUVE*, *FEMA*, *resolução*, *CEDCA*, *CEI*, *edital*, *chamamento* … +9. Camada 2 (5 termos, confirma): *entidades registradas*, *plano de aplicação*, *das inscrições*, *organizações da sociedade civil*, *conselho estadual*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 6 achado(s) acumulado(s). Domínios com recusa registrada: `goias.gov.br` (39), `www.goias.gov.br` (6)
+**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 6 achado(s) acumulado(s). Domínios com recusa registrada: `diariooficial.abc.go.gov.br` (4), `goias.gov.br` (39), `www.goias.gov.br` (6)
 
 **Setembro.** rodou 3 de 3 dias (100%); dias por estado: nao exec 20, encontrado 3; achados no mês: 3; veredito da validação: *lacunas*.
 
@@ -149,7 +149,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>3/3 dias"]
-  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 45"]
+  L["LEITURA<br/>4 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 49"]
   X["LÉXICO<br/>19+5 termos<br/>dias com achado: 3"]
   C["CAPTURA<br/>6 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
@@ -170,7 +170,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): Goiás Social (`goias.gov.br`); SEDS — editais (`goias.gov.br`).
 
-**Léxico.** Camada 1 (17 termos, abre a leitura): *Auxílio Nutricional*, *cofinanciamento*, *edital*, *chamamento*, *entidades filantrópicas*, *assistência social*, *inscrições*, *CMAS*, *chamamento público*, *termo de fomento* … +7. Camada 2 (5 termos, confirma): *organizações da sociedade civil*, *plano de trabalho*, *das inscrições*, *certificado*, *CEBAS*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (17 termos, abre a leitura): *Auxílio Nutricional*, *cofinanciamento*, *edital*, *chamamento*, *entidades filantrópicas*, *assistência social*, *inscrições*, *CMAS*, *chamamento público*, *termo de fomento* … +7. Camada 2 (5 termos, confirma): *organizações da sociedade civil*, *plano de trabalho*, *das inscrições*, *certificado*, *CEBAS*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 6 achado(s) acumulado(s). Domínios com recusa registrada: `goias.gov.br` (39), `www.goias.gov.br` (6)
 
@@ -206,9 +206,9 @@ flowchart LR
 
 **Onde busca.** 3 rota(s) em 3 domínio(s): MPGO — editais de destinação (`mpgo.mp.br`); MPF — chamamentos de destinação (Goiás e nacional) (`mpf.mp.br`); MPT-GO — destinação de multas trabalhistas (`prt18.mpt.mp.br`).
 
-**Léxico.** Camada 1 (19 termos, abre a leitura): *edital de destinação*, *destinação de recursos*, *TAC*, *termo de ajustamento*, *reparação*, *bens lesados*, *multa*, *projetos sociais*, *entidades*, *chamamento* … +9. Camada 2 (6 termos, confirma): *organizações da sociedade civil*, *projeto social*, *das inscrições*, *habilitação*, *Goiás*, *Goiânia*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (19 termos, abre a leitura): *edital de destinação*, *destinação de recursos*, *TAC*, *termo de ajustamento*, *reparação*, *bens lesados*, *multa*, *projetos sociais*, *entidades*, *chamamento* … +9. Camada 2 (6 termos, confirma): *organizações da sociedade civil*, *projeto social*, *das inscrições*, *habilitação*, *Goiás*, *Goiânia*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 12 achado(s) acumulado(s). Domínios com recusa registrada: `www.mpgo.mp.br` (60), `transparencia.mpf.mp.br` (1)
+**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 12 achado(s) acumulado(s). Domínios com recusa registrada: `www.mpgo.mp.br` (59), `transparencia.mpf.mp.br` (1)
 
 **Setembro.** rodou 3 de 3 dias (100%); dias por estado: nao exec 20, encontrado 3; achados no mês: 3; veredito da validação: *lacunas*.
 
@@ -221,7 +221,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>3/3 dias"]
-  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 61"]
+  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 60"]
   X["LÉXICO<br/>19+6 termos<br/>dias com achado: 3"]
   C["CAPTURA<br/>12 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
@@ -240,11 +240,11 @@ flowchart LR
 
 **Parâmetros.** OVG — maior operador de repasses a entidades de Goiás. Tipo: plataforma · finalidade: descoberta · cadência: a cada 1 dia(s) · coleta: **nuvem**.
 
-**Onde busca.** 3 rota(s) em 2 domínio(s): OVG — portal (`ovg.org.br`); OVG — editais e chamamentos (`ovg.org.br`); Goiás Social (programas operados pela OVG) (`goias.gov.br`).
+**Onde busca.** 4 rota(s) em 3 domínio(s): OVG — portal (`ovg.org.br`); OVG — editais e chamamentos (`ovg.org.br`); Goiás Social (programas operados pela OVG) (`goias.gov.br`); Diário Oficial do Estado (`diariooficial.abc.go.gov.br`).
 
-**Léxico.** Camada 1 (16 termos, abre a leitura): *edital*, *chamamento*, *credenciamento de entidades*, *entidades parceiras*, *Mais Social*, *cofinanciamento*, *termo de fomento*, *termo de colaboração*, *inscrições*, *chamamento público* … +6. Camada 2 (6 termos, confirma): *organizações da sociedade civil*, *plano de trabalho*, *assistência social*, *das inscrições*, *documentos exigidos*, *CMAS*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (16 termos, abre a leitura): *edital*, *chamamento*, *credenciamento de entidades*, *entidades parceiras*, *Mais Social*, *cofinanciamento*, *termo de fomento*, *termo de colaboração*, *inscrições*, *chamamento público* … +6. Camada 2 (6 termos, confirma): *organizações da sociedade civil*, *plano de trabalho*, *assistência social*, *das inscrições*, *documentos exigidos*, *CMAS*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 6 achado(s) acumulado(s). Domínios com recusa registrada: `goias.gov.br` (39), `www.goias.gov.br` (6), `www.ovg.org.br` (9)
+**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 6 achado(s) acumulado(s). Domínios com recusa registrada: `diariooficial.abc.go.gov.br` (4), `goias.gov.br` (39), `www.goias.gov.br` (6), `www.ovg.org.br` (8)
 
 **Setembro.** rodou 3 de 3 dias (100%); dias por estado: nao exec 20, encontrado 3; achados no mês: 3; veredito da validação: *lacunas*.
 
@@ -257,7 +257,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>3/3 dias"]
-  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 54"]
+  L["LEITURA<br/>4 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 57"]
   X["LÉXICO<br/>16+6 termos<br/>dias com achado: 3"]
   C["CAPTURA<br/>6 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
@@ -278,9 +278,9 @@ flowchart LR
 
 **Onde busca.** 3 rota(s) em 2 domínio(s): MinC — Lei Rouanet (página institucional) (`gov.br`); Salic — sistema de propostas (`salic.cultura.gov.br`); Instrução Normativa vigente (prazos e limites) (`gov.br`).
 
-**Léxico.** Camada 1 (17 termos, abre a leitura): *Lei Rouanet*, *PRONAC*, *Salic*, *proposta cultural*, *incentivo fiscal*, *mecenato*, *Instrução Normativa*, *prazo de apresentação*, *chamamento público*, *termo de fomento* … +7. Camada 2 (5 termos, confirma): *proponente*, *pessoa jurídica sem fins lucrativos*, *limite por proponente*, *captação*, *aprovação*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (17 termos, abre a leitura): *Lei Rouanet*, *PRONAC*, *Salic*, *proposta cultural*, *incentivo fiscal*, *mecenato*, *Instrução Normativa*, *prazo de apresentação*, *chamamento público*, *termo de fomento* … +7. Camada 2 (5 termos, confirma): *proponente*, *pessoa jurídica sem fins lucrativos*, *limite por proponente*, *captação*, *aprovação*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 30 achado(s) acumulado(s). Domínios com recusa registrada: `diariooficial.goiania.go.gov.br` (14), `www.in.gov.br` (293), `diariooficial.abc.go.gov.br` (4), `www.goiania.go.gov.br` (33), `www.goias.gov.br` (6), `pncp.gov.br` (44), `www.caixa.gov.br` (1), `transparencia.camaragyn.go.gov.br` (21), `goias.gov.br` (39), `www.gov.br` (112), `mapaosc.ipea.gov.br` (2), `cnetmobile.estaleiro.serpro.gov.br` (4), `www.bndes.gov.br` (2), `rouanet.cultura.gov.br` (2), `www.novohamburgo.rs.gov.br` (2), `sistema.mirassoldoeste.mt.gov.br` (2), `www.arapongas.pr.gov.br` (1)
+**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 30 achado(s) acumulado(s). Domínios com recusa registrada: `diariooficial.goiania.go.gov.br` (14), `www.in.gov.br` (286), `diariooficial.abc.go.gov.br` (4), `www.goiania.go.gov.br` (33), `www.goias.gov.br` (6), `pncp.gov.br` (43), `www.caixa.gov.br` (1), `transparencia.camaragyn.go.gov.br` (21), `goias.gov.br` (39), `www.gov.br` (107), `mapaosc.ipea.gov.br` (2), `cnetmobile.estaleiro.serpro.gov.br` (4), `www.bndes.gov.br` (2), `rouanet.cultura.gov.br` (2), `www.novohamburgo.rs.gov.br` (2), `sistema.mirassoldoeste.mt.gov.br` (2), `www.arapongas.pr.gov.br` (1)
 
 **Setembro.** rodou 3 de 3 dias (100%); dias por estado: nao exec 20, encontrado 3; achados no mês: 3; veredito da validação: *lacunas*.
 
@@ -293,7 +293,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>3/3 dias"]
-  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 582"]
+  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 569"]
   X["LÉXICO<br/>17+5 termos<br/>dias com achado: 3"]
   C["CAPTURA<br/>30 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
@@ -312,11 +312,11 @@ flowchart LR
 
 **Parâmetros.** cinco portas da SECULT-GO — Chamamentos, Goyazes, Fundo de Arte e Cultura, PNAB, Lei Paulo Gustavo. Tipo: plataforma · finalidade: descoberta · cadência: a cada 1 dia(s) · coleta: **nuvem**.
 
-**Onde busca.** 3 rota(s) em 2 domínio(s): Chamamentos Públicos 2026 (`goias.gov.br`); Editais 2026 — PNAB (`goias.gov.br`); Portal PNAB do Estado (`pnab.cultura.go.gov.br`).
+**Onde busca.** 4 rota(s) em 3 domínio(s): Chamamentos Públicos 2026 (`goias.gov.br`); Editais 2026 — PNAB (`goias.gov.br`); Portal PNAB do Estado (`pnab.cultura.go.gov.br`); Diário Oficial do Estado (publicação obrigatória) (`diariooficial.abc.go.gov.br`).
 
-**Léxico.** Camada 1 (17 termos, abre a leitura): *chamamento público*, *edital*, *PNAB*, *Goyazes*, *Fundo de Arte e Cultura*, *Lei Paulo Gustavo*, *inscrições*, *cronograma*, *retificação*, *termo de fomento* … +7. Camada 2 (6 termos, confirma): *Plataforma Baru*, *agentes culturais*, *organizações da sociedade civil*, *das inscrições*, *resultado*, *habilitação*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (17 termos, abre a leitura): *chamamento público*, *edital*, *PNAB*, *Goyazes*, *Fundo de Arte e Cultura*, *Lei Paulo Gustavo*, *inscrições*, *cronograma*, *retificação*, *termo de fomento* … +7. Camada 2 (6 termos, confirma): *Plataforma Baru*, *agentes culturais*, *organizações da sociedade civil*, *das inscrições*, *resultado*, *habilitação*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 77 achado(s) acumulado(s). Domínios com recusa registrada: `goias.gov.br` (39), `www.goias.gov.br` (6)
+**Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 77 achado(s) acumulado(s). Domínios com recusa registrada: `diariooficial.abc.go.gov.br` (4), `goias.gov.br` (39), `www.goias.gov.br` (6)
 
 **Setembro.** rodou 3 de 3 dias (100%); dias por estado: nao exec 20, encontrado 3; achados no mês: 3; veredito da validação: *lacunas*.
 
@@ -329,7 +329,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>3/3 dias"]
-  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 45"]
+  L["LEITURA<br/>4 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 49"]
   X["LÉXICO<br/>17+6 termos<br/>dias com achado: 3"]
   C["CAPTURA<br/>77 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 2<br/>fora da abrangência: 0"]
@@ -346,11 +346,11 @@ flowchart LR
 ### 9. Motor do Piloto — busca aberta no terceiro setor  
 `plat-sindico-aberto` · decisão: **MANTER** — produz e o que produz sobrevive à triagem
 
-**Parâmetros.** Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.. Tipo: plataforma · finalidade: descoberta · cadência: a cada 1 dia(s) · coleta: **nuvem**.
+**Parâmetros.** Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.. Tipo: plataforma · finalidade: — · cadência: a cada 1 dia(s) · coleta: **nuvem**.
 
 **Onde busca.** 3 rota(s) em 1 domínio(s): busca aberta por ângulo sorteado (sem rota fixa) (`html.duckduckgo.com`); site oficial do financiador descoberto (derivado) (``); plataformas ainda não catalogadas (`html.duckduckgo.com`).
 
-**Léxico.** Camada 1 (33 termos, abre a leitura): *edital*, *chamada pública*, *chamamento*, *seleção de projetos*, *seleção pública*, *inscrições abertas*, *apoio a projetos*, *apoio institucional*, *fomento*, *financiamento de projetos* … +23. Camada 2 (14 termos, confirma): *quem pode participar*, *podem se inscrever*, *proponente*, *critérios de seleção*, *cronograma*, *valor do apoio*, *recursos disponíveis*, *regulamento* … +6. Veto geral: 37 termos.
+**Léxico.** Camada 1 (33 termos, abre a leitura): *edital*, *chamada pública*, *chamamento*, *seleção de projetos*, *seleção pública*, *inscrições abertas*, *apoio a projetos*, *apoio institucional*, *fomento*, *financiamento de projetos* … +23. Camada 2 (14 termos, confirma): *quem pode participar*, *podem se inscrever*, *proponente*, *critérios de seleção*, *cronograma*, *valor do apoio*, *recursos disponíveis*, *regulamento* … +6. Veto geral: 12 termos.
 
 **Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 54 achado(s) acumulado(s). Nenhum domínio dele na lista de bloqueios.
 
@@ -386,7 +386,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): Página oficial de cada oportunidade validada (dinâmica) (``); Vetor que anunciou a oportunidade (para pegar prorrogação noticiada) (`observatorio3setor.org.br`).
 
-**Léxico.** Camada 1 (21 termos, abre a leitura): *retificação*, *prorrogação*, *errata*, *resultado*, *homologação*, *classificados*, *recurso*, *suspensão*, *revogação*, *novo edital* … +11. Camada 2 (7 termos, confirma): *prazo prorrogado*, *nova data*, *fica retificado*, *resultado final*, *lista de habilitados*, *edital revogado*, *reabertura*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (21 termos, abre a leitura): *retificação*, *prorrogação*, *errata*, *resultado*, *homologação*, *classificados*, *recurso*, *suspensão*, *revogação*, *novo edital* … +11. Camada 2 (7 termos, confirma): *prazo prorrogado*, *nova data*, *fica retificado*, *resultado final*, *lista de habilitados*, *edital revogado*, *reabertura*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-22; 24 achado(s) acumulado(s). Nenhum domínio dele na lista de bloqueios.
 
@@ -422,9 +422,9 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): API do PNCP — modalidade chamamento e credenciamento (`pncp.gov.br`); Arquivo do edital do órgão hospedado no PNCP (/arquivos/) — documento oficial (`pncp.gov.br`).
 
-**Léxico.** Camada 1 (7 termos, abre a leitura): *chamamento público*, *termo de fomento*, *termo de colaboração*, *organização da sociedade civil*, *Lei 13.019*, *seleção de OSC*, *fomento*. Camada 2 (5 termos, confirma): *Lei 13.019/2014*, *termo de fomento*, *termo de colaboração*, *sem fins lucrativos*, *plano de trabalho*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (7 termos, abre a leitura): *chamamento público*, *termo de fomento*, *termo de colaboração*, *organização da sociedade civil*, *Lei 13.019*, *seleção de OSC*, *fomento*. Camada 2 (5 termos, confirma): *Lei 13.019/2014*, *termo de fomento*, *termo de colaboração*, *sem fins lucrativos*, *plano de trabalho*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `pncp.gov.br` (44)
+**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `pncp.gov.br` (43)
 
 **Setembro.** rodou 23 de 23 dias (100%); dias por estado: encontrado 3, sem oport 12, falha 8; achados no mês: 3; veredito da validação: *íntegro*.
 
@@ -437,7 +437,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>23/23 dias"]
-  L["LEITURA<br/>2 rota(s)<br/>falhas no mês: 8<br/>bloqueios: 44"]
+  L["LEITURA<br/>2 rota(s)<br/>falhas no mês: 8<br/>bloqueios: 43"]
   X["LÉXICO<br/>7+5 termos<br/>dias com achado: 3"]
   C["CAPTURA<br/>0 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 246<br/>fora da abrangência: 187"]
@@ -458,7 +458,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): Site institucional da empresa (ranking dos 100 maiores contribuintes ICMS-GO) (``); Portais do terceiro setor onde a empresa anuncia (Observatório, ABCR, GIFE) (`observatorio3setor.org.br`).
 
-**Léxico.** Camada 1 (13 termos, abre a leitura): *edital*, *seleção de projetos*, *investimento social*, *responsabilidade social*, *patrocínio*, *incentivo fiscal*, *Lei Rouanet*, *FIA*, *Fundo do Idoso*, *Lei do Esporte* … +3. Camada 2 (8 termos, confirma): *inscrições*, *organizações sem fins lucrativos*, *critérios de seleção*, *valor do apoio*, *cronograma*, *Goiás*, *Goiânia*, *região Centro-Oeste*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (13 termos, abre a leitura): *edital*, *seleção de projetos*, *investimento social*, *responsabilidade social*, *patrocínio*, *incentivo fiscal*, *Lei Rouanet*, *FIA*, *Fundo do Idoso*, *Lei do Esporte* … +3. Camada 2 (8 termos, confirma): *inscrições*, *organizações sem fins lucrativos*, *critérios de seleção*, *valor do apoio*, *cronograma*, *Goiás*, *Goiânia*, *região Centro-Oeste*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-18; 1 achado(s) acumulado(s). Nenhum domínio dele na lista de bloqueios. Alerta aberto: 5 dia(s) sem leitura (cadência 1).
 
@@ -494,7 +494,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): ABCR — editais (`captadores.org.br`); Site oficial do financiador anunciado (``).
 
-**Léxico.** Camada 1 (8 termos, abre a leitura): *edital*, *chamada*, *seleção*, *inscrições*, *até R$*, *OSCs*, *organizações sociais*, *prazo*. Camada 2 (5 termos, confirma): *inscrições até*, *podem participar*, *valor*, *regulamento*, *site oficial*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (8 termos, abre a leitura): *edital*, *chamada*, *seleção*, *inscrições*, *até R$*, *OSCs*, *organizações sociais*, *prazo*. Camada 2 (5 termos, confirma): *inscrições até*, *podem participar*, *valor*, *regulamento*, *site oficial*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 65 achado(s) acumulado(s). Domínios com recusa registrada: `captadores.org.br` (2)
 
@@ -530,9 +530,9 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): GIFE — agenda e oportunidades dos associados (`gife.org.br`); Sites dos associados (institutos e fundações empresariais) (`gife.org.br`).
 
-**Léxico.** Camada 1 (15 termos, abre a leitura): *edital*, *chamada*, *seleção de projetos*, *inscrições*, *instituto*, *fundação*, *investimento social*, *chamamento público*, *termo de fomento*, *termo de colaboração* … +5. Camada 2 (4 termos, confirma): *organizações da sociedade civil*, *valor*, *prazo*, *regulamento*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (15 termos, abre a leitura): *edital*, *chamada*, *seleção de projetos*, *inscrições*, *instituto*, *fundação*, *investimento social*, *chamamento público*, *termo de fomento*, *termo de colaboração* … +5. Camada 2 (4 termos, confirma): *organizações da sociedade civil*, *valor*, *prazo*, *regulamento*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `gife.org.br` (14)
+**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `gife.org.br` (13)
 
 **Setembro.** rodou 6 de 20 dias (30%); dias por estado: nao exec 17, sem oport 6; achados no mês: 0; veredito da validação: *lacunas*.
 
@@ -545,7 +545,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>6/20 dias"]
-  L["LEITURA<br/>2 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 14"]
+  L["LEITURA<br/>2 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 13"]
   X["LÉXICO<br/>15+4 termos<br/>dias com achado: —"]
   C["CAPTURA<br/>0 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
@@ -566,7 +566,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): Observatório — editais (`observatorio3setor.org.br`); Site oficial do financiador anunciado (localizado a partir da matéria) (``).
 
-**Léxico.** Camada 1 (8 termos, abre a leitura): *abre edital*, *abre inscrições*, *seleção de projetos*, *chamada*, *até R$*, *para organizações*, *para OSCs*, *prazo*. Camada 2 (6 termos, confirma): *inscrições até*, *podem participar*, *organizações da sociedade civil*, *valor*, *regulamento*, *site oficial*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (8 termos, abre a leitura): *abre edital*, *abre inscrições*, *seleção de projetos*, *chamada*, *até R$*, *para organizações*, *para OSCs*, *prazo*. Camada 2 (6 termos, confirma): *inscrições até*, *podem participar*, *organizações da sociedade civil*, *valor*, *regulamento*, *site oficial*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 65 achado(s) acumulado(s). Nenhum domínio dele na lista de bloqueios.
 
@@ -602,7 +602,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): Prosas — prêmios (`prosas.com.br`); Site oficial do organizador do prêmio (``).
 
-**Léxico.** Camada 1 (14 termos, abre a leitura): *prêmio*, *concurso*, *reconhecimento*, *organizações*, *iniciativas sociais*, *inscrições*, *chamamento público*, *termo de fomento*, *termo de colaboração*, *seleção de projetos* … +4. Camada 2 (4 termos, confirma): *podem concorrer*, *organizações da sociedade civil*, *premiação em dinheiro*, *regulamento*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (14 termos, abre a leitura): *prêmio*, *concurso*, *reconhecimento*, *organizações*, *iniciativas sociais*, *inscrições*, *chamamento público*, *termo de fomento*, *termo de colaboração*, *seleção de projetos* … +4. Camada 2 (4 termos, confirma): *podem concorrer*, *organizações da sociedade civil*, *premiação em dinheiro*, *regulamento*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Nenhum domínio dele na lista de bloqueios.
 
@@ -638,7 +638,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): Projetos de lei da Câmara de Goiânia (`goiania.go.leg.br`); Diário da Câmara (`goiania.go.leg.br`).
 
-**Léxico.** Camada 1 (5 termos, abre a leitura): *utilidade pública*, *declara de utilidade pública*, *associação de moradores*, *entidade*, *denominação*. Camada 2 (4 termos, confirma): *Jardim América*, *A.M.C.*, *associação*, *sem fins lucrativos*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (5 termos, abre a leitura): *utilidade pública*, *declara de utilidade pública*, *associação de moradores*, *entidade*, *denominação*. Camada 2 (4 termos, confirma): *Jardim América*, *A.M.C.*, *associação*, *sem fins lucrativos*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `www.goiania.go.leg.br` (49), `sapl.goiania.go.leg.br` (64)
 
@@ -674,7 +674,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): Diário da Justiça Federal — Seção Judiciária de Goiás (`trf1.jus.br`); Editais de destinação de prestações pecuniárias — TRF1 (`trf1.jus.br`).
 
-**Léxico.** Camada 1 (6 termos, abre a leitura): *prestação pecuniária*, *destinação de recursos*, *edital de cadastramento*, *entidades beneficiárias*, *transação penal*, *pena pecuniária*. Camada 2 (5 termos, confirma): *Resolução CNJ 154*, *entidade pública ou privada com destinação social*, *projetos sociais*, *Goiás*, *Goiânia*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (6 termos, abre a leitura): *prestação pecuniária*, *destinação de recursos*, *edital de cadastramento*, *entidades beneficiárias*, *transação penal*, *pena pecuniária*. Camada 2 (5 termos, confirma): *Resolução CNJ 154*, *entidade pública ou privada com destinação social*, *projetos sociais*, *Goiás*, *Goiânia*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Nenhum domínio dele na lista de bloqueios.
 
@@ -710,7 +710,7 @@ flowchart LR
 
 **Onde busca.** 3 rota(s) em 2 domínio(s): TJGO — editais das varas de execução penal (recusa IP estrangeiro) (`tjgo.jus.br`); Diário da Justiça Eletrônico do TJGO (`tjgo.jus.br`); Portal Corregedoria — cadastramento de entidades (Res. CNJ 154) (`corregedoria.tjgo.jus.br`).
 
-**Léxico.** Camada 1 (7 termos, abre a leitura): *prestação pecuniária*, *edital de cadastramento*, *entidades*, *vara de execução penal*, *VEP*, *destinação*, *Resolução 154*. Camada 2 (5 termos, confirma): *entidade com destinação social*, *projeto social*, *Goiânia*, *prestação de contas*, *habilitação de entidades*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (7 termos, abre a leitura): *prestação pecuniária*, *edital de cadastramento*, *entidades*, *vara de execução penal*, *VEP*, *destinação*, *Resolução 154*. Camada 2 (5 termos, confirma): *entidade com destinação social*, *projeto social*, *Goiânia*, *prestação de contas*, *habilitação de entidades*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **BLOQUEADO** — todas as páginas falharam em 2026-09-23. Domínios com recusa registrada: `www.tjgo.jus.br` (140), `projudi.tjgo.jus.br` (1) Alerta aberto: todas as páginas falharam em 2026-09-23.
 
@@ -746,7 +746,7 @@ flowchart LR
 
 **Onde busca.** 4 rota(s) em 1 domínio(s): Diário Oficial do Município (edição do dia) (`goiania.go.gov.br`); SEMASDH — Fundo Municipal de Assistência Social e chamamentos (`goiania.go.gov.br`); Secretaria Municipal de Cultura — editais (`goiania.go.gov.br`); CMDCA / CMAS / CMI de Goiânia — resoluções e editais dos fundos (`goiania.go.gov.br`).
 
-**Léxico.** Camada 1 (14 termos, abre a leitura): *chamamento público*, *termo de fomento*, *termo de colaboração*, *FMAS*, *FMDCA*, *fundo municipal*, *CMDCA*, *CMAS*, *CMI*, *utilidade pública* … +4. Camada 2 (12 termos, confirma): *Lei 13.019*, *MROSC*, *Lei Municipal*, *plano de trabalho*, *das inscrições*, *do objeto*, *cronograma*, *recursos do fundo* … +4. Veto geral: 37 termos.
+**Léxico.** Camada 1 (14 termos, abre a leitura): *chamamento público*, *termo de fomento*, *termo de colaboração*, *FMAS*, *FMDCA*, *fundo municipal*, *CMDCA*, *CMAS*, *CMI*, *utilidade pública* … +4. Camada 2 (12 termos, confirma): *Lei 13.019*, *MROSC*, *Lei Municipal*, *plano de trabalho*, *das inscrições*, *do objeto*, *cronograma*, *recursos do fundo* … +4. Veto geral: 12 termos.
 
 **Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-22; nunca reconheceu edital. Domínios com recusa registrada: `diariooficial.goiania.go.gov.br` (14), `www.goiania.go.gov.br` (33) Alerta aberto: aguardando coleta local (portal recusa IP estrangeiro).
 
@@ -782,7 +782,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 2 domínio(s): Proposições da ALEGO (`portal.al.go.leg.br`); LOA e emendas impositivas — SEFAZ/SEGPLAN (`economia.go.gov.br`).
 
-**Léxico.** Camada 1 (8 termos, abre a leitura): *emenda*, *emenda impositiva*, *emenda parlamentar*, *utilidade pública*, *LOA*, *orçamento*, *transferência especial*, *indicação*. Camada 2 (6 termos, confirma): *entidade beneficiária*, *Goiânia*, *assistência social*, *cultura*, *valor da emenda*, *programação orçamentária*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (8 termos, abre a leitura): *emenda*, *emenda impositiva*, *emenda parlamentar*, *utilidade pública*, *LOA*, *orçamento*, *transferência especial*, *indicação*. Camada 2 (6 termos, confirma): *entidade beneficiária*, *Goiânia*, *assistência social*, *cultura*, *valor da emenda*, *programação orçamentária*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **FUNCIONANDO** — leu em 2026-09-23; 17 achado(s) acumulado(s). Domínios com recusa registrada: `portal.al.go.leg.br` (51)
 
@@ -814,11 +814,11 @@ flowchart LR
 ### 22. CNJ — destinações de penas e prestações pecuniárias  
 `cnj-destinacoes` · decisão: **INSUMO** — não busca oportunidade: alimenta o sistema com referência normativa; não se mede por achado
 
-**Parâmetros.** REFERÊNCIA, não motor — a fonte real de destinações são os tribunais estaduais (decisão da auditoria de 20/09). Tipo: diario_justica · finalidade: insumo · cadência: a cada 30 dia(s) · coleta: **nuvem**.
+**Parâmetros.** REFERÊNCIA, não motor — a fonte real de destinações são os tribunais estaduais (decisão da auditoria de 20/09). Tipo: diario_justica · finalidade: insumo · cadência: a cada 7 dia(s) · coleta: **nuvem**.
 
 **Onde busca.** 2 rota(s) em 2 domínio(s): CNJ — Resolução 154 e orientações (`cnj.jus.br`); Tribunais estaduais (TJGO coberto pelo motor dje-tjgo) (`tjgo.jus.br`).
 
-**Léxico.** Camada 1 (13 termos, abre a leitura): *prestação pecuniária*, *destinação*, *Resolução 154*, *entidades*, *chamamento público*, *termo de fomento*, *termo de colaboração*, *seleção de projetos*, *edital de apoio*, *fomento* … +3. Camada 2 (2 termos, confirma): *projeto social*, *cadastramento de entidades*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (13 termos, abre a leitura): *prestação pecuniária*, *destinação*, *Resolução 154*, *entidades*, *chamamento público*, *termo de fomento*, *termo de colaboração*, *seleção de projetos*, *edital de apoio*, *fomento* … +3. Camada 2 (2 termos, confirma): *projeto social*, *cadastramento de entidades*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `www.tjgo.jus.br` (140), `projudi.tjgo.jus.br` (1), `www.cnj.jus.br` (45)
 
@@ -832,7 +832,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  A["AGENDA<br/>cada 30 dia(s)<br/>20/1 dias"]
+  A["AGENDA<br/>cada 7 dia(s)<br/>20/1 dias"]
   L["LEITURA<br/>2 rota(s)<br/>falhas no mês: 1<br/>bloqueios: 186"]
   X["LÉXICO<br/>13+2 termos<br/>dias com achado: —"]
   C["CAPTURA<br/>0 achado(s)"]
@@ -854,9 +854,9 @@ flowchart LR
 
 **Onde busca.** 3 rota(s) em 1 domínio(s): CNPq — chamadas públicas (`gov.br`); MCTI — editais de popularização da ciência (`gov.br`); Setec/MEC — extensão na rede federal (`gov.br`).
 
-**Léxico.** Camada 1 (15 termos, abre a leitura): *chamada pública*, *extensão*, *popularização da ciência*, *inovação social*, *parceria*, *organizações da sociedade civil*, *edital*, *chamamento público*, *termo de fomento*, *termo de colaboração* … +5. Camada 2 (4 termos, confirma): *instituição parceira*, *proponente*, *das inscrições*, *cronograma*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (15 termos, abre a leitura): *chamada pública*, *extensão*, *popularização da ciência*, *inovação social*, *parceria*, *organizações da sociedade civil*, *edital*, *chamamento público*, *termo de fomento*, *termo de colaboração* … +5. Camada 2 (4 termos, confirma): *instituição parceira*, *proponente*, *das inscrições*, *cronograma*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `diariooficial.goiania.go.gov.br` (14), `www.in.gov.br` (293), `diariooficial.abc.go.gov.br` (4), `www.goiania.go.gov.br` (33), `www.goias.gov.br` (6), `pncp.gov.br` (44), `www.caixa.gov.br` (1), `transparencia.camaragyn.go.gov.br` (21), `goias.gov.br` (39), `www.gov.br` (112), `mapaosc.ipea.gov.br` (2), `cnetmobile.estaleiro.serpro.gov.br` (4), `www.bndes.gov.br` (2), `rouanet.cultura.gov.br` (2), `www.novohamburgo.rs.gov.br` (2), `sistema.mirassoldoeste.mt.gov.br` (2), `www.arapongas.pr.gov.br` (1)
+**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `diariooficial.goiania.go.gov.br` (14), `www.in.gov.br` (286), `diariooficial.abc.go.gov.br` (4), `www.goiania.go.gov.br` (33), `www.goias.gov.br` (6), `pncp.gov.br` (43), `www.caixa.gov.br` (1), `transparencia.camaragyn.go.gov.br` (21), `goias.gov.br` (39), `www.gov.br` (107), `mapaosc.ipea.gov.br` (2), `cnetmobile.estaleiro.serpro.gov.br` (4), `www.bndes.gov.br` (2), `rouanet.cultura.gov.br` (2), `www.novohamburgo.rs.gov.br` (2), `sistema.mirassoldoeste.mt.gov.br` (2), `www.arapongas.pr.gov.br` (1)
 
 **Setembro.** rodou 3 de 3 dias (100%); dias por estado: nao exec 20, sem oport 3; achados no mês: 0; veredito da validação: *íntegro*.
 
@@ -869,7 +869,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>3/3 dias"]
-  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 582"]
+  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 569"]
   X["LÉXICO<br/>15+4 termos<br/>dias com achado: —"]
   C["CAPTURA<br/>0 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
@@ -890,7 +890,7 @@ flowchart LR
 
 **Onde busca.** 3 rota(s) em 1 domínio(s): Página de editais da empresa/instituto (ranking dos 100 de Goiás + nacionais) (``); Portais do terceiro setor onde a empresa anuncia (`captadores.org.br`); Redes sociais institucionais (LinkedIn/Instagram) — pista, nunca fonte (``).
 
-**Léxico.** Camada 1 (19 termos, abre a leitura): *edital*, *projetos incentivados*, *seleção de projetos*, *FIA*, *Fundo do Idoso*, *Lei de Incentivo ao Esporte*, *Lei Rouanet*, *PRONAS*, *PRONON*, *inscrições* … +9. Camada 2 (6 termos, confirma): *projetos aprovados*, *leis de incentivo*, *organizações sem fins lucrativos*, *critérios*, *cronograma*, *regulamento*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (19 termos, abre a leitura): *edital*, *projetos incentivados*, *seleção de projetos*, *FIA*, *Fundo do Idoso*, *Lei de Incentivo ao Esporte*, *Lei Rouanet*, *PRONAS*, *PRONON*, *inscrições* … +9. Camada 2 (6 termos, confirma): *projetos aprovados*, *leis de incentivo*, *organizações sem fins lucrativos*, *critérios*, *cronograma*, *regulamento*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `captadores.org.br` (2)
 
@@ -924,11 +924,11 @@ flowchart LR
 
 **Parâmetros.** FAP de Goiás — OSC entra como parceira em chamadas de extensão e inovação social. Tipo: plataforma · finalidade: descoberta · cadência: a cada 1 dia(s) · coleta: **nuvem**.
 
-**Onde busca.** 1 rota(s) em 1 domínio(s): FAPEG — chamadas públicas (`goias.gov.br`).
+**Onde busca.** 2 rota(s) em 2 domínio(s): FAPEG — chamadas públicas (`goias.gov.br`); Diário Oficial do Estado (`diariooficial.abc.go.gov.br`).
 
-**Léxico.** Camada 1 (15 termos, abre a leitura): *chamada pública*, *extensão*, *inovação social*, *popularização da ciência*, *parceria com organizações*, *edital*, *chamamento público*, *termo de fomento*, *termo de colaboração*, *seleção de projetos* … +5. Camada 2 (4 termos, confirma): *organizações da sociedade civil*, *instituição parceira*, *das inscrições*, *cronograma*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (15 termos, abre a leitura): *chamada pública*, *extensão*, *inovação social*, *popularização da ciência*, *parceria com organizações*, *edital*, *chamamento público*, *termo de fomento*, *termo de colaboração*, *seleção de projetos* … +5. Camada 2 (4 termos, confirma): *organizações da sociedade civil*, *instituição parceira*, *das inscrições*, *cronograma*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `goias.gov.br` (39), `www.goias.gov.br` (6)
+**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `diariooficial.abc.go.gov.br` (4), `goias.gov.br` (39), `www.goias.gov.br` (6)
 
 **Setembro.** rodou 3 de 3 dias (100%); dias por estado: nao exec 20, sem oport 3; achados no mês: 0; veredito da validação: *íntegro*.
 
@@ -941,7 +941,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>3/3 dias"]
-  L["LEITURA<br/>1 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 45"]
+  L["LEITURA<br/>2 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 49"]
   X["LÉXICO<br/>15+4 termos<br/>dias com achado: —"]
   C["CAPTURA<br/>0 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
@@ -962,9 +962,9 @@ flowchart LR
 
 **Onde busca.** 3 rota(s) em 2 domínio(s): Portal da prefeitura (config/municipios_maiores.json → GO) (``); Diário oficial do município (Querido Diário / próprio) (`queridodiario.ok.org.br`); PNCP como descoberta (número do processo) (`pncp.gov.br`).
 
-**Léxico.** Camada 1 (13 termos, abre a leitura): *chamamento público*, *termo de fomento*, *termo de colaboração*, *edital de seleção*, *organizações da sociedade civil*, *fundo municipal*, *CMDCA*, *CMAS*, *seleção de projetos*, *edital de apoio* … +3. Camada 2 (5 termos, confirma): *Lei 13.019*, *plano de trabalho*, *das inscrições*, *do objeto*, *entidade sem fins lucrativos*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (13 termos, abre a leitura): *chamamento público*, *termo de fomento*, *termo de colaboração*, *edital de seleção*, *organizações da sociedade civil*, *fundo municipal*, *CMDCA*, *CMAS*, *seleção de projetos*, *edital de apoio* … +3. Camada 2 (5 termos, confirma): *Lei 13.019*, *plano de trabalho*, *das inscrições*, *do objeto*, *entidade sem fins lucrativos*. Veto geral: 12 termos.
 
-**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `pncp.gov.br` (44)
+**Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Domínios com recusa registrada: `pncp.gov.br` (43)
 
 **Setembro.** rodou 3 de 3 dias (100%); dias por estado: nao exec 20, sem oport 3; achados no mês: 0; veredito da validação: *lacunas*.
 
@@ -977,7 +977,7 @@ flowchart LR
 ```mermaid
 flowchart LR
   A["AGENDA<br/>cada 1 dia(s)<br/>3/3 dias"]
-  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 44"]
+  L["LEITURA<br/>3 rota(s)<br/>falhas no mês: 0<br/>bloqueios: 43"]
   X["LÉXICO<br/>13+5 termos<br/>dias com achado: —"]
   C["CAPTURA<br/>0 achado(s)"]
   T["TRIAGEM<br/>fora do objeto: 0<br/>fora da abrangência: 0"]
@@ -998,7 +998,7 @@ flowchart LR
 
 **Onde busca.** 2 rota(s) em 1 domínio(s): Prosas — editais abertos (`prosas.com.br`); Site oficial do financiador (link 'saiba mais' de cada edital) (``).
 
-**Léxico.** Camada 1 (19 termos, abre a leitura): *edital*, *inscrições abertas*, *seleção*, *até*, *R$*, *organizações*, *projetos sociais*, *nacional*, *Goiás*, *Centro-Oeste* … +9. Camada 2 (5 termos, confirma): *quem pode participar*, *inscrições até*, *valor por projeto*, *regulamento*, *elegibilidade*. Veto geral: 37 termos.
+**Léxico.** Camada 1 (19 termos, abre a leitura): *edital*, *inscrições abertas*, *seleção*, *até*, *R$*, *organizações*, *projetos sociais*, *nacional*, *Goiás*, *Centro-Oeste* … +9. Camada 2 (5 termos, confirma): *quem pode participar*, *inscrições até*, *valor por projeto*, *regulamento*, *elegibilidade*. Veto geral: 12 termos.
 
 **Bloqueio.** estado **LENDO SEM ACHAR** — leu em 2026-09-23; nunca reconheceu edital. Nenhum domínio dele na lista de bloqueios.
 
@@ -1030,11 +1030,11 @@ flowchart LR
 ### 28. Empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS)  
 `motor-gife` · decisão: **MEDIR** — entrou no sistema depois da auditoria; sem número não há como julgar
 
-**Parâmetros.** Empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS). Tipo: — · finalidade: descoberta · cadência: a cada 7 dia(s) · coleta: **nuvem**.
+**Parâmetros.** Empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS). Tipo: — · finalidade: — · cadência: a cada — dia(s) · coleta: **nuvem**.
 
 **Onde busca.** 3 rota(s) em 2 domínio(s): maiores contribuintes do ICMS de Goiás (`goias.gov.br`); site institucional de cada empresa (páginas de RSE) (``); Salic — projetos que a empresa já incentivou (`salic.cultura.gov.br`).
 
-**Léxico.** Camada 1 (26 termos, abre a leitura): *edital*, *chamada pública*, *chamamento*, *seleção de projetos*, *seleção pública*, *inscrições abertas*, *apoio a projetos*, *apoio institucional*, *fomento*, *financiamento de projetos* … +16. Camada 2 (14 termos, confirma): *quem pode participar*, *podem se inscrever*, *proponente*, *critérios de seleção*, *cronograma*, *valor do apoio*, *recursos disponíveis*, *regulamento* … +6. Veto geral: 37 termos.
+**Léxico.** Camada 1 (26 termos, abre a leitura): *edital*, *chamada pública*, *chamamento*, *seleção de projetos*, *seleção pública*, *inscrições abertas*, *apoio a projetos*, *apoio institucional*, *fomento*, *financiamento de projetos* … +16. Camada 2 (14 termos, confirma): *quem pode participar*, *podem se inscrever*, *proponente*, *critérios de seleção*, *cronograma*, *valor do apoio*, *recursos disponíveis*, *regulamento* … +6. Veto geral: 12 termos.
 
 **Bloqueio.** estado **sem auditoria**. Domínios com recusa registrada: `goias.gov.br` (39), `www.goias.gov.br` (6)
 
@@ -1048,7 +1048,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  A["AGENDA<br/>cada 7 dia(s)<br/>—/— dias"]
+  A["AGENDA<br/>cada — dia(s)<br/>—/— dias"]
   L["LEITURA<br/>3 rota(s)<br/>falhas no mês: —<br/>bloqueios: 45"]
   X["LÉXICO<br/>26+14 termos<br/>dias com achado: —"]
   C["CAPTURA<br/>— achado(s)"]
@@ -1064,11 +1064,11 @@ flowchart LR
 ### 29. Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefício fiscal)  
 `motor-patrocinio` · decisão: **MEDIR** — entrou no sistema depois da auditoria; sem número não há como julgar
 
-**Parâmetros.** Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefício fiscal). Tipo: — · finalidade: descoberta · cadência: a cada 7 dia(s) · coleta: **nuvem**.
+**Parâmetros.** Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefício fiscal). Tipo: — · finalidade: — · cadência: a cada — dia(s) · coleta: **nuvem**.
 
 **Onde busca.** 3 rota(s) em 2 domínio(s): imprensa e portais de eventos de Goiás (`opopular.com.br`); site institucional do patrocinador identificado (``); páginas de eventos e festivais goianos (`html.duckduckgo.com`).
 
-**Léxico.** Camada 1 (31 termos, abre a leitura): *edital*, *chamada pública*, *chamamento*, *seleção de projetos*, *seleção pública*, *inscrições abertas*, *apoio a projetos*, *apoio institucional*, *fomento*, *financiamento de projetos* … +21. Camada 2 (14 termos, confirma): *quem pode participar*, *podem se inscrever*, *proponente*, *critérios de seleção*, *cronograma*, *valor do apoio*, *recursos disponíveis*, *regulamento* … +6. Veto geral: 37 termos.
+**Léxico.** Camada 1 (31 termos, abre a leitura): *edital*, *chamada pública*, *chamamento*, *seleção de projetos*, *seleção pública*, *inscrições abertas*, *apoio a projetos*, *apoio institucional*, *fomento*, *financiamento de projetos* … +21. Camada 2 (14 termos, confirma): *quem pode participar*, *podem se inscrever*, *proponente*, *critérios de seleção*, *cronograma*, *valor do apoio*, *recursos disponíveis*, *regulamento* … +6. Veto geral: 12 termos.
 
 **Bloqueio.** estado **sem auditoria**. Nenhum domínio dele na lista de bloqueios.
 
@@ -1082,7 +1082,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  A["AGENDA<br/>cada 7 dia(s)<br/>—/— dias"]
+  A["AGENDA<br/>cada — dia(s)<br/>—/— dias"]
   L["LEITURA<br/>3 rota(s)<br/>falhas no mês: —<br/>bloqueios: 0"]
   X["LÉXICO<br/>31+14 termos<br/>dias com achado: —"]
   C["CAPTURA<br/>— achado(s)"]
@@ -1098,11 +1098,11 @@ flowchart LR
 ### 30. Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.  
 `sindico-aberto` · decisão: **MEDIR** — entrou no sistema depois da auditoria; sem número não há como julgar
 
-**Parâmetros.** Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.. Tipo: — · finalidade: descoberta · cadência: a cada 1 dia(s) · coleta: **nuvem**.
+**Parâmetros.** Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.. Tipo: — · finalidade: — · cadência: a cada — dia(s) · coleta: **nuvem**.
 
 **Onde busca.** 3 rota(s) em 1 domínio(s): busca aberta por ângulo sorteado (sem rota fixa) (`html.duckduckgo.com`); site oficial do financiador descoberto (derivado) (``); plataformas ainda não catalogadas (`html.duckduckgo.com`).
 
-**Léxico.** Camada 1 (33 termos, abre a leitura): *edital*, *chamada pública*, *chamamento*, *seleção de projetos*, *seleção pública*, *inscrições abertas*, *apoio a projetos*, *apoio institucional*, *fomento*, *financiamento de projetos* … +23. Camada 2 (14 termos, confirma): *quem pode participar*, *podem se inscrever*, *proponente*, *critérios de seleção*, *cronograma*, *valor do apoio*, *recursos disponíveis*, *regulamento* … +6. Veto geral: 37 termos.
+**Léxico.** Camada 1 (33 termos, abre a leitura): *edital*, *chamada pública*, *chamamento*, *seleção de projetos*, *seleção pública*, *inscrições abertas*, *apoio a projetos*, *apoio institucional*, *fomento*, *financiamento de projetos* … +23. Camada 2 (14 termos, confirma): *quem pode participar*, *podem se inscrever*, *proponente*, *critérios de seleção*, *cronograma*, *valor do apoio*, *recursos disponíveis*, *regulamento* … +6. Veto geral: 12 termos.
 
 **Bloqueio.** estado **sem auditoria**. Nenhum domínio dele na lista de bloqueios.
 
@@ -1116,7 +1116,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  A["AGENDA<br/>cada 1 dia(s)<br/>—/— dias"]
+  A["AGENDA<br/>cada — dia(s)<br/>—/— dias"]
   L["LEITURA<br/>3 rota(s)<br/>falhas no mês: —<br/>bloqueios: 0"]
   X["LÉXICO<br/>33+14 termos<br/>dias com achado: —"]
   C["CAPTURA<br/>— achado(s)"]
@@ -1135,13 +1135,19 @@ Dois motores que leem o mesmo domínio gastam duas leituras para o mesmo conteú
 
 | motor | motor | domínios em comum |
 |---|---|---|
-| `do-goias` | `plat-ovg` | `goias.gov.br`, `ovg.org.br` |
+| `do-goias` | `plat-ovg` | `diariooficial.abc.go.gov.br`, `goias.gov.br`, `ovg.org.br` |
+| `do-goias` | `plat-fapeg` | `diariooficial.abc.go.gov.br`, `goias.gov.br` |
+| `do-goias` | `plat-fundos-estaduais-go` | `diariooficial.abc.go.gov.br`, `goias.gov.br` |
+| `do-goias` | `plat-secult-go` | `diariooficial.abc.go.gov.br`, `goias.gov.br` |
+| `plat-fapeg` | `plat-fundos-estaduais-go` | `diariooficial.abc.go.gov.br`, `goias.gov.br` |
+| `plat-fapeg` | `plat-ovg` | `diariooficial.abc.go.gov.br`, `goias.gov.br` |
+| `plat-fapeg` | `plat-secult-go` | `diariooficial.abc.go.gov.br`, `goias.gov.br` |
+| `plat-fundos-estaduais-go` | `plat-ovg` | `diariooficial.abc.go.gov.br`, `goias.gov.br` |
+| `plat-fundos-estaduais-go` | `plat-secult-go` | `diariooficial.abc.go.gov.br`, `goias.gov.br` |
+| `plat-ovg` | `plat-secult-go` | `diariooficial.abc.go.gov.br`, `goias.gov.br` |
 | `cnj-destinacoes` | `dje-tjgo` | `tjgo.jus.br` |
 | `do-goias` | `motor-gife` | `goias.gov.br` |
-| `do-goias` | `plat-fapeg` | `goias.gov.br` |
-| `do-goias` | `plat-fundos-estaduais-go` | `goias.gov.br` |
 | `do-goias` | `plat-goias-social` | `goias.gov.br` |
-| `do-goias` | `plat-secult-go` | `goias.gov.br` |
 | `dou` | `plat-cnpq-extensao` | `gov.br` |
 | `dou` | `plat-salic` | `gov.br` |
 | `empresas-incentivadas` | `plat-observatorio-3setor` | `observatorio3setor.org.br` |
@@ -1156,17 +1162,11 @@ Dois motores que leem o mesmo domínio gastam duas leituras para o mesmo conteú
 | `motor-patrocinio` | `sindico-aberto` | `html.duckduckgo.com` |
 | `plat-abcr` | `plat-empresas-editais-incentivados` | `captadores.org.br` |
 | `plat-cnpq-extensao` | `plat-salic` | `gov.br` |
-| `plat-fapeg` | `plat-fundos-estaduais-go` | `goias.gov.br` |
 | `plat-fapeg` | `plat-goias-social` | `goias.gov.br` |
-| `plat-fapeg` | `plat-ovg` | `goias.gov.br` |
-| `plat-fapeg` | `plat-secult-go` | `goias.gov.br` |
 | `plat-fundos-estaduais-go` | `plat-goias-social` | `goias.gov.br` |
-| `plat-fundos-estaduais-go` | `plat-ovg` | `goias.gov.br` |
-| `plat-fundos-estaduais-go` | `plat-secult-go` | `goias.gov.br` |
 | `plat-goias-social` | `plat-ovg` | `goias.gov.br` |
 | `plat-goias-social` | `plat-secult-go` | `goias.gov.br` |
 | `plat-observatorio-3setor` | `recorrencia` | `observatorio3setor.org.br` |
-| `plat-ovg` | `plat-secult-go` | `goias.gov.br` |
 | `plat-prefeituras-50-go` | `pncp-api` | `pncp.gov.br` |
 | `plat-prosas` | `plat-prosas-premios` | `prosas.com.br` |
 | `plat-sindico-aberto` | `sindico-aberto` | `html.duckduckgo.com` |

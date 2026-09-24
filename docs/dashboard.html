@@ -426,18 +426,6 @@ box-shadow:0 1px 3px #0002}
 /* O AVIÃO DO PILOTO vai e volta SÓ por cima do motor da Bússola em que está trabalhando agora,
    como um sinal de alerta. Nenhuma outra parte do site recebe o avião.
    Sem missão em curso, ou com o lugar fora da tela, ele simplesmente não aparece. */
-/* DESCRIÇÃO INTERNA DO MOTOR: aparece só com o mouse parado sobre o quadro, sem clique.
-   Um pequeno atraso evita que pisque ao atravessar a lista com o mouse. */
-.mt-item>.mt-desc{position:absolute;top:10px;right:56px;width:min(460px,70%);z-index:40;
-  background:#0E2A55;color:#EAF1FB;border-radius:12px;padding:12px 14px;font-size:11.5px;line-height:1.5;
-  box-shadow:0 10px 28px rgba(14,42,85,.35);opacity:0;visibility:hidden;pointer-events:none;
-  transform:translateY(-4px);transition:opacity .18s ease,transform .18s ease,visibility 0s linear .18s}
-.mt-item:hover>.mt-desc{opacity:1;visibility:visible;transform:none;transition-delay:.45s,.45s,.45s}
-.mt-desc b{color:#9FE3B8;font-size:10px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-top:7px}
-.mt-desc b:first-child{margin-top:0}
-.mt-desc ul{margin:2px 0 0 16px;padding:0}.mt-desc li{margin:1px 0}
-.mt-desc .mt-desc-evo{color:#FFE6A8}
-@media (hover:none){.mt-item>.mt-desc{display:none}}
 .pil-aviao-vivo{position:absolute;left:0;top:0;width:130px;height:130px;z-index:60;
   pointer-events:auto;cursor:pointer;opacity:0;transition:opacity .45s ease;will-change:transform}
 .pil-aviao-vivo.visivel{opacity:1}
@@ -3588,32 +3576,6 @@ window._aviaoDiag=function(){
   return {x:AV.x,y:AV.y,dir:AV.dir,esq:AV.esq,alvo:AV.alvo&&AV.alvo.getAttribute("data-id"),
           dentro:!!c&&AV.x>=c.x0-.5&&AV.x<=c.x1+.5, x0:c&&c.x0, x1:c&&c.x1, via:(window._POS||{})._via||null};
 };
-/* ── DESCRIÇÃO INTERNA DOS MOTORES ───────────────────────────────────────────────────────
-   Carregada uma vez e presa a cada quadro de motor da Bússola; só aparece ao passar o mouse.
-   A lista é redesenhada várias vezes, então um observador recoloca a descrição sempre que ela
-   some. */
-window._DESC=null;
-async function carregaDescricoes(){ try{ const r=await fetch("dados/descricao_motores.json?v="+Date.now());
-  if(r.ok) window._DESC=(await r.json()).motores||{}; }catch(e){} anexarDescricoes(); }
-function anexarDescricoes(){
-  const D=window._DESC; if(!D) return;
-  document.querySelectorAll("#mt-lista .mt-item[data-id]").forEach(el=>{
-    if(el.querySelector(":scope>.mt-desc")) return;
-    const id=el.getAttribute("data-id"); const d=D[id]||D["plat-"+id]||D[id.replace(/^plat-/,"")]; if(!d) return;   // a Bússola às vezes omite o prefixo plat-
-    const box=document.createElement("div"); box.className="mt-desc"; box.setAttribute("role","tooltip");
-    box.innerHTML=`<b>Objetivo</b>${esc(d.objetivo||"")}<b>Como funciona</b>${esc(d.como_funciona||"")}`+
-      `<b>Onde para hoje</b>${esc(d.onde_para||"—")}`+
-      ((d.para_afiar||[]).length?`<b>Para afiar</b><ul>${d.para_afiar.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"")+
-      `<b>Evolução gratuita</b><span class="mt-desc-evo">${esc(d.evolucao_gratuita||"")}</span>`;
-    el.appendChild(box);
-  });
-}
-(function vigiarLista(){
-  const alvo=document.getElementById("mt-lista");
-  if(!alvo){ setTimeout(vigiarLista,800); return; }
-  new MutationObserver(()=>anexarDescricoes()).observe(alvo,{childList:true,subtree:true});
-  carregaDescricoes();
-})();
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
