@@ -1,22 +1,21 @@
-commit: dae0ff8f80a6e7bb407c405ca5e85e72a7f22cdb
-em: 2026-09-24T10:22:05Z
+commit: f3519a8a199f253563d0e7efa77fdb0a3c41d861
+em: 2026-09-24T11:20:37Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 733 tests in 182.539s
+Ran 733 tests in 254.585s
 
 FAILED (failures=1, skipped=11)
 ---- falhas ----
-FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
-Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
+FAIL: test_entendimento_cobre_a_biblioteca_inteira (test_piloto.TestePiloto.test_entendimento_cobre_a_biblioteca_inteira)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3790, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
-    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'futuro' == 'futuro'
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_piloto.py", line 48, in test_entendimento_cobre_a_biblioteca_inteira
+    self.assertIn("orcamento", cfg); self.assertIn("prazo inventado", cfg["regra"])
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'prazo inventado' not found in 'ocupante empossado pelo titular; só ele roda nos voos'
 
 ----------------------------------------------------------------------
-Ran 733 tests in 182.539s
+Ran 733 tests in 254.585s
 
 FAILED (failures=1, skipped=11)
