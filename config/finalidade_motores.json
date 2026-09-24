@@ -1,283 +1,299 @@
 {
-  "versao": 1,
-  "em": "2026-09-20T19:32:59+00:00",
-  "regra": "DESCOBERTA procura o que não existe na base (léxico amplo, diário); RECORRÊNCIA revisita o identificado (léxico estreito, cadência por estado); INSUMO alimenta habilitação e emenda",
-  "motores": {
-    "do-goiania": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "do-goias": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "dou": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "dje-tjgo": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "dj-trf1-go": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "cnj-destinacoes": {
-      "finalidade": "insumo",
-      "do_que": "referência normativa",
-      "cadencia_dias": 7
-    },
-    "camara-goiania-pl": {
-      "finalidade": "insumo",
-      "do_que": "utilidade pública",
-      "cadencia_dias": 7
-    },
-    "alego-pl": {
-      "finalidade": "insumo",
-      "do_que": "emenda parlamentar",
-      "cadencia_dias": 7
-    },
-    "pncp-api": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "empresas-incentivadas": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-prosas": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-observatorio-3setor": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-abcr": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-gife": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-salic": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-secult-go": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-prosas-premios": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-ovg": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-goias-social": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-fundos-estaduais-go": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-fapeg": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-prefeituras-50-go": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-empresas-editais-incentivados": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-mp-destinacoes-reparacao": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "plat-cnpq-extensao": {
-      "finalidade": "descoberta",
-      "cadencia_dias": 1
-    },
-    "recorrencia": {
-      "finalidade": "recorrencia",
-      "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
-      "cadencia_dias": "por estado da oportunidade",
-      "rotas": "estado/rotas_recorrencia.json"
-    }
+ "versao": 1,
+ "em": "2026-09-20T19:32:59+00:00",
+ "regra": "DESCOBERTA procura o que não existe na base (léxico amplo, diário); RECORRÊNCIA revisita o identificado (léxico estreito, cadência por estado); INSUMO alimenta habilitação e emenda",
+ "motores": {
+  "do-goiania": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
   },
-  "espalhamento": {
-    "regra": "toda oportunidade validada gera rota de recorrência; o financiador vira fonte no catálogo; território e área alimentam os motores de descoberta vizinhos",
-    "financiadores_novos_para_o_catalogo": [
-      {
-        "host": "rouanet.cultura.gov.br",
-        "orgao": "Ministério da Cultura — SALIC",
-        "uf": null,
-        "area": "cultura",
-        "origem_edital": "janela-rouanet-2026"
-      },
-      {
-        "host": "www.arapongas.pr.gov.br",
-        "orgao": "Querido Diário — diários oficiais municipais",
-        "uf": "PR",
-        "area": "educacao",
-        "origem_edital": "d96fb4cdbb7a7dcd0ac0"
-      },
-      {
-        "host": "crcgo.org.br",
-        "orgao": "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS",
-        "uf": "GO",
-        "area": "educacao",
-        "origem_edital": "85bdd934184ec6d91efe"
-      },
-      {
-        "host": "acessoainformacao.cavalcante.go.gov.br",
-        "orgao": "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE",
-        "uf": "GO",
-        "area": "cultura",
-        "origem_edital": "529e7f3f5331bc30856f"
-      },
-      {
-        "host": "www.ipora.pr.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE IPORA",
-        "uf": "PR",
-        "area": "cultura",
-        "origem_edital": "14a08a92997115da8279"
-      },
-      {
-        "host": "www.novohamburgo.rs.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE NOVO HAMBURGO",
-        "uf": "RS",
-        "area": "cultura",
-        "origem_edital": "1eaba08f0097a3439216"
-      },
-      {
-        "host": "sistema.mirassoldoeste.mt.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE MIRASSOL D'OESTE",
-        "uf": "MT",
-        "area": "saude",
-        "origem_edital": "34fcd0f7fbf6291a42f3"
-      },
-      {
-        "host": "www.senadorpompeu.ce.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE SENADOR POMPEU",
-        "uf": "CE",
-        "area": "crianca_adolescente",
-        "origem_edital": "43ec6258b8523a140c08"
-      },
-      {
-        "host": "carazinho.atende.net",
-        "orgao": "PNCP — MUNICIPIO DE CARAZINHO",
-        "uf": "RS",
-        "area": "crianca_adolescente",
-        "origem_edital": "52715deee843fac8f817"
-      },
-      {
-        "host": "www.detran.rj.gov.br",
-        "orgao": "PNCP — ESTADO DO RIO DE JANEIRO",
-        "uf": "RJ",
-        "area": "meio_ambiente",
-        "origem_edital": "82f947d591f92ed7759c"
-      },
-      {
-        "host": "www.riopreto.sp.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE SAO JOSE DO RIO PRETO",
-        "uf": "SP",
-        "area": "cultura",
-        "origem_edital": "b1ae48b981558670d3b6"
-      },
-      {
-        "host": "www.rosariodosul.rs.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE ROSARIO DO SUL",
-        "uf": "RS",
-        "area": "crianca_adolescente",
-        "origem_edital": "b8c90c7a8928773bd959"
-      },
-      {
-        "host": "www.bentogoncalves.rs.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE BENTO GONCALVES",
-        "uf": "RS",
-        "area": "cultura",
-        "origem_edital": "c42691378940f7689f60"
-      },
-      {
-        "host": "transparencia.cacoal.ro.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE CACOAL",
-        "uf": "RO",
-        "area": "assistencia_social",
-        "origem_edital": "c84b4b6d14a24f587635"
-      },
-      {
-        "host": "www.itabaianinha.se.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE ITABAIANINHA",
-        "uf": "SE",
-        "area": "educacao",
-        "origem_edital": "ced063d82912665631c2"
-      },
-      {
-        "host": "transparencia.agilicloud.com.br",
-        "orgao": "PNCP — MUNICIPIO DE PARANATINGA",
-        "uf": "MT",
-        "area": "saude",
-        "origem_edital": "cfa2bfd4a77cf4ce804e"
-      },
-      {
-        "host": "www.ribeiraodasneves.mg.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE RIBEIRAO DAS NEVES",
-        "uf": "MG",
-        "area": "cultura",
-        "origem_edital": "d6ff07772a8525e4a45c"
-      },
-      {
-        "host": "www.santaluziadoparua.ma.gov.br",
-        "orgao": "ABCR — Associação Brasileira de Captadores",
-        "uf": null,
-        "area": "meio_ambiente",
-        "origem_edital": "bdb12843444ecfd292cf"
-      },
-      {
-        "host": "transparencia.nobres.mt.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE NOBRES",
-        "uf": "MT",
-        "area": "saude",
-        "origem_edital": "4c94a13f418fba0d0715"
-      },
-      {
-        "host": "senadorcanedo.go.gov.br",
-        "orgao": "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC",
-        "uf": "GO",
-        "area": "outros",
-        "origem_edital": "e6801d299530f293e1b5"
-      },
-      {
-        "host": "www.vilarica.mt.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE VILA RICA",
-        "uf": "MT",
-        "area": "outros",
-        "origem_edital": "eaa12d99fc473fb7ac68"
-      },
-      {
-        "host": "www.ekloos.org",
-        "orgao": "ABCR — Associação Brasileira de Captadores",
-        "uf": null,
-        "area": "outros",
-        "origem_edital": "32d5ced61ef79f59ab7f"
-      },
-      {
-        "host": "carire.ce.gov.br",
-        "orgao": "PNCP — MUNICIPIO DE CARIRE",
-        "uf": "CE",
-        "area": "outros",
-        "origem_edital": "f1ca92b53138bf67e586"
-      }
-    ],
-    "total_novos": 23
+  "do-goias": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "dou": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "dje-tjgo": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "dj-trf1-go": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "cnj-destinacoes": {
+   "finalidade": "insumo",
+   "do_que": "referência normativa",
+   "cadencia_dias": 7
+  },
+  "camara-goiania-pl": {
+   "finalidade": "insumo",
+   "do_que": "utilidade pública",
+   "cadencia_dias": 7
+  },
+  "alego-pl": {
+   "finalidade": "insumo",
+   "do_que": "emenda parlamentar",
+   "cadencia_dias": 7
+  },
+  "pncp-api": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "empresas-incentivadas": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-prosas": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-observatorio-3setor": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-abcr": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-gife": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-salic": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-secult-go": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-prosas-premios": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-ovg": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-goias-social": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-fundos-estaduais-go": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-fapeg": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-prefeituras-50-go": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-empresas-editais-incentivados": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-mp-destinacoes-reparacao": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "plat-cnpq-extensao": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "recorrencia": {
+   "finalidade": "recorrencia",
+   "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
+   "cadencia_dias": "por estado da oportunidade",
+   "rotas": "estado/rotas_recorrencia.json"
+  },
+  "plat-sindico-aberto": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
+  },
+  "motor-gife": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 7
+  },
+  "motor-patrocinio": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 7
+  },
+  "sindico-aberto": {
+   "finalidade": "descoberta",
+   "cadencia_dias": 1
   }
+ },
+ "espalhamento": {
+  "regra": "toda oportunidade validada gera rota de recorrência; o financiador vira fonte no catálogo; território e área alimentam os motores de descoberta vizinhos",
+  "financiadores_novos_para_o_catalogo": [
+   {
+    "host": "rouanet.cultura.gov.br",
+    "orgao": "Ministério da Cultura — SALIC",
+    "uf": null,
+    "area": "cultura",
+    "origem_edital": "janela-rouanet-2026"
+   },
+   {
+    "host": "www.arapongas.pr.gov.br",
+    "orgao": "Querido Diário — diários oficiais municipais",
+    "uf": "PR",
+    "area": "educacao",
+    "origem_edital": "d96fb4cdbb7a7dcd0ac0"
+   },
+   {
+    "host": "crcgo.org.br",
+    "orgao": "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS",
+    "uf": "GO",
+    "area": "educacao",
+    "origem_edital": "85bdd934184ec6d91efe"
+   },
+   {
+    "host": "acessoainformacao.cavalcante.go.gov.br",
+    "orgao": "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE",
+    "uf": "GO",
+    "area": "cultura",
+    "origem_edital": "529e7f3f5331bc30856f"
+   },
+   {
+    "host": "www.ipora.pr.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE IPORA",
+    "uf": "PR",
+    "area": "cultura",
+    "origem_edital": "14a08a92997115da8279"
+   },
+   {
+    "host": "www.novohamburgo.rs.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE NOVO HAMBURGO",
+    "uf": "RS",
+    "area": "cultura",
+    "origem_edital": "1eaba08f0097a3439216"
+   },
+   {
+    "host": "sistema.mirassoldoeste.mt.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE MIRASSOL D'OESTE",
+    "uf": "MT",
+    "area": "saude",
+    "origem_edital": "34fcd0f7fbf6291a42f3"
+   },
+   {
+    "host": "www.senadorpompeu.ce.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE SENADOR POMPEU",
+    "uf": "CE",
+    "area": "crianca_adolescente",
+    "origem_edital": "43ec6258b8523a140c08"
+   },
+   {
+    "host": "carazinho.atende.net",
+    "orgao": "PNCP — MUNICIPIO DE CARAZINHO",
+    "uf": "RS",
+    "area": "crianca_adolescente",
+    "origem_edital": "52715deee843fac8f817"
+   },
+   {
+    "host": "www.detran.rj.gov.br",
+    "orgao": "PNCP — ESTADO DO RIO DE JANEIRO",
+    "uf": "RJ",
+    "area": "meio_ambiente",
+    "origem_edital": "82f947d591f92ed7759c"
+   },
+   {
+    "host": "www.riopreto.sp.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE SAO JOSE DO RIO PRETO",
+    "uf": "SP",
+    "area": "cultura",
+    "origem_edital": "b1ae48b981558670d3b6"
+   },
+   {
+    "host": "www.rosariodosul.rs.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE ROSARIO DO SUL",
+    "uf": "RS",
+    "area": "crianca_adolescente",
+    "origem_edital": "b8c90c7a8928773bd959"
+   },
+   {
+    "host": "www.bentogoncalves.rs.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE BENTO GONCALVES",
+    "uf": "RS",
+    "area": "cultura",
+    "origem_edital": "c42691378940f7689f60"
+   },
+   {
+    "host": "transparencia.cacoal.ro.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE CACOAL",
+    "uf": "RO",
+    "area": "assistencia_social",
+    "origem_edital": "c84b4b6d14a24f587635"
+   },
+   {
+    "host": "www.itabaianinha.se.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE ITABAIANINHA",
+    "uf": "SE",
+    "area": "educacao",
+    "origem_edital": "ced063d82912665631c2"
+   },
+   {
+    "host": "transparencia.agilicloud.com.br",
+    "orgao": "PNCP — MUNICIPIO DE PARANATINGA",
+    "uf": "MT",
+    "area": "saude",
+    "origem_edital": "cfa2bfd4a77cf4ce804e"
+   },
+   {
+    "host": "www.ribeiraodasneves.mg.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE RIBEIRAO DAS NEVES",
+    "uf": "MG",
+    "area": "cultura",
+    "origem_edital": "d6ff07772a8525e4a45c"
+   },
+   {
+    "host": "www.santaluziadoparua.ma.gov.br",
+    "orgao": "ABCR — Associação Brasileira de Captadores",
+    "uf": null,
+    "area": "meio_ambiente",
+    "origem_edital": "bdb12843444ecfd292cf"
+   },
+   {
+    "host": "transparencia.nobres.mt.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE NOBRES",
+    "uf": "MT",
+    "area": "saude",
+    "origem_edital": "4c94a13f418fba0d0715"
+   },
+   {
+    "host": "senadorcanedo.go.gov.br",
+    "orgao": "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC",
+    "uf": "GO",
+    "area": "outros",
+    "origem_edital": "e6801d299530f293e1b5"
+   },
+   {
+    "host": "www.vilarica.mt.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE VILA RICA",
+    "uf": "MT",
+    "area": "outros",
+    "origem_edital": "eaa12d99fc473fb7ac68"
+   },
+   {
+    "host": "www.ekloos.org",
+    "orgao": "ABCR — Associação Brasileira de Captadores",
+    "uf": null,
+    "area": "outros",
+    "origem_edital": "32d5ced61ef79f59ab7f"
+   },
+   {
+    "host": "carire.ce.gov.br",
+    "orgao": "PNCP — MUNICIPIO DE CARIRE",
+    "uf": "CE",
+    "area": "outros",
+    "origem_edital": "f1ca92b53138bf67e586"
+   }
+  ],
+  "total_novos": 23
+ }
 }

@@ -20,7 +20,9 @@ class TesteAchadosDoDia(unittest.TestCase):
 
     def test_dia_traz_motor_e_link(self):
         a = json.loads((ROOT / "docs/dados/achados_dia.json").read_text(encoding="utf-8"))
-        dia = a["dias"]["2026-09-20"]
+        # o dia mais recente com achado, não uma data fixa: com '2026-09-20' o teste apodreceu
+        # quando o dia saiu da janela, e sua falha impedia TODOS os motores de rodar
+        dia = a["dias"][max(k for k, v in a["dias"].items() if (v or {}).get("total", 0) >= 1)]
         self.assertGreaterEqual(dia["total"], 1)
         for m, l in dia["motores"].items():
             self.assertTrue(m)

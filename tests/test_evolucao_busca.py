@@ -83,6 +83,8 @@ class TesteLexicoQueAprende(unittest.TestCase):
 class TesteAcervoCompacto(unittest.TestCase):
     def test_acervo_fts5_zstd(self):
         from src.acervo_compacto import buscar, ficha, ACERVO
+        if not ACERVO.exists():                   # gerado localmente e fora do git (.gitignore)
+            self.skipTest("acervo.sqlite não existe neste ambiente: é gerado, não versionado")
         self.assertTrue(ACERVO.exists())
         m = json.loads((ROOT / "estado/acervo_compacto.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(m["docs"], 10000); self.assertLess(m["bytes_acervo"], 40 * 1024 * 1024)

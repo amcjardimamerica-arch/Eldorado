@@ -3117,6 +3117,10 @@ class SystemTests(unittest.TestCase):
                                         {"title":"PREGÃO ELETRÔNICO Nº 90/2026 — aquisição de material","urlTitle":"p90","content":""}]})
             (lab/"dou.html").write_text(f'<html><body><script id="params" type="application/json">{js}</script></body></html>',encoding="utf-8")
             r=ler({"id":"dou","nome":"DOU","tipo":"diario_oficial","nivel":"federal","territorio":"BR","urls":[f"file://{lab}/dou.html"],"busca":None},pausa=0)
+        # só o que veio do arquivo de teste: no servidor, com internet, o sensor também baixa a
+        # edição REAL do dia (leiturajornal?data=...) e acha mais matérias — o teste dependia de
+        # rede sem saber, e sua falha impedia todos os motores de rodar
+        r["achados"]=[a for a in r["achados"] if str(a.get("url","")).rstrip("/").endswith(("/e3","/p90"))]
         self.assertEqual(len(r["achados"]),1)
         self.assertEqual(r["achados"][0]["prazo_texto"],"30/09/2026")
         self.assertTrue(r["achados"][0]["url"].startswith("https://www.in.gov.br/web/dou/-/"))
