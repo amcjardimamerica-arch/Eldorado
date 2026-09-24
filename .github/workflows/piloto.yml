@@ -209,7 +209,24 @@ jobs:
                   if urllib.request.urlopen(f"http://127.0.0.1:{cfg.get('porta', 8081)}/health", timeout=2).status == 200: break
               except Exception: time.sleep(1)
           from src.piloto import ciclo
-          print(json.dumps(ciclo(porta=cfg.get("porta", 8081)), ensure_ascii=False, indent=1))
+          import traceback
+          # O ERRO FICA NO REPOSITÓRIO. Em 24/09 voos alternados quebravam no fechamento, depois
+          # das missões, e o log do Actions não é legível de fora. O traceback vai para
+          # estado/piloto/erro_do_voo.json, que o passo de commit leva junto.
+          etapa = "ciclo"
+          try:
+              r = ciclo(porta=cfg.get("porta", 8081))
+              etapa = "json.dumps do relatório"
+              print(json.dumps(r, ensure_ascii=False, indent=1))
+          except Exception:
+              tb = traceback.format_exc()
+              print(tb)
+              os.makedirs("estado/piloto", exist_ok=True)
+              json.dump({"em": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "etapa": etapa,
+                         "erro": tb[-6000:]}, open("estado/piloto/erro_do_voo.json", "w"),
+                        ensure_ascii=False, indent=1)
+              srv.kill()
+              sys.exit(1)
           srv.kill()
           PY
       - name: Pousar 3 segundos e decolar de novo
