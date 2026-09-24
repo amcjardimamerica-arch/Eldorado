@@ -1,0 +1,102 @@
+{
+  "em": "2026-09-22T08:46:44+00:00",
+  "gabarito": 120,
+  "runner": {
+    "cpus": 4,
+    "publico": true
+  },
+  "regra": "acerto na classificação contra o veredito do titular; QUALQUER prazo inventado (data sem trecho literal) elimina; desempate por tokens/s",
+  "candidatos": [
+    {
+      "id": "qwen2.5-3b",
+      "nome": "Qwen2.5-3B-Instruct",
+      "arquivo": "qwen2.5-3b-instruct-q4_k_m.gguf",
+      "gb": 2.0,
+      "licenca": "Apache-2.0",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/main/qwen2.5-3b-instruct-q4_k_m.gguf",
+      "itens": 120,
+      "respondeu_de": 120,
+      "acerto": 0.325,
+      "confusao": {
+        "atencao->aprovado": 13,
+        "atencao->atencao": 17,
+        "reprovado->aprovado": 29,
+        "reprovado->atencao": 49,
+        "aprovado->aprovado": 9,
+        "aprovado->atencao": 3
+      },
+      "falso_positivo": 0.372,
+      "falso_negativo": 0.0,
+      "prazos_confirmados": 0,
+      "prazos_inventados": 0,
+      "tokens_por_s": 9.5,
+      "minutos": 46.7,
+      "elegivel": true
+    },
+    {
+      "id": "qwen2.5-7b",
+      "nome": "Qwen2.5-7B-Instruct",
+      "arquivo": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+      "gb": 4.7,
+      "licenca": "Apache-2.0",
+      "url": "https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF/resolve/main/Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+      "nota": "o repositório oficial da Alibaba distribui o 7B fatiado em 2 arquivos; esta é a versão em arquivo único",
+      "erro": "modelo não disponível no runner",
+      "elegivel": false
+    },
+    {
+      "id": "gemma-2-2b",
+      "nome": "Gemma-2-2B-it",
+      "arquivo": "gemma-2-2b-it-Q4_K_M.gguf",
+      "gb": 1.6,
+      "licenca": "Gemma",
+      "url": "https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q4_K_M.gguf",
+      "itens": 120,
+      "respondeu_de": 120,
+      "acerto": 0.35,
+      "confusao": {
+        "atencao->aprovado": 28,
+        "reprovado->aprovado": 77,
+        "aprovado->aprovado": 12,
+        "reprovado->atencao": 1,
+        "atencao->atencao": 2
+      },
+      "falso_positivo": 0.987,
+      "falso_negativo": 0.0,
+      "prazos_confirmados": 0,
+      "prazos_inventados": 0,
+      "tokens_por_s": 10.3,
+      "minutos": 43.1,
+      "elegivel": true
+    },
+    {
+      "id": "llama-3.2-3b",
+      "nome": "Llama-3.2-3B-Instruct",
+      "arquivo": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+      "gb": 2.0,
+      "licenca": "Llama-3.2-Community",
+      "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
+      "itens": 120,
+      "respondeu_de": 120,
+      "acerto": 0.342,
+      "confusao": {
+        "atencao->aprovado": 25,
+        "reprovado->aprovado": 65,
+        "atencao->atencao": 5,
+        "reprovado->atencao": 13,
+        "aprovado->aprovado": 11,
+        "aprovado->atencao": 1
+      },
+      "falso_positivo": 0.833,
+      "falso_negativo": 0.0,
+      "prazos_confirmados": 0,
+      "prazos_inventados": 0,
+      "tokens_por_s": 11.5,
+      "minutos": 38.6,
+      "elegivel": true
+    }
+  ],
+  "criterio": "elegível = 0 prazos inventados e falso positivo ≤ 25%; nota = acerto × taxa de resposta; desempate por tokens/s",
+  "vencedor": null,
+  "motivo": "nenhum candidato elegível (todos inventaram prazo ou não subiram)"
+}
