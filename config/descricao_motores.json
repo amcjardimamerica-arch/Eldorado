@@ -1,0 +1,313 @@
+{
+ "em": "2026-09-24",
+ "regra": "descrição interna: aparece só ao passar o mouse sobre o quadro do motor na Bússola",
+ "motores": {
+  "do-goiania": {
+   "nome": "Diário Oficial do Município de Goiânia",
+   "objetivo": "Descobrir oportunidades novas em diário oficial municipal — a fonte primária de Goiânia.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta pelo computador do titular; lê 4 rota(s) em 1 domínio(s) (goiania.go.gov.br); abre só links que casam com 14 termos e escapam dos 37 vetos, e confirma no texto com 12 termos.",
+   "onde_para": "leitura — a nuvem é recusada; a coleta desta fonte é local",
+   "para_afiar": [
+    "coleta local: a fonte recusa endereço de fora do país; o que a nuvem lê é a página de recusa — só rende pelo computador do titular"
+   ],
+   "evolucao_gratuita": "verificar a cobertura de Goiânia no Querido Diário (API aberta da Open Knowledge Brasil); se houver, dispensa a coleta local"
+  },
+  "do-goias": {
+   "nome": "Diário Oficial do Estado de Goiás",
+   "objetivo": "Descobrir oportunidades novas em diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta pelo computador do titular; lê 4 rota(s) em 3 domínio(s) (diariooficial.abc.go.gov.br, goias.gov.br, ovg.org.br); abre só links que casam com 34 termos e escapam dos 37 vetos, e confirma no texto com 11 termos.",
+   "onde_para": "chega à biblioteca — 9 de 9 ativos",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem",
+    "recebe 6 termo(s) de plat-ovg: credenciamento de entidades, entidades parceiras, Mais Social, edital de apoio…",
+    "recebe 5 termo(s) de plat-fapeg: chamada pública, extensão, inovação social, popularização da ciência…"
+   ],
+   "evolucao_gratuita": "ler o PDF da edição completa, não só o índice — o ato está dentro; e ser o único leitor do Diário para os motores estaduais"
+  },
+  "dou": {
+   "nome": "Diário Oficial da União",
+   "objetivo": "Descobrir oportunidades novas em diário federal — MDHC, CONANDA, MinC, MDS, emendas e Rouanet.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 4 rota(s) em 2 domínio(s) (gov.br, in.gov.br); abre só links que casam com 13 termos e escapam dos 37 vetos, e confirma no texto com 9 termos.",
+   "onde_para": "chega à biblioteca — 3 de 3 ativos",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem"
+   ],
+   "evolucao_gratuita": "Ro-DOU (robô de código aberto do governo federal que busca termos no DOU) ou INLABS da Imprensa Nacional (XML integral da edição, gratuito com cadastro)"
+  },
+  "pncp-api": {
+   "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
+   "objetivo": "Descobrir oportunidades novas em vetor de DESCOBERTA — dá número do processo e órgão; nunca é fonte (311 de 317 registros citam a 14.133).",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (pncp.gov.br); abre só links que casam com 7 termos e escapam dos 37 vetos, e confirma no texto com 5 termos.",
+   "onde_para": "triagem — 433 de 587 registros eliminados (74%)",
+   "para_afiar": [
+    "afinar filtro: traz volume, mas quase tudo é ruído"
+   ],
+   "evolucao_gratuita": "filtrar NA CONSULTA da API oficial do PNCP (uf=GO e modalidade), em vez de baixar tudo e descartar depois: o credenciamento é barrado antes de chegar"
+  },
+  "camara-goiania-pl": {
+   "nome": "Câmara Municipal de Goiânia — projetos de lei",
+   "objetivo": "Alimentar o sistema com utilidade pública, a partir de insumo de HABILITAÇÃO — declarações de utilidade pública municipal (requisito de editais), não fonte de captação.",
+   "como_funciona": "Roda a cada 7 dia(s), coleta pelo computador do titular; lê 2 rota(s) em 1 domínio(s) (goiania.go.leg.br); abre só links que casam com 5 termos e escapam dos 37 vetos, e confirma no texto com 4 termos.",
+   "onde_para": "leitura — a nuvem é recusada; a coleta desta fonte é local",
+   "para_afiar": [
+    "coleta local: a fonte recusa endereço de fora do país; o que a nuvem lê é a página de recusa — só rende pelo computador do titular"
+   ],
+   "evolucao_gratuita": "verificar se a Câmara usa o SAPL (Interlegis), que expõe API aberta de proposições"
+  },
+  "alego-pl": {
+   "nome": "Assembleia Legislativa de Goiás — proposições",
+   "objetivo": "Alimentar o sistema com emenda parlamentar, a partir de insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais.",
+   "como_funciona": "Roda a cada 7 dia(s), coleta na nuvem; lê 2 rota(s) em 2 domínio(s) (economia.go.gov.br, portal.al.go.leg.br); abre só links que casam com 8 termos e escapam dos 37 vetos, e confirma no texto com 6 termos.",
+   "onde_para": "chega à biblioteca — 1 de 1 ativos",
+   "para_afiar": [
+    "insumo: não busca oportunidade: alimenta o sistema com emenda parlamentar; não se mede por achado"
+   ],
+   "evolucao_gratuita": "dados abertos da ALEGO para proposições e leis de utilidade pública, em vez de raspar páginas"
+  },
+  "dj-trf1-go": {
+   "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
+   "objetivo": "Descobrir oportunidades novas em destinações de pena federais — raras em Goiás.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta pelo computador do titular; lê 2 rota(s) em 1 domínio(s) (trf1.jus.br); abre só links que casam com 6 termos e escapam dos 37 vetos, e confirma no texto com 5 termos.",
+   "onde_para": "leitura — a nuvem é recusada; a coleta desta fonte é local",
+   "para_afiar": [
+    "coleta local: a fonte recusa endereço de fora do país; o que a nuvem lê é a página de recusa — só rende pelo computador do titular"
+   ],
+   "evolucao_gratuita": "testar a API do DJEN/CNJ, que concentra os diários da Justiça Federal"
+  },
+  "dje-tjgo": {
+   "nome": "TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)",
+   "objetivo": "Descobrir oportunidades novas em varas de execução penal de Goiânia — prestações pecuniárias destinadas a entidades, sem edital e sem disputa.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta pelo computador do titular; lê 3 rota(s) em 2 domínio(s) (corregedoria.tjgo.jus.br, tjgo.jus.br); abre só links que casam com 7 termos e escapam dos 37 vetos, e confirma no texto com 5 termos.",
+   "onde_para": "leitura — a nuvem é recusada; a coleta desta fonte é local",
+   "para_afiar": [
+    "coleta local: a fonte recusa endereço de fora do país; o que a nuvem lê é a página de recusa — só rende pelo computador do titular"
+   ],
+   "evolucao_gratuita": "testar a API do Diário de Justiça Eletrônico Nacional (DJEN/CNJ), que publica os atos dos tribunais fora do WAF do TJGO"
+  },
+  "cnj-destinacoes": {
+   "nome": "CNJ — destinações de penas e prestações pecuniárias",
+   "objetivo": "Alimentar o sistema com referência normativa, a partir de REFERÊNCIA, não motor — a fonte real de destinações são os tribunais estaduais (decisão da auditoria de 20/09).",
+   "como_funciona": "Roda a cada 30 dia(s), coleta na nuvem; lê 2 rota(s) em 2 domínio(s) (cnj.jus.br, tjgo.jus.br); abre só links que casam com 13 termos e escapam dos 37 vetos, e confirma no texto com 2 termos.",
+   "onde_para": "léxico — lê as páginas e nada casa com os termos — nenhum achado no mês",
+   "para_afiar": [
+    "insumo: não busca oportunidade: alimenta o sistema com referência normativa; não se mede por achado",
+    "cadência alinhada a 30 dias: referência normativa não muda por semana"
+   ],
+   "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir"
+  },
+  "empresas-incentivadas": {
+   "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
+   "objetivo": "Descobrir oportunidades novas em site das maiores empresas contribuintes de Goiás — procura a página de responsabilidade social.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (observatorio3setor.org.br); abre só links que casam com 13 termos e escapam dos 37 vetos, e confirma no texto com 8 termos.",
+   "onde_para": "agenda — rodou 4 de 20 dias esperados",
+   "para_afiar": [
+    "reativar: não está rodando nos dias previstos"
+   ],
+   "evolucao_gratuita": "cruzar a lista do ICMS de Goiás com os incentivadores do SALIC: quem já destinou por lei sobe na fila"
+  },
+  "plat-observatorio-3setor": {
+   "nome": "Observatório do Terceiro Setor — editais",
+   "objetivo": "Descobrir oportunidades novas em vetor de DESCOBERTA nacional — anuncia, não publica; a fonte oficial é localizada depois.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (observatorio3setor.org.br); abre só links que casam com 8 termos e escapam dos 37 vetos, e confirma no texto com 6 termos.",
+   "onde_para": "agenda — rodou 6 de 20 dias esperados",
+   "para_afiar": [
+    "reativar: não está rodando nos dias previstos"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-abcr": {
+   "nome": "ABCR — Associação Brasileira de Captadores",
+   "objetivo": "Descobrir oportunidades novas em vetor de DESCOBERTA nacional (Captadores/ABCR).",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (captadores.org.br); abre só links que casam com 8 termos e escapam dos 37 vetos, e confirma no texto com 5 termos.",
+   "onde_para": "agenda — rodou 6 de 20 dias esperados",
+   "para_afiar": [
+    "reativar: não está rodando nos dias previstos"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-gife": {
+   "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
+   "objetivo": "Descobrir oportunidades novas em associados do GIFE são os maiores investidores sociais privados — a home não lista editais (TROCAR a rota).",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (gife.org.br); abre só links que casam com 15 termos e escapam dos 37 vetos, e confirma no texto com 4 termos.",
+   "onde_para": "agenda — rodou 6 de 20 dias esperados",
+   "para_afiar": [
+    "reativar: não está rodando nos dias previstos"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-prosas": {
+   "nome": "Prosas — editais para o terceiro setor",
+   "objetivo": "Descobrir oportunidades novas em maior plataforma de editais do terceiro setor no Brasil.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (prosas.com.br); abre só links que casam com 19 termos e escapam dos 37 vetos, e confirma no texto com 5 termos.",
+   "onde_para": "léxico — lê as páginas e nada casa com os termos — nenhum achado no mês",
+   "para_afiar": [
+    "observar: só 3 execução(ões) desde que nasceu — amostra curta demais para julgar o léxico"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-prosas-premios": {
+   "nome": "Prosas — prêmios, concursos e cursos para OSCs",
+   "objetivo": "Descobrir oportunidades novas em prêmios e concursos — muitos a pessoa física; o filtro de objeto barra.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (prosas.com.br); abre só links que casam com 14 termos e escapam dos 37 vetos, e confirma no texto com 4 termos.",
+   "onde_para": "agenda — rodou 6 de 20 dias esperados",
+   "para_afiar": [
+    "reativar: não está rodando nos dias previstos"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-salic": {
+   "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
+   "objetivo": "Descobrir oportunidades novas em Lei Rouanet — janela anual no Salic (1º/02 a 31/10, confirmar IN vigente).",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 2 domínio(s) (gov.br, salic.cultura.gov.br); abre só links que casam com 17 termos e escapam dos 37 vetos, e confirma no texto com 5 termos.",
+   "onde_para": "chega à biblioteca — 5 de 5 ativos",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem"
+   ],
+   "evolucao_gratuita": "API pública do SALIC: projetos aprovados e INCENTIVADORES com valores — serve também à lista de empresas"
+  },
+  "plat-secult-go": {
+   "nome": "Secult Goiás — Goyazes e Aldir Blanc",
+   "objetivo": "Descobrir oportunidades novas em cinco portas da SECULT-GO — Chamamentos, Goyazes, Fundo de Arte e Cultura, PNAB, Lei Paulo Gustavo.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 2 domínio(s) (goias.gov.br, pnab.cultura.go.gov.br); abre só links que casam com 17 termos e escapam dos 37 vetos, e confirma no texto com 6 termos.",
+   "onde_para": "chega à biblioteca — 7 de 9 ativos",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem",
+    "deixa de ler o Diário Oficial de Goiás (1 rota): quem lê é o do-goias"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-ovg": {
+   "nome": "OVG — Organização das Voluntárias de Goiás: editais e chamamentos",
+   "objetivo": "Descobrir oportunidades novas em OVG — maior operador de repasses a entidades de Goiás.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 2 domínio(s) (goias.gov.br, ovg.org.br); abre só links que casam com 16 termos e escapam dos 37 vetos, e confirma no texto com 6 termos.",
+   "onde_para": "captura sem ficha — 6 achado(s) sem ficha na Biblioteca",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem",
+    "deixa de ler o Diário Oficial de Goiás (1 rota): quem lê é o do-goias"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-goias-social": {
+   "nome": "Goiás Social — programas e editais para entidades",
+   "objetivo": "Descobrir oportunidades novas em programas sociais do Estado com repasse a entidades (Auxílio Nutricional já validado).",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (goias.gov.br); abre só links que casam com 17 termos e escapam dos 37 vetos, e confirma no texto com 5 termos.",
+   "onde_para": "chega à biblioteca — 6 de 6 ativos",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-fundos-estaduais-go": {
+   "nome": "Fundos estaduais de Goiás com conselho — FIA, Idoso, FUNJUVE, Meio Ambiente",
+   "objetivo": "Descobrir oportunidades novas em fundos estaduais com conselho — publicam por RESOLUÇÃO, não só por edital.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 1 domínio(s) (goias.gov.br); abre só links que casam com 19 termos e escapam dos 37 vetos, e confirma no texto com 5 termos.",
+   "onde_para": "captura sem ficha — 6 achado(s) sem ficha na Biblioteca",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem",
+    "deixa de ler o Diário Oficial de Goiás (1 rota): quem lê é o do-goias"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-fapeg": {
+   "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
+   "objetivo": "Descobrir oportunidades novas em FAP de Goiás — OSC entra como parceira em chamadas de extensão e inovação social.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 1 rota(s) em 1 domínio(s) (goias.gov.br); abre só links que casam com 15 termos e escapam dos 37 vetos, e confirma no texto com 4 termos.",
+   "onde_para": "léxico — lê as páginas e nada casa com os termos — nenhum achado no mês",
+   "para_afiar": [
+    "observar: só 3 execução(ões) desde que nasceu — amostra curta demais para julgar o léxico",
+    "deixa de ler o Diário Oficial de Goiás (1 rota): quem lê é o do-goias"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-prefeituras-50-go": {
+   "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
+   "objetivo": "Descobrir oportunidades novas em 50 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 2 domínio(s) (pncp.gov.br, queridodiario.ok.org.br); abre só links que casam com 13 termos e escapam dos 37 vetos, e confirma no texto com 5 termos.",
+   "onde_para": "léxico — lê as páginas e nada casa com os termos — nenhum achado no mês",
+   "para_afiar": [
+    "observar: só 3 execução(ões) desde que nasceu — amostra curta demais para julgar o léxico"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-empresas-editais-incentivados": {
+   "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
+   "objetivo": "Descobrir oportunidades novas em EDITAL publicado pela própria empresa para distribuir renúncia fiscal (modelo Porto Itapoá, Renner, Maria Emília).",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 1 domínio(s) (captadores.org.br); abre só links que casam com 19 termos e escapam dos 37 vetos, e confirma no texto com 6 termos.",
+   "onde_para": "léxico — lê as páginas e nada casa com os termos — nenhum achado no mês",
+   "para_afiar": [
+    "observar: só 3 execução(ões) desde que nasceu — amostra curta demais para julgar o léxico"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-mp-destinacoes-reparacao": {
+   "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
+   "objetivo": "Descobrir oportunidades novas em Ministérios Públicos — destinação de reparação, TAC, bens lesados e multas a projetos sociais.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 3 domínio(s) (mpf.mp.br, mpgo.mp.br, prt18.mpt.mp.br); abre só links que casam com 19 termos e escapam dos 37 vetos, e confirma no texto com 6 termos.",
+   "onde_para": "chega à biblioteca — 2 de 2 ativos",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "plat-cnpq-extensao": {
+   "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
+   "objetivo": "Descobrir oportunidades novas em CNPq / MCTI / Setec-MEC — chamadas com componente de extensão que aceitam OSC como parceira.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 1 domínio(s) (gov.br); abre só links que casam com 15 termos e escapam dos 37 vetos, e confirma no texto com 4 termos.",
+   "onde_para": "léxico — lê as páginas e nada casa com os termos — nenhum achado no mês",
+   "para_afiar": [
+    "observar: só 3 execução(ões) desde que nasceu — amostra curta demais para julgar o léxico"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "recorrencia": {
+   "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
+   "objetivo": "Revisitar oportunidades já conhecidas em RECORRÊNCIA — revisita a página oficial de cada oportunidade validada (retificação, prorrogação, resultado, reabertura); as rotas são dinâmicas e vêm de estado/rotas_recorrencia.json.",
+   "como_funciona": "Roda a cada por estado da oportunidade dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (observatorio3setor.org.br); abre só links que casam com 21 termos e escapam dos 37 vetos, e confirma no texto com 7 termos.",
+   "onde_para": "chega à biblioteca — 2 de 2 ativos",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem"
+   ],
+   "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir"
+  },
+  "plat-sindico-aberto": {
+   "nome": "Motor do Piloto — busca aberta no terceiro setor",
+   "objetivo": "Descobrir oportunidades novas em Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade..",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 1 domínio(s) (html.duckduckgo.com); abre só links que casam com 33 termos e escapam dos 37 vetos, e confirma no texto com 14 termos.",
+   "onde_para": "chega à biblioteca — 12 de 12 ativos",
+   "para_afiar": [
+    "manter: produz e o que produz sobrevive à triagem"
+   ],
+   "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia"
+  },
+  "motor-gife": {
+   "nome": "Empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS)",
+   "objetivo": "Descobrir oportunidades novas em Empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS).",
+   "como_funciona": "Roda a cada 7 dia(s), coleta na nuvem; lê 3 rota(s) em 2 domínio(s) (goias.gov.br, salic.cultura.gov.br); abre só links que casam com 26 termos e escapam dos 37 vetos, e confirma no texto com 14 termos.",
+   "onde_para": "sem medição — o motor não tem auditoria nem validação: nunca foi medido como os outros",
+   "para_afiar": [
+    "medir: entrou no sistema depois da auditoria; sem número não há como julgar"
+   ],
+   "evolucao_gratuita": "API do SALIC (incentivadores por empresa, com valores e anos) + dados abertos de CNPJ da Receita: histórico real de destinação"
+  },
+  "motor-patrocinio": {
+   "nome": "Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefício fiscal)",
+   "objetivo": "Descobrir oportunidades novas em Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefício fiscal).",
+   "como_funciona": "Roda a cada 7 dia(s), coleta na nuvem; lê 3 rota(s) em 2 domínio(s) (html.duckduckgo.com, opopular.com.br); abre só links que casam com 31 termos e escapam dos 37 vetos, e confirma no texto com 14 termos.",
+   "onde_para": "sem medição — o motor não tem auditoria nem validação: nunca foi medido como os outros",
+   "para_afiar": [
+    "medir: entrou no sistema depois da auditoria; sem número não há como julgar"
+   ],
+   "evolucao_gratuita": "alertas gratuitos em RSS (Google Alertas) para 'patrocínio' + Goiânia/Goiás: a imprensa avisa quando uma empresa patrocina"
+  },
+  "sindico-aberto": {
+   "nome": "Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
+   "objetivo": "Descobrir oportunidades novas em Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade..",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 1 domínio(s) (html.duckduckgo.com); abre só links que casam com 33 termos e escapam dos 37 vetos, e confirma no texto com 14 termos.",
+   "onde_para": "sem medição — o motor não tem auditoria nem validação: nunca foi medido como os outros",
+   "para_afiar": [
+    "medir: entrou no sistema depois da auditoria; sem número não há como julgar"
+   ],
+   "evolucao_gratuita": "feeds RSS das entidades e da imprensa do terceiro setor, em vez de busca genérica bloqueada"
+  }
+ }
+}

@@ -1,6 +1,6 @@
 {
  "versao": 1,
- "atualizado_em": "2026-09-20",
+ "atualizado_em": "2026-09-24",
  "regra": "Cada motor regular declara PELO MENOS DUAS rotas onde o recurso divulga suas oportunidades (o mesmo edital sai no diário oficial E no site da secretaria; a empresa publica no próprio site E nos portais do terceiro setor). O LÉXICO tem duas camadas: a camada 1 (direcionamento) corre na leitura de links e títulos e decide quais páginas abrir; a camada 2 (contexto) corre no texto do documento e decide se é oportunidade. Um motor sem rota alternativa é um motor que fica cego quando a rota principal muda.",
  "camada_1_geral": [
   "chamamento",
@@ -36,7 +36,32 @@
   "exoneração",
   "portaria de pessoal",
   "licença",
-  "alvará"
+  "alvará",
+  "credenciamento de empresa",
+  "credenciamento de empresas",
+  "credenciamento de pessoa jurídica",
+  "credenciamento de prestadores",
+  "prestação de serviços de",
+  "contratação de serviços",
+  "fornecimento de",
+  "registro de preços",
+  "gêneros alimentícios",
+  "credenciamento de instituições financeiras",
+  "instituição financeira",
+  "folha de pagamento",
+  "banco de pareceristas",
+  "credenciamento de pareceristas",
+  "seleção de pareceristas",
+  "locação de imóvel",
+  "alienação de imóvel",
+  "permissão de uso",
+  "cessão de uso",
+  "contratação artística",
+  "cachê",
+  "resultado final",
+  "homologação do resultado",
+  "extrato do termo",
+  "extrato de termo"
  ],
  "motores": {
   "do-goiania": {
@@ -135,7 +160,28 @@
     "Goiás Social",
     "OVG",
     "emenda parlamentar",
-    "decreto de programação"
+    "decreto de programação",
+    "credenciamento de entidades",
+    "entidades parceiras",
+    "Mais Social",
+    "edital de apoio",
+    "patrocínio",
+    "organizações da sociedade civil",
+    "chamada pública",
+    "extensão",
+    "inovação social",
+    "popularização da ciência",
+    "parceria com organizações",
+    "FIA",
+    "Fundo da Infância",
+    "Fundo do Idoso",
+    "FUNJUVE",
+    "FEMA",
+    "resolução",
+    "CEDCA",
+    "CEI",
+    "cronograma",
+    "retificação"
    ],
    "lexico_camada2": [
     "Lei 13.019",
@@ -707,12 +753,6 @@
      "nome": "Portal PNAB do Estado",
      "url": "https://pnab.cultura.go.gov.br",
      "tipo": "plataforma"
-    },
-    {
-     "nome": "Diário Oficial do Estado (publicação obrigatória)",
-     "url": "https://diariooficial.abc.go.gov.br/",
-     "tipo": "diario",
-     "exige_brasil": true
     }
    ],
    "armadilha": "goias.gov.br/cultura/termos-de-fomento é lista de termos JÁ CELEBRADOS — nunca terá prazo",
@@ -761,12 +801,6 @@
      "nome": "Goiás Social (programas operados pela OVG)",
      "url": "https://goias.gov.br/social/",
      "tipo": "secretaria"
-    },
-    {
-     "nome": "Diário Oficial do Estado",
-     "url": "https://diariooficial.abc.go.gov.br/",
-     "tipo": "diario",
-     "exige_brasil": true
     }
    ],
    "lexico_camada1": [
@@ -854,12 +888,6 @@
      "nome": "SEMAD — FEMA",
      "url": "https://goias.gov.br/meioambiente/",
      "tipo": "secretaria"
-    },
-    {
-     "nome": "Diário Oficial do Estado (resoluções dos conselhos)",
-     "url": "https://diariooficial.abc.go.gov.br/",
-     "tipo": "diario",
-     "exige_brasil": true
     }
    ],
    "lexico_camada1": [
@@ -899,12 +927,6 @@
      "nome": "FAPEG — chamadas públicas",
      "url": "https://goias.gov.br/fapeg/",
      "tipo": "fundacao"
-    },
-    {
-     "nome": "Diário Oficial do Estado",
-     "url": "https://diariooficial.abc.go.gov.br/",
-     "tipo": "diario",
-     "exige_brasil": true
     }
    ],
    "lexico_camada1": [
@@ -1520,5 +1542,10 @@
    "armadilha": "portal de notícia não é site oficial — vale como pista; a descoberta só conta com o domínio próprio da organização"
   }
  },
- "auditado_em": "2026-09-22T21:24:52+00:00"
+ "auditado_em": "2026-09-22T21:24:52+00:00",
+ "veto_origem": {
+  "em": "2026-09-24",
+  "porque": "famílias de objeto que responderam por 344 dos 409 descartes nos 20 dias até 23/09: serviço ao órgão 174, compra pública 69, imóvel e uso de espaço 23, instituição financeira 13, parecerista 12, cachê 10, resultado/extrato de parceria já julgada 19",
+  "efeito_esperado": "descartar na captura, sem gastar leitura nem verificação"
+ }
 }
