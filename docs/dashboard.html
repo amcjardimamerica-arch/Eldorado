@@ -277,6 +277,8 @@ box-shadow:0 1px 3px #0002}
 .mt-abates{position:absolute;right:calc(100% + 10px);top:8px;display:flex;flex-direction:column;flex-wrap:wrap-reverse;
   align-content:flex-start;max-height:calc(100% - 16px);gap:4px 6px;z-index:5}
 .mt-abates .est{width:22px;height:22px;color:#C8961E;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.mt-abates .est.ouro{color:#D4A017}
+.mt-abates .est.prata{color:#9EA7B3;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
 .mt-abates .est.nova{animation:est-nasce .9s ease-out}
 @keyframes est-nasce{0%{transform:scale(0) rotate(-120deg);opacity:0}60%{transform:scale(1.5) rotate(10deg);opacity:1}100%{transform:scale(1) rotate(0)}}
 .mt-abates .mais{font-size:12px;font-weight:800;color:#C8961E;align-self:center}
@@ -2890,11 +2892,15 @@ function aviaoDoPiloto(motorId, titulo){
     <g class="pil-tiro"><circle cx="58" cy="17" r="2.4" fill="#F2A33C"/><circle cx="61" cy="17" r="1.2" fill="#FFD98A"/></g>
   </svg>`;
 }
-function estrelasDeAbate(n, novos){
-  if(!n)return "";
-  const EST='<svg class="est" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>';
-  const mostra=Math.min(n,60);           // todas à vista até 60; só depois resume em "+N"
-  return `<div class="mt-abates" title="${n} oportunidade(s) nova(s) descoberta(s) por este motor">${Array.from({length:mostra},(_,i)=>EST.replace('class="est"', i<(novos||0)?'class="est nova"':'class="est"')).join("")}${n>8?`<span class=mais>+${n-8}</span>`:""}</div>`;
+function estrelasDeAbate(n, novos, ab){
+  /* OURO = edital aberto encontrado · PRATA = empresa encontrada (titular, 24/09). Um abate por URL. */
+  const A=(ab&&typeof ab==="object")?ab:{n:n||0,ouro:n||0,prata:0};
+  const ouro=A.ouro||0, prata=A.prata||0, total=ouro+prata; if(!total)return "";
+  const EST=(cls)=>`<svg class="est ${cls}" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>`;
+  const lim=60, nO=Math.min(ouro,lim), nP=Math.min(prata,Math.max(0,lim-nO));
+  return `<div class="mt-abates" title="${ouro} edital(is) aberto(s) (ouro) e ${prata} empresa(s) (prata) encontrados por este motor">`+
+    Array.from({length:nO},(_,i)=>EST(i<(novos||0)?"ouro nova":"ouro")).join("")+Array.from({length:nP},()=>EST("prata")).join("")+
+    (total>lim?`<span class="mais">+${total-lim}</span>`:"")+`</div>`;
 }
 function desenhaPostoPiloto(alvo){
   const el=$(alvo||"pil-posto"); if(!el)return; const E=window._ESQ;
@@ -3779,7 +3785,7 @@ function desenhaMotores(){
   ofRows.sort((a,b)=>(a.rank||99)-(b.rank||99));
   const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Motores regulares <span class=meta>${ofRows.length} · numerados: diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado</span></div>
     ${ofRows.map(o=>{const st=semaforo(o.situacao);const ativo=mtAtivo(o.id);const E=window._ESQ||{};const ab=(E.abates||{})[o.id];const voa=E.missao_atual&&E.missao_atual.motor===o.id;
-      return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">${ab&&ab.n?estrelasDeAbate(ab.n,(ab.ultimos||[]).filter(x=>x.em===new Date().toISOString().slice(0,10)).length):""}
+      return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">${ab&&ab.n?estrelasDeAbate(ab.n,(ab.ultimos||[]).filter(x=>x.em===new Date().toISOString().slice(0,10)).length,ab):""}
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
       <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(ROT_TIPO[o.tipo]||GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}

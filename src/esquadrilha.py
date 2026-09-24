@@ -70,6 +70,26 @@ def abrir_missao(m: dict, alvo: str = "") -> dict:
     return b["missao_atual"]
 
 
+def tipo_de_abate(a: dict) -> str | None:
+    """OURO: edital com prazo aberto. PRATA: empresa que financiou o terceiro setor. Nada: o resto."""
+    if a.get("empresa") or a.get("via") or a.get("reconhecimento") or a.get("tipo") == "empresa":
+        return "prata"
+    fim = a.get("fim") or a.get("prazo") or ""
+    m = re.search(r"(\d{4})-(\d{2})-(\d{2})", str(fim)) or None
+    if not m:
+        m2 = re.search(r"(\d{2})/(\d{2})/(\d{4})", str(a.get("prazo_texto") or fim))
+        if m2:
+            m = (m2.group(3), m2.group(2), m2.group(1))
+    if m:
+        y, mo, d = (m.group(1), m.group(2), m.group(3)) if hasattr(m, "group") else m
+        try:
+            if date(int(y), int(mo), int(d)) >= date.today():
+                return "ouro"
+        except ValueError:
+            pass
+    return None
+
+
 def fechar_missao(resultado: str, achados: list[dict] | None = None, licao: str = "") -> dict:
     """achados: [{titulo, onde, url, uf, novo: bool}] — os NOVOS viram estrela no motor."""
     b = bordo()

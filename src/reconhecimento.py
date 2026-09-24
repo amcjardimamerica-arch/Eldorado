@@ -222,6 +222,10 @@ def marcar(chave: str, estado: str, achado: dict | None = None) -> dict:
 
 
 def publicar() -> dict:
+    try:
+        alimentar_listas_de_empresas()
+    except Exception:
+        pass
     d = alvos()
     its = d.get("itens") or {}
     por_via, por_frente, por_estado = {}, {}, {}
@@ -249,3 +253,37 @@ def publicar() -> dict:
 
 if __name__ == "__main__":
     print(json.dumps(publicar(), ensure_ascii=False, indent=1))
+
+
+def alimentar_listas_de_empresas() -> dict:
+    """AS EMPRESAS DA MISSÃO 2 ENTRAM NA LISTA DE EMPRESAS (titular, 24/09). Até aqui o ranking
+    excluía as descobertas do Piloto de propósito. Agora cada empresa reconhecida entra na lista
+    que a via indica — patrocínio, doação e marketing social vão para 'doação e patrocínio';
+    incentivo fiscal vai para 'destinação tributária'; quem tem as duas vias entra nas duas — com
+    a origem e as evidências gravadas, para o ranking avaliá-la pelos mesmos critérios."""
+    import re as _re
+    a = alvos()
+    destino = {"patrocinio_privado": ROOT / "biblioteca_alexandria/empresas/ranking_patrocinio_privado.json",
+               "destinacao_tributaria": ROOT / "biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json"}
+    fiscal = _re.compile(r"incentivo|rouanet|lie|pronon|pronas|fia|idoso|icms|isen[cç]", _re.I)
+    social = _re.compile(r"patroc|doa[cç]|marketing|apoio|convenio|conv[êe]nio", _re.I)
+    contagem = {k: 0 for k in destino}
+    for cat, arq in destino.items():
+        d = load_json(arq) if arq.exists() else {"empresas": []}
+        chaves = {_re.sub(r"[^a-z0-9]", "", str(e.get("nome") or "").lower())[:40] for e in d.get("empresas", [])}
+        for k, it in (a.get("itens") or {}).items():
+            vias = " ".join(str(v) for v in (it.get("vias") or [it.get("via")]) if v)
+            quer = fiscal.search(vias) if cat == "destinacao_tributaria" else social.search(vias)
+            if not quer:
+                continue
+            ch = _re.sub(r"[^a-z0-9]", "", str(it.get("empresa") or "").lower())[:40]
+            if not ch or ch in chaves:
+                continue
+            chaves.add(ch); contagem[cat] += 1
+            d.setdefault("empresas", []).append({
+                "nome": it.get("empresa"), "origem": "reconhecimento do Piloto (missão 2)",
+                "vias": it.get("vias") or [it.get("via")], "onde_foi_vista": (it.get("onde_foi_vista") or [])[:5],
+                "evidencias": (it.get("evidencias") or [])[:3], "primeira_vez": it.get("primeira_vez"),
+                "nota": "entrou pela missão de reconhecimento; classificada pelos mesmos critérios das demais"})
+        write_json(arq, d)
+    return contagem
