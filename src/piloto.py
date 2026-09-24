@@ -742,6 +742,12 @@ def ciclo(porta: int | None = None) -> dict:
     # POSIÇÃO AO VIVO: o painel só é republicado a cada 6 h; a posição vai por um ramo
     # próprio, lido direto pelo navegador, para o avião aparecer onde o trabalho está AGORA
     from .posicao_piloto import anunciar as _anunciar, pousar as _pousar_pos, registro as _reg_pos
+    # OS ACHADOS DO VOO, EM LISTA. Cada missão guarda só a CONTAGEM em rel["missoes"] ("achados":
+    # len(ach)), e o pouso somava len() dessa contagem. Com zero achados, '0 or []' escondia o
+    # defeito; com UM achado, o voo quebrava no pouso — e perdia relatório, aprendizado do
+    # briefing, radar e anúncio de pouso. Em 24/09, os voos que falhavam eram justamente os
+    # que tinham encontrado alguma coisa.
+    _todos_ach: list[dict] = []
     for m in plano:
         if time.time() - t0 > teto_s:
             rel["encerrou_por"] = "teto de tempo"
@@ -771,6 +777,7 @@ def ciclo(porta: int | None = None) -> dict:
             alvo, ach, licao = m.get("motor") or "", [], f"falhou: {type(ex_).__name__}"
         reg = fechar_missao(licao, ach, licao)
         rel["missoes"].append({"tipo": m["tipo"], "motor": m.get("motor"), "alvo": alvo, "achados": len(ach), "abates": reg["abates"], "licao": licao[:90]})
+        _todos_ach.extend(a for a in (ach or []) if isinstance(a, dict))
         rel["abates"] += reg["abates"]; rel["propostas"] += len(ach)
         from .radar_piloto import registrar as _radar
         from .aprendizados_piloto import avaliar as _avaliar, ja_tratado as _ja
@@ -798,14 +805,14 @@ def ciclo(porta: int | None = None) -> dict:
         if _m["tipo"] == "resgate" and _m["alvo_id"] not in _atendidos:
             _devolver(_m["alvo_id"], tentado=False)                      # reservado e não atendido volta a aguardar
     from .piloto_ao_vivo import marcar as _vivo2, montar as _vivo_montar
-    _vivo2("pousou", detalhe=f"{sum(len(m.get('achados') or []) for m in (rel.get('missoes') or []))} achado(s)")
+    _vivo2("pousou", detalhe=f"{len(_todos_ach)} achado(s)")
     _pousar_pos(f"voo {rel.get('voo_do_dia')} pousou")
     rel["posicao_ao_vivo"] = _reg_pos()                 # prova de que o anúncio chegou (ou não)
     rel.setdefault("encerrou_por", "tarefa concluída")   # o normal: acabou o que havia para fazer
     rel["minutos_de_voo"] = round((time.time() - t0) / 60, 1)
     from .radar_piloto import publicar as _pub_radar
     rel["radar"] = _pub_radar()
-    _todos = [a for m in (rel.get("missoes") or []) for a in (m.get("achados") or [])]
+    _todos = _todos_ach
     _fechar(brief, _todos, abertas=sum(1 for a in _todos if a.get("situacao") == "aberta"),
             arquivadas=sum(1 for a in _todos if a.get("situacao") == "arquivada"))
     rel["minutos"] = round((time.time() - t0) / 60, 1)
