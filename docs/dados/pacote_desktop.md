@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-09-23
+# Pacote para o Claude Desktop — 2026-09-24
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
@@ -15,21 +15,19 @@ Ele lê com o seu IP e envia ao repositório. Motores atendidos:
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
-- **TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)** — todas as páginas falharam em 2026-09-23. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
-    - abrir https://www.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-    - abrir https://www.tjgo.jus.br/index.php/dje e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-    - abrir https://corregedoria.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 5 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 6 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://observatorio3setor.org.br/editais/ e procurar: edital, seleção de projetos, investimento social, responsabilidade social, patrocínio, incentivo fiscal
 
 Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `dados/editais/`. Devolva em `dados/editais/coleta_navegador/<data>-motores.json` no formato `{"<id ou novo>": {"objeto":..., "inicio":..., "fim":..., "pagina_oficial":..., "observacao":...}}`.
 
-## Etapa 3 — oportunidades aguardando ação externa (11)
+## Etapa 3 — oportunidades aguardando ação externa (13)
 
 - `3f4e0f749a5a6e40f2c4` — Edital prevê seleção de 58 apresentações artísticas para o Natal do Bem 2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/edital-preve-selecao-de-58-apresentacoes-artisticas-para-o-natal-do-bem-2026
 - `4d519a11c8b5c23bd8d5` — Termo de Fomento nº 01/2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf
 - `0fc96da3bfa4c9659ef3` — Secretaria de Fomento e Incentivo à Cultura · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.gov.br/cultura/pt-br/composicao/secretaria-de-economia-criativa-e-fomento-cultural
 - `bdea428602f61e41e70b` — Edital recebe 851 inscrições! · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://climaesociedade.org/ics-lanca-edital-para-projetos-de-comunicacao-com-acoes-de-enfrentamento-as-mudancas-climaticas
+- `575706d9ad755cd36a5d` — EXTRATO DE TERMO DE FOMENTO Nº 997181/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-n-997181/2026-733920831
+- `9107398972ccec107a35` — EDITAL DE INTIMAÇÃO · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-de-intimacao-733801219
 - `400d80f3c84332f2aa0c` — EDITAL DE Nº 126/IFAL, DE 18 DE SETEMBRO DE 2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-de-n-126/ifal-de-18-de-setembro-de-2026-733048195
 - `39e8067201494d565881` — EDITAL PPGFIL/IFILO/UFU Nº 1/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-ppgfil/ifilo/ufu-n-1/2026-733304995
 - `f733cd0539057acbdcbe` — A referente requisição se faz para abertura de edital de chamamento público , para contrat · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/88775390000112/2023/99
@@ -80,11 +78,11 @@ Para cada uma, abra a página oficial (nunca PNCP, diário ou portal de notícia
 - `8a6b25cb0d7024bad623` — O UNAIDS publicou  edital  para seleção de  Organizações   da   Sociedade   Civil  para de · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fbrasil.un.org%2Fpt%2Dbr%2F308564%2Dunaids%2De%2Dminist%25C3%25A9rio%2Dda%2Dsa%25C3%25BAde%2Dabrem%2Dsele%25C3%25A7%25C3%25A3o%2Dde%2Dorganiza%25C3%25A7%25C3%25B5es%2Dda%2Dsociedade%2Dcivil%2Dvoltadas%2Da%25C3%25A7%25C3%25B5es&rut=89173c11252d4918b33561b96a3a2cff1ea3644f7114677d14a8be37a203d3d9
 - `e8978d129f2f0e1aaa8e` — O  Edital  nº 7/2026 tem como objetivo selecionar  organizações   da   sociedade   civil   · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.gov.br%2Fmulheres%2Fpt%2Dbr%2Facesso%2Da%2Dinformacao%2Feditais%2F2026%2Fedital%2Dno%2D7%2D2026%2Dselecao%2Dde%2Dorganizacoes%2Dda%2Dsociedade%2Dcivil%2Dpara%2Dcomposicao%2Ddo%2Dforum%2Dnacional%2Dpelo%2Dprotagonismo%2Ddas%2Dmulheres%2Didosas&rut=b344638a7913779ead02f3b7baf2d15fc7867709341dc505efe63441381a5b12
 - `fdade18228dbd15fb9fb` — Edital Conta que soma oferece formação gratuita em educação financeira para jovens · falta: Objeto, Prazo de inscrição · https://observatorio3setor.org.br/edital-conta-que-soma-oferece-formacao-gratuita-em-educacao-financeira-para-jovens
-- `0b74c8f7131e75e09a15` — Captação de Recursos · falta: Objeto, Prazo de inscrição · https://captadores.org.br/captacao-de-recursos
-- `1a298f0b5d7cbe0b2d76` — Certificadora Social · falta: Objeto, Prazo de inscrição · https://captadores.org.br/certificadora-social
-- `2df7efe2328e78c1df66` — Bússola Investimento Social · falta: Objeto, Prazo de inscrição · https://www.bussolasocial.com.br/investidores-sociais
-- `5b0575f3f6f5ab2aea82` — Bússola Gestão · falta: Objeto, Prazo de inscrição · https://www.bussolasocial.com.br/bussola-gestao
-- `6ace1b0d40a5cca52c51` — Bússola Financeiro · falta: Objeto, Prazo de inscrição · https://www.bussolasocial.com.br/bussola-financeiro
+- `2a2723c82124d864056f` — EDITAL  001/ 2026  - FUNDO SEMENTE PARA RESILIÊNCIA - PARCEIROS VOLUNTÁRIOS SELEÇÃO DE PRO · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fparceirosvoluntarios.org.br%2Fwp%2Dcontent%2Fuploads%2F2026%2F04%2FEdital%2D001%2D2026.pdf&rut=9f8dc4d175cc76dfd812fc5d4cdb8a704b49ac4ba23be048793d36ef34d3093f
+- `2df87928ba6acc971bd6` — Explore  editais  públicos e privados abertos para ONGs, projetos sociais, cultura, educaç · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Falteditais.com.br%2Foportunidades&rut=a069c4469af36c24615b3612103395a0bb8b66e183c977ae0e55ac6a30f7576b
+- `3d574c9d2f1a4fc94f58` — Edital  para Seleção de  Organizações   da   Sociedade   Civil  para o Desenvolvimento de  · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Funaids.org.br%2Fwp%2Dcontent%2Fuploads%2F2026%2F01%2F2026_Edital_UNAIDS_DATHI_Sociedade_Civil.pdf&rut=9a127a288a095dd335564a77dd360d044756408638eb2505a37a52ccf9c59569
+- `575706d9ad755cd36a5d` — EXTRATO DE TERMO DE FOMENTO Nº 997181/2026 · falta: Objeto, Prazo de inscrição, Página oficial do edital
+- `7865f403fa2643571d52` — Edital Conta que soma oferece formação gratuita em educação financeira para jovens Co.liga · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fobservatorio3setor.org.br%2Fsecoes_tematicas%2Feditais%2F&rut=eebcd1002a59143e482e3f14690c6d8ab3b35713f1479e9e052b6e891f40de9d
 
 ## Etapa 4½ — IA local (organização automática, sem gastar Claude)
 
