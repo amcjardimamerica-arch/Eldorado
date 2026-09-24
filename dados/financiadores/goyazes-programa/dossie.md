@@ -12,4 +12,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Termo de Fomento nº 01/2026](https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf) — coletado em 2026-09-08T11:47:05+00:00
+- [Termo de Fomento nº 01/2026](https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf) — coletado em 2026-09-24T20:45:13+00:00
