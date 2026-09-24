@@ -1,12 +1,21 @@
-commit: c941f1776c4f5a8dd2c65248c178ceeb5e00fecb
-em: 2026-09-23T14:05:05Z
+commit: a41ba672f3eccabde446486e5584a3b51b2e86be
+em: 2026-09-24T07:55:33Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 637 tests in 328.532s
+Ran 719 tests in 250.179s
 
-FAILED (failures=2, errors=2, skipped=9)
+FAILED (failures=3, errors=3, skipped=9)
 ---- falhas ----
+ERROR: test_dia_traz_motor_e_link (test_achados_dia_e_retroativo.TesteAchadosDoDia.test_dia_traz_motor_e_link)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_achados_dia_e_retroativo.py", line 23, in test_dia_traz_motor_e_link
+    dia = a["dias"]["2026-09-20"]
+          ~~~~~~~~~^^^^^^^^^^^^^^
+KeyError: '2026-09-20'
+
+======================================================================
 ERROR: test_briefing_piloto (unittest.loader._FailedTest.test_briefing_piloto)
 ----------------------------------------------------------------------
 ImportError: Failed to import test module: test_briefing_piloto
@@ -45,9 +54,19 @@ O DOU (leiturajornal) traz as matérias num JSON embutido: o sensor as lê
 Traceback (most recent call last):
   File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3120, in test_dou_por_json_embutido_e_pil_opcional
     self.assertEqual(len(r["achados"]),1)
-AssertionError: 4 != 1
+AssertionError: 3 != 1
+
+======================================================================
+FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
+Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3786, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
+    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'futuro' == 'futuro'
 
 ----------------------------------------------------------------------
-Ran 637 tests in 328.532s
+Ran 719 tests in 250.179s
 
-FAILED (failures=2, errors=2, skipped=9)
+FAILED (failures=3, errors=3, skipped=9)
