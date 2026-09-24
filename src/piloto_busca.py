@@ -53,8 +53,8 @@ class _Res(HTMLParser):
         if tag == "a" and self._a is not None and not self._sn:
             tit = re.sub(r"\s+", " ", "".join(self._t)).strip()
             url = self._a
-            if url.startswith("//duckduckgo.com/l/?uddg="):
-                url = urllib.parse.unquote(url.split("uddg=")[1].split("&")[0])
+            from .nucleo import resolver_redirecionamento
+            url = resolver_redirecionamento(url)         # qualquer variante do embrulho do buscador
             if tit and url.startswith("http") and not LIXO.search(url):
                 self.itens.append({"titulo": tit[:160], "url": url, "trecho": ""})
             self._a = None

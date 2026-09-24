@@ -28,6 +28,7 @@ import zlib
 from datetime import date, timedelta
 from html.parser import HTMLParser
 from urllib.parse import quote, urljoin, urlsplit
+from .nucleo import resolver_redirecionamento
 
 from .destinacao import avaliar_destinacao
 from .lexico import casar
@@ -522,7 +523,7 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
                 rl = (r or "").lower(); hl = (h or "").lower()
                 if h and re.search(r"edita|licita|chamament|credenciament|edi[çc][õo]es|di[áa]rio|publica[çc][õo]es|transpar[êe]ncia|jornal|ver todas|mais not", rl + " " + hl) \
                         and not re.search(r"\.(jpg|png|css|js)$|mailto:|javascript:|#$", hl):
-                    u2 = canonical_url(urljoin(final, h))
+                    u2 = canonical_url(resolver_redirecionamento(urljoin(final, h)))   # destino real, não o embrulho do buscador
                     if urlsplit(u2).scheme in ("https", "file") and u2 not in lidas and u2 not in fila and len(diag["descobertas"]) < 4:
                         fila.append(u2); diag["descobertas"].append({"de": url, "para": u2, "rotulo": (r or "")[:60]})
         for href, rot in p.links[:lim["links_por_pagina"] * 3]:
@@ -542,7 +543,7 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
             if not lx["candidato"] and not esp:
                 continue
             lx["termos"]["especificos"] = esp
-            u = canonical_url(urljoin(final, href))
+            u = canonical_url(resolver_redirecionamento(urljoin(final, href)))   # destino real, não o embrulho do buscador
             if urlsplit(u).scheme not in ("https", "file"):
                 continue
             # contexto: o rótulo e o que vem DEPOIS dele, até o próximo item —

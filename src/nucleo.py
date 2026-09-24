@@ -186,3 +186,33 @@ def append_jsonl(path: Path, value) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(value, ensure_ascii=False, separators=(",", ":")) + "\n")
+
+
+def resolver_redirecionamento(url: str) -> str:
+    """O ENDEREÇO REAL, NÃO O DO BUSCADOR (24/09). Resultado de busca vem embrulhado num
+    redirecionamento — DuckDuckGo (`duckduckgo.com/l?uddg=…`), Bing (`bing.com/ck/a?u=a1<base64>`),
+    Google (`google.com/url?q=…`). Gravado assim, o link não abre para ninguém: o motor 23 tinha
+    24 registros com o embrulho e nenhum com o destino. Aqui se tira o destino do embrulho."""
+    import base64
+    from urllib.parse import parse_qs, unquote, urlsplit
+    u = str(url or "").strip()
+    if u.startswith("//"):
+        u = "https:" + u
+    try:
+        p = urlsplit(u)
+        host = (p.hostname or "").lower()
+        q = parse_qs(p.query)
+        if host.endswith("duckduckgo.com") and q.get("uddg"):
+            return unquote(q["uddg"][0])
+        if host.endswith("bing.com") and q.get("u"):
+            b = q["u"][0]
+            if b.startswith("a1"):
+                b = b[2:]
+                b += "=" * (-len(b) % 4)
+                return base64.urlsafe_b64decode(b).decode("utf-8", "ignore")
+            return unquote(b)
+        if host.endswith("google.com") and p.path.startswith("/url") and (q.get("q") or q.get("url")):
+            return unquote((q.get("q") or q.get("url"))[0])
+    except Exception:
+        pass
+    return u
