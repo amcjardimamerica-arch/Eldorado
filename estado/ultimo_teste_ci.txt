@@ -1,71 +1,22 @@
-commit: f62670acd8a5539101ab34bc74cf0c9de217b2ab
-em: 2026-09-24T09:52:50Z
+commit: dae0ff8f80a6e7bb407c405ca5e85e72a7f22cdb
+em: 2026-09-24T10:22:05Z
 rc: 1
 
 ----------------------------------------------------------------------
-Ran 726 tests in 235.474s
+Ran 733 tests in 182.539s
 
-FAILED (failures=3, errors=3, skipped=9)
+FAILED (failures=1, skipped=11)
 ---- falhas ----
-ERROR: test_dia_traz_motor_e_link (test_achados_dia_e_retroativo.TesteAchadosDoDia.test_dia_traz_motor_e_link)
+FAIL: test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas (test_system.SystemTests.test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas)
+Regressao de 06/09: o monitor da Bussola ficou parado desde 04/09 porque
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_achados_dia_e_retroativo.py", line 23, in test_dia_traz_motor_e_link
-    dia = a["dias"]["2026-09-20"]
-          ~~~~~~~~~^^^^^^^^^^^^^^
-KeyError: '2026-09-20'
-
-======================================================================
-ERROR: test_briefing_piloto (unittest.loader._FailedTest.test_briefing_piloto)
-----------------------------------------------------------------------
-ImportError: Failed to import test module: test_briefing_piloto
-Traceback (most recent call last):
-  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/unittest/loader.py", line 396, in _find_test_path
-    module = self._get_module_from_name(name)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name
-    __import__(name)
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_briefing_piloto.py", line 2, in <module>
-    import json, pathlib, unittest, yaml
-ModuleNotFoundError: No module named 'yaml'
-
-
-======================================================================
-ERROR: test_finalidade_declarada_para_todo_motor (test_evolucao_busca.TesteDescobertaERecorrencia.test_finalidade_declarada_para_todo_motor)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_evolucao_busca.py", line 31, in test_finalidade_declarada_para_todo_motor
-    self.assertIn(f["motores"][s["id"]]["finalidade"], ("descoberta", "insumo"), s["id"])
-                  ~~~~~~~~~~~~^^^^^^^^^
-KeyError: 'plat-sindico-aberto'
-
-======================================================================
-FAIL: test_acervo_fts5_zstd (test_evolucao_busca.TesteAcervoCompacto.test_acervo_fts5_zstd)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_evolucao_busca.py", line 86, in test_acervo_fts5_zstd
-    self.assertTrue(ACERVO.exists())
-AssertionError: False is not true
-
-======================================================================
-FAIL: test_entendimento_cobre_a_biblioteca_inteira (test_piloto.TestePiloto.test_entendimento_cobre_a_biblioteca_inteira)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_piloto.py", line 48, in test_entendimento_cobre_a_biblioteca_inteira
-    self.assertIn("orcamento", cfg); self.assertIn("prazo inventado", cfg["regra"])
-                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'prazo inventado' not found in 'ocupante empossado pelo titular; só ele roda nos voos'
-
-======================================================================
-FAIL: test_dou_por_json_embutido_e_pil_opcional (test_system.SystemTests.test_dou_por_json_embutido_e_pil_opcional)
-O DOU (leiturajornal) traz as matérias num JSON embutido: o sensor as lê
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3120, in test_dou_por_json_embutido_e_pil_opcional
-    self.assertEqual(len(r["achados"]),1)
-AssertionError: 3 != 1
+  File "/home/runner/work/Eldorado/Eldorado/tests/test_system.py", line 3790, in test_gerador_dos_motores_roda_rapido_e_aceita_fontes_mapeadas
+    self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'futuro' == 'futuro'
 
 ----------------------------------------------------------------------
-Ran 726 tests in 235.474s
+Ran 733 tests in 182.539s
 
-FAILED (failures=3, errors=3, skipped=9)
+FAILED (failures=1, skipped=11)
