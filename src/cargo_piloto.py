@@ -95,7 +95,8 @@ def deve_sair(medida: dict | None = None) -> tuple[bool, str]:
     o = c.get("ocupante_atual") or {}
     if not o.get("nome"):
         return False, "cargo já está vago"
-    d = o.get("desempenho_em_voo") or {}
+    _a = ROOT / "estado/piloto/desempenho_em_voo.json"
+    d = ((load_json(_a) if _a.exists() else {}).get(o.get("id") or "") or o.get("desempenho_em_voo") or {})
     if d.get("pedidos", 0) >= 10 and d.get("taxa_de_resposta", 1) < 0.5:
         return True, (f"responde a {d['taxa_de_resposta']:.0%} dos pedidos em voo, "
                       f"abaixo dos 50% que o cargo exige ({d['pedidos']} pedidos medidos)")

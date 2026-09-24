@@ -226,6 +226,11 @@ def main() -> int:
     import tempfile
     tmp = tempfile.mkdtemp(prefix="voo-observado-")
     os.environ["ELDORADO_APRENDIZADOS"] = tmp        # o banco não suja a base de produção
+    # nem o radar: em 23/09 as empresas das páginas do banco (todas fictícias) entraram no
+    # radar real, e o plano de voo passou a mandar o Piloto investigar empresas inexistentes
+    import src.reconhecimento as R, src.briefing_piloto as BP
+    R.ALVOS, R.PUB = Path(tmp) / "reconhecimento.json", Path(tmp) / "reconhecimento_pub.json"
+    BP.PASTA = Path(tmp) / "briefings"
     import importlib
     import src.aprendizados_piloto as A
     importlib.reload(A)

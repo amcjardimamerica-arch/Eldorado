@@ -98,12 +98,21 @@ def _cobertura() -> str:
 def _registrar_mudez(mudo: bool) -> None:
     """O cargo exige do ocupante ≥50% de acerto. Um modelo que não responde entrega zero —
     então a mudez é medida e fica no arquivo do cargo, para a avaliação poder decidir."""
-    arq = ROOT / "config/cargo_piloto.json"
-    if not arq.exists():
+    # O CONTADOR MORA EM estado/, NÃO EM config/. O voo só commita estado, dados, docs e a
+    # biblioteca: gravado no arquivo do cargo, o contador sumia a cada pouso — depois de dois
+    # voos do Qwen3 ele ainda marcava 0 pedidos, e a regra dos 50% nunca poderia valer.
+    # SÓ O VOO REAL CONTA. Em 24/09 os testes, com modelos falsos "mudos", gravaram 33 pedidos
+    # e 12% de resposta no contador do Qwen3 — um desempenho que não era dele e que teria
+    # disparado o alerta de substituição. O workflow põe ELDORADO_VOO_REAL=1 no passo do ciclo;
+    # fora dele, nada é contado.
+    import os as _os
+    if _os.environ.get("ELDORADO_VOO_REAL") != "1":
         return
-    c = load_json(arq)
-    o = c.setdefault("ocupante_atual", {})
-    d = o.setdefault("desempenho_em_voo", {"pedidos": 0, "mudos": 0})
+    from .cargo_piloto import ocupante as _oc
+    arq = ROOT / "estado/piloto/desempenho_em_voo.json"
+    tudo = load_json(arq) if arq.exists() else {}
+    oid = (_oc() or {}).get("id") or "vago"
+    d = tudo.setdefault(oid, {"pedidos": 0, "mudos": 0})
     d["pedidos"] += 1
     d["mudos"] += 1 if mudo else 0
     d["taxa_de_resposta"] = round(1 - d["mudos"] / d["pedidos"], 3)
@@ -113,7 +122,8 @@ def _registrar_mudez(mudo: bool) -> None:
                        "que o cargo exige — candidato a substituição pelo banco de reserva")
     else:
         d.pop("alerta", None)
-    write_json(arq, c)
+    tudo[oid] = d
+    write_json(arq, tudo)
 
 
 def escrever(ia, motor_cfg: dict | None = None) -> dict:

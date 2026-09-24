@@ -6,6 +6,23 @@ from src.reconhecimento import (ler_rastros, registrar, proximo_do_plano, public
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
+def setUpModule():
+    """O RADAR DE TESTE É OUTRO. Em 23/09 este arquivo registrou 'Teste Reconhecimento XXXX' no
+    radar real, e no primeiro voo do Qwen3 o plano mandou investigar essa empresa inventada.
+    As funções leem ALVOS e PUB do módulo na hora da chamada: basta apontá-los para longe."""
+    import tempfile, src.reconhecimento as R
+    global _TMP, _ORIG
+    _TMP = pathlib.Path(tempfile.mkdtemp(prefix="reconhecimento-"))
+    _ORIG = (R.ALVOS, R.PUB)
+    R.ALVOS, R.PUB = _TMP / "reconhecimento.json", _TMP / "pub.json"
+
+
+def tearDownModule():
+    import shutil, src.reconhecimento as R
+    R.ALVOS, R.PUB = _ORIG
+    shutil.rmtree(_TMP, ignore_errors=True)
+
+
 class TesteMissao1_PNCPForaDoPiloto(unittest.TestCase):
     """PNCP é dado genérico de compras públicas: quem analisa é o Claude, por fora."""
 

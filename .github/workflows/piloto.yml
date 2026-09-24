@@ -188,6 +188,7 @@ jobs:
       - name: Ciclo do piloto (entender → curar → afiar → minerar → anunciar)
         env:
           GH_TOKEN: ${{ github.token }}   # posição ao vivo no ramo piloto-ao-vivo
+          ELDORADO_VOO_REAL: "1"            # só o voo real conta no desempenho do ocupante
           BRAVE_SEARCH_KEY: ${{ secrets.BRAVE_SEARCH_KEY }}
           GOOGLE_CSE_KEY: ${{ secrets.GOOGLE_CSE_KEY }}
           GOOGLE_CSE_CX: ${{ secrets.GOOGLE_CSE_CX }}

@@ -83,40 +83,62 @@ class TesteRedeDeSegurancaComRumo(unittest.TestCase):
 
 
 class TesteMudezMedidaNoCargo(unittest.TestCase):
+    def setUp(self):
+        import os; os.environ["ELDORADO_VOO_REAL"] = "1"      # simulam um voo real, só aqui
+
+    def tearDown(self):
+        import os; os.environ.pop("ELDORADO_VOO_REAL", None)
+
+    def test_fora_do_voo_real_nada_e_contado(self):
+        import os; os.environ.pop("ELDORADO_VOO_REAL", None)
+        arq = ROOT / "estado/piloto/desempenho_em_voo.json"
+        antes = arq.read_text(encoding="utf-8") if arq.exists() else None
+        _registrar_mudez(True)
+        depois = arq.read_text(encoding="utf-8") if arq.exists() else None
+        self.assertEqual(antes, depois)
+
     """O cargo exige ≥50% de acerto. Um modelo que não responde entrega zero, e isso
     precisa estar medido no arquivo do cargo para a substituição poder ser decidida."""
 
     def test_conta_pedidos_e_mudos(self):
-        arq = ROOT / "config/cargo_piloto.json"
-        antes = arq.read_text(encoding="utf-8")
+        """O contador mora em estado/ desde 24/09: o voo não commita o arquivo do cargo, e ali
+        ele sumia a cada pouso (0 pedidos depois de dois voos do Qwen3)."""
+        from src.cargo_piloto import ocupante
+        arq = ROOT / "estado/piloto/desempenho_em_voo.json"
+        antes = arq.read_text(encoding="utf-8") if arq.exists() else None
+        oid = (ocupante() or {}).get("id") or "vago"
         try:
-            c = json.loads(antes); c["ocupante_atual"].pop("desempenho_em_voo", None)
-            arq.write_text(json.dumps(c, ensure_ascii=False, indent=1), encoding="utf-8")
+            arq.write_text("{}", encoding="utf-8")
             for _ in range(10):
                 _registrar_mudez(True)
-            d = json.loads(arq.read_text(encoding="utf-8"))["ocupante_atual"]["desempenho_em_voo"]
+            d = json.loads(arq.read_text(encoding="utf-8"))[oid]
             self.assertEqual(d["pedidos"], 10); self.assertEqual(d["mudos"], 10)
             self.assertEqual(d["taxa_de_resposta"], 0.0)
             self.assertIn("abaixo dos 50%", d["alerta"])
             self.assertIn("banco de reserva", d["alerta"])
             _registrar_mudez(False)
-            d = json.loads(arq.read_text(encoding="utf-8"))["ocupante_atual"]["desempenho_em_voo"]
+            d = json.loads(arq.read_text(encoding="utf-8"))[oid]
             self.assertGreater(d["taxa_de_resposta"], 0)
         finally:
-            arq.write_text(antes, encoding="utf-8")
+            arq.unlink(missing_ok=True)
+            if antes is not None:
+                arq.write_text(antes, encoding="utf-8")
 
     def test_sem_alerta_enquanto_a_amostra_e_pequena(self):
-        arq = ROOT / "config/cargo_piloto.json"
-        antes = arq.read_text(encoding="utf-8")
+        from src.cargo_piloto import ocupante
+        arq = ROOT / "estado/piloto/desempenho_em_voo.json"
+        antes = arq.read_text(encoding="utf-8") if arq.exists() else None
+        oid = (ocupante() or {}).get("id") or "vago"
         try:
-            c = json.loads(antes); c["ocupante_atual"].pop("desempenho_em_voo", None)
-            arq.write_text(json.dumps(c, ensure_ascii=False, indent=1), encoding="utf-8")
+            arq.write_text("{}", encoding="utf-8")
             for _ in range(3):
                 _registrar_mudez(True)
-            d = json.loads(arq.read_text(encoding="utf-8"))["ocupante_atual"]["desempenho_em_voo"]
+            d = json.loads(arq.read_text(encoding="utf-8"))[oid]
             self.assertNotIn("alerta", d)                 # 3 pedidos não condenam ninguém
         finally:
-            arq.write_text(antes, encoding="utf-8")
+            arq.unlink(missing_ok=True)
+            if antes is not None:
+                arq.write_text(antes, encoding="utf-8")
 
 
 class TesteParecer(unittest.TestCase):
