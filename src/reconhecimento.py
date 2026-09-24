@@ -89,6 +89,25 @@ IGNORAR = re.compile(r"(facebook|instagram|twitter|youtube|linkedin|tiktok|whats
                      r"google|gov\.br|\.gov\.|pncp|queridodiario|wikipedia)", re.I)
 
 
+def _e_ensaio_url(u: str) -> bool:
+    """DOMÍNIO DE ENSAIO NÃO ENTRA (24/09). As 27 empresas fictícias do banco de provas voltaram ao
+    radar por uma execução antiga que devolveu o arquivo velho, e a integração levou lixo ('GGFM&')
+    à lista de empresas. A barreira passa a ser por domínio: o que só foi visto em site de teste
+    é inventado, não importa por onde tenha entrado."""
+    try:
+        import json as _j
+        ens = _j.load(open(ROOT / "config/dominios_de_ensaio.json"))["dominios"]
+    except Exception:
+        ens = ["x.org", "jornaldacidade.com.br", "portalregional.com.br", "ongsemearfuturo.org.br", "festivalsolidario.com.br"]
+    h = (urlsplit(str(u or "")).hostname or "").lower().replace("www.", "")
+    return any(h == d or h.endswith("." + d) for d in ens)
+
+
+def _nome_valido(nome: str) -> bool:
+    n = str(nome or "").strip()
+    return len(re.sub(r"[^A-Za-zÀ-ú]", "", n)) >= 4 and not re.search(r"[&/|]$", n)
+
+
 def alvos() -> dict:
     return load_json(ALVOS) if ALVOS.exists() else {"em": None, "itens": {}, "plano": []}
 
@@ -160,6 +179,8 @@ def ler_rastros(texto: str, url: str) -> list[dict]:
 
 def registrar(rastro: dict, frente: str, nivel: str = "regional") -> dict:
     """A empresa vira alvo de investigação, e o alvo entra no plano dos próximos voos."""
+    if _e_ensaio_url(url) or not _nome_valido(empresa):
+        return None
     ALVOS.parent.mkdir(parents=True, exist_ok=True)
     d = alvos()
     k = _chave(rastro.get("empresa"))
@@ -277,7 +298,9 @@ def alimentar_listas_de_empresas() -> dict:
             if not quer:
                 continue
             ch = _re.sub(r"[^a-z0-9]", "", str(it.get("empresa") or "").lower())[:40]
-            if not ch or ch in chaves:
+            if not ch or ch in chaves or not _nome_valido(it.get("empresa")):
+                continue
+            if all(_e_ensaio_url(u) for u in (it.get("onde_foi_vista") or ["x.org"])):
                 continue
             chaves.add(ch); contagem[cat] += 1
             d.setdefault("empresas", []).append({
