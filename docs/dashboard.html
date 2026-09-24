@@ -444,6 +444,11 @@ box-shadow:0 1px 3px #0002}
 .mt-desc b{color:#9FE3B8;font-size:10px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-top:7px}.mt-desc b:first-child{margin-top:0}
 .mt-desc ul{margin:2px 0 0 16px;padding:0}.mt-desc li{margin:1px 0}.mt-desc .mt-desc-evo{color:#FFE6A8}
 @media (hover:none){.mt-item>.mt-desc{display:none}}
+@keyframes pil-vaivem{from{transform:translate3d(var(--x0),var(--y),0)}to{transform:translate3d(var(--x1),var(--y),0)}}
+@keyframes pil-balanco{0%,100%{translate:0 0}50%{translate:0 3px}}
+.pil-aviao-vivo{transform:translate3d(var(--x0,0px),var(--y,0px),0)}
+.pil-aviao-vivo.voando{animation:pil-vaivem var(--ciclo,4480ms) linear infinite alternate}
+.pil-aviao-vivo.voando img{animation:pil-balanco 1.6s ease-in-out infinite}
 .pil-aviao-vivo{position:absolute;left:0;top:0;width:130px;height:130px;z-index:60;backface-visibility:hidden;
   pointer-events:auto;cursor:pointer;opacity:0;transition:opacity .45s ease;will-change:transform}
 .pil-aviao-vivo.visivel{opacity:1}
@@ -3554,40 +3559,48 @@ function corredor(el){
   const r=el.getBoundingClientRect(), x0=r.left+window.scrollX, y0=r.top+window.scrollY;
   return {x0:x0-AV_T*.08, x1:Math.max(x0-AV_T*.08, x0+r.width-AV_T*.92), y:y0-AV_T*.62};
 }
-/* O GIF MANDA NO RITMO (titular, 24/09): o arquivo original tem 64 quadros e um ciclo de ~4,5 s.
-   Cada travessia do motor dura exatamente um ciclo, e o gif recomeça na meia-volta — ida e volta
-   casadas com a animação. O nariz vira sem transição, para não borrar a virada. */
+/* MOVIMENTO NO COMPOSITOR (titular, 24/09). O vaivém deixa de ser calculado quadro a quadro em
+   JavaScript — a página trava sempre que a Bússola redesenha seus 29 quadros, e o avião travava
+   junto — e passa a ser uma ANIMAÇÃO CSS sobre transform: o navegador a executa fora do laço da
+   página, fluida mesmo com a página ocupada. Uma ida dura exatamente um ciclo do gif original
+   (64 quadros, ~4,48 s); a animação alterna ida e volta, e a cada fim de ida/volta o nariz vira.
+   O gif NÃO é reiniciado por troca de origem: isso piscava e fazia o avião "reaparecer" — ele
+   parte junto com a primeira ida e, tendo o mesmo ciclo, segue casado com o vaivém. */
 const GIF_CICLO_MS=4480, GIF_SRC="img/aviao-amc.webp";
-function reiniciarGif(){ const img=AV.el&&AV.el.firstElementChild; if(img) img.src=GIF_SRC+"#r"+Date.now(); }  // o fragmento não vai à rede: recomeça do cache
-function desenharAviao(){
-  const bal=Math.sin(performance.now()/480)*3;
-  AV.el.style.transform=`translate3d(${AV.x.toFixed(2)}px,${(AV.y+bal).toFixed(2)}px,0)`;
-  AV.el.firstElementChild.style.transform=AV.esq?"scaleX(-1)":"none";
+function aplicarCorredor(){
+  const c=corredor(AV.alvo); AV.corr=c;
+  AV.el.style.setProperty("--x0",c.x0.toFixed(1)+"px"); AV.el.style.setProperty("--x1",c.x1.toFixed(1)+"px");
+  AV.el.style.setProperty("--y",c.y.toFixed(1)+"px");
 }
+function decolarSobre(el){
+  AV.alvo=el; AV.alvoId=el.getAttribute("data-id"); el.classList.add("pil-trabalhando");
+  aplicarCorredor();
+  const av=AV.el, img=av.firstElementChild;
+  av.classList.remove("voando"); void av.offsetWidth;          // reinicia a animação do zero
+  av.style.setProperty("--ciclo",GIF_CICLO_MS+"ms"); av.classList.add("voando");
+  AV.esq=false; img.style.transform="none";
+  img.src=GIF_SRC+"#v"+Date.now();                             // o gif parte junto com a primeira ida (do cache)
+  if(!AV.vira){ AV.vira=true; av.addEventListener("animationiteration",ev=>{ if(ev.animationName!=="pil-vaivem")return;
+      AV.esq=!AV.esq; av.firstElementChild.style.transform=AV.esq?"scaleX(-1)":"none"; }); }
+}
+function desenharAviao(){}
 function voarAviao(t){
+  // vigia: acompanha o quadro se ele se mover e reencontra-o se for redesenhado; o movimento é do CSS
   AV.raf=requestAnimationFrame(voarAviao);
   if(!AV.alvo||!AV.el||document.hidden) return;
-  if(!document.body.contains(AV.alvo)){                      // o quadro foi redesenhado: reencontra pelo id
+  if(!document.body.contains(AV.alvo)){
     const P=window._POS||{}; const novo=P.missao&&lugarDoTrabalho(P.missao);
     if(novo&&novo.getAttribute("data-id")===AV.alvoId){ AV.alvo=novo; novo.classList.add("pil-trabalhando"); }
     else { pousarAviao(); return; }
   }
   if(AV.alvo.offsetParent===null){ pousarAviao(); return; }
-  const dt=Math.min(.05,(t-(AV.ultimo||t))/1000); AV.ultimo=t;
-  if(!AV.corr||t-AV.corrEm>400){ AV.corr=corredor(AV.alvo); AV.corrEm=t; }   // mede o quadro a cada 0,4 s, não a cada quadro
-  const c=AV.corr; AV.y=c.y;
-  if(t<AV.pausaAte){ desenharAviao(); return; }
-  const largura=Math.max(1,c.x1-c.x0), vel=largura/(GIF_CICLO_MS/1000);   // uma travessia = um ciclo do gif
-  AV.x+=AV.dir*vel*dt;
-  if(AV.x>=c.x1){ AV.x=c.x1; AV.dir=-1; AV.pausaAte=t+120; reiniciarGif(); }
-  else if(AV.x<=c.x0){ AV.x=c.x0; AV.dir=1; AV.pausaAte=t+120; reiniciarGif(); }
-  AV.esq=AV.dir<0;
-  desenharAviao();
+  if(!AV.corrEm||t-AV.corrEm>500){ AV.corrEm=t; const c=corredor(AV.alvo);
+    if(!AV.corr||Math.abs(c.x0-AV.corr.x0)>1||Math.abs(c.x1-AV.corr.x1)>1||Math.abs(c.y-AV.corr.y)>1) aplicarCorredor(); }
 }
 function pousarAviao(){
   if(AV.alvo) AV.alvo.classList.remove("pil-trabalhando");
   AV.alvo=null; AV.alvoId=null; AV.corr=null;
-  if(AV.el) AV.el.classList.remove("visivel","mostra-balao");
+  if(AV.el){ AV.el.classList.remove("visivel","mostra-balao","voando"); }
   if(AV.raf){ cancelAnimationFrame(AV.raf); AV.raf=0; }
 }
 const TRABALHO={afiar_motor:"afiando o motor",cacar_oportunidade:"caçando oportunidade",
@@ -3603,23 +3616,23 @@ window.atualizarAviao=function(){
     `${m.tipo==="resgate"?(m.alvo_titulo?` · <b>${esc(m.alvo_titulo.slice(0,40))}</b>`:""):(m.motor?` · <b>${esc(m.motor)}</b>`:"")}`+
     `${m.ordem&&m.de?` · missão ${m.ordem}/${m.de}`:""}`;
   const idAlvo=el.getAttribute("data-id");
-  if(AV.alvoId!==idAlvo){                       // mudou de MOTOR: começa da borda
+  if(AV.alvoId!==idAlvo){                       // mudou de MOTOR: decola da borda do novo quadro
     if(AV.alvo) AV.alvo.classList.remove("pil-trabalhando");
-    AV.alvo=el; AV.alvoId=idAlvo; el.classList.add("pil-trabalhando");
-    const c=corredor(el); AV.x=c.x0; AV.y=c.y; AV.dir=1; reiniciarGif();
-  }else if(AV.alvo!==el){                       // mesmo motor, quadro redesenhado: só troca a referência, sem pular
+    decolarSobre(el);
+  }else if(AV.alvo!==el){                       // mesmo motor, quadro redesenhado: só troca a referência
     AV.alvo=el; el.classList.add("pil-trabalhando");
   }
   av.classList.add("visivel");
-  if(AV.reduz){ const c=corredor(el); AV.x=c.x0; AV.y=c.y; AV.esq=false; desenharAviao(); return; }
+  if(AV.reduz){ av.classList.remove("voando"); return; }   // quem pede menos movimento: parado na borda
   if(!AV.raf){ AV.ultimo=0; AV.raf=requestAnimationFrame(voarAviao); }
 };
 /* diagnóstico só de leitura: no console, _aviaoDiag() diz onde ele está, para onde vai e se
    está dentro do lugar de trabalho — sem isso, conferir o voo exigia adivinhar */
 window._aviaoDiag=function(){
-  const c=AV.alvo?corredor(AV.alvo):null;
-  return {x:AV.x,y:AV.y,dir:AV.dir,esq:AV.esq,alvo:AV.alvo&&AV.alvo.getAttribute("data-id"),
-          dentro:!!c&&AV.x>=c.x0-.5&&AV.x<=c.x1+.5, x0:c&&c.x0, x1:c&&c.x1, via:(window._POS||{})._via||null};
+  const c=AV.corr||null, r=AV.el&&AV.el.getBoundingClientRect();
+  const x=r?r.left+window.scrollX:null;
+  return {x, esq:AV.esq, alvo:AV.alvoId, voando:!!(AV.el&&AV.el.classList.contains("voando")),
+          dentro:!!c&&x!=null&&x>=c.x0-1&&x<=c.x1+1, x0:c&&c.x0, x1:c&&c.x1, via:(window._POS||{})._via||null};
 };
 /* ── DESCRIÇÃO E CONFIGURAÇÃO DOS MOTORES ──────────────────────────────────────────────────
    Mouse parado sobre o quadro: resumo. Clique no quadro: janela com a configuração completa.
