@@ -28,12 +28,13 @@ class TesteAviaoSoNoLugarExato(unittest.TestCase):
     def test_vai_e_volta_por_cima_do_motor(self):
         self.assertIn("function corredor(el)", H)
         self.assertIn("y:y0-AV_T*.62", H)                            # por cima do topo do motor
-        self.assertIn("AV.x+=AV.dir*200*dt;", H)
-        self.assertIn("meia-volta na borda", H)
-        self.assertIn("nunca fora do motor", H)
+        # 24/09: o vaivém é animação CSS no compositor — uma ida = um ciclo do gif, alternando
+        self.assertIn("@keyframes pil-vaivem", H)
+        self.assertIn("animation:pil-vaivem var(--ciclo,4480ms) linear infinite alternate", H)
+        self.assertIn("MOVIMENTO NO COMPOSITOR", H)
 
     def test_o_nariz_aponta_para_onde_vai(self):
-        self.assertIn('AV.el.firstElementChild.style.transform=AV.esq?"scaleX(-1)":"none"', H)
+        self.assertIn('AV.esq=!AV.esq; av.firstElementChild.style.transform=AV.esq?"scaleX(-1)":"none"', H)   # vira no fim de cada ida/volta
 
     def test_sem_missao_ou_posicao_vencida_nao_aparece(self):
         self.assertIn('if(!P||P.estado!=="em_voo"||!P.missao) return false;', H)

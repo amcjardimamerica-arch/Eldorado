@@ -20,23 +20,10 @@ class TesteCargoVago(unittest.TestCase):
         if o.get("vago"):
             self.assertFalse(deve_sair()[0])
 
-    def test_ninguem_assume_sem_medicao(self):
-        """O Qwen3 não baixou: não há número real sobre ele."""
-        a = json.loads((ROOT / "estado/piloto/avaliacao-qwen3-1.7b-2026-09-23.json").read_text(encoding="utf-8"))
-        self.assertIsNone(a["resultado"]["acerto"])
-        self.assertIn("não disponível no runner", a["resultado"]["erro"])
-        self.assertFalse(a["cumpre_criterio"])
-        self.assertFalse(pode_assumir({"elegivel": False})[0])
-
 
 class TesteTresBarreiras(unittest.TestCase):
     """As três tentativas de medir esbarraram em barreiras operacionais, não nos modelos."""
 
-    def test_teto_por_modo(self):
-        """Os 30 min eram do VOO e cancelaram o benchmark no meio, após 30 min de trabalho."""
-        self.assertIn("TETO POR MODO", WF)
-        self.assertIn("modo == 'benchmark' && 330", WF)
-        self.assertIn("foi cancelado no meio", WF)
 
     def test_o_motivo_da_falha_de_download_fica_gravado(self):
         self.assertIn("downloads_falhos.tsv", WF)

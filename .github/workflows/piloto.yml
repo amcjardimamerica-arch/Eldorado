@@ -13,12 +13,6 @@ on:
       encadeado:
         description: "true quando o voo anterior chamou este (uso interno)"
         default: "false"
-      candidato:
-        description: "avaliar: id do reserva (qwen3-1.7b, llama-3.2-1b, gemma-2-2b, phi-3.5-mini)"
-        default: "qwen3-1.7b"
-      limite_gabarito:
-        description: "quantos itens do gabarito (vazio = todos)"
-        default: "120"
 permissions:
   contents: write
   actions: write
@@ -32,7 +26,7 @@ jobs:
     # para que nenhum voo monopolize o runner. O benchmark é outra coisa — cinco modelos
     # contra 120 itens em 4 CPUs — e em 23/09 foi cancelado no meio por esse mesmo teto,
     # depois de 30 minutos de trabalho perdidos. Cada modo passa a ter o seu.
-    timeout-minutes: ${{ github.event.inputs.modo == 'benchmark' && 330 || (github.event.inputs.modo == 'avaliar' && 240 || 30) }}
+    timeout-minutes: 30
     # (o comentário original) teto duro: UMA pesquisa por execução, nunca mais que 30 min
     steps:
       - uses: actions/checkout@v4
@@ -88,14 +82,7 @@ jobs:
           modo = os.environ.get("MODO", "ciclo")
           from src.cargo_piloto import cargo
           cg = cargo(); oc = cg["ocupante_atual"]
-          if modo == "benchmark":
-              alvo = CANDIDATOS
-          elif modo == "avaliar":
-              cid = os.environ.get("CANDIDATO") or ""
-              res = [dict(r, arquivo=r.get("arquivo") or r["url"].split("/")[-1]) for r in cg["banco_de_reserva"] if r["id"] == cid]
-              alvo = [oc] + res                      # o ocupante também, para a comparação ser justa
-          else:
-              alvo = [oc]                            # dia a dia: só o ocupante (2 GB)
+          alvo = [oc]                                # só o ocupante: sem benchmark nem avaliação (titular, 24/09)
           # CARGO VAGO NÃO TEM ARQUIVO. Desde 23/09 o posto pode estar vago, e o ocupante
           # vira um registro sem url nem arquivo. Ler esses campos direto quebrava o passo
           # inteiro — o download falhava antes de tentar baixar coisa alguma, e a avaliação
@@ -135,19 +122,6 @@ jobs:
           done < /tmp/alvos.txt
           ls -la ia_local/modelos/ || true
           df -h / | tail -1
-      - name: Avaliar um reserva (troca o ocupante se for melhor)
-        if: ${{ github.event.inputs.modo == 'avaliar' }}
-        env:
-          CANDIDATO: ${{ github.event.inputs.candidato }}
-          LIMITE: ${{ github.event.inputs.limite_gabarito }}
-        run: |
-          timeout 12000 python -m src.cargo_piloto avaliar "$CANDIDATO" "${LIMITE:-120}" || echo "avaliação: registrado o que deu"
-      - name: Benchmark de todos (só quando pedido)
-        if: ${{ github.event.inputs.modo == 'benchmark' }}
-        env:
-          LIMITE: ${{ github.event.inputs.limite_gabarito }}
-        run: |
-          timeout 20000 python -m src.piloto benchmark $LIMITE || echo "benchmark: registrado o que deu"
       - name: Diagnóstico dos buscadores (de onde o Piloto realmente está)
         if: ${{ github.event.inputs.diagnostico == 'true' }}
         run: |
@@ -161,10 +135,6 @@ jobs:
           PY
           git config user.name "piloto" && git config user.email "piloto@eldorado"
           git add estado/piloto/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
-      - name: Trilha do cargo (banco) — valida as provas antes de gastar runner
-        if: github.event.inputs.modo == 'benchmark' || github.event.inputs.modo == 'avaliar'
-        continue-on-error: true
-        run: python3 scripts/trilha_do_cargo.py || true
       - name: BATIMENTO — avisar que o voo COMEÇOU, antes de decolar
         run: |
           # Sem isto o painel só sabia do voo quando ele terminava, e entre um commit e outro

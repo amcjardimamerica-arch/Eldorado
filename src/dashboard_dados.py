@@ -1548,8 +1548,7 @@ def coletar(hoje: date | None = None) -> dict:
                         "memoria_erros": (lambda m: {"total": m.get("total"), "distintos": len(m.get("erros") or {})} if m else None)(
                             load_json(ROOT / "estado/piloto/memoria_erros.json") if (ROOT / "estado/piloto/memoria_erros.json").exists() else None),
                         "config": load_json(ROOT / "config/piloto.json") if (ROOT / "config/piloto.json").exists() else None,
-                        "benchmark": (lambda b: {k: v for k, v in b.items() if k != "candidatos"} | {"resumo": [{k: c.get(k) for k in ("id", "acerto", "prazos_inventados", "tokens_por_s", "minutos", "elegivel", "erro")} for c in b.get("candidatos", [])]} if b else None)(
-                            load_json(ROOT / "estado/piloto/benchmark.json") if (ROOT / "estado/piloto/benchmark.json").exists() else None),
+                        "benchmark": None,   # sem benchmark desde 24/09
                         "ultimo": load_json(ROOT / "docs/dados/piloto.json") if (ROOT / "docs/dados/piloto.json").exists() else None},
             "ia_local": (lambda d: {"configurada": True, "modelo": d["modelos"]["principal"]["nome"], "motor": d["motor"]["nome"],
                                      "ultimo_ciclo": (lambda p: (load_json(p) if p else None))(max((ROOT / "estado/ia_local").glob("propostas-*.json"), default=None)),

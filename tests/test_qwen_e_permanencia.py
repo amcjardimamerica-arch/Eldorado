@@ -106,9 +106,3 @@ class TesteRegistroCorrigido(unittest.TestCase):
         self.assertIn("A nomeação", src); self.assertIn("foi legítima", src)
         self.assertIn("regra para demitir", src)
 
-    def test_os_dois_benchmarks_estao_guardados(self):
-        b1 = json.loads((ROOT / "estado/piloto/benchmark-1-2026-09-21.json").read_text(encoding="utf-8"))
-        self.assertEqual(b1["vencedor"], "llama-3.2-3b")
-        v = next(c for c in b1["candidatos"] if c["nome"] == "Llama-3.2-3B-Instruct")
-        self.assertGreater(v["acerto"], 0.5)                 # legítimo em 21/09
-        self.assertEqual(v["prazos_inventados"], 0)

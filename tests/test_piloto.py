@@ -1,6 +1,6 @@
-"""O Piloto (21/09): gabarito, benchmark eliminatório, mineração sem ociosidade e memória curta."""
+"""O Piloto (21/09): mineração sem ociosidade e memória curta (sem benchmark desde 24/09)."""
 import json, pathlib, unittest
-from src.piloto import gabarito, CANDIDATOS, MAPA_VEREDITO, PROMPTS_MINERACAO, minerar, entender
+from src.piloto import CANDIDATOS, MAPA_VEREDITO, PROMPTS_MINERACAO, minerar, entender
 from src.ia_local import IALocal
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
@@ -9,24 +9,7 @@ def falso(resp): return lambda payload: {"model": "sim", "choices": [{"message":
 
 
 class TestePiloto(unittest.TestCase):
-    def test_gabarito_vem_das_validacoes_do_titular(self):
-        g = gabarito()
-        self.assertGreaterEqual(len(g), 400)
-        self.assertTrue(all(x["veredito"] in ("aprovado", "atencao", "reprovado") for x in g))
-        self.assertGreaterEqual(sum(1 for x in g if len(x["texto"]) > 200), 300)
 
-    def test_candidatos_vem_do_banco_de_reserva_um_por_vez(self):
-        """A lista era fixa no código e não via o banco de reserva do cargo: o Qwen3-1.7B
-        estava lá desde 21/09 e nunca foi medido."""
-        self.assertGreaterEqual(len(CANDIDATOS), 4)
-        self.assertTrue(any("Qwen3" in (c["nome"] or "") for c in CANDIDATOS))
-        self.assertEqual({c["id"] for c in CANDIDATOS}, {"llama-3.2-3b", "qwen3-1.7b", "llama-3.2-1b", "gemma-2-2b", "phi-3.5-mini"})
-        self.assertTrue(all(c["gb"] <= 5 and c["url"].startswith("https://huggingface.co/") for c in CANDIDATOS))
-        self.assertEqual(MAPA_VEREDITO["fomento_osc"], "aprovado")
-        wf = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
-        self.assertIn("actions/cache@v4", wf); self.assertIn("ia_local/modelos", wf); self.assertIn("benchmark", wf)
-        self.assertIn("Pousar 3 segundos e decolar de novo", wf)                         # ciclo contínuo: um voo chama o seguinte
-        self.assertIn("prazo inventado", (ROOT / "src/piloto.py").read_text(encoding="utf-8").lower().replace("prazos inventados", "prazo inventado"))
 
     def test_mineracao_gera_prompt_diferente_e_registra_negativo(self):
         self.assertGreaterEqual(len(PROMPTS_MINERACAO), 5)

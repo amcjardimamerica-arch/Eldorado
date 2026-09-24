@@ -6,7 +6,7 @@ Piloto: modelo **qwen3-1.7b**. Ao responder, o Claude anota o modelo com que tra
 
 - 2026-09-22T23:45 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 15 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 10.5 min de voo.
 - 2026-09-23T19:21 — Esquadrilha 2026-09-23 (Llama-3.2-3B-Instruct): 6 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 2.7 min de voo.
-- 2026-09-24T11:07 — Esquadrilha 2026-09-24 (Qwen3-1.7B): 7 missão(ões) — 4 alvo(s) novo(s) abatido(s), 4 proposta(s) ao todo, 3.4 min de voo.
+- 2026-09-24T14:12 — Esquadrilha 2026-09-24 (Qwen3-1.7B): 7 missão(ões) — 4 alvo(s) novo(s) abatido(s), 4 proposta(s) ao todo, 3.1 min de voo.
 
 ## Relatório de aprendizado e bloqueios (4)
 

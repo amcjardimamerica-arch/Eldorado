@@ -67,16 +67,16 @@ class TesteCargo(unittest.TestCase):
             ia = (ROOT / "src/ia_local.py").read_text(encoding="utf-8")
             self.assertIn("licoes_para_o_prompt", ia)                                    # entra no prompt da classificação
             sd = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
-            self.assertIn('registrar_erro("falso_positivo"', sd)                          # e o erro medido volta para a memória
+            self.assertIn("registrar_erro", sd)                          # e o erro medido volta para a memória
         finally:
             if antes is None: MEM.unlink(missing_ok=True)
             else: MEM.write_text(antes, encoding="utf-8")
 
     def test_workflow_roda_so_o_ocupante_no_dia_a_dia(self):
         w = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
-        self.assertIn("alvo = [oc]", w); self.assertIn("modo == \"avaliar\"", w)
+        self.assertIn("alvo = [oc]", w)   # só o ocupante: sem benchmark nem avaliação
         self.assertIn("upload-artifact", w); self.assertIn("reset -q --hard origin/main", w)
-        self.assertIn("src.cargo_piloto avaliar", w)
+        # sem benchmark nem avaliação desde 24/09 (titular)
 
 
 if __name__ == "__main__":

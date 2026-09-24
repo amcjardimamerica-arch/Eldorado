@@ -130,9 +130,11 @@ class TesteFilaDeResgate(unittest.TestCase):
 class TestePrioridadeETempo(unittest.TestCase):
     def test_resgate_vem_antes_da_exploracao(self):
         src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
-        self.assertLess(src.index("montar_fila()"), src.index("plano += sortear()"))
+        # 24/09 (titular): resgate dos últimos 30 dias primeiro; sem resgate, catálogo do terceiro setor
+        self.assertLess(src.index("montar_fila()"), src.index('"tipo": "catalogar"'))
+        self.assertIn("REGRA DO TITULAR (24/09)", src); self.assertIn("resgates_fora_dos_30_dias", src)
         self.assertIn('plano.append({"tipo": "resgate"', src)
-        self.assertIn("PRIMEIRO os resgates", src)
+        self.assertIn("primeiro o RESGATE de oportunidades publicadas nos últimos 30 dias", src)
         self.assertIn("def missao_resgate", src)
         cg = json.loads((ROOT / "config/cargo_piloto.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(cg["parametros"]["resgates_por_voo"], 3)

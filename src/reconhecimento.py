@@ -179,7 +179,8 @@ def ler_rastros(texto: str, url: str) -> list[dict]:
 
 def registrar(rastro: dict, frente: str, nivel: str = "regional") -> dict:
     """A empresa vira alvo de investigação, e o alvo entra no plano dos próximos voos."""
-    if _e_ensaio_url(url) or not _nome_valido(empresa):
+    _r = rastro if isinstance(rastro, dict) else {}
+    if _e_ensaio_url(_r.get("url") or _r.get("onde") or _r.get("pagina") or "") or not _nome_valido(_r.get("empresa") or _r.get("nome") or ""):
         return None
     ALVOS.parent.mkdir(parents=True, exist_ok=True)
     d = alvos()

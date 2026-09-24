@@ -128,6 +128,11 @@ def indexar_oportunidades() -> dict:
     if origem.exists():
         for dj in sorted(origem.glob("*/*/dados.json")):
             d = load_json(dj)
+            # EDIÇÃO DE DIÁRIO NÃO É FICHA (24/09). Uma edição do Querido Diário é matéria-prima e
+            # vive em dados/editais/indice_diarios.json; virar ficha aqui recriou 14.906 fichas
+            # (234 MB) a cada varredura, depois de terem sido apagadas.
+            if str(d.get("fonte_id") or "") == "querido-diario" and re.search(r"diario[- ]oficial", str(d.get("chave") or d.get("titulo") or ""), re.I):
+                continue
             pasta_destino = OPORTUNIDADES / d["chave"] / d["ano"]
             pasta_destino.mkdir(parents=True, exist_ok=True)
             texto = _texto_do_edital(dj.parent)

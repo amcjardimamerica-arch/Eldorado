@@ -5,7 +5,7 @@ Duas funções neste módulo:
   benchmark ..... roda cada modelo candidato, UM POR VEZ, contra o GABARITO (os 531 editais
                   validados pelo titular em 09/09 e 15/09) e mede: acerto na classificação,
                   prazos inventados (eliminatório), tokens/s, memória. Grava
-                  estado/piloto/benchmark.json e fixa o vencedor em config/piloto.json.
+                  (sem benchmark desde 24/09: o ocupante é empossado pelo titular e avaliado em voo real).
 
   ciclo ......... o dia a dia: (1) ENTENDER — lê a Biblioteca inteira (editais, leis, fontes,
                   empresas, rotas) e mantém um catálogo compacto do que sabe; (2) CURAR —
@@ -28,7 +28,7 @@ import subprocess
 import sys
 import time
 import urllib.request
-from datetime import date
+from datetime import timedelta, date
 from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
@@ -79,28 +79,6 @@ def cfg() -> dict:
 
 
 # ─────────────────────────────────────────────────────────────── gabarito
-def gabarito(limite: int | None = None) -> list[dict]:
-    """Os editais validados pelo titular, com o texto disponível, em ordem estável."""
-    from .fonte_edital import EXTRAIDOS
-    import gzip
-    itens = {}
-    for arq in ("docs/dados/verificacao_467_2026-09-09.json", "docs/dados/verificacao_63_2026-09-15.json"):
-        p = ROOT / arq
-        if p.exists():
-            for k, v in (load_json(p).get("itens") or {}).items():
-                if v.get("veredito") in ("aprovado", "atencao", "reprovado"):
-                    itens[k] = v
-    out = []
-    for eid, v in sorted(itens.items()):
-        tx = ROOT / "dados/editais/textos" / f"{eid}.txt.gz"
-        texto = gzip.open(tx, "rt", encoding="utf-8").read()[:5000] if tx.exists() else ""
-        objeto = v.get("objeto") or ""
-        if len(texto) < 60 and len(objeto) < 40:
-            continue
-        out.append({"id": eid, "titulo": objeto[:160] or (v.get("edital") or eid), "texto": texto or objeto,
-                    "veredito": v["veredito"], "fim": v.get("fim"), "familia": v.get("familia")})
-    return out[:limite] if limite else out
-
 
 def _servidor(modelo: Path, porta: int = 8081) -> subprocess.Popen | None:
     motor = os.environ.get("LLAMA_SERVER") or str(ROOT / "ia_local/motor/llama-server")
@@ -125,86 +103,8 @@ def _servidor(modelo: Path, porta: int = 8081) -> subprocess.Popen | None:
     return _sobe(["--jinja"]) or _sobe([])
 
 
-def avaliar_modelo(cand: dict, itens: list[dict], porta: int = 8081) -> dict:
-    """Um modelo, todo o gabarito. Eliminatório: qualquer prazo inventado."""
-    modelo = ROOT / "ia_local/modelos" / cand["arquivo"]
-    if not modelo.exists():
-        return {**cand, "erro": "modelo não disponível no runner", "elegivel": False}
-    t0 = time.time(); srv = _servidor(modelo, porta)
-    if not srv:
-        return {**cand, "erro": "servidor não subiu", "elegivel": False}
-    ia = IALocal(porta=porta, timeout=90)
-    ia.sem_system = cand["id"].startswith("gemma")           # Gemma recusa a role 'system'
-    acertos = total = prazos_ok = prazos_inventados = tokens = 0
-    confusao: dict = {}
-    t_inf = 0.0
-    try:
-        for it in itens:
-            t1 = time.time()
-            p = t_classificar_objeto(ia, {"id": it["id"], "titulo": it["titulo"]}, it["texto"])
-            t_inf += time.time() - t1
-            if p:
-                pred = MAPA_VEREDITO.get(p["familia"], "reprovado")
-                esperado = it["veredito"]
-                total += 1
-                if pred == esperado or (esperado == "atencao" and pred == "aprovado"):
-                    acertos += 1
-                else:
-                    from .cargo_piloto import registrar_erro
-                    if esperado == "reprovado" and pred == "aprovado":
-                        registrar_erro("falso_positivo", it["titulo"], "reprovado", "aprovado", f"família correta: {it.get('familia') or 'não é fomento a OSC'}")
-                    elif esperado == "aprovado" and pred == "reprovado":
-                        registrar_erro("falso_negativo", it["titulo"], "aprovado", "reprovado", "chamamento com termo de fomento/colaboração para OSC conta como oportunidade")
-                confusao[f"{esperado}->{pred}"] = confusao.get(f"{esperado}->{pred}", 0) + 1
-                tokens += 120
-            else:
-                from .cargo_piloto import registrar_erro
-                registrar_erro("fora_do_esquema", it["titulo"], "JSON do esquema", "resposta inválida")
-            if it.get("fim") and len(it["texto"]) > 200:
-                t1 = time.time()
-                q = t_extrair_objeto_prazo(ia, {"id": it["id"]}, it["texto"])
-                t_inf += time.time() - t1; tokens += 160
-                if q and q.get("fim"):
-                    if q["fim"] == it["fim"]:
-                        prazos_ok += 1
-                    elif not _trecho_existe((q.get("trechos") or {}).get("prazo"), it["texto"]):
-                        prazos_inventados += 1                      # data sem trecho: INVENTADA
-    finally:
-        srv.kill()
-    dur = time.time() - t0
-    fp = confusao.get("reprovado->aprovado", 0); fn = confusao.get("aprovado->reprovado", 0)
-    n_rep = sum(v for k, v in confusao.items() if k.startswith("reprovado->")); n_apr = sum(v for k, v in confusao.items() if k.startswith("aprovado->"))
-    return {**cand, "itens": total, "respondeu_de": len(itens), "acerto": round(acertos / total, 3) if total else 0, "confusao": confusao,
-            "falso_positivo": round(fp / n_rep, 3) if n_rep else None, "falso_negativo": round(fn / n_apr, 3) if n_apr else None,
-            "prazos_confirmados": prazos_ok, "prazos_inventados": prazos_inventados,
-            "tokens_por_s": round(tokens / t_inf, 1) if t_inf else None, "minutos": round(dur / 60, 1),
-            "elegivel": prazos_inventados == 0 and total > 0}
 
 
-def benchmark(limite: int | None = None) -> dict:
-    itens = gabarito(limite)
-    res = {"em": now_iso(), "gabarito": len(itens), "runner": {"cpus": os.cpu_count(), "publico": True},
-           "regra": "acerto na classificação contra o veredito do titular; QUALQUER prazo inventado (data sem trecho literal) elimina; desempate por tokens/s",
-           "candidatos": []}
-    for c in CANDIDATOS:
-        r = avaliar_modelo(c, itens); res["candidatos"].append(r)
-        write_json(PASTA / "benchmark.json", res)                    # parcial a cada modelo
-    eleg = [c for c in res["candidatos"] if c.get("elegivel") and (c.get("falso_positivo") is None or c["falso_positivo"] <= 0.25)]
-    for c in eleg:
-        c["nota"] = round(c["acerto"] * (c["itens"] / max(1, c.get("respondeu_de") or c["itens"])), 3)   # acerto × taxa de resposta
-    eleg.sort(key=lambda c: (-c["nota"], -(c.get("tokens_por_s") or 0)))
-    res["criterio"] = "elegível = 0 prazos inventados e falso positivo ≤ 25%; nota = acerto × taxa de resposta; desempate por tokens/s"
-    res["vencedor"] = eleg[0]["id"] if eleg else None
-    res["motivo"] = (f"{eleg[0]['nome']}: nota {eleg[0]['nota']} (acerto {eleg[0]['acerto']} em {eleg[0]['itens']}/{eleg[0].get('respondeu_de')}), FP {eleg[0].get('falso_positivo')}, 0 prazos inventados, {eleg[0].get('tokens_por_s')} tok/s"
-                     if eleg else "nenhum candidato elegível (todos inventaram prazo ou não subiram)")
-    write_json(PASTA / "benchmark.json", res)
-    if eleg:
-        c = cfg(); c.update({"modelo_vencedor": eleg[0]["id"], "arquivo": eleg[0]["arquivo"], "url": eleg[0]["url"], "eleito_em": now_iso(), "benchmark": res["motivo"]})
-        write_json(CFG_P, c)
-    return {k: v for k, v in res.items() if k != "candidatos"} | {"resumo": [{k: c.get(k) for k in ("id", "acerto", "prazos_inventados", "tokens_por_s", "minutos", "elegivel", "erro")} for c in res["candidatos"]]}
-
-
-# ─────────────────────────────────────────────────────────────── entender
 def entender() -> dict:
     """Catálogo compacto do que a Biblioteca contém — o Piloto só orienta o que conhece."""
     from collections import Counter
@@ -632,6 +532,38 @@ def missao_prospeccao(ia, angulo: dict, conhecidos: set[str]) -> tuple[str, list
     return f"expansao:{nivel}", novas, licao
 
 
+def missao_catalogar(site: dict) -> tuple[str, list[dict], str]:
+    """Visita um site especializado do terceiro setor: páginas para entidades, empresas presentes, ESG."""
+    from .piloto_busca import ler_pagina
+    from .catalogo_terceiro_setor import catalogar
+    import urllib.request
+    from html.parser import HTMLParser
+    class _L(HTMLParser):
+        def __init__(self): super().__init__(); self.links = []; self._h = None; self._t = []
+        def handle_starttag(self, tag, attrs):
+            if tag == "a": self._h = dict(attrs).get("href"); self._t = []
+        def handle_data(self, d):
+            if self._h is not None: self._t.append(d)
+        def handle_endtag(self, tag):
+            if tag == "a" and self._h: self.links.append((self._h, " ".join(self._t).strip()[:120])); self._h = None
+    texto = ler_pagina(site["url"], limite=12000)
+    links = []
+    try:
+        req = urllib.request.Request(site["url"], headers={"User-Agent": "Mozilla/5.0 (Eldorado)"})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            html = r.read(600_000).decode("utf-8", "ignore")
+        p = _L(); p.feed(html); links = p.links
+    except Exception:
+        pass
+    if not texto and not links:
+        return site["nome"], [], f"catálogo · {site['nome']}: página não respondeu"
+    reg = catalogar(site, texto or "", links)
+    ach = [{"titulo": e.get("empresa"), "empresa": e.get("empresa"), "via": e.get("via"), "url": site["url"], "novo": True}
+           for e in reg.get("empresas") or []]
+    return site["nome"], ach, (f"catálogo · {site['nome']}: {len(reg.get('paginas_para_entidades') or [])} página(s) para entidades, "
+                              f"{len(ach)} empresa(s), ESG {'declarado' if (reg.get('esg') or {}).get('declarado') else 'não declarado'}")
+
+
 def missao_reconhecimento(ia, rumo: dict, conhecidos: set[str]) -> tuple[str, list[dict], str]:
     """MISSÃO REGULAR — reconhecimento do terceiro setor e de quem o financia.
 
@@ -731,14 +663,35 @@ def ciclo(porta: int | None = None) -> dict:
     from .missao_especial import montar_fila, proximo as _proximo_resgate
     montar_fila()
     plano = []
-    while len(plano) < int(par.get("resgates_por_voo", 6)):        # PRIMEIRO os resgates
+    # REGRA DO TITULAR (24/09): primeiro o RESGATE de oportunidades publicadas nos últimos 30 dias;
+    # não havendo o que resgatar, RECONHECIMENTO em sites especializados do terceiro setor — empresas
+    # que aparecem neles, ESG declarado, páginas voltadas a entidades — catalogando os sites oficiais.
+    limite30 = (date.today() - timedelta(days=30)).isoformat()
+    def _recente(a: dict) -> bool:
+        for k in ("publicado_em", "publicacao", "inicio", "descoberto_em", "criado_em", "registrado_em", "indexado_em", "em", "primeira_vez"):
+            v = str(a.get(k) or "")[:10]
+            if re.match(r"\d{4}-\d{2}-\d{2}$", v):
+                return v >= limite30
+        return False                                            # sem data de publicação, não é resgate dos 30 dias
+    pulados = 0
+    while len(plano) < int(par.get("resgates_por_voo", 6)) and pulados < 40:
         alvo_r = _proximo_resgate()
         if not alvo_r or any(x.get("alvo_id") == alvo_r["id"] for x in plano):
             break
+        if not _recente(alvo_r):
+            pulados += 1; continue
         plano.append({"tipo": "resgate", "motor": "missao-especial", "ordem": len(plano) + 1,
                       "alvo_id": alvo_r["id"], "_alvo": alvo_r})
-    rel["resgates_na_fila"] = len(plano)
-    plano += sortear()                                              # depois a exploração
+    rel["resgates_na_fila"] = len(plano); rel["resgates_fora_dos_30_dias"] = pulados
+    from .catalogo_terceiro_setor import proximo_site as _proximo_site
+    vagas = int(par.get("missoes_por_voo", 7)) - len(plano)
+    while vagas > 0:
+        site = _proximo_site()
+        if not site or any(x.get("_site", {}).get("url") == site["url"] for x in plano):
+            break
+        plano.append({"tipo": "catalogar", "motor": "sindico-aberto", "ordem": len(plano) + 1,
+                      "alvo_id": site["url"], "_site": site, "_alvo": {"titulo": site["nome"]}})
+        vagas -= 1
     # POSIÇÃO AO VIVO: o painel só é republicado a cada 6 h; a posição vai por um ramo
     # próprio, lido direto pelo navegador, para o avião aparecer onde o trabalho está AGORA
     from .posicao_piloto import anunciar as _anunciar, pousar as _pousar_pos, registro as _reg_pos
@@ -757,6 +710,8 @@ def ciclo(porta: int | None = None) -> dict:
         try:
             if m["tipo"] == "resgate":
                 alvo, ach, licao = missao_resgate(ia, m["_alvo"], conhecidos)
+            elif m["tipo"] == "catalogar":
+                alvo, ach, licao = missao_catalogar(m["_site"])
             elif m.get("motor") == "sindico-aberto":
                 # MISSÃO 2 — reconhecimento: o que os motores não acham porque não houve edital
                 alvo, ach, licao = missao_reconhecimento(ia, {**(rumo or {}), "ordem": m["ordem"]}, conhecidos)
