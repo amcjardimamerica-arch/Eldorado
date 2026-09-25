@@ -445,6 +445,12 @@ box-shadow:0 1px 3px #0002}
 .pil-aviao-vivo{transform:translate3d(var(--x0,0px),var(--y,0px),0)}
 .pil-aviao-vivo.voando{animation:pil-vaivem var(--ciclo,4480ms) linear infinite alternate}
 .pil-aviao-vivo.voando img{animation:pil-balanco 1.6s ease-in-out infinite}
+.doa-t{width:100%;border-collapse:collapse;font-size:12px}.doa-t th{text-align:left;font-size:10.5px;color:var(--suave);font-weight:700;padding:4px 6px;border-bottom:1px solid var(--linha)}
+.doa-t td{padding:5px 6px;border-bottom:1px dotted #E3E9F1;vertical-align:top}.doa-t tr.cl{cursor:pointer}.doa-t tr.cl:hover td{background:#F4F8FD}
+.doa-t .vl{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.doa-lei{font-size:9.5px;border:1px solid var(--linha);border-radius:6px;padding:0 5px;margin-right:3px}
+#doa-pag button{border:1px solid var(--linha);background:#fff;border-radius:8px;padding:4px 10px;cursor:pointer;font:inherit}#doa-pag button:disabled{opacity:.4;cursor:default}
+.hist-barra{height:8px;background:#0B4EA2;border-radius:4px}.piloto-nova{display:inline-block;border:1px solid #9EA7B3;border-radius:14px;padding:2px 9px;margin:2px;font-size:11.5px;cursor:pointer;background:#F7F8FA}
+.piloto-nova:hover{border-color:#0B4EA2;color:#0B4EA2}
 .pil-aviao-vivo{position:absolute;left:0;top:0;width:130px;height:130px;z-index:60;backface-visibility:hidden;
   pointer-events:auto;cursor:pointer;opacity:0;transition:opacity .45s ease;will-change:transform}
 .pil-aviao-vivo.visivel{opacity:1}
@@ -990,7 +996,19 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </div>
 </div>
 <div class="cartao faixa-total oculto" id="emp-ranking-caixa" style="margin-bottom:16px">
+  <div id="piloto-novas"></div>
   <div id="rank-apoiadores"></div>
+  <div id="doadoras-caixa" style="margin-top:18px">
+    <h3 style="margin:0 0 4px">Empresas doadoras — base pública <span class=meta id="doa-total"></span></h3>
+    <div class=meta style="margin-bottom:8px">Quem já destinou recursos por lei de incentivo, com o histórico de doações. Clique numa empresa para ver o histórico. Fonte: SALIC (Lei Rouanet); as demais leis entram conforme houver base pública.</div>
+    <div class="bz-filtros" style="justify-content:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+      <select id="doa-lei"><option value="">Todos os tipos de recurso</option><option>Rouanet</option><option>FIA</option><option>Esporte</option><option>Idoso</option><option>PRONON</option><option>PRONAS</option><option>Goyazes</option><option>PAT</option></select>
+      <select id="doa-uf"><option value="">Qualquer estado de destino</option></select>
+      <input id="doa-busca" placeholder="buscar empresa ou CNPJ…" style="padding:8px 11px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
+    </div>
+    <div id="doa-lista"></div>
+    <div id="doa-pag" style="display:flex;gap:8px;align-items:center;justify-content:center;margin-top:10px"></div>
+  </div>
 </div>
 <div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
   <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
@@ -2168,7 +2186,7 @@ function desenhaEditais(){
   const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
   const ce=$("emp-caixa"); if(ce){ce.classList.toggle("oculto",aba!=="em_andamento"); if(aba==="em_andamento")desenhaEmpresas();}
   desenhaFilaVerificacao();
-  const rk=$("emp-ranking-caixa"); if(rk){rk.classList.toggle("oculto",aba!=="ranking_empresas"); if(aba==="ranking_empresas"&&window.desenhaApoiadores)window.desenhaApoiadores();}
+  const rk=$("emp-ranking-caixa"); if(rk){rk.classList.toggle("oculto",aba!=="ranking_empresas"); if(aba==="ranking_empresas"){ try{ desenhaNovasDoPiloto(); desenhaDoadoras(); }catch(e){} } if(aba==="ranking_empresas"&&window.desenhaApoiadores)window.desenhaApoiadores();}
   ["ed-abertos-caixa","ed-filtros","ed-lista","ed-grade"].forEach(id=>{const el=$(id);if(el&&aba==="ranking_empresas")el.classList.add("oculto");});
 
   if(aba==="em_andamento"){
@@ -3723,6 +3741,73 @@ window.anexarDescricoes=function(){
   new MutationObserver(()=>window.anexarDescricoes()).observe(alvo,{childList:true,subtree:true});
   window.carregaDescricoes();
 })();
+/* ── EMPRESAS DOADORAS: base pública, 100 por página, filtro por estado de destino e tipo de recurso ──
+   (titular, 25/09). O índice (dados/doadoras/indice.json) traz as 23.498 incentivadoras da Rouanet; o
+   histórico de cada uma vem em fatias pelo começo do CNPJ (dados/doadoras/h/NN.json) e é carregado só no
+   clique. Estado de destino = estado do PROJETO que recebeu a doação. */
+window._DOA=null; const DOA_POR_PAG=100; let doaPag=0; const _doaFatias={};
+const _brl=v=>"R$ "+Number(v||0).toLocaleString("pt-BR",{maximumFractionDigits:0});
+window.carregaDoadoras=async function(){
+  if(window._DOA) return window._DOA;
+  try{ const r=await fetch("dados/doadoras/indice.json?v="+Date.now()); if(r.ok) window._DOA=await r.json(); }catch(e){}
+  const D=window._DOA; if(!D) return null;
+  const ufs=new Set(); D.empresas.forEach(e=>Object.keys(e.d||{}).forEach(u=>ufs.add(u)));
+  const s=$("doa-uf"); if(s&&s.options.length<=1) [...ufs].sort().forEach(u=>{const o=document.createElement("option");o.value=u;o.textContent="destino: "+u;s.appendChild(o);});
+  return D;
+};
+function doaFiltradas(){
+  const D=window._DOA||{empresas:[]}, lei=($("doa-lei")||{}).value||"", uf=($("doa-uf")||{}).value||"", q=(($("doa-busca")||{}).value||"").toLowerCase().trim();
+  let xs=D.empresas.filter(e=>(!lei||(e.l||[]).includes(lei))&&(!q||String(e.n||"").toLowerCase().includes(q)||String(e.c||"").includes(q.replace(/\D/g,"")||"~")));
+  if(uf) xs=xs.filter(e=>(e.d||{})[uf]).sort((a,b)=>(b.d[uf]||0)-(a.d[uf]||0));
+  return xs;
+}
+window.doaIr=function(n){ doaPag=Math.max(0,doaPag+n); desenhaDoadoras(); document.getElementById('doadoras-caixa').scrollIntoView({block:'start'}); };
+window.desenhaDoadoras=async function(){
+  const box=$("doa-lista"); if(!box) return;
+  const D=await carregaDoadoras();
+  if(!D){ box.innerHTML='<div class=meta>A base de doadoras ainda não foi publicada.</div>'; return; }
+  const lei=($("doa-lei")||{}).value||"", uf=($("doa-uf")||{}).value||"";
+  const xs=doaFiltradas(), pags=Math.max(1,Math.ceil(xs.length/DOA_POR_PAG)); doaPag=Math.min(doaPag,pags-1);
+  const comHist=D.empresas.filter(e=>(e.a||[]).length).length;
+  $("doa-total").textContent=`· ${D.total.toLocaleString("pt-BR")} empresas · ${comHist.toLocaleString("pt-BR")} com histórico detalhado`;
+  if(lei&&lei!=="Rouanet"){ box.innerHTML=`<div class=meta>Ainda não há base pública estruturada de doadoras para <b>${esc(lei)}</b>: o portal de dados abertos exige chave de acesso (FIA, Idoso, Esporte, PRONON, PRONAS, PAT) e o Goyazes publica só em PDF.</div>`; $("doa-pag").innerHTML=""; return; }
+  if(uf&&!comHist){ box.innerHTML=`<div class=meta>O filtro por estado de destino depende do histórico de doações, que está sendo coletado agora no servidor (das maiores doadoras para as menores).</div>`; $("doa-pag").innerHTML=""; return; }
+  const pag=xs.slice(doaPag*DOA_POR_PAG,(doaPag+1)*DOA_POR_PAG);
+  box.innerHTML=`<table class="doa-t"><thead><tr><th>#</th><th>empresa</th><th>CNPJ</th><th>sede</th><th>recurso</th><th class=vl>${uf?"destinado a "+esc(uf):"total doado"}</th></tr></thead><tbody>`+
+    pag.map((e,i)=>`<tr class=cl onclick="abreHistoricoEmpresa('${esc(e.c)}')"><td>${doaPag*DOA_POR_PAG+i+1}</td><td>${esc(e.n||"")}</td><td class=meta>${esc(String(e.c||"").replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,"$1.$2.$3/$4-$5"))}</td><td>${esc(e.u||"")}</td><td>${(e.l||[]).map(l=>`<span class=doa-lei>${esc(l)}</span>`).join("")}</td><td class=vl>${_brl(uf?(e.d||{})[uf]:e.t)}</td></tr>`).join("")+`</tbody></table>`;
+  $("doa-pag").innerHTML=`<button ${doaPag?"":"disabled"} onclick="doaIr(-1)">← 100 anteriores</button><span class=meta>${(doaPag*DOA_POR_PAG+1).toLocaleString("pt-BR")}–${Math.min(xs.length,(doaPag+1)*DOA_POR_PAG).toLocaleString("pt-BR")} de ${xs.length.toLocaleString("pt-BR")}</span><button ${doaPag<pags-1?"":"disabled"} onclick="doaIr(1)">próximas 100 →</button>`;
+};
+window.abreHistoricoEmpresa=async function(chave){
+  const D=await carregaDoadoras(); if(!D) return;
+  const k=String(chave||""), kn=k.toLowerCase().replace(/[^a-z0-9]/g,"");
+  // CNPJ exato; senão nome exato; senão o nome do Piloto CONTIDO no nome oficial ("Globo" → "GLOBO COMUNICAÇÃO…"),
+  // ficando com a de maior doação (o índice já vem ordenado pelo total)
+  const norm=s=>String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+  const kk=norm(k);
+  const e=D.empresas.find(x=>x.c===k)||D.empresas.find(x=>norm(x.n)===kk)
+         ||(kk.length>=4?D.empresas.find(x=>norm(x.n).includes(kk)):null);
+  if(!e){ abreModal(`<div>${esc(chave)}</div>`,`<p>Esta empresa não consta da base pública de doadoras (Rouanet) — o histórico dela, se houver, é o que o Piloto registrou.</p>`); return; }
+  const f=String(e.c).slice(0,2); if(!_doaFatias[f]){ try{ const r=await fetch(`dados/doadoras/h/${f}.json?v=${Date.now()}`); _doaFatias[f]=r.ok?await r.json():{}; }catch(x){ _doaFatias[f]={}; } }
+  const h=_doaFatias[f][e.c];
+  const anos=h?Object.entries(h.por_ano):[], mx=Math.max(1,...anos.map(a=>a[1]));
+  abreModal(`<div><span class="ep-selo" style="background:#0E2A55">doadora</span> ${esc(e.n)} <span class=meta>· ${esc(e.c)} · ${esc(e.m||"")}/${esc(e.u||"")}</span></div>`,
+   `<div class="cfg"><p><b>Total doado pela Lei Rouanet:</b> ${_brl(e.t)}</p>`+
+   (h?`<div class="fdoc-t">Doações por ano</div>${anos.map(([a,v])=>`<div style="display:grid;grid-template-columns:44px 1fr 120px;gap:8px;align-items:center;font-size:12px"><span>${a}</span><div class="hist-barra" style="width:${Math.max(2,100*v/mx)}%"></div><span class=vl style="text-align:right">${_brl(v)}</span></div>`).join("")}
+       <div class="fdoc-t">Estado de destino do recurso</div><div class="cfg-tags">${Object.entries(h.por_uf_destino).map(([u,v])=>`<span>${esc(u)} · ${_brl(v)}</span>`).join("")||"<span class=meta>sem estado identificado</span>"}</div>
+       <div class="fdoc-t">Projetos apoiados (mais recentes)</div><table class="cfg-t"><tbody>${h.projetos.slice(0,40).map(p=>`<tr><td>${esc(p.data||"")}</td><td>${esc(p.projeto||"PRONAC "+p.pronac)}</td><td>${esc(p.uf||"")}</td><td class=vl style="text-align:right">${_brl(p.valor)}</td></tr>`).join("")}</tbody></table>`
+     :`<p class=meta>O histórico ano a ano, os projetos apoiados e o estado de destino desta empresa estão sendo coletados no servidor, das maiores doadoras para as menores; aparecem aqui assim que a coleta passar por ela.</p>`)+`</div>`);
+};
+/* EMPRESAS NOVAS DO PILOTO: aparecem no alto do ranking, clicáveis */
+window.desenhaNovasDoPiloto=async function(){
+  const box=$("piloto-novas"); if(!box) return;
+  let R=null; try{ const r=await fetch("dados/reconhecimento.json?v="+Date.now()); if(r.ok) R=await r.json(); }catch(e){}
+  const xs=(R&&(R.empresas||R.itens||[]))||[]; const lista=(Array.isArray(xs)?xs:Object.values(xs)).map(x=>typeof x==="string"?{empresa:x}:x).filter(x=>x.empresa);
+  if(!lista.length){ box.innerHTML=""; return; }
+  box.innerHTML=`<div style="margin-bottom:12px"><b>Novas — encontradas pelo Piloto</b> <span class=meta>(${lista.length}) · clique para o histórico de doações</span><br>`+
+    lista.map(x=>`<span class="piloto-nova" title="${esc((x.vias||[]).join(", "))}" onclick="abreHistoricoEmpresa('${esc(x.empresa).replace(/'/g,"")}')">${esc(x.empresa)}</span>`).join("")+`</div>`;
+};
+["doa-lei","doa-uf"].forEach(id=>document.addEventListener("change",ev=>{ if(ev.target&&ev.target.id===id){ doaPag=0; desenhaDoadoras(); } }));
+document.addEventListener("input",ev=>{ if(ev.target&&ev.target.id==="doa-busca"){ doaPag=0; clearTimeout(window._doaT); window._doaT=setTimeout(desenhaDoadoras,250); } });
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição

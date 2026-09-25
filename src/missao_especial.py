@@ -182,6 +182,18 @@ def montar_fila(limite: int = 60) -> dict:
             continue
         itens[e["id"]] = {**e, "falta": f, "urgencia": _urgencia(e, f), "serve_porque": porque,
                           "estado": "aguardando", "tentativas": tentados.get(e["id"], 0)}
+    # OPORTUNIDADES QUE O PRÓPRIO PILOTO ACHOU (25/09): as páginas de edital descobertas nos sites do terceiro
+    # setor entram na fila de resgate — é aqui que ele confirma prazo e página oficial. A data de descoberta
+    # vale como publicação recente: são anúncios lidos na semana, não arquivo.
+    cc = ROOT / "estado/piloto/candidatas_do_catalogo.json"
+    for c in ((load_json(cc) or {}).get("candidatas") or []) if cc.exists() else []:
+        cid = "cat-" + __import__("hashlib").sha1(c["url"].encode()).hexdigest()[:12]
+        if cid in feitos or tentados.get(cid, 0) >= 1:
+            continue
+        itens[cid] = {"id": cid, "titulo": c["titulo"], "url": c["url"], "orgao": c.get("visto_em"), "uf": None,
+                      "descoberto_em": c.get("descoberto_em"), "enquadramento": c.get("enquadramento"),
+                      "falta": ["prazo", "pagina_oficial"], "urgencia": 90, "serve_porque": c.get("como_se_enquadra"),
+                      "estado": "aguardando", "tentativas": 0, "origem": "catálogo do Piloto"}
     ordenada = dict(sorted(itens.items(), key=lambda kv: -kv[1]["urgencia"])[:limite])
     d = {"em": now_iso(), "total_incompletos": len(itens), "na_fila": len(ordenada),
          "descartados_por_nao_servirem": descartados,
