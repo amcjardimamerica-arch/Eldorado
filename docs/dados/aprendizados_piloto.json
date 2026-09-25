@@ -1,5 +1,5 @@
 {
-  "em": "2026-09-25T08:33:52+00:00",
+  "em": "2026-09-25T08:37:43+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
@@ -16,7 +16,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 208,
+      "vezes": 209,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -26,7 +26,7 @@
       ],
       "ultima": "2026-09-25",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 208 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 209 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -102,24 +102,24 @@
     {
       "motor": "piloto-aberto",
       "motivo": "rastro_sem_prova",
-      "vezes": 13,
+      "vezes": 10,
       "tipos": [
         "reconhecimento"
       ],
       "ultima": "2026-09-25",
       "explicacao": "rastro_sem_prova",
-      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 13 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 10 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "sem_rastro",
-      "vezes": 13,
+      "vezes": 10,
       "tipos": [
         "reconhecimento"
       ],
       "ultima": "2026-09-25",
       "explicacao": "sem_rastro",
-      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 13 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 10 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -156,30 +156,23 @@
   "melhorias_pendentes": [
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor não está retornando resultados para edital, patrocínio, doação de empresa ou incentivo fiscal, o que prejudica a capacidade de busca para identificar oportunidades de financiamento.",
-      "efetividade_na_hora": 1.0,
-      "em": "2026-09-25T04:45",
-      "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor precisa ser capaz de identificar páginas de eventos culturais e associar a mesma a uma associação de moradores, garantindo que a informação seja relevante para o tipo de recurso solicitado.",
-      "efetividade_na_hora": 1.0,
-      "em": "2026-09-25T03:01",
-      "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor precisa ser capaz de identificar páginas que mencionam recursos disponíveis para concorrência, incluindo prazos, valores e formas de inscrição, para classificar como 'serve' ou 'não serve'.",
+      "sugestao": "O motor não está filtrando informações com base em categorias como 'associação de moradores', 'assistência social', 'cultura' ou 'incentivo fiscal'. Isso pode levar a resultados irrelevantes ou não válidos.",
       "efetividade_na_hora": 0.5,
-      "em": "2026-09-25T02:23",
+      "em": "2026-09-25T08:07",
       "aplicada": false
     },
     {
       "motor": "piloto-aberto",
-      "sugestao": "o motor não consegue identificar o tipo de recurso (edital, patrocínio, doação de empresa, incentivo fiscal) e não pode distinguir entre diferentes tipos de recursos.",
+      "sugestao": "O motor precisa ser capaz de identificar páginas de eventos culturais como possíveis candidatas a recursos de fomento, especialmente quando a associação está ativa em áreas de assistência social e cultura.",
       "efetividade_na_hora": 1.0,
-      "em": "2026-09-25T01:51",
+      "em": "2026-09-25T03:04",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor precisa incluir um campo para buscar informações sobre o objeto do recurso (como edital, patrocínio, doação de empresa, incentivo fiscal) e também filtrar resultados com base em detalhes específicos do edital, co",
+      "efetividade_na_hora": 0.5,
+      "em": "2026-09-25T02:26",
       "aplicada": false
     },
     {
@@ -293,10 +286,17 @@
       "efetividade_na_hora": 0.5,
       "em": "2026-09-23T09:44",
       "aplicada": false
+    },
+    {
+      "motor": "m-teste",
+      "sugestao": "filtrar por 'chamamento' no título",
+      "efetividade_na_hora": 0.5,
+      "em": "2026-09-23T09:35",
+      "aplicada": false
     }
   ],
   "editais_tratados": 25,
-  "entregues_ao_claude": 10,
+  "entregues_ao_claude": 13,
   "ultima_faxina": {
     "em": "2026-09-22T22:01:28+00:00",
     "dias": 3,
