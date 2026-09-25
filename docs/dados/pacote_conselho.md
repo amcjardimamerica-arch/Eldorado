@@ -1,4 +1,4 @@
-# Pacote do conselho — validação do Claude (2026-09-25, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-09-24, últimos 3 dias)
 
 Piloto: modelo **qwen3-1.7b**. Ao responder, o Claude anota o modelo com que trabalhou.
 
@@ -7,7 +7,6 @@ Piloto: modelo **qwen3-1.7b**. Ao responder, o Claude anota o modelo com que tra
 - 2026-09-22T23:45 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 15 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 10.5 min de voo.
 - 2026-09-23T19:21 — Esquadrilha 2026-09-23 (Llama-3.2-3B-Instruct): 6 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 2.7 min de voo.
 - 2026-09-24T22:51 — Esquadrilha 2026-09-24 (Qwen3-1.7B): 1 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 0.6 min de voo.
-- 2026-09-25T01:25 — Esquadrilha 2026-09-25 (Qwen3-1.7B): 2 missão(ões) — 2 alvo(s) novo(s) abatido(s), 2 proposta(s) ao todo, 1.1 min de voo.
 
 ## Relatório de aprendizado e bloqueios (10)
 
