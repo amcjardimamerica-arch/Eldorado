@@ -88,7 +88,7 @@ class TesteMissao2_Reconhecimento(unittest.TestCase):
         import uuid
         nome = f"Distribuidora Aurora Norte {uuid.uuid4().hex[:8].upper()}"
         registrar({"empresa": nome, "via": "patrocinio",
-                   "trecho": f"patrocínio da {nome}", "onde_vi": "https://x.org"}, "imprensa", "regional")
+                   "trecho": f"patrocínio da {nome}", "onde_vi": "https://jornal.aurora-norte.com.br/materia"}, "imprensa", "regional")
         p = proximo_do_plano()
         self.assertTrue(p, "o alvo recém-registrado deveria estar no plano")
         self.assertIn("financia no terceiro setor", p["pergunta"])
