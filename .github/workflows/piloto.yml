@@ -173,7 +173,7 @@ jobs:
           print("ocupante do cargo:", c["nome"], c["gb"], "GB")
           env = dict(os.environ, LD_LIBRARY_PATH=os.path.abspath("ia_local/motor"))
           srv = subprocess.Popen(["ia_local/motor/llama-server", "-m", f"ia_local/modelos/{c['arquivo']}", "--port", str(cfg.get("porta", 8081)),
-                                  "--host", "127.0.0.1", "-c", "4096", "--jinja", "-t", str(os.cpu_count() or 4)], env=env)
+                                  "--host", "127.0.0.1", "-c", "8192", "--jinja", "-t", str(os.cpu_count() or 4)], env=env)
           for _ in range(180):
               try:
                   if urllib.request.urlopen(f"http://127.0.0.1:{cfg.get('porta', 8081)}/health", timeout=2).status == 200: break
@@ -208,16 +208,9 @@ jobs:
           # Terminou, ele fica 3 segundos no pátio e decola de novo — não existe tarefa eterna
           # segurando um executor, o que estouraria o limite do GitHub. É uma corrente de voos curtos.
           if [ -f estado/piloto_pausado ]; then echo "pausado pelo titular — o Piloto fica em terra"; exit 0; fi
-          VOOS=$(python - <<'PY'
-          import json, pathlib, datetime
-          p = pathlib.Path("estado/piloto/voos.json")
-          d = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
-          print(int(d.get(datetime.date.today().isoformat(), 0)))
-          PY
-          )
-          TETO=$(python -c "import json;print(json.load(open('config/piloto.json')).get('voos_por_dia',40))" 2>/dev/null || echo 40)
-          echo "voo ${VOOS} de ${TETO} hoje"
-          if [ "${VOOS:-0}" -ge "${TETO:-40}" ]; then echo "teto do dia atingido — retoma amanhã"; exit 0; fi
+          # SEM TETO DIÁRIO (titular, 24/09): o Piloto voa o tempo todo. Cada voo é uma rotina nova e
+          # independente; ao pousar, 3 segundos de pátio e decola de novo. O teto de 40 contava também as
+          # execuções que falharam e, às 16h01 de 24/09, parou a corrente por 210 minutos.
           # nunca dois voos no ar ao mesmo tempo: se já há um na fila ou rodando, este não chama outro
           EMVOO=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/piloto.yml/runs?per_page=12" \
@@ -243,8 +236,9 @@ jobs:
         run: |
           timeout 300 python -m src.dashboard_dados || true
           # 1) guarda o que o Piloto produziu
+          BASE_DO_VOO=$(git rev-parse HEAD)          # onde a cópia do voo começou
           rm -rf /tmp/sind && mkdir -p /tmp/sind
-          for P in estado/piloto config/piloto.json docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
+          for P in estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
             # cp -r PASTA DESTINO copia PARA DENTRO quando o destino ja existe (gerava docs/dados/dados).
             # Com diretorio, copiamos o CONTEUDO; com arquivo, o arquivo.
             if [ -d "$P" ]; then mkdir -p "/tmp/sind/$P" && cp -r "$P/." "/tmp/sind/$P/" || true
@@ -253,6 +247,11 @@ jobs:
           # 2) volta para o origin atual (sem rebase, sem conflito) e reaplica por cima
           git config user.name "piloto-eldorado" && git config user.email "piloto@eldorado"
           git fetch -q origin main && git reset -q --hard origin/main
+          # O QUE FOI APAGADO NA MAIN DURANTE O VOO CONTINUA APAGADO (24/09). A cópia do voo ainda
+          # tinha arquivos que a limpeza apagou enquanto ele voava; o 'cp -r' os devolvia — foi assim
+          # que as avaliações de ensaio e as empresas fictícias voltaram. Tira-se da cópia guardada
+          # tudo o que a main apagou desde o começo do voo, antes de reaplicar.
+          git diff --name-only --diff-filter=D "$BASE_DO_VOO" origin/main | while read -r f; do rm -f "/tmp/sind/$f"; done
           cp -r /tmp/sind/. .
           # PROTEÇÃO DO PAINEL: arquivos de autoria nunca são sobrescritos por job de dados
           git checkout origin/main -- docs/dashboard.html 2>/dev/null || true
@@ -263,11 +262,11 @@ jobs:
           orig = json.loads(subprocess.run(["git","show","origin/main:config/piloto.json"],capture_output=True,text=True).stdout or "{}")
           try: atual = json.load(open("config/piloto.json"))
           except Exception: atual = {}
-          for c in ("orcamento","encadeamento","voos_por_dia"):
+          for c in ("orcamento","encadeamento","regra","motor_de_inferencia"):
               if c in orig: atual[c] = orig[c]
           json.dump(atual, open("config/piloto.json","w"), ensure_ascii=False, indent=1)
           PY
-          git add -A estado/piloto config/piloto.json docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados 2>/dev/null || git add -A
+          git add -A estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados 2>/dev/null || git add -A
           git status --short | head -20
           git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"
           for i in 1 2 3; do git push -q origin main && break; echo "push $i falhou; recompondo…"; git fetch -q origin main; git reset -q --soft origin/main; cp -r /tmp/sind/. .; git add -A; git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || true; sleep 10; done

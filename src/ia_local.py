@@ -77,7 +77,22 @@ class IALocal:
                 self._qwen3 = False
         return self._qwen3
 
+    def _anotar(self, **kw) -> None:
+        """RESPOSTA BRUTA DE CADA PEDIDO (24/09): tempo, erro e o começo do texto devolvido. Sem isto
+        não se sabia se o modelo respondia fora do formato, respondia tarde ou não respondia."""
+        import os as _os, time as _t
+        if _os.environ.get("ELDORADO_VOO_REAL") != "1":
+            return
+        arq = ROOT / "estado/piloto/respostas_modelo.jsonl"
+        try:
+            linhas = arq.read_text(encoding="utf-8").splitlines()[-199:] if arq.exists() else []
+            linhas.append(json.dumps({"em": _t.strftime("%Y-%m-%dT%H:%M:%S"), **kw}, ensure_ascii=False))
+            arq.write_text("\n".join(linhas) + "\n", encoding="utf-8")
+        except Exception:
+            pass
+
     def perguntar(self, prompt: str, esquema_hint: str) -> dict | None:
+        _t0 = __import__("time").time()   # vale para rede e para transporte injetado
         # Gemma não aceita a role 'system': o sistema vai dentro da mensagem do usuário
         if getattr(self, "sem_system", False):
             msgs = [{"role": "user", "content": SISTEMA + " Esquema: " + esquema_hint + "\n\n" + prompt[:6000]}]
@@ -91,6 +106,7 @@ class IALocal:
             msgs[-1] = {**msgs[-1], "content": msgs[-1]["content"] + " /no_think"}
         payload = {"messages": msgs,
                    "temperature": CFG["limites"]["temperatura"], "max_tokens": CFG["limites"]["tokens_resposta"],
+                   "cache_prompt": True,        # a constituição (~1.400 tokens) fica no cache entre pedidos
                    "response_format": {"type": "json_object"}}
         if self._e_qwen3():
             payload["chat_template_kwargs"] = {"enable_thinking": False}
@@ -105,8 +121,15 @@ class IALocal:
             txt = data["choices"][0]["message"]["content"]
             txt = re.sub(r"<think>[\s\S]*?</think>", "", txt or "")           # raciocínio que escapou
             txt = re.sub(r"^```(?:json)?|```$", "", txt.strip(), flags=re.M).strip()
-            return json.loads(txt)
-        except Exception:
+            try:
+                out = json.loads(txt)
+                self._anotar(ok=True, s=round(__import__("time").time() - _t0, 1), tokens_prompt=(data.get("usage") or {}).get("prompt_tokens"))
+                return out
+            except ValueError:
+                self._anotar(ok=False, erro="fora do formato JSON", s=round(__import__("time").time() - _t0, 1), texto=txt[:300])
+                return None
+        except Exception as e:
+            self._anotar(ok=False, erro=type(e).__name__, detalhe=str(e)[:160], limite_s=self.timeout)
             return None
 
 

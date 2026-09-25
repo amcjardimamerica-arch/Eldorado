@@ -22,16 +22,9 @@ class TesteUmaListaSo(unittest.TestCase):
         self.assertEqual(q["licenca"], "Apache-2.0")
         self.assertLess(q["gb"], 2.0)                       # 1,1 GB: cabe no runner
 
-    def test_quem_saiu_do_cargo_continua_servindo_de_regua(self):
-        """Com o cargo vago, o modelo que saiu volta ao banco: sem ele o benchmark perde
-        contra quem comparar."""
-        nomes = [c["nome"] for c in CANDIDATOS]
-        self.assertIn("Llama-3.2-3B-Instruct", nomes)
-        c = json.loads(CARGO.read_text(encoding="utf-8"))
-        saiu = next(r for r in c["banco_de_reserva"] if r["id"] == "llama-3.2-3b")
-        self.assertIn("ocupou o cargo até", saiu["porque"])
-        self.assertIn("é contra ele que se mede", saiu["serve_de_regua"])
-
+    def test_so_modelos_qwen(self):
+        """24/09 (titular): a família é Qwen; o llama.cpp é só o executor."""
+        self.assertTrue(all("qwen" in c["nome"].lower() for c in CANDIDATOS))
     def test_candidato_sem_url_nao_entra(self):
         self.assertTrue(all(c.get("url") for c in _candidatos()))
 

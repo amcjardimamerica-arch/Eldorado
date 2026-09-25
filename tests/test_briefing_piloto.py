@@ -34,7 +34,7 @@ class TesteCicloDeTresSegundos(unittest.TestCase):
     def test_travas_para_nao_estourar_o_github(self):
         txt = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         self.assertIn("estado/piloto_pausado", txt)                          # o titular segura o Piloto
-        self.assertIn("teto do dia atingido", txt)
+        self.assertNotIn("teto do dia atingido", txt)
         self.assertIn("in_progress", txt)                                    # nunca dois voos no ar
         self.assertIn("github.run_id", txt)                                  # não conta a si mesmo
 

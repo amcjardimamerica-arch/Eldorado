@@ -50,55 +50,22 @@
  },
  "banco_de_reserva": [
   {
-   "id": "llama-3.2-3b",
-   "nome": "Llama-3.2-3B-Instruct",
-   "gb": 2.0,
-   "licenca": "Llama-3.2-Community",
-   "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-   "desempenho": {
-    "acerto": 0.597,
-    "prazos_inventados": 0,
-    "tokens_por_s": 16.0,
-    "minutos_120_itens": 20.5
-   },
-   "porque": "ocupou o cargo até 2026-09-23 e saiu: nenhum substituto medido: o Qwen3 nao baixou no runner e os demais nunca foram executados; o ocupante responde a 24% em ",
-   "serve_de_regua": "é contra ele que se mede quem quer o cargo",
-   "arquivo": "Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-   "gb_medido": 2.02,
-   "url_confirmada_em": "2026-09-23 (sondagem: HTTP 200)"
+   "id": "qwen3-4b",
+   "nome": "Qwen3-4B",
+   "url": "https://huggingface.co/unsloth/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf",
+   "arquivo": "Qwen3-4B-Q4_K_M.gguf",
+   "gb": 2.5,
+   "licenca": "Apache-2.0",
+   "porque": "mesma família do ocupante, mais capaz; cabe em 4 CPUs com contexto de 8k, mais lento; candidato natural se o 1.7B seguir curto"
   },
   {
-   "id": "llama-3.2-1b",
-   "nome": "Llama-3.2-1B-Instruct",
-   "gb": 0.8,
-   "licenca": "Llama-3.2-Community",
-   "url": "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf",
-   "porque": "irmão menor do ocupante: 3x mais rápido; testar se mantém 50% com o prompt já calibrado",
-   "arquivo": "Llama-3.2-1B-Instruct-Q4_K_M.gguf",
-   "gb_medido": 0.81,
-   "url_confirmada_em": "2026-09-23 (sondagem: HTTP 200)"
-  },
-  {
-   "id": "gemma-2-2b",
-   "nome": "Gemma-2-2B-it",
-   "gb": 1.6,
-   "licenca": "Gemma",
-   "url": "https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q4_K_M.gguf",
-   "porque": "não chegou a ser medido; correção do boot já implantada",
-   "arquivo": "gemma-2-2b-it-Q4_K_M.gguf",
-   "gb_medido": 1.71,
-   "url_confirmada_em": "2026-09-23 (sondagem: HTTP 200)"
-  },
-  {
-   "id": "phi-3.5-mini",
-   "nome": "Phi-3.5-mini-instruct",
-   "gb": 2.3,
-   "licenca": "MIT",
-   "url": "https://huggingface.co/bartowski/Phi-3.5-mini-instruct-GGUF/resolve/main/Phi-3.5-mini-instruct-Q4_K_M.gguf",
-   "porque": "licença MIT e forte em instrução; português a verificar",
-   "arquivo": "Phi-3.5-mini-instruct-Q4_K_M.gguf",
-   "gb_medido": 2.39,
-   "url_confirmada_em": "2026-09-23 (sondagem: HTTP 200)"
+   "id": "qwen2.5-3b",
+   "nome": "Qwen2.5-3B-Instruct",
+   "url": "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q4_K_M.gguf",
+   "arquivo": "Qwen2.5-3B-Instruct-Q4_K_M.gguf",
+   "gb": 1.9,
+   "licenca": "Qwen-Research",
+   "porque": "sem modo de raciocínio a desligar; obediente a JSON"
   }
  ],
  "como_trocar_o_piloto": [
@@ -207,5 +174,6 @@
    "instituto ou fundacao de empresa",
    "relatorio ESG e de sustentabilidade"
   ]
- }
+ },
+ "regra_da_familia": "só modelos Qwen (titular, 24/09); o executor é o llama.cpp, que roda o GGUF do Qwen"
 }
