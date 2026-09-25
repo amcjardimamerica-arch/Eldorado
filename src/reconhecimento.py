@@ -108,8 +108,35 @@ def _nome_valido(nome: str) -> bool:
     return len(re.sub(r"[^A-Za-zÀ-ú]", "", n)) >= 4 and not re.search(r"[&/|]$", n)
 
 
+GENERICOS = {"escola", "fundacao", "fundação", "instituto", "associacao", "associação", "projeto", "projetos", "programa",
+             "secretaria", "prefeitura", "governo", "ministerio", "ministério", "empresa", "empresas", "entidade", "grupo"}
+FICTICIAS = {"agroluz alimentos", "construtora meridiano", "instituto bandeirante", "supermercado cerrado", "fundacao vale verde",
+             "fundação vale verde", "cooperativa central", "mineradora serra azul", "energisa goias", "energisa goiás", "banco meridiano",
+             "rede bom preco", "rede bom preço", "seguradora goias vida", "seguradora goiás vida", "frigorifico boi forte",
+             "frigorífico boi forte", "escritorio andrade arquitetura", "escritório andrade arquitetura", "moveis planalto",
+             "móveis planalto", "cimento araguaia", "distribuidora planalto", "usina sao bento", "usina são bento"}
+
+
+def _item_valido(it: dict) -> bool:
+    nome = str(it.get("empresa") or "").strip()
+    n = nome.lower()
+    if not _nome_valido(nome) or n in FICTICIAS or n.startswith("teste ") or n in GENERICOS:
+        return False
+    if len(nome.split()[-1]) == 1:                               # "Projetos O": resíduo de extração
+        return False
+    onde = it.get("onde_foi_vista") or []
+    return not (onde and all(_e_ensaio_url(u) for u in onde))
+
+
 def alvos() -> dict:
-    return load_json(ALVOS) if ALVOS.exists() else {"em": None, "itens": {}, "plano": []}
+    """LIMPEZA NA LEITURA (25/09). Cada voo grava por cima a versão inteira do radar que tinha na cópia dele;
+    uma limpeza feita no arquivo era desfeita pelo voo que estava no ar, e todos os seguintes herdavam — as
+    empresas fictícias do banco de provas e 8 'Teste Reconhecimento' ficaram o dia 25 inteiro. Agora quem
+    abre o radar recebe só o que é válido, e todo voo que o grava já grava limpo: a sujeira se desfaz sozinha."""
+    d = load_json(ALVOS) if ALVOS.exists() else {"em": None, "itens": {}, "plano": []}
+    d["itens"] = {k: v for k, v in (d.get("itens") or {}).items() if isinstance(v, dict) and _item_valido(v)}
+    d["plano"] = [p for p in (d.get("plano") or []) if p.get("alvo") in d["itens"]]
+    return d
 
 
 def _chave(s: str) -> str:

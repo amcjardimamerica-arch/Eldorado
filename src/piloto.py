@@ -586,6 +586,8 @@ def missao_catalogar(site: dict) -> tuple[str, list[dict], str]:
     except Exception:
         pass
     if not texto and not links:
+        from .catalogo_terceiro_setor import falhou
+        falhou(site)                                     # sai da vez; na 3ª falha seguida, sai do rodízio
         return site["nome"], [], f"catálogo · {site['nome']}: página não respondeu"
     reg = catalogar(site, texto or "", links)
     ach = [{"titulo": e.get("empresa"), "empresa": e.get("empresa"), "via": e.get("via"), "url": site["url"], "novo": True}
@@ -788,7 +790,7 @@ def ciclo(porta: int | None = None) -> dict:
         ach = _r["uteis"]                                   # só o que serve entra no sistema
         for a in [x for x in ach if x.get("novo")]:
             with open(PASTA / "alvos_novos.jsonl", "a", encoding="utf-8") as fh:
-                fh.write(json.dumps({"d": hoje, "motor": m.get("motor"), "titulo": a["titulo"], "onde": a["onde"], "uf": a.get("uf")}, ensure_ascii=False) + "\n")
+                fh.write(json.dumps({"d": hoje, "motor": m.get("motor"), "titulo": a["titulo"], "onde": a.get("onde") or a.get("url"), "uf": a.get("uf")}, ensure_ascii=False) + "\n")
             _radar(a, alvo, m.get("motor") or "")          # entra no radar de captação como 'a pesquisar' 
     from .missao_especial import devolver_a_fila as _devolver
     _atendidos = {str(m.get("alvo", "")).replace("resgate:", "") for m in (rel.get("missoes") or []) if m.get("tipo") == "resgate"}

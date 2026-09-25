@@ -83,13 +83,14 @@ def proximo_site() -> dict | None:
     candidatos = []
     for s in sementes() + sementes_de_associacoes():
         k = _chave(s["url"])
-        lido = (cat["sites"].get(k) or {}).get("lido_em") or ""
-        if lido < limite:
+        reg = cat["sites"].get(k) or {}
+        lido = reg.get("lido_em") or ""
+        if lido < limite and not reg.get("inacessivel"):
             candidatos.append((lido, {"url": s["url"], "nome": s.get("nome") or k, "tipo": s.get("tipo") or "especializado"}))
     for k, v in cat["sites"].items():
         if any(_chave(s["url"]) == k for s in sementes()):
             continue
-        if (v.get("lido_em") or "") < limite and v.get("url"):
+        if (v.get("lido_em") or "") < limite and v.get("url") and not v.get("inacessivel"):
             candidatos.append((v.get("lido_em") or "", {"url": v["url"], "nome": v.get("nome") or k, "tipo": v.get("tipo") or "descoberto"}))
     candidatos.sort(key=lambda x: x[0])
     if candidatos:
@@ -104,6 +105,19 @@ def proximo_site() -> dict | None:
             if u.startswith("http") and ck not in lidas and (cat["sites"].get(ck) or {}).get("lido_em", "") < limite:
                 return {"url": u, "nome": f"{v.get('nome')} · {pg.get('rotulo') or 'página para entidades'}"[:90], "tipo": "pagina-de-entidades", "_chave": ck}
     return None
+
+
+def falhou(site: dict) -> None:
+    """SITE QUE NÃO RESPONDE SAI DA VEZ (25/09). A falha não gravava leitura, e o mesmo site era escolhido de
+    novo a cada voo — o Captamos foi tentado 30 vezes seguidas. A tentativa conta como leitura; na terceira
+    falha seguida o site é marcado inacessível e deixa o rodízio."""
+    cat = catalogo()
+    k = site.get("_chave") or _chave(site["url"])
+    v = cat["sites"].setdefault(k, {"url": site["url"], "nome": site.get("nome"), "tipo": site.get("tipo")})
+    v["lido_em"] = now_iso(); v["falhas_seguidas"] = (v.get("falhas_seguidas") or 0) + 1
+    if v["falhas_seguidas"] >= 3:
+        v["inacessivel"] = True
+    cat["em"] = now_iso(); write_json(CATALOGO, cat)
 
 
 def catalogar(site: dict, texto: str, links: list[tuple[str, str]]) -> dict:
@@ -133,7 +147,7 @@ def catalogar(site: dict, texto: str, links: list[tuple[str, str]]) -> dict:
     cat = catalogo()
     k = site.get("_chave") or _chave(url)
     anterior = cat["sites"].get(k) or {}
-    cat["sites"][k] = {"url": url, "nome": site.get("nome") or k, "tipo": site.get("tipo"), "lido_em": now_iso(),
+    cat["sites"][k] = {"url": url, "nome": site.get("nome") or k, "tipo": site.get("tipo"), "lido_em": now_iso(), "falhas_seguidas": 0,
                        "leituras": (anterior.get("leituras") or 0) + 1,
                        "paginas_para_entidades": paginas, "empresas": empresas, "esg": esg,
                        "texto_bytes": len((texto or "").encode())}

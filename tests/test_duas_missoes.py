@@ -86,7 +86,7 @@ class TesteMissao2_Reconhecimento(unittest.TestCase):
         # nome único por corrida: um alvo já investigado numa corrida anterior sairia do
         # plano e o teste falharia por estado herdado, não por defeito
         import uuid
-        nome = f"Teste Reconhecimento {uuid.uuid4().hex[:8].upper()}"
+        nome = f"Distribuidora Aurora Norte {uuid.uuid4().hex[:8].upper()}"
         registrar({"empresa": nome, "via": "patrocinio",
                    "trecho": f"patrocínio da {nome}", "onde_vi": "https://x.org"}, "imprensa", "regional")
         p = proximo_do_plano()
