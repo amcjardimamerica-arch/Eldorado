@@ -1,19 +1,19 @@
 {
-  "motor": "ligado",
-  "motor_frase": "a corrente de voos está ativa: cada voo chama o seguinte",
-  "em": "2026-09-24T22:52:08+00:00",
+  "motor": "parado",
+  "motor_frase": "sem sinal há 41.8 min — ninguém reencadeou",
+  "em": "2026-09-24T23:33:53+00:00",
   "sinal_em": "2026-09-24T22:52:07+00:00",
-  "minutos_sem_sinal": 0.0,
-  "estado": "entre_voos",
-  "frase": "entre um voo e outro — o próximo decola em segundos",
-  "proximo_voo": "em segundos, assim que o atual pousar",
+  "minutos_sem_sinal": 41.8,
+  "estado": "parado",
+  "frase": "a corrente de voos parou",
+  "proximo_voo": "só quando o titular acionar",
   "sem_sinal_a_partir_de_min": 35,
   "missao_atual": null,
   "ultima_missao": {
     "tipo": "catalogar",
     "motor": "sindico-aberto",
     "fim": "2026-09-24T22:52:07+00:00",
-    "ha_minutos": 0.0,
+    "ha_minutos": 41.8,
     "achados": 0,
     "licao": "catálogo · Parceiros Voluntários: 30 página(s) para entidades, 0 empresa(s), ESG não declarado"
   },
@@ -42,19 +42,26 @@
   },
   "plano_do_voo": {
     "aposta": {
-      "onde": "portal_especializado",
-      "confianca": "baixa",
-      "porque": "o modelo não respondeu; rumo sorteado do catálogo, sem repetir os últimos"
+      "onde": "energia em GO",
+      "porque": "concessionária tem obrigação socioambiental",
+      "confianca": "alta"
     },
-    "pergunta": "Portais e boletins que agregam editais de terceiro setor, captacao e fomento. Catalogue o portal, nao o edital: se for bom, vira motor proprio.",
+    "pergunta": "que concessionárias de energia em Goiás têm edital socioambiental?",
     "resultado": {
-      "achados": 0,
-      "oportunidades_abertas": 0,
+      "achados": 1,
+      "oportunidades_abertas": 1,
       "arquivadas": 0,
-      "alvos": [],
-      "fechado_em": "2026-09-24T22:52:08+00:00"
+      "alvos": [
+        {
+          "nome": "Edital X",
+          "url": "https://x.org",
+          "prazo": null,
+          "situacao": "aberta"
+        }
+      ],
+      "fechado_em": "2026-09-24T23:33:50+00:00"
     }
   },
-  "pode_acionar": false,
+  "pode_acionar": true,
   "como_acionar": "Actions → 07 · Piloto → Run workflow (modo: ciclo)"
 }
