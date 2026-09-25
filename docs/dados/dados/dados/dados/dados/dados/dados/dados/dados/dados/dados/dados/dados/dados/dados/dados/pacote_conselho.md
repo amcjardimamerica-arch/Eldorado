@@ -41,4 +41,4 @@ Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que tr
 3. Que bloqueios exigem ação do titular (coleta local, documento ao órgão, decisão)?
 4. O modelo eleito deve continuar? (reexecutar o benchmark se a taxa de propostas inválidas subir)
 
-_Ao final, registrar em `estado/Piloto/validacoes_claude.jsonl`: data, modelo do Claude, decisões._
+_Ao final, registrar em `estado/piloto/validacoes_claude.jsonl`: data, modelo do Claude, decisões._
