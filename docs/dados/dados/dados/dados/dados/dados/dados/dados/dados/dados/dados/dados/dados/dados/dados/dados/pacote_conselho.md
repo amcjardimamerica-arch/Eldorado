@@ -1,8 +1,8 @@
 # Pacote do conselho — validação do Claude (2026-09-21, últimos 3 dias)
 
-Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
+Piloto: modelo **não eleito**. Ao responder, o Claude anota o modelo com que trabalhou.
 
-## O que o Síndico fez
+## O que o Piloto fez
 
 - nenhum ciclo concluído no período
 
@@ -41,4 +41,4 @@ Síndico: modelo **não eleito**. Ao responder, o Claude anota o modelo com que 
 3. Que bloqueios exigem ação do titular (coleta local, documento ao órgão, decisão)?
 4. O modelo eleito deve continuar? (reexecutar o benchmark se a taxa de propostas inválidas subir)
 
-_Ao final, registrar em `estado/sindico/validacoes_claude.jsonl`: data, modelo do Claude, decisões._
+_Ao final, registrar em `estado/Piloto/validacoes_claude.jsonl`: data, modelo do Claude, decisões._

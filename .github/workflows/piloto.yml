@@ -250,8 +250,9 @@ jobs:
           # O QUE FOI APAGADO NA MAIN DURANTE O VOO CONTINUA APAGADO (24/09). A cópia do voo ainda
           # tinha arquivos que a limpeza apagou enquanto ele voava; o 'cp -r' os devolvia — foi assim
           # que as avaliações de ensaio e as empresas fictícias voltaram. Tira-se da cópia guardada
-          # tudo o que a main apagou desde o começo do voo, antes de reaplicar.
-          git diff --name-only --diff-filter=D "$BASE_DO_VOO" origin/main | while read -r f; do rm -f "/tmp/sind/$f"; done
+          # tudo o que a main apagou desde o começo do voo, antes de reaplicar. --no-renames: renomear é apagar
+          # o nome velho — sem isso o git chama de 'renomeado' e o nome velho voltava (25/09, 406 arquivos).
+          git diff --no-renames --name-only --diff-filter=D "$BASE_DO_VOO" origin/main | while read -r f; do rm -f "/tmp/sind/$f"; done
           cp -r /tmp/sind/. .
           # PROTEÇÃO DO PAINEL: arquivos de autoria nunca são sobrescritos por job de dados
           git checkout origin/main -- docs/dashboard.html 2>/dev/null || true
