@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `pncp`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 209
-- Distribuição por ano pesquisado/coletado: {'2023': 7, '2024': 89, '2025': 50, '2026': 63}
+- Pistas aguardando confirmação: 213
+- Distribuição por ano pesquisado/coletado: {'2023': 11, '2024': 89, '2025': 50, '2026': 63}
 
 ## Padrões
 
@@ -12,7 +12,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [ORGANIZAÇÕES DA SOCIEDADE CIVIL SEM FINS LUCRATIVOS PARA EVENTUAL CELEBRAÇÃO DE TERMO DE COLABORAÇÃO OU TERMO DE FOMENTO.](https://pncp.gov.br/app/editais/01616836000188/2024/46) — coletado em 2026-09-01T06:25:56+00:00
 - [CHAMAMENTO PÚBLICO NOS TERMOS DA LEI FEDERAL Nº 13.019/2014 (MROSC) E DO DECRETO FEDERAL Nº 8.726/2016 (APLICADO SUBSIDIARIAMENTE CONFORME DECRETO FEDERAL Nº 11.948/2024), VISANDO À SELEÇÃO DE ASSOCIAÇÃO RURAL PRIVADA, SEM FINS LUCRATIVOS, REPRESENTATIVA DE AGRICULTORES FAMILIARES, PARA A CELEBRAÇÃO](https://pncp.gov.br/app/editais/04279238000159/2026/197) — coletado em 2026-09-01T06:46:00+00:00
 - [Formalização de parceria, mediante Termo de Colaboração, com Organização da Sociedade Civil (OSC), visando à execução complementar e colaborativa de atividades voltadas ao fortalecimento da política de educação inclusiva, à ampliação do sucesso escolar e à qualificação das práticas pedagógicas na re](https://pncp.gov.br/app/editais/13098181000182/2025/247) — coletado em 2026-09-01T06:39:59+00:00
 - [O presente objeto constitui-se em  concurso para  seleção de 14 (quatorze) projetos culturais nas Categorias Eventos (realização de mostras, feiras, festivais, gincanas, salões, concursos, shows, entre outros eventos com cunho artístico e cultural nas variadas linguagens artísticas e culturais) e Ca](https://pncp.gov.br/app/editais/83009860000113/2024/148) — coletado em 2026-09-01T06:25:03+00:00
@@ -60,6 +59,7 @@ SE FINANCEIRO A ASSOCIAÇÃO BENEFICENTE FREI ROGÉRIO.](https://pncp.gov.br/app
 - [Chamamento Público 007.2025 - Credenciamento de Serviços de Acolhimento Institucional de Alta Complexidade com vagas de abrigo para Adolescente, Adulto, Idoso Grau I, Grau II, Grau III e Pessoas com Deficiência, de ambos os sexos, destinados a individuais com vínculos familiares rompidos ou fragiliz](https://pncp.gov.br/app/editais/76105634000170/2025/153) — coletado em 2026-09-01T06:34:52+00:00
 - [CHAMAMENTO PÚBLICO, EM CONFORMIDADE COM A LEI 13.019/14, OBJETIVANDO A CELEBRAÇÃO DE TERMO DE COLABORAÇÂO DE FOMENTO À ATIVIDADES ESPORTIVAS DE FUTEBOL DE CAMPO E FUTSAL, CONTRIBUINDO PARA O APRIMORAMENTO DA PROMOÇÃO DA SAÚDE, SOCIABILIZAÇÃO, CONSTRUÇÃO DE VALORES MORAIS E ÉTICOS, RECREAÇÃO E LAZER.](https://pncp.gov.br/app/editais/87613626000151/2024/117) — coletado em 2026-09-21T17:44:37+00:00
 - [Chamamento Público, objetivando firmar parceria por meio de Termo de Fomento com Organizações da Sociedade Civil (pessoa jurídica sem fins lucrativos), para implementação de projetos e consecução de finalidades de interesse público e recíproco proposto por organizações da sociedade civil com a trans](https://pncp.gov.br/app/editais/75904524000106/2024/428) — coletado em 2026-09-01T06:24:57+00:00
+- [Trata-se de procedimento que tem por objeto a Dispensa de Chamamento Público, com vistas à celebração de parceria, a ser executada em regime de mútua cooperação, entre o Município de Bom Retiro, por intermédio da Secretaria Municipal de Assistência Social e a Organização da Sociedade Civil denominad](https://pncp.gov.br/app/editais/82777343000121/2023/20) — coletado em 2026-09-25T11:13:32+00:00
 - [Concurso de Projetos nº 002/2024 das Parcerias a serem firmadas com as Organizações da Sociedade Civil.](https://pncp.gov.br/app/editais/37465598000102/2024/54) — coletado em 2026-09-01T06:25:03+00:00
 - [CHAMAMENTO PÚBLICO CULTURAL Nº 09/2024 - EDITAL DE PREMIAÇÃO DE PONTOS DE CULTURA (PNAB) -  CULTURA VIVA DO TAMANHO DO BRASIL!
 Chamamento Público para premiação de Pontos de Cultura, para o desenvolvimento da "Rede Municipal de Pontos de Cultura de Novo Hamburgo", por meio da Política Nacional de Cu](https://pncp.gov.br/app/editais/88254875000160/2024/872) — coletado em 2026-09-01T06:24:52+00:00

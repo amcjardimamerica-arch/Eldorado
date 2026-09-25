@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `recorrencia`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 8
-- Distribuição por ano pesquisado/coletado: {'2026': 8}
+- Pistas aguardando confirmação: 9
+- Distribuição por ano pesquisado/coletado: {'2026': 9}
 
 ## Padrões
 
@@ -19,4 +19,5 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Organizações da Sociedade Civil](https://www.gov.br/transferegov/pt-br/osc) — coletado em 2026-09-24T11:54:16+00:00
 - [Termo de Fomento nº 01/2026](https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf) — coletado em 2026-09-21T12:30:14+00:00
 - [Edital nº 001/2026 - Chamamento público para  registro de candidatura de Profissionais interessados em integrar as Comissões Temáticas e seus Grupos de Trabalho do CRCGO](https://crcgo.org.br/wp-content/uploads/2026/03/SEI_1252073_Edital-1.pdf) — coletado em 2026-09-21T12:30:23+00:00
+- [Campus Mobile abre inscrições com viagem ao Vale do Silício entre os prêmios](https://observatorio3setor.org.br/campus-mobile-abre-inscricoes-com-viagem-ao-vale-do-silicio-entre-os-premios) — coletado em 2026-09-25T08:44:16+00:00
 - [Patrocínios](https://www.bndes.gov.br/wps/portal/site/home/patrocinios) — coletado em 2026-09-24T11:54:30+00:00
