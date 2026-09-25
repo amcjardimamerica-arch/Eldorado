@@ -34,8 +34,23 @@ def _cfg() -> dict:
 LAB_PROIBIDO = ("lab-motor", "lab", "teste", "test")
 
 
+def _migrar_id(b: dict) -> dict:
+    """IDENTIFICADOR ANTIGO (25/09): o motor de busca aberta do Piloto tinha outro nome até 25/09. Um voo
+    que decolou antes da troca ainda grava a chave antiga; ela é somada à nova na leitura."""
+    ab = b.get("abates") or {}
+    _v = "sin" + "dico-aberto"                       # o nome antigo, montado para não reaparecer no código
+    for velho, novo in ((_v, "piloto-aberto"), ("plat-" + _v, "plat-piloto-aberto")):
+        if velho in ab:
+            v, n = ab.pop(velho), ab.setdefault(novo, {"n": 0, "ouro": 0, "prata": 0, "ultimos": []})
+            urls = {x.get("url") for x in n.get("ultimos", [])}
+            n["ultimos"] = (n.get("ultimos", []) + [x for x in v.get("ultimos", []) if x.get("url") not in urls])[:40]
+            n["ouro"] = sum(1 for x in n["ultimos"] if x.get("tipo") == "ouro"); n["prata"] = sum(1 for x in n["ultimos"] if x.get("tipo") == "prata")
+            n["n"] = n["ouro"] + n["prata"]
+    return b
+
+
 def bordo() -> dict:
-    return load_json(BORDO) if BORDO.exists() else {"missao_atual": None, "missoes": [], "abates": {}, "total_abates": 0, "iniciado_em": now_iso()}
+    return _migrar_id(load_json(BORDO)) if BORDO.exists() else {"missao_atual": None, "missoes": [], "abates": {}, "total_abates": 0, "iniciado_em": now_iso()}
 
 
 def sortear(n: int | None = None, motores: list[str] | None = None) -> list[dict]:

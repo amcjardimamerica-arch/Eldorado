@@ -1,4 +1,4 @@
-# Parecer — motor 23, a busca aberta do Piloto (`sindico-aberto`) · 24/09/2026
+# Parecer — motor 23, a busca aberta do Piloto (`piloto-aberto`) · 24/09/2026
 
 ## 1. O que o quadro diz e o que os arquivos mostram
 

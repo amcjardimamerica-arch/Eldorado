@@ -176,7 +176,7 @@ class TesteAprendizadoDoReconhecimento(unittest.TestCase):
 
     def test_financiador_nomeado_com_prova_conta_como_util(self):
         from src.aprendizados_piloto import avaliar
-        r = avaliar(self._Mudo(), {"motor": "sindico-aberto", "tipo": "reconhecimento", "licao": "x"},
+        r = avaliar(self._Mudo(), {"motor": "piloto-aberto", "tipo": "reconhecimento", "licao": "x"},
                     [{"titulo": "Agroluz Alimentos", "url": "https://j.com",
                       "trecho": "patrocínio da Agroluz Alimentos no projeto", "confirmado_na_pagina": True}])
         self.assertEqual(r["avaliacao"]["efetividade"], 1.0)
@@ -186,13 +186,13 @@ class TesteAprendizadoDoReconhecimento(unittest.TestCase):
 
     def test_nome_sem_prova_nao_conta(self):
         from src.aprendizados_piloto import avaliar
-        r = avaliar(self._Mudo(), {"motor": "sindico-aberto", "tipo": "reconhecimento", "licao": "x"},
+        r = avaliar(self._Mudo(), {"motor": "piloto-aberto", "tipo": "reconhecimento", "licao": "x"},
                     [{"titulo": "Empresa X", "trecho": "", "confirmado_na_pagina": False}])
         self.assertEqual(r["avaliacao"]["efetividade"], 0.0)
         self.assertEqual(r["avaliacao"]["motivo_do_insucesso"], "rastro_sem_prova")
 
     def test_pagina_sem_credito_registra_o_motivo(self):
         from src.aprendizados_piloto import avaliar
-        r = avaliar(self._Mudo(), {"motor": "sindico-aberto", "tipo": "reconhecimento", "licao": "x"}, [])
+        r = avaliar(self._Mudo(), {"motor": "piloto-aberto", "tipo": "reconhecimento", "licao": "x"}, [])
         self.assertEqual(r["avaliacao"]["motivo_do_insucesso"], "sem_rastro")
         self.assertIn("não creditou ninguém", r["avaliacao"]["explicacao"])

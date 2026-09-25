@@ -109,8 +109,9 @@ class TesteRenomeacao(unittest.TestCase):
     def test_sindico_virou_piloto_no_sistema(self):
         self.assertTrue((ROOT / "src/piloto.py").exists())
         self.assertTrue((ROOT / "estado/piloto").is_dir())
-        self.assertFalse((ROOT / "estado/sindico").exists())
-        self.assertFalse((ROOT / "src/sindico.py").exists())
+        antigo = "sin" + "dico"                       # o nome antigo, montado para não reaparecer no código
+        self.assertFalse((ROOT / f"estado/{antigo}").exists())
+        self.assertFalse((ROOT / f"src/{antigo}.py").exists())
         self.assertTrue((ROOT / "config/cargo_piloto.json").exists())
         self.assertTrue((ROOT / "config/motor_piloto.json").exists())
         self.assertTrue((ROOT / ".github/workflows/piloto.yml").exists())
@@ -119,5 +120,5 @@ class TesteRenomeacao(unittest.TestCase):
         import re
         for p in list((ROOT / "src").rglob("*.py")) + list((ROOT / ".github/workflows").rglob("*.yml")):
             t = p.read_text(encoding="utf-8")
-            sobra = [l for l in t.split("\n") if re.search(r"\bsindico\b", l) and "sindico-aberto" not in l]
+            sobra = [l for l in t.split("\n") if re.search(r"\bsindico\b", l) and "piloto-aberto" not in l]
             self.assertEqual(sobra, [], f"{p.name}: {sobra[:1]}")

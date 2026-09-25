@@ -258,7 +258,7 @@ box-shadow:0 1px 3px #0002}
 .alerta-motores ul{margin:6px 0 0;padding-left:0;list-style:none}.alerta-motores li{padding:2px 0;display:flex;gap:6px;align-items:baseline;flex-wrap:wrap}
 .alerta-motores small{color:var(--suave)}.grav{width:8px;height:8px;border-radius:50%;flex:none;display:inline-block}.grav.alta{background:var(--urgente)}.grav.media{background:var(--alerta)}
 
-/* ===== ESQUADRILHA DO SÍNDICO (22/09) — o avião voa sobre o motor em que está trabalhando ===== */
+/* ===== ESQUADRILHA DO PILOTO (22/09) — o avião voa sobre o motor em que está trabalhando ===== */
 .mt-item{position:relative}
 .pil-aviao{position:absolute;left:-6px;top:-16px;width:62px;height:34px;z-index:6;cursor:pointer;filter:drop-shadow(0 2px 3px rgba(11,78,162,.25));animation:pil-voo 3.6s ease-in-out infinite}
 .pil-aviao:hover{animation-play-state:paused;transform:scale(1.12)}
@@ -915,7 +915,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 </section>
 
-<!-- ============ ESQUADRILHA DO SÍNDICO — posto de comando ============ -->
+<!-- ============ ESQUADRILHA DO PILOTO — posto de comando ============ -->
 
 <!-- ============ ELDORADO · CALENDÁRIO ============ -->
 <section id="v-calendario" style="margin-top:14px">
@@ -2891,7 +2891,7 @@ const ROT_TIPO={empresas_incentivo:"editais incentivados (empresas)",empresas_fi
 /* Oportunidades que ESTE motor encontrou, com o link direto da página do edital
    (site oficial quando conhecido; nunca o vetor de divulgação). */
 
-/* O SÍNDICO (22/09): avião de patrulha com o Piloto de binóculos. Pousa sobre o motor em
+/* O PILOTO (22/09): avião de patrulha com o Piloto de binóculos. Pousa sobre o motor em
    que está trabalhando; clicar abre o posto de observação daquele motor. */
 function aviaoDoPiloto(motorId, titulo){
   return `<svg class="pil-aviao" viewBox="0 0 62 34" onclick="event.stopPropagation();abrirPostoPiloto('${esc(motorId)}')" role="img" aria-label="Piloto sobrevoando ${esc(titulo||motorId)}"><title>${esc(titulo||"Piloto em missão")} — clique para acompanhar</title>
@@ -3589,7 +3589,12 @@ function corredor(el){
    (64 quadros, ~4,48 s); a animação alterna ida e volta, e a cada fim de ida/volta o nariz vira.
    O gif NÃO é reiniciado por troca de origem: isso piscava e fazia o avião "reaparecer" — ele
    parte junto com a primeira ida e, tendo o mesmo ciclo, segue casado com o vaivém. */
-const GIF_CICLO_MS=4480, GIF_SRC="img/aviao-amc.webp";
+const GIF_CICLO_MS=4480, GIF_SRC="img/aviao-amc.webp";   // medido no arquivo: 64 quadros × 70 ms
+/* RITMO (titular, 25/09): mais lento. A travessia dura um número INTEIRO de ciclos completos do gif,
+   escolhido para ~100 px/s — num quadro de 1.200 px são 3 ciclos (13,4 s). A virada acontece sempre
+   no fim de um ciclo completo, e o percurso de volta começa junto com o gif recomeçando. */
+const VEL_ALVO_PX_S=100;
+function ciclosPorTravessia(largura){ return Math.max(1, Math.round(largura/(VEL_ALVO_PX_S*GIF_CICLO_MS/1000))); }
 function aplicarCorredor(){
   const c=corredor(AV.alvo); AV.corr=c;
   AV.el.style.setProperty("--x0",c.x0.toFixed(1)+"px"); AV.el.style.setProperty("--x1",c.x1.toFixed(1)+"px");
@@ -3600,7 +3605,8 @@ function decolarSobre(el){
   aplicarCorredor();
   const av=AV.el, img=av.firstElementChild;
   av.classList.remove("voando"); void av.offsetWidth;          // reinicia a animação do zero
-  av.style.setProperty("--ciclo",GIF_CICLO_MS+"ms"); av.classList.add("voando");
+  AV.ciclos=ciclosPorTravessia(AV.corr.x1-AV.corr.x0);
+  av.style.setProperty("--ciclo",(AV.ciclos*GIF_CICLO_MS)+"ms"); av.classList.add("voando");
   AV.esq=false; img.style.transform="none";
   img.src=GIF_SRC+"#v"+Date.now();                             // o gif parte junto com a primeira ida (do cache)
   if(!AV.vira){ AV.vira=true; av.addEventListener("animationiteration",ev=>{ if(ev.animationName!=="pil-vaivem")return;
@@ -3618,7 +3624,8 @@ function voarAviao(t){
   }
   if(AV.alvo.offsetParent===null){ pousarAviao(); return; }
   if(!AV.corrEm||t-AV.corrEm>500){ AV.corrEm=t; const c=corredor(AV.alvo);
-    if(!AV.corr||Math.abs(c.x0-AV.corr.x0)>1||Math.abs(c.x1-AV.corr.x1)>1||Math.abs(c.y-AV.corr.y)>1) aplicarCorredor(); }
+    if(!AV.corr||Math.abs(c.x0-AV.corr.x0)>1||Math.abs(c.x1-AV.corr.x1)>1||Math.abs(c.y-AV.corr.y)>1){ aplicarCorredor();
+      const n=ciclosPorTravessia(AV.corr.x1-AV.corr.x0); if(n!==AV.ciclos){ AV.ciclos=n; AV.el.style.setProperty("--ciclo",(n*GIF_CICLO_MS)+"ms"); } } }
 }
 function pousarAviao(){
   if(AV.alvo) AV.alvo.classList.remove("pil-trabalhando");
@@ -3634,7 +3641,7 @@ window.atualizarAviao=function(){
   const m=P.missao, el=lugarDoTrabalho(m);
   if(!el){ pousarAviao(); return; }
   const av=montarAviao();
-  const trab=m.motor==="sindico-aberto"?"reconhecimento":m.tipo;     // a missão 2 corre sob este motor
+  const trab=m.motor==="piloto-aberto"?"reconhecimento":m.tipo;     // a missão 2 corre sob este motor
   av.querySelector(".pil-balao").innerHTML=`${esc(TRABALHO[trab]||trab||"")}`+
     `${m.tipo==="resgate"?(m.alvo_titulo?` · <b>${esc(m.alvo_titulo.slice(0,40))}</b>`:""):(m.motor?` · <b>${esc(m.motor)}</b>`:"")}`+
     `${m.ordem&&m.de?` · missão ${m.ordem}/${m.de}`:""}`;

@@ -7,7 +7,7 @@ relatório atualiza os capítulos, mas as decisões abaixo são de 24/09.*
 
 **2. Pessimista — staff engineer.** O Diário Oficial de Goiás é lido cinco vezes por cinco motores. Isso não é redundância de segurança: é desperdício de cota num site que já registra recusas, e cinco motores quebram juntos no dia em que o diário mudar de formato.
 
-**3. Levemente pessimista — professor de engenharia de software.** Três motores — `motor-gife`, `motor-patrocinio`, `sindico-aberto` — entraram no sistema depois da auditoria e nunca foram medidos como os outros. Um motor sem medição fica fora de qualquer decisão, e é exatamente por isso que tende a ficar para sempre.
+**3. Levemente pessimista — professor de engenharia de software.** Três motores — `motor-gife`, `motor-patrocinio`, `piloto-aberto` — entraram no sistema depois da auditoria e nunca foram medidos como os outros. Um motor sem medição fica fora de qualquer decisão, e é exatamente por isso que tende a ficar para sempre.
 
 **4. Neutro — CTO (ponderador).** O relatório não autoriza eliminar nenhum motor hoje, e isso é um resultado, não uma omissão: quem parecia morto era motor de coleta local sendo julgado pela nuvem, motor de insumo sendo julgado por achado, ou motor com três dias de vida. O que ele autoriza é **redistribuir trabalho**:
 
@@ -32,5 +32,5 @@ relatório atualiza os capítulos, mas as decisões abaixo são de 24/09.*
 | 2 | levar para o computador do titular | `do-goiania`, `dje-tjgo`, `dj-trf1-go`, `camara-goiania-pl` | leitura |
 | 3 | filtro de abrangência e objeto na captura | `pncp-api` | triagem (74% eliminado) |
 | 4 | um leitor só para o Diário Oficial de Goiás | `do-goias` + 4 `plat-*` estaduais | sobreposição |
-| 5 | incluir na auditoria e na validação | `motor-gife`, `motor-patrocinio`, `sindico-aberto` | sem medição |
+| 5 | incluir na auditoria e na validação | `motor-gife`, `motor-patrocinio`, `piloto-aberto` | sem medição |
 | 6 | reavaliar em 08/10 | 5 motores novos em observação | léxico (amostra curta) |

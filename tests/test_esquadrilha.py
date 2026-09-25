@@ -20,7 +20,8 @@ class TesteMissoes(unittest.TestCase):
         BORDO.unlink(missing_ok=True)                                   # teste isolado: bordo limpo
         try:
             abrir_missao({"tipo": "cacar_oportunidade", "motor": "ensaio-motor", "ordem": 1}, "teste")
-            r = fechar_missao("2 alvos", [{"titulo": "Instituto Novo", "onde": "https://x.org/editais", "url": "https://x.org/editais", "novo": True},
+            # 24/09: abate precisa de tipo — edital com prazo aberto (ouro) ou empresa (prata)
+            r = fechar_missao("2 alvos", [{"titulo": "Instituto Novo", "onde": "https://x.org/editais", "url": "https://x.org/editais", "novo": True, "fim": "2099-12-31"},
                                           {"titulo": "Já conhecido", "onde": "y", "novo": False}], "lição")
             self.assertEqual(r["abates"], 1); self.assertEqual(r["achados"], 2)
             b = bordo(); self.assertEqual(b["abates"]["ensaio-motor"]["n"], 1)
@@ -36,7 +37,7 @@ class TesteMissoes(unittest.TestCase):
         self.assertTrue(any("motor" in x for x in c["missao"]["faz_agora"]))
         self.assertIn("aleat", c["missao"]["ritmo"].lower())
         src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
-        for f in ("def missao_cacar", "def missao_afiar", "def missao_local", "sortear()", "fechar_missao"):
+        for f in ("def missao_cacar", "def missao_afiar", "def missao_local", "\"tipo\": \"catalogar\"", "fechar_missao"):
             self.assertIn(f, src, f)
 
     def test_aviao_estrelas_e_posto(self):
@@ -48,7 +49,7 @@ class TesteMissoes(unittest.TestCase):
         self.assertIn("function aviaoDoPiloto", h)                          # o avião existe...
         self.assertNotIn("voa?aviaoDoPiloto", h)                            # ...mas não dentro de cada motor da lista                   # o avião pousa no motor ativo
         self.assertIn("estrelasDeAbate(ab.n", h)                          # estrelas à esquerda, fora da caixa
-        self.assertIn("left:-26px", h)
+        self.assertIn("right:calc(100% + 10px)", h)
 
 
 if __name__ == "__main__":
@@ -59,7 +60,7 @@ class TesteMotor29EFoco(unittest.TestCase):
     def test_sindico_voa_so_nos_quatro_motores(self):
         c = json.loads((ROOT / "config/cargo_piloto.json").read_text(encoding="utf-8"))
         ids = c["parametros"]["motores_do_piloto"]["ids"]
-        self.assertEqual(set(ids), {"empresas-incentivadas", "motor-gife", "motor-patrocinio", "sindico-aberto"})
+        self.assertEqual(set(ids), {"empresas-incentivadas", "motor-gife", "motor-patrocinio", "piloto-aberto"})
         self.assertIn("releem o que já está mapeado", c["parametros"]["motores_do_piloto"]["porque"])
         m = sortear(10)
         self.assertTrue({x["motor"] for x in m} <= set(ids), "o Piloto saiu do escopo")
@@ -84,7 +85,7 @@ class TesteMotor29EFoco(unittest.TestCase):
         self.assertTrue(m["aprendizado"]["pode_criar_termos"])            # pode propor termos novos
         self.assertIn("3 execuções", m["memoria_negativa"]["regra"])
         from src.sensores import registro, lexico_camada1
-        s = [x for x in registro() if x["id"] == "plat-sindico-aberto"]
+        s = [x for x in registro() if x["id"] == "plat-piloto-aberto"]
         self.assertTrue(s, "o motor 29 precisa existir como sensor")
         t, v = lexico_camada1(s[0]); self.assertGreaterEqual(len(t), 40)
         src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")

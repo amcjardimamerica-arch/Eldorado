@@ -54,7 +54,7 @@ class TesteRadarDeCaptacao(unittest.TestCase):
     def test_descoberta_entra_como_a_pesquisar_e_conclui(self):
         antes = RADAR.read_text(encoding="utf-8") if RADAR.exists() else None
         try:
-            e = registrar({"titulo": "Instituto Teste", "url": "https://institutoteste.org.br/edital", "porque": "edital aberto"}, "esg_relatorio_go", "sindico-aberto")
+            e = registrar({"titulo": "Instituto Teste", "url": "https://institutoteste.org.br/edital", "porque": "edital aberto"}, "esg_relatorio_go", "piloto-aberto")
             self.assertEqual(e["marcador"], "a_pesquisar"); self.assertGreaterEqual(len(e["a_descobrir"]), 5)
             self.assertIn("relatório ESG", " ".join(e["a_descobrir"]))
             self.assertIn("editais anteriores", " ".join(e["a_descobrir"]))

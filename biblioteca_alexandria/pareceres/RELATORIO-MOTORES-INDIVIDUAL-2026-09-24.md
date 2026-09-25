@@ -28,7 +28,7 @@ Cada motor percorre o mesmo caminho: **agenda → leitura → léxico → captur
 | 6 | `plat-ovg` | FUNCIONANDO | 3/3 · 0 · 3 | 0/0 · — | captura sem ficha | **MANTER** |
 | 7 | `plat-salic` | FUNCIONANDO | 3/3 · 0 · 3 | 5/5 · 0.0% | chega à biblioteca | **MANTER** |
 | 8 | `plat-secult-go` | FUNCIONANDO | 3/3 · 0 · 3 | 7/9 · 22.2% | chega à biblioteca | **MANTER** |
-| 9 | `plat-sindico-aberto` | FUNCIONANDO | 2/2 · 0 · 2 | 12/12 · 0.0% | chega à biblioteca | **MANTER** |
+| 9 | `plat-piloto-aberto` | FUNCIONANDO | 2/2 · 0 · 2 | 12/12 · 0.0% | chega à biblioteca | **MANTER** |
 | 10 | `recorrencia` | FUNCIONANDO | 2/3 · 0 · 2 | 2/2 · 0.0% | chega à biblioteca | **MANTER** |
 | 11 | `pncp-api` | LENDO SEM ACHAR | 23/23 · 8 · 3 | 154/587 · 73.8% | triagem | **AFINAR FILTRO** |
 | 12 | `empresas-incentivadas` | FUNCIONANDO | 4/20 · 0 · 1 | 1/1 · 0.0% | agenda | **REATIVAR** |
@@ -49,7 +49,7 @@ Cada motor percorre o mesmo caminho: **agenda → leitura → léxico → captur
 | 27 | `plat-prosas` | LENDO SEM ACHAR | 3/3 · 0 · 0 | 0/0 · — | léxico | **OBSERVAR** |
 | 28 | `motor-gife` | sem auditoria | —/— · — · — | 0/0 · — | sem medição | **MEDIR** |
 | 29 | `motor-patrocinio` | sem auditoria | —/— · — · — | 0/0 · — | sem medição | **MEDIR** |
-| 30 | `sindico-aberto` | sem auditoria | —/— · — · — | 0/0 · — | sem medição | **MEDIR** |
+| 30 | `piloto-aberto` | sem auditoria | —/— · — · — | 0/0 · — | sem medição | **MEDIR** |
 
 ---
 
@@ -344,7 +344,7 @@ flowchart LR
 ---
 
 ### 9. Motor do Piloto — busca aberta no terceiro setor  
-`plat-sindico-aberto` · decisão: **MANTER** — produz e o que produz sobrevive à triagem
+`plat-piloto-aberto` · decisão: **MANTER** — produz e o que produz sobrevive à triagem
 
 **Parâmetros.** Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.. Tipo: plataforma · finalidade: — · cadência: a cada 1 dia(s) · coleta: **nuvem**.
 
@@ -356,7 +356,7 @@ flowchart LR
 
 **Setembro.** rodou 2 de 2 dias (100%); dias por estado: nao exec 21, encontrado 2; achados no mês: 2; veredito da validação: *lacunas*.
 
-**Resultado no acervo.** 12 registro(s) na Biblioteca — **12 não eliminado(s)** (ainda não quer dizer aprovado), 0 fora do objeto, 0 fora da abrangência: **0.0% eliminado**. Fontes: `plat-sindico-aberto`. Achados totais na auditoria: 54. **42 achado(s) ficaram entre a captura e a Biblioteca** (duplicata de registro já existente ou descarte antes de virar ficha).
+**Resultado no acervo.** 12 registro(s) na Biblioteca — **12 não eliminado(s)** (ainda não quer dizer aprovado), 0 fora do objeto, 0 fora da abrangência: **0.0% eliminado**. Fontes: `plat-piloto-aberto`. Achados totais na auditoria: 54. **42 achado(s) ficaram entre a captura e a Biblioteca** (duplicata de registro já existente ou descarte antes de virar ficha).
 
 **Onde para: chega à biblioteca.** 12 de 12 ativos.
 
@@ -1096,7 +1096,7 @@ flowchart LR
 ---
 
 ### 30. Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.  
-`sindico-aberto` · decisão: **MEDIR** — entrou no sistema depois da auditoria; sem número não há como julgar
+`piloto-aberto` · decisão: **MEDIR** — entrou no sistema depois da auditoria; sem número não há como julgar
 
 **Parâmetros.** Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.. Tipo: — · finalidade: — · cadência: a cada — dia(s) · coleta: **nuvem**.
 
@@ -1158,8 +1158,8 @@ Dois motores que leem o mesmo domínio gastam duas leituras para o mesmo conteú
 | `motor-gife` | `plat-ovg` | `goias.gov.br` |
 | `motor-gife` | `plat-salic` | `salic.cultura.gov.br` |
 | `motor-gife` | `plat-secult-go` | `goias.gov.br` |
-| `motor-patrocinio` | `plat-sindico-aberto` | `html.duckduckgo.com` |
-| `motor-patrocinio` | `sindico-aberto` | `html.duckduckgo.com` |
+| `motor-patrocinio` | `plat-piloto-aberto` | `html.duckduckgo.com` |
+| `motor-patrocinio` | `piloto-aberto` | `html.duckduckgo.com` |
 | `plat-abcr` | `plat-empresas-editais-incentivados` | `captadores.org.br` |
 | `plat-cnpq-extensao` | `plat-salic` | `gov.br` |
 | `plat-fapeg` | `plat-goias-social` | `goias.gov.br` |
@@ -1169,7 +1169,7 @@ Dois motores que leem o mesmo domínio gastam duas leituras para o mesmo conteú
 | `plat-observatorio-3setor` | `recorrencia` | `observatorio3setor.org.br` |
 | `plat-prefeituras-50-go` | `pncp-api` | `pncp.gov.br` |
 | `plat-prosas` | `plat-prosas-premios` | `prosas.com.br` |
-| `plat-sindico-aberto` | `sindico-aberto` | `html.duckduckgo.com` |
+| `plat-piloto-aberto` | `piloto-aberto` | `html.duckduckgo.com` |
 
 ## Fontes no acervo que nenhum motor reivindica
 
@@ -1204,7 +1204,7 @@ relatório atualiza os capítulos, mas as decisões abaixo são de 24/09.*
 
 **2. Pessimista — staff engineer.** O Diário Oficial de Goiás é lido cinco vezes por cinco motores. Isso não é redundância de segurança: é desperdício de cota num site que já registra recusas, e cinco motores quebram juntos no dia em que o diário mudar de formato.
 
-**3. Levemente pessimista — professor de engenharia de software.** Três motores — `motor-gife`, `motor-patrocinio`, `sindico-aberto` — entraram no sistema depois da auditoria e nunca foram medidos como os outros. Um motor sem medição fica fora de qualquer decisão, e é exatamente por isso que tende a ficar para sempre.
+**3. Levemente pessimista — professor de engenharia de software.** Três motores — `motor-gife`, `motor-patrocinio`, `piloto-aberto` — entraram no sistema depois da auditoria e nunca foram medidos como os outros. Um motor sem medição fica fora de qualquer decisão, e é exatamente por isso que tende a ficar para sempre.
 
 **4. Neutro — CTO (ponderador).** O relatório não autoriza eliminar nenhum motor hoje, e isso é um resultado, não uma omissão: quem parecia morto era motor de coleta local sendo julgado pela nuvem, motor de insumo sendo julgado por achado, ou motor com três dias de vida. O que ele autoriza é **redistribuir trabalho**:
 
@@ -1229,6 +1229,6 @@ relatório atualiza os capítulos, mas as decisões abaixo são de 24/09.*
 | 2 | levar para o computador do titular | `do-goiania`, `dje-tjgo`, `dj-trf1-go`, `camara-goiania-pl` | leitura |
 | 3 | filtro de abrangência e objeto na captura | `pncp-api` | triagem (74% eliminado) |
 | 4 | um leitor só para o Diário Oficial de Goiás | `do-goias` + 4 `plat-*` estaduais | sobreposição |
-| 5 | incluir na auditoria e na validação | `motor-gife`, `motor-patrocinio`, `sindico-aberto` | sem medição |
+| 5 | incluir na auditoria e na validação | `motor-gife`, `motor-patrocinio`, `piloto-aberto` | sem medição |
 | 6 | reavaliar em 08/10 | 5 motores novos em observação | léxico (amostra curta) |
 

@@ -40,7 +40,7 @@ EVOLUCAO = {
     "empresas-incentivadas": "cruzar a lista do ICMS de Goiás com os incentivadores do SALIC: quem já destinou "
                              "por lei sobe na fila",
     "motor-patrocinio": "alertas gratuitos em RSS (Google Alertas) para 'patrocínio' + Goiânia/Goiás",
-    "sindico-aberto": "feeds RSS das entidades e da imprensa do terceiro setor, em vez de busca genérica bloqueada",
+    "piloto-aberto": "feeds RSS das entidades e da imprensa do terceiro setor, em vez de busca genérica bloqueada",
 }
 FINALIDADE = {"descoberta": "Descobrir oportunidades novas", "insumo": "Alimentar o sistema com referência",
               "recorrencia": "Revisitar oportunidades já conhecidas"}

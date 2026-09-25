@@ -2,10 +2,10 @@
   "em": "2026-09-25T01:29:46+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
-    "sindico-aberto": {
-      "missoes": 30,
-      "achados": 5,
-      "uteis": 5,
+    "piloto-aberto": {
+      "missoes": 29,
+      "achados": 6,
+      "uteis": 4,
       "motivos": {
         "nada_no_crivo": 25
       },
@@ -64,7 +64,7 @@
       "regra": "o motor 'empresas-incentivadas' falha por vieram resultados, mas nenhum era oportunidade de verdade há 130 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
       "vezes": 102,
       "tipos": [
@@ -76,7 +76,7 @@
       ],
       "ultima": "2026-09-25",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'sindico-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 102 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 100 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-patrocinio",
@@ -127,7 +127,7 @@
       "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 18 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "motivo": "rastro_sem_prova",
       "vezes": 10,
       "tipos": [
@@ -135,10 +135,10 @@
       ],
       "ultima": "2026-09-25",
       "explicacao": "rastro_sem_prova",
-      "regra": "o motor 'sindico-aberto' falha por rastro_sem_prova há 10 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 10 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "motivo": "sem_rastro",
       "vezes": 10,
       "tipos": [
@@ -146,7 +146,7 @@
       ],
       "ultima": "2026-09-25",
       "explicacao": "sem_rastro",
-      "regra": "o motor 'sindico-aberto' falha por sem_rastro há 10 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 10 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -160,7 +160,7 @@
       "regra": "o motor 'missao-especial' falha por o que veio não serve à finalidade da associação há 8 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "motivo": "busca_vazia",
       "vezes": 1,
       "tipos": [
@@ -168,25 +168,35 @@
       ],
       "ultima": "2026-09-22",
       "explicacao": "o buscador não devolveu nada (bloqueio ou rede)"
+    },
+    {
+      "motor": "piloto-aberto",
+      "motivo": "fora_do_objeto",
+      "vezes": 1,
+      "tipos": [
+        "prospectar"
+      ],
+      "ultima": "2026-09-25",
+      "explicacao": "o que veio não serve à finalidade da associação"
     }
   ],
   "melhorias_pendentes": [
     {
-      "motor": "sindico-aberto",
-      "sugestao": "O motor não está filtrando eventos culturais com relação a projetos de assistência social. A atualização do motor para incluir categorias de interesse social e cultura seria uma melhoria.",
-      "efetividade_na_hora": 1.0,
-      "em": "2026-09-25T01:21",
+      "motor": "piloto-aberto",
+      "sugestao": "O motor não tem acesso a dados de editais de fomento e não consegue extrair informações relevantes para classificar recursos.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-25T01:26",
       "aplicada": false
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "sugestao": "O motor não identifica se o achado é um edital de fomento para organizações da sociedade civil. Isso pode levar a classificações incorretas ou a concorrência com recursos não alinhados à missão da associação.",
       "efetividade_na_hora": 1.0,
       "em": "2026-09-24T16:05",
       "aplicada": false
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "sugestao": "o motor não está retornando resultados relacionados a editais de fomento para organizações da sociedade civil no Brasil.",
       "efetividade_na_hora": 1.0,
       "em": "2026-09-24T15:51",
@@ -207,14 +217,14 @@
       "aplicada": false
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "sugestao": "O motor não consegue identificar o tipo de recurso (patrocínio) e não diferencia entre patrocínios e doações. Isso pode levar a resultados incorretos ou a ignorar recursos válidos.",
       "efetividade_na_hora": 1.0,
       "em": "2026-09-24T11:22",
       "aplicada": false
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "sugestao": "O motor precisa ter acesso a informações completas e claras sobre o patrocínio, incluindo valor, prazo, objeto e página específica do edital para identificar se é uma opção válida.",
       "efetividade_na_hora": 0.5,
       "em": "2026-09-24T11:10",
@@ -228,14 +238,14 @@
       "aplicada": false
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "sugestao": "o motor não consegue encontrar editais de fomento para organizações da sociedade civil",
       "efetividade_na_hora": 1.0,
       "em": "2026-09-24T09:53",
       "aplicada": false
     },
     {
-      "motor": "sindico-aberto",
+      "motor": "piloto-aberto",
       "sugestao": "O motor não está conseguindo identificar o tipo de edital (ex.: premiação, patrocínio, doação) e não está reconhecendo o contexto do conteúdo (ex.: responsabilidade social, desenvolvimento sustentável).",
       "efetividade_na_hora": 1.0,
       "em": "2026-09-24T09:41",

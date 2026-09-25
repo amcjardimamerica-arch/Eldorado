@@ -1,4 +1,4 @@
-# O SÍNDICO — IA local rodando no próprio GitHub (plano de implantação)
+# O PILOTO — IA local rodando no próprio GitHub (plano de implantação)
 
 **Decisão do titular (20/09/2026):** a IA não roda no computador dele. Roda no repositório, via
 GitHub Actions, como **piloto/curador da Biblioteca de Alexandria**: pensa em otimizar as buscas,

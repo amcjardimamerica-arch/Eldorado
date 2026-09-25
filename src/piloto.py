@@ -719,11 +719,11 @@ def ciclo(porta: int | None = None) -> dict:
         site = _proximo_site()
         if not site or any(x.get("_site", {}).get("url") == site["url"] for x in plano):
             break
-        plano.append({"tipo": "catalogar", "motor": "sindico-aberto", "ordem": len(plano) + 1,
+        plano.append({"tipo": "catalogar", "motor": "piloto-aberto", "ordem": len(plano) + 1,
                       "alvo_id": site["url"], "_site": site, "_alvo": {"titulo": site["nome"]}})
         vagas -= 1
         if vagas > 0:                                   # proativo: a cada site, uma busca ativa de empresas
-            plano.append({"tipo": "prospectar", "motor": "sindico-aberto", "ordem": len(plano) + 1,
+            plano.append({"tipo": "prospectar", "motor": "piloto-aberto", "ordem": len(plano) + 1,
                           "alvo_id": f"prospeccao-{len(plano)}", "_alvo": {"titulo": "busca ativa de empresas"}})
             vagas -= 1
     # POSIÇÃO AO VIVO: o painel só é republicado a cada 6 h; a posição vai por um ramo
@@ -748,7 +748,7 @@ def ciclo(porta: int | None = None) -> dict:
                 alvo, ach, licao = missao_catalogar(m["_site"])
             elif m["tipo"] == "prospectar":
                 alvo, ach, licao = missao_prospectar(m["ordem"])
-            elif m.get("motor") == "sindico-aberto":
+            elif m.get("motor") == "piloto-aberto":
                 # MISSÃO 2 — reconhecimento: o que os motores não acham porque não houve edital
                 alvo, ach, licao = missao_reconhecimento(ia, {**(rumo or {}), "ordem": m["ordem"]}, conhecidos)
             elif False:

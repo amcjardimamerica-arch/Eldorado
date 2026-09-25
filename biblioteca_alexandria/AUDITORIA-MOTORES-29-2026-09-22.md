@@ -39,9 +39,9 @@ ninguém tinha dito a ele qual é o nosso objeto.
 | 24 | `plat-mp-destinacoes-reparacao` | 0 | **seco** | rota responde mas nada passa no léxico em 24 dias | ampliar o léxico da camada 1 e conferir se a página mudou de endereço |
 | 25 | `plat-cnpq-extensao` | 0 | **seco** | rota responde mas nada passa no léxico em 24 dias | ampliar o léxico da camada 1 e conferir se a página mudou de endereço |
 | 26 | `recorrencia` | 0 | **seco** | rota responde mas nada passa no léxico em 24 dias | ampliar o léxico da camada 1 e conferir se a página mudou de endereço |
-| 27 | `plat-sindico-aberto` | 0 | **seco** | rota responde mas nada passa no léxico em 24 dias | ampliar o léxico da camada 1 e conferir se a página mudou de endereço |
+| 27 | `plat-piloto-aberto` | 0 | **seco** | rota responde mas nada passa no léxico em 24 dias | ampliar o léxico da camada 1 e conferir se a página mudou de endereço |
 | 29 | `motor-patrocinio` | 0 | **seco** | rota responde mas nada passa no léxico em 24 dias | ampliar o léxico da camada 1 e conferir se a página mudou de endereço |
-| 30 | `sindico-aberto` | 0 | **seco** | rota responde mas nada passa no léxico em 24 dias | ampliar o léxico da camada 1 e conferir se a página mudou de endereço |
+| 30 | `piloto-aberto` | 0 | **seco** | rota responde mas nada passa no léxico em 24 dias | ampliar o léxico da camada 1 e conferir se a página mudou de endereço |
 | 28 | `motor-gife` | 12 | **produtivo** | entrega dentro do esperado | manter; acrescentar termos só quando a avaliação do Piloto sugerir |
 | 11 | `plat-observatorio-3setor` | 9 | **produtivo** | entrega dentro do esperado | manter; acrescentar termos só quando a avaliação do Piloto sugerir |
 | 12 | `plat-abcr` | 9 | **produtivo** | entrega dentro do esperado | manter; acrescentar termos só quando a avaliação do Piloto sugerir |
