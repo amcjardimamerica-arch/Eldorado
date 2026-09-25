@@ -4,7 +4,7 @@
 - Fonte: `bndes`
 - Eventos verificados: 0
 - Pistas aguardando confirmação: 7
-- Distribuição por ano pesquisado/coletado: {'2023': 7}
+- Distribuição por ano pesquisado/coletado: {'2025': 7}
 
 ## Padrões
 
@@ -12,10 +12,10 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [BNDES | Agência BNDES de Notícias Página Inicial | Agência BNDES de ...](https://agenciadenoticias.bndes.gov.br/) — coletado em 2026-09-25T02:48:49+00:00
-- [BNDES - O banco nacional do desenvolvimento](https://www.bndes.gov.br/wps/portal/site/home) — coletado em 2026-09-25T02:48:49+00:00
-- [BNDES - Portal do Cliente](https://web.bndes.gov.br/CFI/login/bemVindo.xhtml) — coletado em 2026-09-25T02:48:49+00:00
-- [BNDES - Portal do Cliente](https://portal.bndes.gov.br/) — coletado em 2026-09-25T02:48:49+00:00
-- [BNDES - Brazilian Development Bank](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en) — coletado em 2026-09-25T02:48:49+00:00
-- [About Us - BNDES Investor Relations](https://ri.bndes.gov.br/en/about-bndes/about-us) — coletado em 2026-09-25T02:48:49+00:00
-- [Home - BNDES Investor Relations](https://ri.bndes.gov.br/en) — coletado em 2026-09-25T02:48:49+00:00
+- [BNDES | Agência BNDES de Notícias Página Inicial | Agência BNDES de ...](https://agenciadenoticias.bndes.gov.br/) — coletado em 2026-09-25T16:44:08+00:00
+- [BNDES - O banco nacional do desenvolvimento](https://www.bndes.gov.br/wps/portal/site/home) — coletado em 2026-09-25T16:44:08+00:00
+- [BNDES - Portal do Cliente](https://web.bndes.gov.br/CFI/login/bemVindo.xhtml) — coletado em 2026-09-25T16:44:08+00:00
+- [BNDES - Portal do Cliente](https://portal.bndes.gov.br/) — coletado em 2026-09-25T16:44:08+00:00
+- [BNDES - Brazilian Development Bank](https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en) — coletado em 2026-09-25T16:44:08+00:00
+- [About Us - BNDES Investor Relations](https://ri.bndes.gov.br/en/about-bndes/about-us) — coletado em 2026-09-25T16:44:08+00:00
+- [Home - BNDES Investor Relations](https://ri.bndes.gov.br/en) — coletado em 2026-09-25T16:44:08+00:00

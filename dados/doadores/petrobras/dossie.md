@@ -3,8 +3,8 @@
 - Classe: `doadores`
 - Fonte: `petrobras`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 4
-- Distribuição por ano pesquisado/coletado: {'2022': 4}
+- Pistas aguardando confirmação: 3
+- Distribuição por ano pesquisado/coletado: {'2025': 3}
 
 ## Padrões
 
@@ -12,7 +12,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Agência Petrobras de Notícias](https://agencia.petrobras.com.br/) — coletado em 2026-09-24T21:03:21+00:00
-- [Brazilian Energy | Petrobras](https://petrobras.com.br/en) — coletado em 2026-09-24T21:03:21+00:00
-- [O Brasil é a nossa Energia | Petrobras](https://petrobras.com.br/) — coletado em 2026-09-24T21:03:21+00:00
-- [Petrobras News Agency - Agência](https://agencia.petrobras.com.br/en) — coletado em 2026-09-24T21:03:21+00:00
+- [Agência Petrobras de Notícias](https://agencia.petrobras.com.br/) — coletado em 2026-09-25T16:44:08+00:00
+- [Brazilian Energy | Petrobras](https://petrobras.com.br/en) — coletado em 2026-09-25T16:44:08+00:00
+- [O Brasil é a nossa Energia | Petrobras](https://petrobras.com.br/) — coletado em 2026-09-25T16:44:08+00:00
