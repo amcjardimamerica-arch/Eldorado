@@ -1,0 +1,33 @@
+name: 09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes
+# Roda no servidor do GitHub, que alcança os portais do governo. Mensal, e sob demanda.
+on:
+  schedule:
+    - cron: "37 6 3 * *"
+  workflow_dispatch:
+    inputs:
+      fontes:
+        description: "fontes separadas por espaço (vazio = todas)"
+        required: false
+        default: ""
+permissions:
+  contents: write
+concurrency:
+  group: coleta-historica
+  cancel-in-progress: false
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Coletar
+        run: python3 scripts/coleta_historica.py ${{ github.event.inputs.fontes }}
+      - name: Guardar na Biblioteca
+        if: always()
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          git add biblioteca_alexandria/base/incentivos || true
+          git commit -q -m "base: incentivos (5 anos) $(date -u +%F)" || exit 0
+          for i in 1 2 3; do git pull --rebase -q -X theirs origin main && git push -q origin main && break; sleep 5; done

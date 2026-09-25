@@ -47,12 +47,41 @@ def _chave(url: str) -> str:
     return (urlsplit(url).hostname or url).lower().replace("www.", "")
 
 
+def sementes_de_associacoes() -> list[dict]:
+    """ASSOCIAÇÕES QUE JÁ EXISTEM (titular, 24/09): toda entidade do sistema que tem site próprio entra
+    no rodízio — é no site delas que aparecem os apoiadores, patrocinadores e parceiros."""
+    import json as _j
+    out, vistos = [], set()
+    for base in (ROOT / "biblioteca_alexandria/associacoes", ROOT / "dados/associacoes"):
+        for f in base.rglob("*.json") if base.exists() else []:
+            try:
+                d = _j.loads(f.read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            for it in (d if isinstance(d, list) else (d.get("itens") or d.get("associacoes") or [d])):
+                if not isinstance(it, dict):
+                    continue
+                u = str(it.get("site") or it.get("url") or it.get("website") or "")
+                if u.startswith("http") and not re.search(r"facebook|instagram|gov\.br|mapaosc|youtube", u) and _chave(u) not in vistos:
+                    vistos.add(_chave(u)); out.append({"url": u, "nome": it.get("nome") or it.get("razao_social") or _chave(u), "tipo": "associacao"})
+    return out
+
+
+def empresas_ja_conhecidas() -> set[str]:
+    """Empresas que já constam da base de incentivadores (SALIC etc.): o Piloto não gasta voo 'descobrindo'."""
+    arq = ROOT / "biblioteca_alexandria/base/incentivos/empresas_incentivadoras.jsonl"
+    if not arq.exists():
+        return set()
+    import json as _j
+    return {re.sub(r"[^a-z0-9]", "", str(_j.loads(l).get("nome") or "").lower())[:40] for l in arq.read_text(encoding="utf-8").splitlines() if l.strip()}
+
+
 def proximo_site() -> dict | None:
     """O site há mais tempo sem leitura, entre as sementes e os sites já catalogados."""
     cat = catalogo()
     limite = (datetime.now(timezone.utc) - timedelta(days=REVISITA_DIAS)).isoformat(timespec="seconds")
     candidatos = []
-    for s in sementes():
+    for s in sementes() + sementes_de_associacoes():
         k = _chave(s["url"])
         lido = (cat["sites"].get(k) or {}).get("lido_em") or ""
         if lido < limite:
@@ -93,10 +122,12 @@ def catalogar(site: dict, texto: str, links: list[tuple[str, str]]) -> dict:
             break
     rastros = ler_rastros(texto, url)
     empresas = []
+    conhecidas = empresas_ja_conhecidas()
     for r in rastros[:40]:
         it = registrar(r, "site_especializado", 1)
         if it:
-            empresas.append({"empresa": it.get("empresa"), "via": r.get("via")})
+            ja = re.sub(r"[^a-z0-9]", "", str(it.get("empresa") or "").lower())[:40] in conhecidas
+            empresas.append({"empresa": it.get("empresa"), "via": r.get("via"), "ja_na_base_de_incentivos": ja})
     m = RX_ESG.search(texto or "")
     esg = {"declarado": bool(m), "trecho": (texto[max(0, m.start() - 60): m.end() + 80].strip() if m else None)}
     cat = catalogo()

@@ -532,6 +532,36 @@ def missao_prospeccao(ia, angulo: dict, conhecidos: set[str]) -> tuple[str, list
     return f"expansao:{nivel}", novas, licao
 
 
+CONSULTAS_PROSPECCAO = [
+    "patrocínio empresa Goiânia projeto social {ano}", "apoio institucional Goiás instituto empresa edital {ano}",
+    "investimento social privado Goiás empresas", "empresas goianas responsabilidade social ESG relatório {ano}",
+    "patrocinadores festival Goiânia {ano}", "lei de incentivo ao esporte patrocinador Goiás {ano}",
+    "Lei Rouanet incentivador Goiânia empresa {ano}", "fundação empresarial Goiás edital projetos {ano}",
+    "doação empresa hospital Goiânia PRONON {ano}", "instituto empresarial Centro-Oeste chamada projetos {ano}",
+]
+
+
+def missao_prospectar(ordem: int) -> tuple[str, list[dict], str]:
+    """BUSCA ATIVA DE EMPRESAS (titular, 24/09): consultas criativas que rodam em rodízio; das páginas
+    devolvidas, lê as primeiras e extrai quem patrocina, apoia ou doa. Empresa já na base de incentivos
+    não conta como descoberta."""
+    from datetime import date as _d
+    from .piloto_busca import buscar, ler_pagina
+    from .reconhecimento import ler_rastros, registrar
+    from .catalogo_terceiro_setor import empresas_ja_conhecidas
+    q = CONSULTAS_PROSPECCAO[(int(time.time() // 600) + ordem) % len(CONSULTAS_PROSPECCAO)].format(ano=_d.today().year)
+    res = buscar(q, maximo=8) or []
+    conhecidas = empresas_ja_conhecidas()
+    ach = []
+    for r in res[:4]:
+        texto = ler_pagina(r.get("url") or "", limite=9000)
+        for rs in ler_rastros(texto or "", r.get("url") or ""):
+            it = registrar(rs, "busca_ativa", 1)
+            if it and re.sub(r"[^a-z0-9]", "", str(it.get("empresa") or "").lower())[:40] not in conhecidas:
+                ach.append({"titulo": it.get("empresa"), "empresa": it.get("empresa"), "via": rs.get("via"), "url": r.get("url"), "novo": True})
+    return q, ach, f"busca ativa · '{q}': {len(res)} resultado(s), {len(ach)} empresa(s) nova(s)"
+
+
 def missao_catalogar(site: dict) -> tuple[str, list[dict], str]:
     """Visita um site especializado do terceiro setor: páginas para entidades, empresas presentes, ESG."""
     from .piloto_busca import ler_pagina
@@ -692,6 +722,10 @@ def ciclo(porta: int | None = None) -> dict:
         plano.append({"tipo": "catalogar", "motor": "sindico-aberto", "ordem": len(plano) + 1,
                       "alvo_id": site["url"], "_site": site, "_alvo": {"titulo": site["nome"]}})
         vagas -= 1
+        if vagas > 0:                                   # proativo: a cada site, uma busca ativa de empresas
+            plano.append({"tipo": "prospectar", "motor": "sindico-aberto", "ordem": len(plano) + 1,
+                          "alvo_id": f"prospeccao-{len(plano)}", "_alvo": {"titulo": "busca ativa de empresas"}})
+            vagas -= 1
     # POSIÇÃO AO VIVO: o painel só é republicado a cada 6 h; a posição vai por um ramo
     # próprio, lido direto pelo navegador, para o avião aparecer onde o trabalho está AGORA
     from .posicao_piloto import anunciar as _anunciar, pousar as _pousar_pos, registro as _reg_pos
@@ -712,6 +746,8 @@ def ciclo(porta: int | None = None) -> dict:
                 alvo, ach, licao = missao_resgate(ia, m["_alvo"], conhecidos)
             elif m["tipo"] == "catalogar":
                 alvo, ach, licao = missao_catalogar(m["_site"])
+            elif m["tipo"] == "prospectar":
+                alvo, ach, licao = missao_prospectar(m["ordem"])
             elif m.get("motor") == "sindico-aberto":
                 # MISSÃO 2 — reconhecimento: o que os motores não acham porque não houve edital
                 alvo, ach, licao = missao_reconhecimento(ia, {**(rumo or {}), "ordem": m["ordem"]}, conhecidos)

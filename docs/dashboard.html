@@ -3940,6 +3940,11 @@ function bzStatusUF(){
 /* marcas de grau da rosa dos ventos (72 traços finos, a cada 5°) */
 (function(){const r=document.getElementById("bz-rosa-svg");if(r&&window.MAPA_ARTE)r.innerHTML=window.MAPA_ARTE.rosa();})();
 /* dados por UF: núcleo + base ampla (abertas.json) — abertos, por área e por cidade */
+/* LINK DO SITE OFICIAL: a página do órgão ou do edital — não buscador, não agregador de diário */
+function linkOficial(it){
+  const u=String(it.pagina_oficial||it.url||it.link||"");
+  return /^https?:\/\//.test(u)&&!/duckduckgo|bing\.com|google\.|queridodiario|pncp\.gov\.br\/app\/editais\?/i.test(u);
+}
 function mpDadosUF(){
   const hojeISO=HOJE.toISOString().slice(0,10); const por={};
   const add=(uf,area,cidade,st)=>{if(!uf)return;const p=por[uf]||(por[uf]={aberta:0,verificacao:0,encerrada:0,total:0,areas:{},cidades:{}});
@@ -3956,8 +3961,10 @@ function mpDadosUF(){
     if(item&&item.tipo_registro&&!["edital","regra_anual"].includes(item.tipo_registro)){window._mpTriagem=(window._mpTriagem||{});window._mpTriagem[item.tipo_registro]=(window._mpTriagem[item.tipo_registro]||0)+1;return;}
     if(item){const arq=estadoDe(item.id)!=="em_andamento"||situacaoDe(item)==="encerrada";
       if((frSel||"ativas")==="ativas"?arq:!arq)return;}
-    if(item&&!casaPeriodoMapa(item))return;const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,areas:{},cidades:{},itens:[]});
-    p[st]=(p[st]||0)+1;p.total++;if(st==="aberta"||st==="possivel"){p.areas[area]=(p.areas[area]||0)+1;if(item&&p.itens.length<400)p.itens.push(item);
+    if(item&&!casaPeriodoMapa(item))return;const k=uf||"__nac__";const p=por[k]||(por[k]={aberta:0,verificacao:0,encerrada:0,possivel:0,total:0,confirmadas:0,areas:{},cidades:{},itens:[]});
+    p[st]=(p[st]||0)+1;p.total++;
+    // 24/09 (titular): o 1º número do mapa são as que têm PRAZO e LINK DO SITE OFICIAL conhecidos
+    if(item&&item.fim&&linkOficial(item)) p.confirmadas=(p.confirmadas||0)+1;if(st==="aberta"||st==="possivel"){p.areas[area]=(p.areas[area]||0)+1;if(item&&p.itens.length<400)p.itens.push(item);
       if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{},itens:[]});c.n++;c.areas[area]=(c.areas[area]||0)+1;if(item&&c.itens.length<60)c.itens.push(item);}}};
   const nac=e=>(!e.uf||e.nivel==="federal"||e.abrangencia==="nacional")?null:e.uf;
   (D.editais||[]).forEach(e=>{add2(nac(e),e.area||"outros",e.municipio||cid(e.titulo),situacaoDe(e),e);});
@@ -4023,13 +4030,13 @@ function desenhaBzMapa(){ window._mpTriagem={};
     svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${n?" com-abertas":""}" style="fill:${fill}"></path>`;}
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
     // 24/09 (titular): confirmadas/possíveis — datas e objeto verificados / identificadas sem os dados mínimos
-    svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-11}" y="${e.cy+13}" class="uf-n"><title>${p.aberta||0} confirmada(s) com data e objeto / ${p.possivel||0} possível(is) sem os dados mínimos</title>${p.aberta||0}/${p.possivel||0}</text>`:""}`;}
+    svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-11}" y="${e.cy+13}" class="uf-n"><title>${p.confirmadas||0} com prazo e link do site oficial / ${p.total||0} possibilidade(s) identificada(s)</title>${p.confirmadas||0}/${p.total||0}</text>`:""}`;}
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
   // a rosa dos ventos carrega o nível nacional no mesmo formato: confirmadas/possíveis
   const _nac=por["__nac__"]||{}; const _rot=$("bz-rosa-svg")&&$("bz-rosa-svg").parentElement&&$("bz-rosa-svg").parentElement.querySelector(".bz-rosa-rot");
-  if(_rot) _rot.innerHTML=`Brasil · nível nacional<br><b class="bz-rosa-n" title="${_nac.aberta||0} confirmada(s) com data e objeto / ${_nac.possivel||0} possível(is) sem os dados mínimos">${_nac.aberta||0}/${_nac.possivel||0}</b>`;
-  const _leg=$("bz-mapa-legenda"); if(_leg) _leg.innerHTML=`<span class=meta>em cada estado e na rosa: <b>confirmadas</b> (data e objeto verificados) / <b>possíveis</b> (identificadas, sem os dados mínimos)</span>`;
+  if(_rot) _rot.innerHTML=`Brasil · nível nacional<br><b class="bz-rosa-n" title="${_nac.confirmadas||0} com prazo e link do site oficial / ${_nac.total||0} possibilidade(s) identificada(s)">${_nac.confirmadas||0}/${_nac.total||0}</b>`;
+  const _leg=$("bz-mapa-legenda"); if(_leg) _leg.innerHTML=`<span class=meta>em cada estado e na rosa: <b>com prazo e link do site oficial</b> / <b>todas as possibilidades identificadas</b></span>`;
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */
