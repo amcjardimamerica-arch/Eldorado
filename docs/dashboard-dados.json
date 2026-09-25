@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-25T00:05:04+00:00",
+  "gerado_em": "2026-09-25T08:44:43+00:00",
   "referencia": "2026-09-25",
   "cadencia": {
     "varredura": "segundas e sextas, 6h de Brasília",
@@ -38900,7 +38900,7 @@
   ],
   "biblioteca": {
     "biblioteca": "Biblioteca de Alexandria",
-    "atualizado_em": "2026-09-25T00:04:59+00:00",
+    "atualizado_em": "2026-09-25T08:44:37+00:00",
     "acervos": {
       "leis": 27,
       "oportunidades": 16361,
@@ -38914,7 +38914,7 @@
     "alimentacao": "Eldorado alimenta; Farol analisa com IA",
     "detalhe": {
       "leis": {
-        "atualizado_em": "2026-09-25T00:04:59+00:00",
+        "atualizado_em": "2026-09-25T08:44:37+00:00",
         "total": 27,
         "temas": {
           "assistencia_social": 6,
@@ -39108,7 +39108,7 @@
         }
       },
       "oportunidades": {
-        "atualizado_em": "2026-09-25T00:04:59+00:00",
+        "atualizado_em": "2026-09-25T08:44:37+00:00",
         "total": 16361,
         "em_pasta": 2,
         "no_banco": 16361,
@@ -39278,7 +39278,7 @@
         "nota": "contagens determinísticas; padrões de aprovação e critérios de vitória são apurados pela IA a partir deste índice"
       },
       "associacoes": {
-        "atualizado_em": "2026-09-25T00:04:59+00:00",
+        "atualizado_em": "2026-09-25T08:44:37+00:00",
         "total": 1,
         "associacoes": [
           {
@@ -39329,7 +39329,7 @@
         "nome": "Descobrir",
         "modulo": "Eldorado",
         "descricao": "mapear oportunidades e fontes de recursos",
-        "quantidade": 17213
+        "quantidade": 17221
       },
       {
         "n": 2,
@@ -39363,7 +39363,7 @@
         "quantidade": 0
       }
     ],
-    "atualizado_em": "2026-09-25T00:05:02+00:00",
+    "atualizado_em": "2026-09-25T08:44:41+00:00",
     "nota": "etapas 4 e 5 são automáticas; não dependem de ação do titular"
   },
   "previsoes": {
@@ -47388,28 +47388,22 @@
     },
     "ultima_execucao": {
       "data": "2026-09-25",
-      "em": "2026-09-25T00:04:51+00:00",
+      "em": "2026-09-25T08:44:29+00:00",
       "manual": [
-        "alego-pl",
-        "pncp-api"
+        "recorrencia"
       ],
       "bloco": "manual",
-      "sensores_executados": 2,
-      "em_espera": 127,
+      "sensores_executados": 1,
+      "em_espera": 128,
       "total_esquadra": 129,
       "previsoes_ativas": 1,
-      "achados": 0,
-      "novos_na_base": 0,
+      "achados": 15,
+      "novos_na_base": 1,
       "por_tipo": {
-        "legislativo": {
+        "recorrencia": {
           "sensores": 1,
-          "achados": 0,
-          "falhas": 0
-        },
-        "api": {
-          "sensores": 1,
-          "achados": 0,
-          "falhas": 3
+          "achados": 15,
+          "falhas": 9
         }
       }
     },
@@ -50925,7 +50919,7 @@
       "modo": "completo",
       "motivo": "sem prazo de inscrição confirmado",
       "desde": "2026-09-11",
-      "vezes_vistas": 118,
+      "vezes_vistas": 119,
       "link_oficial": "https://goias.gov.br/cultura/pnab-2026-retificado-cronograma-dos-editais-no-12-13-e-14-2026"
     },
     "1f9233fbd12b1abd9cde": {
@@ -51384,7 +51378,7 @@
       "modo": "completo",
       "motivo": "sem prazo de inscrição confirmado",
       "desde": "2026-09-21",
-      "vezes_vistas": 60,
+      "vezes_vistas": 61,
       "link_oficial": "https://goias.gov.br/esporte/dispensa-de-licitacoes"
     },
     "85cf67da9feb8daf3109": {
@@ -53085,24 +53079,14 @@
         },
         "reservas": [
           {
-            "id": "llama-3.2-3b",
-            "gb": 2.0,
-            "porque": "ocupou o cargo até 2026-09-23 e saiu: nenhum substituto medido: o Qwen3 nao baixou no runn"
+            "id": "qwen3-4b",
+            "gb": 2.5,
+            "porque": "mesma família do ocupante, mais capaz; cabe em 4 CPUs com contexto de 8k, mais lento; cand"
           },
           {
-            "id": "llama-3.2-1b",
-            "gb": 0.8,
-            "porque": "irmão menor do ocupante: 3x mais rápido; testar se mantém 50% com o prompt já calibrado"
-          },
-          {
-            "id": "gemma-2-2b",
-            "gb": 1.6,
-            "porque": "não chegou a ser medido; correção do boot já implantada"
-          },
-          {
-            "id": "phi-3.5-mini",
-            "gb": 2.3,
-            "porque": "licença MIT e forte em instrução; português a verificar"
+            "id": "qwen2.5-3b",
+            "gb": 1.9,
+            "porque": "sem modo de raciocínio a desligar; obediente a JSON"
           }
         ],
         "ex_ocupantes": 0
@@ -53114,7 +53098,7 @@
       "config": {
         "modelo_vencedor": "qwen3-1.7b",
         "eleito_em": "2026-09-24T08:37:01+00:00",
-        "regra": "ocupante empossado pelo titular; só ele roda nos voos",
+        "regra": "ocupante empossado pelo titular; só ele roda nos voos. Regra de sempre: QUALQUER prazo inventado (data sem trecho literal) elimina o ocupante; acerto medido contra o veredito do titular",
         "orcamento": {
           "registros_por_ciclo": 150,
           "ciclos_por_dia": 4,
@@ -53125,15 +53109,12 @@
         "motor": "llama.cpp b11064",
         "porta": 8081,
         "constituicao": "config/constituicao_piloto.json",
-        "voos_por_dia": 40,
         "encadeamento": {
-          "regra": "cada voo e uma execucao separada de ate 30 min; ao pousar espera 3 segundos e decola de novo",
+          "regra": "voa o tempo todo: cada voo é uma execução separada e independente de até 30 min; ao pousar espera 3 segundos e decola de novo",
           "pausa_no_patio_s": 3,
           "teto_execucao_min": 30,
-          "teto_diario": 40,
           "travas": [
-            "estado/piloto_pausado",
-            "teto diario",
+            "estado/piloto/piloto_pausado",
             "nunca dois voos no ar"
           ]
         },
@@ -53142,15 +53123,21 @@
           "exploracao (briefing e motores 26-29)"
         ],
         "arquivo": "Qwen3-1.7B-Q4_K_M.gguf",
-        "url": "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf"
+        "url": "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf",
+        "motor_de_inferencia": {
+          "nome": "llama.cpp (llama-server)",
+          "o_que_e": "motor de código aberto, em C/C++, que executa modelos no formato GGUF em CPU; apesar do nome, roda qualquer modelo GGUF — aqui ele executa o Qwen3. Não é resquício do Llama: é o executor",
+          "contexto_tokens": 8192,
+          "template": "--jinja (template de chat oficial do Qwen3)"
+        }
       },
       "benchmark": null,
       "ultimo": {
-        "em": "2026-09-24T22:51:35+00:00",
+        "em": "2026-09-25T08:10:21+00:00",
         "modelo": "qwen3-1.7b",
         "ocupante": "Qwen3-1.7B",
         "entendimento": {
-          "em": "2026-09-24T22:51:35+00:00",
+          "em": "2026-09-25T08:10:21+00:00",
           "editais": 256,
           "analises": 814,
           "fontes": 293,
@@ -53162,35 +53149,43 @@
           {
             "tipo": "catalogar",
             "motor": "piloto-aberto",
-            "alvo": "Parceiros Voluntários",
+            "alvo": "Captamos",
             "achados": 0,
             "abates": 0,
-            "licao": "catálogo · Parceiros Voluntários: 30 página(s) para entidades, 0 empresa(s), ESG não decla"
+            "licao": "catálogo · Captamos: página não respondeu"
+          },
+          {
+            "tipo": "prospectar",
+            "motor": "piloto-aberto",
+            "alvo": "lei de incentivo ao esporte patrocinador Goiás 2026",
+            "achados": 0,
+            "abates": 0,
+            "licao": "busca ativa · 'lei de incentivo ao esporte patrocinador Goiás 2026': 8 resultado(s), 0 emp"
           }
         ],
         "abates": 0,
         "propostas": 0,
-        "voo_do_dia": 43,
+        "voo_do_dia": 55,
         "briefing": {
-          "diagnostico": null,
+          "diagnostico": "um edital de financiador privado que não é encontrado nos motores e que não é mencionado em qualquer fonte pública",
           "aposta": {
-            "onde": "portal_especializado",
-            "confianca": "baixa",
-            "porque": "o modelo não respondeu; rumo sorteado do catálogo, sem repetir os últimos"
+            "onde": "instituto ou fundação empresarial que seleciona por formulário no próprio site",
+            "porque": "os editais de financiadores privados geralmente não são encontrados nos motores e não são mencionados em qualquer fonte pública, além disso, não há registros de publicação em diário oficial nem em plataforma agregadora",
+            "confianca": "alta"
           },
-          "pergunta_de_pesquisa": "Portais e boletins que agregam editais de terceiro setor, captacao e fomento. Catalogue o portal, nao o edital: se for bom, vira motor proprio.",
+          "pergunta_de_pesquisa": "Qual é o edital de financiador privado que não foi encontrado nos motores e que não é mencionado em qualquer fonte pública?",
           "nivel": "nacional"
         },
         "rumo": {
           "nivel": "nacional",
           "alvo": "empresa",
-          "porque": "o modelo não respondeu; rumo sorteado do catálogo, sem repetir os últimos"
+          "porque": "os editais de financiadores privados geralmente não são encontrados nos motores e não são mencionados em qualquer fonte pública, além disso, não há registros de publicação em diário oficial nem em plataforma agregadora"
         },
         "resgates_na_fila": 0,
         "resgates_fora_dos_30_dias": 0,
         "avaliacoes": [
           {
-            "em": "2026-09-24T22:52:07+00:00",
+            "em": "2026-09-25T08:10:57+00:00",
             "motor": "piloto-aberto",
             "missao": "catalogar",
             "alvo": null,
@@ -53201,27 +53196,41 @@
             "motivo_do_insucesso": "nada_no_crivo",
             "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
             "melhoria_sugerida": "",
-            "licao_do_voo": "catálogo · Parceiros Voluntários: 30 página(s) para entidades, 0 empresa(s), ESG não declarado"
+            "licao_do_voo": "catálogo · Captamos: página não respondeu"
+          },
+          {
+            "em": "2026-09-25T08:11:09+00:00",
+            "motor": "piloto-aberto",
+            "missao": "prospectar",
+            "alvo": null,
+            "achados": 0,
+            "uteis": 0,
+            "descartados": 0,
+            "efetividade": 0.0,
+            "motivo_do_insucesso": "nada_no_crivo",
+            "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
+            "melhoria_sugerida": "",
+            "licao_do_voo": "busca ativa · 'lei de incentivo ao esporte patrocinador Goiás 2026': 8 resultado(s), 0 empresa(s) nova(s)"
           }
         ],
         "posicao_ao_vivo": [
           {
-            "em": "2026-09-24T22:52:02+00:00",
+            "em": "2026-09-25T08:10:57+00:00",
             "http": 200,
             "ok": true,
             "msg": "posição: catalogar · piloto-aberto"
           },
           {
-            "em": "2026-09-24T22:52:08+00:00",
+            "em": "2026-09-25T08:11:10+00:00",
             "http": 200,
             "ok": true,
             "msg": "posição: pousou"
           }
         ],
         "encerrou_por": "tarefa concluída",
-        "minutos_de_voo": 0.6,
+        "minutos_de_voo": 0.8,
         "radar": {
-          "em": "2026-09-24T22:52:08+00:00",
+          "em": "2026-09-25T08:11:10+00:00",
           "total": 0,
           "por_marcador": {
             "a_pesquisar": 0,
@@ -53231,9 +53240,9 @@
           "regra": "descoberta do Piloto entra como 'a pesquisar'; o Claude externo investiga e conclui",
           "radar_captacao": "biblioteca_alexandria/empresas/radar_captacao.json"
         },
-        "minutos": 0.6,
+        "minutos": 0.8,
         "bordo": {
-          "total_abates": 62,
+          "total_abates": 8,
           "motores_com_abate": 2,
           "missoes_registradas": 60,
           "em_voo": false
@@ -53241,8 +53250,8 @@
         "ao_vivo": {
           "motor": "ligado",
           "motor_frase": "a corrente de voos está ativa: cada voo chama o seguinte",
-          "em": "2026-09-24T22:52:08+00:00",
-          "sinal_em": "2026-09-24T22:52:07+00:00",
+          "em": "2026-09-25T08:11:10+00:00",
+          "sinal_em": "2026-09-25T08:11:09+00:00",
           "minutos_sem_sinal": 0.0,
           "estado": "entre_voos",
           "frase": "entre um voo e outro — o próximo decola em segundos",
@@ -53250,31 +53259,18 @@
           "sem_sinal_a_partir_de_min": 35,
           "missao_atual": null,
           "ultima_missao": {
-            "tipo": "catalogar",
+            "tipo": "prospectar",
             "motor": "piloto-aberto",
-            "fim": "2026-09-24T22:52:07+00:00",
+            "fim": "2026-09-25T08:11:09+00:00",
             "ha_minutos": 0.0,
             "achados": 0,
-            "licao": "catálogo · Parceiros Voluntários: 30 página(s) para entidades, 0 empresa(s), ESG não declarado"
+            "licao": "busca ativa · 'lei de incentivo ao esporte patrocinador Goiás 2026': 8 resultado(s), 0 empresa(s) nova(s)"
           },
-          "voos_hoje": 43,
+          "voos_hoje": 55,
           "missoes_registradas": 60,
-          "missoes_com_achado": 9,
-          "achados_recentes": [
-            {
-              "titulo": "Siemens Integrity Initiative",
-              "onde": null,
-              "url": "https://www.pactoglobal.org.br/",
-              "uf": null
-            },
-            {
-              "titulo": "IDIS",
-              "onde": null,
-              "url": "https://www.idis.org.br/",
-              "uf": null
-            }
-          ],
-          "total_abates": 62,
+          "missoes_com_achado": 2,
+          "achados_recentes": [],
+          "total_abates": 8,
           "resgate": {
             "aguardando": 0,
             "resgatados": 3,
@@ -53282,65 +53278,38 @@
           },
           "plano_do_voo": {
             "aposta": {
-              "onde": "portal_especializado",
-              "confianca": "baixa",
-              "porque": "o modelo não respondeu; rumo sorteado do catálogo, sem repetir os últimos"
+              "onde": "instituto ou fundação empresarial que seleciona por formulário no próprio site",
+              "porque": "os editais de financiadores privados geralmente não são encontrados nos motores e não são mencionados em qualquer fonte pública, além disso, não há registros de publicação em diário oficial nem em plataforma agregadora",
+              "confianca": "alta"
             },
-            "pergunta": "Portais e boletins que agregam editais de terceiro setor, captacao e fomento. Catalogue o portal, nao o edital: se for bom, vira motor proprio.",
+            "pergunta": "Qual é o edital de financiador privado que não foi encontrado nos motores e que não é mencionado em qualquer fonte pública?",
             "resultado": {
               "achados": 0,
               "oportunidades_abertas": 0,
               "arquivadas": 0,
               "alvos": [],
-              "fechado_em": "2026-09-24T22:52:08+00:00"
+              "fechado_em": "2026-09-25T08:11:10+00:00"
             }
           },
           "pode_acionar": false,
           "como_acionar": "Actions → 07 · Piloto → Run workflow (modo: ciclo)"
         },
         "aprendizados": {
-          "em": "2026-09-24T22:52:08+00:00",
+          "em": "2026-09-25T08:11:10+00:00",
           "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
           "por_motor": {
             "piloto-aberto": {
-              "missoes": 25,
-              "achados": 4,
-              "uteis": 4,
-              "motivos": {
-                "nada_no_crivo": 21
-              },
-              "efetividade": 1.0
-            },
-            "empresas-incentivadas": {
-              "missoes": 6,
+              "missoes": 40,
               "achados": 0,
               "uteis": 0,
               "motivos": {
-                "nada_no_crivo": 6
-              },
-              "efetividade": 0.0
-            },
-            "motor-patrocinio": {
-              "missoes": 6,
-              "achados": 0,
-              "uteis": 0,
-              "motivos": {
-                "nada_no_crivo": 6
-              },
-              "efetividade": 0.0
-            },
-            "motor-gife": {
-              "missoes": 3,
-              "achados": 0,
-              "uteis": 0,
-              "motivos": {
-                "nada_no_crivo": 3
+                "nada_no_crivo": 40
               },
               "efetividade": 0.0
             }
           },
-          "editais_tratados": 20,
-          "entregues_ao_claude": 9,
+          "editais_tratados": 25,
+          "entregues_ao_claude": 10,
           "ultima_faxina": {
             "em": "2026-09-22T22:01:28+00:00",
             "dias": 3,
@@ -53350,7 +53319,7 @@
           }
         },
         "prospeccao": {
-          "em": "2026-09-24T22:52:08+00:00",
+          "em": "2026-09-25T08:11:10+00:00",
           "total": 0,
           "descobertas_hoje": 0,
           "promovidas_a_motor": 0,
@@ -53374,13 +53343,13 @@
           }
         },
         "reconhecimento": {
-          "em": "2026-09-24T22:52:08+00:00",
-          "total": 29,
+          "em": "2026-09-25T08:11:10+00:00",
+          "total": 34,
           "pergunta": "quem pagou pelas atividades do terceiro setor que já aconteceram",
           "porque_os_motores_nao_acham": "não houve edital publicado: houve patrocínio, doação, destinação de imposto ou verba de marketing",
           "por_via": {
-            "patrocinio": 22,
-            "incentivo_fiscal": 4,
+            "patrocinio": 26,
+            "incentivo_fiscal": 5,
             "doacao": 2,
             "marketing_social": 1
           },
@@ -53390,11 +53359,12 @@
             "evento": 3,
             "prestacao": 1,
             "investigacao": 2,
-            "site_especializado": 2
+            "site_especializado": 2,
+            "busca_ativa": 5
           },
           "por_estado": {
             "investigado": 27,
-            "a_investigar": 2
+            "a_investigar": 7
           },
           "frentes": {
             "entidade": "site de entidade do terceiro setor",
@@ -53409,9 +53379,9 @@
             "marketing_social",
             "convenio"
           ],
-          "no_plano_de_voo": 2
+          "no_plano_de_voo": 7
         },
-        "anuncio": "Esquadrilha 2026-09-24 (Qwen3-1.7B): 1 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 0.6 min de voo."
+        "anuncio": "Esquadrilha 2026-09-25 (Qwen3-1.7B): 2 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 0.8 min de voo."
       }
     },
     "ia_local": {
@@ -53419,11 +53389,11 @@
       "modelo": "Qwen2.5-3B-Instruct",
       "motor": "llama.cpp",
       "ultimo_ciclo": {
-        "em": "2026-09-24T23:33:53+00:00",
+        "em": "2026-09-25T08:12:45+00:00",
         "disponivel": false,
         "nota": "servidor local não está de pé — rode ia_local/iniciar (bat|sh)"
       },
-      "rotas_sugeridas": 37
+      "rotas_sugeridas": 38
     },
     "acervo_compacto": {
       "em": "2026-09-24T14:09:46+00:00",
@@ -54120,7 +54090,7 @@
     }
   },
   "fila_verificacao": {
-    "gerado_em": "2026-09-24T23:36:45+00:00",
+    "gerado_em": "2026-09-25T08:15:34+00:00",
     "total": 385,
     "selos": {
       "validadas": 100,
@@ -71526,7 +71496,7 @@
     },
     "db0bf83f4df2fe2c618a": {
       "selo": "analise_incompleta",
-      "em": "2026-09-24T23:37:19+00:00",
+      "em": "2026-09-25T08:16:07+00:00",
       "modelo": "Claude Fable 5.1",
       "motivo": "teste",
       "completo": false,
@@ -78536,7 +78506,7 @@
       "nivel": "estadual",
       "uf": "GO",
       "abrangencia": "estadual",
-      "motivo": "mencionada em 13 publicação(ões) recente(s)",
+      "motivo": "mencionada em 14 publicação(ões) recente(s)",
       "em_epoca": false,
       "regime_prazo": "sem_observacao",
       "certeza_prazo": "nenhuma",
@@ -78950,6 +78920,26 @@
       }
     },
     {
+      "id": "fonte-captacao-225",
+      "fonte_260": "captacao-225",
+      "programa": "Instituto Claro",
+      "orgao": "Instituto Claro",
+      "area": "outros",
+      "esfera": "Brasil",
+      "natureza": "privada",
+      "nivel": "privada",
+      "uf": null,
+      "abrangencia": "nacional",
+      "motivo": "mencionada em 1 publicação(ões) recente(s)",
+      "em_epoca": false,
+      "regime_prazo": "sem_observacao",
+      "certeza_prazo": "nenhuma",
+      "janela": null,
+      "pagina": "https://www.institutoclaro.org.br/",
+      "camadas_obtidas": 2,
+      "ultimo_edital": null
+    },
+    {
       "id": "fonte-nova-09243dc7dff2",
       "fonte_260": "nova-09243dc7dff2",
       "programa": "Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática",
@@ -78984,7 +78974,7 @@
       "nivel": "privada",
       "uf": null,
       "abrangencia": "nacional",
-      "motivo": "mencionada em 26 publicação(ões) recente(s)",
+      "motivo": "mencionada em 27 publicação(ões) recente(s)",
       "em_epoca": false,
       "regime_prazo": "sem_observacao",
       "certeza_prazo": "nenhuma",
@@ -80187,7 +80177,7 @@
       "nivel": "privada",
       "uf": null,
       "abrangencia": "nacional",
-      "motivo": "mencionada em 3 publicação(ões) recente(s)",
+      "motivo": "mencionada em 1 publicação(ões) recente(s)",
       "em_epoca": false,
       "regime_prazo": null,
       "certeza_prazo": null,
@@ -80770,7 +80760,7 @@
       "nivel": "privada",
       "uf": null,
       "abrangencia": "nacional",
-      "motivo": "mencionada em 5 publicação(ões) recente(s)",
+      "motivo": "mencionada em 6 publicação(ões) recente(s)",
       "em_epoca": false,
       "regime_prazo": "sem_observacao",
       "certeza_prazo": "nenhuma",
@@ -82133,17 +82123,18 @@
         "houve_busca": true,
         "camadas": [
           "motor_api",
-          "motor_legislativo"
+          "motor_legislativo",
+          "motor_site_oficial"
         ],
         "categorias_ativas": [
           "api_oficial",
           "site_oficial"
         ],
-        "fontes_ok": 1,
+        "fontes_ok": 2,
         "fontes_falha": 1,
-        "novas": 0,
-        "encontrado": false,
-        "situacao": "ausente",
+        "novas": 15,
+        "encontrado": true,
+        "situacao": "encontrado",
         "integridade": "com_falhas",
         "validado": false
       }
@@ -100812,7 +100803,7 @@
       "regra": "cada identificação em diário abre campanha de até 30 dias consecutivos atrás do edital integral nos sites oficiais"
     },
     "totais": {
-      "base_completa": 17213,
+      "base_completa": 17221,
       "monitoramentos": 6893,
       "completos": 2,
       "no_painel": 258,
@@ -101115,11 +101106,11 @@
     ]
   },
   "carga_historica": {
-    "executado_em": "2026-09-24T20:59:31+00:00",
+    "executado_em": "2026-09-25T02:46:59+00:00",
     "janelas_totais": 61,
     "janelas_ja_concluidas": 23,
     "janelas_nesta_execucao": 38,
-    "novas": 4,
+    "novas": 7,
     "falhas": [
       {
         "janela": "2021-09",
@@ -101207,7 +101198,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
+            "erro": "JSONDecodeError"
           },
           {
             "api": "querido_diario",
@@ -101227,7 +101218,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
+            "erro": "JSONDecodeError"
           },
           {
             "api": "querido_diario",
@@ -101247,7 +101238,7 @@
           {
             "api": "pncp",
             "base": "https://pncp.gov.br/api/consulta",
-            "erro": "HTTPError"
+            "erro": "JSONDecodeError"
           },
           {
             "api": "querido_diario",
@@ -102228,8 +102219,8 @@
         "tentativa": 2
       }
     ],
-    "dominios_ano_pesquisado": 2022,
-    "dominios_novas": 4,
+    "dominios_ano_pesquisado": 2023,
+    "dominios_novas": 7,
     "dominios_falhas": 0,
     "status": "em_andamento",
     "janelas_restantes": 38
@@ -102240,7 +102231,7 @@
     "Detecção de resultado/prorrogação é textual — conferir na página."
   ],
   "portao_fidelidade": {
-    "aplicado_em": "2026-09-25T00:05:04+00:00",
+    "aplicado_em": "2026-09-25T08:44:43+00:00",
     "classes": {
       "confirmado": 130,
       "estimado": 128,
@@ -102249,7 +102240,7 @@
     "removidos": 2,
     "regra": "presente e passado só com confirmado; futuro estimado e marcado; nada por analogia; o que sai fica registrado aqui"
   },
-  "abertas_total": 16980,
+  "abertas_total": 16981,
   "empresas_resumo": {
     "GO": {
       "ativo": true,
