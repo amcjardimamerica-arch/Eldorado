@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
@@ -281,6 +281,15 @@ def registrar_resgate(alvo_id: str, dados: dict, achou: bool) -> dict:
         return {}
     it["tentativas"] = it.get("tentativas", 0) + 1
     it["ultima_tentativa"] = now_iso()[:16]
+    # PRAZO IMPLAUSÍVEL NÃO ENTRA (26/09): um edital sendo resgatado como aberto não pode ter prazo de anos atrás —
+    # o 4B gravou 2014-08-04 no Bondinho, a data da matéria, literal na página mas não o prazo.
+    if achou and dados.get("prazo"):
+        try:
+            if date.fromisoformat(str(dados["prazo"])[:10]) < date.today() - timedelta(days=60):
+                it["observacao_prazo"] = f"prazo {dados['prazo']} rejeitado: no passado distante — data da página, não do edital"
+                dados = {k: v for k, v in dados.items() if k != "prazo"}
+        except ValueError:
+            dados = {k: v for k, v in dados.items() if k != "prazo"}
     if achou:
         faltava = list(it.get("falta") or [])
         it.update({k: v for k, v in dados.items() if v})

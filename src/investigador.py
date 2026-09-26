@@ -199,6 +199,8 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     if c: e["objeto"] = str(b["valor"])[:400]
     # Prazo de inscrição
     b = g("prazo_inscricao"); fim = _data(b.get("fim")); ini = _data(b.get("inicio")); c = ok(b) and bool(fim)
+    if c and fim < (date.today() - __import__("datetime").timedelta(days=365)).isoformat():
+        c = False; b = {**b, "trecho": (b.get("trecho") or "") + " [rejeitado: data implausível para edital aberto]"}
     campos["Prazo de inscrição"] = {"valor": f"{ini or '?'} a {fim}" if fim else None, "trecho": b.get("trecho"), "comprovado": c}
     if c:
         e["fim"] = fim; e["inicio"] = ini or e.get("inicio"); e["prazo_texto"] = str(b.get("trecho"))[:160]; e["situacao"] = "aberta" if fim >= date.today().isoformat() else "encerrada"
