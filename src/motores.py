@@ -497,6 +497,24 @@ def run() -> dict:
                          "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
                          "situacao": ("aguardando coleta local" if _aguarda_local(s, e) else "bloqueado" if b else "sem leitura ainda" if not s else
                                       "ativo — captando" if s.get("achados_total") else "ativo, sem achados")})
+    # ── PILOTO - INTERCEPTADOR como motor próprio (titular, 26/09): verificação de funcionamento e de resultado
+    # separadas do Espião. Funcionamento = voou há menos de 6 h; resultado = alvos comprovados (validada/parcial).
+    try:
+        _ie = load_json(ROOT / "estado/interceptador/estado.json") if (ROOT / "estado/interceptador/estado.json").exists() else {}
+        _fe = _ie.get("feitos") or {}; _rd = _ie.get("rodadas") or []
+        _ult = (_rd[-1].get("em") if _rd else None)
+        _val = sum(1 for v in _fe.values() if v.get("qualidade") in ("validada", "parcial", "fonte_confirmada"))
+        _ag = (ROOT / "estado/interceptador/aguardando.json").exists()
+        plataformas.append({"id": "piloto-interceptador", "nome": "Piloto - Interceptador — comprova na fonte oficial", "tipo": "piloto",
+                            "url": "docs/dados/interceptador.json", "dias": [], "ultima_leitura": _ult, "achados": _val,
+                            "diagnostico": {"alvos_estudados": len(_fe), "validadas": sum(1 for v in _fe.values() if v.get("qualidade") == "validada"),
+                                            "parciais": sum(1 for v in _fe.values() if v.get("qualidade") == "parcial"),
+                                            "fontes_confirmadas": sum(1 for v in _fe.values() if v.get("qualidade") == "fonte_confirmada"),
+                                            "aguardando_alvo": _ag},
+                            "situacao": ("aguardando alvos novos" if _ag else "sem leitura ainda" if not _ult else
+                                         "satisfatória — comprovando editais" if _val else "ativo, sem comprovação ainda")})
+    except Exception:
+        pass
     # ── dois motores de EMPRESAS como motores regulares individuais ──
     # GIFE = captação de INCENTIVOS FISCAIS (empresas do Lucro Real, Rouanet/LIE/FIA/PRONON)
     # Patrocínio Privado = captação PRIVADA (marketing, recursos próprios, sem benefício fiscal)

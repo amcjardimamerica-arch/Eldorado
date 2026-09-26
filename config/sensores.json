@@ -1,242 +1,251 @@
 {
-  "versao": 1,
-  "doutrina": "Um sensor por fonte, independente mas coordenado. DIÁRIOS OFICIAIS, DIÁRIO DA JUSTIÇA e LEGISLATIVOS rodam TODOS os dias. Sites de fonte rodam em rodízio por dia da semana (hash do id), para não sobrecarregar; quando há previsão de edital para a fonte no mês corrente, o sensor passa a rodar TODOS os dias até o fim da janela. Cada sensor conhece o passado (dossiê), o presente (última leitura) e o futuro (previsão) da sua fonte.",
-  "cadencia": {
-    "diaria": [
-      "diario_oficial",
-      "diario_justica",
-      "legislativo",
-      "api"
-    ],
-    "rodizio_semanal": [
-      "site_oficial",
-      "plataforma",
-      "privada",
-      "internacional"
-    ],
-    "escalada_por_previsao": true
-  },
-  "limites": {
-    "paginas_por_sensor": 3,
-    "links_por_pagina": 60,
-    "bytes_por_pagina": 2500000,
-    "pausa_segundos": 0.5,
-    "sensores_por_execucao": 40,
-    "timeout_segundos": 12
-  },
-  "sensores_especiais": [
-    {
-      "id": "do-goiania",
-      "nome": "Diário Oficial do Município de Goiânia",
-      "tipo": "diario_oficial",
-      "nivel": "municipal",
-      "uf": "GO",
-      "territorio": "GO/Goiânia",
-      "urls": [
-        "https://www.goiania.go.gov.br/diario-oficial/",
-        "https://www.goiania.go.gov.br/sing/secretarias/casa-civil/diario-oficial/",
-        "https://www.goiania.go.gov.br/diario-oficial/"
-      ],
-      "busca": null,
-      "confianca": "curada",
-      "o_que_procurar": "chamamentos, termos de fomento, resoluções do CMDCA/CMAS/CMI, subvenções, declarações de utilidade pública",
-      "nota_rede": "03/09: o host diariooficial.goiania.go.gov.br não resolveu no DNS do CI (gaierror); a página institucional do Diário entra como principal e a antiga como espelho, até o sensor confirmar · 04/09: páginas de listagem + descoberta automática a partir da home"
-    },
-    {
-      "id": "do-goias",
-      "nome": "Diário Oficial do Estado de Goiás",
-      "tipo": "diario_oficial",
-      "nivel": "estadual",
-      "uf": "GO",
-      "territorio": "GO",
-      "urls": [
-        "https://diariooficial.abc.go.gov.br/",
-        "https://diariooficial.abc.go.gov.br/portal",
-        "https://www.goias.gov.br/servico/22-diario-oficial-do-estado-de-goias.html"
-      ],
-      "busca": null,
-      "confianca": "curada",
-      "o_que_procurar": "chamamentos da Secult/SEDS/SEEL/SES/Seduc, resoluções do CEDCA/CEAS/CEI, Goyazes, PNAB estadual, emendas",
-      "nota_rede": "03/09: a home respondeu 200 (17 KB) sem links de edital — é portal, não listagem; listagem de edições e pesquisa entram como páginas 2 e 3 · 04/09: páginas de listagem + descoberta automática a partir da home"
-    },
-    {
-      "id": "dou",
-      "nome": "Diário Oficial da União",
-      "tipo": "diario_oficial",
-      "nivel": "federal",
-      "uf": null,
-      "territorio": "BR",
-      "urls": [
-        "https://www.in.gov.br/leiturajornal?data={data}&secao=do3",
-        "https://www.in.gov.br/consulta/-/buscar/dou?q={termo}&s=todos&exactDate=dia&sortType=0"
-      ],
-      "busca": "data_e_termo",
-      "confianca": "confirmada",
-      "termos_busca": [
-        "chamamento público organizações da sociedade civil",
-        "termo de fomento",
-        "edital projetos sociais",
-        "doação entidades sem fins lucrativos"
-      ],
-      "o_que_procurar": "chamamentos de ministérios e fundos nacionais, portarias de destinação, editais Rouanet/PNAB/LIE",
-      "nota_rede": "03/09: a busca /consulta devolveu HTTPError às duas consultas; a leitura por seção do dia (Seção 3 = editais) passa a ser a via principal · 04/09: RemoteDisconnected com UA de robô — identificação de navegador"
-    },
-    {
-      "id": "dje-tjgo",
-      "nome": "TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)",
-      "tipo": "diario_justica",
-      "nivel": "estadual",
-      "uf": "GO",
-      "territorio": "GO",
-      "urls": [
-        "https://www.tjgo.jus.br/index.php/execucao-penal",
-        "https://www.tjgo.jus.br/index.php/institucional/centro-de-comunicacao-social/17-tribunal/20140-prestacao-pecuniaria",
-        "https://www.tjgo.jus.br/index.php/coordenadoria-de-execucao-penal",
-        "https://www.tjgo.jus.br/index.php/editais-de-chamamento",
-        "https://www.jusbrasil.com.br/diarios/DJGO/",
-        "https://www.mpgo.mp.br/portal/editais"
-      ],
-      "busca": null,
-      "confianca": "curada",
-      "o_que_procurar": "editais de destinação de prestação pecuniária, penas de perdimento, doações a entidades pelas varas de execução penal",
-      "nota_rede": "04/09: o Diário (403) é substituído pela busca direta nas páginas das varas de execução penal/prestação pecuniária do TJGO (mesmo domínio — pode manter o 403), pelo espelho do DJGO no Jusbrasil e pelos editais do MPGO (Res. CNJ 154/2012 obriga o chamamento público das entidades); o diagnóstico individual diz qual via respondeu",
-      "max_paginas": 6
-    },
-    {
-      "id": "dj-trf1-go",
-      "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
-      "tipo": "diario_justica",
-      "nivel": "federal",
-      "uf": "GO",
-      "territorio": "GO",
-      "urls": [
-        "https://www.trf1.jus.br/sjgo/"
-      ],
-      "busca": null,
-      "confianca": "curada",
-      "o_que_procurar": "editais de destinação de prestações pecuniárias a entidades"
-    },
-    {
-      "id": "cnj-destinacoes",
-      "nome": "CNJ — destinações de penas e prestações pecuniárias",
-      "tipo": "diario_justica",
-      "nivel": "federal",
-      "uf": null,
-      "territorio": "BR",
-      "urls": [
-        "https://www.cnj.jus.br/",
-        "https://www.cnj.jus.br/sistema-carcerario/penas-e-medidas-alternativas/",
-        "https://www.cnj.jus.br/transparencia-cnj/licitacoes-e-contratos/"
-      ],
-      "busca": null,
-      "confianca": "curada",
-      "o_que_procurar": "resoluções e editais nacionais de destinação",
-      "nota_rede": " · 04/09: páginas de listagem + descoberta automática a partir da home"
-    },
-    {
-      "id": "camara-goiania-pl",
-      "nome": "Câmara Municipal de Goiânia — projetos de lei",
-      "tipo": "legislativo",
-      "nivel": "municipal",
-      "uf": "GO",
-      "territorio": "GO/Goiânia",
-      "urls": [
-        "https://www.goiania.go.leg.br/",
-        "https://www.goiania.go.leg.br/feed/",
-        "https://sapl.goiania.go.leg.br/",
-        "https://sapl.goiania.go.leg.br/materia/pesquisar-materia",
-        "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos"
-      ],
-      "busca": null,
-      "confianca": "curada",
-      "o_que_procurar": "projetos de lei sobre terceiro setor, utilidade pública, isenções, fundos, subvenções, emendas impositivas a OSCs",
-      "nota_rede": "04/09: home sem links (script); tenta RSS, SAPL (proposições) e licitações · 04/09 20:59: só a home respondeu (0 links); RSS e SAPL falharam — endereço do SAPL/portal de proposições a confirmar",
-      "max_paginas": 6
-    },
-    {
-      "id": "alego-pl",
-      "nome": "Assembleia Legislativa de Goiás — proposições",
-      "tipo": "legislativo",
-      "nivel": "estadual",
-      "uf": "GO",
-      "territorio": "GO",
-      "urls": [
-        "https://portal.al.go.leg.br/",
-        "https://portal.al.go.leg.br/noticias",
-        "https://transparencia.al.go.leg.br/"
-      ],
-      "busca": null,
-      "confianca": "curada",
-      "o_que_procurar": "proposições sobre OSCs, doações, fundos estaduais, incentivo fiscal, emendas parlamentares",
-      "nota_rede": " · 04/09: páginas de listagem + descoberta automática a partir da home"
-    },
-    {
-      "id": "pncp-api",
-      "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
-      "tipo": "api",
-      "nivel": "federal",
-      "uf": null,
-      "territorio": "BR",
-      "urls": [
-        "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=20",
-        "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8}&dataFinal={data8}&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=20"
-      ],
-      "busca": null,
-      "confianca": "confirmada",
-      "o_que_procurar": "modalidades 12 (credenciamento) e 3 (concurso) com vocabulário de OSC; PDFs do edital via API",
-      "nota_rede": "04/09: a API exige dataInicial/dataFinal (AAAAMMDD), modalidade e página; 12 = chamamento público, 3 = concorrência/credenciamento; resposta JSON lida pelo sensor"
-    },
-    {
-      "id": "empresas-incentivadas",
-      "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
-      "tipo": "empresas_incentivo",
-      "nivel": "privada",
-      "territorio": "GO",
-      "uf": "GO",
-      "max_paginas": 24,
-      "busca": null,
-      "urls": [
-        "https://go.equatorialenergia.com.br/",
-        "https://www.saneago.com.br/"
-      ],
-      "lexico_proprio": [
-        "Rouanet",
-        "Lei de Incentivo",
-        "incentivo fiscal",
-        "incentivado",
-        "Lei do Esporte",
-        "Lei de Incentivo ao Esporte",
-        "FIA",
-        "Fundo da Criança",
-        "Fundo do Idoso",
-        "PRONON",
-        "PRONAS",
-        "seleção pública",
-        "chamada pública",
-        "edital",
-        "inscrições",
-        "patrocínio",
-        "projetos culturais",
-        "projetos esportivos"
-      ],
-      "descricao": "sites institucionais das próprias empresas com maior contribuição de ICMS em Goiás (lista oficial da Economia-GO), lidos atrás de editais, seleções e chamadas de destinação tributária (Rouanet, LIE, FIA, Idoso, PRONON); os endereços vêm do e-mail corporativo do cadastro RFB de cada empresa da base",
-      "nota_rede": "04/09: criado; os endereços dos programas são conhecidos publicamente e a descoberta automática segue 'editais / seleções / patrocínios' em cada site — nada é dado como certo antes da leitura",
-      "urls_dinamicas": "base_empresas_go"
-    }
+ "versao": 1,
+ "doutrina": "Um sensor por fonte, independente mas coordenado. DIÁRIOS OFICIAIS, DIÁRIO DA JUSTIÇA e LEGISLATIVOS rodam TODOS os dias. Sites de fonte rodam em rodízio por dia da semana (hash do id), para não sobrecarregar; quando há previsão de edital para a fonte no mês corrente, o sensor passa a rodar TODOS os dias até o fim da janela. Cada sensor conhece o passado (dossiê), o presente (última leitura) e o futuro (previsão) da sua fonte.",
+ "cadencia": {
+  "diaria": [
+   "diario_oficial",
+   "diario_justica",
+   "legislativo",
+   "api"
   ],
-  "nota_rede": "A rede deste ambiente não alcança os domínios; os sensores rodam no GitHub Actions. URLs 'curadas' são conferidas pelo próprio sensor (saúde HTTP) e trocadas quando três leituras seguidas não trazem nada.",
-  "nota_orcamento": "40 sensores por saída (diários sempre primeiro), 2 páginas cada, 12s de timeout: pior caso ~16 min. O rodízio garante que todos saem ao longo da semana.",
-  "plataformas": [],
-  "exige_brasil": {
-    "dominios": [
-      "www.tjgo.jus.br",
-      "www.goiania.go.leg.br",
-      "www.goiania.go.gov.br",
-      "www.goias.gov.br",
-      "www.mpgo.mp.br",
-      "diariooficial.abc.go.gov.br",
-      "projudi.tjgo.jus.br"
-    ],
-    "regra": "portais que recusam IP estrangeiro/datacenter (403 sem WAF ou conexão recusada). No GitHub o motor fica 'aguardando coleta local (Brasil)'; a coleta local (scripts/coleta_brasil.py, na máquina do titular) os lê e envia o resultado ao repositório. Sem custo, sem servidor 24h."
+  "rodizio_semanal": [
+   "site_oficial",
+   "plataforma",
+   "privada",
+   "internacional"
+  ],
+  "escalada_por_previsao": true
+ },
+ "limites": {
+  "paginas_por_sensor": 3,
+  "links_por_pagina": 60,
+  "bytes_por_pagina": 2500000,
+  "pausa_segundos": 0.5,
+  "sensores_por_execucao": 40,
+  "timeout_segundos": 12
+ },
+ "sensores_especiais": [
+  {
+   "id": "do-goiania",
+   "nome": "Diário Oficial do Município de Goiânia",
+   "tipo": "diario_oficial",
+   "nivel": "municipal",
+   "uf": "GO",
+   "territorio": "GO/Goiânia",
+   "urls": [
+    "https://www.goiania.go.gov.br/diario-oficial/",
+    "https://www.goiania.go.gov.br/sing/secretarias/casa-civil/diario-oficial/",
+    "https://www.goiania.go.gov.br/diario-oficial/"
+   ],
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "chamamentos, termos de fomento, resoluções do CMDCA/CMAS/CMI, subvenções, declarações de utilidade pública",
+   "nota_rede": "03/09: o host diariooficial.goiania.go.gov.br não resolveu no DNS do CI (gaierror); a página institucional do Diário entra como principal e a antiga como espelho, até o sensor confirmar · 04/09: páginas de listagem + descoberta automática a partir da home"
+  },
+  {
+   "id": "do-goias",
+   "nome": "Diário Oficial do Estado de Goiás",
+   "tipo": "diario_oficial",
+   "nivel": "estadual",
+   "uf": "GO",
+   "territorio": "GO",
+   "urls": [
+    "https://diariooficial.abc.go.gov.br/",
+    "https://diariooficial.abc.go.gov.br/portal",
+    "https://www.goias.gov.br/servico/22-diario-oficial-do-estado-de-goias.html"
+   ],
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "chamamentos da Secult/SEDS/SEEL/SES/Seduc, resoluções do CEDCA/CEAS/CEI, Goyazes, PNAB estadual, emendas",
+   "nota_rede": "03/09: a home respondeu 200 (17 KB) sem links de edital — é portal, não listagem; listagem de edições e pesquisa entram como páginas 2 e 3 · 04/09: páginas de listagem + descoberta automática a partir da home"
+  },
+  {
+   "id": "dou",
+   "nome": "Diário Oficial da União",
+   "tipo": "diario_oficial",
+   "nivel": "federal",
+   "uf": null,
+   "territorio": "BR",
+   "urls": [
+    "https://www.in.gov.br/leiturajornal?data={data}&secao=do3",
+    "https://www.in.gov.br/consulta/-/buscar/dou?q={termo}&s=todos&exactDate=dia&sortType=0"
+   ],
+   "busca": "data_e_termo",
+   "confianca": "confirmada",
+   "termos_busca": [
+    "chamamento público organizações da sociedade civil",
+    "termo de fomento",
+    "edital projetos sociais",
+    "doação entidades sem fins lucrativos"
+   ],
+   "o_que_procurar": "chamamentos de ministérios e fundos nacionais, portarias de destinação, editais Rouanet/PNAB/LIE",
+   "nota_rede": "03/09: a busca /consulta devolveu HTTPError às duas consultas; a leitura por seção do dia (Seção 3 = editais) passa a ser a via principal · 04/09: RemoteDisconnected com UA de robô — identificação de navegador"
+  },
+  {
+   "id": "dje-tjgo",
+   "nome": "TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)",
+   "tipo": "diario_justica",
+   "nivel": "estadual",
+   "uf": "GO",
+   "territorio": "GO",
+   "urls": [
+    "https://www.tjgo.jus.br/index.php/execucao-penal",
+    "https://www.tjgo.jus.br/index.php/institucional/centro-de-comunicacao-social/17-tribunal/20140-prestacao-pecuniaria",
+    "https://www.tjgo.jus.br/index.php/coordenadoria-de-execucao-penal",
+    "https://www.tjgo.jus.br/index.php/editais-de-chamamento",
+    "https://www.jusbrasil.com.br/diarios/DJGO/",
+    "https://www.mpgo.mp.br/portal/editais"
+   ],
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "editais de destinação de prestação pecuniária, penas de perdimento, doações a entidades pelas varas de execução penal",
+   "nota_rede": "04/09: o Diário (403) é substituído pela busca direta nas páginas das varas de execução penal/prestação pecuniária do TJGO (mesmo domínio — pode manter o 403), pelo espelho do DJGO no Jusbrasil e pelos editais do MPGO (Res. CNJ 154/2012 obriga o chamamento público das entidades); o diagnóstico individual diz qual via respondeu",
+   "max_paginas": 6
+  },
+  {
+   "id": "dj-trf1-go",
+   "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
+   "tipo": "diario_justica",
+   "nivel": "federal",
+   "uf": "GO",
+   "territorio": "GO",
+   "urls": [
+    "https://www.trf1.jus.br/sjgo/"
+   ],
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "editais de destinação de prestações pecuniárias a entidades"
+  },
+  {
+   "id": "cnj-destinacoes",
+   "nome": "CNJ — destinações de penas e prestações pecuniárias",
+   "tipo": "diario_justica",
+   "nivel": "federal",
+   "uf": null,
+   "territorio": "BR",
+   "urls": [
+    "https://www.cnj.jus.br/",
+    "https://www.cnj.jus.br/sistema-carcerario/penas-e-medidas-alternativas/",
+    "https://www.cnj.jus.br/transparencia-cnj/licitacoes-e-contratos/"
+   ],
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "resoluções e editais nacionais de destinação",
+   "nota_rede": " · 04/09: páginas de listagem + descoberta automática a partir da home"
+  },
+  {
+   "id": "camara-goiania-pl",
+   "nome": "Câmara Municipal de Goiânia — projetos de lei",
+   "tipo": "legislativo",
+   "nivel": "municipal",
+   "uf": "GO",
+   "territorio": "GO/Goiânia",
+   "urls": [
+    "https://www.goiania.go.leg.br/",
+    "https://www.goiania.go.leg.br/feed/",
+    "https://sapl.goiania.go.leg.br/",
+    "https://sapl.goiania.go.leg.br/materia/pesquisar-materia",
+    "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos"
+   ],
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "projetos de lei sobre terceiro setor, utilidade pública, isenções, fundos, subvenções, emendas impositivas a OSCs",
+   "nota_rede": "04/09: home sem links (script); tenta RSS, SAPL (proposições) e licitações · 04/09 20:59: só a home respondeu (0 links); RSS e SAPL falharam — endereço do SAPL/portal de proposições a confirmar",
+   "max_paginas": 6
+  },
+  {
+   "id": "alego-pl",
+   "nome": "Assembleia Legislativa de Goiás — proposições",
+   "tipo": "legislativo",
+   "nivel": "estadual",
+   "uf": "GO",
+   "territorio": "GO",
+   "urls": [
+    "https://portal.al.go.leg.br/",
+    "https://portal.al.go.leg.br/noticias",
+    "https://transparencia.al.go.leg.br/"
+   ],
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "proposições sobre OSCs, doações, fundos estaduais, incentivo fiscal, emendas parlamentares",
+   "nota_rede": " · 04/09: páginas de listagem + descoberta automática a partir da home"
+  },
+  {
+   "id": "pncp-api",
+   "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
+   "tipo": "api",
+   "nivel": "federal",
+   "uf": null,
+   "territorio": "BR",
+   "urls": [
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=2&tamanhoPagina=50&uf=GO",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=50&uf=GO",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=3&pagina=2&tamanhoPagina=50&uf=GO",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=10&pagina=1&tamanhoPagina=50&uf=GO",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=10&pagina=2&tamanhoPagina=50&uf=GO",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=2&tamanhoPagina=50",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=3&tamanhoPagina=50",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=50",
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=10&pagina=1&tamanhoPagina=50"
+   ],
+   "busca": null,
+   "confianca": "confirmada",
+   "o_que_procurar": "modalidades 12 (credenciamento) e 3 (concurso) com vocabulário de OSC; PDFs do edital via API",
+   "nota_rede": "04/09: a API exige dataInicial/dataFinal (AAAAMMDD), modalidade e página; 12 = chamamento público, 3 = concorrência/credenciamento; resposta JSON lida pelo sensor · 26/09: janela de 3 dias (dataInicial=hoje-3), Goiás primeiro (uf=GO), modalidades 12/3/10, 50 por página — antes: um dia, 20 itens, página 1, Brasil inteiro (o que interessa não cabia)"
+  },
+  {
+   "id": "empresas-incentivadas",
+   "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
+   "tipo": "empresas_incentivo",
+   "nivel": "privada",
+   "territorio": "GO",
+   "uf": "GO",
+   "max_paginas": 24,
+   "busca": null,
+   "urls": [
+    "https://go.equatorialenergia.com.br/",
+    "https://www.saneago.com.br/"
+   ],
+   "lexico_proprio": [
+    "Rouanet",
+    "Lei de Incentivo",
+    "incentivo fiscal",
+    "incentivado",
+    "Lei do Esporte",
+    "Lei de Incentivo ao Esporte",
+    "FIA",
+    "Fundo da Criança",
+    "Fundo do Idoso",
+    "PRONON",
+    "PRONAS",
+    "seleção pública",
+    "chamada pública",
+    "edital",
+    "inscrições",
+    "patrocínio",
+    "projetos culturais",
+    "projetos esportivos"
+   ],
+   "descricao": "sites institucionais das próprias empresas com maior contribuição de ICMS em Goiás (lista oficial da Economia-GO), lidos atrás de editais, seleções e chamadas de destinação tributária (Rouanet, LIE, FIA, Idoso, PRONON); os endereços vêm do e-mail corporativo do cadastro RFB de cada empresa da base",
+   "nota_rede": "04/09: criado; os endereços dos programas são conhecidos publicamente e a descoberta automática segue 'editais / seleções / patrocínios' em cada site — nada é dado como certo antes da leitura",
+   "urls_dinamicas": "base_empresas_go"
   }
+ ],
+ "nota_rede": "A rede deste ambiente não alcança os domínios; os sensores rodam no GitHub Actions. URLs 'curadas' são conferidas pelo próprio sensor (saúde HTTP) e trocadas quando três leituras seguidas não trazem nada.",
+ "nota_orcamento": "40 sensores por saída (diários sempre primeiro), 2 páginas cada, 12s de timeout: pior caso ~16 min. O rodízio garante que todos saem ao longo da semana.",
+ "plataformas": [],
+ "exige_brasil": {
+  "dominios": [
+   "www.tjgo.jus.br",
+   "www.goiania.go.leg.br",
+   "www.goiania.go.gov.br",
+   "www.goias.gov.br",
+   "www.mpgo.mp.br",
+   "diariooficial.abc.go.gov.br",
+   "projudi.tjgo.jus.br"
+  ],
+  "regra": "portais que recusam IP estrangeiro/datacenter (403 sem WAF ou conexão recusada). No GitHub o motor fica 'aguardando coleta local (Brasil)'; a coleta local (scripts/coleta_brasil.py, na máquina do titular) os lê e envia o resultado ao repositório. Sem custo, sem servidor 24h."
+ }
 }

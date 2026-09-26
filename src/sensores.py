@@ -274,8 +274,9 @@ def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
     hoje = hoje or sensor.get("_data") or date.today()      # retroativo: a edição de outro dia
     saida = list(_local_conhecido(sensor))
     for u in sensor["urls"]:
-        if "{data8}" in u:
-            saida.append(u.replace("{data8}", hoje.strftime("%Y%m%d")))
+        if "{data8}" in u or "{data8-3}" in u:
+            from datetime import timedelta as _td
+            saida.append(u.replace("{data8-3}", (hoje - _td(days=3)).strftime("%Y%m%d")).replace("{data8}", hoje.strftime("%Y%m%d")))
         elif "{dataiso}" in u:
             saida.append(u.replace("{dataiso}", hoje.isoformat()))
         elif "{data}" in u:

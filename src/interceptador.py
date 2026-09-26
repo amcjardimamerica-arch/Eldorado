@@ -32,7 +32,7 @@ PUB = ROOT / "docs/dados/interceptador.json"
 BORDO_INT = ROOT / "estado/interceptador/bordo.json"
 RELATORIOS = ROOT / "estado/interceptador/relatorios"
 FONTES_EMPRESAS = ROOT / "estado/interceptador/fontes_empresas.json"
-MOTOR = "piloto-aberto"        # o motor de busca aberta da família Piloto: as estrelas de ouro aparecem nele
+MOTOR = "piloto-interceptador"  # motor PRÓPRIO na Bússola (titular, 26/09): estrelas e verificação separadas do Espião
 REVISITA_DIAS = 7
 
 # ── PARÂMETROS DO INTERCEPTADOR (titular, 26/09): distintos dos do Espião ────────────────────

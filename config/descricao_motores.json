@@ -2565,7 +2565,7 @@
    }
   },
   "plat-piloto-aberto": {
-   "nome": "Motor do Piloto — busca aberta no terceiro setor",
+   "nome": "Piloto - Espião — busca aberta no terceiro setor",
    "perfil": "Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
    "tipo": "plataforma",
    "finalidade": "descoberta",
@@ -2963,7 +2963,7 @@
    }
   },
   "piloto-aberto": {
-   "nome": "Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
+   "nome": "Piloto - Espião — busca aberta no terceiro setor",
    "perfil": "Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
    "tipo": null,
    "finalidade": "descoberta",
@@ -3094,6 +3094,19 @@
     "achados_total": null,
     "bloqueios": {}
    }
+  },
+  "piloto-interceptador": {
+   "nome": "Piloto - Interceptador — comprova na fonte oficial",
+   "perfil": "IA (Qwen3-8B) em execução própria, um alvo por voo, a cada 3 s",
+   "tipo": "piloto",
+   "finalidade": "estudar cada possibilidade trazida pelos motores ou pelo Espião: mapear o site oficial, comprovar as doze condições com trecho literal, registrar dispensa só se o edital a disser, e dar o parecer 'como serve como fonte' para a decisão do Claude",
+   "coleta": "nuvem",
+   "nota_coleta": "lê página oficial e PDFs; PDF reconhecido pelo conteúdo",
+   "objetivo": "informação nova comprovada, nunca refeita",
+   "como_funcionamento": "ordem dos alvos: edital novo dos motores → indício novo do Espião → aberto atual com falta → empresa nova (ficha de 8 itens)",
+   "agenda": "contínuo (3 s de pátio); sem alvo, aguarda e é acordado pelo Espião ou pelos motores",
+   "verificacao": "funcionamento = voou nas últimas horas; resultado = alvos validados/parciais; relatório por voo em estado/interceptador/relatorios",
+   "onde_para": "docs/dados/interceptador.json"
   }
  }
 }

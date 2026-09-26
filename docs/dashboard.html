@@ -216,6 +216,7 @@ box-shadow:0 1px 3px #0002}
 .mt-diag.ok{color:#1E7E4B;background:#E7F4EC;border-left-color:var(--ok)}
 .mt-item{grid-template-columns:44px 1fr 40px;position:relative}
 .mt-item.oficial{border-left:6px solid #0B4EA2}                     /* detalhe azul: diário / local oficial */
+.mt-item.sem-lendo{border-right:4px solid #8FC9A3}
 .mt-item.sem-verde{border-right:6px solid var(--ok)}
 .mt-item.sem-vermelho{border-right:6px solid var(--urgente)}
 .mt-lado-esq{display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -3825,7 +3826,9 @@ function desenhaMotores(){
   const fam0=$("mt-familia").value,uf0=$("mt-uf").value,q0=$("mt-busca").value.toLowerCase();
   const ofRows=(!fam0&&!uf0)?oficiais.filter(o=>!q0||o.nome.toLowerCase().includes(q0)):[];
   /* borda direita: verde = motor funcionando; vermelho = bloqueio/inoperância que precisa de ação; sem cor nos demais */
-  const semaforo=s=>/captando|satisfat|lida|funcion/.test(s)&&!/bloque/.test(s)?["verde","funcionando"]:/bloque|inoper|não funcion/.test(s)?["vermelho","bloqueio ou inoperância — precisa de ação"]:["neutro",""];
+  /* 26/09 (titular): verificação de FUNCIONAMENTO separada da de RESULTADO. verde = lê e traz resultado;
+     verde-claro = lê a fonte, sem resultado ainda (a fonte pode não ter edital hoje); vermelho = bloqueio; sem cor = sem leitura */
+  const semaforo=s=>/captando|satisfat|comprovando|funcion/.test(s)&&!/bloque/.test(s)?["verde","funcionando com resultado"]:/bloque|inoper|não funcion/.test(s)?["vermelho","bloqueio ou inoperância — precisa de ação"]:/ativo, sem|lendo, sem|aguardando alvos/.test(s)?["lendo","funcionando, sem resultado ainda"]:["neutro",""];
   const CAM=(MT._resumo||{}).camadas||["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação"];
   /* calendário do motor — mesmo desenho do Mapa de oportunidades, um por motor */
   const SEMd=["DOM","SEG","TER","QUA","QUI","SEX","SAB"];
