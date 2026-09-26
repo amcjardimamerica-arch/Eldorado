@@ -168,3 +168,44 @@ def publicar() -> dict:
                          "esg": (v.get("esg") or {}).get("declarado")} for v in cat["sites"].values()]}
     write_json(PUB, resumo)
     return resumo
+
+
+# ── O QUE O ESPIÃO DESCOBRE VIRA CANDIDATA PARA O INTERCEPTADOR (26/09) ──────────────────────────
+JUNK = re.compile(r"facebook\.com|twitter\.com|x\.com/share|linkedin\.com|whatsapp|pinterest|/tag/|/category/|/categoria/|\?s=|#|/page/\d", re.I)
+ENQUADRAMENTOS = [
+    (r"zurich|porto seguro|edital social porto|incentivo fiscal", "APOIO FINANCEIRO COM INCENTIVO FISCAL"),
+    (r"conanda|sndca|chamamento p[uú]blico", "CHAMAMENTO PÚBLICO MROSC"),
+    (r"bondinho|rouanet|patroc[ií]nio cultural|instituto votorantim|banco bv", "PATROCÍNIO CULTURAL INCENTIVADO"),
+    (r"pr[eê]mio", "PRÊMIO"),
+    (r"fundo de fomento|fundo patrimonial|apoio institucional", "APOIO INSTITUCIONAL"),
+    (r"consultoria gratuita|mentoria", "APOIO EM ESPÉCIE (CONSULTORIA)"),
+    (r"edital|editais|chamada|sele[cç][aã]o de projetos|apoiar projetos|apoio a projetos|financiamento", "FOMENTO A PROJETO"),
+]
+DESCARTE = re.compile(r"palestrante|forma[cç][aã]o|curso|capacita|volunt[aá]ri|lote \d|congresso|evento|capta 20|fife|co\.liga|conta que soma|"
+                      r"aquisi[cç]|campus mobile|luppa|elabora[cç][aã]o de editais|exemplos|scaled$|inscricoesprorrogadas|impactos da inovacao|"
+                      r"aldir blanc|circula cultura|ficc|centro municipal de arte", re.I)
+
+
+def candidatas_do_catalogo() -> int:
+    """Das páginas voltadas a entidades que o Espião catalogou, as que são oportunidade de recurso viram
+    candidatas (estado/piloto/candidatas_do_catalogo.json). O Interceptador lê daí; o Espião só escreve."""
+    from urllib.parse import urlsplit as _u
+    cat = catalogo(); vistos = {}; hoje = date.today().isoformat()
+    arq = ROOT / "estado/piloto/candidatas_do_catalogo.json"
+    ant = load_json(arq) if arq.exists() else {}
+    ja = {c["url"]: c for c in (ant.get("candidatas") or [])}
+    for v in cat["sites"].values():
+        for p in v.get("paginas_para_entidades") or []:
+            u = (p.get("url") or "").split("#")[0]; rot = re.sub(r"\s+", " ", p.get("rotulo") or "").strip()
+            t = (rot + " " + u.replace("-", " ")).lower()
+            if not u.startswith("http") or JUNK.search(u) or DESCARTE.search(t): continue
+            if not re.search(r"edital|editais|pr[eê]mio|fundo|sele[cç][aã]o|apoiar|chamamento|chamada|inscri", t): continue
+            k = _u(u).netloc + _u(u).path.rstrip("/")
+            if k in vistos: continue
+            enq = next((e for rx, e in ENQUADRAMENTOS if re.search(rx, t)), "A VERIFICAR")
+            slug = _u(u).path.rstrip("/").split("/")[-1].replace("-", " ").strip()
+            titulo = rot if len(rot) > 12 and not re.search(r"skip|menu|leia|ler artigo|clique|cancelar|comments|share|pular|tweet", rot, re.I) else (slug[:1].upper() + slug[1:])
+            vistos[k] = ja.get(u) or {"url": u, "titulo": titulo[:160], "visto_em": (v.get("nome") or "").split(" · ")[0], "enquadramento": enq,
+                                       "descoberto_em": hoje, "origem": "catálogo do Piloto - Espião"}
+    write_json(arq, {"em": hoje, "regra": "o que o Espião descobre; o Interceptador comprova", "candidatas": list(vistos.values())})
+    return len(vistos)

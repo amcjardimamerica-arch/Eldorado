@@ -141,7 +141,27 @@ def fechar_missao(resultado: str, achados: list[dict] | None = None, licao: str 
     return reg
 
 
+def _somar_interceptador(b: dict) -> dict:
+    """O bordo do Interceptador (arquivo próprio, estado/interceptador/bordo.json) entra na publicação:
+    as estrelas de ouro dele aparecem no mesmo quadro do motor."""
+    arq = ROOT / "estado/interceptador/bordo.json"
+    if not arq.exists():
+        return b
+    bi = load_json(arq) or {}
+    out = json.loads(json.dumps(b))
+    for mid, v in (bi.get("abates") or {}).items():
+        e = out.setdefault("abates", {}).setdefault(mid, {"n": 0, "ouro": 0, "prata": 0, "ultimos": []})
+        urls = {x.get("url") for x in e.get("ultimos", [])}
+        nov = [x for x in v.get("ultimos", []) if x.get("url") not in urls]
+        e["ultimos"] = (nov + e.get("ultimos", []))[:40]
+        e["ouro"] = e.get("ouro", 0) + sum(1 for x in nov if x.get("tipo") == "ouro"); e["prata"] = e.get("prata", 0) + sum(1 for x in nov if x.get("tipo") == "prata")
+        e["n"] = e["ouro"] + e["prata"]
+    out["total_abates"] = sum(v.get("n", 0) for v in out.get("abates", {}).values())
+    return out
+
+
 def _publicar(b: dict) -> None:
+    b = _somar_interceptador(b)
     PUB.write_text(json.dumps({
         "em": now_iso(),
         "missao_atual": b.get("missao_atual"),

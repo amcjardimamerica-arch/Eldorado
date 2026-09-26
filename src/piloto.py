@@ -693,29 +693,11 @@ def ciclo(porta: int | None = None) -> dict:
             "alvo": "empresa", "porque": (brief.get("aposta") or {}).get("porque"), "origem": "briefing"}
     if rumo:
         rel["rumo"] = {k: rumo[k] for k in ("rumo", "nivel", "alvo", "porque") if k in rumo}
-    from .missao_especial import montar_fila, proximo as _proximo_resgate
-    montar_fila()
     plano = []
-    # REGRA DO TITULAR (24/09): primeiro o RESGATE de oportunidades publicadas nos últimos 30 dias;
-    # não havendo o que resgatar, RECONHECIMENTO em sites especializados do terceiro setor — empresas
-    # que aparecem neles, ESG declarado, páginas voltadas a entidades — catalogando os sites oficiais.
-    limite30 = (date.today() - timedelta(days=30)).isoformat()
-    def _recente(a: dict) -> bool:
-        for k in ("publicado_em", "publicacao", "inicio", "descoberto_em", "criado_em", "registrado_em", "indexado_em", "em", "primeira_vez"):
-            v = str(a.get(k) or "")[:10]
-            if re.match(r"\d{4}-\d{2}-\d{2}$", v):
-                return v >= limite30
-        return False                                            # sem data de publicação, não é resgate dos 30 dias
-    pulados = 0
-    while len(plano) < int(par.get("resgates_por_voo", 6)) and pulados < 40:
-        alvo_r = _proximo_resgate()
-        if not alvo_r or any(x.get("alvo_id") == alvo_r["id"] for x in plano):
-            break
-        if not _recente(alvo_r):
-            pulados += 1; continue
-        plano.append({"tipo": "resgate", "motor": "missao-especial", "ordem": len(plano) + 1,
-                      "alvo_id": alvo_r["id"], "_alvo": alvo_r})
-    rel["resgates_na_fila"] = len(plano); rel["resgates_fora_dos_30_dias"] = pulados
+    # PILOTO - ESPIÃO (titular, 26/09): missão única de DESCOBERTA — sites, empresas e possíveis fontes de recurso.
+    # O resgate (comprovar prazo e página oficial) passou ao Piloto - Interceptador, que tem fila e arquivos
+    # próprios; o Espião não toca na fila de resgate. O que ele descobre vira candidata para o Interceptador.
+    rel["papel"] = "Piloto - Espião"; rel["resgates_na_fila"] = 0; rel["resgates_fora_dos_30_dias"] = 0
     from .catalogo_terceiro_setor import proximo_site as _proximo_site
     vagas = int(par.get("missoes_por_voo", 7)) - len(plano)
     while vagas > 0:
@@ -821,6 +803,11 @@ def ciclo(porta: int | None = None) -> dict:
     rel["anuncio"] = (f"Esquadrilha {hoje} ({rel['ocupante']}): {len(rel['missoes'])} missão(ões) — "
                       f"{rel['abates']} alvo(s) novo(s) abatido(s), {rel['propostas']} proposta(s) ao todo, {rel['minutos']} min de voo.")
     write_json(PASTA / f"relatorio-{hoje}.json", rel)
+    try:
+        from .catalogo_terceiro_setor import candidatas_do_catalogo
+        rel["candidatas_entregues_ao_interceptador"] = candidatas_do_catalogo()
+    except Exception as ex:
+        rel["candidatas_entregues_ao_interceptador"] = f"falhou: {type(ex).__name__}"
     write_json(ROOT / "docs/dados/piloto.json", rel)
     return rel
 

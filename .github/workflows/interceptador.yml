@@ -1,9 +1,10 @@
-name: 12 · Piloto - Interceptador — comprova na fonte oficial os indícios já encontrados
+name: 12 · Piloto - Interceptador — um alvo por voo, a cada 3 segundos
 # A segunda IA do sistema (mesmo modelo, Qwen3-8B). Só comprova: mapeia o site oficial e confirma cada dado
-# no documento/edital. Roda a cada 4 h e sob demanda; rodada de até 4 h 40, um edital por vez.
+# no documento/edital. Mesmo padrão do Espião: cada voo é uma execução independente com UM alvo; ao pousar,
+# 3 segundos de pátio e decola de novo. Grupo de concorrência próprio: nunca bloqueia nem é bloqueado pelo Espião.
 on:
   schedule:
-    - cron: "17 */4 * * *"
+    - cron: "17 */2 * * *"      # rede de segurança: religa a corrente se ela cair
   workflow_dispatch:
 permissions:
   contents: write
@@ -14,7 +15,7 @@ concurrency:
 jobs:
   interceptar:
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 45
     env:
       ELDORADO_VOO_REAL: "1"
     steps:
@@ -45,16 +46,17 @@ jobs:
           ia_local/motor/llama-server -m ia_local/modelos/Qwen3-8B-Q4_K_M.gguf -c 16384 -t 4 --port 8082 --jinja --host 127.0.0.1 > /tmp/llama.log 2>&1 &
           for i in $(seq 1 90); do curl -s http://127.0.0.1:8082/health | grep -q '"ok"' && break; sleep 2; done
           curl -s http://127.0.0.1:8082/health || { tail -20 /tmp/llama.log; exit 1; }
-      - name: Interceptar
+      - name: Interceptar (um alvo)
         run: |
-          python - <<'PY'
+          [ -e estado/interceptador/pausado ] && { echo "em terra por ordem do titular"; exit 0; }
+          timeout 1800 python - <<'PY'
           import json
           from src.ia_local import IALocal, CFG
-          from src.interceptador import rodada
+          from src.interceptador import voo
           CFG["limites"]["tokens_resposta"] = 1400
-          CFG["limites"]["tempo_maximo_s"] = 1800
-          r = rodada(IALocal(porta=8082, timeout=1800), minutos=280, maximo=40)
-          print(json.dumps(r["resumo"], ensure_ascii=False))
+          CFG["limites"]["tempo_maximo_s"] = 1500
+          r = voo(IALocal(porta=8082, timeout=1500))
+          print(json.dumps({k: v for k, v in r.items() if k not in ("passos", "itens")}, ensure_ascii=False)[:1500])
           PY
       - name: Guardar uma cópia (artefato)
         if: always()
@@ -63,7 +65,7 @@ jobs:
           name: interceptador-${{ github.run_id }}
           path: |
             docs/dados/interceptador.json
-            estado/piloto/interceptador.json
+            estado/interceptador/
             estado/piloto/fila_resgate.json
             dados/editais/extraidos/
           retention-days: 30
@@ -72,18 +74,28 @@ jobs:
         run: |
           git config user.name "piloto-interceptador" && git config user.email "interceptador@eldorado"
           rm -rf /tmp/int && mkdir -p /tmp/int/extraidos
-          cp docs/dados/interceptador.json estado/piloto/interceptador.json estado/piloto/fila_resgate.json estado/piloto/bordo.json /tmp/int/ 2>/dev/null || true
-          for f in $(git diff --name-only -- dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json); do mkdir -p "/tmp/int/$(dirname "$f")"; cp "$f" "/tmp/int/$f"; done
+          # SÓ OS ARQUIVOS DO INTERCEPTADOR (e o que este voo alterou): nunca o bordo do Espião
+          cp docs/dados/interceptador.json estado/piloto/fila_resgate.json /tmp/int/ 2>/dev/null || true
+          cp -r estado/interceptador /tmp/int/ 2>/dev/null || true
+          for f in $(git diff --name-only -- dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json; git ls-files --others --exclude-standard dados/editais/extraidos biblioteca_alexandria/oportunidades); do mkdir -p "/tmp/int/$(dirname "$f")"; cp "$f" "/tmp/int/$f"; done
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
             cp /tmp/int/interceptador.json docs/dados/ 2>/dev/null || true
-            cp /tmp/int/interceptador.json /tmp/int/fila_resgate.json /tmp/int/bordo.json estado/piloto/ 2>/dev/null || true
+            cp /tmp/int/fila_resgate.json estado/piloto/ 2>/dev/null || true
+            mkdir -p estado/interceptador && cp -r /tmp/int/interceptador/. estado/interceptador/ 2>/dev/null || true
             cp -r /tmp/int/dados /tmp/int/biblioteca_alexandria /tmp/int/docs . 2>/dev/null || true
-            git add -A docs/dados/interceptador.json estado/piloto/interceptador.json estado/piloto/fila_resgate.json estado/piloto/bordo.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json
-            git commit -q -m "interceptador: rodada $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; ENVIADO=1; break; }
+            git add -A docs/dados/interceptador.json estado/interceptador estado/piloto/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json
+            git commit -q -m "interceptador: voo $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; ENVIADO=1; break; }
             if git push -q origin main; then echo "gravado ($i)"; ENVIADO=1; break; fi
             sleep $((i * 5))
           done
           [ "${ENVIADO:-0}" = "1" ] || { echo "::error::não gravou — o resultado está no artefato"; exit 1; }
           curl -s -o /dev/null -w "painel republicado: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/publicar-painel.yml/dispatches" -d '{"ref":"main"}'
+      - name: Pousar 3 segundos e decolar de novo
+        if: always()
+        run: |
+          [ -e estado/interceptador/pausado ] && { echo "em terra por ordem do titular"; exit 0; }
+          sleep 3
+          curl -s -o /dev/null -w "decolou o próximo: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/interceptador.yml/dispatches" -d '{"ref":"main"}'

@@ -17,6 +17,7 @@ Biblioteca), para o registro do edital (a ficha do painel) e para o bordo (prazo
 from __future__ import annotations
 
 import json
+import re
 import time
 from datetime import date
 from pathlib import Path
@@ -26,10 +27,61 @@ from .nucleo import load_json, now_iso, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
 FILA = ROOT / "estado/piloto/fila_resgate.json"
-ESTADO = ROOT / "estado/piloto/interceptador.json"
+ESTADO = ROOT / "estado/interceptador/estado.json"          # pasta PRÓPRIA: o Espião nunca a toca
 PUB = ROOT / "docs/dados/interceptador.json"
+BORDO_INT = ROOT / "estado/interceptador/bordo.json"
+RELATORIOS = ROOT / "estado/interceptador/relatorios"
+FONTES_EMPRESAS = ROOT / "estado/interceptador/fontes_empresas.json"
 MOTOR = "piloto-aberto"        # o motor de busca aberta da família Piloto: as estrelas de ouro aparecem nele
 REVISITA_DIAS = 7
+
+# ── PARÂMETROS DO INTERCEPTADOR (titular, 26/09): distintos dos do Espião ────────────────────
+PARAMETROS = {
+    "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser",
+    "modos": {
+        "validar": "editais encontrados pelos motores de busca (abertos, com itens em falta): mapear a fonte oficial e comprovar as doze condições",
+        "complementar": "depois dos abertos: os achados do Piloto - Espião — indícios de edital (fila) e empresas sem edital (fontes de recurso)",
+    },
+    "padrao_de_qualidade_edital": {
+        "validada": "prazo de inscrição comprovado NA FONTE OFICIAL + página oficial mapeada + pelo menos 9 das 12 condições comprovadas ou dispensadas",
+        "parcial": "página oficial mapeada e pelo menos 6 condições",
+        "insuficiente": "abaixo disso — o relatório diz o que faltou e onde procurar",
+    },
+    "padrao_de_qualidade_empresa": {
+        "fonte_confirmada": "site oficial + canal de pedido (edital, formulário ou contato institucional) + áreas apoiadas, tudo com trecho; e pelo menos 5 dos 8 itens",
+        "fonte_possivel": "site oficial + ao menos 3 itens",
+        "sem_evidencia": "o resto",
+    },
+}
+
+# ── FICHA DE FONTE DE RECURSO — para EMPRESAS sem edital (8 itens) ──────────────────────────
+OITO = ["Site oficial", "Instituto, fundação ou programa social", "Canal de pedido", "Leis de incentivo que usa",
+        "Áreas apoiadas", "Território de atuação social", "Porte do apoio", "Exigências para a entidade"]
+ESQUEMA_EMPRESA = {
+    "instituto": {"valor": "nome do instituto, fundação ou programa de investimento social, ou null", "trecho": "trecho literal"},
+    "canal": {"valor": "edital|formulario|contato|patrocinio_por_proposta|nenhum", "url": "endereço ou null", "trecho": "trecho literal"},
+    "leis": {"lista": ["rouanet|esporte|fia|idoso|pronon|pronas|goyazes|pat"], "trecho": "trecho literal"},
+    "areas": {"lista": ["cultura|educacao|saude|assistencia_social|esporte|meio_ambiente|direitos|outros"], "trecho": "trecho literal"},
+    "territorio": {"valor": "nacional|estados citados|municipios citados", "trecho": "trecho literal"},
+    "porte": {"valor": "valores ou faixas de apoio como estão escritos, ou null", "trecho": "trecho literal"},
+    "exigencias": {"lista": ["exigência para a entidade proponente"], "trecho": "trecho literal"},
+}
+PROMPT_EMPRESA = """Você é o Piloto - Interceptador. A empresa abaixo apareceu como possível FONTE DE RECURSOS (patrocínio, doação,
+investimento social ou lei de incentivo) para organizações da sociedade civil. Leia o texto do site dela e responda ao
+esquema. REGRAS: só o que está escrito; cada campo com "trecho" copiado LITERALMENTE (30 a 200 caracteres); sem trecho,
+valor null. Devolva APENAS o JSON com as chaves do esquema.
+EMPRESA: {nome}
+ONDE FOI VISTA: {vias}
+ESQUEMA: {esquema}
+TEXTO DO SITE (pode estar truncado):
+{texto}
+"""
+PROMPT_SERVE = """Você é o Piloto - Interceptador. Com base SOMENTE no que foi comprovado abaixo sobre «{titulo}», responda em JSON:
+{{"serve_como_fonte": "sim|talvez|nao", "por_que": "uma ou duas frases", "para_a_amc": "o que uma associação comunitária de Goiânia
+(assistência social, cultura, educação, esporte) precisaria fazer para acessar", "proximo_passo": "uma ação concreta", "risco": "o que pode impedir"}}
+COMPROVADO: {comprovado}
+NÃO ENCONTRADO: {faltou}
+"""
 
 
 def _mestre_por_url() -> dict:
@@ -128,6 +180,167 @@ def _abate(alvo: dict, e_inv: dict) -> None:
                       f"interceptador · {(reg.get('titulo') or '')[:60]}: {e_inv.get('comprovados', 0)}/{len(DOZE)} itens comprovados ou dispensados")
     except Exception:
         pass
+
+
+def qualidade_edital(reg: dict, inv: dict) -> str:
+    campos = inv.get("campos") or {}
+    n = sum(1 for v in campos.values() if v.get("comprovado") or v.get("dispensado"))
+    prazo_of = (campos.get("Prazo de inscrição") or {}).get("comprovado") and (campos.get("Prazo de inscrição") or {}).get("fonte_oficial")
+    if prazo_of and reg.get("pagina_oficial") and n >= 9:
+        return "validada"
+    if reg.get("pagina_oficial") and n >= 6:
+        return "parcial"
+    return "insuficiente"
+
+
+def parecer_fonte(ia, titulo: str, inv: dict) -> dict:
+    """A pergunta do titular: como esta busca inicial pode servir como fonte de recursos?"""
+    campos = inv.get("campos") or {}
+    comp = {k: v.get("valor") for k, v in campos.items() if v.get("comprovado") or v.get("dispensado")}
+    falt = [k for k, v in campos.items() if not (v.get("comprovado") or v.get("dispensado"))]
+    r = ia.perguntar(PROMPT_SERVE.format(titulo=titulo[:160], comprovado=json.dumps(comp, ensure_ascii=False)[:3000], faltou=", ".join(falt) or "nada"),
+                     '{"serve_como_fonte","por_que","para_a_amc","proximo_passo","risco"}')
+    return r if isinstance(r, dict) else {"serve_como_fonte": "indefinido", "por_que": "o modelo não respondeu"}
+
+
+def _abate_proprio(reg: dict, inv: dict, alvo: dict) -> None:
+    """Bordo PRÓPRIO do Interceptador (o Espião grava o dele por cima do que tinha; arquivos separados não colidem).
+    Prazo aberto comprovado na fonte = OURO; o painel soma os dois bordos."""
+    b = load_json(BORDO_INT) if BORDO_INT.exists() else {"abates": {}, "missoes": []}
+    e = b["abates"].setdefault(MOTOR, {"n": 0, "ouro": 0, "prata": 0, "ultimos": []})
+    fim = reg.get("fim"); pz = (inv.get("campos") or {}).get("Prazo de inscrição") or {}
+    url = reg.get("pagina_oficial") or reg.get("url")
+    if fim and fim >= date.today().isoformat() and pz.get("comprovado") and url and url not in {x.get("url") for x in e["ultimos"]}:
+        e["ouro"] += 1; e["n"] = e["ouro"] + e["prata"]
+        e["ultimos"] = ([{"titulo": (reg.get("titulo") or "")[:80], "url": url, "tipo": "ouro", "em": date.today().isoformat(), "papel": "Piloto - Interceptador"}] + e["ultimos"])[:40]
+    b["missoes"] = ([{"tipo": "interceptar", "modo": alvo.get("modo"), "alvo": (reg.get("titulo") or "")[:80], "comprovados": inv.get("comprovados"), "em": now_iso()}] + b["missoes"])[:60]
+    b["total_abates"] = sum(v.get("n", 0) for v in b["abates"].values())
+    write_json(BORDO_INT, b)
+
+
+def investigar_empresa(ia, emp: dict) -> dict:
+    """Empresa sem edital: a ficha de fonte de recurso (8 itens), lida no site oficial dela."""
+    from .investigador import texto_do_edital, comprovado, _norm, _recortar
+    nome = emp.get("empresa") or emp.get("nome") or ""
+    site = emp.get("site") or emp.get("dominio")
+    if site and not str(site).startswith("http"):
+        site = "https://" + str(site)
+    if not site:
+        try:
+            from .piloto_busca import buscar
+            r = next((x for x in (buscar(f"{nome} site oficial instituto responsabilidade social", maximo=5) or []) if x.get("url") and not re.search(r"wikipedia|linkedin|facebook|instagram", x["url"])), None)
+            site = r["url"] if r else None
+        except Exception:
+            site = None
+    ficha = {"empresa": nome, "em": now_iso(), "site_oficial": site, "itens": {}, "qualidade": "sem_evidencia"}
+    if not site:
+        ficha["erro"] = "site oficial não encontrado"; return ficha
+    texto, fontes = texto_do_edital({"pagina_oficial": site, "anexos": []})
+    if not texto.strip():
+        ficha["erro"] = "site sem texto legível"; return ficha
+    r = ia.perguntar(PROMPT_EMPRESA.format(nome=nome, vias=", ".join(emp.get("vias") or []), esquema=json.dumps(ESQUEMA_EMPRESA, ensure_ascii=False), texto=_recortar(texto, 30_000)),
+                     json.dumps(ESQUEMA_EMPRESA, ensure_ascii=False))
+    tn = _norm(texto); itens = {"Site oficial": {"valor": site, "comprovado": True}}
+    def ok(b, curto=False): return isinstance(b, dict) and comprovado(b.get("trecho") or "", tn, curto)
+    g = lambda k: (r or {}).get(k) if isinstance((r or {}).get(k), dict) else {}
+    b = g("instituto"); itens["Instituto, fundação ou programa social"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": ok(b) and bool(b.get("valor"))}
+    b = g("canal"); itens["Canal de pedido"] = {"valor": b.get("valor"), "url": b.get("url"), "trecho": b.get("trecho"), "comprovado": ok(b) and str(b.get("valor")) not in ("", "None", "nenhum", "null")}
+    # leis: o texto do site OU o histórico público (SALIC) comprovam
+    hist = []
+    try:
+        idx = load_json(ROOT / "docs/dados/doadoras/indice.json") or {}
+        kn = re.sub(r"[^a-z0-9]", "", nome.lower())
+        hist = [x.get("l", ["Rouanet"]) for x in idx.get("empresas", []) if kn and re.sub(r"[^a-z0-9]", "", str(x.get("n", "")).lower()).startswith(kn[:12])][:1]
+    except Exception:
+        pass
+    b = g("leis"); leis = sorted({str(x).lower() for x in (b.get("lista") or []) if x} | {l.lower() for h in hist for l in h})
+    itens["Leis de incentivo que usa"] = {"valor": ", ".join(leis) or None, "trecho": b.get("trecho") or ("histórico público (SALIC)" if hist else None), "comprovado": bool(hist) or (ok(b, True) and bool(leis))}
+    b = g("areas"); areas = [str(x).lower() for x in (b.get("lista") or []) if x]; itens["Áreas apoiadas"] = {"valor": ", ".join(areas) or None, "trecho": b.get("trecho"), "comprovado": ok(b, True) and bool(areas)}
+    b = g("territorio"); itens["Território de atuação social"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": ok(b, True) and bool(b.get("valor"))}
+    b = g("porte"); itens["Porte do apoio"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": ok(b) and bool(re.search(r"\d|mil|milh", str(b.get("valor") or ""), re.I))}
+    b = g("exigencias"); ex = [str(x)[:120] for x in (b.get("lista") or []) if x]; itens["Exigências para a entidade"] = {"valor": ", ".join(ex)[:300] or None, "trecho": b.get("trecho"), "comprovado": ok(b) and bool(ex)}
+    n = sum(1 for v in itens.values() if v.get("comprovado"))
+    ficha["itens"] = itens; ficha["comprovados"] = n; ficha["total"] = len(OITO)
+    ficha["qualidade"] = "fonte_confirmada" if (itens["Canal de pedido"]["comprovado"] and itens["Áreas apoiadas"]["comprovado"] and n >= 5) else ("fonte_possivel" if n >= 3 else "sem_evidencia")
+    ficha["fontes"] = fontes
+    return ficha
+
+
+def empresas_pendentes() -> list[dict]:
+    """Empresas do radar do Espião que ainda não têm ficha de fonte de recurso."""
+    try:
+        from .reconhecimento import alvos as _radar
+        feitas = (load_json(FONTES_EMPRESAS) or {}).get("fichas", {}) if FONTES_EMPRESAS.exists() else {}
+        out = []
+        for k, v in (_radar().get("itens") or {}).items():
+            nome = v.get("empresa")
+            if nome and nome not in feitas:
+                out.append({"chave": k, "empresa": nome, "vias": v.get("vias") or [], "site": v.get("site") or v.get("dominio"), "onde": (v.get("onde_foi_vista") or [])[:2]})
+        return out
+    except Exception:
+        return []
+
+
+def proximo_alvo() -> dict | None:
+    """UM ALVO POR VOO. Primeiro VALIDAR (editais dos motores, abertos); depois COMPLEMENTAR (achados do Espião:
+    indícios de edital, depois empresas sem edital)."""
+    lista = alvos(60)
+    abertos = [a for a in lista if a["de"] == "edital aberto com itens em falta"]
+    if abertos:
+        return {**abertos[0], "modo": "validar", "tipo": "edital"}
+    fila = [a for a in lista if a["de"] == "fila de resgate"]
+    if fila:
+        return {**fila[0], "modo": "complementar", "tipo": "edital"}
+    emp = empresas_pendentes()
+    if emp:
+        return {**emp[0], "id": emp[0]["chave"], "modo": "complementar", "tipo": "empresa", "de": "radar do Espião", "titulo": emp[0]["empresa"]}
+    return None
+
+
+def voo(ia) -> dict:
+    """Um voo do Interceptador: um alvo, relatório ao pousar."""
+    t0 = time.time()
+    a = proximo_alvo()
+    est = load_json(ESTADO) if ESTADO.exists() else {"feitos": {}, "rodadas": []}
+    est.setdefault("feitos", {}); est.setdefault("rodadas", [])
+    rel = {"em": now_iso(), "papel": "Piloto - Interceptador", "modelo": "qwen3-8b", "parametros": PARAMETROS["regra"]}
+    if not a:
+        rel["resultado"] = "nada a interceptar: sem edital aberto com itens em falta, sem indício na fila, sem empresa sem ficha"
+    elif a["tipo"] == "empresa":
+        f = investigar_empresa(ia, a)
+        F = load_json(FONTES_EMPRESAS) if FONTES_EMPRESAS.exists() else {"fichas": {}}
+        F.setdefault("fichas", {})[a["empresa"]] = f; write_json(FONTES_EMPRESAS, F)
+        rel.update({"modo": a["modo"], "tipo": "empresa", "alvo": a["empresa"], "de": a["de"], "qualidade": f.get("qualidade"),
+                    "comprovados": f.get("comprovados"), "total": f.get("total"), "site_oficial": f.get("site_oficial"), "erro": f.get("erro"),
+                    "itens": {k: {"valor": v.get("valor"), "comprovado": v.get("comprovado")} for k, v in (f.get("itens") or {}).items()}})
+        est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "empresa", "qualidade": f.get("qualidade")}
+    else:
+        x = investigar_um(a["id"], ia, "qwen3-8b")
+        reg = registro(a["id"]) or {}; inv = reg.get("investigacao_ia") or {}
+        q = qualidade_edital(reg, inv) if "erro" not in x else "insuficiente"
+        par = parecer_fonte(ia, reg.get("titulo") or a.get("titulo") or "", inv) if inv.get("campos") else {}
+        inv["qualidade"] = q; inv["parecer_fonte"] = par
+        arq = ROOT / "dados/editais/extraidos" / f"{a['id']}.json"
+        if arq.exists():
+            e = json.loads(arq.read_text(encoding="utf-8")); e["investigacao_ia"] = inv; arq.write_text(json.dumps(e, ensure_ascii=False, indent=1), encoding="utf-8")
+        _devolver_a_fila(a, inv); _abate_proprio(reg, inv, a)
+        rel.update({"modo": a["modo"], "tipo": "edital", "alvo": reg.get("titulo") or a.get("titulo"), "de": a["de"], "qualidade": q,
+                    "comprovados": x.get("comprovados"), "dispensados": x.get("dispensados"), "total": len(DOZE),
+                    "nao_resolvidos": x.get("nao_resolvidos"), "pagina_oficial": x.get("pagina_oficial"), "passos": x.get("passos"),
+                    "fontes_oficiais": [c for c, v in (inv.get("campos") or {}).items() if v.get("fonte_oficial")],
+                    "parecer_fonte": par, "erro": x.get("erro")})
+        est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "edital", "qualidade": q, "comprovados": x.get("comprovados"), "de": a["de"]}
+    rel["segundos"] = round(time.time() - t0)
+    est["rodadas"] = (est["rodadas"] + [{k: v for k, v in rel.items() if k not in ("passos", "itens")}])[-60:]
+    write_json(ESTADO, est)
+    RELATORIOS.mkdir(parents=True, exist_ok=True)
+    write_json(RELATORIOS / f"{date.today().isoformat()}.json", {"dia": date.today().isoformat(), "voos": ([v for v in (load_json(RELATORIOS / f"{date.today().isoformat()}.json") or {}).get("voos", [])] if (RELATORIOS / f"{date.today().isoformat()}.json").exists() else []) + [rel]})
+    fe = est["feitos"]
+    write_json(PUB, {**rel, "acumulado": {"interceptados": len(fe), "validadas": sum(1 for v in fe.values() if v.get("qualidade") == "validada"),
+                                          "parciais": sum(1 for v in fe.values() if v.get("qualidade") == "parcial"),
+                                          "fontes_confirmadas": sum(1 for v in fe.values() if v.get("qualidade") == "fonte_confirmada")},
+                     "parametros": PARAMETROS, "ultimos_voos": est["rodadas"][-6:]})
+    return rel
 
 
 def rodada(ia, minutos: float = 280, maximo: int = 40) -> dict:
