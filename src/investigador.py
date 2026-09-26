@@ -97,7 +97,9 @@ def texto_do_edital(e: dict) -> tuple[str, list[dict]]:
             dados, tipo = _baixar(u)
         except Exception as ex:
             fontes.append({"url": u, "ok": False, "erro": type(ex).__name__}); continue
-        if "pdf" in tipo.lower() or u.lower().endswith(".pdf"):
+        # PDF pelo CONTEÚDO: o PNCP entrega o edital sem se anunciar como PDF, e os 303 mil caracteres de
+        # binário lidos como página deram 0/12 nos dois modelos
+        if dados[:5] == b"%PDF-" or "pdf" in tipo.lower() or u.lower().endswith(".pdf"):
             t = _pdf_texto(dados); fontes.append({"url": u, "ok": bool(t), "tipo": "pdf", "chars": len(t)})
         else:
             p = _Texto(); p.feed(dados.decode("utf-8", "ignore")); t = re.sub(r"[ \t]+", " ", "".join(p.partes)); t = re.sub(r"\n{3,}", "\n\n", t)
@@ -385,6 +387,7 @@ encontrados no texto da fonte oficial. Para cada um, diga se o edital DISPENSA o
 item não se aplica a este edital (exemplos: não há fase de recurso; apoio é em espécie, sem valor em dinheiro; inscrição
 por formulário, sem anexos; resultado comunicado diretamente, sem data; edital aberto a todo o território nacional).
 Só diga que dispensa se houver TRECHO LITERAL do texto que sustente; copie de 30 a 200 caracteres. Se não houver, "dispensa": false.
+O fato de o texto NÃO MENCIONAR o item não é dispensa: dispensa é o edital dizer que o item não se aplica.
 Responda APENAS o JSON, uma chave por item, exatamente com estes nomes: {itens}
 Formato de cada item: {{"dispensa": true|false, "justificativa": "uma frase", "trecho": "trecho literal ou vazio"}}
 
@@ -420,8 +423,18 @@ def _links_da_pagina(url: str) -> list[tuple[str, str]]:
 
 def pagina_oficial(ia, e: dict) -> tuple[str | None, str]:
     """Conhecida → usa. Senão: links que saem da divulgação, escolhidos pelo modelo; senão, busca pelo órgão."""
+    ve = e.get("verificacao_externa") if isinstance(e.get("verificacao_externa"), dict) else {}
+    confirmada = ve.get("pagina_oficial") or (e.get("validacao") or {}).get("site")
+    if confirmada:
+        return confirmada, "página oficial confirmada pelo titular ou pela validação"
     if e.get("pagina_oficial"):
-        return e["pagina_oficial"], "página oficial já verificada"
+        # escolhida numa rodada anterior da IA: precisa conversar com o órgão ou o título — a rodada de 26/09
+        # gravou um link de rodapé da ABCR e a seguinte o aceitou como 'já verificada'
+        dom = _norm(urlsplit(e["pagina_oficial"]).hostname or "").replace(" ", "")
+        chaves = [w for w in _norm(f"{e.get('orgao') or ''} {re.sub(r'(?i)^continue lendo ', '', e.get('titulo') or '')}").split() if len(w) >= 5]
+        if any(w in dom for w in chaves):
+            return e["pagina_oficial"], "página oficial de rodada anterior, conferida pelo domínio"
+        e["pagina_oficial"] = None
     url = e.get("url") or ""
     links = _links_da_pagina(url) if url.startswith("http") else []
     if links:
@@ -456,6 +469,10 @@ def dispensas(ia, e: dict, texto: str, faltantes: list[str]) -> dict:
     tn = _norm(texto); out = {}
     for item in faltantes:
         b = (r or {}).get(CHAVE_ITEM[item]) if isinstance(r, dict) else None
+        just = _norm(b.get("justificativa") if isinstance(b, dict) else "")
+        # AUSÊNCIA NÃO É DISPENSA: "o edital não menciona recurso" é falta de informação, não regra do edital
+        if re.search(r"nao (menciona|informa|consta|cita|especifica|apresenta|traz|indica)|nao ha (informacao|mencao|dados)|sem informacao", just):
+            continue
         if isinstance(b, dict) and str(b.get("dispensa")).lower() in ("true", "1", "sim") and comprovado(b.get("trecho") or "", tn):
             out[item] = {"justificativa": str(b.get("justificativa") or "")[:200], "trecho": str(b.get("trecho") or "")[:200]}
     return out
