@@ -143,6 +143,38 @@ def montar() -> dict:
                 outra = next(c for c in nas_duas[e["_chave"]] if c != cat)
                 e["tambem_em"] = {"lista": outra, "posicao": nas_duas[e["_chave"]][outra]}
 
+    # DOADORAS DA ROUANET NA MESMA LISTA (titular, 25/09): as 23.498 incentivadoras da base pública entram
+    # na lista de destinação tributária — não numa segunda lista. Quem já estava (curadoria ou Piloto) é
+    # ENRIQUECIDO com CNPJ, total e histórico; quem não estava entra como registro leve, pontuado pelos
+    # mesmos critérios (lei com histórico, valor, recorrência), depois dos que têm mais critérios levantados.
+    idx = ROOT / "docs/dados/doadoras/indice.json"
+    if idx.exists():
+        salic = (load_json(idx) or {}).get("empresas") or []
+        itens = listas["destinacao_tributaria"]
+        por_cnpj = {re.sub(r"\D", "", str((e.get("cadastro") or {}).get("cnpj") or "")): e for e in itens}
+        por_chave = {e["_chave"]: e for e in itens}
+        def _norm(n): return re.sub(r"[^a-z0-9]", "", str(n or "").lower())[:40]
+        novos = []
+        for x in salic:
+            cn, nome = str(x.get("c") or ""), x.get("n") or ""
+            e = por_cnpj.get(cn) or por_chave.get(_norm(nome))
+            hist = {"total": x.get("t") or 0, "anos": x.get("a") or [], "destino": x.get("d") or {}, "leis": x.get("l") or ["Rouanet"]}
+            if e:
+                e["salic"] = hist
+                e.setdefault("cadastro", {}).setdefault("cnpj", cn)
+                if not e["cadastro"].get("uf"): e["cadastro"]["uf"] = x.get("u")
+                continue
+            anos = hist["anos"]
+            pontos = 10 + (10 if hist["total"] else 0) + min(15, 5 * len(anos))     # lei com histórico + valor + recorrência
+            # registro LEVE: só o essencial; a tela completa o resto (o arquivo vai a milhares de linhas)
+            novos.append({"nome": nome, "_chave": _norm(nome), "origem": "destinação tributária", "fonte": "SALIC",
+                          "cadastro": {"cnpj": cn, "uf": x.get("u")}, "salic": hist, "leve": True,
+                          "programas": [{"chave": "rouanet", "historico": True}], "pontos_lista": pontos})
+        itens += novos
+        itens.sort(key=lambda x: (-x["pontos_lista"], -((x.get("salic") or {}).get("total") or 0), -(x.get("pontos") or 0), x["nome"]))
+        for n, e in enumerate(itens, 1):
+            e["n_na_lista"] = n; e["uid"] = f"destinacao_tributaria:{n}"; e["faixa"] = "A" if n <= 25 else "B" if n <= 60 else "C"
+        listas["destinacao_tributaria"] = itens
     todas = [e for itens in listas.values() for e in itens]
     from .programas_sociais import catalogo
     res = {"gerado_em": now_iso(), "por_pagina": POR_PAGINA,
@@ -159,8 +191,8 @@ def montar() -> dict:
                             "criterios": [{"chave": c[0], "peso": c[1], "rotulo": c[2], "porque": c[3]}
                                           for c in (CRITERIOS_FISCAL if cat == "destinacao_tributaria" else CRITERIOS_DOADORA)],
                             "teto": sum(c[1] for c in (CRITERIOS_FISCAL if cat == "destinacao_tributaria" else CRITERIOS_DOADORA)),
-                            "confianca_media": round(sum(e["avaliacao"]["confianca"] for e in itens) / len(itens), 2) if itens else 0,
-                            "criterios_sem_dado": sorted({f["rotulo"] for e in itens for f in e["avaliacao"]["falta_levantar"]})}
+                            "confianca_media": round(sum((e.get("avaliacao") or {}).get("confianca", 0) for e in itens if not e.get("leve")) / max(1, sum(1 for e in itens if not e.get("leve"))), 2),
+                            "criterios_sem_dado": sorted({f["rotulo"] for e in itens for f in (e.get("avaliacao") or {}).get("falta_levantar", [])})}
                       for cat, itens in listas.items()},
            "total": len(todas), "nas_duas_listas": len(nas_duas),
            "com_cnpj": sum(1 for e in todas if e["cadastro"].get("cnpj")),
@@ -170,10 +202,14 @@ def montar() -> dict:
            "com_site": sum(1 for e in todas if e.get("site")),
            "com_programa": sum(1 for e in todas if e.get("programas")),
            "com_potencial": sum(1 for e in todas if (e.get("potencial") or {}).get("apurou")),
+           "da_base_publica": sum(1 for e in todas if e.get("salic")),
+           "estados_de_destino": sorted({u for e in todas for u in ((e.get("salic") or {}).get("destino") or {})}),
+           "tipos_de_recurso": sorted({p.get("chave") for e in todas for p in (e.get("programas") or []) if p.get("chave")}),
            "por_origem": {("destinação tributária" if c == "destinacao_tributaria" else "doação e patrocínio"): len(i)
                           for c, i in listas.items()},
            "empresas": todas}
-    write_json(SAIDA, res)
+    SAIDA.parent.mkdir(parents=True, exist_ok=True)
+    SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return {k: v for k, v in res.items() if k != "empresas"}
 
 
