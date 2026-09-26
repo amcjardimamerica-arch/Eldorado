@@ -121,7 +121,9 @@ def texto_do_edital(e: dict) -> tuple[str, list[dict]]:
 
 # ── validação: o trecho tem de existir na fonte ──────────────────────────────────────────────
 def _norm(s: str) -> str:
-    s = unicodedata.normalize("NFD", str(s or "").lower())
+    # NFKD desfaz ligaduras de PDF (ﬁ → fi); a hifenização de fim de linha é juntada antes de normalizar
+    s = re.sub(r"(\w)-\s*\n\s*(\w)", r"\1\2", str(s or ""))
+    s = unicodedata.normalize("NFKD", s.lower())
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
     return re.sub(r"[^a-z0-9]+", " ", s).strip()
 
@@ -132,9 +134,22 @@ def comprovado(trecho: str, texto_norm: str, curto_ok: bool = False) -> bool:
         return bool(curto_ok and len(t) >= 4 and re.search(r"(^| )" + re.escape(t) + r"( |$)", texto_norm))
     if t in texto_norm:
         return True
-    # tolerância a quebra de linha e pontuação: metade inicial e final do trecho, ambas presentes
-    meio = len(t) // 2
-    return t[:meio].strip() in texto_norm and t[meio:].strip() in texto_norm and len(t) >= 30
+    # TEXTO DE PDF NÃO BATE LETRA POR LETRA (26/09): o 8B copiou 'Fundação Maria Emília Pedreira Freire De
+    # Carvalho, CNPJ…' — que está no edital — e o validador rejeitou. Agora vale a janela: 85% das palavras
+    # do trecho aparecem juntas, num trecho do texto de até 1,5× o tamanho. Continua exigindo a prova no texto.
+    pal = [w for w in t.split() if len(w) > 2]
+    if len(pal) < 4:
+        return False
+    tw = texto_norm.split()
+    alvo = set(pal); n = len(pal); larg = int(n * 1.5) + 2
+    rara = min(pal, key=lambda w: texto_norm.count(" " + w + " ") or 10**9)
+    for i, w in enumerate(tw):
+        if w != rara:
+            continue
+        janela = set(tw[max(0, i - larg): i + larg])
+        if len(alvo & janela) >= 0.85 * len(alvo):
+            return True
+    return False
 
 
 def _data(v) -> str | None:
@@ -243,9 +258,25 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     campos["Destinação"] = {"valor": ("elegível" if el else "fora do escopo") + (f" · {b.get('natureza')}" if b.get("natureza") else ""), "trecho": b.get("trecho"), "comprovado": c}
     if c: e["destinacao"] = {"elegivel": el, "natureza": b.get("natureza"), "motivo": str(b.get("trecho"))[:160]}
     # Área
-    b = g("area"); v = str(b.get("valor") or "").lower(); c = ok(b, True) and v in ("cultura", "educacao", "saude", "assistencia_social", "esporte", "meio_ambiente", "direitos")
+    b = g("area"); _areas = ("cultura", "educacao", "saude", "assistencia_social", "esporte", "meio_ambiente", "direitos")
+    v = next((a for a in re.split(r"[|,;/ ]+|\be\b", _norm(b.get("valor") or "").replace("assistencia social", "assistencia_social").replace("meio ambiente", "meio_ambiente")) if a in _areas), "")
+    c = ok(b, True) and bool(v)
     campos["Área de atuação"] = {"valor": v or None, "trecho": b.get("trecho"), "comprovado": c}
     if c: e["area"] = v
+    # DE ONDE VEIO A PROVA: cada trecho comprovado é localizado na fonte que o contém (oficial ou divulgação)
+    blocos = re.split(r"\n\n=== (?:FONTE|ANEXO): ", texto)
+    dom_of = (urlsplit(e.get("pagina_oficial") or "").hostname or "").replace("www.", "")
+    for k, v in campos.items():
+        if not v.get("comprovado") or not v.get("trecho"):
+            continue
+        for bl in blocos[1:]:
+            cab, _, corpo = bl.partition(" ===\n")
+            if comprovado(v["trecho"], _norm(corpo), True):
+                url = re.search(r"https?://\S+?(?=\)|$|\s)", cab)
+                u = url.group(0) if url else cab[:120]
+                v["fonte"] = u
+                v["fonte_oficial"] = bool(dom_of) and dom_of in (urlsplit(u).hostname or "")
+                break
     n = sum(1 for v in campos.values() if v["comprovado"])
     e["investigacao_ia"] = {"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "modelo": modelo, "fontes": fontes, "campos": campos,
                             "comprovados": n, "total": len(DOZE),
@@ -399,10 +430,15 @@ def pagina_oficial(ia, e: dict) -> tuple[str | None, str]:
                                               links="\n".join(f"- {u}  ({r})" for u, r in links)), '{"url": "...", "porque": "..."}')
         u = (r or {}).get("url") if isinstance(r, dict) else None
         if u and str(u).startswith("http") and any(u == l for l, _ in links):
-            return u, f"escolhida entre {len(links)} links da divulgação: {(r or {}).get('porque', '')[:120]}"
+            # o domínio tem de conversar com o órgão ou o título — o 8B escolheu um link de rodapé da ABCR
+            dom = _norm(urlsplit(u).hostname or "").replace(" ", "")
+            chaves = [w for w in _norm(f"{e.get('orgao') or ''} {e.get('titulo') or ''}").split() if len(w) >= 5]
+            if any(w in dom for w in chaves):
+                return u, f"escolhida entre {len(links)} links da divulgação: {(r or {}).get('porque', '')[:120]}"
+            passos_rejeitado = f"o modelo escolheu {u}, rejeitado: o domínio não tem relação com o órgão nem com o título"
     try:
         from .piloto_busca import buscar
-        q = f"{(e.get('orgao') or '').strip()} {(e.get('titulo') or '')[:80]} edital".strip()
+        q = f"{(e.get('orgao') or '').strip()} {re.sub(r'(?i)^continue lendo ', '', (e.get('titulo') or ''))[:80]} edital".strip()
         for r in (buscar(q, maximo=6) or []):
             u = r.get("url") or ""
             if u.startswith("http") and not re.search(r"captadores|observatorio3setor|prosas|filantropia\.ong|gife|duckduckgo|bing\.", u):
