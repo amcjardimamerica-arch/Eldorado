@@ -95,13 +95,14 @@ jobs:
           # o rebase não fechou. Agora: guarda os resultados, volta à main atual, recoloca só os resultados e envia.
           git config user.name "investigador-ia" && git config user.email "ia@eldorado"
           rm -rf /tmp/inv && mkdir -p /tmp/inv/extraidos
-          cp docs/dados/investigacoes_ia*.json /tmp/inv/ 2>/dev/null || true
+          # só o arquivo DESTE modelo: o 14B, ao gravar, recolocou a versão velha do 8B que tinha na cópia dele
+          cp "docs/dados/investigacoes_ia_${{ github.event.inputs.modelo }}.json" /tmp/inv/ 2>/dev/null || true
           for id in $(echo "$IDS" | tr ',' ' '); do cp "dados/editais/extraidos/$id.json" /tmp/inv/extraidos/ 2>/dev/null || true; done
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
-            cp /tmp/inv/investigacoes_ia*.json docs/dados/ 2>/dev/null || true
+            cp /tmp/inv/investigacoes_ia_*.json docs/dados/ 2>/dev/null || true
             cp /tmp/inv/extraidos/*.json dados/editais/extraidos/ 2>/dev/null || true
-            git add docs/dados/investigacoes_ia*.json dados/editais/extraidos
+            git add docs/dados/investigacoes_ia_*.json dados/editais/extraidos
             git commit -q -m "investigador (${{ github.event.inputs.modelo }}): doze perguntas ($(date -u +%F\ %H:%M))" || { echo "nada a gravar"; break; }
             if git push -q origin main; then echo "gravado na tentativa $i"; ENVIADO=1; break; fi
             sleep $((i * 5))
