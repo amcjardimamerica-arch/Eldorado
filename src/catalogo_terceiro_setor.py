@@ -76,13 +76,16 @@ def empresas_ja_conhecidas() -> set[str]:
     return {re.sub(r"[^a-z0-9]", "", str(_j.loads(l).get("nome") or "").lower())[:40] for l in arq.read_text(encoding="utf-8").splitlines() if l.strip()}
 
 
-def proximo_site() -> dict | None:
+def proximo_site(excluir: set | None = None) -> dict | None:
+    excluir = excluir or set()
     """O site há mais tempo sem leitura, entre as sementes e os sites já catalogados."""
     cat = catalogo()
     limite = (datetime.now(timezone.utc) - timedelta(days=REVISITA_DIAS)).isoformat(timespec="seconds")
     candidatos = []
     for s in sementes() + sementes_de_associacoes():
         k = _chave(s["url"])
+        if s["url"] in excluir or k in excluir:
+            continue
         reg = cat["sites"].get(k) or {}
         lido = reg.get("lido_em") or ""
         if lido < limite and not reg.get("inacessivel"):
@@ -102,7 +105,7 @@ def proximo_site() -> dict | None:
         for pg in v.get("paginas_para_entidades") or []:
             u = pg.get("url") or ""
             ck = _chave(u) + urlsplit(u).path.rstrip("/")[:60]
-            if u.startswith("http") and ck not in lidas and (cat["sites"].get(ck) or {}).get("lido_em", "") < limite:
+            if u.startswith("http") and ck not in lidas and u not in excluir and ck not in excluir and (cat["sites"].get(ck) or {}).get("lido_em", "") < limite:
                 return {"url": u, "nome": f"{v.get('nome')} · {pg.get('rotulo') or 'página para entidades'}"[:90], "tipo": "pagina-de-entidades", "_chave": ck}
     return None
 

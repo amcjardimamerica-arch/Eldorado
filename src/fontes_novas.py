@@ -48,7 +48,8 @@ def agregar(url: str, nome: str, tipo: str, origem: str, nivel: str = "privado",
         fid += "-" + date.today().strftime("%m%d")
     f["fontes"].append({"id": fid, "nome": nome[:80], "nivel": nivel, "tipo": tipo, "territorio": "BR" if not uf else uf, "uf": uf,
                         "municipio": None, "areas": areas or [], "url": url, "hosts_links": [host], "confianca": "descoberta",
-                        "modo": "html_publico", "ativa": True, "origem": origem, "agregada_em": date.today().isoformat()})
+                        # QUARENTENA (26/09): entra desligada; o Claude, na análise a cada 3 dias, liga (ativa=true) ou remove
+                        "modo": "html_publico", "ativa": False, "quarentena": True, "origem": origem, "agregada_em": date.today().isoformat()})
     write_json(FONTES, f)
     reg = load_json(REGISTRO) if REGISTRO.exists() else {"regra": "fontes descobertas pelo Espião e confirmadas pelo Interceptador viram monitoramento dos motores", "fontes": []}
     reg["fontes"].append({"id": fid, "nome": nome[:80], "url": url, "tipo": tipo, "origem": origem, "em": date.today().isoformat()})

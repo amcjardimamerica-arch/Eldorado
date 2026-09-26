@@ -541,6 +541,43 @@ CONSULTAS_PROSPECCAO = [
 ]
 
 
+def missao_aposta(brief: dict, ordem: int) -> tuple[str, list[dict], str]:
+    """A APOSTA VIRA MISSÃO (26/09): o briefing apostava ('programa de doação de multinacional com inscrição
+    local') e as mãos faziam sempre o mesmo. Agora a pergunta de pesquisa do briefing vira consulta no buscador,
+    as primeiras páginas são lidas, e o que parece edital/programa vira CANDIDATA para o Interceptador; empresa
+    que patrocina ou doa vai ao radar."""
+    from .piloto_busca import buscar, ler_pagina
+    from .reconhecimento import ler_rastros, registrar
+    from .nucleo import load_json as _lj, write_json as _wj
+    q = str(brief.get("pergunta_de_pesquisa") or "").strip()
+    ap = brief.get("aposta") if isinstance(brief.get("aposta"), dict) else {}
+    if not q and ap.get("onde"):
+        q = f"{ap['onde']} edital inscrições organizações sociedade civil"
+    if not q:
+        return "sem aposta", [], "aposta · o briefing não trouxe pergunta de pesquisa"
+    q = re.sub(r"\s+", " ", q)[:120] + ("" if ordem == 1 else " Goiás")
+    res = buscar(q, maximo=8) or []
+    ach, cand = [], []
+    arq = ROOT / "estado/piloto/candidatas_do_catalogo.json"
+    C = _lj(arq) if arq.exists() else {"candidatas": []}
+    ja = {x.get("url") for x in C.get("candidatas") or []}
+    for r in res[:5]:
+        url = r.get("url") or ""; titulo = (r.get("titulo") or "")[:160]
+        texto = ler_pagina(url, limite=9000) or ""
+        if re.search(r"edital|inscri[cç][õo]es|chamada|chamamento|programa de doa|patroc[ií]nio|apoio a projetos|sele[cç][aã]o de projetos", (titulo + " " + texto[:3000]).lower()) \
+                and url.startswith("http") and url not in ja and not re.search(r"duckduckgo|bing\.|google\.|wikipedia", url):
+            cand.append({"url": url, "titulo": titulo or url, "visto_em": "aposta do briefing", "enquadramento": "A VERIFICAR",
+                         "descoberto_em": date.today().isoformat(), "origem": "aposta do Piloto - Espião", "aposta": ap.get("onde")})
+            ach.append({"titulo": titulo, "url": url, "novo": True})
+        for rs in ler_rastros(texto, url):
+            it = registrar(rs, "aposta_do_briefing", 1)
+            if it:
+                ach.append({"titulo": it.get("empresa"), "empresa": it.get("empresa"), "via": rs.get("via"), "url": url, "novo": True})
+    if cand:
+        C["candidatas"] = (C.get("candidatas") or []) + cand; C["em"] = date.today().isoformat(); _wj(arq, C)
+    return q, ach, f"aposta · '{q[:70]}': {len(res)} resultado(s), {len(cand)} candidata(s) nova(s), {len([a for a in ach if a.get('empresa')])} empresa(s)"
+
+
 def missao_prospectar(ordem: int) -> tuple[str, list[dict], str]:
     """BUSCA ATIVA DE EMPRESAS (titular, 24/09): consultas criativas que rodam em rodízio; das páginas
     devolvidas, lê as primeiras e extrai quem patrocina, apoia ou doa. Empresa já na base de incentivos
@@ -698,10 +735,16 @@ def ciclo(porta: int | None = None) -> dict:
     # O resgate (comprovar prazo e página oficial) passou ao Piloto - Interceptador, que tem fila e arquivos
     # próprios; o Espião não toca na fila de resgate. O que ele descobre vira candidata para o Interceptador.
     rel["papel"] = "Piloto - Espião"; rel["resgates_na_fila"] = 0; rel["resgates_fora_dos_30_dias"] = 0
+    # 1) A APOSTA DO BRIEFING VIRA MISSÃO — duas buscas (nacional e Goiás) antes de tudo
+    if brief.get("pergunta_de_pesquisa") or (isinstance(brief.get("aposta"), dict) and brief["aposta"].get("onde")):
+        for o in (1, 2):
+            plano.append({"tipo": "aposta", "motor": "piloto-aberto", "ordem": len(plano) + 1, "alvo_id": f"aposta-{o}",
+                          "_alvo": {"titulo": f"aposta do briefing ({'nacional' if o == 1 else 'Goiás'})"}, "_brief": brief, "_ordem": o})
+    # 2) catálogo e busca ativa até PREENCHER O VOO (o tempo é o único limite; sem isto o voo pousava aos 3 min)
     from .catalogo_terceiro_setor import proximo_site as _proximo_site
     vagas = int(par.get("missoes_por_voo", 7)) - len(plano)
     while vagas > 0:
-        site = _proximo_site()
+        site = _proximo_site({x.get("_site", {}).get("url") for x in plano if x.get("_site")} | {x.get("_site", {}).get("_chave") for x in plano if x.get("_site")})
         if not site or any(x.get("_site", {}).get("url") == site["url"] for x in plano):
             break
         plano.append({"tipo": "catalogar", "motor": "piloto-aberto", "ordem": len(plano) + 1,
@@ -733,6 +776,8 @@ def ciclo(porta: int | None = None) -> dict:
                 alvo, ach, licao = missao_catalogar(m["_site"])
             elif m["tipo"] == "prospectar":
                 alvo, ach, licao = missao_prospectar(m["ordem"])
+            elif m["tipo"] == "aposta":
+                alvo, ach, licao = missao_aposta(m["_brief"], m["_ordem"])
             elif m.get("motor") == "piloto-aberto":
                 # MISSÃO 2 — reconhecimento: o que os motores não acham porque não houve edital
                 alvo, ach, licao = missao_reconhecimento(ia, {**(rumo or {}), "ordem": m["ordem"]}, conhecidos)
