@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-09-25
+# Pacote para o Claude Desktop — 2026-09-26
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
@@ -17,17 +17,19 @@ Ele lê com o seu IP e envia ao repositório. Motores atendidos:
 
 Nenhum motor em alerta.
 
-## Etapa 3 — oportunidades aguardando ação externa (14)
+## Etapa 3 — oportunidades aguardando ação externa (16)
 
 - `3f4e0f749a5a6e40f2c4` — Edital prevê seleção de 58 apresentações artísticas para o Natal do Bem 2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/edital-preve-selecao-de-58-apresentacoes-artisticas-para-o-natal-do-bem-2026
 - `4d519a11c8b5c23bd8d5` — Termo de Fomento nº 01/2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf
+- `ee794628b50b5fde65f0` — Secult Goiás retifica cronograma do edital de apresentações artísticas para o Natal do Bem · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/secult-goias-retifica-cronograma-do-edital-de-apresentacoes-artisticas-para-o-natal-do-bem-2026
+- `39e8067201494d565881` — EDITAL PPGFIL/IFILO/UFU Nº 1/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-ppgfil/ifilo/ufu-n-1/2026-733304995
 - `0fc96da3bfa4c9659ef3` — Secretaria de Fomento e Incentivo à Cultura · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.gov.br/cultura/pt-br/composicao/secretaria-de-economia-criativa-e-fomento-cultural
 - `bdea428602f61e41e70b` — Edital recebe 851 inscrições! · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://climaesociedade.org/ics-lanca-edital-para-projetos-de-comunicacao-com-acoes-de-enfrentamento-as-mudancas-climaticas
 - `575706d9ad755cd36a5d` — EXTRATO DE TERMO DE FOMENTO Nº 997181/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-n-997181/2026-733920831
 - `9107398972ccec107a35` — EDITAL DE INTIMAÇÃO · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-de-intimacao-733801219
 - `c1d5199dfe1753398903` — Edital nº 7/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-n-7/2026-723987102
 - `400d80f3c84332f2aa0c` — EDITAL DE Nº 126/IFAL, DE 18 DE SETEMBRO DE 2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-de-n-126/ifal-de-18-de-setembro-de-2026-733048195
-- `39e8067201494d565881` — EDITAL PPGFIL/IFILO/UFU Nº 1/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-ppgfil/ifilo/ufu-n-1/2026-733304995
+- `645f8bc3798ac55c4cfe` — Celebração de Termo de Colaboração para a consecução de finalidade de interesse público de · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/13646005000138/2024/44
 - `f733cd0539057acbdcbe` — A referente requisição se faz para abertura de edital de chamamento público , para contrat · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/88775390000112/2023/99
 - `5b1f86e6fc0993dabf5b` — Edital Natal do Bem · **o PDF anexado é digitalização sem camada de texto** → rodar OCR no navegador (tesseract + pdf.js) ou pedir o arquivo ao órgão · link: https://goias.gov.br/cultura/pnab/edital-2026-pnab
 - `61208c62e6d5fade40d4` — Política Nacional Aldir Blanc de Fomento à Cultura · **o PDF anexado é digitalização sem camada de texto** → rodar OCR no navegador (tesseract + pdf.js) ou pedir o arquivo ao órgão · link: https://www.gov.br/cultura/pt-br/acesso-a-informacao/perguntas-frequentes/politica-nacional-aldir-blanc

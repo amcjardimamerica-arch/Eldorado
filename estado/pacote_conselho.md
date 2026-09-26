@@ -1,20 +1,16 @@
-# Pacote do conselho — validação do Claude (2026-09-25, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-09-26, últimos 3 dias)
 
-Piloto: modelo **qwen3-1.7b**. Ao responder, o Claude anota o modelo com que trabalhou.
+Piloto: modelo **qwen3-4b**. Ao responder, o Claude anota o modelo com que trabalhou.
 
 ## O que o Piloto fez
 
-- 2026-09-22T23:45 — Esquadrilha 2026-09-22 (Llama-3.2-3B-Instruct): 15 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 10.5 min de voo.
 - 2026-09-23T19:21 — Esquadrilha 2026-09-23 (Llama-3.2-3B-Instruct): 6 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 2.7 min de voo.
 - 2026-09-24T22:51 — Esquadrilha 2026-09-24 (Qwen3-1.7B): 1 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 0.6 min de voo.
-- 2026-09-25T14:16 — Esquadrilha 2026-09-25 (Qwen3-1.7B): 2 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 0.8 min de voo.
+- 2026-09-25T23:33 — Esquadrilha 2026-09-25 (Qwen3-1.7B): 8 missão(ões) — 0 alvo(s) novo(s) abatido(s), 7 proposta(s) ao todo, 10.4 min de voo.
+- 2026-09-26T09:57 — Esquadrilha 2026-09-26 (Qwen3-4B): 5 missão(ões) — 0 alvo(s) novo(s) abatido(s), 3 proposta(s) ao todo, 32.1 min de voo.
 
-## Relatório de aprendizado e bloqueios (10)
+## Relatório de aprendizado e bloqueios (6)
 
-- 2026-09-22T11:02 · nível — · **missao** — tentou: afiar_motor · impediu: ValueError: could not convert string to float: 'null' · aprendeu: revisar prompt/esquema
-- 2026-09-22T11:03 · nível — · **missao** — tentou: afiar_motor · impediu: ValueError: could not convert string to float: 'null' · aprendeu: revisar prompt/esquema
-- 2026-09-22T12:16 · nível — · **missao** — tentou: afiar_motor · impediu: ValueError: could not convert string to float: 'null' · aprendeu: revisar prompt/esquema
-- 2026-09-22T14:16 · nível — · **missao** — tentou: afiar_motor · impediu: ValueError: could not convert string to float: 'null' · aprendeu: revisar prompt/esquema
 - 2026-09-24T14:38 · nível — · **missao** — tentou: afiar_motor · impediu: NameError: name 'url' is not defined · aprendeu: revisar prompt/esquema
 - 2026-09-24T14:40 · nível — · **missao** — tentou: cacar_oportunidade · impediu: NameError: name 'url' is not defined · aprendeu: revisar prompt/esquema
 - 2026-09-24T14:51 · nível — · **missao** — tentou: afiar_motor · impediu: NameError: name 'url' is not defined · aprendeu: revisar prompt/esquema
@@ -27,7 +23,7 @@ Piloto: modelo **qwen3-1.7b**. Ao responder, o Claude anota o modelo com que tra
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (38)
+### Rotas e pistas sugeridas (39)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
@@ -60,6 +56,7 @@ Piloto: modelo **qwen3-1.7b**. Ao responder, o Claude anota o modelo com que tra
 - motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
 - motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
 - motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
