@@ -86,8 +86,10 @@ def _pdf_texto(dados: bytes) -> str:
 def texto_do_edital(e: dict) -> tuple[str, list[dict]]:
     """A página oficial primeiro, depois o que o registro já tem, depois os anexos em PDF."""
     fontes, textos, vistos = [], [], set()
-    urls = [((e.get("validacao") or {}).get("site")), e.get("pagina_oficial"), e.get("url")]
-    urls += [a.get("url") if isinstance(a, dict) else a for a in (e.get("anexos") or [])]
+    urls = [e.get("pagina_oficial"), ((e.get("validacao") or {}).get("site")), e.get("url")]
+    # anexos já registrados entram só se o nome parecer o edital (não manuais, planos ou relatórios)
+    urls += [a.get("url") for a in (e.get("anexos") or []) if isinstance(a, dict) and a.get("url")
+             and re.search(r"edital|anexo|regulamento|chamamento|termo|formul|inscri", f"{a.get('nome', '')} {a.get('url', '')}", re.I)]
     for u in [u for u in urls if u and str(u).startswith("http")]:
         if u in vistos or re.search(r"duckduckgo|bing\.com|google\.", u): continue
         vistos.add(u)
@@ -103,7 +105,8 @@ def texto_do_edital(e: dict) -> tuple[str, list[dict]]:
             # anexos em PDF linkados na página oficial entram também (até 4)
             for h, rot in p.links:
                 full = urljoin(u, h or "")
-                if full.lower().endswith(".pdf") and full not in vistos and len([f for f in fontes if f.get("tipo") == "pdf"]) < 4:
+                parece_edital = re.search(r"edital|anexo|regulamento|chamamento|termo|formul|inscri|sele[cç]", f"{rot} {full}", re.I)
+                if full.lower().endswith(".pdf") and parece_edital and full not in vistos and len([f for f in fontes if f.get("tipo") == "pdf"]) < 3:
                     vistos.add(full)
                     try:
                         d2, _ = _baixar(full); t2 = _pdf_texto(d2)
@@ -123,10 +126,10 @@ def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", " ", s).strip()
 
 
-def comprovado(trecho: str, texto_norm: str) -> bool:
+def comprovado(trecho: str, texto_norm: str, curto_ok: bool = False) -> bool:
     t = _norm(trecho)
     if len(t) < 12:
-        return False
+        return bool(curto_ok and len(t) >= 4 and re.search(r"(^| )" + re.escape(t) + r"( |$)", texto_norm))
     if t in texto_norm:
         return True
     # tolerância a quebra de linha e pontuação: metade inicial e final do trecho, ambas presentes
@@ -160,7 +163,7 @@ TEXTO DA FONTE (pode estar truncado):
 """
 
 
-def _recortar(texto: str, limite: int = 34_000) -> str:
+def _recortar(texto: str, limite: int = 42_000) -> str:
     """Cabe no contexto: o começo inteiro e, se faltar, janelas em volta das palavras que importam."""
     if len(texto) <= limite:
         return texto
@@ -188,8 +191,8 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     """Só o comprovado entra na ficha; tudo fica registrado em investigacao_ia."""
     tn = _norm(texto)
     campos = {}
-    def ok(bloco):
-        return isinstance(bloco, dict) and comprovado(bloco.get("trecho") or "", tn)
+    def ok(bloco, curto=False):
+        return isinstance(bloco, dict) and comprovado(bloco.get("trecho") or "", tn, curto)
     g = lambda k: r.get(k) if isinstance(r.get(k), dict) else {}
     # Objeto
     b = g("objeto"); c = ok(b) and bool(b.get("valor")); campos["Objeto"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": c}
@@ -215,12 +218,12 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     b = g("orgao"); c = ok(b) and bool(b.get("valor")); campos["Órgão / financiador"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": c}
     if c: e["orgao"] = str(b["valor"])[:160]
     # Território
-    b = g("territorio"); c = ok(b) and bool(b.get("uf") or b.get("abrangencia")); campos["Território"] = {"valor": b.get("uf") or b.get("abrangencia"), "trecho": b.get("trecho"), "comprovado": c}
+    b = g("territorio"); c = ok(b, True) and bool(b.get("uf") or b.get("abrangencia")); campos["Território"] = {"valor": b.get("uf") or b.get("abrangencia"), "trecho": b.get("trecho"), "comprovado": c}
     if c:
         if b.get("uf") and re.fullmatch(r"[A-Z]{2}", str(b["uf"]).upper()): e["uf"] = str(b["uf"]).upper()
         if b.get("abrangencia") == "nacional": e["abrangencia"] = "nacional"
     # Esfera
-    b = g("esfera"); v = str(b.get("valor") or "").lower(); c = ok(b) and v in ("federal", "estadual", "municipal", "privada")
+    b = g("esfera"); v = str(b.get("valor") or "").lower(); c = ok(b, True) and v in ("federal", "estadual", "municipal", "privada")
     campos["Esfera"] = {"valor": v or None, "trecho": b.get("trecho"), "comprovado": c}
     if c and v in ("federal", "estadual", "municipal"): e["nivel"] = v
     # Requisitos
@@ -238,7 +241,7 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     campos["Destinação"] = {"valor": ("elegível" if el else "fora do escopo") + (f" · {b.get('natureza')}" if b.get("natureza") else ""), "trecho": b.get("trecho"), "comprovado": c}
     if c: e["destinacao"] = {"elegivel": el, "natureza": b.get("natureza"), "motivo": str(b.get("trecho"))[:160]}
     # Área
-    b = g("area"); v = str(b.get("valor") or "").lower(); c = ok(b) and v in ("cultura", "educacao", "saude", "assistencia_social", "esporte", "meio_ambiente", "direitos")
+    b = g("area"); v = str(b.get("valor") or "").lower(); c = ok(b, True) and v in ("cultura", "educacao", "saude", "assistencia_social", "esporte", "meio_ambiente", "direitos")
     campos["Área de atuação"] = {"valor": v or None, "trecho": b.get("trecho"), "comprovado": c}
     if c: e["area"] = v
     n = sum(1 for v in campos.values() if v["comprovado"])
@@ -249,6 +252,33 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     return e["investigacao_ia"]
 
 
+MESTRE = ROOT / "dados/oportunidades/oportunidades.jsonl"
+
+
+def registro(eid: str) -> dict | None:
+    """O registro MESTRE (título, URL) vem de oportunidades.jsonl; a verificação (site oficial confirmado,
+    anexos) vem do extraído, que é criado se não existir. Os dois juntos são o edital."""
+    m = None
+    if MESTRE.exists():
+        for l in MESTRE.open(encoding="utf-8"):
+            if eid in l:
+                try:
+                    d = json.loads(l)
+                    if d.get("id") == eid:
+                        m = d; break
+                except ValueError:
+                    pass
+    arq = EXTRAIDOS / f"{eid}.json"
+    ex = json.loads(arq.read_text(encoding="utf-8")) if arq.exists() else {}
+    if not m and not ex:
+        return None
+    e = {**(m or {}), **ex, "id": eid}
+    ve = ex.get("verificacao_externa") if isinstance(ex.get("verificacao_externa"), dict) else {}
+    e["pagina_oficial"] = e.get("pagina_oficial") or ve.get("pagina_oficial") or (ex.get("validacao") or {}).get("site")
+    e["titulo"] = e.get("titulo") or (m or {}).get("titulo")
+    return e
+
+
 def investigar(ids: list[str], ia, modelo: str, prazo_s: float = 280 * 60) -> dict:
     fim = time.time() + prazo_s
     saida = {"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "modelo": modelo, "editais": []}
@@ -256,9 +286,9 @@ def investigar(ids: list[str], ia, modelo: str, prazo_s: float = 280 * 60) -> di
         if time.time() > fim:
             saida["parou"] = "tempo esgotado"; break
         arq = EXTRAIDOS / f"{eid}.json"
-        if not arq.exists():
+        e = registro(eid)
+        if e is None:
             saida["editais"].append({"id": eid, "erro": "registro não encontrado"}); continue
-        e = json.loads(arq.read_text(encoding="utf-8"))
         t0 = time.time()
         texto, fontes = texto_do_edital(e)
         if not texto.strip():
@@ -269,6 +299,7 @@ def investigar(ids: list[str], ia, modelo: str, prazo_s: float = 280 * 60) -> di
         if not isinstance(r, dict):
             saida["editais"].append({"id": eid, "titulo": e.get("titulo"), "comprovados": 0, "erro": "o modelo não devolveu JSON", "s": round(time.time() - t0)}); continue
         inv = aplicar(e, r, texto, fontes, modelo)
+        e.setdefault("edital_id", eid)
         arq.write_text(json.dumps(e, ensure_ascii=False, indent=1), encoding="utf-8")
         saida["editais"].append({"id": eid, "titulo": e.get("titulo"), "comprovados": inv["comprovados"], "total": inv["total"],
                                  "nao_comprovados": [k for k, v in inv["campos"].items() if not v["comprovado"]],
