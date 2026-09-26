@@ -1,0 +1,51 @@
+{
+ "modelo_padrao": "qwen3-8b",
+ "decidido_em": "2026-09-26",
+ "regra": "fica o 8B se resolver ao menos 85% do que o 14B resolve nos mesmos editais e alcançar a fonte oficial nos mesmos casos; passa ao 14B se resolver em média 2 itens a mais por edital ou achar na fonte oficial o que o 8B não acha",
+ "comparacao": {
+  "editais": [
+   "Fundação Maria Emília (página oficial + PDF)",
+   "Chamamento PNCP Guaíra",
+   "Continue lendo Maria Emília (ABCR)"
+  ],
+  "qwen3-8b": {
+   "itens": [
+    8,
+    0,
+    9
+   ],
+   "total": 17,
+   "tempo_s": [
+    519,
+    716,
+    427
+   ],
+   "tempo_total_min": 28,
+   "baixar_s": 99,
+   "subir_s": 4,
+   "memoria_gb": 7
+  },
+  "qwen3-14b": {
+   "itens": [
+    8,
+    0,
+    10
+   ],
+   "total_valido": 17,
+   "observacao": "um dos 10 era dispensa por ausência ('não menciona recurso'), recusada pela regra nova",
+   "tempo_s": [
+    669,
+    931,
+    720
+   ],
+   "tempo_total_min": 39,
+   "baixar_s": 134,
+   "subir_s": 35,
+   "memoria_gb": 12.5
+  },
+  "proporcao_8b_sobre_14b": 1.0,
+  "fonte_oficial": "os dois alcançaram a fonte oficial no mesmo edital (Maria Emília), com os mesmos itens",
+  "diferenca_de_qualidade": "no valor, o 8B provou 'apoio financeiro' e o 14B 'até R$ 1 milhão' — corrigido com a regra de que valor só conta com número"
+ },
+ "veredito": "8B: resolve o mesmo que o 14B, 40% mais rápido e com 5 GB a menos de memória"
+}

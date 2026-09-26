@@ -231,7 +231,9 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     if c: marcos.append({"tipo": "recurso", "data": d2 or d1, "inicio": d1, "fim": d2, "trecho": str(b.get("trecho"))[:160]})
     if marcos: e["marcos"] = marcos
     # Valor
-    b = g("valor"); c = ok(b) and bool(b.get("valor")); campos["Valor"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": c}
+    # VALOR SÓ CONTA COM NÚMERO (26/09): o 8B provou "apoio financeiro" — verdade, mas não é valor; o 14B trouxe
+    # "até R$ 1 milhão". Sem algarismo ou "mil/milhão", fica como não encontrado e vai para a checagem de dispensa.
+    b = g("valor"); c = ok(b) and bool(re.search(r"\d|mil\b|milh", str(b.get("valor") or ""), re.I)); campos["Valor"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": c}
     if c: e["valor_texto"] = str(b["valor"])[:160]
     # Órgão
     b = g("orgao"); c = ok(b) and bool(b.get("valor")); campos["Órgão / financiador"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": c}
