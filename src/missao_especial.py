@@ -282,8 +282,11 @@ def registrar_resgate(alvo_id: str, dados: dict, achou: bool) -> dict:
     it["tentativas"] = it.get("tentativas", 0) + 1
     it["ultima_tentativa"] = now_iso()[:16]
     if achou:
+        faltava = list(it.get("falta") or [])
         it.update({k: v for k, v in dados.items() if v})
-        it["falta"] = _falta(it)
+        # item vindo do catálogo não tem objeto nem órgão por natureza: o que falta é medido contra o que
+        # faltava (prazo e página oficial), não contra a ficha completa — daí o "completou -1 de 2"
+        it["falta"] = [f for f in _falta(it) if f in faltava] if it.get("origem") == "catálogo do Piloto" else _falta(it)
         it["estado"] = "resgatado" if not it["falta"] else "parcial"
         it["resgatado_em"] = now_iso()[:16]
         if it["estado"] == "resgatado":

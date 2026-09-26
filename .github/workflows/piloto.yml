@@ -26,7 +26,7 @@ jobs:
     # para que nenhum voo monopolize o runner. O benchmark é outra coisa — cinco modelos
     # contra 120 itens em 4 CPUs — e em 23/09 foi cancelado no meio por esse mesmo teto,
     # depois de 30 minutos de trabalho perdidos. Cada modo passa a ter o seu.
-    timeout-minutes: 30
+    timeout-minutes: 45      # ~3 min de preparação + 30 min de voo (o único limite) + pouso e commit
     # (o comentário original) teto duro: UMA pesquisa por execução, nunca mais que 30 min
     steps:
       - uses: actions/checkout@v4
@@ -82,7 +82,10 @@ jobs:
           modo = os.environ.get("MODO", "ciclo")
           from src.cargo_piloto import cargo
           cg = cargo(); oc = cg["ocupante_atual"]
-          alvo = [oc]                                # só o ocupante: sem benchmark nem avaliação (titular, 24/09)
+          from src.folga import escolher
+          oc, porque = escolher(cg)                  # só cede lugar se o sistema estiver no limite (titular, 26/09)
+          print("folga:", porque)
+          alvo = [oc] if oc else []
           # CARGO VAGO NÃO TEM ARQUIVO. Desde 23/09 o posto pode estar vago, e o ocupante
           # vira um registro sem url nem arquivo. Ler esses campos direto quebrava o passo
           # inteiro — o download falhava antes de tentar baixar coisa alguma, e a avaliação

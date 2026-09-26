@@ -148,7 +148,7 @@ class TestePrioridadeETempo(unittest.TestCase):
         self.assertIn('rel.setdefault("encerrou_por", "tarefa concluída")', src)
         self.assertIn('rel["minutos_de_voo"]', src)
         c = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
-        self.assertLessEqual(c["orcamento"]["teto_minutos"], 28)                   # cabe nos 30 do job
+        self.assertLessEqual(c["orcamento"]["teto_minutos"], 30)                   # 26/09: um unico limite, 30 min de voo (o job tem 45)
         self.assertIn("nao uma meta", c["orcamento"]["regra_de_tempo"])
         self.assertNotIn("minutos_por_ciclo", c["orcamento"])
 

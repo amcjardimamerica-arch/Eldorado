@@ -683,6 +683,7 @@ def ciclo(porta: int | None = None) -> dict:
     # resgate estiver vazia e o rumo render rápido — ou ir até o teto. O que não pode é
     # ficar parado: acabou o trabalho, o voo encerra e o próximo decola em 3 segundos.
     teto_s = int(orc.get("teto_minutos", orc.get("minutos_por_ciclo", 25))) * 60
+    os.environ["ELDORADO_FIM_DO_VOO"] = str(time.time() + teto_s)     # o único limite: todos leem daqui
     rel["voo_do_dia"] = _contar_voo()
     from .briefing_piloto import escrever as _brief, fechar as _fechar
     brief = _brief(ia)                                # RELATÓRIO DE CONTEXTO: lê o banco e os voos anteriores

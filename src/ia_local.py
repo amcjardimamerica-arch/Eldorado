@@ -115,7 +115,11 @@ class IALocal:
                 data = self._transporte(payload)
             else:
                 req = urllib.request.Request(self.url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"})
-                with urllib.request.urlopen(req, timeout=self.timeout) as r:
+                # SÓ O TEMPO TOTAL DO VOO (titular, 26/09): o pedido pode durar até o que resta do voo.
+                import os as _os, time as _tm
+                _fim = float(_os.environ.get("ELDORADO_FIM_DO_VOO") or 0)
+                _t = max(30, min(self.timeout, _fim - _tm.time())) if _fim else self.timeout
+                with urllib.request.urlopen(req, timeout=_t) as r:
                     data = json.loads(r.read().decode("utf-8"))
             self.modelo = data.get("model") or self.modelo
             txt = data["choices"][0]["message"]["content"]

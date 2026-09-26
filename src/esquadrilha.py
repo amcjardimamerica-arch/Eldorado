@@ -110,7 +110,9 @@ def fechar_missao(resultado: str, achados: list[dict] | None = None, licao: str 
     b = bordo()
     m = b.get("missao_atual") or {}
     achados = achados or []
-    novos = [a for a in achados if a.get("novo")]
+    # CONFIRMAR PRAZO ABERTO É O EVENTO DE OURO (26/09): o achado de resgate nasce marcado 'não novo' porque
+    # o edital já era conhecido — mas o que se confirma nele (prazo aberto, página oficial) é o que vale.
+    novos = [a for a in (achados or []) if a.get("novo") or (a.get("resgate") and a.get("situacao") == "aberta")]
     reg = {**m, "fim": now_iso(), "estado": "pousou", "resultado": resultado[:200],
            "achados": len(achados), "abates": len(novos), "licao": licao[:160],
            "alvos": [{"titulo": (a.get("titulo") or "")[:90], "onde": a.get("onde"), "url": a.get("url"), "uf": a.get("uf")} for a in achados[:6]]}

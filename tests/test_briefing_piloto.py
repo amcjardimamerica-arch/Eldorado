@@ -24,12 +24,12 @@ class TesteCicloDeTresSegundos(unittest.TestCase):
         # o teto virou expressão por modo em 23/09 — o benchmark precisa de mais que um voo.
         # O que se cobra é que o VOO continue em 30: é ele que não pode monopolizar o runner.
         teto = str(job["timeout-minutes"])
-        self.assertIn("||30", teto.replace(" ", "")) if "$" in teto else self.assertLessEqual(int(teto), 30)
+        self.assertIn("||45", teto.replace(" ", "")) if "$" in teto else self.assertLessEqual(int(teto), 45)   # 26/09: 3 de preparacao + 30 de voo + pouso
         self.assertIn("benchmark", teto) if "$" in teto else None                    # uma pesquisa por execução
         c = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
         self.assertEqual(c["encadeamento"]["pausa_no_patio_s"], 3)
-        self.assertEqual(c["encadeamento"]["teto_execucao_min"], 30)
-        self.assertLessEqual(c["orcamento"]["teto_minutos"], 28)            # teto, não meta: cabe nos 30 do job
+        self.assertEqual(c["encadeamento"]["teto_execucao_min"], 45)
+        self.assertLessEqual(c["orcamento"]["teto_minutos"], 30)   # 26/09: um único limite (o job tem 45)
 
     def test_travas_para_nao_estourar_o_github(self):
         txt = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
