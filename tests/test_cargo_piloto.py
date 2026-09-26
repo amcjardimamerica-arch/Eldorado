@@ -38,7 +38,7 @@ class TesteCargo(unittest.TestCase):
 
     def test_troca_do_ocupante_e_uma_linha(self):
         c = cargo()
-        self.assertGreaterEqual(len(c["banco_de_reserva"]), 2)
+        self.assertEqual(len(c["banco_de_reserva"]), 0)   # 26/09: um único modelo no sistema, sem reserva
         for r in c["banco_de_reserva"]:
             self.assertTrue(r["url"].startswith("https://") and r["gb"] <= 3.0 and r["porque"])
         self.assertIn("ex_ocupantes", c); self.assertEqual(len(c["como_trocar_o_piloto"]), 3)

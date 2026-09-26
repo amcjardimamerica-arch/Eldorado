@@ -1457,11 +1457,11 @@ window.investigarComIA=async function(e){
   // abertos, com o clicado em primeiro. O resultado entra na ficha só onde houver trecho literal na fonte.
   // TRABALHO ESPECIALIZADO (titular, 26/09): este botão investiga SÓ este edital. Passos: entender os dados
   // indicados → achar a página oficial → ler a fonte oficial → doze perguntas → dispensa justificada do que faltar.
-  abreModal(`<h3 style="margin:0">Investigar com IA — este edital</h3><div class=meta>${esc(e.titulo||"")}</div>`,
+  abreModal(`<h3 style="margin:0">Piloto - Interceptador — este edital</h3><div class=meta>${esc(e.titulo||"")}</div>`,
     `<p id="inv-st">Acionando o Investigador especializado para este edital…</p>
      <ol style="margin:6px 0 0 18px;font-size:12.5px;line-height:1.5"><li>entende os dados já indicados (título, fonte, órgão, prazo)</li><li>acha a página oficial: usa a conhecida ou escolhe entre os links da divulgação, ou busca pelo órgão</li><li>lê a fonte oficial e os anexos que parecem o edital</li><li>responde às doze perguntas, cada uma com trecho literal comprovado</li><li>para o que faltar, verifica se o edital <b>dispensa</b> o item e registra a justificativa — dispensa justificada conta como válida (verde)</li></ol>
      <p class=meta style="margin-top:8px">Leva alguns minutos; a ficha é republicada ao fim.</p>`);
-  const r=await ghDispatch("investigar-ia.yml",{ids:e.id,modelo:"qwen3-8b"});
+  const r=await ghDispatch("investigar-ia.yml",{ids:e.id});
   const st=document.getElementById("inv-st"); if(!st) return;
   st.innerHTML=r.ok?`<b style="color:#1E7E4B">Investigador acionado</b> para este edital.`:`<b style="color:#B3261E">Não disparou:</b> ${esc(r.motivo||"")}`;
 };
@@ -2937,8 +2937,9 @@ function desenhaPostoPiloto(alvo){
   if(!E){ carregaEsquadrilha().then(()=>desenhaPostoPiloto(alvo)); return; }
   const at=E.missao_atual, L=E.ultimas||[], tot=E.total_abates||0;
   const motores=Object.entries(E.abates||{}).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
+  setTimeout(()=>{ try{ desenhaInterceptador(); }catch(e){} }, 300);
   el.innerHTML=`<div class="pil-posto">
-    <h4>${at?'<span class="pil-voando-ic" title="em missão">✈</span>':""} Esquadrilha do Piloto <span class=meta style="font-weight:400">— patrulha dos motores 26, 27, 28 e 29</span>
+    <h4>${at?'<span class="pil-voando-ic" title="em missão">✈</span>':""} Piloto - Espião <span class=meta style="font-weight:400">— descobre oportunidades novas · — patrulha dos motores 26, 27, 28 e 29</span>
       ${(()=>{const V=window._VIVO||{};const m=V.motor||"parado";
         const R={ligado:["girando","MOTOR LIGADO","#1E7E4B"],parado:["","MOTOR PARADO","#B3261E"],
                  desligado:["","EM TERRA POR ORDEM SUA","#8a5a00"]}[m]||["","MOTOR PARADO","#B3261E"];
@@ -2975,6 +2976,7 @@ function desenhaPostoPiloto(alvo){
           <span title="empresas descobertas"><b>${V.total_abates||0}</b> abate(s)</span></div>
         ${U?`<div class="pil-vivo-u"><b>Última missão:</b> ${esc(U.tipo||"")}${U.motor?" · "+esc(U.motor):""} — ${esc(String(U.licao||"").slice(0,120))}</div>`:""}
         ${(V.achados_recentes||[]).length?`<div class="pil-vivo-u"><b>Trouxe:</b> ${(V.achados_recentes||[]).slice(0,3).map(a=>esc(String(a.titulo||a).slice(0,60))).join(" · ")}</div>`:""}
+        <div id="pil-interceptador" class="pil-vivo-u" style="margin-top:8px;border-top:1px dashed var(--linha);padding-top:6px"><b>Piloto - Interceptador</b> <span class=meta>· comprova na fonte oficial os indícios já encontrados · carregando…</span></div>
         ${est==="parado"?`<div class="pil-acionar"><b>Ele não está voando.</b> Acione em ${esc(V.como_acionar||"Actions → Piloto → Run workflow")}.
            <a class="pil-bt-acionar" href="https://github.com/amcjardimamerica-arch/Eldorado/actions/workflows/piloto.yml" target=_blank rel="noopener noreferrer">acionar o Piloto ↗</a></div>`:""}
       </div>`;})()}
@@ -3762,6 +3764,17 @@ window.htmlHistoricoRouanet=function(e,h){
         <div class="fdoc-t">Projetos apoiados (mais recentes)</div><table class="cfg-t"><tbody>${(h.projetos||[]).slice(0,40).map(x=>`<tr><td>${esc(x.data||"")}</td><td>${esc(x.projeto||"PRONAC "+x.pronac)}</td><td>${esc(x.uf||"")}</td><td style="text-align:right;white-space:nowrap">${_brl(x.valor)}</td></tr>`).join("")}</tbody></table>`
       :`<p class=meta>O ano a ano, os projetos apoiados e o estado de destino desta empresa estão sendo coletados no servidor, das maiores doadoras para as menores; aparecem aqui assim que a coleta passar por ela.</p>`);
 };
+/* POSTO DO INTERCEPTADOR (26/09): a segunda IA — mesmo modelo — que só comprova dados na fonte oficial */
+window.desenhaInterceptador=async function(){
+  const box=document.getElementById("pil-interceptador"); if(!box) return;
+  let R=null; try{ const r=await fetch("dados/interceptador.json?v="+Date.now()); if(r.ok) R=await r.json(); }catch(e){}
+  if(!R){ box.innerHTML=`<b>Piloto - Interceptador</b> <span class=meta>· comprova na fonte oficial os indícios já encontrados · ainda não fez a primeira rodada</span>`; return; }
+  const s=R.resumo||{}, ac=R.acumulado||{};
+  box.innerHTML=`<b>Piloto - Interceptador</b> <span class=meta>· comprova na fonte oficial os indícios já encontrados</span><br>
+    <span class=meta>última rodada ${esc(String(R.em||"").slice(0,16).replace("T"," "))}: <b>${s.interceptados||0}</b> edital(is) · média <b>${s.media_itens||0}</b> de 12 itens · <b>${s.com_prazo_confirmado||0}</b> com prazo confirmado · ${s.completos||0} completos · acumulado ${ac.interceptados||0}</span>`+
+    ((R.editais||[]).slice(0,4).map(x=>`<div class=meta>· ${esc(String(x.titulo||x.id).slice(0,70))} — ${x.comprovados??"–"}/12${x.dispensados?` (${x.dispensados} dispensa)`:""}${x.erro?` · ${esc(x.erro)}`:""}</div>`).join(""));
+};
+setInterval(()=>{ try{ desenhaInterceptador(); }catch(e){} }, 120000);
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição

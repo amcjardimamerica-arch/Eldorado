@@ -1,0 +1,89 @@
+name: 12 · Piloto - Interceptador — comprova na fonte oficial os indícios já encontrados
+# A segunda IA do sistema (mesmo modelo, Qwen3-8B). Só comprova: mapeia o site oficial e confirma cada dado
+# no documento/edital. Roda a cada 4 h e sob demanda; rodada de até 4 h 40, um edital por vez.
+on:
+  schedule:
+    - cron: "17 */4 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: interceptador
+  cancel-in-progress: false
+jobs:
+  interceptar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      ELDORADO_VOO_REAL: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Dependências
+        run: pip install -q pypdf
+      - name: Motor llama.cpp (release fixa)
+        run: |
+          mkdir -p ia_local/motor ia_local/modelos
+          curl -sL -o /tmp/l.tgz https://github.com/ggml-org/llama.cpp/releases/download/b11064/llama-b11064-bin-ubuntu-x64.tar.gz
+          tar xzf /tmp/l.tgz -C /tmp && cp -r /tmp/llama-b11064/* ia_local/motor/
+      - name: Modelo — cache do Actions
+        uses: actions/cache@v4
+        with:
+          path: ia_local/modelos
+          key: modelos-gguf-v1-${{ hashFiles('config/piloto.json') }}
+      - name: Baixar o Qwen3-8B se faltar
+        run: |
+          ARQ=Qwen3-8B-Q4_K_M.gguf; DEST="ia_local/modelos/$ARQ"
+          if [ -s "$DEST" ] && [ "$(stat -c%s "$DEST")" -gt 1000000000 ]; then echo "cache: $(du -h "$DEST" | cut -f1)"; exit 0; fi
+          for U in $(python3 -c "import json;print(' '.join(json.load(open('config/espelhos_gguf.json'))['espelhos']['qwen3-8b']))"); do
+            if curl -L --retry 3 --retry-delay 10 --fail --silent --show-error -o "$DEST" "$U"; then echo "ok: $(du -h "$DEST" | cut -f1)"; exit 0; fi; rm -f "$DEST"
+          done; echo "nenhum espelho entregou o modelo"; exit 1
+      - name: Subir o modelo (contexto de 16k)
+        run: |
+          ia_local/motor/llama-server -m ia_local/modelos/Qwen3-8B-Q4_K_M.gguf -c 16384 -t 4 --port 8082 --jinja --host 127.0.0.1 > /tmp/llama.log 2>&1 &
+          for i in $(seq 1 90); do curl -s http://127.0.0.1:8082/health | grep -q '"ok"' && break; sleep 2; done
+          curl -s http://127.0.0.1:8082/health || { tail -20 /tmp/llama.log; exit 1; }
+      - name: Interceptar
+        run: |
+          python - <<'PY'
+          import json
+          from src.ia_local import IALocal, CFG
+          from src.interceptador import rodada
+          CFG["limites"]["tokens_resposta"] = 1400
+          CFG["limites"]["tempo_maximo_s"] = 1800
+          r = rodada(IALocal(porta=8082, timeout=1800), minutos=280, maximo=40)
+          print(json.dumps(r["resumo"], ensure_ascii=False))
+          PY
+      - name: Guardar uma cópia (artefato)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: interceptador-${{ github.run_id }}
+          path: |
+            docs/dados/interceptador.json
+            estado/piloto/interceptador.json
+            estado/piloto/fila_resgate.json
+            dados/editais/extraidos/
+          retention-days: 30
+      - name: Guardar e publicar (à prova de conflito)
+        if: always()
+        run: |
+          git config user.name "piloto-interceptador" && git config user.email "interceptador@eldorado"
+          rm -rf /tmp/int && mkdir -p /tmp/int/extraidos
+          cp docs/dados/interceptador.json estado/piloto/interceptador.json estado/piloto/fila_resgate.json estado/piloto/bordo.json /tmp/int/ 2>/dev/null || true
+          for f in $(git diff --name-only -- dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json); do mkdir -p "/tmp/int/$(dirname "$f")"; cp "$f" "/tmp/int/$f"; done
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            cp /tmp/int/interceptador.json docs/dados/ 2>/dev/null || true
+            cp /tmp/int/interceptador.json /tmp/int/fila_resgate.json /tmp/int/bordo.json estado/piloto/ 2>/dev/null || true
+            cp -r /tmp/int/dados /tmp/int/biblioteca_alexandria /tmp/int/docs . 2>/dev/null || true
+            git add -A docs/dados/interceptador.json estado/piloto/interceptador.json estado/piloto/fila_resgate.json estado/piloto/bordo.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json
+            git commit -q -m "interceptador: rodada $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; ENVIADO=1; break; }
+            if git push -q origin main; then echo "gravado ($i)"; ENVIADO=1; break; fi
+            sleep $((i * 5))
+          done
+          [ "${ENVIADO:-0}" = "1" ] || { echo "::error::não gravou — o resultado está no artefato"; exit 1; }
+          curl -s -o /dev/null -w "painel republicado: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/publicar-painel.yml/dispatches" -d '{"ref":"main"}'

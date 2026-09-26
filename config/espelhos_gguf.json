@@ -1,42 +1,11 @@
 {
- "porque": "UM ENDEREÇO SÓ É UM PONTO ÚNICO DE FALHA. Em 23/09 a avaliação do Qwen3-1.7B morreu porque o GGUF não baixou, e o sistema não sabia dizer se era URL errada, arquivo renomeado na origem ou rede. Cada modelo passa a ter uma lista de endereços; o download tenta em ordem e registra qual funcionou. A sondagem mede todos antes, sem baixar nada.",
- "como_sondar": "workflow piloto.yml, modo=sondar: faz uma requisição de cabeçalho em cada endereço e grava o código HTTP e o tamanho. Não baixa o arquivo — custa segundos, não minutos.",
- "atualizado_em": "2026-09-23",
+ "em": "2026-09-26",
+ "regra": "só o Qwen3-8B (titular, 26/09)",
  "espelhos": {
-  "qwen3-1.7b": [
-   "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf",
-   "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf",
-   "https://huggingface.co/bartowski/Qwen_Qwen3-1.7B-GGUF/resolve/main/Qwen_Qwen3-1.7B-Q4_K_M.gguf",
-   "https://huggingface.co/ggml-org/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M.gguf",
-   "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_K_M-00001-of-00001.gguf",
-   "https://huggingface.co/Mungert/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-q4_k_m.gguf"
-  ],
-  "qwen3-4b": [
-   "https://huggingface.co/unsloth/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf",
-   "https://huggingface.co/bartowski/Qwen_Qwen3-4B-GGUF/resolve/main/Qwen_Qwen3-4B-Q4_K_M.gguf"
-  ],
-  "qwen2.5-3b": [
-   "https://huggingface.co/bartowski/Qwen2.5-3B-Instruct-GGUF/resolve/main/Qwen2.5-3B-Instruct-Q4_K_M.gguf"
-  ],
-  "qwen3-14b": [
-   "https://huggingface.co/unsloth/Qwen3-14B-GGUF/resolve/main/Qwen3-14B-Q4_K_M.gguf",
-   "https://huggingface.co/bartowski/Qwen_Qwen3-14B-GGUF/resolve/main/Qwen_Qwen3-14B-Q4_K_M.gguf",
-   "https://huggingface.co/Qwen/Qwen3-14B-GGUF/resolve/main/Qwen3-14B-Q4_K_M.gguf"
-  ],
   "qwen3-8b": [
-   "https://huggingface.co/unsloth/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf"
-  ],
-  "qwen3.5-9b": [
-   "https://huggingface.co/Qwen/Qwen3.5-9B-GGUF/resolve/main/Qwen3.5-9B-Q4_K_M.gguf",
-   "https://huggingface.co/unsloth/Qwen3.5-9B-GGUF/resolve/main/Qwen3.5-9B-Q4_K_M.gguf",
-   "https://huggingface.co/bartowski/Qwen_Qwen3.5-9B-GGUF/resolve/main/Qwen_Qwen3.5-9B-Q4_K_M.gguf",
-   "https://huggingface.co/unsloth/Qwen3.5-9B-Instruct-GGUF/resolve/main/Qwen3.5-9B-Instruct-Q4_K_M.gguf"
-  ],
-  "qwen3-32b": [
-   "https://huggingface.co/unsloth/Qwen3-32B-GGUF/resolve/main/Qwen3-32B-Q4_K_M.gguf"
-  ],
-  "qwen3-30b-a3b": [
-   "https://huggingface.co/unsloth/Qwen3-30B-A3B-GGUF/resolve/main/Qwen3-30B-A3B-Q4_K_M.gguf"
+   "https://huggingface.co/unsloth/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf",
+   "https://huggingface.co/bartowski/Qwen_Qwen3-8B-GGUF/resolve/main/Qwen_Qwen3-8B-Q4_K_M.gguf",
+   "https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf"
   ]
  }
 }

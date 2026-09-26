@@ -1,4 +1,4 @@
-name: 11 · Investigar com IA — Qwen3-8B responde às doze perguntas dos editais abertos
+name: 11 · Piloto - Interceptador (botão) — comprova os dados de um edital na fonte oficial
 # Uma missão só: quando o botão «Investigar com IA» é acionado, o 8B lê a página oficial e os anexos de cada
 # edital e responde às doze perguntas da ficha, com trecho literal verificado. Só o comprovado entra na ficha.
 on:
@@ -7,15 +7,11 @@ on:
       ids:
         description: "ids dos editais, separados por vírgula (o primeiro tem prioridade)"
         required: true
-      modelo:
-        description: "qwen3-8b (padrão), qwen3-14b ou qwen3-4b"
-        required: false
-        default: "qwen3-8b"
 permissions:
   contents: write
   actions: write
 concurrency:
-  group: investigar-ia-${{ github.event.inputs.modelo }}
+  group: interceptador-botao
   cancel-in-progress: false
 jobs:
   investigar:
@@ -38,24 +34,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ia_local/modelos
-          key: investigador-${{ github.event.inputs.modelo }}-v1
-      - name: Baixar o modelo se faltar (tenta os espelhos)
-        env:
-          MODELO: ${{ github.event.inputs.modelo }}
+          key: modelos-gguf-v1-${{ hashFiles('config/piloto.json') }}
+      - name: Baixar o Qwen3-8B se faltar (único modelo do sistema)
         run: |
-          case "$MODELO" in
-            qwen3-14b) ARQ=Qwen3-14B-Q4_K_M.gguf; URLS="https://huggingface.co/unsloth/Qwen3-14B-GGUF/resolve/main/Qwen3-14B-Q4_K_M.gguf https://huggingface.co/bartowski/Qwen_Qwen3-14B-GGUF/resolve/main/Qwen_Qwen3-14B-Q4_K_M.gguf https://huggingface.co/Qwen/Qwen3-14B-GGUF/resolve/main/Qwen3-14B-Q4_K_M.gguf";;
-            qwen3-4b) ARQ=Qwen3-4B-Q4_K_M.gguf; URLS="https://huggingface.co/unsloth/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf https://huggingface.co/bartowski/Qwen_Qwen3-4B-GGUF/resolve/main/Qwen_Qwen3-4B-Q4_K_M.gguf";;
-            *)        ARQ=Qwen3-8B-Q4_K_M.gguf; URLS="https://huggingface.co/unsloth/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf https://huggingface.co/bartowski/Qwen_Qwen3-8B-GGUF/resolve/main/Qwen_Qwen3-8B-Q4_K_M.gguf https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf";;
-          esac
-          echo "ARQ=$ARQ" >> $GITHUB_ENV
-          DEST="ia_local/modelos/$ARQ"
-          if [ -s "$DEST" ] && [ "$(stat -c%s "$DEST")" -gt 1000000000 ]; then echo "cache: $ARQ ($(du -h "$DEST" | cut -f1))"; exit 0; fi
-          for U in $URLS; do
-            echo "baixando $U"; if curl -L --retry 3 --retry-delay 10 --fail --silent --show-error -o "$DEST" "$U"; then echo "ok: $(du -h "$DEST" | cut -f1)"; exit 0; fi
-            echo "  falhou: HTTP $(curl -L -o /dev/null -s -w '%{http_code}' --max-time 30 "$U" || echo '?')"; rm -f "$DEST"
-          done
-          echo "nenhum espelho entregou o modelo"; exit 1
+          ARQ=Qwen3-8B-Q4_K_M.gguf; echo "ARQ=$ARQ" >> $GITHUB_ENV; DEST="ia_local/modelos/$ARQ"
+          if [ -s "$DEST" ] && [ "$(stat -c%s "$DEST")" -gt 1000000000 ]; then echo "cache: $(du -h "$DEST" | cut -f1)"; exit 0; fi
+          for U in $(python3 -c "import json;print(' '.join(json.load(open('config/espelhos_gguf.json'))['espelhos']['qwen3-8b']))"); do
+            if curl -L --retry 3 --retry-delay 10 --fail --silent --show-error -o "$DEST" "$U"; then echo "ok: $(du -h "$DEST" | cut -f1)"; exit 0; fi; rm -f "$DEST"
+          done; echo "nenhum espelho entregou o modelo"; exit 1
       - name: Subir o modelo (contexto de 16k para ler o edital inteiro)
         run: |
           ia_local/motor/llama-server -m "ia_local/modelos/$ARQ" -c 16384 -t 4 --port 8082 --jinja --host 127.0.0.1 > /tmp/llama.log 2>&1 &
@@ -64,7 +50,6 @@ jobs:
       - name: Investigar
         env:
           IDS: ${{ github.event.inputs.ids }}
-          MODELO: ${{ github.event.inputs.modelo }}
         run: |
           python - <<'PY'
           import os, json
@@ -74,14 +59,14 @@ jobs:
           CFG["limites"]["tempo_maximo_s"] = 1800
           ia = IALocal(porta=8082, timeout=1800)
           ids = [x.strip() for x in os.environ.get("IDS", "").split(",") if x.strip()]
-          r = investigar_especializado(ids, ia, os.environ.get("MODELO") or "qwen3-8b", prazo_s=290 * 60)
+          r = investigar_especializado(ids, ia, "qwen3-8b", prazo_s=290 * 60)
           print(json.dumps(r["resumo"], ensure_ascii=False))
           PY
       - name: Guardar uma cópia (artefato) — o resultado nunca se perde
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: investigacao-${{ github.event.inputs.modelo }}-${{ github.run_id }}
+          name: interceptador-botao-${{ github.run_id }}
           path: |
             docs/dados/investigacoes_ia*.json
             dados/editais/extraidos/
@@ -96,14 +81,14 @@ jobs:
           git config user.name "investigador-ia" && git config user.email "ia@eldorado"
           rm -rf /tmp/inv && mkdir -p /tmp/inv/extraidos
           # só o arquivo DESTE modelo: o 14B, ao gravar, recolocou a versão velha do 8B que tinha na cópia dele
-          cp "docs/dados/investigacoes_ia_${{ github.event.inputs.modelo }}.json" /tmp/inv/ 2>/dev/null || true
+          cp docs/dados/investigacoes_ia_qwen3-8b.json /tmp/inv/ 2>/dev/null || true
           for id in $(echo "$IDS" | tr ',' ' '); do cp "dados/editais/extraidos/$id.json" /tmp/inv/extraidos/ 2>/dev/null || true; done
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
             cp /tmp/inv/investigacoes_ia_*.json docs/dados/ 2>/dev/null || true
             cp /tmp/inv/extraidos/*.json dados/editais/extraidos/ 2>/dev/null || true
             git add docs/dados/investigacoes_ia_*.json dados/editais/extraidos
-            git commit -q -m "investigador (${{ github.event.inputs.modelo }}): doze perguntas ($(date -u +%F\ %H:%M))" || { echo "nada a gravar"; break; }
+            git commit -q -m "interceptador (botão): doze perguntas ($(date -u +%F\ %H:%M))" || { echo "nada a gravar"; break; }
             if git push -q origin main; then echo "gravado na tentativa $i"; ENVIADO=1; break; fi
             sleep $((i * 5))
           done
