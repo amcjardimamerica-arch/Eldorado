@@ -77,12 +77,35 @@ jobs:
           r = investigar_especializado(ids, ia, os.environ.get("MODELO") or "qwen3-8b", prazo_s=290 * 60)
           print(json.dumps(r["resumo"], ensure_ascii=False))
           PY
+      - name: Guardar uma cópia (artefato) — o resultado nunca se perde
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: investigacao-${{ github.event.inputs.modelo }}-${{ github.run_id }}
+          path: |
+            docs/dados/investigacoes_ia*.json
+            dados/editais/extraidos/
+          retention-days: 30
       - name: Guardar e publicar
         if: always()
+        env:
+          IDS: ${{ github.event.inputs.ids }}
         run: |
+          # GRAVAÇÃO À PROVA DE CONFLITO (26/09): o 14B perdeu 65 min porque o 8B gravou os mesmos editais antes e
+          # o rebase não fechou. Agora: guarda os resultados, volta à main atual, recoloca só os resultados e envia.
           git config user.name "investigador-ia" && git config user.email "ia@eldorado"
-          git add dados/editais/extraidos docs/dados/investigacoes_ia*.json estado/piloto/respostas_modelo.jsonl 2>/dev/null || true
-          git commit -q -m "investigador: doze perguntas respondidas ($(date -u +%F\ %H:%M))" || exit 0
-          for i in 1 2 3; do git pull --rebase -q -X theirs origin main && git push -q origin main && break; sleep 5; done
+          rm -rf /tmp/inv && mkdir -p /tmp/inv/extraidos
+          cp docs/dados/investigacoes_ia*.json /tmp/inv/ 2>/dev/null || true
+          for id in $(echo "$IDS" | tr ',' ' '); do cp "dados/editais/extraidos/$id.json" /tmp/inv/extraidos/ 2>/dev/null || true; done
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            cp /tmp/inv/investigacoes_ia*.json docs/dados/ 2>/dev/null || true
+            cp /tmp/inv/extraidos/*.json dados/editais/extraidos/ 2>/dev/null || true
+            git add docs/dados/investigacoes_ia*.json dados/editais/extraidos
+            git commit -q -m "investigador (${{ github.event.inputs.modelo }}): doze perguntas ($(date -u +%F\ %H:%M))" || { echo "nada a gravar"; break; }
+            if git push -q origin main; then echo "gravado na tentativa $i"; ENVIADO=1; break; fi
+            sleep $((i * 5))
+          done
+          [ "${ENVIADO:-0}" = "1" ] || { echo "::error::não foi possível gravar — o resultado está no artefato"; exit 1; }
           curl -s -o /dev/null -w "painel republicado: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/publicar-painel.yml/dispatches" -d '{"ref":"main"}'
