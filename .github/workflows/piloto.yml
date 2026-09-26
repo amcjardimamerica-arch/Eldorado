@@ -256,6 +256,12 @@ jobs:
           # tudo o que a main apagou desde o começo do voo, antes de reaplicar. --no-renames: renomear é apagar
           # o nome velho — sem isso o git chama de 'renomeado' e o nome velho voltava (25/09, 406 arquivos).
           git diff --no-renames --name-only --diff-filter=D "$BASE_DO_VOO" origin/main | while read -r f; do rm -f "/tmp/sind/$f"; done
+          # O QUE O VOO NÃO MEXEU NÃO VOLTA (26/09): arquivo que a main mudou durante o voo e que o voo NÃO
+          # alterou fica com a versão da main. Sem isto, cada pouso recolocava a cópia antiga dos registros dos
+          # editais e apagava o que o Investigador (8B/14B) tinha gravado no meio do voo.
+          git diff --no-renames --name-only "$BASE_DO_VOO" origin/main | while read -r f; do
+            if [ -f "/tmp/sind/$f" ] && git cat-file -e "$BASE_DO_VOO:$f" 2>/dev/null && cmp -s <(git show "$BASE_DO_VOO:$f") "/tmp/sind/$f"; then rm -f "/tmp/sind/$f"; fi
+          done
           cp -r /tmp/sind/. .
           # PROTEÇÃO DO PAINEL: arquivos de autoria nunca são sobrescritos por job de dados
           git checkout origin/main -- docs/dashboard.html 2>/dev/null || true
