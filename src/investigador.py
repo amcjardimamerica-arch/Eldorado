@@ -255,19 +255,29 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
 MESTRE = ROOT / "dados/oportunidades/oportunidades.jsonl"
 
 
+_MESTRE_IDX: dict | None = None
+
+
+def _mestre() -> dict:
+    """Índice do arquivo mestre por id, montado uma vez (17 mil linhas; varrer por id era lento demais)."""
+    global _MESTRE_IDX
+    if _MESTRE_IDX is None:
+        _MESTRE_IDX = {}
+        if MESTRE.exists():
+            for l in MESTRE.open(encoding="utf-8"):
+                try:
+                    d = json.loads(l)
+                except ValueError:
+                    continue
+                if d.get("id"):
+                    _MESTRE_IDX[d["id"]] = d
+    return _MESTRE_IDX
+
+
 def registro(eid: str) -> dict | None:
     """O registro MESTRE (título, URL) vem de oportunidades.jsonl; a verificação (site oficial confirmado,
     anexos) vem do extraído, que é criado se não existir. Os dois juntos são o edital."""
-    m = None
-    if MESTRE.exists():
-        for l in MESTRE.open(encoding="utf-8"):
-            if eid in l:
-                try:
-                    d = json.loads(l)
-                    if d.get("id") == eid:
-                        m = d; break
-                except ValueError:
-                    pass
+    m = _mestre().get(eid)
     arq = EXTRAIDOS / f"{eid}.json"
     ex = json.loads(arq.read_text(encoding="utf-8")) if arq.exists() else {}
     if not m and not ex:
