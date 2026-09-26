@@ -202,6 +202,14 @@ jobs:
               sys.exit(1)
           srv.kill()
           PY
+      - name: Acordar o Piloto - Interceptador, se ele aguarda alvo
+        if: always()
+        run: |
+          git fetch -q origin main 2>/dev/null || true
+          if git cat-file -e origin/main:estado/interceptador/aguardando.json 2>/dev/null; then
+            curl -s -o /dev/null -w "Interceptador acordado: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/interceptador.yml/dispatches" -d '{"ref":"main"}'
+          else echo "Interceptador já em atividade"; fi
       - name: Pousar 3 segundos e decolar de novo
         if: ${{ always() && (github.event.inputs.modo || 'ciclo') == 'ciclo' }}
         env:

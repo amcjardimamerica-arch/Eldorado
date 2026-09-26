@@ -57,6 +57,13 @@ jobs:
           CFG["limites"]["tempo_maximo_s"] = 1500
           r = voo(IALocal(porta=8082, timeout=1500))
           print(json.dumps({k: v for k, v in r.items() if k not in ("passos", "itens")}, ensure_ascii=False)[:1500])
+          import os, pathlib
+          ag = pathlib.Path("estado/interceptador/aguardando.json")
+          if str(r.get("resultado", "")).startswith("nada a interceptar"):
+              ag.write_text(json.dumps({"desde": r["em"], "porque": r["resultado"]}, ensure_ascii=False), encoding="utf-8")
+              open(os.environ["GITHUB_ENV"], "a").write("SEM_ALVO=1\n")
+          elif ag.exists():
+              ag.unlink()
           PY
       - name: Guardar uma cópia (artefato)
         if: always()
@@ -92,10 +99,13 @@ jobs:
           [ "${ENVIADO:-0}" = "1" ] || { echo "::error::não gravou — o resultado está no artefato"; exit 1; }
           curl -s -o /dev/null -w "painel republicado: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/publicar-painel.yml/dispatches" -d '{"ref":"main"}'
-      - name: Pousar 3 segundos e decolar de novo
+      - name: Pousar 3 segundos e decolar de novo (ou aguardar, se não há alvo)
         if: always()
         run: |
           [ -e estado/interceptador/pausado ] && { echo "em terra por ordem do titular"; exit 0; }
+          # SEM ALVO, AGUARDA (titular, 26/09): não gira em vazio. Quem o acorda é o pouso do Espião ou o
+          # monitoramento dos motores, quando trazem algo novo — e o cron de 2 h, por segurança.
+          [ "${SEM_ALVO:-0}" = "1" ] && { echo "sem alvo: aguardando novos alvos dos motores ou do Espião"; exit 0; }
           sleep 3
           curl -s -o /dev/null -w "decolou o próximo: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/interceptador.yml/dispatches" -d '{"ref":"main"}'

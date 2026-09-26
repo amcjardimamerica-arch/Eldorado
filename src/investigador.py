@@ -42,8 +42,8 @@ ESQUEMA = {
     "prazo_recurso": {"inicio": "AAAA-MM-DD ou null", "fim": "AAAA-MM-DD ou null", "trecho": "trecho literal"},
     "valor": {"valor": "valor por projeto ou total, como está escrito", "trecho": "trecho literal"},
     "orgao": {"valor": "quem publica e financia", "trecho": "trecho literal"},
-    "territorio": {"uf": "sigla ou null", "abrangencia": "nacional|estadual|municipal|regional", "trecho": "trecho literal"},
-    "esfera": {"valor": "federal|estadual|municipal|privada", "trecho": "trecho literal"},
+    "territorio": {"uf": "sigla ou null", "abrangencia": "internacional|nacional|estadual|municipal|regional", "trecho": "trecho literal"},
+    "esfera": {"valor": "federal|estadual|municipal|privada|internacional", "trecho": "trecho literal"},
     "requisitos": {"lista": ["documento ou exigência"], "trecho": "trecho literal"},
     "anexos": {"lista": [{"nome": "nome do anexo", "url": "endereço ou null"}], "trecho": "trecho literal"},
     "destinacao": {"elegivel": "true se organização da sociedade civil pode concorrer", "natureza": "fomento|premio|patrocinio|convenio|outro", "trecho": "trecho literal"},
@@ -242,9 +242,9 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     b = g("territorio"); c = ok(b, True) and bool(b.get("uf") or b.get("abrangencia")); campos["Território"] = {"valor": b.get("uf") or b.get("abrangencia"), "trecho": b.get("trecho"), "comprovado": c}
     if c:
         if b.get("uf") and re.fullmatch(r"[A-Z]{2}", str(b["uf"]).upper()): e["uf"] = str(b["uf"]).upper()
-        if b.get("abrangencia") == "nacional": e["abrangencia"] = "nacional"
+        if b.get("abrangencia") in ("nacional", "internacional"): e["abrangencia"] = b["abrangencia"]   # internacional vale para Goiás
     # Esfera
-    b = g("esfera"); v = str(b.get("valor") or "").lower(); c = ok(b, True) and v in ("federal", "estadual", "municipal", "privada")
+    b = g("esfera"); v = str(b.get("valor") or "").lower(); c = ok(b, True) and v in ("federal", "estadual", "municipal", "privada", "internacional")
     campos["Esfera"] = {"valor": v or None, "trecho": b.get("trecho"), "comprovado": c}
     if c and v in ("federal", "estadual", "municipal"): e["nivel"] = v
     # Requisitos

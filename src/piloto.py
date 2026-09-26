@@ -575,6 +575,11 @@ def missao_aposta(brief: dict, ordem: int) -> tuple[str, list[dict], str]:
                 ach.append({"titulo": it.get("empresa"), "empresa": it.get("empresa"), "via": rs.get("via"), "url": url, "novo": True})
     if cand:
         C["candidatas"] = (C.get("candidatas") or []) + cand; C["em"] = date.today().isoformat(); _wj(arq, C)
+        # INCENTIVO (titular, 26/09): aposta que rendeu candidata fica registrada como exemplo — "faça mais assim"
+        arq2 = ROOT / "estado/piloto/apostas_que_renderam.json"
+        A = _lj(arq2) if arq2.exists() else {"regra": "apostas do briefing que produziram candidatas; o briefing seguinte as recebe como exemplos a seguir", "apostas": []}
+        A["apostas"] = ([{"em": date.today().isoformat(), "aposta": ap.get("onde"), "pergunta": q, "candidatas": [x["titulo"][:80] for x in cand]}] + A["apostas"])[:30]
+        _wj(arq2, A)
     return q, ach, f"aposta · '{q[:70]}': {len(res)} resultado(s), {len(cand)} candidata(s) nova(s), {len([a for a in ach if a.get('empresa')])} empresa(s)"
 
 

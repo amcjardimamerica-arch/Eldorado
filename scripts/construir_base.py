@@ -39,7 +39,7 @@ from src.nucleo import chave_curta  # noqa: E402
 B = RAIZ / "biblioteca_alexandria"
 BASE = B / "base"
 UFS_ABRANGENCIA = {"GO"}
-NACIONAL = {"nacional", "federal", "BR", ""}
+NACIONAL = {"nacional", "federal", "BR", "", "internacional"}   # internacional vale para Goiás (titular, 26/09)
 
 
 def ler(p: Path, padrao=None):
@@ -107,7 +107,7 @@ def historico() -> tuple[list[dict], list[dict]]:
             "veredito": vi.get("veredito") or vi.get("resultado"), "motivo": (vi.get("motivo") or vi.get("observacao") or "")[:160] or None,
             "familia_descarte": familias.get(k), "pertinencia_pncp": e.get("pertinencia_pncp"),
             "verificado_em": ve.get("em") or e.get("verificado_em"),
-            "abrangencia": "nacional" if (d.get("territorio") in NACIONAL or d.get("nivel") == "federal") else ("goias" if uf == "GO" else "fora"),
+            "abrangencia": "nacional" if (d.get("territorio") in NACIONAL or d.get("nivel") in ("federal", "internacional")) else ("goias" if uf == "GO" else "fora"),
         })
     aprovados = [x for x in linhas if x["veredito"] == "aprovado"]
     return linhas, aprovados

@@ -126,6 +126,20 @@ def _registrar_mudez(mudo: bool) -> None:
     write_json(arq, tudo)
 
 
+def _apostas_que_renderam() -> str:
+    """O incentivo do titular: criatividade com resultado. As apostas que já renderam candidatas voltam ao briefing
+    como exemplos — 'faça mais assim' —; as que vieram secas duas vezes já estão na memória de lugares secos."""
+    try:
+        import json as _j
+        a = _j.loads((ROOT / "estado/piloto/apostas_que_renderam.json").read_text(encoding="utf-8")).get("apostas") or []
+    except Exception:
+        a = []
+    if not a:
+        return "APOSTAS QUE RENDERAM: nenhuma ainda — a primeira que produzir candidata vira exemplo. "
+    ex = "; ".join(f"«{x.get('aposta')}» → {len(x.get('candidatas') or [])} candidata(s)" for x in a[:5])
+    return f"APOSTAS QUE RENDERAM (faça MAIS assim, com a mesma ousadia): {ex}. Oportunidade INTERNACIONAL vale para Goiás. "
+
+
 def escrever(ia, motor_cfg: dict | None = None) -> dict:
     """Escreve o briefing deste voo e devolve o prompt de pesquisa que ele gerou."""
     banco = _estado_do_banco()
@@ -145,6 +159,7 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
            "o que você planeja aqui é o que sobra de tempo depois deles.\n\n"
            if banco.get("editais_incompletos_na_fila") else "")
         + (_cobertura() + "\n\n")
+        + _apostas_que_renderam()
         + "REGRA PRINCIPAL DO ESPIÃO (titular, 26/09): encontre o que os outros motores NÃO encontram. Seja criativo. Procure "
           "oportunidades em geral — empresas, fundações, institutos, editais abertos, prêmios, fundos, programas — onde os 30 motores "
           "não chegam (a cobertura mostra onde eles já estão). Sua finalidade primordial é CRIAR oportunidades novas que virem fontes "
