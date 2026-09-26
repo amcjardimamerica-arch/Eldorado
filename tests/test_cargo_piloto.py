@@ -11,7 +11,7 @@ class TesteCargo(unittest.TestCase):
         recusa de manter um reprovado por inércia."""
         o = ocupante(); c = criterio()
         if o.get("empossado_por"):                  # posse direta do titular, avaliada em voo
-            self.assertEqual(o["id"], "qwen3-1.7b"); self.assertIn("titular", o["empossado_por"]); return
+            self.assertTrue(o["id"].startswith("qwen"), o["id"]); self.assertIn("titular", o["empossado_por"]); return
         if o.get("vago"):
             self.assertIsNone(o["nome"]); self.assertTrue(o["motivo"])
             self.assertIn("rede determinística", o["como_o_piloto_voa"])

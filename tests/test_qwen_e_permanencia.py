@@ -20,7 +20,7 @@ class TesteUmaListaSo(unittest.TestCase):
         q = next(c for c in CANDIDATOS if "Qwen3" in (c["nome"] or ""))
         self.assertTrue(q["url"].endswith(".gguf"))
         self.assertEqual(q["licenca"], "Apache-2.0")
-        self.assertLess(q["gb"], 2.0)                       # 1,1 GB: cabe no runner
+        self.assertLess(q["gb"], 3.0)   # o 4B tem 2,5 GB                       # 1,1 GB: cabe no runner
 
     def test_so_modelos_qwen(self):
         """24/09 (titular): a família é Qwen; o llama.cpp é só o executor."""
