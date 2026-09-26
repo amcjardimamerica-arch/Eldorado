@@ -323,3 +323,159 @@ def investigar(ids: list[str], ia, modelo: str, prazo_s: float = 280 * 60) -> di
     SAIDA.parent.mkdir(parents=True, exist_ok=True)
     SAIDA.write_text(json.dumps(saida, ensure_ascii=False, indent=1), encoding="utf-8")
     return saida
+
+
+# ── INVESTIGAÇÃO ESPECIALIZADA POR EDITAL (titular, 26/09) ───────────────────────────────────
+# Um botão por edital. Passos, sempre nesta ordem:
+#   1. entender os DADOS INDICADOS (título, fonte, órgão, prazo, o que já foi verificado);
+#   2. achar a PÁGINA OFICIAL: se conhecida, usa; senão lê a página de divulgação e escolhe, entre os links
+#      que saem dela, o que leva ao site do órgão — e, se não houver, busca pelo site do órgão;
+#   3. ler a FONTE OFICIAL (página e anexos que parecem o edital) e responder às doze perguntas;
+#   4. para cada item NÃO encontrado, perguntar se o edital DISPENSA aquele item — com trecho literal — e, se
+#      dispensar, registrar a justificativa: dispensa justificada conta como informação válida (verde).
+
+PROMPT_PAGINA = """Você é o Investigador da Biblioteca de Alexandria. Este é um EDITAL conhecido pelo sistema:
+título: {titulo}
+fonte que o divulgou: {fonte}
+órgão/financiador indicado: {orgao}
+prazo indicado: {prazo}
+página de divulgação lida: {url}
+
+Abaixo estão os LINKS que saem dessa página de divulgação. Escolha o que leva à PÁGINA OFICIAL do edital — o site do
+órgão ou financiador que o publica (não redes sociais, não a própria página de divulgação, não a página inicial genérica).
+Se nenhum servir, devolva url null. Responda APENAS o JSON: {{"url": "...", "porque": "..."}}
+
+LINKS:
+{links}
+"""
+
+PROMPT_DISPENSA = """Você é o Investigador da Biblioteca de Alexandria. Sobre o edital "{titulo}", os itens abaixo NÃO foram
+encontrados no texto da fonte oficial. Para cada um, diga se o edital DISPENSA o item — isto é, se o texto mostra que o
+item não se aplica a este edital (exemplos: não há fase de recurso; apoio é em espécie, sem valor em dinheiro; inscrição
+por formulário, sem anexos; resultado comunicado diretamente, sem data; edital aberto a todo o território nacional).
+Só diga que dispensa se houver TRECHO LITERAL do texto que sustente; copie de 30 a 200 caracteres. Se não houver, "dispensa": false.
+Responda APENAS o JSON, uma chave por item, exatamente com estes nomes: {itens}
+Formato de cada item: {{"dispensa": true|false, "justificativa": "uma frase", "trecho": "trecho literal ou vazio"}}
+
+TEXTO DA FONTE (pode estar truncado):
+{texto}
+"""
+
+CHAVE_ITEM = {"Objeto": "objeto", "Prazo de inscrição": "prazo_inscricao", "Resultado": "resultado", "Prazo de recurso": "prazo_recurso",
+              "Valor": "valor", "Órgão / financiador": "orgao", "Território": "territorio", "Esfera": "esfera", "Requisitos": "requisitos",
+              "Anexos": "anexos", "Destinação": "destinacao", "Área de atuação": "area"}
+
+
+def _links_da_pagina(url: str) -> list[tuple[str, str]]:
+    try:
+        dados, tipo = _baixar(url)
+    except Exception:
+        return []
+    if "pdf" in tipo.lower():
+        return []
+    p = _Texto(); p.feed(dados.decode("utf-8", "ignore"))
+    dom = (urlsplit(url).hostname or "").replace("www.", "")
+    out, vistos = [], set()
+    for h, rot in p.links:
+        full = urljoin(url, h or "")
+        hd = (urlsplit(full).hostname or "").replace("www.", "")
+        if not full.startswith("http") or full in vistos or not hd or hd == dom:
+            continue
+        if re.search(r"facebook|instagram|twitter|x\.com|linkedin|youtube|whatsapp|t\.me|wa\.me|pinterest|tiktok|google\.|apple\.|mailto", full):
+            continue
+        vistos.add(full); out.append((full, (rot or "")[:90]))
+    return out[:40]
+
+
+def pagina_oficial(ia, e: dict) -> tuple[str | None, str]:
+    """Conhecida → usa. Senão: links que saem da divulgação, escolhidos pelo modelo; senão, busca pelo órgão."""
+    if e.get("pagina_oficial"):
+        return e["pagina_oficial"], "página oficial já verificada"
+    url = e.get("url") or ""
+    links = _links_da_pagina(url) if url.startswith("http") else []
+    if links:
+        r = ia.perguntar(PROMPT_PAGINA.format(titulo=(e.get("titulo") or "")[:160], fonte=e.get("fonte_nome") or e.get("fonte_id") or "—",
+                                              orgao=e.get("orgao") or "—", prazo=e.get("prazo_texto") or e.get("fim") or "—", url=url,
+                                              links="\n".join(f"- {u}  ({r})" for u, r in links)), '{"url": "...", "porque": "..."}')
+        u = (r or {}).get("url") if isinstance(r, dict) else None
+        if u and str(u).startswith("http") and any(u == l for l, _ in links):
+            return u, f"escolhida entre {len(links)} links da divulgação: {(r or {}).get('porque', '')[:120]}"
+    try:
+        from .piloto_busca import buscar
+        q = f"{(e.get('orgao') or '').strip()} {(e.get('titulo') or '')[:80]} edital".strip()
+        for r in (buscar(q, maximo=6) or []):
+            u = r.get("url") or ""
+            if u.startswith("http") and not re.search(r"captadores|observatorio3setor|prosas|filantropia\.ong|gife|duckduckgo|bing\.", u):
+                return u, f"achada pelo buscador com '{q[:60]}'"
+    except Exception:
+        pass
+    return None, "não encontrada: sem link para o site do órgão na divulgação e o buscador não devolveu o site"
+
+
+def dispensas(ia, e: dict, texto: str, faltantes: list[str]) -> dict:
+    if not faltantes:
+        return {}
+    r = ia.perguntar(PROMPT_DISPENSA.format(titulo=(e.get("titulo") or "")[:160], itens=json.dumps([CHAVE_ITEM[i] for i in faltantes], ensure_ascii=False),
+                                            texto=_recortar(texto, 30_000)), "{item: {dispensa, justificativa, trecho}}")
+    tn = _norm(texto); out = {}
+    for item in faltantes:
+        b = (r or {}).get(CHAVE_ITEM[item]) if isinstance(r, dict) else None
+        if isinstance(b, dict) and str(b.get("dispensa")).lower() in ("true", "1", "sim") and comprovado(b.get("trecho") or "", tn):
+            out[item] = {"justificativa": str(b.get("justificativa") or "")[:200], "trecho": str(b.get("trecho") or "")[:200]}
+    return out
+
+
+def investigar_um(eid: str, ia, modelo: str) -> dict:
+    t0 = time.time()
+    e = registro(eid)
+    if e is None:
+        return {"id": eid, "erro": "registro não encontrado"}
+    passos = [f"dados indicados: título «{(e.get('titulo') or '')[:80]}», fonte {e.get('fonte_nome') or e.get('fonte_id') or '—'}, "
+              f"órgão {e.get('orgao') or '—'}, prazo {e.get('prazo_texto') or e.get('fim') or '—'}"]
+    oficial, como = pagina_oficial(ia, e)
+    passos.append(f"página oficial: {oficial or 'não encontrada'} — {como}")
+    if oficial:
+        e["pagina_oficial"] = oficial
+    texto, fontes = texto_do_edital(e)
+    if not texto.strip():
+        e["investigacao_ia"] = {"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "modelo": modelo, "passos": passos, "fontes": fontes,
+                                "campos": {}, "comprovados": 0, "dispensados": 0, "total": len(DOZE), "erro": "nenhuma fonte legível"}
+        (EXTRAIDOS / f"{eid}.json").write_text(json.dumps({**e, "edital_id": eid}, ensure_ascii=False, indent=1), encoding="utf-8")
+        return {"id": eid, "titulo": e.get("titulo"), "comprovados": 0, "erro": "nenhuma fonte legível", "passos": passos, "s": round(time.time() - t0)}
+    r = responder(ia, e, texto)
+    if not isinstance(r, dict):
+        return {"id": eid, "titulo": e.get("titulo"), "comprovados": 0, "erro": "o modelo não devolveu JSON", "passos": passos, "s": round(time.time() - t0)}
+    inv = aplicar(e, r, texto, fontes, modelo)
+    faltantes = [k for k, v in inv["campos"].items() if not v["comprovado"]]
+    disp = dispensas(ia, e, texto, faltantes)
+    for item, d in disp.items():
+        inv["campos"][item].update({"dispensado": True, "justificativa": d["justificativa"], "trecho_dispensa": d["trecho"],
+                                    "valor": f"dispensado — {d['justificativa']}"})
+    inv["dispensados"] = len(disp)
+    inv["comprovados"] = sum(1 for v in inv["campos"].values() if v["comprovado"] or v.get("dispensado"))
+    inv["passos"] = passos + [f"doze perguntas respondidas: {sum(1 for v in inv['campos'].values() if v['comprovado'])} comprovadas na fonte",
+                              f"dispensas justificadas: {len(disp)} ({', '.join(disp) or 'nenhuma'})",
+                              f"sem informação nem dispensa: {', '.join(k for k, v in inv['campos'].items() if not (v['comprovado'] or v.get('dispensado'))) or 'nenhum'}"]
+    inv["s"] = round(time.time() - t0)
+    e["confirmacao"] = f"investigado pela IA ({modelo}) em {time.strftime('%d/%m/%Y')}: {inv['comprovados']}/{len(DOZE)} itens (comprovados ou dispensados)"
+    (EXTRAIDOS / f"{eid}.json").write_text(json.dumps({**e, "edital_id": eid}, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"id": eid, "titulo": e.get("titulo"), "comprovados": inv["comprovados"], "dispensados": len(disp), "total": len(DOZE),
+            "nao_resolvidos": [k for k, v in inv["campos"].items() if not (v["comprovado"] or v.get("dispensado"))],
+            "s": inv["s"], "chars": len(texto), "fontes": len([f for f in fontes if f.get("ok")]), "pagina_oficial": oficial, "passos": passos}
+
+
+def investigar_especializado(ids: list[str], ia, modelo: str, prazo_s: float = 300 * 60) -> dict:
+    fim = time.time() + prazo_s
+    saida = {"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "modelo": modelo, "modo": "especializado (um edital por vez)", "editais": []}
+    for eid in ids:
+        if time.time() > fim:
+            saida["parou"] = "tempo esgotado"; break
+        x = investigar_um(eid, ia, modelo); saida["editais"].append(x)
+        print(f"{eid} · {x.get('comprovados', '-')}/12 ({x.get('dispensados', 0)} dispensa) · {x.get('s', '-')} s · {str(x.get('titulo', ''))[:60]} · {x.get('erro') or ''}", flush=True)
+    saida["resumo"] = {"investigados": len([x for x in saida["editais"] if "comprovados" in x]),
+                       "media_itens_resolvidos": round(sum(x.get("comprovados", 0) for x in saida["editais"]) / max(1, len(saida["editais"])), 1),
+                       "completos_12_de_12": sum(1 for x in saida["editais"] if x.get("comprovados") == len(DOZE))}
+    SAIDA.parent.mkdir(parents=True, exist_ok=True)
+    (SAIDA.parent / f"investigacoes_ia_{modelo}.json").write_text(json.dumps(saida, ensure_ascii=False, indent=1), encoding="utf-8")
+    SAIDA.write_text(json.dumps(saida, ensure_ascii=False, indent=1), encoding="utf-8")
+    return saida

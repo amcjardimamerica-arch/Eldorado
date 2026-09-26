@@ -516,7 +516,9 @@ def _bussola(editais: list[dict], hoje: date | None = None) -> dict:
         inv = (e.get("investigacao_ia") or {}).get("campos") or {}
         if inv:
             analise = [{"item": a["item"], "valor": (inv.get(a["item"]) or {}).get("valor") or a.get("valor"),
-                        "comprovado": bool((inv.get(a["item"]) or {}).get("comprovado")),
+                        "comprovado": bool((inv.get(a["item"]) or {}).get("comprovado") or (inv.get(a["item"]) or {}).get("dispensado")),
+                        "dispensado": bool((inv.get(a["item"]) or {}).get("dispensado")),
+                        "justificativa": (inv.get(a["item"]) or {}).get("justificativa"),
                         "trecho": (inv.get(a["item"]) or {}).get("trecho")} for a in analise]
         camp = _campanhas_idx().get(e["id"])
         cx["editais"].append({"id": e["id"], "titulo": e["titulo"], "url": e["url"],

@@ -8,14 +8,14 @@ on:
         description: "ids dos editais, separados por vírgula (o primeiro tem prioridade)"
         required: true
       modelo:
-        description: "qwen3-8b (padrão) ou qwen3-4b"
+        description: "qwen3-8b (padrão), qwen3-14b ou qwen3-4b"
         required: false
         default: "qwen3-8b"
 permissions:
   contents: write
   actions: write
 concurrency:
-  group: investigar-ia
+  group: investigar-ia-${{ github.event.inputs.modelo }}
   cancel-in-progress: false
 jobs:
   investigar:
@@ -44,6 +44,7 @@ jobs:
           MODELO: ${{ github.event.inputs.modelo }}
         run: |
           case "$MODELO" in
+            qwen3-14b) ARQ=Qwen3-14B-Q4_K_M.gguf; URLS="https://huggingface.co/unsloth/Qwen3-14B-GGUF/resolve/main/Qwen3-14B-Q4_K_M.gguf https://huggingface.co/bartowski/Qwen_Qwen3-14B-GGUF/resolve/main/Qwen_Qwen3-14B-Q4_K_M.gguf https://huggingface.co/Qwen/Qwen3-14B-GGUF/resolve/main/Qwen3-14B-Q4_K_M.gguf";;
             qwen3-4b) ARQ=Qwen3-4B-Q4_K_M.gguf; URLS="https://huggingface.co/unsloth/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf https://huggingface.co/bartowski/Qwen_Qwen3-4B-GGUF/resolve/main/Qwen_Qwen3-4B-Q4_K_M.gguf";;
             *)        ARQ=Qwen3-8B-Q4_K_M.gguf; URLS="https://huggingface.co/unsloth/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf https://huggingface.co/bartowski/Qwen_Qwen3-8B-GGUF/resolve/main/Qwen_Qwen3-8B-Q4_K_M.gguf https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf";;
           esac
@@ -68,19 +69,19 @@ jobs:
           python - <<'PY'
           import os, json
           from src.ia_local import IALocal, CFG
-          from src.investigador import investigar
+          from src.investigador import investigar_especializado
           CFG["limites"]["tokens_resposta"] = 1400          # doze campos com trecho não cabem em 400 tokens
-          CFG["limites"]["tempo_maximo_s"] = 1500
-          ia = IALocal(porta=8082, timeout=1500)
+          CFG["limites"]["tempo_maximo_s"] = 1800
+          ia = IALocal(porta=8082, timeout=1800)
           ids = [x.strip() for x in os.environ.get("IDS", "").split(",") if x.strip()]
-          r = investigar(ids, ia, os.environ.get("MODELO") or "qwen3-8b", prazo_s=290 * 60)
+          r = investigar_especializado(ids, ia, os.environ.get("MODELO") or "qwen3-8b", prazo_s=290 * 60)
           print(json.dumps(r["resumo"], ensure_ascii=False))
           PY
       - name: Guardar e publicar
         if: always()
         run: |
           git config user.name "investigador-ia" && git config user.email "ia@eldorado"
-          git add dados/editais/extraidos docs/dados/investigacoes_ia.json estado/piloto/respostas_modelo.jsonl 2>/dev/null || true
+          git add dados/editais/extraidos docs/dados/investigacoes_ia*.json estado/piloto/respostas_modelo.jsonl 2>/dev/null || true
           git commit -q -m "investigador: doze perguntas respondidas ($(date -u +%F\ %H:%M))" || exit 0
           for i in 1 2 3; do git pull --rebase -q -X theirs origin main && git push -q origin main && break; sleep 5; done
           curl -s -o /dev/null -w "painel republicado: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
