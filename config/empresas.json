@@ -51,19 +51,28 @@
   },
   "destinacoes": {
     "rouanet_salic": {
-      "api": "https://api.salic.cultura.gov.br/v1/incentivadores/?cgccpf={cnpj}&limit=100",
-      "nota": "incentivadores da Lei Rouanet por CNPJ, com projeto, ano e valor — fonte oficial do MinC"
+      "api": "https://api.salic.cultura.gov.br/api/v1/incentivadores?cgccpf={cnpj}",
+      "detalhe": "https://aplicacoes.cultura.gov.br/comparar/control_IncentivadoresSeusProponente/",
+      "nota": "incentivadores da Lei Rouanet por CNPJ — fonte oficial do MinC. Desde 09/2026 a API mora em /api/v1/ (o /v1/ antigo devolve 404) e devolve só o total histórico; o detalhe por doação (projeto, valor, data) está no SalicComparar e na base verificada dados/empresas/destinacoes/fontes/rouanet_salic_2026-09-26.json"
     },
     "lei_incentivo_esporte": {
       "pagina": "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte",
-      "nota": "listas de patrocinadores/doadores da LIE publicadas pelo Ministério do Esporte (por ano)"
+      "nota": "listas de patrocinadores/doadores da LIE publicadas pelo Ministério do Esporte (por ano). Em 26/09/2026 a página estava sob defeso eleitoral (HTTP 401) — retomar a partir de 26/10/2026."
     },
     "pronon_pronas": {
       "pagina": "https://www.gov.br/saude/pt-br/acesso-a-informacao/acoes-e-programas/pronon-pronas",
-      "nota": "incentivadores publicados pelo Ministério da Saúde"
+      "nota": "o Ministério da Saúde publica projetos aprovados, não doadores: não há lista pública por CNPJ"
     },
     "fia_fundo_idoso": {
       "nota": "destinações a FIA/Fundo do Idoso aparecem em prestações de contas dos conselhos (CMDCA/CMI) e em relatórios da empresa; sem lista nacional aberta por CNPJ"
+    },
+    "goyazes": {
+      "pagina": "https://goias.gov.br/cultura/programa-goyazes/",
+      "nota": "créditos de ICMS concedidos por empresa (planilhas da Secult-GO por ano); traz nome, não CNPJ"
+    },
+    "pat": {
+      "pagina": "https://dados.gov.br/dados/conjuntos-dados/programa-de-alimentacao-do-trabalhador-pat",
+      "nota": "relação de empresas beneficiárias do PAT (MTE); indício de regime, não prova de Lucro Real"
     }
   },
   "estados": {

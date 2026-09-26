@@ -3420,8 +3420,8 @@ window.desenhaApoiadores=function(){
             return leis(R).map(L=>{const m=meus[L.chave];
               const cls=!m?"nao":(m.historico?"fez":"cit");
               const t=!m?`${L.nome} — nenhuma destinação registrada. ${L.lei} · ${L.orgao} · até ${L.teto}`
-                       :`${L.nome} — ${m.historico?"já destinou":"citado, a confirmar"}. ${L.lei} · ${L.orgao} · até ${L.teto}. Como se entra: ${L.porta}`;
-              return `<i class="ep-lei ${cls}" style="--lc:${L.cor}" title="${esc(t)}">${esc(L.curto)}</i>`;}).join("");
+                       :`${L.nome} — ${m.verificado?"VERIFICADO em fonte oficial: "+(m.prova||""):m.historico?"já destinou":"citado, a confirmar"}. ${L.lei} · ${L.orgao} · até ${L.teto}. Como se entra: ${L.porta}`;
+              return `<i class="ep-lei ${cls}" style="--lc:${L.cor}" title="${esc(t)}">${esc(L.curto)}${m&&m.verificado?" ✓":""}</i>`;}).join("");
           }
           return (A.criterios||[]).map(c=>`<i class="ep-lei ${c.pontos>0?"fez":"nao"}" style="--lc:${_corCrit(c.chave)}"
             title="${esc(c.rotulo)} — ${c.pontos>0?esc(String(c.valor)):"sem registro"}. ${esc(c.porque)}">${esc(_curtoCrit(c.chave))}</i>`).join("");
@@ -3518,7 +3518,7 @@ window.fichaEmpresa=async function(uid){
         </div>`;})()}
       ${false?`<div class="ep-progs">
         ${(e.programas||[]).map(pr=>`<div class="ep-prog-l ${pr.historico?"fez":"cit"}">
-          <div class="ep-prog-c"><b>${esc(pr.nome)}</b><span class="ep-prog-s">${pr.historico?"já destinou":"citado — a confirmar"}</span></div>
+          <div class="ep-prog-c"><b>${esc(pr.nome)}${pr.verificado?" ✓":""}</b><span class="ep-prog-s">${pr.verificado?"verificado em fonte oficial ("+esc(pr.fonte||"")+")":pr.historico?"já destinou":"citado — a confirmar"}</span></div>
           <div class="ep-prog-d"><span>${esc(pr.lei)}</span><span>${esc(pr.orgao)}</span><span>até ${esc(pr.teto)}</span></div>
           <div class="ep-prog-p"><b>Como se entra:</b> ${esc(pr.porta)}</div>
           ${pr.prova?`<div class="ep-prog-e">${esc(pr.prova)}</div>`:""}</div>`).join("")}

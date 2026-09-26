@@ -304,6 +304,29 @@ if __name__ == "__main__":
     print(json.dumps(publicar(), ensure_ascii=False, indent=1))
 
 
+def _validada_para_lista(nome: str) -> str | None:
+    """RESULTADO VÁLIDO (titular, 26/09): nome extraído pelo Espião é INDÍCIO, não empresa. Só vai ao ranking
+    a empresa que (a) o Piloto - Interceptador confirmou como fonte (ficha fonte_confirmada ou fonte_possivel),
+    ou (b) consta da base verificada oficial (SALIC, Secult-GO, MTE) — inclusive as descobertas do Goyazes.
+    Entrou 'Tesouro Estadual', 'Nações Unidas', 'Pizza' e uma banda quando bastava o nome."""
+    import re as _re
+    n = _re.sub(r"[^a-z0-9]", "", str(nome or "").lower())
+    if len(n) < 4:
+        return None
+    fe = ROOT / "estado/interceptador/fontes_empresas.json"
+    f = ((load_json(fe) or {}).get("fichas") or {}).get(nome) if fe.exists() else None
+    if f and f.get("qualidade") in ("fonte_confirmada", "fonte_possivel"):
+        return f"confirmada pelo Piloto - Interceptador ({f['qualidade']})"
+    vb = ROOT / "biblioteca_alexandria/empresas/incentivos_verificados.json"
+    V = load_json(vb) if vb.exists() else {}
+    nomes = [x.get("nome") for x in (V.get("empresas") or [])] + [x.get("nome") if isinstance(x, dict) else x for x in (V.get("descobertas_goyazes") or [])]
+    for x in nomes:
+        rs = _re.sub(r"[^a-z0-9]", "", str(x or "").lower())
+        if rs and (rs == n or (len(n) >= 6 and (rs.startswith(n) or n.startswith(rs)))):
+            return "consta da base verificada oficial"
+    return None
+
+
 def alimentar_listas_de_empresas() -> dict:
     """AS EMPRESAS DA MISSÃO 2 ENTRAM NA LISTA DE EMPRESAS (titular, 24/09). Até aqui o ranking
     excluía as descobertas do Piloto de propósito. Agora cada empresa reconhecida entra na lista
@@ -330,11 +353,15 @@ def alimentar_listas_de_empresas() -> dict:
                 continue
             if all(_e_ensaio_url(u) for u in (it.get("onde_foi_vista") or ["x.org"])):
                 continue
+            razao = _validada_para_lista(it.get("empresa"))
+            if not razao:
+                continue                                   # indício: fica no radar, para o Interceptador estudar
             chaves.add(ch); contagem[cat] += 1
             d.setdefault("empresas", []).append({
                 "nome": it.get("empresa"), "origem": "reconhecimento do Piloto (missão 2)",
                 "vias": it.get("vias") or [it.get("via")], "onde_foi_vista": (it.get("onde_foi_vista") or [])[:5],
                 "evidencias": (it.get("evidencias") or [])[:3], "primeira_vez": it.get("primeira_vez"),
+                "validada_por": razao,
                 "nota": "entrou pela missão de reconhecimento; classificada pelos mesmos critérios das demais"})
         write_json(arq, d)
     return contagem

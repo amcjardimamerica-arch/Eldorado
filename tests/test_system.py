@@ -3786,8 +3786,11 @@ class SystemTests(unittest.TestCase):
         src=open("src/motores.py",encoding="utf-8").read(); self.assertNotIn('f["tipo"]',src); self.assertIn("def _indice_manual",src)
         m=load_json(pathlib.Path("docs/dados/motores.json"))
         dou=[x for x in m["oficiais"] if x["id"]=="dou"][0]
-        hoje=str(date.today()); dias={x["d"]:x["cor"] for x in dou["dias"]}
-        self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia de hoje nunca aparece como futuro
+        # "hoje" é o dia em que o arquivo foi gerado, não o relógio de quem roda o teste:
+        # com o relógio, o teste quebrava sozinho no dia seguinte a cada geração (23/09 e
+        # 26/09/2026), sem que o gerador tivesse mudado uma linha.
+        hoje=str((m.get("resumo") or {}).get("gerado_em") or date.today())[:10]; dias={x["d"]:x["cor"] for x in dou["dias"]}
+        self.assertNotEqual(dias.get(hoje),"futuro")                      # o dia da geração nunca aparece como futuro
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("timeout 600 python -m src.motores",wf); self.assertIn("log_motores.txt",wf)
 
 

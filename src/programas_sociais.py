@@ -118,6 +118,23 @@ def programas_de(e: dict) -> list[dict]:
                         "orgao": d["orgao"], "teto": d["teto"], "porta": d["porta"],
                         "historico": historico, "prova": (prova or "")[:160]})
 
+    # VERIFICADO EM FONTE OFICIAL PRIMEIRO (26/09): 'incentivos' agora só traz o que o SALIC, a Secult-GO ou o MTE
+    # confirmaram na janela de 5 anos; cada programa leva 'verificado' e a prova com valor, ano e fonte.
+    iv = e.get("incentivos_verificados") or {}
+    mec = iv.get("mecanismos") or {}
+    for inc in (iv.get("confirmados_5_anos") or []):
+        m = mec.get(inc) or {}
+        if inc == "Rouanet":
+            u5 = m.get("ultimos_5_anos") or {}
+            prova = f"R$ {u5.get('valor', 0):,.0f} em {u5.get('doacoes', 0)} doação(ões) desde {u5.get('desde', 2021)} ({', '.join(u5.get('anos') or [])}) — SALIC/MinC".replace(",", ".")
+        elif inc == "Goyazes":
+            pa = m.get("por_ano") or {}
+            prova = "; ".join(f"{a}: {v.get('projetos')} projeto(s)" for a, v in sorted(pa.items())) + " — Secult-GO"
+        else:
+            prova = f"{inc}: {m.get('status')} — {m.get('fonte') or 'fonte oficial'}"
+        n0 = len(achados); _add(identificar(inc), prova, True)
+        if len(achados) > n0:
+            achados[-1]["verificado"] = True; achados[-1]["fonte"] = m.get("fonte")
     for inc in (e.get("incentivos") or []):
         _add(identificar(inc), f"declarado como incentivo utilizado: {inc}", True)
     for d in (e.get("destinacoes") or []):

@@ -250,6 +250,9 @@ jobs:
             # associações, Sebrae e entidades empresariais do estado. O log vai para o repositório.
             { timeout 2400 python -m src.empresas semanal GO; echo "rc_semanal=$?"; } 2>&1 | tail -c 30000 >> estado/log_empresas.txt
             { timeout 900 python -m src.patrocinios; echo "rc_patrocinios=$?"; } 2>&1 | tail -c 20000 >> estado/log_empresas.txt
+            # incentivos verificados em fonte oficial (Rouanet/SALIC, Goyazes/Secult-GO, PAT/MTE):
+            # reaplica a base verificada sobre o painel de Goiás e os dois rankings regerados acima
+            { timeout 300 python -m src.biblioteca_empresas; timeout 300 python -m src.incentivos_empresas; echo "rc_incentivos=$?"; } 2>&1 | tail -c 20000 >> estado/log_empresas.txt
           fi
       - name: Exportar o acervo do banco (volta pelo Git para a próxima saída)
         if: always()

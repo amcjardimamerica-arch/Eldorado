@@ -1,0 +1,5944 @@
+{
+  "gerado_em": "2026-09-26T23:00:14+00:00",
+  "referencia": "2026-09-26",
+  "regra": "valor, ano e CNPJ só com fonte oficial; mecanismo sem fonte pública sai nulo com o motivo e o caminho para obter o dado; inscrição no PAT não prova Lucro Real",
+  "mecanismos": {
+    "Rouanet": {
+      "status": "lido",
+      "fonte": "SALIC — Ministério da Cultura",
+      "url": "https://aplicacoes.cultura.gov.br/comparar/control_IncentivadoresSeusProponente/",
+      "prova_lucro_real": true,
+      "nota": "total histórico pela API nova do SALIC e cada doação pelo SalicComparar, ambos do MinC"
+    },
+    "Goyazes": {
+      "status": "lido",
+      "fonte": "Secretaria de Estado da Cultura de Goiás",
+      "url": "https://goias.gov.br/cultura/programa-goyazes/",
+      "prova_lucro_real": false,
+      "nota": "créditos de ICMS concedidos por empresa, 2024, 2025 e 2026; a planilha traz o nome da empresa, não o CNPJ, e o valor é o do projeto aprovado"
+    },
+    "PAT": {
+      "status": "lido",
+      "fonte": "Ministério do Trabalho e Emprego — dados.gov.br",
+      "url": "https://dados.gov.br/dados/conjuntos-dados/programa-de-alimentacao-do-trabalhador-pat",
+      "prova_lucro_real": false,
+      "nota": "inscrição no PAT até 31/03/2026; é indício de regime tributário, não prova — a dedução no IRPJ só existe no Lucro Real, mas a inscrição não exige Lucro Real"
+    },
+    "LIE": {
+      "status": "bloqueado_defeso_eleitoral",
+      "fonte": "Ministério do Esporte",
+      "url": "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte",
+      "retomar_em": "2026-10-26",
+      "prova_lucro_real": true,
+      "nota": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026"
+    },
+    "FIA": {
+      "status": "sem_fonte_publica_por_cnpj",
+      "fonte": null,
+      "prova_lucro_real": true,
+      "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo",
+      "nota": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador"
+    },
+    "Fundo do Idoso": {
+      "status": "sem_fonte_publica_por_cnpj",
+      "fonte": null,
+      "prova_lucro_real": true,
+      "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa",
+      "nota": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador"
+    },
+    "PRONON": {
+      "status": "sem_fonte_publica_por_cnpj",
+      "fonte": null,
+      "prova_lucro_real": true,
+      "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação",
+      "nota": "o Ministério da Saúde publica projetos aprovados, não doadores"
+    },
+    "PRONAS/PCD": {
+      "status": "sem_fonte_publica_por_cnpj",
+      "fonte": null,
+      "prova_lucro_real": true,
+      "caminho": "idem PRONON",
+      "nota": "o Ministério da Saúde publica projetos aprovados, não doadores"
+    }
+  },
+  "resumo": {
+    "referencia": "2026-09-26",
+    "registros_na_biblioteca": 156,
+    "descartados": [],
+    "empresas_com_cnpj": 99,
+    "sem_cnpj_unico": [
+      "BTG Pactual",
+      "Buriti Shopping",
+      "CCR",
+      "Coca-Cola",
+      "Coca-Cola Brasil",
+      "Coca-Cola Femsa",
+      "Construtora Dinâmica",
+      "Curta Mais",
+      "Faculdade Estácio Goiás",
+      "Fecomércio Goiás",
+      "Fieg / Sesi / Senai Goiás",
+      "Flamboyant Shopping",
+      "Goiânia Shopping",
+      "Grupo Boticário",
+      "Grupo Bretas / Cencosud",
+      "Grupo Jaime Câmara",
+      "Grupo Mateus",
+      "Heineken",
+      "Hospital do Coração Anis Rassi",
+      "Jornal O Popular",
+      "Mais Goiás",
+      "Nubank",
+      "PUC Goiás",
+      "Passeio das Águas Shopping",
+      "Rede D'Or",
+      "Rádio Sagres",
+      "Sebrae Goiás",
+      "Sesc Goiás",
+      "Sicoob",
+      "Sicredi",
+      "Terral Empreendimentos",
+      "Unimed",
+      "Unip / Unigoiás"
+    ],
+    "cnpj_corrigidos": [
+      {
+        "nome": "Vale",
+        "errado": "53400818000168",
+        "correto": "33592510000154",
+        "prova": "o CNPJ da base é da FERTIGRAN FERTILIZANTES VALE DO RIO GRANDE (SALIC e PAT); o SALIC devolve VALE S.A. para 33592510000154"
+      },
+      {
+        "nome": "Stone",
+        "errado": "57497539000115",
+        "correto": "16501555000157",
+        "prova": "o CNPJ da base é da BRIDGESTONE (SALIC e PAT); o SALIC devolve STONE PAGAMENTOS S.A. para 16501555000157"
+      },
+      {
+        "nome": "Fleury",
+        "errado": "37639630000110",
+        "correto": "60840055000131",
+        "prova": "o CNPJ da base não aparece no SALIC nem no PAT; o SALIC devolve Fleury S/A para 60840055000131 e o PAT, FLEURY SA"
+      },
+      {
+        "nome": "Nestlé",
+        "errado": "08334818000152",
+        "correto": "60409075000152",
+        "prova": "o CNPJ da base é da Nestlé Nordeste Alimentos e Bebidas, subsidiária; a matriz é NESTLE BRASIL LTDA., 60409075000152 no SALIC"
+      }
+    ],
+    "cnpj_resolvidos_por_nome": 24,
+    "rouanet": {
+      "destinou": 86,
+      "nao_consta": 13,
+      "destinou_desde_corte": 64
+    },
+    "goyazes": {
+      "destinou": 5,
+      "empresas_novas_descobertas": 87
+    },
+    "pat": {
+      "inscrita": 87,
+      "inscrita_por_estabelecimento": 3,
+      "inscricao_inativa": 7,
+      "nao_consta": 2
+    },
+    "lucro_real_confirmado_pela_rouanet": 64,
+    "mecanismos_sem_fonte": {
+      "LIE": "bloqueado_defeso_eleitoral",
+      "FIA": "sem_fonte_publica_por_cnpj",
+      "Fundo do Idoso": "sem_fonte_publica_por_cnpj",
+      "PRONON": "sem_fonte_publica_por_cnpj",
+      "PRONAS/PCD": "sem_fonte_publica_por_cnpj"
+    }
+  },
+  "sem_cnpj": [
+    {
+      "nome": "BTG Pactual",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "grupo: o SALIC traz 17 pessoas jurídicas BTG, nenhuma é a matriz única do grupo"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "grupo: o SALIC traz 17 pessoas jurídicas BTG, nenhuma é a matriz única do grupo"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "grupo: o SALIC traz 17 pessoas jurídicas BTG, nenhuma é a matriz única do grupo"
+    },
+    {
+      "nome": "Buriti Shopping",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "CCR",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "o SALIC não devolveu registro para o nome"
+    },
+    {
+      "nome": "Coca-Cola",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "idem Coca-Cola Brasil"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "idem Coca-Cola Brasil"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "idem Coca-Cola Brasil"
+    },
+    {
+      "nome": "Coca-Cola Brasil",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "a marca não é a pessoa jurídica que produz; o SALIC não devolveu a matriz"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "a marca não é a pessoa jurídica que produz; o SALIC não devolveu a matriz"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "a marca não é a pessoa jurídica que produz; o SALIC não devolveu a matriz"
+    },
+    {
+      "nome": "Coca-Cola Femsa",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "no Brasil opera como SPAL Indústria Brasileira de Bebidas — a confirmar antes de atribuir o CNPJ"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "no Brasil opera como SPAL Indústria Brasileira de Bebidas — a confirmar antes de atribuir o CNPJ"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "no Brasil opera como SPAL Indústria Brasileira de Bebidas — a confirmar antes de atribuir o CNPJ"
+    },
+    {
+      "nome": "Construtora Dinâmica",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Curta Mais",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Faculdade Estácio Goiás",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "grupo educacional: o SALIC traz 33 pessoas jurídicas Estácio"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "grupo educacional: o SALIC traz 33 pessoas jurídicas Estácio"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "grupo educacional: o SALIC traz 33 pessoas jurídicas Estácio"
+    },
+    {
+      "nome": "Fecomércio Goiás",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "incentivo_fiscal": {
+        "aplica": false,
+        "motivo": "federação sindical: não apura IRPJ pelo Lucro Real; patrocínio só com verba própria"
+      },
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Fieg / Sesi / Senai Goiás",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "incentivo_fiscal": {
+        "aplica": false,
+        "motivo": "federação sindical e serviços sociais autônomos: não apura IRPJ pelo Lucro Real; patrocínio só com verba própria"
+      },
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Flamboyant Shopping",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Goiânia Shopping",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Grupo Boticário",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC devolve O Boticário Franchising S.A.; outras empresas do grupo têm CNPJ próprio — a confirmar"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC devolve O Boticário Franchising S.A.; outras empresas do grupo têm CNPJ próprio — a confirmar"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "o SALIC devolve O Boticário Franchising S.A.; outras empresas do grupo têm CNPJ próprio — a confirmar"
+    },
+    {
+      "nome": "Grupo Bretas / Cencosud",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "o SALIC não devolveu registro para o nome"
+    },
+    {
+      "nome": "Grupo Jaime Câmara",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "grupo de comunicação; a TV Anhanguera, do grupo, está resolvida à parte"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "grupo de comunicação; a TV Anhanguera, do grupo, está resolvida à parte"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "grupo de comunicação; a TV Anhanguera, do grupo, está resolvida à parte"
+    },
+    {
+      "nome": "Grupo Mateus",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "o SALIC não devolveu registro para o nome"
+    },
+    {
+      "nome": "Heineken",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "no Brasil opera como HNK BR Indústria de Bebidas (50221019000136, já na base) — a confirmar antes de fundir"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "no Brasil opera como HNK BR Indústria de Bebidas (50221019000136, já na base) — a confirmar antes de fundir"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "no Brasil opera como HNK BR Indústria de Bebidas (50221019000136, já na base) — a confirmar antes de fundir"
+    },
+    {
+      "nome": "Hospital do Coração Anis Rassi",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Jornal O Popular",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Mais Goiás",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Nubank",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "o SALIC não devolveu registro para o nome"
+    },
+    {
+      "nome": "PUC Goiás",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "incentivo_fiscal": {
+        "aplica": false,
+        "motivo": "instituição de ensino sem fins lucrativos: não apura IRPJ pelo Lucro Real; patrocínio só com verba própria"
+      },
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Passeio das Águas Shopping",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Rede D'Or",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "o SALIC não devolveu registro para o nome"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "o SALIC não devolveu registro para o nome"
+    },
+    {
+      "nome": "Rádio Sagres",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Sebrae Goiás",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "incentivo_fiscal": {
+        "aplica": false,
+        "motivo": "serviço social autônomo: não apura IRPJ pelo Lucro Real; patrocínio só com verba própria"
+      },
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Sesc Goiás",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "incentivo_fiscal": {
+        "aplica": false,
+        "motivo": "serviço social autônomo: não apura IRPJ pelo Lucro Real; patrocínio só com verba própria"
+      },
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Sicoob",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sistema de cooperativas: cada singular tem CNPJ próprio"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sistema de cooperativas: cada singular tem CNPJ próprio"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "sistema de cooperativas: cada singular tem CNPJ próprio"
+    },
+    {
+      "nome": "Sicredi",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sistema de cooperativas: cada singular tem CNPJ próprio"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sistema de cooperativas: cada singular tem CNPJ próprio"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "sistema de cooperativas: cada singular tem CNPJ próprio"
+    },
+    {
+      "nome": "Terral Empreendimentos",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Unimed",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sistema de cooperativas: cada singular tem CNPJ próprio (a de Goiânia está resolvida à parte)"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sistema de cooperativas: cada singular tem CNPJ próprio (a de Goiânia está resolvida à parte)"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": [],
+      "observacao": "sistema de cooperativas: cada singular tem CNPJ próprio (a de Goiânia está resolvida à parte)"
+    },
+    {
+      "nome": "Unip / Unigoiás",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    }
+  ],
+  "descobertas_goyazes": [
+    {
+      "nome": "LEVE ALIMENTOS LTDA",
+      "chave": "LEVE ALIMENTOS",
+      "cnpj": null,
+      "grafias": [
+        "LEVE ALIMENTOS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 8,
+          "valor_projetos": 1373032.92
+        },
+        "2025": {
+          "projetos": 16,
+          "valor_projetos": 3967151.89
+        },
+        "2026": {
+          "projetos": 19,
+          "valor_projetos": 4056942.7
+        }
+      },
+      "projetos": 43,
+      "valor_projetos": 9397127.51,
+      "cidades": [
+        "Alto Horizonte",
+        "Anápolis",
+        "Anápolis e Hidrolândia",
+        "Aparecida de Goiânia",
+        "Aragarças",
+        "Barro Alto",
+        "Britânia",
+        "Campinorte",
+        "Cidade de Goiás",
+        "Covington",
+        "Córdoba (Argentina)",
+        "Goiás"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "CATRAL REFRIGERAÇÃO E ELETRODOMÉSTICOS LTDA",
+      "chave": "CATRAL REFRIGERACAO ELETRODOMESTICOS",
+      "cnpj": null,
+      "grafias": [
+        "CATRAL REFRIGERAÇÃO E ELETRODOMÉSTICOS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 6,
+          "valor_projetos": 1772213.24
+        },
+        "2025": {
+          "projetos": 3,
+          "valor_projetos": 621195.0
+        },
+        "2026": {
+          "projetos": 11,
+          "valor_projetos": 2193557.17
+        }
+      },
+      "projetos": 20,
+      "valor_projetos": 4586965.41,
+      "cidades": [
+        "Aruanã",
+        "Buelandia",
+        "Catalão",
+        "Cavalcante",
+        "Goiânia",
+        "Itapirapuã",
+        "Itapuranga",
+        "Matrinchã",
+        "Pirenópolis",
+        "Rio de Janeiro",
+        "Santa Fé de Goiás",
+        "Senador Canedo"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "COMPANHIA HIDROELÉTRICA SÃO PATRÍCIO - CHESP",
+      "chave": "HIDROELETRICA SAO PATRICIO CHESP",
+      "cnpj": null,
+      "grafias": [
+        "COMPANHIA HIDROELÉTRICA SÃO PATRÍCIO - CHESP",
+        "Companhia Hidroelétrica São Patrício - CHESP"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 9,
+          "valor_projetos": 1768328.62
+        },
+        "2025": {
+          "projetos": 4,
+          "valor_projetos": 1107905.89
+        },
+        "2026": {
+          "projetos": 5,
+          "valor_projetos": 1580109.42
+        }
+      },
+      "projetos": 18,
+      "valor_projetos": 4456343.93,
+      "cidades": [
+        "Alexânia",
+        "Ceres",
+        "Cidade de Goiás",
+        "Goiânia",
+        "Goiânia e Alto Paraíso de Goiás",
+        "Jaraguá",
+        "Olhos D'água.",
+        "Pirenópolis",
+        "Pirenópolis e Cavalcante",
+        "Quirinópolis",
+        "Uruana"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "HARMONIA MUSICAL LTDA",
+      "chave": "HARMONIA MUSICAL",
+      "cnpj": null,
+      "grafias": [
+        "HARMONIA MUSICAL LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 4,
+          "valor_projetos": 1050925.45
+        },
+        "2025": {
+          "projetos": 4,
+          "valor_projetos": 934196.5
+        },
+        "2026": {
+          "projetos": 7,
+          "valor_projetos": 1858014.72
+        }
+      },
+      "projetos": 15,
+      "valor_projetos": 3843136.67,
+      "cidades": [
+        "Anápolis",
+        "Aragarças",
+        "Brasília",
+        "Capitais do Brasil",
+        "Florianópolis",
+        "Fortaleza",
+        "Goiás e Pirenópolis.",
+        "Goiânia",
+        "Inhumas",
+        "Internacional",
+        "Montreal",
+        "Oakland"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "PAPELARIA TRIBUTÁRIA LTDA",
+      "chave": "PAPELARIA TRIBUTARIA",
+      "cnpj": null,
+      "grafias": [
+        "PAPELARIA TRIBUTÁRIA LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 8,
+          "valor_projetos": 2140008.42
+        },
+        "2025": {
+          "projetos": 9,
+          "valor_projetos": 762128.75
+        },
+        "2026": {
+          "projetos": 9,
+          "valor_projetos": 645575.0
+        }
+      },
+      "projetos": 26,
+      "valor_projetos": 3547712.17,
+      "cidades": [
+        "Brasília",
+        "Buelandia",
+        "Catalão",
+        "Goiânia",
+        "Itapirapuã",
+        "Itapuranga",
+        "Matrinchã",
+        "Miami",
+        "Pirenópolis",
+        "Santa Fé de Goiás",
+        "Senador Canedo"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "VIA NUT NUTRIÇÃO CLÍNIA E PRODUTOS HOSPITALARES LTDA",
+      "chave": "VIA NUT NUTRICAO CLINIA PRODUTOS HOSPITALARES",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "VIA NUT NUTRICAO CLINIA PRODUTOS HOSPITALARES",
+        "VIA NUT NUTRICAO CLINICA PRODUTOS HOSPITALARES"
+      ],
+      "grafias": [
+        "VIA NUT NUTRIÇÃO CLÍNIA E PRODUTOS HOSPITALARES LTDA",
+        "VIA NUT NUTRIÇÃO CLÍNICA E PRODUTOS HOSPITALARES LTDA",
+        "Via Nut Nutrição Clínica e Produtos Hospitalares LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 4,
+          "valor_projetos": 641892.03
+        },
+        "2025": {
+          "projetos": 5,
+          "valor_projetos": 902391.9
+        },
+        "2026": {
+          "projetos": 5,
+          "valor_projetos": 960082.47
+        }
+      },
+      "projetos": 14,
+      "valor_projetos": 2504366.4,
+      "cidades": [
+        "Anicuns",
+        "Anápolis e Caldas Novas",
+        "Brazabrantes",
+        "Caldazinha",
+        "Campestre de Goiás",
+        "Cidade de Goiás",
+        "Goianápolis",
+        "Goiânia",
+        "Hidrolândia",
+        "Inhumas",
+        "Ipameri",
+        "Itaberaí"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "MILHÃO INDUSTRIA E COMÉRCIO DE INGREDIENTES E CEREAIS LTDA",
+      "chave": "MILHAO INGREDIENTES CEREAIS",
+      "cnpj": null,
+      "grafias": [
+        "MILHÃO INDUSTRIA E COMÉRCIO DE INGREDIENTES E CEREAIS LTDA",
+        "MILHÃO INDÚSTRIA E COMÉRCIO DE INGREDIENTES E CEREAIS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 4,
+          "valor_projetos": 1488312.92
+        },
+        "2025": {
+          "projetos": 2,
+          "valor_projetos": 542103.0
+        }
+      },
+      "projetos": 6,
+      "valor_projetos": 2030415.92,
+      "cidades": [
+        "Anápolis",
+        "Aparecida de Goiânia",
+        "Goiânia",
+        "Inhumas",
+        "Rio Verde",
+        "Santo Antônio de Goiás",
+        "Trindade"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "ARTE TRIGO INDUSTRIAL LTDA",
+      "chave": "ARTE TRIGO INDUSTRIAL",
+      "cnpj": null,
+      "grafias": [
+        "ARTE TRIGO INDUSTRIAL LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 7,
+          "valor_projetos": 1950298.63
+        }
+      },
+      "projetos": 7,
+      "valor_projetos": 1950298.63,
+      "cidades": [
+        "Alto Horizonte",
+        "Alto Paraíso de Goiás",
+        "Barro Alto",
+        "Campinorte",
+        "Cavalcante",
+        "Cavalcante de Goiás",
+        "Goiânia",
+        "Itapaci",
+        "Minaçu",
+        "Niquelândia",
+        "Pirenópolis",
+        "Pirenópolis e Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "COMPLEM - COOPERATIVA MISTA DOS PRODUTORES",
+      "chave": "COMPLEM COOPERATIVA MISTA PRODUTORES",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "COMPLEM COOPERATIVA MISTA PRODUTORES",
+        "COMPLEM COOPERATIVA MISTA PRODUTORES LEITE MORRINHOS",
+        "COMPLEM COOPERATIVA MISTA PRODUTORES LEITE MORRINHOSLTDA"
+      ],
+      "grafias": [
+        "COMPLEM - COOPERATIVA MISTA DOS PRODUTORES",
+        "COMPLEM - COOPERATIVA MISTA DOS PRODUTORES DE LEITE DE MORRINHOS LTDA",
+        "COMPLEM - COOPERATIVA MISTA DOS PRODUTORES DE LEITE DE MORRINHOSLTDA",
+        "COMPLEM COOPERATIVA MISTA DOS PRODUTORES DE LEITE DE MORRINHOS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 6,
+          "valor_projetos": 1347655.0
+        },
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 301245.0
+        },
+        "2026": {
+          "projetos": 2,
+          "valor_projetos": 169931.11
+        }
+      },
+      "projetos": 9,
+      "valor_projetos": 1818831.11,
+      "cidades": [
+        "Britânia",
+        "Catalão",
+        "Espanha",
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "LACTOSUL INDUSTRIA DE LATICINIOS LTDA",
+      "chave": "LACTOSUL LATICINIOS",
+      "cnpj": null,
+      "grafias": [
+        "LACTOSUL INDUSTRIA DE LATICINIOS LTDA",
+        "LACTOSUL INDÚSTRIA DE LATICÍNIOS LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 2,
+          "valor_projetos": 656052.8
+        },
+        "2026": {
+          "projetos": 2,
+          "valor_projetos": 1151129.77
+        }
+      },
+      "projetos": 4,
+      "valor_projetos": 1807182.57,
+      "cidades": [
+        "Baliza",
+        "Bom Jardim",
+        "Caiapônia",
+        "Doverlândia",
+        "Goiânia",
+        "Iporá",
+        "Piranhas"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "SALLO CONFECÇÃO E COMÉRCIO DE ROUPAS",
+      "chave": "SALLO CONFECCAO ROUPAS",
+      "cnpj": null,
+      "grafias": [
+        "SALLO CONFECÇÃO E COMÉRCIO DE ROUPAS",
+        "SALLO CONFECÇÃO E COMÉRCIO DE ROUPAS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 337486.83
+        },
+        "2025": {
+          "projetos": 5,
+          "valor_projetos": 1364717.85
+        }
+      },
+      "projetos": 6,
+      "valor_projetos": 1702204.68,
+      "cidades": [
+        "Goiânia",
+        "Goiânia e Maastricht (Holanda)"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "RODONAVES TRANSPORTES E ENCOMEDAS LTDA",
+      "chave": "RODONAVES TRANSPORTES ENCOMEDAS",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "RODONAVES TRANSPORTES ENCOMEDAS",
+        "RODONAVES TRANSPORTES ENCOMENDAS"
+      ],
+      "grafias": [
+        "RODONAVES TRANSPORTES E ENCOMEDAS LTDA",
+        "RODONAVES TRANSPORTES E ENCOMENDAS LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 794510.64
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 799705.76
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 1594216.4,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "TRILHA MOTO PEÇAS COM. LTDA",
+      "chave": "TRILHA MOTO PECAS",
+      "cnpj": null,
+      "grafias": [
+        "TRILHA MOTO PEÇAS COM. LTDA",
+        "TRILHA MOTO PEÇAS COMÉRCIO E IMPORTAÇÕES LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 2,
+          "valor_projetos": 561233.3
+        },
+        "2025": {
+          "projetos": 5,
+          "valor_projetos": 1031702.2
+        }
+      },
+      "projetos": 7,
+      "valor_projetos": 1592935.5,
+      "cidades": [
+        "Goiânia",
+        "Senador Canedo"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "COMPLEM - COOPERATIVA DE PRODUTORES DE LEITE DE MORRINHOS - LTDA",
+      "chave": "COMPLEM COOPERATIVA PRODUTORES LEITE MORRINHOS",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "COMPLEM COOPERATIVA PRODUTORES LEITE MORRINHOS",
+        "COMPLEM COORPERATIVA MISTA PRODUTORES LEITE MORRINHOS"
+      ],
+      "grafias": [
+        "COMPLEM - COOPERATIVA DE PRODUTORES DE LEITE DE MORRINHOS - LTDA",
+        "COMPLEM - COORPERATIVA MISTA DOS PRODUTORES DE LEITE DE MORRINHOS LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 673086.02
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 671434.71
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 1344520.73,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "ART GESSO MATERIAIS PARA CONSTRUÇÃO",
+      "chave": "ART GESSO MATERIAIS PARA CONSTRUCAO",
+      "cnpj": null,
+      "grafias": [
+        "ART GESSO MATERIAIS PARA CONSTRUÇÃO",
+        "ART GESSO MATERIAIS PARA CONSTRUÇÃO LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 173114.18
+        },
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 157737.98
+        },
+        "2026": {
+          "projetos": 3,
+          "valor_projetos": 857973.64
+        }
+      },
+      "projetos": 5,
+      "valor_projetos": 1188825.8,
+      "cidades": [
+        "Goiânia",
+        "Iporá",
+        "Iporá e Goiânia",
+        "Pirenópolis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "FLÁVIO S. CALÇADOS & ESPORTES LTDA",
+      "chave": "FLAVIO S CALCADOS ESPORTES",
+      "cnpj": null,
+      "grafias": [
+        "FLÁVIO S. CALÇADOS & ESPORTES LTDA",
+        "FLÁVIO'S CALÇADOS & ESPORTES LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 3,
+          "valor_projetos": 789870.68
+        },
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 256772.46
+        }
+      },
+      "projetos": 4,
+      "valor_projetos": 1046643.14,
+      "cidades": [
+        "Alto Paraíso",
+        "Cidade de Goiás",
+        "Goiânia",
+        "Pirenópolis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "HALEX ISTAR INDÚSTRIA FARMACÊUTICA S.A.",
+      "chave": "HALEX ISTAR FARMACEUTICA",
+      "cnpj": null,
+      "grafias": [
+        "HALEX ISTAR INDÚSTRIA FARMACÊUTICA S.A.",
+        "HALEX ISTAR INDÚSTRIA FARMACÊUTICA SA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 2,
+          "valor_projetos": 569720.03
+        },
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 383061.9
+        }
+      },
+      "projetos": 3,
+      "valor_projetos": 952781.93,
+      "cidades": [
+        "Abadiânia",
+        "Alexânia",
+        "Anápolis",
+        "Aparecida de Goiânia",
+        "Belo Horizonte",
+        "Brasília",
+        "Caldas Novas",
+        "Catalão",
+        "Cezarina",
+        "Curitiba",
+        "Goiânia",
+        "Ipameri"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "COMERCIAL DE PISOS E REVESTIMENTOS CRISTAL LTDA",
+      "chave": "COMERCIAL PISOS REVESTIMENTOS CRISTAL",
+      "cnpj": null,
+      "grafias": [
+        "COMERCIAL DE PISOS E REVESTIMENTOS CRISTAL LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 300000.0
+        },
+        "2026": {
+          "projetos": 2,
+          "valor_projetos": 624974.98
+        }
+      },
+      "projetos": 3,
+      "valor_projetos": 924974.98,
+      "cidades": [
+        "Goiás",
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "GT DISTRIBUIDORA DE AUTO PEÇAS LTDA",
+      "chave": "GT DISTRIBUIDORA AUTO PECAS",
+      "cnpj": null,
+      "grafias": [
+        "GT DISTRIBUIDORA DE AUTO PEÇAS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 5,
+          "valor_projetos": 920505.47
+        }
+      },
+      "projetos": 5,
+      "valor_projetos": 920505.47,
+      "cidades": [
+        "Britânia",
+        "Coruña",
+        "Fazenda Nova",
+        "Goiânia",
+        "Inhumas",
+        "Itapirapuã",
+        "Jussara",
+        "Madri",
+        "Matrinchã",
+        "Montes Claros de Goiás",
+        "Novo Brasil",
+        "Pirenópolis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "REDE DA CONSTRUÇÃO LTDA",
+      "chave": "REDE CONSTRUCAO",
+      "cnpj": null,
+      "grafias": [
+        "REDE DA CONSTRUÇÃO LTDA",
+        "REDE DA CONSTRUÇÃO LTDA (FILIAL)"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 6,
+          "valor_projetos": 896920.63
+        }
+      },
+      "projetos": 6,
+      "valor_projetos": 896920.63,
+      "cidades": [
+        "Aparecida de Goiânia",
+        "Belém",
+        "Florianópolis",
+        "Fortaleza",
+        "Goiânia",
+        "Goiânia (online)",
+        "Inhumas",
+        "Manaus",
+        "Montreal",
+        "Oakland",
+        "Pacifica",
+        "Palminópolis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "BEAUVALLET GOIAS ALIMENTOS LTDA",
+      "chave": "BEAUVALLET GOIAS ALIMENTOS",
+      "cnpj": null,
+      "grafias": [
+        "BEAUVALLET GOIAS ALIMENTOS LTDA",
+        "BEAUVALLET GOIÁS ALIMENTOS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 2,
+          "valor_projetos": 592410.0
+        },
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 273394.0
+        }
+      },
+      "projetos": 3,
+      "valor_projetos": 865804.0,
+      "cidades": [
+        "Goiânia",
+        "Inhumas"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "FRIGO SUÍNOS NASCENTE LTDA",
+      "chave": "FRIGO SUINOS NASCENTE",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "FRIGO SUINOS NASCENTE",
+        "FRIGO SUINOS SOL NASCENTE"
+      ],
+      "grafias": [
+        "FRIGO SUÍNOS NASCENTE LTDA",
+        "FRIGO SUÍNOS SOL NASCENTE LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 336866.45
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 424999.96
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 761866.41,
+      "cidades": [
+        "Goiânia",
+        "Jaraguá",
+        "Vianópolis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "RUBISMAR CORREIA GUEDES LTDA",
+      "chave": "RUBISMAR CORREIA GUEDES",
+      "cnpj": null,
+      "grafias": [
+        "RUBISMAR CORREIA GUEDES LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 307129.5
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 404981.73
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 712111.23,
+      "cidades": [
+        "Santa Terezinha de Goiás"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "KELLDRIN INDUSTRIAL LTDA",
+      "chave": "KELLDRIN INDUSTRIAL",
+      "cnpj": null,
+      "grafias": [
+        "KELLDRIN INDUSTRIAL LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 2,
+          "valor_projetos": 705667.0
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 705667.0,
+      "cidades": [
+        "Goiânia",
+        "Minaçu"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "COMERCIO DE ALIMENTOS JAÓ LTDA",
+      "chave": "ALIMENTOS JAO",
+      "cnpj": null,
+      "grafias": [
+        "COMERCIO DE ALIMENTOS JAÓ LTDA",
+        "COMÉRCIO DE ALIMENTOS JAÓ LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 3,
+          "valor_projetos": 675942.73
+        }
+      },
+      "projetos": 3,
+      "valor_projetos": 675942.73,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "LATICÍNIOS FLEURY LTDA",
+      "chave": "LATICINIOS FLEURY",
+      "cnpj": null,
+      "grafias": [
+        "LATICÍNIOS FLEURY LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 488026.35
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 168774.61
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 656800.96,
+      "cidades": [
+        "Jaragua",
+        "Jaraguá"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "EXPRESSO SATÉLITE NORTE LTDA",
+      "chave": "EXPRESSO SATELITE NORTE",
+      "cnpj": null,
+      "grafias": [
+        "EXPRESSO SATÉLITE NORTE LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 254150.0
+        },
+        "2026": {
+          "projetos": 2,
+          "valor_projetos": 384328.55
+        }
+      },
+      "projetos": 3,
+      "valor_projetos": 638478.55,
+      "cidades": [
+        "Aparecida de Goiânia",
+        "Goiás",
+        "Goiânia",
+        "Pirenópolis",
+        "Trindade"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "SAGA KOEA COMÉRCIO DE VEÍCULOS, PEÇAS E SERVIÇOS LTDA",
+      "chave": "SAGA KOEA VEICULOS PECAS SERVICOS",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "SAGA KOEA VEICULOS PECAS SERVICOS",
+        "SAGA KOREA VEICULOS PECAS SERVICOS"
+      ],
+      "grafias": [
+        "SAGA KOEA COMÉRCIO DE VEÍCULOS, PEÇAS E SERVIÇOS LTDA",
+        "SAGA KOREA COMÉRCIO DE VEÍCULOS PEÇAS E SERVIÇOS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 492488.45
+        },
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 142500.0
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 634988.45,
+      "cidades": [
+        "Goiânia",
+        "Pirenópilis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "JORLAN S/A VEÍCULOS AUTOMOTORES COMERCIO E IMPORTAÇÃO",
+      "chave": "JORLAN VEICULOS AUTOMOTORES",
+      "cnpj": null,
+      "grafias": [
+        "JORLAN S/A VEÍCULOS AUTOMOTORES COMERCIO E IMPORTAÇÃO",
+        "JORLAN S/A VEÍCULOS AUTOMOTORES COMÉRCIO E IMPORTAÇÃO"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 171000.0
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 461980.31
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 632980.31,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "MADEIMANAS MADEIREIRA MANAS LTDA",
+      "chave": "MADEIMANAS MADEIREIRA MANAS",
+      "cnpj": null,
+      "grafias": [
+        "MADEIMANAS MADEIREIRA MANAS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 2,
+          "valor_projetos": 626325.62
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 626325.62,
+      "cidades": [
+        "Goiânia",
+        "Goiânia e Trindade",
+        "Hidrolândia",
+        "Senador Canedo"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "GOIÁS COMÉRCIO DE COSMÉTICOS LTDA",
+      "chave": "GOIAS COSMETICOS",
+      "cnpj": null,
+      "grafias": [
+        "GOIÁS COMÉRCIO DE COSMÉTICOS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 567531.47
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 567531.47,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "VR LABEL INDUSTRIA GRÁFICA LTDA",
+      "chave": "VR LABEL GRAFICA",
+      "cnpj": null,
+      "grafias": [
+        "VR LABEL INDUSTRIA GRÁFICA LTDA",
+        "VR LABEL INDÚSTRIA GRÁFICA LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 2,
+          "valor_projetos": 560804.79
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 560804.79,
+      "cidades": [
+        "Aparecida de Goiânia (Online)",
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "PÃO DE QUEIJO FARIAS LTDA",
+      "chave": "PAO QUEIJO FARIAS",
+      "cnpj": null,
+      "grafias": [
+        "PÃO DE QUEIJO FARIAS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 3,
+          "valor_projetos": 549226.84
+        }
+      },
+      "projetos": 3,
+      "valor_projetos": 549226.84,
+      "cidades": [
+        "Anápolis (online)",
+        "Goiânia",
+        "Goiânia (online)"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "EDP TRANSMISSÃO GOIÁS S.A",
+      "chave": "EDP TRANSMISSAO GOIAS",
+      "cnpj": null,
+      "grafias": [
+        "EDP TRANSMISSÃO GOIÁS S.A"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 535500.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 535500.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "ÓTICA DE LABORATÓRIO VIDA EXPRESS INDÚSTRIA, COMÉRCIO IMPORTAÇÃO E EXPORTAÇÃO DE PRODUTOS ÓTICOS LTDA",
+      "chave": "OTICA LABORATORIO VID EXPRESS PRODUTOS OTICOS",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "OTICA LABORATORIO VID EXPRESS PRODUTOS OTICOS",
+        "OTICA LABORATORIO VIDA EXPRESS PRODUTOS OTICOS"
+      ],
+      "grafias": [
+        "ÓTICA DE LABORATÓRIO VIDA EXPRESS INDÚSTRIA, COMÉRCIO IMPORTAÇÃO E EXPORTAÇÃO DE PRODUTOS ÓTICOS LTDA",
+        "ÓTICA E LABORATÓRIO VID EXPRESS INDÚSTRIA, COMÉRCIO IMPORTAÇÃO E EXPORTAÇÃO DE PRODUTOS ÓTICOS LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 2,
+          "valor_projetos": 526111.68
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 526111.68,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "VARELLA VEÍCULOS PESADOS LTDA",
+      "chave": "VARELLA VEICULOS PESADOS",
+      "cnpj": null,
+      "grafias": [
+        "VARELLA VEÍCULOS PESADOS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 2,
+          "valor_projetos": 517901.68
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 517901.68,
+      "cidades": [
+        "Goiânia",
+        "Santo Antônio do Descoberto"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "GERALDO B. GUIMARÃES E CIA LTDA",
+      "chave": "GERALDO B GUIMARAES",
+      "cnpj": null,
+      "grafias": [
+        "GERALDO B. GUIMARÃES E CIA LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 8,
+          "valor_projetos": 511818.05
+        }
+      },
+      "projetos": 8,
+      "valor_projetos": 511818.05,
+      "cidades": [
+        "Goiânia",
+        "Goiânia (online)",
+        "Inhumas"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "MAX DISTRIBUIDORA DE PETRÓLEO LTDA",
+      "chave": "MAX DISTRIBUIDORA PETROLEO",
+      "cnpj": null,
+      "grafias": [
+        "MAX DISTRIBUIDORA DE PETRÓLEO LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 472386.7
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 472386.7,
+      "cidades": [
+        "Aracajú e Gurupi",
+        "Maceió e Palmas",
+        "Recife",
+        "Rio de Janeiro",
+        "São Paulo"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "DICASA INDUSTRIA E COMERCIO DE ALIMENTOS LTDA",
+      "chave": "DICASA ALIMENTOS",
+      "cnpj": null,
+      "grafias": [
+        "DICASA INDUSTRIA E COMERCIO DE ALIMENTOS LTDA",
+        "DICASA INDÚSTRIA E COMÉRCIO DE ALIMENTOS"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 234135.1
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 225530.0
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 459665.1,
+      "cidades": [
+        "Goiânia",
+        "Guapó",
+        "Pirenópolis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "METALÚRGICA PERPETUO SOCORRO LTDA",
+      "chave": "METALURGICA PERPETUO SOCORRO",
+      "cnpj": null,
+      "grafias": [
+        "METALÚRGICA PERPETUO SOCORRO LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 449785.04
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 449785.04,
+      "cidades": [
+        "Goiânia",
+        "Rio de Janeiro",
+        "São Paulo"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "HIDRÁULICA BRASIL LTDA",
+      "chave": "HIDRAULICA BRASIL",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "HIDRAULICA BRASIL",
+        "HIRAULICA BRASIL"
+      ],
+      "grafias": [
+        "HIDRÁULICA BRASIL LTDA",
+        "HIRÁULICA BRASIL LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 2,
+          "valor_projetos": 443622.12
+        },
+        "2026": {
+          "projetos": 2,
+          "valor_projetos": 0.0
+        }
+      },
+      "projetos": 4,
+      "valor_projetos": 443622.12,
+      "cidades": [
+        "Goiânia",
+        "Piracanjuba"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "MINAS SUL EMPREENDIMENTOS EM ALIMENTAÇÃO COLETIVA LTDA",
+      "chave": "MINAS SUL EMPREENDIMENTOS EM ALIMENTACAO COLETIVA",
+      "cnpj": null,
+      "grafias": [
+        "MINAS SUL EMPREENDIMENTOS EM ALIMENTAÇÃO COLETIVA LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 412051.5
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 412051.5,
+      "cidades": [
+        "Crixás"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "REFLORESCE - EMPREENDIMENTOS RURAIS LTDA",
+      "chave": "REFLORESCE EMPREENDIMENTOS RURAIS",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "REFLORESCE EMPREENDIMENTOS RURAIS",
+        "REFLORESCE EMPRRENDIMENTOS RURAIS"
+      ],
+      "grafias": [
+        "REFLORESCE - EMPREENDIMENTOS RURAIS LTDA",
+        "REFLORESCE - EMPRRENDIMENTOS RURAIS E LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 176087.24
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 199997.95
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 376085.19,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "LUIZ-COR MATERIAIS DE CONSTRUÇÃO LTDA",
+      "chave": "LUIZ COR MATERIAIS CONSTRUCAO",
+      "cnpj": null,
+      "grafias": [
+        "LUIZ-COR MATERIAIS DE CONSTRUÇÃO LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 2,
+          "valor_projetos": 365783.76
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 365783.76,
+      "cidades": [
+        "Goiânia",
+        "Inhumas"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "TDM TRANSPORTES LTDA",
+      "chave": "TDM TRANSPORTES",
+      "cnpj": null,
+      "grafias": [
+        "TDM TRANSPORTES LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 3,
+          "valor_projetos": 348421.5
+        }
+      },
+      "projetos": 3,
+      "valor_projetos": 348421.5,
+      "cidades": [
+        "Cidade de Goiás",
+        "Espanha",
+        "Goiânia",
+        "Portugal"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "W. H. INDÚSTRIA E COMÉRCIO LTDA",
+      "chave": "W H",
+      "cnpj": null,
+      "grafias": [
+        "W. H. INDÚSTRIA E COMÉRCIO LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 337311.82
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 337311.82,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "UNILENTES INDUSTRIAL COMERCIAL DE LENTES LTDA",
+      "chave": "UNILENTES INDUSTRIAL COMERCIAL LENTES",
+      "cnpj": null,
+      "grafias": [
+        "UNILENTES INDUSTRIAL COMERCIAL DE LENTES LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 329763.41
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 329763.41,
+      "cidades": [
+        "Goiânia",
+        "São Paulo"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "TIA MANINHA PRODUTOS ORGÂNICOS LTDA",
+      "chave": "TIA MANINHA PRODUTOS ORGANICOS",
+      "cnpj": null,
+      "grafias": [
+        "TIA MANINHA PRODUTOS ORGÂNICOS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 321587.25
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 321587.25,
+      "cidades": [
+        "Alexânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "WI INDÚSTRIA COMÉRCIO, IMPORTAÇÃO, EXPORTAÇÃO E DISTRIBUIÇÃO DE COSMÉTICOS LTDA",
+      "chave": "WI DISTRIBUICAO COSMETICOS",
+      "cnpj": null,
+      "grafias": [
+        "WI INDÚSTRIA COMÉRCIO, IMPORTAÇÃO, EXPORTAÇÃO E DISTRIBUIÇÃO DE COSMÉTICOS LTDA",
+        "WI INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO, EXPORTAÇÃO E DISTRIBUIÇÃO DE COSMÉTICOS"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 118915.96
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 193538.44
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 312454.4,
+      "cidades": [
+        "Goiânia",
+        "Pirenópolis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "KLEUBER ZACARIAS ALVES & CIA LTDA",
+      "chave": "KLEUBER ZACARIAS ALVES",
+      "cnpj": null,
+      "grafias": [
+        "KLEUBER ZACARIAS ALVES & CIA LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 304290.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 304290.0,
+      "cidades": [
+        "Goiânia (online)"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "DENUSA DESTILARIA NOVA UNIÃO",
+      "chave": "DENUSA DESTILARIA NOVA UNIAO",
+      "cnpj": null,
+      "grafias": [
+        "DENUSA DESTILARIA NOVA UNIÃO"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 299993.4
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 299993.4,
+      "cidades": [
+        "Jandaia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "VITORIA PROVEDORA LOGÍSTICA",
+      "chave": "VITORIA PROVEDORA LOGISTICA",
+      "cnpj": null,
+      "grafias": [
+        "VITORIA PROVEDORA LOGÍSTICA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 291784.5
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 291784.5,
+      "cidades": [
+        "Aparecida de Goiânia",
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "COSTA LIMA COMÉRCIO DE RELÓGIOS E ACESSÓRIOS LTDA",
+      "chave": "COSTA LIMA RELOGIOS ACESSORIOS",
+      "cnpj": null,
+      "grafias": [
+        "COSTA LIMA COMÉRCIO DE RELÓGIOS E ACESSÓRIOS LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 290000.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 290000.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "BELCAR AUTOMÓVEIS LTDA",
+      "chave": "BELCAR AUTOMOVEIS",
+      "cnpj": null,
+      "grafias": [
+        "BELCAR AUTOMÓVEIS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 285000.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 285000.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "AMORIX ALIMENTOS LTDA",
+      "chave": "AMORIX ALIMENTOS",
+      "cnpj": null,
+      "grafias": [
+        "AMORIX ALIMENTOS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 284886.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 284886.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "MILHÃO INDUSTRIA E COMERCIA DE INGREDIENTES E CEREAIS LTDA",
+      "chave": "MILHAO COMERCIA INGREDIENTES CEREAIS",
+      "cnpj": null,
+      "grafias": [
+        "MILHÃO INDUSTRIA E COMERCIA DE INGREDIENTES E CEREAIS LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 2,
+          "valor_projetos": 265493.24
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 265493.24,
+      "cidades": [
+        "Alto Paraíso de Goiás",
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "CERRADO DISTRIBUIÇÃO E SERVIÇOS LTDA",
+      "chave": "CERRADO DISTRIBUICAO SERVICOS",
+      "cnpj": null,
+      "grafias": [
+        "CERRADO DISTRIBUIÇÃO E SERVIÇOS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 253637.16
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 253637.16,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "CASA DO PICA PAU LTDA",
+      "chave": "CASA PICA PAU",
+      "cnpj": null,
+      "grafias": [
+        "CASA DO PICA PAU LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 252000.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 252000.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "WI INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO, EXPORTAÇÃO DE COSMÉTICOS",
+      "chave": "WI COSMETICOS",
+      "cnpj": null,
+      "grafias": [
+        "WI INDÚSTRIA, COMÉRCIO, IMPORTAÇÃO, EXPORTAÇÃO DE COSMÉTICOS"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 250000.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 250000.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "AVAGUI DISTRIBUIDORA DE PRODUTOS AGROPECUÁRIOS LTDA",
+      "chave": "AVAGUI DISTRIBUIDORA PRODUTOS AGROPECUARIOS",
+      "cnpj": null,
+      "grafias": [
+        "AVAGUI DISTRIBUIDORA DE PRODUTOS AGROPECUÁRIOS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 227543.59
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 227543.59,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "R3 SUPRIMENTOS",
+      "chave": "R3 SUPRIMENTOS",
+      "cnpj": null,
+      "grafias": [
+        "R3 SUPRIMENTOS"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 2,
+          "valor_projetos": 227414.99
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 227414.99,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "ART LENS DISTRIBUIDORA DE PRODUTOS ÓPTICOS LTDA",
+      "chave": "ART LENS DISTRIBUIDORA PRODUTOS OPTICOS",
+      "cnpj": null,
+      "grafias": [
+        "ART LENS DISTRIBUIDORA DE PRODUTOS ÓPTICOS LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 207590.04
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 207590.04,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "SOL INDÚSTRIA E COMÉRCIO DE BEBIDAS LTDA",
+      "chave": "SOL BEBIDAS",
+      "cnpj": null,
+      "grafias": [
+        "SOL INDÚSTRIA E COMÉRCIO DE BEBIDAS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 186276.48
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 186276.48,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "MEGA DORNIER COMÉRCIO DE JÓIAS LTDA",
+      "chave": "MEGA DORNIER JOIAS",
+      "cnpj": null,
+      "grafias": [
+        "MEGA DORNIER COMÉRCIO DE JÓIAS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 173914.13
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 173914.13,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "CENTROESTE ESQUADRIAS DE ALUMÍNIO LTDA",
+      "chave": "CENTROESTE ESQUADRIAS ALUMINIO",
+      "cnpj": null,
+      "agrupado_por_semelhanca_de_nome": [
+        "CENTROESTE ESQUADRIAS ALUMINIO",
+        "CENTROOESTE ESQUADRIAS ALUMINIO"
+      ],
+      "grafias": [
+        "CENTROESTE ESQUADRIAS DE ALUMÍNIO LTDA",
+        "CENTROOESTE ESQUADRIAS DE ALUMÍNIO LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 45995.3
+        },
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 123436.23
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 169431.53,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "TOPLINE BUS COMERCIO E REPRESNTAÇÕES LTDA",
+      "chave": "TOPLINE BUS REPRESNTACOES",
+      "cnpj": null,
+      "grafias": [
+        "TOPLINE BUS COMERCIO E REPRESNTAÇÕES LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 167529.5
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 167529.5,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "LA COMERCIO DE PRODUTOS DE SECOS E MOLHADOS LTDA",
+      "chave": "LA PRODUTOS SECOS MOLHADOS",
+      "cnpj": null,
+      "grafias": [
+        "LA COMERCIO DE PRODUTOS DE SECOS E MOLHADOS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 160892.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 160892.0,
+      "cidades": [
+        "Alto Paraíso",
+        "Brasília",
+        "Cidade de Goiás",
+        "Itaberaí",
+        "Matrinchã"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "MARIZE DE CARVALHO ALMEIDA E CIA LTDA",
+      "chave": "MARIZE CARVALHO ALMEIDA",
+      "cnpj": null,
+      "grafias": [
+        "MARIZE DE CARVALHO ALMEIDA E CIA LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 154470.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 154470.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "BF SUPERMERCADO NOSSA CASA LTDA",
+      "chave": "BF SUPERMERCADO NOSSA CASA",
+      "cnpj": null,
+      "grafias": [
+        "BF SUPERMERCADO NOSSA CASA LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 150000.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 150000.0,
+      "cidades": [
+        "Anhanguera",
+        "Anápolis",
+        "Bonfinópolis",
+        "Catalão",
+        "Cumari",
+        "Goiandira",
+        "Goiânia.",
+        "Ipameri",
+        "Leopodo de Bulhões",
+        "Orizona",
+        "Pires do Rio",
+        "Senador Canedo"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "PACHECO MATERIAIS PARA CONSTRUÇÃO LTDA",
+      "chave": "PACHECO MATERIAIS PARA CONSTRUCAO",
+      "cnpj": null,
+      "grafias": [
+        "PACHECO MATERIAIS PARA CONSTRUÇÃO LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 128992.5
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 128992.5,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "NUTRA - NUTRIÇÃO AVANÇADA LTDA",
+      "chave": "NUTRA NUTRICAO AVANCADA",
+      "cnpj": null,
+      "grafias": [
+        "NUTRA - NUTRIÇÃO AVANÇADA LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 2,
+          "valor_projetos": 118408.5
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 118408.5,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "AGILLE COMÉRCIO DE MEDICAMENTOS LTDA",
+      "chave": "AGILLE MEDICAMENTOS",
+      "cnpj": null,
+      "grafias": [
+        "AGILLE COMÉRCIO DE MEDICAMENTOS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 2,
+          "valor_projetos": 100137.35
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 100137.35,
+      "cidades": [
+        "Cidade de Goiás",
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "FURACÃO NEGÓCIOS E PRODUTOS PROFISSIONAIS LTDA",
+      "chave": "FURACAO NEGOCIOS PRODUTOS PROFISSIONAIS",
+      "cnpj": null,
+      "grafias": [
+        "FURACÃO NEGÓCIOS E PRODUTOS PROFISSIONAIS LTDA"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 99960.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 99960.0,
+      "cidades": [
+        "Anápolis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "JRV INDÚSTRIA E COMÉRCIO DE PEÇAS EIRELLI",
+      "chave": "JRV PECAS",
+      "cnpj": null,
+      "grafias": [
+        "JRV INDÚSTRIA E COMÉRCIO DE PEÇAS EIRELLI"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 97061.53
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 97061.53,
+      "cidades": [
+        "Aparecida de Goiânia",
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "CRJ ESQUADRIAS EM ALUMÍNIO",
+      "chave": "CRJ ESQUADRIAS EM ALUMINIO",
+      "cnpj": null,
+      "grafias": [
+        "CRJ ESQUADRIAS EM ALUMÍNIO"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 85652.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 85652.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "LUZTOL INDÚSTRIA QUÍMICA LTDA",
+      "chave": "LUZTOL QUIMICA",
+      "cnpj": null,
+      "grafias": [
+        "LUZTOL INDÚSTRIA QUÍMICA LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 71000.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 71000.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "RECICLAR RECICLAGEM DE MATERIAIS",
+      "chave": "RECICLAR RECICLAGEM MATERIAIS",
+      "cnpj": null,
+      "grafias": [
+        "RECICLAR RECICLAGEM DE MATERIAIS"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 53074.35
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 53074.35,
+      "cidades": [
+        "Goiânia",
+        "Iporá"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "Pitigliano Pizzaria Itda",
+      "chave": "PITIGLIANO PIZZARIA ITDA",
+      "cnpj": null,
+      "grafias": [
+        "Pitigliano Pizzaria Itda"
+      ],
+      "por_ano": {
+        "2025": {
+          "projetos": 1,
+          "valor_projetos": 52523.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 52523.0,
+      "cidades": [
+        "Goiânia e Anápolis"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "NOVA ROCHA INDUSTRIA DE TINTAS LTDA",
+      "chave": "NOVA ROCHA TINTAS",
+      "cnpj": null,
+      "grafias": [
+        "NOVA ROCHA INDUSTRIA DE TINTAS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 38587.5
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 38587.5,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "VITAMEDIC INDÚSTRIA FARMACÊUTICA LTDA",
+      "chave": "VITAMEDIC FARMACEUTICA",
+      "cnpj": null,
+      "grafias": [
+        "VITAMEDIC INDÚSTRIA FARMACÊUTICA LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 31500.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 31500.0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "A.M. DA SILVA SUPERMERCADO",
+      "chave": "A M SILVA SUPERMERCADO",
+      "cnpj": null,
+      "grafias": [
+        "A.M. DA SILVA SUPERMERCADO"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 0.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 0,
+      "cidades": [
+        "Santa Terezinha de Goiás"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "AGROINDÚSTRIA DE ALIMENTOS AVESUI LTDA",
+      "chave": "AGROINDUSTRIA ALIMENTOS AVESUI",
+      "cnpj": null,
+      "grafias": [
+        "AGROINDÚSTRIA DE ALIMENTOS AVESUI LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 0.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "BELCAR VEÍCULOS LTDA",
+      "chave": "BELCAR VEICULOS",
+      "cnpj": null,
+      "grafias": [
+        "BELCAR VEÍCULOS LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 0.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "ELISSANDRO DIAS NASCIMENTO LTDA",
+      "chave": "ELISSANDRO DIAS NASCIMENTO",
+      "cnpj": null,
+      "grafias": [
+        "ELISSANDRO DIAS NASCIMENTO LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 2,
+          "valor_projetos": 0.0
+        }
+      },
+      "projetos": 2,
+      "valor_projetos": 0,
+      "cidades": [
+        "Goiânia",
+        "Hidrolândia",
+        "Inhumas",
+        "Senador Canedo"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "ELLO DISTRIBUIÇÃO LTDA",
+      "chave": "ELLO DISTRIBUICAO",
+      "cnpj": null,
+      "grafias": [
+        "ELLO DISTRIBUIÇÃO LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 0.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "LS TECIDOS E CONFECÇÕES LTDA",
+      "chave": "LS TECIDOS CONFECCOES",
+      "cnpj": null,
+      "grafias": [
+        "LS TECIDOS E CONFECÇÕES LTDA"
+      ],
+      "por_ano": {
+        "2026": {
+          "projetos": 1,
+          "valor_projetos": 0.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 0,
+      "cidades": [
+        "Santa Terezinha de Goiás"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    },
+    {
+      "nome": "VIRTUAL DISTRIBUIDORA DE UTILIDADES DOSMÉTICAS LTDA",
+      "chave": "VIRTUAL DISTRIBUIDORA UTILIDADES DOSMETICAS",
+      "cnpj": null,
+      "grafias": [
+        "VIRTUAL DISTRIBUIDORA DE UTILIDADES DOSMÉTICAS LTDA"
+      ],
+      "por_ano": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 0.0
+        }
+      },
+      "projetos": 1,
+      "valor_projetos": 0,
+      "cidades": [
+        "Goiânia"
+      ],
+      "fonte": "Secult-GO — créditos concedidos por empresa",
+      "proximo_passo": "obter o CNPJ no cadastro da Receita e incluir no motor de empresas de Goiás"
+    }
+  ],
+  "empresas": [
+    {
+      "nome": "AMAZON SERVIÇOS DE VAREJO DO BRASIL LTDA",
+      "cnpj": "15436940000103",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscricao_inativa",
+      "lucro_real": null
+    },
+    {
+      "nome": "AMBEV S.A.",
+      "cnpj": "07526557000100",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 41700.0,
+        "anos": [
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "AMERICANAS S.A.",
+      "cnpj": "00776574000156",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 2,
+        "valor": 2130049.0,
+        "anos": [
+          "2021",
+          "2022"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "ATACADAO DIA A DIA S.A",
+      "cnpj": "17457404000101",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 4,
+        "valor": 1877683.6,
+        "anos": [
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "ATACADAO DISTRIBUICAO COMERCIO E INDUSTRIA LTDA",
+      "cnpj": "75315333000109",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 67,
+        "valor": 20079536.17,
+        "anos": [
+          "2021",
+          "2022",
+          "2023"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Alcoa",
+      "cnpj": "23637697000101",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 3,
+        "valor": 800439.09,
+        "anos": [
+          "2021"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Arcelor Mittal",
+      "cnpj": "17469701000177",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 98,
+        "valor": 49657698.66,
+        "anos": [
+          "2021",
+          "2022",
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "BRASAL REFRIGERANTES S/A",
+      "cnpj": "01612795000151",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 27,
+        "valor": 5666632.74,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "BRF S.A.",
+      "cnpj": "01838723000127",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 14,
+        "valor": 7128242.8,
+        "anos": [
+          "2021",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "BUNGE ALIMENTOS S/A",
+      "cnpj": "84046101000193",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 30000.0,
+        "anos": [
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Banco do Brasil",
+      "cnpj": "00000000000191",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 132,
+        "valor": 119272403.21,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Bradesco",
+      "cnpj": "60746948000112",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 54,
+        "valor": 42099688.21,
+        "anos": [
+          "2022",
+          "2023",
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Braskem",
+      "cnpj": "42150391000170",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 25,
+        "valor": 11147555.84,
+        "anos": [
+          "2021"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "CALAMO DISTRIBUIDORA DE PRODUTOS DE BELEZA S.A.",
+      "cnpj": "06147451000132",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 4,
+        "valor": 1603028.5,
+        "anos": [
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "CAOA MONTADORA DE VEÍCULOS LTDA",
+      "cnpj": "03471344000177",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "CARAMURU ALIMENTOS S/A",
+      "cnpj": "00080671000100",
+      "confirmados": [
+        "Goyazes",
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 100000.0,
+        "anos": [
+          "2024"
+        ]
+      },
+      "goyazes": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 313677.0
+        }
+      },
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "CARGILL AGRICOLA S A",
+      "cnpj": "60498706000157",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "CARGILL NOVOS HORIZONTES LTDA",
+      "cnpj": "50290329000102",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "CARREFOUR COMERCIO E INDUSTRIA LTDA",
+      "cnpj": "45543915000181",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "CENTRO OESTE COMERCIAL DE ALIMENTOS LTDA",
+      "cnpj": "24447350000169",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "nao_consta",
+      "lucro_real": null
+    },
+    {
+      "nome": "CERVEJARIA PETROPOLIS S/A",
+      "cnpj": "73410326000160",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscricao_inativa",
+      "lucro_real": null
+    },
+    {
+      "nome": "CERVEJARIAS KAISER BRASIL LTDA",
+      "cnpj": "19900000000176",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 8,
+        "valor": 2707124.6,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "CIPLAN CIMENTO PLANALTO SA",
+      "cnpj": "00057240000122",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 44000.0,
+        "anos": [
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "CKBR BEBIDAS LTDA",
+      "cnpj": "04176513000109",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 3,
+        "valor": 2754586.89,
+        "anos": [
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "CLARO S.A.",
+      "cnpj": "40432544000147",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 1317000.0,
+        "anos": [
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "CMOC BRASIL MINERACAO, INDUSTRIA E PARTICIPACOES LTDA.",
+      "cnpj": "26108898000100",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 33,
+        "valor": 20152282.14,
+        "anos": [
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "COOPERATIVA AGROIND DOS PRODUTORES RURAIS DO SUDOESTE GOIANO",
+      "cnpj": "02077618000185",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "COSTA MULTICANAL S/A",
+      "cnpj": "27289076000135",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "Caixa Econômica Federal",
+      "cnpj": "00360305000104",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 32,
+        "valor": 6612870.87,
+        "anos": [
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Correios",
+      "cnpj": "34028316000103",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 5,
+        "valor": 1910000.0,
+        "anos": [
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "DISTRIBUIDORA DE MEDICAMENTOS SANTA CRUZ LTDA",
+      "cnpj": "61940292000137",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "DROGARIA SAO PAULO S.A.",
+      "cnpj": "61412110000155",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 7,
+        "valor": 1991643.87,
+        "anos": [
+          "2021",
+          "2022",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Dasa",
+      "cnpj": "61486650000183",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 2,
+        "valor": 312738.96,
+        "anos": [
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscricao_inativa",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "EDN UTILIDADES DOMESTICAS IMPORTACAO E EXPORTACAO LTDA",
+      "cnpj": "20758851000105",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscricao_inativa",
+      "lucro_real": null
+    },
+    {
+      "nome": "EQUATORIAL GOIAS DISTRIBUIDORA DE ENERGIA S/A",
+      "cnpj": "01543032000104",
+      "confirmados": [
+        "Goyazes",
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": {
+        "2024": {
+          "projetos": 39,
+          "valor_projetos": 10866385.87
+        },
+        "2025": {
+          "projetos": 17,
+          "valor_projetos": 5862937.97
+        },
+        "2026": {
+          "projetos": 13,
+          "valor_projetos": 5474160.95
+        }
+      },
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "Eletrobras",
+      "cnpj": "00001180000126",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 10,
+        "valor": 8396187.79,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "FORD MOTOR COMPANY BRASIL LTDA",
+      "cnpj": "03470727000120",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "Fleury",
+      "cnpj": "60840055000131",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 4,
+        "valor": 2717251.0,
+        "anos": [
+          "2021",
+          "2023",
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "GENERAL MOTORS DO BRASIL LTDA",
+      "cnpj": "59275792000150",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 4,
+        "valor": 1075935.4,
+        "anos": [
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "GOIASMINAS INDUSTRIA DE LATICINIOS LTDA",
+      "cnpj": "01257995000133",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "GRUPO CASAS BAHIA S.A.",
+      "cnpj": "33041260000164",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita_por_estabelecimento",
+      "lucro_real": null
+    },
+    {
+      "nome": "Gerdau",
+      "cnpj": "07358761000169",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 45,
+        "valor": 26769852.06,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "HAVAN LOJAS DE DEPARTAMENTOS LTDA",
+      "cnpj": "79379491000183",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 155,
+        "valor": 28899065.51,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "HEINZ BRASIL S.A.",
+      "cnpj": "50955707000120",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "HNK BR INDUSTRIA DE BEBIDAS LTDA.",
+      "cnpj": "50221019000136",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 800000.0,
+        "anos": [
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "HONDA AUTOMOVEIS DO BRASIL LTDA",
+      "cnpj": "01192333000122",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 6,
+        "valor": 1794121.57,
+        "anos": [
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "HYPERA S.A",
+      "cnpj": "02932074000191",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscrita_por_estabelecimento",
+      "lucro_real": null
+    },
+    {
+      "nome": "HYUNDAI MOTOR BRASIL MONTADORA DE AUTOMOVEIS LTDA",
+      "cnpj": "10394422000142",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 25,
+        "valor": 6582000.0,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Hapvida",
+      "cnpj": "63554067000198",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscricao_inativa",
+      "lucro_real": null
+    },
+    {
+      "nome": "Hospital Israelita Albert Einstein",
+      "cnpj": "60765823000130",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscricao_inativa",
+      "lucro_real": null
+    },
+    {
+      "nome": "ICONIC LUBRIFICANTES S.A.",
+      "cnpj": "05524572000193",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 19,
+        "valor": 2752735.07,
+        "anos": [
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Ipiranga",
+      "cnpj": "33337122000127",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 47,
+        "valor": 26631129.48,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Itaú Unibanco",
+      "cnpj": "60701190000104",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 3,
+        "valor": 450000.0,
+        "anos": [
+          "2021",
+          "2022"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "JBS S A",
+      "cnpj": "02916265000160",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "JC DISTRIBUICAO LOGISTICA IMPORTACAO E EXPORTACAO DE PRODUTOS INDUSTRIALIZADOS S/A",
+      "cnpj": "06314327000114",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscrita_por_estabelecimento",
+      "lucro_real": null
+    },
+    {
+      "nome": "JOHN DEERE BRASIL LTDA",
+      "cnpj": "89674782000158",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 153,
+        "valor": 114529360.51,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Klabin",
+      "cnpj": "89637490000145",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 46,
+        "valor": 18028024.78,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "LABORATÓRIO TEUTO BRASILEIRO S.A",
+      "cnpj": "17159229000176",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "LATICINIOS BELA VISTA LTDA",
+      "cnpj": "02089969000106",
+      "confirmados": [
+        "Goyazes",
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": {
+        "2024": {
+          "projetos": 13,
+          "valor_projetos": 4019837.21
+        },
+        "2025": {
+          "projetos": 11,
+          "valor_projetos": 5295962.16
+        },
+        "2026": {
+          "projetos": 11,
+          "valor_projetos": 6530979.43
+        }
+      },
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "LOJAS RENNER S A",
+      "cnpj": "92754738000162",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 17,
+        "valor": 6136958.76,
+        "anos": [
+          "2021",
+          "2022",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Localiza",
+      "cnpj": "16670085000155",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 2,
+        "valor": 491932.37,
+        "anos": [
+          "2021",
+          "2022"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscricao_inativa",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "MAGAZINE LUIZA S/A",
+      "cnpj": "47960950000121",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 2,
+        "valor": 254262.77,
+        "anos": [
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "MERCK SHARP & DOHME FARMACEUTICA LTDA.",
+      "cnpj": "03560974000118",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "MINERVA S.A.",
+      "cnpj": "67620377000114",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "Marisa",
+      "cnpj": "61189288000189",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "nao_consta",
+      "lucro_real": null
+    },
+    {
+      "nome": "Mosaic Fertilizantes",
+      "cnpj": "61156501000156",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "NATURA COSMETICOS S A",
+      "cnpj": "71673990000177",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 700000.0,
+        "anos": [
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "NESTLE NORDESTE ALIMENTOS E BEBIDAS LTDA.",
+      "cnpj": "08334818000152",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "NOVARTIS BIOCIENCIAS S.A.",
+      "cnpj": "56994502000130",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 7,
+        "valor": 2371000.0,
+        "anos": [
+          "2022",
+          "2024"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "NUTRIZA AGROINDUSTRIAL DE ALIMENTOS S/A",
+      "cnpj": "37020260000139",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 400000.0,
+        "anos": [
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Nestlé",
+      "cnpj": "60409075000152",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 100000.0,
+        "anos": [
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "PETROBRAS DISTRIBUIDORA S/A",
+      "cnpj": "34274233000102",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 45,
+        "valor": 54188826.79,
+        "anos": [
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "PETROLEO BRASILEIRO S A PETROBRAS",
+      "cnpj": "33000167000101",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 420,
+        "valor": 890764416.79,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "PHILIP MORRIS BRASIL INDUSTRIA E COMERCIO LTDA.",
+      "cnpj": "04041933000188",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 3,
+        "valor": 600000.0,
+        "anos": [
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "PRODUTOS ROCHE QUIMICOS E FARMACEUTICOS S A",
+      "cnpj": "33009945000123",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "RAIA DROGASIL S/A",
+      "cnpj": "61585865000151",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 120000.0,
+        "anos": [
+          "2023"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "REAL DISTRIBUIDORA E LOGISTICA LTDA",
+      "cnpj": "03785066000122",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 2,
+        "valor": 215000.0,
+        "anos": [
+          "2022",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "REFINARIA DE MATARIPE SA",
+      "cnpj": "41777706000141",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "REFRESCOS BANDEIRANTES INDUSTRIA E COMERCIO LTDA",
+      "cnpj": "03380763000101",
+      "confirmados": [
+        "Goyazes",
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 3,
+        "valor": 3763375.0,
+        "anos": [
+          "2023",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 950000.0
+        },
+        "2025": {
+          "projetos": 2,
+          "valor_projetos": 869233.5
+        }
+      },
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Raízen",
+      "cnpj": "08070508000178",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 2,
+        "valor": 1550000.0,
+        "anos": [
+          "2021",
+          "2023"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Riachuelo",
+      "cnpj": "33200056000149",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 3,
+        "valor": 7556666.66,
+        "anos": [
+          "2022",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "SAO SALVADOR ALIMENTOS S/A",
+      "cnpj": "03387396000160",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "SENDAS DISTRIBUIDORA S/A",
+      "cnpj": "06057223000171",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 7,
+        "valor": 6102578.93,
+        "anos": [
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "SOUZA CRUZ LTDA",
+      "cnpj": "33009911000139",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 9,
+        "valor": 4798578.25,
+        "anos": [
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "STELLANTIS AUTOMÓVEIS BRASIL LTDA.",
+      "cnpj": "16701716000156",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 14,
+        "valor": 50500000.0,
+        "anos": [
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Sabin",
+      "cnpj": "00718528000109",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 6,
+        "valor": 1760595.34,
+        "anos": [
+          "2022",
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Saneago",
+      "cnpj": "01616929000102",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 4,
+        "valor": 3535000.0,
+        "anos": [
+          "2021",
+          "2023",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Santander",
+      "cnpj": "90400888000142",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "Stone",
+      "cnpj": "16501555000157",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 4,
+        "valor": 2087748.2,
+        "anos": [
+          "2023",
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Suzano",
+      "cnpj": "16404287000155",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 49,
+        "valor": 16588787.43,
+        "anos": [
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "TELEFONICA BRASIL S.A.",
+      "cnpj": "02558157000162",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 100,
+        "valor": 70751545.87,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "TIM S A",
+      "cnpj": "02421421000111",
+      "confirmados": [
+        "Goyazes"
+      ],
+      "rouanet_5_anos": {},
+      "goyazes": {
+        "2024": {
+          "projetos": 1,
+          "valor_projetos": 1976625.0
+        }
+      },
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "TOYOTA DO BRASIL LTDA.",
+      "cnpj": "59104760000191",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 34,
+        "valor": 29468741.73,
+        "anos": [
+          "2021",
+          "2022",
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "TV Anhanguera",
+      "cnpj": "01534510000101",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "Unimed Goiânia",
+      "cnpj": "02476067000122",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "VOLKSWAGEN DO BRASIL IND VEICULOS AUTOMOTORES LTDA",
+      "cnpj": "59104422000150",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 3,
+        "valor": 3107777.78,
+        "anos": [
+          "2021",
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "VOTORANTIM CIMENTOS S A",
+      "cnpj": "01637895000132",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 4,
+        "valor": 1671482.24,
+        "anos": [
+          "2022",
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "Vale",
+      "cnpj": "33592510000154",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 733,
+        "valor": 1225593693.88,
+        "anos": [
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "WMS SUPERMERCADOS DO BRASIL LTDA",
+      "cnpj": "93209765000117",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 3,
+        "valor": 1019000.0,
+        "anos": [
+          "2024",
+          "2025"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    }
+  ]
+}

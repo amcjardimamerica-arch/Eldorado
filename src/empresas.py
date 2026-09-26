@@ -271,25 +271,32 @@ def _normaliza_cadastro(js: dict, fonte: str) -> dict:
 def destinacoes_rouanet(cnpj: str, anos: int = 5) -> dict:
     """Incentivadores da Lei Rouanet (API SALIC) — por CNPJ, com projeto, ano e valor."""
     d = so_digitos(cnpj)
+    # 1º a base verificada: doação por doação, lida no SalicComparar do MinC. O
+    # endpoint /doacoes da API nova devolve "No funding info" para todo incentivador,
+    # e o antigo /v1/ devolvia 404 — os 26 caches gravados até 09/2026 eram só falha.
+    from .incentivos_empresas import rouanet_de
+    verificado = rouanet_de(d)
+    if verificado.get("status") in ("destinou", "nao_consta"):
+        itens = [{"programa": "Lei Rouanet", "ano": x["data"][:4] if x.get("data") else None, "data": x.get("data"),
+                  "projeto": x["projeto"], "pronac": x["pronac"], "valor": x["valor"], "proponente": x.get("proponente"),
+                  "fonte": "SALIC/MinC", "url": "https://aplicacoes.cultura.gov.br/comparar/"} for x in verificado.get("doacoes_5_anos") or []]
+        return {"fonte": "SALIC/MinC (base verificada)", "consultado_em": verificado.get("lido_em"), "itens": itens,
+                "status": "com_registro" if itens else ("sem_registro_na_janela" if verificado["status"] == "destinou" else "sem_registro"),
+                "total_historico_api": verificado.get("total_historico_api")}
     cache = PASTA / "destinacoes" / f"{d}_rouanet.json"
-    if cache.exists():
+    if cache.exists() and not str(load_json(cache).get("status", "")).startswith("falha"):
         return load_json(cache)
     saida = {"fonte": "SALIC/MinC", "consultado_em": now_iso(), "itens": [], "status": "sem_registro"}
     try:
         js = json.loads(_get(_cfg()["destinacoes"]["rouanet_salic"]["api"].format(cnpj=d), timeout=25))
+        # a API nova devolve só o TOTAL histórico do incentivador — nunca foi lista de
+        # doações por ano. Registrar o total como se fosse uma doação do ano inventaria
+        # um ano; guarda-se o total, e o detalhe fica para a base verificada.
         emb = (js.get("_embedded") or {}).get("incentivadores") or js.get("incentivadores") or []
-        corte = date.today().year - anos
-        for it in emb:
-            ano = it.get("ano") or (str(it.get("data_recibo") or "")[:4] or None)
-            try:
-                if ano and int(ano) < corte:
-                    continue
-            except ValueError:
-                pass
-            saida["itens"].append({"programa": "Lei Rouanet", "ano": ano, "projeto": it.get("nome_projeto") or it.get("PRONAC"),
-                                   "pronac": it.get("PRONAC"), "valor": it.get("valor") or it.get("total_doado"),
-                                   "uf_projeto": it.get("UF"), "fonte": "SALIC", "url": "https://salic.cultura.gov.br"})
-        saida["status"] = "com_registro" if saida["itens"] else "sem_registro"
+        if emb:
+            saida["total_historico_api"] = emb[0].get("total_doado")
+            saida["razao_social_salic"] = (emb[0].get("nome") or "").strip() or None
+        saida["status"] = "total_sem_detalhe" if emb else "sem_registro"
     except Exception as exc:
         saida["status"] = f"falha: {type(exc).__name__}"
     write_json(cache, saida)
@@ -848,8 +855,12 @@ def _saida_painel(uf, base, lista, col):
                      "fontes": [{"tipo": "maiores contribuintes ICMS", "url": lista.get("url")}] + ([{"tipo": "cadastro RFB (espelho público)", "url": f"https://minhareceita.org/{so_digitos(e['cnpj'])}"}] if cad and e.get("cnpj") else [])
                               + ([{"tipo": "SALIC/MinC", "url": "https://salic.cultura.gov.br"}] if hist else []) + [{"tipo": "parceria declarada", "url": p["url"]} for p in e.get("parcerias", [])[:3]]})
     emps.sort(key=lambda x: (-(x["score"]), x["icms_posicao_recente"] or 9999))
-    return {"uf": uf, "gerado_em": now_iso(), "fonte_icms": lista.get("fonte"), "anos_lidos": sorted(lista.get("anos", {})), "ultima_leitura": col["leitura"],
-            "total": len(emps), "com_cadastro": sum(1 for x in emps if x["cadastro_obtido"]), "elegiveis": sum(1 for x in emps if x["elegivel"]), "empresas": emps}
+    painel = {"uf": uf, "gerado_em": now_iso(), "fonte_icms": lista.get("fonte"), "anos_lidos": sorted(lista.get("anos", {})), "ultima_leitura": col["leitura"],
+              "total": len(emps), "com_cadastro": sum(1 for x in emps if x["cadastro_obtido"]), "elegiveis": sum(1 for x in emps if x["elegivel"]), "empresas": emps}
+    # incentivos verificados em fonte oficial (SALIC, Secult-GO, MTE) — sem isso o
+    # campo destinacoes_5_anos nascia vazio em todas as empresas
+    from .incentivos_empresas import aplicar_em_painel
+    return aplicar_em_painel(painel)
 
 
 # ───────────────────────── 5. saída ─────────────────────────
