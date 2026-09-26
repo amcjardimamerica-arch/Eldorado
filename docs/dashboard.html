@@ -1452,6 +1452,18 @@ window.pedirParecer=function(e){
 /* «Investigar com IA»: relatório dos PARÂMETROS do edital — objeto, prazos,
    requisitos, documentos, destinação e enquadramento. Entrega o que já está
    apurado e registra o pedido para o Farol aprofundar na próxima rodada. */
+window.investigarComIA=async function(e){
+  // UMA MISSÃO SÓ (titular, 26/09): o botão manda o Qwen3-8B responder às doze perguntas de TODOS os editais
+  // abertos, com o clicado em primeiro. O resultado entra na ficha só onde houver trecho literal na fonte.
+  const abertas=[...document.querySelectorAll(".ed-item .bt-ia[data-id]")].map(b=>b.dataset.id);   // os cartões abertos em tela
+  const ids=[e.id,...abertas.filter(i=>i!==e.id)].slice(0,120);
+  abreModal(`<h3 style="margin:0">Investigar com IA — Qwen3-8B</h3><div class=meta>${esc(e.titulo||"")}</div>`,
+    `<p id="inv-st">Disparando o Investigador para <b>${ids.length}</b> edital(is) aberto(s), começando por este…</p>
+     <p class=meta>Ele lê a página oficial e os anexos de cada um e responde às doze perguntas da ficha com trecho literal; só o comprovado entra. Leva alguns minutos por edital; a ficha é republicada ao fim.</p>`);
+  const r=await ghDispatch("investigar-ia.yml",{ids:ids.join(","),modelo:"qwen3-8b"});
+  const st=document.getElementById("inv-st"); if(!st) return;
+  st.innerHTML=r.ok?`<b style="color:#1E7E4B">Investigador acionado</b> para ${ids.length} edital(is).`:`<b style="color:#B3261E">Não disparou:</b> ${esc(r.motivo||"")}`;
+};
 window.investigarEdital=function(e){
   salvaDecisao(e.id,estadoDe(e.id),{investigacao_pedida:new Date().toISOString(),titulo:e.titulo});
   const d=e.detalhes||{}, c=e.ciclo||{}, dest=e.destinacao||{};
@@ -2601,14 +2613,14 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
         ${camp&&camp.pendencias&&camp.pendencias.length?`<div class=meta style="margin-top:4px">campanha: ${camp.pendencias.map(esc).join(" · ")}</div>`:""}
         <div class=meta>${b&&b.anexos&&b.anexos.length?"anexos: "+b.anexos.map(a=>`<a href="${esc(a.url||a)}" target=_blank rel="noopener noreferrer">${esc(a.nome||"documento")}</a>`).join(" · "):"anexos ainda não catalogados — <em>pendência declarada</em>"}</div>
         <div class="acoes-ed">
-          <button class="bt-ia" data-id="${esc(e.id)}" title="Relatório sobre os parâmetros deste edital">✦ Investigar com IA</button>
+          <button class="bt-ia" data-id="${esc(e.id)}" title="O Qwen3-8B responde às doze perguntas de todos os editais abertos, com trecho literal">✦ Investigar com IA</button>
           <button class="bt-arq" data-id="${esc(e.id)}" title="Arquivar este edital — exclusão SISTÊMICA: sai do mapa, do enquadramento e das análises (exporte arquivados.json para o repositório)">🗄 Arquivar</button>
           <button class="bz-acao ficha" data-id="${esc(e.id)}">Abrir ficha</button>
         </div></div>`;}).join("")}</div>`;
     const achaEd=id=>(D.editais||[]).find(x=>x.id===id)||(lista.find(x=>x.e.id===id)||{}).e;
     const completaEd=ed=>({programa:ed.fonte_nome,lei:"—",protocolo:ed.id,resumo:ed.objeto||"",territorio:ed.uf||"BR",
       detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:ed.objeto||ed.titulo||"",coletado_em:ed.coletado_em,lacuna:null},...ed});
-    bloco.querySelectorAll(".bt-ia").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)investigarEdital(completaEd(ed));});
+    bloco.querySelectorAll(".bt-ia").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)investigarComIA(completaEd(ed));});
     bloco.querySelectorAll(".bt-arq").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);
       if(ed){salvaDecisao(ed.id,"inscrito",{titulo:ed.titulo,acao:"arquivado"});rerender();}});
     bloco.querySelectorAll(".ficha").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)detalheEdital(completaEd(ed));});

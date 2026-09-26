@@ -1,0 +1,87 @@
+name: 11 · Investigar com IA — Qwen3-8B responde às doze perguntas dos editais abertos
+# Uma missão só: quando o botão «Investigar com IA» é acionado, o 8B lê a página oficial e os anexos de cada
+# edital e responde às doze perguntas da ficha, com trecho literal verificado. Só o comprovado entra na ficha.
+on:
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: "ids dos editais, separados por vírgula (o primeiro tem prioridade)"
+        required: true
+      modelo:
+        description: "qwen3-8b (padrão) ou qwen3-4b"
+        required: false
+        default: "qwen3-8b"
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: investigar-ia
+  cancel-in-progress: false
+jobs:
+  investigar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env:
+      ELDORADO_VOO_REAL: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Dependências
+        run: pip install -q pypdf
+      - name: Motor llama.cpp (release fixa)
+        run: |
+          mkdir -p ia_local/motor ia_local/modelos
+          curl -sL -o /tmp/l.tgz https://github.com/ggml-org/llama.cpp/releases/download/b11064/llama-b11064-bin-ubuntu-x64.tar.gz
+          tar xzf /tmp/l.tgz -C /tmp && cp -r /tmp/llama-b11064/* ia_local/motor/
+      - name: Modelo — cache do Actions
+        uses: actions/cache@v4
+        with:
+          path: ia_local/modelos
+          key: investigador-${{ github.event.inputs.modelo }}-v1
+      - name: Baixar o modelo se faltar (tenta os espelhos)
+        env:
+          MODELO: ${{ github.event.inputs.modelo }}
+        run: |
+          case "$MODELO" in
+            qwen3-4b) ARQ=Qwen3-4B-Q4_K_M.gguf; URLS="https://huggingface.co/unsloth/Qwen3-4B-GGUF/resolve/main/Qwen3-4B-Q4_K_M.gguf https://huggingface.co/bartowski/Qwen_Qwen3-4B-GGUF/resolve/main/Qwen_Qwen3-4B-Q4_K_M.gguf";;
+            *)        ARQ=Qwen3-8B-Q4_K_M.gguf; URLS="https://huggingface.co/unsloth/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf https://huggingface.co/bartowski/Qwen_Qwen3-8B-GGUF/resolve/main/Qwen_Qwen3-8B-Q4_K_M.gguf https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf";;
+          esac
+          echo "ARQ=$ARQ" >> $GITHUB_ENV
+          DEST="ia_local/modelos/$ARQ"
+          if [ -s "$DEST" ] && [ "$(stat -c%s "$DEST")" -gt 1000000000 ]; then echo "cache: $ARQ ($(du -h "$DEST" | cut -f1))"; exit 0; fi
+          for U in $URLS; do
+            echo "baixando $U"; if curl -L --retry 3 --retry-delay 10 --fail --silent --show-error -o "$DEST" "$U"; then echo "ok: $(du -h "$DEST" | cut -f1)"; exit 0; fi
+            echo "  falhou: HTTP $(curl -L -o /dev/null -s -w '%{http_code}' --max-time 30 "$U" || echo '?')"; rm -f "$DEST"
+          done
+          echo "nenhum espelho entregou o modelo"; exit 1
+      - name: Subir o modelo (contexto de 16k para ler o edital inteiro)
+        run: |
+          ia_local/motor/llama-server -m "ia_local/modelos/$ARQ" -c 16384 -t 4 --port 8082 --jinja --host 127.0.0.1 > /tmp/llama.log 2>&1 &
+          for i in $(seq 1 90); do curl -s http://127.0.0.1:8082/health | grep -q '"ok"' && break; sleep 2; done
+          curl -s http://127.0.0.1:8082/health || { tail -20 /tmp/llama.log; exit 1; }
+      - name: Investigar
+        env:
+          IDS: ${{ github.event.inputs.ids }}
+          MODELO: ${{ github.event.inputs.modelo }}
+        run: |
+          python - <<'PY'
+          import os, json
+          from src.ia_local import IALocal, CFG
+          from src.investigador import investigar
+          CFG["limites"]["tokens_resposta"] = 1400          # doze campos com trecho não cabem em 400 tokens
+          CFG["limites"]["tempo_maximo_s"] = 1500
+          ia = IALocal(porta=8082, timeout=1500)
+          ids = [x.strip() for x in os.environ.get("IDS", "").split(",") if x.strip()]
+          r = investigar(ids, ia, os.environ.get("MODELO") or "qwen3-8b", prazo_s=290 * 60)
+          print(json.dumps(r["resumo"], ensure_ascii=False))
+          PY
+      - name: Guardar e publicar
+        if: always()
+        run: |
+          git config user.name "investigador-ia" && git config user.email "ia@eldorado"
+          git add dados/editais/extraidos docs/dados/investigacoes_ia.json estado/piloto/respostas_modelo.jsonl 2>/dev/null || true
+          git commit -q -m "investigador: doze perguntas respondidas ($(date -u +%F\ %H:%M))" || exit 0
+          for i in 1 2 3; do git pull --rebase -q -X theirs origin main && git push -q origin main && break; sleep 5; done
+          curl -s -o /dev/null -w "painel republicado: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/publicar-painel.yml/dispatches" -d '{"ref":"main"}'

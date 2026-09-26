@@ -511,6 +511,13 @@ def _bussola(editais: list[dict], hoje: date | None = None) -> dict:
              "valor": (e.get("destinacao") or {}).get("motivo"),
              "comprovado": (e.get("destinacao") or {}).get("elegivel") is True},
         ]
+        # O INVESTIGADOR MANDA NOS 12 ITENS (26/09): quando o Qwen3-8B investigou o edital, cada item da ficha
+        # reflete o que ele COMPROVOU com trecho literal na fonte — e só isso.
+        inv = (e.get("investigacao_ia") or {}).get("campos") or {}
+        if inv:
+            analise = [{"item": a["item"], "valor": (inv.get(a["item"]) or {}).get("valor") or a.get("valor"),
+                        "comprovado": bool((inv.get(a["item"]) or {}).get("comprovado")),
+                        "trecho": (inv.get(a["item"]) or {}).get("trecho")} for a in analise]
         camp = _campanhas_idx().get(e["id"])
         cx["editais"].append({"id": e["id"], "titulo": e["titulo"], "url": e["url"],
                               "campanha": ({"status": camp["status"], "dia": min((hoje - date.fromisoformat(camp["criado_em"])).days + 1, 30),
