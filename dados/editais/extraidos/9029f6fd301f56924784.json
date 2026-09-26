@@ -11,7 +11,7 @@
  "tipo_fonte": "sensor_plataforma",
  "confianca": "secundaria",
  "coletado_em": "2026-09-21T10:40:15+00:00",
- "prazo_texto": "As propostas poderão solicitar até R$ 1 milhão e devem ser enviadas até 30 de outubro, às 23h59",
+ "prazo_texto": "devem ser enviadas até 30 de outubro, às 23h59",
  "valor_texto": "até R$ 1 milhão",
  "evidencia": "Continue lendo Fundação Maria Emília abre edital com apoio de até R$ 1 milhão para projetos em saúde e educação Instituto Lojas Renner abre edital para fortalecer organizações sociais em três estados Autor do post: Stephane Post publicado: 27 de agosto de 2026 Categoria do post: Editais / Notícias Comentários do post: ",
  "hash_evidencia": "fa4db960bd8440924b21fa3ad6593881110fa5a917b9c8945cbd2fff24023a94",
@@ -29,7 +29,7 @@
  "destinacao": {
   "elegivel": true,
   "natureza": "fomento",
-  "motivo": "Podem participar organizações da sociedade civil"
+  "motivo": "organizações da sociedade civil e instituições públicas ou privadas sem fins lucrativos"
  },
  "sensor": "plat-abcr",
  "qualidade": {
@@ -113,13 +113,13 @@
  "abrangencia": "nacional",
  "anexos": [
   {
-   "nome": "Edital FME Transforma nº 02/2026",
+   "nome": "Formulário de Inscrição",
    "url": "https://forms.gle/Rmxcs3jg5APBGUcX6"
   }
  ],
  "investigacao_ia": {
-  "em": "2026-09-26T13:21:11",
-  "modelo": "qwen3-8b",
+  "em": "2026-09-26T14:41:49",
+  "modelo": "qwen3-14b",
   "fontes": [
    {
     "url": "https://sistema.clubesassociados.com.br/",
@@ -131,19 +131,28 @@
     "url": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
     "ok": true,
     "tipo": "html",
-    "chars": 6072
+    "chars": 6028
+   },
+   {
+    "url": "https://forms.gle/Rmxcs3jg5APBGUcX6",
+    "ok": false,
+    "erro": "HTTPError"
    }
   ],
   "campos": {
    "Objeto": {
     "valor": "financiamento de projetos nas áreas de saúde e educação",
-    "trecho": "Edital FME Transforma nº 02/2026, voltado ao financiamento de projetos nas áreas de saúde e educação",
-    "comprovado": true
+    "trecho": "voltado ao financiamento de projetos nas áreas de saúde e educação",
+    "comprovado": true,
+    "fonte": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+    "fonte_oficial": false
    },
    "Prazo de inscrição": {
     "valor": "? a 2026-10-30",
-    "trecho": "As propostas poderão solicitar até R$ 1 milhão e devem ser enviadas até 30 de outubro, às 23h59",
-    "comprovado": true
+    "trecho": "devem ser enviadas até 30 de outubro, às 23h59",
+    "comprovado": true,
+    "fonte": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+    "fonte_oficial": false
    },
    "Resultado": {
     "valor": null,
@@ -151,64 +160,82 @@
     "comprovado": false
    },
    "Prazo de recurso": {
-    "valor": null,
+    "valor": "dispensado — O edital não menciona fase de recurso.",
     "trecho": "",
-    "comprovado": false
+    "comprovado": false,
+    "dispensado": true,
+    "justificativa": "O edital não menciona fase de recurso.",
+    "trecho_dispensa": "As propostas poderão solicitar até R$ 1 milhão e devem ser enviadas até 30 de outubro, às 23h59."
    },
    "Valor": {
     "valor": "até R$ 1 milhão",
-    "trecho": "As propostas poderão solicitar até R$ 1 milhão",
-    "comprovado": true
+    "trecho": "poderão solicitar até R$ 1 milhão",
+    "comprovado": true,
+    "fonte": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+    "fonte_oficial": false
    },
    "Órgão / financiador": {
     "valor": "Fundação Maria Emília",
     "trecho": "A Fundação Maria Emília abriu inscrições para o Edital FME Transforma nº 02/2026",
-    "comprovado": true
+    "comprovado": true,
+    "fonte": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+    "fonte_oficial": false
    },
    "Território": {
     "valor": "nacional",
-    "trecho": "Podem participar organizações sem fins lucrativos, instituições de ensino superior e pesquisa, fundações, institutos, organizações da sociedade civil e instituições públicas ou privadas sem fins lucrativos",
-    "comprovado": true
+    "trecho": "organizações sem fins lucrativos, instituições de ensino superior e pesquisa, fundações, institutos, organizações da sociedade civil e instituições públicas ou privadas sem fins lucrativos",
+    "comprovado": true,
+    "fonte": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+    "fonte_oficial": false
    },
    "Esfera": {
     "valor": "privada",
     "trecho": "Fundação Maria Emília",
-    "comprovado": true
+    "comprovado": true,
+    "fonte": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+    "fonte_oficial": false
    },
    "Requisitos": {
     "valor": "estar legalmente constituídas há pelo menos dois anos, ter experiência comprovada na área do projeto, ter vínculo, parceria ou apoio institucional de uma instituição de ensino, pesquisa ou organização da sociedade civil, contar com um coordenador com titulação mínima de Doutorado",
-    "trecho": "Podem participar organizações sem fins lucrativos, instituições de ensino superior e pesquisa, fundações, institutos, organizações da sociedade civil e instituições públicas ou privadas sem fins lucrativos, desde que estejam legalmente constituídas há pelo menos dois anos e tenham experiência comprovada na área do projeto. Os projetos deverão ter vínculo, parceria ou apoio institucional de uma instituição de ensino, pesquisa ou organização da sociedade civil e contar com um coordenador com titulação mínima de Doutorado",
+    "trecho": "deve estar legalmente constituídas há pelo menos dois anos e tenham experiência comprovada na área do projeto... projetos deverão ter vínculo, parceria ou apoio institucional de uma instituição de ensino, pesquisa ou organização da sociedade civil e contar com um coordenador com titulação mínima de Doutorado.",
     "comprovado": false
    },
    "Anexos": {
     "valor": "1 anexo(s)",
     "trecho": "Inscrições: https://forms.gle/Rmxcs3jg5APBGUcX6",
-    "comprovado": true
+    "comprovado": true,
+    "fonte": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+    "fonte_oficial": false
    },
    "Destinação": {
     "valor": "elegível · fomento",
-    "trecho": "Podem participar organizações da sociedade civil",
-    "comprovado": true
+    "trecho": "organizações da sociedade civil e instituições públicas ou privadas sem fins lucrativos",
+    "comprovado": true,
+    "fonte": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+    "fonte_oficial": false
    },
    "Área de atuação": {
-    "valor": "saude, educacao",
-    "trecho": "Edital FME Transforma nº 02/2026, voltado ao financiamento de projetos nas áreas de saúde e educação",
-    "comprovado": false
+    "valor": "saude",
+    "trecho": "financiamento de projetos nas áreas de saúde e educação",
+    "comprovado": true,
+    "fonte": "https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao",
+    "fonte_oficial": false
    }
   },
-  "comprovados": 8,
+  "comprovados": 10,
   "total": 12,
   "regra": "só entra na ficha o que tem trecho literal encontrado na fonte",
-  "dispensados": 0,
+  "dispensados": 1,
   "passos": [
-   "dados indicados: título «Continue lendo Fundação Maria Emília abre edital com apoio de até R$ 1 milhão pa», fonte ABCR — Associação Brasileira de Captadores, órgão —, prazo —",
-   "página oficial: https://sistema.clubesassociados.com.br/ — escolhida entre 6 links da divulgação: ()}",
-   "doze perguntas respondidas: 8 comprovadas na fonte",
-   "dispensas justificadas: 0 (nenhuma)",
-   "sem informação nem dispensa: Resultado, Prazo de recurso, Requisitos, Área de atuação"
+   "dados indicados: título «Continue lendo Fundação Maria Emília abre edital com apoio de até R$ 1 milhão pa», fonte ABCR — Associação Brasileira de Captadores, órgão Fundação Maria Emília, prazo As propostas poderão solicitar até R$ 1 milhão e devem ser enviadas até 30 de outubro, às 23h59",
+   "página oficial: https://sistema.clubesassociados.com.br/ — página oficial já verificada",
+   "doze perguntas respondidas: 9 comprovadas na fonte",
+   "dispensas justificadas: 1 (Prazo de recurso)",
+   "sem informação nem dispensa: Resultado, Requisitos"
   ],
-  "s": 481
+  "s": 720
  },
- "confirmacao": "investigado pela IA (qwen3-8b) em 26/09/2026: 8/12 itens (comprovados ou dispensados)",
- "edital_id": "9029f6fd301f56924784"
+ "confirmacao": "investigado pela IA (qwen3-14b) em 26/09/2026: 10/12 itens (comprovados ou dispensados)",
+ "edital_id": "9029f6fd301f56924784",
+ "area": "saude"
 }
