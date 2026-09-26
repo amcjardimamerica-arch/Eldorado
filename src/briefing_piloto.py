@@ -145,6 +145,10 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
            "o que você planeja aqui é o que sobra de tempo depois deles.\n\n"
            if banco.get("editais_incompletos_na_fila") else "")
         + (_cobertura() + "\n\n")
+        + "REGRA PRINCIPAL DO ESPIÃO (titular, 26/09): encontre o que os outros motores NÃO encontram. Seja criativo. Procure "
+          "oportunidades em geral — empresas, fundações, institutos, editais abertos, prêmios, fundos, programas — onde os 30 motores "
+          "não chegam (a cobertura mostra onde eles já estão). Sua finalidade primordial é CRIAR oportunidades novas que virem fontes "
+          "permanentes de busca. "
         + "Pense como quem caça a FONTE do dinheiro, não o edital: que empresa deduz imposto, que empresa patrocina "
           "evento, quem tem instituto ou fundação, quem publica relatório ESG, quem aparece como apoiadora no site de "
           "outra entidade, que setor da economia está com caixa e ainda não foi procurado por ninguém daqui.\n"

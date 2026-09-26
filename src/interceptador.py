@@ -36,11 +36,17 @@ MOTOR = "piloto-aberto"        # o motor de busca aberta da família Piloto: as 
 REVISITA_DIAS = 7
 
 # ── PARÂMETROS DO INTERCEPTADOR (titular, 26/09): distintos dos do Espião ────────────────────
+CORTE = "2026-09-26"      # valida informação NOVA a partir daqui (titular, 26/09); nunca refaz o que já fez
 PARAMETROS = {
-    "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser",
+    "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; "
+             "estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de " + CORTE + " — e nunca refaz o que já fez",
+    "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') "
+                  "para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
+    "ordem_dos_alvos": ["1. edital NOVO trazido pelos motores de busca (descoberto desde o corte)", "2. indício NOVO trazido pelo Espião (candidatas)",
+                        "3. oportunidade ABERTA atual com itens em falta (alimenta o que já está no painel)", "4. empresa NOVA do radar do Espião (ficha de fonte de recurso)"],
     "modos": {
-        "validar": "editais encontrados pelos motores de busca (abertos, com itens em falta): mapear a fonte oficial e comprovar as doze condições",
-        "complementar": "depois dos abertos: os achados do Piloto - Espião — indícios de edital (fila) e empresas sem edital (fontes de recurso)",
+        "validar": "editais dos motores de busca e oportunidades abertas atuais: mapear a fonte oficial e comprovar as doze condições",
+        "complementar": "os achados do Piloto - Espião — indícios de edital e empresas sem edital (fontes de recurso)",
     },
     "padrao_de_qualidade_edital": {
         "validada": "prazo de inscrição comprovado NA FONTE OFICIAL + página oficial mapeada + pelo menos 9 das 12 condições comprovadas ou dispensadas",
@@ -95,13 +101,8 @@ def alvos(maximo: int = 40) -> list[dict]:
     abertos do painel com itens em falta. Um alvo já interceptado só volta depois de REVISITA_DIAS."""
     est = load_json(ESTADO) if ESTADO.exists() else {}
     feitos = est.get("feitos") or {}
-    limite = (date.today().toordinal() - REVISITA_DIAS)
     def recente(k):
-        f = feitos.get(k) or {}
-        try:
-            return date.fromisoformat(str(f.get("em", ""))[:10]).toordinal() > limite
-        except ValueError:
-            return False
+        return k in feitos                                     # nunca refaz o que já fez (titular, 26/09)
     out, vistos = [], set()
     fila = (load_json(FILA) or {}).get("itens") or {} if FILA.exists() else {}
     por_url = _mestre_por_url()
@@ -281,17 +282,41 @@ def empresas_pendentes() -> list[dict]:
         return []
 
 
+def novos_dos_motores(maximo: int = 30) -> list[dict]:
+    """Editais que os MOTORES trouxeram desde o corte — os que ainda não foram estudados."""
+    from .investigador import _mestre
+    est = load_json(ESTADO) if ESTADO.exists() else {}
+    feitos = est.get("feitos") or {}
+    out = []
+    for eid, m in _mestre().items():
+        d = str(m.get("descoberto_em") or m.get("coletado_em") or "")[:10]
+        if d < CORTE or eid in feitos or not m.get("url"):
+            continue
+        if m.get("fonte_id") == "querido-diario" or str(m.get("titulo") or "").startswith("Diário Oficial de"):
+            continue
+        if m.get("estado_export") in ("arquivado", "excluido") or (m.get("fim") and m["fim"] < date.today().isoformat()):
+            continue
+        out.append({"id": eid, "de": "edital novo dos motores", "titulo": m.get("titulo"), "fonte": m.get("fonte_id"), "descoberto_em": d})
+    out.sort(key=lambda x: x["descoberto_em"], reverse=True)
+    return out[:maximo]
+
+
 def proximo_alvo() -> dict | None:
-    """UM ALVO POR VOO. Primeiro VALIDAR (editais dos motores, abertos); depois COMPLEMENTAR (achados do Espião:
-    indícios de edital, depois empresas sem edital)."""
+    """UM ALVO POR VOO, na ordem dos parâmetros: novo dos motores → novo do Espião → aberto atual com falta →
+    empresa nova. Quem já foi estudado não volta (memória em estado/interceptador)."""
+    est = load_json(ESTADO) if ESTADO.exists() else {}
+    feitos = est.get("feitos") or {}
+    nm = [a for a in novos_dos_motores() if a["id"] not in feitos]
+    if nm:
+        return {**nm[0], "modo": "validar", "tipo": "edital"}
     lista = alvos(60)
-    abertos = [a for a in lista if a["de"] == "edital aberto com itens em falta"]
-    if abertos:
-        return {**abertos[0], "modo": "validar", "tipo": "edital"}
-    fila = [a for a in lista if a["de"] == "fila de resgate"]
+    fila = [a for a in lista if a["de"] == "fila de resgate" and a["id"] not in feitos]
     if fila:
         return {**fila[0], "modo": "complementar", "tipo": "edital"}
-    emp = empresas_pendentes()
+    abertos = [a for a in lista if a["de"] == "edital aberto com itens em falta" and a["id"] not in feitos]
+    if abertos:
+        return {**abertos[0], "modo": "validar", "tipo": "edital"}
+    emp = [e for e in empresas_pendentes() if e["chave"] not in feitos]
     if emp:
         return {**emp[0], "id": emp[0]["chave"], "modo": "complementar", "tipo": "empresa", "de": "radar do Espião", "titulo": emp[0]["empresa"]}
     return None
@@ -324,12 +349,22 @@ def voo(ia) -> dict:
         if arq.exists():
             e = json.loads(arq.read_text(encoding="utf-8")); e["investigacao_ia"] = inv; arq.write_text(json.dumps(e, ensure_ascii=False, indent=1), encoding="utf-8")
         _devolver_a_fila(a, inv); _abate_proprio(reg, inv, a)
+        try:
+            from .fontes_novas import agregar_pagina_oficial
+            rel["fonte_nova_para_os_motores"] = agregar_pagina_oficial(reg)
+        except Exception:
+            pass
         rel.update({"modo": a["modo"], "tipo": "edital", "alvo": reg.get("titulo") or a.get("titulo"), "de": a["de"], "qualidade": q,
                     "comprovados": x.get("comprovados"), "dispensados": x.get("dispensados"), "total": len(DOZE),
                     "nao_resolvidos": x.get("nao_resolvidos"), "pagina_oficial": x.get("pagina_oficial"), "passos": x.get("passos"),
                     "fontes_oficiais": [c for c, v in (inv.get("campos") or {}).items() if v.get("fonte_oficial")],
                     "parecer_fonte": par, "erro": x.get("erro")})
         est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "edital", "qualidade": q, "comprovados": x.get("comprovados"), "de": a["de"]}
+    try:
+        from .para_claude import montar as _para_claude
+        rel["para_o_claude"] = _para_claude()
+    except Exception as ex:
+        rel["para_o_claude"] = f"falhou: {type(ex).__name__}"
     rel["segundos"] = round(time.time() - t0)
     est["rodadas"] = (est["rodadas"] + [{k: v for k, v in rel.items() if k not in ("passos", "itens")}])[-60:]
     write_json(ESTADO, est)

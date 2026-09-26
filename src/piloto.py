@@ -806,6 +806,10 @@ def ciclo(porta: int | None = None) -> dict:
     try:
         from .catalogo_terceiro_setor import candidatas_do_catalogo
         rel["candidatas_entregues_ao_interceptador"] = candidatas_do_catalogo()
+        from .fontes_novas import agregar_do_catalogo
+        rel["fontes_novas_para_os_motores"] = agregar_do_catalogo()
+        from .para_claude import montar as _para_claude
+        rel["para_o_claude"] = _para_claude()
     except Exception as ex:
         rel["candidatas_entregues_ao_interceptador"] = f"falhou: {type(ex).__name__}"
     write_json(ROOT / "docs/dados/piloto.json", rel)
