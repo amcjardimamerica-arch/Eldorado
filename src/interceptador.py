@@ -441,6 +441,11 @@ def voo(ia) -> dict:
                     "parecer_fonte": par, "erro": x.get("erro")})
         est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "edital", "qualidade": q, "comprovados": x.get("comprovados"), "de": a["de"]}
     try:
+        from .fluxo_oportunidades import montar as _fluxo
+        rel["fluxo"] = _fluxo().get("mapa_total")          # mapa e calendário em tempo real a cada pouso
+    except Exception as ex:
+        rel["fluxo"] = f"falhou: {type(ex).__name__}"
+    try:
         from .para_claude import montar as _para_claude
         rel["para_o_claude"] = _para_claude()
     except Exception as ex:

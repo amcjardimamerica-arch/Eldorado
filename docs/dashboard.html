@@ -2033,7 +2033,9 @@ window.mudaMes=function(dx){calMes+=dx;if(calMes<0){calMes=11;calAno--;}if(calMe
 function desenhaCal(){
   $("cal-titulo").textContent=MES[calMes]+" de "+calAno;
   const porDia={};
-  (D.eventos||[]).forEach(ev=>{const d=new Date(ev.data+"T00:00:00");
+  const _jaEv=new Set((D.eventos||[]).map(ev=>ev.edital_id));
+  const _fx=(((window._FLUXO||{}).calendario)||[]).filter(x=>x.fim&&!_jaEv.has(x.id)).map(x=>({data:x.fim,tipo:"encerramento",edital_id:x.id,titulo:x.titulo,area:"",fluxo:true,link:x.link_oficial}));
+  (D.eventos||[]).concat(_fx).forEach(ev=>{const d=new Date(ev.data+"T00:00:00");
     if(d.getFullYear()===calAno&&d.getMonth()===calMes)(porDia[d.getDate()]||(porDia[d.getDate()]=[])).push(ev);});
   const prim=new Date(calAno,calMes,1),ini=prim.getDay(),nd=new Date(calAno,calMes+1,0).getDate();
   /* FAIXAS CONTÍNUAS de inscrição — como no Calendário de Editais da tela inicial,
@@ -3909,6 +3911,19 @@ window.htmlInterceptadorAgora=function(V){
 setInterval(()=>{ try{ lerInterceptadorVivo(); }catch(e){} }, 15000);
 window._ACHADOS=null;
 (async()=>{ try{ const r=await fetch("dados/achados_motores.json?v="+Date.now()); if(r.ok){ window._ACHADOS=await r.json(); if(window.desenhaMotores) desenhaMotores(); } }catch(e){} })();
+/* FLUXO DAS OPORTUNIDADES (27/09): números do mapa e prazos do calendário vindos do servidor. Lido direto do ramo
+   main (atualiza assim que o monitoramento ou um voo do Interceptador grava), com a cópia do site como reserva. */
+window._FLUXO=null;
+window.fxUF=(uf,p)=>{ const F=((window._FLUXO||{}).mapa||{}).por_uf||null; if(F){ const x=F[uf]||{}; return {c:x.confirmadas||0,t:x.possiveis||0}; } return {c:(p&&p.confirmadas)||0,t:(p&&p.total)||0}; };
+window.fxTot=(n)=>{ const T=((window._FLUXO||{}).mapa||{}).total; return T?{c:T.confirmadas||0,t:T.possiveis||0}:{c:(n&&n.confirmadas)||0,t:(n&&n.total)||0}; };
+window.carregaFluxo=async function(){
+  for(const u of ["https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/fluxo_oportunidades.json?t="+Date.now(),"dados/fluxo_oportunidades.json?v="+Date.now()]){
+    try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ window._FLUXO=await r.json(); break; } }catch(e){}
+  }
+  try{ if(typeof desenhaBzMapa==="function") desenhaBzMapa(); }catch(e){}
+  try{ if(typeof desenhaCal==="function") desenhaCal(); }catch(e){}
+};
+setTimeout(()=>carregaFluxo(),1500); setInterval(()=>carregaFluxo(),300000);
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
@@ -4272,19 +4287,19 @@ function desenhaBzMapa(){ window._mpTriagem={};
   const [vx,vy,vw,vh]=M.viewBox.split(" ").map(Number);
   const arSel=($("mp-area")||{}).value||"";
   let svg=`<svg viewBox="${vx-10} ${vy-10} ${vw+20} ${vh+20}" class="mapa-antigo" style="width:100%;height:auto;background:transparent">`;
-  const maxN=Math.max(1,...Object.entries(por).filter(([k])=>k!=="__nac__").map(([,p])=>(p.aberta||0)+(p.possivel||0)));
-  for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
+  const maxN=Math.max(1,...Object.entries(M.estados).map(([uf])=>fxUF(uf,por[uf]).t));
+  for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=fxUF(uf,p).t;
     const k=n?Math.sqrt(n/maxN):0; const fill=n?sepia(k):"#F5EBD3";
     svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${n?" com-abertas":""}" style="fill:${fill}"></path>`;}
-  for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=p?(p.aberta||0)+(p.possivel||0):0;
+  for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=fxUF(uf,p).t;
     // 24/09 (titular): confirmadas/possíveis — datas e objeto verificados / identificadas sem os dados mínimos
-    svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-11}" y="${e.cy+13}" class="uf-n"><title>${p.confirmadas||0} com prazo e link do site oficial / ${p.total||0} possibilidade(s) identificada(s)</title>${p.confirmadas||0}/${p.total||0}</text>`:""}`;}
+    svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-11}" y="${e.cy+13}" class="uf-n"><title>${fxUF(uf,p).c} com objeto, data-limite de inscrição aberta e link oficial / ${fxUF(uf,p).t} possível(is) aberta(s)</title>${fxUF(uf,p).c}/${fxUF(uf,p).t}</text>`:""}`;}
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
   // a rosa dos ventos carrega o nível nacional no mesmo formato: confirmadas/possíveis
   const _nac=por["__nac__"]||{}; const _rot=$("bz-rosa-svg")&&$("bz-rosa-svg").parentElement&&$("bz-rosa-svg").parentElement.querySelector(".bz-rosa-rot");
-  if(_rot) _rot.innerHTML=`Brasil · nível nacional<br><b class="bz-rosa-n" title="${_nac.confirmadas||0} com prazo e link do site oficial / ${_nac.total||0} possibilidade(s) identificada(s)">${_nac.confirmadas||0}/${_nac.total||0}</b>`;
-  const _leg=$("bz-mapa-legenda"); if(_leg) _leg.innerHTML=`<span class=meta>em cada estado e na rosa: <b>com prazo e link do site oficial</b> / <b>todas as possibilidades identificadas</b></span>`;
+  if(_rot) _rot.innerHTML=`Brasil · nível nacional<br><b class="bz-rosa-n" title="${fxTot(_nac).c} com objeto, data-limite aberta e link oficial / ${fxTot(_nac).t} possíveis abertas no país">${fxTot(_nac).c}/${fxTot(_nac).t}</b>`;
+  const _leg=$("bz-mapa-legenda"); if(_leg) _leg.innerHTML=`<span class=meta>em cada estado e na rosa: <b>1º</b> oportunidades com o mínimo — objeto, data-limite de inscrição ainda aberta e link do site oficial (de empresa, instituto ou ente público) / <b>2º</b> todas as possíveis abertas, mesmo sem informação (prazo não vencido, ou publicadas nos últimos 60 dias, inclusive menções em diários oficiais) · atualiza a cada gravação do sistema</span>`;
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */

@@ -85,6 +85,11 @@ jobs:
           rm -rf /tmp/int && mkdir -p /tmp/int/extraidos
           # SÓ OS ARQUIVOS DO INTERCEPTADOR (e o que este voo alterou): nunca o bordo do Espião
           cp docs/dados/interceptador.json estado/piloto/fila_resgate.json /tmp/int/ 2>/dev/null || true
+          mkdir -p /tmp/int/docs/dados /tmp/int/biblioteca_alexandria/fontes /tmp/int/biblioteca_alexandria/base/preditivo /tmp/int/estadoraiz
+          cp docs/dados/fluxo_oportunidades.json /tmp/int/docs/dados/ 2>/dev/null || true
+          cp biblioteca_alexandria/fontes/motores.json /tmp/int/biblioteca_alexandria/fontes/ 2>/dev/null || true
+          cp biblioteca_alexandria/base/preditivo/oportunidades.jsonl /tmp/int/biblioteca_alexandria/base/preditivo/ 2>/dev/null || true
+          cp estado/opressores.json /tmp/int/estadoraiz/ 2>/dev/null || true
           cp -r estado/interceptador /tmp/int/ 2>/dev/null || true
           for f in $(git diff --name-only -- dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json; git ls-files --others --exclude-standard dados/editais/extraidos biblioteca_alexandria/oportunidades); do mkdir -p "/tmp/int/$(dirname "$f")"; cp "$f" "/tmp/int/$f"; done
           for i in 1 2 3 4 5; do
@@ -94,7 +99,8 @@ jobs:
             # a pasta é SÓ do Interceptador: substitui inteira (propaga exclusões — o aguardando.json nunca saía)
             [ -d /tmp/int/interceptador ] && { rm -rf estado/interceptador; cp -r /tmp/int/interceptador estado/interceptador; }
             cp -r /tmp/int/dados /tmp/int/biblioteca_alexandria /tmp/int/docs . 2>/dev/null || true
-            git add -A docs/dados/interceptador.json estado/interceptador estado/piloto/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json
+            cp /tmp/int/estadoraiz/opressores.json estado/ 2>/dev/null || true
+            git add -A docs/dados/interceptador.json estado/interceptador estado/piloto/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json docs/dados/fluxo_oportunidades.json biblioteca_alexandria/fontes/motores.json biblioteca_alexandria/base/preditivo estado/opressores.json
             git commit -q -m "interceptador: voo $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; ENVIADO=1; break; }
             if git push -q origin main; then echo "gravado ($i)"; ENVIADO=1; break; fi
             sleep $((i * 5))
