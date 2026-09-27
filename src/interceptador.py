@@ -43,7 +43,8 @@ PARAMETROS = {
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') "
                   "para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
     "ordem_dos_alvos": ["1. edital NOVO trazido pelos motores de busca (descoberto desde o corte)", "2. indício NOVO trazido pelo Espião (candidatas)",
-                        "3. oportunidade ABERTA atual com itens em falta (alimenta o que já está no painel)", "4. empresa NOVA do radar do Espião (ficha de fonte de recurso)"],
+                        "3. oportunidade ABERTA atual com itens em falta (alimenta o que já está no painel)", "4. empresa NOVA do radar do Espião (ficha de fonte de recurso)",
+                        "5. motor OPRESSOR que nunca leu a própria página (lê e devolve prazo e condições ao opressor)"],
     "modos": {
         "validar": "editais dos motores de busca e oportunidades abertas atuais: mapear a fonte oficial e comprovar as doze condições",
         "complementar": "os achados do Piloto - Espião — indícios de edital e empresas sem edital (fontes de recurso)",
@@ -301,6 +302,49 @@ def novos_dos_motores(maximo: int = 30) -> list[dict]:
     return out[:maximo]
 
 
+def opressores_sem_leitura(maximo: int = 40) -> list[dict]:
+    """OPRESSORES QUE NUNCA LERAM A PRÓPRIA PÁGINA (27/09): 92 foram criados de oportunidades novas e todos estão
+    'não lida ainda' — a fase de IA deles depende de chave externa que não existe. O Interceptador lê a página com
+    o modelo local e comprova as condições; o resultado volta ao catálogo do opressor (prazo, regime, camadas)."""
+    cat = ROOT / "biblioteca_alexandria/fontes/motores.json"
+    lig = ROOT / "estado/opressores.json"
+    if not cat.exists():
+        return []
+    C = load_json(cat).get("motores") or []
+    L = (load_json(lig) or {}).get("ligados") or {} if lig.exists() else {}
+    vistos, out = set(), []
+    for x in C:
+        pag = x.get("pagina")
+        if not pag or str(x.get("validacao")) not in ("não lida ainda", "None", "") or x["id"] not in L:
+            continue
+        chave = re.sub(r"[^a-z0-9]", "", f"{x.get('programa')}{x.get('orgao')}".lower())[:80]
+        if chave in vistos:                      # 'Convênios e parcerias' criado 4 vezes: estuda uma
+            continue
+        vistos.add(chave)
+        out.append({"id": "op-" + x["id"], "opressor": x["id"], "titulo": f"{x.get('programa')} — {x.get('orgao')}"[:160], "url": pag,
+                    "de": "opressor sem leitura", "orgao": x.get("orgao")})
+        if len(out) >= maximo:
+            break
+    return out
+
+
+def _devolver_ao_opressor(alvo: dict, inv: dict) -> None:
+    cat = ROOT / "biblioteca_alexandria/fontes/motores.json"
+    C = load_json(cat)
+    reg = registro(alvo["id"]) or {}
+    for x in C.get("motores") or []:
+        if x.get("id") == alvo.get("opressor"):
+            campos = inv.get("campos") or {}
+            x["validacao"] = f"lida pelo Piloto - Interceptador em {now_iso()[:10]}: {inv.get('comprovados', 0)}/12"
+            x["ultima_leitura"] = now_iso()
+            x["camadas"] = [{"camada": k, "ok": bool(v.get("comprovado") or v.get("dispensado")), "valor": str(v.get("valor") or "")[:120]} for k, v in campos.items()]
+            x["obtidas"] = sum(1 for v in campos.values() if v.get("comprovado") or v.get("dispensado"))
+            if reg.get("fim"):
+                x["proxima_data"] = reg["fim"]; x["regime_prazo"] = "prazo comprovado na fonte"; x["certeza_prazo"] = "comprovada"
+            break
+    write_json(cat, C)
+
+
 def proximo_alvo() -> dict | None:
     """UM ALVO POR VOO, na ordem dos parâmetros: novo dos motores → novo do Espião → aberto atual com falta →
     empresa nova. Quem já foi estudado não volta (memória em estado/interceptador)."""
@@ -323,10 +367,17 @@ def proximo_alvo() -> dict | None:
     abertos = [a for a in lista if a["de"] == "edital aberto com itens em falta" and a["id"] not in feitos]
     if abertos:
         return {**abertos[0], "modo": "validar", "tipo": "edital"}
+    op = [o for o in opressores_sem_leitura() if o["id"] not in feitos]
     emp = sorted([e for e in empresas_pendentes() if e["chave"] not in feitos],
                  key=lambda e: _prio(str(e.get("empresa") or ""), str(e.get("site") or "")))
     if emp:
         return {**emp[0], "id": emp[0]["chave"], "modo": "complementar", "tipo": "empresa", "de": "radar do Espião", "titulo": emp[0]["empresa"]}
+    if op:
+        o = op[0]
+        arq = ROOT / "dados/editais/extraidos" / f"{o['id']}.json"
+        if not arq.exists():
+            write_json(arq, {"edital_id": o["id"], "titulo": o["titulo"], "url": o["url"], "orgao": o.get("orgao"), "origem": "opressor sem leitura"})
+        return {**o, "modo": "validar", "tipo": "edital"}
     return None
 
 
@@ -373,6 +424,11 @@ def voo(ia) -> dict:
         if arq.exists():
             e = json.loads(arq.read_text(encoding="utf-8")); e["investigacao_ia"] = inv; arq.write_text(json.dumps(e, ensure_ascii=False, indent=1), encoding="utf-8")
         _devolver_a_fila(a, inv); _abate_proprio(reg, inv, a)
+        if a.get("opressor"):
+            try:
+                _devolver_ao_opressor(a, inv)
+            except Exception:
+                pass
         try:
             from .fontes_novas import agregar_pagina_oficial
             rel["fonte_nova_para_os_motores"] = agregar_pagina_oficial(reg)
