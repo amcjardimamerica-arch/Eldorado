@@ -1,8 +1,7 @@
 name: 10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "41 */6 * * *"        # a cada 6 h enquanto houver empresa sem histórico
+  # sem agendamento (26/09): a API do SALIC não publica doações por incentivador; roda só sob demanda
 permissions:
   contents: write
   actions: write

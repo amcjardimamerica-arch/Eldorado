@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import re
 import sys
 import time
 import urllib.parse
@@ -87,7 +88,8 @@ def etapa_a(status: dict) -> list[dict]:
 
 
 def _link_doacoes(x: dict) -> str | None:
-    h = ((x.get("_links") or {}).get("doacoes") or {}).get("href")
+    lk = (x.get("_links") or {}).get("doacoes")
+    h = lk.get("href") if isinstance(lk, dict) else (lk if isinstance(lk, str) else None)
     if h:
         return h.replace("http://", "https://")
     i = x.get("incentivador_id") or x.get("id")
@@ -114,6 +116,12 @@ def etapa_b(incs: list[dict], minutos: float, status: dict) -> None:
             off = 0
             while True:
                 cod, d = get(f"{link}{'&' if '?' in link else '?'}{urllib.parse.urlencode({'limit': 100, 'offset': off, 'format': 'json'})}")
+                # a API nova responde 'No funding info' para TODO incentivador (verificado em 26/09): o histórico por
+                # doação só existe no SalicComparar; a coleta registra e para, em vez de gastar 23 mil consultas
+                if isinstance(d, dict) and re.search(r"no funding info", json.dumps(d), re.I):
+                    status["b"] = {"parou": "a API do SALIC não publica doações por incentivador ('No funding info'); histórico por doação só no SalicComparar (base verificada de 26/09)"}
+                    (BASE / "rouanet_feitas.json").write_text(json.dumps(sorted(feitas)), encoding="utf-8")
+                    return
                 l = lote(d) if cod == 200 else []
                 for dd in l:
                     f.write(json.dumps({"cnpj": cn, "empresa": x.get("nome"), **{k: dd.get(k) for k in
