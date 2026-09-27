@@ -1,5 +1,5 @@
 {
-  "em": "2026-09-27T04:48:41+00:00",
+  "em": "2026-09-27T04:56:25+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
@@ -7,8 +7,8 @@
       "achados": 7,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 34,
-        "fora_do_objeto": 6
+        "fora_do_objeto": 6,
+        "nada_no_crivo": 34
       },
       "efetividade": 0.0
     }
@@ -17,7 +17,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 654,
+      "vezes": 658,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -28,18 +28,18 @@
       ],
       "ultima": "2026-09-27",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 654 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 658 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
       "motivo": "pagina_nao_confirma",
-      "vezes": 173,
+      "vezes": 176,
       "tipos": [
         "resgate"
       ],
       "ultima": "2026-09-26",
       "explicacao": "a página aberta não confirmou o que o resultado prometia",
-      "regra": "o motor 'missao-especial' falha por a página aberta não confirmou o que o resultado prometia há 173 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'missao-especial' falha por a página aberta não confirmou o que o resultado prometia há 176 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "empresas-incentivadas",
@@ -56,13 +56,13 @@
     {
       "motor": "missao-especial",
       "motivo": "nada_no_crivo",
-      "vezes": 119,
+      "vezes": 104,
       "tipos": [
         "resgate"
       ],
       "ultima": "2026-09-26",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 119 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 104 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-patrocinio",
@@ -93,7 +93,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "fora_do_objeto",
-      "vezes": 33,
+      "vezes": 30,
       "tipos": [
         "prospectar",
         "catalogar",
@@ -101,7 +101,7 @@
       ],
       "ultima": "2026-09-27",
       "explicacao": "o que veio não serve à finalidade da associação",
-      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 33 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 30 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-gife",
@@ -117,35 +117,35 @@
     {
       "motor": "missao-especial",
       "motivo": "fora_do_objeto",
-      "vezes": 20,
+      "vezes": 18,
       "tipos": [
         "resgate"
       ],
       "ultima": "2026-09-26",
       "explicacao": "o que veio não serve à finalidade da associação",
-      "regra": "o motor 'missao-especial' falha por o que veio não serve à finalidade da associação há 20 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'missao-especial' falha por o que veio não serve à finalidade da associação há 18 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "rastro_sem_prova",
-      "vezes": 11,
+      "vezes": 12,
       "tipos": [
         "reconhecimento"
       ],
       "ultima": "2026-09-26",
       "explicacao": "rastro_sem_prova",
-      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 11 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 12 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "sem_rastro",
-      "vezes": 11,
+      "vezes": 12,
       "tipos": [
         "reconhecimento"
       ],
       "ultima": "2026-09-26",
       "explicacao": "sem_rastro",
-      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 11 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 12 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -161,16 +161,23 @@
   "melhorias_pendentes": [
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor deve validar se o trecho do achado está preenchido e contém informações relevantes para a análise do recurso.",
+      "sugestao": "O motor deveria capturar e armazenar trechos específicos dos textos das páginas, permitindo uma análise mais precisa sobre a natureza dos recursos oferecidos.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-27T04:47",
+      "em": "2026-09-27T04:56",
       "aplicada": false
     },
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor deve coletar e exibir trechos específicos dos editais para facilitar a análise e a identificação de oportunidades de recursos.",
+      "sugestao": "O motor deveria identificar automaticamente páginas que contenham informações sobre editais de fomento, patrocínios ou doações, e não apenas publicações informativas.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-27T04:47",
+      "em": "2026-09-27T04:41",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor precisa identificar melhor conteúdos que mencionem explicitamente editais, patrocínios, doações ou incentivos fiscais, mesmo que indiretamente, para evitar resultados irrelevantes.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-27T04:40",
       "aplicada": false
     },
     {
@@ -291,17 +298,10 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-09-26T23:05",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve ser capaz de extrair e identificar automaticamente os trechos relevantes dos textos, incluindo informações sobre editais, patrocínios, doações e incentivos fiscais, para permitir uma avaliação mais precisa d",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-26T22:53",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 109,
-  "entregues_ao_claude": 76,
+  "editais_tratados": 110,
+  "entregues_ao_claude": 77,
   "ultima_faxina": {
     "em": "2026-09-22T22:01:28+00:00",
     "dias": 3,
