@@ -114,7 +114,7 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
+        "erro": "JSONDecodeError"
       },
       {
         "api": "querido_diario",
@@ -199,12 +199,12 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
         "base": "https://queridodiario.ok.org.br/api",
-        "erro": "HTTPError"
+        "erro": "TimeoutError"
       },
       {
         "api": "querido_diario",
@@ -233,7 +233,7 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
+        "erro": "JSONDecodeError"
       },
       {
         "api": "querido_diario",
@@ -318,7 +318,7 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -335,7 +335,7 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -352,14 +352,24 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "HTTPError"
+      },
+      {
+        "api": "querido_diario",
+        "base": "https://queridodiario.ok.org.br/api",
+        "erro": "HTTPError"
+      },
+      {
+        "api": "querido_diario",
+        "base": "https://api.queridodiario.ok.org.br",
+        "erro": "URLError"
       }
     ],
     "2023-04": [
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -381,7 +391,7 @@
       {
         "api": "querido_diario",
         "base": "https://queridodiario.ok.org.br/api",
-        "erro": "TimeoutError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -393,7 +403,7 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -410,12 +420,12 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
         "base": "https://queridodiario.ok.org.br/api",
-        "erro": "TimeoutError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -426,30 +436,8 @@
     "2023-08": [
       {
         "api": "pncp",
-        "descartados_fase2": 112,
-        "amostra": [
-          {
-            "objeto": "[Portal de Compras Públicas] - Credenciamento de profissionais ou empresas prestadoras de serviços técnicos de engenhari",
-            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-          },
-          {
-            "objeto": "Refere-se a contratação de pessoa jurídica atuante na área da saúde, por meio de credenciamento, sem caráter de exclusiv",
-            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-          },
-          {
-            "objeto": "Realização de CHAMAMENTO PÚBLICO, visando a contratação através de credenciamento de pessoas jurídicas para fornecimento",
-            "motivo": "positivo: contratação pública comum"
-          },
-          {
-            "objeto": "Contratação de pessoa jurídica atuante na área da saúde para prestação de serviços nas especialidades de fisioterapia, t",
-            "motivo": "positivo: contratação pública comum"
-          },
-          {
-            "objeto": "Contratação de pessoa jurídica atuante na área da saúde para prestação de serviços nas especialidades de laboratórios de",
-            "motivo": "positivo: contratação pública comum"
-          }
-        ],
-        "nota": "fora do escopo do terceiro setor"
+        "base": "https://pncp.gov.br/api/consulta",
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -500,7 +488,7 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -517,7 +505,7 @@
       {
         "api": "pncp",
         "base": "https://pncp.gov.br/api/consulta",
-        "erro": "JSONDecodeError"
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -533,8 +521,30 @@
     "2024-01": [
       {
         "api": "pncp",
-        "base": "https://pncp.gov.br/api/consulta",
-        "erro": "HTTPError"
+        "descartados_fase2": 183,
+        "amostra": [
+          {
+            "objeto": "CREDENCIAMENTO pessoa jurídica ou física, visando a prestação de serviços de manutenção preventiva e/ou corretiva de mão",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          },
+          {
+            "objeto": "Credenciamento para contratação de pessoas jurídicas para realização de cirurgias de Facectomia para dar continuidade e ",
+            "motivo": "positivo: contratação pública comum"
+          },
+          {
+            "objeto": "CREDENCIAMENTO DE PESSOA JURÍDICA PARA PRESTAÇÃO DE SERVIÇOS MÉDICOS (PLANTÃO TERRA RICA)",
+            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+          },
+          {
+            "objeto": "Credenciamento para aquisição de gêneros alimentícios da Agricultura Familiar e do Empreendedor Familiar rural para prom",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          },
+          {
+            "objeto": "Credenciamento tem o objetivo de permitir que todo interessado que preencha os requisitos previstos neste Edital possa p",
+            "motivo": "objeto comercial (aquisição, obra, pregão, fornecimento) sem destinação ao terceiro setor"
+          }
+        ],
+        "nota": "fora do escopo do terceiro setor"
       },
       {
         "api": "querido_diario",
@@ -550,30 +560,8 @@
     "2024-02": [
       {
         "api": "pncp",
-        "descartados_fase2": 154,
-        "amostra": [
-          {
-            "objeto": "[Portal de Compras Públicas] - Credenciamento de pessoa jurídica para prestação de serviços médicos, para atuação em pro",
-            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-          },
-          {
-            "objeto": "Chamamento Público para Credenciamento de pessoas jurídicas para prestação de serviços de Escavadeira Hidráulica, Caminh",
-            "motivo": "positivo: contratação pública comum"
-          },
-          {
-            "objeto": "Edital nº 1/2024 de CHAMAMENTO PÚBLICO para CREDENCIAMENTO DE LEILOEIRO(A) OFICIAL, regularmente registrado na Junta Com",
-            "motivo": "positivo: contratação pública comum"
-          },
-          {
-            "objeto": "Credenciamento de Profissionais e Técnicos, sendo Pessoas Físicas, para atuarem nas áreas Específicas da Secretaria Muni",
-            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-          },
-          {
-            "objeto": "O Objeto do presente edital de chamamento público é o processo de seleção de Empreendedores Familiares Rurais, Grupos Fo",
-            "motivo": "controle: compra pública"
-          }
-        ],
-        "nota": "fora do escopo do terceiro setor"
+        "base": "https://pncp.gov.br/api/consulta",
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -674,30 +662,8 @@
     "2024-08": [
       {
         "api": "pncp",
-        "descartados_fase2": 175,
-        "amostra": [
-          {
-            "objeto": "CREDENCIAMENTO DE EMPRESAS PARA PRESTAR SERVIÇOS ESPECIALIZADOS NA CONSULTA/ATENDIMENTO E REALIZAÇÃO DE EXAMES DE IMAGEM",
-            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-          },
-          {
-            "objeto": "[Portal de Compras Públicas] - LICITAÇÃO NA MODALIDADE CHAMAMENTO PÚBLICO, PARA CREDENCIAMENTO DE EMPRESAS PARA AQUISIÇÃ",
-            "motivo": "positivo: contratação pública comum"
-          },
-          {
-            "objeto": "CREDENCIAMENTO DE EXAME DE ESOFAGOGASTRODUODENOSCOPIA (ENDOSCOPIA DIGESTIVA ALTA) e COLONOSCOPIA (COLOSCOPIA)",
-            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-          },
-          {
-            "objeto": "CREDENCIAMENTO DE PESSOA JURÍDICA PARA PRESTAÇÃO DE SERVIÇOS DE HOSPEDAGEM NA CIDADE DE GOVERNADOR VALADARES-MG PARA ATE",
-            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-          },
-          {
-            "objeto": "CREDENCIAMENTO DE EXAME DE VIDEOLARINGOSCOPIA – AUDIOMETRIA E TESTES VESTIBULARES OTONEUROLÓGICOS",
-            "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-          }
-        ],
-        "nota": "fora do escopo do terceiro setor"
+        "base": "https://pncp.gov.br/api/consulta",
+        "erro": "HTTPError"
       },
       {
         "api": "querido_diario",
@@ -745,5 +711,5 @@
       }
     ]
   },
-  "proximo_ano_dominios": 4
+  "proximo_ano_dominios": 5
 }

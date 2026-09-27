@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `pncp`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 229
-- Distribuição por ano pesquisado/coletado: {'2023': 19, '2024': 97, '2025': 50, '2026': 63}
+- Pistas aguardando confirmação: 230
+- Distribuição por ano pesquisado/coletado: {'2023': 19, '2024': 98, '2025': 50, '2026': 63}
 
 ## Padrões
 
@@ -53,7 +53,7 @@ SE FINANCEIRO A ASSOCIAÇÃO BENEFICENTE FREI ROGÉRIO.](https://pncp.gov.br/app
 - [Credenciamento de entidades públicas, filantrópicas e/ou sem fins lucrativos e entidades privadas, prestadoras de serviço profissionais na área da saúde, em atendimento multidisciplinar, para atendimento da clientela adulta e pediátrica,](https://pncp.gov.br/app/editais/28695658000184/2023/49) — coletado em 2026-09-26T20:48:18+00:00
 - [CHAMAMENTO PUBLICO PARA SELEÇÃO DE PROJETOS APRESENTADOS POR ORGANIZAÇÕES DA SOCIEDADE CIVIL PARA FINS DE CELEBRAÇÃO DE PARCERIAS, VISANDO A REALIZAÇÃO DE REISADO NA SEDE E EM DIVERSOS DISTRITOS DO MUNICÍPIO DE CARIRÉ-CE](https://pncp.gov.br/app/editais/07598600000142/2025/4) — coletado em 2026-09-25T16:42:13+00:00
 - [SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA – PNAB (LEI Nº 14.399/2022) – CICLO 2](https://pncp.gov.br/app/editais/01614112000103/2026/45) — coletado em 2026-08-31T09:37:04+00:00
-- [A finalidade da presente dispensa de chamamento público é a celebração de parceria entre a Prefeitura Municipal de Anita Garibaldi/SC e a Associação Beneficente Frei Rogério de Anita Garibaldi/SC, inscrita no CNPJ 15.281.509/0001-27, com sede na Rua Padre Remígio Della Vechia, n° 248, Centro, na cid](https://pncp.gov.br/app/editais/14016436000183/2024/2) — coletado em 2026-09-26T20:52:21+00:00
+- [A finalidade da presente dispensa de chamamento público é a celebração de parceria entre a Prefeitura Municipal de Anita Garibaldi/SC e a Associação Beneficente Frei Rogério de Anita Garibaldi/SC, inscrita no CNPJ 15.281.509/0001-27, com sede na Rua Padre Remígio Della Vechia, n° 248, Centro, na cid](https://pncp.gov.br/app/editais/14016436000183/2024/2) — coletado em 2026-09-27T02:59:29+00:00
 - [[Portal de Compras Públicas] - Seleção de Propostas apresentadas pelas Organizações da Sociedade Civil de Planaltina, que visem à execução de Atividades Esportivas e gestão de CAMPEONATO DE FUTEBOL AMADOR, TRABALHO COM CATEGORIAS DE BASE, FOMENTO ESPORTIVO E ESCOLINHA DE FUTEBOL, destinado ao atendi](https://portaldecompraspublicas.com.br/processos/GO/Prefeitura-Municipal-de-Planaltina-1253/CRED-CH-09-2024-2024-325654) — coletado em 2026-09-26T20:54:01+00:00
 - [Credenciamento de associações, cooperativas, entidades sem fins lucrativos e empresas para a coleta seletiva solidária, transporte, triagem e destinação ambientalmente adequada do papel branco proveniente dos resíduos gerados nos Municípios de Guarapuava e Irati da UNICENTRO](https://pncp.gov.br/app/editais/77902914000172/2026/1) — coletado em 2026-09-01T06:40:01+00:00
 - [Chamamento Público 007.2025 - Credenciamento de Serviços de Acolhimento Institucional de Alta Complexidade com vagas de abrigo para Adolescente, Adulto, Idoso Grau I, Grau II, Grau III e Pessoas com Deficiência, de ambos os sexos, destinados a individuais com vínculos familiares rompidos ou fragiliz](https://pncp.gov.br/app/editais/76105634000170/2025/153) — coletado em 2026-09-01T06:34:52+00:00
