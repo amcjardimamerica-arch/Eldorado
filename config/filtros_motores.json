@@ -1,0 +1,153 @@
+{
+  "versao": "2026-09-27",
+  "origem": "Aprendizado da validação individual das 1.026 oportunidades do mapa (27/09/2026). Cada regra nasceu de itens que a validação descartou; o relatório por motor mostra quantos itens cada regra teria dispensado sem custo de verificação.",
+  "principio": "A regra só DISPENSA o que comprovadamente não é oportunidade (ou é fase posterior de edital já encerrado). Na dúvida, o item fica no mapa como possível. Decisão individual registrada em dados/oportunidades/validacao_mapa/ sempre prevalece sobre a regra.",
+  "regras": [
+    {
+      "id": "vaga_emprego",
+      "decisao": "descartada",
+      "motivo": "vaga de emprego — não é oportunidade de recurso",
+      "url": "/vagas/",
+      "titulo": "\\b(contrata|abre vaga|vaga para|vaga de)\\b"
+    },
+    {
+      "id": "blog_ou_contato",
+      "decisao": "descartada",
+      "motivo": "artigo de blog ou link de contato — não é oportunidade",
+      "url": "(blog\\.prosas\\.com\\.br|wa\\.me/|substack\\.com|/noticias/webinar)"
+    },
+    {
+      "id": "agregador_sem_oportunidade",
+      "decisao": "descartada",
+      "motivo": "página de agregador/plataforma comercial sem oportunidade individual",
+      "url": "(capitaai\\.com\\.br|alteditais\\.com\\.br|vagas\\.terceirosetor\\.net|produtos\\.prosas\\.com\\.br|prosas\\.com\\.br/(editais|patrocinadores)|mapaosc\\.ipea\\.gov\\.br/editais|bussolasocial\\.com\\.br|editale\\.com\\.br|observatorio3setor\\.org\\.br/(ods|secoes_tematicas|doacao-e-projetos-sociais|category)|captadores\\.org\\.br/(captacao-de-recursos|certificadora-social|abcr/|noticias/))"
+    },
+    {
+      "id": "pagina_inicial",
+      "decisao": "descartada",
+      "motivo": "página inicial/portal institucional — não é oportunidade",
+      "url_raiz": true
+    },
+    {
+      "id": "texto_de_link",
+      "decisao": "descartada",
+      "motivo": "texto de link capturado como título — não identifica oportunidade",
+      "titulo": "^(acesse|baixar|baixe|clique|saiba|fale com|planilha|cronograma|acessar o link|next\\b|conheça|confira)"
+    },
+    {
+      "id": "resultado_de_edicao",
+      "decisao": "descartada",
+      "motivo": "notícia de resultado de edição já encerrada",
+      "titulo": "(anuncia (contemplados|vencedor|iniciativas vencedoras)|recebe \\d+ (inscri|propostas)|vencem premia|lista final|propostas aprovadas)"
+    },
+    {
+      "id": "curso_evento",
+      "decisao": "descartada",
+      "motivo": "curso, webinar ou evento — não é recurso para OSC",
+      "titulo": "(\\bcurso\\b|webinar|especializa[cç][aã]o|palestrantes|desconto na inscri|consultoria gratuita)"
+    },
+    {
+      "id": "premio_jornalismo",
+      "decisao": "descartada",
+      "motivo": "prêmio de jornalismo (pessoa física/jornalista) — não é recurso para OSC",
+      "titulo": "pr[eê]mio .{0,40}jornalismo|jornalismo para a solidariedade"
+    },
+    {
+      "id": "edicao_antiga",
+      "decisao": "descartada",
+      "motivo": "edição antiga (ano anterior a 2025 e sem menção a edição atual)",
+      "titulo": "(?<![/.\\d])\\b(200\\d|201\\d|202[0-4])\\b",
+      "exceto_titulo": "\\b202[5-9]\\b|\\blei n|14\\.399",
+      "exceto_tipo": "menção em diário oficial"
+    },
+    {
+      "id": "dou_academico",
+      "decisao": "descartada",
+      "motivo": "edital acadêmico, de pessoal ou de intimação no DOU — não é recurso para OSC",
+      "motores": [
+        "dou"
+      ],
+      "titulo": "(intima[cç][aã]o|PPG|/IF[A-Z]+|\\bUF[A-Z]{1,3}\\b|universidade|concurso|processo seletivo)"
+    },
+    {
+      "id": "pncp_contratacao",
+      "decisao": "descartada",
+      "motivo": "contratação de serviço ou repasse a OSC já definida — não é chamamento aberto",
+      "motores": [
+        "pncp"
+      ],
+      "titulo": "^(contrata[cç][aã]o de servi|incremento|recurso do incremento)"
+    }
+  ],
+  "diario": {
+    "descricao": "Querido Diário traz a edição inteira; o título é genérico. A decisão usa o TRECHO (evidencia) — primeira regra que casar vence. 'valida' e 'revisar' ficam no mapa como possíveis (o diário nunca confirma prazo).",
+    "regras": [
+      {
+        "id": "inexigibilidade_dispensa",
+        "decisao": "descartada",
+        "motivo": "inexigibilidade, dispensa ou ausência de chamamento — parceria direcionada",
+        "rx": "inexigibilidade|inexigivel|dispensa (de|do) chamamento|dispensad[oa] (o|de) chamamento|dispensa de licita|ausencia de (realizacao de )?chamamento|sem chamamento"
+      },
+      {
+        "id": "nao_osc",
+        "decisao": "descartada",
+        "motivo": "objeto não é parceria com OSC nem fomento cultural (ambulantes, estágio, concurso, habitação, patrocinadores, credenciamento de serviços)",
+        "rx": "ambulante|food truck|quiosque|feira do empreendedor|estande institucional|estagiari|concurso publico|minha casa minha vida|fnhis|selecao de patrocinadores|chamamento publico para patrocinio|credenciamento (de|para) (pessoas? fisica|profissiona|medic|clinica|laborator|empresa|prestador|leiloeir|servicos|familias|artesaos|artistas|instituicoes de ensino|agencias|postos)|credenciamento medico|torneio leiteiro|expositores|livreiros|locacao de predio|permissao de uso|licenca de ambulante|pre qualificacao|artista credenciado|contrato administrativo visando apresentacao artistica|consulta publica|sandbox regulatorio"
+      },
+      {
+        "id": "colegiado",
+        "decisao": "descartada",
+        "motivo": "escolha/eleição/composição de conselho ou comitê — sem recurso",
+        "rx": "(composicao|eleicao|escolha|recomposicao|preenchimento de vagas)[a-z ]{0,40}(conselho|comite|colegiado|cadeiras)|conselho municipal .{0,60}(biênio|bienio|mandato)|comite de participacao"
+      },
+      {
+        "id": "intencao_futura",
+        "decisao": "descartada",
+        "motivo": "plano ou intenção de fazer chamamento no futuro — ainda não é edital",
+        "rx": "elaboracao de (um )?chamamento|pretende (realizar|lancar) (um )?chamamento|diretrizes (e dos eixos tematicos )?para a realizacao de chamamento"
+      },
+      {
+        "id": "edital_reaberto",
+        "decisao": "valida",
+        "motivo": "reabertura ou prorrogação de prazo de inscrições — possível, prazo a confirmar no site oficial",
+        "rx": "reabertura de prazo|reabre o prazo|reabertura do prazo|prorroga[a-z]* (do |o )?prazo de inscri"
+      },
+      {
+        "id": "fase_posterior",
+        "decisao": "arquivada",
+        "motivo": "resultado, homologação, julgamento, lista de inscritos ou convocação — inscrições encerradas",
+        "rx": "resultado (final|preliminar|provisorio|definitivo|da analise|do julgamento|da etapa|de recurso)|divulga(cao|r)? (o |do )?resultado|homologa(cao|do|da|r)|classificacao (final|geral|preliminar)|lista (final )?de (inscritos|selecionad|habilitad|contemplad|aprovad|classificad)|relacao (de|dos|das) (inscritos|projetos|organizacoes)|propostas? (selecionad|classificad|aprovad)|julgamento (definitivo )?(do|de|dos) recurso|recurso da etapa|aviso de julgamento|contratacoes do edital|convoca(cao|m)? (para|a) assinatura|convocacao (dos|de) (inscritos|proponentes|suplentes|agentes)|nova convocacao|projetos (contemplad|selecionad)|termo de habilitacao|aviso de sorteio|analise preliminar das inscricoes|certifica o recebimento|diligencia para saneamento"
+      },
+      {
+        "id": "edital_aberto",
+        "decisao": "valida",
+        "motivo": "edital ou aviso de chamamento no trecho — possível, prazo a confirmar no site oficial",
+        "rx": "(edital|aviso) de chamamento( publico)?( para [a-z ]{0,40})? n|chamamento publico n[ºo°.]* ?\\d|torna publico .{0,160}(chamamento|edital|selecao)|abertura (de|do) (chamamento|edital|inscric)|(prorroga|reabre|reabertura|retifica|errata|altera)[a-z]* .{0,80}(prazo|inscric|cronograma|edital)|inscricoes (abertas|estarao abertas|poderao ser|serao realizadas|de propostas)|dispoe sobre o chamamento publico|visando a selecao de (propostas|projetos|organiza)|selecao de (projetos|propostas|organizacoes|entidades)|premia(cao|r) .{0,60}(cultura|artist|projeto|mestre)|pnab|aldir blanc|credenciam[ce]nto de (organizacoes da sociedade civil|osc)|realizacao de chamamento publico|edital .{0,20}n[ºo°.]* ?\\d+/?20\\d\\d.{0,20}chamamento"
+      },
+      {
+        "id": "licitacao_contratacao",
+        "decisao": "descartada",
+        "motivo": "licitação/contratação (Lei 14.133) — não é parceria com OSC",
+        "rx": "pregao|concorrencia (publica|eletronica)|tomada de precos|licitacao|contratacao de (empresa|servico|artista|profissional)|registro de precos|leilao|lei (federal )?n?[ºo°.]* ?14\\.133|art\\.? 74"
+      },
+      {
+        "id": "termo_celebrado",
+        "decisao": "descartada",
+        "motivo": "extrato de termo já celebrado, aditivo, rescisão ou fiscalização de parceria firmada",
+        "rx": "extrato d[oe] (termo|contrato|aditivo)|termo de colaboracao n|termo de fomento n|termo aditivo|aditivo (ao|do) (termo|contrato)|celebrad[oa]s? (entre|com)|apostilamento|rescisao|comissao de monitoramento|gestor (dos|do|da) termo|prestacao de contas (aprovada|da parceria|do)"
+      },
+      {
+        "id": "ato_sem_edital",
+        "decisao": "descartada",
+        "motivo": "ato normativo, de pessoal ou de colegiado — não é edital",
+        "rx": "nomeia|nomear|exonera|portaria|designa|comissao (de|permanente)|decreta|lei (municipal )?n|projeto de lei|veto|regulamenta|dispoe sobre|conselho municipal|assembleia|eleicao|conferencia|sumario|indice"
+      }
+    ],
+    "sem_regra": {
+      "decisao": "descartada",
+      "motivo": "trecho do diário não contém edital de chamamento",
+      "exceto_rx": "chamamento|edital",
+      "senao": "revisar"
+    }
+  }
+}

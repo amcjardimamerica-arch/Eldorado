@@ -73,6 +73,9 @@ def _registro_ext(eid: str) -> dict:
     return _j(EXT / f"{eid}.json", {}) if eid else {}
 
 
+TRIAGEM: dict = {}
+
+
 def consolidar() -> list[dict]:
     hoje = date.today(); lim = (hoje - timedelta(days=60)).isoformat()
     brutos = []
@@ -97,10 +100,24 @@ def consolidar() -> list[dict]:
     RUIDO = re.compile(r"^\s*\d{1,2}:\d{2}\b|vota[cç][õo]es|requerimentos|t[ií]tulos? de cidadania|utilidades? p[uú]blica|convoca[cç][aã]o de assembleia|"
                        r"^\s*extrato|resultado|lista de aprovados|aprovados e suplentes|heteroidentifica|homologa|inexigibilidade|dispensa de chamamento|termo aditivo", re.I)
     vistos_t, vistos_u, out = set(), set(), []
+    # VALIDAÇÃO INDIVIDUAL (27/09): decisão registrada prevalece; o que não foi validado passa pelas regras aprendidas
+    from . import validacao_mapa as _vm
+    VAL = _vm.carregar(); HER = _vm.indice_heranca(VAL)
+    ARQ = _j(ROOT / "dados/editais/arquivados.json", {})
+    TRIAGEM.clear(); TRIAGEM.update({"saiu_por_validacao": 0, "saiu_por_arquivo": 0, "dispensado_pela_regra": 0, "regras": {}})
     for origem, m in brutos:
         tit = re.sub(r"\s+", " ", str(m.get("titulo") or "")).strip()
         if not tit or RUIDO.search(tit):
             continue
+        v = VAL.get(m.get("id"))
+        if not v:
+            h = _vm.herdada(m, HER)
+            if h and h["decisao"] in _vm.SAEM_DO_MAPA:
+                TRIAGEM["herdou_decisao"] = TRIAGEM.get("herdou_decisao", 0) + 1; continue
+        if v and v["decisao"] in _vm.SAEM_DO_MAPA:
+            TRIAGEM["saiu_por_validacao"] += 1; continue
+        if m.get("id") in ARQ:
+            TRIAGEM["saiu_por_arquivo"] += 1; continue          # exclusão sistêmica (dashboard ou validação)
         e = _registro_ext(m.get("id"))
         ve = e.get("verificacao_externa") if isinstance(e.get("verificacao_externa"), dict) else {}
         inv = e.get("investigacao_ia") or {}; campos = inv.get("campos") or {}
@@ -109,17 +126,28 @@ def consolidar() -> list[dict]:
         fim = _d(e.get("fim"), ve.get("prazo"), val.get("prazo_valor"), m.get("fim"))
         link = _oficial(ve.get("pagina_oficial"), e.get("pagina_oficial"), val.get("site"), m.get("url"))
         objeto = m.get("objeto") or e.get("objeto") or ((campos.get("Objeto") or {}).get("valor") if (campos.get("Objeto") or {}).get("comprovado") else None)
+        if v and v["decisao"] in ("valida_aberta", "valida_fora_abrangencia") and v.get("fonte_oficial"):
+            fim = v.get("prazo") or fim; link = v["fonte_oficial"]; objeto = v.get("objeto") or objeto
         diario = bool(re.match(r"(?i)di[aá]rio oficial", tit))
         # 3. possível: prazo não vencido, ou sem prazo e publicada nos últimos 60 dias
         possivel = (fim and fim >= hoje.isoformat()) or (not fim and pub and pub >= lim)
         if not possivel:
             continue
+        if not v:                                            # regra aprendida só conta o que ainda estaria no mapa
+            dsp = _vm.dispensa(origem, m, "menção em diário oficial" if diario else None)
+            if dsp:
+                TRIAGEM["dispensado_pela_regra"] += 1; TRIAGEM["regras"][dsp["regra"]] = TRIAGEM["regras"].get(dsp["regra"], 0) + 1
+                continue
         kt, ku = _nt(tit), _nu(m.get("url"))
         if (kt and kt in vistos_t) or (ku and ku in vistos_u and not diario):
             continue
         vistos_t.add(kt); vistos_u.add(ku)
         uf = str(m.get("uf") or e.get("uf") or "").upper()
-        confirmada = bool(objeto and fim and fim >= hoje.isoformat() and link)
+        # fluxo contínuo: o próprio edital dispensa a data-limite (validação no site oficial) — vale como prazo aberto
+        prazo_disp = bool(v and v["decisao"].startswith("valida") and ((v.get("doze_itens") or {}).get("Prazo de inscrição") or {}).get("status") == "dispensado pelo edital")
+        confirmada = bool(objeto and link and ((fim and fim >= hoje.isoformat()) or (prazo_disp and not fim)))
+        if v and v["decisao"] == "pendente":
+            confirmada = False                                # a validação não achou a fonte oficial: não confirma
         insp = None
         if inv.get("em"):
             po = e.get("pagina_oficial")
@@ -131,7 +159,8 @@ def consolidar() -> list[dict]:
         out.append({"id": m.get("id"), "titulo": re.sub(r"(?i)^continue lendo\s+", "", tit)[:180], "orgao": m.get("orgao") or e.get("orgao"),
                     "uf": uf if uf in UFS else None, "origem": origem, "tipo": "menção em diário oficial" if diario else ("empresa/instituto" if (m.get("nivel") in ("privada", "privado") or origem.startswith("Piloto")) else "ente público"),
                     "publicado_em": pub, "inicio": _d(e.get("inicio"), ve.get("inicio")), "fim": fim, "link_oficial": link,
-                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp})
+                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp,
+                    "validacao": ({"decisao": v["decisao"], "motivo": v.get("motivo"), "em": v.get("validado_em")} if v else None)})
     return out
 
 
@@ -226,10 +255,12 @@ def montar() -> dict:
     res = {"em": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Publica")[0].strip(),
            "etapas": {"possiveis_abertas": tot["possiveis"], "confirmadas_com_minimo": tot["confirmadas"],
                       "por_origem": {o: sum(1 for x in itens if x["origem"].startswith(o)) for o in ("motor", "Piloto - Espião", "Piloto - Interceptador")},
-                      "por_tipo": {t: sum(1 for x in itens if x["tipo"] == t) for t in ("ente público", "empresa/instituto", "menção em diário oficial")}, **etapa},
+                      "por_tipo": {t: sum(1 for x in itens if x["tipo"] == t) for t in ("ente público", "empresa/instituto", "menção em diário oficial")},
+                      "por_validacao": {d: sum(1 for x in itens if (x.get("validacao") or {}).get("decisao") == d) for d in ("valida_aberta", "valida_fora_abrangencia", "pendente")},
+                      "triagem": dict(TRIAGEM), **etapa},
            "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal,
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
-           "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em")}
+           "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao")}
                                        for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
                             for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}

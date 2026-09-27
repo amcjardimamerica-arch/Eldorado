@@ -180,8 +180,9 @@ jobs:
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 120 python scripts/construir_base.py >/dev/null || echo "base da Biblioteca: falhou"
           timeout 120 python -m src.achados_motores >/dev/null || echo "achados por motor: falhou"   # oportunidades únicas por motor
-          timeout 180 python -m src.fluxo_oportunidades >/dev/null || echo "fluxo das oportunidades: falhou"
-          GITHUB_TOKEN="${{ github.token }}" timeout 120 python -m src.saude >/dev/null || echo "saúde do sistema: falhou"   # alertas no cabeçalho do painel   # mapa, calendário, opressor novo, cadastro preditivo   # base leve: histórico, recorrência, critérios de pontuação
+          timeout 120 python -m src.validacao_mapa >/dev/null || echo "validação do mapa: falhou"   # decisões individuais + regras aprendidas (idempotente)
+          timeout 180 python -m src.fluxo_oportunidades >/dev/null || echo "fluxo das oportunidades: falhou"   # mapa, calendário, opressor novo, cadastro preditivo
+          GITHUB_TOKEN="${{ github.token }}" timeout 120 python -m src.saude >/dev/null || echo "saúde do sistema: falhou"   # alertas no cabeçalho do painel
           timeout 300 python -m src.dossie_fontes || echo "src.dossie_fontes: encerrado no orçamento de 300s ou falhou — registrado"
           fi
           timeout 600 python -m src.motores || { echo "src.motores FALHOU — o monitor da Bússola não atualiza sem este passo" | tee -a estado/log_motores.txt; python -m src.motores 2>&1 | tail -20 >> estado/log_motores.txt; }
