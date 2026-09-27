@@ -3880,8 +3880,15 @@ window.duracaoTxt=(a,b)=>{ const s=Math.max(0,Math.round((new Date(b)-new Date(a
 /* INTERCEPTADOR AO VIVO (27/09): o arquivo do ramo piloto-ao-vivo, relido a cada 15 s — o site não precisa republicar */
 const INT_VIVO_RAW="https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/piloto-ao-vivo/docs/dados/interceptador_ao_vivo.json";
 window._INT_VIVO=null;
+const INT_VIVO_API="https://api.github.com/repos/amcjardimamerica-arch/Eldorado/contents/docs/dados/interceptador_ao_vivo.json?ref=piloto-ao-vivo";
 window.lerInterceptadorVivo=async function(){
-  try{ const r=await fetch(INT_VIVO_RAW+"?t="+Date.now(),{cache:"no-store"}); if(r.ok){ window._INT_VIVO=await r.json(); } }catch(e){}
+  let ok=false;
+  if(Date.now()>(window._intApiDescansa||0)){
+    try{ const r=await fetch(INT_VIVO_API,{cache:"no-cache",headers:{Accept:"application/vnd.github.raw+json"}});
+      if(r.ok){ window._INT_VIVO=await r.json(); ok=true; } else if(r.status===403||r.status===429) window._intApiDescansa=Date.now()+15*60*1000;
+    }catch(e){} }
+  if(!ok){ try{ const r=await fetch(INT_VIVO_RAW+"?t="+Date.now(),{cache:"no-store"}); if(r.ok){ window._INT_VIVO=await r.json(); } }catch(e){} }
+  try{ atualizarAviaoInterceptador(); }catch(e){}
   ["int-posto","int-posto-bussola"].forEach(id=>{ const el=document.getElementById(id+"-agora"); if(el) el.innerHTML=htmlInterceptadorAgora(window._INT_VIVO); });
 };
 window.htmlInterceptadorAgora=function(V){
@@ -3902,6 +3909,59 @@ setInterval(()=>{ try{ lerInterceptadorVivo(); }catch(e){} }, 15000);
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
+/* ── O AVIÃO DO INTERCEPTADOR (27/09): um segundo avião, independente do Espião, que vai e volta sobre o
+   MOTOR 25 (piloto-interceptador) enquanto o Interceptador está em missão. Mesmo gif, mesmo ritmo (ciclos
+   inteiros do gif, ~100 px/s), mesma animação no compositor; o balão diz a etapa em curso. */
+const AVI={el:null,alvo:null,alvoId:null,corr:null,raf:0,esq:false,vira:false,ciclos:1,corrEm:0};
+const INT_MOTOR_ID="piloto-interceptador";
+function _motor25(){ const el=document.querySelector(`#mt-lista .mt-item[data-id="${INT_MOTOR_ID}"]`); return _visivel(el)?el:null; }
+function montarAviaoInt(){
+  if(AVI.el) return AVI.el;
+  const d=document.createElement("div"); d.className="pil-aviao-vivo int-aviao"; d.id="int-aviao-vivo"; d.setAttribute("role","img");
+  d.innerHTML=`<img src="${GIF_SRC}" alt="" draggable="false"><span class="pil-balao"></span>`;
+  d.addEventListener("click",e=>{e.stopPropagation(); d.classList.toggle("mostra-balao");});
+  document.body.appendChild(d); AVI.el=d; return d;
+}
+function aplicarCorredorInt(){ const c=corredor(AVI.alvo); AVI.corr=c;
+  AVI.el.style.setProperty("--x0",c.x0.toFixed(1)+"px"); AVI.el.style.setProperty("--x1",c.x1.toFixed(1)+"px"); AVI.el.style.setProperty("--y",c.y.toFixed(1)+"px"); }
+function decolarInt(el){
+  AVI.alvo=el; AVI.alvoId=el.getAttribute("data-id"); el.classList.add("pil-trabalhando"); aplicarCorredorInt();
+  const av=AVI.el, img=av.firstElementChild;
+  av.classList.remove("voando"); void av.offsetWidth;
+  AVI.ciclos=ciclosPorTravessia(AVI.corr.x1-AVI.corr.x0); av.style.setProperty("--ciclo",(AVI.ciclos*GIF_CICLO_MS)+"ms"); av.classList.add("voando");
+  AVI.esq=false; img.style.transform="none"; img.src=GIF_SRC+"#i"+Date.now();
+  if(!AVI.vira){ AVI.vira=true; av.addEventListener("animationiteration",ev=>{ if(ev.animationName!=="pil-vaivem")return;
+      AVI.esq=!AVI.esq; av.firstElementChild.style.transform=AVI.esq?"scaleX(-1)":"none"; }); }
+}
+function voarInt(t){
+  AVI.raf=requestAnimationFrame(voarInt);
+  if(!AVI.alvo||!AVI.el||document.hidden) return;
+  if(!document.body.contains(AVI.alvo)){ const n=_motor25(); if(n){ AVI.alvo=n; n.classList.add("pil-trabalhando"); } else { pousarInt(); return; } }
+  if(AVI.alvo.offsetParent===null){ pousarInt(); return; }
+  if(!AVI.corrEm||t-AVI.corrEm>500){ AVI.corrEm=t; const c=corredor(AVI.alvo);
+    if(!AVI.corr||Math.abs(c.x0-AVI.corr.x0)>1||Math.abs(c.x1-AVI.corr.x1)>1||Math.abs(c.y-AVI.corr.y)>1){ aplicarCorredorInt();
+      const n=ciclosPorTravessia(AVI.corr.x1-AVI.corr.x0); if(n!==AVI.ciclos){ AVI.ciclos=n; AVI.el.style.setProperty("--ciclo",(n*GIF_CICLO_MS)+"ms"); } } }
+}
+function pousarInt(){
+  if(AVI.alvo) AVI.alvo.classList.remove("pil-trabalhando");
+  AVI.alvo=null; AVI.alvoId=null; AVI.corr=null;
+  if(AVI.el) AVI.el.classList.remove("visivel","mostra-balao","voando");
+  if(AVI.raf){ cancelAnimationFrame(AVI.raf); AVI.raf=0; }
+}
+window.atualizarAviaoInterceptador=function(){
+  const V=window._INT_VIVO;
+  const emMissao=V&&V.estado==="em_voo"&&V.atualizado_em&&(Date.now()-new Date(V.atualizado_em))/60000<25;
+  if(!emMissao){ pousarInt(); return; }
+  const el=_motor25(); if(!el){ pousarInt(); return; }
+  const av=montarAviaoInt();
+  av.querySelector(".pil-balao").innerHTML=`Interceptador — ${esc(V.etapa||"em missão")}${V.alvo&&V.alvo.titulo?` · <b>${esc(String(V.alvo.titulo).slice(0,44))}</b>`:""}`;
+  if(AVI.alvoId!==INT_MOTOR_ID||!AVI.alvo) decolarInt(el);
+  else if(AVI.alvo!==el){ AVI.alvo=el; el.classList.add("pil-trabalhando"); }
+  av.classList.add("visivel");
+  if(AV.reduz){ av.classList.remove("voando"); return; }
+  if(!AVI.raf) AVI.raf=requestAnimationFrame(voarInt);
+};
+setInterval(()=>{ try{ atualizarAviaoInterceptador(); }catch(e){} },3000);
 setInterval(()=>{ atualizarAviao(); },3000);                       // o lugar (troca de vista, filtro)
 document.addEventListener("click",()=>setTimeout(()=>atualizarAviao(),350),true);
 
