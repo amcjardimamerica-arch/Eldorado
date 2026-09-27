@@ -1392,7 +1392,8 @@ function dias(iso){if(!iso)return null;const d=new Date(iso.slice(0,10)+"T00:00:
 /* tooltip: resumo ao passar o mouse */
 const tip=$("tip");
 function ligaTip(el,html){
-  el.addEventListener("mousemove",e=>{tip.innerHTML=html;tip.style.display="block";
+  // 27/09: aceita função — o texto é calculado na hora do cursor, com os dados daquele instante
+  el.addEventListener("mousemove",e=>{tip.innerHTML=(typeof html==="function")?html():html;tip.style.display="block";
     tip.style.left=Math.min(e.clientX+14,innerWidth-360)+"px";tip.style.top=Math.min(e.clientY+14,innerHeight-140)+"px";});
   el.addEventListener("mouseleave",()=>tip.style.display="none");
 }
@@ -4063,6 +4064,21 @@ window.posicionarRotulosMapa=function(){
 // quando o mapa aparece (ou muda de tamanho), os rótulos são recalculados
 (function(){ const alvo=document.getElementById("bz-mapa"); if(!alvo||!window.ResizeObserver) return; let ult=0;
   new ResizeObserver(en=>{ const w=Math.round(en[0].contentRect.width); if(w&&(window._rotPendente||Math.abs(w-ult)>40)){ ult=w; requestAnimationFrame(()=>{ try{ posicionarRotulosMapa(); }catch(e){} }); } }).observe(alvo); })();
+/* BALÃO DO ESTADO (27/09): mesma fonte do número no mapa e do painel lateral — itens_por_uf do fluxo. */
+window.tipEstado=function(uf,mo){
+  const itens=((((window._FLUXO||{}).itens_por_uf)||{})[uf])||[];
+  const N=fxUF(uf,null);                       // o MESMO número que está escrito no estado
+  if(!N.t) return `<strong>${uf}</strong> — nenhuma possível oportunidade aberta identificada agora`;
+  if(!itens.length) return `<strong>${uf}</strong> · <b>${N.c}/${N.t}</b><br><b>${N.c}</b> com objeto, prazo de inscrição aberto e link oficial<br><b>${N.t}</b> possíveis abertas<br><em>o detalhamento chega na próxima gravação do sistema</em>`;
+  const c=itens.filter(x=>x.confirmada).length, cont=k=>itens.filter(x=>x.tipo===k).length;
+  const insp=itens.filter(x=>x.inspecao), ok=insp.filter(x=>x.inspecao.ok).length;
+  const prox=itens.filter(x=>x.confirmada&&x.fim).sort((a,b)=>String(a.fim).localeCompare(String(b.fim)))[0];
+  return `<strong>${uf}</strong> · <b>${c}/${itens.length}</b><br>
+    <b>${c}</b> com objeto, prazo de inscrição aberto e link oficial<br>
+    <b>${itens.length}</b> possíveis abertas: ${cont("ente público")} de entes públicos · ${cont("empresa/instituto")} de empresas e institutos · ${cont("menção em diário oficial")} menções em diário oficial<br>
+    Interceptador: <b>${insp.length}</b> inspecionada(s) — ${ok} com prazo e site oficial, ${insp.length-ok} sem · ${itens.length-insp.length} na fila${uf==="GO"?" (Goiás tem prioridade)":""}<br>
+    ${prox?`próximo prazo confirmado: ${esc(String(prox.titulo).slice(0,60))} — até ${br(prox.fim)}<br>`:""}${mo?`motores: <b>${mo.ligados}</b> ligado(s) de ${mo.total} · ${mo.lidos} com leitura<br>`:""}<em>clique para ver a lista ao lado do mapa</em>`;
+};
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
@@ -4444,8 +4460,8 @@ function desenhaBzMapa(){ window._mpTriagem={};
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */
     const mo=(MT&&MT.length)?mpMotoresUF(uf):null;
-    ligaTip(el,p&&(p.aberta||p.possivel)?`<strong>${uf}</strong> · <b>${(p.aberta||0)+(p.possivel||0)} oportunidade(s)</b> (editais, emendas, leis de incentivo, doações, fundos) — critério: prazo de encerramento da inscrição: ${p.aberta||0} aberta(s) confirmada(s) · ${p.possivel||0} possível(is) em investigação — os mesmos de «Oportunidades Abertas»<br>${mo?`motores: <b>${mo.ligados}</b> ligado(s) de ${mo.total} · ${mo.lidos} com leitura · ${mo.achados} achado(s)<br>`:""}${Object.entries(p.areas).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`${esc(AREA(a).rotulo)}: ${n}`).join("<br>")}<br><em>clique para ver as cidades</em>`
-      :`<strong>${uf}</strong> · nenhuma oportunidade identificada`);
+    // 27/09 (titular): o balão diz EXATAMENTE o que o número do estado e o painel lateral dizem — a mesma fonte (fluxo)
+    ligaTip(el,()=>tipEstado(uf,mo));
     el.onclick=()=>{bzUFsel=(bzUFsel===uf?"":uf);$("bz-uf").value=bzUFsel;if($("mp-uf")){$("mp-uf").value=bzUFsel;if(typeof mpFiltro==="object")mpFiltro.uf=bzUFsel;}desenhaBzMapa();desenhaBzTabela();desenhaFontesAbertas();desenhaBzLateral(por);if(typeof desenhaMapaMonitor==="function")desenhaMapaMonitor();};
   });
   desenhaBzLateral(por);
