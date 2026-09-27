@@ -399,6 +399,8 @@ box-shadow:0 1px 3px #0002}
 .selo-box{margin:2px 0 6px}.selo-vivo{display:inline-block;font-size:10.5px;color:#1E7E4B;background:#F1F9F4;border:1px solid #CFE8D8;border-radius:8px;padding:1px 8px}
 .selo-vivo.atraso{color:#8A6D1E;background:#FFFBEF;border-color:#E6D39A}.selo-vivo.falha{color:#B3261E;background:#FDF1F0;border-color:#F0C4BF}
 .vivo-pt{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22;vertical-align:1px}.vivo-pt.falha{background:#B3261E}
+#bz-mapa .uf-guia{fill:none;stroke:#7E2A1E;stroke-width:.8;stroke-dasharray:2 1.5;pointer-events:none}#bz-mapa .uf-guia-pt{fill:#7E2A1E;pointer-events:none}
+#bz-mapa g.uf-rot{pointer-events:none}#bz-mapa g.uf-rot.fora text.uf-sigla{font-weight:700}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -3990,6 +3992,77 @@ window.htmlPainelUF=function(rot,itens){
         <span class="uf-fx-p">${(I&&I.prazo)||x.fim?"até "+br((I&&I.prazo)||x.fim):"prazo a confirmar"}</span>
         ${u?`<a class="uf-fx-a" href="${esc(u)}" target=_blank rel="noopener noreferrer">${I&&I.pagina_oficial?"site oficial ↗":"indício ↗"}</a>`:`<span class="uf-fx-a meta">—</span>`}</div>`;}).join("")}</div>`;
 };
+/* RÓTULOS DO MAPA DENTRO DO ESTADO (titular, 27/09): cada rótulo (sigla + números) vai para o ponto do estado com
+   MAIS FOLGA até as divisas — testado pela própria geometria do desenho (isPointInFill), com o retângulo inteiro do
+   rótulo e uma margem. Se não couber, sai do mapa numa coluna lateral, com uma linha até o estado.
+   Única exceção: o DF fica dentro de Goiás, logo acima do DF. */
+window.posicionarRotulosMapa=function(){
+  const svg=document.querySelector("#bz-mapa svg"); if(!svg) return;
+  // com a Bússola oculta nada tem tamanho: espera ficar visível (o observador abaixo chama de novo)
+  if(!svg.getBoundingClientRect().width){ window._rotPendente=true; return; }
+  window._rotPendente=false;
+  if(!svg.dataset.vb0) svg.dataset.vb0=svg.getAttribute("viewBox"); else svg.setAttribute("viewBox",svg.dataset.vb0);
+  svg.querySelectorAll(".uf-guia,.uf-guia-pt").forEach(x=>x.remove()); svg.querySelectorAll("g.uf-rot").forEach(g=>g.classList.remove("fora","em-go"));
+  const P={}; svg.querySelectorAll("path[data-uf]").forEach(el=>P[el.dataset.uf]=el);
+  const pt=svg.createSVGPoint();
+  const em=(uf,x,y)=>{ pt.x=x; pt.y=y; return P[uf]&&P[uf].isPointInFill(pt); };
+  const vb=svg.viewBox.baseVal; const VX=vb.x, VY=vb.y, VW=vb.width, VH=vb.height;
+  // o retângulo do rótulo (w×h) centrado em (x,y) cabe no estado com margem m?
+  const OCUP=[];                                   // rótulos já posicionados: ninguém cai em cima de outro
+  const livre=(x,y,w,h)=>OCUP.every(o=>x+w/2+3<o.x0||x-w/2-3>o.x1||y+h/2+3<o.y0||y-h/2-3>o.y1);
+  const cabe=(uf,x,y,w,h,m,evitar)=>{ if(!livre(x,y,w,h)) return false; const x0=x-w/2-m, x1=x+w/2+m, y0=y-h/2-m, y1=y+h/2+m;
+    for(const [a,b] of [[x0,y0],[x1,y0],[x0,y1],[x1,y1],[x,y0],[x,y1],[x0,y],[x1,y],[x,y],[(x0+x)/2,y0],[(x1+x)/2,y0],[(x0+x)/2,y1],[(x1+x)/2,y1]]){
+      if(!em(uf,a,b)) return false; if(evitar&&em(evitar,a,b)) return false; }
+    return true; };
+  const melhor=(uf,w,h,bb,filtro,evitar)=>{
+    const passo=Math.max(1.5,Math.min(bb.width,bb.height)/24); let best=null;
+    for(let y=bb.y+h/2; y<=bb.y+bb.height-h/2; y+=passo) for(let x=bb.x+w/2; x<=bb.x+bb.width-w/2; x+=passo){
+      if(filtro&&!filtro(x,y)) continue;
+      if(!cabe(uf,x,y,w,h,1.5,evitar)) continue;
+      let m=1.5; for(const mm of [3,5,8,12,16]){ if(cabe(uf,x,y,w,h,mm,evitar)) m=mm; else break; }
+      const d=Math.hypot(x-(bb.x+bb.width/2),y-(bb.y+bb.height/2))/Math.max(bb.width,bb.height);
+      const sc=m-d*4; if(!best||sc>best.sc) best={x,y,sc,m}; }
+    return best; };
+  const fora=[];
+  const grupos=[...svg.querySelectorAll("g.uf-rot")].sort((a,b)=>(a.dataset.uf==="DF"?-1:0)-(b.dataset.uf==="DF"?-1:0));   // DF primeiro
+  const ocupar=(x,y,w,h)=>OCUP.push({x0:x-w/2,x1:x+w/2,y0:y-h/2,y1:y+h/2});
+  grupos.forEach(g=>{
+    const uf=g.dataset.uf; if(!P[uf]) return;
+    g.setAttribute("transform","translate(0,0)"); const r=g.getBBox(); const w=r.width, h=r.height, dy=r.y+h/2;
+    const bb=P[uf].getBBox();
+    if(uf==="DF"&&P.GO){                         // exceção: dentro de Goiás, logo acima do DF
+      const db=bb, gb=P.GO.getBBox();
+      const b=melhor("GO",w,h,gb,(x,y)=>y<db.y&&y>db.y-h*2.6&&Math.abs(x-(db.x+db.width/2))<w*1.6,"DF");
+      if(b){ g.setAttribute("transform",`translate(${b.x.toFixed(1)},${(b.y-dy).toFixed(1)})`); g.classList.add("em-go"); ocupar(b.x,b.y,w,h); ocupar(db.x+db.width/2,db.y+db.height/2,db.width+4,db.height+4); return; }
+    }
+    const b=melhor(uf,w,h,bb);
+    if(b){ g.setAttribute("transform",`translate(${b.x.toFixed(1)},${(b.y-dy).toFixed(1)})`); ocupar(b.x,b.y,w,h); return; }
+    // não coube: âncora = ponto do estado com mais folga para um ponto só
+    const a=melhor(uf,1,1,bb)||{x:bb.x+bb.width/2,y:bb.y+bb.height/2};
+    fora.push({g,uf,w,h,dy,ax:a.x,ay:a.y,lado:(bb.x+bb.width/2)>(VX+VW/2)?"dir":"esq"});
+  });
+  if(!fora.length) return;
+  // coluna fora do mapa, na altura do estado, sem sobreposição entre os rótulos
+  let extE=0, extD=0; const NS="http://www.w3.org/2000/svg";
+  ["dir","esq"].forEach(lado=>{
+    const L=fora.filter(f=>f.lado===lado).sort((a,b)=>a.ay-b.ay); if(!L.length) return;
+    const larg=Math.max(...L.map(f=>f.w))+14;
+    const cx=lado==="dir"?VX+VW+larg/2+10:VX-larg/2-10;
+    let ultimo=-1e9;
+    L.forEach(f=>{ let y=Math.max(f.ay,ultimo+f.h+6); ultimo=y;
+      f.g.setAttribute("transform",`translate(${cx.toFixed(1)},${(y-f.dy).toFixed(1)})`); f.g.classList.add("fora");
+      const ln=document.createElementNS(NS,"polyline"); const bx=lado==="dir"?cx-f.w/2-4:cx+f.w/2+4;
+      ln.setAttribute("points",`${f.ax.toFixed(1)},${f.ay.toFixed(1)} ${(lado==="dir"?VX+VW+4:VX-4).toFixed(1)},${y.toFixed(1)} ${bx.toFixed(1)},${y.toFixed(1)}`);
+      ln.setAttribute("class","uf-guia"); svg.insertBefore(ln,f.g);
+      const pto=document.createElementNS(NS,"circle"); pto.setAttribute("cx",f.ax.toFixed(1)); pto.setAttribute("cy",f.ay.toFixed(1)); pto.setAttribute("r","1.8"); pto.setAttribute("class","uf-guia-pt"); svg.insertBefore(pto,f.g);
+    });
+    if(lado==="dir") extD=larg+18; else extE=larg+18;
+  });
+  svg.setAttribute("viewBox",`${VX-extE} ${VY} ${VW+extE+extD} ${VH}`);
+};
+// quando o mapa aparece (ou muda de tamanho), os rótulos são recalculados
+(function(){ const alvo=document.getElementById("bz-mapa"); if(!alvo||!window.ResizeObserver) return; let ult=0;
+  new ResizeObserver(en=>{ const w=Math.round(en[0].contentRect.width); if(w&&(window._rotPendente||Math.abs(w-ult)>40)){ ult=w; requestAnimationFrame(()=>{ try{ posicionarRotulosMapa(); }catch(e){} }); } }).observe(alvo); })();
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
@@ -4358,10 +4431,11 @@ function desenhaBzMapa(){ window._mpTriagem={};
     const k=n?Math.sqrt(n/maxN):0; const fill=n?sepia(k):"#F5EBD3";
     svg+=`<path d="${e.d}" data-uf="${uf}" class="${bzUFsel===uf?"sel":""}${n?" com-abertas":""}" style="fill:${fill}"></path>`;}
   for(const [uf,e] of Object.entries(M.estados)){const p=por[uf];const n=fxUF(uf,p).t;
-    // 24/09 (titular): confirmadas/possíveis — datas e objeto verificados / identificadas sem os dados mínimos
-    svg+=`<text x="${e.cx-8}" y="${e.cy+2}" class="uf-sigla">${uf}</text>${n?`<text x="${e.cx-11}" y="${e.cy+13}" class="uf-n"><title>${fxUF(uf,p).c} com objeto, data-limite de inscrição aberta e link oficial / ${fxUF(uf,p).t} possível(is) aberta(s)</title>${fxUF(uf,p).c}/${fxUF(uf,p).t}</text>`:""}`;}
+    // 27/09 (titular): sigla e números num grupo; a posição é calculada depois, pela geometria do estado
+    svg+=`<g class="uf-rot" data-uf="${uf}" transform="translate(${e.cx},${e.cy})"><text x="0" y="0" class="uf-sigla" text-anchor="middle">${uf}</text>${n?`<text x="0" y="13" class="uf-n" text-anchor="middle"><title>${fxUF(uf,p).c} com objeto, data-limite de inscrição aberta e link oficial / ${fxUF(uf,p).t} possível(is) aberta(s)</title>${fxUF(uf,p).c}/${fxUF(uf,p).t}</text>`:""}</g>`;}
   svg+="</svg>";
   $("bz-mapa").innerHTML=svg;
+  try{ posicionarRotulosMapa(); }catch(e){ console.warn("rótulos do mapa:",e); }
   // a rosa dos ventos carrega o nível nacional no mesmo formato: confirmadas/possíveis
   const _nac=por["__nac__"]||{}; const _rot=$("bz-rosa-svg")&&$("bz-rosa-svg").parentElement&&$("bz-rosa-svg").parentElement.querySelector(".bz-rosa-rot");
   if(_rot) _rot.innerHTML=`Brasil · nível nacional<br><b class="bz-rosa-n" title="${fxTot(_nac).c} com objeto, data-limite aberta e link oficial / ${fxTot(_nac).t} possíveis abertas no país">${fxTot(_nac).c}/${fxTot(_nac).t}</b>`;
