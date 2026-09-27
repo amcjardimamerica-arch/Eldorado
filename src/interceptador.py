@@ -116,8 +116,8 @@ def alvos(maximo: int = 40) -> list[dict]:
             eid = str(it["id"])
             arq = ROOT / "dados/editais/extraidos" / f"{eid}.json"
             if not arq.exists():
-                write_json(arq, {"edital_id": eid, "titulo": it.get("titulo"), "url": it.get("url"), "orgao": it.get("orgao"),
-                                 "fonte_nome": it.get("orgao"), "origem": "fila de resgate (catálogo do Espião)",
+                write_json(arq, {"edital_id": eid, "titulo": it.get("titulo"), "url": it.get("url"), "orgao": None,
+                                 "fonte_nome": it.get("visto_em") or it.get("orgao"), "origem": "fila de resgate (catálogo do Espião)",
                                  "enquadramento": it.get("enquadramento"), "descoberto_em": it.get("descoberto_em")})
         if not eid or eid in vistos or recente(eid):
             continue
@@ -582,6 +582,9 @@ def publicar_painel() -> dict:
             eid = v.get("id") or _id_por_titulo().get(str(v.get("alvo") or "")[:120])
             m["id"] = eid
             m["encontrou"] = _dados_do_registro(eid) if eid else {}
+            bo = (registro(eid) or {}).get("busca_do_oficial") or {} if eid else {}
+            m["financiador"] = bo.get("financiador"); m["indicios"] = bo.get("indicios") or []
+            m["rotas"] = [t.get("rota") for t in (bo.get("tentativas") or []) if t.get("rota") and not t.get("validou")][:6]
         missoes.append(m)
     try:
         fila = {"editais novos dos motores": len(novos_dos_motores()), "indícios do Espião": sum(1 for a in alvos(60) if a["de"] == "fila de resgate" and a["id"] not in fe),

@@ -62,8 +62,9 @@ def _nu(u: str) -> str:
 
 
 def _oficial(*us) -> str | None:
+    from .sites_oficiais import e_republicador       # catálogo de republicadores (config/republicadores.json)
     for u in us:
-        if isinstance(u, str) and u.startswith("http") and not AGREGADORES.search(u):
+        if isinstance(u, str) and u.startswith("http") and not AGREGADORES.search(u) and not e_republicador(u):
             return u
     return None
 

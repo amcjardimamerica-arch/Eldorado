@@ -287,7 +287,8 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
                 url = re.search(r"https?://\S+?(?=\)|$|\s)", cab)
                 u = url.group(0) if url else cab[:120]
                 v["fonte"] = u
-                v["fonte_oficial"] = bool(dom_of) and dom_of in (urlsplit(u).hostname or "")
+                from .sites_oficiais import e_republicador as _rep
+                v["fonte_oficial"] = bool(dom_of) and dom_of in (urlsplit(u).hostname or "") and not _rep(u)
                 break
     n = sum(1 for v in campos.values() if v["comprovado"])
     e["investigacao_ia"] = {"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "modelo": modelo, "fontes": fontes, "campos": campos,
@@ -432,43 +433,35 @@ def _links_da_pagina(url: str) -> list[tuple[str, str]]:
 
 
 def pagina_oficial(ia, e: dict) -> tuple[str | None, str]:
-    """Conhecida → usa. Senão: links que saem da divulgação, escolhidos pelo modelo; senão, busca pelo órgão."""
+    """PRIMEIRO O SITE OFICIAL DA FONTE (titular, 27/09). A confirmada pelo titular/validação vale, se não for
+    republicador; depois, as rotas de src/sites_oficiais.py: financiador REAL lido na notícia (quem republica não
+    é o financiador), domínio aprendido, links da notícia para o financiador, buscas criativas, e validação da
+    página (fala do programa e tem sinais de edital). Sem página validada, nenhuma — a notícia fica como indício."""
+    from . import sites_oficiais as SO
     ve = e.get("verificacao_externa") if isinstance(e.get("verificacao_externa"), dict) else {}
-    confirmada = ve.get("pagina_oficial") or (e.get("validacao") or {}).get("site")
-    if confirmada:
-        return confirmada, "página oficial confirmada pelo titular ou pela validação"
-    if e.get("pagina_oficial"):
-        # escolhida numa rodada anterior da IA: precisa conversar com o órgão ou o título — a rodada de 26/09
-        # gravou um link de rodapé da ABCR e a seguinte o aceitou como 'já verificada'
-        dom = _norm(urlsplit(e["pagina_oficial"]).hostname or "").replace(" ", "")
-        chaves = [w for w in _norm(f"{e.get('orgao') or ''} {re.sub(r'(?i)^continue lendo ', '', e.get('titulo') or '')}").split() if len(w) >= 5]
-        if any(w in dom for w in chaves):
-            return e["pagina_oficial"], "página oficial de rodada anterior, conferida pelo domínio"
-        e["pagina_oficial"] = None
-    url = e.get("url") or ""
-    links = _links_da_pagina(url) if url.startswith("http") else []
-    if links:
-        r = ia.perguntar(PROMPT_PAGINA.format(titulo=(e.get("titulo") or "")[:160], fonte=e.get("fonte_nome") or e.get("fonte_id") or "—",
-                                              orgao=e.get("orgao") or "—", prazo=e.get("prazo_texto") or e.get("fim") or "—", url=url,
-                                              links="\n".join(f"- {u}  ({r})" for u, r in links)), '{"url": "...", "porque": "..."}')
-        u = (r or {}).get("url") if isinstance(r, dict) else None
-        if u and str(u).startswith("http") and any(u == l for l, _ in links):
-            # o domínio tem de conversar com o órgão ou o título — o 8B escolheu um link de rodapé da ABCR
-            dom = _norm(urlsplit(u).hostname or "").replace(" ", "")
-            chaves = [w for w in _norm(f"{e.get('orgao') or ''} {e.get('titulo') or ''}").split() if len(w) >= 5]
-            if any(w in dom for w in chaves):
-                return u, f"escolhida entre {len(links)} links da divulgação: {(r or {}).get('porque', '')[:120]}"
-            passos_rejeitado = f"o modelo escolheu {u}, rejeitado: o domínio não tem relação com o órgão nem com o título"
+    for cand, como in ((ve.get("pagina_oficial"), "confirmada pelo titular"), ((e.get("validacao") or {}).get("site"), "confirmada pela validação"),
+                       (e.get("pagina_oficial"), "de rodada anterior")):
+        if cand and str(cand).startswith("http") and not SO.e_republicador(cand):
+            return cand, f"página oficial {como}"
+    e["pagina_oficial"] = None
+
+    def _ler(u):
+        try:
+            dados, tipo = _baixar(u, 25)
+            if dados[:5] == b"%PDF-" or "pdf" in (tipo or "").lower():
+                return _pdf_texto(dados)
+            pp = _Texto(); pp.feed(dados.decode("utf-8", "ignore")); return "".join(pp.partes)
+        except Exception:
+            return ""
     try:
         from .piloto_busca import buscar
-        q = f"{(e.get('orgao') or '').strip()} {re.sub(r'(?i)^continue lendo ', '', (e.get('titulo') or ''))[:80]} edital".strip()
-        for r in (buscar(q, maximo=6) or []):
-            u = r.get("url") or ""
-            if u.startswith("http") and not re.search(r"captadores|observatorio3setor|prosas|filantropia\.ong|gife|duckduckgo|bing\.", u):
-                return u, f"achada pelo buscador com '{q[:60]}'"
     except Exception:
-        pass
-    return None, "não encontrada: sem link para o site do órgão na divulgação e o buscador não devolveu o site"
+        buscar = lambda q, maximo=8: []
+    url, como, diag = SO.descobrir(ia, e, _ler, buscar, _links_da_pagina)
+    e["busca_do_oficial"] = diag
+    if diag.get("financiador") and (not e.get("orgao") or SO.e_republicador("https://" + str(e.get("orgao"))) or re.search(r"(?i)captadores|observat[oó]rio|filantropia|abcr", str(e.get("orgao")))):
+        e["orgao"] = diag["financiador"]            # o órgão passa a ser o financiador real, não quem republicou
+    return url, como
 
 
 def dispensas(ia, e: dict, texto: str, faltantes: list[str]) -> dict:

@@ -59,7 +59,8 @@ def agregar(url: str, nome: str, tipo: str, origem: str, nivel: str = "privado",
 
 def agregar_pagina_oficial(reg_edital: dict, origem: str = "Piloto - Interceptador") -> bool:
     u = reg_edital.get("pagina_oficial")
-    if not u:
+    from .sites_oficiais import e_republicador
+    if not u or e_republicador(u):                   # republicador não vira fonte monitorada
         return False
     # monitora a PÁGINA-MÃE do edital (a seção de editais do site), não o edital específico
     p = urlsplit(u); base = f"{p.scheme}://{p.netloc}" + "/".join(p.path.rstrip("/").split("/")[:-1]) if p.path.count("/") > 1 else u

@@ -190,7 +190,7 @@ def montar_fila(limite: int = 60) -> dict:
         cid = "cat-" + __import__("hashlib").sha1(c["url"].encode()).hexdigest()[:12]
         if cid in feitos or tentados.get(cid, 0) >= 1:
             continue
-        itens[cid] = {"id": cid, "titulo": c["titulo"], "url": c["url"], "orgao": c.get("visto_em"), "uf": None,
+        itens[cid] = {"id": cid, "titulo": c["titulo"], "url": c["url"], "orgao": None, "visto_em": c.get("visto_em"), "uf": None,   # quem republicou não é o órgão
                       "descoberto_em": c.get("descoberto_em"), "enquadramento": c.get("enquadramento"),
                       "falta": ["prazo", "pagina_oficial"], "urgencia": 90, "serve_porque": c.get("como_se_enquadra"),
                       "estado": "aguardando", "tentativas": 0, "origem": "catálogo do Piloto"}
