@@ -469,6 +469,11 @@ def voo(ia) -> dict:
     except Exception as ex:
         rel["fluxo"] = f"falhou: {type(ex).__name__}"
     try:
+        from .saude import checar as _saude
+        rel["saude"] = len(_saude().get("alertas", []))
+    except Exception:
+        pass
+    try:
         from .para_claude import montar as _para_claude
         rel["para_o_claude"] = _para_claude()
     except Exception as ex:

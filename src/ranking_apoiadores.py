@@ -181,7 +181,13 @@ def montar() -> dict:
     for cat, itens in listas.items():
         for e in itens:
             pt = pontuar(e)
-            e["pontuacao"] = pt; e["pontos_lista"] = pt["pontos"]; e["nivel"] = pt["nivel"]; e["nivel_ordem"] = pt["ordem"]
+            if e.get("leve"):     # 27/09: 23 mil registros leves com o detalhamento completo davam 22 MB
+                pt = {"pontos": pt["pontos"], "base": pt["base"], "bonus": pt["bonus"], "componentes": pt["componentes"],
+                      "bonus_detalhe": {"anos_seguidos": pt["bonus_detalhe"]["anos_seguidos"]}, "nivel": pt["nivel"], "ordem": pt["ordem"]}
+            else:
+                pt.pop("porque", None)
+            e["pontuacao"] = pt; e["pontos_lista"] = pt["pontos"]; e["pontos"] = e.get("pontos") or pt["pontos"]
+            e["nivel"] = pt["nivel"]; e["nivel_ordem"] = pt["ordem"]
         itens.sort(key=lambda x: (-x["pontos_lista"], -((x.get("salic") or {}).get("total") or 0), x["nome"]))
         for n, e in enumerate(itens, 1):
             e["n_na_lista"] = n; e["uid"] = f"{cat}:{n}"; e["faixa"] = e["nivel"]

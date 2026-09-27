@@ -145,7 +145,7 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
     """Oportunidade nova (não coberta) → opressor próprio ligado por 30 dias + cadastro preditivo."""
     C = _j(CAT_OPR, {"motores": []}); L = _j(EST_OPR, {"ligados": {}})
     cobertos_u = {_nu(x.get("pagina") or "") for x in C.get("motores") or [] if x.get("pagina")}
-    cobertos_t = {_nt(f"{x.get('programa')}") for x in C.get("motores") or []}
+    cobertos_t = {_nt(f"{x.get('programa')}") for x in C.get("motores") or []} | {_nt(f"{x.get('programa')}{x.get('orgao')}") for x in C.get("motores") or []}
     PRED.parent.mkdir(parents=True, exist_ok=True)
     ja_pred = {json.loads(l).get("id") for l in PRED.open(encoding="utf-8") if l.strip()} if PRED.exists() else set()
     novos_opr = novos_pred = 0; hoje = date.today()

@@ -1634,8 +1634,10 @@ def _versionar_scripts(versao: str) -> None:
     t = html.read_text(encoding="utf-8")
     t2 = re.sub(r'<script src="(dashboard-dados(?:\.enc)?\.js|mapa-brasil\.js|mapa-arte\.js)(?:\?v=\d+)?"></script>',
                 lambda m: f'<script src="{m.group(1)}?v={v}"></script>', t)
-    if t2 != t:
-        html.write_text(t2, encoding="utf-8")
+    # 27/09: NÃO reescreve mais o painel. Cada voo que rodava este gerador regravava docs/dashboard.html com a
+    # cópia antiga que tinha (só para trocar o ?v=), e às 21h49 desfez a leitura pela API publicada minutos antes.
+    # A camada ao vivo do painel já lê dashboard-dados.js direto do repositório; o carimbo é dispensável.
+    return
 
 
 def _preservar_se_vazio(caminho, novo: dict, chave: str = "linhas") -> bool:
@@ -1671,8 +1673,7 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
     if _preservar_se_vazio(pasta / "historico.json", pac):
         pac = load_json(pasta / "historico.json")          # CI sem banco: mantém o publicado
     else:
-        (pasta / "historico.json").write_text(json.dumps(pac, ensure_ascii=False,
-                                                         separators=(",", ":")), encoding="utf-8")
+        _grava_se_mudou(pasta / "historico.json", pac, separators=(",", ":"))
     tamanhos["historico.json"] = tamanho(pac)
 
     prev = dados.get("previsoes", {}).get("itens", [])
@@ -1680,8 +1681,7 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                 "especial", "das_260", "goias", "base", "status_verificacao",
                 "fonte_confirmacao", "lei"]
     pacp = compactar([{k: p0.get(k) for k in campos_p} for p0 in prev], campos_p)
-    (pasta / "previsoes.json").write_text(json.dumps(pacp, ensure_ascii=False,
-                                                     separators=(",", ":")), encoding="utf-8")
+    _grava_se_mudou(pasta / "previsoes.json", pacp, separators=(",", ":"))
     tamanhos["previsoes.json"] = tamanho(pacp)
 
     pp = ROOT / "biblioteca_alexandria/fontes/parecer_prazos.json"
@@ -1753,7 +1753,7 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                     "tipo_registro", "motivo_tipo", "selo_validacao", "validacao"]
         pac_a = compactar(abertas, campos_a)
         pac_a["total"] = len(abertas)
-        (pasta / "abertas.json").write_text(json.dumps(pac_a, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        _grava_se_mudou(pasta / "abertas.json", pac_a, separators=(",", ":"))
         tamanhos["abertas.json"] = tamanho(pac_a)
         dados["abertas_total"] = len(abertas)
     except Exception as exc:
@@ -1785,7 +1785,7 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
             pj2 = emp_dir / uf.lower() / "patrocinios.json"
             bl = load_json(pj2) if pj2.exists() else None
             pac_e["estados"][uf]["patrocinios"] = bl or {"total": 0, "empresas": [], "fontes": []}
-        (pasta / "empresas.json").write_text(json.dumps(pac_e, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        _grava_se_mudou(pasta / "empresas.json", pac_e, separators=(",", ":"))
         tamanhos["empresas.json"] = tamanho(pac_e)
         dados["empresas_resumo"] = {uf: {"ativo": v["ativo"], "total": v["total"], "elegiveis": v["elegiveis"]} for uf, v in pac_e["estados"].items()}
     except Exception as exc:
@@ -1825,6 +1825,24 @@ def enxugar_nucleo(dados: dict, hoje: date) -> dict:
                            "nota": "carregados sob demanda; só registro público"}
     return dados
 
+
+def _grava_se_mudou(caminho, obj, **kw) -> bool:
+    """27/09: regravar arquivos de megabytes a cada voo com o mesmo conteúdo (só a data de geração mudando) inchou o
+    histórico do repositório a 1,5 GB. Compara ignorando os campos de data; só grava se o conteúdo mudou."""
+    novo = json.dumps(obj, ensure_ascii=False, **kw)
+    try:
+        if caminho.exists():
+            # compara o CONTEÚDO (a ordem das chaves varia entre execuções), sem os campos de data do topo
+            vol = ("gerado_em", "em", "referencia", "atualizado_em")
+            a = json.loads(caminho.read_text(encoding="utf-8")); b = json.loads(novo)
+            if isinstance(a, dict) and isinstance(b, dict):
+                a = {k: v for k, v in a.items() if k not in vol}; b = {k: v for k, v in b.items() if k not in vol}
+            if a == b:
+                return False
+    except Exception:
+        pass
+    caminho.write_text(novo, encoding="utf-8")
+    return True
 
 def run(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()

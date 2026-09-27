@@ -1,5 +1,12 @@
 name: 00 · Verificar prontidão
-on: [workflow_dispatch, push]
+# 27/09: rodava a CADA gravação (os Pilotos gravam a cada poucos minutos: centenas de execuções/dia, todas
+# falhando e escondendo falha real). Agora: só quando código, testes, configuração ou workflows mudam, e 1×/dia.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "11 9 * * *"
+  push:
+    paths: ["src/**", "tests/**", "scripts/**", "config/**", ".github/workflows/**"]
 permissions:
   contents: read
 jobs:

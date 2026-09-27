@@ -396,6 +396,7 @@ box-shadow:0 1px 3px #0002}
    registrada vem colorida e sólida; a que não tem fica apagada, no lugar dela, para que
    a linha mostre ao mesmo tempo o que a empresa já fez e o que ainda não fez. */
 .ep-prog{display:flex;gap:3px;flex-wrap:wrap}
+.saude{border-radius:8px;padding:0 6px;font-weight:700;cursor:help}.saude.ok{color:#1E7E4B;background:#F1F9F4}.saude.alerta{color:#8A6D1E;background:#FFFBEF;border:1px solid #E6D39A}
 .selo-box{margin:2px 0 6px}.selo-vivo{display:inline-block;font-size:10.5px;color:#1E7E4B;background:#F1F9F4;border:1px solid #CFE8D8;border-radius:8px;padding:1px 8px}
 .selo-vivo.atraso{color:#8A6D1E;background:#FFFBEF;border-color:#E6D39A}.selo-vivo.falha{color:#B3261E;background:#FDF1F0;border-color:#F0C4BF}
 .vivo-pt{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22;vertical-align:1px}.vivo-pt.falha{background:#B3261E}
@@ -1241,17 +1242,44 @@ let D=null;
 const REPO_RAW="https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/";
 const _fetchOriginal=window.fetch.bind(window);
 window._FONTES={};                       // caminho → {fonte, lido_em, ok}
+const _ETAG={};                           // caminho → {etag, corpo}: não baixar de novo o que não mudou
+/* 1ª FONTE (27/09): a API do GitHub com o token guardado neste navegador — lê o arquivo no instante em que foi
+   gravado, sem o atraso de até 5 min da cópia pública. Sem token, ou se a API recusar (token vencido, cota), segue
+   para a cópia pública do repositório e, por fim, para o site. Cota da API com token: 5.000 leituras/hora. */
+const REPO_API="https://api.github.com/repos/amcjardimamerica-arch/Eldorado/contents/docs/";
+window.tokenLeitura=()=>{ try{ return (Date.now()>(window._apiDescansa||0)&&localStorage.getItem("eldorado_gh_token"))||""; }catch(e){ return ""; } };
+/* UMA LEITURA POR ARQUIVO A CADA 20 s: vários quadros pedem o mesmo arquivo ao mesmo tempo (158 consultas só
+   para abrir a página); os pedidos simultâneos passam a compartilhar a mesma leitura. */
+const _lendo={};
 window.fetch=async function(u,o){
   if(typeof u==="string"&&/^(dados\/|dashboard-dados\.js)/.test(u)){
     const cam=u.split("?")[0];
-    try{ const r=await _fetchOriginal(REPO_RAW+cam+"?t="+Date.now(),{cache:"no-store"});
-      if(r.ok){ _FONTES[cam]={fonte:"repositório (ao vivo)",lido_em:new Date(),ok:true}; return r; } }catch(e){}
-    try{ const r=await _fetchOriginal(cam+"?v="+Date.now(),{cache:"no-cache"});
-      _FONTES[cam]={fonte:r.ok?"cópia do site (reserva)":"falhou nas duas fontes",lido_em:new Date(),ok:r.ok}; return r; }
-    catch(e){ _FONTES[cam]={fonte:"falhou nas duas fontes",lido_em:new Date(),ok:false}; throw e; }
+    const x=_lendo[cam];
+    if(x&&Date.now()-x.t<20000){ const r=await x.p; return r?r.clone():new Response(null,{status:503}); }
+    const pr=_lerFonte(cam,u).catch(()=>null); _lendo[cam]={t:Date.now(),p:pr};
+    const r=await pr; return r?r.clone():new Response(null,{status:503});
   }
   return _fetchOriginal(u,o);
 };
+async function _lerFonte(cam,u){
+  {
+    const tok=tokenLeitura();
+    if(tok){ try{
+        // arquivo que não mudou não é baixado de novo (ETag): o ranking de 16 MB muda 1×/semana e era relido a cada 4 min
+        const C=_ETAG[cam]; const hd={"Authorization":"Bearer "+tok,"Accept":"application/vnd.github.raw+json","X-GitHub-Api-Version":"2022-11-28"}; if(C) hd["If-None-Match"]=C.etag;
+        const r=await _fetchOriginal(REPO_API+cam+"?ref=main",{cache:"no-store",headers:hd});
+        if(r.status===304&&C){ _FONTES[cam]={fonte:"API do GitHub (sem atraso · sem mudança)",lido_em:new Date(),ok:true}; return new Response(C.corpo,{status:200}); }
+        if(r.ok){ _FONTES[cam]={fonte:"API do GitHub (sem atraso)",lido_em:new Date(),ok:true};
+          const et=r.headers.get("ETag"); if(et){ const corpo=await r.text(); _ETAG[cam]={etag:et,corpo}; return new Response(corpo,{status:200}); } return r; }
+        if(r.status===401||r.status===403||r.status===429){ window._apiDescansa=Date.now()+10*60*1000; window._apiMotivo="API recusou ("+r.status+"): usando a cópia pública por 10 min"; }
+      }catch(e){} }
+    try{ const r=await _fetchOriginal(REPO_RAW+cam+"?t="+Date.now(),{cache:"no-store"});
+      if(r.ok){ _FONTES[cam]={fonte:tok||window._apiMotivo?"cópia pública do repositório (até 5 min)":"cópia pública do repositório (até 5 min) — guarde o token para ler sem atraso",lido_em:new Date(),ok:true}; return r; } }catch(e){}
+    try{ const r=await _fetchOriginal(cam+"?v="+Date.now(),{cache:"no-cache"});
+      _FONTES[cam]={fonte:r.ok?"cópia do site (reserva)":"falhou nas três fontes",lido_em:new Date(),ok:r.ok}; return r; }
+    catch(e){ _FONTES[cam]={fonte:"falhou nas três fontes",lido_em:new Date(),ok:false}; throw e; }
+  }
+}
 window.recarregarDados=async function(){
   try{ const r=await fetch("dashboard-dados.js"); if(!r.ok) return false;
     const w={}; new Function("window",await r.text())(w);
@@ -3637,7 +3665,7 @@ async function lerPosicao(){
   // 1º a API: resposta fresca, e a revalidação com ETag (304) não gasta cota — medido.
   // Se a cota do IP acabar (403/429), 15 min de descanso e o raw, que atrasa até 5 min.
   if(Date.now()>_apiDescansaAte){
-    try{ const r=await fetch(POS_API,{cache:"no-cache",headers:{Accept:"application/vnd.github.raw+json"}});
+    try{ const _t=tokenLeitura(); const r=await fetch(POS_API,{cache:"no-store",headers:Object.assign({Accept:"application/vnd.github.raw+json"},_t?{"Authorization":"Bearer "+_t}:{})});
       if(r.ok){ const d=await r.json(); d._via="api"; window._POS=d; return d; }
       if(r.status===403||r.status===429) _apiDescansaAte=Date.now()+15*60*1000;
     }catch(e){}
@@ -3934,9 +3962,13 @@ const INT_VIVO_RAW="https://raw.githubusercontent.com/amcjardimamerica-arch/Eldo
 window._INT_VIVO=null;
 const INT_VIVO_API="https://api.github.com/repos/amcjardimamerica-arch/Eldorado/contents/docs/dados/interceptador_ao_vivo.json?ref=piloto-ao-vivo";
 window.lerInterceptadorVivo=async function(){
+  if(window._intVivoP&&Date.now()-(window._intVivoT||0)<10000) return window._intVivoP;   // uma leitura a cada 10 s, compartilhada
+  window._intVivoT=Date.now(); window._intVivoP=_lerIntVivo(); return window._intVivoP;
+};
+async function _lerIntVivo(){
   let ok=false;
   if(Date.now()>(window._intApiDescansa||0)){
-    try{ const r=await fetch(INT_VIVO_API,{cache:"no-cache",headers:{Accept:"application/vnd.github.raw+json"}});
+    try{ const _t=tokenLeitura(); const r=await fetch(INT_VIVO_API,{cache:"no-store",headers:Object.assign({Accept:"application/vnd.github.raw+json"},_t?{"Authorization":"Bearer "+_t}:{})});
       if(r.ok){ window._INT_VIVO=await r.json(); ok=true; } else if(r.status===403||r.status===429) window._intApiDescansa=Date.now()+15*60*1000;
     }catch(e){} }
   if(!ok){ try{ const r=await fetch(INT_VIVO_RAW+"?t="+Date.now(),{cache:"no-store"}); if(r.ok){ window._INT_VIVO=await r.json(); } }catch(e){} }
@@ -4753,7 +4785,8 @@ function pintarSelos(){
     s.innerHTML=seloVivo(cam,g(),lim); });
   const v=document.getElementById("versao-painel");
   if(v){ const F=_FONTES["dashboard-dados.js"]||{}; const prox=Math.max(0,Math.round((240000-(Date.now()-(window._ultimaAtualizacao||Date.now())))/60000));
-    v.innerHTML=`<span class="vivo-pt${F.ok===false?" falha":""}"></span> <b>ao vivo</b> · dados gerados em ${esc(_hm(D&&D.gerado_em))} · lidos às ${F.lido_em?esc(_hm(F.lido_em).slice(6)):"—"} de ${esc(F.fonte||"—")} · próxima leitura em ${prox||4} min <a href="#" onclick="atualizarAgora(true);return false">atualizar agora</a>`; }
+    v.innerHTML=`<span class="vivo-pt${F.ok===false?" falha":""}"></span> <b>ao vivo</b> · dados gerados em ${esc(_hm(D&&D.gerado_em))} · lidos às ${F.lido_em?esc(_hm(F.lido_em).slice(6)):"—"} de ${esc(F.fonte||"—")} · próxima leitura em ${prox||4} min${(()=>{const S=window._SAUDE; if(!S) return ""; const A=S.alertas||[];
+      return ` · <span class="saude ${A.length?"alerta":"ok"}" title="${esc(A.length?A.map(a=>"• "+a.area+": "+a.texto).join("\n"):(S.ok||[]).join("\n"))}\n(checado em ${esc(_hm(S.em))})">saúde: ${A.length?A.length+" alerta(s)":"ok"}</span>`;})()}${tokenLeitura()?"":" · <b>sem token: guarde-o (fósforo de um motor) para ler sem atraso</b>"} <a href="#" onclick="atualizarAgora(true);return false">atualizar agora</a>`; }
   const r=document.getElementById("rodada"); if(r&&D) r.textContent="Última alimentação: "+_hm(D.gerado_em)+" · leitura ao vivo a cada 4 minutos";
 }
 window.atualizarAgora=async function(forcar){
@@ -4773,6 +4806,7 @@ window.atualizarAgora=async function(forcar){
     ()=>window.desenhaPostoInterceptador&&desenhaPostoInterceptador("int-posto"),()=>window.desenhaPostoInterceptador&&desenhaPostoInterceptador("int-posto-bussola"),
     ()=>window.carregaFluxo&&carregaFluxo()];
   for(const f of passos){ try{ await f(); }catch(e){ console.warn("atualização de caixa falhou:",e); } }
+  try{ const r=await fetch("dados/saude.json"); if(r.ok) window._SAUDE=await r.json(); }catch(e){}
   window._ultimaAtualizacao=Date.now(); pintarSelos();
 };
 setInterval(()=>atualizarAgora(),240000);
