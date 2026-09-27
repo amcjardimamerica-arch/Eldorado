@@ -92,10 +92,14 @@ def consolidar() -> list[dict]:
         if e.get("investigacao_ia") and arq.stem.startswith(("cat-", "op-")):
             brutos.append(("Piloto - Interceptador", {"id": arq.stem, "titulo": e.get("titulo"), "url": e.get("url"), "orgao": e.get("orgao"),
                                                       "descoberto_em": str((e.get("investigacao_ia") or {}).get("em", ""))[:10], "fonte_id": "piloto-interceptador"}))
+    # NÃO É OPORTUNIDADE (27/09): pauta legislativa, assembleia, contrato já assinado, resultado e lista de aprovados.
+    # Retificação e alteração de cronograma FICAM: indicam edital aberto.
+    RUIDO = re.compile(r"^\s*\d{1,2}:\d{2}\b|vota[cç][õo]es|requerimentos|t[ií]tulos? de cidadania|utilidades? p[uú]blica|convoca[cç][aã]o de assembleia|"
+                       r"^\s*extrato|resultado|lista de aprovados|aprovados e suplentes|heteroidentifica|homologa|inexigibilidade|dispensa de chamamento|termo aditivo", re.I)
     vistos_t, vistos_u, out = set(), set(), []
     for origem, m in brutos:
-        tit = str(m.get("titulo") or "")
-        if not tit:
+        tit = re.sub(r"\s+", " ", str(m.get("titulo") or "")).strip()
+        if not tit or RUIDO.search(tit):
             continue
         e = _registro_ext(m.get("id"))
         ve = e.get("verificacao_externa") if isinstance(e.get("verificacao_externa"), dict) else {}
@@ -116,10 +120,18 @@ def consolidar() -> list[dict]:
         vistos_t.add(kt); vistos_u.add(ku)
         uf = str(m.get("uf") or e.get("uf") or "").upper()
         confirmada = bool(objeto and fim and fim >= hoje.isoformat() and link)
+        insp = None
+        if inv.get("em"):
+            po = e.get("pagina_oficial")
+            from .sites_oficiais import e_republicador as _rep
+            po_ok = bool(po and not _rep(po))
+            insp = {"em": str(inv.get("em"))[:16], "qualidade": inv.get("qualidade"), "comprovados": inv.get("comprovados"),
+                    "prazo": fim, "pagina_oficial": po if po_ok else None,
+                    "ok": bool(fim and po_ok)}          # verde = achou prazo E site oficial; vermelho = não achou
         out.append({"id": m.get("id"), "titulo": re.sub(r"(?i)^continue lendo\s+", "", tit)[:180], "orgao": m.get("orgao") or e.get("orgao"),
                     "uf": uf if uf in UFS else None, "origem": origem, "tipo": "menção em diário oficial" if diario else ("empresa/instituto" if (m.get("nivel") in ("privada", "privado") or origem.startswith("Piloto")) else "ente público"),
                     "publicado_em": pub, "inicio": _d(e.get("inicio"), ve.get("inicio")), "fim": fim, "link_oficial": link,
-                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url")})
+                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp})
     return out
 
 
@@ -179,6 +191,28 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
             "opressores_total": len(C.get("motores") or []), "previsao_total": len(ja_pred) + novos_pred}
 
 
+def atualizar_preditivo(eid: str, dados: dict) -> bool:
+    """Cada investigação do Interceptador compõe o cadastro preditivo: prazo, página oficial, financiador,
+    qualidade, parecer — o entendimento daquela oportunidade."""
+    if not PRED.exists():
+        return False
+    linhas = [json.loads(l) for l in PRED.open(encoding="utf-8") if l.strip()]
+    achou = False
+    for x in linhas:
+        if x.get("id") == eid:
+            x.setdefault("estudos", []).append({k: v for k, v in dados.items() if v is not None})
+            x["estudos"] = x["estudos"][-5:]
+            if dados.get("prazo"):
+                x["prazo"] = dados["prazo"]
+                if x.get("ciclo") == "pontual":
+                    x["proxima_janela_estimada"] = (date.fromisoformat(dados["prazo"]) + timedelta(days=365)).isoformat()[:7]
+                x["confianca"] = "alta" if dados.get("pagina_oficial") else x.get("confianca")
+            achou = True
+    if achou:
+        PRED.write_text("".join(json.dumps(x, ensure_ascii=False) + "\n" for x in linhas), encoding="utf-8")
+    return achou
+
+
 def montar() -> dict:
     itens = consolidar()
     etapa = opressores_e_preditivo(itens)
@@ -195,6 +229,9 @@ def montar() -> dict:
                       "por_tipo": {t: sum(1 for x in itens if x["tipo"] == t) for t in ("ente público", "empresa/instituto", "menção em diário oficial")}, **etapa},
            "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal,
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
+           "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em")}
+                                       for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
+                            for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}
     SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return {"mapa_total": tot, **res["etapas"]}

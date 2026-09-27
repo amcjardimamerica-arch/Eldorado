@@ -42,7 +42,7 @@ PARAMETROS = {
              "estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de " + CORTE + " — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') "
                   "para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
-    "ordem_dos_alvos": ["1. edital NOVO trazido pelos motores de busca (descoberto desde o corte)", "2. indício NOVO trazido pelo Espião (candidatas)",
+    "ordem_dos_alvos": ["0. PRIORIDADE: possíveis oportunidades de GOIÁS no mapa; depois as dos outros estados em sorteio (titular, 27/09)","1. edital NOVO trazido pelos motores de busca (descoberto desde o corte)", "2. indício NOVO trazido pelo Espião (candidatas)",
                         "3. oportunidade ABERTA atual com itens em falta (alimenta o que já está no painel)", "4. empresa NOVA do radar do Espião (ficha de fonte de recurso)",
                         "5. motor OPRESSOR que nunca leu a própria página (lê e devolve prazo e condições ao opressor)"],
     "modos": {
@@ -355,6 +355,20 @@ def proximo_alvo() -> dict | None:
         montar_fila()                        # 27/09: quem remonta a fila de resgate agora é o Interceptador
     except Exception:
         pass
+    # PRIORIDADE GOIÁS (titular, 27/09): as possíveis oportunidades de Goiás do mapa primeiro; depois as dos outros
+    # estados, em sorteio. O fluxo já reúne o que os motores, o Espião e ele mesmo trouxeram.
+    import random
+    fx = ((load_json(ROOT / "docs/dados/fluxo_oportunidades.json") or {}).get("itens_por_uf") or {}) if (ROOT / "docs/dados/fluxo_oportunidades.json").exists() else {}
+    def _pend(x):
+        return x.get("id") and x["id"] not in feitos and not x.get("inspecao") and registro(str(x["id"]))
+    go = [x for x in fx.get("GO", []) if _pend(x)]
+    if go:
+        x = go[0]
+        return {"id": x["id"], "titulo": x.get("titulo"), "url": x.get("url"), "de": "mapa · Goiás (prioridade)", "modo": "validar", "tipo": "edital", "uf": "GO"}
+    outros = [(k, x) for k, v in fx.items() if k != "GO" for x in v if _pend(x)]
+    if outros:
+        k, x = random.choice(outros)
+        return {"id": x["id"], "titulo": x.get("titulo"), "url": x.get("url"), "de": f"mapa · {'nacional' if k == '__nac__' else k} (sorteio)", "modo": "validar", "tipo": "edital", "uf": k}
     nm = [a for a in novos_dos_motores() if a["id"] not in feitos]
     if nm:
         return {**nm[0], "modo": "validar", "tipo": "edital"}
@@ -429,6 +443,15 @@ def voo(ia) -> dict:
                 _devolver_ao_opressor(a, inv)
             except Exception:
                 pass
+        try:
+            from .fluxo_oportunidades import atualizar_preditivo
+            bo = reg.get("busca_do_oficial") or {}
+            atualizar_preditivo(a["id"], {"em": now_iso()[:10], "qualidade": q, "comprovados": x.get("comprovados"), "prazo": reg.get("fim"),
+                                          "pagina_oficial": reg.get("pagina_oficial"), "financiador": bo.get("financiador"), "programa": bo.get("programa"),
+                                          "serve_como_fonte": (par or {}).get("serve_como_fonte"), "por_que": (par or {}).get("por_que"),
+                                          "faltou": x.get("nao_resolvidos")})
+        except Exception:
+            pass
         try:
             from .fontes_novas import agregar_pagina_oficial
             rel["fonte_nova_para_os_motores"] = agregar_pagina_oficial(reg)

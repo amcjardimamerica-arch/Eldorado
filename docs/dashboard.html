@@ -399,6 +399,9 @@ box-shadow:0 1px 3px #0002}
 .selo-box{margin:2px 0 6px}.selo-vivo{display:inline-block;font-size:10.5px;color:#1E7E4B;background:#F1F9F4;border:1px solid #CFE8D8;border-radius:8px;padding:1px 8px}
 .selo-vivo.atraso{color:#8A6D1E;background:#FFFBEF;border-color:#E6D39A}.selo-vivo.falha{color:#B3261E;background:#FDF1F0;border-color:#F0C4BF}
 .vivo-pt{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22;vertical-align:1px}.vivo-pt.falha{background:#B3261E}
+.uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
+.uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
+.uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
 .int-agora{margin:10px 0}.int-agora-v{border:1px solid #DDEBE2;background:#F7FBF8;border-radius:10px;padding:8px 12px;font-size:12.5px}
 .int-passos{margin:6px 0 0 18px;padding:0;font-size:12px;line-height:1.55}.int-passos li::marker{color:#9AA5B1}
 .int-posto{border:1px solid var(--linha);border-radius:14px;background:#fff;padding:14px 16px}
@@ -740,7 +743,7 @@ box-shadow:0 1px 3px #0002}
 .bz-motor.on{background:#FFF7EC;border-color:#F3D9B0}.bz-motor-led{width:8px;height:8px;border-radius:50%;background:#C9CED6;flex:none}.bz-motor.on .bz-motor-led{background:#E8571A;box-shadow:0 0 5px #E8571A88}
 .bz-motor-nome{font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta)}.bz-op:hover{border-color:#9FC1E8}.bz-op-t{font-size:12px;color:var(--tinta)}
 #bz-mapa path.com-abertas:hover{filter:brightness(.9)}
-#bz-mapa text.uf-n{font-family:Georgia,serif;font-size:9.5px;font-weight:800;fill:#7E2A1E;pointer-events:none}#bz-mapa text.uf-sigla{pointer-events:none}
+#bz-mapa text.uf-n{font-family:Georgia,serif;font-size:13px;font-weight:800;fill:#7E2A1E;pointer-events:none}#bz-mapa text.uf-sigla{pointer-events:none}
 #bz-mapa path[data-uf]{stroke:#5A3E10;stroke-width:.9;cursor:pointer;transition:filter .12s}
 #bz-mapa .mapa-antigo text.uf-sigla{font-family:Georgia,'Times New Roman',serif;font-size:10px;fill:#4A3410;font-weight:700;letter-spacing:.5px}
 #bz-mapa .mapa-antigo .arte{opacity:.95}
@@ -3964,9 +3967,29 @@ window.carregaFluxo=async function(){
     try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ window._FLUXO=await r.json(); break; } }catch(e){}
   }
   try{ if(typeof desenhaBzMapa==="function") desenhaBzMapa(); }catch(e){}
+  try{ if(typeof desenhaBzLateral==="function"&&bzUFsel) desenhaBzLateral(); }catch(e){}
   try{ if(typeof desenhaCal==="function") desenhaCal(); }catch(e){}
 };
 setTimeout(()=>carregaFluxo(),1500); setInterval(()=>carregaFluxo(),300000);
+/* PAINEL DO ESTADO (27/09): cada possível oportunidade do território, com a INSPEÇÃO do Piloto - Interceptador —
+   fundo verde-claro quando inspecionada; marcador verde se achou prazo E site oficial, vermelho se não achou,
+   cinza se ainda não foi inspecionada (ele está nesta fila: Goiás primeiro, depois os outros estados). */
+window.htmlPainelUF=function(rot,itens){
+  const conf=itens.filter(x=>x.confirmada).length, insp=itens.filter(x=>x.inspecao).length, ok=itens.filter(x=>x.inspecao&&x.inspecao.ok).length;
+  const nome=x=>String(x.titulo||"").replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"Diário oficial · ").replace(/"/g,"").slice(0,110);
+  return `<div style="display:flex;justify-content:space-between;align-items:center">
+      <strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(rot)} · ${itens.length} possível(is) oportunidade(s)</strong>
+      <button class="fdoc-bt" onclick="bzFecharUF()">fechar</button></div>
+    <div class=meta style="margin:4px 0 8px">${conf} com objeto, prazo aberto e link oficial · ${insp} inspecionada(s) pelo Interceptador (${ok} com prazo e site oficial) · ${itens.length-insp} na fila dele</div>
+    <div class="uf-fx">${itens.map(x=>{const I=x.inspecao; const cor=!I?"cinza":I.ok?"verde":"verm";
+      const u=(I&&I.pagina_oficial)||x.link_oficial||x.url;
+      return `<div class="uf-fx-l${I?" insp":""}" data-op="${esc(x.id||"")}">
+        <span class="uf-fx-m ${cor}" title="${!I?"ainda não inspecionada pelo Interceptador":I.ok?"inspecionada: prazo e site oficial encontrados":"inspecionada: prazo ou site oficial NÃO encontrados"}"></span>
+        <span class="uf-fx-n"><b title="${esc(x.titulo||"")}">${esc(nome(x))}</b>
+          <small>${esc(x.tipo||"")} · ${esc(String(x.origem||"").replace(/^motor /,"motor: "))}${x.publicado_em?" · publicado em "+br(x.publicado_em):""}${I?` · inspecionada em ${esc(I.em.slice(8,10)+"/"+I.em.slice(5,7))}: ${esc(I.qualidade||"—")} ${I.comprovados??""}/12`:""}</small></span>
+        <span class="uf-fx-p">${(I&&I.prazo)||x.fim?"até "+br((I&&I.prazo)||x.fim):"prazo a confirmar"}</span>
+        ${u?`<a class="uf-fx-a" href="${esc(u)}" target=_blank rel="noopener noreferrer">${I&&I.pagina_oficial?"site oficial ↗":"indício ↗"}</a>`:`<span class="uf-fx-a meta">—</span>`}</div>`;}).join("")}</div>`;
+};
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
@@ -4205,7 +4228,7 @@ async function iniciaMotores(){ await carregaMotores(); desenhaMotores(); atuali
   ["mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca","mo-area","mo-natureza","mo-esfera","mo-status","mo-busca"].forEach(id=>{if($(id))$(id).addEventListener("input",desenhaMotores);}); }
 
 /* ================= BÚSSOLA · réplica do modelo ================= */
-let bzUFsel="";
+let bzUFsel="GO";   // 27/09: Goiás aberto ao lado do mapa por padrão
 window.bzLimpar=function(){["bz-assoc","bz-uf","bz-area","bz-nivel"].forEach(id=>$(id).value="");
   $("bz-prazo").value="vivas";bzUFsel="";desenhaBzTabela();desenhaBzMapa();desenhaFontesAbertas();};
 function desenhaBzCards(){
@@ -4372,6 +4395,9 @@ function desenhaBzLateral(por){
   /* mesmo universo que o mapa conta: abertas confirmadas E possíveis em verificação.
      Antes o mapa somava as duas e o painel listava só as abertas — daí "GO 10" e
      "nenhum edital aberto" ao clicar. */
+  // 27/09 (titular): o painel lista EXATAMENTE as oportunidades que o mapa conta (fluxo), com a inspeção do Interceptador
+  const FX=(((window._FLUXO||{}).itens_por_uf)||{})[bzUFsel];
+  if(FX){ L.innerHTML=htmlPainelUF(rotUF,FX); return; }
   const univUF=(p.itens||[]).filter(e=>ehOportunidade(e)&&estadoDe(e.id)==="em_andamento"&&["aberta","possivel"].includes(situacaoDe(e)));
   const abertosUF=univUF.filter(e=>situacaoDe(e)==="aberta").sort((a,b)=>String(a.fim||"9").localeCompare(String(b.fim||"9")));
   const possiveisUF=univUF.filter(e=>situacaoDe(e)!=="aberta").sort((a,b)=>String(a.titulo||"").localeCompare(String(b.titulo||"")));
