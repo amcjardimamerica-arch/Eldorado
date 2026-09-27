@@ -1,0 +1,27 @@
+name: 13 · Sondagem das fontes de destinação tributária (Receita Federal e histórico da Lei do Esporte)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sondar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Sondar
+        run: python3 scripts/sondar_fontes_incentivos.py
+      - name: Guardar
+        if: always()
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          rm -rf /tmp/s && mkdir -p /tmp/s && cp -r biblioteca_alexandria/base/incentivos/sondagem_fontes.json biblioteca_alexandria/base/incentivos/historico /tmp/s/ 2>/dev/null || true
+          for i in 1 2 3 4; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            mkdir -p biblioteca_alexandria/base/incentivos && cp -r /tmp/s/. biblioteca_alexandria/base/incentivos/ 2>/dev/null || true
+            git add biblioteca_alexandria/base/incentivos
+            git commit -q -m "sondagem: fontes de destinação tributária $(date -u +%F\ %H:%M)" || break
+            git push -q origin main && break; sleep 5
+          done

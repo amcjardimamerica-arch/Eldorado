@@ -396,6 +396,11 @@ box-shadow:0 1px 3px #0002}
    registrada vem colorida e sólida; a que não tem fica apagada, no lugar dela, para que
    a linha mostre ao mesmo tempo o que a empresa já fez e o que ainda não fez. */
 .ep-prog{display:flex;gap:3px;flex-wrap:wrap}
+.ep-nivel{font-style:normal;font-size:9.5px;font-weight:700;border-radius:8px;padding:1px 7px;margin-left:6px;vertical-align:1px;border:1px solid}
+.ep-nivel.n1{background:#0E2A55;color:#fff;border-color:#0E2A55}.ep-nivel.n2{background:#1E7E4B;color:#fff;border-color:#1E7E4B}
+.ep-nivel.n3{color:#1E7E4B;border-color:#8FC9A3;background:#F1F9F4}.ep-nivel.n4{color:#8A6D1E;border-color:#E6D39A;background:#FFFBEF}
+.ep-nivel.n5{color:#9AA5B1;border-color:#E3E8ED;background:#F7F9FA;font-weight:600}
+.ep-bonus{display:block;color:#1E7E4B!important;font-weight:700}
 .ep-lei{font-style:normal;font-size:9.5px;font-weight:700;border-radius:9px;padding:1.5px 7px;
   white-space:nowrap;border:1px solid;letter-spacing:.01em;line-height:1.5}
 .ep-lei.fez{color:#fff;background:var(--lc);border-color:var(--lc)}
@@ -3320,15 +3325,15 @@ window.empLista=function(k){ window.EMPV.lista=k; window.EMPV.pagina=0; window.d
 window.empPagina=function(n){ window.EMPV.pagina=n; window.desenhaApoiadores();
   const c=$("emp-ranking-caixa"); if(c&&c.scrollIntoView)c.scrollIntoView({block:"start"}); };
 window.empFiltro=function(c,v){ window.EMPV[c]=v; window.EMPV.pagina=0; window.desenhaApoiadores(); };
-window.empLimpa=function(){ window.EMPV.q="";window.EMPV.uf="";window.EMPV.porte="";window.EMPV.so="";window.EMPV.lei="";window.EMPV.dest="";
+window.empLimpa=function(){ window.EMPV.q="";window.EMPV.uf="";window.EMPV.so="";window.EMPV.lei="";window.EMPV.dest="";window.EMPV.nivel="";
   window.EMPV.pagina=0; window.desenhaApoiadores(); };
 
 function _filtra(e){ const F=window.EMPV, c=e.cadastro||{}, pt=e.potencial||{};
   if(F.uf && (c.uf||"")!==F.uf) return false;
   // 25/09 (titular): tipo de recurso (lei) e estado de DESTINO do recurso aplicado (estado do projeto que recebeu)
-  if(F.lei && !(e.programas||[]).some(p=>p.chave===F.lei)) return false;
+  if(F.nivel && e.nivel!==F.nivel) return false;
+  if(F.lei && !(e.programas||[]).some(p=>p.chave===F.lei && (p.verificado||p.historico))) return false;
   if(F.dest && !(((e.salic||{}).destino||{})[F.dest])) return false;
-  if(F.porte && !String(c.porte||"").toUpperCase().includes(F.porte)) return false;
   if(F.so==="contato" && !(c.telefone||c.email||e.site)) return false;
   if(F.so==="valor" && !pt.apurou) return false;
   if(F.so==="goias" && (c.uf||"")!=="GO") return false;
@@ -3381,17 +3386,14 @@ window.desenhaApoiadores=function(){
     <div class="ep-filtros">
       <input id="ep-q" class="ep-campo" placeholder="nome, razão social, atividade ou cidade" value="${esc(F.q)}">
       <select id="ep-uf" class="ep-sel"><option value="">todos os estados (sede)</option>${ufs.map(u=>`<option ${F.uf===u?"selected":""} value="${esc(u)}">${esc(u)}</option>`).join("")}</select>
+      <select id="ep-nivel" class="ep-sel" onchange="EMPV.nivel=this.value;EMPV.pagina=0;desenhaApoiadores()"><option value="">todos os níveis</option>${["Parceira social","Destinadora ativa","Destinadora eventual","Potencial","A prospectar"].map(n=>`<option ${F.nivel===n?"selected":""} value="${n}">${n}${(R.niveis||{})[n]!=null?" ("+R.niveis[n]+")":""}</option>`).join("")}</select>
       <select id="ep-lei" class="ep-sel" onchange="EMPV.lei=this.value;EMPV.pagina=0;desenhaApoiadores()"><option value="">todos os tipos de recurso</option>${(R.catalogo_de_leis||[]).map(l=>`<option ${F.lei===l.chave?"selected":""} value="${esc(l.chave)}">${esc(l.curto||l.nome)}</option>`).join("")}</select>
       <select id="ep-dest" class="ep-sel" onchange="EMPV.dest=this.value;EMPV.pagina=0;desenhaApoiadores()"><option value="">qualquer estado de destino</option>${(R.estados_de_destino||[]).map(u=>`<option ${F.dest===u?"selected":""} value="${esc(u)}">destino: ${esc(u)}</option>`).join("")}</select>
-      <select id="ep-pt" class="ep-sel"><option value="">todo porte</option>
-        <option ${F.porte==="DEMAIS"?"selected":""} value="DEMAIS">grande porte</option>
-        <option ${F.porte==="EPP"?"selected":""} value="EPP">pequeno porte</option>
-        <option ${F.porte==="ME"?"selected":""} value="ME">microempresa</option></select>
       <select id="ep-so" class="ep-sel"><option value="">todas</option>
         <option ${F.so==="contato"?"selected":""} value="contato">com contato</option>
         <option ${F.so==="valor"?"selected":""} value="valor">com valor estimado</option>
         <option ${F.so==="goias"?"selected":""} value="goias">só de Goiás</option></select>
-      ${(F.q||F.uf||F.porte||F.so||F.lei||F.dest)?`<button class="ep-limpa" onclick="empLimpa()">limpar filtros</button>`:""}
+      ${(F.q||F.uf||F.so||F.lei||F.dest||F.nivel)?`<button class="ep-limpa" onclick="empLimpa()">limpar filtros</button>`:""}
     </div>
 
     ${paginas.length>1?`<div class="ep-paginas"><span class="ep-rot">Páginas</span>
@@ -3411,23 +3413,23 @@ window.desenhaApoiadores=function(){
       return `<li class="ep-l" tabindex="0" role="button" aria-label="abrir ficha de ${esc(e.nome)}, ${e.n_na_lista}ª da lista"
         onclick="fichaEmpresa('${esc(e.uid)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();fichaEmpresa('${esc(e.uid)}')}">
         <span class="ep-pos">${e.n_na_lista||e.posicao}</span>
-        <span class="ep-nome"><b>${esc(e.nome)}</b>${c.cnpj?`<small>${esc(c.cnpj)}</small>`:`<small class="ep-falta">CNPJ a levantar</small>`}</span>
+        <span class="ep-nome"><b>${esc(e.nome)}</b>${e.nivel?`<i class="ep-nivel n${e.nivel_ordem||5}" title="${esc((e.pontuacao||{}).porque||"")}">${esc(e.nivel)}</i>`:""}${c.cnpj?`<small>${esc(c.cnpj)}</small>`:`<small class="ep-falta">CNPJ a levantar</small>`}</span>
         <span class="ep-prog">${(()=>{const A=e.avaliacao||{};
           if(F.lista==="tributaria"){
             // TODAS as leis sempre à vista: colorida quando há destinação registrada,
             // apagada quando não há. Assim a linha mostra o que existe E o que falta.
             const meus={}; (e.programas||[]).forEach(p=>meus[p.chave]=p);
             return leis(R).map(L=>{const m=meus[L.chave];
-              const cls=!m?"nao":(m.historico?"fez":"cit");
+              const cls=!m?"nao":((m.verificado||m.historico)?"fez":"nao");   // aceso = participou; cinza = não participou
               const t=!m?`${L.nome} — nenhuma destinação registrada. ${L.lei} · ${L.orgao} · até ${L.teto}`
                        :`${L.nome} — ${m.verificado?"VERIFICADO em fonte oficial: "+(m.prova||""):m.historico?"já destinou":"citado, a confirmar"}. ${L.lei} · ${L.orgao} · até ${L.teto}. Como se entra: ${L.porta}`;
-              return `<i class="ep-lei ${cls}" style="--lc:${L.cor}" title="${esc(t)}">${esc(L.curto)}${m&&m.verificado?" ✓":""}</i>`;}).join("");
+              return `<i class="ep-lei ${cls}" style="--lc:${L.cor}" title="${esc(t)}">${esc(L.curto)}</i>`;}).join("");
           }
           return (A.criterios||[]).map(c=>`<i class="ep-lei ${c.pontos>0?"fez":"nao"}" style="--lc:${_corCrit(c.chave)}"
             title="${esc(c.rotulo)} — ${c.pontos>0?esc(String(c.valor)):"sem registro"}. ${esc(c.porque)}">${esc(_curtoCrit(c.chave))}</i>`).join("");
           })()}</span>
-        <span class="ep-esg"><b class="n-${esc((e.avaliacao||{}).nivel||"").replace(/\s/g,"-")}">${(e.avaliacao||{}).pontos||0}</b>
-          <small>de ${(e.avaliacao||{}).teto||100} · ${esc((e.avaliacao||{}).nivel||"—")}</small></span>
+        <span class="ep-esg" title="base ${(e.pontuacao||{}).base??"–"} de 100 + bônus ${(e.pontuacao||{}).bonus||0} por doar em anos seguidos"><b>${e.pontos_lista??0}</b>${(e.pontuacao||{}).bonus?`<small class="ep-bonus">+${e.pontuacao.bonus} bônus</small>`:""}
+          <small>${(e.pontuacao||{}).base??"–"} de 100 · ${esc(e.nivel||"—")}</small></span>
         <span class="ep-valor">${F.lista==="tributaria"
           ? (pt.apurou?`<b>${_fx(ir.direcionavel_min,ir.direcionavel_max)}</b><small>${ir.teto_pct}% do IRPJ</small>`
                       :`<em>${esc((pt.motivo||"sem estimativa").split("—")[0].trim().slice(0,34))}</em>`)
@@ -3486,7 +3488,13 @@ window.fichaEmpresa=async function(uid){
             <span class="ep-nt-txt"><b>${esc(c.rotulo)}</b><small>${esc(c.porque)}</small></span>
             <span class="ep-nt-val">${esc(c.valor)}</span>
             <span class="ep-nt-pt">${tipo==="fez"?"+"+c.pontos:`<i>0</i> de ${c.peso}`}</span></div>`;
-        return `<div class="fdoc-t" style="margin-top:4px">Nota nesta lista: ${A.pontos} de ${A.teto}
+        const P=e.pontuacao||{}, C=P.componentes||{}, BD=P.bonus_detalhe||{};
+        const ROT={recursos:["Recursos destinados","30 pelo 1º mecanismo com destinação comprovada em 5 anos, +15 por mecanismo adicional",60],volume:["Volume destinado","ordem de grandeza do que destinou em 5 anos",20],frequencia:["Frequência","doações e projetos em 5 anos",15],goias:["Goiás","sede em Goiás e projeto em Goiás",10],lucro_real:["Lucro Real confirmado","doou por incentivo, logo apurou pelo Lucro Real",5],canal:["Canal","GIFE, patrocínio observado, programa social",5]};
+        const pont=`<div class="fdoc-t" style="margin-top:4px">Pontuação pela doação: ${e.pontos_lista??0} <span class=meta>· ${esc(e.nivel||"")} — ${esc(P.porque||"")}</span></div>
+          <div class="ep-nt-bloco fez">${Object.entries(ROT).map(([k,[r,q,mx]])=>`<div class="ep-nt ${C[k]?"fez":"nao"}"><span class="ep-nt-ico" aria-hidden="true">${C[k]?"+":"&#8722;"}</span><span class="ep-nt-txt"><b>${r}</b><small>${q}</small></span><span class="ep-nt-val"></span><span class="ep-nt-pt">${C[k]||0} de ${mx}</span></div>`).join("")}
+          <div class="ep-nt ${P.bonus?"fez":"nao"}"><span class="ep-nt-ico" aria-hidden="true">★</span><span class="ep-nt-txt"><b>Bônus acima de 100</b><small>${BD.anos_seguidos||0} ano(s) seguido(s) de doação${BD.varios_recursos_no_mesmo_ano?" · mais de um recurso no mesmo ano":""}${(P.anos_com_doacao||[]).length?" — "+P.anos_com_doacao.join(", "):""}</small></span><span class="ep-nt-val"></span><span class="ep-nt-pt">+${P.bonus||0}</span></div></div>
+          ${(P.prova||[]).length?`<div class=meta style="margin:4px 0 12px">${P.prova.map(esc).join(" · ")}</div>`:""}`;
+        return pont+`<div class="fdoc-t" style="margin-top:14px">Critérios de perfil (referência): ${A.pontos} de ${A.teto}
             <span class=meta>${esc(A.nivel||"")} · ${fez.length} de ${A.total_criterios} critérios pontuaram</span></div>
           <div class=meta style="margin-bottom:8px"><b>Porta de entrada:</b> ${esc(A.porta_de_entrada||"")}</div>
           <div class="ep-nt-bloco fez">
@@ -3518,7 +3526,7 @@ window.fichaEmpresa=async function(uid){
         </div>`;})()}
       ${false?`<div class="ep-progs">
         ${(e.programas||[]).map(pr=>`<div class="ep-prog-l ${pr.historico?"fez":"cit"}">
-          <div class="ep-prog-c"><b>${esc(pr.nome)}${pr.verificado?" ✓":""}</b><span class="ep-prog-s">${pr.verificado?"verificado em fonte oficial ("+esc(pr.fonte||"")+")":pr.historico?"já destinou":"citado — a confirmar"}</span></div>
+          <div class="ep-prog-c"><b>${esc(pr.nome)}</b><span class="ep-prog-s">${pr.verificado?"verificado em fonte oficial ("+esc(pr.fonte||"")+")":pr.historico?"já destinou":"citado — a confirmar"}</span></div>
           <div class="ep-prog-d"><span>${esc(pr.lei)}</span><span>${esc(pr.orgao)}</span><span>até ${esc(pr.teto)}</span></div>
           <div class="ep-prog-p"><b>Como se entra:</b> ${esc(pr.porta)}</div>
           ${pr.prova?`<div class="ep-prog-e">${esc(pr.prova)}</div>`:""}</div>`).join("")}

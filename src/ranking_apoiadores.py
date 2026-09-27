@@ -175,6 +175,16 @@ def montar() -> dict:
         for n, e in enumerate(itens, 1):
             e["n_na_lista"] = n; e["uid"] = f"destinacao_tributaria:{n}"; e["faixa"] = "A" if n <= 25 else "B" if n <= 60 else "C"
         listas["destinacao_tributaria"] = itens
+    # PONTUAÇÃO PELA DOAÇÃO E HIERARQUIA (titular, 26/09): ponto por recurso destinado, 100 redistribuídos pelo que
+    # se comprova em fonte oficial, bônus acima de 100 para doação em anos seguidos. Vale para as duas listas.
+    from .pontuacao_doacao import pontuar
+    for cat, itens in listas.items():
+        for e in itens:
+            pt = pontuar(e)
+            e["pontuacao"] = pt; e["pontos_lista"] = pt["pontos"]; e["nivel"] = pt["nivel"]; e["nivel_ordem"] = pt["ordem"]
+        itens.sort(key=lambda x: (-x["pontos_lista"], -((x.get("salic") or {}).get("total") or 0), x["nome"]))
+        for n, e in enumerate(itens, 1):
+            e["n_na_lista"] = n; e["uid"] = f"{cat}:{n}"; e["faixa"] = e["nivel"]
     todas = [e for itens in listas.values() for e in itens]
     from .programas_sociais import catalogo
     res = {"gerado_em": now_iso(), "por_pagina": POR_PAGINA,
@@ -203,6 +213,7 @@ def montar() -> dict:
            "com_programa": sum(1 for e in todas if e.get("programas")),
            "com_potencial": sum(1 for e in todas if (e.get("potencial") or {}).get("apurou")),
            "da_base_publica": sum(1 for e in todas if e.get("salic")),
+           "niveis": {n: sum(1 for e in todas if e.get("nivel") == n) for n in ("Parceira social", "Destinadora ativa", "Destinadora eventual", "Potencial", "A prospectar")},
            "estados_de_destino": sorted({u for e in todas for u in ((e.get("salic") or {}).get("destino") or {})}),
            "tipos_de_recurso": sorted({p.get("chave") for e in todas for p in (e.get("programas") or []) if p.get("chave")}),
            "por_origem": {("destinação tributária" if c == "destinacao_tributaria" else "doação e patrocínio"): len(i)
