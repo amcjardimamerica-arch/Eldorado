@@ -82,7 +82,8 @@ def proximo_site(excluir: set | None = None) -> dict | None:
     cat = catalogo()
     limite = (datetime.now(timezone.utc) - timedelta(days=REVISITA_DIAS)).isoformat(timespec="seconds")
     candidatos = []
-    for s in sementes() + sementes_de_associacoes():
+    from .entidades import sementes as _entidades
+    for s in _entidades() + sementes() + sementes_de_associacoes():     # 27/09: entidades empresariais (GO e nacionais) primeiro
         k = _chave(s["url"])
         if s["url"] in excluir or k in excluir:
             continue
@@ -150,6 +151,12 @@ def catalogar(site: dict, texto: str, links: list[tuple[str, str]]) -> dict:
     cat = catalogo()
     k = site.get("_chave") or _chave(url)
     anterior = cat["sites"].get(k) or {}
+    from .entidades import descartar as _descartar
+    motivo = _descartar(site.get("nome") or "", url, texto)
+    if motivo:                                  # entidade de outro estado sem vínculo nacional nem com Goiás
+        cat["sites"][k] = {"url": url, "nome": site.get("nome"), "tipo": site.get("tipo"), "lido_em": now_iso(), "descartado": motivo, "inacessivel": True}
+        write_json(CATALOGO, cat)
+        return {"descartado": motivo, "paginas_para_entidades": [], "empresas": []}
     cat["sites"][k] = {"url": url, "nome": site.get("nome") or k, "tipo": site.get("tipo"), "lido_em": now_iso(), "falhas_seguidas": 0,
                        "leituras": (anterior.get("leituras") or 0) + 1,
                        "paginas_para_entidades": paginas, "empresas": empresas, "esg": esg,

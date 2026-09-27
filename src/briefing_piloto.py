@@ -160,6 +160,9 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
            if banco.get("editais_incompletos_na_fila") else "")
         + (_cobertura() + "\n\n")
         + _apostas_que_renderam()
+        + "META DE ENTIDADES (titular, 27/09): priorize entidades que agremiam empresas ou lutam por objetivo comum delas — "
+          "associações comerciais e industriais, federações, confederações, sindicatos patronais, câmaras, CDLs, GIFE, ACIEG, "
+          "Fecomércio, FIEG — de nível NACIONAL ou de GOIÁS. Entidade de outro estado sem vínculo nacional nem com Goiás: descarte. "
         + "REGRA PRINCIPAL DO ESPIÃO (titular, 26/09): encontre o que os outros motores NÃO encontram. Seja criativo. Procure "
           "oportunidades em geral — empresas, fundações, institutos, editais abertos, prêmios, fundos, programas — onde os 30 motores "
           "não chegam (a cobertura mostra onde eles já estão). Sua finalidade primordial é CRIAR oportunidades novas que virem fontes "

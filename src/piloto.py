@@ -533,6 +533,11 @@ def missao_prospeccao(ia, angulo: dict, conhecidos: set[str]) -> tuple[str, list
 
 
 CONSULTAS_PROSPECCAO = [
+    # 27/09 — META: entidades que agremiam empresas (GO e nacionais) primeiro
+    "associação comercial industrial Goiás projeto social apoio {ano}", "ACIEG responsabilidade social edital {ano}",
+    "Fecomércio Goiás projeto social patrocínio {ano}", "FIEG Goiás investimento social edital {ano}",
+    "CDL Goiânia campanha social doação {ano}", "sindicato patronal Goiás apoio entidades sociais {ano}",
+    "federação empresarial nacional edital projetos sociais {ano}", "GIFE associados edital aberto {ano}",
     "patrocínio empresa Goiânia projeto social {ano}", "apoio institucional Goiás instituto empresa edital {ano}",
     "investimento social privado Goiás empresas", "empresas goianas responsabilidade social ESG relatório {ano}",
     "patrocinadores festival Goiânia {ano}", "lei de incentivo ao esporte patrocinador Goiás {ano}",

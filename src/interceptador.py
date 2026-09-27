@@ -315,13 +315,16 @@ def proximo_alvo() -> dict | None:
     if nm:
         return {**nm[0], "modo": "validar", "tipo": "edital"}
     lista = alvos(60)
-    fila = [a for a in lista if a["de"] == "fila de resgate" and a["id"] not in feitos]
+    from .entidades import prioridade as _prio
+    fila = sorted([a for a in lista if a["de"] == "fila de resgate" and a["id"] not in feitos],
+                  key=lambda a: _prio(str(a.get("titulo") or ""), str(a.get("url") or "")))    # 27/09: entidades GO/nacionais primeiro
     if fila:
         return {**fila[0], "modo": "complementar", "tipo": "edital"}
     abertos = [a for a in lista if a["de"] == "edital aberto com itens em falta" and a["id"] not in feitos]
     if abertos:
         return {**abertos[0], "modo": "validar", "tipo": "edital"}
-    emp = [e for e in empresas_pendentes() if e["chave"] not in feitos]
+    emp = sorted([e for e in empresas_pendentes() if e["chave"] not in feitos],
+                 key=lambda e: _prio(str(e.get("empresa") or ""), str(e.get("site") or "")))
     if emp:
         return {**emp[0], "id": emp[0]["chave"], "modo": "complementar", "tipo": "empresa", "de": "radar do Espião", "titulo": emp[0]["empresa"]}
     return None
@@ -334,7 +337,18 @@ def voo(ia) -> dict:
     est = load_json(ESTADO) if ESTADO.exists() else {"feitos": {}, "rodadas": []}
     est.setdefault("feitos", {}); est.setdefault("rodadas", [])
     rel = {"em": now_iso(), "papel": "Piloto - Interceptador", "modelo": "qwen3-8b", "parametros": PARAMETROS["regra"]}
-    if not a:
+    from .entidades import descartar as _descartar
+    motivo = _descartar(str((a or {}).get("titulo") or ""), str((a or {}).get("url") or "")) if a else None
+    if a and motivo:
+        # DESCARTE DE ENTIDADE (titular, 27/09): de outro estado sem vínculo nacional nem com Goiás — não gasta voo
+        rel.update({"id": a["id"], "modo": a.get("modo"), "tipo": a.get("tipo"), "alvo": a.get("titulo"), "de": a.get("de"),
+                    "qualidade": "descartada", "comprovados": 0, "total": 12, "erro": motivo})
+        est["feitos"][a["id"]] = {"em": now_iso(), "tipo": a.get("tipo"), "qualidade": "descartada", "motivo": motivo}
+        a = None
+        rel["resultado_descarte"] = motivo
+    if not a and rel.get("qualidade") == "descartada":
+        pass
+    elif not a:
         rel["resultado"] = "nada a interceptar: sem edital aberto com itens em falta, sem indício na fila, sem empresa sem ficha"
     elif a["tipo"] == "empresa":
         f = investigar_empresa(ia, a)
@@ -422,6 +436,7 @@ JUSTIFICA = {
     "validada": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
     "parcial": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
     "insuficiente": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+    "descartada": "entidade de outro estado, sem vínculo nacional nem com Goiás (regra do titular de 27/09)",
     "fonte_confirmada": "site oficial, canal de pedido e áreas apoiadas comprovados, e 5 ou mais dos 8 itens da ficha de fonte",
     "fonte_possivel": "site oficial e 3 ou mais itens da ficha de fonte",
     "sem_evidencia": "o site não trouxe prova de que a empresa apoia organizações sociais",
