@@ -396,6 +396,8 @@ box-shadow:0 1px 3px #0002}
    registrada vem colorida e sólida; a que não tem fica apagada, no lugar dela, para que
    a linha mostre ao mesmo tempo o que a empresa já fez e o que ainda não fez. */
 .ep-prog{display:flex;gap:3px;flex-wrap:wrap}
+.int-agora{margin:10px 0}.int-agora-v{border:1px solid #DDEBE2;background:#F7FBF8;border-radius:10px;padding:8px 12px;font-size:12.5px}
+.int-passos{margin:6px 0 0 18px;padding:0;font-size:12px;line-height:1.55}.int-passos li::marker{color:#9AA5B1}
 .int-posto{border:1px solid var(--linha);border-radius:14px;background:#fff;padding:14px 16px}
 .int-cab{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.int-cab h3{margin:0;font-size:16px}
 .int-dot{width:10px;height:10px;border-radius:50%;background:#9AA5B1;display:inline-block}.int-dot.ativo{background:#1E7E4B;box-shadow:0 0 0 4px #1E7E4B22}.int-dot.aguarda{background:#C9A227}
@@ -3824,6 +3826,8 @@ window.ligarInterceptador=function(base){
 window.desenhaPostoInterceptador=async function(alvo){
   const el=document.getElementById(alvo); if(!el) return;
   try{ const r0=await fetch("dados/interceptador.json?v="+Date.now()); if(r0.ok){ window._INT=await r0.json(); await estadoMotorInterceptador(window._INT); } }catch(e){}
+  if(!window._INT_VIVO){ try{ await lerInterceptadorVivo(); }catch(e){} }
+  if(window._INT_VIVO&&window._INT_VIVO.estado==="em_voo"&&(Date.now()-new Date(window._INT_VIVO.atualizado_em))/60000<25){ window._INT_MOTOR="ligado"; window._INT_MOTOR_FRASE="em missão agora: "+(window._INT_VIVO.etapa||""); }
   try{ const r=await fetch("dados/interceptador.json?v="+Date.now()); if(r.ok) window._INT=await r.json(); }catch(e){}
   const D=window._INT; if(!D){ el.innerHTML=`<div class="int-posto"><div class="int-cab"><span class="int-dot"></span><h3>Piloto - Interceptador</h3><span class=meta>ainda sem relatório publicado</span></div></div>`; return; }
   const A=D.acumulado||{}, F=D.fila||{}, est=D.estado||"";
@@ -3840,7 +3844,9 @@ window.desenhaPostoInterceptador=async function(alvo){
           <svg viewBox="0 0 24 24" aria-hidden="true"><g class="pil-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.2" fill="#3a3a3a"/></svg>
           <span id="${alvo}-int-txt">${R[1]}</span></button>`;})()}
       <span class=meta>comprova na fonte oficial o que os motores e o Espião trazem · ${esc(est)} · Qwen3-8B</span></div>
-    ${(()=>{const u=(D.missoes||[])[0]; if(!u) return ""; const ini=u.em&&u.segundos?new Date(new Date(u.em)-u.segundos*1000).toISOString():null;
+    <div id="${alvo}-agora" class="int-agora">${htmlInterceptadorAgora(window._INT_VIVO)}</div>
+    ${D.erro_publicacao?`<div class=meta style="color:#B3261E">Falha ao publicar o último relatório (${esc(horaMin(D.erro_publicacao.em))}): ${esc(D.erro_publicacao.erro)}</div>`:""}
+    ${(()=>{const u=(D.missoes||[])[0]; if(!u) return (D.alvo?`<div class="pil-vivo-u"><b>Último voo:</b> ${esc(String(D.alvo).slice(0,100))} — ${esc(D.qualidade||"")} ${D.comprovados??""}/${D.total??""}</div>`:""); const ini=u.em&&u.segundos?new Date(new Date(u.em)-u.segundos*1000).toISOString():null;
       return `<div class="pil-vivo-u"><b>Última missão:</b> ${esc(String(u.alvo||u.resultado||"").slice(0,100))}<br><span class=meta>começou ${ini?esc(horaMin(ini)):"—"} · terminou ${esc(horaMin(u.em))}${u.segundos?` · ${duracaoTxt(ini,u.em)}`:""}</span></div>`;})()}
     <div class="int-mets">
       <div class="int-met"><b>${A.missoes||0}</b><span>missões</span></div>
@@ -3859,11 +3865,11 @@ window.desenhaPostoInterceptador=async function(alvo){
         <span><b>${esc(String(m.alvo||m.resultado||"").slice(0,110))}</b><br><small class=meta>${esc(m.modo||"")} · ${esc(m.de||"")}${m.tipo==="empresa"?" · empresa":""}</small></span>
         <span class="int-q ${esc(m.qualidade||"")}">${esc(m.qualidade||"—")}</span><span class=meta>${m.comprovados??"–"}/${m.total??"–"}</span></summary>
         <div class="int-corpo">
+          <div class="int-av ${cls(m.avaliacao||"")}"><h5>Resultado</h5><b>${esc(m.avaliacao||"")}</b>${P.serve_como_fonte?`<br>Serve como fonte de recursos: <b>${esc(P.serve_como_fonte)}</b> — ${esc(P.por_que||"")}`:""}${P.para_a_amc?`<br><span class=meta>Para a A.M.C.: ${esc(P.para_a_amc)}</span>`:""}${P.proximo_passo?`<br><span class=meta>Próximo passo: ${esc(P.proximo_passo)}</span>`:""}${P.risco?`<br><span class=meta>Risco: ${esc(P.risco)}</span>`:""}${m.fonte_nova_para_os_motores?'<br><span class=meta>A página-mãe entrou como fonte nova dos motores (em quarentena até a análise).</span>':""}</div>
           <div><h5>O que encontrou</h5>${Object.keys(E).length?Object.entries(E).map(([k,v])=>`<div class="int-dado"><b>${esc(k)}</b><span>${esc(String(v.valor??""))}${v.oficial?' <i class=meta>· fonte oficial</i>':""}${v.trecho?`<small>“${esc(v.trecho)}”</small>`:""}</span></div>`).join(""):'<span class=meta>nenhum dado comprovado</span>'}
             ${m.pagina_oficial||m.site_oficial?`<div class="int-dado"><b>Página oficial</b><span><a href="${esc(m.pagina_oficial||m.site_oficial)}" target=_blank rel="noopener noreferrer">${esc(String(m.pagina_oficial||m.site_oficial).slice(0,90))}</a> <i class=meta>· ${m.fontes_oficiais||0} item(ns) provado(s) nela</i></span></div>`:""}</div>
           <div><h5>Justificativa da qualidade</h5>${esc(m.justificativa||"")}${(m.nao_resolvidos||[]).length?`<br><span class=meta>Faltou: ${esc(m.nao_resolvidos.join(", "))}</span>`:""}${m.dispensados?`<br><span class=meta>${m.dispensados} item(ns) dispensado(s) pelo próprio edital</span>`:""}</div>
-          <div class="int-av ${cls(m.avaliacao||"")}"><h5>Avaliação</h5><b>${esc(m.avaliacao||"")}</b>${P.serve_como_fonte?`<br>Serve como fonte de recursos: <b>${esc(P.serve_como_fonte)}</b> — ${esc(P.por_que||"")}`:""}${P.para_a_amc?`<br><span class=meta>Para a A.M.C.: ${esc(P.para_a_amc)}</span>`:""}${P.proximo_passo?`<br><span class=meta>Próximo passo: ${esc(P.proximo_passo)}</span>`:""}${P.risco?`<br><span class=meta>Risco: ${esc(P.risco)}</span>`:""}${m.fonte_nova_para_os_motores?'<br><span class=meta>A página-mãe entrou como fonte nova dos motores (em quarentena até a análise).</span>':""}</div>
-        </div></details>`;}).join("")}
+</div></details>`;}).join("")}
     ${(D.missoes||[]).length>M.length?`<div class=meta style="margin-top:6px">mostrando ${M.length} de ${(D.missoes||[]).length} missões recentes · o relatório completo fica em dados/interceptador.json</div>`:""}
   </div>`;
 };
@@ -3871,6 +3877,28 @@ setInterval(()=>{ try{ desenhaPostoInterceptador("int-posto"); desenhaPostoInter
 /* horário local de início/término das missões dos Pilotos (27/09) */
 window.horaMin=s=>{ try{ const d=new Date(s); return d.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})+" "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}); }catch(e){ return String(s||""); } };
 window.duracaoTxt=(a,b)=>{ const s=Math.max(0,Math.round((new Date(b)-new Date(a))/1000)); return s<60?s+" s":s<3600?Math.round(s/60)+" min":(s/3600).toFixed(1)+" h"; };
+/* INTERCEPTADOR AO VIVO (27/09): o arquivo do ramo piloto-ao-vivo, relido a cada 15 s — o site não precisa republicar */
+const INT_VIVO_RAW="https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/piloto-ao-vivo/docs/dados/interceptador_ao_vivo.json";
+window._INT_VIVO=null;
+window.lerInterceptadorVivo=async function(){
+  try{ const r=await fetch(INT_VIVO_RAW+"?t="+Date.now(),{cache:"no-store"}); if(r.ok){ window._INT_VIVO=await r.json(); } }catch(e){}
+  ["int-posto","int-posto-bussola"].forEach(id=>{ const el=document.getElementById(id+"-agora"); if(el) el.innerHTML=htmlInterceptadorAgora(window._INT_VIVO); });
+};
+window.htmlInterceptadorAgora=function(V){
+  if(!V) return `<div class="int-agora-v"><b>Agora:</b> <span class=meta>aguardando o primeiro sinal ao vivo do Interceptador</span></div>`;
+  const idade=V.atualizado_em?Math.round((Date.now()-new Date(V.atualizado_em))/60000):null;
+  const vivo=V.estado==="em_voo"&&idade!==null&&idade<25;
+  const A=V.alvo||{}, R=V.resultado||{};
+  const cab=vivo?`<span class="int-dot ativo"></span> <b>Agora — em missão</b> <span class=meta>desde ${esc(horaMin(V.inicio))} · ${duracaoTxt(V.inicio,new Date().toISOString())} · etapa: <b>${esc(V.etapa||"")}</b></span>`
+            :V.estado==="pousou"?`<span class="int-dot"></span> <b>Último pouso</b> <span class=meta>${esc(horaMin(V.inicio))} → ${esc(horaMin(V.fim))} · ${duracaoTxt(V.inicio,V.fim)}</span>`
+            :V.estado==="aguardando"?`<span class="int-dot aguarda"></span> <b>Aguardando alvo</b> <span class=meta>desde ${esc(horaMin(V.atualizado_em))} — ${esc(V.detalhe||"")}</span>`
+            :`<span class="int-dot"></span> <b>Sem sinal recente</b> <span class=meta>último sinal ${esc(horaMin(V.atualizado_em))}</span>`;
+  return `<div class="int-agora-v">${cab}
+    ${A.titulo?`<div style="margin-top:4px"><b>${esc(String(A.titulo).slice(0,140))}</b> <span class=meta>· ${esc(A.modo||"")} · ${esc(A.de||"")}</span></div>`:""}
+    ${V.estado==="pousou"&&R?`<div class=meta style="margin-top:2px">Resultado: <b>${esc(R.qualidade||R.resultado||"")}</b> · ${R.comprovados??"–"}/${R.total??12} condições${R.dispensados?` (${R.dispensados} dispensa)`:""}${V.parecer?` · serve como fonte: <b>${esc(V.parecer)}</b>`:""}${R.pagina_oficial?` · <a href="${esc(R.pagina_oficial)}" target=_blank rel="noopener noreferrer">página oficial</a>`:""}${R.erro?` · ${esc(R.erro)}`:""}</div>`:""}
+    ${(V.passos||[]).length?`<ol class="int-passos">${V.passos.map(s=>`<li><span class=meta>${esc(horaMin(s.em).slice(6))}</span> <b>${esc(s.etapa)}</b>${s.detalhe?` — ${esc(String(s.detalhe).slice(0,150))}`:""}</li>`).join("")}</ol>`:""}</div>`;
+};
+setInterval(()=>{ try{ lerInterceptadorVivo(); }catch(e){} }, 15000);
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição

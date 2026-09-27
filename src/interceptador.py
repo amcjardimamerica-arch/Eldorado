@@ -336,7 +336,10 @@ def voo(ia) -> dict:
     a = proximo_alvo()
     est = load_json(ESTADO) if ESTADO.exists() else {"feitos": {}, "rodadas": []}
     est.setdefault("feitos", {}); est.setdefault("rodadas", [])
-    rel = {"em": now_iso(), "papel": "Piloto - Interceptador", "modelo": "qwen3-8b", "parametros": PARAMETROS["regra"]}
+    rel = {"em": now_iso(), "papel": "Piloto - Interceptador", "modelo": "qwen3-8b", "parametros": PARAMETROS["regra"], "inicio": now_iso()}
+    from . import interceptador_ao_vivo as AV
+    if a:
+        AV.decolar(a)
     from .entidades import descartar as _descartar
     motivo = _descartar(str((a or {}).get("titulo") or ""), str((a or {}).get("url") or "")) if a else None
     if a and motivo:
@@ -351,6 +354,7 @@ def voo(ia) -> dict:
     elif not a:
         rel["resultado"] = "nada a interceptar: sem edital aberto com itens em falta, sem indício na fila, sem empresa sem ficha"
     elif a["tipo"] == "empresa":
+        AV.etapa("lendo o site da empresa: ficha de fonte de recurso (8 itens)", a.get("empresa") or "")
         f = investigar_empresa(ia, a)
         F = load_json(FONTES_EMPRESAS) if FONTES_EMPRESAS.exists() else {"fichas": {}}
         F.setdefault("fichas", {})[a["empresa"]] = f; write_json(FONTES_EMPRESAS, F)
@@ -359,9 +363,10 @@ def voo(ia) -> dict:
                     "itens": {k: {"valor": v.get("valor"), "comprovado": v.get("comprovado")} for k, v in (f.get("itens") or {}).items()}})
         est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "empresa", "qualidade": f.get("qualidade")}
     else:
-        x = investigar_um(a["id"], ia, "qwen3-8b")
+        x = investigar_um(a["id"], ia, "qwen3-8b", avisar=AV.etapa)
         reg = registro(a["id"]) or {}; inv = reg.get("investigacao_ia") or {}
         q = qualidade_edital(reg, inv) if "erro" not in x else "insuficiente"
+        AV.etapa("parecer: como isto serve como fonte de recursos", q)
         par = parecer_fonte(ia, reg.get("titulo") or a.get("titulo") or "", inv) if inv.get("campos") else {}
         inv["qualidade"] = q; inv["parecer_fonte"] = par
         arq = ROOT / "dados/editais/extraidos" / f"{a['id']}.json"
@@ -391,9 +396,17 @@ def voo(ia) -> dict:
     write_json(RELATORIOS / f"{date.today().isoformat()}.json", {"dia": date.today().isoformat(), "voos": ([v for v in (load_json(RELATORIOS / f"{date.today().isoformat()}.json") or {}).get("voos", [])] if (RELATORIOS / f"{date.today().isoformat()}.json").exists() else []) + [rel]})
     fe = est["feitos"]
     try:
-        publicar_painel(); return rel
+        AV.pousar(rel) if a or rel.get("qualidade") == "descartada" else AV.aguardar(str(rel.get("resultado") or ""))
     except Exception:
         pass
+    try:
+        publicar_painel(); return rel
+    except Exception as ex:
+        # NUNCA MAIS O FORMATO VELHO (27/09): o erro vai para o relatório e o painel mantém as missões anteriores
+        import traceback
+        ant = load_json(PUB) if PUB.exists() else {}
+        ant["erro_publicacao"] = {"em": now_iso(), "erro": f"{type(ex).__name__}: {ex}", "onde": traceback.format_exc()[-800:]}
+        ant["ultimo_voo"] = rel.get("em"); write_json(PUB, ant); return rel
     write_json(PUB, {**rel, "acumulado": {"interceptados": len(fe), "validadas": sum(1 for v in fe.values() if v.get("qualidade") == "validada"),
                                           "parciais": sum(1 for v in fe.values() if v.get("qualidade") == "parcial"),
                                           "fontes_confirmadas": sum(1 for v in fe.values() if v.get("qualidade") == "fonte_confirmada")},

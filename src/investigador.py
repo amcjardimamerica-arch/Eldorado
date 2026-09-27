@@ -488,28 +488,35 @@ def dispensas(ia, e: dict, texto: str, faltantes: list[str]) -> dict:
     return out
 
 
-def investigar_um(eid: str, ia, modelo: str) -> dict:
+def investigar_um(eid: str, ia, modelo: str, avisar=None) -> dict:
+    avisar = avisar or (lambda *a: None)
     t0 = time.time()
     e = registro(eid)
     if e is None:
         return {"id": eid, "erro": "registro não encontrado"}
     passos = [f"dados indicados: título «{(e.get('titulo') or '')[:80]}», fonte {e.get('fonte_nome') or e.get('fonte_id') or '—'}, "
               f"órgão {e.get('orgao') or '—'}, prazo {e.get('prazo_texto') or e.get('fim') or '—'}"]
+    avisar("mapeando a página oficial", (e.get("titulo") or "")[:120])
     oficial, como = pagina_oficial(ia, e)
     passos.append(f"página oficial: {oficial or 'não encontrada'} — {como}")
+    avisar("página oficial", f"{oficial or 'não encontrada'} — {como}")
     if oficial:
         e["pagina_oficial"] = oficial
+    avisar("lendo a fonte oficial e os anexos", oficial or e.get("url") or "")
     texto, fontes = texto_do_edital(e)
+    avisar("fonte lida", f"{len(texto):,} caracteres em {len([f for f in fontes if f.get('ok')])} fonte(s)".replace(",", "."))
     if not texto.strip():
         e["investigacao_ia"] = {"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "modelo": modelo, "passos": passos, "fontes": fontes,
                                 "campos": {}, "comprovados": 0, "dispensados": 0, "total": len(DOZE), "erro": "nenhuma fonte legível"}
         (EXTRAIDOS / f"{eid}.json").write_text(json.dumps({**e, "edital_id": eid}, ensure_ascii=False, indent=1), encoding="utf-8")
         return {"id": eid, "titulo": e.get("titulo"), "comprovados": 0, "erro": "nenhuma fonte legível", "passos": passos, "s": round(time.time() - t0)}
+    avisar("perguntando ao modelo as doze condições", "Qwen3-8B lendo o texto")
     r = responder(ia, e, texto)
     if not isinstance(r, dict):
         return {"id": eid, "titulo": e.get("titulo"), "comprovados": 0, "erro": "o modelo não devolveu JSON", "passos": passos, "s": round(time.time() - t0)}
     inv = aplicar(e, r, texto, fontes, modelo)
     faltantes = [k for k, v in inv["campos"].items() if not v["comprovado"]]
+    avisar("doze condições conferidas", f"{12 - len(faltantes)} comprovadas com trecho; checando dispensas de {len(faltantes)}")
     disp = dispensas(ia, e, texto, faltantes)
     for item, d in disp.items():
         inv["campos"][item].update({"dispensado": True, "justificativa": d["justificativa"], "trecho_dispensa": d["trecho"],

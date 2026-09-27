@@ -47,6 +47,8 @@ jobs:
           for i in $(seq 1 90); do curl -s http://127.0.0.1:8082/health | grep -q '"ok"' && break; sleep 2; done
           curl -s http://127.0.0.1:8082/health || { tail -20 /tmp/llama.log; exit 1; }
       - name: Interceptar (um alvo)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}          # transmissão ao vivo (ramo piloto-ao-vivo)
         run: |
           [ -e estado/interceptador/pausado ] && { echo "em terra por ordem do titular"; exit 0; }
           timeout 1800 python - <<'PY'
