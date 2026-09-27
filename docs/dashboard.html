@@ -3966,9 +3966,7 @@ window._FLUXO=null;
 window.fxUF=(uf,p)=>{ const F=((window._FLUXO||{}).mapa||{}).por_uf||null; if(F){ const x=F[uf]||{}; return {c:x.confirmadas||0,t:x.possiveis||0}; } return {c:(p&&p.confirmadas)||0,t:(p&&p.total)||0}; };
 window.fxTot=(n)=>{ const T=((window._FLUXO||{}).mapa||{}).total; return T?{c:T.confirmadas||0,t:T.possiveis||0}:{c:(n&&n.confirmadas)||0,t:(n&&n.total)||0}; };
 window.carregaFluxo=async function(){
-  for(const u of ["https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/fluxo_oportunidades.json?t="+Date.now(),"dados/fluxo_oportunidades.json?v="+Date.now()]){
-    try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ window._FLUXO=await r.json(); break; } }catch(e){}
-  }
+  try{ const r=await fetch("dados/fluxo_oportunidades.json"); if(r.ok) window._FLUXO=await r.json(); }catch(e){}   // camada ao vivo
   try{ if(typeof desenhaBzMapa==="function") desenhaBzMapa(); }catch(e){}
   try{ if(typeof desenhaBzLateral==="function"&&bzUFsel) desenhaBzLateral(); }catch(e){}
   try{ if(typeof desenhaCal==="function") desenhaCal(); }catch(e){}
@@ -4455,7 +4453,7 @@ function desenhaBzMapa(){ window._mpTriagem={};
   // a rosa dos ventos carrega o nível nacional no mesmo formato: confirmadas/possíveis
   const _nac=por["__nac__"]||{}; const _rot=$("bz-rosa-svg")&&$("bz-rosa-svg").parentElement&&$("bz-rosa-svg").parentElement.querySelector(".bz-rosa-rot");
   if(_rot) _rot.innerHTML=`Brasil · nível nacional<br><b class="bz-rosa-n" title="${fxTot(_nac).c} com objeto, data-limite aberta e link oficial / ${fxTot(_nac).t} possíveis abertas no país">${fxTot(_nac).c}/${fxTot(_nac).t}</b>`;
-  const _leg=$("bz-mapa-legenda"); if(_leg) _leg.innerHTML=`<span class=meta>em cada estado e na rosa: <b>1º</b> oportunidades com o mínimo — objeto, data-limite de inscrição ainda aberta e link do site oficial (de empresa, instituto ou ente público) / <b>2º</b> todas as possíveis abertas, mesmo sem informação (prazo não vencido, ou publicadas nos últimos 60 dias, inclusive menções em diários oficiais) · atualiza a cada gravação do sistema</span>`;
+  const _leg=$("bz-mapa-legenda"); if(_leg) _leg.innerHTML="";   // 27/09 (titular): sem descritivo abaixo do mapa
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
     const uf=el.dataset.uf,p=por[uf];
     /* hover: quantos abertos e em quais áreas */
