@@ -126,8 +126,39 @@ def lie_agora() -> dict:
     return {"http": cod, "restrito": isinstance(html, str) and "restrito" in html.lower()}
 
 
+def receita_fundo() -> dict:
+    """Todas as ligações das páginas de benefícios da Receita — e os diretórios de arquivos que elas citam."""
+    alvos = ["https://www.gov.br/receitafederal/pt-br/acesso-a-informacao/dados-abertos/beneficios-e-renuncias-fiscais",
+             "https://www.gov.br/receitafederal/pt-br/assuntos/beneficios-fiscais",
+             "https://www.gov.br/receitafederal/pt-br/centrais-de-conteudo/paineis/dashboards-das-atividades-de-beneficios-fiscais"]
+    out = {}
+    for u in alvos:
+        cod, html, _ = get(u)
+        if cod != 200 or not isinstance(html, str):
+            out[u] = {"http": cod}; continue
+        p = Links(); p.feed(html)
+        ls = [(urljoin(u, h or ""), r) for h, r in p.l if h and not h.startswith("#")]
+        uteis = [{"url": a, "rotulo": r} for a, r in ls if not re.search(r"/pt-br/(assuntos|acesso-a-informacao|servicos|canais|noticias|centrais)/?$|facebook|twitter|instagram|youtube|linkedin|flickr|soundcloud|whatsapp|#", a)]
+        texto = re.sub(r"<[^>]+>", " ", html); texto = re.sub(r"\s+", " ", texto)
+        i = texto.lower().find("benef")
+        out[u] = {"http": cod, "links": uteis[:120], "trecho": texto[max(0, i - 200): i + 1500]}
+        for a in [x["url"] for x in uteis if re.search(r"arquivos\.receitafederal|dados\.gov\.br|/dados/|\.zip|\.csv|\.xlsx|powerbi|app\.powerbi", x["url"])][:10]:
+            c2, h2, tp = get(a)
+            item = {"http": c2, "tipo": tp}
+            if c2 == 200 and isinstance(h2, str) and "html" in tp:
+                p2 = Links(); p2.feed(h2); item["links"] = [urljoin(a, h or "") for h, _ in p2.l][:80]
+            out.setdefault("seguidos", {})[a] = item
+    return out
+
+
 def main() -> dict:
     SAIDA.mkdir(parents=True, exist_ok=True)
+    import sys
+    if "--receita" in sys.argv:
+        r = json.loads((SAIDA / "sondagem_fontes.json").read_text(encoding="utf-8")) if (SAIDA / "sondagem_fontes.json").exists() else {}
+        r["receita_fundo"] = receita_fundo(); r["em_receita_fundo"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+        (SAIDA / "sondagem_fontes.json").write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(json.dumps({k: (v.get("http"), len(v.get("links") or [])) for k, v in r["receita_fundo"].items() if k != "seguidos"}, ensure_ascii=False)); return r
     r = {"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "receita": receita(), "lie_hoje": lie_agora(), "lie_internet_archive": lie_wayback()}
     (SAIDA / "sondagem_fontes.json").write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({"receita_arquivos": len(r["receita"]["arquivos_de_dados"]), "receita_por_cnpj": r["receita"]["tem_por_cnpj"],
