@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-27T11:30:42+00:00",
+  "em": "2026-09-27T11:46:33+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-27T11:23:25+00:00",
+  "ultimo_voo": "2026-09-27T11:31:56+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -30,26 +30,93 @@
   },
   "fila": {
     "editais novos dos motores": 0,
-    "indícios do Espião": 26,
+    "indícios do Espião": 25,
     "abertos com itens em falta": 0,
     "empresas sem ficha": 3
   },
   "acumulado": {
-    "missoes": 112,
+    "missoes": 113,
     "validadas": 7,
-    "parciais": 25,
+    "parciais": 26,
     "insuficientes": 30,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 52,
+      "sim": 53,
       "nao": 5
     },
     "estrelas_de_ouro": 6,
-    "fontes_novas_para_os_motores": 25,
-    "tempo_medio_min": 6.3
+    "fontes_novas_para_os_motores": 26,
+    "tempo_medio_min": 6.4
   },
   "missoes": [
+    {
+      "em": "2026-09-27T11:31:56+00:00",
+      "modo": "complementar",
+      "tipo": "edital",
+      "de": "fila de resgate",
+      "alvo": "Fundarpe lançou seu primeiro edital pela Prosas",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://jornalemfocoitapoa.com.br/porto-itapoa-lanca-seu-1o-edital-de-projetos-incentivados-com-foco-em-impacto-social/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprova que o edital foi lançado pela Prosas e menciona prazo de inscrição, financiador, território, esfera, requisitos e anexos.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria ter um projeto aprovado em programas de incentivo fiscal e seguir o prazo de inscrição até 20 de setembro, além de anexar os documentos exigidos.",
+        "proximo_passo": "Verificar os requisitos do edital e preparar os documentos necessários para inscrição até o prazo estabelecido.",
+        "risco": "O projeto não estar aprovado em programas de incentivo fiscal ou a falta de anexos pode impedir a participação."
+      },
+      "erro": null,
+      "segundos": 877,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Objeto, Resultado, Prazo de recurso, Valor",
+      "id": "cat-723cd8dc2859",
+      "encontrou": {
+        "Prazo de inscrição": {
+          "valor": "dispensado — O texto menciona que as inscrições seguem até o dia 20 de setembro.",
+          "trecho": "as inscrições já estão abertas e seguem até o dia 20 de setembro [rejeitado: data implausível para edital aberto]",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Órgão / financiador": {
+          "valor": "Porto Itapoá",
+          "trecho": "Porto Itapoá",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SC",
+          "trecho": "Podem participar organizações de qualquer região do país",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "Podem participar organizações de qualquer região do país, desde que tenham projetos aprovados em programas de incentivo fiscal",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "projetos aprovados em programas de incentivo fiscal",
+          "trecho": "Podem participar organizações de qualquer região do país, desde que tenham projetos aprovados em programas de incentivo fiscal",
+          "oficial": true,
+          "dispensado": false
+        }
+      }
+    },
     {
       "em": "2026-09-27T11:23:25+00:00",
       "modo": "complementar",
@@ -1929,36 +1996,6 @@
       "justificativa": "o site não trouxe prova de que a empresa apoia organizações sociais",
       "avaliacao": "falhou: site oficial não encontrado",
       "encontrou": {}
-    },
-    {
-      "em": "2026-09-27T05:40:55+00:00",
-      "modo": "complementar",
-      "tipo": "empresa",
-      "de": "radar do Espião",
-      "alvo": "OSCs Este",
-      "qualidade": "sem_evidencia",
-      "comprovados": 2,
-      "dispensados": null,
-      "total": 8,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": null,
-      "erro": null,
-      "segundos": 106,
-      "site_oficial": "https://irssocial.org.br/",
-      "resultado": null,
-      "fonte_nova_para_os_motores": null,
-      "fontes_oficiais": 0,
-      "justificativa": "o site não trouxe prova de que a empresa apoia organizações sociais",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "encontrou": {
-        "Site oficial": {
-          "valor": "https://irssocial.org.br/"
-        },
-        "Instituto, fundação ou programa social": {
-          "valor": "Instituto de Responsabilidade Social"
-        }
-      }
     }
   ]
 }
