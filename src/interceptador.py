@@ -306,6 +306,11 @@ def proximo_alvo() -> dict | None:
     empresa nova. Quem já foi estudado não volta (memória em estado/interceptador)."""
     est = load_json(ESTADO) if ESTADO.exists() else {}
     feitos = est.get("feitos") or {}
+    try:
+        from .missao_especial import montar_fila
+        montar_fila()                        # 27/09: quem remonta a fila de resgate agora é o Interceptador
+    except Exception:
+        pass
     nm = [a for a in novos_dos_motores() if a["id"] not in feitos]
     if nm:
         return {**nm[0], "modo": "validar", "tipo": "edital"}
@@ -354,7 +359,7 @@ def voo(ia) -> dict:
             rel["fonte_nova_para_os_motores"] = agregar_pagina_oficial(reg)
         except Exception:
             pass
-        rel.update({"modo": a["modo"], "tipo": "edital", "alvo": reg.get("titulo") or a.get("titulo"), "de": a["de"], "qualidade": q,
+        rel.update({"id": a["id"], "modo": a["modo"], "tipo": "edital", "alvo": reg.get("titulo") or a.get("titulo"), "de": a["de"], "qualidade": q,
                     "comprovados": x.get("comprovados"), "dispensados": x.get("dispensados"), "total": len(DOZE),
                     "nao_resolvidos": x.get("nao_resolvidos"), "pagina_oficial": x.get("pagina_oficial"), "passos": x.get("passos"),
                     "fontes_oficiais": [c for c, v in (inv.get("campos") or {}).items() if v.get("fonte_oficial")],
@@ -371,6 +376,10 @@ def voo(ia) -> dict:
     RELATORIOS.mkdir(parents=True, exist_ok=True)
     write_json(RELATORIOS / f"{date.today().isoformat()}.json", {"dia": date.today().isoformat(), "voos": ([v for v in (load_json(RELATORIOS / f"{date.today().isoformat()}.json") or {}).get("voos", [])] if (RELATORIOS / f"{date.today().isoformat()}.json").exists() else []) + [rel]})
     fe = est["feitos"]
+    try:
+        publicar_painel(); return rel
+    except Exception:
+        pass
     write_json(PUB, {**rel, "acumulado": {"interceptados": len(fe), "validadas": sum(1 for v in fe.values() if v.get("qualidade") == "validada"),
                                           "parciais": sum(1 for v in fe.values() if v.get("qualidade") == "parcial"),
                                           "fontes_confirmadas": sum(1 for v in fe.values() if v.get("qualidade") == "fonte_confirmada")},
@@ -406,3 +415,108 @@ def rodada(ia, minutos: float = 280, maximo: int = 40) -> dict:
     write_json(PUB, {**r, "editais": [{k: v for k, v in x.items() if k != "passos"} for x in r["editais"]],
                      "acumulado": {"interceptados": len(est["feitos"]), "rodadas": len(est["rodadas"])}})
     return r
+
+
+# ── QUADRO DO INTERCEPTADOR NO PAINEL (titular, 27/09) ─────────────────────────────────────────
+JUSTIFICA = {
+    "validada": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
+    "parcial": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+    "insuficiente": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+    "fonte_confirmada": "site oficial, canal de pedido e áreas apoiadas comprovados, e 5 ou mais dos 8 itens da ficha de fonte",
+    "fonte_possivel": "site oficial e 3 ou mais itens da ficha de fonte",
+    "sem_evidencia": "o site não trouxe prova de que a empresa apoia organizações sociais",
+}
+
+
+def _dados_do_registro(eid: str) -> dict:
+    """O que foi comprovado no edital: prazo, valor, órgão, objeto, área, território — com o trecho de prova."""
+    e = registro(eid) or {}
+    c = (e.get("investigacao_ia") or {}).get("campos") or {}
+    def v(k):
+        x = c.get(k) or {}
+        return {"valor": x.get("valor"), "trecho": (x.get("trecho") or x.get("trecho_dispensa") or "")[:180],
+                "oficial": bool(x.get("fonte_oficial")), "dispensado": bool(x.get("dispensado"))} if (x.get("comprovado") or x.get("dispensado")) else None
+    out = {k: v(k) for k in ("Objeto", "Prazo de inscrição", "Valor", "Órgão / financiador", "Território", "Área de atuação", "Destinação", "Requisitos")}
+    return {k: x for k, x in out.items() if x}
+
+
+def _avaliar(m: dict) -> str:
+    """Avaliação do voo em uma linha: aproveitável para o Claude, a completar, ou descartável."""
+    q = m.get("qualidade"); par = (m.get("parecer_fonte") or {}).get("serve_como_fonte")
+    if m.get("erro") and not m.get("comprovados"):
+        return "falhou: " + str(m.get("erro"))[:80]
+    if q in ("validada", "fonte_confirmada"):
+        return "pronta para a decisão do Claude"
+    if q in ("parcial", "fonte_possivel"):
+        return "aproveitável: falta " + ", ".join((m.get("nao_resolvidos") or [])[:4]) if m.get("nao_resolvidos") else "aproveitável"
+    if par == "nao" or (m.get("comprovados") or 0) <= 2:
+        return "descartável: não se mostrou oportunidade de recurso"
+    return "a completar: sem página oficial ou poucas condições comprovadas"
+
+
+_IDX_TIT = None
+
+
+def _id_por_titulo() -> dict:
+    global _IDX_TIT
+    if _IDX_TIT is None:
+        _IDX_TIT = {}
+        for arq in (ROOT / "dados/editais/extraidos").glob("*.json"):
+            try:
+                e = json.loads(arq.read_text(encoding="utf-8"))
+            except ValueError:
+                continue
+            if e.get("investigacao_ia"):
+                t = str((registro(arq.stem) or {}).get("titulo") or e.get("titulo") or "")[:120]
+                if t:
+                    _IDX_TIT[t] = arq.stem
+    return _IDX_TIT
+
+
+def publicar_painel() -> dict:
+    est = load_json(ESTADO) if ESTADO.exists() else {}
+    fe = est.get("feitos") or {}
+    voos = []
+    for f in sorted(RELATORIOS.glob("*.json")):
+        voos += (load_json(f) or {}).get("voos", [])
+    voos = [v for v in voos if v.get("alvo") or v.get("resultado")]
+    missoes = []
+    for v in reversed(voos[-40:]):
+        m = {k: v.get(k) for k in ("em", "modo", "tipo", "de", "alvo", "qualidade", "comprovados", "dispensados", "total", "nao_resolvidos",
+                                   "pagina_oficial", "parecer_fonte", "erro", "segundos", "site_oficial", "resultado", "fonte_nova_para_os_motores")}
+        m["fontes_oficiais"] = len(v.get("fontes_oficiais") or [])
+        m["justificativa"] = JUSTIFICA.get(v.get("qualidade") or "", "")
+        m["avaliacao"] = _avaliar(v)
+        if v.get("tipo") == "empresa":
+            m["encontrou"] = {k: {"valor": x.get("valor")} for k, x in (v.get("itens") or {}).items() if x.get("comprovado")}
+        else:
+            eid = v.get("id") or _id_por_titulo().get(str(v.get("alvo") or "")[:120])
+            m["id"] = eid
+            m["encontrou"] = _dados_do_registro(eid) if eid else {}
+        missoes.append(m)
+    try:
+        fila = {"editais novos dos motores": len(novos_dos_motores()), "indícios do Espião": sum(1 for a in alvos(60) if a["de"] == "fila de resgate" and a["id"] not in fe),
+                "abertos com itens em falta": sum(1 for a in alvos(60) if a["de"] == "edital aberto com itens em falta" and a["id"] not in fe),
+                "empresas sem ficha": len([e for e in empresas_pendentes() if e["chave"] not in fe])}
+    except Exception:
+        fila = {}
+    import collections
+    q = collections.Counter(v.get("qualidade") for v in voos if v.get("qualidade"))
+    serve = collections.Counter(str((v.get("parecer_fonte") or {}).get("serve_como_fonte")) for v in voos if v.get("parecer_fonte"))
+    ult = voos[-1]["em"] if voos else None
+    agf = ROOT / "estado/interceptador/aguardando.json"
+    ag = agf.exists() and str((load_json(agf) or {}).get("desde") or "") >= str(ult or "")
+    tempos = [v.get("segundos") for v in voos if v.get("segundos")]
+    bi = load_json(BORDO_INT) if BORDO_INT.exists() else {}
+    ouro = sum(v.get("ouro", 0) for v in (bi.get("abates") or {}).values())
+    pub = {"em": now_iso(), "papel": "Piloto - Interceptador", "modelo": "qwen3-8b",
+           "estado": "aguardando alvos novos" if ag else ("em atividade" if ult else "sem voos ainda"), "ultimo_voo": ult,
+           "parametros": PARAMETROS, "fila": fila,
+           "acumulado": {"missoes": len(voos), "validadas": q.get("validada", 0), "parciais": q.get("parcial", 0), "insuficientes": q.get("insuficiente", 0),
+                         "fontes_confirmadas": q.get("fonte_confirmada", 0), "fontes_possiveis": q.get("fonte_possivel", 0),
+                         "serve_como_fonte": dict(serve), "estrelas_de_ouro": ouro,
+                         "fontes_novas_para_os_motores": sum(1 for v in voos if v.get("fonte_nova_para_os_motores")),
+                         "tempo_medio_min": round(sum(tempos) / len(tempos) / 60, 1) if tempos else None},
+           "missoes": missoes}
+    write_json(PUB, pub)
+    return pub["acumulado"]

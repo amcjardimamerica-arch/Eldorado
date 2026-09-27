@@ -184,7 +184,7 @@ ENQUADRAMENTOS = [
     (r"consultoria gratuita|mentoria", "APOIO EM ESPÉCIE (CONSULTORIA)"),
     (r"edital|editais|chamada|sele[cç][aã]o de projetos|apoiar projetos|apoio a projetos|financiamento", "FOMENTO A PROJETO"),
 ]
-DESCARTE = re.compile(r"palestrante|forma[cç][aã]o|curso|capacita|volunt[aá]ri|lote \d|congresso|evento|capta 20|fife|co\.liga|conta que soma|"
+DESCARTE = re.compile(r"scaled|\.(jpe?g|png|webp|gif|svg)\b|/wp-content/uploads/|^comite |article/edit|palestrante|forma[cç][aã]o|curso|capacita|volunt[aá]ri|lote \d|congresso|evento|capta 20|fife|co\.liga|conta que soma|"
                       r"aquisi[cç]|campus mobile|luppa|elabora[cç][aã]o de editais|exemplos|scaled$|inscricoesprorrogadas|impactos da inovacao|"
                       r"aldir blanc|circula cultura|ficc|centro municipal de arte", re.I)
 
@@ -205,9 +205,11 @@ def candidatas_do_catalogo() -> int:
             if not re.search(r"edital|editais|pr[eê]mio|fundo|sele[cç][aã]o|apoiar|chamamento|chamada|inscri", t): continue
             k = _u(u).netloc + _u(u).path.rstrip("/")
             if k in vistos: continue
+            if re.search(r"\.(jpe?g|png|webp|gif|svg|css|js)(\?|$)", u, re.I): continue      # arquivo de imagem não é oportunidade
             enq = next((e for rx, e in ENQUADRAMENTOS if re.search(rx, t)), "A VERIFICAR")
             slug = _u(u).path.rstrip("/").split("/")[-1].replace("-", " ").strip()
             titulo = rot if len(rot) > 12 and not re.search(r"skip|menu|leia|ler artigo|clique|cancelar|comments|share|pular|tweet", rot, re.I) else (slug[:1].upper() + slug[1:])
+            if len(titulo.split()) < 3 and not re.search(r"edital|pr[eê]mio|chamamento|chamada|fundo", titulo, re.I): continue   # 'Comite fff', '61a6201 scaled'
             vistos[k] = ja.get(u) or {"url": u, "titulo": titulo[:160], "visto_em": (v.get("nome") or "").split(" · ")[0], "enquadramento": enq,
                                        "descoberto_em": hoje, "origem": "catálogo do Piloto - Espião"}
     write_json(arq, {"em": hoje, "regra": "o que o Espião descobre; o Interceptador comprova", "candidatas": list(vistos.values())})

@@ -208,6 +208,13 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     """Só o comprovado entra na ficha; tudo fica registrado em investigacao_ia."""
     tn = _norm(texto)
     campos = {}
+    # EXEMPLO DO ESQUEMA NÃO É RESPOSTA (27/09): o modelo devolveu "o que o edital financia, em uma frase" como objeto
+    _ph = re.compile(r"o que o edital financia|trecho literal|aaaa-mm-dd|como est[aá] escrito|quem publica e financia|uma frase|ou null", re.I)
+    for k, b0 in list((r or {}).items()):
+        if isinstance(b0, dict):
+            for kk in ("valor", "trecho"):
+                if isinstance(b0.get(kk), str) and _ph.search(b0[kk]):
+                    b0[kk] = None
     def ok(bloco, curto=False):
         return isinstance(bloco, dict) and comprovado(bloco.get("trecho") or "", tn, curto)
     g = lambda k: r.get(k) if isinstance(r.get(k), dict) else {}
@@ -233,7 +240,8 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     # Valor
     # VALOR SÓ CONTA COM NÚMERO (26/09): o 8B provou "apoio financeiro" — verdade, mas não é valor; o 14B trouxe
     # "até R$ 1 milhão". Sem algarismo ou "mil/milhão", fica como não encontrado e vai para a checagem de dispensa.
-    b = g("valor"); c = ok(b) and bool(re.search(r"\d|mil\b|milh", str(b.get("valor") or ""), re.I)); campos["Valor"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": c}
+    # valor tem de ter FORMA DE DINHEIRO (27/09): um número de rastreamento (525265914179580) passava como valor
+    b = g("valor"); c = ok(b) and bool(re.search(r"r\$|reais|\bmil\b|milh|bilh|us\$|€|\d{1,3}(\.\d{3})+(,\d{2})?", str(b.get("valor") or ""), re.I)); campos["Valor"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": c}
     if c: e["valor_texto"] = str(b["valor"])[:160]
     # Órgão
     b = g("orgao"); c = ok(b) and bool(b.get("valor")); campos["Órgão / financiador"] = {"valor": b.get("valor"), "trecho": b.get("trecho"), "comprovado": c}

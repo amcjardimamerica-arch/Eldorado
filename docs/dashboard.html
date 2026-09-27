@@ -396,6 +396,19 @@ box-shadow:0 1px 3px #0002}
    registrada vem colorida e sólida; a que não tem fica apagada, no lugar dela, para que
    a linha mostre ao mesmo tempo o que a empresa já fez e o que ainda não fez. */
 .ep-prog{display:flex;gap:3px;flex-wrap:wrap}
+.int-posto{border:1px solid var(--linha);border-radius:14px;background:#fff;padding:14px 16px}
+.int-cab{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.int-cab h3{margin:0;font-size:16px}
+.int-dot{width:10px;height:10px;border-radius:50%;background:#9AA5B1;display:inline-block}.int-dot.ativo{background:#1E7E4B;box-shadow:0 0 0 4px #1E7E4B22}.int-dot.aguarda{background:#C9A227}
+.int-mets{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin:12px 0}
+.int-met{border:1px solid #EEF2F6;border-radius:10px;padding:7px 10px}.int-met b{display:block;font-size:18px}.int-met span{font-size:11px;color:var(--suave)}
+.int-fila{font-size:12px;color:var(--suave);margin-bottom:8px}.int-fila b{color:var(--tinta)}
+.int-m{border:1px solid #EEF2F6;border-radius:10px;margin:6px 0}.int-m>summary{list-style:none;cursor:pointer;padding:8px 10px;display:grid;grid-template-columns:92px 1fr auto auto;gap:10px;align-items:center;font-size:12.5px}
+.int-m>summary::-webkit-details-marker{display:none}.int-m[open]>summary{border-bottom:1px solid #EEF2F6}
+.int-q{font-size:10px;font-weight:700;border-radius:8px;padding:1px 8px;border:1px solid}.int-q.validada,.int-q.fonte_confirmada{background:#1E7E4B;color:#fff;border-color:#1E7E4B}
+.int-q.parcial,.int-q.fonte_possivel{color:#1E7E4B;border-color:#8FC9A3;background:#F1F9F4}.int-q.insuficiente,.int-q.sem_evidencia{color:#9AA5B1;border-color:#E3E8ED;background:#F7F9FA}
+.int-corpo{padding:8px 12px 12px;font-size:12.5px;display:grid;gap:8px}.int-corpo h5{margin:0 0 3px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--suave)}
+.int-dado{display:grid;grid-template-columns:150px 1fr;gap:8px;border-bottom:1px dotted #EEF2F6;padding:3px 0}.int-dado small{display:block;color:var(--suave);font-style:italic}
+.int-av{border-left:3px solid #1E7E4B;padding:4px 10px;background:#F7FBF8}.int-av.descartavel{border-color:#B9C3CE;background:#F7F9FA}.int-av.a-completar{border-color:#C9A227;background:#FFFBEF}
 .ep-nivel{font-style:normal;font-size:9.5px;font-weight:700;border-radius:8px;padding:1px 7px;margin-left:6px;vertical-align:1px;border:1px solid}
 .ep-nivel.n1{background:#0E2A55;color:#fff;border-color:#0E2A55}.ep-nivel.n2{background:#1E7E4B;color:#fff;border-color:#1E7E4B}
 .ep-nivel.n3{color:#1E7E4B;border-color:#8FC9A3;background:#F1F9F4}.ep-nivel.n4{color:#8A6D1E;border-color:#E6D39A;background:#FFFBEF}
@@ -938,6 +951,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 </section>
 <section id="v-piloto-posto" style="margin-top:14px"><div id="pil-posto"></div></section>
+<section id="v-interceptador-posto" style="margin-top:14px"><div id="int-posto"></div></section>
 
 <!-- ============ ELDORADO · EDITAIS ============ -->
 <section id="v-editais" class="oculto" style="margin-top:14px">
@@ -1124,6 +1138,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 
 <!-- (Farol de aderência migrou para Oportunidades Abertas › Farol de Alexandria) -->
 <div id="pil-posto-bussola" style="margin-top:18px"></div>
+<div id="int-posto-bussola" style="margin-top:14px"></div>
 </section>
 
 <!-- ============ FAROL ============ -->
@@ -2943,7 +2958,7 @@ function desenhaPostoPiloto(alvo){
   if(!E){ carregaEsquadrilha().then(()=>desenhaPostoPiloto(alvo)); return; }
   const at=E.missao_atual, L=E.ultimas||[], tot=E.total_abates||0;
   const motores=Object.entries(E.abates||{}).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
-  setTimeout(()=>{ try{ desenhaInterceptador(); }catch(e){} }, 300);
+  setTimeout(()=>{ try{ desenhaPostoInterceptador("int-posto"); desenhaPostoInterceptador("int-posto-bussola"); }catch(e){} }, 300);
   el.innerHTML=`<div class="pil-posto">
     <h4>${at?'<span class="pil-voando-ic" title="em missão">✈</span>':""} Piloto - Espião <span class=meta style="font-weight:400">— descobre oportunidades novas · — patrulha dos motores 26, 27, 28 e 29</span>
       ${(()=>{const V=window._VIVO||{};const m=V.motor||"parado";
@@ -2982,7 +2997,6 @@ function desenhaPostoPiloto(alvo){
           <span title="empresas descobertas"><b>${V.total_abates||0}</b> abate(s)</span></div>
         ${U?`<div class="pil-vivo-u"><b>Última missão:</b> ${esc(U.tipo||"")}${U.motor?" · "+esc(U.motor):""} — ${esc(String(U.licao||"").slice(0,120))}</div>`:""}
         ${(V.achados_recentes||[]).length?`<div class="pil-vivo-u"><b>Trouxe:</b> ${(V.achados_recentes||[]).slice(0,3).map(a=>esc(String(a.titulo||a).slice(0,60))).join(" · ")}</div>`:""}
-        <div id="pil-interceptador" class="pil-vivo-u" style="margin-top:8px;border-top:1px dashed var(--linha);padding-top:6px"><b>Piloto - Interceptador</b> <span class=meta>· comprova na fonte oficial os indícios já encontrados · carregando…</span></div>
         ${est==="parado"?`<div class="pil-acionar"><b>Ele não está voando.</b> Acione em ${esc(V.como_acionar||"Actions → Piloto → Run workflow")}.
            <a class="pil-bt-acionar" href="https://github.com/amcjardimamerica-arch/Eldorado/actions/workflows/piloto.yml" target=_blank rel="noopener noreferrer">acionar o Piloto ↗</a></div>`:""}
       </div>`;})()}
@@ -3784,6 +3798,48 @@ window.desenhaInterceptador=async function(){
     ((R.editais||[]).slice(0,4).map(x=>`<div class=meta>· ${esc(String(x.titulo||x.id).slice(0,70))} — ${x.comprovados??"–"}/12${x.dispensados?` (${x.dispensados} dispensa)`:""}${x.erro?` · ${esc(x.erro)}`:""}</div>`).join(""));
 };
 setInterval(()=>{ try{ desenhaInterceptador(); }catch(e){} }, 120000);
+/* ── QUADRO DO PILOTO - INTERCEPTADOR (27/09): na tela inicial e ao fim da Bússola, como o do Espião.
+   Mostra estado, fila, acumulado e o RELATÓRIO de cada missão: o que encontrou (com a prova), a justificativa
+   da qualidade, o que faltou e a avaliação (serve como fonte, próximo passo, risco). */
+window._INT=null;
+window.desenhaPostoInterceptador=async function(alvo){
+  const el=document.getElementById(alvo); if(!el) return;
+  try{ const r=await fetch("dados/interceptador.json?v="+Date.now()); if(r.ok) window._INT=await r.json(); }catch(e){}
+  const D=window._INT; if(!D){ el.innerHTML=`<div class="int-posto"><div class="int-cab"><span class="int-dot"></span><h3>Piloto - Interceptador</h3><span class=meta>ainda sem relatório publicado</span></div></div>`; return; }
+  const A=D.acumulado||{}, F=D.fila||{}, est=D.estado||"";
+  const dot=/atividade/.test(est)?"ativo":/aguard/.test(est)?"aguarda":"";
+  const quando=s=>String(s||"").slice(0,16).replace("T"," ");
+  const serve=(A.serve_como_fonte||{});
+  const M=(D.missoes||[]).slice(0,alvo==="int-posto"?8:20);
+  const cls=a=>/^pronta|^aproveit/.test(a)?"":/^descart|^falhou/.test(a)?"descartavel":"a-completar";
+  el.innerHTML=`<div class="int-posto">
+    <div class="int-cab"><span class="int-dot ${dot}"></span><h3>Piloto - Interceptador</h3>
+      <span class=meta>comprova na fonte oficial o que os motores e o Espião trazem · ${esc(est)} · último voo ${esc(quando(D.ultimo_voo))} · Qwen3-8B</span></div>
+    <div class="int-mets">
+      <div class="int-met"><b>${A.missoes||0}</b><span>missões</span></div>
+      <div class="int-met"><b style="color:#1E7E4B">${A.validadas||0}</b><span>editais validados</span></div>
+      <div class="int-met"><b>${A.parciais||0}</b><span>parciais</span></div>
+      <div class="int-met"><b style="color:#9AA5B1">${A.insuficientes||0}</b><span>insuficientes</span></div>
+      <div class="int-met"><b>${(A.fontes_confirmadas||0)}/${(A.fontes_possiveis||0)}</b><span>empresas: fonte confirmada/possível</span></div>
+      <div class="int-met"><b>${A.estrelas_de_ouro||0}</b><span>estrelas de ouro (prazo aberto)</span></div>
+      <div class="int-met"><b>${A.fontes_novas_para_os_motores||0}</b><span>fontes novas p/ os motores</span></div>
+      <div class="int-met"><b>${A.tempo_medio_min??"–"} min</b><span>por missão</span></div>
+    </div>
+    <div class="int-fila">Na fila: ${Object.entries(F).map(([k,v])=>`<b>${v}</b> ${esc(k)}`).join(" · ")||"—"} · parecer "serve como fonte": <b>${serve.sim||0}</b> sim, <b>${serve.talvez||0}</b> talvez, <b>${serve.nao||0}</b> não</div>
+    ${M.map(m=>{const E=m.encontrou||{}, P=m.parecer_fonte||{};
+      return `<details class="int-m"><summary><span class=meta>${esc(quando(m.em).slice(5))}</span>
+        <span><b>${esc(String(m.alvo||m.resultado||"").slice(0,110))}</b><br><small class=meta>${esc(m.modo||"")} · ${esc(m.de||"")}${m.tipo==="empresa"?" · empresa":""}</small></span>
+        <span class="int-q ${esc(m.qualidade||"")}">${esc(m.qualidade||"—")}</span><span class=meta>${m.comprovados??"–"}/${m.total??"–"}</span></summary>
+        <div class="int-corpo">
+          <div><h5>O que encontrou</h5>${Object.keys(E).length?Object.entries(E).map(([k,v])=>`<div class="int-dado"><b>${esc(k)}</b><span>${esc(String(v.valor??""))}${v.oficial?' <i class=meta>· fonte oficial</i>':""}${v.trecho?`<small>“${esc(v.trecho)}”</small>`:""}</span></div>`).join(""):'<span class=meta>nenhum dado comprovado</span>'}
+            ${m.pagina_oficial||m.site_oficial?`<div class="int-dado"><b>Página oficial</b><span><a href="${esc(m.pagina_oficial||m.site_oficial)}" target=_blank rel="noopener noreferrer">${esc(String(m.pagina_oficial||m.site_oficial).slice(0,90))}</a> <i class=meta>· ${m.fontes_oficiais||0} item(ns) provado(s) nela</i></span></div>`:""}</div>
+          <div><h5>Justificativa da qualidade</h5>${esc(m.justificativa||"")}${(m.nao_resolvidos||[]).length?`<br><span class=meta>Faltou: ${esc(m.nao_resolvidos.join(", "))}</span>`:""}${m.dispensados?`<br><span class=meta>${m.dispensados} item(ns) dispensado(s) pelo próprio edital</span>`:""}</div>
+          <div class="int-av ${cls(m.avaliacao||"")}"><h5>Avaliação</h5><b>${esc(m.avaliacao||"")}</b>${P.serve_como_fonte?`<br>Serve como fonte de recursos: <b>${esc(P.serve_como_fonte)}</b> — ${esc(P.por_que||"")}`:""}${P.para_a_amc?`<br><span class=meta>Para a A.M.C.: ${esc(P.para_a_amc)}</span>`:""}${P.proximo_passo?`<br><span class=meta>Próximo passo: ${esc(P.proximo_passo)}</span>`:""}${P.risco?`<br><span class=meta>Risco: ${esc(P.risco)}</span>`:""}${m.fonte_nova_para_os_motores?'<br><span class=meta>A página-mãe entrou como fonte nova dos motores (em quarentena até a análise).</span>':""}</div>
+        </div></details>`;}).join("")}
+    ${(D.missoes||[]).length>M.length?`<div class=meta style="margin-top:6px">mostrando ${M.length} de ${(D.missoes||[]).length} missões recentes · o relatório completo fica em dados/interceptador.json</div>`:""}
+  </div>`;
+};
+setInterval(()=>{ try{ desenhaPostoInterceptador("int-posto"); desenhaPostoInterceptador("int-posto-bussola"); }catch(e){} }, 120000);
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição

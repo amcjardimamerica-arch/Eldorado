@@ -89,7 +89,8 @@ jobs:
             git fetch -q origin main && git reset -q --hard origin/main
             cp /tmp/int/interceptador.json docs/dados/ 2>/dev/null || true
             cp /tmp/int/fila_resgate.json estado/piloto/ 2>/dev/null || true
-            mkdir -p estado/interceptador && cp -r /tmp/int/interceptador/. estado/interceptador/ 2>/dev/null || true
+            # a pasta é SÓ do Interceptador: substitui inteira (propaga exclusões — o aguardando.json nunca saía)
+            [ -d /tmp/int/interceptador ] && { rm -rf estado/interceptador; cp -r /tmp/int/interceptador estado/interceptador; }
             cp -r /tmp/int/dados /tmp/int/biblioteca_alexandria /tmp/int/docs . 2>/dev/null || true
             git add -A docs/dados/interceptador.json estado/interceptador estado/piloto/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json
             git commit -q -m "interceptador: voo $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; ENVIADO=1; break; }
