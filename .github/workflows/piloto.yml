@@ -245,7 +245,7 @@ jobs:
         env:
           MODO: ${{ github.event.inputs.modo || 'ciclo' }}
         run: |
-          timeout 300 python -m src.dashboard_dados || true
+          timeout 300 python -m src.dashboard_dados || { echo "::error::o gerador principal do painel (src.dashboard_dados) falhou — o painel ficaria congelado"; date -u +%FT%TZ > estado/piloto/gerador_painel_falhou.txt; }
           # 1) guarda o que o Piloto produziu
           BASE_DO_VOO=$(git rev-parse HEAD)          # onde a cópia do voo começou
           rm -rf docs/dados/dados                    # 27/09: pasta aninhada de 22/09 (220 MB) — nunca mais volta

@@ -340,7 +340,7 @@ def _devolver_ao_opressor(alvo: dict, inv: dict) -> None:
             x["camadas"] = [{"camada": k, "ok": bool(v.get("comprovado") or v.get("dispensado")), "valor": str(v.get("valor") or "")[:120]} for k, v in campos.items()]
             x["obtidas"] = sum(1 for v in campos.values() if v.get("comprovado") or v.get("dispensado"))
             if reg.get("fim"):
-                x["proxima_data"] = reg["fim"]; x["regime_prazo"] = "prazo comprovado na fonte"; x["certeza_prazo"] = "comprovada"
+                x["proxima_data"] = {"inicio": reg.get("inicio"), "fim": reg["fim"]}; x["regime_prazo"] = "prazo comprovado na fonte"; x["certeza_prazo"] = "comprovada"
             break
     write_json(cat, C)
 

@@ -84,7 +84,7 @@ def montar() -> dict:
                            "publicado_em": r["_pub"], "visto_em": None if r["_pub"] else _data(r.get("descoberto_em"), r.get("coletado_em")),
                            "prazo": _data(r.get("fim"), ve.get("prazo"), e.get("fim")), "uf": r.get("uf")})
         out[mid] = {"total_registros": len(xs), "total_unicas": len(unicas), "ultimas": unicas[:5]}
-    res = {"regra": "oportunidades diferentes por motor, sem repetição; as 5 mais recentes pela data de publicação original", "motores": out}
+    res = {"em": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="seconds"), "regra": "oportunidades diferentes por motor, sem repetição; as 5 mais recentes pela data de publicação original", "motores": out}
     SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return {m: (v["total_registros"], v["total_unicas"]) for m, v in out.items() if v["total_registros"]}
 

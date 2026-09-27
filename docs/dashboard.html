@@ -396,6 +396,9 @@ box-shadow:0 1px 3px #0002}
    registrada vem colorida e sólida; a que não tem fica apagada, no lugar dela, para que
    a linha mostre ao mesmo tempo o que a empresa já fez e o que ainda não fez. */
 .ep-prog{display:flex;gap:3px;flex-wrap:wrap}
+.selo-box{margin:2px 0 6px}.selo-vivo{display:inline-block;font-size:10.5px;color:#1E7E4B;background:#F1F9F4;border:1px solid #CFE8D8;border-radius:8px;padding:1px 8px}
+.selo-vivo.atraso{color:#8A6D1E;background:#FFFBEF;border-color:#E6D39A}.selo-vivo.falha{color:#B3261E;background:#FDF1F0;border-color:#F0C4BF}
+.vivo-pt{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22;vertical-align:1px}.vivo-pt.falha{background:#B3261E}
 .int-agora{margin:10px 0}.int-agora-v{border:1px solid #DDEBE2;background:#F7FBF8;border-radius:10px;padding:8px 12px;font-size:12.5px}
 .int-passos{margin:6px 0 0 18px;padding:0;font-size:12px;line-height:1.55}.int-passos li::marker{color:#9AA5B1}
 .int-posto{border:1px solid var(--linha);border-radius:14px;background:#fff;padding:14px 16px}
@@ -1211,10 +1214,10 @@ Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histór
 <dialog id="modal"><div class="mcab" id="m-cab"></div><div class="mcorpo" id="m-corpo"></div>
 <div style="padding:12px 20px;text-align:right;border-top:1px solid var(--linha)"><button onclick="document.getElementById('modal').close()">fechar</button></div></dialog>
 
-<script src="mapa-brasil.js?v=20260922213229"></script>
-<script src="mapa-arte.js?v=20260922213229"></script>
-<script src="dashboard-dados.enc.js?v=20260922213229"></script>
-<script src="dashboard-dados.js?v=20260922213229"></script>
+<script src="mapa-brasil.js?v=20260927213410"></script>
+<script src="mapa-arte.js?v=20260927213410"></script>
+<script src="dashboard-dados.enc.js?v=20260927213410"></script>
+<script src="dashboard-dados.js?v=20260927213410"></script>
 <script>
 (function(){
 "use strict";
@@ -1223,6 +1226,40 @@ const esc=s=>String(s??"—").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">"
 const MES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
 const HOJE=new Date();HOJE.setHours(0,0,0,0);
 let D=null;
+
+/* ═══ LEITURA AO VIVO (titular, 27/09) ═══════════════════════════════════════════════════════════════
+   Nenhum dado é lido da cópia publicada do site em primeiro lugar: ela só é republicada a cada 6 h, e o
+   repositório recebe dados novos a cada voo (~30 min) e a cada monitoramento. Todo pedido a "dados/…" e a
+   "dashboard-dados.js" vai PRIMEIRO ao repositório (ramo main) e, se falhar, à cópia do site (redundância).
+   A cada 4 minutos tudo é relido e redesenhado; cada caixa leva o selo de quando o dado foi gerado e de onde
+   veio. Se as duas fontes falharem, a caixa mantém o último dado bom e avisa. */
+const REPO_RAW="https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/";
+const _fetchOriginal=window.fetch.bind(window);
+window._FONTES={};                       // caminho → {fonte, lido_em, ok}
+window.fetch=async function(u,o){
+  if(typeof u==="string"&&/^(dados\/|dashboard-dados\.js)/.test(u)){
+    const cam=u.split("?")[0];
+    try{ const r=await _fetchOriginal(REPO_RAW+cam+"?t="+Date.now(),{cache:"no-store"});
+      if(r.ok){ _FONTES[cam]={fonte:"repositório (ao vivo)",lido_em:new Date(),ok:true}; return r; } }catch(e){}
+    try{ const r=await _fetchOriginal(cam+"?v="+Date.now(),{cache:"no-cache"});
+      _FONTES[cam]={fonte:r.ok?"cópia do site (reserva)":"falhou nas duas fontes",lido_em:new Date(),ok:r.ok}; return r; }
+    catch(e){ _FONTES[cam]={fonte:"falhou nas duas fontes",lido_em:new Date(),ok:false}; throw e; }
+  }
+  return _fetchOriginal(u,o);
+};
+window.recarregarDados=async function(){
+  try{ const r=await fetch("dashboard-dados.js"); if(!r.ok) return false;
+    const w={}; new Function("window",await r.text())(w);
+    if(w.DADOS&&w.DADOS.gerado_em){ D=w.DADOS; window.DADOS=D; return true; } }catch(e){}
+  return false;
+};
+const _hm=d=>{ try{ const x=new Date(d); return x.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})+" "+x.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}); }catch(e){ return "—"; } };
+/* selo de uma caixa: quando o dado foi GERADO, quando foi LIDO e de ONDE; âmbar se o gerador está atrasado */
+window.seloVivo=function(cam,gerado,limiteMin){
+  const F=_FONTES[cam]||{}; const idade=gerado?(Date.now()-new Date(gerado))/60000:null;
+  const atraso=idade!==null&&idade>(limiteMin||90);
+  return `<span class="selo-vivo${F.ok===false?" falha":atraso?" atraso":""}" title="${esc((F.fonte||"")+(gerado?" · gerado em "+_hm(gerado):""))}">${F.ok===false?"⚠ sem conexão com as fontes — mostrando o último dado bom":`dados de ${gerado?_hm(gerado):"—"}${atraso?" (gerador atrasado)":""} · lidos às ${F.lido_em?_hm(F.lido_em).slice(6):"—"} · ${esc(F.fonte||"")}`}</span>`;
+};
 
 /* ================= PORTÃO DE ACESSO =================
 Camadas, na ordem: (1) bloqueio de celular; (2) verificação de localização
@@ -1294,7 +1331,7 @@ async function portao(){
     $("senha").addEventListener("keydown",e=>{if(e.key==="Enter")window.entrar();});
     return;
   }
-  if(window.DADOS){ D=window.DADOS; iniciar(); return; }
+  if(window.DADOS){ D=window.DADOS; iniciar(); setTimeout(()=>atualizarAgora(true),800); return; }
   if(window.DADOS_ENC && await tentarSessao()){ iniciar(); return; }
   $("portao-msg").textContent="Os dados do painel não foram encontrados nesta publicação.";
 }
@@ -2035,7 +2072,10 @@ function desenhaCal(){
   const porDia={};
   const _jaEv=new Set((D.eventos||[]).map(ev=>ev.edital_id));
   const _fx=(((window._FLUXO||{}).calendario)||[]).filter(x=>x.fim&&!_jaEv.has(x.id)).map(x=>({data:x.fim,tipo:"encerramento",edital_id:x.id,titulo:x.titulo,area:"",fluxo:true,link:x.link_oficial}));
-  (D.eventos||[]).concat(_fx).forEach(ev=>{const d=new Date(ev.data+"T00:00:00");
+  // 27/09 (titular): no calendário, só edital com SITE OFICIAL e PRAZO DE INSCRIÇÃO identificados
+  const _edPorId={}; (D.editais||[]).forEach(e=>_edPorId[e.id]=e);
+  const _okCal=ev=>{ if(ev.fluxo) return !!(ev.link&&ev.data); const e=_edPorId[ev.edital_id]; return !!(e&&linkOficial(e)&&(e.fim||((e.ciclo||{}).inscricao||{}).fim)); };
+  (D.eventos||[]).concat(_fx).filter(_okCal).forEach(ev=>{const d=new Date(ev.data+"T00:00:00");
     if(d.getFullYear()===calAno&&d.getMonth()===calMes)(porDia[d.getDate()]||(porDia[d.getDate()]=[])).push(ev);});
   const prim=new Date(calAno,calMes,1),ini=prim.getDay(),nd=new Date(calAno,calMes+1,0).getDate();
   /* FAIXAS CONTÍNUAS de inscrição — como no Calendário de Editais da tela inicial,
@@ -2045,7 +2085,7 @@ function desenhaCal(){
   const m0=`${calAno}-${String(calMes+1).padStart(2,"0")}-01`, m1=`${calAno}-${String(calMes+1).padStart(2,"0")}-${String(nd).padStart(2,"0")}`;
   const faixas=(D.editais||[]).filter(e=>{const c=(e.ciclo||{}).inscricao||{};const i0=c.inicio||e.inicio,f0=c.fim||e.fim;
       const regraConfirmada=["anual","janela_confirmada","permanente"].includes(e.regime_inscricao)&&e.ano_permitido!==false&&situacaoDe(e)!=="encerrada";
-      return i0&&f0&&!c.projetado&&e.calendario_ok!==false&&(situacaoDe(e)==="aberta"||regraConfirmada)
+      return i0&&f0&&linkOficial(e)&&!c.projetado&&e.calendario_ok!==false&&(situacaoDe(e)==="aberta"||regraConfirmada)
         &&estadoDe(e.id)==="em_andamento"&&i0<=m1&&f0>=m0;})
     .map(e=>{const c=(e.ciclo||{}).inscricao||{};return {e,i:c.inicio||e.inicio,f:c.fim||e.fim};})
     .sort((a,b)=>a.i.localeCompare(b.i)||a.f.localeCompare(b.f));
@@ -2100,7 +2140,7 @@ function desenhaCal(){
     :"<span class=meta>Nenhum evento registrado ainda — a primeira varredura de segunda/sexta popula o calendário.</span>";
   {const marc=D.marcacoes_ia||{};
    const sp=(D.editais||[]).filter(e=>estadoDe(e.id)==="em_andamento"&&situacaoDe(e)!=="encerrada"&&!(e.fim||((e.ciclo||{}).inscricao||{}).fim));
-   const cx=$("cal-sem-prazo"); if(cx){cx.innerHTML=sp.length?`<div class="fdoc-t">Abertos sem prazo final confirmado <span class=meta>${sp.length} — marcados para a IA externa; entram no calendário assim que o prazo for confirmado na fonte</span></div>
+   const cx=$("cal-sem-prazo"); if(cx){cx.innerHTML=false&&sp.length?`<div class="fdoc-t">Abertos sem prazo final confirmado <span class=meta>${sp.length} — marcados para a IA externa; entram no calendário assim que o prazo for confirmado na fonte</span></div>
      <div class="cal-sp-grade">${sp.slice(0,60).map(e=>{const m=marc[e.id]||{};return `<div class="cal-sp" data-id="${esc(e.id)}" title="${esc(e.titulo||"")}"><span class="pt" style="background:${AREA(e.area).cor}"></span><span class="tt">${esc((e.titulo||"").slice(0,64))}</span><small>${esc(e.uf||"Brasil")} · ${m.modo==="leve"?"leve":"completo"}${m.desde?" · desde "+br(m.desde):""}${m.link_oficial?` · <a href="${esc(m.link_oficial)}" target=_blank rel="noopener noreferrer">fonte ↗</a>`:""}</small></div>`;}).join("")}</div>`:"";}}
   $("cal-simbolos").innerHTML=`<span><span class="cfx" style="display:inline-block;width:26px;height:9px;background:var(--marca);vertical-align:middle;position:static"></span> faixa contínua = prazo de inscrição <b>confirmado</b> (${faixas.length} neste mês); os marcos do edital aparecem <b>dentro</b> da faixa com contorno branco · ícone solto = chamamento identificado <b>sem prazo confirmado</b> (busca de prazo por IA acionada)</span> · `
     +Object.entries(D.tipos_evento||{}).map(([k,v])=>`<span><i style="font-style:normal;font-weight:700">${v.simbolo}</i> ${esc(v.rotulo)}</span>`).join(" · ");
@@ -4583,6 +4623,45 @@ function desenhaBiblioteca(){
 }
 
 /* ================= INÍCIO ================= */
+/* ═══ ATUALIZAÇÃO A CADA 4 MINUTOS (titular, 27/09) — todas as caixas relidas e redesenhadas ═══ */
+const SELOS=[   // [caixa, arquivo, de onde vem a data de geração, minutos até considerar o gerador atrasado]
+  ["ed-grade","dashboard-dados.js",()=>D&&D.gerado_em,90], ["cal-grade","dashboard-dados.js",()=>D&&D.gerado_em,90],
+  ["bz-mapa","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90], ["mt-lista","dados/achados_motores.json",()=>(window._ACHADOS||{}).em,1500],
+  ["rank-apoiadores","dados/ranking_apoiadores.json",()=>(window.EMP||{}).gerado_em,10080], ["int-posto-bussola","dados/interceptador.json",()=>(window._INT||{}).em,60],
+  ["int-posto","dados/interceptador.json",()=>(window._INT||{}).em,60]];
+function pintarSelos(){
+  SELOS.forEach(([id,cam,g,lim])=>{ const el=document.getElementById(id); if(!el||!el.parentNode) return;
+    let s=document.querySelector(`.selo-box[data-para="${id}"]`);
+    if(!s){ s=document.createElement("div"); s.className="selo-box"; s.dataset.para=id; el.parentNode.insertBefore(s,el); }
+    s.innerHTML=seloVivo(cam,g(),lim); });
+  const v=document.getElementById("versao-painel");
+  if(v){ const F=_FONTES["dashboard-dados.js"]||{}; const prox=Math.max(0,Math.round((240000-(Date.now()-(window._ultimaAtualizacao||Date.now())))/60000));
+    v.innerHTML=`<span class="vivo-pt${F.ok===false?" falha":""}"></span> <b>ao vivo</b> · dados gerados em ${esc(_hm(D&&D.gerado_em))} · lidos às ${F.lido_em?esc(_hm(F.lido_em).slice(6)):"—"} de ${esc(F.fonte||"—")} · próxima leitura em ${prox||4} min <a href="#" onclick="atualizarAgora(true);return false">atualizar agora</a>`; }
+  const r=document.getElementById("rodada"); if(r&&D) r.textContent="Última alimentação: "+_hm(D.gerado_em)+" · leitura ao vivo a cada 4 minutos";
+}
+window.atualizarAgora=async function(forcar){
+  if(document.hidden&&!forcar) return;
+  if(document.querySelector("dialog[open]")&&!forcar){ window._atualizarDepois=true; return; }
+  await recarregarDados();
+  for(const k in _frag) delete _frag[k];
+  window.EMP=null;
+  // os dados do Espião eram carregados UMA vez e travados por sinalizadores — soltos a cada ciclo
+  window._ESQ=null; window._esqPronta=false; window._RADAR=null; window._radarPronto=false;
+  window._BRIEF=null; window._briefPronto=false; window._RESG=null;
+  try{ const r=await fetch("dados/achados_motores.json"); if(r.ok) window._ACHADOS=await r.json(); }catch(e){}
+  try{ const r=await fetch("dados/descricao_motores.json"); if(r.ok){ const j=await r.json(); window._DESC=j.motores||window._DESC; } }catch(e){}
+  const passos=[()=>desenhaRadar(),()=>desenhaFarolResumo(),()=>desenhaGantt(),()=>desenhaFila(),()=>desenhaCal(),()=>desenhaEditais(),
+    ()=>desenhaBussola(),()=>(typeof desenhaBzMapa==="function")&&desenhaBzMapa(),()=>(typeof desenhaMotores==="function")&&desenhaMotores(),()=>desenhaBiblioteca(),
+    ()=>window.desenhaApoiadores&&desenhaApoiadores(),()=>desenhaPostoPiloto("pil-posto"),()=>desenhaPostoPiloto("pil-posto-bussola"),
+    ()=>window.desenhaPostoInterceptador&&desenhaPostoInterceptador("int-posto"),()=>window.desenhaPostoInterceptador&&desenhaPostoInterceptador("int-posto-bussola"),
+    ()=>window.carregaFluxo&&carregaFluxo()];
+  for(const f of passos){ try{ await f(); }catch(e){ console.warn("atualização de caixa falhou:",e); } }
+  window._ultimaAtualizacao=Date.now(); pintarSelos();
+};
+setInterval(()=>atualizarAgora(),240000);
+setInterval(()=>{ try{ pintarSelos(); }catch(e){} },30000);
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&Date.now()-(window._ultimaAtualizacao||0)>240000) atualizarAgora(); });
+document.addEventListener("close",()=>{ if(window._atualizarDepois){ window._atualizarDepois=false; atualizarAgora(); } },true);
 function iniciar(){
   $("portao").classList.add("oculto");$("app").classList.remove("oculto");
   $("rodada").textContent="Última alimentação: "+(D.gerado_em?new Date(D.gerado_em).toLocaleString("pt-BR"):"—")

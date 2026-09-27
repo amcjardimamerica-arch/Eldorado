@@ -1439,7 +1439,9 @@ def coletar(hoje: date | None = None) -> dict:
     for m in motores.get("motores", []):
         if not m.get("ativa"):
             continue
-        pd = (m.get("proxima_data") or {})
+        pd = m.get("proxima_data") or {}
+        if isinstance(pd, str):                      # 27/09: opressor novo gravou só a data; aceita as duas formas
+            pd = {"fim": pd}
         fontes_ativas.append({
             "id": f'fonte-{m["id"]}', "fonte_260": m["id"], "programa": m["programa"],
             "orgao": m.get("orgao"), "area": area_canonica(m.get("area_atuacao")),

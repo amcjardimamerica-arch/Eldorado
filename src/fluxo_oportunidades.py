@@ -151,7 +151,7 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
                                                 "familia": "Outros programas", "esfera": "Estado" if it.get("uf") else "Brasil", "uf": it.get("uf") or "BR",
                                                 "ativa": True, "tipo": "oportunidade_mapeada", "pagina": pagina, "paginas": [pagina], "validacao": "não lida ainda",
                                                 "motivo_status": f"criado pelo fluxo das oportunidades ({it['origem']})", "criado_em": hoje.isoformat(),
-                                                "proxima_data": it.get("fim"), "mencoes": [{"titulo": it["titulo"][:120], "url": it.get("url")}]})
+                                                "proxima_data": {"inicio": it.get("inicio"), "fim": it.get("fim")} if it.get("fim") else None, "mencoes": [{"titulo": it["titulo"][:120], "url": it.get("url")}]})
             L.setdefault("ligados", {})[oid] = {"desde": hoje.isoformat(), "ate": (hoje + timedelta(days=30)).isoformat(),
                                                 "origem": f"automática: oportunidade nova ({it['origem']})", "dias": 0, "ia": [], "itens": {}}
             cobertos_u.add(ku); cobertos_t.add(kt); novos_opr += 1; it["opressor"] = oid
@@ -188,7 +188,7 @@ def montar() -> dict:
         p["possiveis"] += 1; p["confirmadas"] += 1 if it["confirmada"] else 0
     tot = {"confirmadas": sum(v["confirmadas"] for v in mapa.values()), "possiveis": sum(v["possiveis"] for v in mapa.values())}
     cal = [{k: it.get(k) for k in ("id", "titulo", "orgao", "uf", "inicio", "fim", "link_oficial", "origem")} for it in itens if it["confirmada"]]
-    res = {"em": date.today().isoformat(), "regra": __doc__.split("Publica")[0].strip(),
+    res = {"em": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Publica")[0].strip(),
            "etapas": {"possiveis_abertas": tot["possiveis"], "confirmadas_com_minimo": tot["confirmadas"],
                       "por_origem": {o: sum(1 for x in itens if x["origem"].startswith(o)) for o in ("motor", "Piloto - Espião", "Piloto - Interceptador")},
                       "por_tipo": {t: sum(1 for x in itens if x["tipo"] == t) for t in ("ente público", "empresa/instituto", "menção em diário oficial")}, **etapa},
