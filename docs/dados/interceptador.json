@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-27T17:24:27+00:00",
+  "em": "2026-09-27T17:35:11+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-27T17:12:03+00:00",
+  "ultimo_voo": "2026-09-27T17:25:55+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -11,7 +11,8 @@
       "1. edital NOVO trazido pelos motores de busca (descoberto desde o corte)",
       "2. indício NOVO trazido pelo Espião (candidatas)",
       "3. oportunidade ABERTA atual com itens em falta (alimenta o que já está no painel)",
-      "4. empresa NOVA do radar do Espião (ficha de fonte de recurso)"
+      "4. empresa NOVA do radar do Espião (ficha de fonte de recurso)",
+      "5. motor OPRESSOR que nunca leu a própria página (lê e devolve prazo e condições ao opressor)"
     ],
     "modos": {
       "validar": "editais dos motores de busca e oportunidades abertas atuais: mapear a fonte oficial e comprovar as doze condições",
@@ -29,16 +30,16 @@
     }
   },
   "fila": {
-    "editais novos dos motores": 2,
-    "indícios do Espião": 8,
+    "editais novos dos motores": 1,
+    "indícios do Espião": 10,
     "abertos com itens em falta": 0,
     "empresas sem ficha": 17
   },
   "acumulado": {
-    "missoes": 145,
+    "missoes": 146,
     "validadas": 7,
     "parciais": 40,
-    "insuficientes": 48,
+    "insuficientes": 49,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
@@ -50,6 +51,30 @@
     "tempo_medio_min": 7.0
   },
   "missoes": [
+    {
+      "em": "2026-09-27T17:25:55+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "edital novo dos motores",
+      "alvo": "[Portal de Compras Públicas] - SELEÇÃO EMERGENCIAL COM FULCRO NOS ART. 30 E 32 DA LEI 113.013 PARA PROJETOS DAS ORGANIZAÇÕES DA SOCIEDADE CIVIL O.S.C. A SEREM FINANCIADOS COM RECURSOS DO FUNDO MUNICIPAL DE SAÚDE DE TEREZINHA, PARA O ATENDIMENTO EM SAÚDE NA ATENÇÃO BÁSICA, MÉDIA E ALTA COMPLEXIDADE H",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": null,
+      "total": 12,
+      "nao_resolvidos": null,
+      "pagina_oficial": null,
+      "parecer_fonte": {},
+      "erro": "o modelo não devolveu JSON",
+      "segundos": 555,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "falhou: o modelo não devolveu JSON",
+      "id": "70aaa827f5b4d6e15e83",
+      "encontrou": {}
+    },
     {
       "em": "2026-09-27T17:12:03+00:00",
       "modo": "validar",
@@ -2257,83 +2282,6 @@
         "Requisitos": {
           "valor": "organizações da sociedade civil (OSCs) sem fins lucrativos, com projetos aprovados pelos Conselhos de Direitos da Pessoa Idosa (Municipais, Estaduais ou Nacional), com autorização para captação",
           "trecho": "Podem participar organizações da sociedade civil (OSCs) sem fins lucrativos, com projetos aprovados pelos Conselhos de Direitos da Pessoa Idosa (Municipais, Estaduais ou Nacional) ",
-          "oficial": true,
-          "dispensado": false
-        }
-      }
-    },
-    {
-      "em": "2026-09-27T10:22:41+00:00",
-      "modo": "complementar",
-      "tipo": "edital",
-      "de": "fila de resgate",
-      "alvo": "BeForms – EDITAL 2026 DE SELEÇÃO DE PROJETOS CULTURAIS DO PARQUE BONDINHO PÃO DE AÇÚCAR®",
-      "qualidade": "validada",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de recurso",
-        "Valor",
-        "Anexos"
-      ],
-      "pagina_oficial": "https://blog.bondinho.com.br/parque-bondinho-pao-de-acucar-abre-inscricoes-para-o-edital-2026-de-selecao-de-projetos-culturais/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, resultado, órgão financiador, território, esfera, requisitos e destinação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria ler o Regulamento, preencher os modelos de documentos obrigatórios e garantir que seu projeto esteja alinhado à área de atuação de cultura, mesmo que o território do edital seja RJ.",
-        "proximo_passo": "Consultar o Regulamento do edital para entender os requisitos detalhados e preparar os documentos obrigatórios.",
-        "risco": "O território do edital é RJ, o que pode impedir que uma associação de Goiânia participe, a menos que o projeto tenha conexão direta com o Parque Bondinho Pão de Açúcar®."
-      },
-      "erro": null,
-      "segundos": 584,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 9,
-      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
-      "avaliacao": "pronta para a decisão do Claude",
-      "id": "cat-01004868599c",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoio financeiro para projetos culturais",
-          "trecho": "A proposta é apoiar iniciativas que unam cultura, educação, meio ambiente e fortalecimento das comunidades do entorno.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-09-16 a 2026-10-09",
-          "trecho": "Período de inscrições: 16/09 a 09/10/2026",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Parque Bondinho Pão de Açúcar®",
-          "trecho": "O Parque Bondinho lança mais uma edição de processo de seleção que concederá apoio financeiro para projetos culturais...",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "RJ",
-          "trecho": "recurso incentivado pela Lei Municipal de Incentivo à Cultura da cidade do Rio de Janeiro (Lei do ISS)",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "apoio financeiro para projetos culturais",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "apoio financeiro para projetos culturais",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "ler o Regulamento, preencher os modelos de documentos obrigatórios",
-          "trecho": "Antes de se inscrever, leia o Regulamento e preencha os modelos de documentos obrigatórios.",
           "oficial": true,
           "dispensado": false
         }
