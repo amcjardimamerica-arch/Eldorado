@@ -7,7 +7,7 @@ Piloto: modelo **qwen3-8b**. Ao responder, o Claude anota o modelo com que traba
 - 2026-09-24T22:51 — Esquadrilha 2026-09-24 (Qwen3-1.7B): 1 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 0.6 min de voo.
 - 2026-09-25T23:47 — Esquadrilha 2026-09-25 (Qwen3-1.7B): 8 missão(ões) — 0 alvo(s) novo(s) abatido(s), 7 proposta(s) ao todo, 10.4 min de voo.
 - 2026-09-26T23:58 — Esquadrilha 2026-09-26 (Qwen3-8B): 7 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 4.4 min de voo.
-- 2026-09-27T06:28 — Esquadrilha 2026-09-27 (Qwen3-8B): 7 missão(ões) — 4 alvo(s) novo(s) abatido(s), 4 proposta(s) ao todo, 5.4 min de voo.
+- 2026-09-27T14:17 — Esquadrilha 2026-09-27 (Qwen3-8B): 7 missão(ões) — 2 alvo(s) novo(s) abatido(s), 2 proposta(s) ao todo, 5.3 min de voo.
 
 ## Relatório de aprendizado e bloqueios (6)
 
@@ -23,7 +23,7 @@ Piloto: modelo **qwen3-8b**. Ao responder, o Claude anota o modelo com que traba
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (39)
+### Rotas e pistas sugeridas (40)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
@@ -56,6 +56,7 @@ Piloto: modelo **qwen3-8b**. Ao responder, o Claude anota o modelo com que traba
 - motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
 - motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
 - motor-patrocinio → [{"tipo": "url", "valor": "https://www.opopular.com.br/", "porque": "imprensa e portais de eventos de Goiás", "valido": true}]
+- plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]

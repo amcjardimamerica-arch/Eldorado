@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-09-26
+# Pacote para o Claude Desktop — 2026-09-27
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
