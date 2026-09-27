@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-27T12:10:21+00:00",
+  "em": "2026-09-27T12:18:24+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-27T12:00:19+00:00",
+  "ultimo_voo": "2026-09-27T12:11:50+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -29,27 +29,89 @@
     }
   },
   "fila": {
-    "editais novos dos motores": 0,
+    "editais novos dos motores": 10,
     "indícios do Espião": 23,
     "abertos com itens em falta": 0,
-    "empresas sem ficha": 5
+    "empresas sem ficha": 4
   },
   "acumulado": {
-    "missoes": 115,
+    "missoes": 116,
     "validadas": 7,
-    "parciais": 26,
+    "parciais": 27,
     "insuficientes": 32,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 55,
+      "sim": 56,
       "nao": 5
     },
     "estrelas_de_ouro": 6,
-    "fontes_novas_para_os_motores": 26,
+    "fontes_novas_para_os_motores": 27,
     "tempo_medio_min": 6.5
   },
   "missoes": [
+    {
+      "em": "2026-09-27T12:11:50+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "edital novo dos motores",
+      "alvo": "CREDENCIAMENTO DE PROFISSIONAIS, PESSOA FÍSICA E/OU PESSOA JURÍDICA, PARA DESEMPENHAR FUNÇÕES, QUE ATENDERÃO OS SERVIÇOS DE CONVIVÊNCIA E FORTALECIMENTO DE VÍNCULOS – SCFV, EM PROL, DE ALCANÇAR OS OBJETIVOS E FINALIDADES PACTUADOS, POR MEIO DA POLÍTICA PÚBLICA MUNICIPAL DE ASSISTÊNCIA SOCIAL / FUNDO",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://cisamcespar.org/wp-content/uploads/2025/03/Edital-05-2025-SERVICOS-MEDICOS-E-APOIO-COMPLEMENTAR.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprova a existência de um chamado para credenciamento de profissionais, o que pode ser utilizado como fonte para a associação comunitária de Goiânia acessar os serviços mencionados.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se credenciar apresentando os documentos pessoais dos profissionais atuantes e os documentos exigidos no edital, além de seguir as normas estabelecidas para o credenciamento.",
+        "proximo_passo": "Verificar os requisitos e anexos do edital para iniciar o processo de credenciamento.",
+        "risco": "A falta de informações sobre prazo de inscrição e outros detalhes pode impedir a associação de se inscrever no prazo correto."
+      },
+      "erro": null,
+      "segundos": 393,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "105f413f0bcd8c49c283",
+      "encontrou": {
+        "Objeto": {
+          "valor": "SERVIÇOS MÉDICOS E APOIO COMPLEMENTAR",
+          "trecho": "SERVIÇOS MÉDICOS E APOIO COMPLEMENTAR",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "cisamcespar.org",
+          "trecho": "cisamcespar.org",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "nacional",
+          "trecho": "nacional",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "apresentar os seguintes documentos, documentos pessoais dos profissionais atuantes",
+          "trecho": "apresentar os seguintes documentos: ... documentos pessoais dos profissionais atuantes",
+          "oficial": true,
+          "dispensado": false
+        }
+      }
+    },
     {
       "em": "2026-09-27T12:00:19+00:00",
       "modo": "complementar",
@@ -2026,51 +2088,6 @@
         },
         "Instituto, fundação ou programa social": {
           "valor": "Instituto de Responsabilidade Social"
-        }
-      }
-    },
-    {
-      "em": "2026-09-27T05:51:33+00:00",
-      "modo": "complementar",
-      "tipo": "empresa",
-      "de": "radar do Espião",
-      "alvo": "Observatório",
-      "qualidade": "fonte_confirmada",
-      "comprovados": 7,
-      "dispensados": null,
-      "total": 8,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": null,
-      "erro": null,
-      "segundos": 250,
-      "site_oficial": "https://observatoriosocial.org.br/conteudo/responsabilidade-social",
-      "resultado": null,
-      "fonte_nova_para_os_motores": null,
-      "fontes_oficiais": 0,
-      "justificativa": "site oficial, canal de pedido e áreas apoiadas comprovados, e 5 ou mais dos 8 itens da ficha de fonte",
-      "avaliacao": "pronta para a decisão do Claude",
-      "encontrou": {
-        "Site oficial": {
-          "valor": "https://observatoriosocial.org.br/conteudo/responsabilidade-social"
-        },
-        "Instituto, fundação ou programa social": {
-          "valor": "IOS - Instituto Observatório Social"
-        },
-        "Canal de pedido": {
-          "valor": "patrocinio_por_proposta"
-        },
-        "Leis de incentivo que usa": {
-          "valor": "esporte, fia, goyazes, idoso, pat, pronas, pronon, rouanet"
-        },
-        "Áreas apoiadas": {
-          "valor": "cultura, educacao, saude, assistencia_social, esporte, meio_ambiente, direitos, outros"
-        },
-        "Território de atuação social": {
-          "valor": "estados citados"
-        },
-        "Exigências para a entidade": {
-          "valor": "exigência para a entidade proponente"
         }
       }
     }
