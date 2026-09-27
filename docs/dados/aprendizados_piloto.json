@@ -1,14 +1,14 @@
 {
-  "em": "2026-09-27T23:03:39+00:00",
+  "em": "2026-09-27T23:10:43+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 9,
+      "achados": 10,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 32,
-        "fora_do_objeto": 8
+        "nada_no_crivo": 31,
+        "fora_do_objeto": 9
       },
       "efetividade": 0.0
     }
@@ -17,7 +17,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 1163,
+      "vezes": 1203,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -28,7 +28,7 @@
       ],
       "ultima": "2026-09-27",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 1163 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 1203 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -93,7 +93,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "fora_do_objeto",
-      "vezes": 63,
+      "vezes": 51,
       "tipos": [
         "prospectar",
         "catalogar",
@@ -101,7 +101,7 @@
       ],
       "ultima": "2026-09-27",
       "explicacao": "o que veio não serve à finalidade da associação",
-      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 63 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 51 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-gife",
@@ -128,24 +128,24 @@
     {
       "motor": "piloto-aberto",
       "motivo": "rastro_sem_prova",
-      "vezes": 13,
+      "vezes": 11,
       "tipos": [
         "reconhecimento"
       ],
-      "ultima": "2026-09-27",
+      "ultima": "2026-09-26",
       "explicacao": "rastro_sem_prova",
-      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 13 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 11 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "sem_rastro",
-      "vezes": 13,
+      "vezes": 11,
       "tipos": [
         "reconhecimento"
       ],
-      "ultima": "2026-09-27",
+      "ultima": "2026-09-26",
       "explicacao": "sem_rastro",
-      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 13 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 11 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -161,44 +161,37 @@
   "melhorias_pendentes": [
     {
       "motor": "piloto-aberto",
-      "sugestao": "Adicionar a capacidade de extrair e validar trechos de conteúdo de páginas web para permitir a análise de editais e sua compatibilidade com a missão da organização.",
+      "sugestao": "Adicionar a funcionalidade de extração de trechos relevantes dos editais para permitir uma análise mais precisa da compatibilidade com a missão da organização.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-27T23:03",
+      "em": "2026-09-27T22:55",
       "aplicada": false
     },
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor deve garantir que os trechos dos editais sejam preenchidos corretamente para permitir uma avaliação precisa da viabilidade de concorrência.",
+      "sugestao": "O motor deve validar a existência de trechos com conteúdo relevante nos editais antes de considerá-los como possíveis recursos.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-27T23:02",
+      "em": "2026-09-27T22:54",
       "aplicada": false
     },
     {
       "motor": "piloto-aberto",
-      "sugestao": "Incluir a capacidade de identificar e extrair informações específicas como prazo, valor, objeto e página dos editais, mesmo que o texto não seja claro ou completo.",
+      "sugestao": "O motor deve exigir que o trecho do edital seja preenchido com informações relevantes, como prazo, valor, objeto e página, para permitir uma análise adequada do recurso.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-27T22:46",
+      "em": "2026-09-27T22:53",
       "aplicada": false
     },
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor deve coletar e exibir trechos específicos dos editais para facilitar a análise e a decisão sobre a relevância para a missão da organização.",
+      "sugestao": "O motor deve exigir que os trechos dos editais sejam preenchidos com informações relevantes para que seja possível avaliar se o edital é compatível com a missão da organização.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-27T22:45",
+      "em": "2026-09-27T22:36",
       "aplicada": false
     },
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor deveria coletar e armazenar trechos literais das páginas visitadas para permitir uma análise mais precisa e completa dos conteúdos encontrados.",
+      "sugestao": "O motor deveria identificar automaticamente se o achado contém informações sobre editais, patrocínios, doações ou incentivos fiscais, mesmo que não haja um trecho explícito mencionando esses termos.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-27T22:44",
-      "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deveria identificar automaticamente editais e oportunidades de recursos em sites de organizações da sociedade civil e em portais de transparência governamental.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-27T22:44",
+      "em": "2026-09-27T22:35",
       "aplicada": false
     },
     {
@@ -298,10 +291,17 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-09-27T15:18",
       "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "Adicionar informações detalhadas sobre os editais, como prazo, valor, objeto e página, para facilitar a avaliação de compatibilidade com a missão da associação.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-27T15:17",
+      "aplicada": false
     }
   ],
-  "editais_tratados": 155,
-  "entregues_ao_claude": 122,
+  "editais_tratados": 154,
+  "entregues_ao_claude": 121,
   "ultima_faxina": {
     "em": "2026-09-22T22:01:28+00:00",
     "dias": 3,
