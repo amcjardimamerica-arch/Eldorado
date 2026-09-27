@@ -1,13 +1,14 @@
 {
-  "em": "2026-09-27T12:04:09+00:00",
+  "em": "2026-09-27T12:11:35+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 0,
+      "achados": 1,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 40
+        "nada_no_crivo": 39,
+        "fora_do_objeto": 1
       },
       "efetividade": 0.0
     }
@@ -16,7 +17,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 858,
+      "vezes": 844,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -27,7 +28,7 @@
       ],
       "ultima": "2026-09-27",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 858 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 844 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -127,24 +128,24 @@
     {
       "motor": "piloto-aberto",
       "motivo": "rastro_sem_prova",
-      "vezes": 11,
+      "vezes": 12,
       "tipos": [
         "reconhecimento"
       ],
-      "ultima": "2026-09-26",
+      "ultima": "2026-09-27",
       "explicacao": "rastro_sem_prova",
-      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 11 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 12 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "sem_rastro",
-      "vezes": 11,
+      "vezes": 12,
       "tipos": [
         "reconhecimento"
       ],
-      "ultima": "2026-09-26",
+      "ultima": "2026-09-27",
       "explicacao": "sem_rastro",
-      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 11 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 12 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -158,6 +159,13 @@
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deveria verificar a presença de palavras-chave específicas como 'edital', 'patrocínio', 'incentivo fiscal' ou 'recurso' nos títulos e trechos das páginas, para melhorar a relevância dos resultados.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-27T11:57",
+      "aplicada": false
+    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deve coletar e armazenar trechos relevantes dos editais para permitir uma avaliação mais precisa de sua utilidade e possibilidade de concorrência.",
@@ -290,17 +298,10 @@
       "efetividade_na_hora": 0.67,
       "em": "2026-09-27T02:46",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve coletar e armazenar trechos relevantes dos editais para facilitar a análise e a decisão sobre sua utilidade.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-27T02:33",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 120,
-  "entregues_ao_claude": 87,
+  "editais_tratados": 121,
+  "entregues_ao_claude": 88,
   "ultima_faxina": {
     "em": "2026-09-22T22:01:28+00:00",
     "dias": 3,
