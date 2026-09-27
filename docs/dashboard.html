@@ -3087,14 +3087,15 @@ function achadosDoMotor(o){
   if(o.produto==="empresas"){const L=o.empresas||[];if(!L.length)return "";
     return `<div class="mt-achados"><b>${o.achados||L.length} empresa(s) mapeada(s)</b> — candidatas a destinação/patrocínio (não são editais); as ${L.length} de maior pontuação:
       ${L.map(e=>`<div class="mt-ach"><span class="pt" style="background:#0B4EA2"></span>${e.url?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" title="${esc(e.motivo||"")}">${esc((e.nome||"").slice(0,54))}</a>`:esc((e.nome||"").slice(0,54))}<small>${e.score!=null?"score "+e.score:""}${e.classe?" · "+esc(e.classe):""}</small></div>`).join("")}</div>`;}
-  const eds=(D.editais||[]).concat(FA_ABERTAS||[]).filter(e=>ehOportunidade(e)&&(e.fonte_id===o.id||e.fonte_nome===o.nome));
-  if(!eds.length)return "";
-  const ord=eds.sort((a,b)=>String(b.coletado_em||b.publicado_em||"").localeCompare(String(a.coletado_em||a.publicado_em||""))).slice(0,6);
-  return `<div class="mt-achados"><b>${eds.length} oportunidade(s) encontrada(s)</b>${eds.length>6?" — 6 mais recentes:":":"}
-    ${ord.map(e=>{const u=linkOficial(e)||e.url;const val=e.selo_validacao==="validada";
-      return `<div class="mt-ach"><span class="pt ${val?"ok":"nv"}" title="${val?"validada: objeto, prazo e site oficial":"não verificada"}"></span>
-        ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</a>`:`<span title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,58))}</span>`}
-        <small>${e.fim?"até "+br(e.fim):"prazo a confirmar"}${e.uf?" · "+esc(e.uf):""}</small></div>`;}).join("")}</div>`;
+  // 27/09 (titular): oportunidades DIFERENTES do motor (sem repetição), as 5 mais recentes pela data de publicação
+  // original — montadas no servidor (dados/achados_motores.json). O indicador aparece em todo motor.
+  const A=((window._ACHADOS||{}).motores||{})[o.id];
+  if(!A) return `<div class="mt-achados"><b>Oportunidades encontradas</b> <span class=meta>· carregando…</span></div>`;
+  if(!A.total_unicas) return `<div class="mt-achados"><b>0 oportunidades encontradas</b> <span class=meta>· nenhuma oportunidade reconhecida nesta fonte até agora</span></div>`;
+  return `<div class="mt-achados"><b>${A.total_unicas} oportunidade(s) encontrada(s)</b>${A.total_registros>A.total_unicas?` <span class=meta>(${A.total_registros} registros, sem repetição)</span>`:""} — ${Math.min(5,A.ultimas.length)} mais recente(s):
+    ${A.ultimas.map(e=>`<div class="mt-ach"><span class="pt nv"></span>
+        ${e.url?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,64))}</a>`:`<span>${esc((e.titulo||"").slice(0,64))}</span>`}
+        <small>${e.publicado_em?"publicado em "+br(e.publicado_em):"visto em "+br(e.visto_em||"")}${e.prazo?" · inscrições até "+br(e.prazo):""}${e.uf?" · "+esc(e.uf):""}</small></div>`).join("")}</div>`;
 }
 /* código vizinho que saiu junto com o ranking antigo — devolvido ao lugar */
 /* ================= DOCUMENTOS DAS ASSOCIAÇÕES ================= */
@@ -3843,7 +3844,7 @@ window.desenhaPostoInterceptador=async function(alvo){
         return `<button class="pil-partida ${R[0]} m-${m}" id="${alvo}-int-bt" onclick="ligarInterceptador('${alvo}')" style="--mc:${R[2]}" title="${esc(window._INT_MOTOR_FRASE||"")}">
           <svg viewBox="0 0 24 24" aria-hidden="true"><g class="pil-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.2" fill="#3a3a3a"/></svg>
           <span id="${alvo}-int-txt">${R[1]}</span></button>`;})()}
-      <span class=meta>comprova na fonte oficial o que os motores e o Espião trazem · ${esc(est)} · Qwen3-8B</span></div>
+      </div>
     <div id="${alvo}-agora" class="int-agora">${htmlInterceptadorAgora(window._INT_VIVO)}</div>
     ${D.erro_publicacao?`<div class=meta style="color:#B3261E">Falha ao publicar o último relatório (${esc(horaMin(D.erro_publicacao.em))}): ${esc(D.erro_publicacao.erro)}</div>`:""}
     ${(()=>{const u=(D.missoes||[])[0]; if(!u) return (D.alvo?`<div class="pil-vivo-u"><b>Último voo:</b> ${esc(String(D.alvo).slice(0,100))} — ${esc(D.qualidade||"")} ${D.comprovados??""}/${D.total??""}</div>`:""); const ini=u.em&&u.segundos?new Date(new Date(u.em)-u.segundos*1000).toISOString():null;
@@ -3906,6 +3907,8 @@ window.htmlInterceptadorAgora=function(V){
     ${(V.passos||[]).length?`<ol class="int-passos">${V.passos.map(s=>`<li><span class=meta>${esc(horaMin(s.em).slice(6))}</span> <b>${esc(s.etapa)}</b>${s.detalhe?` — ${esc(String(s.detalhe).slice(0,150))}`:""}</li>`).join("")}</ol>`:""}</div>`;
 };
 setInterval(()=>{ try{ lerInterceptadorVivo(); }catch(e){} }, 15000);
+window._ACHADOS=null;
+(async()=>{ try{ const r=await fetch("dados/achados_motores.json?v="+Date.now()); if(r.ok){ window._ACHADOS=await r.json(); if(window.desenhaMotores) desenhaMotores(); } }catch(e){} })();
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição

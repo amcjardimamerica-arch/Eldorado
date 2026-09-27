@@ -248,6 +248,7 @@ jobs:
           timeout 300 python -m src.dashboard_dados || true
           # 1) guarda o que o Piloto produziu
           BASE_DO_VOO=$(git rev-parse HEAD)          # onde a cópia do voo começou
+          rm -rf docs/dados/dados                    # 27/09: pasta aninhada de 22/09 (220 MB) — nunca mais volta
           rm -rf /tmp/sind && mkdir -p /tmp/sind
           for P in estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
             # cp -r PASTA DESTINO copia PARA DENTRO quando o destino ja existe (gerava docs/dados/dados).
