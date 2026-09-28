@@ -1,22 +1,17 @@
-# Pacote do conselho — validação do Claude (2026-09-27, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-09-28, últimos 3 dias)
 
 Piloto: modelo **qwen3-8b**. Ao responder, o Claude anota o modelo com que trabalhou.
 
 ## O que o Piloto fez
 
-- 2026-09-24T22:51 — Esquadrilha 2026-09-24 (Qwen3-1.7B): 1 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 0.6 min de voo.
 - 2026-09-25T23:47 — Esquadrilha 2026-09-25 (Qwen3-1.7B): 8 missão(ões) — 0 alvo(s) novo(s) abatido(s), 7 proposta(s) ao todo, 10.4 min de voo.
 - 2026-09-26T23:58 — Esquadrilha 2026-09-26 (Qwen3-8B): 7 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 4.4 min de voo.
-- 2026-09-27T21:22 — Esquadrilha 2026-09-27 (Qwen3-8B): 7 missão(ões) — 1 alvo(s) novo(s) abatido(s), 1 proposta(s) ao todo, 2.5 min de voo.
+- 2026-09-27T23:59 — Esquadrilha 2026-09-27 (Qwen3-8B): 7 missão(ões) — 1 alvo(s) novo(s) abatido(s), 1 proposta(s) ao todo, 4.2 min de voo.
+- 2026-09-28T14:11 — Esquadrilha 2026-09-28 (Qwen3-8B): 7 missão(ões) — 1 alvo(s) novo(s) abatido(s), 1 proposta(s) ao todo, 4.7 min de voo.
 
-## Relatório de aprendizado e bloqueios (6)
+## Relatório de aprendizado e bloqueios (0)
 
-- 2026-09-24T14:38 · nível — · **missao** — tentou: afiar_motor · impediu: NameError: name 'url' is not defined · aprendeu: revisar prompt/esquema
-- 2026-09-24T14:40 · nível — · **missao** — tentou: cacar_oportunidade · impediu: NameError: name 'url' is not defined · aprendeu: revisar prompt/esquema
-- 2026-09-24T14:51 · nível — · **missao** — tentou: afiar_motor · impediu: NameError: name 'url' is not defined · aprendeu: revisar prompt/esquema
-- 2026-09-24T14:53 · nível — · **missao** — tentou: cacar_oportunidade · impediu: NameError: name 'url' is not defined · aprendeu: revisar prompt/esquema
-- 2026-09-24T15:04 · nível — · **missao** — tentou: afiar_motor · impediu: NameError: name 'url' is not defined · aprendeu: revisar prompt/esquema
-- 2026-09-24T15:06 · nível — · **missao** — tentou: cacar_oportunidade · impediu: NameError: name 'url' is not defined · aprendeu: revisar prompt/esquema
+- nenhum bloqueio registrado
 
 ## Pesquisas autônomas do nível 3 (0)
 
