@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T07:14:46+00:00",
+  "em": "2026-09-28T07:30:42+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T06:59:09+00:00",
+  "ultimo_voo": "2026-09-28T07:16:02+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -32,26 +32,103 @@
   },
   "fila": {
     "editais novos dos motores": 3,
-    "indícios do Espião": 17,
+    "indícios do Espião": 18,
     "abertos com itens em falta": 4,
-    "empresas sem ficha": 40
+    "empresas sem ficha": 42
   },
   "acumulado": {
-    "missoes": 206,
+    "missoes": 207,
     "validadas": 13,
     "parciais": 61,
-    "insuficientes": 81,
+    "insuficientes": 82,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 124,
+      "sim": 125,
       "nao": 14
     },
     "estrelas_de_ouro": 9,
     "fontes_novas_para_os_motores": 47,
-    "tempo_medio_min": 8.4
+    "tempo_medio_min": 8.5
   },
   "missoes": [
+    {
+      "em": "2026-09-28T07:16:02+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · SE (sorteio)",
+      "alvo": "Diário Oficial de Muribeca (SE) 2026-08-04 — \"edital de chamamento público\" associação",
+      "qualidade": "insuficiente",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprovado menciona o objeto e o financiador, indicando que é uma fonte válida para ações relacionadas a projetos culturais.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é a seleção de projetos culturais, e verificar se sua proposta se enquadra na área de atuação cultural, mesmo que o edital seja municipal e não esteja disponível para outros territórios.",
+        "proximo_passo": "Verificar se há possibilidade de aliança ou parceria com entidades locais em Muribeca para acessar o edital.",
+        "risco": "O edital é municipal e específico para Muribeca, o que pode impedir que uma associação de Goiânia participe diretamente."
+      },
+      "erro": null,
+      "segundos": 880,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "89678b5ec4c4ea5cf956",
+      "encontrou": {
+        "Objeto": {
+          "valor": "seleção de projetos culturais para celebração de Termo de Execução Cultural com recursos da Política Nacional Aldir Blanc (PNAB)",
+          "trecho": "seleção de projetos culturais para celebração de Termo de Execução Cultural com recursos da Política Nacional Aldir Blanc (PNAB)",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "PREFEITURA MUNICIPAL DE MURIBECA",
+          "trecho": "PREFEITURA MUNICIPAL DE MURIBECA",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SE",
+          "trecho": "MUNICÍPIO",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "seleção de projetos culturais",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "PREFEITURA MUNICIPAL DE MURIBECA",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/2804300/2026-08-04/948afca6fa916b8a29f2629ffbaafc7e7719fefd.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-09-28T06:59:09+00:00",
       "modo": "validar",
@@ -2682,52 +2759,6 @@
           "dispensado": false
         }
       },
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-09-27T21:32:12+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "edital novo dos motores",
-      "alvo": "O Brasil é a nossa Energia | Petrobras",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Território",
-        "Esfera",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://nossaenergia.petrobras.com.br/",
-      "parecer_fonte": {
-        "serve_como_fonte": "nao",
-        "por_que": "Não há informações comprovadas sobre o edital mencionado.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar se há editais específicos para sua área de atuação e se preencher os requisitos exigidos.",
-        "proximo_passo": "Consultar editais oficiais da Petrobras ou órgãos de fomento para organizações da sociedade civil.",
-        "risco": "A falta de informações específicas pode impedir o acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 739,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "dd5094ec4175dcf4d093",
-      "encontrou": {},
       "financiador": null,
       "indicios": [],
       "rotas": []
