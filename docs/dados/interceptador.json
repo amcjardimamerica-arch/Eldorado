@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T08:27:04+00:00",
+  "em": "2026-09-28T08:39:21+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T08:08:36+00:00",
+  "ultimo_voo": "2026-09-28T08:28:31+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -32,26 +32,88 @@
   },
   "fila": {
     "editais novos dos motores": 3,
-    "indícios do Espião": 17,
+    "indícios do Espião": 16,
     "abertos com itens em falta": 4,
-    "empresas sem ficha": 45
+    "empresas sem ficha": 48
   },
   "acumulado": {
-    "missoes": 211,
+    "missoes": 212,
     "validadas": 14,
     "parciais": 62,
-    "insuficientes": 84,
+    "insuficientes": 85,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 128,
+      "sim": 129,
       "nao": 15
     },
     "estrelas_de_ouro": 9,
-    "fontes_novas_para_os_motores": 48,
+    "fontes_novas_para_os_motores": 49,
     "tempo_medio_min": 8.5
   },
   "missoes": [
+    {
+      "em": "2026-09-28T08:28:31+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · nacional (sorteio)",
+      "alvo": "📄 Edital nº 001/2026 – Doação de Bens Móveis SENAR/AR-GO",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://faespsenar.com.br/edital-no-001-2026-processo-seletivo-senar-sao-paulo/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre Território, Esfera, Requisitos e Anexos, o que permite identificar a fonte e os critérios de participação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se possui parceiros/instrutores regularmente vinculados ao Sistema FAESP/SENAR-SP e garantir que todos os requisitos do edital sejam atendidos.",
+        "proximo_passo": "Consultar os anexos do edital para obter detalhes completos sobre os requisitos e procedimentos de inscrição.",
+        "risco": "A falta de parceiros/instrutores vinculados ao Sistema FAESP/SENAR-SP pode impedir o acesso ao edital."
+      },
+      "erro": null,
+      "segundos": 650,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 4,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "cat-df63255f78d5",
+      "encontrou": {
+        "Território": {
+          "valor": "SP",
+          "trecho": "SENAR/SP",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "Parceiros/instrutores regularmente vinculados ao Sistema FAESP/SENAR-SP",
+          "trecho": "parceiros/instrutores regularmente vinculados ao Sistema FAESP/SENAR-SP",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "SENAR/AR-GO",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-28T08:08:36+00:00",
       "modo": "validar",
@@ -2845,88 +2907,6 @@
         "financiador_ano",
         "governo",
         "parceiro"
-      ]
-    },
-    {
-      "em": "2026-09-27T22:22:27+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "mapa · Goiás (prioridade)",
-      "alvo": "3ª Alteração do Cronograma, “Tabela 2”, item “11.1” referente ao EDITAL DE CHAMAMENTO PÚBLICO Nº 02/2026 – SECULT/GO",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona o objeto do edital, que é a seleção de uma OSC para executar o Circuito das Cavalhadas 2026, o que é relevante para a AMC.",
-        "para_a_amc": "A associação comunitária de Goiânia precisa se qualificar como Organização da Sociedade Civil (OSC) e demonstrar capacidade de executar o Circuito das Cavalhadas 2026, conforme o objeto do edital.",
-        "proximo_passo": "Verificar os anexos mencionados e se candidatar ao edital, caso esteja elegível.",
-        "risco": "A falta de informações sobre prazo de inscrição e outros detalhes pode impedir a participação da AMC no processo seletivo."
-      },
-      "erro": null,
-      "segundos": 517,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "fa6210416fca8e60c5dd",
-      "encontrou": {
-        "Objeto": {
-          "valor": "selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026",
-          "trecho": "selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "SECRETARIA DE ESTADO DA CULTURA",
-          "trecho": "SECRETARIA DE ESTADO DA CULTURA",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "ESTADO DE GOIÁS",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · convenio",
-          "trecho": "selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Organização da Sociedade Civil (OSC)",
-          "trecho": "selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "SECRETARIA DE ESTADO DA CULTURA",
-      "indicios": [
-        {
-          "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/04/diario_oficial_2026_04_07_completo.pdf",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ]
