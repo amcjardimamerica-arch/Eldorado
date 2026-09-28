@@ -117,6 +117,9 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertEqual(len(re.findall(r"^function desenhaGantt\(", h, re.M)), 1)
         self.assertEqual(len(re.findall(r"^function desenhaRadar\(", h, re.M)), 1)
         self.assertIn("CALENDÁRIO COMPLETO, DIA A DIA (titular, 28/09)", h)
+        cal = h[h.index("CALENDÁRIO COMPLETO, DIA A DIA (titular, 28/09)"):h.index("function corTexto(hex){")]
+        self.assertNotIn("ver todas", cal, "o calendário não pode esconder oportunidade")
+        self.assertIn("cv-vaga", cal, "cada oportunidade precisa de linha fixa (vaga vazia nos dias em que não está aberta)")
         F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
         em = [x for x in F.get("calendario", []) if "Emenda Parlamentar" in x.get("titulo", "")]
         self.assertGreaterEqual(len(em), 3, "emendas parlamentares fora do calendário")
