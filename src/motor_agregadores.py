@@ -80,21 +80,30 @@ def _prazo(texto: str) -> str | None:
     return None
 
 
-def _oficial(pagina: str, links: list) -> str | None:
+def _oficial(pagina: str, links: list, titulo: str = "") -> str | None:
+    """O link da FONTE OFICIAL do edital. Lei citada no texto (planalto, lexml, diários de legislação) não é fonte do
+    edital; ganha quem tem sinal de edital e, sobretudo, o domínio do órgão que aparece no título (Itapajé → itapaje.ce.gov.br)."""
+    import unicodedata
     from .sites_oficiais import e_republicador
+    sem = lambda x: "".join(c for c in unicodedata.normalize("NFKD", x.lower()) if not unicodedata.combining(c))
+    toks = [w for w in re.findall(r"[a-z]{5,}", sem(titulo)) if w not in {"edital", "publico", "chamamento", "selecao", "credenciamento", "organizacoes", "sociedade", "projetos", "recursos", "captar"}]
     host = urlsplit(pagina).hostname
     cands = []
-    for h, t in links:
+    for ordem, (h, t) in enumerate(links):
         s = urljoin(pagina, h or "")
-        if not s.startswith("http") or urlsplit(s).hostname in (host, None) or e_republicador(s):
+        hs = (urlsplit(s).hostname or "")
+        if not s.startswith("http") or hs in (host, "") or e_republicador(s):
             continue
         if re.search(r"facebook|instagram|linkedin|twitter|whatsapp|youtube|wa\.me|google|apple|t\.me", s):
             continue
-        pts = (3 if re.search(r"edital|inscri|regulamento|chamad|\.pdf|pncp\.gov\.br/app/editais", s + " " + t, re.I) else 0) + \
-              (2 if re.search(r"\.gov\.br|\.leg\.br|\.jus\.br|\.org\.br", s) else 0)
+        if re.search(r"planalto\.gov\.br|/ccivil|lexml|legislacao|normas\.leg|jusbrasil|/leis?/|lei-?\d", s, re.I):
+            continue                                            # lei citada não é a fonte do edital
+        pts = (3 if re.search(r"edital|inscri|regulamento|chamad|oportunidade|\.pdf|pncp\.gov\.br/app/editais|mapacultural|prosas", s + " " + t, re.I) else 0) + \
+              (2 if re.search(r"\.gov\.br|\.leg\.br|\.jus\.br|\.org\.br|\.gov\.|\.org", s) else 0) + \
+              (4 if any(w in sem(hs) for w in toks) else 0)
         if pts:
-            cands.append((pts, s))
-    return sorted(cands, reverse=True)[0][1] if cands else None
+            cands.append((pts, -ordem, s))
+    return sorted(cands, reverse=True)[0][2] if cands else None
 
 
 def _uf(texto: str) -> str | None:
@@ -120,11 +129,11 @@ def _ler_listagem(f: dict, maximo: int = 40) -> list[dict]:
     for u in list(vistos)[:maximo]:
         html = _get(u); p = _P(); p.feed(html)
         texto = " ".join(p.texto)
-        titulo = p.titulo or ""
+        titulo = re.sub(r"\s*[·|–-]\s*(CapitaAI|Capitaai|Farol Cultural|FAROL|IDIS)[^·|]*$", "", p.titulo or "").strip()   # sem o nome do site
         if len(titulo.split()) < 3 or not EDITAL.search(titulo + " " + texto[:3000]):
             continue
         itens.append({"id": "agr-" + hashlib.sha1(u.encode()).hexdigest()[:12], "fonte": f["id"], "titulo": titulo,
-                      "pagina_agregador": u, "link_oficial": _oficial(u, p.l), "prazo": _prazo(texto),
+                      "pagina_agregador": u, "link_oficial": _oficial(u, p.l, titulo), "prazo": _prazo(texto),
                       "uf": _uf(titulo) or _uf(texto[:1500]), "visto_em": date.today().isoformat()})
         time.sleep(1)
     return itens
@@ -139,7 +148,7 @@ def _ler_rss(f: dict) -> list[dict]:
             continue
         html = _get(link); p = _P(); p.feed(html)
         itens.append({"id": "agr-" + hashlib.sha1(link.encode()).hexdigest()[:12], "fonte": f["id"], "titulo": tit[:200],
-                      "pagina_agregador": link, "link_oficial": _oficial(link, p.l), "prazo": _prazo(" ".join(p.texto)),
+                      "pagina_agregador": link, "link_oficial": _oficial(link, p.l, tit), "prazo": _prazo(" ".join(p.texto)),
                       "uf": _uf(tit), "visto_em": date.today().isoformat()})
         time.sleep(1)
     return itens
@@ -159,7 +168,7 @@ def rodar() -> dict:
             rel[f["id"]] = {"erro": f"{type(e).__name__}"}; continue
         for x in novos:
             x["primeiro_visto"] = (ant.get(x["id"]) or {}).get("primeiro_visto") or x["visto_em"]
-            ant[x["id"]] = {**(ant.get(x["id"]) or {}), **{k: v for k, v in x.items() if v}}
+            ant[x["id"]] = {**(ant.get(x["id"]) or {}), **{k: v for k, v in x.items() if v}, "link_oficial": x.get("link_oficial"), "titulo": x.get("titulo")}
         rel[f["id"]] = {"lidos": len(novos), "com_link_oficial": sum(1 for x in novos if x.get("link_oficial")),
                         "com_prazo": sum(1 for x in novos if x.get("prazo"))}
     hoje = date.today().isoformat()
