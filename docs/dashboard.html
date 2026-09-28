@@ -412,6 +412,7 @@ box-shadow:0 1px 3px #0002}
 .gc-b.continuo{background:#E3F2E8;color:#1E7E4B;box-shadow:none;border:1px solid #8FC9A3}
 .gc-hoje{position:absolute;top:-2px;bottom:-2px;width:2px;background:#0E2A55;opacity:.7}
 .gc-b-leg{display:inline-block;width:22px;height:10px;border-radius:5px;background:#1E7E4B;vertical-align:-1px}.gc-b-leg.sem-ini{background:repeating-linear-gradient(45deg,#1E7E4B 0,#1E7E4B 4px,#2E9460 4px,#2E9460 8px)}
+.mt-ach-op{display:block;font-size:10.5px;color:#1E7E4B}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -3219,13 +3220,16 @@ function achadosDoMotor(o){
       ${L.map(e=>`<div class="mt-ach"><span class="pt" style="background:#0B4EA2"></span>${e.url?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" title="${esc(e.motivo||"")}">${esc((e.nome||"").slice(0,54))}</a>`:esc((e.nome||"").slice(0,54))}<small>${e.score!=null?"score "+e.score:""}${e.classe?" · "+esc(e.classe):""}</small></div>`).join("")}</div>`;}
   // 27/09 (titular): oportunidades DIFERENTES do motor (sem repetição), as 5 mais recentes pela data de publicação
   // original — montadas no servidor (dados/achados_motores.json). O indicador aparece em todo motor.
-  const A=((window._ACHADOS||{}).motores||{})[o.id];
-  if(!A) return `<div class="mt-achados"><b>Oportunidades encontradas</b> <span class=meta>· carregando…</span></div>`;
+  const _AM=((window._ACHADOS||{}).motores||{});
+  const A=_AM[o.id]||_AM["plat-"+o.id]||_AM[String(o.id).replace(/^plat-/,"")];
+  if(!window._ACHADOS) return `<div class="mt-achados"><b>Oportunidades encontradas</b> <span class=meta>· carregando…</span></div>`;
+  if(!A) return `<div class="mt-achados"><b>0 oportunidades encontradas</b> <span class=meta>· nenhuma oportunidade reconhecida nesta fonte até agora</span></div>`;
   if(!A.total_unicas) return `<div class="mt-achados"><b>0 oportunidades encontradas</b> <span class=meta>· nenhuma oportunidade reconhecida nesta fonte até agora</span></div>`;
   return `<div class="mt-achados"><b>${A.total_unicas} oportunidade(s) encontrada(s)</b>${A.total_registros>A.total_unicas?` <span class=meta>(${A.total_registros} registros, sem repetição)</span>`:""} — ${Math.min(5,A.ultimas.length)} mais recente(s):
     ${A.ultimas.map(e=>`<div class="mt-ach"><span class="pt nv"></span>
         ${e.url?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,64))}</a>`:`<span>${esc((e.titulo||"").slice(0,64))}</span>`}
-        <small>${e.publicado_em?"publicado em "+br(e.publicado_em):"visto em "+br(e.visto_em||"")}${e.prazo?" · inscrições até "+br(e.prazo):""}${e.uf?" · "+esc(e.uf):""}</small></div>`).join("")}</div>`;
+        <small>${e.publicado_em?"publicado em "+br(e.publicado_em):"visto em "+br(e.visto_em||"")}${e.prazo?" · inscrições até "+br(e.prazo):""}${e.uf?" · "+esc(e.uf):""}</small>
+        <small class="mt-ach-op">${e.opressor&&e.opressor.id?`motor opressor <b>${esc(e.opressor.id)}</b>${e.opressor.ligado?" · ligado":" · desligado"}`:esc((e.opressor||{}).estado||"")}${e.site_oficial?` · <a href="${esc(e.site_oficial)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:" · site oficial ainda não identificado"}</small></div>`).join("")}</div>`;
 }
 /* código vizinho que saiu junto com o ranking antigo — devolvido ao lugar */
 /* ================= DOCUMENTOS DAS ASSOCIAÇÕES ================= */
@@ -4320,7 +4324,7 @@ function desenhaMotores(){
         <div class=n>${dt.getDate()}<span class=sem>${SEMd[dt.getDay()]}</span></div>
         <div class="s">${x.cor==="amarelo"?"Parcial":x.cor==="verde"?"12 itens":x.cor==="azul"?"Sem oport.":x.cor==="vermelho"?"Falha":x.cor==="futuro"?"—":"Não exec."}</div>
         ${x.t?`<div class=mt-trecho title="${esc(x.t)}">${esc(x.t.slice(0,26))}…</div>`:""}</div>`;}).join("")}</div>
-    ${dias.filter(x=>x.t).slice(-3).map(x=>`<div class=meta>· ${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} — ${x.u?`<a href="${esc(x.u)}" target=_blank rel="noopener noreferrer">${esc(x.t)}</a>`:esc(x.t)}</div>`).join("")}`;};
+    `;};   /* 28/09 (titular): as "últimas 3" por dia repetiam a mesma oportunidade — a lista única fica em "Oportunidades encontradas" */
   const trintaDias=calendarioMotor;
   ofRows.sort((a,b)=>(a.rank||99)-(b.rank||99));
   const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Motores regulares <span class=meta>${ofRows.length} · numerados: diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado</span></div>

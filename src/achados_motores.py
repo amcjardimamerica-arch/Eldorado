@@ -56,10 +56,45 @@ def montar() -> dict:
         if fi.get("id") and _data(fi.get("data_publicacao"), fi.get("publicado_em")):
             pub_ficha[fi["id"]] = _data(fi.get("data_publicacao"), fi.get("publicado_em"))
     ext = ROOT / "dados/editais/extraidos"
+    # OPRESSOR E SITE OFICIAL DE CADA OPORTUNIDADE (28/09): onde a informação fica guardada e onde ela nasce
+    from .sites_oficiais import e_republicador
+    cat = json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8")).get("motores", []) if (ROOT / "biblioteca_alexandria/fontes/motores.json").exists() else []
+    lig = (json.loads((ROOT / "estado/opressores.json").read_text(encoding="utf-8")) or {}).get("ligados", {}) if (ROOT / "estado/opressores.json").exists() else {}
+    opr_u = {_norm_url(x.get("pagina")): x for x in cat if x.get("pagina")}
+    opr_t = {_norm_tit(x.get("programa")): x for x in cat}
+    try:
+        from .validacao_mapa import carregar as _valc
+        VAL = _valc()
+    except Exception:
+        VAL = {}
+    try:
+        FX = {x["id"]: x for v in (json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8")).get("itens_por_uf") or {}).values() for x in v}
+    except Exception:
+        FX = {}
+    # O QUE O PRÓPRIO MOTOR VIU (28/09): o registro de uma oportunidade fica em nome de quem a catalogou primeiro; o motor
+    # do Goiás Social viu o edital do Auxílio Nutricional 3 dias seguidos, mas o registro é do FEAS-GO. A lista do motor
+    # junta o que é dele no registro E o que ele leu nos seus dias (d, t, u) — cada oportunidade uma vez.
+    viu = {}
+    try:
+        MJ = json.loads((ROOT / "docs/dados/motores.json").read_text(encoding="utf-8"))
+        por_url = {_norm_url(r.get("url")): r for r in regs if r.get("url")}
+        por_tit = {_norm_tit(r.get("titulo")): r for r in regs if r.get("titulo")}
+        for p in (MJ.get("plataformas") or []) + (MJ.get("oficiais") or []):
+            for dd in p.get("dias") or []:
+                if not dd.get("t"):
+                    continue
+                r0 = por_url.get(_norm_url(dd.get("u"))) or por_tit.get(_norm_tit(dd.get("t"))) or {}
+                viu.setdefault(str(p.get("id")), []).append({**r0, "id": r0.get("id") or ("visto-" + _norm_url(dd.get("u"))[:40]),
+                                                             "titulo": r0.get("titulo") or dd["t"], "url": r0.get("url") or dd.get("u"),
+                                                             "descoberto_em": r0.get("descoberto_em") or dd.get("d")})
+    except Exception:
+        pass
     out = {}
     for mid in motores:
         ids = {mid, mid.replace("plat-", "")} | ALIAS.get(mid, set())
         xs = [r for r in regs if r.get("fonte_id") in ids]
+        for k in ids:
+            xs += viu.get(k, [])
         if mid == "do-goiania":
             xs = [r for r in regs if r.get("fonte_id") == "querido-diario" and "goiânia" in str(r.get("titulo", "")).lower()]
         vistos_t, vistos_u, unicas = set(), set(), []
@@ -79,7 +114,21 @@ def montar() -> dict:
             except Exception:
                 pass
             ve = e.get("verificacao_externa") if isinstance(e.get("verificacao_externa"), dict) else {}
+            v = VAL.get(r.get("id")) or {}; fx = FX.get(r.get("id")) or {}
+            of = next((u for u in (v.get("fonte_oficial"), fx.get("link_oficial"), ve.get("pagina_oficial"), e.get("pagina_oficial"))
+                       if isinstance(u, str) and u.startswith("http") and not e_republicador(u)), None)
+            o = opr_u.get(_norm_url(of)) or opr_u.get(ku) or opr_t.get(kt)
+            dec = v.get("decisao")
+            if o:
+                opr = {"id": o["id"], "ligado": o["id"] in lig, "estado": "informação guardada no opressor"}
+            elif dec in ("descartada", "arquivada_encerrada"):
+                opr = {"id": None, "estado": ("encerrada — vai para a Biblioteca" if dec == "arquivada_encerrada" else "descartada") + f": {str(v.get('motivo') or '')[:90]}"}
+            elif fx:
+                opr = {"id": None, "estado": "opressor será criado no próximo ciclo do fluxo"}
+            else:
+                opr = {"id": None, "estado": "fora da janela das possíveis (mais de 60 dias sem prazo)"}
             unicas.append({"id": r.get("id"), "titulo": re.sub(r"(?i)^continue lendo\s+", "", tit)[:160],
+                           "site_oficial": of, "opressor": opr, "decisao": dec,
                            "url": ve.get("pagina_oficial") or e.get("pagina_oficial") or r.get("url"),
                            "publicado_em": r["_pub"], "visto_em": None if r["_pub"] else _data(r.get("descoberto_em"), r.get("coletado_em")),
                            "prazo": _data(r.get("fim"), ve.get("prazo"), e.get("fim")), "uf": r.get("uf")})

@@ -87,6 +87,18 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertIn("docs/dashboard.html", y)
         json.loads((ROOT / "config/regra_maxima.json").read_text(encoding="utf-8"))
 
+    def test_motor_mostra_cada_oportunidade_uma_vez(self):
+        """28/09: abaixo do motor, a mesma oportunidade aparecia uma vez por dia; e o indicador ficava em 'carregando…'."""
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertNotIn("dias.filter(x=>x.t).slice(-3)", h)
+        self.assertIn('_AM["plat-"+o.id]', h)
+        A = json.loads((ROOT / "docs/dados/achados_motores.json").read_text(encoding="utf-8"))["motores"]
+        for mid, x in A.items():
+            tits = [re.sub(r"[^a-z0-9]", "", e["titulo"].lower())[:60] for e in x.get("ultimas", [])]
+            self.assertEqual(len(tits), len(set(tits)), f"{mid} repete oportunidade")
+            for e in x.get("ultimas", []):
+                self.assertIn("opressor", e, f"{mid}: oportunidade sem destino de opressor")
+
 
 if __name__ == "__main__":
     unittest.main()

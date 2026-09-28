@@ -222,6 +222,10 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
         # só vira opressor o que tem CARA DE OPORTUNIDADE — não notícia, não dispensa de chamamento
         cara = re.search(r"edital|chamad|chamamento|pr[eê]mio|sele[cç][aã]o|fundo|inscri[cç]|apoio a projetos|patroc", it["titulo"], re.I) \
                and not re.match(r"(?i)(dispensa|extrato|homologa|resultado|termo aditivo|inexigibilidade)", it["titulo"])
+        # oportunidade VALIDADA ganha opressor mesmo com título de notícia (ex.: o credenciamento do Goiás Social)
+        if (it.get("validacao") or {}).get("decisao") in ("valida_aberta", "valida_fora_abrangencia"):
+            cara = True
+            pagina = it.get("link_oficial") or pagina; ku = _nu(pagina)
         if pagina and cara and ku not in cobertos_u and kt not in cobertos_t:
             oid = "nova-" + hashlib.sha1(ku.encode()).hexdigest()[:12]
             C.setdefault("motores", []).append({"id": oid, "programa": it["titulo"][:160], "orgao": it.get("orgao") or "", "motor": "f260-" + oid,

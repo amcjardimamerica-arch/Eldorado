@@ -98,8 +98,9 @@ jobs:
             [ -d /tmp/int/interceptador ] && { rm -rf estado/interceptador; cp -r /tmp/int/interceptador estado/interceptador; }
             cp -r /tmp/int/dados /tmp/int/biblioteca_alexandria /tmp/int/docs . 2>/dev/null || true
             timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa (curadoria + validação + fluxo): falhou"
+            timeout 120 python -m src.achados_motores >/dev/null 2>&1 || echo "oportunidades por motor: falhou"   # lista única de cada motor, a cada pouso
             GITHUB_TOKEN="${{ github.token }}" timeout 120 python -m src.saude >/dev/null 2>&1 || echo "saúde: falhou"
-            git add -A docs/dados/interceptador.json estado/interceptador estado/piloto/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json docs/dados/fluxo_oportunidades.json docs/dados/saude.json docs/dados/validacao_motores.json biblioteca_alexandria/fontes/motores.json biblioteca_alexandria/base/preditivo estado/opressores.json dados/editais/arquivados.json
+            git add -A docs/dados/interceptador.json estado/interceptador estado/piloto/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json docs/dados/fluxo_oportunidades.json docs/dados/saude.json docs/dados/validacao_motores.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json biblioteca_alexandria/base/preditivo estado/opressores.json dados/editais/arquivados.json
             git commit -q -m "interceptador: voo $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; ENVIADO=1; break; }
             if git push -q origin main; then echo "gravado ($i)"; ENVIADO=1; break; fi
             sleep $((i * 5))
