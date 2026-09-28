@@ -440,6 +440,13 @@ box-shadow:0 1px 3px #0002}
 #mt-lista .mt-ach .pt{margin-top:5px}#mt-lista .mt-ach>a,#mt-lista .mt-ach>span:not(.pt){grid-column:2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
 #mt-lista .mt-ach>small{grid-column:2;display:block;text-align:left;white-space:normal;overflow-wrap:anywhere;word-break:break-word;color:var(--suave);font-size:10.5px;line-height:1.35;min-width:0}
 #mt-lista .mt-ach>small.mt-ach-op{color:#1E7E4B}#mt-lista .mt-ach>small a{white-space:nowrap}
+.oa-sec{margin:14px 0 6px}.oa-sec-t{display:flex;align-items:center;gap:8px;font-weight:800;color:#23272E;font-size:14px;padding:6px 10px;border-radius:8px;background:color-mix(in srgb,var(--c) 10%,#fff);border-left:5px solid var(--c);margin-bottom:8px}
+.oa-sec-t i{width:11px;height:11px;border-radius:50%;background:var(--c);display:inline-block}.oa-sec-t span{font-weight:500;font-size:11.5px;color:var(--suave)}
+.oa-kt{margin-bottom:4px}.oa-kl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 8px}
+.oa-ki{font-size:10.5px;line-height:1.5;display:flex;align-items:center;gap:4px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:help}
+.oa-ki i{font-style:normal;width:14px;height:14px;line-height:14px;text-align:center;border-radius:4px;font-size:9.5px;font-weight:800;flex:0 0 14px}
+.oa-ki.ok i{background:#1E7E4B;color:#fff}.oa-ki.val i{background:#8FC9A3;color:#fff}.oa-ki.disp i{background:#2F79D0;color:#fff}
+.oa-ki.falta i{background:#FBE3E1;color:#B3261E}.oa-ki.falta{color:#8A2A22}.oa-ki.pend i{background:#EEF1F4;color:#9AA5B1}.oa-ki.pend{color:#9AA5B1}
 .oa-cab{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.oa-fil{display:flex;gap:6px;flex-wrap:wrap}
 .oa-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px}
 .oa-c{border:1px solid #E6EAF0;border-top:4px solid var(--c);border-radius:10px;padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:5px;min-width:0;font-size:12.5px}
@@ -2167,9 +2174,9 @@ function desenhaRadar(){
    Cada dia mostra as inscrições ABERTAS naquele dia (do início ao fim da inscrição), lidas do fluxo validado — o mesmo
    do mapa, do Radar e do calendário da página inicial. ▲ = abre neste dia · ■ = último dia. Cada item abre o SITE
    OFICIAL. Fluxo contínuo fica numa faixa própria acima da grade. Emendas parlamentares (01/10–30/11) incluídas. */
-const COR_AREA={cultura:"#D63A6B",esporte:"#7CB518",saude:"#2F79D0",crianca:"#E0A100",idoso:"#8C6D3F",assistencia:"#12A5B5",ambiente:"#7B4FE0",educacao:"#2E9D5B",emendas:"#B8860B",outras:"#7C8899"};
-const NOME_AREA={cultura:"Cultura",esporte:"Esporte e lazer",saude:"Saúde",crianca:"Criança e adolescente",idoso:"Pessoa idosa",assistencia:"Assistência social",ambiente:"Meio ambiente e clima",educacao:"Educação",emendas:"Emendas parlamentares",outras:"Outras"};
-const areaCal=x=>(/emenda parlamentar/i.test(x.titulo||"")||/emendas/.test(x.origem||""))?"emendas":areaRadar(x);
+const COR_AREA={diario:"#5B6B82",cultura:"#D63A6B",esporte:"#7CB518",saude:"#2F79D0",crianca:"#E0A100",idoso:"#8C6D3F",assistencia:"#12A5B5",ambiente:"#7B4FE0",educacao:"#2E9D5B",emendas:"#B8860B",outras:"#7C8899"};
+const NOME_AREA={cultura:"Cultura",esporte:"Esporte e lazer",saude:"Saúde",crianca:"Criança e adolescente",idoso:"Pessoa idosa",assistencia:"Assistência social",ambiente:"Meio ambiente e clima",educacao:"Educação",emendas:"Emendas parlamentares",diario:"Chamamentos em diário oficial — tema a identificar",outras:"Outras"};
+const areaCal=x=>x.area||((/emenda parlamentar/i.test(x.titulo||"")||/emendas/.test(x.origem||""))?"emendas":areaRadar(x));   // 28/09: tema do servidor primeiro
 function desenhaCal(){
   if(calAno==null){calAno=HOJE.getFullYear();calMes=HOJE.getMonth();}
   const MES_=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
@@ -4360,8 +4367,12 @@ function desenhaAbertasFluxo(){
       <div class="oa-l"><span class="oa-p${x.confirmada?" ok":""}">${x.fim?"inscrições até "+br(x.fim):x.confirmada?"fluxo contínuo":"prazo a confirmar"}</span>
         ${u?`<span class="oa-s${of?" ok":""}">${of?"site oficial ✓":"indício — site oficial em busca"}</span>`:""}</div>
       ${x.objeto?`<div class="oa-o" title="${esc(x.objeto)}">${esc(String(x.objeto).slice(0,180))}</div>`:""}
-      <div class="oa-k">${C?`<b>${C.comprovadas}</b> condição(ões) comprovada(s) · <b>${C.dispensadas}</b> dispensada(s) pelo edital${(C.faltam||[]).length?` · faltam: ${esc(C.faltam.slice(0,5).join(", "))}${C.faltam.length>5?"…":""}`:""}`:`condições ainda não estudadas — na fila do Interceptador${x._uf==="GO"?" (Goiás tem prioridade)":""}`}
-        ${I?`<br><span class=meta>estudada pelo Interceptador em ${esc(I.em.slice(8,10)+"/"+I.em.slice(5,7))}: ${esc(I.qualidade||"—")} ${I.comprovados??""}/12</span>`:""}</div>
+      <div class="oa-k">${(()=>{const K=x.checklist||{}; const ord=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
+          const n=s=>ord.filter(k=>(K[k]||{}).s===s).length; const feitos=n("ok")+n("disp")+n("val");
+          const SIM={ok:"✓",disp:"◐",val:"✓",falta:"✕",pend:"·"}, DIZ={ok:"comprovado na fonte, com trecho",disp:"dispensado pelo próprio edital",val:"confirmado na validação individual",falta:"estudado e ainda não encontrado",pend:"ainda não estudado pelo Interceptador"};
+          return `<div class="oa-kt"><b>Checklist ${feitos}/12</b> <span class=meta>${n("ok")} comprovado(s) · ${n("disp")} dispensado(s) · ${n("val")} da validação · ${n("falta")} em falta${n("pend")?` · ${n("pend")} a estudar`:""}</span></div>
+            <div class="oa-kl">${ord.map(k=>{const it=K[k]||{s:"pend"}; return `<span class="oa-ki ${it.s}" title="${esc(k)} — ${DIZ[it.s]}${it.v?": "+esc(it.v):""}${it.t?" · “"+esc(it.t)+"”":""}"><i>${SIM[it.s]}</i>${esc(k)}</span>`;}).join("")}</div>`;})()}
+        ${I?`<div class=meta style="margin-top:3px">estudada pelo Interceptador em ${esc(I.em.slice(8,10)+"/"+I.em.slice(5,7))}: ${esc(I.qualidade||"—")} ${I.comprovados??""}/12</div>`:`<div class=meta style="margin-top:3px">na fila do Interceptador${x._uf==="GO"?" (Goiás tem prioridade)":""}</div>`}</div>
       <div class="oa-r">${x.opressor?`motor opressor <b>${esc(x.opressor)}</b>${x.opressor_edicoes?` · ${x.opressor_edicoes} edição(ões) guardada(s)`:""}${x.opressor_previsao?` · próxima janela prevista: ${esc(x.opressor_previsao.proxima_janela)}`:""}`:x.opressor_dispensa?`sem motor opressor — ${esc(x.opressor_dispensa)}`:"motor opressor será criado no próximo ciclo"}</div>
     </div>`;};
   cx.innerHTML=`<div class="oa-cab"><div><b style="font-size:15px;color:#0E2A55">Oportunidades abertas</b>
@@ -4369,7 +4380,12 @@ function desenhaAbertasFluxo(){
     <div class="oa-fil">${sel("uf",[["",`Brasil (${todos.length})`],["__nac__",`Nacional (${nUF.__nac__||0})`],...Object.keys(nUF).filter(k=>k!=="__nac__").sort((a,b)=>a==="GO"?-1:b==="GO"?1:a.localeCompare(b)).map(k=>[k,`${k} (${nUF[k]})`])],f.uf)}
       ${sel("a",[["","todas as áreas"],...Object.keys(NOME_AREA).map(k=>[k,NOME_AREA[k]])],f.a)}
       ${sel("s",[["","todas"],["conf","com prazo e site oficial"],["verif","em verificação"]],f.s)}</div></div>
-    <div class="oa-g">${L.map(cartao).join("")||`<div class=meta style="padding:10px">nenhuma oportunidade neste recorte</div>`}</div>`;
+    ${(()=>{ const grupos={}; L.forEach(x=>{(grupos[areaCal(x)]=grupos[areaCal(x)]||[]).push(x);});
+        // temas identificados primeiro (os que têm mais oportunidades confirmadas à frente); depois "Outras"; diários por último
+        const peso=a=>a==="diario"?2:a==="outras"?1:0, conf=a=>grupos[a].filter(x=>x.confirmada).length;
+        const ordem=Object.keys(NOME_AREA).filter(a=>grupos[a]).sort((a,b)=>peso(a)-peso(b)||conf(b)-conf(a)||grupos[b].length-grupos[a].length);
+        return ordem.map(a=>`<div class="oa-sec" style="--c:${COR_AREA[a]}"><div class="oa-sec-t"><i></i>${NOME_AREA[a]} <span>${grupos[a].length} oportunidade(s) · ${grupos[a].filter(x=>x.confirmada).length} com prazo e site oficial</span></div>
+          <div class="oa-g">${grupos[a].map(cartao).join("")}</div></div>`).join("")||`<div class=meta style="padding:10px">nenhuma oportunidade neste recorte</div>`; })()}`;
 }
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);

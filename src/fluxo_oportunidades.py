@@ -33,6 +33,8 @@ EST_OPR = ROOT / "estado/opressores.json"
 PRED = ROOT / "biblioteca_alexandria/base/preditivo/oportunidades.jsonl"
 SAIDA = ROOT / "docs/dados/fluxo_oportunidades.json"
 AGREGADORES = re.compile(r"duckduckgo|bing\.com|google\.|queridodiario|captadores\.org|observatorio3setor|prosas\.com|filantropia\.ong|gife\.org|idis\.org|pncp\.gov\.br/app", re.I)
+CHECKLIST = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera",
+             "Requisitos", "Anexos", "Destinação", "Área de atuação"]
 UFS = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}
 
 
@@ -86,6 +88,26 @@ def _orgao_real(m: dict, e: dict) -> str | None:
     if re.search(r"(?i)idis|observat[oó]rio|captadores|abcr|filantropia|gife|prosas|piloto|espi[aã]o|interceptador|querido di[aá]rio|not[ií]cia", o):
         return None
     return o or None
+
+
+AREAS = [("emendas", r"emenda parlamentar"),
+         ("cultura", r"cultur|art[ií]st|\barte\b|artes|pnab|aldir|rouanet|cinema|m[uú]sica|teatro|patrim[oô]nio|leitura|audiovis|dan[cç]a|festival|museu|biblioteca|circo|artesan"),
+         ("esporte", r"esport|atleta|lazer|olimp|paral[ií]mp|futebol|jogos"),
+         ("saude", r"sa[uú]de|hospital|pronon|pronas|m[eé]dic|sus\b|oncol|defici[eê]ncia|reabilita|autis|tgd|intelectual"),
+         ("crianca", r"crian[cç]a|adolesc|inf[aâ]ncia|\bfia\b|juventude|jovens|\beca\b|conanda|cmdca"),
+         ("idoso", r"idos|envelhec|longevid|pessoa idosa"),
+         ("assistencia", r"assist[eê]ncia social|vulnerab|alimentar|nutricional|filantr[oó]p|pobreza|fome|perif[eé]ri|suas\b|acolhimento|popula[cç][aã]o de rua|mulher|g[eê]nero|direitos humanos"),
+         ("ambiente", r"ambient|clima|sustent|floresta|[aá]gua|amaz[oô]n|energ|reciclag|biodivers|res[ií]duo"),
+         ("educacao", r"educa|escola|ensino|alfabetiz|forma[cç][aã]o|capacita|bolsa")]
+
+
+def area_tematica(*textos: str) -> str | None:
+    """28/09: o tema da oportunidade, pela primeira fonte que o diga (Área de atuação comprovada, objeto, título...)."""
+    for tx in textos:
+        for k, rx in AREAS:
+            if tx and re.search(rx, tx, re.I):
+                return k
+    return None
 
 
 def consolidar() -> list[dict]:
@@ -185,6 +207,35 @@ def consolidar() -> list[dict]:
         _cp = [k for k, c in campos.items() if (c or {}).get("comprovado")]; _dp = [k for k, c in campos.items() if (c or {}).get("dispensado")]
         condicoes = {"comprovadas": len(_cp), "dispensadas": len(_dp), "faltam": [k for k in campos if k not in _cp and k not in _dp],
                      "dispensas": {k: str((campos[k] or {}).get("trecho_dispensa") or "")[:120] for k in _dp}} if campos else None
+        # CHECKLIST DOS 12 ITENS (28/09): a situação de CADA item — ok (comprovado com trecho), disp (dispensado pelo edital),
+        # val (confirmado na validação individual), falta (estudado e não achado), pend (ainda não estudado)
+        _vv = v or {}
+        _val_ok = {"Objeto": objeto, "Prazo de inscrição": fim or (_vv.get("prazo_dispensado") and "fluxo contínuo"),
+                   "Órgão / financiador": _vv.get("orgao") or _vv.get("financiador"), "Valor": _vv.get("valor"),
+                   "Território": _vv.get("uf") or _vv.get("territorio"), "Requisitos": _vv.get("requisitos")} if (_vv.get("decisao") or "").startswith("valida") else {}
+        checklist = {}
+        for k in CHECKLIST:
+            c = (campos or {}).get(k) or {}
+            if c.get("comprovado"):
+                checklist[k] = {"s": "ok", "v": str(c.get("valor") or "")[:90], "t": str(c.get("trecho") or "")[:160]}
+            elif c.get("dispensado"):
+                checklist[k] = {"s": "disp", "v": "dispensado pelo edital", "t": str(c.get("trecho_dispensa") or "")[:160]}
+            elif _val_ok.get(k):
+                checklist[k] = {"s": "val", "v": str(_val_ok[k])[:90]}
+            elif campos:
+                checklist[k] = {"s": "falta"}
+            elif m.get("_emenda"):
+                # EMENDA (28/09): não há edital — o calendário legislativo (config/emendas.json) diz o que se sabe; o resto não se aplica
+                _em = {"Objeto": (str(objeto or "")[:90], "val"), "Prazo de inscrição": (f"{m.get('inicio')} a {fim}", "val"),
+                       "Órgão / financiador": (str(m.get("orgao") or "casa legislativa")[:90], "val"), "Território": ("nacional" if m.get("nivel") == "federal" else "Goiás", "val"),
+                       "Esfera": (str(m.get("nivel") or ""), "val"), "Área de atuação": ("qualquer área de atuação da entidade", "val"),
+                       "Requisitos": ("entidade regular: CNPJ, certidões e cadastro na casa legislativa", "val"),
+                       "Valor": ("definido pelo parlamentar", "disp"), "Destinação": ("definida pelo parlamentar na indicação", "disp"),
+                       "Resultado": ("não há edital: indicação do parlamentar", "disp"), "Prazo de recurso": ("não há edital nem recurso", "disp"),
+                       "Anexos": ("não há edital: ofício e plano de trabalho da entidade", "disp")}
+                vv, ss = _em.get(k, ("", "pend")); checklist[k] = {"s": ss, "v": vv}
+            else:
+                checklist[k] = {"s": "pend"}
         _ix = _IDX.get(m.get("id")) or {}
         if v and v["decisao"] == "pendente":
             confirmada = False                                # a validação não achou a fonte oficial: não confirma
@@ -199,7 +250,10 @@ def consolidar() -> list[dict]:
         out.append({"id": m.get("id"), "titulo": re.sub(r"(?i)^continue lendo\s+", "", tit)[:180], "orgao": _orgao_real(m, e),
                     "uf": uf if uf in UFS else None, "origem": origem, "tipo": "menção em diário oficial" if diario else ("empresa/instituto" if (m.get("nivel") in ("privada", "privado") or origem.startswith("Piloto")) else "ente público"),
                     "publicado_em": pub, "inicio": _d(e.get("inicio"), ve.get("inicio"), m.get("inicio") if m.get("_emenda") else None), "fim": fim, "link_oficial": link,
-                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp, "condicoes": condicoes, "opressor": _ix.get("opressor"), "opressor_dispensa": _ix.get("dispensa"),
+                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp, "condicoes": condicoes, "checklist": checklist,
+                    "area": area_tematica(((checklist.get("Área de atuação") or {}).get("v") or ""), str(objeto or ""), tit, str(m.get("orgao") or ""),
+                                          " ".join(m.get("areas_fonte") or []) if isinstance(m.get("areas_fonte"), list) else str(m.get("areas_fonte") or ""))
+                            or ("diario" if diario else None), "opressor": _ix.get("opressor"), "opressor_dispensa": _ix.get("dispensa"),
                     "opressor_edicoes": len((_OPR.get(_ix.get("opressor")) or {}).get("historico") or []) or None,
                     "opressor_previsao": (_OPR.get(_ix.get("opressor")) or {}).get("previsao"),
                     "validacao": ({"decisao": v["decisao"], "motivo": v.get("motivo"), "em": v.get("validado_em")} if v else None)})
@@ -347,7 +401,7 @@ def montar() -> dict:
            "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal,
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
            "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao",
-                                                                  "objeto", "condicoes", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao")}
+                                                                  "objeto", "condicoes", "checklist", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao")}
                                        for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
                             for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}

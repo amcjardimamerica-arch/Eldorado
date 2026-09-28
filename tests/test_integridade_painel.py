@@ -155,6 +155,16 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertIsNone(dispensa({"titulo": "Edital de seleção de projetos 2026", "tipo": "empresa/instituto"}))
         self.assertEqual(chave("Edital nº 02/2026 — Prêmio X"), chave("Edital nº 05/2025 — Prêmio X"))
 
+    def test_checklist_12_itens_e_temas(self):
+        """28/09: os cartões perderam o checklist dos 12 itens e a separação por temas com as cores das áreas."""
+        F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
+        its = [x for v in F["itens_por_uf"].values() for x in v]
+        for x in its:
+            self.assertEqual(len(x.get("checklist") or {}), 12, x["titulo"][:50])
+        self.assertGreater(sum(1 for x in its if x.get("area")), len(its) * 0.8, "tema identificado em menos de 80%")
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn('class="oa-sec"', h); self.assertIn("oa-ki", h)
+
 
 if __name__ == "__main__":
     unittest.main()
