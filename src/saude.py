@@ -106,6 +106,17 @@ def checar() -> dict:
             alertas.append({"area": "opressores", "texto": f"{d} opressor(es) duplicado(s) no catálogo"})
     except Exception:
         pass
+    # CÓDIGO NO AR = CÓDIGO DO REPOSITÓRIO (regra máxima, 28/09)
+    try:
+        import hashlib, re as _re, urllib.request as _u
+        def _cod(h): m = _re.findall(r"<script>([\s\S]*?)</script>", h); return hashlib.sha1((m[-1] if m else "").encode()).hexdigest()[:12]
+        local = _cod((ROOT / "docs/dashboard.html").read_text(encoding="utf-8"))
+        with _u.urlopen(f"https://amcjardimamerica-arch.github.io/Eldorado/dashboard.html?v={datetime.now().timestamp():.0f}", timeout=20) as r:
+            no_ar = _cod(r.read().decode("utf-8", "ignore"))
+        (alertas.append({"area": "publicação", "texto": f"o painel no ar ({no_ar}) é diferente do código do repositório ({local}) — publicação pendente"}) if no_ar != local
+         else ok.append("código do painel no ar = código do repositório"))
+    except Exception:
+        pass
     for w in _workflows():
         alertas.append({"area": "workflows", "texto": w})
     res = {"em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "alertas": alertas, "ok": ok}

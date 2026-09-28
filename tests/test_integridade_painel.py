@@ -72,6 +72,21 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertNotIn("marcado para a IA", novo.split("*/", 1)[1])
         self.assertIn("F.calendario", novo)
 
+    def test_regra_maxima(self):
+        """28/09: nenhuma caixa estática — dados ao vivo, código ao vivo, publicação contínua, selo em cada caixa."""
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn("window.conferirVersaoDoPainel=", h)
+        passos = h[h.index("window.atualizarAgora=async function"):h.index("setInterval(()=>atualizarAgora(),240000)")]
+        for f in ("desenhaGantt", "desenhaCal", "desenhaEditais", "desenhaBzMapa", "desenhaMotores", "desenhaApoiadores",
+                  "desenhaPostoPiloto", "desenhaPostoInterceptador", "carregaFluxo"):
+            self.assertIn(f, passos, f"caixa sem atualização contínua: {f}")
+        selos = h[h.index("const SELOS=["):h.index("function pintarSelos")]
+        for el in ("g-corpo", "cal-grade", "bz-mapa", "mt-lista", "rank-apoiadores", "int-posto", "ed-grade"):
+            self.assertIn(f'"{el}"', selos, f"caixa sem selo de procedência: {el}")
+        y = (ROOT / ".github/workflows/publicar-painel.yml").read_text(encoding="utf-8")
+        self.assertIn("docs/dashboard.html", y)
+        json.loads((ROOT / "config/regra_maxima.json").read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()

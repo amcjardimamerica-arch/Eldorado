@@ -1,0 +1,24 @@
+{
+ "regra_maxima": "Nenhuma caixa do painel é ilustração. Cada caixa existe para mostrar informação CONFIÁVEL E ATUAL; o fluxo de alimentação de cada uma é contínuo. O que não é atual é avisado na própria caixa — nunca mostrado como se fosse.",
+ "desde": "2026-09-28",
+ "principios": [
+  "uma fonte validada por assunto: mapa, calendários e listas de oportunidade leem o mesmo fluxo (validação individual + curadoria + Pilotos)",
+  "dados ao vivo: leitura pela API do GitHub (reservas: cópia pública, site), a cada 4 minutos e ao voltar para a aba",
+  "código ao vivo: a página confere a própria versão a cada 4 minutos e recarrega sozinha quando há código novo no ar",
+  "publicação contínua: mudança no código do painel vai ao ar na hora (workflow 04 por gravação)",
+  "procedência visível: cada caixa leva o selo de quando o dado foi gerado, lido e de onde; âmbar se o gerador atrasou, vermelho se as fontes falharam",
+  "dado inválido é recusado: mapa sem a validação não é exibido; fica o último válido, com aviso",
+  "ninguém regrava o que não é seu: derivados são regenerados sobre a main atual, nunca copiados de uma cópia velha",
+  "falha não é engolida: o verificador de saúde publica os alertas no cabeçalho"
+ ],
+ "caixas": {
+  "calendario_inicial": {"elemento": "g-corpo", "fonte": "dados/fluxo_oportunidades.json", "regra": "só inscrição com data confirmada e site oficial"},
+  "calendario_completo": {"elemento": "cal-grade", "fonte": "dashboard-dados.js + fluxo", "regra": "só edital com site oficial e prazo de inscrição"},
+  "mapa": {"elemento": "bz-mapa", "fonte": "dados/fluxo_oportunidades.json", "regra": "1º confirmadas com o mínimo / 2º possíveis; só com a validação aplicada"},
+  "painel_do_estado": {"elemento": "bz-atual", "fonte": "itens_por_uf do fluxo", "regra": "exatamente o que o mapa conta"},
+  "oportunidades_em_andamento": {"elemento": "ed-grade", "fonte": "dashboard-dados.js", "regra": "atualiza a cada voo do Espião"},
+  "motores": {"elemento": "mt-lista", "fonte": "dados/achados_motores.json + motores.json", "regra": "oportunidades únicas, 5 mais recentes"},
+  "pilotos": {"elemento": "pil-posto / int-posto", "fonte": "esquadrilha, interceptador e sinais ao vivo", "regra": "estado real do motor e da missão"},
+  "empresas": {"elemento": "rank-apoiadores", "fonte": "dados/ranking_apoiadores.json", "regra": "verificado em fonte oficial"}
+ }
+}

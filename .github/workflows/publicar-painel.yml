@@ -1,5 +1,9 @@
 name: 04 · Publicar painel Eldorado
 on:
+  # REGRA MÁXIMA (28/09): mudança no código do painel vai ao ar na hora — antes, só a cada 6 h
+  push:
+    branches: [main]
+    paths: ["docs/dashboard.html", "docs/index.html", "docs/*.js"]
   schedule:
     - cron: "45 */6 * * *"   # a cada 6 horas: o monitor dos motores nunca fica mais de 6h defasado
   workflow_dispatch:
