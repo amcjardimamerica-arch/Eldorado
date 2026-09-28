@@ -123,6 +123,14 @@ class TesteIntegridadePainel(unittest.TestCase):
         for x in em:
             self.assertTrue(x.get("inicio") and x.get("fim") and x.get("link_oficial"))
 
+    def test_gravacao_dos_voos_nao_regrava_codigo(self):
+        """28/09: a gravação de um voo do Espião desfez uma correção de código (reset --soft + git add -A geral)."""
+        for w in (ROOT / ".github/workflows").glob("*.yml"):
+            y = w.read_text(encoding="utf-8")
+            self.assertNotIn("reset --soft", y, f"{w.name}: reset --soft leva a árvore velha no commit")
+            self.assertNotIn("|| git add -A\n", y, f"{w.name}: 'git add -A' geral como plano B")
+            self.assertNotRegex(y, r"git add -A;\s*git commit", f"{w.name}: 'git add -A' geral na recomposição")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -309,13 +309,16 @@ jobs:
             fi
             git rebase --abort 2>/dev/null || true
             git fetch origin main
-            git reset --soft origin/main
+            # 28/09: --mixed (índice = main NOVA) e código sempre da main — o --soft levava a árvore velha do job inteira
+            # no commit, desfazendo correções de código feitas enquanto ele rodava (aconteceu no Espião às 16h36 de 28/09)
+            git reset -q --mixed origin/main
+            git checkout origin/main -- src tests scripts .github docs/dashboard.html docs/index.html 2>/dev/null || true
             # PROTEÇÃO (21/09): restaura do origin o que o Piloto/conselho gravaram enquanto este job rodava —
             # sem isto, a árvore antiga do job marcava esses arquivos como deletados (foi assim que o benchmark sumiu)
             for P in estado/piloto estado/ia_local config/piloto.json estado/rotas_sugeridas_ia.json estado/pacote_conselho.md estado/pacote_conselho.json docs/dados/piloto.json docs/dados/pacote_conselho.md; do
               git checkout origin/main -- "$P" 2>/dev/null || true
             done
-            git add biblioteca_alexandria -A dados estado docs && git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F) (reaplicada)" || true
+            git add -A biblioteca_alexandria dados estado docs/dados docs/dashboard-dados.js docs/relatorios 2>/dev/null; git commit -m "dados: varredura ${MOTORES_BLOCO:-completo} $(date -u +%F) (reaplicada)" || true
             sleep 15
           done
           git push || echo "REGISTRO FALHOU apos 3 tentativas — os dados desta saida ficam no log"

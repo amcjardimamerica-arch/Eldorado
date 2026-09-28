@@ -298,8 +298,15 @@ jobs:
               if c in orig: atual[c] = orig[c]
           json.dump(atual, open("config/piloto.json","w"), ensure_ascii=False, indent=1)
           PY
-          git add -A estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados 2>/dev/null || git add -A
+          # 28/09: SÓ os caminhos do Piloto — nunca "git add -A" geral (levava a cópia velha de src/ e desfez uma correção)
+          PILOTO_PATHS="estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados"
+          for P in $PILOTO_PATHS; do [ -e "$P" ] && git add -A -- "$P"; done
           git status --short | head -20
           git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"
-          for i in 1 2 3; do git push -q origin main && break; echo "push $i falhou; recompondo…"; git fetch -q origin main; git reset -q --soft origin/main; cp -r /tmp/sind/. .; git add -A; git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || true; sleep 10; done
+          # envio recusado (outro processo gravou antes): recompõe sobre a main NOVA, com --hard — o --soft mantinha os
+          # arquivos velhos na pasta e o "git add -A" os gravava por cima (assim a correção das 16h36 de 28/09 foi desfeita)
+          for i in 1 2 3; do git push -q origin main && break; echo "push $i falhou; recompondo sobre a main nova…"
+            git fetch -q origin main; git reset -q --hard origin/main; cp -r /tmp/sind/. .; git checkout origin/main -- docs/dashboard.html 2>/dev/null || true
+            for P in $PILOTO_PATHS; do [ -e "$P" ] && git add -A -- "$P"; done
+            git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || true; sleep 10; done
           git log --oneline -1
