@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T07:39:52+00:00",
+  "em": "2026-09-28T07:56:30+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T07:32:24+00:00",
+  "ultimo_voo": "2026-09-28T07:41:14+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,24 +34,101 @@
     "editais novos dos motores": 3,
     "indícios do Espião": 17,
     "abertos com itens em falta": 4,
-    "empresas sem ficha": 46
+    "empresas sem ficha": 45
   },
   "acumulado": {
-    "missoes": 208,
+    "missoes": 209,
     "validadas": 13,
     "parciais": 62,
-    "insuficientes": 82,
+    "insuficientes": 83,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
       "sim": 126,
-      "nao": 14
+      "nao": 15
     },
     "estrelas_de_ouro": 9,
     "fontes_novas_para_os_motores": 48,
-    "tempo_medio_min": 8.4
+    "tempo_medio_min": 8.5
   },
   "missoes": [
+    {
+      "em": "2026-09-28T07:41:14+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · RJ (sorteio)",
+      "alvo": "Diário Oficial de Nova Iguaçu (RJ) 2026-08-11 — \"edital de chamamento público\" associação",
+      "qualidade": "insuficiente",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O edital comprovado refere-se a uma aprovação de parecer sobre prestação de contas de um fundo municipal, não sendo um edital de chamamento público para organizações da sociedade civil.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há outros editais públicos divulgados pela Prefeitura Municipal de Nova Iguaçu ou outros órgãos públicos que sejam voltados para as áreas de assistência social, cultura, educação e esporte, e se enquadrarem em seus critérios de elegibilidade.",
+        "proximo_passo": "Consultar os editais vigentes da Prefeitura Municipal de Nova Iguaçu e de outros órgãos públicos no Estado do Rio de Janeiro que possam se alinhar às áreas de atuação da associação.",
+        "risco": "A falta de informações sobre prazos, requisitos e áreas de atuação pode impedir a associação de se candidatar a editais de fomento."
+      },
+      "erro": null,
+      "segundos": 916,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "9d55e4ce3e88d38309ce",
+      "encontrou": {
+        "Objeto": {
+          "valor": "aprovacao do parecer sobre a prestacao de contas do fundo municipal dos direitos da pessoa com deficiencia",
+          "trecho": "Dispõe sobre a aprovação do Parecer sobre a Prestação de Contas do Fundo Municipal dos Direitos da Pessoa com Deficiência (FMDPD), no âmbito do Município de Nova Iguaçu, durante o ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura da Cidade de Nova Iguaçu",
+          "trecho": "Prefeitura da Cidade de Nova Iguaçu",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RJ",
+          "trecho": "Estado do Rio de Janeiro - Prefeitura da Cidade de Nova Iguaçu – Terça-feira, 11 de agosto de 2026.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · outro",
+          "trecho": "Dispõe sobre a aprovação do Parecer sobre a Prestação de Contas do Fundo Municipal dos Direitos da Pessoa com Deficiência (FMDPD), no âmbito do Município de Nova Iguaçu, durante o ",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura da Cidade de Nova Iguaçu",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3303500/2026-08-11/097c595564406aaf930eb98776a439ce039293bd.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-28T07:32:24+00:00",
       "modo": "validar",
@@ -2752,51 +2829,6 @@
       "rotas": [
         "financiador_programa_edital"
       ]
-    },
-    {
-      "em": "2026-09-27T21:52:21+00:00",
-      "modo": "complementar",
-      "tipo": "edital",
-      "de": "fila de resgate",
-      "alvo": "Baixe um guia gratuito sobre como avaliar as propostas do seu edital de forma eficiente e estrategica",
-      "qualidade": "insuficiente",
-      "comprovados": 1,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Território",
-        "Esfera",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://mkt.prosas.com.br/e-book-guia-para-avaliacao-de-propostas",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto menciona um guia gratuito sobre como avaliar as propostas do seu edital de forma eficiente e estratégica, o que indica que ele serve como fonte de informação relevante para o processo de avaliação de editais.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria acessar o guia gratuito para entender melhor como avaliar as propostas do edital de forma eficiente e estratégica, o que pode ajudá-la a preparar uma proposta mais competitiva.",
-        "proximo_passo": "Acessar o guia gratuito mencionado para obter orientações sobre avaliação de propostas.",
-        "risco": "Não há informações sobre o prazo de inscrição ou outros requisitos necessários para a associação comunitária acessar o edital, o que pode dificultar a preparação da proposta."
-      },
-      "erro": null,
-      "segundos": 612,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 1,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "cat-502afc852638",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
     }
   ]
 }
