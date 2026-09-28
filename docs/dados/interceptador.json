@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T19:46:26+00:00",
+  "em": "2026-09-28T20:03:23+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T19:33:54+00:00",
+  "ultimo_voo": "2026-09-28T19:48:02+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 59
   },
   "acumulado": {
-    "missoes": 261,
+    "missoes": 262,
     "validadas": 18,
     "parciais": 83,
-    "insuficientes": 109,
+    "insuficientes": 110,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 167,
+      "sim": 168,
       "nao": 21
     },
     "estrelas_de_ouro": 10,
@@ -52,6 +52,78 @@
     "tempo_medio_min": 9.2
   },
   "missoes": [
+    {
+      "em": "2026-09-28T19:48:02+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · PR (sorteio)",
+      "alvo": "Diário Oficial de Londrina (PR) 2026-09-18 — \"edital de chamamento público\" associação",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://portal.londrina.pr.gov.br/plano-plurianual-ppa",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre o objeto e o financiador, o que é suficiente para validar sua existência.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital se aplica à sua área de atuação e se ela atende aos critérios de elegibilidade, mesmo que não estejam explicitados no texto.",
+        "proximo_passo": "Consultar o edital completo para entender melhor os requisitos e a área de atuação prevista.",
+        "risco": "A falta de informações sobre prazo, requisitos e área de atuação pode impedir a associação de se candidatar adequadamente."
+      },
+      "erro": null,
+      "segundos": 922,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 4,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "e0a2663b1f39e9c79970",
+      "encontrou": {
+        "Objeto": {
+          "valor": "planejamento de médio prazo com diretrizes, objetivos e metas",
+          "trecho": "O Plano Plurianual (PPA) está previsto no artigo 165 da Constituição Federal e é um planejamento de médio prazo, que estabelece as diretrizes, objetivos e metas a serem seguidos pe",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura de Londrina",
+          "trecho": "Portal da Prefeitura de Londrina - Plano Plurianual - PPA",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "PR",
+          "trecho": "Portal da Prefeitura de Londrina - Plano Plurianual - PPA",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Município de Londrina",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4113700/2026-09-18/c38c40c11a471d25b98600540a688dba3c4b88bc.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-28T19:33:54+00:00",
       "modo": "validar",
@@ -2792,83 +2864,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-09-28T11:02:33+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "opressor sem leitura",
-      "alvo": "Banrisul Instituto Cultural e Social — Edital Merece! — Banrisul Instituto Cultural e Social",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://banrisulcultural.com.br/projeto/merece/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre seu objeto, financiador, território, esfera, requisitos e destinação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria apresentar iniciativas de impacto realizadas nos últimos 24 meses nas áreas de assistência social, cultura, educação, esporte e comunitário, além de seguir os requisitos e anexos exigidos no edital.",
-        "proximo_passo": "Verificar os anexos do edital e garantir que a associação atenda aos requisitos para participar.",
-        "risco": "A falta de informações sobre prazo de inscrição e valor pode impedir a associação de se inscrever no prazo correto ou com os recursos necessários."
-      },
-      "erro": null,
-      "segundos": 829,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 0,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "op-curadoria-007",
-      "encontrou": {
-        "Objeto": {
-          "valor": "concessão de premiação em dinheiro, com caráter de reconhecimento, para valorizar iniciativas de impacto realizadas nos últimos 24 meses por Organizações da Sociedade Civil (OSCs)",
-          "trecho": "Este edital prevê a concessão de premiação em dinheiro, com caráter de reconhecimento, para valorizar iniciativas de impacto realizadas nos últimos 24 meses por Organizações da Soc",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Banrisul Instituto Cultural e Social",
-          "trecho": "Banrisul Instituto Cultural e Social – Banrisul Cultural apresenta o edital Merece! Prêmio Banrisul Cultural de Impacto Social, destinado a reconhecer, valorizar e premiar Organiza",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "RS",
-          "trecho": "Organizações da Sociedade Civil (OSCs) com sede no Rio Grande do Sul.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · premio",
-          "trecho": "destinado a reconhecer, valorizar e premiar Organizações da Sociedade Civil (OSCs) com sede no Rio Grande do Sul.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "iniciativas de impacto realizadas nos últimos 24 meses por Organizações da Sociedade Civil (OSCs), ações e projetos que promovam a cultura, a cidadania, o desenvolvimento social e comunitário, a educação, o esporte e o ",
-          "trecho": "As iniciativas devem ser desenvolvidas por meio de ações e projetos que promovam a cultura, a cidadania, o desenvolvimento social e comunitário, a educação, o esporte e o lazer, o ",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Banrisul Instituto Cultural e Social",
-      "indicios": [],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
       ]
     }
   ]
