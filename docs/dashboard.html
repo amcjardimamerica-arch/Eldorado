@@ -3930,7 +3930,7 @@ function pousarAviao(){
   if(AV.el){ AV.el.classList.remove("visivel","mostra-balao","voando"); }
   if(AV.raf){ cancelAnimationFrame(AV.raf); AV.raf=0; }
 }
-const TRABALHO={afiar_motor:"afiando o motor",cacar_oportunidade:"caçando oportunidade",
+const TRABALHO={preparando:"decolando — preparando o modelo",patio:"no pátio — decolando o próximo voo",aposta:"seguindo uma aposta do briefing",catalogar:"catalogando sites do terceiro setor",afiar_motor:"afiando o motor",cacar_oportunidade:"caçando oportunidade",
   descobrir_local:"procurando fonte local",resgate:"resgatando edital",reconhecimento:"reconhecendo o terceiro setor"};
 window.atualizarAviao=function(){
   const P=window._POS;
@@ -3938,7 +3938,7 @@ window.atualizarAviao=function(){
   const m=P.missao, el=lugarDoTrabalho(m);
   if(!el){ pousarAviao(); return; }
   const av=montarAviao();
-  const trab=m.motor==="piloto-aberto"?"reconhecimento":m.tipo;     // a missão 2 corre sob este motor
+  const trab=(m.motor==="piloto-aberto"&&!TRABALHO[m.tipo])?"reconhecimento":m.tipo;     // a missão 2 corre sob este motor
   av.querySelector(".pil-balao").innerHTML=`${esc(TRABALHO[trab]||trab||"")}`+
     `${m.tipo==="resgate"?(m.alvo_titulo?` · <b>${esc(m.alvo_titulo.slice(0,40))}</b>`:""):(m.motor?` · <b>${esc(m.motor)}</b>`:"")}`+
     `${m.ordem&&m.de?` · missão ${m.ordem}/${m.de}`:""}`;

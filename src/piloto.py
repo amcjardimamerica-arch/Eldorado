@@ -837,7 +837,10 @@ def ciclo(porta: int | None = None) -> dict:
             _devolver(_m["alvo_id"], tentado=False)                      # reservado e não atendido volta a aguardar
     from .piloto_ao_vivo import marcar as _vivo2, montar as _vivo_montar
     _vivo2("pousou", detalhe=f"{len(_todos_ach)} achado(s)")
-    _pousar_pos(f"voo {rel.get('voo_do_dia')} pousou")
+    # 28/09: em corrente (voos encadeados), NÃO marca pouso aqui — o passo "Pousar 3 segundos e decolar de novo" diz
+    # "no pátio, decolando de novo"; só marca pousado se a corrente parar. Antes, cada fim de voo apagava o avião.
+    if os.environ.get("PILOTO_EM_CORRENTE") != "1":
+        _pousar_pos(f"voo {rel.get('voo_do_dia')} pousou")
     rel["posicao_ao_vivo"] = _reg_pos()                 # prova de que o anúncio chegou (ou não)
     rel.setdefault("encerrou_por", "tarefa concluída")   # o normal: acabou o que havia para fazer
     rel["minutos_de_voo"] = round((time.time() - t0) / 60, 1)
