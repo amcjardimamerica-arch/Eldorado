@@ -3107,6 +3107,18 @@
    "agenda": "contínuo (3 s de pátio); sem alvo, aguarda e é acordado pelo Espião ou pelos motores",
    "verificacao": "funcionamento = voou nas últimas horas; resultado = alvos validados/parciais; relatório por voo em estado/interceptador/relatorios",
    "onde_para": "docs/dados/interceptador.json"
+  },
+  "motor-agregadores": {
+   "nome": "Agregadores de editais — CapitaAI, Farol Cultural, IDIS",
+   "perfil": "motor regular de indícios",
+   "tipo": "regular",
+   "finalidade": "ler sites que republicam editais de fontes oficiais e extrair título, prazo e o LINK DA FONTE OFICIAL de cada um; o agregador é só indício",
+   "coleta": "nuvem",
+   "objetivo": "descobrir editais abertos que as fontes oficiais monitoradas ainda não trouxeram",
+   "como_funciona": "listagens públicas (respeitando o robots.txt), 1 s entre páginas, até 40 editais por site; cada edital segue para curadoria, validação, motor opressor e Interceptador",
+   "agenda": "2x por dia (workflow 16)",
+   "verificacao": "quantos editais lidos por fonte, quantos com link oficial e prazo",
+   "onde_para": "estado/agregadores/itens.json"
   }
  }
 }

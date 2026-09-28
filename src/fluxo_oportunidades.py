@@ -141,6 +141,11 @@ def consolidar() -> list[dict]:
                                "fonte_id": em.get("fonte_id"), "nivel": em.get("nivel"), "_emenda": True}))
     except Exception:
         pass
+    # MOTOR AGREGADORES NO FLUXO (28/09): capitaai, farolcultural, IDIS — indícios com o link da fonte oficial
+    for ag in (_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens", []):
+        brutos.append((f"motor agregadores · {ag.get('fonte')}", {"id": ag["id"], "titulo": ag.get("titulo"), "url": ag.get("link_oficial") or ag.get("pagina_agregador"),
+                       "fim": ag.get("prazo"), "uf": ag.get("uf"), "data_publicacao": ag.get("primeiro_visto"), "fonte_id": "motor-agregadores",
+                       "pagina_agregador": ag.get("pagina_agregador")}))
     for arq in EXT.glob("*.json"):
         e = _j(arq, {})
         if e.get("investigacao_ia") and arq.stem.startswith(("cat-", "op-")):

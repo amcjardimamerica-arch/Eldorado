@@ -117,6 +117,13 @@ def montar() -> dict:
                 if tit and not NAO_E_SELECAO.search(tit):        # dispensa de chamamento, pessoa física e compra não são oportunidade
                     xs.append({**r0, "id": eid, "titulo": tit, "url": r0.get("url") or e0.get("url"),
                                "descoberto_em": str(f.get("em") or "")[:10], "fim": r0.get("fim") or e0.get("fim")})
+        if mid == "motor-agregadores":
+            try:
+                xs = [{"id": g["id"], "titulo": g.get("titulo"), "url": g.get("link_oficial") or g.get("pagina_agregador"), "fim": g.get("prazo"),
+                       "uf": g.get("uf"), "descoberto_em": g.get("primeiro_visto")}
+                      for g in json.loads((ROOT / "estado/agregadores/itens.json").read_text(encoding="utf-8")).get("itens", [])]
+            except Exception:
+                xs = []
         if mid == "do-goiania":
             xs = [r for r in regs if r.get("fonte_id") == "querido-diario" and "goiânia" in str(r.get("titulo", "")).lower()]
         vistos_t, vistos_u, unicas = set(), set(), []

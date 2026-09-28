@@ -1,0 +1,33 @@
+name: 16 · Motor regular — agregadores de editais (CapitaAI, Farol Cultural, IDIS)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 10,22 * * *"
+permissions:
+  contents: write
+concurrency:
+  group: motor-agregadores
+  cancel-in-progress: false
+jobs:
+  ler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Ler os agregadores
+        run: python -m src.motor_agregadores
+      - name: Gravar (só o que é do motor) e regenerar o mapa sobre a main atual
+        run: |
+          git config user.name "motor-agregadores" && git config user.email "motor@eldorado"
+          mkdir -p /tmp/ag && cp -r estado/agregadores /tmp/ag/
+          for i in 1 2 3 4; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            rm -rf estado/agregadores && cp -r /tmp/ag/agregadores estado/agregadores
+            timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa: falhou"
+            timeout 120 python -m src.achados_motores >/dev/null 2>&1 || true
+            for P in estado/agregadores docs/dados/fluxo_oportunidades.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json estado/opressores.json estado/opressores_indice.json biblioteca_alexandria/base/preditivo dados/oportunidades/validacao_mapa docs/dados/validacao_motores.json; do [ -e "$P" ] && git add -A -- "$P"; done
+            git commit -q -m "motor agregadores: $(date -u +%F\ %H:%M)" || break
+            git push -q origin main && break; sleep 8
+          done

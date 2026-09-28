@@ -515,6 +515,16 @@ def run() -> dict:
                          "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
                          "situacao": ("aguardando coleta local" if _aguarda_local(s, e) else "bloqueado" if b else "sem leitura ainda" if not s else
                                       "ativo — captando" if s.get("achados_total") else "ativo, sem achados")})
+    # ── MOTOR REGULAR: AGREGADORES DE EDITAIS (titular, 28/09) — indícios com o link da fonte oficial
+    try:
+        _ag = load_json(ROOT / "estado/agregadores/itens.json") if (ROOT / "estado/agregadores/itens.json").exists() else {}
+        _pf = _ag.get("por_fonte") or {}
+        plataformas.append({"id": "motor-agregadores", "nome": "Agregadores de editais — CapitaAI, Farol Cultural, IDIS", "tipo": "regular",
+                            "url": "https://capitaai.com.br/editais-abertos/para-ong", "dias": [], "ultima_leitura": _ag.get("em"),
+                            "achados": len(_ag.get("itens") or []), "diagnostico": {"por_fonte": _pf},
+                            "situacao": ("sem leitura ainda" if not _ag else "satisfatória — obtendo editais" if _ag.get("itens") else "ativo, sem achados")})
+    except Exception:
+        pass
     # ── PILOTO - INTERCEPTADOR como motor próprio (titular, 26/09): verificação de funcionamento e de resultado
     # separadas do Espião. Funcionamento = voou há menos de 6 h; resultado = alvos comprovados (validada/parcial).
     try:
