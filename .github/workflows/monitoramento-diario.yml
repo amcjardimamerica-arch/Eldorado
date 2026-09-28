@@ -180,8 +180,7 @@ jobs:
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 120 python scripts/construir_base.py >/dev/null || echo "base da Biblioteca: falhou"
           timeout 120 python -m src.achados_motores >/dev/null || echo "achados por motor: falhou"   # oportunidades únicas por motor
-          timeout 120 python -m src.validacao_mapa >/dev/null || echo "validação do mapa: falhou"   # decisões individuais + regras aprendidas (idempotente)
-          timeout 180 python -m src.fluxo_oportunidades >/dev/null || echo "fluxo das oportunidades: falhou"   # mapa, calendário, opressor novo, cadastro preditivo
+          timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa (curadoria + validação + fluxo): falhou"
           GITHUB_TOKEN="${{ github.token }}" timeout 120 python -m src.saude >/dev/null || echo "saúde do sistema: falhou"   # alertas no cabeçalho do painel
           timeout 300 python -m src.dossie_fontes || echo "src.dossie_fontes: encerrado no orçamento de 300s ou falhou — registrado"
           fi

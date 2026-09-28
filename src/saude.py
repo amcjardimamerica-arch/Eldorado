@@ -76,6 +76,10 @@ def checar() -> dict:
         F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
         pu, iu = F["mapa"]["por_uf"], F.get("itens_por_uf") or {}
         div = [k for k in pu if pu[k]["possiveis"] != len(iu.get(k, []))]
+        if not (F.get("validacao") or {}).get("aplicada"):
+            alertas.append({"area": "mapa", "texto": "o mapa publicado foi gerado SEM a validação individual — o painel mantém o último válido"})
+        elif (F.get("validacao") or {}).get("sem_decisao"):
+            alertas.append({"area": "mapa", "texto": f"{F['validacao']['sem_decisao']} oportunidade(s) no mapa sem decisão (curadoria)"})
         (alertas.append({"area": "coerência", "texto": f"mapa e lista divergem em {', '.join(div[:5])}"}) if div else ok.append("número do mapa = lista de cada estado"))
     except Exception as e:
         alertas.append({"area": "coerência", "texto": f"fluxo ilegível ({type(e).__name__})"})

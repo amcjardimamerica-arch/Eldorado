@@ -267,7 +267,11 @@ def montar() -> dict:
         p["possiveis"] += 1; p["confirmadas"] += 1 if it["confirmada"] else 0
     tot = {"confirmadas": sum(v["confirmadas"] for v in mapa.values()), "possiveis": sum(v["possiveis"] for v in mapa.values())}
     cal = [{k: it.get(k) for k in ("id", "titulo", "orgao", "uf", "inicio", "fim", "link_oficial", "origem")} for it in itens if it["confirmada"]]
-    res = {"em": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Publica")[0].strip(),
+    from . import validacao_mapa as _vm2
+    _V = _vm2.carregar()
+    res = {"validacao": {"aplicada": True, "decisoes": len(_V), "arquivos": sorted({v.get("_arquivo") for v in _V.values()}),
+                         "sem_decisao": sum(1 for x in itens if not x.get("validacao"))},
+           "em": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Publica")[0].strip(),
            "etapas": {"possiveis_abertas": tot["possiveis"], "confirmadas_com_minimo": tot["confirmadas"],
                       "por_origem": {o: sum(1 for x in itens if x["origem"].startswith(o)) for o in ("motor", "Piloto - Espião", "Piloto - Interceptador")},
                       "por_tipo": {t: sum(1 for x in itens if x["tipo"] == t) for t in ("ente público", "empresa/instituto", "menção em diário oficial")},
@@ -283,5 +287,19 @@ def montar() -> dict:
     return {"mapa_total": tot, **res["etapas"]}
 
 
+def atualizar_mapa() -> dict:
+    """28/09 (titular): o mapa nunca é gravado sem a validação e sem decisão para o que chegou depois dela."""
+    montar()
+    from . import curadoria_automatica, validacao_mapa
+    c = curadoria_automatica.run()
+    try:
+        validacao_mapa.run()
+    except Exception as ex:
+        c["validacao_mapa"] = f"falhou: {type(ex).__name__}"
+    r = montar(); r["curadoria"] = c
+    return r
+
+
 if __name__ == "__main__":
-    print(json.dumps(montar(), ensure_ascii=False, indent=1))
+    import sys
+    print(json.dumps(atualizar_mapa() if "--completo" in sys.argv else montar(), ensure_ascii=False, indent=1))

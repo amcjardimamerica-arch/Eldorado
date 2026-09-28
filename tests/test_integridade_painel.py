@@ -39,6 +39,22 @@ class TesteIntegridadePainel(unittest.TestCase):
         ch = [re.sub(r"[^a-z0-9]", "", f"{x.get('programa')}{x.get('orgao')}".lower())[:80] for x in C]
         self.assertEqual(len(ch), len(set(ch)))
 
+    def test_mapa_so_com_validacao(self):
+        """28/09: um voo com código antigo publicou o mapa sem a validação (11/1018) por 10 minutos."""
+        F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
+        self.assertTrue((F.get("validacao") or {}).get("aplicada"))
+        self.assertEqual((F.get("validacao") or {}).get("sem_decisao"), 0)
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn("eldorado_fluxo_valido", h); self.assertIn("_FLUXO_RECUSADO", h)
+        for w in ("monitoramento-diario.yml", "interceptador.yml"):
+            self.assertIn("fluxo_oportunidades --completo", (ROOT / ".github/workflows" / w).read_text(encoding="utf-8"))
+
+    def test_curadoria_decide_o_que_nao_serve(self):
+        from src.curadoria_automatica import decidir
+        self.assertEqual(decidir({"titulo": "Fundo Patrimonial FEAUSP", "tipo": "empresa/instituto"})["decisao"], "descartada")
+        self.assertEqual(decidir({"titulo": "Editalagua2022", "url": "https://x.org/edital-2022"})["decisao"], "arquivada_encerrada")
+        self.assertIsNone(decidir({"titulo": "Edital X", "confirmada": True}))
+
 
 if __name__ == "__main__":
     unittest.main()

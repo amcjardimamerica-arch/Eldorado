@@ -1289,6 +1289,7 @@ window.recarregarDados=async function(){
 const _hm=d=>{ try{ const x=new Date(d); return x.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})+" "+x.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}); }catch(e){ return "—"; } };
 /* selo de uma caixa: quando o dado foi GERADO, quando foi LIDO e de ONDE; âmbar se o gerador está atrasado */
 window.seloVivo=function(cam,gerado,limiteMin){
+  if(cam==="dados/fluxo_oportunidades.json"&&window._FLUXO_RECUSADO) return `<span class="selo-vivo falha">⚠ recebida uma versão do mapa sem a validação (${esc(String(window._FLUXO_RECUSADO).slice(0,16))}) — recusada; mostrando o último mapa válido</span>`;
   const F=_FONTES[cam]||{}; const idade=gerado?(Date.now()-new Date(gerado))/60000:null;
   const atraso=idade!==null&&idade>(limiteMin||90);
   return `<span class="selo-vivo${F.ok===false?" falha":atraso?" atraso":""}" title="${esc((F.fonte||"")+(gerado?" · gerado em "+_hm(gerado):""))}">${F.ok===false?"⚠ sem conexão com as fontes — mostrando o último dado bom":`dados de ${gerado?_hm(gerado):"—"}${atraso?" (gerador atrasado)":""} · lidos às ${F.lido_em?_hm(F.lido_em).slice(6):"—"} · ${esc(F.fonte||"")}`}</span>`;
@@ -3998,7 +3999,12 @@ window._FLUXO=null;
 window.fxUF=(uf,p)=>{ const F=((window._FLUXO||{}).mapa||{}).por_uf||null; if(F){ const x=F[uf]||{}; return {c:x.confirmadas||0,t:x.possiveis||0}; } return {c:(p&&p.confirmadas)||0,t:(p&&p.total)||0}; };
 window.fxTot=(n)=>{ const T=((window._FLUXO||{}).mapa||{}).total; return T?{c:T.confirmadas||0,t:T.possiveis||0}:{c:(n&&n.confirmadas)||0,t:(n&&n.total)||0}; };
 window.carregaFluxo=async function(){
-  try{ const r=await fetch("dados/fluxo_oportunidades.json"); if(r.ok) window._FLUXO=await r.json(); }catch(e){}   // camada ao vivo
+  // 28/09 (titular): versão do mapa gerada SEM a validação individual (voo com código antigo) é RECUSADA — fica o último
+  // mapa válido (guardado neste navegador) e o selo avisa. Nunca mais mostrar oportunidade já descartada ou encerrada.
+  try{ const r=await fetch("dados/fluxo_oportunidades.json"); if(r.ok){ const f=await r.json();
+      if(f&&f.validacao&&f.validacao.aplicada){ window._FLUXO=f; window._FLUXO_RECUSADO=null; try{ localStorage.setItem("eldorado_fluxo_valido",JSON.stringify(f)); }catch(e){} }
+      else { window._FLUXO_RECUSADO=f&&f.em||"sem data";
+        if(!window._FLUXO){ try{ const g=JSON.parse(localStorage.getItem("eldorado_fluxo_valido")||"null"); if(g&&g.validacao&&g.validacao.aplicada) window._FLUXO=g; }catch(e){} } } } }catch(e){}
   try{ if(typeof desenhaBzMapa==="function") desenhaBzMapa(); }catch(e){}
   try{ if(typeof desenhaBzLateral==="function"&&bzUFsel) desenhaBzLateral(); }catch(e){}
   try{ if(typeof desenhaCal==="function") desenhaCal(); }catch(e){}
