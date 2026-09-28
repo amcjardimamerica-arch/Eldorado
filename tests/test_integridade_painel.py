@@ -134,6 +134,12 @@ class TesteIntegridadePainel(unittest.TestCase):
             self.assertNotIn("|| git add -A\n", y, f"{w.name}: 'git add -A' geral como plano B")
             self.assertNotRegex(y, r"git add -A;\s*git commit", f"{w.name}: 'git add -A' geral na recomposição")
 
+    def test_quadros_dos_motores_contidos(self):
+        """28/09: a coluna do meio do quadro do motor esticava com a linha mais longa e o calendário vazava."""
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn(".mt-item{grid-template-columns:44px minmax(0,1fr) 40px}", h)
+        self.assertIn("#mt-lista .mt-ach{display:grid", h)
+
 
 if __name__ == "__main__":
     unittest.main()

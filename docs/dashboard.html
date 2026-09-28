@@ -431,6 +431,15 @@ box-shadow:0 1px 3px #0002}
 .cv-cont .cv-chip{display:inline-block;max-width:320px;font-size:11.5px}.cv-mais{font-size:10.5px;color:#0E2A55;font-weight:700;cursor:pointer}
 .cv-resto{display:none;flex-direction:column;gap:3px}.cv-dia.abre .cv-resto{display:flex}.cv-dia.abre .cv-mais{display:none}.cv-dia.abre{overflow:visible}
 @media (max-width:760px){.cv-dia{min-height:70px}.cv-chip{font-size:9.5px}}
+/* PADRÃO ÚNICO DOS QUADROS DOS MOTORES (titular, 28/09): tudo dentro do quadro. A coluna do meio da grade não tinha
+   largura mínima zero — a linha de oportunidade mais longa esticava o quadro e o calendário do motor vazava junto. */
+.mt-item{grid-template-columns:44px minmax(0,1fr) 40px}.mt-item>*{min-width:0}
+.mt-corpo{min-width:0;overflow:hidden}.mt-item .mt-cal{max-width:100%}
+.mt-achados{overflow:hidden;max-width:100%;box-sizing:border-box}
+#mt-lista .mt-ach{display:grid;grid-template-columns:8px minmax(0,1fr);column-gap:6px;row-gap:1px;align-items:start;min-width:0}
+#mt-lista .mt-ach .pt{margin-top:5px}#mt-lista .mt-ach>a,#mt-lista .mt-ach>span:not(.pt){grid-column:2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+#mt-lista .mt-ach>small{grid-column:2;display:block;text-align:left;white-space:normal;overflow-wrap:anywhere;word-break:break-word;color:var(--suave);font-size:10.5px;line-height:1.35;min-width:0}
+#mt-lista .mt-ach>small.mt-ach-op{color:#1E7E4B}#mt-lista .mt-ach>small a{white-space:nowrap}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
