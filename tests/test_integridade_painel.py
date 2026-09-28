@@ -166,6 +166,19 @@ class TesteIntegridadePainel(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn('class="oa-sec"', h); self.assertIn("oa-ki", h)
 
+    def test_bussola_numeros_reais(self):
+        """28/09: os cartões da Bússola liam o conjunto antigo; 'fontes monitoradas' não batia com os opressores ligados."""
+        F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
+        O = F.get("opressores") or {}
+        self.assertEqual(O.get("abertas_sem_opressor_nem_dispensa"), 0)
+        C = {x["id"] for x in json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8"))["motores"]}
+        L = json.loads((ROOT / "estado/opressores.json").read_text(encoding="utf-8"))["ligados"]
+        self.assertEqual([k for k in L if k not in C], [], "opressor ligado que não existe no catálogo")
+        self.assertEqual(O.get("ligados"), len(L))
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        cards = h[h.index("function desenhaBzCards(){"):h.index('$("bz-cards").innerHTML=cards.map(')]
+        self.assertIn("FX.opressores", cards); self.assertNotIn("eds.filter(e=>situacaoDe(e)", cards)
+
 
 if __name__ == "__main__":
     unittest.main()

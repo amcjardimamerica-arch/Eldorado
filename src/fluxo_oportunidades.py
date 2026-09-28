@@ -377,6 +377,20 @@ def atualizar_preditivo(eid: str, dados: dict) -> bool:
     return achou
 
 
+def _resumo_opressores(itens: list[dict]) -> dict:
+    """28/09: os números REAIS dos motores opressores, para a Bússola ('fontes monitoradas' = opressores ligados)."""
+    C = (_j(CAT_OPR, {}) or {}).get("motores", []); L = (_j(EST_OPR, {}) or {}).get("ligados", {})
+    ids = {x.get("id") for x in C}; lig = [k for k in L if k in ids]
+    de_abertas = {x.get("opressor") for x in itens if x.get("opressor")}
+    return {"catalogo": len(C), "ligados": len(lig), "ligados_de_oportunidades_abertas": sum(1 for k in lig if k in de_abertas),
+            "ligados_fontes_permanentes": sum(1 for k in lig if k not in de_abertas),
+            "abertas_com_opressor": sum(1 for x in itens if x.get("opressor")), "abertas_dispensadas": sum(1 for x in itens if x.get("opressor_dispensa")),
+            "abertas_sem_opressor_nem_dispensa": sum(1 for x in itens if not x.get("opressor") and not x.get("opressor_dispensa")),
+            "com_historico_de_edicoes": sum(1 for x in C if len(x.get("historico") or []) >= 2), "com_previsao": sum(1 for x in C if x.get("previsao")),
+            "arquivadas_encerradas": sum(1 for v in ((_j(ROOT / "dados/editais/arquivados.json", {}) or {}).values() if isinstance(_j(ROOT / "dados/editais/arquivados.json", {}), dict) else [])
+                                         if "encerr" in json.dumps(v, ensure_ascii=False).lower())}
+
+
 def montar() -> dict:
     itens = consolidar()
     etapa = opressores_e_preditivo(itens)
@@ -398,7 +412,7 @@ def montar() -> dict:
                       "por_tipo": {t: sum(1 for x in itens if x["tipo"] == t) for t in ("ente público", "empresa/instituto", "menção em diário oficial")},
                       "por_validacao": {d: sum(1 for x in itens if (x.get("validacao") or {}).get("decisao") == d) for d in ("valida_aberta", "valida_fora_abrangencia", "pendente")},
                       "triagem": dict(TRIAGEM), **etapa},
-           "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal,
+           "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal, "opressores": _resumo_opressores(itens),
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
            "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao",
                                                                   "objeto", "condicoes", "checklist", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao")}

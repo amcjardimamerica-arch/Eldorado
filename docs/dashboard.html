@@ -2553,11 +2553,16 @@ function desenhaBussola(){
     ok:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#1E7E4B" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.8"/><path d="M8.3 12.3l2.5 2.5 4.9-5.1" stroke-linejoin="round"/></svg>',
     falha:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#B8860B" stroke-width="2" stroke-linecap="round"><path d="M12 3.5l9 16H3l9-16z" stroke-linejoin="round"/><path d="M12 10v4.2M12 17.3v.2"/></svg>',
     novo:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0B4EA2" stroke-width="2" stroke-linecap="round"><path d="M12 4.5v15M4.5 12h15"/><circle cx="12" cy="12" r="9" stroke-dasharray="2.4 3.4"/></svg>'};
+  // 28/09 (titular): somar fontes e itens dia a dia contava a mesma fonte 28 vezes e o mesmo item revisto todo dia.
+  // Agora: dias com busca, fontes na ÚLTIMA varredura e oportunidades abertas DESCOBERTAS no mês (sem repetição).
+  const ult=doMes[doMes.length-1]||{}, nd=new Date(busAno,busMes+1,0).getDate();
+  const mesId=`${busAno}-${String(busMes+1).padStart(2,"0")}`;
+  const novasMes=Object.values(((window._FLUXO||{}).itens_por_uf)||{}).flat().filter(x=>String(x.publicado_em||"").startsWith(mesId)).length;
   $("bus-mets").innerHTML=[
-    [ICOB.exec, doMes.length, "Buscas executadas"],
-    [ICOB.ok,   soma("fontes_ok"), "Fontes respondendo"],
-    [ICOB.falha,soma("fontes_falha"), "Fontes com falha"],
-    [ICOB.novo, soma("novas"), "Itens novos captados"]]
+    [ICOB.exec, `${doMes.length}<span style="font-size:13px;color:var(--suave)">/${nd}</span>`, "Dias com busca executada"],
+    [ICOB.ok,   ult.fontes_ok??0, `Fontes respondendo na última varredura${ult.data?" ("+br(ult.data)+")":""}`],
+    [ICOB.falha,ult.fontes_falha??0, "Fontes com falha na última varredura"],
+    [ICOB.novo, novasMes, "Oportunidades abertas descobertas no mês"]]
     .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
   const cat=(D.bussola&&D.bussola.categorias)||{};
   $("bus-legenda").innerHTML=Object.values(cat).map(c=>`<span><span class=ponto style="background:${c.cor}"></span>${esc(c.rotulo)}</span>`).join("");
@@ -4223,6 +4228,7 @@ window.carregaFluxo=async function(){
   try{ if(typeof desenhaBzLateral==="function"&&bzUFsel) desenhaBzLateral(); }catch(e){}
   try{ desenhaGantt(); }catch(e){}
   try{ desenhaRadar(); }catch(e){}
+  try{ if(typeof desenhaBzCards==="function") desenhaBzCards(); }catch(e){}
   try{ if((window._abaEd||"em_andamento")==="em_andamento"&&document.getElementById("ed-abertos-caixa")) desenhaAbertasFluxo(); }catch(e){}
   try{ if(typeof desenhaCal==="function") desenhaCal(); }catch(e){}
 };
@@ -4652,19 +4658,25 @@ function desenhaBzCards(){
     farol:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.7"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M12 2.2v2.2M7 4.4l1.7 1.3M17 4.4l-1.7 1.3M8 21h8"/></svg>`,
     livro:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><path d="M12 5.5C10 4 7.4 3.6 4 3.8v14.7c3.4-.2 6 .2 8 1.7 2-1.5 4.6-1.9 8-1.7V3.8c-3.4-.2-6 .2-8 1.7z" stroke-linejoin="round"/><path d="M12 5.5v14.7"/></svg>`});
   const mon=bp.monitoramentos||{}; const tot=bp.totais||{};
+  // 28/09 (titular): os cartões leem o FLUXO VALIDADO e o catálogo real dos opressores — não mais o conjunto antigo
+  const FX=window._FLUXO||{}, OP=FX.opressores||{}, its=Object.values(FX.itens_por_uf||{}).flat();
+  const hj=HOJE.toISOString().slice(0,10), em7=new Date(HOJE.getTime()+7*864e5).toISOString().slice(0,10);
+  const conf=its.filter(x=>x.confirmada), urg=conf.filter(x=>x.fim&&x.fim>=hj&&x.fim<=em7);
+  const estud=its.filter(x=>x.inspecao), chk9=its.filter(x=>Object.values(x.checklist||{}).filter(c=>["ok","disp","val"].includes(c.s)).length>=9);
   const cards=[
-    [IC("#C77E12").rosa,"Oportunidades",`${eds.filter(e=>situacaoDe(e)==="aberta").length} <span style="font-size:14px;color:var(--suave)">abertas</span>`,
-     `${eds.filter(e=>situacaoDe(e)==="possivel").length} possíveis em investigação · ${eds.filter(e=>situacaoDe(e)==="encerrada").length} encerradas`,"vermelho",
-     "aberta = período de inscrição vigente e confirmado, com cidade/estado e publicação oficial; possível = encontrada sem prazo confirmado — fica em investigação até validar ou descartar; encerrada = período passou"],
-    [IC("#0B4EA2").banco,"Fontes monitoradas",`<span id="bz-motores-ativos">—</span>`,"motores ativos / total","azul",
-     "motores de busca ativos no dia (regulares + Opressores acesos) sobre o total de motores"],
-    [IC("#0B4EA2").escudo,"Editais verificados",tot.completos??0,"completos p/ o Farol","azul",
-     "verificação DUPLA: fonte identificada + edital integral com texto, datas e documentos-modelo — só estes compõem o Dashboard"],
-    [IC("#C0392B").relogio,"Prazos urgentes",bp.urgentes_7d??0,"até 7 dias","vermelho","inscrições abertas encerrando em até 7 dias"],
-    [IC("#0B4EA2").farol,"Casos no Farol",bp.casos_farol??0,bp.casos_nota||"em análise","azul","casos em preparação de documentação"],
-    [IC("#0B4EA2").livro,"Base legal",((D.biblioteca||{}).acervos||{}).leis??"—","normas na Biblioteca","azul","leis, decretos, portarias, resoluções e atos que regem as fontes de recurso"]];
+    [IC("#C77E12").rosa,"Oportunidades",`${its.length} <span style="font-size:14px;color:var(--suave)">abertas</span>`,
+     `${conf.length} com prazo e site oficial · ${its.length-conf.length} em verificação · ${OP.arquivadas_encerradas??0} encerradas no arquivo`,"vermelho",
+     "abertas = prazo não vencido ou publicadas nos últimos 60 dias, já com a validação individual; com prazo e site oficial = objeto, data-limite e link oficial confirmados"],
+    [IC("#0B4EA2").banco,"Fontes monitoradas",`${OP.ligados??"—"} <span style="font-size:14px;color:var(--suave)">opressores ligados</span>`,
+     `${OP.ligados_de_oportunidades_abertas??0} de oportunidades abertas · ${OP.ligados_fontes_permanentes??0} fontes permanentes · ${OP.catalogo??0} no catálogo`,"azul",
+     `cada oportunidade com concorrência tem o seu motor opressor: ${OP.abertas_com_opressor??0} abertas com opressor, ${OP.abertas_dispensadas??0} dispensadas (doação, patrocínio, emenda), ${OP.abertas_sem_opressor_nem_dispensa??0} sem nenhum dos dois`],
+    [IC("#0B4EA2").escudo,"Estudadas pelo Interceptador",estud.length,`${chk9.length} com checklist ≥ 9/12 · ${its.length-estud.length} na fila`,"azul",
+     "oportunidades cuja fonte oficial o Piloto - Interceptador já leu, com as 12 condições conferidas (comprovadas, dispensadas pelo edital ou em falta)"],
+    [IC("#C0392B").relogio,"Prazos urgentes",urg.length,"inscrições terminando em até 7 dias","vermelho",urg.map(x=>`${x.titulo.slice(0,50)} — até ${br(x.fim)}`).join("\n")||"nenhuma inscrição confirmada termina nos próximos 7 dias"],
+    [IC("#0B4EA2").farol,"Repositório de oportunidades",OP.com_historico_de_edicoes??0,`opressores com 2+ edições · ${OP.com_previsao??0} com próxima janela prevista`,"azul",
+     "cada motor opressor guarda as edições de uma oportunidade (prazo, página oficial, condições, estudo) — é a base da análise preditiva"],
+    [IC("#0B4EA2").livro,"Base legal",((D.biblioteca||{}).acervos||{}).leis??"","normas na Biblioteca","azul","leis, decretos, portarias, resoluções e atos que regem as fontes de recurso"]];
   $("bz-cards").innerHTML=cards.map(c=>`<div class="bz-card" title="${esc(c[5])}">${c[0]}<div class=r>${c[1]}</div><div class=v>${c[2]}</div><div class="s ${c[4]}">${esc(String(c[3]))}</div></div>`).join("");
-  atualizaMotoresAtivos();
   const na=$("bz-cards").children[0];
   // honestidade: 305 "novas" hoje = carga inicial de 31/08
 }
@@ -5071,7 +5083,8 @@ const SELOS=[   // [caixa, arquivo, de onde vem a data de geração, minutos at�
   ["rank-apoiadores","dados/ranking_apoiadores.json",()=>(window.EMP||{}).gerado_em,10080], ["int-posto-bussola","dados/interceptador.json",()=>(window._INT||{}).em,60],
   ["int-posto","dados/interceptador.json",()=>(window._INT||{}).em,60],
   ["g-corpo","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90],
-  ["fi-mets","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90]];
+  ["fi-mets","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90],
+  ["bz-cards","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90]];
 function pintarSelos(){
   SELOS.forEach(([id,cam,g,lim])=>{ const el=document.getElementById(id); if(!el||!el.parentNode) return;
     let s=document.querySelector(`.selo-box[data-para="${id}"]`);

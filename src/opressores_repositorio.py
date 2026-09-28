@@ -170,6 +170,12 @@ def sincronizar() -> dict:
         if not SELECAO.search(f"{tit} {item['orgao']}"):
             idx[fid] = {"dispensa": "sem critério de seleção identificado no título"}; continue
         idx[fid] = {"opressor": opressor_de(item, "biblioteca", False)}
+    # LIGADO SEM OPRESSOR NÃO É FONTE MONITORADA (28/09): 33 ligados não existiam mais no catálogo e inflavam a contagem
+    ids = {x.get("id") for x in C.get("motores") or []}
+    orfaos = [k for k in L["ligados"] if k not in ids]
+    for k in orfaos:
+        L["ligados"].pop(k, None)
+    st["ligados_orfaos_removidos"] = len(orfaos)
     CAT.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
     LIG.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     IDX.write_text(json.dumps({"regra": __doc__.split("Fontes:")[0].strip(), "indice": idx}, ensure_ascii=False), encoding="utf-8")
