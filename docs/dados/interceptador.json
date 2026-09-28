@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T21:00:44+00:00",
+  "em": "2026-09-28T21:14:21+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T20:50:15+00:00",
+  "ultimo_voo": "2026-09-28T21:02:35+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,24 +34,91 @@
     "editais novos dos motores": 26,
     "indícios do Espião": 21,
     "abertos com itens em falta": 4,
-    "empresas sem ficha": 59
+    "empresas sem ficha": 61
   },
   "acumulado": {
-    "missoes": 266,
+    "missoes": 267,
     "validadas": 18,
     "parciais": 85,
-    "insuficientes": 112,
+    "insuficientes": 113,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 172,
+      "sim": 173,
       "nao": 21
     },
-    "estrelas_de_ouro": 10,
+    "estrelas_de_ouro": 11,
     "fontes_novas_para_os_motores": 71,
     "tempo_medio_min": 9.3
   },
   "missoes": [
+    {
+      "em": "2026-09-28T21:02:35+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · RJ (sorteio)",
+      "alvo": "Diário Oficial de Sumidouro (RJ) 2026-08-14 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "http://sumidouro.rj.gov.br",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona o prazo de inscrição, órgão financiador e anexos, o que é suficiente para identificar a fonte como válida.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital se aplica à sua área de atuação, preparar os documentos necessários e submeter a proposta dentro do prazo de inscrição.",
+        "proximo_passo": "Consultar o edital completo para entender os requisitos e a área de atuação prevista.",
+        "risco": "O edital não menciona a área de atuação, o que pode impedir que a associação comunitária se qualifique como elegível."
+      },
+      "erro": null,
+      "segundos": 706,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 2,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "d6d83aa6dfbb5d9422e1",
+      "encontrou": {
+        "Prazo de inscrição": {
+          "valor": "2026-08-14 a 2026-09-30",
+          "trecho": "Prazo de Inscrição: 14/08/2026 a 30/09/2026",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Sumidouro",
+          "trecho": "Prefeitura Municipal de Sumidouro",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Sumidouro",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3305703/2026-08-14/cda5ba736b1f4e758e8445a1b1c93ad9e5b07a89.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-28T20:50:15+00:00",
       "modo": "validar",
@@ -2811,74 +2878,6 @@
           "tipo": "noticia"
         }
       ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-09-28T12:17:12+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "opressor sem leitura",
-      "alvo": "Instituto Claro — Instituto Claro",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://institutoclaro.clarobrasil.mobi/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O Instituto Claro é citado como financiador do edital com objeto de capacitar mil jovens em tecnologia da informação (TI), com possibilidade de contratação pela Claro, no território de SP.",
-        "para_a_amc": "Para acessar o edital, uma associação comunitária de Goiânia precisaria verificar se o edital é aberto para o território de Goiânia, pois o objeto do edital está vinculado ao território de SP. Caso não seja, seria necessário buscar outros editais compatíveis com a localidade e área de atuação da associação.",
-        "proximo_passo": "Consultar os editais disponíveis para o território de Goiânia e área de atuação da associação comunitária, verificando se há compatibilidade com o objeto do edital do Instituto Claro.",
-        "risco": "O território de atuação do edital (SP) não coincide com a localidade de Goiânia, o que pode impedir o acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 716,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 4,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-captacao-225",
-      "encontrou": {
-        "Objeto": {
-          "valor": "capacitar mil jovens em tecnologia da informação (TI), com possibilidade de contratação pela Claro",
-          "trecho": "Objetivo é capacitar mil jovens em tecnologia da informação (TI), com possibilidade de contratação pela Claro",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Instituto Claro",
-          "trecho": "Instituto Claro",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "evento em São Paulo",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Instituto Claro",
-      "indicios": [],
       "rotas": [
         "financiador_programa_edital",
         "financiador_regulamento",
