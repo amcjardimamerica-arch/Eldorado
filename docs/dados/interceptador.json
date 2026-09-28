@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T21:58:25+00:00",
+  "em": "2026-09-28T22:12:10+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T21:43:41+00:00",
+  "ultimo_voo": "2026-09-28T21:59:51+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,108 @@
     "empresas sem ficha": 63
   },
   "acumulado": {
-    "missoes": 270,
-    "validadas": 18,
+    "missoes": 271,
+    "validadas": 19,
     "parciais": 86,
     "insuficientes": 115,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 175,
+      "sim": 176,
       "nao": 22
     },
     "estrelas_de_ouro": 12,
-    "fontes_novas_para_os_motores": 71,
+    "fontes_novas_para_os_motores": 72,
     "tempo_medio_min": 9.3
   },
   "missoes": [
+    {
+      "em": "2026-09-28T21:59:51+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "opressor sem leitura",
+      "alvo": "MDS - Cozinhas Solidárias 2026 — MDS / FNAS / CNAS",
+      "qualidade": "validada",
+      "comprovados": 9,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de recurso",
+        "Valor",
+        "Anexos"
+      ],
+      "pagina_oficial": "https://scbrnews.com.br/mds-divulga-edital-e-convoca-entidades-para-apoiar-cozinhas-solidarias-ate-marco/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, resultado, órgão financiador, território, esfera, requisitos, destinação e área de atuação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisa estar credenciada pelo MDS e oferecer refeições gratuitas a grupos em situação de vulnerabilidade socioeconômica e insegurança alimentar.",
+        "proximo_passo": "Verificar se a associação está credenciada pelo MDS e se atende aos requisitos do edital.",
+        "risco": "A associação pode não estar credenciada pelo MDS, o que impediria o acesso ao fomento."
+      },
+      "erro": null,
+      "segundos": 738,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 9,
+      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
+      "avaliacao": "pronta para a decisão do Claude",
+      "id": "op-captacao-090",
+      "encontrou": {
+        "Objeto": {
+          "valor": "oferecer refeições gratuitas a grupos em situação de vulnerabilidade socioeconômica e insegurança alimentar",
+          "trecho": "As cozinhas solidárias têm como objetivo oferecer refeições gratuitas a grupos em situação de vulnerabilidade socioeconômica e insegurança alimentar.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "? a 2026-03-12",
+          "trecho": "As propostas devem ser cadastradas até 12 de março de 2026 através da plataforma eletrônica Transferegov.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Ministério do Desenvolvimento e Assistência Social, Família e Combate à Fome",
+          "trecho": "O Ministério do Desenvolvimento e Assistência Social, Família e Combate à Fome (MDS), anunciou um edital em 09/02/2026, visando selecionar entidades gestoras para apoiar o Programa",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "nacional",
+          "trecho": "As cozinhas solidárias são uma ação organizada da sociedade civil, funcionando de maneira voluntária e com a colaboração da comunidade.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "assistencia_social",
+          "trecho": "As cozinhas solidárias têm como objetivo oferecer refeições gratuitas a grupos em situação de vulnerabilidade socioeconômica e insegurança alimentar.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "As entidades privadas e sem fins lucrativos, credenciadas pelo MDS.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "credenciadas pelo MDS",
+          "trecho": "As entidades privadas e sem fins lucrativos, credenciadas pelo MDS.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Ministério do Desenvolvimento e Assistência Social, Família e Combate à Fome",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-09-28T21:43:41+00:00",
       "modo": "validar",
@@ -2825,80 +2912,6 @@
         "financiador_ano",
         "governo",
         "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-09-28T12:59:34+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "opressor sem leitura",
-      "alvo": "15:19 \n                   \n                   Votações conjuntas validam requerimentos e declarações de utilidade públic — Assembleia Legislativa de Goiás — pro",
-      "qualidade": "parcial",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.al.sp.gov.br/repositorio/bibliotecaDigital/25228_arquivo.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O objeto do edital menciona votações conjuntas para validar requerimentos e declarações de utilidade pública, o que está relacionado ao processo de obtenção de status de utilidade pública.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria apresentar requerimentos e declarações de utilidade pública, além de seguir as normas e procedimentos estabelecidos pela Assembleia Legislativa de Goiás para a validação desses documentos.",
-        "proximo_passo": "Consultar os anexos disponibilizados pela Assembleia Legislativa de Goiás para obter detalhes sobre os requisitos e procedimentos necessários para a validação dos requerimentos e declarações de utilidade pública.",
-        "risco": "A falta de informações sobre prazos, requisitos e áreas de atuação pode impedir a associação de se adequar corretamente ao processo."
-      },
-      "erro": null,
-      "segundos": 583,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 2,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "op-nova-fec270c47329",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Votações conjuntas validam requerimentos e declarações de utilidade pública",
-          "trecho": "Votações conjuntas validam requerimentos e declarações de utilidade pública",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Assembleia Legislativa de Goiás",
-          "trecho": "Assembleia Legislativa de Goiás",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Da Divisão Territori",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "Votações conjuntas validam requerimentos e declarações de utilidade pública",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Conselho de Ética e Decoro Parlamentar",
-      "indicios": [
-        {
-          "url": "https://portal.al.go.leg.br/noticias/167392/votacoes-conjuntas-validam-requerimentos-e-declaracoes-de-utilidade-publica",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf"
       ]
     }
   ]
