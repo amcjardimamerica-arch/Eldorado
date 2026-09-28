@@ -382,7 +382,16 @@ def _resumo_opressores(itens: list[dict]) -> dict:
     C = (_j(CAT_OPR, {}) or {}).get("motores", []); L = (_j(EST_OPR, {}) or {}).get("ligados", {})
     ids = {x.get("id") for x in C}; lig = [k for k in L if k in ids]
     de_abertas = {x.get("opressor") for x in itens if x.get("opressor")}
-    return {"catalogo": len(C), "ligados": len(lig), "ligados_de_oportunidades_abertas": sum(1 for k in lig if k in de_abertas),
+    # por mês: opressores CRIADOS e, deles, os ACIONADOS COM RESULTADO (geraram oportunidade: uma aberta agora ou edição guardada)
+    por_mes = {}
+    for x in C:
+        m = str(x.get("criado_em") or "")[:7]
+        if not m:
+            continue
+        p = por_mes.setdefault(m, {"criados": 0, "com_resultado": 0}); p["criados"] += 1
+        if x.get("id") in de_abertas or any(h.get("origem") == "aberta" for h in (x.get("historico") or [])):
+            p["com_resultado"] += 1
+    return {"por_mes": por_mes, "catalogo": len(C), "ligados": len(lig), "ligados_de_oportunidades_abertas": sum(1 for k in lig if k in de_abertas),
             "ligados_fontes_permanentes": sum(1 for k in lig if k not in de_abertas),
             "abertas_com_opressor": sum(1 for x in itens if x.get("opressor")), "abertas_dispensadas": sum(1 for x in itens if x.get("opressor_dispensa")),
             "abertas_sem_opressor_nem_dispensa": sum(1 for x in itens if not x.get("opressor") and not x.get("opressor_dispensa")),

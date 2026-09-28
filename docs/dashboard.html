@@ -1130,7 +1130,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <!-- 1 · MAPA DE OPORTUNIDADES — monitor da etapa 1 (levantamento) -->
 <div class="cartao" style="margin-bottom:16px">
   <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Mapa de oportunidades
-    <span class=meta style="font-weight:500" title="Monitor da ETAPA 1 (levantamento). Mostra onde e quando a varredura encontrou indícios de edital, por frente de busca. Ainda sem a confirmação da etapa 2.">— levantamento por dia, frente e território</span></div>
+    </div>
   <div class="bz-filtros" id="mp-filtros" style="margin:10px 0 12px">
     <select id="mp-mes" style="display:none"></select>
     <select id="mp-frente"><option value="">Todas as frentes</option></select>
@@ -2564,7 +2564,7 @@ function desenhaBussola(){
     [ICOB.exec, `${doMes.length}<span class="bz-tot">/${nd}</span>`, "Dias com busca"],
     [ICOB.ok,   `${ult.fontes_ok??0}<span class="bz-tot">/${totF}</span>`, "Fontes respondendo"],
     [ICOB.falha,`${ult.fontes_falha??0}<span class="bz-tot">/${totF}</span>`, "Fontes com falha"],
-    [ICOB.novo, `${novasMes}<span class="bz-tot">/${itsM}</span>`, "Descobertas no mês"]]
+    [ICOB.novo, (()=>{const PM=(((window._FLUXO||{}).opressores||{}).por_mes||{})[mesId]||{}; return `${PM.criados??0}<span class="bz-tot">/${PM.com_resultado??0}</span>`;})(), "Descobertas no mês"]]   // opressores criados no mês / acionados com resultado
     .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
   const cat=(D.bussola&&D.bussola.categorias)||{};
   $("bus-legenda").innerHTML=Object.values(cat).map(c=>`<span><span class=ponto style="background:${c.cor}"></span>${esc(c.rotulo)}</span>`).join("");
@@ -4244,7 +4244,6 @@ window.htmlPainelUF=function(rot,itens){
   return `<div style="display:flex;justify-content:space-between;align-items:center">
       <strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(rot)} · ${itens.length} possível(is) oportunidade(s)</strong>
       <button class="fdoc-bt" onclick="bzFecharUF()">fechar</button></div>
-    <div class=meta style="margin:4px 0 8px">${conf} com objeto, prazo aberto e link oficial · ${insp} inspecionada(s) pelo Interceptador (${ok} com prazo e site oficial) · ${itens.length-insp} na fila dele</div>
     <div class="uf-fx">${itens.map(x=>{const I=x.inspecao; const cor=!I?"cinza":I.ok?"verde":"verm";
       const u=(I&&I.pagina_oficial)||x.link_oficial||x.url;
       return `<div class="uf-fx-l${I?" insp":""}" data-op="${esc(x.id||"")}">
@@ -5090,8 +5089,7 @@ function pintarSelos(){
     s.innerHTML=seloVivo(cam,g(),lim); });
   const v=document.getElementById("versao-painel");
   if(v){ const F=_FONTES["dashboard-dados.js"]||{}; const prox=Math.max(0,Math.round((240000-(Date.now()-(window._ultimaAtualizacao||Date.now())))/60000));
-    v.innerHTML=`<span class="vivo-pt${F.ok===false?" falha":""}"></span> <b>ao vivo</b> · dados gerados em ${esc(_hm(D&&D.gerado_em))} · lidos às ${F.lido_em?esc(_hm(F.lido_em).slice(6)):"—"} de ${esc(F.fonte||"—")} · próxima leitura em ${prox||4} min${(()=>{const S=window._SAUDE; if(!S) return ""; const A=S.alertas||[];
-      return ` · <span class="saude ${A.length?"alerta":"ok"}" title="${esc(A.length?A.map(a=>"• "+a.area+": "+a.texto).join("\n"):(S.ok||[]).join("\n"))}\n(checado em ${esc(_hm(S.em))})">saúde: ${A.length?A.length+" alerta(s)":"ok"}</span>`;})()}${tokenLeitura()?"":" · <b>sem token: guarde-o (fósforo de um motor) para ler sem atraso</b>"} <a href="#" onclick="atualizarAgora(true);return false">atualizar agora</a>`; }
+    v.innerHTML=`<span class="vivo-pt${F.ok===false?" falha":""}"></span> <b>ao vivo</b> · dados gerados em ${esc(_hm(D&&D.gerado_em))}`; }   // 28/09 (titular): sem "lidos às…", próxima leitura, saúde e atualizar agora
   const r=document.getElementById("rodada"); if(r&&D) r.textContent="Última alimentação: "+_hm(D.gerado_em)+" · leitura ao vivo a cada 4 minutos";
 }
 window.atualizarAgora=async function(forcar){
