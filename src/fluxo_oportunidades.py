@@ -90,6 +90,23 @@ def consolidar() -> list[dict]:
         cid = "cat-" + hashlib.sha1(c["url"].encode()).hexdigest()[:12]
         brutos.append(("Piloto - Espião", {"id": cid, "titulo": c.get("titulo"), "url": c.get("url"), "orgao": c.get("visto_em"),
                                             "descoberto_em": c.get("descoberto_em"), "fonte_id": "piloto-espiao", "enquadramento": c.get("enquadramento")}))
+    # EMENDAS PARLAMENTARES NO FLUXO (titular, 28/09): a captação de emendas (federal, estadual de Goiás e municipal de
+    # Goiânia) abre todo ano em 01/10 e vai a 30/11 (config/emendas.json). Ficavam só no conjunto antigo do painel e
+    # sumiram do Radar, do mapa e dos calendários quando eles passaram a ler o fluxo validado. Voltam, a cada ano.
+    try:
+        _dd = (ROOT / "docs/dashboard-dados.js").read_text(encoding="utf-8")
+        _D = json.loads(_dd[_dd.index("{"):_dd.rindex("}") + 1])
+        for em in (_D.get("editais") or []):
+            if em.get("area") == "emendas_parlamentares" and em.get("fim"):
+                _u = em.get("url") or ""
+                if "dadosabertos.camara.leg.br/api" in _u:      # endereço de API não é página para a entidade abrir
+                    _u = "https://www.camara.leg.br/deputados/quem-sao"
+                brutos.append(("calendário legislativo · emendas", {"id": em["id"], "titulo": em.get("titulo"), "url": _u,
+                               "orgao": em.get("orgao") or em.get("fonte_nome"), "uf": em.get("uf"), "objeto": em.get("objeto"),
+                               "fim": em.get("fim"), "inicio": em.get("inicio"), "data_publicacao": em.get("inicio"),
+                               "fonte_id": em.get("fonte_id"), "nivel": em.get("nivel"), "_emenda": True}))
+    except Exception:
+        pass
     for arq in EXT.glob("*.json"):
         e = _j(arq, {})
         if e.get("investigacao_ia") and arq.stem.startswith(("cat-", "op-")):
@@ -124,6 +141,8 @@ def consolidar() -> list[dict]:
         val = e.get("validacao") if isinstance(e.get("validacao"), dict) else {}
         pub = _d(m.get("data_publicacao"), m.get("descoberto_em"), m.get("coletado_em"))
         fim = _d(e.get("fim"), ve.get("prazo"), val.get("prazo_valor"), m.get("fim"))
+        if m.get("_emenda"):
+            e = {**e, "inicio": m.get("inicio")}
         link = _oficial(ve.get("pagina_oficial"), e.get("pagina_oficial"), val.get("site"), m.get("url"))
         objeto = m.get("objeto") or e.get("objeto") or ((campos.get("Objeto") or {}).get("valor") if (campos.get("Objeto") or {}).get("comprovado") else None)
         if v and v["decisao"] in ("valida_aberta", "valida_fora_abrangencia") and v.get("fonte_oficial"):
@@ -143,6 +162,8 @@ def consolidar() -> list[dict]:
             continue
         vistos_t.add(kt); vistos_u.add(ku)
         uf = str(m.get("uf") or e.get("uf") or "").upper()
+        if m.get("_emenda") and m.get("nivel") == "federal":
+            uf = ""
         # fluxo contínuo: o próprio edital dispensa a data-limite (validação no site oficial) — vale como prazo aberto
         prazo_disp = bool(v and v["decisao"].startswith("valida") and ((v.get("doze_itens") or {}).get("Prazo de inscrição") or {}).get("status") == "dispensado pelo edital")
         confirmada = bool(objeto and link and ((fim and fim >= hoje.isoformat()) or (prazo_disp and not fim)))
@@ -158,7 +179,7 @@ def consolidar() -> list[dict]:
                     "ok": bool(fim and po_ok)}          # verde = achou prazo E site oficial; vermelho = não achou
         out.append({"id": m.get("id"), "titulo": re.sub(r"(?i)^continue lendo\s+", "", tit)[:180], "orgao": m.get("orgao") or e.get("orgao"),
                     "uf": uf if uf in UFS else None, "origem": origem, "tipo": "menção em diário oficial" if diario else ("empresa/instituto" if (m.get("nivel") in ("privada", "privado") or origem.startswith("Piloto")) else "ente público"),
-                    "publicado_em": pub, "inicio": _d(e.get("inicio"), ve.get("inicio")), "fim": fim, "link_oficial": link,
+                    "publicado_em": pub, "inicio": _d(e.get("inicio"), ve.get("inicio"), m.get("inicio") if m.get("_emenda") else None), "fim": fim, "link_oficial": link,
                     "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp,
                     "validacao": ({"decisao": v["decisao"], "motivo": v.get("motivo"), "em": v.get("validado_em")} if v else None)})
     return out

@@ -417,6 +417,19 @@ box-shadow:0 1px 3px #0002}
 .rd-t{font-weight:700;color:#0E2A55;margin:6px 0 4px;font-size:13.5px}.rd-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:6px 8px;border-bottom:1px solid #F0F3F7;font-size:12.5px}
 .rd-l.insp{background:#F4FAF6}.rd-n small{display:block;color:var(--suave);font-size:10.5px}.rd-p{white-space:nowrap;color:var(--suave);font-size:11.5px}
 .rd-a{white-space:nowrap;font-size:11.5px;border:1px solid #E6D39A;border-radius:8px;padding:2px 8px;text-decoration:none;color:#8A5A00}.rd-a.of{background:#FFF6E5;font-weight:700}
+.cv-leg{display:inline-flex;align-items:center;gap:5px;margin:0 12px 4px 0;font-size:12.5px}.cv-leg i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.cv-cont{border:1px solid #CFE8D8;background:#F4FAF6;border-radius:10px;padding:8px 10px;font-size:12.5px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+#cal-grade.calgrade{display:block;grid-template-columns:none}#cal-simbolos{display:block;line-height:1.6}
+.cv-grade{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.cv-sem{text-align:center;font-size:11px;font-weight:700;color:var(--suave);padding:4px 0}
+.cv-dia{min-height:104px;border:1px solid #E6EAF0;border-radius:10px;padding:6px;background:#fff;display:flex;flex-direction:column;gap:3px;cursor:default;overflow:hidden}
+.cv-dia.vazio{border:none;background:transparent}.cv-dia.passado{background:#FAFBFC}.cv-dia.passado .cv-n span{color:#9AA5B1}
+.cv-dia.hoje{border:2px solid #0E2A55;box-shadow:0 0 0 3px #0E2A5512}.cv-n{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:13px}
+.cv-n em{font-style:normal;font-size:10px;background:#0E2A55;color:#fff;border-radius:9px;padding:0 6px}
+.cv-chip{display:block;font-size:10.5px;line-height:1.3;padding:2px 6px;border-radius:6px;background:color-mix(in srgb,var(--c) 14%,#fff);border-left:3px solid var(--c);color:#23272E;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cv-chip:hover{background:color-mix(in srgb,var(--c) 26%,#fff)}.cv-chip.fim{font-weight:700}
+.cv-cont .cv-chip{display:inline-block;max-width:320px;font-size:11.5px}.cv-mais{font-size:10.5px;color:#0E2A55;font-weight:700;cursor:pointer}
+.cv-resto{display:none;flex-direction:column;gap:3px}.cv-dia.abre .cv-resto{display:flex}.cv-dia.abre .cv-mais{display:none}.cv-dia.abre{overflow:visible}
+@media (max-width:760px){.cv-dia{min-height:70px}.cv-chip{font-size:9.5px}}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -1673,7 +1686,7 @@ function resumoTip(e){
 
 
 /* ================= PÁGINA INICIAL ================= */
-function desenhaRadar(){
+function desenhaRadar_antigo_ate_28_09(){
   const eds=D.editais||[];
   const UFS=["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
   // contagem PRÓPRIA de cada estado (não soma os de alcance nacional)
@@ -1802,7 +1815,7 @@ function desenhaFarolResumo(){
 }
 let gAno,gMes,gFiltrados=null;   // gFiltrados = recorte vindo do filtro da página inicial
 window.mudaMesG=function(dx){gMes+=dx;if(gMes<0){gMes=11;gAno--;}if(gMes>11){gMes=0;gAno++;}desenhaGantt();};
-function desenhaGantt(){
+function desenhaGantt_antigo_ate_28_09(){
   $("g-mes").textContent=MES[gMes]+" "+gAno;
   $("g-meses").innerHTML=MES.map((m,i)=>
     `<button data-m="${i}" class="${i===gMes?"on":""}">${m.slice(0,3)}</button>`).join("");
@@ -2132,6 +2145,42 @@ function desenhaRadar(){
     +possOrd.slice(0,8).map(x=>linha(x,false)).join("")
     +(possOrd.length>8?`<div class=meta style="padding:6px 2px">mostrando 8 de ${possOrd.length} · <a href="#" onclick="trocaVista('bussola');return false">todas no Mapa de Oportunidades</a></div>`:""):"";
 }
+/* ═══ CALENDÁRIO COMPLETO, DIA A DIA (titular, 28/09) — REGRA MÁXIMA ═════════════════════════════════════════════
+   Cada dia mostra as inscrições ABERTAS naquele dia (do início ao fim da inscrição), lidas do fluxo validado — o mesmo
+   do mapa, do Radar e do calendário da página inicial. ▲ = abre neste dia · ■ = último dia. Cada item abre o SITE
+   OFICIAL. Fluxo contínuo fica numa faixa própria acima da grade. Emendas parlamentares (01/10–30/11) incluídas. */
+const COR_AREA={cultura:"#D63A6B",esporte:"#7CB518",saude:"#2F79D0",crianca:"#E0A100",idoso:"#8C6D3F",assistencia:"#12A5B5",ambiente:"#7B4FE0",educacao:"#2E9D5B",emendas:"#B8860B",outras:"#7C8899"};
+const NOME_AREA={cultura:"Cultura",esporte:"Esporte e lazer",saude:"Saúde",crianca:"Criança e adolescente",idoso:"Pessoa idosa",assistencia:"Assistência social",ambiente:"Meio ambiente e clima",educacao:"Educação",emendas:"Emendas parlamentares",outras:"Outras"};
+const areaCal=x=>(/emenda parlamentar/i.test(x.titulo||"")||/emendas/.test(x.origem||""))?"emendas":areaRadar(x);
+function desenhaCal(){
+  if(calAno==null){calAno=HOJE.getFullYear();calMes=HOJE.getMonth();}
+  const MES_=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  $("cal-titulo").textContent=MES_[calMes]+" de "+calAno;
+  const F=window._FLUXO||{}; const p2=n=>String(n).padStart(2,"0");
+  const nd=new Date(calAno,calMes+1,0).getDate(), I=`${calAno}-${p2(calMes+1)}-01`, Fm=`${calAno}-${p2(calMes+1)}-${p2(nd)}`;
+  const conf=(F.calendario||[]).filter(x=>x.link_oficial);
+  const continuos=conf.filter(x=>!x.fim);
+  const comPrazo=conf.filter(x=>x.fim&&x.fim>=I&&(x.inicio||x.publicado_em||I)<=Fm);
+  const noDia=iso=>comPrazo.filter(x=>(x.inicio||x.publicado_em||"0000")<=iso&&iso<=x.fim);
+  const areas={}; comPrazo.concat(continuos).forEach(x=>{const a=areaCal(x); areas[a]=(areas[a]||0)+1;});
+  $("cal-legenda").innerHTML=Object.keys(COR_AREA).filter(a=>areas[a]).map(a=>`<span class="cv-leg"><i style="background:${COR_AREA[a]}"></i>${NOME_AREA[a]} <b>${areas[a]}</b></span>`).join("")||`<span class=meta>nenhuma inscrição confirmada neste mês</span>`;
+  $("cal-sem-prazo").innerHTML=continuos.length?`<div class="cv-cont"><b>Abertas o ano todo (fluxo contínuo)</b> ${continuos.map(x=>`<a class="cv-chip" style="--c:${COR_AREA[areaCal(x)]}" href="${esc(x.link_oficial)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)} — inscrição em fluxo contínuo · abre o site oficial">${esc(String(x.titulo).slice(0,60))}</a>`).join("")}</div>`:"";
+  $("cal-simbolos").innerHTML=`<b>${comPrazo.length}</b> inscrição(ões) com prazo neste mês · <b>▲</b> abre neste dia · <b>■</b> último dia de inscrição · cada item abre o site oficial, com edital, dados e anexos · só entra o que tem data de inscrição e site oficial confirmados`;
+  const SEM=["D","S","T","Q","Q","S","S"], hojeISO=HOJE.toISOString().slice(0,10);
+  let html=`<div class="cv-grade">${SEM.map(s=>`<div class="cv-sem">${s}</div>`).join("")}`;
+  const off=new Date(calAno,calMes,1).getDay(); for(let k=0;k<off;k++) html+=`<div class="cv-dia vazio"></div>`;
+  for(let dia=1;dia<=nd;dia++){
+    const iso=`${calAno}-${p2(calMes+1)}-${p2(dia)}`;
+    // o que ABRE ou FECHA neste dia vem primeiro; depois, pelo prazo mais próximo
+    const L=noDia(iso).sort((a,b)=>((b.inicio===iso||b.fim===iso)-(a.inicio===iso||a.fim===iso))||String(a.fim).localeCompare(String(b.fim)));
+    const chip=x=>{const ab=x.inicio===iso, fe=x.fim===iso;
+      return `<a class="cv-chip${fe?" fim":""}" style="--c:${COR_AREA[areaCal(x)]}" href="${esc(x.link_oficial)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)} — inscrições ${x.inicio?"de "+br(x.inicio)+" ":""}até ${br(x.fim)}${x.uf?" · "+esc(x.uf):" · nacional"} · abre o site oficial">${ab?"▲ ":fe?"■ ":""}${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"").replace(/"/g,"").slice(0,38))}</a>`;};
+    html+=`<div class="cv-dia${iso===hojeISO?" hoje":""}${iso<hojeISO?" passado":""}" onclick="if(event.target.closest('a'))return;this.classList.toggle('abre')">
+      <div class="cv-n"><span>${dia}</span>${L.length?`<em>${L.length}</em>`:""}</div>
+      ${L.slice(0,4).map(chip).join("")}${L.length>4?`<span class="cv-mais">+${L.length-4} — ver todas</span><div class="cv-resto">${L.slice(4).map(chip).join("")}</div>`:""}</div>`;
+  }
+  $("cal-grade").innerHTML=html+`</div>`;
+}
 function corTexto(hex){
   const c=String(hex).replace("#","");
   const r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);
@@ -2220,7 +2269,7 @@ function nomeObjetivo(e){
 /* ================= CALENDÁRIO ================= */
 let calAno,calMes;
 window.mudaMes=function(dx){calMes+=dx;if(calMes<0){calMes=11;calAno--;}if(calMes>11){calMes=0;calAno++;}desenhaCal();};
-function desenhaCal(){
+function desenhaCal_antigo_ate_28_09(){
   $("cal-titulo").textContent=MES[calMes]+" de "+calAno;
   const porDia={};
   const _jaEv=new Set((D.eventos||[]).map(ev=>ev.edital_id));

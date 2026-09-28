@@ -110,6 +110,19 @@ class TesteIntegridadePainel(unittest.TestCase):
             self.assertNotIn(proibido, corpo, proibido)
         self.assertIn("link_oficial", corpo)
 
+    def test_calendario_completo_dia_a_dia_e_emendas(self):
+        """28/09: o calendário completo não mostrava as inscrições abertas dia a dia; as emendas tinham sumido."""
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertEqual(len(re.findall(r"^function desenhaCal\(", h, re.M)), 1)
+        self.assertEqual(len(re.findall(r"^function desenhaGantt\(", h, re.M)), 1)
+        self.assertEqual(len(re.findall(r"^function desenhaRadar\(", h, re.M)), 1)
+        self.assertIn("CALENDÁRIO COMPLETO, DIA A DIA (titular, 28/09)", h)
+        F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
+        em = [x for x in F.get("calendario", []) if "Emenda Parlamentar" in x.get("titulo", "")]
+        self.assertGreaterEqual(len(em), 3, "emendas parlamentares fora do calendário")
+        for x in em:
+            self.assertTrue(x.get("inicio") and x.get("fim") and x.get("link_oficial"))
+
 
 if __name__ == "__main__":
     unittest.main()
