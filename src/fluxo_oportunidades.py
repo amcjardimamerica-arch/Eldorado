@@ -316,7 +316,7 @@ def montar() -> dict:
     from . import validacao_mapa as _vm2
     _V = _vm2.carregar()
     res = {"validacao": {"aplicada": True, "decisoes": len(_V), "arquivos": sorted({v.get("_arquivo") for v in _V.values()}),
-                         "sem_decisao": sum(1 for x in itens if not x.get("validacao") and not x.get("confirmada"))},   # confirmada (objeto+prazo+link) não precisa de decisão
+                         "sem_decisao": sum(1 for x in itens if not x.get("validacao"))},
            "em": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Publica")[0].strip(),
            "etapas": {"possiveis_abertas": tot["possiveis"], "confirmadas_com_minimo": tot["confirmadas"],
                       "por_origem": {o: sum(1 for x in itens if x["origem"].startswith(o)) for o in ("motor", "Piloto - Espião", "Piloto - Interceptador")},

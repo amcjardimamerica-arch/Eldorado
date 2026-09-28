@@ -422,7 +422,6 @@ box-shadow:0 1px 3px #0002}
 #cal-grade.calgrade{display:block;grid-template-columns:none}#cal-simbolos{display:block;line-height:1.6}
 .cv-grade{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.cv-sem{text-align:center;font-size:11px;font-weight:700;color:var(--suave);padding:4px 0}
 .cv-dia{min-height:104px;border:1px solid #E6EAF0;border-radius:10px;padding:6px;background:#fff;display:flex;flex-direction:column;gap:3px;cursor:default;overflow:hidden}
-.cv-vaga{display:block;height:19px;flex:0 0 19px}.cv-dia .cv-chip{height:19px;box-sizing:border-box;flex:0 0 19px}
 .cv-dia.vazio{border:none;background:transparent}.cv-dia.passado{background:#FAFBFC}.cv-dia.passado .cv-n span{color:#9AA5B1}
 .cv-dia.hoje{border:2px solid #0E2A55;box-shadow:0 0 0 3px #0E2A5512}.cv-n{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:13px}
 .cv-n em{font-style:normal;font-size:10px;background:#0E2A55;color:#fff;border-radius:9px;padding:0 6px}
@@ -2166,22 +2165,19 @@ function desenhaCal(){
   const areas={}; comPrazo.concat(continuos).forEach(x=>{const a=areaCal(x); areas[a]=(areas[a]||0)+1;});
   $("cal-legenda").innerHTML=Object.keys(COR_AREA).filter(a=>areas[a]).map(a=>`<span class="cv-leg"><i style="background:${COR_AREA[a]}"></i>${NOME_AREA[a]} <b>${areas[a]}</b></span>`).join("")||`<span class=meta>nenhuma inscrição confirmada neste mês</span>`;
   $("cal-sem-prazo").innerHTML=continuos.length?`<div class="cv-cont"><b>Abertas o ano todo (fluxo contínuo)</b> ${continuos.map(x=>`<a class="cv-chip" style="--c:${COR_AREA[areaCal(x)]}" href="${esc(x.link_oficial)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)} — inscrição em fluxo contínuo · abre o site oficial">${esc(String(x.titulo).slice(0,60))}</a>`).join("")}</div>`:"";
-  $("cal-simbolos").innerHTML=`<b>${comPrazo.length}</b> inscrição(ões) com prazo neste mês — todas visíveis, cada uma na sua linha, do prazo final mais próximo ao mais distante · <b>▲</b> abre neste dia · <b>■</b> último dia · cada item abre o site oficial, com edital, dados e anexos`;
+  $("cal-simbolos").innerHTML=`<b>${comPrazo.length}</b> inscrição(ões) com prazo neste mês · <b>▲</b> abre neste dia · <b>■</b> último dia de inscrição · cada item abre o site oficial, com edital, dados e anexos · só entra o que tem data de inscrição e site oficial confirmados`;
   const SEM=["D","S","T","Q","Q","S","S"], hojeISO=HOJE.toISOString().slice(0,10);
   let html=`<div class="cv-grade">${SEM.map(s=>`<div class="cv-sem">${s}</div>`).join("")}`;
   const off=new Date(calAno,calMes,1).getDay(); for(let k=0;k<off;k++) html+=`<div class="cv-dia vazio"></div>`;
-  // 28/09 (titular): NENHUMA oportunidade escondida; cada uma tem a SUA linha no mês inteiro — nos dias em que não está
-  // aberta o espaço fica vazio (nunca ocupado por outra); linhas do prazo final mais próximo para o mais distante.
-  const faixas=[...comPrazo].sort((a,b)=>String(a.fim).localeCompare(String(b.fim))||String(a.inicio||a.publicado_em||"").localeCompare(String(b.inicio||b.publicado_em||""))||String(a.titulo).localeCompare(String(b.titulo)));
-  const aberta=(x,iso)=>(x.inicio||x.publicado_em||"0000")<=iso&&iso<=x.fim;
   for(let dia=1;dia<=nd;dia++){
     const iso=`${calAno}-${p2(calMes+1)}-${p2(dia)}`;
-    const n=faixas.filter(x=>aberta(x,iso)).length;
-    const linha=x=>{ if(!aberta(x,iso)) return `<span class="cv-vaga" aria-hidden="true"></span>`;
-      const ab=x.inicio===iso, fe=x.fim===iso;
-      return `<a class="cv-chip${fe?" fim":""}${ab?" ini":""}" style="--c:${COR_AREA[areaCal(x)]}" href="${esc(x.link_oficial)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)} — inscrições ${x.inicio?"de "+br(x.inicio)+" ":""}até ${br(x.fim)}${x.uf?" · "+esc(x.uf):" · nacional"} · abre o site oficial">${ab?"▲ ":fe?"■ ":""}${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"").replace(/"/g,"").slice(0,40))}</a>`;};
-    html+=`<div class="cv-dia${iso===hojeISO?" hoje":""}${iso<hojeISO?" passado":""}">
-      <div class="cv-n"><span>${dia}</span>${n?`<em>${n}</em>`:""}</div>${faixas.map(linha).join("")}</div>`;
+    // o que ABRE ou FECHA neste dia vem primeiro; depois, pelo prazo mais próximo
+    const L=noDia(iso).sort((a,b)=>((b.inicio===iso||b.fim===iso)-(a.inicio===iso||a.fim===iso))||String(a.fim).localeCompare(String(b.fim)));
+    const chip=x=>{const ab=x.inicio===iso, fe=x.fim===iso;
+      return `<a class="cv-chip${fe?" fim":""}" style="--c:${COR_AREA[areaCal(x)]}" href="${esc(x.link_oficial)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)} — inscrições ${x.inicio?"de "+br(x.inicio)+" ":""}até ${br(x.fim)}${x.uf?" · "+esc(x.uf):" · nacional"} · abre o site oficial">${ab?"▲ ":fe?"■ ":""}${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"").replace(/"/g,"").slice(0,38))}</a>`;};
+    html+=`<div class="cv-dia${iso===hojeISO?" hoje":""}${iso<hojeISO?" passado":""}" onclick="if(event.target.closest('a'))return;this.classList.toggle('abre')">
+      <div class="cv-n"><span>${dia}</span>${L.length?`<em>${L.length}</em>`:""}</div>
+      ${L.slice(0,4).map(chip).join("")}${L.length>4?`<span class="cv-mais">+${L.length-4} — ver todas</span><div class="cv-resto">${L.slice(4).map(chip).join("")}</div>`:""}</div>`;
   }
   $("cal-grade").innerHTML=html+`</div>`;
 }
