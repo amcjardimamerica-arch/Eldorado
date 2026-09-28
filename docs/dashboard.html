@@ -413,6 +413,7 @@ box-shadow:0 1px 3px #0002}
 .gc-hoje{position:absolute;top:-2px;bottom:-2px;width:2px;background:#0E2A55;opacity:.7}
 .gc-b-leg{display:inline-block;width:22px;height:10px;border-radius:5px;background:#1E7E4B;vertical-align:-1px}.gc-b-leg.sem-ini{background:repeating-linear-gradient(45deg,#1E7E4B 0,#1E7E4B 4px,#2E9460 4px,#2E9460 8px)}
 .mt-ach-op{display:block;font-size:10.5px;color:#1E7E4B}
+#fi-mets .met.linha>svg{flex:0 0 25px;width:25px;height:25px}
 .rd-t{font-weight:700;color:#0E2A55;margin:6px 0 4px;font-size:13.5px}.rd-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:6px 8px;border-bottom:1px solid #F0F3F7;font-size:12.5px}
 .rd-l.insp{background:#F4FAF6}.rd-n small{display:block;color:var(--suave);font-size:10.5px}.rd-p{white-space:nowrap;color:var(--suave);font-size:11.5px}
 .rd-a{white-space:nowrap;font-size:11.5px;border:1px solid #E6D39A;border-radius:8px;padding:2px 8px;text-decoration:none;color:#8A5A00}.rd-a.of{background:#FFF6E5;font-weight:700}
@@ -2105,11 +2106,17 @@ function desenhaRadar(){
   const prox=conf.filter(x=>x.fim&&x.fim>=hoje&&x.fim<=em15);
   const verif=L.filter(x=>!x.confirmada);
   if(v0.p==="confirmadas") L=conf; else if(v0.p==="15dias") L=prox;
-  const cartao=(ic,n,rot,dica)=>`<div class="met" title="${esc(dica)}"><span class="ic">${ic}</span><div><b>${n}</b><span>${rot}</span></div></div>`;
-  $("fi-mets").innerHTML=cartao("📊",L.length,"oportunidades abertas","possíveis abertas no recorte: prazo não vencido ou publicadas nos últimos 60 dias, já com a validação")
-    +cartao("✔",conf.length,"com prazo e site oficial","objeto, data-limite de inscrição aberta e link do site oficial — prontas para a decisão")
-    +cartao("🔍",verif.length,"em verificação","ainda sem prazo e site oficial confirmados: na fila do Interceptador (Goiás primeiro)")
-    +cartao("⏰",prox.length,"prazos em 15 dias","confirmadas com inscrição terminando até "+br(em15));
+  // 28/09 (titular): os ícones e o cartão de antes — gráfico, lupa, escudo e relógio — com os indicadores do fluxo validado
+  const ICO={barras:`<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><path d="M4 20V12M9.3 20V6M14.7 20v-6M20 20V9"/></svg>`,
+    lupa:`<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>`,
+    escudo:`<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linejoin="round"><path d="M12 2.7l7.5 3v6c0 4.4-3.1 8.3-7.5 9.6-4.4-1.3-7.5-5.2-7.5-9.6v-6l7.5-3z"/><path d="M8.6 11.8l2.4 2.4 4.3-4.5" stroke-linecap="round"/></svg>`,
+    relogio:`<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.7"/><path d="M12 7v5.2l3.2 2"/></svg>`};
+  $("fi-mets").innerHTML=[
+    [ICO.barras,L.length,"Oportunidades abertas","possíveis abertas no recorte: prazo não vencido ou publicadas nos últimos 60 dias, já com a validação"],
+    [ICO.lupa,verif.length,"Em verificação","ainda sem prazo e site oficial confirmados: na fila do Interceptador (Goiás primeiro)"],
+    [ICO.escudo,conf.length,"Prazo e site oficial","objeto, data-limite de inscrição aberta e link do site oficial — prontas para a decisão"],
+    [ICO.relogio,prox.length,"Prazos em 15 dias","confirmadas com inscrição terminando até "+br(em15)]]
+    .map(x=>`<div class="met linha" title="${esc(x[3])}">${x[0]}<div><div class=v>${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
   const linha=(x,oficial)=>{const I=x.inspecao; const u=(I&&I.pagina_oficial)||x.link_oficial||x.url;
     const cor=x.confirmada?"verde":!I?"cinza":I.ok?"verde":"verm";
     return `<div class="rd-l${I||x.confirmada?" insp":""}"><span class="uf-fx-m ${cor}" title="${x.confirmada?"confirmada: prazo e site oficial":!I?"ainda não inspecionada pelo Interceptador":I.ok?"inspecionada: prazo e site oficial encontrados":"inspecionada: prazo ou site oficial ainda não encontrados"}"></span>
