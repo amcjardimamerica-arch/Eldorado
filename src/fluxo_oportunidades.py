@@ -173,6 +173,21 @@ def _tipo_ciclo(t: str) -> str:
 def opressores_e_preditivo(itens: list[dict]) -> dict:
     """Oportunidade nova (não coberta) → opressor próprio ligado por 30 dias + cadastro preditivo."""
     C = _j(CAT_OPR, {"motores": []}); L = _j(EST_OPR, {"ligados": {}})
+    # DUPLICADOS NA REGENERAÇÃO (28/09): cópia velha de um voo pode trazer opressores repetidos (mesmo programa +
+    # órgão); a cada regeneração fica um só — o que tem dados da validação ou está ligado.
+    grupos = {}
+    for x in C.get("motores") or []:
+        grupos.setdefault(_nt(f"{x.get('programa')}{x.get('orgao')}"), []).append(x)
+    manter, fora = [], []
+    for g in grupos.values():
+        g.sort(key=lambda x: (bool(x.get("validacao_mapa") or x.get("dados_confirmados") or x.get("decisao")), x["id"] in (L.get("ligados") or {}), len(json.dumps(x))), reverse=True)
+        manter.append(g[0]); fora += [y["id"] for y in g[1:]]
+    if fora:
+        C["motores"] = [x for x in C["motores"] if x["id"] not in set(fora)]
+        for i in fora:
+            (L.get("ligados") or {}).pop(i, None)
+        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+        EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     cobertos_u = {_nu(x.get("pagina") or "") for x in C.get("motores") or [] if x.get("pagina")}
     cobertos_t = {_nt(f"{x.get('programa')}") for x in C.get("motores") or []} | {_nt(f"{x.get('programa')}{x.get('orgao')}") for x in C.get("motores") or []}
     PRED.parent.mkdir(parents=True, exist_ok=True)

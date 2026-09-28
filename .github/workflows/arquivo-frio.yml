@@ -1,0 +1,32 @@
+name: 14 · Arquivo frio — dados grandes e esporádicos para a Release do GitHub e o Google Drive
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 7 * * 0"      # domingos: arquiva o que entrar na lista de config/arquivo_frio.json
+permissions:
+  contents: write
+concurrency:
+  group: arquivo-frio
+  cancel-in-progress: false
+jobs:
+  arquivar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: rclone (para o Google Drive, se o segredo RCLONE_CONF existir)
+        env: { RCLONE_CONF: "${{ secrets.RCLONE_CONF }}" }
+        run: '[ -n "$RCLONE_CONF" ] && curl -s https://rclone.org/install.sh | sudo bash >/dev/null 2>&1 || echo "Drive ainda não ligado (segredo RCLONE_CONF ausente): só a Release do GitHub"'
+      - name: Empacotar, verificar, guardar e só então remover
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          RCLONE_CONF: ${{ secrets.RCLONE_CONF }}
+        run: python -m src.arquivo_frio
+      - name: Gravar
+        run: |
+          git config user.name "arquivo-frio" && git config user.email "arquivo@eldorado"
+          git add -A biblioteca_alexandria/arquivo_frio docs biblioteca_alexandria/oportunidades 2>/dev/null || true
+          git commit -q -m "arquivo frio: pacotes guardados fora do repositório e originais removidos ($(date -u +%F))" || exit 0
+          for i in 1 2 3 4; do git pull --rebase -q -X ours origin main && git push -q origin main && break; sleep 5; done

@@ -246,13 +246,26 @@ def faxina(dias: int = 3) -> dict:
             guardados += sum(1 for _ in open(arq, encoding="utf-8"))
             arq.unlink()
             apagados += 1
-    velhas = [a for a in sorted(AVAL.glob("*.json")) if a.stem[:8] < corte.replace("-", "")]
+    _d = lambda a: re.sub(r"\D", "", a.stem)[:8]          # a data vem em dois formatos no nome: 20260922-… e 2026-09-22T…
+    velhas = [a for a in sorted(AVAL.glob("*.json")) if _d(a) < corte.replace("-", "")]
     resumo_velhas = {}
+    # 28/09 (titular): SEM PERDA — a avaliação antiga não é apagada: vai inteira para o arquivo mensal comprimido
+    # (avaliacoes/arquivo-AAAA-MM.jsonl.xz, uma linha por avaliação com o nome original); 4.019 arquivos viram poucos.
+    import lzma
+    por_mes = {}
     for a in velhas:
         v = load_json(a)
         k = v.get("motivo_do_insucesso") or "com_resultado"
         resumo_velhas[k] = resumo_velhas.get(k, 0) + 1
-        a.unlink()
+        por_mes.setdefault(f"{_d(a)[:4]}-{_d(a)[4:6]}", []).append({"arquivo": a.name, "avaliacao": v})
+    for mes, linhas in por_mes.items():
+        arq = AVAL / f"arquivo-{mes}.jsonl.xz"
+        ant = lzma.decompress(arq.read_bytes()).decode("utf-8") if arq.exists() else ""
+        novo = ant + "".join(json.dumps(x, ensure_ascii=False) + "\n" for x in linhas)
+        arq.write_bytes(lzma.compress(novo.encode("utf-8"), preset=9))
+        if lzma.decompress(arq.read_bytes()).decode("utf-8") == novo:          # confere antes de apagar
+            for x in linhas:
+                (AVAL / x["arquivo"]).unlink(missing_ok=True)
     d = load_json(LICOES) if LICOES.exists() else {"itens": {}}
     d["ultima_faxina"] = {"em": now_iso(), "dias": dias, "arquivos_de_quarentena_apagados": apagados,
                           "achados_descartados_removidos": guardados,

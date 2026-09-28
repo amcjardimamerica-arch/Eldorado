@@ -259,6 +259,17 @@ def pasta_edital_da_associacao(assoc_slug: str, titulo_edital: str) -> Path:
     return destino
 
 
+def limpar_edicoes_de_diario() -> int:
+    """28/09: as edições do Querido Diário vivem em dados/editais/indice_diarios.json e o arquivo delas está no
+    arquivo frio (Release + Drive). Pasta de edição que reaparecer na Biblioteca — por cópia antiga de um voo ou por
+    outro processo — é removida ao fim de cada varredura."""
+    import shutil
+    n = 0
+    for p in OPORTUNIDADES.glob("querido-diario-*"):
+        if p.is_dir() and re.search(r"diario-oficial", p.name):
+            shutil.rmtree(p, ignore_errors=True); n += 1
+    return n
+
 def run() -> dict:
     RAIZ.mkdir(parents=True, exist_ok=True)
     resumo = {"executado_em": now_iso(),
@@ -276,6 +287,10 @@ def run() -> dict:
                       "associacoes": "associacoes/<slug>/editais/<edital>/"},
         "alimentacao": "Eldorado alimenta; Farol analisa com IA",
     })
+    try:
+        limpar_edicoes_de_diario()
+    except Exception:
+        pass
     return resumo
 
 

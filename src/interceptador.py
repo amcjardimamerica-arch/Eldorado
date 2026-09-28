@@ -359,8 +359,14 @@ def proximo_alvo() -> dict | None:
     # estados, em sorteio. O fluxo já reúne o que os motores, o Espião e ele mesmo trouxeram.
     import random
     fx = ((load_json(ROOT / "docs/dados/fluxo_oportunidades.json") or {}).get("itens_por_uf") or {}) if (ROOT / "docs/dados/fluxo_oportunidades.json").exists() else {}
+    try:
+        from .validacao_mapa import dispensa as _disp
+    except Exception:
+        _disp = lambda *a, **k: None
     def _pend(x):
-        return x.get("id") and x["id"] not in feitos and not x.get("inspecao") and registro(str(x["id"]))
+        # 28/09: não gasta voo com o que as regras aprendidas na validação já dispensam
+        return x.get("id") and x["id"] not in feitos and not x.get("inspecao") and not x.get("confirmada") and registro(str(x["id"])) \
+            and not _disp(str(x.get("origem") or ""), {"titulo": x.get("titulo"), "url": x.get("url")})
     go = [x for x in fx.get("GO", []) if _pend(x)]
     if go:
         x = go[0]

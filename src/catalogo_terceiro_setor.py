@@ -217,6 +217,14 @@ def candidatas_do_catalogo() -> int:
             slug = _u(u).path.rstrip("/").split("/")[-1].replace("-", " ").strip()
             titulo = rot if len(rot) > 12 and not re.search(r"skip|menu|leia|ler artigo|clique|cancelar|comments|share|pular|tweet", rot, re.I) else (slug[:1].upper() + slug[1:])
             if len(titulo.split()) < 3 and not re.search(r"edital|pr[eê]mio|chamamento|chamada|fundo", titulo, re.I): continue   # 'Comite fff', '61a6201 scaled'
+            # REGRAS APRENDIDAS (28/09): o Espião explora livre, mas o que ENTREGA passa pelas regras que a validação
+            # individual aprendeu (config/filtros_motores.json) — 81% das candidatas dele foram descartadas na validação
+            try:
+                from .validacao_mapa import dispensa as _dispensa
+                if _dispensa("Piloto - Espião", {"titulo": titulo, "url": u}):
+                    continue
+            except Exception:
+                pass
             vistos[k] = ja.get(u) or {"url": u, "titulo": titulo[:160], "visto_em": (v.get("nome") or "").split(" · ")[0], "enquadramento": enq,
                                        "descoberto_em": hoje, "origem": "catálogo do Piloto - Espião"}
     write_json(arq, {"em": hoje, "regra": "o que o Espião descobre; o Interceptador comprova", "candidatas": list(vistos.values())})

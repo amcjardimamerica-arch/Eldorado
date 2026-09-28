@@ -867,6 +867,11 @@ def ciclo(porta: int | None = None) -> dict:
         rel["para_o_claude"] = _para_claude()
     except Exception as ex:
         rel["candidatas_entregues_ao_interceptador"] = f"falhou: {type(ex).__name__}"
+    try:
+        from .aprendizados_piloto import faxina
+        rel["faxina_sem_perda"] = faxina(2)              # avaliações com mais de 2 dias vão ao arquivo mensal .jsonl.xz
+    except Exception as ex:
+        rel["faxina_sem_perda"] = f"falhou: {type(ex).__name__}"
     write_json(ROOT / "docs/dados/piloto.json", rel)
     return rel
 
