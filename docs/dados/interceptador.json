@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T07:30:42+00:00",
+  "em": "2026-09-28T07:39:52+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T07:16:02+00:00",
+  "ultimo_voo": "2026-09-28T07:32:24+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -32,26 +32,113 @@
   },
   "fila": {
     "editais novos dos motores": 3,
-    "indícios do Espião": 18,
+    "indícios do Espião": 17,
     "abertos com itens em falta": 4,
-    "empresas sem ficha": 42
+    "empresas sem ficha": 46
   },
   "acumulado": {
-    "missoes": 207,
+    "missoes": 208,
     "validadas": 13,
-    "parciais": 61,
+    "parciais": 62,
     "insuficientes": 82,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 125,
+      "sim": 126,
       "nao": 14
     },
     "estrelas_de_ouro": 9,
-    "fontes_novas_para_os_motores": 47,
-    "tempo_medio_min": 8.5
+    "fontes_novas_para_os_motores": 48,
+    "tempo_medio_min": 8.4
   },
   "missoes": [
+    {
+      "em": "2026-09-28T07:32:24+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · nacional (sorteio)",
+      "alvo": "Edital de apoio a filantropia comunitaria do dia de doar esta inscricoes abertas",
+      "qualidade": "parcial",
+      "comprovados": 8,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Território",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://notasocial.com.br/dia-de-doar-abre-edital-de-apoio-a-filantropia-comunitaria/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona diretamente o edital de apoio a filantropia comunitária do Dia de Doar, com inscrições abertas até 17 de outubro, e detalha os requisitos e valor do apoio.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria apresentar um projeto que mobilize recursos da própria comunidade para atender às suas necessidades, com foco em áreas como assistência social, cultura, educação e esporte, e incluir atividades como criação de arte, produção de vídeos, anúncios em mídia offline, custos operacionais para eventos, patrocínio de postagens em redes sociais, despesas logísticas e outras necessárias para incentivar a generosidade.",
+        "proximo_passo": "A associação deve se inscrever no edital até 17 de outubro, apresentando o projeto conforme os requisitos descritos.",
+        "risco": "O risco seria a falta de conformidade com os requisitos do edital, como a ausência de mobilização comunitária ou a não inclusão de atividades que incentivem a generosidade."
+      },
+      "erro": null,
+      "segundos": 448,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Território, Área de atuação",
+      "id": "cat-d20b4ff8ce2a",
+      "encontrou": {
+        "Objeto": {
+          "valor": "apoiar projetos que mobilizam recursos da própria comunidade para atender às suas necessidades",
+          "trecho": "O edital tem como objetivo apoiar projetos que mobilizam recursos da própria comunidade para atender às suas necessidades",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "dispensado — O texto menciona que as inscrições estão abertas até dia 17 de outubro.",
+          "trecho": "as inscrições abertas até dia 17 de outubro [rejeitado: data implausível para edital aberto]",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Valor": {
+          "valor": "R$ 40 mil para apoiar 40 campanhas comunitárias, sendo R$ 1.000 destinados a cada projeto selecionado",
+          "trecho": "O edital oferece um total de R$ 40 mil para apoiar 40 campanhas comunitárias, sendo R$ 1.000 destinados a cada projeto selecionado",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Dia de Doar",
+          "trecho": "Dia de Doar abre edital de apoio à filantropia comunitária",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "apoiar projetos que mobilizam recursos da própria comunidade para atender às suas necessidades",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "criação de arte e materiais gráficos, produção de vídeos promocionais, anúncios em mídia offline, custos operacionais para eventos, patrocínio de postagens em redes sociais, despesas logísticas e outras necessidades que incentivem a generosidade",
+          "trecho": "como: Criação de arte e materiais gráficos; Produção de vídeos promocionais; Anúncios em mídia offline; Custos operacionais para eventos; Patrocínio de postagens em redes sociais; ",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Associação Brasileira de Captadores de Recursos (ABCR)",
+      "indicios": [
+        {
+          "url": "https://observatorio3setor.org.br/edital-de-apoio-a-filantropia-comunitaria-do-dia-de-doar-esta-inscricoes-abertas/",
+          "tipo": "noticia"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-09-28T07:16:02+00:00",
       "modo": "validar",
@@ -2707,58 +2794,6 @@
       "avaliacao": "descartável: não se mostrou oportunidade de recurso",
       "id": "cat-502afc852638",
       "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-09-27T21:46:12+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "edital novo dos motores",
-      "alvo": "Petrobras News Agency - Agência",
-      "qualidade": "insuficiente",
-      "comprovados": 1,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Esfera",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://petrobras.com.br",
-      "parecer_fonte": {
-        "serve_como_fonte": "nao",
-        "por_que": "Não há informações suficientes para confirmar se a Petrobras News Agency - Agência serve como fonte para editais de fomento.",
-        "para_a_amc": "null",
-        "proximo_passo": "Consultar diretamente a Petrobras News Agency - Agência para obter informações sobre editais de fomento disponíveis.",
-        "risco": "A falta de informações detalhadas pode impedir a associação comunitária de Goiânia de se qualificar para os editais de fomento."
-      },
-      "erro": null,
-      "segundos": 296,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 1,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "f2650ee3c147cf357c0f",
-      "encontrou": {
-        "Território": {
-          "valor": "null",
-          "trecho": "null",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
       "financiador": null,
       "indicios": [],
       "rotas": []
