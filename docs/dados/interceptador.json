@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T20:21:43+00:00",
+  "em": "2026-09-28T20:34:54+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T20:05:03+00:00",
+  "ultimo_voo": "2026-09-28T20:23:22+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,98 @@
     "empresas sem ficha": 59
   },
   "acumulado": {
-    "missoes": 263,
+    "missoes": 264,
     "validadas": 18,
-    "parciais": 83,
+    "parciais": 84,
     "insuficientes": 111,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 169,
+      "sim": 170,
       "nao": 21
     },
     "estrelas_de_ouro": 10,
-    "fontes_novas_para_os_motores": 69,
-    "tempo_medio_min": 9.2
+    "fontes_novas_para_os_motores": 70,
+    "tempo_medio_min": 9.3
   },
   "missoes": [
+    {
+      "em": "2026-09-28T20:23:22+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · RS (sorteio)",
+      "alvo": "Diário Oficial de Horizontina (RS) 2026-09-25 — \"edital de chamamento público\" associação",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://editaisdobrasil.com/editais/orgao/municipio-de-horizontina-87612834000136",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, órgão financiador, território e esfera.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital se aplica a sua área de atuação e se há requisitos não explicitados, como capacidade técnica ou documentação específica, e se alinhar suas propostas ao objeto do edital.",
+        "proximo_passo": "Consultar os anexos do edital para obter detalhes adicionais e verificar se há requisitos não mencionados.",
+        "risco": "O edital não menciona requisitos, valor ou destinação, o que pode impedir a associação de compreender se é elegível ou como proceder."
+      },
+      "erro": null,
+      "segundos": 692,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 5,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor, Requisitos",
+      "id": "38279d30f6b16e4cbd98",
+      "encontrou": {
+        "Objeto": {
+          "valor": "REGISTRO DE PREÇOS PARA EVENTUAL AQUISIÇÃO DE UNIFORMES DESTINADOS AO ATENDIMENTO DAS NECESSIDADES DAS SECRETARIAS MUNICIPAIS DE HORIZONTINA/RS.",
+          "trecho": "REGISTRO DE PREÇOS PARA EVENTUAL AQUISIÇÃO DE UNIFORMES DESTINADOS AO ATENDIMENTO DAS NECESSIDADES DAS SECRETARIAS MUNICIPAIS DE HORIZONTINA/RS.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-09-22 a 2026-09-23",
+          "trecho": "Publicado em 23/09/2026",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "MUNICIPIO DE HORIZONTINA",
+          "trecho": "MUNICIPIO DE HORIZONTINA",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RS",
+          "trecho": "Horizontina/RS",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "MUNICIPIO DE HORIZONTINA",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4309605/2026-09-25/b036a690f19c9833d4b462adfefb1a350929a058.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-28T20:05:03+00:00",
       "modo": "validar",
@@ -2790,74 +2867,6 @@
       "rotas": [
         "financiador_programa_edital",
         "financiador_regulamento"
-      ]
-    },
-    {
-      "em": "2026-09-28T11:33:08+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "opressor sem leitura",
-      "alvo": "Histórias de sucesso INSTITUTO BANCORBRÁS 15 de maio, 2026 Instituto Bancorbrás qualifica estratégia de investimento soc — Bússola Social - Bússola Editais",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://blog.bussolasocial.com.br/historias-de-sucesso/instituto-bancorbras-qualifica-estrategia-de-investimento-social-com-o-bussola",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital mencionado está relacionado à qualificação da estratégia de investimento social do Instituto Bancorbrás, o que pode ser relevante para organizações da sociedade civil que buscam alinhar suas ações com iniciativas de investimento social.",
-        "para_a_amc": "Para acessar o edital, a associação comunitária de Goiânia precisaria verificar se os objetivos do edital se alinham com suas atividades em assistência social, cultura, educação ou esporte, e seguir o processo de inscrição conforme definido no edital.",
-        "proximo_passo": "Verificar os requisitos e o escopo do edital para confirmar a compatibilidade com as atividades da associação comunitária.",
-        "risco": "A falta de informações sobre prazo de inscrição e requisitos pode impedir a associação de se candidatar oportunamente."
-      },
-      "erro": null,
-      "segundos": 737,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 4,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-nova-fe3ed0ccb915",
-      "encontrou": {
-        "Objeto": {
-          "valor": "o edital visa qualificar a estratégia de investimento social do Instituto Bancorbrás",
-          "trecho": "Instituto Bancorbrás qualifica investimento social com Bússo",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Instituto Bancorbrás",
-          "trecho": "Instituto Bancorbrás qualifica investimento social com Bússo",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "nacional",
-          "trecho": "Instituto Bancorbrás qualifica investimento social com Bússo",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Instituto Bancorbrás",
-      "indicios": [],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "parceiro"
       ]
     }
   ]
