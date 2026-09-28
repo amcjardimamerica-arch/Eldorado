@@ -632,7 +632,20 @@ def run() -> dict:
                                   "uf": m.get("uf"), "nivel": m.get("nivel")} for m in novas],
         "camadas": list(CAMADAS),
     }
-    write_json(ROOT / "biblioteca_alexandria/fontes/motores.json", {**resumo, "motores": motores})
+    # 28/09: o catálogo não é só deste gerador — o fluxo das oportunidades cria opressores próprios ('nova-…') a partir
+    # do que é encontrado. Reescrever só com a lista daqui APAGAVA esses opressores (24 numa rodada) e trazia duplicados.
+    # Preserva os que não são deste gerador e deixa um só por programa + órgão.
+    import re as _re
+    _cat_arq = ROOT / "biblioteca_alexandria/fontes/motores.json"
+    _ant = (load_json(_cat_arq) or {}).get("motores", []) if _cat_arq.exists() else []
+    _ids = {x.get("id") for x in motores}
+    motores = motores + [x for x in _ant if x.get("id") not in _ids]
+    _lig = set(((load_json(ROOT / "estado/opressores.json") or {}).get("ligados") or {}).keys()) if (ROOT / "estado/opressores.json").exists() else set()
+    _grp = {}
+    for x in motores:
+        _grp.setdefault(_re.sub(r"[^a-z0-9]", "", f"{x.get('programa')}{x.get('orgao')}".lower())[:80], []).append(x)
+    motores = [sorted(g, key=lambda y: (y.get("id") in _lig, not str(y.get("id", "")).startswith("nova-"), len(json.dumps(y, ensure_ascii=False))), reverse=True)[0] for g in _grp.values()]
+    write_json(_cat_arq, {**resumo, "motores": motores})
     from .compacto import compactar
     pasta = ROOT / "docs/dados"; pasta.mkdir(parents=True, exist_ok=True)
     from .opressores import proximidade as _prox, _estado as _est_op
