@@ -181,6 +181,14 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertIn("fr(OP.ligados??0,OP.catalogo??0)", cards, "fontes monitoradas: ligados / disponíveis na Biblioteca")
         self.assertNotIn('<div class="s ${c[4]}">', h, "cartão da Bússola sem texto além do título")
 
+    def test_pagina_nao_recarrega_sozinha(self):
+        """28/09: a autoatualização do código recarregava a página e reiniciava a tela. Só por clique do titular."""
+        import re as _re
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        automaticos = [l for l in h.split("\n") if _re.search(r"location\.(reload|replace)\(|location\.href\s*=", l) and "onclick" not in l]
+        self.assertEqual(automaticos, [], "recarregamento automático da página")
+        self.assertIn("window.scrollTo(0,_y);", h, "atualização dos dados preserva a posição da tela")
+
 
 if __name__ == "__main__":
     unittest.main()
