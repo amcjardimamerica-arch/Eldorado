@@ -371,6 +371,15 @@ def proximo_alvo() -> dict | None:
     if go:
         x = go[0]
         return {"id": x["id"], "titulo": x.get("titulo"), "url": x.get("url"), "de": "mapa · Goiás (prioridade)", "modo": "validar", "tipo": "edital", "uf": "GO"}
+    # OPRESSOR ATIVO SEM LEITURA (28/09): o opressor nasce com a página da oportunidade, mas nada a lia (a fase de IA
+    # dele depende de chave externa). Vem logo depois de Goiás — antes, ficava no fim da fila e nunca era alcançado.
+    op0 = [o for o in opressores_sem_leitura() if o["id"] not in feitos]
+    if op0:
+        o = op0[0]
+        arq = ROOT / "dados/editais/extraidos" / f"{o['id']}.json"
+        if not arq.exists():
+            write_json(arq, {"edital_id": o["id"], "titulo": o["titulo"], "url": o["url"], "orgao": o.get("orgao"), "origem": "opressor sem leitura"})
+        return {**o, "modo": "validar", "tipo": "edital"}
     outros = [(k, x) for k, v in fx.items() if k != "GO" for x in v if _pend(x)]
     if outros:
         k, x = random.choice(outros)

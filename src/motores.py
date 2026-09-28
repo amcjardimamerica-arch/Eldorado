@@ -660,6 +660,21 @@ def run() -> dict:
             for m in motores]
     pac = compactar(leve)
     pac["resumo"] = {k: v for k, v in resumo.items() if k not in ("plataformas", "oficiais", "novas_sem_referencia")}
+    # ESTADO REAL DE CADA NOVA (28/09): a caixa dizia "o motor persegue os 12 itens" e nenhum opressor lia a página
+    try:
+        import re as _re
+        _nt = lambda t: _re.sub(r"[^a-z0-9]", "", str(t or "").lower())[:60]
+        _cat = load_json(ROOT / "biblioteca_alexandria/fontes/motores.json").get("motores", [])
+        _lig = (load_json(ROOT / "estado/opressores.json") or {}).get("ligados", {})
+        from .validacao_mapa import carregar as _valc
+        _val = {_nt(v.get("titulo")): v for v in _valc().values()}
+        for n in resumo["novas_sem_referencia"]:
+            o = next((x for x in _cat if _nt(x.get("programa")) == _nt(n.get("titulo"))), None)
+            v = _val.get(_nt(n.get("titulo")))
+            n["opressor"] = {"id": o["id"], "ligado": o["id"] in _lig, "leitura": o.get("validacao")} if o else None
+            n["validacao"] = {"decisao": v.get("decisao"), "motivo": str(v.get("motivo") or "")[:160], "prazo": v.get("prazo"), "fonte_oficial": v.get("fonte_oficial")} if v else None
+    except Exception:
+        pass
     pac["plataformas"] = plataformas; pac["oficiais"] = oficiais; pac["novas"] = resumo["novas_sem_referencia"]
     hz = ROOT / "config/horarios.json"
     pac["horarios"] = load_json(hz) if hz.exists() else {}

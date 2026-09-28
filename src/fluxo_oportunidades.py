@@ -188,6 +188,26 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
             (L.get("ligados") or {}).pop(i, None)
         CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
         EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
+    # OPRESSOR ACOMPANHA A VALIDAÇÃO (28/09): oportunidade descartada ou encerrada desliga o opressor dela; válida
+    # marca o opressor com os dados confirmados. Antes, 9 "novas anunciadas" tinham opressor e NENHUM estava coerente.
+    from . import validacao_mapa as _vmo
+    _VAL = {_nt(v.get("titulo")): v for v in _vmo.carregar().values() if v.get("titulo")}
+    _ruido = re.compile(r"^\s*extrato|termo de (fomento|colabora[cç][aã]o) n[ºo°]|resultado|homologa", re.I)
+    mudou = False
+    for x in C.get("motores") or []:
+        if not str(x.get("id", "")).startswith("nova-"):
+            continue
+        v = _VAL.get(_nt(x.get("programa")))
+        dec = (v or {}).get("decisao") or ("descartada" if _ruido.search(str(x.get("programa") or "")) else None)
+        if dec in ("descartada", "arquivada_encerrada") and x["id"] in (L.get("ligados") or {}):
+            L["ligados"].pop(x["id"], None); x["desligado_por"] = f"validação: {dec} — {str((v or {}).get('motivo') or 'extrato/termo já celebrado')[:120]}"; mudou = True
+        elif dec in ("valida_aberta", "valida_fora_abrangencia") and not str(x.get("validacao", "")).startswith("confirmada"):
+            x["validacao"] = f"confirmada pela validação individual em {v.get('validado_em')}"; x["proxima_data"] = {"inicio": v.get("inicio"), "fim": v.get("prazo")}
+            if v.get("fonte_oficial"): x["pagina"] = v["fonte_oficial"]
+            mudou = True
+    if mudou:
+        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+        EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     cobertos_u = {_nu(x.get("pagina") or "") for x in C.get("motores") or [] if x.get("pagina")}
     cobertos_t = {_nt(f"{x.get('programa')}") for x in C.get("motores") or []} | {_nt(f"{x.get('programa')}{x.get('orgao')}") for x in C.get("motores") or []}
     PRED.parent.mkdir(parents=True, exist_ok=True)

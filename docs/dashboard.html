@@ -4280,7 +4280,7 @@ function desenhaMotores(){
     ${novas.map((n,i)=>`<div class="mt-item nova sem-verde" data-id="nova-${i}"><div class="mt-lado-esq">${iconeMotor("nova-"+i,true)}</div>
       <div class="mt-corpo"><div><b>${esc(n.titulo)}</b> <span class=tag>nova</span> <span class=tag>${esc(n.uf||"BR")}</span></div>
         <div class=meta>anunciada em ${esc(n.fonte||"")} em ${n.em?br(n.em):"—"}${n.prazo?" · prazo "+esc(n.prazo):""}${n.valor?" · "+esc(n.valor):""} · <a href="${esc(n.url)}" target=_blank rel="noopener noreferrer">publicação ↗</a></div>
-        <div class="mt-diag">caixa criada automaticamente: oportunidade sem referência no catálogo de fontes — o motor persegue as 12 itens a partir da publicação</div></div>
+        <div class="mt-diag">${(()=>{const O=n.opressor,V=n.validacao;const dec={valida_aberta:"válida e aberta",valida_fora_abrangencia:"válida, fora da abrangência",pendente:"pendente",descartada:"descartada",arquivada_encerrada:"encerrada — na Biblioteca"}; return `motor opressor ${O?esc(O.id)+(O.ligado?" · ligado":" · desligado")+" · "+esc(O.leitura||"sem leitura"):"não criado"}${V?` · validação: <b>${esc(dec[V.decisao]||V.decisao)}</b>${V.prazo?" · até "+br(V.prazo):""} — ${esc(V.motivo)}`:" · ainda sem decisão"}`;})()}</div></div>
       <div class="mt-lado-dir">${iconesAcao("nova-"+i,n.titulo)}</div></div>`).join("")}</div>`:"";
   $("mt-lista").innerHTML=oficiaisHtml||'<div class=meta>Nenhum local de publicação neste filtro.</div>';
   if($("mo-lista"))$("mo-lista").innerHTML=(novasHtml+listaFontes)||'<div class=meta>Nenhuma fonte ativa neste filtro — inativas ficam ocultas até menção em local oficial ou época prevista.</div>';
