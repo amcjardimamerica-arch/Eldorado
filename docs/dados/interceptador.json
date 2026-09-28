@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T03:03:02+00:00",
+  "em": "2026-09-28T03:15:31+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T02:47:12+00:00",
+  "ultimo_voo": "2026-09-28T03:04:32+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,102 @@
     "empresas sem ficha": 31
   },
   "acumulado": {
-    "missoes": 188,
+    "missoes": 189,
     "validadas": 12,
     "parciais": 55,
-    "insuficientes": 70,
+    "insuficientes": 71,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 109,
+      "sim": 110,
       "nao": 12
     },
     "estrelas_de_ouro": 8,
     "fontes_novas_para_os_motores": 45,
-    "tempo_medio_min": 8.0
+    "tempo_medio_min": 8.1
   },
   "missoes": [
+    {
+      "em": "2026-09-28T03:04:32+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · PR (sorteio)",
+      "alvo": "Diário Oficial de Campo Largo (PR) 2026-09-21 — \"edital de chamamento público\" associação",
+      "qualidade": "insuficiente",
+      "comprovados": 8,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de recurso, órgão financiador, território, esfera, anexos e área de atuação.",
+        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar se atende aos requisitos não explicitados, preparar os anexos necessários e se alinhar à área de atuação do edital, que é cultura.",
+        "proximo_passo": "Consultar os anexos do edital para entender os requisitos específicos e verificar a compatibilidade com a área de atuação da associação.",
+        "risco": "A falta de informações sobre prazo de inscrição, requisitos e valor pode impedir a associação de se candidatar adequadamente."
+      },
+      "erro": null,
+      "segundos": 658,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "144aaf22f937af36fa9d",
+      "encontrou": {
+        "Objeto": {
+          "valor": "premiação cultural",
+          "trecho": "EDITAL DE CHAMAMENTO PÚBLICO PARA PREMIAÇÃO CULTURAL Nº 02/2026 - 1º ENCONTRO DE VIOLEIROS E VIOLONISTAS DE CAMPO LARGO",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Campo Largo",
+          "trecho": "A Prefeitura Municipal de Campo Largo da garantia da autenticidade deste documento",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "PR",
+          "trecho": "MUNICÍPIO DE CAMPO LARGO – PARANÁ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "EDITAL DE CHAMAMENTO PÚBLICO PARA PREMIAÇÃO CULTURAL",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · premio",
+          "trecho": "EDITAL DE CHAMAMENTO PÚBLICO PARA PREMIAÇÃO CULTURAL",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Campo Largo",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4104204/2026-09-21/97a830b58fe718dc8a0044384c42b27b59062b06.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-28T02:47:12+00:00",
       "modo": "validar",
@@ -2489,92 +2570,6 @@
       "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
       "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Esfera",
       "id": "cat-7503efcf3abb",
-      "encontrou": {
-        "Objeto": {
-          "valor": "valorização, preservação e difusão da memória e do patrimônio cultural africano e afro-brasileiro",
-          "trecho": "A Rede busca mapear e fortalecer os territórios de memória africana no Brasil. Além disso, pretende ampliar a visibilidade e a articulação dessas iniciativas no Brasil e no exterio",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "dispensado — O prazo de inscrição foi explicitado no texto.",
-          "trecho": "As inscrições estão abertas até o dia 03 de outubro de 2026.",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Valor": {
-          "valor": "dispensado — O edital não oferece recursos financeiros para a execução das ações.",
-          "trecho": "O edital não oferece recursos financeiros para a execução das ações. O objetivo é qualificar as propostas e facilitar futuras captações de recursos.",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Órgão / financiador": {
-          "valor": "Iniciativa Viva Pequena África",
-          "trecho": "A Iniciativa Viva Pequena África lançou o edital de adesão à Rede Memória Viva e selecionará ações voltadas à valorização, preservação e difusão da memória e do patrimônio cultural",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "nacional",
-          "trecho": "O edital possui abrangência nacional e busca identificar e articular territórios brasileiros relacionados à memória, ao patrimônio e à herança cultural africana e afro-brasileira.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "A Rede busca mapear e fortalecer os territórios de memória africana no Brasil. Além disso, pretende ampliar a visibilidade e a articulação dessas iniciativas no Brasil e no exterio",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Podem participar organizações da sociedade civil, associações, coletivos regularizados, cooperativas, quilombos e iniciativas comunitárias.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "comprovar atuação em territórios representativos da herança cultural africana no Brasil",
-          "trecho": "As iniciativas devem comprovar atuação em territórios representativos da herança cultural africana no Brasil.",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-09-27T17:57:36+00:00",
-      "modo": "complementar",
-      "tipo": "edital",
-      "de": "fila de resgate",
-      "alvo": "Edital_Rede_Memoria_Viva.docx.pdf",
-      "qualidade": "parcial",
-      "comprovados": 9,
-      "dispensados": 2,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Esfera"
-      ],
-      "pagina_oficial": "https://capta.org.br/oportunidades/edital-rede-memoria-viva/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações claras sobre seu objeto, requisitos e destinação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria comprovar atuação em territórios representativos da herança cultural africana no Brasil e anexar os documentos exigidos.",
-        "proximo_passo": "Verificar os requisitos do edital e preparar os documentos necessários para a inscrição.",
-        "risco": "A falta de atuação em territórios representativos da herança cultural africana pode impedir a elegibilidade."
-      },
-      "erro": null,
-      "segundos": 694,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 7,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Esfera",
-      "id": "cat-444c577642d8",
       "encontrou": {
         "Objeto": {
           "valor": "valorização, preservação e difusão da memória e do patrimônio cultural africano e afro-brasileiro",
