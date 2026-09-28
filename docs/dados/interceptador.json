@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T14:58:10+00:00",
+  "em": "2026-09-28T15:15:33+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T14:44:43+00:00",
+  "ultimo_voo": "2026-09-28T15:00:16+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -32,26 +32,99 @@
   },
   "fila": {
     "editais novos dos motores": 30,
-    "indícios do Espião": 18,
+    "indícios do Espião": 19,
     "abertos com itens em falta": 4,
     "empresas sem ficha": 54
   },
   "acumulado": {
-    "missoes": 238,
+    "missoes": 239,
     "validadas": 16,
-    "parciais": 76,
+    "parciais": 77,
     "insuficientes": 95,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 149,
+      "sim": 150,
       "nao": 20
     },
     "estrelas_de_ouro": 9,
     "fontes_novas_para_os_motores": 62,
-    "tempo_medio_min": 9.0
+    "tempo_medio_min": 9.1
   },
   "missoes": [
+    {
+      "em": "2026-09-28T15:00:16+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "opressor sem leitura",
+      "alvo": "Copa Quilombola premia campeões da 5ª edição em fase final realizada em Caldas Novas — Programa estadual de eventos esportivos",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": "https://goias.gov.br/esporte/copa-quilombola-regulamento/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado descreve o objeto, órgão financiador, território, esfera, anexos, destinação e área de atuação do edital, sendo suficiente para identificar a fonte.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é promover o intercâmbio esportivo e valorizar as culturas corporais nas comunidades quilombolas, e demonstrar como sua atuação se encaixa nesse escopo.",
+        "proximo_passo": "Verificar se a associação comunitária atende ao escopo do edital e preparar um plano de ação alinhado ao objeto do edital.",
+        "risco": "A associação pode não atender ao escopo do edital, que é específico para comunidades quilombolas, o que pode impedir o acesso ao fomento."
+      },
+      "erro": null,
+      "segundos": 915,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "op-nova-c599c44cc264",
+      "encontrou": {
+        "Objeto": {
+          "valor": "promover o intercâmbio esportivo, o desenvolvimento do desporto e a valorização das culturas corporais, especialmente o futebol, nas comunidades quilombolas de Goiás",
+          "trecho": "A Copa Quilombola tem por finalidade promover o intercâmbio esportivo, o desenvolvimento do desporto e a valorização das culturas corporais, especialmente o futebol, nas comunidade",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Secretaria de Estado de Esporte e Lazer - SEEL do Estado de Goiás",
+          "trecho": "A Copa Quilombola é um evento esportivo da Secretaria de Estado de Esporte e Lazer - SEEL do Estado de Goiás, no âmbito do Programa Goiás Social, e fomentado pelo Fundo Protege.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "A Copa Quilombola é um evento esportivo da Secretaria de Estado de Esporte e Lazer - SEEL do Estado de Goiás, no âmbito do Programa Goiás Social, e fomentado pelo Fundo Protege.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "esporte",
+          "trecho": "A Copa Quilombola é um evento esportivo da Secretaria de Estado de Esporte e Lazer - SEEL do Estado de Goiás, no âmbito do Programa Goiás Social, e fomentado pelo Fundo Protege.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · premio",
+          "trecho": "A Copa Quilombola é um evento esportivo da Secretaria de Estado de Esporte e Lazer - SEEL do Estado de Goiás, no âmbito do Programa Goiás Social, e fomentado pelo Fundo Protege.",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Governo do Estado de Goiás",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-09-28T14:44:43+00:00",
       "modo": "validar",
@@ -2983,96 +3056,6 @@
         "financiador_ano",
         "governo",
         "parceiro"
-      ]
-    },
-    {
-      "em": "2026-09-28T05:25:11+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "mapa · BA (sorteio)",
-      "alvo": "Diário Oficial de Ipiaú (BA) 2026-08-18 — \"edital de chamamento público\" associação",
-      "qualidade": "validada",
-      "comprovados": 11,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Valor"
-      ],
-      "pagina_oficial": "https://transparencia.ipiau.ba.gov.br/wp-includes/ExternalApps/downloader.php?hurl=aHR0cDovL2RvZW0ub3JnLmJyL2JhL2lwaWF1L2FycXVpdm9zL2Rvd25sb2FkL2MzNTcyYzFkZGZkMGMxNzNkM2JiZTYzMTI4OTQ5MmQxLzhmMjE2MGZjZWQxNjA2NzlhNWI4MTI5MDQyODhhNGE4LnBkZg==",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com detalhes sobre o objeto, prazos, requisitos e outros elementos necessários para a análise.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria comprovar residência pelo Comitê de Acompanhamento à Execução da PNAB e apresentar documentos para Habilitação pelo Comitê de Acompanhamento à Execução da PNAB, além de se alinhar ao objeto do edital, que é apoio a projetos culturais em áreas como artesanato e culturas populares.",
-        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos do edital e se enquadra na área de atuação definida.",
-        "risco": "A associação pode não atender aos requisitos específicos do edital, como a comprovação de residência e habilitação pelo Comitê de Acompanhamento à Execução da PNAB."
-      },
-      "erro": null,
-      "segundos": 1015,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 11,
-      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
-      "avaliacao": "pronta para a decisão do Claude",
-      "id": "705e2e69dfef3bb407d5",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoio a projetos culturais em linguagens artísticas, artesanato, culturas populares e de matriz africana, através da política nacional Aldir Blanc - PNAB",
-          "trecho": "APOIO A PROJETOS CULTURAIS EM LINGUAGENS ARTÍSTICAS, ARTESANATO, CULTURAS POPULARES E DE MATRIZ AFRICANA, ATRAVÉS DA POLÍTICA NACIONAL ALDIR BLANC - PNAB",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-08-11 a 2026-09-06",
-          "trecho": "Período de Inscrição dos projetos  11/08/2026 a 06/09/2026",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Ipiaú",
-          "trecho": "PREFEITURA MUNICIPAL DE IPIAÚ",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "BA",
-          "trecho": "Ipiaú, BA",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "APOIO A PROJETOS CULTURAIS EM LINGUAGENS ARTÍSTICAS, ARTESANATO, CULTURAS POPULARES E DE MATRIZ AFRICANA, ATRAVÉS DA POLÍTICA NACIONAL ALDIR BLANC - PNAB",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "APOIO A PROJETOS CULTURAIS EM LINGUAGENS ARTÍSTICAS, ARTESANATO, CULTURAS POPULARES E DE MATRIZ AFRICANA, ATRAVÉS DA POLÍTICA NACIONAL ALDIR BLANC - PNAB",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "comprovante de residência pelo Comitê de Acompanhamento à Execução da PNAB, documentos para Habilitação pelo Comitê de Acompanhamento à Execução da PNAB",
-          "trecho": "Análise do portfólio, comprovante de residência pelo Comitê de Acompanhamento à Execução da PNAB 07/09/2026 a 14/9/2026",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Ipiaú",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/2913903/2026-08-18/8ad242f70edc84175801275d0ebee9d5b5a8ecc9.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ]
