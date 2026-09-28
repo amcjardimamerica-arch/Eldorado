@@ -139,6 +139,7 @@ class TesteIntegridadePainel(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn(".mt-item{grid-template-columns:44px minmax(0,1fr) 40px}", h)
         self.assertIn("#mt-lista .mt-ach{display:grid", h)
+        self.assertIn('class="mt-ach mt-ach1"', h, "oportunidade encontrada em uma linha: nome, prazo, opressor, site oficial")
 
     def test_oportunidades_abertas_do_fluxo_e_opressores(self):
         """28/09: os cartões de oportunidades abertas liam o conjunto antigo; toda oportunidade com seleção precisa de

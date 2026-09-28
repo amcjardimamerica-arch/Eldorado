@@ -455,6 +455,14 @@ box-shadow:0 1px 3px #0002}
 .oa-p,.oa-s{font-size:10.5px;border-radius:8px;padding:1px 8px;border:1px solid #E3E8ED;background:#F7F9FA;color:var(--suave)}.oa-p.ok,.oa-s.ok{background:#F1F9F4;border-color:#CFE8D8;color:#1E7E4B;font-weight:700}
 .oa-o{font-size:11.5px;color:#3A4250;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .oa-k{font-size:11.5px;border-top:1px dotted #E6EAF0;padding-top:5px}.oa-r{font-size:11px;color:#8A6D1E;overflow-wrap:anywhere}
+#mt-lista .mt-ach.mt-ach1{grid-template-columns:8px minmax(0,1fr) auto auto auto;column-gap:10px;align-items:center;padding:3px 0}
+#mt-lista .mt-ach.mt-ach1 .pt{margin-top:0}#mt-lista .mt-ach.mt-ach1>a,#mt-lista .mt-ach.mt-ach1>span:not(.pt),#mt-lista .mt-ach.mt-ach1>*{grid-column:auto;white-space:nowrap;min-width:0}
+#mt-lista .mt-ach1 .mt-ach-t{overflow:hidden;text-overflow:ellipsis;display:block}
+#mt-lista .mt-ach1 .mt-ach-p{font-size:10.5px;color:var(--suave)}#mt-lista .mt-ach1 .mt-ach-p.ok{color:#1E7E4B;font-weight:700}
+#mt-lista .mt-ach1 .mt-ach-o{font-size:10.5px;color:#8A6D1E;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+#mt-lista .mt-ach1 .mt-ach-s{font-size:10.5px}#mt-lista .mt-ach1 .mt-ach-s.sem{color:#9AA5B1}
+.mt-ach-lg{display:inline-block;width:7px;height:7px;border-radius:50%;background:#C3CBD4;margin-left:4px;vertical-align:1px}.mt-ach-lg.on{background:#1E7E4B}
+@media (max-width:820px){#mt-lista .mt-ach.mt-ach1{grid-template-columns:8px minmax(0,1fr) auto}#mt-lista .mt-ach.mt-ach1>span.mt-ach-o,#mt-lista .mt-ach.mt-ach1>.mt-ach-s{grid-column:2 / 4;justify-self:start}}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -3369,10 +3377,16 @@ function achadosDoMotor(o){
   if(!A) return `<div class="mt-achados"><b>0 oportunidades encontradas</b> <span class=meta>· nenhuma oportunidade reconhecida nesta fonte até agora</span></div>`;
   if(!A.total_unicas) return `<div class="mt-achados"><b>0 oportunidades encontradas</b> <span class=meta>· nenhuma oportunidade reconhecida nesta fonte até agora</span></div>`;
   return `<div class="mt-achados"><b>${A.total_unicas} oportunidade(s) encontrada(s)</b>${A.total_registros>A.total_unicas?` <span class=meta>(${A.total_registros} registros, sem repetição)</span>`:""} — ${Math.min(5,A.ultimas.length)} mais recente(s):
-    ${A.ultimas.map(e=>`<div class="mt-ach"><span class="pt nv"></span>
-        ${e.url?`<a href="${esc(e.url)}" target=_blank rel="noopener noreferrer" title="${esc(e.titulo||"")}">${esc((e.titulo||"").slice(0,64))}</a>`:`<span>${esc((e.titulo||"").slice(0,64))}</span>`}
-        <small>${e.publicado_em?"publicado em "+br(e.publicado_em):"visto em "+br(e.visto_em||"")}${e.prazo?" · inscrições até "+br(e.prazo):""}${e.uf?" · "+esc(e.uf):""}</small>
-        <small class="mt-ach-op">${e.opressor&&e.opressor.id?`motor opressor <b>${esc(e.opressor.id)}</b>${e.opressor.ligado?" · ligado":" · desligado"}`:esc((e.opressor||{}).estado||"")}${e.site_oficial?` · <a href="${esc(e.site_oficial)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:" · site oficial ainda não identificado"}</small></div>`).join("")}</div>`;
+    ${A.ultimas.map(e=>{   // 28/09 (titular): UMA linha por oportunidade — nome · prazo de inscrição · motor opressor · site oficial
+        const O=e.opressor||{}, dec=e.decisao||"";
+        const venc=e.prazo&&e.prazo<HOJE.toISOString().slice(0,10);
+        const prazo=e.prazo?(venc?"encerrada em "+br(e.prazo):"inscrições até "+br(e.prazo)):dec==="arquivada_encerrada"?"encerrada":"prazo a confirmar";
+        const opr=O.id?`opressor <b>${esc(O.id)}</b><i class="mt-ach-lg${O.ligado?" on":""}" title="${O.ligado?"ligado":"desligado"}"></i>`:dec==="descartada"?"sem opressor · descartada":dec==="arquivada_encerrada"?"sem opressor · encerrada":"opressor no próximo ciclo";
+        const dica=`${e.titulo||""}\n${e.publicado_em?"publicado em "+br(e.publicado_em):"visto em "+br(e.visto_em||"")}${e.prazo?" · inscrições até "+br(e.prazo):""}\n${O.id?"motor opressor "+O.id+(O.ligado?" (ligado)":" (desligado)"):(O.estado||"")}\n${e.site_oficial?"site oficial: "+e.site_oficial:"site oficial ainda não identificado"}`;
+        return `<div class="mt-ach mt-ach1" title="${esc(dica)}"><span class="pt nv"></span>
+          ${e.url?`<a class="mt-ach-t" href="${esc(e.url)}" target=_blank rel="noopener noreferrer">${esc(e.titulo||"")}</a>`:`<span class="mt-ach-t">${esc(e.titulo||"")}</span>`}
+          <span class="mt-ach-p${e.prazo&&!venc?" ok":""}">${prazo}</span><span class="mt-ach-o">${opr}</span>
+          ${e.site_oficial?`<a class="mt-ach-s" href="${esc(e.site_oficial)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:`<span class="mt-ach-s sem">sem site oficial</span>`}</div>`;}).join("")}</div>`;
 }
 /* código vizinho que saiu junto com o ranking antigo — devolvido ao lugar */
 /* ================= DOCUMENTOS DAS ASSOCIAÇÕES ================= */
