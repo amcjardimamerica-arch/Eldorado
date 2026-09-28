@@ -1141,7 +1141,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   </div>
   <div class="bz-mapa-grade">
     <div class="bz-mapa-col">
-      <div id="versao-painel" class="meta" style="text-align:right;font-size:11px"></div>
+      <div id="versao-painel" class="meta" style="text-align:left;font-size:11px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"></div>
 
 <div id="bz-mapa"></div>
 <div id="bz-mapa-legenda" style="text-align:center;margin:4px 0 2px"></div>
@@ -1350,11 +1350,11 @@ window.recarregarDados=async function(){
 };
 const _hm=d=>{ try{ const x=new Date(d); return x.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})+" "+x.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}); }catch(e){ return "—"; } };
 /* selo de uma caixa: quando o dado foi GERADO, quando foi LIDO e de ONDE; âmbar se o gerador está atrasado */
-window.seloVivo=function(cam,gerado,limiteMin){
+window.seloVivo=function(cam,gerado,limiteMin,semFonte){
   if(cam==="dados/fluxo_oportunidades.json"&&window._FLUXO_RECUSADO) return `<span class="selo-vivo falha">⚠ recebida uma versão do mapa sem a validação (${esc(String(window._FLUXO_RECUSADO).slice(0,16))}) — recusada; mostrando o último mapa válido</span>`;
   const F=_FONTES[cam]||{}; const idade=gerado?(Date.now()-new Date(gerado))/60000:null;
   const atraso=idade!==null&&idade>(limiteMin||90);
-  return `<span class="selo-vivo${F.ok===false?" falha":atraso?" atraso":""}" title="${esc((F.fonte||"")+(gerado?" · gerado em "+_hm(gerado):""))}">${F.ok===false?"⚠ sem conexão com as fontes — mostrando o último dado bom":`dados de ${gerado?_hm(gerado):"—"}${atraso?" (gerador atrasado)":""} · lidos às ${F.lido_em?_hm(F.lido_em).slice(6):"—"} · ${esc(F.fonte||"")}`}</span>`;
+  return `<span class="selo-vivo${F.ok===false?" falha":atraso?" atraso":""}" title="${esc((F.fonte||"")+(gerado?" · gerado em "+_hm(gerado):""))}">${F.ok===false?"⚠ sem conexão com as fontes — mostrando o último dado bom":`dados de ${gerado?_hm(gerado):"—"}${atraso?" (gerador atrasado)":""} · lidos às ${F.lido_em?_hm(F.lido_em).slice(6):"—"}${semFonte?"":" · "+esc(F.fonte||"")}`}</span>`;
 };
 
 /* ================= PORTÃO DE ACESSO =================
@@ -5083,13 +5083,14 @@ const SELOS=[   // [caixa, arquivo, de onde vem a data de geração, minutos at�
   ["fi-mets","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90],
   ["bz-cards","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90]];
 function pintarSelos(){
-  SELOS.forEach(([id,cam,g,lim])=>{ const el=document.getElementById(id); if(!el||!el.parentNode) return;
+  SELOS.forEach(([id,cam,g,lim])=>{ if(id==="bz-mapa"){ const s0=document.querySelector('.selo-box[data-para="bz-mapa"]'); if(s0) s0.remove(); return; }
+    const el=document.getElementById(id); if(!el||!el.parentNode) return;
     let s=document.querySelector(`.selo-box[data-para="${id}"]`);
     if(!s){ s=document.createElement("div"); s.className="selo-box"; s.dataset.para=id; el.parentNode.insertBefore(s,el); }
     s.innerHTML=seloVivo(cam,g(),lim); });
   const v=document.getElementById("versao-painel");
   if(v){ const F=_FONTES["dashboard-dados.js"]||{}; const prox=Math.max(0,Math.round((240000-(Date.now()-(window._ultimaAtualizacao||Date.now())))/60000));
-    v.innerHTML=`<span class="vivo-pt${F.ok===false?" falha":""}"></span> <b>ao vivo</b> · dados gerados em ${esc(_hm(D&&D.gerado_em))}`; }   // 28/09 (titular): sem "lidos às…", próxima leitura, saúde e atualizar agora
+    v.innerHTML=`<span><span class="vivo-pt${F.ok===false?" falha":""}"></span> <b>ao vivo</b> · dados gerados em ${esc(_hm(D&&D.gerado_em))}</span>${seloVivo("dados/fluxo_oportunidades.json",(window._FLUXO||{}).em,90,true)}`; }   // 28/09 (titular): sem "lidos às…", próxima leitura, saúde e atualizar agora
   const r=document.getElementById("rodada"); if(r&&D) r.textContent="Última alimentação: "+_hm(D.gerado_em)+" · leitura ao vivo a cada 4 minutos";
 }
 window.atualizarAgora=async function(forcar){
