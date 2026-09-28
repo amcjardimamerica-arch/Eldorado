@@ -55,6 +55,15 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertEqual(decidir({"titulo": "Editalagua2022", "url": "https://x.org/edital-2022"})["decisao"], "arquivada_encerrada")
         self.assertIsNone(decidir({"titulo": "Edital X", "confirmada": True}))
 
+    def test_quadro_de_novas_respeita_a_validacao(self):
+        """28/09: o quadro 'novas oportunidades anunciadas' mostrava 7 itens já descartados ou encerrados."""
+        from src.validacao_mapa import carregar, SAEM_DO_MAPA
+        V = carregar()
+        saem = {v.get("titulo") for v in V.values() if v.get("decisao") in SAEM_DO_MAPA}
+        novas = json.loads((ROOT / "docs/dados/motores.json").read_text(encoding="utf-8")).get("novas") or []
+        self.assertFalse([n["titulo"] for n in novas if n.get("titulo") in saem and not any(
+            v.get("titulo") == n["titulo"] and v.get("decisao") not in SAEM_DO_MAPA for v in V.values())])
+
 
 if __name__ == "__main__":
     unittest.main()

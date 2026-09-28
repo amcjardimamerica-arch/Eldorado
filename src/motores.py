@@ -352,7 +352,25 @@ def _novas_sem_referencia(mencoes: list[dict], fontes: list[dict]) -> list[dict]
     260: ganha caixa própria (nova oportunidade histórica)."""
     toks_f = [(_toks(f["programa"]) | _toks(f.get("orgao") or "")) for f in fontes]
     novas = []
+    # RESPEITA A VALIDAÇÃO (28/09): o quadro "novas oportunidades" mostrava como nova o que a validação individual já
+    # descartou ou encerrou (7 de 9). Decisão registrada, item arquivado ou regra de descarte tiram a menção daqui.
+    try:
+        from .validacao_mapa import carregar as _val, SAEM_DO_MAPA
+        from .curadoria_automatica import decidir as _decidir
+        VAL = _val()
+        ARQ = load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}
+    except Exception:
+        VAL, ARQ, SAEM_DO_MAPA, _decidir = {}, {}, (), (lambda x: None)
+    RUIDO_TIT = re.compile(r"^\s*extrato|termo aditivo|homologa|resultado|inexigibilidade|dispensa de chamamento", re.I)
     for m in mencoes:
+        v = VAL.get(m.get("id")) or {}
+        if v.get("decisao") in SAEM_DO_MAPA or m.get("id") in ARQ or RUIDO_TIT.search(str(m.get("titulo") or "")):
+            continue
+        d = None if v else _decidir({"titulo": m.get("titulo"), "url": m.get("url"), "fim": m.get("prazo") or m.get("fim"), "origem": m.get("fonte")})
+        if d and d.get("decisao") in ("descartada", "arquivada_encerrada"):
+            continue
+        if v.get("decisao"):
+            m = {**m, "decisao": v["decisao"], "motivo_decisao": v.get("motivo")}
         tm = _toks(m.get("titulo", "") + " " + (m.get("evidencia") or "")[:300])
         if not tm:
             continue
