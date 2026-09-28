@@ -99,6 +99,17 @@ class TesteIntegridadePainel(unittest.TestCase):
             for e in x.get("ultimas", []):
                 self.assertIn("opressor", e, f"{mid}: oportunidade sem destino de opressor")
 
+    def test_radar_so_com_o_fluxo_validado(self):
+        """28/09: o Radar lia editais sem validação e chamava programas do catálogo de 'editais possíveis'."""
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        ini = h.index("RADAR DE RECURSOS DA PÁGINA INICIAL (titular, 28/09)")
+        novo = h[ini:h.index("function corTexto(hex){", ini)]
+        corpo = novo.split("*/", 1)[1]
+        self.assertIn("window._FLUXO", corpo)
+        for proibido in ("D.editais", "D.bussola_painel", "D.fontes_ativas", "D._historico"):
+            self.assertNotIn(proibido, corpo, proibido)
+        self.assertIn("link_oficial", corpo)
+
 
 if __name__ == "__main__":
     unittest.main()

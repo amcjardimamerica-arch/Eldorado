@@ -413,6 +413,9 @@ box-shadow:0 1px 3px #0002}
 .gc-hoje{position:absolute;top:-2px;bottom:-2px;width:2px;background:#0E2A55;opacity:.7}
 .gc-b-leg{display:inline-block;width:22px;height:10px;border-radius:5px;background:#1E7E4B;vertical-align:-1px}.gc-b-leg.sem-ini{background:repeating-linear-gradient(45deg,#1E7E4B 0,#1E7E4B 4px,#2E9460 4px,#2E9460 8px)}
 .mt-ach-op{display:block;font-size:10.5px;color:#1E7E4B}
+.rd-t{font-weight:700;color:#0E2A55;margin:6px 0 4px;font-size:13.5px}.rd-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:6px 8px;border-bottom:1px solid #F0F3F7;font-size:12.5px}
+.rd-l.insp{background:#F4FAF6}.rd-n small{display:block;color:var(--suave);font-size:10.5px}.rd-p{white-space:nowrap;color:var(--suave);font-size:11.5px}
+.rd-a{white-space:nowrap;font-size:11.5px;border:1px solid #E6D39A;border-radius:8px;padding:2px 8px;text-decoration:none;color:#8A5A00}.rd-a.of{background:#FFF6E5;font-weight:700}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -2068,6 +2071,60 @@ function desenhaGantt(){
   if($("g-possiveis")) $("g-possiveis").innerHTML=""; if($("g-cobertura")) $("g-cobertura").innerHTML="";
 }
 function ddmmG(iso){ return `${iso.slice(8,10)}/${iso.slice(5,7)}`; }
+/* ═══ RADAR DE RECURSOS DA PÁGINA INICIAL (titular, 28/09) — REGRA MÁXIMA ═══════════════════════════════════════
+   O Radar antigo lia o conjunto principal SEM a validação (três "Emendas parlamentares" repetidas, doação da Receita
+   com prazo em 2027) e chamava de "editais possíveis" os 163 PROGRAMAS do catálogo de opressores — fontes, não
+   editais. Agora lê o fluxo validado, o mesmo do mapa e dos calendários, relido ao vivo:
+     indicadores  possíveis abertas · confirmadas (objeto + prazo + site oficial) · em verificação · prazos em 15 dias
+     Novas        as CONFIRMADAS, com "Abrir oportunidade" levando ao SITE OFICIAL (edital, dados e anexos)
+     Possíveis    abertas ainda sem prazo confirmado, com o marcador da inspeção do Interceptador e o link — "site
+                  oficial" quando validado, "indício" quando ainda é a publicação de terceiros */
+const _AREAS_RADAR=[["cultura","Cultura",/cultur|art[ií]st|\barte|pnab|aldir|rouanet|cinema|m[uú]sica|teatro|patrim[oô]nio|leitura|audiovis/i],
+  ["esporte","Esporte e lazer",/esport|atleta|lazer/i],["saude","Saúde",/sa[uú]de|hospital|pronon|pronas|m[eé]dic/i],
+  ["crianca","Criança e adolescente",/crian[cç]a|adolesc|inf[aâ]ncia|\bfia\b|juventude|jovens/i],["idoso","Pessoa idosa",/idos|envelhec/i],
+  ["assistencia","Assistência social",/assist[eê]ncia social|vulnerab|alimentar|nutricional|filantr[oó]p|pobreza|fome|perif[eé]ri/i],
+  ["ambiente","Meio ambiente e clima",/ambient|clima|sustent|floresta|[aá]gua|amaz[oô]n/i],["educacao","Educação",/educa|escola|ensino/i]];
+const areaRadar=x=>{const t=(x.titulo||"")+" "+(x.orgao||""); const a=_AREAS_RADAR.find(([,,rx])=>rx.test(t)); return a?a[0]:"outras";};
+function desenhaRadar(){
+  const F=window._FLUXO; const P=(F&&F.itens_por_uf)||{};
+  const todos=Object.entries(P).flatMap(([uf,v])=>v.map(x=>({...x,_uf:uf==="__nac__"?"":uf})));
+  const hoje=HOJE.toISOString().slice(0,10), em15=new Date(HOJE.getTime()+15*864e5).toISOString().slice(0,10);
+  // filtros preenchidos a partir do que existe agora
+  const sUF=$("fi-uf"), sA=$("fi-area"), sN=$("fi-nivel"), sP=$("fi-prazo");
+  const v0={uf:sUF.value,a:sA.value,n:sN.value,p:sP.value||"abertos"};
+  const nUF={}; todos.forEach(x=>{nUF[x._uf||"__nac__"]=(nUF[x._uf||"__nac__"]||0)+1;});
+  sUF.innerHTML=`<option value="">Brasil (${todos.length})</option><option value="__nac__">Nacional (${nUF.__nac__||0})</option>`+Object.keys(nUF).filter(k=>k!=="__nac__").sort((a,b)=>a==="GO"?-1:b==="GO"?1:a.localeCompare(b)).map(k=>`<option value="${k}">${k} (${nUF[k]})</option>`).join("");
+  sA.innerHTML=`<option value="">Todas</option>`+_AREAS_RADAR.map(([k,r])=>`<option value="${k}">${r}</option>`).join("")+`<option value="outras">Outras</option>`;
+  sN.innerHTML=`<option value="">Todos</option><option value="ente público">Entes públicos</option><option value="empresa/instituto">Empresas e institutos</option><option value="menção em diário oficial">Menções em diário oficial</option>`;
+  sP.innerHTML=`<option value="abertos">Inscrições abertas</option><option value="confirmadas">Com prazo e site confirmados</option><option value="15dias">Prazo em até 15 dias</option>`;
+  sUF.value=v0.uf; sA.value=v0.a; sN.value=v0.n; sP.value=v0.p;
+  [sUF,sA,sN,sP].forEach(s=>s.onchange=()=>desenhaRadar());
+  if(!F){ $("fi-mets").innerHTML=`<div class=meta style="padding:10px">lendo o fluxo das oportunidades…</div>`; $("fi-novas").innerHTML=""; $("fi-possiveis").innerHTML=""; return; }
+  let L=todos.filter(x=>(!v0.uf||(v0.uf==="__nac__"?!x._uf:x._uf===v0.uf))&&(!v0.a||areaRadar(x)===v0.a)&&(!v0.n||x.tipo===v0.n));
+  const conf=L.filter(x=>x.confirmada);
+  const prox=conf.filter(x=>x.fim&&x.fim>=hoje&&x.fim<=em15);
+  const verif=L.filter(x=>!x.confirmada);
+  if(v0.p==="confirmadas") L=conf; else if(v0.p==="15dias") L=prox;
+  const cartao=(ic,n,rot,dica)=>`<div class="met" title="${esc(dica)}"><span class="ic">${ic}</span><div><b>${n}</b><span>${rot}</span></div></div>`;
+  $("fi-mets").innerHTML=cartao("📊",L.length,"oportunidades abertas","possíveis abertas no recorte: prazo não vencido ou publicadas nos últimos 60 dias, já com a validação")
+    +cartao("✔",conf.length,"com prazo e site oficial","objeto, data-limite de inscrição aberta e link do site oficial — prontas para a decisão")
+    +cartao("🔍",verif.length,"em verificação","ainda sem prazo e site oficial confirmados: na fila do Interceptador (Goiás primeiro)")
+    +cartao("⏰",prox.length,"prazos em 15 dias","confirmadas com inscrição terminando até "+br(em15));
+  const linha=(x,oficial)=>{const I=x.inspecao; const u=(I&&I.pagina_oficial)||x.link_oficial||x.url;
+    const cor=x.confirmada?"verde":!I?"cinza":I.ok?"verde":"verm";
+    return `<div class="rd-l${I||x.confirmada?" insp":""}"><span class="uf-fx-m ${cor}" title="${x.confirmada?"confirmada: prazo e site oficial":!I?"ainda não inspecionada pelo Interceptador":I.ok?"inspecionada: prazo e site oficial encontrados":"inspecionada: prazo ou site oficial ainda não encontrados"}"></span>
+      <span class="rd-n"><b title="${esc(x.titulo)}">${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"Diário oficial · ").replace(/"/g,"").slice(0,70))}</b>
+        <small>${x._uf||"nacional"} · ${esc(x.tipo||"")}${x.publicado_em?" · publicado em "+br(x.publicado_em):""}</small></span>
+      <span class="rd-p">${x.fim?"até "+br(x.fim):x.confirmada?"fluxo contínuo":"prazo a confirmar"}</span>
+      ${u?`<a class="rd-a${oficial&&x.link_oficial?" of":""}" href="${esc(u)}" target=_blank rel="noopener noreferrer">${x.link_oficial&&(x.confirmada||(I&&I.pagina_oficial))?"Abrir oportunidade ↗":"indício ↗"}</a>`:`<span class="rd-a meta">—</span>`}</div>`;};
+  const confOrd=[...conf].sort((a,b)=>String(a.fim||"9999").localeCompare(String(b.fim||"9999")));
+  $("fi-novas").innerHTML=`<div class="rd-t">Oportunidades com prazo e site oficial <span class=meta>· ${confOrd.length} · o botão abre o site oficial, com edital, dados e anexos</span></div>`
+    +(confOrd.length?confOrd.map(x=>linha(x,true)).join(""):`<div class=meta style="padding:8px 2px">nenhuma confirmada neste recorte</div>`);
+  const possOrd=[...verif].sort((a,b)=>(a._uf==="GO"?0:1)-(b._uf==="GO"?0:1)||String(b.publicado_em||"").localeCompare(String(a.publicado_em||"")));
+  $("fi-possiveis").innerHTML=v0.p==="abertos"?`<div class="rd-t" style="margin-top:12px">Possíveis — em verificação <span class=meta>· ${possOrd.length} · Goiás primeiro · o Interceptador confirma o prazo e o site oficial</span></div>`
+    +possOrd.slice(0,8).map(x=>linha(x,false)).join("")
+    +(possOrd.length>8?`<div class=meta style="padding:6px 2px">mostrando 8 de ${possOrd.length} · <a href="#" onclick="trocaVista('bussola');return false">todas no Mapa de Oportunidades</a></div>`:""):"";
+}
 function corTexto(hex){
   const c=String(hex).replace("#","");
   const r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);
@@ -4065,6 +4122,7 @@ window.carregaFluxo=async function(){
   try{ if(typeof desenhaBzMapa==="function") desenhaBzMapa(); }catch(e){}
   try{ if(typeof desenhaBzLateral==="function"&&bzUFsel) desenhaBzLateral(); }catch(e){}
   try{ desenhaGantt(); }catch(e){}
+  try{ desenhaRadar(); }catch(e){}
   try{ if(typeof desenhaCal==="function") desenhaCal(); }catch(e){}
 };
 setTimeout(()=>carregaFluxo(),1500); setInterval(()=>carregaFluxo(),300000);
@@ -4864,7 +4922,8 @@ const SELOS=[   // [caixa, arquivo, de onde vem a data de geração, minutos at�
   ["bz-mapa","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90], ["mt-lista","dados/achados_motores.json",()=>(window._ACHADOS||{}).em,1500],
   ["rank-apoiadores","dados/ranking_apoiadores.json",()=>(window.EMP||{}).gerado_em,10080], ["int-posto-bussola","dados/interceptador.json",()=>(window._INT||{}).em,60],
   ["int-posto","dados/interceptador.json",()=>(window._INT||{}).em,60],
-  ["g-corpo","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90]];
+  ["g-corpo","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90],
+  ["fi-mets","dados/fluxo_oportunidades.json",()=>(window._FLUXO||{}).em,90]];
 function pintarSelos(){
   SELOS.forEach(([id,cam,g,lim])=>{ const el=document.getElementById(id); if(!el||!el.parentNode) return;
     let s=document.querySelector(`.selo-box[data-para="${id}"]`);
