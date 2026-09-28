@@ -44,9 +44,10 @@ def _release(tag: str) -> dict:
 
 
 def _enviar_release(rel: dict, arq: Path) -> dict:
+    # anexo com o mesmo nome é SUBSTITUÍDO: a assinatura do manifesto tem de corresponder ao que está guardado
     ja = next((a for a in rel.get("assets", []) if a["name"] == arq.name), None)
-    if ja and ja["size"] == arq.stat().st_size:
-        return ja
+    if ja:
+        _api("DELETE", ja["url"])
     up = rel["upload_url"].split("{")[0] + f"?name={arq.name}"
     return _api("POST", up, arq.read_bytes(), {"Content-Type": "application/octet-stream"})
 
@@ -91,7 +92,9 @@ def run() -> list[dict]:
         LISTAS.mkdir(parents=True, exist_ok=True)
         (LISTAS / f"{cj['nome']}.jsonl.xz").write_bytes(lzma.compress("".join(json.dumps(x, ensure_ascii=False) + "\n" for x in reg["conteudo"]).encode("utf-8"), preset=9))
         registrar({**reg, "por_que": cj.get("por_que")}, onde)
-        subprocess.run(["git", "rm", "-q", "-r", "--cached", "--ignore-unmatch", *arquivos], cwd=ROOT, check=False)
+        lista = TMP / f"{cj['nome']}.remover.txt"; lista.write_text("\n".join(arquivos) + "\n", encoding="utf-8")
+        # 62.305 caminhos numa linha de comando estouram o limite do sistema: a lista vai por arquivo
+        subprocess.run(["git", "rm", "-q", "-r", "--cached", "--ignore-unmatch", f"--pathspec-from-file={lista}"], cwd=ROOT, check=True)
         for a in arquivos:
             try:
                 (ROOT / a).unlink()
