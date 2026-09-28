@@ -52,9 +52,15 @@ def chave(titulo: str, orgao: str = "") -> str:
     return re.sub(r"[^a-z0-9]+", "", t)[:70]
 
 
+NAO_E_SELECAO = re.compile(r"dispensa de (chamamento|licita)|inexigibilidade|pessoa[s]? f[ií]sica|credenciamento de (profissionais|m[eé]dicos|pessoas)|"
+                           r"preg[aã]o|licita[cç][aã]o|tomada de pre[cç]os|registro de pre[cç]os|contrata[cç][aã]o de empresa|termo aditivo|extrato", re.I)
+
+
 def dispensa(item: dict) -> str | None:
     """Motivo da dispensa de opressor, ou None (precisa de opressor)."""
     t = f"{item.get('titulo') or ''} {item.get('orgao') or ''}"
+    if NAO_E_SELECAO.search(t):     # 28/09: dispensa de chamamento, inexigibilidade, pessoa física, compra — não é seleção aberta a associações
+        return "não é seleção aberta a associações (dispensa/inexigibilidade de chamamento, credenciamento de pessoa física ou compra)"
     if re.search(r"emenda parlamentar", t, re.I):
         return "emenda parlamentar: indicação do parlamentar, sem concorrência entre entidades"
     if SEM_CONCORRENCIA.search(t) and not SELECAO.search(t):
@@ -170,6 +176,10 @@ def sincronizar() -> dict:
         if not SELECAO.search(f"{tit} {item['orgao']}"):
             idx[fid] = {"dispensa": "sem critério de seleção identificado no título"}; continue
         idx[fid] = {"opressor": opressor_de(item, "biblioteca", False)}
+    # REPOSITÓRIO CRIADO PARA ATO QUE NÃO É SELEÇÃO (28/09): sai do catálogo
+    antes = len(C["motores"])
+    C["motores"] = [x for x in C["motores"] if not (x.get("tipo") == "repositorio_de_oportunidade" and NAO_E_SELECAO.search(f"{x.get('programa') or ''} {x.get('orgao') or ''}"))]
+    st["repositorios_indevidos_removidos"] = antes - len(C["motores"])
     # LIGADO SEM OPRESSOR NÃO É FONTE MONITORADA (28/09): 33 ligados não existiam mais no catálogo e inflavam a contagem
     ids = {x.get("id") for x in C.get("motores") or []}
     orfaos = [k for k in L["ligados"] if k not in ids]

@@ -212,7 +212,11 @@ def _abate_proprio(reg: dict, inv: dict, alvo: dict) -> None:
     e = b["abates"].setdefault(MOTOR, {"n": 0, "ouro": 0, "prata": 0, "ultimos": []})
     fim = reg.get("fim"); pz = (inv.get("campos") or {}).get("Prazo de inscrição") or {}
     url = reg.get("pagina_oficial") or reg.get("url")
-    if fim and fim >= date.today().isoformat() and pz.get("comprovado") and url and url not in {x.get("url") for x in e["ultimos"]}:
+    # 28/09: estrela de OURO só com SITE OFICIAL (agregador e notícia não contam) e título de oportunidade de verdade
+    from .sites_oficiais import e_republicador as _rep
+    _tit = str(reg.get("titulo") or "")
+    _tit_ok = len(re.findall(r"[A-Za-zÀ-ú]{3,}", _tit)) >= 4 and not re.search(r"(?i)acessar o link|editais abertos|clique aqui|veja (a )?lista", _tit)
+    if fim and fim >= date.today().isoformat() and pz.get("comprovado") and url and not _rep(url) and _tit_ok and url not in {x.get("url") for x in e["ultimos"]}:
         e["ouro"] += 1; e["n"] = e["ouro"] + e["prata"]
         e["ultimos"] = ([{"titulo": (reg.get("titulo") or "")[:80], "url": url, "tipo": "ouro", "em": date.today().isoformat(), "papel": "Piloto - Interceptador"}] + e["ultimos"])[:40]
     b["missoes"] = ([{"tipo": "interceptar", "modo": alvo.get("modo"), "alvo": (reg.get("titulo") or "")[:80], "comprovados": inv.get("comprovados"), "em": now_iso()}] + b["missoes"])[:60]

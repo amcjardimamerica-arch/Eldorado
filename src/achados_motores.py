@@ -95,6 +95,28 @@ def montar() -> dict:
         xs = [r for r in regs if r.get("fonte_id") in ids]
         for k in ids:
             xs += viu.get(k, [])
+        if mid == "piloto-interceptador":
+            # O QUE O INTERCEPTADOR VALIDOU (28/09): ele não gera registro com a própria fonte nem leitura diária — o
+            # resultado dele são os estudos. Entram as oportunidades que ele validou (completas ou parciais).
+            try:
+                est = json.loads((ROOT / "estado/interceptador/estado.json").read_text(encoding="utf-8")).get("feitos") or {}
+            except Exception:
+                est = {}
+            por_id = {r.get("id"): r for r in regs}
+            xs = []
+            for eid, f in est.items():
+                if f.get("qualidade") not in ("validada", "parcial"):
+                    continue
+                r0 = por_id.get(eid) or {}
+                try:
+                    e0 = json.loads((ext / f"{eid}.json").read_text(encoding="utf-8"))
+                except Exception:
+                    e0 = {}
+                tit = r0.get("titulo") or e0.get("titulo")
+                from .opressores_repositorio import NAO_E_SELECAO
+                if tit and not NAO_E_SELECAO.search(tit):        # dispensa de chamamento, pessoa física e compra não são oportunidade
+                    xs.append({**r0, "id": eid, "titulo": tit, "url": r0.get("url") or e0.get("url"),
+                               "descoberto_em": str(f.get("em") or "")[:10], "fim": r0.get("fim") or e0.get("fim")})
         if mid == "do-goiania":
             xs = [r for r in regs if r.get("fonte_id") == "querido-diario" and "goiânia" in str(r.get("titulo", "")).lower()]
         vistos_t, vistos_u, unicas = set(), set(), []
