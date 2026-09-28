@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T08:07:19+00:00",
+  "em": "2026-09-28T08:27:04+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T07:58:12+00:00",
+  "ultimo_voo": "2026-09-28T08:08:36+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 45
   },
   "acumulado": {
-    "missoes": 210,
+    "missoes": 211,
     "validadas": 14,
     "parciais": 62,
-    "insuficientes": 83,
+    "insuficientes": 84,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 127,
+      "sim": 128,
       "nao": 15
     },
     "estrelas_de_ouro": 9,
@@ -52,6 +52,92 @@
     "tempo_medio_min": 8.5
   },
   "missoes": [
+    {
+      "em": "2026-09-28T08:08:36+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · MG (sorteio)",
+      "alvo": "Diário Oficial de Campo Belo (MG) 2026-09-11 — \"edital de chamamento público\" associação",
+      "qualidade": "insuficiente",
+      "comprovados": 9,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de recurso",
+        "Valor",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, resultado, órgão financiador, território, esfera, requisitos e anexos.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital, apresentar os documentos exigidos (documento de identidade, CPF, comprovante de residência e certidão de situação cadastral) e anexar os documentos necessários para participar do processo seletivo.",
+        "proximo_passo": "Verificar os requisitos do edital e preparar os documentos necessários para inscrição.",
+        "risco": "A falta de documentos exigidos ou a não apresentação dos anexos pode impedir a participação na contratação."
+      },
+      "erro": null,
+      "segundos": 1108,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "ff7d7d8f2e729e6783cb",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Contratação do curso WORKSHOP PRÁTICO DFD, ETP e Termo de Referência com Inteligência Artificial e ChatGPT Plus",
+          "trecho": "1.1. Contratação do curso WORKSHOP PRÁTICO DFD, ETP e Termo de Referência com Inteligência Artificial e ChatGPT Plus, para os servidores que desempenham tal função no setor de Comp",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-09-14 a 2026-09-25",
+          "trecho": "O edital na sua íntegra e seus anexos estarão disponíveis a partir do dia 14/09/2026 nos sites www.campobelo.mg.gov.br;campobelo.atende.net;www.comprasgovernamentais.gov.br e Porta",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Campo Belo - MG",
+          "trecho": "Edital de Publicação Prefeitura Municipal de Campo Belo - MG. Pregão, tipo Eletrônico n.º 128/2026 e no compras.gov.br n.º 103/2026.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "MG",
+          "trecho": "Órgão Oficial do Município de Campo Belo/MG, criado pela Lei Municipal nº 3.540 de 01/10/2015.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · convenio",
+          "trecho": "Contratação do curso WORKSHOP PRÁTICO DFD, ETP e Termo de Referência com Inteligência Artificial e ChatGPT Plus, para os servidores que desempenham tal função no setor de Compras d",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "Documento de identidade, CPF, Comprovante de residência, Certidão de situação cadastral",
+          "trecho": "1.2. A contratação será dividida em itens, conforme tabela constante abaixo.",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Campo Belo",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3111200/2026-09-11/66bbd1b71c44e98fe9bf8df7639860d078057fd2.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-09-28T07:58:12+00:00",
       "modo": "validar",
@@ -2842,36 +2928,6 @@
         "financiador_pdf",
         "financiador_ano"
       ]
-    },
-    {
-      "em": "2026-09-27T22:16:31+00:00",
-      "modo": "complementar",
-      "tipo": "empresa",
-      "de": "radar do Espião",
-      "alvo": "CDL Goiânia",
-      "qualidade": "sem_evidencia",
-      "comprovados": 2,
-      "dispensados": null,
-      "total": 8,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": null,
-      "erro": null,
-      "segundos": 250,
-      "site_oficial": "https://cdlgoiania.com.br/",
-      "resultado": null,
-      "fonte_nova_para_os_motores": null,
-      "fontes_oficiais": 0,
-      "justificativa": "o site não trouxe prova de que a empresa apoia organizações sociais",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "encontrou": {
-        "Site oficial": {
-          "valor": "https://cdlgoiania.com.br/"
-        },
-        "Território de atuação social": {
-          "valor": "municipios citados"
-        }
-      }
     }
   ]
 }
