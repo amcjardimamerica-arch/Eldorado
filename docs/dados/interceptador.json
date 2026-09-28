@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T13:38:42+00:00",
+  "em": "2026-09-28T13:53:37+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T13:27:42+00:00",
+  "ultimo_voo": "2026-09-28T13:40:02+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -32,19 +32,19 @@
   },
   "fila": {
     "editais novos dos motores": 3,
-    "indícios do Espião": 18,
+    "indícios do Espião": 19,
     "abertos com itens em falta": 4,
     "empresas sem ficha": 54
   },
   "acumulado": {
-    "missoes": 233,
+    "missoes": 234,
     "validadas": 15,
-    "parciais": 74,
+    "parciais": 75,
     "insuficientes": 93,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 145,
+      "sim": 146,
       "nao": 19
     },
     "estrelas_de_ouro": 9,
@@ -52,6 +52,93 @@
     "tempo_medio_min": 8.9
   },
   "missoes": [
+    {
+      "em": "2026-09-28T13:40:02+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "opressor sem leitura",
+      "alvo": "Aviso de Chamamento Público — SMS Goiânia - parceria com entidade de saúde",
+      "qualidade": "parcial",
+      "comprovados": 9,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor"
+      ],
+      "pagina_oficial": "https://saude.goiania.go.gov.br/editas-de-chamamento-publico/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto fornece informações sobre o objeto, prazo de inscrição, órgão financiador, território, esfera, requisitos, anexos e destinação do edital, o que é suficiente para compreender a base do chamamento público.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se credenciar com profissionais especialistas, técnicos e auxiliares em saúde, apresentando a documentação descrita no ANEXO III, e garantir que sua atuação esteja alinhada ao objeto do edital, que é o credenciamento de profissionais em saúde.",
+        "proximo_passo": "Consultar o ANEXO III para entender os requisitos de documentação e se adequar ao objeto do edital.",
+        "risco": "A falta de clareza sobre os critérios de seleção e o prazo de inscrição pode impedir a associação de se candidatar adequadamente."
+      },
+      "erro": null,
+      "segundos": 813,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor",
+      "id": "op-nova-137bf6a88373",
+      "encontrou": {
+        "Objeto": {
+          "valor": "credenciamento de profissionais ESPECIALISTAS, TÉCNICOS E AUXILIARES EM SAÚDE",
+          "trecho": "Dispõe sobre o Edital de Chamamento Público nº 007/2024, sobre o credenciamento de profissionais ESPECIALISTAS, TÉCNICOS E AUXILIARES EM SAÚDE, interessados em prestar serviços na ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "dispensado — O prazo de inscrição é especificado no texto.",
+          "trecho": "a partir do dia 11/11/2024 até o dia 13/11/2024 às 18h se encontrará aberto o processo de credenciamento [rejeitado: data implausível para edital aberto]",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Órgão / financiador": {
+          "valor": "Secretaria Municipal de Saúde",
+          "trecho": "O Município de Goiânia, com interveniência da Secretaria Municipal de Saúde de Goiânia",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "O Município de Goiânia, com interveniência da Secretaria Municipal de Saúde de Goiânia",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "saude",
+          "trecho": "Dispõe sobre o Edital de Chamamento Público nº 007/2024, sobre o credenciamento de profissionais ESPECIALISTAS, TÉCNICOS E AUXILIARES EM SAÚDE, interessados em prestar serviços na ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · convenio",
+          "trecho": "O Município de Goiânia, com interveniência da Secretaria Municipal de Saúde de Goiânia",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "documentação descrita no ANEXO III",
+          "trecho": "Os profissionais interessados a realizarem serviço complementares junto a Rede Municipal de Saúde, deverão protocolar toda a documentação descrita no ANEXO III",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secretaria Municipal de Saúde",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-09-28T13:27:42+00:00",
       "modo": "validar",
@@ -3011,73 +3098,6 @@
         "financiador_ano",
         "governo",
         "parceiro"
-      ]
-    },
-    {
-      "em": "2026-09-28T04:00:12+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "mapa · SP (sorteio)",
-      "alvo": "Diário Oficial de Itapeva (SP) 2026-09-23 — \"edital de chamamento público\" associação",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://itapeva.mg.gov.br/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi publicado no Diário Oficial de Itapeva (SP) em 2026-09-23, indicando que a Prefeitura de Itapeva é o órgão financiador, o que confirma a existência do chamamento público.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação, reunir os documentos necessários e se inscrever conforme as instruções do edital, mesmo que os requisitos não sejam explicitados.",
-        "proximo_passo": "Consultar o edital completo para obter informações sobre os requisitos, prazos e processo de inscrição.",
-        "risco": "A falta de informações detalhadas sobre requisitos, prazos e área de atuação pode impedir a associação de se qualificar adequadamente para o edital."
-      },
-      "erro": null,
-      "segundos": 888,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 3,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "0659cca2e07a53d96851",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Prefeitura de Itapeva",
-          "trecho": "Prefeitura de Itapeva",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "MG",
-          "trecho": "Itapeva/MG",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Itapeva",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3522406/2026-09-23/b3a2309e1998522f02965f909d966a84abc9f001.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
       ]
     }
   ]
