@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `dou`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 7
-- Distribuição por ano pesquisado/coletado: {'2026': 7}
+- Pistas aguardando confirmação: 8
+- Distribuição por ano pesquisado/coletado: {'2026': 8}
 
 ## Padrões
 
@@ -19,3 +19,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA](https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-733073978) — coletado em 2026-09-21T08:20:26+00:00
 - [EDITAL DE INTIMAÇÃO](https://www.in.gov.br/web/dou/-/edital-de-intimacao-733801219) — coletado em 2026-09-24T07:56:27+00:00
 - [EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA](https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-733173172) — coletado em 2026-09-21T08:20:26+00:00
+- [EXTRATO DE TERMO DE FOMENTO](https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-734970912) — coletado em 2026-09-28T13:40:09+00:00

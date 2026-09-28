@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `querido-diario`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 18438
-- Distribuição por ano pesquisado/coletado: {'2021': 1267, '2022': 3605, '2023': 3774, '2024': 3681, '2025': 3423, '2026': 2688}
+- Pistas aguardando confirmação: 16901
+- Distribuição por ano pesquisado/coletado: {'2021': 1102, '2022': 3228, '2023': 3261, '2024': 3298, '2025': 3363, '2026': 2649}
 
 ## Padrões
 
@@ -12,8 +12,10 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
+- [Diário Oficial de Patrocínio Paulista (SP) 2024-02-07 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3536307/2024-02-07/8212d1dab2660dd2f665d1c88d066ee9d4359fd6.pdf) — coletado em 2026-09-27T16:51:11+00:00
+- [Diário Oficial de Pratânia (SP) 2025-11-17 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3541059/2025-11-17/c091902bebf87f28284e7d8e6a46f9f71ee946dc.pdf) — coletado em 2026-09-01T06:39:46+00:00
+- [Diário Oficial de Votuporanga (SP) 2024-01-15 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3557105/2024-01-15/ca4aa3190ce0de703a6b23c4cccd08cc71df870f.pdf) — coletado em 2026-09-27T16:49:45+00:00
 - [Diário Oficial de Itapevi (SP) 2023-06-06 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3522505/2023-06-06/d79ca985cf15ba3b047f1c30f6a4aef0d710d0bf.pdf) — coletado em 2026-09-27T16:38:40+00:00
-- [Diário Oficial de Floreal (SP) 2023-09-22 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3515905/2023-09-22/38e78c68e8429e9381e2088d739936063dca3615.pdf) — coletado em 2026-09-27T16:43:25+00:00
 - [Diário Oficial de Corbélia (PR) 2024-11-13 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/4106308/2024-11-13/2f5518770971c0daae6de8aa761dfe505e1be1e6.pdf) — coletado em 2026-09-01T06:26:19+00:00
 - [Diário Oficial de Pindorama (SP) 2022-11-11 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3538105/2022-11-11/8de24dffe9035afe64c4297c400a4713ff4a3136.pdf) — coletado em 2026-09-27T11:26:14+00:00
 - [Diário Oficial de Horizontina (RS) 2025-07-18 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/4309605/2025-07-18/cdb00d7a636820a74276fb86fde065ac23407fdc.pdf) — coletado em 2026-09-01T06:35:28+00:00
@@ -27,7 +29,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Diário Oficial de Queimados (RJ) 2024-03-25 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3304144/2024-03-25/21e07539a929b7dafa1d2d50b9099d49059bd64a.pdf) — coletado em 2026-09-28T03:14:07+00:00
 - [Diário Oficial de Campo Limpo Paulista (SP) 2025-11-24 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3509601/2025-11-24/484f28e52bfda3b235732b0c23077db69f45e8c3.pdf) — coletado em 2026-09-01T06:39:43+00:00
 - [Diário Oficial de Brasília (DF) 2024-11-27 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/5300108/2024-11-27/55c669c71d4be98e7654c7cd89614ffcf88195df.pdf) — coletado em 2026-09-01T06:26:19+00:00
-- [Diário Oficial de Florianópolis (SC) 2024-01-15 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/4205407/2024-01-15/ce63c1b1fb6874b3dcaa6573cf99c2247872aaa3.pdf) — coletado em 2026-09-27T16:49:43+00:00
 - [Diário Oficial de Joinville (SC) 2026-02-20 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/4209102/2026-02-20/e677c3bad0ddd3cfd162e827d24c2c686aef2de8.pdf) — coletado em 2026-09-01T06:41:58+00:00
 - [Diário Oficial de Uberaba (MG) 2022-03-18 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3170107/2022-03-18/6cf330fff8b2e2ff08ed7e793f39d7ba46a37418.pdf) — coletado em 2026-09-27T16:21:45+00:00
 - [Diário Oficial de Cafelândia (PR) 2023-02-24 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/4103453/2023-02-24/12aaf6531c8cc36965936ecad700e1519d367561.pdf) — coletado em 2026-09-28T12:38:12+00:00
@@ -38,8 +39,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Diário Oficial de Itapevi (SP) 2025-02-19 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3522505/2025-02-19/f81056fa73cb0d98d38526cd6dc07cb013e14990.pdf) — coletado em 2026-09-01T06:30:07+00:00
 - [Diário Oficial de Uberaba (MG) 2023-09-12 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3170107/2023-09-12/ad72196f127bd5cbd89b0db698f4c90633103be6.pdf) — coletado em 2026-09-28T03:10:25+00:00
 - [Diário Oficial de São José dos Campos (SP) 2022-07-08 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3549904/2022-07-08/cd27e61d3a62c69124effa58f6188880efa7aa2e.pdf) — coletado em 2026-09-27T20:49:27+00:00
-- [Diário Oficial de Teresina (PI) 2023-04-24 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2211001/2023-04-24/06ea602a07a2f4518ebaf586b7af7b8e4cd0dee9.pdf) — coletado em 2026-09-27T16:34:40+00:00
-- [Diário Oficial de Uberlândia (MG) 2024-06-12 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3170206/2024-06-12/7e2c4d35ee5d4d16bb15cb4d0542e58cc6259089.pdf) — coletado em 2026-09-27T16:58:22+00:00
+- [Diário Oficial de Uberlândia (MG) 2024-06-12 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3170206/2024-06-12/7e2c4d35ee5d4d16bb15cb4d0542e58cc6259089.pdf) — coletado em 2026-09-28T22:53:53+00:00
 - [Diário Oficial de Tucano (BA) 2023-09-12 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2931905/2023-09-12/e9a9068818db1bfbcf0bd13571bf4b8ebcfa3687.pdf) — coletado em 2026-09-28T03:11:04+00:00
 - [Diário Oficial de Porto Alegre (RS) 2023-04-04 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/4314902/2023-04-04/100934e7275ed10bf21f79fed5f947978566104d.pdf) — coletado em 2026-09-27T16:34:47+00:00
 - [Diário Oficial de Mogi Guaçu (SP) 2025-09-20 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3530706/2025-09-20/e7017f9c3b3a382c3721d4f026bbec9718b68265.pdf) — coletado em 2026-09-01T06:37:31+00:00
