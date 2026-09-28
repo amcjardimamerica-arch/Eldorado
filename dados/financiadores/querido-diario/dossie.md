@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `querido-diario`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 18413
-- Distribuição por ano pesquisado/coletado: {'2021': 1267, '2022': 3599, '2023': 3755, '2024': 3681, '2025': 3423, '2026': 2688}
+- Pistas aguardando confirmação: 18438
+- Distribuição por ano pesquisado/coletado: {'2021': 1267, '2022': 3605, '2023': 3774, '2024': 3681, '2025': 3423, '2026': 2688}
 
 ## Padrões
 
@@ -30,7 +30,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Diário Oficial de Florianópolis (SC) 2024-01-15 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/4205407/2024-01-15/ce63c1b1fb6874b3dcaa6573cf99c2247872aaa3.pdf) — coletado em 2026-09-27T16:49:43+00:00
 - [Diário Oficial de Joinville (SC) 2026-02-20 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/4209102/2026-02-20/e677c3bad0ddd3cfd162e827d24c2c686aef2de8.pdf) — coletado em 2026-09-01T06:41:58+00:00
 - [Diário Oficial de Uberaba (MG) 2022-03-18 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3170107/2022-03-18/6cf330fff8b2e2ff08ed7e793f39d7ba46a37418.pdf) — coletado em 2026-09-27T16:21:45+00:00
-- [Diário Oficial de Cafelândia (PR) 2023-02-24 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/4103453/2023-02-24/12aaf6531c8cc36965936ecad700e1519d367561.pdf) — coletado em 2026-09-27T16:30:18+00:00
+- [Diário Oficial de Cafelândia (PR) 2023-02-24 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/4103453/2023-02-24/12aaf6531c8cc36965936ecad700e1519d367561.pdf) — coletado em 2026-09-28T12:38:12+00:00
 - [Diário Oficial de Juazeiro do Norte (CE) 2023-05-30 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2307304/2023-05-30/92cad4f366040de4dc7993f36c35b18f87c31beb.pdf) — coletado em 2026-09-27T11:35:10+00:00
 - [Diário Oficial de Campo Belo (MG) 2026-09-11 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3111200/2026-09-11/66bbd1b71c44e98fe9bf8df7639860d078057fd2.pdf) — coletado em 2026-09-21T23:35:50+00:00
 - [Diário Oficial de Belém (PA) 2023-02-24 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/1501402/2023-02-24/3c08e9546eb3c8d61b8077d0e1ee3b920bc0cadb.pdf) — coletado em 2026-09-27T16:28:56+00:00
