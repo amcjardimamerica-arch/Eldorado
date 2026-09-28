@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T10:04:34+00:00",
+  "em": "2026-09-28T10:20:20+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T09:48:49+00:00",
+  "ultimo_voo": "2026-09-28T10:06:22+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,89 @@
     "empresas sem ficha": 52
   },
   "acumulado": {
-    "missoes": 217,
+    "missoes": 218,
     "validadas": 15,
-    "parciais": 64,
+    "parciais": 65,
     "insuficientes": 87,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
       "sim": 132,
-      "nao": 17
+      "nao": 18
     },
     "estrelas_de_ouro": 9,
     "fontes_novas_para_os_motores": 50,
     "tempo_medio_min": 8.7
   },
   "missoes": [
+    {
+      "em": "2026-09-28T10:06:22+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "opressor sem leitura",
+      "alvo": "Convênio com órgão público estadual — PNCP / Diário Oficial de Goiás",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://redelog.rj.gov.br/redecompras/pncp/",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O texto menciona o PNCP como um portal de divulgação de contratações públicas, mas não fornece informações específicas sobre convênios com órgãos públicos estaduais em Goiás, tampouco dados sobre como uma associação comunitária poderia acessar esse tipo de convênio.",
+        "para_a_amc": "Para acessar o convênio, a associação comunitária precisaria identificar convocações específicas de convênios com órgãos públicos estaduais em Goiás, geralmente divulgados em editais ou portais oficiais, e seguir o processo de inscrição e licitação estabelecido.",
+        "proximo_passo": "Consultar os editais de convênios divulgados pelo órgão público estadual de Goiás ou no PNCP para verificar se há oportunidades disponíveis.",
+        "risco": "A falta de informações sobre prazos, requisitos e áreas de atuação pode impedir a associação de se qualificar adequadamente para participar de convênios."
+      },
+      "erro": null,
+      "segundos": 837,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 5,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "op-captacao-206",
+      "encontrou": {
+        "Objeto": {
+          "valor": "o Portal Nacional de Contratações Públicas – PNCP, definido como um sítio eletrônico oficial destinado à divulgação centralizada e obrigatória dos atos exigidos pela Lei de Licitações e Contratos Administrativos",
+          "trecho": "O Portal Nacional de Contratações Públicas – PNCP, definido como um sítio eletrônico oficial destinado à divulgação centralizada e obrigatória dos atos exigidos pela Lei de Licitaç",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Comitê Gestor da Rede Nacional de Contratações Públicas",
+          "trecho": "A adequação e fidedignidade das informações e dos arquivos relativos às contratações disponibilizadas no PNCP são de estrita responsabilidade dos órgãos e entidades contratantes.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RJ",
+          "trecho": "Portal Nacional de Contratações Públicas – PNCP",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · convenio",
+          "trecho": "A adequação e fidedignidade das informações e dos arquivos relativos às contratações disponibilizadas no PNCP são de estrita responsabilidade dos órgãos e entidades contratantes.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Comitê Gestor da Rede Nacional de Contratações Públicas",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-09-28T09:48:49+00:00",
       "modo": "validar",
@@ -2971,73 +3039,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-09-27T23:46:00+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "mapa · Goiás (prioridade)",
-      "alvo": "Aviso de Reabertura de Prazo de Inscrições (até 05/02/2026)",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Destinação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/cine-leitura-do-bem/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O aviso menciona a reabertura de prazo de inscrições até 05/02/2026, o que indica que o edital está ativo e disponível para candidatura.",
-        "para_a_amc": "A associação comunitária de Goiânia precisa verificar se o edital se enquadra na área de atuação da Secretaria de Estado da Cultura e se sua proposta se alinha ao objeto do edital, que não foi especificado no texto.",
-        "proximo_passo": "Consultar os anexos do edital para obter informações detalhadas sobre o objeto, requisitos e outros detalhes necessários para a inscrição.",
-        "risco": "A falta de informações sobre o objeto e os requisitos pode impedir a associação de se qualificar adequadamente para o edital."
-      },
-      "erro": null,
-      "segundos": 876,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 3,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "2421130d235c35214c54",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado da Cultura",
-          "trecho": "Secretaria de Estado da Cultura",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "cultura",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Estado da Cultura",
-      "indicios": [
-        {
-          "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/01/diario_oficial_2026-01-23_suplemento_pag_3.pdf",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ]
