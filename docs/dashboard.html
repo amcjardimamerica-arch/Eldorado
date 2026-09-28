@@ -402,6 +402,16 @@ box-shadow:0 1px 3px #0002}
 .vivo-pt{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22;vertical-align:1px}.vivo-pt.falha{background:#B3261E}
 #bz-mapa .uf-guia{fill:none;stroke:#7E2A1E;stroke-width:.8;stroke-dasharray:2 1.5;pointer-events:none}#bz-mapa .uf-guia-pt{fill:#7E2A1E;pointer-events:none}
 #bz-mapa g.uf-rot{pointer-events:none}#bz-mapa g.uf-rot.fora text.uf-sigla{font-weight:700}
+.gc{display:grid;gap:4px}.gc-l{display:grid;grid-template-columns:230px 1fr;gap:8px;align-items:center}.gc-cab{position:sticky;top:0;background:#fff;z-index:1}
+.gc-r{font-size:12px;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}.gc-r a{color:var(--tinta);font-weight:600;text-decoration:none}.gc-r a:hover{text-decoration:underline}.gc-r small{display:block;color:var(--suave);font-size:10.5px}
+.gc-t{position:relative;height:28px;background:repeating-linear-gradient(90deg,#F4F6F9 0,#F4F6F9 1px,transparent 1px,transparent calc(100%/31));border-radius:6px}
+.gc-dias{height:auto;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:none}.gc-d{text-align:center;font-size:9px;color:var(--suave);line-height:1.15;min-width:0}.gc-d b{display:block;font-size:11px;color:var(--tinta)}.gc-d.fds b{color:#9AA5B1}
+.gc-d.hoje b{background:#0E2A55;color:#fff;border-radius:50%;width:18px;height:18px;line-height:18px;margin:0 auto}
+.gc-b{position:absolute;top:4px;height:20px;border-radius:10px;background:#1E7E4B;color:#fff;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden;box-shadow:0 1px 2px #0002}
+.gc-b.sem-ini{background:repeating-linear-gradient(45deg,#1E7E4B 0,#1E7E4B 6px,#2E9460 6px,#2E9460 12px)}
+.gc-b.continuo{background:#E3F2E8;color:#1E7E4B;box-shadow:none;border:1px solid #8FC9A3}
+.gc-hoje{position:absolute;top:-2px;bottom:-2px;width:2px;background:#0E2A55;opacity:.7}
+.gc-b-leg{display:inline-block;width:22px;height:10px;border-radius:5px;background:#1E7E4B;vertical-align:-1px}.gc-b-leg.sem-ini{background:repeating-linear-gradient(45deg,#1E7E4B 0,#1E7E4B 4px,#2E9460 4px,#2E9460 8px)}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -2014,6 +2024,49 @@ function desenhaGantt(){
     +(prevs.filter(p=>p.especial&&p.inicio<=hojeISO&&p.fim>=hojeISO).length?`<span title="janela histórica aberta agora"><span class="gbarra gprevisto especial" style="position:static;width:22px;height:10px;display:inline-block;background:#F5E6A8"></span> janela aberta</span>`:"");
 }
 /* contraste do rótulo dentro da barra: escuro sobre cor clara, claro sobre escura */
+/* ═══ CALENDÁRIO DE EDITAIS DA PÁGINA INICIAL (titular, 28/09) ═══════════════════════════════════════════════
+   Substitui o calendário antigo (regras de 06–07/09): ele desenhava todo edital aberto SEM prazo numa faixa
+   "marcado para a IA", mais faixas projetadas pelo histórico, e não lia o fluxo validado. Agora a regra é uma só,
+   a mesma do mapa: entra APENAS inscrição com data confirmada e site oficial — vinda do fluxo das oportunidades
+   (validação individual + curadoria + o que os Pilotos confirmam a cada pouso). Sem prazo não aparece aqui: fica no
+   Mapa de Oportunidades como possível, na fila do Interceptador. */
+function desenhaGantt(){
+  if(gAno==null){gAno=HOJE.getFullYear();gMes=HOJE.getMonth();}
+  const MES_=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  $("g-mes").textContent=MES_[gMes]+" "+gAno;
+  $("g-meses").innerHTML=MES_.map((m,i)=>`<button data-m="${i}" class="${i===gMes?"on":""}">${m.slice(0,3)}</button>`).join("");
+  $("g-meses").querySelectorAll("button").forEach(b=>b.onclick=()=>{gMes=Number(b.dataset.m);desenhaGantt();});
+  const nd=new Date(gAno,gMes+1,0).getDate(), p2=n=>String(n).padStart(2,"0");
+  const I=`${gAno}-${p2(gMes+1)}-01`, Fm=`${gAno}-${p2(gMes+1)}-${p2(nd)}`;
+  const F=window._FLUXO||{};
+  const conf=(F.calendario||[]).filter(x=>x.link_oficial);     // com prazo, ou de fluxo contínuo (aberto o ano todo)
+  const iniDe=x=>x.inicio||x.publicado_em||null;
+  const noMes=conf.filter(x=>(!x.fim||x.fim>=I)&&(iniDe(x)||I)<=Fm);
+  const grupo=x=>(!x.uf?0:x.uf==="GO"?1:2);
+  noMes.sort((a,b)=>grupo(a)-grupo(b)||String(a.fim||"9999").localeCompare(String(b.fim||"9999")));
+  const SEM=["D","S","T","Q","Q","S","S"];
+  const hojeISO=HOJE.toISOString().slice(0,10), mesAtual=hojeISO.slice(0,7)===I.slice(0,7);
+  const col=d=>((d-1)/nd*100);
+  const cab=Array.from({length:nd},(_,k)=>{const dt=new Date(gAno,gMes,k+1),fds=[0,6].includes(dt.getDay());
+    return `<span class="gc-d${fds?" fds":""}${mesAtual&&k+1===HOJE.getDate()?" hoje":""}"><b>${k+1}</b><small>${SEM[dt.getDay()]}</small></span>`;}).join("");
+  const barra=x=>{
+    if(!x.fim) return `<span class="gc-b continuo" style="left:0;width:100%" title="${esc(x.titulo)} — inscrição em fluxo contínuo (aberta o ano todo)">fluxo contínuo — inscrição aberta o ano todo</span>`;
+    const a=iniDe(x), a0=(a&&a>I)?Number(a.slice(8,10)):1, b0=x.fim<Fm?Number(x.fim.slice(8,10)):nd;
+    const antes=!a||a<I, depois=x.fim>Fm, semIni=!x.inicio;
+    return `<span class="gc-b${semIni?" sem-ini":""}" style="left:${col(a0).toFixed(2)}%;width:${((b0-a0+1)/nd*100).toFixed(2)}%"
+      title="${esc(x.titulo)} — inscrições ${x.inicio?"de "+br(x.inicio)+" ":""}até ${br(x.fim)}${semIni?" (início não informado; desde a publicação)":""}">${antes?"◂ ":""}${x.inicio?ddmmG(x.inicio)+" → ":""}até ${ddmmG(x.fim)}${depois?" ▸":""}</span>`;};
+  const linhas=noMes.map(x=>`<div class="gc-l">
+      <div class="gc-r" title="${esc(x.titulo)}${x.orgao?" — "+esc(x.orgao):""}"><a href="${esc(x.link_oficial)}" target=_blank rel="noopener noreferrer">${esc(String(x.titulo).slice(0,58))}</a>
+        <small>${x.uf?esc(x.uf):"nacional"}${x.inspecionada?" · confirmado pelo Interceptador":""}</small></div>
+      <div class="gc-t">${barra(x)}${mesAtual?`<span class="gc-hoje" style="left:${(col(HOJE.getDate())+50/nd).toFixed(2)}%"></span>`:""}</div></div>`).join("");
+  $("g-corpo").innerHTML=`<div class="gc"><div class="gc-l gc-cab"><div class="gc-r"></div><div class="gc-t gc-dias">${cab}</div></div>
+    ${linhas||`<div class="meta" style="padding:14px 4px">Nenhuma inscrição com data confirmada e site oficial neste mês.</div>`}</div>`;
+  const outros=conf.length-noMes.length, poss=((F.mapa||{}).total||{}).possiveis;
+  $("g-legenda").innerHTML=`<span class="gc-b-leg"></span> inscrição com data confirmada e site oficial · <span class="gc-b-leg sem-ini"></span> início não informado (desde a publicação) · o título abre o site oficial`;
+  $("g-abertas").innerHTML=`<b>${noMes.length}</b> inscrição(ões) confirmada(s) neste mês${outros?` · ${outros} em outros meses`:""}${poss!=null?` · as possíveis ainda sem prazo confirmado ficam no <a href="#" onclick="trocaVista('bussola');return false">Mapa de Oportunidades</a>, na fila do Interceptador — entram aqui assim que ele confirma a data`:""}`;
+  if($("g-possiveis")) $("g-possiveis").innerHTML=""; if($("g-cobertura")) $("g-cobertura").innerHTML="";
+}
+function ddmmG(iso){ return `${iso.slice(8,10)}/${iso.slice(5,7)}`; }
 function corTexto(hex){
   const c=String(hex).replace("#","");
   const r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);
@@ -4007,6 +4060,7 @@ window.carregaFluxo=async function(){
         if(!window._FLUXO){ try{ const g=JSON.parse(localStorage.getItem("eldorado_fluxo_valido")||"null"); if(g&&g.validacao&&g.validacao.aplicada) window._FLUXO=g; }catch(e){} } } } }catch(e){}
   try{ if(typeof desenhaBzMapa==="function") desenhaBzMapa(); }catch(e){}
   try{ if(typeof desenhaBzLateral==="function"&&bzUFsel) desenhaBzLateral(); }catch(e){}
+  try{ desenhaGantt(); }catch(e){}
   try{ if(typeof desenhaCal==="function") desenhaCal(); }catch(e){}
 };
 setTimeout(()=>carregaFluxo(),1500); setInterval(()=>carregaFluxo(),300000);

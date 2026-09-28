@@ -64,6 +64,14 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertFalse([n["titulo"] for n in novas if n.get("titulo") in saem and not any(
             v.get("titulo") == n["titulo"] and v.get("decisao") not in SAEM_DO_MAPA for v in V.values())])
 
+    def test_calendario_inicial_so_com_data(self):
+        """28/09: o calendário da página inicial mostrava edital sem data ('marcado para a IA')."""
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn("CALENDÁRIO DE EDITAIS DA PÁGINA INICIAL (titular, 28/09)", h)
+        novo = h[h.index("CALENDÁRIO DE EDITAIS DA PÁGINA INICIAL (titular, 28/09)"):h.index("function ddmmG(")]
+        self.assertNotIn("marcado para a IA", novo.split("*/", 1)[1])
+        self.assertIn("F.calendario", novo)
+
 
 if __name__ == "__main__":
     unittest.main()

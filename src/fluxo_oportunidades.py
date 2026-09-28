@@ -286,7 +286,8 @@ def montar() -> dict:
         p = mapa.setdefault(k, {"confirmadas": 0, "possiveis": 0})
         p["possiveis"] += 1; p["confirmadas"] += 1 if it["confirmada"] else 0
     tot = {"confirmadas": sum(v["confirmadas"] for v in mapa.values()), "possiveis": sum(v["possiveis"] for v in mapa.values())}
-    cal = [{k: it.get(k) for k in ("id", "titulo", "orgao", "uf", "inicio", "fim", "link_oficial", "origem")} for it in itens if it["confirmada"]]
+    cal = [{**{k: it.get(k) for k in ("id", "titulo", "orgao", "uf", "inicio", "fim", "link_oficial", "origem", "publicado_em", "tipo")},
+            "inspecionada": bool(it.get("inspecao"))} for it in itens if it["confirmada"]]
     from . import validacao_mapa as _vm2
     _V = _vm2.carregar()
     res = {"validacao": {"aplicada": True, "decisoes": len(_V), "arquivos": sorted({v.get("_arquivo") for v in _V.values()}),
