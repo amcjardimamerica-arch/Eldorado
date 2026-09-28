@@ -178,6 +178,8 @@ class TesteIntegridadePainel(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         cards = h[h.index("function desenhaBzCards(){"):h.index('$("bz-cards").innerHTML=cards.map(')]
         self.assertIn("FX.opressores", cards); self.assertNotIn("eds.filter(e=>situacaoDe(e)", cards)
+        self.assertIn("fr(OP.ligados??0,OP.catalogo??0)", cards, "fontes monitoradas: ligados / disponíveis na Biblioteca")
+        self.assertNotIn('<div class="s ${c[4]}">', h, "cartão da Bússola sem texto além do título")
 
 
 if __name__ == "__main__":
