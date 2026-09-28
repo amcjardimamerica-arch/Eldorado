@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T01:40:51+00:00",
+  "em": "2026-09-28T01:57:00+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T01:25:25+00:00",
+  "ultimo_voo": "2026-09-28T01:42:24+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -32,26 +32,88 @@
   },
   "fila": {
     "editais novos dos motores": 0,
-    "indícios do Espião": 11,
+    "indícios do Espião": 13,
     "abertos com itens em falta": 4,
     "empresas sem ficha": 30
   },
   "acumulado": {
-    "missoes": 183,
+    "missoes": 184,
     "validadas": 10,
     "parciais": 55,
-    "insuficientes": 67,
+    "insuficientes": 68,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 104,
+      "sim": 105,
       "nao": 12
     },
     "estrelas_de_ouro": 8,
     "fontes_novas_para_os_motores": 44,
-    "tempo_medio_min": 7.8
+    "tempo_medio_min": 7.9
   },
   "missoes": [
+    {
+      "em": "2026-09-28T01:42:24+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · RJ (sorteio)",
+      "alvo": "Diário Oficial de Niterói (RJ) 2026-09-25 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 2,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona um chamamento público relacionado a organizações da sociedade civil, emitido pela Prefeitura Municipal de Niterói, o que indica que pode ser uma fonte válida para acesso a editais de fomento.",
+        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar os anexos do edital, garantir que atenda aos requisitos estabelecidos e participar do processo seletivo conforme o chamamento público divulgado.",
+        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre os requisitos, prazos e outros critérios de participação.",
+        "risco": "A falta de informações específicas, como prazos e requisitos, pode impedir a associação de se preparar adequadamente para o processo seletivo."
+      },
+      "erro": null,
+      "segundos": 875,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "faa554f12b7dab979fef",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "PREFEITURA MUNICIPAL DE NITERÓI",
+          "trecho": "PREFEITURA MUNICIPAL DE NITERÓI",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "PREFEITURA MUNICIPAL DE NITERÓI",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3303302/2026-09-25/53e96e4a20900edda4db3da5348a1c4193ce59cf.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-28T01:25:25+00:00",
       "modo": "validar",
@@ -2499,77 +2561,6 @@
         "Requisitos": {
           "valor": "Documentação solicitada no edital objeto da licitação",
           "trecho": "A documentação será analisada por esta comissão, comunicando o resultado posteriormente.",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-09-27T17:00:55+00:00",
-      "modo": "complementar",
-      "tipo": "edital",
-      "de": "fila de resgate",
-      "alvo": "Fundo de Fomento à Filantropia: pedra fundamental do legado do IDIS para o Brasil",
-      "qualidade": "insuficiente",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Anexos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O Fundo de Fomento à Filantropia do IDIS está alinhado com o objeto de apoio a iniciativas que transformam realidades e contribuem para a redução das desigualdades socioambientais, sendo uma fonte válida para ações de organização da sociedade civil.",
-        "para_a_amc": "Para acessar o Fundo de Fomento à Filantropia, a associação comunitária de Goiânia precisa se enquadrar como uma organização da sociedade civil, alinhar suas ações ao objeto do edital (transformação de realidades e redução de desigualdades socioambientais) e demonstrar sua capacidade de execução do projeto.",
-        "proximo_passo": "Consultar os requisitos específicos do edital e preparar a documentação necessária para submissão da proposta.",
-        "risco": "A falta de alinhamento com o objeto do edital ou a não conformidade com os requisitos pode impedir o acesso ao fomento."
-      },
-      "erro": null,
-      "segundos": 591,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "cat-0e83f4196df6",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Fomento à filantropia e apoio a iniciativas que transformam realidades e contribuem para a redução das desigualdades socioambientais",
-          "trecho": "O IDIS foi fundado em 1999, com a missão de inspirar, apoiar e ampliar o investimento social privado e seu impacto, trabalhando junto a indivíduos, famílias, empresas, fundações e ",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "IDIS",
-          "trecho": "O IDIS foi fundado em 1999, com a missão de inspirar, apoiar e ampliar o investimento social privado e seu impacto, trabalhando junto a indivíduos, famílias, empresas, fundações e ",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "null",
-          "trecho": "O IDIS foi fundado em 1999, com a missão de inspirar, apoiar e ampliar o investimento social privado e seu impacto, trabalhando junto a indivíduos, famílias, empresas, fundações e ",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "trabalhando junto a indivíduos, famílias, empresas, fundações e institutos corporativos e familiares, assim como organizações da sociedade civil em ações que transformam realidades",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Organizações da sociedade civil",
-          "trecho": "trabalhando junto a indivíduos, famílias, empresas, fundações e institutos corporativos e familiares, assim como organizações da sociedade civil em ações que transformam realidades",
           "oficial": false,
           "dispensado": false
         }
