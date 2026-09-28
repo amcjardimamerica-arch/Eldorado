@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T09:28:07+00:00",
+  "em": "2026-09-28T09:47:21+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T09:11:26+00:00",
+  "ultimo_voo": "2026-09-28T09:29:30+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,99 @@
     "empresas sem ficha": 50
   },
   "acumulado": {
-    "missoes": 215,
+    "missoes": 216,
     "validadas": 15,
-    "parciais": 63,
+    "parciais": 64,
     "insuficientes": 86,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
       "sim": 132,
-      "nao": 15
+      "nao": 16
     },
     "estrelas_de_ouro": 9,
     "fontes_novas_para_os_motores": 50,
-    "tempo_medio_min": 8.6
+    "tempo_medio_min": 8.7
   },
   "missoes": [
+    {
+      "em": "2026-09-28T09:29:30+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · SP (sorteio)",
+      "alvo": "Diário Oficial de Valparaíso (SP) 2026-09-16 — \"edital de chamamento público\" associação",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://campoflorido.mg.gov.br/documentos/edital-de-chamamento-publico-cmdca-no-001-2026/",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O edital mencionado é referente a Campo Florido-MG, enquanto a associação comunitária de Goiânia busca recursos em outro território e esfera de atuação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há editais disponíveis em sua região e esfera (municipal, estadual ou federal) que sejam compatíveis com suas áreas de atuação (assistência social, cultura, educação, esporte) e se atendam aos requisitos de regularidade constitutiva.",
+        "proximo_passo": "Pesquisar editais de fomento disponíveis em Goiânia, considerando as áreas de atuação da associação e os requisitos de elegibilidade.",
+        "risco": "A falta de editais compatíveis com a região e esfera de atuação da associação pode impedir o acesso a recursos."
+      },
+      "erro": null,
+      "segundos": 1071,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "aa8271b22a129dce9ef4",
+      "encontrou": {
+        "Objeto": {
+          "valor": "seleção de projetos de entidades governamentais e não governamentais registradas no Conselho Municipal dos Direitos da Criança e do Adolescente de Campo Florido, regularmente constituídas, para fins de que os projetos sejam patrocinados pelo FMDCA – Fundo Municipal dos Direitos da Criança e do Adolescente",
+          "trecho": "Constitui objeto deste Edital a seleção de projetos de entidades governamentais e não governamentais registradas no Conselho Municipal dos Direitos da Criança e do Adolescente de C",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "CONSELHO MUNICIPAL DOS DIREITOS DA CRIANÇA E DO ADOLESCENTE DE CAMPO FLORIDO-MG",
+          "trecho": "CONSELHO MUNICIPAL DOS DIREITOS DA CRIANÇA E DO ADOLESCENTE DE CAMPO FLORIDO-MG",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "MG",
+          "trecho": "para a consecução de finalidade de interesse público e recíproco que envolve a transferência de recursos financeiros do Fundo Municipal dos Direitos da Criança e do Adolescente - F",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · patrocinio",
+          "trecho": "para a consecução de finalidade de interesse público e recíproco que envolve a transferência de recursos financeiros do Fundo Municipal dos Direitos da Criança e do Adolescente - F",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "regularmente constituídas",
+          "trecho": "para fins deste Edital entende-se por projeto o conjunto de ações que abranjam programas de promoção, proteção e defesa de direitos, bem como programas para cumprimento de medidas ",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Conselho Municipal dos Direitos da Criança e do Adolescente de Valparaíso-SP",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3556305/2026-09-16/6565fc831572274d0f0226c43b5201fdb765dab1.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-09-28T09:11:26+00:00",
       "modo": "validar",
@@ -2952,33 +3030,6 @@
         "financiador_programa_edital",
         "financiador_regulamento"
       ]
-    },
-    {
-      "em": "2026-09-27T23:16:11+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "mapa · Goiás (prioridade)",
-      "alvo": "Aviso de Chamamento Público Nº 02/2006 – DOE",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "o modelo não devolveu JSON",
-      "segundos": 880,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: o modelo não devolveu JSON",
-      "id": "3a3514f67ea7f8d2403a",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
     }
   ]
 }
