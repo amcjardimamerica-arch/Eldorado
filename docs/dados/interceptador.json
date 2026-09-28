@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T18:55:41+00:00",
+  "em": "2026-09-28T19:09:25+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T18:43:29+00:00",
+  "ultimo_voo": "2026-09-28T18:57:01+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,112 @@
     "empresas sem ficha": 58
   },
   "acumulado": {
-    "missoes": 256,
+    "missoes": 257,
     "validadas": 17,
-    "parciais": 82,
+    "parciais": 83,
     "insuficientes": 106,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 165,
+      "sim": 166,
       "nao": 20
     },
     "estrelas_de_ouro": 10,
-    "fontes_novas_para_os_motores": 67,
+    "fontes_novas_para_os_motores": 68,
     "tempo_medio_min": 9.2
   },
   "missoes": [
+    {
+      "em": "2026-09-28T18:57:01+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "opressor sem leitura",
+      "alvo": "Agência do Bem / Rede do Bem — Edital de Microprojetos — Agência do Bem",
+      "qualidade": "parcial",
+      "comprovados": 11,
+      "dispensados": 2,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de recurso"
+      ],
+      "pagina_oficial": "https://www.agenciadobem.org.br/inscricoes-abertas-para-o-12o-edital-de-microprojetos-da-rede-do-bem-rj/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações detalhadas sobre objeto, prazo de inscrição, valor e requisitos.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria estar inscrita no 26º Fórum da Rede de Organizações do Bem e atuar na Região Metropolitana do Rio de Janeiro para acessar o edital.",
+        "proximo_passo": "Verificar se a associação comunitária está inscrita no 26º Fórum da Rede de Organizações do Bem e se atua na Região Metropolitana do Rio de Janeiro.",
+        "risco": "A associação comunitária de Goiânia pode não atuar na Região Metropolitana do Rio de Janeiro, o que impediria o acesso ao edital."
+      },
+      "erro": null,
+      "segundos": 743,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 9,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de recurso",
+      "id": "op-curadoria-004",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fortalecer as ações dessas entidades em seus respectivos territórios",
+          "trecho": "Serão selecionados três microprojetos para receber apoio financeiro de até R$ 4.000,00 cada, com o objetivo de fortalecer as ações dessas entidades em seus respectivos territórios.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "dispensado — O edital menciona a abertura das inscrições no dia 20 de agosto de 2024 e o encerramento previsto para o dia 16 de setembro de 2024.",
+          "trecho": "a abertura das inscrições no dia 20 de agosto de 2024, com encerramento previsto para o dia 16 de setembro de 2024. [rejeitado: data implausível para edital aberto]",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Valor": {
+          "valor": "apoio financeiro de até R$ 4.000,00 cada",
+          "trecho": "Serão selecionados três microprojetos para receber apoio financeiro de até R$ 4.000,00 cada, com o objetivo de fortalecer as ações dessas entidades em seus respectivos territórios.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Agência do Bem",
+          "trecho": "No dia 12 de agosto, a Agência do Bem lançou oficialmente o 12º Edital de Microprojetos...",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RJ",
+          "trecho": "na Região Metropolitana do Rio de Janeiro",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "dispensado — O edital é aberto apenas para a Região Metropolitana do Rio de Janeiro.",
+          "trecho": "fortalecer as ações dessas entidades em seus respectivos territórios",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "apoiar o trabalho social realizado por organizações da sociedade civil na Região Metropolitana do Rio de Janeiro",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "participantes do 26º Fórum da Rede de Organizações do Bem",
+          "trecho": "As entidades participantes do 26º Fórum da Rede de Organizações do Bem, que aconteceu em agosto, terão um diferencial na pontuação de suas propostas.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Agência do Bem",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-09-28T18:43:29+00:00",
       "modo": "validar",
@@ -2854,82 +2945,6 @@
       "rotas": [
         "financiador_programa_edital",
         "financiador_regulamento"
-      ]
-    },
-    {
-      "em": "2026-09-28T09:48:49+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "mapa · SP (sorteio)",
-      "alvo": "Diário Oficial de Valinhos (SP) 2026-09-25 — \"edital de chamamento público\" associação",
-      "qualidade": "insuficiente",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "nao",
-        "por_que": "O edital mencionado não é direcionado a organizações da sociedade civil, mas sim a uma suplementação orçamentária da Secretaria da Saúde.",
-        "para_a_amc": "A associação comunitária de Goiânia não pode acessar esse edital, pois ele não está voltado para organizações da sociedade civil e não há informações sobre como se inscrever ou requisitos para participação.",
-        "proximo_passo": "Consultar editais específicos para organizações da sociedade civil divulgados por órgãos públicos ou programas de fomento voltados para assistência social, cultura, educação e esporte.",
-        "risco": "A falta de informações sobre prazo, requisitos e área de atuação torna impossível a participação da associação nesse edital."
-      },
-      "erro": null,
-      "segundos": 944,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "7953fb9e3735e1761123",
-      "encontrou": {
-        "Objeto": {
-          "valor": "abertura de crédito adicional suplementar para suplementar a dotação do orçamento da Secretaria da Saúde",
-          "trecho": "É aberto um crédito adicional suplementar, no valor de R$ 140.000,00 (cento e quarenta mil reais), com fundamento na Lei n° 6.990, de 25 de setembro de 2026, a fim de suplementar a",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 140.000,00",
-          "trecho": "É aberto um crédito adicional suplementar, no valor de R$ 140.000,00 (cento e quarenta mil reais), com fundamento na Lei n° 6.990, de 25 de setembro de 2026, a fim de suplementar a",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Valinhos",
-          "trecho": "FRANKLIN DUARTE DE LIMA, Prefeito do Município de Valinhos, no uso das atribuições que lhe são conferidas pelo art. 80, inciso VIII, da Lei Orgânica do Município,",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "Prefeitura Municipal de Valinhos",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Valinhos",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3556206/2026-09-25/56aea1ce2320e8f0a5b14032fed10736db597209.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "programa_puro"
       ]
     }
   ]
