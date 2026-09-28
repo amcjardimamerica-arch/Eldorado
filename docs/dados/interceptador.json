@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T06:09:04+00:00",
+  "em": "2026-09-28T06:17:18+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T05:58:15+00:00",
+  "ultimo_voo": "2026-09-28T06:10:41+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 38
   },
   "acumulado": {
-    "missoes": 201,
+    "missoes": 202,
     "validadas": 13,
-    "parciais": 60,
+    "parciais": 61,
     "insuficientes": 77,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 119,
+      "sim": 120,
       "nao": 14
     },
     "estrelas_de_ouro": 9,
@@ -52,6 +52,79 @@
     "tempo_medio_min": 8.3
   },
   "missoes": [
+    {
+      "em": "2026-09-28T06:10:41+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · ES (sorteio)",
+      "alvo": "Diário Oficial de Vitória (ES) 2026-08-20 — \"edital de chamamento público\" associação",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": "https://diariooficial.vitoria.es.gov.br/ExibirArquivo.aspx?qs=nnmrXIDe5L4hR81FZwDXlD95Q/WHOCtXgeCw/nRIrFMxQA7S5mwuf0RM3mOCPGtiwqKwtsQd8WTWmli6Dukj2dAWxhN5clJ9aaMAM83N65XAe1Agki7X32uuFlYJtTBM",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital menciona o objeto e o financiador, o que é suficiente para identificar a fonte como válida.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é a implantação de botões de acionamento rápido para reforçar segurança em serviços de saúde, e verificar se há compatibilidade com suas atividades de assistência social, cultura, educação ou esporte.",
+        "proximo_passo": "Consultar os anexos do edital para obter mais detalhes sobre os requisitos e ações necessárias para participar.",
+        "risco": "A falta de informações sobre prazo, valor e requisitos pode impedir a associação de se candidatar adequadamente ao edital."
+      },
+      "erro": null,
+      "segundos": 397,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 5,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "23f384d4602b5868efaf",
+      "encontrou": {
+        "Objeto": {
+          "valor": "implantação de 41 novos botões de acionamento rápido para reforçar segurança em serviços de saúde",
+          "trecho": "A Prefeitura de Vitória está ampliando as ferramentas de proteção e resposta rápida disponíveis no município com a instalação de 41 novos botões de acionamento de segurança em serv",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura de Vitória",
+          "trecho": "A Prefeitura de Vitória está ampliando as ferramentas de proteção e resposta rápida disponíveis no município com a instalação de 41 novos botões de acionamento de segurança em serv",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "ES",
+          "trecho": "Publicada em 18/08/2026, às 13h15 | Atualizada em 18/08/2026, às 13h16",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "saude",
+          "trecho": "A Prefeitura de Vitória está ampliando as ferramentas de proteção e resposta rápida disponíveis no município com a instalação de 41 novos botões de acionamento de segurança em serv",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Vitória",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3205309/2026-08-20/2cb411c36334b5eefa148fb71461762e663e4214.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-09-28T05:58:15+00:00",
       "modo": "validar",
@@ -2583,76 +2656,6 @@
         "Destinação": {
           "valor": "elegível · fomento",
           "trecho": "O projeto tem como objetivo principal fortalecer a capacidade institucional da sociedade civil por meio da produção de conhecimento e de alterações normativas que ampliem as condiç",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-09-27T20:28:40+00:00",
-      "modo": "complementar",
-      "tipo": "edital",
-      "de": "fila de resgate",
-      "alvo": "Bndes lanca edital de r 175 milhoes para organizacoes perifericas da regiao norte e do maranhao",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.facebook.com/ABCRBrasil/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre o objeto, valor, financiador e destinação do recurso.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital, apresentar proposta de fortalecimento institucional e atender aos critérios de elegibilidade estabelecidos no edital, mesmo que não especificados aqui.",
-        "proximo_passo": "Consultar o edital completo para verificar os requisitos e prazos de inscrição.",
-        "risco": "A falta de informações sobre prazos e requisitos pode impedir a participação da associação no edital."
-      },
-      "erro": null,
-      "segundos": 923,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Requisitos",
-      "id": "cat-e5fd8a89f088",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fortalecimento institucional de organizações sociais de periferia",
-          "trecho": "programa selecionará até 82 organizações sociais periféricas para uma jornada de desenvolvimento institucional com duração de dois anos",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 17,5 milhões",
-          "trecho": "Com investimento de R$ 17,5 milhões, o programa selecionará até 82 organizações sociais periféricas",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Banco Nacional de Desenvolvimento Econômico e Social (BNDES)",
-          "trecho": "O Banco Nacional de Desenvolvimento Econômico e Social (BNDES), em parceria com o Instituto Phi e o Instituto Phomenta, lançou o edital BNDES Periferias Fortes – Norte",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "BR",
-          "trecho": "Podem participar organizações sociais de periferia dos estados do Acre, Amapá, Amazonas, Pará, Rondônia, Roraima e Tocantins, além do Maranhão",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Podem participar organizações sociais de periferia dos estados do Acre, Amapá, Amazonas, Pará, Rondônia, Roraima e Tocantins, além do Maranhão",
           "oficial": false,
           "dispensado": false
         }
