@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T04:32:51+00:00",
+  "em": "2026-09-28T04:48:01+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T04:16:12+00:00",
+  "ultimo_voo": "2026-09-28T04:34:35+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -32,19 +32,19 @@
   },
   "fila": {
     "editais novos dos motores": 4,
-    "indícios do Espião": 14,
+    "indícios do Espião": 16,
     "abertos com itens em falta": 4,
     "empresas sem ficha": 35
   },
   "acumulado": {
-    "missoes": 195,
+    "missoes": 196,
     "validadas": 12,
     "parciais": 58,
-    "insuficientes": 74,
+    "insuficientes": 75,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 113,
+      "sim": 114,
       "nao": 14
     },
     "estrelas_de_ouro": 8,
@@ -52,6 +52,63 @@
     "tempo_medio_min": 8.2
   },
   "missoes": [
+    {
+      "em": "2026-09-28T04:34:35+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · RN (sorteio)",
+      "alvo": "Diário Oficial de Mossoró (RN) 2026-08-14 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 1,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona um 'chamamento público' para organizações da sociedade civil, o que indica que é uma fonte válida para ações de fomento.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o chamamento público abrange sua área de atuação (assistência social, cultura, educação, esporte) e seguir as instruções do edital para inscrição.",
+        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre as condições e requisitos de participação.",
+        "risco": "A falta de informações detalhadas como prazo, objeto e requisitos pode impedir a associação de se qualificar adequadamente para o chamamento público."
+      },
+      "erro": null,
+      "segundos": 805,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "637559dd4e3e92e3b329",
+      "encontrou": {},
+      "financiador": "Câmara Municipal de Mossoró",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/2408003/2026-08-14/adfdfa54dac186518ab0373f5d2ef8cffe909d38.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-09-28T04:16:12+00:00",
       "modo": "validar",
@@ -2526,92 +2583,6 @@
           "valor": "Ações voluntárias, como organizar um mutirão para revitalizar uma praça do bairro, montar um teatro de fantoches para cr",
           "trecho": "Vale qualquer ação voluntária, como organizar um mutirão para revitalizar uma praça do bairro, montar um teatro de fantoches para crianças ou fazer uma visita para levar flores a i",
           "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-09-27T19:12:00+00:00",
-      "modo": "complementar",
-      "tipo": "edital",
-      "de": "fila de resgate",
-      "alvo": "acessar o link.",
-      "qualidade": "validada",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Anexos"
-      ],
-      "pagina_oficial": "https://capitaai.com.br/editais-abertos/observatorio-3-setor",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona que o objeto do edital é projetos culturais e esportivos em todo o Brasil, e que as organizações da sociedade civil são requisitos para participação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisa se registrar como organização da sociedade civil, elaborar um projeto alinhado aos objetivos do edital (projetos culturais e esportivos), e se inscrever no prazo de inscrição até 2026-09-30.",
-        "proximo_passo": "Verificar os requisitos específicos do edital e iniciar a elaboração do projeto cultural ou esportivo.",
-        "risco": "A falta de registro como organização da sociedade civil ou a não conformidade com os requisitos do edital pode impedir o acesso ao fomento."
-      },
-      "erro": null,
-      "segundos": 643,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 9,
-      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
-      "avaliacao": "pronta para a decisão do Claude",
-      "id": "cat-eca3b315e7ba",
-      "encontrou": {
-        "Objeto": {
-          "valor": "projetos culturais e esportivos em todo o Brasil",
-          "trecho": "Ambev abre edital de até R$ 67 milhões para projetos culturais e esportivos em todo o Brasil",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "? a 2026-09-30",
-          "trecho": "Prazo: 30/09/2026 (4d)",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 67,0 mi",
-          "trecho": "Ambev abre edital de até R$ 67 milhões para projetos culturais e esportivos em todo o Brasil",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Observatório 3º Setor",
-          "trecho": "Observatório 3º Setor (fonte)",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "nacional",
-          "trecho": "projetos culturais e esportivos em todo o Brasil",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "projetos culturais e esportivos em todo o Brasil",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Aceita: organizações da sociedade civil",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "organizações da sociedade civil",
-          "trecho": "Aceita: organizações da sociedade civil",
-          "oficial": true,
           "dispensado": false
         }
       },
