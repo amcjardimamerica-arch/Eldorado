@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T03:47:51+00:00",
+  "em": "2026-09-28T03:58:59+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T03:35:18+00:00",
+  "ultimo_voo": "2026-09-28T03:49:05+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -31,27 +31,75 @@
     }
   },
   "fila": {
-    "editais novos dos motores": 5,
+    "editais novos dos motores": 4,
     "indícios do Espião": 13,
     "abertos com itens em falta": 4,
     "empresas sem ficha": 33
   },
   "acumulado": {
-    "missoes": 192,
+    "missoes": 193,
     "validadas": 12,
     "parciais": 57,
-    "insuficientes": 72,
+    "insuficientes": 73,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
       "sim": 112,
-      "nao": 12
+      "nao": 13
     },
     "estrelas_de_ouro": 8,
     "fontes_novas_para_os_motores": 45,
     "tempo_medio_min": 8.1
   },
   "missoes": [
+    {
+      "em": "2026-09-28T03:49:05+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · nacional (sorteio)",
+      "alvo": "Home - BNDES Investor Relations",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "Não há informações comprovadas sobre o edital ou programas específicos da BNDES Investor Relations que sejam relevantes para organizações da sociedade civil.",
+        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar diretamente com a BNDES Investor Relations ou outros editais específicos para OSCs.",
+        "proximo_passo": "Consultar o site oficial da BNDES Investor Relations ou outros editais voltados para organizações da sociedade civil.",
+        "risco": "A falta de informações específicas sobre programas para OSCs pode impedir o acesso ao financiamento."
+      },
+      "erro": null,
+      "segundos": 595,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "d52e2cc3190a8ad42b33",
+      "encontrou": {},
+      "financiador": "BNDES",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador"
+      ]
+    },
     {
       "em": "2026-09-28T03:35:18+00:00",
       "modo": "validar",
@@ -2570,72 +2618,6 @@
         "Requisitos": {
           "valor": "regularidade fiscal",
           "trecho": "O peso da regularidade fiscal",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-09-27T18:44:29+00:00",
-      "modo": "complementar",
-      "tipo": "edital",
-      "de": "fila de resgate",
-      "alvo": "Edital de convocacao de assembleia geral",
-      "qualidade": "insuficiente",
-      "comprovados": 5,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.portalsecovi.com.br/ver-noticia/id/429/edital-de-convocacao-de-assembleia-geral",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprova a necessidade de realizar uma assembleia geral extraordinária para negociar e autorizar a celebração da Convenção Coletiva de Trabalho, aditivos à CCT e acordos coletivos.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria realizar uma assembleia geral extraordinária para negociar e autorizar a celebração da Convenção Coletiva de Trabalho, aditivos à CCT e acordos coletivos, conforme o objeto do edital.",
-        "proximo_passo": "Verificar se a associação comunitária está apta a realizar assembleia geral extraordinária e se possui representantes legalmente eleitos para tal função.",
-        "risco": "A falta de representantes legalmente eleitos ou a impossibilidade de realizar a assembleia geral pode impedir o acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 639,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 5,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "cat-8e61370e225a",
-      "encontrou": {
-        "Objeto": {
-          "valor": "realizar assembleia geral extraordinária para negociar e autorizar a celebração da Convenção Coletiva de Trabalho, aditivos à CCT e acordos coletivos",
-          "trecho": "A assembleia ocorrerá no dia 14/01/2026, às 8:30h, de forma presencial, no endereço Av. Fued José Sebba, nº 1.193, Setor Jardim Goiás, Goiânia/GO, com a finalidade de apreciar, neg",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secovi Goiás",
-          "trecho": "Comunicamos a realização da Assembleia Geral Extraordinária do SECOVIGOIÁS, convocada pelo Presidente do Sindicato, nos termos do art. 12 e demais dispositivos estatutários, destin",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Av. Fued José Sebba, nº 1.193, Setor Jardim Goiás, Goiânia/GO",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "Comunicamos a realização da Assembleia Geral Extraordinária do SECOVIGOIÁS, convocada pelo Presidente do Sindicato, nos termos do art. 12 e demais dispositivos estatutários, destin",
           "oficial": true,
           "dispensado": false
         }
