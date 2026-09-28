@@ -140,6 +140,21 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertIn(".mt-item{grid-template-columns:44px minmax(0,1fr) 40px}", h)
         self.assertIn("#mt-lista .mt-ach{display:grid", h)
 
+    def test_oportunidades_abertas_do_fluxo_e_opressores(self):
+        """28/09: os cartões de oportunidades abertas liam o conjunto antigo; toda oportunidade com seleção precisa de
+        motor opressor (ou do motivo da dispensa); o quadro 'Aguardando verificação da IA' saiu."""
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn("function desenhaAbertasFluxo(", h)
+        self.assertIn("desenhaAbertasFluxo();       //", h)
+        F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
+        its = [x for v in F["itens_por_uf"].values() for x in v]
+        sem = [x["titulo"][:60] for x in its if not x.get("opressor") and not x.get("opressor_dispensa")]
+        self.assertEqual(sem, [], "oportunidade aberta sem motor opressor e sem motivo de dispensa")
+        from src.opressores_repositorio import dispensa, chave
+        self.assertIsNotNone(dispensa({"titulo": "Patrocínios", "tipo": "empresa/instituto"}))
+        self.assertIsNone(dispensa({"titulo": "Edital de seleção de projetos 2026", "tipo": "empresa/instituto"}))
+        self.assertEqual(chave("Edital nº 02/2026 — Prêmio X"), chave("Edital nº 05/2025 — Prêmio X"))
+
 
 if __name__ == "__main__":
     unittest.main()

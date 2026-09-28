@@ -76,6 +76,18 @@ def _registro_ext(eid: str) -> dict:
 TRIAGEM: dict = {}
 
 
+def _orgao_real(m: dict, e: dict) -> str | None:
+    """28/09: o 'órgão' gravado costuma ser o site que REPUBLICOU (IDIS, Observatório do 3º Setor, ABCR...). Vale o
+    financiador lido pelo Interceptador; senão o órgão gravado, se não for republicador; senão nada."""
+    fin = ((e.get("busca_do_oficial") or {}).get("financiador") or "").strip()
+    if fin:
+        return fin
+    o = (m.get("orgao") or e.get("orgao") or "").strip()
+    if re.search(r"(?i)idis|observat[oó]rio|captadores|abcr|filantropia|gife|prosas|piloto|espi[aã]o|interceptador|querido di[aá]rio|not[ií]cia", o):
+        return None
+    return o or None
+
+
 def consolidar() -> list[dict]:
     hoje = date.today(); lim = (hoje - timedelta(days=60)).isoformat()
     brutos = []
@@ -116,6 +128,8 @@ def consolidar() -> list[dict]:
     # Retificação e alteração de cronograma FICAM: indicam edital aberto.
     RUIDO = re.compile(r"^\s*\d{1,2}:\d{2}\b|vota[cç][õo]es|requerimentos|t[ií]tulos? de cidadania|utilidades? p[uú]blica|convoca[cç][aã]o de assembleia|"
                        r"^\s*extrato|resultado|lista de aprovados|aprovados e suplentes|heteroidentifica|homologa|inexigibilidade|dispensa de chamamento|termo aditivo", re.I)
+    _IDX = (_j(ROOT / "estado/opressores_indice.json", {}) or {}).get("indice") or {}
+    _OPR = {x.get("id"): x for x in (_j(CAT_OPR, {}) or {}).get("motores", [])}
     vistos_t, vistos_u, out = set(), set(), []
     # VALIDAÇÃO INDIVIDUAL (27/09): decisão registrada prevalece; o que não foi validado passa pelas regras aprendidas
     from . import validacao_mapa as _vm
@@ -167,6 +181,11 @@ def consolidar() -> list[dict]:
         # fluxo contínuo: o próprio edital dispensa a data-limite (validação no site oficial) — vale como prazo aberto
         prazo_disp = bool(v and v["decisao"].startswith("valida") and ((v.get("doze_itens") or {}).get("Prazo de inscrição") or {}).get("status") == "dispensado pelo edital")
         confirmada = bool(objeto and link and ((fim and fim >= hoje.isoformat()) or (prazo_disp and not fim)))
+        # CONDIÇÕES E OPRESSOR DE CADA OPORTUNIDADE (28/09)
+        _cp = [k for k, c in campos.items() if (c or {}).get("comprovado")]; _dp = [k for k, c in campos.items() if (c or {}).get("dispensado")]
+        condicoes = {"comprovadas": len(_cp), "dispensadas": len(_dp), "faltam": [k for k in campos if k not in _cp and k not in _dp],
+                     "dispensas": {k: str((campos[k] or {}).get("trecho_dispensa") or "")[:120] for k in _dp}} if campos else None
+        _ix = _IDX.get(m.get("id")) or {}
         if v and v["decisao"] == "pendente":
             confirmada = False                                # a validação não achou a fonte oficial: não confirma
         insp = None
@@ -177,10 +196,12 @@ def consolidar() -> list[dict]:
             insp = {"em": str(inv.get("em"))[:16], "qualidade": inv.get("qualidade"), "comprovados": inv.get("comprovados"),
                     "prazo": fim, "pagina_oficial": po if po_ok else None,
                     "ok": bool(fim and po_ok)}          # verde = achou prazo E site oficial; vermelho = não achou
-        out.append({"id": m.get("id"), "titulo": re.sub(r"(?i)^continue lendo\s+", "", tit)[:180], "orgao": m.get("orgao") or e.get("orgao"),
+        out.append({"id": m.get("id"), "titulo": re.sub(r"(?i)^continue lendo\s+", "", tit)[:180], "orgao": _orgao_real(m, e),
                     "uf": uf if uf in UFS else None, "origem": origem, "tipo": "menção em diário oficial" if diario else ("empresa/instituto" if (m.get("nivel") in ("privada", "privado") or origem.startswith("Piloto")) else "ente público"),
                     "publicado_em": pub, "inicio": _d(e.get("inicio"), ve.get("inicio"), m.get("inicio") if m.get("_emenda") else None), "fim": fim, "link_oficial": link,
-                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp,
+                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp, "condicoes": condicoes, "opressor": _ix.get("opressor"), "opressor_dispensa": _ix.get("dispensa"),
+                    "opressor_edicoes": len((_OPR.get(_ix.get("opressor")) or {}).get("historico") or []) or None,
+                    "opressor_previsao": (_OPR.get(_ix.get("opressor")) or {}).get("previsao"),
                     "validacao": ({"decisao": v["decisao"], "motivo": v.get("motivo"), "em": v.get("validado_em")} if v else None)})
     return out
 
@@ -247,7 +268,7 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
         if (it.get("validacao") or {}).get("decisao") in ("valida_aberta", "valida_fora_abrangencia"):
             cara = True
             pagina = it.get("link_oficial") or pagina; ku = _nu(pagina)
-        if pagina and cara and ku not in cobertos_u and kt not in cobertos_t:
+        if False and pagina and cara and ku not in cobertos_u and kt not in cobertos_t:   # 28/09: quem cria é src/opressores_repositorio.py
             oid = "nova-" + hashlib.sha1(ku.encode()).hexdigest()[:12]
             C.setdefault("motores", []).append({"id": oid, "programa": it["titulo"][:160], "orgao": it.get("orgao") or "", "motor": "f260-" + oid,
                                                 "familia": "Outros programas", "esfera": "Estado" if it.get("uf") else "Brasil", "uf": it.get("uf") or "BR",
@@ -325,7 +346,8 @@ def montar() -> dict:
                       "triagem": dict(TRIAGEM), **etapa},
            "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal,
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
-           "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao")}
+           "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao",
+                                                                  "objeto", "condicoes", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao")}
                                        for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
                             for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}
@@ -342,6 +364,11 @@ def atualizar_mapa() -> dict:
         validacao_mapa.run()
     except Exception as ex:
         c["validacao_mapa"] = f"falhou: {type(ex).__name__}"
+    try:
+        from .opressores_repositorio import sincronizar
+        c["repositorio_dos_opressores"] = sincronizar()
+    except Exception as ex:
+        c["repositorio_dos_opressores"] = f"falhou: {type(ex).__name__}"
     r = montar(); r["curadoria"] = c
     return r
 
