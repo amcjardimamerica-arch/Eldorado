@@ -94,9 +94,9 @@ AREAS = [("emendas", r"emenda parlamentar"),
          ("cultura", r"cultur|art[ií]st|\barte\b|artes|pnab|aldir|rouanet|cinema|m[uú]sica|teatro|patrim[oô]nio|leitura|audiovis|dan[cç]a|festival|museu|biblioteca|circo|artesan"),
          ("esporte", r"esport|atleta|lazer|olimp|paral[ií]mp|futebol|jogos"),
          ("saude", r"sa[uú]de|hospital|pronon|pronas|m[eé]dic|sus\b|oncol|defici[eê]ncia|reabilita|autis|tgd|intelectual"),
-         ("crianca", r"crian[cç]a|adolesc|inf[aâ]ncia|\bfia\b|juventude|jovens|\beca\b|conanda|cmdca"),
+         ("crianca", r"crian[cç]a|adolesc|inf[aâ]ncia|\bfia\b|juventude|jovens|\beca\b|conanda|cmdca|socioeducativ|primeira inf[aâ]ncia|creche"),
          ("idoso", r"idos|envelhec|longevid|pessoa idosa"),
-         ("assistencia", r"assist[eê]ncia social|vulnerab|alimentar|nutricional|filantr[oó]p|pobreza|fome|perif[eé]ri|suas\b|acolhimento|popula[cç][aã]o de rua|mulher|g[eê]nero|direitos humanos"),
+         ("assistencia", r"assist[eê]ncia social|vulnerab|alimentar|nutricional|filantr[oó]p|pobreza|fome|perif[eé]ri|suas\b|acolhimento|popula[cç][aã]o de rua|mulher|g[eê]nero|direitos humanos|cras|creas|servi[cç]os? de conviv|fortalecimento de v[ií]nculos|prote[cç][aã]o social|pcd|pessoa com defici"),
          ("ambiente", r"ambient|clima|sustent|floresta|[aá]gua|amaz[oô]n|energ|reciclag|biodivers|res[ií]duo"),
          ("educacao", r"educa|escola|ensino|alfabetiz|forma[cç][aã]o|capacita|bolsa")]
 
@@ -145,7 +145,7 @@ def consolidar() -> list[dict]:
     for ag in (_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens", []):
         brutos.append((f"motor agregadores · {ag.get('fonte')}", {"id": ag["id"], "titulo": ag.get("titulo"), "url": ag.get("link_oficial") or ag.get("pagina_agregador"),
                        "fim": ag.get("prazo"), "uf": ag.get("uf"), "data_publicacao": ag.get("primeiro_visto"), "fonte_id": "motor-agregadores",
-                       "pagina_agregador": ag.get("pagina_agregador")}))
+                       "pagina_agregador": ag.get("pagina_agregador"), "areas_fonte": ["cultura"] if ag.get("fonte") == "farolcultural" else []}))
     for arq in EXT.glob("*.json"):
         e = _j(arq, {})
         if e.get("investigacao_ia") and arq.stem.startswith(("cat-", "op-")):

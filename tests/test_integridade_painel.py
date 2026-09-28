@@ -145,8 +145,8 @@ class TesteIntegridadePainel(unittest.TestCase):
         """28/09: os cartões de oportunidades abertas liam o conjunto antigo; toda oportunidade com seleção precisa de
         motor opressor (ou do motivo da dispensa); o quadro 'Aguardando verificação da IA' saiu."""
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        self.assertIn("function desenhaAbertasFluxo(", h)
-        self.assertIn("desenhaAbertasFluxo();       //", h)
+        self.assertIn("function _desenhaAbertasFluxo(", h)
+        self.assertIn("_desenhaAbertasFluxo();       //", h)
         F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
         its = [x for v in F["itens_por_uf"].values() for x in v]
         sem = [x["titulo"][:60] for x in its if not x.get("opressor") and not x.get("opressor_dispensa")]
@@ -188,6 +188,14 @@ class TesteIntegridadePainel(unittest.TestCase):
         automaticos = [l for l in h.split("\n") if _re.search(r"location\.(reload|replace)\(|location\.href\s*=", l) and "onclick" not in l]
         self.assertEqual(automaticos, [], "recarregamento automático da página")
         self.assertIn("window.scrollTo(0,_y);", h, "atualização dos dados preserva a posição da tela")
+
+    def test_funcoes_chamadas_pela_tela_existem(self):
+        """28/09: o filtro de estado das oportunidades abertas chamava uma função fora do escopo global; o botão
+        'Ver fonte por fonte' chamava uma função que nunca existiu."""
+        import re as _re
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        for f in ("desenhaAbertasFluxo", "abrePrazos"):
+            self.assertIn(f"window.{f}=", h, f"{f} precisa estar no escopo global (é chamada pela tela)")
 
 
 if __name__ == "__main__":

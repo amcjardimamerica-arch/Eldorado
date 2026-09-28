@@ -466,6 +466,7 @@ box-shadow:0 1px 3px #0002}
 .bz-tot{font-size:.55em;font-weight:700;color:var(--suave);margin-left:1px}
 #aviso-versao{position:fixed;right:16px;bottom:16px;z-index:50;background:#0E2A55;color:#fff;font-size:12.5px;padding:8px 12px;border-radius:10px;box-shadow:0 4px 14px #0003}
 #aviso-versao a{color:#FFD27A;font-weight:700;margin-left:6px}#aviso-versao a.fechar{color:#fff;opacity:.7;text-decoration:none;margin-left:10px}
+.tab-prazos{border-collapse:collapse;width:100%;font-size:12px}.tab-prazos th{text-align:left;font-size:11px;color:var(--suave);border-bottom:1px solid #E6EAF0;padding:4px 6px;position:sticky;top:0;background:#fff}.tab-prazos td{border-bottom:1px solid #F0F3F7;padding:4px 6px;vertical-align:top}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -2497,7 +2498,7 @@ function desenhaEditais(){
     /* UNIFICADA: a antiga «Fontes com edital aberto» da Bússola vive aqui, com
        todos os seus filtros (associação, UF, área, nível, situação) e o resumo */
     g.innerHTML=""; g.className="oculto"; $("ed-legenda").innerHTML="";
-    desenhaAbertasFluxo();       // 28/09 (titular): cartões do fluxo validado, criados na descoberta e atualizados pelo Interceptador
+    _desenhaAbertasFluxo();       // 28/09 (titular): cartões do fluxo validado, criados na descoberta e atualizados pelo Interceptador
     return;
   }
   if(aba==="inscrito"){
@@ -4371,7 +4372,8 @@ document.addEventListener("visibilitychange",()=>{ if(!document.hidden) conferir
    cada estudo do Interceptador — condições comprovadas, dispensadas e em falta, prazo, site oficial, e o MOTOR OPRESSOR
    que guarda a oportunidade (com as edições anteriores e a previsão da próxima) ou o motivo da dispensa dele. */
 window._oaF={uf:"",a:"",s:""};
-function desenhaAbertasFluxo(){
+window.desenhaAbertasFluxo=function(){ return _desenhaAbertasFluxo(); };   // 28/09: chamado pelos filtros da tela (escopo global)
+function _desenhaAbertasFluxo(){
   const caixa=$("ed-abertos-caixa"); if(!caixa) return; caixa.classList.remove("oculto");
   // espaço próprio dos cartões; o conteúdo antigo da caixa fica oculto (outras funções ainda escrevem nele)
   let cx=document.getElementById("oa-lista");
@@ -4413,6 +4415,17 @@ function desenhaAbertasFluxo(){
         return ordem.map(a=>`<div class="oa-sec" style="--c:${COR_AREA[a]}"><div class="oa-sec-t"><i></i>${NOME_AREA[a]} <span>${grupos[a].length} oportunidade(s) · ${grupos[a].filter(x=>x.confirmada).length} com prazo e site oficial</span></div>
           <div class="oa-g">${grupos[a].map(cartao).join("")}</div></div>`).join("")||`<div class=meta style="padding:10px">nenhuma oportunidade neste recorte</div>`; })()}`;
 }
+/* "Ver fonte por fonte, com as datas →" (Biblioteca · parecer de prazos): o botão chamava uma função que nunca existiu (28/09) */
+window.abrePrazos=async function(){
+  let P=null; try{ const r=await fetch("dados/prazos.json"); if(r.ok) P=await r.json(); }catch(e){}
+  if(!P||!P.campos){ abreModal("<b>Prazos por fonte</b>","<p class=meta>não foi possível ler os prazos agora</p>"); return; }
+  const C=P.campos, dic=P.dic||{}, v=(l,k)=>{const x=l[C.indexOf(k)]; const m=dic[k]; return Array.isArray(m)&&typeof x==="number"?m[x]:x;};
+  const REG={permanente_com_janela_anual:"permanente, janela anual",permanente_fluxo_continuo:"fluxo contínuo",eventual_observado:"eventual",sem_observacao:"sem observação"};
+  const L=P.linhas.map(l=>({p:v(l,"programa"),o:v(l,"orgao"),r:v(l,"regime_de_prazo"),i:v(l,"proxima_data"),f:v(l,"proxima_fim"),g:v(l,"goias"),c:v(l,"certeza")}))
+    .sort((a,b)=>(b.g?1:0)-(a.g?1:0)||String(a.i||a.f||"9999").localeCompare(String(b.i||b.f||"9999")));
+  abreModal(`<b>Prazos por fonte</b> <span class=meta>· ${L.length} fontes · Goiás primeiro, depois pela próxima data</span>`,
+    `<div style="max-height:70vh;overflow:auto"><table class="tab-prazos"><tr><th>fonte</th><th>regime</th><th>próxima janela</th><th>certeza</th></tr>${L.map(x=>`<tr><td><b>${esc(String(x.p||"").slice(0,80))}</b><br><small class=meta>${esc(String(x.o||"").slice(0,60))}${x.g?" · Goiás":""}</small></td><td>${esc(REG[x.r]||x.r||"—")}</td><td>${x.i||x.f?`${x.i?br(x.i):""}${x.f?" → "+br(x.f):""}`:"—"}</td><td>${esc(x.c||"—")}</td></tr>`).join("")}</table></div>`);
+};
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
