@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T08:39:21+00:00",
+  "em": "2026-09-28T08:56:36+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T08:28:31+00:00",
+  "ultimo_voo": "2026-09-28T08:40:43+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,24 +34,105 @@
     "editais novos dos motores": 3,
     "indícios do Espião": 16,
     "abertos com itens em falta": 4,
-    "empresas sem ficha": 48
+    "empresas sem ficha": 49
   },
   "acumulado": {
-    "missoes": 212,
-    "validadas": 14,
+    "missoes": 213,
+    "validadas": 15,
     "parciais": 62,
     "insuficientes": 85,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 129,
+      "sim": 130,
       "nao": 15
     },
     "estrelas_de_ouro": 9,
     "fontes_novas_para_os_motores": 49,
-    "tempo_medio_min": 8.5
+    "tempo_medio_min": 8.6
   },
   "missoes": [
+    {
+      "em": "2026-09-28T08:40:43+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · BA (sorteio)",
+      "alvo": "Diário Oficial de Correntina (BA) 2026-09-11 — \"edital de chamamento público\" associação",
+      "qualidade": "validada",
+      "comprovados": 10,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": "https://www.correntina.ba.gov.br/prefeitura-de-correntina-abre-processo-seletivo-simplificado-com-227-vagas-para-a-educacao/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, resultado e outros detalhes relevantes.",
+        "para_a_amc": "A associação precisaria se inscrever no prazo de 2025-12-17 a 2025-12-26, apresentar os requisitos exigidos no edital e demonstrar capacidade de atender ao objeto de contratação temporária de profissionais da área da Educação.",
+        "proximo_passo": "Verificar os anexos do edital e se os requisitos são atendidos pela associação.",
+        "risco": "O prazo de inscrição já passou, o que pode impedir o acesso ao edital."
+      },
+      "erro": null,
+      "segundos": 953,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 10,
+      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
+      "avaliacao": "pronta para a decisão do Claude",
+      "id": "0dce34216b830e97ff6b",
+      "encontrou": {
+        "Objeto": {
+          "valor": "contratação temporária de profissionais da área da Educação",
+          "trecho": "O processo seletivo tem como objetivo atender demandas temporárias da rede municipal de ensino, assegurando a continuidade das atividades educacionais diante de afastamentos legais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2025-12-17 a 2025-12-26",
+          "trecho": "As inscrições estarão abertas no período de 17 a 26 de dezembro de 2025, exclusivamente pela internet.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Correntina",
+          "trecho": "A Prefeitura Municipal de Correntina publicou o Edital nº 002/2025, que dispõe sobre a abertura de Processo Seletivo Simplificado para contratação temporária de profissionais da ár",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "BA",
+          "trecho": "Prefeitura de Correntina abre Processo Seletivo Simplificado com 227 vagas para a Educação",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "educacao",
+          "trecho": "O processo seletivo tem como objetivo atender demandas temporárias da rede municipal de ensino, assegurando a continuidade das atividades educacionais diante de afastamentos legais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · convenio",
+          "trecho": "A Prefeitura Municipal de Correntina publicou o Edital nº 002/2025, que dispõe sobre a abertura de Processo Seletivo Simplificado para contratação temporária de profissionais da ár",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Correntina",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/2909307/2026-09-11/938bd6b9ac32d230b2ba37ec3a77a7d7236bae07.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-09-28T08:28:31+00:00",
       "modo": "validar",
@@ -2821,93 +2902,6 @@
       "financiador": null,
       "indicios": [],
       "rotas": []
-    },
-    {
-      "em": "2026-09-27T22:32:20+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "mapa · Goiás (prioridade)",
-      "alvo": "ANEXO IX – MINUTA DO TERMO DE COLABORAÇÃO",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O documento comprova a existência de um Termo de Colaboração para a execução do Circuito das Cavalhadas 2026, envolvendo a Secretaria de Estado da Cultura e uma Organização da Sociedade Civil (OSC).",
-        "para_a_amc": "A associação comunitária de Goiânia precisa se registrar como OSC, demonstrar capacidade técnica e legal para executar o Circuito das Cavalhadas 2026 e firmar um Termo de Colaboração com a Secretaria de Estado da Cultura.",
-        "proximo_passo": "A associação comunitária deve se inscrever no processo seletivo da Secretaria de Estado da Cultura, apresentando seu projeto e capacidade de execução.",
-        "risco": "A falta de registro como OSC ou a incapacidade de demonstrar capacidade técnica e legal pode impedir a associação de acessar o edital."
-      },
-      "erro": null,
-      "segundos": 968,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "89da6af5827f908a3b7c",
-      "encontrou": {
-        "Objeto": {
-          "valor": "selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026",
-          "trecho": "selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "SECRETARIA DE ESTADO DA CULTURA",
-          "trecho": "SECRETARIA DE ESTADO DA CULTURA",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "GOIÁS",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "Secretaria de Estado da Cultura",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · convenio",
-          "trecho": "selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Organização da Sociedade Civil (OSC)",
-          "trecho": "selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "ESTADO DE GOIÁS",
-      "indicios": [
-        {
-          "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86406084_ANEXO.pdf",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "parceiro"
-      ]
     }
   ]
 }
