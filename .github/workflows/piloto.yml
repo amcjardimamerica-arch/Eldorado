@@ -55,7 +55,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ia_local/modelos
-          key: modelos-gguf-v1-${{ hashFiles('config/piloto.json') }}
+          key: modelos-gguf-Qwen3-8B-Q4_K_M   # 30/09: chave FIXA pelo modelo — a chave pelo config/piloto.json guardava uma cópia nova de 4,9 GB a cada mudança do arquivo
           restore-keys: modelos-gguf-v1-
       - name: SONDAR os enderecos dos GGUF (nao baixa; mede o cabecalho)
         if: ${{ github.event.inputs.modo == 'sondar' }}
