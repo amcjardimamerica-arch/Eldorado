@@ -171,7 +171,11 @@ def avaliar(ia, missao: dict, achados: list[dict]) -> dict:
     if _e_ensaio(motor):                      # missão de ensaio não entra na base
         return {"avaliacao": {"motor": motor, "ensaio": True, "uteis": len(uteis),
                               "nota": "missão de ensaio — não gravada na base"}, "uteis": uteis}
-    av = {"em": now_iso(), "motor": motor, "missao": missao.get("tipo"), "alvo": missao.get("alvo"),
+    _alvo = missao.get("alvo") or ((missao.get("_alvo") or {}).get("titulo") if isinstance(missao.get("_alvo"), dict) else None) \
+        or (missao.get("_brief") or {}).get("pergunta_de_pesquisa") or (missao.get("_site") or {}).get("url")
+    _cons = re.search(r"'([^']{6,140})'", licao or "")        # 30/09: a consulta usada (antes o alvo ficava vazio em 100% das avaliações)
+    av = {"em": now_iso(), "motor": motor, "missao": missao.get("tipo"), "alvo": _alvo, "consulta": _cons.group(1) if _cons else None,
+          "descartados_amostra": [{"titulo": str(d.get("titulo") or "")[:100], "porque": d.get("porque_nao")} for d in descartados[:3]],
           "achados": len(achados), "uteis": len(uteis), "descartados": len(descartados),
           "efetividade": round(len(uteis) / len(achados), 2) if achados else 0.0,
           "motivo_do_insucesso": motivo if not uteis else None,

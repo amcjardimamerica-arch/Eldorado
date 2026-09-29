@@ -560,7 +560,15 @@ def missao_aposta(brief: dict, ordem: int) -> tuple[str, list[dict], str]:
         q = f"{ap['onde']} edital inscrições organizações sociedade civil"
     if not q:
         return "sem aposta", [], "aposta · o briefing não trouxe pergunta de pesquisa"
-    q = re.sub(r"\s+", " ", q)[:120] + ("" if ordem == 1 else " Goiás")
+    # 30/09: 2.320 de 6.145 apostas deram 'fora do objeto' — perguntas amplas (tecnologia, inovação, pesquisa) longe da
+    # finalidade da associação. A aposta fica presa às áreas dela e a organizações da sociedade civil.
+    FORA_DA_FINALIDADE = re.compile(r"(?i)tecnolog|inova[cç]|startup|cient[ií]fic|pesquisa acad|agroneg|ind[uú]stria|infraestrutura|energia|mobilidade")
+    AREAS_AMC = ["assistência social", "criança e adolescente", "pessoa idosa", "cultura", "saúde", "esporte e lazer"]
+    if FORA_DA_FINALIDADE.search(q):
+        q = f"edital {AREAS_AMC[(int(time.time() // 600) + ordem) % len(AREAS_AMC)]} organizações da sociedade civil inscrições"
+    if not re.search(r"(?i)sociedade civil|\bosc\b|associa|entidade|terceiro setor|ong", q):
+        q += " organizações da sociedade civil"
+    q = re.sub(r"\s+", " ", q)[:140] + ("" if ordem == 1 else " Goiás")
     res = buscar(q, maximo=8) or []
     ach, cand = [], []
     arq = ROOT / "estado/piloto/candidatas_do_catalogo.json"
@@ -794,7 +802,7 @@ def ciclo(porta: int | None = None) -> dict:
         _pesos = (_parp().get("espiao") or {}).get("pesos_missao") or {}
     except Exception:
         _pesos = {}
-    _max_cat = 1 if float(_pesos.get("catalogar", 1)) <= 0.2 else vagas
+    _max_cat = 0 if float(_pesos.get("catalogar", 1)) <= 0.2 else vagas     # 30/09: 9.655 catalogações renderam 0,1% — sai do voo
     while vagas > 0 and _max_cat <= 0:
         plano.append({"tipo": "descobrir", "motor": "piloto-aberto", "ordem": len(plano) + 1, "alvo_id": f"descoberta-{len(plano)}",
                       "_alvo": {"titulo": "descobrir entidades novas (fora do cadastro)"}}); vagas -= 1
