@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## 8812eadf434767bad390 — Convênios e parcerias
 
-MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 4× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 5× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Programa estadual de eventos esportivos · UF GO · nível estadual · situação possivel · fim None
 
@@ -33,7 +33,7 @@ Texto do edital (compacto):
 ---
 ## bb1435f3526255de51ee — Convênios e parcerias
 
-MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 4× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 5× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Programa estadual de eventos esportivos · UF GO · nível estadual · situação possivel · fim None
 

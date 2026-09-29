@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-29T00:58:39+00:00",
+  "gerado_em": "2026-09-29T02:43:41+00:00",
   "referencia": "2026-09-26",
   "regra": "valor, ano e CNPJ só com fonte oficial; mecanismo sem fonte pública sai nulo com o motivo e o caminho para obter o dado; inscrição no PAT não prova Lucro Real",
   "mecanismos": {
@@ -63,7 +63,7 @@
   },
   "resumo": {
     "referencia": "2026-09-26",
-    "registros_na_biblioteca": 156,
+    "registros_na_biblioteca": 157,
     "descartados": [],
     "empresas_com_cnpj": 99,
     "sem_cnpj_unico": [
@@ -91,6 +91,7 @@
       "Nubank",
       "PUC Goiás",
       "Passeio das Águas Shopping",
+      "Prefeitura de Aparecida e Instituto",
       "Rede D'Or",
       "Rádio Sagres",
       "Sebrae Goiás",
@@ -33283,6 +33284,58 @@
     },
     {
       "nome": "Passeio das Águas Shopping",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Prefeitura de Aparecida e Instituto",
       "cnpj": null,
       "verificado_em": "2026-09-26",
       "mecanismos": {
