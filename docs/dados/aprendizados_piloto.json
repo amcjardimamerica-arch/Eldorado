@@ -1,22 +1,23 @@
 {
-  "em": "2026-09-29T16:57:53+00:00",
+  "em": "2026-09-29T17:05:45+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 3,
+      "achados": 5,
       "uteis": 2,
       "motivos": {
-        "nada_no_crivo": 38
+        "nada_no_crivo": 36,
+        "fora_do_objeto": 2
       },
-      "efetividade": 0.67
+      "efetividade": 0.4
     }
   },
   "licoes": [
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 2286,
+      "vezes": 2272,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -28,7 +29,7 @@
       ],
       "ultima": "2026-09-29",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 2286 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 2272 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -67,7 +68,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "fora_do_objeto",
-      "vezes": 109,
+      "vezes": 111,
       "tipos": [
         "prospectar",
         "catalogar",
@@ -76,7 +77,7 @@
       ],
       "ultima": "2026-09-29",
       "explicacao": "o que veio não serve à finalidade da associação",
-      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 109 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 111 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-patrocinio",
@@ -129,24 +130,24 @@
     {
       "motor": "piloto-aberto",
       "motivo": "rastro_sem_prova",
-      "vezes": 16,
+      "vezes": 17,
       "tipos": [
         "reconhecimento"
       ],
       "ultima": "2026-09-29",
       "explicacao": "rastro_sem_prova",
-      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 16 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 17 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "sem_rastro",
-      "vezes": 16,
+      "vezes": 17,
       "tipos": [
         "reconhecimento"
       ],
       "ultima": "2026-09-29",
       "explicacao": "sem_rastro",
-      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 16 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 17 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -162,16 +163,16 @@
   "melhorias_pendentes": [
     {
       "motor": "piloto-aberto",
-      "sugestao": "Incluir filtros mais específicos para categorias como 'assistência social' e 'cultura' para facilitar a identificação de editais relevantes.",
-      "efetividade_na_hora": 1.0,
-      "em": "2026-09-29T16:41",
+      "sugestao": "O motor deveria identificar e extrair automaticamente o trecho relevante do texto para permitir uma avaliação mais precisa do edital.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-29T16:49",
       "aplicada": false
     },
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor deveria extrair e validar automaticamente os trechos relevantes dos editais, como prazo, valor, objeto e página, para evitar ambiguidades e garantir uma avaliação mais precisa dos recursos disponíveis.",
-      "efetividade_na_hora": 0.5,
-      "em": "2026-09-29T16:40",
+      "sugestao": "O motor deveria extrair e validar o trecho do texto para permitir uma análise mais precisa do conteúdo do edital.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-29T16:49",
       "aplicada": false
     },
     {
@@ -301,10 +302,10 @@
       "aplicada": false
     }
   ],
-  "editais_tratados": 259,
-  "entregues_ao_claude": 220,
+  "editais_tratados": 258,
+  "entregues_ao_claude": 221,
   "ultima_faxina": {
-    "em": "2026-09-29T16:57:53+00:00",
+    "em": "2026-09-29T17:05:45+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 1,
     "achados_descartados_removidos": 82,
