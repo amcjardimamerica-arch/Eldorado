@@ -42,9 +42,9 @@
   "consultas_boas": [
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 103,
-    "com_resultado": 97,
-    "achados": 194,
+    "tentativas": 104,
+    "com_resultado": 98,
+    "achados": 196,
     "missao": "aposta"
    },
    {
@@ -53,13 +53,6 @@
     "com_resultado": 9,
     "achados": 9,
     "missao": "prospectar"
-   },
-   {
-    "consulta": "fundação empresarial goiás edital projetos 2026 organizações da socied",
-    "tentativas": 4,
-    "com_resultado": 2,
-    "achados": 3,
-    "missao": "aposta"
    },
    {
     "consulta": "edital abre inscrições para rede memória organizações da sociedade civ",
@@ -98,7 +91,7 @@
    },
    {
     "consulta": "zurich abre edital nacional para apoiar",
-    "tentativas": 166,
+    "tentativas": 167,
     "com_resultado": 82,
     "achados": 82,
     "missao": "resgate"
@@ -116,6 +109,13 @@
     "com_resultado": 165,
     "achados": 165,
     "missao": "resgate"
+   },
+   {
+    "consulta": "fundação empresarial goiás edital projetos 2026 organizações da socied",
+    "tentativas": 5,
+    "com_resultado": 2,
+    "achados": 3,
+    "missao": "aposta"
    },
    {
     "consulta": "edital pessoa idosa organizações da sociedade civil inscrições goiás",
@@ -316,7 +316,7 @@
    },
    {
     "consulta": "empresa goiana responsabilidade social edital",
-    "tentativas": 13,
+    "tentativas": 14,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
@@ -334,7 +334,7 @@
    },
    {
     "consulta": "fundação comunitária edital doações 2026",
-    "tentativas": 11,
+    "tentativas": 12,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
@@ -382,8 +382,8 @@
    "apoiar",
    "sndca",
    "filantropia",
-   "rede",
    "memória",
+   "rede",
    "milhões"
   ],
   "termos_ruins": [
@@ -393,7 +393,7 @@
   ],
   "rendimento_das_buscas": {
    "resgate": {
-    "tentativas": 6327,
+    "tentativas": 6328,
     "com_resultado": 585,
     "taxa": 0.092
    },
@@ -408,17 +408,17 @@
     "taxa": 0.519
    },
    "aposta": {
-    "tentativas": 235,
-    "com_resultado": 116,
-    "taxa": 0.494
+    "tentativas": 239,
+    "com_resultado": 117,
+    "taxa": 0.49
    },
    "descobrir": {
-    "tentativas": 157,
+    "tentativas": 160,
     "com_resultado": 2,
     "taxa": 0.013
    }
   },
-  "consultas_aprendidas_em": "2026-09-29T22:49:23+00:00"
+  "consultas_aprendidas_em": "2026-09-29T22:51:36+00:00"
  },
  "atualizado_em": "2026-09-29T16:11:27+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
