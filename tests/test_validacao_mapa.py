@@ -15,13 +15,16 @@ ARQ = ROOT / "dados/oportunidades/validacao_mapa/validacao_2026-09-27.json"
 
 
 class TestArquivoDeValidacao(unittest.TestCase):
+    ARQUIVO = ARQ
+    MINIMO = 1022
+
     @classmethod
     def setUpClass(cls):
-        cls.dados = json.loads(ARQ.read_text(encoding="utf-8"))
+        cls.dados = json.loads(cls.ARQUIVO.read_text(encoding="utf-8"))
         cls.itens = cls.dados["itens"]
 
     def test_universo_inteiro_decidido(self):
-        self.assertGreaterEqual(len(self.itens), 1022)
+        self.assertGreaterEqual(len(self.itens), self.MINIMO)
         self.assertEqual(len({r["id"] for r in self.itens}), len(self.itens), "id repetido")
         for r in self.itens:
             self.assertIn(r["decisao"], VM.DECISOES)
@@ -63,6 +66,12 @@ class TestArquivoDeValidacao(unittest.TestCase):
                 self.assertTrue(op.get("id") or op.get("acao"), r["id"])
 
 
+class TestArquivoDeValidacao0929(TestArquivoDeValidacao):
+    """29/09: verificação das abertas — mesmas garantias do arquivo de 27/09."""
+    ARQUIVO = ROOT / "dados/oportunidades/validacao_mapa/validacao_2026-09-29.json"
+    MINIMO = 150
+
+
 class TestRegrasAprendidas(unittest.TestCase):
     def d(self, titulo, url, fonte="x", evid=None, origem=None):
         return VM.dispensa(origem or f"motor {fonte}", {"titulo": titulo, "url": url, "fonte_id": fonte, "evidencia": evid})
@@ -89,6 +98,10 @@ class TestRegrasAprendidas(unittest.TestCase):
         self.assertEqual(r["decisao"], "arquivada")
         self.assertIsNone(self.d(t, "u", fonte="querido-diario", evid="EDITAL DE CHAMAMENTO PÚBLICO Nº 05/2026 destinado à seleção de Organizações da Sociedade Civil"))
         self.assertIsNone(self.d(t, "u", fonte="querido-diario", evid="AVISO DE RESULTADO FINAL E REABERTURA DE PRAZO EDITAL DE CHAMAMENTO PÚBLICO"))
+
+    def test_pagina_inicial_do_agregador_vira_pista_e_nao_descarte(self):
+        self.assertIsNone(VM.dispensa("motor agregadores · capitaai", {"titulo": "Edital Balsas 2026", "url": "https://www.balsas.ma.gov.br/", "fonte_id": "motor-agregadores"}))
+        self.assertEqual(self.d("Petrobras", "https://petrobras.com.br/")["regra"], "pagina_inicial")
 
     def test_heranca_nao_vale_para_diario(self):
         idx = {"t:" + VM._nt("Lei Rouanet"): {"id": "a", "decisao": "descartada"}}
@@ -142,6 +155,18 @@ class TestAplicacaoIdempotente(unittest.TestCase):
 
 
 class TestFluxoLimpo(unittest.TestCase):
+    def test_prazo_de_agregador_nao_vira_prazo(self):
+        src = (ROOT / "src/fluxo_oportunidades.py").read_text(encoding="utf-8")
+        self.assertIn('"fim": None, "prazo_agregador": ag.get("prazo")', src)
+
+    def test_valida_sem_fonte_oficial_nao_confirma(self):
+        from src import fluxo_oportunidades as F
+        V = VM.carregar()
+        for x in F.consolidar():
+            v = V.get(x["id"])
+            if v and v["decisao"].startswith("valida") and not v.get("fonte_oficial"):
+                self.assertFalse(x["confirmada"], x["id"])
+
     def test_mapa_so_tem_valida_fora_ou_pendente_entre_os_validados(self):
         from src import fluxo_oportunidades as F
         V = VM.carregar()

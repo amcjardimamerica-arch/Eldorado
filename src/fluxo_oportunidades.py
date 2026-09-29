@@ -144,7 +144,8 @@ def consolidar() -> list[dict]:
     # MOTOR AGREGADORES NO FLUXO (28/09): capitaai, farolcultural, IDIS — indícios com o link da fonte oficial
     for ag in (_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens", []):
         brutos.append((f"motor agregadores · {ag.get('fonte')}", {"id": ag["id"], "titulo": ag.get("titulo"), "url": ag.get("link_oficial") or ag.get("pagina_agregador"),
-                       "fim": ag.get("prazo"), "uf": ag.get("uf"), "data_publicacao": ag.get("primeiro_visto"), "fonte_id": "motor-agregadores",
+                       # 29/09: prazo de agregador NÃO é prazo (regra do titular) — fica como pista até a fonte oficial confirmar
+                       "fim": None, "prazo_agregador": ag.get("prazo"), "uf": ag.get("uf"), "data_publicacao": ag.get("primeiro_visto"), "fonte_id": "motor-agregadores",
                        "pagina_agregador": ag.get("pagina_agregador"), "areas_fonte": ["cultura"] if ag.get("fonte") == "farolcultural" else []}))
     for arq in EXT.glob("*.json"):
         e = _j(arq, {})
@@ -242,8 +243,8 @@ def consolidar() -> list[dict]:
             else:
                 checklist[k] = {"s": "pend"}
         _ix = _IDX.get(m.get("id")) or {}
-        if v and v["decisao"] == "pendente":
-            confirmada = False                                # a validação não achou a fonte oficial: não confirma
+        if v and (v["decisao"] == "pendente" or (v["decisao"].startswith("valida") and not v.get("fonte_oficial"))):
+            confirmada = False                                # a validação não achou a fonte oficial: não confirma (29/09: nem prazo de outra origem)
         insp = None
         if inv.get("em"):
             po = e.get("pagina_oficial")

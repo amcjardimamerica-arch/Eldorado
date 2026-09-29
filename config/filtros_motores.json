@@ -1,5 +1,5 @@
 {
-  "versao": "2026-09-27",
+  "versao": "2026-09-29",
   "origem": "Aprendizado da validação individual das 1.026 oportunidades do mapa (27/09/2026). Cada regra nasceu de itens que a validação descartou; o relatório por motor mostra quantos itens cada regra teria dispensado sem custo de verificação.",
   "principio": "A regra só DISPENSA o que comprovadamente não é oportunidade (ou é fase posterior de edital já encerrado). Na dúvida, o item fica no mapa como possível. Decisão individual registrada em dados/oportunidades/validacao_mapa/ sempre prevalece sobre a regra.",
   "regras": [
@@ -17,6 +17,25 @@
       "url": "(blog\\.prosas\\.com\\.br|wa\\.me/|substack\\.com|/noticias/webinar)"
     },
     {
+      "id": "link_solto_do_piloto",
+      "decisao": "descartada",
+      "motivo": "arquivo ou formulário solto (Drive, bit.ly, SurveyMonkey, Google Forms) sem página oficial do financiador — o Piloto deve guardar a página do edital, não o anexo",
+      "motores": [
+        "piloto-espiao",
+        "piloto-interceptador"
+      ],
+      "url": "(drive\\.google\\.com/|docs\\.google\\.com/|bit\\.ly/|surveymonkey\\.com/|forms\\.gle/|wa\\.me/)"
+    },
+    {
+      "id": "pagina_institucional_goias_social",
+      "decisao": "descartada",
+      "motivo": "página institucional da Secretaria de Desenvolvimento Social (capacitações, eleições de conselho, ex-empregados) — não é chamada",
+      "motores": [
+        "goias-social"
+      ],
+      "titulo": "(capacita[cç][õo]es|elei[cç][õo]es? para representantes|ex-empregados|edital de chamamento cpa)"
+    },
+    {
       "id": "agregador_sem_oportunidade",
       "decisao": "descartada",
       "motivo": "página de agregador/plataforma comercial sem oportunidade individual",
@@ -26,7 +45,11 @@
       "id": "pagina_inicial",
       "decisao": "descartada",
       "motivo": "página inicial/portal institucional — não é oportunidade",
-      "url_raiz": true
+      "url_raiz": true,
+      "exceto_motores": [
+        "motor-agregadores"
+      ],
+      "nota": "no motor de agregadores a página inicial significa que o agregador não deu o link do edital: o item fica como pista (pendente), não é descartado"
     },
     {
       "id": "texto_de_link",
