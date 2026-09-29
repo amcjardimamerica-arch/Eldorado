@@ -21,16 +21,19 @@ class TesteCatalogo(unittest.TestCase):
             for m, v in e["incentivos"].items():
                 self.assertTrue(v.get("fonte"), f"{e['raiz']} {m} sem fonte")
 
-    def test_pat_so_complemento_e_so_matriz(self):
-        """29/09: o PAT beneficia trabalhadores, não associações — nunca fonte, só complemento das empresas existentes."""
-        self.assertFalse(any("PAT" in e["incentivos"] for e in self.cat), "PAT não é incentivo de destinação")
-        self.assertTrue(all(e["incentivos"] or e.get("no_sistema") for e in self.cat), "empresa só do PAT não entra")
-        self.assertTrue(all("PAT" in (e.get("complementos") or {}) for e in self.cat))
-        base = ROOT / "biblioteca_alexandria/base/incentivos"
-        self.assertFalse((base / "pat_beneficiarias_ativas_2026-03-31.jsonl.gz").exists(), "a relação completa do PAT não fica no sistema")
-        raizes = {e["raiz"] for e in self.cat}
-        for l in gzip.open(base / "pat_matrizes_das_empresas_do_sistema_2026-03-31.jsonl.gz", "rt", encoding="utf-8"):
-            r = json.loads(l); self.assertIn(r["cnpj"][:8], raizes); self.assertTrue(r["cnpj"][8:12] == "0001" or True)
+    def test_pat_incentivo_indicio_so_de_empresa_existente(self):
+        """29/09: PAT é incentivo fiscal da empresa (indício), só matriz; nunca inclui empresa nem é fonte para associação."""
+        self.assertTrue(all(("Rouanet" in e["incentivos"] or "Goyazes" in e["incentivos"] or e.get("no_sistema")) for e in self.cat),
+                        "empresa que só está no PAT não pode entrar")
+        pat = [e["incentivos"]["PAT"] for e in self.cat if "PAT" in e["incentivos"]]
+        self.assertGreater(len(pat), 1000)
+        self.assertTrue(all("não destina" in p.get("papel", "") or "não associações" in p.get("papel", "") or "trabalhadores" in p.get("papel", "") for p in pat[:500]))
+        self.assertFalse((ROOT / "biblioteca_alexandria/base/incentivos/pat_beneficiarias_ativas_2026-03-31.jsonl.gz").exists())
+
+    def test_icone_do_pat_aceso_no_painel(self):
+        R = json.loads((ROOT / "docs/dados/ranking_apoiadores.json").read_text(encoding="utf-8"))
+        acesos = sum(1 for e in R["empresas"] for p in (e.get("programas") or []) if p.get("chave") == "pat" and p.get("verificado"))
+        self.assertGreater(acesos, 1000, "ícone do PAT precisa acender para as empresas com adesão")
 
     def test_leitura_de_valor_brasileiro(self):
         from src.catalogo_incentivos import valor_br

@@ -419,6 +419,8 @@ def ficha(nome: str, cnpj: str | None, bases: dict | None = None) -> dict:
         recentes.append("Rouanet")
     if any(int(a) >= _corte() for a in (mec["Goyazes"].get("por_ano") or {})):
         recentes.append("Goyazes")
+    if (mec.get("PAT") or {}).get("status") in ("inscrita", "inscrita_por_estabelecimento"):
+        recentes.append("PAT")                          # 29/09: incentivo fiscal da empresa (indício), inscrição vigente
     saida["confirmados_5_anos"] = sorted(recentes)
     lucro = lucro_real_pela_rouanet(mec["Rouanet"])
     if lucro:

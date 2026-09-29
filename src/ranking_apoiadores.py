@@ -191,6 +191,35 @@ def montar() -> dict:
         itens.sort(key=lambda x: (-x["pontos_lista"], -((x.get("salic") or {}).get("total") or 0), x["nome"]))
         for n, e in enumerate(itens, 1):
             e["n_na_lista"] = n; e["uid"] = f"{cat}:{n}"; e["faixa"] = e["nivel"]
+    # ÍCONE DO PAT (titular, 29/09): incentivo fiscal da empresa — indício, não fonte para associações. Aceso quando a
+    # MATRIZ tem adesão (MTE, até 31/03/2026), pelo catálogo único de incentivos; nenhuma empresa entra por causa dele.
+    try:
+        import gzip as _gz
+        _pat, _goy = {}, {}
+        with _gz.open(ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
+            for l in fh:
+                c = json.loads(l)
+                if "PAT" in c["incentivos"]:
+                    _pat[str(c["raiz"])[:8]] = c["incentivos"]["PAT"]
+                if "Goyazes" in c["incentivos"] and not str(c["raiz"]).startswith("nome:"):
+                    _goy[str(c["raiz"])[:8]] = c["incentivos"]["Goyazes"]
+        for itens in listas.values():
+            for e in itens:
+                cn = re.sub(r"\D", "", str((e.get("cadastro") or {}).get("cnpj") or e.get("cnpj") or ""))[:8]
+                g = _goy.get(cn)                        # Goyazes: créditos concedidos (Secult-GO), pelo catálogo único
+                if g and not any(x.get("chave") == "goyazes" for x in (e.get("programas") or [])):
+                    anos = ", ".join(f"{a}: {v.get('projetos')} projeto(s)" for a, v in sorted((g.get("por_ano") or {}).items()))
+                    e.setdefault("programas", []).append({"chave": "goyazes", "verificado": True, "prova": f"Secult-GO — créditos concedidos do Programa Goyazes ({anos})"})
+                p = _pat.get(cn)
+                if not p:
+                    mp = ((e.get("incentivos_verificados") or {}).get("mecanismos") or {}).get("PAT") or {}
+                    if mp.get("status") in ("inscrita", "inscrita_por_estabelecimento"):
+                        p = {"situacao": "ativa", "trabalhadores_matriz": mp.get("trabalhadores"), "fonte": mp.get("fonte") or "MTE"}
+                if p and p.get("situacao") == "ativa" and not any(x.get("chave") == "pat" for x in (e.get("programas") or [])):
+                    e.setdefault("programas", []).append({"chave": "pat", "verificado": True, "indicio": True,
+                        "prova": f"adesão ativa da matriz no PAT (MTE, até 31/03/2026){' · ' + str(p.get('trabalhadores_matriz')) + ' trabalhadores' if p.get('trabalhadores_matriz') else ''} — indício de uso de incentivo fiscal; não destina a associações"})
+    except Exception:
+        pass
     todas = [e for itens in listas.values() for e in itens]
     from .programas_sociais import catalogo
     res = {"gerado_em": now_iso(), "por_pagina": POR_PAGINA,

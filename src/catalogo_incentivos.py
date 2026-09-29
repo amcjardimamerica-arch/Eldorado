@@ -5,9 +5,9 @@ participou, cada um com a fonte oficial. Só entram empresas das FONTES PRIMÁRI
   Rouanet    SALIC/MinC — incentivadores (valor doado) + lotes detalhados de 26/09 (doações por projeto)
   Goyazes    Secult-GO — créditos concedidos 2024 e 2025 (as planilhas não trazem CNPJ: casamento pelo nome)
   Sistema    empresas da base verificada e dos rankings do sistema
-PAT (MTE) — COMPLEMENTO, NUNCA FONTE: o PAT beneficia TRABALHADORES, não associações. Nenhuma empresa entra por estar
-no PAT; as que já existem recebem "adesão ao PAT: sim/não", consultada SÓ NA MATRIZ (filiais descartadas). A adesão é
-um indício de regime tributário, não prova de destinação nem de Lucro Real.
+PAT (MTE) — INCENTIVO FISCAL da empresa, mas NUNCA FONTE de empresa nem de recurso para associação (o PAT beneficia
+os trabalhadores). Nenhuma empresa entra por estar no PAT; as que já existem recebem o PAT entre os incentivos quando
+há adesão, consultada SÓ NA MATRIZ (filiais descartadas) — indício de uso de incentivo fiscal, não prova de Lucro Real.
 """
 from __future__ import annotations
 
@@ -260,10 +260,13 @@ def construir() -> dict:
     usados = {}
     for e in cat.values():
         p = pat.get(e["raiz"]) if not e["raiz"].startswith("nome:") else None
-        e.setdefault("complementos", {})["PAT"] = ({"adesao": True, "situacao": p["situacao"], "trabalhadores_matriz": p["trabalhadores"],
-                                                   "municipio_matriz": p["municipio"], "uf_matriz": p["uf"], "data_cadastro": p["data_cadastro"],
-                                                   "fonte": PAT_FONTE, "nota": "indício de regime tributário; o PAT beneficia trabalhadores, não associações"}
-                                                  if p else {"adesao": False, "fonte": PAT_FONTE} if pat else {"adesao": None, "motivo": "base do PAT indisponível"})
+        e.pop("complementos", None)
+        if p:          # PAT é INCENTIVO FISCAL da empresa (indício de uso de incentivo); não destina a associações
+            e["incentivos"]["PAT"] = {"adesao": True, "situacao": p["situacao"], "trabalhadores_matriz": p["trabalhadores"],
+                                      "municipio_matriz": p["municipio"], "uf_matriz": p["uf"], "data_cadastro": p["data_cadastro"], "fonte": PAT_FONTE,
+                                      "papel": "indício de uso de incentivo fiscal pela empresa; o PAT beneficia trabalhadores, não associações"}
+        else:
+            e["pat_adesao"] = False if pat else None
         if p:
             usados[e["raiz"]] = p
             if p.get("uf") == "GO":
@@ -280,9 +283,8 @@ def construir() -> dict:
     res = {"gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Fontes brutas")[0].strip(),
            "empresas": len(cat), "de_goias": sum(1 for e in cat.values() if e.get("goias")),
            "por_incentivo": {m: sum(1 for e in cat.values() if m in e["incentivos"]) for m in ("Rouanet", "Goyazes")},
-           "complemento_pat": {"com_adesao": sum(1 for e in cat.values() if (e.get("complementos") or {}).get("PAT", {}).get("adesao") is True),
-                               "sem_adesao": sum(1 for e in cat.values() if (e.get("complementos") or {}).get("PAT", {}).get("adesao") is False),
-                               "regra": "complemento das empresas já existentes, só matriz; nenhuma empresa entra por estar no PAT"},
+           "pat": {"com_adesao": sum(1 for e in cat.values() if "PAT" in e["incentivos"]), "sem_adesao": sum(1 for e in cat.values() if e.get("pat_adesao") is False),
+                   "regra": "incentivo (indício) das empresas já existentes, só matriz; nenhuma empresa entra por estar no PAT"},
            "combinacoes": dict(combo.most_common()), "goyazes_casamento": dict(g_st),
            "goias_por_incentivo": {m: sum(1 for e in cat.values() if e.get("goias") and m in e["incentivos"]) for m in ("Rouanet", "Goyazes")}}
     RESUMO.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
