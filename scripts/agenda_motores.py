@@ -46,7 +46,14 @@ def _ultimas_leituras() -> dict:
         M = json.loads((RAIZ / "docs/dados/motores.json").read_text(encoding="utf-8"))
     except Exception:
         return {}
-    return {str(p.get("id")).replace("plat-", ""): p.get("ultima_leitura") for p in (M.get("plataformas") or []) + (M.get("oficiais") or [])}
+    out = {}
+    for p in (M.get("plataformas") or []) + (M.get("oficiais") or []):
+        u = p.get("ultima_leitura")
+        if not u:   # 29/09: motor que não grava a última leitura (ex.: recorrência) entrava em TODA varredura — usa o último dia executado
+            feitos = [d.get("d") for d in (p.get("dias") or []) if d.get("cor") not in (None, "cinza", "fora", "futuro")]
+            u = (max(feitos) + "T12:00:00+00:00") if feitos else None
+        out[str(p.get("id")).replace("plat-", "")] = u
+    return out
 
 
 def recuperar(agora_utc=None) -> list[str]:
