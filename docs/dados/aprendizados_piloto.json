@@ -1,23 +1,23 @@
 {
-  "em": "2026-09-29T02:31:46+00:00",
+  "em": "2026-09-29T02:37:21+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 9,
+      "achados": 12,
       "uteis": 1,
       "motivos": {
-        "nada_no_crivo": 35,
-        "fora_do_objeto": 4
+        "nada_no_crivo": 34,
+        "fora_do_objeto": 5
       },
-      "efetividade": 0.11
+      "efetividade": 0.08
     }
   },
   "licoes": [
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 1956,
+      "vezes": 1923,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -28,7 +28,7 @@
       ],
       "ultima": "2026-09-29",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 1956 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 1923 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -65,6 +65,19 @@
       "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 119 vezes — precisa de correção, não de mais tentativas"
     },
     {
+      "motor": "piloto-aberto",
+      "motivo": "fora_do_objeto",
+      "vezes": 91,
+      "tipos": [
+        "prospectar",
+        "catalogar",
+        "aposta"
+      ],
+      "ultima": "2026-09-29",
+      "explicacao": "o que veio não serve à finalidade da associação",
+      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 91 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
       "motor": "motor-patrocinio",
       "motivo": "nada_no_crivo",
       "vezes": 88,
@@ -76,19 +89,6 @@
       "ultima": "2026-09-24",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
       "regra": "o motor 'motor-patrocinio' falha por vieram resultados, mas nenhum era oportunidade de verdade há 88 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "piloto-aberto",
-      "motivo": "fora_do_objeto",
-      "vezes": 88,
-      "tipos": [
-        "prospectar",
-        "catalogar",
-        "aposta"
-      ],
-      "ultima": "2026-09-29",
-      "explicacao": "o que veio não serve à finalidade da associação",
-      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 88 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-gife",
@@ -128,24 +128,24 @@
     {
       "motor": "piloto-aberto",
       "motivo": "rastro_sem_prova",
-      "vezes": 12,
+      "vezes": 14,
       "tipos": [
         "reconhecimento"
       ],
       "ultima": "2026-09-28",
       "explicacao": "rastro_sem_prova",
-      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 12 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 14 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "sem_rastro",
-      "vezes": 12,
+      "vezes": 14,
       "tipos": [
         "reconhecimento"
       ],
       "ultima": "2026-09-28",
       "explicacao": "sem_rastro",
-      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 12 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 14 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -161,16 +161,30 @@
   "melhorias_pendentes": [
     {
       "motor": "piloto-aberto",
-      "sugestao": "Incluir a capacidade de extrair e validar trechos de conteúdo de páginas web para permitir uma análise mais precisa dos editais.",
+      "sugestao": "Adicionar a capacidade de extrair e validar trechos de texto dos editais para permitir uma avaliação mais precisa de sua relevância para a missão e perfil da organização.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-29T02:19",
+      "em": "2026-09-29T02:36",
       "aplicada": false
     },
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor deve validar se o trecho está preenchido e contém informações relevantes para a organização, como prazo, valor, objeto ou página, antes de considerar o achado como válido.",
+      "sugestao": "Incluir a possibilidade de capturar e armazenar trechos de texto dos editais para análise mais precisa.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-29T02:18",
+      "em": "2026-09-29T02:26",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deveria identificar automaticamente links de editais e extrair informações específicas como prazo, valor, objeto e página, para facilitar a avaliação de servir ou não servir.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-29T02:25",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "Incluir informações mais detalhadas sobre os editais, como público-alvo, prazo, valor e objeto, para facilitar a identificação de editais compatíveis com a missão da organização.",
+      "efetividade_na_hora": 0.25,
+      "em": "2026-09-29T02:06",
       "aplicada": false
     },
     {
@@ -284,26 +298,12 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-09-28T21:04",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deveria extrair e validar o trecho do texto para permitir uma avaliação mais precisa do edital.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-28T21:02",
-      "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "Incluir a funcionalidade de extração de trechos relevantes dos textos para permitir uma análise mais precisa da relevância dos achados.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-28T20:18",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 215,
-  "entregues_ao_claude": 180,
+  "editais_tratados": 220,
+  "entregues_ao_claude": 185,
   "ultima_faxina": {
-    "em": "2026-09-29T02:31:46+00:00",
+    "em": "2026-09-29T02:37:21+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 1,
     "achados_descartados_removidos": 82,
