@@ -3331,19 +3331,7 @@ function desenhaPostoPiloto(alvo){
           <span class="pil-urg">${x.urgencia}</span><span class="pil-resg-n">${esc((x.titulo||"").slice(0,64))}</span>
           <span class=meta>${(x.falta||[]).length} dado(s) em falta${x.uf?" · "+esc(x.uf):""}</span></div>`).join("")}
       </div>`;})()}
-    ${(()=>{const B=(window._BRIEF||{}).voos&&window._BRIEF.voos[0];if(!B)return "";
-      const cf={alta:"#1E7E4B",media:"#C8961E",baixa:"#9AA7B4"}[(B.aposta||{}).confianca]||"#5B7A9E";
-      const R=B.resultado||{};
-      return `<div class="pil-brief">
-        <div class="pil-brief-t">Plano deste voo <span class=meta>${esc(B.em||"")} · ${esc(B.nivel||"")}</span></div>
-        ${B.diagnostico?`<div class="pil-brief-l"><b>Buraco no mapa:</b> ${esc(B.diagnostico)}</div>`:""}
-        ${(B.aposta||{}).onde?`<div class="pil-brief-l"><b>Aposta:</b> ${esc(B.aposta.onde)} <span class="pil-conf" style="color:${cf};border-color:${cf}">${esc(B.aposta.confianca||"")}</span><br><span class=meta>${esc(B.aposta.porque||"")}</span></div>`:""}
-        ${B.pergunta?`<div class="pil-brief-l"><b>Pergunta:</b> <i>${esc(B.pergunta)}</i></div>`:""}
-        ${R.achados!=null?`<div class="pil-brief-l"><b>Trouxe:</b> ${R.achados} achado(s)${R.oportunidades_abertas?` · <span style="color:#1E7E4B">${R.oportunidades_abertas} aberta(s)</span>`:""}${R.arquivadas?` · <span class=meta>${R.arquivadas} arquivada(s)</span>`:""}</div>`:'<div class="pil-brief-l meta">voo em andamento</div>'}
-      </div>`;})()}
-    ${(()=>{const V=window._VIVO||{};const tot=(window._ESQ||{}).total_abates||0;
-      return `<div class="pil-atual"><span class=pil-placar><b>${tot}</b><br><span class=meta>alvo(s) novo(s)</span></span></div>`;})()}
-    ${motores.length?`<div class=meta style="margin-top:8px">Marcas na fuselagem: ${motores.map(([m,v])=>`<b>${esc(m)}</b> ★${v.n}`).join(" · ")}</div>`:""}
+    <!-- 30/09 (titular): sem o plano do briefing, o contador de alvos e as marcas na fuselagem — a caixa segue a do Interceptador -->
     ${(()=>{const R=window._RADAR;if(!R||!R.total)return "";const M=R.por_marcador||{};
       const cor={a_pesquisar:"#C8961E",em_pesquisa:"#0B4EA2",concluido:"var(--ok)"};
       const rot={a_pesquisar:"a pesquisar",em_pesquisa:"em pesquisa",concluido:"concluído"};
@@ -3355,7 +3343,7 @@ function desenhaPostoPiloto(alvo){
           ${e.site?`<a class="uf-ab-link" href="${esc(e.site)}" target=_blank rel="noopener noreferrer">site ↗</a>`:""}</div>`).join("")}</div>
         <div class=meta>As marcadas como <b style="color:#C8961E">a pesquisar</b> vão no pacote do conselho para o Claude externo investigar ESG, editais anteriores e como pleitear.</div>`;})()}
     <!-- 29/09: 'Missões anteriores' substituída por 'Últimas missões' (espião ao vivo) -->
-    <div class=meta style="margin-top:6px">Clique no avião sobre qualquer motor (aba Bússola) para ver o que ele fez ali.</div></div>`;
+    </div>`;
 }
 window.darPartida=function(base){
   base=base||"pil-posto";
