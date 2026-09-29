@@ -686,6 +686,14 @@ def run() -> dict:
             if _m.get("esfera") == "Internacional":
                 _m["esfera"] = "Brasil"
     resumo["internacionais"] = sum(1 for _m in motores if _m.get("internacional"))
+    # LIVROS (29/09): todo opressor — os originais também — com geografia, objeto, tipo, público e inscrição, e o nome
+    # classificado ("GO - Cultura · Edital — programa")
+    from .livros_opressores import classificar as _classificar
+    for _m in motores:
+        try:
+            _classificar(_m)
+        except Exception:
+            pass
     # RESUMO RECALCULADO (28/09): o resumo vinha dos 366 originais; agora conta o catálogo inteiro, e "ligado" vale
     # para todos (os repositórios incorporados não passavam pelo laço que marca os ligados)
     for _m in motores:
@@ -707,6 +715,7 @@ def run() -> dict:
                            "proxima_ia_em": (3 - (r.get("dias") or 0) % 3) % 3 or 3,
                            "itens_ia": len(r.get("itens", {}))} if r else None)
     leve = [{k: m.get(k) for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias", "internacional",
+                              "nome_classificado", "geo", "municipio", "objeto_area", "tipo_objeto", "publico", "regime_inscricao", "aberta_agora", "janelas", "livro", "abrangencia",
                               "pagina", "confianca_pagina", "validacao", "ultima_leitura", "achados", "http",
                               "regime_prazo", "certeza_prazo", "obtidas", "area_atuacao", "natureza", "esfera",
                               "ativa", "motivo_status", "em_epoca", "proximidade")}

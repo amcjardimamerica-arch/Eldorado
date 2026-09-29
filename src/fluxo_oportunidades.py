@@ -451,6 +451,11 @@ def atualizar_mapa() -> dict:
         c["repositorio_dos_opressores"] = sincronizar()
     except Exception as ex:
         c["repositorio_dos_opressores"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 29/09: cada opressor é um LIVRO — curadoria (separa/junta) e classificação
+        from .livros_opressores import curar
+        c["livros"] = curar()
+    except Exception as ex:
+        c["livros"] = f"falhou: {type(ex).__name__}"
     r = montar(); r["curadoria"] = c
     return r
 

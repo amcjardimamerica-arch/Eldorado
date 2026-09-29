@@ -468,6 +468,9 @@ box-shadow:0 1px 3px #0002}
 #aviso-versao a{color:#FFD27A;font-weight:700;margin-left:6px}#aviso-versao a.fechar{color:#fff;opacity:.7;text-decoration:none;margin-left:10px}
 .tab-prazos{border-collapse:collapse;width:100%;font-size:12px}.tab-prazos th{text-align:left;font-size:11px;color:var(--suave);border-bottom:1px solid #E6EAF0;padding:4px 6px;position:sticky;top:0;background:#fff}.tab-prazos td{border-bottom:1px solid #F0F3F7;padding:4px 6px;vertical-align:top}
 .bdia.mtd-fora{opacity:.55;background:#FAFBFC}
+.livro-op{border:1px solid #E6D9B8;background:#FFFBF1;border-radius:10px;padding:8px 10px;margin:8px 0}.livro-t{font-weight:800;color:#8A5A00;font-family:Georgia,serif;margin-bottom:4px}
+.livro-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 12px;font-size:12px}.livro-g b{display:block;font-size:10.5px;color:var(--suave);text-transform:uppercase;letter-spacing:.3px}
+.doss{border:1px solid #CFE0F5;background:#F5F9FF;border-radius:10px;padding:8px 10px;margin:8px 0;font-size:12.5px}.doss-t{font-weight:800;color:#0E2A55;margin-bottom:4px}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -1199,7 +1202,10 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <div class="mets" id="mo-mets" style="margin:10px 0 8px"></div>
   <div class="bz-filtros" style="margin:6px 0 10px">
     <select id="mo-uf"><option value="">Todos os estados</option></select>
-    <select id="mo-area"><option value="">Todas as áreas de atuação</option></select>
+    <select id="mo-area"><option value="">Todos os objetos</option></select>
+    <select id="mo-tipo"><option value="">Todos os tipos</option></select>
+    <select id="mo-periodo"><option value="">Qualquer período</option><option value="aberta">Inscrição aberta agora</option><option value="anual">Janela anual</option><option value="contínuo">Fluxo contínuo</option><option value="eventual">Eventual</option><option value="sem registro">Sem período registrado</option></select>
+    <select id="mo-publico"><option value="">Todos os públicos</option></select>
     <select id="mo-natureza"><option value="">Pública e privada</option><option value="publica">Fonte pública</option><option value="privada">Fonte privada</option></select>
     <select id="mo-esfera"><option value="">Todas as esferas</option><option value="Município">Município</option><option value="Estado">Estado</option><option value="Brasil">Brasil</option><option value="Internacional">Internacional</option></select>
     <select id="mo-status"><option value="ativo">Acesos (fogo)</option><option value="inativo">Apagados (poça de óleo)</option><option value="">Todos</option></select>
@@ -3125,9 +3131,17 @@ function iconesAcao(id,nome){
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5"/></svg></button>`;
 }
 window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id===id);if(!m)return;const ativo=mtAtivo(m.id);const d=m.disjuntor?JSON.parse(m.disjuntor):null;
-  abreModal(`<h3 style="margin:0">${esc(m.programa)}</h3><div class=meta>${esc(m.orgao||"")} · ${esc(AREA(m.area_atuacao).rotulo)} · ${esc(m.esfera||"")} · ${esc(m.natureza==="publica"?"fonte pública":"fonte privada")}</div>`,
+  const LV=m.livro||{}, IN=LV.inscricao||{}, MES=["","jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  const livroHtml=`<div class="livro-op"><div class="livro-t">Livro da oportunidade</div>
+    <div class="livro-g"><span><b>Área geográfica</b>${esc((LV.geografia||{}).abrangencia||m.abrangencia||"")}${m.municipio?" · "+esc(m.municipio):""}${m.geo?" · "+esc(m.geo):""}</span>
+    <span><b>Objeto</b>${esc(m.objeto_area||"—")}</span><span><b>Tipo do objeto</b>${esc(m.tipo_objeto||"—")}</span>
+    <span><b>Público</b>${esc((m.publico||[]).join(", ")||"—")}</span>
+    <span><b>Inscrição</b>${esc(IN.regime||m.regime_inscricao||"—")}${IN.mes_tipico?" · costuma fechar em "+MES[Number(IN.mes_tipico)]:""}${m.aberta_agora?" · <b style='color:#1E7E4B'>aberta agora</b>":""}${IN.proxima?" · próxima prevista: "+esc(IN.proxima):""}</span>
+    <span><b>Edições guardadas</b>${LV.edicoes??0}${(IN.janelas||[]).length?" · janelas: "+IN.janelas.map(j=>`${j.inicio?br(j.inicio)+"→":""}${br(j.fim)}`).join(" · "):""}</span></div>
+    ${(LV.atualizacoes||[]).length?`<div class=meta style="margin-top:4px">última atualização do livro: ${esc(LV.atualizacoes.slice(-1)[0].o_que)} (${br(String(LV.atualizacoes.slice(-1)[0].em).slice(0,10))})</div>`:""}</div>`;
+  abreModal(`<h3 style="margin:0">${esc(m.nome_classificado||m.programa)}</h3><div class=meta>${esc(m.programa)}${m.orgao?" · "+esc(m.orgao):""} · ${esc(m.natureza==="publica"?"fonte pública":m.natureza==="privada"?"fonte privada":"")}</div>`,
     `<div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}${d?` · <strong>ligado · dia ${d.dias}/30</strong> · próxima IA em ${d.proxima_ia_em} dia(s)${d.ia?" · IA acionada "+d.ia+"×":""}${d.conselho?" · conselho Fable 5.1 emitido":""}`:""}</div>
-     ${camadasHtml(m)}
+     ${livroHtml}${camadasHtml(m)}
      <div class=meta style="margin-top:8px">${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag>${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"} · validação: <strong>${esc(m.validacao)}</strong>${m.http?" (HTTP "+m.http+")":""}${m.ultima_leitura?" · lida em "+br(m.ultima_leitura.slice(0,10)):""}${m.ultimo_url?` · <a href="${esc(m.ultimo_url)}" target=_blank rel="noopener noreferrer">último edital ↗</a>`:""}${m.regime_prazo?` · prazo: ${esc(m.regime_prazo.replace(/_/g," "))} (${esc(m.certeza_prazo||"")})`:""}</div>
      ${m.faltam?`<div class="mt-diag">⚠ faltam ${m.faltam.split("|").length} camada(s): ${esc(m.faltam.replace(/\|/g," · "))}<br><b>causa:</b> ${esc(m.causa||"")} · <b>ação:</b> ${esc(m.acao||"")}</div>`:`<div class="mt-diag ok">✓ 12 itens obtidos — motor pode parar</div>`}
      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">${iconesAcao(m.id,m.programa)} <span class=meta>fósforo: busca imediata · upload: alimentar manualmente · link: ensinar onde publica</span></div>`);};
@@ -3207,11 +3221,14 @@ function mtFiltrados(){
     &&(!es||(es==="bloqueada"?m.validacao==="bloqueada":es==="completo"?!m.faltam:!!m.faltam))
     &&(!q||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q))
     &&(!muf||(muf==="INT"?!!m.internacional:muf==="BR"?((!m.uf||m.uf==="BR")&&!m.internacional):m.uf===muf))
-    &&(!ar||m.area_atuacao===ar)&&(!nt||m.natureza===nt)&&(!ef||m.esfera===ef)
+    &&(!ar||(m.objeto_area||"Geral")===ar)&&(!nt||m.natureza===nt)&&(!ef||m.esfera===ef)
+    &&(!(($("mo-tipo")||{}).value)||m.tipo_objeto===$("mo-tipo").value)
+    &&(!(($("mo-periodo")||{}).value)||($("mo-periodo").value==="aberta"?!!m.aberta_agora:m.regime_inscricao===$("mo-periodo").value))
+    &&(!(($("mo-publico")||{}).value)||(m.publico||[]).includes($("mo-publico").value))
     &&(!stt||(stt==="ativo"?mtAtivo(m.id):!mtAtivo(m.id)))
     &&(!q2||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q2)));
 }
-window.moLimpar=function(){["mo-uf","mo-area","mo-natureza","mo-esfera"].forEach(id=>$(id)&&($(id).value=""));$("mo-status").value="ativo";$("mo-busca").value="";desenhaMotores();};
+window.moLimpar=function(){["mo-uf","mo-area","mo-tipo","mo-periodo","mo-publico","mo-natureza","mo-esfera"].forEach(id=>$(id)&&($(id).value=""));$("mo-status").value="ativo";$("mo-busca").value="";desenhaMotores();};
 window.mtLimpar=function(){["mt-familia","mt-segmento","mt-uf","mt-estado"].forEach(id=>$(id).value="");$("mt-busca").value="";desenhaMotores();};
 window.mtSelecionar=function(on){mtFiltrados().forEach(m=>on?mtSel.add(m.id):mtSel.delete(m.id));desenhaMotores();};
 window.mtToggle=function(id){mtSel.has(id)?mtSel.delete(id):mtSel.add(id);$("mt-sel").textContent=`${mtSel.size} selecionado(s)`;};
@@ -3782,10 +3799,21 @@ window.fichaEmpresa=async function(uid){
   const c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
   const L=Object.values(LISTAS).find(v=>v.origem===e.origem)||LISTAS.doadoras;
   const li=(r,v)=>v?`<div class="rel-linha"><b>${r}:</b> ${esc(String(v))}</div>`:"";
+  // 29/09 (titular): DOSSIÊ INVESTIGATIVO do Interceptador — composição, contatos, projetos e atuação no terceiro setor
+  if(!window._DOSS){ try{ const r=await fetch("dados/dossies_empresas.json"); window._DOSS=r.ok?await r.json():{itens:[]}; }catch(x){ window._DOSS={itens:[]}; } }
+  const _c8=String(c.cnpj||"").replace(/\D/g,"").slice(0,8);
+  const DZ=((window._DOSS||{}).itens||[]).find(d=>(_c8&&String(d.cnpj||"").slice(0,8)===_c8)||String(d.nome||"").toLowerCase()===String(e.nome||"").toLowerCase());
+  const dossHtml=DZ?`<div class="doss"><div class="doss-t">Dossiê investigativo <span class=meta>· Piloto - Interceptador · ${br(String(DZ.em||"").slice(0,10))} · completude ${DZ.completude??0}/6</span></div>
+      ${DZ.resumo?`<div style="margin-bottom:4px">${esc(DZ.resumo)}</div>`:""}
+      ${DZ.socios?`<div class="rel-linha"><b>Sócios e administradores:</b> ${DZ.socios}</div>`:""}
+      ${DZ.contatos?`<div class="rel-linha"><b>Contatos:</b> ${[...(DZ.contatos.telefones||[]),DZ.contatos.email,DZ.contatos.site].filter(Boolean).map(x=>esc(String(x))).join(" · ")||"—"}${DZ.contatos.endereco?" · "+esc(DZ.contatos.endereco):""}</div>`:""}
+      ${(DZ.projetos||[]).length?`<div class="rel-linha"><b>Projetos e incentivos verificados:</b> ${DZ.projetos.map(p=>`${esc(p.mecanismo)}${p.anos?" ("+esc(String(p.anos))+")":""}`).join(" · ")}</div>`:""}
+      <div class=meta>${DZ.atua===true?"atua no terceiro setor":DZ.atua===false?"sem atuação social identificada no site":""}</div></div>`
+    :`<div class="doss"><div class="doss-t">Dossiê investigativo</div><div class=meta>ainda não elaborado — as empresas de Goiás do cadastro entram na fila do Interceptador logo depois das missões especiais</div></div>`;
   abreModal(
    `<h3 style="margin:0">${esc(e.nome)}</h3>
     <div class=meta><span class="ep-selo" style="background:${L.cor}">${esc(L.rot)}</span>posição ${e.posicao}${c.uf?" · "+esc(c.uf):""}</div>`,
-   `<div class="rel-janela">
+   `<div class="rel-janela">${dossHtml}
       ${pt.apurou?`<div class="ep-conta">
         <span class="ep-rot">Pode direcionar por ano</span>
         <div class="ep-conta-v">${_fx(ir.direcionavel_min,ir.direcionavel_max)}</div>
@@ -4518,9 +4546,12 @@ function desenhaMotores(){
     n.BR=MT.filter(m=>(!m.uf||m.uf==="BR")&&!m.internacional).length;
     Object.keys(n).sort((a,b)=>a==="GO"?-1:b==="GO"?1:a==="BR"?-1:b==="BR"?1:a.localeCompare(b)).forEach(k=>{const o=document.createElement("option"); o.value=k; o.textContent=`${k==="BR"?"Nacional":k} (${n[k]})`; s.appendChild(o);});
     s.value=v0; if(!s.dataset.lig){ s.dataset.lig=1; s.addEventListener("change",()=>desenhaMotores()); }}
-  if($("mo-area")){const s=$("mo-area");const v0=s.value;s.length=1;
-    (D.areas_canonicas||Object.keys(D.areas||{})).map(a=>[a,rotArea0(a)]).sort((x,y)=>x[1].localeCompare(y[1],"pt"))
-      .forEach(([a,r])=>{const o=document.createElement("option");o.value=a;o.textContent=r;s.appendChild(o);});s.value=v0;}
+  // 29/09: opções dos filtros dos livros, com contagem
+  const _opc=(id,vals,rot)=>{const s=$(id); if(!s) return; const v0=s.value, n={}; vals.forEach(v=>{if(v) n[v]=(n[v]||0)+1;});
+    s.length=1; Object.keys(n).sort((a,b)=>n[b]-n[a]).forEach(k=>{const o=document.createElement("option"); o.value=k; o.textContent=`${k} (${n[k]})`; s.appendChild(o);}); s.value=v0;
+    if(!s.dataset.lig){ s.dataset.lig=1; s.addEventListener("change",()=>desenhaMotores()); }};
+  _opc("mo-area",MT.map(m=>m.objeto_area||"Geral")); _opc("mo-tipo",MT.map(m=>m.tipo_objeto)); _opc("mo-publico",MT.flatMap(m=>m.publico||[]));
+  if($("mo-periodo")&&!$("mo-periodo").dataset.lig){ $("mo-periodo").dataset.lig=1; $("mo-periodo").addEventListener("change",()=>desenhaMotores()); }
   if($("mo-mets"))$("mo-mets").innerHTML=[[IC("#1E7E4B"),MT.filter(m=>mtAtivo(m.id)).length,"Acesos (automático ou manual)"],
     [IC("#94A3B8"),MT.filter(m=>!mtAtivo(m.id)).length,"Apagados (poça de óleo)"],
     [IC("#7B4BE0"),(MT._novas||[]).length,"Novas oportunidades anunciadas"],
@@ -4596,12 +4627,15 @@ function desenhaMotores(){
   window._mtPorId=window._mtPorId||{}; rows.forEach(m=>window._mtPorId[m.id]=m);
   const chipAceso=m=>{const d=m.disjuntor?JSON.parse(m.disjuntor):null;
     return `<div class="dj aceso" data-id="${esc(m.id)}" style="border-left:4px solid ${AREA(m.area_atuacao).cor}" title="${esc(m.programa)} · ${esc(m.orgao||"")} · ${esc(m.motivo_status||"")}${d?` · ligado dia ${d.dias}/30`:""} — clique no nome para o detalhe">
-      ${iconeMotor(m.id,true)}<span class="dj-nome" onclick="mtDetalhe('${esc(m.id)}')"><b>${esc(nomeCurto(m.programa))}</b>${d?`<small>dia ${d.dias}/30${d.ia?" · IA×"+d.ia:""}${d.conselho?" · conselho":""}</small>`:`<small>${m.faltam?m.faltam.split("|").length+" camada(s) faltando":"12 itens"}</small>`}</span>
+      ${iconeMotor(m.id,true)}<span class="dj-nome" onclick="mtDetalhe('${esc(m.id)}')"><b>${esc(m.nome_classificado||nomeCurto(m.programa))}</b>${d?`<small>dia ${d.dias}/30${d.ia?" · IA×"+d.ia:""}${d.conselho?" · conselho":""}</small>`:`<small>${m.faltam?m.faltam.split("|").length+" camada(s) faltando":"12 itens"}</small>`}</span>
       <span class="dj-acoes">${iconesAcao(m.id,m.programa)}</span></div>`;};
-  const listaFontes=(()=>{const porArea={};rows.forEach(m=>{(porArea[m.area_atuacao||"outros"]=porArea[m.area_atuacao||"outros"]||[]).push(m);});
-    const ordem=Object.keys(porArea).sort((a,b)=>(a==="outros")-(b==="outros")||AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt"));
-    return ordem.map(a=>`<div class="dj-area"><div class="dj-areat" style="color:${AREA(a).cor}"><span class=ponto style="background:${AREA(a).cor};width:10px;height:10px"></span>${esc(AREA(a).rotulo)} <span class=meta>${porArea[a].length} motor(es)</span></div>
-      <div class="dj-grade">${porArea[a].sort((x,y)=>nomeCurto(x.programa).localeCompare(nomeCurto(y.programa),"pt")).map(chipAceso).join("")}</div></div>`).join("");})();
+  // 29/09 (titular): os opressores são LIVROS — agrupados pelo OBJETO classificado, com o nome "GO - Cultura · Edital — …"
+  const COR_OBJ={"Cultura":"#D63A6B","Esporte":"#7CB518","Saúde":"#2F79D0","Educação":"#2E9D5B","Assistência social":"#12A5B5","Criança e adolescente":"#E0A100",
+    "Pessoa idosa":"#8C6D3F","Meio ambiente":"#7B4FE0","Direitos humanos":"#C0392B","Desenvolvimento social":"#16A085","Emendas":"#B8860B","Geral":"#7C8899"};
+  const listaFontes=(()=>{const porObj={};rows.forEach(m=>{const k=m.objeto_area||"Geral";(porObj[k]=porObj[k]||[]).push(m);});
+    const ordem=Object.keys(porObj).sort((a,b)=>(a==="Geral")-(b==="Geral")||porObj[b].length-porObj[a].length);
+    return ordem.map(a=>`<div class="dj-area"><div class="dj-areat" style="color:${COR_OBJ[a]||"#7C8899"}"><span class=ponto style="background:${COR_OBJ[a]||"#7C8899"};width:10px;height:10px"></span>${esc(a)} <span class=meta>${porObj[a].length} livro(s)</span></div>
+      <div class="dj-grade">${porObj[a].sort((x,y)=>String(x.nome_classificado||x.programa).localeCompare(String(y.nome_classificado||y.programa),"pt")).map(chipAceso).join("")}</div></div>`).join("");})();
   // caixa 1 = motores regulares e gerais; caixa 2 = Motores Opressores (fontes específicas) + novas anunciadas
   const novas=(MT._novas||[]);
   const novasHtml=novas.length?`<div class="mt-fam"><div class="mt-famt">Novas oportunidades anunciadas — sem referência histórica <span class=meta>${novas.length}</span></div>

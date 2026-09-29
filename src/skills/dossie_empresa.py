@@ -131,7 +131,7 @@ def indexar() -> None:
         except Exception:
             continue
         itens.append({"cnpj": d.get("cnpj"), "nome": d.get("nome"), "uf": d.get("uf"), "em": d.get("em"), "completude": d.get("completude"),
-                      "socios": len((d.get("composicao") or {}).get("socios") or []), "contatos": d.get("contatos"), "projetos": d.get("projetos"),
+                      "socios": ", ".join(f"{s.get('nome')} ({s.get('qualificacao')})" for s in ((d.get("composicao") or {}).get("socios") or [])[:8]), "contatos": d.get("contatos"), "projetos": d.get("projetos"),
                       "resumo": (d.get("resumo_investigativo") or {}).get("resumo"), "atua": (d.get("resumo_investigativo") or {}).get("atua_no_terceiro_setor")})
     IDX.write_text(json.dumps({"em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "total": len(itens), "itens": itens}, ensure_ascii=False), encoding="utf-8")
 

@@ -52,7 +52,8 @@ def chave(titulo: str, orgao: str = "") -> str:
     return re.sub(r"[^a-z0-9]+", "", t)[:70]
 
 
-NAO_E_SELECAO = re.compile(r"dispensa de (chamamento|licita)|inexigibilidade|pessoa[s]? f[ií]sica|credenciamento de (profissionais|m[eé]dicos|pessoas)|"
+NAO_E_SELECAO = re.compile(r"dispensa de (chamamento|licita)|inexigibilidade|pessoa[s]? f[ií]sica|credenciamento (de |para (os |a )?)?(profissionais|m[eé]dicos|pessoas|empresas?|leiloeir|hot[eé]is|prestadores)|"
+                           r"leiloeir|concess[aã]o (de |onerosa)|contrata[cç][aã]o de profissionais|profissionais da (?:[aá]rea da )?sa[uú]de|"
                            r"preg[aã]o|licita[cç][aã]o|tomada de pre[cç]os|registro de pre[cç]os|contrata[cç][aã]o de empresa|termo aditivo|extrato", re.I)
 
 
