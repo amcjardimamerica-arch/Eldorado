@@ -702,6 +702,11 @@ def run() -> dict:
     resumo["total"] = len(motores); resumo["ligados"] = sum(1 for _m in motores if _m.get("id") in _lig)
     resumo["ativas"] = resumo["ligados"]; resumo["inativas"] = resumo["total"] - resumo["ligados"]
     resumo["repositorios_de_oportunidade"] = sum(1 for _m in motores if _m.get("tipo") == "repositorio_de_oportunidade")
+    try:                                   # 29/09: os 12 parâmetros pesquisados (ou a dispensa) em cada opressor
+        from .parametros_opressores import no_catalogo as _par_cat
+        resumo["com_parametros"] = _par_cat(motores)
+    except Exception:
+        pass
     write_json(_cat_arq, {**resumo, "motores": motores})
     from .compacto import compactar
     pasta = ROOT / "docs/dados"; pasta.mkdir(parents=True, exist_ok=True)
@@ -720,6 +725,8 @@ def run() -> dict:
                               "regime_prazo", "certeza_prazo", "obtidas", "area_atuacao", "natureza", "esfera",
                               "ativa", "motivo_status", "em_epoca", "proximidade")}
             | {"disjuntor": json.dumps(m["disjuntor"], ensure_ascii=False) if m.get("disjuntor") else None}
+            | {"parametros": (f"{m['parametros']['decisao']} · {m['parametros']['fechados']}/12 · {m['parametros'].get('prazo') or '-'}"
+                              if isinstance(m.get("parametros"), dict) else None)}
             | {"camadas_ok": "".join("1" if c["ok"] else "0" for c in m["camadas"]),
                "camadas_val": "|".join((c["valor"] or "").replace("|", "/")[:90] for c in m["camadas"]),
                "mencoes": " · ".join(x["titulo"][:70] for x in m["mencoes"]) or None,

@@ -115,6 +115,11 @@ def _previsao(hist: list[dict]) -> dict | None:
 
 def sincronizar() -> dict:
     C = _j(CAT, {"motores": []}); L = _j(LIG, {"ligados": {}}); L.setdefault("ligados", {})
+    try:                                   # 29/09: opressor que a pesquisa dos 12 parâmetros descartou não religa
+        from .parametros_opressores import dispensados
+        _disp = dispensados()
+    except Exception:
+        _disp = set()
     try:
         from .validacao_mapa import carregar
         V = carregar()
@@ -163,7 +168,7 @@ def sincronizar() -> dict:
                 x["proxima_data"] = {"inicio": item.get("inicio"), "fim": item.get("fim")}
             if item.get("link_oficial"):
                 x["pagina"] = item["link_oficial"]
-            if x["id"] not in L["ligados"]:
+            if x["id"] not in L["ligados"] and x["id"] not in _disp:
                 L["ligados"][x["id"]] = {"desde": hoje.isoformat(), "ate": (hoje + timedelta(days=30)).isoformat(),
                                          "origem": f"automática: repositório de oportunidade aberta ({origem})", "dias": 0, "ia": [], "itens": {}}
         return x["id"]
