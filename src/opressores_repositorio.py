@@ -70,6 +70,27 @@ def dispensa(item: dict) -> str | None:
     return None
 
 
+FINANCIADOR_INT = re.compile(r"\b(ford|gates|oak|rockefeller|skoll|kellogg|open society|mott|macarthur|packard|hewlett|bloomberg|wellcome|"
+                             r"unesco|unicef|pnud|undp|onu|nações unidas|united nations|opas|oms|who\b|usaid|união europeia|european union|europeaid|"
+                             r"erasmus|horizon europe|banco mundial|world bank|\bbid\b|banco interamericano|caf\b|jica|koica|giz\b|british council|"
+                             r"goethe|institut français|alliance française|embaixada|embassy|consulado|fundo global|global fund|ars electronica)\b", re.I)
+TLD_EXTERIOR = re.compile(r"\.(eu|int|de|fr|uk|us|ca|jp|kr|es|it|pt|nl|ch|at|se|no|dk|be|fi|ie|au|nz|mx|ar|cl|co|pe|uy)(/|$)|usaid\.gov|ec\.europa|\.un\.org|worldbank\.org|iadb\.org|\.art/.*(austria|europe)", re.I)
+
+
+def internacional(x: dict) -> bool:
+    """28/09 (titular): oportunidade INTERNACIONAL — financiador estrangeiro ou multilateral, ou página em domínio de
+    outro país. 'Festival internacional' realizado no Brasil (ex.: FICA, em Goiás) NÃO conta."""
+    t = f"{x.get('programa') or x.get('titulo') or ''} {x.get('orgao') or ''}"
+    if re.search(r"(?i)festival internacional|mostra internacional|congresso internacional", t) and not FINANCIADOR_INT.search(t):
+        return False
+    if str(x.get("esfera") or "") == "Internacional" or str(x.get("familia") or "") == "Internacionais":
+        return True
+    pag = str(x.get("pagina") or x.get("link_oficial") or x.get("url") or "")
+    host = re.sub(r"^https?://(www\.)?", "", pag).split("/")[0].lower()
+    from .sites_oficiais import e_republicador
+    return bool(FINANCIADOR_INT.search(t) or (host and not e_republicador(pag) and TLD_EXTERIOR.search(host + "/")))
+
+
 def _edicao(item: dict, origem: str) -> dict:
     ano = (item.get("fim") or item.get("publicado_em") or item.get("data_publicacao") or "")[:4]
     return {k: v for k, v in {"id": item.get("id"), "titulo": str(item.get("titulo") or "")[:180], "ano": ano or None,
@@ -114,8 +135,9 @@ def sincronizar() -> dict:
         if not x:
             pag = item.get("link_oficial") or item.get("pagina_oficial") or item.get("url")
             x = {"id": "op-" + hashlib.sha1(k.encode()).hexdigest()[:12], "programa": str(item.get("titulo") or "")[:160],
-                 "orgao": item.get("orgao") or "", "motor": "repositorio", "familia": "Oportunidade com seleção",
-                 "esfera": "Estado" if item.get("uf") else "Brasil", "uf": item.get("uf") or "BR", "ativa": True,
+                 "orgao": item.get("orgao") or "", "motor": "repositorio",
+                 "familia": "Internacionais" if internacional({**item, "pagina": pag}) else "Oportunidade com seleção",
+                 "esfera": "Internacional" if internacional({**item, "pagina": pag}) else ("Estado" if item.get("uf") else "Brasil"), "uf": item.get("uf") or "BR", "ativa": True,
                  "tipo": "repositorio_de_oportunidade", "pagina": pag, "paginas": [pag] if pag else [], "validacao": "não lida ainda",
                  "motivo_status": f"criado como repositório da oportunidade ({origem})", "criado_em": hoje.isoformat(), "historico": []}
             C.setdefault("motores", []).append(x); por_chave[k] = x; por_chave[chave(item.get("titulo") or "")] = x
@@ -179,6 +201,9 @@ def sincronizar() -> dict:
     # REPOSITÓRIO CRIADO PARA ATO QUE NÃO É SELEÇÃO (28/09): sai do catálogo
     antes = len(C["motores"])
     C["motores"] = [x for x in C["motores"] if not (x.get("tipo") == "repositorio_de_oportunidade" and NAO_E_SELECAO.search(f"{x.get('programa') or ''} {x.get('orgao') or ''}"))]
+    # título que é data/hora ou lixo de página ("23 Set. 08:50 In…") não é oportunidade (28/09)
+    _lixo = re.compile(r"^\s*\d{1,2}\s+[a-zç]{3}\.?\s+\d{1,2}:\d{2}|^\s*\d{1,2}:\d{2}\b|^\W*$", re.I)
+    C["motores"] = [x for x in C["motores"] if not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]
     st["repositorios_indevidos_removidos"] = antes - len(C["motores"])
     # LIGADO SEM OPRESSOR NÃO É FONTE MONITORADA (28/09): 33 ligados não existiam mais no catálogo e inflavam a contagem
     ids = {x.get("id") for x in C.get("motores") or []}

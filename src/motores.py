@@ -672,6 +672,20 @@ def run() -> dict:
     for x in motores:
         _grp.setdefault(_re.sub(r"[^a-z0-9]", "", f"{x.get('programa')}{x.get('orgao')}".lower())[:80], []).append(x)
     motores = [sorted(g, key=lambda y: (y.get("id") in _lig, not str(y.get("id", "")).startswith("nova-"), len(json.dumps(y, ensure_ascii=False))), reverse=True)[0] for g in _grp.values()]
+    # título que é data/hora ou lixo de página não vira opressor (28/09)
+    _lixo = re.compile(r"^\s*\d{1,2}\s+[a-zç]{3}\.?\s+\d{1,2}:\d{2}|^\s*\d{1,2}:\d{2}\b|^\W*$", re.I)
+    motores = [x for x in motores if not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]
+    # SEPARAÇÃO INTERNACIONAL (28/09): uma regra só (src/opressores_repositorio.internacional); o opressor internacional
+    # vai para a família "Internacionais", esfera "Internacional"
+    from .opressores_repositorio import internacional as _intl
+    for _m in motores:
+        if _intl(_m):
+            _m["internacional"] = True; _m["familia"] = "Internacionais"; _m["esfera"] = "Internacional"
+        else:
+            _m["internacional"] = False
+            if _m.get("esfera") == "Internacional":
+                _m["esfera"] = "Brasil"
+    resumo["internacionais"] = sum(1 for _m in motores if _m.get("internacional"))
     # RESUMO RECALCULADO (28/09): o resumo vinha dos 366 originais; agora conta o catálogo inteiro, e "ligado" vale
     # para todos (os repositórios incorporados não passavam pelo laço que marca os ligados)
     for _m in motores:
@@ -692,7 +706,7 @@ def run() -> dict:
                            "ia": len(r.get("ia", [])), "conselho": bool(r.get("conselho")),
                            "proxima_ia_em": (3 - (r.get("dias") or 0) % 3) % 3 or 3,
                            "itens_ia": len(r.get("itens", {}))} if r else None)
-    leve = [{k: m.get(k) for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias",
+    leve = [{k: m.get(k) for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias", "internacional",
                               "pagina", "confianca_pagina", "validacao", "ultima_leitura", "achados", "http",
                               "regime_prazo", "certeza_prazo", "obtidas", "area_atuacao", "natureza", "esfera",
                               "ativa", "motivo_status", "em_epoca", "proximidade")}

@@ -3205,7 +3205,7 @@ function mtFiltrados(){
   return MT.filter(m=>(!fa||m.familia===fa)&&(!sg||m.segmento===sg)&&(!uf||m.uf===uf)
     &&(!es||(es==="bloqueada"?m.validacao==="bloqueada":es==="completo"?!m.faltam:!!m.faltam))
     &&(!q||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q))
-    &&(!muf||(muf==="BR"?(!m.uf||m.uf==="BR"):m.uf===muf))
+    &&(!muf||(muf==="INT"?!!m.internacional:muf==="BR"?((!m.uf||m.uf==="BR")&&!m.internacional):m.uf===muf))
     &&(!ar||m.area_atuacao===ar)&&(!nt||m.natureza===nt)&&(!ef||m.esfera===ef)
     &&(!stt||(stt==="ativo"?mtAtivo(m.id):!mtAtivo(m.id)))
     &&(!q2||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q2)));
@@ -4512,6 +4512,9 @@ function desenhaMotores(){
   enche("mt-uf",[...new Set(MT.map(m=>m.uf).filter(Boolean))].sort());
   if($("mo-uf")){const s=$("mo-uf"), v0=s.value, n={}; MT.forEach(m=>{const k=(!m.uf||m.uf==="BR")?"BR":m.uf; n[k]=(n[k]||0)+1;});
     s.length=0; const o0=document.createElement("option"); o0.value=""; o0.textContent=`Todos os estados (${MT.length})`; s.appendChild(o0);
+    // 28/09 (titular): separação das OPORTUNIDADES INTERNACIONAIS
+    const oi=document.createElement("option"); oi.value="INT"; oi.textContent=`🌐 Internacionais (${MT.filter(m=>m.internacional).length})`; s.appendChild(oi);
+    n.BR=MT.filter(m=>(!m.uf||m.uf==="BR")&&!m.internacional).length;
     Object.keys(n).sort((a,b)=>a==="GO"?-1:b==="GO"?1:a==="BR"?-1:b==="BR"?1:a.localeCompare(b)).forEach(k=>{const o=document.createElement("option"); o.value=k; o.textContent=`${k==="BR"?"Nacional":k} (${n[k]})`; s.appendChild(o);});
     s.value=v0; if(!s.dataset.lig){ s.dataset.lig=1; s.addEventListener("change",()=>desenhaMotores()); }}
   if($("mo-area")){const s=$("mo-area");const v0=s.value;s.length=1;

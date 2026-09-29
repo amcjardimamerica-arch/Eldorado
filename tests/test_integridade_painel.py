@@ -219,6 +219,16 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertIn('return m?m.proximidade==="ligado":false;', h, "aceso = ligado")
         self.assertIn('id="mo-uf"', h, "filtro por estado dos motores opressores")
 
+    def test_separacao_internacional(self):
+        """28/09: separação e filtro das oportunidades internacionais nos motores opressores."""
+        from src.opressores_repositorio import internacional
+        self.assertTrue(internacional({"programa": "Ford Foundation"}))
+        self.assertTrue(internacional({"programa": "União Europeia – Erasmus+"}))
+        self.assertFalse(internacional({"programa": "Editais FICA Goiás — Festival Internacional de Cinema Ambiental"}))
+        self.assertFalse(internacional({"programa": "Edital Secult Goiás", "pagina": "https://goias.gov.br/cultura"}))
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn('oi.value="INT"', h); self.assertIn('muf==="INT"?!!m.internacional', h)
+
 
 if __name__ == "__main__":
     unittest.main()
