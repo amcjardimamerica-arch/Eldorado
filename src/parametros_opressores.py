@@ -1,0 +1,143 @@
+"""Os 12 parâmetros de cada Motor Opressor, pesquisados na fonte oficial (29/09/2026).
+
+Regra do titular: cada opressor ligado persegue os 12 parâmetros do edital do seu recurso — Objeto, Prazo de
+inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos,
+Destinação e Área de atuação. Quando o recurso não tem algum deles (programa permanente, fluxo contínuo, doação,
+destinação de imposto, TAC, emenda), fica registrada a DISPENSA e o porquê.
+
+A pesquisa é feita por blocos e gravada em `dados/opressores/parametros/parametros_AAAA-MM-DD.json` (um registro
+por opressor; o arquivo mais recente prevalece). Este módulo leva esses dados para:
+
+- `estado/opressores.json` → `ligados[id].itens` (texto que a rotina dos disjuntores já entende: o item preenchido
+  não é mais perguntado à IA) e `ligados[id].parametros` (os 12 com status, a edição de referência e a fonte);
+- o histórico dos desligados (`historico[].parametros`), para a edição encerrada alimentar a previsão;
+- o catálogo (`parametros` em cada motor), chamado por `src.motores` antes de gravar.
+
+Decisões: V = edital vigente aberto · A = última edição encerrada (histórico) · R = programa permanente sem edital
+periódico · D = não é recurso para OSC (o opressor é desligado e não volta a ser ligado automaticamente) ·
+P = pendente, com o motivo. Nada é inventado: dado sem fonte oficial fica null com o status "não localizado".
+Aplicação idempotente: rodar duas vezes não muda nada.
+"""
+from __future__ import annotations
+
+import json
+from datetime import date
+from pathlib import Path
+
+from .nucleo import ROOT
+
+PASTA = ROOT / "dados/opressores/parametros"
+EST = ROOT / "estado/opressores.json"
+ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
+         "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
+STATUS = ("confirmado", "dispensado pelo edital", "não informado no edital", "não localizado")
+DECISOES = {"V": "edital vigente aberto", "A": "última edição encerrada (histórico)", "R": "programa permanente sem edital periódico",
+            "D": "não é recurso para OSC — opressor desligado", "P": "pendente"}
+
+
+def _j(p: Path, padrao):
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return padrao
+
+
+def carregar() -> dict[str, dict]:
+    """Registro por opressor; arquivos lidos em ordem alfabética — o mais recente prevalece."""
+    out: dict[str, dict] = {}
+    for arq in sorted(PASTA.glob("parametros_*.json")) if PASTA.exists() else []:
+        d = _j(arq, {})
+        for r in d.get("itens") or []:
+            if r.get("id") and r.get("decisao") in DECISOES:
+                out[r["id"]] = {**r, "verificado_em": r.get("verificado_em") or d.get("data")}
+    return out
+
+
+def dispensados() -> set[str]:
+    """Opressores que a pesquisa mostrou não serem recurso: não voltam a ser ligados automaticamente."""
+    return {k for k, r in carregar().items() if r["decisao"] == "D"}
+
+
+def texto_item(v: dict | None) -> str | None:
+    """Converte {valor, status} no texto gravado em ligados[id].itens. 'não localizado' fica vazio (a busca continua)."""
+    if not isinstance(v, dict):
+        return None
+    st, val = v.get("status"), (str(v.get("valor")).strip() if v.get("valor") not in (None, "") else None)
+    if st == "confirmado" and val:
+        return val
+    if st == "dispensado pelo edital":
+        return "dispensado pelo edital" + (f": {val}" if val else "")
+    if st == "não informado no edital":
+        return "não informado no edital" + (f": {val}" if val else "")
+    return None
+
+
+def resumo(r: dict) -> dict:
+    dz = r.get("dados") or {}
+    doze = {k: {"valor": (dz.get(k) or {}).get("valor"), "status": (dz.get(k) or {}).get("status") or "não localizado"} for k in ITENS} \
+        if r["decisao"] in ("V", "A", "R") else None
+    fechados = sum(1 for v in (doze or {}).values() if v["status"] != "não localizado")
+    return {"decisao": r["decisao"], "significado": DECISOES[r["decisao"]], "verificado_em": r.get("verificado_em"),
+            "motivo": r.get("motivo"), "edital": r.get("edital_referencia"), "fonte_oficial": r.get("fonte_oficial"),
+            "origem_fonte": r.get("origem_fonte"), "inicio": r.get("inicio"), "prazo": r.get("prazo"),
+            "pagina_oficial_verificada": r.get("pagina_monitorar"), "recomendacao": r.get("motor_recomendacao"),
+            "fora_abrangencia": bool(r.get("fora_abrangencia")), "fechados": fechados, "doze": doze}
+
+
+def aplicar(hoje: date | None = None) -> dict:
+    hoje = hoje or date.today()
+    P = carregar()
+    est = _j(EST, {"ligados": {}})
+    est.setdefault("ligados", {}); est.setdefault("historico", [])
+    res = {"registros": len(P), "itens_gravados": 0, "opressores_atualizados": 0, "desligados": 0, "historico_anotado": 0}
+    mudou = False
+    for oid in list(est["ligados"]):
+        r = P.get(oid)
+        if not r:
+            continue
+        reg = est["ligados"][oid]
+        if r["decisao"] == "D":
+            est["historico"].append({**reg, "id": oid, "desligado_em": hoje.isoformat(),
+                                     "motivo": f"parâmetros {r.get('verificado_em')}: {r.get('motivo')}", "parametros": resumo(r)})
+            est["ligados"].pop(oid)
+            res["desligados"] += 1; mudou = True
+            continue
+        alterou = False
+        itens = reg.setdefault("itens", {})
+        for k in ITENS:
+            t = texto_item((r.get("dados") or {}).get(k))
+            if t and itens.get(k) != t:
+                itens[k] = t; res["itens_gravados"] += 1; alterou = True
+        rs = resumo(r)
+        if reg.get("parametros") != rs:
+            reg["parametros"] = rs; alterou = True
+        if r.get("fonte_oficial") and r["decisao"] in ("V", "A", "R") and reg.get("url_edital") != ((r.get("edital_referencia") or {}).get("url") or r["fonte_oficial"]):
+            reg["url_edital"] = (r.get("edital_referencia") or {}).get("url") or r["fonte_oficial"]; alterou = True
+        if alterou:
+            res["opressores_atualizados"] += 1; mudou = True
+    for h in est["historico"]:
+        r = P.get(h.get("id"))
+        if r and h.get("id") not in est["ligados"] and h.get("parametros") != resumo(r):
+            h["parametros"] = resumo(r); res["historico_anotado"] += 1; mudou = True
+    est["historico"] = est["historico"][-400:]
+    if mudou:
+        EST.write_text(json.dumps(est, ensure_ascii=False, indent=1), encoding="utf-8")
+    return res
+
+
+def no_catalogo(motores: list[dict]) -> int:
+    """Anota os 12 parâmetros em cada motor do catálogo (chamado por src.motores antes de gravar)."""
+    P = carregar(); n = 0
+    for m in motores:
+        r = P.get(m.get("id"))
+        if r:
+            m["parametros"] = resumo(r); n += 1
+    return n
+
+
+def run() -> dict:
+    return aplicar()
+
+
+if __name__ == "__main__":
+    print(json.dumps(run(), ensure_ascii=False, indent=1))

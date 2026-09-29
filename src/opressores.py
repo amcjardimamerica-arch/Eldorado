@@ -76,6 +76,11 @@ def sincronizar(hoje: date | None = None) -> dict:
     man = load_json(ROOT / "config/motores_ativos.json") if (ROOT / "config/motores_ativos.json").exists() else {}
     acesos = man.get("acesos_manualmente") or []
     desligados = set(man.get("inativos") or [])
+    try:                                   # 29/09: o que a pesquisa dos 12 parâmetros mostrou não ser recurso não religa
+        from .parametros_opressores import dispensados as _disp
+        desligados |= _disp()
+    except Exception:
+        pass
     for fid, motivo in auto.items():
         if fid in desligados or fid in est["ligados"]:
             continue
@@ -183,6 +188,11 @@ def run(hoje: date | None = None) -> dict:
     dias aciona a IA com prompt do caso; na 3ª IA (dia 9) o conselho Fable 5.1."""
     hoje = hoje or date.today()
     sincronizar(hoje)
+    try:                                   # 29/09: os 12 parâmetros pesquisados na fonte oficial entram antes da IA
+        from .parametros_opressores import aplicar as _par
+        _par(hoje)
+    except Exception:
+        pass
     est = _estado()
     fontes = _fontes()
     cfg = load_json(ROOT / "config/ia.json") if (ROOT / "config/ia.json").exists() else {}
