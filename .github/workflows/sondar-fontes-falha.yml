@@ -1,0 +1,20 @@
+name: 17 · Sondagem das fontes com falha
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sondar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python3 scripts/sondar_fontes_falha.py
+      - name: Guardar
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          cp biblioteca_alexandria/base/sondagem_fontes_falha.json /tmp/s.json
+          for i in 1 2 3 4; do git fetch -q origin main && git reset -q --hard origin/main; cp /tmp/s.json biblioteca_alexandria/base/sondagem_fontes_falha.json
+            git add biblioteca_alexandria/base/sondagem_fontes_falha.json; git commit -q -m "sondagem das fontes com falha" || break; git push -q origin main && break; sleep 5; done
