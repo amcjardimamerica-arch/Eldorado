@@ -348,7 +348,7 @@ def investigar(ids: list[str], ia, modelo: str, prazo_s: float = 280 * 60) -> di
         texto, fontes = texto_do_edital(e)
         try:                                   # 29/09: skill de PDF — o que importa (prazos, cronograma, valor) na frente
             from .skills.leitura_pdf import trechos_chave
-    from .skills import para as _skills
+            from .skills import para as _skills
             texto = _skills('interceptador', 'edital') + '\n\n' + trechos_chave(texto) + texto
         except Exception:
             pass
