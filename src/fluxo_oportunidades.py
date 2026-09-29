@@ -119,6 +119,8 @@ def consolidar() -> list[dict]:
         m = json.loads(l)
         if m.get("estado_export") in ("arquivado", "excluido"):
             continue
+        if m.get("status") == "pista" and m.get("confirmar_url_oficial") and not m.get("url_oficial_confirmada"):
+            continue                 # 29/09: pista (ex.: Comunica PJe) só vira oportunidade com a URL oficial confirmada (AGENTS.md, regra 19)
         brutos.append(("motor " + str(m.get("fonte_id") or m.get("fonte_nome") or ""), m))
     for c in (_j(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}).get("candidatas") or []):
         cid = "cat-" + hashlib.sha1(c["url"].encode()).hexdigest()[:12]

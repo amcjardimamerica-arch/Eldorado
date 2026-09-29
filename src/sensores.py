@@ -443,6 +443,9 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
         if url in lidas:
             continue
         lidas.add(url)
+        from .alternativas import url_coletavel as _col
+        if not _col(url):
+            continue                                  # 29/09: WhatsApp/telefone/e-mail não é fonte
         try:
             tmo = lim.get("timeout_segundos", 12) if sensor.get("tipo") != "api" else max(30, lim.get("timeout_segundos", 12))
             html, final, status = _abrir(url, timeout=tmo, max_bytes=lim["bytes_por_pagina"])

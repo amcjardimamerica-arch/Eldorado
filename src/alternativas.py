@@ -68,9 +68,30 @@ def _ruido_de_laboratorio(url: str) -> bool:
     return str(url).startswith(("file:", "http://localhost", "http://127.")) or "exemplo.invalido" in str(url)
 
 
+NAO_E_FONTE = ("wa.me", "api.whatsapp.com", "web.whatsapp.com", "chat.whatsapp.com")
+
+
+def url_coletavel(url: str) -> bool:
+    """29/09/2026: link de WhatsApp, telefone ou e-mail não é fonte — sai ANTES da coleta (eram 35 'bloqueios' InvalidURL)."""
+    u = str(url or "").strip().lower()
+    if u.startswith(("tel:", "mailto:", "whatsapp:", "javascript:")):
+        return False
+    return (urlsplit(u).hostname or "") not in NAO_E_FONTE
+
+
+def situacao_do_dominio(dom: str) -> str | None:
+    """Domínios que falham por motivo que NÃO é bloqueio de IP (certificado inválido, domínio inexistente...)."""
+    try:
+        return ((load_json(ALTERNATIVAS).get("situacao_dos_dominios") or {}).get(dom) or {}).get("situacao")
+    except Exception:
+        return None
+
+
 def registrar_bloqueio(url: str, erro: str, contexto: str = "") -> dict:
     if _ruido_de_laboratorio(url):
         return {"ignorado": "url de laboratório"}
+    if not url_coletavel(url):
+        return {"ignorado": "link que não é fonte (WhatsApp, telefone, e-mail)"}
     est = load_json(ESTADO) if ESTADO.exists() else {"dominios": {}}
     dom = urlsplit(url).hostname or url
     d = est["dominios"].setdefault(dom, {"bloqueios": 0, "erros": {}, "ultimo": None, "urls": []})
@@ -165,10 +186,17 @@ def run() -> dict:
                       "escada": escada(d["urls"][0] if d["urls"] else f"https://{dom}/",
                                        fonte.get("programa") or dom, fonte),
                       "judicial": destinacao_judicial(fonte) if _JUDICIAL.search(dom) else None}
-    write_json(ALTERNATIVAS, {"gerado_em": now_iso(), "dominios_bloqueados": len(saida),
+    atual = load_json(ALTERNATIVAS) if ALTERNATIVAS.exists() else {}
+    sit = atual.get("situacao_dos_dominios") or {}
+    for dom, a in saida.items():                  # 29/09: o que não é bloqueio de IP é classificado e não entra na conta
+        if (sit.get(dom) or {}).get("situacao"):
+            a["classe"] = sit[dom]["situacao"]; a["nao_e_bloqueio_de_ip"] = True
+    ip = sum(1 for a in saida.values() if not a.get("nao_e_bloqueio_de_ip"))
+    write_json(ALTERNATIVAS, {**{k: v for k, v in atual.items() if k in ("espelhos", "notas", "situacao_dos_dominios")},
+                              "gerado_em": now_iso(), "dominios_bloqueados": ip, "dominios_com_falha_que_nao_e_bloqueio": len(saida) - ip,
                               "alternativas": saida,
                               "regra": "bloqueio nao encerra a busca: desce a escada ate alimentar o repositorio"})
-    return {"dominios_bloqueados": len(saida), "gerado_em": now_iso()}
+    return {"dominios_bloqueados": ip, "nao_e_bloqueio": len(saida) - ip, "gerado_em": now_iso()}
 
 
 if __name__ == "__main__":

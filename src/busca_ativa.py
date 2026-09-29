@@ -158,7 +158,8 @@ def busca_deterministica(indicio: dict, local: dict) -> dict:
                     fila.append(e2)
     except Exception:
         fila = local["urls"][:8]
-    for url in fila[:12]:
+    from .alternativas import url_coletavel as _col
+    for url in [x for x in fila[:12] if _col(x)]:     # 29/09: WhatsApp/telefone/e-mail não é fonte
         try:
             html, final = _abrir(url)
         except Exception as exc:

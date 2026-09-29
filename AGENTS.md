@@ -20,3 +20,5 @@
 18. A recoleta usa `merge_registro`: status protegidos e campos humanos (`requisitos`, `notas`, `verificado_*`) jamais são sobrescritos por automação.
 19. Pista secundária (imprensa/rede social/diário sem URL do edital) só vira oportunidade com a URL oficial confirmada (`scripts/confirmar_pista.py` ou verificação assistida com evidência).
 11. Antes de gerar qualquer HTML, leia `config/identidade_visual.json` e respeite cores, tipografia, formas e layout ali definidos. Somente tons claros. Não invente paleta nem redesenhe layout aprovado.
+20. **Não criar ponte, proxy, VPN ou redirecionamento de tráfego para driblar bloqueio de portal** (decisão do titular, 29/09/2026): pode violar os termos de uso dos portais e a política da hospedagem. Use as fontes oficiais abertas (Querido Diário, Comunica PJe, PNCP), o canal formal com a TI dos órgãos e a coleta assistida (`docs/claude/COLETA-PELO-NAVEGADOR.md`). Nunca desligar a verificação de certificado.
+
