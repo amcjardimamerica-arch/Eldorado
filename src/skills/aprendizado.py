@@ -16,7 +16,7 @@ import glob
 import json
 import lzma
 import re
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -70,6 +70,55 @@ def _erros_espiao() -> tuple[list[dict], list[dict]]:
     return [a for a in av if a.get("motivo_do_insucesso")], av
 
 
+PLACEHOLDER = re.compile(r"(?i)a pergunta que orienta|o buraco que vejo|pergunta de pesquisa|exemplo de pergunta|<[^>]+>")
+
+
+def _cons(a: dict) -> str | None:
+    c = a.get("consulta")
+    if not c:
+        m = re.search(r"'([^']{6,140})'", str(a.get("licao_do_voo") or ""))
+        c = m.group(1) if m else None
+    return re.sub(r"\s+", " ", c).strip().lower() if c else None
+
+
+def aprender_consultas() -> dict:
+    """APRENDIZADO DAS BUSCAS (titular, 30/09) — a cada pouso: cada consulta feita pelo Espião (recuperada até das
+    missões antigas, pelo texto da lição), quantas vezes foi tentada, quantas deram resultado e quantos achados; e os
+    TERMOS que mais aparecem nas buscas que funcionam e nas que falham. Vira parâmetro: o Espião repete o que funciona,
+    abandona o que falha 3 vezes sem nada e evita os termos das buscas ruins."""
+    _, av = _erros_espiao()
+    por = {}
+    for a in av:
+        c = _cons(a)
+        if not c or PLACEHOLDER.search(c):
+            continue
+        p = por.setdefault(c, {"tentativas": 0, "com_resultado": 0, "achados": 0, "missao": a.get("missao"), "motivos": Counter()})
+        p["tentativas"] += 1; u = int(a.get("uteis") or 0)
+        if u:
+            p["com_resultado"] += 1; p["achados"] += u
+        else:
+            p["motivos"][a.get("motivo_do_insucesso") or "—"] += 1
+    boas = sorted([(c, p) for c, p in por.items() if p["com_resultado"]], key=lambda kv: (-kv[1]["com_resultado"] / kv[1]["tentativas"], -kv[1]["achados"]))
+    ruins = [(c, p) for c, p in por.items() if p["tentativas"] >= 3 and not p["com_resultado"]]
+    tb, tr = Counter(), Counter()
+    for c, p in por.items():
+        for w in set(re.findall(r"[a-zà-ú]{4,}", c)) - STOP:
+            (tb if p["com_resultado"] else tr)[w] += 1
+    termos_bons = [w for w, n in tb.most_common(40) if n >= 2 and tb[w] > tr.get(w, 0)][:15]
+    termos_ruins = [w for w, n in tr.most_common(60) if n >= 3 and not tb.get(w)][:15]
+    rend = defaultdict(lambda: [0, 0])
+    for c, p in por.items():
+        r = rend[str(p["missao"])]; r[0] += p["tentativas"]; r[1] += p["com_resultado"]
+    P = parametros(); pe = P.setdefault("espiao", {})
+    pe["consultas_boas"] = [{"consulta": c, "tentativas": p["tentativas"], "com_resultado": p["com_resultado"], "achados": p["achados"], "missao": p["missao"]} for c, p in boas[:20]]
+    pe["consultas_ruins"] = [{"consulta": c, "tentativas": p["tentativas"], "motivo": p["motivos"].most_common(1)[0][0] if p["motivos"] else "—", "missao": p["missao"]} for c, p in ruins[:40]]
+    pe["termos_bons"] = termos_bons; pe["termos_ruins"] = termos_ruins
+    pe["rendimento_das_buscas"] = {m: {"tentativas": r[0], "com_resultado": r[1], "taxa": round(r[1] / r[0], 3) if r[0] else 0} for m, r in rend.items()}
+    pe["consultas_aprendidas_em"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    PAR.write_text(json.dumps(P, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"consultas": len(por), "boas": len(boas), "ruins": len(ruins), "termos_bons": termos_bons[:6], "termos_ruins": termos_ruins[:6]}
+
+
 def ciclo(forcar: bool = False) -> dict:
     E = _j(EST, {}); P = parametros(); feitos = []
     agora = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -120,10 +169,14 @@ def ciclo(forcar: bool = False) -> dict:
         with HIST.open("a", encoding="utf-8") as fh:
             for d in feitos:
                 fh.write(json.dumps(d, ensure_ascii=False) + "\n")
+    try:
+        _cq = aprender_consultas()            # a cada pouso — não espera 100 erros
+    except Exception as ex:
+        _cq = {"erro": type(ex).__name__}
     EST.parent.mkdir(parents=True, exist_ok=True); EST.write_text(json.dumps(E, ensure_ascii=False, indent=1), encoding="utf-8")
     PUB.write_text(json.dumps({"em": agora, "lote": LOTE, "estado": E, "ultimos_ciclos": [json.loads(l) for l in HIST.read_text(encoding="utf-8").splitlines()[-6:]] if HIST.exists() else [],
                                "parametros": P}, ensure_ascii=False, indent=1), encoding="utf-8")
-    return {"ciclos_abertos": [d["piloto"] for d in feitos], "erros_interceptador": len(ei), "erros_espiao": len(ee)}
+    return {"ciclos_abertos": [d["piloto"] for d in feitos], "erros_interceptador": len(ei), "erros_espiao": len(ee), "consultas": _cq}
 
 
 if __name__ == "__main__":

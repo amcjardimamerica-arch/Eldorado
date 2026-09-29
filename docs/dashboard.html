@@ -473,6 +473,7 @@ box-shadow:0 1px 3px #0002}
 .doss{border:1px solid #CFE0F5;background:#F5F9FF;border-radius:10px;padding:8px 10px;margin:8px 0;font-size:12.5px}.doss-t{font-weight:800;color:#0E2A55;margin-bottom:4px}
 .esp-pl{display:inline-block;font-size:10.5px;border:1px solid #E3E8ED;border-radius:6px;padding:0 6px;margin:1px 2px;color:var(--suave)}.esp-pl.feita{background:#F1F9F4;border-color:#CFE8D8;color:#1E7E4B}.esp-pl.atual{background:#0E2A55;border-color:#0E2A55;color:#fff;font-weight:700}
 .esp-ult{margin-top:8px}.esp-ult-t{font-weight:700;color:#0E2A55;margin:4px 0}
+.esp-apr{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px;margin:6px 0;font-size:12px}.esp-apr h5{margin:0 0 3px;font-size:12px;color:#0E2A55}.esp-apr ul{margin:0;padding-left:18px}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -2185,8 +2186,7 @@ function desenhaRadar(){
       <span class="rd-p">${x.fim?"até "+br(x.fim):x.confirmada?"fluxo contínuo":"prazo a confirmar"}</span>
       ${u?`<a class="rd-a${oficial&&x.link_oficial?" of":""}" href="${esc(u)}" target=_blank rel="noopener noreferrer">${x.link_oficial&&(x.confirmada||(I&&I.pagina_oficial))?"Abrir oportunidade ↗":"indício ↗"}</a>`:`<span class="rd-a meta">—</span>`}</div>`;};
   const confOrd=[...conf].sort((a,b)=>String(a.fim||"9999").localeCompare(String(b.fim||"9999")));
-  $("fi-novas").innerHTML=`<div class="rd-t">Oportunidades com prazo e site oficial <span class=meta>· ${confOrd.length} · o botão abre o site oficial, com edital, dados e anexos</span></div>`
-    +(confOrd.length?confOrd.map(x=>linha(x,true)).join(""):`<div class=meta style="padding:8px 2px">nenhuma confirmada neste recorte</div>`);
+  $("fi-novas").innerHTML=(confOrd.length?confOrd.map(x=>linha(x,true)).join(""):`<div class=meta style="padding:8px 2px">nenhuma confirmada neste recorte</div>`);
   const possOrd=[...verif].sort((a,b)=>(a._uf==="GO"?0:1)-(b._uf==="GO"?0:1)||String(b.publicado_em||"").localeCompare(String(a.publicado_em||"")));
   $("fi-possiveis").innerHTML=v0.p==="abertos"?`<div class="rd-t" style="margin-top:12px">Possíveis — em verificação <span class=meta>· ${possOrd.length} · Goiás primeiro · o Interceptador confirma o prazo e o site oficial</span></div>`
     +possOrd.slice(0,8).map(x=>linha(x,false)).join("")
@@ -4463,13 +4463,18 @@ window.htmlEspiaoQuadro=function(D,V,alvo){
     <div class="int-mets">
       <div class="int-met"><b>${A.missoes||0}</b><span>missões</span></div>
       <div class="int-met"><b style="color:#1E7E4B">${A.com_resultado||0}</b><span>com resultado</span></div>
-      <div class="int-met"><b>${A.achados||0}</b><span>achados</span></div>
       <div class="int-met"><b style="color:#9AA5B1">${A.nada_no_crivo||0}</b><span>nada no crivo</span></div>
       <div class="int-met"><b>${A.fora_do_objeto||0}</b><span>fora do objeto</span></div>
+      <div class="int-met"><b>${A.busca_sem_resposta||0}</b><span>busca sem resposta</span></div>
+      <div class="int-met"><b>${A.achados||0}</b><span>itens achados</span></div>
       <div class="int-met"><b>${A.estrelas_de_ouro||0}</b><span>estrelas de ouro</span></div>
-      <div class="int-met"><b>${A.indicios_entregues_ao_interceptador||0}</b><span>indícios entregues ao Interceptador</span></div>
       <div class="int-met"><b>${tmin==null?"–":tmin<1?Math.round(tmin*60)+" s":tmin+" min"}</b><span>por missão</span></div>
     </div>
+    <div class=meta style="margin:-2px 0 6px">missões = com resultado + nada no crivo + fora do objeto + busca sem resposta · itens achados é a soma do que as missões com resultado trouxeram</div>
+    ${(()=>{const Z=D.aprendizado||{}; if(!(Z.buscas_que_funcionam||[]).length&&!(Z.buscas_que_falham||[]).length) return "";
+      const lin=(c,ok)=>`<li><b>${esc(String(c.consulta).slice(0,80))}</b> <span class=meta>· ${ok?`${c.com_resultado}/${c.tentativas} com resultado · ${c.achados} achado(s)`:`${c.tentativas} tentativa(s) sem resultado`}</span></li>`;
+      return `<div class="esp-apr"><div><h5>Buscas que funcionam</h5><ul>${(Z.buscas_que_funcionam||[]).slice(0,4).map(c=>lin(c,true)).join("")}</ul></div>
+        <div><h5>Buscas que falham — evitadas</h5><ul>${(Z.buscas_que_falham||[]).slice(0,4).map(c=>lin(c,false)).join("")}</ul></div></div>`;})()}
     <div class="int-fila">Na fila: ${Object.entries(F).map(([k,v])=>`<b>${v}</b> ${esc(k)}`).join(" · ")||"—"}</div>
     ${M.map(m=>{const E=m.encontrou||[];
       return `<details class="int-m"><summary><span class=meta>${ini(m)?esc(horaMin(ini(m))):"—"}<br>→ ${esc(horaMin(m.em).slice(6))}${m.segundos?` · ${duracaoTxt(ini(m),m.em)}`:""}${m.aoVivo?" · <b style='color:#1E7E4B'>ao vivo</b>":""}</span>

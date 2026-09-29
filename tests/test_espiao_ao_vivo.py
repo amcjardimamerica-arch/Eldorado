@@ -27,6 +27,18 @@ class TesteEspiaoAoVivo(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn("window.lerEspiaoVivo=", h); self.assertIn("-esp-agora", h); self.assertIn("-esp-quadro", h); self.assertIn("window.htmlEspiaoQuadro=", h)
 
+    def test_missoes_sao_a_soma_das_categorias(self):
+        """30/09: o quadro mostrava 6.626 missões e as categorias não somavam esse número."""
+        from src.espiao_relatorio import montar
+        import json
+        montar(); A = json.loads((ROOT / "docs/dados/espiao.json").read_text(encoding="utf-8"))["acumulado"]
+        self.assertEqual(A["missoes"], sum(A["composicao"].values()))
+
+    def test_aprendizado_das_buscas(self):
+        from src.skills.aprendizado import aprender_consultas, PLACEHOLDER
+        r = aprender_consultas(); self.assertIn("boas", r)
+        self.assertTrue(PLACEHOLDER.search("a pergunta que orienta o voo organizações da sociedade civil"))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -564,7 +564,15 @@ def missao_aposta(brief: dict, ordem: int) -> tuple[str, list[dict], str]:
     # finalidade da associação. A aposta fica presa às áreas dela e a organizações da sociedade civil.
     FORA_DA_FINALIDADE = re.compile(r"(?i)tecnolog|inova[cç]|startup|cient[ií]fic|pesquisa acad|agroneg|ind[uú]stria|infraestrutura|energia|mobilidade")
     AREAS_AMC = ["assistência social", "criança e adolescente", "pessoa idosa", "cultura", "saúde", "esporte e lazer"]
-    if FORA_DA_FINALIDADE.search(q):
+    try:                                         # 30/09: o briefing devolvia o TEXTO-MODELO como pergunta ("a pergunta que orienta o voo")
+        from .skills.aprendizado import PLACEHOLDER as _PH, parametros as _pp
+        _pe = _pp().get("espiao") or {}
+        _boas = [c["consulta"] for c in (_pe.get("consultas_boas") or [])]
+        if _PH.search(q) or q.strip().lower() in {c["consulta"] for c in (_pe.get("consultas_ruins") or [])}:
+            q = _boas[(int(time.time() // 600) + ordem) % len(_boas)] if _boas else ""
+    except Exception:
+        pass
+    if FORA_DA_FINALIDADE.search(q) or not q.strip():
         q = f"edital {AREAS_AMC[(int(time.time() // 600) + ordem) % len(AREAS_AMC)]} organizações da sociedade civil inscrições"
     if not re.search(r"(?i)sociedade civil|\bosc\b|associa|entidade|terceiro setor|ong", q):
         q += " organizações da sociedade civil"
@@ -636,7 +644,19 @@ def missao_descobrir(ordem: int) -> tuple[str, list[dict], str]:
     from .skills.cadastro import conhecida
     from .skills.aprendizado import parametros as _par
     evitar = set((_par().get("espiao") or {}).get("termos_fora_do_objeto") or [])
-    q = CONSULTAS_DESCOBERTA[(int(time.time() // 600) + ordem) % len(CONSULTAS_DESCOBERTA)].format(ano=_d.today().year)
+    # 30/09: APRENDIZADO DAS BUSCAS — evita a consulta que falhou 3 vezes sem nada; 70% das vezes repete uma que deu
+    # resultado (de qualquer missão); nas demais, experimenta uma ainda não reprovada
+    import random as _rnd
+    _pe = _par().get("espiao") or {}
+    _ruins = {c["consulta"] for c in (_pe.get("consultas_ruins") or [])}
+    _boas = [c["consulta"] for c in (_pe.get("consultas_boas") or []) if c.get("com_resultado")]
+    _novas = [c.format(ano=_d.today().year) for c in CONSULTAS_DESCOBERTA if c.format(ano=_d.today().year).lower() not in _ruins]
+    if _boas and (not _novas or _rnd.random() < 0.7):
+        q = _boas[(int(time.time() // 600) + ordem) % len(_boas)]
+    elif _novas:
+        q = _novas[(int(time.time() // 600) + ordem) % len(_novas)]
+    else:
+        q = CONSULTAS_DESCOBERTA[(int(time.time() // 600) + ordem) % len(CONSULTAS_DESCOBERTA)].format(ano=_d.today().year)
     res = buscar(q, maximo=8) or []
     ach, ja = [], 0
     for r in res[:5]:

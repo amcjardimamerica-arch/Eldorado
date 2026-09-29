@@ -43,13 +43,16 @@ def montar() -> dict:
             av += [json.loads(l).get("avaliacao") or {} for l in lzma.decompress(Path(f).read_bytes()).decode().splitlines() if l.strip()]
         except Exception:
             pass
-    motivos = Counter(a.get("motivo_do_insucesso") or "com_resultado" for a in av)
+    motivos = Counter("com_resultado" if int(a.get("uteis") or 0) > 0 else (a.get("motivo_do_insucesso") or "sem_registro") for a in av)
     ms = list(B.get("missoes") or [])
     durs = [d for d in (_dur(m.get("inicio"), m.get("fim")) for m in ms) if d is not None and d >= 0]
     ab = (E.get("abates") or {}).get("piloto-aberto") or (B.get("abates") or {}).get("piloto-aberto") or {}
     novas = sum(int(m.get("achados") or 0) for m in ms if m.get("tipo") == "descobrir")
-    acumulado = {"missoes": len(av), "com_resultado": motivos.get("com_resultado", 0), "nada_no_crivo": motivos.get("nada_no_crivo", 0),
-                 "fora_do_objeto": motivos.get("fora_do_objeto", 0), "achados": sum(int(a.get("uteis") or 0) for a in av),
+    comp = {"com_resultado": motivos.get("com_resultado", 0), "nada_no_crivo": motivos.get("nada_no_crivo", 0),
+            "fora_do_objeto": motivos.get("fora_do_objeto", 0),
+            "busca_sem_resposta": sum(v for k, v in motivos.items() if k not in ("com_resultado", "nada_no_crivo", "fora_do_objeto"))}
+    acumulado = {"missoes": sum(comp.values()), "composicao": comp, "com_resultado": comp["com_resultado"], "nada_no_crivo": comp["nada_no_crivo"],
+                 "fora_do_objeto": comp["fora_do_objeto"], "busca_sem_resposta": comp["busca_sem_resposta"], "achados": sum(int(a.get("uteis") or 0) for a in av),
                  "entidades_novas_recentes": novas, "estrelas_de_ouro": ab.get("ouro") or 0, "abates": ab.get("n") or 0,
                  "indicios_entregues_ao_interceptador": (I.get("fila") or {}).get("indícios do Espião", 0),
                  "tempo_medio_min": round(sum(durs) / len(durs) / 60, 1) if durs else None}
@@ -74,7 +77,10 @@ def montar() -> dict:
                         "avaliacao": f"{ach} achado(s)" if ach else "nada passou no crivo"})
     ult = ms[-1] if ms else {}
     recente = _dur(ult.get("fim") or ult.get("inicio"), datetime.now(timezone.utc).isoformat())
-    out = {"em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "papel": "Piloto - Espião", "modelo": P.get("modelo"),
+    pe = (_j(ROOT / "config/parametros_pilotos.json", {}) or {}).get("espiao") or {}
+    aprend = {"buscas_que_funcionam": (pe.get("consultas_boas") or [])[:5], "buscas_que_falham": (pe.get("consultas_ruins") or [])[:5],
+              "rendimento_por_tipo": pe.get("rendimento_das_buscas") or {}, "em": pe.get("consultas_aprendidas_em")}
+    out = {"em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "papel": "Piloto - Espião", "aprendizado": aprend, "modelo": P.get("modelo"),
            "estado": "em atividade" if B.get("missao_atual") or (recente is not None and recente < 1800) else "aguardando o próximo voo",
            "ultimo_voo": {"voo_do_dia": P.get("voo_do_dia"), "em": P.get("em"), "missoes": len(P.get("missoes") or []), "abates": P.get("abates"),
                           "propostas": P.get("propostas")},
