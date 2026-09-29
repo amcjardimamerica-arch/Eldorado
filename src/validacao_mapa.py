@@ -134,6 +134,8 @@ def dispensa(origem: str, m: dict, tipo: str | None = None) -> dict | None:
     for r in _filtros().get("regras") or []:
         if r.get("motores") and motor not in r["motores"]:
             continue
+        if r.get("exceto_motores") and motor in r["exceto_motores"]:
+            continue
         if r.get("exceto_tipo") and tipo == r["exceto_tipo"]:
             continue
         ok = False
@@ -241,6 +243,10 @@ def aplicar(hoje: date | None = None) -> dict:
                     reg.setdefault("itens", {}).setdefault(k, v)
         if r["decisao"] in ("valida_aberta", "valida_fora_abrangencia") and r.get("fonte_oficial") and not op and not r.get("mesma_de"):
             oid = _oid(r["fonte_oficial"])
+            # já existe opressor com o mesmo programa (título) — reaproveita em vez de duplicar (o fluxo funde duplicados)
+            mesmo = [k for k, x in cat.items() if _nt(x.get("programa")) == _nt(str(r.get("titulo") or "")[:160]) or _nu(x.get("pagina")) == _nu(r["fonte_oficial"])]
+            if mesmo and oid not in cat:
+                oid = mesmo[0]
             if oid not in cat:
                 x = {"id": oid, "programa": str(r.get("titulo") or "")[:160], "orgao": r.get("orgao") or "", "motor": "f260-" + oid,
                      "familia": "Outros programas", "esfera": "Estado" if r.get("uf") else "Brasil", "uf": r.get("uf") or "BR", "ativa": True,
@@ -252,13 +258,16 @@ def aplicar(hoje: date | None = None) -> dict:
             if oid not in L["ligados"]:
                 L["ligados"][oid] = {"desde": hoje.isoformat(), "ate": (hoje + timedelta(days=30)).isoformat(),
                                      "origem": "automática: oportunidade validada no site oficial", "dias": 0, "ia": [], "itens": _itens_confirmados(r)}
-        if r["decisao"] in SAEM_DO_MAPA and op and op in cat and op not in usados_por_validas and cat[op].get("tipo") == "oportunidade_mapeada" and cat[op].get("ativa", True):
+        if r["decisao"] in SAEM_DO_MAPA and op and op in cat and op not in usados_por_validas and cat[op].get("tipo") == "oportunidade_mapeada" and cat[op].get("ativa", True) \
+                and cat[op].get("atual") in (None, eid):      # 29/09: opressor que hoje serve outra oportunidade aberta não é desligado
             # só desliga opressor criado para ESTA oportunidade (fontes permanentes nunca são desligadas aqui)
             cat[op]["ativa"] = False; cat[op]["motivo_status"] = f"desligado pela validação do mapa: {str(r.get('motivo') or '')[:160]}"
             if op in L["ligados"]:
                 L.setdefault("historico", []).append({**L["ligados"].pop(op), "id": op, "desligado_em": hoje.isoformat(), "motivo": "validação do mapa"})
             res["opressores_desligados"] += 1
-    write_json(CAT_OPR, C); write_json(EST_OPR, L)
+    # mesmo formato que o fluxo e o repositório usam (indent=1): evita reescrever o catálogo inteiro a cada execução
+    CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+    EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     return res
 
 
