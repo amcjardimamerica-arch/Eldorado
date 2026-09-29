@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-29T00:22:17+00:00",
+  "em": "2026-09-29T00:41:50+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-29T00:16:28+00:00",
+  "ultimo_voo": "2026-09-29T00:23:48+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,24 +34,101 @@
     "editais novos dos motores": 26,
     "indícios do Espião": 20,
     "abertos com itens em falta": 4,
-    "empresas sem ficha": 67
+    "empresas sem ficha": 68
   },
   "acumulado": {
-    "missoes": 280,
+    "missoes": 281,
     "validadas": 19,
-    "parciais": 89,
+    "parciais": 90,
     "insuficientes": 121,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
       "sim": 183,
-      "nao": 24
+      "nao": 25
     },
     "estrelas_de_ouro": 12,
-    "fontes_novas_para_os_motores": 73,
-    "tempo_medio_min": 9.4
+    "fontes_novas_para_os_motores": 74,
+    "tempo_medio_min": 9.5
   },
   "missoes": [
+    {
+      "em": "2026-09-29T00:23:48+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · SP (sorteio)",
+      "alvo": "Diário Oficial de Macatuba (SP) 2026-09-22 — \"edital de chamamento público\" associação",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://licitario.com.br/diarios",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O edital mencionado é referente ao credenciamento de pessoas jurídicas para prestação de serviços de agenciamento de viagens corporativas, não sendo relevante para associações comunitárias de Goiânia que atuam em áreas como assistência social, cultura, educação e esporte.",
+        "para_a_amc": "Para acessar editais relevantes, a associação comunitária de Goiânia deve monitorar diários oficiais e editais públicos de órgãos federais, estaduais e municipais que sejam alinhados com suas áreas de atuação, como assistência social, cultura, educação e esporte.",
+        "proximo_passo": "Consultar diários oficiais e portais de transparência dos órgãos públicos federal, estadual e municipal para identificar editais que sejam compatíveis com as atividades da associação.",
+        "risco": "A falta de conhecimento sobre editais específicos para áreas como assistência social, cultura, educação e esporte pode impedir a associação de se beneficiar de oportunidades de fomento."
+      },
+      "erro": null,
+      "segundos": 1082,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "67af7e78b77e1a40e4e2",
+      "encontrou": {
+        "Objeto": {
+          "valor": "credenciamento de pessoas jurídicas para prestação de serviços de agenciamento de viagens corporativas",
+          "trecho": "EDITAL DE CHAMAMENTO PARA CREDENCIAMENTO Nº 001/2026-FAMS, destinado ao credenciamento de pessoas jurídicas para prestação de serviços de agenciamento de viagens corporativas",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "FUNDAÇÃO ARQUIVO E MEMÓRIA DE SANTOS – FAMS",
+          "trecho": "A FUNDAÇÃO ARQUIVO E MEMÓRIA DE SANTOS – FAMS, inscrita no CNPJ sob nº 01.446.932/0001-25",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Santos/SP28/09/2026CREDENCIAMENTO",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "art. 74, inciso IV, c/c o art. 79, inciso III (mercados fluidos), da Lei Federal nº 14.133/2021, e nos arts. 45 a 64 do ",
+          "trecho": "art. 74, inciso IV, c/c o art. 79, inciso III (mercados fluidos), da Lei Federal nº 14.133/2021, e nos arts. 45 a 64 do Decreto Municipal nº 10.222/2023, e demais normas aplicáveis",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Macatuba/SP",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3528007/2026-09-22/662ae603003dd0ed3b46baa85f6a83c9e710894a.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-09-29T00:16:28+00:00",
       "modo": "validar",
@@ -2754,93 +2831,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-09-28T15:32:02+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "opressor sem leitura",
-      "alvo": "Edital Alimento no Prato oferece até R$ 800 mil para projetos de agricultura urbana — Observatório do Terceiro Setor — editais",
-      "qualidade": "insuficiente",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, órgão financiador, território, esfera, requisitos, anexos e destinação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria atender aos requisitos estabelecidos pelo edital, como ser uma organização da sociedade civil elegível, ter capacidade técnica e desenvolver uma proposta integralmente localizada nas regiões Norte ou Nordeste, além de promover execução em rede e participação de povos indígenas ou comunidades tradicionais.",
-        "proximo_passo": "Verificar os requisitos do edital e preparar a proposta conforme os critérios estabelecidos.",
-        "risco": "A falta de alinhamento com os critérios de elegibilidade e a localização da proposta nas regiões Norte ou Nordeste pode impedir o acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 898,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-nova-b0eb760d0092",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fortalecer projetos de iniciativas coletivas de agricultura urbana e periurbana em todo o Brasil",
-          "trecho": "O chamamento busca ampliar a produção de alimentos saudáveis, promover a segurança e a soberania alimentar e contribuir para a geração de trabalho e renda nos territórios.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "? a 2026-09-14",
-          "trecho": "As inscrições seguem até 14 de setembro.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Ministério do Desenvolvimento Agrário e da Agricultura Familiar (MDA)",
-          "trecho": "O Ministério do Desenvolvimento Agrário e da Agricultura Familiar (MDA) está com inscrições abertas para o Edital Alimento no Prato,",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "nacional",
-          "trecho": "O chamamento busca ampliar a produção de alimentos saudáveis, promover a segurança e a soberania alimentar e contribuir para a geração de trabalho e renda nos territórios.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Podem participar organizações da sociedade civil que atendam aos critérios de elegibilidade estabelecidos pelo edital e tenham capacidade técnica e operacional para executar as ini",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "organizações da sociedade civil que atendam aos critérios de elegibilidade estabelecidos pelo edital e tenham capacidade, proposta deve estar integralmente localizada nas regiões Norte ou Nordeste para receber a pontuação adicional prevista n, execução em rede, participação de povos indígenas, comun",
-          "trecho": "Podem participar organizações da sociedade civil que atendam aos critérios de elegibilidade estabelecidos pelo edital e tenham capacidade técnica e operacional para executar as ini",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Ministério do Desenvolvimento Agrário e da Agricultura Familiar (MDA)",
-      "indicios": [
-        {
-          "url": "https://observatorio3setor.org.br/edital-alimento-no-prato-oferece-ate-r-800-mil-para-projetos-de-agricultura-urbana",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
       ]
     }
   ]
