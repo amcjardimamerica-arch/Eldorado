@@ -386,45 +386,40 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 43,
+      "leituras": 44,
       "achados_total": 0,
-      "vazias_seguidas": 43,
-      "ultima": "2026-09-28T13:40:35+00:00",
-      "motivo": "motor regular e geral — todo dia",
+      "vazias_seguidas": 44,
+      "ultima": "2026-09-29T00:51:36+00:00",
+      "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260925&dataFinal=20260928&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260926&dataFinal=20260929&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
           "http": 200,
-          "bytes": 4080
+          "bytes": 1966
         },
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260925&dataFinal=20260928&codigoModalidadeContratacao=12&pagina=2&tamanhoPagina=50&uf=GO",
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260926&dataFinal=20260929&codigoModalidadeContratacao=12&pagina=2&tamanhoPagina=50&uf=GO",
           "http": 204,
           "bytes": 0
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 5,
-        "links_total": 2,
-        "links_candidatos": 2,
+        "paginas_lidas": 4,
+        "links_total": 1,
+        "links_candidatos": 1,
         "descobertas": [
           {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260925&dataFinal=20260928&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
-            "para": "https://pncp.gov.br/app/editais/11275251000103/2026/98",
-            "rotulo": "Credenciamento — FUNDO MUNICIPAL DE SAUDE DE PROFESSOR JAMIL"
-          },
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260925&dataFinal=20260928&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
-            "para": "https://pncp.gov.br/app/editais/02321917000113/2026/86",
-            "rotulo": "Credenciamento — MUNICIPIO DE FIRMINOPOLIS — SERVIÇO DE MANU"
+            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260926&dataFinal=20260929&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
+            "para": "https://pncp.gov.br/app/editais/05322181000196/2026/122",
+            "rotulo": "Credenciamento — FUNDO MUNICIPAL DE SAUDE DE SANTA FE DE GOI"
           }
         ],
         "pdf_links": 0,
-        "motivo_zero": "página institucional; seguiu 2 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
-        "camada1_vetados": 1,
+        "motivo_zero": "página institucional; seguiu 1 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
+        "camada1_vetados": 0,
         "camada1_direcionados": 0
       }
     },
@@ -2792,18 +2787,18 @@
     "recorrencia": {
       "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
       "tipo": "recorrencia",
-      "leituras": 7,
-      "achados_total": 104,
+      "leituras": 8,
+      "achados_total": 121,
       "vazias_seguidas": 0,
-      "ultima": "2026-09-28T13:48:57+00:00",
-      "motivo": "motor regular e geral — todo dia",
-      "achados_ultima": 15,
+      "ultima": "2026-09-29T00:54:04+00:00",
+      "motivo": "ativação manual pelo titular",
+      "achados_ultima": 17,
       "falhas_ultima": 5,
       "saude": [
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 132171
+          "bytes": 131764
         },
         {
           "url": "https://www.gov.br/transferegov/pt-br",
@@ -2814,8 +2809,8 @@
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 38,
-        "links_total": 1984,
-        "links_candidatos": 1391,
+        "links_total": 2100,
+        "links_candidatos": 1454,
         "descobertas": [
           {
             "de": "https://portal.al.go.leg.br/",
@@ -2838,10 +2833,10 @@
             "rotulo": "Credenciamento para a Imprensa"
           }
         ],
-        "pdf_links": 59,
+        "pdf_links": 62,
         "motivo_zero": null,
         "camada1_vetados": 42,
-        "camada1_direcionados": 67
+        "camada1_direcionados": 74
       }
     },
     "f260-espalhado-acessoainformacao-cavalcante-go-gov-br": {
@@ -3008,26 +3003,85 @@
         "camada1_vetados": 13,
         "camada1_direcionados": 65
       }
+    },
+    "plat-mapa-osc": {
+      "nome": "Mapa das OSC — editais",
+      "tipo": "plataforma",
+      "leituras": 1,
+      "achados_total": 0,
+      "vazias_seguidas": 1,
+      "ultima": "2026-09-29T00:51:41+00:00",
+      "motivo": "ativação manual pelo titular",
+      "achados_ultima": 0,
+      "falhas_ultima": 0,
+      "saude": [
+        {
+          "url": "https://mapaosc.ipea.gov.br/editais",
+          "http": 200,
+          "bytes": 34863
+        },
+        {
+          "url": "https://mapaosc.ipea.gov.br/posts/2/publicacoes",
+          "http": 200,
+          "bytes": 32436
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 3,
+        "links_total": 147,
+        "links_candidatos": 60,
+        "descobertas": [
+          {
+            "de": "https://mapaosc.ipea.gov.br/editais",
+            "para": "https://mapaosc.ipea.gov.br/posts/2/publicacoes",
+            "rotulo": "Publicações"
+          },
+          {
+            "de": "https://mapaosc.ipea.gov.br/editais",
+            "para": "https://prosas.com.br/editais",
+            "rotulo": "https://prosas.com.br/editais"
+          }
+        ],
+        "pdf_links": 0,
+        "motivo_zero": "página institucional; seguiu 2 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
+        "camada1_vetados": 0,
+        "camada1_direcionados": 0
+      }
     }
   },
   "ultima_execucao": {
-    "data": "2026-09-28",
-    "em": "2026-09-28T23:12:04+00:00",
+    "data": "2026-09-29",
+    "em": "2026-09-29T00:54:04+00:00",
     "manual": [
-      "dou"
+      "motor-gife",
+      "motor-patrocinio",
+      "plat-mapa-osc",
+      "pncp-api",
+      "recorrencia"
     ],
     "bloco": "manual",
-    "sensores_executados": 1,
-    "em_espera": 128,
-    "total_esquadra": 129,
+    "sensores_executados": 3,
+    "em_espera": 127,
+    "total_esquadra": 130,
     "previsoes_ativas": 1,
-    "achados": 1,
+    "achados": 17,
     "novos_na_base": 0,
     "por_tipo": {
-      "diario_oficial": {
+      "api": {
         "sensores": 1,
-        "achados": 1,
+        "achados": 0,
         "falhas": 0
+      },
+      "plataforma": {
+        "sensores": 1,
+        "achados": 0,
+        "falhas": 0
+      },
+      "recorrencia": {
+        "sensores": 1,
+        "achados": 17,
+        "falhas": 5
       }
     }
   }

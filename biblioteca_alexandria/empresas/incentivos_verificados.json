@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-26T23:00:14+00:00",
+  "gerado_em": "2026-09-29T00:58:39+00:00",
   "referencia": "2026-09-26",
   "regra": "valor, ano e CNPJ só com fonte oficial; mecanismo sem fonte pública sai nulo com o motivo e o caminho para obter o dado; inscrição no PAT não prova Lucro Real",
   "mecanismos": {
@@ -21927,6 +21927,135 @@
       }
     },
     {
+      "nome": "RAIZEN ENERGIA S.A",
+      "cnpj": "08070508000178",
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "destinou",
+          "fonte": "SALIC/MinC",
+          "razao_social_salic": "Raízen Combustíveis S.A",
+          "total_historico_api": 2630000,
+          "total_historico_doacoes": 2630000.0,
+          "doacoes_registradas": 6,
+          "primeiro_ano": "2012",
+          "ultimo_ano": "2023",
+          "por_ano": {
+            "2012": {
+              "doacoes": 3,
+              "valor": 830000.0
+            },
+            "2013": {
+              "doacoes": 1,
+              "valor": 250000.0
+            },
+            "2021": {
+              "doacoes": 1,
+              "valor": 1000000.0
+            },
+            "2023": {
+              "doacoes": 1,
+              "valor": 550000.0
+            }
+          },
+          "ultimos_5_anos": {
+            "desde": 2021,
+            "doacoes": 2,
+            "valor": 1550000.0,
+            "anos": [
+              "2021",
+              "2023"
+            ]
+          },
+          "doacoes_5_anos": [
+            {
+              "data": "2021-03-26",
+              "pronac": "180880",
+              "valor": 1000000.0,
+              "proponente": "INSTITUTO RAIZEN CULTURA",
+              "projeto": "Museu da Cana-de-Açúcar"
+            },
+            {
+              "data": "2023-03-31",
+              "pronac": "222681",
+              "valor": 550000.0,
+              "proponente": "EASY PRODUCOES E EVENTOS LTDA",
+              "projeto": "Taste Brasilia Festival"
+            }
+          ],
+          "lido_em": "2026-09-26T21:20:47.334Z"
+        },
+        "PAT": {
+          "status": "inscrita",
+          "fonte": "MTE — relação de beneficiárias do PAT até 31/03/2026",
+          "estabelecimentos_ativos": 22,
+          "estabelecimentos_inativos": 0,
+          "trabalhadores_atendidos": 25891,
+          "cnpj_exato": {
+            "situacao": "Ativo",
+            "razao_social": "RAIZEN ENERGIA S.A",
+            "registro": "0827339",
+            "data_cadastro": "19-08-2008",
+            "municipio": "São Paulo",
+            "uf": "SP",
+            "trabalhadores": 1480,
+            "tipo": "Matriz"
+          },
+          "leitura": "indício de regime tributário, não prova de Lucro Real"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [
+        "Rouanet"
+      ],
+      "confirmados_5_anos": [
+        "Rouanet"
+      ],
+      "lucro_real": {
+        "classe": "confirmado",
+        "motivo": "destinou pela Lei Rouanet em 2021, 2023 — só a pessoa jurídica tributada pelo lucro real pode deduzir (Lei 8.313/1991, art. 26)",
+        "fonte": "SALIC/MinC",
+        "exercicios": [
+          "2021",
+          "2023"
+        ]
+      }
+    },
+    {
       "nome": "REAL DISTRIBUIDORA E LOGISTICA LTDA",
       "cnpj": "03785066000122",
       "verificado_em": "2026-09-26",
@@ -22317,135 +22446,6 @@
           "2023",
           "2025",
           "2026"
-        ]
-      }
-    },
-    {
-      "nome": "Raízen",
-      "cnpj": "08070508000178",
-      "verificado_em": "2026-09-26",
-      "mecanismos": {
-        "Rouanet": {
-          "status": "destinou",
-          "fonte": "SALIC/MinC",
-          "razao_social_salic": "Raízen Combustíveis S.A",
-          "total_historico_api": 2630000,
-          "total_historico_doacoes": 2630000.0,
-          "doacoes_registradas": 6,
-          "primeiro_ano": "2012",
-          "ultimo_ano": "2023",
-          "por_ano": {
-            "2012": {
-              "doacoes": 3,
-              "valor": 830000.0
-            },
-            "2013": {
-              "doacoes": 1,
-              "valor": 250000.0
-            },
-            "2021": {
-              "doacoes": 1,
-              "valor": 1000000.0
-            },
-            "2023": {
-              "doacoes": 1,
-              "valor": 550000.0
-            }
-          },
-          "ultimos_5_anos": {
-            "desde": 2021,
-            "doacoes": 2,
-            "valor": 1550000.0,
-            "anos": [
-              "2021",
-              "2023"
-            ]
-          },
-          "doacoes_5_anos": [
-            {
-              "data": "2021-03-26",
-              "pronac": "180880",
-              "valor": 1000000.0,
-              "proponente": "INSTITUTO RAIZEN CULTURA",
-              "projeto": "Museu da Cana-de-Açúcar"
-            },
-            {
-              "data": "2023-03-31",
-              "pronac": "222681",
-              "valor": 550000.0,
-              "proponente": "EASY PRODUCOES E EVENTOS LTDA",
-              "projeto": "Taste Brasilia Festival"
-            }
-          ],
-          "lido_em": "2026-09-26T21:20:47.334Z"
-        },
-        "PAT": {
-          "status": "inscrita",
-          "fonte": "MTE — relação de beneficiárias do PAT até 31/03/2026",
-          "estabelecimentos_ativos": 22,
-          "estabelecimentos_inativos": 0,
-          "trabalhadores_atendidos": 25891,
-          "cnpj_exato": {
-            "situacao": "Ativo",
-            "razao_social": "RAIZEN ENERGIA S.A",
-            "registro": "0827339",
-            "data_cadastro": "19-08-2008",
-            "municipio": "São Paulo",
-            "uf": "SP",
-            "trabalhadores": 1480,
-            "tipo": "Matriz"
-          },
-          "leitura": "indício de regime tributário, não prova de Lucro Real"
-        },
-        "Goyazes": {
-          "status": "nao_consta_2024_2026",
-          "fonte": "Secult-GO",
-          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
-        },
-        "LIE": {
-          "status": "bloqueado_defeso_eleitoral",
-          "valor": null,
-          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
-          "retomar_em": "2026-10-26"
-        },
-        "FIA": {
-          "status": "sem_fonte_publica_por_cnpj",
-          "valor": null,
-          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
-          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
-        },
-        "Fundo do Idoso": {
-          "status": "sem_fonte_publica_por_cnpj",
-          "valor": null,
-          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
-          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
-        },
-        "PRONON": {
-          "status": "sem_fonte_publica_por_cnpj",
-          "valor": null,
-          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
-          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
-        },
-        "PRONAS/PCD": {
-          "status": "sem_fonte_publica_por_cnpj",
-          "valor": null,
-          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
-          "caminho": "idem PRONON"
-        }
-      },
-      "confirmados": [
-        "Rouanet"
-      ],
-      "confirmados_5_anos": [
-        "Rouanet"
-      ],
-      "lucro_real": {
-        "classe": "confirmado",
-        "motivo": "destinou pela Lei Rouanet em 2021, 2023 — só a pessoa jurídica tributada pelo lucro real pode deduzir (Lei 8.313/1991, art. 26)",
-        "fonte": "SALIC/MinC",
-        "exercicios": [
-          "2021",
-          "2023"
         ]
       }
     },

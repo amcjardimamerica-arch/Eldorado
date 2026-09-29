@@ -1,1 +1,178 @@
 bloco=manual
+/home/runner/work/Eldorado/Eldorado/src/empresas.py:235: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  if datetime.fromisoformat(c["_consultado_em"][:19]) > datetime.utcnow() - timedelta(days=cfg["cache_dias"]):
+{
+  "uf": "GO",
+  "em": "2026-09-29T00:55:59+00:00",
+  "base_antes": 52,
+  "leitura_icms": {
+    "em": "2026-09-29T00:55:02+00:00",
+    "url": "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/",
+    "anexos_encontrados": 25,
+    "http": 200,
+    "empresas_na_pagina": 0,
+    "anexos_lidos": 2
+  },
+  "parcerias": {
+    "paginas_lidas": 12,
+    "achados": 0,
+    "relevantes": 3
+  },
+  "reavaliadas": 50,
+  "novas_agregadas": 5,
+  "candidatos_restantes": 501,
+  "top_candidatos_proxima_semana": [
+    {
+      "nome": "NUTRIZA AGROINDUSTRIAL DE ALIMENTOS S/A",
+      "pontos": 22,
+      "por": [
+        "49º no ICMS +22"
+      ]
+    },
+    {
+      "nome": "WMS SUPERMERCADOS DO BRASIL LTDA",
+      "pontos": 22,
+      "por": [
+        "28º no ICMS +22"
+      ]
+    },
+    {
+      "nome": "de janeiro de 2026",
+      "pontos": 22,
+      "por": [
+        "28º no ICMS +22"
+      ]
+    },
+    {
+      "nome": "CARAMURU ALIMENTOS S/A",
+      "pontos": 15,
+      "por": [
+        "52º no ICMS +15"
+      ]
+    },
+    {
+      "nome": "HAVAN LOJAS DE DEPARTAMENTOS LTDA",
+      "pontos": 15,
+      "por": [
+        "52º no ICMS +15"
+      ]
+    }
+  ],
+  "base": {
+    "empresas": 57,
+    "kb": 66.7
+  }
+}
+rc_semanal=0
+{
+  "uf": "GO",
+  "paginas_lidas": 40,
+  "novos": 1,
+  "total": 3,
+  "fontes": 22,
+  "descoberta": {
+    "candidatas": 11,
+    "novas": 0,
+    "verificadas": 5
+  },
+  "empresas_com_patrocinio": 3,
+  "novas_na_base": 1,
+  "executado_em": "2026-09-29T00:58:39+00:00"
+}
+rc_patrocinios=0
+{
+  "destinacao_tributaria": 100,
+  "patrocinio_privado": 100
+}
+{
+  "referencia": "2026-09-26",
+  "registros_na_biblioteca": 156,
+  "descartados": [],
+  "empresas_com_cnpj": 99,
+  "sem_cnpj_unico": [
+    "BTG Pactual",
+    "Buriti Shopping",
+    "CCR",
+    "Coca-Cola",
+    "Coca-Cola Brasil",
+    "Coca-Cola Femsa",
+    "Construtora Dinâmica",
+    "Curta Mais",
+    "Faculdade Estácio Goiás",
+    "Fecomércio Goiás",
+    "Fieg / Sesi / Senai Goiás",
+    "Flamboyant Shopping",
+    "Goiânia Shopping",
+    "Grupo Boticário",
+    "Grupo Bretas / Cencosud",
+    "Grupo Jaime Câmara",
+    "Grupo Mateus",
+    "Heineken",
+    "Hospital do Coração Anis Rassi",
+    "Jornal O Popular",
+    "Mais Goiás",
+    "Nubank",
+    "PUC Goiás",
+    "Passeio das Águas Shopping",
+    "Rede D'Or",
+    "Rádio Sagres",
+    "Sebrae Goiás",
+    "Sesc Goiás",
+    "Sicoob",
+    "Sicredi",
+    "Terral Empreendimentos",
+    "Unimed",
+    "Unip / Unigoiás"
+  ],
+  "cnpj_corrigidos": [
+    {
+      "nome": "Vale",
+      "errado": "53400818000168",
+      "correto": "33592510000154",
+      "prova": "o CNPJ da base é da FERTIGRAN FERTILIZANTES VALE DO RIO GRANDE (SALIC e PAT); o SALIC devolve VALE S.A. para 33592510000154"
+    },
+    {
+      "nome": "Stone",
+      "errado": "57497539000115",
+      "correto": "16501555000157",
+      "prova": "o CNPJ da base é da BRIDGESTONE (SALIC e PAT); o SALIC devolve STONE PAGAMENTOS S.A. para 16501555000157"
+    },
+    {
+      "nome": "Fleury",
+      "errado": "37639630000110",
+      "correto": "60840055000131",
+      "prova": "o CNPJ da base não aparece no SALIC nem no PAT; o SALIC devolve Fleury S/A para 60840055000131 e o PAT, FLEURY SA"
+    },
+    {
+      "nome": "Nestlé",
+      "errado": "08334818000152",
+      "correto": "60409075000152",
+      "prova": "o CNPJ da base é da Nestlé Nordeste Alimentos e Bebidas, subsidiária; a matriz é NESTLE BRASIL LTDA., 60409075000152 no SALIC"
+    }
+  ],
+  "cnpj_resolvidos_por_nome": 24,
+  "rouanet": {
+    "destinou": 86,
+    "nao_consta": 13,
+    "destinou_desde_corte": 64
+  },
+  "goyazes": {
+    "destinou": 5,
+    "empresas_novas_descobertas": 87
+  },
+  "pat": {
+    "inscrita": 87,
+    "inscrita_por_estabelecimento": 3,
+    "inscricao_inativa": 7,
+    "nao_consta": 2
+  },
+  "lucro_real_confirmado_pela_rouanet": 64,
+  "mecanismos_sem_fonte": {
+    "LIE": "bloqueado_defeso_eleitoral",
+    "FIA": "sem_fonte_publica_por_cnpj",
+    "Fundo do Idoso": "sem_fonte_publica_por_cnpj",
+    "PRONON": "sem_fonte_publica_por_cnpj",
+    "PRONAS/PCD": "sem_fonte_publica_por_cnpj"
+  }
+}
+rc_incentivos=0
