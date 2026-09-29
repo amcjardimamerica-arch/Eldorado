@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-29T18:07:40+00:00",
+  "em": "2026-09-29T18:17:08+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-29T17:58:39+00:00",
+  "ultimo_voo": "2026-09-29T18:09:20+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,80 @@
     "empresas sem ficha": 87
   },
   "acumulado": {
-    "missoes": 330,
+    "missoes": 331,
     "validadas": 24,
     "parciais": 110,
-    "insuficientes": 145,
+    "insuficientes": 146,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 225,
+      "sim": 226,
       "nao": 30
     },
     "estrelas_de_ouro": 12,
-    "fontes_novas_para_os_motores": 90,
+    "fontes_novas_para_os_motores": 91,
     "tempo_medio_min": 10.0
   },
   "missoes": [
+    {
+      "em": "2026-09-29T18:09:20+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "missão especial · prazo até 2026-09-30",
+      "alvo": "Edital AMBEV Brasilidades 2026: Guia de Captação",
+      "qualidade": "insuficiente",
+      "comprovados": 3,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.fccsa.com.br/pt/fcc-connect/todas-publicacoes/fcc-s-lanca-edital-de-apoio-projetos-sociais/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre o objeto e o financiador, o que permite identificar sua existência e potencial relevância para a AMC.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se seu projeto social se enquadra no objeto do edital, que é 'apoio a Projetos Sociais', e se está alinhado com as áreas de atuação da FCC S.A., que é privada.",
+        "proximo_passo": "Consultar o edital completo para obter detalhes sobre requisitos, prazos e outros critérios de seleção.",
+        "risco": "A falta de informações sobre prazos, requisitos e áreas de atuação pode dificultar a preparação da proposta e o acesso ao edital."
+      },
+      "erro": null,
+      "segundos": 467,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 3,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "agr-4361d1826fc1",
+      "encontrou": {
+        "Objeto": {
+          "valor": "apoio a Projetos Sociais",
+          "trecho": "FCC S.A. lança edital de apoio a Projetos Sociais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "FCC S.A.",
+          "trecho": "FCC S.A. lança edital de apoio a Projetos Sociais",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Fábrica Carioca de Catalisadores S.A.",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-09-29T17:58:39+00:00",
       "modo": "validar",
@@ -2984,64 +3043,6 @@
       "indicios": [
         {
           "url": "https://data.queridodiario.ok.org.br/2700000/2026-09-25/92d35a4d28687c2579020590bd85ec59db523cf8.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-09-29T03:03:35+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "mapa · PR (sorteio)",
-      "alvo": "Diário Oficial de Primeiro de Maio (PR) 2026-08-28 — \"edital de chamamento público\" associação",
-      "qualidade": "insuficiente",
-      "comprovados": 3,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.gov.br/cultura/pt-br/assuntos/politica-nacional-aldir-blanc/painel-de-dados",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto menciona que o edital é um 'chamamento público' da associação, indicando que é uma fonte válida para ações relacionadas a editais de fomento.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se os critérios do edital se aplicam à sua área de atuação (assistência social, cultura, educação, esporte) e seguir o processo de inscrição conforme descrito no edital.",
-        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre os requisitos, prazos e outros aspectos necessários para a inscrição.",
-        "risco": "A falta de informações sobre prazos, requisitos e outros detalhes pode impedir a associação de se inscrever adequadamente no edital."
-      },
-      "erro": null,
-      "segundos": 875,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 2,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "df60291a34485a534b1e",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Ministério da Cultura",
-          "trecho": "ministério da cultura",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "SECRETARIA MUNICIPAL DE CULTURA",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/4120507/2026-08-28/4cb8d32c93deb640a18bedd05b3044f0d26a779a.pdf",
           "tipo": "agregador"
         }
       ],
