@@ -7,7 +7,7 @@ Piloto: modelo **qwen3-8b**. Ao responder, o Claude anota o modelo com que traba
 - 2026-09-26T23:58 — Esquadrilha 2026-09-26 (Qwen3-8B): 7 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 4.4 min de voo.
 - 2026-09-27T23:59 — Esquadrilha 2026-09-27 (Qwen3-8B): 7 missão(ões) — 1 alvo(s) novo(s) abatido(s), 1 proposta(s) ao todo, 4.2 min de voo.
 - 2026-09-28T23:55 — Esquadrilha 2026-09-28 (Qwen3-8B): 7 missão(ões) — 3 alvo(s) novo(s) abatido(s), 3 proposta(s) ao todo, 5.5 min de voo.
-- 2026-09-29T08:37 — Esquadrilha 2026-09-29 (Qwen3-8B): 7 missão(ões) — 1 alvo(s) novo(s) abatido(s), 1 proposta(s) ao todo, 4.0 min de voo.
+- 2026-09-29T08:57 — Esquadrilha 2026-09-29 (Qwen3-8B): 7 missão(ões) — 1 alvo(s) novo(s) abatido(s), 1 proposta(s) ao todo, 2.2 min de voo.
 
 ## Relatório de aprendizado e bloqueios (0)
 
