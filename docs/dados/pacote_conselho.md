@@ -7,7 +7,7 @@ Piloto: modelo **qwen3-8b**. Ao responder, o Claude anota o modelo com que traba
 - 2026-09-26T23:58 — Esquadrilha 2026-09-26 (Qwen3-8B): 7 missão(ões) — 0 alvo(s) novo(s) abatido(s), 0 proposta(s) ao todo, 4.4 min de voo.
 - 2026-09-27T23:59 — Esquadrilha 2026-09-27 (Qwen3-8B): 7 missão(ões) — 1 alvo(s) novo(s) abatido(s), 1 proposta(s) ao todo, 4.2 min de voo.
 - 2026-09-28T23:55 — Esquadrilha 2026-09-28 (Qwen3-8B): 7 missão(ões) — 3 alvo(s) novo(s) abatido(s), 3 proposta(s) ao todo, 5.5 min de voo.
-- 2026-09-29T12:09 — Esquadrilha 2026-09-29 (Qwen3-8B): 7 missão(ões) — 8 alvo(s) novo(s) abatido(s), 8 proposta(s) ao todo, 5.5 min de voo.
+- 2026-09-29T15:05 — Esquadrilha 2026-09-29 (Qwen3-8B): 7 missão(ões) — 4 alvo(s) novo(s) abatido(s), 4 proposta(s) ao todo, 6.1 min de voo.
 
 ## Relatório de aprendizado e bloqueios (0)
 
@@ -18,7 +18,7 @@ Piloto: modelo **qwen3-8b**. Ao responder, o Claude anota o modelo com que traba
 
 ## Aguardando validação do conselho
 
-### Rotas e pistas sugeridas (48)
+### Rotas e pistas sugeridas (49)
 
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
 - plat-gife → [{"tipo": "url", "valor": "https://gife.org.br/agenda/", "valido": true}]
