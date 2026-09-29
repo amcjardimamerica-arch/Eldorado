@@ -25,7 +25,7 @@ class TesteEspiaoAoVivo(unittest.TestCase):
         for f in ("_AO.decolar(", "_AO.missao(", "_AO.resultado(", "_AO.pousar("):
             self.assertIn(f, p)
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        self.assertIn("window.lerEspiaoVivo=", h); self.assertIn("-esp-agora", h); self.assertIn("-esp-ultimas", h)
+        self.assertIn("window.lerEspiaoVivo=", h); self.assertIn("-esp-agora", h); self.assertIn("-esp-quadro", h); self.assertIn("window.htmlEspiaoQuadro=", h)
 
 
 if __name__ == "__main__":
