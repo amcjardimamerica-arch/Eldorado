@@ -203,7 +203,13 @@ def consolidar() -> list[dict]:
         if (kt and kt in vistos_t) or (ku and ku in vistos_u and not diario):
             continue
         vistos_t.add(kt); vistos_u.add(ku)
-        uf = str(m.get("uf") or e.get("uf") or "").upper()
+        uf = str(m.get("uf") or e.get("uf") or (v or {}).get("uf") or "").upper()
+        if uf not in UFS:                                  # 30/09: sem estado registrado, deduz do domínio oficial ou do motor goiano
+            _h = (urlsplit(str(link or m.get("url") or "")).hostname or "").lower()
+            _f = str(m.get("fonte_id") or m.get("motor") or origem or "").lower()
+            if _h in ("goias.gov.br", "www.goias.gov.br") or _h.endswith(".go.gov.br") or _h.endswith(".go.leg.br") \
+               or any(k in _f for k in ("secult-go", "goias", "do-goiania", "go-")):
+                uf = "GO"
         if m.get("_emenda") and m.get("nivel") == "federal":
             uf = ""
         # fluxo contínuo: o próprio edital dispensa a data-limite (validação no site oficial) — vale como prazo aberto
