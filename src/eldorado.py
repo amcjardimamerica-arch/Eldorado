@@ -33,22 +33,26 @@ class Links(HTMLParser):
         if tag == "a" and self._href is not None:
             self.links.append((self._href, " ".join(self._text).strip())); self._href=None
 
+def _base(host: str) -> str:
+    """30/09: www.ceara.gov.br e ceara.gov.br são o MESMO site — o redirecionamento entre eles era recusado (ValueError)."""
+    h=(host or "").lower(); return h[4:] if h.startswith("www.") else h
+
 class SafeRedirect(HTTPRedirectHandler):
-    def __init__(self, host): self.host=host
+    def __init__(self, host): self.host=_base(host)
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         validate_public_https(newurl, self.host)
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 def fetch(source: dict, policy: dict) -> tuple[bytes, str, str]:
-    url=source["url"]; host=urlsplit(url).hostname
+    url=source["url"]; host=_base(urlsplit(url).hostname)
     validate_public_https(url, host)
     req=Request(url, headers={"User-Agent":policy["user_agent"],"Accept":"text/html,application/rss+xml,application/atom+xml,application/json,text/plain;q=0.8,*/*;q=0.2"})
     with build_opener(SafeRedirect(host)).open(req, timeout=policy["timeout_segundos"]) as response:
         final=response.geturl(); validate_public_https(final, host)
         ctype=response.headers.get_content_type()
         data=response.read(policy["max_bytes"]+1)
-        if len(data)>policy["max_bytes"]: raise ValueError("resposta excede limite")
-        if ctype not in {"text/html","text/plain","application/json"} | XML_TYPES:
+        if len(data)>policy["max_bytes"]: data=data[:policy["max_bytes"]]   # 30/09: página grande é lida até o limite (antes: descartada inteira)
+        if ctype not in {"text/html","text/plain","application/json","application/xhtml+xml"} | XML_TYPES:
             raise ValueError(f"tipo não permitido: {ctype}")
         return data, final, ctype
 
