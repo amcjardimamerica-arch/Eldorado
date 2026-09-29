@@ -1,16 +1,16 @@
 {
-  "em": "2026-09-29T21:07:34+00:00",
+  "em": "2026-09-29T21:14:16+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 7,
-      "uteis": 2,
+      "achados": 6,
+      "uteis": 1,
       "motivos": {
-        "nada_no_crivo": 36,
-        "fora_do_objeto": 3
+        "nada_no_crivo": 35,
+        "fora_do_objeto": 4
       },
-      "efetividade": 0.29
+      "efetividade": 0.17
     }
   },
   "licoes": [
@@ -68,7 +68,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "fora_do_objeto",
-      "vezes": 116,
+      "vezes": 113,
       "tipos": [
         "prospectar",
         "catalogar",
@@ -77,7 +77,7 @@
       ],
       "ultima": "2026-09-29",
       "explicacao": "o que veio não serve à finalidade da associação",
-      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 116 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 113 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-patrocinio",
@@ -163,9 +163,16 @@
   "melhorias_pendentes": [
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor deveria coletar e exibir trechos específicos dos editais encontrados, como prazos, valores, objetivos e páginas, para facilitar a análise e a identificação de oportunidades de recursos.",
+      "sugestao": "O motor deve garantir que os trechos dos textos sejam preenchidos corretamente, para que seja possível avaliar se um achado é um recurso viável ou não.",
       "efetividade_na_hora": 0.0,
-      "em": "2026-09-29T20:53",
+      "em": "2026-09-29T21:13",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "Adicionar filtros para identificar mais claramente se o edital oferece recursos financeiros diretos, como bolsas, valores em dinheiro ou outros benefícios tangíveis além de doações de serviços.",
+      "efetividade_na_hora": 1.0,
+      "em": "2026-09-29T20:59",
       "aplicada": false
     },
     {
@@ -293,19 +300,12 @@
       "efetividade_na_hora": 1.0,
       "em": "2026-09-29T13:09",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deveria identificar melhor páginas que mencionem explicitamente editais, patrocínios, doações ou incentivos fiscais, mesmo que em contextos mais amplos, para evitar falsos negativos.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-29T12:54",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 278,
+  "editais_tratados": 279,
   "entregues_ao_claude": 234,
   "ultima_faxina": {
-    "em": "2026-09-29T21:07:34+00:00",
+    "em": "2026-09-29T21:14:16+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 1,
     "achados_descartados_removidos": 82,
