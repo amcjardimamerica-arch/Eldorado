@@ -21,6 +21,17 @@ class TesteCodigoCompila(unittest.TestCase):
         for m in ("src.interceptador", "src.investigador", "src.piloto", "src.fluxo_oportunidades", "src.motores"):
             importlib.import_module(m)
 
+    def test_gravacao_do_interceptador_tolera_arquivo_ausente(self):
+        """30/09: 'git add' com um arquivo que ainda não existia derrubava a etapa de gravação do Interceptador."""
+        y = (ROOT / ".github/workflows/interceptador.yml").read_text(encoding="utf-8")
+        self.assertIn('do [ -e "$P" ] && git add -A -- "$P"; done; true', y)
+        self.assertNotIn("git add -A config/parametros_pilotos.json", y)
+
+    def test_workflows_sao_yaml_valido(self):
+        import yaml
+        for w in (ROOT / ".github/workflows").glob("*.yml"):
+            yaml.safe_load(w.read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()
