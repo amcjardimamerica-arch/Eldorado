@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-observatorio-3setor`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 13
-- Distribuição por ano pesquisado/coletado: {'2026': 13}
+- Pistas aguardando confirmação: 15
+- Distribuição por ano pesquisado/coletado: {'2026': 15}
 
 ## Padrões
 
@@ -24,4 +24,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Instituto Lojas Renner abre edital com até R$ 10 mil para fortalecer organizações sociais](https://observatorio3setor.org.br/instituto-lojas-renner-abre-edital-com-ate-r-10-mil-para-fortalecer-organizacoes-sociais) — coletado em 2026-09-04T19:48:28+00:00
 - [Prêmio nacional da Enap oferece até R$ 20 mil para iniciativas que protegem crianças e adolescentes em situação de rua](https://observatorio3setor.org.br/premio-nacional-da-enap-oferece-ate-r-20-mil-para-iniciativas-que-protegem-criancas-e-adolescentes-em-situacao-de-rua) — coletado em 2026-09-21T10:43:27+00:00
 - [Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática](https://observatorio3setor.org.br/instituto-clima-e-sociedade-abre-edital-de-ate-r-500-mil-para-projetos-de-comunicacao-climatica) — coletado em 2026-09-04T19:48:28+00:00
+- [HUB Pacto Contra a Fome conecta organizações a editais, parcerias e iniciativa do Terceiro Setor](https://observatorio3setor.org.br/hub-pacto-contra-a-fome-conecta-organizacoes-a-editais-parcerias-e-iniciativa-do-terceiro-setor) — coletado em 2026-09-29T10:25:06+00:00
+- [Instituto Benera quer transformar a doação em prática de cidadania](https://observatorio3setor.org.br/instituto-benera-quer-transformar-a-doacao-em-pratica-de-cidadania) — coletado em 2026-09-29T10:25:06+00:00
 - [Edital Conta que soma oferece formação gratuita em educação financeira para jovens](https://observatorio3setor.org.br/edital-conta-que-soma-oferece-formacao-gratuita-em-educacao-financeira-para-jovens) — coletado em 2026-09-23T10:00:09+00:00
