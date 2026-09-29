@@ -1,28 +1,28 @@
 {
-  "gerado_em": "2026-09-29T09:57:53+00:00",
-  "total": 325,
+  "gerado_em": "2026-09-29T13:35:34+00:00",
+  "total": 339,
   "selos": {
-    "validadas": 92,
-    "nao_verificadas": 233,
+    "validadas": 93,
+    "nao_verificadas": 246,
     "regra": "VALIDADA (verde) exige objeto + prazo de inscrição + site oficial que divulga; sem qualquer um deles o selo é NÃO VERIFICADA (amarelo) e o item entra na verificação semanal da IA externa"
   },
   "informacoes_minimas": {
     "regra": "toda oportunidade precisa de OBJETO, PRAZO DE INSCRIÇÃO e PÁGINA OFICIAL DO EDITAL (site do órgão/patrocinador, nunca o vetor onde foi encontrada)",
-    "completas": 92,
-    "incompletas": 233,
-    "falta_objeto": 207,
-    "falta_prazo": 222,
-    "falta_pagina": 104
+    "completas": 93,
+    "incompletas": 246,
+    "falta_objeto": 220,
+    "falta_prazo": 235,
+    "falta_pagina": 110
   },
-  "sem_prazo": 240,
-  "goias_ou_nacional": 117,
-  "nunca_investigados": 188,
-  "edicoes_de_diario_sem_ato": 16021,
+  "sem_prazo": 253,
+  "goias_ou_nacional": 130,
+  "nunca_investigados": 200,
+  "edicoes_de_diario_sem_ato": 16018,
   "por_uf": {
     "AL": 6,
     "AM": 3,
     "BA": 12,
-    "BR": 124,
+    "BR": 138,
     "CE": 7,
     "DF": 4,
     "ES": 2,
@@ -45,7 +45,7 @@
     "TO": 2
   },
   "reprovados_por_objeto": {
-    "total": 29,
+    "total": 30,
     "por_familia": {
       "busca_patrocinador": 3,
       "cache_artistico": 2,
@@ -54,6 +54,7 @@
       "empresa_ou_mercado": 1,
       "imovel_ou_mercado": 2,
       "parecerista_ou_juri": 1,
+      "resultado_de_habilitacao": 1,
       "servico_ao_orgao": 9,
       "uso_de_espaco_publico": 1
     },
@@ -231,6 +232,12 @@
         "titulo": "CHAMAMENTO PUBLICO PARA CREDENCIAMENTO DE INSTITUICOES PRIVADAS  COM OU SEM FINS LUCRATIVOS  ESPECIALIZADA NA ",
         "familia": "servico_ao_orgao",
         "motivo": "credenciamento para prestar serviço ao órgão, remunerado por procedimento executado: é contratação, não fomento"
+      },
+      {
+        "id": "bed7b83e02d2e24a00a5",
+        "titulo": "Divulgado resultado preliminar do edital de apresentações artísticas para o Natal do Bem 2026",
+        "familia": "resultado_de_habilitacao",
+        "motivo": "é o resultado, a contratação decorrente ou a prorrogação de um edital já julgado — a inscrição fechou"
       }
     ],
     "regra": "filtro de objeto (inconformidade.py): não é chamada aberta que repasse recurso a entidade — sai da fila e não vira alerta"
@@ -1074,15 +1081,15 @@
     "regra": "excluídas da fila por não estarem entre as 50 maiores cidades do estado; voltam em ROSA quando o titular aprovar a cidade"
   },
   "escopo": {
-    "nacional": 124,
+    "nacional": 138,
     "estadual": 57,
     "municipal": 144
   },
   "modo": {
-    "completo": 139,
+    "completo": 153,
     "leve": 186
   },
-  "marcados_para_ia": 240,
+  "marcados_para_ia": 253,
   "regra": "a IA de domingo executa esta fila na ordem; a varredura imediata percorre os mesmos itens e emite parecer de cada um",
   "itens": [
     {
@@ -2635,56 +2642,6 @@
       "selo_validacao": "nao_verificada"
     },
     {
-      "id": "0ddd68c9faca99e754fe",
-      "titulo": "Chamamento Público Nº 2026.09.01.01-PMI/SME - Seleção de OSC para Educação Infantil Prefeitura Municipal de Iguatu Aceita:   organizações da",
-      "uf": null,
-      "area": "educacao",
-      "fonte": "Piloto - Espião — busca aberta no terceiro setor",
-      "situacao": "possivel",
-      "sem_prazo": true,
-      "faltam": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Território",
-        "Esfera",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "link_oficial": "https://capitaai.com.br/captacao/chamamento-publico-2026090101pmisme-selecao-osc-educacao-infantil-pref-mwyd3o",
-      "link_anuncio": "https://capitaai.com.br/captacao/chamamento-publico-2026090101pmisme-selecao-osc-educacao-infantil-pref-mwyd3o",
-      "anuncio_e_vetor": false,
-      "motivo": "sem prazo de inscrição confirmado",
-      "prioridade": 0,
-      "ja_investigado": false,
-      "escopo": "nacional",
-      "cidade": null,
-      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
-      "modo": "completo",
-      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
-      "minimas": {
-        "exigidas": [
-          "Objeto",
-          "Prazo de inscrição",
-          "Página oficial do edital"
-        ],
-        "tem": [
-          "Página oficial do edital"
-        ],
-        "faltam": [
-          "Objeto",
-          "Prazo de inscrição"
-        ],
-        "completa": false
-      },
-      "selo_validacao": "nao_verificada"
-    },
-    {
       "id": "0fe1b4e2ffca86971609",
       "titulo": "Chamamento Público nº 0001/2026-5688 Centralizadora Nacional Contratações Aceita:   organizações da sociedade civil Prazo:  28/09/2026 (1d) ",
       "uf": null,
@@ -2761,7 +2718,7 @@
       "anuncio_e_vetor": false,
       "motivo": "sem prazo de inscrição confirmado",
       "prioridade": 0,
-      "ja_investigado": false,
+      "ja_investigado": true,
       "escopo": "nacional",
       "cidade": null,
       "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
@@ -3128,6 +3085,154 @@
         "faltam": [
           "Objeto",
           "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "647bacd91908be74d5ff",
+      "titulo": "EXTRATO DE TERMO DE FOMENTO",
+      "uf": null,
+      "area": "cultura",
+      "fonte": "Diário Oficial da União",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": null,
+      "link_anuncio": "https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-735327825",
+      "anuncio_e_vetor": true,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "6d4e30ab99202f86a24d",
+      "titulo": "Estão abertas, até 17 de setembro, as inscrições para o  Edital  de Chamamento Público CONANDA/SNDCA nº 01/ 2026 , que selecionará  organiza",
+      "uf": null,
+      "area": "crianca_adolescente",
+      "fonte": "Piloto - Espião — busca aberta no terceiro setor",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://www.gov.br/mdh/pt-br/assuntos/noticias/2026/defeso-eleitoral/setembro/edital-seleciona-projetos-para-fortalecer-protecao-de-criancas-e-adolescentes",
+      "link_anuncio": "https://www.gov.br/mdh/pt-br/assuntos/noticias/2026/defeso-eleitoral/setembro/edital-seleciona-projetos-para-fortalecer-protecao-de-criancas-e-adolescentes",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "dad0d1baa214f9ba880a",
+      "titulo": "EXTRATO DE TERMO DE FOMENTO",
+      "uf": null,
+      "area": "cultura",
+      "fonte": "Diário Oficial da União",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": null,
+      "link_anuncio": "https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-735200691",
+      "anuncio_e_vetor": true,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
         ],
         "completa": false
       },
@@ -6032,6 +6137,552 @@
       "selo_validacao": "nao_verificada"
     },
     {
+      "id": "196514ae3146c661d6b1",
+      "titulo": "EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA",
+      "uf": null,
+      "area": "outros",
+      "fonte": "Diário Oficial da União",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": null,
+      "link_anuncio": "https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-735202921",
+      "anuncio_e_vetor": true,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "2678f85ddb190162f536",
+      "titulo": "Zurich Seguros abre edital nacional para apoiar projetos sociais via leis de incentivo fiscal",
+      "uf": null,
+      "area": "outros",
+      "fonte": "ABCR — Associação Brasileira de Captadores",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://captadores.org.br/editais/zurich-seguros-abre-edital-nacional-para-apoiar-projetos-sociais-via-leis-de-incentivo-fiscal",
+      "link_anuncio": "https://captadores.org.br/editais/zurich-seguros-abre-edital-nacional-para-apoiar-projetos-sociais-via-leis-de-incentivo-fiscal",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "4fb57d5221ae03621c7b",
+      "titulo": "Bússola Social vai promover webinar sobre como transformar gestão nas OSCs e captar mais recursos",
+      "uf": null,
+      "area": "outros",
+      "fonte": "ABCR — Associação Brasileira de Captadores",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://captadores.org.br/noticias/gerais/bussola-social-vai-promover-webinar-sobre-como-transformar-gestao-nas-oscs-e-captar-mais-recursos",
+      "link_anuncio": "https://captadores.org.br/noticias/gerais/bussola-social-vai-promover-webinar-sobre-como-transformar-gestao-nas-oscs-e-captar-mais-recursos",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "5637793103ae95c3ab74",
+      "titulo": "5º Edital de Apoio à Filantropia Comunitária seleciona 25 campanhas para o Dia de Doar 2025",
+      "uf": null,
+      "area": "outros",
+      "fonte": "ABCR — Associação Brasileira de Captadores",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://captadores.org.br/abcr/5o-edital-de-apoio-a-filantropia-comunitaria-seleciona-25-campanhas-para-o-dia-de-doar-2025",
+      "link_anuncio": "https://captadores.org.br/abcr/5o-edital-de-apoio-a-filantropia-comunitaria-seleciona-25-campanhas-para-o-dia-de-doar-2025",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "7f38f074dd3050937b4d",
+      "titulo": "EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA",
+      "uf": null,
+      "area": "outros",
+      "fonte": "Diário Oficial da União",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": null,
+      "link_anuncio": "https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-735221642",
+      "anuncio_e_vetor": true,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "84ffe85d2404d51e0142",
+      "titulo": "chamada vai selecionar projetos sociais",
+      "uf": null,
+      "area": "outros",
+      "fonte": "ABCR — Associação Brasileira de Captadores",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://www.zurich.com.br/leis-de-incentivo-2026",
+      "link_anuncio": "https://www.zurich.com.br/leis-de-incentivo-2026",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "9910e0c5d4d7c9347422",
+      "titulo": "EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA Nº 7 /2026",
+      "uf": null,
+      "area": "outros",
+      "fonte": "Diário Oficial da União",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": null,
+      "link_anuncio": "https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-n-7-/2026-735243117",
+      "anuncio_e_vetor": true,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "aada3c74210262b72f9d",
+      "titulo": "EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA Nº 1.2026/AGEDOCE",
+      "uf": null,
+      "area": "outros",
+      "fonte": "Diário Oficial da União",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": null,
+      "link_anuncio": "https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-n-1.2026/agedoce-735219338",
+      "anuncio_e_vetor": true,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "e4270e7f7d3d0dc87722",
+      "titulo": "Organização Internacional para as Migrações abre edital para projetos comunitários na Amazônia",
+      "uf": null,
+      "area": "outros",
+      "fonte": "ABCR — Associação Brasileira de Captadores",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://captadores.org.br/editais/organizacao-internacional-para-as-migracoes-abre-edital-para-projetos-comunitarios-na-amazonia",
+      "link_anuncio": "https://captadores.org.br/editais/organizacao-internacional-para-as-migracoes-abre-edital-para-projetos-comunitarios-na-amazonia",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "0435170ee369be5229e7",
+      "titulo": "Zurich Seguros abre edital nacional para apoiar projetos sociais via leis de incentivo fiscal",
+      "uf": null,
+      "area": "outros",
+      "fonte": "ABCR — Associação Brasileira de Captadores",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://captadores.org.br/editais/zurich-seguros-abre-edital-nacional-para-apoiar-projetos-sociais-via-leis-de-incentivo-fiscal",
+      "link_anuncio": "https://captadores.org.br/editais/zurich-seguros-abre-edital-nacional-para-apoiar-projetos-sociais-via-leis-de-incentivo-fiscal",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
+      "id": "7004f787fe4771679ac2",
+      "titulo": "EC/Fiocruz contrata Especialista Sênior em Captação de Recursos e Parcerias",
+      "uf": null,
+      "area": "outros",
+      "fonte": "ABCR — Associação Brasileira de Captadores",
+      "situacao": "possivel",
+      "sem_prazo": true,
+      "faltam": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "link_oficial": "https://captadores.org.br/vagas/ec-fiocruz-contrata-especialista-senior-em-captacao-de-recursos-e-parcerias-2",
+      "link_anuncio": "https://captadores.org.br/vagas/ec-fiocruz-contrata-especialista-senior-em-captacao-de-recursos-e-parcerias-2",
+      "anuncio_e_vetor": false,
+      "motivo": "sem prazo de inscrição confirmado",
+      "prioridade": 0,
+      "ja_investigado": false,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Página oficial do edital"
+        ],
+        "faltam": [
+          "Objeto",
+          "Prazo de inscrição"
+        ],
+        "completa": false
+      },
+      "selo_validacao": "nao_verificada"
+    },
+    {
       "id": "c5be5b3ffd220f988d84",
       "titulo": "15:32 \n                   \n                   Requerimentos, títulos de cidadania e utilidades públicas são aprovados em bloco",
       "uf": "GO",
@@ -7732,6 +8383,48 @@
       ],
       "link_oficial": "https://www.ekloos.org/periferiasfortes",
       "link_anuncio": "https://captadores.org.br/editais/ongs-e-coletivos-perifericos-do-nordeste-podem-se-inscrever-em-edital-que-oferece-apoio-de-r-300-mil-ate-o-dia-12",
+      "anuncio_e_vetor": false,
+      "motivo": "informações incompletas",
+      "prioridade": 1,
+      "ja_investigado": true,
+      "escopo": "nacional",
+      "cidade": null,
+      "geo_motivo": "sem restrição geográfica declarada — vale para todo o Brasil",
+      "modo": "completo",
+      "instrucao": "automação completa: 12 itens, requisitos, documentos, pontuação, parecer e selo",
+      "minimas": {
+        "exigidas": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "tem": [
+          "Objeto",
+          "Prazo de inscrição",
+          "Página oficial do edital"
+        ],
+        "faltam": [],
+        "completa": true
+      },
+      "selo_validacao": "validada"
+    },
+    {
+      "id": "0ddd68c9faca99e754fe",
+      "titulo": "Chamamento Público Nº 2026.09.01.01-PMI/SME - Seleção de OSC para Educação Infantil Prefeitura Municipal de Iguatu Aceita:   organizações da",
+      "uf": null,
+      "area": "educacao",
+      "fonte": "Piloto - Espião — busca aberta no terceiro setor",
+      "situacao": "aberta",
+      "sem_prazo": false,
+      "faltam": [
+        "Resultado",
+        "Prazo de recurso",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "link_oficial": "https://capitaai.com.br/captacao/chamamento-publico-2026090101pmisme-selecao-osc-educacao-infantil-pref-mwyd3o",
+      "link_anuncio": "https://capitaai.com.br/captacao/chamamento-publico-2026090101pmisme-selecao-osc-educacao-infantil-pref-mwyd3o",
       "anuncio_e_vetor": false,
       "motivo": "informações incompletas",
       "prioridade": 1,

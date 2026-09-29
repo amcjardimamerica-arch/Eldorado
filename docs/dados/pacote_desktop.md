@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-09-28
+# Pacote para o Claude Desktop — 2026-09-29
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
@@ -15,13 +15,17 @@ Ele lê com o seu IP e envia ao repositório. Motores atendidos:
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
-Nenhum motor em alerta.
+- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 2 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+    - abrir https://observatorio3setor.org.br/editais/ e procurar: edital, seleção de projetos, investimento social, responsabilidade social, patrocínio, incentivo fiscal
 
-## Etapa 3 — oportunidades aguardando ação externa (17)
+Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `dados/editais/`. Devolva em `dados/editais/coleta_navegador/<data>-motores.json` no formato `{"<id ou novo>": {"objeto":..., "inicio":..., "fim":..., "pagina_oficial":..., "observacao":...}}`.
+
+## Etapa 3 — oportunidades aguardando ação externa (20)
 
 - `3f4e0f749a5a6e40f2c4` — Edital prevê seleção de 58 apresentações artísticas para o Natal do Bem 2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/edital-preve-selecao-de-58-apresentacoes-artisticas-para-o-natal-do-bem-2026
 - `4d519a11c8b5c23bd8d5` — Termo de Fomento nº 01/2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf
 - `ee794628b50b5fde65f0` — Secult Goiás retifica cronograma do edital de apresentações artísticas para o Natal do Bem · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/secult-goias-retifica-cronograma-do-edital-de-apresentacoes-artisticas-para-o-natal-do-bem-2026
+- `bed7b83e02d2e24a00a5` — Divulgado resultado preliminar do edital de apresentações artísticas para o Natal do Bem 2 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/divulgado-resultado-preliminar-do-edital-de-apresentacoes-artisticas-para-o-natal-do-bem-2026
 - `39e8067201494d565881` — EDITAL PPGFIL/IFILO/UFU Nº 1/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-ppgfil/ifilo/ufu-n-1/2026-733304995
 - `0fc96da3bfa4c9659ef3` — Secretaria de Fomento e Incentivo à Cultura · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.gov.br/cultura/pt-br/composicao/secretaria-de-economia-criativa-e-fomento-cultural
 - `bdea428602f61e41e70b` — Edital recebe 851 inscrições! · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://climaesociedade.org/ics-lanca-edital-para-projetos-de-comunicacao-com-acoes-de-enfrentamento-as-mudancas-climaticas
@@ -29,6 +33,8 @@ Nenhum motor em alerta.
 - `9107398972ccec107a35` — EDITAL DE INTIMAÇÃO · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-de-intimacao-733801219
 - `c1d5199dfe1753398903` — Edital nº 7/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-n-7/2026-723987102
 - `ca24a73387bc378e278a` — EXTRATO DE TERMO DE FOMENTO · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-734970912
+- `647bacd91908be74d5ff` — EXTRATO DE TERMO DE FOMENTO · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-735327825
+- `dad0d1baa214f9ba880a` — EXTRATO DE TERMO DE FOMENTO · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-735200691
 - `400d80f3c84332f2aa0c` — EDITAL DE Nº 126/IFAL, DE 18 DE SETEMBRO DE 2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-de-n-126/ifal-de-18-de-setembro-de-2026-733048195
 - `645f8bc3798ac55c4cfe` — Celebração de Termo de Colaboração para a consecução de finalidade de interesse público de · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/13646005000138/2024/44
 - `f733cd0539057acbdcbe` — A referente requisição se faz para abertura de edital de chamamento público , para contrat · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/88775390000112/2023/99
@@ -75,7 +81,6 @@ Para cada uma, abra a página oficial (nunca PNCP, diário ou portal de notícia
 - `cf0decbc589a29f50925` — Edital  nº. 4/2026 - Processo de chamamento público para eleição de  organizações   da   s · falta: Objeto, Prazo de inscrição · https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.gov.br%2Fmdh%2Fpt%2Dbr%2Fnavegue%2Dpor%2Dtemas%2Fparticipacao%2Dsocial%2Feditais&rut=5c647477f5cae553c847b300371447d660d3172f4262cb90c97c14e6630155c6
 - `d299704ec5532fe201b9` — Parque Bondinho Pão de Açúcar abre edital para projetos culturais incentivados · falta: Objeto, Prazo de inscrição · https://observatorio3setor.org.br/parque-bondinho-pao-de-acucar-abre-edital-para-projetos-culturais-incentivados
 - `affe8468951e01850caa` — Pnab 2026: Resultado da 2ª Fase de Heteroidentificação dos Editais · falta: Objeto, Prazo de inscrição · https://goias.gov.br/cultura/pnab-2026-resultado-da-2a-fase-de-heteroidentificacao-dos-editais
-- `0ddd68c9faca99e754fe` — Chamamento Público Nº 2026.09.01.01-PMI/SME - Seleção de OSC para Educação Infantil Prefei · falta: Objeto, Prazo de inscrição · https://capitaai.com.br/captacao/chamamento-publico-2026090101pmisme-selecao-osc-educacao-infantil-pref-mwyd3o
 - `0fe1b4e2ffca86971609` — Chamamento Público nº 0001/2026-5688 Centralizadora Nacional Contratações Aceita:   organi · falta: Objeto, Prazo de inscrição · https://capitaai.com.br/captacao/chamamento-publico-000120265688-centralizadora-nacional-contratacoes-vribf3
 - `26e43476f2b0bf81352e` — O  edital  estabelece critérios para a seleção de projetos de  organizações   da   socieda · falta: Objeto, Prazo de inscrição · https://www.gov.br/mulheres/pt-br/acesso-a-informacao/editais/2026/edital-justica-climatica
 - `66463f6465f409b34cea` — Edital de Projetos Fundação APERAM ACESITA – Social 15ª Edição Fundação APERAM ACESITA R$  · falta: Objeto, Prazo de inscrição · https://capitaai.com.br/captacao/edital-projetos-fundacao-aperam-acesita-social-edicao-fundacao-p5hvyn
@@ -84,6 +89,7 @@ Para cada uma, abra a página oficial (nunca PNCP, diário ou portal de notícia
 - `c9cef45043042a48d03c` — ContraFluxo – Chamada para organizações sociais de Curitiba (PR) que queiram transformar u · falta: Objeto, Prazo de inscrição · https://capitaai.com.br/captacao/contrafluxo-abre-chamada-organizacoes-sociais-curitiba-que-queiram-1kt0lj
 - `ca24a73387bc378e278a` — EXTRATO DE TERMO DE FOMENTO · falta: Objeto, Prazo de inscrição, Página oficial do edital
 - `d8a4963b33b40f02f011` — Chamada Pública Nº 2026.08.14.01 - Execução compartilhada de ações e serviços de apoio e m · falta: Objeto, Prazo de inscrição · https://capitaai.com.br/captacao/chamada-publica-2026081401-execucao-compartilhada-acoes-servicos-apoio-txuoet
+- `d94cd9a3d245f2393f2f` — Apoio Emergencial: Defensores de Direitos Humanos Fundo Brasil de Direitos Humanos Aceita: · falta: Objeto, Prazo de inscrição · https://capitaai.com.br/captacao/apoio-emergencial-defensores-direitos-humanos-fundo-brasil-direitos-ppj1gw
 
 ## Etapa 4½ — IA local (organização automática, sem gastar Claude)
 
