@@ -209,6 +209,16 @@ class TesteIntegridadePainel(unittest.TestCase):
         y = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
         self.assertIn('"0 6 * * 0"', y); self.assertIn("motor-gife|motor-patrocinio", y)
 
+    def test_opressores_mesma_contagem_em_todo_lugar(self):
+        """28/09: cartão 317/994, painel dos opressores 774 acesos e painel de busca 366 — três contagens diferentes."""
+        M = json.loads((ROOT / "docs/dados/motores.json").read_text(encoding="utf-8"))
+        L = json.loads((ROOT / "estado/opressores.json").read_text(encoding="utf-8"))["ligados"]
+        C = json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8"))["motores"]
+        self.assertEqual(M["resumo"]["total"], len(C)); self.assertEqual(M["resumo"]["ligados"], len(L))
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn('return m?m.proximidade==="ligado":false;', h, "aceso = ligado")
+        self.assertIn('id="mo-uf"', h, "filtro por estado dos motores opressores")
+
 
 if __name__ == "__main__":
     unittest.main()

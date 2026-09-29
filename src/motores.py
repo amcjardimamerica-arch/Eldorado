@@ -672,6 +672,14 @@ def run() -> dict:
     for x in motores:
         _grp.setdefault(_re.sub(r"[^a-z0-9]", "", f"{x.get('programa')}{x.get('orgao')}".lower())[:80], []).append(x)
     motores = [sorted(g, key=lambda y: (y.get("id") in _lig, not str(y.get("id", "")).startswith("nova-"), len(json.dumps(y, ensure_ascii=False))), reverse=True)[0] for g in _grp.values()]
+    # RESUMO RECALCULADO (28/09): o resumo vinha dos 366 originais; agora conta o catálogo inteiro, e "ligado" vale
+    # para todos (os repositórios incorporados não passavam pelo laço que marca os ligados)
+    for _m in motores:
+        if _m.get("id") in _lig:
+            _m["proximidade"] = "ligado"
+    resumo["total"] = len(motores); resumo["ligados"] = sum(1 for _m in motores if _m.get("id") in _lig)
+    resumo["ativas"] = resumo["ligados"]; resumo["inativas"] = resumo["total"] - resumo["ligados"]
+    resumo["repositorios_de_oportunidade"] = sum(1 for _m in motores if _m.get("tipo") == "repositorio_de_oportunidade")
     write_json(_cat_arq, {**resumo, "motores": motores})
     from .compacto import compactar
     pasta = ROOT / "docs/dados"; pasta.mkdir(parents=True, exist_ok=True)

@@ -1198,6 +1198,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <span class=meta style="font-weight:500" title="Cada edital ou fonte específica mapeada. Fica oculto até ser mencionado nos locais de publicação oficial/plataformas ou até a época prevista pelo histórico — então o motor é ativado automaticamente. Os motores regulares (diários, justiça, legislativo, plataformas) rodam sempre e capturam qualquer oportunidade.">— editais e fontes específicas, ativos só na época ou após menção</span></div>
   <div class="mets" id="mo-mets" style="margin:10px 0 8px"></div>
   <div class="bz-filtros" style="margin:6px 0 10px">
+    <select id="mo-uf"><option value="">Todos os estados</option></select>
     <select id="mo-area"><option value="">Todas as áreas de atuação</option></select>
     <select id="mo-natureza"><option value="">Pública e privada</option><option value="publica">Fonte pública</option><option value="privada">Fonte privada</option></select>
     <select id="mo-esfera"><option value="">Todas as esferas</option><option value="Município">Município</option><option value="Estado">Estado</option><option value="Brasil">Brasil</option><option value="Internacional">Internacional</option></select>
@@ -3080,7 +3081,8 @@ function mtSalva(e){try{localStorage.setItem("amc_motores",JSON.stringify(e));}c
    ativação AUTOMÁTICA do sistema (época prevista ou menção). Motores regulares
    nascem acesos. */
 function mtAtivo(id){const e=mtEstado();const man=(e.ativos||{})[id];if(man===true||man===false)return man;
-  const m=MT.find(x=>x.id===id);return m?!!m.ativa:true;}
+  // 28/09 (titular): aceso = LIGADO (disjuntor de 30 dias ou fonte permanente) — a marca 'ativa' do catálogo contava 774
+  const m=MT.find(x=>x.id===id);return m?m.proximidade==="ligado":false;}
 /* fósforo aceso SÓ enquanto a busca imediata está em curso: apaga quando o
    motor registra uma leitura posterior ao pedido, ou após 24 h sem resposta */
 function mtPendente(id){const e=mtEstado();const t=(e.imediatos||{})[id];if(!t)return null;
@@ -3198,15 +3200,17 @@ async function carregaMotores(){
 }
 function mtFiltrados(){
   const fa=$("mt-familia").value,sg=$("mt-segmento").value,uf=$("mt-uf").value,es=$("mt-estado").value,q=$("mt-busca").value.toLowerCase();
+  const muf=($("mo-uf")||{}).value||"";
   const ar=($("mo-area")||{}).value||"",nt=($("mo-natureza")||{}).value||"",ef=($("mo-esfera")||{}).value||"",stt=$("mo-status")?$("mo-status").value:"ativo",q2=(($("mo-busca")||{}).value||"").toLowerCase();
   return MT.filter(m=>(!fa||m.familia===fa)&&(!sg||m.segmento===sg)&&(!uf||m.uf===uf)
     &&(!es||(es==="bloqueada"?m.validacao==="bloqueada":es==="completo"?!m.faltam:!!m.faltam))
     &&(!q||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q))
+    &&(!muf||(muf==="BR"?(!m.uf||m.uf==="BR"):m.uf===muf))
     &&(!ar||m.area_atuacao===ar)&&(!nt||m.natureza===nt)&&(!ef||m.esfera===ef)
     &&(!stt||(stt==="ativo"?mtAtivo(m.id):!mtAtivo(m.id)))
     &&(!q2||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q2)));
 }
-window.moLimpar=function(){["mo-area","mo-natureza","mo-esfera"].forEach(id=>$(id).value="");$("mo-status").value="ativo";$("mo-busca").value="";desenhaMotores();};
+window.moLimpar=function(){["mo-uf","mo-area","mo-natureza","mo-esfera"].forEach(id=>$(id)&&($(id).value=""));$("mo-status").value="ativo";$("mo-busca").value="";desenhaMotores();};
 window.mtLimpar=function(){["mt-familia","mt-segmento","mt-uf","mt-estado"].forEach(id=>$(id).value="");$("mt-busca").value="";desenhaMotores();};
 window.mtSelecionar=function(on){mtFiltrados().forEach(m=>on?mtSel.add(m.id):mtSel.delete(m.id));desenhaMotores();};
 window.mtToggle=function(id){mtSel.has(id)?mtSel.delete(id):mtSel.add(id);$("mt-sel").textContent=`${mtSel.size} selecionado(s)`;};
@@ -4497,7 +4501,7 @@ function desenhaMotores(){
   if(!$("mt-lista"))return;
   const R=MT._resumo||{};
   const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>`;
-  $("mt-mets").innerHTML=[[IC("#0E2A55"),R.total??MT.length,"Pontos de captação"],[IC("#1E7E4B"),R.completos??0,"Com os 12 itens"],
+  $("mt-mets").innerHTML=[[IC("#0E2A55"),(MT._plat||[]).length+(MT._of||[]).length,"Motores de busca"],[IC("#1E7E4B"),R.completos??0,"Com os 12 itens"],
     [IC("#C05E00"),(R.media_camadas??0).toFixed?R.media_camadas.toFixed(1):R.media_camadas,"Média de camadas obtidas"],
     [IC("#7B4BE0"),MT.filter(m=>m.validacao==="bloqueada").length,"Páginas bloqueadas"]]
     .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
@@ -4506,6 +4510,10 @@ function desenhaMotores(){
   enche("mt-familia",[...new Set(MT.map(m=>m.familia))].sort());
   enche("mt-segmento",[...new Set(MT.map(m=>m.segmento))].sort());
   enche("mt-uf",[...new Set(MT.map(m=>m.uf).filter(Boolean))].sort());
+  if($("mo-uf")){const s=$("mo-uf"), v0=s.value, n={}; MT.forEach(m=>{const k=(!m.uf||m.uf==="BR")?"BR":m.uf; n[k]=(n[k]||0)+1;});
+    s.length=0; const o0=document.createElement("option"); o0.value=""; o0.textContent=`Todos os estados (${MT.length})`; s.appendChild(o0);
+    Object.keys(n).sort((a,b)=>a==="GO"?-1:b==="GO"?1:a==="BR"?-1:b==="BR"?1:a.localeCompare(b)).forEach(k=>{const o=document.createElement("option"); o.value=k; o.textContent=`${k==="BR"?"Nacional":k} (${n[k]})`; s.appendChild(o);});
+    s.value=v0; if(!s.dataset.lig){ s.dataset.lig=1; s.addEventListener("change",()=>desenhaMotores()); }}
   if($("mo-area")){const s=$("mo-area");const v0=s.value;s.length=1;
     (D.areas_canonicas||Object.keys(D.areas||{})).map(a=>[a,rotArea0(a)]).sort((x,y)=>x[1].localeCompare(y[1],"pt"))
       .forEach(([a,r])=>{const o=document.createElement("option");o.value=a;o.textContent=r;s.appendChild(o);});s.value=v0;}
