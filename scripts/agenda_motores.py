@@ -85,6 +85,8 @@ def recuperar(agora_utc=None) -> list[str]:
                 break
         if not devido or agora - devido > timedelta(days=(a.get("cadencia_dias") or 1) + 0.5):
             continue
+        if mid.replace("plat-", "") not in ult:
+            continue            # motor que o painel não acompanha: sem como saber se rodou — fica só com o horário exato
         u = ult.get(mid.replace("plat-", ""))
         try:
             ja = u and datetime.fromisoformat(str(u).replace("Z", "+00:00")) >= devido
