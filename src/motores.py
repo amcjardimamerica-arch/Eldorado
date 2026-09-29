@@ -649,7 +649,24 @@ def run() -> dict:
     _cat_arq = ROOT / "biblioteca_alexandria/fontes/motores.json"
     _ant = (load_json(_cat_arq) or {}).get("motores", []) if _cat_arq.exists() else []
     _ids = {x.get("id") for x in motores}
-    motores = motores + [x for x in _ant if x.get("id") not in _ids]
+    def _neutro(x: dict) -> dict:
+        # 28/09: repositórios de oportunidade (op-/nova-) não nascem com os campos deste gerador; sem eles o gerador
+        # quebrava (KeyError 'segmento', 'camadas'…) e o calendário de TODOS os motores parou em 27/09
+        x = dict(x)
+        x.setdefault("segmento", ""); x.setdefault("familia", "Oportunidade com seleção"); x.setdefault("programa", x.get("id"))
+        x.setdefault("orgao", ""); x.setdefault("tipo", "repositorio_de_oportunidade"); x.setdefault("nivel", None)
+        x["goias"] = bool(x.get("goias") or x.get("uf") == "GO")
+        for k in ("pagina", "confianca_pagina", "ultima_leitura", "http", "regime_prazo", "certeza_prazo", "area_atuacao",
+                  "natureza", "esfera", "motivo_status", "em_epoca", "proximidade", "ultimo_edital", "proxima_data"):
+            x.setdefault(k, None)
+        x.setdefault("validacao", "não lida ainda"); x.setdefault("achados", 0); x.setdefault("obtidas", 0); x.setdefault("ativa", True)
+        x["camadas"] = x.get("camadas") if isinstance(x.get("camadas"), list) else []
+        x["camadas"] = [{"ok": bool(c.get("ok")), "valor": c.get("valor")} for c in x["camadas"] if isinstance(c, dict)]
+        x["mencoes"] = [mm for mm in (x.get("mencoes") or []) if isinstance(mm, dict) and mm.get("titulo")]
+        d0 = x.get("diagnostico") if isinstance(x.get("diagnostico"), dict) else {}
+        x["diagnostico"] = {"faltam": d0.get("faltam") or [], "causa": d0.get("causa"), "acao": d0.get("acao"), "estado": d0.get("estado") or "repositorio"}
+        return x
+    motores = motores + [_neutro(x) for x in _ant if x.get("id") not in _ids]
     _lig = set(((load_json(ROOT / "estado/opressores.json") or {}).get("ligados") or {}).keys()) if (ROOT / "estado/opressores.json").exists() else set()
     _grp = {}
     for x in motores:
@@ -667,7 +684,7 @@ def run() -> dict:
                            "ia": len(r.get("ia", [])), "conselho": bool(r.get("conselho")),
                            "proxima_ia_em": (3 - (r.get("dias") or 0) % 3) % 3 or 3,
                            "itens_ia": len(r.get("itens", {}))} if r else None)
-    leve = [{k: m[k] for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias",
+    leve = [{k: m.get(k) for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias",
                               "pagina", "confianca_pagina", "validacao", "ultima_leitura", "achados", "http",
                               "regime_prazo", "certeza_prazo", "obtidas", "area_atuacao", "natureza", "esfera",
                               "ativa", "motivo_status", "em_epoca", "proximidade")}
@@ -696,6 +713,15 @@ def run() -> dict:
             v = _val.get(_nt(n.get("titulo")))
             n["opressor"] = {"id": o["id"], "ligado": o["id"] in _lig, "leitura": o.get("validacao")} if o else None
             n["validacao"] = {"decisao": v.get("decisao"), "motivo": str(v.get("motivo") or "")[:160], "prazo": v.get("prazo"), "fonte_oficial": v.get("fonte_oficial")} if v else None
+    except Exception:
+        pass
+    # AGENDA DE CADA MOTOR NO PAINEL (28/09): dia fora da agenda não é "não executado"
+    try:
+        _ag = load_json(ROOT / "config/agenda_motores.json"); _ag = _ag.get("motores") or _ag
+        for _p in plataformas + oficiais:
+            _a = _ag.get(_p.get("id")) or _ag.get("plat-" + str(_p.get("id"))) or {}
+            if isinstance(_a, dict) and _a.get("dias"):
+                _p["agenda_dias"] = _a.get("dias"); _p["agenda_hora"] = _a.get("horarios_brt")
     except Exception:
         pass
     pac["plataformas"] = plataformas; pac["oficiais"] = oficiais; pac["novas"] = resumo["novas_sem_referencia"]

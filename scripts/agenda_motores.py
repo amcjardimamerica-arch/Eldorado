@@ -40,10 +40,58 @@ def devidos(agora_utc: datetime | None = None) -> list[str]:
     return saida
 
 
+def _ultimas_leituras() -> dict:
+    """última leitura de cada motor, do painel (docs/dados/motores.json): id sem o prefixo plat- → ISO UTC."""
+    try:
+        M = json.loads((RAIZ / "docs/dados/motores.json").read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return {str(p.get("id")).replace("plat-", ""): p.get("ultima_leitura") for p in (M.get("plataformas") or []) + (M.get("oficiais") or [])}
+
+
+def recuperar(agora_utc=None) -> list[str]:
+    """RECUPERAÇÃO DO HORÁRIO PERDIDO (28/09): o GitHub entrega só 8 a 12 das 48 execuções horárias por dia, e o motor
+    só saía se a execução caísse EXATAMENTE no seu horário — perdia o dia inteiro. Agora, em cada execução que acontece,
+    sai todo motor cujo último horário devido (dentro da cadência) já passou e que não rodou desde então."""
+    ag = json.loads((RAIZ / "config/agenda_motores.json").read_text(encoding="utf-8"))
+    ag = ag.get("motores") or ag
+    agora = (agora_utc or datetime.now(timezone.utc))
+    brt = agora - timedelta(hours=3)
+    ult = _ultimas_leituras(); saida = []
+    for mid, a in ag.items():
+        if not isinstance(a, dict) or a.get("coleta") == "local" or a.get("horarios_brt") in (None, "contínuo"):
+            continue
+        horas = sorted([h.strip() for h in str(a["horarios_brt"]).split(",") if ":" in h], reverse=True)
+        d = str(a.get("dias") or "todos"); devido = None
+        for atras in range(0, 8):
+            dia = (brt - timedelta(days=atras)).date()
+            if d.startswith("dia "):
+                if dia.day != int(d.split()[1]): continue
+            elif d != "todos" and DIAS[dia.weekday()] not in d.split(","):
+                continue
+            for h in horas:
+                hh, mm = (int(x) for x in h.split(":"))
+                slot = datetime(dia.year, dia.month, dia.day, hh, mm, tzinfo=timezone.utc) + timedelta(hours=3)   # BRT → UTC
+                if slot <= agora:
+                    devido = slot; break
+            if devido:
+                break
+        if not devido or agora - devido > timedelta(days=(a.get("cadencia_dias") or 1) + 0.5):
+            continue
+        u = ult.get(mid.replace("plat-", ""))
+        try:
+            ja = u and datetime.fromisoformat(str(u).replace("Z", "+00:00")) >= devido
+        except ValueError:
+            ja = False
+        if not ja:
+            saida.append(mid)
+    return saida
+
+
 if __name__ == "__main__":
     if "--tudo" in sys.argv:
         ag = json.loads((RAIZ / "config/agenda_motores.json").read_text(encoding="utf-8"))["motores"]
         for mid, a in sorted(ag.items(), key=lambda kv: kv[1]["horarios_brt"]):
             print(f"{a['horarios_brt']:12} {a['dias']:18} {mid}")
     else:
-        print(",".join(devidos()))
+        print(",".join(sorted(set(devidos()) | set(recuperar()))))

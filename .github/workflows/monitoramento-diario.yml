@@ -5,6 +5,7 @@ on:
     # agenda-motores (config/agenda_motores.json). Ficam os blocos que não são de motor.
     - cron: "0 6 * * 1-6" # 03h BRT · completude, edições, regramentos (seg–sáb)
     - cron: "0 9 * * *"   # 06h BRT · relatório e painel
+    - cron: "0 6 * * 0"   # 03h BRT de DOMINGO · motores de empresas (29 e 30) — o agendamento tinha sumido (28/09)
     - cron: "30 6 1 * *"  # 03h30 BRT do DIA 1 · documentos das associações (certidões mensais, expurgo > 90 dias)
   workflow_dispatch:
     inputs:
@@ -247,7 +248,8 @@ jobs:
         run: |
           pip install pypdf --quiet
           echo "bloco=$MOTORES_BLOCO" > estado/log_empresas.txt
-          if [ "$MOTORES_BLOCO" = "empresas" ]; then
+          # 28/09: chamados pelo agendador ("manual"), os motores de empresas também rodam — antes só o domingo 06h UTC os acionava, e ele não existia mais
+          if [ "$MOTORES_BLOCO" = "empresas" ] || echo ",$MOTORES_FONTES," | grep -qE ",(motor-gife|motor-patrocinio),"; then
             # SEMANAL (domingo 03h BRT): reavalia toda a base + agrega pelo menos 5 empresas novas
             # escolhidas por potencial, com histórico de 5 anos; parcerias declaradas em sites de
             # associações, Sebrae e entidades empresariais do estado. O log vai para o repositório.

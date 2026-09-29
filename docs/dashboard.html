@@ -467,6 +467,7 @@ box-shadow:0 1px 3px #0002}
 #aviso-versao{position:fixed;right:16px;bottom:16px;z-index:50;background:#0E2A55;color:#fff;font-size:12.5px;padding:8px 12px;border-radius:10px;box-shadow:0 4px 14px #0003}
 #aviso-versao a{color:#FFD27A;font-weight:700;margin-left:6px}#aviso-versao a.fechar{color:#fff;opacity:.7;text-decoration:none;margin-left:10px}
 .tab-prazos{border-collapse:collapse;width:100%;font-size:12px}.tab-prazos th{text-align:left;font-size:11px;color:var(--suave);border-bottom:1px solid #E6EAF0;padding:4px 6px;position:sticky;top:0;background:#fff}.tab-prazos td{border-bottom:1px solid #F0F3F7;padding:4px 6px;vertical-align:top}
+.bdia.mtd-fora{opacity:.55;background:#FAFBFC}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -4536,7 +4537,7 @@ function desenhaMotores(){
   /* calendário do motor — mesmo desenho do Mapa de oportunidades, um por motor */
   const SEMd=["DOM","SEG","TER","QUA","QUI","SEX","SAB"];
   const mesRef=`${HOJE.getFullYear()}-${String(HOJE.getMonth()+1).padStart(2,"0")}`;
-  const ROT={cinza:"não executado",futuro:"a executar",azul:"funcionou, sem oportunidade",amarelo:"achou — faltam camadas",verde:"12 itens obtidos",vermelho:"falha / inoperante"};
+  const ROT={fora:"fora da agenda deste motor",cinza:"não executado",futuro:"a executar",azul:"funcionou, sem oportunidade",amarelo:"achou — faltam camadas",verde:"12 itens obtidos",vermelho:"falha / inoperante"};
   /* CALENDÁRIO INDIVIDUAL DO MOTOR — cada motor tem o seu, com navegação de mês */
   window._mtMes=window._mtMes||{};
   const calendarioMotor=o=>{const off=window._mtMes[o.id]||0;const ref=new Date(HOJE.getFullYear(),HOJE.getMonth()+off,1);
@@ -4546,14 +4547,18 @@ function desenhaMotores(){
     const reg={};(o.dias||[]).forEach(x=>reg[x.d]=x);
     const hojeISO=HOJE.toISOString().slice(0,10);
     const nDias=new Date(ref.getFullYear(),ref.getMonth()+1,0).getDate();
-    const dias=[...Array(nDias)].map((_,i)=>{const dd=`${mesId}-${String(i+1).padStart(2,"0")}`;return reg[dd]||{d:dd,cor:dd<=hojeISO?"cinza":"futuro",n:0,t:null};});
+    // 28/09: dia que não está na agenda do motor aparece como "fora da agenda" (não é falha)
+    const _DS=["dom","seg","ter","qua","qui","sex","sab"], _ag=String(o.agenda_dias||"todos");
+    const _naAgenda=dd=>{ if(_ag==="todos") return true; if(_ag.startsWith("dia ")) return Number(dd.slice(8,10))===Number(_ag.split(" ")[1]); return _ag.split(",").includes(_DS[new Date(dd+"T12:00:00").getDay()]); };
+    const dias=[...Array(nDias)].map((_,i)=>{const dd=`${mesId}-${String(i+1).padStart(2,"0")}`; const r0=reg[dd]||{d:dd,cor:dd<=hojeISO?"cinza":"futuro",n:0,t:null};
+      return (r0.cor==="cinza"&&!_naAgenda(dd))?{...r0,cor:"fora"}:r0;});
     const meses=[...new Set([...(o.dias||[]).map(x=>x.d.slice(0,7)),mesId])];
     return `<div class="mt-calt"><span>Calendário do motor — ${MES[ref.getMonth()]} ${ref.getFullYear()}</span>
       <span class="mt-calnav"><button onclick="mtMesMotor('${esc(o.id)}',-1)" ${meses.includes(`${ref.getFullYear()}-${String(ref.getMonth()).padStart(2,"0")}`)||off>0?"":"disabled"} title="mês anterior">◂</button><button onclick="mtMesMotor('${esc(o.id)}',1)" ${off<0?"":"disabled"} title="mês seguinte">▸</button></span></div>
     <div class="bgrade mt-cal">${dias.map(x=>{const dt=new Date(x.d+"T00:00:00");
       return `<div class="bdia mtd-${x.cor}" title="${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} · ${ROT[x.cor]||x.cor}${x.http?" · HTTP "+x.http:""}${x.n?" · "+x.n+" achado(s)":""}${x.t?" · "+esc(x.t):""}">
         <div class=n>${dt.getDate()}<span class=sem>${SEMd[dt.getDay()]}</span></div>
-        <div class="s">${x.cor==="amarelo"?"Parcial":x.cor==="verde"?"12 itens":x.cor==="azul"?"Sem oport.":x.cor==="vermelho"?"Falha":x.cor==="futuro"?"—":"Não exec."}</div>
+        <div class="s">${x.cor==="amarelo"?"Parcial":x.cor==="verde"?"12 itens":x.cor==="azul"?"Sem oport.":x.cor==="vermelho"?"Falha":x.cor==="futuro"?"—":x.cor==="fora"?"Fora da agenda":"Não exec."}</div>
         ${x.t?`<div class=mt-trecho title="${esc(x.t)}">${esc(x.t.slice(0,26))}…</div>`:""}</div>`;}).join("")}</div>
     `;};   /* 28/09 (titular): as "últimas 3" por dia repetiam a mesma oportunidade — a lista única fica em "Oportunidades encontradas" */
   const trintaDias=calendarioMotor;

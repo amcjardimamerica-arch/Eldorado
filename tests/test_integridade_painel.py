@@ -197,6 +197,18 @@ class TesteIntegridadePainel(unittest.TestCase):
         for f in ("desenhaAbertasFluxo", "abrePrazos"):
             self.assertIn(f"window.{f}=", h, f"{f} precisa estar no escopo global (é chamada pela tela)")
 
+    def test_motores_nao_param_por_agenda_perdida(self):
+        """28/09: o gerador dos motores quebrava com os repositórios de oportunidade (KeyError) e o calendário de TODOS
+        parou em 27/09; o agendador perdia o dia quando o GitHub pulava o horário exato."""
+        import importlib.util
+        src = (ROOT / "src/motores.py").read_text(encoding="utf-8")
+        self.assertIn("def _neutro(x: dict) -> dict:", src)
+        self.assertIn("{k: m.get(k) for k in (", src)
+        sp = importlib.util.spec_from_file_location("ag", ROOT / "scripts/agenda_motores.py"); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m)
+        self.assertTrue(hasattr(m, "recuperar"))
+        y = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
+        self.assertIn('"0 6 * * 0"', y); self.assertIn("motor-gife|motor-patrocinio", y)
+
 
 if __name__ == "__main__":
     unittest.main()
