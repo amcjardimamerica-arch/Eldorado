@@ -49,9 +49,9 @@
    },
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 166,
-    "com_resultado": 90,
-    "achados": 180,
+    "tentativas": 167,
+    "com_resultado": 91,
+    "achados": 182,
     "missao": "aposta"
    },
    {
@@ -59,13 +59,6 @@
     "tentativas": 4,
     "com_resultado": 2,
     "achados": 3,
-    "missao": "aposta"
-   },
-   {
-    "consulta": "conanda abre edital de r$ 6 milhões para organizações da sociedade civ",
-    "tentativas": 2,
-    "com_resultado": 1,
-    "achados": 2,
     "missao": "aposta"
    },
    {
@@ -77,6 +70,13 @@
    },
    {
     "consulta": "edital cultura organizações da sociedade civil inscrições goiás",
+    "tentativas": 3,
+    "com_resultado": 1,
+    "achados": 2,
+    "missao": "aposta"
+   },
+   {
+    "consulta": "conanda abre edital de r$ 6 milhões para organizações da sociedade civ",
     "tentativas": 3,
     "com_resultado": 1,
     "achados": 2,
@@ -139,13 +139,6 @@
     "missao": "aposta"
    },
    {
-    "consulta": "instituto \"edital\" \"osc\" goiás 2026",
-    "tentativas": 10,
-    "com_resultado": 1,
-    "achados": 1,
-    "missao": "descobrir"
-   },
-   {
     "consulta": "conanda abre edital de r$ 6 milhões para",
     "tentativas": 864,
     "com_resultado": 82,
@@ -153,8 +146,15 @@
     "missao": "resgate"
    },
    {
+    "consulta": "instituto \"edital\" \"osc\" goiás 2026",
+    "tentativas": 12,
+    "com_resultado": 1,
+    "achados": 1,
+    "missao": "descobrir"
+   },
+   {
     "consulta": "grupo empresarial instituto social chamada de projetos 2026",
-    "tentativas": 15,
+    "tentativas": 16,
     "com_resultado": 1,
     "achados": 1,
     "missao": "descobrir"
@@ -433,9 +433,9 @@
    "qual"
   ],
   "termos_ruins": [
-   "fundações",
-   "institutos",
    "empresariais",
+   "institutos",
+   "fundações",
    "economia",
    "credenciamento",
    "empresas",
@@ -446,7 +446,7 @@
   ],
   "rendimento_das_buscas": {
    "resgate": {
-    "tentativas": 20425,
+    "tentativas": 20426,
     "com_resultado": 585,
     "taxa": 0.029
    },
@@ -456,22 +456,22 @@
     "taxa": 0.013
    },
    "prospectar": {
-    "tentativas": 5516,
+    "tentativas": 5517,
     "com_resultado": 14,
     "taxa": 0.003
    },
    "aposta": {
-    "tentativas": 4277,
-    "com_resultado": 104,
-    "taxa": 0.024
+    "tentativas": 4280,
+    "com_resultado": 105,
+    "taxa": 0.025
    },
    "descobrir": {
-    "tentativas": 128,
+    "tentativas": 131,
     "com_resultado": 2,
-    "taxa": 0.016
+    "taxa": 0.015
    }
   },
-  "consultas_aprendidas_em": "2026-09-29T21:01:01+00:00"
+  "consultas_aprendidas_em": "2026-09-29T21:02:13+00:00"
  },
  "atualizado_em": "2026-09-29T16:11:27+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
