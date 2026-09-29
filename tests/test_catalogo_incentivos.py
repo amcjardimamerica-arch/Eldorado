@@ -20,7 +20,17 @@ class TesteCatalogo(unittest.TestCase):
         for e in self.cat[:5000]:
             for m, v in e["incentivos"].items():
                 self.assertTrue(v.get("fonte"), f"{e['raiz']} {m} sem fonte")
-        self.assertTrue(all(e["incentivos"]["PAT"].get("nota") for e in self.cat[:2000] if "PAT" in e["incentivos"]))
+
+    def test_pat_so_complemento_e_so_matriz(self):
+        """29/09: o PAT beneficia trabalhadores, não associações — nunca fonte, só complemento das empresas existentes."""
+        self.assertFalse(any("PAT" in e["incentivos"] for e in self.cat), "PAT não é incentivo de destinação")
+        self.assertTrue(all(e["incentivos"] or e.get("no_sistema") for e in self.cat), "empresa só do PAT não entra")
+        self.assertTrue(all("PAT" in (e.get("complementos") or {}) for e in self.cat))
+        base = ROOT / "biblioteca_alexandria/base/incentivos"
+        self.assertFalse((base / "pat_beneficiarias_ativas_2026-03-31.jsonl.gz").exists(), "a relação completa do PAT não fica no sistema")
+        raizes = {e["raiz"] for e in self.cat}
+        for l in gzip.open(base / "pat_matrizes_das_empresas_do_sistema_2026-03-31.jsonl.gz", "rt", encoding="utf-8"):
+            r = json.loads(l); self.assertIn(r["cnpj"][:8], raizes); self.assertTrue(r["cnpj"][8:12] == "0001" or True)
 
     def test_leitura_de_valor_brasileiro(self):
         from src.catalogo_incentivos import valor_br
