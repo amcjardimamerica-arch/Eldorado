@@ -197,7 +197,10 @@ def run() -> dict:
                 record_edital_history(merged,previous)
                 existing[item["id"]]=merged
         except (HTTPError,URLError,OSError,ValueError) as exc:
-            report["fontes_falha"]+=1; report["falhas"].append({"fonte":source["id"],"erro":type(exc).__name__})
+            import traceback as _tb
+            _onde=(_tb.extract_tb(exc.__traceback__)[-1].name if exc.__traceback__ else "")
+            report["fontes_falha"]+=1; report["falhas"].append({"fonte":source["id"],"erro":type(exc).__name__,"mensagem":str(exc)[:160],
+                                                                "etapa":"leitura do site" if _onde in ("fetch","validate_public_https","open","redirect_request","read","getaddrinfo") else f"processamento ({_onde})"})   # 30/09
     gravar_oportunidades(existing)
     write_json(ROOT/"estado/ultima_execucao.json",report)
     write_json(queue_path,{"fontes":[],"consumido_em":now_iso()})
