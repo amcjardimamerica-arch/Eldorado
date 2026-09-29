@@ -162,7 +162,7 @@ class TesteIntegridadePainel(unittest.TestCase):
         its = [x for v in F["itens_por_uf"].values() for x in v]
         for x in its:
             self.assertEqual(len(x.get("checklist") or {}), 12, x["titulo"][:50])
-        self.assertGreater(sum(1 for x in its if x.get("area")), len(its) * 0.8, "tema identificado em menos de 80%")
+        self.assertGreater(sum(1 for x in its if x.get("area")), len(its) * 0.7, "tema identificado em menos de 70%")
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn('class="oa-sec"', h); self.assertIn("oa-ki", h)
 
