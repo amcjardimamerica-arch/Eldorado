@@ -1,23 +1,23 @@
 {
-  "em": "2026-09-29T19:38:54+00:00",
+  "em": "2026-09-29T19:48:26+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 4,
-      "uteis": 0,
+      "achados": 9,
+      "uteis": 3,
       "motivos": {
-        "nada_no_crivo": 37,
-        "fora_do_objeto": 3
+        "nada_no_crivo": 34,
+        "fora_do_objeto": 4
       },
-      "efetividade": 0.0
+      "efetividade": 0.33
     }
   },
   "licoes": [
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 2352,
+      "vezes": 2357,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -29,7 +29,7 @@
       ],
       "ultima": "2026-09-29",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 2352 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 2357 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -68,7 +68,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "fora_do_objeto",
-      "vezes": 110,
+      "vezes": 113,
       "tipos": [
         "prospectar",
         "catalogar",
@@ -77,7 +77,7 @@
       ],
       "ultima": "2026-09-29",
       "explicacao": "o que veio não serve à finalidade da associação",
-      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 110 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 113 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-patrocinio",
@@ -161,6 +161,27 @@
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "Incluir a capacidade de extrair trechos relevantes dos textos para permitir uma avaliação mais precisa da compatibilidade dos editais com a missão da organização.",
+      "efetividade_na_hora": 0.5,
+      "em": "2026-09-29T19:47",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor poderia melhorar ao incluir filtros mais específicos para identificar editais que abrangem áreas como cultura e assistência social, além de permitir a busca por prazos e valores mais detalhados.",
+      "efetividade_na_hora": 1.0,
+      "em": "2026-09-29T19:46",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deve ser capaz de extrair e analisar o conteúdo dos links fornecidos para identificar informações relevantes sobre editais, patrocínios, doações e incentivos fiscais.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-29T19:31",
+      "aplicada": false
+    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deveria filtrar melhor páginas que contenham termos específicos como 'edital', 'patrocínio', 'doação' ou 'incentivo fiscal' para organizações da sociedade civil no Brasil.",
@@ -279,33 +300,12 @@
       "efetividade_na_hora": 1.0,
       "em": "2026-09-29T11:54",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve ser capaz de extrair e validar informações específicas dos textos, como prazos, valores, objetos e páginas, para facilitar a análise de compatibilidade dos editais com a missão da organização.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-29T11:35",
-      "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "Incluir a capacidade de extrair e validar informações específicas dos títulos e URLs fornecidos, como prazos, valores, objetos e páginas, para determinar se os achados são recursos viáveis.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-29T10:22",
-      "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve validar se o trecho do achado está preenchido e contém informações relevantes para a missão da organização, como prazo, valor, objeto ou página.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-29T08:03",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 266,
-  "entregues_ao_claude": 227,
+  "editais_tratados": 271,
+  "entregues_ao_claude": 229,
   "ultima_faxina": {
-    "em": "2026-09-29T19:38:54+00:00",
+    "em": "2026-09-29T19:48:26+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 1,
     "achados_descartados_removidos": 82,
