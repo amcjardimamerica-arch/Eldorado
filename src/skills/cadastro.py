@@ -41,6 +41,16 @@ def _conhecidos() -> tuple[frozenset, frozenset]:
             nomes.add(norm(k))
     except Exception:
         pass
+    try:                                   # 29/09: catálogo único — Rouanet e Goyazes (PAT sozinho não é destinação a OSC)
+        with gzip.open(ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
+            for l in fh:
+                e = json.loads(l)
+                if "Rouanet" in e["incentivos"] or "Goyazes" in e["incentivos"]:
+                    nomes.add(norm(e.get("nome"))); cnpjs.add(str(e.get("raiz") or "")[:8])
+                    for g in (e["incentivos"].get("Goyazes") or {}).get("grafias") or []:
+                        nomes.add(norm(g))
+    except Exception:
+        pass
     nomes.discard(""); cnpjs.discard("")
     return frozenset(nomes), frozenset(cnpjs)
 
