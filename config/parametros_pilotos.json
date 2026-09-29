@@ -42,17 +42,10 @@
   "consultas_boas": [
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 83,
-    "com_resultado": 83,
-    "achados": 166,
+    "tentativas": 84,
+    "com_resultado": 84,
+    "achados": 168,
     "missao": "aposta"
-   },
-   {
-    "consulta": "patrocinadores festival goiânia 2026",
-    "tentativas": 9,
-    "com_resultado": 9,
-    "achados": 9,
-    "missao": "prospectar"
    },
    {
     "consulta": "fundação empresarial goiás edital projetos 2026",
@@ -111,6 +104,13 @@
     "missao": "aposta"
    },
    {
+    "consulta": "patrocinadores festival goiânia 2026",
+    "tentativas": 10,
+    "com_resultado": 9,
+    "achados": 9,
+    "missao": "prospectar"
+   },
+   {
     "consulta": "edital abre inscrições para rede memória",
     "tentativas": 164,
     "com_resultado": 82,
@@ -139,13 +139,6 @@
     "missao": "aposta"
    },
    {
-    "consulta": "qual setor ou região em minas gerais ainda não foi mapeado por editais",
-    "tentativas": 2,
-    "com_resultado": 1,
-    "achados": 1,
-    "missao": "aposta"
-   },
-   {
     "consulta": "qual é o potencial de editais de fomento para organizações da sociedad",
     "tentativas": 2,
     "com_resultado": 1,
@@ -158,6 +151,13 @@
     "com_resultado": 165,
     "achados": 165,
     "missao": "resgate"
+   },
+   {
+    "consulta": "qual setor ou região em minas gerais ainda não foi mapeado por editais",
+    "tentativas": 3,
+    "com_resultado": 1,
+    "achados": 1,
+    "missao": "aposta"
    },
    {
     "consulta": "edital assistência social organizações da sociedade civil inscrições g",
@@ -328,13 +328,13 @@
    },
    {
     "consulta": "fundação comunitária edital doações 2026",
-    "tentativas": 10,
+    "tentativas": 11,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "instituto empresarial edital projetos sociais 2026",
-    "tentativas": 8,
+    "tentativas": 9,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
@@ -363,13 +363,12 @@
    "goiânia",
    "fomento",
    "saúde",
-   "cacar",
    "motor",
+   "cacar",
    "doação",
    "apoiar",
    "conanda",
    "filantropia",
-   "fundo",
    "quais",
    "qual",
    "instituto"
@@ -386,27 +385,27 @@
     "taxa": 0.093
    },
    "cacar_oportunidade": {
-    "tentativas": 54,
+    "tentativas": 55,
     "com_resultado": 4,
-    "taxa": 0.074
+    "taxa": 0.073
    },
    "prospectar": {
-    "tentativas": 14,
+    "tentativas": 15,
     "com_resultado": 14,
-    "taxa": 1.0
+    "taxa": 0.933
    },
    "aposta": {
-    "tentativas": 107,
-    "com_resultado": 91,
-    "taxa": 0.85
+    "tentativas": 111,
+    "com_resultado": 92,
+    "taxa": 0.829
    },
    "descobrir": {
-    "tentativas": 112,
+    "tentativas": 114,
     "com_resultado": 2,
     "taxa": 0.018
    }
   },
-  "consultas_aprendidas_em": "2026-09-29T19:19:48+00:00"
+  "consultas_aprendidas_em": "2026-09-29T19:26:14+00:00"
  },
  "atualizado_em": "2026-09-29T16:11:27+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
