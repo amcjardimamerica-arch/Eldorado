@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-28T23:46:32+00:00",
+  "em": "2026-09-29T00:02:49+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-28T23:31:16+00:00",
+  "ultimo_voo": "2026-09-28T23:48:00+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,93 @@
     "empresas sem ficha": 66
   },
   "acumulado": {
-    "missoes": 277,
+    "missoes": 278,
     "validadas": 19,
     "parciais": 88,
-    "insuficientes": 119,
+    "insuficientes": 120,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 180,
+      "sim": 181,
       "nao": 24
     },
     "estrelas_de_ouro": 12,
     "fontes_novas_para_os_motores": 73,
-    "tempo_medio_min": 9.4
+    "tempo_medio_min": 9.5
   },
   "missoes": [
+    {
+      "em": "2026-09-28T23:48:00+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · SP (sorteio)",
+      "alvo": "Diário Oficial de Campinas (SP) 2026-09-11 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://portal-adm.campinas.sp.gov.br/sites/default/files/publicacoes-dom/dom/1919351424310514243119193527.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona um chamamento público para organizações da sociedade civil, relacionado à modernização da infraestrutura dos departamentos, o que indica uma oportunidade de fomento.",
+        "para_a_amc": "Para acessar, uma associação comunitária de Goiânia precisaria se inscrever no chamamento público, apresentar proposta alinhada ao objeto do edital e atender aos requisitos não especificados no texto.",
+        "proximo_passo": "Consultar os anexos mencionados para obter detalhes sobre os requisitos e a proposta necessária.",
+        "risco": "A falta de informações sobre prazo de inscrição, requisitos e destinação pode impedir a associação de se preparar adequadamente para o processo."
+      },
+      "erro": null,
+      "segundos": 889,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 4,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "257492042d91e5c020e5",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Modernização da infraestrutura dos departamentos",
+          "trecho": "MODERNIZAÇÃO DA INFRAESTRUTURA DOS DEPARTAMENTOS",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Campinas",
+          "trecho": "Prefeitura Municipal de Campinas",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Campinas",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Campinas",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3509502/2026-09-11/81c90d9ade889cbc7fe45c09b98e366b7fc872b6.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "parceiro",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-28T23:31:16+00:00",
       "modo": "validar",
@@ -2792,63 +2864,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-09-28T14:44:43+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "opressor sem leitura",
-      "alvo": "Fundação Banco do Brasil — Fundação Banco do Brasil",
-      "qualidade": "insuficiente",
-      "comprovados": 3,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Esfera",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://radarsolidario.fbb.org.br/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O resultado da publicação do edital é comprovado com data específica e financiador identificado.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar os anexos do edital, garantir que atenda aos requisitos não especificados, e seguir o prazo de inscrição não informado.",
-        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre requisitos, prazos e outros critérios de elegibilidade.",
-        "risco": "A falta de informações sobre requisitos, prazos e outros detalhes pode impedir a associação de se qualificar adequadamente para o edital."
-      },
-      "erro": null,
-      "segundos": 806,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 3,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-captacao-221",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Fundação Banco do Brasil",
-          "trecho": "Fundação Banco do Brasil",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Fundação Banco do Brasil",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ]
