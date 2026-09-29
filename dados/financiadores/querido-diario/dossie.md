@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `querido-diario`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 16942
-- Distribuição por ano pesquisado/coletado: {'2021': 1110, '2022': 3228, '2023': 3294, '2024': 3298, '2025': 3363, '2026': 2649}
+- Pistas aguardando confirmação: 16889
+- Distribuição por ano pesquisado/coletado: {'2021': 1099, '2022': 3228, '2023': 3261, '2024': 3289, '2025': 3363, '2026': 2649}
 
 ## Padrões
 
