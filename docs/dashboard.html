@@ -3082,7 +3082,8 @@ function mtSalva(e){try{localStorage.setItem("amc_motores",JSON.stringify(e));}c
    nascem acesos. */
 function mtAtivo(id){const e=mtEstado();const man=(e.ativos||{})[id];if(man===true||man===false)return man;
   // 28/09 (titular): aceso = LIGADO (disjuntor de 30 dias ou fonte permanente) — a marca 'ativa' do catálogo contava 774
-  const m=MT.find(x=>x.id===id);return m?m.proximidade==="ligado":false;}
+  // motor REGULAR da Bússola não está no catálogo de opressores: é sempre aceso (29/09 — a regra de 28/09 os apagou)
+  const m=MT.find(x=>x.id===id);return m?m.proximidade==="ligado":true;}
 /* fósforo aceso SÓ enquanto a busca imediata está em curso: apaga quando o
    motor registra uma leitura posterior ao pedido, ou após 24 h sem resposta */
 function mtPendente(id){const e=mtEstado();const t=(e.imediatos||{})[id];if(!t)return null;

@@ -216,7 +216,7 @@ class TesteIntegridadePainel(unittest.TestCase):
         C = json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8"))["motores"]
         self.assertEqual(M["resumo"]["total"], len(C)); self.assertEqual(M["resumo"]["ligados"], len(L))
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        self.assertIn('return m?m.proximidade==="ligado":false;', h, "aceso = ligado")
+        self.assertIn('return m?m.proximidade==="ligado":true;', h, "opressor aceso = ligado; motor regular sempre aceso")
         self.assertIn('id="mo-uf"', h, "filtro por estado dos motores opressores")
 
     def test_separacao_internacional(self):
