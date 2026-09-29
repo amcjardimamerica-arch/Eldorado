@@ -471,6 +471,8 @@ box-shadow:0 1px 3px #0002}
 .livro-op{border:1px solid #E6D9B8;background:#FFFBF1;border-radius:10px;padding:8px 10px;margin:8px 0}.livro-t{font-weight:800;color:#8A5A00;font-family:Georgia,serif;margin-bottom:4px}
 .livro-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px 12px;font-size:12px}.livro-g b{display:block;font-size:10.5px;color:var(--suave);text-transform:uppercase;letter-spacing:.3px}
 .doss{border:1px solid #CFE0F5;background:#F5F9FF;border-radius:10px;padding:8px 10px;margin:8px 0;font-size:12.5px}.doss-t{font-weight:800;color:#0E2A55;margin-bottom:4px}
+.esp-pl{display:inline-block;font-size:10.5px;border:1px solid #E3E8ED;border-radius:6px;padding:0 6px;margin:1px 2px;color:var(--suave)}.esp-pl.feita{background:#F1F9F4;border-color:#CFE8D8;color:#1E7E4B}.esp-pl.atual{background:#0E2A55;border-color:#0E2A55;color:#fff;font-weight:700}
+.esp-ult{margin-top:8px}.esp-ult-t{font-weight:700;color:#0E2A55;margin:4px 0}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -3288,7 +3290,9 @@ function desenhaPostoPiloto(alvo){
         <svg viewBox="0 0 24 24" aria-hidden="true"><g class="pil-pa" fill="#6B5A12"><rect x="11" y="1.5" width="2" height="9" rx="1"/><rect x="11" y="13.5" width="2" height="9" rx="1"/><rect x="1.5" y="11" width="9" height="2" rx="1"/><rect x="13.5" y="11" width="9" height="2" rx="1"/></g><circle cx="12" cy="12" r="2.6" fill="#0E2A55"/><circle class="pil-fumaca" cx="19" cy="6" r="2" fill="#B9C6D6"/></svg>
         <span id="${(alvo||"pil-posto")}-helice-txt">${(()=>{const m=(window._VIVO||{}).motor||"parado";
           return m==="ligado"?"MOTOR LIGADO":m==="desligado"?"EM TERRA POR ORDEM SUA":"MOTOR PARADO";})()}</span></button></h4>
-    ${(()=>{const V=window._VIVO;if(!V)return "";
+    <div id="${(alvo||"pil-posto")}-esp-agora" class="int-agora">${htmlEspiaoAgora(window._ESP_VIVO)}</div>
+    <div id="${(alvo||"pil-posto")}-esp-ultimas">${htmlEspiaoUltimas(window._ESP_VIVO)}</div>
+    ${(()=>{const V=window._VIVO;return "";   /* 29/09: substituído pelo bloco "Agora" (espiao_ao_vivo) */ if(!V)return "";
       const idade=V.sinal_em?Math.round((Date.now()-new Date(V.sinal_em))/60000):null;
       // o painel NÃO confia no rótulo gravado: recalcula pelo relógio de quem está olhando
       // MOTOR e VOO são estados diferentes: o motor é a corrente que reencadeia os voos;
@@ -3318,7 +3322,7 @@ function desenhaPostoPiloto(alvo){
         ${est==="parado"?`<div class="pil-acionar"><b>Ele não está voando.</b> Acione em ${esc(V.como_acionar||"Actions → Piloto → Run workflow")}.
            <a class="pil-bt-acionar" href="https://github.com/amcjardimamerica-arch/Eldorado/actions/workflows/piloto.yml" target=_blank rel="noopener noreferrer">acionar o Piloto ↗</a></div>`:""}
       </div>`;})()}
-    ${(()=>{const G=window._RESG;if(!G||!G.total)return "";
+    ${""&&(()=>{const G=window._RESG;if(!G||!G.total)return "";
       const P=G.por_estado||{}, esp=(G.fila||[]).filter(x=>x.estado==="aguardando").slice(0,6);
       return `<div class="pil-resg">
         <div class="pil-brief-t">Missões especiais <span class=meta>resgate de edital incompleto · tem prioridade sobre a exploração</span></div>
@@ -3350,9 +3354,7 @@ function desenhaPostoPiloto(alvo){
           <span class="uf-ab-prazo" style="color:${cor[e.marcador]}">${esc(rot[e.marcador]||"")}${e.falta?` · faltam ${e.falta} dado(s)`:""}</span>
           ${e.site?`<a class="uf-ab-link" href="${esc(e.site)}" target=_blank rel="noopener noreferrer">site ↗</a>`:""}</div>`).join("")}</div>
         <div class=meta>As marcadas como <b style="color:#C8961E">a pesquisar</b> vão no pacote do conselho para o Claude externo investigar ESG, editais anteriores e como pleitear.</div>`;})()}
-    <div class="fdoc-t" style="margin-top:10px">Missões anteriores <span class=meta>${L.length} registrada(s)</span></div>
-    ${L.length?`<div class="pil-log">${L.map(m=>linhaBordo(m,E)).join("")}</div>`
-              :'<div class=pil-vazio>O Piloto ainda não decolou. O primeiro voo sai no próximo ciclo — ele sorteia as missões entre caçar oportunidade nova, afiar um motor e procurar um local novo de publicação.</div>'}
+    <!-- 29/09: 'Missões anteriores' substituída por 'Últimas missões' (espião ao vivo) -->
     <div class=meta style="margin-top:6px">Clique no avião sobre qualquer motor (aba Bússola) para ver o que ele fez ali.</div></div>`;
 }
 window.darPartida=function(base){
@@ -4460,6 +4462,52 @@ window.abrePrazos=async function(){
   abreModal(`<b>Prazos por fonte</b> <span class=meta>· ${L.length} fontes · Goiás primeiro, depois pela próxima data</span>`,
     `<div style="max-height:70vh;overflow:auto"><table class="tab-prazos"><tr><th>fonte</th><th>regime</th><th>próxima janela</th><th>certeza</th></tr>${L.map(x=>`<tr><td><b>${esc(String(x.p||"").slice(0,80))}</b><br><small class=meta>${esc(String(x.o||"").slice(0,60))}${x.g?" · Goiás":""}</small></td><td>${esc(REG[x.r]||x.r||"—")}</td><td>${x.i||x.f?`${x.i?br(x.i):""}${x.f?" → "+br(x.f):""}`:"—"}</td><td>${esc(x.c||"—")}</td></tr>`).join("")}</table></div>`);
 };
+/* ESPIÃO AO VIVO (titular, 29/09) — a mesma caixa do Interceptador: o que está fazendo agora e as últimas missões,
+   lidos do ramo piloto-ao-vivo a cada 15 s (o site não precisa republicar) */
+const ESP_VIVO_RAW="https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/piloto-ao-vivo/docs/dados/espiao_ao_vivo.json";
+const ESP_VIVO_API="https://api.github.com/repos/amcjardimamerica-arch/Eldorado/contents/docs/dados/espiao_ao_vivo.json?ref=piloto-ao-vivo";
+window._ESP_VIVO=null;
+window.lerEspiaoVivo=async function(){
+  if(window._espVivoP&&Date.now()-(window._espVivoT||0)<10000) return window._espVivoP;
+  window._espVivoT=Date.now(); window._espVivoP=(async()=>{
+    let ok=false;
+    if(Date.now()>(window._intApiDescansa||0)){
+      try{ const _t=tokenLeitura(); const r=await fetch(ESP_VIVO_API,{cache:"no-store",headers:Object.assign({Accept:"application/vnd.github.raw+json"},_t?{"Authorization":"Bearer "+_t}:{})});
+        if(r.ok){ window._ESP_VIVO=await r.json(); ok=true; } else if(r.status===403||r.status===429) window._intApiDescansa=Date.now()+15*60*1000;
+      }catch(e){} }
+    if(!ok){ try{ const r=await fetch(ESP_VIVO_RAW+"?t="+Date.now(),{cache:"no-store"}); if(r.ok) window._ESP_VIVO=await r.json(); }catch(e){} }
+    document.querySelectorAll("[id$='-esp-agora']").forEach(el=>el.innerHTML=htmlEspiaoAgora(window._ESP_VIVO));
+    document.querySelectorAll("[id$='-esp-ultimas']").forEach(el=>el.innerHTML=htmlEspiaoUltimas(window._ESP_VIVO));
+  })(); return window._espVivoP;
+};
+window.htmlEspiaoAgora=function(V){
+  if(!V) return `<div class="int-agora-v"><b>Agora:</b> <span class=meta>aguardando o primeiro sinal ao vivo do Espião</span></div>`;
+  const idade=V.atualizado_em?Math.round((Date.now()-new Date(V.atualizado_em))/60000):null;
+  const vivo=V.estado==="em_voo"&&idade!==null&&idade<25, MA=V.missao_atual, R=V.resultado||{};
+  const cab=vivo?`<span class="int-dot ativo"></span> <b>Agora — em voo</b> <span class=meta>desde ${esc(horaMin(V.inicio))} · ${duracaoTxt(V.inicio,new Date().toISOString())}${V.voo_do_dia?` · voo ${V.voo_do_dia} do dia`:""} · etapa: <b>${esc(V.etapa||"")}</b></span>`
+    :V.estado==="patio"&&idade!==null&&idade<15?`<span class="int-dot aguarda"></span> <b>No pátio — decolando o próximo voo</b> <span class=meta>pousou ${esc(horaMin(V.fim))}</span>`
+    :V.estado==="pousou"||V.estado==="patio"?`<span class="int-dot"></span> <b>Último pouso</b> <span class=meta>${esc(horaMin(V.inicio))} → ${esc(horaMin(V.fim))} · ${duracaoTxt(V.inicio,V.fim)}</span>`
+    :`<span class="int-dot"></span> <b>Sem sinal recente</b> <span class=meta>último sinal ${esc(horaMin(V.atualizado_em))}</span>`;
+  const plano=(V.plano||[]).length?`<div class=meta style="margin-top:3px">Plano do voo: ${(V.plano||[]).map(p=>{const feita=(V.concluidas||[]).length>=p.ordem, atual=MA&&MA.n===p.ordem;
+      return `<span class="esp-pl${feita?" feita":""}${atual?" atual":""}" title="${esc(p.alvo||"")}">${p.ordem}. ${esc(p.missao)}</span>`;}).join(" ")}</div>`:"";
+  return `<div class="int-agora-v">${cab}
+    ${vivo&&MA?`<div style="margin-top:4px"><b>Missão ${MA.n}/${MA.total} — ${esc(MA.missao)}</b>${MA.alvo?` <span class=meta>· ${esc(String(MA.alvo).slice(0,140))}</span>`:""} <span class=meta>· há ${duracaoTxt(MA.desde,new Date().toISOString())}</span></div>`:""}
+    ${!vivo&&R&&R.missoes!=null?`<div class=meta style="margin-top:2px">Resultado do voo: <b>${R.missoes}</b> missão(ões) · <b>${R.propostas||0}</b> achado(s) · <b>${R.abates||0}</b> abate(s)${R.encerrou_por?" · encerrou por "+esc(R.encerrou_por):""}</div>`:""}
+    ${plano}
+    ${(V.passos||[]).length?`<ol class="int-passos">${V.passos.map(s=>`<li><span class=meta>${esc(horaMin(s.em).slice(6))}</span> <b>${esc(s.etapa)}</b>${s.detalhe?` — ${esc(String(s.detalhe).slice(0,150))}`:""}</li>`).join("")}</ol>`:""}</div>`;
+};
+window.htmlEspiaoUltimas=function(V){
+  const L=[...((V&&V.concluidas)||[])].reverse().concat(((V&&V.anteriores)||[]).slice().reverse()).slice(0,10);
+  if(!L.length) return "";
+  return `<div class="esp-ult"><div class="esp-ult-t">Últimas missões</div>${L.map(m=>`<details class="int-m"><summary>
+      <span class=meta>${m.inicio?esc(horaMin(m.inicio).slice(6)):"—"}${m.fim?"<br>→ "+esc(horaMin(m.fim).slice(6)):""}${m.inicio&&m.fim?" · "+duracaoTxt(m.inicio,m.fim):""}</span>
+      <span><b>${esc(m.missao||m.tipo||"")}</b><br><small class=meta>${esc(String(m.alvo||"").slice(0,120))}</small></span>
+      <span class="int-q ${m.achados?"validada":"insuficiente"}">${m.achados?m.achados+" achado(s)":"nada no crivo"}</span><span class=meta>${m.abates?m.abates+" abate(s)":""}</span></summary>
+      <div class="int-corpo"><div><h5>O que encontrou</h5>${(m.encontrou||[]).length?m.encontrou.map(a=>`<div class="int-dado"><b>${a.novo?"entidade nova":"achado"}</b><span>${a.url?`<a href="${esc(a.url)}" target=_blank rel="noopener noreferrer">${esc(a.titulo||a.url)}</a>`:esc(a.titulo||"")}</span></div>`).join(""):`<span class=meta>${m.achados?m.achados+" achado(s) — detalhes no relatório do voo":"nada passou no crivo"}</span>`}</div>
+        <div><h5>Lição</h5>${esc(m.licao||"")}</div></div></details>`).join("")}</div>`;
+};
+setInterval(()=>{ try{ lerEspiaoVivo(); }catch(e){} }, 15000);
+setTimeout(()=>{ try{ lerEspiaoVivo(); }catch(e){} }, 2500);
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição

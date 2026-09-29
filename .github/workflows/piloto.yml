@@ -41,6 +41,7 @@ jobs:
           # 28/09 (titular): o batimento gravava piloto_ao_vivo.json na main, mas o avião lê piloto_posicao.json no ramo
           # piloto-ao-vivo. Com missões de 1–2 min e preparação de 3–5 min, o avião quase nunca aparecia.
           python -c "from src.posicao_piloto import anunciar; print(anunciar({'tipo':'preparando','motor':'piloto-aberto'}, forcar=True))" || true
+          python -c "from src.espiao_ao_vivo import preparando; preparando()" || true   # caixa do Espião ao vivo desde o início
       - name: Dependências
         run: pip install -q -r requirements.txt
       - name: Motor llama.cpp (17 MB, release fixa)

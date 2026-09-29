@@ -822,12 +822,26 @@ def ciclo(porta: int | None = None) -> dict:
     # briefing, radar e anúncio de pouso. Em 24/09, os voos que falhavam eram justamente os
     # que tinham encontrado alguma coisa.
     _todos_ach: list[dict] = []
-    for m in plano:
+    # ESPIÃO AO VIVO (29/09): o mesmo acompanhamento em tempo real do Interceptador — plano, cada missão e o que achou
+    from . import espiao_ao_vivo as _AO
+    try:
+        _ant = (json.loads((ROOT / "docs/dados/piloto.json").read_text(encoding="utf-8")).get("missoes") or [])
+    except Exception:
+        _ant = []
+    try:
+        _AO.decolar(plano, rel.get("voo_do_dia"), [{"missao": _AO._nome(x), "alvo": str(x.get("alvo") or "")[:160], "achados": x.get("achados"), "abates": x.get("abates"), "licao": x.get("licao")} for x in _ant])
+    except Exception:
+        pass
+    for _n, m in enumerate(plano, 1):
         if time.time() - t0 > teto_s:
             rel["encerrou_por"] = "teto de tempo"
             break
         abrir_missao(m, m.get("motor") or "")
         _anunciar(m, voo=rel.get("voo_do_dia"), de=len(plano))
+        try:
+            _AO.missao(m, _n, len(plano))
+        except Exception:
+            pass
         try:
             if m["tipo"] == "resgate":
                 alvo, ach, licao = missao_resgate(ia, m["_alvo"], conhecidos)
@@ -858,6 +872,10 @@ def ciclo(porta: int | None = None) -> dict:
             aprender("missao", m["tipo"], f"{type(ex_).__name__}: {ex_}", "revisar prompt/esquema", None)
             alvo, ach, licao = m.get("motor") or "", [], f"falhou: {type(ex_).__name__}"
         reg = fechar_missao(licao, ach, licao)
+        try:
+            _AO.resultado(m, alvo, ach, licao, reg.get("abates") or 0)
+        except Exception:
+            pass
         rel["missoes"].append({"tipo": m["tipo"], "motor": m.get("motor"), "alvo": alvo, "achados": len(ach), "abates": reg["abates"], "licao": licao[:90]})
         _todos_ach.extend(a for a in (ach or []) if isinstance(a, dict))
         rel["abates"] += reg["abates"]; rel["propostas"] += len(ach)
@@ -890,6 +908,10 @@ def ciclo(porta: int | None = None) -> dict:
     _vivo2("pousou", detalhe=f"{len(_todos_ach)} achado(s)")
     # 28/09: em corrente (voos encadeados), NÃO marca pouso aqui — o passo "Pousar 3 segundos e decolar de novo" diz
     # "no pátio, decolando de novo"; só marca pousado se a corrente parar. Antes, cada fim de voo apagava o avião.
+    try:
+        _AO.pousar(rel, em_corrente=os.environ.get("PILOTO_EM_CORRENTE") == "1")
+    except Exception:
+        pass
     if os.environ.get("PILOTO_EM_CORRENTE") != "1":
         _pousar_pos(f"voo {rel.get('voo_do_dia')} pousou")
     rel["posicao_ao_vivo"] = _reg_pos()                 # prova de que o anúncio chegou (ou não)
