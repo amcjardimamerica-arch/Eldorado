@@ -74,11 +74,10 @@ def _baixar(url: str, tempo: int = 40) -> tuple[bytes, str]:
 
 
 def _pdf_texto(dados: bytes) -> str:
+    """29/09: skill de leitura de PDF — texto E TABELAS (cronograma, valores), com pdfplumber; sem ele, pypdf."""
     try:
-        from pypdf import PdfReader
-        import io
-        rd = PdfReader(io.BytesIO(dados))
-        return "\n".join((p.extract_text() or "") for p in rd.pages[:60])
+        from .skills.leitura_pdf import ler_pdf, texto_com_tabelas
+        return texto_com_tabelas(ler_pdf(dados, max_paginas=60))
     except Exception:
         return ""
 
@@ -347,6 +346,12 @@ def investigar(ids: list[str], ia, modelo: str, prazo_s: float = 280 * 60) -> di
             saida["editais"].append({"id": eid, "erro": "registro não encontrado"}); continue
         t0 = time.time()
         texto, fontes = texto_do_edital(e)
+        try:                                   # 29/09: skill de PDF — o que importa (prazos, cronograma, valor) na frente
+            from .skills.leitura_pdf import trechos_chave
+    from .skills import para as _skills
+            texto = _skills('interceptador', 'edital') + '\n\n' + trechos_chave(texto) + texto
+        except Exception:
+            pass
         if not texto.strip():
             e["investigacao_ia"] = {"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "modelo": modelo, "fontes": fontes, "campos": {}, "comprovados": 0, "total": len(DOZE), "erro": "nenhuma fonte legível"}
             arq.write_text(json.dumps(e, ensure_ascii=False, indent=1), encoding="utf-8")

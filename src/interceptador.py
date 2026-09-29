@@ -272,6 +272,57 @@ def investigar_empresa(ia, emp: dict) -> dict:
     return ficha
 
 
+def proximo_alvo() -> dict | None:
+    """NOVA ORDEM DO INTERCEPTADOR (titular, 29/09) — aprofunda o que o sistema JÁ tem:
+      1. MISSÕES ESPECIAIS: oportunidades abertas — Goiás e as que fecham em até 15 dias, em qualquer lugar
+      2. EMPRESAS DE GOIÁS do cadastro: dossiê investigativo (composição, contatos, projetos, resumo no terceiro setor)
+      3. OPORTUNIDADES NACIONAIS E INTERNACIONAIS (depois as dos demais estados)
+      4. o restante das filas de antes (opressores sem leitura, editais novos, radar do Espião…)
+    Origem de baixo rendimento (skill de aprendizado) vai para o fim."""
+    from datetime import date as _d, timedelta as _td
+    from .skills.aprendizado import parametros as _par
+    est = load_json(ESTADO) if ESTADO.exists() else {}
+    feitos = est.get("feitos") or {}
+    fx = ((load_json(ROOT / "docs/dados/fluxo_oportunidades.json") or {}).get("itens_por_uf") or {}) if (ROOT / "docs/dados/fluxo_oportunidades.json").exists() else {}
+    hoje = _d.today().isoformat(); em15 = (_d.today() + _td(days=15)).isoformat()
+    def pend(x):
+        return x.get("id") and x["id"] not in feitos and not x.get("inspecao") and not (x.get("confirmada") and (x.get("condicoes") or {}).get("comprovadas", 0) >= 9) \
+            and "emendas" not in str(x.get("origem") or "") and not x.get("opressor_dispensa")      # emenda e dispensada não precisam de estudo
+    def alvo(x, uf, de):
+        arq = ROOT / "dados/editais/extraidos" / f"{x['id']}.json"
+        if not arq.exists():                 # agregadores e afins não têm registro: nasce o extraído para o estudo
+            write_json(arq, {"edital_id": x["id"], "titulo": x.get("titulo"), "url": x.get("link_oficial") or x.get("url"), "orgao": x.get("orgao"), "origem": de, "fim": x.get("fim")})
+        return {"id": x["id"], "titulo": x.get("titulo"), "url": x.get("link_oficial") or x.get("url"), "de": de, "modo": "validar", "tipo": "edital", "uf": uf}
+    todos = [(k, x) for k, v in fx.items() for x in v if pend(x)]
+    esp = [(k, x) for k, x in todos if k == "GO" or (x.get("fim") and hoje <= x["fim"] <= em15)]
+    if esp:
+        esp.sort(key=lambda kx: (kx[0] != "GO", str(kx[1].get("fim") or "9999")))
+        k, x = esp[0]
+        return alvo(x, k, "missão especial · " + ("Goiás" if k == "GO" else f"prazo até {x.get('fim')}"))
+    try:
+        from .skills.dossie_empresa import empresas_goias_sem_dossie
+        eg = empresas_goias_sem_dossie()
+    except Exception:
+        eg = []
+    if eg:
+        e = eg[0]
+        return {"id": f"dossie-{e['cnpj']}", "empresa": e.get("nome"), "cnpj": e["cnpj"], "_emp": e, "de": "empresa de Goiás · dossiê", "modo": "dossie", "tipo": "dossie_empresa"}
+    baixo = set((_par().get("interceptador") or {}).get("origens_baixo_rendimento") or [])
+    nac = [(k, x) for k, x in todos if k == "__nac__" or "intern" in str(x.get("area") or "") or re.search(r"(?i)internacional|foundation|unesco|unicef|pnud|onu", str(x.get("titulo")))]
+    if nac:
+        k, x = nac[0]
+        return alvo(x, k, "oportunidade nacional/internacional")
+    resto = [(k, x) for k, x in todos]
+    if resto:
+        import random as _r
+        k, x = _r.choice(resto)
+        return alvo(x, k, f"oportunidade · {k}")
+    a = _proximo_alvo_anterior()
+    if a and a.get("de") in baixo:
+        a["de"] = a["de"] + " (baixo rendimento)"
+    return a
+
+
 def empresas_pendentes() -> list[dict]:
     """Empresas do radar do Espião que ainda não têm ficha de fonte de recurso."""
     try:
@@ -349,7 +400,7 @@ def _devolver_ao_opressor(alvo: dict, inv: dict) -> None:
     write_json(cat, C)
 
 
-def proximo_alvo() -> dict | None:
+def _proximo_alvo_anterior() -> dict | None:
     """UM ALVO POR VOO, na ordem dos parâmetros: novo dos motores → novo do Espião → aberto atual com falta →
     empresa nova. Quem já foi estudado não volta (memória em estado/interceptador)."""
     est = load_json(ESTADO) if ESTADO.exists() else {}
@@ -437,6 +488,14 @@ def voo(ia) -> dict:
         pass
     elif not a:
         rel["resultado"] = "nada a interceptar: sem edital aberto com itens em falta, sem indício na fila, sem empresa sem ficha"
+    elif a["tipo"] == "dossie_empresa":
+        AV.etapa("dossiê investigativo: composição, contatos, projetos e atuação no terceiro setor", a.get("empresa") or "")
+        from .skills.dossie_empresa import dossie as _dossie
+        dz = _dossie(a["_emp"], ia)
+        rel.update({"modo": "dossie", "tipo": "dossie_empresa", "alvo": a.get("empresa"), "de": a["de"], "qualidade": f"dossiê {dz.get('completude')}/6",
+                    "socios": len((dz.get("composicao") or {}).get("socios") or []), "projetos": len(dz.get("projetos") or []),
+                    "resumo": (dz.get("resumo_investigativo") or {}).get("resumo")})
+        est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "dossie_empresa", "qualidade": f"dossiê {dz.get('completude')}/6"}
     elif a["tipo"] == "empresa":
         AV.etapa("lendo o site da empresa: ficha de fonte de recurso (8 itens)", a.get("empresa") or "")
         f = investigar_empresa(ia, a)

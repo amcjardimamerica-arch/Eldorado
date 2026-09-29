@@ -609,6 +609,42 @@ def missao_prospectar(ordem: int) -> tuple[str, list[dict], str]:
     return q, ach, f"busca ativa · '{q}': {len(res)} resultado(s), {len(ach)} empresa(s) nova(s)"
 
 
+CONSULTAS_DESCOBERTA = [
+    'instituto empresarial edital projetos sociais {ano}', 'fundação empresarial chamada pública organizações da sociedade civil {ano}',
+    'empresa lança edital para ONGs {ano}', 'programa de investimento social privado inscrições {ano}',
+    'instituto "edital" "OSC" Goiás {ano}', 'fundação apoia projetos sociais Goiás inscrições {ano}',
+    'associação comercial industrial Goiás projeto social apoio', 'cooperativa goiana fundo social edital {ano}',
+    'empresa goiana responsabilidade social edital', 'prêmio empresa iniciativas sociais inscrições {ano}',
+    'grupo empresarial instituto social chamada de projetos {ano}', 'fundação comunitária edital doações {ano}']
+
+
+def missao_descobrir(ordem: int) -> tuple[str, list[dict], str]:
+    """DESCOBRIR ENTIDADES NOVAS (titular, 29/09): empresas, institutos, fundações ou qualquer entidade com vínculo ou
+    proximidade com o terceiro setor que NÃO estão no cadastro do sistema (skill cadastro: rankings, 23 mil
+    incentivadores do SALIC, fichas). O que já é conhecido não é descoberta — fica para o Interceptador aprofundar."""
+    from datetime import date as _d
+    from .piloto_busca import buscar, ler_pagina
+    from .reconhecimento import ler_rastros, registrar
+    from .skills.cadastro import conhecida
+    from .skills.aprendizado import parametros as _par
+    evitar = set((_par().get("espiao") or {}).get("termos_fora_do_objeto") or [])
+    q = CONSULTAS_DESCOBERTA[(int(time.time() // 600) + ordem) % len(CONSULTAS_DESCOBERTA)].format(ano=_d.today().year)
+    res = buscar(q, maximo=8) or []
+    ach, ja = [], 0
+    for r in res[:5]:
+        texto = ler_pagina(r.get("url") or "", limite=9000)
+        for rs in ler_rastros(texto or "", r.get("url") or ""):
+            nome = str(rs.get("empresa") or rs.get("nome") or "")
+            if not nome or any(w in nome.lower() for w in evitar):
+                continue
+            if conhecida(nome, rs.get("cnpj") or ""):
+                ja += 1; continue
+            it = registrar(rs, "descoberta_entidade_nova", 1)
+            if it:
+                ach.append({"titulo": it.get("empresa"), "empresa": it.get("empresa"), "via": rs.get("via"), "url": r.get("url"), "novo": True})
+    return q, ach, f"descoberta — '{q}': {len(res)} resultado(s), {len(ach)} entidade(s) NOVA(s), {ja} já no cadastro (ignoradas)"
+
+
 def missao_catalogar(site: dict) -> tuple[str, list[dict], str]:
     """Visita um site especializado do terceiro setor: páginas para entidades, empresas presentes, ESG."""
     from .piloto_busca import ler_pagina
@@ -753,16 +789,29 @@ def ciclo(porta: int | None = None) -> dict:
     # 2) catálogo e busca ativa até PREENCHER O VOO (o tempo é o único limite; sem isto o voo pousava aos 3 min)
     from .catalogo_terceiro_setor import proximo_site as _proximo_site
     vagas = int(par.get("missoes_por_voo", 7)) - len(plano)
+    try:                                        # 29/09: pesos da skill de aprendizado (catalogar/prospectar rendem 0,2%)
+        from .skills.aprendizado import parametros as _parp
+        _pesos = (_parp().get("espiao") or {}).get("pesos_missao") or {}
+    except Exception:
+        _pesos = {}
+    _max_cat = 1 if float(_pesos.get("catalogar", 1)) <= 0.2 else vagas
+    while vagas > 0 and _max_cat <= 0:
+        plano.append({"tipo": "descobrir", "motor": "piloto-aberto", "ordem": len(plano) + 1, "alvo_id": f"descoberta-{len(plano)}",
+                      "_alvo": {"titulo": "descobrir entidades novas (fora do cadastro)"}}); vagas -= 1
     while vagas > 0:
+        if sum(1 for x in plano if x["tipo"] == "catalogar") >= _max_cat:
+            plano.append({"tipo": "descobrir", "motor": "piloto-aberto", "ordem": len(plano) + 1, "alvo_id": f"descoberta-{len(plano)}",
+                          "_alvo": {"titulo": "descobrir entidades novas (fora do cadastro)"}}); vagas -= 1
+            continue
         site = _proximo_site({x.get("_site", {}).get("url") for x in plano if x.get("_site")} | {x.get("_site", {}).get("_chave") for x in plano if x.get("_site")})
         if not site or any(x.get("_site", {}).get("url") == site["url"] for x in plano):
             break
         plano.append({"tipo": "catalogar", "motor": "piloto-aberto", "ordem": len(plano) + 1,
                       "alvo_id": site["url"], "_site": site, "_alvo": {"titulo": site["nome"]}})
         vagas -= 1
-        if vagas > 0:                                   # proativo: a cada site, uma busca ativa de empresas
-            plano.append({"tipo": "prospectar", "motor": "piloto-aberto", "ordem": len(plano) + 1,
-                          "alvo_id": f"prospeccao-{len(plano)}", "_alvo": {"titulo": "busca ativa de empresas"}})
+        if vagas > 0:                                   # 29/09: a busca ativa vira DESCOBERTA de entidades novas
+            plano.append({"tipo": "descobrir", "motor": "piloto-aberto", "ordem": len(plano) + 1,
+                          "alvo_id": f"descoberta-{len(plano)}", "_alvo": {"titulo": "descobrir entidades novas (fora do cadastro)"}})
             vagas -= 1
     # POSIÇÃO AO VIVO: o painel só é republicado a cada 6 h; a posição vai por um ramo
     # próprio, lido direto pelo navegador, para o avião aparecer onde o trabalho está AGORA
@@ -782,6 +831,8 @@ def ciclo(porta: int | None = None) -> dict:
         try:
             if m["tipo"] == "resgate":
                 alvo, ach, licao = missao_resgate(ia, m["_alvo"], conhecidos)
+            elif m["tipo"] == "descobrir":
+                alvo, ach, licao = missao_descobrir(m["ordem"])
             elif m["tipo"] == "catalogar":
                 alvo, ach, licao = missao_catalogar(m["_site"])
             elif m["tipo"] == "prospectar":
