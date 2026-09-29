@@ -3275,6 +3275,7 @@ function estrelasDeAbate(n, novos, ab){
 }
 function desenhaPostoPiloto(alvo){
   const el=$(alvo||"pil-posto"); if(!el)return; const E=window._ESQ;
+  if(!window._ESPR&&!window._esprPedido){ window._esprPedido=1; fetch("dados/espiao.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(j=>{ if(j){ window._ESPR=j; desenhaPostoPiloto(alvo); } }).catch(()=>{}); }
   if(!E){ carregaEsquadrilha().then(()=>desenhaPostoPiloto(alvo)); return; }
   const at=E.missao_atual, L=E.ultimas||[], tot=E.total_abates||0;
   const motores=Object.entries(E.abates||{}).sort((a,b)=>b[1].n-a[1].n).slice(0,6);
@@ -3291,58 +3292,7 @@ function desenhaPostoPiloto(alvo){
         <span id="${(alvo||"pil-posto")}-helice-txt">${(()=>{const m=(window._VIVO||{}).motor||"parado";
           return m==="ligado"?"MOTOR LIGADO":m==="desligado"?"EM TERRA POR ORDEM SUA":"MOTOR PARADO";})()}</span></button></h4>
     <div id="${(alvo||"pil-posto")}-esp-agora" class="int-agora">${htmlEspiaoAgora(window._ESP_VIVO)}</div>
-    <div id="${(alvo||"pil-posto")}-esp-ultimas">${htmlEspiaoUltimas(window._ESP_VIVO)}</div>
-    ${(()=>{const V=window._VIVO;return "";   /* 29/09: substituído pelo bloco "Agora" (espiao_ao_vivo) */ if(!V)return "";
-      const idade=V.sinal_em?Math.round((Date.now()-new Date(V.sinal_em))/60000):null;
-      // o painel NÃO confia no rótulo gravado: recalcula pelo relógio de quem está olhando
-      // MOTOR e VOO são estados diferentes: o motor é a corrente que reencadeia os voos;
-      // o voo é o que acontece dentro de um elo. Dizer "em terra" entre dois voos, com 16
-      // no dia, era a disparidade que o titular apontou.
-      const est = V.estado==="pausado_pelo_titular" ? "pausado"
-                : (V.missao_atual && idade!==null && idade<=30) ? "em_voo"
-                : (idade!==null && idade<=V.sem_sinal_a_partir_de_min) ? "entre_voos" : "parado";
-      const C={em_voo:["#1E7E4B","✈","EM VOO"],entre_voos:["#0B4EA2","↻","ENTRE VOOS"],
-               parado:["#B3261E","⚠","MOTOR PARADO"],pausado:["#8a5a00","⏸","EM TERRA POR ORDEM SUA"]}[est];
-      const M=V.missao_atual, U=V.ultima_missao;
-      return `<div class="pil-vivo ${est}">
-        <div class="pil-vivo-cab"><span class="pil-selo" style="background:${C[0]}">${C[1]} ${C[2]}</span>
-          <span class="pil-vivo-f">${est==="em_voo"
-             ? `motor <b>${esc(M.motor||M.alvo||"—")}</b> · ${esc(M.tipo||"")} · há ${M.ha_minutos!=null?Math.round(M.ha_minutos):idade} min`
-             : est==="entre_voos" ? `último voo há ${idade} min · <b>o motor está ligado</b>, o próximo decola em segundos`
-             : est==="parado" ? `sem sinal há <b>${idade} min</b> — <b>o motor parou</b>: ninguém reencadeou o próximo voo`
-             : "o Piloto está em terra porque você o pausou"}</span></div>
-        <div class="pil-vivo-n">
-          <span title="voos hoje"><b>${V.voos_hoje||0}</b> voo(s) hoje</span>
-          <span title="missões que trouxeram algo"><b>${V.missoes_com_achado||0}</b> de ${V.missoes_registradas||0} com achado</span>
-          <span title="editais incompletos aguardando resgate"><b>${(V.resgate||{}).aguardando||0}</b> a resgatar</span>
-          <span title="editais completados"><b>${(V.resgate||{}).resgatados||0}</b> resgatado(s)</span>
-          <span title="empresas descobertas"><b>${V.total_abates||0}</b> abate(s)</span></div>
-        ${U?`<div class="pil-vivo-u"><b>Última missão:</b> ${esc(U.tipo||"")}${U.motor?" · "+esc(U.motor):""} — ${esc(String(U.licao||"").slice(0,120))}${U.inicio?`<br><span class=meta>começou ${esc(horaMin(U.inicio))} · terminou ${U.fim?esc(horaMin(U.fim)):"— em curso"}${U.inicio&&U.fim?` · ${duracaoTxt(U.inicio,U.fim)}`:""}</span>`:""}</div>`:""}
-        ${(V.achados_recentes||[]).length?`<div class="pil-vivo-u"><b>Trouxe:</b> ${(V.achados_recentes||[]).slice(0,3).map(a=>esc(String(a.titulo||a).slice(0,60))).join(" · ")}</div>`:""}
-        ${est==="parado"?`<div class="pil-acionar"><b>Ele não está voando.</b> Acione em ${esc(V.como_acionar||"Actions → Piloto → Run workflow")}.
-           <a class="pil-bt-acionar" href="https://github.com/amcjardimamerica-arch/Eldorado/actions/workflows/piloto.yml" target=_blank rel="noopener noreferrer">acionar o Piloto ↗</a></div>`:""}
-      </div>`;})()}
-    ${""&&(()=>{const G=window._RESG;if(!G||!G.total)return "";
-      const P=G.por_estado||{}, esp=(G.fila||[]).filter(x=>x.estado==="aguardando").slice(0,6);
-      return `<div class="pil-resg">
-        <div class="pil-brief-t">Missões especiais <span class=meta>resgate de edital incompleto · tem prioridade sobre a exploração</span></div>
-        <div class=meta style="margin-bottom:4px">${Object.entries(P).map(([k,v])=>`<b>${v}</b> ${esc(k.replace("_"," "))}`).join(" · ")}</div>
-        ${esp.map(x=>`<div class="pil-resg-l" data-id="${esc(x.id||"")}" title="${esc((x.orgao||"")+" · falta: "+(x.falta||[]).join(", "))}">
-          <span class="pil-urg">${x.urgencia}</span><span class="pil-resg-n">${esc((x.titulo||"").slice(0,64))}</span>
-          <span class=meta>${(x.falta||[]).length} dado(s) em falta${x.uf?" · "+esc(x.uf):""}</span></div>`).join("")}
-      </div>`;})()}
-    <!-- 30/09 (titular): sem o plano do briefing, o contador de alvos e as marcas na fuselagem — a caixa segue a do Interceptador -->
-    ${(()=>{const R=window._RADAR;if(!R||!R.total)return "";const M=R.por_marcador||{};
-      const cor={a_pesquisar:"#C8961E",em_pesquisa:"#0B4EA2",concluido:"var(--ok)"};
-      const rot={a_pesquisar:"a pesquisar",em_pesquisa:"em pesquisa",concluido:"concluído"};
-      return `<div class="fdoc-t" style="margin-top:12px">Radar de captação <span class=meta>${R.total} empresa(s) no radar · ${Object.entries(M).filter(([k,v])=>v).map(([k,v])=>`<b style="color:${cor[k]}">${v}</b> ${rot[k]}`).join(" · ")}</span></div>
-        <div class="uf-abertos">${(R.empresas||[]).slice(0,10).map(e=>`<div class="uf-ab ${e.marcador==="a_pesquisar"?"nv":""}">
-          <span class="pt" style="background:${cor[e.marcador]||"#999"}" title="${esc(rot[e.marcador]||e.marcador)}"></span>
-          <span class="uf-ab-nome" title="${esc(e.porque||"")}">${esc(e.nome)}</span>
-          <span class="uf-ab-prazo" style="color:${cor[e.marcador]}">${esc(rot[e.marcador]||"")}${e.falta?` · faltam ${e.falta} dado(s)`:""}</span>
-          ${e.site?`<a class="uf-ab-link" href="${esc(e.site)}" target=_blank rel="noopener noreferrer">site ↗</a>`:""}</div>`).join("")}</div>
-        <div class=meta>As marcadas como <b style="color:#C8961E">a pesquisar</b> vão no pacote do conselho para o Claude externo investigar ESG, editais anteriores e como pleitear.</div>`;})()}
-    <!-- 29/09: 'Missões anteriores' substituída por 'Últimas missões' (espião ao vivo) -->
+    <div id="${(alvo||"pil-posto")}-esp-quadro">${htmlEspiaoQuadro(window._ESPR, window._ESP_VIVO, alvo||"pil-posto")}</div>
     </div>`;
 }
 window.darPartida=function(base){
@@ -4465,7 +4415,7 @@ window.lerEspiaoVivo=async function(){
       }catch(e){} }
     if(!ok){ try{ const r=await fetch(ESP_VIVO_RAW+"?t="+Date.now(),{cache:"no-store"}); if(r.ok) window._ESP_VIVO=await r.json(); }catch(e){} }
     document.querySelectorAll("[id$='-esp-agora']").forEach(el=>el.innerHTML=htmlEspiaoAgora(window._ESP_VIVO));
-    document.querySelectorAll("[id$='-esp-ultimas']").forEach(el=>el.innerHTML=htmlEspiaoUltimas(window._ESP_VIVO));
+    document.querySelectorAll("[id$='-esp-quadro']").forEach(el=>el.innerHTML=htmlEspiaoQuadro(window._ESPR,window._ESP_VIVO,el.id.replace("-esp-quadro","")));
   })(); return window._espVivoP;
 };
 window.htmlEspiaoAgora=function(V){
@@ -4495,7 +4445,43 @@ window.htmlEspiaoUltimas=function(V){
         <div><h5>Lição</h5>${esc(m.licao||"")}</div></div></details>`).join("")}</div>`;
 };
 setInterval(()=>{ try{ lerEspiaoVivo(); }catch(e){} }, 15000);
+setInterval(()=>{ fetch("dados/espiao.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(j=>{ if(j){ window._ESPR=j; document.querySelectorAll("[id$='-esp-quadro']").forEach(el=>el.innerHTML=htmlEspiaoQuadro(j,window._ESP_VIVO,el.id.replace("-esp-quadro",""))); } }).catch(()=>{}); }, 120000);
 setTimeout(()=>{ try{ lerEspiaoVivo(); }catch(e){} }, 2500);
+/* QUADRO DO ESPIÃO NO PADRÃO DO INTERCEPTADOR (titular, 30/09): Última missão · números · Na fila · lista de missões
+   (as do voo em andamento, ao vivo, na frente das do relatório) — as mesmas classes e a mesma leitura do Interceptador */
+window.htmlEspiaoQuadro=function(D,V,alvo){
+  D=D||{}; const A=D.acumulado||{}, F=D.fila||{};
+  const vivas=((V&&V.concluidas)||[]).slice().reverse().map(m=>({em:m.fim,segundos:(m.inicio&&m.fim)?(new Date(m.fim)-new Date(m.inicio))/1000:null,
+      modo:m.missao,de:"piloto-aberto",alvo:m.alvo,qualidade:m.achados?"com resultado":"nada no crivo",achados:m.achados,abates:m.abates,
+      justificativa:m.licao,avaliacao:m.achados?m.achados+" achado(s)":"nada passou no crivo",encontrou:m.encontrou||[],aoVivo:true}));
+  const vistos=new Set(vivas.map(m=>String(m.em).slice(0,16)));
+  const M=vivas.concat((D.missoes||[]).filter(m=>!vistos.has(String(m.em).slice(0,16)))).slice(0,alvo==="pil-posto"?8:20);
+  const u=M[0], tmin=A.tempo_medio_min;
+  const ini=m=>m.em&&m.segundos?new Date(new Date(m.em)-m.segundos*1000).toISOString():null;
+  const q=m=>m.achados?"validada":m.qualidade==="fora do objeto"?"parcial":"insuficiente";
+  return `${u?`<div class="pil-vivo-u"><b>Última missão:</b> ${esc(String(u.modo||"")+" — "+String(u.alvo||"").slice(0,100))}<br><span class=meta>começou ${ini(u)?esc(horaMin(ini(u))):"—"} · terminou ${esc(horaMin(u.em))} · ${esc(u.avaliacao||"")}</span></div>`:""}
+    <div class="int-mets">
+      <div class="int-met"><b>${A.missoes||0}</b><span>missões</span></div>
+      <div class="int-met"><b style="color:#1E7E4B">${A.com_resultado||0}</b><span>com resultado</span></div>
+      <div class="int-met"><b>${A.achados||0}</b><span>achados</span></div>
+      <div class="int-met"><b style="color:#9AA5B1">${A.nada_no_crivo||0}</b><span>nada no crivo</span></div>
+      <div class="int-met"><b>${A.fora_do_objeto||0}</b><span>fora do objeto</span></div>
+      <div class="int-met"><b>${A.estrelas_de_ouro||0}</b><span>estrelas de ouro</span></div>
+      <div class="int-met"><b>${A.indicios_entregues_ao_interceptador||0}</b><span>indícios entregues ao Interceptador</span></div>
+      <div class="int-met"><b>${tmin==null?"–":tmin<1?Math.round(tmin*60)+" s":tmin+" min"}</b><span>por missão</span></div>
+    </div>
+    <div class="int-fila">Na fila: ${Object.entries(F).map(([k,v])=>`<b>${v}</b> ${esc(k)}`).join(" · ")||"—"}</div>
+    ${M.map(m=>{const E=m.encontrou||[];
+      return `<details class="int-m"><summary><span class=meta>${ini(m)?esc(horaMin(ini(m))):"—"}<br>→ ${esc(horaMin(m.em).slice(6))}${m.segundos?` · ${duracaoTxt(ini(m),m.em)}`:""}${m.aoVivo?" · <b style='color:#1E7E4B'>ao vivo</b>":""}</span>
+        <span><b>${esc(String(m.alvo||"").slice(0,110))}</b><br><small class=meta>${esc(m.modo||"")} · ${esc(m.de||"")}</small></span>
+        <span class="int-q ${q(m)}">${esc(m.qualidade||"—")}</span><span class=meta>${m.achados??0} achado(s)</span></summary>
+        <div class="int-corpo">
+          <div class="int-av ${m.achados?"":"a-completar"}"><h5>Resultado</h5><b>${esc(m.avaliacao||"")}</b>${m.abates?`<br>${m.abates} abate(s)`:""}</div>
+          <div><h5>O que encontrou</h5>${E.length?E.map(x=>`<div class="int-dado"><b>achado</b><span>${x.url?`<a href="${esc(x.url)}" target=_blank rel="noopener noreferrer">${esc(x.titulo||x.url)}</a>`:esc(x.titulo||"")}</span></div>`).join(""):`<span class=meta>${m.achados?"detalhes no relatório do voo":"nada passou no crivo"}</span>`}</div>
+          <div><h5>Justificativa</h5>${esc(m.justificativa||"")}</div>
+        </div></details>`;}).join("")}
+    ${(D.missoes||[]).length>M.length?`<div class=meta style="margin-top:6px">mostrando ${M.length} missões recentes · o relatório completo fica em dados/espiao.json</div>`:""}`;
+};
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
