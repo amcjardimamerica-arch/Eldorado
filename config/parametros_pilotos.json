@@ -42,16 +42,16 @@
   "consultas_boas": [
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 173,
-    "com_resultado": 149,
-    "achados": 297,
+    "tentativas": 174,
+    "com_resultado": 150,
+    "achados": 299,
     "missao": "aposta"
    },
    {
     "consulta": "quais são os programas de doação de multinacionais com inscrição local",
-    "tentativas": 77,
-    "com_resultado": 48,
-    "achados": 95,
+    "tentativas": 78,
+    "com_resultado": 49,
+    "achados": 97,
     "missao": "aposta"
    },
    {
@@ -81,6 +81,13 @@
     "com_resultado": 165,
     "achados": 165,
     "missao": "resgate"
+   },
+   {
+    "consulta": "1ª edição do prêmio parceiros voluntár organizações da sociedade civ",
+    "tentativas": 3,
+    "com_resultado": 1,
+    "achados": 1,
+    "missao": "aposta"
    },
    {
     "consulta": "fundo de fomento a filantropia amplia pa",
@@ -172,13 +179,6 @@
     "com_resultado": 3,
     "achados": 4,
     "missao": "cacar_oportunidade"
-   },
-   {
-    "consulta": "1ª edição do prêmio parceiros voluntár",
-    "tentativas": 1561,
-    "com_resultado": 84,
-    "achados": 84,
-    "missao": "resgate"
    }
   ],
   "consultas_ruins": [
@@ -352,7 +352,7 @@
    },
    {
     "consulta": "empresa lança edital para ongs 2026",
-    "tentativas": 14,
+    "tentativas": 15,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
@@ -430,15 +430,15 @@
    "fomento",
    "saúde",
    "doação",
+   "edição",
+   "parceiros",
+   "volunta",
    "apoiar",
    "sndca",
    "filantropia",
    "rede",
    "memória",
-   "milhões",
-   "quais",
-   "instituto",
-   "idosa"
+   "milhões"
   ],
   "termos_ruins": [
    "credenciamento",
@@ -464,17 +464,17 @@
     "taxa": 0.194
    },
    "aposta": {
-    "tentativas": 743,
-    "com_resultado": 220,
-    "taxa": 0.296
+    "tentativas": 751,
+    "com_resultado": 223,
+    "taxa": 0.297
    },
    "descobrir": {
-    "tentativas": 333,
+    "tentativas": 334,
     "com_resultado": 2,
     "taxa": 0.006
    }
   },
-  "consultas_aprendidas_em": "2026-09-30T11:22:55+00:00"
+  "consultas_aprendidas_em": "2026-09-30T11:30:08+00:00"
  },
  "atualizado_em": "2026-09-29T16:11:27+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"

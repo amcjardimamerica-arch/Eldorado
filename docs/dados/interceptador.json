@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-30T11:12:40+00:00",
+  "em": "2026-09-30T11:30:04+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-30T10:59:35+00:00",
+  "ultimo_voo": "2026-09-30T11:14:17+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 99
   },
   "acumulado": {
-    "missoes": 474,
+    "missoes": 475,
     "validadas": 27,
     "parciais": 134,
-    "insuficientes": 182,
+    "insuficientes": 183,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 274,
+      "sim": 275,
       "nao": 42
     },
     "estrelas_de_ouro": 18,
@@ -52,6 +52,69 @@
     "tempo_medio_min": 8.6
   },
   "missoes": [
+    {
+      "em": "2026-09-30T11:14:17+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "opressor sem leitura",
+      "alvo": "Diário Oficial de Campinas (SP) 2026-07-31 — \"chamamento público\" \"organizações da sociedade civil\" — Prefeitura Municipal de Campinas",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://portal-adm.campinas.sp.gov.br/sites/default/files/publicacoes-dom/dom/1982421463360714633619824231.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprova que a Prefeitura Municipal de Campinas publicou um chamamento público para organizações da sociedade civil, o que indica a existência de uma fonte de financiamento para tais entidades.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação e se ela atende aos requisitos não especificados, além de se inscrever no chamamento público conforme publicado no Diário Oficial de Campinas.",
+        "proximo_passo": "Consultar os anexos do edital para obter informações detalhadas sobre requisitos, prazos e outros detalhes necessários para a inscrição.",
+        "risco": "A falta de informações sobre requisitos, prazos e área de atuação pode impedir a associação de se qualificar adequadamente para o chamamento público."
+      },
+      "erro": null,
+      "segundos": 946,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 3,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-88fc7e055eb6",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Campinas",
+          "trecho": "Prefeitura Municipal de Campinas",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Município de Campinas",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Campinas",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3509502/2026-07-31/3fc54328b47ec5571da62902f0f27dc7d9f4e65e.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-09-30T10:59:35+00:00",
       "modo": "validar",
@@ -2792,88 +2855,6 @@
       "id": "agr-a64c3c7ec87a",
       "encontrou": {},
       "financiador": "CAU/PR",
-      "indicios": [],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-09-30T01:45:19+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "oportunidade nacional/internacional",
-      "alvo": "Chamamento Público Raposa 2026: Guia para Saúde",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos"
-      ],
-      "pagina_oficial": "https://www.raposa.ma.gov.br/licitacoes-e-contratos/resultado-do-certame/detalhes/e1ca709d-e8a9-44bd-ae67-bcab024a8516?tipo=licitacao",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado descreve o chamamento público para seleção de uma Organização Social qualificada no âmbito do Município de Raposa/MA, com informações sobre objeto, prazo de inscrição, órgão financiador e outros detalhes relevantes.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se atende aos critérios de qualificação para Organização Social, mesmo que não esteja localizada em Raposa/MA, e se alinhar ao objeto do edital, que é gestão de unidades de saúde.",
-        "proximo_passo": "Consultar os anexos do edital para entender os critérios de qualificação e os requisitos específicos para participar do processo seletivo.",
-        "risco": "A associação comunitária de Goiânia pode estar fora do escopo do edital, já que o objeto é voltado para o Município de Raposa/MA e a destinação é fora do escopo de convenio."
-      },
-      "erro": null,
-      "segundos": 889,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 8,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor, Requisitos",
-      "id": "agr-e851387390f3",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Seleção de Organização Social - OS Qualificada no Âmbito do Município de Raposa/MA, para a Celebração de Contratos de Gestão Destinados à Gestão das Unidades de Saúde.",
-          "trecho": "Objeto:Seleção de Organização Social - OS Qualificada no Âmbito do Município de Raposa/MA, para a Celebração de Contratos de Gestão Destinados à Gestão das Unidades de Saúde.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-09-22 a 2026-09-23",
-          "trecho": "Data Publicação:22/09/2026 Data de Abertura:23/09/2026",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Raposa",
-          "trecho": "Unidade:FUNDO MUNICIPAL DE SAÚDE DE RAPOSA",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "MA",
-          "trecho": "Unidade:FUNDO MUNICIPAL DE SAÚDE DE RAPOSA",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "saude",
-          "trecho": "Objeto:Seleção de Organização Social - OS Qualificada no Âmbito do Município de Raposa/MA, para a Celebração de Contratos de Gestão Destinados à Gestão das Unidades de Saúde.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · convenio",
-          "trecho": "Objeto:Seleção de Organização Social - OS Qualificada no Âmbito do Município de Raposa/MA, para a Celebração de Contratos de Gestão Destinados à Gestão das Unidades de Saúde.",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Raposa",
       "indicios": [],
       "rotas": [
         "financiador_programa_edital",
