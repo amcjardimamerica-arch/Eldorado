@@ -1,13 +1,14 @@
 {
-  "em": "2026-09-30T00:47:06+00:00",
+  "em": "2026-09-30T00:54:42+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 0,
+      "achados": 1,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 40
+        "nada_no_crivo": 39,
+        "fora_do_objeto": 1
       },
       "efetividade": 0.0
     }
@@ -54,6 +55,20 @@
       "regra": "o motor 'empresas-incentivadas' falha por vieram resultados, mas nenhum era oportunidade de verdade há 130 vezes — precisa de correção, não de mais tentativas"
     },
     {
+      "motor": "piloto-aberto",
+      "motivo": "fora_do_objeto",
+      "vezes": 123,
+      "tipos": [
+        "prospectar",
+        "catalogar",
+        "aposta",
+        "descobrir"
+      ],
+      "ultima": "2026-09-30",
+      "explicacao": "o que veio não serve à finalidade da associação",
+      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 123 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
       "motor": "missao-especial",
       "motivo": "nada_no_crivo",
       "vezes": 119,
@@ -63,20 +78,6 @@
       "ultima": "2026-09-26",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
       "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 119 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "piloto-aberto",
-      "motivo": "fora_do_objeto",
-      "vezes": 117,
-      "tipos": [
-        "prospectar",
-        "catalogar",
-        "aposta",
-        "descobrir"
-      ],
-      "ultima": "2026-09-29",
-      "explicacao": "o que veio não serve à finalidade da associação",
-      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 117 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-patrocinio",
@@ -160,6 +161,13 @@
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deve coletar e exibir trechos relevantes dos editais para facilitar a avaliação de sua utilidade.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-30T00:53",
+      "aplicada": false
+    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deve extrair e validar trechos relevantes dos textos para permitir uma análise mais precisa da compatibilidade dos editais com a missão da organização.",
@@ -292,19 +300,12 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-09-29T19:31",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deveria filtrar melhor páginas que contenham termos específicos como 'edital', 'patrocínio', 'doação' ou 'incentivo fiscal' para organizações da sociedade civil no Brasil.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-09-29T19:19",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 299,
-  "entregues_ao_claude": 244,
+  "editais_tratados": 300,
+  "entregues_ao_claude": 245,
   "ultima_faxina": {
-    "em": "2026-09-30T00:47:06+00:00",
+    "em": "2026-09-30T00:54:42+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 2,
     "achados_descartados_removidos": 254,
