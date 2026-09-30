@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## 0ddd68c9faca99e754fe — Chamamento Público Nº 2026.09.01.01-PMI/SME - Seleção de OSC para Educação Infantil Prefeitura Municipal de Iguatu Aceita:   organizações da sociedade civil Prazo:  05/10/2026 (8d) Ver detalhes →
 
-MODO: COMPLETO · marcado desde 2026-09-28 · visto pela IA 3× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-28 · visto pela IA 4× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Piloto - Espião — busca aberta no terceiro setor · UF BR · nível privada · situação aberta · fim 2026-10-05
 
@@ -34,7 +34,7 @@ Texto do edital (compacto):
 ---
 ## 8812eadf434767bad390 — Convênios e parcerias
 
-MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 11× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 12× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Programa estadual de eventos esportivos · UF GO · nível estadual · situação possivel · fim None
 
