@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `pncp`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 215
-- Distribuição por ano pesquisado/coletado: {'2023': 10, '2024': 92, '2025': 50, '2026': 63}
+- Pistas aguardando confirmação: 216
+- Distribuição por ano pesquisado/coletado: {'2023': 10, '2024': 92, '2025': 51, '2026': 63}
 
 ## Padrões
 
@@ -52,7 +52,7 @@ SE FINANCEIRO A ASSOCIAÇÃO BENEFICENTE FREI ROGÉRIO.](https://pncp.gov.br/app
 - [Seleção de projetos para firmar termo de execução cultural com recursos da política nacional Aldir Blanc de fomento à cultura – PNAB (lei nº 14.399/2022) -  Proc. Administrativo 2.654/2026](https://pncp.gov.br/app/editais/46634127000163/2026/1974) — coletado em 2026-09-27T17:04:51+00:00
 - [Recurso do incremento temporário da Emenda MAC será destinado ao custeio de materiais de consumo e de serviços de terceiros destinados a manutenção e ao funcionamento das atividades assistenciais de saude realizadas pela OSC](https://pncp.gov.br/app/editais/45787660000100/2026/276) — coletado em 2026-08-31T09:37:07+00:00
 - [Credenciamento de entidades públicas, filantrópicas e/ou sem fins lucrativos e entidades privadas, prestadoras de serviço profissionais na área da saúde, em atendimento multidisciplinar, para atendimento da clientela adulta e pediátrica,](https://pncp.gov.br/app/editais/28695658000184/2023/49) — coletado em 2026-09-29T17:27:38+00:00
-- [CHAMAMENTO PUBLICO PARA SELEÇÃO DE PROJETOS APRESENTADOS POR ORGANIZAÇÕES DA SOCIEDADE CIVIL PARA FINS DE CELEBRAÇÃO DE PARCERIAS, VISANDO A REALIZAÇÃO DE REISADO NA SEDE E EM DIVERSOS DISTRITOS DO MUNICÍPIO DE CARIRÉ-CE](https://pncp.gov.br/app/editais/07598600000142/2025/4) — coletado em 2026-09-27T17:03:21+00:00
+- [CHAMAMENTO PUBLICO PARA SELEÇÃO DE PROJETOS APRESENTADOS POR ORGANIZAÇÕES DA SOCIEDADE CIVIL PARA FINS DE CELEBRAÇÃO DE PARCERIAS, VISANDO A REALIZAÇÃO DE REISADO NA SEDE E EM DIVERSOS DISTRITOS DO MUNICÍPIO DE CARIRÉ-CE](https://pncp.gov.br/app/editais/07598600000142/2025/4) — coletado em 2026-09-30T11:43:41+00:00
 - [SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA – PNAB (LEI Nº 14.399/2022) – CICLO 2](https://pncp.gov.br/app/editais/01614112000103/2026/45) — coletado em 2026-08-31T09:37:04+00:00
 - [[Portal de Compras Públicas] - Seleção de Propostas apresentadas pelas Organizações da Sociedade Civil de Planaltina, que visem à execução de Atividades Esportivas e gestão de CAMPEONATO DE FUTEBOL AMADOR, TRABALHO COM CATEGORIAS DE BASE, FOMENTO ESPORTIVO E ESCOLINHA DE FUTEBOL, destinado ao atendi](https://portaldecompraspublicas.com.br/processos/GO/Prefeitura-Municipal-de-Planaltina-1253/CRED-CH-09-2024-2024-325654) — coletado em 2026-09-27T17:01:07+00:00
 - [Credenciamento de associações, cooperativas, entidades sem fins lucrativos e empresas para a coleta seletiva solidária, transporte, triagem e destinação ambientalmente adequada do papel branco proveniente dos resíduos gerados nos Municípios de Guarapuava e Irati da UNICENTRO](https://pncp.gov.br/app/editais/77902914000172/2026/1) — coletado em 2026-09-01T06:40:01+00:00
