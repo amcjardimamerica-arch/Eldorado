@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-abcr`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 18
-- Distribuição por ano pesquisado/coletado: {'2026': 18}
+- Pistas aguardando confirmação: 20
+- Distribuição por ano pesquisado/coletado: {'2026': 20}
 
 ## Padrões
 
@@ -21,8 +21,10 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Continue lendo ONGs e coletivos periféricos do Nordeste podem se inscrever em edital que oferece apoio de R$ 300 mil até o dia 12](https://captadores.org.br/editais/ongs-e-coletivos-perifericos-do-nordeste-podem-se-inscrever-em-edital-que-oferece-apoio-de-r-300-mil-ate-o-dia-12) — coletado em 2026-09-21T10:40:15+00:00
 - [5º Edital de Apoio à Filantropia Comunitária seleciona 25 campanhas para o Dia de Doar 2025](https://captadores.org.br/abcr/5o-edital-de-apoio-a-filantropia-comunitaria-seleciona-25-campanhas-para-o-dia-de-doar-2025) — coletado em 2026-09-29T10:25:37+00:00
 - [Continue lendo Edital de apoio a organizações sociais da Região Metropolitana de São Paulo está com inscrições abertas](https://captadores.org.br/editais/edital-de-apoio-a-organizacoes-sociais-da-regiao-metropolitana-de-sao-paulo-esta-com-inscricoes-abertas) — coletado em 2026-09-21T10:40:15+00:00
+- [Evento da ABCR vai debater o papel das OSCs na educação climática e participação na COP 30](https://captadores.org.br/abcr/evento-da-abcr-vai-debater-o-papel-das-oscs-na-educacao-climatica-e-participacao-na-cop-30) — coletado em 2026-09-30T14:28:45+00:00
 - [chamada vai selecionar projetos sociais](https://www.zurich.com.br/leis-de-incentivo-2026) — coletado em 2026-09-29T10:25:37+00:00
 - [Continue lendo Fundação Maria Emília abre edital com apoio de até R$ 1 milhão para projetos em saúde e educação](https://captadores.org.br/editais/fundacao-maria-emilia-abre-edital-com-apoio-de-ate-r-1-milhao-para-projetos-em-saude-e-educacao) — coletado em 2026-09-21T10:40:15+00:00
+- [Encontro gratuito vai apresentar critérios de financiamento da Fundação Maria Emília para projetos sociais](https://captadores.org.br/noticias/encontro-gratuito-apresenta-criterios-de-financiamento-da-fundacao-maria-emilia-para-projetos-sociais) — coletado em 2026-09-30T14:28:45+00:00
 - [ChildFund Brasil lança edital para seleção de OSCs que trabalham com crianças e adolescentes](https://captadores.org.br/editais/childfund-brasil-lanca-edital-para-selecao-de-oscs-que-trabalham-com-criancas-e-adolescentes) — coletado em 2026-09-26T11:30:57+00:00
 - [Webinar gratuito vai orientar OSCs sobre prestação de contas e gestão financeira](https://captadores.org.br/noticias/webinar-gratuito-vai-orientar-oscs-sobre-prestacao-de-contas-e-gestao-financeira) — coletado em 2026-09-21T10:40:09+00:00
 - [Continue lendo Movimento Bem Maior lança editais de fortalecimento institucional para organizações sociais e coletivos](https://captadores.org.br/editais/movimento-bem-maior-lanca-editais-de-fortalecimento-institucional-para-organizacoes-sociais-e-coletivos) — coletado em 2026-09-29T10:25:31+00:00

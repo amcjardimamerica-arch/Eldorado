@@ -1,9 +1,9 @@
 {
-  "executado_em": "2026-09-30T11:40:54+00:00",
+  "executado_em": "2026-09-30T17:21:02+00:00",
   "janelas_totais": 61,
   "janelas_ja_concluidas": 23,
   "janelas_nesta_execucao": 38,
-  "novas": 1,
+  "novas": 15,
   "falhas": [
     {
       "janela": "2021-09",
@@ -71,7 +71,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "JSONDecodeError"
+          "erro": "HTTPError"
         },
         {
           "api": "querido_diario",
@@ -131,7 +131,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "erro": "JSONDecodeError"
         },
         {
           "api": "querido_diario",
@@ -151,7 +151,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "erro": "JSONDecodeError"
         },
         {
           "api": "querido_diario",
@@ -171,7 +171,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "erro": "JSONDecodeError"
         },
         {
           "api": "querido_diario",
@@ -590,8 +590,30 @@
       "camadas": [
         {
           "api": "pncp",
-          "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "descartados_fase2": 154,
+          "amostra": [
+            {
+              "objeto": "[Portal de Compras Públicas] - Credenciamento de pessoa jurídica para prestação de serviços médicos, para atuação em pro",
+              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+            },
+            {
+              "objeto": "Chamamento Público para Credenciamento de pessoas jurídicas para prestação de serviços de Escavadeira Hidráulica, Caminh",
+              "motivo": "positivo: contratação pública comum"
+            },
+            {
+              "objeto": "Edital nº 1/2024 de CHAMAMENTO PÚBLICO para CREDENCIAMENTO DE LEILOEIRO(A) OFICIAL, regularmente registrado na Junta Com",
+              "motivo": "positivo: contratação pública comum"
+            },
+            {
+              "objeto": "Credenciamento de Profissionais e Técnicos, sendo Pessoas Físicas, para atuarem nas áreas Específicas da Secretaria Muni",
+              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+            },
+            {
+              "objeto": "O Objeto do presente edital de chamamento público é o processo de seleção de Empreendedores Familiares Rurais, Grupos Fo",
+              "motivo": "controle: compra pública"
+            }
+          ],
+          "nota": "fora do escopo do terceiro setor"
         },
         {
           "api": "querido_diario",
@@ -730,30 +752,8 @@
       "camadas": [
         {
           "api": "pncp",
-          "descartados_fase2": 166,
-          "amostra": [
-            {
-              "objeto": "Publicação de Termo de Adesão - Proc. 67/2024 - Credenciamento",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            },
-            {
-              "objeto": "[Portal de Compras Públicas] - Credenciamento de instituição financeira para prestação de serviços bancários de gerencia",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            },
-            {
-              "objeto": "Credenciamento de empresa especializada de empresa prestadora de serviços de Assistência Odontológica.",
-              "motivo": "exigência empresarial (SICAF, CNAE, capital social) sem qualquer menção a OSC — associação não pode concorrer"
-            },
-            {
-              "objeto": "Credenciamento de empresas para fornecer um sistema completo de benefícios, abrangendo emissão, administração, distribui",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            },
-            {
-              "objeto": "Credenciamento de Organizações Civis de Saúde (OCS) e de Profissionais de Saúde Autônomos (PSA) interessados na prestaçã",
-              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
-            }
-          ],
-          "nota": "fora do escopo do terceiro setor"
+          "base": "https://pncp.gov.br/api/consulta",
+          "erro": "HTTPError"
         },
         {
           "api": "querido_diario",
@@ -1134,8 +1134,8 @@
       "tentativa": 2
     }
   ],
-  "dominios_ano_pesquisado": 2023,
-  "dominios_novas": 0,
+  "dominios_ano_pesquisado": 2024,
+  "dominios_novas": 11,
   "dominios_falhas": 0,
   "status": "em_andamento",
   "janelas_restantes": 38
