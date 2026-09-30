@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-30T19:50:52+00:00",
+  "em": "2026-09-30T20:00:17+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-30T19:39:52+00:00",
+  "ultimo_voo": "2026-09-30T19:52:53+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,97 @@
     "empresas sem ficha": 103
   },
   "acumulado": {
-    "missoes": 514,
-    "validadas": 29,
+    "missoes": 515,
+    "validadas": 30,
     "parciais": 146,
     "insuficientes": 208,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 297,
+      "sim": 298,
       "nao": 52
     },
-    "estrelas_de_ouro": 19,
+    "estrelas_de_ouro": 20,
     "fontes_novas_para_os_motores": 121,
     "tempo_medio_min": 8.8
   },
   "missoes": [
+    {
+      "em": "2026-09-30T19:52:53+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "opressor sem leitura",
+      "alvo": "BNDES abre chamada para apoiar projetos de organizações periféricas em todo o país — BNDES",
+      "qualidade": "validada",
+      "comprovados": 10,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Valor",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social/bndes-periferias",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital do BNDES menciona explicitamente a inclusão produtiva urbana em favelas e periferias, alinhando-se com a missão de organizações da sociedade civil que atuam em áreas periféricas.",
+        "para_a_amc": "A associação comunitária de Goiânia precisa ser uma pessoa jurídica de direito privado sem fins lucrativos, elaborar um projeto alinhado ao objeto do edital e seguir o prazo de inscrição de 2026-08-18 a 2026-12-04.",
+        "proximo_passo": "Verificar os requisitos do edital e preparar o projeto de acordo com o objeto e o prazo estabelecido.",
+        "risco": "A falta de clareza sobre o valor alocado e a área de atuação específica pode dificultar a adequação do projeto ao edital."
+      },
+      "erro": null,
+      "segundos": 443,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 9,
+      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
+      "avaliacao": "pronta para a decisão do Claude",
+      "id": "op-op-9b1d2dfcbd4e",
+      "encontrou": {
+        "Objeto": {
+          "valor": "inclusão produtiva urbana em favelas e periferias",
+          "trecho": "Serão elegíveis propostas relacionadas à inclusão produtiva urbana em favelas e periferias em uma única frente, a saber:",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-08-18 a 2026-12-04",
+          "trecho": "Ciclo para recebimento de propostas: de 18.08.2026 até às 17h de 04.12.2026.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "BNDES",
+          "trecho": "BNDES Periferias",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "nacional",
+          "trecho": "Chamada de projetos para 6º ciclo do BNDES Periferias - até às 17h de 04.12.2026.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "Serão elegíveis propostas relacionadas à inclusão produtiva urbana em favelas e periferias em uma única frente, a saber:",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "Pessoas jurídicas de direito privado sem fins lucrativos.",
+          "trecho": "Quem pode solicitar Pessoas jurídicas de direito privado sem fins lucrativos.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "BNDES",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-09-30T19:39:52+00:00",
       "modo": "validar",
@@ -2516,69 +2592,6 @@
       },
       "financiador": "Prefeitura Municipal de Campinas",
       "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-09-30T11:14:17+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "opressor sem leitura",
-      "alvo": "Diário Oficial de Campinas (SP) 2026-07-31 — \"chamamento público\" \"organizações da sociedade civil\" — Prefeitura Municipal de Campinas",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://portal-adm.campinas.sp.gov.br/sites/default/files/publicacoes-dom/dom/1982421463360714633619824231.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprova que a Prefeitura Municipal de Campinas publicou um chamamento público para organizações da sociedade civil, o que indica a existência de uma fonte de financiamento para tais entidades.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação e se ela atende aos requisitos não especificados, além de se inscrever no chamamento público conforme publicado no Diário Oficial de Campinas.",
-        "proximo_passo": "Consultar os anexos do edital para obter informações detalhadas sobre requisitos, prazos e outros detalhes necessários para a inscrição.",
-        "risco": "A falta de informações sobre requisitos, prazos e área de atuação pode impedir a associação de se qualificar adequadamente para o chamamento público."
-      },
-      "erro": null,
-      "segundos": 946,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 3,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-88fc7e055eb6",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Campinas",
-          "trecho": "Prefeitura Municipal de Campinas",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "Município de Campinas",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Campinas",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3509502/2026-07-31/3fc54328b47ec5571da62902f0f27dc7d9f4e65e.pdf",
-          "tipo": "agregador"
-        }
-      ],
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
