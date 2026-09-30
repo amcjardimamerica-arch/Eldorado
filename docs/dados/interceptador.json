@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-30T07:38:01+00:00",
+  "em": "2026-09-30T07:54:25+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-30T07:28:37+00:00",
+  "ultimo_voo": "2026-09-30T07:39:31+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,103 @@
     "empresas sem ficha": 97
   },
   "acumulado": {
-    "missoes": 460,
+    "missoes": 461,
     "validadas": 26,
-    "parciais": 125,
+    "parciais": 126,
     "insuficientes": 178,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 263,
+      "sim": 264,
       "nao": 39
     },
     "estrelas_de_ouro": 17,
-    "fontes_novas_para_os_motores": 105,
-    "tempo_medio_min": 8.4
+    "fontes_novas_para_os_motores": 106,
+    "tempo_medio_min": 8.5
   },
   "missoes": [
+    {
+      "em": "2026-09-30T07:39:31+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "oportunidade · BA",
+      "alvo": "Diário Oficial de Canudos (BA) 2026-09-23 — \"edital de chamamento público\" associação",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": "https://doem.org.br/ba/canudos/pesquisar",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre o objeto, órgão financiador, território, esfera, anexos, destinação e área de atuação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se sua atividade está alinhada com a área de atuação do edital (cultura) e se atende aos requisitos não explicitados, além de seguir o processo de inscrição conforme o edital.",
+        "proximo_passo": "Consultar o edital completo para entender os requisitos e o processo de inscrição, bem como os prazos não mencionados no texto comprovado.",
+        "risco": "A falta de informações sobre prazos, requisitos e valor pode impedir a associação de se inscrever adequadamente no edital."
+      },
+      "erro": null,
+      "segundos": 893,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 3,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "b55259766243bb944435",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Fomento à cultura no âmbito da Prefeitura Municipal de Canudos",
+          "trecho": "POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Canudos",
+          "trecho": "PREFEITURA MUNICIPAL DE CANUDOS",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "BA",
+          "trecho": "PREFEITURA MUNICIPAL DE CANUDOS",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Canudos",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/2906824/2026-09-23/82414b3857eb558e0c8f5824145fe882d0e3a22c.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-30T07:28:37+00:00",
       "modo": "validar",
@@ -2535,33 +2617,6 @@
       "parecer_fonte": null,
       "erro": null,
       "segundos": 18,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": null,
-      "fontes_oficiais": 0,
-      "justificativa": "",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": null,
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-09-29T23:15:46+00:00",
-      "modo": "dossie",
-      "tipo": "dossie_empresa",
-      "de": "empresa de Goiás · dossiê",
-      "alvo": "MINERVA S.A.",
-      "qualidade": "dossiê 5/6",
-      "comprovados": null,
-      "dispensados": null,
-      "total": null,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": null,
-      "erro": null,
-      "segundos": 17,
       "site_oficial": null,
       "resultado": null,
       "fonte_nova_para_os_motores": null,
