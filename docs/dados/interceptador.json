@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-30T21:39:49+00:00",
+  "em": "2026-09-30T21:48:52+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-30T21:25:06+00:00",
+  "ultimo_voo": "2026-09-30T21:41:32+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,92 @@
     "empresas sem ficha": 103
   },
   "acumulado": {
-    "missoes": 522,
+    "missoes": 523,
     "validadas": 30,
-    "parciais": 148,
+    "parciais": 149,
     "insuficientes": 213,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 302,
+      "sim": 303,
       "nao": 54
     },
     "estrelas_de_ouro": 20,
-    "fontes_novas_para_os_motores": 125,
+    "fontes_novas_para_os_motores": 126,
     "tempo_medio_min": 8.8
   },
   "missoes": [
+    {
+      "em": "2026-09-30T21:41:32+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "mapa · nacional (sorteio)",
+      "alvo": "Como Solicitar uma Doação",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Anexos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://climaesociedade.org/como-solicitar-uma-doacao",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado descreve claramente o objeto, financiador, requisitos e destinação do edital, o que permite identificar as informações necessárias para a solicitação de doação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisa ser uma Organização da Sociedade Civil (OSC), ter CNPJ ou ser movimento ou grupo comunitário que não tenha CNPJ, e beneficiar o Brasil.",
+        "proximo_passo": "Verificar os requisitos detalhados e preparar os documentos necessários para a solicitação de apoio financeiro.",
+        "risco": "A falta de CNPJ ou a não conformidade com os requisitos pode impedir o acesso ao apoio financeiro."
+      },
+      "erro": null,
+      "segundos": 440,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "1900448f0bbb4c705705",
+      "encontrou": {
+        "Objeto": {
+          "valor": "apoio financeiro para projetos e iniciativas de interesse público",
+          "trecho": "o Instituto concede apoio financeiro para projetos e iniciativas de interesse público.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Instituto Climático da Sociedade (iCS)",
+          "trecho": "o Instituto concede apoio financeiro para projetos e iniciativas de interesse público.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "nacional",
+          "trecho": "O iCS apoia projetos em todas as regiões do país...",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "A maior parte das doações é direcionada a Organizações da Sociedade Civil (OSCs)",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "ser Organização da Sociedade Civil (OSC), ter CNPJ ou ser movimento ou grupo comunitário que não tenha CNPJ, beneficiar o Brasil",
+          "trecho": "A maior parte das doações é direcionada a Organizações da Sociedade Civil (OSCs), mas o iCS também apoia projetos de universidades e centros de pesquisa (públicos ou privados), mov",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": null,
+      "indicios": [],
+      "rotas": []
+    },
     {
       "em": "2026-09-30T21:25:06+00:00",
       "modo": "validar",
@@ -2510,88 +2581,6 @@
       "indicios": [
         {
           "url": "https://data.queridodiario.ok.org.br/3556305/2026-08-27/c1f0752a75f98833c12fe9ddda31e4cc37db7489.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-09-30T13:02:27+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "opressor sem leitura",
-      "alvo": "Diário Oficial de Valinhos (SP) 2026-09-25 — \"edital de chamamento público\" associação — Prefeitura Municipal de Valinhos",
-      "qualidade": "insuficiente",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Destinação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital menciona o objeto, valor, órgão financiador, território, esfera e anexos, o que é suficiente para identificar a fonte.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é atendimento ambulatorial e hospitalar da rede municipal de saúde, e verificar se sua atuação está alinhada com essa área. Além disso, deve analisar os anexos para entender melhor os requisitos e a destinação do recurso.",
-        "proximo_passo": "Consultar os anexos do edital para obter mais detalhes sobre os requisitos e a destinação do recurso.",
-        "risco": "A falta de informações sobre prazo de inscrição, requisitos e destinação pode impedir a associação de se candidatar adequadamente."
-      },
-      "erro": null,
-      "segundos": 964,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-bf48b4a8c63e",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Atendimento ambulatorial e hospitalar da rede municipal de saúde",
-          "trecho": "10.302.0203.2.015 Atendimento ambulatorial e hospitalar da rede municipal de saúde",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 140.000,00",
-          "trecho": "01.310.0000 Saúde – Geral .................................................R$ 140.000,00",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Valinhos",
-          "trecho": "FRANKLIN DUARTE DE LIMA, Prefeito do Município de Valinhos",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "Prefeitura Municipal de Valinhos",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "saude",
-          "trecho": "02.10.02 Fundo Municipal de Saúde",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Valinhos",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3556206/2026-09-25/56aea1ce2320e8f0a5b14032fed10736db597209.pdf",
           "tipo": "agregador"
         }
       ],
