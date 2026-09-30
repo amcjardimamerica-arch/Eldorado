@@ -1,13 +1,14 @@
 {
-  "em": "2026-09-30T23:22:41+00:00",
+  "em": "2026-09-30T23:30:50+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 0,
+      "achados": 1,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 40
+        "nada_no_crivo": 39,
+        "fora_do_objeto": 1
       },
       "efetividade": 0.0
     }
@@ -16,7 +17,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 2998,
+      "vezes": 3018,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -28,7 +29,7 @@
       ],
       "ultima": "2026-09-30",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 2998 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 3018 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -44,7 +45,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "fora_do_objeto",
-      "vezes": 140,
+      "vezes": 141,
       "tipos": [
         "prospectar",
         "catalogar",
@@ -53,7 +54,7 @@
       ],
       "ultima": "2026-09-30",
       "explicacao": "o que veio não serve à finalidade da associação",
-      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 140 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 141 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "empresas-incentivadas",
@@ -116,28 +117,6 @@
       "regra": "o motor 'motor-gife' falha por o buscador não devolveu nada (bloqueio ou rede) há 22 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "piloto-aberto",
-      "motivo": "rastro_sem_prova",
-      "vezes": 21,
-      "tipos": [
-        "reconhecimento"
-      ],
-      "ultima": "2026-09-30",
-      "explicacao": "rastro_sem_prova",
-      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 21 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "piloto-aberto",
-      "motivo": "sem_rastro",
-      "vezes": 21,
-      "tipos": [
-        "reconhecimento"
-      ],
-      "ultima": "2026-09-30",
-      "explicacao": "sem_rastro",
-      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 21 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
       "motor": "missao-especial",
       "motivo": "fora_do_objeto",
       "vezes": 20,
@@ -147,6 +126,28 @@
       "ultima": "2026-09-26",
       "explicacao": "o que veio não serve à finalidade da associação",
       "regra": "o motor 'missao-especial' falha por o que veio não serve à finalidade da associação há 20 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "piloto-aberto",
+      "motivo": "rastro_sem_prova",
+      "vezes": 20,
+      "tipos": [
+        "reconhecimento"
+      ],
+      "ultima": "2026-09-30",
+      "explicacao": "rastro_sem_prova",
+      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 20 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "piloto-aberto",
+      "motivo": "sem_rastro",
+      "vezes": 20,
+      "tipos": [
+        "reconhecimento"
+      ],
+      "ultima": "2026-09-30",
+      "explicacao": "sem_rastro",
+      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 20 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -160,6 +161,13 @@
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deve coletar e exibir trechos relevantes dos editais para facilitar a análise e a decisão sobre a conveniência de concorrer a cada oportunidade.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-09-30T23:29",
+      "aplicada": false
+    },
     {
       "motor": "piloto-aberto",
       "sugestao": "Incluir informações específicas sobre prazos, valores, objeto e páginas dos editais para facilitar a identificação de recursos disponíveis.",
@@ -292,19 +300,12 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-09-30T12:15",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "Incluir mecanismo para extração automática de informações como prazo, valor, objeto e página diretamente do texto do edital.",
-      "efetividade_na_hora": 1.0,
-      "em": "2026-09-30T11:14",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 348,
-  "entregues_ao_claude": 287,
+  "editais_tratados": 349,
+  "entregues_ao_claude": 288,
   "ultima_faxina": {
-    "em": "2026-09-30T23:22:41+00:00",
+    "em": "2026-09-30T23:30:50+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 2,
     "achados_descartados_removidos": 254,
