@@ -1,5 +1,5 @@
 {
- "em": "2026-09-30T11:56:08+00:00",
+ "em": "2026-09-30T11:58:42+00:00",
  "lote": 100,
  "estado": {
   "interceptador_erros_vistos": 168,
@@ -267,24 +267,17 @@
    "consultas_boas": [
     {
      "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-     "tentativas": 176,
-     "com_resultado": 151,
-     "achados": 301,
+     "tentativas": 178,
+     "com_resultado": 152,
+     "achados": 303,
      "missao": "aposta"
     },
     {
      "consulta": "quais são os programas de doação de multinacionais com inscrição local",
-     "tentativas": 80,
-     "com_resultado": 50,
-     "achados": 99,
+     "tentativas": 82,
+     "com_resultado": 51,
+     "achados": 101,
      "missao": "aposta"
-    },
-    {
-     "consulta": "patrocinadores festival goiânia 2026",
-     "tentativas": 19,
-     "com_resultado": 9,
-     "achados": 9,
-     "missao": "prospectar"
     },
     {
      "consulta": "zurich abre edital nacional para apoiar",
@@ -299,6 +292,13 @@
      "com_resultado": 82,
      "achados": 82,
      "missao": "resgate"
+    },
+    {
+     "consulta": "patrocinadores festival goiânia 2026",
+     "tentativas": 20,
+     "com_resultado": 9,
+     "achados": 9,
+     "missao": "prospectar"
     },
     {
      "consulta": "chamamento público conanda/sndca nº 01/2",
@@ -378,13 +378,6 @@
      "missao": "aposta"
     },
     {
-     "consulta": "edital criança e adolescente organizações da sociedade civil inscriçõe",
-     "tentativas": 31,
-     "com_resultado": 2,
-     "achados": 2,
-     "missao": "aposta"
-    },
-    {
      "consulta": "cacar-motor-gife",
      "tentativas": 48,
      "com_resultado": 3,
@@ -392,15 +385,22 @@
      "missao": "cacar_oportunidade"
     },
     {
+     "consulta": "edital criança e adolescente organizações da sociedade civil inscriçõe",
+     "tentativas": 32,
+     "com_resultado": 2,
+     "achados": 2,
+     "missao": "aposta"
+    },
+    {
      "consulta": "cacar-motor-patrocinio",
-     "tentativas": 16,
+     "tentativas": 17,
      "com_resultado": 1,
      "achados": 1,
      "missao": "cacar_oportunidade"
     },
     {
      "consulta": "doação empresa hospital goiânia pronon 2026",
-     "tentativas": 16,
+     "tentativas": 17,
      "com_resultado": 1,
      "achados": 1,
      "missao": "prospectar"
@@ -523,7 +523,7 @@
     },
     {
      "consulta": "fundação apoia projetos sociais goiás inscrições 2026",
-     "tentativas": 17,
+     "tentativas": 18,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
@@ -577,7 +577,7 @@
     },
     {
      "consulta": "empresa lança edital para ongs 2026",
-     "tentativas": 15,
+     "tentativas": 16,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
@@ -595,7 +595,7 @@
     },
     {
      "consulta": "onde estão as oportunidades de editais que os motores não encontram? o",
-     "tentativas": 6,
+     "tentativas": 8,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
@@ -661,8 +661,8 @@
     "apoiar",
     "sndca",
     "filantropia",
-    "rede",
     "memória",
+    "rede",
     "milhões"
    ],
    "termos_ruins": [
@@ -679,27 +679,27 @@
      "taxa": 0.091
     },
     "cacar_oportunidade": {
-     "tentativas": 66,
+     "tentativas": 67,
      "com_resultado": 4,
-     "taxa": 0.061
+     "taxa": 0.06
     },
     "prospectar": {
-     "tentativas": 73,
+     "tentativas": 75,
      "com_resultado": 14,
-     "taxa": 0.192
+     "taxa": 0.187
     },
     "aposta": {
-     "tentativas": 762,
-     "com_resultado": 225,
-     "taxa": 0.295
+     "tentativas": 772,
+     "com_resultado": 227,
+     "taxa": 0.294
     },
     "descobrir": {
-     "tentativas": 336,
+     "tentativas": 339,
      "com_resultado": 2,
      "taxa": 0.006
     }
    },
-   "consultas_aprendidas_em": "2026-09-30T11:42:28+00:00"
+   "consultas_aprendidas_em": "2026-09-30T11:56:09+00:00"
   },
   "atualizado_em": "2026-09-29T16:11:27+00:00",
   "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
