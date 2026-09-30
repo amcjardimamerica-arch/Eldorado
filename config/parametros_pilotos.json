@@ -42,21 +42,21 @@
   "consultas_boas": [
    {
     "consulta": "quais são os programas de doação de multinacionais com inscrição local",
-    "tentativas": 89,
-    "com_resultado": 54,
-    "achados": 106,
+    "tentativas": 90,
+    "com_resultado": 55,
+    "achados": 108,
     "missao": "aposta"
    },
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 259,
-    "com_resultado": 155,
-    "achados": 309,
+    "tentativas": 260,
+    "com_resultado": 156,
+    "achados": 311,
     "missao": "aposta"
    },
    {
     "consulta": "chamamento público conanda/sndca nº 01/2",
-    "tentativas": 935,
+    "tentativas": 936,
     "com_resultado": 165,
     "achados": 165,
     "missao": "resgate"
@@ -98,7 +98,7 @@
    },
    {
     "consulta": "edital abre inscrições para rede memória",
-    "tentativas": 1337,
+    "tentativas": 1338,
     "com_resultado": 82,
     "achados": 82,
     "missao": "resgate"
@@ -119,7 +119,7 @@
    },
    {
     "consulta": "fundo de fomento a filantropia amplia pa",
-    "tentativas": 1496,
+    "tentativas": 1497,
     "com_resultado": 83,
     "achados": 83,
     "missao": "resgate"
@@ -139,13 +139,6 @@
     "missao": "resgate"
    },
    {
-    "consulta": "edital saúde organizações da sociedade civil inscrições",
-    "tentativas": 21,
-    "com_resultado": 1,
-    "achados": 1,
-    "missao": "aposta"
-   },
-   {
     "consulta": "edital saúde organizações da sociedade civil inscrições goiás",
     "tentativas": 22,
     "com_resultado": 1,
@@ -161,6 +154,13 @@
    },
    {
     "consulta": "o setor de tecnologia e inovação é um dos mais subexplorados em termos",
+    "tentativas": 22,
+    "com_resultado": 1,
+    "achados": 1,
+    "missao": "aposta"
+   },
+   {
+    "consulta": "edital saúde organizações da sociedade civil inscrições",
     "tentativas": 22,
     "com_resultado": 1,
     "achados": 1,
@@ -427,23 +427,23 @@
    "conanda",
    "saúde",
    "apoiar",
-   "edição",
    "parceiros",
    "volunta",
+   "edição",
    "sndca",
    "filantropia",
-   "rede",
    "memória",
+   "rede",
    "milhões",
    "idosa"
   ],
   "termos_ruins": [
-   "fundações",
    "institutos",
+   "fundações",
    "empresariais",
    "economia",
-   "baixa",
    "regiões",
+   "baixa",
    "credenciamento",
    "empresas",
    "circular",
@@ -456,7 +456,7 @@
   ],
   "rendimento_das_buscas": {
    "resgate": {
-    "tentativas": 20520,
+    "tentativas": 20523,
     "com_resultado": 585,
     "taxa": 0.029
    },
@@ -466,22 +466,22 @@
     "taxa": 0.013
    },
    "prospectar": {
-    "tentativas": 5574,
+    "tentativas": 5575,
     "com_resultado": 14,
     "taxa": 0.003
    },
    "aposta": {
-    "tentativas": 4908,
-    "com_resultado": 233,
-    "taxa": 0.047
+    "tentativas": 4912,
+    "com_resultado": 235,
+    "taxa": 0.048
    },
    "descobrir": {
-    "tentativas": 344,
+    "tentativas": 345,
     "com_resultado": 2,
     "taxa": 0.006
    }
   },
-  "consultas_aprendidas_em": "2026-09-30T12:46:43+00:00"
+  "consultas_aprendidas_em": "2026-09-30T12:49:43+00:00"
  },
  "atualizado_em": "2026-09-29T16:11:27+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
