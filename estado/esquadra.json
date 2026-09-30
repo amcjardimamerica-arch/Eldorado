@@ -386,18 +386,18 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 49,
+      "leituras": 50,
       "achados_total": 0,
-      "vazias_seguidas": 49,
-      "ultima": "2026-09-30T12:36:12+00:00",
-      "motivo": "motor regular e geral — todo dia",
+      "vazias_seguidas": 50,
+      "ultima": "2026-09-30T19:06:14+00:00",
+      "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260927&dataFinal=20260930&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
           "http": 200,
-          "bytes": 11931
+          "bytes": 17960
         },
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260927&dataFinal=20260930&codigoModalidadeContratacao=12&pagina=2&tamanhoPagina=50&uf=GO",
@@ -408,8 +408,8 @@
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 7,
-        "links_total": 6,
-        "links_candidatos": 6,
+        "links_total": 9,
+        "links_candidatos": 9,
         "descobertas": [
           {
             "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260927&dataFinal=20260930&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
@@ -434,8 +434,8 @@
         ],
         "pdf_links": 0,
         "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
-        "camada1_vetados": 2,
-        "camada1_direcionados": 1
+        "camada1_vetados": 4,
+        "camada1_direcionados": 2
       }
     },
     "plat-abcr": {
@@ -3029,11 +3029,11 @@
     "plat-mapa-osc": {
       "nome": "Mapa das OSC — editais",
       "tipo": "plataforma",
-      "leituras": 5,
+      "leituras": 6,
       "achados_total": 0,
-      "vazias_seguidas": 5,
-      "ultima": "2026-09-30T12:40:17+00:00",
-      "motivo": "motor regular e geral — todo dia",
+      "vazias_seguidas": 6,
+      "ultima": "2026-09-30T19:06:20+00:00",
+      "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
@@ -3074,37 +3074,28 @@
   },
   "ultima_execucao": {
     "data": "2026-09-30",
-    "em": "2026-09-30T14:32:23+00:00",
+    "em": "2026-09-30T19:06:20+00:00",
     "manual": [
-      "plat-abcr",
-      "plat-cnpq-extensao",
-      "plat-empresas-editais-incentivados",
-      "plat-fapeg",
-      "plat-fundos-estaduais-go",
-      "plat-gife",
-      "plat-goias-social",
-      "plat-mp-destinacoes-reparacao",
-      "plat-observatorio-3setor",
-      "plat-ovg",
-      "plat-piloto-aberto",
-      "plat-prefeituras-50-go",
-      "plat-prosas",
-      "plat-prosas-premios",
-      "plat-salic",
-      "plat-secult-go"
+      "plat-mapa-osc",
+      "pncp-api"
     ],
     "bloco": "manual",
-    "sensores_executados": 16,
-    "em_espera": 114,
+    "sensores_executados": 2,
+    "em_espera": 128,
     "total_esquadra": 130,
     "previsoes_ativas": 1,
-    "achados": 99,
-    "novos_na_base": 6,
+    "achados": 0,
+    "novos_na_base": 0,
     "por_tipo": {
+      "api": {
+        "sensores": 1,
+        "achados": 0,
+        "falhas": 0
+      },
       "plataforma": {
-        "sensores": 16,
-        "achados": 99,
-        "falhas": 8
+        "sensores": 1,
+        "achados": 0,
+        "falhas": 0
       }
     }
   }
