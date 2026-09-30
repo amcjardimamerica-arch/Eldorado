@@ -1,0 +1,262 @@
+{
+ "id": "bc6daa5abc0c76b70b41",
+ "status": "descoberta_nao_verificada",
+ "titulo": "Solicite seu financiamento - BNDES",
+ "url": "https://www.bndes.gov.br/wps/portal/site/home/financiamento",
+ "fonte_id": "bndes",
+ "fonte_nome": "BNDES",
+ "territorio": "BR",
+ "tipo_fonte": "busca_retroativa_dominio_catalogado",
+ "confianca": "pista",
+ "coletado_em": "2026-09-29T21:46:49+00:00",
+ "ano_pesquisado": 2026,
+ "dominio_autorizado": "bndes.gov.br",
+ "consulta_origem": "site:bndes.gov.br BNDES edital projetos sociais 2026",
+ "prazo_texto": null,
+ "evidencia": "Solicite seu financiamento - BNDES",
+ "hash_evidencia": "eb59cd69051f50b0c501c0a19b92a312b379d5beb088c6bc7e7272adde678857",
+ "qualidade": {
+  "nota": 18,
+  "classe": "apenas_indicio",
+  "obrigatorios_faltando": [],
+  "conteudo_atendido": [],
+  "conteudo_pendente": [
+   {
+    "id": "objeto",
+    "rotulo": "Objeto da parceria ou do apoio"
+   },
+   {
+    "id": "prazo_inscricao",
+    "rotulo": "Prazo e local de apresentação das propostas"
+   },
+   {
+    "id": "valor",
+    "rotulo": "Valor de referência ou programação orçamentária"
+   },
+   {
+    "id": "criterios_selecao",
+    "rotulo": "Critérios de seleção e julgamento"
+   },
+   {
+    "id": "requisitos_habilitacao",
+    "rotulo": "Requisitos de habilitação da proponente"
+   },
+   {
+    "id": "instrumento",
+    "rotulo": "Minuta ou indicação do instrumento de parceria"
+   },
+   {
+    "id": "contrapartida",
+    "rotulo": "Contrapartida e prestação de contas"
+   }
+  ],
+  "oficialidade_atendida": [
+   {
+    "id": "dominio_oficial",
+    "rotulo": "Domínio governamental ou de fonte catalogada",
+    "evidencia_termo": "bndes"
+   },
+   {
+    "id": "orgao_emissor",
+    "rotulo": "Órgão ou entidade emissora identificada",
+    "evidencia_termo": "BNDES"
+   }
+  ],
+  "oficialidade_pendente": [
+   {
+    "id": "identificacao_do_ato",
+    "rotulo": "Numeração do ato (edital/chamamento nº)"
+   },
+   {
+    "id": "data_publicacao",
+    "rotulo": "Data de publicação identificada"
+   },
+   {
+    "id": "anexos_ou_minuta",
+    "rotulo": "Anexos, minuta ou formulários referenciados"
+   }
+  ],
+  "avaliado_em": "2026-09-30T03:21:25+00:00",
+  "regra": "Nota = 60% conteúdo mínimo (Lei 13.019/2014, art. 24, §1º) + 40% sinais de oficialidade. Pendência é lacuna declarada, nunca preenchida por inferência."
+ },
+ "edital_id": "bc6daa5abc0c76b70b41",
+ "orgao": "Banco Nacional de Desenvolvimento Econômico e Social (BNDES)",
+ "origem": "oportunidade nacional/internacional",
+ "fim": null,
+ "pagina_oficial": "https://impulso.bndes.gov.br/",
+ "busca_do_oficial": {
+  "indicios": [],
+  "tentativas": [
+   {
+    "rota": "site_do_financiador",
+    "consulta": "site:bndes.gov.br Solicite seu financiamento",
+    "resultados": 8
+   },
+   {
+    "validou": "https://www.bndes.gov.br/wps/portal/site/home/financiamento",
+    "ok": false,
+    "porque": "termos do edital 66% · sinais de edital 0",
+    "rota": "site_do_financiador"
+   },
+   {
+    "validou": "https://www.bndes.gov.br/wps/portal/site/home/financiamento/portfolio-produtos/solicite-seu-financiamento",
+    "ok": false,
+    "porque": "termos do edital 66% · sinais de edital 0",
+    "rota": "site_do_financiador"
+   },
+   {
+    "validou": "https://portal.bndes.gov.br/",
+    "ok": false,
+    "porque": "termos do edital 16% · sinais de edital 0",
+    "rota": "site_do_financiador"
+   },
+   {
+    "validou": "https://impulso.bndes.gov.br/",
+    "ok": true,
+    "porque": "termos do edital 66% · sinais de edital 2",
+    "rota": "site_do_financiador"
+   }
+  ],
+  "financiador": "BNDES",
+  "programa": "Solicite seu financiamento"
+ },
+ "objeto": "Soluções financeiras e não-financeiras que auxiliam os empreendedores no desenvolvimento de seus negócios",
+ "abrangencia": "nacional",
+ "nivel": "federal",
+ "detalhes": {
+  "documentos_exigidos": [
+   "credenciais da Conta Gov.br para autenticação do usuário logado"
+  ]
+ },
+ "anexos": [
+  {
+   "nome": "Consulte os Termos de Uso",
+   "url": "https://impulso.bndes.gov.br/export/sites/mpme/downloads/Termos_de_uso_do_usuario.pdf"
+  }
+ ],
+ "destinacao": {
+  "elegivel": false,
+  "natureza": "outro",
+  "motivo": "instituições de Crédito e Financiamento (fintechs, instituições financeiras credenciadas pelo BNDES, e OSCIPs concedentes de microcrédito) habilitadas pelo BNDE"
+ },
+ "investigacao_ia": {
+  "em": "2026-09-30T04:24:41",
+  "modelo": "qwen3-8b",
+  "fontes": [
+   {
+    "url": "https://impulso.bndes.gov.br/",
+    "ok": true,
+    "tipo": "html",
+    "chars": 8384
+   },
+   {
+    "url": "https://impulso.bndes.gov.br/export/sites/mpme/downloads/Termos_de_uso_do_usuario.pdf",
+    "ok": true,
+    "tipo": "pdf",
+    "nome": "Consulte os Termos de Uso",
+    "chars": 32061
+   },
+   {
+    "url": "https://www.bndes.gov.br/wps/portal/site/home/financiamento",
+    "ok": true,
+    "tipo": "html",
+    "chars": 2797
+   }
+  ],
+  "campos": {
+   "Objeto": {
+    "valor": "Soluções financeiras e não-financeiras que auxiliam os empreendedores no desenvolvimento de seus negócios",
+    "trecho": "plataforma do BNDES que apresenta soluções financeiras e não-financeiras que auxiliam os empreendedores no desenvolvimento de seus negócios",
+    "comprovado": true,
+    "fonte": "https://impulso.bndes.gov.br/export/sites/mpme/downloads/Termos_de_uso_do_usuario.pdf",
+    "fonte_oficial": true
+   },
+   "Prazo de inscrição": {
+    "valor": null,
+    "trecho": "",
+    "comprovado": false
+   },
+   "Resultado": {
+    "valor": null,
+    "trecho": "",
+    "comprovado": false
+   },
+   "Prazo de recurso": {
+    "valor": null,
+    "trecho": "",
+    "comprovado": false
+   },
+   "Valor": {
+    "valor": "",
+    "trecho": "",
+    "comprovado": false
+   },
+   "Órgão / financiador": {
+    "valor": "Banco Nacional de Desenvolvimento Econômico e Social (BNDES)",
+    "trecho": "Banco Nacional de Desenvolvimento Econômico e Social (BNDES)",
+    "comprovado": true,
+    "fonte": "https://impulso.bndes.gov.br/export/sites/mpme/downloads/Termos_de_uso_do_usuario.pdf",
+    "fonte_oficial": true
+   },
+   "Território": {
+    "valor": "nacional",
+    "trecho": "conjunto de entidades constituídas ou que vierem a ser constituídas pelo Banco Nacional de Desenvolvimento Econômico e Social (BNDES) no País ou no exterior",
+    "comprovado": true,
+    "fonte": "https://impulso.bndes.gov.br/export/sites/mpme/downloads/Termos_de_uso_do_usuario.pdf",
+    "fonte_oficial": true
+   },
+   "Esfera": {
+    "valor": "federal",
+    "trecho": "conjunto de entidades constituídas ou que vierem a ser constituídas pelo Banco Nacional de Desenvolvimento Econômico e Social (BNDES) no País ou no exterior",
+    "comprovado": true,
+    "fonte": "https://impulso.bndes.gov.br/export/sites/mpme/downloads/Termos_de_uso_do_usuario.pdf",
+    "fonte_oficial": true
+   },
+   "Requisitos": {
+    "valor": "credenciais da Conta Gov.br para autenticação do usuário logado",
+    "trecho": "BNDES Impulso solicita as credenciais da Conta Gov.br para autenticação do usuário logado",
+    "comprovado": true,
+    "fonte": "https://impulso.bndes.gov.br/export/sites/mpme/downloads/Termos_de_uso_do_usuario.pdf",
+    "fonte_oficial": true
+   },
+   "Anexos": {
+    "valor": "1 anexo(s)",
+    "trecho": "Consulte os Termos de Uso (https://impulso.bndes.gov.br/export/sites/mpme/downloads/Termos_de_uso_do_usuario.pdf)",
+    "comprovado": true
+   },
+   "Destinação": {
+    "valor": "fora do escopo · outro",
+    "trecho": "instituições de Crédito e Financiamento (fintechs, instituições financeiras credenciadas pelo BNDES, e OSCIPs concedentes de microcrédito) habilitadas pelo BNDES",
+    "comprovado": true,
+    "fonte": "https://impulso.bndes.gov.br/export/sites/mpme/downloads/Termos_de_uso_do_usuario.pdf",
+    "fonte_oficial": true
+   },
+   "Área de atuação": {
+    "valor": null,
+    "trecho": "plataforma do BNDES que apresenta soluções financeiras e não-financeiras que auxiliam os empreendedores no desenvolvimento de seus negócios",
+    "comprovado": false
+   }
+  },
+  "comprovados": 7,
+  "total": 12,
+  "regra": "só entra na ficha o que tem trecho literal encontrado na fonte",
+  "dispensados": 0,
+  "passos": [
+   "dados indicados: título «Solicite seu financiamento - BNDES», fonte BNDES, órgão —, prazo —",
+   "página oficial: https://impulso.bndes.gov.br/ — site_do_financiador — termos do edital 66% · sinais de edital 2",
+   "doze perguntas respondidas: 7 comprovadas na fonte",
+   "dispensas justificadas: 0 (nenhuma)",
+   "sem informação nem dispensa: Prazo de inscrição, Resultado, Prazo de recurso, Valor, Área de atuação"
+  ],
+  "s": 648,
+  "qualidade": "parcial",
+  "parecer_fonte": {
+   "serve_como_fonte": "sim",
+   "por_que": "O objeto do edital menciona soluções financeiras e não-financeiras que auxiliam empreendedores, incluindo possíveis linhas de financiamento para organizações da sociedade civil.",
+   "para_a_amc": "A associação comunitária de Goiânia precisaria se credenciar no BNDES, possuir credenciais da Conta Gov.br para autenticação e seguir as orientações dos anexos para acessar o financiamento.",
+   "proximo_passo": "Verificar os requisitos detalhados no edital e se credenciar no sistema do BNDES.",
+   "risco": "A falta de credenciais da Conta Gov.br ou não atender aos requisitos do edital pode impedir o acesso ao financiamento."
+  }
+ },
+ "confirmacao": "investigado pela IA (qwen3-8b) em 30/09/2026: 7/12 itens (comprovados ou dispensados)"
+}
