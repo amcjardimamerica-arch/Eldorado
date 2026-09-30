@@ -46,3 +46,7 @@ O titular aprovou um design no Claude Design (link no próprio arquivo). Esse li
 acessível** por outra conversa nem pelo ambiente de execução. Se os tokens ainda estiverem
 nulos, peça ao titular a captura de tela, o código ou o logotipo — e então preencha os tokens,
 mude `status` para `ATIVO` e regenere as saídas visuais a partir deles.
+
+
+## Acesso a portais (29/09/2026)
+Não criar ponte, proxy, VPN ou redirecionamento de tráfego para driblar bloqueio; nunca desligar a verificação de certificado. Rotas: fontes oficiais abertas (Querido Diário em `https://api.queridodiario.org.br`, Comunica PJe, PNCP), canal formal com a TI dos órgãos e coleta assistida. Ver `config/alternativas_acesso.json › situacao_dos_dominios`.

@@ -1,16 +1,2315 @@
 {
-  "gerado_em": "2026-09-02T15:02:33+00:00",
-  "dominios_bloqueados": 0,
-  "alternativas": {},
-  "regra": "bloqueio nao encerra a busca: desce a escada ate alimentar o repositorio",
   "espelhos": {
     "www.tjgo.jus.br": [
-      "https://www.jusbrasil.com.br/diarios/DJGO/",
-      "https://comunica.pje.jus.br/consulta?siglaTribunal=TJGO",
+      "rota: config/coletores_api.json › comunica_pje (Comunica PJe/CNJ, TJGO, filtrada por termos, como pista)",
       "https://www.mpgo.mp.br/portal/editais"
     ]
   },
   "notas": {
-    "www.tjgo.jus.br": "varas de execução penal: 1ª e 2ª VEP de Goiânia, VEP de Aparecida, Anápolis e Rio Verde publicam editais de chamamento de entidades para prestações pecuniárias (Res. CNJ 154/2012); quando o portal abrir, o sensor lê as páginas das varas; até lá, espelho DJGO e MPGO"
-  }
+    "www.tjgo.jus.br": "varas de execução penal: 1ª e 2ª VEP de Goiânia, VEP de Aparecida, Anápolis e Rio Verde publicam editais de chamamento de entidades para prestações pecuniárias (Res. CNJ 154/2012); quando o portal abrir, o sensor lê as páginas das varas; até lá, espelho DJGO e MPGO",
+    "2026-09-29": "Decisão do titular: não usar ponte, proxy, VPN ou redirecionamento para driblar bloqueio. Rotas: fontes oficiais abertas (Querido Diário, Comunica PJe, PNCP), canal formal com a TI do TJGO e da Câmara, e coleta assistida (docs/claude/COLETA-PELO-NAVEGADOR.md). DOU diário: INLABS exige cadastro do titular (pendente)."
+  },
+  "situacao_dos_dominios": {
+    "regra": "29/09/2026: estes domínios falham por motivo que NÃO é bloqueio de país/IP — não contam como bloqueio e nenhuma ponte, proxy ou IP brasileiro resolveria.",
+    "sapl.goiania.go.leg.br": {
+      "situacao": "certificado_invalido_no_portal",
+      "desde": "2026-09-29",
+      "evidencia": "Chrome, do Brasil, mostra 'Erro de privacidade'; 72 falhas URLError no Eldorado (última 28/09) — padrão de falha na verificação do certificado",
+      "acao": "NÃO desligar a verificação de certificado; comunicar a TI da Câmara; rota alternativa: Querido Diário (atos no Diário de Goiânia) e coleta assistida"
+    },
+    "www.goiania.go.leg.br": {
+      "situacao": "servidor_lento_ou_recusando",
+      "desde": "2026-09-29",
+      "evidencia": "53 falhas (34 HTTPError, 19 Timeout), última 28/09"
+    },
+    "diariooficial.goiania.go.gov.br": {
+      "situacao": "dominio_nao_resolve",
+      "desde": "2026-09-29",
+      "acao": "substituído pelo Querido Diário (https://api.queridodiario.org.br, Goiânia 5208707)"
+    },
+    "fundacaoarcelormittal.org.br": {
+      "situacao": "dominio_nao_resolve",
+      "desde": "2026-09-29",
+      "acao": "revisar a URL cadastrada"
+    },
+    "www.grupocasasbahiasa.com.br": {
+      "situacao": "dominio_nao_resolve",
+      "desde": "2026-09-29",
+      "acao": "revisar a URL cadastrada"
+    },
+    "captamos.org.br": {
+      "situacao": "dominio_nao_resolve",
+      "desde": "2026-09-29",
+      "acao": "revisar a URL cadastrada"
+    },
+    "wa.me": {
+      "situacao": "link_nao_e_fonte",
+      "desde": "2026-09-29",
+      "acao": "link de WhatsApp — filtrado antes da coleta"
+    },
+    "rouanet.cultura.gov.br": {
+      "situacao": "resposta_fora_da_politica",
+      "desde": "2026-09-29",
+      "evidencia": "ValueError: tipo ou tamanho da resposta fora da política — não é bloqueio"
+    },
+    "sistema.mirassoldoeste.mt.gov.br": {
+      "situacao": "resposta_fora_da_politica",
+      "desde": "2026-09-29"
+    }
+  },
+  "gerado_em": "2026-09-29T13:05:30+00:00",
+  "dominios_bloqueados": 46,
+  "dominios_com_falha_que_nao_e_bloqueio": 9,
+  "alternativas": {
+    "www.tjgo.jus.br": {
+      "bloqueios": 140,
+      "erros": {
+        "HTTPError": 140
+      },
+      "ultimo": "2026-09-20T12:10:23+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://www.tjgo.jus.br/index.php/diario-da-justica",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://projudi.tjgo.jus.br/",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://www.tjgo.jus.br/index.php/transparencia",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.tjgo.jus.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=TJGO%20-%20penas%20pecuni%C3%A1rias%201%C2%AA%20Vara%20de%20Execu%C3%A7%C3%A3o%20Penal%20de%20Goi%C3%A2nia&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia publica seus editais/atos de destinação, quais varas e juízes fazem a destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a CNJ — política de destinação de penas e prestações pecuniárias: (1) a norma vigente que rege TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.tjgo.jus.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": {
+        "o_que_mapear": [
+          "varas de execução penal e juizados especiais criminais de Goiânia e comarcas",
+          "juiz(a) titular de cada vara (assina o edital de cadastramento e a destinação)",
+          "edital anual de cadastramento de entidades (Res. CNJ 154/2012)",
+          "conta única de prestações pecuniárias e o cronograma de destinação",
+          "valores destinados nos últimos 3 anos e entidades beneficiadas"
+        ],
+        "onde": [
+          "DJE-GO (edital de cadastramento aparece com o nome da vara e do juiz)",
+          "Projudi / consulta de expedientes da vara",
+          "portal da transparência do TJGO (prestações pecuniárias)",
+          "Diário Oficial Eletrônico do MPGO (Programa Destina: Ato PGJ 58/2025)"
+        ],
+        "lexico": [
+          "Vara de Execução Penal",
+          "VEP",
+          "Juizado Especial Criminal",
+          "cadastramento de entidades",
+          "prestação pecuniária",
+          "Resolução 154",
+          "juiz(a) de direito",
+          "Destina",
+          "Promotoria"
+        ],
+        "apresentacao_no_calendario": "permanente com edital anual: linha o ano inteiro, com a estrela no mês em que a vara costuma publicar o cadastramento"
+      }
+    },
+    "projudi.tjgo.jus.br": {
+      "bloqueios": 1,
+      "erros": {
+        "HTTPError": 1
+      },
+      "ultimo": "2026-09-02T15:03:04+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fprojudi.tjgo.jus.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde projudi.tjgo.jus.br publica seus editais/atos de destinação, quais varas e juízes fazem a destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a projudi.tjgo.jus.br: (1) a norma vigente que rege projudi.tjgo.jus.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://projudi.tjgo.jus.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": {
+        "o_que_mapear": [
+          "varas de execução penal e juizados especiais criminais de Goiânia e comarcas",
+          "juiz(a) titular de cada vara (assina o edital de cadastramento e a destinação)",
+          "edital anual de cadastramento de entidades (Res. CNJ 154/2012)",
+          "conta única de prestações pecuniárias e o cronograma de destinação",
+          "valores destinados nos últimos 3 anos e entidades beneficiadas"
+        ],
+        "onde": [
+          "DJE-GO (edital de cadastramento aparece com o nome da vara e do juiz)",
+          "Projudi / consulta de expedientes da vara",
+          "portal da transparência do TJGO (prestações pecuniárias)",
+          "Diário Oficial Eletrônico do MPGO (Programa Destina: Ato PGJ 58/2025)"
+        ],
+        "lexico": [
+          "Vara de Execução Penal",
+          "VEP",
+          "Juizado Especial Criminal",
+          "cadastramento de entidades",
+          "prestação pecuniária",
+          "Resolução 154",
+          "juiz(a) de direito",
+          "Destina",
+          "Promotoria"
+        ],
+        "apresentacao_no_calendario": "permanente com edital anual: linha o ano inteiro, com a estrela no mês em que a vara costuma publicar o cadastramento"
+      }
+    },
+    "diariooficial.goiania.go.gov.br": {
+      "bloqueios": 14,
+      "erros": {
+        "gaierror": 14
+      },
+      "ultimo": "2026-09-08T03:08:05+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fdiariooficial.goiania.go.gov.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (Querido Diário)",
+          "url": "https://queridodiario.ok.org.br/api/gazettes?querystring={termo}&territory_ids={ibge}",
+          "custo": "zero"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=Editais%20de%20ocupa%C3%A7%C3%A3o%20cultural%20municipal&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Editais de ocupação cultural municipal publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Secretaria Municipal de Cultura de Goiânia: (1) a norma vigente que rege Editais de ocupação cultural municipal; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://diariooficial.goiania.go.gov.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null,
+      "classe": "dominio_nao_resolve",
+      "nao_e_bloqueio_de_ip": true
+    },
+    "www.in.gov.br": {
+      "bloqueios": 311,
+      "erros": {
+        "HTTPError": 283,
+        "RemoteDisconnected": 5,
+        "URLError": 2,
+        "TimeoutError": 21
+      },
+      "ultimo": "2026-09-29T09:56:54+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.in.gov.br%2Fconsulta%2F-%2Fbuscar%2Fdou%3Fq%3Dchamamento%2520p%25C3%25BAblico%2520organiza%25C3%25A7%25C3%25B5es%2520da%2520sociedade%2520civil%26s%3Dtodos%26exactDate%3Ddia%26sortType%3D0",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Acordo de cooperação sem transferência financeira publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Diário Oficial da União — Seção 3 (avisos e editais): (1) a norma vigente que rege Acordo de cooperação sem transferência financeira; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento%20p%C3%BAblico%20organiza%C3%A7%C3%B5es%20da%20sociedade%20civil&s=todos&exactDate=dia&sortType=0 não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "diariooficial.abc.go.gov.br": {
+      "bloqueios": 4,
+      "erros": {
+        "HTTPError": 4
+      },
+      "ultimo": "2026-09-03T16:51:52+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fdiariooficial.abc.go.gov.br%2Fportal%2Fedicoes",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (Querido Diário)",
+          "url": "https://queridodiario.ok.org.br/api/gazettes?querystring={termo}&territory_ids={ibge}",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Convênio com órgão público estadual publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a PNCP / Diário Oficial de Goiás: (1) a norma vigente que rege Convênio com órgão público estadual; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://diariooficial.abc.go.gov.br/portal/edicoes não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "nao-existe.exemplo.invalido": {
+      "bloqueios": 1,
+      "erros": {
+        "gaierror": 1
+      },
+      "ultimo": "2026-09-04T19:41:05+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fnao-existe.exemplo.invalido%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde nao-existe.exemplo.invalido publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a nao-existe.exemplo.invalido: (1) a norma vigente que rege nao-existe.exemplo.invalido; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://nao-existe.exemplo.invalido/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.goiania.go.leg.br": {
+      "bloqueios": 53,
+      "erros": {
+        "HTTPError": 34,
+        "TimeoutError": 19
+      },
+      "ultimo": "2026-09-28T13:39:07+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://www.goiania.go.leg.br/transparencia",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.goiania.go.leg.br%2Ftransparencia%2Flicitacoes",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Emenda municipal para entidade assistencial publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento): (1) a norma vigente que rege Emenda municipal para entidade assistencial; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.goiania.go.leg.br/transparencia/licitacoes não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null,
+      "classe": "servidor_lento_ou_recusando",
+      "nao_e_bloqueio_de_ip": true
+    },
+    "www.cnj.jus.br": {
+      "bloqueios": 51,
+      "erros": {
+        "HTTPError": 48,
+        "TimeoutError": 3
+      },
+      "ultimo": "2026-09-28T13:39:09+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.cnj.jus.br%2Fsistema-carcerario%2Fpenas-e-medidas-alternativas%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=TJGO%20-%20penas%20pecuni%C3%A1rias%201%C2%AA%20Vara%20de%20Execu%C3%A7%C3%A3o%20Penal%20de%20Goi%C3%A2nia&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia publica seus editais/atos de destinação, quais varas e juízes fazem a destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a CNJ — política de destinação de penas e prestações pecuniárias: (1) a norma vigente que rege TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.cnj.jus.br/sistema-carcerario/penas-e-medidas-alternativas/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": {
+        "o_que_mapear": [
+          "varas de execução penal e juizados especiais criminais de Goiânia e comarcas",
+          "juiz(a) titular de cada vara (assina o edital de cadastramento e a destinação)",
+          "edital anual de cadastramento de entidades (Res. CNJ 154/2012)",
+          "conta única de prestações pecuniárias e o cronograma de destinação",
+          "valores destinados nos últimos 3 anos e entidades beneficiadas"
+        ],
+        "onde": [
+          "DJE-GO (edital de cadastramento aparece com o nome da vara e do juiz)",
+          "Projudi / consulta de expedientes da vara",
+          "portal da transparência do TJGO (prestações pecuniárias)",
+          "Diário Oficial Eletrônico do MPGO (Programa Destina: Ato PGJ 58/2025)"
+        ],
+        "lexico": [
+          "Vara de Execução Penal",
+          "VEP",
+          "Juizado Especial Criminal",
+          "cadastramento de entidades",
+          "prestação pecuniária",
+          "Resolução 154",
+          "juiz(a) de direito",
+          "Destina",
+          "Promotoria"
+        ],
+        "apresentacao_no_calendario": "permanente com edital anual: linha o ano inteiro, com a estrela no mês em que a vara costuma publicar o cadastramento"
+      }
+    },
+    "www.goiania.go.gov.br": {
+      "bloqueios": 33,
+      "erros": {
+        "HTTPError": 31,
+        "TimeoutError": 2
+      },
+      "ultimo": "2026-09-20T12:08:26+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://diariooficial.goiania.go.gov.br/",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://www.goiania.go.gov.br/transparencia/",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.goiania.go.gov.br%2Fsing%2Fsecretarias%2Fcasa-civil%2Fdiario-oficial%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Destinação de IR pessoa física para FMDCA publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Conanda — Fundo Nacional para a Criança e o Adolescente: (1) a norma vigente que rege Destinação de IR pessoa física para FMDCA; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.goiania.go.gov.br/sing/secretarias/casa-civil/diario-oficial/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.goias.gov.br": {
+      "bloqueios": 6,
+      "erros": {
+        "HTTPError": 6
+      },
+      "ultimo": "2026-09-06T03:32:18+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.goias.gov.br%2Fservico%2F22-diario-oficial-do-estado-de-goias.html",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=Editais%20FICA%20Goi%C3%A1s%20-%20artes%20visuais/exposi%C3%A7%C3%A3o&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Editais FICA Goiás - artes visuais/exposição publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a FICA — Festival Internacional de Cinema e Vídeo Ambiental (Secult-GO): (1) a norma vigente que rege Editais FICA Goiás - artes visuais/exposição; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.goias.gov.br/servico/22-diario-oficial-do-estado-de-goias.html não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "pncp.gov.br": {
+      "bloqueios": 74,
+      "erros": {
+        "HTTPError": 31,
+        "TimeoutError": 32,
+        "URLError": 11
+      },
+      "ultimo": "2026-09-29T10:31:55+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fpncp.gov.br%2Fapi%2Fconsulta%2Fv1%2Fcontratacoes%2Fpublicacao",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Convênio com órgão público estadual publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a PNCP / Diário Oficial de Goiás: (1) a norma vigente que rege Convênio com órgão público estadual; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "captamos.org.br": {
+      "bloqueios": 3,
+      "erros": {
+        "gaierror": 3
+      },
+      "ultimo": "2026-09-04T20:35:00+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fcaptamos.org.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde captamos.org.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a captamos.org.br: (1) a norma vigente que rege captamos.org.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://captamos.org.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null,
+      "classe": "dominio_nao_resolve",
+      "nao_e_bloqueio_de_ip": true
+    },
+    "gife.org.br": {
+      "bloqueios": 20,
+      "erros": {
+        "HTTPError": 20
+      },
+      "ultimo": "2026-09-29T10:25:45+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fgife.org.br%2Ftransparencia",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde gife.org.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a gife.org.br: (1) a norma vigente que rege gife.org.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://gife.org.br/transparencia não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.filantropia.ong": {
+      "bloqueios": 4,
+      "erros": {
+        "HTTPError": 4
+      },
+      "ultimo": "2026-09-04T20:59:40+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.filantropia.ong%2Feditais",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.filantropia.ong publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.filantropia.ong: (1) a norma vigente que rege www.filantropia.ong; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.filantropia.ong/editais não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "portal.al.go.leg.br": {
+      "bloqueios": 57,
+      "erros": {
+        "URLError": 57
+      },
+      "ultimo": "2026-09-28T13:51:30+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://portal.al.go.leg.br/noticias",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://portal.al.go.leg.br/legislacao",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fportal.al.go.leg.br%2Fcredenciamento-imprensa",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Emenda municipal para entidade assistencial publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento): (1) a norma vigente que rege Emenda municipal para entidade assistencial; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://portal.al.go.leg.br/credenciamento-imprensa não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "sapl.goiania.go.leg.br": {
+      "bloqueios": 72,
+      "erros": {
+        "URLError": 72
+      },
+      "ultimo": "2026-09-28T13:38:53+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fsapl.goiania.go.leg.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde sapl.goiania.go.leg.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a sapl.goiania.go.leg.br: (1) a norma vigente que rege sapl.goiania.go.leg.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://sapl.goiania.go.leg.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null,
+      "classe": "certificado_invalido_no_portal",
+      "nao_e_bloqueio_de_ip": true
+    },
+    "comunicaapi.pje.jus.br": {
+      "bloqueios": 1,
+      "erros": {
+        "HTTPError": 1
+      },
+      "ultimo": "2026-09-04T20:58:00+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fcomunicaapi.pje.jus.br%2Fapi%2Fv1%2Fcomunicacao%3FsiglaTribunal%3DTJGO%26dataDisponibilizacaoInicio%3D2026-09-04%26dataDisponibilizacaoFim%3D2026-09-04%26itensPorPagina%3D100%26pagina%3D1",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde comunicaapi.pje.jus.br publica seus editais/atos de destinação, quais varas e juízes fazem a destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a comunicaapi.pje.jus.br: (1) a norma vigente que rege comunicaapi.pje.jus.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://comunicaapi.pje.jus.br/api/v1/comunicacao?siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-09-04&dataDisponibilizacaoFim=2026-09-04&itensPorPagina=100&pagina=1 não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": {
+        "o_que_mapear": [
+          "varas de execução penal e juizados especiais criminais de Goiânia e comarcas",
+          "juiz(a) titular de cada vara (assina o edital de cadastramento e a destinação)",
+          "edital anual de cadastramento de entidades (Res. CNJ 154/2012)",
+          "conta única de prestações pecuniárias e o cronograma de destinação",
+          "valores destinados nos últimos 3 anos e entidades beneficiadas"
+        ],
+        "onde": [
+          "DJE-GO (edital de cadastramento aparece com o nome da vara e do juiz)",
+          "Projudi / consulta de expedientes da vara",
+          "portal da transparência do TJGO (prestações pecuniárias)",
+          "Diário Oficial Eletrônico do MPGO (Programa Destina: Ato PGJ 58/2025)"
+        ],
+        "lexico": [
+          "Vara de Execução Penal",
+          "VEP",
+          "Juizado Especial Criminal",
+          "cadastramento de entidades",
+          "prestação pecuniária",
+          "Resolução 154",
+          "juiz(a) de direito",
+          "Destina",
+          "Promotoria"
+        ],
+        "apresentacao_no_calendario": "permanente com edital anual: linha o ano inteiro, com a estrela no mês em que a vara costuma publicar o cadastramento"
+      }
+    },
+    "www.caixa.gov.br": {
+      "bloqueios": 1,
+      "erros": {
+        "HTTPError": 1
+      },
+      "ultimo": "2026-09-04T20:58:58+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.caixa.gov.br%2Fsobre-a-caixa%2Fpatrocinios%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.caixa.gov.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.caixa.gov.br: (1) a norma vigente que rege www.caixa.gov.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.caixa.gov.br/sobre-a-caixa/patrocinios/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.correios.com.br": {
+      "bloqueios": 1,
+      "erros": {
+        "HTTPError": 1
+      },
+      "ultimo": "2026-09-04T20:59:00+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.correios.com.br%2Finstitucional%2Fpatrocinios",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.correios.com.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.correios.com.br: (1) a norma vigente que rege www.correios.com.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.correios.com.br/institucional/patrocinios não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.institutoccr.com.br": {
+      "bloqueios": 1,
+      "erros": {
+        "gaierror": 1
+      },
+      "ultimo": "2026-09-04T20:59:12+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.institutoccr.com.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.institutoccr.com.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.institutoccr.com.br: (1) a norma vigente que rege www.institutoccr.com.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.institutoccr.com.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.naturamusical.com.br": {
+      "bloqueios": 1,
+      "erros": {
+        "URLError": 1
+      },
+      "ultimo": "2026-09-04T20:59:13+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.naturamusical.com.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.naturamusical.com.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.naturamusical.com.br: (1) a norma vigente que rege www.naturamusical.com.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.naturamusical.com.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "go.equatorialenergia.com.br": {
+      "bloqueios": 9,
+      "erros": {
+        "HTTPError": 9
+      },
+      "ultimo": "2026-09-27T07:13:48+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fgo.equatorialenergia.com.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde go.equatorialenergia.com.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a go.equatorialenergia.com.br: (1) a norma vigente que rege go.equatorialenergia.com.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://go.equatorialenergia.com.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.fundacaobradesco.org.br": {
+      "bloqueios": 1,
+      "erros": {
+        "gaierror": 1
+      },
+      "ultimo": "2026-09-04T20:59:19+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.fundacaobradesco.org.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.fundacaobradesco.org.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.fundacaobradesco.org.br: (1) a norma vigente que rege www.fundacaobradesco.org.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.fundacaobradesco.org.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "captadores.org.br": {
+      "bloqueios": 2,
+      "erros": {
+        "HTTPError": 2
+      },
+      "ultimo": "2026-09-04T20:59:25+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fcaptadores.org.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde captadores.org.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a captadores.org.br: (1) a norma vigente que rege captadores.org.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://captadores.org.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "transparencia.camaragyn.go.gov.br": {
+      "bloqueios": 21,
+      "erros": {
+        "URLError": 21
+      },
+      "ultimo": "2026-09-23T09:02:11+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Ftransparencia.camaragyn.go.gov.br%2Ffiles%2FLegislacao-compilada%2FResolucao-6-2005_Codigo-de-Etica-e-Decoro-Parlamentar.htm",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde transparencia.camaragyn.go.gov.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a transparencia.camaragyn.go.gov.br: (1) a norma vigente que rege transparencia.camaragyn.go.gov.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://transparencia.camaragyn.go.gov.br/files/Legislacao-compilada/Resolucao-6-2005_Codigo-de-Etica-e-Decoro-Parlamentar.htm não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.mpgo.mp.br": {
+      "bloqueios": 70,
+      "erros": {
+        "URLError": 70
+      },
+      "ultimo": "2026-09-29T10:29:11+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://www.mpgo.mp.br/portal/transparencia",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://www.mpgo.mp.br/portal/diario-oficial-eletronico",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.mpgo.mp.br%2Fportal%2Feditais",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde MPGO - TAC com destinação social publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Ministério Público de Goiás — editais e destinações: (1) a norma vigente que rege MPGO - TAC com destinação social; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.mpgo.mp.br/portal/editais não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "goias.gov.br": {
+      "bloqueios": 47,
+      "erros": {
+        "HTTPError": 30,
+        "URLError": 6,
+        "TimeoutError": 11
+      },
+      "ultimo": "2026-09-28T13:50:58+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://diariooficial.abc.go.gov.br/",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://legisla.casacivil.go.gov.br/",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fgoias.gov.br%2Fsocial%2Fcedca%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Destinação de IR pessoa física para FMDCA publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Conanda — Fundo Nacional para a Criança e o Adolescente: (1) a norma vigente que rege Destinação de IR pessoa física para FMDCA; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://goias.gov.br/social/cedca/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.trt18.jus.br": {
+      "bloqueios": 6,
+      "erros": {
+        "TimeoutError": 2,
+        "HTTPError": 4
+      },
+      "ultimo": "2026-09-28T13:51:32+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.trt18.jus.br%2Fportal%2Fnoticias%2Flistagem-de-posts",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=TJGO%20-%20penas%20pecuni%C3%A1rias%201%C2%AA%20Vara%20de%20Execu%C3%A7%C3%A3o%20Penal%20de%20Goi%C3%A2nia&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia publica seus editais/atos de destinação, quais varas e juízes fazem a destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a CNJ — política de destinação de penas e prestações pecuniárias: (1) a norma vigente que rege TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.trt18.jus.br/portal/noticias/listagem-de-posts não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": {
+        "o_que_mapear": [
+          "varas de execução penal e juizados especiais criminais de Goiânia e comarcas",
+          "juiz(a) titular de cada vara (assina o edital de cadastramento e a destinação)",
+          "edital anual de cadastramento de entidades (Res. CNJ 154/2012)",
+          "conta única de prestações pecuniárias e o cronograma de destinação",
+          "valores destinados nos últimos 3 anos e entidades beneficiadas"
+        ],
+        "onde": [
+          "DJE-GO (edital de cadastramento aparece com o nome da vara e do juiz)",
+          "Projudi / consulta de expedientes da vara",
+          "portal da transparência do TJGO (prestações pecuniárias)",
+          "Diário Oficial Eletrônico do MPGO (Programa Destina: Ato PGJ 58/2025)"
+        ],
+        "lexico": [
+          "Vara de Execução Penal",
+          "VEP",
+          "Juizado Especial Criminal",
+          "cadastramento de entidades",
+          "prestação pecuniária",
+          "Resolução 154",
+          "juiz(a) de direito",
+          "Destina",
+          "Promotoria"
+        ],
+        "apresentacao_no_calendario": "permanente com edital anual: linha o ano inteiro, com a estrela no mês em que a vara costuma publicar o cadastramento"
+      }
+    },
+    "sebraego.com.br": {
+      "bloqueios": 31,
+      "erros": {
+        "HTTPError": 31
+      },
+      "ultimo": "2026-09-28T13:51:59+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fsebraego.com.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Sebrae Goiás - parcerias com OSC para empreendedorismo publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Sebrae Goiás: (1) a norma vigente que rege Sebrae Goiás - parcerias com OSC para empreendedorismo; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://sebraego.com.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.gov.br": {
+      "bloqueios": 133,
+      "erros": {
+        "HTTPError": 121,
+        "URLError": 12
+      },
+      "ultimo": "2026-09-29T10:30:21+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=Destina%C3%A7%C3%A3o%20de%20IR%20pessoa%20f%C3%ADsica%20para%20FMDCA&s=todos",
+          "custo": "zero"
+        },
+        {
+          "degrau": 1,
+          "acao": "espelho institucional",
+          "url": "https://dados.gov.br/dados/busca?termo=Destina%C3%A7%C3%A3o%20de%20IR%20pessoa%20f%C3%ADsica%20para%20FMDCA",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.gov.br%2Fesporte%2Fpt-br%2Facoes-e-programas%2Flei-de-incentivo-ao-esporte",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Destinação de IR pessoa física para FMDCA publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Conanda — Fundo Nacional para a Criança e o Adolescente: (1) a norma vigente que rege Destinação de IR pessoa física para FMDCA; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "wa.me": {
+      "bloqueios": 35,
+      "erros": {
+        "InvalidURL": 35
+      },
+      "ultimo": "2026-09-29T10:24:52+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwa.me%2F5531999198781%3Ftext%3DOl%C3%A1%2C%2Bgostaria%2Bde%2Bsaber%2Bmais%2Bsobre%2Ba%2BCentral%2Bde%2Beditais%2C%2B%20para%2Bdivulga%C3%A7%C3%A3o%2Bdo%2Bmeu%2Bedital.",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde wa.me publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a wa.me: (1) a norma vigente que rege wa.me; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://wa.me/5531999198781?text=Olá,+gostaria+de+saber+mais+sobre+a+Central+de+editais,+ para+divulgação+do+meu+edital. não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null,
+      "classe": "link_nao_e_fonte",
+      "nao_e_bloqueio_de_ip": true
+    },
+    "www.institutococacolabrasil.com.br": {
+      "bloqueios": 22,
+      "erros": {
+        "URLError": 22
+      },
+      "ultimo": "2026-09-19T11:55:10+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.institutococacolabrasil.com.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=Instituto%20Coca-Cola%20Brasil&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Instituto Coca-Cola Brasil publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Instituto Coca-Cola Brasil: (1) a norma vigente que rege Instituto Coca-Cola Brasil; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.institutococacolabrasil.com.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "fundacaoarcelormittal.org.br": {
+      "bloqueios": 22,
+      "erros": {
+        "gaierror": 22
+      },
+      "ultimo": "2026-09-19T11:55:22+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Ffundacaoarcelormittal.org.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Fundação ArcelorMittal publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Fundação ArcelorMittal: (1) a norma vigente que rege Fundação ArcelorMittal; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://fundacaoarcelormittal.org.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null,
+      "classe": "dominio_nao_resolve",
+      "nao_e_bloqueio_de_ip": true
+    },
+    "www.institutosicoob.org.br": {
+      "bloqueios": 21,
+      "erros": {
+        "TimeoutError": 21
+      },
+      "ultimo": "2026-09-19T11:56:10+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.institutosicoob.org.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Instituto Sicoob publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Instituto Sicoob: (1) a norma vigente que rege Instituto Sicoob; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.institutosicoob.org.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "institutosabin.org.br": {
+      "bloqueios": 6,
+      "erros": {
+        "HTTPError": 6
+      },
+      "ultimo": "2026-09-09T07:26:54+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Finstitutosabin.org.br%2Ftransparencia",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde institutosabin.org.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a institutosabin.org.br: (1) a norma vigente que rege institutosabin.org.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://institutosabin.org.br/transparencia não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.jusbrasil.com.br": {
+      "bloqueios": 50,
+      "erros": {
+        "HTTPError": 50
+      },
+      "ultimo": "2026-09-23T09:02:30+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.jusbrasil.com.br%2Fdiarios",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.jusbrasil.com.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.jusbrasil.com.br: (1) a norma vigente que rege www.jusbrasil.com.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.jusbrasil.com.br/diarios não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.institutosabin.org.br": {
+      "bloqueios": 2,
+      "erros": {
+        "HTTPError": 1,
+        "URLError": 1
+      },
+      "ultimo": "2026-09-08T07:44:21+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.institutosabin.org.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Instituto Sabin publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Instituto Sabin: (1) a norma vigente que rege Instituto Sabin; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.institutosabin.org.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.fundacaogrupoboticario.org.br": {
+      "bloqueios": 1,
+      "erros": {
+        "HTTPError": 1
+      },
+      "ultimo": "2026-09-07T07:51:26+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.fundacaogrupoboticario.org.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Instituto Grupo Boticário publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Fundação Grupo Boticário: (1) a norma vigente que rege Instituto Grupo Boticário; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.fundacaogrupoboticario.org.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.institutoneoenergia.org.br": {
+      "bloqueios": 1,
+      "erros": {
+        "HTTPError": 1
+      },
+      "ultimo": "2026-09-08T07:43:17+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.institutoneoenergia.org.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Instituto Neoenergia publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Instituto Neoenergia: (1) a norma vigente que rege Instituto Neoenergia; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.institutoneoenergia.org.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "transparencia.mpf.mp.br": {
+      "bloqueios": 1,
+      "erros": {
+        "URLError": 1
+      },
+      "ultimo": "2026-09-10T07:46:04+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Ftransparencia.mpf.mp.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde transparencia.mpf.mp.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a transparencia.mpf.mp.br: (1) a norma vigente que rege transparencia.mpf.mp.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://transparencia.mpf.mp.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "mapaosc.ipea.gov.br": {
+      "bloqueios": 3,
+      "erros": {
+        "URLError": 3
+      },
+      "ultimo": "2026-09-25T11:57:30+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fmapaosc.ipea.gov.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Mapa das OSC - área de editais publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Mapa das OSC (IPEA): (1) a norma vigente que rege Mapa das OSC - área de editais; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://mapaosc.ipea.gov.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "cnetmobile.estaleiro.serpro.gov.br": {
+      "bloqueios": 4,
+      "erros": {
+        "URLError": 4
+      },
+      "ultimo": "2026-09-10T08:05:00+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fcnetmobile.estaleiro.serpro.gov.br%2Fcomprasnet-web%2Fpublic%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde cnetmobile.estaleiro.serpro.gov.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a cnetmobile.estaleiro.serpro.gov.br: (1) a norma vigente que rege cnetmobile.estaleiro.serpro.gov.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.bndes.gov.br": {
+      "bloqueios": 2,
+      "erros": {
+        "TimeoutError": 2
+      },
+      "ultimo": "2026-09-14T12:11:03+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.bndes.gov.br%2Fwps%2Fportal%2Fsite%2Fhome%2Ftransparencia%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde BNDES Corais - meio ambiente publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Diário Oficial da União — Seção 3 (avisos e editais): (1) a norma vigente que rege BNDES Corais - meio ambiente; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.bndes.gov.br/wps/portal/site/home/transparencia/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "hojanauba.cidadesmg.com.br": {
+      "bloqueios": 16,
+      "erros": {
+        "HTTPError": 16
+      },
+      "ultimo": "2026-09-19T11:55:31+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fhojanauba.cidadesmg.com.br%2Fportaltransparencia",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde hojanauba.cidadesmg.com.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a hojanauba.cidadesmg.com.br: (1) a norma vigente que rege hojanauba.cidadesmg.com.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://hojanauba.cidadesmg.com.br/portaltransparencia não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.hrjanauba.com.br": {
+      "bloqueios": 1,
+      "erros": {
+        "RemoteDisconnected": 1
+      },
+      "ultimo": "2026-09-19T11:55:43+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.hrjanauba.com.br%2Fwa_files%2FCREDENCIAMENTO_06_2026.pdf",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.hrjanauba.com.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.hrjanauba.com.br: (1) a norma vigente que rege www.hrjanauba.com.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.hrjanauba.com.br/wa_files/CREDENCIAMENTO_06_2026.pdf não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.grupocasasbahiasa.com.br": {
+      "bloqueios": 13,
+      "erros": {
+        "gaierror": 13
+      },
+      "ultimo": "2026-09-29T10:28:48+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.grupocasasbahiasa.com.br",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.grupocasasbahiasa.com.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.grupocasasbahiasa.com.br: (1) a norma vigente que rege www.grupocasasbahiasa.com.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.grupocasasbahiasa.com.br não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null,
+      "classe": "dominio_nao_resolve",
+      "nao_e_bloqueio_de_ip": true
+    },
+    "www.ovg.org.br": {
+      "bloqueios": 15,
+      "erros": {
+        "HTTPError": 12,
+        "URLError": 3
+      },
+      "ultimo": "2026-09-29T10:26:43+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.ovg.org.br%2Feditais",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.ovg.org.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.ovg.org.br: (1) a norma vigente que rege www.ovg.org.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.ovg.org.br/editais não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "rouanet.cultura.gov.br": {
+      "bloqueios": 11,
+      "erros": {
+        "ValueError": 11
+      },
+      "ultimo": "2026-09-29T10:30:21+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=http%3A%2F%2Frouanet.cultura.gov.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=Minist%C3%A9rio%20da%20Cultura%20%E2%80%94%20SALIC%20%E2%80%94%20oportunidades%20%28espalhado%20de%20edital%20validado%29&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 3,
+          "acao": "sistema da própria política (SALIC)",
+          "url": "https://salic.cultura.gov.br/",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado) publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Ministério da Cultura — SALIC: (1) a norma vigente que rege Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado); (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página http://rouanet.cultura.gov.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null,
+      "classe": "resposta_fora_da_politica",
+      "nao_e_bloqueio_de_ip": true
+    },
+    "www.novohamburgo.rs.gov.br": {
+      "bloqueios": 11,
+      "erros": {
+        "HTTPError": 11
+      },
+      "ultimo": "2026-09-29T10:32:04+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.novohamburgo.rs.gov.br%2Fsecult%2Feditais%2Feditalfomento-112024",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=PNCP%20%E2%80%94%20MUNICIPIO%20DE%20NOVO%20HAMBURGO%20%E2%80%94%20oportunidades%20%28espalhado%20de%20edital%20validado%29&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado) publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a PNCP — MUNICIPIO DE NOVO HAMBURGO: (1) a norma vigente que rege PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado); (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.novohamburgo.rs.gov.br/secult/editais/editalfomento-112024 não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "sistema.mirassoldoeste.mt.gov.br": {
+      "bloqueios": 11,
+      "erros": {
+        "ValueError": 11
+      },
+      "ultimo": "2026-09-29T10:32:29+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=http%3A%2F%2Fsistema.mirassoldoeste.mt.gov.br%3A5656%2Fcomprasedital%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=PNCP%20%E2%80%94%20MUNICIPIO%20DE%20MIRASSOL%20D%27OESTE%20%E2%80%94%20oportunidades%20%28espalhado%20de%20edital%20validado%29&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde PNCP — MUNICIPIO DE MIRASSOL D'OESTE — oportunidades (espalhado de edital validado) publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a PNCP — MUNICIPIO DE MIRASSOL D'OESTE: (1) a norma vigente que rege PNCP — MUNICIPIO DE MIRASSOL D'OESTE — oportunidades (espalhado de edital validado); (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página http://sistema.mirassoldoeste.mt.gov.br:5656/comprasedital/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null,
+      "classe": "resposta_fora_da_politica",
+      "nao_e_bloqueio_de_ip": true
+    },
+    "www.arapongas.pr.gov.br": {
+      "bloqueios": 1,
+      "erros": {
+        "URLError": 1
+      },
+      "ultimo": "2026-09-22T11:22:45+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.arapongas.pr.gov.br%2F",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 3,
+          "acao": "agregador (PNCP)",
+          "url": "https://pncp.gov.br/api/search/?q=Querido%20Di%C3%A1rio%20%E2%80%94%20di%C3%A1rios%20oficiais%20municipais%20%E2%80%94%20oportunidades%20%28espalhado%20de%20edital%20validado%29&tipos_documento=edital",
+          "custo": "zero"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde Querido Diário — diários oficiais municipais — oportunidades (espalhado de edital validado) publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a Querido Diário — diários oficiais municipais: (1) a norma vigente que rege Querido Diário — diários oficiais municipais — oportunidades (espalhado de edital validado); (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.arapongas.pr.gov.br/ não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "institutosocialcrescervida.blogspot.com": {
+      "bloqueios": 1,
+      "erros": {
+        "HTTPError": 1
+      },
+      "ultimo": "2026-09-25T11:57:30+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Finstitutosocialcrescervida.blogspot.com%2F2026%2F08%2Feditais-abertos-para-instituicoes.html",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde institutosocialcrescervida.blogspot.com publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a institutosocialcrescervida.blogspot.com: (1) a norma vigente que rege institutosocialcrescervida.blogspot.com; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://institutosocialcrescervida.blogspot.com/2026/08/editais-abertos-para-instituicoes.html não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "www.grupocasasbahia.com.br": {
+      "bloqueios": 2,
+      "erros": {
+        "HTTPError": 2
+      },
+      "ultimo": "2026-09-29T10:28:52+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fwww.grupocasasbahia.com.br%2Fquem-somos",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde www.grupocasasbahia.com.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a www.grupocasasbahia.com.br: (1) a norma vigente que rege www.grupocasasbahia.com.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://www.grupocasasbahia.com.br/quem-somos não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "sistema.ouvidorias.gov.br": {
+      "bloqueios": 1,
+      "erros": {
+        "URLError": 1
+      },
+      "ultimo": "2026-09-28T22:44:30+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fsistema.ouvidorias.gov.br%2Fpublico%2FManifestacao%2FRegistrarManifestacao.aspx%3Ftipo%3D5%26orgaoDestinatario%3D42673",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde sistema.ouvidorias.gov.br publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a sistema.ouvidorias.gov.br: (1) a norma vigente que rege sistema.ouvidorias.gov.br; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://sistema.ouvidorias.gov.br/publico/Manifestacao/RegistrarManifestacao.aspx?tipo=5&orgaoDestinatario=42673 não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    },
+    "brasil.un.org": {
+      "bloqueios": 1,
+      "erros": {
+        "UnicodeEncodeError": 1
+      },
+      "ultimo": "2026-09-29T10:30:02+00:00",
+      "escada": [
+        {
+          "degrau": 0,
+          "acao": "registrar bloqueio",
+          "custo": "zero"
+        },
+        {
+          "degrau": 2,
+          "acao": "cópia arquivada (Wayback Machine)",
+          "url": "https://archive.org/wayback/available?url=https%3A%2F%2Fbrasil.un.org%2Fpt-br%2F308564-unaids-e-minist%C3%A9rio-da-sa%C3%BAde-abrem-sele%C3%A7%C3%A3o-de-organiza%C3%A7%C3%B5es-da-sociedade-civil-voltadas-a%C3%A7%C3%B5es",
+          "custo": "zero",
+          "nota": "texto histórico da mesma URL: serve para regra, calendário e requisitos"
+        },
+        {
+          "degrau": 4,
+          "acao": "IA com busca na web (modelo barato, pergunta fechada)",
+          "pergunta": "Onde brasil.un.org publica seus editais/atos de destinação, qual a época do ano e qual a norma que rege? Responda só com URLs oficiais e artigos.",
+          "custo": "baixo",
+          "modelo": "haiku → sonnet se falhar"
+        },
+        {
+          "degrau": 5,
+          "acao": "pedido LAI ao órgão",
+          "custo": "tempo",
+          "texto": "Com fundamento na Lei 12.527/2011, solicito a brasil.un.org: (1) a norma vigente que rege brasil.un.org; (2) o calendário/periodicidade de abertura para entidades sem fins lucrativos; (3) a relação de editais/atos de destinação dos últimos 3 anos, com valores e beneficiários; (4) o endereço eletrônico onde tais atos são publicados. A página https://brasil.un.org/pt-br/308564-unaids-e-ministério-da-saúde-abrem-seleção-de-organizações-da-sociedade-civil-voltadas-ações não respondeu às consultas automatizadas em 29/09/2026."
+        }
+      ],
+      "judicial": null
+    }
+  },
+  "regra": "bloqueio nao encerra a busca: desce a escada ate alimentar o repositorio"
 }

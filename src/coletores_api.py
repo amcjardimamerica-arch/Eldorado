@@ -33,6 +33,37 @@ def _get_json(url: str, timeout: int = 45, max_bytes: int = 8_000_000):
         if len(data) > max_bytes: raise ValueError("resposta excede limite")
         return json.loads(data.decode("utf-8", "replace"))
 
+def _get_json_resiliente(url: str, tentativas: int = 1, esperas: list | None = None, timeout: int = 45) -> dict:
+    """29/09/2026: nova tentativa com espera — o Querido Diário às vezes responde 'no available server' em TEXTO puro
+    (só vira JSON depois de validado) e o PNCP oscila (Timeout/HTTPError). esperas: lista de segundos por tentativa;
+    [a, b] com 2 números = intervalo aleatório entre a e b."""
+    import random
+    import time as _t
+    ultimo = None
+    for n in range(max(1, tentativas)):
+        try:
+            validate_public_https(url)
+            req = Request(url, headers={"User-Agent": "Eldorado-OSC/3.0 contato-via-repositorio", "Accept": "application/json"})
+            with urlopen(req, timeout=timeout) as resp:
+                bruto = resp.read(8_000_001)
+            if len(bruto) > 8_000_000:
+                raise ValueError("resposta excede limite")
+            texto = bruto.decode("utf-8", "replace").strip()
+            if not texto.startswith(("{", "[")):
+                raise ValueError(f"resposta não é JSON: {texto[:60]!r}")      # ex.: 'no available server'
+            return json.loads(texto)
+        except Exception as exc:
+            ultimo = exc
+            if n + 1 >= tentativas:
+                break
+            if esperas and len(esperas) == 2 and tentativas <= 3 and esperas[0] < esperas[1] <= 10:
+                espera = random.uniform(esperas[0], esperas[1])
+            else:
+                espera = (esperas or [5])[min(n, len(esperas or [5]) - 1)]
+            _t.sleep(espera)
+    raise ultimo
+
+
 def _salvar(novos: list[dict], relatorio: dict) -> None:
     if not novos: return
     registros = carregar_oportunidades()
@@ -71,7 +102,8 @@ def coletar_pncp(inicio: date, fim: date, escopo: dict, cfg: dict | None = None)
                     q = urlencode({"dataInicial": inicio.strftime("%Y%m%d"), "dataFinal": fim.strftime("%Y%m%d"),
                                    "codigoModalidadeContratacao": modalidade, "pagina": pagina,
                                    "tamanhoPagina": int(cfg.get("tamanho_pagina", 50))})
-                    corpo = _get_json(f"{base}/v1/contratacoes/publicacao?{q}")
+                    corpo = _get_json_resiliente(f"{base}/v1/contratacoes/publicacao?{q}", int(cfg.get("tentativas", 1)),
+                                                 cfg.get("esperas_s"), int(cfg.get("timeout_s", 45)))
                     dados = corpo.get("data") or corpo.get("resultado") or []
                     for item in dados:
                         objeto = (item.get("objetoCompra") or item.get("objeto") or "").strip()
@@ -143,7 +175,8 @@ def coletar_querido_diario(inicio: date, fim: date, escopo: dict, cfg: dict | No
                     q = urlencode({"querystring": consulta, "published_since": inicio.isoformat(),
                                    "published_until": fim.isoformat(), "size": int(cfg.get("size", 50)),
                                    "offset": offset, "excerpt_size": 400, "number_of_excerpts": 1})
-                    corpo = _get_json(f"{base}/gazettes?{q}")
+                    corpo = _get_json_resiliente(f"{base}/gazettes?{q}", int(cfg.get("tentativas", 1)),
+                                                 cfg.get("espera_s"), int(cfg.get("timeout_s", 45)))
                     diarios = corpo.get("gazettes") or []
                     for g in diarios:
                         uf = (g.get("state_code") or "").upper() or None
@@ -175,6 +208,41 @@ def coletar_querido_diario(inicio: date, fim: date, escopo: dict, cfg: dict | No
 
 # ─── Execução incremental (diária/segunda-quarta) ───────────────────────────
 
+def coletar_comunica_pje(inicio: date, fim: date, cfg: dict | None = None) -> tuple[list[dict], list[dict]]:
+    """COMUNICA PJe (CNJ) — rota do TJGO e do TRF1 (29/09/2026). Consulta por termos do léxico do terceiro setor; cada
+    comunicação vira PISTA (regra 19 do AGENTS.md): só vira oportunidade com a URL oficial confirmada."""
+    cfg = cfg or _cfg()["comunica_pje"]
+    achados, falhas, vistos = [], [], set()
+    for trib in cfg.get("tribunais", []):
+        for termo in cfg.get("termos", []):
+            for pagina in range(1, int(cfg.get("max_paginas", 3)) + 1):
+                q = urlencode({"siglaTribunal": trib, "dataDisponibilizacaoInicio": inicio.isoformat(), "dataDisponibilizacaoFim": fim.isoformat(),
+                               "itensPorPagina": int(cfg.get("itens_por_pagina", 100)), "pagina": pagina, "texto": termo})
+                try:
+                    corpo = _get_json_resiliente(f"{cfg['base']}?{q}", int(cfg.get("tentativas", 1)), cfg.get("esperas_s"), int(cfg.get("timeout_s", 60)))
+                except (HTTPError, URLError, OSError, ValueError, json.JSONDecodeError) as exc:
+                    falhas.append({"api": "comunica_pje", "tribunal": trib, "termo": termo, "erro": type(exc).__name__}); break
+                itens = corpo.get("items") or corpo.get("itens") or corpo.get("content") or corpo.get("data") or [] if isinstance(corpo, dict) else corpo
+                for it in itens or []:
+                    ident = str(it.get("id") or it.get("hash") or it.get("numero_processo") or it.get("numeroProcesso") or "")
+                    chave = f"{trib}|{ident}|{termo}"
+                    if not ident or chave in vistos:
+                        continue
+                    vistos.add(chave)
+                    orgao = it.get("nomeOrgao") or it.get("orgao") or trib
+                    dia = str(it.get("data_disponibilizacao") or it.get("dataDisponibilizacao") or "")[:10]
+                    texto = " ".join(str(it.get("texto") or "").split())[:600]
+                    link = str(it.get("link") or "")
+                    achados.append({"id": sha256(("pje|" + chave).encode())[:20], "status": "pista", "titulo": f"{trib} · {orgao} {dia} — {termo}"[:300],
+                                    "url": link if link.startswith("https://") else f"https://comunica.pje.jus.br/consulta?siglaTribunal={trib}&texto={quote(termo)}",
+                                    "fonte_id": f"comunica-pje-{trib.lower()}", "fonte_nome": f"Comunica PJe (CNJ) — {trib}", "territorio": "GO" if trib == "TJGO" else "BR",
+                                    "tipo_fonte": "comunicacao_processual", "confianca": "pista", "confirmar_url_oficial": True,
+                                    "data_publicacao": dia or None, "trecho": texto, "processo": it.get("numero_processo") or it.get("numeroProcesso")})
+                if len(itens or []) < int(cfg.get("itens_por_pagina", 100)):
+                    break
+    return achados, falhas
+
+
 def run(dias: int | None = None) -> dict:
     cfg = _cfg(); escopo = load_json(ROOT / "config/escopo.json")
     hoje = date.today()
@@ -186,6 +254,9 @@ def run(dias: int | None = None) -> dict:
     if cfg["querido_diario"].get("ativa"):
         ini = hoje - timedelta(days=dias or int(cfg["querido_diario"].get("dias_incrementais", 5)))
         a, f = coletar_querido_diario(ini, hoje, escopo); novos += a; relatorio["falhas"] += f
+    if (cfg.get("comunica_pje") or {}).get("ativa"):
+        ini = hoje - timedelta(days=dias or int(cfg["comunica_pje"].get("dias_incrementais", 3)))
+        a, f = coletar_comunica_pje(ini, hoje); novos += a; relatorio["falhas"] += f
     relatorio["itens"] = len(novos)
     _salvar(novos, relatorio)
     write_json(ROOT / "estado/ultima_coleta_api.json", relatorio)

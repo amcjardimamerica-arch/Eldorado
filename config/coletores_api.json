@@ -1,34 +1,79 @@
 {
- "versao": 1,
- "regra": "APIs públicas oficiais, somente leitura, sem chave e sem IA. Resultados entram na base deduplicada pelo mesmo merge que preserva revisão humana. Endpoints conferidos em 30/08/2026 na especificação OpenAPI do PNCP; a primeira execução real valida e registra falhas por camada.",
- "pncp": {
-  "ativa": true,
-  "bases": [
-   "https://pncp.gov.br/api/consulta"
-  ],
-  "modalidades": [
-   12,
-   3,
-   10
-  ],
-  "nota_modalidades": "12 = credenciamento; 3 = concurso; 10 = manifestação de interesse (Lei 14.133/2021). Parceria MROSC não é modalidade da 14.133: quando aparece no PNCP, vem de carona nessas três. A pertinência é decidida depois, pelo classificador de finalidade (src/pncp_terceiro_setor.py)",
-  "filtro_regex": "chamamento|credenciament|organiza[çc][õo]es? da sociedade civil|\\bOSC\\b|entidade sem fins lucrativos|projeto (social|cultural|esportivo)|fomento|termo de (fomento|colabora[çc][ãa]o)",
-  "dias_incrementais": 5,
-  "max_paginas": 5,
-  "tamanho_pagina": 50
- },
- "querido_diario": {
-  "ativa": true,
-  "bases": [
-   "https://queridodiario.ok.org.br/api",
-   "https://api.queridodiario.ok.org.br"
-  ],
-  "consultas": [
-   "\"chamamento público\" \"organizações da sociedade civil\"",
-   "\"edital de chamamento público\" associação"
-  ],
-  "dias_incrementais": 5,
-  "size": 50,
-  "max_paginas": 4
- }
+  "versao": 1,
+  "regra": "APIs públicas oficiais, somente leitura, sem chave e sem IA. Resultados entram na base deduplicada pelo mesmo merge que preserva revisão humana. Endpoints conferidos em 30/08/2026 na especificação OpenAPI do PNCP; a primeira execução real valida e registra falhas por camada.",
+  "pncp": {
+    "ativa": true,
+    "bases": [
+      "https://pncp.gov.br/api/consulta"
+    ],
+    "modalidades": [
+      12,
+      3,
+      10
+    ],
+    "nota_modalidades": "12 = credenciamento; 3 = concurso; 10 = manifestação de interesse (Lei 14.133/2021). Parceria MROSC não é modalidade da 14.133: quando aparece no PNCP, vem de carona nessas três. A pertinência é decidida depois, pelo classificador de finalidade (src/pncp_terceiro_setor.py)",
+    "filtro_regex": "chamamento|credenciament|organiza[çc][õo]es? da sociedade civil|\\bOSC\\b|entidade sem fins lucrativos|projeto (social|cultural|esportivo)|fomento|termo de (fomento|colabora[çc][ãa]o)",
+    "dias_incrementais": 5,
+    "max_paginas": 5,
+    "tamanho_pagina": 50,
+    "tentativas": 4,
+    "esperas_s": [
+      5,
+      15,
+      45
+    ],
+    "timeout_s": 90,
+    "nota_tentativas": "29/09/2026: 74 falhas no mês (32 Timeout, 31 HTTPError, 11 URLError) — nova tentativa com espera crescente e tempo limite maior só para o PNCP."
+  },
+  "querido_diario": {
+    "ativa": true,
+    "bases": [
+      "https://api.queridodiario.org.br",
+      "https://queridodiario.ok.org.br/api",
+      "https://api.queridodiario.ok.org.br"
+    ],
+    "consultas": [
+      "\"chamamento público\" \"organizações da sociedade civil\"",
+      "\"edital de chamamento público\" associação"
+    ],
+    "dias_incrementais": 5,
+    "size": 50,
+    "max_paginas": 4,
+    "nota_bases": "29/09/2026: o endereço novo é https://api.queridodiario.org.br (sem 'ok'); os antigos ficam só como reserva (um responde HTTPError, o outro falha no TLS).",
+    "tentativas": 3,
+    "espera_s": [
+      3,
+      5
+    ],
+    "timeout_s": 45
+  },
+  "comunica_pje": {
+    "ativa": true,
+    "base": "https://comunicaapi.pje.jus.br/api/v1/comunicacao",
+    "tribunais": [
+      "TJGO",
+      "TRF1"
+    ],
+    "termos": [
+      "edital de chamamento",
+      "chamamento público",
+      "prestação pecuniária",
+      "organização da sociedade civil",
+      "destinação de recursos",
+      "entidade beneficiária"
+    ],
+    "itens_por_pagina": 100,
+    "max_paginas": 3,
+    "dias_incrementais": 3,
+    "tentativas": 3,
+    "esperas_s": [
+      5,
+      15,
+      45
+    ],
+    "timeout_s": 60,
+    "regra": "29/09/2026: comunicações processuais do CNJ (Comunica PJe) para TJGO e TRF1, SEMPRE filtradas por texto (TJGO sem filtro passa de 10 mil por dia). Entram como PISTA (AGENTS.md, regra 19): só viram oportunidade com a URL oficial confirmada. Substitui o espelho sugerido para www.tjgo.jus.br.",
+    "testado_em": "2026-09-29 (navegador, 21 a 28/09): TJGO + 'edital de chamamento' 32 · TJGO + 'prestação pecuniária' 8 · TRF1 + 'prestação pecuniária' 231",
+    "pendente": "confirmar se a API aceita o IP do GitHub (a única tentativa do robô, em 04/09, falhou com HTTPError)"
+  }
 }
