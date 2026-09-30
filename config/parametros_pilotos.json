@@ -42,16 +42,16 @@
   "consultas_boas": [
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 142,
-    "com_resultado": 125,
-    "achados": 250,
+    "tentativas": 144,
+    "com_resultado": 126,
+    "achados": 252,
     "missao": "aposta"
    },
    {
     "consulta": "quais são os programas de doação de multinacionais com inscrição local",
-    "tentativas": 46,
-    "com_resultado": 25,
-    "achados": 49,
+    "tentativas": 48,
+    "com_resultado": 26,
+    "achados": 51,
     "missao": "aposta"
    },
    {
@@ -77,7 +77,7 @@
    },
    {
     "consulta": "chamamento público conanda/sndca nº 01/2",
-    "tentativas": 420,
+    "tentativas": 421,
     "com_resultado": 165,
     "achados": 165,
     "missao": "resgate"
@@ -95,13 +95,6 @@
     "com_resultado": 83,
     "achados": 83,
     "missao": "resgate"
-   },
-   {
-    "consulta": "fundação empresarial goiás edital projetos 2026 organizações da socied",
-    "tentativas": 16,
-    "com_resultado": 3,
-    "achados": 4,
-    "missao": "aposta"
    },
    {
     "consulta": "edital abre inscrições para rede memória organizações da sociedade civ",
@@ -122,6 +115,13 @@
     "tentativas": 17,
     "com_resultado": 3,
     "achados": 12,
+    "missao": "aposta"
+   },
+   {
+    "consulta": "fundação empresarial goiás edital projetos 2026 organizações da socied",
+    "tentativas": 17,
+    "com_resultado": 3,
+    "achados": 4,
     "missao": "aposta"
    },
    {
@@ -358,7 +358,7 @@
    },
    {
     "consulta": "programa de investimento social privado inscrições 2026",
-    "tentativas": 15,
+    "tentativas": 16,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
@@ -412,7 +412,7 @@
    },
    {
     "consulta": "onde estão as oportunidades não mapeadas em regiões com baixa cobertur",
-    "tentativas": 4,
+    "tentativas": 6,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    }
@@ -438,12 +438,12 @@
    "credenciamento",
    "seleção",
    "organização",
-   "regiões",
-   "baixa"
+   "baixa",
+   "regiões"
   ],
   "rendimento_das_buscas": {
    "resgate": {
-    "tentativas": 6360,
+    "tentativas": 6361,
     "com_resultado": 585,
     "taxa": 0.092
    },
@@ -458,17 +458,17 @@
     "taxa": 0.25
    },
    "aposta": {
-    "tentativas": 512,
-    "com_resultado": 173,
-    "taxa": 0.338
+    "tentativas": 519,
+    "com_resultado": 175,
+    "taxa": 0.337
    },
    "descobrir": {
-    "tentativas": 256,
+    "tentativas": 257,
     "com_resultado": 2,
     "taxa": 0.008
    }
   },
-  "consultas_aprendidas_em": "2026-09-30T05:43:56+00:00"
+  "consultas_aprendidas_em": "2026-09-30T05:46:47+00:00"
  },
  "atualizado_em": "2026-09-29T16:11:27+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
