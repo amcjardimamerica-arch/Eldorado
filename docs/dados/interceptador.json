@@ -1,9 +1,9 @@
 {
-  "em": "2026-09-30T19:08:28+00:00",
+  "em": "2026-09-30T19:22:50+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-09-30T18:54:44+00:00",
+  "ultimo_voo": "2026-09-30T19:10:43+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,24 +34,92 @@
     "editais novos dos motores": 30,
     "indícios do Espião": 17,
     "abertos com itens em falta": 3,
-    "empresas sem ficha": 102
+    "empresas sem ficha": 103
   },
   "acumulado": {
-    "missoes": 511,
+    "missoes": 512,
     "validadas": 29,
     "parciais": 146,
-    "insuficientes": 205,
+    "insuficientes": 206,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
       "sim": 295,
-      "nao": 51
+      "nao": 52
     },
     "estrelas_de_ouro": 19,
     "fontes_novas_para_os_motores": 120,
     "tempo_medio_min": 8.8
   },
   "missoes": [
+    {
+      "em": "2026-09-30T19:10:43+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "opressor sem leitura",
+      "alvo": "Prêmio nacional da Enap oferece até R$ 20 mil para iniciativas que protegem crianças e adolescentes em situação de rua — ",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www2.enap.gov.br/educacao-e-capacitacao/programa-de-aperfeicoamento-para-carreiras/premios/concurso-premio-mdhc/",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "Não há informações suficientes para confirmar que o Prêmio Nacional da ENAP oferece até R$ 20 mil para iniciativas que protegem crianças e adolescentes em situação de rua.",
+        "para_a_amc": "null",
+        "proximo_passo": "null",
+        "risco": "A falta de informações detalhadas sobre o edital pode impedir que a associação comunitária de Goiânia se candidate adequadamente."
+      },
+      "erro": null,
+      "segundos": 726,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 4,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-0d2ab7638fd7",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "ENAP",
+          "trecho": "Prêmio SNDCA do MDHC",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "nacional",
+          "trecho": "Prêmio SNDCA do MDHC",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · premio",
+          "trecho": "Prêmio SNDCA do MDHC",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Ministério do Desenvolvimento, Indústria e Comércio Exterior (MDHC)",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-09-30T18:54:44+00:00",
       "modo": "validar",
@@ -2557,84 +2625,6 @@
         "financiador_ano",
         "governo",
         "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-09-30T10:29:48+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "opressor sem leitura",
-      "alvo": "Diário Oficial de Itu (SP) 2026-09-14 — \"chamamento público\" \"organizações da sociedade civil\" — Prefeitura da Estância Turística de Itu",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://licitacao.itu.sp.gov.br/editalpdfs/20260123173629edital-chamamento-01-2026-416anos..pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona um chamamento público para seleção de parceiros que desejam ocupar barracas de venda de alimentos e bebidas durante um evento municipal, o que é relevante para organizações da sociedade civil.",
-        "para_a_amc": "Uma associação comunitária de Goiânia precisaria se inscrever no chamamento público, apresentar proposta de venda de alimentos e bebidas, respeitando as normas e legislações de marca e venda de gêneros alimentícios, e seguir as instruções dos anexos para participar do evento.",
-        "proximo_passo": "Verificar a data de inscrição e entrar em contato com a Prefeitura Municipal da Estância Turística de Itu para obter mais informações sobre o processo.",
-        "risco": "O prazo de inscrição não foi especificado, o que pode impedir a organização de se inscrever a tempo."
-      },
-      "erro": null,
-      "segundos": 814,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 8,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor, Área de atuação",
-      "id": "op-op-ea7fbefc3222",
-      "encontrou": {
-        "Objeto": {
-          "valor": "selecionar parceiros da iniciativa que queiram ocupar as barracas que serão montadas pela Prefeitura da Estância Turística de Itu vendendo alimentos e bebidas, para atender ao evento de ANIVERSÁRIO DE 416 ANOS DE ITU",
-          "trecho": "O presente Edital tem por objeto selecionar parceiros da iniciativa que queiram ocupar as barracas que serão montadas pela Prefeitura da Estância Turística de Itu vendendo alimento",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "? a 2026-01-29",
-          "trecho": "visando ocupar as barracas que serão montadas, para atender ao evento: Aniversário de 416 Anos da Cidade de Itu, que acontecerá na Praça Padre Miguel, Centro, Itu-SP no dia 02 de f",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal da Estância Turística de Itu",
-          "trecho": "A Prefeitura Municipal da Estância Turística de Itu, por meio da Secretaria Municipal de Turismo torna público o presente Edital",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "A Prefeitura Municipal da Estância Turística de Itu, por meio da Secretaria Municipal de Turismo torna público o presente Edital",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "A Prefeitura Municipal da Estância Turística de Itu, por meio da Secretaria Municipal de Turismo torna público o presente Edital",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "atender e respeitar as normas e legislações para veiculação de marca, venda dos generos alimenticios, objeto ou uso de á",
-          "trecho": "Os interessados que atenderem aos termos deste Edital, mediante parecer fundamentado, firmarão um Termo com a Secretaria Municipal de Turismo, com fundamento na Lei Federal nº 14.1",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura da Estância Turística de Itu",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ]
