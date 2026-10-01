@@ -31,7 +31,8 @@ SAIDA = ROOT / "docs/dados/auditoria_29.json"
 RELATORIO = ROOT / "biblioteca_alexandria/AUDITORIA-MOTORES-29-2026-09-22.md"
 # Fontes que recusam endereço estrangeiro — medido nas coletas anteriores
 # 01/10: do-goiania saiu — lê o Querido Diário na nuvem (src/diario_goiania.py); a coleta local é reforço
-BLOQUEADOS = {"do-goias", "dje-tjgo", "dj-trf1-go", "camara-goiania-pl"}
+# 01/10: do-goias saiu — lê a estrutura aberta do Diário e a API das secretarias (src/diario_goias.py)
+BLOQUEADOS = {"dje-tjgo", "dj-trf1-go", "camara-goiania-pl"}
 
 
 def _achados_por_motor() -> dict:

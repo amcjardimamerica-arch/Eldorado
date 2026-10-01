@@ -72,6 +72,21 @@ _EXTRA = {
     "fomento_forte": re.compile(r"TERMO DE FOMENTO|TERMO DE COLABORACAO|13\.019|ORGANIZACOES? DA SOCIEDADE CIVIL|\bOSCS?\b|"
                                 r"SEM FINS LUCRATIVOS|SELECAO DE PROJETOS|FOMENTO A CULTURA|PREMIO|PREMIACAO"),
 }
+_D = r"(\d{1,2}/\d{1,2}/\d{4}|\d{1,2}\s+de\s+[a-zç]+\s+de\s+\d{4})"
+_PERIODO2 = re.compile(r"(?:do dia|de|entre os dias|entre)\s+" + _D + r"\s+(?:a|at[ée]|e)\s+(?:o dia\s+)?" + _D, re.I)
+_CONTEXTO_PRAZO = re.compile(r"ABERT|INSCRI|PROPOSTA|RECEB|CHAMAMENTO|PROTOCOL|ENVIO", re.I)
+
+
+def _periodo_aberto(bruto: str):
+    """"Torna público que do dia 28/09/2026 a 02/10/2026 estará aberto chamamento" → a 2ª data, se o entorno falar
+    de abertura/inscrição (vigência de contrato "de 01/01 a 31/12" não conta)."""
+    for m in _PERIODO2.finditer(bruto):
+        entorno = bruto[max(0, m.start() - 150): m.end() + 150]
+        if _CONTEXTO_PRAZO.search(entorno) and not re.search(r"vig[eê]ncia", entorno, re.I):
+            return m.group(2)
+    return None
+
+
 _PROTOCOLO = re.compile(r"Protocolo\s+\d{5,7}\b")
 
 
@@ -187,7 +202,7 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     num = _NUM_CHAM.search(T) or _NUM.search(cab) or _NUM.search(T[:900])
     obj = _OBJETO.search(corpo) or _OBJETO.search(bruto)
     mp, m = _PERIODO.search(bruto), _FIM.search(bruto)
-    fim_txt = mp.group(2) if mp else (m.group(1) if m else None)
+    fim_txt = mp.group(2) if mp else (_periodo_aberto(bruto) or (m.group(1) if m else None))
     fim = _data_br(fim_txt)
     motivos = []
     de_interesse = regime in ("mrosc", "fundo_conselho", "pnab_cultura")

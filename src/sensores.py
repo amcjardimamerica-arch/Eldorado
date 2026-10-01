@@ -418,6 +418,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     if sensor.get("id") == "do-goiania":
         from .diario_goiania import ler_motor
         return ler_motor(sensor, data, limites)
+    # MOTOR 02 (parecer de 01/10/2026): o Diário do Estado é lido pela estrutura aberta do portal
+    # (busca, sumário por órgão, texto de cada matéria) + API dos sites das secretarias
+    if sensor.get("id") == "do-goias":
+        from .diario_goias import ler_motor as ler_motor_go
+        return ler_motor_go(sensor, data, limites)
     lim = limites or load_json(CFG)["limites"]
     pausa = lim["pausa_segundos"] if pausa is None else pausa
     achados, falhas, saude = [], [], []
