@@ -33,8 +33,9 @@ class TesteStatusMotores(unittest.TestCase):
     def test_painel_e_fluxo(self):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn("status_motores.json", h); self.assertNotIn("semaforoTres", h)   # a cor fica só na lateral direita
-        for c in ("verde", "vermelho", "cinza"):
-            self.assertIn(f".mt-item.oficial.sem-{c}{{border-right:10px solid", h)
+        self.assertIn(".mt-item.sem-verde{border-right:6px solid var(--ok)}", h)          # cores suaves de antes
+        self.assertIn(".mt-item.sem-vermelho{border-right:6px solid var(--urgente)}", h)
+        self.assertIn(".mt-item.oficial.sem-cinza{border-right:6px solid #C9CED6}", h)
         self.assertNotIn("sem-lendo", h.split("ofRows.map(o=>{")[1].split("join(\"\")")[0])
         w = (ROOT / ".github/workflows/status-motores.yml").read_text(encoding="utf-8")
         self.assertIn("17 0,6,12,18 * * *", w); self.assertIn("src.status_motores", w)
