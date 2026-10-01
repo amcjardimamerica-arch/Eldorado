@@ -685,7 +685,22 @@ def run() -> dict:
         if _af.exists():
             import lzma as _lz
             _arq = {json.loads(l).get("id") for l in _lz.decompress(_af.read_bytes()).decode().splitlines() if l.strip()}
-        _juntados = {i for x in _ant for i in (x.get("ids_juntados") or [])}
+        _ant_por = {x.get("id"): x for x in _ant}
+        for _m in motores:                            # 01/10: o livro que absorveu duplicatas guarda a lista (senão a junção é refeita a cada ciclo)
+            if (_ant_por.get(_m.get("id")) or {}).get("ids_juntados") and not _m.get("ids_juntados"):
+                _m["ids_juntados"] = _ant_por[_m["id"]]["ids_juntados"]
+        # só fica de fora quem a conferência ATUAL ainda considera duplicata (a regra pode ter mudado: editais distintos voltam)
+        from .curadoria_biblioteca import mesma_oportunidade as _mesma
+        import json as _js
+        _pd = (_js.loads((ROOT / "config/parametros_biblioteca.json").read_text(encoding="utf-8")).get("duplicidade") or {})
+        _juntados = set()
+        for x in _ant:
+            for i in (x.get("ids_juntados") or []):
+                _o = next((y for y in motores if y.get("id") == i), None)
+                if _o is None or _mesma(x, _o, _pd):
+                    _juntados.add(i)
+                else:
+                    x["ids_juntados"] = [k for k in x["ids_juntados"] if k != i]
         _f = []
         for _m in motores:
             try:

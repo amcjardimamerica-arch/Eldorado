@@ -46,8 +46,28 @@ def _j(p: Path, padrao):
         return padrao
 
 
+PAR_FIXOS = ROOT / "config/parametros_pilotos_fixos.json"
+CHAVES_FIXAS = ("restricoes_fixas", "estrategia_criativa", "estrategias_anteriores")
+
+
 def parametros() -> dict:
-    return _j(PAR, {})
+    """01/10: restrições fixas e estratégias têm também um arquivo próprio, que os voos não sobrescrevem — um voo
+    iniciado antes de uma publicação gravava a versão antiga do arquivo principal e as apagava."""
+    P = _j(PAR, {}); F = _j(PAR_FIXOS, {})
+    for p in ("espiao", "interceptador"):
+        for k in CHAVES_FIXAS:
+            if k in (F.get(p) or {}) and k not in (P.get(p) or {}):
+                P.setdefault(p, {})[k] = F[p][k]
+    return P
+
+
+def _guardar_fixos(P: dict) -> None:
+    F = _j(PAR_FIXOS, {})
+    for p in ("espiao", "interceptador"):
+        for k in CHAVES_FIXAS:
+            if k in (P.get(p) or {}):
+                F.setdefault(p, {})[k] = P[p][k]
+    PAR_FIXOS.write_text(json.dumps(F, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 def _erros_interceptador() -> list[dict]:
@@ -293,4 +313,5 @@ def ciclo_criativo() -> dict:
               "foco_area": rnd.choice(AREAS[:8]), "pesquisas_no_inicio": m}
         pi["estrategia_criativa"] = ei; pi["rotas_ordem"] = rotas; feito["interceptador"] = ei["id"]
     PAR.write_text(json.dumps(P, ensure_ascii=False, indent=1), encoding="utf-8")
+    _guardar_fixos(P)
     return feito or {"sem_troca": True}

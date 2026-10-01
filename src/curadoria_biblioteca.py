@@ -25,7 +25,7 @@ ARQ = ROOT / "biblioteca_alexandria/livros/arquivo_fora_da_abrangencia.jsonl.xz"
 REL = ROOT / "docs/dados/conferencia_livros.json"
 
 sem = lambda t: "".join(c for c in unicodedata.normalize("NFKD", str(t or "").lower()) if not unicodedata.combining(c))
-MUN = re.compile(r"munic[ií]p|prefeitura|secretaria municipal|camara municipal|conselho municipal|fundo municipal|\bfmdca\b|\bcmdca\b|\bcmas\b|\bfmas\b|\bcomdica\b|\bsemas\b|\bsmas\b|\bsemasdh\b|\bsejuc\b|\bsemed\b|\bsme\b|\bsemus\b|\bsms\b|\bsmc\b|\bsecult municipal\b|\bfundac municipal\b")
+MUN = re.compile(r"\b[a-z]{3,}\s*/\s*(?:ac|al|ap|am|ba|ce|df|es|ma|mt|ms|mg|pa|pb|pr|pe|pi|rj|rn|rs|ro|rr|sc|sp|se|to)\b|di[aá]rio oficial de (?!goi[aâ]nia|goi[aá]s)[a-z]|munic[ií]p|prefeitura|secretaria municipal|camara municipal|conselho municipal|fundo municipal|\bfmdca\b|\bcmdca\b|\bcmas\b|\bfmas\b|\bcomdica\b|\bsemas\b|\bsmas\b|\bsemasdh\b|\bsejuc\b|\bsemed\b|\bsme\b|\bsemus\b|\bsms\b|\bsmc\b|\bsecult municipal\b|\bfundac municipal\b")
 PUB = re.compile(r"ministerio publico|\bmpt\b|\bmpf\b|procuradoria|justica|munic[ií]p|prefeitura|secretaria|governo|minist|fundo |conselho|camara|assembleia|tribunal|uniao|federal|estadual|\bseds\b|secult|pnab|aldir|chamamento publico|emenda")
 PRIV = re.compile(r"institut|fundac|\bs\.?a\.?\b|ltda|empresa|banco|grupo |cooperativa|foundation|fondation|corporat|seguros|natura|ambev|\bvale\b|itau|bradesco|santander|petrobras|equatorial|unimed")
 SEL = re.compile(r"edital|editais|chamada|chamamento|sele[cç]|selecao|premio|inscri|concurso de projetos|convocat|programa de apoio|grant|call for|candidat|residenc|bolsa|fellowship|award|open call|apply|destinac")
@@ -78,7 +78,7 @@ def empresa_sem_edital(x: dict) -> bool:
 
 
 def _base(x: dict) -> str:
-    n = str(x.get("nome_classificado") or x.get("programa") or "").split(" — ")[0]
+    n = str(x.get("nome_classificado") or x.get("programa") or "").split(" — ")[0].split(" · ")[0]   # sem o sufixo do agregador ("· Capitaai")
     return re.sub(r"\s+", " ", re.sub(r"\b(19|20)\d\d\b|\bn[ºo°]?\s*\d+[\w/.-]*|\b\d+\b|[^a-z ]", " ", sem(n))).strip()
 
 
@@ -86,9 +86,44 @@ def _host(u) -> str:
     return re.sub(r"^www\.", "", (re.sub(r"^https?://", "", str(u or "")).split("/")[0]).lower())
 
 
+NUM_EDITAL = re.compile(r"(?i)\bn[ºo°.]*\s*(\d{1,4})\s*[/.-]\s*(20\d\d)|\bedital\s+(\d{1,4})\b")
+VALOR = re.compile(r"(?i)r\$\s*[\d.,]+\s*(mil|milh[õo]es|milhao|bilh)?")
+CIDADE_DIARIO = re.compile(r"(?i)di[aá]rio oficial de ([^(—\-]+?)\s*\(")
+
+
+def _objeto(x: dict) -> str:
+    return sem(((x.get("livro") or {}).get("checklist") or {}).get("Objeto", {}).get("v") or "")
+
+
+def editais_distintos(a: dict, b: dict) -> str | None:
+    """01/10 (titular): PNAB e outros programas abrem VÁRIOS editais — cada edital tem o seu livro. Devolve o motivo
+    quando a e b são editais diferentes do mesmo programa (número, valor/faixa, objeto ou cidade)."""
+    ta, tb = str(a.get("programa") or ""), str(b.get("programa") or "")
+    anos = lambda t: set(re.findall(r"\b(20\d\d)\b", t))
+    mesmo_ano = not anos(ta) or not anos(tb) or bool(anos(ta) & anos(tb))      # edições de anos diferentes = mesmo programa
+    na = {"".join(m) for m in NUM_EDITAL.findall(ta)}; nb = {"".join(m) for m in NUM_EDITAL.findall(tb)}
+    if mesmo_ano and na and nb and na != nb:
+        return "número de edital diferente"
+    va = {sem(m.group(0)).replace(" ", "") for m in VALOR.finditer(ta)}; vb = {sem(m.group(0)).replace(" ", "") for m in VALOR.finditer(tb)}
+    if mesmo_ano and va and vb and va != vb:
+        return "valor ou faixa diferente"
+    ca, cb = CIDADE_DIARIO.search(ta), CIDADE_DIARIO.search(tb)
+    if ca and cb and sem(ca.group(1)).strip() != sem(cb.group(1)).strip():
+        return "cidade diferente"
+    oa, ob = _objeto(a), _objeto(b)
+    proprio = lambda o, t: (not o) or sem(o)[:30] in sem(t) or sem(t)[:30] in sem(o)   # "objeto" que é só o título não conta
+    if len(oa) > 25 and len(ob) > 25 and not proprio(oa, ta) and not proprio(ob, tb):
+        from rapidfuzz import fuzz
+        if fuzz.token_set_ratio(oa, ob) < 80:
+            return "objeto diferente"
+    return None
+
+
 def mesma_oportunidade(a: dict, b: dict, p: dict) -> bool:
     from rapidfuzz import fuzz
     if (a.get("geo"), a.get("municipio") or "") != (b.get("geo"), b.get("municipio") or ""):
+        return False
+    if editais_distintos(a, b):
         return False
     da = [w for w in _base(a).split() if w not in GEN and len(w) > 2]
     db = [w for w in _base(b).split() if w not in GEN and len(w) > 2]
@@ -97,12 +132,11 @@ def mesma_oportunidade(a: dict, b: dict, p: dict) -> bool:
         return bool(a.get("pagina") and a.get("pagina") == b.get("pagina"))
     if len(da) < m or len(db) < m:                     # um genérico e outro não: programas diferentes na mesma página
         return False
-    ja, jb = " ".join(da), " ".join(db)
-    if fuzz.token_sort_ratio(ja, jb) < p.get("nome_parecido_minimo", 90) or fuzz.token_set_ratio(ja, jb) < p.get("nome_contido_minimo", 95):
+    # 01/10: as palavras que DISTINGUEM precisam ser as mesmas (Pontos × Pontões, Dança × Música são editais distintos)
+    if set(da) != set(db) and fuzz.token_sort_ratio(" ".join(da), " ".join(db)) < p.get("nome_identico_minimo", 97):
         return False
     return fuzz.ratio(sem(a.get("orgao")), sem(b.get("orgao"))) >= p.get("financiador_parecido_minimo", 80) or \
         (_host(a.get("pagina")) and _host(a.get("pagina")) == _host(b.get("pagina")))
-
 
 def _juntar(s: dict, o: dict) -> None:
     ids = {h.get("id") or h.get("titulo") for h in s.get("historico") or []}

@@ -144,8 +144,27 @@ def sincronizar() -> dict:
 
     def opressor_de(item: dict, origem: str, aberta: bool) -> str:
         k = chave(item.get("titulo") or "", item.get("orgao") or "")
-        x = por_chave.get(k) or por_chave.get(chave(item.get("titulo") or "")) or \
-            por_pag.get(_pg(item.get("link_oficial") or item.get("pagina_oficial") or ""))
+        x = por_chave.get(k) or por_chave.get(chave(item.get("titulo") or ""))
+        pelo_nome = bool(x)
+        if not x:
+            x = por_pag.get(_pg(item.get("link_oficial") or item.get("pagina_oficial") or ""))
+        # 01/10 (titular): PNAB e outros programas abrem VÁRIOS editais — cada edital tem o seu livro. Edital com número,
+        # faixa, objeto ou cidade diferente não entra como "edição" de outro; pela página, só junta com o mesmo nome.
+        if x:
+            try:
+                from .curadoria_biblioteca import editais_distintos, _base, GEN
+                cand = {"programa": item.get("titulo"), "nome_classificado": item.get("titulo"), "livro": {"checklist": {"Objeto": {"v": item.get("objeto") or ""}}}}
+                ultimos = [x] + [{"programa": h.get("titulo"), "nome_classificado": h.get("titulo")} for h in (x.get("historico") or [])[-6:]]
+                distinto = any(editais_distintos(cand, o) for o in ultimos)
+                if not pelo_nome:
+                    da = {w for w in _base(cand).split() if w not in GEN and len(w) > 2}
+                    db = {w for w in _base(x).split() if w not in GEN and len(w) > 2}
+                    distinto = distinto or da != db
+                if distinto:
+                    k = k + "|" + chave(str(item.get("titulo") or "") + str(item.get("objeto") or ""))[:40] + "|" + "".join(re.findall(r"\d+", str(item.get("titulo") or "")))[:20]
+                    x = por_chave.get(k)
+            except Exception:
+                pass
         if not x:
             pag = item.get("link_oficial") or item.get("pagina_oficial") or item.get("url")
             x = {"id": "op-" + hashlib.sha1(k.encode()).hexdigest()[:12], "programa": str(item.get("titulo") or "")[:160],

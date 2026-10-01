@@ -53,6 +53,21 @@ class TesteBiblioteca(unittest.TestCase):
         from src.livros_opressores import classificar
         self.assertEqual(classificar({"programa": "PNAB Goiânia - Audiovisual", "uf": "GO"})["municipio"], "Goiânia")
 
+    def test_cada_edital_tem_o_seu_livro(self):
+        """01/10: PNAB e outros programas abrem vários editais — objeto, faixa, número (no mesmo ano) ou cidade diferente
+        = livros diferentes; edições do mesmo programa em anos diferentes ficam no mesmo livro."""
+        from src.curadoria_biblioteca import mesma_oportunidade, editais_distintos
+        p = json.loads((ROOT / "config/parametros_biblioteca.json").read_text(encoding="utf-8"))["duplicidade"]
+        G = lambda n: {"programa": n, "nome_classificado": n, "geo": "GO", "orgao": "Secult GO", "pagina": "https://goias.gov.br/cultura/"}
+        self.assertFalse(mesma_oportunidade(G("PNAB Goiás - Pontos de Cultura"), G("PNAB Goiás - Pontões de Cultura"), p))
+        self.assertFalse(mesma_oportunidade(G("Programa Goyazes - projetos de R$ 20 mil a R$ 250 mil"), G("Programa Goyazes - projetos de R$ 250 mil a R$ 2 milhões"), p))
+        self.assertFalse(mesma_oportunidade(G("PNAB Goiânia - Dança"), G("PNAB Goiânia - Música"), p))
+        self.assertTrue(editais_distintos(G("Edital nº 03/2026 PNAB"), G("Edital nº 04/2026 PNAB")))
+        self.assertIsNone(editais_distintos(G("Prêmio X - Edital nº 01/2025"), G("Prêmio X - Edital nº 02/2026")), "edições de anos diferentes")
+        self.assertTrue(mesma_oportunidade(G("Edital Ambev 2026: R$ 67M"), G("Edital Ambev 2026: R$ 67M · Capitaai"), p))
+        C = json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8"))["motores"]
+        self.assertEqual(sum(1 for x in C if "Goyazes - projetos" in str(x.get("programa"))), 3, "as faixas do Goyazes são livros distintos")
+
 
 if __name__ == "__main__":
     unittest.main()
