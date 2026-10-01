@@ -25,8 +25,9 @@ EVOLUCAO = {
                 "descartar depois: o credenciamento é barrado antes de chegar",
     "dou": "Ro-DOU (robô de código aberto do governo federal que busca termos no DOU) ou INLABS da Imprensa "
            "Nacional (XML integral da edição, gratuito com cadastro)",
-    "do-goias": "ler o PDF da edição completa, não só o índice — o ato está dentro; e ser o único leitor do "
-                "Diário para os motores estaduais",
+    "do-goias": "feito em 01/10: lê a busca de texto completo, o sumário por órgão e o texto de cada matéria do "
+                "Diário, mais a API das secretarias; próximo passo gratuito — os decretos de programação de emendas "
+                "da ALEGO como lista de entidades e valores por deputado",
     "do-goiania": "feito em 01/10: o Querido Diário cobre Goiânia (IBGE 5208707) e o motor lê o texto integral "
                   "das edições na nuvem; próximo passo gratuito — alerta de prazo dos editais PNAB/FMDCA pelo "
                   "histórico de 5 anos (os mesmos fundos abrem nas mesmas épocas)",
