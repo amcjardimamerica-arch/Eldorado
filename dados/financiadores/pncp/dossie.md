@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `pncp`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 218
-- Distribuição por ano pesquisado/coletado: {'2023': 6, '2024': 95, '2025': 50, '2026': 67}
+- Pistas aguardando confirmação: 219
+- Distribuição por ano pesquisado/coletado: {'2023': 6, '2024': 95, '2025': 51, '2026': 67}
 
 ## Padrões
 
@@ -52,7 +52,7 @@ SE FINANCEIRO A ASSOCIAÇÃO BENEFICENTE FREI ROGÉRIO.](https://pncp.gov.br/app
 - [Seleção de projetos para firmar termo de execução cultural com recursos da política nacional Aldir Blanc de fomento à cultura – PNAB (lei nº 14.399/2022) -  Proc. Administrativo 2.654/2026](https://pncp.gov.br/app/editais/46634127000163/2026/1974) — coletado em 2026-09-27T17:04:51+00:00
 - [Recurso do incremento temporário da Emenda MAC será destinado ao custeio de materiais de consumo e de serviços de terceiros destinados a manutenção e ao funcionamento das atividades assistenciais de saude realizadas pela OSC](https://pncp.gov.br/app/editais/45787660000100/2026/276) — coletado em 2026-08-31T09:37:07+00:00
 - [Credenciamento de entidades públicas, filantrópicas e/ou sem fins lucrativos e entidades privadas, prestadoras de serviço profissionais na área da saúde, em atendimento multidisciplinar, para atendimento da clientela adulta e pediátrica,](https://pncp.gov.br/app/editais/28695658000184/2023/49) — coletado em 2026-09-29T17:27:38+00:00
-- [CHAMAMENTO PUBLICO PARA SELEÇÃO DE PROJETOS APRESENTADOS POR ORGANIZAÇÕES DA SOCIEDADE CIVIL PARA FINS DE CELEBRAÇÃO DE PARCERIAS, VISANDO A REALIZAÇÃO DE REISADO NA SEDE E EM DIVERSOS DISTRITOS DO MUNICÍPIO DE CARIRÉ-CE](https://pncp.gov.br/app/editais/07598600000142/2025/4) — coletado em 2026-09-30T11:43:41+00:00
+- [CHAMAMENTO PUBLICO PARA SELEÇÃO DE PROJETOS APRESENTADOS POR ORGANIZAÇÕES DA SOCIEDADE CIVIL PARA FINS DE CELEBRAÇÃO DE PARCERIAS, VISANDO A REALIZAÇÃO DE REISADO NA SEDE E EM DIVERSOS DISTRITOS DO MUNICÍPIO DE CARIRÉ-CE](https://pncp.gov.br/app/editais/07598600000142/2025/4) — coletado em 2026-10-01T03:26:51+00:00
 - [SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA – PNAB (LEI Nº 14.399/2022) – CICLO 2](https://pncp.gov.br/app/editais/01614112000103/2026/45) — coletado em 2026-08-31T09:37:04+00:00
 - [A finalidade da presente dispensa de chamamento público é a celebração de parceria entre a Prefeitura Municipal de Anita Garibaldi/SC e a Associação Beneficente Frei Rogério de Anita Garibaldi/SC, inscrita no CNPJ 15.281.509/0001-27, com sede na Rua Padre Remígio Della Vechia, n° 248, Centro, na cid](https://pncp.gov.br/app/editais/14016436000183/2024/2) — coletado em 2026-09-30T17:23:08+00:00
 - [[Portal de Compras Públicas] - Seleção de Propostas apresentadas pelas Organizações da Sociedade Civil de Planaltina, que visem à execução de Atividades Esportivas e gestão de CAMPEONATO DE FUTEBOL AMADOR, TRABALHO COM CATEGORIAS DE BASE, FOMENTO ESPORTIVO E ESCOLINHA DE FUTEBOL, destinado ao atendi](https://portaldecompraspublicas.com.br/processos/GO/Prefeitura-Municipal-de-Planaltina-1253/CRED-CH-09-2024-2024-325654) — coletado em 2026-09-27T17:01:07+00:00

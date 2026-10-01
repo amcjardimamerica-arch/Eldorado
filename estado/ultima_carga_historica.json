@@ -1,30 +1,10 @@
 {
-  "executado_em": "2026-09-30T21:43:24+00:00",
+  "executado_em": "2026-10-01T03:24:25+00:00",
   "janelas_totais": 61,
   "janelas_ja_concluidas": 23,
   "janelas_nesta_execucao": 38,
   "novas": 1,
   "falhas": [
-    {
-      "janela": "2021-09",
-      "camadas": [
-        {
-          "api": "pncp",
-          "base": "https://pncp.gov.br/api/consulta",
-          "erro": "JSONDecodeError"
-        },
-        {
-          "api": "querido_diario",
-          "base": "https://queridodiario.ok.org.br/api",
-          "erro": "HTTPError"
-        },
-        {
-          "api": "querido_diario",
-          "base": "https://api.queridodiario.ok.org.br",
-          "erro": "URLError"
-        }
-      ]
-    },
     {
       "janela": "2021-10",
       "camadas": [
@@ -71,7 +51,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "erro": "JSONDecodeError"
         },
         {
           "api": "querido_diario",
@@ -131,7 +111,7 @@
         {
           "api": "pncp",
           "base": "https://pncp.gov.br/api/consulta",
-          "erro": "JSONDecodeError"
+          "erro": "HTTPError"
         },
         {
           "api": "querido_diario",
@@ -730,8 +710,30 @@
       "camadas": [
         {
           "api": "pncp",
-          "base": "https://pncp.gov.br/api/consulta",
-          "erro": "HTTPError"
+          "descartados_fase2": 166,
+          "amostra": [
+            {
+              "objeto": "Publicação de Termo de Adesão - Proc. 67/2024 - Credenciamento",
+              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+            },
+            {
+              "objeto": "[Portal de Compras Públicas] - Credenciamento de instituição financeira para prestação de serviços bancários de gerencia",
+              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+            },
+            {
+              "objeto": "Credenciamento de empresa especializada de empresa prestadora de serviços de Assistência Odontológica.",
+              "motivo": "exigência empresarial (SICAF, CNAE, capital social) sem qualquer menção a OSC — associação não pode concorrer"
+            },
+            {
+              "objeto": "Credenciamento de empresas para fornecer um sistema completo de benefícios, abrangendo emissão, administração, distribui",
+              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+            },
+            {
+              "objeto": "Credenciamento de Organizações Civis de Saúde (OCS) e de Profissionais de Saúde Autônomos (PSA) interessados na prestaçã",
+              "motivo": "credenciamento de fornecedor sem menção a OSC ou fomento"
+            }
+          ],
+          "nota": "fora do escopo do terceiro setor"
         },
         {
           "api": "querido_diario",
@@ -764,10 +766,29 @@
           "erro": "URLError"
         }
       ]
+    },
+    {
+      "janela": "2026-10",
+      "camadas": [
+        {
+          "api": "pncp",
+          "base": "https://pncp.gov.br/api/consulta",
+          "erro": "HTTPError"
+        },
+        {
+          "api": "querido_diario",
+          "base": "https://queridodiario.ok.org.br/api",
+          "erro": "HTTPError"
+        },
+        {
+          "api": "querido_diario",
+          "base": "https://api.queridodiario.ok.org.br",
+          "erro": "URLError"
+        }
+      ]
     }
   ],
   "janelas_consumidas": [
-    "2021-09",
     "2021-10",
     "2021-11",
     "2021-12",
@@ -804,18 +825,11 @@
     "2024-07",
     "2024-08",
     "2025-01",
-    "2026-09"
+    "2026-09",
+    "2026-10"
   ],
   "retentativas": [
     {
-      "janela": "2021-09",
-      "tentativa": 1
-    },
-    {
-      "janela": "2021-09",
-      "tentativa": 2
-    },
-    {
       "janela": "2021-10",
       "tentativa": 1
     },
@@ -1109,11 +1123,19 @@
     },
     {
       "janela": "2026-09",
+      "tentativa": 2
+    },
+    {
+      "janela": "2026-10",
+      "tentativa": 1
+    },
+    {
+      "janela": "2026-10",
       "tentativa": 2
     }
   ],
-  "dominios_ano_pesquisado": 2025,
-  "dominios_novas": 1,
+  "dominios_ano_pesquisado": 2026,
+  "dominios_novas": 0,
   "dominios_falhas": 0,
   "status": "em_andamento",
   "janelas_restantes": 38
