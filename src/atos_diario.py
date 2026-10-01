@@ -146,8 +146,16 @@ def segmentar_pagina(texto: str, maximo: int = 40) -> list[str]:
 
 
 def classificar(trecho: str, hoje: date | None = None, publicado: str | None = None, *,
-                titulo: str | None = None, caminho: str | None = None, orgaos=ORGAOS_GO, ambito: str = "estadual") -> dict:
-    """Classifica UMA matéria. Mesma regra do motor 01, com título/caminho do sumário e vetos estaduais."""
+                titulo: str | None = None, caminho: str | None = None, orgaos=ORGAOS_GO, ambito: str = "estadual",
+                vetos=None, regimes_extra=None, fundos=None) -> dict:
+    """Classifica UMA matéria. Mesma regra do motor 01, com título/caminho do sumário e vetos estaduais.
+
+    Extensões opcionais (motor 03, DOU — sem efeito quando omitidas, então os motores 01 e 02 não mudam):
+      · vetos ........ [(regime, regex, motivo, cede_a_mrosc)] — conferidos ANTES de tudo; viram RUÍDO com o motivo
+                       escrito (cede_a_mrosc=True: o veto não vale se o texto também falar de MROSC/OSC);
+      · regimes_extra  [(regime, regex)] — regimes de interesse próprios da esfera (doação de bens, patrocínio de
+                       estatal, fundos nacionais…), conferidos depois de licitação/OS e antes dos vetos de pessoal;
+      · fundos ....... regex de fundos/conselhos da esfera que contam como "fundo" (FNCA, FNI, FDD, FNMA…)."""
     hoje = hoje or date.today()
     corpo = re.sub(r"[ \t]+", " ", trecho or "")
     bruto = ((titulo.strip() + "\n") if titulo else "") + corpo
@@ -161,6 +169,8 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     cab = T[ini:ini + 220] if tem_cab else ""
     s = {k: bool(rx.search(T)) for k, rx in _RX.items()}
     s.update({k: bool(rx.search(T)) for k, rx in _EXTRA.items()})
+    if fundos is not None and fundos.search(T):
+        s["fundo"] = True
     c = {k: bool(rx.search(cab)) for k, rx in _RX.items() if k in ("resultado", "celebracao", "retificacao", "abertura")}
     folha = sem_acento((caminho or "").split("›")[-1]).upper().strip()
     cab = cab or T.lstrip()[:220]
@@ -187,10 +197,17 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
         tipo = "referencia"                      # prorrogação de comissão, portaria etc. — não é edital
     # REGIME — os vetos estaduais vêm antes do fomento, salvo quando o texto é claramente de fomento a OSC
     fomento = s["mrosc"] or s["fundo"] or s["cultura"] or s["fomento_forte"]
-    if _LICITACAO_CAB.search(cab[:160]) and not re.search(r"CHAMAMENTO|CHAMADA PUBLICA|FOMENTO|COLABORA", cab[:160]):
+    veto_hit = next(((nome, motivo) for nome, rx, motivo, cede in (vetos or ())
+                     if rx.search(T) and not (cede and (s["mrosc"] or s["fundo"]))), None)
+    extra_hit = next((nome for nome, rx in (regimes_extra or ()) if rx.search(T)), None)
+    if veto_hit:
+        regime = veto_hit[0]
+    elif _LICITACAO_CAB.search(cab[:160]) and not re.search(r"CHAMAMENTO|CHAMADA PUBLICA|FOMENTO|COLABORA", cab[:160]):
         regime = "licitacao"                     # "AVISO DE LICITAÇÃO — PREGÃO… FUNDO MUNICIPAL DE ASSISTÊNCIA SOCIAL"
     elif s["os_saude"] or (s["os_estadual"] and not s["mrosc"]):
         regime = "organizacao_social"
+    elif extra_hit:
+        regime = extra_hit
     elif s["pss"] and not fomento:
         regime = "processo_seletivo_pessoal"
     elif s["pnae"] and not (s["mrosc"] or s["fundo"]):
@@ -217,6 +234,9 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
                "osc_e_pessoa_fisica" if regime == "pnab_cultura" else "indefinido")
     if regime == "pnab_cultura" and s["pessoa_fisica"] and not (s["mrosc"] or s["fundo"]):
         publico = "osc_e_pessoa_fisica"
+    if extra_hit and regime == extra_hit and publico == "indefinido" and not s["empresa"] and \
+            re.search(r"ASSOCIAC|ENTIDADES?\b|INSTITUIC(?:AO|OES)[^.]{0,30}SEM FINS|COOPERATIVAS|ORGANIZAC(?:AO|OES) (?:DA SOCIEDADE|SOCIA)|CLUBES?\b", T):
+        publico = "osc"                          # regime próprio da esfera (doação, coleta solidária, clubes): associação é o público
     if s["empresa_audiovisual"] and not (s["mrosc"] or s["fundo"]):
         publico = "empresa"                      # FSA/Arranjos Regionais: produtora (empresa), não associação
     pref = None if caminho else prefeitura_no_texto(bruto)
@@ -232,8 +252,10 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     fim_txt = mp.group(2) if mp else (_periodo_aberto(bruto) or (m.group(1) if m else None))
     fim = _data_br(fim_txt)
     motivos = []
-    de_interesse = regime in ("mrosc", "fundo_conselho", "pnab_cultura")
-    if tipo in ("abertura", "retificacao") and de_interesse and publico in ("osc", "osc_e_pessoa_fisica"):
+    de_interesse = regime in ("mrosc", "fundo_conselho", "pnab_cultura") or regime in {n for n, _ in (regimes_extra or ())}
+    if veto_hit:
+        veredito = "RUIDO"; motivos.append(veto_hit[1])
+    elif tipo in ("abertura", "retificacao") and de_interesse and publico in ("osc", "osc_e_pessoa_fisica"):
         velho = bool(publicado) and str(publicado)[:10] < (hoje - timedelta(days=60)).isoformat()
         if fim and fim < hoje.isoformat():
             veredito = "ACOMPANHAR"; motivos.append(f"edital de interesse, mas o prazo escrito ({fim}) já passou")
@@ -249,7 +271,7 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
         motivos.append({"andamento": "resultado/andamento de seleção de interesse — prazo de recurso e quem venceu",
                         "celebracao": "parceria celebrada, convênio ou inexigibilidade — inteligência: órgão, valor e entidade",
                         "retificacao": "retificação de edital de interesse — conferir prazo",
-                        "composicao_conselho": f"vaga da sociedade civil em conselho {'estadual' if ambito == 'estadual' else 'municipal'} — porta de entrada dos fundos"}[tipo])
+                        "composicao_conselho": f"vaga da sociedade civil em conselho {({'estadual': 'estadual', 'federal': 'nacional'}).get(ambito, 'municipal')} — porta de entrada dos fundos"}[tipo])
     elif regime == "credenciamento_cultura" and tipo in ("abertura", "retificacao"):
         veredito = "ACOMPANHAR"
         motivos.append("credenciamento no âmbito da PNAB — conferir se é de pareceristas (pessoa física) ou de agentes e espaços culturais")

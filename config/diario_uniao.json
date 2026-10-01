@@ -1,0 +1,73 @@
+{
+  "versao": "2 (01/10/2026)",
+  "parecer": "docs/pareceres/motor-03-diario-uniao.md",
+  "leitor": "src/diario_uniao.py",
+  "fonte_a": {
+    "nome": "Leitura do Jornal (DO1 + DO3 + edições extras anunciadas no dia)",
+    "url": "https://www.in.gov.br/leiturajornal?data={DD-MM-AAAA}&secao={do1|do3|do1e|do3e}",
+    "materia": "https://www.in.gov.br/web/dou/-/{urlTitle}",
+    "secoes": [
+      "do1",
+      "do3"
+    ],
+    "extras": {
+      "DO1E": "do1e",
+      "DO3E": "do3e",
+      "DO1A": "do1a",
+      "DO1ESP": "do1esp"
+    },
+    "janela_dias": 3,
+    "max_textos_por_dia": 160,
+    "max_bytes": 12000000,
+    "pausa_segundos": 0.3,
+    "nota": "01/10: a Seção 3 tem 2,1–2,7 MB; o limite geral de 2,5 MB cortava o JSON das matérias em 5 dias de setembro (02, 04, 11, 25 e 30/09) e em 01/10. Limite próprio de 12 MB e erro descrito acima dele — nunca leitura pela metade."
+  },
+  "fonte_b": {
+    "nome": "Busca do DOU (reserva — só o que a Fonte A não trouxe)",
+    "usar": true,
+    "janela": "semana",
+    "secao": "todos",
+    "pausa_segundos": 0.5,
+    "consultas": [
+      "chamamento público organizações da sociedade civil",
+      "termo de fomento chamamento",
+      "seleção de projetos entidades sem fins lucrativos",
+      "doação de bens inservíveis entidades",
+      "catadores de materiais recicláveis chamamento",
+      "Política Nacional Aldir Blanc Goiás"
+    ],
+    "nota": "01/10: exactDate=dia/semana responde (20 resultados por página); exactDate=personalizado devolve vazio. Da nuvem a busca já deu HTTPError em 297 de 328 tentativas — por isso é reserva, nunca a via principal."
+  },
+  "calibracao_setembro_2026": {
+    "materias_no_jornal": 55567,
+    "dias_com_edicao": 21,
+    "secao_1": 8189,
+    "secao_3": 47378,
+    "cortes": {
+      "tipo_de_materia": 28643,
+      "prefeitura_ou_governo_de_outro_estado": 7141,
+      "conselho_profissional": 641,
+      "sem_termo_de_interesse": 16496
+    },
+    "de_interesse": 2646,
+    "atos_apos_recorte": 2674,
+    "integras_abertas": 489,
+    "oportunidade_no_dia_da_publicacao": 23,
+    "acompanhar": 770,
+    "ruido": 1881,
+    "abertas_em_01_10_2026": 14,
+    "motor_antigo": {
+      "materias_lidas_no_maximo": 9600,
+      "cobertura": "17,3%",
+      "registros": 14,
+      "oportunidades_reais": 0
+    }
+  },
+  "metas": {
+    "secoes_de_dia_util_lidas": ">= 95%",
+    "atraso_publicacao_leitura": "<= 1 dia",
+    "precisao_oportunidade_conferida_pelo_titular": ">= 80%",
+    "falhas_com_causa_descrita": "100%",
+    "cpf_gravado": 0
+  }
+}

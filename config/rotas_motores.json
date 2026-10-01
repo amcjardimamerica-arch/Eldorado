@@ -197,27 +197,31 @@
    ]
   },
   "dou": {
-   "perfil": "diário federal — MDHC, CONANDA, MinC, MDS, emendas e Rouanet",
+   "perfil": "diário federal — ministérios, fundos e conselhos nacionais, prefeituras de Goiás no DOU, doação de bens e coleta solidária em Goiás/DF",
    "rotas": [
     {
-     "nome": "DOU Seção 3 (edição do dia, JSON)",
+     "nome": "DOU Seção 1 — Leitura do Jornal (atos normativos, resoluções de conselho)",
+     "url": "https://www.in.gov.br/leiturajornal?secao=do1",
+     "tipo": "diario",
+     "verificada_em": "2026-10-01"
+    },
+    {
+     "nome": "DOU Seção 3 — Leitura do Jornal (avisos, editais, extratos)",
      "url": "https://www.in.gov.br/leiturajornal?secao=do3",
-     "tipo": "diario"
+     "tipo": "diario",
+     "verificada_em": "2026-10-01"
     },
     {
-     "nome": "MDHC / CONANDA — chamamentos do FNCA",
-     "url": "https://www.gov.br/participamaisbrasil/",
-     "tipo": "secretaria"
+     "nome": "DOU edições extras (anunciadas no próprio dia)",
+     "url": "https://www.in.gov.br/leiturajornal?secao=do1e",
+     "tipo": "diario",
+     "verificada_em": "2026-10-01"
     },
     {
-     "nome": "MinC — editais e Salic",
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "MDS — editais SUAS",
-     "url": "https://www.gov.br/mds/pt-br/acoes-e-programas",
-     "tipo": "secretaria"
+     "nome": "DOU busca semanal (reserva)",
+     "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento&s=todos&exactDate=semana",
+     "tipo": "diario",
+     "verificada_em": "2026-10-01"
     }
    ],
    "lexico_camada1": [
@@ -245,7 +249,8 @@
     "do objeto",
     "recursos do fundo",
     "emenda parlamentar"
-   ]
+   ],
+   "nota_01_10": "leitor próprio (src/diario_uniao.py): as rotas acima são as que ele lê; as páginas de MinC/MDS/Participa+ saíram — os editais desses ministérios saem no DOU e são lidos lá. Os léxicos abaixo ficam só como referência do painel; a decisão é do classificador comum (src/atos_diario.py) com os vetos federais."
   },
   "pncp-api": {
    "perfil": "vetor de DESCOBERTA — dá número do processo e órgão; nunca é fonte (311 de 317 registros citam a 14.133)",
