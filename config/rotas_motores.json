@@ -117,25 +117,36 @@
    "perfil": "diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda",
    "rotas": [
     {
-     "nome": "Diário Oficial do Estado (ABC)",
-     "url": "https://diariooficial.abc.go.gov.br/",
+     "nome": "Diário do Estado — busca de texto completo",
+     "url": "https://diariooficial.abc.go.gov.br/busca/busca/buscar/query/0/",
      "tipo": "diario",
      "exige_brasil": true
     },
     {
-     "nome": "SECULT-GO — Chamamentos Públicos",
-     "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026/",
+     "nome": "Diário do Estado — edições do dia, sumário por órgão e texto da matéria",
+     "url": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/",
+     "tipo": "diario",
+     "exige_brasil": true
+    },
+    {
+     "nome": "SECULT-GO — Chamamentos Públicos 2026 (Lei 13.019)",
+     "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
      "tipo": "secretaria"
     },
     {
-     "nome": "SEDS — Goiás Social e cofinanciamento",
-     "url": "https://goias.gov.br/social/",
+     "nome": "SECULT-GO — Chamamentos Públicos (geral)",
+     "url": "https://goias.gov.br/cultura/chamamentos-publicos-secult/",
      "tipo": "secretaria"
     },
     {
-     "nome": "OVG — editais e credenciamento de parceiras",
-     "url": "https://www.ovg.org.br/",
-     "tipo": "operador"
+     "nome": "SEDS / Goiás Social — notícias e editais (API)",
+     "url": "https://goias.gov.br/social/wp-json/wp/v2/posts",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "SEEL — Chamamento público",
+     "url": "https://goias.gov.br/esporte/chamamento-publico/",
+     "tipo": "secretaria"
     }
    ],
    "lexico_camada1": [
@@ -151,7 +162,16 @@
     "Goiás Social",
     "OVG",
     "emenda parlamentar",
-    "decreto de programação"
+    "decreto de programação",
+    "CEDCA",
+    "FIA",
+    "CEAS",
+    "pessoa idosa",
+    "Aldir Blanc",
+    "subvenção social",
+    "sem fins lucrativos",
+    "seleção de projetos",
+    "emenda impositiva"
    ],
    "lexico_camada2": [
     "Lei 13.019",
@@ -166,8 +186,15 @@
     "Portal Goiás Social",
     "entidades de assistência social"
    ],
-   "coleta": "local",
-   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo"
+   "coleta": "nuvem + local",
+   "nota_coleta": "tenta o Diário na nuvem (busca e edição do dia); se o portal recusar, a causa fica no diagnóstico e a coleta local lê as fontes A e B. As secretarias (fonte C) rodam na nuvem todo dia",
+   "veto_camada1": [
+    "processo seletivo simplificado",
+    "pregão",
+    "registro de preços",
+    "agricultura familiar",
+    "contrato de gestão"
+   ]
   },
   "dou": {
    "perfil": "diário federal — MDHC, CONANDA, MinC, MDS, emendas e Rouanet",

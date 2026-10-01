@@ -1,0 +1,42 @@
+{
+  "motor": "do-goias",
+  "versao": "2 — parecer do conselho de 01/10/2026",
+  "regra": "o Diário do Estado é lido pela estrutura aberta do portal (busca, sumário por órgão e texto de cada matéria), não pelo rótulo dos links; secretarias pela API pública do WordPress",
+  "endpoints": {
+    "edicoes_do_dia": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/{AAAA-MM-DD}.json",
+    "sumario": "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_diario/{id}",
+    "materia": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}/{id}",
+    "busca": "https://diariooficial.abc.go.gov.br/busca/busca/buscar/query/{pagina}/di:{AAAA-MM-DD}/df:{AAAA-MM-DD}/?1=1&q={termo}",
+    "pagina_da_materia": "https://diariooficial.abc.go.gov.br/portal/visualizacoes/html/{id}/#e:{id}/#m:{materia}",
+    "pdf_ultimo_recurso": "https://diariooficial.abc.go.gov.br/portal/edicoes/download/{id}",
+    "observado_em": "2026-10-01, IP brasileiro: setembro/2026 = 40 edições (normal + suplemento), 5.866 matérias; busca \"chamamento público\" = 8.865 resultados"
+  },
+  "nuvem": {
+    "tentar": true,
+    "por_que": "em 03/09 a home respondeu 200 ao servidor do GitHub; os erros vieram de caminhos que não existem (/portal/edicoes, /portal/visualizacoes/pesquisa), não de bloqueio comprovado. O motor tenta na nuvem e, se o portal recusar, registra a causa e a coleta local lê as fontes A e B"
+  },
+  "fonte_a": {
+    "janela_dias": 7,
+    "max_paginas": 5,
+    "pausa_segundos": 0.5,
+    "consultas": [
+      "\"termo de fomento\"", "\"termo de colaboração\"", "\"organizações da sociedade civil\"", "\"edital de chamamento\"",
+      "\"aviso de chamamento\"", "\"seleção de projetos\"", "\"sem fins lucrativos\"", "\"credenciamento de entidades\"",
+      "CEDCA", "\"Fundo Estadual de Assistência Social\"", "\"pessoa idosa\"", "PNAB", "\"Aldir Blanc\"", "Goyazes",
+      "\"Fundo de Arte e Cultura\"", "cofinanciamento", "\"emenda impositiva\"", "\"emendas parlamentares\"",
+      "\"subvenção social\"", "\"chamada pública\""
+    ]
+  },
+  "fonte_b": {"janela_dias": 3, "max_materias_por_edicao": 60, "pausa_segundos": 0.3},
+  "fonte_c": {
+    "janela_dias": 10,
+    "sites": ["cultura", "social", "esporte", "saude", "educacao"],
+    "termos": ["chamamento", "edital", "inscrições", "seleção"],
+    "observado_em": "2026-10-01: goias.gov.br/{site}/wp-json/wp/v2/posts responde 200 com data, link e conteúdo; setembro: cultura 10 posts com 'edital', social 2, esporte 1, saude 3"
+  },
+  "vereditos": {
+    "OPORTUNIDADE": "abertura ou retificação de seleção para OSC (MROSC, fundos/conselhos, PNAB/cultura) com prazo não vencido — entra na base como capturada",
+    "ACOMPANHAR": "resultado, recurso, homologação, extrato de termo/convênio, inexigibilidade, vaga em conselho, edital antigo sem prazo — inteligência em estado/diario_goias.json",
+    "RUIDO": "PSS e atos de pessoal, licitação, PNAE, credenciamento de prestadores, Organização Social (Lei 15.503/2005)"
+  }
+}
