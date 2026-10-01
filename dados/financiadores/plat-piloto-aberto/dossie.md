@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-piloto-aberto`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 139
-- Distribuição por ano pesquisado/coletado: {'2026': 139}
+- Pistas aguardando confirmação: 140
+- Distribuição por ano pesquisado/coletado: {'2026': 140}
 
 ## Padrões
 
