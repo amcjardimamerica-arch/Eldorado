@@ -77,6 +77,9 @@ _EXTRA = {
     "os_estadual": re.compile(r"15\.503|CONTRATO DE GESTAO|QUALIFICACAO COMO ORGANIZACAO SOCIAL|ORGANIZACOES SOCIAIS"),
     "pessoal": re.compile(r"NOMEA|EXONERA|APOSENTADORIA|PENSAO|FERIAS|LICENCA|PROGRESSAO|DESIGNA(R)? .{0,40}SERVIDOR|"
                           r"CESSAO DE SERVIDOR|ABONO"),
+    "abertura_noticia": re.compile(r"\bLANCA (?:O |UM |NOVO |SEU )?EDITA|\bABRE (?:AS )?INSCRICOES|INSCRICOES (?:ESTAO )?ABERTAS|"
+                                   r"ESTAO ABERTAS AS INSCRICOES|ABRE CHAMAMENTO|PUBLICA (?:O )?EDITAL DE CHAMAMENTO"),
+    "empresa_audiovisual": re.compile(r"INVESTIMENTOS? RETORNAVE|\bFSA\b|FUNDO SETORIAL DO AUDIOVISUAL|PRODUTORAS? (?:BRASILEIRAS?|INDEPENDENTES?)|PARA EMPRESAS"),
     "fomento_forte": re.compile(r"TERMO DE FOMENTO|TERMO DE COLABORACAO|13\.019|ORGANIZACOES? DA SOCIEDADE CIVIL|\bOSCS?\b|"
                                 r"SEM FINS LUCRATIVOS|SELECAO DE PROJETOS|FOMENTO A CULTURA|PREMIO|PREMIACAO"),
 }
@@ -177,7 +180,7 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     elif re.match(r"\s*(DECRETO|PORTARIA|DESPACHO|LEI|RESOLUCAO|INSTRUCAO)\b", cab):
         tipo = "normativo" if not s["resultado"] else "andamento"
     else:
-        tipo = "abertura" if s["abertura_corpo"] else "andamento" if s["resultado"] else "referencia"
+        tipo = "abertura" if (s["abertura_corpo"] or s["abertura_noticia"]) else "andamento" if s["resultado"] else "referencia"
     if s["conselho_composicao"] and tipo in ("abertura", "retificacao"):
         tipo = "composicao_conselho"
     if tipo == "retificacao" and not re.search(r"EDITAL|CHAMAMENTO|CHAMADA", T):
@@ -214,6 +217,8 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
                "osc_e_pessoa_fisica" if regime == "pnab_cultura" else "indefinido")
     if regime == "pnab_cultura" and s["pessoa_fisica"] and not (s["mrosc"] or s["fundo"]):
         publico = "osc_e_pessoa_fisica"
+    if s["empresa_audiovisual"] and not (s["mrosc"] or s["fundo"]):
+        publico = "empresa"                      # FSA/Arranjos Regionais: produtora (empresa), não associação
     pref = None if caminho else prefeitura_no_texto(bruto)
     municipal_txt = bool(re.search(r"SECRETARIA MUNICIPAL|FUNDO MUNICIPAL|PREFEITURA MUNICIPAL|O MUNICIPIO DE", T[:900]))
     orgao = orgao_do_caminho(caminho, orgaos) or (f"Prefeitura de {pref}" if pref else None) \
