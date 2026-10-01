@@ -15,10 +15,6 @@ Ele lê com o seu IP e envia ao repositório. Motores atendidos:
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
-- **TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)** — todas as páginas falharam em 2026-10-01. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
-    - abrir https://www.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-    - abrir https://www.tjgo.jus.br/index.php/dje e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-    - abrir https://corregedoria.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
 - **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 4 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://observatorio3setor.org.br/editais/ e procurar: edital, seleção de projetos, investimento social, responsabilidade social, patrocínio, incentivo fiscal
 
