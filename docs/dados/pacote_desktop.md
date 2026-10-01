@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-09-30
+# Pacote para o Claude Desktop — 2026-10-01
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
@@ -15,7 +15,11 @@ Ele lê com o seu IP e envia ao repositório. Motores atendidos:
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
-- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 3 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+- **TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)** — todas as páginas falharam em 2026-10-01. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
+    - abrir https://www.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
+    - abrir https://www.tjgo.jus.br/index.php/dje e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
+    - abrir https://corregedoria.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
+- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 4 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://observatorio3setor.org.br/editais/ e procurar: edital, seleção de projetos, investimento social, responsabilidade social, patrocínio, incentivo fiscal
 
 Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `dados/editais/`. Devolva em `dados/editais/coleta_navegador/<data>-motores.json` no formato `{"<id ou novo>": {"objeto":..., "inicio":..., "fim":..., "pagina_oficial":..., "observacao":...}}`.
