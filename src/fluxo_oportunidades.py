@@ -468,6 +468,11 @@ def atualizar_mapa() -> dict:
         c["livros"] = curar()
     except Exception as ex:
         c["livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 01/10: regra dos livros — o livro existente recebe o checklist; locais de busca
+        from .livros_regra import aplicar_motores
+        c["regra_dos_livros"] = aplicar_motores()
+    except Exception as ex:
+        c["regra_dos_livros"] = f"falhou: {type(ex).__name__}"
     try:                                     # 29/09: os 12 parâmetros de cada opressor, pesquisados na fonte oficial
         from .parametros_opressores import aplicar as _par
         c["parametros_opressores"] = _par()

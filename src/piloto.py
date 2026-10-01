@@ -949,6 +949,11 @@ def ciclo(porta: int | None = None) -> dict:
         if _m["tipo"] == "resgate" and _m["alvo_id"] not in _atendidos:
             _devolver(_m["alvo_id"], tentado=False)                      # reservado e não atendido volta a aguardar
     from .piloto_ao_vivo import marcar as _vivo2, montar as _vivo_montar
+    try:                                   # 01/10: o que não está nos livros vira livro novo na hora
+        from .livros_regra import registrar_achados_do_espiao
+        rel["livros"] = registrar_achados_do_espiao(_todos_ach)
+    except Exception as _ex:
+        rel["livros"] = f"falhou: {type(_ex).__name__}"
     _vivo2("pousou", detalhe=f"{len(_todos_ach)} achado(s)")
     # 28/09: em corrente (voos encadeados), NÃO marca pouso aqui — o passo "Pousar 3 segundos e decolar de novo" diz
     # "no pátio, decolando de novo"; só marca pousado se a corrente parar. Antes, cada fim de voo apagava o avião.

@@ -707,7 +707,8 @@ def run() -> dict:
         resumo["com_parametros"] = _par_cat(motores)
     except Exception:
         pass
-    _cat_arq.write_text(json.dumps({**resumo, "motores": motores}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 01/10: compacto
+    _cab = {k: v for k, v in ((load_json(_cat_arq) or {}) if _cat_arq.exists() else {}).items() if k in ("livros", "locais_de_busca")}   # 01/10: preserva o cabeçalho
+    _cat_arq.write_text(json.dumps({**resumo, **_cab, "motores": motores}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 01/10: compacto
     from .compacto import compactar
     pasta = ROOT / "docs/dados"; pasta.mkdir(parents=True, exist_ok=True)
     from .opressores import proximidade as _prox, _estado as _est_op

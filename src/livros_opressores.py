@@ -203,7 +203,9 @@ def classificar(x: dict) -> dict:
               "rotulo": f"{geo} - {ob} · {tp}"})
     x["nome_classificado"] = nome_do_livro(x)
     # 01/10: o livro guarda só o que NÃO está no registro (geografia, objeto, tipo e público já estão nele) — economiza espaço
-    x["livro"] = {"inscricao": ins, "edicoes": len(x.get("historico") or []), "atualizacoes": ((x.get("livro") or {}).get("atualizacoes") or [])[-8:]}
+    _ant = x.get("livro") or {}
+    x["livro"] = {"inscricao": ins, "edicoes": len(x.get("historico") or []), "atualizacoes": (_ant.get("atualizacoes") or [])[-8:],
+                  **({"checklist": _ant["checklist"], "checklist_itens": _ant.get("checklist_itens")} if _ant.get("checklist") else {})}   # 01/10: o checklist do livro é preservado
     return x
 
 

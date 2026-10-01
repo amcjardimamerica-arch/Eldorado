@@ -327,6 +327,15 @@ def _validada_para_lista(nome: str) -> str | None:
     return None
 
 
+NAO_EMPRESA = re.compile(r"(?i)^(tesouro|governo|minist|secretaria|prefeitura|c[aâ]mara|assembleia|tribunal|na[cç][õo]es unidas|"
+                         r"cnpq|capes|finep|sudene|sudam|sudeco|ibge|ipea|bndes|caixa econ|banco do brasil|correios|"
+                         r"[oó]rg[aã]os|oscs?|entidades|organiza[cç][õo]es|pizza)\b|"
+                         r"\b(concurso|p[uú]blico no|exerc[ií]cio|edital|inscri[cç][õo]es|chamada|sele[cç][aã]o|resultado|festival|show|banda|"
+                         r"turn[eê]|[aá]lbum|semin[aá]rio|congresso|encontro nacional)\b")
+APOIA = re.compile(r"(?i)patroc[ií]nio|patrocinad[oa]|patrocina|doa[cç][aã]o|doador[a]?|investimento social|responsabilidade social|"
+                   r"lei de incentivo|incentivo fiscal|rouanet|apoio de|apoiad[oa] por|apoia projetos|edital pr[oó]prio")
+
+
 def alimentar_listas_de_empresas() -> dict:
     """AS EMPRESAS DA MISSÃO 2 ENTRAM NA LISTA DE EMPRESAS (titular, 24/09). Até aqui o ranking
     excluía as descobertas do Piloto de propósito. Agora cada empresa reconhecida entra na lista
@@ -345,7 +354,7 @@ def alimentar_listas_de_empresas() -> dict:
         chaves = {_re.sub(r"[^a-z0-9]", "", str(e.get("nome") or "").lower())[:40] for e in d.get("empresas", [])}
         for k, it in (a.get("itens") or {}).items():
             vias = " ".join(str(v) for v in (it.get("vias") or [it.get("via")]) if v)
-            quer = fiscal.search(vias) if cat == "destinacao_tributaria" else social.search(vias)
+            quer = fiscal.search(vias) if cat == "destinacao_tributaria" else (social.search(vias) or not fiscal.search(vias))   # 01/10: sem via → doação e patrocínio
             if not quer:
                 continue
             ch = _re.sub(r"[^a-z0-9]", "", str(it.get("empresa") or "").lower())[:40]
@@ -354,14 +363,26 @@ def alimentar_listas_de_empresas() -> dict:
             if all(_e_ensaio_url(u) for u in (it.get("onde_foi_vista") or ["x.org"])):
                 continue
             razao = _validada_para_lista(it.get("empresa"))
+            # 01/10 (titular): empresa achada pelo Espião entra NO RANKING na hora — marcada 'a verificar' até o
+            # Interceptador confirmar. Nome genérico ou fictício continua de fora (26/09: 'Pizza', 'Tesouro Estadual').
+            nm = str(it.get("empresa") or "").strip().lower()
             if not razao:
-                continue                                   # indício: fica no radar, para o Interceptador estudar
+                if nm in GENERICOS or nm in FICTICIAS or NAO_EMPRESA.search(nm):
+                    continue
+                # a evidência precisa mostrar o NOME junto da expressão de apoio ("patrocínio da Ingredion"), em até 60 caracteres
+                ev = " ".join(str(e) for e in (it.get("evidencias") or []))
+                nome_rx = re.escape(str(it.get("empresa") or "").strip())
+                _ap = APOIA.pattern.replace("(?i)", "")
+                perto = re.search(rf"(?is)({_ap}).{{0,60}}{nome_rx}|{nome_rx}.{{0,60}}({_ap})", ev) if nome_rx else None
+                if not perto:
+                    continue                               # sem evidência de que ESTA empresa apoia projetos: fica no radar
             chaves.add(ch); contagem[cat] += 1
             d.setdefault("empresas", []).append({
                 "nome": it.get("empresa"), "origem": "reconhecimento do Piloto (missão 2)",
                 "vias": it.get("vias") or [it.get("via")], "onde_foi_vista": (it.get("onde_foi_vista") or [])[:5],
                 "evidencias": (it.get("evidencias") or [])[:3], "primeira_vez": it.get("primeira_vez"),
-                "validada_por": razao,
+                "validada_por": razao or "a verificar — descoberta do Piloto - Espião",
+                **({} if razao else {"condicao": "a verificar", "a_verificar": True}),
                 "nota": "entrou pela missão de reconhecimento; classificada pelos mesmos critérios das demais"})
         write_json(arq, d)
     return contagem
