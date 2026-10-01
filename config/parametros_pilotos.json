@@ -1,24 +1,25 @@
 {
  "interceptador": {
   "expressoes_extras": {
-   "Prazo de recurso": [
-    "recurso[s]?\\s+(?:administrativo|contra)",
-    "\\d+\\s*\\(\\w+\\)\\s*dias\\s+(?:[uú]teis|corridos)[^.]{0,40}recurso",
-    "impugna[cç][aã]o"
-   ],
    "Resultado": [
     "lista\\s+(?:final\\s+)?(?:de\\s+)?(?:selecionad|classificad|aprovad)",
     "classifica[cç][aã]o\\s+final",
     "resultado\\s+ser[aá]\\s+(?:publicado|divulgado)"
    ],
-   "Prazo de inscrição": [
-    "submiss[aã]o\\s+(?:das\\s+)?propostas",
-    "envio\\s+(?:das\\s+)?propostas",
-    "prazo\\s+de\\s+envio",
-    "at[eé]\\s+as?\\s+\\d{1,2}h"
+   "Prazo de recurso": [
+    "recurso[s]?\\s+(?:administrativo|contra)",
+    "\\d+\\s*\\(\\w+\\)\\s*dias\\s+(?:[uú]teis|corridos)[^.]{0,40}recurso",
+    "impugna[cç][aã]o"
+   ],
+   "Valor": [
+    "montante",
+    "aporte",
+    "teto\\s+(?:por|de)",
+    "at[eé]\\s+R\\$"
    ]
   },
   "origens_baixo_rendimento": [
+   "empresa de Goiás · dossiê",
    "radar do Espião"
   ],
   "rotas_ordem": [
@@ -26,8 +27,8 @@
    "site_do_financiador",
    "financiador_programa_edital",
    "link_da_noticia_para_o_financiador",
-   "site_citado_na_noticia",
    "site_do_financiador_edital",
+   "site_citado_na_noticia",
    "financiador_pdf"
   ]
  },
@@ -42,30 +43,30 @@
   "consultas_boas": [
    {
     "consulta": "quais são os programas de doação de multinacionais com inscrição local",
-    "tentativas": 212,
-    "com_resultado": 140,
-    "achados": 278,
+    "tentativas": 213,
+    "com_resultado": 141,
+    "achados": 280,
     "missao": "aposta"
    },
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 389,
-    "com_resultado": 241,
-    "achados": 481,
+    "tentativas": 390,
+    "com_resultado": 242,
+    "achados": 483,
     "missao": "aposta"
    },
    {
     "consulta": "qual setor ou região em minas gerais ainda não foi mapeado por editais",
-    "tentativas": 87,
-    "com_resultado": 41,
-    "achados": 41,
+    "tentativas": 88,
+    "com_resultado": 42,
+    "achados": 42,
     "missao": "aposta"
    },
    {
     "consulta": "qual é o potencial de editais de fomento para organizações da sociedad",
-    "tentativas": 102,
-    "com_resultado": 42,
-    "achados": 42,
+    "tentativas": 103,
+    "com_resultado": 43,
+    "achados": 43,
     "missao": "aposta"
    },
    {
@@ -98,7 +99,7 @@
    },
    {
     "consulta": "fundo de fomento a filantropia amplia pa",
-    "tentativas": 1528,
+    "tentativas": 1529,
     "com_resultado": 83,
     "achados": 83,
     "missao": "resgate"
@@ -427,8 +428,8 @@
    "conanda",
    "apoiar",
    "saúde",
-   "nacional",
    "zurich",
+   "nacional",
    "edição",
    "volunta",
    "parceiros",
@@ -458,7 +459,7 @@
   ],
   "rendimento_das_buscas": {
    "resgate": {
-    "tentativas": 20738,
+    "tentativas": 20739,
     "com_resultado": 585,
     "taxa": 0.028
    },
@@ -468,23 +469,23 @@
     "taxa": 0.012
    },
    "prospectar": {
-    "tentativas": 5622,
+    "tentativas": 5623,
     "com_resultado": 14,
     "taxa": 0.002
    },
    "aposta": {
-    "tentativas": 5806,
-    "com_resultado": 488,
-    "taxa": 0.084
+    "tentativas": 5812,
+    "com_resultado": 492,
+    "taxa": 0.085
    },
    "descobrir": {
-    "tentativas": 612,
+    "tentativas": 615,
     "com_resultado": 3,
     "taxa": 0.005
    }
   },
-  "consultas_aprendidas_em": "2026-10-01T09:39:37+00:00"
+  "consultas_aprendidas_em": "2026-10-01T09:42:44+00:00"
  },
- "atualizado_em": "2026-09-29T16:11:27+00:00",
+ "atualizado_em": "2026-10-01T08:48:32+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
 }
