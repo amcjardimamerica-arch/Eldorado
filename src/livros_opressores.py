@@ -226,7 +226,8 @@ def classificar(x: dict) -> dict:
     # 01/10: o livro guarda só o que NÃO está no registro (geografia, objeto, tipo e público já estão nele) — economiza espaço
     _ant = x.get("livro") or {}
     x["livro"] = {"inscricao": ins, "edicoes": len(x.get("historico") or []), "atualizacoes": (_ant.get("atualizacoes") or [])[-8:],
-                  **({"checklist": _ant["checklist"], "checklist_itens": _ant.get("checklist_itens")} if _ant.get("checklist") else {})}   # 01/10: o checklist do livro é preservado
+                  **({"checklist": _ant["checklist"], "checklist_itens": _ant.get("checklist_itens")} if _ant.get("checklist") else {}),   # 01/10: o checklist do livro é preservado
+                  **({"historico_parametros": _ant["historico_parametros"]} if _ant.get("historico_parametros") else {})}   # 02/10: e a linha do tempo dos parâmetros
     return x
 
 

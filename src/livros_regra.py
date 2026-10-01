@@ -47,16 +47,31 @@ def _valor(v) -> str:
     return re.sub(r"\s+", " ", str(v or "")).strip()[:200]
 
 
-def anotar_checklist(livro: dict, checklist: dict, origem: str) -> int:
-    """Leva ao livro as informações básicas dos 12 itens. Devolve quantos itens mudaram."""
+def anotar_checklist(livro: dict, checklist: dict, origem: str, edicao: dict | None = None) -> int:
+    """Leva ao livro as informações básicas dos 12 itens. Devolve quantos itens mudaram.
+    02/10 (titular): HISTÓRICO DOS PARÂMETROS — cada mudança fica registrada na linha do tempo do livro (o que era, o que
+    passou a ser, quando e por qual motor), e os parâmetros que a EDIÇÃO trouxe ficam gravados na própria edição."""
     lv = livro.setdefault("livro", {}); ck = lv.setdefault("checklist", {}); mud = 0
+    mudancas = {}
     for item in DOZE:
         novo = _valor((checklist or {}).get(item))
         if not novo:
             continue
         atual = (ck.get(item) or {}).get("v")
         if atual != novo:
+            mudancas[item] = {"antes": atual, "agora": novo} if atual else {"agora": novo}
             ck[item] = {"v": novo, "de": origem[:60], "em": date.today().isoformat()}; mud += 1
+    params = {i: _valor((checklist or {}).get(i)) for i in DOZE if _valor((checklist or {}).get(i))}
+    if edicao and params:                      # os parâmetros que ESTA edição trouxe, na própria edição
+        ref = edicao.get("id"); tit = str(edicao.get("titulo") or "")[:120]
+        for h in livro.get("historico") or []:
+            if (ref and h.get("id") == ref) or (not ref and tit and str(h.get("titulo") or "")[:120] == tit):
+                h["parametros"] = params; h["parametros_em"] = date.today().isoformat(); break
+    if mudancas:                               # linha do tempo dos parâmetros (últimas 40 mudanças)
+        hp = lv.setdefault("historico_parametros", [])
+        hp.append({"em": date.today().isoformat(), "de": origem[:60], **({"edicao": str((edicao or {}).get("titulo") or "")[:120]} if edicao else {}),
+                   "mudou": mudancas})
+        lv["historico_parametros"] = hp[-40:]
     if mud:
         lv["checklist_itens"] = sum(1 for i in DOZE if (ck.get(i) or {}).get("v"))
         at = lv.setdefault("atualizacoes", [])
@@ -88,7 +103,7 @@ def aplicar_motores() -> dict:
             origem = str(it.get("origem") or "motor")
             if str(x.get("criado_em") or "") == hoje:
                 criado[origem] += 1
-            if anotar_checklist(x, it.get("checklist") or {}, origem):
+            if anotar_checklist(x, it.get("checklist") or {}, origem, edicao={"id": it.get("id"), "titulo": it.get("titulo")}):
                 atual[origem] += 1
     hosts = {(urlsplit(str(x.get("pagina") or "")).hostname or "").lower().removeprefix("www.") for x in ms if x.get("pagina")}
     hosts.discard("")
@@ -131,7 +146,7 @@ def registrar_achados_do_espiao(achados: list[dict]) -> dict:
             continue
         x = por_chave.get(k) or por_chave.get(chave(tit))
         if x:
-            if anotar_checklist(x, _checklist_de(a), "Piloto - Espião"):
+            if anotar_checklist(x, _checklist_de(a), "Piloto - Espião", edicao={"titulo": tit}):
                 atualizados += 1
             continue
         lid = "op-" + hashlib.sha1(("espiao|" + k).encode()).hexdigest()[:12]

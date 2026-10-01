@@ -3153,6 +3153,12 @@ function iconesAcao(id,nome){
 }
 window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id===id);if(!m)return;const ativo=mtAtivo(m.id);const d=m.disjuntor?JSON.parse(m.disjuntor):null;
   const LV=m.livro||{}, IN=LV.inscricao||{}, MES=["","jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+  /* 02/10 (titular): previsão da próxima abertura (ativação 30 dias antes) e o histórico do que cada edição trouxe */
+  const PV=m.previsao||{}, HP=((m.livro||{}).historico_parametros||[]).slice(-8).reverse();
+  const edPar=(m._historico||[]).filter(h=>h.parametros).slice(-4).reverse();
+  const prevHtml=PV.situacao?`<div class="livro-op"><div class="livro-t">Previsão</div><div class=meta>${PV.situacao==="aberta agora"?`inscrição aberta agora (até ${br(PV.encerramento)})`
+    :`abertura prevista em <b>${br(PV.abertura)}</b> · livro ativado 30 dias antes, em <b>${br(PV.ativar_em)}</b> · confiança ${esc(PV.confianca)} (${esc(PV.base||"")})`}</div></div>`:"";
+  const histParHtml=HP.length?`<div class="livro-op"><div class="livro-t">Histórico dos parâmetros</div>${HP.map(c=>`<div class=meta><b>${br(c.em)}</b> · ${esc(c.de||"")}${c.edicao?" · "+esc(c.edicao.slice(0,60)):""}: ${Object.entries(c.mudou||{}).map(([k,v])=>`${esc(k)} ${v.antes?`<s>${esc(String(v.antes).slice(0,40))}</s> → `:""}${esc(String(v.agora).slice(0,50))}`).join(" · ")}</div>`).join("")}</div>`:"";
   const livroHtml=`<div class="livro-op"><div class="livro-t">Livro da oportunidade</div><div class=meta style="margin:-2px 0 4px">${esc(m.rotulo||"")}</div>
     <div class="livro-g"><span><b>Área geográfica</b>${esc(m.abrangencia||"")}${m.municipio?" · "+esc(m.municipio):""}${m.geo?" · "+esc(m.geo):""}</span>
     <span><b>Objeto</b>${esc(m.objeto_area||"—")}</span><span><b>Tipo do objeto</b>${esc(m.tipo_objeto||"—")}</span>
@@ -3162,7 +3168,7 @@ window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id
     ${(LV.atualizacoes||[]).length?`<div class=meta style="margin-top:4px">última atualização do livro: ${esc(LV.atualizacoes.slice(-1)[0].o_que)} (${br(String(LV.atualizacoes.slice(-1)[0].em).slice(0,10))})</div>`:""}</div>`;
   abreModal(`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3 style="margin:0">${esc(m.nome_classificado||m.programa)}</h3><span class="dj-acoes">${iconeMotor(m.id,true)}${iconesAcao(m.id,m.programa)}</span></div><div class=meta>${esc(m.programa)}${m.orgao?" · "+esc(m.orgao):""} · ${esc(m.natureza==="publica"?"fonte pública":m.natureza==="privada"?"fonte privada":"")}</div>`,
     `<div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}${d?` · <strong>ligado · dia ${d.dias}/30</strong> · próxima IA em ${d.proxima_ia_em} dia(s)${d.ia?" · IA acionada "+d.ia+"×":""}${d.conselho?" · conselho Fable 5.1 emitido":""}`:""}</div>
-     ${livroHtml}${camadasHtml(m)}
+     ${livroHtml}${prevHtml}${histParHtml}${camadasHtml(m)}
      <div class=meta style="margin-top:8px">${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag>${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"} · validação: <strong>${esc(m.validacao)}</strong>${m.http?" (HTTP "+m.http+")":""}${m.ultima_leitura?" · lida em "+br(m.ultima_leitura.slice(0,10)):""}${m.ultimo_url?` · <a href="${esc(m.ultimo_url)}" target=_blank rel="noopener noreferrer">último edital ↗</a>`:""}${m.regime_prazo?` · prazo: ${esc(m.regime_prazo.replace(/_/g," "))} (${esc(m.certeza_prazo||"")})`:""}</div>
      ${m.faltam?`<div class="mt-diag">⚠ faltam ${m.faltam.split("|").length} camada(s): ${esc(m.faltam.replace(/\|/g," · "))}<br><b>causa:</b> ${esc(m.causa||"")} · <b>ação:</b> ${esc(m.acao||"")}</div>`:`<div class="mt-diag ok">✓ 12 itens obtidos — motor pode parar</div>`}
      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">${iconesAcao(m.id,m.programa)} <span class=meta>fósforo: busca imediata · upload: alimentar manualmente · link: ensinar onde publica</span></div>`);};
@@ -4746,6 +4752,7 @@ function desenhaMotores(){
     const info=[m.aberta_agora?"<b style='color:#1E7E4B'>inscrição aberta</b>":"inscrição "+esc(({"anual":"anual","contínuo":"em fluxo contínuo","eventual":"eventual"})[m.regime_inscricao]||"sem período registrado"),
       IN.mes_tipico?"costuma fechar em "+MES[Number(IN.mes_tipico)]:"",
       (LV.edicoes??0)?LV.edicoes+" edição(ões)":"",
+      (m.previsao&&m.previsao.situacao==="prevista")?`abre ~${br(m.previsao.abertura)} · ativa em ${br(m.previsao.ativar_em)}`:"",
       d?`em leitura, dia ${d.dias}/30`:(mtAtivo(m.id)?"em leitura":"na estante")].filter(Boolean).join(" · ");
     return `<div class="dj aceso livro-c" data-id="${esc(m.id)}" style="border-left:4px solid ${({"Cultura":"#D63A6B","Esporte":"#7CB518","Saúde":"#2F79D0","Educação":"#2E9D5B","Assistência social":"#12A5B5","Criança e adolescente":"#E0A100","Pessoa idosa":"#8C6D3F","Meio ambiente":"#7B4FE0","Direitos humanos":"#C0392B","Desenvolvimento social":"#16A085","Emendas":"#B8860B"})[m.objeto_area]||"#7C8899"}" title="clique para abrir o livro" onclick="mtDetalhe('${esc(m.id)}')">
       <span class="livro-txt"><b class="livro-nome">${esc(nome)}</b><span class="dj-info">${info}</span></span>

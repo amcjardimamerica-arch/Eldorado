@@ -507,6 +507,11 @@ def atualizar_mapa() -> dict:
         c["regra_dos_livros"] = aplicar_motores()
     except Exception as ex:
         c["regra_dos_livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10: previsão da próxima abertura e ativação 30 dias antes
+        from .previsao_livros import run as _prev
+        c["previsao_dos_livros"] = _prev()
+    except Exception as ex:
+        c["previsao_dos_livros"] = f"falhou: {type(ex).__name__}"
     try:                                     # 29/09: os 12 parâmetros de cada opressor, pesquisados na fonte oficial
         from .parametros_opressores import aplicar as _par
         c["parametros_opressores"] = _par()

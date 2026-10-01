@@ -37,16 +37,17 @@ jobs:
           fi
       - name: Regenerar o painel dos motores e o status
         run: |
+          timeout 120 python -m src.previsao_livros || echo "previsão dos livros falhou"   # 02/10: ativação 30 dias antes
           timeout 300 python -c "import src.motores as M; M.run()" || echo "gerador dos motores falhou"
           python -m src.status_motores
       - name: Gravar
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
-          mkdir -p /tmp/st && cp docs/dados/status_motores.json docs/dados/motores.json /tmp/st/
+          mkdir -p /tmp/st && cp docs/dados/status_motores.json docs/dados/motores.json /tmp/st/ && cp docs/dados/previsao_livros.json /tmp/st/ 2>/dev/null || true
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
-            cp /tmp/st/status_motores.json /tmp/st/motores.json docs/dados/
-            git add docs/dados/status_motores.json docs/dados/motores.json
+            cp /tmp/st/status_motores.json /tmp/st/motores.json docs/dados/; cp /tmp/st/previsao_livros.json docs/dados/ 2>/dev/null || true
+            git add docs/dados/status_motores.json docs/dados/motores.json; [ -e docs/dados/previsao_livros.json ] && git add docs/dados/previsao_livros.json
             git commit -q -m "status dos motores (a cada 6 horas)" || break
             git push -q origin HEAD:main && break
             sleep 6
