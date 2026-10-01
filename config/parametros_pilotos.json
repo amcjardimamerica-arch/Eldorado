@@ -23,15 +23,22 @@
    "radar do Espião"
   ],
   "rotas_ordem": [
-   "financiador_pdf",
-   "financiador_programa_edital",
-   "site_do_financiador_edital",
-   "site_citado_na_noticia",
    "financiador_regulamento",
    "site_do_financiador",
-   "link_da_noticia_para_o_financiador"
+   "financiador_programa_edital",
+   "link_da_noticia_para_o_financiador",
+   "site_do_financiador_edital",
+   "site_citado_na_noticia",
+   "financiador_pdf"
   ],
-  "estrategias_anteriores": [],
+  "restricoes_fixas": {
+   "regra": "FIXAS e só NEGATIVAS (titular, 01/10): alvo estudado 2 vezes sem resultado e domínio sem texto legível não voltam",
+   "desde": "2026-10-01T14:01:07+00:00",
+   "alvos_proibidos": [
+    "dispensadechamamentopúblicocomvistasàcelebraçãodeparceriaase"
+   ],
+   "dominios_ilegiveis": []
+  },
   "estrategia_criativa": {
    "id": "I001",
    "criada_em": "2026-10-01T14:30:16+00:00",
@@ -47,14 +54,7 @@
    "foco_area": "criança e adolescente",
    "pesquisas_no_inicio": 3
   },
-  "restricoes_fixas": {
-   "regra": "FIXAS e só NEGATIVAS (titular, 01/10): alvo estudado 2 vezes sem resultado e domínio sem texto legível não voltam",
-   "desde": "2026-10-01T14:01:07+00:00",
-   "alvos_proibidos": [
-    "dispensadechamamentopúblicocomvistasàcelebraçãodeparceriaase"
-   ],
-   "dominios_ilegiveis": []
-  }
+  "estrategias_anteriores": []
  },
  "espiao": {
   "pesos_missao": {
@@ -67,13 +67,26 @@
   "consultas_boas": [
    {
     "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas",
-    "tentativas": 2,
+    "tentativas": 3,
     "com_resultado": 1,
     "achados": 2,
     "missao": "aposta"
    }
   ],
-  "consultas_ruins": [],
+  "consultas_ruins": [
+   {
+    "consulta": "investimento social pessoa com deficiência osc 2026 inscrições abertas",
+    "tentativas": 3,
+    "motivo": "nada_no_crivo",
+    "missao": "descobrir"
+   },
+   {
+    "consulta": "observatório do terceiro setor — editais programa de apoio voluntariado",
+    "tentativas": 3,
+    "motivo": "nada_no_crivo",
+    "missao": "descobrir"
+   }
+  ],
   "termos_bons": [],
   "termos_ruins": [
    "organizações",
@@ -86,45 +99,25 @@
    "fundo",
    "empresarial",
    "prêmio",
+   "cultura",
+   "municipal",
    "câmara",
    "goiânia",
-   "municipal"
+   "bndes"
   ],
   "rendimento_das_buscas": {
    "aposta": {
-    "tentativas": 14,
+    "tentativas": 16,
     "com_resultado": 1,
-    "taxa": 0.071
+    "taxa": 0.062
    },
    "descobrir": {
-    "tentativas": 30,
+    "tentativas": 33,
     "com_resultado": 0,
     "taxa": 0.0
    }
   },
-  "consultas_aprendidas_em": "2026-10-01T14:55:48+00:00",
-  "estrategias_anteriores": [],
-  "estrategia_criativa": {
-   "id": "E001",
-   "criada_em": "2026-10-01T14:30:16+00:00",
-   "semente": 1790865016,
-   "pool": [
-    "seleção de projetos pessoa idosa OSC 2026 inscrições abertas",
-    "como inscrever associação seleção de projetos Câmara Municipal de Goiânia",
-    "como inscrever associação bolsa Observatório do 3º Setor",
-    "Secult Goiás abre prêmio Aparecida de Goiânia",
-    "programa de apoio criança e adolescente OSC 2026 inscrições abertas",
-    "juventude prêmio entidades sem fins lucrativos Catalão",
-    "BNDES patrocínio cultura",
-    "Observatório do Terceiro Setor — editais abre termo de fomento Goiânia",
-    "como inscrever associação chamada pública BNDES",
-    "voluntariado doação entidades sem fins lucrativos Itumbiara",
-    "investimento social pessoa com deficiência OSC 2026 inscrições abertas",
-    "Observatório do Terceiro Setor — editais programa de apoio voluntariado",
-    "como inscrever associação programa de apoio Câmara Municipal de Goiânia"
-   ],
-   "pesquisas_no_inicio": 21
-  },
+  "consultas_aprendidas_em": "2026-10-01T15:01:52+00:00",
   "restricoes_fixas": {
    "regra": "FIXAS e só NEGATIVAS (titular, 01/10): o que falhou repetidamente não volta; todo o resto é busca criativa, renovada a cada 100 pesquisas",
    "desde": "2026-10-01T14:01:07+00:00",
@@ -228,7 +221,29 @@
     "regiões",
     "setores"
    ]
-  }
+  },
+  "estrategia_criativa": {
+   "id": "E001",
+   "criada_em": "2026-10-01T14:30:16+00:00",
+   "semente": 1790865016,
+   "pool": [
+    "seleção de projetos pessoa idosa OSC 2026 inscrições abertas",
+    "como inscrever associação seleção de projetos Câmara Municipal de Goiânia",
+    "como inscrever associação bolsa Observatório do 3º Setor",
+    "Secult Goiás abre prêmio Aparecida de Goiânia",
+    "programa de apoio criança e adolescente OSC 2026 inscrições abertas",
+    "juventude prêmio entidades sem fins lucrativos Catalão",
+    "BNDES patrocínio cultura",
+    "Observatório do Terceiro Setor — editais abre termo de fomento Goiânia",
+    "como inscrever associação chamada pública BNDES",
+    "voluntariado doação entidades sem fins lucrativos Itumbiara",
+    "investimento social pessoa com deficiência OSC 2026 inscrições abertas",
+    "Observatório do Terceiro Setor — editais programa de apoio voluntariado",
+    "como inscrever associação programa de apoio Câmara Municipal de Goiânia"
+   ],
+   "pesquisas_no_inicio": 21
+  },
+  "estrategias_anteriores": []
  },
  "atualizado_em": "2026-10-01T08:48:32+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
