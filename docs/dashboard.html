@@ -487,11 +487,7 @@ box-shadow:0 1px 3px #0002}
 .pd-d.tem{background:#F1F9F4;border-color:#9FD3B4;color:#1E7E4B;cursor:pointer}.pd-d.tem:hover{background:#1E7E4B;color:#fff}.pd-d b{font-size:11px}
 .pd-o{padding:6px 0;border-bottom:1px solid #EEF1F4;display:flex;flex-direction:column;gap:2px}
 @media (max-width:760px){.pd-g{grid-template-columns:repeat(10,minmax(0,1fr))}}
-.sm3{display:flex;flex-direction:column;gap:4px;padding:5px;border-radius:12px;background:#1F2933;margin-bottom:4px}
-.sm3-l{width:14px;height:14px;border-radius:50%;display:block;opacity:.22}
-.sm3-verde{background:#0E9F4F}.sm3-vermelho{background:#E11D2E}.sm3-cinza{background:#9AA5B1}
-.sm3-l.on{opacity:1}.sm3-verde.on{box-shadow:0 0 8px 2px rgba(14,159,79,.75)}.sm3-vermelho.on{box-shadow:0 0 8px 2px rgba(225,29,46,.75)}.sm3-cinza.on{box-shadow:0 0 6px 1px rgba(154,165,177,.6)}
-.mt-item.oficial.sem-verde{border-right:6px solid #0E9F4F}.mt-item.oficial.sem-vermelho{border-right:6px solid #E11D2E}.mt-item.oficial.sem-cinza{border-right:6px solid #9AA5B1}
+.mt-item.oficial.sem-verde{border-right:10px solid #0E9F4F}.mt-item.oficial.sem-vermelho{border-right:10px solid #E11D2E}.mt-item.oficial.sem-cinza{border-right:10px solid #9AA5B1}
 .mt-st{font-size:12px;margin:2px 0;padding:2px 8px;border-radius:6px;display:inline-block}.mt-st-verde{background:#E3F6EA;color:#0B6B37}.mt-st-vermelho{background:#FDE3E5;color:#9B1220}.mt-st-cinza{background:#EEF0F3;color:#4A5563}
 .mt-item .mt-cal .bdia.mtd-verde{background:#0E9F4F;color:#fff;border-bottom:4px solid #0B7A3C;animation:none}.mt-item .mt-cal .bdia.mtd-verde *{color:#fff}
 .mt-item .mt-cal .bdia.mtd-vermelho{background:#E11D2E;color:#fff;border-bottom:4px solid #A3101D;animation:none}.mt-item .mt-cal .bdia.mtd-vermelho *{color:#fff}
@@ -4561,7 +4557,7 @@ window.abreDiaPiloto=function(p,k){
 };
 setTimeout(()=>{ try{ carregaAchadosPilotos(); }catch(e){} }, 2500);
 setInterval(()=>{ try{ carregaAchadosPilotos(); }catch(e){} }, 120000);
-/* STATUS DOS MOTORES — TRÊS LUZES (titular, 01/10): verde = coletou hoje (com ou sem dados) · vermelho = algum erro ou
+/* STATUS DOS MOTORES — COR NA LATERAL DIREITA (titular, 01/10): verde = coletou hoje (com ou sem dados) · vermelho = algum erro ou
    falha na coleta · cinza = não rodou. Atualizado a cada 6 horas (docs/dados/status_motores.json); sem o arquivo, a mesma
    regra é aplicada ao último dado do painel. */
 window._STM=null;
@@ -4572,10 +4568,6 @@ window.statusMotor=function(o){
   const hoje=new Date(Date.now()-3*3600e3).toISOString().slice(0,10), d=(o.dias||[]).find(x=>x.d===hoje)||{};
   const luz=d.cor==="vermelho"?"vermelho":(d.cor==="verde"||String(o.ultima_leitura||"").slice(0,10)===hoje)?"verde":"cinza";
   return {luz, resultado:luz==="verde"?(d.n?d.n+" achado(s)":"sem dados novos"):luz==="vermelho"?"falha na coleta":"ainda não rodou hoje", ultima:o.ultima_leitura||null};
-};
-window.semaforoTres=function(S){
-  const t={verde:"Verde — coletou hoje, com ou sem dados",vermelho:"Vermelho — erro ou falha na coleta",cinza:"Cinza — o motor não rodou hoje"};
-  return `<div class="sm3" title="${esc(t[S.luz]+" · "+S.resultado)}">${["verde","vermelho","cinza"].map(c=>`<i class="sm3-l sm3-${c}${S.luz===c?" on":""}"></i>`).join("")}</div>`;
 };
 setTimeout(()=>{ try{ carregaStatusMotores(); }catch(e){} }, 2000);
 setInterval(()=>{ try{ carregaStatusMotores(); }catch(e){} }, 10*60*1000);
@@ -4738,7 +4730,7 @@ function desenhaMotores(){
         <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a>${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+(o.produto==="empresas"?" empresa(s) mapeada(s)":" edital(is)"):""}</div>
         ${trintaDias(o)}
         ${achadosDoMotor(o)}</div>
-      <div class="mt-lado-dir">${semaforoTres(S)}${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
+      <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
   // agregação por família → segmento
   /* categorias APENAS por área de atuação (rótulos da página inicial) */
   const rotArea=rotArea0;
