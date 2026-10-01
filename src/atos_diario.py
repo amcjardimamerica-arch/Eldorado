@@ -61,10 +61,18 @@ ORGAOS_GO = [
     ("ALEGO (emendas)", r"EMENDA (PARLAMENTAR|IMPOSITIVA)|DECRETO DE PROGRAMACAO"),
 ]
 
+_RESULTADO_EXTRA = re.compile(r"LISTA DE APROVADOS|APROVADOS E SUPLENTES|RELACAO DOS (?:SELECIONADOS|CLASSIFICADOS|HABILITADOS)|"
+                              r"SELECIONADOS|CLASSIFICADOS|CONVALIDACAO|HOMOLOGACAO DO RESULTADO")
+_LICITACAO_CAB = re.compile(r"PREGAO|LICITACAO|LEILAO|CONCORRENCIA|TOMADA DE PRECOS|ADJUDICA|REGISTRO DE PRECOS?|DISPENSA DE LICITA")
+_CAB_T = re.compile(r"\b(?:EDITAL|AVISO|CHAMADA PUBLICA|EXTRATO|RESULTADO|HOMOLOGACAO|RETIFICACAO|ERRATA|RESOLUCAO|PORTARIA|"
+                    r"DECRETO|DESPACHO|ATA DE|TERMO DE|TERMO ADITIVO|JUSTIFICATIVA|INEXIGIBILIDADE|LEI N|INSTRUCAO NORMATIVA)\b")
+_MUNICIPIO = re.compile(r"(?:O\s+)?MUNIC[IÍ]PIO\s+DE\s+([A-ZÀ-Ú][A-ZÀ-Ú' ]{2,40}?)\s*(?:[-–,/(]|\b(?:GO|ESTADO|CNPJ|POR|ATRAVES|TORNA|INSCRITO|PESSOA)\b)")
+
+
 _EXTRA = {
     "pss": re.compile(r"PROCESSO SELETIVO SIMPLIFICADO|\bPSS\b|CONTRATACAO TEMPORARIA|PROCESSO SELETIVO PARA CONTRATA"),
     "licitacao": re.compile(r"PREGAO|CONCORRENCIA|TOMADA DE PRECOS|REGISTRO DE PRECOS?|DISPENSA DE LICITACAO|"
-                            r"INEXIGIBILIDADE DE LICITACAO|AVISO DE LICITACAO|ADJUDICACAO"),
+                            r"INEXIGIBILIDADE DE LICITACAO|AVISO DE LICITACAO|ADJUDICACAO|LEILAO"),
     "pnae": re.compile(r"AGRICULTURA FAMILIAR|\bPNAE\b|GENEROS ALIMENTICIOS|ALIMENTACAO ESCOLAR"),
     "os_estadual": re.compile(r"15\.503|CONTRATO DE GESTAO|QUALIFICACAO COMO ORGANIZACAO SOCIAL|ORGANIZACOES SOCIAIS"),
     "pessoal": re.compile(r"NOMEA|EXONERA|APOSENTADORIA|PENSAO|FERIAS|LICENCA|PROGRESSAO|DESIGNA(R)? .{0,40}SERVIDOR|"
@@ -107,7 +115,7 @@ _MINUSC = {"De", "Do", "Da", "Dos", "Das", "E"}
 
 def prefeitura_no_texto(bruto: str) -> str | None:
     """Publicação de prefeitura achada pela busca (sem caminho do sumário): "PREFEITURA MUNICIPAL DE NOVA IGUAÇU…"."""
-    m = _PREFEITURA.search((bruto or "")[:600].upper())
+    m = _PREFEITURA.search((bruto or "")[:600].upper()) or _MUNICIPIO.search((bruto or "")[:700].upper())
     if not m:
         return None
     return " ".join(w.lower() if w in _MINUSC else w for w in m.group(1).strip().title().split())
@@ -144,6 +152,9 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     mc = _CAB_CORPO.search(bruto[:700])
     tem_cab = bool(mc)
     ini = len(sem_acento(bruto[:mc.start()])) if mc else 0
+    mt = _CAB_T.search(T[:200])                  # "Palmelo Extrato Termo de Convalidação…": cabeçalho em caixa mista
+    if mt and (not mc or mt.start() < ini):
+        tem_cab, ini = True, mt.start()
     cab = T[ini:ini + 220] if tem_cab else ""
     s = {k: bool(rx.search(T)) for k, rx in _RX.items()}
     s.update({k: bool(rx.search(T)) for k, rx in _EXTRA.items()})
@@ -151,6 +162,7 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     folha = sem_acento((caminho or "").split("›")[-1]).upper().strip()
     cab = cab or T.lstrip()[:220]
     # TIPO — o cabeçalho (título) manda; a seção do sumário desempata
+    c["resultado"] = c["resultado"] or bool(_RESULTADO_EXTRA.search(cab))
     if c["resultado"] or folha.startswith(("RESULTADO", "ADJUDICAC")) or (re.match(r"\s*(DESPACHO|PORTARIA|ATA)\b", cab) and s["resultado"]):
         tipo = "andamento"
     elif c["celebracao"] or re.match(r"\s*(EXTRATO|JUSTIFICATIVA)\b", cab) or folha.startswith(("EXTRATO", "TERMOS DE CONVENIO", "TERMOS ADITIVOS", "ACORDOS")):
@@ -166,9 +178,13 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
         tipo = "abertura" if s["abertura_corpo"] else "andamento" if s["resultado"] else "referencia"
     if s["conselho_composicao"] and tipo in ("abertura", "retificacao"):
         tipo = "composicao_conselho"
+    if tipo == "retificacao" and not re.search(r"EDITAL|CHAMAMENTO|CHAMADA", T):
+        tipo = "referencia"                      # prorrogação de comissão, portaria etc. — não é edital
     # REGIME — os vetos estaduais vêm antes do fomento, salvo quando o texto é claramente de fomento a OSC
     fomento = s["mrosc"] or s["fundo"] or s["cultura"] or s["fomento_forte"]
-    if s["os_saude"] or (s["os_estadual"] and not s["mrosc"]):
+    if _LICITACAO_CAB.search(cab[:160]) and not re.search(r"CHAMAMENTO|CHAMADA PUBLICA|FOMENTO|COLABORA", cab[:160]):
+        regime = "licitacao"                     # "AVISO DE LICITAÇÃO — PREGÃO… FUNDO MUNICIPAL DE ASSISTÊNCIA SOCIAL"
+    elif s["os_saude"] or (s["os_estadual"] and not s["mrosc"]):
         regime = "organizacao_social"
     elif s["pss"] and not fomento:
         regime = "processo_seletivo_pessoal"
@@ -195,7 +211,9 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     if regime == "pnab_cultura" and s["pessoa_fisica"] and not (s["mrosc"] or s["fundo"]):
         publico = "osc_e_pessoa_fisica"
     pref = None if caminho else prefeitura_no_texto(bruto)
+    municipal_txt = bool(re.search(r"SECRETARIA MUNICIPAL|FUNDO MUNICIPAL|PREFEITURA MUNICIPAL|O MUNICIPIO DE", T[:900]))
     orgao = orgao_do_caminho(caminho, orgaos) or (f"Prefeitura de {pref}" if pref else None) \
+        or ("Prefeitura (município a confirmar)" if municipal_txt and not caminho else None) \
         or next((r for r, p in orgaos if re.search(p, T)), None)
     if pref or (orgao or "").startswith("Prefeitura de "):
         ambito = "municipal"
@@ -213,6 +231,8 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
         elif not fim and velho:
             veredito = "ACOMPANHAR"; motivos.append(f"edital de interesse publicado em {str(publicado)[:10]}, sem prazo no trecho — "
                                                      "mais de 60 dias: conferir se ainda está aberto antes de tratar como oportunidade")
+        elif tipo == "retificacao" and not fim:
+            veredito = "ACOMPANHAR"; motivos.append("retificação de edital de interesse sem novo prazo no texto — conferir o cronograma no edital")
         else:
             veredito = "OPORTUNIDADE"; motivos.append(f"{tipo} de seleção para OSC no regime {regime}")
     elif tipo in ("andamento", "celebracao", "retificacao", "composicao_conselho") and (de_interesse or publico == "osc"):

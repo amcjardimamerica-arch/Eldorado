@@ -252,6 +252,8 @@ def _registro(ato: dict, m: dict) -> dict:
     nivel, terr = atos.territorio_do_caminho(m.get("caminho"))
     if (ato.get("orgao") or "").startswith("Prefeitura de "):
         nivel, terr = "municipal", "GO/" + ato["orgao"][len("Prefeitura de "):]
+    elif (ato.get("orgao") or "").startswith("Prefeitura"):
+        nivel = "municipal"                      # município não identificado no trecho: território fica GO, sem inventar
     ev = atos.mascarar_pii(re.sub(r"\s+", " ", ((m.get("titulo") or "") + " " + (m.get("texto") or ""))))[:700]
     titulo = " — ".join(x for x in [ato["orgao"] or "Governo de Goiás",
                                      (m.get("titulo") or (f"Edital nº {ato['numero']}" if ato["numero"] else ato["cabecalho"][:90]))[:140],
