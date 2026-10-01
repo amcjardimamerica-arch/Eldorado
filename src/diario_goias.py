@@ -259,7 +259,7 @@ def _registro(ato: dict, m: dict) -> dict:
                                      (m.get("titulo") or (f"Edital nº {ato['numero']}" if ato["numero"] else ato["cabecalho"][:90]))[:140],
                                      (ato["objeto"] or "")[:120] if not m.get("titulo") else None] if x)
     return {
-        "id": sha256(f"dogo|{atos.chave_ato(ato['orgao'], ato['numero'], m.get('titulo') or ato['cabecalho'])}".encode())[:20],
+        "id": sha256(f"dogo|{atos.chave_ato(ato['orgao'], ato['numero'], m.get('titulo') or ato['cabecalho'], m.get('data'))}".encode())[:20],
         "status": "capturada", "titulo": titulo[:300], "url": m.get("url"), "fonte_id": MOTOR_ID,
         "fonte_nome": "Diário Oficial do Estado de Goiás" if m["fonte"] in ("A", "B") else "Site oficial do Governo de Goiás",
         "territorio": terr, "uf": "GO", "nivel": nivel, "tipo_fonte": "sensor_diario_oficial", "confianca": "primaria",

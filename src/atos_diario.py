@@ -109,7 +109,7 @@ def orgao_do_caminho(caminho: str | None, orgaos=ORGAOS_GO) -> str | None:
     return next((r for r, p in orgaos if re.search(p, C)), None)
 
 
-_PREFEITURA = re.compile(r"PREFEITURA MUNICIPAL DE ([A-ZÀ-Ú][A-ZÀ-Ú' ]{2,40}?)\s*(?:[-–,(]|\b(?:CNPJ|AVISO|EDITAL|EXTRATO|TORNA|O MUNIC[IÍ]PIO|ESTADO DE GOI[AÁ]S)\b)")
+_PREFEITURA = re.compile(r"PREFEITURA (?:MUNICIPAL )?DE ([A-ZÀ-Ú][A-ZÀ-Ú' ]{2,40}?)\s*(?:[-–,(/]|\b(?:CNPJ|AVISO|EDITAL|EXTRATO|TORNA|O MUNIC[IÍ]PIO|ESTADO DE GOI[AÁ]S)\b)")
 _MINUSC = {"De", "Do", "Da", "Dos", "Das", "E"}
 
 
@@ -165,6 +165,8 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     c["resultado"] = c["resultado"] or bool(_RESULTADO_EXTRA.search(cab))
     if c["resultado"] or folha.startswith(("RESULTADO", "ADJUDICAC")) or (re.match(r"\s*(DESPACHO|PORTARIA|ATA)\b", cab) and s["resultado"]):
         tipo = "andamento"
+    elif re.match(r"\s*EXTRATO DE PUBLICACAO", cab) and re.search(r"TORNA PUBLIC\w* A REALIZACAO|LANCAMENTO D[OE]|SELECAO PUBLICA", T):
+        tipo = "abertura"                        # SECULT-GO publica o lançamento do edital como "Extrato de Publicação"
     elif c["celebracao"] or re.match(r"\s*(EXTRATO|JUSTIFICATIVA)\b", cab) or folha.startswith(("EXTRATO", "TERMOS DE CONVENIO", "TERMOS ADITIVOS", "ACORDOS")):
         tipo = "celebracao"
     elif c["retificacao"] or folha.startswith(("ERRATA", "RETIFICAC", "ADIAMENTO")):
@@ -190,6 +192,8 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
         regime = "processo_seletivo_pessoal"
     elif s["pnae"] and not (s["mrosc"] or s["fundo"]):
         regime = "pnae_agricultura_familiar"
+    elif s["credenciamento"] and s["cultura"] and not (s["mrosc"] or s["fundo"]):
+        regime = "credenciamento_cultura"        # PNAB: pareceristas (pessoa física) ou agentes/espaços — conferir
     elif s["credenciamento"] and not (s["mrosc"] or s["fundo"]):
         regime = "credenciamento"
     elif s["licitacao"] and not fomento:
@@ -241,6 +245,9 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
                         "celebracao": "parceria celebrada, convênio ou inexigibilidade — inteligência: órgão, valor e entidade",
                         "retificacao": "retificação de edital de interesse — conferir prazo",
                         "composicao_conselho": f"vaga da sociedade civil em conselho {'estadual' if ambito == 'estadual' else 'municipal'} — porta de entrada dos fundos"}[tipo])
+    elif regime == "credenciamento_cultura" and tipo in ("abertura", "retificacao"):
+        veredito = "ACOMPANHAR"
+        motivos.append("credenciamento no âmbito da PNAB — conferir se é de pareceristas (pessoa física) ou de agentes e espaços culturais")
     elif tipo == "referencia" and de_interesse and (num or _VALOR.search(bruto) or re.search(r"CELEBRA|REPASSE|TERMO DE FOMENTO", T)):
         veredito = "ACOMPANHAR"
         motivos.append("menção a parceria ou edital de interesse dentro de outro ato — conferir o ato completo na edição")
@@ -264,9 +271,14 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     }
 
 
-def chave_ato(orgao: str | None, numero: str | None, titulo: str | None) -> str:
-    """Mesmo edital em fontes diferentes → mesma chave (órgão + número; sem número, o título normalizado)."""
+def chave_ato(orgao: str | None, numero: str | None, titulo: str | None, data: str | None = None) -> str:
+    """Mesmo edital em fontes diferentes → mesma chave: órgão + número; sem número, órgão + dia da publicação
+    (o Diário e a busca dão títulos diferentes ao mesmo aviso); sem os dois, o título normalizado."""
     o = re.sub(r"[^a-z0-9]+", "", sem_acento(orgao or "").lower())[:30]
     if numero:
-        return f"{o}|{re.sub(r'[^0-9/]', '', numero)}"
+        n = re.sub(r"[^0-9/]", "", numero)
+        a, _, b = n.partition("/")
+        return f"{o}|{int(a) if a.isdigit() else a}/{b}"          # "03/2026" e "3/2026" são o mesmo edital
+    if data and o:
+        return f"{o}|{str(data)[:10]}|sn"
     return f"{o}|{re.sub(r'[^a-z0-9]+', '', sem_acento(titulo or '').lower())[:60]}"
