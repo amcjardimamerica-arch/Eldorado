@@ -1,0 +1,21 @@
+name: 18 · Diagnóstico da busca do Espião
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -q -r requirements.txt || true
+      - run: python3 scripts/diagnostico_busca_espiao.py
+      - name: Guardar
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          cp biblioteca_alexandria/base/diagnostico_busca_espiao.json /tmp/d.json
+          for i in 1 2 3 4; do git fetch -q origin main && git reset -q --hard origin/main; cp /tmp/d.json biblioteca_alexandria/base/diagnostico_busca_espiao.json
+            git add biblioteca_alexandria/base/diagnostico_busca_espiao.json; git commit -q -m "diagnostico da busca do Espiao" || break; git push -q origin main && break; sleep 5; done
