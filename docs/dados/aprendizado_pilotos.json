@@ -1,47 +1,11 @@
 {
- "em": "2026-10-01T08:55:04+00:00",
+ "em": "2026-10-01T09:03:02+00:00",
  "lote": 100,
  "estado": {
-  "interceptador_erros_vistos": 168,
+  "interceptador_erros_vistos": 268,
   "espiao_erros_vistos": 42595
  },
  "ultimos_ciclos": [
-  {
-   "piloto": "espiao",
-   "em": "2026-09-29T15:02:41+00:00",
-   "erros_no_lote": 1000,
-   "motivos": [
-    [
-     "nada_no_crivo",
-     922
-    ],
-    [
-     "fora_do_objeto",
-     70
-    ],
-    [
-     "sem_rastro",
-     8
-    ]
-   ],
-   "rendimento_por_missao": {
-    "catalogar": "3/2096",
-    "prospectar": "0/1378",
-    "aposta": "5/1349",
-    "descobrir": "2/160",
-    "reconhecimento": "0/17"
-   },
-   "parametros_novos": {
-    "pesos_missao": {
-     "catalogar": 0.1,
-     "prospectar": 0.1,
-     "aposta": 0.19,
-     "descobrir": 0.62
-    },
-    "termos_fora_do_objeto": []
-   },
-   "onde_falha": "missões que quase nunca rendem (catalogar, prospectar, aposta) perdem vagas; termos de 'fora do objeto' descartados na origem"
-  },
   {
    "piloto": "espiao",
    "em": "2026-09-29T15:18:16+00:00",
@@ -221,6 +185,91 @@
     "termos_fora_do_objeto": []
    },
    "onde_falha": "missões que quase nunca rendem (prospectar, catalogar, aposta) perdem vagas; termos de 'fora do objeto' descartados na origem"
+  },
+  {
+   "piloto": "interceptador",
+   "em": "2026-10-01T08:48:32+00:00",
+   "erros_no_lote": 100,
+   "condicoes_que_mais_faltam": [
+    [
+     "Resultado",
+     83
+    ],
+    [
+     "Prazo de recurso",
+     83
+    ],
+    [
+     "Valor",
+     76
+    ],
+    [
+     "Requisitos",
+     71
+    ],
+    [
+     "Prazo de inscrição",
+     67
+    ],
+    [
+     "Área de atuação",
+     66
+    ]
+   ],
+   "erros_tecnicos": [
+    [
+     "o modelo não devolveu JSON",
+     9
+    ],
+    [
+     "nenhuma fonte legível",
+     7
+    ]
+   ],
+   "origens_baixo_rendimento": [
+    [
+     "empresa de Goiás · dossiê",
+     "0/80"
+    ],
+    [
+     "radar do Espião",
+     "6/45"
+    ]
+   ],
+   "parametros_novos": {
+    "expressoes_extras": {
+     "Resultado": [
+      "lista\\s+(?:final\\s+)?(?:de\\s+)?(?:selecionad|classificad|aprovad)",
+      "classifica[cç][aã]o\\s+final",
+      "resultado\\s+ser[aá]\\s+(?:publicado|divulgado)"
+     ],
+     "Prazo de recurso": [
+      "recurso[s]?\\s+(?:administrativo|contra)",
+      "\\d+\\s*\\(\\w+\\)\\s*dias\\s+(?:[uú]teis|corridos)[^.]{0,40}recurso",
+      "impugna[cç][aã]o"
+     ],
+     "Valor": [
+      "montante",
+      "aporte",
+      "teto\\s+(?:por|de)",
+      "at[eé]\\s+R\\$"
+     ]
+    },
+    "origens_baixo_rendimento": [
+     "empresa de Goiás · dossiê",
+     "radar do Espião"
+    ],
+    "rotas_ordem": [
+     "financiador_regulamento",
+     "site_do_financiador",
+     "financiador_programa_edital",
+     "link_da_noticia_para_o_financiador",
+     "site_do_financiador_edital",
+     "site_citado_na_noticia",
+     "financiador_pdf"
+    ]
+   },
+   "onde_falha": "condições do cronograma (recurso/resultado/inscrição) não achadas no texto — expressões ampliadas; origens com rendimento < 25%: empresa de Goiás · dossiê, radar do Espião — vão para o fim da fila"
   }
  ],
  "parametros": {
@@ -266,6 +315,13 @@
    "termos_fora_do_objeto": [],
    "consultas_boas": [
     {
+     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
+     "tentativas": 312,
+     "com_resultado": 237,
+     "achados": 473,
+     "missao": "aposta"
+    },
+    {
      "consulta": "quais são os programas de doação de multinacionais com inscrição local",
      "tentativas": 208,
      "com_resultado": 137,
@@ -273,67 +329,102 @@
      "missao": "aposta"
     },
     {
-     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-     "tentativas": 386,
-     "com_resultado": 238,
-     "achados": 475,
+     "consulta": "qual setor ou região em minas gerais ainda não foi mapeado por editais",
+     "tentativas": 81,
+     "com_resultado": 37,
+     "achados": 37,
      "missao": "aposta"
     },
     {
-     "consulta": "qual setor ou região em minas gerais ainda não foi mapeado por editais",
-     "tentativas": 82,
+     "consulta": "qual é o potencial de editais de fomento para organizações da sociedad",
+     "tentativas": 95,
      "com_resultado": 38,
      "achados": 38,
      "missao": "aposta"
     },
     {
-     "consulta": "qual é o potencial de editais de fomento para organizações da sociedad",
-     "tentativas": 96,
-     "com_resultado": 39,
-     "achados": 39,
-     "missao": "aposta"
-    },
-    {
-     "consulta": "chamamento público conanda/sndca nº 01/2",
-     "tentativas": 963,
-     "com_resultado": 165,
-     "achados": 165,
-     "missao": "resgate"
-    },
-    {
-     "consulta": "conanda abre edital de r$ 6 milhões para",
-     "tentativas": 907,
+     "consulta": "zurich abre edital nacional para apoiar",
+     "tentativas": 206,
      "com_resultado": 82,
      "achados": 82,
      "missao": "resgate"
     },
     {
      "consulta": "edital abre inscrições para rede memória",
-     "tentativas": 1366,
+     "tentativas": 211,
      "com_resultado": 82,
      "achados": 82,
      "missao": "resgate"
     },
     {
-     "consulta": "zurich abre edital nacional para apoiar",
-     "tentativas": 1503,
-     "com_resultado": 82,
-     "achados": 82,
+     "consulta": "chamamento público conanda/sndca nº 01/2",
+     "tentativas": 458,
+     "com_resultado": 165,
+     "achados": 165,
      "missao": "resgate"
+    },
+    {
+     "consulta": "patrocinadores festival goiânia 2026",
+     "tentativas": 32,
+     "com_resultado": 9,
+     "achados": 9,
+     "missao": "prospectar"
     },
     {
      "consulta": "fundo de fomento a filantropia amplia pa",
-     "tentativas": 1524,
+     "tentativas": 371,
      "com_resultado": 83,
      "achados": 83,
      "missao": "resgate"
     },
     {
+     "consulta": "conanda abre edital de r$ 6 milhões para",
+     "tentativas": 617,
+     "com_resultado": 82,
+     "achados": 82,
+     "missao": "resgate"
+    },
+    {
+     "consulta": "parque bondinho pao de acucar abre inscr",
+     "tentativas": 26,
+     "com_resultado": 2,
+     "achados": 2,
+     "missao": "resgate"
+    },
+    {
+     "consulta": "abertas inscrições para prêmio nestlé de",
+     "tentativas": 28,
+     "com_resultado": 2,
+     "achados": 2,
+     "missao": "resgate"
+    },
+    {
+     "consulta": "patrocínio empresa goiânia projeto social 2026",
+     "tentativas": 31,
+     "com_resultado": 2,
+     "achados": 2,
+     "missao": "prospectar"
+    },
+    {
+     "consulta": "fundação empresarial goiás edital projetos 2026",
+     "tentativas": 33,
+     "com_resultado": 2,
+     "achados": 2,
+     "missao": "prospectar"
+    },
+    {
      "consulta": "1ª edição do prêmio parceiros voluntár",
-     "tentativas": 1666,
+     "tentativas": 1594,
      "com_resultado": 84,
      "achados": 84,
      "missao": "resgate"
+    },
+    {
+     "consulta": "cacar-motor-gife",
+     "tentativas": 60,
+     "com_resultado": 3,
+     "achados": 4,
+     "missao": "cacar_oportunidade"
     },
     {
      "consulta": "fundação empresarial goiás edital projetos 2026 organizações da socied",
@@ -350,114 +441,54 @@
      "missao": "aposta"
     },
     {
-     "consulta": "edital abre inscrições para rede memória organizações da sociedade civ",
-     "tentativas": 88,
-     "com_resultado": 3,
-     "achados": 4,
-     "missao": "aposta"
-    },
-    {
-     "consulta": "edital criança e adolescente organizações da sociedade civil inscriçõe",
-     "tentativas": 62,
-     "com_resultado": 2,
-     "achados": 2,
-     "missao": "aposta"
-    },
-    {
-     "consulta": "edital assistência social organizações da sociedade civil inscrições g",
-     "tentativas": 34,
+     "consulta": "doação empresa hospital goiânia pronon 2026",
+     "tentativas": 28,
      "com_resultado": 1,
      "achados": 1,
-     "missao": "aposta"
+     "missao": "prospectar"
     },
     {
-     "consulta": "edital pessoa idosa organizações da sociedade civil inscrições",
-     "tentativas": 34,
+     "consulta": "cacar-motor-patrocinio",
+     "tentativas": 29,
      "com_resultado": 1,
      "achados": 1,
-     "missao": "aposta"
-    },
-    {
-     "consulta": "conanda abre edital de r$ 6 milhões para organizações da sociedade civ",
-     "tentativas": 69,
-     "com_resultado": 2,
-     "achados": 3,
-     "missao": "aposta"
-    },
-    {
-     "consulta": "edital saúde organizações da sociedade civil inscrições goiás",
-     "tentativas": 36,
-     "com_resultado": 1,
-     "achados": 3,
-     "missao": "aposta"
-    },
-    {
-     "consulta": "edital cultura organizações da sociedade civil inscrições goiás",
-     "tentativas": 36,
-     "com_resultado": 1,
-     "achados": 2,
-     "missao": "aposta"
-    },
-    {
-     "consulta": "o setor de tecnologia e inovação é um dos mais subexplorados em termos",
-     "tentativas": 36,
-     "com_resultado": 1,
-     "achados": 1,
-     "missao": "aposta"
+     "missao": "cacar_oportunidade"
     }
    ],
    "consultas_ruins": [
     {
      "consulta": "seleção de propostas para a celebração d",
-     "tentativas": 18,
-     "motivo": "pagina_nao_confirma",
-     "missao": "resgate"
-    },
-    {
-     "consulta": "chamamento público nº 02/2024 visando a",
-     "tentativas": 4,
+     "tentativas": 13,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
     {
      "consulta": "contratação de organização de sociedade",
-     "tentativas": 20,
+     "tentativas": 13,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
     {
      "consulta": "edital de credenciamento de organização",
-     "tentativas": 33,
+     "tentativas": 28,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
     {
      "consulta": "seleção de organização da sociedade civi",
-     "tentativas": 53,
+     "tentativas": 45,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
     {
      "consulta": "[portal de compras públicas] - credencia",
-     "tentativas": 64,
+     "tentativas": 56,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
     {
-     "consulta": "cacar-empresas-incentivadas",
-     "tentativas": 8,
-     "motivo": "nada_no_crivo",
-     "missao": "cacar_oportunidade"
-    },
-    {
-     "consulta": "briefing-livre",
-     "tentativas": 4,
-     "motivo": "nada_no_crivo",
-     "missao": "cacar_oportunidade"
-    },
-    {
      "consulta": "credenciamento de instituições privadas,",
-     "tentativas": 16,
+     "tentativas": 11,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
@@ -469,19 +500,19 @@
     },
     {
      "consulta": "credenciamento para aquisição de gêneros",
-     "tentativas": 31,
-     "motivo": "pagina_nao_confirma",
-     "missao": "resgate"
-    },
-    {
-     "consulta": "credenciamento de pareceristas para exer",
      "tentativas": 28,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
     {
+     "consulta": "credenciamento de pareceristas para exer",
+     "tentativas": 27,
+     "motivo": "pagina_nao_confirma",
+     "missao": "resgate"
+    },
+    {
      "consulta": "aquisição exclusiva de gêneros alimentíc",
-     "tentativas": 24,
+     "tentativas": 20,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
@@ -510,150 +541,168 @@
      "missao": "resgate"
     },
     {
-     "consulta": "empresas goianas responsabilidade social esg relatório 2026",
-     "tentativas": 535,
-     "motivo": "nada_no_crivo",
-     "missao": "prospectar"
-    },
-    {
-     "consulta": "lei de incentivo ao esporte patrocinador goiás 2026",
-     "tentativas": 681,
-     "motivo": "nada_no_crivo",
-     "missao": "prospectar"
-    },
-    {
-     "consulta": "lei rouanet incentivador goiânia empresa 2026",
-     "tentativas": 608,
-     "motivo": "nada_no_crivo",
-     "missao": "prospectar"
-    },
-    {
-     "consulta": "instituto empresarial centro-oeste chamada projetos 2026",
-     "tentativas": 535,
-     "motivo": "nada_no_crivo",
-     "missao": "prospectar"
-    },
-    {
-     "consulta": "apoio institucional goiás instituto empresa edital 2026",
-     "tentativas": 536,
-     "motivo": "nada_no_crivo",
-     "missao": "prospectar"
-    },
-    {
-     "consulta": "investimento social privado goiás empresas",
-     "tentativas": 394,
-     "motivo": "nada_no_crivo",
-     "missao": "prospectar"
-    },
-    {
-     "consulta": "parque bondinho pão de açúcar abre edita",
-     "tentativas": 866,
-     "motivo": "nada_no_crivo",
-     "missao": "resgate"
-    },
-    {
-     "consulta": "fundação grupo volkswagen apoiará projet",
-     "tentativas": 1452,
-     "motivo": "nada_no_crivo",
-     "missao": "resgate"
-    },
-    {
      "consulta": "primeiro edital cultural do banco bv e i",
-     "tentativas": 814,
-     "motivo": "nada_no_crivo",
-     "missao": "resgate"
-    },
-    {
-     "consulta": "espm social abre inscricoes para consult",
-     "tentativas": 1266,
-     "motivo": "nada_no_crivo",
-     "missao": "resgate"
-    },
-    {
-     "consulta": "edital social porto seleciona iniciativa",
-     "tentativas": 1192,
+     "tentativas": 166,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
     {
      "consulta": "61a6201 scaled",
-     "tentativas": 1110,
+     "tentativas": 820,
      "motivo": "pagina_nao_confirma",
      "missao": "resgate"
     },
     {
-     "consulta": "quais empresas e instituições divulgam investimentos em projetos socia",
-     "tentativas": 144,
+     "consulta": "edital social porto seleciona iniciativa",
+     "tentativas": 902,
+     "motivo": "pagina_nao_confirma",
+     "missao": "resgate"
+    },
+    {
+     "consulta": "espm social abre inscricoes para consult",
+     "tentativas": 328,
+     "motivo": "pagina_nao_confirma",
+     "missao": "resgate"
+    },
+    {
+     "consulta": "fundação grupo volkswagen apoiará projet",
+     "tentativas": 82,
+     "motivo": "pagina_nao_confirma",
+     "missao": "resgate"
+    },
+    {
+     "consulta": "fundação apoia projetos sociais goiás inscrições 2026",
+     "tentativas": 28,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "associação comercial industrial goiás projeto social apoio",
+     "tentativas": 33,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "cooperativa goiana fundo social edital 2026",
+     "tentativas": 29,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "empresa goiana responsabilidade social edital",
+     "tentativas": 27,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "prêmio empresa iniciativas sociais inscrições 2026",
+     "tentativas": 31,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "edital esporte e lazer organizações da sociedade civil inscrições",
+     "tentativas": 10,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
-     "consulta": "quais institutos ou fundações empresariais que selecionam por formulár",
-     "tentativas": 288,
-     "motivo": "fora_do_objeto",
-     "missao": "aposta"
+     "consulta": "fundação comunitária edital doações 2026",
+     "tentativas": 30,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
     },
     {
-     "consulta": "quais institutos e fundações empresariais que não publicam em diários",
-     "tentativas": 144,
-     "motivo": "fora_do_objeto",
-     "missao": "aposta"
+     "consulta": "instituto empresarial edital projetos sociais 2026",
+     "tentativas": 28,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
     },
     {
-     "consulta": "quais são as oportunidades de fomento para organizações da sociedade c",
-     "tentativas": 1012,
+     "consulta": "fundação empresarial chamada pública organizações da sociedade civil 2026",
+     "tentativas": 25,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "empresa lança edital para ongs 2026",
+     "tentativas": 26,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "programa de investimento social privado inscrições 2026",
+     "tentativas": 37,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "edital cultura organizações da sociedade civil inscrições",
+     "tentativas": 12,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
-     "consulta": "quais institutos e fundações empresariais que não publicam em diário o",
-     "tentativas": 144,
-     "motivo": "fora_do_objeto",
-     "missao": "aposta"
-    },
-    {
-     "consulta": "quais são as oportunidades de fomento e parcerias em setores de tecnol",
-     "tentativas": 144,
+     "consulta": "onde estão as oportunidades de editais que os motores não encontram? o",
+     "tentativas": 8,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
-     "consulta": "quais programas de doação de multinacionais com inscrição local no bra",
-     "tentativas": 144,
+     "consulta": "fundo de fomento a filantropia amplia pa organizações da sociedade civ",
+     "tentativas": 19,
+     "motivo": "nada_no_crivo",
+     "missao": "aposta"
+    },
+    {
+     "consulta": "patrocinadores festival goiânia 2026 organizações da sociedade civil",
+     "tentativas": 9,
+     "motivo": "nada_no_crivo",
+     "missao": "aposta"
+    },
+    {
+     "consulta": "cacar-motor-patrocinio organizações da sociedade civil goiás",
+     "tentativas": 3,
+     "motivo": "nada_no_crivo",
+     "missao": "aposta"
+    },
+    {
+     "consulta": "edital esporte e lazer organizações da sociedade civil inscrições goiá",
+     "tentativas": 8,
+     "motivo": "nada_no_crivo",
+     "missao": "aposta"
+    },
+    {
+     "consulta": "edital saúde organizações da sociedade civil inscrições goiás goiás",
+     "tentativas": 4,
+     "motivo": "nada_no_crivo",
+     "missao": "aposta"
+    },
+    {
+     "consulta": "doação empresa hospital goiânia pronon 2026 organizações da sociedade",
+     "tentativas": 9,
      "motivo": "fora_do_objeto",
      "missao": "aposta"
     },
     {
-     "consulta": "ainda existem editais de institutos ou fundações empresariais que sele",
-     "tentativas": 144,
-     "motivo": "fora_do_objeto",
+     "consulta": "parque bondinho pao de acucar abre inscr organizações da sociedade civ",
+     "tentativas": 10,
+     "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
-     "consulta": "quais empresas e fundos privados estão investindo em iniciativas socia",
-     "tentativas": 144,
-     "motivo": "fora_do_objeto",
-     "missao": "aposta"
-    },
-    {
-     "consulta": "quais são as organizações da sociedade civil que recebem investimentos",
-     "tentativas": 144,
-     "motivo": "fora_do_objeto",
-     "missao": "aposta"
-    },
-    {
-     "consulta": "quais institutos ou fundações empresariais possuem editais de fomento",
-     "tentativas": 144,
+     "consulta": "onde estão os editais que os motores não encontram? organizações da so",
+     "tentativas": 8,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     }
    ],
    "termos_bons": [
     "conanda",
+    "empresarial",
     "apoiar",
     "saúde",
-    "zurich",
-    "nacional",
+    "doação",
     "parceiros",
     "edição",
     "volunta",
@@ -662,53 +711,47 @@
     "memória",
     "rede",
     "milhões",
-    "idosa"
+    "nacional",
+    "zurich"
    ],
    "termos_ruins": [
     "regiões",
-    "institutos",
-    "empresariais",
     "baixa",
-    "fundações",
-    "economia",
     "credenciamento",
-    "empresas",
-    "privado",
-    "circular",
     "seleção",
     "organização",
-    "setores",
-    "esporte",
-    "privados"
+    "privado",
+    "mapeados",
+    "cobertura"
    ],
    "rendimento_das_buscas": {
     "resgate": {
-     "tentativas": 20721,
+     "tentativas": 6610,
      "com_resultado": 585,
-     "taxa": 0.028
+     "taxa": 0.089
     },
     "cacar_oportunidade": {
-     "tentativas": 344,
+     "tentativas": 91,
      "com_resultado": 4,
-     "taxa": 0.012
+     "taxa": 0.044
     },
     "prospectar": {
-     "tentativas": 5621,
+     "tentativas": 124,
      "com_resultado": 14,
-     "taxa": 0.002
+     "taxa": 0.113
     },
     "aposta": {
-     "tentativas": 5774,
-     "com_resultado": 476,
-     "taxa": 0.082
+     "tentativas": 1666,
+     "com_resultado": 473,
+     "taxa": 0.284
     },
     "descobrir": {
-     "tentativas": 601,
+     "tentativas": 602,
      "com_resultado": 3,
      "taxa": 0.005
     }
    },
-   "consultas_aprendidas_em": "2026-10-01T08:45:17+00:00"
+   "consultas_aprendidas_em": "2026-10-01T08:47:45+00:00"
   },
   "atualizado_em": "2026-09-29T16:11:27+00:00",
   "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
