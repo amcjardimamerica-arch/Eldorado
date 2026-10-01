@@ -78,6 +78,19 @@ def site_da_empresa(emp: dict, rf: dict) -> str | None:
     dom = em.split("@")[-1].lower() if "@" in em else ""
     if dom and not re.search(r"gmail|hotmail|yahoo|outlook|uol|bol|terra|live|icloud|contab|escritorio", dom):
         return "https://" + dom
+    # 01/10: os 80 primeiros dossiês ficaram sem site — procura pelo nome e aceita só o domínio que contém o nome
+    try:
+        from ..piloto_busca import buscar
+        from ..sites_oficiais import e_republicador
+        nome = str(emp.get("nome") or rf.get("nome_fantasia") or rf.get("razao_social") or "")
+        toks = [w for w in re.findall(r"[a-z]{4,}", nome.lower()) if w not in {"industria", "comercio", "servicos", "brasil", "ltda", "participacoes", "holding", "goias"}]
+        for r in buscar(f'"{nome}" site oficial', 6) or []:
+            h = re.sub(r"^www\.", "", (re.sub(r"^https?://", "", r.get("url") or "").split("/")[0]).lower())
+            if h and not e_republicador(r["url"]) and not re.search(r"facebook|instagram|linkedin|youtube|wikipedia|reclameaqui|jusbrasil|econodata|cnpj", h) \
+               and any(t in h.replace("-", "") for t in toks[:3]):
+                return "https://" + h
+    except Exception:
+        pass
     return None
 
 

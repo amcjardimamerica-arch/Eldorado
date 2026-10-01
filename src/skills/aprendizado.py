@@ -87,7 +87,12 @@ def aprender_consultas() -> dict:
     TERMOS que mais aparecem nas buscas que funcionam e nas que falham. Vira parâmetro: o Espião repete o que funciona,
     abandona o que falha 3 vezes sem nada e evita os termos das buscas ruins."""
     _, av = _erros_espiao()
-    por = {}
+    _pe0 = (parametros().get("espiao") or {})
+    from datetime import timedelta as _td
+    _desde = (datetime.now(timezone.utc) - _td(days=int(_pe0.get("janela_aprendizado_dias", 7)))).isoformat()
+    _nao_pune = set(_pe0.get("motivos_que_nao_punem_a_consulta") or ["busca_vazia", "busca_bloqueada", "sem_texto"])
+    av = [a for a in av if str(a.get("em") or "") >= _desde and (int(a.get("uteis") or 0) > 0 or a.get("motivo_do_insucesso") not in _nao_pune)]
+    por = {}                                   # 01/10: só os últimos dias; bloqueio do buscador não reprova a consulta
     for a in av:
         c = _cons(a)
         if not c or PLACEHOLDER.search(c):
@@ -99,7 +104,10 @@ def aprender_consultas() -> dict:
         else:
             p["motivos"][a.get("motivo_do_insucesso") or "—"] += 1
     boas = sorted([(c, p) for c, p in por.items() if p["com_resultado"]], key=lambda kv: (-kv[1]["com_resultado"] / kv[1]["tentativas"], -kv[1]["achados"]))
-    ruins = [(c, p) for c, p in por.items() if p["tentativas"] >= 3 and not p["com_resultado"]]
+    # reprovação só conta tentativas depois de 'reprovas_desde' (01/10: o período do bloqueio do buscador não reprova)
+    _rd = str(_pe0.get("reprovas_desde") or "")
+    _tent_validas = Counter(_cons(a) for a in av if str(a.get("em") or "") >= _rd and not int(a.get("uteis") or 0))
+    ruins = [(c, p) for c, p in por.items() if _tent_validas.get(c, 0) >= int(_pe0.get("minimo_tentativas_para_reprovar", 3)) and not p["com_resultado"]]
     tb, tr = Counter(), Counter()
     for c, p in por.items():
         for w in set(re.findall(r"[a-zà-ú]{4,}", c)) - STOP:

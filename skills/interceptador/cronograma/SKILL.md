@@ -13,3 +13,7 @@ As três condições que mais faltam (prazo de recurso, resultado, prazo de insc
 Procure a tabela "[TABELA …]" ou o item "cronograma/calendário". Para cada etapa, a data ao lado: inscrição
 (início e fim), resultado preliminar/final, recurso (prazo em dias ou data). Se o edital disser que não há recurso
 ou que a inscrição é contínua, isso é DISPENSA — com o trecho.
+
+## Lições aprendidas
+- 01/10 — dos 187 estudos recentes, faltaram prazo de recurso (161), resultado (154) e valor (122). Antes de concluir
+  'insuficiente', procure o PDF do edital ou o anexo do cronograma na página oficial; notícia não tem cronograma.

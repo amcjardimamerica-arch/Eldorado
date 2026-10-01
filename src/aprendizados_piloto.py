@@ -198,8 +198,10 @@ def _motivo_do_insucesso(licao: str, achados: list, uteis: list) -> str:
     l = (licao or "").lower()
     if uteis:
         return ""
-    if "não devolveu resultado" in l or "nao devolveu" in l:
-        return "busca_vazia"
+    if "não devolveu resultado" in l or "nao devolveu" in l or re.search(r"\b0 resultado", l):
+        return "busca_vazia"                       # 01/10: zero resultados = bloqueio do buscador, não falha da consulta
+    if all(not str((d or {}).get("trecho") or (d or {}).get("texto") or "").strip() for d in (achados or [])) and achados and not uteis:
+        return "sem_texto"
     if "nenhum passou no crivo" in l:
         return "nada_no_crivo"
     if "não achei a página oficial" in l:

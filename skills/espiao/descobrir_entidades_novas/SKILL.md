@@ -20,3 +20,7 @@ descoberta — ignore e siga. Sinal forte: página 'instituto', 'responsabilidad
   os sites-catálogo já foram varridos e a prospecção achava empresas já conhecidas.
 - Busque ENTIDADES e PROGRAMAS novos pelas áreas da associação (assistência social, criança e adolescente, pessoa
   idosa, cultura, saúde, esporte), sempre com "organizações da sociedade civil" na consulta e Goiás primeiro.
+- 01/10 — o buscador (DuckDuckGo) corta depois de 2 consultas em sequência: o resultado vazio é BLOQUEIO, não falha
+  da consulta. Intervalo de 10 s entre buscas, nova tentativa após 25 s, e a mesma consulta no máximo 3 vezes por dia.
+- Termos que rendem (7 dias): conanda, empresarial, saúde, doação, voluntariado, parceiros. Termos que falham: regiões,
+  baixa cobertura, mapeados (sobras das perguntas genéricas do briefing).

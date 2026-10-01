@@ -248,9 +248,14 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
     foi o excesso numa só que fez o DuckDuckGo começar a cortar. A via seguinte só é usada
     quando a atual não entrega; quem falha entra em descanso e sai da roda por um tempo."""
     saida, vistos = [], set()
-    espera = ESPERA_ENTRE_BUSCAS - (time.time() - _ULTIMA_BUSCA[0])
+    try:                                                    # 01/10: parâmetros aprendidos (config/parametros_pilotos.json)
+        _pe = (json.loads((Path(__file__).resolve().parents[1] / "config/parametros_pilotos.json").read_text(encoding="utf-8")).get("espiao") or {})
+    except Exception:
+        _pe = {}
+    ESPERA = float(_pe.get("intervalo_busca_s", ESPERA_ENTRE_BUSCAS))
+    espera = ESPERA - (time.time() - _ULTIMA_BUSCA[0])
     if espera > 0:
-        time.sleep(min(espera, ESPERA_ENTRE_BUSCAS))       # respeita o intervalo, senão o buscador corta
+        time.sleep(min(espera, ESPERA))                    # respeita o intervalo, senão o buscador corta
     _ULTIMA_BUSCA[0] = time.time()
     ordem = [v for v in vias_da_roda() if not motores or v in motores] or [b[0] for b in BUSCADORES]
     porMolde = {b[0]: (b[1], b[2]) for b in BUSCADORES}
@@ -292,7 +297,35 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
         except Exception:
             _marcar_via(nome, False)           # bloqueou: descansa e a roda segue sem ela
             time.sleep(1.2)
+    # 01/10: ZERO resultados é o bloqueio silencioso do DuckDuckGo (medido: 8, 8, 0, 0, 0). Espera e tenta de novo,
+    # ignorando o "descanso" — antes, a via descansava e todas as buscas seguintes do voo saíam vazias.
+    if not saida and _pe.get("_repeticao", 0) < int(_pe.get("tentativas_se_vazia", 2)) - 1 and not motores:
+        time.sleep(float(_pe.get("espera_se_busca_vazia_s", 25)))
+        try:
+            return _buscar_de_novo(consulta, maximo, tempo)
+        except Exception:
+            pass
+    if not saida:
+        BLOQUEIO_DO_BUSCADOR[0] += 1
     return saida[:maximo]
+
+
+BLOQUEIO_DO_BUSCADOR = [0]
+
+
+def _buscar_de_novo(consulta: str, maximo: int, tempo: float) -> list[dict]:
+    """Uma segunda tentativa direta no DuckDuckGo HTML, sem a roda de vias."""
+    url = "https://html.duckduckgo.com/html/?q=" + urllib.parse.quote(consulta)
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "pt-BR,pt;q=0.9", "Accept": "text/html,application/xhtml+xml"})
+    with urllib.request.urlopen(req, timeout=tempo) as r:
+        bruto = r.read()
+        if (r.headers.get("Content-Encoding") or "") == "gzip":
+            bruto = gzip.decompress(bruto)
+    p = _Res(); p.feed(bruto.decode("utf-8", "ignore"))
+    _ULTIMA_BUSCA[0] = time.time()
+    if not p.itens:
+        BLOQUEIO_DO_BUSCADOR[0] += 1
+    return [{**it, "buscador": "duckduckgo"} for it in p.itens][:maximo]
 
 
 def ler_pagina(url: str, limite: int = 6000, tempo: float = 20) -> str:

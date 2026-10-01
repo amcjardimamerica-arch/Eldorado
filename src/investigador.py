@@ -199,8 +199,11 @@ def _recortar(texto: str, limite: int = 42_000) -> str:
 
 
 def responder(ia, e: dict, texto: str) -> dict | None:
-    return ia.perguntar(PROMPT.format(titulo=(e.get("titulo") or "")[:160], esquema=json.dumps(ESQUEMA, ensure_ascii=False),
-                                      texto=_recortar(texto)), json.dumps(ESQUEMA, ensure_ascii=False))
+    pedido = PROMPT.format(titulo=(e.get("titulo") or "")[:160], esquema=json.dumps(ESQUEMA, ensure_ascii=False), texto=_recortar(texto))
+    r = ia.perguntar(pedido, json.dumps(ESQUEMA, ensure_ascii=False))
+    if not isinstance(r, dict):                # 01/10: 10 estudos perdidos por resposta fora do formato — tenta de novo, mais estrito
+        r = ia.perguntar(pedido + "\n\nResponda SOMENTE com o JSON pedido, sem nenhum texto antes ou depois.", json.dumps(ESQUEMA, ensure_ascii=False))
+    return r if isinstance(r, dict) else None
 
 
 def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> dict:

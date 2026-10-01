@@ -651,12 +651,28 @@ def missao_descobrir(ordem: int) -> tuple[str, list[dict], str]:
     _ruins = {c["consulta"] for c in (_pe.get("consultas_ruins") or [])}
     _boas = [c["consulta"] for c in (_pe.get("consultas_boas") or []) if c.get("com_resultado")]
     _novas = [c.format(ano=_d.today().year) for c in CONSULTAS_DESCOBERTA if c.format(ano=_d.today().year).lower() not in _ruins]
+    # 01/10: a mesma consulta no máximo N vezes por dia (uma chegou a 98 repetições)
+    _usos_arq = ROOT / "estado/piloto/consultas_do_dia.json"
+    try:
+        _usos = json.loads(_usos_arq.read_text(encoding="utf-8"))
+    except Exception:
+        _usos = {}
+    if _usos.get("dia") != _d.today().isoformat():
+        _usos = {"dia": _d.today().isoformat(), "usos": {}}
+    _max = int(_pe.get("max_usos_da_mesma_consulta_por_dia", 3))
+    _boas = [c for c in _boas if _usos["usos"].get(c.lower(), 0) < _max]
+    _novas = [c for c in _novas if _usos["usos"].get(c.lower(), 0) < _max] or _novas
     if _boas and (not _novas or _rnd.random() < 0.7):
         q = _boas[(int(time.time() // 600) + ordem) % len(_boas)]
     elif _novas:
         q = _novas[(int(time.time() // 600) + ordem) % len(_novas)]
     else:
         q = CONSULTAS_DESCOBERTA[(int(time.time() // 600) + ordem) % len(CONSULTAS_DESCOBERTA)].format(ano=_d.today().year)
+    _usos["usos"][q.lower()] = _usos["usos"].get(q.lower(), 0) + 1
+    try:
+        _usos_arq.write_text(json.dumps(_usos, ensure_ascii=False), encoding="utf-8")
+    except Exception:
+        pass
     res = buscar(q, maximo=8) or []
     ach, ja = [], 0
     for r in res[:5]:

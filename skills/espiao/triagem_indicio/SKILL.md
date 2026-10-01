@@ -17,3 +17,5 @@ extrato e termo já assinado, notícia sem chamada, edição passada, página de
 - 30/09 — 4.047 missões caíram 'fora do objeto', a maioria de apostas sobre tecnologia, inovação e pesquisa.
   Descarte na origem: edital de tecnologia/inovação/startup/pesquisa acadêmica sem abertura a OSC, agronegócio,
   indústria, energia, infraestrutura. O que serve: recurso a que uma associação de assistência social possa concorrer.
+- 01/10 — texto vazio não é motivo de descarte: é 'sem_texto' (a página não abriu e o buscador não trouxe resumo).
+  Só descarte o que foi LIDO e não serve.

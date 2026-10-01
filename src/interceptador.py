@@ -318,6 +318,13 @@ def proximo_alvo() -> dict | None:
         k, x = _r.choice(resto)
         return alvo(x, k, f"oportunidade · {k}")
     a = _proximo_alvo_anterior()
+    try:                                       # 01/10: o mesmo alvo não é reestudado em menos de N dias
+        _dias = int((_par().get("interceptador") or {}).get("dias_sem_reestudar_o_mesmo_alvo", 7))
+        _f = (feitos.get((a or {}).get("id")) or {}).get("em")
+        if a and _f and str(_f) >= (_d.today() - _td(days=_dias)).isoformat():
+            return None
+    except Exception:
+        pass
     if a and a.get("de") in baixo:
         a["de"] = a["de"] + " (baixo rendimento)"
     return a
