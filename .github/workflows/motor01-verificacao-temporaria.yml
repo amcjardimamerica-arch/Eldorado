@@ -1,0 +1,57 @@
+name: TEMPORÁRIO · motor 01 — leitura real (removido antes do merge)
+on:
+  push:
+    branches: ['claude/motor-01-diario-goiania-v2']
+    paths: ['.github/workflows/motor01-verificacao-temporaria.yml']
+permissions:
+  contents: write
+jobs:
+  ler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -q -r requirements.txt || true
+      - name: Leitura real e teste de cada consulta
+        run: |
+          python3 - <<'PY'
+          import json, sys, time
+          from datetime import date
+          sys.path.insert(0, ".")
+          from src import diario_goiania as D
+          cfg = D._cfg(); hoje = date.today(); qd = cfg["querido_diario"]
+          bases = list(qd["bases"]) + ["https://api.queridodiario.org.br"]
+          urls = D.consultas_querido_diario(hoje, cfg)
+          rel = {"em": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "hoje": hoje.isoformat(), "janela_dias": qd["janela_dias"], "consultas": []}
+          for q, url0 in zip(qd["consultas"], urls):
+              item = {"consulta": q, "bases": {}}
+              for b in bases:
+                  url = url0.replace(qd["bases"][0].rstrip("/"), b.rstrip("/"), 1)
+                  try:
+                      corpo = D._get_json(url, tentativas=2)
+                      g = corpo.get("gazettes") or []
+                      gyo = [x for x in g if str(x.get("territory_id")) == D.IBGE]
+                      item["bases"][b] = {"ok": True, "total_gazettes": corpo.get("total_gazettes"), "retornadas": len(g), "de_goiania": len(gyo),
+                                          "datas": sorted({(x.get("date") or "")[:10] for x in gyo}, reverse=True)[:6]}
+                  except Exception as e:
+                      item["bases"][b] = {"ok": False, "erro": str(e)[:220]}
+                  time.sleep(0.5)
+              rel["consultas"].append(item)
+          r = D.ler_motor()
+          rel["diagnostico"] = r["diagnostico"]; rel["falhas"] = r["falhas"]
+          rel["achados"] = [{k: a.get(k) for k in ("id", "titulo", "url", "fim", "orgao", "regime", "objeto", "data_publicacao")} for a in r["achados"]]
+          est = json.load(open(D.ESTADO)) if D.ESTADO.exists() else {}
+          rel["atos_do_painel"] = [{k: a.get(k) for k in ("titulo", "veredito", "tipo", "data_publicacao", "fim", "orgao", "motivo", "url")} for a in (est.get("atos") or [])[:40]]
+          json.dump(rel, open("/tmp/motor01_leitura_real.json", "w"), ensure_ascii=False, indent=1)
+          print(json.dumps(rel["diagnostico"], ensure_ascii=False)[:1500])
+          PY
+      - name: Guardar só o relatório (o estado do motor não é gravado)
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          git checkout -- . && git clean -fdq
+          mkdir -p docs/relatorios && cp /tmp/motor01_leitura_real.json docs/relatorios/motor01_leitura_real_2026-10-01.json
+          git add docs/relatorios/motor01_leitura_real_2026-10-01.json
+          git commit -q -m "motor 01: relatorio da leitura real (verificacao antes do merge)"
+          for i in 1 2 3 4; do git pull -q --rebase origin claude/motor-01-diario-goiania-v2 && git push -q origin HEAD:claude/motor-01-diario-goiania-v2 && break; sleep 4; done
