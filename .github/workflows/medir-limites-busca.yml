@@ -1,0 +1,20 @@
+name: 19 · Medição dos limites de busca
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  medir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python3 scripts/medir_limites_busca.py
+      - name: Guardar
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          cp biblioteca_alexandria/base/limites_busca_2026-10-01.json /tmp/l.json
+          for i in 1 2 3 4; do git fetch -q origin main && git reset -q --hard origin/main; cp /tmp/l.json biblioteca_alexandria/base/limites_busca_2026-10-01.json
+            git add biblioteca_alexandria/base/limites_busca_2026-10-01.json; git commit -q -m "medicao dos limites de busca" || break; git push -q origin main && break; sleep 5; done
