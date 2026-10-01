@@ -1,0 +1,53 @@
+name: 21 · Status dos motores (a cada 6 horas)
+# Titular, 01/10/2026: a cada 6 horas, a data da última leitura e o status de cada motor, com três luzes —
+# verde (coletou hoje), vermelho (erro ou falha na coleta), cinza (não rodou). Antes, dispara os motores cuja leitura
+# do dia ficou pendente, para o painel refletir o dia real.
+on:
+  schedule:
+    - cron: "17 0,6,12,18 * * *"     # 21h17, 03h17, 09h17 e 15h17 em Brasília
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: status-motores
+  cancel-in-progress: false
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -q -r requirements.txt || true
+      - name: Disparar os motores com leitura do dia pendente
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          IDS=$(python3 -c "
+          import importlib.util
+          sp = importlib.util.spec_from_file_location('ag', 'scripts/agenda_motores.py'); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m)
+          print(','.join(sorted(set(m.recuperar()))))" 2>/dev/null || true)
+          echo "pendentes: ${IDS:-nenhum}"
+          if [ -n "$IDS" ]; then
+            curl -s -o /dev/null -w "monitoramento disparado: %{http_code}\n" -X POST -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/monitoramento-diario.yml/dispatches" \
+              -d "{\"ref\":\"main\",\"inputs\":{\"fontes\":\"$IDS\"}}"
+          fi
+      - name: Regenerar o painel dos motores e o status
+        run: |
+          timeout 300 python -c "import src.motores as M; M.run()" || echo "gerador dos motores falhou"
+          python -m src.status_motores
+      - name: Gravar
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          mkdir -p /tmp/st && cp docs/dados/status_motores.json docs/dados/motores.json /tmp/st/
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            cp /tmp/st/status_motores.json /tmp/st/motores.json docs/dados/
+            git add docs/dados/status_motores.json docs/dados/motores.json
+            git commit -q -m "status dos motores (a cada 6 horas)" || break
+            git push -q origin HEAD:main && break
+            sleep 6
+          done

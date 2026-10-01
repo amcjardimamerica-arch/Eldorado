@@ -2799,7 +2799,8 @@ class SystemTests(unittest.TestCase):
             self.assertIn(x,html,x)
         self.assertNotIn("mt-ico tonel",html); self.assertNotIn('class="mt-chk"',html)
         self.assertNotIn("mt-dias",html.split("const calendarioMotor")[1].split("const trintaDias")[0])
-        self.assertNotIn("sem-cinza{",html)
+        # 01/10 (titular): cinza VOLTA a existir, mas só como a luz do motor que não rodou (três luzes: verde, vermelho, cinza)
+        self.assertIn(".mt-item.oficial.sem-cinza{",html); self.assertIn("window.semaforoTres=",html)
 
 
     def test_calendario_por_motor_e_opressores_por_area(self):

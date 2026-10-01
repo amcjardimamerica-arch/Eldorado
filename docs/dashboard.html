@@ -487,6 +487,15 @@ box-shadow:0 1px 3px #0002}
 .pd-d.tem{background:#F1F9F4;border-color:#9FD3B4;color:#1E7E4B;cursor:pointer}.pd-d.tem:hover{background:#1E7E4B;color:#fff}.pd-d b{font-size:11px}
 .pd-o{padding:6px 0;border-bottom:1px solid #EEF1F4;display:flex;flex-direction:column;gap:2px}
 @media (max-width:760px){.pd-g{grid-template-columns:repeat(10,minmax(0,1fr))}}
+.sm3{display:flex;flex-direction:column;gap:4px;padding:5px;border-radius:12px;background:#1F2933;margin-bottom:4px}
+.sm3-l{width:14px;height:14px;border-radius:50%;display:block;opacity:.22}
+.sm3-verde{background:#0E9F4F}.sm3-vermelho{background:#E11D2E}.sm3-cinza{background:#9AA5B1}
+.sm3-l.on{opacity:1}.sm3-verde.on{box-shadow:0 0 8px 2px rgba(14,159,79,.75)}.sm3-vermelho.on{box-shadow:0 0 8px 2px rgba(225,29,46,.75)}.sm3-cinza.on{box-shadow:0 0 6px 1px rgba(154,165,177,.6)}
+.mt-item.oficial.sem-verde{border-right:6px solid #0E9F4F}.mt-item.oficial.sem-vermelho{border-right:6px solid #E11D2E}.mt-item.oficial.sem-cinza{border-right:6px solid #9AA5B1}
+.mt-st{font-size:12px;margin:2px 0;padding:2px 8px;border-radius:6px;display:inline-block}.mt-st-verde{background:#E3F6EA;color:#0B6B37}.mt-st-vermelho{background:#FDE3E5;color:#9B1220}.mt-st-cinza{background:#EEF0F3;color:#4A5563}
+.mt-item .mt-cal .bdia.mtd-verde{background:#0E9F4F;color:#fff;border-bottom:4px solid #0B7A3C;animation:none}.mt-item .mt-cal .bdia.mtd-verde *{color:#fff}
+.mt-item .mt-cal .bdia.mtd-vermelho{background:#E11D2E;color:#fff;border-bottom:4px solid #A3101D;animation:none}.mt-item .mt-cal .bdia.mtd-vermelho *{color:#fff}
+.mt-item .mt-cal .bdia.mtd-cinza{background:#C9CED6;color:#36414F;border-bottom:4px solid #9AA5B1}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -4552,6 +4561,24 @@ window.abreDiaPiloto=function(p,k){
 };
 setTimeout(()=>{ try{ carregaAchadosPilotos(); }catch(e){} }, 2500);
 setInterval(()=>{ try{ carregaAchadosPilotos(); }catch(e){} }, 120000);
+/* STATUS DOS MOTORES — TRÊS LUZES (titular, 01/10): verde = coletou hoje (com ou sem dados) · vermelho = algum erro ou
+   falha na coleta · cinza = não rodou. Atualizado a cada 6 horas (docs/dados/status_motores.json); sem o arquivo, a mesma
+   regra é aplicada ao último dado do painel. */
+window._STM=null;
+window.carregaStatusMotores=async function(){ try{ const r=await fetch("dados/status_motores.json?v="+Date.now()); if(r.ok){ window._STM=await r.json(); if(typeof desenhaMotores==="function") desenhaMotores(); } }catch(e){} };
+window.statusMotor=function(o){
+  const s=((window._STM||{}).motores||[]).find(m=>m.id===o.id);
+  if(s) return {luz:s.luz, resultado:s.resultado, ultima:s.ultima_leitura};
+  const hoje=new Date(Date.now()-3*3600e3).toISOString().slice(0,10), d=(o.dias||[]).find(x=>x.d===hoje)||{};
+  const luz=d.cor==="vermelho"?"vermelho":(d.cor==="verde"||String(o.ultima_leitura||"").slice(0,10)===hoje)?"verde":"cinza";
+  return {luz, resultado:luz==="verde"?(d.n?d.n+" achado(s)":"sem dados novos"):luz==="vermelho"?"falha na coleta":"ainda não rodou hoje", ultima:o.ultima_leitura||null};
+};
+window.semaforoTres=function(S){
+  const t={verde:"Verde — coletou hoje, com ou sem dados",vermelho:"Vermelho — erro ou falha na coleta",cinza:"Cinza — o motor não rodou hoje"};
+  return `<div class="sm3" title="${esc(t[S.luz]+" · "+S.resultado)}">${["verde","vermelho","cinza"].map(c=>`<i class="sm3-l sm3-${c}${S.luz===c?" on":""}"></i>`).join("")}</div>`;
+};
+setTimeout(()=>{ try{ carregaStatusMotores(); }catch(e){} }, 2000);
+setInterval(()=>{ try{ carregaStatusMotores(); }catch(e){} }, 10*60*1000);
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
@@ -4691,24 +4718,27 @@ function desenhaMotores(){
     return `<div class="mt-calt"><span>Calendário do motor — ${MES[ref.getMonth()]} ${ref.getFullYear()}</span>
       <span class="mt-calnav"><button onclick="mtMesMotor('${esc(o.id)}',-1)" ${meses.includes(`${ref.getFullYear()}-${String(ref.getMonth()).padStart(2,"0")}`)||off>0?"":"disabled"} title="mês anterior">◂</button><button onclick="mtMesMotor('${esc(o.id)}',1)" ${off<0?"":"disabled"} title="mês seguinte">▸</button></span></div>
     <div class="bgrade mt-cal">${dias.map(x=>{const dt=new Date(x.d+"T00:00:00");
+      if(x.cor==="fora"||x.cor==="azul"||x.cor==="amarelo") x={...x,cor:x.cor==="fora"?"cinza":"verde"};   /* 01/10: só três cores */
+      if(x.d===new Date(Date.now()-3*3600e3).toISOString().slice(0,10)) x={...x,cor:statusMotor(o).luz};   /* hoje = a luz do status */
       return `<div class="bdia mtd-${x.cor}" title="${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} · ${ROT[x.cor]||x.cor}${x.http?" · HTTP "+x.http:""}${x.n?" · "+x.n+" achado(s)":""}${x.t?" · "+esc(x.t):""}">
         <div class=n>${dt.getDate()}<span class=sem>${SEMd[dt.getDay()]}</span></div>
-        <div class="s">${x.cor==="amarelo"?"Parcial":x.cor==="verde"?"12 itens":x.cor==="azul"?"Sem oport.":x.cor==="vermelho"?"Falha":x.cor==="futuro"?"—":x.cor==="fora"?"Fora da agenda":"Não exec."}</div>
+        <div class="s">${x.cor==="verde"?(x.n?x.n+" achado(s)":"Coletou"):x.cor==="vermelho"?(x.f?x.f+" falha(s)":"Falha"):x.cor==="futuro"?"—":"Não rodou"}</div>
         ${x.t?`<div class=mt-trecho title="${esc(x.t)}">${esc(x.t.slice(0,26))}…</div>`:""}</div>`;}).join("")}</div>
     `;};   /* 28/09 (titular): as "últimas 3" por dia repetiam a mesma oportunidade — a lista única fica em "Oportunidades encontradas" */
   const trintaDias=calendarioMotor;
   ofRows.sort((a,b)=>(a.rank||99)-(b.rank||99));
   const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Motores regulares <span class=meta>${ofRows.length} · numerados: diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado</span></div>
-    ${ofRows.map(o=>{const st=semaforo(o.situacao);const ativo=mtAtivo(o.id);const E=window._ESQ||{};const ab=(E.abates||{})[o.id];const voa=E.missao_atual&&E.missao_atual.motor===o.id;
+    ${ofRows.map(o=>{const S=statusMotor(o);const st=[S.luz];const ativo=mtAtivo(o.id);const E=window._ESQ||{};const ab=(E.abates||{})[o.id];const voa=E.missao_atual&&E.missao_atual.motor===o.id;
       return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">${ab&&ab.n?estrelasDeAbate(ab.n,(ab.ultimos||[]).filter(x=>x.em===new Date().toISOString().slice(0,10)).length,ab):""}
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
       <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(ROT_TIPO[o.tipo]||GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
-        ${o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag ${o.diagnostico.exige_brasil?"br":""}" title="diagnóstico individual da última leitura">${o.diagnostico.exige_brasil?"🇧🇷":"⚠"} ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
-        <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a> · ${esc(o.situacao)}${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+(o.produto==="empresas"?" empresa(s) mapeada(s)":" edital(is)"):""}</div>
+        ${S.luz!=="verde"&&o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag ${o.diagnostico.exige_brasil?"br":""}" title="diagnóstico individual da última leitura">${o.diagnostico.exige_brasil?"🇧🇷":"⚠"} ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
+        <div class="mt-st mt-st-${S.luz}"><b>${S.luz==="verde"?"Coletou hoje":S.luz==="vermelho"?"Falha na coleta":"Não rodou hoje"}</b> · última leitura ${S.ultima?br(S.ultima.slice(0,10))+" "+S.ultima.slice(11,16):"—"} · ${esc(S.resultado.replace(/^(coletou hoje|falha na coleta de hoje|não rodou hoje) — ?/,""))}</div>
+        <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a>${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+(o.produto==="empresas"?" empresa(s) mapeada(s)":" edital(is)"):""}</div>
         ${trintaDias(o)}
         ${achadosDoMotor(o)}</div>
-      <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
+      <div class="mt-lado-dir">${semaforoTres(S)}${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
   // agregação por família → segmento
   /* categorias APENAS por área de atuação (rótulos da página inicial) */
   const rotArea=rotArea0;
