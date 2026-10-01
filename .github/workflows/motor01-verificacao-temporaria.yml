@@ -1,4 +1,4 @@
-name: TEMPORÁRIO · motor 01 — leitura real (removido antes do merge)
+name: TEMPORÁRIO · motor 01 — leitura real (removido antes do merge) · rodada 2 (bases e tentativas ajustadas)
 on:
   push:
     branches: ['claude/motor-01-diario-goiania-v2']
@@ -51,7 +51,7 @@ jobs:
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
           git checkout -- . && git clean -fdq
-          mkdir -p docs/relatorios && cp /tmp/motor01_leitura_real.json docs/relatorios/motor01_leitura_real_2026-10-01.json
-          git add docs/relatorios/motor01_leitura_real_2026-10-01.json
+          mkdir -p docs/relatorios && cp /tmp/motor01_leitura_real.json docs/relatorios/motor01_leitura_real_2026-10-01_rodada2.json
+          git add docs/relatorios/motor01_leitura_real_2026-10-01_rodada2.json
           git commit -q -m "motor 01: relatorio da leitura real (verificacao antes do merge)"
           for i in 1 2 3 4; do git pull -q --rebase origin claude/motor-01-diario-goiania-v2 && git push -q origin HEAD:claude/motor-01-diario-goiania-v2 && break; sleep 4; done

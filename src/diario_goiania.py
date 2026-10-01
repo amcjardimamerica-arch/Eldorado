@@ -91,7 +91,7 @@ def _get_json(url: str, timeout: int = 60, tentativas: int = 2) -> dict:
             return json.loads(_get(url, timeout=timeout, aceitar="application/json").decode("utf-8", "replace"))
         except Exception as exc:  # noqa: BLE001 — o erro vira diagnóstico, não silêncio
             ultimo = exc
-            time.sleep(1.5 * (i + 1))
+            time.sleep(min(20, 2.5 * (2 ** i)))         # espera crescente: 2,5 · 5 · 10 · 20 s
     code = getattr(ultimo, "code", None)
     raise RuntimeError(f"{type(ultimo).__name__}{f' HTTP {code}' if code else ''}: {str(ultimo)[:120]}")
 
@@ -415,7 +415,7 @@ def ler_querido_diario(hoje: date, cfg: dict, diag: dict) -> dict[str, dict]:
         for b in bases:
             url = url0.replace(bases[0].rstrip("/"), b.rstrip("/"), 1)
             try:
-                corpo = _get_json(url); break
+                corpo = _get_json(url, tentativas=int(qd.get("tentativas", 2))); break   # 01/10: 503 da API é passageiro
             except RuntimeError as exc:
                 erro = str(exc)
         diag["qd_consultas"] += 1

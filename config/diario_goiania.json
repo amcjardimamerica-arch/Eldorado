@@ -3,7 +3,11 @@
   "versao": "2 — parecer do conselho de 01/10/2026",
   "regra": "o Diário de Goiânia é lido pelo TEXTO das edições (Querido Diário na nuvem; PDF oficial na coleta local), recortado em atos e classificado sem IA",
   "querido_diario": {
-    "bases": ["https://api.queridodiario.ok.org.br", "https://queridodiario.ok.org.br/api"],
+    "bases": [
+      "https://api.queridodiario.org.br",
+      "https://queridodiario.ok.org.br/api",
+      "https://api.queridodiario.ok.org.br"
+    ],
     "territorio_ibge": "5208707",
     "janela_dias": 15,
     "por_que_15_dias": "o Querido Diário indexou Goiânia com 2 a 16 dias de atraso em setembro/2026 (mediana 5,5); a janela cobre o atraso e a deduplicação evita repetir",
@@ -23,7 +27,9 @@
       "\"subvenção social\" | \"emenda impositiva\" | \"emenda parlamentar\" + entidade",
       "\"inexigibilidade de chamamento\" | \"dispensa de chamamento\"",
       "\"entidades sem fins lucrativos\" + (edital | seleção | inscrições)"
-    ]
+    ],
+    "tentativas": 4,
+    "ajuste_01_10": "Leitura real de 01/10/2026 (servidor do GitHub): a sintaxe | e + foi ACEITA (consultas 3 a 10 responderam; 3 a 9 com edições de Goiânia). A base api.queridodiario.ok.org.br falhou em todas (SSLV3_ALERT_HANDSHAKE_FAILURE): o endereço novo api.queridodiario.org.br passa a ser o primeiro, a antiga queridodiario.ok.org.br/api fica de reserva. As consultas 1 e 2 receberam 503 nas três bases (API sobrecarregada): 4 tentativas com espera crescente."
   },
   "portal": {
     "lista_edicoes": "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano={ano}",
