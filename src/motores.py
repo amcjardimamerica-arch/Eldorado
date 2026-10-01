@@ -341,16 +341,11 @@ def _trinta_dias(reg: dict, hoje) -> list[dict]:
     while d0 <= fim:
         d = d0.isoformat(); d0 += _td(days=1)
         r = reg.get(d)
-        # 01/10 (titular): SÓ TRÊS CORES em todos os motores — verde (coletou no dia, com ou sem dados), vermelho
-        # (algum erro ou falha na coleta), cinza (não rodou). Sem verde claro, azul ou amarelo.
-        c0 = (r or {}).get("cor")
-        if r is None or c0 in (None, "cinza", "fora"):
-            cor = "cinza" if d <= hoje.isoformat() else "futuro"
-        elif c0 == "vermelho" or int((r or {}).get("falhas") or 0) > 0:
-            cor = "vermelho"
-        else:
-            cor = "verde"
-        saida.append({"d": d, "cor": cor, "n": (r or {}).get("achados", 0), "f": int((r or {}).get("falhas") or 0),
+        # 02/10 (titular): o calendário volta ao ÍNDICE original — cinza não executado · azul funcionou, sem
+        # oportunidade · amarelo achou, faltam camadas · verde 12 itens obtidos · vermelho falha / inoperante.
+        # (As três cores de status ficam só na lateral direita do motor.)
+        saida.append({"d": d, "cor": (r or {}).get("cor", "cinza" if d <= hoje.isoformat() else "futuro"),
+                      "n": (r or {}).get("achados", 0), "f": int((r or {}).get("falhas") or 0),
                       "t": (r or {}).get("trecho"), "u": (r or {}).get("url"), "http": (r or {}).get("http")})
     return saida
 

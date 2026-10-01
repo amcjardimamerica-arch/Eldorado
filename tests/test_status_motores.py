@@ -23,12 +23,17 @@ class TesteStatusMotores(unittest.TestCase):
         r = self.S.status_de({"id": "x", "ultima_leitura": "2026-10-01T14:00:00+00:00"}, h)
         self.assertEqual(r["luz"], "vermelho"); self.assertIn("2 página(s) com falha", r["resultado"])
 
-    def test_calendario_so_tres_cores(self):
+    def test_calendario_segue_o_indice_original(self):
+        """02/10 (titular): o calendário mantém as cinco cores do índice; as três cores de status são só da lateral."""
         from src.motores import _trinta_dias
         from datetime import date
-        dias = _trinta_dias({"2026-10-01": {"cor": "amarelo", "achados": 2}, "2026-09-30": {"cor": "azul"}, "2026-09-29": {"cor": "verde", "falhas": 1}}, date(2026, 10, 1))
-        self.assertTrue({d["cor"] for d in dias} <= {"verde", "vermelho", "cinza", "futuro"})
-        self.assertEqual({d["d"]: d["cor"] for d in dias}["2026-09-29"], "vermelho")
+        dias = {d["d"]: d["cor"] for d in _trinta_dias({"2026-10-01": {"cor": "amarelo", "achados": 2}, "2026-09-30": {"cor": "azul"},
+                                                         "2026-09-29": {"cor": "verde"}, "2026-09-28": {"cor": "vermelho"}}, date(2026, 10, 1))}
+        self.assertEqual([dias[k] for k in ("2026-10-01", "2026-09-30", "2026-09-29", "2026-09-28", "2026-09-27")], ["amarelo", "azul", "verde", "vermelho", "cinza"])
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        for c in ("cinza", "azul", "amarelo", "verde", "vermelho"):
+            self.assertIn(f".mt-cal .mtd-{c}{{", h)
+        self.assertNotIn(".mt-item .mt-cal .bdia.mtd-verde{", h)
 
     def test_painel_e_fluxo(self):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")

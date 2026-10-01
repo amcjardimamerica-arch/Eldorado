@@ -489,9 +489,6 @@ box-shadow:0 1px 3px #0002}
 @media (max-width:760px){.pd-g{grid-template-columns:repeat(10,minmax(0,1fr))}}
 .mt-item.oficial.sem-cinza{border-right:6px solid #C9CED6}
 .mt-st{font-size:12px;margin:2px 0;padding:2px 8px;border-radius:6px;display:inline-block}.mt-st-verde{background:#E3F6EA;color:#0B6B37}.mt-st-vermelho{background:#FDE3E5;color:#9B1220}.mt-st-cinza{background:#EEF0F3;color:#4A5563}
-.mt-item .mt-cal .bdia.mtd-verde{background:#0E9F4F;color:#fff;border-bottom:4px solid #0B7A3C;animation:none}.mt-item .mt-cal .bdia.mtd-verde *{color:#fff}
-.mt-item .mt-cal .bdia.mtd-vermelho{background:#E11D2E;color:#fff;border-bottom:4px solid #A3101D;animation:none}.mt-item .mt-cal .bdia.mtd-vermelho *{color:#fff}
-.mt-item .mt-cal .bdia.mtd-cinza{background:#C9CED6;color:#36414F;border-bottom:4px solid #9AA5B1}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -4716,11 +4713,9 @@ function desenhaMotores(){
     return `<div class="mt-calt"><span>Calendário do motor — ${MES[ref.getMonth()]} ${ref.getFullYear()}</span>
       <span class="mt-calnav"><button onclick="mtMesMotor('${esc(o.id)}',-1)" ${meses.includes(`${ref.getFullYear()}-${String(ref.getMonth()).padStart(2,"0")}`)||off>0?"":"disabled"} title="mês anterior">◂</button><button onclick="mtMesMotor('${esc(o.id)}',1)" ${off<0?"":"disabled"} title="mês seguinte">▸</button></span></div>
     <div class="bgrade mt-cal">${dias.map(x=>{const dt=new Date(x.d+"T00:00:00");
-      if(x.cor==="fora"||x.cor==="azul"||x.cor==="amarelo") x={...x,cor:x.cor==="fora"?"cinza":"verde"};   /* 01/10: só três cores */
-      if(x.d===new Date(Date.now()-3*3600e3).toISOString().slice(0,10)) x={...x,cor:statusMotor(o).luz};   /* hoje = a luz do status */
       return `<div class="bdia mtd-${x.cor}" title="${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} · ${ROT[x.cor]||x.cor}${x.http?" · HTTP "+x.http:""}${x.n?" · "+x.n+" achado(s)":""}${x.t?" · "+esc(x.t):""}">
         <div class=n>${dt.getDate()}<span class=sem>${SEMd[dt.getDay()]}</span></div>
-        <div class="s">${x.cor==="verde"?(x.n?x.n+" achado(s)":"Coletou"):x.cor==="vermelho"?(x.f?x.f+" falha(s)":"Falha"):x.cor==="futuro"?"—":"Não rodou"}</div>
+        <div class="s">${x.cor==="amarelo"?"Parcial":x.cor==="verde"?"12 itens":x.cor==="azul"?"Sem oport.":x.cor==="vermelho"?"Falha":x.cor==="futuro"?"—":x.cor==="fora"?"Fora da agenda":"Não exec."}</div>
         ${x.t?`<div class=mt-trecho title="${esc(x.t)}">${esc(x.t.slice(0,26))}…</div>`:""}</div>`;}).join("")}</div>
     `;};   /* 28/09 (titular): as "últimas 3" por dia repetiam a mesma oportunidade — a lista única fica em "Oportunidades encontradas" */
   const trintaDias=calendarioMotor;
