@@ -265,7 +265,7 @@ def _registro(ato: dict, m: dict) -> dict:
         "territorio": terr, "uf": "GO", "nivel": nivel, "tipo_fonte": "sensor_diario_oficial", "confianca": "primaria",
         "forma_divulgacao": "diario_oficial_estado" if m["fonte"] in ("A", "B") else "site_oficial",
         "coletado_em": now_iso(), "data_publicacao": m.get("data") or None, "edicao_id": m.get("edicao"),
-        "pagina": m.get("pagina"), "prazo_texto": ato["prazo_texto"], "fim": ato["fim"],
+        "pagina": m.get("pagina"), "numero_edital": ato["numero"], "prazo_texto": ato["prazo_texto"], "fim": ato["fim"],
         "valor_texto": (ato["valores"] or [None])[0], "objeto": ato["objeto"], "orgao": ato["orgao"], "regime": ato["regime"],
         "caminho_sumario": m.get("caminho"), "evidencia": ev, "hash_evidencia": sha256(ev.encode()),
         "fontes_observadas": [m["fonte"]],
@@ -277,6 +277,7 @@ def _registro(ato: dict, m: dict) -> dict:
 def classificar_lote(materias: list[dict], hoje: date) -> tuple[dict, dict]:
     """→ ({id: registro OPORTUNIDADE}, {id: ato ACOMPANHAR}), já deduplicados entre fontes; e as contagens."""
     oport, acomp, cont = {}, {}, {"OPORTUNIDADE": 0, "ACOMPANHAR": 0, "RUIDO": 0, "quarentena": 0}
+    andamento = set()
     for m in materias:
         bruto = (m.get("titulo") or "") + "\n" + (m.get("texto") or "")
         if has_prompt_injection(bruto):
@@ -296,6 +297,22 @@ def classificar_lote(materias: list[dict], hoje: date) -> tuple[dict, dict]:
             ant["fim"] = ant.get("fim") or reg["fim"]
             continue
         alvo[reg["id"]] = reg
+        if ato["tipo"] == "andamento":
+            andamento.add(reg["id"])
+    # o mesmo edital tem prazo vencido ou resultado publicado em outra fonte → não está mais aberto
+    for i in list(oport):
+        a = acomp.get(i)
+        if not a:
+            continue
+        vencido = bool(a.get("fim")) and a["fim"] < hoje.isoformat()
+        if vencido or i in andamento:
+            r = oport.pop(i)
+            r["classificacao_ato"]["veredito"] = "ACOMPANHAR"
+            r["classificacao_ato"]["motivos"] = [("prazo escrito em outra publicação já passou (" + a["fim"] + ")") if vencido
+                                                 else "a seleção já tem resultado publicado — inscrições encerradas"]
+            r["fontes_observadas"] = sorted(set(r["fontes_observadas"]) | set(a.get("fontes_observadas") or []))
+            acomp[i] = r
+            cont["OPORTUNIDADE"] -= 1; cont["ACOMPANHAR"] += 1
     return oport, acomp, cont
 
 
