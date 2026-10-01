@@ -1,14 +1,14 @@
 {
-  "executado_em": "2026-09-30T14:03:23+00:00",
+  "executado_em": "2026-10-01T20:14:44+00:00",
   "fontes_catalogadas": 85,
   "fontes_total": 69,
-  "fontes_ok": 51,
-  "fontes_falha": 18,
+  "fontes_ok": 50,
+  "fontes_falha": 19,
   "fontes_fora_escopo": 0,
   "fontes_manuais": 2,
   "fontes_api": 2,
-  "novas": 3,
-  "atualizadas": 41,
+  "novas": 1,
+  "atualizadas": 44,
   "quarentena": 0,
   "falhas": [
     {
@@ -19,15 +19,21 @@
     },
     {
       "fonte": "goias-cultura-raiz",
-      "erro": "RemoteDisconnected",
-      "mensagem": "Remote end closed connection without response",
-      "etapa": "processamento (_read_status)"
+      "erro": "ValueError",
+      "mensagem": "tipo não permitido: application/pdf",
+      "etapa": "leitura do site"
     },
     {
       "fonte": "goias-pnab",
-      "erro": "RemoteDisconnected",
-      "mensagem": "Remote end closed connection without response",
-      "etapa": "processamento (_read_status)"
+      "erro": "ValueError",
+      "mensagem": "tipo não permitido: application/pdf",
+      "etapa": "leitura do site"
+    },
+    {
+      "fonte": "petrobras",
+      "erro": "ValueError",
+      "mensagem": "URL deve ser HTTPS e não pode conter credenciais",
+      "etapa": "leitura do site"
     },
     {
       "fonte": "fundacao-bb",
@@ -37,9 +43,9 @@
     },
     {
       "fonte": "goias-cultura",
-      "erro": "RemoteDisconnected",
-      "mensagem": "Remote end closed connection without response",
-      "etapa": "processamento (_read_status)"
+      "erro": "ValueError",
+      "mensagem": "tipo não permitido: application/pdf",
+      "etapa": "leitura do site"
     },
     {
       "fonte": "itau-social",
@@ -55,12 +61,6 @@
     },
     {
       "fonte": "ministerio-cultura",
-      "erro": "ValueError",
-      "mensagem": "URL deve ser HTTPS e não pode conter credenciais",
-      "etapa": "leitura do site"
-    },
-    {
-      "fonte": "petrobras",
       "erro": "ValueError",
       "mensagem": "URL deve ser HTTPS e não pode conter credenciais",
       "etapa": "leitura do site"
@@ -94,6 +94,12 @@
       "erro": "ValueError",
       "mensagem": "redirecionamento para domínio não autorizado",
       "etapa": "leitura do site"
+    },
+    {
+      "fonte": "portal-se",
+      "erro": "URLError",
+      "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "portal-sp",
@@ -158,6 +164,6 @@
       "internacional"
     ]
   },
-  "paginas_alteradas": 169,
-  "fora_do_terceiro_setor": 319
+  "paginas_alteradas": 174,
+  "fora_do_terceiro_setor": 347
 }
