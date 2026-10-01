@@ -320,10 +320,17 @@ def proximo_alvo() -> dict | None:
         p = x.get("parametros") or {}
         return x.get("pagina") and x.get("ativa") not in (False, "False") and not recente("op-" + x["id"]) \
             and (not p or str(p.get("decisao") or "") == "P" or str(x.get("validacao")) in ("não lida ainda", "None", ""))
-    livros = [x for x in cat if precisa(x)]
-    ordem_livro = lambda x: (not x.get("aberta_agora"), x.get("regime_inscricao") != "anual", str(x.get("nome_classificado") or ""))
+    # 01/10: RESTRIÇÕES FIXAS (só negativas) e ESTRATÉGIA CRIATIVA (foco de área, trocado a cada 100 estudos)
+    _pi = _par().get("interceptador") or {}; _rf = _pi.get("restricoes_fixas") or {}
+    _proib = set(_rf.get("alvos_proibidos") or []); _ileg = set(_rf.get("dominios_ilegiveis") or [])
+    _foco = (_pi.get("estrategia_criativa") or {}).get("foco_area")
+    def _barrado(i, url, tit=""):
+        h = re.sub(r"^www\.", "", (re.sub(r"^https?://", "", str(url or "")).split("/")[0]).lower())
+        return i in _proib or "op-" + str(i) in _proib or re.sub(r"\W+", "", str(tit).lower())[:60] in _proib or (h and h in _ileg)
+    livros = [x for x in cat if precisa(x) and not _barrado(x["id"], x.get("pagina"), x.get("programa"))]
+    ordem_livro = lambda x: (not x.get("aberta_agora"), x.get("objeto_area") != _foco, x.get("regime_inscricao") != "anual", str(x.get("nome_classificado") or ""))
     ordem_fluxo = lambda kx: (str(kx[1].get("fim") or "9999") < hoje, str(kx[1].get("fim") or "9999"))
-    todos = [(k, x) for k, v in fx.items() for x in v if pend(x)]
+    todos = [(k, x) for k, v in fx.items() for x in v if pend(x) and not _barrado(x.get("id"), x.get("link_oficial") or x.get("url"), x.get("titulo"))]
 
     def nivel(fluxo, livros_nivel, rotulo):
         if fluxo:

@@ -17,7 +17,7 @@ import json
 import lzma
 import re
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -178,6 +178,10 @@ def ciclo(forcar: bool = False) -> dict:
             for d in feitos:
                 fh.write(json.dumps(d, ensure_ascii=False) + "\n")
     try:
+        _cc = ciclo_criativo()                # 01/10: a cada 100 pesquisas, estratégia nova (sem regra fixa)
+    except Exception as ex:
+        _cc = {"erro": type(ex).__name__}
+    try:
         _cq = aprender_consultas()            # a cada pouso — não espera 100 erros
     except Exception as ex:
         _cq = {"erro": type(ex).__name__}
@@ -190,3 +194,94 @@ def ciclo(forcar: bool = False) -> dict:
 if __name__ == "__main__":
     import sys
     print(json.dumps(ciclo("--forcar" in sys.argv), ensure_ascii=False, indent=1))
+
+
+# ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+# CICLO CRIATIVO A CADA 100 PESQUISAS (titular, 01/10) — sem regra fixa de busca. A cada 100 pesquisas de um Piloto, a
+# estratégia é TROCADA por outra, gerada por sorteio e nunca repetida; o resultado de cada estratégia é medido e o
+# que funcionou ganha peso na seguinte. FIXO, só o NEGATIVO: config/parametros_pilotos.json › <piloto> › restricoes_fixas.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+RECURSOS = ["edital", "chamada pública", "prêmio", "seleção de projetos", "fundo", "patrocínio", "doação", "bolsa", "termo de fomento",
+            "chamamento público", "programa de apoio", "investimento social", "incentivo fiscal", "financiamento de projetos"]
+AREAS = ["assistência social", "criança e adolescente", "pessoa idosa", "cultura", "saúde", "esporte", "educação", "inclusão",
+         "segurança alimentar", "pessoa com deficiência", "juventude", "mulheres", "voluntariado", "direitos humanos"]
+LUGARES = ["Goiás", "Goiânia", "Aparecida de Goiânia", "Anápolis", "Rio Verde", "Senador Canedo", "Trindade", "Catalão", "Itumbiara",
+           "Centro-Oeste", "Brasil", "nacional"]
+MOLDES = ["{recurso} {area} {lugar} {ano}", "\"{recurso}\" \"organizações da sociedade civil\" {area} {lugar}", "{quem} {recurso} {area}",
+          "{recurso} para associações {area} inscrições {ano}", "{quem} abre {recurso} {lugar}", "{area} {recurso} entidades sem fins lucrativos {lugar}",
+          "{recurso} {area} OSC {ano} inscrições abertas", "como inscrever associação {recurso} {quem}"]
+
+
+def _proibido(q: str, rf: dict) -> bool:
+    ql = q.lower()
+    return ql in {c.lower() for c in (rf.get("consultas_proibidas") or [])} or any(t in ql for t in (rf.get("termos_proibidos") or []))
+
+
+def _nova_estrategia_espiao(pe: dict, hist: list) -> dict:
+    import random
+    semente = int(datetime.now(timezone.utc).timestamp())
+    rnd = random.Random(semente)
+    rf = pe.get("restricoes_fixas") or {}
+    pesos = Counter()                                    # elementos das estratégias que deram resultado ganham peso
+    for h in hist:
+        if h.get("taxa", 0) > 0:
+            for e in h.get("elementos_bons") or []:
+                pesos[e] += 1
+    cat = _j(ROOT / "biblioteca_alexandria/fontes/motores.json", {}).get("motores") or []
+    quem = [re.sub(r"\s+", " ", str(x.get("orgao")))[:40] for x in cat if x.get("orgao") and (x.get("livro") or {}).get("checklist")
+            and x.get("geo") in ("GO", "BR") and len(str(x.get("orgao"))) < 45 and not re.search(r"(?i)munic[ií]pio|prefeitura|secretaria", str(x.get("orgao")))]
+    quem = sorted(set(quem)) or ["instituto empresarial", "fundação empresarial"]
+    usadas = {c for h in hist for c in (h.get("pool") or [])}
+    ano = str(date.today().year)
+    escolhe = lambda L: rnd.choices(L, weights=[1 + 2 * pesos.get(x, 0) for x in L])[0]
+    pool, tent = [], 0
+    while len(pool) < 14 and tent < 400:
+        tent += 1
+        q = rnd.choice(MOLDES).format(recurso=escolhe(RECURSOS), area=escolhe(AREAS), lugar=escolhe(LUGARES), quem=rnd.choice(quem), ano=ano)
+        q = re.sub(r"\s+", " ", q).strip()
+        if q.lower() not in usadas and q not in pool and not _proibido(q, rf):
+            pool.append(q)
+    return {"id": f"E{len(hist) + 1:03d}", "criada_em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "semente": semente, "pool": pool,
+            "pesquisas_no_inicio": None}
+
+
+def ciclo_criativo() -> dict:
+    """A cada 100 pesquisas, uma estratégia nova para cada Piloto (sem regra fixa); mede a anterior."""
+    import random
+    P = parametros(); feito = {}
+    # ── ESPIÃO: pesquisas = avaliações de missão desde o reset
+    _, av = _erros_espiao()
+    pe = P.setdefault("espiao", {}); est = pe.get("estrategia_criativa"); hist = pe.setdefault("estrategias_anteriores", [])
+    n = len(av)
+    if not est or n - int(est.get("pesquisas_no_inicio") or 0) >= 100:
+        if est:                                          # mede a estratégia que termina
+            lote = av[int(est.get("pesquisas_no_inicio") or 0):]
+            ok = [a for a in lote if int(a.get("uteis") or 0) > 0]
+            bons = {w for a in ok for w in re.findall(r"[a-zà-ú]{4,}", str(_cons(a) or ""))}
+            elems = [e for e in RECURSOS + AREAS + LUGARES if any(w in e.lower() for w in bons)]
+            hist.append({"id": est["id"], "pesquisas": len(lote), "com_resultado": len(ok), "taxa": round(len(ok) / max(1, len(lote)), 3),
+                         "elementos_bons": elems[:12], "pool": est.get("pool", [])})
+            pe["estrategias_anteriores"] = hist[-30:]
+        est = _nova_estrategia_espiao(pe, hist); est["pesquisas_no_inicio"] = n
+        pe["estrategia_criativa"] = est; feito["espiao"] = est["id"]
+    # ── INTERCEPTADOR: pesquisas = estudos desde o reset
+    vs = [v for f in sorted(glob.glob(str(ROOT / "estado/interceptador/relatorios/*.json"))) for v in (_j(Path(f), {}).get("voos") or [])]
+    pi = P.setdefault("interceptador", {}); ei = pi.get("estrategia_criativa"); hi = pi.setdefault("estrategias_anteriores", [])
+    m = len(vs)
+    if not ei or m - int(ei.get("pesquisas_no_inicio") or 0) >= 100:
+        if ei:
+            lote = vs[int(ei.get("pesquisas_no_inicio") or 0):]
+            ok = sum(1 for v in lote if v.get("qualidade") in ("validada", "parcial", "fonte_confirmada"))
+            hi.append({"id": ei["id"], "estudos": len(lote), "com_resultado": ok, "taxa": round(ok / max(1, len(lote)), 3),
+                       "rotas": ei.get("rotas"), "foco_area": ei.get("foco_area")}); pi["estrategias_anteriores"] = hi[-30:]
+        rnd = random.Random(int(datetime.now(timezone.utc).timestamp()))
+        rotas = list((pi.get("rotas_ordem") or ["financiador_regulamento", "site_do_financiador", "financiador_programa_edital", "link_da_noticia_para_o_financiador"]))
+        melhor = max(hi, key=lambda h: h.get("taxa", 0)) if hi else None
+        rnd.shuffle(rotas)
+        if melhor and melhor.get("rotas") and rnd.random() < 0.5:
+            rotas = melhor["rotas"][:1] + [r for r in rotas if r != melhor["rotas"][0]]   # metade das vezes, parte da melhor
+        ei = {"id": f"I{len(hi) + 1:03d}", "criada_em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "rotas": rotas,
+              "foco_area": rnd.choice(AREAS[:8]), "pesquisas_no_inicio": m}
+        pi["estrategia_criativa"] = ei; pi["rotas_ordem"] = rotas; feito["interceptador"] = ei["id"]
+    PAR.write_text(json.dumps(P, ensure_ascii=False, indent=1), encoding="utf-8")
+    return feito or {"sem_troca": True}

@@ -568,6 +568,10 @@ def missao_aposta(brief: dict, ordem: int) -> tuple[str, list[dict], str]:
         from .skills.aprendizado import PLACEHOLDER as _PH, parametros as _pp
         _pe = _pp().get("espiao") or {}
         _boas = [c["consulta"] for c in (_pe.get("consultas_boas") or [])]
+        _rf = _pe.get("restricoes_fixas") or {}
+        _pool = (_pe.get("estrategia_criativa") or {}).get("pool") or []
+        if _pool and (q.strip().lower() in {c.lower() for c in (_rf.get("consultas_proibidas") or [])} or any(t in q.lower() for t in (_rf.get("termos_proibidos") or []))):
+            q = _pool[(int(time.time() // 300) + ordem) % len(_pool)]          # 01/10: restrição fixa — a proibida sai, entra a estratégia criativa
         if _PH.search(q) or q.strip().lower() in {c["consulta"] for c in (_pe.get("consultas_ruins") or [])}:
             q = _boas[(int(time.time() // 600) + ordem) % len(_boas)] if _boas else ""
     except Exception:
@@ -662,7 +666,14 @@ def missao_descobrir(ordem: int) -> tuple[str, list[dict], str]:
     _max = int(_pe.get("max_usos_da_mesma_consulta_por_dia", 3))
     _boas = [c for c in _boas if _usos["usos"].get(c.lower(), 0) < _max]
     _novas = [c for c in _novas if _usos["usos"].get(c.lower(), 0) < _max] or _novas
-    if _boas and (not _novas or _rnd.random() < 0.7):
+    # 01/10: ESTRATÉGIA CRIATIVA (trocada a cada 100 pesquisas, sem regra fixa) vem primeiro; RESTRIÇÕES FIXAS só negativas
+    _rf = _pe.get("restricoes_fixas") or {}
+    _livre = lambda c: c.lower() not in {x.lower() for x in (_rf.get("consultas_proibidas") or [])} and not any(t in c.lower() for t in (_rf.get("termos_proibidos") or []))
+    _pool = [c for c in ((_pe.get("estrategia_criativa") or {}).get("pool") or []) if _livre(c) and _usos["usos"].get(c.lower(), 0) < _max]
+    _boas = [c for c in _boas if _livre(c)]; _novas = [c for c in _novas if _livre(c)] or _novas
+    if _pool and _rnd.random() < 0.8:
+        q = _pool[(int(time.time() // 300) + ordem) % len(_pool)]
+    elif _boas and (not _novas or _rnd.random() < 0.7):
         q = _boas[(int(time.time() // 600) + ordem) % len(_boas)]
     elif _novas:
         q = _novas[(int(time.time() // 600) + ordem) % len(_novas)]

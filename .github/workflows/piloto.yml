@@ -260,13 +260,15 @@ jobs:
           MODO: ${{ github.event.inputs.modo || 'ciclo' }}
         run: |
           timeout 120 python -m src.skills.aprendizado >/dev/null 2>&1 || echo 'aprendizado: falhou'
-          timeout 90 python -m src.espiao_relatorio >/dev/null 2>&1 || echo 'relatório do Espião: falhou'   # quadro no padrão do Interceptador   # skill: a cada 100 erros, parâmetros novos
+          timeout 60 python -m src.reset_pilotos >/dev/null 2>&1 || true   # 01/10: missões anteriores ao reset ficam só no histórico
+          timeout 90 python -m src.espiao_relatorio >/dev/null 2>&1 || echo 'relatório do Espião: falhou'   # quadro no padrão do Interceptador
+          timeout 60 python -m src.achados_pilotos >/dev/null 2>&1 || echo 'achados por dia: falhou'   # oportunidades do Espião por dia   # skill: a cada 100 erros, parâmetros novos
           timeout 300 python -m src.dashboard_dados || { echo "::error::o gerador principal do painel (src.dashboard_dados) falhou — o painel ficaria congelado"; date -u +%FT%TZ > estado/piloto/gerador_painel_falhou.txt; }
           # 1) guarda o que o Piloto produziu
           BASE_DO_VOO=$(git rev-parse HEAD)          # onde a cópia do voo começou
           rm -rf docs/dados/dados                    # 27/09: pasta aninhada de 22/09 (220 MB) — nunca mais volta
           rm -rf /tmp/sind && mkdir -p /tmp/sind
-          for P in config/parametros_pilotos.json estado/aprendizado estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
+          for P in estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
             # cp -r PASTA DESTINO copia PARA DENTRO quando o destino ja existe (gerava docs/dados/dados).
             # Com diretorio, copiamos o CONTEUDO; com arquivo, o arquivo.
             if [ -d "$P" ]; then mkdir -p "/tmp/sind/$P" && cp -r "$P/." "/tmp/sind/$P/" || true
@@ -302,7 +304,7 @@ jobs:
           json.dump(atual, open("config/piloto.json","w"), ensure_ascii=False, indent=1)
           PY
           # 28/09: SÓ os caminhos do Piloto — nunca "git add -A" geral (levava a cópia velha de src/ e desfez uma correção)
-          PILOTO_PATHS="config/parametros_pilotos.json estado/aprendizado estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados"
+          PILOTO_PATHS="estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados"
           for P in $PILOTO_PATHS; do [ -e "$P" ] && git add -A -- "$P"; done
           git status --short | head -20
           git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"

@@ -763,6 +763,13 @@ def run() -> dict:
                 _p["agenda_dias"] = _a.get("dias"); _p["agenda_hora"] = _a.get("horarios_brt")
     except Exception:
         pass
+    try:                                         # 01/10: novidade que a validação já tirou do mapa não volta pela menção
+        from .validacao_mapa import carregar as _vcar, SAEM_DO_MAPA as _saem
+        _V = _vcar(); _fora = {v.get("titulo") for v in _V.values() if v.get("decisao") in _saem}
+        _fica = {v.get("titulo") for v in _V.values() if v.get("decisao") not in _saem}
+        resumo["novas_sem_referencia"] = [n for n in (resumo.get("novas_sem_referencia") or []) if not (n.get("titulo") in _fora and n.get("titulo") not in _fica)]
+    except Exception:
+        pass
     pac["plataformas"] = plataformas; pac["oficiais"] = oficiais; pac["novas"] = resumo["novas_sem_referencia"]
     hz = ROOT / "config/horarios.json"
     pac["horarios"] = load_json(hz) if hz.exists() else {}

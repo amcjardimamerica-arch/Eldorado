@@ -90,7 +90,7 @@ jobs:
           # da cópia do voo — ela é velha e religava opressores desligados e duplicados removidos. São REGENERADOS sobre
           # a main atual, depois do reset (validação, fluxo e saúde são idempotentes).
           cp -r estado/interceptador /tmp/int/ 2>/dev/null || true
-          mkdir -p /tmp/int/extra && for P in config/parametros_pilotos.json estado/aprendizado docs/dados/dossies_empresas.json docs/dados/aprendizado_pilotos.json; do [ -e "$P" ] && cp -r --parents "$P" /tmp/int/extra/; done; true
+          mkdir -p /tmp/int/extra && for P in estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado docs/dados/dossies_empresas.json docs/dados/aprendizado_pilotos.json; do [ -e "$P" ] && cp -r --parents "$P" /tmp/int/extra/; done; true
           for f in $(git diff --name-only -- dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json; git ls-files --others --exclude-standard dados/editais/extraidos biblioteca_alexandria/oportunidades); do mkdir -p "/tmp/int/$(dirname "$f")"; cp "$f" "/tmp/int/$f"; done
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
@@ -100,12 +100,14 @@ jobs:
             [ -d /tmp/int/interceptador ] && { rm -rf estado/interceptador; cp -r /tmp/int/interceptador estado/interceptador; }
             cp -r /tmp/int/dados /tmp/int/biblioteca_alexandria /tmp/int/docs . 2>/dev/null || true
             [ -d /tmp/int/extra ] && cp -r /tmp/int/extra/. . || true
+            timeout 60 python -m src.reset_pilotos >/dev/null 2>&1 || true   # 01/10: missões anteriores ao reset ficam só no histórico
             timeout 120 python -m src.skills.aprendizado >/dev/null 2>&1 || echo 'aprendizado: falhou'   # skill: a cada 100 erros, parâmetros novos
+            timeout 60 python -m src.achados_pilotos >/dev/null 2>&1 || echo 'achados por dia: falhou'
             timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa (curadoria + validação + fluxo): falhou"
             timeout 120 python -m src.achados_motores >/dev/null 2>&1 || echo "oportunidades por motor: falhou"   # lista única de cada motor, a cada pouso
             GITHUB_TOKEN="${{ github.token }}" timeout 120 python -m src.saude >/dev/null 2>&1 || echo "saúde: falhou"
             # 30/09: só os caminhos que EXISTEM — "git add" de arquivo inexistente (dossies_empresas.json, ainda sem dossiê) saía com erro e a etapa inteira falhava: nenhum resultado do Interceptador era gravado
-            for P in config/parametros_pilotos.json estado/aprendizado docs/dados/dossies_empresas.json docs/dados/aprendizado_pilotos.json docs/dados/interceptador.json estado/interceptador estado/piloto/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json docs/dados/fluxo_oportunidades.json docs/dados/saude.json docs/dados/validacao_motores.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json biblioteca_alexandria/base/preditivo estado/opressores.json dados/editais/arquivados.json; do [ -e "$P" ] && git add -A -- "$P"; done; true
+            for P in estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado docs/dados/dossies_empresas.json docs/dados/aprendizado_pilotos.json docs/dados/interceptador.json estado/interceptador estado/piloto/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/oportunidades docs/dados/esquadrilha.json docs/dados/fluxo_oportunidades.json docs/dados/saude.json docs/dados/validacao_motores.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json biblioteca_alexandria/base/preditivo estado/opressores.json dados/editais/arquivados.json; do [ -e "$P" ] && git add -A -- "$P"; done; true
             git commit -q -m "interceptador: voo $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; ENVIADO=1; break; }
             if git push -q origin main; then echo "gravado ($i)"; ENVIADO=1; break; fi
             sleep $((i * 5))

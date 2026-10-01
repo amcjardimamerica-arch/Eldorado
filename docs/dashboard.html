@@ -481,6 +481,11 @@ box-shadow:0 1px 3px #0002}
 .livro-nome{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0E2A55}
 .livro-lugar{display:flex;flex-direction:column;align-items:flex-end;gap:2px;min-width:118px;max-width:150px;font-size:11px;color:#3B4A5C}
 .lg-l{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.lg-l span{overflow:hidden;text-overflow:ellipsis;max-width:120px}.lg-l svg{flex:none;color:#5B6B7F}
+.pd{margin:6px 0 8px}.pd-t{font-weight:700;color:#0E2A55;font-size:12.5px;margin-bottom:4px}.pd-g{display:grid;grid-template-columns:repeat(30,minmax(0,1fr));gap:3px}
+.pd-d{border:1px solid #E3E8ED;background:#fff;border-radius:6px;padding:2px 0;font-size:10px;color:#9AA5B1;display:flex;flex-direction:column;align-items:center;min-height:30px;cursor:default}
+.pd-d.tem{background:#F1F9F4;border-color:#9FD3B4;color:#1E7E4B;cursor:pointer}.pd-d.tem:hover{background:#1E7E4B;color:#fff}.pd-d b{font-size:11px}
+.pd-o{padding:6px 0;border-bottom:1px solid #EEF1F4;display:flex;flex-direction:column;gap:2px}
+@media (max-width:760px){.pd-g{grid-template-columns:repeat(10,minmax(0,1fr))}}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -4142,6 +4147,7 @@ window.desenhaPostoInterceptador=async function(alvo){
       <div class="int-met"><b>${A.fontes_novas_para_os_motores||0}</b><span>fontes novas p/ os motores</span></div>
       <div class="int-met"><b>${A.tempo_medio_min??"–"} min</b><span>por missão</span></div>
     </div>
+    <div class="pd" data-dias-piloto="interceptador">${htmlDiasPiloto("interceptador")}</div>
     <div class="int-fila">Na fila: ${Object.entries(F).map(([k,v])=>`<b>${v}</b> ${esc(k)}`).join(" · ")||"—"} · parecer "serve como fonte": <b>${serve.sim||0}</b> sim, <b>${serve.talvez||0}</b> talvez, <b>${serve.nao||0}</b> não</div>
     ${M.map(m=>{const E=m.encontrou||{}, P=m.parecer_fonte||{};
       const ini=m.em&&m.segundos?new Date(new Date(m.em)-m.segundos*1000).toISOString():null;
@@ -4479,6 +4485,7 @@ window.htmlEspiaoQuadro=function(D,V,alvo){
       <div class="int-met"><b>${tmin==null?"–":tmin<1?Math.round(tmin*60)+" s":tmin+" min"}</b><span>por missão</span></div>
     </div>
     <div class=meta style="margin:-2px 0 6px">missões = com resultado + nada no crivo + fora do objeto + busca sem resposta · itens achados é a soma do que as missões com resultado trouxeram</div>
+    <div class="pd" data-dias-piloto="espiao">${htmlDiasPiloto("espiao")}</div>
     ${(()=>{const Z=D.aprendizado||{}; if(!(Z.buscas_que_funcionam||[]).length&&!(Z.buscas_que_falham||[]).length) return "";
       const lin=(c,ok)=>`<li><b>${esc(String(c.consulta).slice(0,80))}</b> <span class=meta>· ${ok?`${c.com_resultado}/${c.tentativas} com resultado · ${c.achados} achado(s)`:`${c.tentativas} tentativa(s) sem resultado`}</span></li>`;
       return `<div class="esp-apr"><div><h5>Buscas que funcionam</h5><ul>${(Z.buscas_que_funcionam||[]).slice(0,4).map(c=>lin(c,true)).join("")}</ul></div>
@@ -4525,6 +4532,25 @@ window.lugarLivro=function(m){
   const c=cid?(cid===cid.toUpperCase()?cid.toLowerCase().replace(/(^|\s)\S/g,s=>s.toUpperCase()):cid):"";
   return `${c?`<span class="lg-l">${ICL.cidade}<span>${esc(c)}</span></span>`:""}<span class="lg-l">${ICL.estado}<span>${esc(UF_NOME[g])}</span></span>`;
 };
+/* OPORTUNIDADES ENCONTRADAS POR DIA — PILOTOS (titular, 01/10): como os demais motores; o dia abre só as oportunidades */
+window._ACHP=null;
+window.carregaAchadosPilotos=async function(){ try{ const r=await fetch("dados/achados_pilotos.json?v="+Date.now()); if(r.ok){ window._ACHP=await r.json();
+  document.querySelectorAll("[data-dias-piloto]").forEach(el=>el.innerHTML=htmlDiasPiloto(el.dataset.diasPiloto)); } }catch(e){} };
+window.htmlDiasPiloto=function(p){
+  const D=((window._ACHP||{})[p])||{}, hoje=new Date(), cel=[];
+  for(let i=29;i>=0;i--){ const dt=new Date(hoje); dt.setDate(hoje.getDate()-i); const k=dt.toISOString().slice(0,10), n=(D[k]||[]).length;
+    cel.push(`<button class="pd-d${n?" tem":""}" ${n?`onclick="abreDiaPiloto('${p}','${k}')"`:"disabled"} title="${k.split("-").reverse().join("/")}: ${n} oportunidade(s)"><span>${dt.getDate()}</span>${n?`<b>${n}</b>`:""}</button>`); }
+  const tot=Object.entries(D).filter(([k])=>k>=new Date(hoje-29*864e5).toISOString().slice(0,10)).reduce((s,[,v])=>s+v.length,0);
+  return `<div class="pd-t">Oportunidades encontradas por dia <span class=meta>· ${tot} nos últimos 30 dias · clique no dia</span></div><div class="pd-g">${cel.join("")}</div>`;
+};
+window.abreDiaPiloto=function(p,k){
+  const L=(((window._ACHP||{})[p])||{})[k]||[], nome=p==="espiao"?"Piloto - Espião":"Piloto - Interceptador";
+  abreModal(`<h3 style="margin:0">${esc(nome)} · ${k.split("-").reverse().join("/")}</h3><div class=meta>${L.length} oportunidade(s) encontrada(s) neste dia</div>`,
+    `<div class="pd-lista">${L.map(o=>`<div class="pd-o"><b>${o.url?`<a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">${esc(o.titulo)}</a>`:esc(o.titulo)}</b>
+      <span class=meta>${[o.uf,o.prazo?"prazo "+br(o.prazo):"",o.situacao].filter(Boolean).map(esc).join(" · ")}</span></div>`).join("")||"<div class=meta>Nenhuma oportunidade.</div>"}</div>`);
+};
+setTimeout(()=>{ try{ carregaAchadosPilotos(); }catch(e){} }, 2500);
+setInterval(()=>{ try{ carregaAchadosPilotos(); }catch(e){} }, 120000);
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição

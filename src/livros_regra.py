@@ -113,18 +113,30 @@ def registrar_achados_do_espiao(achados: list[dict]) -> dict:
         por_chave.setdefault(chave(x.get("programa") or "", x.get("orgao") or ""), x)
         por_chave.setdefault(chave(x.get("programa") or ""), x)
     criados = atualizados = 0
+    ids = {x.get("id") for x in ms}
+    # 01/10: o que a validação individual já DESCARTOU não volta como livro
+    import glob as _g
+    descartados = set()
+    for f in _g.glob(str(ROOT / "dados/oportunidades/validacao_mapa/validacao_*.json")):
+        for d in (_j(Path(f), {}).get("itens") or []):
+            if d.get("decisao") == "descartada":
+                descartados.add(chave(d.get("titulo") or "")); descartados.add(str(d.get("url") or "").rstrip("/"))
     for a in achados or []:
         tit = str(a.get("titulo") or a.get("nome") or "").strip()
         url = str(a.get("url") or a.get("onde") or "")
         if len(tit) < 8 or not url.startswith("http"):
             continue
         k = chave(tit, a.get("orgao") or a.get("empresa") or "")
+        if chave(tit) in descartados or url.rstrip("/") in descartados:
+            continue
         x = por_chave.get(k) or por_chave.get(chave(tit))
         if x:
             if anotar_checklist(x, _checklist_de(a), "Piloto - Espião"):
                 atualizados += 1
             continue
         lid = "op-" + hashlib.sha1(("espiao|" + k).encode()).hexdigest()[:12]
+        if lid in ids:
+            continue
         x = {"id": lid, "programa": tit[:200], "orgao": a.get("orgao") or a.get("empresa") or "", "motor": "repositorio",
              "tipo": "repositorio_de_oportunidade", "familia": "Oportunidade com seleção", "uf": a.get("uf"), "pagina": url,
              "ativa": True, "validacao": "não lida ainda", "criado_em": date.today().isoformat(),
@@ -134,7 +146,7 @@ def registrar_achados_do_espiao(achados: list[dict]) -> dict:
         if internacional(x):
             x["internacional"] = True
         classificar(x); anotar_checklist(x, _checklist_de(a), "Piloto - Espião")
-        ms.append(x); por_chave[k] = x; criados += 1
+        ms.append(x); por_chave[k] = x; ids.add(lid); criados += 1
     if criados or atualizados:
         CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return {"livros_novos": criados, "livros_atualizados": atualizados}

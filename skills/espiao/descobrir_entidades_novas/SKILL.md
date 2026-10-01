@@ -24,3 +24,7 @@ descoberta — ignore e siga. Sinal forte: página 'instituto', 'responsabilidad
   da consulta. Intervalo de 10 s entre buscas, nova tentativa após 25 s, e a mesma consulta no máximo 3 vezes por dia.
 - Termos que rendem (7 dias): conanda, empresarial, saúde, doação, voluntariado, parceiros. Termos que falham: regiões,
   baixa cobertura, mapeados (sobras das perguntas genéricas do briefing).
+- 01/10 — SEM REGRA FIXA DE BUSCA: a cada 100 pesquisas o Espião recebe uma estratégia nova, sorteada (tipo de recurso ×
+  área × lugar × financiador real dos livros × molde), nunca repetida; o que funcionou pesa mais na próxima. FIXO, só o
+  negativo: consultas e termos proibidos (config/parametros_pilotos.json › espiao › restricoes_fixas).
+- O que achar e não estiver nos livros vira livro novo; empresa achada vai ao ranking (a verificar).
