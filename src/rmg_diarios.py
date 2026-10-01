@@ -31,7 +31,7 @@ SAIDA = ROOT / "dados/oportunidades/oportunidades.jsonl"
 def _normalizar(texto: str) -> str:
     return unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode().lower().strip()
 
-def _buscar(url: str, timeout: int = 25) -> dict:
+def _buscar(url: str, timeout: int = 60) -> dict:
     validate_public_https(url)
     req = Request(url, headers={"User-Agent": "Eldorado-OSC/3.0 contato-via-repositorio",
                                 "Accept": "application/json"})
@@ -105,11 +105,15 @@ def run(dias: int | None = None) -> dict:
                           "published_since": inicio.isoformat(), "published_until": fim.isoformat(),
                           "size": min(int(apis.get("size", 50)), 50)}
             sucesso = False
+            erros = []
             for base in bases:
                 url = f"{base.rstrip('/')}/gazettes?" + urlencode(parametros)
                 try:
                     dados = _buscar(url)
                 except (HTTPError, URLError, OSError, ValueError, json.JSONDecodeError) as exc:
+                    # 01/10: o erro passa a ser registrado — 147 de 147 consultas falhavam como "sem resposta"
+                    code = getattr(exc, "code", None)
+                    erros.append(f"{base.split('//')[-1][:30]}: {type(exc).__name__}{f' HTTP {code}' if code else ''}")
                     continue
                 sucesso = True
                 for gazeta in dados.get("gazettes", []) or []:
@@ -145,7 +149,8 @@ def run(dias: int | None = None) -> dict:
                         novos += 1
                 break
             if not sucesso:
-                relatorio["falhas"].append({"municipio": chave, "consulta": consulta[:40], "erro": "sem resposta das bases"})
+                relatorio["falhas"].append({"municipio": chave, "consulta": consulta[:40],
+                                            "erro": "; ".join(erros)[:200] or "sem resposta das bases"})
 
     gravar_oportunidades(registros)
     relatorio["novas"] = novos

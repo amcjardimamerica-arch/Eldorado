@@ -125,7 +125,10 @@ def montar() -> dict:
             except Exception:
                 xs = []
         if mid == "do-goiania":
-            xs = [r for r in regs if r.get("fonte_id") == "querido-diario" and "goiânia" in str(r.get("titulo", "")).lower()]
+            # 01/10 (parecer do motor 01): antes entravam as EDIÇÕES do Querido Diário com "goiânia" no título —
+            # inclusive Aparecida de Goiânia — e todas caíam no filtro "edição não é oportunidade" (268 → 0).
+            # Agora entram os ATOS que o leitor recortou e classificou como oportunidade (fonte_id do-goiania).
+            xs = [r for r in regs if r.get("fonte_id") == "do-goiania"]
         vistos_t, vistos_u, unicas = set(), set(), []
         for r in xs:
             r["_pub"] = _data(r.get("data_publicacao")) or pub_ficha.get(r.get("id"))

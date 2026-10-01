@@ -413,6 +413,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     livros de oportunidades da Biblioteca (fontes_260) também casam pelo léxico ESPECÍFICO."""
     if data:
         sensor = dict(sensor, _data=data)
+    # MOTOR 01 (parecer de 01/10/2026): o Diário de Goiânia é lido pelo TEXTO das edições
+    # (Querido Diário na nuvem + PDF oficial na coleta local), recortado em atos — não pelo rótulo dos links
+    if sensor.get("id") == "do-goiania":
+        from .diario_goiania import ler_motor
+        return ler_motor(sensor, data, limites)
     lim = limites or load_json(CFG)["limites"]
     pausa = lim["pausa_segundos"] if pausa is None else pausa
     achados, falhas, saude = [], [], []
