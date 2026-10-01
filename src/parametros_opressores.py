@@ -50,7 +50,13 @@ def carregar() -> dict[str, dict]:
         for r in d.get("itens") or []:
             if r.get("id") and r.get("decisao") in DECISOES:
                 out[r["id"]] = {**r, "verificado_em": r.get("verificado_em") or d.get("data")}
-    return out
+    _reg = out
+    # 30/09: a curadoria dos livros pode ter juntado/renomeado o opressor pesquisado — segue o mapa de identificadores
+    _m = (_j(PASTA / "mapa_ids_2026-09-30.json", {}) or {}).get("mapa") or {}
+    for _a, _n in _m.items():
+        if _a in _reg and _n not in _reg:
+            _reg[_n] = {**_reg[_a], "id": _n, "id_pesquisado": _a}
+    return _reg
 
 
 def dispensados() -> set[str]:

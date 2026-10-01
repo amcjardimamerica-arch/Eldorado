@@ -674,7 +674,7 @@ def run() -> dict:
     motores = [sorted(g, key=lambda y: (y.get("id") in _lig, not str(y.get("id", "")).startswith("nova-"), len(json.dumps(y, ensure_ascii=False))), reverse=True)[0] for g in _grp.values()]
     # título que é data/hora ou lixo de página não vira opressor (28/09)
     _lixo = re.compile(r"^\s*\d{1,2}\s+[a-zç]{3}\.?\s+\d{1,2}:\d{2}|^\s*\d{1,2}:\d{2}\b|^\W*$", re.I)
-    motores = [x for x in motores if not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]
+    motores = [x for x in motores if x.get("parametros") or not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]
     # SEPARAÇÃO INTERNACIONAL (28/09): uma regra só (src/opressores_repositorio.internacional); o opressor internacional
     # vai para a família "Internacionais", esfera "Internacional"
     from .opressores_repositorio import internacional as _intl

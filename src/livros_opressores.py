@@ -200,9 +200,10 @@ def curar() -> dict:
             _anota(x, "classificação escrita" if not antes[0] else ("nova edição registrada" if antes[1] != x["livro"]["edicoes"] else "classificação atualizada"))
             st["atualizados"] += 1
     lig = L.get("ligados") or {}; por_ass, fica = {}, []    # 3) JUNTAR mesma assinatura
-    for x in sorted(ms, key=lambda y: (y.get("id") not in lig, -len(y.get("historico") or []))):
+    # 30/09: opressor PESQUISADO (12 parâmetros) é sempre o sobrevivente e nunca é absorvido por outro
+    for x in sorted(ms, key=lambda y: (not y.get("parametros"), y.get("id") not in lig, -len(y.get("historico") or []))):
         a = _assinatura(x)
-        if a in por_ass and x.get("tipo") == "repositorio_de_oportunidade":
+        if a in por_ass and x.get("tipo") == "repositorio_de_oportunidade" and not x.get("parametros"):
             alvo = por_ass[a]; ids = {h.get("id") for h in alvo.get("historico") or []}
             alvo.setdefault("historico", []).extend(h for h in x.get("historico") or [] if h.get("id") not in ids)
             classificar(alvo); _anota(alvo, f"juntado com {x['id']} (mesma geografia, objeto, tipo e programa)")

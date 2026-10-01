@@ -206,10 +206,10 @@ def sincronizar() -> dict:
         idx[fid] = {"opressor": opressor_de(item, "biblioteca", False)}
     # REPOSITÓRIO CRIADO PARA ATO QUE NÃO É SELEÇÃO (28/09): sai do catálogo
     antes = len(C["motores"])
-    C["motores"] = [x for x in C["motores"] if not (x.get("tipo") == "repositorio_de_oportunidade" and NAO_E_SELECAO.search(f"{x.get('programa') or ''} {x.get('orgao') or ''}"))]
+    C["motores"] = [x for x in C["motores"] if x.get("parametros") or not (x.get("tipo") == "repositorio_de_oportunidade" and NAO_E_SELECAO.search(f"{x.get('programa') or ''} {x.get('orgao') or ''}"))]   # 30/09: pesquisado nunca sai
     # título que é data/hora ou lixo de página ("23 Set. 08:50 In…") não é oportunidade (28/09)
     _lixo = re.compile(r"^\s*\d{1,2}\s+[a-zç]{3}\.?\s+\d{1,2}:\d{2}|^\s*\d{1,2}:\d{2}\b|^\W*$", re.I)
-    C["motores"] = [x for x in C["motores"] if not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]
+    C["motores"] = [x for x in C["motores"] if x.get("parametros") or not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]
     st["repositorios_indevidos_removidos"] = antes - len(C["motores"])
     # LIGADO SEM OPRESSOR NÃO É FONTE MONITORADA (28/09): 33 ligados não existiam mais no catálogo e inflavam a contagem
     ids = {x.get("id") for x in C.get("motores") or []}
