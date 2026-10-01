@@ -52,7 +52,13 @@ def carregar() -> dict[str, dict]:
                 out[r["id"]] = {**r, "verificado_em": r.get("verificado_em") or d.get("data")}
     _reg = out
     # 30/09: a curadoria dos livros pode ter juntado/renomeado o opressor pesquisado — segue o mapa de identificadores
-    _m = (_j(PASTA / "mapa_ids_2026-09-30.json", {}) or {}).get("mapa") or {}
+    _m = dict((_j(PASTA / "mapa_ids_2026-09-30.json", {}) or {}).get("mapa") or {})
+    try:                                       # 01/10: livro juntado a outro na conferência — a pesquisa segue para o que ficou
+        for _x in (_j(ROOT / "biblioteca_alexandria/fontes/motores.json", {}) or {}).get("motores") or []:
+            for _i in _x.get("ids_juntados") or []:
+                _m.setdefault(_i, _x["id"])
+    except Exception:
+        pass
     for _a, _n in _m.items():
         if _a in _reg and _n not in _reg:
             _reg[_n] = {**_reg[_a], "id": _n, "id_pesquisado": _a}
@@ -90,9 +96,21 @@ def resumo(r: dict) -> dict:
             "fora_abrangencia": bool(r.get("fora_abrangencia")), "fechados": fechados, "doze": doze}
 
 
+def _catalogo() -> dict[str, dict]:
+    return {m.get("id"): m for m in (_j(ROOT / "biblioteca_alexandria/fontes/motores.json", {}) or {}).get("motores", [])}
+
+
+def _resumo_com_dispensa(r: dict, mo: dict | None) -> dict:
+    """resumo() + a análise de dispensa provável dos itens 'não localizado' (src/dispensas_itens.py, 01/10/2026)."""
+    from . import dispensas_itens as DI
+    rs = resumo(r)
+    DI.no_livro(rs, mo, str((r.get("edital_referencia") or {}).get("titulo") or ""), str((mo or {}).get("programa") or ""))
+    return rs
+
+
 def aplicar(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
-    P = carregar()
+    P = carregar(); CAT = _catalogo()
     est = _j(EST, {"ligados": {}})
     est.setdefault("ligados", {}); est.setdefault("historico", [])
     res = {"registros": len(P), "itens_gravados": 0, "opressores_atualizados": 0, "desligados": 0, "historico_anotado": 0}
@@ -100,11 +118,19 @@ def aplicar(hoje: date | None = None) -> dict:
     for oid in list(est["ligados"]):
         r = P.get(oid)
         if not r:
+            # livro com 12 itens vindos de outra verificação (validação individual): só ganha a análise de dispensa provável
+            par = (est["ligados"][oid] or {}).get("parametros")
+            if isinstance(par, dict) and par.get("doze"):
+                antes = json.dumps(par, sort_keys=True, ensure_ascii=False)
+                from . import dispensas_itens as DI
+                DI.no_livro(par, CAT.get(oid), str((par.get("edital") or {}).get("titulo") or ""), str((CAT.get(oid) or {}).get("programa") or ""))
+                if json.dumps(par, sort_keys=True, ensure_ascii=False) != antes:
+                    res["opressores_atualizados"] += 1; mudou = True
             continue
         reg = est["ligados"][oid]
         if r["decisao"] == "D":
             est["historico"].append({**reg, "id": oid, "desligado_em": hoje.isoformat(),
-                                     "motivo": f"parâmetros {r.get('verificado_em')}: {r.get('motivo')}", "parametros": resumo(r)})
+                                     "motivo": f"parâmetros {r.get('verificado_em')}: {r.get('motivo')}", "parametros": _resumo_com_dispensa(r, CAT.get(oid))})
             est["ligados"].pop(oid)
             res["desligados"] += 1; mudou = True
             continue
@@ -114,7 +140,7 @@ def aplicar(hoje: date | None = None) -> dict:
             t = texto_item((r.get("dados") or {}).get(k))
             if t and itens.get(k) != t:
                 itens[k] = t; res["itens_gravados"] += 1; alterou = True
-        rs = resumo(r)
+        rs = _resumo_com_dispensa(r, CAT.get(oid))
         if reg.get("parametros") != rs:
             reg["parametros"] = rs; alterou = True
         if r.get("fonte_oficial") and r["decisao"] in ("V", "A", "R") and reg.get("url_edital") != ((r.get("edital_referencia") or {}).get("url") or r["fonte_oficial"]):
@@ -123,8 +149,8 @@ def aplicar(hoje: date | None = None) -> dict:
             res["opressores_atualizados"] += 1; mudou = True
     for h in est["historico"]:
         r = P.get(h.get("id"))
-        if r and h.get("id") not in est["ligados"] and h.get("parametros") != resumo(r):
-            h["parametros"] = resumo(r); res["historico_anotado"] += 1; mudou = True
+        if r and h.get("id") not in est["ligados"] and h.get("parametros") != _resumo_com_dispensa(r, CAT.get(h.get("id"))):
+            h["parametros"] = _resumo_com_dispensa(r, CAT.get(h.get("id"))); res["historico_anotado"] += 1; mudou = True
     est["historico"] = est["historico"][-400:]
     if mudou:
         EST.write_text(json.dumps(est, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -137,7 +163,7 @@ def no_catalogo(motores: list[dict]) -> int:
     for m in motores:
         r = P.get(m.get("id"))
         if r:
-            m["parametros"] = resumo(r); n += 1
+            m["parametros"] = _resumo_com_dispensa(r, m); n += 1
     return n
 
 

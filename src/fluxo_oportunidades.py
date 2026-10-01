@@ -158,9 +158,11 @@ def consolidar() -> list[dict]:
                        r"^\s*extrato|resultado|lista de aprovados|aprovados e suplentes|heteroidentifica|homologa|inexigibilidade|dispensa de chamamento|termo aditivo", re.I)
     _IDX = (_j(ROOT / "estado/opressores_indice.json", {}) or {}).get("indice") or {}
     _OPR = {x.get("id"): x for x in (_j(CAT_OPR, {}) or {}).get("motores", [])}
+    _EO = (_j(EST_OPR, {}) or {}).get("ligados") or {}
     vistos_t, vistos_u, out = set(), set(), []
     # VALIDAÇÃO INDIVIDUAL (27/09): decisão registrada prevalece; o que não foi validado passa pelas regras aprendidas
     from . import validacao_mapa as _vm
+    from . import dispensas_itens as _DI
     VAL = _vm.carregar(); HER = _vm.indice_heranca(VAL)
     ARQ = _j(ROOT / "dados/editais/arquivados.json", {})
     TRIAGEM.clear(); TRIAGEM.update({"saiu_por_validacao": 0, "saiu_por_arquivo": 0, "dispensado_pela_regra": 0, "regras": {}})
@@ -222,18 +224,36 @@ def consolidar() -> list[dict]:
         # CHECKLIST DOS 12 ITENS (28/09): a situação de CADA item — ok (comprovado com trecho), disp (dispensado pelo edital),
         # val (confirmado na validação individual), falta (estudado e não achado), pend (ainda não estudado)
         _vv = v or {}
+        _ix = _IDX.get(m.get("id")) or {}
+        _vok = (_vv.get("decisao") or "").startswith("valida")
+        _doze = _vv.get("doze_itens") or {} if _vok else {}
         _val_ok = {"Objeto": objeto, "Prazo de inscrição": fim or (_vv.get("prazo_dispensado") and "fluxo contínuo"),
                    "Órgão / financiador": _vv.get("orgao") or _vv.get("financiador"), "Valor": _vv.get("valor"),
-                   "Território": _vv.get("uf") or _vv.get("territorio"), "Requisitos": _vv.get("requisitos")} if (_vv.get("decisao") or "").startswith("valida") else {}
+                   "Território": _vv.get("uf") or _vv.get("territorio"), "Requisitos": _vv.get("requisitos")} if _vok else {}
+        # 01/10: os 12 itens da validação individual (doze_itens) e os parâmetros do livro também alimentam o checklist.
+        # Antes só valiam campos que a validação nem grava (orgao, valor, territorio...) e 'doze_itens' era ignorado.
+        _par = ((_EO.get(_ix.get("opressor")) or {}).get("parametros") or {}) if _ix.get("opressor") else {}
+        _pdz = _par.get("doze") or {}
+        _mesmo = bool(link and _par and _nu(link) in {_nu(x) for x in (_par.get("fonte_oficial"), (_par.get("edital") or {}).get("url")) if x})
         checklist = {}
         for k in CHECKLIST:
             c = (campos or {}).get(k) or {}
+            dz = _doze.get(k) or {}; pz = _pdz.get(k) or {}
             if c.get("comprovado"):
                 checklist[k] = {"s": "ok", "v": str(c.get("valor") or "")[:90], "t": str(c.get("trecho") or "")[:160]}
             elif c.get("dispensado"):
                 checklist[k] = {"s": "disp", "v": "dispensado pelo edital", "t": str(c.get("trecho_dispensa") or "")[:160]}
+            elif dz.get("status") == "confirmado" and dz.get("valor"):
+                checklist[k] = {"s": "val", "v": str(dz["valor"])[:90]}
+            elif dz.get("status") in ("dispensado pelo edital", "não informado no edital"):
+                checklist[k] = {"s": "disp", "v": (dz.get("status") if not dz.get("valor") else f"{dz['status']}: {dz['valor']}")[:90], "t": "validação individual no site oficial"}
             elif _val_ok.get(k):
                 checklist[k] = {"s": "val", "v": str(_val_ok[k])[:90]}
+            elif pz.get("status") in ("confirmado", "dispensado pelo edital", "não informado no edital") and _par.get("decisao") in ("V", "R") \
+                    and (pz.get("valor") or pz.get("status") != "confirmado"):
+                # parâmetros do livro: valem como 'val'/'disp' só se for o MESMO edital; senão são 'ref' (edição de referência)
+                st = "val" if (_mesmo and pz["status"] == "confirmado") else ("disp" if (_mesmo and pz["status"] != "confirmado") else "ref")
+                checklist[k] = {"s": st, "v": str(pz.get("valor") or pz["status"])[:90], "t": "parâmetros do livro" + ("" if _mesmo else " (edital de referência, não confirmado como o desta oportunidade)")}
             elif campos:
                 checklist[k] = {"s": "falta"}
             elif m.get("_emenda"):
@@ -248,7 +268,16 @@ def consolidar() -> list[dict]:
                 vv, ss = _em.get(k, ("", "pend")); checklist[k] = {"s": ss, "v": vv}
             else:
                 checklist[k] = {"s": "pend"}
-        _ix = _IDX.get(m.get("id")) or {}
+        # 01/10: DISPENSA PROVÁVEL pelo tipo de recurso (config/dispensas_por_regime.json). Não conta como item feito.
+        _mo = _OPR.get(_ix.get("opressor"))
+        # esfera comprovada vale mais que o 'nivel' bruto do motor (que erra em agregadores e diários)
+        _esf = str((checklist.get("Esfera") or {}).get("v") or "").lower() if (checklist.get("Esfera") or {}).get("s") in ("ok", "val", "disp") else ""
+        _privada = ("privad" in _esf or "internacional" in _esf) if re.search(r"privad|internacional|federal|estadual|municipal|distrital", _esf) \
+            else (m.get("nivel") in ("privada", "privado") or str((_mo or {}).get("natureza") or "") == "privada")
+        _reg, _reg_o = _DI.regime(_mo, tit, str(m.get("orgao") or ""), emenda=bool(m.get("_emenda")),
+                                  prazo_dispensado=prazo_disp,
+                                  privada=_privada)
+        dispensa_analise = _DI.aplicar_ao_checklist(checklist, _reg, _reg_o)
         if v and (v["decisao"] == "pendente" or (v["decisao"].startswith("valida") and not v.get("fonte_oficial"))):
             confirmada = False                                # a validação não achou a fonte oficial: não confirma (29/09: nem prazo de outra origem)
         insp = None
@@ -262,7 +291,7 @@ def consolidar() -> list[dict]:
         out.append({"id": m.get("id"), "titulo": re.sub(r"(?i)^continue lendo\s+", "", tit)[:180], "orgao": _orgao_real(m, e),
                     "uf": uf if uf in UFS else None, "origem": origem, "tipo": "menção em diário oficial" if diario else ("empresa/instituto" if (m.get("nivel") in ("privada", "privado") or origem.startswith("Piloto")) else "ente público"),
                     "publicado_em": pub, "inicio": _d(e.get("inicio"), ve.get("inicio"), m.get("inicio") if m.get("_emenda") else None), "fim": fim, "link_oficial": link,
-                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp, "condicoes": condicoes, "checklist": checklist,
+                    "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp, "condicoes": condicoes, "checklist": checklist, "regime": dispensa_analise["regime"], "dispensa_analise": dispensa_analise,
                     "area": area_tematica(((checklist.get("Área de atuação") or {}).get("v") or ""), str(objeto or ""), tit, str(m.get("orgao") or ""),
                                           " ".join(m.get("areas_fonte") or []) if isinstance(m.get("areas_fonte"), list) else str(m.get("areas_fonte") or ""))
                             or ("diario" if diario else None), "opressor": _ix.get("opressor"), "opressor_dispensa": _ix.get("dispensa"),
@@ -436,7 +465,7 @@ def montar() -> dict:
            "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal, "opressores": _resumo_opressores(itens),
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
            "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao",
-                                                                  "objeto", "condicoes", "checklist", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao")}
+                                                                  "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao")}
                                        for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
                             for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}
