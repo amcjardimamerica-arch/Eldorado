@@ -43,35 +43,35 @@
   "consultas_boas": [
    {
     "consulta": "quais são os programas de doação de multinacionais com inscrição local",
-    "tentativas": 229,
-    "com_resultado": 150,
-    "achados": 298,
+    "tentativas": 231,
+    "com_resultado": 151,
+    "achados": 300,
     "missao": "aposta"
    },
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 406,
-    "com_resultado": 251,
-    "achados": 501,
+    "tentativas": 408,
+    "com_resultado": 252,
+    "achados": 503,
     "missao": "aposta"
    },
    {
     "consulta": "qual setor ou região em minas gerais ainda não foi mapeado por editais",
-    "tentativas": 103,
-    "com_resultado": 51,
-    "achados": 51,
-    "missao": "aposta"
-   },
-   {
-    "consulta": "qual é o potencial de editais de fomento para organizações da sociedad",
-    "tentativas": 117,
+    "tentativas": 104,
     "com_resultado": 52,
     "achados": 52,
     "missao": "aposta"
    },
    {
+    "consulta": "qual é o potencial de editais de fomento para organizações da sociedad",
+    "tentativas": 119,
+    "com_resultado": 53,
+    "achados": 53,
+    "missao": "aposta"
+   },
+   {
     "consulta": "chamamento público conanda/sndca nº 01/2",
-    "tentativas": 967,
+    "tentativas": 968,
     "com_resultado": 165,
     "achados": 165,
     "missao": "resgate"
@@ -85,14 +85,14 @@
    },
    {
     "consulta": "edital abre inscrições para rede memória",
-    "tentativas": 1369,
+    "tentativas": 1370,
     "com_resultado": 82,
     "achados": 82,
     "missao": "resgate"
    },
    {
     "consulta": "zurich abre edital nacional para apoiar",
-    "tentativas": 1506,
+    "tentativas": 1507,
     "com_resultado": 82,
     "achados": 82,
     "missao": "resgate"
@@ -185,7 +185,7 @@
   "consultas_ruins": [
    {
     "consulta": "cacar-motor-patrocinio",
-    "tentativas": 53,
+    "tentativas": 52,
     "motivo": "nada_no_crivo",
     "missao": "cacar_oportunidade"
    },
@@ -433,12 +433,12 @@
    "volunta",
    "edição",
    "parceiros",
-   "público",
    "chamamento",
    "sndca",
+   "público",
    "filantropia",
-   "memória",
    "rede",
+   "memória",
    "milhões"
   ],
   "termos_ruins": [
@@ -460,7 +460,7 @@
   ],
   "rendimento_das_buscas": {
    "cacar_oportunidade": {
-    "tentativas": 101,
+    "tentativas": 100,
     "com_resultado": 1,
     "taxa": 0.01
    },
@@ -470,22 +470,22 @@
     "taxa": 0.002
    },
    "resgate": {
-    "tentativas": 20390,
+    "tentativas": 20393,
     "com_resultado": 585,
     "taxa": 0.029
    },
    "aposta": {
-    "tentativas": 5933,
-    "com_resultado": 528,
-    "taxa": 0.089
+    "tentativas": 5940,
+    "com_resultado": 532,
+    "taxa": 0.09
    },
    "descobrir": {
-    "tentativas": 643,
+    "tentativas": 644,
     "com_resultado": 3,
     "taxa": 0.005
    }
   },
-  "consultas_aprendidas_em": "2026-10-01T12:03:54+00:00"
+  "consultas_aprendidas_em": "2026-10-01T12:05:10+00:00"
  },
  "atualizado_em": "2026-10-01T08:48:32+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
