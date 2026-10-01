@@ -241,6 +241,30 @@ def diagnostico(consulta: str = "edital apoio a projetos sociais 2026", tempo: f
             "nenhum_respondeu": not vivos, "detalhe": saida}
 
 
+_DDG_NO_VOO = {"usadas": 0, "bloqueado": False}
+
+
+def _google_noticias(consulta: str, maximo: int, tempo: float) -> list[dict]:
+    """Google Notícias por RSS (01/10): sem chave, sem cartão; medido no servidor: 61 a 100 resultados por busca,
+    6 buscas seguidas sem bloqueio. Traz NOTÍCIAS (anúncios de editais, prêmios, chamadas) — o título e a fonte viram o
+    trecho que o crivo lê; a fonte oficial é confirmada depois pelo Interceptador."""
+    url = ("https://news.google.com/rss/search?q=" + urllib.parse.quote(consulta) + "&hl=pt-BR&gl=BR&ceid=BR:pt-419")
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/rss+xml,application/xml"})
+    with urllib.request.urlopen(req, timeout=tempo) as r:
+        xml = r.read(3_000_000).decode("utf-8", "ignore")
+    import html as _h
+    out = []
+    for it in re.findall(r"<item>(.*?)</item>", xml, re.S)[:maximo * 2]:
+        tit = _h.unescape(re.sub(r"<[^>]+>", "", (re.search(r"<title>(.*?)</title>", it, re.S) or [None, ""])[1]))
+        link = (re.search(r"<link>(.*?)</link>", it, re.S) or [None, ""])[1].strip()
+        fonte = _h.unescape((re.search(r"<source[^>]*>(.*?)</source>", it, re.S) or [None, ""])[1])
+        fonte_url = (re.search(r'<source url="([^"]+)"', it) or [None, ""])[1]
+        data = (re.search(r"<pubDate>(.*?)</pubDate>", it) or [None, ""])[1]
+        if tit and link:
+            out.append({"titulo": tit[:160], "url": link, "trecho": f"{tit} — {fonte} ({data[:16]})"[:300], "fonte_url": fonte_url, "buscador": "google_noticias"})
+    return out[:maximo]
+
+
 def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str] | None = None) -> list[dict]:
     """Busca real na internet pelas vias disponíveis, EM REVEZAMENTO.
 
@@ -257,6 +281,14 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
     if espera > 0:
         time.sleep(min(espera, ESPERA))                    # respeita o intervalo, senão o buscador corta
     _ULTIMA_BUSCA[0] = time.time()
+    # 01/10 — MEDIDO no servidor: o DuckDuckGo entrega 2 buscas por máquina e bloqueia (desafio anti-robô, status 202)
+    # por mais de 4 minutos — esperar não adianta. Cada voo é uma máquina nova: no máximo 2 buscas nele; depois, ou se
+    # bloquear, o Google Notícias (RSS) assume o resto do voo.
+    if not motores and (_DDG_NO_VOO["bloqueado"] or _DDG_NO_VOO["usadas"] >= int(_pe.get("max_buscas_duckduckgo_por_voo", 2))):
+        try:
+            return _google_noticias(consulta, maximo, tempo)
+        except Exception:
+            return []
     ordem = [v for v in vias_da_roda() if not motores or v in motores] or [b[0] for b in BUSCADORES]
     porMolde = {b[0]: (b[1], b[2]) for b in BUSCADORES}
     for nome in ordem:
@@ -292,6 +324,10 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
                     continue
                 vistos.add(chave); saida.append({**it, "buscador": nome})
             _marcar_via(nome, bool(p.itens), len(p.itens))
+            if nome == "duckduckgo":
+                _DDG_NO_VOO["usadas"] += 1
+                if not p.itens:
+                    _DDG_NO_VOO["bloqueado"] = True    # bloqueou: o resto do voo vai pelo Google Notícias
             if saida:
                 break                          # entregou: a roda para aqui e a próxima consulta começa na via seguinte
         except Exception:
@@ -299,10 +335,10 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
             time.sleep(1.2)
     # 01/10: ZERO resultados é o bloqueio silencioso do DuckDuckGo (medido: 8, 8, 0, 0, 0). Espera e tenta de novo,
     # ignorando o "descanso" — antes, a via descansava e todas as buscas seguintes do voo saíam vazias.
-    if not saida and _pe.get("_repeticao", 0) < int(_pe.get("tentativas_se_vazia", 2)) - 1 and not motores:
-        time.sleep(float(_pe.get("espera_se_busca_vazia_s", 25)))
+    if not saida and not motores:
+        _DDG_NO_VOO["bloqueado"] = True
         try:
-            return _buscar_de_novo(consulta, maximo, tempo)
+            return _google_noticias(consulta, maximo, tempo)
         except Exception:
             pass
     if not saida:
