@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-01T06:40:23+00:00",
+  "em": "2026-10-01T06:56:59+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-01T06:28:24+00:00",
+  "ultimo_voo": "2026-10-01T06:42:07+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,103 @@
     "empresas sem ficha": 106
   },
   "acumulado": {
-    "missoes": 562,
+    "missoes": 563,
     "validadas": 32,
-    "parciais": 164,
+    "parciais": 165,
     "insuficientes": 235,
     "fontes_confirmadas": 6,
     "fontes_possiveis": 14,
     "serve_como_fonte": {
-      "sim": 333,
+      "sim": 334,
       "nao": 60
     },
     "estrelas_de_ouro": 27,
-    "fontes_novas_para_os_motores": 136,
+    "fontes_novas_para_os_motores": 137,
     "tempo_medio_min": 9.1
   },
   "missoes": [
+    {
+      "em": "2026-10-01T06:42:07+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "edital novo dos motores",
+      "alvo": "Zurich Seguros abre edital nacional para apoiar projetos sociais via leis de incentivo fiscal",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.zurich.com.br/leis-de-incentivo-2026",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre o objeto, órgão financiador, território, esfera, requisitos e anexos.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria alinhar seu projeto a uma das áreas de atuação elegíveis, como assistência social, cultura, educação ou esporte, e garantir que o projeto esteja apto à captação por meio da Lei de Incentivo à Cultura.",
+        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre os requisitos específicos e o processo de inscrição.",
+        "risco": "O prazo de inscrição e outros detalhes não foram encontrados, o que pode impedir a participação no edital."
+      },
+      "erro": null,
+      "segundos": 892,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 0,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "0435170ee369be5229e7",
+      "encontrou": {
+        "Objeto": {
+          "valor": "selecionar e apoiar projetos sociais alinhados à estratégia de Responsabilidade Social Corporativa da compania, por meio da destinação de recursos provenientes de leis federais de incentivo fiscal",
+          "trecho": "O Edital de Seleção de Projetos via Incentivo Fiscal 2026 da Zurich Seguros tem como objetivo selecionar e apoiar projetos sociais alinhados à estratégia de Responsabilidade Social",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Zurich Seguros",
+          "trecho": "A Zurich Seguros torna público o presente Edital de Seleção de Projetos via Incentivo Fiscal 2026",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "BR",
+          "trecho": "Com apoio técnico do Instituto para o Desenvolvimento do Investimento Social (IDIS), este Edital integra o compromisso da Zurich Seguros com a geração de impacto social positivo e ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "Serão considerados projetos aprovados e aptos à captação por meio dos seguintes mecanismos: • Lei de Incentivo à Cultura - Lei Rouanet; • Fundo da Pessoa Idosa; • Fundo da Infância",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "Serão considerados projetos aprovados e aptos à captação por meio dos seguintes mecanismos: • Lei de Incentivo à Cultura",
+          "trecho": "Serão considerados projetos aprovados e aptos à captação por meio dos seguintes mecanismos: • Lei de Incentivo à Cultura - Lei Rouanet; • Fundo da Pessoa Idosa; • Fundo da Infância",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Zurich Seguros",
+      "indicios": [
+        {
+          "url": "https://captadores.org.br/editais/zurich-seguros-abre-edital-nacional-para-apoiar-projetos-sociais-via-leis-de-incentivo-fiscal",
+          "tipo": "noticia"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-01T06:28:24+00:00",
       "modo": "validar",
@@ -2904,77 +2986,6 @@
         "governo",
         "programa_puro"
       ]
-    },
-    {
-      "em": "2026-09-30T21:41:32+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "mapa · nacional (sorteio)",
-      "alvo": "Como Solicitar uma Doação",
-      "qualidade": "parcial",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Anexos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://climaesociedade.org/como-solicitar-uma-doacao",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado descreve claramente o objeto, financiador, requisitos e destinação do edital, o que permite identificar as informações necessárias para a solicitação de doação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisa ser uma Organização da Sociedade Civil (OSC), ter CNPJ ou ser movimento ou grupo comunitário que não tenha CNPJ, e beneficiar o Brasil.",
-        "proximo_passo": "Verificar os requisitos detalhados e preparar os documentos necessários para a solicitação de apoio financeiro.",
-        "risco": "A falta de CNPJ ou a não conformidade com os requisitos pode impedir o acesso ao apoio financeiro."
-      },
-      "erro": null,
-      "segundos": 440,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 6,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "1900448f0bbb4c705705",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoio financeiro para projetos e iniciativas de interesse público",
-          "trecho": "o Instituto concede apoio financeiro para projetos e iniciativas de interesse público.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Instituto Climático da Sociedade (iCS)",
-          "trecho": "o Instituto concede apoio financeiro para projetos e iniciativas de interesse público.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "nacional",
-          "trecho": "O iCS apoia projetos em todas as regiões do país...",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "A maior parte das doações é direcionada a Organizações da Sociedade Civil (OSCs)",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "ser Organização da Sociedade Civil (OSC), ter CNPJ ou ser movimento ou grupo comunitário que não tenha CNPJ, beneficiar o Brasil",
-          "trecho": "A maior parte das doações é direcionada a Organizações da Sociedade Civil (OSCs), mas o iCS também apoia projetos de universidades e centros de pesquisa (públicos ou privados), mov",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
     }
   ]
 }
