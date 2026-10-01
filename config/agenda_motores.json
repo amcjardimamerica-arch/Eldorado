@@ -3,15 +3,15 @@
  "regra": "cada motor roda na hora em que sua fonte publica; minuto :23/:53 para não cair na virada da hora, quando o GitHub atrasa e descarta execuções agendadas",
  "motores": {
   "do-goiania": {
-   "horarios_brt": "08:23",
-   "dias": "seg,ter,qua,qui,sex",
+   "horarios_brt": "07:41",
+   "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "o Diário de Goiânia publica pela manhã em dias úteis; coleta pelo computador do titular",
-   "coleta": "local",
+   "por_que_esta_hora": "na nuvem lê o Querido Diário, que indexa Goiânia com 2 a 16 dias de atraso — janela de 15 dias todo dia, sem repetir o que já leu; a coleta local lê o PDF oficial do dia, que sai em dias úteis",
+   "coleta": "nuvem + local",
    "objetivo": "encontrar oportunidade aberta para OSC em diário oficial municipal — a fonte primária de Goiânia",
    "verificacao": {
-    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
-    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+    "etapa_1": "na leitura: o texto integral da edição é recortado em atos pelo cabeçalho e cada ato é classificado (tipo, regime, público, órgão) → OPORTUNIDADE, ACOMPANHAR ou RUÍDO",
+    "etapa_2": "na fonte oficial: o ato mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem prazo no trecho e publicado há mais de 60 dias fica em ACOMPANHAR"
    }
   },
   "do-goias": {

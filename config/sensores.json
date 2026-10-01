@@ -33,14 +33,14 @@
    "uf": "GO",
    "territorio": "GO/Goiânia",
    "urls": [
-    "https://www.goiania.go.gov.br/diario-oficial/",
-    "https://www.goiania.go.gov.br/sing/secretarias/casa-civil/diario-oficial/",
-    "https://www.goiania.go.gov.br/diario-oficial/"
+    "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp",
+    "https://api.queridodiario.ok.org.br/gazettes"
    ],
    "busca": null,
    "confianca": "curada",
-   "o_que_procurar": "chamamentos, termos de fomento, resoluções do CMDCA/CMAS/CMI, subvenções, declarações de utilidade pública",
-   "nota_rede": "03/09: o host diariooficial.goiania.go.gov.br não resolveu no DNS do CI (gaierror); a página institucional do Diário entra como principal e a antiga como espelho, até o sensor confirmar · 04/09: páginas de listagem + descoberta automática a partir da home"
+   "o_que_procurar": "chamamentos MROSC, editais dos fundos (FMDCA, FMAS, FMI), PNAB/cultura, termos de fomento e colaboração, inexigibilidades, resultados e vagas da sociedade civil nos conselhos",
+   "nota_rede": "03/09: o host diariooficial.goiania.go.gov.br não resolveu no DNS do CI (gaierror); a página institucional do Diário entra como principal e a antiga como espelho, até o sensor confirmar · 04/09: páginas de listagem + descoberta automática a partir da home · 01/10: a URL /diario-oficial/ é a Carta de Serviços, não o Diário; a lista real é lista_diarios.asp?ano=AAAA e a edição segue do_AAAAMMDD_NNNNNNNNN.pdf. Na nuvem o motor lê o Querido Diário (IBGE 5208707), que indexa Goiânia com 2 a 16 dias de atraso; o PDF oficial do dia é lido na coleta local",
+   "leitor": "src/diario_goiania.py — texto integral das edições recortado em atos"
   },
   {
    "id": "do-goias",

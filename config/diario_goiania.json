@@ -1,0 +1,41 @@
+{
+  "motor": "do-goiania",
+  "versao": "2 — parecer do conselho de 01/10/2026",
+  "regra": "o Diário de Goiânia é lido pelo TEXTO das edições (Querido Diário na nuvem; PDF oficial na coleta local), recortado em atos e classificado sem IA",
+  "querido_diario": {
+    "bases": ["https://api.queridodiario.ok.org.br", "https://queridodiario.ok.org.br/api"],
+    "territorio_ibge": "5208707",
+    "janela_dias": 15,
+    "por_que_15_dias": "o Querido Diário indexou Goiânia com 2 a 16 dias de atraso em setembro/2026 (mediana 5,5); a janela cobre o atraso e a deduplicação evita repetir",
+    "size": 30,
+    "excerpt_size": 1500,
+    "number_of_excerpts": 3,
+    "max_textos_integrais": 8,
+    "sintaxe": "simple_query_string do Querido Diário: aspas = frase, | = OU, + = E (a palavra OR não é operador)",
+    "consultas": [
+      "\"chamamento público\" + (\"sociedade civil\" | OSC | \"13.019\")",
+      "\"edital de chamamento\" | \"aviso de chamamento\" | \"chamada pública\"",
+      "\"termo de fomento\" | \"termo de colaboração\"",
+      "CMDCA | FMDCA | \"direitos da criança e do adolescente\"",
+      "CMAS | FMAS | \"fundo municipal de assistência social\"",
+      "\"conselho municipal do idoso\" | \"fundo municipal do idoso\" | \"pessoa idosa\" + edital",
+      "\"Aldir Blanc\" | PNAB | \"pontos de cultura\" | \"Paulo Gustavo\"",
+      "\"subvenção social\" | \"emenda impositiva\" | \"emenda parlamentar\" + entidade",
+      "\"inexigibilidade de chamamento\" | \"dispensa de chamamento\"",
+      "\"entidades sem fins lucrativos\" + (edital | seleção | inscrições)"
+    ]
+  },
+  "portal": {
+    "lista_edicoes": "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano={ano}",
+    "padrao_edicao": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/{AAAA}/do_{AAAAMMDD}_{NNNNNNNNN}.pdf",
+    "observado_em": "2026-10-01: lista de 2026 com 187 edições (inclui Edição Extra); edição de 25/09/2026 = 9,3 MB, 238 páginas, com camada de texto",
+    "exige_brasil": true,
+    "janela_dias": 7,
+    "max_pdfs_por_execucao": 4
+  },
+  "vereditos": {
+    "OPORTUNIDADE": "abertura ou retificação de seleção para OSC (MROSC, fundos/conselhos, PNAB) com prazo não vencido — entra na base como capturada",
+    "ACOMPANHAR": "resultado, recurso, homologação, extrato de termo, inexigibilidade, vaga de conselho — inteligência para o painel",
+    "RUIDO": "credenciamento de prestadores (8.666 art. 25 / 14.133 art. 79), Organização Social da saúde (Lei 8.411/2006), decretos e portarias sem seleção"
+  }
+}
