@@ -27,8 +27,9 @@ EVOLUCAO = {
            "Nacional (XML integral da edição, gratuito com cadastro)",
     "do-goias": "ler o PDF da edição completa, não só o índice — o ato está dentro; e ser o único leitor do "
                 "Diário para os motores estaduais",
-    "do-goiania": "verificar a cobertura de Goiânia no Querido Diário (API aberta da Open Knowledge Brasil); "
-                  "se houver, dispensa a coleta local",
+    "do-goiania": "feito em 01/10: o Querido Diário cobre Goiânia (IBGE 5208707) e o motor lê o texto integral "
+                  "das edições na nuvem; próximo passo gratuito — alerta de prazo dos editais PNAB/FMDCA pelo "
+                  "histórico de 5 anos (os mesmos fundos abrem nas mesmas épocas)",
     "dje-tjgo": "testar a API do Diário de Justiça Eletrônico Nacional (DJEN/CNJ), fora do WAF do TJGO",
     "dj-trf1-go": "testar a API do DJEN/CNJ, que concentra os diários da Justiça Federal",
     "camara-goiania-pl": "verificar se a Câmara usa o SAPL (Interlegis), que expõe API aberta de proposições",
