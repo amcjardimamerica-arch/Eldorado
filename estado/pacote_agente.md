@@ -13,7 +13,7 @@ MARCAÇÕES: os editais abaixo marcados como LEVE pertencem a outros estados —
 ---
 ## 0ddd68c9faca99e754fe — Chamamento Público Nº 2026.09.01.01-PMI/SME - Seleção de OSC para Educação Infantil Prefeitura Municipal de Iguatu Aceita:   organizações da sociedade civil Prazo:  05/10/2026 (8d) Ver detalhes →
 
-MODO: COMPLETO · marcado desde 2026-09-28 · visto pela IA 11× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-28 · visto pela IA 13× · motivo: sem prazo de inscrição confirmado
 
 Fonte (vetor): Piloto - Espião — busca aberta no terceiro setor · UF BR · nível privada · situação aberta · fim 2026-10-05
 
@@ -32,17 +32,17 @@ Texto do edital (compacto):
 
 
 ---
-## 8812eadf434767bad390 — Convênios e parcerias
+## 00da9a728fcc3fe03de7 — AVISO DE CHAMADA PÚBLICA Nº 3/2026 - SCFV Prefeitura Municipal de Cafelândia R$ 17 mil Aceita:   organizações da sociedade civil Prazo:  16/10/2026 (17d) Ver detalhes →
 
-MODO: COMPLETO · marcado desde 2026-09-21 · visto pela IA 19× · motivo: sem prazo de inscrição confirmado
+MODO: COMPLETO · marcado desde 2026-09-30 · visto pela IA 2× · motivo: sem prazo de inscrição confirmado
 
-Fonte (vetor): Programa estadual de eventos esportivos · UF GO · nível estadual · situação possivel · fim None
+Fonte (vetor): Piloto - Espião — busca aberta no terceiro setor · UF BR · nível privada · situação aberta · fim 2026-10-16
 
 Itens já obtidos: nenhum
 
 Itens que FALTAM: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação, Área de atuação
 
-Anúncio: https://goias.gov.br/esporte/solicitacao-de-transporte
+Anúncio: https://capitaai.com.br/captacao/aviso-chamada-publica-32026-scfv-prefeitura-municipal-cafelandia-hdt3qz
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):

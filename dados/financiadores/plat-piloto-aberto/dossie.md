@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-piloto-aberto`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 132
-- Distribuição por ano pesquisado/coletado: {'2026': 132}
+- Pistas aguardando confirmação: 139
+- Distribuição por ano pesquisado/coletado: {'2026': 139}
 
 ## Padrões
 
@@ -12,7 +12,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Editais  Oportunidades de financiamento para organizações da sociedade civil, com prazo e condições apurados na fonte oficial.](https://duckduckgo.com/l?uddg=https%3A%2F%2Fvagas.terceirosetor.net%2Feditais%2F&rut=c858823372de0e60cb08794aea0b428dec42f0a03c154b1326e3cbc32d109816) — coletado em 2026-09-22T10:45:15+00:00
 - [Editais abertos para ONGs
  (1)](https://institutosocialcrescervida.blogspot.com/search/label/Editais%20abertos%20para%20ONGs) — coletado em 2026-09-29T17:10:10+00:00
 - [Oportunidades de Parcerias Nessa página são disponibilizados Programas do Governo Federal que estão abertos para recebimento de propostas de OSCs e  editais  públicos e privados de apoio a projetos, que podem ser executados por organizações do  Terceiro   Setor .](https://duckduckgo.com/l?uddg=https%3A%2F%2Fwww.gov.br%2Fsri%2Fpt%2Dbr%2Fbackup%2Dsecretaria%2Dde%2Dgoverno%2Farticulacao%2Dsocial%2Fportal%2Dorganizacao%2Dsociedade%2Dcivil%2Foportunidades&rut=7d29df1f3161c6157395a3c126dfdd0fbb0ff08336d0d3eb635f0ea1321f3cde) — coletado em 2026-09-24T09:57:34+00:00
@@ -62,5 +61,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [A  Plataforma  Prosas reúne  editais  públicos e privados de todos os estados brasileiros. É o maior agregador de oportunidades para o  terceiro   setor  no país. Estados como São Paulo, Minas Gerais, Bahia e Ceará concentram o maior volume de chamamentos estaduais em 2026, especialmente nas áreas d](https://institutosocialcrescervida.blogspot.com/2026/08/editais-abertos-para-instituicoes.html) — coletado em 2026-09-28T13:45:41+00:00
 - [parceirosvoluntarios.org.br/wp-content/uploads/2026/01/Edital-Programa-Impulsionar-2026.pdf](https://duckduckgo.com/l?uddg=https%3A%2F%2Fparceirosvoluntarios.org.br%2Fwp%2Dcontent%2Fuploads%2F2026%2F01%2FEdital%2DPrograma%2DImpulsionar%2D2026.pdf&rut=9e8ed409546502b6b0269714fa8ba1e28c8d1623e335ed009c084481b1d60008) — coletado em 2026-09-24T09:57:33+00:00
 - [️ A Conjunta considera que este  edital  apoia o desenvolvimento institucional de  organizações   da   sociedade   civil , pois apoia  organizações  que promovem e fortalecem o ecossistema do desenvolvimento institucional, oferecendo oportunidades para que outras  organizações  também se desenvolvam](https://conjunta.org/recurso-financeiro/chamada-aberta-2026-instituto-acp) — coletado em 2026-09-29T17:10:06+00:00
+- [capitaai.com.br/editais-abertos/assistencia-social-para-ong](https://capitaai.com.br/editais-abertos/assistencia-social-para-ong) — coletado em 2026-10-01T14:33:36+00:00
 - [capitaai.com.br/editais-abertos/para-ong](https://capitaai.com.br/editais-abertos/para-ong) — coletado em 2026-09-25T11:57:10+00:00
 - [Editais Sociais 2026 — Banco do Nordeste Banco do Nordeste R$ 1,5 mi Aceita:   organizações da sociedade civil Prazo:  30/09/2026 (3d) Ver detalhes →](https://capitaai.com.br/captacao/editais-sociais-2026-banco-nordeste-banco-nordeste-nsnx3s) — coletado em 2026-09-28T13:45:49+00:00

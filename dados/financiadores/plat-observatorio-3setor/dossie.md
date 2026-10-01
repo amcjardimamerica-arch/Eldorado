@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-observatorio-3setor`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 16
-- Distribuição por ano pesquisado/coletado: {'2026': 16}
+- Pistas aguardando confirmação: 17
+- Distribuição por ano pesquisado/coletado: {'2026': 17}
 
 ## Padrões
 
@@ -26,5 +26,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática](https://observatorio3setor.org.br/instituto-clima-e-sociedade-abre-edital-de-ate-r-500-mil-para-projetos-de-comunicacao-climatica) — coletado em 2026-09-04T19:48:28+00:00
 - [Karibu Foundation abre inscrições para iniciativas do Sul Global com bolsas de até US$ 20 mil](https://observatorio3setor.org.br/karibu-foundation-abre-inscricoes-para-iniciativas-do-sul-global-com-bolsas-de-ate-us-20-mil) — coletado em 2026-09-29T17:05:59+00:00
 - [HUB Pacto Contra a Fome conecta organizações a editais, parcerias e iniciativa do Terceiro Setor](https://observatorio3setor.org.br/hub-pacto-contra-a-fome-conecta-organizacoes-a-editais-parcerias-e-iniciativa-do-terceiro-setor) — coletado em 2026-09-29T10:25:06+00:00
+- [Sonhar o Mundo 2026 abre inscrições para instituições culturais de São Paulo](https://observatorio3setor.org.br/sonhar-o-mundo-2026-abre-inscricoes-para-instituicoes-culturais-de-sao-paulo) — coletado em 2026-10-01T14:27:49+00:00
 - [Instituto Benera quer transformar a doação em prática de cidadania](https://observatorio3setor.org.br/instituto-benera-quer-transformar-a-doacao-em-pratica-de-cidadania) — coletado em 2026-09-29T10:25:06+00:00
 - [Edital Conta que soma oferece formação gratuita em educação financeira para jovens](https://observatorio3setor.org.br/edital-conta-que-soma-oferece-formacao-gratuita-em-educacao-financeira-para-jovens) — coletado em 2026-09-23T10:00:09+00:00

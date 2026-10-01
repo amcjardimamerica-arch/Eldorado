@@ -2,9 +2,9 @@
 
 - Classe: `financiadores`
 - Fonte: `pncp`
-- Eventos verificados: 0
+- Eventos verificados: 2
 - Pistas aguardando confirmação: 230
-- Distribuição por ano pesquisado/coletado: {'2023': 7, '2024': 105, '2025': 51, '2026': 67}
+- Distribuição por ano pesquisado/coletado: {'2023': 7, '2024': 105, '2025': 51, '2026': 69}
 
 ## Padrões
 
