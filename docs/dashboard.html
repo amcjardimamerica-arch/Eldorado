@@ -477,6 +477,10 @@ box-shadow:0 1px 3px #0002}
 .esp-ult{margin-top:8px}.esp-ult-t{font-weight:700;color:#0E2A55;margin:4px 0}
 .esp-apr{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px;margin:6px 0;font-size:12px}.esp-apr h5{margin:0 0 3px;font-size:12px;color:#0E2A55}.esp-apr ul{margin:0;padding-left:18px}
 .bib-abas{display:inline-flex;gap:4px;margin-right:6px}.bib-abas button{border:1px solid #CFD8E3;background:#fff;border-radius:8px;padding:4px 10px;font-size:12px;cursor:pointer}.bib-abas button.on{background:#0E2A55;color:#fff;border-color:#0E2A55}
+.livro-c{display:flex;align-items:flex-start;gap:10px;cursor:pointer}.livro-txt{flex:1;min-width:0}
+.livro-nome{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0E2A55}
+.livro-lugar{display:flex;flex-direction:column;align-items:flex-end;gap:2px;min-width:118px;max-width:150px;font-size:11px;color:#3B4A5C}
+.lg-l{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}.lg-l span{overflow:hidden;text-overflow:ellipsis;max-width:120px}.lg-l svg{flex:none;color:#5B6B7F}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -1215,7 +1219,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <select id="mo-publico"><option value="">Todos os públicos</option></select>
     <select id="mo-natureza"><option value="">Pública e privada</option><option value="publica">Fonte pública</option><option value="privada">Fonte privada</option></select>
     <select id="mo-esfera"><option value="">Todas as esferas</option><option value="Município">Município</option><option value="Estado">Estado</option><option value="Brasil">Brasil</option><option value="Internacional">Internacional</option></select>
-    <select id="mo-status"><option value="ativo">Acesos (fogo)</option><option value="inativo">Apagados (poça de óleo)</option><option value="">Todos</option></select>
+    <select id="mo-status"><option value="ativo">Lendo</option><option value="inativo">Na Estante</option><option value="">Todos</option></select>
     <input id="mo-busca" placeholder="buscar edital ou órgão…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
     <span class="bz-limpar" onclick="moLimpar()">⨯ Limpar</span>
   </div>
@@ -4507,6 +4511,20 @@ window.desenhaLeis=async function(){
       <span class="dj-info">parametriza: ${esc((x.parametriza||{}).regra||"")}</span>
       <span class="dj-info"><b>${x.livros_de_oportunidade||0}</b> livro(s) de oportunidade sob esta norma · <b>${x.em_goias||0}</b> em Goiás</span></span></div>`).join("")}</div></div>`).join("")||'<div class=meta>Nenhum livro de lei.</div>';
 };
+/* LUGAR DO LIVRO (titular, 01/10): cidade e estado com ícone, um acima do outro; Brasil e Internacional com ícone próprio */
+const ICL={
+  cidade:'<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.3" d="M2 14V6l4-2v10M6 14V2l5 2v10M11 14V8l3 1v5M1 14h14M8 5.5h1M8 7.5h1M8 9.5h1M3.5 8h1M3.5 10h1"/></svg>',
+  estado:'<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M8 15s5-4.6 5-8.5A5 5 0 0 0 3 6.5C3 10.4 8 15 8 15z"/><circle cx="8" cy="6.5" r="1.8" fill="currentColor"/></svg>',
+  brasil:'<svg viewBox="0 0 20 14" width="18" height="13" aria-hidden="true"><rect width="20" height="14" rx="2" fill="#1E9E4A"/><path d="M10 2 18 7 10 12 2 7z" fill="#F4C20D"/><circle cx="10" cy="7" r="2.9" fill="#1C3F94"/></svg>',
+  inter:'<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path fill="none" stroke="currentColor" stroke-width="1.1" d="M1.5 8h13M8 1.5c2 2 2 11 0 13M8 1.5c-2 2-2 11 0 13"/></svg>'};
+const UF_NOME={AC:"Acre",AL:"Alagoas",AP:"Amapá",AM:"Amazonas",BA:"Bahia",CE:"Ceará",DF:"Distrito Federal",ES:"Espírito Santo",GO:"Goiás",MA:"Maranhão",MT:"Mato Grosso",MS:"Mato Grosso do Sul",MG:"Minas Gerais",PA:"Pará",PB:"Paraíba",PR:"Paraná",PE:"Pernambuco",PI:"Piauí",RJ:"Rio de Janeiro",RN:"Rio Grande do Norte",RS:"Rio Grande do Sul",RO:"Rondônia",RR:"Roraima",SC:"Santa Catarina",SP:"São Paulo",SE:"Sergipe",TO:"Tocantins"};
+window.lugarLivro=function(m){
+  const g=String(m.geo||""), cid=m.municipio?String(m.municipio):"";
+  if(g==="INT") return `<span class="lg-l">${ICL.inter}<span>Internacional</span></span>`;
+  if(!UF_NOME[g]) return `<span class="lg-l">${ICL.brasil}<span>Brasil</span></span>`;
+  const c=cid?(cid===cid.toUpperCase()?cid.toLowerCase().replace(/(^|\s)\S/g,s=>s.toUpperCase()):cid):"";
+  return `${c?`<span class="lg-l">${ICL.cidade}<span>${esc(c)}</span></span>`:""}<span class="lg-l">${ICL.estado}<span>${esc(UF_NOME[g])}</span></span>`;
+};
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
@@ -4599,8 +4617,8 @@ function desenhaMotores(){
     if(!s.dataset.lig){ s.dataset.lig=1; s.addEventListener("change",()=>desenhaMotores()); }};
   _opc("mo-area",MT.map(m=>m.objeto_area||"Geral")); _opc("mo-tipo",MT.map(m=>m.tipo_objeto)); _opc("mo-publico",MT.flatMap(m=>m.publico||[]));
   if($("mo-periodo")&&!$("mo-periodo").dataset.lig){ $("mo-periodo").dataset.lig=1; $("mo-periodo").addEventListener("change",()=>desenhaMotores()); }
-  if($("mo-mets"))$("mo-mets").innerHTML=[[IC("#1E7E4B"),MT.filter(m=>mtAtivo(m.id)).length,"Acesos (automático ou manual)"],
-    [IC("#94A3B8"),MT.filter(m=>!mtAtivo(m.id)).length,"Apagados (poça de óleo)"],
+  if($("mo-mets"))$("mo-mets").innerHTML=[[IC("#1E7E4B"),MT.filter(m=>mtAtivo(m.id)).length,"Lendo"],
+    [IC("#94A3B8"),MT.filter(m=>!mtAtivo(m.id)).length,"Na Estante"],
     [IC("#7B4BE0"),(MT._novas||[]).length,"Novas oportunidades anunciadas"],
     [IC("#C05E00"),MT.filter(m=>m.ativa&&m.faltam).length,"Ativos com camadas faltando"]]
     .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
@@ -4674,10 +4692,15 @@ function desenhaMotores(){
   window._mtPorId=window._mtPorId||{}; rows.forEach(m=>window._mtPorId[m.id]=m);
   // 01/10 (titular): cartão do LIVRO em 2 colunas, com mais informação; fósforo e envio de documentos/arquivos só na janela do livro
   const chipAceso=m=>{const d=m.disjuntor?JSON.parse(m.disjuntor):null, LV=m.livro||{}, IN=LV.inscricao||{};
-    return `<div class="dj aceso" data-id="${esc(m.id)}" style="border-left:4px solid ${({"Cultura":"#D63A6B","Esporte":"#7CB518","Saúde":"#2F79D0","Educação":"#2E9D5B","Assistência social":"#12A5B5","Criança e adolescente":"#E0A100","Pessoa idosa":"#8C6D3F","Meio ambiente":"#7B4FE0","Direitos humanos":"#C0392B","Desenvolvimento social":"#16A085","Emendas":"#B8860B"})[m.objeto_area]||"#7C8899"}" title="clique para abrir o livro">
-      <span class="dj-nome" onclick="mtDetalhe('${esc(m.id)}')"><b>${esc(m.nome_classificado||nomeCurto(m.programa))}</b>
-        <span class="dj-info"><b>${esc(m.objeto_area||"Geral")}</b> · ${esc(m.tipo_objeto||"")}${m.orgao?" · "+esc(String(m.orgao).slice(0,60)):""}</span>
-        <span class="dj-info">${m.aberta_agora?"<b style='color:#1E7E4B'>inscrição aberta</b>":"inscrição: "+esc(m.regime_inscricao||"sem registro")}${IN.mes_tipico?" · costuma fechar em "+["","jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"][Number(IN.mes_tipico)]:""}${(LV.edicoes??0)?" · "+LV.edicoes+" edição(ões)":""}${d?` · em leitura, dia ${d.dias}/30`:""}</span></span></div>`;};
+    const N=String(m.nome_classificado||nomeCurto(m.programa)), k=N.lastIndexOf(" — "), nome=k>0?N.slice(0,k):N;
+    const MES=["","jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"];
+    const info=[m.aberta_agora?"<b style='color:#1E7E4B'>inscrição aberta</b>":"inscrição "+esc(({"anual":"anual","contínuo":"em fluxo contínuo","eventual":"eventual"})[m.regime_inscricao]||"sem período registrado"),
+      IN.mes_tipico?"costuma fechar em "+MES[Number(IN.mes_tipico)]:"",
+      (LV.edicoes??0)?LV.edicoes+" edição(ões)":"",
+      d?`em leitura, dia ${d.dias}/30`:(mtAtivo(m.id)?"em leitura":"na estante")].filter(Boolean).join(" · ");
+    return `<div class="dj aceso livro-c" data-id="${esc(m.id)}" style="border-left:4px solid ${({"Cultura":"#D63A6B","Esporte":"#7CB518","Saúde":"#2F79D0","Educação":"#2E9D5B","Assistência social":"#12A5B5","Criança e adolescente":"#E0A100","Pessoa idosa":"#8C6D3F","Meio ambiente":"#7B4FE0","Direitos humanos":"#C0392B","Desenvolvimento social":"#16A085","Emendas":"#B8860B"})[m.objeto_area]||"#7C8899"}" title="clique para abrir o livro" onclick="mtDetalhe('${esc(m.id)}')">
+      <span class="livro-txt"><b class="livro-nome">${esc(nome)}</b><span class="dj-info">${info}</span></span>
+      <span class="livro-lugar">${lugarLivro(m)}</span></div>`;};
   // 29/09 (titular): os livros de oportunidades — agrupados pelo OBJETO classificado, com o nome "GO - Cultura · Edital — …"
   const COR_OBJ={"Cultura":"#D63A6B","Esporte":"#7CB518","Saúde":"#2F79D0","Educação":"#2E9D5B","Assistência social":"#12A5B5","Criança e adolescente":"#E0A100",
     "Pessoa idosa":"#8C6D3F","Meio ambiente":"#7B4FE0","Direitos humanos":"#C0392B","Desenvolvimento social":"#16A085","Emendas":"#B8860B","Geral":"#7C8899"};
@@ -4739,7 +4762,7 @@ function desenhaDisjuntores(){
 window.mtLigar30=function(id){const e=mtEstado();e.ativos=e.ativos||{};e.ativos[id]=true;e.ligados_em=e.ligados_em||{};e.ligados_em[id]=new Date().toISOString();mtSalva(e);desenhaMotores();atualizaMotoresAtivos();};
 window.mtAtivar=function(){
   const sel=mtFiltrados().filter(m=>mtAtivo(m.id));
-  if(!sel.length){abreModal("<h3 style=\"margin:0\">Nenhum motor com fogo no filtro</h3>","<p>Acenda (fogo) os motores que quer rodar agora — os com poça de óleo ficam de fora.</p>");return;}
+  if(!sel.length){abreModal("<h3 style=\"margin:0\">Nenhum livro sendo lido neste filtro</h3>","<p>Acenda (fogo) os motores que quer rodar agora — os com poça de óleo ficam de fora.</p>");return;}
   const pedido={gerado_em:new Date().toISOString(),fontes:sel.map(m=>m.id),programas:sel.map(m=>m.programa),
     instrucao:"Rodar apenas os motores destes pontos e devolver diagnóstico: camadas obtidas, faltantes, causa e ação."};
   const blob=new Blob([JSON.stringify(pedido,null,2)],{type:"application/json"});

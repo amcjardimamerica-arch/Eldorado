@@ -70,6 +70,30 @@ def _titulos(x: dict) -> str:
     return f"{x.get('programa') or ''} " + " ".join(str(e.get("titulo") or "") for e in (x.get("historico") or [])[-5:])
 
 
+# 01/10: cidade reconhecida também pelo nome do programa e pelo órgão (capitais e principais cidades de Goiás)
+CIDADES_CONHECIDAS = {"GO": ["Goiânia", "Aparecida de Goiânia", "Anápolis", "Rio Verde", "Águas Lindas de Goiás", "Luziânia", "Valparaíso de Goiás",
+                             "Trindade", "Formosa", "Novo Gama", "Senador Canedo", "Catalão", "Itumbiara", "Jataí", "Planaltina", "Caldas Novas",
+                             "Santo Antônio do Descoberto", "Goianésia", "Cidade Ocidental", "Mineiros", "Inhumas", "Cristalina", "Quirinópolis",
+                             "Niquelândia", "Porangatu", "Goiás", "Pirenópolis", "Alvorada do Norte", "Goiatuba", "Morrinhos", "Ceres", "Uruaçu"],
+                      "SP": ["São Paulo", "Campinas", "Guarulhos"], "RJ": ["Rio de Janeiro", "Niterói"], "MG": ["Belo Horizonte", "Uberlândia"],
+                      "DF": ["Brasília"], "BA": ["Salvador"], "PE": ["Recife"], "CE": ["Fortaleza"], "PR": ["Curitiba"], "RS": ["Porto Alegre"],
+                      "SC": ["Florianópolis"], "PA": ["Belém"], "AM": ["Manaus"], "MA": ["São Luís"], "PB": ["João Pessoa"], "RN": ["Natal"],
+                      "AL": ["Maceió"], "SE": ["Aracaju"], "PI": ["Teresina"], "MT": ["Cuiabá"], "MS": ["Campo Grande"], "ES": ["Vitória"],
+                      "TO": ["Palmas"], "RO": ["Porto Velho"], "AC": ["Rio Branco"], "AP": ["Macapá"], "RR": ["Boa Vista"]}
+
+
+def _cidade_no_texto(uf: str, texto: str) -> str | None:
+    t = _sem(texto)
+    for c in sorted(CIDADES_CONHECIDAS.get(uf, []), key=len, reverse=True):
+        if c == "Goiás":                       # a cidade de Goiás só quando escrita como "Cidade de Goiás" / "Goiás Velho"
+            if re.search(r"cidade de goias|goias velho", t):
+                return "Cidade de Goiás"
+            continue
+        if re.search(r"\b" + re.escape(_sem(c)) + r"\b", t):
+            return c
+    return None
+
+
 def geografia(x: dict) -> dict:
     from .opressores_repositorio import internacional
     if x.get("internacional") or internacional(x):
@@ -80,6 +104,8 @@ def geografia(x: dict) -> dict:
     m = re.search(r"(?:Prefeitura (?:Municipal )?de|Munic[ií]pio de|Di[aá]rio Oficial de|C[aâ]mara (?:Municipal )?de)\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ú']+(?:\s+(?:d[aeo]s?\s+)?[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ú']+){0,3})", _titulos(x))
     if m and not re.search(r"(?i)^goi[aá]s$|estad|outros|programa|uni[aã]o|brasil", m.group(1)):
         mun = m.group(1).strip()
+    if uf and not mun:
+        mun = _cidade_no_texto(uf, f"{x.get('programa') or ''} {x.get('orgao') or ''} {_titulos(x)}")
     if uf:
         return {"codigo": uf, "abrangencia": "municipal" if mun else "estadual", "uf": uf, "municipio": mun}
     return {"codigo": "BR", "abrangencia": "nacional", "uf": None, "municipio": None}

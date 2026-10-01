@@ -41,6 +41,15 @@ class TesteBiblioteca(unittest.TestCase):
         import re
         self.assertNotIn("Motores Opressores", h); self.assertNotIn("motores opressores", h)
 
+    def test_cartao_do_livro(self):
+        """01/10: Lendo / Na Estante; nome numa linha; lugar com ícone à direita; sem 'Cultura · Grant internacional'."""
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn('<option value="ativo">Lendo</option><option value="inativo">Na Estante</option>', h)
+        self.assertNotIn("Acesos (automático ou manual)", h); self.assertNotIn("Apagados (poça de óleo)", h)
+        self.assertIn("window.lugarLivro=", h); self.assertIn('class="livro-lugar"', h)
+        from src.livros_opressores import classificar
+        self.assertEqual(classificar({"programa": "PNAB Goiânia - Audiovisual", "uf": "GO"})["municipio"], "Goiânia")
+
 
 if __name__ == "__main__":
     unittest.main()
