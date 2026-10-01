@@ -3225,7 +3225,7 @@ window.mtExportarAtivacao=function(){const e=mtEstado();const inativos=Object.en
 let MT=[],mtSel=new Set();
 async function carregaMotores(){
   const p=await carregaFragmento("motores"); if(!p)return [];
-  MT=expandeCompacto(p); MT._resumo=p.resumo||{}; MT._plat=p.plataformas||[]; MT._of=p.oficiais||[]; MT._novas=p.novas||[];
+  MT=expandeCompacto(p).filter(m=>m.papel!=="fonte_de_busca");   /* 01/10: empresa sem edital é fonte de busca, não livro */ MT._resumo=p.resumo||{}; MT._plat=p.plataformas||[]; MT._of=p.oficiais||[]; MT._novas=p.novas||[];
   MT._horarios=p.horarios||{}; MT._relHoje=p.relatorio_hoje||null; MT._relatorios=(p.relatorios||{}).dias||[]; return MT;
 }
 function mtFiltrados(){

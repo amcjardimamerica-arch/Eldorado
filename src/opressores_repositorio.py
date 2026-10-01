@@ -62,8 +62,20 @@ def dispensa(item: dict) -> str | None:
     t = f"{item.get('titulo') or ''} {item.get('orgao') or ''}"
     if NAO_E_SELECAO.search(t):     # 28/09: dispensa de chamamento, inexigibilidade, pessoa física, compra — não é seleção aberta a associações
         return "não é seleção aberta a associações (dispensa/inexigibilidade de chamamento, credenciamento de pessoa física ou compra)"
-    # 01/10 (titular): TODA oportunidade mapeada vira livro — emenda, doação, patrocínio e empresa também. Fica de fora
-    # só o que não é oportunidade (acima).
+    # 01/10 (titular): parâmetros da Biblioteca na CRIAÇÃO — público municipal só de Goiás; empresa só como edital.
+    try:
+        from .curadoria_biblioteca import fora_da_abrangencia, empresa_sem_edital
+        x = {"programa": item.get("titulo"), "orgao": item.get("orgao"), "geo": item.get("uf") or None,
+             "pagina": item.get("pagina_oficial") or item.get("link_oficial") or item.get("url")}
+        if not x["geo"]:
+            from .livros_opressores import uf_do_dominio
+            x["geo"] = uf_do_dominio(x["pagina"])[0]
+        if fora_da_abrangencia(x):
+            return "fora da abrangência: oportunidade pública municipal de outro estado (só Goiás tem livros municipais)"
+        if item.get("tipo") == "empresa/instituto" and empresa_sem_edital(x):
+            return "empresa sem edital por concorrência: é fonte de busca, não livro"
+    except Exception:
+        pass
     return None
 
 

@@ -264,6 +264,15 @@ def ciclo_criativo() -> dict:
             pe["estrategias_anteriores"] = hist[-30:]
         est = _nova_estrategia_espiao(pe, hist); est["pesquisas_no_inicio"] = n
         pe["estrategia_criativa"] = est; feito["espiao"] = est["id"]
+    # 01/10: a estratégia em uso é sempre conferida contra as restrições fixas (um voo antigo gerou uma sem elas)
+    _rf = pe.get("restricoes_fixas") or {}
+    _limpo = [q for q in (est.get("pool") or []) if not _proibido(q, _rf)]
+    if len(_limpo) != len(est.get("pool") or []):
+        if len(_limpo) < 8:
+            _n0 = est.get("pesquisas_no_inicio"); est = _nova_estrategia_espiao(pe, hist); est["pesquisas_no_inicio"] = _n0
+            pe["estrategia_criativa"] = est; feito["espiao"] = est["id"] + " (refeita: havia consulta proibida)"
+        else:
+            est["pool"] = _limpo; pe["estrategia_criativa"] = est
     # ── INTERCEPTADOR: pesquisas = estudos desde o reset
     vs = [v for f in sorted(glob.glob(str(ROOT / "estado/interceptador/relatorios/*.json"))) for v in (_j(Path(f), {}).get("voos") or [])]
     pi = P.setdefault("interceptador", {}); ei = pi.get("estrategia_criativa"); hi = pi.setdefault("estrategias_anteriores", [])

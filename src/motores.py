@@ -675,6 +675,31 @@ def run() -> dict:
     # título que é data/hora ou lixo de página não vira opressor (28/09)
     _lixo = re.compile(r"^\s*\d{1,2}\s+[a-zç]{3}\.?\s+\d{1,2}:\d{2}|^\s*\d{1,2}:\d{2}\b|^\W*$", re.I)
     motores = [x for x in motores if x.get("parametros") or not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]
+    # PARÂMETROS DA BIBLIOTECA NO GERADOR (01/10): o gerador reconstrói os registros originais a cada ciclo — sem isto,
+    # a conferência era desfeita (municipal de outro estado voltava; empresa sem edital voltava a ser livro)
+    try:
+        from .curadoria_biblioteca import fora_da_abrangencia, empresa_sem_edital
+        from .livros_opressores import classificar as _cl0
+        _arq = set()
+        _af = ROOT / "biblioteca_alexandria/livros/arquivo_fora_da_abrangencia.jsonl.xz"
+        if _af.exists():
+            import lzma as _lz
+            _arq = {json.loads(l).get("id") for l in _lz.decompress(_af.read_bytes()).decode().splitlines() if l.strip()}
+        _juntados = {i for x in _ant for i in (x.get("ids_juntados") or [])}
+        _f = []
+        for _m in motores:
+            try:
+                _cl0(_m)
+            except Exception:
+                pass
+            if _m.get("id") in _arq or _m.get("id") in _juntados or fora_da_abrangencia(_m):
+                continue
+            if empresa_sem_edital(_m):
+                _m["papel"] = "fonte_de_busca"
+            _f.append(_m)
+        motores = _f
+    except Exception:
+        pass
     # SEPARAÇÃO INTERNACIONAL (28/09): uma regra só (src/opressores_repositorio.internacional); o opressor internacional
     # vai para a família "Internacionais", esfera "Internacional"
     from .opressores_repositorio import internacional as _intl
@@ -721,7 +746,7 @@ def run() -> dict:
                            "proxima_ia_em": (3 - (r.get("dias") or 0) % 3) % 3 or 3,
                            "itens_ia": len(r.get("itens", {}))} if r else None)
     leve = [{k: m.get(k) for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias", "internacional",
-                              "nome_classificado", "geo", "municipio", "objeto_area", "tipo_objeto", "publico", "regime_inscricao", "aberta_agora", "janelas", "livro", "abrangencia",
+                              "nome_classificado", "geo", "municipio", "objeto_area", "tipo_objeto", "publico", "regime_inscricao", "aberta_agora", "janelas", "livro", "abrangencia", "papel",
                               "pagina", "confianca_pagina", "validacao", "ultima_leitura", "achados", "http",
                               "regime_prazo", "certeza_prazo", "obtidas", "area_atuacao", "natureza", "esfera",
                               "ativa", "motivo_status", "em_epoca", "proximidade")}

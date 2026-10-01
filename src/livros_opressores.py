@@ -94,12 +94,33 @@ def _cidade_no_texto(uf: str, texto: str) -> str | None:
     return None
 
 
+ORGAOS_ESTADUAIS = {"secult", "seds", "sefaz", "saude", "educacao", "cultura", "governo", "portal", "transparencia", "diariooficial", "doe", "sedes",
+                    "sesa", "seduc", "secretaria", "casacivil", "fapeg", "mapacultural", "sistemas", "editais", "al", "assembleia", "tce", "mp",
+                    "defensoria", "detran", "esporte", "sejus", "sedh", "agencia", "goinfra", "emater", "ipasgo"}
+
+
+def uf_do_dominio(url) -> tuple[str | None, str | None]:
+    """01/10: o domínio oficial diz o estado e o nível — paracuru.ce.gov.br é prefeitura do Ceará; secult.ce.gov.br é o estado."""
+    h = re.sub(r"^www\.", "", (re.sub(r"^https?://", "", str(url or "")).split("/")[0]).lower())
+    if h == "goias.gov.br" or h.endswith(".goias.gov.br"):
+        return "GO", "estadual"
+    m = re.match(r"^(?:(.+)\.)?([a-z]{2})\.(gov|leg|mp|jus)\.br$", h)
+    if not m or m.group(2).upper() not in UFS:
+        return None, None
+    rotulos = (m.group(1) or "").split(".")
+    if not m.group(1) or any(r in ORGAOS_ESTADUAIS for r in rotulos):
+        return m.group(2).upper(), "estadual"
+    return m.group(2).upper(), "municipal"
+
+
 def geografia(x: dict) -> dict:
     from .opressores_repositorio import internacional
     if x.get("internacional") or internacional(x):
         return {"codigo": "INT", "abrangencia": "internacional", "uf": None, "municipio": None}
     ufs = [h.get("uf") for h in (x.get("historico") or []) if h.get("uf") in UFS]
     uf = x.get("uf") if x.get("uf") in UFS else (Counter(ufs).most_common(1)[0][0] if ufs else None)
+    if not uf:                                        # 01/10: sem estado registrado, o domínio oficial informa
+        uf = uf_do_dominio(x.get("pagina"))[0]
     mun = None
     m = re.search(r"(?:Prefeitura (?:Municipal )?de|Munic[ií]pio de|Di[aá]rio Oficial de|C[aâ]mara (?:Municipal )?de)\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ú']+(?:\s+(?:d[aeo]s?\s+)?[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ú']+){0,3})", _titulos(x))
     if m and not re.search(r"(?i)^goi[aá]s$|estad|outros|programa|uni[aã]o|brasil", m.group(1)):

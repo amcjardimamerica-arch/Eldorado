@@ -318,7 +318,7 @@ def proximo_alvo() -> dict | None:
         cat = []
     def precisa(x):
         p = x.get("parametros") or {}
-        return x.get("pagina") and x.get("ativa") not in (False, "False") and not recente("op-" + x["id"]) \
+        return x.get("pagina") and x.get("ativa") not in (False, "False") and x.get("papel") != "fonte_de_busca" and not recente("op-" + x["id"]) \
             and (not p or str(p.get("decisao") or "") == "P" or str(x.get("validacao")) in ("não lida ainda", "None", ""))
     # 01/10: RESTRIÇÕES FIXAS (só negativas) e ESTRATÉGIA CRIATIVA (foco de área, trocado a cada 100 estudos)
     _pi = _par().get("interceptador") or {}; _rf = _pi.get("restricoes_fixas") or {}

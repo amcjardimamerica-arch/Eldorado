@@ -468,6 +468,11 @@ def atualizar_mapa() -> dict:
         c["livros"] = curar()
     except Exception as ex:
         c["livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 01/10: conferência da Biblioteca — abrangência, empresas e duplicidade
+        from .curadoria_biblioteca import conferir
+        c["conferencia_dos_livros"] = conferir()
+    except Exception as ex:
+        c["conferencia_dos_livros"] = f"falhou: {type(ex).__name__}"
     try:                                     # 01/10: regra dos livros — o livro existente recebe o checklist; locais de busca
         from .livros_regra import aplicar_motores
         c["regra_dos_livros"] = aplicar_motores()
