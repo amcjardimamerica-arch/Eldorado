@@ -28,9 +28,9 @@ CADENCIA = 7   # dias (P21: art. 26 da Lei 13.019/2014 → 30 dias de antecedên
 
 # parecer do conselho por motor (id → dict). O neutro decide.
 CONSELHO = {
- "do-goiania": {"pess": "recusa IP estrangeiro há semanas; só lê pela coleta local, que nunca foi rodada.",
-                "otim": "é o diário da cidade da associação: todo chamamento da SEMASDH, CMDCA e CMAS passa aqui.",
-                "decide": "manter; a coleta local (.bat) é o único desbloqueio real — prioridade 1 do titular."},
+ "do-goiania": {"pess": "43 leituras e 0 achado: lia o rótulo de uma página de serviço; a edição é um PDF de 240 páginas e o ato está dentro.",
+                "otim": "o Querido Diário já indexa Goiânia: 232 edições na base, com o edital SEGENP 001/2026 (25/09, R$ 5 milhões, prazo 26/10) e o PNAB 006/2026.",
+                "decide": "refeito em 01/10: lê o texto da edição pela nuvem, recorta em atos e classifica; a coleta local passa a ser reforço do dia, não condição."},
  "do-goias": {"pess": "lê 200 mas zero achado em 20 dias: ou o léxico não casa com o formato do ABC, ou o ato fica no PDF.",
               "otim": "é onde saem os editais da SECULT, SEDS, SES e os decretos de emenda impositiva.",
               "decide": "manter e abrir o PDF da edição: o ato está dentro, não no índice."},

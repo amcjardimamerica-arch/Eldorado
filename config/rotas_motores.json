@@ -43,42 +43,52 @@
    "perfil": "diário oficial municipal — a fonte primária de Goiânia",
    "rotas": [
     {
-     "nome": "Diário Oficial do Município (edição do dia)",
-     "url": "https://www.goiania.go.gov.br/diario-oficial/",
+     "nome": "Lista oficial das edições do ano (Casa Civil)",
+     "url": "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano=2026",
      "tipo": "diario",
      "exige_brasil": true
     },
     {
-     "nome": "SEMASDH — Fundo Municipal de Assistência Social e chamamentos",
-     "url": "https://www.goiania.go.gov.br/sing/secretarias/semasdh/",
-     "tipo": "secretaria"
+     "nome": "Querido Diário — Goiânia (IBGE 5208707), texto integral das edições",
+     "url": "https://api.queridodiario.ok.org.br/gazettes?territory_ids=5208707",
+     "tipo": "api"
     },
     {
-     "nome": "Secretaria Municipal de Cultura — editais",
-     "url": "https://www.goiania.go.gov.br/sing/secretarias/cultura/",
-     "tipo": "secretaria"
+     "nome": "Secretaria Municipal de Cultura — editais PNAB",
+     "url": "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/",
+     "tipo": "secretaria",
+     "exige_brasil": true
     },
     {
-     "nome": "CMDCA / CMAS / CMI de Goiânia — resoluções e editais dos fundos",
-     "url": "https://www.goiania.go.gov.br/sing/conselhos/",
-     "tipo": "conselho"
+     "nome": "Conselhos Municipais (CMDCA, CMAS, CMI) — resoluções e editais dos fundos",
+     "url": "https://www.goiania.go.gov.br/conselhos-municipais/",
+     "tipo": "conselho",
+     "exige_brasil": true
     }
    ],
    "lexico_camada1": [
+    "Aldir Blanc",
+    "aviso de chamamento",
+    "chamada pública",
     "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
+    "CMAS",
+    "CMDCA",
+    "CMI",
+    "edital de seleção",
+    "emenda impositiva",
     "FMAS",
     "FMDCA",
+    "FMI",
     "fundo municipal",
-    "CMDCA",
-    "CMAS",
-    "CMI",
-    "utilidade pública",
-    "subvenção social",
-    "edital de seleção",
+    "inexigibilidade de chamamento",
     "organizações da sociedade civil",
-    "OSC"
+    "OSC",
+    "PNAB",
+    "pontos de cultura",
+    "subvenção social",
+    "termo de colaboração",
+    "termo de fomento",
+    "utilidade pública"
    ],
    "lexico_camada2": [
     "Lei 13.019",
@@ -94,8 +104,14 @@
     "Jardim América",
     "Região Sul"
    ],
-   "coleta": "local",
-   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo"
+   "coleta": "nuvem + local",
+   "nota_coleta": "na nuvem lê o Querido Diário (texto das edições de Goiânia); no computador do titular lê também o PDF oficial do dia, que o portal só entrega a IP brasileiro",
+   "veto_camada1": [
+    "contrato de gestão",
+    "credenciamento",
+    "organização social na área da saúde",
+    "pessoa física"
+   ]
   },
   "do-goias": {
    "perfil": "diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda",
