@@ -1,0 +1,70 @@
+{
+  "versao": 1,
+  "data": "2026-10-01",
+  "doutrina": "Nem todo recurso tem os 12 parâmetros de um edital. Esta matriz diz, para cada TIPO de recurso (regime), quais itens costumam NÃO existir e por quê. Ela só produz DISPENSA PROVÁVEL (estado 'prov' no checklist): é a hipótese pelo regime, que NÃO substitui a leitura do edital. Dispensa confirmada ('disp') só nasce quando o próprio edital ou regramento oficial declara que o item não existe. Item que o regime exige continua 'falta' até a fonte oficial ser lida. Nada aqui é dado do edital.",
+  "situacoes": {
+    "exigivel": "o regime prevê o item; ele precisa constar da fonte oficial",
+    "dispensa_provavel": "o regime costuma não ter o item; confirmar no edital",
+    "nao_se_aplica": "o regime, por sua natureza, não tem o item (decisão já adotada pelo titular para o mapa)"
+  },
+  "bases_verificadas": {
+    "lei_13019_art26": {"ref": "Lei 13.019/2014, art. 26", "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l13019.htm", "diz": "edital de chamamento divulgado com antecedência mínima de 30 dias", "verificado_em": "2026-10-01"},
+    "lei_14903_art6": {"ref": "Lei 14.903/2024, art. 6º", "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2024/lei/l14903.htm", "diz": "chamamento de fomento à cultura pode ser de fluxo contínuo (propostas recebidas conforme chegam) ou ordinário (período concentrado)", "verificado_em": "2026-10-01"},
+    "lei_14903_art9": {"ref": "Lei 14.903/2024, art. 9º", "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2024/lei/l14903.htm", "diz": "fomento à cultura: inscrição de no mínimo 5 dias úteis, recurso de no mínimo 3 dias úteis e contrarrazões de 2 dias úteis; a lei vale só para fomento cultural", "verificado_em": "2026-10-01"}
+  },
+  "regimes": {
+    "chamamento_publico": {
+      "nome": "Edital ou chamamento público com seleção",
+      "quando": "padrão: edital de ente público, fundo ou financiador com período de inscrição, julgamento e resultado",
+      "itens": {},
+      "nota": "Nenhum item é dispensável por natureza. Em editais de cultura a Lei 14.903/2024, art. 9º, exige inscrição (mín. 5 dias úteis) e recurso (mín. 3 dias úteis): se o edital cultural não trouxer o prazo de recurso, é falha do edital, não dispensa."
+    },
+    "fluxo_continuo": {
+      "nome": "Credenciamento ou chamamento em fluxo contínuo",
+      "quando": "o motor registra regime contínuo, ou o edital diz fluxo contínuo / credenciamento permanente",
+      "itens": {
+        "Prazo de inscrição": {"situacao": "dispensa_provavel", "porque": "fluxo contínuo: propostas recebidas durante a vigência, sem data final de inscrição", "base": "lei_14903_art6 (cultura); credenciamento permanente em geral", "confianca": "media"}
+      }
+    },
+    "emenda_parlamentar": {
+      "nome": "Emenda parlamentar",
+      "quando": "captação junto a parlamentar (federal, estadual de Goiás ou municipal de Goiânia): não há edital",
+      "itens": {
+        "Valor": {"situacao": "nao_se_aplica", "porque": "definido pelo parlamentar na indicação", "base": "mapa de emendas adotado em 28/09/2026", "confianca": "alta"},
+        "Destinação": {"situacao": "nao_se_aplica", "porque": "definida pelo parlamentar na indicação", "base": "mapa de emendas adotado em 28/09/2026", "confianca": "alta"},
+        "Resultado": {"situacao": "nao_se_aplica", "porque": "não há edital: a indicação é do parlamentar", "base": "mapa de emendas adotado em 28/09/2026", "confianca": "alta"},
+        "Prazo de recurso": {"situacao": "nao_se_aplica", "porque": "não há edital nem fase recursal", "base": "mapa de emendas adotado em 28/09/2026", "confianca": "alta"},
+        "Anexos": {"situacao": "nao_se_aplica", "porque": "não há edital: a entidade entrega ofício e plano de trabalho", "base": "mapa de emendas adotado em 28/09/2026", "confianca": "alta"}
+      }
+    },
+    "incentivo_fiscal": {
+      "nome": "Incentivo fiscal (Rouanet, Goyazes, esporte, PRONON/PRONAS, fundos da criança e do idoso)",
+      "quando": "o recurso vem de incentivador que deduz imposto; o órgão aprova o projeto, não classifica concorrentes",
+      "itens": {
+        "Prazo de recurso": {"situacao": "dispensa_provavel", "porque": "o rito de recurso, quando existe, está na norma do programa e não em edital de seleção", "base": "regramento de cada programa (config/regramentos.json); texto da norma ainda por baixar", "confianca": "baixa"}
+      }
+    },
+    "destinacao_judicial": {
+      "nome": "Destinação judicial ou extrajudicial (prestação pecuniária, TAC, multas)",
+      "quando": "o valor vem de processo ou acordo e é indicado pelo juízo ou pelo Ministério Público",
+      "itens": {
+        "Valor": {"situacao": "dispensa_provavel", "porque": "o valor é o da prestação ou do acordo, fixado no processo; o edital da vara/MP, quando houver, só indica a faixa", "base": "Resolução CNJ 154/2012 e Ato PGJ 58/2025 (textos ainda por baixar)", "confianca": "baixa"},
+        "Prazo de recurso": {"situacao": "dispensa_provavel", "porque": "a escolha é ato do juízo/MP, sem classificação entre concorrentes", "base": "Resolução CNJ 154/2012 e Ato PGJ 58/2025 (textos ainda por baixar)", "confianca": "media"}
+      }
+    },
+    "doacao_de_bens": {
+      "nome": "Doação de bens (mercadorias apreendidas e semelhantes)",
+      "quando": "o recurso é um bem, não dinheiro",
+      "itens": {
+        "Valor": {"situacao": "dispensa_provavel", "porque": "doação de bens: o que se recebe é o bem, avaliado pelo órgão, não um valor de edital", "base": "Portaria RFB 200/2022 (texto no repositório)", "confianca": "media"}
+      }
+    },
+    "patrocinio_privado": {
+      "nome": "Patrocínio, doação ou grant de empresa, instituto, fundação ou organismo internacional",
+      "quando": "o financiador é privado ou internacional e segue regulamento próprio",
+      "itens": {
+        "Prazo de recurso": {"situacao": "dispensa_provavel", "porque": "regulamento privado não é obrigado a ter fase de recurso (a Lei 13.019 rege parcerias com a administração pública, não patrocínio privado)", "base": "regulamento de cada financiador", "confianca": "media"}
+      }
+    }
+  }
+}
