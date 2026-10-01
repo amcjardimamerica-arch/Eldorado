@@ -42,16 +42,16 @@
   "consultas_boas": [
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 256,
-    "com_resultado": 205,
-    "achados": 409,
+    "tentativas": 258,
+    "com_resultado": 206,
+    "achados": 411,
     "missao": "aposta"
    },
    {
     "consulta": "quais são os programas de doação de multinacionais com inscrição local",
-    "tentativas": 158,
-    "com_resultado": 105,
-    "achados": 208,
+    "tentativas": 159,
+    "com_resultado": 106,
+    "achados": 210,
     "missao": "aposta"
    },
    {
@@ -91,9 +91,16 @@
    },
    {
     "consulta": "qual setor ou região em minas gerais ainda não foi mapeado por editais",
-    "tentativas": 35,
-    "com_resultado": 5,
-    "achados": 5,
+    "tentativas": 36,
+    "com_resultado": 6,
+    "achados": 6,
+    "missao": "aposta"
+   },
+   {
+    "consulta": "qual é o potencial de editais de fomento para organizações da sociedad",
+    "tentativas": 48,
+    "com_resultado": 7,
+    "achados": 7,
     "missao": "aposta"
    },
    {
@@ -102,13 +109,6 @@
     "com_resultado": 82,
     "achados": 82,
     "missao": "resgate"
-   },
-   {
-    "consulta": "qual é o potencial de editais de fomento para organizações da sociedad",
-    "tentativas": 47,
-    "com_resultado": 6,
-    "achados": 6,
-    "missao": "aposta"
    },
    {
     "consulta": "parque bondinho pao de acucar abre inscr",
@@ -334,13 +334,13 @@
    },
    {
     "consulta": "fundação comunitária edital doações 2026",
-    "tentativas": 26,
+    "tentativas": 27,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "instituto empresarial edital projetos sociais 2026",
-    "tentativas": 23,
+    "tentativas": 24,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
@@ -429,16 +429,16 @@
    "apoiar",
    "saúde",
    "doação",
-   "parceiros",
    "volunta",
    "edição",
+   "parceiros",
    "sndca",
    "filantropia",
-   "rede",
    "memória",
+   "rede",
    "milhões",
-   "zurich",
-   "nacional"
+   "nacional",
+   "zurich"
   ],
   "termos_ruins": [
    "regiões",
@@ -466,17 +466,17 @@
     "taxa": 0.128
    },
    "aposta": {
-    "tentativas": 1296,
-    "com_resultado": 345,
-    "taxa": 0.266
+    "tentativas": 1304,
+    "com_resultado": 349,
+    "taxa": 0.268
    },
    "descobrir": {
-    "tentativas": 498,
+    "tentativas": 501,
     "com_resultado": 2,
     "taxa": 0.004
    }
   },
-  "consultas_aprendidas_em": "2026-10-01T01:10:43+00:00"
+  "consultas_aprendidas_em": "2026-10-01T01:14:21+00:00"
  },
  "atualizado_em": "2026-09-29T16:11:27+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
