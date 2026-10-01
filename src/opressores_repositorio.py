@@ -62,12 +62,8 @@ def dispensa(item: dict) -> str | None:
     t = f"{item.get('titulo') or ''} {item.get('orgao') or ''}"
     if NAO_E_SELECAO.search(t):     # 28/09: dispensa de chamamento, inexigibilidade, pessoa física, compra — não é seleção aberta a associações
         return "não é seleção aberta a associações (dispensa/inexigibilidade de chamamento, credenciamento de pessoa física ou compra)"
-    if re.search(r"emenda parlamentar", t, re.I):
-        return "emenda parlamentar: indicação do parlamentar, sem concorrência entre entidades"
-    if SEM_CONCORRENCIA.search(t) and not SELECAO.search(t):
-        return "doação, patrocínio ou apoio de empresa sem seleção aberta a todas as associações"
-    if item.get("tipo") == "empresa/instituto" and not SELECAO.search(t):
-        return "empresa ou instituto sem chamada, edital ou prêmio — pedido direto, sem concorrência"
+    # 01/10 (titular): TODA oportunidade mapeada vira livro — emenda, doação, patrocínio e empresa também. Fica de fora
+    # só o que não é oportunidade (acima).
     return None
 
 
@@ -217,7 +213,7 @@ def sincronizar() -> dict:
     for k in orfaos:
         L["ligados"].pop(k, None)
     st["ligados_orfaos_removidos"] = len(orfaos)
-    CAT.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+    CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     LIG.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     IDX.write_text(json.dumps({"regra": __doc__.split("Fontes:")[0].strip(), "indice": idx}, ensure_ascii=False), encoding="utf-8")
     com_hist = [x for x in C["motores"] if len(x.get("historico") or []) >= 2]

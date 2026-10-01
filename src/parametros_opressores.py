@@ -1,4 +1,4 @@
-"""Os 12 parâmetros de cada Motor Opressor, pesquisados na fonte oficial (29/09/2026).
+"""Os 12 parâmetros de cada Livro de oportunidade, pesquisados na fonte oficial (29/09/2026).
 
 Regra do titular: cada opressor ligado persegue os 12 parâmetros do edital do seu recurso — Objeto, Prazo de
 inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos,

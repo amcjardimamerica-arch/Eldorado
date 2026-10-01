@@ -1,6 +1,6 @@
-"""Disjuntores dos Motores Opressores — a chave que liga um recurso por 30 dias.
+"""Disjuntores dos livros de oportunidades da Biblioteca — a chave que liga um recurso por 30 dias.
 
-Regra do titular: quando um Motor Opressor é acionado — automaticamente (época
+Regra do titular: quando um Livro de oportunidade é acionado — automaticamente (época
 prevista ou menção nos motores regulares) ou manualmente (poça de óleo → fogo)
 — ele fica LIGADO por 30 dias, pesquisando todos os dias. A cada 3 dias entra
 uma IA com um prompt feito para AQUELE recurso (economizando tokens: modelo

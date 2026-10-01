@@ -8,7 +8,7 @@ rotina externa (agente Claude, conta do titular, domingo 03h) e devolve os resul
 | Extração dos 12 itens (Haiku→Sonnet→Opus) | src/fonte_edital.investigar ← src/enquadramento.run | chamava a API; sem chave → "aguardando credencial" | não roda no GitHub; feito pela rotina externa (pacote → respostas_agente → ingerir) |
 | Análise de enquadramento (Fable 5.1) | src/enquadramento.run | idem | idem — campo `enquadramento` das respostas do agente |
 | Busca de prazo por IA (chamamentos sem faixa) | src/prazos_ia | passo do workflow | passo desativado no CI; coberto pelo pacote do agente |
-| IA dos Motores Opressores (3º/6º/9º dia, conselho) | src/opressores.run | passo do bloco 04h | disjuntores continuam; chamadas de IA devolvem "fase 3 por rotina externa" |
+| IA dos Livros de Oportunidades (3º/6º/9º dia, conselho) | src/opressores.run | passo do bloco 04h | disjuntores continuam; chamadas de IA devolvem "fase 3 por rotina externa" |
 | Farol parecer / conselho do edital (fase 3 antiga) | src/farol_parecer, src/conselho_edital | passo do workflow | passo desativado no CI; a rotina externa produz o parecer |
 | Botão "subir informação faltante" (painel) | Enquadramento | abre complemento.md | mantido — o agente lê os complementos |
 | Botões "inscrição realizada" / "dispensar" | perfil da associação | locais + export | mantidos; inconformidade do agente arquiva automaticamente |

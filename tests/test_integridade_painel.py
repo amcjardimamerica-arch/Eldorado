@@ -152,7 +152,7 @@ class TesteIntegridadePainel(unittest.TestCase):
         sem = [x["titulo"][:60] for x in its if not x.get("opressor") and not x.get("opressor_dispensa")]
         self.assertEqual(sem, [], "oportunidade aberta sem motor opressor e sem motivo de dispensa")
         from src.opressores_repositorio import dispensa, chave
-        self.assertIsNotNone(dispensa({"titulo": "Patrocínios", "tipo": "empresa/instituto"}))
+        self.assertIsNone(dispensa({"titulo": "Patrocínios", "tipo": "empresa/instituto"}))   # 01/10 (titular): toda oportunidade mapeada vira livro
         self.assertIsNone(dispensa({"titulo": "Edital de seleção de projetos 2026", "tipo": "empresa/instituto"}))
         self.assertEqual(chave("Edital nº 02/2026 — Prêmio X"), chave("Edital nº 05/2025 — Prêmio X"))
 

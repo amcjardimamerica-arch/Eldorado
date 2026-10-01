@@ -2,7 +2,7 @@
 
 Sites que REPUBLICAM editais de fontes oficiais servem como INDÍCIO: este motor lê as listagens deles, extrai de cada
 edital o título, o prazo e — o que importa — o LINK DA FONTE OFICIAL, e entrega ao fluxo das oportunidades. De lá seguem
-curadoria, validação, motor opressor e o estudo do Piloto - Interceptador, sempre sobre a fonte oficial; a página do
+curadoria, validação, livro de oportunidade e o estudo do Piloto - Interceptador, sempre sobre a fonte oficial; a página do
 agregador fica só como indício (nunca é "site oficial").
 
 Fontes (sondagem de 28/09, biblioteca_alexandria/base/sondagem_agregadores.json):

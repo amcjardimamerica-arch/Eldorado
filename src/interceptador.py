@@ -273,60 +273,90 @@ def investigar_empresa(ia, emp: dict) -> dict:
 
 
 def proximo_alvo() -> dict | None:
-    """NOVA ORDEM DO INTERCEPTADOR (titular, 29/09) — aprofunda o que o sistema JÁ tem:
-      1. MISSÕES ESPECIAIS: oportunidades abertas — Goiás e as que fecham em até 15 dias, em qualquer lugar
-      2. EMPRESAS DE GOIÁS do cadastro: dossiê investigativo (composição, contatos, projetos, resumo no terceiro setor)
-      3. OPORTUNIDADES NACIONAIS E INTERNACIONAIS (depois as dos demais estados)
-      4. o restante das filas de antes (opressores sem leitura, editais novos, radar do Espião…)
-    Origem de baixo rendimento (skill de aprendizado) vai para o fim."""
+    """ORDEM DE BUSCAS GUIADA PELOS LIVROS (titular, 01/10):
+      1. GOIÁS            oportunidades do mapa e livros de Goiás que precisam de estudo
+      2. BRASIL           oportunidades e livros nacionais
+      3. INTERNACIONAIS   que se apliquem ao Brasil
+      4. EMPRESAS         dossiê das empresas do cadastro (Goiás primeiro)
+      5. OUTROS ESTADOS   oportunidades e livros dos demais estados
+    Em cada nível: prazo mais próximo primeiro; inscrição aberta antes de janela anual; nada reestudado em menos de 7 dias.
+    Depois, as filas de antes (editais novos dos motores, radar do Espião...)."""
     from datetime import date as _d, timedelta as _td
     from .skills.aprendizado import parametros as _par
     est = load_json(ESTADO) if ESTADO.exists() else {}
     feitos = est.get("feitos") or {}
+    _dias = int((_par().get("interceptador") or {}).get("dias_sem_reestudar_o_mesmo_alvo", 7))
+    _lim = (_d.today() - _td(days=_dias)).isoformat()
+    recente = lambda i: str((feitos.get(i) or {}).get("em") or "") >= _lim
     fx = ((load_json(ROOT / "docs/dados/fluxo_oportunidades.json") or {}).get("itens_por_uf") or {}) if (ROOT / "docs/dados/fluxo_oportunidades.json").exists() else {}
-    hoje = _d.today().isoformat(); em15 = (_d.today() + _td(days=15)).isoformat()
+    hoje = _d.today().isoformat()
+    INTL = re.compile(r"(?i)internacional|foundation|fondation|unesco|unicef|pnud|onu\b|grant|embaixada|embassy|uni[aã]o europeia")
+    APLICA_BR = re.compile(r"(?i)brasil|brazil|am[eé]rica latina|latin america|latam|global|worldwide|internacional|international|todos os pa[ií]ses|any country")
+
     def pend(x):
         return x.get("id") and x["id"] not in feitos and not x.get("inspecao") and not (x.get("confirmada") and (x.get("condicoes") or {}).get("comprovadas", 0) >= 9) \
-            and "emendas" not in str(x.get("origem") or "") and not x.get("opressor_dispensa")      # emenda e dispensada não precisam de estudo
-    def alvo(x, uf, de):
+            and not x.get("opressor_dispensa") and "emendas" not in str(x.get("origem") or "")   # emenda já é confirmada pela configuração
+
+    def alvo_fluxo(x, uf, de):
         arq = ROOT / "dados/editais/extraidos" / f"{x['id']}.json"
-        if not arq.exists():                 # agregadores e afins não têm registro: nasce o extraído para o estudo
+        if not arq.exists():
             write_json(arq, {"edital_id": x["id"], "titulo": x.get("titulo"), "url": x.get("link_oficial") or x.get("url"), "orgao": x.get("orgao"), "origem": de, "fim": x.get("fim")})
         return {"id": x["id"], "titulo": x.get("titulo"), "url": x.get("link_oficial") or x.get("url"), "de": de, "modo": "validar", "tipo": "edital", "uf": uf}
-    todos = [(k, x) for k, v in fx.items() for x in v if pend(x)]
-    esp = [(k, x) for k, x in todos if k == "GO" or (x.get("fim") and hoje <= x["fim"] <= em15)]
-    if esp:
-        esp.sort(key=lambda kx: (kx[0] != "GO", str(kx[1].get("fim") or "9999")))
-        k, x = esp[0]
-        return alvo(x, k, "missão especial · " + ("Goiás" if k == "GO" else f"prazo até {x.get('fim')}"))
+
+    def alvo_livro(x, de):
+        oid = "op-" + x["id"]
+        arq = ROOT / "dados/editais/extraidos" / f"{oid}.json"
+        if not arq.exists():
+            write_json(arq, {"edital_id": oid, "titulo": x.get("nome_classificado") or x.get("programa"), "url": x.get("pagina"), "orgao": x.get("orgao"), "origem": de, "livro": x["id"]})
+        return {"id": oid, "opressor": x["id"], "titulo": f"{x.get('nome_classificado') or x.get('programa')}"[:160], "url": x.get("pagina"),
+                "de": de, "modo": "validar", "tipo": "edital", "uf": x.get("geo")}
+
+    # livros que precisam de estudo: com página, sem os 12 parâmetros fechados (ou pendentes), não estudados há 7 dias
     try:
+        cat = (load_json(ROOT / "biblioteca_alexandria/fontes/motores.json") or {}).get("motores") or []
+    except Exception:
+        cat = []
+    def precisa(x):
+        p = x.get("parametros") or {}
+        return x.get("pagina") and x.get("ativa") not in (False, "False") and not recente("op-" + x["id"]) \
+            and (not p or str(p.get("decisao") or "") == "P" or str(x.get("validacao")) in ("não lida ainda", "None", ""))
+    livros = [x for x in cat if precisa(x)]
+    ordem_livro = lambda x: (not x.get("aberta_agora"), x.get("regime_inscricao") != "anual", str(x.get("nome_classificado") or ""))
+    ordem_fluxo = lambda kx: (str(kx[1].get("fim") or "9999") < hoje, str(kx[1].get("fim") or "9999"))
+    todos = [(k, x) for k, v in fx.items() for x in v if pend(x)]
+
+    def nivel(fluxo, livros_nivel, rotulo):
+        if fluxo:
+            k, x = sorted(fluxo, key=ordem_fluxo)[0]
+            return alvo_fluxo(x, k, f"{rotulo} · oportunidade do mapa" + (f" · prazo até {x.get('fim')}" if x.get("fim") else ""))
+        if livros_nivel:
+            return alvo_livro(sorted(livros_nivel, key=ordem_livro)[0], f"{rotulo} · livro da Biblioteca")
+        return None
+
+    eh_int = lambda x: bool(INTL.search(str(x.get("titulo") or x.get("programa") or "")) or x.get("internacional") or x.get("geo") == "INT")
+    for rotulo, fl, lv in (
+        ("1 · Goiás", [(k, x) for k, x in todos if k == "GO"], [x for x in livros if x.get("geo") == "GO"]),
+        ("2 · Brasil", [(k, x) for k, x in todos if k == "__nac__" and not eh_int(x)], [x for x in livros if x.get("geo") == "BR"]),
+        ("3 · internacional aplicável ao Brasil", [(k, x) for k, x in todos if eh_int(x) and APLICA_BR.search(str(x.get("titulo") or ""))],
+         [x for x in livros if x.get("geo") == "INT" and APLICA_BR.search(f"{x.get('programa') or ''} {x.get('orgao') or ''} {' '.join(x.get('publico') or [])}")]),
+    ):
+        a = nivel(fl, lv, rotulo)
+        if a:
+            return a
+    try:                                       # 4 · empresas: dossiê (Goiás primeiro)
         from .skills.dossie_empresa import empresas_goias_sem_dossie
         eg = empresas_goias_sem_dossie()
     except Exception:
         eg = []
     if eg:
         e = eg[0]
-        return {"id": f"dossie-{e['cnpj']}", "empresa": e.get("nome"), "cnpj": e["cnpj"], "_emp": e, "de": "empresa de Goiás · dossiê", "modo": "dossie", "tipo": "dossie_empresa"}
-    baixo = set((_par().get("interceptador") or {}).get("origens_baixo_rendimento") or [])
-    nac = [(k, x) for k, x in todos if k == "__nac__" or "intern" in str(x.get("area") or "") or re.search(r"(?i)internacional|foundation|unesco|unicef|pnud|onu", str(x.get("titulo")))]
-    if nac:
-        k, x = nac[0]
-        return alvo(x, k, "oportunidade nacional/internacional")
-    resto = [(k, x) for k, x in todos]
-    if resto:
-        import random as _r
-        k, x = _r.choice(resto)
-        return alvo(x, k, f"oportunidade · {k}")
+        return {"id": f"dossie-{e['cnpj']}", "empresa": e.get("nome"), "cnpj": e["cnpj"], "_emp": e, "de": "4 · empresas · dossiê", "modo": "dossie", "tipo": "dossie_empresa"}
+    a = nivel([(k, x) for k, x in todos if k not in ("GO", "__nac__")], [x for x in livros if x.get("geo") not in ("GO", "BR", "INT")], "5 · outros estados")
+    if a:
+        return a
     a = _proximo_alvo_anterior()
-    try:                                       # 01/10: o mesmo alvo não é reestudado em menos de N dias
-        _dias = int((_par().get("interceptador") or {}).get("dias_sem_reestudar_o_mesmo_alvo", 7))
-        _f = (feitos.get((a or {}).get("id")) or {}).get("em")
-        if a and _f and str(_f) >= (_d.today() - _td(days=_dias)).isoformat():
-            return None
-    except Exception:
-        pass
-    if a and a.get("de") in baixo:
-        a["de"] = a["de"] + " (baixo rendimento)"
+    if a and str((feitos.get(a.get("id")) or {}).get("em") or "") >= _lim:
+        return None
     return a
 
 

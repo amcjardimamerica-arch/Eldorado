@@ -12,7 +12,7 @@ Cada oportunidade do mapa recebe UMA decisão, registrada em dados/oportunidades
     pendente                  não foi possível confirmar na fonte oficial agora: fica no mapa, com o motivo
 
 aplicar()   leva as decisões ao sistema — arquivo (dados/editais/arquivados.json), cadastro preditivo, estudo de cada
-            oportunidade válida (dados/editais/extraidos/<id>.json → verificacao_externa) e motores opressores (cria o
+            oportunidade válida (dados/editais/extraidos/<id>.json → verificacao_externa) e livros de oportunidades (cria o
             opressor individual da válida que ainda não tinha; desliga o opressor criado para item descartado/encerrado).
 dispensa()  o APRENDIZADO: regras de config/filtros_motores.json que dispensam na origem o que a validação mostrou
             ser lixo (usada pelo fluxo das oportunidades antes de o item chegar ao mapa).
@@ -266,7 +266,7 @@ def aplicar(hoje: date | None = None) -> dict:
                 L.setdefault("historico", []).append({**L["ligados"].pop(op), "id": op, "desligado_em": hoje.isoformat(), "motivo": "validação do mapa"})
             res["opressores_desligados"] += 1
     # mesmo formato que o fluxo e o repositório usam (indent=1): evita reescrever o catálogo inteiro a cada execução
-    CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+    CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 01/10: compacto
     EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     return res
 

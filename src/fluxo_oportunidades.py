@@ -7,7 +7,7 @@
                      últimos 60 dias — mesmo sem informação nenhuma (menção em diário oficial conta)
     4. CONFIRMADAS   com o MÍNIMO: objeto + data-limite de inscrição ainda aberta + link do site oficial
                      (de empresa, instituto ou ente público)
-    5. OPRESSOR      oportunidade nova (não coberta por opressor existente) gera um motor opressor próprio,
+    5. OPRESSOR      oportunidade nova (não coberta por opressor existente) gera um livro de oportunidade próprio,
                      ligado por 30 dias, com a página dela — e o Interceptador a lê (5ª fila)
     6. PREDITIVO     cada oportunidade é cadastrada em biblioteca_alexandria/base/preditivo/oportunidades.jsonl
                      com órgão, tipo (pontual/recorrente), prazo e próxima janela estimada
@@ -390,7 +390,7 @@ def atualizar_preditivo(eid: str, dados: dict) -> bool:
 
 
 def _resumo_opressores(itens: list[dict]) -> dict:
-    """28/09: os números REAIS dos motores opressores, para a Bússola ('fontes monitoradas' = opressores ligados)."""
+    """28/09: os números REAIS dos livros de oportunidades, para a Bússola ('fontes monitoradas' = opressores ligados)."""
     C = (_j(CAT_OPR, {}) or {}).get("motores", []); L = (_j(EST_OPR, {}) or {}).get("ligados", {})
     ids = {x.get("id") for x in C}; lig = [k for k in L if k in ids]
     de_abertas = {x.get("opressor") for x in itens if x.get("opressor")}
@@ -458,6 +458,11 @@ def atualizar_mapa() -> dict:
         c["repositorio_dos_opressores"] = sincronizar()
     except Exception as ex:
         c["repositorio_dos_opressores"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 01/10: livros de LEIS — parametrizam o Farol de Alexandria
+        from .livros_leis import montar as _leis
+        c["livros_de_leis"] = _leis()
+    except Exception as ex:
+        c["livros_de_leis"] = f"falhou: {type(ex).__name__}"
     try:                                     # 29/09: cada opressor é um LIVRO — curadoria (separa/junta) e classificação
         from .livros_opressores import curar
         c["livros"] = curar()

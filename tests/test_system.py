@@ -2794,7 +2794,7 @@ class SystemTests(unittest.TestCase):
             if s.get("fontes_260"):
                 self.assertTrue(s["motivo"].startswith(("fonte específica ATIVA","escalada")),s["motivo"])
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("Motores Opressores","mo-area","mo-natureza","mo-esfera","mo-status","mt-ico oleo","mt-cal",
+        for x in ("Biblioteca","mo-area","mo-natureza","mo-esfera","mo-status","mt-ico oleo","mt-cal",
                   "@keyframes pisca-borda","@keyframes folha-vento","Novas oportunidades anunciadas","camadas_val"):
             self.assertIn(x,html,x)
         self.assertNotIn("mt-ico tonel",html); self.assertNotIn('class="mt-chk"',html)

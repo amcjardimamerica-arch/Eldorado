@@ -707,7 +707,7 @@ def run() -> dict:
         resumo["com_parametros"] = _par_cat(motores)
     except Exception:
         pass
-    write_json(_cat_arq, {**resumo, "motores": motores})
+    _cat_arq.write_text(json.dumps({**resumo, "motores": motores}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 01/10: compacto
     from .compacto import compactar
     pasta = ROOT / "docs/dados"; pasta.mkdir(parents=True, exist_ok=True)
     from .opressores import proximidade as _prox, _estado as _est_op

@@ -33,10 +33,11 @@ class TesteSkills(unittest.TestCase):
         self.assertLess(len(para("interceptador", "edital")), 2500, "skill carregada não pode inchar o pedido")
 
     def test_nova_ordem_do_interceptador(self):
+        """01/10: a ordem passou a ser guiada pelos livros — Goiás, Brasil, internacional, empresas, outros estados."""
         src = (ROOT / "src/interceptador.py").read_text(encoding="utf-8")
-        i = src.index("NOVA ORDEM DO INTERCEPTADOR")
-        self.assertLess(src.index("missão especial", i), src.index("empresa de Goiás · dossiê", i))
-        self.assertLess(src.index("empresa de Goiás · dossiê", i), src.index("oportunidade nacional/internacional", i))
+        i = src.index("ORDEM DE BUSCAS GUIADA PELOS LIVROS")
+        self.assertLess(src.index('"1 · Goiás"', i), src.index('"4 · empresas · dossiê"', i))
+        self.assertLess(src.index('"4 · empresas · dossiê"', i), src.index('"5 · outros estados"', i))
 
     def test_espiao_descobre_so_o_que_e_novo(self):
         src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")

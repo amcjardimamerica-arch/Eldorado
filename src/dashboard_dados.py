@@ -53,7 +53,7 @@ AREAS = {
     "doacao_bens":          {"rotulo": "Doação de bens (Receita Federal)", "cor": "#5C7A3F"},
 }
 # ÁREAS CANÔNICAS — o mesmo vocabulário para todo o painel (Radar, Calendário,
-# Motores Opressores, Biblioteca). Qualquer outro rótulo é traduzido para estas.
+# livros de oportunidades da Biblioteca, Biblioteca). Qualquer outro rótulo é traduzido para estas.
 AREAS_CANONICAS = ("assistencia_social", "crianca_adolescente", "cultura", "direitos_humanos",
                    "doacao_bens", "educacao", "esporte", "infraestrutura", "meio_ambiente",
                    "outros", "pessoa_idosa", "saude", "seguranca_alimentar")
@@ -1431,7 +1431,7 @@ def coletar(hoje: date | None = None) -> dict:
     fichas = load_json(ft_p) if ft_p.exists() else {"fontes_lista": []}
     aud_p = ROOT / "biblioteca_alexandria/historico/auditoria_individual.json"
     auditoria = load_json(aud_p) if aud_p.exists() else {}
-    # ÚNICO BANCO PARA TODO O PAINEL: as fontes ativas dos Motores Opressores
+    # ÚNICO BANCO PARA TODO O PAINEL: as fontes ativas dos livros de oportunidades da Biblioteca
     # (época prevista ou menção) alimentam também o Radar e o Calendário
     mot_p = ROOT / "biblioteca_alexandria/fontes/motores.json"
     motores = load_json(mot_p) if mot_p.exists() else {"motores": []}

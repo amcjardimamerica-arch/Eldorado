@@ -357,7 +357,7 @@ def casa_camada1(rotulo: str, termos: list[str], vetos: list[str]) -> dict:
 
 
 def lexico_especifico(sensor: dict) -> list[str]:
-    """2ª etapa (Motores Opressores): termos ESPECÍFICOS do recurso — o léxico
+    """2ª etapa (livros de oportunidades da Biblioteca): termos ESPECÍFICOS do recurso — o léxico
     próprio do regramento quando existe, senão os termos distintivos do
     programa. Casam de forma cirúrgica, onde o léxico geral seria vago."""
     if sensor.get("lexico_proprio"):                 # sensores especiais com léxico próprio (ex.: editais incentivados)
@@ -410,7 +410,7 @@ def reprogramar_recorrencia(sensor: dict, resultado: dict) -> None:
 
 def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, data: date | None = None) -> dict:
     """Uma leitura do sensor: páginas → links → léxico → destinação → achados.
-    Motores Opressores (fontes_260) também casam pelo léxico ESPECÍFICO."""
+    livros de oportunidades da Biblioteca (fontes_260) também casam pelo léxico ESPECÍFICO."""
     if data:
         sensor = dict(sensor, _data=data)
     lim = limites or load_json(CFG)["limites"]
@@ -611,7 +611,7 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
     import os
     pedidos = {x.strip() for x in os.environ.get("MOTORES_FONTES", "").split(",") if x.strip()}
     # BLOCO DA HORA (config/horarios.json): 00h diários · 01h justiça/legislativo ·
-    # 02h plataformas/API · 04h Motores Opressores ativos. Fora do bloco, o motor
+    # 02h plataformas/API · 04h livros de oportunidades da Biblioteca ativos. Fora do bloco, o motor
     # espera a sua hora — nada de sobrecarga.
     bloco = os.environ.get("MOTORES_BLOCO", "completo")
     hz = ROOT / "config/horarios.json"

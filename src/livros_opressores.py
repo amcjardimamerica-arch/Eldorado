@@ -1,6 +1,6 @@
 """MOTORES OPRESSORES = LIVROS ESPECIALIZADOS DA BIBLIOTECA (titular, 29/09).
 
-Cada motor opressor é um LIVRO sobre UMA oportunidade: escrito com o que se sabe e atualizado a cada informação nova
+Cada livro de oportunidade é um LIVRO sobre UMA oportunidade: escrito com o que se sabe e atualizado a cada informação nova
 (edição nova, estudo do Interceptador, prazo confirmado). Nenhum livro se mistura com outro — cada um é distinto por:
   ÁREA GEOGRÁFICA   INT (internacional) · BR (nacional) · UF (estadual) · UF/município (municipal)
   OBJETO            área temática: Cultura, Esporte, Saúde, Educação, Assistência social, Criança e adolescente, …
@@ -136,7 +136,13 @@ def inscricao(x: dict) -> dict:
 
 def _prog_curto(x: dict) -> str:
     p = re.sub(r"\s+", " ", str(x.get("programa") or x.get("id")))
-    p = re.sub(r"(?i)^(di[aá]rio oficial de [^—-]+[—-]\s*)", "", p)
+    # 01/10: menção em diário ("Diário Oficial de Campinas (SP) 2026-07-31 — "chamamento público" …") vira um nome legível
+    md = re.match(r"(?i)di[aá]rio oficial de .+?\s*\(\w\w\)\s*(\d{4})-(\d{2})-(\d{2})\s*[—-]\s*(.*)", p)
+    if md:
+        termos = md.group(4).lower()
+        tipo = "Chamamento público" if "chamamento" in termos else "Edital" if "edital" in termos else "Seleção pública"
+        return f"{tipo} publicado no Diário Oficial em {md.group(3)}/{md.group(2)}/{md.group(1)}"
+    p = re.sub(r"(?i)^(di[aá]rio oficial de [^—]+—\s*)", "", p)
     # 29/09: aberturas copiadas do texto do edital não são nome ("1.1 Este Edital tem por objeto a …")
     p = re.sub(r"^\s*\d+(\.\d+)*\s*[-–.)]?\s*", "", p)
     p = re.sub(r"(?i)^(este|o presente) edital (tem por|tem como) (objeto|finalidade)( a| o)?\s*|^o objeto deste edital (é|e) (a|o)?\s*", "", p)
@@ -144,7 +150,22 @@ def _prog_curto(x: dict) -> str:
     if len(re.findall(r"[A-ZÁÉÍÓÚÂÊÔÃÕÇ]", p)) > 0.6 * max(1, len(re.findall(r"[A-Za-zÀ-ú]", p))):
         p = p.capitalize()                                # CAIXA ALTA vira leitura normal
     p = p[:1].upper() + p[1:]
-    return p[:70] + ("…" if len(p) > 70 else "")
+    return p[:110] + ("…" if len(p) > 110 else "")      # 01/10: em 2 colunas cabe mais
+
+
+ESTADOS = {"AC": "Acre", "AL": "Alagoas", "AP": "Amapá", "AM": "Amazonas", "BA": "Bahia", "CE": "Ceará", "DF": "Distrito Federal",
+           "ES": "Espírito Santo", "GO": "Goiás", "MA": "Maranhão", "MT": "Mato Grosso", "MS": "Mato Grosso do Sul", "MG": "Minas Gerais",
+           "PA": "Pará", "PB": "Paraíba", "PR": "Paraná", "PE": "Pernambuco", "PI": "Piauí", "RJ": "Rio de Janeiro", "RN": "Rio Grande do Norte",
+           "RS": "Rio Grande do Sul", "RO": "Rondônia", "RR": "Roraima", "SC": "Santa Catarina", "SP": "São Paulo", "SE": "Sergipe", "TO": "Tocantins",
+           "BR": "Brasil", "INT": "Internacional"}
+
+
+def nome_do_livro(x: dict) -> str:
+    """01/10 (titular): o livro leva o NOME DA OPORTUNIDADE, depois o Estado e a Cidade — 'Programa Goyazes — Goiás / Goiânia'."""
+    lugar = ESTADOS.get(str(x.get("geo") or ""), str(x.get("geo") or "Brasil"))
+    if x.get("municipio"):
+        lugar += f" / {str(x['municipio']).title() if str(x['municipio']).isupper() else x['municipio']}"
+    return f"{_prog_curto(x)} — {lugar}"
 
 
 def classificar(x: dict) -> dict:
@@ -153,10 +174,10 @@ def classificar(x: dict) -> dict:
     geo = g["codigo"] + (f"/{g['municipio']}" if g.get("municipio") else "")
     x.update({"geo": g["codigo"], "municipio": g.get("municipio"), "abrangencia": g["abrangencia"], "objeto_area": ob, "tipo_objeto": tp,
               "publico": publico(x), "regime_inscricao": ins["regime"], "aberta_agora": ins["aberta_agora"], "janelas": len(ins["janelas"]),
-              "nome_classificado": f"{geo} - {ob} · {tp} — {_prog_curto(x)}"})
-    x["livro"] = {"geografia": g, "objeto": ob, "tipo_do_objeto": tp, "publico": x["publico"], "inscricao": ins,
-                  "edicoes": len(x.get("historico") or []), "financiador": x.get("orgao") or None, "pagina": x.get("pagina"),
-                  "atualizacoes": (x.get("livro") or {}).get("atualizacoes") or []}
+              "rotulo": f"{geo} - {ob} · {tp}"})
+    x["nome_classificado"] = nome_do_livro(x)
+    # 01/10: o livro guarda só o que NÃO está no registro (geografia, objeto, tipo e público já estão nele) — economiza espaço
+    x["livro"] = {"inscricao": ins, "edicoes": len(x.get("historico") or []), "atualizacoes": ((x.get("livro") or {}).get("atualizacoes") or [])[-8:]}
     return x
 
 
@@ -214,7 +235,7 @@ def curar() -> dict:
     C["livros"] = {"regra": __doc__.split("CURADORIA:")[0].strip(), "em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                    "por_geografia": Counter(x.get("geo") for x in fica).most_common(), "por_objeto": Counter(x.get("objeto_area") for x in fica).most_common(),
                    "por_tipo": Counter(x.get("tipo_objeto") for x in fica).most_common()}
-    CAT.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+    CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 01/10: sem recuos — menos espaço
     L["ligados"] = lig; LIG.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     return {**st, "livros": len(fica)}
 

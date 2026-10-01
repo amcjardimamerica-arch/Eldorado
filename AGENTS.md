@@ -20,3 +20,14 @@
 18. A recoleta usa `merge_registro`: status protegidos e campos humanos (`requisitos`, `notas`, `verificado_*`) jamais são sobrescritos por automação.
 19. Pista secundária (imprensa/rede social/diário sem URL do edital) só vira oportunidade com a URL oficial confirmada (`scripts/confirmar_pista.py` ou verificação assistida com evidência).
 11. Antes de gerar qualquer HTML, leia `config/identidade_visual.json` e respeite cores, tipografia, formas e layout ali definidos. Somente tons claros. Não invente paleta nem redesenhe layout aprovado.
+
+
+## Glossário da Biblioteca (01/10/2026)
+- **Biblioteca** — o antigo painel "Motores Opressores". Tem **livros de oportunidades** (um por oportunidade mapeada:
+  nome da oportunidade — Estado / Cidade; só dados, nenhum arquivo anexado) e **livros de leis** (as normas que
+  parametrizam o Farol de Alexandria, em `biblioteca_alexandria/livros/leis.json`).
+- **Livro de oportunidade** = o que antes se chamava "motor opressor". Por compatibilidade com os robôs e com o
+  histórico, os nomes internos continuam: `biblioteca_alexandria/fontes/motores.json`, `estado/opressores.json`,
+  `src/opressores*.py`, `src/livros_opressores.py` e campos como `opressor` e `opressor_dispensa`.
+- **Ordem de buscas do Interceptador**: Goiás → Brasil → internacionais aplicáveis ao Brasil → dados de empresas →
+  outros estados (src/interceptador.py, `proximo_alvo`).
