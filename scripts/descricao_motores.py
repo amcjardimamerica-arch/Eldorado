@@ -23,8 +23,9 @@ RAIZ = Path(__file__).resolve().parents[1]
 EVOLUCAO = {
     "pncp-api": "filtrar NA CONSULTA da API oficial do PNCP (uf=GO e modalidade), em vez de baixar tudo e "
                 "descartar depois: o credenciamento é barrado antes de chegar",
-    "dou": "Ro-DOU (robô de código aberto do governo federal que busca termos no DOU) ou INLABS da Imprensa "
-           "Nacional (XML integral da edição, gratuito com cadastro)",
+    "dou": "feito em 01/10: lê a Leitura do Jornal inteira (DO1, DO3 e extras) e a íntegra das matérias de interesse; "
+           "próximo passo gratuito — o INLABS da Imprensa Nacional (XML integral, cadastro gratuito) como segunda fonte "
+           "e o Transferegov (programas abertos a propostas de OSC) como motor próprio",
     "do-goias": "feito em 01/10: lê a busca de texto completo, o sumário por órgão e o texto de cada matéria do "
                 "Diário, mais a API das secretarias; próximo passo gratuito — os decretos de programação de emendas "
                 "da ALEGO como lista de entidades e valores por deputado",

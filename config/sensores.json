@@ -68,8 +68,9 @@
    "uf": null,
    "territorio": "BR",
    "urls": [
+    "https://www.in.gov.br/leiturajornal?data={data}&secao=do1",
     "https://www.in.gov.br/leiturajornal?data={data}&secao=do3",
-    "https://www.in.gov.br/consulta/-/buscar/dou?q={termo}&s=todos&exactDate=dia&sortType=0"
+    "https://www.in.gov.br/consulta/-/buscar/dou?q={termo}&s=todos&exactDate=semana&sortType=0"
    ],
    "busca": "data_e_termo",
    "confianca": "confirmada",
@@ -79,8 +80,9 @@
     "edital projetos sociais",
     "doação entidades sem fins lucrativos"
    ],
-   "o_que_procurar": "chamamentos de ministérios e fundos nacionais, portarias de destinação, editais Rouanet/PNAB/LIE",
-   "nota_rede": "03/09: a busca /consulta devolveu HTTPError às duas consultas; a leitura por seção do dia (Seção 3 = editais) passa a ser a via principal · 04/09: RemoteDisconnected com UA de robô — identificação de navegador"
+   "o_que_procurar": "chamamentos MROSC de ministérios, fundos nacionais e conselhos (CONANDA, FNI, FDD, FNMA), editais PNAB/Rouanet/LIE/PRONON-PRONAS, chamamentos de prefeituras de Goiás publicados no DOU, doação de bens e coleta seletiva solidária (Decreto 5.940) em Goiás/DF, aprendizagem com ESFL, patrocínio de estatais",
+   "nota_rede": "03/09: a busca /consulta devolveu HTTPError às duas consultas; a leitura por seção do dia (Seção 3 = editais) passa a ser a via principal · 04/09: RemoteDisconnected com UA de robô — identificação de navegador · 01/10: a Seção 3 tem 2,1–2,7 MB e o limite geral de 2,5 MB cortava o JSON das matérias (0 lidas em 02, 04, 11, 25, 30/09 e 01/10); nos outros dias só as 600 primeiras de ~2.200 eram lidas e a Seção 1 nunca. Agora: DO1 + DO3 + extras inteiras, limite próprio de 12 MB, íntegra das matérias de interesse",
+   "leitor": "src/diario_uniao.py — Leitura do Jornal (DO1, DO3, extras) + íntegra + busca semanal de reserva"
   },
   {
    "id": "dje-tjgo",

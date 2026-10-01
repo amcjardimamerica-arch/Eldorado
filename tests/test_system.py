@@ -3108,23 +3108,25 @@ class SystemTests(unittest.TestCase):
 
 
     def test_dou_por_json_embutido_e_pil_opcional(self):
-        """O DOU (leiturajornal) traz as matérias num JSON embutido: o sensor as lê
-        e filtra pelo léxico; testes com PIL pulam quando a biblioteca falta."""
-        import tempfile
-        from src.sensores import ler
-        with tempfile.TemporaryDirectory() as tmp:
-            lab=pathlib.Path(tmp)/"in.gov.br"; lab.mkdir()
-            js=json.dumps({"jsonArray":[{"title":"EDITAL DE CHAMAMENTO PÚBLICO Nº 3/2026 — seleção de organizações da sociedade civil","urlTitle":"e3","content":"Inscrições até 30/09/2026."},
-                                        {"title":"PREGÃO ELETRÔNICO Nº 90/2026 — aquisição de material","urlTitle":"p90","content":""}]})
-            (lab/"dou.html").write_text(f'<html><body><script id="params" type="application/json">{js}</script></body></html>',encoding="utf-8")
-            r=ler({"id":"dou","nome":"DOU","tipo":"diario_oficial","nivel":"federal","territorio":"BR","urls":[f"file://{lab}/dou.html"],"busca":None},pausa=0)
-        # só o que veio do arquivo de teste: no servidor, com internet, o sensor também baixa a
-        # edição REAL do dia (leiturajornal?data=...) e acha mais matérias — o teste dependia de
-        # rede sem saber, e sua falha impedia todos os motores de rodar
-        r["achados"]=[a for a in r["achados"] if str(a.get("url","")).rstrip("/").endswith(("/e3","/p90"))]
-        self.assertEqual(len(r["achados"]),1)
-        self.assertEqual(r["achados"][0]["prazo_texto"],"30/09/2026")
-        self.assertTrue(r["achados"][0]["url"].startswith("https://www.in.gov.br/web/dou/-/"))
+        """O DOU (leiturajornal) traz as matérias num JSON embutido. Desde 01/10/2026 (motor 03 v2) quem lê é
+        src/diario_uniao.py: só o <script id="params"> exato, filtro por tipo de matéria e classificação comum.
+        Sem rede — a versão antiga deste teste baixava a edição real do dia sem saber."""
+        from src import diario_uniao as du
+        js=json.dumps({"typeNormDay":{},"jsonArray":[
+            {"title":"EDITAL DE CHAMAMENTO PÚBLICO Nº 3/2026","artType":"Edital","urlTitle":"e3","pubName":"DO3","pubDate":"18/09/2026",
+             "hierarchyList":["Ministério da Cultura","Secretaria de Cidadania e Diversidade Cultural"],"content":"seleção de organizações da sociedade civil"},
+            {"title":"AVISO DE LICITAÇÃO","artType":"Aviso de Licitação-Pregão","urlTitle":"p90","pubName":"DO3","pubDate":"18/09/2026",
+             "hierarchyList":["Ministério da Cultura"],"content":"PREGÃO ELETRÔNICO Nº 90/2026 — aquisição de material"}]})
+        html=('<script id="_br_com_seatecnologia_in_buscadou_BuscaDouPortlet_params">{"jsonArray":[]}</script>'
+              f'<script id="params" type="application/json">{js}</script>')
+        itens,_=du.materias_do_jornal(html)
+        self.assertEqual(len(itens),2)
+        self.assertEqual([du.interessa(i)[0] for i in itens],[True,False])
+        m=du._materia(itens[0],"EDITAL DE CHAMAMENTO PÚBLICO Nº 3/2026\nO Ministério da Cultura torna pública a abertura de "
+                      "inscrições para seleção de organizações da sociedade civil, nos termos da Lei 13.019/2014. Inscrições até 30/09/2026.","A")
+        a=du.classificar_materia(m,date(2026,9,20))
+        self.assertEqual((a["veredito"],a["fim"]),("OPORTUNIDADE","2026-09-30"))
+        self.assertTrue(m["url"].startswith("https://www.in.gov.br/web/dou/-/"))
         src=open("tests/test_system.py",encoding="utf-8").read()
         self.assertGreaterEqual(src.count('self.skipTest("PIL ausente no runner")'),2)
 

@@ -423,6 +423,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     if sensor.get("id") == "do-goias":
         from .diario_goias import ler_motor as ler_motor_go
         return ler_motor_go(sensor, data, limites)
+    # MOTOR 03 (parecer de 01/10/2026): o DOU é lido pela Leitura do Jornal INTEIRA (DO1 + DO3 + extras, sem o corte
+    # de 2,5 MB que zerava a Seção 3) e pela íntegra das matérias de interesse, com o classificador comum
+    if sensor.get("id") == "dou":
+        from .diario_uniao import ler_motor as ler_motor_br
+        return ler_motor_br(sensor, data, limites)
     lim = limites or load_json(CFG)["limites"]
     pausa = lim["pausa_segundos"] if pausa is None else pausa
     achados, falhas, saude = [], [], []
