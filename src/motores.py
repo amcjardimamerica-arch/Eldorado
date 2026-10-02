@@ -630,6 +630,15 @@ def run() -> dict:
     for o in oficiais + plataformas:
         o["grupo"] = _grupo(o); o["relevancia"] = _relevancia(o)      # relevância só interna (não exibida)
     ordem = sorted(oficiais + plataformas, key=lambda o: (o["grupo"], _terr(o), o["nome"]))
+    # 02/10 (titular): posições fixas (config/ordem_motores.json) — só a ordem de apresentação e o número do selo mudam
+    try:
+        pos = (load_json(ROOT / "config/ordem_motores.json") or {}).get("posicoes") or {}
+        for _id, _p in sorted(pos.items(), key=lambda kv: kv[1]):
+            alvo = next((o for o in ordem if o["id"] == _id), None)
+            if alvo is not None:
+                ordem.remove(alvo); ordem.insert(min(max(int(_p), 1), len(ordem) + 1) - 1, alvo)
+    except Exception:
+        pass
     for i, o in enumerate(ordem, 1):
         o["rank"] = i
     motores.sort(key=lambda m: (not m["goias"], m["familia"], m["segmento"], m["programa"]))

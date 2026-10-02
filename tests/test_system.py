@@ -3481,7 +3481,8 @@ class SystemTests(unittest.TestCase):
             self.assertIn(x,html,x)
         self.assertNotIn("mt-rel",html.split("const oficiaisHtml")[1].split("const listaFontes")[0])   # relevância não exibida
         m=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json")); reg=sorted(m["oficiais"]+m["plataformas"],key=lambda o:o["rank"])
-        grupos=[o["grupo"] for o in reg]; self.assertEqual(grupos,sorted(grupos))                       # ordem por tipo
+        fixos=set((load_json(pathlib.Path("config/ordem_motores.json")).get("posicoes") or {}))           # 02/10: posições fixas do titular
+        grupos=[o["grupo"] for o in reg if o["id"] not in fixos]; self.assertEqual(grupos,sorted(grupos))   # ordem por tipo
         self.assertEqual(reg[0]["tipo"],"diario_oficial"); self.assertEqual(reg[-1]["tipo"],"empresas_privado"); self.assertEqual(reg[-2]["tipo"],"empresas_fiscal")
         self.assertEqual([o["id"] for o in reg if o["grupo"]==2],["pncp-api"])
 
