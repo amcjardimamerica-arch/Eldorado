@@ -438,6 +438,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     if sensor.get("id") == "pncp-api":
         from .pncp_osc import ler_motor as ler_motor_pncp
         return ler_motor_pncp(sensor, data, limites)
+    # MOTOR 05 (parecer de 01/10/2026): a Câmara de Goiânia é lida pelo SUAP (processos legislativos, com autor, setor e
+    # documentos), pela tramitação dos processos da própria associação e pelas notícias do portal — não pela home
+    if sensor.get("id") == "camara-goiania-pl":
+        from .camara_goiania import ler_motor as ler_motor_cmg
+        return ler_motor_cmg(sensor, data, limites)
     # MOTOR 22 (parecer de 01/10/2026): o GIFE é lido pela API da seleção de editais (um item por bloco "título +
     # prazo + Inscreva-se") e pela Capta, para onde a seleção aponta — não pela home institucional nem pelos associados
     if sensor.get("id") == "plat-gife":

@@ -304,18 +304,20 @@
    "nota_01_10": "leitor próprio (src/pncp_osc.py). Os vetos de camada 1 abaixo ('com ou sem fins lucrativos', 'prestação de serviços', 'aquisição') barravam chamamentos de OSC e ficam só como referência do painel; a decisão é do classificador do motor 04."
   },
   "camara-goiania-pl": {
-   "perfil": "insumo de HABILITAÇÃO — declarações de utilidade pública municipal (requisito de editais), não fonte de captação",
-   "cadencia": "semanal",
+   "perfil": "insumo de HABILITAÇÃO e de ACOMPANHAMENTO — utilidade pública municipal (a da própria associação em destaque), leis de fomento/parceria/isenção para entidades e emendas impositivas; chamamento da Câmara é raro",
+   "cadencia": "diária",
    "rotas": [
     {
-     "nome": "Projetos de lei da Câmara de Goiânia",
-     "url": "https://www.goiania.go.leg.br/",
-     "tipo": "legislativo"
+     "nome": "SUAP da Câmara — consulta pública de processos legislativos (por assunto)",
+     "url": "https://suap.camaragyn.go.gov.br/camara/consulta_publica/",
+     "tipo": "legislativo",
+     "verificada_em": "2026-10-01"
     },
     {
-     "nome": "Diário da Câmara",
-     "url": "https://www.goiania.go.leg.br/diario-oficial",
-     "tipo": "diario"
+     "nome": "Portal da Câmara (Plone) — busca de notícias em RSS",
+     "url": "https://www.goiania.go.leg.br/search_rss",
+     "tipo": "noticias",
+     "verificada_em": "2026-10-01"
     }
    ],
    "lexico_camada1": [
@@ -332,7 +334,8 @@
     "sem fins lucrativos"
    ],
    "coleta": "local",
-   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo"
+   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo",
+   "nota_01_10": "leitor próprio (src/camara_goiania.py): lê os processos por assunto no SUAP, a tramitação dos processos da associação (documentos e datas) e as notícias; os léxicos abaixo ficam só como referência do painel"
   },
   "alego-pl": {
    "perfil": "insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais",

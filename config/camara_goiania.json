@@ -1,0 +1,64 @@
+{
+ "versao": 2,
+ "atualizado_em": "2026-10-01",
+ "parecer": "docs/pareceres/motor-05-camara-goiania.md",
+ "regra": "Motor 05 lê os processos legislativos da Câmara de Goiânia no SUAP (consulta pública), a tramitação dos processos da própria associação e as notícias do portal; cada item vira OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo, e as utilidades públicas vão para a lista de habilitação. Sem IA, sem tokens.",
+ "suap": {
+  "base": "https://suap.camaragyn.go.gov.br",
+  "janela_dias": 35,
+  "max_paginas_por_assunto": 4,
+  "assuntos": [
+   "utilidade pública",
+   "entidade",
+   "associação",
+   "instituto",
+   "fundação",
+   "fundo",
+   "subvenção",
+   "programa",
+   "isenção",
+   "emenda",
+   "sociedade civil",
+   "parceria",
+   "doação",
+   "repasse",
+   "terceiro setor",
+   "assistência social",
+   "cultura",
+   "Jardim América"
+  ]
+ },
+ "associacao": {
+  "nomes": [
+   "A.M.C. JARDIM AMERICA",
+   "MORADORES E COMERCIANTES DO JARDIM AMERICA"
+  ],
+  "nomes_no_processo": [
+   "A.M.C. Jardim América",
+   "Moradores e Comerciantes do Jardim América"
+  ],
+  "bairro": "Jardim América"
+ },
+ "portal": {
+  "ativa": true,
+  "base": "https://www.goiania.go.leg.br",
+  "janela_dias": 35,
+  "buscas": [
+   "chamamento",
+   "edital",
+   "doação",
+   "entidades",
+   "terceiro setor",
+   "emenda impositiva",
+   "subvenção",
+   "sociedade civil",
+   "Jardim América"
+  ]
+ },
+ "ritmo": {
+  "pausa_segundos": 1.0,
+  "espera_erro_segundos": 4
+ },
+ "prazo_total_segundos": 300,
+ "falhas_seguidas_para_abortar_fonte": 3
+}

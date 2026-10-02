@@ -138,23 +138,20 @@
   },
   {
    "id": "camara-goiania-pl",
-   "nome": "Câmara Municipal de Goiânia — projetos de lei",
+   "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
    "tipo": "legislativo",
    "nivel": "municipal",
    "uf": "GO",
    "territorio": "GO/Goiânia",
    "urls": [
-    "https://www.goiania.go.leg.br/",
-    "https://www.goiania.go.leg.br/feed/",
-    "https://sapl.goiania.go.leg.br/",
-    "https://sapl.goiania.go.leg.br/materia/pesquisar-materia",
-    "https://www.goiania.go.leg.br/transparencia/licitacoes-e-contratos"
+    "https://suap.camaragyn.go.gov.br/camara/consulta_publica/",
+    "https://www.goiania.go.leg.br/search_rss"
    ],
    "busca": null,
    "confianca": "curada",
-   "o_que_procurar": "projetos de lei sobre terceiro setor, utilidade pública, isenções, fundos, subvenções, emendas impositivas a OSCs",
-   "nota_rede": "04/09: home sem links (script); tenta RSS, SAPL (proposições) e licitações · 04/09 20:59: só a home respondeu (0 links); RSS e SAPL falharam — endereço do SAPL/portal de proposições a confirmar",
-   "max_paginas": 6
+   "o_que_procurar": "utilidade pública municipal (habilitação; a da própria associação em destaque), leis que criam programas, fundos, isenções, doações e parcerias com entidades, emendas impositivas, chamamentos da Câmara e o bairro Jardim América",
+   "nota_rede": "04/09: home sem links (script); tenta RSS, SAPL (proposições) e licitações · 04/09 20:59: só a home respondeu (0 links); RSS e SAPL falharam — endereço do SAPL/portal de proposições a confirmar · 01/10 (navegador do titular): sapl.goiania.go.leg.br responde com certificado inválido (erro de privacidade, daí o URLError) e não é o sistema em uso; /feed/ e /diario-oficial dão 404; /transparencia/licitacoes-e-contratos traz só contratos da própria Câmara; as proposições estão no SUAP (suap.camaragyn.go.gov.br/camara/consulta_publica/, aberto pelo Portal da Transparência → Projetos de Lei) e o RSS do portal Plone é /RSS e /search_rss",
+   "leitor": "src/camara_goiania.py — SUAP (consulta pública por assunto) + tramitação dos processos da associação + notícias do portal"
   },
   {
    "id": "alego-pl",
@@ -240,7 +237,8 @@
    "www.goias.gov.br",
    "www.mpgo.mp.br",
    "diariooficial.abc.go.gov.br",
-   "projudi.tjgo.jus.br"
+   "projudi.tjgo.jus.br",
+   "suap.camaragyn.go.gov.br"
   ],
   "regra": "portais que recusam IP estrangeiro/datacenter (403 sem WAF ou conexão recusada). No GitHub o motor fica 'aguardando coleta local (Brasil)'; a coleta local (scripts/coleta_brasil.py, na máquina do titular) os lê e envia o resultado ao repositório. Sem custo, sem servidor 24h."
  }

@@ -38,7 +38,9 @@ EVOLUCAO = {
                   "histórico de 5 anos (os mesmos fundos abrem nas mesmas épocas)",
     "dje-tjgo": "testar a API do Diário de Justiça Eletrônico Nacional (DJEN/CNJ), fora do WAF do TJGO",
     "dj-trf1-go": "testar a API do DJEN/CNJ, que concentra os diários da Justiça Federal",
-    "camara-goiania-pl": "verificar se a Câmara usa o SAPL (Interlegis), que expõe API aberta de proposições",
+    "camara-goiania-pl": "feito em 01/10: a Câmara não usa o SAPL — lê o SUAP (consulta pública de processos), a tramitação "
+                         "dos processos da associação e as notícias; próximo passo gratuito — ler o texto do projeto (documento do "
+                         "processo) para confirmar quem recebe o recurso, e as emendas impositivas da LOA por entidade",
     "alego-pl": "dados abertos da ALEGO para proposições e leis de utilidade pública, em vez de raspar páginas",
     "plat-salic": "API pública do SALIC: projetos aprovados e INCENTIVADORES com valores — serve também à lista "
                   "de empresas",
