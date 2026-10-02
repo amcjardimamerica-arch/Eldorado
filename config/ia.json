@@ -1,7 +1,7 @@
 {
  "versao": 2,
  "ativa": true,
- "execucao": "integrada_quando_houver_credencial",
+ "execucao": "fora dos fluxos do GitHub (titular, 02/10/2026): nenhum fluxo recebe a chave FAROL_AI_API_KEY; IA Claude só por acionamento externo",
  "segredo_provedor_env": "FAROL_AI_API_KEY",
  "regra": "IA somente em etapas essenciais, com o modelo mais adequado a cada tarefa. Sem credencial configurada, o sistema prepara os pacotes e NUNCA simula que uma IA executou. Cada chamada é registrada em estado/ia_uso.jsonl com modelo e volume.",
  "modelos": {
@@ -30,12 +30,6 @@
   "busca_nivel_2": "claude-sonnet-5",
   "busca_nivel_3": "claude-opus-5",
   "analise_edital": "claude-fable-5-1",
-  "esteira_bronze": {
-   "env": "FAROL_MODELO_BRONZE",
-   "padrao": "claude-sonnet-5-5",
-   "esforco": "low",
-   "papel": "esteira bronze: achar e confirmar o site oficial da oportunidade (busca e leitura na web), no computador do titular"
-  },
   "esteira_prata": {
    "env": "FAROL_MODELO_PRATA",
    "padrao": "claude-opus-5-5",

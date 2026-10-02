@@ -341,6 +341,19 @@ def proximo_alvo() -> dict | None:
         return None
 
     eh_int = lambda x: bool(INTL.search(str(x.get("titulo") or x.get("programa") or "")) or x.get("internacional") or x.get("geo") == "INT")
+    # 0 · ESTANTE BRONZE (titular, 02/10): livros cujo site oficial ainda não foi confirmado — fila da esteira de selos,
+    # na ordem da nota da rede e do prazo. O Interceptador investiga com o Qwen 8B; o resultado volta à esteira.
+    try:
+        _fb = ((load_json(ROOT / "docs/dados/esteira.json") or {}).get("filas") or {}).get("bronze") or []
+        _por_id = {x.get("id"): x for x in cat}
+        for _f in _fb:
+            _x = _por_id.get(_f.get("livro"))
+            if _x and _x.get("pagina") and not recente(f"op-{_x['id']}") and not recente(_x["id"]) and not _barrado(_x["id"], _x.get("pagina"), _x.get("programa")):
+                _a = alvo_livro(_x, f"0 · estante bronze · tentativa {_f.get('tentativa') or 1}")
+                _a["esteira"] = "bronze"
+                return _a
+    except Exception:  # noqa: BLE001 — a esteira nunca impede o voo
+        pass
     for rotulo, fl, lv in (
         ("1 · Goiás", [(k, x) for k, x in todos if k == "GO"], [x for x in livros if x.get("geo") == "GO"]),
         ("2 · Brasil", [(k, x) for k, x in todos if k == "__nac__" and not eh_int(x)], [x for x in livros if x.get("geo") == "BR"]),
@@ -440,6 +453,22 @@ def _devolver_ao_opressor(alvo: dict, inv: dict) -> None:
             x["obtidas"] = sum(1 for v in campos.values() if v.get("comprovado") or v.get("dispensado"))
             if reg.get("fim"):
                 x["proxima_data"] = {"inicio": reg.get("inicio"), "fim": reg["fim"]}; x["regime_prazo"] = "prazo comprovado na fonte"; x["certeza_prazo"] = "comprovada"
+            if alvo.get("esteira") == "bronze":          # 02/10: o estudo volta à esteira de selos (estante bronze)
+                try:
+                    from .sites_oficiais import e_republicador
+                except Exception:  # noqa: BLE001
+                    e_republicador = lambda u: False   # noqa: E731
+                e = x.setdefault("esteira", {})
+                url = reg.get("pagina_oficial") or reg.get("url") or x.get("pagina")
+                oficial = bool(url) and not e_republicador(url) and any(v.get("fonte_oficial") for v in campos.values())
+                if oficial:
+                    e["site_oficial"] = url; e["site_confirmado_por"] = "Piloto - Interceptador (Qwen3-8B)"
+                else:
+                    e["tentativas_bronze"] = int(e.get("tentativas_bronze") or 0) + 1
+                e.setdefault("aprendizado", []).append({"em": now_iso(), "etapa": "bronze", "modelo": "qwen3-8b",
+                    "o_que_aprendeu": (f"site oficial confirmado: {url}" if oficial else f"site oficial não confirmado nesta tentativa ({url or 'sem página'})")
+                                      + f"; {inv.get('comprovados', 0)}/12 itens comprovados"})
+                e["aprendizado"] = e["aprendizado"][-20:]
             break
     write_json(cat, C)
 

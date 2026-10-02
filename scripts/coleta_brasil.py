@@ -53,9 +53,7 @@ def main():
     pasta.mkdir(parents=True, exist_ok=True)
     delta = pasta / f"brasil-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
     run([sys.executable, "-m", "src.indexadores", "rodada", "--rota", "ponte", "--delta", str(delta)], 1800)
-    # 02/10 (titular): o Piloto - Interceptador trabalha a esteira de selos no IP do titular (bronze: Sonnet 5.5;
-    # prata: Opus 5.5; esforço baixo). O resultado vai em estado/esteira/ e sobe junto no envio abaixo.
-    run([sys.executable, "scripts/interceptador_local.py"], 3600)
+    # 02/10 (titular): a investigação das estantes (IA) é acionada externamente — não roda na coleta automática
     run([sys.executable, "-m", "src.motores"], 900)
     run([sys.executable, "-m", "src.dashboard_dados"], 1800)
     gerados = ("estado/indexadores", "estado/agregadores", "docs/dados/indexadores.json")

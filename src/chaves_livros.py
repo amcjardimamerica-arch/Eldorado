@@ -165,6 +165,7 @@ def run(hoje: date | None = None) -> dict:
             x.pop("chave_acionamento", None)
             continue
         motores, origens = motores_do_livro(x, ids)
+        motores = list(dict.fromkeys(motores + ((x.get("indexacao") or {}).get("motores") or [])))   # 02/10: índice do Espião
         ch = {"termos": termos, "motores": motores, "origens": origens,
               "consulta": f'"{termos[0]}" ' + ("edital" if "edital" not in termos[0] else "") + f" {hoje.year}".rstrip(),
               "atualizada_em": hoje.isoformat()}
