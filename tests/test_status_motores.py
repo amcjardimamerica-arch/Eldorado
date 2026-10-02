@@ -43,7 +43,7 @@ class TesteStatusMotores(unittest.TestCase):
         self.assertIn(".mt-item.oficial.sem-cinza{border-right:6px solid #C9CED6}", h)
         self.assertNotIn("sem-lendo", h.split("ofRows.map(o=>{")[1].split("join(\"\")")[0])
         w = (ROOT / ".github/workflows/status-motores.yml").read_text(encoding="utf-8")
-        self.assertIn("17 0,6,12,18 * * *", w); self.assertIn("src.status_motores", w)
+        self.assertIn("47 10,14,19 * * *", w); self.assertIn("17 1 * * *", w); self.assertIn("src.status_motores", w)   # 02/10: itinerário do maestro
 
 
 if __name__ == "__main__":
