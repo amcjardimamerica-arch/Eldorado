@@ -1,13 +1,15 @@
 {
-  "em": "2026-10-02T03:54:16+00:00",
+  "em": "2026-10-02T04:02:26+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 0,
+      "achados": 1,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 40
+        "nada_no_crivo": 38,
+        "sem_texto": 1,
+        "busca_vazia": 1
       },
       "efetividade": 0.0
     }
@@ -16,7 +18,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 3696,
+      "vezes": 3736,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -28,7 +30,7 @@
       ],
       "ultima": "2026-10-02",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 3696 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 3736 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -107,24 +109,24 @@
     {
       "motor": "piloto-aberto",
       "motivo": "rastro_sem_prova",
-      "vezes": 27,
+      "vezes": 26,
       "tipos": [
         "reconhecimento"
       ],
-      "ultima": "2026-10-02",
+      "ultima": "2026-10-01",
       "explicacao": "rastro_sem_prova",
-      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 27 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por rastro_sem_prova há 26 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "sem_rastro",
-      "vezes": 27,
+      "vezes": 26,
       "tipos": [
         "reconhecimento"
       ],
-      "ultima": "2026-10-02",
+      "ultima": "2026-10-01",
       "explicacao": "sem_rastro",
-      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 27 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_rastro há 26 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-gife",
@@ -140,7 +142,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "busca_vazia",
-      "vezes": 20,
+      "vezes": 21,
       "tipos": [
         "cacar_oportunidade",
         "descobrir",
@@ -148,7 +150,7 @@
       ],
       "ultima": "2026-10-02",
       "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 20 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 21 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -164,16 +166,23 @@
     {
       "motor": "piloto-aberto",
       "motivo": "sem_texto",
-      "vezes": 5,
+      "vezes": 6,
       "tipos": [
         "aposta"
       ],
-      "ultima": "2026-10-01",
+      "ultima": "2026-10-02",
       "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 5 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 6 vezes — precisa de correção, não de mais tentativas"
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deve validar a existência de um trecho com informações essenciais (objeto, prazo, valor, página) antes de considerar o achado como válido.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-02T04:01",
+      "aplicada": false
+    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deve garantir que os trechos dos editais sejam preenchidos e disponíveis para análise detalhada.",
@@ -306,19 +315,12 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-01T07:25",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve garantir que os trechos dos editais sejam preenchidos e disponíveis para análise, permitindo uma avaliação mais precisa da elegibilidade dos recursos.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-01T06:36",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 383,
-  "entregues_ao_claude": 317,
+  "editais_tratados": 384,
+  "entregues_ao_claude": 318,
   "ultima_faxina": {
-    "em": "2026-10-02T03:54:16+00:00",
+    "em": "2026-10-02T04:02:26+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 4,
     "achados_descartados_removidos": 657,
