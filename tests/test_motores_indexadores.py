@@ -434,7 +434,9 @@ class RodadaCompleta(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.tmp, True)
         (self.tmp / "config").mkdir()
         cat = {"limites": {"itens_por_site_por_rodada": 80, "falhas_para_ponte": 2, "dias_sem_prazo_no_fluxo": 60,
-                           "indicios_no_fluxo_max": 1500, "requisicoes_por_rodada": 200},
+                           "indicios_no_fluxo_max": 1000, "requisicoes_por_rodada": 200,
+                           "ordem_do_fluxo": ["GO", "BR", "internacional", "outros_estados"]},
+               "ponte": {"escolha": "computador_do_titular", "dias_sem_leitura_para_navegador": 3},
                "agente": {"token_robots": "EldoradoIndexadores", "user_agent": "teste"},
                "motores": {k: {"nome": k, "metodo": "m", "horarios_brt": "x"} for k in
                            ("idx-feeds", "idx-apis", "idx-sitemaps", "idx-listagens", "idx-dados-abertos", "idx-ponte-brasil", "idx-assistido")},
@@ -459,7 +461,8 @@ class RodadaCompleta(unittest.TestCase):
                                               "ESTADO": "estado/indexadores/estado.json", "ACERVO": "estado/indexadores/indicios.json",
                                               "FILA": "estado/indexadores/fila_assistida.json", "DIARIO": "estado/indexadores/diario.json",
                                               "ANGULOS": "estado/indexadores/angulos_piloto.json", "FLUXO": "estado/agregadores/itens.json",
-                                              "PAINEL": "docs/dados/indexadores.json", "ESQUADRA": "estado/esquadra.json"}.items()}
+                                              "PAINEL": "docs/dados/indexadores.json", "ESQUADRA": "estado/esquadra.json",
+                                              "DELTAS_BRASIL": "entrada_manual/indexadores/deltas"}.items()}
         for k, v in alvo.items():
             p = mock.patch.object(M, k, v); p.start(); self.addCleanup(p.stop)
         e = mock.patch.dict("os.environ", {}, clear=True); e.start(); self.addCleanup(e.stop)
@@ -522,6 +525,62 @@ class RodadaCompleta(unittest.TestCase):
         self.assertEqual(diario["idx-apis"]["2026-10-02"]["cor"], "amarelo")
         self.assertGreaterEqual(r1["no_fluxo"], 2)
 
+    def test_ponte_pelo_computador_e_navegador_apos_3_dias(self):
+        """Decisão do titular (02/10/2026): a ponte é o computador dele. A nuvem não tenta o site da rota 'ponte' — espera
+        a coleta no computador; se o computador não ler por 3 dias, o site entra também na fila do navegador."""
+        web = self.web()
+        for h in (12, 15, 18):
+            M.rodada(agora=datetime(2026, 10, 2, h, 13, tzinfo=timezone.utc), rede=rede(web))
+        est = json.loads((self.tmp / "estado/indexadores/estado.json").read_text(encoding="utf-8"))
+        self.assertEqual((est["sites"]["portal-geo"]["rota"], est["sites"]["portal-geo"]["aguardando_ponte_desde"]), ("ponte", "2026-10-02"))
+        n = len(web.pedidos)
+        M.rodada(agora=datetime(2026, 10, 5, 18, 13, tzinfo=timezone.utc), rede=rede(web))
+        self.assertFalse(any("portal.go.gov.br" in u for u, _ in web.pedidos[n:]))     # a nuvem não insiste: é a vez do computador
+        fila = json.loads((self.tmp / "estado/indexadores/fila_assistida.json").read_text(encoding="utf-8"))
+        g = next(x for x in fila["itens"] if x["id"] == "portal-geo")
+        self.assertIn("computador do titular", g["motivo"])
+        painel = json.loads((self.tmp / "docs/dados/indexadores.json").read_text(encoding="utf-8"))
+        self.assertEqual(painel["ponte"]["escolha"], "computador_do_titular")
+        self.assertIn("portal-geo", painel["ponte"]["sites_na_ponte"])
+        # a coleta no computador lê o site com o IP de casa e tira a espera
+        casa = Web({"https://portal.go.gov.br/editais": (200, '<a href="/editais/2026/edital-01-fomento">Edital 01/2026 de fomento a OSC</a>', {}),
+                    "https://portal.go.gov.br/editais/2026/edital-01-fomento": (200, "<h1>Edital 01/2026</h1><p>Inscrições até 30/11/2026.</p>", {})})
+        with mock.patch.dict("os.environ", {"ELDORADO_LOCAL_BR": "1"}):
+            r = M.rodada(agora=datetime(2026, 10, 5, 19, 13, tzinfo=timezone.utc), rede=rede(casa, local_brasil=True))
+        self.assertEqual(r["rota_da_execucao"], "ponte")
+        est = json.loads((self.tmp / "estado/indexadores/estado.json").read_text(encoding="utf-8"))
+        self.assertNotIn("aguardando_ponte_desde", est["sites"]["portal-geo"])
+        self.assertTrue(est["ultima_coleta_brasil"]["em"].startswith("2026-10-05"))
+
+    def test_computador_envia_delta_e_a_nuvem_aplica_e_apaga(self):
+        """O computador do titular grava a rodada como ARQUIVO NOVO de delta; a nuvem aplica os deltas em ordem sobre o
+        main mais novo, antes do seu, e apaga os arquivos — sem conflito de git e sem perder o que cada um leu."""
+        web = self.web()
+        for h in (12, 15, 18):
+            M.rodada(agora=datetime(2026, 10, 2, h, 13, tzinfo=timezone.utc), rede=rede(web))
+        pasta = self.tmp / "entrada_manual/indexadores/deltas"; pasta.mkdir(parents=True)
+        arq = pasta / "brasil-20261002-191000.json"
+        casa = Web({"https://portal.go.gov.br/editais": (200, '<a href="/editais/2026/edital-02-fomento">Edital 02/2026 de fomento a OSC</a>', {}),
+                    "https://portal.go.gov.br/editais/2026/edital-02-fomento": (200, "<h1>Edital 02/2026</h1><p>Inscrições até 30/11/2026.</p>", {})})
+        # no computador: a rodada grava o delta (e os arquivos de estado de lá são descartados pelo coleta_brasil.py)
+        copia = {f: f.read_bytes() for f in (self.tmp / "estado").rglob("*.json")} | {f: f.read_bytes() for f in (self.tmp / "docs").rglob("*.json")}
+        with mock.patch.dict("os.environ", {"ELDORADO_LOCAL_BR": "1"}):
+            M.rodada(agora=datetime(2026, 10, 2, 22, 10, tzinfo=timezone.utc), rede=rede(casa, local_brasil=True), delta_em=arq)
+        for f, b in copia.items():
+            f.write_bytes(b)
+        d = json.loads(arq.read_text(encoding="utf-8"))
+        self.assertEqual((d["rota"], set(d["sites"])), ("ponte", {"portal-geo"}))
+        self.assertTrue(all(h == "portal.go.gov.br" for h in d["robots"]))         # só o cache do que ele leu
+        (pasta / "brasil-20261002-000000.json").write_text('{"versao": 9}', encoding="utf-8")   # lixo: recusado e apagado
+        r = M.aplicar_deltas_do_brasil(remover=True)
+        self.assertEqual((r["aplicados"], [x["arquivo"] for x in r["recusados"]]), (["brasil-20261002-191000.json"], ["brasil-20261002-000000.json"]))
+        self.assertEqual(list(pasta.glob("*.json")), [])
+        fluxo = json.loads((self.tmp / "estado/agregadores/itens.json").read_text(encoding="utf-8"))
+        self.assertTrue(any("Edital 02/2026" in x["titulo"] for x in fluxo["itens"]))
+        est = json.loads((self.tmp / "estado/indexadores/estado.json").read_text(encoding="utf-8"))
+        self.assertNotIn("aguardando_ponte_desde", est["sites"]["portal-geo"])
+        self.assertIn("ultima_coleta_brasil", est)
+
     def test_delta_reaplicado_nao_apaga_o_que_outro_gravou(self):
         web = self.web()
         delta_arq = self.tmp / "delta.json"
@@ -535,6 +594,72 @@ class RodadaCompleta(unittest.TestCase):
         M.aplicar(json.loads(delta_arq.read_text(encoding="utf-8")))
         fluxo = json.loads((self.tmp / "estado/agregadores/itens.json").read_text(encoding="utf-8"))
         self.assertIn("agr-brasil00000001", {x["id"] for x in fluxo["itens"]})
+
+
+class OrdemDoFluxo(unittest.TestCase):
+    def test_goias_brasil_internacional_outros_estados_e_limite(self):
+        """Decisão do titular (02/10/2026): até 1.000 indícios — Goiás, Brasil, internacional e, por último, outros estados;
+        dentro do grupo, o prazo mais próximo primeiro e o sem prazo no fim."""
+        sites = {"farol": {}, "fundsforngos-brasil": {"internacional": True}}
+        b = {"perfil": "osc", "primeiro_visto": "2026-10-01", "visto_em": "2026-10-02", "fonte": "farol", "pais": "BR"}
+        itens = {"sp": dict(b, id="sp", titulo="Edital de São Paulo", uf="SP", prazo="2026-10-03"),
+                 "int": dict(b, id="int", fonte="fundsforngos-brasil", pais=None, titulo="Grant for Brazilian NGOs", prazo="2026-10-09"),
+                 "us": dict(b, id="us", pais="US", titulo="Call open to organizations in Brazil", prazo="2026-10-04"),
+                 "br": dict(b, id="br", titulo="Edital nacional de fomento", prazo="2026-11-30"),
+                 "br2": dict(b, id="br2", titulo="Chamada nacional sem prazo publicado"),
+                 "go": dict(b, id="go", titulo="Edital de Goiás", uf="GO", prazo="2026-12-20"),
+                 "go2": dict(b, id="go2", titulo="Chamamento de Goiânia", uf="GO", prazo="2026-10-10"),
+                 "mg": dict(b, id="mg", titulo="Edital de Minas", uf="MG", prazo="2026-10-02")}
+        lim = {"ordem_do_fluxo": ["GO", "BR", "internacional", "outros_estados"], "indicios_no_fluxo_max": 1000}
+        entrada, fora = M.entrada_do_fluxo({"itens": itens}, sites, HOJE, lim)
+        self.assertEqual([x["id"] for x in entrada], ["go2", "go", "br", "br2", "us", "int", "mg", "sp"])
+        self.assertEqual(M.por_grupo(entrada, sites), {"GO": 2, "BR": 2, "internacional": 2, "outros_estados": 2})
+        entrada, fora = M.entrada_do_fluxo({"itens": itens}, sites, HOJE, dict(lim, indicios_no_fluxo_max=6))
+        self.assertEqual([x["id"] for x in entrada][-1], "int")                  # o corte cai sobre os outros estados
+        self.assertEqual(fora["acima_do_limite"], 2)
+        self.assertEqual(len(M.entrada_do_fluxo({"itens": itens}, sites, HOJE, {})[0]), 8)   # padrão: 1.000
+
+    def test_catalogo_registra_as_decisoes(self):
+        cat = json.loads((Path(__file__).resolve().parents[1] / "config/indexadores.json").read_text(encoding="utf-8"))
+        self.assertEqual(cat["limites"]["indicios_no_fluxo_max"], 1000)
+        self.assertEqual(cat["limites"]["ordem_do_fluxo"], ["GO", "BR", "internacional", "outros_estados"])
+        self.assertEqual(cat["ponte"]["escolha"], "computador_do_titular")
+        sites = {s["id"]: s for s in cat["sites"]}
+        self.assertNotIn("se_autorizado", sites["prosas"])                       # sem pedido de licença
+        self.assertEqual(len(sites["prosas"]["caminhos_indiretos"]), 3)
+        self.assertEqual(sites["capitaai"]["listas_fixas"], {"https://capitaai.com.br/editais-abertos/prosas": "prosas"})
+
+
+class RotaIndiretaProsas(unittest.TestCase):
+    def test_listagem_do_prosas_no_capitaai_em_toda_rodada(self):
+        base = "https://capitaai.com.br"
+        card = ('<a href="/captacao/potencias-negras"><div><h3>EDITAL SMCT Nº 22/2026 - POTÊNCIAS NEGRAS</h3>'
+                '<p>Secretaria Municipal de Cultura</p><p><span>Aceita:</span> organizações da sociedade civil</p>'
+                '<div><span>Prazo: <!-- -->30/10/2026 (28d)</span></div></div></a>')
+        web = Web({f"{base}/sitemap-captacao.xml": (200, "<urlset></urlset>", {}),
+                   f"{base}/sitemap-editais.xml": (200, f"<urlset><url><loc>{base}/editais-abertos/prosas</loc></url>"
+                                                        f"<url><loc>{base}/editais-abertos/cultura</loc></url></urlset>", {}),
+                   f"{base}/editais-abertos/prosas": (200, f"<html>{card}</html>", {}),
+                   f"{base}/editais-abertos/cultura": (200, "<html></html>", {})})
+        site = {"id": "capitaai", "nome": "CapitaAI", "motor": "idx-sitemaps", "leitor": "sitemap_jsonld", "prefixo": "/captacao/",
+                "url": f"{base}/sitemap-captacao.xml", "listas_sitemap": f"{base}/sitemap-editais.xml", "listas_prefixo": "/editais-abertos",
+                "listas_por_rodada": 1, "prazo_no_texto": False, "listas_fixas": {f"{base}/editais-abertos/prosas": "prosas"}}
+        est = {}
+        res = L.ler_sitemap_jsonld(site, rede(web), est, ctx())
+        self.assertEqual(len(res["itens"]), 1)
+        x = res["itens"][0]
+        self.assertEqual((x["rota_indireta_de"], x["prazo"]), ("prosas", "2026-10-30"))
+        self.assertEqual(res["diag"]["cartoes_rota_indireta_prosas"], 1)
+        self.assertNotIn(f"{base}/editais-abertos/prosas", est["listas"])          # fora do rodízio: é lida sempre
+        for _ in range(2):
+            L.ler_sitemap_jsonld(site, rede(web), est, ctx())
+        lidas = [u for u, _ in web.pedidos if u.endswith("/editais-abertos/prosas")]
+        self.assertEqual(len(lidas), 3)                                           # uma vez em cada rodada
+        self.assertFalse(any("prosas.com.br" in u for u, _ in web.pedidos))       # o robô nunca toca o Prosas
+        cat = {"sites": [{"id": "prosas", "nome": "Prosas", "url": "https://prosas.com.br/x", "rota": "assistida", "prioridade": "P1",
+                          "caminhos_indiretos": ["a", "b", "c"]}]}
+        fila = M.montar_fila(cat, {}, {"prosas": ("assistida", "robots")}, HOJE, {"itens": {x["id"]: x}})
+        self.assertEqual(fila["itens"][0]["cobertos_pela_rota_indireta"], 1)
 
 
 class ColetaAssistida(unittest.TestCase):

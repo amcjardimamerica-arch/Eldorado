@@ -567,7 +567,7 @@ def ler_sitemap_jsonld(site, rede, est, ctx) -> dict:
                                  financiador=c.get("financiador"), valor=X.valor(base_txt),
                                  uf=X.uf(titulo) or X.uf(c.get("financiador") or "") or X.uf(base_txt[:2500]),
                                  resumo=descricao or txt[:300], publicado=art.get("datePublished"),
-                                 texto_perfil=perfil_txt[:5000], extra={"prazo_continuo": True} if c.get("continuo") else None))
+                                 texto_perfil=perfil_txt[:5000], extra=_extra_cartao(c)))
         if c:
             est.setdefault("cartao_emitido", {})[u] = _assinatura_cartao(c)
     # cartões novos ou alterados de páginas que não couberam nesta rodada (ou já lidas): indício imediato com o
@@ -581,7 +581,7 @@ def ler_sitemap_jsonld(site, rede, est, ctx) -> dict:
         res["itens"].append(item(site, ctx, titulo=c["titulo"], pagina=u, prazo=c.get("prazo"), financiador=c.get("financiador"),
                                  uf=X.uf(c["titulo"]) or X.uf(c.get("financiador") or ""),
                                  texto_perfil=f"Aceita: {c.get('publico') or ''}",
-                                 extra={"prazo_continuo": True} if c.get("continuo") else None))
+                                 extra=_extra_cartao(c)))
         res["diag"]["cartoes_emitidos"] = res["diag"].get("cartoes_emitidos", 0) + 1
     _podar(emitidos, 5000)
     est["fila"] = fila
@@ -591,7 +591,8 @@ def ler_sitemap_jsonld(site, rede, est, ctx) -> dict:
 
 
 def _assinatura_cartao(c: dict) -> str:
-    return f"{c.get('titulo') or ''}|{c.get('prazo') or ''}|{c.get('financiador') or ''}|{int(bool(c.get('continuo')))}"
+    return (f"{c.get('titulo') or ''}|{c.get('prazo') or ''}|{c.get('financiador') or ''}|{int(bool(c.get('continuo')))}|"
+            f"{c.get('indireta') or ''}")
 
 
 def _listagens_de_cartoes(site, rede, est, ctx, res) -> dict:
@@ -614,12 +615,13 @@ def _listagens_de_cartoes(site, rede, est, ctx, res) -> dict:
         except Bloqueio as b:
             if b.tipo != "orcamento":
                 res["falhas"].append(_falha(site["listas_sitemap"], b))
-    listas = list(est.get("listas") or [])
+    fixas = dict(site.get("listas_fixas") or {})          # {listagem: site fechado que ela cobre} — lidas em TODA rodada
+    listas = [u for u in (est.get("listas") or []) if u not in fixas]
     cart = est.setdefault("cartoes", {})
     lidas = 0
-    for _ in range(min(len(listas), int(site.get("listas_por_rodada") or 12))):
-        lista = listas.pop(0)
-        listas.append(lista)                               # rodízio: a lida vai para o fim da fila
+    rodizio = [listas.pop(0) for _ in range(min(len(listas), int(site.get("listas_por_rodada") or 12)))]
+    listas.extend(rodizio)                                 # rodízio: as lidas vão para o fim da fila
+    for lista in list(fixas) + rodizio:
         try:
             r = _get(rede, lista, site, ctx, condicional=False)
         except Bloqueio as b:
@@ -633,6 +635,8 @@ def _listagens_de_cartoes(site, rede, est, ctx, res) -> dict:
         for u, c in X.cartoes(r.texto(), lista, site.get("prefixo") or "/").items():
             ant = cart.get(u) or {}
             cart[u] = {k: (v if v not in (None, "") else ant.get(k)) for k, v in c.items()} | {"visto": hoje}
+            if fixas.get(lista) or ant.get("indireta"):
+                cart[u]["indireta"] = fixas.get(lista) or ant.get("indireta")
     est["listas"] = listas
     corte = (ctx["hoje"] - timedelta(days=45)).isoformat()
     for u in [u for u, c in cart.items() if (c.get("visto") or "") < corte or (c.get("prazo") and c["prazo"] < corte)]:
@@ -640,7 +644,18 @@ def _listagens_de_cartoes(site, rede, est, ctx, res) -> dict:
     res["diag"]["listagens_lidas"] = lidas
     res["diag"]["cartoes"] = len(cart)
     res["diag"]["cartoes_com_prazo"] = sum(1 for c in cart.values() if c.get("prazo"))
+    for tag in set(fixas.values()):
+        res["diag"][f"cartoes_rota_indireta_{tag}"] = sum(1 for c in cart.values() if c.get("indireta") == tag)
     return dict(cart)
+
+
+def _extra_cartao(c: dict) -> dict | None:
+    ex = {}
+    if c.get("continuo"):
+        ex["prazo_continuo"] = True
+    if c.get("indireta"):
+        ex["rota_indireta_de"] = c["indireta"]            # edital de site fechado a robôs, achado pela rota indireta
+    return ex or None
 
 
 # ------------------------------------------------------------------ L4: listagem HTML + página do item

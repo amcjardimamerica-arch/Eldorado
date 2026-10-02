@@ -36,6 +36,7 @@ DIARIO = PASTA / "diario.json"
 ANGULOS = PASTA / "angulos_piloto.json"
 FLUXO = ROOT / "estado/agregadores/itens.json"
 PAINEL = ROOT / "docs/dados/indexadores.json"
+DELTAS_BRASIL = ROOT / "entrada_manual/indexadores/deltas"     # rodadas feitas no computador do titular (um arquivo por rodada)
 ESQUADRA = ROOT / "estado/esquadra.json"
 BRT = timezone(timedelta(hours=-3))
 PRIO = {"P1": 0, "P2": 1, "P3": 2}
@@ -190,6 +191,32 @@ def aplica_brasil(x: dict, sites: dict) -> bool:
     return bool(APLICA_BR.search(f"{x.get('titulo') or ''} {x.get('resumo') or ''}"))
 
 
+ORDEM_PADRAO = ("GO", "BR", "internacional", "outros_estados")
+
+
+def grupo_territorial(x: dict, sites: dict | None = None) -> str:
+    """Decisão do titular (02/10/2026): Goiás → Brasil (abrangência nacional) → internacional → outros estados.
+    Internacional: país diferente do Brasil, ou país em branco vindo de indexador internacional (fundsforNGOs, IAF,
+    embaixadas) — o leitor deixa o país em branco quando a fonte é estrangeira."""
+    uf = (x.get("uf") or "").upper()
+    if uf == "GO":
+        return "GO"
+    pais = x.get("pais")
+    if pais and pais != "BR":
+        return "internacional"
+    if not pais and any((sites or {}).get(f, {}).get("internacional") for f in x.get("fontes") or [x.get("fonte")]):
+        return "internacional"
+    return "BR" if uf in ("", "BR") else "outros_estados"
+
+
+def por_grupo(entrada: list[dict], sites: dict | None = None) -> dict:
+    out = {g: 0 for g in ORDEM_PADRAO}
+    for x in entrada:
+        g = grupo_territorial(x, sites)
+        out[g] = out.get(g, 0) + 1
+    return out
+
+
 def entrada_do_fluxo(acervo: dict, sites: dict, hoje: date, lim: dict) -> tuple[list[dict], dict]:
     """O que segue para o fluxo das oportunidades. Fica de fora (e continua no acervo, auditável): prazo vencido,
     público claramente fora do perfil de OSC, quarentena e chamada estrangeira que não se aplica ao Brasil."""
@@ -209,8 +236,9 @@ def entrada_do_fluxo(acervo: dict, sites: dict, hoje: date, lim: dict) -> tuple[
         if not aplica_brasil(x, sites):
             motivos["nao_se_aplica_ao_brasil"] += 1; continue
         vivos.append(x)
-    vivos.sort(key=lambda x: (0 if x.get("uf") == "GO" else 1, 0 if (x.get("pais") or "BR") == "BR" else 1, x.get("prazo") or "9999"))
-    mx = int(lim.get("indicios_no_fluxo_max", 1500))
+    ordem = {g: i for i, g in enumerate(lim.get("ordem_do_fluxo") or ORDEM_PADRAO)}
+    vivos.sort(key=lambda x: (ordem.get(grupo_territorial(x, sites), len(ordem)), x.get("prazo") or "9999", x.get("id") or ""))
+    mx = int(lim.get("indicios_no_fluxo_max", 1000))
     motivos["acima_do_limite"] = max(0, len(vivos) - mx)
     campos = ("id", "fonte", "titulo", "pagina_agregador", "link_oficial", "prazo", "uf", "visto_em", "primeiro_visto", "publicado",
               "financiador", "valor", "areas", "pais", "motor", "fontes", "perfil", "tipo", "rota")
@@ -218,13 +246,20 @@ def entrada_do_fluxo(acervo: dict, sites: dict, hoje: date, lim: dict) -> tuple[
 
 
 # ------------------------------------------------------------------ fila assistida e ângulos do Piloto
-def montar_fila(cat: dict, est: dict, rotas: dict, hoje: date) -> dict:
+def montar_fila(cat: dict, est: dict, rotas: dict, hoje: date, acervo: dict | None = None) -> dict:
     sites = {s["id"]: s for s in cat.get("sites") or []}
+    pt = cat.get("ponte") or {}
+    dias = int(pt.get("dias_sem_leitura_para_navegador", 3))
+    computador = pt.get("escolha") == "computador_do_titular"
+    indiretos: dict = {}
+    for x in ((acervo or {}).get("itens") or {}).values():
+        if x.get("rota_indireta_de"):
+            indiretos[x["rota_indireta_de"]] = indiretos.get(x["rota_indireta_de"], 0) + 1
     itens = []
     for sid, (rota, motivo) in rotas.items():
         s, st = sites[sid], (est.get("sites") or {}).get(sid) or {}
         espera = st.get("aguardando_ponte_desde")
-        esperando = rota == "ponte" and espera and (hoje - date.fromisoformat(espera)).days >= 3
+        esperando = rota == "ponte" and espera and (hoje - date.fromisoformat(espera)).days >= dias
         if rota != "assistida" and not esperando:
             continue
         if s.get("mesmo_que"):
@@ -233,9 +268,16 @@ def montar_fila(cat: dict, est: dict, rotas: dict, hoje: date) -> dict:
         como = ("levantar a rota: abrir o site, achar a página de editais e registrá-la no catálogo"
                 if s.get("motivo") == "rota_a_levantar" else
                 "abrir a página e clicar no botão 'Capturar indícios' (docs/coleta-assistida.html), depois enviar o arquivo")
+        if rota == "assistida":
+            mot = motivo
+        elif computador:
+            mot = (f"o computador do titular não lê este site desde {espera} (computador desligado ou coleta parada): "
+                   "leia pelo navegador enquanto isso")
+        else:
+            mot = f"aguardando a ponte Brasil desde {espera}: leia pelo navegador enquanto isso"
         itens.append({"id": sid, "nome": s.get("nome"), "abrir": s.get("url") or (s.get("listas") or [None])[0],
-                      "motivo": motivo if rota == "assistida" else f"aguardando a ponte Brasil desde {espera}: leia pelo navegador enquanto isso",
-                      "como": como, "prioridade": s.get("prioridade", "P3"), "rota_indireta": s.get("rota_indireta"),
+                      "motivo": mot, "como": como, "prioridade": s.get("prioridade", "P3"), "rota_indireta": s.get("rota_indireta"),
+                      "caminhos_indiretos": s.get("caminhos_indiretos"), "cobertos_pela_rota_indireta": indiretos.get(sid, 0),
                       "ultima_captura": cap.get("em"), "itens_ultima_captura": cap.get("itens")})
     itens.sort(key=lambda x: (PRIO.get(x["prioridade"], 3), x.get("ultima_captura") or ""))
     return {"em": agora_utc().isoformat(timespec="seconds"),
@@ -352,9 +394,14 @@ def rodada(motores: list[str] | None = None, sites: list[str] | None = None, rot
         elif res.get("lidas") or res.get("delegado"):
             m["ok"] += 1
     delta["diario"] = {mid: {"itens": m["itens"], "falhas": m["falhas"], "ok": m["ok"]} for mid, m in por_motor.items()}
-    delta["robots"], delta["http_cache"] = robots, http_cache
     if rota == "ponte" or local:
+        # o delta do computador vira arquivo no git: leva só o cache dos sites que ele leu
+        hosts = {(urlsplit(u).hostname or "").lower() for s in fila
+                 for u in [s.get("url"), s.get("pagina")] + list(s.get("listas") or []) if u}
+        robots = {h: v for h, v in robots.items() if h in hosts}
+        http_cache = {u: v for u, v in http_cache.items() if (urlsplit(u).hostname or "").lower() in hosts}
         delta["ultima_coleta_brasil"] = {"em": delta["em"], "sites": len(fila)}
+    delta["robots"], delta["http_cache"] = robots, http_cache
     resumo["requisicoes"] = rede.usadas
     if delta_em:
         _gravar(Path(delta_em), delta, indent=None)
@@ -401,14 +448,41 @@ def aplicar(delta: dict, gravar: bool = True) -> dict:
         _gravar(ESTADO, est)
         _gravar(ACERVO, acervo)
         _gravar(DIARIO, diario)
-        _gravar(FILA, montar_fila(cat, est, rotas, hoje))
+        _gravar(FILA, montar_fila(cat, est, rotas, hoje, acervo))
         _gravar(ANGULOS, {"em": est["em"], "angulos": angulos_piloto(cat, rotas)})
         _gravar(FLUXO, {"em": est["em"], "regra": "INDÍCIOS dos motores indexadores (config/indexadores.json): link da fonte oficial quando o "
                                                   "indexador o traz; o prazo é pista até a fonte oficial confirmar.",
-                        "por_fonte": _por_fonte(entrada), "fora_do_fluxo": fora, "itens": entrada})
+                        "ordem_do_fluxo": list(lim.get("ordem_do_fluxo") or ORDEM_PADRAO), "limite": int(lim.get("indicios_no_fluxo_max", 1000)),
+                        "por_grupo": por_grupo(entrada, por_id), "por_fonte": _por_fonte(entrada), "fora_do_fluxo": fora, "itens": entrada})
         _gravar(PAINEL, painel(cat, est, acervo, rotas, entrada, hoje), indent=None)
-    return {"novos": n, "atualizados": a, "podados": podados, "no_fluxo": len(entrada), "fora_do_fluxo": fora,
-            "acervo": len(acervo.get("itens") or {})}
+    return {"novos": n, "atualizados": a, "podados": podados, "no_fluxo": len(entrada), "por_grupo": por_grupo(entrada, por_id),
+            "fora_do_fluxo": fora, "acervo": len(acervo.get("itens") or {})}
+
+
+def deltas_do_brasil() -> list[Path]:
+    return sorted(DELTAS_BRASIL.glob("*.json")) if DELTAS_BRASIL.exists() else []
+
+
+def aplicar_deltas_do_brasil(remover: bool = False, gravar: bool = True) -> dict:
+    """Ponte pelo computador do titular (decisão de 02/10/2026): cada rodada feita lá é enviada como um ARQUIVO NOVO de
+    delta em entrada_manual/indexadores/deltas/ — arquivo novo nunca conflita no git. O fluxo 16 aplica esses deltas,
+    em ordem, sobre o main mais novo (antes do delta da própria nuvem) e os apaga no mesmo commit."""
+    feitos, recusados = [], []
+    for arq in deltas_do_brasil():
+        try:
+            d = json.loads(arq.read_text(encoding="utf-8"))
+            if d.get("versao") != 1 or not isinstance(d.get("sites"), dict) or not isinstance(d.get("itens"), list):
+                raise ValueError("formato de delta desconhecido")
+            if d.get("rota") != "ponte":
+                raise ValueError("não é delta da coleta no Brasil")
+        except Exception as e:
+            recusados.append({"arquivo": arq.name, "motivo": f"{type(e).__name__}: {str(e)[:120]}"})
+        else:
+            aplicar(d, gravar=gravar)
+            feitos.append(arq.name)
+        if remover:
+            arq.unlink()
+    return {"aplicados": feitos, "recusados": recusados}
 
 
 def _migrar_antigo(acervo: dict, hoje: date) -> None:
@@ -477,6 +551,11 @@ def painel(cat: dict, est: dict, acervo: dict, rotas: dict, entrada: list[dict],
             if x["rota"] == r and x["motor"] != mid and mid in por_mid:
                 por_mid[mid].setdefault("escalados", []).append(x["id"])
     return {"em": est.get("em"), "regra": cat.get("regra"), "motores": motores, "sites": sites,
-            "ponte": {"configurada": _ponte.configurada(), "ultima_coleta_brasil": est.get("ultima_coleta_brasil")},
-            "acervo": len(acervo.get("itens") or {}), "no_fluxo": len(entrada), "descartados": cat.get("descartados"),
-            "fila_assistida": montar_fila(cat, est, rotas, hoje)["itens"]}
+            "ponte": {"escolha": (cat.get("ponte") or {}).get("escolha"), "configurada": _ponte.configurada(),
+                      "ultima_coleta_brasil": est.get("ultima_coleta_brasil"),
+                      "sites_na_ponte": sorted(sid for sid, (r, _m) in rotas.items() if r == "ponte")},
+            "decisoes_do_titular": cat.get("decisoes_do_titular"),
+            "acervo": len(acervo.get("itens") or {}), "no_fluxo": len(entrada),
+            "por_grupo": por_grupo(entrada, {s["id"]: s for s in cat.get("sites") or []}),
+            "ordem_do_fluxo": list((cat.get("limites") or {}).get("ordem_do_fluxo") or ORDEM_PADRAO),
+            "descartados": cat.get("descartados"), "fila_assistida": montar_fila(cat, est, rotas, hoje, acervo)["itens"]}

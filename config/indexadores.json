@@ -3,6 +3,12 @@
  "em": "2026-10-02",
  "regra": "MOTORES INDEXADORES (titular, 02/10/2026): sites que reúnem editais de terceiros servem como INDÍCIO. Cada site tem o seu motor, com os parâmetros do próprio site; os motores com a mesma metodologia de leitura se agregam numa família (feeds, APIs, sitemaps, listagens, dados abertos). O que eles acham vai ao fluxo das oportunidades com o link da fonte oficial; o prazo do agregador é pista até a fonte oficial confirmar. Site que proíbe robô vai para a coleta assistida (navegador do titular e pilotos); site que recusa IP estrangeiro vai para a ponte Brasil. Nada se perde por bloqueio: cada site desce a escada nuvem → ponte → assistida e volta a tentar a rota mais barata toda semana.",
  "parecer": "docs/pareceres/motores-indexadores.md",
+ "decisoes_do_titular": {
+  "em": "2026-10-02",
+  "ponte_brasil": "computador do titular, por enquanto (scripts/coleta_brasil.py agendado a cada 3 horas, das 06:10 às 21:10); VM e hospedagem ficam como alternativas futuras",
+  "prosas": "sem pedido de licença: o Prosas é coberto pelos três caminhos indiretos (rota indireta pelo CapitaAI, ângulo do Piloto - Espião e coleta assistida no navegador)",
+  "fluxo": "até 1.000 indícios, na ordem: Goiás, Brasil (abrangência nacional), internacional e, por último, os outros estados"
+ },
  "agente": {
   "token_robots": "EldoradoIndexadores",
   "user_agent": "Mozilla/5.0 (compatible; EldoradoIndexadores/1.0; +https://github.com/amcjardimamerica-arch/Eldorado; associacao sem fins lucrativos, leitura de editais publicos)"
@@ -19,7 +25,25 @@
   "dias_para_tentar_rota_mais_barata": 7,
   "dias_sem_prazo_no_fluxo": 60,
   "dias_guardar_encerrados": 30,
-  "indicios_no_fluxo_max": 1000
+  "indicios_no_fluxo_max": 1000,
+  "ordem_do_fluxo": [
+   "GO",
+   "BR",
+   "internacional",
+   "outros_estados"
+  ],
+  "ordem_do_fluxo_regra": "GO = UF Goiás; BR = brasileiro sem UF (abrangência nacional); internacional = financiador ou chamada de fora do Brasil que se aplica ao Brasil; outros_estados = UF diferente de Goiás. Dentro de cada grupo, o prazo mais próximo primeiro e os sem prazo por último."
+ },
+ "ponte": {
+  "escolha": "computador_do_titular",
+  "como": "scripts/coleta_brasil.py roda no computador do titular com ELDORADO_LOCAL_BR=1 e lê os sites da rota 'ponte' (python -m src.indexadores rodada --rota ponte); agendado por scripts/agendar_coleta_brasil.ps1 a cada 3 horas, das 06:10 às 21:10, com o computador ligado",
+  "na_nuvem": "o GitHub não lê os sites da rota 'ponte': marca a espera e deixa para a coleta no computador",
+  "entrega": "o computador envia cada rodada como arquivo novo em entrada_manual/indexadores/deltas/; o fluxo 16 aplica sobre o main mais novo (aplicar --brasil) e apaga o arquivo",
+  "dias_sem_leitura_para_navegador": 3,
+  "alternativas_futuras": {
+   "vm_brasil": "scripts/instalar_vm_brasil.sh (Oracle Always Free ou VM paga)",
+   "hospedagem": "ponte/ponte.php + segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE"
+  }
  },
  "motores": {
   "idx-feeds": {
@@ -63,8 +87,8 @@
   },
   "idx-ponte-brasil": {
    "nome": "Indexadores — ponte Brasil (sites que recusam IP estrangeiro)",
-   "metodo": "os mesmos leitores, com saída por IP brasileiro: ponte HTTP em hospedagem no Brasil (ELDORADO_PONTE_URL), máquina virtual no Brasil ou o computador do titular (scripts/coleta_brasil.py)",
-   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13"
+   "metodo": "os mesmos leitores, com saída pelo IP brasileiro do computador do titular (scripts/coleta_brasil.py, de 3 em 3 horas, das 6h10 às 21h10, com o computador ligado); máquina virtual no Brasil e ponte HTTP em hospedagem ficam como alternativas futuras",
+   "horarios_brt": "06:10,09:10,12:10,15:10,18:10,21:10"
   },
   "idx-assistido": {
    "nome": "Indexadores — coleta assistida e pilotos (sites que proíbem robôs)",
@@ -406,7 +430,10 @@
    "listas_sitemap": "https://capitaai.com.br/sitemap-editais.xml",
    "listas_prefixo": "/editais-abertos",
    "listas_por_rodada": 14,
-   "prazo_no_texto": false
+   "prazo_no_texto": false,
+   "listas_fixas": {
+    "https://capitaai.com.br/editais-abertos/prosas": "prosas"
+   }
   },
   {
    "id": "baoba",
@@ -570,19 +597,12 @@
    "prioridade": "P1",
    "legado": "plat-prosas-oscs",
    "nota": "robots.txt: o último grupo para 'User-agent: *' tem 'Disallow: /' (RFC 9309 soma os grupos). O widget é público e feito para ser embutido; a captura é feita pelo titular no navegador, no ritmo de uma pessoa.",
-   "se_autorizado": {
-    "leitor": "prosas_api",
-    "rota": "nuvem",
-    "url": "https://prosas.com.br/selecao/api/v2/publics/oportunidades",
-    "pausa_s": 30,
-    "cadencia_horas": 12,
-    "autorizacao": {
-     "por": null,
-     "em": null,
-     "documento": null
-    },
-    "como": "com a licença escrita do Prosas: copiar estes campos para o site (leitor, rota, url, pausa_s, cadencia_horas) e preencher a autorizacao"
-   }
+   "decisao_titular": "02/10/2026: sem pedido de licença — cobertura pelos três caminhos indiretos",
+   "caminhos_indiretos": [
+    "rota indireta: a listagem https://capitaai.com.br/editais-abertos/prosas é lida em TODA rodada do CapitaAI (listas_fixas) e os indícios saem marcados com rota_indireta_de = prosas",
+    "Piloto - Espião: ângulo de busca diário pelo financiador e pelo edital fora do Prosas (estado/indexadores/angulos_piloto.json)",
+    "coleta assistida: o titular ou o Claude no Chrome abre o widget público e clica em 'Capturar indícios' (docs/coleta-assistida.html), no ritmo de uma pessoa"
+   ]
   },
   {
    "id": "mapa-osc",

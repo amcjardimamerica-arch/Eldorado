@@ -100,10 +100,15 @@ document.body.appendChild(q);})();
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   fetch('dados/indexadores.json', {cache: 'no-store'}).then(function(r){ return r.json(); }).then(function(d){
     var tb = document.querySelector('#fila tbody'), f = d.fila_assistida || [];
-    document.getElementById('em').textContent = 'Atualizado em ' + (d.em || '—') + ' · ' + (d.no_fluxo || 0) + ' indícios no fluxo · ponte Brasil ' + ((d.ponte || {}).configurada ? 'configurada' : 'não configurada');
+    var pt = d.ponte || {}, ult = (pt.ultima_coleta_brasil || {}).em;
+    var ponte = pt.escolha === 'computador_do_titular'
+      ? 'ponte Brasil: seu computador · última coleta ' + (ult ? String(ult).slice(0, 16).replace('T', ' ') : 'ainda não houve')
+      : 'ponte Brasil ' + (pt.configurada ? 'configurada' : 'não configurada');
+    document.getElementById('em').textContent = 'Atualizado em ' + (d.em || '—') + ' · ' + (d.no_fluxo || 0) + ' indícios no fluxo · ' + ponte;
     if (!f.length) { tb.innerHTML = '<tr><td colspan="4" class="nota">Nada na fila. </td></tr>'; return; }
     tb.innerHTML = f.map(function(x){
-      var ind = x.rota_indireta ? '<br><span class="nota">enquanto isso: <a href="' + esc(x.rota_indireta.pagina) + '" target="_blank" rel="noopener">rota indireta</a></span>' : '';
+      var ind = x.rota_indireta ? '<br><span class="nota">enquanto isso: <a href="' + esc(x.rota_indireta.pagina) + '" target="_blank" rel="noopener">rota indireta</a>' +
+        (x.cobertos_pela_rota_indireta ? ' · ' + esc(x.cobertos_pela_rota_indireta) + ' editais já vieram por ela' : '') + '</span>' : '';
       return '<tr><td><span class="' + esc(String(x.prioridade || 'P3').toLowerCase()) + '">' + esc(x.prioridade || 'P3') + '</span> · ' +
         '<a href="' + esc(x.abrir) + '" target="_blank" rel="noopener"><b>' + esc(x.nome) + '</b></a></td><td>' + esc(x.motivo) + ind + '</td><td>' + esc(x.como) + '</td><td>' +
         esc(x.ultima_captura ? String(x.ultima_captura).slice(0, 10) + ' · ' + (x.itens_ultima_captura || 0) + ' itens' : 'nunca') + '</td></tr>';

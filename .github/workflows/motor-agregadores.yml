@@ -2,7 +2,8 @@ name: 16 · Motores indexadores (feeds, APIs, sitemaps, listagens, dados abertos
 # Titular, 02/10/2026: os sites que reúnem editais são lidos como INDÍCIO, um motor por site, reunidos por metodologia
 # (config/indexadores.json, src/indexadores/). Substitui o antigo motor de agregadores (CapitaAI, Farol, IDIS).
 # Seis rodadas por dia: cada rodada lê os sites cuja cadência venceu e continua o que a anterior deixou pendente,
-# até trazer todas as oportunidades. Também roda quando o titular envia uma captura da coleta assistida.
+# até trazer todas as oportunidades. Também roda quando o titular envia uma captura da coleta assistida e quando o
+# computador do titular (a ponte Brasil escolhida em 02/10/2026) envia o delta da sua rodada.
 on:
   workflow_dispatch:
     inputs:
@@ -45,10 +46,10 @@ jobs:
           git config user.name "motores-indexadores" && git config user.email "motor@eldorado"
           for i in 1 2 3 4; do
             git fetch -q origin main && git reset -q --hard origin/main
-            python -m src.indexadores aplicar --delta /tmp/ix/delta.json >/dev/null
+            python -m src.indexadores aplicar --brasil --delta /tmp/ix/delta.json >/dev/null   # 1º o que o computador do titular leu
             timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa: falhou"
             timeout 120 python -m src.achados_motores >/dev/null 2>&1 || true
-            for P in estado/agregadores estado/indexadores docs/dados/indexadores.json docs/dados/fluxo_oportunidades.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json estado/opressores.json estado/opressores_indice.json biblioteca_alexandria/base/preditivo dados/oportunidades/validacao_mapa docs/dados/validacao_motores.json; do [ -e "$P" ] && git add -A -- "$P"; done
+            for P in entrada_manual/indexadores/deltas estado/agregadores estado/indexadores docs/dados/indexadores.json docs/dados/fluxo_oportunidades.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json estado/opressores.json estado/opressores_indice.json biblioteca_alexandria/base/preditivo dados/oportunidades/validacao_mapa docs/dados/validacao_motores.json; do [ -e "$P" ] && git add -A -- "$P"; done
             git commit -q -m "motores indexadores: $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 8
           done

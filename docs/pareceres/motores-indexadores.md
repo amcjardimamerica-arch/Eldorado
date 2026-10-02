@@ -43,7 +43,7 @@ indexador o traz. O prazo do indexador é pista até o Interceptador confirmar n
 | idx-sitemaps | sitemap.xml com data de alteração + JSON-LD e links da página | CapitaAI (inclui a página dele sobre o Prosas) | 6 |
 | idx-listagens | página de editais + página de cada edital novo | Baobá, BrazilFoundation, IAF, Funarte, UNDEF, Editais Culturais, Radar do Portal do Impacto | 2 |
 | idx-dados-abertos | arquivo oficial do dia | Siconv — programas com recebimento de propostas aberto a OSC | 1 |
-| idx-ponte-brasil | os mesmos leitores por IP brasileiro | Portal Filantropia e todo site que a escada de rotas mandar | 6 (com ponte) e a cada coleta no Brasil |
+| idx-ponte-brasil | os mesmos leitores pelo IP brasileiro do computador do titular | Portal Filantropia e todo site que a escada de rotas mandar | de 3 em 3 horas, das 6h10 às 21h10, com o computador ligado |
 | idx-assistido | navegador do titular + pilotos | Prosas, Mapa das OSC, FINEP, Itaú Social, Embaixada dos EUA, Petrobras, FBB, embaixadas | contínuo |
 
 ### Cotas de cada rodada
@@ -80,17 +80,22 @@ Os leitores foram rodados no Chrome do titular, sobre as páginas reais, antes d
 | Rota | Quem lê | Quando o site vai para ela |
 |---|---|---|
 | nuvem | GitHub, respeitando robots.txt, intervalo por site e cache condicional | padrão |
-| ponte | IP brasileiro: ponte HTTP na hospedagem, VM no Brasil ou computador do titular | o domínio está em `exige_brasil`, ou deu 2 falhas seguidas de rede ou bloqueio pela nuvem |
+| ponte | IP brasileiro. Escolha do titular: **o computador dele**, por enquanto (VM e hospedagem ficam para depois) | o domínio está em `exige_brasil`, ou deu 2 falhas seguidas de rede ou bloqueio pela nuvem |
 | assistida | titular ou Claude no Chrome, com o botão "Capturar indícios" | o robots.txt proíbe robôs, a página só abre com JavaScript, a rota ainda precisa ser levantada, ou 3 bloqueios também pelo IP brasileiro |
 
 **Regras da escada:**
 
 - Toda semana o site tenta de novo a rota mais barata; quando ela volta a funcionar, ele desce. Quem foi para a assistida por robots.txt é reavaliado a cada 30 dias.
-- Site que espera a ponte há 3 dias entra também na fila da coleta assistida, para não ficar parado.
+- A nuvem não tenta os sites da rota "ponte": deixa para a coleta no computador do titular, a cada 3 horas, das 6h10 às
+  21h10. Se o computador não ler um site por 3 dias (desligado ou coleta parada), o site entra também na fila da coleta
+  assistida, para não ficar parado.
 
-**Os sites fechados a robôs (Prosas, FINEP) continuam cobertos por três caminhos:**
+**Os sites fechados a robôs (Prosas, FINEP) continuam cobertos por três caminhos.** O titular decidiu (02/10/2026) não
+pedir licença ao Prosas: esses três caminhos são a cobertura definitiva.
 
-1. a **rota indireta**: outro indexador que pode ser lido e publica os mesmos editais, como a página do CapitaAI sobre o Prosas;
+1. a **rota indireta**: outro indexador que pode ser lido e publica os mesmos editais. A listagem do CapitaAI sobre o
+   Prosas (`/editais-abertos/prosas`) é lida em **toda** rodada, fora do rodízio, e cada indício sai marcado com
+   `rota_indireta_de: prosas`. A fila assistida mostra quantos editais do Prosas já chegaram por esse caminho;
 2. o **Piloto - Espião**, que recebe um ângulo de busca pelo financiador fora do site fechado (`estado/indexadores/angulos_piloto.json`);
 3. a **coleta assistida**: o titular abre o site e o botão grava o que a página mostra.
 
@@ -102,7 +107,7 @@ O robô nunca toca o site fechado.
 |---|---|---|---|
 | Extremamente pessimista | Engenheiro-chefe de confiabilidade | Mais fontes, mais quebras silenciosas. Site mudo sem aviso foi o defeito dos motores 01, 02 e 22. | Cada família grava o seu diário (calendário e luz no painel). Site que falha sobe na escada, e falha nunca vira "funcionou". |
 | Pessimista | Staff engineer de dados | O mesmo edital aparece no Farol, no CapitaAI e na rede Mapas Culturais com títulos diferentes. | Chave dupla de duplicata: link oficial canônico, ou título + prazo + UF. Um indício só, com várias fontes. |
-| Levemente pessimista | Professor de sistemas distribuídos | Três escritores no mesmo arquivo: nuvem, computador do titular e envio da coleta assistida. | A rodada gera um delta e o reaplica sobre o main mais recente antes do push, para não apagar o que outro gravou. |
+| Levemente pessimista | Professor de sistemas distribuídos | Três escritores no mesmo arquivo: nuvem, computador do titular e envio da coleta assistida. | A rodada gera um delta e o reaplica sobre o main mais recente antes do push. O computador do titular envia a sua rodada como arquivo novo de delta (`entrada_manual/indexadores/deltas/`), que a nuvem aplica e apaga: arquivo novo nunca conflita no git. |
 | Neutro | CTO | Decide (abaixo). | — |
 | Levemente otimista | Professor de recuperação de informação | Farol, Mapas Culturais, WordPress e CapitaAI entregam dados estruturados (API, JSON-LD, sitemap com data). | Leitores estruturados primeiro; a raspagem de HTML fica só onde não há alternativa. |
 | Otimista | Staff engineer de produto | Bloqueio não precisa ser perda: há rota indireta, Piloto e navegador. | Fila assistida no painel, botão de captura, ângulos do Piloto, roteiro para o Claude no Chrome. |
@@ -119,8 +124,12 @@ O robô nunca toca o site fechado.
    da proteção pelo art. 8º, IV).
 4. **Fora do fluxo, mas guardado no acervo.** Fica de fora o que tem prazo vencido, público claramente fora do perfil
    de OSC (bolsa de doutorado, só empresa, só prefeitura), quarentena, chamada estrangeira que não se aplica ao Brasil
-   e indício sem prazo publicado há mais de 60 dias. O limite é de 1.000 indícios no fluxo, com Goiás primeiro, depois
-   Brasil e prazo mais próximo.
+   e indício sem prazo publicado há mais de 60 dias.
+5. **Limite e ordem (decisão do titular).** Até 1.000 indícios no fluxo, nesta ordem: Goiás; Brasil (abrangência
+   nacional, sem UF); internacional (financiador estrangeiro com chamada que vale para o Brasil); e, por último, os
+   outros estados. Dentro de cada grupo, o prazo mais próximo vem primeiro e o sem prazo vai para o fim. Quando passa
+   de 1.000, o corte cai sobre os outros estados. O arquivo do fluxo e o painel mostram quantos indícios há em cada
+   grupo (`por_grupo`).
 
 | Parâmetro | Meta | Onde se mede |
 |---|---|---|
@@ -134,8 +143,8 @@ O robô nunca toca o site fechado.
 
 | Risco | Mitigação |
 |---|---|
-| O volume cresce (de 62 para até 1.000 indícios) e pesa no mapa e no Interceptador | Limite configurável (`limites.indicios_no_fluxo_max`), ordem Goiás → Brasil → prazo. O mapa foi medido em 12 s com os dados atuais. |
-| A ponte HTTP em datacenter também é bloqueada | O site sobe para a coleta assistida; o computador do titular continua sendo o IP residencial. |
+| O volume cresce (de 62 para até 1.000 indícios) e pesa no mapa e no Interceptador | Limite configurável (`limites.indicios_no_fluxo_max` = 1.000), ordem Goiás → Brasil → internacional → outros estados (`limites.ordem_do_fluxo`). O mapa foi medido em 12 s com os dados atuais. |
+| O computador do titular fica desligado | Depois de 3 dias sem leitura, o site entra também na fila da coleta assistida. A VM no Brasil e a hospedagem continuam prontas em `ponte/` para quando o titular quiser leitura 24 horas. |
 | Ponte usada como proxy aberto | Pedido assinado com HMAC e válido por 5 minutos; lista de domínios; só destino público; 120 pedidos por minuto. |
 | Mudança de layout num site | Os leitores estruturados (API, JSON-LD, sitemap) quebram menos. A falha aparece no painel e sobe na escada. |
 | Validações já feitas se perdem | O id do indício é o mesmo do motor antigo (sha1 da página do agregador). Os itens antigos foram migrados com a data em que apareceram. |
@@ -147,6 +156,13 @@ O robô nunca toca o site fechado.
    - Embaixadas: Japão, Canadá, Alemanha, Austrália, Reino Unido, Países Baixos e Noruega.
 2. **Colunas do Siconv.** Confirmar na primeira leitura real os nomes das colunas de `siconv_programa.zip`. O leitor
    reconhece as colunas pelo nome e, se não reconhecer, grava a lista de cabeçalhos no diagnóstico.
-3. **Ponte Brasil.** Escolher um dos três jeitos (`ponte/LEIA-ME.md`).
-4. **Prosas.** Pedido de licença escrita: se vier, o leitor de API (JSON:API do widget) entra na rota nuvem com
-   intervalo de 30 s.
+3. **Coleta no computador do titular.** Instalar o agendamento (`scripts/agendar_coleta_brasil.ps1`) e confirmar a
+   primeira coleta no painel ("última coleta no Brasil").
+
+## Decisões do titular (02/10/2026)
+
+| Tema | Decisão | Onde está no sistema |
+|---|---|---|
+| Ponte Brasil | o computador do titular, por enquanto | `config/indexadores.json` → `ponte.escolha`; `scripts/coleta_brasil.py` e `scripts/agendar_coleta_brasil.ps1` |
+| Prosas | sem pedido de licença; cobertura pelos três caminhos indiretos | `sites[prosas].caminhos_indiretos`; `sites[capitaai].listas_fixas` |
+| Fluxo | 1.000 indícios: Goiás, Brasil, internacional, outros estados | `limites.indicios_no_fluxo_max` e `limites.ordem_do_fluxo` |

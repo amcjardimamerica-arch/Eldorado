@@ -129,9 +129,15 @@ python -m src.indexadores ponte-dominios      # lista de domínios para o ponte.
   diário: `estado/indexadores/`. Painel: `docs/dados/indexadores.json`; coleta assistida: `docs/coleta-assistida.html`.
 - Site novo = uma linha no catálogo com `leitor` (feed, wordpress, farol_api, mapas_culturais, transferegov_api,
   sitemap_jsonld, html_listagem, siconv_zip, delegado, assistido) e os parâmetros do site.
-- Ponte Brasil (sites que recusam IP estrangeiro): `ponte/LEIA-ME.md` — computador do titular
-  (`scripts/agendar_coleta_brasil.bat`), VM no Brasil (`scripts/instalar_vm_brasil.sh`) ou hospedagem
-  (`ponte/ponte.php` + segredos `ELDORADO_PONTE_URL` e `ELDORADO_PONTE_CHAVE`).
+- Ponte Brasil (sites que recusam IP estrangeiro): **o computador do titular** (decisão de 02/10/2026), com
+  `scripts/coleta_brasil.py` agendado por `scripts/agendar_coleta_brasil.ps1` a cada 3 horas, das 06:10 às 21:10.
+  A nuvem não tenta esses sites; com 3 dias sem leitura, eles entram também na fila assistida. O computador envia cada
+  rodada como arquivo novo em `entrada_manual/indexadores/deltas/`; o fluxo 16 aplica (`aplicar --brasil`) e apaga. Alternativas prontas
+  para depois: VM no Brasil (`scripts/instalar_vm_brasil.sh`) ou hospedagem (`ponte/ponte.php` + segredos
+  `ELDORADO_PONTE_URL` e `ELDORADO_PONTE_CHAVE`). Detalhes em `ponte/LEIA-ME.md`.
+- Fluxo: até 1.000 indícios, na ordem Goiás → Brasil → internacional → outros estados (`limites.ordem_do_fluxo`).
+- Prosas: sem licença para robô (decisão de 02/10/2026); coberto pela listagem do CapitaAI lida em toda rodada
+  (`listas_fixas`), pelo ângulo do Piloto e pela coleta assistida.
 
 ## Região Metropolitana de Goiânia
 
