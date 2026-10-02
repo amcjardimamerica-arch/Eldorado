@@ -93,8 +93,20 @@ def empresa_sem_edital(x: dict) -> bool:
     return natureza(x) == "privada" and x.get("geo") != "INT" and not SEL.search(_txt(x))
 
 
+def titulo_sem_orgao(x: dict) -> str:
+    """02/10: o nome do livro é 'Órgão — Título — Lugar' nos livros dos motores que registram o órgão na frente (motor
+    estadual): comparar só a 1ª parte comparava o ÓRGÃO e juntava editais diferentes da mesma secretaria."""
+    n = str(x.get("nome_classificado") or x.get("programa") or "")
+    if x.get("nome_classificado") and " — " in n:
+        n = n.rsplit(" — ", 1)[0]                          # tira o lugar ("— Goiás / Goiânia")
+    org = str(x.get("orgao") or "").strip()
+    if org and sem(n).startswith(sem(org)) and len(n) > len(org) + 3:
+        n = n[len(org):].lstrip(" —-:")                   # tira o órgão da frente
+    return n.split(" · ")[0]                               # sem o sufixo do agregador ("· Capitaai")
+
+
 def _base(x: dict) -> str:
-    n = str(x.get("nome_classificado") or x.get("programa") or "").split(" — ")[0].split(" · ")[0]   # sem o sufixo do agregador ("· Capitaai")
+    n = titulo_sem_orgao(x)
     return re.sub(r"\s+", " ", re.sub(r"\b(19|20)\d\d\b|\bn[ºo°]?\s*\d+[\w/.-]*|\b\d+\b|[^a-z ]", " ", sem(n))).strip()
 
 
