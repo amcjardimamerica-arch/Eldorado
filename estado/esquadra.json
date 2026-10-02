@@ -3160,25 +3160,100 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       }
+    },
+    "judiciario-cnj-tjgo": {
+      "nome": "Judiciário — CNJ e TJGO: editais das varas de execução penal e das comarcas (prestações pecuniárias) e credenciamentos de entidades",
+      "tipo": "diario_justica",
+      "leituras": 1,
+      "achados_total": 1,
+      "vazias_seguidas": 0,
+      "duracao_s": 53,
+      "ultima": "2026-10-02T16:08:45+00:00",
+      "motivo": "ativação manual pelo titular",
+      "achados_ultima": 1,
+      "falhas_ultima": 0,
+      "saude": [
+        {
+          "url": "https://www.cnj.jus.br/",
+          "http": 200,
+          "bytes": 3279036,
+          "itens": 32
+        }
+      ],
+      "alerta": null,
+      "diagnostico": {
+        "paginas_lidas": 12,
+        "links_total": 8,
+        "links_candidatos": 4,
+        "descobertas": [],
+        "pdf_links": 0,
+        "motivo_zero": null,
+        "versao": "motor Judiciário CNJ+TJGO v1 (02/10/2026)",
+        "rota": "nuvem",
+        "fontes": {
+          "A": {
+            "falhas": [],
+            "consultas": 0,
+            "itens": 0,
+            "pulado": "na nuvem o TJGO recusa IP estrangeiro: notícias e PDFs são lidos no computador do titular (scripts/coleta_brasil.py)"
+          },
+          "B": {
+            "falhas": [],
+            "consultas": 0,
+            "itens": 0,
+            "pulado": "na nuvem o TJGO recusa IP estrangeiro: notícias e PDFs são lidos no computador do titular (scripts/coleta_brasil.py)"
+          },
+          "C": {
+            "falhas": [],
+            "consultas": 12,
+            "itens": 32,
+            "bytes": 3279036,
+            "candidatas": 19
+          },
+          "D": {
+            "falhas": [],
+            "consultas": 0,
+            "itens": 1
+          },
+          "E": {
+            "falhas": [],
+            "consultas": 0,
+            "itens": 0
+          }
+        },
+        "alerta_local": "a coleta no computador do titular ainda não rodou — as notícias e os editais das comarcas do TJGO só são lidos por ele",
+        "vereditos": {
+          "OPORTUNIDADE": 1,
+          "ACOMPANHAR": 3,
+          "RUIDO": 4,
+          "quarentena": 0,
+          "erros": 0,
+          "duplicados": 0
+        },
+        "pncp_do_judiciario": 1,
+        "abertas": 1
+      }
     }
   },
   "ultima_execucao": {
     "data": "2026-10-02",
-    "em": "2026-10-02T03:01:05+00:00",
+    "em": "2026-10-02T16:08:45+00:00",
     "manual": [
-      "pncp-api"
+      "judiciario-cnj-tjgo"
     ],
     "bloco": "manual",
     "sensores_executados": 1,
-    "em_espera": 126,
-    "total_esquadra": 127,
+    "adiados_por_tempo": [],
+    "duracao_s": 53,
+    "em_espera": 122,
+    "total_esquadra": 123,
     "previsoes_ativas": 1,
-    "achados": 165,
-    "novos_na_base": 165,
+    "achados": 1,
+    "novos_na_base": 1,
     "por_tipo": {
-      "api": {
+      "diario_justica": {
         "sensores": 1,
-        "achados": 165,
+        "achados": 1,
         "falhas": 0
       }
     }
