@@ -214,6 +214,15 @@ def _angulo_do_dia() -> dict:
     """Sorteia o ângulo de ataque do motor 29, pulando os que estão na memória negativa."""
     import random as _r
     m = load_json(MOTOR29)
+    # 02/10 (motores indexadores): sites fechados a robôs (Prosas, FINEP...) entram no rodízio como ângulo de busca —
+    # o Piloto procura o financiador e o site oficial FORA do site fechado
+    try:
+        _ix = ROOT / "estado/indexadores/angulos_piloto.json"
+        if _ix.exists():
+            _ja = {a.get("id") for a in m.get("angulos_de_ataque") or []}
+            m["angulos_de_ataque"] = list(m.get("angulos_de_ataque") or []) + [a for a in (load_json(_ix).get("angulos") or []) if a.get("id") not in _ja]
+    except Exception:
+        pass
     secos = {x["id"] for x in (m.get("memoria_negativa") or {}).get("itens", [])}
     b = load_json(ROOT / "estado/piloto/bordo.json") if (ROOT / "estado/piloto/bordo.json").exists() else {}
     recentes = {x.get("alvo") for x in (b.get("missoes") or [])[:8]}

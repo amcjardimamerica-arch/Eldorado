@@ -552,7 +552,8 @@
     "valor",
     "regulamento",
     "site oficial"
-   ]
+   ],
+   "agregado_a": "idx-feeds"
   },
   "plat-abcr": {
    "perfil": "vetor de DESCOBERTA nacional (Captadores/ABCR)",
@@ -584,7 +585,8 @@
     "valor",
     "regulamento",
     "site oficial"
-   ]
+   ],
+   "agregado_a": "idx-feeds"
   },
   "plat-gife": {
    "perfil": "curadoria do investimento social privado — a seleção mensal de editais do GIFE e as oportunidades da Capta, lidas pela API do WordPress (não a home nem a ficha dos associados)",
@@ -1657,6 +1659,236 @@
     "dia nacional"
    ],
    "nota_02_10": "leitor próprio (src/congresso_nacional.py); os léxicos acima ficam como referência do painel e do livro"
+  },
+  "idx-feeds": {
+   "perfil": "Indexadores — feeds RSS e WordPress",
+   "coleta": "nuvem",
+   "nota_coleta": "feed RSS/Atom da seção de editais ou API REST do WordPress (posts e tipos próprios de edital), com leitura do artigo só quando o item é novo",
+   "rotas": [
+    {
+     "nome": "Observatório do Terceiro Setor — editais",
+     "url": "https://www.observatorio3setor.org.br/secoes_tematicas/editais/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "ABCR — editais divulgados pelos captadores",
+     "url": "https://captadores.org.br/category/editais/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "IDIS — notícias de editais (RSS)",
+     "url": "https://www.idis.org.br/feed/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "fundsforNGOs — chamadas internacionais abertas ao Brasil",
+     "url": "https://www2.fundsforngos.org/tag/brazil/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Rede Comuá — editais dos fundos independentes",
+     "url": "https://redecomua.org.br/edital/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Fundo Brasil de Direitos Humanos — editais",
+     "url": "https://www.fundobrasil.org.br/editais/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Fundo Casa Socioambiental — chamadas",
+     "url": "https://casa.org.br/chamadas/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "CESE — editais",
+     "url": "https://cese.org.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "GIFE e Capta (motor 22)",
+     "url": "https://gife.org.br/editais/",
+     "tipo": "delegado"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": [],
+   "indexadores": true
+  },
+  "idx-apis": {
+   "perfil": "Indexadores — APIs públicas de editais",
+   "coleta": "nuvem",
+   "nota_coleta": "API JSON paginada: Farol Cultural (/api/v1/editais), rede Mapas Culturais (uma instância por estado ou cidade) e Transferegov (programas)",
+   "rotas": [
+    {
+     "nome": "Farol Cultural — editais culturais abertos (API)",
+     "url": "https://farolcultural.art/editais",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Rede Mapas Culturais — oportunidades com inscrição aberta",
+     "url": null,
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Transferegov — programas do módulo Gestão de Parcerias (API)",
+     "url": "https://www.gov.br/transferegov/pt-br",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "SALIC e editais do MinC (motor próprio)",
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
+     "tipo": "delegado"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": [],
+   "indexadores": true
+  },
+  "idx-sitemaps": {
+   "perfil": "Indexadores — sitemaps e páginas estruturadas",
+   "coleta": "nuvem",
+   "nota_coleta": "sitemap.xml com data de alteração (lastmod) + dados estruturados (JSON-LD) e links oficiais de cada página nova ou alterada",
+   "rotas": [
+    {
+     "nome": "CapitaAI — páginas públicas de captação (sitemap)",
+     "url": "https://capitaai.com.br/editais-abertos/para-ong",
+     "tipo": "indexador"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": [],
+   "indexadores": true
+  },
+  "idx-listagens": {
+   "perfil": "Indexadores — listagens de editais dos financiadores",
+   "coleta": "nuvem",
+   "nota_coleta": "página de editais do site + página de cada edital novo, com as regras de cada site no catálogo",
+   "rotas": [
+    {
+     "nome": "Fundo Baobá — editais",
+     "url": "https://baoba.org.br/editais/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "BrazilFoundation — edital",
+     "url": "https://brazilfoundation.org/edital/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Inter-American Foundation — chamadas",
+     "url": "https://www.iaf.gov/apply-for-grants/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Editais Culturais (editaisculturais.com.br)",
+     "url": "https://editaisculturais.com.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Funarte — editais",
+     "url": "https://www.gov.br/funarte/pt-br/editais",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Fundo das Nações Unidas para a Democracia (UNDEF)",
+     "url": "https://www.un.org/democracyfund/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Radar de Editais — Portal do Impacto",
+     "url": "https://editais.portaldoimpacto.com/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "FAPEG e Secult-GO (motor estadual)",
+     "url": "https://goias.gov.br/fapeg/",
+     "tipo": "delegado"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": [],
+   "indexadores": true
+  },
+  "idx-dados-abertos": {
+   "perfil": "Indexadores — dados abertos de governo",
+   "coleta": "nuvem",
+   "nota_coleta": "arquivo oficial atualizado todo dia (Transferegov: programas com recebimento de propostas aberto)",
+   "rotas": [
+    {
+     "nome": "Transferegov — programas abertos a propostas (dados abertos Siconv)",
+     "url": "https://discricionarias.transferegov.sistema.gov.br/voluntarias/programa/ConsultarPrograma/ConsultarPrograma.do",
+     "tipo": "indexador"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": [],
+   "indexadores": true
+  },
+  "idx-ponte-brasil": {
+   "perfil": "Indexadores — ponte Brasil (sites que recusam IP estrangeiro)",
+   "coleta": "nuvem + local",
+   "nota_coleta": "os mesmos leitores, com saída pelo IP brasileiro do computador do titular (scripts/coleta_brasil.py, de 3 em 3 horas, das 6h10 às 21h10, com o computador ligado); máquina virtual no Brasil e ponte HTTP em hospedagem ficam como alternativas futuras",
+   "rotas": [
+    {
+     "nome": "Portal Filantropia — editais",
+     "url": "https://www.filantropia.ong/editais",
+     "tipo": "indexador"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": [],
+   "indexadores": true
+  },
+  "idx-assistido": {
+   "perfil": "Indexadores — coleta assistida e pilotos (sites que proíbem robôs)",
+   "coleta": "local",
+   "nota_coleta": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
+   "rotas": [
+    {
+     "nome": "Prosas — editais e prêmios para OSCs",
+     "url": "https://prosas.com.br/selecao/widgets/listagem-editais",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Mapa das OSC (Ipea) — editais",
+     "url": "https://mapaosc.ipea.gov.br/editais",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "FINEP — chamadas públicas",
+     "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Itaú Social — editais",
+     "url": "https://editais.itausocial.org.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Embaixada dos EUA — apoios a projetos",
+     "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Petrobras — seleções socioambientais e culturais",
+     "url": "https://petrobras.com.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Fundação Banco do Brasil — editais",
+     "url": "https://www.fbb.org.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Embaixadas com pequenos projetos (Japão, Canadá, Alemanha, Austrália, Reino Unido, Países Baixos, Noruega)",
+     "url": "https://www.br.emb-japan.go.jp/",
+     "tipo": "indexador"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": [],
+   "indexadores": true
   }
  },
  "auditado_em": "2026-09-22T21:24:52+00:00"

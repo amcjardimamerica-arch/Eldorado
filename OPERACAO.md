@@ -112,6 +112,33 @@ python -m src.rota_monitoramento
 python scripts/cobertura_catalogo.py
 ```
 
+## Motores indexadores — sites que reúnem editais (02/10/2026)
+
+Catálogo e parâmetros: `config/indexadores.json` · código: `src/indexadores/` · parecer: `docs/pareceres/motores-indexadores.md`.
+
+```bash
+python -m src.indexadores                     # importa capturas assistidas + uma rodada (o que estiver devido)
+python -m src.indexadores rodada --motor idx-apis --forcar   # uma família, ignorando a cadência
+python -m src.indexadores rodada --rota ponte # só os sites que precisam de IP brasileiro (rodar no Brasil)
+python -m src.indexadores status              # resumo do painel
+python -m src.indexadores ponte-dominios      # lista de domínios para o ponte.php
+```
+
+- Fluxo "16 · Motores indexadores": 6 rodadas por dia + a cada captura enviada para `entrada_manual/indexadores/`.
+- Saída para o fluxo: `estado/agregadores/itens.json` (indícios; prazo é pista). Acervo completo, estado, fila e
+  diário: `estado/indexadores/`. Painel: `docs/dados/indexadores.json`; coleta assistida: `docs/coleta-assistida.html`.
+- Site novo = uma linha no catálogo com `leitor` (feed, wordpress, farol_api, mapas_culturais, transferegov_api,
+  sitemap_jsonld, html_listagem, siconv_zip, delegado, assistido) e os parâmetros do site.
+- Ponte Brasil (sites que recusam IP estrangeiro): **o computador do titular** (decisão de 02/10/2026), com
+  `scripts/coleta_brasil.py` agendado por `scripts/agendar_coleta_brasil.ps1` a cada 3 horas, das 06:10 às 21:10.
+  A nuvem não tenta esses sites; com 3 dias sem leitura, eles entram também na fila assistida. O computador envia cada
+  rodada como arquivo novo em `entrada_manual/indexadores/deltas/`; o fluxo 16 aplica (`aplicar --brasil`) e apaga. Alternativas prontas
+  para depois: VM no Brasil (`scripts/instalar_vm_brasil.sh`) ou hospedagem (`ponte/ponte.php` + segredos
+  `ELDORADO_PONTE_URL` e `ELDORADO_PONTE_CHAVE`). Detalhes em `ponte/LEIA-ME.md`.
+- Fluxo: até 1.000 indícios, na ordem Goiás → Brasil → internacional → outros estados (`limites.ordem_do_fluxo`).
+- Prosas: sem licença para robô (decisão de 02/10/2026); coberto pela listagem do CapitaAI lida em toda rodada
+  (`listas_fixas`), pelo ângulo do Piloto e pela coleta assistida.
+
 ## Região Metropolitana de Goiânia
 
 `src/rmg_diarios.py` cobre os 21 municípios pelo diário oficial, com consultas

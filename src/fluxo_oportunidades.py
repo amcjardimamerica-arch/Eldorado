@@ -142,11 +142,14 @@ def consolidar() -> list[dict]:
     except Exception:
         pass
     # MOTOR AGREGADORES NO FLUXO (28/09): capitaai, farolcultural, IDIS — indícios com o link da fonte oficial
+    # 02/10: os MOTORES INDEXADORES (src/indexadores) gravam o mesmo arquivo, com financiador, áreas e o motor da família
     for ag in (_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens", []):
         brutos.append((f"motor agregadores · {ag.get('fonte')}", {"id": ag["id"], "titulo": ag.get("titulo"), "url": ag.get("link_oficial") or ag.get("pagina_agregador"),
                        # 29/09: prazo de agregador NÃO é prazo (regra do titular) — fica como pista até a fonte oficial confirmar
                        "fim": None, "prazo_agregador": ag.get("prazo"), "uf": ag.get("uf"), "data_publicacao": ag.get("primeiro_visto"), "fonte_id": "motor-agregadores",
-                       "pagina_agregador": ag.get("pagina_agregador"), "areas_fonte": ["cultura"] if ag.get("fonte") == "farolcultural" else []}))
+                       "orgao": ag.get("financiador"), "motor_indexador": ag.get("motor"),
+                       "pagina_agregador": ag.get("pagina_agregador"),
+                       "areas_fonte": ag.get("areas") or (["cultura"] if ag.get("fonte") == "farolcultural" else [])}))
     for arq in EXT.glob("*.json"):
         e = _j(arq, {})
         if e.get("investigacao_ia") and arq.stem.startswith(("cat-", "op-")):

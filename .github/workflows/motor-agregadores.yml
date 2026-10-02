@@ -1,8 +1,23 @@
-name: 16 · Motor regular — agregadores de editais (CapitaAI, Farol Cultural, IDIS)
+name: 16 · Motores indexadores (feeds, APIs, sitemaps, listagens, dados abertos, ponte Brasil, coleta assistida)
+# Titular, 02/10/2026: os sites que reúnem editais são lidos como INDÍCIO, um motor por site, reunidos por metodologia
+# (config/indexadores.json, src/indexadores/). Substitui o antigo motor de agregadores (CapitaAI, Farol, IDIS).
+# Seis rodadas por dia: cada rodada lê os sites cuja cadência venceu e continua o que a anterior deixou pendente,
+# até trazer todas as oportunidades. Também roda quando o titular envia uma captura da coleta assistida e quando o
+# computador do titular (a ponte Brasil escolhida em 02/10/2026) envia o delta da sua rodada.
 on:
   workflow_dispatch:
+    inputs:
+      motor:
+        description: "família (idx-feeds, idx-apis, idx-sitemaps, idx-listagens, idx-dados-abertos, idx-ponte-brasil) — vazio = todas"
+        required: false
+      forcar:
+        description: "ler mesmo os sites cuja cadência não venceu (true/false)"
+        required: false
+        default: "false"
+  push:
+    paths: ["entrada_manual/indexadores/**"]
   schedule:
-    - cron: "17 10,22 * * *"
+    - cron: "13 0,9,12,15,18,21 * * *"     # 21h13, 06h13, 09h13, 12h13, 15h13 e 18h13 em Brasília
 permissions:
   contents: write
 concurrency:
@@ -11,23 +26,30 @@ concurrency:
 jobs:
   ler:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
+    env:
+      ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+      ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - name: Ler os agregadores
-        run: python -m src.motor_agregadores
-      - name: Gravar (só o que é do motor) e regenerar o mapa sobre a main atual
+      - name: Importar capturas assistidas e ler os indexadores devidos
         run: |
-          git config user.name "motor-agregadores" && git config user.email "motor@eldorado"
-          mkdir -p /tmp/ag && cp -r estado/agregadores /tmp/ag/
+          ARGS=""
+          if [ -n "${{ github.event.inputs.motor }}" ]; then ARGS="$ARGS --motor ${{ github.event.inputs.motor }}"; fi
+          if [ "${{ github.event.inputs.forcar }}" = "true" ]; then ARGS="$ARGS --forcar"; fi
+          mkdir -p /tmp/ix
+          timeout 1800 python -m src.indexadores tudo --delta /tmp/ix/delta.json $ARGS | tee /tmp/ix/resumo.json
+      - name: Reaplicar sobre o main atual, regenerar o mapa e gravar (só o que é do motor)
+        run: |
+          git config user.name "motores-indexadores" && git config user.email "motor@eldorado"
           for i in 1 2 3 4; do
             git fetch -q origin main && git reset -q --hard origin/main
-            rm -rf estado/agregadores && cp -r /tmp/ag/agregadores estado/agregadores
+            python -m src.indexadores aplicar --brasil --delta /tmp/ix/delta.json >/dev/null   # 1º o que o computador do titular leu
             timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa: falhou"
             timeout 120 python -m src.achados_motores >/dev/null 2>&1 || true
-            for P in estado/agregadores docs/dados/fluxo_oportunidades.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json estado/opressores.json estado/opressores_indice.json biblioteca_alexandria/base/preditivo dados/oportunidades/validacao_mapa docs/dados/validacao_motores.json; do [ -e "$P" ] && git add -A -- "$P"; done
-            git commit -q -m "motor agregadores: $(date -u +%F\ %H:%M)" || break
+            for P in entrada_manual/indexadores/deltas estado/agregadores estado/indexadores docs/dados/indexadores.json docs/dados/fluxo_oportunidades.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json estado/opressores.json estado/opressores_indice.json biblioteca_alexandria/base/preditivo dados/oportunidades/validacao_mapa docs/dados/validacao_motores.json; do [ -e "$P" ] && git add -A -- "$P"; done
+            git commit -q -m "motores indexadores: $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 8
           done

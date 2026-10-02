@@ -1007,7 +1007,7 @@
    "tipo": "plataforma",
    "finalidade": "descoberta",
    "coleta": "nuvem",
-   "nota_coleta": null,
+   "nota_coleta": "reunido ao motor Indexadores — feeds RSS e WordPress (02/10/2026): o RSS da seção de editais substitui a leitura dos rótulos da página",
    "objetivo": "Encontrar oportunidade aberta para OSC em vetor de DESCOBERTA nacional — anuncia, não publica; a fonte oficial é localizada depois.",
    "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 1 rota(s) em 1 domínio(s) (observatorio3setor.org.br); abre só links que casam com 8 termos e escapam dos 12 vetos, e confirma no texto com 6 termos.",
    "agenda": "05:53,10:23 · todos — plataforma de alto rendimento: atualiza em horário comercial",
@@ -1086,7 +1086,7 @@
    "tipo": "plataforma",
    "finalidade": "descoberta",
    "coleta": "nuvem",
-   "nota_coleta": null,
+   "nota_coleta": "reunido ao motor Indexadores — feeds RSS e WordPress (02/10/2026): o RSS da categoria Editais, com o link oficial de cada artigo, substitui a leitura dos rótulos da página",
    "objetivo": "Encontrar oportunidade aberta para OSC em vetor de DESCOBERTA nacional (Captadores/ABCR).",
    "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 1 rota(s) em 1 domínio(s) (captadores.org.br); abre só links que casam com 8 termos e escapam dos 12 vetos, e confirma no texto com 5 termos.",
    "agenda": "05:53,10:23 · todos — plataforma de alto rendimento: atualiza em horário comercial",
@@ -3215,6 +3215,420 @@
     "achados_total": null,
     "bloqueios": null
    }
+  },
+  "idx-feeds": {
+   "nome": "Indexadores — feeds RSS e WordPress",
+   "perfil": "reúne plat-observatorio-3setor, plat-abcr, motor-agregadores (IDIS)",
+   "tipo": "regular",
+   "finalidade": "descoberta",
+   "coleta": "nuvem",
+   "nota_coleta": "feed RSS/Atom da seção de editais ou API REST do WordPress (posts e tipos próprios de edital), com leitura do artigo só quando o item é novo",
+   "objetivo": "Trazer como INDÍCIO os editais que os indexadores publicam em feed RSS ou na API do WordPress, com o link da fonte oficial.",
+   "como_funciona": "feed RSS/Atom da seção de editais ou API REST do WordPress (posts e tipos próprios de edital), com leitura do artigo só quando o item é novo. 9 site(s), cada um com os parâmetros do próprio site (config/indexadores.json); robots.txt respeitado, intervalo por site, cache condicional; o que não coube na rodada continua na próxima.",
+   "agenda": "06:13,09:13,12:13,15:13,18:13,21:13 · todos — seis rodadas por dia: feeds e a API do WordPress são leves e mostram o edital no dia em que é publicado",
+   "agenda_detalhe": {
+    "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+    "dias": "todos",
+    "cadencia_dias": 1,
+    "por_que_esta_hora": "seis rodadas por dia: feeds e a API do WordPress são leves e mostram o edital no dia em que é publicado"
+   },
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "onde_para": "—",
+   "para_afiar": [],
+   "evolucao_gratuita": "cada site novo entra como uma linha do catálogo config/indexadores.json, com o leitor da sua metodologia",
+   "rotas": [
+    {
+     "nome": "Observatório do Terceiro Setor — editais",
+     "url": "https://www.observatorio3setor.org.br/secoes_tematicas/editais/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "ABCR — editais divulgados pelos captadores",
+     "url": "https://captadores.org.br/category/editais/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "IDIS — notícias de editais (RSS)",
+     "url": "https://www.idis.org.br/feed/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "fundsforNGOs — chamadas internacionais abertas ao Brasil",
+     "url": "https://www2.fundsforngos.org/tag/brazil/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Rede Comuá — editais dos fundos independentes",
+     "url": "https://redecomua.org.br/edital/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Fundo Brasil de Direitos Humanos — editais",
+     "url": "https://www.fundobrasil.org.br/editais/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Fundo Casa Socioambiental — chamadas",
+     "url": "https://casa.org.br/chamadas/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "CESE — editais",
+     "url": "https://cese.org.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "GIFE e Capta (motor 22)",
+     "url": "https://gife.org.br/editais/",
+     "tipo": "indexador"
+    }
+   ],
+   "dominios": [
+    "captadores.org.br",
+    "casa.org.br",
+    "cese.org.br",
+    "fundobrasil.org.br",
+    "gife.org.br",
+    "idis.org.br",
+    "observatorio3setor.org.br",
+    "redecomua.org.br",
+    "www2.fundsforngos.org"
+   ],
+   "lexico_1": [],
+   "lexico_2": [],
+   "veto_motor": [],
+   "numeros": {}
+  },
+  "idx-apis": {
+   "nome": "Indexadores — APIs públicas de editais",
+   "perfil": "reúne motor-agregadores (Farol Cultural)",
+   "tipo": "regular",
+   "finalidade": "descoberta",
+   "coleta": "nuvem",
+   "nota_coleta": "API JSON paginada: Farol Cultural (/api/v1/editais), rede Mapas Culturais (uma instância por estado ou cidade) e Transferegov (programas)",
+   "objetivo": "Trazer como INDÍCIO os editais que os indexadores entregam por API pública, com o link da fonte oficial.",
+   "como_funciona": "API JSON paginada: Farol Cultural (/api/v1/editais), rede Mapas Culturais (uma instância por estado ou cidade) e Transferegov (programas). 4 site(s), cada um com os parâmetros do próprio site (config/indexadores.json); robots.txt respeitado, intervalo por site, cache condicional; o que não coube na rodada continua na próxima.",
+   "agenda": "06:13,09:13,12:13,15:13,18:13,21:13 · todos — seis rodadas por dia; cada site tem a sua cadência (Farol e Mapas Culturais a cada 6 h, Transferegov uma vez por dia)",
+   "agenda_detalhe": {
+    "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+    "dias": "todos",
+    "cadencia_dias": 1,
+    "por_que_esta_hora": "seis rodadas por dia; cada site tem a sua cadência (Farol e Mapas Culturais a cada 6 h, Transferegov uma vez por dia)"
+   },
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "onde_para": "—",
+   "para_afiar": [],
+   "evolucao_gratuita": "cada site novo entra como uma linha do catálogo config/indexadores.json, com o leitor da sua metodologia",
+   "rotas": [
+    {
+     "nome": "Farol Cultural — editais culturais abertos (API)",
+     "url": "https://farolcultural.art/editais",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Rede Mapas Culturais — oportunidades com inscrição aberta",
+     "url": null,
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Transferegov — programas do módulo Gestão de Parcerias (API)",
+     "url": "https://www.gov.br/transferegov/pt-br",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "SALIC e editais do MinC (motor próprio)",
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
+     "tipo": "indexador"
+    }
+   ],
+   "dominios": [
+    "farolcultural.art",
+    "gov.br"
+   ],
+   "lexico_1": [],
+   "lexico_2": [],
+   "veto_motor": [],
+   "numeros": {}
+  },
+  "idx-sitemaps": {
+   "nome": "Indexadores — sitemaps e páginas estruturadas",
+   "perfil": "reúne motor-agregadores (CapitaAI)",
+   "tipo": "regular",
+   "finalidade": "descoberta",
+   "coleta": "nuvem",
+   "nota_coleta": "sitemap.xml com data de alteração (lastmod) + dados estruturados (JSON-LD) e links oficiais de cada página nova ou alterada",
+   "objetivo": "Trazer como INDÍCIO os editais que os indexadores listam no sitemap, com o link da fonte oficial.",
+   "como_funciona": "sitemap.xml com data de alteração (lastmod) + dados estruturados (JSON-LD) e links oficiais de cada página nova ou alterada. 1 site(s), cada um com os parâmetros do próprio site (config/indexadores.json); robots.txt respeitado, intervalo por site, cache condicional; o que não coube na rodada continua na próxima.",
+   "agenda": "06:13,09:13,12:13,15:13,18:13,21:13 · todos — seis rodadas por dia: o sitemap traz a data de alteração de cada página e a rodada lê só as novas ou alteradas, até 70 por rodada, até zerar a fila",
+   "agenda_detalhe": {
+    "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+    "dias": "todos",
+    "cadencia_dias": 1,
+    "por_que_esta_hora": "seis rodadas por dia: o sitemap traz a data de alteração de cada página e a rodada lê só as novas ou alteradas, até 70 por rodada, até zerar a fila"
+   },
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "onde_para": "—",
+   "para_afiar": [],
+   "evolucao_gratuita": "cada site novo entra como uma linha do catálogo config/indexadores.json, com o leitor da sua metodologia",
+   "rotas": [
+    {
+     "nome": "CapitaAI — páginas públicas de captação (sitemap)",
+     "url": "https://capitaai.com.br/editais-abertos/para-ong",
+     "tipo": "indexador"
+    }
+   ],
+   "dominios": [
+    "capitaai.com.br"
+   ],
+   "lexico_1": [],
+   "lexico_2": [],
+   "veto_motor": [],
+   "numeros": {}
+  },
+  "idx-listagens": {
+   "nome": "Indexadores — listagens de editais dos financiadores",
+   "perfil": "Indexadores — listagens de editais dos financiadores",
+   "tipo": "regular",
+   "finalidade": "descoberta",
+   "coleta": "nuvem",
+   "nota_coleta": "página de editais do site + página de cada edital novo, com as regras de cada site no catálogo",
+   "objetivo": "Trazer como INDÍCIO os editais que os financiadores listam nas suas páginas de editais, com o link da fonte oficial.",
+   "como_funciona": "página de editais do site + página de cada edital novo, com as regras de cada site no catálogo. 8 site(s), cada um com os parâmetros do próprio site (config/indexadores.json); robots.txt respeitado, intervalo por site, cache condicional; o que não coube na rodada continua na próxima.",
+   "agenda": "07:13,19:13 · todos — duas rodadas por dia: financiadores publicam poucos editais por ano; a página de cada edital novo é lida uma vez e revisitada a cada 14 dias",
+   "agenda_detalhe": {
+    "horarios_brt": "07:13,19:13",
+    "dias": "todos",
+    "cadencia_dias": 1,
+    "por_que_esta_hora": "duas rodadas por dia: financiadores publicam poucos editais por ano; a página de cada edital novo é lida uma vez e revisitada a cada 14 dias"
+   },
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "onde_para": "—",
+   "para_afiar": [],
+   "evolucao_gratuita": "cada site novo entra como uma linha do catálogo config/indexadores.json, com o leitor da sua metodologia",
+   "rotas": [
+    {
+     "nome": "Fundo Baobá — editais",
+     "url": "https://baoba.org.br/editais/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "BrazilFoundation — edital",
+     "url": "https://brazilfoundation.org/edital/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Inter-American Foundation — chamadas",
+     "url": "https://www.iaf.gov/apply-for-grants/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Editais Culturais (editaisculturais.com.br)",
+     "url": "https://editaisculturais.com.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Funarte — editais",
+     "url": "https://www.gov.br/funarte/pt-br/editais",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Fundo das Nações Unidas para a Democracia (UNDEF)",
+     "url": "https://www.un.org/democracyfund/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Radar de Editais — Portal do Impacto",
+     "url": "https://editais.portaldoimpacto.com/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "FAPEG e Secult-GO (motor estadual)",
+     "url": "https://goias.gov.br/fapeg/",
+     "tipo": "indexador"
+    }
+   ],
+   "dominios": [
+    "baoba.org.br",
+    "brazilfoundation.org",
+    "editais.portaldoimpacto.com",
+    "editaisculturais.com.br",
+    "goias.gov.br",
+    "gov.br",
+    "iaf.gov",
+    "un.org"
+   ],
+   "lexico_1": [],
+   "lexico_2": [],
+   "veto_motor": [],
+   "numeros": {}
+  },
+  "idx-dados-abertos": {
+   "nome": "Indexadores — dados abertos de governo",
+   "perfil": "Indexadores — dados abertos de governo",
+   "tipo": "regular",
+   "finalidade": "descoberta",
+   "coleta": "nuvem",
+   "nota_coleta": "arquivo oficial atualizado todo dia (Transferegov: programas com recebimento de propostas aberto)",
+   "objetivo": "Trazer como INDÍCIO os editais que o governo publica em dados abertos, com o link da fonte oficial.",
+   "como_funciona": "arquivo oficial atualizado todo dia (Transferegov: programas com recebimento de propostas aberto). 1 site(s), cada um com os parâmetros do próprio site (config/indexadores.json); robots.txt respeitado, intervalo por site, cache condicional; o que não coube na rodada continua na próxima.",
+   "agenda": "07:13 · todos — uma vez por dia, depois da atualização diária dos arquivos do Transferegov",
+   "agenda_detalhe": {
+    "horarios_brt": "07:13",
+    "dias": "todos",
+    "cadencia_dias": 1,
+    "por_que_esta_hora": "uma vez por dia, depois da atualização diária dos arquivos do Transferegov"
+   },
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "onde_para": "—",
+   "para_afiar": [],
+   "evolucao_gratuita": "cada site novo entra como uma linha do catálogo config/indexadores.json, com o leitor da sua metodologia",
+   "rotas": [
+    {
+     "nome": "Transferegov — programas abertos a propostas (dados abertos Siconv)",
+     "url": "https://discricionarias.transferegov.sistema.gov.br/voluntarias/programa/ConsultarPrograma/ConsultarPrograma.do",
+     "tipo": "indexador"
+    }
+   ],
+   "dominios": [
+    "discricionarias.transferegov.sistema.gov.br"
+   ],
+   "lexico_1": [],
+   "lexico_2": [],
+   "veto_motor": [],
+   "numeros": {}
+  },
+  "idx-ponte-brasil": {
+   "nome": "Indexadores — ponte Brasil (sites que recusam IP estrangeiro)",
+   "perfil": "Indexadores — ponte Brasil (sites que recusam IP estrangeiro)",
+   "tipo": "regular",
+   "finalidade": "descoberta",
+   "coleta": "nuvem + local",
+   "nota_coleta": "os mesmos leitores, com saída pelo IP brasileiro do computador do titular (scripts/coleta_brasil.py, de 3 em 3 horas, das 6h10 às 21h10, com o computador ligado); máquina virtual no Brasil e ponte HTTP em hospedagem ficam como alternativas futuras",
+   "objetivo": "Trazer como INDÍCIO os editais que só abrem para IP brasileiro, com o link da fonte oficial.",
+   "como_funciona": "os mesmos leitores, com saída pelo IP brasileiro do computador do titular (scripts/coleta_brasil.py, de 3 em 3 horas, das 6h10 às 21h10, com o computador ligado); máquina virtual no Brasil e ponte HTTP em hospedagem ficam como alternativas futuras. 1 site(s), cada um com os parâmetros do próprio site (config/indexadores.json); robots.txt respeitado, intervalo por site, cache condicional; o que não coube na rodada continua na próxima.",
+   "agenda": "06:13,09:13,12:13,15:13,18:13,21:13 · todos — nas rodadas da nuvem quando a ponte Brasil está configurada; e sempre que a coleta no Brasil (computador do titular ou VM) roda",
+   "agenda_detalhe": {
+    "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+    "dias": "todos",
+    "cadencia_dias": 1,
+    "por_que_esta_hora": "nas rodadas da nuvem quando a ponte Brasil está configurada; e sempre que a coleta no Brasil (computador do titular ou VM) roda"
+   },
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "onde_para": "—",
+   "para_afiar": [],
+   "evolucao_gratuita": "cada site novo entra como uma linha do catálogo config/indexadores.json, com o leitor da sua metodologia",
+   "rotas": [
+    {
+     "nome": "Portal Filantropia — editais",
+     "url": "https://www.filantropia.ong/editais",
+     "tipo": "indexador"
+    }
+   ],
+   "dominios": [
+    "filantropia.ong"
+   ],
+   "lexico_1": [],
+   "lexico_2": [],
+   "veto_motor": [],
+   "numeros": {}
+  },
+  "idx-assistido": {
+   "nome": "Indexadores — coleta assistida e pilotos (sites que proíbem robôs)",
+   "perfil": "reúne plat-prosas-oscs, plat-mapa-osc",
+   "tipo": "regular",
+   "finalidade": "descoberta",
+   "coleta": "local",
+   "nota_coleta": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
+   "objetivo": "Trazer como INDÍCIO os editais que os sites fechados a robôs publicam, com o link da fonte oficial.",
+   "como_funciona": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial. 8 site(s), cada um com os parâmetros do próprio site (config/indexadores.json); robots.txt respeitado, intervalo por site, cache condicional; o que não coube na rodada continua na próxima.",
+   "agenda": "contínuo · todos — contínuo: a fila é atualizada a cada rodada e as capturas enviadas pelo titular entram na rodada seguinte (ou na hora, pelo envio)",
+   "agenda_detalhe": {
+    "horarios_brt": "contínuo",
+    "dias": "todos",
+    "cadencia_dias": 1,
+    "por_que_esta_hora": "contínuo: a fila é atualizada a cada rodada e as capturas enviadas pelo titular entram na rodada seguinte (ou na hora, pelo envio)"
+   },
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "onde_para": "—",
+   "para_afiar": [],
+   "evolucao_gratuita": "cada site novo entra como uma linha do catálogo config/indexadores.json, com o leitor da sua metodologia",
+   "rotas": [
+    {
+     "nome": "Prosas — editais e prêmios para OSCs",
+     "url": "https://prosas.com.br/selecao/widgets/listagem-editais",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Mapa das OSC (Ipea) — editais",
+     "url": "https://mapaosc.ipea.gov.br/editais",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "FINEP — chamadas públicas",
+     "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Itaú Social — editais",
+     "url": "https://editais.itausocial.org.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Embaixada dos EUA — apoios a projetos",
+     "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Petrobras — seleções socioambientais e culturais",
+     "url": "https://petrobras.com.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Fundação Banco do Brasil — editais",
+     "url": "https://www.fbb.org.br/",
+     "tipo": "indexador"
+    },
+    {
+     "nome": "Embaixadas com pequenos projetos (Japão, Canadá, Alemanha, Austrália, Reino Unido, Países Baixos, Noruega)",
+     "url": "https://www.br.emb-japan.go.jp/",
+     "tipo": "indexador"
+    }
+   ],
+   "dominios": [
+    "br.emb-japan.go.jp",
+    "br.usembassy.gov",
+    "editais.itausocial.org.br",
+    "fbb.org.br",
+    "finep.gov.br",
+    "mapaosc.ipea.gov.br",
+    "petrobras.com.br",
+    "prosas.com.br"
+   ],
+   "lexico_1": [],
+   "lexico_2": [],
+   "veto_motor": [],
+   "numeros": {}
   }
  }
 }

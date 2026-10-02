@@ -1,0 +1,746 @@
+{
+ "versao": 1,
+ "em": "2026-10-02",
+ "regra": "MOTORES INDEXADORES (titular, 02/10/2026): sites que reúnem editais de terceiros servem como INDÍCIO. Cada site tem o seu motor, com os parâmetros do próprio site; os motores com a mesma metodologia de leitura se agregam numa família (feeds, APIs, sitemaps, listagens, dados abertos). O que eles acham vai ao fluxo das oportunidades com o link da fonte oficial; o prazo do agregador é pista até a fonte oficial confirmar. Site que proíbe robô vai para a coleta assistida (navegador do titular e pilotos); site que recusa IP estrangeiro vai para a ponte Brasil. Nada se perde por bloqueio: cada site desce a escada nuvem → ponte → assistida e volta a tentar a rota mais barata toda semana.",
+ "parecer": "docs/pareceres/motores-indexadores.md",
+ "decisoes_do_titular": {
+  "em": "2026-10-02",
+  "ponte_brasil": "computador do titular, por enquanto (scripts/coleta_brasil.py agendado a cada 3 horas, das 06:10 às 21:10); VM e hospedagem ficam como alternativas futuras",
+  "prosas": "sem pedido de licença: o Prosas é coberto pelos três caminhos indiretos (rota indireta pelo CapitaAI, ângulo do Piloto - Espião e coleta assistida no navegador)",
+  "fluxo": "até 1.000 indícios, na ordem: Goiás, Brasil (abrangência nacional), internacional e, por último, os outros estados"
+ },
+ "agente": {
+  "token_robots": "EldoradoIndexadores",
+  "user_agent": "Mozilla/5.0 (compatible; EldoradoIndexadores/1.0; +https://github.com/amcjardimamerica-arch/Eldorado; associacao sem fins lucrativos, leitura de editais publicos)"
+ },
+ "limites": {
+  "tempo_max_rodada_s": 1500,
+  "requisicoes_por_rodada": 700,
+  "pausa_padrao_s": 1.5,
+  "timeout_s": 25,
+  "bytes_max": 4000000,
+  "itens_por_site_por_rodada": 80,
+  "falhas_para_ponte": 2,
+  "falhas_para_assistida": 3,
+  "dias_para_tentar_rota_mais_barata": 7,
+  "dias_sem_prazo_no_fluxo": 60,
+  "dias_guardar_encerrados": 30,
+  "indicios_no_fluxo_max": 1000,
+  "ordem_do_fluxo": [
+   "GO",
+   "BR",
+   "internacional",
+   "outros_estados"
+  ],
+  "ordem_do_fluxo_regra": "GO = UF Goiás; BR = brasileiro sem UF (abrangência nacional); internacional = financiador ou chamada de fora do Brasil que se aplica ao Brasil; outros_estados = UF diferente de Goiás. Dentro de cada grupo, o prazo mais próximo primeiro e os sem prazo por último."
+ },
+ "ponte": {
+  "escolha": "computador_do_titular",
+  "como": "scripts/coleta_brasil.py roda no computador do titular com ELDORADO_LOCAL_BR=1 e lê os sites da rota 'ponte' (python -m src.indexadores rodada --rota ponte); agendado por scripts/agendar_coleta_brasil.ps1 a cada 3 horas, das 06:10 às 21:10, com o computador ligado",
+  "na_nuvem": "o GitHub não lê os sites da rota 'ponte': marca a espera e deixa para a coleta no computador",
+  "entrega": "o computador envia cada rodada como arquivo novo em entrada_manual/indexadores/deltas/; o fluxo 16 aplica sobre o main mais novo (aplicar --brasil) e apaga o arquivo",
+  "dias_sem_leitura_para_navegador": 3,
+  "alternativas_futuras": {
+   "vm_brasil": "scripts/instalar_vm_brasil.sh (Oracle Always Free ou VM paga)",
+   "hospedagem": "ponte/ponte.php + segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE"
+  }
+ },
+ "motores": {
+  "idx-feeds": {
+   "nome": "Indexadores — feeds RSS e WordPress",
+   "metodo": "feed RSS/Atom da seção de editais ou API REST do WordPress (posts e tipos próprios de edital), com leitura do artigo só quando o item é novo",
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "reune": [
+    "plat-observatorio-3setor",
+    "plat-abcr",
+    "motor-agregadores (IDIS)"
+   ],
+   "delega": {
+    "plat-gife": "motor 22 já lê GIFE e Capta pela API do WordPress — não se lê duas vezes"
+   }
+  },
+  "idx-apis": {
+   "nome": "Indexadores — APIs públicas de editais",
+   "metodo": "API JSON paginada: Farol Cultural (/api/v1/editais), rede Mapas Culturais (uma instância por estado ou cidade) e Transferegov (programas)",
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "reune": [
+    "motor-agregadores (Farol Cultural)"
+   ]
+  },
+  "idx-sitemaps": {
+   "nome": "Indexadores — sitemaps e páginas estruturadas",
+   "metodo": "sitemap.xml com data de alteração (lastmod) + dados estruturados (JSON-LD) e links oficiais de cada página nova ou alterada",
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "reune": [
+    "motor-agregadores (CapitaAI)"
+   ]
+  },
+  "idx-listagens": {
+   "nome": "Indexadores — listagens de editais dos financiadores",
+   "metodo": "página de editais do site + página de cada edital novo, com as regras de cada site no catálogo",
+   "horarios_brt": "07:13,19:13"
+  },
+  "idx-dados-abertos": {
+   "nome": "Indexadores — dados abertos de governo",
+   "metodo": "arquivo oficial atualizado todo dia (Transferegov: programas com recebimento de propostas aberto)",
+   "horarios_brt": "07:13"
+  },
+  "idx-ponte-brasil": {
+   "nome": "Indexadores — ponte Brasil (sites que recusam IP estrangeiro)",
+   "metodo": "os mesmos leitores, com saída pelo IP brasileiro do computador do titular (scripts/coleta_brasil.py, de 3 em 3 horas, das 6h10 às 21h10, com o computador ligado); máquina virtual no Brasil e ponte HTTP em hospedagem ficam como alternativas futuras",
+   "horarios_brt": "06:10,09:10,12:10,15:10,18:10,21:10"
+  },
+  "idx-assistido": {
+   "nome": "Indexadores — coleta assistida e pilotos (sites que proíbem robôs)",
+   "metodo": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
+   "horarios_brt": "contínuo",
+   "reune": [
+    "plat-prosas-oscs",
+    "plat-mapa-osc"
+   ]
+  }
+ },
+ "sites": [
+  {
+   "id": "observatorio-3setor",
+   "nome": "Observatório do Terceiro Setor — editais",
+   "motor": "idx-feeds",
+   "leitor": "feed",
+   "url": "https://www.observatorio3setor.org.br/secoes_tematicas/editais/feed/",
+   "pagina": "https://www.observatorio3setor.org.br/secoes_tematicas/editais/",
+   "seguir_artigo": true,
+   "paginas_retroativas": 3,
+   "cadencia_horas": 3,
+   "prioridade": "P1",
+   "rota": "nuvem",
+   "areas": [],
+   "legado": "plat-observatorio-3setor"
+  },
+  {
+   "id": "abcr",
+   "nome": "ABCR — editais divulgados pelos captadores",
+   "motor": "idx-feeds",
+   "leitor": "feed",
+   "url": "https://captadores.org.br/category/editais/feed/",
+   "pagina": "https://captadores.org.br/category/editais/",
+   "seguir_artigo": true,
+   "paginas_retroativas": 3,
+   "cadencia_horas": 3,
+   "prioridade": "P1",
+   "rota": "nuvem",
+   "legado": "plat-abcr"
+  },
+  {
+   "id": "idis",
+   "nome": "IDIS — notícias de editais (RSS)",
+   "motor": "idx-feeds",
+   "leitor": "feed",
+   "url": "https://www.idis.org.br/feed/",
+   "filtro_titulo": "edital|chamad|sele[cç][aã]o|pr[eê]mio|inscri",
+   "seguir_artigo": true,
+   "cadencia_horas": 6,
+   "prioridade": "P2",
+   "rota": "nuvem",
+   "legado": "motor-agregadores"
+  },
+  {
+   "id": "fundsforngos-brasil",
+   "nome": "fundsforNGOs — chamadas internacionais abertas ao Brasil",
+   "motor": "idx-feeds",
+   "leitor": "feed",
+   "url": "https://www2.fundsforngos.org/tag/brazil/feed/",
+   "pagina": "https://www2.fundsforngos.org/tag/brazil/",
+   "seguir_artigo": true,
+   "paginas_retroativas": 4,
+   "cadencia_horas": 6,
+   "prioridade": "P2",
+   "rota": "nuvem",
+   "internacional": true
+  },
+  {
+   "id": "rede-comua",
+   "nome": "Rede Comuá — editais dos fundos independentes",
+   "motor": "idx-feeds",
+   "leitor": "wordpress",
+   "url": "https://redecomua.org.br/wp-json/wp/v2/_editais",
+   "pagina": "https://redecomua.org.br/edital/",
+   "seguir_artigo": true,
+   "janela_dias": 240,
+   "cadencia_horas": 12,
+   "prioridade": "P1",
+   "rota": "nuvem",
+   "areas": [
+    "direitos",
+    "justiça socioambiental"
+   ]
+  },
+  {
+   "id": "fundo-brasil",
+   "nome": "Fundo Brasil de Direitos Humanos — editais",
+   "motor": "idx-feeds",
+   "leitor": "wordpress",
+   "url": "https://www.fundobrasil.org.br/wp-json/wp/v2/edital",
+   "pagina": "https://www.fundobrasil.org.br/editais/",
+   "proprio": true,
+   "financiador": "Fundo Brasil de Direitos Humanos",
+   "janela_dias": 365,
+   "cadencia_horas": 12,
+   "prioridade": "P1",
+   "rota": "nuvem",
+   "areas": [
+    "direitos humanos"
+   ]
+  },
+  {
+   "id": "fundo-casa",
+   "nome": "Fundo Casa Socioambiental — chamadas",
+   "motor": "idx-feeds",
+   "leitor": "wordpress",
+   "url": "https://casa.org.br/wp-json/wp/v2/chamadas",
+   "pagina": "https://casa.org.br/chamadas/",
+   "proprio": true,
+   "financiador": "Fundo Casa Socioambiental",
+   "janela_dias": 365,
+   "cadencia_horas": 12,
+   "prioridade": "P1",
+   "rota": "nuvem",
+   "areas": [
+    "meio ambiente"
+   ]
+  },
+  {
+   "id": "cese",
+   "nome": "CESE — editais",
+   "motor": "idx-feeds",
+   "leitor": "wordpress",
+   "url": "https://cese.org.br/wp-json/wp/v2/edital",
+   "pagina": "https://cese.org.br/",
+   "proprio": true,
+   "financiador": "CESE — Coordenadoria Ecumênica de Serviço",
+   "janela_dias": 365,
+   "cadencia_horas": 24,
+   "prioridade": "P2",
+   "rota": "nuvem",
+   "areas": [
+    "direitos"
+   ]
+  },
+  {
+   "id": "gife-capta",
+   "nome": "GIFE e Capta (motor 22)",
+   "motor": "idx-feeds",
+   "leitor": "delegado",
+   "delegado_a": "plat-gife",
+   "url": "https://gife.org.br/editais/",
+   "prioridade": "P1",
+   "rota": "nuvem"
+  },
+  {
+   "id": "farolcultural",
+   "nome": "Farol Cultural — editais culturais abertos (API)",
+   "motor": "idx-apis",
+   "leitor": "farol_api",
+   "url": "https://farolcultural.art/api/v1/editais",
+   "pagina": "https://farolcultural.art/editais",
+   "status": "Aberto",
+   "por_pagina": 100,
+   "paginas_max": 8,
+   "cadencia_horas": 6,
+   "prioridade": "P1",
+   "rota": "nuvem",
+   "areas": [
+    "cultura"
+   ],
+   "legado": "motor-agregadores"
+  },
+  {
+   "id": "mapas-culturais",
+   "nome": "Rede Mapas Culturais — oportunidades com inscrição aberta",
+   "motor": "idx-apis",
+   "leitor": "mapas_culturais",
+   "tipos": "edital|concurso|pr[eê]mio|chamad|sele[cç]|fomento|credenciamento|bolsa|aux[ií]lio|programa",
+   "cadencia_horas": 6,
+   "prioridade": "P1",
+   "rota": "nuvem",
+   "areas": [
+    "cultura"
+   ],
+   "instancias": [
+    {
+     "host": "mapagoiano.cultura.go.gov.br",
+     "uf": "GO",
+     "nome": "Mapa Goiano",
+     "confirmada": true
+    },
+    {
+     "host": "mapa.cultura.gov.br",
+     "uf": null,
+     "nome": "Mapas Culturais — MinC",
+     "confirmada": true
+    },
+    {
+     "host": "mapacultural.secult.ce.gov.br",
+     "uf": "CE",
+     "nome": "Mapa Cultural do Ceará",
+     "confirmada": true
+    },
+    {
+     "host": "mapacultural.pe.gov.br",
+     "uf": "PE",
+     "nome": "Mapa Cultural de Pernambuco",
+     "confirmada": true
+    },
+    {
+     "host": "mapacultural.pa.gov.br",
+     "uf": "PA",
+     "nome": "Mapa Cultural do Pará",
+     "confirmada": true
+    },
+    {
+     "host": "jpcultura.joaopessoa.pb.gov.br",
+     "uf": "PB",
+     "nome": "JP Cultura — João Pessoa",
+     "confirmada": true
+    },
+    {
+     "host": "mapacultural.ap.gov.br",
+     "uf": "AP",
+     "nome": "Mapa Cultural do Amapá",
+     "confirmada": true
+    },
+    {
+     "host": "mapacultural.se.gov.br",
+     "uf": "SE",
+     "nome": "Mapa Cultural de Sergipe",
+     "confirmada": true
+    },
+    {
+     "host": "mapacultural.pb.gov.br",
+     "uf": "PB",
+     "nome": "Mapa Cultural da Paraíba",
+     "confirmada": true
+    },
+    {
+     "host": "spcultura.prefeitura.sp.gov.br",
+     "uf": "SP",
+     "nome": "SP Cultura",
+     "confirmada": false
+    },
+    {
+     "host": "mapa.cultura.es.gov.br",
+     "uf": "ES",
+     "nome": "Mapa Cultural do Espírito Santo",
+     "confirmada": true
+    },
+    {
+     "host": "rededasartes.cultura.gov.br",
+     "uf": null,
+     "nome": "Rede das Artes (MinC/Funarte)",
+     "confirmada": true
+    },
+    {
+     "host": "mapa.cultura.rs.gov.br",
+     "uf": "RS",
+     "nome": "Mapa da Cultura do RS",
+     "confirmada": false
+    },
+    {
+     "host": "mapas.cultura.mt.gov.br",
+     "uf": "MT",
+     "nome": "Mapa Cultural de Mato Grosso",
+     "confirmada": false
+    },
+    {
+     "host": "mapacultural.ms.gov.br",
+     "uf": "MS",
+     "nome": "Mapa Cultural de Mato Grosso do Sul",
+     "confirmada": false
+    },
+    {
+     "host": "mapa.cultura.rn.gov.br",
+     "uf": "RN",
+     "nome": "Mapa Cultural do RN",
+     "confirmada": false
+    },
+    {
+     "host": "mapa.cultura.to.gov.br",
+     "uf": "TO",
+     "nome": "Mapa Cultural do Tocantins",
+     "confirmada": false
+    },
+    {
+     "host": "mapacultural.ba.gov.br",
+     "uf": "BA",
+     "nome": "Mapa Cultural da Bahia",
+     "confirmada": false
+    },
+    {
+     "host": "mapa.cultura.df.gov.br",
+     "uf": "DF",
+     "nome": "Mapa Cultural do DF",
+     "confirmada": false
+    },
+    {
+     "host": "mapacultural.mg.gov.br",
+     "uf": "MG",
+     "nome": "Mapa Cultural de Minas Gerais",
+     "confirmada": false
+    },
+    {
+     "host": "mapacultural.al.gov.br",
+     "uf": "AL",
+     "nome": "Mapa Cultural de Alagoas",
+     "confirmada": false
+    },
+    {
+     "host": "mapacultural.fortaleza.ce.gov.br",
+     "uf": "CE",
+     "nome": "Mapa Cultural de Fortaleza",
+     "confirmada": false
+    }
+   ]
+  },
+  {
+   "id": "transferegov-parcerias",
+   "nome": "Transferegov — programas do módulo Gestão de Parcerias (API)",
+   "motor": "idx-apis",
+   "leitor": "transferegov_api",
+   "url": "https://api-publica.transferegov.gestao.gov.br/parcerias/programa",
+   "situacao": "Disponibilizado",
+   "pagina": "https://www.gov.br/transferegov/pt-br",
+   "cadencia_horas": 24,
+   "prioridade": "P2",
+   "rota": "nuvem"
+  },
+  {
+   "id": "capitaai",
+   "nome": "CapitaAI — páginas públicas de captação (sitemap)",
+   "motor": "idx-sitemaps",
+   "leitor": "sitemap_jsonld",
+   "url": "https://capitaai.com.br/sitemap-captacao.xml",
+   "prefixo": "/captacao/",
+   "pagina": "https://capitaai.com.br/editais-abertos/para-ong",
+   "pausa_s": 2.0,
+   "itens_por_rodada": 70,
+   "cadencia_horas": 3,
+   "prioridade": "P1",
+   "rota": "nuvem",
+   "legado": "motor-agregadores",
+   "nota": "o robots.txt do CapitaAI proíbe /editais/ e /api/; /editais-abertos/ (84 listagens com cartões: órgão, público e PRAZO), /captacao/ e os sitemaps são liberados. O prazo vem do cartão da listagem; o texto do guia tem datas ilustrativas e não é usado para prazo (calibrado no navegador em 02/10/2026). A página /editais-abertos/prosas é a rota indireta para os editais do Prosas.",
+   "listas_sitemap": "https://capitaai.com.br/sitemap-editais.xml",
+   "listas_prefixo": "/editais-abertos",
+   "listas_por_rodada": 14,
+   "prazo_no_texto": false,
+   "listas_fixas": {
+    "https://capitaai.com.br/editais-abertos/prosas": "prosas"
+   }
+  },
+  {
+   "id": "baoba",
+   "nome": "Fundo Baobá — editais",
+   "motor": "idx-listagens",
+   "leitor": "html_listagem",
+   "listas": [
+    "https://baoba.org.br/editais/"
+   ],
+   "padrao_link": "programa|edital",
+   "proprio": true,
+   "financiador": "Fundo Baobá para Equidade Racial",
+   "cadencia_horas": 12,
+   "prioridade": "P1",
+   "rota": "nuvem",
+   "areas": [
+    "equidade racial"
+   ]
+  },
+  {
+   "id": "brazilfoundation",
+   "nome": "BrazilFoundation — edital",
+   "motor": "idx-listagens",
+   "leitor": "html_listagem",
+   "listas": [
+    "https://brazilfoundation.org/edital/"
+   ],
+   "padrao_link": "edital|selecao|inscri",
+   "pagina_unica": true,
+   "proprio": true,
+   "financiador": "BrazilFoundation",
+   "cadencia_horas": 24,
+   "prioridade": "P2",
+   "rota": "nuvem"
+  },
+  {
+   "id": "iaf",
+   "nome": "Inter-American Foundation — chamadas",
+   "motor": "idx-listagens",
+   "leitor": "html_listagem",
+   "listas": [
+    "https://iaf.gov/apply-for-grant/",
+    "https://www.iaf.gov/"
+   ],
+   "padrao_link": "apply|notice-of-funding|funding-opportunit|nofo",
+   "proprio": true,
+   "financiador": "Inter-American Foundation",
+   "internacional": true,
+   "cadencia_horas": 24,
+   "prioridade": "P2",
+   "rota": "nuvem"
+  },
+  {
+   "id": "editaisculturais",
+   "nome": "Editais Culturais (editaisculturais.com.br)",
+   "motor": "idx-listagens",
+   "leitor": "html_listagem",
+   "listas": [
+    "https://editaisculturais.com.br/"
+   ],
+   "padrao_link": "edital|chamada|premio|selecao|inscri",
+   "cadencia_horas": 24,
+   "prioridade": "P3",
+   "rota": "nuvem",
+   "areas": [
+    "cultura"
+   ]
+  },
+  {
+   "id": "funarte",
+   "nome": "Funarte — editais",
+   "motor": "idx-listagens",
+   "leitor": "html_listagem",
+   "listas": [
+    "https://www.gov.br/funarte/pt-br/editais/editais-abertos",
+    "https://www.gov.br/funarte/pt-br/editais",
+    "https://www.gov.br/funarte/pt-br"
+   ],
+   "padrao_link": "/editais(-1)?/20\\d\\d/",
+   "proprio": true,
+   "financiador": "Funarte",
+   "cadencia_horas": 24,
+   "prioridade": "P2",
+   "rota": "nuvem",
+   "areas": [
+    "cultura"
+   ],
+   "nota": "editais abertos em /editais/editais-abertos (02/10/2026); o leitor testa as candidatas e guarda a primeira que responde"
+  },
+  {
+   "id": "undef",
+   "nome": "Fundo das Nações Unidas para a Democracia (UNDEF)",
+   "motor": "idx-listagens",
+   "leitor": "html_listagem",
+   "listas": [
+    "https://www.un.org/democracyfund/"
+   ],
+   "padrao_link": "call|proposal|apply|round",
+   "proprio": true,
+   "financiador": "UNDEF",
+   "internacional": true,
+   "cadencia_horas": 168,
+   "prioridade": "P3",
+   "rota": "nuvem"
+  },
+  {
+   "id": "radar-portal-impacto",
+   "nome": "Radar de Editais — Portal do Impacto",
+   "motor": "idx-listagens",
+   "leitor": "html_listagem",
+   "listas": [
+    "https://editais.portaldoimpacto.com/"
+   ],
+   "padrao_link": "edital|chamada",
+   "cadencia_horas": 168,
+   "prioridade": "P3",
+   "rota": "nuvem",
+   "nota": "em manutenção em 02/10/2026; checagem semanal até voltar"
+  },
+  {
+   "id": "siconv-programas",
+   "nome": "Transferegov — programas abertos a propostas (dados abertos Siconv)",
+   "motor": "idx-dados-abertos",
+   "leitor": "siconv_zip",
+   "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip",
+   "pagina": "https://discricionarias.transferegov.sistema.gov.br/voluntarias/programa/ConsultarPrograma/ConsultarPrograma.do",
+   "bytes_max": 40000000,
+   "timeout_s": 120,
+   "cadencia_horas": 24,
+   "prioridade": "P1",
+   "rota": "nuvem"
+  },
+  {
+   "id": "filantropia",
+   "nome": "Portal Filantropia — editais",
+   "motor": "idx-ponte-brasil",
+   "leitor": "html_listagem",
+   "listas": [
+    "https://www.filantropia.ong/editais",
+    "https://www.filantropia.ong/"
+   ],
+   "padrao_link": "edital|chamad|sele|premio|inscri",
+   "cadencia_horas": 24,
+   "prioridade": "P3",
+   "rota": "ponte",
+   "nota": "recusou leitura pela nuvem (HTTP 403) em 02/10/2026"
+  },
+  {
+   "id": "prosas",
+   "nome": "Prosas — editais e prêmios para OSCs",
+   "motor": "idx-assistido",
+   "leitor": "assistido",
+   "url": "https://prosas.com.br/selecao/widgets/listagem-editais",
+   "rota": "assistida",
+   "motivo": "robots",
+   "rota_indireta": {
+    "site": "capitaai",
+    "pagina": "https://capitaai.com.br/editais-abertos/prosas"
+   },
+   "angulo_piloto": "Que editais com inscrições abertas estão publicados no Prosas (prosas.com.br) agora? Para cada um, ache o FINANCIADOR e o SITE OFICIAL dele (o Prosas não pode ser lido por robô: procure pelo nome do financiador e do edital fora do Prosas).",
+   "prioridade": "P1",
+   "legado": "plat-prosas-oscs",
+   "nota": "robots.txt: o último grupo para 'User-agent: *' tem 'Disallow: /' (RFC 9309 soma os grupos). O widget é público e feito para ser embutido; a captura é feita pelo titular no navegador, no ritmo de uma pessoa.",
+   "decisao_titular": "02/10/2026: sem pedido de licença — cobertura pelos três caminhos indiretos",
+   "caminhos_indiretos": [
+    "rota indireta: a listagem https://capitaai.com.br/editais-abertos/prosas é lida em TODA rodada do CapitaAI (listas_fixas) e os indícios saem marcados com rota_indireta_de = prosas",
+    "Piloto - Espião: ângulo de busca diário pelo financiador e pelo edital fora do Prosas (estado/indexadores/angulos_piloto.json)",
+    "coleta assistida: o titular ou o Claude no Chrome abre o widget público e clica em 'Capturar indícios' (docs/coleta-assistida.html), no ritmo de uma pessoa"
+   ]
+  },
+  {
+   "id": "mapa-osc",
+   "nome": "Mapa das OSC (Ipea) — editais",
+   "motor": "idx-assistido",
+   "leitor": "assistido",
+   "url": "https://mapaosc.ipea.gov.br/editais",
+   "rota": "assistida",
+   "motivo": "repete_prosas",
+   "mesmo_que": "prosas",
+   "prioridade": "P3",
+   "legado": "plat-mapa-osc",
+   "nota": "a página só embute o widget do Prosas — coberto pela coleta do Prosas"
+  },
+  {
+   "id": "finep",
+   "nome": "FINEP — chamadas públicas",
+   "motor": "idx-assistido",
+   "leitor": "assistido",
+   "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
+   "rota": "assistida",
+   "motivo": "robots",
+   "rota_indireta": {
+    "site": "capitaai",
+    "pagina": "https://capitaai.com.br/editais-abertos/finep"
+   },
+   "angulo_piloto": "Que chamadas públicas da FINEP estão abertas e aceitam instituições sem fins lucrativos? Busque no DOU e no site do MCTI, não no site da FINEP.",
+   "prioridade": "P3"
+  },
+  {
+   "id": "itau-social",
+   "nome": "Itaú Social — editais",
+   "motor": "idx-assistido",
+   "leitor": "assistido",
+   "url": "https://editais.itausocial.org.br/",
+   "rota": "assistida",
+   "motivo": "javascript",
+   "prioridade": "P1",
+   "nota": "a página só abre com JavaScript; a captura pelo navegador lê o que a página mostra"
+  },
+  {
+   "id": "embaixada-eua",
+   "nome": "Embaixada dos EUA — apoios a projetos",
+   "motor": "idx-assistido",
+   "leitor": "assistido",
+   "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
+   "rota": "assistida",
+   "motivo": "bloqueio_http",
+   "prioridade": "P3",
+   "nota": "recusou leitura automática (HTTP 403) em 02/10/2026"
+  },
+  {
+   "id": "petrobras",
+   "nome": "Petrobras — seleções socioambientais e culturais",
+   "motor": "idx-assistido",
+   "leitor": "assistido",
+   "url": "https://petrobras.com.br/",
+   "rota": "assistida",
+   "motivo": "rota_a_levantar",
+   "rota_indireta": {
+    "site": "capitaai",
+    "pagina": "https://capitaai.com.br/editais-abertos/para-ong"
+   },
+   "prioridade": "P1",
+   "nota": "levantar a página de seleções no navegador e registrar a rota no catálogo"
+  },
+  {
+   "id": "fbb",
+   "nome": "Fundação Banco do Brasil — editais",
+   "motor": "idx-assistido",
+   "leitor": "assistido",
+   "url": "https://www.fbb.org.br/",
+   "rota": "assistida",
+   "motivo": "rota_a_levantar",
+   "prioridade": "P1"
+  },
+  {
+   "id": "embaixadas",
+   "nome": "Embaixadas com pequenos projetos (Japão, Canadá, Alemanha, Austrália, Reino Unido, Países Baixos, Noruega)",
+   "motor": "idx-assistido",
+   "leitor": "assistido",
+   "url": "https://www.br.emb-japan.go.jp/",
+   "rota": "assistida",
+   "motivo": "rota_a_levantar",
+   "prioridade": "P2",
+   "internacional": true
+  },
+  {
+   "id": "salic-minc",
+   "nome": "SALIC e editais do MinC (motor próprio)",
+   "motor": "idx-apis",
+   "leitor": "delegado",
+   "delegado_a": "plat-salic",
+   "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
+   "prioridade": "P2",
+   "rota": "nuvem"
+  },
+  {
+   "id": "fapeg-secult",
+   "nome": "FAPEG e Secult-GO (motor estadual)",
+   "motor": "idx-listagens",
+   "leitor": "delegado",
+   "delegado_a": "plat-estaduais-go-gov",
+   "url": "https://goias.gov.br/fapeg/",
+   "prioridade": "P1",
+   "rota": "nuvem"
+  }
+ ],
+ "descartados": [
+  {
+   "nome": "Conjunta",
+   "url": "https://conjunta.org/conteudo/editais/",
+   "motivo": "guia educativo; não lista oportunidades"
+  },
+  {
+   "nome": "Escola Aberta do Terceiro Setor",
+   "url": "https://www.escolaaberta3setor.org.br/",
+   "motivo": "divulga editais de forma esporádica; o que importa chega pelos outros indexadores"
+  },
+  {
+   "nome": "Fomento Cultural",
+   "url": "https://fomentocultural.com.br/",
+   "motivo": "aproxima empresas e artistas na Lei Rouanet; não publica editais"
+  },
+  {
+   "nome": "editaisabertos.com.br e editais.info",
+   "url": null,
+   "motivo": "domínios não respondem (02/10/2026)"
+  },
+  {
+   "nome": "Global Greengrants Fund",
+   "url": "https://www.greengrants.org",
+   "motivo": "apoio por indicação de conselheiros, sem edital aberto"
+  },
+  {
+   "nome": "USAID",
+   "url": "https://www.usaid.gov",
+   "motivo": "agência desmontada em 2025 — confirmar e desativar onde estiver cadastrada"
+  }
+ ]
+}

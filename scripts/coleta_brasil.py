@@ -45,12 +45,26 @@ def main():
         print(f"  {s['nome'][:50]:50s} achados {len(r['achados'])} · {(r.get('diagnostico') or {}).get('motivo_zero') or 'OK'}")
     est["ultima_coleta_local_br"] = {"em": now_iso(), "sensores": n, "achados": achados}
     write_json(ESTADO, est)
+    # 02/10: MOTORES INDEXADORES — a ponte Brasil escolhida pelo titular é ESTE computador. Os sites que recusam IP
+    # estrangeiro (rota "ponte") são lidos daqui; o resultado sai como um arquivo NOVO de delta (nunca conflita no git)
+    # e o fluxo 16 do GitHub o aplica sobre o main mais novo. Os arquivos de estado dos indexadores não são gravados daqui.
+    from datetime import datetime
+    pasta = ROOT / "entrada_manual" / "indexadores" / "deltas"
+    pasta.mkdir(parents=True, exist_ok=True)
+    delta = pasta / f"brasil-{datetime.now().strftime('%Y%m%d-%H%M%S')}.json"
+    run([sys.executable, "-m", "src.indexadores", "rodada", "--rota", "ponte", "--delta", str(delta)], 1800)
     # 02/10 (titular): o Piloto - Interceptador trabalha a esteira de selos no IP do titular (bronze: Sonnet 5.5;
     # prata: Opus 5.5; esforço baixo). O resultado vai em estado/esteira/ e sobe junto no envio abaixo.
     run([sys.executable, "scripts/interceptador_local.py"], 3600)
     run([sys.executable, "-m", "src.motores"], 900)
     run([sys.executable, "-m", "src.dashboard_dados"], 1800)
+    gerados = ("estado/indexadores", "estado/agregadores", "docs/dados/indexadores.json")
+    for p in gerados:
+        run(["git", "checkout", "--", p])        # volta à versão do GitHub: quem grava esses arquivos é o fluxo 16
+    run(["git", "clean", "-fq", "--", *gerados])  # e tira o que a rodada local criou ali (só arquivos gerados)
     run(["git", "add", "-A", "estado", "dados", "docs", "biblioteca_alexandria"])
+    if delta.exists():
+        run(["git", "add", "--", str(delta.relative_to(ROOT))])
     run(["git", "commit", "-m", f"coleta local (Brasil) {hoje}: {n} portais lidos, {achados} achados"])
     run(["git", "pull", "--rebase", "origin", "main"]); run(["git", "push", "origin", "main"])
     print(f"\nConcluído: {n} portais lidos do Brasil, {achados} achados. O painel é publicado pelo GitHub em até 6 horas.")
