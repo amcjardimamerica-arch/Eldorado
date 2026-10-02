@@ -173,7 +173,7 @@ def run(hoje: date | None = None) -> dict:
             ini, fim = date.fromisoformat(pv.get("ativar_em") or ""), date.fromisoformat(pv.get("encerramento") or "")
         except ValueError:
             ini = fim = None
-        if pv.get("situacao") == "prevista" and ini and fim and ini <= hoje <= fim:
+        if pv.get("situacao") == "prevista" and ini and fim and ini <= hoje <= fim and (x.get("qualificacao") or {}).get("veredito") != "NÃO APLICA":
             ch["lexico_ativo"] = {"desde": ini.isoformat(), "ate": fim.isoformat()}
             itens.append({"livro": x["id"], "nome": x.get("nome_classificado"), "termos": termos, "motores": motores,
                           "desde": ini.isoformat(), "ate": fim.isoformat(), "abertura_prevista": pv.get("abertura")})

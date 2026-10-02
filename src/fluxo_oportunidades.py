@@ -517,6 +517,11 @@ def atualizar_mapa() -> dict:
         c["chaves_dos_livros"] = _chaves()
     except Exception as ex:
         c["chaves_dos_livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10: preparação dos editais de fluxo permanente (Farol de Alexandria)
+        from .preparacao_livros import run as _prep
+        c["preparacao_dos_livros"] = _prep()
+    except Exception as ex:
+        c["preparacao_dos_livros"] = f"falhou: {type(ex).__name__}"
     try:                                     # 29/09: os 12 parâmetros de cada opressor, pesquisados na fonte oficial
         from .parametros_opressores import aplicar as _par
         c["parametros_opressores"] = _par()

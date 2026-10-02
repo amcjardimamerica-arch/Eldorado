@@ -41,9 +41,12 @@ class TesteRegrasRestricao(unittest.TestCase):
         self.assertIn("EN-01", nok["regras"])
 
     def test_natureza_vence_e_territorio_fica_anotado(self):
+        # 02/10 (titular): catadores, ILPI e associações estudantis TAMBÉM são OSC — viram livro com enquadramento (EN-03)
         a = R.avaliar({"titulo": "MUNICIPIO DE CASTRO — credenciamento de associação de catadores", "uf": "PR"}, hoje=HOJE)
-        self.assertEqual((a["veredito"], a["regra"]), ("NÃO APLICA", "NA-06"))
-        self.assertIn("EN-01", a["regras"])
+        self.assertEqual(a["veredito"], "APLICÁVEL")
+        self.assertTrue({"EN-01", "EN-03"} <= {e["id"] for e in a["enquadramento"]})
+        for t in ("Credenciamento de ILPI — instituição de longa permanência para idosos", "Chamamento de associações estudantis"):
+            self.assertNotEqual(R.avaliar({"titulo": t, "uf": "GO"}, hoje=HOJE)["veredito"], "NÃO APLICA", t)
 
     def test_servico_especializado_e_enquadramento(self):
         a = R.avaliar({"titulo": "Chamamento de OSC para acolhimento institucional de crianças — Prefeitura de Campinas", "uf": "SP"}, hoje=HOJE)
@@ -198,13 +201,17 @@ class TesteLivrosDoParecer(unittest.TestCase):
         tmp = pathlib.Path(tempfile.mkdtemp()) / "cat.json"; shutil.copy(L.CAT, tmp)
         return L, tmp
 
-    def test_achado_vetado_nao_vira_livro_e_fica_registrado(self):
+    def test_achado_vetado_vira_livro_qualificado(self):
         L, tmp = self._cat()
         with mock.patch.object(L, "CAT", tmp):
             r = L.registrar_achados([{"titulo": "Pregão eletrônico para aquisição de merenda escolar 2026", "url": "https://teste.go.gov.br/pregao", "uf": "GO"}], "teste")
-            self.assertEqual((r["livros_novos"], r["vetados_pelas_restricoes"]), (0, 1))
+            # 02/10 (titular): IDENTIFICAR primeiro, QUALIFICAR depois — o achado vetado vira livro, marcado como NÃO APLICA
+            self.assertEqual((r["livros_novos"], r["vetados_pelas_restricoes"]), (1, 1))
             C = json.loads(tmp.read_text(encoding="utf-8"))
             self.assertEqual(C["vetados_pelas_restricoes"][-1]["regra"], "NA-02")
+            x = next(m for m in C["motores"] if m.get("pagina") == "https://teste.go.gov.br/pregao")
+            self.assertEqual((x["qualificacao"]["veredito"], x["qualificacao"]["regra"]), ("NÃO APLICA", "NA-02"))
+            self.assertFalse(x["ativa"])
 
     def test_edital_de_outro_municipio_vira_livro_com_busca_e_nao_e_arquivado(self):
         from src.curadoria_biblioteca import fora_da_abrangencia

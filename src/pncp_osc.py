@@ -402,6 +402,8 @@ _ENTIDADE_PRESTADORA = re.compile(r"(?:ENTIDADES|INSTITUICOES) (?:DE ASSISTENCIA
                                   r"INSTITUICOES PRIVADAS,? (?:COM OU )?SEM FINS")
 _MROSC_FORTE = re.compile(r"13\.019|TERMO DE (?:FOMENTO|COLABORACAO)|MROSC|ACORDO DE COOPERACAO|TERMO DE EXECUCAO CULTURAL")
 _OSC_FORTE = re.compile(r"13\.019|TERMO DE (?:FOMENTO|COLABORACAO)|ORGANIZAC(?:AO|OES) DA SOCIEDADE CIVIL|\bOSCS?\b|MROSC|"
+                        r"ASSOCIAC(?:AO|OES) (?:DE )?ESTUDANT|GREMIOS? ESTUDANT|CENTROS? ACADEMIC|\bILPIS?\b|LONGA PERMANENCIA|"   # 02/10: também são OSC
+                        r"COOPERATIVAS? (?:E|OU|/)? ?ASSOCIAC(?:AO|OES) DE CATADORES|ASSOCIAC(?:AO|OES) DE CATADORES|"
                         r"ACORDO DE COOPERACAO|ENTIDADES? (?:SOCIOASSISTENCIA|DE ASSISTENCIA SOCIAL)|\bCMAS\b|\bCMDCA\b|PNAB|"
                         r"ALDIR BLANC|PAULO GUSTAVO|AGENTES? CULTURA|PONTOS? DE CULTURA")
 
@@ -461,9 +463,12 @@ def classificar_item(m: dict, hoje: date, ufs: list[str] | None = None) -> dict:
         if rx.search(alvo) and not cedeu:
             if nome in ("credenciamento_servico", "saude_complementar") and _ENTIDADE_PRESTADORA.search(T) \
                     and not re.search(r"EMPRESAS? ESPECIALIZADA|PROFISSIONA(?:L|IS)|PESSOAS? FISICA", T):
-                return {**base, "veredito": "ACOMPANHAR", "regime": "credenciamento_de_entidade",
-                        "motivos": ["credenciamento de entidade sem fins lucrativos para prestar serviço contratado (acolhimento, "
-                                    "saúde) — não é fomento, mas interessa à OSC que já presta o serviço"]}
+                # 02/10 (titular): ILPI, acolhimento e outras OSC prestadoras também são OSC — a oportunidade é mapeada
+                # (identificar primeiro); o enquadramento fica anotado e a decisão de concorrer é do Farol, por associação
+                return {**base, "veredito": "OPORTUNIDADE", "regime": "credenciamento_de_entidade",
+                        "enquadramento": "EN-03 — credenciamento de OSC para prestar serviço (contratação pela Lei 14.133, não fomento MROSC)",
+                        "motivos": ["credenciamento de entidade sem fins lucrativos para prestar serviço (acolhimento, ILPI, saúde) — "
+                                    "oportunidade para a OSC que presta o serviço; enquadramento técnico anotado"]}
             return {**base, "veredito": "RUIDO", "regime": nome, "motivos": [motivo]}
     fin = pts.classificar(m.get("objeto") or "", " ".join(x for x in (m.get("titulo"), m.get("info")) if x))
     extra = next((nome for nome, rx in du.REGIMES_BR if rx.search(T)), None)
@@ -475,9 +480,10 @@ def classificar_item(m: dict, hoje: date, ufs: list[str] | None = None) -> dict:
     if extra in du.REGIMES_LOCAIS and not re.search(r"ENTIDADES?|ASSOCIAC|COOPERATIVA|INSTITUIC(?:AO|OES)[^.]{0,30}SEM FINS|OSC", T):
         extra = None                                     # doação/coleta sem entidade como destinatária
     if not fin["terceiro_setor"] and not extra and not forte and "CREDENCIAMENTO" in T and _ENTIDADE_PRESTADORA.search(T):
-        return {**base, "veredito": "ACOMPANHAR", "regime": "credenciamento_de_entidade",
-                "motivos": ["credenciamento de entidade sem fins lucrativos para prestar serviço contratado (acolhimento, "
-                            "saúde) — não é fomento, mas interessa à OSC que já presta o serviço"]}
+        return {**base, "veredito": "OPORTUNIDADE", "regime": "credenciamento_de_entidade",   # 02/10 (titular): mapeada, com enquadramento
+                "enquadramento": "EN-03 — credenciamento de OSC para prestar serviço (contratação pela Lei 14.133, não fomento MROSC)",
+                "motivos": ["credenciamento de entidade sem fins lucrativos para prestar serviço (acolhimento, ILPI, saúde) — "
+                            "oportunidade para a OSC que presta o serviço; enquadramento técnico anotado"]}
     if not fin["terceiro_setor"] and not extra and not forte:
         return {**base, "veredito": "RUIDO", "regime": "contratacao_publica",
                 "motivos": [f"{fin['finalidade']} — {fin['porque']}"]}

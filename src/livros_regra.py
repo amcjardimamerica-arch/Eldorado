@@ -233,8 +233,14 @@ def registrar_achados(achados: list[dict], origem: str, catalogo: dict | None = 
             x = next((y for y in ms if chave_pncp_do_livro(y) == kp), None)
         if x:
             j = julgar_no_livro({"titulo": tit, "objeto": a.get("objeto"), "url": url, "modalidade": a.get("modalidade")}, x)
-            if j["efeito"] == "veto":                  # a restrição DO livro barra a informação (nada se perde: fica anotado)
-                n_vetos += _anotar(vetados, x.get("id"), tit, url, j["regra"])
+            if j["efeito"] == "veto":                  # 02/10 (titular): IDENTIFICAR primeiro, QUALIFICAR depois — a informação
+                n_vetos += _anotar(vetados, x.get("id"), tit, url, j["regra"])   # entra no histórico do livro, marcada
+                hist = x.setdefault("historico", [])
+                if not any(str(h.get("pagina_oficial") or "").rstrip("/") == url.rstrip("/") for h in hist):
+                    hist.append({"id": "pub-" + hashlib.sha1(url.encode()).hexdigest()[:10], "titulo": tit[:200], "pagina_oficial": url,
+                                 "origem": origem, "visto_em": date.today().isoformat(),
+                                 "qualificacao": {"veredito": "NÃO APLICA", "regra": j["regra"], "acao": "arquivar manualmente se confirmado"}})
+                    atualizados += 1
                 continue
             if a.get("excecao_abrangencia") and not x.get("excecao_abrangencia"):
                 x["excecao_abrangencia"] = a["excecao_abrangencia"]
@@ -254,9 +260,13 @@ def registrar_achados(achados: list[dict], origem: str, catalogo: dict | None = 
             continue
         av = avaliar({"titulo": tit, "objeto": a.get("objeto"), "url": url, "uf": a.get("uf"), "modalidade": a.get("modalidade"),
                       "fim": a.get("prazo") if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(a.get("prazo") or "")) else None})
+        qualif = None
         if av["veredito"] == "NÃO APLICA" and not a.get("excecao_abrangencia"):
+            # 02/10 (titular): nada é eliminado de início — o achado vira livro, QUALIFICADO como não aplicável; o
+            # arquivamento é manual (curadoria). Fica também anotado em vetados_pelas_restricoes, para a conferência.
             n_vetos += _anotar(vetados, None, tit, url, av["regra"])
-            continue
+            from .regras_restricao import qualificacao_do_veto
+            qualif = qualificacao_do_veto(av["regra"], f"{tit} {a.get('objeto') or ''}", str(av.get("motivo") or ""), date.today().isoformat())
         if av.get("efeito") == "edicao" and not a.get("excecao_abrangencia"):
             n_pend += _anotar(pendentes, None, tit, url, av["regra"])   # errata/resultado sem o livro do edital: espera o livro
             continue
@@ -278,6 +288,10 @@ def registrar_achados(achados: list[dict], origem: str, catalogo: dict | None = 
         except Exception:  # noqa: BLE001
             pass
         classificar(x); anotar_checklist(x, _checklist_de(a), origem)
+        if qualif:
+            x["qualificacao"] = qualif
+            if qualif["veredito"] == "NÃO APLICA":
+                x["ativa"] = False
         x["busca"] = bloco_do_livro(x)
         ms.append(x); por_chave[k] = x; ids.add(lid); por_id[lid] = x; por_url[url.rstrip("/")] = x; criados += 1
     C["vetados_pelas_restricoes"] = vetados[-300:]

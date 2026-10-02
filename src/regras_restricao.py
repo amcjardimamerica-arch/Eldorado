@@ -405,10 +405,46 @@ def aplicar_aos_livros(livros: list[dict], hoje: str | None = None) -> dict:
         else:
             novo["atualizado_em"] = ant.get("atualizado_em") or hoje
         x["busca"] = novo
+        _qualificar(x, hoje)                       # 02/10 (titular): identificado primeiro, qualificado depois — nunca apagado
         com_restricao += bool(novo["restricoes"])
         restritos += novo["aptidao"]["situacao"] == "restrita"
     return {"livros": len(livros), "blocos_novos": novos, "blocos_atualizados": atualizados, "livros_com_falha": falhas,
             "com_restricoes": com_restricao, "restritos_para_a_associacao": restritos, "versao_regras": cfg.get("versao")}
+
+
+# 02/10 (conferência): veto de PÚBLICO ou de PRÊMIO com sinal de OSC no texto não é "não aplica" — fica EM REVISÃO
+SINAL_OSC_REVISAO = re.compile(r"pontos? (?:e pontoes )?de cultura|\bpnab\b|aldir blanc|coletivos?|iniciativas?|\boscs?\b|"
+                               r"organizac(?:ao|oes) da sociedade|entidades?|associac(?:ao|oes)|fundo (?:municipal|estadual|da crianca|do idoso)|"
+                               r"projetos? (?:sociais|culturais|comunitarios)|biodiversidade|sem fins")
+REVISAVEIS = {"NA-05", "NA-06"}
+
+
+def qualificacao_do_veto(regra: str | None, texto: str, motivo: str = "", hoje: str = "") -> dict:
+    """NÃO APLICA (o livro fica, marcado, sem ativação) ou EM REVISÃO (veto duvidoso: o livro segue ativo e vai à curadoria)."""
+    if regra in REVISAVEIS and SINAL_OSC_REVISAO.search(norm(texto)):
+        return {"veredito": "EM REVISÃO", "regra": regra, "motivo": (motivo or "")[:240], "origem": "automática", "em": hoje,
+                "acao": "veto de público ou prêmio com sinal de OSC no texto — conferir na curadoria (o livro segue ativo)"}
+    return {"veredito": "NÃO APLICA", "regra": regra, "motivo": (motivo or "")[:240], "origem": "automática", "em": hoje,
+            "acao": "identificado e mantido; arquivar manualmente se confirmado"}
+
+
+def _qualificar(x: dict, hoje: str) -> None:
+    """Marca o livro que cai num veto (NÃO APLICA) — sem apagá-lo. A qualificação MANUAL (curadoria) nunca é sobrescrita;
+    a automática é refeita a cada ciclo (some quando a regra deixa de valer)."""
+    q = x.get("qualificacao") or {}
+    if q.get("manual"):
+        return
+    try:
+        ck = ((x.get("livro") or {}).get("checklist") or {}).get("Objeto") or {}
+        av = avaliar({"titulo": x.get("programa") or x.get("nome_classificado"), "objeto": ck.get("v") if isinstance(ck, dict) else None,
+                      "url": x.get("pagina"), "uf": x.get("geo") if x.get("geo") not in ("BR", "INT") else None})
+    except Exception:  # noqa: BLE001
+        return
+    if av.get("veredito") == "NÃO APLICA" and not x.get("excecao_abrangencia"):
+        txt = f"{x.get('programa') or ''} {x.get('nome_classificado') or ''} {(ck.get('v') if isinstance(ck, dict) else '') or ''}"
+        x["qualificacao"] = qualificacao_do_veto(av.get("regra"), txt, str(av.get("motivo") or ""), q.get("em") or hoje)
+    elif q.get("origem") == "automática":
+        x.pop("qualificacao", None)
 
 
 def _pncp_achados() -> dict[str, str]:
