@@ -101,8 +101,12 @@ def controlar(disparar: bool = False, dia=None) -> dict:
     a_disparar = [p["motor"] for p in plano if p["cobertura"] in ("pendente", "parcial") and p["tentativas_hoje"] < limite and p["coleta"] != "local"]
     a_disparar += [x for x in atrasados if x not in a_disparar and int(est["tentativas"].get(x) or 0) < limite]
     if disparar:
+        # 02/10: só conta tentativa de quem DE FATO leu (parcial). O GitHub mantém um único disparo na fila e cancela o
+        # anterior: contar por disparo esgotava as 3 tentativas de motores que nunca chegaram a rodar.
+        parciais = {p["motor"] for p in plano if p["cobertura"] == "parcial"}
         for x in a_disparar:
-            est["tentativas"][x] = int(est["tentativas"].get(x) or 0) + 1
+            if x in parciais:
+                est["tentativas"][x] = int(est["tentativas"].get(x) or 0) + 1
     from collections import Counter
     cont = Counter(p["cobertura"] for p in plano)
     completos = cont.get("completa", 0)
