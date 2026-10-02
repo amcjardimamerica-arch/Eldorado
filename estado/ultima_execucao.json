@@ -1,14 +1,14 @@
 {
-  "executado_em": "2026-10-02T08:33:10+00:00",
+  "executado_em": "2026-10-02T09:41:09+00:00",
   "fontes_catalogadas": 85,
   "fontes_total": 69,
-  "fontes_ok": 51,
-  "fontes_falha": 18,
+  "fontes_ok": 40,
+  "fontes_falha": 29,
   "fontes_fora_escopo": 0,
   "fontes_manuais": 2,
   "fontes_api": 2,
   "novas": 0,
-  "atualizadas": 45,
+  "atualizadas": 41,
   "quarentena": 0,
   "falhas": [
     {
@@ -18,6 +18,18 @@
       "etapa": "processamento (http_error_default)"
     },
     {
+      "fonte": "conanda",
+      "erro": "URLError",
+      "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
+      "etapa": "processamento (do_open)"
+    },
+    {
+      "fonte": "fnma",
+      "erro": "URLError",
+      "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
+      "etapa": "processamento (do_open)"
+    },
+    {
       "fonte": "fundacao-bb",
       "erro": "ValueError",
       "mensagem": "tipo não permitido: application/pdf",
@@ -25,21 +37,39 @@
     },
     {
       "fonte": "goias-cultura",
-      "erro": "ValueError",
-      "mensagem": "tipo não permitido: application/pdf",
-      "etapa": "leitura do site"
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "goias-cultura-raiz",
-      "erro": "TimeoutError",
-      "mensagem": "The read operation timed out",
-      "etapa": "leitura do site"
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
+    },
+    {
+      "fonte": "goias-esporte",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "goias-pnab",
-      "erro": "ValueError",
-      "mensagem": "tipo não permitido: application/pdf",
-      "etapa": "leitura do site"
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
+    },
+    {
+      "fonte": "goias-social",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
+    },
+    {
+      "fonte": "goyazes-programa",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "itau-social",
@@ -48,28 +78,52 @@
       "etapa": "leitura do site"
     },
     {
+      "fonte": "mapa-osc",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
+    },
+    {
       "fonte": "mds",
-      "erro": "ValueError",
-      "mensagem": "tipo não permitido: application/pdf",
-      "etapa": "leitura do site"
+      "erro": "URLError",
+      "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "ministerio-cultura",
-      "erro": "ValueError",
-      "mensagem": "URL deve ser HTTPS e não pode conter credenciais",
-      "etapa": "leitura do site"
+      "erro": "URLError",
+      "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "petrobras",
-      "erro": "ValueError",
-      "mensagem": "URL deve ser HTTPS e não pode conter credenciais",
-      "etapa": "leitura do site"
+      "erro": "HTTPError",
+      "mensagem": "HTTP Error 403: Forbidden",
+      "etapa": "processamento (http_error_default)"
+    },
+    {
+      "fonte": "portal-ac",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "portal-es",
       "erro": "ValueError",
       "mensagem": "tipo não permitido: application/pdf",
       "etapa": "leitura do site"
+    },
+    {
+      "fonte": "portal-go",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
+    },
+    {
+      "fonte": "portal-mt",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "portal-pa",
@@ -90,6 +144,12 @@
       "etapa": "leitura do site"
     },
     {
+      "fonte": "portal-ro",
+      "erro": "URLError",
+      "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
+      "etapa": "processamento (do_open)"
+    },
+    {
       "fonte": "portal-se",
       "erro": "URLError",
       "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
@@ -103,9 +163,15 @@
     },
     {
       "fonte": "pronon-pronas",
-      "erro": "RemoteDisconnected",
-      "mensagem": "Remote end closed connection without response",
-      "etapa": "processamento (_read_status)"
+      "erro": "URLError",
+      "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
+      "etapa": "processamento (do_open)"
+    },
+    {
+      "fonte": "salic-editais",
+      "erro": "HTTPError",
+      "mensagem": "HTTP Error 403: Forbidden",
+      "etapa": "processamento (http_error_default)"
     },
     {
       "fonte": "tjgo-banco-projetos",
@@ -115,9 +181,9 @@
     },
     {
       "fonte": "transferegov",
-      "erro": "HTTPError",
-      "mensagem": "HTTP Error 401: ",
-      "etapa": "processamento (http_error_default)"
+      "erro": "URLError",
+      "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
+      "etapa": "processamento (do_open)"
     }
   ],
   "escopo": {
@@ -158,6 +224,6 @@
       "internacional"
     ]
   },
-  "paginas_alteradas": 161,
-  "fora_do_terceiro_setor": 327
+  "paginas_alteradas": 116,
+  "fora_do_terceiro_setor": 163
 }
