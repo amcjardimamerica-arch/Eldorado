@@ -59,8 +59,21 @@ GO_CIDADES = re.compile(r"goias|goiania|aparecida de goiania|anapolis|rio verde|
                         r"pirenopolis|alvorada do norte|goiatuba|morrinhos|ceres|uruacu|planaltina de goias|cidade ocidental|santo antonio do descoberto")
 
 
+def do_pncp(x: dict) -> bool:
+    """02/10 (titular): o PNCP recebe todas as oportunidades do Brasil e CADA UMA ganha livro — exceção à abrangência."""
+    if "pncp.gov.br" in str(x.get("pagina") or x.get("url") or x.get("link_oficial") or ""):
+        return True
+    if "pncp" in str(x.get("origem") or "").lower():
+        return True
+    return any("pncp" in str(h.get("origem") or "").lower() or "pncp.gov.br" in str(h.get("pagina_oficial") or "")
+               for h in (x.get("historico") or []))
+
+
 def fora_da_abrangencia(x: dict) -> bool:
-    """Público MUNICIPAL só de Goiás — inclusive quando o estado não foi identificado (geo nacional)."""
+    """Público MUNICIPAL só de Goiás — inclusive quando o estado não foi identificado (geo nacional).
+    Exceção (02/10): o que vem do PNCP ganha livro em qualquer estado."""
+    if do_pncp(x):
+        return False
     from .livros_opressores import uf_do_dominio
     _uf, _niv = uf_do_dominio(x.get("pagina"))
     if _niv == "municipal" and _uf != "GO":

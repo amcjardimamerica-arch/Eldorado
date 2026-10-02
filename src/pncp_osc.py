@@ -188,7 +188,12 @@ def fonte_a(hoje: date, cfg: dict, diag: dict) -> list[dict]:
     horizonte = (hoje + timedelta(days=int(a.get("horizonte_dias", 500)))).strftime("%Y%m%d")
     out = []
     seguidas, limite = 0, int(cfg.get("falhas_seguidas_para_abortar_fonte", 3))
-    for uf in a.get("ufs") or ["GO"]:
+    lista = cfg.get("_ufs_da_execucao") or a.get("ufs") or ["GO"]
+    F["ufs_lidas"] = []
+    for uf in lista:
+        if cfg.get("_fim_fonte_a") and time.monotonic() > cfg["_fim_fonte_a"]:
+            break                                   # 02/10: o resto dos estados fica para a próxima execução (rodízio)
+        F["ufs_lidas"].append(uf)
         for mod in a.get("modalidades") or [12, 3, 10, 11]:
             for pg in range(1, int(a.get("max_paginas", 20)) + 1):
                 if seguidas >= limite:
@@ -322,7 +327,14 @@ def _vetos():
     usar = {"selecao_pessoas", "apoio_ao_orgao", "imovel", "empresas_servicos", "credenciamento_prestadores",
             "empresas_credenciamento", "pesquisa_contratada", "selecao_familias", "participacao_publica", "consulta_publica",
             "pesquisa_clinica", "empreendedorismo"}
-    return VETOS_PNCP + [acad_pncp] + [v for v in du.VETOS_BR if v[0] in usar]
+    _base = VETOS_PNCP + [acad_pncp] + [v for v in du.VETOS_BR if v[0] in usar]
+    # 02/10: vetos do Brasil inteiro (falsos positivos da primeira leitura nacional) — config/pncp_osc.json › vetos_nacionais
+    extra = [(v[0], re.compile(v[1]), v[2], bool(v[3] if len(v) > 3 else False)) for v in (_cfg().get("vetos_nacionais") or [])]
+    return extra + list(_base)
+
+
+TODAS_UFS = ["GO", "DF", "AC", "AL", "AP", "AM", "BA", "CE", "ES", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS",
+             "RO", "RR", "SC", "SP", "SE", "TO"]
 
 
 def territorio(m: dict, ufs: list[str]) -> tuple[str, str, str | None]:
@@ -465,6 +477,14 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     ufs = list((cfg.get("fonte_a") or {}).get("ufs") or ["GO"])
     _PRAZO["ate"] = time.monotonic() + float(cfg.get("prazo_total_segundos", 420))
     est = load_json(ESTADO) if ESTADO.exists() else {}
+    if "*" in ufs:                                  # 02/10 (titular): Brasil inteiro — Goiás e DF primeiro, depois rodízio
+        ab = cfg.get("abrangencia") or {}
+        prio = [u for u in ab.get("prioridade") or ["GO", "DF"] if u in TODAS_UFS]
+        resto = [u for u in TODAS_UFS if u not in prio]
+        k = int(est.get("rodizio_ufs") or 0) % len(resto)
+        cfg["_ufs_da_execucao"] = prio + resto[k:] + resto[:k]
+        cfg["_fim_fonte_a"] = time.monotonic() + float(cfg.get("prazo_total_segundos", 420)) * float(ab.get("parte_do_tempo_fonte_a", 0.65))
+        ufs = list(TODAS_UFS)                       # o classificador não descarta nenhum estado
     diag = {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0, "motivo_zero": None,
             "versao": "motor-04 v2 (01/10/2026)",
             "fontes": {"A": {"falhas": [], "consultas": 0, "itens": 0}, "B": {"falhas": [], "consultas": 0, "itens": 0}}}
@@ -473,6 +493,10 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
         itens += fonte_a(hoje, cfg, diag)
     except Exception as exc:  # noqa: BLE001 — uma fonte nunca derruba a outra
         diag["fontes"]["A"]["falhas"].append(f"etapa: {_erro(exc)}")
+    if cfg.get("_ufs_da_execucao"):
+        lidas = [u for u in diag["fontes"]["A"].get("ufs_lidas") or [] if u not in ("GO", "DF")]
+        est["rodizio_ufs"] = int(est.get("rodizio_ufs") or 0) + max(0, len(lidas) - 1)
+        diag["rodizio"] = {"ufs_lidas": diag["fontes"]["A"].get("ufs_lidas"), "proxima_comeca_em": None}
     try:
         itens += fonte_b(hoje, cfg, diag, set())
     except Exception as exc:  # noqa: BLE001
