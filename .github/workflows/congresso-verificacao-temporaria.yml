@@ -1,0 +1,42 @@
+name: TEMPORÁRIO · motor do Congresso — leitura real (removido antes do merge)
+on:
+  push:
+    branches: ['claude/motor-congresso-nacional']
+    paths: ['.github/workflows/congresso-verificacao-temporaria.yml']
+permissions:
+  contents: write
+jobs:
+  ler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -q -r requirements.txt || true
+      - name: Leitura real
+        run: |
+          python3 - <<'PY'
+          import json, sys, time, traceback
+          sys.path.insert(0, ".")
+          rel = {"em": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}; t0 = time.time()
+          try:
+              from src.congresso_nacional import ler_motor, ESTADO
+              r = ler_motor(); rel["segundos"] = round(time.time() - t0)
+              rel["diagnostico"] = r.get("diagnostico"); rel["falhas"] = (r.get("falhas") or [])[:12]; rel["pulado_exige_brasil"] = r.get("pulado_exige_brasil")
+              rel["achados"] = [{k: a.get(k) for k in ("titulo", "url", "fim", "orgao", "data_publicacao")} for a in (r.get("achados") or [])]
+              try:
+                  est = json.load(open(ESTADO)); rel["estado"] = {k: (v if len(json.dumps(v, default=str)) < 2500 else f"{type(v).__name__} ({len(v)})") for k, v in est.items()}
+              except Exception: pass
+              print(json.dumps(r.get("diagnostico"), ensure_ascii=False, indent=1, default=str)[:5000]); print(len(r.get("achados") or []), "achado(s)")
+          except Exception:
+              rel["erro"] = traceback.format_exc()[-3000:]; print(rel["erro"])
+          json.dump(rel, open("/tmp/cn.json", "w"), ensure_ascii=False, indent=1, default=str)
+          PY
+      - name: Guardar só o relatório
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          git checkout -- . && git clean -fdq
+          mkdir -p docs/relatorios && cp /tmp/cn.json docs/relatorios/congresso_nacional_leitura_real_2026-10-02.json
+          git add docs/relatorios/congresso_nacional_leitura_real_2026-10-02.json && git commit -q -m "motor do Congresso: relatorio da leitura real"
+          for i in 1 2 3 4; do git pull -q --rebase origin claude/motor-congresso-nacional && git push -q origin HEAD:claude/motor-congresso-nacional && break; sleep 4; done
