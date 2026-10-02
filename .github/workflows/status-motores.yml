@@ -25,10 +25,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          IDS=$(python3 -c "
-          import importlib.util
-          sp = importlib.util.spec_from_file_location('ag', 'scripts/agenda_motores.py'); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m)
-          print(','.join(sorted(set(m.recuperar()))))" 2>/dev/null || true)
+          # 02/10: o MAESTRO (rede neural) mede a cobertura do dia de cada motor e dispara de novo os pendentes e os
+          # parciais (até 3 vezes por dia) — a busca do dia não fica parcial. Inclui os pendentes da agenda.
+          IDS=$(python3 -m src.maestro --disparar 2>/dev/null | tail -1 || true)
           echo "pendentes: ${IDS:-nenhum}"
           if [ -n "$IDS" ]; then
             curl -s -o /dev/null -w "monitoramento disparado: %{http_code}\n" -X POST -H "Authorization: Bearer $GH_TOKEN" \
@@ -44,11 +43,11 @@ jobs:
       - name: Gravar
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
-          mkdir -p /tmp/st && cp docs/dados/status_motores.json docs/dados/motores.json /tmp/st/ && cp docs/dados/previsao_livros.json /tmp/st/ 2>/dev/null || true; cp estado/lexico_temporario_livros.json /tmp/st/ 2>/dev/null || true
+          mkdir -p /tmp/st && cp docs/dados/status_motores.json docs/dados/motores.json /tmp/st/ && cp docs/dados/previsao_livros.json /tmp/st/ 2>/dev/null || true; cp estado/lexico_temporario_livros.json /tmp/st/ 2>/dev/null || true; cp docs/dados/maestro.json /tmp/st/ 2>/dev/null || true; mkdir -p /tmp/st/maestro && cp estado/maestro/*.json /tmp/st/maestro/ 2>/dev/null || true
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
-            cp /tmp/st/status_motores.json /tmp/st/motores.json docs/dados/; cp /tmp/st/previsao_livros.json docs/dados/ 2>/dev/null || true; mkdir -p estado; cp /tmp/st/lexico_temporario_livros.json estado/ 2>/dev/null || true
-            git add docs/dados/status_motores.json docs/dados/motores.json; [ -e docs/dados/previsao_livros.json ] && git add docs/dados/previsao_livros.json; [ -e estado/lexico_temporario_livros.json ] && git add estado/lexico_temporario_livros.json
+            cp /tmp/st/status_motores.json /tmp/st/motores.json docs/dados/; cp /tmp/st/previsao_livros.json docs/dados/ 2>/dev/null || true; mkdir -p estado/maestro; cp /tmp/st/lexico_temporario_livros.json estado/ 2>/dev/null || true; cp /tmp/st/maestro.json docs/dados/ 2>/dev/null || true; cp /tmp/st/maestro/*.json estado/maestro/ 2>/dev/null || true
+            git add docs/dados/status_motores.json docs/dados/motores.json; [ -e docs/dados/previsao_livros.json ] && git add docs/dados/previsao_livros.json; [ -e estado/lexico_temporario_livros.json ] && git add estado/lexico_temporario_livros.json; git add docs/dados/maestro.json estado/maestro 2>/dev/null || true
             git commit -q -m "status dos motores (a cada 6 horas)" || break
             git push -q origin HEAD:main && break
             sleep 6

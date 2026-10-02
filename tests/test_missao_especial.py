@@ -1,5 +1,6 @@
 """Missões especiais de resgate e voo sob demanda (22/09)."""
 import json, pathlib, unittest
+from pathlib import Path
 from src.missao_especial import (montar_fila, proximo, plano_de_voo, registrar_resgate,
                                  publicar, _falta, _urgencia, MINIMO, FILA)
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -42,6 +43,31 @@ def _alvo_nao_pncp(n: int = 3) -> list[str]:
     FILA.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
 
 
+
+
+# 02/10: o arquivo inteiro roda isolado — guarda e devolve os arquivos reais e bloqueia a gravação de fichas na Biblioteca
+_GUARDADOS = {}
+_PATCHES = []
+
+
+def setUpModule():
+    from unittest import mock
+    import src.missao_especial as _ME
+    for p in (_ME.FILA, _ME.PARA_O_CLAUDE, _ME.PUB):
+        _GUARDADOS[p] = p.read_bytes() if p.exists() else None
+    _PATCHES.append(mock.patch.object(_ME, "_para_biblioteca", lambda *a, **k: None))
+    for x in _PATCHES:
+        x.start()
+
+
+def tearDownModule():
+    for x in _PATCHES:
+        x.stop()
+    for p, conteudo in _GUARDADOS.items():
+        if conteudo is None:
+            p.unlink(missing_ok=True)
+        else:
+            p.write_bytes(conteudo)
 
 class _IA:
     def __init__(self, r): self.r = r; self.perguntas = []
@@ -98,6 +124,19 @@ class TesteFilaDeResgate(unittest.TestCase):
     def test_resgate_conclui_e_vira_ficha_na_biblioteca(self):
         _alvo_nao_pncp(1)
         antes = FILA.read_text(encoding="utf-8")
+        # 02/10: a ficha e as publicações vão para pasta temporária — antes este teste gravava fichas FALSAS
+        # (x.gov.br, prazo 2099) na Biblioteca real, e o fluxo de produção as publicava
+        import tempfile
+        from unittest import mock
+        import src.missao_especial as _ME
+        _tmp = tempfile.TemporaryDirectory()
+        _p = [mock.patch.object(_ME, "_para_biblioteca", lambda *a, **k: None),
+              mock.patch.object(_ME, "PUB", Path(_tmp.name) / "pub.json"),
+              mock.patch.object(_ME, "PARA_O_CLAUDE", Path(_tmp.name) / "claude.json")]
+        for _x in _p:
+            _x.start()
+        self.addCleanup(lambda: [_x.stop() for _x in _p] and None)
+        self.addCleanup(_tmp.cleanup)
         try:
             d = json.loads(antes)
             k = next(k for k, v in d["itens"].items() if v.get("estado") in ("aguardando", "em_resgate"))

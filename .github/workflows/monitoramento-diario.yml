@@ -72,8 +72,12 @@ jobs:
           # o resultado fica no repositório (estado/ultimo_teste_ci.txt) para
           # diagnóstico mesmo quando o log do Actions não é acessível
           set +e
-          timeout 1200 python -m unittest discover -s tests -v > /tmp/testes.log 2>&1
+          # 02/10: os testes rodam numa CÓPIA isolada (git worktree). Antes rodavam sobre os dados de produção, que este
+          # fluxo grava em seguida — um teste que escrevia fichas falsas (x.gov.br, prazo 2099) contaminou a Biblioteca.
+          rm -rf /tmp/eldorado_testes; git worktree add --detach /tmp/eldorado_testes HEAD >/dev/null 2>&1
+          ( cd /tmp/eldorado_testes && timeout 1200 python -m unittest discover -s tests -v > /tmp/testes.log 2>&1 )
           rc=$?
+          git worktree remove --force /tmp/eldorado_testes >/dev/null 2>&1 || true
           { echo "commit: $GITHUB_SHA"; echo "em: $(date -u +%FT%TZ)"; echo "rc: $rc";
             tail -5 /tmp/testes.log; echo "---- falhas ----";
             grep -A30 -E "^(FAIL|ERROR):" /tmp/testes.log | head -300; } > estado/ultimo_teste_ci.txt

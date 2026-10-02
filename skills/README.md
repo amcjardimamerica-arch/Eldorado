@@ -24,3 +24,7 @@ Uma por família de fonte + duas comuns; o vínculo motor → skill fica em conf
 - **motores/pilotos** — Pilotos (Espião e Interceptador): buscar oportunidades FORA dos canais e confirmar na fonte oficial.
 - **comum/linha_producao** — Contrato comum da linha de produção: o que todo canal entrega e o que nunca pode acontecer.
 - **comum/plano_correcao** — Roteiro dos planos de correção: diagnosticar o canal e aplicar o plano previsto no fluxograma.
+
+## Esteira de selos (02/10/2026)
+
+Bronze → Prata → Ouro, conduzida pelo maestro (src/maestro.py); o Interceptador local executa bronze (Sonnet 5.5) e prata (Opus 5.5), esforço baixo. Ver docs/arquitetura/esteira-de-selos.md.

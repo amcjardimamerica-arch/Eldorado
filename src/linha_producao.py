@@ -1,10 +1,11 @@
 """LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).
 
 Cada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:
-  BRONZE      o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)
-  PRATA       canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista
+  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)
+  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)
+  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista
               em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)
-  OURO        a entidade chegou ao mapa ou a um livro da Biblioteca
+  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca
   QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual
 Registro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.
 O LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.
@@ -182,7 +183,7 @@ def run(regs: list[dict] | None = None, gravar: bool = True) -> dict:
         else:
             lv = livros.get(u)
             etapa = ("QUALIFICADO" if lv and (lv.get("qualificacao") or {}).get("veredito") else
-                     "OURO" if lv or u in mapa else "PRATA")
+                     "EM_LIVRO" if lv or u in mapa else "CONSOLIDADO")
         etapas[etapa] += 1
         ant = idx.get(r["id"])
         if ant != etapa:
@@ -213,7 +214,7 @@ def run(regs: list[dict] | None = None, gravar: bool = True) -> dict:
                      for k, v in por_canal.items()], key=lambda c: (-c["validadas_como_reais"], -c["entidades"]))
     n_ent = len(canais_da_ent)
     out = {"em": agora, "regra": __doc__.split("Saída")[0].strip(),
-           "funil": {"bronze_registros": len(regs), "prata_entidades": n_ent, "entidades_em_2_ou_mais_canais": sum(1 for v in canais_da_ent.values() if len(v) > 1),
+           "funil": {"coletados": len(regs), "oportunidades_distintas": n_ent, "entidades_em_2_ou_mais_canais": sum(1 for v in canais_da_ent.values() if len(v) > 1),
                      "etapas": dict(etapas), "fila_de_reprocessamento": dict(fila)},
            "canais": canais, "familias": dict(Counter(c["familia"] for c in canais)),
            "corroboradas": sorted([{"entidade": e, "canais": sorted(cs)} for e, cs in canais_da_ent.items() if len(cs) > 1],

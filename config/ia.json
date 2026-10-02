@@ -1,110 +1,122 @@
 {
-  "versao": 2,
-  "ativa": true,
-  "execucao": "integrada_quando_houver_credencial",
-  "segredo_provedor_env": "FAROL_AI_API_KEY",
-  "regra": "IA somente em etapas essenciais, com o modelo mais adequado a cada tarefa. Sem credencial configurada, o sistema prepara os pacotes e NUNCA simula que uma IA executou. Cada chamada é registrada em estado/ia_uso.jsonl com modelo e volume.",
-  "modelos": {
-    "extracao_requisitos": {
-      "env": "FAROL_EXTRACAO_MODEL",
-      "padrao": "claude-haiku-4-5",
-      "papel": "ler o edital extraído e devolver requisitos estruturados sem inventar"
-    },
-    "conselheiros": {
-      "env": "FAROL_CONSELHEIRO_MODEL",
-      "padrao": "claude-sonnet-4-5",
-      "papel": "sete análises independentes por ponto de vista"
-    },
-    "parecer_final": {
-      "env": "FAROL_FINAL_MODEL",
-      "padrao": "claude-fable-5",
-      "papel": "modelo mais avançado: síntese do conselho, decisão fundamentada e documentos de submissão"
-    },
-    "busca": {
-      "env": "FAROL_MODELO_BUSCA",
-      "padrao": "claude-haiku-4-5",
-      "nota": "busca ativa de URL de edital com busca na web: tarefa curta, modelo mais barato"
-    },
-    "conselho_recursos": "claude-fable-5-1",
-    "busca_nivel_1": "claude-haiku-4-5",
-    "busca_nivel_2": "claude-sonnet-5",
-    "busca_nivel_3": "claude-opus-5",
-    "analise_edital": "claude-fable-5-1"
+ "versao": 2,
+ "ativa": true,
+ "execucao": "integrada_quando_houver_credencial",
+ "segredo_provedor_env": "FAROL_AI_API_KEY",
+ "regra": "IA somente em etapas essenciais, com o modelo mais adequado a cada tarefa. Sem credencial configurada, o sistema prepara os pacotes e NUNCA simula que uma IA executou. Cada chamada é registrada em estado/ia_uso.jsonl com modelo e volume.",
+ "modelos": {
+  "extracao_requisitos": {
+   "env": "FAROL_EXTRACAO_MODEL",
+   "padrao": "claude-haiku-4-5",
+   "papel": "ler o edital extraído e devolver requisitos estruturados sem inventar"
   },
-  "nota_modelos": "IDs padrão registrados em 30/08/2026. Atualize os padrões (ou defina as variáveis de ambiente) quando modelos mais novos estiverem disponíveis; o código nunca traz modelo gravado em fonte.",
-  "verificacao_assistida": {
-    "ativa": true,
-    "max_por_execucao": 10
+  "conselheiros": {
+   "env": "FAROL_CONSELHEIRO_MODEL",
+   "padrao": "claude-sonnet-4-5",
+   "papel": "sete análises independentes por ponto de vista"
   },
-  "limites": {
-    "max_casos_ia_por_execucao": 2,
-    "max_chars_edital": 80000,
-    "max_tokens_saida": 8000,
-    "max_chars_pacote_conselheiro": 30000
+  "parecer_final": {
+   "env": "FAROL_FINAL_MODEL",
+   "padrao": "claude-fable-5",
+   "papel": "modelo mais avançado: síntese do conselho, decisão fundamentada e documentos de submissão"
   },
-  "dados_proibidos": [
-    "cpf",
-    "rg",
-    "dados_bancarios",
-    "email_pessoal",
-    "telefone_pessoal",
-    "documentos_pessoais",
-    "fotos_sem_autorizacao"
-  ],
-  "escalada_busca": {
-    "regra": "quando o sensor determinístico não obtém o item, escala modelo a modelo; cada degrau só é acionado se o anterior não atingiu a finalidade; o forte só entra em análise profunda",
-    "cadeia": [
-      {
-        "papel": "busca",
-        "modelo": "claude-haiku-4-5",
-        "max_tokens": 300,
-        "web_search": true,
-        "finalidade": "URL oficial do edital / do ato normativo"
-      },
-      {
-        "papel": "extracao",
-        "modelo": "claude-sonnet-4-5",
-        "max_tokens": 900,
-        "web_search": true,
-        "finalidade": "prazo, objeto e documentos a partir da página/PDF do edital"
-      },
-      {
-        "papel": "analise_profunda",
-        "modelo": "claude-opus-4-1",
-        "max_tokens": 1500,
-        "web_search": true,
-        "finalidade": "quando os dois anteriores falharam: leitura completa e reconciliação dos 11 itens"
-      }
-    ],
-    "parar_quando": "11 itens obtidos, OU três leituras seguidas dos locais oficiais sem nenhum dado novo",
-    "cadencia": "1x por dia por fonte com pendência"
+  "busca": {
+   "env": "FAROL_MODELO_BUSCA",
+   "padrao": "claude-haiku-4-5",
+   "nota": "busca ativa de URL de edital com busca na web: tarefa curta, modelo mais barato"
   },
-  "disjuntores": {
-    "duracao_dias": 30,
-    "ia_a_cada_dias": 3,
-    "conselho_na_ia_numero": 3,
-    "regra": "livro de oportunidade acionado (automático ou manual) fica ligado 30 dias; IA barata no 3º dia, intermediária no 6º, conselho Fable 5.1 no 9º com opinião sobre as falhas anteriores; prompt sob medida por recurso, só com os itens que faltam"
+  "conselho_recursos": "claude-fable-5-1",
+  "busca_nivel_1": "claude-haiku-4-5",
+  "busca_nivel_2": "claude-sonnet-5",
+  "busca_nivel_3": "claude-opus-5",
+  "analise_edital": "claude-fable-5-1",
+  "esteira_bronze": {
+   "env": "FAROL_MODELO_BRONZE",
+   "padrao": "claude-sonnet-5-5",
+   "esforco": "low",
+   "papel": "esteira bronze: achar e confirmar o site oficial da oportunidade (busca e leitura na web), no computador do titular"
   },
-  "escada_edital": {
-    "regra": "busca de informações do edital em três níveis, do mais barato ao mais caro, só sobre o que falta: Haiku 4.5 → Sonnet 5 → Opus 5; a Fable 5.1 é usada exclusivamente para a ANÁLISE do edital (entendimento, parecer, enquadramento), nunca para busca",
-    "sinalizacao": {
-      "verde": "buscou e obteve informação nova",
-      "amarelo": "buscou e não encontrou nada novo",
-      "vermelho": "não buscou ou falhou (sem credencial, erro, sem texto)"
-    }
-  },
-  "orcamento": {
-    "limite_tokens_periodo": {
-      "env": "FAROL_AI_LIMITE_TOKENS",
-      "padrao": 2000000,
-      "nota": "tokens (entrada+saída) que o titular aceita gastar por mês; informe o valor real do seu plano/limite na variável FAROL_AI_LIMITE_TOKENS (segredo ou variável do repositório)"
-    },
-    "percentual_por_edital": 0.05,
-    "regras": [
-      "cada edital pode consumir até 5% do limite do período; ao atingir, a IA para para aquele edital e o relatório registra 'orçamento do edital esgotado'",
-      "a análise de um edital não se repete: só volta a chamar a IA se ainda faltarem itens e houver novidade (texto novo, complemento manual) — nunca no mesmo dia",
-      "foco: completar a Biblioteca de Alexandria (12 itens, requisitos, documentos, anexos, regras); depois, raciocinar só com os dados do sistema",
-      "busca na internet apenas quando necessário: a extração usa o texto já guardado; a ferramenta de busca só entra se não há texto do edital; a análise da Fable nunca usa internet"
-    ]
+  "esteira_prata": {
+   "env": "FAROL_MODELO_PRATA",
+   "padrao": "claude-opus-5-5",
+   "esforco": "low",
+   "papel": "esteira prata: avaliar o edital no site oficial, validar prazos e os 12 dados (ou a dispensa), no computador do titular"
   }
+ },
+ "nota_modelos": "IDs padrão registrados em 30/08/2026. Atualize os padrões (ou defina as variáveis de ambiente) quando modelos mais novos estiverem disponíveis; o código nunca traz modelo gravado em fonte.",
+ "verificacao_assistida": {
+  "ativa": true,
+  "max_por_execucao": 10
+ },
+ "limites": {
+  "max_casos_ia_por_execucao": 2,
+  "max_chars_edital": 80000,
+  "max_tokens_saida": 8000,
+  "max_chars_pacote_conselheiro": 30000
+ },
+ "dados_proibidos": [
+  "cpf",
+  "rg",
+  "dados_bancarios",
+  "email_pessoal",
+  "telefone_pessoal",
+  "documentos_pessoais",
+  "fotos_sem_autorizacao"
+ ],
+ "escalada_busca": {
+  "regra": "quando o sensor determinístico não obtém o item, escala modelo a modelo; cada degrau só é acionado se o anterior não atingiu a finalidade; o forte só entra em análise profunda",
+  "cadeia": [
+   {
+    "papel": "busca",
+    "modelo": "claude-haiku-4-5",
+    "max_tokens": 300,
+    "web_search": true,
+    "finalidade": "URL oficial do edital / do ato normativo"
+   },
+   {
+    "papel": "extracao",
+    "modelo": "claude-sonnet-4-5",
+    "max_tokens": 900,
+    "web_search": true,
+    "finalidade": "prazo, objeto e documentos a partir da página/PDF do edital"
+   },
+   {
+    "papel": "analise_profunda",
+    "modelo": "claude-opus-4-1",
+    "max_tokens": 1500,
+    "web_search": true,
+    "finalidade": "quando os dois anteriores falharam: leitura completa e reconciliação dos 11 itens"
+   }
+  ],
+  "parar_quando": "11 itens obtidos, OU três leituras seguidas dos locais oficiais sem nenhum dado novo",
+  "cadencia": "1x por dia por fonte com pendência"
+ },
+ "disjuntores": {
+  "duracao_dias": 30,
+  "ia_a_cada_dias": 3,
+  "conselho_na_ia_numero": 3,
+  "regra": "livro de oportunidade acionado (automático ou manual) fica ligado 30 dias; IA barata no 3º dia, intermediária no 6º, conselho Fable 5.1 no 9º com opinião sobre as falhas anteriores; prompt sob medida por recurso, só com os itens que faltam"
+ },
+ "escada_edital": {
+  "regra": "busca de informações do edital em três níveis, do mais barato ao mais caro, só sobre o que falta: Haiku 4.5 → Sonnet 5 → Opus 5; a Fable 5.1 é usada exclusivamente para a ANÁLISE do edital (entendimento, parecer, enquadramento), nunca para busca",
+  "sinalizacao": {
+   "verde": "buscou e obteve informação nova",
+   "amarelo": "buscou e não encontrou nada novo",
+   "vermelho": "não buscou ou falhou (sem credencial, erro, sem texto)"
+  }
+ },
+ "orcamento": {
+  "limite_tokens_periodo": {
+   "env": "FAROL_AI_LIMITE_TOKENS",
+   "padrao": 2000000,
+   "nota": "tokens (entrada+saída) que o titular aceita gastar por mês; informe o valor real do seu plano/limite na variável FAROL_AI_LIMITE_TOKENS (segredo ou variável do repositório)"
+  },
+  "percentual_por_edital": 0.05,
+  "regras": [
+   "cada edital pode consumir até 5% do limite do período; ao atingir, a IA para para aquele edital e o relatório registra 'orçamento do edital esgotado'",
+   "a análise de um edital não se repete: só volta a chamar a IA se ainda faltarem itens e houver novidade (texto novo, complemento manual) — nunca no mesmo dia",
+   "foco: completar a Biblioteca de Alexandria (12 itens, requisitos, documentos, anexos, regras); depois, raciocinar só com os dados do sistema",
+   "busca na internet apenas quando necessário: a extração usa o texto já guardado; a ferramenta de busca só entra se não há texto do edital; a análise da Fable nunca usa internet"
+  ]
+ }
 }

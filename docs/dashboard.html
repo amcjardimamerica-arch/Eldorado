@@ -1231,6 +1231,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <select id="mo-natureza"><option value="">Pública e privada</option><option value="publica">Fonte pública</option><option value="privada">Fonte privada</option></select>
     <select id="mo-esfera"><option value="">Todas as esferas</option><option value="Município">Município</option><option value="Estado">Estado</option><option value="Brasil">Brasil</option><option value="Internacional">Internacional</option></select>
     <select id="mo-status"><option value="ativo">Lendo</option><option value="inativo">Na Estante</option><option value="">Todos</option></select>
+    <select id="mo-selo" title="Esteira de selos (02/10)"><option value="">Todos os selos</option><option value="ouro">Ouro — pronto para o Farol</option><option value="prata">Prata</option><option value="bronze">Bronze</option><option value="investigacao_prata">Estante de Investigação Prata</option><option value="investigacao_bronze">Estante de Investigação Bronze</option></select>
     <input id="mo-busca" placeholder="buscar edital ou órgão…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
     <span class="bz-limpar" onclick="moLimpar()">⨯ Limpar</span>
   </div>
@@ -3174,6 +3175,13 @@ window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id
     ${(PR.passos||[]).length?`<b>Passos:</b><ol style="margin:2px 0 4px 18px">${PR.passos.map(e=>`<li>${esc(e)}</li>`).join("")}</ol>`:""}
     <details><summary>Documentos-base (MROSC) e roteiro do projeto-base</summary><ul style="margin:2px 0 4px 16px">${(PR.documentos_base||[]).map(e=>`<li>${esc(e)}</li>`).join("")}</ul>
     <b>Roteiro:</b> ${(PR.projeto_base_roteiro||[]).map(esc).join(" · ")}</details></div></div>`:"";
+  /* 02/10 (titular): esteira metódica de selos — bronze (site oficial) → prata (edital, prazos, 12 dados) → ouro (Farol) */
+  const ES=m.esteira||{};
+  const esteiraHtml=ES.selo?`<div class="livro-op" style="border-left:4px solid ${{bronze:"#8C5A2B",prata:"#6B7785",ouro:"#A07A10"}[ES.selo]}"><div class="livro-t">Esteira de selos</div><div class=meta>
+    <b>selo ${esc(ES.selo)}</b> · ${esc({fila_bronze:"na fila do bronze",investigacao_bronze:"Estante de Investigação Bronze",fila_prata:"na fila da prata",investigacao_prata:"Estante de Investigação Prata",farol:"pronto para o Farol de Alexandria"}[ES.estante]||ES.estante||"")}
+    ${ES.site_oficial?`<br>site oficial: <a href="${esc(ES.site_oficial)}" target=_blank rel="noopener noreferrer">${esc(ES.site_oficial.slice(0,70))}</a> · ${esc(ES.site_confirmado_por||"a confirmar")}`:""}
+    <br>tentativas: bronze ${ES.tentativas_bronze||0}/2 · prata ${ES.tentativas_prata||0}/2 · 12 dados: ${ES.doze_resolvidos||0}/12${(ES.doze_faltando||[]).length?` (faltam: ${ES.doze_faltando.map(esc).join(", ")})`:""}
+    ${(ES.aprendizado||[]).length?`<br><b>Aprendizado:</b><ul style="margin:2px 0 4px 16px">${ES.aprendizado.slice(-5).reverse().map(a=>`<li>${br(String(a.em).slice(0,10))} · ${esc(a.etapa||"")} · ${esc(a.modelo||"")}: ${esc(a.o_que_aprendeu||"")}</li>`).join("")}</ul>`:""}</div></div>`:"";
   const prevHtml=PV.situacao?`<div class="livro-op"><div class="livro-t">Previsão</div><div class=meta>${PV.situacao==="aberta agora"?`inscrição aberta agora (até ${br(PV.encerramento)})`
     :`abertura prevista em <b>${br(PV.abertura)}</b> · livro ativado 30 dias antes, em <b>${br(PV.ativar_em)}</b> · confiança ${esc(PV.confianca)} (${esc(PV.base||"")})`}</div></div>`:"";
   const histParHtml=HP.length?`<div class="livro-op"><div class="livro-t">Histórico dos parâmetros</div>${HP.map(c=>`<div class=meta><b>${br(c.em)}</b> · ${esc(c.de||"")}${c.edicao?" · "+esc(c.edicao.slice(0,60)):""}: ${Object.entries(c.mudou||{}).map(([k,v])=>`${esc(k)} ${v.antes?`<s>${esc(String(v.antes).slice(0,40))}</s> → `:""}${esc(String(v.agora).slice(0,50))}`).join(" · ")}</div>`).join("")}</div>`:"";
@@ -3186,7 +3194,7 @@ window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id
     ${(LV.atualizacoes||[]).length?`<div class=meta style="margin-top:4px">última atualização do livro: ${esc(LV.atualizacoes.slice(-1)[0].o_que)} (${br(String(LV.atualizacoes.slice(-1)[0].em).slice(0,10))})</div>`:""}</div>`;
   abreModal(`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3 style="margin:0">${esc(m.nome_classificado||m.programa)}</h3><span class="dj-acoes">${iconeMotor(m.id,true)}${iconesAcao(m.id,m.programa)}</span></div><div class=meta>${esc(m.programa)}${m.orgao?" · "+esc(m.orgao):""} · ${esc(m.natureza==="publica"?"fonte pública":m.natureza==="privada"?"fonte privada":"")}</div>`,
     `<div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}${d?` · <strong>ligado · dia ${d.dias}/30</strong> · próxima IA em ${d.proxima_ia_em} dia(s)${d.ia?" · IA acionada "+d.ia+"×":""}${d.conselho?" · conselho Fable 5.1 emitido":""}`:""}</div>
-     ${qualHtml}${livroHtml}${prepHtml}${prevHtml}${chaveHtml}${histParHtml}${camadasHtml(m)}
+     ${qualHtml}${esteiraHtml}${livroHtml}${prepHtml}${prevHtml}${chaveHtml}${histParHtml}${camadasHtml(m)}
      <div class=meta style="margin-top:8px">${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag>${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"} · validação: <strong>${esc(m.validacao)}</strong>${m.http?" (HTTP "+m.http+")":""}${m.ultima_leitura?" · lida em "+br(m.ultima_leitura.slice(0,10)):""}${m.ultimo_url?` · <a href="${esc(m.ultimo_url)}" target=_blank rel="noopener noreferrer">último edital ↗</a>`:""}${m.regime_prazo?` · prazo: ${esc(m.regime_prazo.replace(/_/g," "))} (${esc(m.certeza_prazo||"")})`:""}</div>
      ${m.faltam?`<div class="mt-diag">⚠ faltam ${m.faltam.split("|").length} camada(s): ${esc(m.faltam.replace(/\|/g," · "))}<br><b>causa:</b> ${esc(m.causa||"")} · <b>ação:</b> ${esc(m.acao||"")}</div>`:`<div class="mt-diag ok">✓ 12 itens obtidos — motor pode parar</div>`}
      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">${iconesAcao(m.id,m.programa)} <span class=meta>fósforo: busca imediata · upload: alimentar manualmente · link: ensinar onde publica</span></div>`);};
@@ -3270,6 +3278,7 @@ function mtFiltrados(){
     &&(!(($("mo-tipo")||{}).value)||m.tipo_objeto===$("mo-tipo").value)
     &&(!(($("mo-periodo")||{}).value)||($("mo-periodo").value==="aberta"?!!m.aberta_agora:m.regime_inscricao===$("mo-periodo").value))
     &&(!(($("mo-publico")||{}).value)||(m.publico||[]).includes($("mo-publico").value))
+    &&(!(($("mo-selo")||{}).value)||(($("mo-selo").value.startsWith("investigacao"))?((m.esteira||{}).estante===$("mo-selo").value):((m.esteira||{}).selo===$("mo-selo").value)))
     &&(!stt||(stt==="ativo"?mtAtivo(m.id):!mtAtivo(m.id)))
     &&(!q2||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q2)));
 }
@@ -4784,6 +4793,7 @@ function desenhaMotores(){
       (LV.edicoes??0)?LV.edicoes+" edição(ões)":"",
       (m.qualificacao&&m.qualificacao.veredito)?`<b style='color:${m.qualificacao.veredito==="EM REVISÃO"?"#C08A1E":"#B8433A"}'>qualificado: ${esc(m.qualificacao.veredito.toLowerCase())}${m.qualificacao.regra?" ("+esc(m.qualificacao.regra)+")":""}</b>`:"",
       (m.preparacao&&m.preparacao.modelo==="próprio")?"<b style='color:#0B4EA2'>preparação no livro</b>":"",
+      (m.esteira&&m.esteira.selo)?`<b style="color:${{bronze:"#8C5A2B",prata:"#6B7785",ouro:"#A07A10"}[m.esteira.selo]}">selo ${m.esteira.selo}${(m.esteira.estante||"").startsWith("investigacao")?" · estante de investigação":""}</b>`:"",
       (typeof m.nota_rede==="number")?`<span title="rede neural: probabilidade de ser oportunidade real para OSC (apoio, nunca filtro)">rede ${Math.round(m.nota_rede*100)}%</span>`:"",
       (m.previsao&&m.previsao.situacao==="prevista")?`abre ~${br(m.previsao.abertura)} · ativa em ${br(m.previsao.ativar_em)}`:"",
       d?`em leitura, dia ${d.dias}/30`:(mtAtivo(m.id)?"em leitura":"na estante")].filter(Boolean).join(" · ");
@@ -4874,7 +4884,7 @@ function atualizaMotoresAtivos(){
   el.textContent=`${ativos}/${total}`; el.title=`${regulares.filter(o=>mtAtivo(o.id)).length} regulares + ${MT.filter(m=>mtAtivo(m.id)).length} livros em leitura, de ${total}`;
 }
 async function iniciaMotores(){ await carregaMotores(); desenhaMotores(); atualizaMotoresAtivos(); if(typeof desenhaBzMapa==="function"&&$("bz-mapa"))desenhaBzMapa();
-  ["mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca","mo-area","mo-natureza","mo-esfera","mo-status","mo-busca"].forEach(id=>{if($(id))$(id).addEventListener("input",desenhaMotores);}); }
+  ["mt-familia","mt-segmento","mt-uf","mt-estado","mt-busca","mo-area","mo-natureza","mo-esfera","mo-status","mo-busca","mo-selo"].forEach(id=>{if($(id))$(id).addEventListener("input",desenhaMotores);}); }
 
 /* ================= BÚSSOLA · réplica do modelo ================= */
 let bzUFsel="GO";   // 27/09: Goiás aberto ao lado do mapa por padrão
