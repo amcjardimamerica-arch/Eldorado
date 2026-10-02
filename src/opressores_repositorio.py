@@ -66,7 +66,7 @@ def dispensa(item: dict) -> str | None:
     try:
         from .curadoria_biblioteca import fora_da_abrangencia, empresa_sem_edital
         x = {"programa": item.get("titulo"), "orgao": item.get("orgao"), "geo": item.get("uf") or None,
-             "pagina": item.get("pagina_oficial") or item.get("link_oficial") or item.get("url")}
+             "pagina": item.get("pagina_oficial") or item.get("link_oficial") or item.get("url"), "origem": item.get("origem")}
         if not x["geo"]:
             from .livros_opressores import uf_do_dominio
             x["geo"] = uf_do_dominio(x["pagina"])[0]
