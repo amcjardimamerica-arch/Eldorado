@@ -442,6 +442,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     if sensor.get("id") == "plat-estaduais-go-gov":
         from .estaduais_go import ler_motor as ler_motor_est
         return ler_motor_est(sensor, data, limites)
+    # MOTOR 08 v2 (parecer complementar de 02/10/2026): as 25 maiores prefeituras de Goiás lidas onde publicam — diário
+    # AGM, API do WordPress, Querido Diário (domínio novo) e portais próprios —, com status honesto por cidade e por rota
+    if sensor.get("id") == "plat-prefeituras-50-go":
+        from .prefeituras_25_go import ler_motor as ler_motor_pref
+        return ler_motor_pref(sensor, data, limites)
     if sensor.get("id") == "dou":
         from .diario_uniao import ler_motor as ler_motor_br
         return ler_motor_br(sensor, data, limites)

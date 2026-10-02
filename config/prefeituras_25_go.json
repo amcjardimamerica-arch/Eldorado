@@ -1,0 +1,483 @@
+{
+ "versao": 2,
+ "atualizado_em": "2026-10-02",
+ "regra": "Motor 08 v2 — 25 maiores prefeituras de Goiás lidas onde publicam: diário AGM, API do WordPress, Querido Diário (domínio novo) e portais próprios. PNCP fica com o motor 04. Status honesto por cidade e por rota.",
+ "janela_historico_dias": 1096,
+ "monitoramento_dias_minimos": 15,
+ "pausa_segundos": 0.8,
+ "orcamento_segundos_por_execucao": 900,
+ "wp": {
+  "tipos": [
+   "posts",
+   "pages"
+  ],
+  "max_paginas": 10,
+  "termos": [
+   "chamamento",
+   "termo de fomento",
+   "termo de colaboração",
+   "sociedade civil",
+   "Aldir Blanc",
+   "PNAB",
+   "Paulo Gustavo",
+   "CMDCA",
+   "subvenção",
+   "emenda parlamentar",
+   "edital",
+   "inexigibilidade",
+   "seleção de projetos",
+   "fundo municipal"
+  ]
+ },
+ "agm": {
+  "url": "https://www.diariomunicipal.com.br/agm/pesquisar",
+  "por_pagina": 25,
+  "max_paginas": 12,
+  "termos": [
+   "chamamento público",
+   "termo de fomento",
+   "termo de colaboração",
+   "organização da sociedade civil",
+   "seleção de projetos",
+   "Aldir Blanc",
+   "Paulo Gustavo",
+   "CMDCA",
+   "subvenção",
+   "inexigibilidade de chamamento",
+   "emenda parlamentar"
+  ]
+ },
+ "querido_diario": {
+  "api": "https://api.queridodiario.org.br",
+  "max_por_termo": 1000,
+  "termos": [
+   "\"chamamento público\"",
+   "\"termo de fomento\"",
+   "\"termo de colaboração\"",
+   "\"organização da sociedade civil\"",
+   "\"Aldir Blanc\"",
+   "CMDCA"
+  ],
+  "nota": "domínio antigo api.queridodiario.ok.org.br falha (TLS); em 02/10/2026 a API oscilou (tempo esgotado) — o motor marca 'falhou' e tenta de novo na próxima"
+ },
+ "lexico": {
+  "osc_forte": "organizac\\w* da sociedade civil|\\boscs?\\b|termos? de (fomento|colaboracao)|contrato de fomento|mrosc|13\\.019|sem fins lucrativos|entidades? (socioassistencia|filantropic|sem fins|nao governamenta|assistencia)|terceiro setor|organizac\\w* socia",
+  "osc": "entidade|associac|instituic\\w* (privad|sem|de longa)|aldir blanc|\\bpnab\\b|paulo gustavo|lei (municipal )?de incentivo|fundo municipal|projetos? (culturais|sociais|esportivos|socioambientais|literarios)|agentes? culturais|ponto(s|es)? de cultura|cultura viva|cmdca|\\bfia\\b|fmdca|crianca|adolescente|idosos|longa permanencia|casa.lar|credenciamento social|socioassistencia|premi\\w* (para|de|por)|chamamento publico|chamada publica|fomento|cultura|cultural",
+  "abertura": "chamament|chamada publica|\\bchamada\\b|edital|editais|selecao|seleciona|credenciamento|inscric|premio|premiacao|abre |lanca",
+  "resultado": "^resultado|resultado (final|preliminar|definitivo|da|do|dos|pos)|homolog|habilitad|habilitac|classificad|classificac|selecionad|contemplad|lista (de|final|preliminar|dos)|aprovad|inscritos|deferid|julgamento|^ata\\b|ata (da|de)|pagamento(s)? aos|recursos .*(ja estao|chegam)|analise de merito|propostas recebidas|indeferimento",
+  "ato_do_edital": "retifica|errata|prorroga|adiad|adiamento|revoga|suspens|cronograma|esclareciment|aditivo ao edital|termo aditivo ao edital|convocac\\w* de suplentes|suplentes",
+  "parceria": "^extrato|extrato d|inexigibilidade|dispensa de chamamento|termos? de (fomento|colaboracao|execucao cultural|convenio|subvencao|parceria)\\b|contrato de fomento|^convenio|subvenc|apostilamento|aditamento|aditivo ao termo|repass|celebra|firma|entrega de (van|veiculo)|incentivo financeiro|apoio financeiro|^c o n v",
+  "conselho": "conselh\\w* municipa|representantes da sociedade civil|eleicao|composicao d|conselheir|forum municipal|conferencia|recomposicao",
+  "cultura": "aldir blanc|\\bpnab\\b|paulo gustavo|cultur|audiovisual|artist|ponto(s|es)? de cultura|lei (municipal )?de incentivo|patrimonio|literari|\\blpg\\b",
+  "crianca": "cmdca|\\bfia\\b|fmdca|crianca|adolescente",
+  "agricultura": "agricultura familiar|\\bpaa\\b|\\bpnae\\b|aquisicao de (generos )?aliment",
+  "acompanhar": "resoluc|fundo municipal|emenda|plano (anual )?de aplicacao|consulta publica|audiencia publica|regulament|\\blei n|programa|adesao",
+  "dias_aberta_sem_prazo": 45,
+  "vetos": [
+   [
+    "seleção ou convocação de pessoal",
+    "concurso|processo seletivo|\\bpss\\b|convocac\\w* (de|dos|para) (candidat|aprovad|apresentac|concursad)|nomeac|analistas|pedagog|professor|educador social voluntario|estagi|aptidao fisica|guarda civil|concursados|assistente social escolar|pareceristas|bancas? tecnicas?",
+    false
+   ],
+   [
+    "matrícula e vagas escolares",
+    "chamada publica (escolar|infantil|da educacao)|matricula|educacao infantil|novos alunos|ingresso na rede|escola (municipal )?de (linguas|musica)|\\beja\\b|periodo integral",
+    false
+   ],
+   [
+    "saúde pública geral",
+    "vacin|febre amarela|dengue",
+    false
+   ],
+   [
+    "conselho tutelar",
+    "conselh\\w* tutelar",
+    false
+   ],
+   [
+    "leilão, notificação ou tributo",
+    "leilao|notificac|intimac|iptu|tribut|lancamento fiscal|divida ativa|refis",
+    false
+   ],
+   [
+    "compra ou contratação comum",
+    "pregao|registro de precos|combustivel|aquisicao de (?!generos aliment)|contratacao de empresa|ordem de fornecimento|locacao|manutencao predial",
+    true
+   ],
+   [
+    "ocupação comercial de evento",
+    "festival gastronomic|praca de alimentacao|ocupacao de espacos|ambulante|feira (livre|de artesanato)|atividades comerciais|expotrin|som automotivo|milholandia|festival de sabores",
+    false
+   ],
+   [
+    "prêmio recebido pela prefeitura ou servidores",
+    "(recebe|conquista|ganha|vence|destaque|finalista|premiad|homenage|reconhecid)\\w*.{0,60}premi|premio (da qualidade|leia|selo|funcionario|goias sustentavel|espirito publico)|selo (ouro|de referencia)|premiacoes de destaque|licenca premio|cerimonia de premiacao|premio buritis|premio brb",
+    false
+   ],
+   [
+    "habitação e regularização fundiária",
+    "habitac|sorteio|regularizacao fundiaria|custo zero|unidades habitaciona|pro moradia|moradia|loteamento",
+    true
+   ],
+   [
+    "transporte e mobilidade",
+    "transporte (coletivo|publico)|bicicletas compartilhad|mototaxi|\\btaxi\\b",
+    false
+   ],
+   [
+    "chamamento de empresas, patrocínio ou publicidade",
+    "construtor|empresas|loteric|patrocini|influenciador|publicidade|subcomissao tecnica|capital social|restos a pagar|juro zero|manifestacao de interesse|\\bpmi\\b|cemiterio|telemedicina|clinicas de psicologia|profissionais (psicologos|habilitados)",
+    true
+   ],
+   [
+    "doação de bens ou uso de espaço público",
+    "doacao de bens|permissao de uso|bens moveis|inserviv|patrulhas agricolas|lago bonsucesso|parque natural",
+    false
+   ],
+   [
+    "corrida e esporte de rendimento sem entidade",
+    "corrida|campeonato|torneio|atletas",
+    true
+   ]
+  ]
+ },
+ "municipios": [
+  {
+   "municipio": "Goiânia",
+   "ibge": "5208707",
+   "site": "https://www.goiania.go.gov.br",
+   "wp_api": true,
+   "diario": "Diário Oficial do Município – www.goiania.go.gov.br/casa-civil/ (também no Querido Diário, nível 3, desde 2020-11-24)",
+   "transparencia": "www.goiania.go.gov.br/sing_transparencia/licitacoes",
+   "agm": null,
+   "qd": "5208707"
+  },
+  {
+   "municipio": "Aparecida de Goiânia",
+   "ibge": "5201405",
+   "site": "https://aparecida.go.gov.br",
+   "wp_api": true,
+   "diario": "doe.aparecida.go.gov.br (Querido Diário nível 3 desde 2022-10-04)",
+   "transparencia": "acessoainformacao.aparecida.go.gov.br ; transparencia.aparecida.go.gov.br/licitacoes",
+   "agm": null,
+   "qd": "5201405"
+  },
+  {
+   "municipio": "Anápolis",
+   "ibge": "5201108",
+   "site": "https://www.anapolis.go.gov.br",
+   "wp_api": true,
+   "diario": "dom.anapolis.go.gov.br",
+   "paginas_editais": [
+    "/publicacao-de-editais/",
+    "/espacocultural/"
+   ],
+   "agm": null,
+   "portal": {
+    "modo": "pagina_editais",
+    "paginas": [
+     "publicacao-de-editais/"
+    ]
+   },
+   "qd": null
+  },
+  {
+   "municipio": "Rio Verde",
+   "ibge": "5218805",
+   "site": "https://www.rioverde.go.gov.br",
+   "wp_api": true,
+   "diario": null,
+   "paginas_editais": [
+    "/editais-e-downloads/"
+   ],
+   "transparencia": "acessoainformacao.rioverde.go.gov.br/informacao/licitacoes",
+   "agm": null,
+   "portal": {
+    "modo": "pagina_editais",
+    "paginas": [
+     "editais-e-downloads/"
+    ]
+   },
+   "qd": null
+  },
+  {
+   "municipio": "Águas Lindas de Goiás",
+   "ibge": "5200258",
+   "site": "https://aguaslindasdegoias.go.gov.br",
+   "wp_api": true,
+   "diario": "AGM + acessoainformacao.aguaslindasdegoias.go.gov.br/cidadao/atos_adm/mp/id=26",
+   "paginas_editais": [
+    "acessoainformacao…/cidadao/atos_adm/mp/id=23"
+   ],
+   "agm": "44796",
+   "qd": null
+  },
+  {
+   "municipio": "Luziânia",
+   "ibge": "5212501",
+   "site": "https://www.luziania.go.gov.br",
+   "wp_api": false,
+   "nota": "API WordPress fechada (401): usar busca interna /?s= e tabelas",
+   "paginas_editais": [
+    "/tabela-editais/",
+    "/tabela-termos/",
+    "/editaismunicipais",
+    "/editaismunicipais2/"
+   ],
+   "agm": null,
+   "portal": {
+    "modo": "busca_wp_html",
+    "termos": [
+     "chamamento",
+     "termo de fomento",
+     "termo de colaboração",
+     "sociedade civil",
+     "aldir blanc",
+     "paulo gustavo",
+     "cmdca",
+     "subvenção"
+    ],
+    "max_paginas": 6
+   },
+   "qd": null
+  },
+  {
+   "municipio": "Valparaíso de Goiás",
+   "ibge": "5221858",
+   "site": "https://www.valparaisodegoias.go.gov.br",
+   "wp_api": true,
+   "diario": "diariooficial.valparaisodegoias.go.gov.br",
+   "paginas_editais": [
+    "acessoainformacao.valparaisodegoias.go.gov.br/cidadao/atos_adm/mp/id=3"
+   ],
+   "agm": null,
+   "qd": null
+  },
+  {
+   "municipio": "Trindade",
+   "ibge": "5221403",
+   "site": "https://www.trindade.go.gov.br",
+   "wp_api": true,
+   "diario": "AGM",
+   "transparencia": "acessoainformacao.trindade.go.gov.br",
+   "agm": "51721",
+   "qd": null
+  },
+  {
+   "municipio": "Formosa",
+   "ibge": "5208004",
+   "site": "https://www.formosa.go.gov.br",
+   "wp_api": true,
+   "diario": "AGM",
+   "transparencia": "acessoainformacao.formosa.go.gov.br",
+   "agm": "14263",
+   "qd": null
+  },
+  {
+   "municipio": "Novo Gama",
+   "ibge": "5215231",
+   "site": "https://www.novogama.go.gov.br",
+   "wp_api": false,
+   "nota": "portal próprio (/noticia/NNNN-…), sem WordPress; responder só do Brasil",
+   "transparencia": "acessoainformacao.novogama.go.gov.br",
+   "agm": null,
+   "portal": {
+    "modo": "noticias_paginado",
+    "max_paginas": 260
+   },
+   "qd": null
+  },
+  {
+   "municipio": "Senador Canedo",
+   "ibge": "5220454",
+   "site": "https://www.senadorcanedo.go.gov.br",
+   "wp_api": true,
+   "diario": "diario.senadorcanedo.go.gov.br + AGM",
+   "transparencia": "acessoainformacao.senadorcanedo.go.gov.br/cidadao/informacao/licitacoes",
+   "agm": "4445",
+   "qd": null
+  },
+  {
+   "municipio": "Itumbiara",
+   "ibge": "5211503",
+   "site": "https://www.itumbiara.go.gov.br",
+   "wp_api": true,
+   "diario": "acessoainformacao.itumbiara.go.gov.br/cidadao/outras_informacoes/mp/id=5",
+   "agm": null,
+   "qd": null
+  },
+  {
+   "municipio": "Catalão",
+   "ibge": "5205109",
+   "site": "https://www.catalao.go.gov.br",
+   "wp_api": false,
+   "nota": "portal próprio; listas paginadas ?page=N",
+   "paginas_editais": [
+    "/avisos/edital-de-chamamento-publico",
+    "/avisos/termo-fomento",
+    "/avisos/termo-de-convenio",
+    "/avisos/comunicados"
+   ],
+   "transparencia": "/transparencia/documentos/licitacao",
+   "agm": null,
+   "portal": {
+    "modo": "avisos_paginado",
+    "secoes": [
+     "avisos/edital-de-chamamento-publico",
+     "avisos/termo-fomento",
+     "avisos/termo-de-convenio"
+    ],
+    "max_paginas": 15
+   },
+   "qd": null
+  },
+  {
+   "municipio": "Jataí",
+   "ibge": "5211909",
+   "site": "https://www.jatai.go.gov.br",
+   "wp_api": true,
+   "diario": "intranet.jatai.go.gov.br/intranet/sistemas/diario-oficial/diario-site.php",
+   "transparencia": "jatai.sigep.com.br",
+   "agm": null,
+   "qd": null
+  },
+  {
+   "municipio": "Planaltina",
+   "ibge": null,
+   "site": "https://www.planaltina.go.gov.br",
+   "wp_api": true,
+   "transparencia": "acessoainformacao.planaltina.go.gov.br/cidadao/informacao/licitacoes",
+   "agm": null,
+   "ibge_pendente": "confirmar no IBGE antes de usar",
+   "qd": null
+  },
+  {
+   "municipio": "Caldas Novas",
+   "ibge": "5204508",
+   "site": "https://www.caldasnovas.go.gov.br",
+   "wp_api": true,
+   "diario": "caldasnovas.integrame.app.br/app/",
+   "transparencia": "www.caldasnovas.go.gov.br/licitacao/ ; acessoainformacao.caldasnovas.go.gov.br/informacao/mp/id=27",
+   "agm": null,
+   "qd": null
+  },
+  {
+   "municipio": "Santo Antônio do Descoberto",
+   "ibge": null,
+   "site": "https://www.santoantoniododescoberto.go.gov.br",
+   "wp_api": true,
+   "diario": "/diario-oficial/",
+   "transparencia": "acessoainformacao.santoantoniododescoberto.go.gov.br/cidadao/informacao/licitacoes",
+   "agm": null,
+   "ibge_pendente": "confirmar no IBGE antes de usar",
+   "qd": null
+  },
+  {
+   "municipio": "Goianésia",
+   "ibge": null,
+   "site": "https://www.goianesia.go.gov.br",
+   "wp_api": true,
+   "paginas_editais": [
+    "/editais-e-publicacoes/"
+   ],
+   "transparencia": "acessoainformacao.goianesia.go.gov.br/cidadao/informacao/licitacoes",
+   "agm": null,
+   "ibge_pendente": "confirmar no IBGE antes de usar",
+   "portal": {
+    "modo": "pagina_editais",
+    "paginas": [
+     "editais-e-publicacoes/"
+    ]
+   },
+   "qd": null
+  },
+  {
+   "municipio": "Cidade Ocidental",
+   "ibge": "5205497",
+   "site": "https://cidadeocidental.go.gov.br",
+   "wp_api": true,
+   "transparencia": "acessoainformacao.cidadeocidental.go.gov.br/cidadao/informacao/licitacoes",
+   "agm": null,
+   "qd": null
+  },
+  {
+   "municipio": "Mineiros",
+   "ibge": null,
+   "site": "https://www.mineiros.go.gov.br",
+   "wp_api": false,
+   "nota": "portal próprio, sem WordPress",
+   "paginas_editais": [
+    "/acesso-a-informacao/bids",
+    "/acesso-a-informacao/atos-de-inexigibilidade",
+    "/acesso-a-informacao/atos-de-dispensa"
+   ],
+   "agm": null,
+   "ibge_pendente": "confirmar no IBGE antes de usar",
+   "portal": {
+    "modo": "requer_navegador",
+    "paginas": [
+     "acesso-a-informacao/apoio-financeiro",
+     "acesso-a-informacao/convenios",
+     "acesso-a-informacao/credenciamentos"
+    ],
+    "nota": "portal Sonda montado por script: PROCACES (apoio financeiro a projetos culturais, esportivos e sociais, fluxo contínuo) e convênios"
+   },
+   "qd": null
+  },
+  {
+   "municipio": "Cristalina",
+   "ibge": null,
+   "site": "https://cristalina.go.gov.br",
+   "wp_api": true,
+   "diario": "AGM",
+   "transparencia": "acessoainformacao.cristalina.go.gov.br/cidadao/informacao/licitacoes",
+   "agm": "46421",
+   "ibge_pendente": "confirmar no IBGE antes de usar",
+   "qd": null
+  },
+  {
+   "municipio": "Inhumas",
+   "ibge": null,
+   "site": "https://www.inhumas.go.gov.br",
+   "wp_api": true,
+   "diario": "AGM",
+   "transparencia": "acessoainformacao.inhumas.go.gov.br/cidadao/informacao/licitacoes_cnt",
+   "agm": "28352",
+   "ibge_pendente": "confirmar no IBGE antes de usar",
+   "qd": null
+  },
+  {
+   "municipio": "Itaberaí",
+   "ibge": null,
+   "site": "https://www.itaberai.go.gov.br",
+   "wp_api": true,
+   "paginas_editais": [
+    "/aviso/"
+   ],
+   "transparencia": "acessoainformacao.itaberai.go.gov.br/cidadao/informacao/licitacoes",
+   "agm": null,
+   "ibge_pendente": "confirmar no IBGE antes de usar",
+   "qd": null
+  },
+  {
+   "municipio": "Jaraguá",
+   "ibge": null,
+   "site": "https://www.jaragua.go.gov.br",
+   "wp_api": true,
+   "transparencia": "acessoainformacao.jaragua.go.gov.br/cidadao/informacao/licitacoes",
+   "agm": null,
+   "ibge_pendente": "confirmar no IBGE antes de usar",
+   "qd": null
+  },
+  {
+   "municipio": "Quirinópolis",
+   "ibge": null,
+   "site": "https://www.quirinopolis.go.gov.br",
+   "wp_api": true,
+   "transparencia": "acessoainformacao.quirinopolis.go.gov.br/cidadao/informacao/licitacoes_cnt",
+   "agm": null,
+   "ibge_pendente": "confirmar no IBGE antes de usar",
+   "qd": null
+  }
+ ]
+}
