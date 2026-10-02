@@ -332,7 +332,11 @@ def proximo_alvo() -> dict | None:
     ordem_fluxo = lambda kx: (str(kx[1].get("fim") or "9999") < hoje, str(kx[1].get("fim") or "9999"))
     todos = [(k, x) for k, v in fx.items() for x in v if pend(x) and not _barrado(x.get("id"), x.get("link_oficial") or x.get("url"), x.get("titulo"))]
 
-    def nivel(fluxo, livros_nivel, rotulo):
+    def nivel(fluxo, livros_nivel, rotulo, bronze_nivel=()):
+        if bronze_nivel:                      # a estante bronze daquele nível vem primeiro, dentro da ordem
+            _a = alvo_livro(bronze_nivel[0], f"{rotulo} · estante bronze · tentativa {_tent.get(bronze_nivel[0]['id'], 1)}")
+            _a["esteira"] = "bronze"
+            return _a
         if fluxo:
             k, x = sorted(fluxo, key=ordem_fluxo)[0]
             return alvo_fluxo(x, k, f"{rotulo} · oportunidade do mapa" + (f" · prazo até {x.get('fim')}" if x.get("fim") else ""))
@@ -341,26 +345,35 @@ def proximo_alvo() -> dict | None:
         return None
 
     eh_int = lambda x: bool(INTL.search(str(x.get("titulo") or x.get("programa") or "")) or x.get("internacional") or x.get("geo") == "INT")
-    # 0 · ESTANTE BRONZE (titular, 02/10): livros cujo site oficial ainda não foi confirmado — fila da esteira de selos,
-    # na ordem da nota da rede e do prazo. O Interceptador investiga com o Qwen 8B; o resultado volta à esteira.
+
+    def _no_nivel(rotulo, x):
+        g = x.get("geo")
+        if rotulo.startswith("1"):
+            return g == "GO"
+        if rotulo.startswith("2"):
+            return g == "BR"
+        if rotulo.startswith("3"):
+            return g == "INT" and bool(APLICA_BR.search(f"{x.get('programa') or ''} {x.get('orgao') or ''} {' '.join(x.get('publico') or [])}"))
+        return False
+    # ESTANTE BRONZE DENTRO DA ORDEM (titular, 02/10): não vem antes da ordem — em cada nível (Goiás, Brasil, internacional,
+    # outros estados) o Interceptador começa pelos livros da estante bronze daquele nível (site oficial ainda não
+    # confirmado), na ordem da fila (nota da rede e prazo), e investiga com o Qwen 8B; o resultado volta à esteira.
+    _bronze, _tent = [], {}
     try:
-        _fb = ((load_json(ROOT / "docs/dados/esteira.json") or {}).get("filas") or {}).get("bronze") or []
         _por_id = {x.get("id"): x for x in cat}
-        for _f in _fb:
+        for _f in ((load_json(ROOT / "docs/dados/esteira.json") or {}).get("filas") or {}).get("bronze") or []:
             _x = _por_id.get(_f.get("livro"))
             if _x and _x.get("pagina") and not recente(f"op-{_x['id']}") and not recente(_x["id"]) and not _barrado(_x["id"], _x.get("pagina"), _x.get("programa")):
-                _a = alvo_livro(_x, f"0 · estante bronze · tentativa {_f.get('tentativa') or 1}")
-                _a["esteira"] = "bronze"
-                return _a
+                _bronze.append(_x); _tent[_x["id"]] = _f.get("tentativa") or 1
     except Exception:  # noqa: BLE001 — a esteira nunca impede o voo
-        pass
+        _bronze = []
     for rotulo, fl, lv in (
         ("1 · Goiás", [(k, x) for k, x in todos if k == "GO"], [x for x in livros if x.get("geo") == "GO"]),
         ("2 · Brasil", [(k, x) for k, x in todos if k == "__nac__" and not eh_int(x)], [x for x in livros if x.get("geo") == "BR"]),
         ("3 · internacional aplicável ao Brasil", [(k, x) for k, x in todos if eh_int(x) and APLICA_BR.search(str(x.get("titulo") or ""))],
          [x for x in livros if x.get("geo") == "INT" and APLICA_BR.search(f"{x.get('programa') or ''} {x.get('orgao') or ''} {' '.join(x.get('publico') or [])}")]),
     ):
-        a = nivel(fl, lv, rotulo)
+        a = nivel(fl, lv, rotulo, [x for x in _bronze if _no_nivel(rotulo, x)])
         if a:
             return a
     try:                                       # 4 · empresas: dossiê (Goiás primeiro)
@@ -371,7 +384,8 @@ def proximo_alvo() -> dict | None:
     if eg:
         e = eg[0]
         return {"id": f"dossie-{e['cnpj']}", "empresa": e.get("nome"), "cnpj": e["cnpj"], "_emp": e, "de": "4 · empresas · dossiê", "modo": "dossie", "tipo": "dossie_empresa"}
-    a = nivel([(k, x) for k, x in todos if k not in ("GO", "__nac__")], [x for x in livros if x.get("geo") not in ("GO", "BR", "INT")], "5 · outros estados")
+    a = nivel([(k, x) for k, x in todos if k not in ("GO", "__nac__")], [x for x in livros if x.get("geo") not in ("GO", "BR", "INT")], "5 · outros estados",
+              [x for x in _bronze if x.get("geo") not in ("GO", "BR", "INT")])
     if a:
         return a
     a = _proximo_alvo_anterior()
