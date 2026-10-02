@@ -87,10 +87,12 @@ class TestClassificacao(unittest.TestCase):
                     "especializadas para prestação de serviços de medicina do trabalho e serviços de perícia médica"):
             self.assertEqual(classif(obj, orgao="FUNDO MUNICIPAL DE SAUDE")["veredito"], "RUIDO", obj[:40])
 
-    def test_ilpi_credenciada_e_acompanhar(self):
+    def test_ilpi_credenciada_e_oportunidade_com_enquadramento(self):
+        """02/10 (titular): ILPI também é OSC — o credenciamento é oportunidade mapeada, com o enquadramento anotado."""
         c = classif("CREDENCIAMENTO DE INSTITUIÇÕES DE ASSISTÊNCIA SOCIAL PARA ACOLHIMENTO INSTITUCIONAL DE IDOSOS (ILPI) E, "
                     "EXCEPCIONALMENTE, PESSOAS COM DEFICIÊNCIA", orgao="MUNICIPIO DE TRINDADE", municipio="Trindade")
-        self.assertEqual((c["veredito"], c["regime"]), ("ACOMPANHAR", "credenciamento_de_entidade"))
+        self.assertEqual((c["veredito"], c["regime"]), ("OPORTUNIDADE", "credenciamento_de_entidade"))
+        self.assertIn("EN-03", c.get("enquadramento") or "")
 
     def test_inovacao_e_competicao_nao_sao_recurso_para_associacao(self):
         for obj in ("SELEÇÃO DE PROJETOS INOVADORES NO AMBIENTE REGULATÓRIO EXPERIMENTAL – SANDBOX RIO VERDE",
