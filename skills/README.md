@@ -9,3 +9,18 @@ Pacotes pequenos por tarefa, carregados só na missão que precisa (src/skills/_
 - **interceptador/cronograma** — Mapear inscrição, resultado e recurso a partir do cronograma do edital (quase sempre tabela em PDF).
 - **interceptador/site_oficial** — Achar o site oficial do financiador (nunca o republicador), na ordem das rotas que funcionam.
 - **interceptador/dossie_empresa** — Dossiê investigativo de empresa do cadastro: composição, contatos, projetos e atuação no terceiro setor.
+
+## Skills dos motores (02/10/2026)
+
+Uma por família de fonte + duas comuns; o vínculo motor → skill fica em config/skills_motores.json.
+
+- **motores/diario_oficial** — Ler diário oficial (municipal, estadual, da União, da Justiça) e achar o ato que abre recurso para OSC.
+- **motores/portal_chamamentos** — Ler portais de chamamentos e contratações públicas (PNCP, SALIC, Mapa das OSC, portais de prefeituras).
+- **motores/orgao_publico** — Ler sites de órgãos públicos (secretarias, autarquias, fundações, conselhos, fundos, Congresso).
+- **motores/justica_mp** — Ler Justiça e Ministério Público (destinação de penas pecuniárias, TAC, reparação).
+- **motores/terceiro_setor** — Ler sites especializados no terceiro setor (ABCR, Observatório, agregadores, GIFE, recorrência).
+- **motores/entidades** — Ler sites de institutos, fundações e outras entidades financiadoras.
+- **motores/empresas** — Ler sites empresariais e buscar linhas de captação de empresas, mesmo sem publicação.
+- **motores/pilotos** — Pilotos (Espião e Interceptador): buscar oportunidades FORA dos canais e confirmar na fonte oficial.
+- **comum/linha_producao** — Contrato comum da linha de produção: o que todo canal entrega e o que nunca pode acontecer.
+- **comum/plano_correcao** — Roteiro dos planos de correção: diagnosticar o canal e aplicar o plano previsto no fluxograma.

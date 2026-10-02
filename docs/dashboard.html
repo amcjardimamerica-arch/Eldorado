@@ -4784,6 +4784,7 @@ function desenhaMotores(){
       (LV.edicoes??0)?LV.edicoes+" edição(ões)":"",
       (m.qualificacao&&m.qualificacao.veredito)?`<b style='color:${m.qualificacao.veredito==="EM REVISÃO"?"#C08A1E":"#B8433A"}'>qualificado: ${esc(m.qualificacao.veredito.toLowerCase())}${m.qualificacao.regra?" ("+esc(m.qualificacao.regra)+")":""}</b>`:"",
       (m.preparacao&&m.preparacao.modelo==="próprio")?"<b style='color:#0B4EA2'>preparação no livro</b>":"",
+      (typeof m.nota_rede==="number")?`<span title="rede neural: probabilidade de ser oportunidade real para OSC (apoio, nunca filtro)">rede ${Math.round(m.nota_rede*100)}%</span>`:"",
       (m.previsao&&m.previsao.situacao==="prevista")?`abre ~${br(m.previsao.abertura)} · ativa em ${br(m.previsao.ativar_em)}`:"",
       d?`em leitura, dia ${d.dias}/30`:(mtAtivo(m.id)?"em leitura":"na estante")].filter(Boolean).join(" · ");
     return `<div class="dj aceso livro-c" data-id="${esc(m.id)}" style="border-left:4px solid ${({"Cultura":"#D63A6B","Esporte":"#7CB518","Saúde":"#2F79D0","Educação":"#2E9D5B","Assistência social":"#12A5B5","Criança e adolescente":"#E0A100","Pessoa idosa":"#8C6D3F","Meio ambiente":"#7B4FE0","Direitos humanos":"#C0392B","Desenvolvimento social":"#16A085","Emendas":"#B8860B"})[m.objeto_area]||"#7C8899"}" title="clique para abrir o livro" onclick="mtDetalhe('${esc(m.id)}')">
