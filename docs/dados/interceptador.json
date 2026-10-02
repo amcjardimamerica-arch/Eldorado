@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-02T23:47:16+00:00",
+  "em": "2026-10-02T23:56:00+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-02T23:34:13+00:00",
+  "ultimo_voo": "2026-10-02T23:49:50+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,89 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 145,
+    "missoes": 146,
     "validadas": 1,
     "parciais": 39,
-    "insuficientes": 105,
+    "insuficientes": 106,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 31,
-      "sim": 87
+      "sim": 88
     },
     "estrelas_de_ouro": 29,
     "fontes_novas_para_os_motores": 2,
-    "tempo_medio_min": 11.3
+    "tempo_medio_min": 11.2
   },
   "missoes": [
+    {
+      "em": "2026-10-02T23:49:50+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Aviso de chamada pública nº 5/2026 — Goiás / Ceres",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O aviso de chamada pública refere-se ao apoio de projetos culturais em Ceres, Goiás, o que é relevante para uma associação comunitária local.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto da chamada pública, que é apoiar projetos culturais em Ceres, e verificar se sua atuação está alinhada com essa área.",
+        "proximo_passo": "Verificar se a associação comunitária tem projetos culturais em Ceres e se está apta a participar da chamada pública.",
+        "risco": "A falta de alinhamento com o objeto da chamada pública ou a incompatibilidade com a área de atuação pode impedir o acesso."
+      },
+      "erro": null,
+      "segundos": 369,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-bf4c3af441cc",
+      "encontrou": {
+        "Objeto": {
+          "valor": "apoiar projetos culturais em Ceres",
+          "trecho": "Prefeitura de Ceres lança Edital PNAB – Ciclo 2 e abre inscrições para projetos culturais",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Ceres",
+          "trecho": "Prefeitura Municipal de Ceres",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Prefeitura Municipal de Ceres",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "Prefeitura de Ceres lança Edital PNAB – Ciclo 2 e abre inscrições para projetos culturais",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Ceres",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador"
+      ]
+    },
     {
       "em": "2026-10-02T23:34:13+00:00",
       "modo": "validar",
@@ -2613,45 +2681,6 @@
           "dispensado": false
         }
       },
-      "financiador": "Prefeitura Municipal de Guaraní de Goiás",
-      "indicios": [
-        {
-          "url": "https://guaranidegoias.go.gov.br/wp-content/uploads/2025/10/EDITAL-0020225-CMDPI.pdf",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-02T13:14:25+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "PDF Imagem digitalizada EDITAL No 02, DE 1 - guaranidegoias.go.gov.br — Goiás — Goiás — Goiás — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "nenhuma fonte legível",
-      "segundos": 137,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: nenhuma fonte legível",
-      "id": "op-op-e6113ab36133",
-      "encontrou": {},
       "financiador": "Prefeitura Municipal de Guaraní de Goiás",
       "indicios": [
         {
