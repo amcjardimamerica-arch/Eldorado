@@ -183,7 +183,8 @@ def aplicar_resultados(C: dict, cfg: dict, hoje: str) -> dict:
 def filas(livros: list[dict], cfg: dict) -> dict:
     def ordem(x):
         fim = min([h.get("fim") for h in (x.get("historico") or []) if isinstance(h, dict) and h.get("fim") and h["fim"] >= date.today().isoformat()] or ["9999"])
-        return (-(x.get("nota_rede") or 0), fim)
+        grupo = {"GO": 0, "BR": 1, "INT": 2}.get(x.get("geo"), 3)      # 02/10 (titular): Goiás → Brasil → internacional → outros
+        return (grupo, -(x.get("nota_rede") or 0), fim)
     out = {}
     for etapa in ("bronze", "prata"):
         xs = sorted([x for x in livros if (x.get("esteira") or {}).get("estante") == f"fila_{etapa}"], key=ordem)[:int(cfg[etapa]["por_dia"])]

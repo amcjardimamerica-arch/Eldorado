@@ -24,9 +24,18 @@ class TesteSemClaude(unittest.TestCase):
         sp = importlib.util.spec_from_file_location("il", ROOT / "scripts/interceptador_local.py"); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m)
         self.assertTrue(m.main()["pausado"])                          # sem --externo, nada roda
 
-    def test_interceptador_comeca_pela_estante_bronze(self):
+    def test_estante_bronze_dentro_da_ordem(self):
+        """02/10 (titular): a estante bronze não vem antes da ordem — a ordem (Goiás, Brasil, internacional, outros
+        estados) vale dentro dela: em cada nível, os livros da estante bronze daquele nível vêm primeiro."""
         src = (ROOT / "src/interceptador.py").read_text(encoding="utf-8")
-        self.assertIn("0 · estante bronze", src); self.assertIn('"Piloto - Interceptador (Qwen3-8B)"', src)
+        self.assertNotIn("0 · estante bronze", src)
+        self.assertIn("· estante bronze · tentativa", src); self.assertIn("def _no_nivel(rotulo, x):", src)
+        self.assertIn('"Piloto - Interceptador (Qwen3-8B)"', src)
+        from src.esteira import filas
+        cfg = json.loads((ROOT / "config/esteira.json").read_text(encoding="utf-8"))
+        livros = [{"id": i, "geo": g, "nota_rede": n, "esteira": {"estante": "fila_bronze"}} for i, g, n in
+                  (("sp", "SP", 0.99), ("br", "BR", 0.9), ("int", "INT", 0.95), ("go", "GO", 0.1))]
+        self.assertEqual([f["livro"] for f in filas(livros, cfg)["bronze"]], ["go", "br", "int", "sp"])
 
     def test_espiao_indexa_livros_a_motores(self):
         from src import indexacao_livros as X
