@@ -1,6 +1,11 @@
 name: 13 · Sondagem dos Ministérios Públicos (motor 12 — MP-GO/Destina, MPT-GO, MPU)
 on:
   workflow_dispatch:
+    inputs:
+      bruto:
+        description: "endereços separados por espaço: guarda o HTML completo (com scripts) em vez da sondagem"
+        required: false
+        default: ""
 permissions:
   contents: write
 jobs:
@@ -12,15 +17,20 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - name: Sondar
-        run: timeout 2280 python3 scripts/sondar_ministerios_publicos.py || echo "sondagem terminou com aviso"
+        run: |
+          if [ -n "${{ github.event.inputs.bruto }}" ]; then
+            timeout 600 python3 scripts/sondar_ministerios_publicos.py --bruto ${{ github.event.inputs.bruto }} || echo "bruto terminou com aviso"
+          else
+            timeout 2280 python3 scripts/sondar_ministerios_publicos.py || echo "sondagem terminou com aviso"
+          fi
       - name: Guardar
         if: always()
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
-          rm -rf /tmp/s && mkdir -p /tmp/s && cp biblioteca_alexandria/base/ministerios_publicos/sondagem.json /tmp/s/ 2>/dev/null || exit 0
+          rm -rf /tmp/s && mkdir -p /tmp/s && cp -r biblioteca_alexandria/base/ministerios_publicos/. /tmp/s/ 2>/dev/null || exit 0
           for i in 1 2 3 4; do
             git fetch -q origin main && git reset -q --hard origin/main
-            mkdir -p biblioteca_alexandria/base/ministerios_publicos && cp /tmp/s/sondagem.json biblioteca_alexandria/base/ministerios_publicos/
+            mkdir -p biblioteca_alexandria/base/ministerios_publicos && cp -r /tmp/s/. biblioteca_alexandria/base/ministerios_publicos/
             git add biblioteca_alexandria/base/ministerios_publicos
             git commit -q -m "sondagem: Ministérios Públicos (motor 12) $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 5
