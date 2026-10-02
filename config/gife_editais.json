@@ -1,0 +1,39 @@
+{
+ "versao": 2,
+ "atualizado_em": "2026-10-01",
+ "parecer": "docs/pareceres/motor-22-gife.md",
+ "regra": "Motor 22 lê a seleção de editais do GIFE (API pública do WordPress: categoria Editais + busca) e as oportunidades da plataforma Capta, para onde a seleção aponta; cada edital vira OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo escrito. Sem IA, sem tokens.",
+ "gife": {
+  "base": "https://gife.org.br",
+  "categoria_slug": "editais",
+  "categoria_id": 25,
+  "janela_dias": 90,
+  "buscas": [
+   "edital",
+   "inscrições abertas",
+   "chamada",
+   "seleciona projetos"
+  ]
+ },
+ "capta": {
+  "ativa": true,
+  "base": "https://capta.org.br",
+  "categoria_slug": "oportunidades",
+  "categoria_id": 4,
+  "janela_dias": 365
+ },
+ "territorio": {
+  "ufs": [
+   "GO"
+  ],
+  "nota": "edital regional só vira OPORTUNIDADE se alcançar Goiás; nacional sempre vale"
+ },
+ "dias_sem_prazo_oportunidade": 45,
+ "por_pagina": 50,
+ "ritmo": {
+  "pausa_segundos": 1.0,
+  "espera_erro_segundos": 5
+ },
+ "prazo_total_segundos": 180,
+ "falhas_seguidas_para_abortar_fonte": 3
+}

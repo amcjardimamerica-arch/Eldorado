@@ -24,6 +24,9 @@ EVOLUCAO = {
     "pncp-api": "feito em 01/10: lê as propostas abertas (data oficial de encerramento) e a busca do portal em Goiás e nos "
                 "órgãos federais; próximo passo gratuito — ler o texto do PDF do edital (/arquivos) para confirmar público e "
                 "documentos exigidos",
+    "plat-gife": "feito em 01/10: lê a seleção mensal de editais do GIFE e as oportunidades da Capta pela API do WordPress, "
+                 "com prazo, público e abrangência; próximo passo gratuito — abrir o link oficial de cada OPORTUNIDADE para "
+                 "confirmar o prazo no próprio edital e ler a página de editais dos associados do GIFE (motor 30)",
     "dou": "feito em 01/10: lê a Leitura do Jornal inteira (DO1, DO3 e extras) e a íntegra das matérias de interesse; "
            "próximo passo gratuito — o INLABS da Imprensa Nacional (XML integral, cadastro gratuito) como segunda fonte "
            "e o Transferegov (programas abertos a propostas de OSC) como motor próprio",
@@ -35,7 +38,9 @@ EVOLUCAO = {
                   "histórico de 5 anos (os mesmos fundos abrem nas mesmas épocas)",
     "dje-tjgo": "testar a API do Diário de Justiça Eletrônico Nacional (DJEN/CNJ), fora do WAF do TJGO",
     "dj-trf1-go": "testar a API do DJEN/CNJ, que concentra os diários da Justiça Federal",
-    "camara-goiania-pl": "verificar se a Câmara usa o SAPL (Interlegis), que expõe API aberta de proposições",
+    "camara-goiania-pl": "feito em 01/10: a Câmara não usa o SAPL — lê o SUAP (consulta pública de processos), a tramitação "
+                         "dos processos da associação e as notícias; próximo passo gratuito — ler o texto do projeto (documento do "
+                         "processo) para confirmar quem recebe o recurso, e as emendas impositivas da LOA por entidade",
     "alego-pl": "dados abertos da ALEGO para proposições e leis de utilidade pública, em vez de raspar páginas",
     "plat-salic": "API pública do SALIC: projetos aprovados e INCENTIVADORES com valores — serve também à lista "
                   "de empresas",
