@@ -584,17 +584,19 @@
    ]
   },
   "plat-gife": {
-   "perfil": "associados do GIFE são os maiores investidores sociais privados — a home não lista editais (TROCAR a rota)",
+   "perfil": "curadoria do investimento social privado — a seleção mensal de editais do GIFE e as oportunidades da Capta, lidas pela API do WordPress (não a home nem a ficha dos associados)",
    "rotas": [
     {
-     "nome": "GIFE — agenda e oportunidades dos associados",
-     "url": "https://gife.org.br/agenda/",
-     "tipo": "vetor"
+     "nome": "GIFE — API de posts: categoria Editais (seleção mensal) + busca de notícias de edital",
+     "url": "https://gife.org.br/wp-json/wp/v2/posts",
+     "tipo": "api",
+     "verificada_em": "2026-10-01"
     },
     {
-     "nome": "Sites dos associados (institutos e fundações empresariais)",
-     "url": "https://gife.org.br/associados/",
-     "tipo": "fonte_derivada"
+     "nome": "Capta — API de posts: categoria Oportunidades (Região, Inscrições até, link do edital)",
+     "url": "https://capta.org.br/wp-json/wp/v2/posts",
+     "tipo": "api",
+     "verificada_em": "2026-10-01"
     }
    ],
    "lexico_camada1": [
@@ -619,7 +621,8 @@
     "valor",
     "prazo",
     "regulamento"
-   ]
+   ],
+   "nota_01_10": "leitor próprio (src/gife_editais.py): as rotas acima são as que ele lê. A home, a /agenda/ (eventos), a /associados/ (fichas institucionais) e a /transparencia (erro diário) saíram. Os léxicos abaixo ficam só como referência do painel; a decisão é do classificador do motor (prazo, público OSC, abrangência nacional ou Goiás)."
   },
   "plat-prosas": {
    "perfil": "maior plataforma de editais do terceiro setor no Brasil",
