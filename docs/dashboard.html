@@ -489,6 +489,9 @@ box-shadow:0 1px 3px #0002}
 @media (max-width:760px){.pd-g{grid-template-columns:repeat(10,minmax(0,1fr))}}
 .mt-item.oficial.sem-cinza{border-right:6px solid #C9CED6}
 .mt-st{font-size:12px;margin:2px 0;padding:2px 8px;border-radius:6px;display:inline-block}.mt-st-verde{background:#E3F6EA;color:#0B6B37}.mt-st-vermelho{background:#FDE3E5;color:#9B1220}.mt-st-cinza{background:#EEF0F3;color:#4A5563}
+.ego{margin:6px 0;border:1px solid #E3E8ED;border-radius:8px;padding:6px 10px;background:#FAFBFC}.ego summary{cursor:pointer;font-size:12.5px}
+.ego-tab{overflow-x:auto;margin-top:6px}.ego-tab table{border-collapse:collapse;font-size:11.5px;width:100%}.ego-tab th,.ego-tab td{border-bottom:1px solid #EEF1F4;padding:3px 6px;text-align:left;vertical-align:top}
+.ego-tab th{background:#F1F4F7;color:#0E2A55;white-space:nowrap}
 .uf-fx{display:grid;gap:4px;max-height:560px;overflow:auto}.uf-fx-l{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;padding:5px 8px;border-radius:8px;border:1px solid #EEF2F6;font-size:12.5px}
 .uf-fx-l.insp{background:#EEF8F1;border-color:#CFE8D8}.uf-fx-m{width:10px;height:10px;border-radius:50%;background:#C3CBD4}.uf-fx-m.verde{background:#1E7E4B;box-shadow:0 0 0 3px #1E7E4B22}.uf-fx-m.verm{background:#B3261E;box-shadow:0 0 0 3px #B3261E22}
 .uf-fx-n small{display:block;color:var(--suave);font-size:11px}.uf-fx-p{white-space:nowrap;color:var(--suave);font-size:11.5px}.uf-fx-a{white-space:nowrap;font-size:11.5px}
@@ -4574,6 +4577,20 @@ window.statusMotor=function(o){
 };
 setTimeout(()=>{ try{ carregaStatusMotores(); }catch(e){} }, 2000);
 setInterval(()=>{ try{ carregaStatusMotores(); }catch(e){} }, 10*60*1000);
+/* MOTOR OPORTUNIDADES ESTADUAIS GOVERNAMENTAIS (titular, 02/10): cada órgão do Executivo de Goiás, em camadas */
+window._EGO=null;
+fetch("dados/estaduais_go.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(d=>{ if(d){ window._EGO=d; if(typeof desenhaMotores==="function") desenhaMotores(); } }).catch(()=>{});
+window.orgaosEstaduaisHtml=function(){
+  const D=window._EGO; if(!D||!(D.orgaos||[]).length) return "";
+  const T=D.totais||{}, anos=[...new Set(D.orgaos.flatMap(o=>Object.keys(o.publicacoes_por_ano||{})))].sort().slice(-6);
+  const CAM={1:"1 · descoberta",2:"2 · histórico",3:"3 · oportunidades",4:"4 · monitorado"};
+  return `<details class="ego"><summary><b>${T.orgaos||0} órgão(s) estadual(is) mapeado(s)</b> · ${T.com_historico||0} com histórico de 5 anos · <b>${T.oportunidades_historicas||0}</b> oportunidade(s) no histórico · <b>${T.oportunidades_abertas||0}</b> aberta(s)</summary>
+    <div class="ego-tab"><table><thead><tr><th>Órgão</th><th>Camada</th><th>Onde publica</th>${anos.map(a=>`<th>${a}</th>`).join("")}<th>Oport. (passado / aberta)</th></tr></thead><tbody>
+    ${D.orgaos.map(o=>`<tr><td><a href="${esc(o.site||"#")}" target=_blank rel="noopener noreferrer">${esc(o.nome)}</a>${o.antigo_motor?` <span class=meta>(antigo motor ${esc(o.antigo_motor)})</span>`:""}</td>
+      <td>${esc(CAM[o.camada]||o.camada||"")}</td><td class=meta>${(o.onde_publica||[]).slice(0,3).map(x=>esc(String(x).split(" — ")[0])).join("<br>")||"—"}</td>
+      ${anos.map(a=>`<td>${(o.publicacoes_por_ano||{})[a]||""}</td>`).join("")}<td><b>${o.oportunidades_historicas||0}</b> / <b>${o.oportunidades_abertas||0}</b></td></tr>`).join("")}
+    </tbody></table></div></details>`;
+};
 window._lerPosicao=()=>lerPosicao();
 lerPosicao().then(atualizarAviao);
 setInterval(()=>{ window._lerPosicao().then(atualizarAviao); },45000);     // a posição
@@ -4730,7 +4747,7 @@ function desenhaMotores(){
         <div class="mt-st mt-st-${S.luz}"><b>${S.luz==="verde"?"Coletou hoje":S.luz==="vermelho"?"Falha na coleta":"Não rodou hoje"}</b> · última leitura ${S.ultima?br(S.ultima.slice(0,10))+" "+S.ultima.slice(11,16):"—"} · ${esc(S.resultado.replace(/^(coletou hoje|falha na coleta de hoje|não rodou hoje) — ?/,""))}</div>
         <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a>${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+(o.produto==="empresas"?" empresa(s) mapeada(s)":" edital(is)"):""}</div>
         ${trintaDias(o)}
-        ${achadosDoMotor(o)}</div>
+        ${achadosDoMotor(o)}${o.id==="plat-estaduais-go-gov"?orgaosEstaduaisHtml():""}</div>
       <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
   // agregação por família → segmento
   /* categorias APENAS por área de atuação (rótulos da página inicial) */
