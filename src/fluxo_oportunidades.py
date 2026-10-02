@@ -421,6 +421,36 @@ def atualizar_preditivo(eid: str, dados: dict) -> bool:
     return achou
 
 
+_ORDEM_SELO = {"bronze": 0, "prata": 1, "ouro": 2}
+
+
+def _selos_dos_itens(itens: list[dict]) -> dict:
+    """02/10 (titular): o selo da esteira em cada oportunidade aberta (estrela no quadro). Vale o MAIOR entre o selo do
+    livro (esteira de selos) e a avaliação do próprio quadro pelas mesmas regras — o quadro pode estar mais adiantado
+    (link oficial e checklist vindos do Interceptador e da validação)."""
+    from collections import Counter
+    try:
+        from .esteira import avaliar
+        cfg = json.loads((ROOT / "config/esteira.json").read_text(encoding="utf-8"))
+        livros = {x.get("id"): x for x in (json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8")).get("motores") or [])}
+    except Exception:  # noqa: BLE001
+        return {}
+    for it in itens:
+        lv = livros.get(it.get("opressor")) or {}
+        s_lv = (lv.get("esteira") or {}).get("selo")
+        I = it.get("inspecao") or {}
+        oficial = it.get("link_oficial") or I.get("pagina_oficial")
+        ck = it.get("checklist") or {}
+        pseudo = {"pagina": oficial or it.get("url"), "comprovado": bool(oficial),
+                  "historico": [{"pagina_oficial": oficial or it.get("url"), **({"fim": it["fim"]} if it.get("fim") else {})}],
+                  "checklist12": {k: {"s": v.get("s")} for k, v in ck.items() if isinstance(v, dict) and v.get("s") in ("ok", "disp", "val")},
+                  **({"regime_inscricao": "contínuo"} if "contínuo" in str(it.get("regime") or "") or "continuo" in str(it.get("regime") or "") else {})}
+        s_it = avaliar(pseudo, cfg)["nivel"]
+        melhor = max([s for s in (s_lv, s_it) if s], key=lambda s: _ORDEM_SELO[s])
+        it["selo"] = melhor; it["selo_de"] = "livro" if melhor == s_lv else "quadro"
+    return dict(Counter(it["selo"] for it in itens))
+
+
 def _resumo_opressores(itens: list[dict]) -> dict:
     """28/09: os números REAIS dos livros de oportunidades, para a Bússola ('fontes monitoradas' = opressores ligados)."""
     C = (_j(CAT_OPR, {}) or {}).get("motores", []); L = (_j(EST_OPR, {}) or {}).get("ligados", {})
@@ -465,10 +495,11 @@ def montar() -> dict:
                       "por_tipo": {t: sum(1 for x in itens if x["tipo"] == t) for t in ("ente público", "empresa/instituto", "menção em diário oficial")},
                       "por_validacao": {d: sum(1 for x in itens if (x.get("validacao") or {}).get("decisao") == d) for d in ("valida_aberta", "valida_fora_abrangencia", "pendente")},
                       "triagem": dict(TRIAGEM), **etapa},
+           "selos": _selos_dos_itens(itens),
            "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal, "opressores": _resumo_opressores(itens),
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
            "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao",
-                                                                  "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao")}
+                                                                  "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao", "selo", "selo_de")}
                                        for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
                             for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}
