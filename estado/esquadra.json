@@ -424,56 +424,103 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 54,
-      "achados_total": 0,
-      "vazias_seguidas": 54,
-      "ultima": "2026-10-02T00:58:08+00:00",
+      "leituras": 55,
+      "achados_total": 165,
+      "vazias_seguidas": 0,
+      "ultima": "2026-10-02T03:01:05+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 0,
+      "achados_ultima": 165,
       "falhas_ultima": 0,
       "saude": [
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260929&dataFinal=20261002&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
           "http": 200,
-          "bytes": 33595
+          "bytes": 7143
         },
         {
-          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260929&dataFinal=20261002&codigoModalidadeContratacao=12&pagina=2&tamanhoPagina=50&uf=GO",
-          "http": 204,
-          "bytes": 0
+          "url": "https://pncp.gov.br/api/search/",
+          "http": 200,
+          "bytes": 1712
         }
       ],
-      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
+      "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 7,
-        "links_total": 17,
-        "links_candidatos": 17,
-        "descobertas": [
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260929&dataFinal=20261002&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
-            "para": "https://pncp.gov.br/app/editais/12028647000100/2025/2",
-            "rotulo": "Credenciamento — FUNDO MUNICIPAL DE SAUDE DE PALMELO — PROCE"
-          },
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260929&dataFinal=20261002&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
-            "para": "https://pncp.gov.br/app/editais/02296325000199/2026/303",
-            "rotulo": "Credenciamento — MUNICIPIO DE BRITANIA — CREDENCIAMENTO DE P"
-          },
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260929&dataFinal=20261002&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
-            "para": "https://pncp.gov.br/app/editais/07784414000106/2026/75",
-            "rotulo": "Credenciamento — FUNDO MUNICIPAL DE SAUDE DE MAMBAI - GO — C"
-          },
-          {
-            "de": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial=20260929&dataFinal=20261002&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
-            "para": "https://pncp.gov.br/app/editais/01304286000161/2026/92",
-            "rotulo": "Credenciamento — MUNICIPIO DE TRES RANCHOS — Chamamento Públ"
-          }
-        ],
+        "paginas_lidas": 262,
+        "links_total": 8855,
+        "links_candidatos": 203,
+        "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
-        "camada1_vetados": 11,
-        "camada1_direcionados": 2
+        "motivo_zero": null,
+        "versao": "motor-04 v2 (01/10/2026)",
+        "fontes": {
+          "A": {
+            "falhas": [],
+            "consultas": 215,
+            "itens": 7143,
+            "ufs_lidas": [
+              "GO",
+              "DF",
+              "AC",
+              "AL",
+              "AP",
+              "AM",
+              "BA",
+              "CE",
+              "ES",
+              "MA",
+              "MT",
+              "MS",
+              "MG",
+              "PA",
+              "PB",
+              "PR",
+              "PE",
+              "PI",
+              "RJ",
+              "RN",
+              "RS",
+              "RO"
+            ]
+          },
+          "B": {
+            "falhas": [],
+            "consultas": 47,
+            "itens": 1712
+          }
+        },
+        "rodizio": {
+          "ufs_lidas": [
+            "GO",
+            "DF",
+            "AC",
+            "AL",
+            "AP",
+            "AM",
+            "BA",
+            "CE",
+            "ES",
+            "MA",
+            "MT",
+            "MS",
+            "MG",
+            "PA",
+            "PB",
+            "PR",
+            "PE",
+            "PI",
+            "RJ",
+            "RN",
+            "RS",
+            "RO"
+          ],
+          "proxima_comeca_em": null
+        },
+        "vereditos": {
+          "OPORTUNIDADE": 165,
+          "ACOMPANHAR": 38,
+          "RUIDO": 8294,
+          "quarentena": 0
+        }
       }
     },
     "plat-abcr": {
@@ -3117,27 +3164,21 @@
   },
   "ultima_execucao": {
     "data": "2026-10-02",
-    "em": "2026-10-02T00:58:08+00:00",
+    "em": "2026-10-02T03:01:05+00:00",
     "manual": [
-      "alego-pl",
       "pncp-api"
     ],
     "bloco": "manual",
-    "sensores_executados": 2,
-    "em_espera": 129,
-    "total_esquadra": 131,
+    "sensores_executados": 1,
+    "em_espera": 126,
+    "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 0,
-    "novos_na_base": 0,
+    "achados": 165,
+    "novos_na_base": 165,
     "por_tipo": {
-      "legislativo": {
-        "sensores": 1,
-        "achados": 0,
-        "falhas": 0
-      },
       "api": {
         "sensores": 1,
-        "achados": 0,
+        "achados": 165,
         "falhas": 0
       }
     }
