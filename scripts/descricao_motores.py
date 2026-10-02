@@ -41,6 +41,9 @@ EVOLUCAO = {
     "camara-goiania-pl": "feito em 01/10: a Câmara não usa o SAPL — lê o SUAP (consulta pública de processos), a tramitação "
                          "dos processos da associação e as notícias; próximo passo gratuito — ler o texto do projeto (documento do "
                          "processo) para confirmar quem recebe o recurso, e as emendas impositivas da LOA por entidade",
+    "congresso-nacional": "feito em 02/10: APIs de dados abertos da Câmara e do Senado (/processo) e a página da LOA na CMO — "
+                          "próximo passo gratuito: ler o texto integral das proposições (inteiro teor) e o SIGA Brasil para as emendas "
+                          "já indicadas a entidades de Goiás",
     "alego-pl": "dados abertos da ALEGO para proposições e leis de utilidade pública, em vez de raspar páginas",
     "plat-salic": "API pública do SALIC: projetos aprovados e INCENTIVADORES com valores — serve também à lista "
                   "de empresas",

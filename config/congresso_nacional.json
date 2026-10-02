@@ -1,0 +1,91 @@
+{
+ "versao": 1,
+ "atualizado_em": "2026-10-02",
+ "parecer": "docs/pareceres/motor-congresso-nacional.md",
+ "regra": "Motor do Congresso Nacional (Câmara dos Deputados, Senado Federal e Comissão Mista de Orçamento). O que o Congresso produz para uma OSC quase nunca é edital: é a JANELA DE EMENDAS ao orçamento da União (prazo oficial da CMO), a REGRA que muda a vida das entidades (MROSC, imunidade, IBS/CBS, REFIS, CEBAS) e, raramente, um chamamento, prêmio ou cessão das próprias Casas. Cada item vira OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo escrito. Sem IA, sem tokens, biblioteca-padrão.",
+ "orcamento": {
+  "ativa": true,
+  "base": "https://www.congressonacional.leg.br",
+  "loa": "/web/orcamento/acompanhe/orcamento-anual/-/loa/{ano}",
+  "comunicados": "/web/cmo/comunicados",
+  "referencia_ploa": {
+   "ano": 2027,
+   "projeto": "PLN 24/2026",
+   "recebido_em": "2026-08-31",
+   "individuais_total": "R$ 28,5 bilhões",
+   "individual_por_deputado": "cerca de R$ 43,0 milhões",
+   "individual_por_senador": "cerca de R$ 79,1 milhões",
+   "saude_minimo_individuais": "50%",
+   "bancada_estadual_total": "R$ 16,3 bilhões",
+   "comissao": "sem reserva no PLOA 2027",
+   "votacao_prevista": "2026-12-22",
+   "fonte": "Informativo Conjunto LOA 2027 — Consultorias de Orçamento da Câmara e do Senado (04/09/2026)",
+   "url": "https://www.congressonacional.leg.br/documents/150599582/159576811/Informativo_conjunto.pdf/9448d8dd-b0d1-454a-bcd1-33693eb57d3b",
+   "lido_em": "2026-10-02",
+   "nota": "valores do informativo; o prazo de apresentação de emendas não estava fixado em 02/10/2026 (etapa 'Apresentação de emendas' = não iniciada; PLN 24/2026 aguardando despacho para a CMO)"
+  },
+  "janela_dias": 60
+ },
+ "camara": {
+  "ativa": true,
+  "api": "https://dadosabertos.camara.leg.br/api/v2",
+  "janela_dias": 60,
+  "itens_por_consulta": 100,
+  "keywords": [
+   "sem fins lucrativos",
+   "sociedade civil",
+   "terceiro setor",
+   "termo de fomento",
+   "emendas parlamentares",
+   "entidades beneficentes",
+   "associação de moradores"
+  ],
+  "nota_keywords": "02/10: a busca da API casa a expressão (aceita acento): 'sem fins lucrativos' trouxe 19 proposições desde 01/06/2026, 'sociedade civil' 5 desde 01/07, 'terceiro setor' o PL 3088/2026 (REFIS social), 'associação de moradores' 4 desde 2025; '13.019' e 'filantropicas' voltam vazios. 'utilidade pública' fica de fora: a utilidade pública federal foi extinta pela Lei 13.204/2015."
+ },
+ "senado": {
+  "ativa": true,
+  "api": "https://legis.senado.leg.br/dadosabertos",
+  "janela_dias": 60,
+  "termos": [
+   "sem fins lucrativos",
+   "sociedade civil",
+   "terceiro setor",
+   "entidades beneficentes",
+   "emendas parlamentares"
+  ],
+  "nota": "o serviço antigo /materia/pesquisa/lista foi desativado em 01/02/2026; o novo é /dadosabertos/processo?termo=&dataInicioApresentacao=AAAA-MM-DD"
+ },
+ "noticias": {
+  "ativa": true,
+  "janela_dias": 15,
+  "feeds": [
+   {
+    "casa": "Câmara dos Deputados",
+    "url": "https://www.camara.leg.br/noticias/rss/ultimas-noticias"
+   },
+   {
+    "casa": "Senado Federal",
+    "url": "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss"
+   }
+  ]
+ },
+ "convocacoes": {
+  "ativa": true,
+  "nome": "Senado — convocações públicas (chamamentos, PMI, audiências)",
+  "url": "https://www6g.senado.leg.br/transparencia/licitacoes-e-contratos/sadcon/convocacoes-publicas",
+  "nota": "02/10: 13 convocações desde 2017, nenhuma dirigida a OSC (concessão de espaço, soluções de TI, exposições) — fica como vigia: só vira oportunidade se o objeto tiver entidades como público",
+  "janela_dias": 400
+ },
+ "associacao": {
+  "nomes": [
+   "A.M.C. JARDIM AMERICA",
+   "MORADORES E COMERCIANTES DO JARDIM AMERICA"
+  ],
+  "uf": "GO"
+ },
+ "ritmo": {
+  "pausa_segundos": 1.0,
+  "espera_erro_segundos": 4
+ },
+ "prazo_total_segundos": 300
+}

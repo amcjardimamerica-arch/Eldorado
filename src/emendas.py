@@ -156,11 +156,41 @@ def levantar(tipo: dict) -> dict:
 
 
 # ------------------------------------------------------- oportunidade anual
+def _janela_oficial_cmo(ano: int) -> dict | None:
+    """Situação oficial da apresentação de emendas ao PLOA do ano seguinte (estado/congresso_nacional.json)."""
+    try:
+        from .congresso_nacional import janela_oficial
+        j = janela_oficial()
+    except Exception:  # noqa: BLE001 — sem o motor do Congresso, a área segue com a janela anual
+        return None
+    try:
+        if not j or int(j.get("ano") or 0) != ano + 1:
+            return None
+    except (TypeError, ValueError):
+        return None
+    out = {k: j.get(k) for k in ("ano", "projeto", "situacao", "status", "inicio", "fim", "url", "lido_em")}
+    try:                                                      # leitura velha não vale como situação de hoje
+        out["desatualizado"] = (date.today() - date.fromisoformat(str(j.get("lido_em"))[:10])).days > 3
+    except ValueError:
+        out["desatualizado"] = True
+    return out
+
+
+def _texto_cmo(of: dict | None) -> str:
+    if not of:
+        return ""
+    st = {"nao_iniciada": "ainda não aberta", "em_andamento": "ABERTA", "encerrada": "encerrada"}.get(of.get("status"), "situação não lida")
+    datas = (f" ({of['inicio'] or '?'} a {of['fim']})" if of.get("fim") else "")
+    return (f" · Prazo oficial na CMO ({of.get('projeto') or 'PLOA ' + str(of.get('ano'))}): apresentação de emendas {st}{datas}"
+            f"{' — leitura desatualizada' if of.get('desatualizado') else ''}.")
+
+
 def oportunidade(tipo: dict, ano: int, lev: dict, hoje: date) -> dict:
     """Uma linha por tipo de emenda, com o ciclo do ano e o levantamento."""
     inicio, fim = janela(ano)
     estado = ("aberto" if inicio <= hoje.isoformat() <= fim
               else "a_abrir" if hoje.isoformat() < inicio else "encerrado")
+    oficial = _janela_oficial_cmo(ano) if tipo.get("esfera") == "federal" else None
     oid = f'{tipo["id"]}-{ano}'
     return {
         "id": oid, "protocolo": oid,
@@ -180,7 +210,7 @@ def oportunidade(tipo: dict, ano: int, lev: dict, hoje: date) -> dict:
         "publicado_em": None, "prazo_prorrogado": False,
         "estado_export": estado, "sem_edital": True,
         "resumo": (f'{lev["total"]} parlamentar(es) com mandato levantado(s) — '
-                   f'{lev["com_contato_completo"]} com gabinete e contato completos'),
+                   f'{lev["com_contato_completo"]} com gabinete e contato completos' + _texto_cmo(oficial)),
         "valor_texto": None,
         "verificacao_dupla": {"fonte": True, "conteudo": bool(lev["parlamentares"]),
                               "criterio": "regra anual + levantamento de mandatos"},
@@ -194,7 +224,9 @@ def oportunidade(tipo: dict, ano: int, lev: dict, hoje: date) -> dict:
         "ciclo": {"inscricao": {"inicio": inicio, "fim": fim, "projetado": False},
                   "resultado": None, "recurso": None, "fim_do_ciclo": fim},
         "marcos": [{"tipo": "abertura", "data": inicio, "projetado": False},
-                   {"tipo": "encerramento", "data": fim, "projetado": False}],
+                   {"tipo": "encerramento", "data": fim, "projetado": False}]
+                  + ([{"tipo": "prazo_emendas_cmo", "data": oficial["fim"], "projetado": False}]
+                     if oficial and oficial.get("fim") and not oficial.get("desatualizado") else []),
         "destinacao": {"elegivel": True,
                        "motivo": "emenda parlamentar destina recurso a OSC por "
                                  "ofício e projeto — sem certame comercial"},
@@ -211,6 +243,9 @@ def oportunidade(tipo: dict, ano: int, lev: dict, hoje: date) -> dict:
             "coletado_em": hoje.isoformat(), "lacuna": None,
         },
         "ficha": "",
+        # 02/10: prazo OFICIAL da Comissão Mista de Orçamento, lido pelo motor do Congresso (src/congresso_nacional.py).
+        # A janela 01/10–30/11 é a de ARTICULAÇÃO com os gabinetes; a apresentação das emendas tem prazo próprio na CMO.
+        "prazo_oficial_cmo": oficial,
     }
 
 

@@ -455,6 +455,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     if sensor.get("id") == "camara-goiania-pl":
         from .camara_goiania import ler_motor as ler_motor_cmg
         return ler_motor_cmg(sensor, data, limites)
+    # MOTOR DO CONGRESSO (parecer de 02/10/2026): CMO (prazo oficial das emendas ao PLOA), APIs da Câmara e do Senado
+    # (regras e recursos para entidades), notícias e convocações das Casas — o par federal dos motores 05 e 06
+    if sensor.get("id") == "congresso-nacional":
+        from .congresso_nacional import ler_motor as ler_motor_cn
+        return ler_motor_cn(sensor, data, limites)
     # MOTOR 22 (parecer de 01/10/2026): o GIFE é lido pela API da seleção de editais (um item por bloco "título +
     # prazo + Inscreva-se") e pela Capta, para onde a seleção aponta — não pela home institucional nem pelos associados
     if sensor.get("id") == "plat-gife":
