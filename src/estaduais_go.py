@@ -118,6 +118,13 @@ def classificar(titulo: str, resumo: str, publicado: date | None, hoje: date, le
 
 
 # ── camadas ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+def _continua(titulo: str, hoje: date, lex: dict) -> bool:
+    """Reavalia uma oportunidade já guardada (só o título): sai só o que cai num VETO ou é RESULTADO — nunca por falta de
+    sinal, porque a confirmação pode ter vindo do resumo, que não fica guardado."""
+    c = classificar(titulo, "", None, hoje, lex)
+    return not (str(c.get("motivo") or "").startswith("veto:") or c.get("veredito") == "ACOMPANHAR" and "resultado" in str(c.get("motivo")))
+
+
 def _api(site: str) -> str:
     return site.rstrip("/") + "/wp-json/wp/v2"
 
@@ -356,8 +363,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     novos = [{"titulo": f"{r['orgao']} — {r['titulo']}", "url": r["url"], "orgao": r["orgao"], "uf": "GO",
               "prazo": r.get("prazo"), "publicado_em": r.get("data")} for r in passadas + abertas]
     pend = {x["url"]: x for x in (est.get("pendentes_livros") or []) + novos
-            if classificar(x["titulo"].split(" — ", 1)[-1], "", None, hoje, cfg["lexico"])["veredito"] != "RUIDO"
-            and not re.search(cfg["lexico"].get("resultado_no_titulo") or "^$", sem(x["titulo"].split(" — ", 1)[-1]))}
+            if x["titulo"].split(" — ", 1)[-1].strip() and _continua(x["titulo"].split(" — ", 1)[-1], hoje, cfg["lexico"])}
     if os.environ.get("ESTADUAIS_SEM_LIVROS"):
         est["pendentes_livros"] = list(pend.values())
     elif pend:

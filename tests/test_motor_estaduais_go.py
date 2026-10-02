@@ -25,6 +25,20 @@ class TesteClassificador(unittest.TestCase):
                   "Chamada FAPEG para bolsas de pesquisa e pesquisadores"):
             self.assertEqual(self.c(t, "entidades")["veredito"], "RUIDO", t)
 
+    def test_falsos_positivos_da_primeira_leitura(self):
+        """02/10: títulos reais que a primeira leitura classificou errado — viraram veto ou ACOMPANHAR."""
+        for t in ("Vem aí a 7 edição do Prêmio Goiás + Transparente", "Juceg ganha Troféu Diamante no 1º Prêmio de Ouvidoria Pública",
+                  "Governo de Goiás é destaque nacional no 5º Prêmio Conexão Inova com 12 iniciativas premiadas",
+                  "CHAMADA PÚBLICA FAPEG/Nº 27/2025 -Seleção de Bolsistas para Projetos", "Governo de Goiás publica edital de chamamento público para nova gestão do Hugo",
+                  "Governo de Goiás oferece consultoria gratuita para novos negócios liderados por mulheres",
+                  "SIC anuncia Edital de Chamamento Público para o Mercadão Goiano de Águas Lindas de Goiás",
+                  "Inscrições para a 2ª edição do Prêmio Professor Transformador podem ser feitas até o dia 1° de dezembro"):
+            self.assertNotEqual(self.c(t, "entidades")["veredito"], "OPORTUNIDADE", t)
+        self.assertEqual(self.c("Fapeg divulga resultado final de edital com bolsas para projetos")["veredito"], "ACOMPANHAR")
+        for t in ("Governo de Goiás lança editais da Pnab para Pontos e Pontões de Cultura",
+                  "Edital de Chamamento Público de Instituições sem Fins Lucrativos para a Execução do Programa"):
+            self.assertEqual(self.c(t)["veredito"], "OPORTUNIDADE", t)
+
     def test_veto_cede_a_chamamento_de_osc(self):
         x = self.c("Chamamento público para OSC executar curso de capacitação", "termo de fomento com organizações da sociedade civil")
         self.assertEqual(x["veredito"], "OPORTUNIDADE")
