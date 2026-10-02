@@ -188,8 +188,42 @@ def bruto(urls: list[str]) -> dict:
     return out
 
 
+def tabela_mpt(pagina: str, task: str, n: int = 100) -> dict:
+    """02/10: faz o que a página do PRT-18 faz no navegador — abre a página (cookie e token público do formulário) e pede
+    os dados da tabela DataTables (POST /index.php, option=com_mpt). Sem login nem CAPTCHA; robots.txt respeitado."""
+    import http.cookiejar
+    b = "{0.scheme}://{0.netloc}".format(urllib.parse.urlsplit(pagina)); rp, _ = robots(b)
+    if not rp.can_fetch(UA, pagina) or not rp.can_fetch(UA, b + "/index.php"):
+        return {"erro": "robots proíbe"}
+    cj = http.cookiejar.CookieJar(); op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+    h = op.open(urllib.request.Request(pagina, headers={"User-Agent": UA}), timeout=30).read().decode("utf-8", "ignore")
+    tok = re.search(r'\{\s*"name"\s*:\s*"([0-9a-f]{32})"\s*,\s*"value"\s*:\s*"1"\s*\}', h)
+    dados = {"sEcho": "1", "iColumns": "5", "iDisplayStart": "0", "iDisplayLength": str(n), "sSearch": "", "option": "com_mpt", "task": task, "format": "raw"}
+    if tok:
+        dados[tok.group(1)] = "1"
+    time.sleep(PAUSA)
+    r = op.open(urllib.request.Request(b + "/index.php", data=urllib.parse.urlencode(dados).encode(), headers={
+        "User-Agent": UA, "X-Requested-With": "XMLHttpRequest", "Referer": pagina, "Content-Type": "application/x-www-form-urlencoded"}), timeout=30)
+    corpo = r.read(5_000_000).decode("utf-8", "ignore")
+    return {"status": r.status, "token_achado": bool(tok), "cookies": len(cj), "tipo": r.headers.get("Content-Type"), "bytes": len(corpo), "inicio": corpo[:3000]}
+
+
 if __name__ == "__main__":
     import sys
+    if "--tabela-mpt" in sys.argv:
+        pasta = SAIDA.parent / "bruto"; pasta.mkdir(parents=True, exist_ok=True); out = {}
+        for pag, task in (("https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens", "editaisdestinacaorecursosoubens"),
+                          ("https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais", None)):
+            try:
+                if task is None:
+                    hh = ler(pag)["corpo"].decode("utf-8", "ignore"); m = re.search(r'"value"\s*:\s*"([a-z]{8,})"\s*\}', hh[hh.find("fnServerParams"):])
+                    task = m.group(1) if m else "entidadesassistenciais"
+                out[pag] = {"task": task, **tabela_mpt(pag, task)}
+            except Exception as e:  # noqa: BLE001
+                out[pag] = {"erro": f"{type(e).__name__}: {str(e)[:200]}"}
+        (pasta / "tabela_mpt.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(json.dumps({k: {kk: v.get(kk) for kk in ("status", "bytes", "token_achado", "erro")} for k, v in out.items()}, ensure_ascii=False))
+        sys.exit(0)
     if "--bruto" in sys.argv:
         print(json.dumps(bruto([a for a in sys.argv[sys.argv.index("--bruto") + 1:] if a.startswith("http")]), ensure_ascii=False))
     else:
