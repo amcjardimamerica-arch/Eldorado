@@ -184,14 +184,15 @@ def run(regs: list[dict] | None = None, gravar: bool = True) -> dict:
     livros, mapa = _livros_e_mapa()
     for r in regs:
         r["_canal"] = canal_canonico(r.get("fonte_id") or r.get("sensor"), cfg)
-    ok = [r for r in regs if not contrato(r, cfg)]
+    _motivos = {id(r): contrato(r, cfg) for r in regs}          # 02/10: uma vez por registro (antes, duas)
+    ok = [r for r in regs if not _motivos[id(r)]]
     ent = resolver_entidades(ok, cfg)
     canais_da_ent = defaultdict(set)
     for r in ok:
         canais_da_ent[ent[r["id"]]].add(r["_canal"])
     eventos, fila, etapas = [], Counter(), Counter()
     for r in regs:
-        motivo = contrato(r, cfg)
+        motivo = _motivos[id(r)]
         u = str(r.get("url") or "").split("#")[0].rstrip("/").lower()
         if motivo and motivo.startswith("RUIDO"):
             etapa = "RUIDO"                     # 02/10: aprendido com um descarte — não volta ao reprocessamento

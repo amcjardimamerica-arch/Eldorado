@@ -42,14 +42,26 @@ def assinatura(titulo) -> str:
     return " ".join(ps[:8])
 
 
+_CACHE: dict = {}
+
+
 def restricoes() -> dict:
-    return _j(RESTR, {"versao": 1, "regra": __doc__.split("Pedidos")[0].strip(), "itens": []})
+    """Em memória enquanto o arquivo não muda (a linha consulta 35 mil vezes por ciclo)."""
+    try:
+        mt = RESTR.stat().st_mtime
+    except OSError:
+        mt = None
+    if _CACHE.get("arq") != str(RESTR) or _CACHE.get("mt") != mt:
+        _CACHE.update({"arq": str(RESTR), "mt": mt, "R": _j(RESTR, {"versao": 1, "regra": __doc__.split("Pedidos")[0].strip(), "itens": []})})
+    return _CACHE["R"]
 
 
 def e_ruido(reg: dict, motor: str | None = None, R: dict | None = None) -> dict | None:
     """O registro bate com uma restrição aprendida do motor? (endereço canônico ou assinatura do título)"""
     from .integridade import url_canonica
     R = R or restricoes(); m = motor or reg.get("fonte_id")
+    if not R.get("itens"):
+        return None
     u = url_canonica(reg.get("url")); a = assinatura(reg.get("titulo"))
     for it in R.get("itens") or []:
         if it.get("motor") not in (m, "*"):
