@@ -83,7 +83,7 @@ def termos_da_chave(x: dict) -> list[str]:
     _bruto = str(x.get("nome_classificado") or x.get("programa") or "").split(" — ")[0]
     if _bruto.rstrip().endswith(("…", "...")):                # título cortado: a última palavra pode estar pela metade
         _bruto = _bruto.rstrip(" .…").rsplit(" ", 1)[0]
-    nome = re.sub(r"\b(19|20)\d\d\b|\bn[ºo°.]*\s*\d+[\w/.-]*|r\$\s*[\d.,]+\s*\w*", " ", _bruto)
+    nome = re.sub(r"(?i)\b(19|20)\d\d\b|\bn[ºo°.]*\s*\d+[\w/.-]*|r\$\s*[\d.,]+\s*\w*", " ", _bruto)   # R$ maiúsculo também
     letras = [c for c in nome if c.isalpha()]
     caixa_alta = letras and sum(c.isupper() for c in letras) / len(letras) > 0.6
     out = []
