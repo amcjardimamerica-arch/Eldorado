@@ -1,29 +1,12 @@
 bloco=manual
-{
-  "data": "2026-10-02",
-  "em": "2026-10-02T00:58:08+00:00",
-  "manual": [
-    "alego-pl",
-    "pncp-api"
-  ],
-  "bloco": "manual",
-  "sensores_executados": 2,
-  "em_espera": 129,
-  "total_esquadra": 131,
-  "previsoes_ativas": 1,
-  "achados": 0,
-  "novos_na_base": 0,
-  "por_tipo": {
-    "legislativo": {
-      "sensores": 1,
-      "achados": 0,
-      "falhas": 0
-    },
-    "api": {
-      "sensores": 1,
-      "achados": 0,
-      "falhas": 0
-    }
-  }
-}
-ultima_execucao: 2026-10-02T00:58:08+00:00 bloco manual sensores 2 achados 0
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 696, in <module>
+    print(json.dumps(run(), ensure_ascii=False, indent=2))
+                     ^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 667, in run
+    reg.update({"ultima": r["lido_em"], "motivo": s.get("motivo") or f"bloco {escala.get('bloco') or 'manual'}",
+                          ~^^^^^^^^^^^
+KeyError: 'lido_em'
+ultima_execucao: 2026-10-02T00:25:06+00:00 bloco manual sensores 2 achados 0
