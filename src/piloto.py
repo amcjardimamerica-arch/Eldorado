@@ -974,6 +974,11 @@ def ciclo(porta: int | None = None) -> dict:
         rel["livros"] = registrar_achados_do_espiao(_todos_ach)
     except Exception as _ex:
         rel["livros"] = f"falhou: {type(_ex).__name__}"
+    try:                                   # 02/10 (titular): o Espião indexa cada livro a um motor de busca existente
+        from .indexacao_livros import indexar as _indexar
+        rel["indexacao_dos_livros"] = _indexar("Piloto - Espião")
+    except Exception as _ex:
+        rel["indexacao_dos_livros"] = f"falhou: {type(_ex).__name__}"
     _vivo2("pousou", detalhe=f"{len(_todos_ach)} achado(s)")
     # 28/09: em corrente (voos encadeados), NÃO marca pouso aqui — o passo "Pousar 3 segundos e decolar de novo" diz
     # "no pátio, decolando de novo"; só marca pousado se a corrente parar. Antes, cada fim de voo apagava o avião.

@@ -2,16 +2,68 @@
  "versao": "2026-10-02",
  "regra": "Esteira metódica de selos (titular, 02/10/2026). A rede neural acompanha cada etapa: (0) planeja e controla os motores até a busca do dia chegar a 100%; (1) resultado: a oportunidade complementa/atualiza um livro existente ou cria um novo; (2) BRONZE: confirmar o site oficial — o Interceptador, no computador do titular (IP brasileiro, sem bloqueio), com Sonnet 5.5 em esforço baixo, reprocessa até 2 vezes; sem site oficial → Estante de Investigação Bronze (selo bronze); (3) PRATA: site oficial confirmado — Opus 5.5 em esforço baixo avalia o edital, os prazos e os 12 dados (ou a dispensa deles); sem validação → Estante de Investigação Prata (selo prata); (4) OURO: edital, condições e prazos completos → pronto para o Farol de Alexandria. O aprendizado de cada etapa fica gravado no livro.",
  "selos": {
-  "bronze": {"nome": "Bronze", "significado": "oportunidade identificada; site oficial ainda não confirmado", "estante": "Estante de Investigação Bronze"},
-  "prata": {"nome": "Prata", "significado": "site oficial confirmado; edital, prazos ou 12 dados ainda não validados", "estante": "Estante de Investigação Prata"},
-  "ouro": {"nome": "Ouro", "significado": "edital, condições e prazos completos — pronto para o Farol de Alexandria", "estante": "Pronto para o Farol"}
+  "bronze": {
+   "nome": "Bronze",
+   "significado": "oportunidade identificada; site oficial ainda não confirmado",
+   "estante": "Estante de Investigação Bronze"
+  },
+  "prata": {
+   "nome": "Prata",
+   "significado": "site oficial confirmado; edital, prazos ou 12 dados ainda não validados",
+   "estante": "Estante de Investigação Prata"
+  },
+  "ouro": {
+   "nome": "Ouro",
+   "significado": "edital, condições e prazos completos — pronto para o Farol de Alexandria",
+   "estante": "Pronto para o Farol"
+  }
  },
- "bronze": {"executor": "Piloto - Interceptador (computador do titular)", "tarefa_ia": "esteira_bronze", "tentativas": 2, "por_dia": 40,
-            "ferramentas": ["web_search", "web_fetch"], "confirmacao_local": "a página proposta precisa abrir no IP do titular e conter termos do programa"},
- "prata": {"executor": "Piloto - Interceptador (computador do titular)", "tarefa_ia": "esteira_prata", "tentativas": 2, "por_dia": 15,
-           "exige": ["prazo de inscrição (data de encerramento ou regime contínuo)", "12 dados preenchidos ou dispensados"]},
- "doze_dados": ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"],
+ "bronze": {
+  "executor": "Piloto - Interceptador (Qwen3-8B, nuvem)",
+  "tarefa_ia": null,
+  "tentativas": 2,
+  "por_dia": 40,
+  "ferramentas": [],
+  "confirmacao_local": "a página proposta precisa abrir no IP do titular e conter termos do programa",
+  "regra": "02/10 (titular): a fila bronze é o nível 0 dos alvos do Interceptador, com o Qwen 8B; cada estudo volta à esteira (site confirmado ou mais uma tentativa) com o aprendizado no livro"
+ },
+ "prata": {
+  "executor": "acionamento externo (pausado)",
+  "tarefa_ia": "esteira_prata",
+  "tentativas": 2,
+  "por_dia": 15,
+  "exige": [
+   "prazo de inscrição (data de encerramento ou regime contínuo)",
+   "12 dados preenchidos ou dispensados"
+  ],
+  "regra": "02/10 (titular): a análise da prata com IA Claude só por acionamento externo"
+ },
+ "doze_dados": [
+  "Objeto",
+  "Prazo de inscrição",
+  "Resultado",
+  "Prazo de recurso",
+  "Valor",
+  "Órgão / financiador",
+  "Território",
+  "Esfera",
+  "Requisitos",
+  "Anexos",
+  "Destinação",
+  "Área de atuação"
+ ],
  "nova_informacao_reabre": "quando um motor traz informação nova a um livro que está numa estante de investigação, as tentativas voltam a zero e ele retorna à fila",
- "rede_neural": {"ordem_das_filas": "nota da rede (maior primeiro) e prazo mais próximo", "registro": "a nota em cada etapa fica no histórico do selo"},
- "maestro": {"tentativas_por_dia": 3, "cobertura_completa": "leitura do dia sem falha de página; motor que exige IP brasileiro conta como pendente da coleta local"}
+ "rede_neural": {
+  "ordem_das_filas": "nota da rede (maior primeiro) e prazo mais próximo",
+  "registro": "a nota em cada etapa fica no histórico do selo"
+ },
+ "maestro": {
+  "tentativas_por_dia": 3,
+  "cobertura_completa": "leitura do dia sem falha de página; motor que exige IP brasileiro conta como pendente da coleta local"
+ },
+ "investigacao": {
+  "pausada": true,
+  "acionamento": "externo",
+  "regra": "02/10 (titular): as Estantes de Investigação são acionadas externamente — o fluxo automático fica pausado. Nenhum fluxo do GitHub aciona IA Claude."
+ }
 }

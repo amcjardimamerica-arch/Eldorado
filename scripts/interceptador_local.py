@@ -150,7 +150,14 @@ def prata(it: dict, cfg: dict) -> dict:
             "faltando_depois": faltando, "aprendizado": f"{r.get('aprendizado') or ''} {('Condições: ' + r['condicoes']) if r.get('condicoes') else ''}".strip()}
 
 
-def main(limite: int | None = None, etapas=("bronze", "prata")) -> dict:
+def main(limite: int | None = None, etapas=("prata",), externo: bool = False) -> dict:
+    """02/10 (titular): PAUSADO — as Estantes de Investigação são acionadas externamente (rode com --externo). O bronze
+    é do Piloto - Interceptador (Qwen 8B, na nuvem); aqui só a prata, e só quando acionada de fora."""
+    cfg0 = _j(ROOT / "config/esteira.json", {})
+    if (cfg0.get("investigacao") or {}).get("pausada") and not externo:
+        print("Investigação das estantes PAUSADA (acionamento externo: python3 scripts/interceptador_local.py --externo).")
+        return {"analisados": 0, "pausado": True}
+    etapas = tuple(e for e in etapas if e != "bronze")           # bronze: Interceptador com Qwen 8B
     os.environ.setdefault("ELDORADO_LOCAL_BR", "1")      # só ao EXECUTAR (carregar o módulo não muda o ambiente dos outros)
     from src import ia
     if not ia.credencial():
@@ -180,5 +187,4 @@ def main(limite: int | None = None, etapas=("bronze", "prata")) -> dict:
 
 if __name__ == "__main__":
     lim = int(sys.argv[sys.argv.index("--limite") + 1]) if "--limite" in sys.argv else None
-    et = ("bronze",) if "--so-bronze" in sys.argv else ("prata",) if "--so-prata" in sys.argv else ("bronze", "prata")
-    print(json.dumps(main(lim, et), ensure_ascii=False))
+    print(json.dumps(main(lim, ("prata",), externo="--externo" in sys.argv), ensure_ascii=False))
