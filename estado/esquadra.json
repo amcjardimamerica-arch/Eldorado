@@ -2617,57 +2617,374 @@
     "plat-mp-destinacoes-reparacao": {
       "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
       "tipo": "plataforma",
-      "leituras": 19,
-      "achados_total": 38,
+      "leituras": 20,
+      "achados_total": 42,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-01T15:03:53+00:00",
+      "ultima": "2026-10-02T22:10:56+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 2,
-      "falhas_ultima": 1,
+      "achados_ultima": 4,
+      "falhas_ultima": 0,
       "saude": [
         {
-          "url": "https://www.mpf.mp.br/",
+          "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
           "http": 200,
-          "bytes": 249633
+          "itens": 43
         },
         {
-          "url": "https://www.prt18.mpt.mp.br/",
+          "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
           "http": 200,
-          "bytes": 64665
+          "itens": 0
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 6,
-        "links_total": 2150,
-        "links_candidatos": 845,
-        "descobertas": [
-          {
-            "de": "https://www.mpf.mp.br/",
-            "para": "https://transparencia.mpf.mp.br/",
-            "rotulo": "Transparência"
+        "versao": "motor 12 Ministérios Públicos v2 (02/10/2026)",
+        "fontes": {
+          "f00": {
+            "orgao": "MP-GO",
+            "modo": "regra_fixa_manual",
+            "url": "https://www.mpgo.mp.br/portal/conteudo/destina-destinacao-articulada-de-acordos-edital-n-02-2024",
+            "situacao": "nunca acessada (regra fixa; verificação manual mensal)"
           },
-          {
-            "de": "https://www.mpf.mp.br/",
-            "para": "https://www.mpf.mp.br/atuacao/ccr1/atos-e-publicacoes",
-            "rotulo": "Atos e publicações"
+          "f01": {
+            "orgao": "MP-GO",
+            "modo": "regra_fixa_manual",
+            "url": "https://www.mpgo.mp.br/robots.txt",
+            "situacao": "nunca acessada (regra fixa; verificação manual mensal)"
           },
-          {
-            "de": "https://www.mpf.mp.br/",
-            "para": "https://www.mpf.mp.br/atuacao/ccr2/publicacoes",
-            "rotulo": "Publicações"
+          "f02": {
+            "orgao": "MPT-GO",
+            "modo": "tabela_mpt",
+            "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+            "situacao": "lida",
+            "itens": 43
           },
-          {
-            "de": "https://www.mpf.mp.br/",
-            "para": "https://www.mpf.mp.br/atuacao/ccr3/documentos-e-publicacoes",
-            "rotulo": "Documentos e publicações"
+          "f03": {
+            "orgao": "MPT-GO",
+            "modo": "lista_habilitadas",
+            "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+            "situacao": "lida",
+            "total": 57,
+            "associacao_consta": false
+          },
+          "f04": {
+            "orgao": "MPT-GO",
+            "modo": "regra",
+            "url": "https://www.prt18.mpt.mp.br/servicos/prestacao-de-contas-de-destinacoes",
+            "situacao": "referência (sem coleta)"
+          },
+          "f05": {
+            "orgao": "MPT-GO",
+            "modo": "regra",
+            "url": "https://www.prt18.mpt.mp.br/informe-se/doacoes-convenios",
+            "situacao": "referência (sem coleta)"
+          },
+          "f06": {
+            "orgao": "MPT-GO",
+            "modo": "regra",
+            "url": "https://www.prt18.mpt.mp.br/informe-se/tutorial-do-sistema-de-destinacoes-do-mpt",
+            "situacao": "referência (sem coleta)"
+          },
+          "f07": {
+            "orgao": "MPT-GO",
+            "modo": "regra",
+            "url": "https://www.prt18.mpt.mp.br/15-servicos/99-cadastro-de-entidades",
+            "situacao": "referência (sem coleta)"
+          },
+          "f08": {
+            "orgao": "MPT-GO",
+            "modo": "regra",
+            "url": "https://www.prt18.mpt.mp.br/16-transparencia/90-programas-projetos-acoes-obras-e-atividades",
+            "situacao": "referência (sem coleta)"
+          },
+          "f09": {
+            "orgao": "MPT-GO",
+            "modo": "listagem_html",
+            "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+            "situacao": "lida",
+            "itens": 7
+          },
+          "f10": {
+            "orgao": "MPT nacional",
+            "modo": "regra_fixa_manual",
+            "url": "https://destinacoes.mpt.mp.br/",
+            "situacao": "nunca acessada (regra fixa; verificação manual mensal)"
+          },
+          "f11": {
+            "orgao": "MPT nacional",
+            "modo": "rss",
+            "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+            "situacao": "lida",
+            "itens": 10
+          },
+          "f12": {
+            "orgao": "MPT nacional",
+            "modo": "rss",
+            "url": "https://mpt.mp.br/pgt/noticias/RSS",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f13": {
+            "orgao": "MPT nacional",
+            "modo": "regra",
+            "url": "https://mpt.mp.br/pgt/noticias/nota-tecnica-no-9-2025-gt-reversoes-decisao-cautelar-stf-adpf-944.pdf",
+            "situacao": "referência (sem coleta)"
+          },
+          "f14": {
+            "orgao": "MPT nacional",
+            "modo": "requer_navegador",
+            "url": "https://diario.mpt.mp.br",
+            "situacao": "requer navegador (sem coleta automática)"
+          },
+          "f15": {
+            "orgao": "MPF",
+            "modo": "listagem_html",
+            "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f16": {
+            "orgao": "MPF",
+            "modo": "listagem_html",
+            "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f17": {
+            "orgao": "MPF",
+            "modo": "listagem_html",
+            "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f18": {
+            "orgao": "MPF",
+            "modo": "listagem_html",
+            "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f19": {
+            "orgao": "MPF",
+            "modo": "regra",
+            "url": "https://www.mpf.mp.br/atuacao/ccr4/normas/copy_of_portarias/portarias-2024/Portaria10972024PGRMPF.pdf/view",
+            "situacao": "referência (sem coleta)"
+          },
+          "f20": {
+            "orgao": "MPF",
+            "modo": "listagem_html",
+            "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+            "situacao": "lida",
+            "itens": 10
+          },
+          "f21": {
+            "orgao": "MPF",
+            "modo": "listagem_html",
+            "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+            "situacao": "lida",
+            "itens": 2
+          },
+          "f22": {
+            "orgao": "MPF",
+            "modo": "listagem_html",
+            "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f23": {
+            "orgao": "MPDFT",
+            "modo": "listagem_html",
+            "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+            "situacao": "lida",
+            "itens": 11
+          },
+          "f24": {
+            "orgao": "MPDFT",
+            "modo": "regra",
+            "url": "https://www.mpdft.mp.br/portal/images/pdf/unidades/cema/edital_1_2026_formacao_cadastro_pessoas_juridicas_direito_privado_sem_fins_lucrativos.pdf",
+            "situacao": "referência (sem coleta)"
+          },
+          "f25": {
+            "orgao": "MPDFT",
+            "modo": "regra",
+            "url": "https://www.mpdft.mp.br/portal/images/noticias/setembro_2026/sei_4123038_despacho_administrativo_2_2.pdf",
+            "situacao": "referência (sem coleta)"
+          },
+          "f26": {
+            "orgao": "MPDFT",
+            "modo": "regra",
+            "url": "https://www.mpdft.mp.br/portal/index.php/conhecampdft-menu/cema",
+            "situacao": "referência (sem coleta)"
+          },
+          "f27": {
+            "orgao": "MPDFT",
+            "modo": "requer_navegador",
+            "url": "https://mpdft.mp.br/portal-medidas-alternativas/",
+            "situacao": "requer navegador (sem coleta automática)"
+          },
+          "f28": {
+            "orgao": "MPDFT",
+            "modo": "listagem_html",
+            "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f29": {
+            "orgao": "MPDFT",
+            "modo": "listagem_html",
+            "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+            "situacao": "lida",
+            "itens": 1
+          },
+          "f30": {
+            "orgao": "MPM",
+            "modo": "ruido_conhecido",
+            "url": "https://www.mpm.mp.br/notificacoes/",
+            "situacao": "ruído conhecido (não lida)"
+          },
+          "f31": {
+            "orgao": "MPM",
+            "modo": "listagem_html",
+            "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f32": {
+            "orgao": "MPM",
+            "modo": "regra",
+            "url": "https://www.mpm.mp.br/spdv/",
+            "situacao": "referência (sem coleta)"
+          },
+          "f33": {
+            "orgao": "MPU",
+            "modo": "listagem_html",
+            "url": "https://www.mpu.mp.br/sitemap",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f34": {
+            "orgao": "Ministério da Justiça e Segurança Pública",
+            "modo": "listagem_html",
+            "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+            "situacao": "lida",
+            "itens": 1
+          },
+          "f35": {
+            "orgao": "Ministério da Justiça e Segurança Pública",
+            "modo": "estado_pagina",
+            "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+            "situacao": "lida",
+            "selecao_aberta": true
+          },
+          "f36": {
+            "orgao": "Ministério da Justiça e Segurança Pública",
+            "modo": "listagem_html",
+            "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f37": {
+            "orgao": "Ministério da Justiça e Segurança Pública",
+            "modo": "listagem_html",
+            "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+            "situacao": "lida",
+            "itens": 1
+          },
+          "f38": {
+            "orgao": "Ministério da Justiça e Segurança Pública",
+            "modo": "regra",
+            "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/legislacao",
+            "situacao": "referência (sem coleta)"
+          },
+          "f39": {
+            "orgao": "Ministério da Justiça e Segurança Pública",
+            "modo": "regra",
+            "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/duvidas-frequentes",
+            "situacao": "referência (sem coleta)"
+          },
+          "f40": {
+            "orgao": "Ministério da Justiça e Segurança Pública",
+            "modo": "regra",
+            "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/manual-e-orientacoes",
+            "situacao": "referência (sem coleta)"
+          },
+          "f41": {
+            "orgao": "Ministério da Justiça e Segurança Pública",
+            "modo": "listagem_html",
+            "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+            "situacao": "lida",
+            "itens": 0
+          },
+          "f42": {
+            "orgao": "Ministério da Justiça e Segurança Pública",
+            "modo": "ruido_conhecido",
+            "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/saju/editais-e-convenios/editais",
+            "situacao": "ruído conhecido (não lida)"
+          },
+          "f43": {
+            "orgao": "Conselho Nacional do Ministério Público",
+            "modo": "regra",
+            "url": "https://www.cnmp.mp.br/portal/images/Resolucoes/Resolu%C3%A7%C3%A3o-179.pdf",
+            "situacao": "referência (sem coleta)"
+          },
+          "f44": {
+            "orgao": "Conselho Nacional do Ministério Público",
+            "modo": "requer_navegador",
+            "url": "https://www.cnmp.mp.br/portal/atos-e-normas",
+            "situacao": "requer navegador (sem coleta automática)"
+          },
+          "f45": {
+            "orgao": "Imprensa Nacional",
+            "modo": "requer_navegador",
+            "url": "https://www.in.gov.br",
+            "situacao": "requer navegador (sem coleta automática)"
+          },
+          "f46": {
+            "orgao": "Presidência da República",
+            "modo": "regra",
+            "url": "https://www.planalto.gov.br/ccivil_03/leis/L7347Compilada.htm",
+            "situacao": "referência (sem coleta)"
+          },
+          "f47": {
+            "orgao": "Conselho Nacional de Justiça",
+            "modo": "requer_navegador",
+            "url": "https://atos.cnj.jus.br/atos",
+            "situacao": "requer navegador (sem coleta automática)"
           }
+        },
+        "nunca_acessadas": [
+          "mpgo.mp.br",
+          "destinacoes.mpt.mp.br"
         ],
-        "pdf_links": 10,
-        "motivo_zero": null,
-        "camada1_vetados": 18,
-        "camada1_direcionados": 8
-      }
+        "pdfs_lidos": 5,
+        "sem_texto": 5,
+        "vereditos": {
+          "OPORTUNIDADE": 4,
+          "ACOMPANHAR": 63,
+          "RUIDO": 7
+        },
+        "abertas": 4,
+        "pendencias_presidente": [
+          "Cadastrar a A.M.C. no Sistema de Destinações do MPT (Edital PRT18 24/2025). Sem isso, não dá para responder aos editais de 5 dias.",
+          "Pedir cadastro no Destina do MP-GO (Edital 02/2024, COMPOR, (62) 3243-8116).",
+          "Cadastro MPF PR-GO: pedir o edital à PR-GO (prgo-chefiagabinete@mpf.mp.br), porque o link oficial dá 404.",
+          "Ter 2 ou 3 projetos-modelo com tema trabalhista prontos, por causa da pertinência temática."
+        ],
+        "habilitadas": {
+          "total": 57,
+          "associacao_consta": false,
+          "em": "2026-10-02"
+        },
+        "paginas_lidas": 22,
+        "links_total": 89,
+        "links_candidatos": 67,
+        "inventario": {
+          "inventario_base_registrado": true,
+          "em": "2026-10-02T22:10:56+00:00"
+        },
+        "motivo_zero": null
+      },
+      "duracao_s": 102
     },
     "plat-ovg": {
       "nome": "OVG — Organização das Voluntárias de Goiás: editais e chamamentos",
@@ -4917,139 +5234,23 @@
   },
   "ultima_execucao": {
     "data": "2026-10-02",
-    "em": "2026-10-02T17:49:40+00:00",
+    "em": "2026-10-02T22:10:56+00:00",
     "manual": [
-      "congresso-nacional",
-      "do-goiania",
-      "do-goias",
-      "dou",
-      "empresas-incentivadas",
-      "f260-captacao-025",
-      "f260-captacao-069",
-      "f260-captacao-090",
-      "f260-captacao-107",
-      "f260-captacao-152",
-      "f260-captacao-169",
-      "f260-captacao-175",
-      "f260-captacao-176",
-      "f260-captacao-177",
-      "f260-captacao-180",
-      "f260-captacao-200",
-      "f260-captacao-206",
-      "f260-captacao-212",
-      "f260-captacao-220",
-      "f260-captacao-221",
-      "f260-captacao-224",
-      "f260-captacao-225",
-      "f260-captacao-226",
-      "f260-captacao-228",
-      "f260-captacao-240",
-      "f260-captacao-241",
-      "f260-captacao-242",
-      "f260-captacao-243",
-      "f260-captacao-244",
-      "f260-captacao-245",
-      "f260-captacao-246",
-      "f260-captacao-247",
-      "f260-captacao-248",
-      "f260-captacao-249",
-      "f260-captacao-250",
-      "f260-captacao-251",
-      "f260-captacao-252",
-      "f260-captacao-253",
-      "f260-captacao-254",
-      "f260-captacao-255",
-      "f260-captacao-256",
-      "f260-captacao-257",
-      "f260-captacao-258",
-      "f260-captacao-259",
-      "f260-captacao-260",
-      "idx-apis",
-      "idx-feeds",
-      "idx-sitemaps",
-      "plat-cnpq-extensao",
-      "plat-empresas-editais-incentivados",
-      "plat-estaduais-go-gov",
-      "plat-gife",
-      "plat-mp-destinacoes-reparacao",
-      "plat-piloto-aberto",
-      "plat-prefeituras-50-go",
-      "plat-salic",
-      "pncp-api"
+      "plat-mp-destinacoes-reparacao"
     ],
     "bloco": "manual",
-    "sensores_executados": 5,
-    "adiados_por_tempo": [
-      "empresas-incentivadas",
-      "f260-captacao-107",
-      "f260-captacao-069",
-      "f260-captacao-152",
-      "f260-captacao-212",
-      "f260-captacao-206",
-      "f260-captacao-025",
-      "f260-captacao-177",
-      "f260-captacao-244",
-      "f260-captacao-176",
-      "f260-captacao-220",
-      "f260-captacao-175",
-      "f260-captacao-243",
-      "f260-captacao-255",
-      "f260-captacao-259",
-      "f260-captacao-200",
-      "f260-captacao-169",
-      "f260-captacao-249",
-      "f260-captacao-221",
-      "f260-captacao-224",
-      "f260-captacao-256",
-      "f260-captacao-250",
-      "f260-captacao-254",
-      "f260-captacao-251",
-      "f260-captacao-225",
-      "f260-captacao-228",
-      "f260-captacao-226",
-      "f260-captacao-090",
-      "f260-captacao-252",
-      "f260-captacao-253",
-      "f260-captacao-260",
-      "f260-captacao-248",
-      "f260-captacao-242",
-      "f260-captacao-180",
-      "f260-captacao-257",
-      "f260-captacao-258",
-      "f260-captacao-240",
-      "f260-captacao-241",
-      "f260-captacao-245",
-      "f260-captacao-246",
-      "f260-captacao-247",
-      "plat-gife",
-      "plat-salic",
-      "plat-prefeituras-50-go",
-      "plat-empresas-editais-incentivados",
-      "plat-mp-destinacoes-reparacao",
-      "plat-cnpq-extensao",
-      "plat-piloto-aberto",
-      "plat-estaduais-go-gov"
-    ],
-    "duracao_s": 1452,
-    "em_espera": 69,
+    "sensores_executados": 1,
+    "adiados_por_tempo": [],
+    "duracao_s": 102,
+    "em_espera": 122,
     "total_esquadra": 123,
     "previsoes_ativas": 1,
-    "achados": 229,
-    "novos_na_base": 59,
+    "achados": 4,
+    "novos_na_base": 4,
     "por_tipo": {
-      "diario_oficial": {
-        "sensores": 3,
-        "achados": 8,
-        "falhas": 0
-      },
-      "legislativo": {
+      "plataforma": {
         "sensores": 1,
-        "achados": 0,
-        "falhas": 0
-      },
-      "api": {
-        "sensores": 1,
-        "achados": 221,
+        "achados": 4,
         "falhas": 0
       }
     }
