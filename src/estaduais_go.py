@@ -102,6 +102,8 @@ def classificar(titulo: str, resumo: str, publicado: date | None, hoje: date, le
         nome, rx, cede = (list(veto) + [False])[:3]
         if re.search(rx, t) and not (cede and osc and re.search(r"chamamento|termo de (fomento|colabora)|mrosc|13\.019", t)):
             return {"veredito": "RUIDO", "motivo": f"veto: {nome}"}
+    if lex.get("resultado_no_titulo") and re.search(lex["resultado_no_titulo"], sem(titulo)):
+        return {"veredito": "ACOMPANHAR", "motivo": "resultado, premiação ou informação sobre seleção já feita"}
     abre = bool(re.search(lex["abertura"], t))
     acomp = bool(re.search(lex["acompanhar"], t))
     pz = _prazo(texto, publicado or hoje)
@@ -156,6 +158,13 @@ def camada1(o: dict, cfg: dict) -> None:
     onde = []
     st, corpo, _ = _get(_api(o["site"]) + "/posts?per_page=1&_fields=id,date")
     o["wordpress"] = st == 200 and corpo.strip().startswith("[")
+    if not o["wordpress"] and "goias.gov.br/" in o["site"]:        # 02/10: endereço suposto errado → tenta os alternativos
+        for slug in (cfg.get("slugs_alternativos") or {}).get(o["id"], []):
+            alt = f"https://goias.gov.br/{slug}"
+            st, corpo, _ = _get(_api(alt) + "/posts?per_page=1&_fields=id,date")
+            if st == 200 and corpo.strip().startswith("["):
+                o["site_anterior"] = o["site"]; o["site"] = alt; o["wordpress"] = True; break
+            time.sleep(cfg["pausa_entre_requisicoes"])
     if o["wordpress"]:
         onde.append("notícias do site (API do portal)")
         for termo in ("edital", "chamamento"):
@@ -308,6 +317,17 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
             diag["descobertos_agora"] = descobrir_catalogo(cfg, est); est["catalogo_em"] = hoje.isoformat()
         except Exception as ex:
             diag["falhas"].append(f"descoberta: {type(ex).__name__}: {ex}"[:160])
+    for o in est["orgaos"].values():
+        if o.get("camada") == 4 and not o.get("wordpress") and not (o.get("publicacoes_por_ano") or {}) \
+           and str(o.get("camada1_em") or "") < (hoje - timedelta(days=cfg.get("refazer_descoberta_dias", 7))).isoformat():
+            o["camada"] = 1
+    vistos = {}
+    for k in sorted(est["orgaos"], key=lambda k: (k.startswith("go-"), k)):
+        st_ = est["orgaos"][k]["site"].rstrip("/").lower()
+        if st_ in vistos:
+            est["orgaos"].pop(k)
+        else:
+            vistos[st_] = k
     abertas, passadas = [], []
     # 1º: monitoramento dos órgãos que já têm histórico (barato) · 2º: os demais, UM POR VEZ, camada a camada
     for o in [o for o in est["orgaos"].values() if o.get("camada") == 4]:
@@ -335,7 +355,9 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     import os
     novos = [{"titulo": f"{r['orgao']} — {r['titulo']}", "url": r["url"], "orgao": r["orgao"], "uf": "GO",
               "prazo": r.get("prazo"), "publicado_em": r.get("data")} for r in passadas + abertas]
-    pend = {x["url"]: x for x in (est.get("pendentes_livros") or []) + novos}
+    pend = {x["url"]: x for x in (est.get("pendentes_livros") or []) + novos
+            if classificar(x["titulo"].split(" — ", 1)[-1], "", None, hoje, cfg["lexico"])["veredito"] != "RUIDO"
+            and not re.search(cfg["lexico"].get("resultado_no_titulo") or "^$", sem(x["titulo"].split(" — ", 1)[-1]))}
     if os.environ.get("ESTADUAIS_SEM_LIVROS"):
         est["pendentes_livros"] = list(pend.values())
     elif pend:

@@ -225,7 +225,7 @@
    "id": "pge",
    "nome": "Procuradoria-Geral do Estado (PGE)",
    "tipo": "órgão",
-   "site": "https://goias.gov.br/pge"
+   "site": "https://goias.gov.br/procuradoria"
   },
   {
    "id": "agehab",
@@ -296,13 +296,8 @@
     true
    ],
    [
-    "seleção de pessoas (emprego, estágio, concurso, conselheiro)",
-    "concurso p[uú]blico|processo seletivo simplificado|est[aá]gio|ex-empregados|celetistas|temporári[oa]s?|vagas de emprego|banco de talentos|conselheiros? tutelar",
-    false
-   ],
-   [
     "pesquisa acadêmica (bolsa para pesquisador)",
-    "bolsas? de (pesquisa|mestrado|doutorado|inicia[cç][aã]o)|pesquisadores?|p[oó]s-gradua",
+    "bolsas? de (pesquisa|mestrado|doutorado|inicia[cç][aã]o)|pesquisadores?|p[oó]s-gradua|pesquisas? cient[ií]ficas?|investiga[cç][aã]o cient[ií]fica",
     true
    ],
    [
@@ -314,9 +309,35 @@
     "seleção de alunos ou adolescentes",
     "adolescentes para o comit[eê]|sele[cç][aã]o de (alunos|estudantes)|vestibular|matr[ií]culas?",
     false
+   ],
+   [
+    "seleção de pessoas (emprego, estágio, concurso, bolsista, conselheiro)",
+    "concurso p[uú]blico|processo seletivo simplificado|est[aá]gio|ex-empregados|celetistas|tempor[aá]ri[oa]s?|vagas de emprego|banco de talentos|conselheiros? tutelar|bolsistas|professor(es)? transformador|pr[eê]mio .{0,40}(professores|estudantes|alunos)|solve for tomorrow|jogos abertos|modalidades individuais|atletas",
+    false
+   ],
+   [
+    "prêmio de gestão pública (o órgão é premiado, não financia)",
+    "(recebe|conquista|ganha|vence|prestigia) (o |os |um |dois )?(tro[fé]u|pr[eê]mio|selo|premia)|anuncia os vencedores|tro[fé]u|selo (ouro|de excel)|ranking|pr[eê]mio (goi[aá]s )?\\+? ?(mais )?transparente|compliance|[eé]tica e responsabilidade|ouvidoria p[uú]blica|execu[cç][aã]o or[cç]ament|servi[cç]os digitais|educa[cç][aã]o fiscal|governo aberto|embaixadores da cidadania|boas pr[aá]ticas em seguran|destaque nacional|iniciativas premiadas|concorrem ao pr[eê]mio|esp[ií]rito p[uú]blico|[eé] premiad",
+    false
+   ],
+   [
+    "Organização Social (gestão de hospital ou unidade)",
+    "organiza[cç][aã]o social|nova gest[aã]o d[oa]|gest[aã]o (compartilhada|de unidade|do hospital)|qualifica[cç][aã]o como os\\b",
+    false
+   ],
+   [
+    "serviço ou consultoria, sem recurso",
+    "consultoria gratuita|atendimento gratuito|mentoria gratuita|assessoria gratuita",
+    false
+   ],
+   [
+    "empresas ou espaço comercial (não é para entidades)",
+    "credenci(ar|amento de) empresas|mercad[aã]o|permiss[aã]o de uso|boxes|espa[cç]o comercial|temporada .{0,30}araguaia|ambulantes|barraqueiros|quiosques",
+    false
    ]
   ],
-  "vetos_cedem_a_osc": "por veto (3º campo): capacitação e pesquisa cedem a um chamamento de OSC; seleção de pessoas, merenda, licitação e seleção de alunos nunca cedem"
+  "vetos_cedem_a_osc": "por veto (3º campo): capacitação e pesquisa cedem a um chamamento de OSC; seleção de pessoas, merenda, licitação e seleção de alunos nunca cedem",
+  "resultado_no_titulo": "divulga(do|da|m)?\\b.{0,25}resultado|resultado (final|preliminar|parcial|da sele)|homologa|vencedores|s[aã]o premiad|selecionad[oa]s|classificad[oa]s|convoca[cç][aã]o dos aprovados|lista de aprovados|recebe(m)? r\\$|repassa informa|orienta (gestores|munic)"
  },
  "evidencia_do_lexico": {
   "descartes_que_viraram_veto": {
@@ -332,6 +353,51 @@
    "repasse a entidades": "Goiás Social aumenta repasse do Auxílio Nutricional às entidades filantrópicas",
    "chamamento OSC": "Edital de chamamento público 001/2026 — Socioeducativo",
    "PNAB": "Edital Cultura Goiatuba 2026: PNAB Ciclo 2"
+  },
+  "primeira_leitura_02_10": {
+   "falsos_positivos_que_viraram_veto": {
+    "prêmio de gestão pública": "Prêmio Goiás + Transparente (CGE), Troféu Diamante (Juceg), Ranking de Execução Orçamentária (Economia)",
+    "resultado": "Fapeg divulga resultado final de edital…; Divulgado resultado final de seleção da OSC… (Secult)",
+    "bolsistas": "Chamada Fapeg/Senai — seleção de bolsistas",
+    "Organização Social": "edital de chamamento para nova gestão do Hugo (SES)",
+    "consultoria": "consultoria gratuita para novos negócios liderados por mulheres (Casa Civil)",
+    "governo premiado": "Governo de Goiás é destaque nacional no 5º Prêmio Conexão Inova",
+    "pessoas": "Prêmio Professor Transformador; Solve for Tomorrow; Jogos Abertos (atletas)",
+    "empresas/comércio": "credenciar empresas para eficiência energética; Mercadão Goiano de Águas Lindas; temporada Mais Araguaia",
+    "pesquisa": "edital de R$ 8,5 milhões em pesquisas científicas (Casa Civil)"
+   },
+   "acertos_mantidos": [
+    "Governo de Goiás lança editais da Pnab para Pontos e Pontões de Cultura",
+    "Governo de Goiás abre chamamento público para o Circuito das Cavalhadas 2026",
+    "inscrições abertas para financiar projetos de enfrentamento à violência contra a mulher (Fapeg)"
+   ]
   }
- }
+ },
+ "slugs_alternativos": {
+  "seds": [
+   "seds",
+   "desenvolvimentosocial"
+  ],
+  "secti": [
+   "secti",
+   "ciencia",
+   "sectigo"
+  ],
+  "infraestrutura": [
+   "seinfra",
+   "infra"
+  ],
+  "dgap": [
+   "dgap",
+   "administracaopenitenciaria"
+  ],
+  "segov": [
+   "governo",
+   "segov"
+  ],
+  "pge": [
+   "procuradoria"
+  ]
+ },
+ "refazer_descoberta_dias": 7
 }
