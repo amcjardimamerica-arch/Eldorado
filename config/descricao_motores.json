@@ -3112,6 +3112,109 @@
    "coleta": "nuvem",
    "nota_coleta": "pausado em 02/10/2026: o robots.txt do Prosas proíbe robôs (o último grupo para 'User-agent: *' tem 'Disallow: /'; só Google, Bing e Yahoo são liberados). Retomar só com autorização ou API do Prosas.",
    "objetivo": "Editais e prêmios para OSC no Prosas."
+  },
+  "congresso-nacional": {
+   "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento",
+   "perfil": "insumo de EMENDA FEDERAL e de REGRA — prazo oficial de emendas ao PLOA (CMO), proposições que mudam a vida das entidades; chamamento das Casas é raro",
+   "tipo": "legislativo",
+   "finalidade": "insumo",
+   "coleta": "nuvem",
+   "nota_coleta": null,
+   "objetivo": "Ler o prazo oficial das emendas ao orçamento da União e as regras e recursos para entidades que tramitam no Congresso.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 7 rota(s) em 6 domínio(s) (camara.leg.br, congressonacional.leg.br, dadosabertos.camara.leg.br…); abre só links que casam com 9 termos e escapam dos 12 vetos, e confirma no texto com 7 termos.",
+   "agenda": "20:53 · todos — a CMO e as Casas publicam no expediente; na janela de emendas (out–nov) a leitura diária não pode falhar",
+   "agenda_detalhe": {
+    "horarios_brt": "20:53",
+    "dias": "todos",
+    "cadencia_dias": 1,
+    "por_que_esta_hora": "a CMO e as Casas publicam no expediente; na janela de emendas (out–nov) a leitura diária não pode falhar"
+   },
+   "verificacao": {
+    "etapa_1": "CMO, APIs da Câmara e do Senado, notícias e convocações; categoria (janela de emendas, comunicado, regra MROSC/tributária/emendas, programa, chamamento, honraria) → OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo",
+    "etapa_2": "na fonte oficial: situação e datas da etapa de emendas na página da LOA; número, ementa e situação da proposição na API da Casa"
+   },
+   "onde_para": "",
+   "para_afiar": [],
+   "evolucao_gratuita": "feito em 02/10: APIs de dados abertos da Câmara e do Senado (/processo) e a página da LOA na CMO — próximo passo gratuito: ler o texto integral das proposições (inteiro teor) e o SIGA Brasil para as emendas já indicadas a entidades de Goiás",
+   "rotas": [
+    {
+     "nome": "CMO — LOA do ano seguinte (etapa 'Apresentação de emendas')",
+     "url": "https://www.congressonacional.leg.br/web/orcamento/acompanhe/orcamento-anual/-/loa/2027",
+     "tipo": "orcamento"
+    },
+    {
+     "nome": "CMO — comunicados",
+     "url": "https://www.congressonacional.leg.br/web/cmo/comunicados",
+     "tipo": "orcamento"
+    },
+    {
+     "nome": "Câmara — API de proposições",
+     "url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes",
+     "tipo": "api"
+    },
+    {
+     "nome": "Senado — API /processo",
+     "url": "https://legis.senado.leg.br/dadosabertos/processo",
+     "tipo": "api"
+    },
+    {
+     "nome": "Câmara — notícias (RSS)",
+     "url": "https://www.camara.leg.br/noticias/rss/ultimas-noticias",
+     "tipo": "noticias"
+    },
+    {
+     "nome": "Senado — notícias (RSS)",
+     "url": "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss",
+     "tipo": "noticias"
+    },
+    {
+     "nome": "Senado — convocações públicas",
+     "url": "https://www6g.senado.leg.br/transparencia/licitacoes-e-contratos/sadcon/convocacoes-publicas",
+     "tipo": "chamamento"
+    }
+   ],
+   "dominios": [
+    "camara.leg.br",
+    "congressonacional.leg.br",
+    "dadosabertos.camara.leg.br",
+    "legis.senado.leg.br",
+    "www12.senado.leg.br",
+    "www6g.senado.leg.br"
+   ],
+   "lexico_1": [
+    "emendas",
+    "PLOA",
+    "LOA",
+    "orçamento",
+    "sem fins lucrativos",
+    "sociedade civil",
+    "terceiro setor",
+    "chamamento",
+    "prêmio"
+   ],
+   "lexico_2": [
+    "entidade",
+    "associação",
+    "termo de fomento",
+    "13.019",
+    "imunidade",
+    "emenda individual",
+    "bancada"
+   ],
+   "veto_motor": [
+    "concurso público",
+    "licitação",
+    "pregão",
+    "denominação",
+    "dia nacional"
+   ],
+   "numeros": {
+    "mes": null,
+    "acervo": null,
+    "estado": null,
+    "achados_total": null,
+    "bloqueios": null
+   }
   }
  }
 }

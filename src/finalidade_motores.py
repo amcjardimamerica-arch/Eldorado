@@ -32,7 +32,8 @@ DESCOBERTA = {"do-goiania", "do-goias", "dou", "pncp-api", "plat-observatorio-3s
               "plat-prosas-premios", "plat-salic", "plat-secult-go", "plat-ovg", "plat-goias-social", "plat-fundos-estaduais-go",
               "plat-fapeg", "plat-prefeituras-50-go", "plat-empresas-editais-incentivados", "plat-mp-destinacoes-reparacao",
               "plat-cnpq-extensao", "empresas-incentivadas", "dje-tjgo", "dj-trf1-go"}
-INSUMO = {"alego-pl": "emenda parlamentar", "camara-goiania-pl": "utilidade pública", "cnj-destinacoes": "referência normativa"}
+INSUMO = {"alego-pl": "emenda parlamentar", "camara-goiania-pl": "utilidade pública", "cnj-destinacoes": "referência normativa",
+          "congresso-nacional": "emenda parlamentar federal e regras para entidades"}
 VETOR = re.compile(r"pncp\.gov|queridodiario|in\.gov\.br|diariooficial|observatorio3setor|captadores\.org|bussolasocial|prosas\.com", re.I)
 
 
