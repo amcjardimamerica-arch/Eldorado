@@ -1,0 +1,45 @@
+name: 23 · Teste de acionamento dos motores (um por vez, na ordem do painel)
+on:
+  workflow_dispatch:
+    inputs:
+      motores:
+        description: "vazio = todos, na ordem do painel; ou ids separados por vírgula"
+        required: false
+        default: ""
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: eldorado-teste-acionamento
+  cancel-in-progress: false
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Dependências
+        run: pip install pypdf --quiet
+      - name: Acionar cada motor, um por vez (relatório após cada um)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "${{ github.event.inputs.motores }}" ]; then
+            timeout 20400 python3 scripts/testar_acionamento.py --motores "${{ github.event.inputs.motores }}" || echo "teste terminou com aviso"
+          else
+            timeout 20400 python3 scripts/testar_acionamento.py || echo "teste terminou com aviso"
+          fi
+      - name: Gravar só o relatório (nenhum dado de produção)
+        if: always()
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          rm -rf /tmp/r && mkdir -p /tmp/r && cp -r docs/relatorios/teste-acionamento/. /tmp/r/ 2>/dev/null || exit 0
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            mkdir -p docs/relatorios/teste-acionamento && cp -r /tmp/r/. docs/relatorios/teste-acionamento/
+            git add docs/relatorios/teste-acionamento
+            git commit -q -m "teste de acionamento dos motores $(date -u +%F\ %H:%M)" || break
+            git push -q origin main && break; sleep 7
+          done
