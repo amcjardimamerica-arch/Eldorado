@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-02T17:11:05+00:00",
+  "em": "2026-10-02T17:24:01+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-02T16:56:56+00:00",
+  "ultimo_voo": "2026-10-02T17:13:39+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,108 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 120,
+    "missoes": 121,
     "validadas": 1,
-    "parciais": 34,
+    "parciais": 35,
     "insuficientes": 85,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 23,
-      "sim": 72
+      "sim": 73
     },
     "estrelas_de_ouro": 29,
     "fontes_novas_para_os_motores": 2,
     "tempo_medio_min": 11.0
   },
   "missoes": [
+    {
+      "em": "2026-10-02T17:13:39+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Anápolis — Fundo Municipal de Cultura recebe inscrições até domingo (19) — Goiás / Anápolis",
+      "qualidade": "parcial",
+      "comprovados": 10,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso"
+      ],
+      "pagina_oficial": "https://www.anapolis.go.gov.br/espacocultural/fundo-municipal-de-cultura-2023-2024/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprova que o Fundo Municipal de Cultura de Anápolis oferece financiamento de projetos culturais com prazo de inscrição até 19 de maio e valor superior a R$ 2 milhões.",
+        "para_a_amc": "Uma associação comunitária de Goiânia precisaria apresentar um projeto cultural e anexar um documento, mesmo que não esteja localizada em Anápolis, pois o financiamento é municipal e não especifica restrições geográficas.",
+        "proximo_passo": "A associação deve se inscrever no Fundo Municipal de Cultura de Anápolis até 19 de maio, apresentando o projeto cultural e os anexos necessários.",
+        "risco": "O risco é que a associação não tenha acesso a informações sobre o edital ou não cumpra os requisitos de apresentação do projeto e anexos."
+      },
+      "erro": null,
+      "segundos": 621,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 9,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso",
+      "id": "op-op-21b31c90e94a",
+      "encontrou": {
+        "Objeto": {
+          "valor": "financiamento de projetos culturais",
+          "trecho": "Serão mais de R$ 2 milhões para o financiamento de projetos culturais.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "dispensado — O texto menciona que as inscrições podem ser realizadas até o dia 19 de maio.",
+          "trecho": "As inscrições podem ser realizadas pelo link abaixo, onde também estão disponíveis o regulamento e outras informações. [rejeitado: data implausível para edital aberto]",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Valor": {
+          "valor": "mais de R$ 2 milhões",
+          "trecho": "Serão mais de R$ 2 milhões para o financiamento de projetos culturais.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura de Anápolis",
+          "trecho": "A gestão municipal, por meio da Secretaria de Integração, acaba de lançar o regulamento para o processo seletivo do Fundo Municipal de Cultura 2023/2024.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Fundo Municipal de Cultura 2023/2024 | Prefeitura de Anápolis",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "Serão mais de R$ 2 milhões para o financiamento de projetos culturais.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "Outra mudança importante é que, antes, o poder público também podia participar do processo e agora, o mecanismo é exclusivo para projetos apresentados pela sociedade civil.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "apresentação de projeto cultural",
+          "trecho": "As inscrições podem ser realizadas pelo link abaixo, onde também estão disponíveis o regulamento e outras informações.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Anápolis",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador"
+      ]
+    },
     {
       "em": "2026-10-02T16:56:56+00:00",
       "modo": "validar",
@@ -2420,84 +2507,6 @@
         "Requisitos": {
           "valor": "Complete 14 (quatorze) anos;, 16 (dezesseis) anos incompletos (15 anos e 10 meses);, Esteja cursando o Ensino Fundamental ou Médio (ou já ter concluído o Ensino Médio);, Em vulnerabilidade econômico-social;, Estudante da rede pública ou bolsista 100% de rede particular;, Com renda familiar de até 2 ",
           "trecho": "2.1. Idade (até a data do Resultado Final – SEXTA ETAPA deste Edital - Item 3.6.): 2.1.1. Complete 14 (quatorze) anos; à 2.1.2. 16 (dezesseis) anos incompletos (15 anos e 10 meses)",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Governo do Estado de Goiás",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-02T07:58:13+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Goiás Social — Conselho da Juventude abre amanhã as inscrições para seleção de organizações da sociedade civil… — Goiás",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 1,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Território",
-        "Requisitos"
-      ],
-      "pagina_oficial": "https://goias.gov.br/social/edital-de-chamamento-publico-001-2026-socioeducativo/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprova a existência de uma seleção de OSC para a execução de ações complementares em unidades socioeducativas no Estado de Goiás.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no prazo definido, apresentar os documentos exigidos nos anexos e demonstrar sua capacidade de executar as ações complementares necessárias ao funcionamento das unidades socioeducativas mencionadas.",
-        "proximo_passo": "Verificar os anexos do edital e se inscrever no período de 2026-09-28 a 2026-10-15.",
-        "risco": "A falta de documentos necessários ou a não inscrição no prazo definido pode impedir o acesso ao fomento."
-      },
-      "erro": null,
-      "segundos": 756,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Território, Requisitos",
-      "id": "op-op-554a802f5fc0",
-      "encontrou": {
-        "Objeto": {
-          "valor": "seleção de Organização da Sociedade Civil – OSC para celebração de Termo de Colaboração destinado à execução, em regime de mútua cooperação com o Estado de Goiás, de ações complementares necessárias ao funcionamento das unidades Centro de Atendimento Socioeducativo Regional de Rio Verde - CASER Rio Verde e Unidade Centralizada de Atendimento Socioeducativo Feminino - Anápolis",
-          "trecho": "O presente Chamamento Público tem por objeto a seleção de Organização da Sociedade Civil – OSC para celebração de Termo de Colaboração destinado à execução, em regime de mútua coop",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-09-28 a 2026-10-15",
-          "trecho": "A SECRETARIA DE ESTADO DE DESENVOLVIMENTO SOCIAL – SEDS, órgão da Administração Pública do Estado de Goiás, torna público o presente Edital de Chamamento Público, destinado à seleç",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "dispensado — O edital menciona que o apoio é em espécie, sem valor em dinheiro.",
-          "trecho": "O valor total do Termo de Colaboração será definido conforme o orçamento aprovado pela SEDS e o plano de trabalho da OSC.",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Órgão / financiador": {
-          "valor": "SECRETARIA DE ESTADO DE DESENVOLVIMENTO SOCIAL",
-          "trecho": "A SECRETARIA DE ESTADO DE DESENVOLVIMENTO SOCIAL – SEDS, órgão da Administração Pública do Estado de Goiás, torna público o presente Edital de Chamamento Público.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "assistencia_social",
-          "trecho": "O objeto compreende ações relacionadas, entre outras, às seguintes: I – garantia da assistência material, incluindo alimentação, vestuário, materiais de higiene, limpeza e demais i",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "O presente Edital tem por objeto a seleção de Organização da Sociedade Civil – OSC para celebração de Termo de Colaboração.",
           "oficial": false,
           "dispensado": false
         }
