@@ -350,3 +350,30 @@ class TestRevisaoIndependente(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteSuapNaNuvem(unittest.TestCase):
+    """02/10 — leitura real: na nuvem o SUAP não responde; o motor marca 'exige IP brasileiro', lê as notícias e não
+    conta a ausência do SUAP como falha."""
+    def test_suap_fora_da_nuvem_nao_e_falha(self):
+        import os
+        from unittest import mock
+        from src import camara_goiania as C
+
+        def a(hoje, cfg, diag):
+            diag["fontes"]["A"]["falhas"].append("utilidade pública: RuntimeError"); return []
+
+        def b(hoje, cfg, diag):
+            diag["fontes"]["B"]["falhas"].append("A.M.C. Jardim América: RuntimeError"); return []
+
+        def c(hoje, cfg, diag):
+            diag["fontes"]["C"]["consultas"] += 3; diag["fontes"]["C"]["itens"] += 0; return []
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}, clear=False), \
+             mock.patch.object(C, "fonte_a", a), mock.patch.object(C, "fonte_b", b), mock.patch.object(C, "fonte_c", c), \
+             mock.patch.object(C, "ESTADO", Path(tmp) / "e.json"):
+            os.environ.pop("ELDORADO_LOCAL_BR", None)
+            r = C.ler_motor()
+        self.assertEqual(r["falhas"], []); self.assertTrue(r["diagnostico"]["exige_brasil"])
+        self.assertIn("SUAP só pelo Brasil", r["diagnostico"]["motivo_zero"])

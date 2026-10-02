@@ -1,4 +1,4 @@
-name: TEMPORÁRIO · motores GIFE e Câmara — leitura real (removido antes do merge)
+name: TEMPORÁRIO · motores GIFE e Câmara — leitura real (removido antes do merge) · rodada 2
 on:
   push:
     branches: ['claude/motores-22-gife-e-05-camara']
@@ -40,7 +40,7 @@ jobs:
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
           git checkout -- . && git clean -fdq
-          mkdir -p docs/relatorios && cp /tmp/m22_05.json docs/relatorios/motores_22_05_leitura_real_2026-10-02.json
-          git add docs/relatorios/motores_22_05_leitura_real_2026-10-02.json
+          mkdir -p docs/relatorios && cp /tmp/m22_05.json docs/relatorios/motores_22_05_leitura_real_2026-10-02_rodada2.json
+          git add docs/relatorios/motores_22_05_leitura_real_2026-10-02_rodada2.json
           git commit -q -m "motores GIFE e Camara: relatorio da leitura real (verificacao antes do merge)"
           for i in 1 2 3 4; do git pull -q --rebase origin claude/motores-22-gife-e-05-camara && git push -q origin HEAD:claude/motores-22-gife-e-05-camara && break; sleep 4; done

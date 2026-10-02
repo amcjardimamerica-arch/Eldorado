@@ -545,6 +545,17 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     leu = any(F[k]["consultas"] for k in F)
     na_nuvem = bool(os.environ.get("GITHUB_ACTIONS")) and not os.environ.get("ELDORADO_LOCAL_BR")
     suap_recusou = any(r.startswith(("A:", "B:")) for r in recusas) and not (F["A"]["consultas"] or F["B"]["consultas"])
+    # 02/10 — leitura real no servidor do GitHub: o SUAP não respondeu a NENHUMA consulta (RuntimeError em todas), mas as
+    # fontes registram a falha consulta a consulta, sem levantar Recusa. Na nuvem isso é "exige IP brasileiro": os
+    # projetos e a tramitação ficam para a coleta local e as NOTÍCIAS (fonte C) continuam sendo lidas.
+    suap_fora = na_nuvem and not (F["A"]["consultas"] or F["B"]["consultas"]) and bool(F["A"]["falhas"] or F["B"]["falhas"])
+    if suap_fora:
+        diag["exige_brasil"] = True
+        diag["suap_na_nuvem"] = (F["A"]["falhas"] + F["B"]["falhas"])[:5]
+        if not recusas:
+            recusas.append("A/B: o SUAP não respondeu ao servidor do GitHub")
+        F["A"]["falhas"], F["B"]["falhas"] = [], []
+        suap_recusou = suap_recusou or not F["C"]["consultas"]
     if suap_recusou and na_nuvem:
         # medido, não suposto: os portais da Câmara recusam o IP do GitHub — vale a coleta local
         return {"sensor": MOTOR_ID, "achados": [], "falhas": [], "saude": [], "lido_em": now_iso(), "pulado_exige_brasil": True,
@@ -588,7 +599,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     if seq >= 2:
         diag["alerta"] = f"{seq} leituras seguidas sem resposta da Câmara — " + (sum((F[k]["falhas"] for k in F), []) + ["sem causa"])[0]
     campos = ("id", "titulo", "url", "data_publicacao", "fim", "autor", "setor", "situacao", "categoria", "propria")
-    completo = leu and not any(F[k]["falhas"] for k in F)
+    completo = leu and not any(F[k]["falhas"] for k in F) and not diag.get("exige_brasil")   # sem SUAP: o já conhecido fica
     abertas_l = [{k: r.get(k) for k in campos} for r in oport.values()]
     if not completo:                     # leitura falhou ou saiu parcial: o que não foi relido hoje continua na lista
         novos = {r["id"] for r in abertas_l}
@@ -623,6 +634,9 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                                f"{F['C']['itens']}): nenhum chamamento aberto para OSC · {cont['ACOMPANHAR']} a acompanhar · "
                                f"{len(habilitacao)} utilidade(s) pública(s) para a lista de habilitação" if leu else
                                "a Câmara não respondeu: " + (falhas[0]["causa"] if falhas else "sem leitura"))
+    if diag.get("exige_brasil"):
+        diag["motivo_zero"] = ("SUAP só pelo Brasil: os projetos de lei e a tramitação da associação aguardam a coleta local "
+                               "(scripts/coleta_brasil.py); notícias lidas na nuvem — " + str(diag.get("motivo_zero") or "sem oportunidade nas notícias"))
     return {"sensor": MOTOR_ID, "achados": sorted(oport.values(), key=lambda r: str(r.get("fim") or "9999")), "falhas": falhas,
             "saude": saude, "diagnostico": diag, "lido_em": now_iso()}
 
