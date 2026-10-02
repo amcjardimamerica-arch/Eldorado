@@ -1,26 +1,20 @@
 {
-  "executado_em": "2026-10-02T16:59:47+00:00",
+  "executado_em": "2026-10-02T19:22:02+00:00",
   "fontes_catalogadas": 85,
   "fontes_total": 69,
-  "fontes_ok": 52,
-  "fontes_falha": 17,
+  "fontes_ok": 48,
+  "fontes_falha": 21,
   "fontes_fora_escopo": 0,
   "fontes_manuais": 2,
   "fontes_api": 2,
   "novas": 0,
-  "atualizadas": 17,
+  "atualizadas": 15,
   "quarentena": 0,
   "falhas": [
     {
-      "fonte": "goias-cultura-raiz",
+      "fonte": "bndes-social",
       "erro": "TimeoutError",
       "mensagem": "The read operation timed out",
-      "etapa": "leitura do site"
-    },
-    {
-      "fonte": "petrobras",
-      "erro": "ValueError",
-      "mensagem": "URL deve ser HTTPS e não pode conter credenciais",
       "etapa": "leitura do site"
     },
     {
@@ -42,9 +36,15 @@
       "etapa": "leitura do site"
     },
     {
+      "fonte": "goias-cultura-raiz",
+      "erro": "ValueError",
+      "mensagem": "tipo não permitido: application/pdf",
+      "etapa": "leitura do site"
+    },
+    {
       "fonte": "goias-pnab",
-      "erro": "TimeoutError",
-      "mensagem": "The read operation timed out",
+      "erro": "ValueError",
+      "mensagem": "tipo não permitido: application/pdf",
       "etapa": "leitura do site"
     },
     {
@@ -66,6 +66,12 @@
       "etapa": "leitura do site"
     },
     {
+      "fonte": "petrobras",
+      "erro": "ValueError",
+      "mensagem": "URL deve ser HTTPS e não pode conter credenciais",
+      "etapa": "leitura do site"
+    },
+    {
       "fonte": "portal-es",
       "erro": "ValueError",
       "mensagem": "tipo não permitido: application/pdf",
@@ -78,10 +84,22 @@
       "etapa": "processamento (do_open)"
     },
     {
+      "fonte": "portal-pb",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
+    },
+    {
       "fonte": "portal-pi",
       "erro": "ValueError",
       "mensagem": "redirecionamento para domínio não autorizado",
       "etapa": "leitura do site"
+    },
+    {
+      "fonte": "portal-rs",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "portal-se",
@@ -100,6 +118,12 @@
       "erro": "RemoteDisconnected",
       "mensagem": "Remote end closed connection without response",
       "etapa": "processamento (_read_status)"
+    },
+    {
+      "fonte": "salic-editais",
+      "erro": "HTTPError",
+      "mensagem": "HTTP Error 403: Forbidden",
+      "etapa": "processamento (http_error_default)"
     },
     {
       "fonte": "tjgo-banco-projetos",
@@ -152,6 +176,6 @@
       "internacional"
     ]
   },
-  "paginas_alteradas": 166,
-  "fora_do_terceiro_setor": 329
+  "paginas_alteradas": 108,
+  "fora_do_terceiro_setor": 266
 }
