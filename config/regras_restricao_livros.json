@@ -1,0 +1,486 @@
+{
+ "versao": "2026-10-02.1",
+ "origem": "Parecer das 238 oportunidades não confirmadas — validação item a item em 02/10/2026",
+ "como_usar": "Aplicar src/regras_restricao.avaliar(registro, perfil) antes de promover um registro a 'oportunidade aberta'. NÃO APLICA e DISPENSÁVEL saem do funil de abertas; APLICÁVEL segue para verificação dos 12 itens. Nunca apagar: arquivar com o código da regra.",
+ "perfil_de_referencia": {
+  "associacao": "amc-jardim-america",
+  "municipios": [
+   "goiania",
+   "jardim america"
+  ],
+  "ufs": [
+   "GO"
+  ],
+  "observacao": "chamamento de OUTRO município (inclusive goiano) exige sede/atuação local: DI-01. Estado de Goiás e abrangência nacional passam."
+ },
+ "territorio": {
+  "regra": "município citado no título/objeto nunca é 'nacional'; só passa se for o município da entidade; sem município, vale a UF."
+ },
+ "regras": [
+  {
+   "id": "NA-01",
+   "veredito": "NÃO APLICA",
+   "nome": "Ato do diário oficial que não é chamamento",
+   "motivo_modelo": "Edição de diário/ato orçamentário, administrativo ou legislativo sem edital de fomento: ….",
+   "evidencia_na_validacao": {
+    "itens": 1,
+    "exemplos": [
+     "op-op-519ca57560c0"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "credito (adicional|suplementar)",
+    "abertura de credito",
+    "dotacao orcamentaria",
+    "projeto de lei",
+    "prorrogacao do plano municipal",
+    "provimento de empregos",
+    "vencimentos e vantagens"
+   ],
+   "exceto": [
+    "^diario oficial de",
+    "termo de (colaboracao|fomento)",
+    "chamamento publico n"
+   ]
+  },
+  {
+   "id": "NA-02",
+   "veredito": "NÃO APLICA",
+   "nome": "Licitação, contratação de fornecedor ou serviço",
+   "motivo_modelo": "É contratação/licitação de fornecedor ou prestador (não parceria de fomento com OSC): ….",
+   "evidencia_na_validacao": {
+    "itens": 12,
+    "exemplos": [
+     "67af7e78b77e1a40e4e2",
+     "op-op-287b50bed6e4",
+     "02beaaebc68cfe0ebe7b",
+     "596e7daa5e97ac628e9e"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "pregao",
+    "registro de precos",
+    "contratacao de empresa",
+    "aquisicao de",
+    "fornecimento de",
+    "prestacao de servicos de captacao",
+    "servicos de captacao de recursos",
+    "terceiro facilitador",
+    "captacao de recursos vinculados",
+    "contratacao de prestador",
+    "prestador de servicos",
+    "produtor(a)? (executivo|cultural)",
+    "estudo de impacto",
+    "permuta",
+    "imoveis ociosos",
+    "recrutar .*aprendiz",
+    "poder concedente"
+   ],
+   "exceto": [
+    "termo de (colaboracao|fomento)",
+    "organizacoes? da sociedade civil",
+    "\\bosc",
+    "entidades? sem fins",
+    "associacoes?",
+    "fundacoes?"
+   ],
+   "modalidade_padrao": "pregao|dispensa|inexigibilidade|concorrencia"
+  },
+  {
+   "id": "NA-03",
+   "veredito": "NÃO APLICA",
+   "nome": "Recursos humanos (concurso, seleção, estágio, aprendizagem)",
+   "motivo_modelo": "É seleção de pessoas (estágio/aprendizagem/processo seletivo), não de entidade: ….",
+   "evidencia_na_validacao": {
+    "itens": 2,
+    "exemplos": [
+     "6814500ae96365bfe8f4",
+     "4fd88f080ac37762bbd2"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "estagi",
+    "jovens? aprendiz",
+    "programa de aprendizagem",
+    "processo seletivo",
+    "concurso publico",
+    "selecao de diretores"
+   ],
+   "exceto": [
+    "^diario oficial de",
+    "organizacoes? da sociedade civil",
+    "\\bosc\\b",
+    "propostas",
+    "projetos"
+   ]
+  },
+  {
+   "id": "NA-04",
+   "veredito": "NÃO APLICA",
+   "nome": "Página genérica, agregador, notícia ou link sem edital",
+   "motivo_modelo": "Não há edital identificável: ….",
+   "evidencia_na_validacao": {
+    "itens": 3,
+    "exemplos": [
+     "cat-eb61d1d86e65",
+     "op-op-ea820a4ce757",
+     "op-op-d9564733a007"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "cria fundo para"
+   ],
+   "exceto": []
+  },
+  {
+   "id": "NA-05",
+   "veredito": "NÃO APLICA",
+   "nome": "Concurso ou prêmio sem fomento a OSC",
+   "motivo_modelo": "Concurso/prêmio de ideias, artigos ou boas práticas, sem repasse de fomento a OSC: ….",
+   "evidencia_na_validacao": {
+    "itens": 7,
+    "exemplos": [
+     "op-op-0d2ab7638fd7",
+     "eedf3e2c1d25c3dfbbc2",
+     "7cc127c475288ac0d250",
+     "aa2c4ba104e6ba6ce856"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "gincana",
+    "concurso de artigos",
+    "premio de boas praticas",
+    "premio de comunicacao",
+    "concurso parlamento",
+    "premio mdhc|premio .*servidor|concurso premio"
+   ],
+   "exceto": [],
+   "modalidade_padrao": "^concurso"
+  },
+  {
+   "id": "NA-06",
+   "veredito": "NÃO APLICA",
+   "nome": "Público-alvo incompatível com a associação",
+   "motivo_modelo": "Público-alvo exclusivo que não inclui associação de moradores/comerciantes: ….",
+   "evidencia_na_validacao": {
+    "itens": 49,
+    "exemplos": [
+     "f737b3860b74e4c839b1",
+     "634f365db34a6b63c02b",
+     "0bd2e135ad952c6164c1",
+     "4b7b01fdcbb766bdb605"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes_fortes": [
+    "catadores?",
+    "coleta seletiva",
+    "materiais reciclaveis",
+    "oleo vegetal",
+    "longa permanencia",
+    "\\bilpis?\\b",
+    "cooperativas? de credito",
+    "associacoes? estudantis",
+    "associacao de estudantes",
+    "fapeg",
+    "pesquisador",
+    "instituicoes de ensino superior",
+    "negocios de impacto",
+    "produtora brasileira independente",
+    "fundo setorial do audiovisual|longa metragem"
+   ],
+   "padroes": [
+    "credenciamento de artistas",
+    "contratacao de artistas",
+    "propostas artisticas",
+    "artistas,? grupos",
+    "premiacao",
+    "premio cultural",
+    "\\bmestres?\\b",
+    "bolsas? (culturais|de intercambio)",
+    "apresentacao musical",
+    "facilitadores?,? profissionais",
+    "articuladores"
+   ],
+   "exceto": [
+    "organizacoes? da sociedade civil",
+    "\\bosc\\b",
+    "entidades? sem fins",
+    "associacoes?"
+   ]
+  },
+  {
+   "id": "NA-07",
+   "veredito": "NÃO APLICA",
+   "nome": "Conselho, eleição ou representação (sem recurso)",
+   "motivo_modelo": "Processo de escolha de representantes/organizações para conselho, sem repasse de recursos: ….",
+   "evidencia_na_validacao": {
+    "itens": 2,
+    "exemplos": [
+     "14082a9a4394d27d3685",
+     "op-op-b7fa89c45add"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "representantes da sociedade civil",
+    "eleicao de organiza",
+    "eleicao de entidades"
+   ],
+   "exceto": []
+  },
+  {
+   "id": "NA-08",
+   "veredito": "NÃO APLICA",
+   "nome": "Residência artística ou programa de artista individual no exterior",
+   "motivo_modelo": "Programa para artista individual no exterior: ….",
+   "evidencia_na_validacao": {
+    "itens": 3,
+    "exemplos": [
+     "agr-63e537851550",
+     "agr-9976989216a8",
+     "agr-37dd02b09d80"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "residencia (artistica|em|institut)",
+    "residency",
+    "delfina|braunschweig|institut francais|transartists"
+   ],
+   "exceto": []
+  },
+  {
+   "id": "DI-03",
+   "veredito": "DISPENSÁVEL",
+   "nome": "Prazo encerrado, revogado ou suspenso",
+   "motivo_modelo": "Fase encerrada/sem inscrições vigentes: ….",
+   "evidencia_na_validacao": {
+    "itens": 2,
+    "exemplos": [
+     "op-op-2ca18cdbee02",
+     "op-op-109a827a27bd"
+    ]
+   },
+   "tipo": "prazo"
+  },
+  {
+   "id": "DI-02",
+   "veredito": "DISPENSÁVEL",
+   "nome": "Região restrita do edital",
+   "motivo_modelo": "Edital limitado a região que não inclui Goiás: ….",
+   "evidencia_na_validacao": {
+    "itens": 1,
+    "exemplos": [
+     "op-nova-962fbc0ba13a"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "norte e nordeste",
+    "nordeste do brasil",
+    "periferias fortes"
+   ],
+   "exceto": [
+    "centro-oeste",
+    "goias"
+   ]
+  },
+  {
+   "id": "DI-01",
+   "veredito": "DISPENSÁVEL",
+   "nome": "Território incompatível (fora de Goiânia/GO e sem abrangência nacional)",
+   "motivo_modelo": "Oportunidade real, mas de outro município/estado; chamamentos locais exigem sede/atuação no território: ….",
+   "evidencia_na_validacao": {
+    "itens": 115,
+    "exemplos": [
+     "c76fa7dde15e92b4c940",
+     "op-op-88fc7e055eb6",
+     "257492042d91e5c020e5",
+     "7147b501ca7e398929c3"
+    ]
+   },
+   "tipo": "territorio"
+  },
+  {
+   "id": "DI-04",
+   "veredito": "DISPENSÁVEL",
+   "nome": "Ato acessório (errata, retificação, prorrogação, resultado) de edital já registrado",
+   "motivo_modelo": "Ato acessório de edital de outro registro/território: ….",
+   "evidencia_na_validacao": {
+    "itens": 13,
+    "exemplos": [
+     "0659cca2e07a53d96851",
+     "3c4334473732489935e8",
+     "b55259766243bb944435",
+     "6b107a7e438b933a6e10"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "\\berrata\\b",
+    "retificacao",
+    "prorrogacao (das|do|de) (inscri|prazo|cronograma)",
+    "alteracao de cronograma",
+    "comunicado do edital",
+    "\\bdespacho\\b",
+    "reabertura de prazo",
+    "republicad"
+   ],
+   "exceto": [
+    "fluxo continuo"
+   ]
+  },
+  {
+   "id": "DI-06",
+   "veredito": "DISPENSÁVEL",
+   "nome": "Serviço técnico especializado exige qualificação que o perfil não comprova",
+   "motivo_modelo": "Serviço especializado (qualificação/experiência não comprovada no perfil da entidade): ….",
+   "evidencia_na_validacao": {
+    "itens": 2,
+    "exemplos": [
+     "op-op-d32b4ceef777",
+     "op-op-047d2afbc2f2"
+    ]
+   },
+   "tipo": "padrao",
+   "padroes": [
+    "acolhimento institucional",
+    "organizacao social de saude|\\boss\\b",
+    "sistema socioeducativo",
+    "medidas? socioeducativ",
+    "atendimento socioeducativo",
+    "pronto atendimento",
+    "ambulatorial|hospitalar",
+    "reabilitacao intelectual",
+    "comunidade terapeutica",
+    "assistencia a saude",
+    "escola de musica",
+    "abrigo transitorio"
+   ],
+   "exceto": []
+  },
+  {
+   "id": "DI-05",
+   "veredito": "DISPENSÁVEL",
+   "nome": "Não verificável — sem fonte oficial confirmada",
+   "motivo_modelo": "Sem fonte oficial que comprove objeto e prazo; reavaliar se a fonte for localizada: ….",
+   "evidencia_na_validacao": {
+    "itens": 13,
+    "exemplos": [
+     "op-op-bf48b4a8c63e",
+     "agr-34a22d843bb8",
+     "agr-b35b5e29bd8a",
+     "op-op-114cf6cd87f5"
+    ]
+   },
+   "tipo": "dominio",
+   "dominios": [
+    "licitario.com.br",
+    "buscarlicitacao.com.br",
+    "capitaai.com.br",
+    "prefeituras.org",
+    "farolcultural.art",
+    "x.gov.br",
+    "queridodiario.ok.org.br"
+   ],
+   "motivo_dominio": "fonte espelho/agregador — localizar o ato no site oficial",
+   "padroes": [
+    "guia de (captacao|permuta)",
+    "guia completo",
+    "captacao e regras",
+    "captacao e inscri",
+    "^edital [^:]{3,80} 20\\d\\d: "
+   ]
+  },
+  {
+   "id": "DI-08",
+   "veredito": "DISPENSÁVEL",
+   "nome": "Duplicata de outro registro da lista",
+   "motivo_modelo": "Mesma oportunidade já listada em outro registro: ….",
+   "evidencia_na_validacao": {
+    "itens": 9,
+    "exemplos": [
+     "38de63878d5d74c687cb",
+     "op-op-658ed6de4b10",
+     "op-op-08d9f9917e1f",
+     "op-op-080e80b33a90"
+    ]
+   },
+   "tipo": "duplicata",
+   "chave": [
+    "pncp:cnpj/ano/seq",
+    "titulo_normalizado+municipio"
+   ]
+  }
+ ],
+ "regras_de_coleta": [
+  {
+   "id": "RC-01",
+   "regra": "Registro com município no título não pode receber 'sem restrição geográfica — vale para todo o Brasil'; o território é o do município.",
+   "motivo": "39 registros caíram no balde 'nacional' do painel (__nac__) sem serem nacionais."
+  },
+  {
+   "id": "RC-02",
+   "regra": "Em registros de 'menção em diário oficial', o campo objeto não é confiável (vem de outro trecho da edição): só valer após ler o ato que cita o chamamento.",
+   "motivo": "Valinhos, Iracemápolis, Andradina, Arapongas e outros: objeto = crédito, concurso ou plano, enquanto o ato validado era chamamento."
+  },
+  {
+   "id": "RC-03",
+   "regra": "link_oficial não pode ser agregador, home, diário de outra cidade ou documento de outro município; quando for, o registro fica sem fonte oficial (DI-05).",
+   "motivo": "Itapeva/SP→itapeva.mg.gov.br; Pinhais/PR→catalao.go.gov.br; Valparaíso/SP→campoflorido.mg.gov.br; PNAB→concurso público."
+  },
+  {
+   "id": "RC-04",
+   "regra": "Data de vigência de credenciamento (ex.: 2030, 2031) não é prazo de inscrição; usar a abertura/encerramento de propostas do PNCP e marcar 'credenciamento permanente' quando for o caso.",
+   "motivo": "Artur Nogueira/SP 2030, Telêmaco Borba/PR 2030, São Pedro do Sul/RS 2031."
+  },
+  {
+   "id": "RC-05",
+   "regra": "Registro cuja fonte é um link fictício ou placeholder (ex.: x.gov.br/edital) vai para quarentena, não para a lista de abertas.",
+   "motivo": "Item 101 'Seleção de OSC' sem edital real."
+  },
+  {
+   "id": "RC-06",
+   "regra": "Mesma oportunidade em mais de um registro (PNCP + diário + Interceptador) conta uma vez: chave pncp cnpj/ano/seq ou título+município.",
+   "motivo": "9 duplicatas entre as 238."
+  }
+ ],
+ "totais_da_validacao": {
+  "DI-01": 115,
+  "DI-04": 13,
+  "NA-02": 12,
+  "NA-06": 49,
+  "DI-05": 13,
+  "DI-08": 9,
+  "NA-03": 2,
+  "NA-08": 3,
+  "AP-03": 3,
+  "DI-03": 2,
+  "NA-04": 3,
+  "DI-02": 1,
+  "NA-05": 7,
+  "NA-07": 2,
+  "NA-01": 1,
+  "AP-01": 1,
+  "DI-06": 2
+ },
+ "backtest_contra_a_validacao": {
+  "concordancia_de_classe": 0.92,
+  "matriz": {
+   "DISPENSÁVEL->DISPENSÁVEL": 139,
+   "NÃO APLICA->DISPENSÁVEL": 1,
+   "NÃO APLICA->NÃO APLICA": 76,
+   "DISPENSÁVEL->NÃO APLICA": 5,
+   "DISPENSÁVEL->APLICÁVEL": 11,
+   "APLICÁVEL->APLICÁVEL": 4,
+   "NÃO APLICA->APLICÁVEL": 2
+  },
+  "leitura": "As regras reproduzem a classe do veredito humano em 92% dos 238 registros e confirmam os 6 aplicáveis; as divergências são registros que só a leitura do ato/da página resolve (objeto mal extraído, link de outro município) — por isso a regra reduz o funil mas não substitui a verificação dos 12 itens."
+ }
+}
