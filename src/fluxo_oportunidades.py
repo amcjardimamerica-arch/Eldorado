@@ -522,6 +522,23 @@ def atualizar_mapa() -> dict:
         c["preparacao_dos_livros"] = _prep()
     except Exception as ex:
         c["preparacao_dos_livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10: linha de produção (bronze → prata → ouro → qualificado), sem eliminar nada
+        from .linha_producao import run as _linha
+        c["linha_de_producao"] = _linha()["funil"]
+    except Exception as ex:
+        c["linha_de_producao"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10: rede neural (treina por semana; pontua a cada ciclo) — apoio, nunca filtro
+        from .rede_neural import run as _rede, anotar_livros, precisa_treinar
+        _r = _rede(treinar=precisa_treinar())
+        c["rede_neural"] = {"validacao_cruzada": _r.get("validacao_cruzada"), "pendentes_provaveis_reais": _r.get("pendentes_provaveis_reais"),
+                            "livros_com_nota": anotar_livros()}
+    except Exception as ex:
+        c["rede_neural"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10: planos de correção de cada canal
+        from .planos_correcao import run as _planos
+        c["planos_de_correcao"] = _planos()
+    except Exception as ex:
+        c["planos_de_correcao"] = f"falhou: {type(ex).__name__}"
     try:                                     # 29/09: os 12 parâmetros de cada opressor, pesquisados na fonte oficial
         from .parametros_opressores import aplicar as _par
         c["parametros_opressores"] = _par()

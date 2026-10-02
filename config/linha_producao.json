@@ -1,0 +1,40 @@
+{
+ "versao": "2026-10-02",
+ "regra": "Linha de produção de informação do Eldorado: cada canal só COLETA; as etapas seguintes são comuns a todos. Nada é eliminado: cada registro passa por BRONZE (coletado) → PRATA (normalizado, contrato conferido, entidade resolvida entre canais) → OURO (livro/mapa) → QUALIFICADO (veredito). Falha de contrato vai para a FILA DE REPROCESSAMENTO, nunca para o lixo.",
+ "canais_alias": {
+  "pncp": "pncp-api", "plat-abcr": "abcr", "observatorio-terceiro-setor": "observatorio-3setor", "plat-observatorio-3setor": "observatorio-3setor",
+  "plat-piloto-aberto": "piloto-aberto", "plat-secult-go": "estaduais-go-gov", "plat-fapeg": "estaduais-go-gov", "plat-goias-social": "estaduais-go-gov",
+  "plat-ovg": "estaduais-go-gov", "plat-fundos-estaduais-go": "estaduais-go-gov", "plat-estaduais-go-gov": "estaduais-go-gov",
+  "plat-prosas": "prosas-oscs", "plat-prosas-premios": "prosas-oscs", "plat-gife": "gife", "plat-salic": "salic",
+  "plat-mp-destinacoes-reparacao": "mp-destinacoes-reparacao", "plat-prefeituras-50-go": "prefeituras-50-go", "plat-mapa-osc": "mapa-osc",
+  "plat-empresas-editais-incentivados": "empresas-editais-incentivados", "plat-cnpq-extensao": "cnpq-extensao"
+ },
+ "familias": {
+  "diario_oficial": {"nome": "Diários oficiais", "padrao": "^(do-|dou$|querido-diario|dj-|dje-|diario)"},
+  "portal_chamamentos": {"nome": "Portais de chamamentos e contratações públicas", "padrao": "^(pncp|salic|mapa-osc|prefeituras-)"},
+  "orgao_publico": {"nome": "Sites de órgãos públicos", "padrao": "^(estaduais-go-gov|congresso-nacional|camara-|alego-|bndes|cnpq|f260-)"},
+  "justica_mp": {"nome": "Justiça e Ministério Público", "padrao": "^(cnj-|mp-|dje-|dj-trf)"},
+  "terceiro_setor": {"nome": "Sites especializados no terceiro setor", "padrao": "^(abcr|observatorio|motor-agregadores|prosas|gife$|recorrencia|captamos)"},
+  "entidades": {"nome": "Sites de outras entidades (institutos, fundações)", "padrao": "^(gife|motor-gife|instituto|fundacao)"},
+  "empresas": {"nome": "Sites empresariais", "padrao": "^(empresas-|motor-patrocinio|motor-gife|plat-empresas)"},
+  "pilotos": {"nome": "Pilotos (IA fora dos canais)", "padrao": "^(piloto-|plat-piloto)"}
+ },
+ "contratos": {
+  "obrigatorios": ["titulo", "url", "fonte_id"],
+  "url_de_busca": "duckduckgo\\.com|google\\.[a-z.]+/(search|url)|bing\\.com/(search|ck)",
+  "titulo_minimo": 8
+ },
+ "resolucao_de_entidades": {
+  "tecnica": "blocagem por (UF, 2 termos raros do título) + semelhança de conjunto de termos (rapidfuzz.token_set_ratio) + mesma chave PNCP ou mesma URL → união (union-find). Inspirado em dedupe/Splink (Fellegi–Sunter) sem treino pesado.",
+  "limiar_semelhanca": 90, "termos_raros_por_bloco": 2
+ },
+ "planos_de_correcao": {
+  "sem_rendimento": {"quando": "5+ leituras sem nenhum achado", "plano": ["conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)", "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed", "testar rotas alternativas do motor (config/rotas_motores.json)", "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"], "skill": "comum/plano_correcao"},
+  "falha_parcial": {"quando": "falhas em parte das páginas por 3+ dias", "plano": ["repetir com espera crescente (backoff)", "trocar a ordem das rotas", "registrar páginas que falham sempre como rota morta"], "skill": "comum/plano_correcao"},
+  "bloqueio": {"quando": "HTTP 403/429 ou WAF", "plano": ["espaçar as leituras (respeitar Crawl-Delay)", "mudar o horário na agenda", "se 403 persistente da nuvem: marcar 'exige IP brasileiro' e mandar à coleta local"], "skill": "comum/plano_correcao"},
+  "exige_brasil": {"quando": "o site recusa o IP do GitHub", "plano": ["coleta local (scripts/coleta_brasil.py)", "manter as outras fontes do motor lendo na nuvem", "não contar como falha"], "skill": "comum/plano_correcao"},
+  "formato_mudou": {"quando": "zero itens hoje depois de 7+ dias com itens", "plano": ["comparar o HTML de hoje com o último que rendeu", "alerta no painel", "atualizar o leitor e a lição na skill do motor"], "skill": "comum/plano_correcao"},
+  "contrato_violado": {"quando": "registro sem título, sem URL oficial ou com URL de buscador", "plano": ["vai à fila de reprocessamento (nunca ao lixo)", "Interceptador resolve o site oficial", "volta à linha quando corrigido"], "skill": "comum/linha_producao"},
+  "injecao": {"quando": "texto coletado com instrução ao modelo", "plano": ["quarentena: não vira livro nem prompt", "registro preservado para auditoria"], "skill": "comum/linha_producao"}
+ }
+}
