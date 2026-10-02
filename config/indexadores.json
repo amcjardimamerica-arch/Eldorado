@@ -312,6 +312,18 @@
    "reune": [
     "plat-mapa-osc"
    ]
+  },
+  "site-prosas": {
+   "nome": "Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida)",
+   "local": "Prosas",
+   "finalidade": "editais e prêmios para OSCs; o robots.txt proíbe robôs, então só pelos três caminhos indiretos decididos pelo titular",
+   "fonte": "https://prosas.com.br/selecao/widgets/listagem-editais",
+   "metodo": "caminhos indiretos (sem robô no site)",
+   "horarios_brt": "06:13",
+   "familia_antiga": "idx-assistido",
+   "reune": [
+    "plat-prosas-oscs"
+   ]
   }
  },
  "sites": [
@@ -840,6 +852,29 @@
    "prioridade": "media",
    "cadencia_horas": 168,
    "paginas_retroativas": 1
+  },
+  {
+   "id": "prosas",
+   "nome": "Prosas — editais e prêmios para OSCs",
+   "motor": "site-prosas",
+   "leitor": "assistido",
+   "url": "https://prosas.com.br/selecao/widgets/listagem-editais",
+   "rota": "assistida",
+   "motivo": "robots",
+   "rota_indireta": {
+    "site": "capitaai",
+    "pagina": "https://capitaai.com.br/editais-abertos/prosas"
+   },
+   "angulo_piloto": "Que editais com inscrições abertas estão publicados no Prosas (prosas.com.br) agora? Para cada um, ache o FINANCIADOR e o SITE OFICIAL dele (o Prosas não pode ser lido por robô: procure pelo nome do financiador e do edital fora do Prosas).",
+   "prioridade": "P1",
+   "legado": "plat-prosas-oscs",
+   "nota": "robots.txt: o último grupo para 'User-agent: *' tem 'Disallow: /' (RFC 9309 soma os grupos). O widget é público e feito para ser embutido; a captura é feita pelo titular no navegador, no ritmo de uma pessoa.",
+   "decisao_titular": "02/10/2026: sem pedido de licença — cobertura pelos três caminhos indiretos",
+   "caminhos_indiretos": [
+    "rota indireta: a listagem https://capitaai.com.br/editais-abertos/prosas é lida em TODA rodada do CapitaAI (listas_fixas) e os indícios saem marcados com rota_indireta_de = prosas",
+    "Piloto - Espião: ângulo de busca diário pelo financiador e pelo edital fora do Prosas (estado/indexadores/angulos_piloto.json)",
+    "coleta assistida: o titular ou o Claude no Chrome abre o widget público e clica em 'Capturar indícios' (docs/coleta-assistida.html), no ritmo de uma pessoa"
+   ]
   }
  ],
  "descartados": [
@@ -896,14 +931,6 @@
    "motivo": "ineficaz: nenhum indício na leitura; agregador cujo conteúdo já chega pela CapitaAI e pelo Observatório",
    "em": "2026-10-02",
    "antes_em": "idx-listagens"
-  },
-  {
-   "id": "prosas",
-   "nome": "Prosas — editais e prêmios para OSCs",
-   "url": "https://prosas.com.br/selecao/widgets/listagem-editais",
-   "motivo": "o robots.txt do Prosas proíbe robôs; a lista pública dos editais do Prosas já chega pela CapitaAI (60 na 1ª leitura)",
-   "em": "2026-10-02",
-   "antes_em": "idx-assistido"
   },
   {
    "id": "salic-minc",

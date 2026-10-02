@@ -512,7 +512,9 @@ class RodadaCompleta(unittest.TestCase):
         est = json.loads((self.tmp / "estado/indexadores/estado.json").read_text(encoding="utf-8"))
         self.assertEqual(est["sites"]["portal-geo"]["rota"], "ponte")
         painel = json.loads((self.tmp / "docs/dados/indexadores.json").read_text(encoding="utf-8"))
-        self.assertIn("portal-geo", next(m for m in painel["motores"] if m["id"] == "idx-ponte-brasil").get("escalados", []))
+        # 02/10: um motor por site — o site levado à ponte aparece no PRÓPRIO motor, com a rota "ponte"
+        _mid = next(x["motor"] for x in painel["sites"] if x["id"] == "portal-geo")
+        self.assertIn("ponte", next(m for m in painel["motores"] if m["id"] == _mid).get("rotas", []))
         # Prosas: na fila assistida, com a rota indireta, e o Piloto ganha o ângulo de busca
         fila = json.loads((self.tmp / "estado/indexadores/fila_assistida.json").read_text(encoding="utf-8"))
         self.assertEqual(fila["itens"][0]["id"], "prosas")
@@ -700,7 +702,7 @@ class Catalogo(unittest.TestCase):
             self.assertIn(mid, agenda)
         for legado in ("plat-observatorio-3setor", "plat-abcr", "plat-mapa-osc"):
             self.assertEqual(agenda[legado]["dias"], "inativo")
-            self.assertTrue(agenda[legado]["agregado_a"].startswith("idx-"))
+            self.assertTrue(agenda[legado]["agregado_a"].startswith("site-"))      # 02/10: o motor do próprio site
         inv = {f["id"]: f for f in json.loads((raiz / "config/investigacao.json").read_text(encoding="utf-8"))["fontes"]}
         self.assertFalse(inv["observatorio-3setor"]["ativa"])
         self.assertFalse(inv["abcr"]["ativa"])
