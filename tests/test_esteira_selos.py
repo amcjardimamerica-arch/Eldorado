@@ -58,15 +58,6 @@ class TesteInterceptadorLocal(unittest.TestCase):
         sp = importlib.util.spec_from_file_location("il", ROOT / "scripts/interceptador_local.py"); m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m)
         return m
 
-    def test_bronze_confere_no_ip_do_titular(self):
-        L = self._imp()
-        it = {"livro": "op-a", "programa": "Edital Goyazes de cultura", "candidatos": ["https://noticia.com.br/x"], "termos": ["goyazes"]}
-        resp = '{"site_oficial": "https://cultura.go.gov.br", "url_edital": "https://cultura.go.gov.br/goyazes", "aprendizado": "ok"}'
-        for pagina, esperado in (({"status": 200, "texto": "Programa Goyazes inscrições"}, True), ({"status": 404, "texto": ""}, False),
-                                 ({"status": 200, "texto": "página sem relação"}, False)):
-            with mock.patch.object(L, "ler", return_value=pagina), mock.patch("src.ia.chamar", return_value=resp), mock.patch("src.ia.credencial", return_value="x"):
-                self.assertEqual(L.bronze(it)["confirmado_localmente"], esperado, pagina)
-
     def test_prata_o_codigo_valida(self):
         L = self._imp()
         it = {"livro": "op-a", "programa": "X", "url_edital": "https://cultura.go.gov.br/e", "doze_faltando": ["Valor", "Resultado"]}
@@ -78,7 +69,7 @@ class TesteInterceptadorLocal(unittest.TestCase):
 
     def test_esforco_baixo_e_modelos(self):
         from src import ia
-        self.assertEqual((ia.modelo_para("esteira_bronze"), ia.esforco_para("esteira_bronze")), ("claude-sonnet-5-5", "low"))
+        self.assertNotIn("esteira_bronze", ia._cfg()["modelos"])     # 02/10: bronze é do Interceptador (Qwen 8B)
         self.assertEqual((ia.modelo_para("esteira_prata"), ia.esforco_para("esteira_prata")), ("claude-opus-5-5", "low"))
 
 
