@@ -425,6 +425,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
         return ler_motor_go(sensor, data, limites)
     # MOTOR 03 (parecer de 01/10/2026): o DOU é lido pela Leitura do Jornal INTEIRA (DO1 + DO3 + extras, sem o corte
     # de 2,5 MB que zerava a Seção 3) e pela íntegra das matérias de interesse, com o classificador comum
+    # MOTOR — OPORTUNIDADES ESTADUAIS GOVERNAMENTAIS (titular, 02/10/2026): todos os órgãos do Executivo de Goiás, um por
+    # vez, em camadas (onde publicam · histórico de 5 anos · oportunidades · monitoramento) — agrega os motores 09, 14-17
+    if sensor.get("id") == "plat-estaduais-go-gov":
+        from .estaduais_go import ler_motor as ler_motor_est
+        return ler_motor_est(sensor, data, limites)
     if sensor.get("id") == "dou":
         from .diario_uniao import ler_motor as ler_motor_br
         return ler_motor_br(sensor, data, limites)

@@ -118,8 +118,9 @@ def aplicar_motores() -> dict:
             "dominios": locais["dominios_distintos"]}
 
 
-def registrar_achados_do_espiao(achados: list[dict]) -> dict:
-    """Espião: achado que não está nos livros vira um livro novo na hora; o que já existe recebe a informação nova."""
+def registrar_achados(achados: list[dict], origem: str) -> dict:
+    """Achado que não está nos livros vira um livro novo; o que já existe recebe a informação nova e, se for outra
+    publicação, ENTRA COMO EDIÇÃO no histórico do livro (alimenta a previsão). Usado pelo Espião e pelo motor estadual."""
     from .opressores_repositorio import chave, internacional
     from .livros_opressores import classificar
     C = _j(CAT, {}); ms = C.setdefault("motores", [])
@@ -146,26 +147,37 @@ def registrar_achados_do_espiao(achados: list[dict]) -> dict:
             continue
         x = por_chave.get(k) or por_chave.get(chave(tit))
         if x:
-            if anotar_checklist(x, _checklist_de(a), "Piloto - Espião", edicao={"titulo": tit}):
+            hist = x.setdefault("historico", [])
+            if not any(str(h.get("pagina_oficial") or "").rstrip("/") == url.rstrip("/") for h in hist):
+                hist.append({k: v for k, v in {"id": "pub-" + hashlib.sha1(url.encode()).hexdigest()[:10], "titulo": tit[:200],
+                             "publicado_em": a.get("publicado_em"), "fim": a.get("prazo") if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(a.get("prazo") or "")) else None,
+                             "uf": a.get("uf"), "pagina_oficial": url, "origem": origem, "visto_em": date.today().isoformat()}.items() if v})
+                hist.sort(key=lambda h: str(h.get("fim") or h.get("publicado_em") or ""))
+                atualizados += 1
+            if anotar_checklist(x, _checklist_de(a), origem, edicao={"titulo": tit}):
                 atualizados += 1
             continue
-        lid = "op-" + hashlib.sha1(("espiao|" + k).encode()).hexdigest()[:12]
+        lid = "op-" + hashlib.sha1((("espiao|" if origem == "Piloto - Espião" else origem + "|") + k).encode()).hexdigest()[:12]
         if lid in ids:
             continue
         x = {"id": lid, "programa": tit[:200], "orgao": a.get("orgao") or a.get("empresa") or "", "motor": "repositorio",
              "tipo": "repositorio_de_oportunidade", "familia": "Oportunidade com seleção", "uf": a.get("uf"), "pagina": url,
              "ativa": True, "validacao": "não lida ainda", "criado_em": date.today().isoformat(),
-             "motivo_status": "livro criado pelo Piloto - Espião (oportunidade que não estava na Biblioteca)",
+             "motivo_status": f"livro criado por {origem} (oportunidade que não estava na Biblioteca)",
              "historico": [{"id": lid, "titulo": tit[:200], "fim": a.get("prazo") if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(a.get("prazo") or "")) else None,
-                            "uf": a.get("uf"), "pagina_oficial": url, "origem": "Piloto - Espião", "visto_em": date.today().isoformat()}]}
+                            "uf": a.get("uf"), "pagina_oficial": url, "origem": origem, "publicado_em": a.get("publicado_em"), "visto_em": date.today().isoformat()}]}
         if internacional(x):
             x["internacional"] = True
-        classificar(x); anotar_checklist(x, _checklist_de(a), "Piloto - Espião")
+        classificar(x); anotar_checklist(x, _checklist_de(a), origem)
         ms.append(x); por_chave[k] = x; ids.add(lid); criados += 1
     if criados or atualizados:
         CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return {"livros_novos": criados, "livros_atualizados": atualizados}
 
+
+
+def registrar_achados_do_espiao(achados: list[dict]) -> dict:
+    return registrar_achados(achados, "Piloto - Espião")
 
 if __name__ == "__main__":
     print(json.dumps(aplicar_motores(), ensure_ascii=False, indent=1))

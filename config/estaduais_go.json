@@ -1,0 +1,337 @@
+{
+ "versao": "2026-10-02",
+ "motor": "Oportunidades Estaduais Governamentais",
+ "regra": "Só órgãos do PODER EXECUTIVO do Estado de Goiás e entidades vinculadas a ele (secretarias, autarquias, fundações, empresas estatais, conselhos e fundos estaduais). Ficam de fora Assembleia, Tribunais, Ministério Público e Defensoria (outros poderes ou órgãos autônomos). Agrega os antigos motores 09 (Secult), 14 (FAPEG), 15 (fundos estaduais), 16 (Goiás Social) e 17 (OVG).",
+ "camadas": {
+  "1_descoberta": "onde o órgão publica: notícias (API do portal), páginas de editais e chamamentos, links do site",
+  "2_historico": "publicações dos últimos 5 anos ligadas a oportunidades (busca por termos, com data)",
+  "3_oportunidades": "classifica cada publicação; as abertas viram achados (e livros); as do passado entram no histórico dos livros",
+  "4_monitoramento": "depois do histórico, o órgão passa a ser lido todo dia só nas publicações novas"
+ },
+ "portal": "https://goias.gov.br",
+ "anos_de_historico": 5,
+ "orcamento_segundos_por_execucao": 900,
+ "pausa_entre_requisicoes": 0.4,
+ "paginas_por_termo": 3,
+ "maximo_publicacoes_por_orgao": 900,
+ "descoberta": {
+  "paginas_indice": [
+   "https://goias.gov.br/",
+   "https://goias.gov.br/orgaos/",
+   "https://goias.gov.br/secretarias/",
+   "https://goias.gov.br/governo/"
+  ],
+  "fora_do_executivo": "assembleia|tribunal|minist[eé]rio p[uú]blico|defensoria|tce|tcm|c[aâ]mara municipal|prefeitura",
+  "caminhos_ignorados": [
+   "wp-content",
+   "wp-json",
+   "wp-admin",
+   "noticias",
+   "servicos",
+   "category",
+   "tag",
+   "page",
+   "feed",
+   "en",
+   "busca",
+   "contato",
+   "author",
+   "comments",
+   "transparencia",
+   "ouvidoria",
+   "agenda",
+   "eventos",
+   "galeria",
+   "videos",
+   "podcast",
+   "imprensa"
+  ]
+ },
+ "orgaos_semente": [
+  {
+   "id": "secult",
+   "nome": "Secretaria de Estado da Cultura (Secult)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/cultura",
+   "antigo_motor": "09"
+  },
+  {
+   "id": "fapeg",
+   "nome": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG)",
+   "tipo": "fundação",
+   "site": "https://goias.gov.br/fapeg",
+   "antigo_motor": "14"
+  },
+  {
+   "id": "seds",
+   "nome": "Secretaria de Estado de Desenvolvimento Social (SEDS) — fundos e conselhos (FIA/CEDCA, Idoso, FEAS/CEAS, FUNJUVE)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/desenvolvimento-social",
+   "antigo_motor": "15"
+  },
+  {
+   "id": "goias-social",
+   "nome": "Goiás Social",
+   "tipo": "programa",
+   "site": "https://goias.gov.br/social",
+   "antigo_motor": "16"
+  },
+  {
+   "id": "ovg",
+   "nome": "Organização das Voluntárias de Goiás (OVG)",
+   "tipo": "organização social do Estado",
+   "site": "https://www.ovg.org.br",
+   "antigo_motor": "17"
+  },
+  {
+   "id": "retomada",
+   "nome": "Secretaria de Estado da Retomada",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/retomada"
+  },
+  {
+   "id": "segov",
+   "nome": "Secretaria de Estado de Governo (SEGOV)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/segov"
+  },
+  {
+   "id": "casacivil",
+   "nome": "Casa Civil",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/casacivil"
+  },
+  {
+   "id": "esporte",
+   "nome": "Secretaria de Estado de Esporte e Lazer (SEEL)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/esporte"
+  },
+  {
+   "id": "saude",
+   "nome": "Secretaria de Estado da Saúde (SES)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/saude"
+  },
+  {
+   "id": "educacao",
+   "nome": "Secretaria de Estado da Educação (Seduc)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/educacao"
+  },
+  {
+   "id": "secti",
+   "nome": "Secretaria de Estado de Ciência, Tecnologia e Inovação (SECTI)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/secti"
+  },
+  {
+   "id": "agricultura",
+   "nome": "Secretaria de Estado de Agricultura, Pecuária e Abastecimento (Seapa)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/agricultura"
+  },
+  {
+   "id": "meioambiente",
+   "nome": "Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável (Semad)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/meioambiente"
+  },
+  {
+   "id": "infraestrutura",
+   "nome": "Secretaria de Estado da Infraestrutura (Seinfra)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/infraestrutura"
+  },
+  {
+   "id": "industria",
+   "nome": "Secretaria de Estado de Indústria, Comércio e Serviços (SIC)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/industriaecomercio"
+  },
+  {
+   "id": "economia",
+   "nome": "Secretaria de Estado da Economia",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/economia"
+  },
+  {
+   "id": "administracao",
+   "nome": "Secretaria de Estado da Administração (Sead)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/administracao"
+  },
+  {
+   "id": "seguranca",
+   "nome": "Secretaria de Estado da Segurança Pública (SSP)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/seguranca"
+  },
+  {
+   "id": "comunicacao",
+   "nome": "Secretaria de Estado da Comunicação (Secom)",
+   "tipo": "secretaria",
+   "site": "https://goias.gov.br/comunicacao"
+  },
+  {
+   "id": "turismo",
+   "nome": "Goiás Turismo",
+   "tipo": "agência",
+   "site": "https://goias.gov.br/turismo"
+  },
+  {
+   "id": "imb",
+   "nome": "Instituto Mauro Borges (IMB)",
+   "tipo": "instituto",
+   "site": "https://goias.gov.br/imb"
+  },
+  {
+   "id": "goinfra",
+   "nome": "Agência Goiana de Infraestrutura e Transportes (Goinfra)",
+   "tipo": "agência",
+   "site": "https://goias.gov.br/goinfra"
+  },
+  {
+   "id": "emater",
+   "nome": "Emater Goiás",
+   "tipo": "agência",
+   "site": "https://goias.gov.br/emater"
+  },
+  {
+   "id": "agrodefesa",
+   "nome": "Agência Goiana de Defesa Agropecuária (Agrodefesa)",
+   "tipo": "agência",
+   "site": "https://goias.gov.br/agrodefesa"
+  },
+  {
+   "id": "juceg",
+   "nome": "Junta Comercial do Estado de Goiás (Juceg)",
+   "tipo": "autarquia",
+   "site": "https://goias.gov.br/juceg"
+  },
+  {
+   "id": "dgap",
+   "nome": "Diretoria-Geral de Administração Penitenciária (DGAP)",
+   "tipo": "órgão",
+   "site": "https://goias.gov.br/dgap"
+  },
+  {
+   "id": "cge",
+   "nome": "Controladoria-Geral do Estado (CGE)",
+   "tipo": "órgão",
+   "site": "https://goias.gov.br/controladoria"
+  },
+  {
+   "id": "pge",
+   "nome": "Procuradoria-Geral do Estado (PGE)",
+   "tipo": "órgão",
+   "site": "https://goias.gov.br/pge"
+  },
+  {
+   "id": "agehab",
+   "nome": "Agência Goiana de Habitação (Agehab)",
+   "tipo": "agência",
+   "site": "https://www.agehab.go.gov.br"
+  },
+  {
+   "id": "agr",
+   "nome": "Agência Goiana de Regulação (AGR)",
+   "tipo": "agência",
+   "site": "https://www.agr.go.gov.br"
+  },
+  {
+   "id": "goiasfomento",
+   "nome": "Goiás Fomento (agência de fomento)",
+   "tipo": "empresa estatal",
+   "site": "https://www.goiasfomento.com"
+  },
+  {
+   "id": "ueg",
+   "nome": "Universidade Estadual de Goiás (UEG)",
+   "tipo": "autarquia",
+   "site": "https://www.ueg.br"
+  },
+  {
+   "id": "detran",
+   "nome": "Detran-GO",
+   "tipo": "autarquia",
+   "site": "https://www.detran.go.gov.br"
+  },
+  {
+   "id": "saneago",
+   "nome": "Saneago",
+   "tipo": "empresa estatal",
+   "site": "https://www.saneago.com.br"
+  }
+ ],
+ "lexico": {
+  "origem": "decisões da validação individual sobre órgãos estaduais de GO (67 decisões: 12 oportunidades reais, 35 descartadas — 01/10/2026) + calibração dos motores 01, 02 e 03",
+  "buscar": [
+   "chamamento público",
+   "edital",
+   "seleção de projetos",
+   "termo de fomento",
+   "termo de colaboração",
+   "organizações da sociedade civil",
+   "entidades",
+   "cofinanciamento",
+   "prêmio",
+   "credenciamento",
+   "fundo estadual",
+   "inscrições abertas",
+   "repasse"
+  ],
+  "abertura": "inscri[cç][õo]es (abertas|at[ée]|prorrogad|come[cç]am|v[aã]o at[ée])|\\babre (as )?(inscri|edital|chamamento|sele[cç])|lan[cç]a (o )?(edital|chamamento|programa|pr[eê]mio)|edital de (chamamento|sele[cç])|chamamento p[uú]blico|chamada p[uú]blica|sele[cç][aã]o de (projetos|propostas|entidades|organiza)|pr[eê]mio|credenciamento de (entidades|organiza|osc)|recebe (propostas|projetos)",
+  "publico_alvo": "organiza[cç][õo]es da sociedade civil|\\boscs?\\b|entidades|associa[cç][õo]es|institui[cç][õo]es (sem fins|filantr)|sem fins lucrativos|projetos (culturais|sociais|esportivos|de)|agentes culturais|fazedores de cultura|pontos (e pont[õo]es )?de cultura|coletivos|cooperativas|terceiro setor|filantr[oó]pic",
+  "acompanhar": "resultado|homologa|aprovados|selecionados|classificados|celebra|assina(m|tura)? (o |de )?termo|termos? de fomento|repasse|conv[eê]nio|cofinanciamento|presta[cç][aã]o de contas|elei[cç][aã]o (de|dos) (representantes|conselheiros)",
+  "vetos": [
+   [
+    "merenda / PNAE",
+    "merenda|alimenta[cç][aã]o escolar|\\bpnae\\b|agricultura familiar",
+    false
+   ],
+   [
+    "curso ou capacitação, sem recurso",
+    "capacita[cç][aã]o|\\bcurso(s)?\\b|oficina(s)? gratuita|workshop|palestra|semin[aá]rio",
+    true
+   ],
+   [
+    "seleção de pessoas (emprego, estágio, concurso, conselheiro)",
+    "concurso p[uú]blico|processo seletivo simplificado|est[aá]gio|ex-empregados|celetistas|temporári[oa]s?|vagas de emprego|banco de talentos|conselheiros? tutelar",
+    false
+   ],
+   [
+    "pesquisa acadêmica (bolsa para pesquisador)",
+    "bolsas? de (pesquisa|mestrado|doutorado|inicia[cç][aã]o)|pesquisadores?|p[oó]s-gradua",
+    true
+   ],
+   [
+    "compra ou licitação",
+    "licita[cç][aã]o|preg[aã]o|tomada de pre[cç]os|aquisi[cç][aã]o de|leil[aã]o|ata de registro de pre[cç]os",
+    false
+   ],
+   [
+    "seleção de alunos ou adolescentes",
+    "adolescentes para o comit[eê]|sele[cç][aã]o de (alunos|estudantes)|vestibular|matr[ií]culas?",
+    false
+   ]
+  ],
+  "vetos_cedem_a_osc": "por veto (3º campo): capacitação e pesquisa cedem a um chamamento de OSC; seleção de pessoas, merenda, licitação e seleção de alunos nunca cedem"
+ },
+ "evidencia_do_lexico": {
+  "descartes_que_viraram_veto": {
+   "merenda escolar": "Chamada Pública Merenda Escolar Goiás 2026 (compra de gêneros)",
+   "capacitação": "Capacitações sobre gênero (curso, sem recurso)",
+   "ex-empregados": "Edital de chamamento de ex-empregados celetistas da extinta…",
+   "adolescentes": "Edital de Chamamento CPA (seleciona adolescentes)",
+   "conselheiros": "Edital de Convocação das Eleições (representantes da sociedade civil)",
+   "pesquisa": "Chamada FAPEG/CBA/Reserva Votorantim (pesquisadores)",
+   "termos celebrados": "Termos de Fomento (listagem de termos já celebrados) → ACOMPANHAR"
+  },
+  "acertos_que_viraram_abertura": {
+   "repasse a entidades": "Goiás Social aumenta repasse do Auxílio Nutricional às entidades filantrópicas",
+   "chamamento OSC": "Edital de chamamento público 001/2026 — Socioeducativo",
+   "PNAB": "Edital Cultura Goiatuba 2026: PNAB Ciclo 2"
+  }
+ }
+}

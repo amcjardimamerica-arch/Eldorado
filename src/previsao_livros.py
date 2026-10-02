@@ -55,7 +55,7 @@ def janelas(x: dict) -> list[tuple[date | None, date | None]]:
     """Todas as janelas de inscrição que o livro conhece: (abertura, encerramento)."""
     js = []
     for h in x.get("historico") or []:
-        js.append((_d(h.get("inicio")), _d(h.get("fim"))))
+        js.append((_d(h.get("inicio")) or _d(h.get("publicado_em")), _d(h.get("fim"))))   # publicação = abertura, se não houver data de início
         ds = _datas((h.get("parametros") or {}).get("Prazo de inscrição"))
         if len(ds) >= 2:
             js.append((min(ds), max(ds)))
