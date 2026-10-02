@@ -18,8 +18,8 @@ def devidos(agora_utc: datetime | None = None) -> list[str]:
     faixa = "23" if brt.minute < 38 else "53"
     saida = []
     for mid, a in ag.items():
-        if a.get("coleta") == "local" or a.get("horarios_brt") == "contínuo":
-            continue
+        if a.get("coleta") == "local" or a.get("horarios_brt") == "contínuo" or str(a.get("coleta") or "").startswith("fluxo"):
+            continue                                        # 02/10: motores por site são lidos pelo fluxo 16, não pela agenda
         horas = [h.strip() for h in str(a["horarios_brt"]).split(",")]
         if not any(h == f"{brt.hour:02d}:{faixa}" for h in horas):
             continue
@@ -66,7 +66,7 @@ def recuperar(agora_utc=None) -> list[str]:
     brt = agora - timedelta(hours=3)
     ult = _ultimas_leituras(); saida = []
     for mid, a in ag.items():
-        if not isinstance(a, dict) or a.get("coleta") == "local" or a.get("horarios_brt") in (None, "contínuo"):
+        if not isinstance(a, dict) or a.get("coleta") == "local" or a.get("horarios_brt") in (None, "contínuo") or str(a.get("coleta") or "").startswith("fluxo"):
             continue
         horas = sorted([h.strip() for h in str(a["horarios_brt"]).split(",") if ":" in h], reverse=True)
         d = str(a.get("dias") or "todos"); devido = None
