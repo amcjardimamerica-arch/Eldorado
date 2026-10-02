@@ -117,6 +117,8 @@ def _situacao_prazo(item: dict) -> tuple[str, str]:
 def render(item: dict, aprendizado: dict | None = None) -> str:
     q = item.get("qualidade") or {}
     classe_prazo, texto_prazo = _situacao_prazo(item)
+    from .qualidade import expandir as _exp
+    q = _exp(q)                                            # 02/10: a base guarda só os códigos
     atendidos = q.get("conteudo_atendido", []) + q.get("oficialidade_atendida", [])
     pendentes = q.get("conteudo_pendente", []) + q.get("oficialidade_pendente", [])
     nota = q.get("nota", 0)

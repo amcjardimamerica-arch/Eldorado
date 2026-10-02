@@ -19,6 +19,7 @@ Quando o segredo de acesso está configurado, o publicador cifra este conteúdo
 """
 from __future__ import annotations
 
+from src.qualidade import expandir as _qexp   # 02/10: a base guarda só os códigos
 import json
 import pathlib
 import re
@@ -316,8 +317,8 @@ def _editais(hoje: date) -> list[dict]:
                 "requisitos_estruturados": req or None,
                 "pontuacao": (req or {}).get("criterios_pontuacao") or None,
                 "documentos_exigidos": (req or {}).get("documentos") or None,
-                "pendencias": [x["rotulo"] for x in (q.get("conteudo_pendente") or [])],
-                "atendidos": [x["rotulo"] for x in (q.get("conteudo_atendido") or [])],
+                "pendencias": [x["rotulo"] for x in (_qexp(q).get("conteudo_pendente") or [])],
+                "atendidos": [x["rotulo"] for x in (_qexp(q).get("conteudo_atendido") or [])],
                 "evidencia": (item.get("evidencia") or "")[:600],
                 "hash_evidencia": item.get("hash_evidencia"),
                 "coletado_em": item.get("coletado_em"),
