@@ -327,7 +327,10 @@ def _vetos():
     usar = {"selecao_pessoas", "apoio_ao_orgao", "imovel", "empresas_servicos", "credenciamento_prestadores",
             "empresas_credenciamento", "pesquisa_contratada", "selecao_familias", "participacao_publica", "consulta_publica",
             "pesquisa_clinica", "empreendedorismo"}
-    return VETOS_PNCP + [acad_pncp] + [v for v in du.VETOS_BR if v[0] in usar]
+    _base = VETOS_PNCP + [acad_pncp] + [v for v in du.VETOS_BR if v[0] in usar]
+    # 02/10: vetos do Brasil inteiro (falsos positivos da primeira leitura nacional) — config/pncp_osc.json › vetos_nacionais
+    extra = [(v[0], re.compile(v[1]), v[2], bool(v[3] if len(v) > 3 else False)) for v in (_cfg().get("vetos_nacionais") or [])]
+    return extra + list(_base)
 
 
 TODAS_UFS = ["GO", "DF", "AC", "AL", "AP", "AM", "BA", "CE", "ES", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS",

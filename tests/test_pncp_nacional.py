@@ -19,6 +19,16 @@ class TestePncpNacional(unittest.TestCase):
         self.assertNotIn("fora do território", " ".join(c.get("motivos") or []))
         self.assertEqual(c["territorio"], "SP/Campinas")
 
+    def test_vetos_nacionais(self):
+        """02/10: os falsos positivos da primeira leitura do Brasil inteiro viraram veto."""
+        from src import pncp_osc as P
+        for t in ("CREDENCIAMENTO DE PARECERISTAS PARA ANÁLISE DE PROJETOS CULTURAIS", "SOLICITAÇÃO GERADA PARA COTAÇÃO DE VÁRIAS SOLICITAÇÕES",
+                  "CREDENCIAMENTO PARA A CAPTAÇÃO DE COTAS DE PATROCÍNIO", "CONTRATAÇÃO DE SHOWS ARTÍSTICOS",
+                  "Credenciamento de pessoas jurídicas de direito privado com fins lucrativos"):
+            c = P.classificar_item({"titulo": t, "objeto": t + " organizações da sociedade civil", "orgao": "MUNICIPIO X", "uf": "SP", "esfera": "M",
+                                    "encerramento": "2026-12-01"}, date(2026, 10, 2), P.TODAS_UFS)
+            self.assertEqual(c["veredito"], "RUIDO", t)
+
     def test_livro_para_pncp_em_qualquer_estado(self):
         from src.curadoria_biblioteca import fora_da_abrangencia
         from src.opressores_repositorio import dispensa
