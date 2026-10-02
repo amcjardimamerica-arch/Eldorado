@@ -65,14 +65,17 @@ def do_pncp(x: dict) -> bool:
         return True
     if "pncp" in str(x.get("origem") or "").lower():
         return True
+    if (((x.get("busca") or {}).get("lexico") or {}).get("pncp") or {}).get("chave"):
+        return True                                    # 02/10: livro cujo ato foi localizado no PNCP (Fonte C do motor 04)
     return any("pncp" in str(h.get("origem") or "").lower() or "pncp.gov.br" in str(h.get("pagina_oficial") or "")
                for h in (x.get("historico") or []))
 
 
 def fora_da_abrangencia(x: dict) -> bool:
     """Público MUNICIPAL só de Goiás — inclusive quando o estado não foi identificado (geo nacional).
-    Exceção (02/10): o que vem do PNCP ganha livro em qualquer estado."""
-    if do_pncp(x):
+    Exceção (02/10): o que vem do PNCP ganha livro em qualquer estado; e o edital de OSC validado no parecer das 238
+    (titular, 02/10: edital de OSC de outro município é oportunidade para OSC e compõe um livro próprio)."""
+    if do_pncp(x) or x.get("excecao_abrangencia"):
         return False
     from .livros_opressores import uf_do_dominio
     _uf, _niv = uf_do_dominio(x.get("pagina"))
@@ -90,8 +93,20 @@ def empresa_sem_edital(x: dict) -> bool:
     return natureza(x) == "privada" and x.get("geo") != "INT" and not SEL.search(_txt(x))
 
 
+def titulo_sem_orgao(x: dict) -> str:
+    """02/10: o nome do livro é 'Órgão — Título — Lugar' nos livros dos motores que registram o órgão na frente (motor
+    estadual): comparar só a 1ª parte comparava o ÓRGÃO e juntava editais diferentes da mesma secretaria."""
+    n = str(x.get("nome_classificado") or x.get("programa") or "")
+    if x.get("nome_classificado") and " — " in n:
+        n = n.rsplit(" — ", 1)[0]                          # tira o lugar ("— Goiás / Goiânia")
+    org = str(x.get("orgao") or "").strip()
+    if org and sem(n).startswith(sem(org)) and len(n) > len(org) + 3:
+        n = n[len(org):].lstrip(" —-:")                   # tira o órgão da frente
+    return n.split(" · ")[0]                               # sem o sufixo do agregador ("· Capitaai")
+
+
 def _base(x: dict) -> str:
-    n = str(x.get("nome_classificado") or x.get("programa") or "").split(" — ")[0].split(" · ")[0]   # sem o sufixo do agregador ("· Capitaai")
+    n = titulo_sem_orgao(x)
     return re.sub(r"\s+", " ", re.sub(r"\b(19|20)\d\d\b|\bn[ºo°]?\s*\d+[\w/.-]*|\b\d+\b|[^a-z ]", " ", sem(n))).strip()
 
 

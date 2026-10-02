@@ -80,7 +80,8 @@ def _siglas(texto: str, caixa_alta: bool) -> list[str]:
 
 def termos_da_chave(x: dict) -> list[str]:
     """Nomes próprios e siglas do título (o que identifica a oportunidade) + o financiador real."""
-    _bruto = str(x.get("nome_classificado") or x.get("programa") or "").split(" — ")[0]
+    from .curadoria_biblioteca import titulo_sem_orgao
+    _bruto = titulo_sem_orgao(x).split(" — ")[0]           # 02/10: o título do edital, sem o órgão da frente e sem o lugar
     if _bruto.rstrip().endswith(("…", "...")):                # título cortado: a última palavra pode estar pela metade
         _bruto = _bruto.rstrip(" .…").rsplit(" ", 1)[0]
     nome = re.sub(r"(?i)\b(19|20)\d\d\b|\bn[ºo°.]*\s*\d+[\w/.-]*|r\$\s*[\d.,]+\s*\w*", " ", _bruto)   # R$ maiúsculo também

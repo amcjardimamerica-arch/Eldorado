@@ -264,6 +264,95 @@ def fonte_b(hoje: date, cfg: dict, diag: dict, vistos: set) -> list[dict]:
     return out
 
 
+def _livros_a_localizar(cfg: dict) -> list[dict]:
+    """Livros cuja oportunidade ainda não tem chave no PNCP (consulta gravada no próprio livro, src/regras_restricao) e os
+    registros do parecer das 238 que aguardam o ato oficial (dados/oportunidades/livros_parecer_238.json › aguardar)."""
+    out = []
+    try:
+        ms = load_json(ROOT / "biblioteca_alexandria/fontes/motores.json").get("motores") or []
+    except Exception:  # noqa: BLE001
+        ms = []
+    for x in ms:
+        lx = (x.get("busca") or {}).get("lexico") or {}
+        pn = lx.get("pncp") or {}
+        if pn.get("consulta") and not pn.get("chave") and lx.get("municipio"):
+            out.append({"id": x["id"], "consulta": pn["consulta"], "uf": pn.get("ufs"), "municipio": lx["municipio"],
+                        "numeros": lx.get("numeros") or [], "termos": lx.get("termos") or []})
+    try:
+        sem = load_json(ROOT / "dados/oportunidades/livros_parecer_238.json").get("aguardar") or []
+    except Exception:  # noqa: BLE001
+        sem = []
+    for e in sem:
+        if e.get("consulta") and e.get("municipio"):
+            out.append({"id": "semente-" + str(e.get("registro")), "consulta": e["consulta"], "uf": e.get("uf"), "municipio": e["municipio"],
+                        "numeros": e.get("numeros") or [], "termos": e.get("termos") or []})
+    return out
+
+
+def fonte_c(hoje: date, cfg: dict, diag: dict, vistos: set, est: dict) -> list[dict]:
+    """02/10 (titular): o PNCP é o agregador dos editais de OSC do Brasil inteiro. Fonte C procura, com o LÉXICO DE CADA
+    LIVRO, o ato no PNCP dos livros que ainda não têm chave (ex.: edital de outro município achado em diário oficial).
+    Casa só no mesmo município (e no número do edital, quando o livro tem número); grava {livro: chave} em
+    estado/pncp_osc.json › livros_pncp, que o ciclo dos livros leva ao livro."""
+    c = cfg.get("fonte_c") or {}
+    if not c.get("usar", True):
+        return []
+    F = diag["fontes"].setdefault("C", {"falhas": [], "consultas": 0, "itens": 0, "localizados": 0})
+    fila = _livros_a_localizar(cfg)
+    achados = est.setdefault("livros_pncp", {})
+    sem = est.setdefault("livros_sem_pncp", {})
+    reler = (hoje - timedelta(days=int(c.get("reler_sem_registro_dias", 7)))).isoformat()
+    fila = [l for l in fila if l["id"] not in achados and str(sem.get(l["id"]) or "") <= reler]
+    if not fila:
+        return []
+    k = int(est.get("cursor_fonte_c") or 0) % len(fila)
+    fila = (fila[k:] + fila[:k])[: int(c.get("max_livros_por_execucao", 10))]
+    est["cursor_fonte_c"] = k + len(fila)
+    out = []
+    for l in fila:
+        if _tempo_esgotado():
+            break
+        q = urlencode({"q": l["consulta"], "tipos_documento": "edital", "ordenacao": "-data", "pagina": 1,
+                       "tam_pagina": int(c.get("tam_pagina", 100)), **({"ufs": l["uf"]} if l.get("uf") else {})})
+        try:
+            j = _get(f"{BASE}/api/search/?{q}", cfg)
+        except RuntimeError as exc:
+            F["falhas"].append(f"livro {l['id']}: {exc}"); continue
+        F["consultas"] += 1
+        melhor = None
+        termos = [_N(t) for t in l.get("termos") or [] if t and _N(t) not in _N(l["municipio"]).split()]
+        for x in (j.get("items") if isinstance(j, dict) else None) or []:
+            if _N(x.get("municipio_nome")) != _N(l["municipio"]):
+                continue
+            m = item_da_busca(x, "C")
+            if not m:
+                continue
+            T = _N(" ".join(str(m.get(k) or "") for k in ("titulo", "objeto", "info")))
+            if not _OSC_FORTE.search(T) and not re.search(r"\bPNAB\b|ALDIR BLANC|TERMO DE EXECUCAO CULTURAL|AGENTES? CULTURA", T):
+                continue                                   # revisão 02/10: só ato de OSC/fomento (não leiloeiro, compra, monitor)
+            num = any(re.search(rf"(?<![\d/])0*{int(n.split('/')[0])}\s*/\s*{n.split('/')[1]}(?![\d/])", T) for n in l["numeros"])
+            if l["numeros"] and not num:
+                continue                                   # o livro tem número: só o mesmo número serve
+            casados = sum(1 for t in termos if t in T)
+            if not l["numeros"] and casados < 2:
+                continue                                   # sem número: exige dois termos distintivos do livro
+            if classificar_item(m, hoje, TODAS_UFS)["veredito"] == "RUIDO":
+                continue                                   # o classificador do motor 04 tem a palavra final
+            nota = 10 * num + casados
+            if not melhor or nota > melhor[0]:
+                melhor = (nota, m)
+        if melhor:
+            achados[l["id"]] = f"pncp:{melhor[1]['cnpj']}/{melhor[1]['ano']}/{melhor[1]['seq']}"
+            F["localizados"] += 1; sem.pop(l["id"], None)
+            if melhor[1]["controle"] not in vistos:
+                vistos.add(melhor[1]["controle"]); out.append(melhor[1])
+        else:
+            sem[l["id"]] = hoje.isoformat()          # não está no PNCP (MROSC não obriga): tenta de novo em 7 dias
+    est["livros_pncp"] = achados
+    F["itens"] = len(out)
+    return out
+
+
 def documento_oficial(m: dict, cfg: dict) -> str | None:
     """O PDF que o órgão anexou no PNCP (vale como documento oficial): prefere o que se chama "edital"."""
     try:
@@ -501,6 +590,10 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
         itens += fonte_b(hoje, cfg, diag, set())
     except Exception as exc:  # noqa: BLE001
         diag["fontes"]["B"]["falhas"].append(f"etapa: {_erro(exc)}")
+    try:                                            # 02/10: Fonte C — o léxico de cada livro procura o ato no PNCP
+        itens += fonte_c(hoje, cfg, diag, {x["controle"] for x in itens}, est)
+    except Exception as exc:  # noqa: BLE001
+        diag["fontes"].setdefault("C", {"falhas": []})["falhas"].append(f"etapa: {_erro(exc)}")
     oport, acomp, cont = classificar_lote(itens, hoje, ufs)
     # documento oficial (PDF do edital anexado pelo órgão) para as oportunidades novas
     docs = est.setdefault("documentos", {})

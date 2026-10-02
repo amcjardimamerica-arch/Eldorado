@@ -104,6 +104,22 @@ def sincronizar(hoje: date | None = None) -> dict:
     return {"ligados": len(est["ligados"])}
 
 
+def _busca_do_livro(fonte: dict) -> str:
+    """02/10: o léxico e as restrições gravados no próprio livro orientam a busca (o que procurar e o que NÃO aceitar)."""
+    b = fonte.get("busca") or {}
+    if not b:
+        return ""
+    lx = b.get("lexico") or {}
+    vetos = [r["id"] for r in b.get("restricoes") or [] if r.get("efeito") == "veto"]
+    enq = [r.get("motivo") for r in b.get("restricoes") or [] if r.get("efeito") == "enquadramento"]
+    pn = lx.get("pncp") or {}
+    return ("Léxico do livro: " + ", ".join((lx.get("frases") or [])[:3] + (lx.get("termos") or [])[:10]) + ".\n"
+            + (f"PNCP: {pn['chave']}.\n" if pn.get("chave") else (f"Procure no PNCP por: {pn['consulta']}.\n" if pn.get("consulta") else ""))
+            + (f"Não aceite como deste recurso o que cair nas restrições {', '.join(vetos)} (licitação, RH, ato de diário sem chamamento, "
+               "público incompatível…); errata/resultado/prorrogação é edição DESTE livro.\n" if vetos else "")
+            + (f"Enquadramento já anotado (não descarta): {'; '.join(enq)}.\n" if enq else ""))
+
+
 def prompt_para_fonte(fonte: dict, reg: dict | None, faltam: list[str], tentativas: list[dict]) -> str:
     """Prompt sob medida para o recurso — muda a cada caso: nome, órgão, norma,
     léxico próprio, o que já se tem e o que ainda falta."""
@@ -111,6 +127,7 @@ def prompt_para_fonte(fonte: dict, reg: dict | None, faltam: list[str], tentativ
             + (f"Norma que rege: {', '.join(n['ref'] for n in reg.get('normas', []))}. Página oficial: {reg.get('pagina_oficial')}. "
                f"Léxico próprio: {', '.join(reg.get('lexico_proprio', [])[:10])}.\n" if reg else
                f"Página conhecida: {fonte.get('pagina')}.\n")
+            + _busca_do_livro(fonte)
             + f"Itens que AINDA FALTAM (só estes): {', '.join(faltam)}.\n"
             + (f"Tentativas anteriores sem resultado: {'; '.join(t.get('resumo','') for t in tentativas)}.\n" if tentativas else "")
             + "Encontre o edital/ato VIGENTE ou o mais recente deste recurso em fonte oficial e devolva SOMENTE JSON: "

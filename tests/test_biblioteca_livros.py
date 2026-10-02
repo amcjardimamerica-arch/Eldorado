@@ -68,6 +68,15 @@ class TesteBiblioteca(unittest.TestCase):
         C = json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8"))["motores"]
         self.assertEqual(sum(1 for x in C if "Goyazes - projetos" in str(x.get("programa"))), 3, "as faixas do Goyazes são livros distintos")
 
+    def test_orgao_na_frente_nao_junta_editais_diferentes(self):
+        """02/10: livros do motor estadual são 'Órgão — Título — Lugar'; editais diferentes da mesma secretaria não se juntam."""
+        from src.curadoria_biblioteca import mesma_oportunidade
+        p = json.loads((ROOT / "config/parametros_biblioteca.json").read_text(encoding="utf-8"))["duplicidade"]
+        O = "Secretaria de Estado da Cultura (Secult)"
+        A = {"nome_classificado": f"{O} — Governo de Goiás lança editais da Pnab para Pontos e Pontões — Goiás", "orgao": O, "geo": "GO", "pagina": "https://goias.gov.br/cultura/a"}
+        B = {"nome_classificado": f"{O} — Governo de Goiás abre chamamento para o Circuito das Cavalhadas — Goiás", "orgao": O, "geo": "GO", "pagina": "https://goias.gov.br/cultura/b"}
+        self.assertFalse(mesma_oportunidade(A, B, p)); self.assertTrue(mesma_oportunidade(A, dict(A), p))
+
 
 if __name__ == "__main__":
     unittest.main()

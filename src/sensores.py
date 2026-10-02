@@ -369,6 +369,9 @@ def lexico_especifico(sensor: dict) -> list[str]:
     programa. Casam de forma cirúrgica, onde o léxico geral seria vago."""
     if sensor.get("lexico_proprio"):                 # sensores especiais com léxico próprio (ex.: editais incentivados)
         return list(sensor["lexico_proprio"])[:30]
+    lx = (sensor.get("busca") or {}).get("lexico") or {}
+    if lx.get("termos") or lx.get("proprio"):        # 02/10: o livro carrega o léxico que busca a sua oportunidade
+        return list(dict.fromkeys(list(lx.get("proprio") or []) + list(lx.get("termos") or [])))[:30]
     if not sensor.get("fontes_260"):
         return []
     genericos = {"edital", "editais", "projeto", "projetos", "apoio", "cultura", "cultural", "esporte", "fomento",
@@ -395,8 +398,10 @@ def lexico_especifico(sensor: dict) -> list[str]:
 
 
 def casa_especifico(texto: str, termos: list[str]) -> list[str]:
-    tl = texto.lower()
-    return [t for t in termos if t.lower() in tl]
+    import unicodedata as _u
+    sa = lambda t: "".join(c for c in _u.normalize("NFKD", str(t or "").lower()) if not _u.combining(c))
+    tl = sa(texto)                                    # 02/10: o léxico do livro vem sem acento — compara os dois sem acento
+    return [t for t in termos if sa(t) in tl]
 
 
 def reprogramar_recorrencia(sensor: dict, resultado: dict) -> None:

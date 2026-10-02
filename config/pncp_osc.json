@@ -110,5 +110,13 @@
    false
   ]
  ],
- "nota_vetos_nacionais": "02/10: primeira leitura do Brasil inteiro — 173 oportunidades, cerca de 96% corretas; os 6 erros viraram estes vetos."
+ "nota_vetos_nacionais": "02/10: primeira leitura do Brasil inteiro — 173 oportunidades, cerca de 96% corretas; os 6 erros viraram estes vetos.",
+ "fonte_c": {
+  "nome": "Livros sem chave PNCP — /api/search/ com o léxico de cada livro",
+  "usar": true,
+  "max_livros_por_execucao": 10,
+  "tam_pagina": 100,
+  "reler_sem_registro_dias": 7,
+  "regra": "02/10 (titular): o PNCP é o agregador dos editais de OSC do Brasil inteiro. Livro de edital de OSC de outro município achado em diário oficial ou agregador é procurado no PNCP com a consulta gravada no próprio livro (busca.lexico.pncp.consulta); achado no mesmo município (e com o mesmo número, quando houver), o livro recebe a chave PNCP. Não achado: o livro continua (fonte oficial = diário) e é procurado de novo em 7 dias — a Lei 13.019/2014 manda publicar o chamamento no sítio do órgão, não obriga o PNCP."
+ }
 }
