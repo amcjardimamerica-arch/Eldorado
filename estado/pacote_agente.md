@@ -31,17 +31,17 @@ Texto do edital (compacto):
 
 
 ---
-## 53e16dff2aeb300819dd — SEGENP (gestão de negócios e parcerias) — Edital nº 001/2026 — Celebração de Termo de Colaboração com Organização da Sociedade Civil (OSC) v
+## ca043943546c8b82ef8d — MUNICIPIO DE SILVANIA — REALIZAÇÃO E PUBLICAÇÃO DO EDITAL DE CHAMAMENTO PUBLICO Nº 01/2026 - EDITAL CICLO 2 DA POLITICA NACIONAL ALDIR BLANC
 
-MODO: COMPLETO · marcado desde 2026-10-01 · visto pela IA 5× · motivo: informações incompletas
+MODO: COMPLETO
 
-Fonte (vetor): Diário Oficial do Município de Goiânia · UF GO · nível municipal · situação aberta · fim 2026-10-26
+Fonte (vetor): PNCP — MUNICIPIO DE SILVANIA · UF GO · nível municipal · situação aberta · fim 2026-10-09
 
 Itens já obtidos: nenhum
 
 Itens que FALTAM: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação, Área de atuação
 
-Anúncio: https://data.queridodiario.ok.org.br/5208707/2026-09-25/9952f00ade29d6e71433d17d9591a05498b890bb.pdf
+Anúncio: https://pncp.gov.br/app/editais/01068030000100/2026/355
 Site institucional conhecido: não localizado
 
 Texto do edital (compacto):
