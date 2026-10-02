@@ -1,146 +1,16 @@
 bloco=manual
-  do-goiania: 1 achado(s), 0 falha(s), 353 s
-  do-goias: 5 achado(s), 0 falha(s), 124 s
-  dou: 2 achado(s), 0 falha(s), 40 s
-  congresso-nacional: 0 achado(s), 0 falha(s), 41 s
-  pncp-api: 221 achado(s), 0 falha(s), 894 s
-{
-  "data": "2026-10-02",
-  "em": "2026-10-02T17:49:40+00:00",
-  "manual": [
-    "congresso-nacional",
-    "do-goiania",
-    "do-goias",
-    "dou",
-    "empresas-incentivadas",
-    "f260-captacao-025",
-    "f260-captacao-069",
-    "f260-captacao-090",
-    "f260-captacao-107",
-    "f260-captacao-152",
-    "f260-captacao-169",
-    "f260-captacao-175",
-    "f260-captacao-176",
-    "f260-captacao-177",
-    "f260-captacao-180",
-    "f260-captacao-200",
-    "f260-captacao-206",
-    "f260-captacao-212",
-    "f260-captacao-220",
-    "f260-captacao-221",
-    "f260-captacao-224",
-    "f260-captacao-225",
-    "f260-captacao-226",
-    "f260-captacao-228",
-    "f260-captacao-240",
-    "f260-captacao-241",
-    "f260-captacao-242",
-    "f260-captacao-243",
-    "f260-captacao-244",
-    "f260-captacao-245",
-    "f260-captacao-246",
-    "f260-captacao-247",
-    "f260-captacao-248",
-    "f260-captacao-249",
-    "f260-captacao-250",
-    "f260-captacao-251",
-    "f260-captacao-252",
-    "f260-captacao-253",
-    "f260-captacao-254",
-    "f260-captacao-255",
-    "f260-captacao-256",
-    "f260-captacao-257",
-    "f260-captacao-258",
-    "f260-captacao-259",
-    "f260-captacao-260",
-    "idx-apis",
-    "idx-feeds",
-    "idx-sitemaps",
-    "plat-cnpq-extensao",
-    "plat-empresas-editais-incentivados",
-    "plat-estaduais-go-gov",
-    "plat-gife",
-    "plat-mp-destinacoes-reparacao",
-    "plat-piloto-aberto",
-    "plat-prefeituras-50-go",
-    "plat-salic",
-    "pncp-api"
-  ],
-  "bloco": "manual",
-  "sensores_executados": 5,
-  "adiados_por_tempo": [
-    "empresas-incentivadas",
-    "f260-captacao-107",
-    "f260-captacao-069",
-    "f260-captacao-152",
-    "f260-captacao-212",
-    "f260-captacao-206",
-    "f260-captacao-025",
-    "f260-captacao-177",
-    "f260-captacao-244",
-    "f260-captacao-176",
-    "f260-captacao-220",
-    "f260-captacao-175",
-    "f260-captacao-243",
-    "f260-captacao-255",
-    "f260-captacao-259",
-    "f260-captacao-200",
-    "f260-captacao-169",
-    "f260-captacao-249",
-    "f260-captacao-221",
-    "f260-captacao-224",
-    "f260-captacao-256",
-    "f260-captacao-250",
-    "f260-captacao-254",
-    "f260-captacao-251",
-    "f260-captacao-225",
-    "f260-captacao-228",
-    "f260-captacao-226",
-    "f260-captacao-090",
-    "f260-captacao-252",
-    "f260-captacao-253",
-    "f260-captacao-260",
-    "f260-captacao-248",
-    "f260-captacao-242",
-    "f260-captacao-180",
-    "f260-captacao-257",
-    "f260-captacao-258",
-    "f260-captacao-240",
-    "f260-captacao-241",
-    "f260-captacao-245",
-    "f260-captacao-246",
-    "f260-captacao-247",
-    "plat-gife",
-    "plat-salic",
-    "plat-prefeituras-50-go",
-    "plat-empresas-editais-incentivados",
-    "plat-mp-destinacoes-reparacao",
-    "plat-cnpq-extensao",
-    "plat-piloto-aberto",
-    "plat-estaduais-go-gov"
-  ],
-  "duracao_s": 1452,
-  "em_espera": 69,
-  "total_esquadra": 123,
-  "previsoes_ativas": 1,
-  "achados": 229,
-  "novos_na_base": 59,
-  "por_tipo": {
-    "diario_oficial": {
-      "sensores": 3,
-      "achados": 8,
-      "falhas": 0
-    },
-    "legislativo": {
-      "sensores": 1,
-      "achados": 0,
-      "falhas": 0
-    },
-    "api": {
-      "sensores": 1,
-      "achados": 221,
-      "falhas": 0
-    }
-  }
-}
+  empresas-incentivadas: 7 achado(s), 1 falha(s), 13 s
+  plat-gife: 3 achado(s), 0 falha(s), 15 s
+  plat-salic: 5 achado(s), 0 falha(s), 12 s
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 772, in <module>
+    print(json.dumps(run(), ensure_ascii=False, indent=2))
+                     ^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 728, in run
+    reg.update({"ultima": r["lido_em"], "motivo": s.get("motivo") or f"bloco {escala.get('bloco') or 'manual'}",
+                          ~^^^^^^^^^^^
+KeyError: 'lido_em'
+src.sensores: falhou ou estourou 1500s (código 1)
 ultima_execucao: 2026-10-02T17:49:40+00:00 bloco manual sensores 5 achados 229
