@@ -18,7 +18,9 @@ jobs:
         with: { python-version: "3.12" }
       - name: Sondar
         run: |
-          if [ -n "${{ github.event.inputs.bruto }}" ]; then
+          if [ "${{ github.event.inputs.bruto }}" = "tabela-mpt" ]; then
+            timeout 300 python3 scripts/sondar_ministerios_publicos.py --tabela-mpt || echo "tabela terminou com aviso"
+          elif [ -n "${{ github.event.inputs.bruto }}" ]; then
             timeout 600 python3 scripts/sondar_ministerios_publicos.py --bruto ${{ github.event.inputs.bruto }} || echo "bruto terminou com aviso"
           else
             timeout 2280 python3 scripts/sondar_ministerios_publicos.py || echo "sondagem terminou com aviso"
