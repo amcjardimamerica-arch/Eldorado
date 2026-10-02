@@ -290,7 +290,11 @@ class Integracao(unittest.TestCase):
         ag = json.loads((ROOT / "config/agenda_motores.json").read_text(encoding="utf-8"))["motores"]
         for k in ("dje-tjgo", "cnj-destinacoes"):
             self.assertEqual((ag[k]["dias"], ag[k]["agregado_a"]), ("inativo", J.MOTOR_ID))
-        self.assertEqual(ag[J.MOTOR_ID]["dias"], "todos")
+        # 02/10 (titular): o motor combinado foi SEPARADO em TJ-GO e CNJ — fica inativo, apontando para o TJ-GO
+        self.assertEqual((ag[J.MOTOR_ID]["dias"], ag[J.MOTOR_ID]["agregado_a"]), ("inativo", "judiciario-tjgo"))
+        self.assertEqual((ag["judiciario-tjgo"]["dias"], ag["judiciario-cnj"]["dias"]), ("todos", "todos"))
+        tj = next(x for x in s["sensores_especiais"] if x["id"] == "judiciario-tjgo")
+        self.assertTrue({urlsplit(u).hostname for u in tj["urls"]} & set(s["exige_brasil"]["dominios"]))   # o TJ-GO segue no computador
         fm = json.loads((ROOT / "config/finalidade_motores.json").read_text(encoding="utf-8"))["motores"]
         self.assertEqual(fm[J.MOTOR_ID]["finalidade"], "descoberta")
         cfg = json.loads((ROOT / "config/judiciario_go.json").read_text(encoding="utf-8"))

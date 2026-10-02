@@ -31,6 +31,7 @@ SENSORES = ROOT / "config/sensores.json"
 PASTA = ROOT / "estado/indexadores"
 ESTADO = PASTA / "estado.json"
 ACERVO = PASTA / "indicios.json"
+CRIADOS = PASTA / "motores_criados.json"        # 02/10: motores criados pelo robô (somados ao catálogo ao carregar)
 FILA = PASTA / "fila_assistida.json"
 DIARIO = PASTA / "diario.json"
 ANGULOS = PASTA / "angulos_piloto.json"
@@ -65,7 +66,34 @@ def agora_utc() -> datetime:
 
 # ------------------------------------------------------------------ catálogo e rotas
 def catalogo() -> dict:
-    return _j(CATALOGO, {"sites": [], "motores": {}, "limites": {}})
+    """O catálogo editado (config/indexadores.json) + os motores que o robô criou (estado/indexadores/motores_criados.json)."""
+    cat = _j(CATALOGO, {"sites": [], "motores": {}, "limites": {}})
+    cri = _j(CRIADOS, {"sites": []})
+    ids = {s["id"] for s in cat.get("sites") or []}
+    for s in cri.get("sites") or []:
+        if s.get("tipo") == "instancia_mapas_culturais":   # instância nova entra no motor Mapas Culturais
+            mc = next((x for x in cat.get("sites") or [] if x.get("leitor") == "mapas_culturais"), None)
+            if mc is not None and s["host"] not in {i.get("host") for i in mc.get("instancias") or []}:
+                mc.setdefault("instancias", []).append({"host": s["host"], "uf": None, "nome": s["host"], "confirmada": False, "criada_automaticamente": True})
+            continue
+        if s.get("id") not in ids:
+            cat.setdefault("sites", []).append(s)
+            cat.setdefault("motores", {})[s["motor"]] = {"nome": f"{s['nome']} — editais (motor criado automaticamente, em observação)", "local": s["nome"],
+                "finalidade": "fonte oficial que apareceu em indícios sem ter motor", "fonte": (s.get("listas") or [None])[0],
+                "metodo": "listagem HTML genérica", "criado_automaticamente": True, "criado_em": s.get("criado_em")}
+    return cat
+
+
+def registrar_motores_que_faltam(hoje: date, gravar: bool = True) -> list[dict]:
+    """Depois da rodada: domínio oficial sem motor, visto em 2+ indícios, vira motor (em observação). Um por vez, sem repetir."""
+    cri = _j(CRIADOS, {"sites": []})
+    ja = {s["id"] for s in cri.get("sites") or []}
+    novos = [dict(m, criado_em=hoje.isoformat()) for m in motores_que_faltam(_j(ACERVO, {"itens": {}}), catalogo()) if m["id"] not in ja]
+    if novos and gravar:
+        cri["sites"] = (cri.get("sites") or []) + novos
+        cri["regra"] = "02/10/2026 (titular): quando a oportunidade não tem motor, ele é criado — leitor de listagem genérico, em observação até render indício."
+        _gravar(CRIADOS, cri)
+    return novos
 
 
 def hosts_exige_brasil() -> set[str]:
@@ -337,19 +365,32 @@ def motores_que_faltam(acervo: dict, cat: dict, minimo: int = 2) -> list[dict]:
         M = mapa_dominios()
     except Exception:  # noqa: BLE001
         return []
-    ja = {(urlsplit(x.get("url") or x.get("pagina") or (x.get("listas") or [""])[0]).hostname or "").lower().removeprefix("www.") for x in cat.get("sites") or []}
-    ja |= {(urlsplit(d.get("url") or "").hostname or "").lower().removeprefix("www.") for d in cat.get("descartados") or [] if isinstance(d, dict)}
+    def _todas_urls(o):                               # QUALQUER endereço do site (ex.: as instâncias do Mapas Culturais)
+        if isinstance(o, dict):
+            return [u for v in o.values() for u in _todas_urls(v)]
+        if isinstance(o, list):
+            return [u for v in o for u in _todas_urls(v)]
+        return [o] if isinstance(o, str) and o.startswith("http") else []
+    ja = {str(i.get("host") or "").lower().removeprefix("www.") for x in cat.get("sites") or [] for i in x.get("instancias") or []}
+    ja |= {host(u) for x in (cat.get("sites") or []) + [d for d in cat.get("descartados") or [] if isinstance(d, dict)] for u in _todas_urls(x)}
     cont, exemplo = Counter(), {}
     for x in (acervo.get("itens") or {}).values():
         u = x.get("link_oficial")
         d = host(u) if u else ""
         if not d or d in GENERICOS or d in ja or any(d == k or d.endswith("." + k) for k in M) or X._republicador(u):
             continue
+        if x.get("perfil") == "fora" or not (d.endswith(".br") or x.get("pais") == "BR"):
+            continue                                  # só o que se aplica a OSC no Brasil vira motor
         cont[d] += 1; exemplo.setdefault(d, u)
     out = []
     for d, n in cont.most_common(10):
         if n >= minimo:
-            base = exemplo[d].rsplit("/", 1)[0] + "/"
+            _p = urlsplit(exemplo[d]); _seg = [x for x in _p.path.split("/") if x]
+            base = f"{_p.scheme}://{_p.netloc}/" + ("/".join(_seg[:-1]) + "/" if len(_seg) > 1 else "")   # a LISTAGEM (pasta de cima)
+            if "/oportunidade/" in exemplo[d]:            # é uma instância do Mapas Culturais: ALIMENTA o motor existente
+                out.append({"id": "instancia-" + re.sub(r"[^a-z0-9]+", "-", d)[:40].strip("-"), "tipo": "instancia_mapas_culturais",
+                            "host": d, "nome": d, "motor": "site-mapas-culturais", "indicios_que_motivaram": n, "listas": [base]})
+                continue
             out.append({"id": "auto-" + re.sub(r"[^a-z0-9]+", "-", d)[:40].strip("-"), "nome": d, "motor": "site-auto-" + re.sub(r"[^a-z0-9]+", "-", d)[:40].strip("-"),
                         "leitor": "html_listagem", "listas": [base], "cadencia_horas": 24, "prioridade": "baixa", "rota": "nuvem",
                         "paginas_retroativas": 1, "criado_automaticamente": True, "situacao": "em observação", "indicios_que_motivaram": n})
@@ -458,6 +499,10 @@ def rodada(motores: list[str] | None = None, sites: list[str] | None = None, rot
     if delta_em:
         _gravar(Path(delta_em), delta, indent=None)
     resumo.update(aplicar(delta, gravar=gravar))
+    try:                                             # 02/10: oportunidade sem motor → o motor é criado
+        resumo["motores_criados"] = [m["motor"] for m in registrar_motores_que_faltam(hoje, gravar=gravar)]
+    except Exception as e:  # noqa: BLE001 — nunca derruba a rodada
+        resumo["motores_criados"] = f"falhou: {type(e).__name__}"
     return resumo
 
 
