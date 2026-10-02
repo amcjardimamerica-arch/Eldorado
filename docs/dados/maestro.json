@@ -1,28 +1,28 @@
 {
  "dia": "2026-10-02",
- "em": "2026-10-02T14:19:53+00:00",
+ "em": "2026-10-02T14:29:35+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 121,
  "cobertura": {
-  "parcial": 5,
-  "completa": 7,
+  "parcial": 4,
+  "completa": 8,
   "aguardando_horario": 108,
   "pendente": 1
  },
- "cobertura_percentual": 53.8,
+ "cobertura_percentual": 61.5,
  "a_disparar": [
   "plat-piloto-aberto",
   "plat-estaduais-go-gov",
-  "plat-prefeituras-50-go",
   "plat-empresas-editais-incentivados",
   "plat-mp-destinacoes-reparacao",
   "plat-cnpq-extensao",
-  "cnj-destinacoes",
-  "do-goias",
-  "dou",
   "pncp-api",
+  "dou",
   "plat-gife",
+  "cnj-destinacoes",
   "plat-salic",
+  "plat-prefeituras-50-go",
+  "do-goias",
   "do-goiania"
  ],
  "esgotaram_tentativas": [],
@@ -30,13 +30,13 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 0.9838,
+   "prioridade": 4.5038,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 48,
+   "livros_com_abertura_proxima": 224,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "congresso-nacional",
@@ -746,7 +746,7 @@
    "horarios": "06:47,14:17",
    "coleta": "nuvem",
    "cobertura": "pendente",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "f260-captacao-236",
@@ -836,7 +836,7 @@
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "cobertura": "completa",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "plat-prefeituras-50-go",
@@ -845,8 +845,8 @@
    "livros_com_abertura_proxima": 0,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
-   "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "cobertura": "completa",
+   "tentativas_hoje": 1
   },
   {
    "motor": "plat-empresas-editais-incentivados",
@@ -856,7 +856,7 @@
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "plat-mp-destinacoes-reparacao",
@@ -866,7 +866,7 @@
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "plat-cnpq-extensao",
@@ -876,7 +876,7 @@
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "f260-captacao-217",
@@ -1046,7 +1046,7 @@
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "cobertura": "completa",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "f260-curadoria-006",
@@ -1206,7 +1206,7 @@
    "horarios": "07:41",
    "coleta": "nuvem + local",
    "cobertura": "completa",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "do-goias",
@@ -1216,7 +1216,7 @@
    "horarios": "07:23",
    "coleta": "nuvem + local",
    "cobertura": "completa",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "dou",
@@ -1226,7 +1226,7 @@
    "horarios": "05:53,06:23,19:23",
    "coleta": "nuvem",
    "cobertura": "completa",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "pncp-api",
@@ -1236,7 +1236,7 @@
    "horarios": "05:53,12:23,20:23",
    "coleta": "nuvem",
    "cobertura": "completa",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   }
  ]
 }
