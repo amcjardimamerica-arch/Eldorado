@@ -72,6 +72,13 @@ def contrato(reg: dict, cfg: dict) -> str | None:
         return "URL inválida"
     if c.get("url_de_busca") and re.search(c["url_de_busca"], str(reg.get("url"))):
         return "URL de buscador (falta o site oficial)"
+    try:                                       # 02/10: ruído aprendido com os descartes das estantes
+        from .descartes import e_ruido
+        rr = e_ruido(reg)
+        if rr:
+            return f"RUIDO: descartado antes ({rr.get('livro')}: {str(rr.get('motivo'))[:60]})"
+    except Exception:  # noqa: BLE001
+        pass
     try:                                       # 02/10: condicionais de integridade — o que BLOQUEIA vai ao reprocessamento
         from .integridade import verificar
         b = [x for x in verificar(reg) if x["gravidade"] == "bloqueia"]
@@ -186,7 +193,9 @@ def run(regs: list[dict] | None = None, gravar: bool = True) -> dict:
     for r in regs:
         motivo = contrato(r, cfg)
         u = str(r.get("url") or "").split("#")[0].rstrip("/").lower()
-        if motivo:
+        if motivo and motivo.startswith("RUIDO"):
+            etapa = "RUIDO"                     # 02/10: aprendido com um descarte — não volta ao reprocessamento
+        elif motivo:
             etapa = "REPROCESSAR"; fila[motivo] += 1
         else:
             lv = livros.get(u)

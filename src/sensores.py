@@ -708,6 +708,11 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
     # (estimativa = duração da leitura anterior dele); o adiado volta pelo maestro; a esquadra é gravada após cada motor.
     import time as _t
     _ini = _t.monotonic(); _prazo = float(os.environ.get("SENSORES_PRAZO_S", "1380"))
+    try:
+        from .descartes import restricoes as _restricoes
+        _RESTR = _restricoes()
+    except Exception:  # noqa: BLE001
+        _RESTR = {"itens": []}
     executados, adiados = 0, []
     for s in escala["saem"][: (limite or len(escala["saem"]))]:
         _est = float((sens.get(s["id"]) or {}).get("duracao_s") or 60)
@@ -734,6 +739,13 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         est["sensores"].setdefault(s["id"], {})["diagnostico"] = r.get("diagnostico")
         for a in r["achados"]:
             total_ach += 1
+            try:                                         # 02/10: restrição aprendida com um descarte — é ruído
+                from .descartes import e_ruido
+                if e_ruido(a, s["id"], _RESTR):
+                    reg["ruido_filtrado"] = int(reg.get("ruido_filtrado") or 0) + 1
+                    continue
+            except Exception:  # noqa: BLE001
+                pass
             if a["id"] not in existentes:
                 try:                                     # 02/10: data original da publicação + data da consulta
                     from .integridade import completar_datas

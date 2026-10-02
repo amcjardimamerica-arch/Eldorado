@@ -202,7 +202,7 @@ def run(hoje: str | None = None, gravar: bool = True) -> dict:
     cfg = _j(CFG, {}); C = _j(CAT, {})
     aplicado = aplicar_resultados(C, cfg, hoje) if gravar else {}
     livros = [x for x in C.get("motores") or [] if x.get("papel") != "fonte_de_busca"
-              and (x.get("qualificacao") or {}).get("veredito") != "NÃO APLICA"]
+              and (x.get("qualificacao") or {}).get("veredito") not in ("NÃO APLICA", "DESCARTADA")]
     for x in livros:
         atualizar_livro(x, cfg, hoje)
     cont = Counter((x["esteira"]["selo"], x["esteira"]["estante"]) for x in livros)

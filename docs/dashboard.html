@@ -1231,7 +1231,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <select id="mo-natureza"><option value="">Pública e privada</option><option value="publica">Fonte pública</option><option value="privada">Fonte privada</option></select>
     <select id="mo-esfera"><option value="">Todas as esferas</option><option value="Município">Município</option><option value="Estado">Estado</option><option value="Brasil">Brasil</option><option value="Internacional">Internacional</option></select>
     <select id="mo-status"><option value="ativo">Lendo</option><option value="inativo">Na Estante</option><option value="">Todos</option></select>
-    <select id="mo-selo" title="Esteira de selos (02/10)"><option value="">Todos os selos</option><option value="ouro">Ouro — pronto para o Farol</option><option value="prata">Prata</option><option value="bronze">Bronze</option><option value="investigacao_prata">Estante de Investigação Prata</option><option value="investigacao_bronze">Estante de Investigação Bronze</option></select>
+    <select id="mo-selo" title="Esteira de selos (02/10)"><option value="">Todos os selos</option><option value="ouro">Ouro — pronto para o Farol</option><option value="prata">Prata</option><option value="bronze">Bronze</option><option value="investigacao_prata">Estante de Investigação Prata</option><option value="investigacao_bronze">Estante de Investigação Bronze</option><option value="descartada">Descartadas (viraram ruído)</option></select>
     <input id="mo-busca" placeholder="buscar edital ou órgão…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
     <span class="bz-limpar" onclick="moLimpar()">⨯ Limpar</span>
   </div>
@@ -3278,7 +3278,7 @@ function mtFiltrados(){
     &&(!(($("mo-tipo")||{}).value)||m.tipo_objeto===$("mo-tipo").value)
     &&(!(($("mo-periodo")||{}).value)||($("mo-periodo").value==="aberta"?!!m.aberta_agora:m.regime_inscricao===$("mo-periodo").value))
     &&(!(($("mo-publico")||{}).value)||(m.publico||[]).includes($("mo-publico").value))
-    &&(!(($("mo-selo")||{}).value)||(($("mo-selo").value.startsWith("investigacao"))?((m.esteira||{}).estante===$("mo-selo").value):((m.esteira||{}).selo===$("mo-selo").value)))
+    &&(!(($("mo-selo")||{}).value)||(($("mo-selo").value.startsWith("investigacao")||$("mo-selo").value==="descartada")?((m.esteira||{}).estante===$("mo-selo").value):((m.esteira||{}).selo===$("mo-selo").value)))
     &&(!stt||(stt==="ativo"?mtAtivo(m.id):!mtAtivo(m.id)))
     &&(!q2||(m.programa+" "+(m.orgao||"")).toLowerCase().includes(q2)));
 }

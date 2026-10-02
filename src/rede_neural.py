@@ -214,6 +214,10 @@ def dados_rotulados() -> tuple[list[dict], list[int], list[dict]]:
                 regs.append(r); y.append(1 if COPIA.search(str(d.get("motivo") or d.get("razao") or "").lower()) else 0)
             elif dec == "pendente":
                 pend.append({**r, "_decisao": dec})
+    for it in (_j(ROOT / "config/restricoes_aprendidas.json", {}).get("itens") or []):   # 02/10: descartes das estantes = ruído
+        u = str(it.get("url") or "").lower(); chave = u or str(it.get("titulo"))
+        if chave and chave not in vistos:
+            vistos.add(chave); regs.append({**(base.get(u) or {}), "titulo": it.get("titulo"), "url": it.get("url")}); y.append(0)
     return regs, y, pend
 
 
