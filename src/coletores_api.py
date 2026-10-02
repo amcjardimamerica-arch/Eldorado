@@ -60,6 +60,8 @@ def _pncp_url_publica(item: dict) -> str | None:
 
 def coletar_pncp(inicio: date, fim: date, escopo: dict, cfg: dict | None = None) -> tuple[list[dict], list[dict]]:
     cfg = cfg or _cfg()["pncp"]
+    if not cfg.get("ativa", True):
+        return [], []            # 01/10: desligado — o PNCP é lido só pelo motor 04 (src/pncp_osc.py), com prazo e território
     filtro = re.compile(cfg["filtro_regex"], re.I)
     ufs = set(escopo.get("ufs_ativas") or [])
     achados, falhas, descartados = [], [], []

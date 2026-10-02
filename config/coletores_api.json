@@ -2,7 +2,7 @@
  "versao": 1,
  "regra": "APIs públicas oficiais, somente leitura, sem chave e sem IA. Resultados entram na base deduplicada pelo mesmo merge que preserva revisão humana. Endpoints conferidos em 30/08/2026 na especificação OpenAPI do PNCP; a primeira execução real valida e registra falhas por camada.",
  "pncp": {
-  "ativa": true,
+  "ativa": false,
   "bases": [
    "https://pncp.gov.br/api/consulta"
   ],
@@ -15,7 +15,8 @@
   "filtro_regex": "chamamento|credenciament|organiza[çc][õo]es? da sociedade civil|\\bOSC\\b|entidade sem fins lucrativos|projeto (social|cultural|esportivo)|fomento|termo de (fomento|colabora[çc][ãa]o)",
   "dias_incrementais": 5,
   "max_paginas": 5,
-  "tamanho_pagina": 50
+  "tamanho_pagina": 50,
+  "nota_desativado_01_10": "desligado pelo parecer do motor 04 (docs/pareceres/motor-04-pncp.md): gravava registros do país inteiro sem data de encerramento (0 de 215) e 206 fora de Goiás. O PNCP passa a ser lido só pelo motor 04 (src/pncp_osc.py), pelas propostas abertas com a data oficial de encerramento."
  },
  "querido_diario": {
   "ativa": true,

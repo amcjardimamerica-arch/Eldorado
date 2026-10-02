@@ -181,22 +181,15 @@
    "uf": null,
    "territorio": "BR",
    "urls": [
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50&uf=GO",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=2&tamanhoPagina=50&uf=GO",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=50&uf=GO",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=3&pagina=2&tamanhoPagina=50&uf=GO",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=10&pagina=1&tamanhoPagina=50&uf=GO",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=10&pagina=2&tamanhoPagina=50&uf=GO",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=1&tamanhoPagina=50",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=2&tamanhoPagina=50",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=12&pagina=3&tamanhoPagina=50",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=3&pagina=1&tamanhoPagina=50",
-    "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao?dataInicial={data8-3}&dataFinal={data8}&codigoModalidadeContratacao=10&pagina=1&tamanhoPagina=50"
+    "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta?dataFinal={data+500}&codigoModalidadeContratacao={12|3|10|11}&uf=GO",
+    "https://pncp.gov.br/api/search/?q={consulta}&tipos_documento=edital&status=recebendo_proposta&ufs=GO",
+    "https://pncp.gov.br/api/search/?q={consulta}&tipos_documento=edital&status=recebendo_proposta&esferas=F"
    ],
    "busca": null,
    "confianca": "confirmada",
-   "o_que_procurar": "modalidades 12 (credenciamento) e 3 (concurso) com vocabulário de OSC; PDFs do edital via API",
-   "nota_rede": "04/09: a API exige dataInicial/dataFinal (AAAAMMDD), modalidade e página; 12 = chamamento público, 3 = concorrência/credenciamento; resposta JSON lida pelo sensor · 26/09: janela de 3 dias (dataInicial=hoje-3), Goiás primeiro (uf=GO), modalidades 12/3/10, 50 por página — antes: um dia, 20 itens, página 1, Brasil inteiro (o que interessa não cabia)"
+   "o_que_procurar": "chamamentos MROSC publicados como credenciamento (12), prêmios (3), manifestação de interesse (10), PNAB, credenciamento de entidades socioassistenciais, coleta seletiva solidária e aprendizagem com ESFL — em Goiás e nos órgãos federais; PDF do edital via /arquivos",
+   "nota_rede": "04/09: a API exige dataInicial/dataFinal (AAAAMMDD), modalidade e página; 12 = chamamento público, 3 = concorrência/credenciamento; resposta JSON lida pelo sensor · 26/09: janela de 3 dias (dataInicial=hoje-3), Goiás primeiro (uf=GO), modalidades 12/3/10, 50 por página — antes: um dia, 20 itens, página 1, Brasil inteiro (o que interessa não cabia) · 01/10: o sensor genérico lia só 3 das 11 URLs (paginas_por_sensor = 3), vetava 'com ou sem fins lucrativos' e 'prestação de serviços' no rótulo, seguia /app/editais como se fosse listagem e tomava HTTP 429 (limite de requisições) sem causa descrita: 52 leituras, 0 achados. Agora: propostas ABERTAS por modalidade com a data oficial de encerramento + busca do portal (Goiás e órgãos federais), 1,5 s entre chamadas e espera no 429",
+   "leitor": "src/pncp_osc.py — propostas abertas (Fonte A) + busca do portal (Fonte B) + PDF do edital do órgão"
   },
   {
    "id": "empresas-incentivadas",

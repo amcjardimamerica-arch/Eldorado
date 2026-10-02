@@ -19,7 +19,8 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-SUPORTAM_DATA = {"dou", "pncp-api"}          # têm {data}/{data8} na URL: leem a edição de qualquer dia
+SUPORTAM_DATA = {"dou"}          # têm {data} na URL: leem a edição de qualquer dia · 01/10: o pncp-api saiu — lê as propostas
+                                 # ABERTAS hoje; reler "um dia de setembro" gravaria editais de hoje como se fossem daquele dia
 
 
 def dias_sem_leitura(sid: str, ano: int, mes: int, ate: date) -> list[date]:

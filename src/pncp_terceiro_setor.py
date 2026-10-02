@@ -46,7 +46,7 @@ POSITIVO = {
                          "agentes culturais", "agente cultural", "projetos culturais", "premiacao",
                          "premio", "fomento a cultura", "fomento cultural", "mestres da cultura"],
     "fundo_social": ["fmas", "fmdca", "fundo municipal dos direitos", "fundo municipal de assistencia",
-                     "fundo da infancia", "fia ", "cmdca", "cmas", "conselho municipal", "subvencao social",
+                     "fundo da infancia", " fia ", "cmdca", "cmas", "conselho municipal", "subvencao social",
                      "subvencoes sociais", "fundo do idoso"],
     # "chamamento público" e "fomento" SOZINHOS não entram: no PNCP o chamamento é usado para
     # tudo (hotéis, combustível, imóvel) — medido no corpus de 768 publicações
