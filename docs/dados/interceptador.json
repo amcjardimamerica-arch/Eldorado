@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-02T06:35:40+00:00",
+  "em": "2026-10-02T06:47:41+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-02T06:20:15+00:00",
+  "ultimo_voo": "2026-10-02T06:37:33+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,80 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 74,
+    "missoes": 75,
     "validadas": 0,
     "parciais": 16,
-    "insuficientes": 58,
+    "insuficientes": 59,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 19,
-      "sim": 41
+      "sim": 42
     },
     "estrelas_de_ouro": 27,
     "fontes_novas_para_os_motores": 0,
     "tempo_medio_min": 11.1
   },
   "missoes": [
+    {
+      "em": "2026-10-02T06:37:33+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG) — Goiás premia projetos de IA que transformam educaçã… — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 1,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado indica que a Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG) está associada ao estado de Goiás, o que é relevante para ações locais.",
+        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar se o edital se aplica a sua área de atuação e se atende aos requisitos não especificados, como capacidade técnica e recursos.",
+        "proximo_passo": "Consultar o edital completo da FAPEG para obter informações detalhadas sobre requisitos, prazos e processo de inscrição.",
+        "risco": "A falta de informações específicas, como prazos e requisitos, pode impedir a associação de se qualificar adequadamente para o edital."
+      },
+      "erro": null,
+      "segundos": 607,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-03b34415fb6d",
+      "encontrou": {
+        "Território": {
+          "valor": "GO",
+          "trecho": "GOiás",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG)",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-02T06:20:15+00:00",
       "modo": "validar",
@@ -2439,54 +2498,6 @@
         "financiador_regulamento",
         "financiador_pdf",
         "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-01T20:52:14+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Editais - FAPEG — Goiás — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Território",
-        "Esfera",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/fapeg/editais/inscricoes-abertas/",
-      "parecer_fonte": {
-        "serve_como_fonte": "nao",
-        "por_que": "Não há informações comprovadas sobre os editais da FAPEG — Goiás, impossibilitando a análise detalhada.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar as condições específicas dos editais, que não foram encontrados.",
-        "proximo_passo": "Consultar fontes oficiais ou agências de fomento para obter informações atualizadas sobre os editais.",
-        "risco": "A falta de informações específicas pode impedir o acesso aos recursos disponíveis."
-      },
-      "erro": null,
-      "segundos": 762,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "op-op-cc1574acdd23",
-      "encontrou": {},
-      "financiador": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG)",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ]
