@@ -1,26 +1,14 @@
 bloco=manual
-  plat-mp-destinacoes-reparacao: 4 achado(s), 0 falha(s), 102 s
-{
-  "data": "2026-10-02",
-  "em": "2026-10-02T22:10:56+00:00",
-  "manual": [
-    "plat-mp-destinacoes-reparacao"
-  ],
-  "bloco": "manual",
-  "sensores_executados": 1,
-  "adiados_por_tempo": [],
-  "duracao_s": 102,
-  "em_espera": 122,
-  "total_esquadra": 123,
-  "previsoes_ativas": 1,
-  "achados": 4,
-  "novos_na_base": 4,
-  "por_tipo": {
-    "plataforma": {
-      "sensores": 1,
-      "achados": 4,
-      "falhas": 0
-    }
-  }
-}
+  plat-gife: 3 achado(s), 0 falha(s), 14 s
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 775, in <module>
+    print(json.dumps(run(), ensure_ascii=False, indent=2))
+                     ^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 731, in run
+    reg.update({"ultima": r["lido_em"], "motivo": s.get("motivo") or f"bloco {escala.get('bloco') or 'manual'}",
+                          ~^^^^^^^^^^^
+KeyError: 'lido_em'
+src.sensores: falhou ou estourou 1500s (código 1)
 ultima_execucao: 2026-10-02T22:10:56+00:00 bloco manual sensores 1 achados 4
