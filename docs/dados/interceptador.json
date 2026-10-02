@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-02T15:30:12+00:00",
+  "em": "2026-10-02T15:41:55+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-02T15:21:22+00:00",
+  "ultimo_voo": "2026-10-02T15:33:24+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,99 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 114,
+    "missoes": 115,
     "validadas": 1,
-    "parciais": 32,
+    "parciais": 33,
     "insuficientes": 81,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 23,
-      "sim": 67
+      "sim": 68
     },
-    "estrelas_de_ouro": 28,
-    "fontes_novas_para_os_motores": 1,
+    "estrelas_de_ouro": 29,
+    "fontes_novas_para_os_motores": 2,
     "tempo_medio_min": 10.9
   },
   "missoes": [
+    {
+      "em": "2026-10-02T15:33:24+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · oportunidade do mapa",
+      "alvo": "credenciamento de microempreendedor individuais para a prestação de serviços artísticos — MUNICIPIO DE JANDAIA",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://licitaclaro.com.br/licitacao.php?id=25292",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprova a existência de um processo de credenciamento para microempreendedores individuais na área de serviços artísticos no município de Jandaia, GO.",
+        "para_a_amc": "A associação comunitária precisaria se credenciar como microempreendedor individual, prestando serviços artísticos, e atender aos critérios estabelecidos no edital para participar do processo.",
+        "proximo_passo": "Verificar os requisitos específicos do edital e se candidatar dentro do prazo de inscrição estabelecido.",
+        "risco": "A falta de informações sobre os requisitos e anexos pode impedir a associação de se preparar adequadamente para o credenciamento."
+      },
+      "erro": null,
+      "segundos": 509,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Requisitos, Anexos",
+      "id": "agr-9d8cee25526b",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Credenciamento de microempreendedor individuais para a prestação de serviços artísticos",
+          "trecho": "Credenciamento de microempreendedor individuais para a prestação de serviços artísticos",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-05-29 a 2027-05-10",
+          "trecho": "Início das propostas10/05/2026 07:00",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 63.499,68",
+          "trecho": "Valor estimadoR$ 63.499,68",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Municipio de jandaia",
+          "trecho": "ÓrgãoMunicipio de jandaia",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "LocalJandaia / GO",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "MUNICIPIO DE JANDAIA",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-10-02T15:21:22+00:00",
       "modo": "validar",
@@ -2484,65 +2562,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-02T06:37:33+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG) — Goiás premia projetos de IA que transformam educaçã… — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 1,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Esfera",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado indica que a Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG) está associada ao estado de Goiás, o que é relevante para ações locais.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar se o edital se aplica a sua área de atuação e se atende aos requisitos não especificados, como capacidade técnica e recursos.",
-        "proximo_passo": "Consultar o edital completo da FAPEG para obter informações detalhadas sobre requisitos, prazos e processo de inscrição.",
-        "risco": "A falta de informações específicas, como prazos e requisitos, pode impedir a associação de se qualificar adequadamente para o edital."
-      },
-      "erro": null,
-      "segundos": 607,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "op-op-03b34415fb6d",
-      "encontrou": {
-        "Território": {
-          "valor": "GO",
-          "trecho": "GOiás",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG)",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ]
