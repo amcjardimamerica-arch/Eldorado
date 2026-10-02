@@ -173,5 +173,24 @@ def run() -> dict:
     return {k: len(v["paginas"]) for k, v in out["orgaos"].items()}
 
 
+def bruto(urls: list[str]) -> dict:
+    """02/10: guarda o HTML COMPLETO (com os scripts) das páginas pedidas, para achar de onde a tabela montada por
+    JavaScript busca os dados. Respeita o robots.txt. Saída: biblioteca_alexandria/base/ministerios_publicos/bruto/"""
+    pasta = SAIDA.parent / "bruto"; pasta.mkdir(parents=True, exist_ok=True); out = {}
+    for u in urls:
+        b = "{0.scheme}://{0.netloc}".format(urllib.parse.urlsplit(u)); rp, _ = robots(b)
+        if not rp.can_fetch(UA, u):
+            out[u] = "robots proíbe"; continue
+        r = ler(u); time.sleep(PAUSA)
+        nome = re.sub(r"[^a-z0-9]+", "-", u.lower().split("//", 1)[1])[:120] + ".html"
+        (pasta / nome).write_bytes(r["corpo"][:3_000_000]); out[u] = {"status": r["status"], "bytes": r["bytes"], "arquivo": nome, "tipo": r["tipo"]}
+    (pasta / "indice.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    return out
+
+
 if __name__ == "__main__":
-    print(json.dumps(run(), ensure_ascii=False))
+    import sys
+    if "--bruto" in sys.argv:
+        print(json.dumps(bruto([a for a in sys.argv[sys.argv.index("--bruto") + 1:] if a.startswith("http")]), ensure_ascii=False))
+    else:
+        print(json.dumps(run(), ensure_ascii=False))
