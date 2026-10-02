@@ -24,7 +24,7 @@ class TesteEsquadraSemPerda(unittest.TestCase):
 
     def test_fluxo_avisa_falha_de_verdade(self):
         y = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
-        self.assertIn("python -u -m src.sensores", y); self.assertIn("PIPESTATUS[0]", y); self.assertIn("SENSORES_PRAZO_S=1380", y)
+        self.assertIn("PYTHONUNBUFFERED=1 timeout 1500 python -m src.sensores", y); self.assertIn("PIPESTATUS[0]", y); self.assertIn("SENSORES_PRAZO_S=1380", y)
 
 
 if __name__ == "__main__":
