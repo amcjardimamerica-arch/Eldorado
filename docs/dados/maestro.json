@@ -1,23 +1,18 @@
 {
  "dia": "2026-10-02",
- "em": "2026-10-02T23:17:36+00:00",
+ "em": "2026-10-02T23:29:00+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 124,
  "cobertura": {
   "parcial": 16,
-  "pendente": 6,
+  "pendente": 1,
   "completa": 35,
-  "pendente_sem_agenda": 64,
-  "aguardando_horario": 3
+  "aguardando_horario": 8,
+  "pendente_sem_agenda": 64
  },
- "cobertura_percentual": 28.9,
+ "cobertura_percentual": 30.2,
  "a_disparar": [
   "plat-estaduais-go-gov",
-  "judiciario-tjgo",
-  "judiciario-cnj",
-  "mpgo-destinacao",
-  "mptgo-destinacao",
-  "mpu-destinacao",
   "f260-captacao-107",
   "f260-captacao-069",
   "f260-captacao-152",
@@ -70,8 +65,10 @@
   "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
   "f260-curadoria-006",
   "f260-captacao-051",
-  "plat-gife",
-  "pncp-api"
+  "do-goias",
+  "pncp-api",
+  "do-goiania",
+  "dou"
  ],
  "esgotaram_tentativas": [
   "plat-piloto-aberto",
@@ -207,7 +204,7 @@
    "horarios": "07:53,16:23",
    "coleta": "nuvem + local",
    "dia_anterior": "nao_observado",
-   "cobertura": "pendente",
+   "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
   },
   {
@@ -218,7 +215,7 @@
    "horarios": "07:53",
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
-   "cobertura": "pendente",
+   "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
   },
   {
@@ -229,7 +226,7 @@
    "horarios": "07:53",
    "coleta": "manual",
    "dia_anterior": "nao_se_aplica",
-   "cobertura": "pendente",
+   "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
   },
   {
@@ -240,7 +237,7 @@
    "horarios": "07:53,16:23",
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
-   "cobertura": "pendente",
+   "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
   },
   {
@@ -251,7 +248,7 @@
    "horarios": "16:23",
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
-   "cobertura": "pendente",
+   "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
   },
   {
@@ -593,7 +590,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-069",
@@ -604,7 +601,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-152",
@@ -615,7 +612,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-212",
@@ -747,7 +744,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-169",
@@ -780,7 +777,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-224",
@@ -791,7 +788,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-256",
@@ -802,7 +799,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-250",
@@ -857,7 +854,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-226",
@@ -868,7 +865,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-090",
@@ -890,7 +887,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-253",
@@ -934,7 +931,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-180",
@@ -978,7 +975,7 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-241",
@@ -1410,17 +1407,6 @@
    "tentativas_hoje": 2
   },
   {
-   "motor": "plat-gife",
-   "prioridade": 0.0078,
-   "diagnostico": "falha_parcial",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "11:23,17:53",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 2
-  },
-  {
    "motor": "f260-curadoria-008",
    "prioridade": 0.0076,
    "diagnostico": "sem_rendimento",
@@ -1430,6 +1416,17 @@
    "dia_anterior": "nao_observado",
    "cobertura": "pendente_sem_agenda",
    "tentativas_hoje": 0
+  },
+  {
+   "motor": "plat-gife",
+   "prioridade": 0.0076,
+   "diagnostico": "falha_parcial",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "11:23,17:53",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-039",
