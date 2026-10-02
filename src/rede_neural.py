@@ -256,6 +256,12 @@ def run(treinar: bool = True, epocas: int = 10) -> dict:
             rede = Rede.carregar(MODELO)
     else:
         rede = Rede.carregar(MODELO)
+        try:                                   # sem retreino: as métricas do modelo em uso
+            with gzip.open(MODELO, "rt", encoding="utf-8") as f:
+                meta = json.load(f).get("meta") or {}
+            out["validacao_cruzada"] = meta.get("metricas"); out["modelo_treinado_em"] = meta.get("treinada_em")
+        except Exception:  # noqa: BLE001
+            pass
     if rede:
         ps = [(rede.prever(entradas(r)), r) for r in pend]
         out["fila_de_validacao"] = [{"titulo": str(r.get("titulo"))[:140], "url": r.get("url"), "nota": round(p, 3), "incerteza": round(1 - abs(2 * p - 1), 3)}
