@@ -1,13 +1,13 @@
 {
-  "em": "2026-10-01T16:07:09+00:00",
+  "em": "2026-10-02T15:36:39+00:00",
   "cadencia_dias": 7,
-  "total": 28,
+  "total": 20,
   "por_estado": {
     "BLOQUEADO": 0,
     "PARADO": 0,
-    "NUNCA RODOU": 0,
-    "LENDO SEM ACHAR": 13,
-    "FUNCIONANDO": 15
+    "NUNCA RODOU": 2,
+    "LENDO SEM ACHAR": 7,
+    "FUNCIONANDO": 11
   },
   "correcoes_de_hoje": [
     "regulares nunca mais são cortados pelo limite de 40 por execução (as 4 plataformas ficaram 14 dias sem rodar por isso)",
@@ -17,17 +17,43 @@
   ],
   "itens": [
     {
+      "id": "congresso-nacional",
+      "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
+      "tipo": "legislativo",
+      "estado": "NUNCA RODOU",
+      "base": "sem leitura registrada",
+      "ultima": "",
+      "achados_total": 0,
+      "conselho": {
+        "pessimista": "motor novo (02/10): o Congresso quase não publica edital para OSC; as convocações do Senado desde 2017 não tiveram nenhuma para entidades; a área de emendas usava janela fixa, sem o prazo oficial da CMO.",
+        "otimista": "o PLOA 2027 (PLN 24/2026) reserva R$ 28,5 bi em emendas individuais (≈ R$ 43 mi por deputado, R$ 79 mi por senador) e R$ 16,3 bi de bancada; as APIs da Câmara e do Senado mostram cada regra nova para entidades (MROSC, IBS/CBS, REFIS social).",
+        "neutro_decide": "criado em 02/10: CMO (etapa de emendas + comunicados), APIs das Casas, notícias e convocações; a janela oficial alimenta a área de emendas; proposição é insumo, nunca edital."
+      }
+    },
+    {
+      "id": "plat-estaduais-go-gov",
+      "nome": "Oportunidade Estaduais Governamentais de Goiás",
+      "tipo": "plataforma",
+      "estado": "NUNCA RODOU",
+      "base": "sem leitura registrada",
+      "ultima": "",
+      "achados_total": 0,
+      "conselho": {
+        "neutro_decide": "sem parecer registrado — avaliar na próxima auditoria"
+      }
+    },
+    {
       "id": "camara-goiania-pl",
-      "nome": "Câmara Municipal de Goiânia — projetos de lei",
+      "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
       "tipo": "legislativo",
       "estado": "LENDO SEM ACHAR",
       "base": "leu em 2026-09-30; nunca reconheceu edital",
       "ultima": "2026-09-30T12:34",
       "achados_total": 0,
       "conselho": {
-        "pessimista": "lê e não acha: projetos de utilidade pública raramente vêm com edital.",
-        "otimista": "é onde nascem as declarações de utilidade pública municipal, requisito de vários editais.",
-        "neutro_decide": "manter em cadência semanal, não diária: é insumo de habilitação, não de captação."
+        "pessimista": "40 leituras e 0 achado em setembro: lia a home do Plone, um SAPL com certificado inválido e páginas que dão 404; 3 a 5 falhas por dia.",
+        "otimista": "o SUAP da Câmara tem todo projeto de lei com autor, setor e documentos datados — inclusive o PL 288/2026, que declara de utilidade pública a própria A.M.C. Jardim América.",
+        "neutro_decide": "refeito em 01/10: SUAP por assunto, tramitação da associação e notícias; utilidade pública vira lista de habilitação; edital da Câmara é raro e só entra com prazo."
       }
     },
     {
@@ -73,20 +99,6 @@
       }
     },
     {
-      "id": "do-goiania",
-      "nome": "Diário Oficial do Município de Goiânia",
-      "tipo": "diario_oficial",
-      "estado": "LENDO SEM ACHAR",
-      "base": "leu em 2026-09-30; nunca reconheceu edital",
-      "ultima": "2026-09-30T12:35",
-      "achados_total": 0,
-      "conselho": {
-        "pessimista": "recusa IP estrangeiro há semanas; só lê pela coleta local, que nunca foi rodada.",
-        "otimista": "é o diário da cidade da associação: todo chamamento da SEMASDH, CMDCA e CMAS passa aqui.",
-        "neutro_decide": "manter; a coleta local (.bat) é o único desbloqueio real — prioridade 1 do titular."
-      }
-    },
-    {
       "id": "plat-cnpq-extensao",
       "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
       "tipo": "plataforma",
@@ -115,32 +127,6 @@
       }
     },
     {
-      "id": "plat-fapeg",
-      "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
-      "tipo": "plataforma",
-      "estado": "LENDO SEM ACHAR",
-      "base": "leu em 2026-10-01; nunca reconheceu edital",
-      "ultima": "2026-10-01T15:03",
-      "achados_total": 0,
-      "conselho": {
-        "pessimista": "novo; FAP financia pesquisa, OSC só entra como parceira.",
-        "otimista": "FAPERGS e FAPESC apareceram no radar financiando terceiro setor.",
-        "neutro_decide": "INCLUÍDO hoje em cadência semanal."
-      }
-    },
-    {
-      "id": "plat-mapa-osc",
-      "nome": "Mapa das OSC — editais",
-      "tipo": "plataforma",
-      "estado": "LENDO SEM ACHAR",
-      "base": "leu em 2026-10-01; nunca reconheceu edital",
-      "ultima": "2026-10-01T14:59",
-      "achados_total": 0,
-      "conselho": {
-        "neutro_decide": "sem parecer registrado — avaliar na próxima auditoria"
-      }
-    },
-    {
       "id": "plat-prefeituras-50-go",
       "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
       "tipo": "plataforma",
@@ -155,54 +141,12 @@
       }
     },
     {
-      "id": "plat-prosas",
-      "nome": "Prosas — editais para o terceiro setor",
-      "tipo": "plataforma",
-      "estado": "LENDO SEM ACHAR",
-      "base": "leu em 2026-10-01; nunca reconheceu edital",
-      "ultima": "2026-10-01T14:59",
-      "achados_total": 0,
-      "conselho": {
-        "pessimista": "nunca rodou: descartada por deduplicação de URL contra os 260 pontos.",
-        "otimista": "é a maior plataforma de editais do terceiro setor no Brasil.",
-        "neutro_decide": "CORRIGIDO hoje: passa a ter sensor próprio e roda todo dia."
-      }
-    },
-    {
-      "id": "plat-prosas-premios",
-      "nome": "Prosas — prêmios, concursos e cursos para OSCs",
-      "tipo": "plataforma",
-      "estado": "LENDO SEM ACHAR",
-      "base": "leu em 2026-10-01; nunca reconheceu edital",
-      "ultima": "2026-10-01T15:01",
-      "achados_total": 0,
-      "conselho": {
-        "pessimista": "lê e não reconhece: prêmios a pessoa física não são fomento a OSC.",
-        "otimista": "alguns prêmios aceitam OSC e pagam bem.",
-        "neutro_decide": "manter com o filtro de objeto ativo."
-      }
-    },
-    {
-      "id": "pncp-api",
-      "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
-      "tipo": "api",
-      "estado": "LENDO SEM ACHAR",
-      "base": "leu em 2026-10-01; nunca reconheceu edital",
-      "ultima": "2026-10-01T14:27",
-      "achados_total": 0,
-      "conselho": {
-        "pessimista": "311 de 317 registros citam a Lei 14.133 e nenhum a 13.019: a via do PNCP é a da contratação.",
-        "otimista": "é o único lugar onde 5.570 municípios publicam de forma padronizada; o arquivo do edital hospedado lá é documento oficial.",
-        "neutro_decide": "manter como DESCOBERTA (número do processo + órgão), nunca como fonte; o filtro de objeto já barra o ruído."
-      }
-    },
-    {
       "id": "alego-pl",
       "nome": "Assembleia Legislativa de Goiás — proposições",
       "tipo": "legislativo",
       "estado": "FUNCIONANDO",
-      "base": "leu em 2026-09-30; 17 achado(s) acumulado(s)",
-      "ultima": "2026-09-30T12:34",
+      "base": "leu em 2026-10-02; 17 achado(s) acumulado(s)",
+      "ultima": "2026-10-02T00:57",
       "achados_total": 17,
       "conselho": {
         "pessimista": "14 achados, todos de projetos de lei — não de editais.",
@@ -211,17 +155,31 @@
       }
     },
     {
+      "id": "do-goiania",
+      "nome": "Diário Oficial do Município de Goiânia",
+      "tipo": "diario_oficial",
+      "estado": "FUNCIONANDO",
+      "base": "leu em 2026-10-01; 1 achado(s) acumulado(s)",
+      "ultima": "2026-10-01T21:58",
+      "achados_total": 1,
+      "conselho": {
+        "pessimista": "43 leituras e 0 achado: lia o rótulo de uma página de serviço; a edição é um PDF de 240 páginas e o ato está dentro.",
+        "otimista": "o Querido Diário já indexa Goiânia: 232 edições na base, com o edital SEGENP 001/2026 (25/09, R$ 5 milhões, prazo 26/10) e o PNAB 006/2026.",
+        "neutro_decide": "refeito em 01/10: lê o texto da edição pela nuvem, recorta em atos e classifica; a coleta local passa a ser reforço do dia, não condição."
+      }
+    },
+    {
       "id": "do-goias",
       "nome": "Diário Oficial do Estado de Goiás",
       "tipo": "diario_oficial",
       "estado": "FUNCIONANDO",
-      "base": "leu em 2026-09-30; 111 achado(s) acumulado(s)",
-      "ultima": "2026-09-30T12:35",
-      "achados_total": 111,
+      "base": "leu em 2026-10-01; 116 achado(s) acumulado(s)",
+      "ultima": "2026-10-01T22:41",
+      "achados_total": 116,
       "conselho": {
-        "pessimista": "lê 200 mas zero achado em 20 dias: ou o léxico não casa com o formato do ABC, ou o ato fica no PDF.",
-        "otimista": "é onde saem os editais da SECULT, SEDS, SES e os decretos de emenda impositiva.",
-        "neutro_decide": "manter e abrir o PDF da edição: o ato está dentro, não no índice."
+        "pessimista": "em setembro não leu o Diário nenhum dia: 06–20/09 foi pulado e pintado de azul; desde 21/09 repetia 11 itens velhos das secretarias.",
+        "otimista": "o portal tem busca de texto completo, sumário por órgão e texto de cada matéria — e as prefeituras do interior publicam ali.",
+        "neutro_decide": "refeito em 01/10: busca + edição do dia + API das secretarias, com o classificador comum; prova na primeira execução na nuvem."
       }
     },
     {
@@ -230,12 +188,12 @@
       "tipo": "diario_oficial",
       "estado": "FUNCIONANDO",
       "base": "leu em 2026-10-01; 28 achado(s) acumulado(s)",
-      "ultima": "2026-10-01T14:27",
+      "ultima": "2026-10-01T23:52",
       "achados_total": 28,
       "conselho": {
-        "pessimista": "regrediu de 368 matérias/dia para zero por mudança de seletor; corrigido, mas só 2 achados desde então.",
-        "otimista": "é a fonte federal: MDHC, CONANDA, Rouanet, MinC, emendas.",
-        "neutro_decide": "manter; validar por 7 dias se o JSON volta a trazer matérias — se não, ler a seção 3 pela busca avançada."
+        "pessimista": "em setembro leu no máximo 17% das matérias: a Seção 3 passava de 2,5 MB e vinha cortada (5 dias com 0 lidas), a Seção 1 nunca era lida, e os 14 'achados' eram extratos e editais de universidade.",
+        "otimista": "o DOU de setembro tinha 23 seleções reais para OSC — prefeituras de Goiás (PNAB, MROSC), IBAMA, ANATER, Caixa, Correios — e 833 extratos de parceria que mostram quem financia quem.",
+        "neutro_decide": "refeito em 01/10: DO1 + DO3 + extras inteiras, íntegra das matérias de interesse e classificador comum com vetos federais; prova na primeira execução na nuvem."
       }
     },
     {
@@ -253,34 +211,6 @@
       }
     },
     {
-      "id": "plat-abcr",
-      "nome": "ABCR — Associação Brasileira de Captadores",
-      "tipo": "plataforma",
-      "estado": "FUNCIONANDO",
-      "base": "leu em 2026-10-01; 169 achado(s) acumulado(s)",
-      "ultima": "2026-10-01T15:00",
-      "achados_total": 169,
-      "conselho": {
-        "pessimista": "idem: vetor de divulgação, 2 recusas em setembro.",
-        "otimista": "23 achados, o segundo mais produtivo.",
-        "neutro_decide": "manter como descoberta; nunca como fonte."
-      }
-    },
-    {
-      "id": "plat-fundos-estaduais-go",
-      "nome": "Fundos estaduais de Goiás com conselho — FIA, Idoso, FUNJUVE, Meio Ambiente",
-      "tipo": "plataforma",
-      "estado": "FUNCIONANDO",
-      "base": "leu em 2026-10-01; 19 achado(s) acumulado(s)",
-      "ultima": "2026-10-01T15:02",
-      "achados_total": 19,
-      "conselho": {
-        "pessimista": "novo; fundos publicam via conselho, em resolução, não em edital.",
-        "otimista": "FIA-GO, Idoso, FUNJUVE e FEMA são recursos com destinatário obrigatório: entidades.",
-        "neutro_decide": "INCLUÍDO hoje; ler também as resoluções dos conselhos."
-      }
-    },
-    {
       "id": "plat-gife",
       "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
       "tipo": "plataforma",
@@ -289,23 +219,9 @@
       "ultima": "2026-10-01T15:00",
       "achados_total": 5,
       "conselho": {
-        "pessimista": "lê a home institucional, nunca achou edital.",
-        "otimista": "os associados do GIFE são os maiores investidores sociais do país.",
-        "neutro_decide": "TROCAR a URL para a agenda/oportunidades dos associados; a home não serve."
-      }
-    },
-    {
-      "id": "plat-goias-social",
-      "nome": "Goiás Social — programas e editais para entidades",
-      "tipo": "plataforma",
-      "estado": "FUNCIONANDO",
-      "base": "leu em 2026-10-01; 19 achado(s) acumulado(s)",
-      "ultima": "2026-10-01T15:02",
-      "achados_total": 19,
-      "conselho": {
-        "pessimista": "novo; risco de página institucional sem edital.",
-        "otimista": "abriga o Auxílio Nutricional que já validamos.",
-        "neutro_decide": "INCLUÍDO hoje."
+        "pessimista": "em setembro, 0 edital: a seleção mensal era lida, mas os links 'Inscreva-se/Acesse' têm rótulo curto e eram descartados; o único achado foi a ficha do associado Fundação FEAC; 1 erro por dia em /transparencia.",
+        "otimista": "a seleção do GIFE e a Capta trazem 3 a 6 editais de investidores sociais por mês, com prazo, valor e link oficial (Fundo Baobá, FAS, Impactarte, Viva Pequena África).",
+        "neutro_decide": "refeito em 01/10: API do GIFE (Editais + busca) e da Capta, um item por bloco, prazo, público OSC e abrangência nacional ou Goiás; a ficha de associado nunca vira edital."
       }
     },
     {
@@ -320,34 +236,6 @@
         "pessimista": "novo; cada MP tem portal próprio.",
         "otimista": "MPMG, MPF e MPSE distribuíram reparação a OSC no radar; MPGO tem edital próprio.",
         "neutro_decide": "INCLUÍDO hoje; MPGO primeiro."
-      }
-    },
-    {
-      "id": "plat-observatorio-3setor",
-      "nome": "Observatório do Terceiro Setor — editais",
-      "tipo": "plataforma",
-      "estado": "FUNCIONANDO",
-      "base": "leu em 2026-10-01; 198 achado(s) acumulado(s)",
-      "ultima": "2026-10-01T14:59",
-      "achados_total": 198,
-      "conselho": {
-        "pessimista": "portal de notícia: anuncia, não publica; guardou mídia kit como se fosse edital.",
-        "otimista": "foi o motor mais produtivo em achados (21) — é onde o privado nacional aparece primeiro.",
-        "neutro_decide": "manter como DESCOBERTA; a fonte oficial é sempre localizada depois."
-      }
-    },
-    {
-      "id": "plat-ovg",
-      "nome": "OVG — Organização das Voluntárias de Goiás: editais e chamamentos",
-      "tipo": "plataforma",
-      "estado": "FUNCIONANDO",
-      "base": "leu em 2026-10-01; 19 achado(s) acumulado(s)",
-      "ultima": "2026-10-01T15:01",
-      "achados_total": 19,
-      "conselho": {
-        "pessimista": "novo: sem histórico, sem léxico calibrado.",
-        "otimista": "maior operador de repasses a entidades de Goiás com UMA fonte no catálogo — a lacuna mais cara.",
-        "neutro_decide": "INCLUÍDO hoje; primeira leitura na próxima saída."
       }
     },
     {
@@ -377,17 +265,17 @@
       }
     },
     {
-      "id": "plat-secult-go",
-      "nome": "Secult Goiás — Goyazes e Aldir Blanc",
-      "tipo": "plataforma",
+      "id": "pncp-api",
+      "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
+      "tipo": "api",
       "estado": "FUNCIONANDO",
-      "base": "leu em 2026-10-01; 276 achado(s) acumulado(s)",
-      "ultima": "2026-10-01T15:01",
-      "achados_total": 276,
+      "base": "leu em 2026-10-02; 165 achado(s) acumulado(s)",
+      "ultima": "2026-10-02T03:01",
+      "achados_total": 165,
       "conselho": {
-        "pessimista": "nunca rodou; e a página de termos de fomento é armadilha (já celebrados).",
-        "otimista": "os 18 editais do PNAB Goiás Ciclo 2 saíram daqui e o sistema não viu.",
-        "neutro_decide": "CORRIGIDO hoje; as 5 rotas (Chamamentos, Goyazes, Fundo, PNAB, LPG) já estão na curadoria."
+        "pessimista": "52 leituras e 0 achado: o sensor lia 3 das 11 URLs, vetava 'com ou sem fins lucrativos' e tomava 429; o coletor paralelo gravou 215 registros sem prazo, 206 fora de Goiás.",
+        "otimista": "os municípios de Goiás publicam ali, como credenciamento, chamamentos MROSC com data oficial de encerramento (Pirenópolis, Senador Canedo, Silvânia).",
+        "neutro_decide": "refeito em 01/10: propostas abertas + busca do portal, vetos e finalidade; o PNCP segue vetor, o PDF do órgão é o documento oficial."
       }
     },
     {

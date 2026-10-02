@@ -1,52 +1,68 @@
 {
-  "em": "2026-10-01T16:07:13+00:00",
-  "data": "2026-10-01",
-  "total": 28,
-  "funcionando": 26,
-  "em_alerta": 2,
+  "em": "2026-10-02T15:36:43+00:00",
+  "data": "2026-10-02",
+  "total": 20,
+  "funcionando": 14,
+  "em_alerta": 6,
   "alertas": [
+    {
+      "id": "congresso-nacional",
+      "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
+      "gravidade": "alta",
+      "problema": "nunca rodou",
+      "acao": "conferir se o sensor está na escala; se for novo, esperar a próxima saída"
+    },
     {
       "id": "empresas-incentivadas",
       "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
       "gravidade": "alta",
-      "problema": "4 dia(s) sem leitura (cadência 1)",
+      "problema": "5 dia(s) sem leitura (cadência 1)",
       "acao": "conferir escala e limite por execução"
     },
     {
-      "id": "do-goiania",
-      "nome": "Diário Oficial do Município de Goiânia",
+      "id": "plat-estaduais-go-gov",
+      "nome": "Oportunidade Estaduais Governamentais de Goiás",
+      "gravidade": "alta",
+      "problema": "nunca rodou",
+      "acao": "conferir se o sensor está na escala; se for novo, esperar a próxima saída"
+    },
+    {
+      "id": "camara-goiania-pl",
+      "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
       "gravidade": "media",
-      "problema": "aguardando coleta local (portal recusa IP estrangeiro)",
-      "acao": "rodar scripts/coleta_brasil.py no computador do titular — ou o Claude Desktop faz isso ao abrir"
+      "problema": "2 dia(s) sem leitura (cadência 1)",
+      "acao": "conferir escala e limite por execução"
+    },
+    {
+      "id": "dje-tjgo",
+      "nome": "TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)",
+      "gravidade": "media",
+      "problema": "2 dia(s) sem leitura (cadência 1)",
+      "acao": "conferir escala e limite por execução"
+    },
+    {
+      "id": "recorrencia",
+      "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
+      "gravidade": "media",
+      "problema": "2 dia(s) sem leitura (cadência 1)",
+      "acao": "conferir escala e limite por execução"
     }
   ],
   "ok": [
+    "do-goiania",
     "do-goias",
     "dou",
-    "dje-tjgo",
     "dj-trf1-go",
     "cnj-destinacoes",
-    "camara-goiania-pl",
     "alego-pl",
     "pncp-api",
-    "plat-prosas",
-    "plat-mapa-osc",
-    "plat-observatorio-3setor",
-    "plat-abcr",
     "plat-gife",
     "plat-salic",
-    "plat-secult-go",
-    "plat-prosas-premios",
-    "plat-ovg",
-    "plat-goias-social",
-    "plat-fundos-estaduais-go",
-    "plat-fapeg",
     "plat-prefeituras-50-go",
     "plat-empresas-editais-incentivados",
     "plat-mp-destinacoes-reparacao",
     "plat-cnpq-extensao",
-    "plat-piloto-aberto",
-    "recorrencia"
+    "plat-piloto-aberto"
   ],
   "regra": "todo motor regular tem de ler dentro da sua cadência; o que não leu vira alerta e vai para o pacote do Claude Desktop"
 }

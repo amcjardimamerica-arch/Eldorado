@@ -1,54 +1,71 @@
 {
-  "em": "2026-10-01T16:07:13+00:00",
+  "em": "2026-10-02T15:36:43+00:00",
   "mes": "2026-10",
-  "ate": "2026-10-01",
-  "dias_no_periodo": 1,
+  "ate": "2026-10-02",
+  "dias_no_periodo": 2,
   "motores": {
     "do-goiania": {
       "nome": "Diário Oficial do Município de Goiânia",
       "cadencia": 1,
-      "dias_executados": 0,
-      "dias_esperados": 1,
-      "cobertura": 0.0,
-      "encontrados": 0,
+      "dias_executados": 2,
+      "dias_esperados": 2,
+      "cobertura": 1.0,
+      "encontrados": 2,
       "falhas": 0,
-      "veredito": "não executou",
+      "veredito": "íntegro",
       "dias": [
         {
           "dia": "2026-10-01",
-          "estado": "nao_exec"
+          "estado": "encontrado",
+          "achados": 1
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "encontrado",
+          "achados": 1
         }
       ]
     },
     "do-goias": {
       "nome": "Diário Oficial do Estado de Goiás",
       "cadencia": 1,
-      "dias_executados": 0,
-      "dias_esperados": 1,
-      "cobertura": 0.0,
-      "encontrados": 0,
+      "dias_executados": 2,
+      "dias_esperados": 2,
+      "cobertura": 1.0,
+      "encontrados": 2,
       "falhas": 0,
-      "veredito": "não executou",
+      "veredito": "íntegro",
       "dias": [
         {
           "dia": "2026-10-01",
-          "estado": "nao_exec"
+          "estado": "encontrado",
+          "achados": 5
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "encontrado",
+          "achados": 5
         }
       ]
     },
     "dou": {
       "nome": "Diário Oficial da União",
       "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
+      "dias_executados": 2,
+      "dias_esperados": 2,
       "cobertura": 1.0,
-      "encontrados": 0,
+      "encontrados": 1,
       "falhas": 0,
       "veredito": "íntegro",
       "dias": [
         {
           "dia": "2026-10-01",
           "estado": "sem_oport"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "encontrado",
+          "achados": 2
         }
       ]
     },
@@ -56,7 +73,7 @@
       "nome": "TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)",
       "cadencia": 1,
       "dias_executados": 0,
-      "dias_esperados": 1,
+      "dias_esperados": 2,
       "cobertura": 0.0,
       "encontrados": 0,
       "falhas": 0,
@@ -64,6 +81,10 @@
       "dias": [
         {
           "dia": "2026-10-01",
+          "estado": "nao_exec"
+        },
+        {
+          "dia": "2026-10-02",
           "estado": "nao_exec"
         }
       ]
@@ -81,14 +102,38 @@
         {
           "dia": "2026-10-01",
           "estado": "nao_exec"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "nao_exec"
         }
       ]
     },
     "cnj-destinacoes": {
       "nome": "CNJ — destinações de penas e prestações pecuniárias",
       "cadencia": 30,
-      "dias_executados": 0,
+      "dias_executados": 1,
       "dias_esperados": 1,
+      "cobertura": 1.0,
+      "encontrados": 0,
+      "falhas": 0,
+      "veredito": "íntegro",
+      "dias": [
+        {
+          "dia": "2026-10-01",
+          "estado": "nao_exec"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "sem_oport"
+        }
+      ]
+    },
+    "camara-goiania-pl": {
+      "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
+      "cadencia": 1,
+      "dias_executados": 0,
+      "dias_esperados": 2,
       "cobertura": 0.0,
       "encontrados": 0,
       "falhas": 0,
@@ -97,21 +142,9 @@
         {
           "dia": "2026-10-01",
           "estado": "nao_exec"
-        }
-      ]
-    },
-    "camara-goiania-pl": {
-      "nome": "Câmara Municipal de Goiânia — projetos de lei",
-      "cadencia": 7,
-      "dias_executados": 0,
-      "dias_esperados": 1,
-      "cobertura": 0.0,
-      "encontrados": 0,
-      "falhas": 0,
-      "veredito": "não executou",
-      "dias": [
+        },
         {
-          "dia": "2026-10-01",
+          "dia": "2026-10-02",
           "estado": "nao_exec"
         }
       ]
@@ -119,32 +152,61 @@
     "alego-pl": {
       "nome": "Assembleia Legislativa de Goiás — proposições",
       "cadencia": 1,
-      "dias_executados": 0,
-      "dias_esperados": 1,
-      "cobertura": 0.0,
+      "dias_executados": 1,
+      "dias_esperados": 2,
+      "cobertura": 0.5,
       "encontrados": 0,
       "falhas": 0,
-      "veredito": "não executou",
+      "veredito": "lacunas",
       "dias": [
         {
           "dia": "2026-10-01",
           "estado": "nao_exec"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "sem_oport"
+        }
+      ]
+    },
+    "congresso-nacional": {
+      "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
+      "cadencia": 1,
+      "dias_executados": 1,
+      "dias_esperados": 2,
+      "cobertura": 0.5,
+      "encontrados": 0,
+      "falhas": 0,
+      "veredito": "lacunas",
+      "dias": [
+        {
+          "dia": "2026-10-01",
+          "estado": "nao_exec"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "sem_oport"
         }
       ]
     },
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
+      "dias_executados": 2,
+      "dias_esperados": 2,
       "cobertura": 1.0,
-      "encontrados": 0,
+      "encontrados": 1,
       "falhas": 0,
       "veredito": "íntegro",
       "dias": [
         {
           "dia": "2026-10-01",
           "estado": "sem_oport"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "encontrado",
+          "achados": 244
         }
       ]
     },
@@ -152,7 +214,7 @@
       "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
       "cadencia": 1,
       "dias_executados": 0,
-      "dias_esperados": 1,
+      "dias_esperados": 2,
       "cobertura": 0.0,
       "encontrados": 0,
       "falhas": 0,
@@ -161,82 +223,20 @@
         {
           "dia": "2026-10-01",
           "estado": "nao_exec"
-        }
-      ]
-    },
-    "plat-prosas": {
-      "nome": "Prosas — editais para o terceiro setor",
-      "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 0,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
+        },
         {
-          "dia": "2026-10-01",
-          "estado": "sem_oport"
-        }
-      ]
-    },
-    "plat-mapa-osc": {
-      "nome": "Mapa das OSC — editais",
-      "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 0,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
-        {
-          "dia": "2026-10-01",
-          "estado": "sem_oport"
-        }
-      ]
-    },
-    "plat-observatorio-3setor": {
-      "nome": "Observatório do Terceiro Setor — editais",
-      "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 1,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
-        {
-          "dia": "2026-10-01",
-          "estado": "encontrado",
-          "achados": 12
-        }
-      ]
-    },
-    "plat-abcr": {
-      "nome": "ABCR — Associação Brasileira de Captadores",
-      "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 1,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
-        {
-          "dia": "2026-10-01",
-          "estado": "encontrado",
-          "achados": 9
+          "dia": "2026-10-02",
+          "estado": "nao_exec"
         }
       ]
     },
     "plat-gife": {
       "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
       "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
+      "dias_executados": 2,
+      "dias_esperados": 2,
       "cobertura": 1.0,
-      "encontrados": 1,
+      "encontrados": 2,
       "falhas": 0,
       "veredito": "íntegro",
       "dias": [
@@ -244,16 +244,21 @@
           "dia": "2026-10-01",
           "estado": "encontrado",
           "achados": 1
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "encontrado",
+          "achados": 3
         }
       ]
     },
     "plat-salic": {
       "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
       "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
+      "dias_executados": 2,
+      "dias_esperados": 2,
       "cobertura": 1.0,
-      "encontrados": 1,
+      "encontrados": 2,
       "falhas": 0,
       "veredito": "íntegro",
       "dias": [
@@ -261,114 +266,19 @@
           "dia": "2026-10-01",
           "estado": "encontrado",
           "achados": 5
-        }
-      ]
-    },
-    "plat-secult-go": {
-      "nome": "Secult Goiás — Goyazes e Aldir Blanc",
-      "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 1,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
+        },
         {
-          "dia": "2026-10-01",
+          "dia": "2026-10-02",
           "estado": "encontrado",
-          "achados": 19
-        }
-      ]
-    },
-    "plat-prosas-premios": {
-      "nome": "Prosas — prêmios, concursos e cursos para OSCs",
-      "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 0,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
-        {
-          "dia": "2026-10-01",
-          "estado": "sem_oport"
-        }
-      ]
-    },
-    "plat-ovg": {
-      "nome": "OVG — Organização das Voluntárias de Goiás: editais e chamamentos",
-      "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 1,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
-        {
-          "dia": "2026-10-01",
-          "estado": "encontrado",
-          "achados": 1
-        }
-      ]
-    },
-    "plat-goias-social": {
-      "nome": "Goiás Social — programas e editais para entidades",
-      "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 1,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
-        {
-          "dia": "2026-10-01",
-          "estado": "encontrado",
-          "achados": 1
-        }
-      ]
-    },
-    "plat-fundos-estaduais-go": {
-      "nome": "Fundos estaduais de Goiás com conselho — FIA, Idoso, FUNJUVE, Meio Ambiente",
-      "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 1,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
-        {
-          "dia": "2026-10-01",
-          "estado": "encontrado",
-          "achados": 1
-        }
-      ]
-    },
-    "plat-fapeg": {
-      "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
-      "cadencia": 7,
-      "dias_executados": 1,
-      "dias_esperados": 1,
-      "cobertura": 1.0,
-      "encontrados": 0,
-      "falhas": 0,
-      "veredito": "íntegro",
-      "dias": [
-        {
-          "dia": "2026-10-01",
-          "estado": "sem_oport"
+          "achados": 5
         }
       ]
     },
     "plat-prefeituras-50-go": {
       "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
       "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
+      "dias_executados": 2,
+      "dias_esperados": 2,
       "cobertura": 1.0,
       "encontrados": 0,
       "falhas": 0,
@@ -376,6 +286,10 @@
       "dias": [
         {
           "dia": "2026-10-01",
+          "estado": "sem_oport"
+        },
+        {
+          "dia": "2026-10-02",
           "estado": "sem_oport"
         }
       ]
@@ -383,8 +297,8 @@
     "plat-empresas-editais-incentivados": {
       "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
       "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
+      "dias_executados": 2,
+      "dias_esperados": 2,
       "cobertura": 1.0,
       "encontrados": 0,
       "falhas": 0,
@@ -393,21 +307,30 @@
         {
           "dia": "2026-10-01",
           "estado": "sem_oport"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "sem_oport"
         }
       ]
     },
     "plat-mp-destinacoes-reparacao": {
       "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
       "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
+      "dias_executados": 2,
+      "dias_esperados": 2,
       "cobertura": 1.0,
-      "encontrados": 1,
+      "encontrados": 2,
       "falhas": 0,
       "veredito": "íntegro",
       "dias": [
         {
           "dia": "2026-10-01",
+          "estado": "encontrado",
+          "achados": 2
+        },
+        {
+          "dia": "2026-10-02",
           "estado": "encontrado",
           "achados": 2
         }
@@ -416,26 +339,31 @@
     "plat-cnpq-extensao": {
       "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
       "cadencia": 7,
-      "dias_executados": 1,
+      "dias_executados": 2,
       "dias_esperados": 1,
       "cobertura": 1.0,
       "encontrados": 0,
-      "falhas": 0,
+      "falhas": 1,
       "veredito": "íntegro",
       "dias": [
         {
           "dia": "2026-10-01",
           "estado": "sem_oport"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "falha",
+          "falhas": 3
         }
       ]
     },
     "plat-piloto-aberto": {
       "nome": "Piloto - Espião — busca aberta no terceiro setor",
       "cadencia": 1,
-      "dias_executados": 1,
-      "dias_esperados": 1,
+      "dias_executados": 2,
+      "dias_esperados": 2,
       "cobertura": 1.0,
-      "encontrados": 1,
+      "encontrados": 2,
       "falhas": 0,
       "veredito": "íntegro",
       "dias": [
@@ -443,14 +371,19 @@
           "dia": "2026-10-01",
           "estado": "encontrado",
           "achados": 46
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "encontrado",
+          "achados": 51
         }
       ]
     },
-    "recorrencia": {
-      "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
+    "plat-estaduais-go-gov": {
+      "nome": "Oportunidade Estaduais Governamentais de Goiás",
       "cadencia": 1,
       "dias_executados": 0,
-      "dias_esperados": 1,
+      "dias_esperados": 2,
       "cobertura": 0.0,
       "encontrados": 0,
       "falhas": 0,
@@ -459,14 +392,38 @@
         {
           "dia": "2026-10-01",
           "estado": "nao_exec"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "nao_exec"
+        }
+      ]
+    },
+    "recorrencia": {
+      "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
+      "cadencia": 1,
+      "dias_executados": 0,
+      "dias_esperados": 2,
+      "cobertura": 0.0,
+      "encontrados": 0,
+      "falhas": 0,
+      "veredito": "não executou",
+      "dias": [
+        {
+          "dia": "2026-10-01",
+          "estado": "nao_exec"
+        },
+        {
+          "dia": "2026-10-02",
+          "estado": "nao_exec"
         }
       ]
     }
   },
   "resumo": {
-    "integros": 19,
-    "com_lacunas": 0,
-    "nao_executaram": 9
+    "integros": 12,
+    "com_lacunas": 2,
+    "nao_executaram": 6
   },
   "pergunta": "em cada dia, todas as oportunidades que poderiam existir foram procuradas nos lugares possíveis? Um motor com lacunas é um dia em que uma rota não foi olhada."
 }
