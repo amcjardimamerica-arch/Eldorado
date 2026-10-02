@@ -105,3 +105,38 @@ def situacao(flags: list[dict]) -> str:
     if any(x["gravidade"] == "bloqueia" for x in flags):
         return "inconclusiva"
     return "com_ressalva" if flags else "confiavel"
+
+
+MESES = {m: n for n, m in enumerate(["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro",
+                                     "novembro", "dezembro"], 1)}
+_PUB_TXT = re.compile(r"(?:publicad[oa]|edi[cç][aã]o|di[aá]rio oficial|D\.?O\.?[EMU]?\.?)[^0-9]{0,40}(\d{1,2})[/.](\d{1,2})[/.](20\d\d)", re.I)
+_PUB_EXT = re.compile(r"(?:publicad[oa]|edi[cç][aã]o)[^0-9]{0,40}(\d{1,2}) de (janeiro|fevereiro|março|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro) de (20\d\d)", re.I)
+_PUB_URL = re.compile(r"/(20\d\d)[/-](\d{2})[/-](\d{2})(?:/|$|\D)|[^0-9](20\d\d)(\d{2})(\d{2})[^0-9]")
+
+
+def completar_datas(reg: dict, hoje: date | None = None) -> dict:
+    """02/10 (titular): todo registro novo leva a data ORIGINAL da publicação e a data da CONSULTA.
+    Se a fonte não informou a publicação, tenta o texto (\"publicado em\", \"edição de\") e o endereço (/2026/10/01/);
+    a origem fica registrada. Nada inventado: sem pista, fica null e o sinal SEM_DATA_DE_PUBLICACAO aparece."""
+    hoje = hoje or date.today()
+    reg.setdefault("data_consulta", str(reg.get("coletado_em") or hoje.isoformat())[:10])
+    if reg.get("data_publicacao"):
+        reg.setdefault("data_publicacao_origem", "fonte")
+        return reg
+    txt = f"{reg.get('titulo') or ''} {reg.get('evidencia') or ''}"
+    cand = None
+    m = _PUB_TXT.search(txt)
+    if m:
+        cand = (int(m.group(3)), int(m.group(2)), int(m.group(1))); orig = "texto"
+    elif (m := _PUB_EXT.search(txt)):
+        cand = (int(m.group(3)), MESES[m.group(2).lower()], int(m.group(1))); orig = "texto"
+    elif (m := _PUB_URL.search(str(reg.get("url") or ""))):
+        g = [x for x in m.groups() if x]; cand = (int(g[0]), int(g[1]), int(g[2])); orig = "endereço"
+    if cand:
+        try:
+            d = date(*cand)
+            if date(2000, 1, 1) <= d <= hoje:
+                reg["data_publicacao"] = d.isoformat(); reg["data_publicacao_origem"] = f"extraída do {orig}"
+        except ValueError:
+            pass
+    return reg

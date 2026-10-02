@@ -735,6 +735,11 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         for a in r["achados"]:
             total_ach += 1
             if a["id"] not in existentes:
+                try:                                     # 02/10: data original da publicação + data da consulta
+                    from .integridade import completar_datas
+                    completar_datas(a)
+                except Exception:  # noqa: BLE001
+                    pass
                 append_jsonl(DB, a); existentes[a["id"]] = a; novos += 1
         t = por_tipo.setdefault(s["tipo"], {"sensores": 0, "achados": 0, "falhas": 0})
         t["sensores"] += 1; t["achados"] += len(r["achados"]); t["falhas"] += len(r["falhas"])

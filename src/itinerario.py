@@ -19,7 +19,10 @@ SK = ROOT / "config/skills_motores.json"
 LEGIS = re.compile(r"camara|alego|congresso|assembleia|legislativ")
 
 
-def familia(mid: str, sk: dict) -> str:
+def familia(mid: str, sk: dict, cfg: dict | None = None) -> str:
+    exc = ((cfg or {}).get("excecoes_de_familia") or {}).get(mid)
+    if exc:
+        return exc
     if LEGIS.search(mid):
         return "legislativo"
     return (sk.get(mid) or {}).get("familia") or "?"
@@ -31,7 +34,7 @@ def aplicar(gravar: bool = True) -> dict:
     for mid, a in A["motores"].items():
         if mid.startswith("idx-") or a.get("coleta") == "local" or a.get("horarios_brt") == "contínuo" or str(a.get("dias", "")).startswith("inativ"):
             continue
-        fam = familia(mid, sk); novo = (cfg["familias"].get(fam) or {}).get("horarios_brt")
+        fam = familia(mid, sk, cfg); novo = (cfg["familias"].get(fam) or {}).get("horarios_brt")
         if not novo or a.get("horarios_brt") == novo:
             continue
         antes.setdefault(mid, a.get("horarios_brt"))
