@@ -109,11 +109,17 @@ def controlar(disparar: bool = False, dia=None) -> dict:
         _diario = str(_ag.get("dias") or "todos") == "todos" and int(_ag.get("cadencia_dias") or 1) <= 1
         p["dia_anterior"] = ("nao_se_aplica" if not _diario else
                              "observado" if c == "completa" or _ont.get("cor") in ("verde", "azul", "amarelo") else "nao_observado")
-        if c == "pendente" and p["motor"] not in atrasados:
+        _sem_agenda = p["motor"] not in A_ag
+        _ont0 = (D.get(p["motor"]) or {}).get((dia - timedelta(days=1)).isoformat()) or {}
+        if c == "pendente" and _sem_agenda and not _ont0:
+            c = "pendente_sem_agenda"                # 02/10: fonte sem horário próprio (ex.: as 260) — o maestro a lê em lotes
+        elif c == "pendente" and p["motor"] not in atrasados:
             c = "aguardando_horario"                 # ainda não chegou a hora (ou a cadência) — não se dispara
         p["cobertura"] = c
         p["tentativas_hoje"] = int(est["tentativas"].get(p["motor"]) or 0)
     a_disparar = [p["motor"] for p in plano if p["cobertura"] in ("pendente", "parcial") and p["tentativas_hoje"] < limite and p["coleta"] != "local"]
+    _lote = int(cfg.get("lote_sem_agenda", 40))                # fontes sem horário próprio: em lotes, por prioridade
+    a_disparar += [p["motor"] for p in plano if p["cobertura"] == "pendente_sem_agenda"][:_lote]
     a_disparar += [x for x in atrasados if x not in a_disparar and int(est["tentativas"].get(x) or 0) < limite]
     if disparar:
         # 02/10: só conta tentativa de quem DE FATO leu (parcial). O GitHub mantém um único disparo na fila e cancela o
@@ -126,7 +132,7 @@ def controlar(disparar: bool = False, dia=None) -> dict:
     cont = Counter(p["cobertura"] for p in plano)
     completos = cont.get("completa", 0)
     esgotados = [p["motor"] for p in plano if p["cobertura"] in ("pendente", "parcial") and p["tentativas_hoje"] >= limite]
-    fechado = all(p["cobertura"] == "completa" or p["motor"] in esgotados or p["cobertura"] == "pendente_local" for p in plano)
+    fechado = all(p["cobertura"] == "completa" or p["motor"] in esgotados or p["cobertura"] == "pendente_local" for p in plano)   # sem agenda: só fecha lido
     completos_ou_esperando = completos + cont.get("aguardando_horario", 0)
     out = {"dia": d0, "em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Saída")[0].strip(),
            "planejados": len(plano), "cobertura": dict(cont), "cobertura_percentual": round(100 * completos / max(1, len(plano) - cont.get("aguardando_horario", 0)), 1),
