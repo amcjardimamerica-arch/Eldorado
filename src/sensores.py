@@ -331,6 +331,13 @@ def lexico_camada1(sensor: dict) -> tuple[list[str], list[str]]:
         vetos += [x for x in ap_veto if x not in vetos]
     except Exception:
         pass
+    # 02/10 (titular): LÉXICO TEMPORÁRIO DOS LIVROS — na janela de ativação (30 dias antes da abertura prevista até o
+    # encerramento), a chave de acionamento do livro compõe o léxico da camada 1 dos motores do seu índice
+    try:
+        from .chaves_livros import termos_temporarios
+        termos += [x for x in termos_temporarios(sensor.get("id")) if x not in termos]
+    except Exception:
+        pass
     return termos, vetos
 
 

@@ -3156,6 +3156,12 @@ window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id
   /* 02/10 (titular): previsão da próxima abertura (ativação 30 dias antes) e o histórico do que cada edição trouxe */
   const PV=m.previsao||{}, HP=((m.livro||{}).historico_parametros||[]).slice(-8).reverse();
   const edPar=(m._historico||[]).filter(h=>h.parametros).slice(-4).reverse();
+  /* 02/10 (titular): CHAVE DE ACIONAMENTO — os termos que acionam a oportunidade, o índice dos motores e o léxico temporário */
+  const CH=m.chave_acionamento||{};
+  const chaveHtml=(CH.termos||[]).length?`<div class="livro-op"><div class="livro-t">Chave de acionamento</div><div class=meta>
+    termos: <b>${CH.termos.map(esc).join("</b> · <b>")}</b>${(CH.motores||[]).length?` · motores que já a encontraram: ${CH.motores.map(esc).join(", ")}`:" · nenhum motor a encontrou ainda — o léxico vale para todos os motores regulares"}
+    ${CH.lexico_ativo?`<br><b style="color:#1E7E4B">léxico temporário ativo</b> de ${br(CH.lexico_ativo.desde)} a ${br(CH.lexico_ativo.ate)} — os termos estão no léxico dos motores`:""}
+    ${CH.consulta?`<br>busca pronta: <code>${esc(CH.consulta)}</code>`:""}</div></div>`:"";
   const prevHtml=PV.situacao?`<div class="livro-op"><div class="livro-t">Previsão</div><div class=meta>${PV.situacao==="aberta agora"?`inscrição aberta agora (até ${br(PV.encerramento)})`
     :`abertura prevista em <b>${br(PV.abertura)}</b> · livro ativado 30 dias antes, em <b>${br(PV.ativar_em)}</b> · confiança ${esc(PV.confianca)} (${esc(PV.base||"")})`}</div></div>`:"";
   const histParHtml=HP.length?`<div class="livro-op"><div class="livro-t">Histórico dos parâmetros</div>${HP.map(c=>`<div class=meta><b>${br(c.em)}</b> · ${esc(c.de||"")}${c.edicao?" · "+esc(c.edicao.slice(0,60)):""}: ${Object.entries(c.mudou||{}).map(([k,v])=>`${esc(k)} ${v.antes?`<s>${esc(String(v.antes).slice(0,40))}</s> → `:""}${esc(String(v.agora).slice(0,50))}`).join(" · ")}</div>`).join("")}</div>`:"";
@@ -3168,7 +3174,7 @@ window.mtDetalhe=function(id){const m=(window._mtPorId||{})[id]||MT.find(x=>x.id
     ${(LV.atualizacoes||[]).length?`<div class=meta style="margin-top:4px">última atualização do livro: ${esc(LV.atualizacoes.slice(-1)[0].o_que)} (${br(String(LV.atualizacoes.slice(-1)[0].em).slice(0,10))})</div>`:""}</div>`;
   abreModal(`<div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><h3 style="margin:0">${esc(m.nome_classificado||m.programa)}</h3><span class="dj-acoes">${iconeMotor(m.id,true)}${iconesAcao(m.id,m.programa)}</span></div><div class=meta>${esc(m.programa)}${m.orgao?" · "+esc(m.orgao):""} · ${esc(m.natureza==="publica"?"fonte pública":m.natureza==="privada"?"fonte privada":"")}</div>`,
     `<div class=meta>${esc(m.motivo_status||"")}${m.mencoes?" — "+esc(m.mencoes):""}${d?` · <strong>ligado · dia ${d.dias}/30</strong> · próxima IA em ${d.proxima_ia_em} dia(s)${d.ia?" · IA acionada "+d.ia+"×":""}${d.conselho?" · conselho Fable 5.1 emitido":""}`:""}</div>
-     ${livroHtml}${prevHtml}${histParHtml}${camadasHtml(m)}
+     ${livroHtml}${prevHtml}${chaveHtml}${histParHtml}${camadasHtml(m)}
      <div class=meta style="margin-top:8px">${m.pagina?`<a href="${esc(m.pagina)}" target=_blank rel="noopener noreferrer">página de publicação ↗</a> <span class=tag>${esc(m.confianca_pagina||"")}</span>`:"<em>sem página conhecida</em>"} · validação: <strong>${esc(m.validacao)}</strong>${m.http?" (HTTP "+m.http+")":""}${m.ultima_leitura?" · lida em "+br(m.ultima_leitura.slice(0,10)):""}${m.ultimo_url?` · <a href="${esc(m.ultimo_url)}" target=_blank rel="noopener noreferrer">último edital ↗</a>`:""}${m.regime_prazo?` · prazo: ${esc(m.regime_prazo.replace(/_/g," "))} (${esc(m.certeza_prazo||"")})`:""}</div>
      ${m.faltam?`<div class="mt-diag">⚠ faltam ${m.faltam.split("|").length} camada(s): ${esc(m.faltam.replace(/\|/g," · "))}<br><b>causa:</b> ${esc(m.causa||"")} · <b>ação:</b> ${esc(m.acao||"")}</div>`:`<div class="mt-diag ok">✓ 12 itens obtidos — motor pode parar</div>`}
      <div style="margin-top:10px;display:flex;gap:8px;align-items:center">${iconesAcao(m.id,m.programa)} <span class=meta>fósforo: busca imediata · upload: alimentar manualmente · link: ensinar onde publica</span></div>`);};
