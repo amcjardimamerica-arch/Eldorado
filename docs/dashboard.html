@@ -453,7 +453,18 @@ box-shadow:0 1px 3px #0002}
 .oa-cab{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.oa-fil{display:flex;gap:6px;flex-wrap:wrap}
 .oa-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px}
 .oa-c{border:1px solid #E6EAF0;border-top:4px solid var(--c);border-radius:10px;padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:5px;min-width:0;font-size:12.5px}
-.oa-t{display:grid;grid-template-columns:12px minmax(0,1fr);gap:7px;align-items:start}.oa-t a,.oa-t b{font-weight:700;color:#0E2A55;text-decoration:none;line-height:1.3;overflow-wrap:anywhere}.oa-t a:hover{text-decoration:underline}
+.oa-t{display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:7px;align-items:start}
+/* 02/10 (titular): selo da esteira em estrela pequena — bronze fosco, prata reluzente, ouro cintilante */
+.oa-selo{width:13px;height:13px;margin-top:2px;display:block;flex:none}
+.oa-selo.bronze path{fill:#9A6A3C;stroke:#6E4A28;stroke-width:.7}
+.oa-selo.prata path{fill:url(#gSeloPrata);stroke:#7F8B97;stroke-width:.6}
+.oa-selo.prata{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.9)) drop-shadow(0 0 1px rgba(140,155,170,.55))}
+.oa-selo.ouro path{fill:url(#gSeloOuro);stroke:#A87412;stroke-width:.6}
+.oa-selo.ouro{animation:seloOuroBrilho 2.4s ease-in-out infinite;transform-origin:50% 55%}
+@keyframes seloOuroBrilho{0%,100%{filter:drop-shadow(0 0 1.5px rgba(255,200,40,.55));transform:scale(1) rotate(0)}
+  45%{filter:drop-shadow(0 0 4px rgba(255,214,70,.95)) drop-shadow(0 0 7px rgba(255,190,30,.45));transform:scale(1.12) rotate(6deg)}
+  55%{filter:drop-shadow(0 0 5px rgba(255,240,150,1)) drop-shadow(0 0 8px rgba(255,200,40,.5));transform:scale(1.08) rotate(-4deg)}}
+@media (prefers-reduced-motion:reduce){.oa-selo.ouro{animation:none;filter:drop-shadow(0 0 3px rgba(255,205,50,.8))}}.oa-t a,.oa-t b{font-weight:700;color:#0E2A55;text-decoration:none;line-height:1.3;overflow-wrap:anywhere}.oa-t a:hover{text-decoration:underline}
 .oa-t .uf-fx-m{margin-top:4px}.oa-m{font-size:11px;color:var(--suave)}.oa-l{display:flex;gap:6px;flex-wrap:wrap}
 .oa-p,.oa-s{font-size:10.5px;border-radius:8px;padding:1px 8px;border:1px solid #E3E8ED;background:#F7F9FA;color:var(--suave)}.oa-p.ok,.oa-s.ok{background:#F1F9F4;border-color:#CFE8D8;color:#1E7E4B;font-weight:700}
 .oa-o{font-size:11.5px;color:#3A4250;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -4399,6 +4410,28 @@ document.addEventListener("visibilitychange",()=>{ if(!document.hidden) conferir
    cada estudo do Interceptador — condições comprovadas, dispensadas e em falta, prazo, site oficial, e o MOTOR OPRESSOR
    que guarda a oportunidade (com as edições anteriores e a previsão da próxima) ou o motivo da dispensa dele. */
 window._oaF={uf:"",a:"",s:""};
+/* 02/10 (titular): selo da esteira em cada oportunidade aberta. O ciclo grava x.selo (o maior entre o livro e o quadro);
+   sem ele, o painel aplica a mesma regra: site oficial → prata; + prazo e os 12 dados resolvidos → ouro; senão bronze. */
+const SELO_DIZ={ouro:"Selo ouro — edital, condições e prazos completos: pronto para o Farol de Alexandria",
+  prata:"Selo prata — site oficial confirmado; edital, prazos ou os 12 dados ainda em validação",
+  bronze:"Selo bronze — oportunidade identificada; site oficial ainda não confirmado"};
+const SELO_ORD={ouro:2,prata:1,bronze:0};
+window.seloEsteira=function(x){ if(x.selo) return x.selo;
+  const I=x.inspecao||{}, of=x.link_oficial||I.pagina_oficial||(/\.(gov|leg|jus|mp)\.br(\/|$)|pncp\.gov\.br/i.test(String(x.url||""))?x.url:null);
+  const K=x.checklist||{}, res=Object.values(K).filter(v=>v&&["ok","disp","val"].includes(v.s)).length;
+  const prazo=!!x.fim||/cont[ií]nuo/i.test(String(x.regime||""));
+  return !of?"bronze":(prazo&&res>=12?"ouro":"prata"); };
+window.estrelaSelo=function(s){
+  if(!document.getElementById("gSeloDefs")){ const d=document.createElement("div"); d.id="gSeloDefs"; d.style.cssText="position:absolute;width:0;height:0;overflow:hidden";
+    d.innerHTML=`<svg width="0" height="0" aria-hidden="true"><defs>
+      <linearGradient id="gSeloPrata" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#D5DCE3"/>
+        <stop offset=".5" stop-color="#F8FAFC"><animate attributeName="offset" values=".15;.85;.15" dur="2.8s" repeatCount="indefinite"/></stop>
+        <stop offset=".7" stop-color="#9AA6B2"/><stop offset="1" stop-color="#E9EEF3"/></linearGradient>
+      <linearGradient id="gSeloOuro" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF7C9"/><stop offset=".3" stop-color="#F6C744"/>
+        <stop offset=".5" stop-color="#FFF4B0"><animate attributeName="offset" values=".1;.9;.1" dur="1.9s" repeatCount="indefinite"/></stop>
+        <stop offset=".72" stop-color="#D99A1B"/><stop offset="1" stop-color="#FFE27A"/></linearGradient></defs></svg>`;
+    document.body.appendChild(d); }
+  return `<svg class="oa-selo ${s}" viewBox="0 0 24 24" role="img" aria-label="${SELO_DIZ[s]}"><title>${SELO_DIZ[s]}</title><path d="M12 2.6l2.75 5.86 6.4.74-4.74 4.37 1.27 6.33L12 16.73 6.32 19.9l1.27-6.33L2.85 9.2l6.4-.74z"/></svg>`; };
 window.desenhaAbertasFluxo=function(){ return _desenhaAbertasFluxo(); };   // 28/09: chamado pelos filtros da tela (escopo global)
 function _desenhaAbertasFluxo(){
   const caixa=$("ed-abertos-caixa"); if(!caixa) return; caixa.classList.remove("oculto");
@@ -4409,15 +4442,15 @@ function _desenhaAbertasFluxo(){
   const F=window._FLUXO; if(!F){ cx.innerHTML=`<div class=meta style="padding:14px">lendo o fluxo das oportunidades…</div>`; return; }
   const todos=Object.entries(F.itens_por_uf||{}).flatMap(([uf,v])=>v.map(x=>({...x,_uf:uf==="__nac__"?"":uf})));
   const f=window._oaF, nUF={}; todos.forEach(x=>{const k=x._uf||"__nac__"; nUF[k]=(nUF[k]||0)+1;});
-  let L=todos.filter(x=>(!f.uf||(f.uf==="__nac__"?!x._uf:x._uf===f.uf))&&(!f.a||areaCal(x)===f.a)&&(!f.s||(f.s==="conf"?x.confirmada:!x.confirmada)));
-  L.sort((a,b)=>(b.confirmada-a.confirmada)||(a.confirmada?String(a.fim||"9999").localeCompare(String(b.fim||"9999")):((a._uf==="GO"?0:1)-(b._uf==="GO"?0:1))||String(b.publicado_em||"").localeCompare(String(a.publicado_em||""))));
+  let L=todos.filter(x=>(!f.uf||(f.uf==="__nac__"?!x._uf:x._uf===f.uf))&&(!f.a||areaCal(x)===f.a)&&(!f.s||seloEsteira(x)===f.s));
+  L.sort((a,b)=>(SELO_ORD[seloEsteira(b)]-SELO_ORD[seloEsteira(a)])||(b.confirmada-a.confirmada)||(a.confirmada?String(a.fim||"9999").localeCompare(String(b.fim||"9999")):((a._uf==="GO"?0:1)-(b._uf==="GO"?0:1))||String(b.publicado_em||"").localeCompare(String(a.publicado_em||""))));
   const conf=L.filter(x=>x.confirmada).length, insp=L.filter(x=>x.inspecao).length, opr=L.filter(x=>x.opressor).length;
   const sel=(id,opts,v)=>`<select class="ep-sel" onchange="_oaF['${id}']=this.value;desenhaAbertasFluxo()">${opts.map(([k,r])=>`<option value="${k}" ${v===k?"selected":""}>${r}</option>`).join("")}</select>`;
   const cartao=x=>{const I=x.inspecao, C=x.condicoes, a=areaCal(x), u=x.link_oficial||(I&&I.pagina_oficial)||x.url, of=!!(x.link_oficial||(I&&I.pagina_oficial));
     const cor=x.confirmada?"verde":!I?"cinza":I.ok?"verde":"verm";
     return `<div class="oa-c" style="--c:${COR_AREA[a]}">
       <div class="oa-t"><span class="uf-fx-m ${cor}" title="${x.confirmada?"confirmada: objeto, prazo e site oficial":!I?"ainda não estudada pelo Interceptador":I.ok?"estudada: prazo e site oficial encontrados":"estudada: prazo ou site oficial ainda não encontrados"}"></span>
-        ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)}">${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"Diário oficial · ").replace(/"/g,"").slice(0,110))}</a>`:`<b>${esc(String(x.titulo).slice(0,110))}</b>`}</div>
+        ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)}">${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"Diário oficial · ").replace(/"/g,"").slice(0,110))}</a>`:`<b>${esc(String(x.titulo).slice(0,110))}</b>`}${estrelaSelo(seloEsteira(x))}</div>
       <div class="oa-m">${esc(x.orgao||"")}${x.orgao?" · ":""}${x._uf||"nacional"} · ${esc(x.tipo||"")} · ${NOME_AREA[a]}${x.publicado_em?" · publicado em "+br(x.publicado_em):""}</div>
       <div class="oa-l"><span class="oa-p${x.confirmada?" ok":""}">${x.fim?"inscrições até "+br(x.fim):x.confirmada?"fluxo contínuo":"prazo a confirmar"}</span>
         ${u?`<span class="oa-s${of?" ok":""}">${of?"site oficial ✓":"indício — site oficial em busca"}</span>`:""}</div>
@@ -4431,10 +4464,10 @@ function _desenhaAbertasFluxo(){
       <div class="oa-r">${x.opressor?`livro <b>${esc(x.opressor)}</b>${x.opressor_edicoes?` · ${x.opressor_edicoes} edição(ões) guardada(s)`:""}${x.opressor_previsao?` · próxima janela prevista: ${esc(x.opressor_previsao.proxima_janela)}`:""}`:x.opressor_dispensa?`sem livro — ${esc(x.opressor_dispensa)}`:"livro será criado no próximo ciclo"}</div>
     </div>`;};
   cx.innerHTML=`<div class="oa-cab"><div><b style="font-size:15px;color:#0E2A55">Oportunidades abertas</b>
-      <span class=meta> · ${L.length} no recorte · ${conf} com prazo e site oficial · ${insp} estudada(s) pelo Interceptador · ${opr} com livro · atualiza a cada pouso</span></div>
+      <span class=meta> · ${L.length} no recorte · ${["ouro","prata","bronze"].map(s=>`${L.filter(x=>seloEsteira(x)===s).length} ${s}`).join(" · ")} · ${conf} com prazo e site oficial · ${insp} estudada(s) pelo Interceptador · ${opr} com livro · atualiza a cada pouso</span></div>
     <div class="oa-fil">${sel("uf",[["",`Brasil (${todos.length})`],["__nac__",`Nacional (${nUF.__nac__||0})`],...Object.keys(nUF).filter(k=>k!=="__nac__").sort((a,b)=>a==="GO"?-1:b==="GO"?1:a.localeCompare(b)).map(k=>[k,`${k} (${nUF[k]})`])],f.uf)}
       ${sel("a",[["","todas as áreas"],...Object.keys(NOME_AREA).map(k=>[k,NOME_AREA[k]])],f.a)}
-      ${sel("s",[["","todas"],["conf","com prazo e site oficial"],["verif","em verificação"]],f.s)}</div></div>
+      ${sel("s",[["","todas"],["ouro","Selo Ouro"],["prata","Selo Prata"],["bronze","Selo Bronze"]],f.s)}</div></div>
     ${(()=>{ const grupos={}; L.forEach(x=>{(grupos[areaCal(x)]=grupos[areaCal(x)]||[]).push(x);});
         // temas identificados primeiro (os que têm mais oportunidades confirmadas à frente); depois "Outras"; diários por último
         const peso=a=>a==="diario"?2:a==="outras"?1:0, conf=a=>grupos[a].filter(x=>x.confirmada).length;
