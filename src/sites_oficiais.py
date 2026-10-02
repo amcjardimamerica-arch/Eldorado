@@ -126,10 +126,84 @@ def financiador(ia, titulo: str, url_noticia: str, texto: str) -> dict:
     return r
 
 
+# ── território (parecer dos pilotos, 02/10/2026) ────────────────────────────────────────────────────────────
+# Medido em 01–02/10: de 70 voos do Interceptador com "página oficial", 13 apontavam para OUTRO estado ou município —
+# Cachoeira Paulista (SP) no lugar de Cachoeira Alta (GO), Ipiaú (BA) para Anápolis, a Secretaria de Educação de Goiânia
+# para Nova Iguaçu de Goiás, a Secretaria de Esportes de SP para o Serra Dourada. E a página errada ficava para sempre
+# ("de rodada anterior"). Agora a página de outro estado ou de outro município é recusada, inclusive a já guardada.
+UF_GOV = re.compile(r"\.(ac|al|am|ap|ba|ce|df|es|go|ma|mg|ms|mt|pa|pb|pe|pi|pr|rj|rn|ro|rr|rs|sc|se|sp|to)\.gov\.br$")
+_UF_NOME = {"GOIAS": "GO", "SAO PAULO": "SP", "MINAS GERAIS": "MG", "BAHIA": "BA", "DISTRITO FEDERAL": "DF", "MATO GROSSO": "MT",
+            "MATO GROSSO DO SUL": "MS", "TOCANTINS": "TO", "RIO DE JANEIRO": "RJ", "PARANA": "PR"}
+
+
+def _slug(s: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", _n(s))
+
+
+def territorio(e: dict) -> dict:
+    """UF e município esperados da oportunidade: campos do registro, ou o título ('… — Goiás / Anápolis',
+    'Prefeitura de Cachoeira Alta — …')."""
+    tit = str(e.get("titulo") or "")
+    uf = str(e.get("uf") or "").upper() or None
+    mun = str(e.get("municipio") or "")
+    if "/" in mun:
+        uf = uf or mun.split("/")[0].upper()
+        mun = mun.split("/", 1)[1]
+    m = re.search(r"[—-]\s*(Goi[áa]s|S[ãa]o Paulo|Minas Gerais|Bahia|Distrito Federal|Mato Grosso(?: do Sul)?|Tocantins)\s*/\s*([^—/]+?)\s*(?:—|$)", tit)
+    if m:
+        uf = uf or _UF_NOME.get(_n(m.group(1)).upper())
+        mun = mun or m.group(2).strip()
+    m = re.search(r"Prefeitura(?: Municipal)? de ([A-ZÀ-Ú][\wÀ-ú' ]{2,40}?)\s*(?:—|-|,|\(|$)", tit)
+    if m and not mun:
+        mun = m.group(1).strip()
+    if not uf and re.search(r"(?i)\bgoi[áa]s\b|\(GO\)", tit):
+        uf = "GO"
+    if mun and re.search(r"(?i)a confirmar|^munic[ií]pio$", mun):
+        mun = ""
+    return {"uf": uf if uf and len(uf) == 2 else None, "municipio": mun or None}
+
+
+def fora_do_territorio(url: str, texto_pagina: str, terr: dict | None) -> str | None:
+    """Motivo para recusar a página por território, ou None. Só recusa com sinal claro: domínio estadual de outra UF,
+    ou domínio municipal/estadual (.xx.gov.br) que não é do município esperado nem o cita no texto."""
+    if not terr or not url:
+        return None
+    h = host(url)
+    m = UF_GOV.search(h)
+    uf = (terr.get("uf") or "").upper()
+    if m and uf and uf != "BR" and m.group(1).upper() != uf:
+        return f"site de outro estado (.{m.group(1)}.gov.br) para oportunidade de {uf}"
+    mun = terr.get("municipio")
+    if mun and m:
+        sm = _slug(mun)
+        if sm and sm[:7] not in _slug(h) and _n(mun) not in _n(texto_pagina or "")[:80000]:
+            return f"site de outro município ({h}) para oportunidade de {mun}"
+    return None
+
+
+def site_municipal(terr: dict | None) -> str | None:
+    """Domínio da prefeitura esperada: catálogo das 25 maiores de Goiás (config/prefeituras_25_go.json) ou o padrão
+    <município>.go.gov.br. Serve para procurar o edital DENTRO do site oficial, sem depender de buscador."""
+    if not terr or not terr.get("municipio") or (terr.get("uf") or "GO") != "GO":
+        return None
+    try:
+        cat = json.loads((ROOT / "config/prefeituras_25_go.json").read_text(encoding="utf-8")).get("municipios") or []
+        for x in cat:
+            if _n(x.get("municipio") or "") == _n(terr["municipio"]) and x.get("site"):
+                return host(x["site"])
+    except Exception:  # noqa: BLE001
+        pass
+    sm = _slug(terr["municipio"])
+    return f"{sm}.go.gov.br" if len(sm) >= 4 else None
+
+
 # ── validação de uma página candidata ─────────────────────────────────────────────────────────
-def validar(url: str, texto_pagina: str, programa: str, chaves: list[str]) -> tuple[bool, str]:
+def validar(url: str, texto_pagina: str, programa: str, chaves: list[str], terr: dict | None = None) -> tuple[bool, str]:
     if not url or e_republicador(url):
         return False, "republicador/notícia/rede social"
+    fora = fora_do_territorio(url, texto_pagina, terr)
+    if fora:
+        return False, fora
     t = _n(texto_pagina)[:60000]
     alvo = [w for w in _n(" ".join([programa or ""] + (chaves or []))).split() if len(w) > 3][:12]
     bate = sum(1 for w in set(alvo) if w in t) / max(1, len(set(alvo)))
@@ -171,7 +245,21 @@ def descobrir(ia, e: dict, ler, buscar, links_da_pagina) -> tuple[str | None, st
     diag["financiador"] = fin.get("financiador"); diag["programa"] = fin.get("programa")
     dom = dominio_aprendido(fin.get("financiador") or "")
     chaves = fin.get("palavras_chave") or []
+    terr = territorio(e)
+    diag["territorio"] = terr
     candidatos = []
+    # rota municipal (02/10): o edital procurado DENTRO do site da prefeitura esperada (mapa do site), sem buscador —
+    # é a rota que não bloqueia e que não confunde Cachoeira Alta (GO) com Cachoeira Paulista (SP)
+    sm = site_municipal(terr)
+    if sm and not dom:
+        try:
+            from .piloto_busca import buscar_na_fonte
+            termos = [w for w in _n(" ".join([fin.get("programa") or titulo] + chaves)).split() if len(w) > 5][:6] + ["edital", "chamamento"]
+            achados = buscar_na_fonte(sm, termos, tempo=15, teto=20)
+        except Exception:  # noqa: BLE001
+            achados = []
+        diag["tentativas"].append({"rota": "site_municipal", "dominio": sm, "resultados": len(achados)})
+        candidatos += [(r["url"], "site_municipal", 4) for r in achados if r.get("url")]
     # rota 0: site citado no próprio texto
     if fin.get("site_citado") and str(fin["site_citado"]).startswith("http") and not e_republicador(fin["site_citado"]):
         candidatos.append((fin["site_citado"], "site_citado_na_noticia"))
@@ -207,7 +295,7 @@ def descobrir(ia, e: dict, ler, buscar, links_da_pagina) -> tuple[str | None, st
             continue
         vistos.add(u)
         tp = ler(u)
-        ok, porque = validar(u, tp, fin.get("programa") or titulo, chaves)
+        ok, porque = validar(u, tp, fin.get("programa") or titulo, chaves, terr)
         diag["tentativas"].append({"validou": u[:140], "ok": ok, "porque": porque, "rota": rota})
         if ok:
             aprender(fin.get("financiador") or "", u, rota)

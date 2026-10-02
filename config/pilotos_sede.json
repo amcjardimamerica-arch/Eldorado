@@ -1,0 +1,15 @@
+{
+ "versao": 1,
+ "atualizado_em": "2026-10-02",
+ "regra": "Sede dos Pilotos (Espião e Interceptador). 'automatica': voam no Brasil (computador do titular ou VM gratuita) enquanto o batimento estiver fresco; se parar, a nuvem do GitHub reassume sozinha. 'nuvem': só na nuvem. A nuvem confere a sede no início de cada voo e a cada hora (horário de segurança).",
+ "sede": "automatica",
+ "minutos_batimento": 45,
+ "maquinas": {
+  "computador": "scripts/pilotos_brasil.py, agendado por scripts/agendar_pilotos_brasil.ps1 (Windows) — voa enquanto o computador estiver ligado",
+  "vm": "scripts/instalar_vm_pilotos.sh numa VM gratuita no Brasil (Oracle Cloud Always Free, São Paulo ou Vinhedo: 4 núcleos ARM e 24 GB) — 24 h por dia"
+ },
+ "buscas": {
+  "nuvem": "DuckDuckGo 2 por voo → Brave/Google com chave (se houver) → ponte Brasil (se houver) → Google Notícias; cache de 24 h por consulta",
+  "brasil": "DuckDuckGo até 30 por voo, 6 s entre buscas (IP residencial ou brasileiro) → mesmas reservas"
+ }
+}
