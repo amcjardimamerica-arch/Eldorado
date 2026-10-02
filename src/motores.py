@@ -775,7 +775,7 @@ def run() -> dict:
                            "proxima_ia_em": (3 - (r.get("dias") or 0) % 3) % 3 or 3,
                            "itens_ia": len(r.get("itens", {}))} if r else None)
     leve = [{k: m.get(k) for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias", "internacional",
-                              "nome_classificado", "geo", "municipio", "objeto_area", "tipo_objeto", "publico", "regime_inscricao", "aberta_agora", "janelas", "livro", "abrangencia", "papel", "previsao",
+                              "nome_classificado", "geo", "municipio", "objeto_area", "tipo_objeto", "publico", "regime_inscricao", "aberta_agora", "janelas", "livro", "abrangencia", "papel", "previsao", "chave_acionamento",
                               "pagina", "confianca_pagina", "validacao", "ultima_leitura", "achados", "http",
                               "regime_prazo", "certeza_prazo", "obtidas", "area_atuacao", "natureza", "esfera",
                               "ativa", "motivo_status", "em_epoca", "proximidade")}

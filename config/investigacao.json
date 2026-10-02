@@ -9,7 +9,9 @@
    "nome": "Prosas — editais para o terceiro setor",
    "url": "https://prosas.com.br/editais",
    "territorio": "BR",
-   "ativa": true
+   "ativa": false,
+   "agregado_a": "prosas-oscs",
+   "motivo_inativa": "reunido ao motor Prosas — editais e prêmios para OSCs (02/10/2026)"
   },
   {
    "id": "mapa-osc",
@@ -69,8 +71,10 @@
    "nome": "Prosas — prêmios, concursos e cursos para OSCs",
    "url": "https://prosas.com.br/editais?natureza=premio",
    "territorio": "BR",
-   "ativa": true,
-   "natureza": "reconhecimento_e_capacitacao"
+   "ativa": false,
+   "natureza": "reconhecimento_e_capacitacao",
+   "agregado_a": "prosas-oscs",
+   "motivo_inativa": "reunido ao motor Prosas — editais e prêmios para OSCs (02/10/2026)"
   },
   {
    "id": "ovg",
@@ -162,6 +166,20 @@
    "ativa": true,
    "o_que_procurar": "chamamentos, editais, seleções, prêmios e credenciamentos para entidades nos sites de todos os órgãos do Executivo estadual",
    "origem": "titular 02/10/2026: agrega os motores 09 (Secult), 14 (FAPEG), 15 (fundos), 16 (Goiás Social) e 17 (OVG) e todos os demais órgãos estaduais"
+  },
+  {
+   "id": "prosas-oscs",
+   "nome": "Prosas — editais e prêmios para OSCs",
+   "url": "https://prosas.com.br/editais?page=1",
+   "territorio": "BR",
+   "ativa": false,
+   "motivo_inativa": "pausado em 02/10/2026: o robots.txt do Prosas proíbe robôs (o último grupo para 'User-agent: *' tem 'Disallow: /'; só Google, Bing e Yahoo são liberados). Retomar só com autorização ou API do Prosas.",
+   "aprendizado": "aprendizado (02/10/2026) antes de reunir: os motores 23 (editais) e 24 (prêmios) leram 19 e 26 vezes e nunca reconheceram um edital (0 achados). prosas.com.br/editais redireciona para a página comercial produtos.prosas.com.br; a lista real é um app Next.js com os dados em __NEXT_DATA__ (sem links /editais/<id> no HTML); não há sitemap nem API pública. Os 24 itens do Prosas que chegaram à base por outros motores eram páginas comerciais e foram descartados pela validação.",
+   "reune": [
+    "prosas",
+    "prosas-premios"
+   ],
+   "o_que_procurar": "editais e prêmios para OSC publicados no Prosas — com prazo, financiador e valor"
   }
  ],
  "incluir_dominios_das_260": true,

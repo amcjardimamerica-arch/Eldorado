@@ -38,6 +38,7 @@ jobs:
       - name: Regenerar o painel dos motores e o status
         run: |
           timeout 120 python -m src.previsao_livros || echo "previsão dos livros falhou"   # 02/10: ativação 30 dias antes
+          timeout 120 python -m src.chaves_livros || echo "chaves dos livros falharam"     # 02/10: léxico temporário de 30 dias
           timeout 300 python -c "import src.motores as M; M.run()" || echo "gerador dos motores falhou"
           python -m src.status_motores
       - name: Gravar

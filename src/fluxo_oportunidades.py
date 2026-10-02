@@ -512,6 +512,11 @@ def atualizar_mapa() -> dict:
         c["previsao_dos_livros"] = _prev()
     except Exception as ex:
         c["previsao_dos_livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10: chave de acionamento dos livros e léxico temporário (janela de 30 dias)
+        from .chaves_livros import run as _chaves
+        c["chaves_dos_livros"] = _chaves()
+    except Exception as ex:
+        c["chaves_dos_livros"] = f"falhou: {type(ex).__name__}"
     try:                                     # 29/09: os 12 parâmetros de cada opressor, pesquisados na fonte oficial
         from .parametros_opressores import aplicar as _par
         c["parametros_opressores"] = _par()
