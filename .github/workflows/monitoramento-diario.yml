@@ -289,6 +289,9 @@ jobs:
       - name: Resumo e decisão de alerta
         if: always()
         run: python -m src.resumo_execucao >> "$GITHUB_STEP_SUMMARY"
+      - name: Compactar a base de oportunidades (armazenamento leve)
+        if: always()
+        run: timeout 300 python -m src.compactacao || echo "compactação: falhou (a base fica como está)"
       - name: Registrar somente alterações produzidas
         if: always()
         run: |
