@@ -1,4 +1,4 @@
-name: TEMPORÁRIO · motor 04 — leitura real (removido antes do merge)
+name: TEMPORÁRIO · motor 04 — leitura real (removido antes do merge) · rodada 2 (PDF do órgão)
 on:
   push:
     branches: ['claude/motor-04-pncp-v2']
@@ -24,7 +24,7 @@ jobs:
               from src.pncp_osc import ler_motor, ESTADO
               r = ler_motor()
               rel["diagnostico"] = r.get("diagnostico"); rel["falhas"] = (r.get("falhas") or [])[:20]
-              rel["achados"] = [{k: a.get(k) for k in ("id", "titulo", "url", "fim", "orgao", "fonte_nome", "data_publicacao", "documento_oficial", "pdf", "regime")} for a in (r.get("achados") or [])]
+              rel["achados"] = [{k: a.get(k) for k in ("id", "titulo", "url", "fim", "orgao", "fonte_nome", "data_publicacao", "url_documento", "regime")} for a in (r.get("achados") or [])]
               try:
                   est = json.load(open(ESTADO)); rel["ultima"] = est.get("ultima")
               except Exception:
@@ -38,7 +38,7 @@ jobs:
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
           git checkout -- . && git clean -fdq
-          mkdir -p docs/relatorios && cp /tmp/motor04_leitura_real.json docs/relatorios/motor04_leitura_real_2026-10-02.json
-          git add docs/relatorios/motor04_leitura_real_2026-10-02.json
+          mkdir -p docs/relatorios && cp /tmp/motor04_leitura_real.json docs/relatorios/motor04_leitura_real_2026-10-02_rodada2.json
+          git add docs/relatorios/motor04_leitura_real_2026-10-02_rodada2.json
           git commit -q -m "motor 04: relatorio da leitura real (verificacao antes do merge)"
           for i in 1 2 3 4; do git pull -q --rebase origin claude/motor-04-pncp-v2 && git push -q origin HEAD:claude/motor-04-pncp-v2 && break; sleep 4; done
