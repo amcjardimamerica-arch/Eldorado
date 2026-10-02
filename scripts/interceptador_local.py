@@ -32,7 +32,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-os.environ.setdefault("ELDORADO_LOCAL_BR", "1")
 RESULTADOS = ROOT / "estado/esteira/resultados_local.jsonl"
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
@@ -152,6 +151,7 @@ def prata(it: dict, cfg: dict) -> dict:
 
 
 def main(limite: int | None = None, etapas=("bronze", "prata")) -> dict:
+    os.environ.setdefault("ELDORADO_LOCAL_BR", "1")      # só ao EXECUTAR (carregar o módulo não muda o ambiente dos outros)
     from src import ia
     if not ia.credencial():
         print("Interceptador local: sem credencial de IA (FAROL_AI_API_KEY) neste computador — nada foi analisado nem simulado.")
