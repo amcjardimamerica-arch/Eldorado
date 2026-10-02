@@ -4,7 +4,7 @@ name: 12 · Piloto - Interceptador — um alvo por voo, a cada 3 segundos
 # 3 segundos de pátio e decola de novo. Grupo de concorrência próprio: nunca bloqueia nem é bloqueado pelo Espião.
 on:
   schedule:
-    - cron: "17 */2 * * *"      # rede de segurança: religa a corrente se ela cair
+    - cron: "17 * * * *"        # rede de segurança de hora em hora: religa a corrente se ela cair ou se o Brasil parar
   workflow_dispatch:
 permissions:
   contents: write
@@ -13,7 +13,23 @@ concurrency:
   group: interceptador
   cancel-in-progress: false
 jobs:
+  sede:
+    # 02/10 (parecer dos pilotos): se o Interceptador está voando no Brasil (computador do titular ou VM), a nuvem fica
+    # em terra — sem dois pilotos no mesmo alvo. Parou o batimento do Brasil, a nuvem reassume aqui, sozinha.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      voar: ${{ steps.s.outputs.voar }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - id: s
+        run: python -m src.pilotos_sede nuvem-deve-voar interceptador
   interceptar:
+    needs: sede
+    if: ${{ needs.sede.outputs.voar == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -50,6 +66,12 @@ jobs:
       - name: Interceptar (um alvo)
         env:
           GITHUB_TOKEN: ${{ github.token }}          # transmissão ao vivo (ramo piloto-ao-vivo)
+          # 02/10: as vias de busca por API (gratuitas, com chave) também valem para o Interceptador — antes só o Espião as tinha
+          BRAVE_SEARCH_KEY: ${{ secrets.BRAVE_SEARCH_KEY }}
+          GOOGLE_CSE_KEY: ${{ secrets.GOOGLE_CSE_KEY }}
+          GOOGLE_CSE_CX: ${{ secrets.GOOGLE_CSE_CX }}
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
         run: |
           [ -e estado/interceptador/pausado ] && { echo "em terra por ordem do titular"; exit 0; }
           timeout 1800 python - <<'PY'
@@ -97,7 +119,8 @@ jobs:
             cp /tmp/int/interceptador.json docs/dados/ 2>/dev/null || true
             cp /tmp/int/fila_resgate.json estado/piloto/ 2>/dev/null || true
             # a pasta é SÓ do Interceptador: substitui inteira (propaga exclusões — o aguardando.json nunca saía)
-            [ -d /tmp/int/interceptador ] && { rm -rf estado/interceptador; cp -r /tmp/int/interceptador estado/interceptador; }
+            # 02/10: MESCLA, não substitui — o Interceptador também voa no Brasil (computador/VM); por alvo vence o mais recente
+            [ -d /tmp/int/interceptador ] && python -m src.pilotos_sede mesclar-interceptador /tmp/int/interceptador
             cp -r /tmp/int/dados /tmp/int/biblioteca_alexandria /tmp/int/docs . 2>/dev/null || true
             [ -d /tmp/int/extra ] && cp -r /tmp/int/extra/. . || true
             timeout 60 python -m src.reset_pilotos >/dev/null 2>&1 || true   # 01/10: missões anteriores ao reset ficam só no histórico

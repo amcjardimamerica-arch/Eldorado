@@ -447,9 +447,14 @@ def pagina_oficial(ia, e: dict) -> tuple[str | None, str]:
     página (fala do programa e tem sinais de edital). Sem página validada, nenhuma — a notícia fica como indício."""
     from . import sites_oficiais as SO
     ve = e.get("verificacao_externa") if isinstance(e.get("verificacao_externa"), dict) else {}
+    terr = SO.territorio(e)
     for cand, como in ((ve.get("pagina_oficial"), "confirmada pelo titular"), ((e.get("validacao") or {}).get("site"), "confirmada pela validação"),
                        (e.get("pagina_oficial"), "de rodada anterior")):
         if cand and str(cand).startswith("http") and not SO.e_republicador(cand):
+            # 02/10: a página guardada de rodada anterior também passa pelo território (Cachoeira Paulista ficava para sempre)
+            if como == "de rodada anterior" and SO.fora_do_territorio(cand, "", {**terr, "municipio": None}):
+                e.setdefault("paginas_recusadas", []).append({"url": cand, "porque": SO.fora_do_territorio(cand, "", {**terr, "municipio": None})})
+                continue
             return cand, f"página oficial {como}"
     e["pagina_oficial"] = None
 

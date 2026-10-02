@@ -17,6 +17,7 @@ Biblioteca), para o registro do edital (a ficha do painel) e para o bordo (prazo
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 from datetime import date
@@ -272,6 +273,47 @@ def investigar_empresa(ia, emp: dict) -> dict:
     return ficha
 
 
+def _local_brasil() -> bool:
+    return os.environ.get("ELDORADO_LOCAL_BR") == "1"
+
+
+def causa_de_retentativa(x: dict, reg: dict) -> str | None:
+    """Por que o voo não comprovou: falha de rede (retentar) ou o edital não tem os dados (resultado de verdade)."""
+    if str(x.get("erro") or "") == "nenhuma fonte legível":
+        return "fonte_ilegivel"
+    bo = reg.get("busca_do_oficial") or {}
+    tent = [t for t in bo.get("tentativas") or [] if "resultados" in t]
+    if not x.get("pagina_oficial") and tent and all(int(t.get("resultados") or 0) == 0 for t in tent):
+        return "busca_sem_resultado"
+    return None
+
+
+def retentativa(feitos: dict, hoje: str | None = None) -> dict | None:
+    """O alvo que falhou por rede e já pode ser tentado de novo. No Brasil (ELDORADO_LOCAL_BR=1): qualquer um que a
+    nuvem não conseguiu, o mais antigo primeiro. Na nuvem: só 'busca_sem_resultado', 3 dias depois."""
+    from datetime import date as _d, timedelta as _td
+    hoje = hoje or _d.today().isoformat()
+    corte = (_d.fromisoformat(hoje) - _td(days=3)).isoformat()
+    cands = []
+    for i, f in feitos.items():
+        r = f.get("retentar") or {}
+        if not r:
+            continue
+        if _local_brasil():
+            if r.get("ultima_rota") == "brasil" and str(r.get("desde") or "") > corte:
+                continue
+        elif r.get("onde") != "qualquer" or str(r.get("desde") or "") > corte:
+            continue
+        cands.append((str(r.get("desde") or ""), i, r))
+    for _, i, r in sorted(cands):
+        e = registro(i) or {}
+        if not (e.get("url") or e.get("pagina_oficial") or e.get("titulo")):
+            continue
+        return {"id": i, "titulo": e.get("titulo"), "url": e.get("url"), "de": f"0 · retentativa ({r.get('causa')}, "
+                f"{'computador/VM do Brasil' if _local_brasil() else 'nuvem'})", "modo": "validar", "tipo": "edital", "retentativa": r}
+    return None
+
+
 def proximo_alvo() -> dict | None:
     """ORDEM DE BUSCAS GUIADA PELOS LIVROS (titular, 01/10):
       1. GOIÁS            oportunidades do mapa e livros de Goiás que precisam de estudo
@@ -285,6 +327,9 @@ def proximo_alvo() -> dict | None:
     from .skills.aprendizado import parametros as _par
     est = load_json(ESTADO) if ESTADO.exists() else {}
     feitos = est.get("feitos") or {}
+    r0 = retentativa(feitos)                 # 02/10: o que falhou por rede vem primeiro (no Brasil, sempre)
+    if r0:
+        return r0
     _dias = int((_par().get("interceptador") or {}).get("dias_sem_reestudar_o_mesmo_alvo", 7))
     _lim = (_d.today() - _td(days=_dias)).isoformat()
     recente = lambda i: str((feitos.get(i) or {}).get("em") or "") >= _lim
@@ -628,6 +673,16 @@ def voo(ia) -> dict:
                     "fontes_oficiais": [c for c, v in (inv.get("campos") or {}).items() if v.get("fonte_oficial")],
                     "parecer_fonte": par, "erro": x.get("erro")})
         est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "edital", "qualidade": q, "comprovados": x.get("comprovados"), "de": a["de"]}
+        # CONTINUIDADE (parecer dos pilotos, 02/10): falha de REDE não é resultado. Fonte ilegível (o site recusou o IP
+        # do servidor) ou busca sem resposta voltam para a fila de retentativa — no computador do titular / VM do Brasil
+        # primeiro, e na nuvem de novo depois de 3 dias, até 3 tentativas.
+        causa = causa_de_retentativa(x, reg)
+        tent = int(((a.get("retentativa") or {}).get("tentativas")) or 0) + (1 if a.get("retentativa") else 0)
+        if causa and q in ("insuficiente", "sem_evidencia") and tent < 3:
+            est["feitos"][a["id"]]["retentar"] = {"causa": causa, "tentativas": tent, "desde": now_iso()[:10],
+                                                  "onde": "brasil" if causa == "fonte_ilegivel" else "qualquer",
+                                                  "ultima_rota": "brasil" if _local_brasil() else "nuvem"}
+            rel["retentar"] = est["feitos"][a["id"]]["retentar"]
     try:
         from .fluxo_oportunidades import atualizar_mapa as _fluxo
         rel["fluxo"] = _fluxo().get("mapa_total")          # mapa e calendário em tempo real a cada pouso

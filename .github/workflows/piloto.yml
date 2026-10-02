@@ -1,7 +1,7 @@
 name: 07 · Piloto — IA local da Biblioteca (benchmark e ciclos)
 on:
   schedule:
-    - cron: "0 */2 * * *"     # rede de segurança a cada 2h; o normal é o próprio Piloto encadear o voo seguinte
+    - cron: "0 */2 * * *"     # rede de segurança a cada 2h; o normal é o próprio Piloto encadear o voo seguinte (e reassumir quando o Brasil para)
   workflow_dispatch:
     inputs:
       modo:
@@ -20,7 +20,23 @@ concurrency:
   group: piloto
   cancel-in-progress: false
 jobs:
+  sede:
+    # 02/10 (parecer dos pilotos): com o Espião voando no Brasil (computador do titular ou VM), a nuvem fica em terra;
+    # parou o batimento, a nuvem reassume aqui. Benchmark, avaliação e sondagem não dependem da sede.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      voar: ${{ steps.s.outputs.voar }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - id: s
+        run: python -m src.pilotos_sede nuvem-deve-voar espiao
   piloto:
+    needs: sede
+    if: ${{ needs.sede.outputs.voar == 'true' || (github.event.inputs.modo != '' && github.event.inputs.modo != 'ciclo') }}
     runs-on: ubuntu-latest
     # TETO POR MODO. Os 30 minutos foram desenhados para o VOO: uma pesquisa por execução,
     # para que nenhum voo monopolize o runner. O benchmark é outra coisa — cinco modelos

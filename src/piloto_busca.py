@@ -265,7 +265,110 @@ def _google_noticias(consulta: str, maximo: int, tempo: float) -> list[dict]:
     return out[:maximo]
 
 
+# ── 02/10/2026 (parecer dos pilotos): CONTINUIDADE DAS BUSCAS ────────────────────────────────────────────────
+# Medido: no servidor do GitHub o DuckDuckGo entrega 2 buscas por máquina e bloqueia; depois disso o voo inteiro caía no
+# Google Notícias — e as vias por API (Brave, Google) NUNCA eram tentadas, mesmo com a chave gravada. E o Espião repetia
+# as mesmas consultas a cada voo (uma delas 241 vezes), gastando as 2 buscas boas no que já sabia. Agora:
+#   1. CACHE de 24 h por consulta (6 h se veio vazia): a mesma pergunta não gasta busca de novo;
+#   2. quando o DuckDuckGo esgota, a ordem é: API com chave (Brave, Google) → ponte Brasil (se configurada) → Google
+#      Notícias — nessa ordem, sempre;
+#   3. no computador do titular ou na VM do Brasil (ELDORADO_LOCAL_BR=1), IP que o buscador não trata como robô de
+#      datacenter: até 30 buscas por voo no DuckDuckGo, com 6 s de intervalo.
+CACHE_BUSCAS = ROOT / "estado/piloto/cache_buscas.json"
+_PONTE_NO_VOO = {"usadas": 0}
+
+
+def local_brasil() -> bool:
+    import os
+    return os.environ.get("ELDORADO_LOCAL_BR") == "1"
+
+
+def _chave_consulta(c: str) -> str:
+    import unicodedata
+    t = unicodedata.normalize("NFD", (c or "").lower())
+    return re.sub(r"\s+", " ", "".join(ch for ch in t if unicodedata.category(ch) != "Mn")).strip()
+
+
+def _cache_ler(consulta: str) -> list[dict] | None:
+    try:
+        d = load_json(CACHE_BUSCAS) if CACHE_BUSCAS.exists() else {}
+    except Exception:  # noqa: BLE001
+        return None
+    x = d.get(_chave_consulta(consulta))
+    if not x:
+        return None
+    validade = 24 * 3600 if x.get("itens") else 6 * 3600
+    return x.get("itens") if time.time() - float(x.get("t") or 0) < validade else None
+
+
+def _cache_gravar(consulta: str, itens: list[dict]) -> None:
+    try:
+        d = load_json(CACHE_BUSCAS) if CACHE_BUSCAS.exists() else {}
+        d[_chave_consulta(consulta)] = {"t": time.time(), "em": now_iso()[:16], "itens": itens[:12]}
+        if len(d) > 400:                                     # fica o mais recente
+            d = dict(sorted(d.items(), key=lambda kv: -float(kv[1].get("t") or 0))[:400])
+        write_json(CACHE_BUSCAS, d)
+    except Exception:  # noqa: BLE001 — cache nunca derruba a busca
+        pass
+
+
+def _ddg_pela_ponte(consulta: str, tempo: float) -> list[dict]:
+    """O DuckDuckGo pelo IP da ponte Brasil (hospedagem ou VM): outra máquina, outra cota de buscas."""
+    from .indexadores import ponte as _ponte
+    if not _ponte.configurada():
+        return []
+    st, _final, corpo, hdr = _ponte.buscar("https://html.duckduckgo.com/html/?q=" + urllib.parse.quote(consulta),
+                                           {"Accept": "text/html", "Accept-Language": "pt-BR,pt;q=0.9"}, int(tempo), 2_000_000)
+    if (hdr.get("content-encoding") or "") == "gzip":
+        corpo = gzip.decompress(corpo)
+    p = _Res(); p.feed(corpo.decode("utf-8", "ignore"))
+    return [{**it, "buscador": "duckduckgo_ponte"} for it in p.itens]
+
+
+def _vias_de_reserva(consulta: str, maximo: int, tempo: float, pe: dict) -> list[dict]:
+    """Quando o DuckDuckGo direto esgota: API com chave → ponte Brasil → Google Notícias."""
+    import os
+    for nome in ("brave", "google_cse"):
+        if not os.environ.get(CHAVES[nome][0]):
+            continue
+        try:
+            itens = _por_api(nome, consulta, tempo)
+            _marcar_via(nome, bool(itens), len(itens))
+            if itens:
+                return itens[:maximo]
+        except Exception:  # noqa: BLE001
+            _marcar_via(nome, False)
+    if _PONTE_NO_VOO["usadas"] < int(pe.get("max_buscas_ponte_por_voo", 3)):
+        try:
+            _PONTE_NO_VOO["usadas"] += 1
+            itens = _ddg_pela_ponte(consulta, tempo)
+            if itens:
+                _marcar_via("duckduckgo_ponte", True, len(itens))
+                return itens[:maximo]
+        except Exception:  # noqa: BLE001
+            _marcar_via("duckduckgo_ponte", False)
+    try:
+        return _google_noticias(consulta, maximo, tempo)
+    except Exception:  # noqa: BLE001
+        return []
+
+
 def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str] | None = None) -> list[dict]:
+    """Busca com cache e vias de reserva (02/10/2026) — ver _buscar_sem_cache. O cache vale só no voo real (nuvem ou
+    Brasil), nunca em teste."""
+    import os
+    usar_cache = not motores and (os.environ.get("ELDORADO_VOO_REAL") == "1" or local_brasil())
+    if usar_cache:
+        c = _cache_ler(consulta)
+        if c is not None:
+            return [dict(x, do_cache=True) for x in c][:maximo]
+    r = _buscar_sem_cache(consulta, maximo, tempo, motores)
+    if usar_cache:
+        _cache_gravar(consulta, r)
+    return r
+
+
+def _buscar_sem_cache(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str] | None = None) -> list[dict]:
     """Busca real na internet pelas vias disponíveis, EM REVEZAMENTO.
 
     Cada consulta começa por uma via diferente, para que nenhuma apanhe o volume inteiro —
@@ -276,7 +379,7 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
         _pe = (json.loads((Path(__file__).resolve().parents[1] / "config/parametros_pilotos.json").read_text(encoding="utf-8")).get("espiao") or {})
     except Exception:
         _pe = {}
-    ESPERA = float(_pe.get("intervalo_busca_s", ESPERA_ENTRE_BUSCAS))
+    ESPERA = float(_pe.get("intervalo_busca_local_s", 6.0) if local_brasil() else _pe.get("intervalo_busca_s", ESPERA_ENTRE_BUSCAS))
     espera = ESPERA - (time.time() - _ULTIMA_BUSCA[0])
     if espera > 0:
         time.sleep(min(espera, ESPERA))                    # respeita o intervalo, senão o buscador corta
@@ -284,11 +387,9 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
     # 01/10 — MEDIDO no servidor: o DuckDuckGo entrega 2 buscas por máquina e bloqueia (desafio anti-robô, status 202)
     # por mais de 4 minutos — esperar não adianta. Cada voo é uma máquina nova: no máximo 2 buscas nele; depois, ou se
     # bloquear, o Google Notícias (RSS) assume o resto do voo.
-    if not motores and (_DDG_NO_VOO["bloqueado"] or _DDG_NO_VOO["usadas"] >= int(_pe.get("max_buscas_duckduckgo_por_voo", 2))):
-        try:
-            return _google_noticias(consulta, maximo, tempo)
-        except Exception:
-            return []
+    cota = int(_pe.get("max_buscas_duckduckgo_por_voo_local", 30) if local_brasil() else _pe.get("max_buscas_duckduckgo_por_voo", 2))
+    if not motores and (_DDG_NO_VOO["bloqueado"] or _DDG_NO_VOO["usadas"] >= cota):
+        return _vias_de_reserva(consulta, maximo, tempo, _pe)
     ordem = [v for v in vias_da_roda() if not motores or v in motores] or [b[0] for b in BUSCADORES]
     porMolde = {b[0]: (b[1], b[2]) for b in BUSCADORES}
     for nome in ordem:
@@ -337,10 +438,9 @@ def buscar(consulta: str, maximo: int = 10, tempo: float = 20, motores: list[str
     # ignorando o "descanso" — antes, a via descansava e todas as buscas seguintes do voo saíam vazias.
     if not saida and not motores:
         _DDG_NO_VOO["bloqueado"] = True
-        try:
-            return _google_noticias(consulta, maximo, tempo)
-        except Exception:
-            pass
+        r = _vias_de_reserva(consulta, maximo, tempo, _pe)
+        if r:
+            return r
     if not saida:
         BLOQUEIO_DO_BUSCADOR[0] += 1
     return saida[:maximo]
