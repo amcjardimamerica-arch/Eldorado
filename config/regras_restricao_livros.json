@@ -1,5 +1,5 @@
 {
- "versao": "2026-10-02.2",
+ "versao": "2026-10-02.3",
  "origem": "Parecer das 238 oportunidades não confirmadas — validação item a item em 02/10/2026 (v2: território vira enquadramento; léxico e restrições em cada livro)",
  "regra_do_livro": "Cada livro da Biblioteca carrega, junto com o LÉXICO que busca a sua oportunidade, as RESTRIÇÕES que se aplicam a ela (bloco `busca` gravado no livro a cada ciclo por src/livros_regra.aplicar_motores). Este arquivo é o catálogo-mãe: os livros e os motores atualizam o JSON, não o código. Uma regra nunca se volta contra o próprio livro (fica em `suspensas` e vai à curadoria).",
  "como_usar": "src/regras_restricao.avaliar(registro) decide o veredito de um registro novo; bloco_do_livro(livro) monta o léxico e as restrições do livro; julgar_no_livro(achado, livro) julga o achado pelas restrições DO livro (veto · edição · junção · aceita). Nunca apagar: o vetado fica em `vetados_pelas_restricoes` do catálogo.",
@@ -264,15 +264,7 @@
    },
    "tipo": "padrao",
    "padroes_fortes": [
-    "catadores?",
-    "coleta seletiva",
-    "materiais reciclaveis",
-    "oleo vegetal",
-    "longa permanencia",
-    "\\bilpis?\\b",
     "cooperativas? de credito",
-    "associacoes? estudantis",
-    "associacao de estudantes",
     "fapeg",
     "instituicoes de ensino superior",
     "produtora brasileira independente",
@@ -502,6 +494,14 @@
    "antes": "DI-06",
    "tipo": "padrao",
    "padroes": [
+    "catadores?",
+    "coleta seletiva",
+    "materiais reciclaveis",
+    "oleo vegetal",
+    "longa permanencia",
+    "\\bilpis?\\b",
+    "associacoes? estudantis",
+    "associacao de estudantes",
     "acolhimento institucional",
     "organizacao social de saude|\\boss\\b",
     "sistema socioeducativo",
@@ -594,5 +594,12 @@
   },
   "leitura": "As regras reproduzem a classe do veredito humano em 84% dos 238 registros (v2: território e especialidade viram enquadramento; a fonte só em agregador aguarda o ato oficial). As divergências são registros que só a leitura do ato/da página resolve (objeto mal extraído, link de outro município, vigência tomada por prazo) — a regra reduz o funil e organiza o livro, mas não substitui a verificação dos 12 itens.",
   "ressalva": "calibradas no mesmo conjunto de 238 — ajuste, não validação independente"
+ },
+ "decisoes_do_titular": {
+  "2026-10-02": {
+   "catadores_ilpi_estudantis": "também são OSC: as oportunidades para elas são coletadas, viram livro (EN-03, enquadramento técnico) e são anunciadas; o arquivamento é manual",
+   "identificar_depois_qualificar": "a regra maior é coletar: nada é eliminado de início. O achado vetado vira livro marcado com a qualificação (NÃO APLICA + regra + motivo) e o livro existente que cai em veto é mantido e marcado; o arquivamento é manual. Exceção: texto com injeção de instrução (quarentena, por segurança).",
+   "abrangencia": "o PNCP continua sendo a porta de entrada para editais de OSC de outros municípios e estados, com geração de livros; os livros podem ser excluídos depois, por análise posterior"
+  }
  }
 }

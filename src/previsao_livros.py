@@ -133,6 +133,7 @@ def run(hoje: date | None = None) -> dict:
     for x in C.get("motores") or []:
         if x.get("papel") == "fonte_de_busca":
             continue
+        _naoaplica = (x.get("qualificacao") or {}).get("veredito") == "NÃO APLICA"
         pv = prever(x, hoje, cfg)
         if not pv:
             continue
@@ -146,7 +147,7 @@ def run(hoje: date | None = None) -> dict:
         linha = {"id": x["id"], "nome": x.get("nome_classificado") or x.get("programa"), "geo": x.get("geo"), "abertura_prevista": pv["abertura"],
                  "ativar_em": pv["ativar_em"], "confianca": pv["confianca"], "base": pv["base"], "ativa_automaticamente": ok_conf}
         if ativ <= hoje <= fecha:
-            if ok_conf and x["id"] not in L["ligados"] and x["id"] not in disp and x["id"] not in man:
+            if ok_conf and not _naoaplica and x["id"] not in L["ligados"] and x["id"] not in disp and x["id"] not in man:
                 L["ligados"][x["id"]] = {"desde": hoje.isoformat(), "ate": (hoje + timedelta(days=30)).isoformat(),
                                          "origem": f"automática: abertura prevista em {abre.strftime('%d/%m/%Y')} (confiança {pv['confianca']}) — ativado 30 dias antes",
                                          "dias": 0, "ia": [], "itens": {}}
