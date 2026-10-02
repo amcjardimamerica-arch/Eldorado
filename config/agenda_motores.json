@@ -118,15 +118,16 @@
   },
   "empresas-incentivadas": {
    "horarios_brt": "10:23",
-   "dias": "dom",
+   "dias": "inativo",
    "cadencia_dias": 7,
-   "por_que_esta_hora": "itinerário 02/10 (empresas): uma passagem por dia; a cadência de cada empresa é mantida; a 1ª passagem fecha o dia anterior (D-1)",
+   "por_que_esta_hora": "02/10: reunido ao Motor Incentivos Fiscais (motor-gife), que lê também estes sites",
    "coleta": "nuvem",
    "objetivo": "identificar empresa que já financiou o terceiro setor, e por qual via",
    "verificacao": {
     "etapa_1": "a empresa aparece numa lista de referência (ICMS de Goiás, SALIC, GIFE, patrocínio publicado)",
     "etapa_2": "CNPJ ativo e prova da destinação ou do patrocínio (projeto, valor ou matéria que a credita)"
-   }
+   },
+   "agregado_a": "motor-gife"
   },
   "plat-observatorio-3setor": {
    "horarios_brt": "05:53,10:23",
@@ -140,7 +141,7 @@
     "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
    },
    "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)",
-   "agregado_a": "idx-feeds",
+   "agregado_a": "site-observatorio-terceiro-setor",
    "motivo_inativa": "reunido ao motor Indexadores — feeds RSS e WordPress (02/10/2026): o RSS da seção de editais substitui a leitura dos rótulos da página"
   },
   "plat-abcr": {
@@ -155,7 +156,7 @@
     "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
    },
    "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)",
-   "agregado_a": "idx-feeds",
+   "agregado_a": "site-abcr",
    "motivo_inativa": "reunido ao motor Indexadores — feeds RSS e WordPress (02/10/2026): o RSS da categoria Editais, com o link oficial de cada artigo, substitui a leitura dos rótulos da página"
   },
   "plat-gife": {
@@ -295,7 +296,7 @@
    "cadencia_dias": 1,
    "por_que_esta_hora": "itinerário 02/10 (orgao_publico): os sites dos órgãos são atualizados no expediente; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
-   "objetivo": "encontrar oportunidade aberta para OSC em 50 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
+   "objetivo": "encontrar oportunidade aberta para OSC em 25 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
    "verificacao": {
     "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
     "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
@@ -317,16 +318,17 @@
   },
   "plat-mp-destinacoes-reparacao": {
    "horarios_brt": "07:53,16:23",
-   "dias": "todos",
+   "dias": "inativo",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "por_que_esta_hora": "02/10: separado em mpgo-destinacao, mptgo-destinacao, mpu-destinacao — não roda mais",
    "coleta": "nuvem",
    "objetivo": "editais de 5 dias do MPT-GO (todo dia) e destinações do MPF, MPDFT, MPT nacional e FDD (semanal/mensal, pela cadência de cada fonte)",
    "verificacao": {
     "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
     "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
    },
-   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
+   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)",
+   "agregado_a": "mptgo-destinacao"
   },
   "plat-cnpq-extensao": {
    "horarios_brt": "09:23,15:23",
@@ -373,7 +375,7 @@
    "cadencia_dias": 7,
    "por_que_esta_hora": "cadastro de empresas muda devagar; leitura semanal no domingo",
    "coleta": "nuvem",
-   "objetivo": "identificar empresa que já financiou o terceiro setor, e por qual via",
+   "objetivo": "empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada e os sites das maiores contribuintes do ICMS (editais incentivados)",
    "verificacao": {
     "etapa_1": "a empresa aparece numa lista de referência (ICMS de Goiás, SALIC, GIFE, patrocínio publicado)",
     "etapa_2": "CNPJ ativo e prova da destinação ou do patrocínio (projeto, valor ou matéria que a credita)"
@@ -411,7 +413,7 @@
    "coleta": "nuvem",
    "objetivo": "ler a página de editais do Mapa das OSC (IPEA)",
    "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)",
-   "agregado_a": "idx-assistido",
+   "agregado_a": "site-mapa-osc",
    "motivo_inativa": "reunido ao motor Indexadores — coleta assistida (02/10/2026): a página de editais do Mapa das OSC só embute o widget do Prosas, que é coberto pela coleta do Prosas"
   },
   "plat-estaduais-go-gov": {
@@ -433,9 +435,9 @@
    "dias": "inativo",
    "cadencia_dias": 1,
    "coleta": "nuvem",
-   "motivo_inativa": "pausado em 02/10/2026: o robots.txt do Prosas proíbe robôs (o último grupo para 'User-agent: *' tem 'Disallow: /'). Decisão do titular (02/10/2026): sem pedido de licença — o Prosas é coberto pelos três caminhos indiretos do motor idx-assistido (listagem do CapitaAI sobre o Prosas em toda rodada, ângulo do Piloto e coleta assistida no navegador).",
+   "motivo_inativa": "pausado em 02/10/2026: o robots.txt do Prosas proíbe robôs (o último grupo para 'User-agent: *' tem 'Disallow: /'). Decisão do titular (02/10/2026): sem pedido de licença — o Prosas é coberto pelos três caminhos indiretos do motor CapitaAI e da coleta assistida (listagem do CapitaAI sobre o Prosas em toda rodada, ângulo do Piloto e coleta assistida no navegador).",
    "objetivo": "editais e prêmios para OSC no Prosas",
-   "agregado_a": "idx-assistido"
+   "agregado_a": "site-prosas"
   },
   "congresso-nacional": {
    "horarios_brt": "10:53,20:53",
@@ -449,13 +451,63 @@
     "etapa_2": "na fonte oficial: situação e datas da etapa de emendas na página da LOA; número, ementa e situação da proposição na API da Casa"
    }
   },
-  "idx-feeds": {
+  "judiciario-cnj-tjgo": {
+   "horarios_brt": "07:53,16:23",
+   "dias": "inativo",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "02/10: separado em judiciario-tjgo, judiciario-cnj — não roda mais",
+   "coleta": "nuvem + local",
+   "objetivo": "encontrar os editais de seleção de projetos com recursos de prestações pecuniárias das comarcas de Goiás (Goiânia primeiro), os credenciamentos do Judiciário para entidades e a regra do CNJ — com comarca, prazo, áreas admitidas e a exigência do Banco de Projetos Sociais",
+   "verificacao": {
+    "etapa_1": "RSS da Agência de Notícias do TJGO (paginado), página da notícia e PDF do edital; busca do CNJ; PNCP cruzado → OPORTUNIDADE (edital ou credenciamento aberto), ACOMPANHAR (encerrado, resultado/entrega, regra, habilitação prévia) ou RUÍDO, com o motivo",
+    "etapa_2": "no PDF do edital (link oficial): número, prazo de habilitação, documentos e restrição territorial da comarca"
+   },
+   "reune": [
+    "dje-tjgo",
+    "cnj-destinacoes"
+   ],
+   "criado_em": "2026-10-02",
+   "agregado_a": "judiciario-tjgo"
+  },
+  "site-farol-cultural": {
    "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "seis rodadas por dia: feeds e a API do WordPress são leves e mostram o edital no dia em que é publicado",
-   "coleta": "nuvem",
-   "objetivo": "trazer como INDÍCIO os editais que os indexadores publicam em feed RSS ou na API do WordPress, com o link da fonte oficial",
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais de cultura de todo o Brasil, pela API pública do portal",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "motor-agregadores (Farol Cultural)"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-capitaai": {
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais e oportunidades de captação, incluindo a lista pública dos editais do Prosas",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "motor-agregadores (CapitaAI)"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-observatorio-terceiro-setor": {
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais publicados na seção temática do portal",
    "verificacao": {
     "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
     "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
@@ -467,13 +519,13 @@
    ],
    "criado_em": "2026-10-02"
   },
-  "idx-apis": {
+  "site-mapas-culturais": {
    "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "seis rodadas por dia; cada site tem a sua cadência (Farol e Mapas Culturais a cada 6 h, Transferegov uma vez por dia)",
-   "coleta": "nuvem",
-   "objetivo": "trazer como INDÍCIO os editais que os indexadores entregam por API pública, com o link da fonte oficial",
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais das redes estaduais e municipais de cultura que usam a plataforma",
    "verificacao": {
     "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
     "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
@@ -483,29 +535,31 @@
    ],
    "criado_em": "2026-10-02"
   },
-  "idx-sitemaps": {
+  "site-abcr": {
    "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "seis rodadas por dia: o sitemap traz a data de alteração de cada página e a rodada lê só as novas ou alteradas, até 70 por rodada, até zerar a fila",
-   "coleta": "nuvem",
-   "objetivo": "trazer como INDÍCIO os editais que os indexadores listam no sitemap, com o link da fonte oficial",
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais divulgados pela associação dos captadores",
    "verificacao": {
     "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
     "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
    },
    "reune": [
-    "motor-agregadores (CapitaAI)"
+    "plat-observatorio-3setor",
+    "plat-abcr",
+    "motor-agregadores (IDIS)"
    ],
    "criado_em": "2026-10-02"
   },
-  "idx-listagens": {
+  "site-funarte": {
    "horarios_brt": "07:13,19:13",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "duas rodadas por dia: financiadores publicam poucos editais por ano; a página de cada edital novo é lida uma vez e revisitada a cada 14 dias",
-   "coleta": "nuvem",
-   "objetivo": "trazer como INDÍCIO os editais que os financiadores listam nas suas páginas de editais, com o link da fonte oficial",
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais da Fundação Nacional de Artes",
    "verificacao": {
     "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
     "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
@@ -513,13 +567,13 @@
    "reune": null,
    "criado_em": "2026-10-02"
   },
-  "idx-dados-abertos": {
+  "site-transferegov": {
    "horarios_brt": "07:13",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "uma vez por dia, depois da atualização diária dos arquivos do Transferegov",
-   "coleta": "nuvem",
-   "objetivo": "trazer como INDÍCIO os editais que o governo publica em dados abertos, com o link da fonte oficial",
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "programas e parcerias com OSC abertos na plataforma federal (dados abertos)",
    "verificacao": {
     "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
     "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
@@ -527,13 +581,159 @@
    "reune": null,
    "criado_em": "2026-10-02"
   },
-  "idx-ponte-brasil": {
+  "site-rede-comua": {
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais dos fundos independentes de filantropia",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-observatorio-3setor",
+    "plat-abcr",
+    "motor-agregadores (IDIS)"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-fundo-baoba": {
+   "horarios_brt": "07:13,19:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais para equidade racial",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": null,
+   "criado_em": "2026-10-02"
+  },
+  "site-editais-culturais": {
+   "horarios_brt": "07:13,19:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais de cultura reunidos no portal",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": null,
+   "criado_em": "2026-10-02"
+  },
+  "site-fundo-brasil": {
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais de direitos humanos",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-observatorio-3setor",
+    "plat-abcr",
+    "motor-agregadores (IDIS)"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-idis": {
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "chamadas e editais de investimento social",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-observatorio-3setor",
+    "plat-abcr",
+    "motor-agregadores (IDIS)"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-undef": {
+   "horarios_brt": "07:13,19:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "chamadas anuais para a sociedade civil",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": null,
+   "criado_em": "2026-10-02"
+  },
+  "site-fundo-casa": {
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "chamadas socioambientais",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-observatorio-3setor",
+    "plat-abcr",
+    "motor-agregadores (IDIS)"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-cese": {
+   "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais de apoio a projetos populares",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-observatorio-3setor",
+    "plat-abcr",
+    "motor-agregadores (IDIS)"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-brazilfoundation": {
+   "horarios_brt": "07:13,19:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais de apoio a organizações brasileiras",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": null,
+   "criado_em": "2026-10-02"
+  },
+  "site-rede-filantropia": {
    "horarios_brt": "06:10,09:10,12:10,15:10,18:10,21:10",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "decisão do titular (02/10/2026): a ponte Brasil é o computador dele — o agendador do Windows roda scripts/coleta_brasil.py a cada 3 horas, das 06:10 às 21:10, com o computador ligado; a nuvem não tenta esses sites",
-   "coleta": "local",
-   "objetivo": "trazer como INDÍCIO os editais que só abrem para IP brasileiro, com o link da fonte oficial",
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)",
    "verificacao": {
     "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
     "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
@@ -541,13 +741,27 @@
    "reune": null,
    "criado_em": "2026-10-02"
   },
-  "idx-assistido": {
+  "site-iaf": {
+   "horarios_brt": "07:13,19:13",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "chamadas de apoio a organizações de base (recusa IP estrangeiro)",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": null,
+   "criado_em": "2026-10-02"
+  },
+  "site-finep": {
    "horarios_brt": "contínuo",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "contínuo: a fila é atualizada a cada rodada e as capturas enviadas pelo titular entram na rodada seguinte (ou na hora, pelo envio)",
-   "coleta": "local",
-   "objetivo": "trazer como INDÍCIO os editais que os sites fechados a robôs publicam, com o link da fonte oficial",
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "chamadas públicas (coleta assistida: o site proíbe robôs)",
    "verificacao": {
     "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
     "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
@@ -558,13 +772,134 @@
    ],
    "criado_em": "2026-10-02"
   },
-  "judiciario-cnj-tjgo": {
+  "site-itau-social": {
+   "horarios_brt": "contínuo",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais (coleta assistida: o site proíbe robôs)",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-prosas-oscs",
+    "plat-mapa-osc"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-petrobras": {
+   "horarios_brt": "contínuo",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "seleções socioambientais (coleta assistida: o site proíbe robôs)",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-prosas-oscs",
+    "plat-mapa-osc"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-fundacao-banco-do-brasil": {
+   "horarios_brt": "contínuo",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais (coleta assistida: o site proíbe robôs)",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-prosas-oscs",
+    "plat-mapa-osc"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-embaixada-eua": {
+   "horarios_brt": "contínuo",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "pequenas doações a projetos (coleta assistida)",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-prosas-oscs",
+    "plat-mapa-osc"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-embaixada-japao": {
+   "horarios_brt": "contínuo",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "apoio a projetos comunitários (coleta assistida)",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-prosas-oscs",
+    "plat-mapa-osc"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-mapa-osc": {
+   "horarios_brt": "06:13",
+   "dias": "todos",
+   "cadencia_dias": 7,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais reunidos no portal do Ipea (coleta assistida: o site proíbe robôs)",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-observatorio-3setor",
+    "plat-abcr",
+    "motor-agregadores (IDIS)"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "site-prosas": {
+   "horarios_brt": "06:13",
+   "dias": "todos",
+   "cadencia_dias": 7,
+   "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
+   "coleta": "fluxo 16 (indexadores)",
+   "objetivo": "editais e prêmios para OSCs; o robots.txt proíbe robôs, então só pelos três caminhos indiretos decididos pelo titular",
+   "verificacao": {
+    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
+    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
+   },
+   "reune": [
+    "plat-observatorio-3setor",
+    "plat-abcr",
+    "motor-agregadores (IDIS)"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "judiciario-tjgo": {
    "horarios_brt": "07:53,16:23",
    "dias": "todos",
    "cadencia_dias": 1,
    "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem + local",
-   "objetivo": "encontrar os editais de seleção de projetos com recursos de prestações pecuniárias das comarcas de Goiás (Goiânia primeiro), os credenciamentos do Judiciário para entidades e a regra do CNJ — com comarca, prazo, áreas admitidas e a exigência do Banco de Projetos Sociais",
+   "objetivo": "editais das comarcas do TJ-GO (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
    "verificacao": {
     "etapa_1": "RSS da Agência de Notícias do TJGO (paginado), página da notícia e PDF do edital; busca do CNJ; PNCP cruzado → OPORTUNIDADE (edital ou credenciamento aberto), ACOMPANHAR (encerrado, resultado/entrega, regra, habilitação prévia) ou RUÍDO, com o motivo",
     "etapa_2": "no PDF do edital (link oficial): número, prazo de habilitação, documentos e restrição territorial da comarca"
@@ -574,6 +909,62 @@
     "cnj-destinacoes"
    ],
    "criado_em": "2026-10-02"
+  },
+  "judiciario-cnj": {
+   "horarios_brt": "07:53",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "coleta": "nuvem",
+   "objetivo": "editais e regra nacional de destinação de prestações pecuniárias no Portal do CNJ",
+   "verificacao": {
+    "etapa_1": "RSS da Agência de Notícias do TJGO (paginado), página da notícia e PDF do edital; busca do CNJ; PNCP cruzado → OPORTUNIDADE (edital ou credenciamento aberto), ACOMPANHAR (encerrado, resultado/entrega, regra, habilitação prévia) ou RUÍDO, com o motivo",
+    "etapa_2": "no PDF do edital (link oficial): número, prazo de habilitação, documentos e restrição territorial da comarca"
+   },
+   "reune": [
+    "dje-tjgo",
+    "cnj-destinacoes"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "mpgo-destinacao": {
+   "horarios_brt": "07:53",
+   "dias": "todos",
+   "cadencia_dias": 30,
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "coleta": "manual",
+   "objetivo": "Destina do MP-GO: regra fixa, lembrete mensal",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   },
+   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
+  },
+  "mptgo-destinacao": {
+   "horarios_brt": "07:53,16:23",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "coleta": "nuvem",
+   "objetivo": "editais de 5 dias do MPT-GO (todo dia) e habilitação da A.M.C.",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   },
+   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
+  },
+  "mpu-destinacao": {
+   "horarios_brt": "16:23",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "coleta": "nuvem",
+   "objetivo": "MPF PR-GO, MPDFT, MPM, MPT nacional, FDD e CNMP (pela cadência de cada fonte)",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   },
+   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
   }
  }
 }

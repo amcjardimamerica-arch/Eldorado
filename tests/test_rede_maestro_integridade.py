@@ -67,7 +67,7 @@ class TesteItinerarioEMaestro(unittest.TestCase):
     def test_horarios_disparaveis(self):
         A = json.loads((ROOT / "config/agenda_motores.json").read_text(encoding="utf-8"))["motores"]
         for mid, a in A.items():
-            if mid.startswith("idx-") or a.get("coleta") == "local" or a.get("horarios_brt") in (None, "contínuo") or str(a.get("dias", "")).startswith("inativ"):
+            if mid.startswith(("idx-", "site-")) or str(a.get("coleta") or "").startswith("fluxo") or a.get("coleta") == "local" or a.get("horarios_brt") in (None, "contínuo") or str(a.get("dias", "")).startswith("inativ"):
                 continue
             for h in str(a["horarios_brt"]).split(","):
                 self.assertIn(h.strip()[-2:], ("23", "53"), f"{mid} {h}: a agenda só dispara em HH:23 e HH:53")

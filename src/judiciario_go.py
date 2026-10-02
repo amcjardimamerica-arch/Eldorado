@@ -65,8 +65,34 @@ def _hoje_real() -> date:
     return date.today()
 
 
+# 02/10 (titular): o motor foi SEPARADO em dois — TJ-GO (fontes A, B, D, E) e CNJ (fonte C) —, cada um com identificador,
+# estado e parâmetros próprios (config/judiciario_go.json › partes). O leitor é o mesmo; cada parte ativa só as suas fontes.
+_PARTE = {"id": None, "fontes": "ABCDE"}
+PARTES = {"judiciario-tjgo": ("ABDE", "estado/judiciario_tjgo.json"), "judiciario-cnj": ("C", "estado/judiciario_cnj.json")}
+
+
+def _tem(f: str) -> bool:
+    return f in _PARTE["fontes"]
+
+
 def _cfg() -> dict:
-    return load_json(CFG) if CFG.exists() else {}
+    c = load_json(CFG) if CFG.exists() else {}
+    p = (c.get("partes") or {}).get(_PARTE["id"]) or {}
+    return {**c, **{k: v for k, v in p.items() if k not in ("fontes", "nome")}}
+
+
+def ler_parte(mid: str, sensor: dict | None = None, hoje=None, limites: dict | None = None) -> dict:
+    """Lê só a PARTE `mid` (judiciario-tjgo ou judiciario-cnj), com estado e parâmetros próprios."""
+    global MOTOR_ID, ESTADO
+    antes = (MOTOR_ID, ESTADO, dict(_PARTE))
+    fontes, arq = PARTES[mid]
+    MOTOR_ID, ESTADO = mid, ROOT / arq
+    _PARTE.update(id=mid, fontes=fontes)
+    try:
+        return ler_motor(sensor, hoje, limites)
+    finally:
+        MOTOR_ID, ESTADO = antes[0], antes[1]
+        _PARTE.clear(); _PARTE.update(antes[2])
 
 
 def modo() -> str:
@@ -502,6 +528,8 @@ def classificar_lote(itens: list[dict], hoje: date, cfg: dict | None = None) -> 
 def fonte_a(hoje: date, cfg: dict, diag: dict, est: dict) -> list[dict]:
     """RSS paginado da Agência de Notícias do TJGO: lê até a primeira página toda já vista; a carga inicial de N dias vai
     em parcelas (cursor), para não pesar numa execução só."""
+    if not _tem("A"):
+        return []
     f = (cfg.get("fontes") or {}).get("A_noticias_tjgo") or {}
     F = diag["fontes"]["A"]
     if not f.get("ativa", True):
@@ -583,6 +611,8 @@ def fonte_a(hoje: date, cfg: dict, diag: dict, est: dict) -> list[dict]:
 
 def fonte_b(itens: list[dict], hoje: date, cfg: dict, diag: dict, est: dict) -> None:
     """PDF do edital: o texto completo (pypdf) completa prazo, número e requisitos que a notícia não trouxe."""
+    if not _tem("B"):
+        return None
     f = (cfg.get("fontes") or {}).get("B_pdf_edital") or {}
     F = diag["fontes"]["B"]
     if not f.get("ativa", True):
@@ -632,6 +662,8 @@ def resultados_cnj(pagina_html: str, base: str = "https://www.cnj.jus.br/") -> l
 
 
 def fonte_c(hoje: date, cfg: dict, diag: dict, est: dict, rota: str) -> list[dict]:
+    if not _tem("C"):
+        return []
     f = (cfg.get("fontes") or {}).get("C_cnj_busca") or {}
     F = diag["fontes"]["C"]
     if not f.get("ativa", True):
@@ -678,6 +710,8 @@ def fonte_c(hoje: date, cfg: dict, diag: dict, est: dict, rota: str) -> list[dic
 
 def fonte_d(cfg: dict, diag: dict) -> list[dict]:
     """O que o motor 04 (PNCP) já gravou na base com órgão TJGO ou CNJ — cruzado, não relido."""
+    if not _tem("D"):
+        return []
     f = (cfg.get("fontes") or {}).get("D_pncp_cruzado") or {}
     F = diag["fontes"]["D"]
     if not f.get("ativa", True) or not DB.exists():
@@ -704,6 +738,8 @@ def fonte_d(cfg: dict, diag: dict) -> list[dict]:
 
 
 def habilitacao_previa(cfg: dict) -> dict:
+    if not _tem("E"):
+        return None
     f = (cfg.get("fontes") or {}).get("E_banco_projetos") or {}
     return {"id": sha256(b"jud|banco-projetos-cgjgo")[:20], "categoria": "habilitacao_previa",
             "titulo": "Banco de Projetos Sociais da Corregedoria (CGJ/GO) — cadastro prévio exigido pelos editais de prestação pecuniária",
@@ -749,7 +785,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
             fonte_b(itens, hoje, cfg, diag, est)
         except Exception as exc:  # noqa: BLE001
             diag["fontes"]["B"]["falhas"].append(f"etapa: {_erro(exc)}")
-    else:
+    elif _tem("A"):
         diag["fontes"]["A"]["pulado"] = diag["fontes"]["B"]["pulado"] = \
             "na nuvem o TJGO recusa IP estrangeiro: notícias e PDFs são lidos no computador do titular (scripts/coleta_brasil.py)"
     try:
@@ -771,7 +807,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     acompanhar = [a for a in ac.values() if str(a.get("data_publicacao") or d0) >= limite_ac]
     # registros do computador do titular entram na leitura da nuvem (sem o computador gravar na base)
     local = {}
-    if rota == "nuvem" and ESTADO_LOCAL.exists():
+    if rota == "nuvem" and _tem("A") and ESTADO_LOCAL.exists():
         local = load_json(ESTADO_LOCAL)
         ids = {r["id"] for r in abertas}
         ks = {k for r in abertas for k in (r.get("chaves") or [])}
@@ -785,11 +821,11 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
         if not ult or ult < (hoje - timedelta(days=3)).isoformat():
             diag["alerta_local"] = (f"o computador do titular não roda a coleta desde {ult or 'nunca'} — as notícias e os editais das "
                                     "comarcas do TJGO só são lidos por ele (scripts/coleta_brasil.py)")
-    elif rota == "nuvem":
+    elif rota == "nuvem" and _tem("A"):
         diag["alerta_local"] = "a coleta no computador do titular ainda não rodou — as notícias e os editais das comarcas do TJGO só são lidos por ele"
     pncp = fonte_d(cfg, diag)
     habil = habilitacao_previa(cfg)
-    if habil["id"] not in {a["id"] for a in acompanhar}:
+    if habil and habil["id"] not in {a["id"] for a in acompanhar}:
         acompanhar.insert(0, habil)
     comarca_assoc = _N(cfg.get("comarca_da_associacao") or "Goiânia")
     abertas.sort(key=lambda r: (_N(r.get("comarca")) != comarca_assoc, str(r.get("fim") or "9999")))

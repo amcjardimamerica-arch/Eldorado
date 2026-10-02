@@ -556,7 +556,7 @@
     "regulamento",
     "site oficial"
    ],
-   "agregado_a": "idx-feeds"
+   "agregado_a": "site-observatorio-terceiro-setor"
   },
   "plat-abcr": {
    "perfil": "vetor de DESCOBERTA nacional (Captadores/ABCR)",
@@ -589,7 +589,7 @@
     "regulamento",
     "site oficial"
    ],
-   "agregado_a": "idx-feeds"
+   "agregado_a": "site-abcr"
   },
   "plat-gife": {
    "perfil": "curadoria do investimento social privado — a seleção mensal de editais do GIFE e as oportunidades da Capta, lidas pela API do WordPress (não a home nem a ficha dos associados)",
@@ -729,6 +729,11 @@
      "nome": "Instrução Normativa vigente (prazos e limites)",
      "url": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao",
      "tipo": "regramento"
+    },
+    {
+     "nome": "VerSalic — consulta pública de projetos e editais",
+     "url": "https://versalic.cultura.gov.br/",
+     "tipo": "listagem"
     }
    ],
    "lexico_camada1": [
@@ -1000,7 +1005,7 @@
    ]
   },
   "plat-prefeituras-50-go": {
-   "perfil": "50 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
+   "perfil": "25 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
    "rotas": [
     {
      "nome": "Portal da prefeitura (config/municipios_maiores.json → GO)",
@@ -1763,236 +1768,6 @@
    ],
    "nota_02_10": "leitor próprio (src/congresso_nacional.py); os léxicos acima ficam como referência do painel e do livro"
   },
-  "idx-feeds": {
-   "perfil": "Indexadores — feeds RSS e WordPress",
-   "coleta": "nuvem",
-   "nota_coleta": "feed RSS/Atom da seção de editais ou API REST do WordPress (posts e tipos próprios de edital), com leitura do artigo só quando o item é novo",
-   "rotas": [
-    {
-     "nome": "Observatório do Terceiro Setor — editais",
-     "url": "https://www.observatorio3setor.org.br/secoes_tematicas/editais/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "ABCR — editais divulgados pelos captadores",
-     "url": "https://captadores.org.br/category/editais/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "IDIS — notícias de editais (RSS)",
-     "url": "https://www.idis.org.br/feed/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "fundsforNGOs — chamadas internacionais abertas ao Brasil",
-     "url": "https://www2.fundsforngos.org/tag/brazil/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Rede Comuá — editais dos fundos independentes",
-     "url": "https://redecomua.org.br/edital/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Fundo Brasil de Direitos Humanos — editais",
-     "url": "https://www.fundobrasil.org.br/editais/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Fundo Casa Socioambiental — chamadas",
-     "url": "https://casa.org.br/chamadas/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "CESE — editais",
-     "url": "https://cese.org.br/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "GIFE e Capta (motor 22)",
-     "url": "https://gife.org.br/editais/",
-     "tipo": "delegado"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": [],
-   "indexadores": true
-  },
-  "idx-apis": {
-   "perfil": "Indexadores — APIs públicas de editais",
-   "coleta": "nuvem",
-   "nota_coleta": "API JSON paginada: Farol Cultural (/api/v1/editais), rede Mapas Culturais (uma instância por estado ou cidade) e Transferegov (programas)",
-   "rotas": [
-    {
-     "nome": "Farol Cultural — editais culturais abertos (API)",
-     "url": "https://farolcultural.art/editais",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Rede Mapas Culturais — oportunidades com inscrição aberta",
-     "url": null,
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Transferegov — programas do módulo Gestão de Parcerias (API)",
-     "url": "https://www.gov.br/transferegov/pt-br",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "SALIC e editais do MinC (motor próprio)",
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
-     "tipo": "delegado"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": [],
-   "indexadores": true
-  },
-  "idx-sitemaps": {
-   "perfil": "Indexadores — sitemaps e páginas estruturadas",
-   "coleta": "nuvem",
-   "nota_coleta": "sitemap.xml com data de alteração (lastmod) + dados estruturados (JSON-LD) e links oficiais de cada página nova ou alterada",
-   "rotas": [
-    {
-     "nome": "CapitaAI — páginas públicas de captação (sitemap)",
-     "url": "https://capitaai.com.br/editais-abertos/para-ong",
-     "tipo": "indexador"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": [],
-   "indexadores": true
-  },
-  "idx-listagens": {
-   "perfil": "Indexadores — listagens de editais dos financiadores",
-   "coleta": "nuvem",
-   "nota_coleta": "página de editais do site + página de cada edital novo, com as regras de cada site no catálogo",
-   "rotas": [
-    {
-     "nome": "Fundo Baobá — editais",
-     "url": "https://baoba.org.br/editais/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "BrazilFoundation — edital",
-     "url": "https://brazilfoundation.org/edital/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Inter-American Foundation — chamadas",
-     "url": "https://www.iaf.gov/apply-for-grants/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Editais Culturais (editaisculturais.com.br)",
-     "url": "https://editaisculturais.com.br/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Funarte — editais",
-     "url": "https://www.gov.br/funarte/pt-br/editais",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Fundo das Nações Unidas para a Democracia (UNDEF)",
-     "url": "https://www.un.org/democracyfund/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Radar de Editais — Portal do Impacto",
-     "url": "https://editais.portaldoimpacto.com/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "FAPEG e Secult-GO (motor estadual)",
-     "url": "https://goias.gov.br/fapeg/",
-     "tipo": "delegado"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": [],
-   "indexadores": true
-  },
-  "idx-dados-abertos": {
-   "perfil": "Indexadores — dados abertos de governo",
-   "coleta": "nuvem",
-   "nota_coleta": "arquivo oficial atualizado todo dia (Transferegov: programas com recebimento de propostas aberto)",
-   "rotas": [
-    {
-     "nome": "Transferegov — programas abertos a propostas (dados abertos Siconv)",
-     "url": "https://discricionarias.transferegov.sistema.gov.br/voluntarias/programa/ConsultarPrograma/ConsultarPrograma.do",
-     "tipo": "indexador"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": [],
-   "indexadores": true
-  },
-  "idx-ponte-brasil": {
-   "perfil": "Indexadores — ponte Brasil (sites que recusam IP estrangeiro)",
-   "coleta": "nuvem + local",
-   "nota_coleta": "os mesmos leitores, com saída pelo IP brasileiro do computador do titular (scripts/coleta_brasil.py, de 3 em 3 horas, das 6h10 às 21h10, com o computador ligado); máquina virtual no Brasil e ponte HTTP em hospedagem ficam como alternativas futuras",
-   "rotas": [
-    {
-     "nome": "Portal Filantropia — editais",
-     "url": "https://www.filantropia.ong/editais",
-     "tipo": "indexador"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": [],
-   "indexadores": true
-  },
-  "idx-assistido": {
-   "perfil": "Indexadores — coleta assistida e pilotos (sites que proíbem robôs)",
-   "coleta": "local",
-   "nota_coleta": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
-   "rotas": [
-    {
-     "nome": "Prosas — editais e prêmios para OSCs",
-     "url": "https://prosas.com.br/selecao/widgets/listagem-editais",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Mapa das OSC (Ipea) — editais",
-     "url": "https://mapaosc.ipea.gov.br/editais",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "FINEP — chamadas públicas",
-     "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Itaú Social — editais",
-     "url": "https://editais.itausocial.org.br/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Embaixada dos EUA — apoios a projetos",
-     "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Petrobras — seleções socioambientais e culturais",
-     "url": "https://petrobras.com.br/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Fundação Banco do Brasil — editais",
-     "url": "https://www.fbb.org.br/",
-     "tipo": "indexador"
-    },
-    {
-     "nome": "Embaixadas com pequenos projetos (Japão, Canadá, Alemanha, Austrália, Reino Unido, Países Baixos, Noruega)",
-     "url": "https://www.br.emb-japan.go.jp/",
-     "tipo": "indexador"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": [],
-   "indexadores": true
-  },
   "judiciario-cnj-tjgo": {
    "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
    "rotas": [
@@ -2050,6 +1825,881 @@
    ],
    "coleta": "nuvem + local",
    "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
+  },
+  "site-farol-cultural": {
+   "perfil": "Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal",
+   "rotas": [
+    {
+     "nome": "Farol Cultural",
+     "url": "https://farolcultural.art/api/v1/editais",
+     "tipo": "farol_api"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-capitaai": {
+   "perfil": "CapitaAI — editais e oportunidades de captação, incluindo a lista pública dos editais do Prosas",
+   "rotas": [
+    {
+     "nome": "CapitaAI",
+     "url": "https://capitaai.com.br/sitemap-captacao.xml",
+     "tipo": "sitemap_jsonld"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-observatorio-terceiro-setor": {
+   "perfil": "Observatório do Terceiro Setor — editais publicados na seção temática do portal",
+   "rotas": [
+    {
+     "nome": "Observatório do Terceiro Setor",
+     "url": "https://www.observatorio3setor.org.br/secoes_tematicas/editais/feed/",
+     "tipo": "feed"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-mapas-culturais": {
+   "perfil": "Mapas Culturais — editais das redes estaduais e municipais de cultura que usam a plataforma",
+   "rotas": [
+    {
+     "nome": "Mapas Culturais",
+     "url": null,
+     "tipo": "mapas_culturais"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-abcr": {
+   "perfil": "ABCR — Associação Brasileira de Captadores de Recursos — editais divulgados pela associação dos captadores",
+   "rotas": [
+    {
+     "nome": "ABCR — Associação Brasileira de Captadores de Recursos",
+     "url": "https://captadores.org.br/category/editais/feed/",
+     "tipo": "feed"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-funarte": {
+   "perfil": "Funarte — editais da Fundação Nacional de Artes",
+   "rotas": [
+    {
+     "nome": "Funarte",
+     "url": null,
+     "tipo": "html_listagem"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-transferegov": {
+   "perfil": "Transferegov — programas e parcerias com OSC abertos na plataforma federal (dados abertos)",
+   "rotas": [
+    {
+     "nome": "Transferegov",
+     "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip",
+     "tipo": "siconv_zip"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-rede-comua": {
+   "perfil": "Rede Comuá — editais dos fundos independentes de filantropia",
+   "rotas": [
+    {
+     "nome": "Rede Comuá",
+     "url": "https://redecomua.org.br/wp-json/wp/v2/_editais",
+     "tipo": "wordpress"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-fundo-baoba": {
+   "perfil": "Fundo Baobá — editais para equidade racial",
+   "rotas": [
+    {
+     "nome": "Fundo Baobá",
+     "url": null,
+     "tipo": "html_listagem"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-editais-culturais": {
+   "perfil": "Editais Culturais — editais de cultura reunidos no portal",
+   "rotas": [
+    {
+     "nome": "Editais Culturais",
+     "url": null,
+     "tipo": "html_listagem"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-fundo-brasil": {
+   "perfil": "Fundo Brasil de Direitos Humanos — editais de direitos humanos",
+   "rotas": [
+    {
+     "nome": "Fundo Brasil de Direitos Humanos",
+     "url": "https://www.fundobrasil.org.br/wp-json/wp/v2/edital",
+     "tipo": "wordpress"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-idis": {
+   "perfil": "IDIS — Instituto para o Desenvolvimento do Investimento Social — chamadas e editais de investimento social",
+   "rotas": [
+    {
+     "nome": "IDIS — Instituto para o Desenvolvimento do Investimento Social",
+     "url": "https://www.idis.org.br/feed/",
+     "tipo": "feed"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-undef": {
+   "perfil": "UNDEF — Fundo das Nações Unidas para a Democracia — chamadas anuais para a sociedade civil",
+   "rotas": [
+    {
+     "nome": "UNDEF — Fundo das Nações Unidas para a Democracia",
+     "url": null,
+     "tipo": "html_listagem"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-fundo-casa": {
+   "perfil": "Fundo Casa Socioambiental — chamadas socioambientais",
+   "rotas": [
+    {
+     "nome": "Fundo Casa Socioambiental",
+     "url": "https://casa.org.br/wp-json/wp/v2/chamadas",
+     "tipo": "wordpress"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-cese": {
+   "perfil": "CESE — Coordenadoria Ecumênica de Serviço — editais de apoio a projetos populares",
+   "rotas": [
+    {
+     "nome": "CESE — Coordenadoria Ecumênica de Serviço",
+     "url": "https://cese.org.br/wp-json/wp/v2/edital",
+     "tipo": "wordpress"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-brazilfoundation": {
+   "perfil": "BrazilFoundation — editais de apoio a organizações brasileiras",
+   "rotas": [
+    {
+     "nome": "BrazilFoundation",
+     "url": null,
+     "tipo": "html_listagem"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-rede-filantropia": {
+   "perfil": "Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)",
+   "rotas": [
+    {
+     "nome": "Rede Filantropia",
+     "url": null,
+     "tipo": "html_listagem"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-iaf": {
+   "perfil": "IAF — Fundação Interamericana — chamadas de apoio a organizações de base (recusa IP estrangeiro)",
+   "rotas": [
+    {
+     "nome": "IAF — Fundação Interamericana",
+     "url": null,
+     "tipo": "html_listagem"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-finep": {
+   "perfil": "Finep — chamadas públicas (coleta assistida: o site proíbe robôs)",
+   "rotas": [
+    {
+     "nome": "Finep",
+     "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
+     "tipo": "assistido"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-itau-social": {
+   "perfil": "Itaú Social — editais (coleta assistida: o site proíbe robôs)",
+   "rotas": [
+    {
+     "nome": "Itaú Social",
+     "url": "https://editais.itausocial.org.br/",
+     "tipo": "assistido"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-petrobras": {
+   "perfil": "Petrobras — seleções socioambientais (coleta assistida: o site proíbe robôs)",
+   "rotas": [
+    {
+     "nome": "Petrobras",
+     "url": "https://petrobras.com.br/",
+     "tipo": "assistido"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-fundacao-banco-do-brasil": {
+   "perfil": "Fundação Banco do Brasil — editais (coleta assistida: o site proíbe robôs)",
+   "rotas": [
+    {
+     "nome": "Fundação Banco do Brasil",
+     "url": "https://www.fbb.org.br/",
+     "tipo": "assistido"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-embaixada-eua": {
+   "perfil": "Embaixada dos EUA — pequenas doações a projetos (coleta assistida)",
+   "rotas": [
+    {
+     "nome": "Embaixada dos EUA",
+     "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
+     "tipo": "assistido"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-embaixada-japao": {
+   "perfil": "Embaixada do Japão — apoio a projetos comunitários (coleta assistida)",
+   "rotas": [
+    {
+     "nome": "Embaixada do Japão",
+     "url": "https://www.br.emb-japan.go.jp/",
+     "tipo": "assistido"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-mapa-osc": {
+   "perfil": "Mapa das OSC (Ipea) — editais reunidos no portal (coleta assistida: o site proíbe robôs)",
+   "rotas": [
+    {
+     "nome": "Mapa das OSC (Ipea)",
+     "url": "https://mapaosc.ipea.gov.br/editais",
+     "tipo": "assistida"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "site-prosas": {
+   "perfil": "Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida)",
+   "rotas": [
+    {
+     "nome": "Prosas",
+     "url": "https://prosas.com.br/selecao/widgets/listagem-editais",
+     "tipo": "assistida"
+    }
+   ],
+   "lexico_camada1": [],
+   "lexico_camada2": []
+  },
+  "judiciario-tjgo": {
+   "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
+   "rotas": [
+    {
+     "nome": "TJGO — Agência de Notícias (RSS paginado)",
+     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "TJGO — PDF do edital anexado à notícia",
+     "url": "https://www.tjgo.jus.br/files/",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
+     "url": "https://corregedoria.tjgo.jus.br/basesocial",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
+     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+     "tipo": "referencia"
+    },
+    {
+     "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
+     "url": "https://pncp.gov.br/app/editais",
+     "tipo": "vetor"
+    }
+   ],
+   "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
+   "lexico_camada1": [
+    "prestação pecuniária",
+    "penas pecuniárias",
+    "penas alternativas",
+    "transação penal",
+    "projetos sociais",
+    "finalidade social",
+    "destinação de recursos",
+    "Banco de Projetos Sociais",
+    "cadastramento de entidades",
+    "credenciamento de entidades",
+    "Vepema",
+    "edital"
+   ],
+   "lexico_camada2": [
+    "seleção de projetos",
+    "habilitação",
+    "entidades públicas ou privadas",
+    "Resolução CNJ 558",
+    "Código de Normas art. 257",
+    "comarca",
+    "inscrições até"
+   ],
+   "coleta": "nuvem + local",
+   "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
+  },
+  "judiciario-cnj": {
+   "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
+   "rotas": [
+    {
+     "nome": "TJGO — Agência de Notícias (RSS paginado)",
+     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "TJGO — PDF do edital anexado à notícia",
+     "url": "https://www.tjgo.jus.br/files/",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
+     "url": "https://corregedoria.tjgo.jus.br/basesocial",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
+     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+     "tipo": "referencia"
+    },
+    {
+     "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
+     "url": "https://pncp.gov.br/app/editais",
+     "tipo": "vetor"
+    }
+   ],
+   "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
+   "lexico_camada1": [
+    "prestação pecuniária",
+    "penas pecuniárias",
+    "penas alternativas",
+    "transação penal",
+    "projetos sociais",
+    "finalidade social",
+    "destinação de recursos",
+    "Banco de Projetos Sociais",
+    "cadastramento de entidades",
+    "credenciamento de entidades",
+    "Vepema",
+    "edital"
+   ],
+   "lexico_camada2": [
+    "seleção de projetos",
+    "habilitação",
+    "entidades públicas ou privadas",
+    "Resolução CNJ 558",
+    "Código de Normas art. 257",
+    "comarca",
+    "inscrições até"
+   ],
+   "coleta": "nuvem + local",
+   "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
+  },
+  "mpgo-destinacao": {
+   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+   "rotas": [
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "tipo": "tabela_mpt"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região",
+     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "tipo": "lista_habilitadas"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/pgt/noticias/RSS",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional (busca)",
+     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-BA (modelo)",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional",
+     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — várias promotorias",
+     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — Sala de imprensa",
+     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPM — portal",
+     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPU — portal",
+     "url": "https://www.mpu.mp.br/sitemap",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+     "tipo": "estado_pagina"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+     "tipo": "listagem_html"
+    }
+   ],
+   "lexico_camada1": [
+    "bens lesados",
+    "chamamento",
+    "chamamento público",
+    "destinação de recursos",
+    "edital de apoio",
+    "edital de destinação",
+    "entidades",
+    "organizações da sociedade civil",
+    "projetos sociais",
+    "reparação",
+    "seleção de projetos",
+    "termo de ajustamento",
+    "termo de colaboração",
+    "termo de fomento",
+    "indicação de destinação",
+    "Sistema de Destinações",
+    "entidades assistenciais",
+    "bens e valores",
+    "Destina"
+   ],
+   "lexico_camada2": [
+    "organizações da sociedade civil",
+    "projeto social",
+    "das inscrições",
+    "habilitação",
+    "Goiás",
+    "Goiânia"
+   ],
+   "nunca_acessar": [
+    "mpgo.mp.br",
+    "destinacoes.mpt.mp.br"
+   ],
+   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
+  },
+  "mptgo-destinacao": {
+   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+   "rotas": [
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "tipo": "tabela_mpt"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região",
+     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "tipo": "lista_habilitadas"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/pgt/noticias/RSS",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional (busca)",
+     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-BA (modelo)",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional",
+     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — várias promotorias",
+     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — Sala de imprensa",
+     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPM — portal",
+     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPU — portal",
+     "url": "https://www.mpu.mp.br/sitemap",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+     "tipo": "estado_pagina"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+     "tipo": "listagem_html"
+    }
+   ],
+   "lexico_camada1": [
+    "bens lesados",
+    "chamamento",
+    "chamamento público",
+    "destinação de recursos",
+    "edital de apoio",
+    "edital de destinação",
+    "entidades",
+    "organizações da sociedade civil",
+    "projetos sociais",
+    "reparação",
+    "seleção de projetos",
+    "termo de ajustamento",
+    "termo de colaboração",
+    "termo de fomento",
+    "indicação de destinação",
+    "Sistema de Destinações",
+    "entidades assistenciais",
+    "bens e valores",
+    "Destina"
+   ],
+   "lexico_camada2": [
+    "organizações da sociedade civil",
+    "projeto social",
+    "das inscrições",
+    "habilitação",
+    "Goiás",
+    "Goiânia"
+   ],
+   "nunca_acessar": [
+    "mpgo.mp.br",
+    "destinacoes.mpt.mp.br"
+   ],
+   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
+  },
+  "mpu-destinacao": {
+   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+   "rotas": [
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "tipo": "tabela_mpt"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região",
+     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "tipo": "lista_habilitadas"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/pgt/noticias/RSS",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional (busca)",
+     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-BA (modelo)",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional",
+     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — várias promotorias",
+     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — Sala de imprensa",
+     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPM — portal",
+     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPU — portal",
+     "url": "https://www.mpu.mp.br/sitemap",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+     "tipo": "estado_pagina"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+     "tipo": "listagem_html"
+    }
+   ],
+   "lexico_camada1": [
+    "bens lesados",
+    "chamamento",
+    "chamamento público",
+    "destinação de recursos",
+    "edital de apoio",
+    "edital de destinação",
+    "entidades",
+    "organizações da sociedade civil",
+    "projetos sociais",
+    "reparação",
+    "seleção de projetos",
+    "termo de ajustamento",
+    "termo de colaboração",
+    "termo de fomento",
+    "indicação de destinação",
+    "Sistema de Destinações",
+    "entidades assistenciais",
+    "bens e valores",
+    "Destina"
+   ],
+   "lexico_camada2": [
+    "organizações da sociedade civil",
+    "projeto social",
+    "das inscrições",
+    "habilitação",
+    "Goiás",
+    "Goiânia"
+   ],
+   "nunca_acessar": [
+    "mpgo.mp.br",
+    "destinacoes.mpt.mp.br"
+   ],
+   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
   }
  },
  "auditado_em": "2026-09-22T21:24:52+00:00"

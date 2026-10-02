@@ -4,8 +4,14 @@
  "motor": "judiciario-cnj-tjgo",
  "parecer": "docs/pareceres/motor-judiciario-cnj-tjgo.md",
  "regra": "Motor do Judiciário — CNJ e TJGO (reúne os antigos dje-tjgo e cnj-destinacoes). O dinheiro que o Judiciário destina a entidades sai das prestações pecuniárias, penas de multa e transações penais (Resolução CNJ 558/2024; Código de Normas da Corregedoria de Goiás, art. 257). Cada comarca abre o seu EDITAL de seleção de projetos e anuncia na Agência de Notícias do TJGO, com o PDF do edital. A entidade precisa estar cadastrada no Banco de Projetos Sociais da Corregedoria (CGJ/GO). O motor lê as notícias pelo RSS do TJGO (no computador do titular, porque o portal recusa IP estrangeiro), o PDF do edital, a busca do Portal do CNJ (que republica editais dos tribunais) e cruza o que o PNCP já trouxe do TJGO e do CNJ. Cada item vira OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo escrito. Sem IA, sem tokens, biblioteca-padrão.",
- "prazo_total_segundos": {"nuvem": 240, "local": 900},
- "ritmo": {"pausa_segundos": 1.5, "espera_erro_segundos": 4},
+ "prazo_total_segundos": {
+  "nuvem": 240,
+  "local": 900
+ },
+ "ritmo": {
+  "pausa_segundos": 1.5,
+  "espera_erro_segundos": 4
+ },
  "comarca_da_associacao": "Goiânia",
  "janela_oportunidade_sem_prazo_dias": 20,
  "fontes": {
@@ -26,7 +32,13 @@
    "ativa": true,
    "rota": "local",
    "nome": "TJGO — PDF do edital anexado à notícia",
-   "hosts": ["www.tjgo.jus.br", "tjgo.jus.br", "dg-transparencia-admin-prd.s3.tjgo.jus.br", "corregedoria.tjgo.jus.br", "tjdocs.tjgo.jus.br"],
+   "hosts": [
+    "www.tjgo.jus.br",
+    "tjgo.jus.br",
+    "dg-transparencia-admin-prd.s3.tjgo.jus.br",
+    "corregedoria.tjgo.jus.br",
+    "tjdocs.tjgo.jus.br"
+   ],
    "max_pdfs_por_execucao": 6,
    "max_bytes": 15000000,
    "nota": "os PDFs ficam em /files/<ano>/<mês>/… e em /images/docs/ccs/…; o texto é lido com pypdf quando instalado no computador do titular — sem pypdf, valem os dados da notícia"
@@ -36,7 +48,12 @@
    "rota": "nuvem_ou_local",
    "nome": "Portal do CNJ — busca do site (republica editais dos tribunais)",
    "busca": "https://www.cnj.jus.br/?s={termo}",
-   "termos": ["prestação pecuniária edital", "penas pecuniárias projetos sociais", "destinação de recursos entidades", "alternativas penais entidades"],
+   "termos": [
+    "prestação pecuniária edital",
+    "penas pecuniárias projetos sociais",
+    "destinação de recursos entidades",
+    "alternativas penais entidades"
+   ],
    "cadencia_dias": 1,
    "max_artigos_por_execucao": 8,
    "verificado_em": "2026-10-02",
@@ -47,7 +64,10 @@
    "rota": "delegado",
    "delegado_a": "pncp-api",
    "nome": "PNCP — credenciamentos e chamamentos do TJGO e do CNJ (lidos pelo motor 04)",
-   "cnpjs": {"02292266000180": "Tribunal de Justiça do Estado de Goiás", "07421906000129": "Conselho Nacional de Justiça"},
+   "cnpjs": {
+    "02292266000180": "Tribunal de Justiça do Estado de Goiás",
+    "07421906000129": "Conselho Nacional de Justiça"
+   },
    "orgao_regex": "TRIBUNAL DE JUSTI[CÇ]A DO ESTADO DE GOI|CONSELHO NACIONAL DE JUSTI[CÇ]A",
    "nota": "o motor 04 já lê o PNCP de Goiás inteiro (credenciamento, concurso, manifestação de interesse); aqui só se cruza, para o cartão deste motor mostrar o que o Judiciário publicou — sem ler duas vezes nem duplicar na base"
   },
@@ -69,5 +89,23 @@
  "antigos": {
   "dje-tjgo": "as 5 páginas do TJGO que ele lia dão 404 desde a reforma do portal (verificado em 02/10/2026: /execucao-penal, /coordenadoria-de-execucao-penal, /editais-de-chamamento, /20140-prestacao-pecuniaria, /dje); o Jusbrasil é republicador, não fonte; o MPGO é outro órgão. 40 leituras, 0 achados.",
   "cnj-destinacoes": "lia a home, a página de licitações de compras e /penas-e-medidas-alternativas/ (404). 40 leituras, 0 achados."
+ },
+ "partes": {
+  "judiciario-tjgo": {
+   "nome": "TJ-GO",
+   "fontes": "ABDE",
+   "prazo_total_segundos": {
+    "local": 900,
+    "nuvem": 300
+   }
+  },
+  "judiciario-cnj": {
+   "nome": "CNJ",
+   "fontes": "C",
+   "prazo_total_segundos": {
+    "local": 300,
+    "nuvem": 300
+   }
+  }
  }
 }

@@ -22,7 +22,7 @@
    "motivo_inativa": "reunido ao motor Indexadores — coleta assistida (02/10/2026): a página de editais do Mapa das OSC só embute o widget do Prosas, que é coberto pela coleta do Prosas",
    "reativado_em": "2026-09-28",
    "nota": "reativado (28/09): o motor 22 nunca executava; lê a página de editais do Mapa das OSC",
-   "agregado_a": "idx-assistido"
+   "agregado_a": "site-mapa-osc"
   },
   {
    "id": "observatorio-3setor",
@@ -30,7 +30,7 @@
    "url": "https://observatorio3setor.org.br/editais/",
    "territorio": "BR",
    "ativa": false,
-   "agregado_a": "idx-feeds",
+   "agregado_a": "site-observatorio-terceiro-setor",
    "motivo_inativa": "reunido ao motor Indexadores — feeds RSS e WordPress (02/10/2026): o RSS da seção de editais substitui a leitura dos rótulos da página"
   },
   {
@@ -43,7 +43,7 @@
     "https://captadores.org.br/noticias/"
    ],
    "nota": "unifica o antigo motor Captamos: a página /editais/ da ABCR é a fonte",
-   "agregado_a": "idx-feeds",
+   "agregado_a": "site-abcr",
    "motivo_inativa": "reunido ao motor Indexadores — feeds RSS e WordPress (02/10/2026): o RSS da categoria Editais, com o link oficial de cada artigo, substitui a leitura dos rótulos da página"
   },
   {
@@ -124,7 +124,7 @@
   },
   {
    "id": "prefeituras-50-go",
-   "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
+   "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
    "url": "https://www.goiania.go.gov.br/",
    "territorio": "GO",
    "ativa": true,
@@ -132,7 +132,7 @@
   },
   {
    "id": "empresas-editais-incentivados",
-   "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
+   "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
    "url": "https://www.portoitapoa.com/",
    "territorio": "BR",
    "ativa": true,
@@ -143,12 +143,14 @@
    "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
    "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
    "territorio": "BR",
-   "ativa": true,
+   "ativa": false,
    "o_que_procurar": "editais de destinação de recursos de reparação e bens lesados: MPT-GO (editais de 5 dias, lidos todo dia pela tabela), MPF PR-GO, MPDFT, MPT nacional e FDD; MP-GO Destina e Sistema de Destinações como regras fixas (nunca acessados pelo robô). Catálogo: config/ministerios_publicos.json",
    "nunca_acessar": [
     "mpgo.mp.br",
     "destinacoes.mpt.mp.br"
-   ]
+   ],
+   "agregado_a": "mptgo-destinacao",
+   "motivo_inativa": "02/10: separado em MP-GO, MPT-GO e MPU"
   },
   {
    "id": "cnpq-extensao",
@@ -189,7 +191,7 @@
     "prosas-premios"
    ],
    "o_que_procurar": "editais e prêmios para OSC publicados no Prosas — com prazo, financiador e valor",
-   "agregado_a": "idx-assistido",
+   "agregado_a": "site-prosas",
    "nota_indexadores": "02/10/2026: o Prosas segue fechado a robôs; entra pela coleta assistida (navegador do titular), pela página do CapitaAI sobre o Prosas e pelo ângulo de busca do Piloto (config/indexadores.json)"
   }
  ],

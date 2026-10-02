@@ -44,6 +44,32 @@ VALOR = re.compile(r"R\$\s*([\d.]+,\d{2})")
 _PRAZO = {"ate": None}
 
 
+# 02/10 (titular): o motor foi SEPARADO em três — MP-GO, MPT-GO e MPU —, cada um com identificador, estado e pendências
+# próprios. As fontes ligadas (CNMP, FDD, Lei 7.347, atos do CNJ) ficam com o MPU. O leitor é o mesmo.
+PARTES = {"mpgo-destinacao": ({"MP-GO"}, None, "estado/mp_go.json"),
+          "mptgo-destinacao": ({"MPT-GO"}, None, "estado/mpt_go.json"),
+          "mpu-destinacao": (None, {"MP-GO", "MPT-GO"}, "estado/mpu.json")}
+_PARTE = {"id": None}
+_SESSAO = {}
+
+
+def _da_parte(orgao) -> bool:
+    if not _PARTE["id"]:
+        return True
+    so, exceto, _ = PARTES[_PARTE["id"]]
+    return (orgao in so) if so else (orgao not in (exceto or set()))
+
+
+def ler_parte(mid: str, sensor: dict | None = None, hoje=None, limites: dict | None = None) -> dict:
+    global MOTOR_ID, ESTADO
+    antes = (MOTOR_ID, ESTADO, _PARTE["id"])
+    MOTOR_ID, ESTADO = mid, ROOT / PARTES[mid][2]; _PARTE["id"] = mid
+    try:
+        return ler_motor(sensor, hoje, limites)
+    finally:
+        MOTOR_ID, ESTADO = antes[0], antes[1]; _PARTE["id"] = antes[2]
+
+
 class AcessoProibido(Exception):
     """Fonte que o motor NUNCA acessa (robots proibitivo ou sistema com login)."""
 
@@ -188,6 +214,25 @@ def outra_regional(titulo: str) -> bool:
     return bool(re.search(r"\bPRT[- ]?(?!18\b)\d{1,2}\b|\b(?!18)\d{1,2}[ªa] Regi[aã]o|\bMPT[- ](?!GO\b)[A-Z]{2}\b", str(titulo or "")))
 
 
+def selecao_sem_edital(texto: str) -> bool:
+    """FDD: "Não há" perto de "Seleção em andamento" — ANTES ou DEPOIS da palavra (a página pode trazer as duas ordens)."""
+    t = re.sub(r"\s+", " ", texto or "")
+    for m in re.finditer(r"sele[cç][aã]o", t, re.I):
+        if re.search(r"n[aã]o h[aá]", t[max(0, m.start() - 300):m.end() + 300], re.I):
+            return True
+    return not re.search(r"sele[cç][aã]o", t, re.I)       # sem a seção, não há alarme
+
+
+def pagina_como_item(html: str, url: str) -> dict | None:
+    """Página de notícia avulsa (ex.: o cadastro do MPF em Goiás) lida como o PRÓPRIO item: título e data da publicação."""
+    h1 = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.S | re.I) or re.search(r"<title>(.*?)</title>", html, re.S | re.I)
+    if not h1:
+        return None
+    tit = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h1.group(1))).strip()
+    pub = re.search(r"(?:publicad[oa]|data|em)\s*:?\s*(\d{2}/\d{2}/\d{4})", re.sub(r"<[^>]+>", " ", html), re.I)
+    return {"titulo": tit[:300], "url": url, "data_publicacao": _iso(pub.group(1)) if pub else _iso(re.sub(r"<[^>]+>", " ", html)[:3000])}
+
+
 def chave(it: dict) -> str:
     """Chave natural: órgão|unidade|número|procedimento (ou o título normalizado com a data, sem número)."""
     if it.get("numero_edital") or it.get("procedimento"):
@@ -277,7 +322,7 @@ def _opener():
 
 def _tabela(pagina: str, task: str, cfg: dict, n: int = 200) -> dict:
     """O que a página do PRT-18 faz no navegador: abre a página (cookie e token público do formulário) e pede a tabela."""
-    op = _opener()
+    op = _opener(); _SESSAO["op"] = op                  # o PDF do edital é baixado nesta mesma sessão (cookie)
     h = _abrir(pagina, cfg, op).decode("utf-8", "ignore")
     tok = re.search(r'\{\s*"name"\s*:\s*"([0-9a-f]{32})"\s*,\s*"value"\s*:\s*"1"\s*\}', h)
     dados = {"sEcho": "1", "iColumns": "5", "iDisplayStart": "0", "iDisplayLength": str(n), "sSearch": "", "option": "com_mpt", "task": task, "format": "raw"}
@@ -309,7 +354,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     diag = {"versao": "motor 12 Ministérios Públicos v2 (02/10/2026)", "fontes": {}, "nunca_acessadas": cfg.get("nunca_acessar"), "pdfs_lidos": 0, "sem_texto": 0}
     itens, falhas, saude = [], [], []
     pdf_cache = est.setdefault("pdf_cache", {})
-    for f in cfg["fontes"]:
+    for f in [x for x in cfg["fontes"] if _da_parte(x["orgao"])]:
         D = diag["fontes"].setdefault(f["id"], {"orgao": f["orgao"], "modo": f["modo"], "url": f["url"]})
         if f["modo"] in ("regra_fixa_manual", "regra", "requer_navegador", "ruido_conhecido"):
             D["situacao"] = {"regra_fixa_manual": "nunca acessada (regra fixa; verificação manual mensal)", "regra": "referência (sem coleta)",
@@ -326,7 +371,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                         it.update(pdf_cache[k])
                     elif it.get("ultimo_link_pdf") and diag["pdfs_lidos"] < int(cfg.get("pdfs_por_leitura", 15)) \
                             and str(it.get("data_publicacao") or "") >= (hoje - timedelta(days=60)).isoformat():
-                        t = _texto_pdf(_abrir(it["ultimo_link_pdf"], cfg)); diag["pdfs_lidos"] += 1
+                        t = _texto_pdf(_abrir(it["ultimo_link_pdf"], cfg, _SESSAO.get("op"))); diag["pdfs_lidos"] += 1
                         if not t.strip():
                             diag["sem_texto"] += 1; continue
                         if has_prompt_injection(t):
@@ -342,6 +387,11 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                       if any(re.search(p, l["titulo"], re.I) for p in cfg.get("lexico_alvo") or [])]
                 itens += [{**l, "orgao": f["orgao"], "unidade": f["unidade"], "link_oficial": l["url"], "fonte": f["id"], "tipo": "listagem"} for l in ls]
                 D.update({"situacao": "lida", "itens": len(ls)})
+            elif f["modo"] == "pagina_item":
+                pg = pagina_como_item(_abrir(f["url"], cfg).decode("utf-8", "ignore"), f["url"])
+                if pg and any(re.search(p, pg["titulo"], re.I) for p in cfg.get("lexico_alvo") or []):
+                    itens.append({**pg, "orgao": f["orgao"], "unidade": f["unidade"], "link_oficial": f["url"], "fonte": f["id"], "tipo": "pagina_item"})
+                D.update({"situacao": "lida", "itens": 1 if pg else 0})
             elif f["modo"] == "rss":
                 rs = [r for r in itens_do_rss(_abrir(f["url"], cfg).decode("utf-8", "ignore"))
                       if re.search(r"destina[cç][aã]o|cadastr|revers[aã]o", f"{r['titulo']} {r['descricao']}", re.I)]
@@ -351,7 +401,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                 D.update({"situacao": "lida", "itens": len(rs)})
             elif f["modo"] == "estado_pagina":
                 t = re.sub(r"<[^>]+>", " ", _abrir(f["url"], cfg).decode("utf-8", "ignore"))
-                nao_ha = bool(re.search(r"n[aã]o h[aá]", t[t.lower().find("sele"):][:4000] if "sele" in t.lower() else t, re.I))
+                nao_ha = selecao_sem_edital(t)
                 est["fdd_selecao"] = {"nao_ha": nao_ha, "em": hoje.isoformat()}; D.update({"situacao": "lida", "selecao_aberta": not nao_ha})
                 if not nao_ha:
                     itens.append({"titulo": "FDD/CFDD — seleção em andamento (a página deixou de dizer 'Não há')", "orgao": f["orgao"], "unidade": f["unidade"],
@@ -365,7 +415,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
             D["situacao"] = "falhou"; falhas.append({"url": f["url"], "erro": type(e).__name__, "code": getattr(e, "code", None), "waf": None, "causa": str(e)[:160]})
     _PRAZO["ate"] = None
     # registros fixos (regras permanentes que nunca são acessadas pelo robô)
-    for r in cfg.get("registros_fixos") or []:
+    for r in [x for x in cfg.get("registros_fixos") or [] if _da_parte(x.get("orgao"))]:
         itens.append({**{k: v for k, v in r.items() if k != "chave"}, "fonte": "regra_fixa_manual", "tipo": "regra_fixa", "data_publicacao": None})
     classif = []
     for it in mesclar(itens):
@@ -390,7 +440,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     limite = (hoje - timedelta(days=1100)).isoformat()
     acompanhar = sorted([a for a in acomp.values() if str(a.get("data_publicacao") or hoje.isoformat()) >= limite],
                         key=lambda a: str(a.get("data_publicacao") or ""), reverse=True)[:400]
-    pend = list(cfg.get("pendencias_presidente") or [])
+    _alvo = {"mpgo-destinacao": ("Destina",), "mptgo-destinacao": ("Sistema de Destinações", "trabalhista"), "mpu-destinacao": ("MPF",)}.get(_PARTE["id"])
+    pend = [p for p in cfg.get("pendencias_presidente") or [] if not _alvo or any(a in p for a in _alvo)]
     if (est.get("habilitadas") or {}).get("associacao_consta"):
         pend = [p for p in pend if "Sistema de Destinações" not in p]
     # inventário de 3 anos nos livros: UMA vez (com nova tentativa se falhar)
@@ -398,7 +449,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     if not inv.get("inventario_base_registrado"):
         try:
             from .livros_regra import registrar_achados
-            r = registrar_achados(inventario_base(), "Motor 12 — inventário-base (estudo de 02/10/2026)")
+            r = registrar_achados([x for x in inventario_base() if _da_parte(x.get("orgao", "").split(" — ")[0])],
+                                  f"{MOTOR_ID} — inventário-base (estudo de 02/10/2026)")
             inv.update({"inventario_base_registrado": True, "em": now_iso(), "resultado": {k: v for k, v in (r or {}).items() if isinstance(v, (int, str))}})
             inv.pop("pendentes_livros", None)
         except Exception as e:  # noqa: BLE001

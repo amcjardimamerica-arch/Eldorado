@@ -648,7 +648,7 @@ def fila_verificacao() -> dict:
                                      "itens": reprovados_objeto[:300],
                                      "regra": "filtro de objeto (inconformidade.py): não é chamada aberta que repasse recurso a entidade — sai da fila e não vira alerta"},
            "fora_das_50_maiores": {"total": len(fora_das_50), "itens": fora_das_50[:400],
-                                   "regra": "excluídas da fila por não estarem entre as 50 maiores cidades do estado; voltam em ROSA quando o titular aprovar a cidade"},
+                                   "regra": "excluídas da fila por não estarem entre as 25 maiores cidades do estado; voltam em ROSA quando o titular aprovar a cidade"},
            "escopo": {k: sum(1 for x in itens if x["escopo"] == k) for k in ("nacional", "estadual", "municipal")},
            "modo": {"completo": sum(1 for x in itens if x["modo"] == "completo"), "leve": sum(1 for x in itens if x["modo"] == "leve")},
            "marcados_para_ia": len(vivos),

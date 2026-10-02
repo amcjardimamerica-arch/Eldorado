@@ -107,7 +107,9 @@
    "reune": [
     "dje-tjgo",
     "cnj-destinacoes"
-   ]
+   ],
+   "nota_separacao": "02/10/2026: separado em judiciario-tjgo (TJ-GO) e judiciario-cnj (CNJ), cada um com parâmetros próprios",
+   "painel_agregado_a": "judiciario-tjgo"
   },
   {
    "id": "dj-trf1-go",
@@ -228,7 +230,105 @@
    ],
    "descricao": "sites institucionais das próprias empresas com maior contribuição de ICMS em Goiás (lista oficial da Economia-GO), lidos atrás de editais, seleções e chamadas de destinação tributária (Rouanet, LIE, FIA, Idoso, PRONON); os endereços vêm do e-mail corporativo do cadastro RFB de cada empresa da base",
    "nota_rede": "04/09: criado; os endereços dos programas são conhecidos publicamente e a descoberta automática segue 'editais / seleções / patrocínios' em cada site — nada é dado como certo antes da leitura",
-   "urls_dinamicas": "base_empresas_go"
+   "urls_dinamicas": "base_empresas_go",
+   "painel_agregado_a": "motor-gife"
+  },
+  {
+   "id": "judiciario-tjgo",
+   "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
+   "tipo": "diario_justica",
+   "nivel": "estadual",
+   "uf": "GO",
+   "territorio": "GO",
+   "urls": [
+    "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs",
+    "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+    "https://www.tjgo.jus.br/",
+    "https://corregedoria.tjgo.jus.br/basesocial"
+   ],
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "editais de seleção de projetos com recursos de prestações pecuniárias, penas alternativas e transações penais das varas de execução penal, juizados e comarcas do TJ-GO; credenciamentos do TJ-GO para entidades; o cadastro prévio no Banco de Projetos Sociais da CGJ/GO (habilitação)",
+   "nota_rede": "02/10/2026: reúne dje-tjgo e cnj-destinacoes. As páginas que o dje-tjgo lia dão 404; o TJGO recusa IP estrangeiro — o RSS da Agência de Notícias e os PDFs são lidos no computador do titular (scripts/coleta_brasil.py); a busca do CNJ é lida na nuvem; o PNCP do TJGO/CNJ é cruzado da base (motor 04).",
+   "leitor": "src/judiciario_go.py (parte TJ-GO: fontes A, B, D, E) — RSS da Agência de Notícias + notícia + PDF (computador do titular) · PNCP cruzado · Banco de Projetos",
+   "reune": [
+    "dje-tjgo",
+    "cnj-destinacoes"
+   ],
+   "separado_de": "judiciario-cnj-tjgo"
+  },
+  {
+   "id": "judiciario-cnj",
+   "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
+   "tipo": "diario_justica",
+   "nivel": "federal",
+   "uf": null,
+   "territorio": "BR",
+   "urls": [
+    "https://www.cnj.jus.br/",
+    "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital"
+   ],
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "editais e notícias de destinação de prestações pecuniárias republicados pelo CNJ e a regra nacional (Resolução CNJ 558/2024)",
+   "nota_rede": "02/10/2026: reúne dje-tjgo e cnj-destinacoes. As páginas que o dje-tjgo lia dão 404; o TJGO recusa IP estrangeiro — o RSS da Agência de Notícias e os PDFs são lidos no computador do titular (scripts/coleta_brasil.py); a busca do CNJ é lida na nuvem; o PNCP do TJGO/CNJ é cruzado da base (motor 04).",
+   "leitor": "src/judiciario_go.py (parte CNJ: fonte C) — busca do Portal do CNJ (nuvem)",
+   "reune": [
+    "dje-tjgo",
+    "cnj-destinacoes"
+   ],
+   "separado_de": "judiciario-cnj-tjgo"
+  },
+  {
+   "tipo": "ministerio_publico",
+   "busca": null,
+   "confianca": "curada",
+   "separado_de": "plat-mp-destinacoes-reparacao",
+   "id": "mpgo-destinacao",
+   "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
+   "nivel": "estadual",
+   "uf": "GO",
+   "territorio": "GO",
+   "urls": [
+    "https://www.mpgo.mp.br/portal/conteudo/destina-destinacao-articulada-de-acordos-edital-n-02-2024"
+   ],
+   "o_que_procurar": "o Edital de Chamamento 02/2024 do Destina (COMPOR), em cadastro contínuo — o robots.txt do MP-GO proíbe robôs: regra fixa, verificação manual mensal pelo titular",
+   "leitor": "src/ministerios_publicos.py (parte MP-GO) — regra fixa; o site nunca é acessado"
+  },
+  {
+   "tipo": "ministerio_publico",
+   "busca": null,
+   "confianca": "curada",
+   "separado_de": "plat-mp-destinacoes-reparacao",
+   "id": "mptgo-destinacao",
+   "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
+   "nivel": "estadual",
+   "uf": "GO",
+   "territorio": "GO",
+   "urls": [
+    "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+    "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais"
+   ],
+   "o_que_procurar": "editais de 5 dias da PRT 18ª e das PTMs (tabela + PDF), a lista de entidades habilitadas e o cadastro no Sistema de Destinações",
+   "leitor": "src/ministerios_publicos.py (parte MPT-GO) — tabela DataTables (nuvem, todo dia) + PDF na mesma sessão"
+  },
+  {
+   "tipo": "ministerio_publico",
+   "busca": null,
+   "confianca": "curada",
+   "separado_de": "plat-mp-destinacoes-reparacao",
+   "id": "mpu-destinacao",
+   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
+   "nivel": "federal",
+   "uf": null,
+   "territorio": "BR",
+   "urls": [
+    "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+    "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+    "https://mpt.mp.br/pgt/noticias/RSS"
+   ],
+   "o_que_procurar": "cadastro de entidades da PR-GO (MPF), editais do MPDFT, notícias do MPT nacional, o FDD (seleção em andamento) e as regras do CNMP",
+   "leitor": "src/ministerios_publicos.py (parte MPU) — listagens, RSS, páginas avulsas e estado da página do FDD"
   }
  ],
  "nota_rede": "A rede deste ambiente não alcança os domínios; os sensores rodam no GitHub Actions. URLs 'curadas' são conferidas pelo próprio sensor (saúde HTTP) e trocadas quando três leituras seguidas não trazem nada.",

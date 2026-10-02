@@ -31,6 +31,7 @@ SENSORES = ROOT / "config/sensores.json"
 PASTA = ROOT / "estado/indexadores"
 ESTADO = PASTA / "estado.json"
 ACERVO = PASTA / "indicios.json"
+CRIADOS = PASTA / "motores_criados.json"        # 02/10: motores criados pelo robô (somados ao catálogo ao carregar)
 FILA = PASTA / "fila_assistida.json"
 DIARIO = PASTA / "diario.json"
 ANGULOS = PASTA / "angulos_piloto.json"
@@ -65,7 +66,34 @@ def agora_utc() -> datetime:
 
 # ------------------------------------------------------------------ catálogo e rotas
 def catalogo() -> dict:
-    return _j(CATALOGO, {"sites": [], "motores": {}, "limites": {}})
+    """O catálogo editado (config/indexadores.json) + os motores que o robô criou (estado/indexadores/motores_criados.json)."""
+    cat = _j(CATALOGO, {"sites": [], "motores": {}, "limites": {}})
+    cri = _j(CRIADOS, {"sites": []})
+    ids = {s["id"] for s in cat.get("sites") or []}
+    for s in cri.get("sites") or []:
+        if s.get("tipo") == "instancia_mapas_culturais":   # instância nova entra no motor Mapas Culturais
+            mc = next((x for x in cat.get("sites") or [] if x.get("leitor") == "mapas_culturais"), None)
+            if mc is not None and s["host"] not in {i.get("host") for i in mc.get("instancias") or []}:
+                mc.setdefault("instancias", []).append({"host": s["host"], "uf": None, "nome": s["host"], "confirmada": False, "criada_automaticamente": True})
+            continue
+        if s.get("id") not in ids:
+            cat.setdefault("sites", []).append(s)
+            cat.setdefault("motores", {})[s["motor"]] = {"nome": f"{s['nome']} — editais (motor criado automaticamente, em observação)", "local": s["nome"],
+                "finalidade": "fonte oficial que apareceu em indícios sem ter motor", "fonte": (s.get("listas") or [None])[0],
+                "metodo": "listagem HTML genérica", "criado_automaticamente": True, "criado_em": s.get("criado_em")}
+    return cat
+
+
+def registrar_motores_que_faltam(hoje: date, gravar: bool = True) -> list[dict]:
+    """Depois da rodada: domínio oficial sem motor, visto em 2+ indícios, vira motor (em observação). Um por vez, sem repetir."""
+    cri = _j(CRIADOS, {"sites": []})
+    ja = {s["id"] for s in cri.get("sites") or []}
+    novos = [dict(m, criado_em=hoje.isoformat()) for m in motores_que_faltam(_j(ACERVO, {"itens": {}}), catalogo()) if m["id"] not in ja]
+    if novos and gravar:
+        cri["sites"] = (cri.get("sites") or []) + novos
+        cri["regra"] = "02/10/2026 (titular): quando a oportunidade não tem motor, ele é criado — leitor de listagem genérico, em observação até render indício."
+        _gravar(CRIADOS, cri)
+    return novos
 
 
 def hosts_exige_brasil() -> set[str]:
@@ -311,6 +339,64 @@ def _registrar_dia(diario: dict, motor: str, hoje: str, novos: int, falhas: int,
 
 
 # ------------------------------------------------------------------ a rodada
+def registrar_leitura(st: dict, res: dict, site: dict, desde: str | None, extra: int, agora: datetime) -> dict:
+    """02/10 (titular): registro COMPACTO de cada leitura — hash do que foi lido, quantidade, cobertura das datas de
+    publicação e lacuna. Lacuna = a leitura não chegou até a data da anterior e esgotou as páginas permitidas: a próxima
+    volta mais páginas (até 10 a mais). Guarda só as 30 últimas; o texto útil (título, datas, link) fica no acervo."""
+    import hashlib
+    itens = res.get("itens") or []
+    datas = sorted(d for d in (str(x.get("publicado") or "")[:10] for x in itens) if len(d) == 10)
+    h = hashlib.sha1("\n".join(sorted(str(x.get("chave") or x.get("id")) for x in itens)).encode()).hexdigest()[:12]
+    paginas = int(site.get("paginas_retroativas") or 1)
+    lacuna = bool(desde and datas and datas[0] > desde and int(res.get("lidas") or 0) >= paginas and not res.get("delegado"))
+    st["paginas_extra"] = min(extra + 1, 10) if lacuna else 0
+    reg = {"em": agora.isoformat(timespec="seconds"), "h": h, "n": len(itens), "de": datas[0] if datas else None,
+           "ate": datas[-1] if datas else None, "desde": desde, "lacuna": lacuna, "paginas": int(res.get("lidas") or 0)}
+    st["leituras"] = (list(st.get("leituras") or []) + [reg])[-30:]
+    return reg
+
+
+def motores_que_faltam(acervo: dict, cat: dict, minimo: int = 2) -> list[dict]:
+    """02/10 (titular): indício cujo SITE OFICIAL não tem motor, visto em `minimo` indícios ou mais, gera um motor novo
+    (leitor genérico de listagem, em observação). Nunca para domínio proibido, de buscador ou já coberto."""
+    from collections import Counter
+    try:
+        from ..indexacao_livros import mapa_dominios, host, GENERICOS
+        M = mapa_dominios()
+    except Exception:  # noqa: BLE001
+        return []
+    def _todas_urls(o):                               # QUALQUER endereço do site (ex.: as instâncias do Mapas Culturais)
+        if isinstance(o, dict):
+            return [u for v in o.values() for u in _todas_urls(v)]
+        if isinstance(o, list):
+            return [u for v in o for u in _todas_urls(v)]
+        return [o] if isinstance(o, str) and o.startswith("http") else []
+    ja = {str(i.get("host") or "").lower().removeprefix("www.") for x in cat.get("sites") or [] for i in x.get("instancias") or []}
+    ja |= {host(u) for x in (cat.get("sites") or []) + [d for d in cat.get("descartados") or [] if isinstance(d, dict)] for u in _todas_urls(x)}
+    cont, exemplo = Counter(), {}
+    for x in (acervo.get("itens") or {}).values():
+        u = x.get("link_oficial")
+        d = host(u) if u else ""
+        if not d or d in GENERICOS or d in ja or any(d == k or d.endswith("." + k) for k in M) or X._republicador(u):
+            continue
+        if x.get("perfil") == "fora" or not (d.endswith(".br") or x.get("pais") == "BR"):
+            continue                                  # só o que se aplica a OSC no Brasil vira motor
+        cont[d] += 1; exemplo.setdefault(d, u)
+    out = []
+    for d, n in cont.most_common(10):
+        if n >= minimo:
+            _p = urlsplit(exemplo[d]); _seg = [x for x in _p.path.split("/") if x]
+            base = f"{_p.scheme}://{_p.netloc}/" + ("/".join(_seg[:-1]) + "/" if len(_seg) > 1 else "")   # a LISTAGEM (pasta de cima)
+            if "/oportunidade/" in exemplo[d]:            # é uma instância do Mapas Culturais: ALIMENTA o motor existente
+                out.append({"id": "instancia-" + re.sub(r"[^a-z0-9]+", "-", d)[:40].strip("-"), "tipo": "instancia_mapas_culturais",
+                            "host": d, "nome": d, "motor": "site-mapas-culturais", "indicios_que_motivaram": n, "listas": [base]})
+                continue
+            out.append({"id": "auto-" + re.sub(r"[^a-z0-9]+", "-", d)[:40].strip("-"), "nome": d, "motor": "site-auto-" + re.sub(r"[^a-z0-9]+", "-", d)[:40].strip("-"),
+                        "leitor": "html_listagem", "listas": [base], "cadencia_horas": 24, "prioridade": "baixa", "rota": "nuvem",
+                        "paginas_retroativas": 1, "criado_automaticamente": True, "situacao": "em observação", "indicios_que_motivaram": n})
+    return out
+
+
 def rodada(motores: list[str] | None = None, sites: list[str] | None = None, rota: str | None = None,
            agora: datetime | None = None, rede: Rede | None = None, gravar: bool = True, forcar: bool = False,
            extra: dict | None = None, delta_em: Path | None = None) -> dict:
@@ -370,8 +456,14 @@ def rodada(motores: list[str] | None = None, sites: list[str] | None = None, rot
             resumo["sites"][sid] = {"adiado": "orçamento da rodada esgotado"}
             continue
         ctx = dict(ctx_base, via=("ponte" if r_site == "ponte" else "direta"), rota=r_site)
+        # 02/10 (titular): LEITURA A PARTIR DA ÚLTIMA LEITURA — se a anterior deixou lacuna, esta volta mais páginas
+        s_ef = dict(s)
+        _extra = int(st.get("paginas_extra") or 0)
+        if _extra:
+            s_ef["paginas_retroativas"] = int(s.get("paginas_retroativas") or 1) + _extra
+        _desde = str(st.get("ultima") or "")[:10] or None
         try:
-            res = LEITORES[s["leitor"]](s, rede, st, ctx)
+            res = LEITORES[s["leitor"]](s_ef, rede, st, ctx)
         except Exception as e:                       # um site quebrado não derruba a rodada
             res = {"itens": [], "falhas": [{"url": s.get("url"), "tipo": "erro", "detalhe": f"{type(e).__name__}: {str(e)[:160]}"}], "lidas": 0, "diag": {}}
         if not res.get("delegado"):
@@ -381,6 +473,7 @@ def rodada(motores: list[str] | None = None, sites: list[str] | None = None, rot
                   diag=res.get("diag") or {}, rota_ultima=r_site)
         if res.get("lidas"):
             st.pop("aguardando_ponte_desde", None)
+        registrar_leitura(st, res, s_ef, _desde, _extra, agora)
         delta["sites"][sid] = st
         delta["itens"].extend(res.get("itens") or [])
         resumo["lidos"] += 1
@@ -406,6 +499,10 @@ def rodada(motores: list[str] | None = None, sites: list[str] | None = None, rot
     if delta_em:
         _gravar(Path(delta_em), delta, indent=None)
     resumo.update(aplicar(delta, gravar=gravar))
+    try:                                             # 02/10: oportunidade sem motor → o motor é criado
+        resumo["motores_criados"] = [m["motor"] for m in registrar_motores_que_faltam(hoje, gravar=gravar)]
+    except Exception as e:  # noqa: BLE001 — nunca derruba a rodada
+        resumo["motores_criados"] = f"falhou: {type(e).__name__}"
     return resumo
 
 
@@ -489,7 +586,7 @@ def _migrar_antigo(acervo: dict, hoje: date) -> None:
     """Primeira rodada: os itens do antigo motor de agregadores (CapitaAI, Farol, IDIS) entram no acervo com o mesmo
     id e a data em que foram vistos pela primeira vez — validações já registradas continuam valendo."""
     antigo = _j(FLUXO, {}) or {}
-    nomes = {"capitaai": "idx-sitemaps", "farolcultural": "idx-apis", "idis": "idx-feeds"}
+    nomes = {"capitaai": "site-capitaai", "farolcultural": "site-farol-cultural", "idis": "site-idis"}   # 02/10: motores por site
     velhos = []
     for x in antigo.get("itens") or []:
         if x.get("motor") or not x.get("id"):
@@ -544,12 +641,15 @@ def painel(cat: dict, est: dict, acervo: dict, rotas: dict, entrada: list[dict],
                         "reune": m.get("reune"), "delega": m.get("delega"), "sites": len(ss), "ultima_leitura": ult,
                         "indicios_no_fluxo": sum(x["indicios_no_fluxo"] for x in ss),
                         "com_falha": sum(1 for x in ss if x["falhas_ultima"] and not x.get("lidas_ultima"))})
-    # sites cuja rota foi escalada para a ponte ou a assistida aparecem também nesses motores
+    # 02/10: um motor por site — a rota (nuvem, ponte, assistida) e as últimas leituras vêm do próprio site
     por_mid = {m["id"]: m for m in motores}
     for x in sites:
-        for r, mid in (("ponte", "idx-ponte-brasil"), ("assistida", "idx-assistido")):
-            if x["rota"] == r and x["motor"] != mid and mid in por_mid:
-                por_mid[mid].setdefault("escalados", []).append(x["id"])
+        m = por_mid.get(x["motor"])
+        if m is not None:
+            m.setdefault("rotas", []).append(x["rota"])
+            m["leituras"] = (((est.get("sites") or {}).get(x["id"]) or {}).get("leituras") or [])[-5:]
+            m["local"] = (cat.get("motores") or {}).get(x["motor"], {}).get("local")
+            m["finalidade"] = (cat.get("motores") or {}).get(x["motor"], {}).get("finalidade")
     return {"em": est.get("em"), "regra": cat.get("regra"), "motores": motores, "sites": sites,
             "ponte": {"escolha": (cat.get("ponte") or {}).get("escolha"), "configurada": _ponte.configurada(),
                       "ultima_coleta_brasil": est.get("ultima_coleta_brasil"),

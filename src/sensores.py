@@ -467,9 +467,15 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
         return ler_motor_cn(sensor, data, limites)
     # MOTOR DO JUDICIÁRIO — CNJ e TJGO (parecer de 02/10/2026): reúne dje-tjgo e cnj-destinacoes. RSS da Agência de Notícias do
     # TJGO + notícia + PDF do edital da comarca (no computador do titular), busca do CNJ (nuvem), PNCP cruzado e Banco de Projetos
+    if sensor.get("id") in ("mpgo-destinacao", "mptgo-destinacao", "mpu-destinacao"):   # 02/10: MP separado em três
+        from .ministerios_publicos import ler_parte as ler_parte_mp
+        return ler_parte_mp(sensor["id"], sensor, data, limites)
     if sensor.get("id") == "plat-mp-destinacoes-reparacao":     # 02/10: motor 12 — lê pela estrutura de cada fonte (estudo ao vivo)
         from .ministerios_publicos import ler_motor as ler_motor_mp
         return ler_motor_mp(sensor, data, limites)
+    if sensor.get("id") in ("judiciario-tjgo", "judiciario-cnj"):     # 02/10: o Judiciário separado em TJ-GO e CNJ
+        from .judiciario_go import ler_parte as ler_parte_jud
+        return ler_parte_jud(sensor["id"], sensor, data, limites)
     if sensor.get("id") == "judiciario-cnj-tjgo":
         from .judiciario_go import ler_motor as ler_motor_jud
         return ler_motor_jud(sensor, data, limites)

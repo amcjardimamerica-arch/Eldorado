@@ -509,7 +509,9 @@ def run() -> dict:
                                          "satisfatória — obtendo editais" if s.get("achados_total") else
                                          "lendo, sem editais reconhecidos")})
     # diários e locais oficiais
-    esp = load_json(ROOT / "config/sensores.json").get("sensores_especiais", [])
+    # 02/10: sensor especial que virou PARTE de outro motor (painel_agregado_a) some do painel, mas continua no registro
+    # de execução (ex.: os sites das contribuintes do ICMS agora são lidos pelo Motor Incentivos Fiscais)
+    esp = [e for e in load_json(ROOT / "config/sensores.json").get("sensores_especiais", []) if not e.get("painel_agregado_a")]
     oficiais = []
     for e in esp:
         s = esq.get(e["id"]); b = _bloqueio_vigente(blq.get(urlsplit(e["urls"][0]).hostname), s)
@@ -528,25 +530,31 @@ def run() -> dict:
         _dx = load_json(ROOT / "estado/indexadores/diario.json") if (ROOT / "estado/indexadores/diario.json").exists() else {}
         _pm = {m.get("id"): m for m in (_ix.get("motores") or [])}
         _ps = _ix.get("sites") or []
+        _site_motor = {x["id"]: x.get("motor") for x in (_cx.get("sites") or [])}
         for _mid, _m in (_cx.get("motores") or {}).items():
-            _sx = [x for x in _ps if x.get("motor") == _mid or _mid in ("idx-ponte-brasil", "idx-assistido") and x.get("rota") == {"idx-ponte-brasil": "ponte", "idx-assistido": "assistida"}[_mid]]
+            # 02/10 (titular): um motor por site — a situação vem da rota do próprio site (nuvem, ponte, assistida)
+            _sx = [x for x in _ps if _site_motor.get(x.get("id")) == _mid]
             _st = _pm.get(_mid) or {}
-            _url = next((x.get("url") for x in _sx if x.get("url")), None) or next((x.get("url") or x.get("pagina") for x in (_cx.get("sites") or []) if x.get("motor") == _mid), None)
-            if _mid == "idx-assistido":
+            _rot = {x.get("rota") for x in _sx} or {"nuvem"}
+            _url = next((x.get("url") for x in _sx if x.get("url")), None) or (_m.get("fonte"))
+            if _rot == {"assistida"}:
                 _url = "coleta-assistida.html"        # a fila e o botão "Capturar indícios" (GitHub Pages)
             _falhas = [x for x in _sx if x.get("falhas_ultima") and not x.get("lidas_ultima") and x.get("rota") not in ("assistida", "delegado")]
+            _ult = max((x.get("ultima") for x in _sx if x.get("ultima")), default=None) or _st.get("ultima_leitura")
+            _nf = sum(int(x.get("indicios_no_fluxo") or 0) for x in _sx)
             plataformas.append({"id": _mid, "nome": _m.get("nome"), "tipo": "regular", "url": _url,
-                                "dias": _trinta_dias(_dx.get(_mid, {}), hoje), "ultima_leitura": _st.get("ultima_leitura"),
-                                "achados": _st.get("indicios_no_fluxo", 0),
-                                "diagnostico": {"metodo": _m.get("metodo"), "reune": _m.get("reune"), "delega": _m.get("delega"),
+                                "dias": _trinta_dias(_dx.get(_mid, {}), hoje), "ultima_leitura": _ult, "achados": _nf,
+                                "diagnostico": {"local": _m.get("local"), "finalidade": _m.get("finalidade"), "fonte": _m.get("fonte"),
+                                                "metodo": _m.get("metodo"), "reune": _m.get("reune"), "criado_automaticamente": _m.get("criado_automaticamente"),
                                                 "sites": [{"id": x["id"], "nome": x.get("nome"), "rota": x.get("rota"), "ultima": x.get("ultima"),
-                                                           "no_fluxo": x.get("indicios_no_fluxo"), "falhas": x.get("falhas_ultima")} for x in _sx][:40],
-                                                "ponte": _ix.get("ponte") if _mid == "idx-ponte-brasil" else None},
-                                "situacao": ("coleta assistida — fila no painel" if _mid == "idx-assistido" else
-                                             "aguardando ponte ou coleta local (Brasil)" if _mid == "idx-ponte-brasil" and not (_ix.get("ponte") or {}).get("configurada") and not (_ix.get("ponte") or {}).get("ultima_coleta_brasil") else
-                                             "sem leitura ainda" if not _st.get("ultima_leitura") else
+                                                           "no_fluxo": x.get("indicios_no_fluxo"), "falhas": x.get("falhas_ultima")} for x in _sx][:10],
+                                                "leituras": (_st.get("leituras") or [])[-5:]},
+                                "situacao": ("coleta assistida — fila no painel" if _rot == {"assistida"} else
+                                             "aguardando ponte ou coleta local (Brasil)" if _rot == {"ponte"} and not (_ix.get("ponte") or {}).get("configurada") and not (_ix.get("ponte") or {}).get("ultima_coleta_brasil") else
+                                             "em observação (criado automaticamente)" if _m.get("criado_automaticamente") and not _nf else
+                                             "sem leitura ainda" if not _ult else
                                              f"atenção: {len(_falhas)} site(s) sem leitura" if _falhas else
-                                             "satisfatória — obtendo editais" if _st.get("indicios_no_fluxo") else "ativo, sem achados")})
+                                             "satisfatória — obtendo editais" if _nf else "ativo, sem achados")})
     except Exception:
         pass
     # ── PILOTO - INTERCEPTADOR como motor próprio (titular, 26/09): verificação de funcionamento e de resultado
