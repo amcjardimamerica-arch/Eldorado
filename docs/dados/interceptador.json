@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-02T17:24:01+00:00",
+  "em": "2026-10-02T17:42:29+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-02T17:13:39+00:00",
+  "ultimo_voo": "2026-10-02T17:26:19+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 121,
+    "missoes": 122,
     "validadas": 1,
-    "parciais": 35,
+    "parciais": 36,
     "insuficientes": 85,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "nao": 23,
+      "nao": 24,
       "sim": 73
     },
     "estrelas_de_ouro": 29,
@@ -52,6 +52,88 @@
     "tempo_medio_min": 11.0
   },
   "missoes": [
+    {
+      "em": "2026-10-02T17:26:19+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Anápolis — Fundo Municipal de Cultura recebe inscrições até domingo (19) — Goiás / Anápolis — Goiás / Anápolis",
+      "qualidade": "parcial",
+      "comprovados": 8,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": "https://transparencia.ipiau.ba.gov.br/wp-includes/ExternalApps/downloader.php?hurl=aHR0cDovL2RvZW0ub3JnLmJyL2JhL2lwaWF1L2FycXVpdm9zL2Rvd25sb2FkLzY0ODI3ODA5ZDIwZDRjY2U0YzhjNjJiMDM4N2Y0N2IzL2EyZTg5ODgzN2M0YzE1ZjA5YTJjYzBiNGQ2Y2MxZmQwLnBkZg==",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O texto comprovado menciona o Objeto, Prazo de inscrição, Órgão / financiador, Território, Esfera, Anexos, Destinação e Área de atuação, mas não menciona informações sobre Anápolis, Goiás, ou associações comunitárias de Goiânia.",
+        "para_a_amc": "Para acessar, uma associação comunitária de Goiânia precisaria verificar se o edital se aplica à sua área de atuação (cultura, assistência social, educação, esporte) e se está localizada no território mencionado (BA).",
+        "proximo_passo": "Verificar se o edital se aplica à área de atuação da associação e se está localizada no território mencionado.",
+        "risco": "O edital não menciona a possibilidade de acesso para associações comunitárias de Goiânia, o que pode impedir o acesso."
+      },
+      "erro": null,
+      "segundos": 968,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor, Requisitos",
+      "id": "op-op-1aa878592994",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fomento à execução de projetos culturais a serem realizados por agentes culturais do Município de Ipiaú/BA, no âmbito da Política Nacional Aldir Blanc (PNAB)",
+          "trecho": "O objeto deste edital é o fomento à execução de projetos culturais a serem realizados por agentes culturais do Município de Ipiaú/BA, no âmbito da Política Nacional Aldir Blanc (PN",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-08-11 a 2026-08-31",
+          "trecho": "no período de 11/08/2026 a 31/08/2026",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Ipiaú",
+          "trecho": "PREFEITURA MUNICIPAL DE IPIAÚ",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "BA",
+          "trecho": "Município de Ipiaú/BA",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "fomento à execução de projetos culturais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "destinado ao fomento à execução de projetos culturais a serem realizados por agentes culturais do Município de Ipiaú/BA",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Anápolis",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-02T17:13:39+00:00",
       "modo": "validar",
@@ -2437,77 +2519,6 @@
           "valor": "assistencia_social",
           "trecho": "Desenvolvimento Social",
           "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Governo do Estado de Goiás",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-02T08:12:28+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Goiás Social — Edital de Chamamento Público de Instituições sem Fins Lucrativos para a Execução do Programa Ap… — Goiás",
-      "qualidade": "parcial",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Valor",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/social/programa-aprendiz-do-futuro/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprovado menciona o Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Órgão / financiador, Território, Esfera e Requisitos, o que é suficiente para responder às perguntas formuladas.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital entre 2026-02-01 e 2026-02-28, comprovando que atende aos requisitos de idade, vulnerabilidade econômico-social, ensino em andamento e renda familiar até 2 (dois) salários mínimos, além de anexar os documentos necessários.",
-        "proximo_passo": "Verificar os requisitos do edital e preparar os documentos necessários para a inscrição no prazo estabelecido.",
-        "risco": "A associação pode ser impedida de acessar o edital caso não atenda aos requisitos estabelecidos ou caso não envie os documentos corretamente no prazo de inscrição."
-      },
-      "erro": null,
-      "segundos": 947,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Valor, Destinação, Área de atuação",
-      "id": "op-op-091477acf9f5",
-      "encontrou": {
-        "Objeto": {
-          "valor": "formar um Cadastro de Reserva para vagas do Programa Estadual de Contratação de Aprendiz pela Administração Pública Direta e Indireta do Estado de Goiás",
-          "trecho": "O Cadastro de Reserva destina-se ao preenchimento de vagas que surgirem em decorrência de encerramento ou interrupção de contratos vigentes por motivos legais, bem como ao atendime",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-02-01 a 2026-02-28",
-          "trecho": "https://goias.gov.br/social/wp-content/uploads/sites/24/2026/02/EDITAL-APRENDIZ-DO-FUTURO-001.2026.pdf",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado de Desenvolvimento Social – SEDS",
-          "trecho": "O Goiás Social, por intermédio da Secretaria de Estado de Desenvolvimento Social – SEDS –",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Poderão se inscrever adolescentes de todos os 246 municípios do Estado de Goiás",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Complete 14 (quatorze) anos;, 16 (dezesseis) anos incompletos (15 anos e 10 meses);, Esteja cursando o Ensino Fundamental ou Médio (ou já ter concluído o Ensino Médio);, Em vulnerabilidade econômico-social;, Estudante da rede pública ou bolsista 100% de rede particular;, Com renda familiar de até 2 ",
-          "trecho": "2.1. Idade (até a data do Resultado Final – SEXTA ETAPA deste Edital - Item 3.6.): 2.1.1. Complete 14 (quatorze) anos; à 2.1.2. 16 (dezesseis) anos incompletos (15 anos e 10 meses)",
-          "oficial": false,
           "dispensado": false
         }
       },
