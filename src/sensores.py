@@ -460,6 +460,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     if sensor.get("id") == "congresso-nacional":
         from .congresso_nacional import ler_motor as ler_motor_cn
         return ler_motor_cn(sensor, data, limites)
+    # MOTOR DO JUDICIÁRIO — CNJ e TJGO (parecer de 02/10/2026): reúne dje-tjgo e cnj-destinacoes. RSS da Agência de Notícias do
+    # TJGO + notícia + PDF do edital da comarca (no computador do titular), busca do CNJ (nuvem), PNCP cruzado e Banco de Projetos
+    if sensor.get("id") == "judiciario-cnj-tjgo":
+        from .judiciario_go import ler_motor as ler_motor_jud
+        return ler_motor_jud(sensor, data, limites)
     # MOTOR 22 (parecer de 01/10/2026): o GIFE é lido pela API da seleção de editais (um item por bloco "título +
     # prazo + Inscreva-se") e pela Capta, para onde a seleção aponta — não pela home institucional nem pelos associados
     if sensor.get("id") == "plat-gife":

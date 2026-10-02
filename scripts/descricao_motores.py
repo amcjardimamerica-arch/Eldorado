@@ -36,7 +36,11 @@ EVOLUCAO = {
     "do-goiania": "feito em 01/10: o Querido Diário cobre Goiânia (IBGE 5208707) e o motor lê o texto integral "
                   "das edições na nuvem; próximo passo gratuito — alerta de prazo dos editais PNAB/FMDCA pelo "
                   "histórico de 5 anos (os mesmos fundos abrem nas mesmas épocas)",
-    "dje-tjgo": "testar a API do Diário de Justiça Eletrônico Nacional (DJEN/CNJ), fora do WAF do TJGO",
+    "dje-tjgo": "reunido ao motor do Judiciário — CNJ e TJGO em 02/10 (as páginas que lia davam 404)",
+    "judiciario-cnj-tjgo": "feito em 02/10: RSS paginado da Agência de Notícias do TJGO, notícia e PDF do edital de cada comarca, "
+                           "busca do CNJ e PNCP cruzado (o DJEN foi testado e só traz intimações); próximo passo gratuito — "
+                           "previsão de abertura por comarca a partir do histórico (Goiânia abre em janeiro) e o TRT18/TRF1 "
+                           "no mesmo leitor, se o titular quiser a Justiça do Trabalho e a Federal juntas",
     "dj-trf1-go": "testar a API do DJEN/CNJ, que concentra os diários da Justiça Federal",
     "camara-goiania-pl": "feito em 01/10: a Câmara não usa o SAPL — lê o SUAP (consulta pública de processos), a tramitação "
                          "dos processos da associação e as notícias; próximo passo gratuito — ler o texto do projeto (documento do "

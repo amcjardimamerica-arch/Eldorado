@@ -85,25 +85,29 @@
    "leitor": "src/diario_uniao.py — Leitura do Jornal (DO1, DO3, extras) + íntegra + busca semanal de reserva"
   },
   {
-   "id": "dje-tjgo",
-   "nome": "TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)",
+   "id": "judiciario-cnj-tjgo",
+   "nome": "Judiciário — CNJ e TJGO: editais das varas de execução penal e das comarcas (prestações pecuniárias) e credenciamentos de entidades",
    "tipo": "diario_justica",
    "nivel": "estadual",
    "uf": "GO",
    "territorio": "GO",
    "urls": [
-    "https://www.tjgo.jus.br/index.php/execucao-penal",
-    "https://www.tjgo.jus.br/index.php/institucional/centro-de-comunicacao-social/17-tribunal/20140-prestacao-pecuniaria",
-    "https://www.tjgo.jus.br/index.php/coordenadoria-de-execucao-penal",
-    "https://www.tjgo.jus.br/index.php/editais-de-chamamento",
-    "https://www.jusbrasil.com.br/diarios/DJGO/",
-    "https://www.mpgo.mp.br/portal/editais"
+    "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs",
+    "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+    "https://www.tjgo.jus.br/",
+    "https://corregedoria.tjgo.jus.br/basesocial",
+    "https://www.cnj.jus.br/",
+    "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital"
    ],
    "busca": null,
    "confianca": "curada",
-   "o_que_procurar": "editais de destinação de prestação pecuniária, penas de perdimento, doações a entidades pelas varas de execução penal",
-   "nota_rede": "04/09: o Diário (403) é substituído pela busca direta nas páginas das varas de execução penal/prestação pecuniária do TJGO (mesmo domínio — pode manter o 403), pelo espelho do DJGO no Jusbrasil e pelos editais do MPGO (Res. CNJ 154/2012 obriga o chamamento público das entidades); o diagnóstico individual diz qual via respondeu",
-   "max_paginas": 6
+   "o_que_procurar": "editais de seleção de projetos com recursos de prestações pecuniárias, penas alternativas e transações penais (varas de execução penal, juizados e comarcas do TJGO); credenciamentos do Judiciário para entidades sem fins lucrativos; a regra nacional do CNJ (Res. 558/2024) e o cadastro prévio no Banco de Projetos Sociais da CGJ/GO",
+   "nota_rede": "02/10/2026: reúne dje-tjgo e cnj-destinacoes. As páginas que o dje-tjgo lia dão 404; o TJGO recusa IP estrangeiro — o RSS da Agência de Notícias e os PDFs são lidos no computador do titular (scripts/coleta_brasil.py); a busca do CNJ é lida na nuvem; o PNCP do TJGO/CNJ é cruzado da base (motor 04).",
+   "leitor": "src/judiciario_go.py — RSS do TJGO + notícia + PDF do edital (local) · busca do CNJ (nuvem) · PNCP cruzado · Banco de Projetos (habilitação prévia)",
+   "reune": [
+    "dje-tjgo",
+    "cnj-destinacoes"
+   ]
   },
   {
    "id": "dj-trf1-go",
@@ -118,23 +122,6 @@
    "busca": null,
    "confianca": "curada",
    "o_que_procurar": "editais de destinação de prestações pecuniárias a entidades"
-  },
-  {
-   "id": "cnj-destinacoes",
-   "nome": "CNJ — destinações de penas e prestações pecuniárias",
-   "tipo": "diario_justica",
-   "nivel": "federal",
-   "uf": null,
-   "territorio": "BR",
-   "urls": [
-    "https://www.cnj.jus.br/",
-    "https://www.cnj.jus.br/sistema-carcerario/penas-e-medidas-alternativas/",
-    "https://www.cnj.jus.br/transparencia-cnj/licitacoes-e-contratos/"
-   ],
-   "busca": null,
-   "confianca": "curada",
-   "o_que_procurar": "resoluções e editais nacionais de destinação",
-   "nota_rede": " · 04/09: páginas de listagem + descoberta automática a partir da home"
   },
   {
    "id": "camara-goiania-pl",

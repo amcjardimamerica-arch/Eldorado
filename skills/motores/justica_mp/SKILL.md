@@ -13,3 +13,4 @@ As oportunidades são editais de DESTINAÇÃO de recursos ou bens, com prazos cu
 
 ## Lições aprendidas
 - 02/10 — MPT/PRT-18: editais de ~5 dias; o projeto precisa estar pronto antes.
+- 02/10 — TJGO (motor do Judiciário): cada comarca anuncia o edital de prestações pecuniárias na Agência de Notícias, com o PDF anexado; a entidade precisa estar no Banco de Projetos Sociais da CGJ/GO antes do edital; Goiânia (1ª VEP) abriu em 12/01 com habilitação até 30/01 — o prazo costuma vir como "até o dia N deste mês".
