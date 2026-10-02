@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-02T16:28:32+00:00",
+  "em": "2026-10-02T16:53:06+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-02T16:13:15+00:00",
+  "ultimo_voo": "2026-10-02T16:34:36+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,88 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 118,
+    "missoes": 119,
     "validadas": 1,
     "parciais": 33,
-    "insuficientes": 84,
+    "insuficientes": 85,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 23,
-      "sim": 70
+      "sim": 71
     },
     "estrelas_de_ouro": 29,
     "fontes_novas_para_os_motores": 2,
     "tempo_medio_min": 10.9
   },
   "missoes": [
+    {
+      "em": "2026-10-02T16:34:36+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Pnab 2026: Divulgado resultado preliminar de habilitados e não habilitados do edital nº 04/2026 — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://goias.gov.br/cultura/pnab/edital-2026-pnab/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre o Objeto e o Órgão / financiador, o que permite identificar a fonte de financiamento para a AMC.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se está entre os habilitados no resultado preliminar e, caso não esteja, analisar os motivos da não habilitação para possíveis recursos.",
+        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre os critérios de habilitação e os procedimentos para recursos.",
+        "risco": "A falta de informações sobre os requisitos e a destinação do edital pode impedir a associação de compreender melhor as condições para acesso ao financiamento."
+      },
+      "erro": null,
+      "segundos": 1109,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 1,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-61f5dc003aa8",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Resultado preliminar de habilitados e não habilitados do edital nº 04/2026",
+          "trecho": "Divulgado resultado preliminar de habilitados e não habilitados do edital nº 04/2026",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Pnab 2026",
+          "trecho": "Pnab 2026: Divulgado resultado preliminar de habilitados e não habilitados do edital nº 04/2026",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Edital 87049608 SEI 202617645000628 / pg. 1",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "GOIÁS.GOV.BR",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-02T16:13:15+00:00",
       "modo": "validar",
@@ -2426,89 +2493,6 @@
         "financiador_ano",
         "governo",
         "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-10-02T07:29:29+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Fundo Municipal do Idoso de Goiânia — Goiás / Goiânia",
-      "qualidade": "parcial",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "pagina_oficial": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social/edital-projetos-fundo-idoso",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado descreve o Fundo Municipal do Idoso de Goiânia com detalhes sobre o objeto, valor, requisitos e área de atuação, indicando que é uma fonte válida para ações de fomento.",
-        "para_a_amc": "Uma associação comunitária de Goiânia precisaria propor e realizar um projeto que beneficie idosos, com orçamento entre R$ 500 mil e R$ 5 milhões, e obter a chancela válida dos Conselhos dos Direitos do Idoso (CDI).",
-        "proximo_passo": "Consultar os requisitos detalhados e preparar um projeto elegível para o Fundo Municipal do Idoso de Goiânia.",
-        "risco": "A falta de chancela dos Conselhos dos Direitos do Idoso (CDI) pode impedir a capacitação do projeto para captação de recursos."
-      },
-      "erro": null,
-      "segundos": 934,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 9,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso",
-      "id": "op-captacao-125",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoiar projetos que beneficiem idosos nas cidades em que o BNDES possui sede ou escritório",
-          "trecho": "As iniciativas apoiadas devem beneficiar idosos nas cidades em que o BNDES possui sede ou escritório (Rio de Janeiro, São Paulo, Recife e Brasília - Região Administrativa I Plano P",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "orçamento global de cada projeto deve ser de, no mínimo, R$ 500 mil e, no máximo, de R$ 5 milhões",
-          "trecho": "O orçamento global de cada projeto deve ser de, no mínimo, R$ 500 mil e, no máximo, de R$ 5 milhões.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "BNDES",
-          "trecho": "O BNDES irá selecionar de 2 (dois) a 8 (oito) projetos a serem apoiados por meio de doação de recursos incentivados, realizada no âmbito da Lei nº 12.213, de 20.01.2010, ao Fundo d",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "DF",
-          "trecho": "dos municípios do Rio de Janeiro, São Paulo e Recife, dos estados do Rio de Janeiro, São Paulo e Pernambuco e do Distrito Federal (proponentes)",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "assistencia_social",
-          "trecho": "Os projetos devem atender a pelo menos um dos eixos de atuação a seguir: assistência e proteção ao idoso em situação de rua;",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Os projetos devem ser propostos e realizados por pessoas jurídicas de direito privado sem finalidade lucrativa ou por pessoas jurídicas de direito público, dos municípios do Rio de",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "projetos devem ser propostos e realizados por pessoas jurídicas de direito privado sem finalidade lucrativa ou por pesso, que beneficiem idosos, que obtenham a chancela válida e eficaz para captação de recursos incentivados por Conselhos dos Direitos do Idoso (CDI)",
-          "trecho": "Os projetos devem ser propostos e realizados por pessoas jurídicas de direito privado sem finalidade lucrativa ou por pessoas jurídicas de direito público, dos municípios do Rio de",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Ministério dos Direitos Humanos e da Cidadania",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ]
