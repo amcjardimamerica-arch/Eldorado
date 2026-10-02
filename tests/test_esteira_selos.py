@@ -89,6 +89,10 @@ class TesteMaestroEGuarda(unittest.TestCase):
         self.assertEqual(cobertura("x", {"cor": "azul", "falhas": 2}, {}), "parcial")
         self.assertEqual(cobertura("x", None, {"motivo": "exige IP Brasil"}), "pendente_local")
 
+    def test_tentativa_so_conta_quando_o_motor_leu(self):
+        src = (ROOT / "src/maestro.py").read_text(encoding="utf-8")
+        self.assertIn('parciais = {p["motor"] for p in plano if p["cobertura"] == "parcial"}', src)
+
     def test_guarda_contra_dados_de_teste(self):
         from src.guarda_dados_teste import e_teste, limpar_catalogo
         self.assertTrue(e_teste("https://x.gov.br/edital")); self.assertFalse(e_teste("https://goias.gov.br/x"))
