@@ -139,6 +139,21 @@ python -m src.indexadores ponte-dominios      # lista de domínios para o ponte.
 - Prosas: sem licença para robô (decisão de 02/10/2026); coberto pela listagem do CapitaAI lida em toda rodada
   (`listas_fixas`), pelo ângulo do Piloto e pela coleta assistida.
 
+## Motor do Judiciário — CNJ e TJGO (02/10/2026)
+
+Reúne `dje-tjgo` e `cnj-destinacoes`. Catálogo: `config/judiciario_go.json` · código: `src/judiciario_go.py` · parecer:
+`docs/pareceres/motor-judiciario-cnj-tjgo.md`.
+
+```bash
+python -m src.judiciario_go                              # uma leitura (nuvem no GitHub; local com ELDORADO_LOCAL_BR=1)
+```
+
+- No computador do titular (`scripts/coleta_brasil.py`): RSS da Agência de Notícias do TJGO, notícia e PDF do edital de
+  cada comarca → `estado/judiciario_go_local.json` (só o computador grava nele).
+- Na nuvem (sensores, 07h53): busca do CNJ, PNCP cruzado, Banco de Projetos (habilitação prévia) e os registros do
+  computador → base de oportunidades e `estado/judiciario_go.json`.
+- DJEN desligado (só intimações com nomes de réus). A lista pública do Banco de Projetos não é coletada (LGPD).
+
 ## Região Metropolitana de Goiânia
 
 `src/rmg_diarios.py` cobre os 21 municípios pelo diário oficial, com consultas

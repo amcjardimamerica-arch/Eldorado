@@ -90,7 +90,7 @@
   },
   "dje-tjgo": {
    "horarios_brt": "07:53",
-   "dias": "seg,ter,qua,qui,sex",
+   "dias": "inativo",
    "cadencia_dias": 1,
    "por_que_esta_hora": "o Diário da Justiça sai durante a noite; coleta local por causa do WAF",
    "coleta": "local",
@@ -98,11 +98,13 @@
    "verificacao": {
     "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
     "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
-   }
+   },
+   "agregado_a": "judiciario-cnj-tjgo",
+   "motivo_inativa": "reunido ao motor do Judiciário — CNJ e TJGO (02/10/2026): as 5 páginas do TJGO que ele lia dão 404 (verificado em 02/10/2026) e o Jusbrasil é republicador; 40 leituras, 0 achados"
   },
   "cnj-destinacoes": {
    "horarios_brt": "09:23",
-   "dias": "dia 2",
+   "dias": "inativo",
    "cadencia_dias": 30,
    "por_que_esta_hora": "referência normativa: muda pouco, basta uma leitura por mês",
    "coleta": "nuvem",
@@ -110,7 +112,9 @@
    "verificacao": {
     "etapa_1": "na captura: o ato é do tipo esperado (lei, resolução, título de utilidade pública)",
     "etapa_2": "na fonte oficial: número e data do ato conferidos no texto publicado"
-   }
+   },
+   "agregado_a": "judiciario-cnj-tjgo",
+   "motivo_inativa": "reunido ao motor do Judiciário — CNJ e TJGO (02/10/2026): lia a home, as licitações de compras e uma página 404 do CNJ; 40 leituras, 0 achados"
   },
   "empresas-incentivadas": {
    "horarios_brt": "03:53",
@@ -551,6 +555,23 @@
    "reune": [
     "plat-prosas-oscs",
     "plat-mapa-osc"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "judiciario-cnj-tjgo": {
+   "horarios_brt": "07:53",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "a nuvem lê o CNJ e entrega à base o que o computador do titular achou; o computador lê o RSS do TJGO a cada coleta (de 3 em 3 horas, 06:10 a 21:10) — as comarcas publicam no expediente e o prazo costuma ser de 2 a 12 semanas",
+   "coleta": "nuvem + local",
+   "objetivo": "encontrar os editais de seleção de projetos com recursos de prestações pecuniárias das comarcas de Goiás (Goiânia primeiro), os credenciamentos do Judiciário para entidades e a regra do CNJ — com comarca, prazo, áreas admitidas e a exigência do Banco de Projetos Sociais",
+   "verificacao": {
+    "etapa_1": "RSS da Agência de Notícias do TJGO (paginado), página da notícia e PDF do edital; busca do CNJ; PNCP cruzado → OPORTUNIDADE (edital ou credenciamento aberto), ACOMPANHAR (encerrado, resultado/entrega, regra, habilitação prévia) ou RUÍDO, com o motivo",
+    "etapa_2": "no PDF do edital (link oficial): número, prazo de habilitação, documentos e restrição territorial da comarca"
+   },
+   "reune": [
+    "dje-tjgo",
+    "cnj-destinacoes"
    ],
    "criado_em": "2026-10-02"
   }

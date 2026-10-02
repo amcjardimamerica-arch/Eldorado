@@ -2139,7 +2139,7 @@ class SystemTests(unittest.TestCase):
         for t0 in ("diario_oficial","diario_justica","legislativo","api","site_oficial"):
             self.assertIn(t0,tipos,t0)
         ids={s["id"] for s in r}
-        for esp in ("do-goiania","do-goias","dou","dje-tjgo","camara-goiania-pl","alego-pl","pncp-api"):
+        for esp in ("do-goiania","do-goias","dou","judiciario-cnj-tjgo","camara-goiania-pl","alego-pl","pncp-api"):   # 02/10: dje-tjgo e cnj-destinacoes reunidos no motor do Judiciário
             self.assertIn(esp,ids,esp)
         self.assertGreaterEqual(len(r),60)
         # diários saem todos os dias; rodízio varia ao longo da semana
@@ -2147,7 +2147,7 @@ class SystemTests(unittest.TestCase):
         for d0 in range(7):
             e=escala_do_dia(date(2026,9,7)+timedelta(days=d0))
             ids_dia={s["id"] for s in e["saem"]}
-            for esp in ("do-goiania","do-goias","dou","dje-tjgo","camara-goiania-pl","alego-pl"):
+            for esp in ("do-goiania","do-goias","dou","judiciario-cnj-tjgo","camara-goiania-pl","alego-pl"):
                 self.assertIn(esp,ids_dia,f"{esp} deve sair todo dia")
             saidas.append(frozenset(ids_dia))
         # fontes específicas saem por ATIVAÇÃO (época/menção), não por rodízio; o que sai
@@ -3519,8 +3519,9 @@ class SystemTests(unittest.TestCase):
     def test_rede_filantropia_fora_tjgo_varas_mapeadas_fogueira_farol_e_associacoes(self):
         c=load_json(pathlib.Path("config/investigacao.json")); lst=c.get("plataformas",c.get("fontes",[]))
         self.assertNotIn("rede-filantropia",[x["id"] for x in lst])
-        s=load_json(pathlib.Path("config/sensores.json")); tj=[x for x in s["sensores_especiais"] if x["id"]=="dje-tjgo"][0]
-        self.assertIn("varas de execução penal",tj["nome"]); self.assertTrue(any("execucao-penal" in u for u in tj["urls"]))
+        s=load_json(pathlib.Path("config/sensores.json")); tj=[x for x in s["sensores_especiais"] if x["id"]=="judiciario-cnj-tjgo"][0]
+        # 02/10: as páginas /execucao-penal do TJGO dão 404 — as varas de execução penal publicam pela Agência de Notícias (RSS)
+        self.assertIn("varas de execução penal",tj["nome"]); self.assertTrue(any("noticias-ccs" in u for u in tj["urls"]))
         # novas oportunidades sem referência → mapeadas (Biblioteca + fontes dos motores)
         from src.motores import mapear_novas, MAPEADAS
         import tempfile, shutil

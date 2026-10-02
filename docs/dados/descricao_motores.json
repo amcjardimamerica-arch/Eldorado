@@ -746,7 +746,7 @@
     "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
     "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
    },
-   "onde_para": "leitura — a nuvem é recusada; a coleta desta fonte é local",
+   "onde_para": "reunido ao motor do Judiciário — CNJ e TJGO (02/10/2026)",
    "para_afiar": [
     "coleta local: a fonte recusa endereço de fora do país; o que a nuvem lê é a página de recusa — só rende pelo computador do titular"
    ],
@@ -816,7 +816,8 @@
      "www.tjgo.jus.br": 140,
      "projudi.tjgo.jus.br": 1
     }
-   }
+   },
+   "agregado_a": "judiciario-cnj-tjgo"
   },
   "cnj-destinacoes": {
    "nome": "CNJ — destinações de penas e prestações pecuniárias",
@@ -838,7 +839,7 @@
     "etapa_1": "na captura: o ato é do tipo esperado (lei, resolução, título de utilidade pública)",
     "etapa_2": "na fonte oficial: número e data do ato conferidos no texto publicado"
    },
-   "onde_para": "léxico — lê as páginas e nada casa com os termos — nenhum achado no mês",
+   "onde_para": "reunido ao motor do Judiciário — CNJ e TJGO (02/10/2026)",
    "para_afiar": [
     "insumo: não busca oportunidade: alimenta o sistema com referência normativa; não se mede por achado"
    ],
@@ -907,7 +908,8 @@
      "projudi.tjgo.jus.br": 1,
      "www.cnj.jus.br": 45
     }
-   }
+   },
+   "agregado_a": "judiciario-cnj-tjgo"
   },
   "empresas-incentivadas": {
    "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
@@ -3611,6 +3613,96 @@
    "lexico_2": [],
    "veto_motor": [],
    "numeros": {}
+  },
+  "judiciario-cnj-tjgo": {
+   "nome": "Judiciário — CNJ e TJGO (prestações pecuniárias e credenciamentos de entidades)",
+   "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
+   "tipo": "diario_justica",
+   "finalidade": "descoberta",
+   "coleta": "nuvem + local",
+   "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem",
+   "objetivo": "Encontrar os editais de seleção de projetos com recursos de prestações pecuniárias das comarcas de Goiás (Goiânia primeiro), os credenciamentos do Judiciário para entidades e a regra do CNJ — com comarca, prazo, áreas admitidas e a exigência do Banco de Projetos Sociais.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta no computador do titular (RSS, notícias e PDFs do TJGO) e na nuvem (busca do CNJ, PNCP cruzado); lê 5 rota(s) em 4 domínio(s) (cnj.jus.br, corregedoria.tjgo.jus.br, pncp.gov.br…); abre só links que casam com 12 termos e escapam dos 12 vetos, e confirma no texto com 7 termos.",
+   "agenda": "07:53 · todos — a nuvem lê o CNJ e entrega à base o que o computador do titular achou; o computador lê o RSS do TJGO a cada coleta (de 3 em 3 horas, 06:10 a 21:10) — as comarcas publicam no expediente e o prazo costuma ser de 2 a 12 semanas",
+   "agenda_detalhe": {
+    "horarios_brt": "07:53",
+    "dias": "todos",
+    "cadencia_dias": 1,
+    "por_que_esta_hora": "a nuvem lê o CNJ e entrega à base o que o computador do titular achou; o computador lê o RSS do TJGO a cada coleta (de 3 em 3 horas, 06:10 a 21:10) — as comarcas publicam no expediente e o prazo costuma ser de 2 a 12 semanas"
+   },
+   "verificacao": {
+    "etapa_1": "RSS da Agência de Notícias do TJGO (paginado), página da notícia e PDF do edital; busca do CNJ; PNCP cruzado → OPORTUNIDADE (edital ou credenciamento aberto), ACOMPANHAR (encerrado, resultado/entrega, regra, habilitação prévia) ou RUÍDO, com o motivo",
+    "etapa_2": "no PDF do edital (link oficial): número, prazo de habilitação, documentos e restrição territorial da comarca"
+   },
+   "onde_para": "",
+   "para_afiar": [
+    "coleta local: o TJGO recusa endereço de fora do país — o RSS, as notícias e os PDFs só rendem pelo computador do titular; a nuvem lê o CNJ e entrega à base o que o computador achou"
+   ],
+   "evolucao_gratuita": "feito em 02/10: RSS paginado da Agência de Notícias do TJGO, notícia e PDF do edital de cada comarca, busca do CNJ e PNCP cruzado (o DJEN foi testado e só traz intimações); próximo passo gratuito — previsão de abertura por comarca a partir do histórico (Goiânia abre em janeiro) e o TRT18/TRF1 no mesmo leitor, se o titular quiser a Justiça do Trabalho e a Federal juntas",
+   "rotas": [
+    {
+     "nome": "TJGO — Agência de Notícias (RSS paginado)",
+     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+     "tipo": "tribunal"
+    },
+    {
+     "nome": "TJGO — PDF do edital anexado à notícia",
+     "url": "https://www.tjgo.jus.br/files/",
+     "tipo": "tribunal"
+    },
+    {
+     "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
+     "url": "https://corregedoria.tjgo.jus.br/basesocial",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
+     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+     "tipo": "referencia"
+    },
+    {
+     "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
+     "url": "https://pncp.gov.br/app/editais",
+     "tipo": "vetor"
+    }
+   ],
+   "dominios": [
+    "cnj.jus.br",
+    "corregedoria.tjgo.jus.br",
+    "pncp.gov.br",
+    "tjgo.jus.br"
+   ],
+   "lexico_1": [
+    "prestação pecuniária",
+    "penas pecuniárias",
+    "penas alternativas",
+    "transação penal",
+    "projetos sociais",
+    "finalidade social",
+    "destinação de recursos",
+    "Banco de Projetos Sociais",
+    "cadastramento de entidades",
+    "credenciamento de entidades",
+    "Vepema",
+    "edital"
+   ],
+   "lexico_2": [
+    "seleção de projetos",
+    "habilitação",
+    "entidades públicas ou privadas",
+    "Resolução CNJ 558",
+    "Código de Normas art. 257",
+    "comarca",
+    "inscrições até"
+   ],
+   "veto_motor": [],
+   "numeros": {
+    "mes": null,
+    "acervo": null,
+    "estado": null,
+    "achados_total": null,
+    "bloqueios": null
+   }
   }
  }
 }

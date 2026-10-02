@@ -443,7 +443,8 @@
     "habilitação de entidades"
    ],
    "coleta": "local",
-   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo"
+   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo",
+   "agregado_a": "judiciario-cnj-tjgo"
   },
   "cnj-destinacoes": {
    "perfil": "REFERÊNCIA, não motor — a fonte real de destinações são os tribunais estaduais (decisão da auditoria de 20/09)",
@@ -478,7 +479,9 @@
    "lexico_camada2": [
     "projeto social",
     "cadastramento de entidades"
-   ]
+   ],
+   "agregado_a": "judiciario-cnj-tjgo",
+   "coleta": "nuvem"
   },
   "empresas-incentivadas": {
    "perfil": "site das maiores empresas contribuintes de Goiás — procura a página de responsabilidade social",
@@ -1889,6 +1892,64 @@
    "lexico_camada1": [],
    "lexico_camada2": [],
    "indexadores": true
+  },
+  "judiciario-cnj-tjgo": {
+   "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
+   "rotas": [
+    {
+     "nome": "TJGO — Agência de Notícias (RSS paginado)",
+     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "TJGO — PDF do edital anexado à notícia",
+     "url": "https://www.tjgo.jus.br/files/",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
+     "url": "https://corregedoria.tjgo.jus.br/basesocial",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
+     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+     "tipo": "referencia"
+    },
+    {
+     "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
+     "url": "https://pncp.gov.br/app/editais",
+     "tipo": "vetor"
+    }
+   ],
+   "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
+   "lexico_camada1": [
+    "prestação pecuniária",
+    "penas pecuniárias",
+    "penas alternativas",
+    "transação penal",
+    "projetos sociais",
+    "finalidade social",
+    "destinação de recursos",
+    "Banco de Projetos Sociais",
+    "cadastramento de entidades",
+    "credenciamento de entidades",
+    "Vepema",
+    "edital"
+   ],
+   "lexico_camada2": [
+    "seleção de projetos",
+    "habilitação",
+    "entidades públicas ou privadas",
+    "Resolução CNJ 558",
+    "Código de Normas art. 257",
+    "comarca",
+    "inscrições até"
+   ],
+   "coleta": "nuvem + local",
+   "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
   }
  },
  "auditado_em": "2026-09-22T21:24:52+00:00"
