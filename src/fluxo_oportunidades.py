@@ -547,6 +547,11 @@ def atualizar_mapa() -> dict:
         c["esteira_de_selos"] = _esteira()
     except Exception as ex:
         c["esteira_de_selos"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10: descarte pelas estantes → restrição no motor de origem (ruído)
+        from .descartes import run as _descartes
+        c["descartes"] = _descartes()
+    except Exception as ex:
+        c["descartes"] = f"falhou: {type(ex).__name__}"
     try:                                     # 02/10: planos de correção de cada canal
         from .planos_correcao import run as _planos
         c["planos_de_correcao"] = _planos()

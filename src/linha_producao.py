@@ -72,6 +72,20 @@ def contrato(reg: dict, cfg: dict) -> str | None:
         return "URL inválida"
     if c.get("url_de_busca") and re.search(c["url_de_busca"], str(reg.get("url"))):
         return "URL de buscador (falta o site oficial)"
+    try:                                       # 02/10: ruído aprendido com os descartes das estantes
+        from .descartes import e_ruido
+        rr = e_ruido(reg)
+        if rr:
+            return f"RUIDO: descartado antes ({rr.get('livro')}: {str(rr.get('motivo'))[:60]})"
+    except Exception:  # noqa: BLE001
+        pass
+    try:                                       # 02/10: condicionais de integridade — o que BLOQUEIA vai ao reprocessamento
+        from .integridade import verificar
+        b = [x for x in verificar(reg) if x["gravidade"] == "bloqueia"]
+        if b:
+            return f"{b[0]['codigo']}: {b[0]['motivo']} → {b[0]['acao']}"
+    except Exception:  # noqa: BLE001
+        pass
     return None
 
 
@@ -105,7 +119,8 @@ def resolver_entidades(regs: list[dict], cfg: dict) -> dict[str, str]:
     U = _Uniao(); blocos = defaultdict(list); por_url, por_pncp = {}, {}
     for r in regs:
         rid = r["id"]; U.acha(rid)
-        u = str(r.get("url") or "").split("#")[0].rstrip("/").lower()
+        from .integridade import url_canonica
+        u = url_canonica(r.get("url"))                     # 02/10: a mesma página com rastreio é a mesma entidade
         if u:
             if u in por_url:
                 U.une(rid, por_url[u])
@@ -169,16 +184,19 @@ def run(regs: list[dict] | None = None, gravar: bool = True) -> dict:
     livros, mapa = _livros_e_mapa()
     for r in regs:
         r["_canal"] = canal_canonico(r.get("fonte_id") or r.get("sensor"), cfg)
-    ok = [r for r in regs if not contrato(r, cfg)]
+    _motivos = {id(r): contrato(r, cfg) for r in regs}          # 02/10: uma vez por registro (antes, duas)
+    ok = [r for r in regs if not _motivos[id(r)]]
     ent = resolver_entidades(ok, cfg)
     canais_da_ent = defaultdict(set)
     for r in ok:
         canais_da_ent[ent[r["id"]]].add(r["_canal"])
     eventos, fila, etapas = [], Counter(), Counter()
     for r in regs:
-        motivo = contrato(r, cfg)
+        motivo = _motivos[id(r)]
         u = str(r.get("url") or "").split("#")[0].rstrip("/").lower()
-        if motivo:
+        if motivo and motivo.startswith("RUIDO"):
+            etapa = "RUIDO"                     # 02/10: aprendido com um descarte — não volta ao reprocessamento
+        elif motivo:
             etapa = "REPROCESSAR"; fila[motivo] += 1
         else:
             lv = livros.get(u)

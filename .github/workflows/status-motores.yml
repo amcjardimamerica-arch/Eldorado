@@ -4,7 +4,8 @@ name: 21 · Status dos motores (a cada 6 horas)
 # do dia ficou pendente, para o painel refletir o dia real.
 on:
   schedule:
-    - cron: "17 0,6,12,18 * * *"     # 21h17, 03h17, 09h17 e 15h17 em Brasília
+    - cron: "47 10,14,19 * * *"      # 02/10 itinerário: maestro depois de cada janela — 07h47, 11h47 e 16h47 em Brasília
+    - cron: "17 1 * * *"             # e 22h17 em Brasília (fechamento do dia)
   workflow_dispatch:
 permissions:
   contents: write
@@ -43,11 +44,11 @@ jobs:
       - name: Gravar
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
-          mkdir -p /tmp/st && cp docs/dados/status_motores.json docs/dados/motores.json /tmp/st/ && cp docs/dados/previsao_livros.json /tmp/st/ 2>/dev/null || true; cp estado/lexico_temporario_livros.json /tmp/st/ 2>/dev/null || true; cp docs/dados/maestro.json /tmp/st/ 2>/dev/null || true; mkdir -p /tmp/st/maestro && cp estado/maestro/*.json /tmp/st/maestro/ 2>/dev/null || true
+          mkdir -p /tmp/st && cp docs/dados/status_motores.json docs/dados/motores.json /tmp/st/ && cp docs/dados/previsao_livros.json /tmp/st/ 2>/dev/null || true; cp estado/lexico_temporario_livros.json /tmp/st/ 2>/dev/null || true; cp docs/dados/maestro.json /tmp/st/ 2>/dev/null || true; mkdir -p /tmp/st/maestro && cp estado/maestro/*.json /tmp/st/maestro/ 2>/dev/null || true; cp docs/dados/relatorio_etapas.json /tmp/st/ 2>/dev/null || true; mkdir -p /tmp/st/rel && cp docs/relatorios/maestro/*.md /tmp/st/rel/ 2>/dev/null || true
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
-            cp /tmp/st/status_motores.json /tmp/st/motores.json docs/dados/; cp /tmp/st/previsao_livros.json docs/dados/ 2>/dev/null || true; mkdir -p estado/maestro; cp /tmp/st/lexico_temporario_livros.json estado/ 2>/dev/null || true; cp /tmp/st/maestro.json docs/dados/ 2>/dev/null || true; cp /tmp/st/maestro/*.json estado/maestro/ 2>/dev/null || true
-            git add docs/dados/status_motores.json docs/dados/motores.json; [ -e docs/dados/previsao_livros.json ] && git add docs/dados/previsao_livros.json; [ -e estado/lexico_temporario_livros.json ] && git add estado/lexico_temporario_livros.json; git add docs/dados/maestro.json estado/maestro 2>/dev/null || true
+            cp /tmp/st/status_motores.json /tmp/st/motores.json docs/dados/; cp /tmp/st/previsao_livros.json docs/dados/ 2>/dev/null || true; mkdir -p estado/maestro; cp /tmp/st/lexico_temporario_livros.json estado/ 2>/dev/null || true; cp /tmp/st/maestro.json docs/dados/ 2>/dev/null || true; cp /tmp/st/maestro/*.json estado/maestro/ 2>/dev/null || true; cp /tmp/st/relatorio_etapas.json docs/dados/ 2>/dev/null || true; mkdir -p docs/relatorios/maestro && cp /tmp/st/rel/*.md docs/relatorios/maestro/ 2>/dev/null || true
+            git add docs/dados/status_motores.json docs/dados/motores.json; [ -e docs/dados/previsao_livros.json ] && git add docs/dados/previsao_livros.json; [ -e estado/lexico_temporario_livros.json ] && git add estado/lexico_temporario_livros.json; git add docs/dados/maestro.json estado/maestro docs/dados/relatorio_etapas.json docs/relatorios/maestro 2>/dev/null || true
             git commit -q -m "status dos motores (a cada 6 horas)" || break
             git push -q origin HEAD:main && break
             sleep 6

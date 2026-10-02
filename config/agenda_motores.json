@@ -3,10 +3,10 @@
  "regra": "cada motor roda na hora em que sua fonte publica; minuto :23/:53 para não cair na virada da hora, quando o GitHub atrasa e descarta execuções agendadas",
  "motores": {
   "do-goiania": {
-   "horarios_brt": "07:41",
+   "horarios_brt": "06:23,12:53,20:23",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "na nuvem lê o Querido Diário, que indexa Goiânia com 2 a 16 dias de atraso — janela de 15 dias todo dia, sem repetir o que já leu; a coleta local lê o PDF oficial do dia, que sai em dias úteis",
+   "por_que_esta_hora": "itinerário 02/10 (diario_oficial): as edições saem de madrugada; depois vêm as extras e as edições da noite; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem + local",
    "objetivo": "encontrar oportunidade aberta para OSC em diário oficial municipal — a fonte primária de Goiânia",
    "verificacao": {
@@ -15,10 +15,10 @@
    }
   },
   "do-goias": {
-   "horarios_brt": "07:23",
+   "horarios_brt": "06:23,12:53,20:23",
    "dias": "seg,ter,qua,qui,sex",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "a edição do Diário de Goiás (normal e suplemento) fica disponível no começo da manhã, em dias úteis; a busca cobre os últimos 7 dias, então um dia perdido é recuperado no seguinte",
+   "por_que_esta_hora": "itinerário 02/10 (diario_oficial): as edições saem de madrugada; depois vêm as extras e as edições da noite; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem + local",
    "objetivo": "encontrar oportunidade aberta para OSC em diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda",
    "verificacao": {
@@ -27,10 +27,10 @@
    }
   },
   "dou": {
-   "horarios_brt": "05:53,06:23,19:23",
+   "horarios_brt": "06:23,12:53,20:23",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "o DOU sai de madrugada e tem edições extras ao longo do dia; as passagens da manhã leem a edição normal e a das 19:23 pega as extras (a janela de 3 dias recupera um dia perdido; antes das 8h a edição vazia não conta como falha)",
+   "por_que_esta_hora": "itinerário 02/10 (diario_oficial): as edições saem de madrugada; depois vêm as extras e as edições da noite; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "encontrar oportunidade aberta para OSC em diário federal — ministérios, fundos e conselhos nacionais, prefeituras de Goiás que publicam no DOU, doação de bens e coleta solidária em Goiás/DF",
    "verificacao": {
@@ -40,10 +40,10 @@
    "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
   },
   "pncp-api": {
-   "horarios_brt": "05:53,12:23,20:23",
+   "horarios_brt": "08:53,13:53,19:53",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "o PNCP recebe publicações o dia todo em horário comercial; duas passagens incrementais",
+   "por_que_esta_hora": "itinerário 02/10 (portal_chamamentos): atualização contínua em horário comercial; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "encontrar no PNCP as seleções ABERTAS para OSC em Goiás e nos órgãos federais, com a data oficial de encerramento",
    "verificacao": {
@@ -65,10 +65,10 @@
    }
   },
   "alego-pl": {
-   "horarios_brt": "20:23",
+   "horarios_brt": "10:53,20:53",
    "dias": "qui",
    "cadencia_dias": 7,
-   "por_que_esta_hora": "proposições e leis de utilidade pública saem das sessões de terça a quinta",
+   "por_que_esta_hora": "itinerário 02/10 (legislativo): as sessões e as pautas publicam no fim do dia; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "alimentar o sistema com emenda parlamentar, a partir de insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais",
    "verificacao": {
@@ -117,10 +117,10 @@
    "motivo_inativa": "reunido ao motor do Judiciário — CNJ e TJGO (02/10/2026): lia a home, as licitações de compras e uma página 404 do CNJ; 40 leituras, 0 achados"
   },
   "empresas-incentivadas": {
-   "horarios_brt": "03:53",
+   "horarios_brt": "10:23",
    "dias": "dom",
    "cadencia_dias": 7,
-   "por_que_esta_hora": "a lista do ICMS e o SALIC mudam por mês; semanal basta",
+   "por_que_esta_hora": "itinerário 02/10 (empresas): uma passagem por dia; a cadência de cada empresa é mantida; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "identificar empresa que já financiou o terceiro setor, e por qual via",
    "verificacao": {
@@ -159,10 +159,10 @@
    "motivo_inativa": "reunido ao motor Indexadores — feeds RSS e WordPress (02/10/2026): o RSS da categoria Editais, com o link oficial de cada artigo, substitui a leitura dos rótulos da página"
   },
   "plat-gife": {
-   "horarios_brt": "05:53,10:23",
+   "horarios_brt": "11:23,17:53",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "o GIFE publica a seleção de editais uma vez por mês (fim do mês) e notícias de edital na semana; a Capta, algumas vezes por mês — duas leituras diárias garantem o prazo",
+   "por_que_esta_hora": "itinerário 02/10 (terceiro_setor): os agregadores atualizam em lote; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "encontrar os editais ABERTOS para OSC que o GIFE seleciona todo mês e que a Capta publica com prazo e link oficial",
    "verificacao": {
@@ -202,10 +202,10 @@
    "motivo_inativa": "reunido ao motor Prosas — editais e prêmios para OSCs (02/10/2026)"
   },
   "plat-salic": {
-   "horarios_brt": "05:53,10:23",
+   "horarios_brt": "08:53,13:53,19:53",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "plataforma de alto rendimento: atualiza em horário comercial",
+   "por_que_esta_hora": "itinerário 02/10 (portal_chamamentos): atualização contínua em horário comercial; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "encontrar oportunidade aberta para OSC em Lei Rouanet — janela anual no Salic (1º/02 a 31/10, confirmar IN vigente)",
    "verificacao": {
@@ -290,10 +290,10 @@
    "motivo_inativa": "agregado ao motor Oportunidade Estaduais Governamentais de Goiás (02/10/2026)"
   },
   "plat-prefeituras-50-go": {
-   "horarios_brt": "05:53,10:23",
+   "horarios_brt": "09:23,15:23",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "por_que_esta_hora": "itinerário 02/10 (orgao_publico): os sites dos órgãos são atualizados no expediente; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "encontrar oportunidade aberta para OSC em 50 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
    "verificacao": {
@@ -303,10 +303,10 @@
    "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
   },
   "plat-empresas-editais-incentivados": {
-   "horarios_brt": "05:53,10:23",
+   "horarios_brt": "10:23",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "por_que_esta_hora": "itinerário 02/10 (empresas): uma passagem por dia; a cadência de cada empresa é mantida; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "encontrar oportunidade aberta para OSC em EDITAL publicado pela própria empresa para distribuir renúncia fiscal (modelo Porto Itapoá, Renner, Maria Emília)",
    "verificacao": {
@@ -316,10 +316,10 @@
    "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
   },
   "plat-mp-destinacoes-reparacao": {
-   "horarios_brt": "05:53,10:23",
+   "horarios_brt": "07:53,16:23",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "encontrar oportunidade aberta para OSC em Ministérios Públicos — destinação de reparação, TAC, bens lesados e multas a projetos sociais",
    "verificacao": {
@@ -329,10 +329,10 @@
    "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
   },
   "plat-cnpq-extensao": {
-   "horarios_brt": "05:53,10:23",
+   "horarios_brt": "09:23,15:23",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "plataforma que atualiza sem ritmo fixo: três leituras por semana bastam",
+   "por_que_esta_hora": "itinerário 02/10 (orgao_publico): os sites dos órgãos são atualizados no expediente; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "encontrar oportunidade aberta para OSC em CNPq / MCTI / Setec-MEC — chamadas com componente de extensão que aceitam OSC como parceira",
    "verificacao": {
@@ -342,10 +342,10 @@
    "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
   },
   "recorrencia": {
-   "horarios_brt": "05:23,05:53",
+   "horarios_brt": "11:23,17:53",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "revisita as oportunidades conhecidas antes do dia útil começar",
+   "por_que_esta_hora": "itinerário 02/10 (terceiro_setor): os agregadores atualizam em lote; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "acompanhar as oportunidades já conhecidas: prorrogação, resultado, novo prazo",
    "verificacao": {
@@ -415,10 +415,10 @@
    "motivo_inativa": "reunido ao motor Indexadores — coleta assistida (02/10/2026): a página de editais do Mapa das OSC só embute o widget do Prosas, que é coberto pela coleta do Prosas"
   },
   "plat-estaduais-go-gov": {
-   "horarios_brt": "06:47,14:17",
+   "horarios_brt": "09:23,15:23",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "duas passagens: a primeira avança as camadas (um órgão por vez); a segunda monitora as publicações do dia",
+   "por_que_esta_hora": "itinerário 02/10 (orgao_publico): os sites dos órgãos são atualizados no expediente; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "encontrar oportunidade aberta para OSC em TODOS os órgãos do Poder Executivo de Goiás (secretarias, autarquias, fundações, empresas estatais, conselhos e fundos), lidos um por vez em camadas: onde publicam, histórico de 5 anos, oportunidades e monitoramento diário",
    "verificacao": {
@@ -438,10 +438,10 @@
    "agregado_a": "idx-assistido"
   },
   "congresso-nacional": {
-   "horarios_brt": "20:53",
+   "horarios_brt": "10:53,20:53",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "a CMO e as Casas publicam no expediente; na janela de emendas (out–nov) a leitura diária não pode falhar",
+   "por_que_esta_hora": "itinerário 02/10 (legislativo): as sessões e as pautas publicam no fim do dia; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
    "objetivo": "ler o prazo oficial das emendas ao orçamento da União e as regras e recursos para entidades que tramitam no Congresso",
    "verificacao": {
@@ -559,10 +559,10 @@
    "criado_em": "2026-10-02"
   },
   "judiciario-cnj-tjgo": {
-   "horarios_brt": "07:53",
+   "horarios_brt": "07:53,16:23",
    "dias": "todos",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "a nuvem lê o CNJ e entrega à base o que o computador do titular achou; o computador lê o RSS do TJGO a cada coleta (de 3 em 3 horas, 06:10 a 21:10) — as comarcas publicam no expediente e o prazo costuma ser de 2 a 12 semanas",
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem + local",
    "objetivo": "encontrar os editais de seleção de projetos com recursos de prestações pecuniárias das comarcas de Goiás (Goiânia primeiro), os credenciamentos do Judiciário para entidades e a regra do CNJ — com comarca, prazo, áreas admitidas e a exigência do Banco de Projetos Sociais",
    "verificacao": {
