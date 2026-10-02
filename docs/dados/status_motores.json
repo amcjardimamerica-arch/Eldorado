@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-10-02T17:19-03:00",
- "proxima_atualizacao": "2026-10-02T23:19-03:00",
+ "gerado_em": "2026-10-02T20:15-03:00",
+ "proxima_atualizacao": "2026-10-03T02:15-03:00",
  "a_cada_horas": 6,
  "regra": "STATUS DOS MOTORES A CADA 6 HORAS (titular, 01/10/2026) — monitoramento e tomada de decisão.\n\nPara cada motor regular: a data e a hora da ÚLTIMA LEITURA, o resultado e UMA de três luzes:\n  VERDE     coletou hoje (horário de Brasília), com dados ou sem dados novos\n  VERMELHO  a coleta de hoje teve erro ou falha\n  CINZA     o motor não rodou hoje (fora da agenda, aguardando coleta local, parado)",
  "contagem": {
-  "verde": 14,
-  "vermelho": 7,
-  "cinza": 7
+  "verde": 26,
+  "vermelho": 4,
+  "cinza": 19
  },
  "motores": [
   {
@@ -32,14 +32,6 @@
    "resultado": "coletou hoje — 2 achado(s)",
    "ultima_leitura": "2026-10-02T14:34-03:00",
    "agenda": "todos 06:23,12:53,20:23"
-  },
-  {
-   "id": "judiciario-cnj-tjgo",
-   "nome": "Judiciário — CNJ e TJGO: editais das varas de execução penal e das comarcas (prestações pecuniárias) e credenciamentos de entidades",
-   "luz": "verde",
-   "resultado": "coletou hoje — 1 achado(s)",
-   "ultima_leitura": "2026-10-02T13:08-03:00",
-   "agenda": "todos 07:53,16:23"
   },
   {
    "id": "dj-trf1-go",
@@ -82,12 +74,44 @@
    "agenda": "todos 08:53,13:53,19:53"
   },
   {
-   "id": "empresas-incentivadas",
-   "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
-   "luz": "vermelho",
-   "resultado": "falha na coleta de hoje — 1 página(s) com falha; as demais foram lidas · 7 achado(s) mesmo assim",
-   "ultima_leitura": "2026-10-02T16:47-03:00",
-   "agenda": "dom 10:23"
+   "id": "judiciario-tjgo",
+   "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos 07:53,16:23"
+  },
+  {
+   "id": "judiciario-cnj",
+   "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos 07:53"
+  },
+  {
+   "id": "mpgo-destinacao",
+   "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos 07:53"
+  },
+  {
+   "id": "mptgo-destinacao",
+   "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos 07:53,16:23"
+  },
+  {
+   "id": "mpu-destinacao",
+   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos 16:23"
   },
   {
    "id": "motor-gife",
@@ -116,14 +140,14 @@
   {
    "id": "salic",
    "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
-   "luz": "vermelho",
-   "resultado": "falha na coleta de hoje — 1 página(s) com falha; as demais foram lidas · 5 achado(s) mesmo assim",
-   "ultima_leitura": "2026-10-02T16:48-03:00",
+   "luz": "verde",
+   "resultado": "coletou hoje — 5 achado(s)",
+   "ultima_leitura": "2026-10-02T17:55-03:00",
    "agenda": "todos 08:53,13:53,19:53"
   },
   {
    "id": "prefeituras-50-go",
-   "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
+   "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
    "luz": "vermelho",
    "resultado": "falha na coleta de hoje — 1 página(s) com falha; as demais foram lidas",
    "ultima_leitura": "2026-10-01T12:03-03:00",
@@ -131,19 +155,11 @@
   },
   {
    "id": "empresas-editais-incentivados",
-   "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
+   "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
    "luz": "vermelho",
    "resultado": "falha na coleta de hoje — 2 página(s) com falha; as demais foram lidas",
    "ultima_leitura": "2026-10-01T12:03-03:00",
    "agenda": "todos 10:23"
-  },
-  {
-   "id": "mp-destinacoes-reparacao",
-   "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
-   "luz": "vermelho",
-   "resultado": "falha na coleta de hoje — 1 página(s) com falha; as demais foram lidas · 2 achado(s) mesmo assim",
-   "ultima_leitura": "2026-10-01T12:03-03:00",
-   "agenda": "todos 07:53,16:23"
   },
   {
    "id": "cnpq-extensao",
@@ -170,67 +186,219 @@
    "agenda": "todos 09:23,15:23"
   },
   {
-   "id": "idx-feeds",
-   "nome": "Indexadores — feeds RSS e WordPress",
+   "id": "site-farol-cultural",
+   "nome": "Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal",
    "luz": "verde",
-   "resultado": "coletou hoje — 196 achado(s)",
+   "resultado": "coletou hoje — sem dados novos",
    "ultima_leitura": "2026-10-02T16:56-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
   {
-   "id": "idx-apis",
-   "nome": "Indexadores — APIs públicas de editais",
+   "id": "site-capitaai",
+   "nome": "CapitaAI — editais e oportunidades de captação, incluindo a lista pública dos editais do Prosas",
    "luz": "verde",
-   "resultado": "coletou hoje — 560 achado(s)",
+   "resultado": "coletou hoje — sem dados novos",
    "ultima_leitura": "2026-10-02T16:56-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
   {
-   "id": "idx-sitemaps",
-   "nome": "Indexadores — sitemaps e páginas estruturadas",
+   "id": "site-observatorio-terceiro-setor",
+   "nome": "Observatório do Terceiro Setor — editais publicados na seção temática do portal",
    "luz": "verde",
-   "resultado": "coletou hoje — 311 achado(s)",
+   "resultado": "coletou hoje — sem dados novos",
    "ultima_leitura": "2026-10-02T16:56-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
   {
-   "id": "idx-listagens",
-   "nome": "Indexadores — listagens de editais dos financiadores",
+   "id": "site-mapas-culturais",
+   "nome": "Mapas Culturais — editais das redes estaduais e municipais de cultura que usam a plataforma",
    "luz": "verde",
-   "resultado": "coletou hoje — 60 achado(s)",
+   "resultado": "coletou hoje — sem dados novos",
    "ultima_leitura": "2026-10-02T16:56-03:00",
+   "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
+  },
+  {
+   "id": "site-abcr",
+   "nome": "ABCR — Associação Brasileira de Captadores de Recursos — editais divulgados pela associação dos captadores",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T16:56-03:00",
+   "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
+  },
+  {
+   "id": "site-funarte",
+   "nome": "Funarte — editais da Fundação Nacional de Artes",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 07:13,19:13"
   },
   {
-   "id": "idx-dados-abertos",
-   "nome": "Indexadores — dados abertos de governo",
+   "id": "site-transferegov",
+   "nome": "Transferegov — programas e parcerias com OSC abertos na plataforma federal (dados abertos)",
    "luz": "verde",
-   "resultado": "coletou hoje — 11 achado(s)",
+   "resultado": "coletou hoje — sem dados novos",
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 07:13"
   },
   {
-   "id": "idx-ponte-brasil",
-   "nome": "Indexadores — ponte Brasil (sites que recusam IP estrangeiro)",
+   "id": "site-rede-comua",
+   "nome": "Rede Comuá — editais dos fundos independentes de filantropia",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
+   "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
+  },
+  {
+   "id": "site-fundo-baoba",
+   "nome": "Fundo Baobá — editais para equidade racial",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
+   "agenda": "todos 07:13,19:13"
+  },
+  {
+   "id": "site-editais-culturais",
+   "nome": "Editais Culturais — editais de cultura reunidos no portal",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
+   "agenda": "todos 07:13,19:13"
+  },
+  {
+   "id": "site-fundo-brasil",
+   "nome": "Fundo Brasil de Direitos Humanos — editais de direitos humanos",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
+   "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
+  },
+  {
+   "id": "site-idis",
+   "nome": "IDIS — Instituto para o Desenvolvimento do Investimento Social — chamadas e editais de investimento social",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T16:56-03:00",
+   "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
+  },
+  {
+   "id": "site-undef",
+   "nome": "UNDEF — Fundo das Nações Unidas para a Democracia — chamadas anuais para a sociedade civil",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
+   "agenda": "todos 07:13,19:13"
+  },
+  {
+   "id": "site-fundo-casa",
+   "nome": "Fundo Casa Socioambiental — chamadas socioambientais",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
+   "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
+  },
+  {
+   "id": "site-cese",
+   "nome": "CESE — Coordenadoria Ecumênica de Serviço — editais de apoio a projetos populares",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
+   "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
+  },
+  {
+   "id": "site-brazilfoundation",
+   "nome": "BrazilFoundation — editais de apoio a organizações brasileiras",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
+   "agenda": "todos 07:13,19:13"
+  },
+  {
+   "id": "site-rede-filantropia",
+   "nome": "Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)",
    "luz": "cinza",
    "resultado": "não rodou hoje — aguardando coleta local",
    "ultima_leitura": null,
    "agenda": "todos 06:10,09:10,12:10,15:10,18:10,21:10"
   },
   {
-   "id": "idx-assistido",
-   "nome": "Indexadores — coleta assistida e pilotos (sites que proíbem robôs)",
+   "id": "site-iaf",
+   "nome": "IAF — Fundação Interamericana — chamadas de apoio a organizações de base (recusa IP estrangeiro)",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "ultima_leitura": "2026-10-02T11:04-03:00",
+   "agenda": "todos 07:13,19:13"
+  },
+  {
+   "id": "site-finep",
+   "nome": "Finep — chamadas públicas (coleta assistida: o site proíbe robôs)",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
    "ultima_leitura": null,
    "agenda": "todos contínuo"
   },
   {
+   "id": "site-itau-social",
+   "nome": "Itaú Social — editais (coleta assistida: o site proíbe robôs)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos contínuo"
+  },
+  {
+   "id": "site-petrobras",
+   "nome": "Petrobras — seleções socioambientais (coleta assistida: o site proíbe robôs)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos contínuo"
+  },
+  {
+   "id": "site-fundacao-banco-do-brasil",
+   "nome": "Fundação Banco do Brasil — editais (coleta assistida: o site proíbe robôs)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos contínuo"
+  },
+  {
+   "id": "site-embaixada-eua",
+   "nome": "Embaixada dos EUA — pequenas doações a projetos (coleta assistida)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos contínuo"
+  },
+  {
+   "id": "site-embaixada-japao",
+   "nome": "Embaixada do Japão — apoio a projetos comunitários (coleta assistida)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos contínuo"
+  },
+  {
+   "id": "site-mapa-osc",
+   "nome": "Mapa das OSC (Ipea) — editais reunidos no portal (coleta assistida: o site proíbe robôs)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos 06:13"
+  },
+  {
+   "id": "site-prosas",
+   "nome": "Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida)",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "ultima_leitura": null,
+   "agenda": "todos 06:13"
+  },
+  {
    "id": "piloto-interceptador",
    "nome": "Piloto - Interceptador — comprova na fonte oficial",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
-   "ultima_leitura": "2026-10-02T16:47-03:00",
+   "ultima_leitura": "2026-10-02T19:39-03:00",
    "agenda": null
   }
  ]
