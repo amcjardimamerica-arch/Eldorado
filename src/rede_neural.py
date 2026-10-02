@@ -69,6 +69,11 @@ def entradas(reg: dict) -> list[int]:
           f"url:gov={'.gov.br' in u or '.leg.br' in u or '.jus.br' in u or '.mp.br' in u}", f"url:pdf={u.endswith('.pdf')}",
           f"url:busca={'duckduckgo' in u or 'google.' in u}", f"canal:{canal}", f"familia:{familia(canal)}",
           f"corrob:{min(3, int(reg.get('_canais') or 1))}", "vies"}
+    try:                                       # 02/10: sinais de integridade da leitura também são entrada
+        from .integridade import verificar
+        f |= {f"int:{x['codigo']}" for x in verificar(reg)}
+    except Exception:  # noqa: BLE001
+        pass
     return sorted({_h(x) for x in f})
 
 
@@ -269,6 +274,20 @@ def run(treinar: bool = True, epocas: int = 10) -> dict:
         out["pendentes_provaveis_reais"] = sum(1 for p, _ in ps if p >= 0.5)
     SAIDA.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     return out
+
+
+def avaliar(reg: dict) -> dict:
+    """02/10 (titular): a rede como MAESTRO — antes da nota, a integridade da leitura.
+    inconclusiva (algo bloqueia): sem nota, com o motivo e a ação · com_ressalva: nota puxada para o meio
+    (a leitura tem defeito, a confiança cai) · confiável: a nota da rede."""
+    from .integridade import verificar, situacao
+    flags = verificar(reg); sit = situacao(flags)
+    if sit == "inconclusiva":
+        return {"nota": None, "situacao": sit, "sinais": flags}
+    n = nota(reg)
+    if n is not None and sit == "com_ressalva":
+        n = round(0.5 + (n - 0.5) * 0.5, 3)
+    return {"nota": n, "situacao": sit, "sinais": flags}
 
 
 def nota(reg: dict) -> float | None:

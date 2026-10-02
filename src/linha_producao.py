@@ -72,6 +72,13 @@ def contrato(reg: dict, cfg: dict) -> str | None:
         return "URL inválida"
     if c.get("url_de_busca") and re.search(c["url_de_busca"], str(reg.get("url"))):
         return "URL de buscador (falta o site oficial)"
+    try:                                       # 02/10: condicionais de integridade — o que BLOQUEIA vai ao reprocessamento
+        from .integridade import verificar
+        b = [x for x in verificar(reg) if x["gravidade"] == "bloqueia"]
+        if b:
+            return f"{b[0]['codigo']}: {b[0]['motivo']} → {b[0]['acao']}"
+    except Exception:  # noqa: BLE001
+        pass
     return None
 
 
@@ -105,7 +112,8 @@ def resolver_entidades(regs: list[dict], cfg: dict) -> dict[str, str]:
     U = _Uniao(); blocos = defaultdict(list); por_url, por_pncp = {}, {}
     for r in regs:
         rid = r["id"]; U.acha(rid)
-        u = str(r.get("url") or "").split("#")[0].rstrip("/").lower()
+        from .integridade import url_canonica
+        u = url_canonica(r.get("url"))                     # 02/10: a mesma página com rastreio é a mesma entidade
         if u:
             if u in por_url:
                 U.une(rid, por_url[u])
