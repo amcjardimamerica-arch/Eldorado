@@ -1,0 +1,27 @@
+name: 13 · Sondagem dos Ministérios Públicos (motor 12 — MP-GO/Destina, MPT-GO, MPU)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sondar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Sondar
+        run: timeout 2280 python3 scripts/sondar_ministerios_publicos.py || echo "sondagem terminou com aviso"
+      - name: Guardar
+        if: always()
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          rm -rf /tmp/s && mkdir -p /tmp/s && cp biblioteca_alexandria/base/ministerios_publicos/sondagem.json /tmp/s/ 2>/dev/null || exit 0
+          for i in 1 2 3 4; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            mkdir -p biblioteca_alexandria/base/ministerios_publicos && cp /tmp/s/sondagem.json biblioteca_alexandria/base/ministerios_publicos/
+            git add biblioteca_alexandria/base/ministerios_publicos
+            git commit -q -m "sondagem: Ministérios Públicos (motor 12) $(date -u +%F\ %H:%M)" || break
+            git push -q origin main && break; sleep 5
+          done
