@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-02T20:24:52+00:00",
+  "em": "2026-10-02T20:44:10+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-02T20:22:49+00:00",
+  "ultimo_voo": "2026-10-02T20:27:46+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,103 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 134,
+    "missoes": 135,
     "validadas": 1,
     "parciais": 39,
-    "insuficientes": 94,
+    "insuficientes": 95,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 30,
-      "sim": 77
+      "sim": 78
     },
     "estrelas_de_ouro": 29,
     "fontes_novas_para_os_motores": 2,
     "tempo_medio_min": 11.0
   },
   "missoes": [
+    {
+      "em": "2026-10-02T20:27:46+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Aparecida de Goiânia — Diário Oficial de Aparecida de Goiânia — edição (2026-09-23) — chamamento público — Goiás / Aparecida de Goiânia",
+      "qualidade": "insuficiente",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto fornece informações sobre prazo de inscrição, órgão financiador, território, esfera e requisitos do chamamento público.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no prazo estabelecido, ser avaliada conforme os requisitos do Programa e anexar os documentos necessários.",
+        "proximo_passo": "Verificar os requisitos e anexos do chamamento público e se inscrever no prazo estabelecido.",
+        "risco": "O prazo de inscrição pode expirar antes da conclusão da preparação da proposta, ou a falta de documentos necessários pode impedir a inscrição."
+      },
+      "erro": null,
+      "segundos": 983,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-2c9530c5a031",
+      "encontrou": {
+        "Prazo de inscrição": {
+          "valor": "2026-10-05 a 2026-11-06",
+          "trecho": "O Programa vigorará no período de 5 de outubro a 6 de novembro de 2026.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Câmara Municipal de Aparecida de Goiânia",
+          "trecho": "A CÂMARA MUNICIPAL DE APARECIDA DE GOIÂNIA, nos termos do Art. 8º...",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "no Município de Aparecida de Goiânia",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · outro",
+          "trecho": "Redução temporária das alíquotas do Imposto sobre a Transmissão de Bens Imóveis (ITBI) no Município de Aparecida de Goiânia",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "Ser objeto de avaliação os pedidos de concessão do benefício protocolados durante a vigência do Programa, e os já protoc",
+          "trecho": "Serão objeto de avaliação os pedidos de concessão do benefício protocolados durante a vigência do Programa, e os já protocolados que se encontrarem pendentes de lançamento pela Coo",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Município de Aparecida de Goiânia",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/5201405/2026-09-23/dbfec72a0b926bf54ccbc0c16e52e4c5cc801a8f.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-10-02T20:22:49+00:00",
       "modo": "validar",
@@ -2429,92 +2511,6 @@
         "Requisitos": {
           "valor": "formulários de inscrição e apresentação da documentação exigida – fase de habilitação, portfólios pela Comissão Interdisciplinar de Avaliação e Seleção do Edital, documentos para o PAB",
           "trecho": "Prazo final para recebimento dos formulários de inscrição e apresentação da documentação exigida – fase de habilitação. | Análise e avaliação dos portfólios pela Comissão Interdisc",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Governo de Goiás",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-02T10:52:33+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Goiás Turismo — Governo de Goiás lança edital de R$ 2 milhões para apoio a eventos turísticos — Goiás",
-      "qualidade": "parcial",
-      "comprovados": 10,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Prazo de recurso"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-de-r-2-milhoes-do-fundo-de-arte-e-cultura-para-fomento-de-espacos-culturais/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com dados sobre objeto, valor, resultado, órgão financiador, território, esfera, requisitos, anexos e área de atuação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria desenvolver uma proposta de evento ou festival cultural produzido exclusivamente para a internet, que atue nas diversas linguagens artísticas e culturais, e seguir os requisitos do edital, incluindo anexos necessários.",
-        "proximo_passo": "Consultar os anexos do edital para entender melhor os requisitos e a documentação necessária para a inscrição.",
-        "risco": "A falta de informações sobre o prazo de inscrição e recurso pode impedir a associação de se inscrever no edital a tempo."
-      },
-      "erro": null,
-      "segundos": 917,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Prazo de recurso",
-      "id": "op-op-5ddfdaa4d0c5",
-      "encontrou": {
-        "Objeto": {
-          "valor": "seleção de propostas que visem a programação on-line de Espaços de Cultura das diversas linguagens",
-          "trecho": "Constitui objeto deste Edital a seleção de propostas que visem a programação on-line de Espaços de Cultura das diversas linguagens",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 2 milhões",
-          "trecho": "Governo de Goiás lança edital de R$ 2 milhões para apoio a eventos turísticos",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado de Cultura - SECULT/GO",
-          "trecho": "O Estado de Goiás, por intermédio da Secretaria de Estado de Cultura - SECULT/GO",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "que pleiteiem recursos do Fundo de Arte e Cultura de Goiás - FAC, por meio do EDITAL PARA SELEÇÃO DE PROJETOS DE DINAMIZAÇÃO DE ESPAÇOS DE CULTURA - FUNDO CULTURAL - CONCURSO Nº 01",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "Constitui objeto deste Edital a seleção de propostas que visem a programação on-line de Espaços de Cultura das diversas linguagens",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "que concederá apoio financeiro às propostas do segmento artístico-cultural no Estado de Goiás",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "propostas que visem a programação on-line de Espaços de Cultura das diversas linguagens, propostas de eventos e festivais culturais produzidos exclusivamente para a internet, que atuam nas diversas linguagens artísticas e culturais",
-          "trecho": "Constitui objeto deste Edital a seleção de propostas que visem a programação on-line de Espaços de Cultura das diversas linguagens (Teatros, Museus, Galerias de Arte, Cinemas, Cent",
           "oficial": false,
           "dispensado": false
         }
