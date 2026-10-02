@@ -433,6 +433,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     if sensor.get("id") == "dou":
         from .diario_uniao import ler_motor as ler_motor_br
         return ler_motor_br(sensor, data, limites)
+    # MOTOR 04 (parecer de 01/10/2026): o PNCP é lido pelas propostas ABERTAS (data oficial de encerramento) e pela
+    # busca do portal, com o classificador de finalidade e os vetos federais — não pelo rótulo dos itens
+    if sensor.get("id") == "pncp-api":
+        from .pncp_osc import ler_motor as ler_motor_pncp
+        return ler_motor_pncp(sensor, data, limites)
     lim = limites or load_json(CFG)["limites"]
     pausa = lim["pausa_segundos"] if pausa is None else pausa
     achados, falhas, saude = [], [], []

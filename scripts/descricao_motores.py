@@ -21,8 +21,9 @@ from urllib.parse import urlsplit
 RAIZ = Path(__file__).resolve().parents[1]
 
 EVOLUCAO = {
-    "pncp-api": "filtrar NA CONSULTA da API oficial do PNCP (uf=GO e modalidade), em vez de baixar tudo e "
-                "descartar depois: o credenciamento é barrado antes de chegar",
+    "pncp-api": "feito em 01/10: lê as propostas abertas (data oficial de encerramento) e a busca do portal em Goiás e nos "
+                "órgãos federais; próximo passo gratuito — ler o texto do PDF do edital (/arquivos) para confirmar público e "
+                "documentos exigidos",
     "dou": "feito em 01/10: lê a Leitura do Jornal inteira (DO1, DO3 e extras) e a íntegra das matérias de interesse; "
            "próximo passo gratuito — o INLABS da Imprensa Nacional (XML integral, cadastro gratuito) como segunda fonte "
            "e o Transferegov (programas abertos a propostas de OSC) como motor próprio",

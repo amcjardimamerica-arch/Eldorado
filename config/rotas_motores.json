@@ -253,17 +253,25 @@
    "nota_01_10": "leitor próprio (src/diario_uniao.py): as rotas acima são as que ele lê; as páginas de MinC/MDS/Participa+ saíram — os editais desses ministérios saem no DOU e são lidos lá. Os léxicos abaixo ficam só como referência do painel; a decisão é do classificador comum (src/atos_diario.py) com os vetos federais."
   },
   "pncp-api": {
-   "perfil": "vetor de DESCOBERTA — dá número do processo e órgão; nunca é fonte (311 de 317 registros citam a 14.133)",
+   "perfil": "vetor de DESCOBERTA com prazo oficial — propostas abertas e busca do portal; o documento oficial é o PDF do órgão (/arquivos)",
    "rotas": [
     {
-     "nome": "API do PNCP — modalidade chamamento e credenciamento",
-     "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/publicacao",
-     "tipo": "api"
+     "nome": "API do PNCP — propostas abertas (data oficial de encerramento)",
+     "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
+     "tipo": "api",
+     "verificada_em": "2026-10-01"
     },
     {
-     "nome": "Arquivo do edital do órgão hospedado no PNCP (/arquivos/) — documento oficial",
+     "nome": "Busca do portal PNCP — editais recebendo proposta",
+     "url": "https://pncp.gov.br/api/search/",
+     "tipo": "api",
+     "verificada_em": "2026-10-01"
+    },
+    {
+     "nome": "Arquivos do edital do órgão hospedados no PNCP (/arquivos/) — documento oficial",
      "url": "https://pncp.gov.br/pncp-api/v1/orgaos/",
-     "tipo": "documento"
+     "tipo": "documento",
+     "verificada_em": "2026-10-01"
     }
    ],
    "lexico_camada1": [
@@ -292,7 +300,8 @@
     "com ou sem fins lucrativos"
    ],
    "filtro_de_objeto": true,
-   "nota_filtro": "só entra no acervo o que serve ao objeto da associação (assistência social e cultura)"
+   "nota_filtro": "só entra no acervo o que serve ao objeto da associação (assistência social e cultura)",
+   "nota_01_10": "leitor próprio (src/pncp_osc.py). Os vetos de camada 1 abaixo ('com ou sem fins lucrativos', 'prestação de serviços', 'aquisição') barravam chamamentos de OSC e ficam só como referência do painel; a decisão é do classificador do motor 04."
   },
   "camara-goiania-pl": {
    "perfil": "insumo de HABILITAÇÃO — declarações de utilidade pública municipal (requisito de editais), não fonte de captação",

@@ -18,7 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 MESTRE = ROOT / "dados/oportunidades/oportunidades.jsonl"
 SAIDA = ROOT / "docs/dados/achados_motores.json"
 ALIAS = {   # motor da Bússola → identificadores de fonte gravados nos registros
-    "pncp-api": {"pncp"}, "plat-observatorio-3setor": {"observatorio-3setor", "observatorio-terceiro-setor"},
+    "pncp-api": set(),   # 01/10 (motor 04 v2): os 215 registros "pncp" do coletor antigo (país inteiro, sem prazo) saem do cartão
+    "plat-observatorio-3setor": {"observatorio-3setor", "observatorio-terceiro-setor"},
     "plat-secult-go": {"secult-go", "goyazes-programa"}, "piloto-aberto": {"plat-piloto-aberto", "piloto-aberto"},
     "plat-piloto-aberto": {"plat-piloto-aberto", "piloto-aberto"}, "plat-abcr": {"abcr"},
 }
