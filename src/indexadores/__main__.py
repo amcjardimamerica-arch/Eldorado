@@ -1,7 +1,7 @@
 """Linha de comando dos motores indexadores.
 
   python -m src.indexadores                      importa as capturas assistidas e roda uma rodada (rota da máquina)
-  python -m src.indexadores rodada [--motor idx-feeds,idx-apis] [--site farolcultural] [--rota nuvem|ponte] [--forcar]
+  python -m src.indexadores rodada [--motor site-farol-cultural,site-capitaai] [--site farolcultural] [--rota nuvem|ponte] [--forcar]
   python -m src.indexadores importar             só importa entrada_manual/indexadores/*.json
   python -m src.indexadores tudo --delta /tmp/d.json   (nuvem) rodada que guarda o delta …
   python -m src.indexadores aplicar --delta /tmp/d.json … reaplicado sobre o main mais recente antes do push

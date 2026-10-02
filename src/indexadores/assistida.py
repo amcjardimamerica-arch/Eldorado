@@ -79,7 +79,7 @@ def importar(hoje: date | None = None, gravar: bool = True) -> dict:
         for pg in dado["paginas"][:200]:
             host = (pg.get("host") or urlsplit(pg.get("url") or "").hostname or "").lower()
             s = _site_do_host(host, cat) or {"id": "captura-" + re.sub(r"[^a-z0-9]+", "-", host).strip("-")[:40], "nome": f"Coleta assistida — {host}",
-                                              "motor": "idx-assistido"}
+                                              "motor": "site-captura-" + re.sub(r"[^a-z0-9]+", "-", host).strip("-")[:40]}
             if s.get("mesmo_que"):
                 s = next((x for x in cat.get("sites") or [] if x["id"] == s["mesmo_que"]), s)
             ctx = {"hoje": hoje, "rota": "assistida", "limites": {}}

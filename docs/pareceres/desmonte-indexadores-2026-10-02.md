@@ -36,7 +36,7 @@ Critérios: **vira motor** — fonte própria de oportunidades, com indício rea
 | site | leituras | indícios no acervo | no fluxo | falhas | decisão |
 |---|---|---|---|---|---|
 | Prosas — editais e prêmios para OSCs | None | 0 | 0 | 0 | **eliminado** — o robots.txt do Prosas proíbe robôs; a lista pública dos editais do Prosas já chega pela CapitaAI (60 na 1ª leitura) |
-| Mapa das OSC (Ipea) — editais | None | 0 | 0 | 0 | **eliminado** — coberto pelo motor Mapa das OSC, que já lê o mesmo local |
+| Mapa das OSC (Ipea) — editais | None | 0 | 0 | 0 | **vira motor** `site-mapa-osc` — Mapa das OSC (Ipea): coleta assistida (o site proíbe robôs). *Corrigido na implantação: o motor antigo do Mapa das OSC está desligado e era coberto por este indexador — eliminar os dois deixaria o portal sem cobertura.* |
 | FINEP — chamadas públicas | None | 0 | 0 | 0 | **vira motor** `site-finep` — Finep: chamadas públicas (coleta assistida: o site proíbe robôs) |
 | Itaú Social — editais | None | 0 | 0 | 0 | **vira motor** `site-itau-social` — Itaú Social: editais (coleta assistida: o site proíbe robôs) |
 | Embaixada dos EUA — apoios a projetos | None | 0 | 0 | 0 | **vira motor** `site-embaixada-eua` — Embaixada dos EUA: pequenas doações a projetos (coleta assistida) |

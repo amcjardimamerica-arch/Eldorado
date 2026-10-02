@@ -118,14 +118,15 @@ def montar() -> dict:
                 if tit and not NAO_E_SELECAO.search(tit):        # dispensa de chamamento, pessoa física e compra não são oportunidade
                     xs.append({**r0, "id": eid, "titulo": tit, "url": r0.get("url") or e0.get("url"),
                                "descoberto_em": str(f.get("em") or "")[:10], "fim": r0.get("fim") or e0.get("fim")})
-        if mid.startswith("idx-"):
-            # 02/10: MOTORES INDEXADORES — os indícios da família (e os que a escada de rotas mandou para a ponte/assistida)
+        if mid.startswith(("idx-", "site-")):
+            # 02/10: um motor por site — os indícios ligam-se ao motor PELO SITE de origem (o campo motor dos indícios
+            # antigos guarda a família desmontada; o site não mudou)
             try:
-                _rot = {"idx-ponte-brasil": "ponte", "idx-assistido": "assistida"}.get(mid)
+                _sm = {x["id"]: x.get("motor") for x in json.loads((ROOT / "config/indexadores.json").read_text(encoding="utf-8")).get("sites") or []}
                 xs = [{"id": g["id"], "titulo": g.get("titulo"), "url": g.get("link_oficial") or g.get("pagina_agregador"), "fim": g.get("prazo"),
                        "uf": g.get("uf"), "descoberto_em": g.get("primeiro_visto")}
                       for g in json.loads((ROOT / "estado/agregadores/itens.json").read_text(encoding="utf-8")).get("itens", [])
-                      if (g.get("rota") == _rot if _rot else g.get("motor") == mid)]
+                      if any(_sm.get(f) == mid for f in (g.get("fontes") or [g.get("fonte")]))]
             except Exception:
                 xs = []
         if mid == "motor-agregadores":
