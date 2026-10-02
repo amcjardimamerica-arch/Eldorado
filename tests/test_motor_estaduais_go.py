@@ -90,6 +90,15 @@ class TesteIntegracao(unittest.TestCase):
             self.assertNotIn(k, ids)
         self.assertIn('if sensor.get("id") == "plat-estaduais-go-gov"', (ROOT / "src/sensores.py").read_text(encoding="utf-8"))
 
+    def test_agregados_saem_do_painel(self):
+        """02/10 (titular): os motores 09, 14, 15, 16 e 17 foram agregados — não aparecem nem contam na numeração."""
+        src = (ROOT / "src/motores.py").read_text(encoding="utf-8")
+        self.assertIn('if p.get("ativa") in (False, "False", "false"):', src)
+        inv = json.loads((ROOT / "config/investigacao.json").read_text(encoding="utf-8"))["fontes"]
+        for k in ("secult-go", "fapeg", "fundos-estaduais-go", "goias-social", "ovg"):
+            f = next(x for x in inv if x["id"] == k)
+            self.assertFalse(f["ativa"]); self.assertEqual(f["agregado_a"], "estaduais-go-gov")
+
     def test_so_executivo(self):
         cfg = json.loads((ROOT / "config/estaduais_go.json").read_text(encoding="utf-8"))
         import re

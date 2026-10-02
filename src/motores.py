@@ -497,6 +497,8 @@ def run() -> dict:
     plataformas = []
     inv = load_json(ROOT / "config/investigacao.json").get("fontes", []) if (ROOT / "config/investigacao.json").exists() else []
     for p in inv:
+        if p.get("ativa") in (False, "False", "false"):
+            continue                     # 02/10 (titular): motor desligado ou agregado a outro sai do painel e da numeração
         s = esq.get(f"plat-{p['id']}")
         b = _bloqueio_vigente(blq.get(urlsplit(p["url"]).hostname), esq.get(p.get("id")))
         plataformas.append({"id": p["id"], "nome": p["nome"], "url": p["url"],
