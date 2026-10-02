@@ -4,7 +4,8 @@ name: 21 · Status dos motores (a cada 6 horas)
 # do dia ficou pendente, para o painel refletir o dia real.
 on:
   schedule:
-    - cron: "17 0,6,12,18 * * *"     # 21h17, 03h17, 09h17 e 15h17 em Brasília
+    - cron: "47 10,14,19 * * *"      # 02/10 itinerário: maestro depois de cada janela — 07h47, 11h47 e 16h47 em Brasília
+    - cron: "17 1 * * *"             # e 22h17 em Brasília (fechamento do dia)
   workflow_dispatch:
 permissions:
   contents: write
