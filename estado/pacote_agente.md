@@ -33,7 +33,7 @@ Texto do edital (compacto):
 ---
 ## 53e16dff2aeb300819dd — SEGENP (gestão de negócios e parcerias) — Edital nº 001/2026 — Celebração de Termo de Colaboração com Organização da Sociedade Civil (OSC) v
 
-MODO: COMPLETO · marcado desde 2026-10-01 · visto pela IA 2× · motivo: informações incompletas
+MODO: COMPLETO · marcado desde 2026-10-01 · visto pela IA 3× · motivo: informações incompletas
 
 Fonte (vetor): Diário Oficial do Município de Goiânia · UF GO · nível municipal · situação aberta · fim 2026-10-26
 
