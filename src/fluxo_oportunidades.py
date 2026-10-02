@@ -502,6 +502,11 @@ def atualizar_mapa() -> dict:
         c["conferencia_dos_livros"] = conferir()
     except Exception as ex:
         c["conferencia_dos_livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10: guarda contra dados de teste (domínios reservados) — antes de tudo
+        from .guarda_dados_teste import run as _guarda
+        c["guarda_dados_teste"] = _guarda()
+    except Exception as ex:
+        c["guarda_dados_teste"] = f"falhou: {type(ex).__name__}"
     try:                                     # 01/10: regra dos livros — o livro existente recebe o checklist; locais de busca
         from .livros_regra import aplicar_motores
         c["regra_dos_livros"] = aplicar_motores()
@@ -534,6 +539,11 @@ def atualizar_mapa() -> dict:
                             "livros_com_nota": anotar_livros()}
     except Exception as ex:
         c["rede_neural"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10: esteira de selos (bronze → prata → ouro), depois da nota da rede
+        from .esteira import run as _esteira
+        c["esteira_de_selos"] = _esteira()
+    except Exception as ex:
+        c["esteira_de_selos"] = f"falhou: {type(ex).__name__}"
     try:                                     # 02/10: planos de correção de cada canal
         from .planos_correcao import run as _planos
         c["planos_de_correcao"] = _planos()
