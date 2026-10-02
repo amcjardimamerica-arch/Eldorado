@@ -118,15 +118,16 @@
   },
   "empresas-incentivadas": {
    "horarios_brt": "10:23",
-   "dias": "dom",
+   "dias": "inativo",
    "cadencia_dias": 7,
-   "por_que_esta_hora": "itinerário 02/10 (empresas): uma passagem por dia; a cadência de cada empresa é mantida; a 1ª passagem fecha o dia anterior (D-1)",
+   "por_que_esta_hora": "02/10: reunido ao Motor Incentivos Fiscais (motor-gife), que lê também estes sites",
    "coleta": "nuvem",
    "objetivo": "identificar empresa que já financiou o terceiro setor, e por qual via",
    "verificacao": {
     "etapa_1": "a empresa aparece numa lista de referência (ICMS de Goiás, SALIC, GIFE, patrocínio publicado)",
     "etapa_2": "CNPJ ativo e prova da destinação ou do patrocínio (projeto, valor ou matéria que a credita)"
-   }
+   },
+   "agregado_a": "motor-gife"
   },
   "plat-observatorio-3setor": {
    "horarios_brt": "05:53,10:23",
@@ -295,7 +296,7 @@
    "cadencia_dias": 1,
    "por_que_esta_hora": "itinerário 02/10 (orgao_publico): os sites dos órgãos são atualizados no expediente; a 1ª passagem fecha o dia anterior (D-1)",
    "coleta": "nuvem",
-   "objetivo": "encontrar oportunidade aberta para OSC em 50 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
+   "objetivo": "encontrar oportunidade aberta para OSC em 25 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
    "verificacao": {
     "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
     "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
@@ -317,16 +318,17 @@
   },
   "plat-mp-destinacoes-reparacao": {
    "horarios_brt": "07:53,16:23",
-   "dias": "todos",
+   "dias": "inativo",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "por_que_esta_hora": "02/10: separado em mpgo-destinacao, mptgo-destinacao, mpu-destinacao — não roda mais",
    "coleta": "nuvem",
    "objetivo": "editais de 5 dias do MPT-GO (todo dia) e destinações do MPF, MPDFT, MPT nacional e FDD (semanal/mensal, pela cadência de cada fonte)",
    "verificacao": {
     "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
     "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
    },
-   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
+   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)",
+   "agregado_a": "mptgo-destinacao"
   },
   "plat-cnpq-extensao": {
    "horarios_brt": "09:23,15:23",
@@ -373,7 +375,7 @@
    "cadencia_dias": 7,
    "por_que_esta_hora": "cadastro de empresas muda devagar; leitura semanal no domingo",
    "coleta": "nuvem",
-   "objetivo": "identificar empresa que já financiou o terceiro setor, e por qual via",
+   "objetivo": "empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada e os sites das maiores contribuintes do ICMS (editais incentivados)",
    "verificacao": {
     "etapa_1": "a empresa aparece numa lista de referência (ICMS de Goiás, SALIC, GIFE, patrocínio publicado)",
     "etapa_2": "CNPJ ativo e prova da destinação ou do patrocínio (projeto, valor ou matéria que a credita)"
@@ -451,9 +453,9 @@
   },
   "judiciario-cnj-tjgo": {
    "horarios_brt": "07:53,16:23",
-   "dias": "todos",
+   "dias": "inativo",
    "cadencia_dias": 1,
-   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "por_que_esta_hora": "02/10: separado em judiciario-tjgo, judiciario-cnj — não roda mais",
    "coleta": "nuvem + local",
    "objetivo": "encontrar os editais de seleção de projetos com recursos de prestações pecuniárias das comarcas de Goiás (Goiânia primeiro), os credenciamentos do Judiciário para entidades e a regra do CNJ — com comarca, prazo, áreas admitidas e a exigência do Banco de Projetos Sociais",
    "verificacao": {
@@ -464,7 +466,8 @@
     "dje-tjgo",
     "cnj-destinacoes"
    ],
-   "criado_em": "2026-10-02"
+   "criado_em": "2026-10-02",
+   "agregado_a": "judiciario-tjgo"
   },
   "site-farol-cultural": {
    "horarios_brt": "06:13,09:13,12:13,15:13,18:13,21:13",
@@ -889,6 +892,79 @@
     "motor-agregadores (IDIS)"
    ],
    "criado_em": "2026-10-02"
+  },
+  "judiciario-tjgo": {
+   "horarios_brt": "07:53,16:23",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "coleta": "nuvem + local",
+   "objetivo": "editais das comarcas do TJ-GO (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
+   "verificacao": {
+    "etapa_1": "RSS da Agência de Notícias do TJGO (paginado), página da notícia e PDF do edital; busca do CNJ; PNCP cruzado → OPORTUNIDADE (edital ou credenciamento aberto), ACOMPANHAR (encerrado, resultado/entrega, regra, habilitação prévia) ou RUÍDO, com o motivo",
+    "etapa_2": "no PDF do edital (link oficial): número, prazo de habilitação, documentos e restrição territorial da comarca"
+   },
+   "reune": [
+    "dje-tjgo",
+    "cnj-destinacoes"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "judiciario-cnj": {
+   "horarios_brt": "07:53",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "coleta": "nuvem",
+   "objetivo": "editais e regra nacional de destinação de prestações pecuniárias no Portal do CNJ",
+   "verificacao": {
+    "etapa_1": "RSS da Agência de Notícias do TJGO (paginado), página da notícia e PDF do edital; busca do CNJ; PNCP cruzado → OPORTUNIDADE (edital ou credenciamento aberto), ACOMPANHAR (encerrado, resultado/entrega, regra, habilitação prévia) ou RUÍDO, com o motivo",
+    "etapa_2": "no PDF do edital (link oficial): número, prazo de habilitação, documentos e restrição territorial da comarca"
+   },
+   "reune": [
+    "dje-tjgo",
+    "cnj-destinacoes"
+   ],
+   "criado_em": "2026-10-02"
+  },
+  "mpgo-destinacao": {
+   "horarios_brt": "07:53",
+   "dias": "todos",
+   "cadencia_dias": 30,
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "coleta": "manual",
+   "objetivo": "Destina do MP-GO: regra fixa, lembrete mensal",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   },
+   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
+  },
+  "mptgo-destinacao": {
+   "horarios_brt": "07:53,16:23",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "coleta": "nuvem",
+   "objetivo": "editais de 5 dias do MPT-GO (todo dia) e habilitação da A.M.C.",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   },
+   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
+  },
+  "mpu-destinacao": {
+   "horarios_brt": "16:23",
+   "dias": "todos",
+   "cadencia_dias": 1,
+   "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
+   "coleta": "nuvem",
+   "objetivo": "MPF PR-GO, MPDFT, MPM, MPT nacional, FDD e CNMP (pela cadência de cada fonte)",
+   "verificacao": {
+    "etapa_1": "na captura: o rótulo do link passa no léxico da camada 1 e escapa do veto, e o texto confirma com o léxico da camada 2 → vira CANDIDATO",
+    "etapa_2": "na fonte oficial: o documento mostra objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; sem isso fica como possível"
+   },
+   "ajuste_29_09": "todos os dias, com leitura cedo às 05:53 (titular: motores funcionando ativamente)"
   }
  }
 }

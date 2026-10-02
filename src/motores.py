@@ -509,7 +509,9 @@ def run() -> dict:
                                          "satisfatória — obtendo editais" if s.get("achados_total") else
                                          "lendo, sem editais reconhecidos")})
     # diários e locais oficiais
-    esp = load_json(ROOT / "config/sensores.json").get("sensores_especiais", [])
+    # 02/10: sensor especial que virou PARTE de outro motor (painel_agregado_a) some do painel, mas continua no registro
+    # de execução (ex.: os sites das contribuintes do ICMS agora são lidos pelo Motor Incentivos Fiscais)
+    esp = [e for e in load_json(ROOT / "config/sensores.json").get("sensores_especiais", []) if not e.get("painel_agregado_a")]
     oficiais = []
     for e in esp:
         s = esq.get(e["id"]); b = _bloqueio_vigente(blq.get(urlsplit(e["urls"][0]).hostname), s)

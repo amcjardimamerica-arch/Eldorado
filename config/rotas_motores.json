@@ -1000,7 +1000,7 @@
    ]
   },
   "plat-prefeituras-50-go": {
-   "perfil": "50 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
+   "perfil": "25 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
    "rotas": [
     {
      "nome": "Portal da prefeitura (config/municipios_maiores.json → GO)",
@@ -2132,6 +2132,569 @@
    ],
    "lexico_camada1": [],
    "lexico_camada2": []
+  },
+  "judiciario-tjgo": {
+   "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
+   "rotas": [
+    {
+     "nome": "TJGO — Agência de Notícias (RSS paginado)",
+     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "TJGO — PDF do edital anexado à notícia",
+     "url": "https://www.tjgo.jus.br/files/",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
+     "url": "https://corregedoria.tjgo.jus.br/basesocial",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
+     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+     "tipo": "referencia"
+    },
+    {
+     "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
+     "url": "https://pncp.gov.br/app/editais",
+     "tipo": "vetor"
+    }
+   ],
+   "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
+   "lexico_camada1": [
+    "prestação pecuniária",
+    "penas pecuniárias",
+    "penas alternativas",
+    "transação penal",
+    "projetos sociais",
+    "finalidade social",
+    "destinação de recursos",
+    "Banco de Projetos Sociais",
+    "cadastramento de entidades",
+    "credenciamento de entidades",
+    "Vepema",
+    "edital"
+   ],
+   "lexico_camada2": [
+    "seleção de projetos",
+    "habilitação",
+    "entidades públicas ou privadas",
+    "Resolução CNJ 558",
+    "Código de Normas art. 257",
+    "comarca",
+    "inscrições até"
+   ],
+   "coleta": "nuvem + local",
+   "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
+  },
+  "judiciario-cnj": {
+   "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
+   "rotas": [
+    {
+     "nome": "TJGO — Agência de Notícias (RSS paginado)",
+     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "TJGO — PDF do edital anexado à notícia",
+     "url": "https://www.tjgo.jus.br/files/",
+     "tipo": "tribunal",
+     "exige_brasil": true
+    },
+    {
+     "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
+     "url": "https://corregedoria.tjgo.jus.br/basesocial",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
+     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+     "tipo": "referencia"
+    },
+    {
+     "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
+     "url": "https://pncp.gov.br/app/editais",
+     "tipo": "vetor"
+    }
+   ],
+   "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
+   "lexico_camada1": [
+    "prestação pecuniária",
+    "penas pecuniárias",
+    "penas alternativas",
+    "transação penal",
+    "projetos sociais",
+    "finalidade social",
+    "destinação de recursos",
+    "Banco de Projetos Sociais",
+    "cadastramento de entidades",
+    "credenciamento de entidades",
+    "Vepema",
+    "edital"
+   ],
+   "lexico_camada2": [
+    "seleção de projetos",
+    "habilitação",
+    "entidades públicas ou privadas",
+    "Resolução CNJ 558",
+    "Código de Normas art. 257",
+    "comarca",
+    "inscrições até"
+   ],
+   "coleta": "nuvem + local",
+   "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
+  },
+  "mpgo-destinacao": {
+   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+   "rotas": [
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "tipo": "tabela_mpt"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região",
+     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "tipo": "lista_habilitadas"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/pgt/noticias/RSS",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional (busca)",
+     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-BA (modelo)",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional",
+     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — várias promotorias",
+     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — Sala de imprensa",
+     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPM — portal",
+     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPU — portal",
+     "url": "https://www.mpu.mp.br/sitemap",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+     "tipo": "estado_pagina"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+     "tipo": "listagem_html"
+    }
+   ],
+   "lexico_camada1": [
+    "bens lesados",
+    "chamamento",
+    "chamamento público",
+    "destinação de recursos",
+    "edital de apoio",
+    "edital de destinação",
+    "entidades",
+    "organizações da sociedade civil",
+    "projetos sociais",
+    "reparação",
+    "seleção de projetos",
+    "termo de ajustamento",
+    "termo de colaboração",
+    "termo de fomento",
+    "indicação de destinação",
+    "Sistema de Destinações",
+    "entidades assistenciais",
+    "bens e valores",
+    "Destina"
+   ],
+   "lexico_camada2": [
+    "organizações da sociedade civil",
+    "projeto social",
+    "das inscrições",
+    "habilitação",
+    "Goiás",
+    "Goiânia"
+   ],
+   "nunca_acessar": [
+    "mpgo.mp.br",
+    "destinacoes.mpt.mp.br"
+   ],
+   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
+  },
+  "mptgo-destinacao": {
+   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+   "rotas": [
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "tipo": "tabela_mpt"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região",
+     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "tipo": "lista_habilitadas"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/pgt/noticias/RSS",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional (busca)",
+     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-BA (modelo)",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional",
+     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — várias promotorias",
+     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — Sala de imprensa",
+     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPM — portal",
+     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPU — portal",
+     "url": "https://www.mpu.mp.br/sitemap",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+     "tipo": "estado_pagina"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+     "tipo": "listagem_html"
+    }
+   ],
+   "lexico_camada1": [
+    "bens lesados",
+    "chamamento",
+    "chamamento público",
+    "destinação de recursos",
+    "edital de apoio",
+    "edital de destinação",
+    "entidades",
+    "organizações da sociedade civil",
+    "projetos sociais",
+    "reparação",
+    "seleção de projetos",
+    "termo de ajustamento",
+    "termo de colaboração",
+    "termo de fomento",
+    "indicação de destinação",
+    "Sistema de Destinações",
+    "entidades assistenciais",
+    "bens e valores",
+    "Destina"
+   ],
+   "lexico_camada2": [
+    "organizações da sociedade civil",
+    "projeto social",
+    "das inscrições",
+    "habilitação",
+    "Goiás",
+    "Goiânia"
+   ],
+   "nunca_acessar": [
+    "mpgo.mp.br",
+    "destinacoes.mpt.mp.br"
+   ],
+   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
+  },
+  "mpu-destinacao": {
+   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+   "rotas": [
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "tipo": "tabela_mpt"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região",
+     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "tipo": "lista_habilitadas"
+    },
+    {
+     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPT nacional — PGT - Noticias",
+     "url": "https://mpt.mp.br/pgt/noticias/RSS",
+     "tipo": "rss"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-GO",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional (busca)",
+     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — PR-BA (modelo)",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPF — nacional",
+     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — várias promotorias",
+     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPDFT — Sala de imprensa",
+     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPM — portal",
+     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "MPU — portal",
+     "url": "https://www.mpu.mp.br/sitemap",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+     "tipo": "estado_pagina"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+     "tipo": "listagem_html"
+    },
+    {
+     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+     "tipo": "listagem_html"
+    }
+   ],
+   "lexico_camada1": [
+    "bens lesados",
+    "chamamento",
+    "chamamento público",
+    "destinação de recursos",
+    "edital de apoio",
+    "edital de destinação",
+    "entidades",
+    "organizações da sociedade civil",
+    "projetos sociais",
+    "reparação",
+    "seleção de projetos",
+    "termo de ajustamento",
+    "termo de colaboração",
+    "termo de fomento",
+    "indicação de destinação",
+    "Sistema de Destinações",
+    "entidades assistenciais",
+    "bens e valores",
+    "Destina"
+   ],
+   "lexico_camada2": [
+    "organizações da sociedade civil",
+    "projeto social",
+    "das inscrições",
+    "habilitação",
+    "Goiás",
+    "Goiânia"
+   ],
+   "nunca_acessar": [
+    "mpgo.mp.br",
+    "destinacoes.mpt.mp.br"
+   ],
+   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
   }
  },
  "auditado_em": "2026-09-22T21:24:52+00:00"

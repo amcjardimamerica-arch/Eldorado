@@ -268,6 +268,9 @@ jobs:
             # incentivos verificados em fonte oficial (Rouanet/SALIC, Goyazes/Secult-GO, PAT/MTE):
             # reaplica a base verificada sobre o painel de Goiás e os dois rankings regerados acima
             { timeout 300 python -m src.biblioteca_empresas; timeout 300 python -m src.incentivos_empresas; echo "rc_incentivos=$?"; } 2>&1 | tail -c 20000 >> estado/log_empresas.txt
+            # 02/10 (titular): motor ÚNICO de incentivos fiscais — também lê os sites das maiores contribuintes do ICMS
+            # (o antigo motor "Editais incentivados", agora parte deste)
+            { MOTORES_FONTES=empresas-incentivadas SENSORES_PRAZO_S=840 timeout 900 python -m src.sensores; echo "rc_sites_icms=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
           fi
       - name: Exportar o acervo do banco (volta pelo Git para a próxima saída)
         if: always()
