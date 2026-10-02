@@ -34,7 +34,7 @@ CFG = ROOT / "config/estaduais_go.json"
 ESTADO = ROOT / "estado/estaduais_go.json"
 PAINEL = ROOT / "docs/dados/estaduais_go.json"
 MOTOR_ID = "plat-estaduais-go-gov"
-NOME = "Oportunidades Estaduais Governamentais"
+NOME = "Oportunidade Estaduais Governamentais de Goiás"
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 Eldorado/estaduais"
 MESES = {"janeiro": 1, "fevereiro": 2, "marco": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8, "setembro": 9,
          "outubro": 10, "novembro": 11, "dezembro": 12}

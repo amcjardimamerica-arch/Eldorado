@@ -1,4 +1,4 @@
-"""02/10 (titular): motor Oportunidades Estaduais Governamentais — órgãos do Executivo de Goiás, um por vez, em camadas."""
+"""02/10 (titular): motor Oportunidade Estaduais Governamentais de Goiás — órgãos do Executivo de Goiás, um por vez, em camadas."""
 import json, sys, tempfile, unittest
 from datetime import date
 from pathlib import Path
