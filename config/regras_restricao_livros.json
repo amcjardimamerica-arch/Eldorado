@@ -1,7 +1,16 @@
 {
- "versao": "2026-10-02.1",
- "origem": "Parecer das 238 oportunidades não confirmadas — validação item a item em 02/10/2026",
- "como_usar": "Aplicar src/regras_restricao.avaliar(registro, perfil) antes de promover um registro a 'oportunidade aberta'. NÃO APLICA e DISPENSÁVEL saem do funil de abertas; APLICÁVEL segue para verificação dos 12 itens. Nunca apagar: arquivar com o código da regra.",
+ "versao": "2026-10-02.2",
+ "origem": "Parecer das 238 oportunidades não confirmadas — validação item a item em 02/10/2026 (v2: território vira enquadramento; léxico e restrições em cada livro)",
+ "regra_do_livro": "Cada livro da Biblioteca carrega, junto com o LÉXICO que busca a sua oportunidade, as RESTRIÇÕES que se aplicam a ela (bloco `busca` gravado no livro a cada ciclo por src/livros_regra.aplicar_motores). Este arquivo é o catálogo-mãe: os livros e os motores atualizam o JSON, não o código. Uma regra nunca se volta contra o próprio livro (fica em `suspensas` e vai à curadoria).",
+ "como_usar": "src/regras_restricao.avaliar(registro) decide o veredito de um registro novo; bloco_do_livro(livro) monta o léxico e as restrições do livro; julgar_no_livro(achado, livro) julga o achado pelas restrições DO livro (veto · edição · junção · aceita). Nunca apagar: o vetado fica em `vetados_pelas_restricoes` do catálogo.",
+ "efeitos": {
+  "veto": "não vira livro nem edição (NÃO APLICA)",
+  "estado": "o livro continua, no histórico, com o prazo encerrado",
+  "edicao": "ato acessório (errata, retificação, prorrogação, resultado) entra como edição do livro do edital",
+  "juntar": "mesma chave PNCP = mesmo livro",
+  "pendente": "fonte espelho/agregador: o livro aguarda o ato oficial (PNCP/site do órgão)",
+  "enquadramento": "anotado no livro, NÃO descarta: território, região ou serviço especializado — quem decide é o Farol (fase 2), por associação"
+ },
  "perfil_de_referencia": {
   "associacao": "amc-jardim-america",
   "municipios": [
@@ -11,15 +20,87 @@
   "ufs": [
    "GO"
   ],
-  "observacao": "chamamento de OUTRO município (inclusive goiano) exige sede/atuação local: DI-01. Estado de Goiás e abrangência nacional passam."
+  "observacao": "v2 (titular, 02/10): chamamento de OUTRO município ou estado é oportunidade para OSC e ganha livro próprio, coletado pelo PNCP; para a associação fica o enquadramento EN-01 (costuma exigir sede/atuação local)."
  },
  "territorio": {
-  "regra": "município citado no título/objeto nunca é 'nacional'; só passa se for o município da entidade; sem município, vale a UF."
+  "regra": "território NÃO descarta (EN-01 = enquadramento). Município citado no título nunca é 'nacional'; sem município, vale a UF."
+ },
+ "lexico_dos_livros": {
+  "max_termos": 20,
+  "genericos": [
+   "abertas",
+   "aberto",
+   "apoio",
+   "aviso",
+   "captacao",
+   "celebracao",
+   "chamada",
+   "chamamento",
+   "civil",
+   "colaboracao",
+   "credenciamento",
+   "cultura",
+   "culturais",
+   "cultural",
+   "destinacao",
+   "diario",
+   "doacao",
+   "editais",
+   "edital",
+   "entidade",
+   "entidades",
+   "esporte",
+   "estado",
+   "estadual",
+   "extrato",
+   "federal",
+   "fiscal",
+   "fisica",
+   "fomento",
+   "goiania",
+   "goias",
+   "incentivo",
+   "inscricoes",
+   "interesse",
+   "juridica",
+   "lucrativos",
+   "municipal",
+   "municipio",
+   "nacional",
+   "objetivo",
+   "objeto",
+   "oficial",
+   "organizacao",
+   "organizacoes",
+   "parceria",
+   "parcerias",
+   "pessoa",
+   "prefeitura",
+   "premio",
+   "premios",
+   "presente",
+   "programa",
+   "projeto",
+   "projetos",
+   "proposta",
+   "propostas",
+   "publica",
+   "publico",
+   "recursos",
+   "secretaria",
+   "selecao",
+   "sociais",
+   "social",
+   "sociedade",
+   "termo"
+  ],
+  "pncp": "consulta = município + termo distintivo do livro; a Fonte C do motor 04 (config/pncp_osc.json › fonte_c) usa essa consulta para localizar o ato no PNCP"
  },
  "regras": [
   {
    "id": "NA-01",
    "veredito": "NÃO APLICA",
+   "efeito_no_livro": "veto",
    "nome": "Ato do diário oficial que não é chamamento",
    "motivo_modelo": "Edição de diário/ato orçamentário, administrativo ou legislativo sem edital de fomento: ….",
    "evidencia_na_validacao": {
@@ -47,10 +128,11 @@
   {
    "id": "NA-02",
    "veredito": "NÃO APLICA",
+   "efeito_no_livro": "veto",
    "nome": "Licitação, contratação de fornecedor ou serviço",
    "motivo_modelo": "É contratação/licitação de fornecedor ou prestador (não parceria de fomento com OSC): ….",
    "evidencia_na_validacao": {
-    "itens": 12,
+    "itens": 13,
     "exemplos": [
      "67af7e78b77e1a40e4e2",
      "op-op-287b50bed6e4",
@@ -81,7 +163,7 @@
    "exceto": [
     "termo de (colaboracao|fomento)",
     "organizacoes? da sociedade civil",
-    "\\bosc",
+    "\\boscs?\\b",
     "entidades? sem fins",
     "associacoes?",
     "fundacoes?"
@@ -91,6 +173,7 @@
   {
    "id": "NA-03",
    "veredito": "NÃO APLICA",
+   "efeito_no_livro": "veto",
    "nome": "Recursos humanos (concurso, seleção, estágio, aprendizagem)",
    "motivo_modelo": "É seleção de pessoas (estágio/aprendizagem/processo seletivo), não de entidade: ….",
    "evidencia_na_validacao": {
@@ -112,7 +195,7 @@
    "exceto": [
     "^diario oficial de",
     "organizacoes? da sociedade civil",
-    "\\bosc\\b",
+    "\\boscs?\\b",
     "propostas",
     "projetos"
    ]
@@ -120,6 +203,7 @@
   {
    "id": "NA-04",
    "veredito": "NÃO APLICA",
+   "efeito_no_livro": "veto",
    "nome": "Página genérica, agregador, notícia ou link sem edital",
    "motivo_modelo": "Não há edital identificável: ….",
    "evidencia_na_validacao": {
@@ -139,6 +223,7 @@
   {
    "id": "NA-05",
    "veredito": "NÃO APLICA",
+   "efeito_no_livro": "veto",
    "nome": "Concurso ou prêmio sem fomento a OSC",
    "motivo_modelo": "Concurso/prêmio de ideias, artigos ou boas práticas, sem repasse de fomento a OSC: ….",
    "evidencia_na_validacao": {
@@ -165,6 +250,7 @@
   {
    "id": "NA-06",
    "veredito": "NÃO APLICA",
+   "efeito_no_livro": "veto",
    "nome": "Público-alvo incompatível com a associação",
    "motivo_modelo": "Público-alvo exclusivo que não inclui associação de moradores/comerciantes: ….",
    "evidencia_na_validacao": {
@@ -188,13 +274,13 @@
     "associacoes? estudantis",
     "associacao de estudantes",
     "fapeg",
-    "pesquisador",
     "instituicoes de ensino superior",
-    "negocios de impacto",
     "produtora brasileira independente",
     "fundo setorial do audiovisual|longa metragem"
    ],
    "padroes": [
+    "pesquisador",
+    "negocios de impacto",
     "credenciamento de artistas",
     "contratacao de artistas",
     "propostas artisticas",
@@ -209,7 +295,7 @@
    ],
    "exceto": [
     "organizacoes? da sociedade civil",
-    "\\bosc\\b",
+    "\\boscs?\\b",
     "entidades? sem fins",
     "associacoes?"
    ]
@@ -217,6 +303,7 @@
   {
    "id": "NA-07",
    "veredito": "NÃO APLICA",
+   "efeito_no_livro": "veto",
    "nome": "Conselho, eleição ou representação (sem recurso)",
    "motivo_modelo": "Processo de escolha de representantes/organizações para conselho, sem repasse de recursos: ….",
    "evidencia_na_validacao": {
@@ -237,6 +324,7 @@
   {
    "id": "NA-08",
    "veredito": "NÃO APLICA",
+   "efeito_no_livro": "veto",
    "nome": "Residência artística ou programa de artista individual no exterior",
    "motivo_modelo": "Programa para artista individual no exterior: ….",
    "evidencia_na_validacao": {
@@ -258,11 +346,13 @@
   {
    "id": "DI-03",
    "veredito": "DISPENSÁVEL",
+   "efeito_no_livro": "estado",
    "nome": "Prazo encerrado, revogado ou suspenso",
    "motivo_modelo": "Fase encerrada/sem inscrições vigentes: ….",
    "evidencia_na_validacao": {
-    "itens": 2,
+    "itens": 3,
     "exemplos": [
+     "op-op-5917c6159746",
      "op-op-2ca18cdbee02",
      "op-op-109a827a27bd"
     ]
@@ -270,46 +360,9 @@
    "tipo": "prazo"
   },
   {
-   "id": "DI-02",
-   "veredito": "DISPENSÁVEL",
-   "nome": "Região restrita do edital",
-   "motivo_modelo": "Edital limitado a região que não inclui Goiás: ….",
-   "evidencia_na_validacao": {
-    "itens": 1,
-    "exemplos": [
-     "op-nova-962fbc0ba13a"
-    ]
-   },
-   "tipo": "padrao",
-   "padroes": [
-    "norte e nordeste",
-    "nordeste do brasil",
-    "periferias fortes"
-   ],
-   "exceto": [
-    "centro-oeste",
-    "goias"
-   ]
-  },
-  {
-   "id": "DI-01",
-   "veredito": "DISPENSÁVEL",
-   "nome": "Território incompatível (fora de Goiânia/GO e sem abrangência nacional)",
-   "motivo_modelo": "Oportunidade real, mas de outro município/estado; chamamentos locais exigem sede/atuação no território: ….",
-   "evidencia_na_validacao": {
-    "itens": 115,
-    "exemplos": [
-     "c76fa7dde15e92b4c940",
-     "op-op-88fc7e055eb6",
-     "257492042d91e5c020e5",
-     "7147b501ca7e398929c3"
-    ]
-   },
-   "tipo": "territorio"
-  },
-  {
    "id": "DI-04",
    "veredito": "DISPENSÁVEL",
+   "efeito_no_livro": "edicao",
    "nome": "Ato acessório (errata, retificação, prorrogação, resultado) de edital já registrado",
    "motivo_modelo": "Ato acessório de edital de outro registro/território: ….",
    "evidencia_na_validacao": {
@@ -337,10 +390,108 @@
    ]
   },
   {
-   "id": "DI-06",
+   "id": "DI-05",
    "veredito": "DISPENSÁVEL",
-   "nome": "Serviço técnico especializado exige qualificação que o perfil não comprova",
-   "motivo_modelo": "Serviço especializado (qualificação/experiência não comprovada no perfil da entidade): ….",
+   "efeito_no_livro": "pendente",
+   "nome": "Não verificável — sem fonte oficial confirmada",
+   "motivo_modelo": "Sem fonte oficial que comprove objeto e prazo; reavaliar se a fonte for localizada: ….",
+   "evidencia_na_validacao": {
+    "itens": 32,
+    "exemplos": [
+     "c76fa7dde15e92b4c940",
+     "0b6f4d4f7f6ae844bf83",
+     "op-op-bf48b4a8c63e",
+     "aa8271b22a129dce9ef4"
+    ]
+   },
+   "tipo": "dominio",
+   "dominios": [
+    "licitario.com.br",
+    "buscarlicitacao.com.br",
+    "capitaai.com.br",
+    "prefeituras.org",
+    "farolcultural.art",
+    "x.gov.br"
+   ],
+   "motivo_dominio": "fonte espelho/agregador — localizar o ato no site oficial",
+   "padroes": [
+    "guia de (captacao|permuta)",
+    "guia completo",
+    "captacao e regras",
+    "captacao e inscri",
+    "^edital [^:]{3,80} 20\\d\\d: "
+   ]
+  },
+  {
+   "id": "DI-08",
+   "veredito": "DISPENSÁVEL",
+   "efeito_no_livro": "juntar",
+   "nome": "Duplicata de outro registro da lista",
+   "motivo_modelo": "Mesma oportunidade já listada em outro registro: ….",
+   "evidencia_na_validacao": {
+    "itens": 9,
+    "exemplos": [
+     "38de63878d5d74c687cb",
+     "op-op-658ed6de4b10",
+     "op-op-08d9f9917e1f",
+     "op-op-080e80b33a90"
+    ]
+   },
+   "tipo": "duplicata",
+   "chave": [
+    "pncp:cnpj/ano/seq",
+    "titulo_normalizado+municipio (só com leitura humana)"
+   ]
+  },
+  {
+   "id": "EN-01",
+   "veredito": "APLICÁVEL",
+   "efeito_no_livro": "enquadramento",
+   "nome": "Edital de OSC de outro município/estado — livro próprio (enquadramento territorial)",
+   "motivo_modelo": "Oportunidade para OSC de outro território: ganha livro próprio, coletado pelo PNCP; o território fica anotado no livro como enquadramento (o chamamento costuma exigir sede/atuação local): ….",
+   "evidencia_na_validacao": {
+    "itens": 94,
+    "exemplos": [
+     "op-op-88fc7e055eb6",
+     "257492042d91e5c020e5",
+     "7147b501ca7e398929c3",
+     "b6fca2ac16f769e569c5"
+    ]
+   },
+   "antes": "DI-01",
+   "tipo": "territorio"
+  },
+  {
+   "id": "EN-02",
+   "veredito": "APLICÁVEL",
+   "efeito_no_livro": "enquadramento",
+   "nome": "Edital de OSC com região restrita — livro próprio (enquadramento regional)",
+   "motivo_modelo": "Oportunidade para OSC limitada a uma região: ganha livro próprio; a região fica anotada como enquadramento: ….",
+   "evidencia_na_validacao": {
+    "itens": 1,
+    "exemplos": [
+     "op-nova-962fbc0ba13a"
+    ]
+   },
+   "antes": "DI-02",
+   "tipo": "padrao",
+   "padroes": [
+    "norte e nordeste",
+    "nordeste do brasil",
+    "do nordeste\\b",
+    "periferias fortes"
+   ],
+   "exceto": [
+    "centro-oeste",
+    "goias"
+   ]
+  },
+  {
+   "id": "EN-03",
+   "veredito": "APLICÁVEL",
+   "efeito_no_livro": "enquadramento",
+   "nome": "Edital de OSC para serviço ou público especializado — livro próprio (enquadramento técnico)",
+   "motivo_modelo": "Oportunidade para OSC de serviço ou público especializado (catadores, ILPI, acolhimento, saúde, socioeducativo, associação estudantil): ganha livro próprio; a exigência fica anotada como enquadramento (o perfil da associação não a comprova): ….",
    "evidencia_na_validacao": {
     "itens": 2,
     "exemplos": [
@@ -348,6 +499,7 @@
      "op-op-047d2afbc2f2"
     ]
    },
+   "antes": "DI-06",
    "tipo": "padrao",
    "padroes": [
     "acolhimento institucional",
@@ -364,59 +516,6 @@
     "abrigo transitorio"
    ],
    "exceto": []
-  },
-  {
-   "id": "DI-05",
-   "veredito": "DISPENSÁVEL",
-   "nome": "Não verificável — sem fonte oficial confirmada",
-   "motivo_modelo": "Sem fonte oficial que comprove objeto e prazo; reavaliar se a fonte for localizada: ….",
-   "evidencia_na_validacao": {
-    "itens": 13,
-    "exemplos": [
-     "op-op-bf48b4a8c63e",
-     "agr-34a22d843bb8",
-     "agr-b35b5e29bd8a",
-     "op-op-114cf6cd87f5"
-    ]
-   },
-   "tipo": "dominio",
-   "dominios": [
-    "licitario.com.br",
-    "buscarlicitacao.com.br",
-    "capitaai.com.br",
-    "prefeituras.org",
-    "farolcultural.art",
-    "x.gov.br",
-    "queridodiario.ok.org.br"
-   ],
-   "motivo_dominio": "fonte espelho/agregador — localizar o ato no site oficial",
-   "padroes": [
-    "guia de (captacao|permuta)",
-    "guia completo",
-    "captacao e regras",
-    "captacao e inscri",
-    "^edital [^:]{3,80} 20\\d\\d: "
-   ]
-  },
-  {
-   "id": "DI-08",
-   "veredito": "DISPENSÁVEL",
-   "nome": "Duplicata de outro registro da lista",
-   "motivo_modelo": "Mesma oportunidade já listada em outro registro: ….",
-   "evidencia_na_validacao": {
-    "itens": 9,
-    "exemplos": [
-     "38de63878d5d74c687cb",
-     "op-op-658ed6de4b10",
-     "op-op-08d9f9917e1f",
-     "op-op-080e80b33a90"
-    ]
-   },
-   "tipo": "duplicata",
-   "chave": [
-    "pncp:cnpj/ano/seq",
-    "titulo_normalizado+municipio"
-   ]
   }
  ],
  "regras_de_coleta": [
@@ -447,40 +546,53 @@
   },
   {
    "id": "RC-06",
-   "regra": "Mesma oportunidade em mais de um registro (PNCP + diário + Interceptador) conta uma vez: chave pncp cnpj/ano/seq ou título+município.",
+   "regra": "Mesma oportunidade em mais de um registro (PNCP + diário + Interceptador) conta uma vez: o código junta pela chave PNCP cnpj/ano/seq; título+município só com leitura humana (o mesmo diário traz editais diferentes).",
    "motivo": "9 duplicatas entre as 238."
+  },
+  {
+   "id": "RC-07",
+   "regra": "Edital de OSC de outro município ou estado NÃO é descartado: o PNCP o agrega e ele compõe um livro próprio; o território vai ao livro como enquadramento (EN-01).",
+   "motivo": "Titular, 02/10/2026: 115 editais de OSC de outros territórios estavam como DISPENSÁVEL."
+  },
+  {
+   "id": "RC-08",
+   "regra": "Livro sem chave PNCP é procurado no PNCP com a consulta do próprio livro (Fonte C); não achado, o livro continua com a fonte oficial do órgão (diário/site) e é procurado de novo em 7 dias.",
+   "motivo": "02/10: 58 registros sem link PNCP buscados no PNCP por município e tema — nenhum localizado (a Lei 13.019/2014 manda publicar o chamamento no sítio do órgão; o PNCP não é obrigatório para MROSC)."
   }
  ],
  "totais_da_validacao": {
-  "DI-01": 115,
+  "DI-05": 32,
+  "EN-01": 94,
   "DI-04": 13,
-  "NA-02": 12,
+  "NA-02": 13,
   "NA-06": 49,
-  "DI-05": 13,
+  "DI-03": 3,
   "DI-08": 9,
   "NA-03": 2,
   "NA-08": 3,
   "AP-03": 3,
-  "DI-03": 2,
   "NA-04": 3,
-  "DI-02": 1,
+  "EN-02": 1,
   "NA-05": 7,
   "NA-07": 2,
   "NA-01": 1,
   "AP-01": 1,
-  "DI-06": 2
+  "EN-03": 2
  },
  "backtest_contra_a_validacao": {
-  "concordancia_de_classe": 0.92,
+  "concordancia_de_classe": 0.84,
   "matriz": {
-   "DISPENSÁVEL->DISPENSÁVEL": 139,
+   "DISPENSÁVEL->APLICÁVEL": 28,
+   "APLICÁVEL->APLICÁVEL": 97,
+   "DISPENSÁVEL->DISPENSÁVEL": 27,
    "NÃO APLICA->DISPENSÁVEL": 1,
    "NÃO APLICA->NÃO APLICA": 76,
-   "DISPENSÁVEL->NÃO APLICA": 5,
-   "DISPENSÁVEL->APLICÁVEL": 11,
-   "APLICÁVEL->APLICÁVEL": 4,
-   "NÃO APLICA->APLICÁVEL": 2
+   "DISPENSÁVEL->NÃO APLICA": 2,
+   "APLICÁVEL->NÃO APLICA": 2,
+   "APLICÁVEL->DISPENSÁVEL": 2,
+   "NÃO APLICA->APLICÁVEL": 3
   },
-  "leitura": "As regras reproduzem a classe do veredito humano em 92% dos 238 registros e confirmam os 6 aplicáveis; as divergências são registros que só a leitura do ato/da página resolve (objeto mal extraído, link de outro município) — por isso a regra reduz o funil mas não substitui a verificação dos 12 itens."
+  "leitura": "As regras reproduzem a classe do veredito humano em 84% dos 238 registros (v2: território e especialidade viram enquadramento; a fonte só em agregador aguarda o ato oficial). As divergências são registros que só a leitura do ato/da página resolve (objeto mal extraído, link de outro município, vigência tomada por prazo) — a regra reduz o funil e organiza o livro, mas não substitui a verificação dos 12 itens.",
+  "ressalva": "calibradas no mesmo conjunto de 238 — ajuste, não validação independente"
  }
 }

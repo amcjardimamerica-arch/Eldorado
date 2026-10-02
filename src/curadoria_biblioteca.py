@@ -65,14 +65,17 @@ def do_pncp(x: dict) -> bool:
         return True
     if "pncp" in str(x.get("origem") or "").lower():
         return True
+    if (((x.get("busca") or {}).get("lexico") or {}).get("pncp") or {}).get("chave"):
+        return True                                    # 02/10: livro cujo ato foi localizado no PNCP (Fonte C do motor 04)
     return any("pncp" in str(h.get("origem") or "").lower() or "pncp.gov.br" in str(h.get("pagina_oficial") or "")
                for h in (x.get("historico") or []))
 
 
 def fora_da_abrangencia(x: dict) -> bool:
     """Público MUNICIPAL só de Goiás — inclusive quando o estado não foi identificado (geo nacional).
-    Exceção (02/10): o que vem do PNCP ganha livro em qualquer estado."""
-    if do_pncp(x):
+    Exceção (02/10): o que vem do PNCP ganha livro em qualquer estado; e o edital de OSC validado no parecer das 238
+    (titular, 02/10: edital de OSC de outro município é oportunidade para OSC e compõe um livro próprio)."""
+    if do_pncp(x) or x.get("excecao_abrangencia"):
         return False
     from .livros_opressores import uf_do_dominio
     _uf, _niv = uf_do_dominio(x.get("pagina"))
