@@ -116,7 +116,13 @@ jobs:
           echo "bloco=$MOTORES_BLOCO" | tee estado/log_sensores.txt
           case "$MOTORES_BLOCO" in
             diarios|justica_legislativo|plataformas_api|opressores|manual|regulares|completo)
-              timeout 1500 python -m src.sensores 2>&1 | tee -a estado/log_sensores.txt || echo "src.sensores: falhou ou estourou 1500s" | tee -a estado/log_sensores.txt
+              # 02/10: saída sem buffer (o progresso aparece no log) e aviso REAL de falha/estouro (antes o "||" valia para o
+              # tee, que sempre termina bem, e o aviso nunca aparecia); a parada graciosa fica antes do limite (1380 s < 1500 s)
+              set +e
+              SENSORES_PRAZO_S=1380 timeout 1500 python -u -m src.sensores 2>&1 | tee -a estado/log_sensores.txt
+              rc=${PIPESTATUS[0]}
+              set -e
+              [ "$rc" -ne 0 ] && echo "src.sensores: falhou ou estourou 1500s (código $rc)" | tee -a estado/log_sensores.txt || true
               ;;
             *)
               echo "bloco $MOTORES_BLOCO nao coleta sensores" | tee -a estado/log_sensores.txt

@@ -692,10 +692,24 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
     existentes = carregar_oportunidades()
     novos = total_ach = 0
     por_tipo: dict[str, dict] = {}
+    # 02/10: PARADA GRACIOSA e REGISTRO A CADA MOTOR. O passo do fluxo tem limite de tempo; quando estourava, o processo
+    # era morto antes de gravar a esquadra (gravada só no fim) e as leituras do registro se perdiam — de 03h01 a 14h de
+    # 02/10 nenhuma varredura manual ficou registrada. Agora: não se começa um motor que não cabe no tempo restante
+    # (estimativa = duração da leitura anterior dele); o adiado volta pelo maestro; a esquadra é gravada após cada motor.
+    import time as _t
+    _ini = _t.monotonic(); _prazo = float(os.environ.get("SENSORES_PRAZO_S", "1380"))
+    executados, adiados = 0, []
     for s in escala["saem"][: (limite or len(escala["saem"]))]:
+        _est = float((sens.get(s["id"]) or {}).get("duracao_s") or 60)
+        if executados and _t.monotonic() - _ini + _est > _prazo:
+            adiados.append(s["id"])
+            continue
+        _t0 = _t.monotonic()
         r = ler(s, pausa=pausa)
+        executados += 1
         reg = sens.setdefault(s["id"], {"nome": s["nome"], "tipo": s["tipo"], "leituras": 0,
                                         "achados_total": 0, "vazias_seguidas": 0})
+        reg["duracao_s"] = round(_t.monotonic() - _t0)
         reg.update({"ultima": r["lido_em"], "motivo": s.get("motivo") or f"bloco {escala.get('bloco') or 'manual'}",
                     "leituras": reg["leituras"] + 1,
                     "achados_ultima": len(r["achados"]),
@@ -714,9 +728,12 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
                 append_jsonl(DB, a); existentes[a["id"]] = a; novos += 1
         t = por_tipo.setdefault(s["tipo"], {"sensores": 0, "achados": 0, "falhas": 0})
         t["sensores"] += 1; t["achados"] += len(r["achados"]); t["falhas"] += len(r["falhas"])
+        write_json(ESTADO, est)                                  # registro gravado a cada motor (sobrevive ao limite de tempo)
+        print(f"  {s['id']}: {len(r['achados'])} achado(s), {len(r['falhas'])} falha(s), {reg['duracao_s']} s", flush=True)
     est["ultima_execucao"] = {"data": hoje.isoformat(), "em": now_iso(),
                               "manual": escala.get("manual"), "bloco": escala.get("bloco", bloco),
-                              "sensores_executados": min(len(escala["saem"]), limite or 10**6),
+                              "sensores_executados": executados, "adiados_por_tempo": adiados,
+                              "duracao_s": round(_t.monotonic() - _ini),
                               "em_espera": escala["ficam"], "total_esquadra": escala["total"],
                               "previsoes_ativas": escala["previsoes_ativas"],
                               "achados": total_ach, "novos_na_base": novos, "por_tipo": por_tipo}
