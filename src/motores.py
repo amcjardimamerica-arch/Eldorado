@@ -520,14 +520,33 @@ def run() -> dict:
                          "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
                          "situacao": ("aguardando coleta local" if _aguarda_local(s, e) else "bloqueado" if b else "sem leitura ainda" if not s else
                                       "ativo — captando" if s.get("achados_total") else "ativo, sem achados")})
-    # ── MOTOR REGULAR: AGREGADORES DE EDITAIS (titular, 28/09) — indícios com o link da fonte oficial
+    # ── MOTORES INDEXADORES (titular, 02/10/2026): um motor por site, reunidos por metodologia em 7 famílias
+    # (substituem o antigo "motor-agregadores": CapitaAI, Farol e IDIS agora estão nas famílias sitemaps, APIs e feeds)
     try:
-        _ag = load_json(ROOT / "estado/agregadores/itens.json") if (ROOT / "estado/agregadores/itens.json").exists() else {}
-        _pf = _ag.get("por_fonte") or {}
-        plataformas.append({"id": "motor-agregadores", "nome": "Agregadores de editais — CapitaAI, Farol Cultural, IDIS", "tipo": "regular",
-                            "url": "https://capitaai.com.br/editais-abertos/para-ong", "dias": [], "ultima_leitura": _ag.get("em"),
-                            "achados": len(_ag.get("itens") or []), "diagnostico": {"por_fonte": _pf},
-                            "situacao": ("sem leitura ainda" if not _ag else "satisfatória — obtendo editais" if _ag.get("itens") else "ativo, sem achados")})
+        _cx = load_json(ROOT / "config/indexadores.json")
+        _ix = load_json(ROOT / "docs/dados/indexadores.json") if (ROOT / "docs/dados/indexadores.json").exists() else {}
+        _dx = load_json(ROOT / "estado/indexadores/diario.json") if (ROOT / "estado/indexadores/diario.json").exists() else {}
+        _pm = {m.get("id"): m for m in (_ix.get("motores") or [])}
+        _ps = _ix.get("sites") or []
+        for _mid, _m in (_cx.get("motores") or {}).items():
+            _sx = [x for x in _ps if x.get("motor") == _mid or _mid in ("idx-ponte-brasil", "idx-assistido") and x.get("rota") == {"idx-ponte-brasil": "ponte", "idx-assistido": "assistida"}[_mid]]
+            _st = _pm.get(_mid) or {}
+            _url = next((x.get("url") for x in _sx if x.get("url")), None) or next((x.get("url") or x.get("pagina") for x in (_cx.get("sites") or []) if x.get("motor") == _mid), None)
+            if _mid == "idx-assistido":
+                _url = "coleta-assistida.html"        # a fila e o botão "Capturar indícios" (GitHub Pages)
+            _falhas = [x for x in _sx if x.get("falhas_ultima") and not x.get("lidas_ultima") and x.get("rota") not in ("assistida", "delegado")]
+            plataformas.append({"id": _mid, "nome": _m.get("nome"), "tipo": "regular", "url": _url,
+                                "dias": _trinta_dias(_dx.get(_mid, {}), hoje), "ultima_leitura": _st.get("ultima_leitura"),
+                                "achados": _st.get("indicios_no_fluxo", 0),
+                                "diagnostico": {"metodo": _m.get("metodo"), "reune": _m.get("reune"), "delega": _m.get("delega"),
+                                                "sites": [{"id": x["id"], "nome": x.get("nome"), "rota": x.get("rota"), "ultima": x.get("ultima"),
+                                                           "no_fluxo": x.get("indicios_no_fluxo"), "falhas": x.get("falhas_ultima")} for x in _sx][:40],
+                                                "ponte": _ix.get("ponte") if _mid == "idx-ponte-brasil" else None},
+                                "situacao": ("coleta assistida — fila no painel" if _mid == "idx-assistido" else
+                                             "aguardando ponte ou coleta local (Brasil)" if _mid == "idx-ponte-brasil" and not (_ix.get("ponte") or {}).get("configurada") and not (_ix.get("ponte") or {}).get("ultima_coleta_brasil") else
+                                             "sem leitura ainda" if not _st.get("ultima_leitura") else
+                                             f"atenção: {len(_falhas)} site(s) sem leitura" if _falhas else
+                                             "satisfatória — obtendo editais" if _st.get("indicios_no_fluxo") else "ativo, sem achados")})
     except Exception:
         pass
     # ── PILOTO - INTERCEPTADOR como motor próprio (titular, 26/09): verificação de funcionamento e de resultado

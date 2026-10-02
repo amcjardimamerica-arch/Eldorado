@@ -45,6 +45,8 @@ def main():
         print(f"  {s['nome'][:50]:50s} achados {len(r['achados'])} · {(r.get('diagnostico') or {}).get('motivo_zero') or 'OK'}")
     est["ultima_coleta_local_br"] = {"em": now_iso(), "sensores": n, "achados": achados}
     write_json(ESTADO, est)
+    # 02/10: MOTORES INDEXADORES — os sites que recusam IP estrangeiro (rota "ponte") são lidos daqui, com o IP do Brasil
+    run([sys.executable, "-m", "src.indexadores", "rodada", "--rota", "ponte"], 1800)
     # 02/10 (titular): o Piloto - Interceptador trabalha a esteira de selos no IP do titular (bronze: Sonnet 5.5;
     # prata: Opus 5.5; esforço baixo). O resultado vai em estado/esteira/ e sobe junto no envio abaixo.
     run([sys.executable, "scripts/interceptador_local.py"], 3600)

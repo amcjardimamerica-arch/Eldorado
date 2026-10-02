@@ -1,0 +1,482 @@
+"""A rodada dos motores indexadores: quem roda agora, por qual rota, com que orçamento — e o que vira indício.
+
+Uma rodada (6 por dia na nuvem; mais as da coleta local no Brasil):
+  1. carrega o catálogo (config/indexadores.json) e o estado de cada site;
+  2. decide a ROTA de cada site (escada nuvem → ponte → assistida, com volta semanal à rota mais barata);
+  3. escolhe os sites DEVIDOS (cadência do site vencida ou trabalho pendente da rodada anterior), P1 primeiro;
+  4. lê cada um com o leitor da sua metodologia, dentro do orçamento de requisições e de tempo — o que não couber
+     fica para a próxima rodada, com o cursor guardado ("rodar várias vezes por dia até obter todos");
+  5. junta os indícios pela chave comum (link oficial; sem ele, título + prazo): o mesmo edital visto em vários
+     indexadores é UM indício com várias fontes;
+  6. grava o acervo, a entrada do fluxo (estado/agregadores/itens.json), a fila da coleta assistida, os ângulos de
+     busca do Piloto, o diário de cada família e o painel.
+"""
+from __future__ import annotations
+
+import json
+import os
+import re
+from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+from urllib.parse import urlsplit
+
+from . import extracao as X
+from . import ponte as _ponte
+from .leitores import LEITORES
+from .rede import Rede
+
+ROOT = Path(__file__).resolve().parents[2]
+CATALOGO = ROOT / "config/indexadores.json"
+SENSORES = ROOT / "config/sensores.json"
+PASTA = ROOT / "estado/indexadores"
+ESTADO = PASTA / "estado.json"
+ACERVO = PASTA / "indicios.json"
+FILA = PASTA / "fila_assistida.json"
+DIARIO = PASTA / "diario.json"
+ANGULOS = PASTA / "angulos_piloto.json"
+FLUXO = ROOT / "estado/agregadores/itens.json"
+PAINEL = ROOT / "docs/dados/indexadores.json"
+ESQUADRA = ROOT / "estado/esquadra.json"
+BRT = timezone(timedelta(hours=-3))
+PRIO = {"P1": 0, "P2": 1, "P3": 2}
+APLICA_BR = re.compile(r"brasil|brazil|am[eé]rica latina|latin america|latam|south america|am[eé]rica do sul|global|worldwide|"
+                       r"international|internacional|any country|all countries|todos os pa[ií]ses|open to all|sul global|global south|"
+                       r"developing countries|pa[ií]ses em desenvolvimento|ibero|lusofon|portuguese[- ]speaking|cplp", re.I)
+
+
+def _j(p: Path, padrao):
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return padrao
+
+
+def _gravar(p: Path, v, indent: int | None = 1) -> None:
+    p.parent.mkdir(parents=True, exist_ok=True)
+    tmp = p.with_suffix(p.suffix + ".tmp")
+    tmp.write_text(json.dumps(v, ensure_ascii=False, indent=indent) + "\n", encoding="utf-8")
+    tmp.replace(p)
+
+
+def agora_utc() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+# ------------------------------------------------------------------ catálogo e rotas
+def catalogo() -> dict:
+    return _j(CATALOGO, {"sites": [], "motores": {}, "limites": {}})
+
+
+def hosts_exige_brasil() -> set[str]:
+    return set((_j(SENSORES, {}).get("exige_brasil") or {}).get("dominios") or [])
+
+
+def _host(site: dict) -> str:
+    u = site.get("url") or (site.get("listas") or [""])[0]
+    return (urlsplit(u).hostname or "").lower()
+
+
+def rota_efetiva(site: dict, st: dict, hoje: date, exige: set[str], lim: dict) -> tuple[str, str]:
+    """(rota, motivo). Rotas: nuvem | ponte | assistida | delegado."""
+    if site.get("leitor") == "delegado":
+        return "delegado", f"lido pelo motor {site.get('delegado_a')}"
+    if site.get("leitor") == "assistido" or site.get("rota") == "assistida":
+        return "assistida", {"robots": "o robots.txt proíbe robôs", "javascript": "a página só abre com JavaScript",
+                             "bloqueio_http": "o site recusa leitura automática", "rota_a_levantar": "a rota ainda precisa ser levantada",
+                             "repete_prosas": "a página repete o widget do Prosas"}.get(site.get("motivo"), site.get("motivo") or "coleta assistida")
+    base = site.get("rota", "nuvem")
+    if base == "nuvem" and _host(site) in exige:
+        base = "ponte"
+    esc = st.get("rota")
+    if esc and esc != base:
+        desde = st.get("rota_desde") or hoje.isoformat()
+        espera = 30 if esc == "assistida_robots" else int(lim.get("dias_para_tentar_rota_mais_barata", 7))
+        if (hoje - date.fromisoformat(desde[:10])).days >= espera:
+            return base, f"nova tentativa pela rota {base} (escalado para {esc} em {desde[:10]})"
+        return ("assistida" if esc == "assistida_robots" else esc), st.get("rota_motivo") or f"escalado para {esc}"
+    return base, ("o portal recusa IP estrangeiro (config/sensores.json → exige_brasil)" if base == "ponte" and site.get("rota", "nuvem") == "nuvem"
+                  else site.get("nota") or "")
+
+
+def devido(site: dict, st: dict, agora: datetime) -> bool:
+    if st.get("pendente"):
+        return True
+    ult = st.get("ultima")
+    if not ult:
+        return True
+    try:
+        u = datetime.fromisoformat(ult)
+    except ValueError:
+        return True
+    return agora - u >= timedelta(hours=float(site.get("cadencia_horas") or 6)) - timedelta(minutes=20)
+
+
+def _escalar(site: dict, st: dict, res: dict, rota: str, hoje: date, lim: dict) -> None:
+    """Escada de rotas a partir do resultado da leitura."""
+    tipos = [f.get("tipo") for f in res.get("falhas") or []]
+    leu = res.get("lidas", 0) > 0
+    if "robots" in tipos and not leu:
+        st.update(rota="assistida_robots", rota_desde=hoje.isoformat(), rota_motivo="o robots.txt proíbe robôs — coleta assistida")
+        return
+    if leu:
+        st["falhas_seguidas"] = 0
+        if st.get("rota") and rota == site.get("rota", "nuvem"):
+            st.pop("rota", None); st.pop("rota_desde", None); st.pop("rota_motivo", None)      # a rota barata voltou a funcionar
+        return
+    if "ponte_indisponivel" in tipos:
+        st.setdefault("aguardando_ponte_desde", hoje.isoformat())
+        return
+    if not tipos or "orcamento" in tipos:
+        return
+    st["falhas_seguidas"] = int(st.get("falhas_seguidas") or 0) + 1
+    if rota == "nuvem" and any(t in ("geo", "rede", "waf") for t in tipos) and st["falhas_seguidas"] >= int(lim.get("falhas_para_ponte", 2)):
+        st.update(rota="ponte", rota_desde=hoje.isoformat(), falhas_seguidas=0,
+                  rota_motivo=f"{st.get('falhas_seguidas_total', 0) + int(lim.get('falhas_para_ponte', 2))} falhas pela nuvem ({', '.join(sorted(set(tipos)))}) — ponte Brasil")
+    elif rota == "ponte" and any(t in ("geo", "waf", "http") for t in tipos) and st["falhas_seguidas"] >= int(lim.get("falhas_para_assistida", 3)):
+        st.update(rota="assistida", rota_desde=hoje.isoformat(), falhas_seguidas=0,
+                  rota_motivo=f"bloqueado também pelo IP brasileiro ({', '.join(sorted(set(tipos)))}) — coleta assistida no navegador")
+
+
+# ------------------------------------------------------------------ acervo de indícios
+def _fundir(acervo: dict, novos: list[dict], hoje: str) -> tuple[int, int]:
+    itens, chaves = acervo.setdefault("itens", {}), acervo.setdefault("chaves", {})
+    n_novos = n_atual = 0
+    for it in novos:
+        ks = X.chaves(it)
+        k = ks[0]
+        alvo = next((chaves[x] for x in ks if chaves.get(x) in itens), None) or (it["id"] if it["id"] in itens else None)
+        if alvo and alvo in itens:
+            a = itens[alvo]
+            for campo, v in it.items():
+                if campo in ("id", "primeiro_visto", "fontes", "paginas"):
+                    continue
+                if v not in (None, "", []) and (a.get(campo) in (None, "", []) or campo in ("visto_em", "prazo", "perfil", "perfil_motivo", "rota")):
+                    a[campo] = v
+            a["fontes"] = sorted(set(a.get("fontes") or [a.get("fonte")]) | {it["fonte"]})
+            pags = list(dict.fromkeys((a.get("paginas") or [a.get("pagina_agregador")]) + [it.get("pagina_agregador")]))
+            a["paginas"] = [p for p in pags if p][:8]
+            for x in ks + X.chaves(a):
+                chaves[x] = alvo
+            n_atual += 1
+        else:
+            it = dict(it)
+            it["primeiro_visto"] = hoje
+            it["fontes"] = [it["fonte"]]
+            it["paginas"] = [it.get("pagina_agregador")]
+            itens[it["id"]] = it
+            for x in ks:
+                chaves[x] = it["id"]
+            n_novos += 1
+    return n_novos, n_atual
+
+
+def _podar_acervo(acervo: dict, hoje: date, lim: dict) -> int:
+    corte_enc = (hoje - timedelta(days=int(lim.get("dias_guardar_encerrados", 30)))).isoformat()
+    corte_sem = (hoje - timedelta(days=90)).isoformat()
+    itens = acervo.get("itens") or {}
+    fora = [i for i, x in itens.items() if (x.get("prazo") and x["prazo"] < corte_enc) or (not x.get("prazo") and (x.get("visto_em") or "") < corte_sem)]
+    for i in fora:
+        del itens[i]
+    validos = set(itens)
+    acervo["chaves"] = {k: v for k, v in (acervo.get("chaves") or {}).items() if v in validos}
+    return len(fora)
+
+
+def aplica_brasil(x: dict, sites: dict) -> bool:
+    if (x.get("pais") or "BR") == "BR":
+        return True
+    if any((sites.get(f) or {}).get("internacional") for f in x.get("fontes") or [x.get("fonte")]):
+        return True                                     # indexador já filtrado para o Brasil (fundsforNGOs tag Brasil, IAF)
+    return bool(APLICA_BR.search(f"{x.get('titulo') or ''} {x.get('resumo') or ''}"))
+
+
+def entrada_do_fluxo(acervo: dict, sites: dict, hoje: date, lim: dict) -> tuple[list[dict], dict]:
+    """O que segue para o fluxo das oportunidades. Fica de fora (e continua no acervo, auditável): prazo vencido,
+    público claramente fora do perfil de OSC, quarentena e chamada estrangeira que não se aplica ao Brasil."""
+    h = hoje.isoformat()
+    corte_sem = (hoje - timedelta(days=int(lim.get("dias_sem_prazo_no_fluxo", 60)))).isoformat()
+    motivos = {"prazo_vencido": 0, "fora_do_perfil": 0, "quarentena": 0, "nao_se_aplica_ao_brasil": 0, "sem_prazo_antigo": 0, "acima_do_limite": 0}
+    vivos = []
+    for x in (acervo.get("itens") or {}).values():
+        if x.get("prazo") and x["prazo"] < h:
+            motivos["prazo_vencido"] += 1; continue
+        if not x.get("prazo") and (x.get("publicado") or x.get("primeiro_visto") or h) < corte_sem:
+            motivos["sem_prazo_antigo"] += 1; continue
+        if x.get("quarentena"):
+            motivos["quarentena"] += 1; continue
+        if x.get("perfil") == "fora":
+            motivos["fora_do_perfil"] += 1; continue
+        if not aplica_brasil(x, sites):
+            motivos["nao_se_aplica_ao_brasil"] += 1; continue
+        vivos.append(x)
+    vivos.sort(key=lambda x: (0 if x.get("uf") == "GO" else 1, 0 if (x.get("pais") or "BR") == "BR" else 1, x.get("prazo") or "9999"))
+    mx = int(lim.get("indicios_no_fluxo_max", 1500))
+    motivos["acima_do_limite"] = max(0, len(vivos) - mx)
+    campos = ("id", "fonte", "titulo", "pagina_agregador", "link_oficial", "prazo", "uf", "visto_em", "primeiro_visto", "publicado",
+              "financiador", "valor", "areas", "pais", "motor", "fontes", "perfil", "tipo", "rota")
+    return [{k: x.get(k) for k in campos if x.get(k) not in (None, "", [])} for x in vivos[:mx]], motivos
+
+
+# ------------------------------------------------------------------ fila assistida e ângulos do Piloto
+def montar_fila(cat: dict, est: dict, rotas: dict, hoje: date) -> dict:
+    sites = {s["id"]: s for s in cat.get("sites") or []}
+    itens = []
+    for sid, (rota, motivo) in rotas.items():
+        s, st = sites[sid], (est.get("sites") or {}).get(sid) or {}
+        espera = st.get("aguardando_ponte_desde")
+        esperando = rota == "ponte" and espera and (hoje - date.fromisoformat(espera)).days >= 3
+        if rota != "assistida" and not esperando:
+            continue
+        if s.get("mesmo_que"):
+            continue
+        cap = (est.get("capturas") or {}).get(sid) or {}
+        como = ("levantar a rota: abrir o site, achar a página de editais e registrá-la no catálogo"
+                if s.get("motivo") == "rota_a_levantar" else
+                "abrir a página e clicar no botão 'Capturar indícios' (docs/coleta-assistida.html), depois enviar o arquivo")
+        itens.append({"id": sid, "nome": s.get("nome"), "abrir": s.get("url") or (s.get("listas") or [None])[0],
+                      "motivo": motivo if rota == "assistida" else f"aguardando a ponte Brasil desde {espera}: leia pelo navegador enquanto isso",
+                      "como": como, "prioridade": s.get("prioridade", "P3"), "rota_indireta": s.get("rota_indireta"),
+                      "ultima_captura": cap.get("em"), "itens_ultima_captura": cap.get("itens")})
+    itens.sort(key=lambda x: (PRIO.get(x["prioridade"], 3), x.get("ultima_captura") or ""))
+    return {"em": agora_utc().isoformat(timespec="seconds"),
+            "regra": "sites que o robô não pode ler (robots.txt, JavaScript, bloqueio que nem o IP brasileiro passa) ou cuja rota ainda "
+                     "precisa ser levantada. O titular — ou o Claude no Chrome — abre cada página e captura o que ela mostra; o arquivo vai "
+                     "para entrada_manual/indexadores/ e vira indício na próxima rodada. Enquanto isso, a rota indireta e o Piloto cobrem.",
+            "itens": itens}
+
+
+def angulos_piloto(cat: dict, rotas: dict) -> list[dict]:
+    out = []
+    for s in cat.get("sites") or []:
+        if rotas.get(s["id"], ("",))[0] == "assistida" and s.get("angulo_piloto"):
+            out.append({"id": f"idx-{s['id']}", "nivel": "internacional" if s.get("internacional") else "nacional", "alvo": "plataforma",
+                        "pergunta": s["angulo_piloto"], "origem": "motores indexadores — site fechado a robôs"})
+    return out
+
+
+# ------------------------------------------------------------------ diário (calendário do painel)
+def _registrar_dia(diario: dict, motor: str, hoje: str, novos: int, falhas: int, sites_ok: int, exemplo: dict | None) -> None:
+    d = diario.setdefault(motor, {}).setdefault(hoje, {"achados": 0, "falhas": 0, "rodadas": 0})
+    d["achados"] = int(d.get("achados") or 0) + novos
+    d["falhas"] = falhas
+    d["rodadas"] = int(d.get("rodadas") or 0) + 1
+    d["cor"] = "vermelho" if (falhas and not sites_ok) else ("amarelo" if d["achados"] else "azul")
+    if exemplo and novos:
+        d["trecho"], d["url"] = X.limpar(exemplo.get("titulo"), 160), exemplo.get("link_oficial") or exemplo.get("pagina_agregador")
+    corte = (date.fromisoformat(hoje) - timedelta(days=45)).isoformat()
+    for k in [k for k in diario[motor] if k < corte]:
+        del diario[motor][k]
+
+
+# ------------------------------------------------------------------ a rodada
+def rodada(motores: list[str] | None = None, sites: list[str] | None = None, rota: str | None = None,
+           agora: datetime | None = None, rede: Rede | None = None, gravar: bool = True, forcar: bool = False,
+           extra: dict | None = None, delta_em: Path | None = None) -> dict:
+    """Lê os sites devidos e devolve o resumo. O que a rodada produziu (itens, estado dos sites lidos, diário) vira um
+    DELTA que é aplicado sobre os arquivos do repositório — na nuvem, o fluxo reaplica o mesmo delta sobre o main mais
+    recente antes de gravar, para não apagar o que a coleta no Brasil ou a coleta assistida gravaram no meio tempo."""
+    cat = catalogo()
+    lim = cat.get("limites") or {}
+    agora = agora or agora_utc()
+    hoje = agora.astimezone(BRT).date()
+    est = _j(ESTADO, {"sites": {}})
+    est.setdefault("sites", {})
+    exige = hosts_exige_brasil()
+    local = _ponte.local_brasil()
+    rota = rota or ("ponte" if local else "nuvem")
+    ag = cat.get("agente") or {}
+    robots, http_cache = dict(est.get("robots") or {}), dict(est.get("http_cache") or {})
+    rede = rede or Rede(token=ag.get("token_robots", "EldoradoIndexadores"), user_agent=ag.get("user_agent", "EldoradoIndexadores/1.0"),
+                        pausa_padrao=float(lim.get("pausa_padrao_s", 1.5)), timeout=int(lim.get("timeout_s", 25)),
+                        bytes_max=int(lim.get("bytes_max", 4_000_000)), orcamento=int(lim.get("requisicoes_por_rodada", 700)),
+                        tempo_max=float(lim.get("tempo_max_rodada_s", 1500)), local_brasil=local,
+                        robots_cache=robots, http_cache=http_cache)
+    ctx_base = {"hoje": hoje, "limites": lim, "estado_motores": _j(ESQUADRA, {})}
+    por_id = {s["id"]: s for s in cat.get("sites") or []}
+    rotas = {sid: rota_efetiva(s, est["sites"].get(sid) or {}, hoje, exige, lim) for sid, s in por_id.items()}
+    delta = {"versao": 1, "em": agora.isoformat(timespec="seconds"), "hoje": hoje.isoformat(), "rota": rota, "local_brasil": local,
+             "itens": list((extra or {}).get("itens") or []), "sites": {}, "diario": {},
+             "importados": dict((extra or {}).get("importados") or {}), "capturas": dict((extra or {}).get("capturas") or {})}
+
+    def elegivel(sid):
+        r = rotas[sid][0]
+        if r == "assistida":
+            return False
+        if r == "delegado":
+            return True
+        if rota == "ponte":                          # coleta no Brasil: só o que precisa de IP brasileiro
+            return r == "ponte"
+        return r == "nuvem" or (r == "ponte" and _ponte.configurada())
+    if rota == "nuvem" and not _ponte.configurada():
+        for sid, (r, _m) in rotas.items():           # sem ponte na nuvem: o site espera a coleta no Brasil (e, após 3 dias, o navegador)
+            if r == "ponte" and not (est["sites"].get(sid) or {}).get("aguardando_ponte_desde"):
+                delta["sites"][sid] = dict(est["sites"].get(sid) or {}, aguardando_ponte_desde=hoje.isoformat())
+    fila = [s for sid, s in por_id.items() if elegivel(sid) and (not motores or s.get("motor") in motores)
+            and (not sites or sid in sites) and (forcar or devido(s, est["sites"].get(sid) or {}, agora))]
+    fila.sort(key=lambda s: (PRIO.get(s.get("prioridade"), 3), 0 if not (est["sites"].get(s["id"]) or {}).get("ultima") else 1,
+                             (est["sites"].get(s["id"]) or {}).get("ultima") or ""))
+    resumo = {"em": delta["em"], "rota_da_execucao": rota, "local_brasil": local, "ponte_configurada": _ponte.configurada(),
+              "sites": {}, "lidos": 0}
+    por_motor: dict = {}
+    for s in fila:
+        sid = s["id"]
+        st = dict(est["sites"].get(sid) or {})
+        r_site, _motivo = rotas[sid]
+        if rede.esgotado():
+            st["pendente"] = True
+            delta["sites"][sid] = st
+            resumo["sites"][sid] = {"adiado": "orçamento da rodada esgotado"}
+            continue
+        ctx = dict(ctx_base, via=("ponte" if r_site == "ponte" else "direta"), rota=r_site)
+        try:
+            res = LEITORES[s["leitor"]](s, rede, st, ctx)
+        except Exception as e:                       # um site quebrado não derruba a rodada
+            res = {"itens": [], "falhas": [{"url": s.get("url"), "tipo": "erro", "detalhe": f"{type(e).__name__}: {str(e)[:160]}"}], "lidas": 0, "diag": {}}
+        if not res.get("delegado"):
+            _escalar(s, st, res, r_site, hoje, lim)
+        st.update(ultima=agora.isoformat(timespec="seconds"), pendente=bool(res.get("pendente")), lidas_ultima=res.get("lidas", 0),
+                  itens_ultima=len(res.get("itens") or []), falhas_ultima=(res.get("falhas") or [])[:5],
+                  diag=res.get("diag") or {}, rota_ultima=r_site)
+        if res.get("lidas"):
+            st.pop("aguardando_ponte_desde", None)
+        delta["sites"][sid] = st
+        delta["itens"].extend(res.get("itens") or [])
+        resumo["lidos"] += 1
+        resumo["sites"][sid] = {"rota": r_site, "lidas": res.get("lidas", 0), "itens": len(res.get("itens") or []),
+                                "falhas": [f"{f.get('tipo')}: {f.get('detalhe')}" for f in (res.get("falhas") or [])[:3]],
+                                "pendente": bool(res.get("pendente"))}
+        m = por_motor.setdefault(s.get("motor"), {"itens": [], "falhas": 0, "ok": 0})
+        m["itens"].extend(x["id"] for x in res.get("itens") or [])
+        if res.get("falhas") and not res.get("lidas") and not res.get("delegado"):
+            m["falhas"] += 1
+        elif res.get("lidas") or res.get("delegado"):
+            m["ok"] += 1
+    delta["diario"] = {mid: {"itens": m["itens"], "falhas": m["falhas"], "ok": m["ok"]} for mid, m in por_motor.items()}
+    delta["robots"], delta["http_cache"] = robots, http_cache
+    if rota == "ponte" or local:
+        delta["ultima_coleta_brasil"] = {"em": delta["em"], "sites": len(fila)}
+    resumo["requisicoes"] = rede.usadas
+    if delta_em:
+        _gravar(Path(delta_em), delta, indent=None)
+    resumo.update(aplicar(delta, gravar=gravar))
+    return resumo
+
+
+def aplicar(delta: dict, gravar: bool = True) -> dict:
+    """Aplica o delta de uma rodada sobre os arquivos ATUAIS do repositório e regrava as saídas."""
+    cat = catalogo()
+    lim = cat.get("limites") or {}
+    hoje = date.fromisoformat(delta.get("hoje") or agora_utc().astimezone(BRT).date().isoformat())
+    est = _j(ESTADO, {"sites": {}})
+    est.setdefault("sites", {})
+    for sid, st in (delta.get("sites") or {}).items():
+        est["sites"][sid] = st
+    est.setdefault("robots", {}).update(delta.get("robots") or {})
+    hc = est.setdefault("http_cache", {}); hc.update(delta.get("http_cache") or {})
+    if len(hc) > 3000:
+        for k in list(hc)[: len(hc) - 3000]:
+            del hc[k]
+    est.setdefault("importados", {}).update(delta.get("importados") or {})
+    est.setdefault("capturas", {}).update(delta.get("capturas") or {})
+    if delta.get("ultima_coleta_brasil"):
+        est["ultima_coleta_brasil"] = delta["ultima_coleta_brasil"]
+    acervo = _j(ACERVO, {"itens": {}, "chaves": {}})
+    if not acervo.get("itens"):
+        _migrar_antigo(acervo, hoje)
+    ids_antes = set(acervo.get("itens") or {})
+    n, a = _fundir(acervo, delta.get("itens") or [], hoje.isoformat())
+    diario = _j(DIARIO, {})
+    for mid, d in (delta.get("diario") or {}).items():
+        novos = [i for i in dict.fromkeys(d.get("itens") or []) if i not in ids_antes]
+        ex = next((acervo["itens"].get(i) for i in novos if (acervo["itens"].get(i) or {}).get("link_oficial")), None) or \
+            (acervo["itens"].get(novos[0]) if novos else None)
+        _registrar_dia(diario, mid, hoje.isoformat(), len(novos), int(d.get("falhas") or 0), int(d.get("ok") or 0), ex)
+    podados = _podar_acervo(acervo, hoje, lim)
+    por_id = {s["id"]: s for s in cat.get("sites") or []}
+    exige = hosts_exige_brasil()
+    rotas = {sid: rota_efetiva(s, est["sites"].get(sid) or {}, hoje, exige, lim) for sid, s in por_id.items()}
+    entrada, fora = entrada_do_fluxo(acervo, por_id, hoje, lim)
+    if gravar:
+        est["em"] = delta.get("em") or agora_utc().isoformat(timespec="seconds")
+        _gravar(ESTADO, est)
+        _gravar(ACERVO, acervo)
+        _gravar(DIARIO, diario)
+        _gravar(FILA, montar_fila(cat, est, rotas, hoje))
+        _gravar(ANGULOS, {"em": est["em"], "angulos": angulos_piloto(cat, rotas)})
+        _gravar(FLUXO, {"em": est["em"], "regra": "INDÍCIOS dos motores indexadores (config/indexadores.json): link da fonte oficial quando o "
+                                                  "indexador o traz; o prazo é pista até a fonte oficial confirmar.",
+                        "por_fonte": _por_fonte(entrada), "fora_do_fluxo": fora, "itens": entrada})
+        _gravar(PAINEL, painel(cat, est, acervo, rotas, entrada, hoje), indent=None)
+    return {"novos": n, "atualizados": a, "podados": podados, "no_fluxo": len(entrada), "fora_do_fluxo": fora,
+            "acervo": len(acervo.get("itens") or {})}
+
+
+def _migrar_antigo(acervo: dict, hoje: date) -> None:
+    """Primeira rodada: os itens do antigo motor de agregadores (CapitaAI, Farol, IDIS) entram no acervo com o mesmo
+    id e a data em que foram vistos pela primeira vez — validações já registradas continuam valendo."""
+    antigo = _j(FLUXO, {}) or {}
+    nomes = {"capitaai": "idx-sitemaps", "farolcultural": "idx-apis", "idis": "idx-feeds"}
+    velhos = []
+    for x in antigo.get("itens") or []:
+        if x.get("motor") or not x.get("id"):
+            continue
+        it = dict(x, motor=nomes.get(x.get("fonte")), pais=x.get("pais") or "BR", rota="nuvem",
+                  perfil=X.perfil(x.get("titulo") or "")[0], areas=["cultura"] if x.get("fonte") == "farolcultural" else [])
+        it["chave"] = X.chave(it)
+        velhos.append(it)
+    _fundir(acervo, velhos, hoje.isoformat())
+    for x in velhos:
+        a = acervo["itens"].get(x["id"])
+        if a and x.get("primeiro_visto"):
+            a["primeiro_visto"] = x["primeiro_visto"]
+
+
+def _por_fonte(entrada: list[dict]) -> dict:
+    out: dict = {}
+    for x in entrada:
+        for f in x.get("fontes") or [x.get("fonte")]:
+            d = out.setdefault(f, {"lidos": 0, "com_link_oficial": 0, "com_prazo": 0})
+            d["lidos"] += 1
+            d["com_link_oficial"] += 1 if x.get("link_oficial") else 0
+            d["com_prazo"] += 1 if x.get("prazo") else 0
+    return out
+
+
+# ------------------------------------------------------------------ painel
+def painel(cat: dict, est: dict, acervo: dict, rotas: dict, entrada: list[dict], hoje: date) -> dict:
+    no_fluxo: dict = {}
+    for x in entrada:
+        for f in x.get("fontes") or [x.get("fonte")]:
+            no_fluxo[f] = no_fluxo.get(f, 0) + 1
+    ativos: dict = {}
+    for x in (acervo.get("itens") or {}).values():
+        for f in x.get("fontes") or [x.get("fonte")]:
+            ativos[f] = ativos.get(f, 0) + 1
+    sites = []
+    for s in cat.get("sites") or []:
+        st = (est.get("sites") or {}).get(s["id"]) or {}
+        r, motivo = rotas.get(s["id"], ("nuvem", ""))
+        sites.append({"id": s["id"], "nome": s.get("nome"), "motor": s.get("motor"), "leitor": s.get("leitor"), "url": s.get("pagina") or s.get("url") or (s.get("listas") or [None])[0],
+                      "rota": r, "rota_motivo": motivo, "prioridade": s.get("prioridade"), "cadencia_horas": s.get("cadencia_horas"),
+                      "ultima": st.get("ultima"), "lidas_ultima": st.get("lidas_ultima"), "novos_ultima": st.get("novos_ultima"),
+                      "falhas_ultima": [f"{f.get('tipo')}: {f.get('detalhe')}" for f in (st.get("falhas_ultima") or [])][:3],
+                      "pendente": st.get("pendente"), "indicios_no_acervo": ativos.get(s["id"], 0), "indicios_no_fluxo": no_fluxo.get(s["id"], 0),
+                      "legado": s.get("legado"), "delegado_a": s.get("delegado_a"), "diag": st.get("diag")})
+    motores = []
+    for mid, m in (cat.get("motores") or {}).items():
+        ss = [x for x in sites if x["motor"] == mid]
+        ult = max((x["ultima"] for x in ss if x.get("ultima")), default=None)
+        motores.append({"id": mid, "nome": m.get("nome"), "metodo": m.get("metodo"), "horarios_brt": m.get("horarios_brt"),
+                        "reune": m.get("reune"), "delega": m.get("delega"), "sites": len(ss), "ultima_leitura": ult,
+                        "indicios_no_fluxo": sum(x["indicios_no_fluxo"] for x in ss),
+                        "com_falha": sum(1 for x in ss if x["falhas_ultima"] and not x.get("lidas_ultima"))})
+    # sites cuja rota foi escalada para a ponte ou a assistida aparecem também nesses motores
+    por_mid = {m["id"]: m for m in motores}
+    for x in sites:
+        for r, mid in (("ponte", "idx-ponte-brasil"), ("assistida", "idx-assistido")):
+            if x["rota"] == r and x["motor"] != mid and mid in por_mid:
+                por_mid[mid].setdefault("escalados", []).append(x["id"])
+    return {"em": est.get("em"), "regra": cat.get("regra"), "motores": motores, "sites": sites,
+            "ponte": {"configurada": _ponte.configurada(), "ultima_coleta_brasil": est.get("ultima_coleta_brasil")},
+            "acervo": len(acervo.get("itens") or {}), "no_fluxo": len(entrada), "descartados": cat.get("descartados"),
+            "fila_assistida": montar_fila(cat, est, rotas, hoje)["itens"]}

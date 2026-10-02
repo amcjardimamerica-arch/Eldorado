@@ -112,6 +112,27 @@ python -m src.rota_monitoramento
 python scripts/cobertura_catalogo.py
 ```
 
+## Motores indexadores — sites que reúnem editais (02/10/2026)
+
+Catálogo e parâmetros: `config/indexadores.json` · código: `src/indexadores/` · parecer: `docs/pareceres/motores-indexadores.md`.
+
+```bash
+python -m src.indexadores                     # importa capturas assistidas + uma rodada (o que estiver devido)
+python -m src.indexadores rodada --motor idx-apis --forcar   # uma família, ignorando a cadência
+python -m src.indexadores rodada --rota ponte # só os sites que precisam de IP brasileiro (rodar no Brasil)
+python -m src.indexadores status              # resumo do painel
+python -m src.indexadores ponte-dominios      # lista de domínios para o ponte.php
+```
+
+- Fluxo "16 · Motores indexadores": 6 rodadas por dia + a cada captura enviada para `entrada_manual/indexadores/`.
+- Saída para o fluxo: `estado/agregadores/itens.json` (indícios; prazo é pista). Acervo completo, estado, fila e
+  diário: `estado/indexadores/`. Painel: `docs/dados/indexadores.json`; coleta assistida: `docs/coleta-assistida.html`.
+- Site novo = uma linha no catálogo com `leitor` (feed, wordpress, farol_api, mapas_culturais, transferegov_api,
+  sitemap_jsonld, html_listagem, siconv_zip, delegado, assistido) e os parâmetros do site.
+- Ponte Brasil (sites que recusam IP estrangeiro): `ponte/LEIA-ME.md` — computador do titular
+  (`scripts/agendar_coleta_brasil.bat`), VM no Brasil (`scripts/instalar_vm_brasil.sh`) ou hospedagem
+  (`ponte/ponte.php` + segredos `ELDORADO_PONTE_URL` e `ELDORADO_PONTE_CHAVE`).
+
 ## Região Metropolitana de Goiânia
 
 `src/rmg_diarios.py` cobre os 21 municípios pelo diário oficial, com consultas

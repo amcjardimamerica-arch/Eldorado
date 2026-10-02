@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coleta assistida — Eldorado</title>
+<!-- Identidade visual: config/identidade_visual.json está AGUARDANDO_DESIGN_DE_REFERENCIA; esta página usa os mesmos
+     tokens provisórios do painel (docs/dashboard.html), só tons claros. -->
+<style>
+:root{--fundo:#FBFBFA;--cartao:#FFFFFF;--tinta:#23272E;--suave:#68707C;--linha:#E4E1D8;--marca:#1F5B99;--realce:#EEF3F9;--ok:#1E7E4B;--alerta:#B8860B}
+body{margin:0;background:var(--fundo);color:var(--tinta);font:14.5px/1.55 system-ui,-apple-system,sans-serif}
+main{max-width:960px;margin:0 auto;padding:24px 16px 48px}
+h1{font-family:Georgia,serif;color:var(--marca);font-size:24px;margin:0 0 4px}
+h2{font-family:Georgia,serif;font-size:17px;margin:28px 0 8px;border-bottom:2px solid var(--linha);padding-bottom:4px}
+.sub{color:var(--suave);margin:0 0 18px}
+.cartao{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:14px 16px;margin:10px 0}
+ol li{margin:6px 0}
+.botao{display:inline-block;background:var(--marca);color:#fff;text-decoration:none;font-weight:700;padding:10px 16px;border-radius:8px;cursor:grab}
+.botao.claro{background:var(--realce);color:var(--marca);border:1px solid var(--linha)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--linha);vertical-align:top}
+th{color:var(--suave);font-weight:600}
+.p1{color:#B03A2E;font-weight:700}.p2{color:var(--alerta);font-weight:700}.p3{color:var(--suave)}
+.nota{color:var(--suave);font-size:13px}
+code{background:var(--realce);padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<main>
+<h1>Coleta assistida</h1>
+<p class="sub">Sites que o robô não pode ler — o robots.txt proíbe, a página só abre com JavaScript ou o site recusa até o IP brasileiro.
+Você abre a página no seu navegador e guarda o que ela mostra. Nada é burlado: é você lendo, no ritmo de uma pessoa.</p>
+
+<div class="cartao">
+<b>1. Instale o botão (uma vez só).</b> Arraste o botão abaixo para a barra de favoritos do Chrome.
+<p><a id="botao" class="botao" href="#" title="arraste para a barra de favoritos">Capturar indícios — Eldorado</a></p>
+<span class="nota">Se a barra de favoritos não aparece: Ctrl+Shift+B (Windows) ou Cmd+Shift+B (Mac).</span>
+</div>
+
+<div class="cartao">
+<b>2. Para cada site da lista abaixo:</b>
+<ol>
+<li>clique em <b>abrir</b>; navegue pelas páginas de editais (no Prosas, passe as páginas da lista);</li>
+<li>em cada página, clique no favorito <b>Capturar indícios — Eldorado</b>. Um quadro mostra quantos editais foram guardados;</li>
+<li>no fim, clique em <b>Baixar arquivo</b> no quadro. O arquivo se chama <code>indicios-site-data.json</code>.</li>
+</ol>
+<span class="nota">O Chrome salva na pasta escolhida em Configurações → Downloads. Para salvar na Área de Trabalho, escolha a Área de Trabalho
+ali (ou ligue "Perguntar onde salvar cada arquivo").</span>
+</div>
+
+<div class="cartao">
+<b>3. Envie o arquivo.</b> Abra a página de envio, arraste o arquivo e clique em <i>Commit changes</i>. Em poucos minutos o motor
+importa os editais como indícios, e o Interceptador vai comprovar cada um na fonte oficial.
+<p><a class="botao claro" href="https://github.com/amcjardimamerica-arch/Eldorado/upload/main/entrada_manual/indexadores" target="_blank" rel="noopener">Abrir a página de envio (GitHub)</a></p>
+<span class="nota">Pelo Claude no Chrome: peça "faça a coleta assistida do Eldorado" — o roteiro está em docs/indexadores/PROMPT-COLETA-ASSISTIDA.md.</span>
+</div>
+
+<h2>Fila de hoje</h2>
+<div class="cartao"><table id="fila"><thead><tr><th>Site</th><th>Por que é assistida</th><th>O que fazer</th><th>Última captura</th></tr></thead>
+<tbody><tr><td colspan="4" class="nota">carregando…</td></tr></tbody></table>
+<p class="nota" id="em"></p></div>
+
+<script type="text/plain" id="captura">
+(function(){
+var LS='eldorado-indicios-v1',RX=/edital|chamad|chamamento|sele[cç][aã]o|pr[eê]mio|inscri|credenciamento|fomento|grant|call for|funding/i;
+var itens=[];function add(o){if(o&&o.titulo&&o.url){o.titulo=String(o.titulo).replace(/\s+/g,' ').trim().slice(0,300);itens.push(o);}}
+try{var nd=JSON.parse(document.getElementById('__NEXT_DATA__').textContent);var rs=((nd.props||{}).pageProps||{}).responses||[];
+rs.forEach(function(r){var inc={};(r.included||[]).forEach(function(x){inc[x.type+':'+x.id]=x.attributes||{};});
+(r.data||[]).forEach(function(d){var a=d.attributes||{},iv=((d.relationships||{}).incentivador||{}).data;
+add({titulo:a.nome,url:'https://prosas.com.br/editais/'+(a.id||d.id),prazo:String(a.data_final_inscricoes||a.encerramento_das_inscricoes||'').slice(0,10)||null,
+financiador:iv?(inc['incentivador:'+iv.id]||{}).nome_fantasia:(a.nome_empresa||null),continuo:a.prazo==='continuo'});});});}catch(e){}
+document.querySelectorAll('script[type="application/ld+json"]').forEach(function(s){try{var j=JSON.parse(s.textContent),p=[].concat(j);
+while(p.length){var x=p.shift();if(!x||typeof x!=='object')continue;if(Array.isArray(x['@graph']))p=p.concat(x['@graph']);var t=[].concat(x['@type']||[]);
+if(t.indexOf('Event')>=0)add({titulo:x.name,url:x.url||location.href,prazo:String(x.endDate||'').slice(0,10)||null,financiador:(x.organizer||{}).name||null,oficial:typeof x.sameAs==='string'?x.sameAs:null});
+if(t.indexOf('ItemList')>=0)(x.itemListElement||[]).forEach(function(e){add({titulo:e.name,url:e.url||(e.item||{}).url});});}}catch(e){}});
+document.querySelectorAll('a[href]').forEach(function(a){var t=(a.innerText||'').replace(/\s+/g,' ').trim();if(t.length<12||!RX.test(t+' '+a.href))return;
+if(/login|cadastro|facebook|instagram|whatsapp|linkedin|twitter|youtube|mailto:|javascript:/i.test(a.href))return;
+var b=((a.closest('li,article,tr,section,div')||a).innerText||'').replace(/\s+/g,' ');var m=b.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+add({titulo:t,url:a.href,prazo:m?m[3]+'-'+m[2]+'-'+m[1]:null,texto:b.slice(0,400)});});
+var acc={};try{acc=JSON.parse(localStorage.getItem(LS)||'{}');}catch(e){}
+var vistos={},pag={url:location.href,titulo:document.title,host:location.hostname,capturado_em:new Date().toISOString(),itens:[]};
+itens.forEach(function(i){var k=String(i.url).split('#')[0];if(!vistos[k]){vistos[k]=1;pag.itens.push(i);}});
+acc[location.href]=pag;try{localStorage.setItem(LS,JSON.stringify(acc));}catch(e){}
+var paginas=Object.keys(acc).map(function(k){return acc[k];}),total=paginas.reduce(function(n,p){return n+p.itens.length;},0);
+var dado={eldorado:'indicios-v1',capturado_em:new Date().toISOString(),paginas:paginas};
+var q=document.getElementById('eldorado-quadro');if(q)q.remove();q=document.createElement('div');q.id='eldorado-quadro';
+q.style.cssText='position:fixed;z-index:2147483647;right:16px;bottom:16px;background:#fff;color:#23272E;border:2px solid #1F5B99;border-radius:10px;padding:12px 14px;font:14px system-ui,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.15);max-width:320px';
+q.innerHTML='<b>Eldorado — captura</b><br>Nesta página: '+pag.itens.length+' item(ns).<br>Guardados neste site: <b>'+total+'</b> em '+paginas.length+' página(s).<br>';
+function bt(r,f){var x=document.createElement('button');x.textContent=r;x.style.cssText='margin:8px 6px 0 0;padding:6px 10px;border:1px solid #1F5B99;border-radius:6px;background:#EEF3F9;color:#1F5B99;font-weight:700;cursor:pointer';x.onclick=f;q.appendChild(x);}
+bt('Baixar arquivo',function(){var bl=new Blob([JSON.stringify(dado,null,1)],{type:'application/json'}),a=document.createElement('a');
+a.href=URL.createObjectURL(bl);a.download='indicios-'+location.hostname.replace(/^www\./,'')+'-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();});
+bt('Limpar',function(){try{localStorage.removeItem(LS);}catch(e){}q.remove();});bt('Fechar',function(){q.remove();});
+document.body.appendChild(q);})();
+</script>
+<script>
+(function(){
+  var src = document.getElementById('captura').textContent.trim();
+  document.getElementById('botao').href = 'javascript:' + encodeURIComponent(src);
+  document.getElementById('botao').addEventListener('click', function(ev){ ev.preventDefault(); alert('Arraste este botão para a barra de favoritos; depois clique nele na página do site.'); });
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  fetch('dados/indexadores.json', {cache: 'no-store'}).then(function(r){ return r.json(); }).then(function(d){
+    var tb = document.querySelector('#fila tbody'), f = d.fila_assistida || [];
+    document.getElementById('em').textContent = 'Atualizado em ' + (d.em || '—') + ' · ' + (d.no_fluxo || 0) + ' indícios no fluxo · ponte Brasil ' + ((d.ponte || {}).configurada ? 'configurada' : 'não configurada');
+    if (!f.length) { tb.innerHTML = '<tr><td colspan="4" class="nota">Nada na fila. </td></tr>'; return; }
+    tb.innerHTML = f.map(function(x){
+      var ind = x.rota_indireta ? '<br><span class="nota">enquanto isso: <a href="' + esc(x.rota_indireta.pagina) + '" target="_blank" rel="noopener">rota indireta</a></span>' : '';
+      return '<tr><td><span class="' + esc(String(x.prioridade || 'P3').toLowerCase()) + '">' + esc(x.prioridade || 'P3') + '</span> · ' +
+        '<a href="' + esc(x.abrir) + '" target="_blank" rel="noopener"><b>' + esc(x.nome) + '</b></a></td><td>' + esc(x.motivo) + ind + '</td><td>' + esc(x.como) + '</td><td>' +
+        esc(x.ultima_captura ? String(x.ultima_captura).slice(0, 10) + ' · ' + (x.itens_ultima_captura || 0) + ' itens' : 'nunca') + '</td></tr>';
+    }).join('');
+  }).catch(function(){ document.querySelector('#fila tbody').innerHTML = '<tr><td colspan="4" class="nota">A fila aparece depois da primeira rodada dos motores indexadores.</td></tr>'; });
+})();
+</script>
+</main>
+</body>
+</html>

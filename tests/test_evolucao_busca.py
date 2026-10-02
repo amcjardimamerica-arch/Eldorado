@@ -75,7 +75,8 @@ class TesteLexicoQueAprende(unittest.TestCase):
         from src.aprendizado_lexico import termos_aprendidos
         pos, veto = termos_aprendidos()
         # 02/10: a OVG foi agregada ao motor Oportunidade Estaduais Governamentais de Goiás; a regra vale para qualquer plataforma ativa
-        s = [x for x in registro() if x["id"] == "plat-abcr"][0]   # 02/10: o Prosas foi pausado (robots.txt)
+        # 02/10: o Prosas foi pausado (robots.txt); a ABCR e o Observatório foram reunidos aos motores indexadores
+        s = next(x for x in registro() if x["id"].startswith("plat-"))
         t, v = lexico_camada1(s)
         self.assertTrue(set(pos[:10]) <= set(t)); self.assertTrue(set(veto[:10]) <= set(v))
         self.assertGreaterEqual(len(t), 80)
