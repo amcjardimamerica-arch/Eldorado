@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-03T16:56:41+00:00",
+  "em": "2026-10-03T17:11:32+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-03T16:44:47+00:00",
+  "ultimo_voo": "2026-10-03T16:59:39+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,83 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 212,
+    "missoes": 213,
     "validadas": 2,
     "parciais": 57,
-    "insuficientes": 153,
+    "insuficientes": 154,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 40,
-      "sim": 137
+      "sim": 138
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
     "tempo_medio_min": 11.5
   },
   "missoes": [
+    {
+      "em": "2026-10-03T16:59:39+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Anápolis — Após diversas ações, segundo ciclo da Lei Aldir Blanc registra mais de 300 inscrições em Anápolis — Goiás / Anápolis",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "pagina_oficial": "https://www.anapolis.go.gov.br/apos-diversas-acoes-segundo-ciclo-da-lei-aldir-blanc-registra-mais-de-300-inscricoes-em-anapolis/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O resultado da inscrição está comprovado com data, órgão financiador, território e área de atuação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital da Prefeitura de Anápolis, com foco na área de cultura, e demonstrar sua atuação na área para ser contemplada.",
+        "proximo_passo": "Verificar os requisitos e anexos do edital para se inscrever no processo de seleção.",
+        "risco": "A falta de informações sobre requisitos e anexos pode impedir a associação de se inscrever corretamente."
+      },
+      "erro": null,
+      "segundos": 712,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 5,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-2d4b578892a8",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Prefeitura de Anápolis",
+          "trecho": "Prefeitura de Anápolis",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Anápolis - GO",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "Cultura",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Anápolis",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador"
+      ]
+    },
     {
       "em": "2026-10-03T16:44:47+00:00",
       "modo": "validar",
@@ -2692,63 +2754,6 @@
         "financiador_ano",
         "governo",
         "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-10-03T06:26:45+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · estante bronze · tentativa 1",
-      "alvo": "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS — oportunidades (espalhado de edital validado) — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/governo/licitacoes-e-contratos/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprovado menciona o objeto da ação como 'Revitalização e Execução da Obra do Parque da Serrinha', o que demonstra que há oportunidades de fomento disponíveis para projetos em Goiás.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, ou seja, desenvolver projetos relacionados à revitalização e execução de obras no Parque da Serrinha, e seguir as diretrizes do edital para se candidatar.",
-        "proximo_passo": "Verificar os anexos do edital para obter informações detalhadas sobre os requisitos, critérios de seleção e outros detalhes necessários para a candidatura.",
-        "risco": "A falta de informações sobre prazos, requisitos e destinação do recurso pode impedir a associação de se candidatar adequadamente ao edital."
-      },
-      "erro": null,
-      "segundos": 528,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 4,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-espalhado-crcgo-org-br",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Revitalização e Execução da Obra do Parque da Serrinha",
-          "trecho": "Revitalização e Execução da Obra do Parque da Serrinha",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria-Geral de Governo",
-          "trecho": "Secretaria-Geral de Governo",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Conselho Regional de Contabilidade do Estado de Goiás (CRCGO)",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ]
