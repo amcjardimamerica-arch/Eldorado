@@ -1,27 +1,7 @@
 {
- "em": "2026-10-02T20:00:53+00:00",
+ "em": "2026-10-03T00:31:20+00:00",
  "regra": "sites que o robô não pode ler (robots.txt, JavaScript, bloqueio que nem o IP brasileiro passa) ou cuja rota ainda precisa ser levantada. O titular — ou o Claude no Chrome — abre cada página e captura o que ela mostra; o arquivo vai para entrada_manual/indexadores/ e vira indício na próxima rodada. Enquanto isso, a rota indireta e o Piloto cobrem.",
  "itens": [
-  {
-   "id": "prosas",
-   "nome": "Prosas — editais e prêmios para OSCs",
-   "abrir": "https://prosas.com.br/selecao/widgets/listagem-editais",
-   "motivo": "o robots.txt proíbe robôs",
-   "como": "abrir a página e clicar no botão 'Capturar indícios' (docs/coleta-assistida.html), depois enviar o arquivo",
-   "prioridade": "P1",
-   "rota_indireta": {
-    "site": "capitaai",
-    "pagina": "https://capitaai.com.br/editais-abertos/prosas"
-   },
-   "caminhos_indiretos": [
-    "rota indireta: a listagem https://capitaai.com.br/editais-abertos/prosas é lida em TODA rodada do CapitaAI (listas_fixas) e os indícios saem marcados com rota_indireta_de = prosas",
-    "Piloto - Espião: ângulo de busca diário pelo financiador e pelo edital fora do Prosas (estado/indexadores/angulos_piloto.json)",
-    "coleta assistida: o titular ou o Claude no Chrome abre o widget público e clica em 'Capturar indícios' (docs/coleta-assistida.html), no ritmo de uma pessoa"
-   ],
-   "cobertos_pela_rota_indireta": 59,
-   "ultima_captura": null,
-   "itens_ultima_captura": null
-  },
   {
    "id": "itau-social",
    "nome": "Itaú Social — editais",
@@ -65,6 +45,26 @@
    "itens_ultima_captura": null
   },
   {
+   "id": "prosas",
+   "nome": "Prosas — editais e prêmios para OSCs",
+   "abrir": "https://prosas.com.br/selecao/widgets/listagem-editais",
+   "motivo": "o robots.txt proíbe robôs",
+   "como": "abrir a página e clicar no botão 'Capturar indícios' (docs/coleta-assistida.html), depois enviar o arquivo",
+   "prioridade": "P1",
+   "rota_indireta": {
+    "site": "capitaai",
+    "pagina": "https://capitaai.com.br/editais-abertos/prosas"
+   },
+   "caminhos_indiretos": [
+    "rota indireta: a listagem https://capitaai.com.br/editais-abertos/prosas é lida em TODA rodada do CapitaAI (listas_fixas) e os indícios saem marcados com rota_indireta_de = prosas",
+    "Piloto - Espião: ângulo de busca diário pelo financiador e pelo edital fora do Prosas (estado/indexadores/angulos_piloto.json)",
+    "coleta assistida: o titular ou o Claude no Chrome abre o widget público e clica em 'Capturar indícios' (docs/coleta-assistida.html), no ritmo de uma pessoa"
+   ],
+   "cobertos_pela_rota_indireta": 59,
+   "ultima_captura": null,
+   "itens_ultima_captura": null
+  },
+  {
    "id": "embaixadas",
    "nome": "Embaixadas com pequenos projetos (Japão, Canadá, Alemanha, Austrália, Reino Unido, Países Baixos, Noruega)",
    "abrir": "https://www.br.emb-japan.go.jp/",
@@ -100,6 +100,19 @@
    "motivo": "o site recusa leitura automática",
    "como": "abrir a página e clicar no botão 'Capturar indícios' (docs/coleta-assistida.html), depois enviar o arquivo",
    "prioridade": "P3",
+   "rota_indireta": null,
+   "caminhos_indiretos": null,
+   "cobertos_pela_rota_indireta": 0,
+   "ultima_captura": null,
+   "itens_ultima_captura": null
+  },
+  {
+   "id": "mapa-osc",
+   "nome": "Mapa das OSC (Ipea) — editais",
+   "abrir": "https://mapaosc.ipea.gov.br/editais",
+   "motivo": "coleta assistida",
+   "como": "abrir a página e clicar no botão 'Capturar indícios' (docs/coleta-assistida.html), depois enviar o arquivo",
+   "prioridade": "media",
    "rota_indireta": null,
    "caminhos_indiretos": null,
    "cobertos_pela_rota_indireta": 0,
