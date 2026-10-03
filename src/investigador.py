@@ -82,6 +82,26 @@ def _pdf_texto(dados: bytes) -> str:
         return ""
 
 
+def _pelo_navegador(url: str) -> str:
+    """03/10 (titular): página que não abriu ou veio só com o esqueleto — no computador do titular, o navegador de
+    verdade (JavaScript executado); na nuvem, a ponte da Hostgator (só domínios oficiais da lista dela)."""
+    try:
+        from . import navegador_local as _nav
+        if _nav.disponivel():
+            return _nav.ler(url)
+    except Exception:  # noqa: BLE001
+        pass
+    try:                                                    # na nuvem: a ponte da Hostgator (páginas oficiais .gov/.jus/.leg/.mp)
+        from . import ponte_brasil as _pb
+        if _pb.na_nuvem() and _pb.configurada():
+            import re as _re
+            h = _pb.texto(url, timeout=40)
+            return _re.sub(r"\s+", " ", _re.sub(r"<[^>]+>", " ", _re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", h))).strip()
+    except Exception:  # noqa: BLE001
+        pass
+    return ""
+
+
 def texto_do_edital(e: dict) -> tuple[str, list[dict]]:
     """A página oficial primeiro, depois o que o registro já tem, depois os anexos em PDF."""
     fontes, textos, vistos = [], [], set()
@@ -95,6 +115,10 @@ def texto_do_edital(e: dict) -> tuple[str, list[dict]]:
         try:
             dados, tipo = _baixar(u)
         except Exception as ex:
+            tn = _pelo_navegador(u)                     # 03/10: a página não abriu → navegador do titular
+            if tn:
+                fontes.append({"url": u, "ok": True, "tipo": "html", "chars": len(tn), "via": "navegador do titular"})
+                textos.append(tn); continue
             fontes.append({"url": u, "ok": False, "erro": type(ex).__name__}); continue
         # PDF pelo CONTEÚDO: o PNCP entrega o edital sem se anunciar como PDF, e os 303 mil caracteres de
         # binário lidos como página deram 0/12 nos dois modelos
@@ -102,6 +126,10 @@ def texto_do_edital(e: dict) -> tuple[str, list[dict]]:
             t = _pdf_texto(dados); fontes.append({"url": u, "ok": bool(t), "tipo": "pdf", "chars": len(t)})
         else:
             p = _Texto(); p.feed(dados.decode("utf-8", "ignore")); t = re.sub(r"[ \t]+", " ", "".join(p.partes)); t = re.sub(r"\n{3,}", "\n\n", t)
+            if len(t.strip()) < 400:                    # 03/10: só o esqueleto (JavaScript) → navegador do titular
+                tn = _pelo_navegador(u)
+                if tn and len(tn) > len(t.strip()):
+                    t = tn
             fontes.append({"url": u, "ok": bool(t.strip()), "tipo": "html", "chars": len(t)})
             # anexos em PDF linkados na página oficial entram também (até 4)
             for h, rot in p.links:
