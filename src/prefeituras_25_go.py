@@ -1139,7 +1139,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     ESTADO.write_text(json.dumps(est, ensure_ascii=False, indent=1), encoding="utf-8")
     painel()
     saude = [{"url": m["site"], "status": est["cidades"][m["municipio"]].get("status")} for m in cfg["municipios"]]
-    return {"sensor": MOTOR_ID, "achados": achados, "falhas": [{"erro": f} for f in diag["falhas"]], "saude": saude, "diagnostico": diag}
+    return {"sensor": MOTOR_ID, "achados": achados, "falhas": [{"erro": f} for f in diag["falhas"]], "saude": saude, "diagnostico": diag,
+            "lido_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}   # 03/10: sem isso a passagem caía (KeyError)
 
 
 def painel() -> dict:

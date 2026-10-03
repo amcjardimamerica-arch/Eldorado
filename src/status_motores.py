@@ -133,6 +133,10 @@ def status_de(p: dict, hoje: str) -> dict:
                            else (f"{len(_cob['pendentes'])} edição(ões) publicada(s) ainda não lida(s): "
                                  + ", ".join(_cob["pendentes"][:4]) + " — o maestro dispara de novo") if _cob.get("pendentes")
                            else _cob.get("texto") if _cob and not _cob.get("medida", True)
+                           # 03/10 (teste do motor 14): órgãos estaduais não monitorados hoje
+                           else (f"{len(proprio_u['cobertura_orgaos']['pendentes'])} órgão(s) ainda não lido(s) hoje: "
+                                 + ", ".join(proprio_u["cobertura_orgaos"]["pendentes"][:5]) + " — o maestro dispara de novo")
+                           if (proprio_u.get("cobertura_orgaos") or {}).get("pendentes")
                            else "a leitura foi cortada pelo tempo — o restante volta na próxima passagem" if cortado else "")
         dia_lido = {"estado": "parcial", "texto": "dia lido em parte" + (f" — {motivo}" if motivo else "")}
     elif "fora da agenda" in resultado:
