@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-03T13:47:59+00:00",
+  "em": "2026-10-03T13:58:12+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-03T13:41:46+00:00",
+  "ultimo_voo": "2026-10-03T13:50:38+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,24 +34,87 @@
     "editais novos dos motores": 30,
     "indícios do Espião": 17,
     "abertos com itens em falta": 43,
-    "empresas sem ficha": 116
+    "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 200,
+    "missoes": 201,
     "validadas": 2,
     "parciais": 52,
-    "insuficientes": 146,
+    "insuficientes": 147,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 38,
-      "sim": 127
+      "sim": 128
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
-    "tempo_medio_min": 11.5
+    "tempo_medio_min": 11.4
   },
   "missoes": [
+    {
+      "em": "2026-10-03T13:50:38+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · oportunidade do mapa",
+      "alvo": "Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://goias.gov.br/seguranca/extrato-do-1o-termo-aditivo-ao-convenio-no-119-2021/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona a implantação do Programa Educacional Bombeiro Mirim (PROEBOM) no município de Anápolis, financiado pelo Estado de Goiás, o que indica uma fonte válida para ações de fomento.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o Programa Bombeiro Mirim é compatível com suas áreas de atuação (assistência social, cultura, educação, esporte) e se há possibilidade de parceria ou envolvimento com o município de Anápolis.",
+        "proximo_passo": "Contatar a Secretaria de Estado da Segurança Pública de Goiás para obter mais informações sobre o Programa Bombeiro Mirim e possíveis oportunidades de envolvimento.",
+        "risco": "A falta de informações sobre prazos, requisitos e destinação do programa pode impedir a associação de Goiânia de se envolver de forma efetiva no programa."
+      },
+      "erro": null,
+      "segundos": 452,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "d7da28b885b3f78c56c7",
+      "encontrou": {
+        "Objeto": {
+          "valor": "implantação e implementação do Programa Educacional Bombeiro Mirim (PROEBOM) no âmbito do município convenente",
+          "trecho": "O presente Termo Aditivo ao Convênio nº 119/2021 tem por objetivo incluir obrigações referentes ao CORPO DE BOMBEIROS MILITAR DO ESTADO DE GOIÁS, visando implantação e implementaçã",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Estado de Goiás, por intermédio da Secretaria de Estado da Segurança Pública",
+          "trecho": "A | Estado de Goiás, por intermédio da Secretaria de Estado da Segurança Pública",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Município de Ouro Verde - GO",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Corpo de Bombeiros Militar do Estado de Goiás",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-03T13:41:46+00:00",
       "modo": "validar",
@@ -2694,33 +2757,6 @@
         "governo",
         "programa_puro"
       ]
-    },
-    {
-      "em": "2026-10-03T03:11:48+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · oportunidade do mapa",
-      "alvo": "Goiânia — Diário Oficial de Goiânia — edição 8869 (2026-09-23) — chamamento público",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "o modelo não devolveu JSON",
-      "segundos": 1294,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: o modelo não devolveu JSON",
-      "id": "e1bdae608e9c676f0e2d",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
     }
   ]
 }
