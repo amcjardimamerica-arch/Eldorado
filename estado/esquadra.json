@@ -3,10 +3,10 @@
     "do-goiania": {
       "nome": "Diário Oficial do Município de Goiânia",
       "tipo": "diario_oficial",
-      "leituras": 48,
-      "achados_total": 5,
+      "leituras": 49,
+      "achados_total": 6,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-03T10:42:27+00:00",
+      "ultima": "2026-10-03T11:17:26+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -70,28 +70,28 @@
           "2026-09-29 nº 8873"
         ]
       },
-      "duracao_s": 579
+      "duracao_s": 1087
     },
     "do-goias": {
       "nome": "Diário Oficial do Estado de Goiás",
       "tipo": "diario_oficial",
-      "leituras": 46,
-      "achados_total": 124,
+      "leituras": 47,
+      "achados_total": 128,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-03T00:54:09+00:00",
+      "ultima": "2026-10-03T11:19:16+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 3,
+      "achados_ultima": 4,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://diariooficial.abc.go.gov.br",
           "http": 200,
-          "bytes": 120
+          "bytes": 146
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 120,
+        "paginas_lidas": 146,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
@@ -102,15 +102,15 @@
         "fontes": {
           "A": {
             "falhas": [],
-            "materias_lidas": 112,
-            "consultas": 24,
-            "paginas_achadas": 65
+            "materias_lidas": 123,
+            "consultas": 30,
+            "paginas_achadas": 85
           },
           "B": {
             "falhas": [],
-            "materias_lidas": 0,
-            "edicoes": 0,
-            "materias_no_sumario": 0
+            "materias_lidas": 15,
+            "edicoes": 3,
+            "materias_no_sumario": 227
           },
           "C": {
             "falhas": [],
@@ -118,19 +118,26 @@
             "consultas": 20
           }
         },
+        "cobertura_edicoes": {
+          "medida": true,
+          "esperadas": 10,
+          "lidas": 10,
+          "pendentes": [],
+          "texto": "10 de 10 edição(ões) lidas pelo sumário"
+        },
         "vereditos": {
-          "OPORTUNIDADE": 3,
+          "OPORTUNIDADE": 4,
           "ACOMPANHAR": 14,
-          "RUIDO": 103,
+          "RUIDO": 128,
           "quarentena": 0
         },
         "fonte_do_dia": {
           "A": "leu",
-          "B": "sem leitura",
+          "B": "leu",
           "C": "leu"
         }
       },
-      "duracao_s": 92
+      "duracao_s": 109
     },
     "dou": {
       "nome": "Diário Oficial da União",
@@ -278,31 +285,88 @@
     "camara-goiania-pl": {
       "nome": "Câmara Municipal de Goiânia — projetos de lei",
       "tipo": "legislativo",
-      "leituras": 40,
+      "leituras": 41,
       "achados_total": 0,
-      "vazias_seguidas": 40,
-      "ultima": "2026-09-30T12:34:53+00:00",
-      "motivo": "motor regular e geral — todo dia",
+      "vazias_seguidas": 41,
+      "ultima": "2026-10-03T11:19:54+00:00",
+      "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 3,
+      "falhas_ultima": 0,
       "saude": [
         {
-          "url": "https://www.goiania.go.leg.br/",
+          "url": "https://www.goiania.go.leg.br",
           "http": 200,
-          "bytes": 15885
+          "bytes": 285503,
+          "itens": 24
+        },
+        {
+          "url": "https://www.goiania.go.leg.br",
+          "http": 200,
+          "bytes": 13011,
+          "itens": 0
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 1,
-        "links_total": 0,
-        "links_candidatos": 0,
+        "paginas_lidas": 13,
+        "links_total": 24,
+        "links_candidatos": 5,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
-        "camada1_vetados": 0,
-        "camada1_direcionados": 0
-      }
+        "motivo_zero": "24 itens lidos (pautas D 0 projetos em 0 pauta(s) · processos A 0 · própria B 0 · notícias C 24): nenhum chamamento aberto para OSC · 5 a acompanhar · 0 utilidade(s) pública(s) para a lista de habilitação",
+        "versao": "motor-05 v2 (01/10/2026)",
+        "fontes": {
+          "A": {
+            "falhas": [],
+            "consultas": 0,
+            "itens": 0,
+            "proibido_robots": true
+          },
+          "B": {
+            "falhas": [],
+            "consultas": 0,
+            "itens": 0,
+            "proibido_robots": true
+          },
+          "C": {
+            "falhas": [],
+            "consultas": 12,
+            "itens": 24,
+            "bytes": 285503
+          },
+          "D": {
+            "falhas": [],
+            "consultas": 1,
+            "itens": 0,
+            "bytes": 13011,
+            "publicadas": 0,
+            "lidas": 0,
+            "nao_lidas": []
+          }
+        },
+        "vereditos": {
+          "OPORTUNIDADE": 0,
+          "ACOMPANHAR": 5,
+          "RUIDO": 19,
+          "quarentena": 0,
+          "erros": 0
+        },
+        "habilitacao_novas": 0,
+        "leitura_do_dia": {
+          "pautas_publicadas": 0,
+          "pautas_lidas": 0,
+          "noticias": 24,
+          "nao_lidas": []
+        },
+        "proibido_robots": {
+          "fontes": [
+            "A",
+            "B"
+          ],
+          "motivo": "o robots.txt do SUAP (suap.camaragyn.go.gov.br) proíbe robôs (Disallow: /) — os processos e a tramitação vêm das pautas do Plenário no portal; a ficha do processo da associação no SUAP é conferida pelo titular (consulta humana)"
+        }
+      },
+      "duracao_s": 38
     },
     "cnj-destinacoes": {
       "nome": "CNJ — destinações de penas e prestações pecuniárias",
@@ -5656,15 +5720,30 @@
     "judiciario-tjgo": {
       "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
       "tipo": "diario_justica",
-      "leituras": 1,
+      "leituras": 2,
       "achados_total": 0,
-      "vazias_seguidas": 1,
-      "duracao_s": 0,
-      "ultima": "2026-10-03T02:00:17+00:00",
+      "vazias_seguidas": 2,
+      "duracao_s": 2,
+      "ultima": "2026-10-03T11:19:56+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 0,
-      "saude": [],
+      "falhas_ultima": 2,
+      "saude": [
+        {
+          "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs",
+          "erro": "judiciario",
+          "code": null,
+          "waf": null,
+          "causa": "A: RSS página 1: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: HTTP 403 pela ponte"
+        },
+        {
+          "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs",
+          "erro": "judiciario",
+          "code": null,
+          "waf": null,
+          "causa": "A: carga inicial, página 7: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: HTTP 403 pela ponte"
+        }
+      ],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 0,
@@ -5672,21 +5751,25 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 1 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar · a coleta no computador do titular ainda não rodou — as notícias e os editais das comarcas do TJGO só são lidos por ele",
+        "motivo_zero": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 1 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar",
         "versao": "motor Judiciário CNJ+TJGO v1 (02/10/2026)",
-        "rota": "nuvem",
+        "rota": "ponte",
         "fontes": {
           "A": {
-            "falhas": [],
+            "falhas": [
+              "RSS página 1: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: HTTP 403 pela ponte",
+              "carga inicial, página 7: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: HTTP 403 pela ponte"
+            ],
             "consultas": 0,
             "itens": 0,
-            "pulado": "na nuvem o TJGO recusa IP estrangeiro: notícias e PDFs são lidos no computador do titular (scripts/coleta_brasil.py)"
+            "recusado": true,
+            "candidatas": 0,
+            "lidas": 0
           },
           "B": {
             "falhas": [],
             "consultas": 0,
-            "itens": 0,
-            "pulado": "na nuvem o TJGO recusa IP estrangeiro: notícias e PDFs são lidos no computador do titular (scripts/coleta_brasil.py)"
+            "itens": 0
           },
           "C": {
             "falhas": [],
@@ -5704,7 +5787,6 @@
             "itens": 0
           }
         },
-        "alerta_local": "a coleta no computador do titular ainda não rodou — as notícias e os editais das comarcas do TJGO só são lidos por ele",
         "vereditos": {
           "OPORTUNIDADE": 0,
           "ACOMPANHAR": 0,
@@ -5720,11 +5802,11 @@
     "judiciario-cnj": {
       "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
       "tipo": "diario_justica",
-      "leituras": 1,
-      "achados_total": 1,
+      "leituras": 2,
+      "achados_total": 2,
       "vazias_seguidas": 0,
       "duracao_s": 0,
-      "ultima": "2026-10-03T02:00:17+00:00",
+      "ultima": "2026-10-03T11:20:15+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -5738,7 +5820,7 @@
         "pdf_links": 0,
         "motivo_zero": null,
         "versao": "motor Judiciário CNJ+TJGO v1 (02/10/2026)",
-        "rota": "nuvem",
+        "rota": "ponte",
         "fontes": {
           "A": {
             "falhas": [],
@@ -5782,11 +5864,11 @@
     "mpgo-destinacao": {
       "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
       "tipo": "ministerio_publico",
-      "leituras": 1,
-      "achados_total": 1,
+      "leituras": 2,
+      "achados_total": 2,
       "vazias_seguidas": 0,
       "duracao_s": 0,
-      "ultima": "2026-10-03T02:00:17+00:00",
+      "ultima": "2026-10-03T11:19:56+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -5838,15 +5920,21 @@
     "mptgo-destinacao": {
       "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
       "tipo": "ministerio_publico",
-      "leituras": 1,
-      "achados_total": 2,
+      "leituras": 2,
+      "achados_total": 4,
       "vazias_seguidas": 0,
-      "duracao_s": 0,
-      "ultima": "2026-10-03T02:00:17+00:00",
+      "duracao_s": 19,
+      "ultima": "2026-10-03T11:20:15+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
       "falhas_ultima": 0,
-      "saude": [],
+      "saude": [
+        {
+          "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+          "http": 200,
+          "itens": 43
+        }
+      ],
       "alerta": null,
       "diagnostico": {
         "versao": "motor 12 Ministérios Públicos v2 (02/10/2026)",
@@ -5855,7 +5943,8 @@
             "orgao": "MPT-GO",
             "modo": "tabela_mpt",
             "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-            "situacao": "em dia (cadência)"
+            "situacao": "lida",
+            "itens": 43
           },
           "f03": {
             "orgao": "MPT-GO",
@@ -5904,11 +5993,11 @@
           "mpgo.mp.br",
           "destinacoes.mpt.mp.br"
         ],
-        "pdfs_lidos": 0,
+        "pdfs_lidos": 5,
         "sem_texto": 0,
         "vereditos": {
-          "OPORTUNIDADE": 1,
-          "ACOMPANHAR": 0,
+          "OPORTUNIDADE": 2,
+          "ACOMPANHAR": 42,
           "RUIDO": 0
         },
         "abertas": 2,
@@ -5921,9 +6010,9 @@
           "associacao_consta": false,
           "em": "2026-10-02"
         },
-        "paginas_lidas": 0,
-        "links_total": 1,
-        "links_candidatos": 1,
+        "paginas_lidas": 1,
+        "links_total": 44,
+        "links_candidatos": 44,
         "inventario": {
           "inventario_base_registrado": true,
           "em": "2026-10-03T00:10:58+00:00"
@@ -7278,49 +7367,45 @@
   },
   "ultima_execucao": {
     "data": "2026-10-03",
-    "em": "2026-10-03T10:45:42+00:00",
+    "em": "2026-10-03T11:20:15+00:00",
     "manual": [
+      "camara-goiania-pl",
       "do-goiania",
-      "dou",
-      "f260-captacao-044",
-      "f260-captacao-068",
-      "f260-captacao-118",
-      "f260-captacao-151",
-      "f260-captacao-190",
-      "f260-captacao-196",
-      "f260-captacao-218",
-      "f260-captacao-222",
-      "f260-captacao-223",
-      "f260-captacao-227",
-      "f260-captacao-230",
-      "f260-captacao-231",
-      "f260-captacao-233",
-      "f260-captacao-238"
+      "do-goias",
+      "judiciario-cnj",
+      "judiciario-tjgo",
+      "mpgo-destinacao",
+      "mptgo-destinacao"
     ],
     "bloco": "manual",
-    "sensores_executados": 16,
+    "sensores_executados": 7,
     "adiados_por_tempo": [],
-    "duracao_s": 774,
-    "em_espera": 111,
+    "duracao_s": 1256,
+    "em_espera": 120,
     "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 3,
-    "novos_na_base": 0,
+    "achados": 9,
+    "novos_na_base": 1,
     "por_tipo": {
       "diario_oficial": {
         "sensores": 2,
-        "achados": 1,
+        "achados": 5,
         "falhas": 0
       },
-      "privada": {
-        "sensores": 7,
+      "legislativo": {
+        "sensores": 1,
         "achados": 0,
-        "falhas": 8
+        "falhas": 0
       },
-      "site_oficial": {
-        "sensores": 7,
-        "achados": 2,
-        "falhas": 7
+      "diario_justica": {
+        "sensores": 2,
+        "achados": 1,
+        "falhas": 2
+      },
+      "ministerio_publico": {
+        "sensores": 2,
+        "achados": 3,
+        "falhas": 0
       }
     }
   }
