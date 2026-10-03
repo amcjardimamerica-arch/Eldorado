@@ -1,0 +1,30 @@
+{
+ "em": "2026-10-03T03:55:51+00:00",
+ "host": "suap.camaragyn.go.gov.br",
+ "certificados_enviados_pelo_servidor": 1,
+ "resultado_verificacao_openssl": "Verify return code: 21 (unable to verify the first certificate)",
+ "folha": {
+  "assunto": "subject=CN = suap.camaragyn.go.gov.br",
+  "emissor": "issuer=C = US, O = Let's Encrypt, CN = YR2",
+  "validade": "notAfter=Nov 26 20:46:14 2026 GMT"
+ },
+ "aia": [
+  "http://yr2.i.lencr.org/"
+ ],
+ "intermediario": {
+  "baixado_de": "http://yr2.i.lencr.org/",
+  "dados": [
+   "subject=C = US, O = Let's Encrypt, CN = YR2",
+   "issuer=C = US, O = ISRG, CN = Root YR",
+   "notAfter=Sep  2 23:59:59 2028 GMT",
+   "sha256 Fingerprint=23:8B:85:A0:09:9C:65:B9:70:47:7D:57:24:F1:A1:D4:75:CE:50:58:CF:FE:4E:FA:87:33:89:9B:DB:86:3C:47"
+  ]
+ },
+ "sem_o_intermediario": {
+  "erro": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)>"
+ },
+ "com_o_intermediario": {
+  "erro": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get issuer certificate (_ssl.c:1010)>"
+ },
+ "verificacao_ligada": true
+}
