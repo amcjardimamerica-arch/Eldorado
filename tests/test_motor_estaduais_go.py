@@ -108,3 +108,102 @@ class TesteIntegracao(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteMotor14(unittest.TestCase):
+    """Teste do motor 14 de 03/10/2026."""
+
+    def test_osc_no_singular_e_oportunidade(self):
+        t = "Edital de chamamento público ' 001/2026 ' Socioeducativo"
+        r = ("EDITAL DE CHAMAMENTO PÚBLICO Nº 001/2026 SELEÇÃO DE ORGANIZAÇÃO DA SOCIEDADE CIVIL PARA CELEBRAÇÃO DE TERMO DE "
+             "COLABORAÇÃO DESTINADO À EXECUÇÃO DE AÇÕES COMPLEMENTARES NO ÂMBITO DO ATENDIMENTO SOCIOEDUCATIVO")
+        x = E.classificar(t, r, date(2026, 9, 14), date(2026, 10, 3), LEX)
+        self.assertEqual((x["veredito"], x["aberta"]), ("OPORTUNIDADE", True))
+
+    def test_indice_e_enderecos_novos(self):
+        cfg = json.loads((ROOT / "config/estaduais_go.json").read_text(encoding="utf-8"))
+        self.assertIn("https://goias.gov.br/administracao-direta/", cfg["descoberta"]["paginas_indice"])
+        self.assertEqual(cfg["slugs_alternativos"]["secti"][0], "inovacao")
+        self.assertEqual(cfg["slugs_alternativos"]["seds"][0], "social")
+
+    def _cenario(self, est0, falso, cfg_extra=None):
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg = json.loads((ROOT / "config/estaduais_go.json").read_text(encoding="utf-8"))
+            cfg["orgaos_semente"] = []; cfg["pausa_entre_requisicoes"] = 0; cfg["descoberta"]["paginas_indice"] = []
+            cfg.update(cfg_extra or {})
+            p = Path(tmp) / "cfg.json"; p.write_text(json.dumps(cfg), encoding="utf-8")
+            (Path(tmp) / "e.json").write_text(json.dumps(est0), encoding="utf-8")
+            with mock.patch.object(E, "CFG", p), mock.patch.object(E, "ESTADO", Path(tmp) / "e.json"), mock.patch.object(E, "PAINEL", Path(tmp) / "p.json"), \
+                 mock.patch.object(E, "_get", falso), mock.patch("src.livros_regra.registrar_achados", return_value={}):
+                r = E.ler_motor(hoje=date(2026, 10, 3), orcamento=60)
+                est = json.loads((Path(tmp) / "e.json").read_text(encoding="utf-8"))
+        return r, est
+
+    def test_monitoramento_pagina_em_ordem_crescente_e_revisa_com_lexico_novo(self):
+        pedidas = []
+
+        def falso(url, timeout=25):
+            pedidas.append(url)
+            pg = int(url.split("&page=")[1].split("&")[0]) if "&page=" in url else 1
+            lote = [{"id": pg * 1000 + i, "date": f"2026-09-{10 + pg:02d}T10:00:00", "link": f"https://goias.gov.br/x/p{pg}-{i}/",
+                     "title": {"rendered": "Notícia"}, "excerpt": {"rendered": ""}} for i in range(100 if pg < 3 else 7)]
+            return 200, json.dumps(lote), {"X-WP-TotalPages": "3"}
+        est0 = {"catalogo_em": "2026-10-03", "lexico_versao": "antiga", "orgaos": {"x": {
+            "id": "x", "nome": "Secretaria X", "site": "https://goias.gov.br/x", "camada": 4, "wordpress": True,
+            "ultima_publicacao_vista": "2026-10-02", "publicacoes_por_ano": {"2026": 1}}}}
+        r, est = self._cenario(est0, falso)
+        self.assertTrue(all("order=asc" in u for u in pedidas))
+        self.assertIn("after=2026-08-04", pedidas[0])                         # revisão de 60 dias com o léxico novo
+        self.assertEqual(len(pedidas), 3)                                      # paginou até o fim
+        self.assertEqual(est["orgaos"]["x"]["ultima_publicacao_vista"], "2026-09-13")
+        self.assertEqual(est["lexico_versao"], LEX["versao"])
+        self.assertNotIn("paginas_nao_lidas", r["diagnostico"])
+
+    def test_falha_e_orgao_nao_lido_viram_leitura_parcial(self):
+        def falso(url, timeout=25):
+            return 503, "", {}
+        est0 = {"catalogo_em": "2026-10-03", "lexico_versao": LEX["versao"], "orgaos": {"x": {
+            "id": "x", "nome": "Secretaria X", "site": "https://goias.gov.br/x", "camada": 4, "wordpress": True,
+            "ultima_publicacao_vista": "2026-10-02", "publicacoes_por_ano": {"2026": 1}}}}
+        r, est = self._cenario(est0, falso)
+        self.assertTrue(any("monitoramento" in f["erro"] for f in r["falhas"]))
+        self.assertEqual(r["diagnostico"]["paginas_nao_lidas"], 1)
+        self.assertEqual(est["ultima"]["cobertura_orgaos"]["pendentes"], ["x"])
+
+    def test_site_fora_do_portal_passa_a_ser_monitorado(self):
+        pagina = {"v": "<a href='/editais/antigo'>Edital de chamamento 2024 para entidades</a>"}
+
+        def falso(url, timeout=25):
+            return 200, pagina["v"], {}
+        est0 = {"catalogo_em": "2026-10-03", "lexico_versao": LEX["versao"], "orgaos": {"ovg": {
+            "id": "ovg", "nome": "OVG", "site": "https://www.ovg.org.br", "camada": 4, "wordpress": False,
+            "onde_publica": ["link do site: Editais — https://www.ovg.org.br/editais"], "publicacoes_por_ano": {"2024": 1}}}}
+        r1, est1 = self._cenario(est0, falso)
+        self.assertEqual(r1["achados"], [])                                    # 1ª passagem só registra o que já existe
+        pagina["v"] += "<a href='/editais/novo'>OVG abre chamamento público para organizações da sociedade civil</a>"
+        r2, est2 = self._cenario(est1, falso)
+        self.assertEqual(len(r2["achados"]), 1)
+        self.assertEqual(est2["orgaos"]["ovg"]["monitorado_em"], "2026-10-03")
+
+
+class TesteRegistroDaPassagem(unittest.TestCase):
+    def test_resultado_tem_lido_em_e_sensor(self):
+        """03/10: sem 'lido_em' a passagem de sensores caía com KeyError logo depois do motor 14 (e do 13)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            cfg = json.loads((ROOT / "config/estaduais_go.json").read_text(encoding="utf-8"))
+            cfg["orgaos_semente"] = []; cfg["descoberta"]["paginas_indice"] = []
+            p = Path(tmp) / "cfg.json"; p.write_text(json.dumps(cfg), encoding="utf-8")
+            (Path(tmp) / "e.json").write_text(json.dumps({"catalogo_em": "2026-10-03", "lexico_versao": LEX["versao"], "orgaos": {}}), encoding="utf-8")
+            with mock.patch.object(E, "CFG", p), mock.patch.object(E, "ESTADO", Path(tmp) / "e.json"), mock.patch.object(E, "PAINEL", Path(tmp) / "p.json"):
+                r = E.ler_motor(hoje=date(2026, 10, 3), orcamento=5)
+        self.assertEqual(r["sensor"], "plat-estaduais-go-gov")
+        self.assertTrue(r["lido_em"])
+
+    def test_passagem_normaliza_resultado_sem_lido_em(self):
+        src = (ROOT / "src/sensores.py").read_text(encoding="utf-8")
+        # 03/10: a mesma correção já estava no main (teste dos motores 01–21), em versão mais completa — o teste confere
+        # que o resultado é completado DEPOIS da leitura e ANTES do registro, qualquer que seja a forma escrita
+        i = src.index("r = ler(s, pausa=pausa)")
+        j = src.index('r["lido_em"] = now_iso()', i)
+        self.assertLess(i, j)
+        self.assertLess(j, src.index('reg.update({"ultima": r["lido_em"]', i))

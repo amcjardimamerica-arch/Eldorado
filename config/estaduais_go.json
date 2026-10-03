@@ -19,7 +19,10 @@
    "https://goias.gov.br/",
    "https://goias.gov.br/orgaos/",
    "https://goias.gov.br/secretarias/",
-   "https://goias.gov.br/governo/"
+   "https://goias.gov.br/governo/",
+   "https://goias.gov.br/administracao-direta/",
+   "https://goias.gov.br/autarquias-e-fundacoes/",
+   "https://goias.gov.br/empresas-publicas/"
   ],
   "fora_do_executivo": "assembleia|tribunal|minist[eé]rio p[uú]blico|defensoria|tce|tcm|c[aâ]mara municipal|prefeitura",
   "caminhos_ignorados": [
@@ -45,7 +48,8 @@
    "videos",
    "podcast",
    "imprensa"
-  ]
+  ],
+  "ajuste_03_10": "as páginas-índice antigas só listavam 15 órgãos; administração direta, autarquias/fundações e empresas públicas listam 36 — faltavam SECTI (inovacao, 3.174 publicações), Goiás Parcerias, Vice-Governadoria, Entorno, Procon, Ceasa e outros"
  },
  "orgaos_semente": [
   {
@@ -282,7 +286,7 @@
    "repasse"
   ],
   "abertura": "inscri[cç][õo]es (abertas|at[ée]|prorrogad|come[cç]am|v[aã]o at[ée])|\\babre(m)? (as |os )?(inscri|edital|editais|chamamento|sele[cç])|lan[cç]a(m)? (o |os )?(edital|editais|chamamento|programa|pr[eê]mio)|edital de (chamamento|sele[cç])|chamamento p[uú]blico|chamada p[uú]blica|sele[cç][aã]o de (projetos|propostas|entidades|organiza)|pr[eê]mio|credenciamento de (entidades|organiza|osc)|recebe (propostas|projetos)",
-  "publico_alvo": "organiza[cç][õo]es da sociedade civil|\\boscs?\\b|entidades|associa[cç][õo]es|institui[cç][õo]es (sem fins|filantr)|sem fins lucrativos|projetos (culturais|sociais|esportivos|de)|agentes culturais|fazedores de cultura|pontos (e pont[õo]es )?de cultura|coletivos|cooperativas|terceiro setor|filantr[oó]pic",
+  "publico_alvo": "organiza[cç](?:[õo]es|[ãa]o) da sociedade civil|\\boscs?\\b|entidades|associa[cç][õo]es|institui[cç][õo]es (sem fins|filantr)|sem fins lucrativos|projetos (culturais|sociais|esportivos|de)|agentes culturais|fazedores de cultura|pontos (e pont[õo]es )?de cultura|coletivos|cooperativas|terceiro setor|filantr[oó]pic",
   "acompanhar": "resultado|homologa|aprovados|selecionados|classificados|celebra|assina(m|tura)? (o |de )?termo|termos? de fomento|repasse|conv[eê]nio|cofinanciamento|presta[cç][aã]o de contas|elei[cç][aã]o (de|dos) (representantes|conselheiros)",
   "vetos": [
    [
@@ -337,7 +341,9 @@
    ]
   ],
   "vetos_cedem_a_osc": "por veto (3º campo): capacitação e pesquisa cedem a um chamamento de OSC; seleção de pessoas, merenda, licitação e seleção de alunos nunca cedem",
-  "resultado_no_titulo": "divulga(do|da|m)?\\b.{0,25}resultado|resultado (final|preliminar|parcial|da sele)|homologa|vencedores|s[aã]o premiad|selecionad[oa]s|classificad[oa]s|convoca[cç][aã]o dos aprovados|lista de aprovados|recebe(m)? r\\$|repassa informa|orienta (gestores|munic)|anuncia (a )?institui[cç][aã]o que vai"
+  "resultado_no_titulo": "divulga(do|da|m)?\\b.{0,25}resultado|resultado (final|preliminar|parcial|da sele)|homologa|vencedores|s[aã]o premiad|selecionad[oa]s|classificad[oa]s|convoca[cç][aã]o dos aprovados|lista de aprovados|recebe(m)? r\\$|repassa informa|orienta (gestores|munic)|anuncia (a )?institui[cç][aã]o que vai",
+  "versao": "2026-10-03",
+  "ajuste_03_10": "Teste do motor 14: 'organização da sociedade civil' (singular) não casava — o Edital de Chamamento SEDS 001/2026 (socioeducativo, termo de colaboração com OSC, propostas até 16/10/2026) saía como 'acompanhar'."
  },
  "evidencia_do_lexico": {
   "descartes_que_viraram_veto": {
@@ -375,10 +381,12 @@
  },
  "slugs_alternativos": {
   "seds": [
+   "social",
    "seds",
    "desenvolvimentosocial"
   ],
   "secti": [
+   "inovacao",
    "secti",
    "ciencia",
    "sectigo"
@@ -399,5 +407,7 @@
    "procuradoria"
   ]
  },
- "refazer_descoberta_dias": 7
+ "refazer_descoberta_dias": 7,
+ "janela_revisao_dias": 60,
+ "paginas_monitoramento": 5
 }

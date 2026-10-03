@@ -58,7 +58,9 @@ class TesteAuditoriaDosMotores(unittest.TestCase):
         m = cfg.get("motores") or cfg
         for b in BLOQUEADOS:
             if b in m:
-                self.assertEqual(m[b].get("coleta"), "local", b)
+                # 03/10 (teste do motor 12): site cujo robots.txt proíbe robôs vira "manual" — nem o computador do titular
+                # o lê automaticamente. Nos dois casos o motor bloqueado sai do orçamento de voo da nuvem.
+                self.assertTrue(m[b].get("coleta") == "local" or str(m[b].get("coleta")).startswith("manual"), b)
 
     def test_acervo_foi_limpo_do_que_nao_serve(self):
         # Os 334 fora do objeto NÃO são apagados: ficam marcados. Apagar esvaziava as

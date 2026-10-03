@@ -276,26 +276,71 @@ def camada3(o: dict, cfg: dict, hoje: date) -> tuple[list[dict], list[dict]]:
     return abertas, passadas
 
 
+def _monitorar_sem_api(o: dict, cfg: dict, hoje: date) -> list[dict]:
+    """03/10 (teste do motor 14): site fora do portal (OVG, UEG, Saneago…) não tinha monitoramento nenhum depois do
+    histórico. Agora relê as páginas de publicação achadas na camada 1 e trata como novo o link que ainda não foi visto."""
+    vistos = set(o.get("links_vistos") or [])
+    novos, lidas = [], 0
+    for linha in [l for l in o.get("onde_publica") or [] if l.startswith("link do site:")][:6]:
+        href = linha.rsplit(" — ", 1)[-1]
+        st, html, _ = _get(href)
+        if st != 200:
+            continue
+        lidas += 1
+        for m in re.finditer(r"""<a[^>]+href=["']([^"'#]+)["'][^>]*>(.*?)</a>""", html, re.S | re.I):
+            txt = limpar(m.group(2)); u = urllib.parse.urljoin(href, m.group(1))
+            if 15 <= len(txt) <= 200 and u not in vistos and re.search(r"edita|chamament|sele[cç]|pr[eê]mio|credenciament|inscri", sem(txt)):
+                vistos.add(u); novos.append({"id": sha256(u.encode()).hexdigest()[:10], "data": hoje.isoformat(), "url": u, "titulo": txt, "resumo": ""})
+        time.sleep(cfg["pausa_entre_requisicoes"])
+    primeira = "links_vistos" not in o
+    o["links_vistos"] = sorted(vistos)[-500:]
+    o["monitorado_em"] = hoje.isoformat(); o["monitoramento_http"] = 200 if lidas else (o.get("site_responde") or 0)
+    if primeira:
+        return []                 # 1ª passagem só registra o que já existe (o histórico já foi classificado na camada 3)
+    out = []
+    for x in novos:
+        c = classificar(x["titulo"], "", hoje, hoje, cfg["lexico"])
+        if c["veredito"] == "OPORTUNIDADE" and c.get("aberta"):
+            out.append({**x, **c, "orgao": o["nome"], "orgao_id": o["id"]})
+    return out
+
+
 def camada4(o: dict, cfg: dict, hoje: date) -> list[dict]:
     """Monitoramento: só as publicações novas desde a última vista."""
     if not o.get("wordpress"):
-        return []
+        return _monitorar_sem_api(o, cfg, hoje)
     desde = o.get("ultima_publicacao_vista") or (hoje - timedelta(days=3)).isoformat()
-    st, corpo, _ = _get(_api(o["site"]) + "/posts?per_page=50&_fields=id,date,link,title,excerpt&after=" + desde + "T00:00:00")
+    # 03/10 (teste do motor 14): eram só os 50 primeiros posts — num órgão com mais publicações no período (Saúde,
+    # Procon) o resto se perdia e a "última vista" pulava por cima. Agora pagina até o fim (ou marca como cortado).
+    lista, st, total_pg = [], 0, int(cfg.get("paginas_monitoramento", 5))
+    for pg in range(1, total_pg + 1):
+        st, corpo, h = _get(_api(o["site"]) + "/posts?per_page=100&_fields=id,date,link,title,excerpt&orderby=date&order=asc&after="
+                            + desde + f"T00:00:00&page={pg}")     # do mais antigo ao mais novo: o corte não perde nada
+        if st != 200:
+            break
+        try:
+            parte = [_post(p) for p in json.loads(corpo)]
+        except Exception:
+            st = -1; break
+        lista += parte
+        paginas = int(h.get("X-WP-TotalPages") or h.get("x-wp-totalpages") or 1)
+        if pg >= paginas or len(parte) < 100:
+            break
+        time.sleep(cfg["pausa_entre_requisicoes"])
+    else:
+        o["monitoramento_cortado"] = True
     o["monitorado_em"] = hoje.isoformat(); o["monitoramento_http"] = st
     if st != 200:
-        return []
-    try:
-        lista = [_post(p) for p in json.loads(corpo)]
-    except Exception:
-        return []
+        o["monitoramento_falhou_em"] = hoje.isoformat()
+        raise RuntimeError(f"monitoramento HTTP {st}")       # vira falha no diagnóstico (antes era silêncio)
+    o.pop("monitoramento_falhou_em", None)
     out = []
     for x in lista:
         pub = date.fromisoformat(x["data"]) if x.get("data") else None
         c = classificar(x["titulo"], x["resumo"], pub, hoje, cfg["lexico"])
         if c["veredito"] == "OPORTUNIDADE" and c.get("aberta"):
             out.append({**x, **c, "orgao": o["nome"], "orgao_id": o["id"]})
-    if lista:
+    if lista:                    # em ordem crescente, avançar até a última lida é seguro mesmo com corte
         o["ultima_publicacao_vista"] = max(x["data"] for x in lista if x.get("data"))
     return out
 
@@ -335,15 +380,30 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
             est["orgaos"].pop(k)
         else:
             vistos[st_] = k
+    # 03/10 (teste do motor 14): léxico novo → os últimos N dias de cada órgão são relidos UMA vez com ele, e os órgãos sem
+    # histórico voltam à camada 1 (endereços alternativos, como goias.gov.br/inovacao da SECTI)
+    if est.get("lexico_versao") != cfg["lexico"].get("versao"):
+        rev = (hoje - timedelta(days=int(cfg.get("janela_revisao_dias", 60)))).isoformat()
+        for o in est["orgaos"].values():
+            if o.get("camada") == 4 and o.get("wordpress") and str(o.get("ultima_publicacao_vista") or rev) > rev:
+                o["ultima_publicacao_vista"] = rev
+            if o.get("camada") == 4 and not o.get("wordpress") and not (o.get("publicacoes_por_ano") or {}):
+                o["camada"] = 1
+        est["lexico_versao"] = cfg["lexico"].get("versao"); diag["revisao_lexico"] = rev
     abertas, passadas = [], []
     # 1º: monitoramento dos órgãos que já têm histórico (barato) · 2º: os demais, UM POR VEZ, camada a camada
-    for o in [o for o in est["orgaos"].values() if o.get("camada") == 4]:
+    a_monitorar = [o for o in est["orgaos"].values() if o.get("camada") == 4]
+    # quem ficou para trás ontem (tempo ou falha) vai primeiro
+    a_monitorar.sort(key=lambda o: (str(o.get("monitorado_em") or "") == hoje.isoformat() and not o.get("monitoramento_cortado"),
+                                    str(o.get("monitorado_em") or "")))
+    for o in a_monitorar:
         if time.time() > fim:
             break
+        o.pop("monitoramento_cortado", None)
         try:
             abertas += camada4(o, cfg, hoje); diag["camadas_feitas"]["4"] += 1
         except Exception as ex:
-            diag["falhas"].append(f"{o['id']} monitoramento: {type(ex).__name__}"[:120])
+            diag["falhas"].append(f"{o['id']} monitoramento: {type(ex).__name__}: {ex}"[:140])
     for o in sorted([o for o in est["orgaos"].values() if o.get("camada", 1) < 4], key=lambda z: (not z.get("antigo_motor"), z.get("camada", 1) == 1, z["id"])):
         if time.time() > fim:
             break
@@ -376,18 +436,29 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     achados = [_registro(r) for r in {r["url"]: r for r in abertas}.values()]
     diag["camadas_feitas"] = dict(diag["camadas_feitas"])
     diag["paginas_lidas"] = sum(diag["camadas_feitas"].values())
+    # cobertura do dia: órgãos monitorados hoje × órgãos que deviam ser; o que faltar vira leitura PARCIAL para o maestro
+    devidos = [o for o in est["orgaos"].values() if o.get("camada") == 4]
+    faltam = [o["id"] for o in devidos if o.get("monitorado_em") != hoje.isoformat() or o.get("monitoramento_cortado")
+              or o.get("monitoramento_falhou_em") == hoje.isoformat()]
+    faltam += [o["id"] for o in est["orgaos"].values() if o.get("camada", 1) < 4]          # histórico ainda em construção
+    diag["cobertura_orgaos"] = {"devidos": len(devidos), "monitorados_hoje": len(devidos) - len([f for f in faltam if est["orgaos"][f].get("camada") == 4]),
+                                "pendentes": faltam[:20]}
+    if faltam:
+        diag["paginas_nao_lidas"] = len(faltam)
     por_camada = Counter(o.get("camada", 1) for o in est["orgaos"].values())
     diag["orgaos_por_camada"] = {f"camada {k}": v for k, v in sorted(por_camada.items())}
     if not achados:
         diag["motivo_zero"] = (f"{diag['orgaos_por_camada'].get('camada 4', 0)} órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje"
                                if not diag["falhas"] else "falhas: " + "; ".join(diag["falhas"][:2]))
     est["ultima"] = {"em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "data": hoje.isoformat(), "achados": len(achados),
-                     "historicas_registradas": len(passadas), "orgaos_por_camada": diag["orgaos_por_camada"], "falhas": diag["falhas"][:10]}
+                     "historicas_registradas": len(passadas), "orgaos_por_camada": diag["orgaos_por_camada"], "falhas": diag["falhas"][:10],
+                     "cobertura_orgaos": diag["cobertura_orgaos"], **({"paginas_nao_lidas": diag["paginas_nao_lidas"]} if diag.get("paginas_nao_lidas") else {})}
     ESTADO.parent.mkdir(parents=True, exist_ok=True)
     ESTADO.write_text(json.dumps(est, ensure_ascii=False, indent=1), encoding="utf-8")
     painel()
     saude = [{"url": o.get("site"), "http": o.get("site_responde") or o.get("monitoramento_http")} for o in est["orgaos"].values() if o.get("site_responde") or o.get("monitoramento_http")]
-    return {"achados": achados, "falhas": [{"erro": f} for f in diag["falhas"]], "saude": saude[:40], "diagnostico": diag}
+    return {"sensor": MOTOR_ID, "achados": achados, "falhas": [{"erro": f} for f in diag["falhas"]], "saude": saude[:40], "diagnostico": diag,
+            "lido_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}
 
 
 def painel() -> dict:

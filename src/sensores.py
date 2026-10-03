@@ -244,6 +244,20 @@ class _Links(HTMLParser):
             self.links.append((self._h, " ".join(self._t).strip())); self._h = None
 
 
+_UA_ROBOTS = "Eldorado-OSC/1.0"
+
+
+def _robots_ok(url: str) -> bool:
+    import sys
+    if "unittest" in sys.modules:          # a bateria de testes não consulta a rede (os testes do robots trocam esta função)
+        return True
+    try:
+        from .nucleo import robots_permite
+        return robots_permite(url, _UA_ROBOTS)
+    except Exception:  # noqa: BLE001 — robots ilegível = permitido (mesma regra do núcleo)
+        return True
+
+
 def _abrir(url: str, timeout: int = 12, max_bytes: int = 2_500_000) -> tuple[str, str, int]:
     from urllib.request import Request, urlopen
     if not url.startswith("file://"):
@@ -521,6 +535,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
         if url in lidas:
             continue
         lidas.add(url)
+        # 03/10 (teste do motor 12): a regra do sistema é respeitar o robots.txt — o leitor genérico não consultava.
+        # O TRF1 publica "User-agent: * / Disallow: /": o motor deixa de ler e diz por quê (o titular confere à mão)
+        if url.startswith("http") and lim.get("respeitar_robots", True) and not _robots_ok(url):
+            diag.setdefault("robots_proibe", []).append(url)
+            continue
         try:
             tmo = lim.get("timeout_segundos", 12) if sensor.get("tipo") != "api" else max(30, lim.get("timeout_segundos", 12))
             html, final, status = _abrir(url, timeout=tmo, max_bytes=lim["bytes_por_pagina"])
@@ -676,6 +695,9 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
                                    "tempo esgotado / conexão recusada" if erros & {"timeout", "URLError", "TimeoutError"} else f"falha: {', '.join(sorted(erros))}")
         elif falhas and saude:
             diag["motivo_zero"] = "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+    if diag.get("robots_proibe") and not saude:
+        diag["motivo_zero"] = (f"o robots.txt do site proíbe leitura automática ({len(diag['robots_proibe'])} página(s)) — "
+                               "conferência manual pelo titular; republicações chegam pelo motor do CNJ")
     return {"sensor": sensor["id"], "achados": list(unicos.values()),
             "falhas": falhas, "saude": saude, "diagnostico": diag, "lido_em": now_iso()}
 

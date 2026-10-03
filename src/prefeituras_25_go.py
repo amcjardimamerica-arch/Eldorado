@@ -689,7 +689,7 @@ def classificar(titulo: str, resumo: str = "", publicado: date | None = None, ho
     """Uma publicação municipal → {veredito, categoria, motivo, prazo, aberta}. Só o título decide vetos e resultados;
     o resumo ajuda a achar o público (OSC) e o prazo."""
     lex = lex or config()["lexico"]; hoje = hoje or date.today()
-    t = sem(titulo); s = sem(f"{titulo} . {resumo}")[:1200]
+    t = re.sub(r"^[\W_]+", "", sem(titulo)); s = sem(f"{titulo} . {resumo}")[:1200]   # 03/10: trecho do diário começa com "…"
     osc_forte = bool(re.search(lex["osc_forte"], s))
     if re.search(lex["agricultura"], t):
         return {"veredito": "ACOMPANHAR", "categoria": "AGRICULTURA_FAMILIAR", "motivo": "chamada da agricultura familiar (PAA/PNAE): só cooperativas e associações rurais"}
@@ -698,6 +698,16 @@ def classificar(titulo: str, resumo: str = "", publicado: date | None = None, ho
             return {"veredito": "RUIDO", "categoria": "RUIDO", "motivo": f"veto: {nome}"}
     if re.search(lex["resultado"], t):
         return {"veredito": "ACOMPANHAR", "categoria": "RESULTADO", "motivo": "resultado, homologação ou lista de uma seleção já feita"}
+    # 03/10 (teste do motor 13): título GENÉRICO ("EDITAL Nº 01/2025") — quem diz o que é o ato é o resumo. Trindade publicou
+    # em 11/09/2026 a 3ª prorrogação do resultado do Edital 01/2025 (CMAS/CMDCA/CMDPI) e o motor marcou como seleção aberta.
+    gen = re.fullmatch(r"(?:edital|aviso|comunicado)\b[^a-z0-9]{0,6}(?:n\S{0,2}\s*)?\d{1,4}\s*/\s*(\d{4})\.?", t.strip())
+    if gen:
+        r_ = sem(resumo)
+        if re.search(lex["ato_do_edital"], r_) or re.search(lex["resultado"], r_):
+            return {"veredito": "ACOMPANHAR", "categoria": "ATO_DO_EDITAL", "motivo": "título genérico e o texto é prorrogação, retificação ou resultado do edital"}
+        if publicado and int(gen.group(1)) < publicado.year:
+            return {"veredito": "ACOMPANHAR", "categoria": "ATO_DO_EDITAL",
+                    "motivo": f"edital de {gen.group(1)} publicado de novo em {publicado.year}: ato posterior (prorrogação, resultado) — conferir"}
     abre = bool(re.search(lex["abertura"], t))
     osc = osc_forte or bool(re.search(lex["osc"], s))
     if abre and re.search(lex["ato_do_edital"], t):
@@ -983,7 +993,11 @@ def processar_cidade(c: dict, m: dict, cfg: dict, hoje: date, fim: float) -> tup
         rotas_st[rota] = st; vol[rota] = v; pubs += itens
     c["rotas"] = rotas_st; c["volume_por_rota"] = vol
     lidas = [r for r, s in rotas_st.items() if s.startswith(("lida", "vazia", "parcial"))]
+    # 03/10 (teste do motor 13): rota que FALHOU aparece como falha, mesmo que a outra rota aguarde o Brasil (antes Senador
+    # Canedo e Inhumas, com o diário AGM falhando, apareciam só como "aguardando coleta local")
+    falhou = [r for r, s in rotas_st.items() if s.startswith(("falhou", "não lida"))]
     c["status"] = ("lida" if lidas and len(lidas) == len(rotas_st) else "parcial" if lidas else
+                   "falhou" if falhou else
                    "aguardando coleta local (Brasil)" if any("Brasil" in s for s in rotas_st.values()) else "não lida")
     abertas, passadas = [], []
     ver, cat, por_ano = Counter(), Counter(), Counter()
@@ -992,7 +1006,15 @@ def processar_cidade(c: dict, m: dict, cfg: dict, hoje: date, fim: float) -> tup
             pub = date.fromisoformat(x["data"]) if len(x.get("data") or "") == 10 else None
         except ValueError:
             pub = None
-        k = classificar(x["titulo"], x["resumo"], pub, hoje, cfg["lexico"])
+        if x.get("rota") == "Querido Diário":
+            # 03/10 (teste do motor 13): a publicação do Querido Diário é a EDIÇÃO inteira; o título levava o termo buscado
+            # ("— chamamento público") e toda edição virava "seleção aberta" (12 falsas abertas em Goiânia e Aparecida).
+            # Quem decide é o TRECHO; sem prazo escrito no trecho, não é aberta — fica para conferir o ato.
+            k = classificar(x["resumo"][:300], x["resumo"], pub, hoje, cfg["lexico"])
+            if k["veredito"] == "OPORTUNIDADE" and not k.get("prazo"):
+                k = {**k, "aberta": False, "motivo": k["motivo"] + " — trecho de edição do diário sem prazo; conferir o ato"}
+        else:
+            k = classificar(x["titulo"], x["resumo"], pub, hoje, cfg["lexico"])
         ver[k["veredito"]] += 1; cat[k["categoria"]] += 1
         if pub:
             por_ano[str(pub.year)] += 1
@@ -1063,9 +1085,11 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     abertas, passadas = [], []
     # 1º monitoramento (barato) das que já têm histórico; 2º as demais, uma por vez — AGM primeiro (maior rendimento)
     ordem = sorted(cfg["municipios"], key=lambda m: (est["cidades"][m["municipio"]].get("camada") != 4, not m.get("agm"), m["municipio"]))
+    vistas = set()
     for m in ordem:
         if time.time() > fim:
             break
+        vistas.add(m["municipio"])
         c = est["cidades"][m["municipio"]]
         try:
             a, p = processar_cidade(c, m, cfg, hoje, fim)
@@ -1086,6 +1110,26 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     st = Counter(c.get("status", "não lida") for c in est["cidades"].values())
     diag["cidades_por_status"] = dict(st); diag["camadas"] = dict(diag["camadas"])
     diag["paginas_lidas"] = sum(diag["camadas"].values())
+    # 03/10 (teste do motor 13): PUBLICADO × LIDO por cidade e rota. O que a NUVEM podia ler e não leu (falha, tempo, cidade
+    # não alcançada) vira `paginas_nao_lidas` → o maestro vê "parcial" e dispara de novo. O que só abre pelo Brasil fica em
+    # `aguardando_brasil` → o maestro vê "pendente_local" (nunca "completa"), e o painel diz quantas cidades faltam.
+    nao_lidas, brasil = [], []
+    for m in cfg["municipios"]:
+        c = est["cidades"][m["municipio"]]
+        if m["municipio"] not in vistas:
+            nao_lidas.append(f"{m['municipio']}: não alcançada nesta execução (tempo)"); continue
+        for r, s_ in (c.get("rotas") or {}).items():
+            if s_.startswith(("falhou", "não lida")) or "tempo" in s_:
+                nao_lidas.append(f"{m['municipio']} · {r}: {s_}")
+            elif "Brasil" in s_:
+                brasil.append(f"{m['municipio']} · {r}")
+    if nao_lidas:
+        diag["paginas_nao_lidas"] = nao_lidas[:25]
+    if brasil:
+        diag["aguardando_brasil"] = brasil; diag["exige_brasil"] = True
+    diag["leitura_do_dia"] = {"cidades": len(cfg["municipios"]), "lidas": st.get("lida", 0), "parciais": st.get("parcial", 0),
+                              "aguardando_brasil": st.get("aguardando coleta local (Brasil)", 0), "falharam": st.get("falhou", 0),
+                              "rotas_aguardando_brasil": len(brasil), "rotas_nao_lidas": len(nao_lidas)}
     if not achados:
         diag["motivo_zero"] = ("; ".join(f"{k}: {v}" for k, v in st.items()) + " — nenhuma seleção aberta nova hoje") if not diag["falhas"] \
             else "falhas: " + "; ".join(diag["falhas"][:2])
@@ -1095,7 +1139,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     ESTADO.write_text(json.dumps(est, ensure_ascii=False, indent=1), encoding="utf-8")
     painel()
     saude = [{"url": m["site"], "status": est["cidades"][m["municipio"]].get("status")} for m in cfg["municipios"]]
-    return {"sensor": MOTOR_ID, "achados": achados, "falhas": [{"erro": f} for f in diag["falhas"]], "saude": saude, "diagnostico": diag}
+    return {"sensor": MOTOR_ID, "achados": achados, "falhas": [{"erro": f} for f in diag["falhas"]], "saude": saude, "diagnostico": diag,
+            "lido_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}   # 03/10: sem isso a passagem caía (KeyError)
 
 
 def painel() -> dict:
