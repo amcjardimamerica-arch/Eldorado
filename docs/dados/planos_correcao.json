@@ -2,27 +2,12 @@
  "em": "2026-10-03",
  "regra": "PLANOS DE CORREÇÃO DOS CANAIS (titular, 02/10/2026).\n\nCada motor e Piloto é diagnosticado a cada ciclo pelo seu histórico (estado/esquadra*.json, status dos motores, bloqueios)\ne recebe o plano previsto no fluxograma (config/linha_producao.json › planos_de_correcao):\n  sem_rendimento · falha_parcial · bloqueio · exige_brasil · formato_mudou · (contrato_violado e injecao: por registro)\nO plano nunca desliga um canal sozinho: ele diz o que fazer e qual skill usar.",
  "resumo": {
-  "exige_brasil": 2,
+  "exige_brasil": 1,
   "falha_parcial": 11,
   "sem_rendimento": 33,
-  "saudavel": 81
+  "saudavel": 82
  },
  "motores": [
-  {
-   "motor": "judiciario-tjgo",
-   "canal": "judiciario-tjgo",
-   "familia": "outros",
-   "diagnostico": "exige_brasil",
-   "evidencia": "o site recusa o IP da nuvem",
-   "plano": [
-    "coleta local (scripts/coleta_brasil.py)",
-    "manter as outras fontes do motor lendo na nuvem",
-    "não contar como falha"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 1,
-   "achados_total": 0
-  },
   {
    "motor": "plat-prefeituras-50-go",
    "canal": "prefeituras-50-go",
@@ -43,14 +28,14 @@
    "canal": "camara-goiania-pl",
    "familia": "orgao_publico",
    "diagnostico": "falha_parcial",
-   "evidencia": "falhas em 7 dos últimos 7 dias",
+   "evidencia": "falhas em 6 dos últimos 7 dias",
    "plano": [
     "repetir com espera crescente (backoff)",
     "trocar a ordem das rotas",
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 40,
+   "leituras": 41,
    "achados_total": 0
   },
   {
@@ -761,8 +746,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 48,
-   "achados_total": 5
+   "leituras": 49,
+   "achados_total": 6
   },
   {
    "motor": "do-goias",
@@ -772,8 +757,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 46,
-   "achados_total": 124
+   "leituras": 47,
+   "achados_total": 128
   },
   {
    "motor": "dou",
@@ -1542,8 +1527,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 1,
-   "achados_total": 1
+   "leituras": 2,
+   "achados_total": 2
   },
   {
    "motor": "judiciario-cnj-tjgo",
@@ -1557,6 +1542,17 @@
    "achados_total": 2
   },
   {
+   "motor": "judiciario-tjgo",
+   "canal": "judiciario-tjgo",
+   "familia": "outros",
+   "diagnostico": "saudavel",
+   "evidencia": "saudável",
+   "plano": [],
+   "skill": null,
+   "leituras": 2,
+   "achados_total": 0
+  },
+  {
    "motor": "mpgo-destinacao",
    "canal": "mpgo-destinacao",
    "familia": "outros",
@@ -1564,8 +1560,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 1,
-   "achados_total": 1
+   "leituras": 2,
+   "achados_total": 2
   },
   {
    "motor": "mptgo-destinacao",
@@ -1575,8 +1571,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 1,
-   "achados_total": 2
+   "leituras": 2,
+   "achados_total": 4
   },
   {
    "motor": "mpu-destinacao",
