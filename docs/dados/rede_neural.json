@@ -1,9 +1,9 @@
 {
- "em": "2026-10-03T04:13:13+00:00",
+ "em": "2026-10-03T09:03:06+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1161,
+ "rotulados": 1162,
  "positivos": 356,
- "pendentes": 881,
+ "pendentes": 910,
  "validacao_cruzada": {
   "auc": 0.905,
   "precisao": 0.808,
@@ -12,6 +12,12 @@
  },
  "modelo_treinado_em": "2026-10-02T12:13:19+00:00",
  "fila_de_validacao": [
+  {
+   "titulo": "Aviso de Chamamento Público Credenciamento nº 3/2026",
+   "url": "https://transparencia.paubrasil.ba.gov.br/editais-licitacoes",
+   "nota": 0.5,
+   "incerteza": 1.0
+  },
   {
    "titulo": "Diário Oficial de Monte Mor (SP) 2026-09-28 — \"chamamento público\" \"organizações da sociedade civil\"",
    "url": "https://data.queridodiario.ok.org.br/3531803/2026-09-28/e8702a1695408958b3b1737ab05715fb0be81a9b.pdf",
@@ -41,6 +47,12 @@
    "url": "https://mapa.cultura.gov.br/oportunidade/8365/",
    "nota": 0.498,
    "incerteza": 0.996
+  },
+  {
+   "titulo": "EDITAL DE CHAMADA PÚBLICA FAPESC N.º 051/2026",
+   "url": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+   "nota": 0.498,
+   "incerteza": 0.995
   },
   {
    "titulo": "Edital Prefeitura de Ourinhos 2026: Saúde",
@@ -205,6 +217,12 @@
    "incerteza": 0.974
   },
   {
+   "titulo": "Chamamento Público nº 49/2026 - DSEI - Cuiabá - Secretária de Saúde Indígena (SESAI)",
+   "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-49-2026-dsei-cuiaba-sesai",
+   "nota": 0.514,
+   "incerteza": 0.973
+  },
+  {
    "titulo": "CREDENCIAMENTO DE ARTISTAS, BANDAS, GRUPOS MUSICAIS, GRUPOS DE DANÇA E FANFARRAS NOS VARIADOS ESTILOS PARA… — MUNICIPIO DE CORRENTINA",
    "url": "https://pncp.gov.br/app/editais/14221741000107/2026/64",
    "nota": 0.486,
@@ -251,6 +269,12 @@
    "url": "https://www.gov.br/funarte/pt-br/editais/2026/programa-funarte-aberta",
    "nota": 0.483,
    "incerteza": 0.967
+  },
+  {
+   "titulo": "Edital de Credenciamento Nº 1/2026",
+   "url": "https://www.gov.br/icmbio",
+   "nota": 0.483,
+   "incerteza": 0.966
   },
   {
    "titulo": "Aviso de Chamamento Público Nº 857/2026",
@@ -347,31 +371,7 @@
    "url": "https://pncp.gov.br/app/editais/13913140000100/2026/6",
    "nota": 0.478,
    "incerteza": 0.956
-  },
-  {
-   "titulo": "Aulas de Capoeira Gratuitas",
-   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/5718/",
-   "nota": 0.478,
-   "incerteza": 0.956
-  },
-  {
-   "titulo": "TESTE EDITAL COM PARECERISTA",
-   "url": "https://mapa.cultura.gov.br/oportunidade/6876/",
-   "nota": 0.477,
-   "incerteza": 0.955
-  },
-  {
-   "titulo": "Credenciamento de artistas, bandas ou grupos musicais amadores, de renome local, regional e estadual, para… — MUNICIPIO DE GOUVEA",
-   "url": "https://pncp.gov.br/app/editais/17754144000136/2026/8",
-   "nota": 0.476,
-   "incerteza": 0.952
-  },
-  {
-   "titulo": "The BNDES Abroad - BNDES",
-   "url": "https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en/Institucional/The_BNDES_Abroad",
-   "nota": 0.524,
-   "incerteza": 0.951
   }
  ],
- "pendentes_provaveis_reais": 266
+ "pendentes_provaveis_reais": 276
 }
