@@ -88,15 +88,27 @@ def _get_texto(url: str, timeout: int = 25, max_bytes: int = 4_000_000) -> str:
             return super().redirect_request(req, fp, code, msg, headers, newurl)
 
     validate_public_https(url)
-    from . import ponte_brasil
-    if ponte_brasil.usar(url):                            # 03/10: Câmara e TJGO pela ponte da Hostgator (IP brasileiro)
-        try:
-            return ponte_brasil.texto(url, timeout=timeout, max_bytes=max_bytes)
-        except Exception as exc:  # noqa: BLE001
-            raise Recusa(f"pela ponte Brasil: {str(exc)[:120]}") from exc
+    # 03/10 (titular): DIRETO PRIMEIRO, com as cadeias de certificado que o site não envia (SUAP: src/certificados.py);
+    # a ponte da Hostgator fica de RESERVA — só entra se a leitura direta for recusada ou falhar.
+    try:
+        return _direto(url, timeout, max_bytes, _Redir)
+    except Exception as exc_direto:  # noqa: BLE001
+        from . import ponte_brasil
+        if ponte_brasil.usar(url):
+            try:
+                return ponte_brasil.texto(url, timeout=timeout, max_bytes=max_bytes)
+            except Exception as exc:  # noqa: BLE001
+                raise Recusa(f"direto: {str(exc_direto)[:80]} · pela ponte Brasil: {str(exc)[:80]}") from exc
+        raise
+
+
+def _direto(url: str, timeout: int, max_bytes: int, _Redir) -> str:
+    from urllib.error import HTTPError, URLError
+    from urllib.request import HTTPSHandler, Request, build_opener
+    from .certificados import contexto
     req = Request(url, headers={"User-Agent": UA, "Accept-Language": "pt-BR,pt;q=0.9"})
     try:
-        with build_opener(_Redir()).open(req, timeout=timeout) as r:
+        with build_opener(_Redir(), HTTPSHandler(context=contexto())).open(req, timeout=timeout) as r:
             dados = r.read(max_bytes + 1)
             cs = r.headers.get_content_charset() or "utf-8"
     except HTTPError as exc:
