@@ -46,6 +46,8 @@ jobs:
             { timeout 1800 python -m src.empresas semanal GO; echo "rc_semanal=$?"; } 2>&1 | tail -c 20000 > estado/log_empresas.txt
             { timeout 600 python -m src.patrocinios; echo "rc_patrocinios=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
             { timeout 300 python -m src.biblioteca_empresas; timeout 300 python -m src.incentivos_empresas; echo "rc_incentivos=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
+            # motor ÚNICO de incentivos (02/10): também os sites das maiores contribuintes do ICMS
+            { MOTORES_FONTES=empresas-incentivadas SENSORES_PRAZO_S=840 timeout 900 python -m src.sensores; echo "rc_sites_icms=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
           else
             echo "empresas: rotina semanal em dia"
           fi
