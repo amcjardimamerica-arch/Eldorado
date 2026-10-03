@@ -248,7 +248,7 @@ def consolidar() -> list[dict]:
                 checklist[k] = {"s": "disp", "v": "dispensado pelo edital", "t": str(c.get("trecho_dispensa") or "")[:160]}
             elif dz.get("status") == "confirmado" and dz.get("valor"):
                 checklist[k] = {"s": "val", "v": str(dz["valor"])[:90]}
-            elif dz.get("status") in ("dispensado pelo edital", "não informado no edital"):
+            elif dz.get("status") in ("dispensado pelo edital", "não informado no edital", "dispensado pelo tipo"):   # 02/10: dispensa fundamentada no tipo
                 checklist[k] = {"s": "disp", "v": (dz.get("status") if not dz.get("valor") else f"{dz['status']}: {dz['valor']}")[:90], "t": "validação individual no site oficial"}
             elif _val_ok.get(k):
                 checklist[k] = {"s": "val", "v": str(_val_ok[k])[:90]}
@@ -477,6 +477,13 @@ def _resumo_opressores(itens: list[dict]) -> dict:
 def montar() -> dict:
     itens = consolidar()
     etapa = opressores_e_preditivo(itens)
+    try:                                     # 02/10 (titular): marcador de iniciativa (poder público / privada / mista)
+        from .pareceres_livros import iniciativa_por_id
+        _INI = iniciativa_por_id()
+        for it in itens:
+            it["iniciativa"] = _INI.get(it.get("id"))
+    except Exception:
+        pass
     mapa = {}
     for it in itens:
         k = it["uf"] or "__nac__"
@@ -499,7 +506,7 @@ def montar() -> dict:
            "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal, "opressores": _resumo_opressores(itens),
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
            "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao",
-                                                                  "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao", "selo", "selo_de")}
+                                                                  "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao", "selo", "selo_de", "iniciativa")}
                                        for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
                             for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}
@@ -531,6 +538,11 @@ def atualizar_mapa() -> dict:
         c["livros"] = curar()
     except Exception as ex:
         c["livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 02/10 (titular): pareceres individuais acumulados nos livros
+        from .pareceres_livros import aplicar as _pareceres
+        c["pareceres_nos_livros"] = _pareceres()
+    except Exception as ex:
+        c["pareceres_nos_livros"] = f"falhou: {type(ex).__name__}"
     try:                                     # 01/10: conferência da Biblioteca — abrangência, empresas e duplicidade
         from .curadoria_biblioteca import conferir
         c["conferencia_dos_livros"] = conferir()

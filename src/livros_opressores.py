@@ -227,7 +227,8 @@ def classificar(x: dict) -> dict:
     _ant = x.get("livro") or {}
     x["livro"] = {"inscricao": ins, "edicoes": len(x.get("historico") or []), "atualizacoes": (_ant.get("atualizacoes") or [])[-8:],
                   **({"checklist": _ant["checklist"], "checklist_itens": _ant.get("checklist_itens")} if _ant.get("checklist") else {}),   # 01/10: o checklist do livro é preservado
-                  **({"historico_parametros": _ant["historico_parametros"]} if _ant.get("historico_parametros") else {})}   # 02/10: e a linha do tempo dos parâmetros
+                  **({"historico_parametros": _ant["historico_parametros"]} if _ant.get("historico_parametros") else {}),   # 02/10: e a linha do tempo dos parâmetros
+                  **{k: _ant[k] for k in ("pareceres", "iniciativa", "historico_3_anos") if _ant.get(k)}}   # 02/10 (titular): pareceres individuais e marcador de iniciativa
     return x
 
 
