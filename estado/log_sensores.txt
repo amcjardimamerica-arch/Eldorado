@@ -1,39 +1,55 @@
-motores da vez: plat-prefeituras-50-go,plat-estaduais-go-gov,pncp-api,plat-cnpq-extensao,recorrencia
-  plat-prefeituras-50-go: 1 achado(s), 0 falha(s), 908 s
-  plat-estaduais-go-gov: 1 achado(s), 0 falha(s), 186 s
-  pncp-api: 204 achado(s), 0 falha(s), 924 s
-  plat-cnpq-extensao: 0 achado(s), 0 falha(s), 13 s
+motores da vez: judiciario-tjgo,mptgo-destinacao,mpu-destinacao,plat-estaduais-go-gov,pncp-api,recorrencia
+  judiciario-tjgo: 0 achado(s), 2 falha(s), 3 s
+  mptgo-destinacao: 2 achado(s), 0 falha(s), 20 s
+  mpu-destinacao: 0 achado(s), 0 falha(s), 5 s
+  plat-estaduais-go-gov: 0 achado(s), 0 falha(s), 114 s
+  pncp-api: 214 achado(s), 2 falha(s), 935 s
+  recorrencia: 22 achado(s), 25 falha(s), 159 s
 {
   "data": "2026-10-03",
-  "em": "2026-10-03T18:45:51+00:00",
+  "em": "2026-10-03T19:52:38+00:00",
   "manual": [
-    "plat-cnpq-extensao",
+    "judiciario-tjgo",
+    "mptgo-destinacao",
+    "mpu-destinacao",
     "plat-estaduais-go-gov",
-    "plat-prefeituras-50-go",
     "pncp-api",
     "recorrencia"
   ],
   "bloco": "manual",
-  "sensores_executados": 4,
-  "adiados_por_tempo": [
-    "recorrencia"
-  ],
-  "duracao_s": 2031,
-  "em_espera": 122,
+  "sensores_executados": 6,
+  "adiados_por_tempo": [],
+  "duracao_s": 1236,
+  "em_espera": 121,
   "total_esquadra": 127,
   "previsoes_ativas": 1,
-  "achados": 206,
-  "novos_na_base": 11,
+  "achados": 238,
+  "novos_na_base": 2,
   "por_tipo": {
-    "plataforma": {
-      "sensores": 3,
+    "diario_justica": {
+      "sensores": 1,
+      "achados": 0,
+      "falhas": 2
+    },
+    "ministerio_publico": {
+      "sensores": 2,
       "achados": 2,
+      "falhas": 0
+    },
+    "plataforma": {
+      "sensores": 1,
+      "achados": 0,
       "falhas": 0
     },
     "api": {
       "sensores": 1,
-      "achados": 204,
-      "falhas": 0
+      "achados": 214,
+      "falhas": 2
+    },
+    "recorrencia": {
+      "sensores": 1,
+      "achados": 22,
+      "falhas": 25
     }
   }
 }

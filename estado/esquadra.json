@@ -548,30 +548,30 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 59,
-      "achados_total": 1056,
+      "leituras": 60,
+      "achados_total": 1270,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-03T18:45:38+00:00",
+      "ultima": "2026-10-03T19:49:59+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 204,
-      "falhas_ultima": 0,
+      "achados_ultima": 214,
+      "falhas_ultima": 2,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
           "http": 200,
-          "bytes": 5040
+          "bytes": 7240
         },
         {
           "url": "https://pncp.gov.br/api/search/",
           "http": 200,
-          "bytes": 1737
+          "bytes": 1615
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 223,
-        "links_total": 6777,
-        "links_candidatos": 204,
+        "paginas_lidas": 261,
+        "links_total": 8855,
+        "links_candidatos": 214,
         "descobertas": [],
         "pdf_links": 0,
         "motivo_zero": null,
@@ -579,11 +579,16 @@
         "fontes": {
           "A": {
             "falhas": [],
-            "consultas": 176,
-            "itens": 5040,
+            "consultas": 217,
+            "itens": 7240,
             "ufs_lidas": [
               "GO",
               "DF",
+              "TO",
+              "AC",
+              "AL",
+              "AP",
+              "AM",
               "BA",
               "CE",
               "ES",
@@ -598,23 +603,23 @@
               "PI",
               "RJ",
               "RN",
-              "RS",
-              "RO",
-              "RR",
-              "SC",
-              "SP",
-              "SE",
-              "TO"
+              "RS"
             ],
-            "cortados": 34,
+            "cortados": 28,
             "paginas_pendentes": [
-              "MG/Credenciamento: páginas 21–54"
+              "BA/Credenciamento: páginas 21–27",
+              "MG/Credenciamento: páginas 41–53",
+              "PR/Credenciamento: páginas 21–21",
+              "RS/Credenciamento: páginas 21–27"
             ]
           },
           "B": {
-            "falhas": [],
-            "consultas": 47,
-            "itens": 1737
+            "falhas": [
+              "projetos culturais {}: HTTP 503: HTTP Error 503: Service Unavailable",
+              "agentes culturais {}: HTTP 503: HTTP Error 503: Service Unavailable"
+            ],
+            "consultas": 44,
+            "itens": 1615
           },
           "C": {
             "falhas": [],
@@ -627,6 +632,11 @@
           "ufs_lidas": [
             "GO",
             "DF",
+            "TO",
+            "AC",
+            "AL",
+            "AP",
+            "AM",
             "BA",
             "CE",
             "ES",
@@ -641,26 +651,20 @@
             "PI",
             "RJ",
             "RN",
-            "RS",
-            "RO",
-            "RR",
-            "SC",
-            "SP",
-            "SE",
-            "TO"
+            "RS"
           ],
           "proxima_comeca_em": null,
           "faltam_no_dia": []
         },
-        "cortados": 34,
+        "cortados": 28,
         "vereditos": {
-          "OPORTUNIDADE": 204,
+          "OPORTUNIDADE": 214,
           "ACOMPANHAR": 0,
-          "RUIDO": 6286,
+          "RUIDO": 8322,
           "quarentena": 0
         }
       },
-      "duracao_s": 924
+      "duracao_s": 935
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
@@ -3594,30 +3598,30 @@
     "recorrencia": {
       "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
       "tipo": "recorrencia",
-      "leituras": 15,
-      "achados_total": 246,
+      "leituras": 16,
+      "achados_total": 268,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-03T16:08:18+00:00",
+      "ultima": "2026-10-03T19:52:38+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 20,
-      "falhas_ultima": 26,
+      "achados_ultima": 22,
+      "falhas_ultima": 25,
       "saude": [
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 133991
+          "bytes": 133950
         },
         {
           "url": "https://www.gov.br/transferegov/pt-br",
           "http": 200,
-          "bytes": 742143
+          "bytes": 742073
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 17,
-        "links_total": 1965,
-        "links_candidatos": 1381,
+        "paginas_lidas": 18,
+        "links_total": 2082,
+        "links_candidatos": 1444,
         "descobertas": [
           {
             "de": "https://portal.al.go.leg.br/",
@@ -3640,15 +3644,15 @@
             "rotulo": "Credenciamento para a Imprensa"
           }
         ],
-        "pdf_links": 74,
+        "pdf_links": 77,
         "motivo_zero": null,
         "camada1_vetados": 26,
-        "camada1_direcionados": 78,
+        "camada1_direcionados": 85,
         "rotas_pendentes_local": [
           "https://www.goiania.go.leg.br/parlamentares"
         ]
       },
-      "duracao_s": 325
+      "duracao_s": 159
     },
     "f260-espalhado-acessoainformacao-cavalcante-go-gov-br": {
       "nome": "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE — oportunidades (espalhado de edital validado)",
@@ -5889,11 +5893,11 @@
     "judiciario-tjgo": {
       "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
       "tipo": "diario_justica",
-      "leituras": 5,
+      "leituras": 6,
       "achados_total": 0,
-      "vazias_seguidas": 5,
+      "vazias_seguidas": 6,
       "duracao_s": 3,
-      "ultima": "2026-10-03T16:02:54+00:00",
+      "ultima": "2026-10-03T19:32:05+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -6089,11 +6093,11 @@
     "mptgo-destinacao": {
       "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
       "tipo": "ministerio_publico",
-      "leituras": 2,
-      "achados_total": 4,
+      "leituras": 3,
+      "achados_total": 6,
       "vazias_seguidas": 0,
-      "duracao_s": 19,
-      "ultima": "2026-10-03T11:20:15+00:00",
+      "duracao_s": 20,
+      "ultima": "2026-10-03T19:32:26+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
       "falhas_ultima": 0,
@@ -6192,15 +6196,21 @@
     "mpu-destinacao": {
       "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
       "tipo": "ministerio_publico",
-      "leituras": 1,
+      "leituras": 2,
       "achados_total": 0,
-      "vazias_seguidas": 1,
-      "duracao_s": 0,
-      "ultima": "2026-10-03T02:00:17+00:00",
+      "vazias_seguidas": 2,
+      "duracao_s": 5,
+      "ultima": "2026-10-03T19:32:30+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
-      "saude": [],
+      "saude": [
+        {
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+          "http": 200,
+          "itens": 0
+        }
+      ],
       "alerta": null,
       "diagnostico": {
         "versao": "motor 12 Ministérios Públicos v2 (02/10/2026)",
@@ -6220,7 +6230,7 @@
           "f12": {
             "orgao": "MPT nacional",
             "modo": "rss",
-            "url": "https://mpt.mp.br/pgt/noticias/RSS",
+            "url": "https://mpt.mp.br/search_rss?SearchableText=destina%C3%A7%C3%A3o+recursos&sort_on=Date&sort_order=reverse",
             "situacao": "em dia (cadência)"
           },
           "f13": {
@@ -6345,9 +6355,9 @@
           },
           "f33": {
             "orgao": "MPU",
-            "modo": "listagem_html",
+            "modo": "ruido_conhecido",
             "url": "https://www.mpu.mp.br/sitemap",
-            "situacao": "em dia (cadência)"
+            "situacao": "ruído conhecido (não lida)"
           },
           "f34": {
             "orgao": "Ministério da Justiça e Segurança Pública",
@@ -6359,7 +6369,8 @@
             "orgao": "Ministério da Justiça e Segurança Pública",
             "modo": "estado_pagina",
             "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
-            "situacao": "em dia (cadência)"
+            "situacao": "lida",
+            "selecao_aberta": false
           },
           "f36": {
             "orgao": "Ministério da Justiça e Segurança Pública",
@@ -6450,7 +6461,7 @@
           "Cadastro MPF PR-GO: pedir o edital à PR-GO (prgo-chefiagabinete@mpf.mp.br), porque o link oficial dá 404."
         ],
         "habilitadas": null,
-        "paginas_lidas": 0,
+        "paginas_lidas": 1,
         "links_total": 0,
         "links_candidatos": 0,
         "inventario": {
@@ -6463,13 +6474,13 @@
     "plat-estaduais-go-gov": {
       "nome": "Oportunidade Estaduais Governamentais de Goiás",
       "tipo": "plataforma",
-      "leituras": 4,
+      "leituras": 5,
       "achados_total": 2,
-      "vazias_seguidas": 0,
-      "duracao_s": 186,
-      "ultima": "2026-10-03T18:30:14+00:00",
+      "vazias_seguidas": 1,
+      "duracao_s": 114,
+      "ultima": "2026-10-03T19:34:24+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 1,
+      "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
         {
@@ -6487,31 +6498,19 @@
         "orgaos": 37,
         "descobertos_agora": 0,
         "camadas_feitas": {
-          "4": 36,
-          "1": 1,
-          "2": 1,
-          "3": 1
+          "4": 36
         },
         "falhas": [],
-        "paginas_lidas": 39,
-        "motivo_zero": null,
-        "livros": {
-          "livros_novos": 0,
-          "livros_atualizados": 9,
-          "vetados_pelas_restricoes": 1,
-          "pendentes_das_restricoes": 0
-        },
+        "paginas_lidas": 36,
+        "motivo_zero": "36 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje",
         "pendentes_livros": 0,
         "cobertura_orgaos": {
-          "devidos": 37,
+          "devidos": 36,
           "monitorados_hoje": 36,
-          "pendentes": [
-            "seds"
-          ]
+          "pendentes": []
         },
-        "paginas_nao_lidas": 1,
         "orgaos_por_camada": {
-          "camada 4": 37
+          "camada 4": 36
         }
       }
     },
@@ -7553,35 +7552,49 @@
   },
   "ultima_execucao": {
     "data": "2026-10-03",
-    "em": "2026-10-03T18:45:51+00:00",
+    "em": "2026-10-03T19:52:38+00:00",
     "manual": [
-      "plat-cnpq-extensao",
+      "judiciario-tjgo",
+      "mptgo-destinacao",
+      "mpu-destinacao",
       "plat-estaduais-go-gov",
-      "plat-prefeituras-50-go",
       "pncp-api",
       "recorrencia"
     ],
     "bloco": "manual",
-    "sensores_executados": 4,
-    "adiados_por_tempo": [
-      "recorrencia"
-    ],
-    "duracao_s": 2031,
-    "em_espera": 122,
+    "sensores_executados": 6,
+    "adiados_por_tempo": [],
+    "duracao_s": 1236,
+    "em_espera": 121,
     "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 206,
-    "novos_na_base": 11,
+    "achados": 238,
+    "novos_na_base": 2,
     "por_tipo": {
-      "plataforma": {
-        "sensores": 3,
+      "diario_justica": {
+        "sensores": 1,
+        "achados": 0,
+        "falhas": 2
+      },
+      "ministerio_publico": {
+        "sensores": 2,
         "achados": 2,
+        "falhas": 0
+      },
+      "plataforma": {
+        "sensores": 1,
+        "achados": 0,
         "falhas": 0
       },
       "api": {
         "sensores": 1,
-        "achados": 204,
-        "falhas": 0
+        "achados": 214,
+        "falhas": 2
+      },
+      "recorrencia": {
+        "sensores": 1,
+        "achados": 22,
+        "falhas": 25
       }
     }
   }
