@@ -84,6 +84,33 @@ def catalogo() -> dict:
     return cat
 
 
+MOTORES_PRAZO_DO_TEXTO = ("site-observatorio-terceiro-setor", "site-abcr", "site-funarte", "site-rede-comua", "site-fundo-baoba")
+
+
+def corrigir_prazos_do_ano_seguinte(gravar: bool = True) -> int:
+    """03/10 (estudo dos motores 01–39): o leitor antigo empurrava 'até 2 de setembro' (sem ano) para o PRÓXIMO ano a
+    partir de hoje. Nos motores que leem o prazo do texto (26, 28, 29, 31, 32), o prazo do ano seguinte num post de
+    2026 volta para 2026 quando a data cabe depois da publicação. Idempotente; os outros motores não mudam."""
+    A = _j(ACERVO, {"itens": {}}); cat = catalogo()
+    sm = {s["id"]: s.get("motor") for s in cat.get("sites") or []}
+    n = 0
+    for x in (A.get("itens") or {}).values():
+        pz, pub = str(x.get("prazo") or ""), str(x.get("publicado") or "")[:10]
+        if len(pz) < 10 or len(pub) < 10 or sm.get(x.get("fonte")) not in MOTORES_PRAZO_DO_TEXTO:
+            continue
+        if int(pz[:4]) != int(pub[:4]) + 1:
+            continue
+        try:
+            y = date(int(pub[:4]), int(pz[5:7]), int(pz[8:10])).isoformat()
+        except ValueError:
+            continue
+        if y >= pub:
+            x["prazo_antes_da_correcao"] = pz; x["prazo"] = y; n += 1
+    if n and gravar:
+        _gravar(ACERVO, A)
+    return n
+
+
 def registrar_motores_que_faltam(hoje: date, gravar: bool = True) -> list[dict]:
     """Depois da rodada: domínio oficial sem motor, visto em 2+ indícios, vira motor (em observação). Um por vez, sem repetir."""
     cri = _j(CRIADOS, {"sites": []})
@@ -499,6 +526,10 @@ def rodada(motores: list[str] | None = None, sites: list[str] | None = None, rot
     if delta_em:
         _gravar(Path(delta_em), delta, indent=None)
     resumo.update(aplicar(delta, gravar=gravar))
+    try:                                             # 03/10: prazos do ano seguinte (leitor antigo) corrigidos
+        resumo["prazos_do_ano_seguinte_corrigidos"] = corrigir_prazos_do_ano_seguinte(gravar=gravar)
+    except Exception as e:  # noqa: BLE001
+        resumo["prazos_do_ano_seguinte_corrigidos"] = f"falhou: {type(e).__name__}"
     try:                                             # 02/10: oportunidade sem motor → o motor é criado
         resumo["motores_criados"] = [m["motor"] for m in registrar_motores_que_faltam(hoje, gravar=gravar)]
     except Exception as e:  # noqa: BLE001 — nunca derruba a rodada
