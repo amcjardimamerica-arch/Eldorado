@@ -1,0 +1,35 @@
+name: 24 · Teste da ponte Hostgator (páginas e motores que bloqueiam a nuvem)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: eldorado-teste-ponte
+  cancel-in-progress: false
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+      ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Dependências
+        run: pip install pypdf --quiet
+      - name: Testar a ponte (página por página e os motores)
+        run: timeout 3000 python3 scripts/testar_ponte.py || echo "teste terminou com aviso"
+      - name: Gravar só o relatório
+        if: always()
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          rm -rf /tmp/r && mkdir -p /tmp/r && cp -r docs/relatorios/teste-ponte/. /tmp/r/ 2>/dev/null || exit 0
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            mkdir -p docs/relatorios/teste-ponte && cp -r /tmp/r/. docs/relatorios/teste-ponte/
+            git add docs/relatorios/teste-ponte
+            git commit -q -m "teste da ponte Hostgator $(date -u +%F\ %H:%M)" || break
+            git push -q origin main && break; sleep 7
+          done
