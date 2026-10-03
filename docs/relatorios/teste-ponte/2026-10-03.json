@@ -1,0 +1,191 @@
+{
+ "em": "2026-10-03T03:03:53+00:00",
+ "na_nuvem": true,
+ "ponte_configurada": true,
+ "paginas": [
+  {
+   "nome": "04 Câmara de Goiânia — SUAP",
+   "url": "https://suap.camaragyn.go.gov.br/",
+   "direto": {
+    "status": 0,
+    "erro": "URLError",
+    "segundos": 1.9
+   },
+   "ponte": {
+    "status": 0,
+    "erro": "ErroPonte: rede: pela ponte: falha de rede na ponte: SSL certificate problem: unable to get local issuer certificate",
+    "segundos": 1.2
+   }
+  },
+  {
+   "nome": "04 Câmara de Goiânia — portal",
+   "url": "https://www.goiania.go.leg.br/",
+   "direto": {
+    "status": 200,
+    "bytes": 16787,
+    "segundos": 1.4
+   },
+   "ponte": {
+    "status": 200,
+    "bytes": 102276,
+    "titulo": "Página Inicial — Câmara Municipal de Goiânia",
+    "final_mesmo_site": true,
+    "segundos": 1.5
+   }
+  },
+  {
+   "nome": "07 TJ-GO — RSS da Agência de Notícias",
+   "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+   "direto": {
+    "status": 403,
+    "segundos": 0.2
+   },
+   "ponte": {
+    "status": 403,
+    "bytes": 5193,
+    "titulo": "Attention Required! | Cloudflare",
+    "final_mesmo_site": true,
+    "segundos": 0.9
+   }
+  },
+  {
+   "nome": "13 Prefeituras — Goiânia",
+   "url": "https://www.goiania.go.gov.br",
+   "direto": {
+    "status": 200,
+    "bytes": 177087,
+    "segundos": 1.3
+   },
+   "ponte": {
+    "status": 200,
+    "bytes": 177087,
+    "titulo": "Prefeitura de Goiânia &#8211; Prefeitura de Goiânia",
+    "final_mesmo_site": true,
+    "segundos": 1.9
+   }
+  },
+  {
+   "nome": "13 Prefeituras — Aparecida de Goiânia",
+   "url": "https://aparecida.go.gov.br",
+   "direto": {
+    "status": 200,
+    "bytes": 62506,
+    "segundos": 3.2
+   },
+   "ponte": {
+    "status": 200,
+    "bytes": 62329,
+    "titulo": "Prefeitura de Aparecida de Goiânia",
+    "final_mesmo_site": true,
+    "segundos": 1.3
+   }
+  },
+  {
+   "nome": "13 Prefeituras — Anápolis",
+   "url": "https://www.anapolis.go.gov.br",
+   "direto": {
+    "status": 200,
+    "bytes": 112957,
+    "segundos": 2.1
+   },
+   "ponte": {
+    "status": 200,
+    "bytes": 112957,
+    "titulo": "Prefeitura de Anápolis &#8211; Sempre do seu lado",
+    "final_mesmo_site": true,
+    "segundos": 1.8
+   }
+  },
+  {
+   "nome": "13 Prefeituras — Rio Verde",
+   "url": "https://www.rioverde.go.gov.br",
+   "direto": {
+    "status": 200,
+    "bytes": 224295,
+    "segundos": 1.9
+   },
+   "ponte": {
+    "status": 200,
+    "bytes": 224295,
+    "titulo": "Prefeitura Municipal de Rio Verde &#8211; Bem-vindo ao Portal Oficial da Prefeitura Munici",
+    "final_mesmo_site": true,
+    "segundos": 1.7
+   }
+  },
+  {
+   "nome": "13 Prefeituras — Senador Canedo",
+   "url": "https://www.senadorcanedo.go.gov.br",
+   "direto": {
+    "status": 200,
+    "bytes": 250418,
+    "segundos": 1.6
+   },
+   "ponte": {
+    "status": 200,
+    "bytes": 250418,
+    "titulo": "Prefeitura Municipal de Senador Canedo",
+    "final_mesmo_site": false,
+    "segundos": 2.5
+   }
+  },
+  {
+   "nome": "13 Prefeituras — Catalão",
+   "url": "https://www.catalao.go.gov.br",
+   "direto": {
+    "status": 200,
+    "bytes": 47311,
+    "segundos": 1.3
+   },
+   "ponte": {
+    "status": 200,
+    "bytes": 47311,
+    "titulo": "Prefeitura Municipal de Catalão",
+    "final_mesmo_site": true,
+    "segundos": 1.2
+   }
+  }
+ ],
+ "motores": [
+  {
+   "motor": "camara-goiania-pl",
+   "sensor": "camara-goiania-pl",
+   "achados": 0,
+   "falhas": 0,
+   "falhas_exemplo": [],
+   "paginas": 0,
+   "exige_brasil_pulado": true,
+   "ponte": {
+    "pedidos": 3,
+    "ok": 1,
+    "falhas": 2
+   },
+   "motivo_zero": "aguardando coleta local (Brasil): os portais da Câmara recusaram o IP do GitHub (B: pela ponte Brasil: rede: pela ponte: falha de rede na ponte: SSL certificate problem: unable to get local issuer cer",
+   "segundos": 34
+  },
+  {
+   "motor": "judiciario-tjgo",
+   "sensor": "judiciario-tjgo",
+   "achados": 0,
+   "falhas": 2,
+   "falhas_exemplo": [
+    "A: RSS página 1: pela ponte Brasil: HTTP 403 pela ponte",
+    "A: carga inicial, página 7: pela ponte Brasil: HTTP 403 pela ponte"
+   ],
+   "paginas": 0,
+   "exige_brasil_pulado": false,
+   "ponte": {
+    "pedidos": 2,
+    "ok": 2,
+    "falhas": 0
+   },
+   "motivo_zero": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 1 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar",
+   "segundos": 2
+  },
+  {
+   "motor": "prefeituras-50-go",
+   "erro": "estourou 15 minutos",
+   "segundos": 900
+  }
+ ],
+ "veredito": "a ponte funciona: 7 de 9 páginas abriram pela ponte"
+}
