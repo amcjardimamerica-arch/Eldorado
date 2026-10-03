@@ -461,6 +461,12 @@ box-shadow:0 1px 3px #0002}
 .oa-selo.prata{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.9)) drop-shadow(0 0 1px rgba(140,155,170,.55))}
 .oa-selo.ouro path{fill:url(#gSeloOuro);stroke:#A87412;stroke-width:.6}
 .oa-selo.ouro{animation:seloOuroBrilho 2.4s ease-in-out infinite;transform-origin:50% 55%}
+/* 03/10 (titular): selo do LIVRO (histórico de 3 anos), ícone de livro ao lado da estrela da oportunidade */
+.oa-livro{width:14px;height:13px;margin-top:2px;margin-left:2px;display:block;flex:none}
+.oa-livro.bronze path{fill:#9A6A3C;stroke:#6E4A28;stroke-width:.7}
+.oa-livro.prata path{fill:url(#gSeloPrata);stroke:#7F8B97;stroke-width:.6}
+.oa-livro.ouro path{fill:url(#gSeloOuro);stroke:#A87412;stroke-width:.6}
+.livro-nome .oa-livro{display:inline-block;vertical-align:-2px;margin:0 4px 0 0}
 @keyframes seloOuroBrilho{0%,100%{filter:drop-shadow(0 0 1.5px rgba(255,200,40,.55));transform:scale(1) rotate(0)}
   45%{filter:drop-shadow(0 0 4px rgba(255,214,70,.95)) drop-shadow(0 0 7px rgba(255,190,30,.45));transform:scale(1.12) rotate(6deg)}
   55%{filter:drop-shadow(0 0 5px rgba(255,240,150,1)) drop-shadow(0 0 8px rgba(255,200,40,.5));transform:scale(1.08) rotate(-4deg)}}
@@ -4434,6 +4440,13 @@ window.estrelaSelo=function(s){
         <stop offset=".72" stop-color="#D99A1B"/><stop offset="1" stop-color="#FFE27A"/></linearGradient></defs></svg>`;
     document.body.appendChild(d); }
   return `<svg class="oa-selo ${s}" viewBox="0 0 24 24" role="img" aria-label="${SELO_DIZ[s]}"><title>${SELO_DIZ[s]}</title><path d="M12 2.6l2.75 5.86 6.4.74-4.74 4.37 1.27 6.33L12 16.73 6.32 19.9l1.27-6.33L2.85 9.2l6.4-.74z"/></svg>`; };
+/* 03/10 (titular): selo do LIVRO — ouro = recorrência comprovada em 2+ anos (página oficial e datas); prata = há histórico
+   anterior, sem prova completa; bronze = sem edição anterior nos últimos 3 anos. Usa os mesmos gradientes da estrela. */
+const LIVRO_DIZ={ouro:"Livro ouro — edições em 2 ou mais anos nos últimos 3 anos, comprovadas: a próxima edição é previsível",
+  prata:"Livro prata — há histórico anterior a este ano, mas sem prova completa (página oficial/datas)",
+  bronze:"Livro bronze — sem edição anterior nos últimos 3 anos: falta coletar o histórico"};
+window.livroSelo=function(s){ if(!s||!LIVRO_DIZ[s]) return ""; estrelaSelo("bronze");   // garante os gradientes no documento
+  return `<svg class="oa-livro ${s}" viewBox="0 0 24 22" role="img" aria-label="${LIVRO_DIZ[s]}"><title>${LIVRO_DIZ[s]}</title><path d="M2 3.2c3.4-.9 6.6-.5 9.3 1.4v15.2c-2.7-1.8-5.9-2.2-9.3-1.3zM22 3.2c-3.4-.9-6.6-.5-9.3 1.4v15.2c2.7-1.8 5.9-2.2 9.3-1.3z"/></svg>`; };
 window.desenhaAbertasFluxo=function(){ return _desenhaAbertasFluxo(); };   // 28/09: chamado pelos filtros da tela (escopo global)
 function _desenhaAbertasFluxo(){
   const caixa=$("ed-abertos-caixa"); if(!caixa) return; caixa.classList.remove("oculto");
@@ -4452,7 +4465,7 @@ function _desenhaAbertasFluxo(){
     const cor=x.confirmada?"verde":!I?"cinza":I.ok?"verde":"verm";
     return `<div class="oa-c" style="--c:${COR_AREA[a]}">
       <div class="oa-t"><span class="uf-fx-m ${cor}" title="${x.confirmada?"confirmada: objeto, prazo e site oficial":!I?"ainda não estudada pelo Interceptador":I.ok?"estudada: prazo e site oficial encontrados":"estudada: prazo ou site oficial ainda não encontrados"}"></span>
-        ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)}">${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"Diário oficial · ").replace(/"/g,"").slice(0,110))}</a>`:`<b>${esc(String(x.titulo).slice(0,110))}</b>`}${estrelaSelo(seloEsteira(x))}</div>
+        ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)}">${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"Diário oficial · ").replace(/"/g,"").slice(0,110))}</a>`:`<b>${esc(String(x.titulo).slice(0,110))}</b>`}${estrelaSelo(seloEsteira(x))}${livroSelo(x.selo_livro)}</div>
       <div class="oa-m">${esc(x.orgao||"")}${x.orgao?" · ":""}${x._uf||"nacional"} · ${esc(x.tipo||"")}${x.iniciativa?` · <b title="marcador de iniciativa">${({poder_publico:"poder público",iniciativa_privada:"iniciativa privada",mista:"mista (público + privado)"})[x.iniciativa]||esc(x.iniciativa)}</b>`:""} · ${NOME_AREA[a]}${x.publicado_em?" · publicado em "+br(x.publicado_em):""}</div>
       <div class="oa-l"><span class="oa-p${x.confirmada?" ok":""}">${x.fim?"inscrições até "+br(x.fim):x.confirmada?"fluxo contínuo":"prazo a confirmar"}</span>
         ${u?`<span class="oa-s${of?" ok":""}">${of?"site oficial ✓":"indício — site oficial em busca"}</span>`:""}</div>
@@ -4835,7 +4848,7 @@ function desenhaMotores(){
       (m.previsao&&m.previsao.situacao==="prevista")?`abre ~${br(m.previsao.abertura)} · ativa em ${br(m.previsao.ativar_em)}`:"",
       d?`em leitura, dia ${d.dias}/30`:(mtAtivo(m.id)?"em leitura":"na estante")].filter(Boolean).join(" · ");
     return `<div class="dj aceso livro-c" data-id="${esc(m.id)}" style="border-left:4px solid ${({"Cultura":"#D63A6B","Esporte":"#7CB518","Saúde":"#2F79D0","Educação":"#2E9D5B","Assistência social":"#12A5B5","Criança e adolescente":"#E0A100","Pessoa idosa":"#8C6D3F","Meio ambiente":"#7B4FE0","Direitos humanos":"#C0392B","Desenvolvimento social":"#16A085","Emendas":"#B8860B"})[m.objeto_area]||"#7C8899"}" title="clique para abrir o livro" onclick="mtDetalhe('${esc(m.id)}')">
-      <span class="livro-txt"><b class="livro-nome">${esc(nome)}</b><span class="dj-info">${info}</span></span>
+      <span class="livro-txt"><b class="livro-nome">${livroSelo((m.selo_livro||{}).selo)}${esc(nome)}</b><span class="dj-info">${info}</span></span>
       <span class="livro-lugar">${lugarLivro(m)}</span></div>`;};
   // 29/09 (titular): os livros de oportunidades — agrupados pelo OBJETO classificado, com o nome "GO - Cultura · Edital — …"
   const COR_OBJ={"Cultura":"#D63A6B","Esporte":"#7CB518","Saúde":"#2F79D0","Educação":"#2E9D5B","Assistência social":"#12A5B5","Criança e adolescente":"#E0A100",

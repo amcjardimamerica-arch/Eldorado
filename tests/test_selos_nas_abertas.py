@@ -27,7 +27,7 @@ class TesteSelosNasAbertas(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn('[["","todas"],["ouro","Selo Ouro"],["prata","Selo Prata"],["bronze","Selo Bronze"]]', h)
         self.assertNotIn('["conf","com prazo e site oficial"],["verif","em verificação"]', h)
-        self.assertIn("${estrelaSelo(seloEsteira(x))}</div>", h)                       # canto direito da 1ª linha
+        self.assertIn("${estrelaSelo(seloEsteira(x))}${livroSelo(x.selo_livro)}</div>", h)   # 03/10: estrela + livro                       # canto direito da 1ª linha
         self.assertIn(".oa-selo.bronze path{fill:#9A6A3C", h)                           # bronze fosco (sem brilho)
         self.assertIn('id="gSeloPrata"', h); self.assertIn("animation:seloOuroBrilho", h)  # prata reluzente; ouro cintilante
         self.assertIn(".oa-selo{width:13px;height:13px", h)                             # estrela pequena

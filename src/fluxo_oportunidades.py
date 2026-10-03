@@ -484,6 +484,13 @@ def montar() -> dict:
             it["iniciativa"] = _INI.get(it.get("id"))
     except Exception:
         pass
+    try:                                     # 03/10 (titular): selo do LIVRO (histórico de 3 anos) ao lado da estrela
+        from .selo_livros import selo_por_livro
+        _SL = selo_por_livro()
+        for it in itens:
+            it["selo_livro"] = _SL.get(it.get("opressor"))
+    except Exception:
+        pass
     mapa = {}
     for it in itens:
         k = it["uf"] or "__nac__"
@@ -506,7 +513,7 @@ def montar() -> dict:
            "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal, "opressores": _resumo_opressores(itens),
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
            "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao",
-                                                                  "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao", "selo", "selo_de", "iniciativa")}
+                                                                  "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao", "selo", "selo_de", "iniciativa", "selo_livro")}
                                        for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
                             for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}
@@ -538,6 +545,11 @@ def atualizar_mapa() -> dict:
         c["livros"] = curar()
     except Exception as ex:
         c["livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 03/10 (titular): selo ouro/prata/bronze do LIVRO pelo histórico de 3 anos
+        from .selo_livros import aplicar as _selos
+        c["selos_dos_livros"] = _selos()
+    except Exception as ex:
+        c["selos_dos_livros"] = f"falhou: {type(ex).__name__}"
     try:                                     # 02/10 (titular): pareceres individuais acumulados nos livros
         from .pareceres_livros import aplicar as _pareceres
         c["pareceres_nos_livros"] = _pareceres()
