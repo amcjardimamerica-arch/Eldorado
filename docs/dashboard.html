@@ -906,8 +906,6 @@ dialog::backdrop{background:#23272E66}
 .err{color:var(--urgente);font-size:13px;min-height:18px}
 footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 @media(max-width:720px){.calgrade{gap:3px}.caldia{min-height:64px}}
-.mt-dia{font-size:12px;margin:3px 0 2px;color:#3d4a3a}
-.mt-dia-completa b{color:#2f6b2b}.mt-dia-parcial b{color:#9a6b12}.mt-dia-pendente b{color:#8a4b3c}
 .mt-obs{font-size:12px;background:#fbf7ec;border:1px solid #efe2bf;border-radius:8px;padding:6px 10px;margin:6px 0}
 .mt-obs ul{margin:4px 0 0 16px;padding:0}.mt-obs li{margin:2px 0}
 </style>
@@ -4634,7 +4632,7 @@ window._STM=null;
 window.carregaStatusMotores=async function(){ try{ const r=await fetch("dados/status_motores.json?v="+Date.now()); if(r.ok){ window._STM=await r.json(); if(typeof desenhaMotores==="function") desenhaMotores(); } }catch(e){} };
 window.statusMotor=function(o){
   const s=((window._STM||{}).motores||[]).find(m=>m.id===o.id);
-  if(s) return {luz:s.luz, resultado:s.resultado, ultima:s.ultima_leitura, dia:s.leitura_do_dia||null, obs:s.observacoes||[]};
+  if(s) return {luz:s.luz, resultado:s.resultado, ultima:s.ultima_leitura, obs:s.observacoes||[]};
   const hoje=new Date(Date.now()-3*3600e3).toISOString().slice(0,10), d=(o.dias||[]).find(x=>x.d===hoje)||{};
   const luz=d.cor==="vermelho"?"vermelho":(d.cor==="verde"||String(o.ultima_leitura||"").slice(0,10)===hoje)?"verde":"cinza";
   return {luz, resultado:luz==="verde"?(d.n?d.n+" achado(s)":"sem dados novos"):luz==="vermelho"?"falha na coleta":"ainda não rodou hoje", ultima:o.ultima_leitura||null};
@@ -4810,7 +4808,6 @@ function desenhaMotores(){
         ${(o.agregados||[]).length?`<div class=meta title="03/10 (titular): sites que eram motores próprios e foram reunidos a este motor; continuam lidos pelo fluxo 16">Agrega: ${o.agregados.map(a=>esc(a.nome||a.site)+(a.rota?` (${esc(a.rota)})`:"")).join(" · ")}${o.indicios_agregados?` — ${o.indicios_agregados} indício(s)`:""}</div>`:""}
         ${S.luz!=="verde"&&o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag ${o.diagnostico.exige_brasil?"br":""}" title="diagnóstico individual da última leitura">${o.diagnostico.exige_brasil?"🇧🇷":"⚠"} ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
         <div class="mt-st mt-st-${S.luz}"><b>${S.luz==="verde"?"Coletou hoje":S.luz==="vermelho"?"Falha na coleta":"Não rodou hoje"}</b> · última leitura ${S.ultima?br(S.ultima.slice(0,10))+" "+S.ultima.slice(11,16):"—"} · ${esc(S.resultado.replace(/^(coletou hoje|falha na coleta de hoje|não rodou hoje) — ?/,""))}</div>
-        ${S.dia?`<div class="mt-dia mt-dia-${esc(S.dia.estado)}" title="03/10 (titular): se o motor leu tudo o que a fonte publicou no dia">${S.dia.estado==="completa"?"✔":S.dia.estado==="parcial"?"◐":S.dia.estado==="fora_da_agenda"?"·":"○"} Leitura do dia: <b>${esc(S.dia.texto)}</b></div>`:""}
         ${(S.obs||[]).length?`<div class="mt-obs"><b>Observações</b><ul>${S.obs.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
         <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a>${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+(o.produto==="empresas"?" empresa(s) mapeada(s)":" edital(is)"):""}</div>
         ${trintaDias(o)}
