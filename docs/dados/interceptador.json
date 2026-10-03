@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-03T21:40:45+00:00",
+  "em": "2026-10-03T21:57:28+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-03T21:34:52+00:00",
+  "ultimo_voo": "2026-10-03T21:43:11+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -39,13 +39,13 @@
   "acumulado": {
     "missoes": 229,
     "validadas": 3,
-    "parciais": 61,
-    "insuficientes": 165,
+    "parciais": 62,
+    "insuficientes": 164,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "nao": 41,
-      "sim": 152
+      "nao": 40,
+      "sim": 153
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
@@ -53,56 +53,82 @@
   },
   "missoes": [
     {
-      "em": "2026-10-03T21:34:52+00:00",
+      "em": "2026-10-03T21:43:11+00:00",
       "modo": "validar",
       "tipo": "edital",
       "de": "1 · Goiás · livro da Biblioteca",
       "alvo": "Rede Municipal de Pontos de Cultura de Goiânia — Política Nacional Cultura Viva — Goiás / Goiânia",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
+      "qualidade": "parcial",
+      "comprovados": 7,
       "dispensados": 0,
       "total": 12,
       "nao_resolvidos": [
-        "Objeto",
         "Prazo de inscrição",
         "Resultado",
         "Prazo de recurso",
         "Valor",
-        "Órgão / financiador",
-        "Território",
-        "Esfera",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
+        "Anexos"
       ],
-      "pagina_oficial": null,
+      "pagina_oficial": "https://culturaviva.cultura.gov.br/site/certificados/",
       "parecer_fonte": {
-        "serve_como_fonte": "nao",
-        "por_que": "Não há informações comprovadas sobre o edital mencionado.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar as condições específicas do edital, que não foram fornecidas.",
-        "proximo_passo": "Consultar fontes oficiais ou contatos relacionados ao edital para obter detalhes sobre requisitos e processos.",
-        "risco": "A falta de informações específicas pode impedir a participação adequada no edital."
+        "serve_como_fonte": "sim",
+        "por_que": "O texto fornece informações detalhadas sobre o objeto, requisitos e destinação do edital, o que é suficiente para compreender a base legal e os critérios de elegibilidade.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria preencher o formulário específico com histórico atualizado e comprovação de atuação, assinar os Termos de Adesão à PNCV, Termos de Uso e Privacidade, e demonstrar compromisso com os objetivos da política nacional.",
+        "proximo_passo": "A associação deve se cadastrar no sistema da Secretaria de Cidadania e Diversidade Cultural do Ministério da Cultura e iniciar o processo de adesão à PNCV.",
+        "risco": "A falta de documentação adequada ou a não conformidade com os Termos de Adesão e Uso pode impedir o reconhecimento como Ponto ou Pontão de Cultura."
       },
       "erro": null,
-      "segundos": 351,
+      "segundos": 856,
       "site_oficial": null,
       "resultado": null,
       "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
       "id": "op-op-db2d54eeb38d",
-      "encontrou": {},
+      "encontrou": {
+        "Objeto": {
+          "valor": "reconhecimento de entidades e coletivos culturais como Pontos ou Pontões de Cultura",
+          "trecho": "A Certificação Simplificada como Ponto ou Pontão de Cultura é o reconhecimento de entidades e coletivos culturais como Pontos ou Pontões de Cultura pela Secretaria de Cidadania e D",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Secretaria de Cidadania e Diversidade Cultural do Ministério da Cultura",
+          "trecho": "A Certificação Simplificada como Ponto ou Pontão de Cultura é o reconhecimento de entidades e coletivos culturais como Pontos ou Pontões de Cultura pela Secretaria de Cidadania e D",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "A Plataforma Rede Cultura Viva é o sistema responsável pelo registro, identificação, reconhecimento, divulgação, georreferenciamento, comunicação, interação e articulação da Rede C",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "A Certificação Simplificada como Ponto ou Pontão de Cultura é o reconhecimento de entidades e coletivos culturais como Pontos ou Pontões de Cultura pela Secretaria de Cidadania e D",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "Quem pode utilizar este serviço? Cidadãos, Organizações sem fins lucrativos, Coletivos Culturais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "Formulário específico preenchido, contendo o histórico atualizado e a comprovação de atuação da entidade ou coletivo cul, Termos de Adesão à PNCV, documento no qual a entidade ou coletivo cultural afirmará seu compromisso com os objetivos da , Termos de Uso e Privacidade, documento no qual a entidad",
+          "trecho": "Formulário específico preenchido, contendo o histórico atualizado e a comprovação de atuação da entidade ou coletivo cultural no campo da cultura e as atividades desenvolvidas em r",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
       "financiador": "Ministério da Cultura",
       "indicios": [],
       "rotas": [
         "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
+        "site_do_financiador_edital"
       ]
     },
     {
