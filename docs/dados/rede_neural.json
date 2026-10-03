@@ -1,377 +1,377 @@
 {
- "em": "2026-10-03T16:13:27+00:00",
+ "em": "2026-10-03T17:24:59+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1575,
  "positivos": 616,
- "pendentes": 557,
+ "pendentes": 559,
  "validacao_cruzada": {
-  "auc": 0.879,
-  "precisao": 0.783,
-  "revocacao": 0.706,
-  "brier": 0.137
+  "auc": 0.881,
+  "precisao": 0.802,
+  "revocacao": 0.696,
+  "brier": 0.1359
  },
- "modelo_treinado_em": "2026-10-03T14:56:02+00:00",
+ "modelo_treinado_em": "2026-10-03T15:36:56+00:00",
  "fila_de_validacao": [
   {
-   "titulo": "Programa de Apoio à Formação de Núcleos de Excelência – FAPESP-MCTI/CNPq-PRONEX – Chamada 2026",
-   "url": "https://fapesp.br/18317",
-   "nota": 0.5,
-   "incerteza": 0.999
+   "titulo": "CONSORCIO MULTIFINALITARIO DO BAIXO JEQUITINHONHA — Credenciamento de entidades sem fins lucrativos especializadas na execução de ações itin",
+   "url": "https://pncp.gov.br/app/editais/07306549000158/2026/130",
+   "nota": 0.501,
+   "incerteza": 0.997
   },
   {
-   "titulo": "Diário Oficial de Costa Rica (MS) 2026-08-11 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/5003256/2026-08-11/1946701b72bb1896764da39555f9edf8bf916c4c.pdf",
-   "nota": 0.5,
-   "incerteza": 0.999
-  },
-  {
-   "titulo": "Aviso de Chamamento Público nº 1/2026",
-   "url": "https://www.novaamerica.go.gov.br/politica-nacional-aldir-blanc-ciclo-ii/",
-   "nota": 0.498,
-   "incerteza": 0.996
-  },
-  {
-   "titulo": "Chamada FAPEMIG 014/2026 – Cientista Empreendedor",
-   "url": "https://fapemig.br/oportunidades/chamadas-e-editais/chamada-fapemig-0xx-202x-cientista-empreendedor",
-   "nota": 0.498,
-   "incerteza": 0.996
-  },
-  {
-   "titulo": "Edital de doação de bens móveis — Goiás",
-   "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
-   "nota": 0.497,
+   "titulo": "Recursos livres e carimbados devem financiar tanto os projetos quanto a estrutura das OSCs",
+   "url": "https://captadores.org.br/captamos/recursos-livres-e-carimbados-devem-financiar-tanto-os-projetos-quanto-a-estrutura-das-oscs",
+   "nota": 0.503,
    "incerteza": 0.995
-  },
-  {
-   "titulo": "AVISO DE CHAMAMENTO PÚBLICO Nº 11/2026",
-   "url": "https://www.itapetininga.sp.gov.br/licitacao",
-   "nota": 0.504,
-   "incerteza": 0.992
-  },
-  {
-   "titulo": "MUNICIPIO DE POMBAL — Credenciamento, de instituições privadas, com ou sem fins lucrativos, prestadoras de serviços de saúde, interessadas e",
-   "url": "https://pncp.gov.br/app/editais/08948697000139/2026/156",
-   "nota": 0.504,
-   "incerteza": 0.992
-  },
-  {
-   "titulo": "CERTIFICAÇÕES",
-   "url": "https://www.portoitapoa.com/premiacoes/certificacoes",
-   "nota": 0.495,
-   "incerteza": 0.99
-  },
-  {
-   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 003/2026 - SELEÇÃO DE PROJETOS NA CATEGORIA DE ARTESANATO E AUDIOVISUAL PARA FIRMAR TERMO DE EXECUÇÃO CULTUR",
-   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8386/",
-   "nota": 0.493,
-   "incerteza": 0.985
-  },
-  {
-   "titulo": "Credenciamento Circuito Avessinho 2025/2026",
-   "url": "https://mapa.cultura.es.gov.br/oportunidade/2168/",
-   "nota": 0.492,
-   "incerteza": 0.984
-  },
-  {
-   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO PARA SELEÇÃO DE PROJETOS - PNAB",
-   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8369/",
-   "nota": 0.492,
-   "incerteza": 0.984
-  },
-  {
-   "titulo": "Últimos días para el cierre de nuestras convocatorias 2026",
-   "url": "https://www.ibermusicas.org/index.php/quedan-30-dias-para-el-cierre-de-nuestras-convocatorias-2026/",
-   "nota": 0.491,
-   "incerteza": 0.982
-  },
-  {
-   "titulo": "Publicações Licitações CHAMAMENTO PÚBLICO N° 008/SME/ 2026 - Seleção de Organização da Sociedade Civil (OSC) Chamamento Público Vigente 2026",
-   "url": "https://itaqua.sp.gov.br/publicacoes/licitacao.php?id=2792",
-   "nota": 0.491,
-   "incerteza": 0.982
-  },
-  {
-   "titulo": "MUNICIPIO DE PINDORAMA — CREDENCIAMENTO DE ORGANIZACOES DA SOCIEDADE CIVIL DE PINDORAMA INTERESSADA EM RECEBER DOACAO DE BENS MOVEIS CONSIDE",
-   "url": "https://pncp.gov.br/app/editais/45122942000180/2026/248",
-   "nota": 0.509,
-   "incerteza": 0.982
-  },
-  {
-   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE PARECERISTAS",
-   "url": "https://mapacultural.se.gov.br/oportunidade/59/",
-   "nota": 0.49,
-   "incerteza": 0.981
-  },
-  {
-   "titulo": "Processo de Seleção de Gestor Escolar",
-   "url": "https://goias.gov.br/educacao?page_id=27121",
-   "nota": 0.512,
-   "incerteza": 0.977
-  },
-  {
-   "titulo": "Fundação Itaú cria canal de transmissão com o público interessado em arte e educação Pelo WhatsApp, é possível ficar por dentro das novidade",
-   "url": "https://www.fundacaoitau.org.br/noticias/cultura/fundacao-itau-cria-canal-de-transmissao-com-o-publico-interessado-em-arte-e-educacao",
-   "nota": 0.512,
-   "incerteza": 0.977
-  },
-  {
-   "titulo": "Tela Plus – Plataforma de Streaming dedicada aos produtores independentes Capixaba.",
-   "url": "https://mapa.cultura.es.gov.br/oportunidade/2090/",
-   "nota": 0.487,
-   "incerteza": 0.974
-  },
-  {
-   "titulo": "Prêmio Açorianos de Teatro, Circo e Tibicuera de Teatro Infantojuvenil 2026 — Secretaria Municipal de Cultura de Porto Alegre",
-   "url": "https://dopaonlineupload.procempa.com.br/dopaonlineupload/5970_ce_601372_1.pdf",
-   "nota": 0.486,
-   "incerteza": 0.973
-  },
-  {
-   "titulo": "Secult Goiás divulga plano de ação final do edital Arranjos Regionais 2026",
-   "url": "https://goias.gov.br/cultura/secult-goias-divulga-plano-de-acao-final-do-edital-arranjos-regionais-2026",
-   "nota": 0.486,
-   "incerteza": 0.972
-  },
-  {
-   "titulo": "Destinação de bens e valores - chamamento público — Goiás",
-   "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
-   "nota": 0.486,
-   "incerteza": 0.972
-  },
-  {
-   "titulo": "Edital Itagibá 2026: Guia de Captação e Inscrições · Capitaai",
-   "url": "https://www.planalto.gov.br/ccivil_03/leis/L12305.htm",
-   "nota": 0.485,
-   "incerteza": 0.971
-  },
-  {
-   "titulo": "Diário Oficial de Macatuba (SP) 2026-09-22 — \"edital de chamamento público\" associação — Prefeitura Municipal de Macatuba/SP",
-   "url": "https://licitario.com.br/diarios",
-   "nota": 0.515,
-   "incerteza": 0.969
-  },
-  {
-   "titulo": "MUNICIPIO DE ARTUR NOGUEIRA — EDITAL DE CREDENCIAMENTO PARA PARCERIA EM REGIME DE COLABORAÇÃO ENTRE A SECRETARIA DE EDUCAÇÃO E ORGANIZAÇÃO D",
-   "url": "https://pncp.gov.br/app/editais/45735552000186/2030/4",
-   "nota": 0.483,
-   "incerteza": 0.967
-  },
-  {
-   "titulo": "SECULTFOR - EDITAL DE SELEÇÃO SIMPLIFICADA DE ARTISTAS EM SITUAÇÃO DE RUA OU EM PROCESSO DE SUPERAÇÃO DA SITUAÇÃO DE RUA | PROJETO VOZES DA ",
-   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8387/",
-   "nota": 0.517,
-   "incerteza": 0.966
-  },
-  {
-   "titulo": "Edital de Credenciamento de Pareceristas Técnicos - SEFIC/MinC nº 90001/2026",
-   "url": "https://mapa.cultura.gov.br/oportunidade/10466/#info",
-   "nota": 0.517,
-   "incerteza": 0.966
-  },
-  {
-   "titulo": "Edital nº 002/2026 Programa Nacional de Apoio à Geração de Empreendimentos Inovadores — Programa Centelha 3 Pará",
-   "url": "https://materiais.programacentelha.com.br/pa",
-   "nota": 0.483,
-   "incerteza": 0.966
-  },
-  {
-   "titulo": "Certificado de Vacinação",
-   "url": "https://goias.gov.br/educacao/estudantes-goianos-deverao-apresentar-certificado-de-vacinacao-regularizado-para-fazer-matricula",
-   "nota": 0.481,
-   "incerteza": 0.963
-  },
-  {
-   "titulo": "MUNICIPIO DE CASTRO — CHAMAMENTO PÚBLICO PARA FINS DE CREDENCIAMENTO DE COOPERATIVA OU ASSOCIAÇÃO OU DA INICI­ATIVA PRIVADA DE MATERIAIS REC",
-   "url": "https://pncp.gov.br/app/editais/77001311000108/2026/307",
-   "nota": 0.519,
-   "incerteza": 0.962
-  },
-  {
-   "titulo": "Diário Oficial de Cipó (BA) 2026-09-28 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/2907905/2026-09-28/f66a6594d9fe7d60c5060d0b14ddf9dede04a3ab.pdf",
-   "nota": 0.52,
-   "incerteza": 0.96
-  },
-  {
-   "titulo": "Ecologia do Encontro",
-   "url": "https://mapa.cultura.es.gov.br/oportunidade/2354/",
-   "nota": 0.521,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "DNIT-DEPARTAMENTO NACIONAL DE INFRAEST DE TRANSPORTES — Seleção de associações e/ou cooperativas de catadores de materiais recicláveis, cada",
-   "url": "https://pncp.gov.br/app/editais/04892707000100/2026/136",
-   "nota": 0.522,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Edital Fapes/CNPq/Capes nº 22/2026 – Programa de Apoio à Fixação de Doutores no Brasil – PROFIX-CB",
-   "url": "https://fapes.es.gov.br/Media/fapes/Editais/Ed.%2022.2026%20PROFIX-CB%20-%201%20Altera%C3%A7%C3%A3o%20-%20Publicada.pdf",
-   "nota": 0.478,
-   "incerteza": 0.956
-  },
-  {
-   "titulo": "About Us - BNDES Investor Relations",
-   "url": "https://ri.bndes.gov.br/en/about-bndes/about-us",
-   "nota": 0.477,
-   "incerteza": 0.955
-  },
-  {
-   "titulo": "Requerer Bolsa de Formação - FAPEG",
-   "url": "https://www.go.gov.br/servicos/servico/requerer-bolsa-de-formacao-fapeg",
-   "nota": 0.524,
-   "incerteza": 0.952
-  },
-  {
-   "titulo": "BNDES - Brazilian Development Bank",
-   "url": "https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en",
-   "nota": 0.524,
-   "incerteza": 0.951
-  },
-  {
-   "titulo": "AVISO DE CHAMAMENTO PÚBLICO Nº 5/2026 — Miguel Calmon/BA",
-   "url": "http://doem.org.br/ba/miguelcalmon/editais",
-   "nota": 0.475,
-   "incerteza": 0.949
-  },
-  {
-   "titulo": "MUNICIPIO DE ARTUR NOGUEIRA — CREDENCIAMENTO DE SELEÇÃO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL (OSC) PARA CELEBRAÇÃO DE TERMO DE COLABORAÇÃO PAR",
-   "url": "https://pncp.gov.br/app/editais/45735552000186/2026/3",
-   "nota": 0.526,
-   "incerteza": 0.948
-  },
-  {
-   "titulo": "Edital Balsas 2026: Guia de Captação e Inscrição · Capitaai",
-   "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2022/lei/l14399.htm",
-   "nota": 0.474,
-   "incerteza": 0.948
-  },
-  {
-   "titulo": "Chamamento CRARS 4/2026: Capacitação em IA e Gestão · Capitaai",
-   "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
-   "nota": 0.526,
-   "incerteza": 0.947
-  },
-  {
-   "titulo": "MUNICIPIO DE NOVA SANTA RITA — CREDENCIAMENTO DE INSTITUIÇÕES DE LONGA PERMANÊNCIA PARA IDOSOS (ILPI), públicas ou privadas, com ou sem fins",
-   "url": "https://pncp.gov.br/app/editais/94309291000148/2026/129",
-   "nota": 0.473,
-   "incerteza": 0.947
-  },
-  {
-   "titulo": "Credenciamento de profissional para desenvolvimento de oficina pedagógica intercultural de língua materna e… — MUNICIPIO DE TAPIRAI",
-   "url": "https://pncp.gov.br/app/editais/46634465000103/2026/25",
-   "nota": 0.473,
-   "incerteza": 0.947
-  },
-  {
-   "titulo": "Edital de chamamento público voltado a associações e cooperativas de catadores de materiais recicláveis e reut… — Goiás / Goiânia",
-   "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go/1107-edital-de-chamamento-publico-voltado-a-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
-   "nota": 0.527,
-   "incerteza": 0.946
-  },
-  {
-   "titulo": "Edital apoia projetos ambientais e de inovação no Paraná",
-   "url": "https://fundacaogrupoboticario.org.br/edital-apoia-projetos-ambientais-e-de-inovacao-no-parana",
-   "nota": 0.472,
-   "incerteza": 0.944
-  },
-  {
-   "titulo": "Aulas de Capoeira Gratuitas",
-   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/5718/",
-   "nota": 0.471,
-   "incerteza": 0.942
-  },
-  {
-   "titulo": "Home - BNDES Investor Relations",
-   "url": "https://ri.bndes.gov.br/en",
-   "nota": 0.529,
-   "incerteza": 0.942
   },
   {
    "titulo": "MUNICIPIO DE PAROBE — Formalização de parceria estabelecida pela administração pública com Organização de Sociedade Civil (OSC) para a conse",
    "url": "https://pncp.gov.br/app/editais/88372883000101/2026/270",
-   "nota": 0.469,
-   "incerteza": 0.939
+   "nota": 0.504,
+   "incerteza": 0.992
+  },
+  {
+   "titulo": "Edital de Credenciamento Nº 1/2026",
+   "url": "https://www.gov.br/icmbio",
+   "nota": 0.504,
+   "incerteza": 0.992
+  },
+  {
+   "titulo": "BNDES - Brazilian Development Bank",
+   "url": "https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en",
+   "nota": 0.504,
+   "incerteza": 0.991
+  },
+  {
+   "titulo": "TRIBUNAL REGIONAL ELEITORAL DO AMAZONAS — O presente procedimento tem por objeto selecionar as associações e/ou cooperativas de catadores de",
+   "url": "https://pncp.gov.br/app/editais/05959999000114/2026/52",
+   "nota": 0.506,
+   "incerteza": 0.989
+  },
+  {
+   "titulo": "Edital da Jornada TransformAção de 2026 é lançado",
+   "url": "https://institutosabin.org.br/edital-da-jornada-transformacao-de-2026-e-lancado",
+   "nota": 0.506,
+   "incerteza": 0.988
+  },
+  {
+   "titulo": "Edital de Credenciamento de Pareceristas Técnicos - SEFIC/MinC nº 90001/2026",
+   "url": "https://mapa.cultura.gov.br/oportunidade/10466/#info",
+   "nota": 0.494,
+   "incerteza": 0.987
   },
   {
    "titulo": "AVISO DE CHAMAMENTO PÚBLICO Nº 2/2026 - CP",
    "url": "https://forms.gle/AyXhMZE5YHWD5pMu5",
-   "nota": 0.469,
-   "incerteza": 0.938
+   "nota": 0.507,
+   "incerteza": 0.985
   },
   {
    "titulo": "Aviso de Chamamento Público Nº 1/2026",
    "url": "https://licitacoes.agencia.baciaspcj.org.br/licitacao",
-   "nota": 0.469,
-   "incerteza": 0.938
+   "nota": 0.507,
+   "incerteza": 0.985
   },
   {
-   "titulo": "concessao de patrocinio institucional pelo Municipio de Fagundes Varela RS mediante apoio financeiro e ou… — MUNICIPIO DE FAGUNDES VARELA",
-   "url": "https://pncp.gov.br/app/editais/91566893000192/2026/506",
-   "nota": 0.531,
-   "incerteza": 0.937
+   "titulo": "CONCURSO, do tipo Melhor Conteúdo Artístico – 5º Concurso Fotográfico de Linha Nova, com o tema “Linha Nova:… — MUNICIPIO DE LINHA NOVA",
+   "url": "https://pncp.gov.br/app/editais/92123900000144/2026/140",
+   "nota": 0.509,
+   "incerteza": 0.982
+  },
+  {
+   "titulo": "Chamada Secult Ceará - Política de Cotas Raciais",
+   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/5522/",
+   "nota": 0.509,
+   "incerteza": 0.981
+  },
+  {
+   "titulo": "Acesso à Informação Organizações Sociais",
+   "url": "https://goias.gov.br/saude/selecionar-acesso-as-informacoes-das-organizacoes-sociais",
+   "nota": 0.51,
+   "incerteza": 0.98
+  },
+  {
+   "titulo": "MUNICIPIO DE GOVERNADOR CELSO RAMOS — CREDENCIAMENTO DE PESSOAS JURÍDICAS COM OU SEM FINS LUCRATIVOS INTERESSADAS EM PRESTAR O SERVIÇO DE AC",
+   "url": "https://pncp.gov.br/app/editais/82892373000189/2027/1",
+   "nota": 0.511,
+   "incerteza": 0.979
+  },
+  {
+   "titulo": "AVISO DE CHAMAMENTO PÚBLICO CREDENCIAMENTO Nº 007/2026",
+   "url": "https://www.conceicaodoalmeida.ba.gov.br/diario.html",
+   "nota": 0.511,
+   "incerteza": 0.979
+  },
+  {
+   "titulo": "Diário Oficial de Águas de São Pedro (SP) 2026-09-30 — \"chamamento público\" \"organizações da sociedade civil\"",
+   "url": "https://data.queridodiario.ok.org.br/3500600/2026-09-30/6d27e6278f184e61c7f51d9d6e6d49f4a5488dd5.pdf",
+   "nota": 0.511,
+   "incerteza": 0.978
+  },
+  {
+   "titulo": "FAPESP – Trans-Atlantic Platform (T-AP) Call for Proposals 2026 – Preparing for Tomorrow (P4T)",
+   "url": "https://fapesp.br/18135",
+   "nota": 0.515,
+   "incerteza": 0.97
+  },
+  {
+   "titulo": "Credenciamento de pessoas físicas, pessoas jurídicas, artistas individuais, grupos culturais, grupos musicais… — MUNICIPIO DO BOM JARDIM",
+   "url": "https://pncp.gov.br/app/editais/10293074000117/2026/4",
+   "nota": 0.48,
+   "incerteza": 0.96
   },
   {
    "titulo": "MUNICIPIO DE BANDEIRANTES DO TOCANTINS — Credenciamento de serviços gráficos especializados para confecção de materiais institucionais e inf",
    "url": "https://pncp.gov.br/app/editais/01612819000172/2026/40",
-   "nota": 0.468,
-   "incerteza": 0.935
+   "nota": 0.52,
+   "incerteza": 0.96
   },
   {
-   "titulo": "Chamamento Público Piranhas 2026: Guia para OSCs na Saúde",
-   "url": "https://www.gov.br/secretariageral/pt-br/marcos-regulatorios",
-   "nota": 0.533,
-   "incerteza": 0.935
+   "titulo": "MUNICIPIO DE PERITIBA — [Portal de Compras Públicas] - O objeto deste edital é o credenciamento de associações sem fins lucrativos, sediadas",
+   "url": "https://pncp.gov.br/app/editais/82815085000120/2026/121",
+   "nota": 0.521,
+   "incerteza": 0.957
   },
   {
-   "titulo": "Seleção de bailarinos e bailarinas para compor o coletivo de Dança contemporânea Gáspea",
-   "url": "https://mapa.cultura.es.gov.br/oportunidade/2161/",
-   "nota": 0.534,
-   "incerteza": 0.932
+   "titulo": "About Us - BNDES Investor Relations",
+   "url": "https://ri.bndes.gov.br/en/about-bndes/about-us",
+   "nota": 0.478,
+   "incerteza": 0.955
+  },
+  {
+   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 007/2026 CADASTRO AFIRMATIVO DA CULTURA DA SECRETARIA DE CULTURA DO ESTADO DE PERNAMBUCO (CAC SECULT/PE)",
+   "url": "https://mapacultural.pe.gov.br/oportunidade/3207/",
+   "nota": 0.475,
+   "incerteza": 0.95
+  },
+  {
+   "titulo": "Requerer Bolsa de Formação - FAPEG",
+   "url": "https://www.go.gov.br/servicos/servico/requerer-bolsa-de-formacao-fapeg",
+   "nota": 0.527,
+   "incerteza": 0.947
   },
   {
    "titulo": "Cursos Técnicos de Nível Médio",
    "url": "https://fundacao.bradesco/como-atuamos/cursos-tecnicos-de-nivel-medio",
-   "nota": 0.534,
+   "nota": 0.528,
+   "incerteza": 0.945
+  },
+  {
+   "titulo": "Chamada Pública CNPq/ERC Nº 21/2026",
+   "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-21-2026/chamada-publica-cnpq-N-21-2026",
+   "nota": 0.53,
+   "incerteza": 0.94
+  },
+  {
+   "titulo": "Fundação Tide Setubal abre edital com apoio de R$ 200 mil para projetos de saúde mental",
+   "url": "https://conteudo.fundacaotidesetubal.org.br/edital-territorios-clinicos-2026",
+   "nota": 0.53,
+   "incerteza": 0.94
+  },
+  {
+   "titulo": "A Agência do Bem abriu inscrições para o 6º Edital de Microprojetos - São Paulo da Rede do Bem. A oportunidade é para organizações do tercei",
+   "url": "https://captadores.org.br/category/editais",
+   "nota": 0.533,
+   "incerteza": 0.933
+  },
+  {
+   "titulo": "MPF lança chamamento público para cadastro de entidades aptas a receber bens e valores de processos judiciais … — Goiás",
+   "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb",
+   "nota": 0.466,
    "incerteza": 0.932
+  },
+  {
+   "titulo": "Itaberaí — EDITAL DE CHAMAMENTO PÚBLICO N° 001-CMDCA-2026",
+   "url": "https://itaberai.go.gov.br/edital-de-chamamento-publico-n-001-cmdca-2026/",
+   "nota": 0.465,
+   "incerteza": 0.931
+  },
+  {
+   "titulo": "Últimos días para el cierre de nuestras convocatorias 2026",
+   "url": "https://www.ibermusicas.org/index.php/quedan-30-dias-para-el-cierre-de-nuestras-convocatorias-2026/",
+   "nota": 0.465,
+   "incerteza": 0.929
+  },
+  {
+   "titulo": "Chamada Pública 2026: Merenda Escolar Educação · Capitaai",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/l8666.htm",
+   "nota": 0.536,
+   "incerteza": 0.928
   },
   {
    "titulo": "MECENAS DO CEARÁ 2026",
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/7688/",
-   "nota": 0.465,
-   "incerteza": 0.929
+   "nota": 0.536,
+   "incerteza": 0.927
   },
   {
-   "titulo": "CREDENCIAMENTO ELETRÔNICO DE PESSOAS FÍSICAS E JURÍDICAS PARA PRESTAÇÃO DE SERVIÇOS DE APRESENTAÇÕES MUSICAIS… — MUNICIPIO DE DIVINOLANDIA",
-   "url": "https://pncp.gov.br/app/editais/46435921000188/2026/136",
-   "nota": 0.465,
-   "incerteza": 0.929
+   "titulo": "ICA — Protocolo Luso-Brasileiro de Coprodução Cinematográfica 2026: 350 mil € para longas Brasil–Portugal (até 175 mil € por filme)",
+   "url": "https://www.ica-ip.pt/pt/concursos/protocolo-luso-brasileiro/2026/protocolo-luso-brasileiro/",
+   "nota": 0.463,
+   "incerteza": 0.927
   },
   {
-   "titulo": "MUNICIPIO DE CAPINZAL — Serviços de acolhimento, residência terapêutica e instituição de longa permanência para idosos, destinados ao Municí",
-   "url": "https://pncp.gov.br/app/editais/82939406000107/2026/154",
-   "nota": 0.464,
-   "incerteza": 0.929
-  },
-  {
-   "titulo": "Chamada FAPEMIG 004/2026 – Participação coletiva em eventos técnicos no país – 3ª Entrada",
-   "url": "https://fapemig.br/oportunidades/chamadas-e-editais/chamada-fapemig-004-2026-participacao-coletiva-em-eventos-tecnicos-no-pais-3a-entrada",
-   "nota": 0.537,
-   "incerteza": 0.925
-  },
-  {
-   "titulo": "Solicitar Certificado do Encceja",
-   "url": "https://www.go.gov.br/servicos/servico/solicitar-2-via-de-certificado-do-exame-nacional-do-ensino-medio-enem-e-exame-nacional-para-certificacao-de-competencias-de-jovens-e-adultos-encceja",
-   "nota": 0.462,
+   "titulo": "Understanding Ecosystem Dynamics and the Ecology of the Okavango River Basin",
+   "url": "http://www.nationalgeographic.com/explorers/grants-programs/conservation-trust-application",
+   "nota": 0.538,
    "incerteza": 0.924
   },
   {
-   "titulo": "FUNDO MUNICIPAL DE ASSISTENCIA SOCIAL DE MAFRA — Credenciamento de Instituição de Longa Permanência para Idosos, através da Secretaria Munic",
-   "url": "https://pncp.gov.br/app/editais/15470555000174/2026/4",
+   "titulo": "MUNICIPIO DE ARTUR NOGUEIRA — CREDENCIAMENTO PARA FIRMAR ACORDO DE COOPERAÇÃO TÉCNICA, SEM ÔNUS PARA A ADMINISTRAÇÃO PÚBLICA COM EMPRESA DE ",
+   "url": "https://pncp.gov.br/app/editais/45735552000186/2030/1",
    "nota": 0.538,
+   "incerteza": 0.924
+  },
+  {
+   "titulo": "Projeto Palco Livre De Vila Pavão - Fase 2",
+   "url": "https://mapa.cultura.es.gov.br/oportunidade/2557/",
+   "nota": 0.462,
    "incerteza": 0.923
+  },
+  {
+   "titulo": "MUNICIPIO DE ENCRUZILHADA DO SUL — [Portal de Compras Públicas] - redenciamento de Pessoas Jurídicas para prestação de serviços ACOLHIMENTO ",
+   "url": "https://pncp.gov.br/app/editais/89363642000169/2026/728",
+   "nota": 0.461,
+   "incerteza": 0.921
+  },
+  {
+   "titulo": "Ecologia do Encontro",
+   "url": "https://mapa.cultura.es.gov.br/oportunidade/2354/",
+   "nota": 0.539,
+   "incerteza": 0.921
+  },
+  {
+   "titulo": "EDITAL FAPESB No 18/2026 - APOIO À PUBLICAÇÃO CIENTÍFICA, TECNOLÓGICA OU DE POPULARIZAÇÃO DAS CIÊNCIAS",
+   "url": "https://www.fapesb.ba.gov.br/edital-fapesb-no-0182026-apoio-a-publicacao-cientifica-tecnologica-ou-de-popularizacao-das-ciencias",
+   "nota": 0.459,
+   "incerteza": 0.919
+  },
+  {
+   "titulo": "CONSELHO DE ARQUITETURA E URBANISMO DO ESTADO DE MINAS GERAIS — O concurso PRÊMIO DE BOAS PRÁTICAS URBANAS: AMBIENTAL, SANEAMENTO E SOCIAL -",
+   "url": "https://pncp.gov.br/app/editais/14951451000119/2026/45",
+   "nota": 0.459,
+   "incerteza": 0.918
+  },
+  {
+   "titulo": "O PRESENTE PROCESSO DE CREDENCIAMENTO DE ARTISTA E PROFISSIONAIS DE ARTE E CULTURA, TEM COMO OBJETIVO… — FUNDACAO CULTURAL DE BRUSQUE",
+   "url": "https://pncp.gov.br/app/editais/04894677000171/2026/37",
+   "nota": 0.541,
+   "incerteza": 0.918
+  },
+  {
+   "titulo": "Aulas de Capoeira Gratuitas",
+   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/5718/",
+   "nota": 0.459,
+   "incerteza": 0.917
+  },
+  {
+   "titulo": "Chamada Pública Nº 015/2026",
+   "url": "https://www.fapespa.pa.gov.br/2026/08/20/chamada-publica-no-015-2026",
+   "nota": 0.541,
+   "incerteza": 0.917
+  },
+  {
+   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO PARA SELEÇÃO DE PROJETOS - PNAB",
+   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8369/",
+   "nota": 0.541,
+   "incerteza": 0.917
+  },
+  {
+   "titulo": "Prorrogação do Edital de Chamamento CPA - Conselho Estadual dos Direitos da Criança e do Adolescente — Goiás",
+   "url": "https://goias.gov.br/social/wp-content/uploads/sites/24/2026/08/Edital-005-CPA-Prorrogacao.pdf",
+   "nota": 0.459,
+   "incerteza": 0.917
+  },
+  {
+   "titulo": "I Mostra e Festival Forró Pé de Serra de Colatina",
+   "url": "https://mapa.cultura.es.gov.br/oportunidade/2352/",
+   "nota": 0.542,
+   "incerteza": 0.917
+  },
+  {
+   "titulo": "Chamadas Internas",
+   "url": "https://fbb.org.br/editais-de-projetos/chamadas-internas",
+   "nota": 0.457,
+   "incerteza": 0.913
+  },
+  {
+   "titulo": "AVISO DE CHAMAMENTO PÚBLICO Nº 5/2026 — Miguel Calmon/BA",
+   "url": "http://doem.org.br/ba/miguelcalmon/editais",
+   "nota": 0.544,
+   "incerteza": 0.912
+  },
+  {
+   "titulo": "Chamada nº 009/2026 – FAPESPA/CNPq/CAPES",
+   "url": "https://www.fapespa.pa.gov.br/2026/07/01/chamada-n-o-009-2026-fapespa-cnpq-capes",
+   "nota": 0.545,
+   "incerteza": 0.911
+  },
+  {
+   "titulo": "Tela Plus – Plataforma de Streaming dedicada aos produtores independentes Capixaba.",
+   "url": "https://mapa.cultura.es.gov.br/oportunidade/2090/",
+   "nota": 0.546,
+   "incerteza": 0.908
+  },
+  {
+   "titulo": "Credenciamento de comunicadores profissionais, serviço de fotografia e serviço de filmagem para prestação de… — MUNICIPIO DE DATAS",
+   "url": "https://pncp.gov.br/app/editais/17754193000179/2026/13",
+   "nota": 0.454,
+   "incerteza": 0.908
+  },
+  {
+   "titulo": "Ver edital",
+   "url": "https://rededobem.org.br/editais/14o-edital-de-microprojetos-da-rede-do-bem",
+   "nota": 0.454,
+   "incerteza": 0.907
+  },
+  {
+   "titulo": "Ver edital",
+   "url": "https://rededobem.org.br/editais/12-edital-de-microprojetos-rj",
+   "nota": 0.454,
+   "incerteza": 0.907
+  },
+  {
+   "titulo": "Aviso de Chamamento Público nº 1/2026",
+   "url": "https://www.novaamerica.go.gov.br/politica-nacional-aldir-blanc-ciclo-ii/",
+   "nota": 0.546,
+   "incerteza": 0.907
+  },
+  {
+   "titulo": "CONSORCIO INTERMUNICIPAL DE SAUDE DO ENTORNO DE SALINAS — [Portal de Compras Públicas] - Credenciamento de entidades sem fins lucrativos esp",
+   "url": "https://pncp.gov.br/app/editais/07333598000180/2026/12",
+   "nota": 0.453,
+   "incerteza": 0.906
+  },
+  {
+   "titulo": "Diário Oficial de Macatuba (SP) 2026-09-22 — \"edital de chamamento público\" associação — Prefeitura Municipal de Macatuba/SP",
+   "url": "https://licitario.com.br/diarios",
+   "nota": 0.547,
+   "incerteza": 0.906
+  },
+  {
+   "titulo": "Edital Itagibá 2026: Guia de Captação e Inscrições · Capitaai",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/L12305.htm",
+   "nota": 0.551,
+   "incerteza": 0.898
+  },
+  {
+   "titulo": "Chamamento Público Piranhas 2026: Guia para OSCs na Saúde",
+   "url": "https://www.gov.br/secretariageral/pt-br/marcos-regulatorios",
+   "nota": 0.449,
+   "incerteza": 0.897
+  },
+  {
+   "titulo": "AVISO DE CHAMAMENTO PÚBLICO Nº 11/2026",
+   "url": "https://www.itapetininga.sp.gov.br/licitacao",
+   "nota": 0.552,
+   "incerteza": 0.896
+  },
+  {
+   "titulo": "CERTIFICAÇÕES",
+   "url": "https://www.portoitapoa.com/premiacoes/certificacoes",
+   "nota": 0.447,
+   "incerteza": 0.895
   }
  ],
- "pendentes_provaveis_reais": 379
+ "pendentes_provaveis_reais": 449
 }
