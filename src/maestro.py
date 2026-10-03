@@ -54,6 +54,8 @@ def cobertura(sid: str, reg: dict | None, diag: dict | None, diag_motor: dict | 
         return "parcial"
     if reg.get("cor") in ("cinza", "futuro", "fora"):
         return "pendente"
+    if (diag_motor or {}).get("rotas_pendentes_local"):
+        return "pendente_local"                       # 03/10: leu só a parte da nuvem; o resto é da coleta local (Brasil)
     return "completa"
 
 

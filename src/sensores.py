@@ -511,6 +511,8 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     c1_termos, c1_vetos = lexico_camada1(sensor)
     diag = {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0, "motivo_zero": None,
             "camada1_vetados": 0, "camada1_direcionados": 0}
+    if sensor.get("_rotas_pendentes_local"):        # 03/10: a parte Brasil-only da fonte ficou para a coleta local — não é leitura completa
+        diag["rotas_pendentes_local"] = list(sensor["_rotas_pendentes_local"])
     n_pag = int(sensor.get("max_paginas") or lim["paginas_por_sensor"])
     fila = list(_paginas(sensor)[:n_pag])
     lidas: set = set()
