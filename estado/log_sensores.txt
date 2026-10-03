@@ -1,20 +1,65 @@
 bloco=manual
-  congresso-nacional: 0 achado(s), 0 falha(s), 39 s
+  dj-trf1-go: 0 achado(s), 0 falha(s), 5 s
+  congresso-nacional: 0 achado(s), 0 falha(s), 35 s
   judiciario-tjgo: 0 achado(s), 0 falha(s), 0 s
   judiciario-cnj: 1 achado(s), 0 falha(s), 0 s
   mpgo-destinacao: 1 achado(s), 0 falha(s), 0 s
   mptgo-destinacao: 2 achado(s), 0 falha(s), 0 s
   mpu-destinacao: 0 achado(s), 0 falha(s), 0 s
-  plat-salic: 5 achado(s), 0 falha(s), 12 s
-Traceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 781, in <module>
-    print(json.dumps(run(), ensure_ascii=False, indent=2))
-                     ^^^^^
-  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 737, in run
-    reg.update({"ultima": r["lido_em"], "motivo": s.get("motivo") or f"bloco {escala.get('bloco') or 'manual'}",
-                          ~^^^^^^^^^^^
-KeyError: 'lido_em'
-src.sensores: falhou ou estourou 1500s (código 1)
-ultima_execucao: 2026-10-03T01:13:22+00:00 bloco manual sensores 31 achados 267
+  plat-salic: 5 achado(s), 0 falha(s), 9 s
+  plat-prefeituras-50-go: 8 achado(s), 0 falha(s), 226 s
+  plat-empresas-editais-incentivados: 0 achado(s), 3 falha(s), 6 s
+  plat-cnpq-extensao: 0 achado(s), 2 falha(s), 13 s
+  plat-piloto-aberto: 48 achado(s), 0 falha(s), 8 s
+  plat-estaduais-go-gov: 0 achado(s), 0 falha(s), 71 s
+{
+  "data": "2026-10-03",
+  "em": "2026-10-03T02:47:08+00:00",
+  "manual": [
+    "congresso-nacional",
+    "dj-trf1-go",
+    "judiciario-cnj",
+    "judiciario-tjgo",
+    "mpgo-destinacao",
+    "mptgo-destinacao",
+    "mpu-destinacao",
+    "plat-cnpq-extensao",
+    "plat-empresas-editais-incentivados",
+    "plat-estaduais-go-gov",
+    "plat-piloto-aberto",
+    "plat-prefeituras-50-go",
+    "plat-salic"
+  ],
+  "bloco": "manual",
+  "sensores_executados": 13,
+  "adiados_por_tempo": [],
+  "duracao_s": 374,
+  "em_espera": 114,
+  "total_esquadra": 127,
+  "previsoes_ativas": 1,
+  "achados": 65,
+  "novos_na_base": 29,
+  "por_tipo": {
+    "diario_justica": {
+      "sensores": 3,
+      "achados": 1,
+      "falhas": 0
+    },
+    "legislativo": {
+      "sensores": 1,
+      "achados": 0,
+      "falhas": 0
+    },
+    "ministerio_publico": {
+      "sensores": 3,
+      "achados": 3,
+      "falhas": 0
+    },
+    "plataforma": {
+      "sensores": 6,
+      "achados": 61,
+      "falhas": 5
+    }
+  }
+}
+ultima_execucao: 2026-10-03T02:47:08+00:00 bloco manual sensores 13 achados 65
