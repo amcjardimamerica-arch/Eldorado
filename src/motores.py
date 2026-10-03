@@ -828,6 +828,9 @@ def run() -> dict:
                               "regime_prazo", "certeza_prazo", "obtidas", "area_atuacao", "natureza", "esfera",
                               "ativa", "motivo_status", "em_epoca", "proximidade")}
             | {"disjuntor": json.dumps(m["disjuntor"], ensure_ascii=False) if m.get("disjuntor") else None}
+            # 03/10 (titular): selo do LIVRO no cartão da Biblioteca — só o essencial (o detalhe fica no catálogo)
+            | {"selo_livro": {k: (m.get("selo_livro") or {}).get(k) for k in ("selo", "anos_com_edicao", "preditivo", "bloco", "porque")}
+               if m.get("selo_livro") else None}
             | {"parametros": (f"{m['parametros']['decisao']} · {m['parametros']['fechados']}/12 · {m['parametros'].get('prazo') or '-'}"
                               if isinstance(m.get("parametros"), dict) else None)}
             | {"camadas_ok": "".join("1" if c["ok"] else "0" for c in m["camadas"]),
