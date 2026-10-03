@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-03T03:09:17+00:00",
+  "em": "2026-10-03T03:33:23+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-03T03:05:58+00:00",
+  "ultimo_voo": "2026-10-03T03:11:48+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,13 +34,13 @@
     "editais novos dos motores": 30,
     "indícios do Espião": 17,
     "abertos com itens em falta": 3,
-    "empresas sem ficha": 115
+    "empresas sem ficha": 116
   },
   "acumulado": {
-    "missoes": 160,
+    "missoes": 161,
     "validadas": 2,
     "parciais": 43,
-    "insuficientes": 115,
+    "insuficientes": 116,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
@@ -49,9 +49,36 @@
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 3,
-    "tempo_medio_min": 11.2
+    "tempo_medio_min": 11.3
   },
   "missoes": [
+    {
+      "em": "2026-10-03T03:11:48+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · oportunidade do mapa",
+      "alvo": "Goiânia — Diário Oficial de Goiânia — edição 8869 (2026-09-23) — chamamento público",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": null,
+      "total": 12,
+      "nao_resolvidos": null,
+      "pagina_oficial": null,
+      "parecer_fonte": {},
+      "erro": "o modelo não devolveu JSON",
+      "segundos": 1294,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "falhou: o modelo não devolveu JSON",
+      "id": "e1bdae608e9c676f0e2d",
+      "encontrou": {},
+      "financiador": null,
+      "indicios": [],
+      "rotas": []
+    },
     {
       "em": "2026-10-03T03:05:58+00:00",
       "modo": "validar",
@@ -2561,93 +2588,6 @@
         "financiador_regulamento",
         "financiador_pdf",
         "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-02T17:13:39+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Anápolis — Fundo Municipal de Cultura recebe inscrições até domingo (19) — Goiás / Anápolis",
-      "qualidade": "parcial",
-      "comprovados": 10,
-      "dispensados": 1,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "pagina_oficial": "https://www.anapolis.go.gov.br/espacocultural/fundo-municipal-de-cultura-2023-2024/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprova que o Fundo Municipal de Cultura de Anápolis oferece financiamento de projetos culturais com prazo de inscrição até 19 de maio e valor superior a R$ 2 milhões.",
-        "para_a_amc": "Uma associação comunitária de Goiânia precisaria apresentar um projeto cultural e anexar um documento, mesmo que não esteja localizada em Anápolis, pois o financiamento é municipal e não especifica restrições geográficas.",
-        "proximo_passo": "A associação deve se inscrever no Fundo Municipal de Cultura de Anápolis até 19 de maio, apresentando o projeto cultural e os anexos necessários.",
-        "risco": "O risco é que a associação não tenha acesso a informações sobre o edital ou não cumpra os requisitos de apresentação do projeto e anexos."
-      },
-      "erro": null,
-      "segundos": 621,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 9,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso",
-      "id": "op-op-21b31c90e94a",
-      "encontrou": {
-        "Objeto": {
-          "valor": "financiamento de projetos culturais",
-          "trecho": "Serão mais de R$ 2 milhões para o financiamento de projetos culturais.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "dispensado — O texto menciona que as inscrições podem ser realizadas até o dia 19 de maio.",
-          "trecho": "As inscrições podem ser realizadas pelo link abaixo, onde também estão disponíveis o regulamento e outras informações. [rejeitado: data implausível para edital aberto]",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Valor": {
-          "valor": "mais de R$ 2 milhões",
-          "trecho": "Serão mais de R$ 2 milhões para o financiamento de projetos culturais.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura de Anápolis",
-          "trecho": "A gestão municipal, por meio da Secretaria de Integração, acaba de lançar o regulamento para o processo seletivo do Fundo Municipal de Cultura 2023/2024.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Fundo Municipal de Cultura 2023/2024 | Prefeitura de Anápolis",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "Serão mais de R$ 2 milhões para o financiamento de projetos culturais.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Outra mudança importante é que, antes, o poder público também podia participar do processo e agora, o mecanismo é exclusivo para projetos apresentados pela sociedade civil.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "apresentação de projeto cultural",
-          "trecho": "As inscrições podem ser realizadas pelo link abaixo, onde também estão disponíveis o regulamento e outras informações.",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura de Anápolis",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ]
