@@ -29,6 +29,7 @@ _RX_CONTINUO = re.compile(r"fluxo cont[ií]nuo|demanda cont[ií]nua|credenciamen
 _RX_EMENDA = re.compile(r"emendas? parlamentares?|emenda impositiva|indica[cç][ãa]o parlamentar", re.I)
 _RX_INCENTIVO = re.compile(r"rouanet|pronac|incentivo fiscal|lei de incentivo|goyazes|pronon|pronas|fundo da inf[âa]ncia|fundo do idoso|\bfmdca\b|\bfia\b", re.I)
 _RX_JUDICIAL = re.compile(r"presta[cç][õo]es? pecuni[áa]rias?|destina[cç][ãa]o (de recursos|judicial)|\bTAC\b|termo de ajustamento|penas? pecuni[áa]rias?|\bprograma destina\b", re.I)
+_RX_CRED = re.compile(r"\bcredenciament", re.I)
 _RX_BENS = re.compile(r"doa[cç][ãa]o de (bens|mercadorias)|mercadorias apreendidas|bens apreendidos", re.I)
 
 
@@ -70,6 +71,8 @@ def regime_por_texto(*textos: str, privada: bool = False) -> tuple[str, str]:
         return "incentivo_fiscal", "palavra-chave no título"
     if _RX_CONTINUO.search(t):
         return "fluxo_continuo", "palavra-chave no título"
+    if _RX_CRED.search(t):                                    # 02/10: credenciamento tem regime próprio (art. 79 da Lei 14.133)
+        return "credenciamento", "palavra-chave no título"
     if privada:
         return "patrocinio_privado", "financiador privado"
     return PADRAO, "padrão (edital com seleção)"

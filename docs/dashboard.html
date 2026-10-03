@@ -4455,7 +4455,7 @@ function _desenhaAbertasFluxo(){
     return `<div class="oa-c" style="--c:${COR_AREA[a]}">
       <div class="oa-t"><span class="uf-fx-m ${cor}" title="${x.confirmada?"confirmada: objeto, prazo e site oficial":!I?"ainda não estudada pelo Interceptador":I.ok?"estudada: prazo e site oficial encontrados":"estudada: prazo ou site oficial ainda não encontrados"}"></span>
         ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)}">${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"Diário oficial · ").replace(/"/g,"").slice(0,110))}</a>`:`<b>${esc(String(x.titulo).slice(0,110))}</b>`}${estrelaSelo(seloEsteira(x))}</div>
-      <div class="oa-m">${esc(x.orgao||"")}${x.orgao?" · ":""}${x._uf||"nacional"} · ${esc(x.tipo||"")} · ${NOME_AREA[a]}${x.publicado_em?" · publicado em "+br(x.publicado_em):""}</div>
+      <div class="oa-m">${esc(x.orgao||"")}${x.orgao?" · ":""}${x._uf||"nacional"} · ${esc(x.tipo||"")}${x.iniciativa?` · <b title="marcador de iniciativa">${({poder_publico:"poder público",iniciativa_privada:"iniciativa privada",mista:"mista (público + privado)"})[x.iniciativa]||esc(x.iniciativa)}</b>`:""} · ${NOME_AREA[a]}${x.publicado_em?" · publicado em "+br(x.publicado_em):""}</div>
       <div class="oa-l"><span class="oa-p${x.confirmada?" ok":""}">${x.fim?"inscrições até "+br(x.fim):x.confirmada?"fluxo contínuo":"prazo a confirmar"}</span>
         ${u?`<span class="oa-s${of?" ok":""}">${of?"site oficial ✓":"indício — site oficial em busca"}</span>`:""}</div>
       ${x.objeto?`<div class="oa-o" title="${esc(x.objeto)}">${esc(String(x.objeto).slice(0,180))}</div>`:""}
