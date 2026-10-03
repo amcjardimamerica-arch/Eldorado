@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-03T17:11:32+00:00",
+  "em": "2026-10-03T17:26:27+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-03T16:59:39+00:00",
+  "ultimo_voo": "2026-10-03T17:15:36+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,99 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 213,
+    "missoes": 214,
     "validadas": 2,
-    "parciais": 57,
+    "parciais": 58,
     "insuficientes": 154,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 40,
-      "sim": 138
+      "sim": 139
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
     "tempo_medio_min": 11.5
   },
   "missoes": [
+    {
+      "em": "2026-10-03T17:15:36+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis — Goiás / Anápolis",
+      "qualidade": "parcial",
+      "comprovados": 8,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto fornece informações detalhadas sobre o objeto, prazo de inscrição, valor, órgão financiador, território e requisitos do edital.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se atende aos requisitos do edital, como residir em Anápolis e possuir CPF próprio, e se alinhar com o objeto do edital, que é oferecer vagas gratuitas para crianças em atividades de bombeiro mirim.",
+        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos do edital e se está localizada em Anápolis para participar do processo seletivo.",
+        "risco": "A associação pode não atender aos requisitos do edital, como residir em Anápolis ou não ter acesso ao prazo de inscrição."
+      },
+      "erro": null,
+      "segundos": 650,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Destinação, Área de atuação",
+      "id": "op-op-b9655660e6f1",
+      "encontrou": {
+        "Objeto": {
+          "valor": "oferecer 60 vagas gratuitas para crianças de 9 a 11 anos e 11 meses",
+          "trecho": "São oferecidas 60 vagas gratuitas para crianças de 9 a 11 anos e 11 meses",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "? a 2026-09-02",
+          "trecho": "Estão abertas até às 17h da sexta-feira (02) as inscrições",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "dispensado — O texto menciona que as vagas são gratuitas.",
+          "trecho": "São oferecidas 60 vagas gratuitas para crianças de 9 a 11 anos e 11 meses",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Órgão / financiador": {
+          "valor": "Corpo de Bombeiros Militar do Estado de Goiás",
+          "trecho": "Programa Educacional Bombeiro Mirim (PROEBOM) Itinerante, do Corpo de Bombeiros Militar do Estado de Goiás (CBMGO)",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "residir em Anápolis",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "residir em Anápolis, possuir CPF próprio, estar regularmente matriculada e frequentando a escola, ter nascido entre 3 de outubro de 2014 e 2 de outubro de 2017, apresentar atestado médico que comprove aptidão para a realização das atividades, não ter participado anteriormente do PROEBOM, exceto nos ",
+          "trecho": "Para participar, a criança deve residir em Anápolis, possuir CPF próprio, estar regularmente matriculada e frequentando a escola e ter nascido entre 3 de outubro de 2014 e 2 de out",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secretaria de Segurança Pública",
+      "indicios": [],
+      "rotas": [
+        "site_municipal",
+        "financiador_programa_edital"
+      ]
+    },
     {
       "em": "2026-10-03T16:59:39+00:00",
       "modo": "validar",
@@ -2697,63 +2775,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-03T06:38:44+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · oportunidade do mapa · prazo até 2026-10-20",
-      "alvo": "Aparecida de Goiânia — Diário Oficial de Aparecida de Goiânia — edição (2026-09-23) — chamamento público",
-      "qualidade": "insuficiente",
-      "comprovados": 1,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Território",
-        "Esfera",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.goias365.com.br/prefeito-vilela-sanciona-lei-que-reduz-aliquota-do-itbi-para-15-em-aparecida/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto menciona a existência de anexos, o que indica que há informações adicionais disponíveis para análise.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar os anexos para obter detalhes sobre os requisitos, prazos e outros critérios de participação.",
-        "proximo_passo": "Consultar os anexos do chamamento público para obter informações completas sobre os requisitos e procedimentos.",
-        "risco": "A ausência de informações detalhadas como prazos, valor e requisitos específicos pode impedir a participação adequada da associação."
-      },
-      "erro": null,
-      "segundos": 931,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "8e8a15397e0e88ce5029",
-      "encontrou": {},
-      "financiador": "Município de Aparecida de Goiânia",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/5201405/2026-09-23/dbfec72a0b926bf54ccbc0c16e52e4c5cc801a8f.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
       ]
     }
   ]
