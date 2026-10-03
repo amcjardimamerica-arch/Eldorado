@@ -206,6 +206,21 @@ def dentro(a) -> int:
     return 0
 
 
+def _garantir_navegador() -> None:
+    """03/10 (titular): o navegador dos Pilotos (src/navegador_local.py). Uma vez só: instala o Playwright; no Windows
+    usa o Edge que já existe; sem ele, baixa o Chromium. Se falhar, os Pilotos voam como antes (sem navegador)."""
+    try:
+        import playwright  # noqa: F401
+        return
+    except Exception:  # noqa: BLE001
+        pass
+    sh([sys.executable, "-m", "pip", "install", "--quiet", "playwright"], timeout=900, ok=True)
+    edge = any(Path(p).exists() for p in (r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+                                           r"C:\Program Files\Microsoft\Edge\Application\msedge.exe"))
+    if not edge:
+        sh([sys.executable, "-m", "playwright", "install", "chromium"], timeout=1800, ok=True)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--minutos", type=float, default=55)
@@ -217,6 +232,7 @@ def main() -> int:
     a = ap.parse_args()
     if a.dentro:
         return dentro(a)
+    _garantir_navegador()
     pasta = Path(a.pasta)
     _clone(pasta)
     sh(["git", "-C", str(pasta), "fetch", "-q", "origin", "main"])

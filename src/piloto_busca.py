@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import gzip
 import json
+import os
 import json
 import re
 import time
@@ -374,6 +375,14 @@ def _buscar_sem_cache(consulta: str, maximo: int = 10, tempo: float = 20, motore
     Cada consulta começa por uma via diferente, para que nenhuma apanhe o volume inteiro —
     foi o excesso numa só que fez o DuckDuckGo começar a cortar. A via seguinte só é usada
     quando a atual não entrega; quem falha entra em descanso e sai da roda por um tempo."""
+    try:                                                    # 03/10: navegador do titular primeiro (IP e navegador de verdade)
+        from . import navegador_local as _nav
+        if not motores and _nav.disponivel():
+            _r = _nav.buscar(consulta, maximo)
+            if _r:
+                return _r
+    except Exception:  # noqa: BLE001 — o navegador nunca derruba a busca: segue pelas vias de sempre
+        pass
     saida, vistos = [], set()
     try:                                                    # 01/10: parâmetros aprendidos (config/parametros_pilotos.json)
         _pe = (json.loads((Path(__file__).resolve().parents[1] / "config/parametros_pilotos.json").read_text(encoding="utf-8")).get("espiao") or {})
@@ -474,9 +483,17 @@ def ler_pagina(url: str, limite: int = 6000, tempo: float = 20) -> str:
                 bruto = gzip.decompress(bruto)
             html = bruto.decode("utf-8", "ignore")
         html = re.sub(r"(?is)<(script|style|nav|footer|header)[^>]*>.*?</\1>", " ", html)
-        return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html)).strip()[:limite]
+        texto = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html)).strip()[:limite]
     except Exception:
-        return ""
+        texto = ""
+    if len(texto) < 400:                                    # 03/10: vazia ou só o esqueleto → abre no navegador do titular
+        try:
+            from . import navegador_local as _nav
+            if _nav.disponivel():
+                return re.sub(r"\s+", " ", _nav.ler(url))[:limite]
+        except Exception:  # noqa: BLE001
+            pass
+    return texto
 
 
 def _oficial(url: str) -> bool:
@@ -506,6 +523,8 @@ def inedita(c: str, usadas: list[str], teto: float | None = None) -> bool:
 def caçar(ia, angulo: dict, conhecidos: set[str], max_consultas: int = 3, max_paginas: int = 4) -> tuple[list[dict], str, list[str]]:
     """O voo completo: o Piloto cria as consultas, busca, lê e decide.
     Devolve (achados, lição, consultas usadas)."""
+    if not local_brasil():                                  # 03/10 (titular): na nuvem, 2 buscas por voo
+        max_consultas = min(max_consultas, int(os.environ.get("ELDORADO_BUSCAS_NA_NUVEM", "2")))
     from .cargo_piloto import licoes_para_o_prompt
     cfg = load_json(CFG)
     lic = licoes_para_o_prompt()
