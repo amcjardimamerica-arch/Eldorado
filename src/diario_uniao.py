@@ -385,8 +385,17 @@ def fonte_a(hoje: date, cfg: dict, diag: dict, proc: dict, vistas_url: dict | No
     pausa = float(a.get("pausa_segundos", 0.3)); mb = int(a.get("max_bytes", 12_000_000))
     secoes = list(a.get("secoes") or ["do1", "do3"]); extras = dict(a.get("extras") or {"DO1E": "do1e", "DO3E": "do3e"})
     out, F = [], diag["fontes"]["A"]
-    for k in range(dias):
-        d = hoje - timedelta(days=k)
+    # 03/10 (teste do motor 03): dia útil fora da janela que NUNCA foi lido (ex.: 29/09, perdido na troca para a v2) entra
+    # na leitura — até `retroativo_por_execucao` dias por passagem, dentro dos últimos `retroativo_dias`
+    ret_dias, ret_max = int(a.get("retroativo_dias", 10)), int(a.get("retroativo_por_execucao", 3))
+    janela = [hoje - timedelta(days=k) for k in range(dias)]
+    tinha_estado = bool(proc)                                # estado novo (1ª execução, testes): sem retroativo
+    atrasados = [] if not tinha_estado else [hoje - timedelta(days=k) for k in range(dias, ret_dias + 1)
+                 if _dia_util(hoje - timedelta(days=k)) and f"{(hoje - timedelta(days=k)).isoformat()}|do3" not in proc][:ret_max]
+    F["retroativos"] = [d.isoformat() for d in atrasados]
+    vistas_antes = set(vistas_url)
+    F.setdefault("cortados", 0)
+    for d in janela + atrasados:
         fila, vistas, flags, abertos_dia = list(secoes), set(), {}, 0
         while fila:
             sec = fila.pop(0)
@@ -416,10 +425,14 @@ def fonte_a(hoje: date, cfg: dict, diag: dict, proc: dict, vistas_url: dict | No
                     cortes[porque] = cortes.get(porque, 0) + 1
             for porque, n in cortes.items():
                 F["cortes"][porque] = F["cortes"].get(porque, 0) + n
-            abertos, falhou = 0, 0
+            abertos, falhou, cortados = 0, 0, 0
             for it in sel:
+                if d in atrasados and it.get("urlTitle") in vistas_antes:
+                    continue                                 # dia retroativo: matéria já vista em outra passagem não se repete
                 art = str(it.get("artType") or "")
                 tx = None
+                if not art.startswith("Extrato") and abertos_dia >= lim and it.get("urlTitle"):
+                    cortados += 1                            # 03/10: íntegra além do limite do dia — leitura parcial, não "completa"
                 if not art.startswith("Extrato") and abertos_dia < lim and it.get("urlTitle"):
                     try:
                         tx = texto_da_materia(_get_tentando(url_materia(it["urlTitle"]), tentativas=2, max_bytes=3_000_000))
@@ -432,13 +445,17 @@ def fonte_a(hoje: date, cfg: dict, diag: dict, proc: dict, vistas_url: dict | No
                     vistas_url[it["urlTitle"]] = d.isoformat()
                 out.append(_materia(it, tx, "A"))
             F["textos_abertos"] += abertos
-            if falhou:                                       # íntegra que falhou: a edição é relida na próxima passagem
+            F["cortados"] += cortados
+            if falhou or cortados:                           # íntegra que falhou ou ficou além do limite: relida na próxima passagem
                 proc.pop(chave, None)
                 continue
             proc[chave] = {"data": d.isoformat(), "materias": len(itens), "de_interesse": len(sel), "abertas": abertos,
                            "em": now_iso()}
         F["edicoes_do_dia"][d.isoformat()] = sorted(k for k, v in flags.items() if v)
     F["materias_lidas"] = len(out)
+    # o que ainda falta no período: dia útil dos últimos `retroativo_dias` sem a Seção 3 lida (o maestro vê "parcial")
+    F["dias_nao_lidos"] = [] if not tinha_estado else [(hoje - timedelta(days=k)).isoformat() for k in range(1, ret_dias + 1)
+                           if _dia_util(hoje - timedelta(days=k)) and f"{(hoje - timedelta(days=k)).isoformat()}|do3" not in proc]
     return out
 
 
@@ -485,6 +502,9 @@ def fonte_b(hoje: date, cfg: dict, diag: dict, ja_vistas: set) -> list[dict]:
             out.append(_materia(it, tx, "B"))
         time.sleep(float(b.get("pausa_segundos", 0.5)))
     F["materias_lidas"] = len(out)
+    # o que ainda falta no período: dia útil dos últimos `retroativo_dias` sem a Seção 3 lida (o maestro vê "parcial")
+    F["dias_nao_lidos"] = [] if not tinha_estado else [(hoje - timedelta(days=k)).isoformat() for k in range(1, ret_dias + 1)
+                           if _dia_util(hoje - timedelta(days=k)) and f"{(hoje - timedelta(days=k)).isoformat()}|do3" not in proc]
     return out
 
 
@@ -593,6 +613,13 @@ def classificar_materia(m: dict, hoje: date) -> dict:
     elif ato["veredito"] == "RUIDO" and ato["tipo"] == "retificacao" and ato["regime"] == "indefinido" \
             and re.search(r"CHAMAMENTO PUBLICO", _N(m.get("texto"))[:600]) and orgao_do_item(m) in ORGAOS_SOCIAIS:
         ato["veredito"], ato["motivos"] = "ACOMPANHAR", ["retificação de chamamento público de ministério da área social — conferir o edital"]
+    _Tx = _N(m.get("texto"))[:1500]
+    if ato["veredito"] == "RUIDO" and ato["regime"] in REGIMES_LOCAIS and ato["tipo"] in ("referencia", "abertura") \
+            and re.search(r"TORNA PUBLIC\w*[^.]{0,160}DOAC|EDITAL DE DOAC|(?:CHAMAMENTO|AVISO)[^.]{0,120}DOAC", _Tx) \
+            and re.search(r"ENTIDADES|SEM FINS LUCRATIVOS|\bOSCS?\b|INSTITUICOES|ORGANIZACOES DA SOCIEDADE CIVIL|ASSOCIACOES", _Tx) \
+            and not re.search(r"RESULTADO|HOMOLOGA|CONTEMPLAD|TERMO DE DOACAO CELEBRADO", _Tx[:300]):
+        # 03/10 (teste do motor 03): edital de doação de bens a entidades é recurso aberto — segue para a regra de local
+        ato["veredito"], ato["tipo"], ato["motivos"] = "OPORTUNIDADE", "abertura", ["edital de doação de bens a entidades sem fins lucrativos"]
     if ato["veredito"] == "ACOMPANHAR" and ato["regime"] in REGIMES_LOCAIS and m.get("nivel") == "federal":
         locais = ufs_no_texto(m.get("texto") or "") | ({uf_da_unidade(m)} - {None})
         if locais and not locais & {UF, "DF"}:
@@ -749,7 +776,7 @@ def classificar_lote(materias: list[dict], hoje: date) -> tuple[dict, dict, dict
 # ─────────────────────────── o motor ───────────────────────────
 def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dict | None = None) -> dict:
     """Leitura do motor 03 com a mesma saída de `sensores.ler` (inclusive `dou_json_materias` para o painel)."""
-    hoje = hoje or (sensor or {}).get("_data") or date.today()
+    hoje = hoje or (sensor or {}).get("_data") or _hoje_brt().date()   # 03/10: o dia é o de Brasília (o executor roda em UTC)
     cfg = _cfg()
     est = load_json(ESTADO) if ESTADO.exists() else {}
     proc = est.setdefault("edicoes_processadas", {})
@@ -777,6 +804,11 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     diag["paginas_lidas"] = A["secoes_lidas"] + A["textos_abertos"]
     diag["links_total"] = A["materias_no_jornal"]
     diag["links_candidatos"] = len(materias)
+    # 03/10: chaves que o maestro lê como leitura PARCIAL (src/maestro.py · CORTE) → acionamento complementar no mesmo dia
+    if A.get("dias_nao_lidos"):
+        diag["paginas_nao_lidas"] = [url_jornal(date.fromisoformat(x), "do3") for x in A["dias_nao_lidos"]]
+    if A.get("cortados"):
+        diag["cortados"] = A["cortados"]
     # edição do dia não lida em dia útil = FALHA (não é "azul, funcionou sem oportunidade")
     d0 = hoje.isoformat()
     do3_hoje = f"{d0}|do3" in A["com_materias"]

@@ -173,7 +173,10 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     s.update({k: bool(rx.search(T)) for k, rx in _EXTRA.items()})
     if fundos is not None and fundos.search(T):
         s["fundo"] = True
-    c = {k: bool(rx.search(cab)) for k, rx in _RX.items() if k in ("resultado", "celebracao", "retificacao", "abertura")}
+    # 03/10 (teste do motor 03): "aviso de chamamento ... PARA A CELEBRACAO DE TERMO DE FOMENTO" é ABERTURA — a celebração
+    # é a finalidade da seleção, não um termo já celebrado (falso negativo: o aviso ia para ACOMPANHAR)
+    _cab_c = re.sub(r"(?:PARA|VISANDO|COM VISTAS|OBJETIVANDO|COM O OBJETIVO DE|PARA FINS DE|FINS DE)\s+(?:[AÀ]S?\s+)?(?:FUTURA\s+)?CELEBRACAO DE", " ", cab)
+    c = {k: bool(rx.search(_cab_c if k == "celebracao" else cab)) for k, rx in _RX.items() if k in ("resultado", "celebracao", "retificacao", "abertura")}
     folha = sem_acento((caminho or "").split("›")[-1]).upper().strip()
     cab = cab or T.lstrip()[:220]
     # TIPO — o cabeçalho (título) manda; a seção do sumário desempata
