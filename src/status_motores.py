@@ -121,7 +121,10 @@ def status_de(p: dict, hoje: str) -> dict:
     pend_br = bool(dg.get("exige_brasil") or proprio_u.get("cidades_por_status", {}).get("aguardando coleta local (Brasil)")
                    or "recusa ip estrangeiro" in txt_dg or "fica para a coleta local" in txt_dg
                    or (p.get("id") == "judiciario-tjgo" and proprio_u.get("rota") == "nuvem"))
-    if luz == "verde" and not falha and not cortado and not pend_br:
+    if proprio_u.get("regra_fixa"):
+        # 03/10 (teste do motor 08): motor que não pode ler a fonte (robots.txt) não diz "dia lido por completo"
+        dia_lido = {"estado": "regra_fixa", "texto": proprio_u["regra_fixa"]}
+    elif luz == "verde" and not falha and not cortado and not pend_br:
         dia_lido = {"estado": "completa", "texto": "dia lido por completo"}
     elif luz in ("verde", "vermelho"):
         _cob = proprio_u.get("cobertura_edicoes") or dg.get("cobertura_edicoes") or {}

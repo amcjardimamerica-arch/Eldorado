@@ -4422,19 +4422,19 @@
    }
   },
   "mpgo-destinacao": {
-   "nome": "mpgo-destinacao",
+   "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
    "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
    "tipo": null,
    "finalidade": "descoberta",
-   "coleta": "nuvem",
+   "coleta": "nuvem (indireta: Diário do Estado) + manual",
    "nota_coleta": null,
-   "objetivo": "Destina do MP-GO: regra fixa, lembrete mensal.",
-   "como_funciona": "Roda a cada 30 dia(s), coleta na nuvem; lê 22 rota(s) em 7 domínio(s) (gov.br, mpdft.mp.br, mpf.mp.br…); abre só links que casam com 19 termos e escapam dos 12 vetos, e confirma no texto com 6 termos.",
+   "objetivo": "Destina do MP-GO (Edital de Chamamento 02/2024, cadastro contínuo): regra fixa — o site do MP-GO proíbe robôs. Leitura indireta semanal pelo Diário do Estado (quem recebe recurso DAAMP publica lá) e lembrete de conferência manual mensal",
+   "como_funciona": "Uma vez por semana. Não entra no site do MP-GO (robots.txt proíbe robôs). Mantém o Destina como regra permanente aberta, busca no Diário Oficial do Estado as publicações de quem recebeu recurso do Destina/DAAMP (3 consultas, 3 anos) e lembra o titular da conferência manual mensal e do cadastro no COMPOR.",
    "agenda": "07:53 · todos — itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
    "agenda_detalhe": {
     "horarios_brt": "07:53",
     "dias": "todos",
-    "cadencia_dias": 30,
+    "cadencia_dias": 7,
     "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)"
    },
    "verificacao": {
@@ -4601,7 +4601,8 @@
     "estado": null,
     "achados_total": null,
     "bloqueios": null
-   }
+   },
+   "cadencia_dias": 7
   },
   "mptgo-destinacao": {
    "nome": "mptgo-destinacao",

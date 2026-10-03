@@ -340,10 +340,65 @@ def _texto_pdf(b: bytes) -> str:
         return ""
 
 
+def busca_doe(fonte: dict, hoje: date) -> list[dict]:
+    """03/10/2026 (teste do motor 08): leitura INDIRETA do Destina/DAAMP do MP-GO. O site do MP-GO proíbe robôs; quem
+    recebe e aplica o recurso (prefeituras, entidades) publica no Diário Oficial do Estado, que é aberto. Cada página
+    achada vira um item de inteligência (quem recebeu, área, valor) — nunca edital."""
+    from . import diario_goias as dg
+    de = (hoje - timedelta(days=int(fonte.get("janela_dias", 365)))).isoformat()
+    out, vistos = [], set()
+    for q in fonte.get("consultas") or []:
+        for pg in range(5):
+            j = dg._get_json(dg.url_busca(q, de, hoje.isoformat(), pg))
+            hits = ((j.get("hits") or {}).get("hits")) or []
+            for h in hits:
+                src = h.get("_source") or {}
+                k = f"{src.get('diario_id')}|{src.get('pagina')}"
+                if k in vistos:
+                    continue
+                vistos.add(k)
+                c = re.sub(r"\s+", " ", src.get("conteudo") or "")
+                m = re.search(r"DAAMP|Destina[çc][ãa]o Articulada|Centro de Autocomposi", c, re.I)
+                if not m:
+                    continue
+                trecho = c[max(0, m.start() - 400): m.end() + 300]
+                if has_prompt_injection(trecho):
+                    continue
+                quem = re.search(r"(?:Munic[ií]pio|Prefeitura Municipal) de ([A-ZÀ-Ú][\wÀ-ú' ]{2,40}?)(?:/GO|-GO| -|,|\.|\s{2})", trecho)
+                obj = re.search(r"Obj[e]?[t]?o\s*:\s*(.{20,200}?)(?:,? em conformidade|\.|;)", trecho, re.I)
+                out.append({"orgao": "MP-GO", "unidade": fonte.get("unidade"), "fonte": fonte["id"], "tipo": "busca_doe",
+                            "titulo": "Recurso do Destina/DAAMP do MP-GO aplicado" + (f" — {quem.group(1).strip()}" if quem else "")
+                                      + (f" — {obj.group(1).strip()}" if obj else ""),
+                            "descricao": _limpo(CPF.sub("[CPF]", trecho), 700), "data_publicacao": str(src.get("data") or "")[:10] or None,
+                            "link_oficial": f"{dg.BASE}/portal/visualizacoes/pdf/{src.get('diario_id')}/#e:{src.get('diario_id')}",
+                            "url": f"{dg.BASE}/portal/visualizacoes/pdf/{src.get('diario_id')}/#e:{src.get('diario_id')}",
+                            "pagina_doe": src.get("pagina"), "classificacao": "ACOMPANHAR",
+                            "motivo": "leitura indireta: recurso de acordo do MP-GO (Destina/DAAMP) aplicado por quem recebeu — "
+                                      "mostra para onde vai o dinheiro, áreas e valores; não é edital"})
+            if len(hits) < 10:
+                break
+    return out
+
+
 def _devido(fonte: dict, est: dict, cfg: dict, hoje: date) -> bool:
     cad = int((cfg.get("cadencia_dias") or {}).get(fonte["modo"], 7))
     u = (est.get("ultima_por_fonte") or {}).get(fonte["id"])
     return not u or u <= (hoje - timedelta(days=cad)).isoformat()
+
+
+def _so_regra_fixa(cfg: dict) -> bool:
+    """A parte do motor não tem leitura DIRETA da fonte (só regra fixa e leitura indireta) — caso do MP-GO."""
+    fs = [x for x in cfg["fontes"] if _da_parte(x["orgao"])]
+    return bool(fs) and not any(x["modo"] in ("tabela_mpt", "lista_habilitadas", "listagem_html", "rss", "estado_pagina", "pagina_item") for x in fs)
+
+
+def _texto_regra_fixa(diag: dict, cfg: dict) -> str:
+    ind = [v for v in diag["fontes"].values() if v.get("modo") == "busca_doe"]
+    lida = ind and ind[0].get("situacao") in ("lida", "em dia (cadência)")
+    ult = (cfg.get("verificacoes_manuais") or {}).get(_PARTE["id"])
+    return ("sem leitura automática: o site do MP-GO proíbe robôs. Leitura indireta pelo Diário do Estado: "
+            + ("feita" if lida else "falhou" if ind and ind[0].get("situacao") == "falhou" else "não feita")
+            + f". Conferência manual mensal: {('em ' + str(ult)) if ult else 'ainda não registrada'}.")
 
 
 def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dict | None = None) -> dict:
@@ -399,6 +454,9 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                     r["outra_regional"] = outra_regional(r["titulo"])
                 itens += [{**r, "orgao": f["orgao"], "unidade": f["unidade"], "link_oficial": r["url"], "fonte": f["id"], "tipo": "rss"} for r in rs]
                 D.update({"situacao": "lida", "itens": len(rs)})
+            elif f["modo"] == "busca_doe":
+                bd = busca_doe(f, hoje)
+                itens += bd; D.update({"situacao": "lida", "itens": len(bd)})
             elif f["modo"] == "estado_pagina":
                 t = re.sub(r"<[^>]+>", " ", _abrir(f["url"], cfg).decode("utf-8", "ignore"))
                 nao_ha = selecao_sem_edital(t)
@@ -421,6 +479,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     for it in mesclar(itens):
         if it.get("tipo") == "regra_fixa":
             classif.append({**it, "classificacao": it.get("classificacao", "OPORTUNIDADE")})
+        elif it.get("tipo") == "busca_doe":
+            classif.append(it)                 # 03/10: inteligência já classificada (o veto "ao município de" não se aplica)
         else:
             classif.append(classificar(it, hoje, cfg))
     for it in classif:
@@ -441,7 +501,15 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     acompanhar = sorted([a for a in acomp.values() if str(a.get("data_publicacao") or hoje.isoformat()) >= limite],
                         key=lambda a: str(a.get("data_publicacao") or ""), reverse=True)[:400]
     _alvo = {"mpgo-destinacao": ("Destina",), "mptgo-destinacao": ("Sistema de Destinações", "trabalhista"), "mpu-destinacao": ("MPF",)}.get(_PARTE["id"])
-    pend = [p for p in cfg.get("pendencias_presidente") or [] if not _alvo or any(a in p for a in _alvo)]
+    # 03/10 (teste do motor 08): palavra inteira — "Destina" casava com "Sistema de Destinações" e a pendência do MPT
+    # aparecia no motor do MP-GO
+    pend = [p for p in cfg.get("pendencias_presidente") or [] if not _alvo or any(re.search(rf"\b{re.escape(a)}\b", p) for a in _alvo)]
+    vm = (cfg.get("verificacoes_manuais") or {})
+    if _PARTE["id"] in vm:
+        ult = vm.get(_PARTE["id"])
+        if not ult or str(ult) < (hoje - timedelta(days=30)).isoformat():
+            pend.append("Conferência manual mensal do Destina no site do MP-GO (o robô não pode entrar): "
+                        + (f"a última foi em {ult}." if ult else "ainda não registrada.") + " Depois de conferir, avise para registrar a data.")
     if (est.get("habilitadas") or {}).get("associacao_consta"):
         pend = [p for p in pend if "Sistema de Destinações" not in p]
     # inventário de 3 anos nos livros: UMA vez (com nova tentativa se falhar)
@@ -457,7 +525,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
             inv["pendentes_livros"] = f"{type(e).__name__}: {str(e)[:120]} — nova tentativa na próxima leitura"
     est.update({"abertas_registros": abertas, "acompanhar": acompanhar, "pendencias_presidente": pend,
                 "ruido_ultimo": [x for x in classif if x["classificacao"] == "RUIDO"][:60],
-                "ultima": {"em": now_iso(), "data": hoje.isoformat(), "abertas": len(abertas), "acompanhar": len(acompanhar), "falhas": len(falhas)}})
+                "ultima": {"em": now_iso(), "data": hoje.isoformat(), "abertas": len(abertas), "acompanhar": len(acompanhar), "falhas": len(falhas),
+                           **({"regra_fixa": _texto_regra_fixa(diag, cfg)} if _so_regra_fixa(cfg) else {})}})
     write_json(ESTADO, est)
     cont = {c: sum(1 for x in classif if x["classificacao"] == c) for c in ("OPORTUNIDADE", "ACOMPANHAR", "RUIDO")}
     diag.update({"vereditos": cont, "abertas": len(abertas), "pendencias_presidente": pend, "habilitadas": est.get("habilitadas"),
