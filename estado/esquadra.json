@@ -548,18 +548,18 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 61,
-      "achados_total": 1505,
+      "leituras": 62,
+      "achados_total": 1728,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-03T21:46:46+00:00",
+      "ultima": "2026-10-03T23:09:13+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 235,
+      "achados_ultima": 223,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
           "http": 200,
-          "bytes": 6765
+          "bytes": 7544
         },
         {
           "url": "https://pncp.gov.br/api/search/",
@@ -569,9 +569,9 @@
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 271,
-        "links_total": 8502,
-        "links_candidatos": 235,
+        "paginas_lidas": 286,
+        "links_total": 9281,
+        "links_candidatos": 223,
         "descobertas": [],
         "pdf_links": 0,
         "motivo_zero": null,
@@ -579,11 +579,12 @@
         "fontes": {
           "A": {
             "falhas": [],
-            "consultas": 224,
-            "itens": 6765,
+            "consultas": 239,
+            "itens": 7544,
             "ufs_lidas": [
               "GO",
               "DF",
+              "RN",
               "RS",
               "RO",
               "RR",
@@ -607,13 +608,14 @@
               "PR",
               "PE",
               "PI",
-              "RJ",
-              "RN"
+              "RJ"
             ],
-            "cortados": 3,
+            "cortados": 48,
             "paginas_pendentes": [
-              "SC/Credenciamento: páginas 21–22",
-              "SP/Credenciamento: páginas 21–21"
+              "RS/Credenciamento: páginas 21–27",
+              "BA/Credenciamento: páginas 21–27",
+              "MG/Credenciamento: páginas 21–53",
+              "PR/Credenciamento: páginas 21–21"
             ]
           },
           "B": {
@@ -632,6 +634,7 @@
           "ufs_lidas": [
             "GO",
             "DF",
+            "RN",
             "RS",
             "RO",
             "RR",
@@ -655,21 +658,20 @@
             "PR",
             "PE",
             "PI",
-            "RJ",
-            "RN"
+            "RJ"
           ],
           "proxima_comeca_em": null,
           "faltam_no_dia": []
         },
-        "cortados": 3,
+        "cortados": 48,
         "vereditos": {
-          "OPORTUNIDADE": 235,
+          "OPORTUNIDADE": 223,
           "ACOMPANHAR": 0,
-          "RUIDO": 7886,
+          "RUIDO": 8675,
           "quarentena": 0
         }
       },
-      "duracao_s": 935
+      "duracao_s": 900
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
@@ -3407,10 +3409,10 @@
     "plat-salic": {
       "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
       "tipo": "plataforma",
-      "leituras": 24,
-      "achados_total": 116,
+      "leituras": 25,
+      "achados_total": 119,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-03T17:19:31+00:00",
+      "ultima": "2026-10-03T23:09:53+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 3,
       "falhas_ultima": 0,
@@ -3422,15 +3424,15 @@
           "itens": 120
         },
         {
-          "url": "https://api.salic.cultura.gov.br/api/v1/projetos/?UF=GO&ano_projeto=24&limit=100&offset=0&format=json",
+          "url": "https://api.salic.cultura.gov.br/api/v1/projetos/?UF=GO&ano_projeto=23&limit=100&offset=0&format=json",
           "http": 200,
           "bytes": 0,
-          "itens": 200
+          "itens": 140
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 5,
+        "paginas_lidas": 4,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
@@ -3457,11 +3459,11 @@
             "captado": 3500255.61,
             "aprovado": 155160488.1
           },
-          "2024": {
-            "projetos_go": 200,
-            "novos_no_arquivo": 200,
-            "captado": 10407152.82,
-            "aprovado": 228605713.94
+          "2023": {
+            "projetos_go": 140,
+            "novos_no_arquivo": 140,
+            "captado": 27641514.93,
+            "aprovado": 340705199.39
           },
           "editais_minc": {
             "listados": 9,
@@ -3543,7 +3545,7 @@
           }
         ]
       },
-      "duracao_s": 60
+      "duracao_s": 40
     },
     "plat-secult-go": {
       "nome": "Secult Goiás — Goyazes e Aldir Blanc",
@@ -7557,24 +7559,24 @@
   },
   "ultima_execucao": {
     "data": "2026-10-03",
-    "em": "2026-10-03T21:47:00+00:00",
+    "em": "2026-10-03T23:09:53+00:00",
     "manual": [
-      "plat-gife",
+      "plat-salic",
       "pncp-api"
     ],
     "bloco": "manual",
     "sensores_executados": 2,
     "adiados_por_tempo": [],
-    "duracao_s": 949,
+    "duracao_s": 940,
     "em_espera": 125,
     "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 238,
-    "novos_na_base": 2,
+    "achados": 226,
+    "novos_na_base": 0,
     "por_tipo": {
       "api": {
         "sensores": 1,
-        "achados": 235,
+        "achados": 223,
         "falhas": 0
       },
       "plataforma": {
