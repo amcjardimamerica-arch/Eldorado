@@ -412,16 +412,23 @@
   },
   "dj-trf1-go": {
    "perfil": "destinações de pena federais — raras em Goiás",
-   "cadencia": "semanal",
+   "cadencia": "mensal",
    "rotas": [
     {
-     "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
-     "url": "https://www.trf1.jus.br/sjgo/",
-     "tipo": "diario"
+     "nome": "SJGO — Notícias (onde sai o chamamento de entidades)",
+     "url": "https://www.trf1.jus.br/sjgo/imprensa/noticias",
+     "tipo": "secretaria",
+     "robots_proibe": true
     },
     {
-     "nome": "Editais de destinação de prestações pecuniárias — TRF1",
-     "url": "https://www.trf1.jus.br/",
+     "nome": "SJGO — Editais e Portarias",
+     "url": "https://www.trf1.jus.br/sjgo/processual/editais-e-portarias",
+     "tipo": "diario",
+     "robots_proibe": true
+    },
+    {
+     "nome": "Portal do CNJ — busca (republica editais dos tribunais; motor do CNJ)",
+     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+Goi%C3%A1s",
      "tipo": "secretaria"
     }
    ],
@@ -431,7 +438,13 @@
     "edital de cadastramento",
     "entidades beneficiárias",
     "transação penal",
-    "pena pecuniária"
+    "pena pecuniária",
+    "chamamento público",
+    "cadastramento de entidades",
+    "projetos sociais",
+    "acordo de não persecução penal",
+    "ANPP",
+    "suspensão condicional do processo"
    ],
    "lexico_camada2": [
     "Resolução CNJ 154",
@@ -440,8 +453,8 @@
     "Goiás",
     "Goiânia"
    ],
-   "coleta": "local",
-   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo"
+   "coleta": "manual (robots.txt proíbe robôs)",
+   "nota_coleta": "03/10: o site responde da nuvem, mas o robots.txt proíbe qualquer robô (Disallow: /); o motor registra e não lê — o titular confere Notícias da SJGO uma vez por mês"
   },
   "dje-tjgo": {
    "perfil": "varas de execução penal de Goiânia — prestações pecuniárias destinadas a entidades, sem edital e sem disputa",
