@@ -11,11 +11,11 @@
   "reconhecer": "jardim am[eé]rica"
  },
  "cadencia_dias": {
-  "tabela_mpt": 1,
+  "tabela_mpt": 0,
   "lista_habilitadas": 7,
   "listagem_html": 7,
   "rss": 7,
-  "estado_pagina": 30,
+  "estado_pagina": 7,
   "pagina_item": 30,
   "busca_doe": 7
  },
@@ -334,14 +334,16 @@
    "orgao": "MPT nacional",
    "unidade": "PGT - Noticias",
    "tipo_fonte": "secundaria",
-   "url": "https://mpt.mp.br/pgt/noticias/RSS",
+   "url": "https://mpt.mp.br/search_rss?SearchableText=destina%C3%A7%C3%A3o+recursos&sort_on=Date&sort_order=reverse",
    "robots": "permite",
    "tipo_pagina": "noticia",
    "frequencia": "diaria",
    "rota_estudo": "nuvem",
    "rota": "nuvem",
    "modo": "rss",
-   "observacao": "Feed geral; filtrar por 'destina', 'cadastro', 'edital'."
+   "observacao": "Feed geral; filtrar por 'destina', 'cadastro', 'edital'.",
+   "url_antiga": "https://mpt.mp.br/pgt/noticias/RSS",
+   "nota_teste_0310": "o RSS /pgt/noticias/RSS parou em 28/07/2026 (15 itens, o mais novo de 28/07); a busca ordenada por data traz 20 itens até 17/09/2026"
   },
   {
    "id": "f13",
@@ -383,7 +385,10 @@
    "rota_estudo": "nuvem",
    "rota": "nuvem",
    "modo": "listagem_html",
-   "observacao": "Fonte onde apareceu o chamamento de cadastro (09/10/2025). A antiga URL https://www.mpf.mp.br/go retorna 404; o caminho atual é /o-mpf/unidades/pr-go."
+   "observacao": "Fonte onde apareceu o chamamento de cadastro (09/10/2025). A antiga URL https://www.mpf.mp.br/go retorna 404; o caminho atual é /o-mpf/unidades/pr-go.",
+   "paginacao": "?b_start:int={offset}",
+   "passo": 10,
+   "max_paginas": 5
   },
   {
    "id": "f16",
@@ -495,7 +500,10 @@
    "rota_estudo": "nuvem",
    "rota": "nuvem",
    "modo": "listagem_html",
-   "observacao": "Melhor fonte para acompanhar o Edital PGJ 1/2026 e as destinações das Semas."
+   "observacao": "Melhor fonte para acompanhar o Edital PGJ 1/2026 e as destinações das Semas.",
+   "paginacao": "?start={offset}",
+   "passo": 20,
+   "max_paginas": 5
   },
   {
    "id": "f24",
@@ -634,8 +642,10 @@
    "frequencia": "N/A",
    "rota_estudo": "nuvem",
    "rota": "nuvem",
-   "modo": "listagem_html",
-   "observacao": "A home veio vazia no WebFetch. O sitemap não mostra destinação de recursos nem editais para entidades (só concursos e contratações)."
+   "modo": "ruido_conhecido",
+   "observacao": "A home veio vazia no WebFetch. O sitemap não mostra destinação de recursos nem editais para entidades (só concursos e contratações).",
+   "modo_antigo": "listagem_html",
+   "nota_teste_0310": "o sitemap do MPU é índice navegacional, sem notícia, edital ou data (conferido em 03/10/2026)"
   },
   {
    "id": "f34",
@@ -837,5 +847,6 @@
  "verificacoes_manuais": {
   "mpgo-destinacao": null,
   "_regra": "data (AAAA-MM-DD) da última conferência manual do Destina pelo titular; vazio ou mais de 30 dias vira pendência no painel"
- }
+ },
+ "nota_03_10": "teste do motor 09: a tabela de editais de 5 dias é lida em TODA passagem (07:53 e 16:23) — com cadência de 1 dia a 2ª passagem pulava a tabela e um edital publicado à tarde só era visto no dia seguinte"
 }

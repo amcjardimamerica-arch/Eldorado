@@ -117,6 +117,8 @@ jobs:
         if: always()
         run: |
           echo "bloco=$MOTORES_BLOCO" | tee estado/log_sensores.txt
+          # 03/10 (teste do motor 09): o pypdf só era instalado DEPOIS deste passo — os PDFs dos editais (MPT, TJGO…) nunca eram lidos
+          pip install pypdf --quiet || echo "pypdf: instalação falhou — PDFs ficam sem texto (registrado no diagnóstico)"
           case "$MOTORES_BLOCO" in
             diarios|justica_legislativo|plataformas_api|opressores|manual|regulares|completo)
               # 02/10: saída sem buffer (o progresso aparece no log) e aviso REAL de falha/estouro (antes o "||" valia para o

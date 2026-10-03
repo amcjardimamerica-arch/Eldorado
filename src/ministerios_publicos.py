@@ -186,10 +186,16 @@ def links_da_listagem(html: str, base: str) -> list[dict]:
         texto = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", m.group(2))).strip()
         if len(texto) < 12:
             continue
-        perto = re.sub(r"<[^>]+>", " ", html[max(0, m.start() - 300):m.end() + 300])
+        # 03/10 (teste do motor 10): a data é procurada DEPOIS do link até o próximo link e, se não houver, ANTES dele desde o
+        # link anterior — a janela fixa de 300 caracteres dava a data do item vizinho a quase todos os links da lista.
+        prox = html.find("<a ", m.end()); prox = len(html) if prox < 0 else prox
+        ant = html.rfind("</a>", 0, m.start()); ant = 0 if ant < 0 else ant + 4
+        depois = re.sub(r"<[^>]+>", " ", html[m.end():min(prox, m.end() + 300)])
+        antes = re.sub(r"<[^>]+>", " ", html[max(ant, m.start() - 300):m.start()])
         url = urllib.parse.urljoin(base, m.group(1))
         mu = re.search(r"/(20\d\d)/(\d{2})/(\d{2})(?:/|$)", url)
-        out.append({"titulo": texto[:300], "url": url, "data_publicacao": _iso(texto) or _iso(perto) or (f"{mu.group(1)}-{mu.group(2)}-{mu.group(3)}" if mu else None)})
+        out.append({"titulo": texto[:300], "url": url, "data_publicacao": _iso(texto) or _iso(depois) or _iso(antes)
+                    or (f"{mu.group(1)}-{mu.group(2)}-{mu.group(3)}" if mu else None)})
     return out
 
 
@@ -209,9 +215,22 @@ def itens_do_rss(xml: str) -> list[dict]:
     return out
 
 
+_UF_FORA = r"(?:AC|AL|AP|AM|BA|CE|DF|ES|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)"
+
+
 def outra_regional(titulo: str) -> bool:
-    """Edital de OUTRA regional do MPT (não a 18ª, de Goiás)."""
-    return bool(re.search(r"\bPRT[- ]?(?!18\b)\d{1,2}\b|\b(?!18)\d{1,2}[ªa] Regi[aã]o|\bMPT[- ](?!GO\b)[A-Z]{2}\b", str(titulo or "")))
+    """Edital de OUTRA regional do MPT (não a 18ª, de Goiás). 03/10 (teste do motor 10): também "MPT/AL", "MPT-PA/AP" e
+    "entidades de ES" — antes o cadastro do MPT do Espírito Santo entrava como ACOMPANHAR para a A.M.C."""
+    t = str(titulo or "")
+    return bool(re.search(r"\bPRT[- ]?(?!18\b)\d{1,2}\b|\b(?!18)\d{1,2}[ªa] Regi[aã]o|\bMPT\s*[-/ ]\s*(?!GO\b)[A-Z]{2}\b|"
+                          r"\b(?:de|do|da|no|na|em)\s+" + _UF_FORA + r"\b(?!\$)", t))
+
+
+def texto_visivel(html: str) -> str:
+    """Texto que o leitor vê: sem <script>, <style> e comentários (03/10: no gov.br, 2 mil caracteres de código ficam entre
+    o título "Seleção em andamento" e o "Não há" — o motor via a seleção aberta e alarmava sem motivo)."""
+    h = re.sub(r"(?is)<(script|style|noscript)\b.*?</\1>|<!--.*?-->", " ", html or "")
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h)).strip()
 
 
 def selecao_sem_edital(texto: str) -> bool:
@@ -252,10 +271,14 @@ def classificar(it: dict, hoje: date, cfg: dict) -> dict:
         pub = date.fromisoformat(it["data_publicacao"]) if it.get("data_publicacao") else None
         dias = int(it.get("prazo_dias") or cfg.get("mpt_prazo_dias", 5))
         seg = (pub + timedelta(days=dias - 1)).isoformat() if pub else None
-        it = {**it, "prazo_dias": dias, "prazo_tipo": None, "data_limite_segura": seg, "exige_cadastro": it.get("exige_cadastro", True)}
+        it = {**it, "prazo_dias": dias, "prazo_tipo": None, "data_limite_segura": seg, "exige_cadastro": it.get("exige_cadastro")}
         if seg and seg >= hoje.isoformat():
+            # 03/10 (teste do motor 09): o edital 009220.2026 aceita "qualquer pessoa jurídica de direito privado", com a indicação nos
+            # autos do PA-INTER — a exigência de cadastro só é escrita quando o PDF a traz
+            cad = {True: "exige cadastro prévio no Sistema de Destinações", False: "o edital não exige cadastro prévio: a indicação é feita nos autos do procedimento",
+                   None: "conferir no PDF se exige cadastro prévio (o PDF não foi lido)"}[it["exige_cadastro"]]
             return {**it, "fim": seg, "classificacao": "OPORTUNIDADE",
-                    "motivo": f"edital de {dias} dias aberto (o edital não diz se são úteis ou corridos; data segura {seg}); exige cadastro prévio no Sistema de Destinações"}
+                    "motivo": f"edital de {dias} dias aberto (o edital não diz se são úteis ou corridos; data segura {seg}); {cad}"}
         return {**it, "classificacao": "ACOMPANHAR", "motivo": "edital de 5 dias encerrado — mostra o padrão e o ritmo da unidade"}
     fora = (cfg.get("fora_do_territorio") or {}).get(it.get("orgao"))
     if fora:
@@ -332,11 +355,23 @@ def _tabela(pagina: str, task: str, cfg: dict, n: int = 200) -> dict:
     return json.loads(_abrir(base + "/index.php", cfg, op, dados, pagina).decode("utf-8", "ignore"))
 
 
+_PDF_ERRO = {"motivo": None}
+
+
 def _texto_pdf(b: bytes) -> str:
+    _PDF_ERRO["motivo"] = None
     try:
         from pypdf import PdfReader
+    except Exception:  # noqa: BLE001
+        _PDF_ERRO["motivo"] = "sem_leitor_pdf"            # 03/10: registrado no diagnóstico — o PDF não foi lido
+        return ""
+    if not (b or b"").lstrip().startswith(b"%PDF"):
+        _PDF_ERRO["motivo"] = "resposta_nao_e_pdf"
+        return ""
+    try:
         return " ".join((p.extract_text() or "") for p in PdfReader(io.BytesIO(b)).pages[:8])
-    except Exception:  # noqa: BLE001 — sem pypdf ou PDF sem texto: valem os dados da tabela
+    except Exception:  # noqa: BLE001 — PDF sem texto: valem os dados da tabela
+        _PDF_ERRO["motivo"] = "pdf_sem_texto"
         return ""
 
 
@@ -378,6 +413,20 @@ def busca_doe(fonte: dict, hoje: date) -> list[dict]:
             if len(hits) < 10:
                 break
     return out
+
+
+def lacuna_da_listagem(links: list[dict], desde: str | None) -> bool:
+    """PUBLICADO × LIDO (03/10): a 1ª página só cobre o intervalo desde a última leitura se o item datado mais antigo dela
+    for anterior (ou igual) a essa leitura. Página inteira mais nova que a última leitura = pode haver itens não lidos."""
+    datas = sorted(l["data_publicacao"] for l in links if l.get("data_publicacao"))
+    return bool(desde and len(datas) >= 3 and datas[0] > desde)
+
+
+def feed_parado(itens: list[dict], hoje: date, dias: int = 45) -> bool:
+    """RSS cujo item mais novo tem mais de `dias` dias: a fonte parou de publicar ali (03/10: o RSS de notícias da PGT
+    parou em 28/07/2026)."""
+    datas = [i["data_publicacao"] for i in itens if i.get("data_publicacao")]
+    return bool(datas) and max(datas) < (hoje - timedelta(days=dias)).isoformat()
 
 
 def _devido(fonte: dict, est: dict, cfg: dict, hoje: date) -> bool:
@@ -428,7 +477,10 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                             and str(it.get("data_publicacao") or "") >= (hoje - timedelta(days=60)).isoformat():
                         t = _texto_pdf(_abrir(it["ultimo_link_pdf"], cfg, _SESSAO.get("op"))); diag["pdfs_lidos"] += 1
                         if not t.strip():
-                            diag["sem_texto"] += 1; continue
+                            diag["sem_texto"] += 1
+                            diag.setdefault("pdf_motivos", {})[_PDF_ERRO["motivo"] or "pdf_sem_texto"] = diag.get("pdf_motivos", {}).get(_PDF_ERRO["motivo"] or "pdf_sem_texto", 0) + 1
+                            it["exige_cadastro"] = None                # 03/10: sem o PDF não se sabe — não presumir cadastro
+                            continue
                         if has_prompt_injection(t):
                             D.setdefault("quarentena", []).append(k); continue
                         x = {kk: v for kk, v in extrair_pdf_mpt(t).items() if v is not None}
@@ -438,8 +490,20 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                 h = habilitadas(_tabela(f["url"], "entidadesassistenciais", cfg), cfg["associacao"]["reconhecer"])
                 est["habilitadas"] = {**h, "em": hoje.isoformat()}; D.update({"situacao": "lida", **h})
             elif f["modo"] == "listagem_html":
-                ls = [l for l in links_da_listagem(_abrir(f["url"], cfg).decode("utf-8", "ignore"), f["url"])
-                      if any(re.search(p, l["titulo"], re.I) for p in cfg.get("lexico_alvo") or [])]
+                todos = links_da_listagem(_abrir(f["url"], cfg).decode("utf-8", "ignore"), f["url"])
+                desde = (est.get("ultima_por_fonte") or {}).get(f["id"])
+                pag = f.get("paginacao")                    # ex.: "?b_start:int={offset}" (passo = itens por página)
+                n = 0
+                while lacuna_da_listagem(todos, desde) and pag and n < int(f.get("max_paginas", 5)):
+                    n += 1
+                    todos += links_da_listagem(_abrir(f["url"].split("?")[0] + pag.format(offset=n * int(f.get("passo", 10))), cfg)
+                                               .decode("utf-8", "ignore"), f["url"])
+                if lacuna_da_listagem(todos, desde):
+                    diag.setdefault("paginas_nao_lidas", []).append(f"{f['id']} {f['orgao']}: a listagem não alcança a última leitura ({desde})")
+                    D["lacuna"] = True                       # a última leitura não avança: a próxima passagem relê
+                elif n:
+                    D["paginas_extras"] = n
+                ls = [l for l in todos if any(re.search(p, l["titulo"], re.I) for p in cfg.get("lexico_alvo") or [])]
                 itens += [{**l, "orgao": f["orgao"], "unidade": f["unidade"], "link_oficial": l["url"], "fonte": f["id"], "tipo": "listagem"} for l in ls]
                 D.update({"situacao": "lida", "itens": len(ls)})
             elif f["modo"] == "pagina_item":
@@ -448,7 +512,11 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                     itens.append({**pg, "orgao": f["orgao"], "unidade": f["unidade"], "link_oficial": f["url"], "fonte": f["id"], "tipo": "pagina_item"})
                 D.update({"situacao": "lida", "itens": 1 if pg else 0})
             elif f["modo"] == "rss":
-                rs = [r for r in itens_do_rss(_abrir(f["url"], cfg).decode("utf-8", "ignore"))
+                todos = itens_do_rss(_abrir(f["url"], cfg).decode("utf-8", "ignore"))
+                if feed_parado(todos, hoje):
+                    D["feed_parado"] = max(i["data_publicacao"] for i in todos if i.get("data_publicacao"))
+                    diag.setdefault("alertas", []).append(f"{f['id']}: o feed parou em {D['feed_parado']} — trocar a rota")
+                rs = [r for r in todos
                       if re.search(r"destina[cç][aã]o|cadastr|revers[aã]o", f"{r['titulo']} {r['descricao']}", re.I)]
                 for r in rs:   # editais de OUTRAS regionais do MPT são ruído para a A.M.C.
                     r["outra_regional"] = outra_regional(r["titulo"])
@@ -458,20 +526,30 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                 bd = busca_doe(f, hoje)
                 itens += bd; D.update({"situacao": "lida", "itens": len(bd)})
             elif f["modo"] == "estado_pagina":
-                t = re.sub(r"<[^>]+>", " ", _abrir(f["url"], cfg).decode("utf-8", "ignore"))
+                t = texto_visivel(_abrir(f["url"], cfg).decode("utf-8", "ignore"))
                 nao_ha = selecao_sem_edital(t)
                 est["fdd_selecao"] = {"nao_ha": nao_ha, "em": hoje.isoformat()}; D.update({"situacao": "lida", "selecao_aberta": not nao_ha})
                 if not nao_ha:
                     itens.append({"titulo": "FDD/CFDD — seleção em andamento (a página deixou de dizer 'Não há')", "orgao": f["orgao"], "unidade": f["unidade"],
                                   "link_oficial": f["url"], "url": f["url"], "data_publicacao": None, "fonte": f["id"], "tipo": "estado_pagina",
                                   "alerta_selecao": True, "descricao": "fundo de defesa de direitos difusos"})
-            est.setdefault("ultima_por_fonte", {})[f["id"]] = hoje.isoformat()
+            if not D.get("lacuna"):
+                est.setdefault("ultima_por_fonte", {})[f["id"]] = hoje.isoformat()
             saude.append({"url": f["url"], "http": 200, "itens": D.get("itens", 0)})
         except AcessoProibido as e:
             D["situacao"] = f"não acessada: {e}"
         except Exception as e:  # noqa: BLE001 — uma fonte nunca derruba as outras
             D["situacao"] = "falhou"; falhas.append({"url": f["url"], "erro": type(e).__name__, "code": getattr(e, "code", None), "waf": None, "causa": str(e)[:160]})
     _PRAZO["ate"] = None
+    # 03/10: o alerta do FDD continua enquanto a última leitura disser que há seleção (antes sumia na leitura seguinte,
+    # porque não tem prazo e a fonte só é relida pela cadência)
+    if "estado_pagina" not in {(diag["fontes"].get(x["id"]) or {}).get("modo") for x in cfg["fontes"] if (diag["fontes"].get(x["id"]) or {}).get("situacao") == "lida"} \
+            and (est.get("fdd_selecao") or {}).get("nao_ha") is False:
+        f35 = next((x for x in cfg["fontes"] if x["modo"] == "estado_pagina" and _da_parte(x["orgao"])), None)
+        if f35:
+            itens.append({"titulo": "FDD/CFDD — seleção em andamento (a página deixou de dizer 'Não há')", "orgao": f35["orgao"], "unidade": f35["unidade"],
+                          "link_oficial": f35["url"], "url": f35["url"], "data_publicacao": None, "fonte": f35["id"], "tipo": "estado_pagina",
+                          "alerta_selecao": True, "descricao": "fundo de defesa de direitos difusos"})
     # registros fixos (regras permanentes que nunca são acessadas pelo robô)
     for r in [x for x in cfg.get("registros_fixos") or [] if _da_parte(x.get("orgao"))]:
         itens.append({**{k: v for k, v in r.items() if k != "chave"}, "fonte": "regra_fixa_manual", "tipo": "regra_fixa", "data_publicacao": None})
@@ -533,6 +611,10 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                  "paginas_lidas": len(saude), "links_total": len(itens), "links_candidatos": cont["OPORTUNIDADE"] + cont["ACOMPANHAR"],
                  "inventario": {k: v for k, v in inv.items() if k != "resultado"},
                  "motivo_zero": None if abertas else "nenhum edital de destinação aberto hoje nas fontes lidas"})
+    if diag.get("sem_texto"):          # 03/10: edital cujo PDF não foi lido = leitura parcial (o maestro dispara de novo)
+        diag["cortados"] = diag["sem_texto"]
+    if diag.get("paginas_nao_lidas"):                    # 03/10: o maestro vê "parcial" e dispara de novo
+        diag["paginas_nao_lidas"] = diag["paginas_nao_lidas"][:10]
     return {"sensor": MOTOR_ID, "achados": [registro_base(x, hoje) for x in abertas], "falhas": falhas[:8], "saude": saude,
             "diagnostico": diag, "lido_em": now_iso()}
 

@@ -682,7 +682,8 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
 
 # --------------------------------------------------------------- coordenador
 def run(hoje: date | None = None, limite: int | None = None, pausa: float | None = None) -> dict:
-    hoje = hoje or date.today()
+    # 03/10 (teste do motor 09): o dia é o de Brasília — em UTC, a passagem das 23h41 de 02/10 virava "03/10 lido" no calendário
+    hoje = hoje or __import__("datetime").datetime.now(__import__("datetime").timezone(timedelta(hours=-3))).date()
     escala = escala_do_dia(hoje)
     # ATIVAÇÃO MANUAL: o titular seleciona pontos no painel e o workflow recebe
     # os ids em MOTORES_FONTES — só esses motores saem, fora da escala

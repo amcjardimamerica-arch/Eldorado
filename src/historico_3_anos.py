@@ -154,7 +154,9 @@ def periodo_cnj(pagina: int, ctx: dict) -> list[dict]:
     vistos = ctx.setdefault("vistos", [])
     itens = []
     for termo in termos:
-        url = f"https://www.cnj.jus.br/page/{pagina}/?s={quote_plus(termo)}" if pagina > 1 else f["busca"].format(termo=quote_plus(termo))
+        # 03/10: por DATA (a ordem por relevância misturava anos e o corte dos "mais antigos que 3 anos" não funcionava)
+        url = (f.get("busca_pagina") or "https://www.cnj.jus.br/page/{pagina}/?s={termo}&orderby=date&order=DESC").format(
+            termo=quote_plus(termo), pagina=pagina) if pagina > 1 else f["busca"].format(termo=quote_plus(termo), pagina=1)
         try:
             res = J.resultados_cnj(J._get(url, cfg, F))
         except Exception:  # noqa: BLE001

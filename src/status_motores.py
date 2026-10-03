@@ -26,7 +26,7 @@ PROPRIOS = {"do-goiania": ROOT / "estado/diario_goiania.json", "do-goias": ROOT 
             "prefeituras-50-go": ROOT / "estado/prefeituras_25_go.json", "estaduais-go-gov": ROOT / "estado/estaduais_go.json",
             "dou": ROOT / "estado/diario_uniao.json", "congresso-nacional": ROOT / "estado/congresso_nacional.json",
             "gife": ROOT / "estado/gife_editais.json", "camara-goiania-pl": ROOT / "estado/camara_goiania.json",
-            "judiciario-tjgo": ROOT / "estado/judiciario_go.json", "judiciario-cnj": ROOT / "estado/judiciario_go.json",
+            "judiciario-tjgo": ROOT / "estado/judiciario_tjgo.json", "judiciario-cnj": ROOT / "estado/judiciario_cnj.json",   # 03/10: estado de cada parte
             "mptgo-destinacao": ROOT / "estado/mpt_go.json", "mpu-destinacao": ROOT / "estado/mpu.json",
             "mpgo-destinacao": ROOT / "estado/mp_go.json"}
 CORTE = ("cobertura_cortada", "cortados", "paginas_nao_lidas", "alerta_formato", "adiados_por_tempo", "truncado")
