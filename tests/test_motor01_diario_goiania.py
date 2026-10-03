@@ -196,3 +196,101 @@ class TestMotor(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestCoberturaDoDia(unittest.TestCase):
+    """Teste do motor 01 de 03/10/2026: edições publicadas e não lidas (8873, 8875, 8876) passavam como 'completa'."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        t = Path(self.tmp.name)
+        self.p = [mock.patch.object(dg, "ESTADO", t / "estado.json"), mock.patch.object(dg, "CACHE", t / "cache"),
+                  mock.patch.object(dg, "QUARENTENA", t / "q.jsonl"), mock.patch.object(dg.time, "sleep", lambda *_: None),
+                  mock.patch.dict("os.environ", {"GITHUB_ACTIONS": "true"}, clear=False)]
+        for x in self.p:
+            x.start()
+
+    def tearDown(self):
+        for x in self.p:
+            x.stop()
+        self.tmp.cleanup()
+
+    def test_edicao_extra_entra_na_lista(self):
+        html = ('<a href="/Download/legislacao/diariooficial/2026/do_20260630_000008809_edi.pdf">Edição nº 8809 de 30 de junho '
+                'de 2026 - Edição Extra</a><a href="/Download/legislacao/diariooficial/2026/do_20260630_000008809.pdf">Edição nº 8809</a>')
+        eds = dg.edicoes_da_lista(html)
+        self.assertEqual(len(eds), 2)
+        self.assertEqual(sum(1 for e in eds if e["extra"]), 1)
+
+    def test_cobertura_pela_lista_oficial(self):
+        base = "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/"
+        lista = [{"data": "2026-09-29", "numero": 8873, "url": base + "do_20260929_000008873.pdf"},
+                 {"data": "2026-09-30", "numero": 8874, "url": base + "do_20260930_000008874.pdf"},
+                 {"data": "2026-10-01", "numero": 8875, "url": base + "do_20261001_000008875.pdf"}]
+        proc = {base + "do_20260930_000008874.pdf": {"data": "2026-09-30"}}
+        c = dg.cobertura({"lista_oficial": lista}, proc, date(2026, 10, 3))
+        self.assertTrue(c["medida"])
+        self.assertEqual((c["esperadas"], c["lidas"]), (3, 1))
+        self.assertEqual(c["pendentes"], ["2026-09-29 nº 8873", "2026-10-01 nº 8875"])
+        self.assertFalse(dg.cobertura({}, proc, date(2026, 10, 3))["medida"])
+
+    def test_edicao_sem_acerto_nas_consultas_e_lida_pelo_catalogo_e_cobertura_vai_ao_maestro(self):
+        sem_acerto = {"territory_id": "5208707", "date": "2026-09-29", "edition": "8873",
+                      "url": "https://data.queridodiario.ok.org.br/5208707/2026-09-29/y.pdf",
+                      "txt_url": "https://data.queridodiario.ok.org.br/5208707/2026-09-29/y.txt"}
+        com_acerto = {"territory_id": "5208707", "date": "2026-09-25", "edition": "8871",
+                      "url": "https://data.queridodiario.ok.org.br/5208707/2026-09-25/x.pdf", "txt_url": None, "excerpts": [SEGNEP]}
+
+        def qd(url, **_):
+            return {"gazettes": [com_acerto]} if "querystring" in url else {"gazettes": [com_acerto, sem_acerto]}
+        lidos = []
+
+        def get(url, **_):
+            lidos.append(url)
+            return EDICAO_8871.encode()
+        with mock.patch.object(dg, "_get_json", side_effect=qd), mock.patch.object(dg, "_get", side_effect=get):
+            r = dg.ler_motor({"id": "do-goiania"}, HOJE)
+        self.assertIn(sem_acerto["txt_url"], lidos)                        # a 8873 foi aberta por inteiro
+        cob = r["diagnostico"]["cobertura_edicoes"]
+        self.assertTrue(cob["medida"])
+        self.assertEqual(cob["pendentes"], ["2026-09-25 nº 8871"])         # só excerto: ainda não lida por inteiro
+        self.assertEqual(r["diagnostico"]["paginas_nao_lidas"], 1)        # o maestro lê como PARCIAL e dispara de novo
+        from src.maestro import cobertura as cob_maestro
+        self.assertEqual(cob_maestro("do-goiania", {"cor": "verde", "falhas": 0}, {}, r["diagnostico"]), "parcial")
+        est = json.loads(dg.ESTADO.read_text(encoding="utf-8"))
+        ids = [a["id"] for a in est["atos"]]
+        self.assertEqual(len(ids), len(set(ids)))                           # o mesmo ato não se repete no painel
+
+    def test_sem_lista_e_sem_catalogo_a_cobertura_fica_nao_medida(self):
+        with mock.patch.object(dg, "_get_json", side_effect=RuntimeError("HTTP 503")):
+            r = dg.ler_motor({"id": "do-goiania"}, HOJE)
+        self.assertFalse(r["diagnostico"]["cobertura_edicoes"]["medida"])
+        self.assertIn("não medida", r["diagnostico"]["cobertura_cortada"])
+
+    def test_na_nuvem_com_ponte_o_portal_e_lido(self):
+        from src import ponte_brasil
+        lista = ('<a href="/Download/legislacao/diariooficial/2026/do_20261002_000008876.pdf">Edição nº 8876 de 02 de outubro'
+                 ' de 2026</a>')
+        with mock.patch.object(ponte_brasil, "disponivel", return_value=True), \
+                mock.patch.object(dg, "_get", side_effect=lambda url, **_: lista.encode("latin-1") if "lista_diarios" in url else b"%PDF"), \
+                mock.patch.object(dg, "texto_do_pdf", return_value=EDICAO_8871):
+            diag = {"portal_listas": 0, "portal_pdfs": 0, "portal_falhas": []}
+            out = dg.ler_portal(date(2026, 10, 3), dg._cfg(), diag, set())
+        self.assertIn("ponte", diag["portal"])
+        self.assertEqual(len(out), 1)
+        self.assertEqual(diag["lista_oficial"][0]["numero"], 8876)
+
+
+class TestNormativos(unittest.TestCase):
+    def test_resolucao_que_cita_edital_nao_e_abertura_mas_e_previsao(self):
+        r = dg.classificar_ato("RESOLUÇÃO NORMATIVA Nº 49/2026 O CMDCA aprova o plano de aplicação do FMDCA e a abertura de "
+                               "edital de chamamento público para seleção de projetos de OSC em novembro de 2026", HOJE, "2026-10-02")
+        self.assertEqual((r["tipo"], r["veredito"]), ("normativo", "ACOMPANHAR"))
+
+    def test_subvencao_concedida_e_inteligencia(self):
+        r = dg.classificar_ato("PORTARIA Nº 77, 01 DE OUTUBRO DE 2026 Concede subvenção social à entidade sem fins lucrativos "
+                               "Associação W no valor de R$ 20.000,00", HOJE, "2026-10-02")
+        self.assertEqual(r["veredito"], "ACOMPANHAR")
+
+    def test_portaria_de_pessoal_continua_ruido(self):
+        self.assertEqual(dg.classificar_ato("PORTARIA Nº 61, 25 DE SETEMBRO DE 2026 Nomeia servidor", HOJE)["veredito"], "RUIDO")

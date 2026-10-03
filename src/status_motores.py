@@ -124,7 +124,12 @@ def status_de(p: dict, hoje: str) -> dict:
     if luz == "verde" and not falha and not cortado and not pend_br:
         dia_lido = {"estado": "completa", "texto": "dia lido por completo"}
     elif luz in ("verde", "vermelho"):
+        _cob = proprio_u.get("cobertura_edicoes") or dg.get("cobertura_edicoes") or {}
         motivo = falha or ("parte das fontes exige acesso pelo Brasil (ponte da Hostgator ou computador do titular)" if pend_br
+                           # 03/10 (teste do motor 01): diz QUAIS edições publicadas faltam ler
+                           else (f"{len(_cob['pendentes'])} edição(ões) publicada(s) ainda não lida(s): "
+                                 + ", ".join(_cob["pendentes"][:4]) + " — o maestro dispara de novo") if _cob.get("pendentes")
+                           else _cob.get("texto") if _cob and not _cob.get("medida", True)
                            else "a leitura foi cortada pelo tempo — o restante volta na próxima passagem" if cortado else "")
         dia_lido = {"estado": "parcial", "texto": "dia lido em parte" + (f" — {motivo}" if motivo else "")}
     elif "fora da agenda" in resultado:

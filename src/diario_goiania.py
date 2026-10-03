@@ -47,7 +47,7 @@ MOTOR_ID = "do-goiania"
 IBGE = "5208707"
 PORTAL = "https://www.goiania.go.gov.br"
 LISTA = PORTAL + "/shtml//portal/casacivil/lista_diarios.asp?ano={ano}"
-EDICAO_PDF = re.compile(r"/Download/legislacao/diariooficial/(\d{4})/do_(\d{8})_(\d{9})\.pdf", re.I)
+EDICAO_PDF = re.compile(r"/Download/legislacao/diariooficial/(\d{4})/do_(\d{8})_(\d{9})(_edi)?\.pdf", re.I)   # 03/10: "_edi" = Edição Extra
 CFG = ROOT / "config/diario_goiania.json"
 ESTADO = ROOT / "estado/diario_goiania.json"
 CACHE = ROOT / "estado/edicoes/goiania"          # fora do Git (.gitignore: estado/edicoes/)
@@ -140,7 +140,7 @@ def edicoes_da_lista(html: str, base: str = PORTAL + "/") -> list[dict]:
         vistos.add(u)
         d = m.group(2)
         out.append({"data": f"{d[:4]}-{d[4:6]}-{d[6:]}", "numero": int(m.group(3)), "url": u,
-                    "extra": bool(re.search(r"extra|suplement", rot or "", re.I)), "rotulo": (rot or "")[:90]})
+                    "extra": bool(m.group(4)) or bool(re.search(r"extra|suplement", rot or "", re.I)), "rotulo": (rot or "")[:90]})
     return sorted(out, key=lambda e: (e["data"], e["numero"]), reverse=True)
 
 
@@ -182,7 +182,7 @@ _INTERESSE = re.compile(
     r"chamamento|chamada p[uú]blica|termo de fomento|termo de colabora|13\.019|sociedade civil|\bosc\b|"
     r"cmdca|fmdca|\bcmas\b|\bfmas\b|fundo municipal|conselho municipal|aldir blanc|\bpnab\b|paulo gustavo|"
     r"subven[cç][aã]o social|emenda impositiva|emenda parlamentar|entidades? sem fins lucrativos|inexigibilidade|"
-    r"dispensa de chamamento|edital de sele[cç][aã]o|plano de trabalho", re.I)
+    r"dispensa de chamamento|edital de sele[cç][aã]o|plano de trabalho|acordo de coopera", re.I)
 
 
 def recortar_atos(texto: str, janela: int = 7000, maximo: int = 60) -> list[str]:
@@ -322,6 +322,8 @@ def classificar_ato(trecho: str, hoje: date | None = None, publicado: str | None
         tipo = "celebracao"
     elif c["retificacao"]:
         tipo = "retificacao"
+    elif re.match(r"\s*(DECRETO|PORTARIA|LEI|RESOLUCAO|INSTRUCAO)\b", cab) and not s["abertura_corpo"]:
+        tipo = "normativo"                     # 03/10: resolução que CITA "edital de chamamento" não é a abertura dele
     elif c["abertura"] or (re.match(r"\s*(EDITAL|AVISO|CHAMADA)\b", cab) and s["abertura"]):
         tipo = "abertura"
     elif re.match(r"\s*(DECRETO|PORTARIA|DESPACHO|LEI|RESOLUCAO|INSTRUCAO)\b", cab):
@@ -377,6 +379,10 @@ def classificar_ato(trecho: str, hoje: date | None = None, publicado: str | None
                         "celebracao": "parceria celebrada ou inexigibilidade — inteligência: órgão, valor e entidade parceira",
                         "retificacao": "retificação de edital de interesse — conferir prazo",
                         "composicao_conselho": "vaga da sociedade civil em conselho municipal — porta de entrada dos fundos"}[tipo])
+    elif tipo == "normativo" and de_interesse and publico == "osc" and re.search(
+            r"CHAMAMENTO|EDITAL|SUBVENCAO|REPASSE|PLANO DE APLICACAO|TERMO DE (?:FOMENTO|COLABORACAO)|R\$", T):
+        veredito = "ACOMPANHAR"                # 03/10: subvenção concedida, plano de aplicação do fundo, edital anunciado
+        motivos.append("ato normativo de interesse (subvenção, plano de aplicação de fundo ou edital anunciado) — previsão e inteligência")
     elif tipo == "referencia" and de_interesse and (num or _VALOR.search(bruto) or re.search(r"CELEBRA|REPASSE|TERMO DE FOMENTO", T)):
         veredito = "ACOMPANHAR"
         motivos.append("menção a parceria ou edital de interesse dentro de outro ato — conferir o ato completo na edição")
@@ -445,6 +451,52 @@ def ler_querido_diario(hoje: date, cfg: dict, diag: dict) -> dict[str, dict]:
     return edicoes
 
 
+def catalogo_querido_diario(hoje: date, cfg: dict, diag: dict) -> dict[str, dict]:
+    """03/10 (teste do motor 01): TODAS as edições de Goiânia na janela, sem filtro de palavra. As consultas só
+    devolvem edição que casa com o léxico; a edição 8873 (29/09), com 5 extratos de termo de fomento e 3
+    inexigibilidades, nunca foi aberta. O catálogo é a lista do que precisa ser lido por inteiro."""
+    qd = cfg.get("querido_diario", {})
+    bases = qd.get("bases") or ["https://api.queridodiario.ok.org.br"]
+    params = urlencode({"territory_ids": IBGE, "published_since": (hoje - timedelta(days=int(qd.get("janela_dias", 15)))).isoformat(),
+                        "published_until": hoje.isoformat(), "size": 60, "sort_by": "descending_date"})
+    for b in bases:
+        try:
+            corpo = _get_json(f"{b.rstrip('/')}/gazettes?{params}", tentativas=int(qd.get("tentativas", 2)))
+        except RuntimeError as exc:
+            diag["qd_falhas"].append(f"catálogo: {exc}"[:160]); continue
+        out = {}
+        for g in corpo.get("gazettes") or []:
+            if str(g.get("territory_id") or IBGE) != IBGE:
+                continue
+            d = (g.get("date") or "")[:10]
+            out[(g.get("url") or g.get("txt_url") or "") + "|" + d] = {
+                "data": d, "numero": g.get("edition"), "extra": bool(g.get("is_extra_edition")), "url": g.get("url"),
+                "txt_url": g.get("txt_url"), "url_oficial": url_oficial(d, g.get("edition")), "excertos": [], "consultas": ["catálogo"]}
+        diag["qd_catalogo"] = len(out)
+        return out
+    return {}
+
+
+def cobertura(diag: dict, proc: dict, hoje: date) -> dict:
+    """Edições publicadas na janela × edições lidas por inteiro. A lista oficial manda; sem ela, o catálogo do
+    Querido Diário (com 2 a 16 dias de atraso). Sem nenhuma das duas, a cobertura fica 'não medida'."""
+    lidas = {k for k in proc} | {v.get("url_oficial") for v in proc.values() if isinstance(v, dict)}
+    if diag.get("lista_oficial"):
+        esperadas = [{"data": e["data"], "numero": e["numero"], "extra": e.get("extra"), "url": e["url"]} for e in diag["lista_oficial"]]
+        fonte = "lista oficial do portal"
+    elif diag.get("_catalogo"):
+        esperadas = [{"data": e["data"], "numero": e["numero"], "extra": e.get("extra"), "url": e.get("url_oficial") or e.get("url")}
+                     for e in diag["_catalogo"].values()]
+        fonte = "catálogo do Querido Diário (atraso de 2 a 16 dias: edição recente pode faltar)"
+    else:
+        return {"medida": False, "fonte": None, "esperadas": None, "lidas": None, "pendentes": [],
+                "texto": "cobertura não medida: lista oficial e catálogo do Querido Diário inacessíveis nesta passagem"}
+    pend = [e for e in esperadas if e["url"] not in lidas and e["data"] <= hoje.isoformat()]
+    return {"medida": True, "fonte": fonte, "esperadas": len(esperadas), "lidas": len(esperadas) - len(pend),
+            "pendentes": [f"{e['data']} nº {e['numero']}{' (extra)' if e.get('extra') else ''}" for e in pend],
+            "texto": (f"{len(esperadas) - len(pend)} de {len(esperadas)} edição(ões) lidas por inteiro ({fonte})")}
+
+
 def texto_integral_qd(ed: dict, diag: dict) -> str | None:
     """Texto da edição já extraído pelo Querido Diário (txt_url) — sem PDF, sem pypdf."""
     u = ed.get("txt_url")
@@ -467,9 +519,12 @@ def texto_integral_qd(ed: dict, diag: dict) -> str | None:
 def ler_portal(hoje: date, cfg: dict, diag: dict, processadas: set) -> dict[str, dict]:
     """Coleta LOCAL (IP brasileiro): lista do ano → PDFs das últimas edições ainda não lidas."""
     port = cfg.get("portal", {})
-    if _em_nuvem():
+    from . import ponte_brasil
+    if _em_nuvem() and not ponte_brasil.disponivel():
         diag["portal"] = "nuvem: o portal recusa IP estrangeiro — fica para a coleta local (scripts/coleta_brasil.py)"
         return {}
+    if _em_nuvem():
+        diag["portal"] = "nuvem pela ponte Brasil (Hostgator)"      # 03/10: a ponte empresta o IP brasileiro
     eds = []
     for ano in sorted({hoje.year, (hoje - timedelta(days=int(port.get("janela_dias", 7)))).year}, reverse=True):
         try:
@@ -479,6 +534,7 @@ def ler_portal(hoje: date, cfg: dict, diag: dict, processadas: set) -> dict[str,
         except Exception as exc:  # noqa: BLE001
             diag["portal_falhas"].append(f"lista {ano}: {type(exc).__name__}")
     corte = (hoje - timedelta(days=int(port.get("janela_dias", 7)))).isoformat()
+    diag["lista_oficial"] = [e for e in eds if corte <= e["data"] <= hoje.isoformat()]   # 03/10: base da medida de cobertura
     novas = [e for e in eds if e["data"] >= corte and e["url"] not in processadas][: int(port.get("max_pdfs_por_execucao", 4))]
     out = {}
     for e in novas:
@@ -492,7 +548,9 @@ def ler_portal(hoje: date, cfg: dict, diag: dict, processadas: set) -> dict[str,
                 diag["portal_falhas"].append(f"pdf {e['data']}: {type(exc).__name__}"); continue
             texto = texto_do_pdf(dados)
             if not texto:
-                diag["portal_falhas"].append(f"pdf {e['data']}: sem camada de texto ou pypdf ausente"); continue
+                limite = len(dados) >= 5_900_000 and len(dados) % 1_000_000 < 100_000 and _em_nuvem()
+                diag["portal_falhas"].append(f"pdf {e['data']}: " + ("PDF cortado no limite de tamanho da ponte (MAX_BYTES do ponte.php)"
+                                             if limite else "sem camada de texto ou pypdf ausente")); continue
             alvo.write_text(texto, encoding="utf-8")
         diag["portal_pdfs"] += 1
         out[e["url"] + "|" + e["data"]] = {**e, "url_oficial": e["url"], "texto": texto, "excertos": []}
@@ -532,7 +590,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     proc = est.setdefault("processadas", {})
     diag = {"paginas_lidas": 0, "links_total": 0, "links_candidatos": 0, "descobertas": [], "pdf_links": 0, "motivo_zero": None,
             "versao": "motor-01 v2 (01/10/2026)", "qd_consultas": 0, "qd_edicoes": 0, "qd_falhas": [], "txt_lidos": 0, "txt_falhas": [],
-            "portal_listas": 0, "portal_pdfs": 0, "portal_falhas": [], "atos_lidos": 0,
+            "portal_listas": 0, "portal_pdfs": 0, "portal_falhas": [], "atos_lidos": 0, "qd_catalogo": 0,
             "vereditos": {"OPORTUNIDADE": 0, "ACOMPANHAR": 0, "RUIDO": 0}}
     edicoes = {}
     try:
@@ -540,6 +598,14 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
             edicoes[k] = {**e, "origem": "querido_diario"}
     except Exception as exc:  # noqa: BLE001
         diag["qd_falhas"].append(f"{type(exc).__name__}: {exc}"[:160])
+    try:                                   # 03/10: edições sem acerto nas consultas também são lidas por inteiro
+        cat = catalogo_querido_diario(hoje, cfg, diag)
+        diag["_catalogo"] = cat
+        for k, e in cat.items():
+            if k not in edicoes and (e.get("url_oficial") or e.get("url")) not in proc:
+                edicoes[k] = {**e, "origem": "querido_diario"}
+    except Exception as exc:  # noqa: BLE001
+        diag["qd_falhas"].append(f"catálogo: {type(exc).__name__}"[:160])
     oficiais_lidas = {e.get("url_oficial") for e in edicoes.values()}
     for k, e in ler_portal(hoje, cfg, diag, set(proc)).items():
         if e["url_oficial"] in oficiais_lidas and not e.get("texto"):
@@ -570,6 +636,16 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                                | {"veredito": ato["veredito"], "tipo": ato["tipo"], "motivo": ato["motivos"][0]})
             if ato["veredito"] == "OPORTUNIDADE":
                 achados.append(reg)
+    atos_painel = list({a["id"]: a for a in atos_painel}.values())   # 03/10: o mesmo ato vinha do excerto e do texto integral
+    cob = cobertura(diag, proc, hoje)
+    diag.pop("_catalogo", None); diag.pop("lista_oficial", None)
+    diag["cobertura_edicoes"] = cob
+    if cob["pendentes"]:
+        # o maestro lê "paginas_nao_lidas" como leitura PARCIAL e dispara o motor de novo (até 3 vezes no dia)
+        diag["paginas_nao_lidas"] = len(cob["pendentes"])
+        diag["edicoes_pendentes"] = cob["pendentes"][:12]
+    elif not cob["medida"]:
+        diag["cobertura_cortada"] = cob["texto"]
     if not edicoes and diag["qd_falhas"]:
         falhas.append({"url": "querido_diario", "erro": "consulta", "code": None, "waf": None, "causa": diag["qd_falhas"][0]})
     # memória curta: atos dos últimos 120 dias (sem texto integral), para o painel e para não reprocessar
@@ -579,6 +655,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     est["processadas"] = {u: v for u, v in proc.items() if (v.get("data") or "") >= corte}
     est["ultima"] = {"em": now_iso(), "data": hoje.isoformat(), **{k: diag[k] for k in
                      ("qd_consultas", "qd_edicoes", "txt_lidos", "portal_pdfs", "atos_lidos", "vereditos")},
+                     "cobertura_edicoes": cob, **({"paginas_nao_lidas": len(cob["pendentes"])} if cob["pendentes"] else {}),
+                     **({"cobertura_cortada": cob["texto"]} if not cob["medida"] else {}),
                      "falhas": (diag["qd_falhas"] + diag["txt_falhas"] + diag["portal_falhas"])[:8]}
     write_json(ESTADO, est)
     unicos = {a["id"]: a for a in achados}
