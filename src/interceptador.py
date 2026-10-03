@@ -433,6 +433,16 @@ def proximo_alvo() -> dict | None:
               [x for x in _bronze if x.get("geo") not in ("GO", "BR", "INT")])
     if a:
         return a
+    # 6 · SEMENTE DOS MOTORES 24–39 (03/10): itens que aguardam o site oficial — o Interceptador parte da página do
+    # agregador e confirma a fonte (abertos primeiro). Não viram livro antes disso.
+    try:
+        for _f in (load_json(ROOT / "estado/interceptador/fila_semente_24_39.json") or {}).get("itens") or []:
+            if _f.get("pagina_agregador") and not recente(_f["id"]):
+                return {"id": _f["id"], "titulo": _f.get("titulo"), "url": _f["pagina_agregador"], "uf": _f.get("uf"),
+                        "de": f"6 · semente 24–39 · {_f.get('estado')} (site oficial a confirmar)", "modo": "validar", "tipo": "edital",
+                        "semente_2439": True}
+    except Exception:  # noqa: BLE001 — a fila nunca impede o voo
+        pass
     a = _proximo_alvo_anterior()
     if a and str((feitos.get(a.get("id")) or {}).get("em") or "") >= _lim:
         return None

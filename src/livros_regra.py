@@ -120,6 +120,7 @@ def aplicar_motores() -> dict:
     # 02/10: semente do parecer das 238 + léxico e restrições gravados em CADA livro
     try:
         C["semente_238"] = _aplicar_semente(C)
+        C["semente_24_39"] = _aplicar_semente_24_39(C)          # 03/10: livros dos motores 24–39 (uma vez por versão)
         ms = C.get("motores") or []
     except Exception as exc:  # noqa: BLE001 — a semente nunca derruba o ciclo dos livros
         C["semente_238"] = {"erro": str(exc)[:200]}
@@ -168,6 +169,48 @@ def _aplicar_semente(C: dict) -> dict:
     r = registrar_achados([{**e, "excecao_abrangencia": sem.get("excecao_abrangencia")} for e in acoes], "Parecer 238 (02/10)",
                           catalogo=C, gravar=False)
     return {"versao": sem.get("versao"), "aplicada_em": _agora(), **r}
+
+
+SEMENTE_2439 = ROOT / "dados/oportunidades/livros_motores_24_39.json"
+FILA_2439 = ROOT / "estado/interceptador/fila_semente_24_39.json"
+
+
+def _aplicar_semente_24_39(C: dict) -> dict:
+    """03/10 (estudo dos motores 01–39): segunda semente, aplicada UMA VEZ por versão. `criar_livro` → livro (os
+    encerrados nascem com o prazo vencido: ficam "Na Estante" e alimentam a previsão — território não é veto);
+    `aguardar_fonte` → NÃO vira livro: entra na fila do Interceptador com a página do agregador, para confirmar o site
+    oficial (abertos primeiro). Cada livro guarda o estado da semente, a aplicabilidade à A.M.C. e o valor."""
+    sem = _j(SEMENTE_2439, {})
+    if not sem or C.get("semente_24_39", {}).get("versao") == sem.get("versao"):
+        return C.get("semente_24_39") or {}
+    itens = sem.get("itens") or []
+    criar = [e for e in itens if e.get("acao") == "criar_livro"]
+    achados = [{"titulo": e.get("titulo"), "programa": e.get("programa") or e.get("titulo"), "orgao": e.get("orgao"), "url": e.get("url"),
+                "prazo": e.get("prazo"), "inicio": e.get("inicio"), "publicado_em": e.get("publicado_em"), "uf": e.get("uf"),
+                "valor": e.get("valor"), "fonte_id": e.get("motor"), "excecao_abrangencia": True} for e in criar if e.get("url")]
+    r = registrar_achados(achados, "Semente dos motores 24–39 (estudo de 03/10)", catalogo=C, gravar=False)
+    por_url = {}
+    for x in C.get("motores") or []:
+        for u in [x.get("pagina")] + [h.get("pagina_oficial") or h.get("url") for h in x.get("historico") or [] if isinstance(h, dict)]:
+            if u:
+                por_url.setdefault(str(u).rstrip("/"), x)
+    marcados = 0
+    for e in criar:
+        x = por_url.get(str(e.get("url") or "").rstrip("/"))
+        if x is not None:
+            x["estado_semente"] = e.get("estado"); x["aplicavel_amc"] = e.get("aplicavel")
+            if e.get("valor") and not x.get("valor"):
+                x["valor"] = e["valor"]
+            marcados += 1
+    ordem = {"aberto": 0, "sem_data": 1, "encerrado_arquivar": 2}
+    fila = sorted([{"id": "sem2439-" + hashlib.sha1((str(e.get("pagina_agregador")) + str(e.get("titulo"))).encode()).hexdigest()[:12], "titulo": e.get("titulo"), "motor": e.get("motor"),
+                    "pagina_agregador": e.get("pagina_agregador"), "estado": e.get("estado"), "prazo": e.get("prazo"), "uf": e.get("uf"), "orgao": e.get("orgao")}
+                   for e in itens if e.get("acao") == "aguardar_fonte" and e.get("pagina_agregador")], key=lambda f: ordem.get(f["estado"], 3))
+    FILA_2439.parent.mkdir(parents=True, exist_ok=True)
+    FILA_2439.write_text(json.dumps({"versao": sem.get("versao"), "regra": "aguardando o site oficial — o Interceptador confirma (abertos primeiro)",
+                                     "itens": fila}, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"versao": sem.get("versao"), "aplicada_em": _agora(), "livros_marcados": marcados, "fila_interceptador": len(fila),
+            **{k: v for k, v in (r or {}).items() if isinstance(v, (int, str))}}
 
 
 def registrar_achados(achados: list[dict], origem: str, catalogo: dict | None = None, gravar: bool = True) -> dict:
