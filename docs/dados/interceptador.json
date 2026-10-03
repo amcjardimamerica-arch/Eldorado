@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-03T06:11:16+00:00",
+  "em": "2026-10-03T06:24:10+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-03T05:52:46+00:00",
+  "ultimo_voo": "2026-10-03T06:14:05+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,24 +34,107 @@
     "editais novos dos motores": 30,
     "indícios do Espião": 17,
     "abertos com itens em falta": 43,
-    "empresas sem ficha": 116
+    "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 171,
+    "missoes": 172,
     "validadas": 2,
-    "parciais": 48,
+    "parciais": 49,
     "insuficientes": 121,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 33,
-      "sim": 104
+      "sim": 105
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 3,
     "tempo_medio_min": 11.3
   },
   "missoes": [
+    {
+      "em": "2026-10-03T06:14:05+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · estante bronze · tentativa 1",
+      "alvo": "MPF lança chamamento público para cadastro de entidades aptas a receber bens e valores de processos judiciais … — Goiás",
+      "qualidade": "parcial",
+      "comprovados": 8,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor"
+      ],
+      "pagina_oficial": "https://biblioteca.mpf.mp.br/server/api/core/bitstreams/f0a50f1b-b873-482a-b98b-52d48e4b5d65/content",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprova que o MPF está realizando um chamamento público para cadastro de entidades aptas a receber bens e valores de processos judiciais em Goiás.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se cadastrar no chamamento público do MPF, informando sua área temática de atuação, que pode ser assistência social, cultura, educação ou esporte.",
+        "proximo_passo": "A associação deve se inscrever no chamamento público do MPF, preenchendo os requisitos necessários e informando sua área temática de atuação.",
+        "risco": "A falta de informações sobre o prazo de inscrição pode impedir a associação de se cadastrar a tempo."
+      },
+      "erro": null,
+      "segundos": 604,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "op-op-512f83ac601c",
+      "encontrou": {
+        "Objeto": {
+          "valor": "cadastro de pessoas jurídicas de direito privado sem fins lucrativos e de instituições, entidades e órgãos públicos federais, estaduais, distritais ou municipais interessados em receber bens e valores decorrentes de instrumento de autocomposição coletiva celebrado extrajudicialmente pelo Ministério Público Federal",
+          "trecho": "cadastro de pessoas jurídicas de direito privado sem fins lucrativos e de instituições, entidades e órgãos públicos federais, estaduais, distritais ou municipais interessados em re",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Ministério Público Federal",
+          "trecho": "MINISTÉRIO PÚBLICO FEDERAL",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Ministério Público Federal",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "dispensado — O texto menciona que os interessados devem informar a área temática de sua atuação.",
+          "trecho": "informar, sempre que possível, a área temática de sua atuação",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Destinação": {
+          "valor": "elegível · outro",
+          "trecho": "cadastro de pessoas jurídicas de direito privado sem fins lucrativos e de instituições, entidades e órgãos públicos federais, estaduais, distritais ou municipais interessados em re",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "informar, sempre que possível, a área temática de sua atuação",
+          "trecho": "Os interessados devem informar, sempre que possível, a área temática de sua atuação.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Ministério Público Federal",
+      "indicios": [
+        {
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb",
+          "tipo": "noticia"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-03T05:52:46+00:00",
       "modo": "validar",
@@ -2627,72 +2710,6 @@
       "indicios": [],
       "rotas": [
         "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-02T19:47:33+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Prefeitura de Nova Iguaçu de Goiás — Edital nº 001/2026 — Goiás / Nova Iguaçu de Goiás — Goiás / Nova Iguaçu d… — Goiás / Nova Iguaçu de Goiás",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Valor",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://sme.goiania.go.gov.br/site/images/CACS_FUNDEB/SEI_8316257_Edital.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "nao",
-        "por_que": "O edital comprovado refere-se à escolha de diretores de unidades educacionais da Rede Municipal de Educação de Goiânia, não relacionado a editais de fomento para organizações da sociedade civil.",
-        "para_a_amc": "Para acessar editais de fomento, a associação comunitária precisaria verificar editais específicos de órgãos municipais, estaduais ou federais que ofereçam recursos para áreas como assistência social, cultura, educação e esporte.",
-        "proximo_passo": "Consultar editais de fomento divulgados por órgãos públicos competentes e verificar os requisitos e prazos de inscrição.",
-        "risco": "A falta de conhecimento sobre editais disponíveis ou a não conformidade com os requisitos pode impedir o acesso aos recursos."
-      },
-      "erro": null,
-      "segundos": 997,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 8,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Valor, Destinação, Área de atuação",
-      "id": "op-op-225804d1cece",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Escolha de Diretores das Unidades Educacionais da Rede Municipal de Educação de Goiânia",
-          "trecho": "Processo Seletivo para escolha de Diretores das Unidades Educacionais da Rede Municipal de Educação de Goiânia",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria Municipal de Educação de Goiânia",
-          "trecho": "Secretaria Municipal de Educação de Goiânia, no uso de suas atribuições legais",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Secretaria Municipal de Educação de Goiânia",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "documento ou exigência",
-          "trecho": "conforme item 3.1.3.8 do Edital nº 001-2025, o recurso deverá ser enviado por e-mail:",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura de Goiânia",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ]
