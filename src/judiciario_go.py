@@ -97,7 +97,11 @@ def ler_parte(mid: str, sensor: dict | None = None, hoje=None, limites: dict | N
 
 def modo() -> str:
     """'nuvem' no GitHub (o TJGO recusa IP estrangeiro); 'local' no computador do titular (ELDORADO_LOCAL_BR=1)."""
-    return "nuvem" if os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR") else "local"
+    if os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR"):
+        # 03/10 (titular): com a ponte da Hostgator (IP brasileiro) configurada, o GitHub lê também o TJGO
+        from .ponte_brasil import configurada
+        return "ponte" if configurada() else "nuvem"
+    return "local"
 
 
 def _tempo_esgotado() -> bool:
@@ -770,13 +774,14 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                 "diagnostico": {**vazio, "motivo_zero": "o motor do Judiciário lê a situação de hoje; dia passado não é relido", "retroativo": True}}
     cfg = _cfg()
     rota = modo()
-    _PRAZO["ate"] = time.monotonic() + float((cfg.get("prazo_total_segundos") or {}).get(rota, 300))
+    _pt = cfg.get("prazo_total_segundos") or {}
+    _PRAZO["ate"] = time.monotonic() + float(_pt.get(rota) or (_pt.get("local", 600) if rota == "ponte" else 300))
     diag = {**vazio, "motivo_zero": None, "versao": "motor Judiciário CNJ+TJGO v1 (02/10/2026)", "rota": rota,
             "fontes": {k: {"falhas": [], "consultas": 0, "itens": 0} for k in "ABCDE"}}
     arq = ESTADO_LOCAL if rota == "local" else ESTADO
     est = load_json(arq) if arq.exists() else {}
     itens: list[dict] = []
-    if rota == "local":
+    if rota in ("local", "ponte"):
         try:
             itens += fonte_a(hoje, cfg, diag, est)
         except Exception as exc:  # noqa: BLE001 — uma fonte nunca derruba a outra
@@ -807,7 +812,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     acompanhar = [a for a in ac.values() if str(a.get("data_publicacao") or d0) >= limite_ac]
     # registros do computador do titular entram na leitura da nuvem (sem o computador gravar na base)
     local = {}
-    if rota == "nuvem" and _tem("A") and ESTADO_LOCAL.exists():
+    if rota in ("nuvem", "ponte") and _tem("A") and ESTADO_LOCAL.exists():
         local = load_json(ESTADO_LOCAL)
         ids = {r["id"] for r in abertas}
         ks = {k for r in abertas for k in (r.get("chaves") or [])}

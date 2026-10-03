@@ -74,6 +74,12 @@ def _get(url: str, timeout: int = 60, max_bytes: int = 8_000_000, aceitar: str =
     from urllib.request import Request, urlopen
     if not url.startswith("file://"):
         validate_public_https(url)
+        from . import ponte_brasil
+        if ponte_brasil.usar(url):                        # 03/10: PDFs do TJGO e portais de Goiás pela ponte da Hostgator
+            st, _f, dados, _h = ponte_brasil.abrir(url, aceitar=aceitar, timeout=timeout, max_bytes=max_bytes)
+            if st >= 400:
+                raise RuntimeError(f"HTTP {st} pela ponte Brasil")
+            return dados[:max_bytes]
     req = Request(url, headers={"User-Agent": UA, "Accept": aceitar, "Accept-Language": "pt-BR,pt;q=0.9"})
     with urlopen(req, timeout=timeout) as r:
         dados = r.read(max_bytes + 1)

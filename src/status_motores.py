@@ -20,7 +20,17 @@ BRT = timezone(timedelta(hours=-3))
 CADA_HORAS = 6
 # o calendário de cada motor também fica com as três cores
 TRES_CORES = {"verde": "verde", "azul": "verde", "amarelo": "verde", "vermelho": "vermelho", "cinza": "cinza", "fora": "cinza"}
-PROPRIOS = {"do-goiania": ROOT / "estado/diario_goiania.json", "do-goias": ROOT / "estado/diario_goias.json"}
+PROPRIOS = {"do-goiania": ROOT / "estado/diario_goiania.json", "do-goias": ROOT / "estado/diario_goias.json",
+            # 03/10 (teste dos motores): os leitores v2 gravam a leitura no estado próprio — o painel mostrava cinza ou o
+            # vermelho do leitor antigo em motores que rodavam e rendiam
+            "prefeituras-50-go": ROOT / "estado/prefeituras_25_go.json", "estaduais-go-gov": ROOT / "estado/estaduais_go.json",
+            "dou": ROOT / "estado/diario_uniao.json", "congresso-nacional": ROOT / "estado/congresso_nacional.json",
+            "gife": ROOT / "estado/gife_editais.json", "camara-goiania-pl": ROOT / "estado/camara_goiania.json",
+            "judiciario-tjgo": ROOT / "estado/judiciario_go.json", "judiciario-cnj": ROOT / "estado/judiciario_go.json",
+            "mptgo-destinacao": ROOT / "estado/mpt_go.json", "mpu-destinacao": ROOT / "estado/mpu.json",
+            "mpgo-destinacao": ROOT / "estado/mp_go.json"}
+CORTE = ("cobertura_cortada", "cortados", "paginas_nao_lidas", "alerta_formato", "adiados_por_tempo", "truncado")
+OBS = ROOT / "config/observacoes_motores.json"
 
 
 def _j(p: Path, padrao):
@@ -63,15 +73,20 @@ def status_de(p: dict, hoje: str) -> dict:
             ult = up
         if up and up.date().isoformat() == hoje:
             fontes = u.get("fonte_do_dia") or {}
-            if fontes and all(v != "leu" for v in fontes.values()):
+            if u.get("falhas") and not fontes and not (u.get("vereditos") or u.get("achados") is not None):
+                cor_dia, falha = "vermelho", "falha: " + str(u["falhas"][0])[:120]
+            elif fontes and all(v != "leu" for v in fontes.values()):
                 cor_dia, falha = "vermelho", "nenhuma fonte leu: " + ", ".join(f"{k} {v}" for k, v in fontes.items())
             else:
                 cor_dia = "verde"
                 vd = u.get("vereditos") or {}
-                dia = {"n": vd.get("OPORTUNIDADE") or 0, "t": f"{sum(v for k, v in vd.items() if isinstance(v, int))} ato(s) lido(s)"}
+                n_op = vd.get("OPORTUNIDADE") if vd else u.get("achados")
+                dia = {"n": n_op or 0, "t": f"{sum(v for k, v in vd.items() if isinstance(v, int))} ato(s) lido(s)" if vd else None}
                 falhas = [k for k, v in fontes.items() if v == "falhou"]
                 if falhas:
                     falha = "fonte(s) com falha: " + ", ".join(falhas)
+                elif not fontes and u.get("falhas"):
+                    falha = f"{len(u['falhas'])} falha(s) na leitura: " + str(u["falhas"][0])[:100]
     leu_hoje = bool(ult and ult.date().isoformat() == hoje)
     if cor_dia == "vermelho":
         luz = "vermelho"
@@ -92,17 +107,45 @@ def status_de(p: dict, hoje: str) -> dict:
                   else "aguardando coleta local" if "coleta local" in str(dg.get("motivo_zero") or p.get("situacao") or "")
                   else "ainda não rodou hoje")
         resultado = f"não rodou hoje — {motivo}"
-    return {"id": p.get("id"), "nome": p.get("nome"), "luz": luz, "resultado": resultado,
+    # 03/10: o registro diário usa a data UTC — leitura das 21h57 de ontem (Brasília) aparecia como "coletou hoje"
+    if luz in ("verde", "vermelho") and ult and ult.date().isoformat() != hoje:
+        luz, resultado = "cinza", f"não rodou hoje — última leitura em {ult.strftime('%d/%m %H:%M')}"
+    # 03/10 (titular): além da data da última leitura, SE o dia foi lido por completo
+    dg = dict(p.get("diagnostico") or {})
+    _esq = (_ESQ.get(p.get("id")) or _ESQ.get("plat-" + str(p.get("id"))) or {}).get("diagnostico") or {}
+    dg.update({k: v for k, v in _esq.items() if k not in dg})
+    dg.setdefault("_fontes", _esq.get("fontes"))
+    proprio_u = (_j(proprio, {}).get("ultima") or {}) if proprio and proprio.exists() else {}
+    cortado = any(dg.get(k) for k in CORTE) or any(proprio_u.get(k) for k in CORTE)
+    txt_dg = json.dumps(dg, ensure_ascii=False).lower()
+    pend_br = bool(dg.get("exige_brasil") or proprio_u.get("cidades_por_status", {}).get("aguardando coleta local (Brasil)")
+                   or "recusa ip estrangeiro" in txt_dg or "fica para a coleta local" in txt_dg
+                   or (p.get("id") == "judiciario-tjgo" and proprio_u.get("rota") == "nuvem"))
+    if luz == "verde" and not falha and not cortado and not pend_br:
+        dia_lido = {"estado": "completa", "texto": "dia lido por completo"}
+    elif luz in ("verde", "vermelho"):
+        motivo = falha or ("parte das fontes exige acesso pelo Brasil (ponte da Hostgator ou computador do titular)" if pend_br
+                           else "a leitura foi cortada pelo tempo — o restante volta na próxima passagem" if cortado else "")
+        dia_lido = {"estado": "parcial", "texto": "dia lido em parte" + (f" — {motivo}" if motivo else "")}
+    elif "fora da agenda" in resultado:
+        dia_lido = {"estado": "fora_da_agenda", "texto": "hoje não é dia deste motor"}
+    else:
+        dia_lido = {"estado": "pendente", "texto": "o dia ainda não foi lido" + (" — exige acesso pelo Brasil" if pend_br else "")}
+    obs = (_j(OBS, {}).get("motores") or {}).get(p.get("id")) or []
+    return {"id": p.get("id"), "nome": p.get("nome"), "luz": luz, "resultado": resultado, "leitura_do_dia": dia_lido,
+            "observacoes": obs,
             "ultima_leitura": ult.isoformat(timespec="minutes") if ult else None,
             "agenda": " ".join(x for x in (str(p.get("agenda_dias") or ""), str(p.get("agenda_hora") or "")) if x and x != "None") or None}
 
 
 _DIARIO: dict = {}
+_ESQ: dict = {}
 
 
 def run() -> dict:
     global _DIARIO
     _DIARIO = (_j(ROOT / "estado/esquadra_diario.json", {}) or {}).get("sensores") or {}
+    _ESQ.clear(); _ESQ.update((_j(ROOT / "estado/esquadra.json", {}) or {}).get("sensores") or {})
     M = _j(MOTORES, {})
     agora = datetime.now(BRT); hoje = agora.date().isoformat()
     motores = [status_de(p, hoje) for p in (M.get("oficiais") or []) + (M.get("plataformas") or []) if p.get("id")]

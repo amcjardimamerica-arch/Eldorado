@@ -88,6 +88,12 @@ def _get_texto(url: str, timeout: int = 25, max_bytes: int = 4_000_000) -> str:
             return super().redirect_request(req, fp, code, msg, headers, newurl)
 
     validate_public_https(url)
+    from . import ponte_brasil
+    if ponte_brasil.usar(url):                            # 03/10: Câmara e TJGO pela ponte da Hostgator (IP brasileiro)
+        try:
+            return ponte_brasil.texto(url, timeout=timeout, max_bytes=max_bytes)
+        except Exception as exc:  # noqa: BLE001
+            raise Recusa(f"pela ponte Brasil: {str(exc)[:120]}") from exc
     req = Request(url, headers={"User-Agent": UA, "Accept-Language": "pt-BR,pt;q=0.9"})
     try:
         with build_opener(_Redir()).open(req, timeout=timeout) as r:

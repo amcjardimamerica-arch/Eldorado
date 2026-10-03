@@ -15,8 +15,8 @@ jobs:
   buscar:
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    env:
-      # 02/10 (titular): sem IA Claude nos fluxos do GitHub — a chave FAROL_AI_API_KEY não é mais passada
+    # 02/10 (titular): sem IA Claude nos fluxos do GitHub — a chave FAROL_AI_API_KEY não é mais passada
+    # 03/10: o "env:" vazio deixava o arquivo INVÁLIDO para o GitHub (falha a cada push desde 02/10)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
