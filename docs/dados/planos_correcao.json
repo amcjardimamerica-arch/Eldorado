@@ -2,7 +2,8 @@
  "em": "2026-10-03",
  "regra": "PLANOS DE CORREÇÃO DOS CANAIS (titular, 02/10/2026).\n\nCada motor e Piloto é diagnosticado a cada ciclo pelo seu histórico (estado/esquadra*.json, status dos motores, bloqueios)\ne recebe o plano previsto no fluxograma (config/linha_producao.json › planos_de_correcao):\n  sem_rendimento · falha_parcial · bloqueio · exige_brasil · formato_mudou · (contrato_violado e injecao: por registro)\nO plano nunca desliga um canal sozinho: ele diz o que fazer e qual skill usar.",
  "resumo": {
-  "exige_brasil": 2,
+  "bloqueio": 1,
+  "exige_brasil": 1,
   "falha_parcial": 11,
   "sem_rendimento": 33,
   "saudavel": 81
@@ -12,15 +13,15 @@
    "motor": "judiciario-tjgo",
    "canal": "judiciario-tjgo",
    "familia": "outros",
-   "diagnostico": "exige_brasil",
-   "evidencia": "o site recusa o IP da nuvem",
+   "diagnostico": "bloqueio",
+   "evidencia": "respostas de bloqueio no status",
    "plano": [
-    "coleta local (scripts/coleta_brasil.py)",
-    "manter as outras fontes do motor lendo na nuvem",
-    "não contar como falha"
+    "espaçar as leituras (respeitar Crawl-Delay)",
+    "mudar o horário na agenda",
+    "se 403 persistente da nuvem: marcar 'exige IP brasileiro' e mandar à coleta local"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 2,
+   "leituras": 3,
    "achados_total": 0
   },
   {
@@ -35,8 +36,8 @@
     "não contar como falha"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 20,
-   "achados_total": 12
+   "leituras": 21,
+   "achados_total": 16
   },
   {
    "motor": "camara-goiania-pl",
@@ -163,22 +164,22 @@
    "canal": "gife",
    "familia": "terceiro_setor",
    "diagnostico": "falha_parcial",
-   "evidencia": "falhas em 5 dos últimos 7 dias",
+   "evidencia": "falhas em 6 dos últimos 7 dias",
    "plano": [
     "repetir com espera crescente (backoff)",
     "trocar a ordem das rotas",
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 29,
-   "achados_total": 14
+   "leituras": 28,
+   "achados_total": 11
   },
   {
    "motor": "plat-piloto-aberto",
    "canal": "piloto-aberto",
    "familia": "pilotos",
    "diagnostico": "falha_parcial",
-   "evidencia": "falhas em 4 dos últimos 7 dias",
+   "evidencia": "falhas em 3 dos últimos 7 dias",
    "plano": [
     "repetir com espera crescente (backoff)",
     "trocar a ordem das rotas",
@@ -186,7 +187,7 @@
    ],
    "skill": "comum/plano_correcao",
    "leituras": 20,
-   "achados_total": 555
+   "achados_total": 579
   },
   {
    "motor": "recorrencia",
@@ -208,7 +209,7 @@
    "canal": "dj-trf1-go",
    "familia": "diario_oficial",
    "diagnostico": "sem_rendimento",
-   "evidencia": "42 leituras e nenhum achado",
+   "evidencia": "41 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -216,7 +217,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 42,
+   "leituras": 41,
    "achados_total": 0
   },
   {
@@ -272,7 +273,7 @@
    "canal": "f260-captacao-190",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
-   "evidencia": "38 leituras e nenhum achado",
+   "evidencia": "37 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -280,7 +281,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 38,
+   "leituras": 37,
    "achados_total": 0
   },
   {
@@ -750,7 +751,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 2,
    "achados_total": 0
   },
   {
@@ -761,8 +762,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 49,
-   "achados_total": 6
+   "leituras": 50,
+   "achados_total": 7
   },
   {
    "motor": "do-goias",
@@ -783,8 +784,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 54,
-   "achados_total": 32
+   "leituras": 53,
+   "achados_total": 30
   },
   {
    "motor": "f260-captacao-025",
@@ -816,8 +817,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 33,
-   "achados_total": 4
+   "leituras": 32,
+   "achados_total": 2
   },
   {
    "motor": "f260-captacao-051",
@@ -1553,8 +1554,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
-   "achados_total": 3
+   "leituras": 2,
+   "achados_total": 2
   },
   {
    "motor": "mpgo-destinacao",
@@ -1564,8 +1565,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 1,
-   "achados_total": 1
+   "leituras": 2,
+   "achados_total": 2
   },
   {
    "motor": "mptgo-destinacao",
@@ -1598,7 +1599,7 @@
    "plano": [],
    "skill": null,
    "leituras": 2,
-   "achados_total": 0
+   "achados_total": 1
   },
   {
    "motor": "plat-salic",
@@ -1609,7 +1610,7 @@
    "plano": [],
    "skill": null,
    "leituras": 23,
-   "achados_total": 111
+   "achados_total": 113
   },
   {
    "motor": "pncp-api",
