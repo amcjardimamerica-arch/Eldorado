@@ -11,7 +11,7 @@
 - Base: sem edital periódico: não há edições anuais datadas a prever
 - O que falta para ouro: chamada/RFP datada em pelo menos 2 anos distintos nos últimos 3 anos, em página oficial
 
-## Os 12 pontos (8 confirmados, 2 dispensados, 2 referência, 0 não localizados)
+## Os 12 pontos (9 confirmados, 1 não informados na fonte, 2 dispensados)
 - **Objeto** — CONFIRMADO: Grants por áreas de programa; entrada por convite ou envio de Letter of Enquiry
   - fonte: https://oakfnd.org/grant-making/
 - **Prazo de inscrição** — DISPENSADO: fluxo contínuo (Letter of Enquiry), sem prazo fixo na página lida
@@ -24,9 +24,8 @@
   - fonte: https://oakfnd.org/grant-making/
 - **Órgão / financiador** — CONFIRMADO: Oak Foundation
   - fonte: https://oakfnd.org/grant-making/
-- **Território** — REFERÊNCIA (sem edital lido): Atuação internacional por áreas de programa
+- **Território** — NÃO INFORMADO NA FONTE OFICIAL LIDA: a página de processo não limita geografia; cada programa tem foco próprio (existe programa de meio ambiente com foco no Chile)
   - fonte: https://oakfnd.org/grant-making/
-  - aviso: referência: página oficial da instituição, sem edital datado lido nesta coleta
 - **Esfera** — CONFIRMADO: Internacional, privada
   - fonte: https://oakfnd.org/grant-making/
 - **Requisitos** — CONFIRMADO: Alinhamento à área de programa; convite ou LOI; segue formal application, due diligence (finanças, visitas)
@@ -35,6 +34,5 @@
   - fonte: https://oakfnd.org/grant-making/
 - **Destinação** — CONFIRMADO: Project grants e apoio institucional
   - fonte: https://oakfnd.org/grant-making/
-- **Área de atuação** — REFERÊNCIA (sem edital lido): Infância, meio ambiente, direitos humanos, saúde (verificar áreas vigentes)
-  - fonte: https://oakfnd.org/grant-making/
-  - aviso: referência: página oficial da instituição, sem edital datado lido nesta coleta
+- **Área de atuação** — CONFIRMADO: Programas: Meio Ambiente, Iniciativas Globais de Clima, Habitação e Moradia de Rua, Questões que Afetam Mulheres, Direitos Humanos Internacionais, Diferenças de Aprendizagem, Prevenção de Abuso Sexual Infantil, Interesse Especial
+  - fonte: https://oakfnd.org/

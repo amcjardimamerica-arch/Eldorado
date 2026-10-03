@@ -1,6 +1,6 @@
 # Coleta 3 anos — Internacional: relatório consolidado e preditivo (03/10/2026)
 
-Livros verificados: **41**. Estados dos 12 pontos somados: {'confirmado': 251, 'dispensado': 129, 'nao_localizado': 96, 'referencia': 16}.
+Livros verificados: **41**. Estados dos 12 pontos somados: {'confirmado': 279, 'dispensado': 155, 'nao_informado': 58}.
 
 Cada livro tem relatório próprio em `docs/relatorios/coleta_int/<id>.md` e JSON dos 12 pontos em `dados/coleta_3_anos/12_itens_int/<id>.json`.
 
@@ -8,21 +8,21 @@ Cada livro tem relatório próprio em `docs/relatorios/coleta_int/<id>.md` e JSO
 |---|---|---|---|---|
 | UNESCO — Fundo Internacional para a Diversidade Cultural (IFCD) | anual_mar_mai | 3 | março–maio/2027 (a confirmar com a Comissão Nacional da UNESCO) | alta |
 | UNICEF — parcerias com OSC | convites avulsos a fornecedores e parceiros | 1 | acompanhar a página; sem janela periódica | baixa |
-| PNUD — Small Grants Programme | programa por país (PPP-ECOS no Brasil) | 0 | sem janela | baixa |
+| PNUD — Small Grants Programme (mesmo programa; ver captacao-256) | editais numerados do Fundo Ecos, vários por ano | 2 | setembro a novembro de 2027 (edital geral Cerrado/Caatinga); em 2026 só paisagens restritas ao PI/MA/BA/MS estão abertas | média |
 | Banco Mundial — Social Development Grants | sem programa ativo identificado | 0 | sem janela | baixa |
 | BID Lab (Laboratório de Inovação do BID) | produtos de financiamento em fluxo contínuo | 1 | aberto o ano todo (somente produtos de capital/dívida) | média |
 | USAID — grants globais | encerrado | 0 | sem janela; recomendar desativar o livro | alta |
-| União Europeia — Erasmus+ | chamada anual com Programme Guide | 1 | próxima chamada presumida no ciclo anual; confirmar no Programme Guide 2027 | média |
+| União Europeia — Erasmus+ | chamada anual com Programme Guide | 1 | não aplicável à A.M.C. em ações de juventude; ciclo anual (guia publicado em novembro) | média |
 | União Europeia — EuropeAid / International Partnerships | calls for proposals | 0 | sem janela; consultar chamadas abertas | baixa |
 | Open Society Foundations | chamadas pontuais e fellowship | 0 | sem janela; acompanhar a página de grants | baixa |
 | Ford Foundation | convite (propostas espontâneas não aceitas) | 0 | sem janela; JustFilms reabre sem data publicada | baixa |
 | Gates Foundation | convite_ou_rfp | 0 | sem janela previsível; monitorar RFPs e Grand Challenges | baixa |
 | Google.org | programas e chamadas pontuais | 0 | sem janela | baixa |
 | Meta Community Grants | não localizado | 0 | sem janela | baixa |
-| Microsoft Philanthropies | não localizado na página catalogada | 0 | sem janela | baixa |
+| Microsoft para organizações sem fins lucrativos (subsídios e descontos | programa permanente (cadastro) | 1 | aberto o ano todo | alta |
 | Global Fund for Women | convite (não aceita propostas espontâneas) | 0 | não prever | alta |
 | Climate Justice Resilience Fund | grantmaking com chamadas pontuais | 1 | não prever; piloto de small grants anunciado | baixa |
-| GEF Small Grants Programme | programa por país (PPP-ECOS no Brasil) | 0 | sem janela | baixa |
+| GEF Small Grants Programme (SGP) no Brasil — Fundo Ecos / ISPN | editais numerados do Fundo Ecos, vários por ano | 2 | setembro a novembro de 2027 (edital geral Cerrado/Caatinga); em 2026 só paisagens restritas ao PI/MA/BA/MS estão abertas | média |
 | Rockefeller Foundation | convite | 0 | não prever; só por convite | alta |
 | Skoll Foundation | prêmio por seleção própria | 0 | sem janela | baixa |
 | Echoing Green | chamada anual de fellowship | 1 | próxima abertura presumida em 2027; assinar updates | baixa |
@@ -48,16 +48,22 @@ Cada livro tem relatório próprio em `docs/relatorios/coleta_int/<id>.md` e JSO
 | Chamamento nº 005/2024 — Colombo (PNCP) | misclassificado | 0 | — | — |
 | Ars Biologica ArtXScience Residency (České Budějovice, Capital Europei | pontual | 1 | nenhuma prevista (programa pontual até 2028) | baixa |
 
+## Situação dos 12 pontos
+Nenhum ponto ficou sem tratamento: cada um está confirmado com fonte, não informado na fonte oficial lida, ou dispensado com motivo. As dispensas trazem o tipo (confirmada pelo texto oficial, ou provável pela matriz de regime, que não conta como item feito).
+
 ## Principais achados para a A.M.C.
-- **Criança Esperança / UNESCO** (op-a1a803e05f4b): inscrição de 05/10 a 08/11/2026; R$ 150, 200 ou 250 mil; exige OSC com 3+ anos de CNPJ e registro em conselho. Janela mais urgente.
+- **Fundo Ecos / ISPN = GEF SGP e PNUD SGP no Brasil** (captacao-256 e 242): 45º edital (17/09–10/11/2025; Cerrado e Caatinga; até R$ 150 mil ou R$ 250 mil; OSC com 2+ anos; Goiás elegível) e 50º edital (21/09–11/11/2026, restrito a PI/MA/BA). Dois anos datados. Próxima janela presumida: set–nov/2027.
+- **Criança Esperança / UNESCO** (op-a1a803e05f4b): inscrição de 05/10 a 08/11/2026; R$ 150, 200 ou 250 mil; exige OSC com 3+ anos de CNPJ e registro em conselho.
 - **UNESCO IFCD** (captacao-240): ouro. Chamadas 2024 (15/04–14/06), 2025 (19/03–21/05) e 2026 (23/03–06/05); próxima presumida mar–mai/2027; até US$ 100 mil.
 - **Institut français** (op-606bca20bb69): 4 edições (2023–2026); a de 2026 encerra em 08/10/2026; exige parceiro cultural.
-- **USAID** descontinuada (aviso oficial); recomenda-se desativar o livro. Rockefeller e Global Fund for Women não aceitam propostas espontâneas; Ford só em casos limitados; Oak aceita carta de consulta.
-- **Não lidos por falha do site:** GEF SGP / PNUD SGP (timeout em 03/10/2026) e Meta (página indisponível) — ficam como "não localizado", sem invenção.
-- **Reclassificar:** 3 registros PNCP municipais classificados como INT; 2 duplicatas (op-124d3e34e79a, op-83fd629ad336); captacao-242 duplica captacao-256 e seu "último edital" é de município do PR.
+- **Erasmus+:** o Brasil fica fora das regiões elegíveis de juventude (capacity building: regiões 1, 2, 3 e 9; intercâmbios: regiões 1 a 4). Sem aderência para a A.M.C.
+- **Microsoft:** programa permanente de subsídios para ONGs com status legal no país (cadastro). **Google para ONGs:** idem, exclui governo, saúde e escolas.
+- **USAID** descontinuada (aviso oficial); desativar o livro. Rockefeller e Global Fund for Women não aceitam propostas espontâneas; Ford só em casos limitados; Oak aceita carta de consulta; Gates por convite, RFP ou Grand Challenges.
+- **Meta e Banco Mundial:** sem programa vigente localizado em fonte oficial; desativar ou reapontar.
+- **Reclassificar:** 3 registros PNCP municipais classificados como INT; 2 duplicatas (op-124d3e34e79a, op-83fd629ad336); captacao-242 duplica captacao-256.
 
 ## Próximas janelas
-1. Criança Esperança: 05/10–08/11/2026. 2. Institut français: fecha 08/10/2026. 3. Camargo: fecha 05/10/2026 (última chamada pública). 4. IETM: 15/10/2026. 5. EMMA: 02/11/2026. 6. Al-Tiba9: 30/11/2026. 7. UNICEF (convite avulso, não aderente): 21/10/2026. 8. IFCD: mar–mai/2027. 9. ICA: maio–set/2027. 10. OHCHR fundo contra escravidão: 15/01–01/03/2027.
+1. Camargo: fecha 05/10/2026 (última chamada pública). 2. Criança Esperança: 05/10–08/11/2026. 3. Institut français: 08/10/2026; Fundo Ecos 52º (induzido, com senha): 08/10/2026. 4. IETM: 15/10/2026. 5. EMMA: 02/11/2026. 6. Fundo Ecos 50º e 51º: 11/11/2026. 7. Al-Tiba9: 30/11/2026. 8. OHCHR fundo contra escravidão: 15/01–01/03/2027. 9. IFCD: mar–mai/2027. 10. ICA: maio–set/2027; Fundo Ecos geral: set–nov/2027.
 
 ## Limites
-Sem acesso ao módulo `src.selo_livros` e ao GitHub nesta sessão: selos devem ser calculados no outro chat com `entrada/int_2026-10-03.json`.
+Sem acesso ao módulo `src.selo_livros` e ao GitHub nesta sessão: os selos devem ser calculados no outro chat com `entrada/int_2026-10-03.json`.

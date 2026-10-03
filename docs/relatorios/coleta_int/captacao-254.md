@@ -11,7 +11,7 @@
 - Base: FAQ oficial
 - O que falta para ouro: nada: sem edital
 
-## Os 12 pontos (7 confirmados, 4 dispensados, 0 referência, 1 não localizados)
+## Os 12 pontos (7 confirmados, 1 não informados na fonte, 4 dispensados)
 - **Objeto** — CONFIRMADO: Financiamento de organizações feministas de base
   - fonte: https://www.globalfundforwomen.org/how-we-fund/
 - **Prazo de inscrição** — DISPENSADO: não aceita inscrições: parceiros são encontrados por relações de confiança
@@ -20,7 +20,8 @@
   - base da dispensa: FAQ oficial
 - **Prazo de recurso** — DISPENSADO: regime de fundação privada sem edital: não há fase recursal formal
   - base da dispensa: fundação privada decide por critério próprio; não há rito recursal
-- **Valor** — NÃO LOCALIZADO: não consta
+- **Valor** — NÃO INFORMADO NA FONTE OFICIAL LIDA: não consta
+  - fonte: https://www.globalfundforwomen.org/
 - **Órgão / financiador** — CONFIRMADO: Global Fund for Women
   - fonte: https://www.globalfundforwomen.org/how-we-fund/
 - **Território** — CONFIRMADO: 180 países

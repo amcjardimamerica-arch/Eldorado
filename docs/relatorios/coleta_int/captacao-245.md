@@ -11,7 +11,7 @@
 - Base: aviso oficial de fev/2025 no site
 - O que falta para ouro: —
 
-## Os 12 pontos (2 confirmados, 10 dispensados, 0 referência, 0 não localizados)
+## Os 12 pontos (2 confirmados, 0 não informados na fonte, 10 dispensados)
 - **Objeto** — DISPENSADO: agência em desmonte: o site oficial exibe aviso de licença administrativa e redução de pessoal desde fev/2025
   - base da dispensa: aviso oficial na página inicial
 - **Prazo de inscrição** — DISPENSADO: sem chamadas

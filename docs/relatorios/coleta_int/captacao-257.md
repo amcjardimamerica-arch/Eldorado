@@ -11,7 +11,7 @@
 - Base: FAQ oficial declara que não recebe propostas
 - O que falta para ouro: nada: sem edital, livro não é ouro por natureza
 
-## Os 12 pontos (4 confirmados, 4 dispensados, 2 referência, 2 não localizados)
+## Os 12 pontos (5 confirmados, 3 não informados na fonte, 4 dispensados)
 - **Objeto** — CONFIRMADO: Grants, contratos e outras ferramentas para resolver problemas na raiz com inovação
   - fonte: https://www.rockefellerfoundation.org/our-grants/
 - **Prazo de inscrição** — DISPENSADO: sem inscrição: a fundação não aceita propostas espontâneas
@@ -20,19 +20,19 @@
   - base da dispensa: FAQ oficial
 - **Prazo de recurso** — DISPENSADO: regime de fundação privada sem edital: não há fase recursal formal
   - base da dispensa: fundação privada decide por critério próprio; não há rito recursal
-- **Valor** — NÃO LOCALIZADO: não consta
+- **Valor** — NÃO INFORMADO NA FONTE OFICIAL LIDA: não consta
+  - fonte: https://www.rockefellerfoundation.org/
 - **Órgão / financiador** — CONFIRMADO: Rockefeller Foundation
   - fonte: https://www.rockefellerfoundation.org/our-grants/
-- **Território** — NÃO LOCALIZADO: não consta
+- **Território** — NÃO INFORMADO NA FONTE OFICIAL LIDA: a página não limita geografia (alcance declarado: EUA e mundo)
+  - fonte: https://www.rockefellerfoundation.org/
 - **Esfera** — CONFIRMADO: Internacional, privada
   - fonte: https://www.rockefellerfoundation.org/our-grants/
 - **Requisitos** — CONFIRMADO: Convite da fundação; não há inscrição
   - fonte: https://www.rockefellerfoundation.org/our-grants/
 - **Anexos** — DISPENSADO: sem anexos
   - base da dispensa: sem edital
-- **Destinação** — REFERÊNCIA (sem edital lido): Parcerias de inovação
+- **Destinação** — NÃO INFORMADO NA FONTE OFICIAL LIDA: sem edital: destinação definida no convite
   - fonte: https://www.rockefellerfoundation.org/our-grants/
-  - aviso: referência: página oficial da instituição, sem edital datado lido nesta coleta
-- **Área de atuação** — REFERÊNCIA (sem edital lido): Saúde, energia, alimentos, economia
-  - fonte: https://www.rockefellerfoundation.org/our-grants/
-  - aviso: referência: página oficial da instituição, sem edital datado lido nesta coleta
+- **Área de atuação** — CONFIRMADO: 'Big bets' da fundação, entre elas Universal Energy Abundance; frentes: tecnologia de fronteira, modelos comunitários, dados e finanças inovadoras
+  - fonte: https://www.rockefellerfoundation.org/

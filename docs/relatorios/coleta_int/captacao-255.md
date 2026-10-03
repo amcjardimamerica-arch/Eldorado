@@ -11,7 +11,7 @@
 - Base: uma edição datada
 - O que falta para ouro: chamada/RFP datada em pelo menos 2 anos distintos nos últimos 3 anos, em página oficial
 
-## Os 12 pontos (8 confirmados, 2 dispensados, 0 referência, 2 não localizados)
+## Os 12 pontos (8 confirmados, 2 não informados na fonte, 2 dispensados)
 - **Objeto** — CONFIRMADO: Estratégia 2026–30: impactos climáticos, alternativas positivas, reformulação do ecossistema de financiamento
   - fonte: https://cjrfund.org/what-we-fund/
 - **Prazo de inscrição** — DISPENSADO: não há chamada aberta nas páginas lidas; edição 2024 foi lançada em abril/2024 (leitura anterior, sem data de encerramento)
@@ -20,7 +20,8 @@
   - fonte: https://cjrfund.org/
 - **Prazo de recurso** — DISPENSADO: regime de fundação privada sem edital: não há fase recursal formal
   - base da dispensa: fundação privada decide por critério próprio; não há rito recursal
-- **Valor** — NÃO LOCALIZADO: não consta
+- **Valor** — NÃO INFORMADO NA FONTE OFICIAL LIDA: não consta
+  - fonte: https://www.cjrfund.org/
 - **Órgão / financiador** — CONFIRMADO: Climate Justice Resilience Fund
   - fonte: https://cjrfund.org/what-we-fund/
 - **Território** — CONFIRMADO: Comunidades na linha de frente do clima; mulheres, jovens e povos indígenas
@@ -29,7 +30,8 @@
   - fonte: https://cjrfund.org/what-we-fund/
 - **Requisitos** — CONFIRMADO: Trabalho de justiça climática liderado por comunidades
   - fonte: https://cjrfund.org/what-we-fund/
-- **Anexos** — NÃO LOCALIZADO: não consta
+- **Anexos** — NÃO INFORMADO NA FONTE OFICIAL LIDA: não consta
+  - fonte: https://www.cjrfund.org/
 - **Destinação** — CONFIRMADO: Grants por três áreas de mudança
   - fonte: https://cjrfund.org/what-we-fund/
 - **Área de atuação** — CONFIRMADO: Justiça climática
