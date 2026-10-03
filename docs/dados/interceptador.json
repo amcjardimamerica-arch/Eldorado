@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-03T22:13:23+00:00",
+  "em": "2026-10-03T22:33:37+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-03T22:00:31+00:00",
+  "ultimo_voo": "2026-10-03T22:16:00+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,10 +37,10 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 231,
+    "missoes": 232,
     "validadas": 3,
     "parciais": 63,
-    "insuficientes": 165,
+    "insuficientes": 166,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
@@ -52,6 +52,33 @@
     "tempo_medio_min": 11.6
   },
   "missoes": [
+    {
+      "em": "2026-10-03T22:16:00+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Secretaria de Estado da Cultura (Secult) — Chamamento público de OSC que apoiará Secult Goiás com Política Nac… — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": null,
+      "total": 12,
+      "nao_resolvidos": null,
+      "pagina_oficial": null,
+      "parecer_fonte": {},
+      "erro": "o modelo não devolveu JSON",
+      "segundos": 1057,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "falhou: o modelo não devolveu JSON",
+      "id": "op-op-fc4ae54b664e",
+      "encontrou": {},
+      "financiador": null,
+      "indicios": [],
+      "rotas": []
+    },
     {
       "em": "2026-10-03T22:00:31+00:00",
       "modo": "validar",
@@ -2726,69 +2753,6 @@
       "rotas": [
         "site_municipal",
         "financiador_programa_edital"
-      ]
-    },
-    {
-      "em": "2026-10-03T11:25:08+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Canguçu — Norma do CNJ garante verbas para projetos sociais em Canguçu (RS) — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Anexos",
-        "Destinação"
-      ],
-      "pagina_oficial": "http://www.cnj.jus.br",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona o objeto do edital como apoiar projetos sociais em Canguçu (RS) com recursos do Fundo de Modernização do Conselho Nacional de Justiça (FMCNJ), indicando que é uma fonte válida para projetos sociais.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é apoiar projetos sociais em Canguçu (RS), e demonstrar como seu trabalho se encaixa nesse escopo, mesmo que não esteja localizada na região especificada.",
-        "proximo_passo": "Verificar se há atualizações ou novas divulgações sobre o edital, já que informações como prazo e requisitos não foram encontradas no texto comprovado.",
-        "risco": "A falta de informações sobre prazo de inscrição e requisitos pode impedir a associação de se candidatar oportunamente ou atender às condições exigidas."
-      },
-      "erro": null,
-      "segundos": 687,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 4,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-7451e52233f6",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoiar projetos sociais em Canguçu (RS) com recursos do Fundo de Modernização do Conselho Nacional de Justiça (FMCNJ)",
-          "trecho": "Norma do CNJ garante verbas para projetos sociais em Canguçu (RS) — Goiás",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Conselho Nacional de Justiça (CNJ)",
-          "trecho": "Norma do CNJ garante verbas para projetos sociais em Canguçu (RS) — Goiás",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "assistencia_social",
-          "trecho": "Norma do CNJ garante verbas para projetos sociais em Canguçu (RS) — Goiás",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "CNJ",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ]
