@@ -78,7 +78,9 @@ _EXTRA = {
     "pessoal": re.compile(r"NOMEA|EXONERA|APOSENTADORIA|PENSAO|FERIAS|LICENCA|PROGRESSAO|DESIGNA(R)? .{0,40}SERVIDOR|"
                           r"CESSAO DE SERVIDOR|ABONO"),
     "abertura_noticia": re.compile(r"\bLANCA (?:O |UM |NOVO |SEU )?EDITA|\bABRE (?:AS )?INSCRICOES|INSCRICOES (?:ESTAO )?ABERTAS|"
-                                   r"ESTAO ABERTAS AS INSCRICOES|ABRE CHAMAMENTO|PUBLICA (?:O )?EDITAL DE CHAMAMENTO"),
+                                   r"ESTAO ABERTAS AS INSCRICOES|ABRE CHAMAMENTO|PUBLICA (?:O )?EDITAL DE CHAMAMENTO|"
+                                   # 03/10 (teste do motor 02): "estará aberto o Chamamento Público…" (FMAS de Diorama)
+                                   r"ESTARA(?:O)? ABERT[OA]S? (?:O |A |AS |OS )?(?:CHAMAMENTO|EDITAL|INSCRICOES|CREDENCIAMENTO|CHAMADA)"),
     "empresa_audiovisual": re.compile(r"INVESTIMENTOS? RETORNAVE|\bFSA\b|FUNDO SETORIAL DO AUDIOVISUAL|PRODUTORAS? (?:BRASILEIRAS?|INDEPENDENTES?)|PARA EMPRESAS"),
     "fomento_forte": re.compile(r"TERMO DE FOMENTO|TERMO DE COLABORACAO|13\.019|ORGANIZACOES? DA SOCIEDADE CIVIL|\bOSCS?\b|"
                                 r"SEM FINS LUCRATIVOS|SELECAO DE PROJETOS|FOMENTO A CULTURA|PREMIO|PREMIACAO"),
@@ -171,7 +173,10 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
     s.update({k: bool(rx.search(T)) for k, rx in _EXTRA.items()})
     if fundos is not None and fundos.search(T):
         s["fundo"] = True
-    c = {k: bool(rx.search(cab)) for k, rx in _RX.items() if k in ("resultado", "celebracao", "retificacao", "abertura")}
+    # 03/10 (teste do motor 03): "aviso de chamamento ... PARA A CELEBRACAO DE TERMO DE FOMENTO" é ABERTURA — a celebração
+    # é a finalidade da seleção, não um termo já celebrado (falso negativo: o aviso ia para ACOMPANHAR)
+    _cab_c = re.sub(r"(?:PARA|VISANDO|COM VISTAS|OBJETIVANDO|COM O OBJETIVO DE|PARA FINS DE|FINS DE)\s+(?:[AÀ]S?\s+)?(?:FUTURA\s+)?CELEBRACAO DE", " ", cab)
+    c = {k: bool(rx.search(_cab_c if k == "celebracao" else cab)) for k, rx in _RX.items() if k in ("resultado", "celebracao", "retificacao", "abertura")}
     folha = sem_acento((caminho or "").split("›")[-1]).upper().strip()
     cab = cab or T.lstrip()[:220]
     # TIPO — o cabeçalho (título) manda; a seção do sumário desempata

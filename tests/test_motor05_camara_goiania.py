@@ -372,7 +372,8 @@ class TesteSuapNaNuvem(unittest.TestCase):
         from pathlib import Path
         with tempfile.TemporaryDirectory() as tmp, mock.patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}, clear=False), \
              mock.patch.object(C, "fonte_a", a), mock.patch.object(C, "fonte_b", b), mock.patch.object(C, "fonte_c", c), \
-             mock.patch.object(C, "ESTADO", Path(tmp) / "e.json"):
+             mock.patch.object(C, "fonte_d", lambda h, cf, dg: []), \
+             mock.patch.object(C, "ESTADO", Path(tmp) / "e.json"):   # 03/10: a fonte D (pautas) fica fora deste cenário
             os.environ.pop("ELDORADO_LOCAL_BR", None)
             r = C.ler_motor()
         self.assertEqual(r["falhas"], []); self.assertTrue(r["diagnostico"]["exige_brasil"])

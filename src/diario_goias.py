@@ -72,8 +72,18 @@ def _get(url: str, timeout: int = 40, max_bytes: int = 6_000_000, aceitar: str =
     from urllib.request import Request, urlopen
     validate_public_https(url)
     req = Request(url, headers={"User-Agent": UA, "Accept": aceitar, "Accept-Language": "pt-BR,pt;q=0.9"})
-    with urlopen(req, timeout=timeout) as r:
-        dados = r.read(max_bytes + 1)
+    try:
+        with urlopen(req, timeout=timeout) as r:
+            dados = r.read(max_bytes + 1)
+    except Exception as exc:  # noqa: BLE001
+        # 03/10 (teste do motor 02): se o portal recusar a nuvem, a ponte da Hostgator empresta o IP brasileiro
+        from . import ponte_brasil
+        if _em_nuvem() and getattr(exc, "code", None) in (403, 451) and ponte_brasil.configurada():
+            st, _f, dados, _h = ponte_brasil.abrir(url, aceitar=aceitar, timeout=timeout, max_bytes=max_bytes)
+            if st >= 400:
+                raise RuntimeError(f"HTTP {st} pela ponte Brasil") from exc
+            return dados[:max_bytes]
+        raise
     if len(dados) > max_bytes:
         raise ValueError("resposta excede limite")
     return dados
@@ -151,33 +161,45 @@ def url_materia(edicao_id, mid) -> str:
 def fonte_b(hoje: date, cfg: dict, diag: dict, proc: dict) -> list[dict]:
     """Edições dos últimos N dias ainda não processadas → matérias de interesse com texto integral."""
     b = cfg.get("fonte_b", {})
-    dias = int(b.get("janela_dias", 3)); lim = int(b.get("max_materias_por_edicao", 60))
+    dias = int(b.get("janela_dias", 7)); lim = int(b.get("max_materias_por_edicao", 60))
     out = []
+    esperadas, dias_sem_lista = diag.setdefault("_esperadas", []), diag.setdefault("_dias_sem_lista", [])
     for k in range(dias):
         d = (hoje - timedelta(days=k)).isoformat()
         try:
             j = _get_json(f"{BASE}/apifront/portal/edicoes/edicoes_from_data/{d}.json")
         except RuntimeError as exc:
-            diag["fontes"]["B"]["falhas"].append(f"{d}: {exc}"); continue
+            diag["fontes"]["B"]["falhas"].append(f"{d}: {exc}"); dias_sem_lista.append(d); continue
         for it in j.get("itens") or []:
             ed = str(it.get("id"))
-            if not ed or ed in proc:
+            if ed:
+                esperadas.append({"id": ed, "data": d, "suplemento": bool(it.get("suplemento"))})
+            if not ed or (ed in proc and proc[ed].get("completa", True)):
                 continue
             try:
                 mats = materias_do_sumario(_get(f"{BASE}/portal/visualizacoes/view_html_diario/{ed}").decode("utf-8", "replace"))
             except Exception as exc:  # noqa: BLE001
                 diag["fontes"]["B"]["falhas"].append(f"sumário {ed}: {_erro(exc)}"); continue
             diag["fontes"]["B"]["edicoes"] += 1; diag["fontes"]["B"]["materias_no_sumario"] += len(mats)
-            sel = [m for m in mats if interessa(m["titulo"], m["caminho"])][:lim]
+            ja = set((proc.get(ed) or {}).get("lidas") or [])                # matérias já lidas numa passagem anterior
+            todas = [m for m in mats if interessa(m["titulo"], m["caminho"]) and m["mid"] not in ja]
+            sel, resto = todas[:lim], todas[lim:]
+            if resto:
+                diag["fontes"]["B"]["cortadas"] = diag["fontes"]["B"].get("cortadas", 0) + len(resto)
+            falhou, lidas = False, set(ja)
             for m in sel:
                 try:
                     tx = texto_de_html(_get(f"{BASE}/apifront/portal/edicoes/publicacoes_ver_conteudo/{m['mid']}/{ed}").decode("utf-8", "replace"))
                 except Exception as exc:  # noqa: BLE001
-                    diag["fontes"]["B"]["falhas"].append(f"matéria {m['mid']}: {_erro(exc)}"); continue
+                    diag["fontes"]["B"]["falhas"].append(f"matéria {m['mid']}: {_erro(exc)}"); falhou = True; continue
+                lidas.add(m["mid"])
                 out.append({**m, "texto": tx, "data": d, "edicao": ed, "suplemento": bool(it.get("suplemento")),
                             "url": url_materia(ed, m["mid"]), "fonte": "B"})
                 time.sleep(float(b.get("pausa_segundos", 0.3)))
-            proc[ed] = {"data": d, "materias": len(mats), "abertas": len(sel), "em": now_iso()}
+            # 03/10: edição com matéria não lida (falha ou corte) fica PARCIAL e volta na próxima passagem, sem reler o que já leu
+            proc[ed] = {"data": d, "materias": len(mats), "abertas": len(lidas), "em": now_iso(),
+                        "suplemento": bool(it.get("suplemento")), "completa": not (falhou or resto),
+                        **({"lidas": sorted(lidas)} if (falhou or resto) else {})}
     diag["fontes"]["B"]["materias_lidas"] = len(out)
     return out
 
@@ -245,6 +267,21 @@ def fonte_c(hoje: date, cfg: dict, diag: dict) -> list[dict]:
                             "data": str(p.get("date") or "")[:10], "edicao": None, "url": link, "fonte": "C"})
     diag["fontes"]["C"]["materias_lidas"] = len(out)
     return out
+
+
+def cobertura(diag: dict, proc: dict) -> dict:
+    """03/10 (teste do motor 02): edições publicadas na janela (normal + suplemento) × edições lidas por inteiro.
+    O suplemento de sexta (7391, 02/10) e a edição de 28/09 (7382, com o chamamento MROSC de Nova Iguaçu de Goiás)
+    nunca passaram pelo sumário: a janela era de 3 dias e o motor não roda no fim de semana."""
+    esp = diag.pop("_esperadas", []); sem = diag.pop("_dias_sem_lista", [])
+    if not esp and sem:
+        return {"medida": False, "esperadas": None, "lidas": None, "pendentes": [],
+                "texto": "cobertura não medida: a lista de edições do Diário não respondeu (" + ", ".join(sem[:3]) + ")"}
+    pend = [e for e in esp if not (proc.get(e["id"]) or {}).get("completa", e["id"] in proc)]
+    return {"medida": True, "esperadas": len(esp), "lidas": len(esp) - len(pend),
+            "pendentes": [f"{e['data']} nº {e['id']}{' (suplemento)' if e['suplemento'] else ''}" for e in pend]
+                         + [f"{d} (lista do dia não respondeu)" for d in sem],
+            "texto": f"{len(esp) - len(pend)} de {len(esp)} edição(ões) lidas pelo sumário"}
 
 
 # ─────────────────────────── o motor ───────────────────────────
@@ -336,6 +373,13 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
         except Exception as exc:  # noqa: BLE001 — uma fonte nunca derruba as outras
             diag["fontes"][nome]["falhas"].append(f"etapa: {_erro(exc)}")
     oport, acomp, cont = classificar_lote(materias, hoje)
+    cob = cobertura(diag, proc)
+    diag["cobertura_edicoes"] = cob
+    if cob["pendentes"]:
+        diag["paginas_nao_lidas"] = len(cob["pendentes"])            # o maestro lê como PARCIAL e dispara de novo
+        diag["edicoes_pendentes"] = cob["pendentes"][:12]
+    elif not cob["medida"]:
+        diag["cobertura_cortada"] = cob["texto"]
     diag["vereditos"] = cont
     diag["paginas_lidas"] = sum(diag["fontes"][k]["materias_lidas"] for k in "ABC")
     leu_diario = diag["fontes"]["A"]["materias_lidas"] + diag["fontes"]["B"]["edicoes"] > 0 or diag["fontes"]["A"]["consultas"] > 0
@@ -347,7 +391,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     if seq >= 3:
         diag["alerta"] = (f"{seq} dias úteis seguidos sem ler o Diário do Estado — "
                           + ("o portal recusa a nuvem: rodar a coleta local (scripts/coleta_brasil.py)" if _em_nuvem() else "conferir a rede"))
-    diag["fonte_do_dia"] = {k: ("leu" if diag["fontes"][k]["materias_lidas"] or (k == "B" and diag["fontes"]["B"]["edicoes"]) or
+    diag["fonte_do_dia"] = {k: ("em dia (todas as edições da janela já lidas)" if k == "B" and cob["medida"] and not cob["pendentes"]
+                                and not diag["fontes"]["B"]["edicoes"] else "leu" if diag["fontes"][k]["materias_lidas"] or (k == "B" and diag["fontes"]["B"]["edicoes"]) or
                                 (k == "A" and diag["fontes"]["A"]["consultas"]) or (k == "C" and diag["fontes"]["C"]["consultas"])
                                 else "falhou" if diag["fontes"][k]["falhas"] else "sem leitura") for k in "ABC"}
     corte = (hoje - timedelta(days=120)).isoformat()
@@ -360,6 +405,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                                   and (a.get("data_publicacao") or "") >= corte])[:400]
     est["edicoes_processadas"] = {k: v for k, v in proc.items() if (v.get("data") or "") >= corte}
     est["ultima"] = {"em": now_iso(), "data": hoje.isoformat(), "vereditos": cont, "fonte_do_dia": diag["fonte_do_dia"],
+                     "cobertura_edicoes": cob, **({"paginas_nao_lidas": len(cob["pendentes"])} if cob["pendentes"] else {}),
+                     **({"cobertura_cortada": cob["texto"]} if not cob["medida"] else {}),
                      "falhas": sum((diag["fontes"][k]["falhas"] for k in "ABC"), [])[:10]}
     hist = est.setdefault("historico", {}); hist[hoje.isoformat()] = {"fontes": diag["fonte_do_dia"], **cont}
     est["historico"] = {k: v for k, v in hist.items() if k >= corte}

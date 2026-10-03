@@ -20,7 +20,10 @@
     "max_textos_por_dia": 160,
     "max_bytes": 12000000,
     "pausa_segundos": 0.3,
-    "nota": "01/10: a Seção 3 tem 2,1–2,7 MB; o limite geral de 2,5 MB cortava o JSON das matérias em 5 dias de setembro (02, 04, 11, 25 e 30/09) e em 01/10. Limite próprio de 12 MB e erro descrito acima dele — nunca leitura pela metade."
+    "nota": "01/10: a Seção 3 tem 2,1–2,7 MB; o limite geral de 2,5 MB cortava o JSON das matérias em 5 dias de setembro (02, 04, 11, 25 e 30/09) e em 01/10. Limite próprio de 12 MB e erro descrito acima dele — nunca leitura pela metade.",
+    "retroativo_dias": 10,
+    "retroativo_por_execucao": 3,
+    "nota_03_10": "teste do motor 03: dia útil dos últimos 10 dias sem a Seção 3 lida entra na leitura (até 3 por passagem) e, enquanto faltar, o maestro vê 'parcial' e dispara de novo; íntegra além do limite diário também conta como parcial."
   },
   "fonte_b": {
     "nome": "Busca do DOU (reserva — só o que a Fonte A não trouxe)",

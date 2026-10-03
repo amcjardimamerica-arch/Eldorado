@@ -38,6 +38,7 @@ import os
 import re
 import time
 import xml.etree.ElementTree as ET
+from urllib import robotparser
 from datetime import date, datetime, timedelta
 from urllib.parse import quote, urlencode, urlsplit
 
@@ -136,7 +137,35 @@ def _erro(exc: Exception) -> str:
     return f"{causa}"[:160]
 
 
+class ProibidoRobots(RuntimeError):
+    """O robots.txt do site proíbe a leitura automática deste endereço (03/10/2026: o SUAP da Câmara — `Disallow: /`)."""
+
+
+_ROBOTS: dict = {}
+AGENTE_ROBOTS = "Eldorado-OSC"
+
+
+def robots_permite(url: str, cfg: dict | None = None) -> bool:
+    """03/10 (teste do motor 04): o motor passa a CONSULTAR E RESPEITAR o robots.txt de cada host antes de ler.
+    `config/camara_goiania.json › robots.proibe_hosts` guarda o que foi medido (vale mesmo se o robots não abrir);
+    robots ilegível = permitido (mesma regra de nucleo.robots_permite)."""
+    host = (urlsplit(url).hostname or "").lower()
+    if host in {h.lower() for h in ((cfg or {}).get("robots") or {}).get("proibe_hosts", [])}:
+        return False
+    if host not in _ROBOTS:
+        rp = robotparser.RobotFileParser()
+        try:
+            rp.parse(_get_texto(f"https://{host}/robots.txt", timeout=15, max_bytes=200_000).splitlines())
+        except Exception:  # noqa: BLE001
+            rp = None
+        _ROBOTS[host] = rp
+    rp = _ROBOTS[host]
+    return True if rp is None else rp.can_fetch(AGENTE_ROBOTS, url)
+
+
 def _get(url: str, cfg: dict, fonte: dict) -> str:
+    if not robots_permite(url, cfg):
+        raise ProibidoRobots(f"o robots.txt de {urlsplit(url).hostname} proíbe a leitura automática")
     ritmo = cfg.get("ritmo", {})
     ultimo = None
     for _ in range(2):
@@ -216,6 +245,9 @@ def fonte_a(hoje: date, cfg: dict, diag: dict) -> list[dict]:
     a = cfg.get("suap") or {}
     base = a.get("base", "https://suap.camaragyn.go.gov.br").rstrip("/")
     F = diag["fontes"]["A"]
+    if a.get("ativa") is False or not robots_permite(f"{base}/camara/consulta_publica/", cfg):
+        F["proibido_robots"] = a.get("ativa") is not False
+        return []                                               # 03/10: robots.txt do SUAP = Disallow: / (nada é lido)
     janela = int(a.get("janela_dias", 35))
     corte = (hoje - timedelta(days=janela)).isoformat()
     vistos: dict[str, dict] = {}
@@ -281,6 +313,9 @@ def fonte_b(hoje: date, cfg: dict, diag: dict) -> list[dict]:
     a = cfg.get("suap") or {}
     base = a.get("base", "https://suap.camaragyn.go.gov.br").rstrip("/")
     F = diag["fontes"]["B"]
+    if a.get("ativa") is False or not robots_permite(f"{base}/camara/consulta_publica/", cfg):
+        F["proibido_robots"] = a.get("ativa") is not False
+        return []
     proprios: dict[str, dict] = {}
     for nome in (cfg.get("associacao") or {}).get("nomes_no_processo", []):
         q = urlencode({"classificacao": "PL", "assunto": nome, "interessado": "", "numero_protocolo": "", "ano": "",
@@ -371,6 +406,124 @@ def fonte_c(hoje: date, cfg: dict, diag: dict) -> list[dict]:
     return list(vistos.values())
 
 
+# ─────────────────────────── Fonte D: pautas de projetos do Plenário (PDF no portal) ───────────────────────────
+# 03/10 (teste do motor 04): o SUAP proíbe robôs; o portal da Câmara (robots liberado) publica a PAUTA DE PROJETOS de cada
+# sessão em PDF, com tipo, número, data de criação, autoria, fase e resumo de cada projeto — utilidade pública, programas,
+# fundos, títulos. É a fonte pública e permitida dos processos legislativos. PUBLICADO × LIDO: toda pauta da janela é lida;
+# a que falhar vai para `paginas_nao_lidas` e o maestro dispara o motor de novo.
+_PAUTA_PDF = re.compile(r"""href=["']([^"']*?/(pauta-de-projetos-(\d{2})-(\d{2})-(\d{4})[^"'/]*?\.pdf))(?:/view)?["']""", re.I)
+_TIPO_PROJ = r"Projeto de (?:Lei(?: Complementar)?|Decreto Legislativo|Resolu[çc][ãa]o|Emenda[^\d_]{0,40}?)"
+_BLOCO = re.compile(r"(" + _TIPO_PROJ + r")\s+(\d{1,4}/\d{4})\s+Cria[çc][ãa]o:\s*(\d{2}/\d{2}/\d{4})(.*?)(?=" + _TIPO_PROJ +
+                    r"\s+\d{1,4}/\d{4}\s+Cria|$)", re.S)
+
+
+def pautas_da_listagem(html: str, base: str) -> list[dict]:
+    """Página `processo-legislativo/pautas-de-sessoes` → [{url, arquivo, data}] (uma por arquivo, data do nome do arquivo)."""
+    out, vistos = [], set()
+    for href, arq, d, m, a in _PAUTA_PDF.findall(html or ""):
+        try:
+            dia = date(int(a), int(m), int(d)).isoformat()
+        except ValueError:
+            continue
+        url = href if href.startswith("http") else base.rstrip("/") + "/" + href.lstrip("/")
+        if (urlsplit(url).hostname or "") != (urlsplit(base).hostname or "") or arq.lower() in vistos:
+            continue                                            # link para outro host não é seguido
+        vistos.add(arq.lower())
+        out.append({"url": url.split("/view")[0], "arquivo": arq, "data": dia})
+    return sorted(out, key=lambda x: x["data"], reverse=True)
+
+
+def projetos_da_pauta(texto: str, url: str, data_sessao: str) -> list[dict]:
+    """Texto do PDF da pauta → um item por projeto (o mesmo formato das fontes A/B)."""
+    t = re.sub(r"\s+", " ", texto or "")
+    out = []
+    for tipo, num, criacao, corpo in _BLOCO.findall(t):
+        fase = re.search(r"Fase:\s*(\S+)", corpo)
+        resumo = re.search(r"Resumo:\s*(.*?)(?:\s+Comiss[ãa]o:|\s*_{5,}|$)", corpo)
+        autoria = re.search(r"Autoria:\s*(.*?)\s+Fase:", corpo)
+        assunto = atos.mascarar_pii(_limpo(resumo.group(1) if resumo else ""))[:600]
+        if has_prompt_injection(assunto):
+            assunto = "[resumo em quarentena]"
+        out.append({"fonte": "D", "processo": f"{tipo.strip()} {num}", "url": url, "assunto": assunto,
+                    "tipo_documento": tipo.strip(), "numero": num, "autor": (atos.mascarar_pii(autoria.group(1)) if autoria else None),
+                    "criado": _data_br(criacao), "situacao": f"em pauta na sessão de {data_sessao}"
+                    + (f" ({fase.group(1).lower()} votação)" if fase and fase.group(1).lower() != "única" else " (votação única)" if fase else ""),
+                    "pauta": data_sessao, "setor": "Plenário", "publico": True})
+    return out
+
+
+def _get_bytes(url: str, cfg: dict, fonte: dict, max_bytes: int = 15_000_000) -> bytes:
+    """PDF do portal: direto primeiro (cadeia de certificados de src/certificados.py), ponte Brasil de reserva."""
+    if not robots_permite(url, cfg):
+        raise ProibidoRobots(f"o robots.txt de {urlsplit(url).hostname} proíbe a leitura automática")
+    if _tempo_esgotado():
+        raise RuntimeError("prazo da execução esgotado — o restante fica para a próxima passagem")
+    from urllib.request import HTTPSHandler, Request, build_opener
+    from .certificados import contexto
+    validate_public_https(url)
+    try:
+        req = Request(url, headers={"User-Agent": UA, "Accept": "application/pdf,*/*;q=0.5"})
+        with build_opener(HTTPSHandler(context=contexto())).open(req, timeout=40) as r:
+            dados = r.read(max_bytes + 1)
+    except Exception as exc_direto:  # noqa: BLE001
+        from . import ponte_brasil
+        if not ponte_brasil.usar(url):
+            raise RuntimeError(_erro(exc_direto)) from exc_direto
+        st, _f, dados, _h = ponte_brasil.abrir(url, aceitar="application/pdf,*/*;q=0.5", max_bytes=max_bytes)
+        if st >= 400:
+            raise RuntimeError(f"HTTP {st} pela ponte")
+    if len(dados) > max_bytes:
+        raise ValueError(f"PDF maior que {max_bytes // 1_000_000} MB")
+    fonte["consultas"] += 1
+    fonte["bytes"] = fonte.get("bytes", 0) + len(dados)
+    time.sleep(float((cfg.get("ritmo") or {}).get("pausa_segundos", 1.0)))
+    return dados
+
+
+def _texto_pdf(dados: bytes) -> str | None:
+    from .diario_goiania import texto_do_pdf
+    return texto_do_pdf(dados)
+
+
+def fonte_d(hoje: date, cfg: dict, diag: dict) -> list[dict]:
+    p = cfg.get("pautas") or {}
+    if not p or p.get("ativa") is False:
+        return []
+    base = (cfg.get("portal") or {}).get("base", "https://www.goiania.go.leg.br").rstrip("/")
+    F = diag["fontes"]["D"]
+    corte = (hoje - timedelta(days=int(p.get("janela_dias", 35)))).isoformat()
+    try:
+        html = _get(base + "/" + p.get("listagem", "processo-legislativo/pautas-de-sessoes").lstrip("/"), cfg, F)
+    except ProibidoRobots:
+        F["proibido_robots"] = True; return []
+    except Exception as exc:  # noqa: BLE001
+        F["falhas"].append(f"listagem das pautas: {exc}")
+        F["paginas_nao_lidas"] = ["listagem das pautas de projetos"]
+        return []
+    pautas = [x for x in pautas_da_listagem(html, base) if corte <= x["data"] <= hoje.isoformat()][: int(p.get("max_pautas", 25))]
+    F["publicadas"], F["lidas"], F["nao_lidas"] = len(pautas), 0, []
+    itens: list[dict] = []
+    for x in pautas:                                            # da mais nova para a mais antiga
+        try:
+            texto = _texto_pdf(_get_bytes(x["url"], cfg, F))
+            if texto is None:
+                raise RuntimeError("PDF sem texto legível (leitor de PDF ausente ou arquivo de imagem)")
+            novos = projetos_da_pauta(texto, x["url"], x["data"])
+            if not novos and len(texto) > 500:
+                F.setdefault("formato_desconhecido", []).append(x["arquivo"])
+            itens += novos; F["lidas"] += 1
+        except Exception as exc:  # noqa: BLE001 — uma pauta não derruba as outras
+            F["falhas"].append(f"{x['arquivo']}: {str(exc)[:120]}")
+            F["nao_lidas"].append(f"pauta de {x['data']} ({x['arquivo']})")
+    if F["nao_lidas"]:
+        F["paginas_nao_lidas"] = F["nao_lidas"]
+    vistos: dict[str, dict] = {}
+    for m in itens:                                             # o mesmo projeto em várias pautas: fica a mais recente
+        vistos.setdefault(m["processo"], m)
+    F["itens"] = len(vistos)
+    return list(vistos.values())
+
+
 # ─────────────────────────── classificação ───────────────────────────
 UTILIDADE = re.compile(r"UTILIDADE PUBLICA")
 DENOMINACAO = re.compile(r"\bDENOMINA(?:R|CAO)?\b(?: DE)? (?:A |O |AS |OS )?(?:VIA|RUA|AVENIDA|ALAMEDA|PRACA|PARQUE|BOSQUE|VIADUTO|"
@@ -378,7 +531,8 @@ DENOMINACAO = re.compile(r"\bDENOMINA(?:R|CAO)?\b(?: DE)? (?:A |O |AS |OS )?(?:V
                          r"\")|DA NOME|LOGRADOURO|VIA PUBLICA")
 RUIDO_TEMA = [
     ("denominação de logradouro ou próprio público", DENOMINACAO),
-    ("título honorífico ou homenagem", re.compile(r"TITULO DE CIDADAO|CIDADAO GOIANIENSE|COMENDA|HONRA AO MERITO|MEDALHA|"
+    ("título honorífico ou homenagem", re.compile(r"TITULO (?:HONORIFICO )?DE CIDADA|CIDADANIA GOIANIENSE|CIDADA[O]? GOIANIENSE|"
+                                                  r"COMENDA|HONRA AO MERITO|MEDALHA|"
                                                   r"DIPLOMA DE|SESSAO SOLENE|VOTO DE (?:LOUVOR|APLAUSO|PESAR)|HOMENAGEM")),
     ("data comemorativa no calendário", re.compile(r"INSTITUI (?:O|A) (?:DIA|SEMANA|MES)\b|CALENDARIO OFICIAL|DATA COMEMORATIVA|"
                                                    r"INCLUI NO CALENDARIO")),
@@ -396,6 +550,7 @@ PROGRAMA = re.compile(r"INSTITUI (?:O |A )?(?:PROGRAMA|POLITICA|PLANO|PROJETO)|C
 REGRA_OSC = re.compile(r"ENTIDADES PARCEIRAS|INSTITUICOES PRIVADAS E ENTIDADES|PARCERIAS? (?:CELEBRADAS|FIRMADAS) COM|"
                        r"ORGANIZACOES DA SOCIEDADE CIVIL|\bOSCS?\b|TERCEIRO SETOR|ENTIDADES (?:SEM FINS|DO TERCEIRO|SOCIAIS|"
                        r"FILANTROP|BENEFICENTES|DE ASSISTENCIA|CONVENIADAS)")
+ORCAMENTO = re.compile(r"LEI ORCAMENTARIA|\bLOA\b|\bPLOA\b|ORCAMENTO (?:DE |PARA )?20\d\d|DIRETRIZES ORCAMENTARIAS|\bLDO\b")
 EMENDA_IMP = re.compile(r"EMENDAS? IMPOSITIVAS?|EMENDAS? PARLAMENTAR(?:ES)? INDIVIDUA|IMPEDIMENTO DE ORDEM TECNICA")
 EDITAL = re.compile(r"\bEDITAL\b|CHAMAMENTO|CHAMADA PUBLICA|INSCRICOES (?:ABERTAS|ATE|VAO|PODEM)|SELECAO DE (?:PROJETOS|ENTIDADES|OSC)|"
                     r"CREDENCIAMENTO DE (?:ENTIDADES|OSC|ASSOCIAC)")
@@ -426,7 +581,8 @@ def classificar_item(m: dict, hoje: date, cfg: dict | None = None) -> dict:
     texto = " ".join(x for x in (m.get("assunto"), m.get("titulo"), m.get("descricao")) if x)
     T = _N(texto)
     TE = _ENT_PUBLICA.sub(" ", T)          # "órgãos e entidades da Administração", "Instituto de Previdência" não são OSC
-    propria = bool(m.get("propria")) or any(n and n in T for n in nomes)
+    projetos = {str(x).strip() for x in (cfg.get("associacao") or {}).get("projetos", [])}
+    propria = bool(m.get("propria")) or any(n and n in T for n in nomes) or (str(m.get("numero") or "") in projetos)
     base = {"categoria": None, "regime": None, "motivos": [], "sinais": [], "propria": propria, "fim": None,
             "entidade": None}
     if m.get("fonte") == "C":                                   # notícia
@@ -441,6 +597,12 @@ def classificar_item(m: dict, hoje: date, cfg: dict | None = None) -> dict:
         if (FOMENTO.search(T) or PROGRAMA.search(T) or EMENDA_IMP.search(T)) and ENTIDADE.search(TE):
             return {**base, "veredito": "ACOMPANHAR", "categoria": "noticia_fomento", "regime": "lei_ou_recurso",
                     "motivos": ["notícia de lei, programa ou recurso que envolve entidades — acompanhar a tramitação"]}
+        if REGRA_OSC.search(TE):                    # 03/10: lei que muda as regras das parcerias com o terceiro setor
+            return {**base, "veredito": "ACOMPANHAR", "categoria": "regra_para_entidades", "regime": "obrigacao_de_parceria",
+                    "motivos": ["notícia de lei que muda regras das parcerias com entidades do terceiro setor — afeta a habilitação"]}
+        if ORCAMENTO.search(T) or EMENDA_IMP.search(T):   # 03/10: LOA/LDO em tramitação = janela das emendas impositivas
+            return {**base, "veredito": "ACOMPANHAR", "categoria": "orcamento_emendas", "regime": "emenda_impositiva",
+                    "motivos": ["orçamento do município em tramitação na Câmara — janela das emendas impositivas dos vereadores"]}
         if propria or (bairro and bairro in T):
             return {**base, "veredito": "ACOMPANHAR", "categoria": "bairro", "motivos": ["notícia sobre o Jardim América ou a associação"]}
         return {**base, "veredito": "RUIDO", "motivos": ["notícia sem chamamento, recurso ou entidade"]}
@@ -460,6 +622,9 @@ def classificar_item(m: dict, hoje: date, cfg: dict | None = None) -> dict:
     for nome, rx in RUIDO_TEMA:
         if rx.search(T) and not (FOMENTO.search(T) and ENTIDADE.search(TE)):
             return {**base, "veredito": "RUIDO", "categoria": "ruido", "motivos": [nome]}
+    if ORCAMENTO.search(T):
+        return {**base, "veredito": "ACOMPANHAR", "categoria": "orcamento_emendas", "regime": "emenda_impositiva",
+                "motivos": ["projeto de lei orçamentária (LOA/LDO) — janela das emendas impositivas a entidades"]}
     if EMENDA_IMP.search(T):
         return {**base, "veredito": "ACOMPANHAR", "categoria": "emenda_impositiva", "regime": "emenda_impositiva",
                 "motivos": ["emenda impositiva de vereador — recurso que pode ser destinado a entidade"]}
@@ -549,13 +714,15 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     cfg = _cfg()
     _PRAZO["ate"] = time.monotonic() + float(cfg.get("prazo_total_segundos", 300))
     diag = {**vazio, "motivo_zero": None, "versao": "motor-05 v2 (01/10/2026)",
-            "fontes": {k: {"falhas": [], "consultas": 0, "itens": 0} for k in ("A", "B", "C")}}
+            "fontes": {k: {"falhas": [], "consultas": 0, "itens": 0} for k in ("A", "B", "C", "D")}}
     itens, recusas = [], []
-    for nome, fn in (("B", fonte_b), ("A", fonte_a), ("C", fonte_c)):   # B primeiro: a associação nunca fica sem leitura
+    for nome, fn in (("B", fonte_b), ("A", fonte_a), ("D", fonte_d), ("C", fonte_c)):   # B primeiro: a associação nunca fica sem leitura
         try:
             itens += fn(hoje, cfg, diag)
         except Recusa as exc:
             recusas.append(f"{nome}: {exc}"); diag["fontes"][nome]["falhas"].append(str(exc))
+        except ProibidoRobots:
+            diag["fontes"][nome]["proibido_robots"] = True
         except Exception as exc:  # noqa: BLE001 — uma fonte nunca derruba a outra
             diag["fontes"][nome]["falhas"].append(f"etapa: {_erro(exc)}")
     _PRAZO["ate"] = None
@@ -604,6 +771,18 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                                   + ", ".join(F["A"]["formato_desconhecido"][:4]) + ") — o HTML pode ter mudado")
     if F["A"].get("cortados"):
         diag["cobertura_cortada"] = F["A"]["cortados"][:10]
+    # 03/10 (teste do motor 04): PUBLICADO × LIDO — pauta publicada e não lida faz o maestro ver "parcial" e disparar de novo
+    if F["D"].get("paginas_nao_lidas"):
+        diag["paginas_nao_lidas"] = F["D"]["paginas_nao_lidas"][:20]
+    if F["D"].get("formato_desconhecido"):
+        diag["alerta_formato"] = "pauta lida sem nenhum projeto reconhecido (o PDF pode ter mudado): " + ", ".join(F["D"]["formato_desconhecido"][:3])
+    diag["leitura_do_dia"] = {"pautas_publicadas": F["D"].get("publicadas"), "pautas_lidas": F["D"].get("lidas"),
+                              "noticias": F["C"]["itens"], "nao_lidas": F["D"].get("nao_lidas") or []}
+    proib = [k for k in F if F[k].get("proibido_robots")]
+    if proib:
+        diag["proibido_robots"] = {"fontes": proib, "motivo": "o robots.txt do SUAP (suap.camaragyn.go.gov.br) proíbe robôs "
+                                   "(Disallow: /) — os processos e a tramitação vêm das pautas do Plenário no portal; a ficha do "
+                                   "processo da associação no SUAP é conferida pelo titular (consulta humana)"}
     d0 = hoje.isoformat()
     hist = est.setdefault("historico", {})
     hist[d0] = {**{f"consultas_{k}": F[k]["consultas"] for k in F}, **{f"itens_{k}": F[k]["itens"] for k in F},
@@ -641,14 +820,16 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     est["ultima"] = {"em": now_iso(), "data": d0, "vereditos": cont, "falhas": sum((F[k]["falhas"] for k in F), [])[:10]}
     est["historico"] = {k: v for k, v in hist.items() if k >= (hoje - timedelta(days=120)).isoformat()}
     write_json(ESTADO, est)
-    hosts = {"A": (cfg.get("suap") or {}).get("base", "https://suap.camaragyn.go.gov.br"),
+    hosts = {"D": (cfg.get("portal") or {}).get("base", "https://www.goiania.go.leg.br"),
+             "A": (cfg.get("suap") or {}).get("base", "https://suap.camaragyn.go.gov.br"),
              "B": (cfg.get("suap") or {}).get("base", "https://suap.camaragyn.go.gov.br"),
              "C": (cfg.get("portal") or {}).get("base", "https://www.goiania.go.leg.br")}
     falhas = [{"url": hosts[k], "erro": "camara", "code": None, "waf": None, "causa": f"{k}: {f}"}
               for k in F for f in F[k]["falhas"]][:6]
     saude = [{"url": hosts[k], "http": 200, "bytes": F[k].get("bytes", 0), "itens": F[k]["itens"]} for k in F if F[k]["consultas"]]
     if not oport:
-        diag["motivo_zero"] = (f"{len(itens)} itens lidos (processos A {F['A']['itens']} · própria B {F['B']['itens']} · notícias C "
+        diag["motivo_zero"] = (f"{len(itens)} itens lidos (pautas D {F['D']['itens']} projetos em {F['D'].get('lidas') or 0} pauta(s) · "
+                               f"processos A {F['A']['itens']} · própria B {F['B']['itens']} · notícias C "
                                f"{F['C']['itens']}): nenhum chamamento aberto para OSC · {cont['ACOMPANHAR']} a acompanhar · "
                                f"{len(habilitacao)} utilidade(s) pública(s) para a lista de habilitação" if leu else
                                "a Câmara não respondeu: " + (falhas[0]["causa"] if falhas else "sem leitura"))
