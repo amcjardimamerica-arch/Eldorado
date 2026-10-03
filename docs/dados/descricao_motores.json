@@ -2537,6 +2537,11 @@
      "nome": "Setec/MEC — extensão na rede federal",
      "url": "https://www.gov.br/mec/pt-br/acesso-a-informacao/institucional/secretarias/secretaria-de-educacao-profissional-e-tecnologica",
      "tipo": "secretaria"
+    },
+    {
+     "nome": "Finep",
+     "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
+     "tipo": "agregada (assistido) — lida pelo fluxo 16"
     }
    ],
    "dominios": [
@@ -2878,6 +2883,36 @@
      "nome": "Salic — projetos que a empresa já incentivou",
      "url": "https://salic.cultura.gov.br/",
      "tipo": "plataforma"
+    },
+    {
+     "nome": "Embaixada do Japão",
+     "url": "https://www.br.emb-japan.go.jp/",
+     "tipo": "agregada (assistido) — lida pelo fluxo 16"
+    },
+    {
+     "nome": "Embaixada dos EUA",
+     "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
+     "tipo": "agregada (assistido) — lida pelo fluxo 16"
+    },
+    {
+     "nome": "Fundação Banco do Brasil",
+     "url": "https://www.fbb.org.br/",
+     "tipo": "agregada (assistido) — lida pelo fluxo 16"
+    },
+    {
+     "nome": "IAF — Fundação Interamericana",
+     "url": "https://iaf.gov/apply-for-grant/",
+     "tipo": "agregada (html_listagem) — lida pelo fluxo 16"
+    },
+    {
+     "nome": "Itaú Social",
+     "url": "https://editais.itausocial.org.br/",
+     "tipo": "agregada (assistido) — lida pelo fluxo 16"
+    },
+    {
+     "nome": "Petrobras",
+     "url": "https://petrobras.com.br/",
+     "tipo": "agregada (assistido) — lida pelo fluxo 16"
     }
    ],
    "dominios": [
@@ -4110,306 +4145,6 @@
    "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir",
    "rotas": [],
    "dominios": [],
-   "lexico_1": [],
-   "lexico_2": [],
-   "veto_motor": [],
-   "numeros": {
-    "mes": null,
-    "acervo": null,
-    "estado": null,
-    "achados_total": null,
-    "bloqueios": null
-   }
-  },
-  "site-iaf": {
-   "nome": "site-iaf",
-   "perfil": "IAF — Fundação Interamericana — chamadas de apoio a organizações de base (recusa IP estrangeiro)",
-   "tipo": null,
-   "finalidade": "descoberta",
-   "coleta": "nuvem",
-   "nota_coleta": null,
-   "objetivo": "Chamadas de apoio a organizações de base (recusa IP estrangeiro).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 0 rota(s) em 0 domínio(s) (); abre só links que casam com 0 termos e escapam dos 12 vetos, e confirma no texto com 0 termos.",
-   "agenda": "07:13,19:13 · todos — motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
-   "agenda_detalhe": {
-    "horarios_brt": "07:13,19:13",
-    "dias": "todos",
-    "cadencia_dias": 1,
-    "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna"
-   },
-   "verificacao": {
-    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
-    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
-   },
-   "onde_para": "",
-   "para_afiar": [],
-   "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir",
-   "rotas": [],
-   "dominios": [],
-   "lexico_1": [],
-   "lexico_2": [],
-   "veto_motor": [],
-   "numeros": {
-    "mes": null,
-    "acervo": null,
-    "estado": null,
-    "achados_total": null,
-    "bloqueios": null
-   }
-  },
-  "site-finep": {
-   "nome": "site-finep",
-   "perfil": "Finep — chamadas públicas (coleta assistida: o site proíbe robôs)",
-   "tipo": null,
-   "finalidade": "descoberta",
-   "coleta": "nuvem",
-   "nota_coleta": null,
-   "objetivo": "Chamadas públicas (coleta assistida: o site proíbe robôs).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 1 rota(s) em 1 domínio(s) (finep.gov.br); abre só links que casam com 0 termos e escapam dos 12 vetos, e confirma no texto com 0 termos.",
-   "agenda": "contínuo · todos — motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
-   "agenda_detalhe": {
-    "horarios_brt": "contínuo",
-    "dias": "todos",
-    "cadencia_dias": 1,
-    "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna"
-   },
-   "verificacao": {
-    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
-    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
-   },
-   "onde_para": "",
-   "para_afiar": [],
-   "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir",
-   "rotas": [
-    {
-     "nome": "Finep",
-     "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
-     "tipo": "assistido"
-    }
-   ],
-   "dominios": [
-    "finep.gov.br"
-   ],
-   "lexico_1": [],
-   "lexico_2": [],
-   "veto_motor": [],
-   "numeros": {
-    "mes": null,
-    "acervo": null,
-    "estado": null,
-    "achados_total": null,
-    "bloqueios": null
-   }
-  },
-  "site-itau-social": {
-   "nome": "site-itau-social",
-   "perfil": "Itaú Social — editais (coleta assistida: o site proíbe robôs)",
-   "tipo": null,
-   "finalidade": "descoberta",
-   "coleta": "nuvem",
-   "nota_coleta": null,
-   "objetivo": "Editais (coleta assistida: o site proíbe robôs).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 1 rota(s) em 1 domínio(s) (editais.itausocial.org.br); abre só links que casam com 0 termos e escapam dos 12 vetos, e confirma no texto com 0 termos.",
-   "agenda": "contínuo · todos — motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
-   "agenda_detalhe": {
-    "horarios_brt": "contínuo",
-    "dias": "todos",
-    "cadencia_dias": 1,
-    "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna"
-   },
-   "verificacao": {
-    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
-    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
-   },
-   "onde_para": "",
-   "para_afiar": [],
-   "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir",
-   "rotas": [
-    {
-     "nome": "Itaú Social",
-     "url": "https://editais.itausocial.org.br/",
-     "tipo": "assistido"
-    }
-   ],
-   "dominios": [
-    "editais.itausocial.org.br"
-   ],
-   "lexico_1": [],
-   "lexico_2": [],
-   "veto_motor": [],
-   "numeros": {
-    "mes": null,
-    "acervo": null,
-    "estado": null,
-    "achados_total": null,
-    "bloqueios": null
-   }
-  },
-  "site-petrobras": {
-   "nome": "site-petrobras",
-   "perfil": "Petrobras — seleções socioambientais (coleta assistida: o site proíbe robôs)",
-   "tipo": null,
-   "finalidade": "descoberta",
-   "coleta": "nuvem",
-   "nota_coleta": null,
-   "objetivo": "Seleções socioambientais (coleta assistida: o site proíbe robôs).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 1 rota(s) em 1 domínio(s) (petrobras.com.br); abre só links que casam com 0 termos e escapam dos 12 vetos, e confirma no texto com 0 termos.",
-   "agenda": "contínuo · todos — motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
-   "agenda_detalhe": {
-    "horarios_brt": "contínuo",
-    "dias": "todos",
-    "cadencia_dias": 1,
-    "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna"
-   },
-   "verificacao": {
-    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
-    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
-   },
-   "onde_para": "",
-   "para_afiar": [],
-   "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir",
-   "rotas": [
-    {
-     "nome": "Petrobras",
-     "url": "https://petrobras.com.br/",
-     "tipo": "assistido"
-    }
-   ],
-   "dominios": [
-    "petrobras.com.br"
-   ],
-   "lexico_1": [],
-   "lexico_2": [],
-   "veto_motor": [],
-   "numeros": {
-    "mes": null,
-    "acervo": null,
-    "estado": null,
-    "achados_total": null,
-    "bloqueios": null
-   }
-  },
-  "site-fundacao-banco-do-brasil": {
-   "nome": "site-fundacao-banco-do-brasil",
-   "perfil": "Fundação Banco do Brasil — editais (coleta assistida: o site proíbe robôs)",
-   "tipo": null,
-   "finalidade": "descoberta",
-   "coleta": "nuvem",
-   "nota_coleta": null,
-   "objetivo": "Editais (coleta assistida: o site proíbe robôs).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 1 rota(s) em 1 domínio(s) (fbb.org.br); abre só links que casam com 0 termos e escapam dos 12 vetos, e confirma no texto com 0 termos.",
-   "agenda": "contínuo · todos — motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
-   "agenda_detalhe": {
-    "horarios_brt": "contínuo",
-    "dias": "todos",
-    "cadencia_dias": 1,
-    "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna"
-   },
-   "verificacao": {
-    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
-    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
-   },
-   "onde_para": "",
-   "para_afiar": [],
-   "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir",
-   "rotas": [
-    {
-     "nome": "Fundação Banco do Brasil",
-     "url": "https://www.fbb.org.br/",
-     "tipo": "assistido"
-    }
-   ],
-   "dominios": [
-    "fbb.org.br"
-   ],
-   "lexico_1": [],
-   "lexico_2": [],
-   "veto_motor": [],
-   "numeros": {
-    "mes": null,
-    "acervo": null,
-    "estado": null,
-    "achados_total": null,
-    "bloqueios": null
-   }
-  },
-  "site-embaixada-eua": {
-   "nome": "site-embaixada-eua",
-   "perfil": "Embaixada dos EUA — pequenas doações a projetos (coleta assistida)",
-   "tipo": null,
-   "finalidade": "descoberta",
-   "coleta": "nuvem",
-   "nota_coleta": null,
-   "objetivo": "Pequenas doações a projetos (coleta assistida).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 1 rota(s) em 1 domínio(s) (br.usembassy.gov); abre só links que casam com 0 termos e escapam dos 12 vetos, e confirma no texto com 0 termos.",
-   "agenda": "contínuo · todos — motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
-   "agenda_detalhe": {
-    "horarios_brt": "contínuo",
-    "dias": "todos",
-    "cadencia_dias": 1,
-    "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna"
-   },
-   "verificacao": {
-    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
-    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
-   },
-   "onde_para": "",
-   "para_afiar": [],
-   "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir",
-   "rotas": [
-    {
-     "nome": "Embaixada dos EUA",
-     "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
-     "tipo": "assistido"
-    }
-   ],
-   "dominios": [
-    "br.usembassy.gov"
-   ],
-   "lexico_1": [],
-   "lexico_2": [],
-   "veto_motor": [],
-   "numeros": {
-    "mes": null,
-    "acervo": null,
-    "estado": null,
-    "achados_total": null,
-    "bloqueios": null
-   }
-  },
-  "site-embaixada-japao": {
-   "nome": "site-embaixada-japao",
-   "perfil": "Embaixada do Japão — apoio a projetos comunitários (coleta assistida)",
-   "tipo": null,
-   "finalidade": "descoberta",
-   "coleta": "nuvem",
-   "nota_coleta": null,
-   "objetivo": "Apoio a projetos comunitários (coleta assistida).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 1 rota(s) em 1 domínio(s) (br.emb-japan.go.jp); abre só links que casam com 0 termos e escapam dos 12 vetos, e confirma no texto com 0 termos.",
-   "agenda": "contínuo · todos — motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna",
-   "agenda_detalhe": {
-    "horarios_brt": "contínuo",
-    "dias": "todos",
-    "cadencia_dias": 1,
-    "por_que_esta_hora": "motor por site (desmonte dos indexadores, 02/10): lido pelo fluxo 16 a partir da última leitura, sem lacuna"
-   },
-   "verificacao": {
-    "etapa_1": "na leitura: o indexador entrega título, financiador, prazo e o link da FONTE OFICIAL (quando ele o traz) → vira INDÍCIO; o mesmo edital visto em vários indexadores é um indício só, com várias fontes",
-    "etapa_2": "na fonte oficial: o Interceptador abre o link oficial (ou acha o site do financiador) e comprova objeto, prazo vigente e habilitação de OSC → vira CONFIRMADA; o prazo do indexador é pista até lá"
-   },
-   "onde_para": "",
-   "para_afiar": [],
-   "evolucao_gratuita": "trocar raspagem por feed RSS ou API aberta da própria fonte, quando existir",
-   "rotas": [
-    {
-     "nome": "Embaixada do Japão",
-     "url": "https://www.br.emb-japan.go.jp/",
-     "tipo": "assistido"
-    }
-   ],
-   "dominios": [
-    "br.emb-japan.go.jp"
-   ],
    "lexico_1": [],
    "lexico_2": [],
    "veto_motor": [],

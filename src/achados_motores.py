@@ -129,6 +129,18 @@ def montar() -> dict:
                       if any(_sm.get(f) == mid for f in (g.get("fontes") or [g.get("fonte")]))]
             except Exception:
                 xs = []
+        # 03/10 (titular): motor que recebeu sites agregados (motor 20 ← 40/41/43/44/45/47; motor 17 ← 42) soma os indícios deles
+        try:
+            _cxa = json.loads((ROOT / "config/indexadores.json").read_text(encoding="utf-8"))
+            _agm = (_cxa.get("agregados") or {}).get("motores") or {}
+            _sit = {a.get("site") for k, v in _agm.items() if k in ids or k.removeprefix("plat-") in ids for a in v}
+            if _sit:
+                xs = list(xs) + [{"id": g["id"], "titulo": g.get("titulo"), "url": g.get("link_oficial") or g.get("pagina_agregador"),
+                                  "fim": g.get("prazo"), "uf": g.get("uf"), "descoberto_em": g.get("primeiro_visto")}
+                                 for g in json.loads((ROOT / "estado/agregadores/itens.json").read_text(encoding="utf-8")).get("itens", [])
+                                 if _sit & set(g.get("fontes") or [g.get("fonte")])]
+        except Exception:
+            pass
         if mid == "motor-agregadores":
             try:
                 xs = [{"id": g["id"], "titulo": g.get("titulo"), "url": g.get("link_oficial") or g.get("pagina_agregador"), "fim": g.get("prazo"),

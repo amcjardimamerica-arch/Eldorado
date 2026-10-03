@@ -623,6 +623,27 @@ def run() -> dict:
                      "empresas": [{"nome": a.get("empresa") or a.get("nome") or "", "url": a.get("url") or a.get("fonte"), "motivo": (a.get("evento") or a.get("trecho") or "")[:90]} for a in (pg.get("achados") or [])[:8]],
                      "situacao": ("sem leitura ainda" if not pg else "ativo — captando" if pg.get("total") else "ativo, sem achados"),
                      "descricao": "empresas que patrocinam com recursos próprios (marketing, sem benefício fiscal) eventos culturais, esportivos e educacionais; fontes: imprensa, rádio, TV e portais de eventos; domingo 03h"})
+    # 03/10 (titular): sites que deixaram de ser motor próprio e foram AGREGADOS a um motor regular (40, 41, 43, 44, 45 e 47
+    # no motor 20; 42 no motor 17). O site continua lido pelo fluxo 16; o motor que o recebe mostra os sites e os indícios.
+    try:
+        _cx2 = load_json(ROOT / "config/indexadores.json")
+        _ix2 = load_json(ROOT / "docs/dados/indexadores.json") if (ROOT / "docs/dados/indexadores.json").exists() else {}
+        _ps2 = {x.get("id"): x for x in (_ix2.get("sites") or [])}
+        _todos = {o["id"]: o for o in oficiais + plataformas}
+        for _alvo, _lst in ((_cx2.get("agregados") or {}).get("motores") or {}).items():
+            _o = _todos.get(_alvo) or _todos.get(_alvo.removeprefix("plat-"))
+            if _o is None:
+                continue
+            _ag = []
+            for _a in _lst:
+                _s = _ps2.get(_a.get("site")) or {}
+                _ag.append({"site": _a.get("site"), "nome": _a.get("local") or _a.get("nome"), "motor_antigo": _a.get("motor_antigo"),
+                            "url": _a.get("url"), "rota": _s.get("rota") or _a.get("rota"), "ultima": _s.get("ultima"),
+                            "no_fluxo": int(_s.get("indicios_no_fluxo") or 0)})
+            _o["agregados"] = _ag
+            _o["indicios_agregados"] = sum(x["no_fluxo"] for x in _ag)
+    except Exception:
+        pass
     # ── RELEVÂNCIA de cada motor regular (1 a 5) e numeração pelo nível ──
     def _relevancia(o):
         pts = 0; por = []

@@ -15,8 +15,9 @@ class TesteDesmonte(unittest.TestCase):
     def test_um_motor_por_site_sem_familias(self):
         C = J("config/indexadores.json")
         self.assertFalse([m for m in C["motores"] if m.startswith("idx-")])
+        AG = (C.get("agregados") or {}).get("motores") or {}       # 03/10 (titular): sites agregados ao motor 20 e ao 17
         for s in C["sites"]:
-            self.assertIn(s["motor"], C["motores"], s["id"])
+            self.assertIn(s["motor"], set(C["motores"]) | set(AG), s["id"])
         for mid, m in C["motores"].items():
             self.assertTrue(m.get("local") and m.get("finalidade") and m.get("fonte") is not None, mid)
             self.assertTrue(m["nome"].startswith(m["local"]), mid)                   # o nome começa pelo local de busca
@@ -100,6 +101,37 @@ class TesteOrdemENomes(unittest.TestCase):
         I = {f["id"]: f for f in J("config/investigacao.json")["fontes"]}
         self.assertIn("25 maiores cidades", I["prefeituras-50-go"]["nome"])
         self.assertTrue(I["empresas-editais-incentivados"]["nome"].startswith("Busca de empresas para FIA, Idoso"))
+
+
+
+class TesteAgregacao0310(unittest.TestCase):
+    """03/10/2026 (titular): motores 40, 41, 43, 44, 45 e 47 agregados ao 20; motor 42 agregado ao 17."""
+    AO_20 = {"embaixadas": "site-embaixada-japao", "embaixada-eua": "site-embaixada-eua", "fbb": "site-fundacao-banco-do-brasil",
+             "iaf": "site-iaf", "itau-social": "site-itau-social", "petrobras": "site-petrobras"}
+
+    def test_sites_agregados_e_lidos(self):
+        C = J("config/indexadores.json"); S = {s["id"]: s for s in C["sites"]}; AG = C["agregados"]["motores"]
+        for sid, antigo in self.AO_20.items():
+            self.assertEqual((S[sid]["motor"], S[sid]["motor_antigo"]), ("motor-gife", antigo))
+            self.assertNotIn(antigo, C["motores"])
+        self.assertEqual({a["site"] for a in AG["motor-gife"]}, set(self.AO_20))
+        self.assertEqual((S["finep"]["motor"], [a["site"] for a in AG["plat-cnpq-extensao"]]), ("plat-cnpq-extensao", ["finep"]))
+        self.assertNotIn("site-finep", C["motores"])
+
+    def test_ordem_agenda_e_rotas(self):
+        P = J("config/ordem_motores.json")["posicoes"]
+        self.assertEqual(len(P), 42); self.assertEqual(sorted(P.values()), list(range(1, 43)))
+        self.assertEqual((P["cnpq-extensao"], P["motor-gife"], P["site-mapa-osc"], P["site-prosas"], P["site-rede-filantropia"]), (17, 20, 40, 41, 42))
+        A = J("config/agenda_motores.json")["motores"]
+        for antigo in list(self.AO_20.values()) + ["site-finep"]:
+            self.assertNotIn(antigo, P)
+            self.assertEqual(A[antigo]["dias"], "inativo")
+            self.assertEqual(A[antigo]["agregado_a"], "cnpq-extensao" if antigo == "site-finep" else "motor-gife")
+        R = J("config/rotas_motores.json")["motores"]
+        self.assertEqual(len(R["motor-gife"]["rotas_agregadas"]), 6)
+        self.assertEqual(len(R["plat-cnpq-extensao"]["rotas_agregadas"]), 1)
+        # o sensor do motor NÃO lê as rotas agregadas (a Finep proíbe robôs): elas ficam fora de 'rotas'
+        self.assertFalse([r for r in R["plat-cnpq-extensao"]["rotas"] if "finep" in str(r.get("url"))])
 
 
 if __name__ == "__main__":
