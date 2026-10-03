@@ -1,9 +1,9 @@
 {
- "em": "2026-10-03T03:56:04+00:00",
+ "em": "2026-10-03T04:13:13+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1160,
+ "rotulados": 1161,
  "positivos": 356,
- "pendentes": 880,
+ "pendentes": 881,
  "validacao_cruzada": {
   "auc": 0.905,
   "precisao": 0.808,
@@ -46,6 +46,12 @@
    "titulo": "Edital Prefeitura de Ourinhos 2026: Saúde",
    "url": "http://www.ourinhos.sp.gov.br",
    "nota": 0.498,
+   "incerteza": 0.995
+  },
+  {
+   "titulo": "Prorrogação do Edital de Chamamento CPA - Conselho Estadual dos Direitos da Criança e do Adolescente — Goiás",
+   "url": "https://goias.gov.br/social/wp-content/uploads/sites/24/2026/08/Edital-005-CPA-Prorrogacao.pdf",
+   "nota": 0.503,
    "incerteza": 0.995
   },
   {
@@ -365,13 +371,7 @@
    "url": "https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en/Institucional/The_BNDES_Abroad",
    "nota": 0.524,
    "incerteza": 0.951
-  },
-  {
-   "titulo": "Contratação de artistas, grupos e bandas musicais, em diferentes estilos musicais a fim de atender aos… — MUNICIPIO DE XIQUE-XIQUE",
-   "url": "https://pncp.gov.br/app/editais/13880257000127/2026/9",
-   "nota": 0.475,
-   "incerteza": 0.95
   }
  ],
- "pendentes_provaveis_reais": 265
+ "pendentes_provaveis_reais": 266
 }
