@@ -186,18 +186,30 @@ def coletar_maiores_contribuintes(uf: str) -> dict:
     fonte = est["maiores_contribuintes_icms"]
     destino = PASTA / uf.lower() / "contribuintes_icms.json"
     atual = load_json(destino) if destino.exists() else {"uf": uf, "fonte": fonte["fonte"], "url": fonte["url"], "anos": {}, "leituras": []}
+    for a, b in list((atual.get("anos") or {}).items()):        # 03/10: "anos" que vieram da data da página saem
+        if re.search(r"de (janeiro|fevereiro|mar[cç]o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro) de", str(b.get("rotulo") or ""), re.I):
+            atual["anos"].pop(a)
     leitura = {"em": now_iso(), "url": fonte["url"]}
     try:
         html = _get(fonte["url"])
         p = _Links(); p.feed(html)
         texto = " ".join(p.texto)
         achados = extrair_contribuintes(texto)
-        anexos = [(urljoin(fonte["url"], h), t) for h, t in p.links
-                  if h and (h.lower().endswith(".pdf") or re.search(r"contribuint|ranking|maiores", (t or "") + h, re.I))]
+        # 03/10 (teste do motor 20): só PDF com o ano no RÓTULO ("Os maiores contribuintes de 2025"). Antes o link da
+        # data da página ("28 de janeiro de 2026") virava a "lista de 2026" e "de janeiro de 2026" entrava como empresa.
+        anexos = []
+        for h, t in p.links:
+            u = urljoin(fonte["url"], h or "")
+            if u.rstrip("/") == fonte["url"].rstrip("/") or not u.lower().split("?")[0].endswith(".pdf"):
+                continue
+            if re.search(r"contribuint|ranking|maiores", (t or "") + u, re.I):
+                anexos.append((u, t))
+        anexos.sort(key=lambda x: (re.search(r"(20\d{2})", x[1] or "") or re.search(r"(20\d{2})", x[0]) or [None, "0"])[1], reverse=True)
         leitura["anexos_encontrados"] = len(anexos)
         lidos = 0
         for href, rot in anexos[:6]:
-            ano = (re.search(r"20\d{2}", rot + href) or [None])[0] if re.search(r"20\d{2}", rot + href) else None
+            m_ano = re.search(r"(20\d{2})", rot or "") or re.search(r"_(20\d{2})_", href)
+            ano = m_ano.group(1) if m_ano else None
             try:
                 if href.lower().endswith(".pdf"):
                     dados = _get(href, binario=True)
@@ -697,6 +709,51 @@ def varrer_parcerias(uf: str, base: dict, limite_paginas: int = 30) -> dict:
     return {"paginas_lidas": lidas, "achados": len(achados), "relevantes": len(atual["relevantes"])}
 
 
+_NOME_INVALIDO = re.compile(r"\bde (?:janeiro|fevereiro|mar[cç]o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\b|"
+                            r"whatsapp|instagram|facebook|youtube|agenda|^prefeitura\b|^c[aâ]mara\b|^secretaria\b|^governo\b|"
+                            r"\badvogados\b|^\W*$", re.I)
+
+
+def nome_valido(nome: str) -> bool:
+    """03/10 (teste do motor 20): o leitor de parcerias e o de patrocínios deixavam entrar 'de janeiro de 2026',
+    'WhatsApp Agenda Grupo' e 'Prefeitura de Aparecida e Instituto' como EMPRESAS — sem CNPJ, nunca reavaliadas."""
+    n = (nome or "").strip()
+    genericos = {"software", "sistemas", "servicos", "serviços", "comercio", "comércio", "industria", "indústria", "empresa", "empresas"}
+    toks = _toks_nome(n)
+    return len(n) >= 4 and not _NOME_INVALIDO.search(n) and not (toks and toks <= genericos)   # "SOFTWARE S/A" é genérico demais
+
+
+def _cnpj_verificado_por_nome(nome: str) -> str | None:
+    """CNPJ já conferido em fonte oficial (docs/dados/incentivos_verificados.json), pelo nome — nunca adivinhado."""
+    arq = ROOT / "docs/dados/incentivos_verificados.json"
+    if not arq.exists():
+        return None
+    alvo = _toks_nome(nome)
+    if len(alvo) < 2 or re.match(r"\s*(instituto|funda[cç][aã]o|fundo)\b", nome or "", re.I):
+        return None                               # o braço social tem CNPJ próprio: nunca herda o da empresa
+    for e in load_json(arq).get("empresas") or []:
+        if e.get("cnpj") and alvo <= _toks_nome(e.get("nome") or ""):       # todas as palavras do nome (Instituto X ≠ X S.A.)
+            return e["cnpj"]
+    return None
+
+
+def limpar_base(base: dict) -> dict:
+    """Entrada sem CNPJ: nome inválido sai da base; nome válido ganha o CNPJ verificado quando existe; o resto fica
+    como pendência (contada no relatório da semana)."""
+    out = {"descartadas_sem_cnpj": [], "cnpj_resolvido": [], "pendentes_cnpj": []}
+    for k, e in list(base.items()):
+        if e.get("cnpj"):
+            continue
+        if not nome_valido(e.get("nome")):
+            out["descartadas_sem_cnpj"].append(e.get("nome")); base.pop(k); continue
+        c = _cnpj_verificado_por_nome(e.get("nome"))
+        if c:
+            e["cnpj"] = c; out["cnpj_resolvido"].append(e.get("nome"))
+        else:
+            out["pendentes_cnpj"].append(e.get("nome"))
+    return out
+
+
 def _toks_nome(s: str) -> set:
     return {t for t in re.findall(r"[a-zà-ú0-9]{4,}", (s or "").lower()) if t not in ("ltda", "grupo", "brasil", "holding", "companhia", "instituto", "fundação", "fundacao")}
 
@@ -736,6 +793,7 @@ def run_semanal(uf: str = "GO", minimo_novas: int | None = None) -> dict:
     parc = varrer_parcerias(uf, base)
     parcerias = load_json(PASTA / uf.lower() / "parcerias_declaradas.json")
     rel = {"uf": uf, "em": now_iso(), "base_antes": len(base), "leitura_icms": col["leitura"], "parcerias": parc}
+    rel["limpeza"] = limpar_base(base)
     # (1) REAVALIAÇÃO PERMANENTE da base
     reav = 0
     for k, e in list(base.items()):
@@ -760,6 +818,9 @@ def run_semanal(uf: str = "GO", minimo_novas: int | None = None) -> dict:
                     predicao=predicao(lucro, hist, site, g, eleg))
             reav += 1
     rel["reavaliadas"] = reav
+    com_cnpj = sum(1 for e in base.values() if e.get("cnpj"))
+    rel["cobertura"] = {"base_com_cnpj": com_cnpj, "reavaliadas": reav, "completa": reav >= com_cnpj,
+                        "sem_cnpj": len(rel["limpeza"]["pendentes_cnpj"])}
     # (2) NOVAS DA SEMANA — por potencial, nunca ao acaso
     candidatos = {}
     for ano, bloco in sorted(lista.get("anos", {}).items()):
@@ -774,6 +835,8 @@ def run_semanal(uf: str = "GO", minimo_novas: int | None = None) -> dict:
         if k not in base and not any(len(_toks_nome(c["nome"]) & _toks_nome(g["nome"])) >= 2 for c in candidatos.values()):
             candidatos.setdefault(k, {"nome": g["nome"], "cnpj": None, "icms": {}, "origem": "GIFE"})
     for r in parcerias.get("relevantes", [])[:100]:
+        if not nome_valido(r["nome"]):
+            continue                              # 03/10: escritório de advocacia, data, rede social não são candidatas
         k = _chave(None, r["nome"])
         if k not in base and not any(len(_toks_nome(c["nome"]) & _toks_nome(r["nome"])) >= 2 for c in candidatos.values()):
             candidatos.setdefault(k, {"nome": r["nome"], "cnpj": None, "icms": {}, "origem": "Sebrae/entidades empresariais"})
