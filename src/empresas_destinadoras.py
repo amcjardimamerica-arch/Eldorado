@@ -155,6 +155,10 @@ def rotas(limite: int = 40) -> list[str]:
         for e in d.get("empresas", []):
             for b in e.get("bracos_sociais", []):
                 u = b.get(chave)
+                # 03/10 (teste do motor 19): o leitor só aceita HTTPS — "http://" falhava todo dia (Alcoa, Sicoob) e a
+                # falha fazia o maestro redisparar 3 vezes à toa. Os dois sites respondem em HTTPS.
+                if u and u.startswith("http://"):
+                    u = "https://" + u[len("http://"):]
                 if u and u not in vistos:
                     vistos.add(u); urls.append(u)
     return urls[:limite]

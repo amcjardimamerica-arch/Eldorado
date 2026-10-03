@@ -56,6 +56,11 @@ class Rotas(unittest.TestCase):
         b = {x["nome"]: x for e in ed.load_json(ed.SAIDA)["empresas"] for x in e["bracos_sociais"]}
         self.assertIn("DNS", b["Fundação Cargill"]["pendencia"])
 
+    def test_so_https(self):
+        r = ed.rotas(40)
+        self.assertFalse([u for u in r if u.startswith("http://")])
+        self.assertIn("https://www.alcoa.com/brasil/pt/institute/about.asp", r)
+
 
 class EncerradoNoTitulo(unittest.TestCase):
     def test_prazo_vencido_no_titulo(self):
