@@ -63,6 +63,30 @@ BRACOS = [
     (None, "Sicredi", "Fundação Sicredi", "fundacao-sicredi", "https://fundacaosicredi.org.br/", None, "confirmado"),
     (None, "Nubank", "Instituto Nu", "instituto-nu", None, None, "confirmado"),
 ]
+# 03/10/2026 (teste do motor 19): cada site conferido ao vivo. Endereço que mudou → o atual; página de edital conhecida →
+# lida antes da home; site fora do ar sem endereço novo → sai da leitura e vira pendência (nunca "não tem").
+ENDERECOS_0310 = {
+    "Fundação ArcelorMittal": ("https://www.famb.org.br/", "https://selecao.simbi.social/arcelormittal", "envio de projetos pelo Portal de Projetos (fluxo contínuo)"),
+    "Fundação Banco do Brasil": ("https://www.fbb.org.br/", "https://www.fbb.org.br/editais-de-projetos/editais-publicos/", None),
+    "Fundação Bradesco": ("https://fundacao.bradesco/", None, "mantém escolas próprias; não publica edital para OSC"),
+    "Fundação Cargill": (None, None, "alimentacaoemfoco.org.br não resolve (DNS) em 03/10/2026 — localizar o site atual"),
+    "Fundação Casas Bahia": (None, None, "viavarejo.com.br/fundacaoviavarejo responde 503 em 03/10/2026 — localizar o site atual"),
+    "Fundação Raízen": ("https://www.raizen.com.br/fundacao-raizen", None, "fundacaoraizen.org.br não resolve; site atual no domínio da Raízen"),
+    "Fundação Telefônica Vivo": ("https://fundacaotelefonicavivo.org.br/", None, "domínio novo (o antigo redireciona)"),
+    "Fundação Toyota do Brasil": ("https://www.fundacaotoyotadobrasil.org.br/", "https://www.fundacaotoyotadobrasil.org.br/edital/", None),
+    "Instituto Alcoa": ("http://www.alcoa.com/brasil/pt/institute/about.asp", "https://www.alcoa.com/brasil/pt/institute/local-project-support-program",
+                        "Programa de Apoio a Projetos Locais: OSC de Poços de Caldas/MG, São Luís/MA e Juruti/PA"),
+    "Instituto BAT Brasil": ("https://www.institutobatbrasil.org.br/", None, "o .org não resolve; o .org.br responde"),
+    "Instituto BRF": ("https://institutombrf.com.br/pt", None, "agora Instituto MBRF; os editais ficam no Prosas, que proíbe robôs (conferência manual)"),
+    "Instituto Lojas Renner": ("https://www.institutolojasrenner.org.br/", "https://www.institutolojasrenner.org.br/editais-abertos/",
+                               "Banco de Projetos Incentivados em fluxo contínuo"),
+    "Instituto Natura": ("https://www.institutonatura.org/", None, "o .org.br não resolve; o .org responde"),
+    "Instituto Ultra": ("https://ultra.com.br/instituto-grupo-ultra/", "https://lp.simbi.social/ultra", "cadastro de projetos incentivados em fluxo contínuo"),
+    "Fundo JBS pela Amazônia": (None, None, "fundojbsamazonia.org inacessível em 03/10/2026 (aponta para 127.0.0.1 / 403) — localizar o site atual"),
+    "Instituto Sicoob": ("http://www.institutosicoob.org.br/", "http://www.institutosicoob.org.br/premio.html",
+                         "Prêmio Cooperar para Transformar é para pessoas físicas; próxima edição a partir de 22/04/2027"),
+}
+
 NOTAS_VINCULO = {"Instituto Helda Gerdau": "ligação com a Gerdau pelo nome da família fundadora; conferir no site do instituto",
                  "Instituto Ultra": "Ipiranga pertence ao grupo Ultra (Ultrapar); conferir se o instituto atende a Ipiranga"}
 
@@ -76,7 +100,14 @@ def _braco(t: tuple) -> dict:
          "fonte": "perfil do associado na rede GIFE (categoria Fundação / Instituto Empresarial), lido em 03/10/2026"}
     if inst in NOTAS_VINCULO:
         b["nota"] = NOTAS_VINCULO[inst]
-    if not site:
+    if inst in ENDERECOS_0310:
+        site, b["pagina_de_edital"], obs = ENDERECOS_0310[inst]
+        b["site"] = site
+        if obs:
+            b["conferencia_0310"] = obs
+    if not site and inst in ENDERECOS_0310:
+        b["pendencia"] = ENDERECOS_0310[inst][2]
+    elif not site:
         b["pendencia"] = "o perfil do GIFE não traz o site; localizar o site oficial antes de observar"
     return b
 
@@ -119,9 +150,11 @@ def rotas(limite: int = 40) -> list[str]:
         return []
     d = load_json(SAIDA)
     vistos, urls = set(), []
-    for e in d.get("empresas", []):
-        for b in e.get("bracos_sociais", []):
-            for u in (b.get("pagina_de_edital"), b.get("site")):
+    # 03/10 (teste do motor 19): as páginas de edital conhecidas vêm antes das homes — se o limite cortar, corta home
+    for chave in ("pagina_de_edital", "site"):
+        for e in d.get("empresas", []):
+            for b in e.get("bracos_sociais", []):
+                u = b.get(chave)
                 if u and u not in vistos:
                     vistos.add(u); urls.append(u)
     return urls[:limite]
