@@ -730,6 +730,12 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
             continue
         _t0 = _t.monotonic()
         r = ler(s, pausa=pausa)
+        # 03/10 (teste dos motores 01–21): um leitor que devolve resultado sem 'lido_em' derrubava o passo inteiro
+        # (KeyError às 19:10 de 02/10) e nenhuma leitura seguinte era registrada. Agora o resultado é completado.
+        r = r if isinstance(r, dict) else {}
+        r.setdefault("sensor", s["id"]); r.setdefault("achados", []); r.setdefault("falhas", []); r.setdefault("saude", [])
+        if not r.get("lido_em"):
+            r["lido_em"] = now_iso()
         executados += 1
         reg = sens.setdefault(s["id"], {"nome": s["nome"], "tipo": s["tipo"], "leituras": 0,
                                         "achados_total": 0, "vazias_seguidas": 0})

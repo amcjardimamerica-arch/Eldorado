@@ -12,7 +12,7 @@ DIAS = ["seg", "ter", "qua", "qui", "sex", "sab", "dom"]
 
 def devidos(agora_utc: datetime | None = None) -> list[str]:
     ag = json.loads((RAIZ / "config/agenda_motores.json").read_text(encoding="utf-8"))["motores"]
-    est = RAIZ / "estado/sensores.json"
+    est = RAIZ / "estado/esquadra.json"     # 03/10: o registro das leituras é a esquadra (estado/sensores.json não existe)
     ult = (json.loads(est.read_text(encoding="utf-8")).get("sensores") or {}) if est.exists() else {}
     brt = (agora_utc or datetime.now(timezone.utc)) - timedelta(hours=3)
     faixa = "23" if brt.minute < 38 else "53"
