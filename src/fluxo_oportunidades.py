@@ -425,30 +425,32 @@ _ORDEM_SELO = {"bronze": 0, "prata": 1, "ouro": 2}
 
 
 def _selos_dos_itens(itens: list[dict]) -> dict:
-    """02/10 (titular): o selo da esteira em cada oportunidade aberta (estrela no quadro). Vale o MAIOR entre o selo do
-    livro (esteira de selos) e a avaliação do próprio quadro pelas mesmas regras — o quadro pode estar mais adiantado
-    (link oficial e checklist vindos do Interceptador e da validação)."""
+    """03/10 (titular): a ESTRELA mede o EDITAL ATUAL e só existe na oportunidade ABERTA:
+    bronze = há o site oficial da publicação; prata = + o prazo de inscrição conhecido; ouro = + os 12 critérios
+    conhecidos (ou dispensados quando não se aplicam). Não herda do livro nem da edição anterior: quando a oportunidade
+    fecha, a estrela sai e o que se sabia dela vira histórico do LIVRO; quando abre uma nova edição, a estrela recomeça
+    pelo edital novo. (O LIVRO tem o seu próprio selo, pelo histórico de 3 anos — selo_livro — e aparece sempre.)"""
     from collections import Counter
-    try:
-        from .esteira import avaliar
-        cfg = json.loads((ROOT / "config/esteira.json").read_text(encoding="utf-8"))
-        livros = {x.get("id"): x for x in (json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8")).get("motores") or [])}
-    except Exception:  # noqa: BLE001
-        return {}
+    from datetime import date as _d
+    hoje = _d.today().isoformat()
     for it in itens:
-        lv = livros.get(it.get("opressor")) or {}
-        s_lv = (lv.get("esteira") or {}).get("selo")
         I = it.get("inspecao") or {}
-        oficial = it.get("link_oficial") or I.get("pagina_oficial")
+        u = str(it.get("url") or "")
+        oficial = it.get("link_oficial") or I.get("pagina_oficial") or \
+            (u if re.search(r"\.(gov|leg|jus|mp)\.br(/|$)|pncp\.gov\.br", u, re.I) else None)   # o mesmo critério do painel
+        fim = str(it.get("fim") or "")[:10]
+        reg = str(it.get("regime") or "")
+        continuo = "contínuo" in reg or "continuo" in reg
+        if fim and fim < hoje:
+            it["selo"] = None; it["selo_de"] = "fechada — a estrela vira histórico do livro"; continue
+        if not oficial:
+            it["selo"] = None; it["selo_de"] = "sem site oficial da publicação"; continue
         ck = it.get("checklist") or {}
-        pseudo = {"pagina": oficial or it.get("url"), "comprovado": bool(oficial),
-                  "historico": [{"pagina_oficial": oficial or it.get("url"), **({"fim": it["fim"]} if it.get("fim") else {})}],
-                  "checklist12": {k: {"s": v.get("s")} for k, v in ck.items() if isinstance(v, dict) and v.get("s") in ("ok", "disp", "val")},
-                  **({"regime_inscricao": "contínuo"} if "contínuo" in str(it.get("regime") or "") or "continuo" in str(it.get("regime") or "") else {})}
-        s_it = avaliar(pseudo, cfg)["nivel"]
-        melhor = max([s for s in (s_lv, s_it) if s], key=lambda s: _ORDEM_SELO[s])
-        it["selo"] = melhor; it["selo_de"] = "livro" if melhor == s_lv else "quadro"
-    return dict(Counter(it["selo"] for it in itens))
+        resolvidos = sum(1 for v in ck.values() if isinstance(v, dict) and v.get("s") in ("ok", "disp", "val", "dt"))
+        prazo = bool(fim) or continuo
+        it["selo"] = "ouro" if prazo and resolvidos >= 12 else ("prata" if prazo else "bronze")
+        it["selo_de"] = "edital atual"
+    return dict(Counter(it["selo"] for it in itens if it.get("selo")))
 
 
 def _resumo_opressores(itens: list[dict]) -> dict:
