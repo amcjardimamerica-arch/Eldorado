@@ -1,9 +1,9 @@
 {
- "em": "2026-10-03T11:25:22+00:00",
+ "em": "2026-10-03T13:01:05+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1162,
- "positivos": 356,
- "pendentes": 910,
+ "rotulados": 1163,
+ "positivos": 357,
+ "pendentes": 931,
  "validacao_cruzada": {
   "auc": 0.905,
   "precisao": 0.808,
@@ -71,6 +71,12 @@
    "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260925_000008871.pdf",
    "nota": 0.503,
    "incerteza": 0.994
+  },
+  {
+   "titulo": "ESTADO DO ACRE — 4º PRÊMIO DE COMUNICAÇÃO DO GOVERNO DO ESTADO DO ACRE “MOISÉS ALENCASTRO\"",
+   "url": "https://pncp.gov.br/app/editais/63606479000124/2026/123",
+   "nota": 0.503,
+   "incerteza": 0.993
   },
   {
    "titulo": "Chamamento público publicado no Diário Oficial em 25/09/2026 — Goiás / Goiânia — Goiás / Goiânia",
@@ -247,12 +253,6 @@
    "incerteza": 0.97
   },
   {
-   "titulo": "Chamadas Públicas — TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia",
-   "url": "https://www.cnj.jus.br/poder-judiciario/chamadas-publicas",
-   "nota": 0.484,
-   "incerteza": 0.969
-  },
-  {
    "titulo": "Edital Negros, Negócios e Alimentação",
    "url": "https://baoba.org.br/edital-negros-negocios-e-alimentacao/",
    "nota": 0.516,
@@ -307,6 +307,12 @@
    "incerteza": 0.961
   },
   {
+   "titulo": "Diário Oficial de Águas de São Pedro (SP) 2026-09-30 — \"chamamento público\" \"organizações da sociedade civil\"",
+   "url": "https://data.queridodiario.ok.org.br/3500600/2026-09-30/6d27e6278f184e61c7f51d9d6e6d49f4a5488dd5.pdf",
+   "nota": 0.48,
+   "incerteza": 0.96
+  },
+  {
    "titulo": "Credenciamento de artistas locais e regionais, por meio de Chamamento Público, para futura contratação de… — MUNICIPIO DE MONTE ALEGRE",
    "url": "https://pncp.gov.br/app/editais/08365900000144/2026/53",
    "nota": 0.52,
@@ -319,8 +325,26 @@
    "incerteza": 0.959
   },
   {
+   "titulo": "MUNICIPIO DE OLINDINA — Chamamento Público é o credenciamento de artistas, grupos e coletivos culturais para compor a programação dos evento",
+   "url": "https://pncp.gov.br/app/editais/13647854000106/2026/33",
+   "nota": 0.479,
+   "incerteza": 0.958
+  },
+  {
+   "titulo": "MUNICIPIO DE VARGEM ALTA — CCREDENCIAMENTO DE INSTITUIÇÃO DE LONGA PERMANÊNCIA PARA PESSOA IDOSA – ILPI, ESPECIALIZADAS NA PRESTAÇÃO DO SERV",
+   "url": "https://pncp.gov.br/app/editais/31723570000133/2026/90",
+   "nota": 0.521,
+   "incerteza": 0.958
+  },
+  {
    "titulo": "MUNICIPIO DE GUAIRA — Chamamento Público para firmar Termo de Colaboração com Organização da Sociedade Civil, sem fins lucrativos, que execu",
    "url": "https://pncp.gov.br/app/editais/77857183000190/2026/288",
+   "nota": 0.521,
+   "incerteza": 0.958
+  },
+  {
+   "titulo": "Processo de Seleção de Gestor Escolar",
+   "url": "https://goias.gov.br/educacao?page_id=27121",
    "nota": 0.521,
    "incerteza": 0.958
   },
@@ -347,31 +371,7 @@
    "url": "https://pncp.gov.br/app/editais/08345500000177/2026/15",
    "nota": 0.522,
    "incerteza": 0.957
-  },
-  {
-   "titulo": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG) — Lançada Chamada Pública para apoiar projetos de pes… — Goiás",
-   "url": "https://goias.gov.br/fapeg/lancada-chamada-publica-para-apoiar-projetos-de-pesquisa-e-inovacao-tecnologica-entre-o-brasil-e-a-espanha/",
-   "nota": 0.478,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Credenciamento de Artistas Locais/Regionais, Pessoas Físicas e/ou Jurídicas, para apresentação de shows… — MUNICIPIO DE FREI LAGONEGRO",
-   "url": "https://pncp.gov.br/app/editais/01615008000125/2026/15",
-   "nota": 0.478,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Vila Pavão - EDITAL DE CHAMAMENTO PÚBLICO Nº 003/2026 - Artistas da Terra e Tocadores de Concertina",
-   "url": "https://mapa.cultura.es.gov.br/oportunidade/2620/",
-   "nota": 0.478,
-   "incerteza": 0.956
-  },
-  {
-   "titulo": "EDITAL DE CREDENCIAMENTO 004-2026 - MUSICOS — MUNICIPIO DE SANTANA",
-   "url": "https://pncp.gov.br/app/editais/13913140000100/2026/6",
-   "nota": 0.478,
-   "incerteza": 0.956
   }
  ],
- "pendentes_provaveis_reais": 276
+ "pendentes_provaveis_reais": 282
 }

@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-10-02
+# Pacote para o Claude Desktop — 2026-10-03
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
@@ -8,26 +8,16 @@ Nenhum motor aguardando coleta local hoje.
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
-- **Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)** — nunca rodou. Ação: conferir se o sensor está na escala; se for novo, esperar a próxima saída.
-    - abrir https://www.congressonacional.leg.br/web/orcamento/acompanhe/orcamento-anual/-/loa/2027 e procurar: emendas, PLOA, LOA, orçamento, sem fins lucrativos, sociedade civil
-    - abrir https://www.congressonacional.leg.br/web/cmo/comunicados e procurar: emendas, PLOA, LOA, orçamento, sem fins lucrativos, sociedade civil
-    - abrir https://dadosabertos.camara.leg.br/api/v2/proposicoes e procurar: emendas, PLOA, LOA, orçamento, sem fins lucrativos, sociedade civil
-- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 5 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
-    - abrir https://observatorio3setor.org.br/editais/ e procurar: edital, seleção de projetos, investimento social, responsabilidade social, patrocínio, incentivo fiscal
-- **Oportunidade Estaduais Governamentais de Goiás** — nunca rodou. Ação: conferir se o sensor está na escala; se for novo, esperar a próxima saída.
-- **Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos** — 2 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
-    - abrir https://suap.camaragyn.go.gov.br/camara/consulta_publica/ e procurar: utilidade pública, declara de utilidade pública, associação de moradores, entidade, denominação
-    - abrir https://www.goiania.go.leg.br/search_rss e procurar: utilidade pública, declara de utilidade pública, associação de moradores, entidade, denominação
-- **TJGO — varas de execução penal e prestações pecuniárias (substitui o Diário da Justiça)** — 2 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
-    - abrir https://www.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-    - abrir https://www.tjgo.jus.br/index.php/dje e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-    - abrir https://corregedoria.tjgo.jus.br/ e procurar: prestação pecuniária, edital de cadastramento, entidades, vara de execução penal, VEP, destinação
-- **Motor de Recorrência — revisita as oportunidades identificadas** — 2 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+- **TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO** — todas as páginas falharam em 2026-10-03. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
+    - abrir https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
+    - abrir https://www.tjgo.jus.br/files/ e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
+    - abrir https://corregedoria.tjgo.jus.br/basesocial e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
+- **Motor de Recorrência — revisita as oportunidades identificadas** — 3 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://observatorio3setor.org.br/editais/ e procurar: retificação, prorrogação, errata, resultado, homologação, classificados
 
 Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `dados/editais/`. Devolva em `dados/editais/coleta_navegador/<data>-motores.json` no formato `{"<id ou novo>": {"objeto":..., "inicio":..., "fim":..., "pagina_oficial":..., "observacao":...}}`.
 
-## Etapa 3 — oportunidades aguardando ação externa (74)
+## Etapa 3 — oportunidades aguardando ação externa (85)
 
 - `3f4e0f749a5a6e40f2c4` — Edital prevê seleção de 58 apresentações artísticas para o Natal do Bem 2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/edital-preve-selecao-de-58-apresentacoes-artisticas-para-o-natal-do-bem-2026
 - `4d519a11c8b5c23bd8d5` — Termo de Fomento nº 01/2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf
@@ -37,6 +27,7 @@ Para cada rota aberta, liste os editais publicados nos últimos 30 dias que case
 - `8b60c48fd99740591efb` — Edital Arranjos Regionais FSA · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/arranjosregionais
 - `f82e19edc348ea45484c` — Edital Arranjos Regionais · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/tags/edital-arranjos-regionais
 - `c546d1fd98c47238392c` — SECULT-GO (cultura) — Secult Goiás lança edital para levar produção artística goiana ao Ri · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/secult-goias-lanca-edital-para-levar-producao-artistica-goiana-ao-rio-de-janeiro/
+- `b4f5251372ec272d99f0` — Itaberaí — Edital seleciona projetos de Itaberaí (GO) para receberem recursos de prestação · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://www.tjgo.jus.br/images/docs/CCS/editalitaberai.pdf
 - `39e8067201494d565881` — EDITAL PPGFIL/IFILO/UFU Nº 1/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-ppgfil/ifilo/ufu-n-1/2026-733304995
 - `0fc96da3bfa4c9659ef3` — Secretaria de Fomento e Incentivo à Cultura · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.gov.br/cultura/pt-br/composicao/secretaria-de-economia-criativa-e-fomento-cultural
 - `bdea428602f61e41e70b` — Edital recebe 851 inscrições! · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://climaesociedade.org/ics-lanca-edital-para-projetos-de-comunicacao-com-acoes-de-enfrentamento-as-mudancas-climaticas
@@ -47,6 +38,7 @@ Para cada rota aberta, liste os editais publicados nos últimos 30 dias que case
 - `647bacd91908be74d5ff` — EXTRATO DE TERMO DE FOMENTO · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-735327825
 - `dad0d1baa214f9ba880a` — EXTRATO DE TERMO DE FOMENTO · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-735200691
 - `b629cc2bc40bb6443783` — Agência Nacional de Assistência Técnica e Extensão Rural — AVISO DE SELEÇÃO PÚBLICA · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/aviso-de-selecao-publica-735913080
+- `794d37e62371237ba9dd` — Gráfica do Exército — AVISO DE CHAMAMENTO PÚBLICO Nº 1/2026 — é selecionar as associações  · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-735271941
 - `400d80f3c84332f2aa0c` — EDITAL DE Nº 126/IFAL, DE 18 DE SETEMBRO DE 2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-de-n-126/ifal-de-18-de-setembro-de-2026-733048195
 - `69322c6a48f05a2475c3` — MUNICIPIO DE PALMEIRA DOS INDIOS — Constitui-se objeto do presente Edital estabelecer o cu · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/12356879000198/2025/82
 - `cb432735cfee7c76d00c` — AGENCIA MUNICIPAL DE REGULACAO DE SERVICOS DELEGADOS- ARSER — CHAMAMENTO PÚBLICO PARA A SE · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/26981455000129/2026/51
@@ -65,10 +57,8 @@ Para cada rota aberta, liste os editais publicados nos últimos 30 dias que case
 - `64b098a6f46de27ba9d0` — FUNDO MUNICIPAL DE ASSISTENCIA SOCIAL — EDITAL DE CHAMAMENTO PÚBLICO VISANDO À SELEÇÃO DE  · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/13501444000152/2026/10
 - `97773a721bd40ede563f` — Prefeitura de Corumbá de Goiás — AVISO DE CHAMAMENTO PÚBLICO Nº 3/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-3/2026-736008019
 - `b5199edf43e7cbb8db7d` — MUNICIPIO DE PIRENOPOLIS — CHAMAMENTO PÚBLICO VISANDO CELEBRAR TERMO DE COLABORAÇÃO COM OR · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/01067941000105/2025/74
-- `448c8e19f08994a9661f` — SECTI-GO (ciência e tecnologia) — Edital nº 002/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7374/#e:7374
-- `ca043943546c8b82ef8d` — MUNICIPIO DE SILVANIA — REALIZAÇÃO E PUBLICAÇÃO DO EDITAL DE CHAMAMENTO PUBLICO Nº 01/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/01068030000100/2026/355
-- `9c84a8750b5212859261` — MUNICIPIO DE PIRAPETINGA — Seleção e concessão de fomento à execução de ações culturais po · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/18092825000149/2026/65
-- `a2f833bf388f4584743c` — SELEÇÃO DE PROJETOS CULTURAIS PARA FOMENTO À EXECUÇÃO DE AÇÕES CULTURAIS COM RECURSOS DA P · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/01006232000110/2026/72
+- `2c372f3fc61287ed485f` — Goiânia — Diário Oficial de Goiânia — edição 8874 (2026-09-30) — chamamento público · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://data.queridodiario.ok.org.br/5208707/2026-09-30/eae53a46f7108198ed438c9c4bc4996767a5a08a.pdf
+- `ec450d5c91b443034e50` — Prefeitura de Goiatuba — Aviso de Chamamento Público nº 4/2026 — do Edital é a seleção de  · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-4/2026-734365925
 
 ## Etapa 4 — oportunidades parciais do modo completo, para validar com Opus 5 (40)
 
@@ -113,7 +103,7 @@ Para cada uma, abra a página oficial (nunca PNCP, diário ou portal de notícia
 - `d94cd9a3d245f2393f2f` — Apoio Emergencial: Defensores de Direitos Humanos Fundo Brasil de Direitos Humanos Aceita: · falta: Objeto, Prazo de inscrição · https://capitaai.com.br/captacao/apoio-emergencial-defensores-direitos-humanos-fundo-brasil-direitos-ppj1gw
 - `647bacd91908be74d5ff` — EXTRATO DE TERMO DE FOMENTO · falta: Objeto, Prazo de inscrição, Página oficial do edital
 - `dad0d1baa214f9ba880a` — EXTRATO DE TERMO DE FOMENTO · falta: Objeto, Prazo de inscrição, Página oficial do edital
-- `14082a9a4394d27d3685` — Edital  nº. 4/2026 - Processo de chamamento público para eleição de  organizações   da   s · falta: Objeto, Prazo de inscrição · https://www.gov.br/mdh/pt-br/navegue-por-temas/participacao-social/editais
+- `16a3f1b811ac6854a526` — Aviso de Chamamento Público Nº 7/2026 Prefeitura Municipal de Itagibá Aceita:   organizaçõ · falta: Objeto, Prazo de inscrição · https://capitaai.com.br/captacao/aviso-chamamento-publico-72026-prefeitura-municipal-itagiba-ri6vxt
 
 ## Etapa 4½ — IA local (organização automática, sem gastar Claude)
 
