@@ -1,0 +1,53 @@
+# Chamamento Público 2026 — Goiás
+
+Órgão: Secult Goiás — Goyazes e Aldir Blanc · bloco GO · regime chamamento_publico · selo do livro **ouro** · selo da oportunidade prata
+
+Validação: **validado** — recorrência comprovada em 2 ou mais anos com página oficial
+
+## Estudo preditivo
+
+Mês típico: jan · duração típica: — dias · próxima janela: 2027-01 · confiança: alta
+
+## Edições anteriores e os 12 itens
+
+### 2024-01 — Chamamento público nº 001/2024 — Secult (Lei 13.019/2014)
+Página oficial: https://goias.gov.br/cultura/chamamentos-publicos-2024-lei-13-019-14/
+
+- Objeto: confirmado — Chamamento público nº 001/2024 — Secult (Lei 13.019/2014)
+- Prazo de inscrição: confirmado — 2024-01-22 a ?
+- Resultado: nao_localizado
+- Prazo de recurso: nao_localizado
+- Valor: nao_localizado
+- Órgão / financiador: catalogo — Secult Goiás — Goyazes e Aldir Blanc
+- Território: catalogo — GO
+- Esfera: catalogo — Brasil
+- Requisitos: nao_localizado
+- Anexos: nao_localizado
+- Destinação: nao_localizado
+- Área de atuação: nao_localizado
+
+### 2025-03 — Chamamento público nº 05/2025 — Secult, operacionalização da PNAB 2º ciclo (Lei 13.019/2014)
+Página oficial: https://goias.gov.br/cultura/chamamentos-publicos-2025-lei-13-019-14/
+
+- Objeto: confirmado — Chamamento público nº 05/2025 — Secult, operacionalização da PNAB 2º ciclo (Lei 13.019/2014)
+- Prazo de inscrição: confirmado — 2025-03-05 a ?
+- Resultado: confirmado — resultado preliminar em até 3 dias úteis após o julgamento
+- Prazo de recurso: nao_localizado
+- Valor: confirmado — previsão de custos R$ 1.780.315,24
+- Órgão / financiador: catalogo — Secult Goiás — Goyazes e Aldir Blanc
+- Território: catalogo — GO
+- Esfera: catalogo — Brasil
+- Requisitos: confirmado — OSC com objetivos estatutários voltados à atividade (Lei 13.019)
+- Anexos: nao_localizado
+- Destinação: nao_localizado
+- Área de atuação: nao_localizado
+
+## Conselho de 7 lentes
+
+- extremamente pessimista: Com 2 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
+- pessimista: Itens ainda não lidos nas edições: Prazo de recurso, Anexos, Destinação. Sem eles, requisitos e anexos da próxima podem diferir.
+- levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
+- neutro: Situação: validado. Tratar jan como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- levemente otimista: Série em 2 ano(s) (2024, 2025) já dá referência de calendário e de valor.
+- otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
+- extremamente otimista: Com mês típico em jan, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

@@ -1,0 +1,53 @@
+# Seleção de propostas visando credenciamento e contratação de entidades privadas, pessoas jurídicas, com ou sem… — Santa Catarina
+
+Órgão: PNCP — FUNDO MUNICIPAL DE SAUDE DE LUIS ALVES · bloco UF · regime credenciamento · selo do livro **ouro** · selo da oportunidade prata
+
+Validação: **validado** — recorrência comprovada em 2 ou mais anos com página oficial
+
+## Estudo preditivo
+
+Mês típico: ago · duração típica: 34 dias · próxima janela: 2027-08 · confiança: alta
+
+## Edições anteriores e os 12 itens
+
+### 2024-08 — SELEÇÃO DE PROPOSTAS VISANDO CREDENCIAMENTO E CONTRATAÇÃO DE ENTIDADES PRIVADAS, PESSOAS JURÍDICAS, COM OU SEM FINS LUCR (edição PNCP 2024/73)
+Página oficial: https://pncp.gov.br/app/editais/11301658000150/2024/73
+
+- Objeto: confirmado — SELEÇÃO DE PROPOSTAS VISANDO CREDENCIAMENTO E CONTRATAÇÃO DE ENTIDADES PRIVADAS, PESSOAS JURÍDICAS, COM OU SEM FINS LUCR (edição PNCP 2024/73)
+- Prazo de inscrição: confirmado — 2024-08-13 a 2024-09-02
+- Resultado: nao_localizado
+- Prazo de recurso: nao_localizado
+- Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
+- Órgão / financiador: confirmado — CNPJ 11301658000150 (órgão publicador no PNCP)
+- Território: catalogo — SC
+- Esfera: catalogo — Estado
+- Requisitos: nao_localizado
+- Anexos: nao_localizado
+- Destinação: nao_localizado
+- Área de atuação: nao_localizado
+
+### 2025-12 — SELEÇÃO DE PROPOSTAS VISANDO CREDENCIAMENTO E CONTRATAÇÃO DE ENTIDADES PRIVADAS, PESSOAS JURÍDICAS, COM OU SEM FINS LUCR (edição PNCP 2025/41)
+Página oficial: https://pncp.gov.br/app/editais/11301658000150/2025/41
+
+- Objeto: confirmado — SELEÇÃO DE PROPOSTAS VISANDO CREDENCIAMENTO E CONTRATAÇÃO DE ENTIDADES PRIVADAS, PESSOAS JURÍDICAS, COM OU SEM FINS LUCR (edição PNCP 2025/41)
+- Prazo de inscrição: confirmado — 2025-12-17 a 2026-01-20
+- Resultado: nao_localizado
+- Prazo de recurso: nao_localizado
+- Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
+- Órgão / financiador: confirmado — CNPJ 11301658000150 (órgão publicador no PNCP)
+- Território: catalogo — SC
+- Esfera: catalogo — Estado
+- Requisitos: nao_localizado
+- Anexos: nao_localizado
+- Destinação: nao_localizado
+- Área de atuação: nao_localizado
+
+## Conselho de 7 lentes
+
+- extremamente pessimista: Com 2 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
+- pessimista: Itens ainda não lidos nas edições: Resultado, Prazo de recurso, Requisitos. Sem eles, requisitos e anexos da próxima podem diferir.
+- levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
+- neutro: Situação: validado. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- levemente otimista: Série em 2 ano(s) (2024, 2025) já dá referência de calendário e de valor.
+- otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
+- extremamente otimista: Com mês típico em ago, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

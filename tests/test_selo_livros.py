@@ -48,7 +48,8 @@ class TesteSeloLivros(unittest.TestCase):
                 {"ano": "2023", "abertura": "2023-05-02"}]}}), encoding="utf-8")
             with mock.patch.object(S, "ENTRADA", ent):
                 self.assertEqual(S.incorporar(livros), 1)
-                self.assertEqual(S.incorporar(livros), 0)          # idempotente
+                S.incorporar(livros)                               # idempotente: o histórico não cresce
+                self.assertEqual(len(livros[0]["historico"]), 1)
         self.assertEqual(livros[0]["historico"][0]["ano"], "2024")
 
 

@@ -69,7 +69,7 @@ def edicoes(x: dict, hoje: date | None = None) -> list[dict]:
         d = _d(h.get("publicado_em")) or _d(h.get("inicio"))
         if not d:
             continue
-        brutos.append({"data": d, "fim": _d(h.get("fim")), "inicio": _d(h.get("inicio")), "url": h.get("pagina_oficial") or h.get("url"),
+        brutos.append({"data": d, "so_enc": bool(h.get("so_encerramento")), "fim": _d(h.get("fim")), "inicio": _d(h.get("inicio")), "url": h.get("pagina_oficial") or h.get("url"),
                        "titulo": str(h.get("titulo") or "")[:160], "decisao": h.get("decisao")})
     for j in ((x.get("livro") or {}).get("inscricao") or {}).get("janelas") or []:
         d = _d(j.get("inicio"))
@@ -83,7 +83,7 @@ def edicoes(x: dict, hoje: date | None = None) -> list[dict]:
         a = por_mes.setdefault(k, {"mes": k, "ano": b["data"].year, "abertura": None, "encerramento": None, "pagina_oficial": None,
                                    "fontes": 0, "titulo": b["titulo"]})
         a["fontes"] += 1
-        a["abertura"] = min(filter(None, [a["abertura"], b["inicio"] or b["data"]]), default=None)
+        a["abertura"] = min(filter(None, [a["abertura"], b["inicio"] or (None if b.get("so_enc") else b["data"])]), default=None)
         if b["fim"] and b["fim"] >= b["data"] and (b["fim"] - b["data"]).days <= 400:     # vigência longa não é prazo de inscrição
             a["encerramento"] = max(filter(None, [a["encerramento"], b["fim"]]), default=None)
         if not a["pagina_oficial"] and _oficial(b["url"]):
@@ -147,6 +147,9 @@ def incorporar(livros: list[dict]) -> int:
     if not ENTRADA.exists():
         return 0
     por_id = {x.get("id"): x for x in livros}; n = 0
+    for x in livros:                                       # a coleta é a fonte da verdade: correções em entrada/ removem edição antiga
+        if any(str(h.get("origem") or "").startswith("coleta 3 anos") for h in x.get("historico") or []):
+            x["historico"] = [h for h in x["historico"] if not str(h.get("origem") or "").startswith("coleta 3 anos")]
     for arq in sorted(ENTRADA.glob("*.json")):
         try:
             d = json.loads(arq.read_text(encoding="utf-8"))
@@ -156,6 +159,8 @@ def incorporar(livros: list[dict]) -> int:
             x = por_id.get(lid)
             if not x or not isinstance(v, dict):
                 continue
+            if v.get("observacao"):
+                x.setdefault("livro_coleta", {})["observacao"] = str(v["observacao"])[:400]
             hist = x.setdefault("historico", [])
             vistos = {(str(h.get("pagina_oficial") or ""), str(h.get("ano") or "")) for h in hist}
             for e in v.get("edicoes") or []:
@@ -164,9 +169,10 @@ def incorporar(livros: list[dict]) -> int:
                     continue
                 hist.append({"id": "c3a-" + re.sub(r"[^a-z0-9]", "", (lid + ano + str(e.get("abertura") or "")).lower())[:24],
                              "titulo": str(e.get("titulo") or x.get("programa") or "")[:200], "ano": ano,
-                             "publicado_em": e.get("abertura") or f"{ano}-01-01", "inicio": e.get("abertura"), "fim": e.get("encerramento"),
+                             "publicado_em": e.get("abertura") or e.get("encerramento") or f"{ano}-01-01", "inicio": e.get("abertura"), "fim": e.get("encerramento"),
+                             "so_encerramento": bool(not e.get("abertura") and e.get("encerramento")),
                              "pagina_oficial": e["pagina_oficial"], "valor": e.get("valor"), "trecho": str(e.get("trecho") or "")[:300],
-                             "origem": f"coleta 3 anos ({arq.name})"})
+                             "origem": f"coleta 3 anos ({arq.name})", "itens12": e.get("itens12") or {}})
                 vistos.add((str(e["pagina_oficial"]), ano)); n += 1
     return n
 

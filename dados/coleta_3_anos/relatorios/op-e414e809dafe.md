@@ -1,0 +1,22 @@
+# Municipio de silvania — realização e publicação do edital de chamamento publico nº 01/2026 - edital ciclo 2 da… — Goiás
+
+Órgão: MUNICIPIO DE SILVANIA · bloco GO · regime chamamento_publico · selo do livro **bronze** · selo da oportunidade prata
+
+Validação: **serie_indicada_ordinal** — SERIE INDICADA PELA FONTE OFICIAL: o programa Política Nacional Aldir Blanc (Lei 14.399/2022) opera em ciclos de repasse a estados e municípios (o ciclo 2 já está em curso); o edital municipal anterior do mesmo ente não foi lido individualmente. Datas das edições anteriores ainda não lidas.
+
+## Estudo preditivo
+
+Mês típico: set · duração típica: 10 dias · próxima janela: 2027-09 · confiança: baixa
+
+## Edições anteriores e os 12 itens
+
+Nenhuma edição anterior comprovada (ver validação).
+## Conselho de 7 lentes
+
+- extremamente pessimista: Com 0 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
+- pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
+- levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
+- neutro: Situação: serie_indicada_ordinal. Tratar set como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- levemente otimista: Série em 0 ano(s) (—) já dá referência de calendário e de valor.
+- otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
+- extremamente otimista: Com mês típico em set, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.
