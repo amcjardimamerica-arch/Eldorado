@@ -252,10 +252,14 @@ def classificar(it: dict, hoje: date, cfg: dict) -> dict:
         pub = date.fromisoformat(it["data_publicacao"]) if it.get("data_publicacao") else None
         dias = int(it.get("prazo_dias") or cfg.get("mpt_prazo_dias", 5))
         seg = (pub + timedelta(days=dias - 1)).isoformat() if pub else None
-        it = {**it, "prazo_dias": dias, "prazo_tipo": None, "data_limite_segura": seg, "exige_cadastro": it.get("exige_cadastro", True)}
+        it = {**it, "prazo_dias": dias, "prazo_tipo": None, "data_limite_segura": seg, "exige_cadastro": it.get("exige_cadastro")}
         if seg and seg >= hoje.isoformat():
+            # 03/10 (teste do motor 09): o edital 009220.2026 aceita "qualquer pessoa jurídica de direito privado", com a indicação nos
+            # autos do PA-INTER — a exigência de cadastro só é escrita quando o PDF a traz
+            cad = {True: "exige cadastro prévio no Sistema de Destinações", False: "o edital não exige cadastro prévio: a indicação é feita nos autos do procedimento",
+                   None: "conferir no PDF se exige cadastro prévio (o PDF não foi lido)"}[it["exige_cadastro"]]
             return {**it, "fim": seg, "classificacao": "OPORTUNIDADE",
-                    "motivo": f"edital de {dias} dias aberto (o edital não diz se são úteis ou corridos; data segura {seg}); exige cadastro prévio no Sistema de Destinações"}
+                    "motivo": f"edital de {dias} dias aberto (o edital não diz se são úteis ou corridos; data segura {seg}); {cad}"}
         return {**it, "classificacao": "ACOMPANHAR", "motivo": "edital de 5 dias encerrado — mostra o padrão e o ritmo da unidade"}
     fora = (cfg.get("fora_do_territorio") or {}).get(it.get("orgao"))
     if fora:
@@ -332,11 +336,23 @@ def _tabela(pagina: str, task: str, cfg: dict, n: int = 200) -> dict:
     return json.loads(_abrir(base + "/index.php", cfg, op, dados, pagina).decode("utf-8", "ignore"))
 
 
+_PDF_ERRO = {"motivo": None}
+
+
 def _texto_pdf(b: bytes) -> str:
+    _PDF_ERRO["motivo"] = None
     try:
         from pypdf import PdfReader
+    except Exception:  # noqa: BLE001
+        _PDF_ERRO["motivo"] = "sem_leitor_pdf"            # 03/10: registrado no diagnóstico — o PDF não foi lido
+        return ""
+    if not (b or b"").lstrip().startswith(b"%PDF"):
+        _PDF_ERRO["motivo"] = "resposta_nao_e_pdf"
+        return ""
+    try:
         return " ".join((p.extract_text() or "") for p in PdfReader(io.BytesIO(b)).pages[:8])
-    except Exception:  # noqa: BLE001 — sem pypdf ou PDF sem texto: valem os dados da tabela
+    except Exception:  # noqa: BLE001 — PDF sem texto: valem os dados da tabela
+        _PDF_ERRO["motivo"] = "pdf_sem_texto"
         return ""
 
 
@@ -428,7 +444,10 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                             and str(it.get("data_publicacao") or "") >= (hoje - timedelta(days=60)).isoformat():
                         t = _texto_pdf(_abrir(it["ultimo_link_pdf"], cfg, _SESSAO.get("op"))); diag["pdfs_lidos"] += 1
                         if not t.strip():
-                            diag["sem_texto"] += 1; continue
+                            diag["sem_texto"] += 1
+                            diag.setdefault("pdf_motivos", {})[_PDF_ERRO["motivo"] or "pdf_sem_texto"] = diag.get("pdf_motivos", {}).get(_PDF_ERRO["motivo"] or "pdf_sem_texto", 0) + 1
+                            it["exige_cadastro"] = None                # 03/10: sem o PDF não se sabe — não presumir cadastro
+                            continue
                         if has_prompt_injection(t):
                             D.setdefault("quarentena", []).append(k); continue
                         x = {kk: v for kk, v in extrair_pdf_mpt(t).items() if v is not None}
@@ -533,6 +552,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                  "paginas_lidas": len(saude), "links_total": len(itens), "links_candidatos": cont["OPORTUNIDADE"] + cont["ACOMPANHAR"],
                  "inventario": {k: v for k, v in inv.items() if k != "resultado"},
                  "motivo_zero": None if abertas else "nenhum edital de destinação aberto hoje nas fontes lidas"})
+    if diag.get("sem_texto"):          # 03/10: edital cujo PDF não foi lido = leitura parcial (o maestro dispara de novo)
+        diag["cortados"] = diag["sem_texto"]
     return {"sensor": MOTOR_ID, "achados": [registro_base(x, hoje) for x in abertas], "falhas": falhas[:8], "saude": saude,
             "diagnostico": diag, "lido_em": now_iso()}
 
