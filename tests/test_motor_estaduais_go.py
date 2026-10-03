@@ -201,6 +201,9 @@ class TesteRegistroDaPassagem(unittest.TestCase):
 
     def test_passagem_normaliza_resultado_sem_lido_em(self):
         src = (ROOT / "src/sensores.py").read_text(encoding="utf-8")
+        # 03/10: a mesma correção já estava no main (teste dos motores 01–21), em versão mais completa — o teste confere
+        # que o resultado é completado DEPOIS da leitura e ANTES do registro, qualquer que seja a forma escrita
         i = src.index("r = ler(s, pausa=pausa)")
-        self.assertLess(i, src.index('r.setdefault(_k, _v)'))
-        self.assertLess(src.index('r.setdefault(_k, _v)'), src.index('reg.update({"ultima": r["lido_em"]'))
+        j = src.index('r["lido_em"] = now_iso()', i)
+        self.assertLess(i, j)
+        self.assertLess(j, src.index('reg.update({"ultima": r["lido_em"]', i))
