@@ -148,6 +148,20 @@ def aplicar_resultados(C: dict, cfg: dict, hoje: str) -> dict:
         if not x:
             continue
         e = x.setdefault("esteira", {})
+        # 03/10 (titular): EDIÇÕES ANTERIORES trazidas pela verificação dos livros — alimentam a análise preditiva
+        # (meses e valores em que o programa abriu). Entram no histórico sem repetir (mesma página e mesmo fim).
+        for ed in (r.get("edicoes") or [])[:30]:
+            if not isinstance(ed, dict) or not (ed.get("fim") or ed.get("inicio") or ed.get("ano")):
+                continue
+            chave = (str(ed.get("pagina_oficial") or ""), str(ed.get("fim") or ""), str(ed.get("ano") or ""))
+            if any((str(h.get("pagina_oficial") or ""), str(h.get("fim") or ""), str(h.get("ano") or "")) == chave
+                   for h in x.get("historico") or [] if isinstance(h, dict)):
+                continue
+            x.setdefault("historico", []).append({"id": "ver-" + hashlib.sha1(json.dumps(chave).encode()).hexdigest()[:8],
+                                                  "titulo": str(ed.get("titulo") or x.get("programa") or "")[:200], "ano": ed.get("ano"),
+                                                  "inicio": ed.get("inicio"), "fim": ed.get("fim"), "valor": ed.get("valor"),
+                                                  "pagina_oficial": ed.get("pagina_oficial"), "origem": "verificação dos livros", "visto_em": hoje})
+            n["edicoes_incluidas"] += 1
         if r.get("aprendizado"):
             e.setdefault("aprendizado", []).append({"em": r.get("em") or hoje, "etapa": r.get("etapa"), "modelo": r.get("modelo"),
                                                     "o_que_aprendeu": str(r["aprendizado"])[:600], "fontes": (r.get("fontes") or [])[:5]})
