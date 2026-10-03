@@ -1,0 +1,98 @@
+name: 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro)
+# 03/10/2026 (teste dos motores 01–21, conferido no GitHub pelo navegador do titular): a agenda e o maestro disparavam o
+# fluxo 01 com a lista de motores no pedido. O fluxo 01 dura de 45 min a 1h50 e só admite UMA execução em espera:
+# cada disparo novo cancelava o que esperava (20 execuções canceladas) e os motores daquele pedido nunca rodavam.
+# Este fluxo é LEVE (só os motores, sem os testes e sem a coleta geral) e NÃO recebe lista: calcula no início, a
+# partir do estado real (maestro: pendentes e parciais do dia; agenda: no horário ou com horário perdido; adiados da
+# passagem anterior). Uma execução substituída não perde nada — a seguinte recalcula.
+on:
+  schedule:
+    - cron: "8,38 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: eldorado-varredura-diaria     # o mesmo do fluxo 01: os dois gravam a esquadra, nunca ao mesmo tempo
+  cancel-in-progress: false
+jobs:
+  motores:
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    env:
+      MOTORES_BLOCO: manual
+      ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+      ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -q -r requirements.txt pypdf || true
+      - name: Motores da vez (calculados agora)
+        run: |
+          IDS=$(python scripts/motores_da_vez.py | tail -1)
+          echo "motores da vez: ${IDS:-nenhum}" | tee estado/log_sensores.txt
+          if [ -n "$IDS" ]; then
+            set +e
+            MOTORES_FONTES="$IDS" SENSORES_PRAZO_S=2100 PYTHONUNBUFFERED=1 timeout 2280 python -m src.sensores 2>&1 | tail -c 60000 | tee -a estado/log_sensores.txt
+            rc=${PIPESTATUS[0]}; set -e
+            [ "$rc" -ne 0 ] && echo "src.sensores: falhou ou estourou (código $rc)" | tee -a estado/log_sensores.txt || true
+          fi
+      - name: Histórico de 3 anos (motores 03, 11 e 18) — o que couber, do mais recente para o mais antigo
+        if: always()
+        run: |
+          # 03/10 (titular): oportunidades abertas nos últimos 3 anos → livros para validação; encerradas → arquivo da
+          # análise preditiva. Fracionado: cada passagem continua do cursor (estado/historico_3_anos/).
+          timeout 960 python -m src.historico_3_anos dou judiciario-cnj plat-gife --minutos 4 2>&1 | tail -c 6000 || echo "histórico de 3 anos: registrado"
+      - name: Painel dos motores (achados, status, maestro e mapa)
+        if: always()
+        run: |
+          timeout 120 python -m src.achados_motores >/dev/null || echo "achados por motor: falhou"
+          timeout 300 python -c "import src.motores as M; M.run()" >/dev/null || echo "gerador dos motores falhou"
+          python -m src.status_motores >/dev/null || echo "status falhou"
+          timeout 120 python -m src.maestro >/dev/null || echo "maestro falhou"
+          timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa falhou"
+      - name: Registrar somente alterações produzidas
+        if: always()
+        run: |
+          git config user.name "eldorado-bot"
+          git config user.email "eldorado-bot@users.noreply.github.com"
+          # registra o produzido SEM perder nada, mesmo se a main avançou durante a saída:
+          # commit local → rebase preferindo o que a saída produziu → push com até 3 tentativas
+          # PROTEÇÃO DO PAINEL (22/09): docs/dashboard.html e os arquivos do Piloto são de autoria
+          # do titular/Claude — o job de dados nunca os sobrescreve com a árvore que clonou no início.
+          # PROTEÇÃO DE CÓDIGO (23/09): este job produz DADOS. Nenhuma linha de código é dele.
+          # A árvore que ele clonou no início envelhece durante a execução, e ao commitar
+          # levava junto versões velhas de src/, tests/ e do painel — foi assim que o
+          # catálogo de leis sumiu do ranking e a coluna da destinação tributária ficou vazia.
+          # Antes de commitar, tudo que é código volta a ser o da main.
+          git checkout origin/main -- src tests scripts config docs/dashboard.html docs/mapa-brasil.js docs/mapa-arte.js .github 2>/dev/null || true
+          git reset -q -- src tests scripts config docs/dashboard.html docs/mapa-brasil.js docs/mapa-arte.js .github 2>/dev/null || true
+          git add biblioteca_alexandria -A dados estado docs
+          git diff --cached --quiet && exit 0
+          git commit -m "dados: motores da vez $(date -u +%F\ %H:%M)"
+          for i in 1 2 3; do
+            # sem -X theirs: a cópia do job não pode vencer o que a main recebeu durante a
+            # execução. Conflito em arquivo de dados resolve-se pela versão do job; em
+            # qualquer outro, pela da main.
+            if git pull --rebase origin main 2>/dev/null || \
+               { for f in $(git diff --name-only --diff-filter=U); do
+                   case "$f" in dados/*|estado/*|docs/dados/*|biblioteca_alexandria/*) git checkout --theirs -- "$f";;
+                                *) git checkout --ours -- "$f";; esac; git add "$f"; done
+                 GIT_EDITOR=true git rebase --continue; }; then
+              if git push; then exit 0; fi
+            fi
+            git rebase --abort 2>/dev/null || true
+            git fetch origin main
+            # 28/09: --mixed (índice = main NOVA) e código sempre da main — o --soft levava a árvore velha do job inteira
+            # no commit, desfazendo correções de código feitas enquanto ele rodava (aconteceu no Espião às 16h36 de 28/09)
+            git reset -q --mixed origin/main
+            git checkout origin/main -- src tests scripts .github docs/dashboard.html docs/index.html 2>/dev/null || true
+            # PROTEÇÃO (21/09): restaura do origin o que o Piloto/conselho gravaram enquanto este job rodava —
+            # sem isto, a árvore antiga do job marcava esses arquivos como deletados (foi assim que o benchmark sumiu)
+            for P in estado/piloto estado/ia_local config/piloto.json estado/rotas_sugeridas_ia.json estado/pacote_conselho.md estado/pacote_conselho.json docs/dados/piloto.json docs/dados/pacote_conselho.md; do
+              git checkout origin/main -- "$P" 2>/dev/null || true
+            done
+            git add -A biblioteca_alexandria dados estado docs/dados docs/dashboard-dados.js docs/relatorios 2>/dev/null; git commit -m "dados: motores da vez $(date -u +%F) (reaplicada)" || true
+            sleep 15
+          done
+          git push || echo "REGISTRO FALHOU apos 3 tentativas — os dados desta saida ficam no log"

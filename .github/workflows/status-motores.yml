@@ -28,12 +28,12 @@ jobs:
         run: |
           # 02/10: o MAESTRO (rede neural) mede a cobertura do dia de cada motor e dispara de novo os pendentes e os
           # parciais (até 3 vezes por dia) — a busca do dia não fica parcial. Inclui os pendentes da agenda.
-          IDS=$(python3 -m src.maestro --disparar 2>/dev/null | tail -1 || true)
+          IDS=$(python3 -m src.maestro --ids 2>/dev/null | tail -1 || true)   # 03/10: só consulta; quem conta a tentativa é o fluxo 22
           echo "pendentes: ${IDS:-nenhum}"
           if [ -n "$IDS" ]; then
             curl -s -o /dev/null -w "monitoramento disparado: %{http_code}\n" -X POST -H "Authorization: Bearer $GH_TOKEN" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/monitoramento-diario.yml/dispatches" \
-              -d "{\"ref\":\"main\",\"inputs\":{\"fontes\":\"$IDS\"}}"
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/motores-da-vez.yml/dispatches" \
+              -d '{"ref":"main"}'   # 03/10: o fluxo 22 recalcula os pendentes sozinho
           fi
       - name: Regenerar o painel dos motores e o status
         run: |

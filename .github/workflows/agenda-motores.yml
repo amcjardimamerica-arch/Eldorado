@@ -21,6 +21,8 @@ jobs:
           if [ -n "$IDS" ]; then
             curl -s -o /dev/null -w "coleta disparada: %{http_code}\n" -X POST \
               -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/monitoramento-diario.yml/dispatches" \
-              -d "{\"ref\":\"main\",\"inputs\":{\"fontes\":\"$IDS\"}}"
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/motores-da-vez.yml/dispatches" \
+              -d '{"ref":"main"}'
+            # 03/10: dispara o fluxo 22 SEM lista — ele calcula os motores da vez sozinho; disparar o fluxo 01 com a lista
+            # perdia os motores quando o pedido em espera era substituído (20 execuções canceladas)
           fi

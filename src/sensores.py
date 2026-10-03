@@ -289,7 +289,7 @@ def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
     if sensor.get("id") == "plat-empresas-editais-incentivados":
         try:
             from .empresas_rotas import rotas_para_sensor
-            for u in rotas_para_sensor(24):
+            for u in rotas_para_sensor(40):
                 if u not in saida:
                     saida.append(u)
         except Exception:
@@ -481,6 +481,11 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
         return ler_motor_jud(sensor, data, limites)
     # MOTOR 22 (parecer de 01/10/2026): o GIFE é lido pela API da seleção de editais (um item por bloco "título +
     # prazo + Inscreva-se") e pela Capta, para onde a seleção aponta — não pela home institucional nem pelos associados
+    # MOTOR 16 (03/10/2026): Lei Rouanet pela regra da janela (IN MinC 29/2026, art. 5º) e pela API do SALIC — não pelas
+    # páginas institucionais do Ministério
+    if sensor.get("id") == "plat-salic":
+        from .rouanet_salic import ler_motor as ler_motor_salic
+        return ler_motor_salic(sensor, data, limites)
     if sensor.get("id") == "plat-gife":
         from .gife_editais import ler_motor as ler_motor_gife
         return ler_motor_gife(sensor, data, limites)
@@ -703,6 +708,9 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         todos = registro()
         saem = [dict(s, motivo="ativação manual pelo titular") for s in todos
                 if s["id"] in pedidos or pedidos & set(s.get("fontes_260") or [])]
+        # 03/10: na ORDEM do pedido (o fluxo 22 manda os motores numerados do painel primeiro)
+        _ordem = [x.strip() for x in os.environ.get("MOTORES_FONTES", "").split(",") if x.strip()]
+        saem.sort(key=lambda s: _ordem.index(s["id"]) if s["id"] in _ordem else len(_ordem))
         escala = {"data": hoje.isoformat(), "saem": saem, "ficam": len(todos) - len(saem),
                   "total": len(todos), "previsoes_ativas": escala["previsoes_ativas"],
                   "manual": sorted(pedidos)}

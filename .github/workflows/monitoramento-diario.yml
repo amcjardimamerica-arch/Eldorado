@@ -34,6 +34,9 @@ jobs:
       MOTORES_BLOCO_INPUT: ${{ github.event.inputs.bloco }}
       AGENDA_CRON: ${{ github.event.schedule }}
       ACESSO_MASTER: ${{ secrets.ACESSO_MASTER }}
+      # 03/10 (titular): ponte da Hostgator (IP brasileiro) para Câmara de Goiânia, TJGO e prefeituras de Goiás
+      ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+      ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
     steps:
       - uses: actions/checkout@v4
       - name: Saída pelo Brasil (túnel WireGuard até servidor do titular, se configurado)

@@ -57,10 +57,11 @@
   },
   {
    "id": "salic",
-   "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
-   "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
+   "nome": "Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)",
+   "url": "https://api.salic.cultura.gov.br/api/v1/projetos/?UF=GO&format=json",
    "territorio": "BR",
-   "ativa": true
+   "ativa": true,
+   "nota_03_10": "corrigido no teste dos motores: lia páginas institucionais; agora lê a regra da janela (IN MinC 29/2026, art. 5º: 1º/02 a 31/10) e a API do SALIC (projetos de Goiás por ano)"
   },
   {
    "id": "secult-go",
@@ -136,7 +137,8 @@
    "url": "https://www.portoitapoa.com/",
    "territorio": "BR",
    "ativa": true,
-   "o_que_procurar": "editais publicados pela própria empresa para distribuir a renúncia fiscal (o motor 18 procura o site da empresa; este procura o EDITAL que a empresa publica) — cruzar com o ranking de 100 empresas de Goiás"
+   "o_que_procurar": "editais abertos pelos institutos/fundações das empresas que já destinam renúncia fiscal (Rouanet, Goyazes, FIA, Idoso, Esporte, PRONAS/PRONON). Banco: config/empresas_destinadoras.json (empresas de docs/dados/incentivos_verificados.json × associados empresariais do GIFE, conferidos em 03/10/2026)",
+   "banco": "config/empresas_destinadoras.json"
   },
   {
    "id": "mp-destinacoes-reparacao",

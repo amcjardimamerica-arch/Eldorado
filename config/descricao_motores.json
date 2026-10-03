@@ -1469,14 +1469,14 @@
    }
   },
   "plat-salic": {
-   "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
-   "perfil": "Lei Rouanet — janela anual no Salic (1º/02 a 31/10, confirmar IN vigente)",
+   "nome": "Lei Rouanet — SALIC (Ministério da Cultura)",
+   "perfil": "Lei Rouanet — janela de propostas no SALIC (1º/02 a 31/10, IN MinC 29/2026) e projetos de Goiás",
    "tipo": "plataforma",
    "finalidade": "descoberta",
    "coleta": "nuvem",
    "nota_coleta": null,
-   "objetivo": "Encontrar oportunidade aberta para OSC em Lei Rouanet — janela anual no Salic (1º/02 a 31/10, confirmar IN vigente).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 2 domínio(s) (gov.br, salic.cultura.gov.br); abre só links que casam com 17 termos e escapam dos 12 vetos, e confirma no texto com 5 termos.",
+   "objetivo": "Lei Rouanet: avisar a janela anual de propostas no SALIC (1º/02 a 31/10 — IN MinC nº 29/2026, art. 5º, conferida em 03/10/2026) e manter o mapa dos projetos de Goiás no SALIC (proponente pessoa jurídica, segmento, aprovado e captado) com 3 anos de histórico",
+   "como_funciona": "Lê a regra da janela de propostas (IN MinC 29/2026, art. 5º) e a API pública do SALIC: projetos de Goiás do ano corrente e, um ano por passagem, os 3 anos anteriores (só proponente pessoa jurídica). A janela aberta vira a oportunidade do motor; os projetos vão ao arquivo de referência.",
    "agenda": "08:53,13:53,19:53 · todos — itinerário 02/10 (portal_chamamentos): atualização contínua em horário comercial; a 1ª passagem fecha o dia anterior (D-1)",
    "agenda_detalhe": {
     "horarios_brt": "08:53,13:53,19:53",
@@ -2198,13 +2198,13 @@
   },
   "plat-empresas-editais-incentivados": {
    "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
-   "perfil": "EDITAL publicado pela própria empresa para distribuir renúncia fiscal (modelo Porto Itapoá, Renner, Maria Emília)",
+   "perfil": "EDITAL do instituto ou fundação de empresa que já destina renúncia fiscal (Instituto Lojas Renner, Fundação Telefônica Vivo, Instituto Assaí, Fundação Vale…)",
    "tipo": "plataforma",
    "finalidade": "descoberta",
    "coleta": "nuvem",
    "nota_coleta": null,
-   "objetivo": "Encontrar oportunidade aberta para OSC em EDITAL publicado pela própria empresa para distribuir renúncia fiscal (modelo Porto Itapoá, Renner, Maria Emília).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (captadores.org.br); abre só links que casam com 19 termos e escapam dos 12 vetos, e confirma no texto com 6 termos.",
+   "objetivo": "Observar os sites dos institutos e fundações que distribuem a renúncia fiscal das empresas que JÁ destinam imposto a associações (banco verificado: 103 empresas, 31 com braço social conferido no GIFE e no Mapa das OSC em 03/10/2026, 28 sites) — edital aberto ali é concorrência para a associação",
+   "como_funciona": "Uma passagem por dia. Lê a home de cada instituto/fundação do banco config/empresas_destinadoras.json (28 sites conferidos) e o portal captadores.org.br; segue só os links que casam com o léxico de edital e confirma no texto. Empresa sem braço social conferido fica como 'não verificado'.",
    "agenda": "10:23 · todos — itinerário 02/10 (empresas): uma passagem por dia; a cadência de cada empresa é mantida; a 1ª passagem fecha o dia anterior (D-1)",
    "agenda_detalhe": {
     "horarios_brt": "10:23",

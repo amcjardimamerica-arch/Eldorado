@@ -82,7 +82,8 @@ def montar() -> dict:
                 r["rotas"].append({"tipo": "pagina_rse", "url": f"https://{dom}{c}", "prioridade": 2})
         if not dom:
             # descoberta do site: busca pública (HTML, sem API) + domínios candidatos a confirmar
-            r["rotas"].append({"tipo": "descobrir_site", "url": f"https://html.duckduckgo.com/html/?q={re.sub(r'\s+','+',nome or '')}+site+oficial", "prioridade": 1, "nota": "o sensor lê a página de busca e a camada 1 escolhe o link do site oficial"})
+            q = re.sub(r"\s+", "+", nome or "")
+            r["rotas"].append({"tipo": "descobrir_site", "url": f"https://html.duckduckgo.com/html/?q={q}+site+oficial", "prioridade": 1, "nota": "o sensor lê a página de busca e a camada 1 escolhe o link do site oficial"})
             for u in _candidatos_dominio(nome)[:2]:
                 r["rotas"].append({"tipo": "dominio_candidato", "url": u, "prioridade": 2, "nota": "a confirmar na leitura"})
         inst = _nome_instituto(e)
@@ -111,13 +112,19 @@ def montar() -> dict:
 
 def rotas_para_sensor(limite: int = 40) -> list[str]:
     """URLs de site/RSE das empresas de maior pontuação, para o sensor de editais de empresas."""
-    if not SAIDA.exists():
-        return []
+    # 03/10/2026: o motor 19 observa primeiro os institutos/fundações das empresas que JÁ destinam (banco verificado)
+    try:
+        from .empresas_destinadoras import rotas as rotas_bracos
+        urls = rotas_bracos(limite)
+    except Exception:  # noqa: BLE001
+        urls = []
+    if len(urls) >= limite or not SAIDA.exists():
+        return urls[:limite]
     d = load_json(SAIDA)
-    urls = []
     for r in d.get("empresas", []):
         for x in r["rotas"]:
-            if x.get("url") and x["tipo"] in ("site_institucional", "pagina_rse", "descobrir_site", "dominio_candidato") and x["prioridade"] <= 2:
+            # domínio adivinhado e página de busca saem: só site conhecido entra (03/10/2026)
+            if x.get("url") and x["tipo"] in ("site_institucional", "pagina_rse") and x["prioridade"] <= 2 and x["url"] not in urls:
                 urls.append(x["url"])
     return urls[:limite]
 

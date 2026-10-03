@@ -619,6 +619,13 @@ def config() -> dict:
 
 
 def _get(url: str, timeout: float = 25) -> tuple[int, str, dict]:
+    from . import ponte_brasil
+    if ponte_brasil.usar(url):                            # 03/10 (titular): sites *.go.gov.br pela ponte da Hostgator
+        try:
+            st, _f, corpo, hdr = ponte_brasil.abrir(url, timeout=int(timeout) + 15)
+            return st, corpo.decode("utf-8", "ignore"), hdr
+        except Exception as e:  # noqa: BLE001
+            return 0, f"ponte Brasil: {type(e).__name__}: {e}"[:200], {}
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json,text/html;q=0.9,*/*;q=0.5",
                                                "Accept-Language": "pt-BR,pt;q=0.9", "Accept-Encoding": "gzip"})
     try:
@@ -634,7 +641,11 @@ def _get(url: str, timeout: float = 25) -> tuple[int, str, dict]:
 
 
 def _no_github_sem_brasil() -> bool:
-    return bool(os.environ.get("GITHUB_ACTIONS")) and not os.environ.get("ELDORADO_LOCAL_BR")
+    """No GitHub sem acesso ao Brasil: sem coleta local e sem a ponte da Hostgator configurada (03/10)."""
+    if not (os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR")):
+        return False
+    from . import ponte_brasil
+    return not ponte_brasil.configurada()
 
 
 def _exige_brasil(url: str) -> bool:
