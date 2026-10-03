@@ -11,7 +11,7 @@
 - Base: sem edital periódico: não há edições anuais datadas a prever
 - O que falta para ouro: chamada/RFP datada em pelo menos 2 anos distintos nos últimos 3 anos, em página oficial
 
-## Os 12 pontos (3 confirmados, 3 dispensados, 2 referência, 4 não localizados)
+## Os 12 pontos (3 confirmados, 6 não informados na fonte, 3 dispensados)
 - **Objeto** — CONFIRMADO: Braço filantrópico do Google; a página inicial encaminha organizações ao programa Google para organizações sem fins lucrativos
   - fonte: https://www.google.org/
 - **Prazo de inscrição** — DISPENSADO: sem inscrição aberta na página lida; programas com chamadas próprias
@@ -20,17 +20,19 @@
   - base da dispensa: regime
 - **Prazo de recurso** — DISPENSADO: regime de fundação privada sem edital: não há fase recursal formal
   - base da dispensa: fundação privada decide por critério próprio; não há rito recursal
-- **Valor** — NÃO LOCALIZADO: não consta
+- **Valor** — NÃO INFORMADO NA FONTE OFICIAL LIDA: não consta
+  - fonte: https://www.google.org/
 - **Órgão / financiador** — CONFIRMADO: Google.org
   - fonte: https://www.google.org/
-- **Território** — NÃO LOCALIZADO: não consta
+- **Território** — NÃO INFORMADO NA FONTE OFICIAL LIDA: não consta
+  - fonte: https://www.google.org/
 - **Esfera** — CONFIRMADO: Internacional, privada
   - fonte: https://www.google.org/
-- **Requisitos** — NÃO LOCALIZADO: varia por programa
-- **Anexos** — NÃO LOCALIZADO: não consta
-- **Destinação** — REFERÊNCIA (sem edital lido): Tecnologia e doações
+- **Requisitos** — NÃO INFORMADO NA FONTE OFICIAL LIDA: varia por programa
   - fonte: https://www.google.org/
-  - aviso: referência: página oficial da instituição, sem edital datado lido nesta coleta
-- **Área de atuação** — REFERÊNCIA (sem edital lido): Educação, IA para o bem social
+- **Anexos** — NÃO INFORMADO NA FONTE OFICIAL LIDA: não consta
   - fonte: https://www.google.org/
-  - aviso: referência: página oficial da instituição, sem edital datado lido nesta coleta
+- **Destinação** — NÃO INFORMADO NA FONTE OFICIAL LIDA: a página oficial lida não informa este ponto
+  - fonte: https://www.google.org/
+- **Área de atuação** — NÃO INFORMADO NA FONTE OFICIAL LIDA: a página oficial lida não informa este ponto
+  - fonte: https://www.google.org/

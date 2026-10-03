@@ -11,13 +11,17 @@
 - Base: nenhuma chamada lida
 - O que falta para ouro: chamada/RFP datada em pelo menos 2 anos distintos nos últimos 3 anos, em página oficial
 
-## Os 12 pontos (7 confirmados, 0 dispensados, 1 referência, 4 não localizados)
+## Os 12 pontos (7 confirmados, 5 não informados na fonte, 0 dispensados)
 - **Objeto** — CONFIRMADO: Grants por chamadas competitivas a organizações de desenvolvimento, alinhadas às políticas da UE
   - fonte: https://international-partnerships.ec.europa.eu/funding-and-technical-assistance/looking-funding_en
-- **Prazo de inscrição** — NÃO LOCALIZADO: cada chamada tem prazo próprio; nenhuma lida
-- **Resultado** — NÃO LOCALIZADO: não lido
-- **Prazo de recurso** — NÃO LOCALIZADO: não lido
-- **Valor** — NÃO LOCALIZADO: varia
+- **Prazo de inscrição** — NÃO INFORMADO NA FONTE OFICIAL LIDA: cada chamada tem prazo próprio; nenhuma lida
+  - fonte: https://international-partnerships.ec.europa.eu/
+- **Resultado** — NÃO INFORMADO NA FONTE OFICIAL LIDA: não lido
+  - fonte: https://international-partnerships.ec.europa.eu/
+- **Prazo de recurso** — NÃO INFORMADO NA FONTE OFICIAL LIDA: não lido
+  - fonte: https://international-partnerships.ec.europa.eu/
+- **Valor** — NÃO INFORMADO NA FONTE OFICIAL LIDA: varia
+  - fonte: https://international-partnerships.ec.europa.eu/
 - **Órgão / financiador** — CONFIRMADO: DG International Partnerships (UE)
   - fonte: https://international-partnerships.ec.europa.eu/funding-and-technical-assistance/looking-funding_en
 - **Território** — CONFIRMADO: Países parceiros
@@ -30,6 +34,5 @@
   - fonte: https://international-partnerships.ec.europa.eu/funding-and-technical-assistance/looking-funding_en
 - **Destinação** — CONFIRMADO: Projetos de desenvolvimento
   - fonte: https://international-partnerships.ec.europa.eu/funding-and-technical-assistance/looking-funding_en
-- **Área de atuação** — REFERÊNCIA (sem edital lido): Desenvolvimento
-  - fonte: https://international-partnerships.ec.europa.eu/funding-and-technical-assistance/looking-funding_en
-  - aviso: referência: página oficial da instituição, sem edital datado lido nesta coleta
+- **Área de atuação** — NÃO INFORMADO NA FONTE OFICIAL LIDA: a página oficial lida não informa este ponto
+  - fonte: https://international-partnerships.ec.europa.eu/

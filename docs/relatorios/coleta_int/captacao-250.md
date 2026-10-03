@@ -11,7 +11,7 @@
 - Base: sem edital periódico: não há edições anuais datadas a prever
 - O que falta para ouro: chamada/RFP datada em pelo menos 2 anos distintos nos últimos 3 anos, em página oficial
 
-## Os 12 pontos (5 confirmados, 4 dispensados, 2 referência, 1 não localizados)
+## Os 12 pontos (6 confirmados, 2 não informados na fonte, 4 dispensados)
 - **Objeto** — CONFIRMADO: Fundação que combate pobreza, doença e desigualdade; concede grants a parceiros identificados pela equipe
   - fonte: https://www.gatesfoundation.org/about/how-we-work/grant-opportunities
 - **Prazo de inscrição** — DISPENSADO: não há inscrição geral; somente RFPs e Grand Challenges específicos têm prazo próprio
@@ -20,7 +20,8 @@
   - base da dispensa: regime sem edital
 - **Prazo de recurso** — DISPENSADO: regime de fundação privada sem edital: não há fase recursal formal
   - base da dispensa: fundação privada decide por critério próprio; não há rito recursal
-- **Valor** — NÃO LOCALIZADO: sem faixa geral; varia por grant
+- **Valor** — NÃO INFORMADO NA FONTE OFICIAL LIDA: sem faixa geral; varia por grant
+  - fonte: https://www.gatesfoundation.org/
 - **Órgão / financiador** — CONFIRMADO: Gates Foundation
   - fonte: https://www.gatesfoundation.org/about/how-we-work/grant-opportunities
 - **Território** — CONFIRMADO: Atuação em mais de 130 países; maioria dos grants para organizações isentas dos EUA (501(c)(3)) e outras identificadas pela equipe
@@ -31,9 +32,7 @@
   - fonte: https://www.gatesfoundation.org/about/how-we-work/grant-opportunities
 - **Anexos** — DISPENSADO: sem anexos gerais; cada RFP traz os seus
   - base da dispensa: regime sem edital
-- **Destinação** — REFERÊNCIA (sem edital lido): Projetos alinhados a saúde, economia e desenvolvimento
+- **Destinação** — NÃO INFORMADO NA FONTE OFICIAL LIDA: a página não detalha a destinação dos grants
   - fonte: https://www.gatesfoundation.org/about/how-we-work/grant-opportunities
-  - aviso: referência: página oficial da instituição, sem edital datado lido nesta coleta
-- **Área de atuação** — REFERÊNCIA (sem edital lido): Saúde global, desenvolvimento agrícola, infraestrutura pública digital, economia
+- **Área de atuação** — CONFIRMADO: Salvar a vida de mães e bebês, ampliar oportunidade econômica, acabar com doenças infecciosas; programas como desenvolvimento agrícola, infraestrutura pública digital e malária
   - fonte: https://www.gatesfoundation.org/about/how-we-work/grant-opportunities
-  - aviso: referência: página oficial da instituição, sem edital datado lido nesta coleta

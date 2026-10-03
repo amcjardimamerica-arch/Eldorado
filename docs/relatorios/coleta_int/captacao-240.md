@@ -11,7 +11,7 @@
 - Base: 3 anos consecutivos com edital oficial datado (2024, 2025, 2026)
 - O que falta para ouro: nada — já ouro (3 anos, página e datas oficiais)
 
-## Os 12 pontos (11 confirmados, 1 dispensados, 0 referência, 0 não localizados)
+## Os 12 pontos (11 confirmados, 0 não informados na fonte, 1 dispensados)
 - **Objeto** — CONFIRMADO: Financiar projetos que fortaleçam setores culturais e criativos e políticas culturais em países em desenvolvimento Partes da Convenção de 2005
   - fonte: https://www.unesco.org/creativity/sites/default/files/medias/fichiers/2024/04/15_IFCD_call_2024_en_1.pdf
 - **Prazo de inscrição** — CONFIRMADO: 2024 (15ª chamada): lançada em 15/04/2024, prazo 14/06/2024 12h Paris. 2025 (16ª): 19/03 a 21/05/2025. 2026 (17ª): 23/03 a 06/05/2026
