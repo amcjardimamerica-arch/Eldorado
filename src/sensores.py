@@ -76,6 +76,24 @@ def registrar_dia(sensor_id: str, hoje: date, r: dict) -> None:
 DB = ROOT / "dados/oportunidades/oportunidades.jsonl"
 
 _FIM = re.compile(r"(?:at[ée]|prazo|encerra\w*|inscri[çc][õo]es[^.]{0,30}?at[ée])\D{0,25}(\d{1,2}/\d{1,2}/20\d{2})", re.I)
+_MESES = {"janeiro": 1, "fevereiro": 2, "março": 3, "marco": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8,
+          "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
+_ATE_MES = re.compile(r"\bat[ée]\s+(?:o\s+dia\s+)?(\d{1,2})\s+de\s+(" + "|".join(_MESES) + r")(?:\s+de\s+(20\d{2}))?", re.I)
+
+
+def _ENCERRADO_NO_TITULO(rotulo: str, hoje) -> bool:
+    """03/10 (teste do motor 19): 'MAPFRE recebe projetos incentivados até 30 de setembro' — o prazo no próprio título já
+    passou: não é oportunidade. Sem ano no título, vale o ano corrente."""
+    m = _ATE_MES.search(rotulo or "")
+    if not m:
+        return False
+    try:
+        d = date(int(m.group(3) or hoje.year), _MESES[m.group(2).lower()], int(m.group(1)))
+    except ValueError:
+        return False
+    return d < hoje
+
+
 _VALOR = re.compile(r"R\$\s?[\d.]{1,12},\d{2}|R\$\s?[\d.]{3,12}", re.I)
 _AGREG = re.compile(r"queridodiario|pncp\.gov|compras|licitanet", re.I)
 
@@ -153,7 +171,10 @@ def registro() -> list[dict]:
             sens.append({"id": f"plat-{p['id']}", "nome": p["nome"], "tipo": "plataforma",
                          "nivel": "privada", "uf": None, "territorio": p.get("territorio", "BR"),
                          "urls": [p["url"]], "busca": None, "confianca": "confirmada",
-                         "origem": "investigacao"})
+                         "origem": "investigacao",
+                         # 03/10 (teste do motor 19): o motor que declara quantas páginas tem não fica preso ao limite geral de 3
+                         **({"max_paginas": int(p["max_paginas"])} if p.get("max_paginas") else {}),
+                         **({"portais_terceiro_setor": list(p["portais_terceiro_setor"])} if p.get("portais_terceiro_setor") else {})})
     # MOTOR DE RECORRÊNCIA (20/09): revisita a página oficial de cada oportunidade validada
     rec = ROOT / "estado/rotas_recorrencia.json"
     if rec.exists():
@@ -528,7 +549,10 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
     if sensor.get("_rotas_pendentes_local"):        # 03/10: a parte Brasil-only da fonte ficou para a coleta local — não é leitura completa
         diag["rotas_pendentes_local"] = list(sensor["_rotas_pendentes_local"])
     n_pag = int(sensor.get("max_paginas") or lim["paginas_por_sensor"])
-    fila = list(_paginas(sensor)[:n_pag])
+    _todas = _paginas(sensor)
+    fila = list(_todas[:n_pag])
+    if len(_todas) > n_pag:     # 03/10 (teste do motor 19): rotas que ficaram fora do limite de páginas — registradas, não somem calado
+        diag["paginas_alem_do_limite"] = len(_todas) - n_pag
     lidas: set = set()
     while fila and diag["paginas_lidas"] < n_pag + 4:
         url = fila.pop(0)
@@ -657,7 +681,16 @@ def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, d
             if not dest["elegivel"]:
                 continue
             from .pertinencia import pertinente as _pert
-            if not _pert({"titulo": rot, "evidencia": ctx})["ok"]:
+            _pv = _pert({"titulo": rot, "evidencia": ctx})
+            if not _pv["ok"]:
+                # 03/10 (teste do motor 19): no portal curado do terceiro setor (captadores.org.br, da ABCR) a notícia
+                # "Fundação X abre edital…" é, por definição, para organizações sociais — só a falta da palavra "OSC" não elimina
+                _portal = urlsplit(final).hostname in set(sensor.get("portais_terceiro_setor") or [])
+                if not (_portal and _pv["motivo"].startswith("sem pertinência") and c1["passa"]):
+                    continue
+                lx["portal_terceiro_setor"] = True
+            if _ENCERRADO_NO_TITULO(rot, data or date.today()):
+                diag["encerrados_no_titulo"] = diag.get("encerrados_no_titulo", 0) + 1
                 continue
             fim = _FIM.search(ctx); val = _VALOR.search(ctx)
             achados.append({

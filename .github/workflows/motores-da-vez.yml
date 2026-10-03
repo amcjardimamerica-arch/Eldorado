@@ -17,7 +17,7 @@ concurrency:
 jobs:
   motores:
     runs-on: ubuntu-latest
-    timeout-minutes: 80
+    timeout-minutes: 120   # 03/10: a rotina semanal de empresas pode entrar aqui quando o domingo for pulado
     env:
       MOTORES_BLOCO: manual
       ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
@@ -36,6 +36,20 @@ jobs:
             MOTORES_FONTES="$IDS" SENSORES_PRAZO_S=2100 PYTHONUNBUFFERED=1 timeout 2280 python -m src.sensores 2>&1 | tail -c 60000 | tee -a estado/log_sensores.txt
             rc=${PIPESTATUS[0]}; set -e
             [ "$rc" -ne 0 ] && echo "src.sensores: falhou ou estourou (código $rc)" | tee -a estado/log_sensores.txt || true
+          fi
+      - name: Empresas (motores 20 e 21) — só quando a rotina semanal venceu
+        if: always()
+        run: |
+          # 03/10 (teste do motor 20): o domingo do fluxo 01 foi pulado em 27/09 e nada recuperava. Aqui roda UMA vez
+          # quando a última rotina semanal tem mais de 7,5 dias; a passagem seguinte já a vê em dia.
+          if [ "$(python scripts/empresas_devidas.py | tail -1)" = "sim" ]; then
+            { timeout 1800 python -m src.empresas semanal GO; echo "rc_semanal=$?"; } 2>&1 | tail -c 20000 > estado/log_empresas.txt
+            { timeout 600 python -m src.patrocinios; echo "rc_patrocinios=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
+            { timeout 300 python -m src.biblioteca_empresas; timeout 300 python -m src.incentivos_empresas; echo "rc_incentivos=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
+            # motor ÚNICO de incentivos (02/10): também os sites das maiores contribuintes do ICMS
+            { MOTORES_FONTES=empresas-incentivadas SENSORES_PRAZO_S=840 timeout 900 python -m src.sensores; echo "rc_sites_icms=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
+          else
+            echo "empresas: rotina semanal em dia"
           fi
       - name: Histórico de 3 anos (motores 03, 11 e 18) — o que couber, do mais recente para o mais antigo
         if: always()

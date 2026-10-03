@@ -54,7 +54,9 @@ CAMPOS = "id,date,modified,slug,link,title,content,categories"
 
 
 def _hoje_real() -> date:
-    return date.today()
+    # 03/10 (teste do motor 18): o dia é o de Brasília (o executor roda em UTC)
+    from datetime import timezone
+    return datetime.now(timezone(timedelta(hours=-3))).date()
 
 
 def _tempo_esgotado() -> bool:
@@ -409,7 +411,7 @@ _DATAS = [
     re.compile(r"\bA\s+(\d{1,2})(?:º|O)?\s+DE\s+" + _M + r"(?:\s+(?:DE\s+)?(\d{4}))?"),          # "de 1º a 30 de setembro"
     re.compile(r"\b\d{1,2}/\d{1,2}(?:/\d{2,4})?\s+(?:A|ATE)\s+(\d{1,2})/(\d{1,2})(?:/(\d{2,4}))?"),  # "01/09/2026 a 20/09/2026"
 ]
-_CONTEXTO_PRAZO = re.compile(r"INSCRI|PRAZO|CANDIDAT|SUBMISS|PROPOSTA|ENVIO|CADASTR|PARTICIPA|ADES|ABERT[AO]S?\b|RECEBE")
+_CONTEXTO_PRAZO = re.compile(r"INSCRI|INSCREV|PRAZO|CANDIDAT|SUBMISS|PROPOSTA|ENVIO|CADASTR|PARTICIPA|ADES|ABERT[AO]S?\b|RECEBE")
 _CONTEXTO_OUTRO = re.compile(r"RESULTADO|DIVULGA|ANUNCI|EXECU[CT]|VIGENCIA|EVENTO SERA|REALIZA|CERIMONIA|PREMIACAO|INICIO DAS|"
                              r"CONCLU|FINALIZ|ENTREGA DO RELATORIO|PRESTACAO DE CONTAS|DURACAO|DESENVOLVID")
 FLUXO = re.compile(r"FLUXO CONTINUO|INSCRICOES (?:PERMANENTES|CONTINUAS)|A QUALQUER MOMENTO|EM CARATER PERMANENTE|"
@@ -658,7 +660,13 @@ def classificar_item(m: dict, hoje: date, ufs: list[str] | None = None, cfg: dic
                 "motivos": ["abrangência não informada (pode ser restrito à região do financiador) — conferir no edital"]}
     prazo = f"inscrições até {fim}" if fim else "fluxo contínuo" if fluxo else "prazo não informado — conferir no edital"
     alc = "nacional" if nivel == "nacional" else f"alcança {'/'.join(sorted(alcance & set(ufs)))} ({rotulo})"
-    return {**base, "veredito": "OPORTUNIDADE", "motivos": [f"edital aberto para OSC ({prazo}; {alc})"]}
+    restam = (date.fromisoformat(fim) - hoje).days if fim else None
+    if restam is not None and restam <= int(cfg.get("dias_prazo_curto", 5)):
+        # 03/10 (teste do motor 18): prazo curto sobe com alerta — a Rede Memória Viva vencia no dia do teste
+        quando = "hoje" if restam == 0 else f"em {restam} dia(s)"
+        return {**base, "veredito": "OPORTUNIDADE", "alerta_prazo": True, "dias_restantes": restam,
+                "motivos": [f"URGENTE — vence {quando}: edital aberto para OSC ({prazo}; {alc})"]}
+    return {**base, "veredito": "OPORTUNIDADE", "dias_restantes": restam, "motivos": [f"edital aberto para OSC ({prazo}; {alc})"]}
 
 
 def _url_norm(u: str | None) -> str | None:
@@ -708,6 +716,7 @@ def _registro(c: dict, m: dict, ident: str | None = None) -> dict:
         "evidencia": ev, "hash_evidencia": sha256(ev.encode()), "fontes_observadas": m.get("fontes", [m["fonte"]]),
         "classificacao_ato": {k: c[k] for k in ("veredito", "regime", "motivos", "sinais")} | {"tipo": "abertura"},
         "sensor": MOTOR_ID, "forca_lexica": 3,
+        "alerta_prazo": bool(c.get("alerta_prazo")), "dias_restantes": c.get("dias_restantes"),
     }
 
 

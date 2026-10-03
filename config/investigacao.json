@@ -134,11 +134,16 @@
   {
    "id": "empresas-editais-incentivados",
    "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
-   "url": "https://www.portoitapoa.com/",
+   "url": "https://captadores.org.br/editais/",
    "territorio": "BR",
    "ativa": true,
    "o_que_procurar": "editais abertos pelos institutos/fundações das empresas que já destinam renúncia fiscal (Rouanet, Goyazes, FIA, Idoso, Esporte, PRONAS/PRONON). Banco: config/empresas_destinadoras.json (empresas de docs/dados/incentivos_verificados.json × associados empresariais do GIFE, conferidos em 03/10/2026)",
-   "banco": "config/empresas_destinadoras.json"
+   "banco": "config/empresas_destinadoras.json",
+   "max_paginas": 40,
+   "portais_terceiro_setor": [
+    "captadores.org.br"
+   ],
+   "teste_03_10": "teste do motor 19: o motor lia só 3 das 30 rotas (limite geral de páginas) — Porto Itapoá, Alcoa e ArcelorMittal; o portal captadores.org.br, que concentra os editais de empresas, era a 30ª e nunca era lido. Porto Itapoá (empresa portuária, sem investimento social publicado) saiu da 1ª posição; o portal entrou no lugar."
   },
   {
    "id": "mp-destinacoes-reparacao",
