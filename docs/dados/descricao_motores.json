@@ -1,5 +1,5 @@
 {
- "em": "2026-10-02",
+ "em": "2026-10-03",
  "regra": "resumo ao passar o mouse; configuração completa ao clicar no quadro do motor",
  "veto_geral": [
   "pregão",
@@ -171,10 +171,10 @@
    "nota_coleta": "tenta o Diário na nuvem (busca e edição do dia); se o portal recusar, a causa fica no diagnóstico e a coleta local lê as fontes A e B. As secretarias (fonte C) rodam na nuvem todo dia",
    "objetivo": "Encontrar oportunidade aberta para OSC em diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda.",
    "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 6 rota(s) em 2 domínio(s) (diariooficial.abc.go.gov.br, goias.gov.br); abre só links que casam com 22 termos e escapam dos 12 vetos, e confirma no texto com 11 termos.",
-   "agenda": "06:23,12:53,20:23 · seg,ter,qua,qui,sex — itinerário 02/10 (diario_oficial): as edições saem de madrugada; depois vêm as extras e as edições da noite; a 1ª passagem fecha o dia anterior (D-1)",
+   "agenda": "06:23,12:53,20:23 · seg,ter,qua,qui,sex,sab — itinerário 02/10 (diario_oficial): as edições saem de madrugada; depois vêm as extras e as edições da noite; a 1ª passagem fecha o dia anterior (D-1)",
    "agenda_detalhe": {
     "horarios_brt": "06:23,12:53,20:23",
-    "dias": "seg,ter,qua,qui,sex",
+    "dias": "seg,ter,qua,qui,sex,sab",
     "cadencia_dias": 1,
     "por_que_esta_hora": "itinerário 02/10 (diario_oficial): as edições saem de madrugada; depois vêm as extras e as edições da noite; a 1ª passagem fecha o dia anterior (D-1)"
    },
@@ -526,16 +526,16 @@
    "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo",
    "objetivo": "Seguir a utilidade pública da própria associação e achar leis de fomento, parceria, isenção e emendas impositivas para entidades, e os chamamentos da Câmara.",
    "como_funciona": "Roda a cada 1 dia(s), coleta pelo computador do titular; lê 2 rota(s) em 2 domínio(s) (goiania.go.leg.br, suap.camaragyn.go.gov.br); abre só links que casam com 5 termos e escapam dos 12 vetos, e confirma no texto com 4 termos.",
-   "agenda": "20:23 · todos — projetos são protocolados em qualquer dia útil e a tramitação anda todo dia; 20:23 pega o expediente inteiro",
+   "agenda": "12:53,20:23 · todos — 03/10 (teste do motor 04): o portal da Câmara responde da nuvem (medido) e libera robôs; as pautas saem no dia da sessão — 12:53 pega a pauta do dia e 20:23 fecha o expediente; o SUAP não é lido (robots.txt proíbe)",
    "agenda_detalhe": {
-    "horarios_brt": "20:23",
+    "horarios_brt": "12:53,20:23",
     "dias": "todos",
     "cadencia_dias": 1,
-    "por_que_esta_hora": "projetos são protocolados em qualquer dia útil e a tramitação anda todo dia; 20:23 pega o expediente inteiro"
+    "por_que_esta_hora": "03/10 (teste do motor 04): o portal da Câmara responde da nuvem (medido) e libera robôs; as pautas saem no dia da sessão — 12:53 pega a pauta do dia e 20:23 fecha o expediente; o SUAP não é lido (robots.txt proíbe)"
    },
    "verificacao": {
-    "etapa_1": "SUAP por assunto + notícias; categoria (utilidade pública, fomento/parceria, fundo, emenda impositiva, chamamento, bairro) → OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo",
-    "etapa_2": "na página do processo no SUAP: número, autor, setor e documentos com data (parecer, despacho, votação, sanção)"
+    "etapa_1": "pautas de projetos do Plenário (PDF) + notícias por busca; categoria (utilidade pública, fomento/parceria, regra para entidades, fundo, orçamento e emendas, chamamento, bairro) → OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo",
+    "etapa_2": "publicado × lido: toda pauta publicada na janela foi lida; a ficha do processo no SUAP é conferida pelo titular (o robots.txt proíbe robôs)"
    },
    "onde_para": "leitura — a nuvem é recusada; a coleta desta fonte é local",
    "para_afiar": [
@@ -608,12 +608,12 @@
    "coleta": "nuvem",
    "nota_coleta": null,
    "objetivo": "Alimentar o sistema com emenda parlamentar, a partir de insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais.",
-   "como_funciona": "Roda a cada 7 dia(s), coleta na nuvem; lê 2 rota(s) em 2 domínio(s) (economia.go.gov.br, portal.al.go.leg.br); abre só links que casam com 8 termos e escapam dos 12 vetos, e confirma no texto com 6 termos.",
-   "agenda": "10:53,20:53 · qui — itinerário 02/10 (legislativo): as sessões e as pautas publicam no fim do dia; a 1ª passagem fecha o dia anterior (D-1)",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 5 rota(s) em 3 domínio(s) (alegodigital.al.go.leg.br, economia.go.gov.br, portal.al.go.leg.br); abre só links que casam com 18 termos e escapam dos 12 vetos, e confirma no texto com 6 termos.",
+   "agenda": "10:53,20:53 · seg,ter,qua,qui,sex — itinerário 02/10 (legislativo): as sessões e as pautas publicam no fim do dia; a 1ª passagem fecha o dia anterior (D-1)",
    "agenda_detalhe": {
     "horarios_brt": "10:53,20:53",
-    "dias": "qui",
-    "cadencia_dias": 7,
+    "dias": "seg,ter,qua,qui,sex",
+    "cadencia_dias": 1,
     "por_que_esta_hora": "itinerário 02/10 (legislativo): as sessões e as pautas publicam no fim do dia; a 1ª passagem fecha o dia anterior (D-1)"
    },
    "verificacao": {
@@ -627,6 +627,21 @@
    "evolucao_gratuita": "dados abertos da ALEGO para proposições e leis de utilidade pública, em vez de raspar páginas",
    "rotas": [
     {
+     "nome": "SPL da ALEGO — índice cronológico das proposições",
+     "url": "https://alegodigital.al.go.leg.br/spl/consulta-cronologico.aspx",
+     "tipo": "legislativo"
+    },
+    {
+     "nome": "SPL da ALEGO — consulta por tipo (projeto de lei, emenda, PLOA)",
+     "url": "https://alegodigital.al.go.leg.br/spl/consulta-tipo.aspx",
+     "tipo": "legislativo"
+    },
+    {
+     "nome": "SPL da ALEGO — sessões, pauta prévia e ordem do dia",
+     "url": "https://alegodigital.al.go.leg.br/spl/sessoes.aspx",
+     "tipo": "legislativo"
+    },
+    {
      "nome": "Proposições da ALEGO",
      "url": "https://portal.al.go.leg.br/",
      "tipo": "legislativo"
@@ -638,6 +653,7 @@
     }
    ],
    "dominios": [
+    "alegodigital.al.go.leg.br",
     "economia.go.gov.br",
     "portal.al.go.leg.br"
    ],
@@ -649,7 +665,17 @@
     "LOA",
     "orçamento",
     "transferência especial",
-    "indicação"
+    "indicação",
+    "projeto de lei",
+    "PLOA",
+    "lei orçamentária",
+    "fundo estadual",
+    "subvenção",
+    "doação",
+    "organização da sociedade civil",
+    "OSC",
+    "Goyazes",
+    "Protege Goiás"
    ],
    "lexico_2": [
     "entidade beneficiária",
@@ -659,7 +685,17 @@
     "valor da emenda",
     "programação orçamentária"
    ],
-   "veto_motor": [],
+   "veto_motor": [
+    "título de cidadania",
+    "títulos de cidadania",
+    "requerimento",
+    "moção",
+    "sessão solene",
+    "homenagem",
+    "credenciamento para a imprensa",
+    "licitação",
+    "concurso público"
+   ],
    "numeros": {
     "mes": {
      "esperados": 20,
@@ -693,10 +729,10 @@
    "perfil": "destinações de pena federais — raras em Goiás",
    "tipo": "diario_justica",
    "finalidade": "descoberta",
-   "coleta": "local",
-   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo",
+   "coleta": "manual (robots.txt proíbe robôs)",
+   "nota_coleta": "03/10: o site responde da nuvem, mas o robots.txt proíbe qualquer robô (Disallow: /); o motor registra e não lê — o titular confere Notícias da SJGO uma vez por mês",
    "objetivo": "Encontrar oportunidade aberta para OSC em destinações de pena federais — raras em Goiás.",
-   "como_funciona": "Roda a cada 1 dia(s), coleta pelo computador do titular; lê 2 rota(s) em 1 domínio(s) (trf1.jus.br); abre só links que casam com 6 termos e escapam dos 12 vetos, e confirma no texto com 5 termos.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 2 domínio(s) (cnj.jus.br, trf1.jus.br); abre só links que casam com 12 termos e escapam dos 12 vetos, e confirma no texto com 5 termos.",
    "agenda": "07:53 · seg,ter,qua,qui,sex — o diário da Justiça Federal sai durante a noite; coleta local",
    "agenda_detalhe": {
     "horarios_brt": "07:53",
@@ -715,17 +751,23 @@
    "evolucao_gratuita": "testar a API do DJEN/CNJ, que concentra os diários da Justiça Federal",
    "rotas": [
     {
-     "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
-     "url": "https://www.trf1.jus.br/sjgo/",
+     "nome": "SJGO — Notícias (onde sai o chamamento de entidades)",
+     "url": "https://www.trf1.jus.br/sjgo/imprensa/noticias",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "SJGO — Editais e Portarias",
+     "url": "https://www.trf1.jus.br/sjgo/processual/editais-e-portarias",
      "tipo": "diario"
     },
     {
-     "nome": "Editais de destinação de prestações pecuniárias — TRF1",
-     "url": "https://www.trf1.jus.br/",
+     "nome": "Portal do CNJ — busca (republica editais dos tribunais; motor do CNJ)",
+     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+Goi%C3%A1s",
      "tipo": "secretaria"
     }
    ],
    "dominios": [
+    "cnj.jus.br",
     "trf1.jus.br"
    ],
    "lexico_1": [
@@ -734,7 +776,13 @@
     "edital de cadastramento",
     "entidades beneficiárias",
     "transação penal",
-    "pena pecuniária"
+    "pena pecuniária",
+    "chamamento público",
+    "cadastramento de entidades",
+    "projetos sociais",
+    "acordo de não persecução penal",
+    "ANPP",
+    "suspensão condicional do processo"
    ],
    "lexico_2": [
     "Resolução CNJ 154",
@@ -1475,8 +1523,8 @@
    "finalidade": "descoberta",
    "coleta": "nuvem",
    "nota_coleta": null,
-   "objetivo": "Encontrar oportunidade aberta para OSC em Lei Rouanet — janela anual no Salic (1º/02 a 31/10, confirmar IN vigente).",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 2 domínio(s) (gov.br, salic.cultura.gov.br); abre só links que casam com 17 termos e escapam dos 12 vetos, e confirma no texto com 5 termos.",
+   "objetivo": "Lei Rouanet: avisar a janela anual de propostas no SALIC (1º/02 a 31/10 — IN MinC nº 29/2026, art. 5º, conferida em 03/10/2026) e manter o mapa dos projetos de Goiás no SALIC (proponente pessoa jurídica, segmento, aprovado e captado) com 3 anos de histórico.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 4 rota(s) em 3 domínio(s) (gov.br, salic.cultura.gov.br, versalic.cultura.gov.br); abre só links que casam com 17 termos e escapam dos 12 vetos, e confirma no texto com 5 termos.",
    "agenda": "08:53,13:53,19:53 · todos — itinerário 02/10 (portal_chamamentos): atualização contínua em horário comercial; a 1ª passagem fecha o dia anterior (D-1)",
    "agenda_detalhe": {
     "horarios_brt": "08:53,13:53,19:53",
@@ -1508,11 +1556,17 @@
      "nome": "Instrução Normativa vigente (prazos e limites)",
      "url": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao",
      "tipo": "regramento"
+    },
+    {
+     "nome": "VerSalic — consulta pública de projetos e editais",
+     "url": "https://versalic.cultura.gov.br/",
+     "tipo": "listagem"
     }
    ],
    "dominios": [
     "gov.br",
-    "salic.cultura.gov.br"
+    "salic.cultura.gov.br",
+    "versalic.cultura.gov.br"
    ],
    "lexico_1": [
     "Lei Rouanet",
@@ -2101,7 +2155,7 @@
    }
   },
   "plat-prefeituras-50-go": {
-   "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
+   "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
    "perfil": "25 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
    "tipo": "plataforma",
    "finalidade": "descoberta",
@@ -2203,7 +2257,7 @@
    "finalidade": "descoberta",
    "coleta": "nuvem",
    "nota_coleta": null,
-   "objetivo": "Encontrar oportunidade aberta para OSC em EDITAL publicado pela própria empresa para distribuir renúncia fiscal (modelo Porto Itapoá, Renner, Maria Emília).",
+   "objetivo": "Observar os sites dos institutos e fundações que distribuem a renúncia fiscal das empresas que JÁ destinam imposto a associações (banco verificado: 103 empresas, 31 com braço social conferido no GIFE e no Mapa das OSC em 03/10/2026, 28 sites) — edital aberto ali é concorrência para a associação.",
    "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 2 rota(s) em 1 domínio(s) (captadores.org.br); abre só links que casam com 19 termos e escapam dos 12 vetos, e confirma no texto com 6 termos.",
    "agenda": "10:23 · todos — itinerário 02/10 (empresas): uma passagem por dia; a cadência de cada empresa é mantida; a 1ª passagem fecha o dia anterior (D-1)",
    "agenda_detalhe": {
@@ -2505,7 +2559,7 @@
    "coleta": "nuvem",
    "nota_coleta": null,
    "objetivo": "Encontrar oportunidade aberta para OSC em CNPq / MCTI / Setec-MEC — chamadas com componente de extensão que aceitam OSC como parceira.",
-   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 3 rota(s) em 1 domínio(s) (gov.br); abre só links que casam com 15 termos e escapam dos 12 vetos, e confirma no texto com 4 termos.",
+   "como_funciona": "Roda a cada 1 dia(s), coleta na nuvem; lê 5 rota(s) em 2 domínio(s) (finep.gov.br, gov.br); abre só links que casam com 15 termos e escapam dos 12 vetos, e confirma no texto com 4 termos.",
    "agenda": "09:23,15:23 · todos — itinerário 02/10 (orgao_publico): os sites dos órgãos são atualizados no expediente; a 1ª passagem fecha o dia anterior (D-1)",
    "agenda_detalhe": {
     "horarios_brt": "09:23,15:23",
@@ -2524,18 +2578,23 @@
    "evolucao_gratuita": "ler o feed RSS da plataforma (sites WordPress publicam /feed/ de graça): mais leve que raspar e não bloqueia",
    "rotas": [
     {
-     "nome": "CNPq — chamadas públicas",
-     "url": "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/acoes-e-programas/programas/chamadas-publicas",
+     "nome": "CNPq — chamadas abertas para submissão",
+     "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
      "tipo": "fundacao"
     },
     {
-     "nome": "MCTI — editais de popularização da ciência",
-     "url": "https://www.gov.br/mcti/pt-br",
+     "nome": "MCTI — editais e comunicados",
+     "url": "https://www.gov.br/mcti/pt-br/centrais-de-conteudo/comunicados-mcti",
      "tipo": "secretaria"
     },
     {
-     "nome": "Setec/MEC — extensão na rede federal",
-     "url": "https://www.gov.br/mec/pt-br/acesso-a-informacao/institucional/secretarias/secretaria-de-educacao-profissional-e-tecnologica",
+     "nome": "MCTI — popularização da ciência",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/popciencia",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "Setec/MEC — educação profissional e tecnológica",
+     "url": "https://www.gov.br/mec/pt-br/composicao/setec",
      "tipo": "secretaria"
     },
     {
@@ -2545,6 +2604,7 @@
     }
    ],
    "dominios": [
+    "finep.gov.br",
     "gov.br"
    ],
    "lexico_1": [
@@ -2570,7 +2630,21 @@
     "das inscrições",
     "cronograma"
    ],
-   "veto_motor": [],
+   "veto_motor": [
+    "bolsa",
+    "bolsas",
+    "doutorado",
+    "iniciação científica",
+    "mestrado",
+    "pesquisa oceânica",
+    "pesquisador",
+    "pesquisadores",
+    "produtividade em pesquisa",
+    "pós-doutorado",
+    "recursos humanos em áreas estratégicas",
+    "rhae",
+    "vacina"
+   ],
    "numeros": {
     "mes": {
      "esperados": 3,
@@ -2856,7 +2930,7 @@
    "coleta": "nuvem",
    "nota_coleta": null,
    "objetivo": "Empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada e os sites das maiores contribuintes do ICMS (editais incentivados).",
-   "como_funciona": "Roda a cada 7 dia(s), coleta na nuvem; lê 2 rota(s) em 2 domínio(s) (goias.gov.br, salic.cultura.gov.br); abre só links que casam com 26 termos e escapam dos 12 vetos, e confirma no texto com 14 termos.",
+   "como_funciona": "Roda a cada 7 dia(s), coleta na nuvem; lê 8 rota(s) em 8 domínio(s) (br.emb-japan.go.jp, br.usembassy.gov, editais.itausocial.org.br…); abre só links que casam com 26 termos e escapam dos 12 vetos, e confirma no texto com 14 termos.",
    "agenda": "03:23 · dom — cadastro de empresas muda devagar; leitura semanal no domingo",
    "agenda_detalhe": {
     "horarios_brt": "03:23",
@@ -2916,7 +2990,13 @@
     }
    ],
    "dominios": [
+    "br.emb-japan.go.jp",
+    "br.usembassy.gov",
+    "editais.itausocial.org.br",
+    "fbb.org.br",
     "goias.gov.br",
+    "iaf.gov",
+    "petrobras.com.br",
     "salic.cultura.gov.br"
    ],
    "lexico_1": [
@@ -4427,13 +4507,13 @@
    "finalidade": "descoberta",
    "coleta": "nuvem",
    "nota_coleta": null,
-   "objetivo": "Destina do MP-GO: regra fixa, lembrete mensal.",
-   "como_funciona": "Roda a cada 30 dia(s), coleta na nuvem; lê 22 rota(s) em 7 domínio(s) (gov.br, mpdft.mp.br, mpf.mp.br…); abre só links que casam com 19 termos e escapam dos 12 vetos, e confirma no texto com 6 termos.",
+   "objetivo": "Destina do MP-GO (Edital de Chamamento 02/2024, cadastro contínuo): regra fixa — o site do MP-GO proíbe robôs. Leitura indireta semanal pelo Diário do Estado (quem recebe recurso DAAMP publica lá) e lembrete de conferência manual mensal.",
+   "como_funciona": "Roda a cada 7 dia(s), coleta na nuvem; lê 22 rota(s) em 7 domínio(s) (gov.br, mpdft.mp.br, mpf.mp.br…); abre só links que casam com 19 termos e escapam dos 12 vetos, e confirma no texto com 6 termos.",
    "agenda": "07:53 · todos — itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)",
    "agenda_detalhe": {
     "horarios_brt": "07:53",
     "dias": "todos",
-    "cadencia_dias": 30,
+    "cadencia_dias": 7,
     "por_que_esta_hora": "itinerário 02/10 (justica_mp): o expediente forense publica de manhã e no fim da tarde; a 1ª passagem fecha o dia anterior (D-1)"
    },
    "verificacao": {

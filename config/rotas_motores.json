@@ -1302,18 +1302,23 @@
    "cadencia": "semanal",
    "rotas": [
     {
-     "nome": "CNPq — chamadas públicas",
-     "url": "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/acoes-e-programas/programas/chamadas-publicas",
+     "nome": "CNPq — chamadas abertas para submissão",
+     "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
      "tipo": "fundacao"
     },
     {
-     "nome": "MCTI — editais de popularização da ciência",
-     "url": "https://www.gov.br/mcti/pt-br",
+     "nome": "MCTI — editais e comunicados",
+     "url": "https://www.gov.br/mcti/pt-br/centrais-de-conteudo/comunicados-mcti",
      "tipo": "secretaria"
     },
     {
-     "nome": "Setec/MEC — extensão na rede federal",
-     "url": "https://www.gov.br/mec/pt-br/acesso-a-informacao/institucional/secretarias/secretaria-de-educacao-profissional-e-tecnologica",
+     "nome": "MCTI — popularização da ciência",
+     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/popciencia",
+     "tipo": "secretaria"
+    },
+    {
+     "nome": "Setec/MEC — educação profissional e tecnológica",
+     "url": "https://www.gov.br/mec/pt-br/composicao/setec",
      "tipo": "secretaria"
     }
    ],
@@ -1347,7 +1352,27 @@
      "tipo": "agregada (assistido) — lida pelo fluxo 16",
      "motor_antigo": "site-finep"
     }
-   ]
+   ],
+   "rotas_anteriores_404": [
+    "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/acoes-e-programas/programas/chamadas-publicas",
+    "https://www.gov.br/mec/pt-br/acesso-a-informacao/institucional/secretarias/secretaria-de-educacao-profissional-e-tecnologica"
+   ],
+   "veto_camada1": [
+    "bolsa",
+    "bolsas",
+    "doutorado",
+    "iniciação científica",
+    "mestrado",
+    "pesquisa oceânica",
+    "pesquisador",
+    "pesquisadores",
+    "produtividade em pesquisa",
+    "pós-doutorado",
+    "recursos humanos em áreas estratégicas",
+    "rhae",
+    "vacina"
+   ],
+   "ajuste_03_10": "rotas conferidas no navegador em 03/10/2026: as duas antigas (CNPq e Setec) davam 404 e a do MCTI era a home (2.806 links, 765 'candidatos'). Vetos de bolsa e pesquisa acadêmica: as 3 chamadas abertas do CNPq hoje são para pesquisadores (MAI/DAI, ANR, RHAE-IA)."
   },
   "recorrencia": {
    "perfil": "RECORRÊNCIA — revisita a página oficial de cada oportunidade validada (retificação, prorrogação, resultado, reabertura); as rotas são dinâmicas e vêm de estado/rotas_recorrencia.json",
