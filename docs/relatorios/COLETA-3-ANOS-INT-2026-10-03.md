@@ -1,51 +1,63 @@
-# Coleta dos 3 anos — livros Internacional (03/10/2026)
+# Coleta 3 anos — Internacional: relatório consolidado e preditivo (03/10/2026)
 
-Prompt executado: `PROMPT-COLETA-3-ANOS-LIVROS-INT.md`. A fila oficial (`fila_int.json`) não existia nesta cópia do repositório;
-foi remontada a partir do catálogo (`biblioteca_alexandria/fontes/motores.json`: livros com geografia Internacional) — 41 livros.
-Leitura feita no navegador do titular (IP do Brasil), só páginas oficiais; agregadores serviram para achar a edição.
+Livros verificados: **41**. Estados dos 12 pontos somados: {'confirmado': 251, 'dispensado': 129, 'nao_localizado': 96, 'referencia': 16}.
 
-## Resultado em uma linha
-6 livros ganharam edições provadas em página oficial (8 edições); 1 deles (**ICA — Protocolo Luso-Brasileiro**) tem 3 anos seguidos
-(2024, 2025, 2026) e passa a **ouro** — mas é um concurso de coprodução de cinema, **não é para OSC**. A maioria dos livros INT
-não é chamada para a A.M.C.: é para artistas individuais, para quem tem sede em Portugal/Europa, ou é entidade financiadora sem programa.
+Cada livro tem relatório próprio em `docs/relatorios/coleta_int/<id>.md` e JSON dos 12 pontos em `dados/coleta_3_anos/12_itens_int/<id>.json`.
 
-## Edições provadas
-| Livro | Anos | Datas (página oficial) | Elegível a OSC brasileira? |
-|---|---|---|---|
-| ICA — Protocolo Luso-Brasileiro de Coprodução | 2024, 2025, 2026 | 03/06–19/09/2024 · 06/05–12/09/2025 · 07/05–30/09/2026 (350.000 €) | Não: produtor minoritário português (lado brasileiro pela ANCINE) |
-| Criança Esperança — Edital UNESCO | 2026 | 05/10–08/11/2026 (R$ 150/200/250 mil) | **Sim — público-alvo é OSC brasileira. Abre em 2 dias** |
-| Gulbenkian — Apoio à Internacionalização | 2026 (2022 fora da janela) | 12/01–31/10/2026 | Não: sede/domicílio fiscal em Portugal |
-| Perform Europe (3ª convocatória) | 2026 | até 22/10/2026 | Não: 41 países do Europa Criativa |
-| Camargo Fellowship 2027-28 | 2026 | 01/10 (plataforma) – 05/10/2026 (prorrogado) | Individual (artistas/pesquisadores) |
-| Ars Biologica ArtXScience | 2026 | 01/07–28/09/2026 (encerrada) | Individual |
+| Livro | Regime | Edições provadas | Próxima janela | Confiança |
+|---|---|---|---|---|
+| UNESCO — Fundo Internacional para a Diversidade Cultural (IFCD) | anual_mar_mai | 3 | março–maio/2027 (a confirmar com a Comissão Nacional da UNESCO) | alta |
+| UNICEF — parcerias com OSC | convites avulsos a fornecedores e parceiros | 1 | acompanhar a página; sem janela periódica | baixa |
+| PNUD — Small Grants Programme | programa por país (PPP-ECOS no Brasil) | 0 | sem janela | baixa |
+| Banco Mundial — Social Development Grants | sem programa ativo identificado | 0 | sem janela | baixa |
+| BID Lab (Laboratório de Inovação do BID) | produtos de financiamento em fluxo contínuo | 1 | aberto o ano todo (somente produtos de capital/dívida) | média |
+| USAID — grants globais | encerrado | 0 | sem janela; recomendar desativar o livro | alta |
+| União Europeia — Erasmus+ | chamada anual com Programme Guide | 1 | próxima chamada presumida no ciclo anual; confirmar no Programme Guide 2027 | média |
+| União Europeia — EuropeAid / International Partnerships | calls for proposals | 0 | sem janela; consultar chamadas abertas | baixa |
+| Open Society Foundations | chamadas pontuais e fellowship | 0 | sem janela; acompanhar a página de grants | baixa |
+| Ford Foundation | convite (propostas espontâneas não aceitas) | 0 | sem janela; JustFilms reabre sem data publicada | baixa |
+| Gates Foundation | convite_ou_rfp | 0 | sem janela previsível; monitorar RFPs e Grand Challenges | baixa |
+| Google.org | programas e chamadas pontuais | 0 | sem janela | baixa |
+| Meta Community Grants | não localizado | 0 | sem janela | baixa |
+| Microsoft Philanthropies | não localizado na página catalogada | 0 | sem janela | baixa |
+| Global Fund for Women | convite (não aceita propostas espontâneas) | 0 | não prever | alta |
+| Climate Justice Resilience Fund | grantmaking com chamadas pontuais | 1 | não prever; piloto de small grants anunciado | baixa |
+| GEF Small Grants Programme | programa por país (PPP-ECOS no Brasil) | 0 | sem janela | baixa |
+| Rockefeller Foundation | convite | 0 | não prever; só por convite | alta |
+| Skoll Foundation | prêmio por seleção própria | 0 | sem janela | baixa |
+| Echoing Green | chamada anual de fellowship | 1 | próxima abertura presumida em 2027; assinar updates | baixa |
+| Oak Foundation | convite ou carta de consulta (LOI) | 0 | sem janela; enviar LOI quando houver aderência | baixa |
+| Google Ad Grants — matéria de blog (fonte secundária) | fonte secundária | 0 | — | — |
+| Google para organizações sem fins lucrativos | programa contínuo (cadastro) | 1 | aberto o ano todo | alta |
+| Al-Tiba9 — Open Call do Diretório de Artistas 2027 | anual_nao_provado | 1 | sem previsão relevante; não recomendado (cobrança de taxa e inconsistência de datas) | baixa |
+| IETM Global Connect 2027 | anual_nao_provado | 1 | provável nova chamada em set–out/2027, a confirmar (programa vai até 2028) | baixa |
+| Camargo Fellowship 2027–2028 (residência em Cassis, França) | fim_da_chamada_publica | 1 | nenhuma chamada pública prevista: a Fundação informa que esta é a última aberta ao público 'até nova ordem' | alta (declaração oficial da Fundação) |
+| Residência Ars Biologica (duplicata) | duplicidade | 0 | ver op-ee56b31416f1 | — |
+| Designers in Residence 2027 — EMMA Creative Center Pforzheim | anual_nao_provado | 1 | sem previsão (uma edição provada; não aplicável à A.M.C.) | baixa |
+| Perform Europe — Open Call 2026–2028 (3ª convocatória) | edicao_pluri_anual | 1 | sem previsão: nova convocatória só após 2028 e só para países do Europa Criativa | baixa |
+| Résidences Institut français × Cité internationale des arts (Paris) | anual_fixo | 4 | 2027-07-01 a 2027-10 (fecho esperado entre 8 e 25/10/2027); comissão em dezembro e resultado em janeiro | alta (4 edições anuais consecutivas na plataforma oficial) |
+| Delfina Foundation × Gulbenkian UK — residência em Londres para artist | anual_nao_provado | 1 | sem previsão (uma edição; sem acesso para brasileiros) | baixa |
+| Concurso Contemporary Talents — Water (Fondation François Schneider) | anual_fixo | 2 | 2027-09 a 2027-11 (17ª edição, entre 15/09 e 23/09 de abertura e 22–23/11 de fecho) | media |
+| Credenciamento de agricultores — PNCP estado do RJ | misclassificado | 0 | — | — |
+| Bolsas Camargo (duplicata) | duplicidade | 0 | ver op-0e162fb94284 | — |
+| ICA — Protocolo Luso-Brasileiro de Coprodução Cinematográfica | anual_fixo | 3 | 2027-05 a 2027-09 (abertura entre 03/06 e 07/05; fecho entre 12/09 e 30/09) | alta (3 anos consecutivos com página oficial) |
+| ONU/ACNUDH — Fundo Voluntário para Formas Contemporâneas de Escravidão | anual_fixo | 0 | 2027-01-15 a 2027-03-01 | media |
+| Município de Serro — credenciamento de agricultores familiares (PNCP) | misclassificado | 0 | — | — |
+| Criança Esperança — Edital UNESCO (apoio em 2028) | anual_por_campanha | 1 | 2026-10-05 a 2026-11-08 (edição vigente); próxima edição presumida em out–nov/2027, a confirmar | baixa |
+| Gulbenkian — Apoio à Internacionalização (ex-Apoio à Circulação Intern | anual_fixo | 4 | 2027-01 (abertura em meados de janeiro) a 2027-10 | media |
+| Chamamento nº 005/2024 — Colombo (PNCP) | misclassificado | 0 | — | — |
+| Ars Biologica ArtXScience Residency (České Budějovice, Capital Europei | pontual | 1 | nenhuma prevista (programa pontual até 2028) | baixa |
 
-## Achados importantes
-1. **Criança Esperança/UNESCO — oportunidade quente:** inscrições abrem 05/10/2026 e fecham 08/11/2026 às 23h59; apoio em 2028;
-   Termo de Referência lido por inteiro (19 páginas). A plataforma só mostra a campanha vigente: não há como provar edições 2023-2025 por lá.
-2. **3 livros classificados errado como INT:** credenciamentos de Serro (MG), Colombo (PR) e do Estado do RJ (PNCP). Corrigir a geografia.
-3. **Livro com endereço inválido:** Institut français × Cité internationale — o domínio registrado não resolve (DNS) em duas tentativas.
-4. **Duplicados:** Ars Biologica (2 livros) e Camargo (2 livros) — juntar.
-5. **21 livros "captacao-2xx" são entidades** (Gates, Ford, Google.org, BID…), não programas: nenhuma "mesma oportunidade" para medir em 3 anos.
-   Abrir livro por programa concreto (ex.: UNESCO IFCD, Erasmus+ por ação). IFCD: página oficial diz que o período 2026 foi encerrado; datas estão na brochura em PDF.
-6. **ACNUDH (ONU):** Fundo contra a escravidão contemporânea declara chamada **anual de 15/01 a 01/03** (US$ 15–35 mil) — regime anual provado, sem páginas por ano.
+## Principais achados para a A.M.C.
+- **Criança Esperança / UNESCO** (op-a1a803e05f4b): inscrição de 05/10 a 08/11/2026; R$ 150, 200 ou 250 mil; exige OSC com 3+ anos de CNPJ e registro em conselho. Janela mais urgente.
+- **UNESCO IFCD** (captacao-240): ouro. Chamadas 2024 (15/04–14/06), 2025 (19/03–21/05) e 2026 (23/03–06/05); próxima presumida mar–mai/2027; até US$ 100 mil.
+- **Institut français** (op-606bca20bb69): 4 edições (2023–2026); a de 2026 encerra em 08/10/2026; exige parceiro cultural.
+- **USAID** descontinuada (aviso oficial); recomenda-se desativar o livro. Rockefeller e Global Fund for Women não aceitam propostas espontâneas; Ford só em casos limitados; Oak aceita carta de consulta.
+- **Não lidos por falha do site:** GEF SGP / PNUD SGP (timeout em 03/10/2026) e Meta (página indisponível) — ficam como "não localizado", sem invenção.
+- **Reclassificar:** 3 registros PNCP municipais classificados como INT; 2 duplicatas (op-124d3e34e79a, op-83fd629ad336); captacao-242 duplica captacao-256 e seu "último edital" é de município do PR.
 
-## Limites desta coleta (nada inventado)
-- Sem busca na web nesta sessão; achei edições pelo próprio site oficial. Onde o site não guarda arquivo, **não registrei edição**.
-- Edições 2023–2025 de Criança Esperança, IFCD, Camargo, Perform Europe, Gulbenkian continuam por provar (onde procurar está em `observacao`).
-- `src/selo_livros.py` e a fila oficial não estão nesta cópia: o recálculo dos selos **não foi executado**; o arquivo está pronto para a incorporação.
+## Próximas janelas
+1. Criança Esperança: 05/10–08/11/2026. 2. Institut français: fecha 08/10/2026. 3. Camargo: fecha 05/10/2026 (última chamada pública). 4. IETM: 15/10/2026. 5. EMMA: 02/11/2026. 6. Al-Tiba9: 30/11/2026. 7. UNICEF (convite avulso, não aderente): 21/10/2026. 8. IFCD: mar–mai/2027. 9. ICA: maio–set/2027. 10. OHCHR fundo contra escravidão: 15/01–01/03/2027.
 
-## Próximas janelas previstas de Internacional (só com base provada)
-1. Criança Esperança/UNESCO — 05/10 a 08/11/2026 (aberta em breve)
-2. Camargo 2027-28 — encerra 05/10/2026
-3. Delfina (PT/PALOP) — 04/10/2026 · IETM Global Connect — 15/10 · Perform Europe — 22/10 · Gulbenkian — 31/10 · EMMA — 02/11 · Schneider — 22/11 · Al-Tiba9 — 30/11
-4. ICA Protocolo Luso-Brasileiro — mês típico: maio a setembro (3 anos seguidos) → próxima janela esperada **mai–set/2027**
-5. ACNUDH escravidão — 15/01 a 01/03/2027 (regime anual declarado)
-
-## Conselho de 7 lentes
-- **Extremamente pessimista:** só 6 de 41 livros têm edição; nenhum livro elegível a OSC chegou a ouro. O "ouro" do ICA é de um programa irrelevante para a A.M.C. e pode enganar o painel.
-- **Pessimista:** a fila foi remontada sem o arquivo oficial; pode divergir dos 64 livros do levantamento do selo (aqui são 41).
-- **Levemente pessimista:** a extensão do navegador falhou várias vezes e dois domínios não abriram; a cobertura é desigual.
-- **Neutro (decide):** incorporar as 8 edições (prova oficial + trecho), marcar elegibilidade em `observacao`, corrigir os 3 livros mal classificados e juntar os duplicados. Parâmetros: ouro só conta para o painel se o livro for elegível a OSC brasileira; meta de 100% dos livros INT com "elegibilidade" registrada. Mitigação: reabrir os 5 programas de edições anteriores por arquivo oficial.
-- **Levemente otimista:** o ICA fornece mês típico (mai–set) e confiança média/alta para a próxima janela.
-- **Otimista:** o edital Criança Esperança/UNESCO foi lido por inteiro 2 dias antes da abertura, com prazos e valores.
-- **Extremamente otimista:** separar "programa" de "entidade" limpa a base INT e abre espaço para livros nominais de programas realmente acessíveis ao Brasil.
+## Limites
+Sem acesso ao módulo `src.selo_livros` e ao GitHub nesta sessão: selos devem ser calculados no outro chat com `entrada/int_2026-10-03.json`.
