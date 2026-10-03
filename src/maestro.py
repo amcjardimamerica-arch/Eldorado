@@ -48,6 +48,8 @@ def cobertura(sid: str, reg: dict | None, diag: dict | None, diag_motor: dict | 
     """02/10: além da falha de página, a leitura CORTADA que o motor registra no próprio diagnóstico conta como parcial."""
     if reg and any((diag_motor or {}).get(k) for k in CORTE) and reg.get("cor") not in ("vermelho",):
         return "parcial"
+    if reg and (diag_motor or {}).get("aguardando_brasil") and reg.get("cor") not in ("vermelho",):
+        return "pendente_local"       # 03/10 (teste do motor 13): leu o que a nuvem alcança; o resto espera o Brasil — nunca "completa"
     if not reg:
         return "pendente_local" if "exige" in json.dumps(diag or {}, ensure_ascii=False).lower() else "pendente"
     if reg.get("cor") in ("vermelho",) or int(reg.get("falhas") or 0) > 0:
