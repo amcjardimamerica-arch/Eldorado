@@ -208,6 +208,7 @@ _SCRIPT = re.compile(r"<(script|style|noscript)\b.*?</\1>", re.S | re.I)
 _A = re.compile(r"<a\b[^>]*?href\s*=\s*[\"']([^\"']+)[\"'][^>]*>(.*?)</a>", re.S | re.I)
 _TIME = re.compile(r"<time\b[^>]*datetime\s*=\s*[\"'](\d{4}-\d{2}-\d{2})", re.I)
 _CORPO = re.compile(r"class\s*=\s*[\"'][^\"']*\b(?:item-page|entry-content)\b|itemprop\s*=\s*[\"']articleBody[\"']|<article\b", re.I)
+_META_PUB = re.compile(r"<meta\b[^>]*property\s*=\s*[\"']article:published_time[\"'][^>]*content\s*=\s*[\"'](\d{4}-\d{2}-\d{2})", re.I)
 _FIM_ARTIGO = re.compile(r"sharer|shareArticle|class=[\"'][^\"']*(?:share|social|pager|related|tags)", re.I)
 
 
@@ -239,8 +240,20 @@ def artigo(pagina_html: str, url: str, titulo: str = "", hosts_pdf=()) -> dict:
             continue
         vistos.add(alvo)
         pdfs.append({"url": alvo, "rotulo": _limpo(m.group(2))[:120]})
-    data = _TIME.search(h[max(0, ini - 4000): ini + 6000]) or _TIME.search(h)
-    return {"texto": texto[:20_000], "publicado": data.group(1) if data else None, "pdfs": pdfs[:6],
+    # 03/10 (teste do motor 11): no CNJ os <time> da página são da barra lateral ("notícias recentes") — uma notícia de
+    # 21/07/2020 saía com a data de hoje e o prazo "18 de agosto" virava 2027. A data certa está no meta do artigo.
+    pub = _META_PUB.search(h)
+    if pub:
+        publicado = pub.group(1)
+    else:
+        txt_pub = re.search(r"(?:Post publicado|Publicad[oa] em)\s*:?\s*(\d{1,2}) de ([a-zç]+) de (\d{4})", _limpo(h[ini:ini + 8000]), re.I)
+        mes = _MESES.get(_N(txt_pub.group(2)).lower()) if txt_pub else None
+        if txt_pub and mes:
+            publicado = f"{txt_pub.group(3)}-{mes:02d}-{int(txt_pub.group(1)):02d}"
+        else:
+            data = _TIME.search(h[max(0, ini - 1500): fim])           # só perto do corpo; nunca a página inteira
+            publicado = data.group(1) if data else None
+    return {"texto": texto[:20_000], "publicado": publicado, "pdfs": pdfs[:6],
             "banco_projetos": bool(re.search(r"basesocial|BANCO DE PROJETOS SOCIAIS", trecho, re.I))}
 
 
@@ -374,11 +387,14 @@ def extrair(titulo: str, texto: str, publicado: str | None) -> dict:
     num = _NUM_RX.search(full)
     vara = _VARA_RX.search(texto[:2500]) or _VARA_RX.search(titulo)
     terr = _TERRIT_RX.search(texto)
+    so_local = bool(re.search(r"ATUACAO (?:SEJA |DEVE SER |ESTEJA )?(?:NO|EM) (?:O )?MUNICIPIO|SEDIAD[AO]S? NO MUNICIPIO|ATUEM NO MUNICIPIO|"
+                              r"ATUANTES? NO MUNICIPIO|NO AMBITO DA (?:COMARCA|CIRCUNSCRICAO)", _N(texto)))
     fim, trecho = prazo(full, publicado)
     areas = [k for k, rx in _AREAS if re.search(rx, T)]
     return {"comarca": comarca_de(titulo, texto), "vara": re.sub(r"\s+", " ", vara.group(1)).strip()[:90] if vara else None,
             "numero_edital": f"{int(num.group(1)):02d}/{num.group(2)}" if num else None, "fim": fim, "trecho_prazo": trecho,
-            "areas_admitidas": areas or None, "restricao_territorial": _ok_lugar(terr.group(1)) if terr else None,
+            "areas_admitidas": areas or None,
+            "restricao_territorial": _ok_lugar(terr.group(1)) if terr else (comarca_de(titulo, texto) if so_local else None),
             "valor_texto": (_VALOR.search(full) or [None])[0] if _VALOR.search(full) else None,
             "exige_banco_projetos": bool(re.search(r"BANCO DE PROJETOS|BASESOCIAL|BASE SOCIAL", T)),
             "forma_inscricao": ("e-mail" if re.search(r"E-?MAIL|ENDERECO ELETRONICO", T) else None) if re.search(r"INSCRI|HABILITA|REQUERIMENTO", T) else None}
@@ -434,6 +450,11 @@ def classificar_item(m: dict, hoje: date, cfg: dict | None = None) -> dict:
     if SELECAO.search(T) and not resultado_no_titulo:
         onde = f" — comarca de {ex['comarca']}" if ex["comarca"] else ""
         exige = " · exige cadastro no Banco de Projetos Sociais da CGJ/GO" if ex["exige_banco_projetos"] else ""
+        assoc = _N((cfg or {}).get("comarca_da_associacao") or "Goiânia")
+        if ex["restricao_territorial"] and _N(ex["restricao_territorial"]) != assoc:
+            # 03/10 (teste do motor 11): o edital exige atuação na própria comarca — continua visível (decisão do titular
+            # de 02/10), mas o aviso fica no motivo para não parecer que a A.M.C. pode concorrer sem conferir
+            exige += f" · ATENÇÃO: restrito a entidades que atuam em {ex['restricao_territorial']} — conferir se a A.M.C. pode concorrer"
         if ex["fim"] and ex["fim"] >= hoje.isoformat():
             return {**base, "veredito": "OPORTUNIDADE", "categoria": "edital_destinacao",
                     "motivos": [f"edital de seleção de projetos com recursos de prestação pecuniária{onde}, inscrições até {ex['fim']}{exige}"]}
@@ -702,19 +723,39 @@ def fonte_c(hoje: date, cfg: dict, diag: dict, est: dict, rota: str) -> list[dic
         return []
     vistos = set(cnj.get("vistos") or [])
     achados: list[dict] = []
+    max_pg = int(f.get("max_paginas", 3))
+    nao_alcancou = []
     for termo in f.get("termos") or []:
-        try:
-            achados += resultados_cnj(_get(f["busca"].format(termo=quote_plus(termo)), cfg, F))
-        except Exception as exc:  # noqa: BLE001
-            F["falhas"].append(f"busca '{termo}': {_erro(exc)}")
-            if F.get("recusado") and rota == "nuvem":
-                cnj["recusado_na_nuvem_em"] = hoje.isoformat()
+        # 03/10 (teste do motor 11): a busca do WordPress ordena por RELEVÂNCIA — a 1ª página trazia notícias de 2020 e
+        # escondia as novas. Por DATA, da mais nova para a mais antiga, até alcançar o que já foi visto.
+        for pg in range(1, max_pg + 1):
+            url = (f.get("busca_pagina") if pg > 1 else f["busca"]) or f["busca"]
+            try:
+                res = resultados_cnj(_get(url.format(termo=quote_plus(termo), pagina=pg), cfg, F))
+            except Exception as exc:  # noqa: BLE001
+                F["falhas"].append(f"busca '{termo}' p{pg}: {_erro(exc)}")
+                if F.get("recusado") and rota == "nuvem":
+                    cnj["recusado_na_nuvem_em"] = hoje.isoformat()
                 break
+            achados += res
+            if not res or any(x["url"] in vistos for x in res) or not vistos:
+                break                                  # alcançou o já visto (ou 1ª leitura: só a 1ª página)
+            if pg == max_pg:
+                nao_alcancou.append(termo)
+        if F.get("recusado") and rota == "nuvem":
+            break
     unicos = [x for x in {x["url"]: x for x in achados}.values() if x["url"] not in vistos and candidata(x["titulo"])]
     F["itens"] = len(achados)
     F["candidatas"] = len(unicos)
+    lim = int(f.get("max_artigos_por_execucao", 8))
+    cortados = max(0, len(unicos) - lim) + len(nao_alcancou)
+    if cortados:
+        # leitura parcial: o maestro dispara de novo e a próxima passagem continua de onde parou
+        diag["cortados"] = cortados
+        F["parcial"] = (f"{max(0, len(unicos) - lim)} notícia(s) candidata(s) ficaram para a próxima passagem"
+                        + (f"; a busca por {', '.join(nao_alcancou)} não alcançou o já visto em {max_pg} páginas" if nao_alcancou else ""))
     out = []
-    for x in unicos[: int(f.get("max_artigos_por_execucao", 8))]:
+    for x in unicos[:lim]:
         try:
             a = artigo(_get(x["url"], cfg, F), x["url"], x["titulo"], ("www.cnj.jus.br", "cnj.jus.br", "www.tjgo.jus.br"))
         except Exception as exc:  # noqa: BLE001
@@ -722,7 +763,7 @@ def fonte_c(hoje: date, cfg: dict, diag: dict, est: dict, rota: str) -> list[dic
             continue
         vistos.add(x["url"])
         out.append({**x, "fonte": "C", "texto": a["texto"], "publicado": a["publicado"], "pdfs": a["pdfs"]})
-    if not F["falhas"]:
+    if not F["falhas"] and not cortados:          # leitura cortada não conta como "lida no dia" (a cadência não a pula)
         cnj["ultima"] = hoje.isoformat()
         if rota == "nuvem":
             cnj.pop("recusado_na_nuvem_em", None)
@@ -811,6 +852,15 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     elif _tem("A"):
         diag["fontes"]["A"]["pulado"] = diag["fontes"]["B"]["pulado"] = \
             "na nuvem o TJGO recusa IP estrangeiro: notícias e PDFs são lidos no computador do titular (scripts/coleta_brasil.py)"
+    if _tem("C") and not (est.get("cnj") or {}).get("datas_v2"):
+        # 03/10 (teste do motor 11): as notícias do CNJ lidas com a data da barra lateral são relidas UMA vez com a data
+        # certa (meta do artigo) — a de Itaberaí (2020) estava aberta até 2027
+        refazer = {r.get("url_noticia") for r in est.get("abertas_registros") or [] if r.get("forma_divulgacao") == "noticia_cnj"}
+        est["abertas_registros"] = [r for r in est.get("abertas_registros") or [] if r.get("forma_divulgacao") != "noticia_cnj"]
+        cnj0 = est.setdefault("cnj", {})
+        cnj0["vistos"] = [u for u in cnj0.get("vistos") or [] if u not in refazer]
+        cnj0.pop("ultima", None); cnj0["datas_v2"] = hoje.isoformat()
+        diag["revalidadas_cnj"] = len(refazer)
     try:
         itens += fonte_c(hoje, cfg, diag, est, rota)
     except Exception as exc:  # noqa: BLE001
@@ -861,7 +911,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     leu = any(F[k]["consultas"] for k in "ABC")
     hist[d0] = {**{f"consultas_{k}": F[k]["consultas"] for k in "ABC"}, **{f"itens_{k}": F[k]["itens"] for k in "ABCD"}, **cont, "falhou": not leu and rota == "local"}
     est.update({"abertas_registros": abertas[:300], "acompanhar": acompanhar[:300], "pncp_cruzado": pncp[:60],
-                "ultima": {"em": now_iso(), "data": d0, "rota": rota, "vereditos": cont, "falhas": sum((F[k]["falhas"] for k in F), [])[:10]},
+                "ultima": {"em": now_iso(), "data": d0, "rota": rota, "vereditos": cont, "falhas": sum((F[k]["falhas"] for k in F), [])[:10],
+                           **({"cortados": diag["cortados"]} if diag.get("cortados") else {})},
                 "historico": {k: v for k, v in hist.items() if k >= (hoje - timedelta(days=120)).isoformat()}})
     est["abertas"] = [{k: r.get(k) for k in _CAMPOS} for r in abertas]
     write_json(arq, est)

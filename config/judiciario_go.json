@@ -47,7 +47,7 @@
    "ativa": true,
    "rota": "nuvem_ou_local",
    "nome": "Portal do CNJ — busca do site (republica editais dos tribunais)",
-   "busca": "https://www.cnj.jus.br/?s={termo}",
+   "busca": "https://www.cnj.jus.br/?s={termo}&orderby=date&order=DESC",
    "termos": [
     "prestação pecuniária edital",
     "penas pecuniárias projetos sociais",
@@ -57,7 +57,10 @@
    "cadencia_dias": 1,
    "max_artigos_por_execucao": 8,
    "verificado_em": "2026-10-02",
-   "nota": "02/10: a busca (?s=) responde do Brasil e traz, por exemplo, 'Edital seleciona projetos de Itaberaí (GO) para receberem recursos de prestação pecuniária'. A API REST do WordPress devolve [] para notícias e /feed/ cai na home; a página antiga /sistema-carcerario/penas-e-medidas-alternativas/ dá 404."
+   "nota": "02/10: a busca (?s=) responde do Brasil e traz, por exemplo, 'Edital seleciona projetos de Itaberaí (GO) para receberem recursos de prestação pecuniária'. A API REST do WordPress devolve [] para notícias e /feed/ cai na home; a página antiga /sistema-carcerario/penas-e-medidas-alternativas/ dá 404.",
+   "busca_pagina": "https://www.cnj.jus.br/page/{pagina}/?s={termo}&orderby=date&order=DESC",
+   "max_paginas": 3,
+   "ajuste_03_10": "Teste do motor 11: a busca ordenava por relevância (a 1ª página trazia notícia de 2020 sobre Itaberaí, registrada como aberta até 2027). Agora por data, página a página até alcançar o já visto; a data vem do meta article:published_time."
   },
   "D_pncp_cruzado": {
    "ativa": true,

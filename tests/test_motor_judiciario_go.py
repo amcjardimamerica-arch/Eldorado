@@ -309,3 +309,78 @@ class Integracao(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+ITABERAI_HTML = ('<html><head><meta property="article:published_time" content="2020-07-21T14:27:00+00:00"></head><body>'
+                 '<aside><time datetime="2026-10-02">2 out</time><time datetime="2026-09-21">21 set</time></aside>'
+                 '<article class="post"><div class="entry-content"><p>Post publicado: 21 de julho de 2020</p>'
+                 '<p>Entidades e instituições sociais de Itaberaí (GO) podem se inscrever, desde segunda-feira (20/7), para seleção dos '
+                 'projetos que vão receber verbas provenientes de prestação pecuniária. O prazo termina no dia 18 de agosto. Podem '
+                 'participar projetos de instituições com finalidade social nas áreas de segurança pública, educação e saúde. É '
+                 'necessário que a atuação seja no município.</p></div></article><div class="share">x</div></body></html>')
+
+
+class Motor11CNJ(unittest.TestCase):
+    """Teste do motor 11 (CNJ) de 03/10/2026."""
+
+    def test_data_do_meta_e_nao_da_barra_lateral(self):
+        a = J.artigo(ITABERAI_HTML, "https://www.cnj.jus.br/edital-seleciona-projetos-de-itaberai/", "Edital seleciona projetos de Itaberaí (GO)")
+        self.assertEqual(a["publicado"], "2020-07-21")
+        sem_meta = ITABERAI_HTML.replace('<meta property="article:published_time" content="2020-07-21T14:27:00+00:00">', "")
+        self.assertEqual(J.artigo(sem_meta, "https://www.cnj.jus.br/x/", "Edital")["publicado"], "2020-07-21")
+
+    def test_noticia_de_2020_nao_e_oportunidade_e_restricao_e_detectada(self):
+        a = J.artigo(ITABERAI_HTML, "https://www.cnj.jus.br/x/", "Edital seleciona projetos de Itaberaí (GO)")
+        r = J.classificar_item({"fonte": "C", "titulo": "Edital seleciona projetos de Itaberaí (GO) para receberem recursos de prestação pecuniária",
+                                "texto": a["texto"], "publicado": a["publicado"]}, date(2026, 10, 3), {})
+        self.assertEqual((r["veredito"], r["fim"]), ("ACOMPANHAR", "2020-08-18"))
+        self.assertEqual(r["restricao_territorial"], "Itaberaí")
+
+    def _rodar_c(self, paginas, vistos, lim=8):
+        est = {"cnj": {"vistos": list(vistos), "datas_v2": "x"}}
+        diag = {"fontes": {"C": {"falhas": [], "consultas": 0, "itens": 0}}}
+        cfg = {"fontes": {"C_cnj_busca": {"busca": "https://www.cnj.jus.br/?s={termo}&orderby=date&order=DESC",
+                                          "busca_pagina": "https://www.cnj.jus.br/page/{pagina}/?s={termo}&orderby=date&order=DESC",
+                                          "termos": ["prestação pecuniária"], "max_paginas": 3, "max_artigos_por_execucao": lim}}}
+        pedidas = []
+
+        def get(url, cfg_, F, **kw):
+            pedidas.append(url)
+            if "/?s=" in url and "/page/" not in url:
+                return paginas[0]
+            if "/page/" in url:
+                n = int(url.split("/page/")[1].split("/")[0])
+                return paginas[n - 1] if n <= len(paginas) else ""
+            return ITABERAI_HTML.replace("Itaberaí", "Goiânia")
+        J._PARTE.update(id="judiciario-cnj", fontes="C")
+        try:
+            with mock.patch.object(J, "_get", side_effect=get):
+                out = J.fonte_c(date(2026, 10, 3), cfg, diag, est, "nuvem")
+        finally:
+            J._PARTE.update(id=None, fontes="ABCDE")
+        return out, diag, est, pedidas
+
+    @staticmethod
+    def _pagina(slugs):
+        return "".join(f'<h2><a href="https://www.cnj.jus.br/{s}/">Edital de prestação pecuniária {s}</a></h2>' for s in slugs)
+
+    def test_busca_por_data_ate_alcancar_o_ja_visto(self):
+        p1, p2 = self._pagina(["nova-1", "nova-2"]), self._pagina(["nova-3", "velha-1"])
+        out, diag, est, pedidas = self._rodar_c([p1, p2], ["https://www.cnj.jus.br/velha-1/"])
+        self.assertTrue(all("orderby=date" in u for u in pedidas if "?s=" in u))
+        self.assertEqual(len([u for u in pedidas if "?s=" in u]), 2)              # parou na página que tinha o já visto
+        self.assertEqual(len(out), 3)
+        self.assertNotIn("cortados", diag)
+        self.assertEqual(est["cnj"]["ultima"], "2026-10-03")
+
+    def test_corte_vira_leitura_parcial_e_volta(self):
+        p = [self._pagina([f"n{i}-{k}" for k in range(4)]) for i in range(3)]      # 3 páginas sem alcançar o já visto
+        out, diag, est, _ = self._rodar_c(p, ["https://www.cnj.jus.br/antiga/"], lim=5)
+        self.assertEqual(len(out), 5)
+        self.assertGreaterEqual(diag["cortados"], 1)                             # o maestro lê como PARCIAL
+        self.assertNotIn("ultima", est["cnj"])                                   # a cadência não pula a próxima passagem
+
+    def test_status_le_o_estado_de_cada_parte(self):
+        from src import status_motores as S
+        self.assertTrue(str(S.PROPRIOS["judiciario-cnj"]).endswith("estado/judiciario_cnj.json"))
+        self.assertTrue(str(S.PROPRIOS["judiciario-tjgo"]).endswith("estado/judiciario_tjgo.json"))
