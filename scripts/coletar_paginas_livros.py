@@ -75,6 +75,8 @@ def run(bloco: str, inicio: int = 0, quantos: int = 200) -> dict:
     arq = next((ROOT / "docs/verificacao-livros/blocos").glob(f"{bloco}-*.json"))
     B = json.loads(arq.read_text(encoding="utf-8"))
     out = {"bloco": B["bloco"], "arquivo": arq.name, "livros": []}
+    dest = ROOT / "docs/verificacao-livros/paginas" / f"{bloco}-{inicio:04d}.json"
+    dest.parent.mkdir(parents=True, exist_ok=True)              # a pasta não existe no repositório até a 1ª coleta
     for l in B["livros"][inicio:inicio + quantos]:
         urls = []
         for u in (l.get("pagina_atual"), l.get("site_oficial_conhecido"), (l.get("ultimo_edital") or {}).get("pagina_oficial")):
@@ -93,8 +95,7 @@ def run(bloco: str, inicio: int = 0, quantos: int = 200) -> dict:
             reg["paginas"].append(p); time.sleep(1.0)
         out["livros"].append(reg)
         print(l["livro"], [p["situacao"] for p in reg["paginas"]], flush=True)
-    dest = ROOT / "docs/verificacao-livros/paginas" / f"{bloco}-{inicio:04d}.json"
-    dest.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+        dest.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")   # progresso gravado a cada livro
     return out
 
 
