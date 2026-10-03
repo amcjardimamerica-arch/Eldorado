@@ -1,11 +1,11 @@
 {
- "gerado_em": "2026-10-03T08:33-03:00",
- "proxima_atualizacao": "2026-10-03T14:33-03:00",
+ "gerado_em": "2026-10-03T09:05-03:00",
+ "proxima_atualizacao": "2026-10-03T15:05-03:00",
  "a_cada_horas": 6,
  "regra": "STATUS DOS MOTORES A CADA 6 HORAS (titular, 01/10/2026) — monitoramento e tomada de decisão.\n\nPara cada motor regular: a data e a hora da ÚLTIMA LEITURA, o resultado e UMA de três luzes:\n  VERDE     coletou hoje (horário de Brasília), com dados ou sem dados novos\n  VERMELHO  a coleta de hoje teve erro ou falha\n  CINZA     o motor não rodou hoje (fora da agenda, aguardando coleta local, parado)",
  "contagem": {
-  "verde": 19,
-  "vermelho": 4,
+  "verde": 20,
+  "vermelho": 3,
   "cinza": 19
  },
  "motores": [
@@ -119,11 +119,11 @@
   {
    "id": "judiciario-tjgo",
    "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
-   "luz": "vermelho",
-   "resultado": "falha na coleta de hoje — nenhuma página leu",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos (atenção: 2 falha(s) na leitura: RSS página 1: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte B)",
    "leitura_do_dia": {
     "estado": "parcial",
-    "texto": "dia lido em parte — nenhuma página leu"
+    "texto": "dia lido em parte — 2 falha(s) na leitura: RSS página 1: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte B"
    },
    "observacoes": [
     "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular."
@@ -135,7 +135,7 @@
    "id": "judiciario-cnj",
    "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
    "luz": "verde",
-   "resultado": "coletou hoje — 1 achado(s)",
+   "resultado": "coletou hoje — sem dados novos",
    "leitura_do_dia": {
     "estado": "completa",
     "texto": "dia lido por completo"
@@ -188,7 +188,7 @@
     "PENDÊNCIA DO TITULAR — pedidos de acesso à informação (Lei 12.527/2011) prontos para envio: docs/relatorios/lai/pedidos-lai-motor-10-2026-10-03.md.",
     "MPF PR-GO: o edital de cadastro de entidades para receber bens e valores (notícia de 09/10/2025) tem o link quebrado (404); pedir o edital, a lista de entidades cadastradas e as destinações de 2023 a 2026.",
     "MPT (Procuradoria-Geral do Trabalho): pedir as destinações nacionais a entidades de Goiás de 2023 a 2026 e as regras do Sistema de Destinações.",
-    "FDD/CFDD: a página 'seleção em andamento' deixou de dizer 'não há' — conferir o edital (a informação é pública; não precisa de pedido)."
+    "FDD/CFDD: conferido em 03/10/2026 — a página 'seleção em andamento' diz 'Não há' (atualizada em 08/07/2026). O aviso anterior era falso: vinha do código da página lido como texto (corrigido no motor)."
    ],
    "ultima_leitura": "2026-10-02T23:41-03:00",
    "agenda": "todos 16:23"
@@ -569,7 +569,7 @@
     "texto": "dia lido por completo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-03T08:14-03:00",
+   "ultima_leitura": "2026-10-03T08:43-03:00",
    "agenda": null
   }
  ]
