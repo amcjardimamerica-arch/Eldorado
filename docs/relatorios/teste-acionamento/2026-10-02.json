@@ -1,0 +1,1024 @@
+{
+ "em": "2026-10-03T01:55:11+00:00",
+ "regra": "TESTE DE ACIONAMENTO DE CADA MOTOR (titular, 02/10/2026).\n\nPercorre os motores NA ORDEM DO PAINEL (config/ordem_motores.json) e aciona UM POR VEZ: o próximo só começa quando o\natual termina e o relatório dele é gravado. Cada tipo é acionado pelo seu caminho:\n  sensor (diários, legislativo, Judiciário, MP, portais…) → src.sensores.ler(sensor)\n  motor por site (site-…)                                  → rodada dos indexadores só daquele site (forçada)\n  Motor Incentivos Fiscais / Patrocínio Privado             → as rotinas de empresas (com limite de tempo)\n  Piloto - Espião / Piloto - Interceptador                  → dispara o voo (fluxo do GitHub) e espera terminar\nO teste NÃO grava dados de produção: o fluxo só envia o relatório (docs/relatorios/teste-acionamento/).",
+ "motores": [
+  {
+   "ordem": 1,
+   "motor": "do-goiania",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:03:46+00:00",
+   "segundos": 900,
+   "veredito": "FALHOU — estourou o tempo",
+   "resultado": {
+    "saida": "",
+    "erro": "estourou o limite de tempo"
+   }
+  },
+  {
+   "ordem": 2,
+   "motor": "do-goias",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:18:46+00:00",
+   "segundos": 101,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "do-goias",
+    "achados": 5,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 165,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 5,
+     "ACOMPANHAR": 32,
+     "RUIDO": 128,
+     "quarentena": 0
+    }
+   }
+  },
+  {
+   "ordem": 3,
+   "motor": "dou",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:20:27+00:00",
+   "segundos": 48,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "dou",
+    "achados": 2,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 8,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 0,
+     "ACOMPANHAR": 0,
+     "RUIDO": 0,
+     "quarentena": 0
+    }
+   }
+  },
+  {
+   "ordem": 4,
+   "motor": "camara-goiania-pl",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:21:15+00:00",
+   "segundos": 80,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "camara-goiania-pl",
+    "achados": 0,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 9,
+    "motivo_zero": "SUAP só pelo Brasil: os projetos de lei e a tramitação da associação aguardam a coleta local (scripts/coleta_brasil.py); notícias lidas na nuvem — 19 itens lidos (processos A 0 · própria B 0 · notícia",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 0,
+     "ACOMPANHAR": 1,
+     "RUIDO": 18,
+     "quarentena": 0,
+     "erros": 0
+    }
+   }
+  },
+  {
+   "ordem": 5,
+   "motor": "alego-pl",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:22:35+00:00",
+   "segundos": 27,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "alego-pl",
+    "achados": 0,
+    "falhas": 1,
+    "falhas_exemplo": [
+     "conexão recusada/derrubada — filtro de rede ou IP estrangeiro"
+    ],
+    "paginas": 6,
+    "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+    "exige_brasil": false,
+    "vereditos": null
+   }
+  },
+  {
+   "ordem": 6,
+   "motor": "congresso-nacional",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:23:03+00:00",
+   "segundos": 37,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "congresso-nacional",
+    "achados": 0,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 17,
+    "motivo_zero": "47 itens lidos (CMO A 1 · Câmara B 3 · Senado C 4 · notícias D 35 · convocações E 4): nenhuma janela de emendas aberta nem chamamento para OSC · 3 a acompanhar · emendas ao PLOA 2027: nao_iniciada",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 0,
+     "ACOMPANHAR": 3,
+     "RUIDO": 44,
+     "quarentena": 0,
+     "erros": 0
+    }
+   }
+  },
+  {
+   "ordem": 7,
+   "motor": "judiciario-tjgo",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:23:39+00:00",
+   "segundos": 0,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "judiciario-tjgo",
+    "achados": 0,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 0,
+    "motivo_zero": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 1 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar · a coleta no computador do titular ain",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 0,
+     "ACOMPANHAR": 0,
+     "RUIDO": 0,
+     "quarentena": 0,
+     "erros": 0,
+     "duplicados": 0
+    }
+   }
+  },
+  {
+   "ordem": 8,
+   "motor": "mpgo-destinacao",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:23:40+00:00",
+   "segundos": 0,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "mpgo-destinacao",
+    "achados": 1,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 0,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 1,
+     "ACOMPANHAR": 0,
+     "RUIDO": 0
+    }
+   }
+  },
+  {
+   "ordem": 9,
+   "motor": "mptgo-destinacao",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:23:40+00:00",
+   "segundos": 26,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "mptgo-destinacao",
+    "achados": 2,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 3,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 2,
+     "ACOMPANHAR": 45,
+     "RUIDO": 0
+    }
+   }
+  },
+  {
+   "ordem": 10,
+   "motor": "mpu-destinacao",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:24:06+00:00",
+   "segundos": 68,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "mpu-destinacao",
+    "achados": 1,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 20,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 1,
+     "ACOMPANHAR": 19,
+     "RUIDO": 7
+    }
+   }
+  },
+  {
+   "ordem": 11,
+   "motor": "judiciario-cnj",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:25:14+00:00",
+   "segundos": 55,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "judiciario-cnj",
+    "achados": 1,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 12,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 1,
+     "ACOMPANHAR": 3,
+     "RUIDO": 4,
+     "quarentena": 0,
+     "erros": 0,
+     "duplicados": 0
+    }
+   }
+  },
+  {
+   "ordem": 12,
+   "motor": "dj-trf1-go",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:26:09+00:00",
+   "segundos": 5,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "dj-trf1-go",
+    "achados": 0,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 6,
+    "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
+    "exige_brasil": false,
+    "vereditos": null
+   }
+  },
+  {
+   "ordem": 13,
+   "motor": "prefeituras-50-go",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:26:14+00:00",
+   "segundos": 364,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "plat-prefeituras-50-go",
+    "achados": 8,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 25,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": null
+   }
+  },
+  {
+   "ordem": 14,
+   "motor": "estaduais-go-gov",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:32:18+00:00",
+   "segundos": 67,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "plat-estaduais-go-gov",
+    "achados": 0,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 37,
+    "motivo_zero": "37 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje",
+    "exige_brasil": false,
+    "vereditos": null
+   }
+  },
+  {
+   "ordem": 15,
+   "motor": "pncp-api",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:33:25+00:00",
+   "segundos": 790,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "pncp-api",
+    "achados": 223,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 243,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 223,
+     "ACOMPANHAR": 0,
+     "RUIDO": 7574,
+     "quarentena": 0
+    }
+   }
+  },
+  {
+   "ordem": 16,
+   "motor": "salic",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:46:35+00:00",
+   "segundos": 11,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "plat-salic",
+    "achados": 5,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 7,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": null
+   }
+  },
+  {
+   "ordem": 17,
+   "motor": "cnpq-extensao",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:46:46+00:00",
+   "segundos": 22,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "plat-cnpq-extensao",
+    "achados": 0,
+    "falhas": 2,
+    "falhas_exemplo": [
+     "HTTP 404",
+     "HTTP 404"
+    ],
+    "paginas": 5,
+    "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+    "exige_brasil": false,
+    "vereditos": null
+   }
+  },
+  {
+   "ordem": 18,
+   "motor": "gife",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:47:08+00:00",
+   "segundos": 14,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "plat-gife",
+    "achados": 3,
+    "falhas": 0,
+    "falhas_exemplo": [],
+    "paginas": 8,
+    "motivo_zero": "",
+    "exige_brasil": false,
+    "vereditos": {
+     "OPORTUNIDADE": 3,
+     "ACOMPANHAR": 14,
+     "RUIDO": 4,
+     "quarentena": 0,
+     "erros": 0
+    }
+   }
+  },
+  {
+   "ordem": 19,
+   "motor": "empresas-editais-incentivados",
+   "tipo": "sensor",
+   "inicio": "2026-10-02T23:47:22+00:00",
+   "segundos": 5,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sensor": "plat-empresas-editais-incentivados",
+    "achados": 0,
+    "falhas": 1,
+    "falhas_exemplo": [
+     "endereço não resolve (DNS) — URL errada ou domínio desativado"
+    ],
+    "paginas": 3,
+    "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+    "exige_brasil": false,
+    "vereditos": null
+   }
+  },
+  {
+   "ordem": 20,
+   "motor": "motor-gife",
+   "tipo": "empresas",
+   "inicio": "2026-10-02T23:47:27+00:00",
+   "segundos": 1,
+   "veredito": "OK",
+   "resultado": {
+    "saida": "60409075000152\",\n      \"prova\": \"o CNPJ da base é da Nestlé Nordeste Alimentos e Bebidas, subsidiária; a matriz é NESTLE BRASIL LTDA., 60409075000152 no SALIC\"\n    }\n  ],\n  \"cnpj_resolvidos_por_nome\": 24,\n  \"rouanet\": {\n    \"destinou\": 86,\n    \"nao_consta\": 13,\n    \"destinou_desde_corte\": 64\n  },\n  \"goyazes\": {\n    \"destinou\": 5,\n    \"empresas_novas_descobertas\": 87\n  },\n  \"pat\": {\n    \"inscrita\": 87,\n    \"inscrita_por_estabelecimento\": 3,\n    \"inscricao_inativa\": 7,\n    \"nao_consta\": 2\n  },\n  \"lucro_real_confirmado_pela_rouanet\": 64,\n  \"mecanismos_sem_fonte\": {\n    \"LIE\": \"bloqueado_defeso_eleitoral\",\n    \"FIA\": \"sem_fonte_publica_por_cnpj\",\n    \"Fundo do Idoso\": \"sem_fonte_publica_por_cnpj\",\n    \"PRONON\": \"sem_fonte_publica_por_cnpj\",\n    \"PRONAS/PCD\": \"sem_fonte_publica_por_cnpj\"\n  }\n}\n",
+    "erro": ""
+   }
+  },
+  {
+   "ordem": 21,
+   "motor": "motor-patrocinio",
+   "tipo": "empresas",
+   "inicio": "2026-10-02T23:47:28+00:00",
+   "segundos": 154,
+   "veredito": "OK",
+   "resultado": {
+    "saida": "{\n  \"uf\": \"GO\",\n  \"paginas_lidas\": 40,\n  \"novos\": 5,\n  \"total\": 8,\n  \"fontes\": 22,\n  \"descoberta\": {\n    \"candidatas\": 11,\n    \"novas\": 0,\n    \"verificadas\": 5\n  },\n  \"empresas_com_patrocinio\": 3,\n  \"novas_na_base\": 0,\n  \"executado_em\": \"2026-10-02T23:50:02+00:00\"\n}\n",
+    "erro": ""
+   }
+  },
+  {
+   "ordem": 22,
+   "motor": "piloto-aberto",
+   "tipo": "piloto",
+   "inicio": "2026-10-02T23:50:02+00:00",
+   "segundos": 3620,
+   "veredito": "ATENÇÃO — voo: não terminou no limite do teste",
+   "resultado": {
+    "voo": 37083324351,
+    "conclusao": "não terminou no limite do teste",
+    "situacao_do_voo": "in_progress"
+   }
+  },
+  {
+   "ordem": 23,
+   "motor": "piloto-interceptador",
+   "tipo": "piloto",
+   "inicio": "2026-10-03T00:50:22+00:00",
+   "segundos": 3621,
+   "veredito": "ATENÇÃO — voo: não terminou no limite do teste",
+   "resultado": {
+    "voo": 37087250503,
+    "conclusao": "não terminou no limite do teste",
+    "situacao_do_voo": "in_progress"
+   }
+  },
+  {
+   "ordem": 24,
+   "motor": "site-farol-cultural",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:50:43+00:00",
+   "segundos": 8,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "farolcultural"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "farolcultural": {
+      "rota": "nuvem",
+      "lidas": 6,
+      "itens": 502,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 6
+   }
+  },
+  {
+   "ordem": 25,
+   "motor": "site-capitaai",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:50:51+00:00",
+   "segundos": 171,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "capitaai"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "capitaai": {
+      "rota": "nuvem",
+      "lidas": 86,
+      "itens": 90,
+      "falhas": [],
+      "pendente": true
+     }
+    },
+    "requisicoes": 86
+   }
+  },
+  {
+   "ordem": 26,
+   "motor": "site-observatorio-terceiro-setor",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:53:42+00:00",
+   "segundos": 3,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "observatorio-3setor"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "observatorio-3setor": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 27,
+   "motor": "site-mapas-culturais",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:53:45+00:00",
+   "segundos": 58,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "mapas-culturais"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "mapas-culturais": {
+      "rota": "nuvem",
+      "lidas": 7,
+      "itens": 33,
+      "falhas": [
+       "robots: robots.txt proíbe /api/opportunity/find",
+       "rede: robots.txt inacessível: URLError: timed out",
+       "rede: robots.txt inacessível: URLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)"
+      ],
+      "pendente": false
+     }
+    },
+    "requisicoes": 10
+   }
+  },
+  {
+   "ordem": 28,
+   "motor": "site-abcr",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:54:43+00:00",
+   "segundos": 2,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "abcr"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "abcr": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 29,
+   "motor": "site-funarte",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:54:45+00:00",
+   "segundos": 1,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "funarte"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "funarte": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 30,
+   "motor": "site-transferegov",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:54:46+00:00",
+   "segundos": 3,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "transferegov-parcerias",
+     "siconv-programas"
+    ],
+    "lidos": 2,
+    "detalhe": {
+     "siconv-programas": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     },
+     "transferegov-parcerias": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 5,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 2
+   }
+  },
+  {
+   "ordem": 31,
+   "motor": "site-rede-comua",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:54:49+00:00",
+   "segundos": 1,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "rede-comua"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "rede-comua": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 32,
+   "motor": "site-fundo-baoba",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:54:50+00:00",
+   "segundos": 10,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "baoba"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "baoba": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 33,
+   "motor": "site-editais-culturais",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:00+00:00",
+   "segundos": 3,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "editaisculturais"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "editaisculturais": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 34,
+   "motor": "site-fundo-brasil",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:03+00:00",
+   "segundos": 1,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "fundo-brasil"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "fundo-brasil": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 35,
+   "motor": "site-idis",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:04+00:00",
+   "segundos": 1,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "idis"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "idis": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 36,
+   "motor": "site-undef",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:06+00:00",
+   "segundos": 0,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "undef"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "undef": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 37,
+   "motor": "site-fundo-casa",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:06+00:00",
+   "segundos": 1,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "fundo-casa"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "fundo-casa": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 38,
+   "motor": "site-brazilfoundation",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:07+00:00",
+   "segundos": 1,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "brazilfoundation"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "brazilfoundation": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 1,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 39,
+   "motor": "site-cese",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:08+00:00",
+   "segundos": 1,
+   "veredito": "OK — leu",
+   "resultado": {
+    "sites": [
+     "cese"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "cese": {
+      "rota": "nuvem",
+      "lidas": 1,
+      "itens": 0,
+      "falhas": [],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 40,
+   "motor": "site-embaixada-japao",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:09+00:00",
+   "segundos": 0,
+   "veredito": "OK — fora da rota da nuvem (assistida ou ponte)",
+   "resultado": {
+    "sites": [
+     "embaixadas"
+    ],
+    "lidos": 0,
+    "detalhe": {},
+    "requisicoes": 0
+   }
+  },
+  {
+   "ordem": 41,
+   "motor": "site-embaixada-eua",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:09+00:00",
+   "segundos": 0,
+   "veredito": "OK — fora da rota da nuvem (assistida ou ponte)",
+   "resultado": {
+    "sites": [
+     "embaixada-eua"
+    ],
+    "lidos": 0,
+    "detalhe": {},
+    "requisicoes": 0
+   }
+  },
+  {
+   "ordem": 42,
+   "motor": "site-finep",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:10+00:00",
+   "segundos": 0,
+   "veredito": "OK — fora da rota da nuvem (assistida ou ponte)",
+   "resultado": {
+    "sites": [
+     "finep"
+    ],
+    "lidos": 0,
+    "detalhe": {},
+    "requisicoes": 0
+   }
+  },
+  {
+   "ordem": 43,
+   "motor": "site-fundacao-banco-do-brasil",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:10+00:00",
+   "segundos": 0,
+   "veredito": "OK — fora da rota da nuvem (assistida ou ponte)",
+   "resultado": {
+    "sites": [
+     "fbb"
+    ],
+    "lidos": 0,
+    "detalhe": {},
+    "requisicoes": 0
+   }
+  },
+  {
+   "ordem": 44,
+   "motor": "site-iaf",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:10+00:00",
+   "segundos": 0,
+   "veredito": "ATENÇÃO — acionou mas não leu: geo: HTTP 403",
+   "resultado": {
+    "sites": [
+     "iaf"
+    ],
+    "lidos": 1,
+    "detalhe": {
+     "iaf": {
+      "rota": "nuvem",
+      "lidas": 0,
+      "itens": 0,
+      "falhas": [
+       "geo: HTTP 403"
+      ],
+      "pendente": false
+     }
+    },
+    "requisicoes": 1
+   }
+  },
+  {
+   "ordem": 45,
+   "motor": "site-itau-social",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:10+00:00",
+   "segundos": 0,
+   "veredito": "OK — fora da rota da nuvem (assistida ou ponte)",
+   "resultado": {
+    "sites": [
+     "itau-social"
+    ],
+    "lidos": 0,
+    "detalhe": {},
+    "requisicoes": 0
+   }
+  },
+  {
+   "ordem": 46,
+   "motor": "site-mapa-osc",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:10+00:00",
+   "segundos": 0,
+   "veredito": "OK — fora da rota da nuvem (assistida ou ponte)",
+   "resultado": {
+    "sites": [
+     "mapa-osc"
+    ],
+    "lidos": 0,
+    "detalhe": {},
+    "requisicoes": 0
+   }
+  },
+  {
+   "ordem": 47,
+   "motor": "site-petrobras",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:11+00:00",
+   "segundos": 0,
+   "veredito": "OK — fora da rota da nuvem (assistida ou ponte)",
+   "resultado": {
+    "sites": [
+     "petrobras"
+    ],
+    "lidos": 0,
+    "detalhe": {},
+    "requisicoes": 0
+   }
+  },
+  {
+   "ordem": 48,
+   "motor": "site-prosas",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:11+00:00",
+   "segundos": 0,
+   "veredito": "OK — fora da rota da nuvem (assistida ou ponte)",
+   "resultado": {
+    "sites": [
+     "prosas"
+    ],
+    "lidos": 0,
+    "detalhe": {},
+    "requisicoes": 0
+   }
+  },
+  {
+   "ordem": 49,
+   "motor": "site-rede-filantropia",
+   "tipo": "site",
+   "inicio": "2026-10-03T01:55:11+00:00",
+   "segundos": 0,
+   "veredito": "OK — fora da rota da nuvem (assistida ou ponte)",
+   "resultado": {
+    "sites": [
+     "filantropia"
+    ],
+    "lidos": 0,
+    "detalhe": {},
+    "requisicoes": 0
+   }
+  }
+ ]
+}
