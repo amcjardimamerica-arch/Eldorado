@@ -1,6 +1,6 @@
 {
- "versao": 1,
- "atualizado_em": "2026-10-02",
+ "versao": 1.1,
+ "atualizado_em": "2026-10-03",
  "parecer": "docs/pareceres/motor-congresso-nacional.md",
  "regra": "Motor do Congresso Nacional (Câmara dos Deputados, Senado Federal e Comissão Mista de Orçamento). O que o Congresso produz para uma OSC quase nunca é edital: é a JANELA DE EMENDAS ao orçamento da União (prazo oficial da CMO), a REGRA que muda a vida das entidades (MROSC, imunidade, IBS/CBS, REFIS, CEBAS) e, raramente, um chamamento, prêmio ou cessão das próprias Casas. Cada item vira OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo escrito. Sem IA, sem tokens, biblioteca-padrão.",
  "orcamento": {
@@ -24,7 +24,8 @@
    "lido_em": "2026-10-02",
    "nota": "valores do informativo; o prazo de apresentação de emendas não estava fixado em 02/10/2026 (etapa 'Apresentação de emendas' = não iniciada; PLN 24/2026 aguardando despacho para a CMO)"
   },
-  "janela_dias": 60
+  "janela_dias": 60,
+  "comunicados_por_pagina": 10
  },
  "camara": {
   "ativa": true,
@@ -40,7 +41,8 @@
    "entidades beneficentes",
    "associação de moradores"
   ],
-  "nota_keywords": "02/10: a busca da API casa a expressão (aceita acento): 'sem fins lucrativos' trouxe 19 proposições desde 01/06/2026, 'sociedade civil' 5 desde 01/07, 'terceiro setor' o PL 3088/2026 (REFIS social), 'associação de moradores' 4 desde 2025; '13.019' e 'filantropicas' voltam vazios. 'utilidade pública' fica de fora: a utilidade pública federal foi extinta pela Lei 13.204/2015."
+  "nota_keywords": "02/10: a busca da API casa a expressão (aceita acento): 'sem fins lucrativos' trouxe 19 proposições desde 01/06/2026, 'sociedade civil' 5 desde 01/07, 'terceiro setor' o PL 3088/2026 (REFIS social), 'associação de moradores' 4 desde 2025; '13.019' e 'filantropicas' voltam vazios. 'utilidade pública' fica de fora: a utilidade pública federal foi extinta pela Lei 13.204/2015.",
+  "nota_teste_0310": "03/10: 'sem fins lucrativos' desde 04/08 = 3 proposições (PLP 236/2026, PL 5086/2026, PLP 230/2026); a API responde sem página seguinte"
  },
  "senado": {
   "ativa": true,
@@ -61,13 +63,18 @@
   "feeds": [
    {
     "casa": "Câmara dos Deputados",
-    "url": "https://www.camara.leg.br/noticias/rss/ultimas-noticias"
+    "url": "https://www.camara.leg.br/noticias/rss/ultimas-noticias",
+    "listagem": "https://www.camara.leg.br/noticias/ultimas?pagina={pagina}",
+    "max_paginas_recuperacao": 15
    },
    {
     "casa": "Senado Federal",
-    "url": "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss"
+    "url": "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss",
+    "listagem": "https://www12.senado.leg.br/noticias/ultimas/{pagina}",
+    "max_paginas_recuperacao": 15
    }
-  ]
+  ],
+  "nota": "03/10 (teste do motor 06): o RSS traz só as ~20 últimas notícias (Câmara: 20 itens em ~31 h; Senado: 16 itens em ~31 h). Se houver buraco desde a última leitura, o motor lê a listagem paginada da Casa (robots liberado) até cobri-lo; o que não couber vira paginas_nao_lidas."
  },
  "convocacoes": {
   "ativa": true,
