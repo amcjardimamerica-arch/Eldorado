@@ -1,8 +1,8 @@
 {
- "versao": 2,
- "atualizado_em": "2026-10-01",
+ "versao": 3,
+ "atualizado_em": "2026-10-03",
  "parecer": "docs/pareceres/motor-05-camara-goiania.md",
- "regra": "Motor 05 lê os processos legislativos da Câmara de Goiânia no SUAP (consulta pública), a tramitação dos processos da própria associação e as notícias do portal; cada item vira OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo, e as utilidades públicas vão para a lista de habilitação. Sem IA, sem tokens.",
+ "regra": "Motor 04 (v3, 03/10/2026) lê no portal da Câmara de Goiânia as PAUTAS de projetos do Plenário (PDF) e as notícias; o SUAP não é lido porque o robots.txt proíbe robôs. Cada projeto ou notícia vira OPORTUNIDADE, ACOMPANHAR ou RUÍDO com o motivo; utilidades públicas vão para a lista de habilitação; o PL 288/2026 da associação é seguido pela pauta. Sem IA, sem tokens.",
  "suap": {
   "base": "https://suap.camaragyn.go.gov.br",
   "janela_dias": 35,
@@ -37,7 +37,10 @@
    "A.M.C. Jardim América",
    "Moradores e Comerciantes do Jardim América"
   ],
-  "bairro": "Jardim América"
+  "bairro": "Jardim América",
+  "projetos": [
+   "288/2026"
+  ]
  },
  "portal": {
   "ativa": true,
@@ -52,7 +55,10 @@
    "emenda impositiva",
    "subvenção",
    "sociedade civil",
-   "Jardim América"
+   "Jardim América",
+   "utilidade pública",
+   "orçamento",
+   "associação"
   ]
  },
  "ritmo": {
@@ -60,5 +66,19 @@
   "espera_erro_segundos": 4
  },
  "prazo_total_segundos": 300,
- "falhas_seguidas_para_abortar_fonte": 3
+ "falhas_seguidas_para_abortar_fonte": 3,
+ "robots": {
+  "proibe_hosts": [
+   "suap.camaragyn.go.gov.br"
+  ],
+  "medido_em": "2026-10-03",
+  "regra": "03/10 (teste do motor 04): o robots.txt do SUAP diz 'User-agent: * / Disallow: /' — o motor não lê o SUAP (fontes A e B ficam sem leitura automática). O portal www.goiania.go.leg.br libera robôs: pautas do Plenário (fonte D) e notícias (fonte C). A ficha do processo da associação no SUAP é consulta humana do titular."
+ },
+ "pautas": {
+  "ativa": true,
+  "listagem": "processo-legislativo/pautas-de-sessoes",
+  "janela_dias": 35,
+  "max_pautas": 25,
+  "regra": "PDF da pauta de projetos de cada sessão (tipo, número, criação, autoria, fase e resumo); toda pauta publicada na janela é lida — a que falhar vai para paginas_nao_lidas e o maestro dispara o motor de novo"
+ }
 }
