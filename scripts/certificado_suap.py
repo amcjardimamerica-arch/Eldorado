@@ -37,25 +37,41 @@ def run() -> dict:
     folha = sh(["openssl", "x509", "-noout", "-subject", "-issuer", "-enddate", "-text"], pems[0].encode())
     out["folha"] = {"assunto": (re.search(r"subject=.*", folha) or [""])[0], "emissor": (re.search(r"issuer=.*", folha) or [""])[0],
                     "validade": (re.search(r"notAfter=.*", folha) or [""])[0]}
+    # segue a cadeia de emissores pelos endereços OFICIAIS que vêm dentro de cada certificado (AIA), até a raiz
     aia = re.findall(r"CA Issuers - URI:(\S+)", folha)
     out["aia"] = aia
-    inter_pem = None
-    for u in aia:
-        try:
-            with urllib.request.urlopen(u, timeout=30) as r:
-                b = r.read(200000)
-            der = b if not b.startswith(b"-----BEGIN") else None
-            inter_pem = sh(["openssl", "x509", "-inform", "DER" if der else "PEM", "-outform", "PEM"], b) or None
-            if inter_pem:
-                info = sh(["openssl", "x509", "-noout", "-subject", "-issuer", "-enddate", "-fingerprint", "-sha256"], inter_pem.encode())
-                out["intermediario"] = {"baixado_de": u, "dados": info.strip().splitlines()}
-                break
-        except Exception as e:  # noqa: BLE001
-            out.setdefault("falhas_aia", []).append(f"{u}: {type(e).__name__}")
+    cadeia_pem, atual, vistos = [], aia, set()
+    for _nivel in range(4):
+        prox = []
+        for u in atual:
+            if u in vistos:
+                continue
+            vistos.add(u)
+            try:
+                with urllib.request.urlopen(u, timeout=30) as r:
+                    b = r.read(200000)
+                pem = sh(["openssl", "x509", "-inform", "PEM" if b.startswith(b"-----BEGIN") else "DER", "-outform", "PEM"], b)
+                if not pem:
+                    continue
+                info = sh(["openssl", "x509", "-noout", "-subject", "-issuer", "-enddate", "-fingerprint", "-sha256", "-text"], pem.encode())
+                cadeia_pem.append(pem)
+                sub = (re.search(r"subject=(.*)", info) or ["", ""])[1].strip()
+                iss = (re.search(r"issuer=(.*)", info) or ["", ""])[1].strip()
+                out.setdefault("cadeia", []).append({"baixado_de": u, "assunto": sub, "emissor": iss,
+                                                     "validade": (re.search(r"notAfter=(.*)", info) or ["", ""])[1].strip(),
+                                                     "sha256": (re.search(r"Fingerprint=(\S+)", info) or ["", ""])[1]})
+                if sub != iss:                                   # não é a raiz: segue para o emissor
+                    prox += re.findall(r"CA Issuers - URI:(\S+)", info)
+            except Exception as e:  # noqa: BLE001
+                out.setdefault("falhas_aia", []).append(f"{u}: {type(e).__name__}")
+        if not prox:
+            break
+        atual = prox
+    inter_pem = "".join(cadeia_pem) or None
     if not inter_pem:
-        out["erro"] = "não foi possível baixar o intermediário pelo AIA"; return out
+        out["erro"] = "não foi possível baixar a cadeia pelo AIA"; return out
     PASTA.mkdir(parents=True, exist_ok=True)
-    arq = PASTA / "suap-camaragyn-intermediario.pem"
+    arq = PASTA / "suap-camaragyn-cadeia.pem"      # intermediário + raiz, pelos endereços oficiais da Let's Encrypt
     arq.write_text(inter_pem, encoding="utf-8")
     # prova: sem o intermediário falha, com ele (e a verificação LIGADA) abre
     def tenta(ctx):
