@@ -341,9 +341,27 @@ def _prazo_relativo(texto: str, publicado: str | None) -> str | None:
         return None
 
 
+_PERIODO_ANO = re.compile(r"(\d{1,2})/(\d{1,2})(?:/(\d{4}))?\s*(?:a|at[ée]|e)\s*(?:o dia\s*)?(\d{1,2})/(\d{1,2})/(\d{4})", re.I)
+
+
 def prazo(texto: str, publicado: str | None) -> tuple[str | None, str | None]:
     from .gife_editais import prazo_do_texto
+    # 03/10 (teste do motor 07): período com ano escrito ("de 20/07 a 18/08/2020") manda — o edital de Itaberaí era de 2020
+    mp = _PERIODO_ANO.search(texto or "")
+    if mp and re.search(r"INSCRI|PROTOCOL|PEDIDO|HABILITA|RECEB|APRESENT|ENVI|CADASTR|PERIODO", _N(texto[max(0, mp.start() - 200):mp.start()])):
+        try:
+            return date(int(mp.group(6)), int(mp.group(5)), int(mp.group(4))).isoformat(), mp.group(0)
+        except ValueError:
+            pass
     fim, _fluxo, trecho = prazo_do_texto(texto, publicado)
+    # data SEM ano empurrada para o ano seguinte (ex.: "até 18/08" lido em setembro → agosto do ano que vem) não é prazo:
+    # fica a confirmar no edital — evita oportunidade "aberta" que na verdade já encerrou
+    if fim and publicado and trecho and not re.search(r"\b20\d{2}\b", str(trecho)):
+        try:
+            if (date.fromisoformat(fim) - date.fromisoformat(publicado)).days > 200:
+                fim, trecho = None, None
+        except ValueError:
+            pass
     if not fim:
         fim = _prazo_relativo(texto, publicado)
         trecho = "prazo relativo ('até o dia N deste mês') resolvido pela data da publicação" if fim else None

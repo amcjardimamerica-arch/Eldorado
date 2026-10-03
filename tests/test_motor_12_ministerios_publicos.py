@@ -46,7 +46,8 @@ class TesteMotor12(unittest.TestCase):
         reg = registrar or mock.MagicMock(return_value={"novos": 1})
         with mock.patch.object(M, "ESTADO", Path(tmp.name) / "e.json"), mock.patch.object(M, "_abrir", rede_falsa(acessos)), \
              mock.patch.object(M, "_tabela", tabela_falsa), mock.patch.object(M, "_texto_pdf", lambda b: PDF.get(b.decode(), "")), \
-             mock.patch("src.livros_regra.registrar_achados", reg), mock.patch.object(M, "robots_permite", lambda u, a: True):
+             mock.patch("src.livros_regra.registrar_achados", reg), mock.patch.object(M, "robots_permite", lambda u, a: True), \
+             mock.patch.object(M, "busca_doe", lambda f, h: []):
             r1 = M.ler_motor(hoje=HOJE)
             r2 = M.ler_motor(hoje=HOJE)
             est = json.loads((Path(tmp.name) / "e.json").read_text(encoding="utf-8"))
@@ -110,3 +111,54 @@ class TesteMotor12(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+DOE_DAAMP = {"hits": {"total": 1, "hits": [{"_source": {"diario_id": 7309, "pagina": 87, "data": "2026-08-07T00:00:00",
+    "conteudo": "AVISO DE LICITAÇÃO O Prefeito Municipal de Itarumã/GO torna público. Objeto: Contratação de empresa especializada "
+                "para aquisição de grades e implementos, destinados ao atendimento das demandas do Município de Itarumã/GO, em "
+                "conformidade ao Projeto Institucional de Destinação Articulada de Acordos (DAAMP), Autos Administrativos n. 123."}}]}}
+
+
+class TesteMotor08MPGO(unittest.TestCase):
+    """Teste do motor 08 (MP-GO) de 03/10/2026."""
+
+    def ler(self, verif=None):
+        tmp = tempfile.TemporaryDirectory(); self.addCleanup(tmp.cleanup)
+        cfg = json.loads(json.dumps(CFG)); cfg["verificacoes_manuais"]["mpgo-destinacao"] = verif
+        acessos = []
+        from src import diario_goias as dg
+        with mock.patch.object(M, "_cfg", return_value=cfg), mock.patch.object(M, "_abrir", rede_falsa(acessos)), \
+             mock.patch.object(dg, "_get_json", side_effect=lambda url, **k: (acessos.append(url) or DOE_DAAMP)), \
+             mock.patch("src.livros_regra.registrar_achados", mock.MagicMock(return_value={})), \
+             mock.patch.dict(M.PARTES, {"mpgo-destinacao": ({"MP-GO"}, None, str(Path(tmp.name) / "e.json"))}):
+            r = M.ler_parte("mpgo-destinacao", None, HOJE)       # o estado vai para a pasta temporária, nunca para estado/
+        return r, acessos
+
+    def test_leitura_indireta_pelo_diario_do_estado_sem_tocar_no_mp_go(self):
+        r, acessos = self.ler()
+        self.assertFalse([u for u in acessos if "mpgo.mp.br" in u])
+        self.assertTrue(all("diariooficial.abc.go.gov.br" in u for u in acessos))
+        self.assertEqual(r["diagnostico"]["fontes"]["f00b"]["situacao"], "lida")
+        self.assertEqual(r["diagnostico"]["vereditos"]["ACOMPANHAR"], 1)          # Itarumã: inteligência, não ruído
+        self.assertEqual(len(r["achados"]), 1)                                   # só o Destina (regra permanente) é oportunidade
+
+    def test_pendencia_do_mpt_nao_vaza_e_conferencia_manual_e_lembrada(self):
+        r, _ = self.ler()
+        pend = r["diagnostico"]["pendencias_presidente"]
+        self.assertFalse([p for p in pend if "Sistema de Destinações" in p])
+        self.assertTrue([p for p in pend if "Destina do MP-GO" in p])
+        self.assertTrue([p for p in pend if "Conferência manual mensal" in p and "ainda não registrada" in p])
+        r2, _ = self.ler(verif=HOJE.isoformat())
+        self.assertFalse([p for p in r2["diagnostico"]["pendencias_presidente"] if "Conferência manual mensal" in p])
+
+    def test_leitura_do_dia_nao_diz_completa(self):
+        tmp = tempfile.TemporaryDirectory(); self.addCleanup(tmp.cleanup)
+        cfg = json.loads(json.dumps(CFG))
+        M._PARTE["id"] = "mpgo-destinacao"
+        try:
+            self.assertTrue(M._so_regra_fixa(cfg))
+            t = M._texto_regra_fixa({"fontes": {"f00b": {"modo": "busca_doe", "situacao": "lida"}}}, cfg)
+        finally:
+            M._PARTE["id"] = None
+        self.assertIn("proíbe robôs", t)
+        self.assertIn("indireta pelo Diário do Estado: feita", t)

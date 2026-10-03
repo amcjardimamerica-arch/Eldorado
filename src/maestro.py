@@ -54,6 +54,11 @@ def cobertura(sid: str, reg: dict | None, diag: dict | None, diag_motor: dict | 
         return "parcial"
     if reg.get("cor") in ("cinza", "futuro", "fora"):
         return "pendente"
+    _dm = diag_motor or {}
+    _pulou_local = _dm.get("alerta_local") or any("computador do titular" in str((f or {}).get("pulado") or "") or "IP estrangeiro" in str((f or {}).get("pulado") or "")
+                                                 for f in (_dm.get("fontes") or {}).values() if isinstance(f, dict))
+    if _dm.get("rotas_pendentes_local") or _pulou_local:
+        return "pendente_local"                       # 03/10: leu só a parte da nuvem; o resto é da coleta local (Brasil)
     return "completa"
 
 

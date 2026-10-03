@@ -16,7 +16,8 @@
   "listagem_html": 7,
   "rss": 7,
   "estado_pagina": 30,
-  "pagina_item": 30
+  "pagina_item": 30,
+  "busca_doe": 7
  },
  "pausa_segundos": 1.5,
  "timeout_segundos": 30,
@@ -167,6 +168,26 @@
    "rota": "manual",
    "modo": "regra_fixa_manual",
    "observacao": "proíbe todo robô genérico (Disallow: /); a nuvem não conecta (timeout)"
+  },
+  {
+   "id": "f00b",
+   "orgao": "MP-GO",
+   "unidade": "COMPOR — Destina/DAAMP (leitura indireta pelo Diário Oficial do Estado)",
+   "tipo_fonte": "busca_doe",
+   "url": "https://diariooficial.abc.go.gov.br/",
+   "robots": "permite",
+   "tipo_pagina": "busca",
+   "frequencia": "semanal",
+   "rota_estudo": "nuvem",
+   "rota": "nuvem",
+   "modo": "busca_doe",
+   "consultas": [
+    "DAAMP",
+    "\"Destinação Articulada\"",
+    "\"Centro de Autocomposição\""
+   ],
+   "janela_dias": 1100,
+   "observacao": "03/10/2026 (teste do motor 08): o site do MP-GO proíbe robôs, mas quem RECEBE recurso do Destina publica no Diário do Estado (ex.: Itarumã, licitações 'em conformidade ao Projeto DAAMP', 13 páginas desde 03/2026). Mostra para onde vai o dinheiro, áreas e valores — inteligência, não edital."
   },
   {
    "id": "f02",
@@ -812,5 +833,9 @@
    "modo": "requer_navegador",
    "observacao": "HTTP 403 para a ferramenta; necessário para verificar eventual Resolução Conjunta CNJ/CNMP sobre destinação de recursos."
   }
- ]
+ ],
+ "verificacoes_manuais": {
+  "mpgo-destinacao": null,
+  "_regra": "data (AAAA-MM-DD) da última conferência manual do Destina pelo titular; vazio ou mais de 30 dias vira pendência no painel"
+ }
 }

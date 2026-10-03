@@ -150,14 +150,17 @@
    "uf": "GO",
    "territorio": "GO",
    "urls": [
-    "https://portal.al.go.leg.br/",
+    "https://alegodigital.al.go.leg.br/spl/consulta-cronologico.aspx",
+    "https://alegodigital.al.go.leg.br/spl/consulta-tipo.aspx",
+    "https://alegodigital.al.go.leg.br/spl/sessoes.aspx",
     "https://portal.al.go.leg.br/noticias",
+    "https://portal.al.go.leg.br/",
     "https://transparencia.al.go.leg.br/"
    ],
    "busca": null,
    "confianca": "curada",
    "o_que_procurar": "proposições sobre OSCs, doações, fundos estaduais, incentivo fiscal, emendas parlamentares",
-   "nota_rede": " · 04/09: páginas de listagem + descoberta automática a partir da home"
+   "nota_rede": " · 04/09: páginas de listagem + descoberta automática a partir da home · 03/10 (teste do motor 05): as proposições estão no SPL (alegodigital.al.go.leg.br/spl: consulta por tipo, índice cronológico, sessões e pauta), que recusa IP estrangeiro — lido pela coleta local/ponte; a nuvem lê só notícias e transparência"
   },
   {
    "id": "congresso-nacional",
@@ -343,7 +346,8 @@
    "www.mpgo.mp.br",
    "diariooficial.abc.go.gov.br",
    "projudi.tjgo.jus.br",
-   "suap.camaragyn.go.gov.br"
+   "suap.camaragyn.go.gov.br",
+   "alegodigital.al.go.leg.br"
   ],
   "regra": "portais que recusam IP estrangeiro/datacenter (403 sem WAF ou conexão recusada). No GitHub o motor fica 'aguardando coleta local (Brasil)'; a coleta local (scripts/coleta_brasil.py, na máquina do titular) os lê e envia o resultado ao repositório. Sem custo, sem servidor 24h."
  }

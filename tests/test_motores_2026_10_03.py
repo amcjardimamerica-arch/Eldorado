@@ -142,7 +142,7 @@ class Fluxo22EStatus(unittest.TestCase):
         ms = d.get("motores") or []
         self.assertTrue(ms)
         for m in ms:
-            self.assertIn(m["leitura_do_dia"]["estado"], ("completa", "parcial", "pendente", "fora_da_agenda"))
+            self.assertIn(m["leitura_do_dia"]["estado"], ("completa", "parcial", "pendente", "fora_da_agenda", "regra_fixa"))
 
 
 if __name__ == "__main__":

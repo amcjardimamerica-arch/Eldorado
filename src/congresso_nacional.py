@@ -134,9 +134,15 @@ def etapa_emendas(html: str) -> dict:
     encerrada · desconhecido (formato novo: o motor avisa em vez de adivinhar)."""
     T = _N(_limpo(html))
     proj = re.search(r"\bPLN\s*(\d{1,3})\s*/\s*(\d{4})", T)
-    sit = re.search(r"(AGUARDANDO [A-Z ]{3,40}?|TRANSFORMADA EM NORMA JURIDICA[A-Z ]{0,30}|EM TRAMITACAO|PRONTA PARA PAUTA)(?= |$)", T)
+    # 03/10 (teste do motor 06): a situação é a do "Último estado" do projeto. Antes o motor pegava o 1º "AGUARDANDO…" da
+    # página — que é o item de MENU "Matérias Aguardando Sanção" — e gravava "Aguardando sanção" para o PLOA que aguarda despacho.
+    ue = re.search(r"ULTIMO ESTADO:?\s*(\d{2}/\d{2}/\d{4})\s*-\s*([A-Z ]{3,60}?)(?= COMUNICADO| ACOMPANHAR| EMENTA| AUTORIA|\s*$)", T)
+    sit = None if ue else re.search(r"(?<!MATERIAS )(AGUARDANDO [A-Z ]{3,40}?|TRANSFORMADA EM NORMA JURIDICA[A-Z ]{0,30}|EM TRAMITACAO|"
+                                    r"PRONTA PARA PAUTA)(?= |$)", T)
+    situacao = (ue.group(2) if ue else sit.group(1) if sit else None)
     base = {"projeto": f"PLN {int(proj.group(1))}/{proj.group(2)}" if proj else None,
-            "situacao": sit.group(1).strip().capitalize() if sit else None}
+            "situacao": situacao.strip().capitalize() if situacao else None,
+            "situacao_desde": _data_br(ue.group(1)) if ue else None}
     for tr in _TR.findall(html or ""):
         celulas = [_N(_limpo(c)) for c in _TD.findall(tr)]
         if celulas and _ETAPA.match(celulas[0]):
@@ -152,14 +158,21 @@ def etapa_emendas(html: str) -> dict:
     return {**base, "status": "desconhecido", "inicio": None, "fim": None, "trecho": None}
 
 
-_A_COMUNICADO = re.compile(r"""<a\b[^>]*href=["']([^"']*/comunicados/-/blogs/[^"'#?]+)(?:[?#][^"']*)?["'][^>]*>(.*?)</a>""", re.S | re.I)
+# 03/10 (teste do motor 06): a página da CMO usa href RELATIVO ("comunicados/-/blogs/…", sem barra antes) e põe a data
+# DENTRO do link ("02/10/2026 12:35<br/><span>título</span>"). O padrão antigo exigia "/comunicados/" e não casava com
+# nenhum link: os 6 comunicados de 01/09 a 02/10 (LOA 2027, Lexor, ofício de apoio à emenda) nunca foram lidos.
+_A_COMUNICADO = re.compile(r"""<a\b[^>]*href=["']([^"']*?comunicados/-/blogs/[^"'#?]+)(?:[?#][^"']*)?["'][^>]*>(.*?)</a>""", re.S | re.I)
 
 
 def comunicados_da_pagina(html: str, base: str) -> list[dict]:
+    """`base` = endereço da PÁGINA dos comunicados (o href relativo é resolvido a partir dela)."""
     out, vistos = [], set()
+    pagina = base if "/comunicados" in base else base.rstrip("/") + "/web/cmo/comunicados"
     for m in _A_COMUNICADO.finditer(html or ""):
-        url = urljoin(base + "/", m.group(1))
-        tit = _limpo(m.group(2))
+        url = urljoin(pagina, m.group(1))
+        interno = _limpo(m.group(2))
+        dentro = _data_br(interno)
+        tit = re.sub(r"^\s*\d{2}/\d{2}/\d{4}(?:\s+\d{1,2}:\d{2})?\s*[-–]?\s*", "", interno).strip()
         if len(tit) < 6 or url in vistos:
             continue
         vistos.add(url)
@@ -167,7 +180,7 @@ def comunicados_da_pagina(html: str, base: str) -> list[dict]:
         depois = _limpo((html or "")[m.end(): min(m.end() + 200, prox.start() if prox else len(html or ""))])
         antes = _limpo((html or "")[max(0, m.start() - 160): m.start()])
         out.append({"fonte": "A", "tipo": "comunicado", "titulo": tit[:300], "url": url,
-                    "publicado": _data_br(depois) or (_data_br(antes[-40:]) if antes else None)})
+                    "publicado": dentro or _data_br(depois) or (_data_br(antes[-40:]) if antes else None)})
     return out
 
 
@@ -195,8 +208,16 @@ def fonte_a(hoje: date, cfg: dict, diag: dict) -> list[dict]:
             F["falhas"].append(f"LOA {ano}: {exc}")
     corte = (hoje - timedelta(days=int(c.get("janela_dias", 60)))).isoformat()
     try:
-        html = _get(base + c.get("comunicados", "/web/cmo/comunicados"), cfg, F)
-        out += [x for x in comunicados_da_pagina(html, base) if not x["publicado"] or x["publicado"] >= corte]
+        pag = base + c.get("comunicados", "/web/cmo/comunicados")
+        html = _get(pag, cfg, F)
+        lista = comunicados_da_pagina(html, pag)
+        F["comunicados_na_pagina"] = len(lista)
+        if not lista and "comunicados/-/blogs/" in (html or ""):
+            F["formato_desconhecido_comunicados"] = True       # há links de comunicado e o leitor não reconheceu nenhum
+        datas = [x["publicado"] for x in lista if x["publicado"]]
+        if lista and datas and min(datas) >= corte and len(lista) >= int(c.get("comunicados_por_pagina", 10)):
+            F.setdefault("cortados", []).append("comunicados da CMO: a 1ª página não alcança o início da janela")
+        out += [x for x in lista if not x["publicado"] or x["publicado"] >= corte]
     except Exception as exc:  # noqa: BLE001
         F["falhas"].append(f"comunicados: {exc}")
     F["itens"] = len(out)
@@ -307,16 +328,79 @@ def fonte_d(hoje: date, cfg: dict, diag: dict) -> list[dict]:
     F = diag["fontes"]["D"]
     corte = (hoje - timedelta(days=int(c.get("janela_dias", 15)))).isoformat()
     vistos: dict[str, dict] = {}
+    # 03/10 (teste do motor 06): o RSS das Casas traz só as ~20 últimas notícias (≈ 1 dia). Se o motor passar um dia sem ler,
+    # o que saiu no meio NUNCA é visto. Agora: o item mais antigo do feed é comparado com a última leitura completa; havendo
+    # buraco, a listagem paginada da Casa é lida até cobri-lo; o que não couber vira `paginas_nao_lidas` (maestro: parcial).
+    lidas_ate = dict((diag.get("_estado") or {}).get("noticias_lidas_ate") or {})
     for f in c.get("feeds", []):
+        casa = f.get("casa") or ""
         try:
             xml = _get(f["url"], cfg, F)
         except Exception as exc:  # noqa: BLE001
-            F["falhas"].append(f"{f.get('casa')}: {exc}"); continue
-        for n in noticias_rss(xml, f.get("casa") or ""):
+            F["falhas"].append(f"{casa}: {exc}"); continue
+        lote = noticias_rss(xml, casa)
+        for n in lote:
             if n["url"] and (n["publicado"] or "9999") >= corte:
                 vistos.setdefault(n["url"], n)
+        datas = sorted(n["publicado"] for n in lote if n["publicado"])
+        ate = lidas_ate.get(casa)
+        if not datas:
+            continue
+        if ate and datas[0] > ate:                           # buraco entre a última leitura e o item mais antigo do feed
+            coberto = _recuperar_listagem(f, ate, cfg, F, vistos, corte)
+            if not coberto:
+                F.setdefault("paginas_nao_lidas", []).append(f"notícias da {casa} entre {ate} e {datas[0]} (feed curto)")
+                continue
+        lidas_ate[casa] = datas[-1]
+    F["lidas_ate"] = lidas_ate
     F["itens"] = len(vistos)
     return list(vistos.values())
+
+
+_A_NOTICIA = re.compile(r"""<a\b[^>]*href=["']((?:https?://[^"'/]+)?/noticias/(?:materias/\d{4}/\d{2}/\d{2}/|\d{6,}-)[^"'#?]+)["'][^>]*>(.*?)</a>""",
+                        re.S | re.I)
+
+
+def noticias_da_listagem(html: str, casa: str, pagina: str = "") -> list[dict]:
+    """Listagem paginada de notícias (Câmara: /noticias/ultimas?pagina=N, link absoluto · Senado: /noticias/ultimas/N, link
+    relativo com a data no endereço) → itens com data."""
+    out, vistos = [], set()
+    for m in _A_NOTICIA.finditer(html or ""):
+        url, tit = urljoin(pagina, m.group(1)) if pagina else m.group(1), _limpo(m.group(2))
+        if not url.startswith("http"):
+            continue
+        if len(tit) < 12 or url in vistos:
+            continue
+        vistos.add(url)
+        d = re.search(r"/materias/(\d{4})/(\d{2})/(\d{2})/", url)          # Senado: a data está no endereço
+        prox = _A_NOTICIA.search(html or "", m.end())                          # Câmara: <span class="g-chamada__data"> logo depois
+        depois = _limpo((html or "")[m.end(): min(m.end() + 400, prox.start() if prox else len(html or ""))])
+        pub = f"{d.group(1)}-{d.group(2)}-{d.group(3)}" if d else _data_br(depois)
+        out.append({"fonte": "D", "casa": casa, "titulo": tit[:300], "url": url, "descricao": "", "publicado": pub})
+    return out
+
+
+def _recuperar_listagem(f: dict, ate: str, cfg: dict, F: dict, vistos: dict, corte: str) -> bool:
+    """Lê a listagem paginada da Casa até alcançar `ate` (a última leitura). True = buraco coberto."""
+    modelo = f.get("listagem")
+    if not modelo:
+        return False
+    for pagina in range(1, int(f.get("max_paginas_recuperacao", 15)) + 1):
+        try:
+            end = modelo.format(pagina=pagina)
+            itens = noticias_da_listagem(_get(end, cfg, F), f.get("casa") or "", end)
+        except Exception as exc:  # noqa: BLE001
+            F["falhas"].append(f"{f.get('casa')} (recuperação, página {pagina}): {exc}"); return False
+        if not itens:
+            return False
+        for n in itens:
+            if (n["publicado"] or "9999") >= corte:
+                vistos.setdefault(n["url"], n)
+        datas = [n["publicado"] for n in itens if n["publicado"]]
+        if datas and min(datas) <= ate:
+            F.setdefault("recuperadas", []).append(f"{f.get('casa')}: {pagina} página(s) da listagem")
+            return True
+    return False
 
 
 # ─────────────────────────── Fonte E: convocações públicas do Senado ───────────────────────────
@@ -359,10 +443,13 @@ TRIBUTARIO = re.compile(r"IMUNIDADE|ART(?:IGO)?S?\.? 150\b|ISENC|\bIBS\b|\bCBS\b
 MROSC = re.compile(r"13\.019|MARCO REGULATORIO DAS ORGANIZACOES|TERMOS? DE (?:FOMENTO|COLABORACAO)|"
                    r"PARCERIAS? (?:ENTRE|COM) (?:A ADMINISTRACAO|O PODER|ORGANIZAC|ENTIDADES)|"
                    r"ACORDOS? DE COOPERACAO (?:COM|ENTRE)[^.]{0,40}(?:ORGANIZAC|ENTIDADES|OSC)")
-NAO_ENTIDADE = re.compile(r"ASSOCIAC(?:AO|OES) CRIMINOSAS?|ORGANIZAC(?:AO|OES) CRIMINOSAS?|ENTIDADES? DE CLASSE PATRONA|ENTIDADES? FECHADAS")
+NAO_ENTIDADE = re.compile(r"ASSOCIAC(?:AO|OES) DE PROTECAO PATRIMONIAL[A-Z ]{0,20}|PROTECAO VEICULAR|ASSOCIAC(?:AO|OES) CRIMINOSAS?|ORGANIZAC(?:AO|OES) CRIMINOSAS?|ENTIDADES? DE CLASSE PATRONA|ENTIDADES? FECHADAS")
 ENT_PREMIADA = re.compile(r"PREMI\w* (?:A |AS |PARA |DE )?(?:ENTIDADES|OSCS?|ORGANIZACOES|ASSOCIACOES|INSTITUICOES|PROJETOS SOCIAIS|INICIATIVAS)|"
                           r"RECONHECE (?:ENTIDADES|OSCS?|ORGANIZACOES|ASSOCIACOES|INSTITUICOES|INICIATIVAS|PROJETOS)|"
                           r"ENTIDADES (?:PODEM SE INSCREVER|INSCRITAS|PREMIADAS|AGRACIADAS|HOMENAGEADAS)")
+REGIME_ENTIDADES = re.compile(r"REGIME JURIDICO (?:ESPECIFICO |PROPRIO )?D[AO]S? (?:ASSOCIAC|ENTIDADES|ORGANIZAC|FUNDACOES|OSC)|"
+                              r"ASSOCIACOES CIVIS SEM FINS|ESTATUTO D[AO]S? (?:ENTIDADES|ASSOCIAC|ORGANIZAC)|"
+                              r"CODIGO CIVIL[^.]{0,80}(?:ASSOCIAC|FUNDACO)")
 EMENDAS = re.compile(r"EMENDAS? (?:PARLAMENTAR|INDIVIDUA|DE BANCADA|DE COMISSAO|IMPOSITIVA)|TRANSFERENCIAS? ESPECIA|"
                      r"LEI COMPLEMENTAR (?:N. )?210|\bRP ?[6789]\b")
 ORCAMENTO = re.compile(r"\bPLOA\b|\bLOA\b|\bLDO\b|ORCAMENTO (?:DE )?20\d\d|LEI ORCAMENTARIA|DIRETRIZES ORCAMENTARIAS|COMISSAO MISTA DE (?:PLANOS|ORCAMENTO)|\bCMO\b")
@@ -387,6 +474,9 @@ def _proposicao(m: dict, T: str, TE: str, base: dict) -> dict:
     if MROSC.search(T):
         return {**base, "veredito": "ACOMPANHAR", "categoria": "regra_mrosc", "regime": "regra_para_entidades",
                 "motivos": [virou + "altera o regime das parcerias com OSC (Lei 13.019) — afeta habilitação e prestação de contas"]}
+    if REGIME_ENTIDADES.search(TE):                     # 03/10: regime jurídico das associações civis (antes era ruído)
+        return {**base, "veredito": "ACOMPANHAR", "categoria": "regra_para_entidades", "regime": "regra_para_entidades",
+                "motivos": [virou + "muda o regime jurídico das associações ou entidades sem fins lucrativos — conferir efeito no estatuto"]}
     if TRIBUTARIO.search(T):
         return {**base, "veredito": "ACOMPANHAR", "categoria": "tributario_entidades", "regime": "regra_para_entidades",
                 "motivos": [virou + "tributação, imunidade, certificação ou regularização das entidades sem fins lucrativos"]}
@@ -537,8 +627,9 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                                 "retroativo": True}}
     cfg = _cfg()
     _PRAZO["ate"] = time.monotonic() + float(cfg.get("prazo_total_segundos", 300))
-    diag = {**vazio, "motivo_zero": None, "versao": "motor Congresso Nacional v1 (02/10/2026)",
-            "fontes": {k: {"falhas": [], "consultas": 0, "itens": 0} for k in "ABCDE"}}
+    diag = {**vazio, "motivo_zero": None, "versao": "motor Congresso Nacional v1.1 (03/10/2026)",
+            "fontes": {k: {"falhas": [], "consultas": 0, "itens": 0} for k in "ABCDE"},
+            "_estado": (load_json(ESTADO) if ESTADO.exists() else {})}
     itens = []
     for nome, fn in (("A", fonte_a), ("B", fonte_b), ("C", fonte_c), ("D", fonte_d), ("E", fonte_e)):
         try:
@@ -546,6 +637,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
         except Exception as exc:  # noqa: BLE001 — uma fonte nunca derruba a outra
             diag["fontes"][nome]["falhas"].append(f"etapa: {_erro(exc)}")
     _PRAZO["ate"] = None
+    diag.pop("_estado", None)
     F = diag["fontes"]
     leu = any(F[k]["consultas"] for k in F)
     oport, acomp, cont = classificar_lote(itens, hoje, cfg)
@@ -555,7 +647,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
         est["janela_emendas_tentativa"] = {k: etapa.get(k) for k in ("ano", "status", "url")} | {"lido_em": hoje.isoformat()}
         diag["janela_emendas"] = "desconhecido"
     elif etapa:
-        est["janela_emendas"] = {k: etapa.get(k) for k in ("ano", "projeto", "situacao", "status", "inicio", "fim", "url")} | {
+        est["janela_emendas"] = {k: etapa.get(k) for k in ("ano", "projeto", "situacao", "situacao_desde", "status", "inicio", "fim", "url")} | {
             "lido_em": hoje.isoformat(), "referencia": (cfg.get("orcamento") or {}).get("referencia_ploa")}
         diag["janela_emendas"] = est["janela_emendas"]["status"]
     if F["A"].get("formato_desconhecido"):
@@ -564,8 +656,16 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
         diag["alerta_formato_senado"] = "a API do Senado não devolveu lista — o serviço /processo pode ter mudado"
     if F["A"].get("fora_do_ciclo"):
         diag["fora_do_ciclo"] = F["A"]["fora_do_ciclo"]
-    if F["B"].get("cortados"):
-        diag["cobertura_cortada"] = F["B"]["cortados"]
+    if F["B"].get("cortados") or F["A"].get("cortados"):
+        diag["cobertura_cortada"] = (F["B"].get("cortados") or []) + (F["A"].get("cortados") or [])
+    if F["A"].get("formato_desconhecido_comunicados"):
+        diag["alerta_formato_cmo"] = "a página de comunicados da CMO tem links e o leitor não reconheceu nenhum — o HTML pode ter mudado"
+    if F["D"].get("paginas_nao_lidas"):                     # 03/10: publicado × lido nas notícias → maestro vê "parcial"
+        diag["paginas_nao_lidas"] = F["D"]["paginas_nao_lidas"][:10]
+    if F["D"].get("recuperadas"):
+        diag["noticias_recuperadas"] = F["D"]["recuperadas"]
+    diag["leitura_do_dia"] = {"comunicados_cmo": F["A"].get("comunicados_na_pagina"), "camara": F["B"]["itens"], "senado": F["C"]["itens"],
+                              "noticias": F["D"]["itens"], "nao_lidas": F["D"].get("paginas_nao_lidas") or []}
     d0 = hoje.isoformat()
     hist = est.setdefault("historico", {})
     hist[d0] = {**{f"consultas_{k}": F[k]["consultas"] for k in F}, **{f"itens_{k}": F[k]["itens"] for k in F}, **cont, "falhou": not leu}
@@ -594,6 +694,8 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
     acomp_l.sort(key=lambda a: str(a.get("data_publicacao") or ""), reverse=True)
     est["acompanhar"] = sorted(acomp_l, key=lambda a: ordem_cat.get(a.get("categoria"), 5))[:200]
     est["ultima"] = {"em": now_iso(), "data": d0, "vereditos": cont, "falhas": sum((F[k]["falhas"] for k in F), [])[:10]}
+    if F["D"].get("lidas_ate"):
+        est["noticias_lidas_ate"] = F["D"]["lidas_ate"]
     est["historico"] = {k: v for k, v in hist.items() if k >= (hoje - timedelta(days=120)).isoformat()}
     write_json(ESTADO, est)
     diag.update({"vereditos": cont, "paginas_lidas": sum(F[k]["consultas"] for k in F), "links_total": len(itens),
