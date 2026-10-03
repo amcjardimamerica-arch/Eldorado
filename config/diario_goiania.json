@@ -29,7 +29,8 @@
       "\"entidades sem fins lucrativos\" + (edital | seleção | inscrições)"
     ],
     "tentativas": 4,
-    "ajuste_01_10": "Leitura real de 01/10/2026 (servidor do GitHub): a sintaxe | e + foi ACEITA (consultas 3 a 10 responderam; 3 a 9 com edições de Goiânia). A base api.queridodiario.ok.org.br falhou em todas (SSLV3_ALERT_HANDSHAKE_FAILURE): o endereço novo api.queridodiario.org.br passa a ser o primeiro, a antiga queridodiario.ok.org.br/api fica de reserva. As consultas 1 e 2 receberam 503 nas três bases (API sobrecarregada): 4 tentativas com espera crescente."
+    "ajuste_01_10": "Leitura real de 01/10/2026 (servidor do GitHub): a sintaxe | e + foi ACEITA (consultas 3 a 10 responderam; 3 a 9 com edições de Goiânia). A base api.queridodiario.ok.org.br falhou em todas (SSLV3_ALERT_HANDSHAKE_FAILURE): o endereço novo api.queridodiario.org.br passa a ser o primeiro, a antiga queridodiario.ok.org.br/api fica de reserva. As consultas 1 e 2 receberam 503 nas três bases (API sobrecarregada): 4 tentativas com espera crescente.",
+    "ajuste_03_10": "Teste do motor 01 (03/10/2026): além das 10 consultas, o catálogo da janela (todas as edições, sem palavra) é lido por inteiro — a edição 8873 (29/09) não casava com nenhuma consulta e nunca foi aberta. Edição publicada e não lida vira 'paginas_nao_lidas' e o maestro dispara o motor de novo."
   },
   "portal": {
     "lista_edicoes": "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano={ano}",
@@ -37,7 +38,8 @@
     "observado_em": "2026-10-01: lista de 2026 com 187 edições (inclui Edição Extra); edição de 25/09/2026 = 9,3 MB, 238 páginas, com camada de texto",
     "exige_brasil": true,
     "janela_dias": 7,
-    "max_pdfs_por_execucao": 4
+    "max_pdfs_por_execucao": 4,
+    "ajuste_03_10": "Teste do motor 01 (03/10/2026): na nuvem o portal passa a ser lido pela ponte Brasil (Hostgator) quando os segredos existem; a Edição Extra tem sufixo _edi no PDF (do_AAAAMMDD_NNNNNNNNN_edi.pdf) e agora entra; as edições têm 8 a 11 MB (MAX_BYTES do ponte.php elevado a 16 MB). A lista oficial é a base da medida de cobertura do dia."
   },
   "vereditos": {
     "OPORTUNIDADE": "abertura ou retificação de seleção para OSC (MROSC, fundos/conselhos, PNAB) com prazo não vencido — entra na base como capturada",

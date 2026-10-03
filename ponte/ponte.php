@@ -23,8 +23,8 @@
  */
 
 const CHAVE = 'TROQUE-POR-UMA-FRASE-LONGA-E-ALEATORIA';
-const MAX_BYTES = 6000000;
-const TIMEOUT = 40;
+const MAX_BYTES = 16000000;   // 03/10: as edições do Diário de Goiânia têm de 8 a 11 MB
+const TIMEOUT = 90;
 const LIMITE_POR_MINUTO = 120;
 const DOMINIOS = [
     'api-publica.transferegov.gestao.gov.br',
