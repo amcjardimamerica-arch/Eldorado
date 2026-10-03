@@ -1,0 +1,38 @@
+name: 26 · Coleta das páginas dos livros (verificação por blocos)
+on:
+  workflow_dispatch:
+    inputs:
+      bloco: { description: "número do bloco (ex.: 001)", required: true, default: "001" }
+      inicio: { description: "a partir do livro", required: false, default: "0" }
+      quantos: { description: "quantos livros", required: false, default: "200" }
+permissions:
+  contents: write
+concurrency:
+  group: eldorado-coleta-paginas
+  cancel-in-progress: false
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+      ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pypdf --quiet
+      - name: Coletar
+        run: timeout 6600 python3 scripts/coletar_paginas_livros.py "${{ github.event.inputs.bloco }}" --inicio "${{ github.event.inputs.inicio }}" --quantos "${{ github.event.inputs.quantos }}" || echo "terminou com aviso"
+      - name: Gravar só as páginas coletadas
+        if: always()
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          rm -rf /tmp/p && mkdir -p /tmp/p && cp docs/verificacao-livros/paginas/*.json /tmp/p/ 2>/dev/null || exit 0
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            mkdir -p docs/verificacao-livros/paginas && cp /tmp/p/* docs/verificacao-livros/paginas/
+            git add docs/verificacao-livros/paginas
+            git commit -q -m "verificação dos livros: páginas coletadas ($(date -u +%F\ %H:%M))" || break
+            git push -q origin main && break; sleep 7
+          done
