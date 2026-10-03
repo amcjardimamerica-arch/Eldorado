@@ -61,7 +61,9 @@ _PRAZO = {"ate": None}          # prazo da execução inteira (o passo dos senso
 
 
 def _hoje_real() -> date:
-    return date.today()
+    # 03/10 (teste do motor 15): o dia é o de Brasília — em UTC a passagem das 19h53+ virava o dia seguinte
+    from datetime import datetime, timezone
+    return datetime.now(timezone(timedelta(hours=-3))).date()
 
 
 def _tempo_esgotado() -> bool:
@@ -195,7 +197,11 @@ def fonte_a(hoje: date, cfg: dict, diag: dict) -> list[dict]:
             break                                   # 02/10: o resto dos estados fica para a próxima execução (rodízio)
         F["ufs_lidas"].append(uf)
         for mod in a.get("modalidades") or [12, 3, 10, 11]:
-            for pg in range(1, int(a.get("max_paginas", 20)) + 1):
+            # 03/10 (teste do motor 15): MG tem 53 páginas de credenciamento e SP 21; o teto de 20 cortava o resto sem
+            # aviso. Agora cada UF/modalidade continua de onde parou (cursor) e o que faltar conta como leitura parcial
+            cur = cfg.setdefault("_cursor_a", {}); chave_c = f"{uf}|{mod}"
+            ini = int(cur.get(chave_c) or 1); ult, total = ini - 1, 0
+            for pg in range(ini, ini + int(a.get("max_paginas", 20))):
                 if seguidas >= limite:
                     break
                 q = urlencode({"dataFinal": horizonte, "codigoModalidadeContratacao": mod, "uf": uf, "pagina": pg,
@@ -218,8 +224,15 @@ def fonte_a(hoje: date, cfg: dict, diag: dict) -> list[dict]:
                     total = int(j.get("totalPaginas") or 0)
                 except (TypeError, ValueError):
                     total = 0
+                ult = pg
                 if pg >= total:
                     break
+            if total and ult < total:
+                cur[chave_c] = ult + 1
+                F["cortados"] = F.get("cortados", 0) + (total - ult)
+                F.setdefault("paginas_pendentes", []).append(f"{uf}/{MODALIDADES.get(mod, mod)}: páginas {ult + 1}–{total}")
+            else:
+                cur.pop(chave_c, None)
     F["itens"] = len(out)
     return out
 
@@ -584,6 +597,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
             "versao": "motor-04 v2 (01/10/2026)",
             "fontes": {"A": {"falhas": [], "consultas": 0, "itens": 0}, "B": {"falhas": [], "consultas": 0, "itens": 0}}}
     itens = []
+    cfg["_cursor_a"] = dict(est.get("cursor_fonte_a") or {})
     try:
         itens += fonte_a(hoje, cfg, diag)
     except Exception as exc:  # noqa: BLE001 — uma fonte nunca derruba a outra
@@ -592,6 +606,19 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
         lidas = [u for u in diag["fontes"]["A"].get("ufs_lidas") or [] if u not in ("GO", "DF")]
         est["rodizio_ufs"] = int(est.get("rodizio_ufs") or 0) + max(0, len(lidas) - 1)
         diag["rodizio"] = {"ufs_lidas": diag["fontes"]["A"].get("ufs_lidas"), "proxima_comeca_em": None}
+        # 03/10: estados lidos no DIA (3 passagens). Faltando algum, o maestro vê leitura parcial e dispara de novo
+        dia = est.get("ufs_do_dia") or {}
+        if dia.get("data") != hoje.isoformat():
+            dia = {"data": hoje.isoformat(), "ufs": []}
+        dia["ufs"] = sorted(set(dia["ufs"]) | set(diag["fontes"]["A"].get("ufs_lidas") or []))
+        est["ufs_do_dia"] = dia
+        faltam = [u for u in TODAS_UFS if u not in dia["ufs"]]
+        diag["rodizio"]["faltam_no_dia"] = faltam
+        if faltam:
+            diag["paginas_nao_lidas"] = [f"propostas abertas — {u}" for u in faltam]
+    est["cursor_fonte_a"] = cfg.get("_cursor_a") or {}
+    if diag["fontes"]["A"].get("cortados"):
+        diag["cortados"] = diag["fontes"]["A"]["cortados"]
     try:
         itens += fonte_b(hoje, cfg, diag, set())
     except Exception as exc:  # noqa: BLE001
