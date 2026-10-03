@@ -1,0 +1,37 @@
+# PNAB Goiânia - Pontos de Cultura — Goiás / Goiânia
+
+Órgão: Secretaria Municipal de Cultura de Goiânia · bloco GO · regime chamamento_publico · selo do livro **prata** · selo da oportunidade prata
+
+Validação: **validado_parcial** — há edição anterior comprovada, mas só um ano ou sem datas completas: previsão com confiança média
+
+## Estudo preditivo
+
+Mês típico: ago · duração típica: 24 dias · próxima janela: 2027-08 · confiança: media
+
+## Edições anteriores e os 12 itens
+
+### 2024-08 — PNAB Goiânia 2024 — editais 08 a 13/2024 (Secult Goiânia)
+Página oficial: https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-publica-seis-editais-da-lei-aldir-blanc-de-fomento-a-cultura
+
+- Objeto: confirmado — PNAB Goiânia 2024 — editais 08 a 13/2024 (Secult Goiânia)
+- Prazo de inscrição: confirmado — 05/08 a 20/08/2024, plataforma 1 DOC
+- Resultado: nao_localizado
+- Prazo de recurso: nao_localizado
+- Valor: confirmado — R$ 9.607.842,49 em 6 editais
+- Órgão / financiador: catalogo — Secretaria Municipal de Cultura de Goiânia
+- Território: catalogo — Goiânia
+- Esfera: catalogo — Município
+- Requisitos: confirmado — trabalhadores da cultura, entidades, pessoas físicas e jurídicas que atuem na produção, difusão, promoção e preservação cultural
+- Anexos: confirmado — documentação anexada na plataforma 1 DOC conforme edital
+- Destinação: nao_localizado
+- Área de atuação: nao_localizado
+
+## Conselho de 7 lentes
+
+- extremamente pessimista: Com 1 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
+- pessimista: Itens ainda não lidos nas edições: Resultado, Prazo de recurso, Destinação. Sem eles, requisitos e anexos da próxima podem diferir.
+- levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
+- neutro: Situação: validado_parcial. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- levemente otimista: Série em 1 ano(s) (2024) já dá referência de calendário e de valor.
+- otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
+- extremamente otimista: Com mês típico em ago, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.
