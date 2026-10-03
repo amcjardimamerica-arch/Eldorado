@@ -231,76 +231,6 @@
    "familia_antiga": "idx-ponte-brasil",
    "posicao_relativa": 16
   },
-  "site-iaf": {
-   "nome": "IAF — Fundação Interamericana — chamadas de apoio a organizações de base (recusa IP estrangeiro)",
-   "local": "IAF — Fundação Interamericana",
-   "finalidade": "chamadas de apoio a organizações de base (recusa IP estrangeiro)",
-   "fonte": "https://iaf.gov/apply-for-grant/",
-   "metodo": "página de editais do site + página de cada edital novo, com as regras de cada site no catálogo",
-   "horarios_brt": "07:13,19:13",
-   "familia_antiga": "idx-listagens",
-   "posicao_relativa": 17
-  },
-  "site-finep": {
-   "nome": "Finep — chamadas públicas (coleta assistida: o site proíbe robôs)",
-   "local": "Finep",
-   "finalidade": "chamadas públicas (coleta assistida: o site proíbe robôs)",
-   "fonte": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
-   "metodo": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
-   "horarios_brt": "contínuo",
-   "familia_antiga": "idx-assistido",
-   "posicao_relativa": 18
-  },
-  "site-itau-social": {
-   "nome": "Itaú Social — editais (coleta assistida: o site proíbe robôs)",
-   "local": "Itaú Social",
-   "finalidade": "editais (coleta assistida: o site proíbe robôs)",
-   "fonte": "https://editais.itausocial.org.br/",
-   "metodo": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
-   "horarios_brt": "contínuo",
-   "familia_antiga": "idx-assistido",
-   "posicao_relativa": 19
-  },
-  "site-petrobras": {
-   "nome": "Petrobras — seleções socioambientais (coleta assistida: o site proíbe robôs)",
-   "local": "Petrobras",
-   "finalidade": "seleções socioambientais (coleta assistida: o site proíbe robôs)",
-   "fonte": "https://petrobras.com.br/",
-   "metodo": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
-   "horarios_brt": "contínuo",
-   "familia_antiga": "idx-assistido",
-   "posicao_relativa": 20
-  },
-  "site-fundacao-banco-do-brasil": {
-   "nome": "Fundação Banco do Brasil — editais (coleta assistida: o site proíbe robôs)",
-   "local": "Fundação Banco do Brasil",
-   "finalidade": "editais (coleta assistida: o site proíbe robôs)",
-   "fonte": "https://www.fbb.org.br/",
-   "metodo": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
-   "horarios_brt": "contínuo",
-   "familia_antiga": "idx-assistido",
-   "posicao_relativa": 21
-  },
-  "site-embaixada-eua": {
-   "nome": "Embaixada dos EUA — pequenas doações a projetos (coleta assistida)",
-   "local": "Embaixada dos EUA",
-   "finalidade": "pequenas doações a projetos (coleta assistida)",
-   "fonte": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
-   "metodo": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
-   "horarios_brt": "contínuo",
-   "familia_antiga": "idx-assistido",
-   "posicao_relativa": 22
-  },
-  "site-embaixada-japao": {
-   "nome": "Embaixada do Japão — apoio a projetos comunitários (coleta assistida)",
-   "local": "Embaixada do Japão",
-   "finalidade": "apoio a projetos comunitários (coleta assistida)",
-   "fonte": "https://www.br.emb-japan.go.jp/",
-   "metodo": "fila de coleta no navegador do titular (botão 'Capturar indícios' ou Claude no Chrome), rota indireta por outro indexador que pode ser lido e ângulos de busca para o Piloto - Espião; o Interceptador comprova na fonte oficial",
-   "horarios_brt": "contínuo",
-   "familia_antiga": "idx-assistido",
-   "posicao_relativa": 23
-  },
   "site-mapa-osc": {
    "nome": "Mapa das OSC (Ipea) — editais reunidos no portal (coleta assistida: o site proíbe robôs)",
    "local": "Mapa das OSC (Ipea)",
@@ -674,7 +604,7 @@
   {
    "id": "iaf",
    "nome": "Inter-American Foundation — chamadas",
-   "motor": "site-iaf",
+   "motor": "motor-gife",
    "leitor": "html_listagem",
    "listas": [
     "https://iaf.gov/apply-for-grant/",
@@ -686,7 +616,8 @@
    "internacional": true,
    "cadencia_horas": 24,
    "prioridade": "P2",
-   "rota": "nuvem"
+   "rota": "nuvem",
+   "motor_antigo": "site-iaf"
   },
   {
    "id": "editaisculturais",
@@ -772,7 +703,7 @@
   {
    "id": "finep",
    "nome": "FINEP — chamadas públicas",
-   "motor": "site-finep",
+   "motor": "plat-cnpq-extensao",
    "leitor": "assistido",
    "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
    "rota": "assistida",
@@ -782,34 +713,37 @@
     "pagina": "https://capitaai.com.br/editais-abertos/finep"
    },
    "angulo_piloto": "Que chamadas públicas da FINEP estão abertas e aceitam instituições sem fins lucrativos? Busque no DOU e no site do MCTI, não no site da FINEP.",
-   "prioridade": "P3"
+   "prioridade": "P3",
+   "motor_antigo": "site-finep"
   },
   {
    "id": "itau-social",
    "nome": "Itaú Social — editais",
-   "motor": "site-itau-social",
+   "motor": "motor-gife",
    "leitor": "assistido",
    "url": "https://editais.itausocial.org.br/",
    "rota": "assistida",
    "motivo": "javascript",
    "prioridade": "P1",
-   "nota": "a página só abre com JavaScript; a captura pelo navegador lê o que a página mostra"
+   "nota": "a página só abre com JavaScript; a captura pelo navegador lê o que a página mostra",
+   "motor_antigo": "site-itau-social"
   },
   {
    "id": "embaixada-eua",
    "nome": "Embaixada dos EUA — apoios a projetos",
-   "motor": "site-embaixada-eua",
+   "motor": "motor-gife",
    "leitor": "assistido",
    "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
    "rota": "assistida",
    "motivo": "bloqueio_http",
    "prioridade": "P3",
-   "nota": "recusou leitura automática (HTTP 403) em 02/10/2026"
+   "nota": "recusou leitura automática (HTTP 403) em 02/10/2026",
+   "motor_antigo": "site-embaixada-eua"
   },
   {
    "id": "petrobras",
    "nome": "Petrobras — seleções socioambientais e culturais",
-   "motor": "site-petrobras",
+   "motor": "motor-gife",
    "leitor": "assistido",
    "url": "https://petrobras.com.br/",
    "rota": "assistida",
@@ -819,28 +753,31 @@
     "pagina": "https://capitaai.com.br/editais-abertos/para-ong"
    },
    "prioridade": "P1",
-   "nota": "levantar a página de seleções no navegador e registrar a rota no catálogo"
+   "nota": "levantar a página de seleções no navegador e registrar a rota no catálogo",
+   "motor_antigo": "site-petrobras"
   },
   {
    "id": "fbb",
    "nome": "Fundação Banco do Brasil — editais",
-   "motor": "site-fundacao-banco-do-brasil",
+   "motor": "motor-gife",
    "leitor": "assistido",
    "url": "https://www.fbb.org.br/",
    "rota": "assistida",
    "motivo": "rota_a_levantar",
-   "prioridade": "P1"
+   "prioridade": "P1",
+   "motor_antigo": "site-fundacao-banco-do-brasil"
   },
   {
    "id": "embaixadas",
    "nome": "Embaixadas com pequenos projetos (Japão, Canadá, Alemanha, Austrália, Reino Unido, Países Baixos, Noruega)",
-   "motor": "site-embaixada-japao",
+   "motor": "motor-gife",
    "leitor": "assistido",
    "url": "https://www.br.emb-japan.go.jp/",
    "rota": "assistida",
    "motivo": "rota_a_levantar",
    "prioridade": "P2",
-   "internacional": true
+   "internacional": true,
+   "motor_antigo": "site-embaixada-japao"
   },
   {
    "id": "mapa-osc",
@@ -986,5 +923,70 @@
    "parecer": "docs/pareceres/desmonte-indexadores-2026-10-02.md"
   }
  },
- "regra_motores": "02/10/2026 (titular): cada site é um motor próprio, com o nome do local, uma finalidade e uma fonte; os 7 indexadores por família foram desmontados (parecer individual em docs/pareceres/desmonte-indexadores-2026-10-02.md)."
+ "regra_motores": "02/10/2026 (titular): cada site é um motor próprio, com o nome do local, uma finalidade e uma fonte; os 7 indexadores por família foram desmontados (parecer individual em docs/pareceres/desmonte-indexadores-2026-10-02.md).",
+ "agregados": {
+  "regra": "03/10/2026 (titular): sites que deixaram de ser motor próprio e foram agregados a um motor regular. Continuam lidos pelo fluxo 16 (mesma rota: assistida, ponte ou nuvem); os indícios contam para o motor que os recebe. Não entram como rota do sensor do motor (o sensor não lê site que proíbe robôs).",
+  "motores": {
+   "motor-gife": [
+    {
+     "site": "embaixadas",
+     "motor_antigo": "site-embaixada-japao",
+     "nome": "Embaixada do Japão — apoio a projetos comunitários (coleta assistida)",
+     "local": "Embaixada do Japão",
+     "url": "https://www.br.emb-japan.go.jp/",
+     "rota": "assistida"
+    },
+    {
+     "site": "embaixada-eua",
+     "motor_antigo": "site-embaixada-eua",
+     "nome": "Embaixada dos EUA — pequenas doações a projetos (coleta assistida)",
+     "local": "Embaixada dos EUA",
+     "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
+     "rota": "assistida"
+    },
+    {
+     "site": "fbb",
+     "motor_antigo": "site-fundacao-banco-do-brasil",
+     "nome": "Fundação Banco do Brasil — editais (coleta assistida: o site proíbe robôs)",
+     "local": "Fundação Banco do Brasil",
+     "url": "https://www.fbb.org.br/",
+     "rota": "assistida"
+    },
+    {
+     "site": "iaf",
+     "motor_antigo": "site-iaf",
+     "nome": "IAF — Fundação Interamericana — chamadas de apoio a organizações de base (recusa IP estrangeiro)",
+     "local": "IAF — Fundação Interamericana",
+     "url": "https://iaf.gov/apply-for-grant/",
+     "rota": "nuvem"
+    },
+    {
+     "site": "itau-social",
+     "motor_antigo": "site-itau-social",
+     "nome": "Itaú Social — editais (coleta assistida: o site proíbe robôs)",
+     "local": "Itaú Social",
+     "url": "https://editais.itausocial.org.br/",
+     "rota": "assistida"
+    },
+    {
+     "site": "petrobras",
+     "motor_antigo": "site-petrobras",
+     "nome": "Petrobras — seleções socioambientais (coleta assistida: o site proíbe robôs)",
+     "local": "Petrobras",
+     "url": "https://petrobras.com.br/",
+     "rota": "assistida"
+    }
+   ],
+   "plat-cnpq-extensao": [
+    {
+     "site": "finep",
+     "motor_antigo": "site-finep",
+     "nome": "Finep — chamadas públicas (coleta assistida: o site proíbe robôs)",
+     "local": "Finep",
+     "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
+     "rota": "assistida"
+    }
+   ]
+  }
+ }
 }

@@ -692,8 +692,12 @@ class Catalogo(unittest.TestCase):
         cat = json.loads((raiz / "config/indexadores.json").read_text(encoding="utf-8"))
         ids = [s["id"] for s in cat["sites"]]
         self.assertEqual(len(ids), len(set(ids)))
+        agregados = (cat.get("agregados") or {}).get("motores") or {}      # 03/10: sites agregados a um motor regular
         for s in cat["sites"]:
-            self.assertIn(s["motor"], cat["motores"], s["id"])
+            if s["motor"] in agregados:
+                self.assertIn(s["id"], {a["site"] for a in agregados[s["motor"]]}, s["id"])
+            else:
+                self.assertIn(s["motor"], cat["motores"], s["id"])
             self.assertTrue(s["leitor"] in L.LEITORES or s["leitor"] == "assistido", s["id"])
             if s["leitor"] == "delegado":
                 self.assertTrue(s.get("delegado_a"))

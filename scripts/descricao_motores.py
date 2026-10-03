@@ -91,6 +91,9 @@ def gerar() -> dict:
         r, f, ag = REL.get(mid, {}), FM.get(mid) or {}, AG.get(mid) or {}
         rotas = [{"nome": x.get("nome"), "url": x.get("url"), "tipo": x.get("tipo")}
                  for x in (m.get("rotas") or []) if str(x.get("url") or "")]
+        # 03/10 (titular): sites agregados a este motor (lidos pelo fluxo 16, não pelo sensor) aparecem na janela do motor
+        rotas += [{"nome": x.get("nome"), "url": x.get("url"), "tipo": x.get("tipo")}
+                  for x in (m.get("rotas_agregadas") or []) if str(x.get("url") or "")]
         doms = sorted({(urlsplit(str(x["url"])).hostname or "").replace("www.", "")
                        for x in rotas if str(x["url"]).startswith("http")} - {""})
         fin = f.get("finalidade") or "descoberta"
