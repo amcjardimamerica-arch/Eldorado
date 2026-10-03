@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-02T23:56:00+00:00",
+  "em": "2026-10-03T00:09:12+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-02T23:49:50+00:00",
+  "ultimo_voo": "2026-10-02T23:58:24+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,89 @@
     "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 146,
+    "missoes": 147,
     "validadas": 1,
     "parciais": 39,
-    "insuficientes": 106,
+    "insuficientes": 107,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 31,
-      "sim": 88
+      "sim": 89
     },
     "estrelas_de_ouro": 29,
     "fontes_novas_para_os_motores": 2,
     "tempo_medio_min": 11.2
   },
   "missoes": [
+    {
+      "em": "2026-10-02T23:58:24+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Cadastro para recebimento de bens e recursos (Sistema de Destinações do MPT) — Goiás / Goiânia",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O objeto mencionado é o Cadastro para recebimento de bens e recursos, vinculado ao MPT-GO, que é um órgão estadual de Goiás.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se cadastrar no Sistema de Destinações do MPT-GO, demonstrando sua atuação em áreas como assistência social, cultura, educação ou esporte, para ter acesso a bens e recursos.",
+        "proximo_passo": "Contatar o MPT-GO para obter informações detalhadas sobre o processo de cadastro e os requisitos necessários.",
+        "risco": "A falta de informações sobre requisitos e prazos pode impedir a associação de se cadastrar e acessar os recursos disponíveis."
+      },
+      "erro": null,
+      "segundos": 647,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-f5a90924e5d1",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Cadastro para recebimento de bens e recursos",
+          "trecho": "Cadastro para recebimento de bens e recursos - MPT-GO",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "MPT-GO",
+          "trecho": "Cadastro para recebimento de bens e recursos - MPT-GO",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Cadastro para recebimento de bens e recursos - MPT-GO",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Ministério Público do Trabalho em Goiás",
+      "indicios": [],
+      "rotas": [
+        "site_municipal",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo"
+      ]
+    },
     {
       "em": "2026-10-02T23:49:50+00:00",
       "modo": "validar",
@@ -2600,91 +2668,6 @@
       "indicios": [
         {
           "url": "https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-Credenciamento-Promocao.pdf",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-02T13:19:02+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "PDF Imagem digitalizada EDITAL No 02, DE 1 - guaranidegoias.go.gov.br — Goiás — Goiás — Goiás — Goiás — Goiás",
-      "qualidade": "validada",
-      "comprovados": 10,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Valor",
-        "Requisitos"
-      ],
-      "pagina_oficial": "https://transparencia.ipiau.ba.gov.br/wp-includes/ExternalApps/downloader.php?hurl=aHR0cDovL2RvZW0ub3JnLmJyL2JhL2lwaWF1L2FycXVpdm9zL2Rvd25sb2FkL2MzNTcyYzFkZGZkMGMxNzNkM2JiZTYzMTI4OTQ5MmQxLzhmMjE2MGZjZWQxNjA2NzlhNWI4MTI5MDQyODhhNGE4LnBkZg==",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado inclui informações sobre o objeto, prazo de inscrição, resultado, prazo de recurso, órgão financiador, território, esfera, anexos, destinação e área de atuação do edital, o que é suficiente para responder à solicitação.",
-        "para_a_amc": "Para acessar o edital, a associação comunitária de Goiânia precisaria se inscrever no prazo de 2026-08-11 a 2026-09-06, apresentar um projeto relacionado ao apoio a projetos culturais em linguagens artísticas, artesanato, culturas populares e de matriz africana, e seguir as instruções dos anexos fornecidos.",
-        "proximo_passo": "Verificar os anexos do edital e preparar o projeto conforme o objeto definido.",
-        "risco": "O prazo de inscrição pode expirar sem que a associação tenha se preparado adequadamente, e a falta de requisitos específicos pode impedir a elegibilidade."
-      },
-      "erro": null,
-      "segundos": 1003,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 10,
-      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
-      "avaliacao": "pronta para a decisão do Claude",
-      "id": "op-op-86e2ab0b6eea",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoio a projetos culturais em linguagens artísticas, artesanato, culturas populares e de matriz africana, através da política nacional Aldir Blanc - PNAB",
-          "trecho": "APOIO A PROJETOS CULTURAIS EM LINGUAGENS ARTÍSTICAS, ARTESANATO, CULTURAS POPULARES E DE MATRIZ AFRICANA, ATRAVÉS DA POLÍTICA NACIONAL ALDIR BLANC - PNAB",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-08-11 a 2026-09-06",
-          "trecho": "Período de Inscrição dos projetos 11/08/2026 a 06/09/2026",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Ipiaú",
-          "trecho": "Prefeitura Municipal de Ipiaú",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "BA",
-          "trecho": "Ipiaú, BA",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "APOIO A PROJETOS CULTURAIS EM LINGUAGENS ARTÍSTICAS, ARTESANATO, CULTURAS POPULARES E DE MATRIZ AFRICANA, ATRAVÉS DA POLÍTICA NACIONAL ALDIR BLANC - PNAB",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "APOIO A PROJETOS CULTURAIS EM LINGUAGENS ARTÍSTICAS, ARTESANATO, CULTURAS POPULARES E DE MATRIZ AFRICANA, ATRAVÉS DA POLÍTICA NACIONAL ALDIR BLANC - PNAB",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Guaraní de Goiás",
-      "indicios": [
-        {
-          "url": "https://guaranidegoias.go.gov.br/wp-content/uploads/2025/10/EDITAL-0020225-CMDPI.pdf",
           "tipo": "noticia"
         }
       ],
