@@ -1,0 +1,29 @@
+name: 25 · Certificado intermediário do SUAP (Câmara de Goiânia)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  certificado:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Buscar e provar o intermediário
+        run: python3 scripts/certificado_suap.py || echo "terminou com aviso"
+      - name: Gravar o certificado e o relatório
+        if: always()
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          rm -rf /tmp/c && mkdir -p /tmp/c/cert /tmp/c/rel
+          cp config/certificados/*.pem /tmp/c/cert/ 2>/dev/null || true; cp docs/relatorios/certificado-suap/* /tmp/c/rel/ 2>/dev/null || true
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            mkdir -p config/certificados docs/relatorios/certificado-suap
+            cp /tmp/c/cert/* config/certificados/ 2>/dev/null || true; cp /tmp/c/rel/* docs/relatorios/certificado-suap/ 2>/dev/null || true
+            git add config/certificados docs/relatorios/certificado-suap
+            git commit -q -m "certificado intermediário do SUAP $(date -u +%F\ %H:%M)" || break
+            git push -q origin main && break; sleep 7
+          done
