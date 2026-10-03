@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-10-02T22:49-03:00",
- "proxima_atualizacao": "2026-10-03T04:49-03:00",
+ "gerado_em": "2026-10-02T23:40-03:00",
+ "proxima_atualizacao": "2026-10-03T05:40-03:00",
  "a_cada_horas": 6,
  "regra": "STATUS DOS MOTORES A CADA 6 HORAS (titular, 01/10/2026) — monitoramento e tomada de decisão.\n\nPara cada motor regular: a data e a hora da ÚLTIMA LEITURA, o resultado e UMA de três luzes:\n  VERDE     coletou hoje (horário de Brasília), com dados ou sem dados novos\n  VERMELHO  a coleta de hoje teve erro ou falha\n  CINZA     o motor não rodou hoje (fora da agenda, aguardando coleta local, parado)",
  "contagem": {
-  "verde": 26,
-  "vermelho": 4,
-  "cinza": 19
+  "verde": 32,
+  "vermelho": 0,
+  "cinza": 17
  },
  "motores": [
   {
@@ -14,6 +14,11 @@
    "nome": "Diário Oficial do Município de Goiânia",
    "luz": "verde",
    "resultado": "coletou hoje — 2 achado(s)",
+   "leitura_do_dia": {
+    "estado": "parcial",
+    "texto": "dia lido em parte — parte das fontes exige acesso pelo Brasil (ponte da Hostgator ou computador do titular)"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T21:52-03:00",
    "agenda": "todos 06:23,12:53,20:23"
   },
@@ -22,6 +27,11 @@
    "nome": "Diário Oficial do Estado de Goiás",
    "luz": "verde",
    "resultado": "coletou hoje — 3 achado(s)",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T21:54-03:00",
    "agenda": "seg,ter,qua,qui,sex 06:23,12:53,20:23"
   },
@@ -29,7 +39,12 @@
    "id": "dou",
    "nome": "Diário Oficial da União",
    "luz": "verde",
-   "resultado": "coletou hoje — 2 achado(s)",
+   "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T21:54-03:00",
    "agenda": "todos 06:23,12:53,20:23"
   },
@@ -38,6 +53,11 @@
    "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-09-30T09:35-03:00",
    "agenda": "seg,ter,qua,qui,sex 07:53"
   },
@@ -46,14 +66,27 @@
    "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [
+    "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.",
+    "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América)."
+   ],
    "ultima_leitura": "2026-09-30T09:34-03:00",
    "agenda": "todos 20:23"
   },
   {
    "id": "alego-pl",
    "nome": "Assembleia Legislativa de Goiás — proposições",
-   "luz": "verde",
-   "resultado": "coletou hoje — sem dados novos",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — última leitura em 01/10 21:57",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-01T21:57-03:00",
    "agenda": "qui 10:53,20:53"
   },
@@ -62,7 +95,12 @@
    "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
-   "ultima_leitura": "2026-10-02T14:34-03:00",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
+   "ultima_leitura": "2026-10-02T23:00-03:00",
    "agenda": "todos 10:53,20:53"
   },
   {
@@ -70,47 +108,89 @@
    "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
    "luz": "verde",
    "resultado": "coletou hoje — 221 achado(s)",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T22:08-03:00",
    "agenda": "todos 08:53,13:53,19:53"
   },
   {
    "id": "judiciario-tjgo",
    "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
-   "ultima_leitura": null,
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "parcial",
+    "texto": "dia lido em parte — parte das fontes exige acesso pelo Brasil (ponte da Hostgator ou computador do titular)"
+   },
+   "observacoes": [
+    "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular."
+   ],
+   "ultima_leitura": "2026-10-02T23:00-03:00",
    "agenda": "todos 07:53,16:23"
   },
   {
    "id": "judiciario-cnj",
    "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
-   "ultima_leitura": null,
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
+   "ultima_leitura": "2026-10-02T23:00-03:00",
    "agenda": "todos 07:53"
   },
   {
    "id": "mpgo-destinacao",
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
-   "ultima_leitura": null,
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [
+    "PENDÊNCIA DO TITULAR — pedir o cadastro da A.M.C. no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo).",
+    "Contato: COMPOR — Centro de Autocomposição de Conflitos e Segurança Jurídica do MP-GO, telefone (62) 3243-8116.",
+    "O site do MP-GO proíbe robôs (robots.txt 'Disallow: /'): o motor não lê o site; a conferência é manual, uma vez por mês.",
+    "Histórico de 3 anos: só 2 registros públicos. Para completar, pedir ao COMPOR, pela Lei de Acesso à Informação, as destinações de 2023 a 2025 (área, valor, entidade)."
+   ],
+   "ultima_leitura": "2026-10-02T23:00-03:00",
    "agenda": "todos 07:53"
   },
   {
    "id": "mptgo-destinacao",
    "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
-   "ultima_leitura": null,
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
+   "ultima_leitura": "2026-10-02T23:00-03:00",
    "agenda": "todos 07:53,16:23"
   },
   {
    "id": "mpu-destinacao",
    "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
-   "ultima_leitura": null,
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [
+    "PENDÊNCIA DO TITULAR — pedidos de acesso à informação (Lei 12.527/2011) prontos para envio: docs/relatorios/lai/pedidos-lai-motor-10-2026-10-03.md.",
+    "MPF PR-GO: o edital de cadastro de entidades para receber bens e valores (notícia de 09/10/2025) tem o link quebrado (404); pedir o edital, a lista de entidades cadastradas e as destinações de 2023 a 2026.",
+    "MPT (Procuradoria-Geral do Trabalho): pedir as destinações nacionais a entidades de Goiás de 2023 a 2026 e as regras do Sistema de Destinações.",
+    "FDD/CFDD: a página 'seleção em andamento' deixou de dizer 'não há' — conferir o edital (a informação é pública; não precisa de pedido)."
+   ],
+   "ultima_leitura": "2026-10-02T23:00-03:00",
    "agenda": "todos 16:23"
   },
   {
@@ -118,6 +198,11 @@
    "nome": "Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás)",
    "luz": "cinza",
    "resultado": "não rodou hoje — fora da agenda hoje",
+   "leitura_do_dia": {
+    "estado": "fora_da_agenda",
+    "texto": "hoje não é dia deste motor"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-09-29T00:17-03:00",
    "agenda": "dom 03:23"
   },
@@ -126,6 +211,11 @@
    "nome": "Motor Patrocínio Privado — mídia e eventos de Goiás (empresas)",
    "luz": "cinza",
    "resultado": "não rodou hoje — fora da agenda hoje",
+   "leitura_do_dia": {
+    "estado": "fora_da_agenda",
+    "texto": "hoje não é dia deste motor"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-09-29T00:20-03:00",
    "agenda": "dom 03:23"
   },
@@ -134,55 +224,92 @@
    "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
    "luz": "verde",
    "resultado": "coletou hoje — 3 achado(s)",
-   "ultima_leitura": "2026-10-02T20:09-03:00",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
+   "ultima_leitura": "2026-10-02T21:18-03:00",
    "agenda": "todos 11:23,17:53"
   },
   {
    "id": "salic",
-   "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
+   "nome": "Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)",
    "luz": "verde",
    "resultado": "coletou hoje — 5 achado(s)",
-   "ultima_leitura": "2026-10-02T17:55-03:00",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
+   "ultima_leitura": "2026-10-02T23:00-03:00",
    "agenda": "todos 08:53,13:53,19:53"
   },
   {
    "id": "prefeituras-50-go",
    "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
-   "luz": "vermelho",
-   "resultado": "falha na coleta de hoje — 1 página(s) com falha; as demais foram lidas",
-   "ultima_leitura": "2026-10-01T12:03-03:00",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos (atenção: 1 página(s) com falha; as demais foram lidas)",
+   "leitura_do_dia": {
+    "estado": "parcial",
+    "texto": "dia lido em parte — 1 página(s) com falha; as demais foram lidas"
+   },
+   "observacoes": [
+    "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados."
+   ],
+   "ultima_leitura": "2026-10-02T23:07-03:00",
    "agenda": "todos 09:23,15:23"
   },
   {
    "id": "empresas-editais-incentivados",
    "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
-   "luz": "vermelho",
-   "resultado": "falha na coleta de hoje — 2 página(s) com falha; as demais foram lidas",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — última leitura em 01/10 12:03",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-01T12:03-03:00",
    "agenda": "todos 10:23"
   },
   {
    "id": "cnpq-extensao",
    "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
-   "luz": "vermelho",
-   "resultado": "falha na coleta de hoje — 2 página(s) com falha; as demais foram lidas",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — última leitura em 01/10 12:04",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-01T12:04-03:00",
    "agenda": "todos 09:23,15:23"
   },
   {
    "id": "piloto-aberto",
    "nome": "Piloto - Espião — busca aberta no terceiro setor",
-   "luz": "vermelho",
-   "resultado": "falha na coleta de hoje — 1 página(s) com falha; as demais foram lidas · 18 achado(s) mesmo assim",
+   "luz": "cinza",
+   "resultado": "não rodou hoje — última leitura em 01/10 12:04",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-01T12:04-03:00",
    "agenda": "com o Piloto contínuo"
   },
   {
    "id": "estaduais-go-gov",
    "nome": "Oportunidade Estaduais Governamentais de Goiás",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
-   "ultima_leitura": null,
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
+   "ultima_leitura": "2026-10-02T17:57-03:00",
    "agenda": "todos 09:23,15:23"
   },
   {
@@ -190,6 +317,11 @@
    "nome": "Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T16:56-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -198,6 +330,11 @@
    "nome": "CapitaAI — editais e oportunidades de captação, incluindo a lista pública dos editais do Prosas",
    "luz": "verde",
    "resultado": "coletou hoje — 27 achado(s)",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T21:27-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -206,6 +343,11 @@
    "nome": "Observatório do Terceiro Setor — editais publicados na seção temática do portal",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T21:27-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -214,6 +356,11 @@
    "nome": "Mapas Culturais — editais das redes estaduais e municipais de cultura que usam a plataforma",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T16:56-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -222,6 +369,11 @@
    "nome": "ABCR — Associação Brasileira de Captadores de Recursos — editais divulgados pela associação dos captadores",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T21:27-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -230,6 +382,11 @@
    "nome": "Funarte — editais da Fundação Nacional de Artes",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 07:13,19:13"
   },
@@ -238,6 +395,11 @@
    "nome": "Transferegov — programas e parcerias com OSC abertos na plataforma federal (dados abertos)",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 07:13"
   },
@@ -246,6 +408,11 @@
    "nome": "Rede Comuá — editais dos fundos independentes de filantropia",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -254,6 +421,11 @@
    "nome": "Fundo Baobá — editais para equidade racial",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 07:13,19:13"
   },
@@ -262,6 +434,11 @@
    "nome": "Editais Culturais — editais de cultura reunidos no portal",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 07:13,19:13"
   },
@@ -270,6 +447,11 @@
    "nome": "Fundo Brasil de Direitos Humanos — editais de direitos humanos",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -278,6 +460,11 @@
    "nome": "IDIS — Instituto para o Desenvolvimento do Investimento Social — chamadas e editais de investimento social",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T16:56-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -286,6 +473,11 @@
    "nome": "UNDEF — Fundo das Nações Unidas para a Democracia — chamadas anuais para a sociedade civil",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 07:13,19:13"
   },
@@ -294,6 +486,11 @@
    "nome": "Fundo Casa Socioambiental — chamadas socioambientais",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -302,6 +499,11 @@
    "nome": "CESE — Coordenadoria Ecumênica de Serviço — editais de apoio a projetos populares",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 06:13,09:13,12:13,15:13,18:13,21:13"
   },
@@ -310,6 +512,11 @@
    "nome": "BrazilFoundation — editais de apoio a organizações brasileiras",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 07:13,19:13"
   },
@@ -318,6 +525,11 @@
    "nome": "Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)",
    "luz": "cinza",
    "resultado": "não rodou hoje — aguardando coleta local",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido — exige acesso pelo Brasil"
+   },
+   "observacoes": [],
    "ultima_leitura": null,
    "agenda": "todos 06:10,09:10,12:10,15:10,18:10,21:10"
   },
@@ -326,6 +538,11 @@
    "nome": "IAF — Fundação Interamericana — chamadas de apoio a organizações de base (recusa IP estrangeiro)",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
+   "leitura_do_dia": {
+    "estado": "parcial",
+    "texto": "dia lido em parte — parte das fontes exige acesso pelo Brasil (ponte da Hostgator ou computador do titular)"
+   },
+   "observacoes": [],
    "ultima_leitura": "2026-10-02T11:04-03:00",
    "agenda": "todos 07:13,19:13"
   },
@@ -334,6 +551,11 @@
    "nome": "Finep — chamadas públicas (coleta assistida: o site proíbe robôs)",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": null,
    "agenda": "todos contínuo"
   },
@@ -342,6 +564,11 @@
    "nome": "Itaú Social — editais (coleta assistida: o site proíbe robôs)",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": null,
    "agenda": "todos contínuo"
   },
@@ -350,6 +577,11 @@
    "nome": "Petrobras — seleções socioambientais (coleta assistida: o site proíbe robôs)",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": null,
    "agenda": "todos contínuo"
   },
@@ -358,6 +590,11 @@
    "nome": "Fundação Banco do Brasil — editais (coleta assistida: o site proíbe robôs)",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": null,
    "agenda": "todos contínuo"
   },
@@ -366,6 +603,11 @@
    "nome": "Embaixada dos EUA — pequenas doações a projetos (coleta assistida)",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": null,
    "agenda": "todos contínuo"
   },
@@ -374,6 +616,11 @@
    "nome": "Embaixada do Japão — apoio a projetos comunitários (coleta assistida)",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": null,
    "agenda": "todos contínuo"
   },
@@ -382,6 +629,11 @@
    "nome": "Mapa das OSC (Ipea) — editais reunidos no portal (coleta assistida: o site proíbe robôs)",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": null,
    "agenda": "todos 06:13"
   },
@@ -390,6 +642,11 @@
    "nome": "Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida)",
    "luz": "cinza",
    "resultado": "não rodou hoje — ainda não rodou hoje",
+   "leitura_do_dia": {
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
+   },
+   "observacoes": [],
    "ultima_leitura": null,
    "agenda": "todos 06:13"
   },
@@ -398,7 +655,12 @@
    "nome": "Piloto - Interceptador — comprova na fonte oficial",
    "luz": "verde",
    "resultado": "coletou hoje — sem dados novos",
-   "ultima_leitura": "2026-10-02T22:26-03:00",
+   "leitura_do_dia": {
+    "estado": "completa",
+    "texto": "dia lido por completo"
+   },
+   "observacoes": [],
+   "ultima_leitura": "2026-10-02T23:04-03:00",
    "agenda": null
   }
  ]
