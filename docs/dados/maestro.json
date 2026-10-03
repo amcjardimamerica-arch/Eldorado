@@ -1,6 +1,6 @@
 {
  "dia": "2026-10-03",
- "em": "2026-10-03T14:21:05+00:00",
+ "em": "2026-10-03T14:57:00+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 123,
  "cobertura": {
@@ -17,6 +17,7 @@
   "f260-captacao-107",
   "do-goiania",
   "congresso-nacional",
+  "plat-gife",
   "pncp-api"
  ],
  "esgotaram_tentativas": [
@@ -86,14 +87,25 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 4.9835,
+   "prioridade": 5.1035,
    "diagnostico": "falha_parcial",
-   "livros_com_abertura_proxima": 241,
+   "livros_com_abertura_proxima": 247,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 2
+  },
+  {
+   "motor": "plat-estaduais-go-gov",
+   "prioridade": 0.6025,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 2,
+   "horarios": "09:23,15:23",
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 0
   },
   {
    "motor": "pncp-api",
@@ -104,17 +116,6 @@
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "plat-estaduais-go-gov",
-   "prioridade": 0.4375,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "09:23,15:23",
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
    "tentativas_hoje": 0
   },
   {
@@ -758,7 +759,7 @@
   {
    "motor": "judiciario-tjgo",
    "prioridade": 0.0625,
-   "diagnostico": "exige_brasil",
+   "diagnostico": "bloqueio",
    "livros_com_abertura_proxima": 0,
    "horarios": "07:53,16:23",
    "coleta": "nuvem + local",
