@@ -198,22 +198,27 @@ def dados_rotulados() -> tuple[list[dict], list[int], list[dict]]:
         for l in bp.open(encoding="utf-8"):
             if l.strip():
                 r = json.loads(l); base.setdefault(str(r.get("url") or "").split("#")[0].rstrip("/").lower(), r)
-    regs, y, pend, vistos = [], [], [], set()
-    for f in sorted(_g.glob(str(ROOT / "dados/oportunidades/validacao_mapa/validacao_*.json"))):
+    # 03/10 (titular): a decisão MAIS RECENTE vence e "pendente" nunca bloqueia uma decisão real. Antes os arquivos eram
+    # lidos em ordem alfabética e a primeira decisão vencia — a validação automática (validacao_0000, quase tudo
+    # "pendente") vinha primeiro e as decisões humanas de 02/10 (352 na fonte oficial) eram ignoradas.
+    decisoes: dict[str, tuple[dict, dict]] = {}
+    for f in sorted(_g.glob(str(ROOT / "dados/oportunidades/validacao_mapa/validacao_*.json")), reverse=True):
         for d in (_j(Path(f), {}).get("itens") or []):
             u = str(d.get("url") or "").split("#")[0].rstrip("/").lower()
             chave = u or str(d.get("titulo"))
-            if chave in vistos:
+            ja = decisoes.get(chave)
+            if ja and not (str(ja[1].get("decisao") or "") == "pendente" and str(d.get("decisao") or "") != "pendente"):
                 continue
-            vistos.add(chave)
-            r = {**(base.get(u) or {}), **{k: d.get(k) for k in ("titulo", "url") if d.get(k)}}
-            dec = str(d.get("decisao") or "")
-            if dec.startswith(POSITIVAS):
-                regs.append(r); y.append(1)
-            elif dec == "descartada":
-                regs.append(r); y.append(1 if COPIA.search(str(d.get("motivo") or d.get("razao") or "").lower()) else 0)
-            elif dec == "pendente":
-                pend.append({**r, "_decisao": dec})
+            decisoes[chave] = ({**(base.get(u) or {}), **{k: d.get(k) for k in ("titulo", "url") if d.get(k)}}, d)
+    regs, y, pend, vistos = [], [], [], set(decisoes)
+    for r, d in decisoes.values():
+        dec = str(d.get("decisao") or "")
+        if dec.startswith(POSITIVAS):
+            regs.append(r); y.append(1)
+        elif dec == "descartada":
+            regs.append(r); y.append(1 if COPIA.search(str(d.get("motivo") or d.get("razao") or "").lower()) else 0)
+        elif dec == "pendente":
+            pend.append({**r, "_decisao": dec})
     for it in (_j(ROOT / "config/restricoes_aprendidas.json", {}).get("itens") or []):   # 02/10: descartes das estantes = ruído
         u = str(it.get("url") or "").lower(); chave = u or str(it.get("titulo"))
         if chave and chave not in vistos:
@@ -318,12 +323,19 @@ def anotar_livros() -> int:
     return n
 
 
-def precisa_treinar(dias: int = 7) -> bool:
+def precisa_treinar(dias: int = 7, crescimento: float = 0.05) -> bool:
+    """Retreina a cada `dias` OU quando os rótulos cresceram `crescimento` (5%) desde o último treino — 03/10: 403
+    decisões humanas novas ficaram dias sem ensinar a rede porque a regra era só de calendário."""
     try:
         with gzip.open(MODELO, "rt", encoding="utf-8") as f:
-            t = json.load(f)["meta"]["treinada_em"][:10]
+            meta = json.load(f)["meta"]
         from datetime import date, timedelta
-        return t < (date.today() - timedelta(days=dias)).isoformat()
+        if meta["treinada_em"][:10] < (date.today() - timedelta(days=dias)).isoformat():
+            return True
+        antes = int(meta.get("rotulados") or 0)
+        if not antes:
+            return True
+        return len(dados_rotulados()[1]) >= antes * (1 + crescimento)
     except Exception:  # noqa: BLE001
         return True
 
