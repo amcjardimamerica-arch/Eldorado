@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-03T03:41:40+00:00",
+  "em": "2026-10-03T03:55:06+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-03T03:36:17+00:00",
+  "ultimo_voo": "2026-10-03T03:48:07+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -33,25 +33,107 @@
   "fila": {
     "editais novos dos motores": 30,
     "indícios do Espião": 17,
-    "abertos com itens em falta": 3,
-    "empresas sem ficha": 116
+    "abertos com itens em falta": 43,
+    "empresas sem ficha": 115
   },
   "acumulado": {
-    "missoes": 162,
+    "missoes": 163,
     "validadas": 2,
-    "parciais": 43,
+    "parciais": 44,
     "insuficientes": 117,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 32,
-      "sim": 97
+      "sim": 98
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 3,
     "tempo_medio_min": 11.2
   },
   "missoes": [
+    {
+      "em": "2026-10-03T03:48:07+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · estante bronze · tentativa 1",
+      "alvo": "MPF divulga lista de instituições selecionadas para receber bens doados — Goiás",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor"
+      ],
+      "pagina_oficial": "https://biblioteca.mpf.mp.br/server/api/core/bitstreams/f0a50f1b-b873-482a-b98b-52d48e4b5d65/content",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona que os interessados devem informar a área temática de sua atuação, o que indica que a informação é relevante para a seleção.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria informar a área temática de sua atuação, como assistência social, cultura, educação ou esporte, durante o processo de inscrição.",
+        "proximo_passo": "A associação deve verificar os requisitos específicos e anexos mencionados no edital para se inscrever no processo.",
+        "risco": "A falta de informações claras sobre o prazo de inscrição e outros detalhes pode impedir a associação de se candidatar a tempo."
+      },
+      "erro": null,
+      "segundos": 418,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Objeto, Prazo de inscrição, Resultado, Prazo de recurso",
+      "id": "op-op-6c0e3937043e",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "MINISTÉRIO PÚBLICO FEDERAL",
+          "trecho": "MINISTÉRIO PÚBLICO FEDERAL",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "de instituições, entidades e órgãos públicos federais, estaduais, distritais ou municipais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "dispensado — O texto menciona que os interessados devem informar a área temática de sua atuação.",
+          "trecho": "§ 3º No ato do cadastramento, os interessados devem informar, sempre que possível, a área temática de sua atuação.",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Destinação": {
+          "valor": "elegível · outro",
+          "trecho": "de pessoas jurídicas de direito privado sem fins lucrativos e de instituições, entidades e órgãos públicos federais, estaduais, distritais ou municipais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "informar, sempre que possível, a área temática de sua atuação",
+          "trecho": "§ 3º No ato do cadastramento, os interessados devem informar, sempre que possível, a área temática de sua atuação.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Ministério Público Federal",
+      "indicios": [
+        {
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-divulga-lista-de-instituicoes-selecionadas-para-receber-bens-doados",
+          "tipo": "noticia"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-10-03T03:36:17+00:00",
       "modo": "validar",
@@ -2487,64 +2569,6 @@
       "indicios": [],
       "rotas": [
         "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-02T17:44:44+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Anápolis — Prefeitura lança editais da Lei Aldir Blanc para o setor cultural — Goiás / Anápolis",
-      "qualidade": "insuficiente",
-      "comprovados": 2,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/categoria/politica-nacional-aldir-blanc/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O órgão financiador é a Secretaria de Estado da Cultura, que está relacionado ao edital da Lei Aldir Blanc para o setor cultural em Goiás.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há editais específicos para o Estado de Goiás, verificar os requisitos e anexos, e se enquadrar na área de atuação cultural, assistência social, educação ou esporte, conforme disponibilizado.",
-        "proximo_passo": "Consultar o site da Secretaria de Estado da Cultura para obter informações detalhadas sobre os editais, prazos e requisitos.",
-        "risco": "A falta de informações sobre os editais específicos, prazos e requisitos pode impedir o acesso da associação comunitária aos recursos."
-      },
-      "erro": null,
-      "segundos": 838,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 2,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "op-op-168c2824f46f",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado da Cultura",
-          "trecho": "Secretaria de Estado da Cultura",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Governo Federal",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ]
