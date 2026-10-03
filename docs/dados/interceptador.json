@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-03T08:34:48+00:00",
+  "em": "2026-10-03T08:47:01+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-03T08:19:40+00:00",
+  "ultimo_voo": "2026-10-03T08:38:53+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,24 +34,92 @@
     "editais novos dos motores": 30,
     "indícios do Espião": 17,
     "abertos com itens em falta": 43,
-    "empresas sem ficha": 115
+    "empresas sem ficha": 116
   },
   "acumulado": {
-    "missoes": 180,
+    "missoes": 181,
     "validadas": 2,
     "parciais": 50,
-    "insuficientes": 128,
+    "insuficientes": 129,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 34,
-      "sim": 112
+      "sim": 113
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
     "tempo_medio_min": 11.4
   },
   "missoes": [
+    {
+      "em": "2026-10-03T08:38:53+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · oportunidade do mapa",
+      "alvo": "Goiânia — Diário Oficial de Goiânia — edição 8874 (2026-09-30) — chamamento público",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprova a existência de um programa municipal voltado para unidades habitacionais no Setor Central de Goiânia, o que pode ser relevante para uma associação comunitária que atue na área de assistência social.",
+        "para_a_amc": "A associação comunitária precisaria se alinhar ao objeto do edital, ou seja, atuar em unidades habitacionais localizadas no perímetro definido no Setor Central de Goiânia, e demonstrar como sua atuação se encaixa no Programa Morar no Centro.",
+        "proximo_passo": "Consultar os anexos do edital para obter informações detalhadas sobre o programa e os critérios de participação.",
+        "risco": "A falta de informações sobre prazos, requisitos e destinação do edital pode impedir a associação de se qualificar adequadamente para o chamamento público."
+      },
+      "erro": null,
+      "segundos": 487,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "2c372f3fc61287ed485f",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Insere o Programa Morar no Centro, destinado exclusivamente às unidades habitacionais localizadas em perímetro definido no Setor Central de Goiânia e resultantes de novas construções ou de intervenções de recuperação",
+          "trecho": "Ins(cid:415)tui o Programa Morar no Centro, des(cid:415)nado exclusivamente às unidades habitacionais localizadas em perímetro definido no Setor Central de Goiânia e resultantes de",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura de Goiânia",
+          "trecho": "Prefeitura de Goiânia",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Goiânia – GO, CEP: 74.805-010",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Goiânia",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/5208707/2026-09-30/eae53a46f7108198ed438c9c4bc4996767a5a08a.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-03T08:19:40+00:00",
       "modo": "validar",
@@ -2598,78 +2666,6 @@
         }
       },
       "financiador": "Ministério Público do Trabalho em Goiás",
-      "indicios": [],
-      "rotas": [
-        "site_municipal",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo"
-      ]
-    },
-    {
-      "em": "2026-10-02T22:29:11+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Associação Kalunga recebe veículos por meio de reversão de recursos acordada pelo MPT-GO — Goiás / Goiânia",
-      "qualidade": "insuficiente",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O objeto mencionado indica que a Associação Kalunga recebeu veículos por meio de reversão de recursos acordada pelo MPT-GO, o que demonstra uma fonte de recursos válida para organizações da sociedade civil.",
-        "para_a_amc": "Para acessar essa fonte, a associação comunitária de Goiânia precisaria entrar em contato com o Ministério Público do Trabalho em Goiás (MPT-GO) para verificar se há possibilidade de acordos semelhantes e se atende aos critérios de elegibilidade.",
-        "proximo_passo": "Contatar o MPT-GO para obter informações sobre possíveis acordos de reversão de recursos e verificar se a associação atende aos critérios estabelecidos.",
-        "risco": "A falta de informações sobre requisitos e área de atuação pode impedir a associação de se qualificar para o acesso a essa fonte de recursos."
-      },
-      "erro": null,
-      "segundos": 445,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-3ed177adc912",
-      "encontrou": {
-        "Objeto": {
-          "valor": "receber veículos por meio de reversão de recursos acordada pelo MPT-GO",
-          "trecho": "Associação Kalunga recebe veículos por meio de reversão de recursos acordada pelo MPT-GO",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Ministério Público do Trabalho em Goiás (MPT-GO)",
-          "trecho": "Associação Kalunga recebe veículos por meio de reversão de recursos acordada pelo MPT-GO",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Associação Kalunga recebe veículos por meio de reversão de recursos acordada pelo MPT-GO",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "Associação Kalunga recebe veículos por meio de reversão de recursos acordada pelo MPT-GO",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Ministério Público do Trabalho em Goiás (MPT-GO)",
       "indicios": [],
       "rotas": [
         "site_municipal",
