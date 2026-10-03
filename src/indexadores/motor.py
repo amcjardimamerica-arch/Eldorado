@@ -87,11 +87,11 @@ def catalogo() -> dict:
 MOTORES_PRAZO_DO_TEXTO = ("site-observatorio-terceiro-setor", "site-abcr", "site-funarte", "site-rede-comua", "site-fundo-baoba")
 
 
-def corrigir_prazos_do_ano_seguinte(gravar: bool = True) -> int:
+def corrigir_prazos_do_ano_seguinte(gravar: bool = True, acervo: dict | None = None) -> int:
     """03/10 (estudo dos motores 01–39): o leitor antigo empurrava 'até 2 de setembro' (sem ano) para o PRÓXIMO ano a
     partir de hoje. Nos motores que leem o prazo do texto (26, 28, 29, 31, 32), o prazo do ano seguinte num post de
     2026 volta para 2026 quando a data cabe depois da publicação. Idempotente; os outros motores não mudam."""
-    A = _j(ACERVO, {"itens": {}}); cat = catalogo()
+    A = acervo if acervo is not None else _j(ACERVO, {"itens": {}}); cat = catalogo()
     sm = {s["id"]: s.get("motor") for s in cat.get("sites") or []}
     n = 0
     for x in (A.get("itens") or {}).values():
@@ -106,7 +106,7 @@ def corrigir_prazos_do_ano_seguinte(gravar: bool = True) -> int:
             continue
         if y >= pub:
             x["prazo_antes_da_correcao"] = pz; x["prazo"] = y; n += 1
-    if n and gravar:
+    if n and gravar and acervo is None:
         _gravar(ACERVO, A)
     return n
 
@@ -526,10 +526,6 @@ def rodada(motores: list[str] | None = None, sites: list[str] | None = None, rot
     if delta_em:
         _gravar(Path(delta_em), delta, indent=None)
     resumo.update(aplicar(delta, gravar=gravar))
-    try:                                             # 03/10: prazos do ano seguinte (leitor antigo) corrigidos
-        resumo["prazos_do_ano_seguinte_corrigidos"] = corrigir_prazos_do_ano_seguinte(gravar=gravar)
-    except Exception as e:  # noqa: BLE001
-        resumo["prazos_do_ano_seguinte_corrigidos"] = f"falhou: {type(e).__name__}"
     try:                                             # 02/10: oportunidade sem motor → o motor é criado
         resumo["motores_criados"] = [m["motor"] for m in registrar_motores_que_faltam(hoje, gravar=gravar)]
     except Exception as e:  # noqa: BLE001 — nunca derruba a rodada
@@ -573,6 +569,10 @@ def aplicar(delta: dict, gravar: bool = True) -> dict:
     entrada, fora = entrada_do_fluxo(acervo, por_id, hoje, lim)
     if gravar:
         est["em"] = delta.get("em") or agora_utc().isoformat(timespec="seconds")
+        try:                                         # 03/10: os prazos do ano seguinte saem ANTES de gravar (o fluxo 16
+            corrigir_prazos_do_ano_seguinte(acervo=acervo)   # reaplica o delta sobre o main — correção fora daqui se perdia)
+        except Exception:  # noqa: BLE001
+            pass
         _gravar(ESTADO, est)
         _gravar(ACERVO, acervo)
         _gravar(DIARIO, diario)
