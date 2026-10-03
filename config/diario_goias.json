@@ -20,18 +20,52 @@
     "max_paginas": 5,
     "pausa_segundos": 0.5,
     "consultas": [
-      "\"termo de fomento\"", "\"termo de colaboração\"", "\"organizações da sociedade civil\"", "\"edital de chamamento\"",
-      "\"aviso de chamamento\"", "\"seleção de projetos\"", "\"sem fins lucrativos\"", "\"credenciamento de entidades\"",
-      "CEDCA", "\"Fundo Estadual de Assistência Social\"", "\"pessoa idosa\"", "PNAB", "\"Aldir Blanc\"", "Goyazes",
-      "\"Fundo de Arte e Cultura\"", "cofinanciamento", "\"emenda impositiva\"", "\"emendas parlamentares\"",
-      "\"subvenção social\"", "\"chamada pública\""
-    ]
+      "\"termo de fomento\"",
+      "\"termo de colaboração\"",
+      "\"organizações da sociedade civil\"",
+      "\"edital de chamamento\"",
+      "\"aviso de chamamento\"",
+      "\"seleção de projetos\"",
+      "\"sem fins lucrativos\"",
+      "\"credenciamento de entidades\"",
+      "CEDCA",
+      "\"Fundo Estadual de Assistência Social\"",
+      "\"pessoa idosa\"",
+      "PNAB",
+      "\"Aldir Blanc\"",
+      "Goyazes",
+      "\"Fundo de Arte e Cultura\"",
+      "cofinanciamento",
+      "\"emenda impositiva\"",
+      "\"emendas parlamentares\"",
+      "\"subvenção social\"",
+      "\"chamada pública\"",
+      "\"chamamento público\"",
+      "\"fundo municipal\""
+    ],
+    "ajuste_03_10": "Teste do motor 02: \"chamamento público\" achava 6 páginas que nenhuma das 20 consultas trazia (ex.: FMAS de Diorama, Três Ranchos); \"fundo municipal\" traz os fundos dos municípios que publicam no Diário do Estado."
   },
-  "fonte_b": {"janela_dias": 3, "max_materias_por_edicao": 60, "pausa_segundos": 0.3},
+  "fonte_b": {
+    "janela_dias": 7,
+    "max_materias_por_edicao": 60,
+    "pausa_segundos": 0.3,
+    "ajuste_03_10": "Teste do motor 02: janela de 3 para 7 dias (o motor não roda no fim de semana e o suplemento de sexta sai à noite); edição com matéria não lida não conta como processada; edições publicadas × lidas viram a cobertura do dia."
+  },
   "fonte_c": {
     "janela_dias": 10,
-    "sites": ["cultura", "social", "esporte", "saude", "educacao"],
-    "termos": ["chamamento", "edital", "inscrições", "seleção"],
+    "sites": [
+      "cultura",
+      "social",
+      "esporte",
+      "saude",
+      "educacao"
+    ],
+    "termos": [
+      "chamamento",
+      "edital",
+      "inscrições",
+      "seleção"
+    ],
     "observado_em": "2026-10-01: goias.gov.br/{site}/wp-json/wp/v2/posts responde 200 com data, link e conteúdo; setembro: cultura 10 posts com 'edital', social 2, esporte 1, saude 3"
   },
   "vereditos": {

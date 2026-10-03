@@ -243,3 +243,76 @@ class TestMotor(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestCoberturaMotor02(TestMotor):
+    """Teste do motor 02 de 03/10/2026: suplemento de sexta e edição de 28/09 nunca passavam pelo sumário."""
+
+    def _json_semana(self, url, **_):
+        if "edicoes_from_data/2026-10-01" in url:
+            return {"erro": False, "itens": [{"id": 7388, "suplemento": ""}, {"id": 7389, "suplemento": "1"}]}
+        if "edicoes_from_data/2026-09-28" in url:
+            return {"erro": False, "itens": [{"id": 7382, "suplemento": ""}]}
+        return self._json(url)
+
+    def _get_falha_7389(self, url, **_):
+        if "view_html_diario/7389" in url or "view_html_diario/7382" in url:
+            return SUMARIO.replace("748001", "749001").replace("748003", "749003").encode()
+        if "publicacoes_ver_conteudo/749001/7389" in url:
+            raise TimeoutError("lento")
+        if "/749001/" in url or "/749003/" in url:
+            return b"<p>Aviso de chamamento: credenciamento de leiloeiros oficiais. Pregao.</p>"
+        return self._get(url)
+
+    def test_janela_de_sete_dias_e_edicao_com_falha_fica_pendente(self):
+        with mock.patch.object(dg, "_get_json", side_effect=self._json_semana), mock.patch.object(dg, "_get", side_effect=self._get_falha_7389):
+            r = dg.ler_motor({"id": "do-goias"}, HOJE)
+        cob = r["diagnostico"]["cobertura_edicoes"]
+        self.assertEqual(cob["esperadas"], 3)                             # 7382 (28/09) entra: janela de 7 dias
+        self.assertEqual(cob["pendentes"], ["2026-10-01 nº 7389 (suplemento)"])
+        self.assertEqual(r["diagnostico"]["paginas_nao_lidas"], 1)        # o maestro dispara de novo
+        est = json.loads(dg.ESTADO.read_text(encoding="utf-8"))
+        self.assertFalse(est["edicoes_processadas"]["7389"]["completa"])
+        self.assertEqual(est["edicoes_processadas"]["7389"]["lidas"], ["749003"])   # na volta, só a matéria que falhou
+        lidas = []
+
+        def get2(url, **kw):
+            lidas.append(url)
+            return b"<p>Aviso de chamamento: credenciamento de leiloeiros oficiais. Pregao.</p>" if "/749001/" in url else self._get_falha_7389(url)
+        with mock.patch.object(dg, "_get_json", side_effect=self._json_semana), mock.patch.object(dg, "_get", side_effect=get2):
+            r2 = dg.ler_motor({"id": "do-goias"}, HOJE)
+        self.assertEqual(r2["diagnostico"]["cobertura_edicoes"]["pendentes"], [])
+        self.assertFalse([u for u in lidas if "/749003/7389" in u])
+        self.assertEqual(r2["diagnostico"]["fonte_do_dia"]["B"], "leu")
+        with mock.patch.object(dg, "_get_json", side_effect=self._json_semana), mock.patch.object(dg, "_get", side_effect=get2):
+            r3 = dg.ler_motor({"id": "do-goias"}, HOJE)
+        self.assertTrue(r3["diagnostico"]["fonte_do_dia"]["B"].startswith("em dia"))   # nada novo: não é "sem leitura"
+
+    def test_lista_que_nao_responde_deixa_cobertura_nao_medida(self):
+        def bloq(url, **kw):
+            if "edicoes_from_data" in url:
+                raise RuntimeError("tempo esgotado")
+            return self._json(url)
+        with mock.patch.object(dg, "_get_json", side_effect=bloq), mock.patch.object(dg, "_get", side_effect=self._get):
+            r = dg.ler_motor({"id": "do-goias"}, HOJE)
+        self.assertFalse(r["diagnostico"]["cobertura_edicoes"]["medida"])
+        self.assertIn("não medida", r["diagnostico"]["cobertura_cortada"])
+
+    def test_estara_aberto_o_chamamento_e_abertura(self):
+        t = ("O Fundo Municipal de Assistência Social (FMAS) de Diorama/ GO comunica aos interessados que estará aberto o "
+             "Chamamento Público / Credenciamento de Pessoas Físicas e/ou Jurídicas para Serviços Socioeducativos, inscrições até 15/10/2026")
+        a = atos.classificar(t, date(2026, 9, 30), "2026-09-30")
+        self.assertEqual((a["tipo"], a["veredito"]), ("abertura", "OPORTUNIDADE"))
+
+    def test_nuvem_recusada_usa_a_ponte(self):
+        import urllib.error
+        from src import ponte_brasil
+        erro = urllib.error.HTTPError("https://diariooficial.abc.go.gov.br/x", 403, "Forbidden", {}, None)
+        with mock.patch("urllib.request.urlopen", side_effect=erro), mock.patch.object(ponte_brasil, "configurada", return_value=True), \
+                mock.patch.object(ponte_brasil, "abrir", return_value=(200, "u", b'{"ok": 1}', {})) as ab:
+            self.assertEqual(dg._get("https://diariooficial.abc.go.gov.br/x"), b'{"ok": 1}')
+        ab.assert_called_once()
+
+    def test_sabado_na_agenda(self):
+        ag = json.loads((dg.ROOT / "config/agenda_motores.json").read_text(encoding="utf-8"))["motores"]["do-goias"]
+        self.assertIn("sab", ag["dias"])

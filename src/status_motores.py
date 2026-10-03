@@ -75,7 +75,7 @@ def status_de(p: dict, hoje: str) -> dict:
             fontes = u.get("fonte_do_dia") or {}
             if u.get("falhas") and not fontes and not (u.get("vereditos") or u.get("achados") is not None):
                 cor_dia, falha = "vermelho", "falha: " + str(u["falhas"][0])[:120]
-            elif fontes and all(v != "leu" for v in fontes.values()):
+            elif fontes and all(not str(v).startswith(("leu", "em dia")) for v in fontes.values()):   # 03/10: "em dia" = já lido
                 cor_dia, falha = "vermelho", "nenhuma fonte leu: " + ", ".join(f"{k} {v}" for k, v in fontes.items())
             else:
                 cor_dia = "verde"

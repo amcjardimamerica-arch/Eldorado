@@ -78,7 +78,9 @@ _EXTRA = {
     "pessoal": re.compile(r"NOMEA|EXONERA|APOSENTADORIA|PENSAO|FERIAS|LICENCA|PROGRESSAO|DESIGNA(R)? .{0,40}SERVIDOR|"
                           r"CESSAO DE SERVIDOR|ABONO"),
     "abertura_noticia": re.compile(r"\bLANCA (?:O |UM |NOVO |SEU )?EDITA|\bABRE (?:AS )?INSCRICOES|INSCRICOES (?:ESTAO )?ABERTAS|"
-                                   r"ESTAO ABERTAS AS INSCRICOES|ABRE CHAMAMENTO|PUBLICA (?:O )?EDITAL DE CHAMAMENTO"),
+                                   r"ESTAO ABERTAS AS INSCRICOES|ABRE CHAMAMENTO|PUBLICA (?:O )?EDITAL DE CHAMAMENTO|"
+                                   # 03/10 (teste do motor 02): "estará aberto o Chamamento Público…" (FMAS de Diorama)
+                                   r"ESTARA(?:O)? ABERT[OA]S? (?:O |A |AS |OS )?(?:CHAMAMENTO|EDITAL|INSCRICOES|CREDENCIAMENTO|CHAMADA)"),
     "empresa_audiovisual": re.compile(r"INVESTIMENTOS? RETORNAVE|\bFSA\b|FUNDO SETORIAL DO AUDIOVISUAL|PRODUTORAS? (?:BRASILEIRAS?|INDEPENDENTES?)|PARA EMPRESAS"),
     "fomento_forte": re.compile(r"TERMO DE FOMENTO|TERMO DE COLABORACAO|13\.019|ORGANIZACOES? DA SOCIEDADE CIVIL|\bOSCS?\b|"
                                 r"SEM FINS LUCRATIVOS|SELECAO DE PROJETOS|FOMENTO A CULTURA|PREMIO|PREMIACAO"),
