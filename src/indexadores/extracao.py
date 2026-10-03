@@ -180,10 +180,32 @@ def _data_ok(a: int, m: int, d: int, ref: date) -> str | None:
 _GATILHO = r"(?:inscri[cç][õo]es?|prazo|encerra\w*|at[eé]|deadline|due|submiss\w*|candidaturas?|propostas?|limite)"
 
 
-def prazo(texto: str, ref: date | None = None) -> str | None:
+def _sem_ano(mo: int, d: int, ref: date, publicado: date | None) -> str | None:
+    """03/10 (estudo dos motores 01–39): data SEM ANO no texto. O ano vem da PUBLICAÇÃO do post; se a data cair antes
+    da publicação (post de dezembro, 'até 15 de janeiro'), é o ano seguinte — com checagem de faixa (até 400 dias).
+    Sem a publicação, o ano corrente; o ano seguinte só na virada (data de janeiro lida em dezembro).
+    NUNCA 'o próximo ano a partir de hoje': '19 de outubro' num post de 2026 é 2026, não 2027."""
+    base = publicado or ref
+    x = _data_ok(base.year, mo, d, ref)
+    if publicado:
+        if x and x < publicado.isoformat():
+            y = _data_ok(base.year + 1, mo, d, ref)
+            return y if y and (date.fromisoformat(y) - publicado).days <= 400 else None
+        return x
+    if x and (ref - date.fromisoformat(x)).days > 240:    # virada do ano: data de janeiro/fevereiro lida em nov/dez
+        return _data_ok(base.year + 1, mo, d, ref)
+    return x
+
+
+def prazo(texto: str, ref: date | None = None, publicado: str | date | None = None) -> str | None:
     """A data que fecha as inscrições, quando o texto a diz perto de um gatilho ('inscrições até', 'prazo',
-    'deadline'). Datas soltas não contam. Sem ano ('até 02/10'): o próximo 02/10 a partir de `ref`."""
+    'deadline'). Datas soltas não contam. Sem ano: o ano da PUBLICAÇÃO (ver _sem_ano). Em 'de X a Y', o prazo é Y."""
     ref = ref or date.today()
+    if isinstance(publicado, str):
+        try:
+            publicado = date.fromisoformat(publicado[:10])
+        except ValueError:
+            publicado = None
     t = re.sub(r"\s+", " ", sem_acento(str(texto or ""))).lower()
     cands: list[str] = []
     gat = r"\b" + _GATILHO.replace("[cç]", "c").replace("[õo]", "o").replace("[eé]", "e")
@@ -202,12 +224,17 @@ def prazo(texto: str, ref: date | None = None) -> str | None:
         if x:
             cands.append(x)
     meses_rx = "|".join(sorted({sem_acento(k) for k in MESES}, key=len, reverse=True))
+    for m in re.finditer(gat + r"[^0-9]{0,40}?\b(?:de\s+)?\d{1,2}\s*(?:de\s+(?:" + "|".join(sorted({sem_acento(k) for k in MESES}, key=len, reverse=True)) + r")\s*)?(?:a|ate)\s+(\d{1,2})\s*(?:de\s+)?(" + "|".join(sorted({sem_acento(k) for k in MESES}, key=len, reverse=True)) + r")\b(?:\s*(?:de\s+)?(\d{4}))?", t):
+        d, mo = int(m.group(1)), MESES[m.group(2)]          # "de 5 a 19 de outubro": vale o 19
+        x = _data_ok(int(m.group(3)), mo, d, ref) if m.group(3) else _sem_ano(mo, d, ref, publicado)
+        if x:
+            cands.append(x)
     for m in re.finditer(r"\b(?:inscricoes?|prazo|encerra\w*|ate)[^0-9]{0,40}?(\d{1,2})\s*[°o]?\s*(?:de\s+)?(" + meses_rx + r")\b(?:\s*(?:de\s+)?(\d{4}))?", t):
         d, mo = int(m.group(1)), MESES[m.group(2)]
         if m.group(3):
             x = _data_ok(int(m.group(3)), mo, d, ref)
-        else:                                            # "inscrições até 13 de novembro": o próximo 13/11
-            x = next((y for y in (_data_ok(a, mo, d, ref) for a in (ref.year, ref.year + 1)) if y and y >= ref.isoformat()), None)
+        else:                                            # "inscrições até 13 de novembro": o ano da publicação
+            x = _sem_ano(mo, d, ref, publicado)
         if x:
             cands.append(x)
     mon_rx = "|".join(sorted(MONTHS, key=len, reverse=True))
@@ -223,10 +250,9 @@ def prazo(texto: str, ref: date | None = None) -> str | None:
     if not cands:
         for m in re.finditer(r"(?:inscricoes?[^0-9]{0,25}ate|prazo[^0-9]{0,15}|ate)\s*(\d{1,2})/(\d{1,2})(?![/\d])", t):
             d, mo = int(m.group(1)), int(m.group(2))
-            for a in (ref.year, ref.year + 1):
-                x = _data_ok(a, mo, d, ref)
-                if x and x >= ref.isoformat():
-                    cands.append(x); break
+            x = _sem_ano(mo, d, ref, publicado)
+            if x:
+                cands.append(x)
     if not cands:
         return None
     futuras = sorted(c for c in cands if c >= ref.isoformat())

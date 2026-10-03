@@ -169,7 +169,7 @@ def ler_feed(site, rede, est, ctx) -> dict:
             links = X.pagina(frag).links
             texto = X.html_para_texto(frag)
             oficial = X.oficial(link, links, e["titulo"], [host])
-            pz = X.prazo(texto, ctx["hoje"])
+            pz = X.prazo(texto, ctx["hoje"], _data_feed(e["data"]))      # 03/10: sem ano, vale o ano do post
             if site.get("seguir_artigo") and (not oficial or not pz):
                 if gastos >= cota or rede.esgotado():
                     res["pendente"] = True; terminou = False
@@ -179,7 +179,7 @@ def ler_feed(site, rede, est, ctx) -> dict:
                     gastos += 1; res["diag"]["artigos_lidos"] += 1
                     texto = (texto + "\n" + t2)[:60_000]
                     oficial = oficial or X.oficial(link, l2, e["titulo"], [host])
-                    pz = pz or X.prazo(t2, ctx["hoje"])
+                    pz = pz or X.prazo(t2, ctx["hoje"], _data_feed(e["data"]))
                 except Bloqueio as b:
                     if b.tipo == "orcamento":
                         res["pendente"] = True; terminou = False; continue
@@ -264,7 +264,7 @@ def ler_wordpress(site, rede, est, ctx) -> dict:
                     if fa[link] < 3:
                         res["pendente"] = True; maior = desde; continue     # o cursor não avança: o item volta
             vistos[link] = mod
-            res["itens"].append(item(site, ctx, titulo=titulo, pagina=link, link_oficial=oficial, prazo=X.prazo(texto, ctx["hoje"]),
+            res["itens"].append(item(site, ctx, titulo=titulo, pagina=link, link_oficial=oficial, prazo=X.prazo(texto, ctx["hoje"], (p.get("date") or "")[:10]),
                                      valor=X.valor(texto), uf=X.uf(titulo) or X.uf(texto[:2000]), resumo=texto[:300],
                                      publicado=(p.get("date") or "")[:10], texto_perfil=texto[:4000],
                                      financiador=site.get("financiador")))
