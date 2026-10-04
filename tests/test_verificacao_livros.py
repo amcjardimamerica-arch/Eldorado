@@ -43,3 +43,24 @@ class TesteVerificacaoLivros(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteEsteiraReaplica(unittest.TestCase):
+    def test_reaplica_tudo_sem_repetir(self):
+        """04/10: dado apagado por outro fluxo volta na passagem seguinte; tentativas e histórico não se repetem."""
+        from src import esteira as E
+        C = {"motores": [{"id": "L1", "programa": "P", "historico": []}]}
+        cfg = {"doze_dados": ["Objeto", "Valor"]}
+        with tempfile.TemporaryDirectory() as t:
+            res = Path(t) / "r.jsonl"; apl = Path(t) / "a.json"
+            res.write_text(json.dumps({"livro": "L1", "etapa": "prata", "doze": {"Valor": "R$ 10"}, "url_edital": "https://o.gov.br/e",
+                                       "prazo_inscricao_fim": "2026-11-30"}) + "\n", encoding="utf-8")
+            with mock.patch.object(E, "RESULTADOS", res), mock.patch.object(E, "APLICADOS", apl):
+                E.aplicar_resultados(C, cfg, "2026-10-04")
+                x = C["motores"][0]
+                self.assertEqual(x["esteira"]["tentativas_prata"], 1)
+                x["livro"]["checklist"] = {}                                    # outro fluxo regravou o catálogo por cima
+                E.aplicar_resultados(C, cfg, "2026-10-04")
+        self.assertEqual(x["livro"]["checklist"]["Valor"]["v"], "R$ 10")         # o dado voltou
+        self.assertEqual(x["esteira"]["tentativas_prata"], 1)                    # não contou de novo
+        self.assertEqual(len(x["historico"]), 1)                                 # o prazo não se repetiu
