@@ -2,37 +2,6 @@
  "regra": "COMPACTADOR SEM PERDA (titular, 28/09) — documentos grandes e de uso esporádico viram um pacote menor, verificável.\n\n  empacotar(caminhos, nome)   junta os arquivos num .tar.xz (compressão máxima), grava o SHA-256 e o tamanho de\n                              CADA original no manifesto e, antes de devolver, reabre o pacote e confere byte a byte\n                              que cada arquivo volta idêntico. Só então o pacote é considerado bom.\n  transcrever(arquivo)        para HTML e PDF: extrai o texto (uma TRANSCRIÇÃO leve e pesquisável) que fica no\n                              repositório; o original vai inteiro, sem perda, no pacote.\n  restaurar(pacote, destino)  devolve os arquivos originais e confere cada assinatura.\n\nO manifesto (biblioteca_alexandria/arquivo_frio/manifesto.json) diz, para cada pacote: o que tem dentro, as\nassinaturas, o tamanho antes e depois, e ONDE está guardado (Release do GitHub e/ou Google Drive). Nada é apagado\ndo repositório sem pacote verificado e guardado fora dele.",
  "pacotes": [
   {
-   "pacote": "legado-painel-antigo-2026-09-03.tar.xz",
-   "sha256_pacote": "4b8733a5855d3c7b1b8d48cdfe46c8a5bae0404efdd2d4736cbf36168edc2786",
-   "arquivos": 3,
-   "bytes_originais": 175186948,
-   "bytes_pacote": 6804940,
-   "reducao": 0.961,
-   "verificado": true,
-   "criado_em": "2026-09-28",
-   "por_que": "três arquivos publicados no site (171 MB) que o painel não lê desde 03/09: sobras de geradores antigos",
-   "guardado_em": {
-    "release": "https://github.com/amcjardimamerica-arch/Eldorado/releases/download/arquivo-frio-2026-09-28/legado-painel-antigo-2026-09-03.tar.xz"
-   },
-   "conteudo": [
-    {
-     "arquivo": "docs/dados.json",
-     "bytes": 92189243,
-     "sha256": "867c385d5536ec15e739054dd2ba46f39efc00d9a02cad4c4476d19a2e1be640"
-    },
-    {
-     "arquivo": "docs/transparencia.html",
-     "bytes": 71318367,
-     "sha256": "28c7af4a7467c21229c2623cffe7f046a000de4def5df34408e1b001fe05175a"
-    },
-    {
-     "arquivo": "docs/fichas.json",
-     "bytes": 11679338,
-     "sha256": "b659898f192cb5b80f045a45d66192fb05d74edabf87a314ac6f8948cdc998f5"
-    }
-   ]
-  },
-  {
    "pacote": "querido-diario-edicoes-2026-09-28.tar.xz",
    "sha256_pacote": "46b227689e76842b3b96c0912b946c7867e8d6958dd44af34542ef789fded16d",
    "arquivos": 62305,
@@ -49,6 +18,37 @@
     "resumo": "62305 arquivos",
     "lista": "querido-diario-edicoes-2026-09-28.tar.xz.lista.jsonl"
    }
+  },
+  {
+   "pacote": "legado-painel-antigo-2026-09-03.tar.xz",
+   "sha256_pacote": "dc2321d614ba8af618b3ea4596f2ab009c30f004066a30de8269543bce66e7f4",
+   "arquivos": 3,
+   "bytes_originais": 170306749,
+   "bytes_pacote": 6531412,
+   "reducao": 0.962,
+   "verificado": true,
+   "criado_em": "2026-10-04",
+   "por_que": "três arquivos publicados no site (171 MB) que o painel não lê desde 03/09: sobras de geradores antigos",
+   "guardado_em": {
+    "release": "https://github.com/amcjardimamerica-arch/Eldorado/releases/download/arquivo-frio-2026-09-28/legado-painel-antigo-2026-09-03.tar.xz"
+   },
+   "conteudo": [
+    {
+     "arquivo": "docs/dados.json",
+     "bytes": 89585135,
+     "sha256": "f8489eab2c315b703f830b950d29e19959474e7f52df5ab3e48163f3f9f9df02"
+    },
+    {
+     "arquivo": "docs/transparencia.html",
+     "bytes": 69680909,
+     "sha256": "778ac0b44dc171f44fca3c840841487fb0c68dcbc6a1f9ffb9e70b62bbd67f91"
+    },
+    {
+     "arquivo": "docs/fichas.json",
+     "bytes": 11040705,
+     "sha256": "583dcaa70447567571a29b81ad55b9d7b5c9766b93569bec6ab6664fc690c60b"
+    }
+   ]
   }
  ]
 }
