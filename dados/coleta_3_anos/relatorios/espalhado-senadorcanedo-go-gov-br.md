@@ -2,7 +2,7 @@
 
 Órgão: PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC · bloco GO · regime chamamento_publico · selo do livro **bronze** · selo da oportunidade prata
 
-Validação: **serie_confirmada_sem_datas** — SERIE CONFIRMADA SEM DATAS (Busca web e página oficial do financiador, leitura de 03/10/2026): edições anuais de 2025 comprovadas na página oficial, mas as datas de inscrição não foram lidas; previsão de janela só após ler essas datas.
+Validação: **inaplicavel:derivado** — Livro 'espalhado' do órgão PNCP FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC (CNPJ 21832981000103, Senador Canedo). A busca no PNCP (api/search, município Senador Canedo) mostra que os únicos editais do FMEC são os de PNAB: 003, 004 e 005/2024 (publicados em 03 e 04/10/2024) e 001 a 005/2026 (publicados em 09/09/2026), todos já cobertos pelo livro op-721b59fae1e1, que traz as edições 2024 e 2026 lidas nos PDFs. Nenhum edital independente foi encontrado no FMEC.
 
 ## Estudo preditivo
 
@@ -27,6 +27,15 @@ https://senadorcanedo.go.gov.br/ — Prefeitura de Senador Canedo (portal oficia
 - Destinação: catalogo — tipo: Fundo; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
 - Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
 
+## Parecer do livro (leitura documental)
+
+Veredito: **inaplicavel** · livro-mãe: op-721b59fae1e1
+
+Livro derivado de registros do PNCP do FMEC de Senador Canedo, sem edital próprio. Todos os editais do fundo (PNAB 2024 e 2026) estão no livro op-721b59fae1e1, com os 12 itens lidos nos documentos oficiais. Recomendação à AMC: não acompanhar este livro; usar o livro-mãe da PNAB de Senador Canedo.
+
+Inaplicabilidade: Livro 'espalhado' do órgão PNCP FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC (CNPJ 21832981000103, Senador Canedo). A busca no PNCP (api/search, município Senador Canedo) mostra que os únicos editais do FMEC são os de PNAB: 003, 004 e 005/2024 (publicados em 03 e 04/10/2024) e 001 a 005/2026 (publicados em 09/09/2026), todos já cobertos pelo livro op-721b59fae1e1, que traz as edições 2024 e 2026 lidas nos PDFs. Nenhum edital independente foi encontrado no FMEC.
+
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).
@@ -35,7 +44,7 @@ Nenhuma edição anterior comprovada (ver validação).
 - extremamente pessimista: Com 0 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: serie_confirmada_sem_datas. Tratar sem mês típico como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: inaplicavel:derivado. Tratar sem mês típico como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 0 ano(s) (—) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em sem mês típico, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

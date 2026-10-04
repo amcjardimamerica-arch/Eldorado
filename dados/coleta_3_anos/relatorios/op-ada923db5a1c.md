@@ -2,7 +2,7 @@
 
 Órgão: PNCP — FUNDO MUNICIPAL DE SAUDE DE SAO PATRICIO · bloco GO · regime chamamento_publico · selo do livro **bronze** · selo da oportunidade None
 
-Validação: **dispensa_individual:fora_escopo_compra** — Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.
+Validação: **inaplicavel:fora_perfil** — [fora_escopo_compra] Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.
 
 ## Estudo preditivo
 
@@ -15,17 +15,26 @@ https://pncp.gov.br/app/editais/12260233000102/2024/23 — PNCP — FUNDO MUNICI
 ## Os 12 itens consolidados do histórico
 
 - Objeto: catalogo — ABERTURA DE PROCESSO LICITATORIO PARA  CHAMAMENTO PÚBLICO REFERENTE AQUISIÇÃO DE GÊNEROS ALIMENTÍCIOS DA AGRICULTURA FAMILIAR PARA ALIMENTAÇÃO ESCOLAR/PNAE, FME (nome do livro (título do programa))
-- Prazo de inscrição: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
-- Resultado: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
-- Prazo de recurso: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
-- Valor: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
+- Prazo de inscrição: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
 - Órgão / financiador: catalogo — PNCP — FUNDO MUNICIPAL DE SAUDE DE SAO PATRICIO (catálogo do livro)
 - Território: catalogo — Goiás (catálogo do livro (município/UF))
 - Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
-- Requisitos: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
-- Anexos: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
 - Destinação: catalogo — tipo: Chamamento público; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
 - Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
+## Parecer do livro (leitura documental)
+
+Veredito: **inaplicavel**
+
+Livro inaplicável (fora_perfil). Parecer individual: Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo. Sai da conta dos livros de Goiás; se a fonte oficial publicar edital elegível a OSC, o livro-mãe ou um livro novo recebe a série.
+
+Inaplicabilidade: [fora_escopo_compra] Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.
+
 
 ## Edições anteriores e os 12 itens
 
@@ -35,7 +44,7 @@ Nenhuma edição anterior comprovada (ver validação).
 - extremamente pessimista: Com 0 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: dispensa_individual:fora_escopo_compra. Tratar set como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: inaplicavel:fora_perfil. Tratar set como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 0 ano(s) (—) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em set, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

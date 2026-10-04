@@ -56,6 +56,9 @@ def classificar(url: str) -> str:
         for d in c.get(cat, []):
             if h == d or h.endswith("." + d):
                 return cat
+    # arquivo de edital (PDF/DOC/anexo em /wp-content/uploads/AAAA/MM/) é DOCUMENTO, não notícia (leitor documental, 03/10/2026)
+    if re.search(r"\.(pdf|docx?|odt|xlsx?)(\?|#|$)|/wp-content/uploads/", u):
+        return "oficial_possivel"
     # caminho com cara de notícia em qualquer site: /noticias/, /blog/, /2026/09/...
     if re.search(r"/(noticias?|news|blog|artigos?|post|imprensa|clipping)/|/20\d\d/\d\d/", u):
         return "noticia"

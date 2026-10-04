@@ -2,7 +2,7 @@
 
 Órgão: MUNICÍPIO DE GOIANÉSIA, ESTADO DE GOIÁS · bloco GO · regime credenciamento · selo do livro **bronze** · selo da oportunidade prata
 
-Validação: **dispensa_individual:ato_derivado** — Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe.
+Validação: **inaplicavel:derivado** — [ato_derivado] Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe.
 
 ## Estudo preditivo
 
@@ -27,6 +27,15 @@ https://goianesia.go.gov.br/ — Prefeitura de Goianésia (portal oficial do mun
 - Destinação: confirmado — elegível · fomento (estudo do histórico (2026))
 - Área de atuação: confirmado — assistência social / promoção social (estudo do histórico (2026))
 
+## Parecer do livro (leitura documental)
+
+Veredito: **inaplicavel**
+
+Livro inaplicável (derivado). Parecer individual: Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe. Sai da conta dos livros de Goiás; se a fonte oficial publicar edital elegível a OSC, o livro-mãe ou um livro novo recebe a série.
+
+Inaplicabilidade: [ato_derivado] Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe.
+
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).
@@ -35,7 +44,7 @@ Nenhuma edição anterior comprovada (ver validação).
 - extremamente pessimista: Com 0 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: dispensa_individual:ato_derivado. Tratar abr como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: inaplicavel:derivado. Tratar abr como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 0 ano(s) (—) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em abr, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

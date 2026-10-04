@@ -1,56 +1,60 @@
 # PNAB Goiás - Manutenção Continuada de Grupos/Companhias — Goiás
 
-Órgão: Secretaria de Estado da Cultura de Goiás (Secult-GO) · bloco GO · regime chamamento_publico · selo do livro **prata** · selo da oportunidade prata
+Órgão: Secretaria de Estado da Cultura de Goiás (Secult-GO) · bloco GO · regime chamamento_publico · selo do livro **ouro** · selo da oportunidade prata
 
-Validação: **validado_parcial** — há edição anterior comprovada, mas só um ano ou sem datas completas: previsão com confiança média
+Validação: **validado** — recorrência comprovada em 2 ou mais anos com página oficial
 
 ## Estudo preditivo
 
-Mês típico: ago · duração típica: 42 dias · próxima janela: 2027-08 · confiança: media
+Mês típico: jan · duração típica: 42 dias · próxima janela: 2027-01 · confiança: alta
 
-## Site oficial
+## Parecer do livro (leitura documental)
 
-https://goias.gov.br/cultura/pnab/ — Secretaria de Estado da Cultura (Secult-GO) (portal oficial do órgão; verificado: 2026-10-03)
+Veredito: **ouro** · base legal: Lei 14.399/2022 (PNAB)
 
-## Os 12 itens consolidados do histórico
+Série PNAB Goiás - Manutenção Continuada de Grupos/Companhias: edital nº 16/2024 (publicado 01/08/2024, R$ 6,05 mi) e edital nº 2/2026 (inscrições 13/03 a 17/04/2026 pela plataforma Baru, categorias A/B por tempo de existência), da Secretaria de Estado da Cultura. Exige residência no Estado de Goiás há 2 anos (2024) e agente cultural de Goiás (2026); recurso de 3 dias úteis. Recomendação à AMC: acompanhar o ciclo seguinte pelo portal PNAB da Secult e preparar proposta/plano de trabalho com antecedência, conferindo categorias e cotas no PDF da categoria. Observação: leitura feita por extração automática de PDF; confirmar valores e datas no original antes de submeter.
 
-- Objeto: confirmado — PNAB Goiás 2024 — editais por linguagem (edição 2024-08 (já coletada))
-- Prazo de inscrição: confirmado — prorrogado até 20/09/2024 (edição 2024-08 (já coletada))
-- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Valor: confirmado — R$ 45.307.000,00 em 18 editais (edição 2024-08 (já coletada))
-- Órgão / financiador: catalogo — Secretaria de Estado da Cultura de Goiás (Secult-GO) (catálogo do livro)
-- Território: catalogo — Goiás (catálogo do livro (município/UF))
-- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
-- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
-- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
 
 ## Edições anteriores e os 12 itens
+
+### 2024-01 — Edital de Chamamento Público nº 16/2024 - Manutenção de Grupos e Companhias
+Página oficial: https://goias.gov.br/cultura/wp-content/uploads/sites/25/2024/09/Edital-16-Manutencao-de-Grupos-e-Cia-Artisticas.pdf
+
+- Objeto: confirmado — Manutenção continuada de grupos e companhias artísticas (8+ anos)
+- Prazo de inscrição: confirmado — 2024-01-01 a ?
+- Resultado: nao_localizado (Pendência após leitura do documento: ANEXO V (Cronograma) de 2024 não localizado publicado; ver 2026 para o ciclo atual)
+- Prazo de recurso: confirmado — 3 dias úteis
+- Valor: confirmado — R$ 6.050.000,00
+- Órgão / financiador: confirmado — Secretaria de Estado da Cultura de Goiás / Lei PNAB 14.399/2022
+- Território: confirmado — Estado de Goiás
+- Esfera: confirmado — Estadual
+- Requisitos: confirmado — PF maior de 18 anos residente em GO há 2+ anos; PJ, MEI e coletivos com atuação cultural
+- Anexos: confirmado — 8 anexos (I a VIII; V = cronograma)
+- Destinação: confirmado — Manutenção de grupos com no mínimo 8 anos de atividades continuadas
+- Área de atuação: confirmado — Cultura e artes
 
 ### 2024-08 — PNAB Goiás 2024 — editais por linguagem
 Página oficial: https://goias.gov.br/cultura/secult-goias-prorroga-inscricoes-para-os-editais-da-politica-nacional-aldir-blanc/
 
 - Objeto: confirmado — PNAB Goiás 2024 — editais por linguagem
 - Prazo de inscrição: confirmado — prorrogado até 20/09/2024
-- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Resultado: nao_localizado (Pendência após leitura do documento: ANEXO V (Cronograma) de 2024 não localizado publicado; ver 2026 para o ciclo atual)
 - Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: confirmado — R$ 45.307.000,00 em 18 editais
 - Órgão / financiador: catalogo — Secretaria de Estado da Cultura de Goiás (Secult-GO)
 - Território: catalogo — GO
 - Esfera: catalogo — Estado
 - Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
-- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (Pendência após leitura do documento: Edital 2026 só cita 'Anexo I'; lista completa não confirmada no texto lido)
 - Destinação: catalogo — tipo: Edital; público: OSC e associações
 - Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 
-- extremamente pessimista: Com 1 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
+- extremamente pessimista: Com 2 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: Resultado, Prazo de recurso, Requisitos. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: validado_parcial. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: validado. Tratar jan como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 1 ano(s) (2024) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
-- extremamente otimista: Com mês típico em ago, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.
+- extremamente otimista: Com mês típico em jan, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

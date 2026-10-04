@@ -1,31 +1,19 @@
 # TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia — Goiás / Goiânia
 
-Órgão: CNJ — política de destinação de penas e prestações pecuniárias · bloco GO · regime destinacao_judicial · selo do livro **bronze** · selo da oportunidade prata
+Órgão: CNJ — política de destinação de penas e prestações pecuniárias · bloco GO · regime destinacao_judicial · selo do livro **ouro** · selo da oportunidade prata
 
-Validação: **dispensa_individual:judicial** — Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.
+Validação: **validado_regime** — regime permanente documentado: Resolução CNJ 154/2012 (política institucional de destinação de prestações pecuniárias), art. 2º; Resolução Conjunta CNJ/CNMP 10/2024; Código de Normas e Procedimentos da CGJ/GO, art. 257 §3º; Provimentos CGJ-GO 11/2017, 21/2020 e 55/2021.
 
 ## Estudo preditivo
 
-Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
+Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: alta
 
-## Site oficial
+## Parecer do livro (leitura documental)
 
-https://www.cnj.jus.br/ — CNJ — política de destinação de penas e prestações pecuniárias (página registrada do livro (não foi possível confirmar portal próprio); verificado: não)
+Veredito: **ouro_regime** · base legal: Resolução CNJ 154/2012 (política institucional de destinação de prestações pecuniárias), art. 2º; Resolução Conjunta CNJ/CNMP 10/2024; Código de Normas e Procedimentos da CGJ/GO, art. 257 §3º; Provimentos CGJ-GO 11/2017, 21/2020 e 55/2021.
 
-## Os 12 itens consolidados do histórico
+Regime judicial permanente: prestações pecuniárias (Res. CNJ 154/2012) destinadas a projetos por edital da execução penal de Goiânia, comprovado em 2020, 2023 e 2024 (documento lido em 2024). Valor é o saldo da conta judicial, não fixo; prazo de execução 12 meses; exige 3 orçamentos. Risco: o edital aponta o juízo como decisor; a Res. Conjunta CNJ/CNMP 10/2024 rege prestação de contas. Recomendação à AMC: cadastrar a entidade e monitorar o TJGO a cada início de ano.
 
-- Objeto: catalogo — TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia (nome do livro (título do programa))
-- Prazo de inscrição: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
-- Resultado: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
-- Prazo de recurso: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
-- Valor: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
-- Órgão / financiador: catalogo — CNJ — política de destinação de penas e prestações pecuniárias (catálogo do livro)
-- Território: catalogo — Goiânia (catálogo do livro (município/UF))
-- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
-- Requisitos: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
-- Anexos: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
-- Destinação: catalogo — tipo: Destinação judicial; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
-- Área de atuação: catalogo — Geral (catálogo do livro (área do objeto))
 
 ## Edições anteriores e os 12 itens
 
@@ -35,7 +23,7 @@ Nenhuma edição anterior comprovada (ver validação).
 - extremamente pessimista: Com 0 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: dispensa_individual:judicial. Tratar sem mês típico como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: validado_regime. Tratar sem mês típico como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 0 ano(s) (—) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em sem mês típico, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

@@ -23,6 +23,7 @@ Uma por família de fonte + duas comuns; o vínculo motor → skill fica em conf
 - **motores/empresas** — Ler sites empresariais e buscar linhas de captação de empresas, mesmo sem publicação.
 - **motores/pilotos** — Pilotos (Espião e Interceptador): buscar oportunidades FORA dos canais e confirmar na fonte oficial.
 - **comum/linha_producao** — Contrato comum da linha de produção: o que todo canal entrega e o que nunca pode acontecer.
+- **comum/leitor_documental** — Abrir o site oficial e os arquivos do edital e extrair os 12 itens do documento; notícia é só indício (03/10/2026).
 - **comum/plano_correcao** — Roteiro dos planos de correção: diagnosticar o canal e aplicar o plano previsto no fluxograma.
 
 ## Esteira de selos (02/10/2026)

@@ -2,7 +2,7 @@
 
 Órgão: Prefeitura de Anápolis · bloco GO · regime chamamento_publico · selo do livro **prata** · selo da oportunidade prata
 
-Validação: **validado_parcial** — há edição anterior comprovada, mas só um ano ou sem datas completas: previsão com confiança média
+Validação: **inaplicavel:fora_perfil** — Programação cultural gratuita da Prefeitura (espetáculos no Teatro Municipal); não é edital nem chamamento. Trecho da página oficial: 'O evento será realizado na próxima quarta-feira (04), no Teatro Municipal, a partir das 19h. A entrada é gratuita, sujeita a lotação do espaço.'
 
 ## Estudo preditivo
 
@@ -27,6 +27,15 @@ https://anapolis.go.gov.br/ — Prefeitura de Anápolis (portal oficial do munic
 - Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
 - Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
 
+## Parecer do livro (leitura documental)
+
+Veredito: **inaplicavel**
+
+A Quarta Cultural é uma agenda recorrente de apresentações no Teatro Municipal de Anápolis (dezenas de edições semanais em 2025 e 2026, conforme o arquivo de notícias do site oficial). A edição de 04/06/2025 apresentou o show 'Vibrante Feminina' e o espetáculo 'A Dança dos Ciclos', e menciona só que a Cia Corá foi contemplada em outro edital (PNAB Goiás 2024). Não há inscrição de proponentes, valor, prazo nem regra de seleção, portanto não existe documento de edital a ler. Recomendação à AMC: tratar como agenda cultural de divulgação, não como oportunidade de captação.
+
+Inaplicabilidade: Programação cultural gratuita da Prefeitura (espetáculos no Teatro Municipal); não é edital nem chamamento. Trecho da página oficial: 'O evento será realizado na próxima quarta-feira (04), no Teatro Municipal, a partir das 19h. A entrada é gratuita, sujeita a lotação do espaço.'
+
+
 ## Edições anteriores e os 12 itens
 
 ### 2025-06 — Anápolis — Quarta Cultural abre junho com música e dança no Teatro Municipal
@@ -50,7 +59,7 @@ Página oficial: https://www.anapolis.go.gov.br/quarta-cultural-abre-junho-com-m
 - extremamente pessimista: Com 1 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: Resultado, Prazo de recurso, Valor. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: validado_parcial. Tratar jun como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: inaplicavel:fora_perfil. Tratar jun como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 1 ano(s) (2025) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em jun, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

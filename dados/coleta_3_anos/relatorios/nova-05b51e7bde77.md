@@ -2,7 +2,7 @@
 
 Órgão: Secult Goiás — Goyazes e Aldir Blanc · bloco GO · regime incentivo_fiscal · selo do livro **bronze** · selo da oportunidade prata
 
-Validação: **dispensa_individual:regime_incentivo_fiscal** — Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.
+Validação: **inaplicavel:fora_perfil** — Edital Arranjos Regionais FSA 2026 da Secult-GO: 'dois editais do programa Arranjos Regionais FSA, com investimento de R$ 30 milhões do Fundo Setorial do Audiovisual (FSA) ... produção de longas-metragens e obras seriadas para TV/VOD' e comercialização de longas-metragens: setor audiovisual, empresas produtoras, fora do perfil de OSC da AMC.
 
 ## Estudo preditivo
 
@@ -15,17 +15,26 @@ https://goias.gov.br/cultura/ — Secretaria de Estado da Cultura (Secult-GO) (p
 ## Os 12 itens consolidados do histórico
 
 - Objeto: catalogo — Edital Arranjos Regionais (nome do livro (título do programa))
-- Prazo de inscrição: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
-- Resultado: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
-- Prazo de recurso: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
-- Valor: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
+- Prazo de inscrição: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
 - Órgão / financiador: catalogo — Secult Goiás — Goyazes e Aldir Blanc (catálogo do livro)
 - Território: catalogo — Goiás (catálogo do livro (município/UF))
 - Esfera: catalogo — Brasil (catálogo do livro (esfera/abrangência/órgão))
-- Requisitos: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
-- Anexos: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
 - Destinação: catalogo — tipo: Incentivo fiscal; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
 - Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
+## Parecer do livro (leitura documental)
+
+Veredito: **inaplicavel**
+
+Programa de fomento audiovisual (Arranjos Regionais FSA, MinC/FSA/BRDE) com 22 projetos e R$ 30 milhões, edição Goiás 2026, lido na página oficial da Secult. Destina-se a produtoras e obras audiovisuais, e não a projetos sociais de associações do terceiro setor; o título 'regime de incentivo fiscal' no triagem não se confirma, pois o recurso é do Fundo Setorial do Audiovisual. Recomendação à AMC: ignorar, salvo entidade com projeto audiovisual cultural.
+
+Inaplicabilidade: Edital Arranjos Regionais FSA 2026 da Secult-GO: 'dois editais do programa Arranjos Regionais FSA, com investimento de R$ 30 milhões do Fundo Setorial do Audiovisual (FSA) ... produção de longas-metragens e obras seriadas para TV/VOD' e comercialização de longas-metragens: setor audiovisual, empresas produtoras, fora do perfil de OSC da AMC.
+
 
 ## Edições anteriores e os 12 itens
 
@@ -35,7 +44,7 @@ Nenhuma edição anterior comprovada (ver validação).
 - extremamente pessimista: Com 0 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: dispensa_individual:regime_incentivo_fiscal. Tratar set como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: inaplicavel:fora_perfil. Tratar set como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 0 ano(s) (—) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em set, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.
