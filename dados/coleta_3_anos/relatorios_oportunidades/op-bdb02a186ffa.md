@@ -1,0 +1,53 @@
+# MUNICIPIO DE CASTELO — Credenciamento de cooperativas e associações que estejam legalmente habilitadas para Coleta Seletiva de resíduos recicláveis, classificad
+
+- **Identificador:** `op-bdb02a186ffa` · **Órgão/financiador:** MUNICIPIO DE CASTELO
+- **Decisão:** V (edital vigente) · **Validação dos 12 pontos:** parcial
+- **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
+- **Página oficial usada:** https://pncp.gov.br/app/editais/27165638000139/2026/241
+
+**Serve para uma OSC de Goiás?** depende — É contratação de serviço de município fora de Goiás (Castelo/ES); exige sede/atuação local, regularidade e habilitação do edital.
+
+## Decisão e motivo
+
+Credenciamento com prazo final >= 03/10/2026, dirigido a entidades do tipo OSC (associações/cooperativas ou pessoas jurídicas com ou sem fins lucrativos).
+
+## Os 12 pontos
+
+| Ponto | Situação | Conteúdo / motivo |
+|---|---|---|
+| Objeto | confirmado | Credenciamento de cooperativas e associações para coleta seletiva de resíduos recicláveis do município |
+| Prazo de inscrição | confirmado | Abertura 2027-07-23; encerramento 2027-07-23 (credenciamento aberto durante o período) |
+| Resultado | não informado no edital | Dado da API do PNCP não traz data de resultado; credenciamento é de fluxo contínuo; edital integral não lido. |
+| Prazo de recurso | não localizado | Não consta na API do PNCP; edital integral não lido. |
+| Valor | confirmado | R$ 43200 |
+| Órgão / financiador | confirmado | Prefeitura Municipal de Castelo/ES |
+| Território | confirmado | Castelo/ES |
+| Esfera | confirmado | Municipal |
+| Requisitos | não localizado | Edital/anexos em PDF não lidos; só a API pública do PNCP foi consultada (requisitos). |
+| Anexos | confirmado | Edital (CREDENCIAMENTO 004 2026), 1 documento no PNCP |
+| Destinação | confirmado | Pagamento por serviço prestado mediante credenciamento (Lei 14.133/2021, art. 79), não é transferência de fomento |
+| Área de atuação | confirmado | Resíduos sólidos / coleta seletiva e inclusão socioprodutiva |
+
+## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
+
+Nenhuma edição anterior comprovada em página oficial.
+
+## Estudo preditivo
+
+- **Mês típico:** sem base
+- **Duração típica (dias):** sem base
+- **Próxima janela:** sem base para prever
+- **Confiança:** baixa
+- **Base:** sem edição anterior comprovada em página oficial: não há base para prever
+- **Calculado por:** script
+
+## O que ainda precisa ser conferido
+
+- **Prazo de recurso:** Não consta na API do PNCP; edital integral não lido.
+- **Requisitos:** Edital/anexos em PDF não lidos; só a API pública do PNCP foi consultada (requisitos).
+
+## Observações da pesquisa
+
+Castelo/ES; credenciamento aberto até 2027-07-23. Dados da API pública do PNCP; edital integral não lido. Atenção: PNCP traz abertura e encerramento no mesmo dia (2027-07-23), possível erro de digitação do órgão; confirmar no edital. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF.
+
+_Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

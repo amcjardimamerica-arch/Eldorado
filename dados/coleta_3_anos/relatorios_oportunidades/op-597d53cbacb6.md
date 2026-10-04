@@ -1,0 +1,59 @@
+# MUNICIPIO DE PALMEIRA DOS INDIOS — CREDENCIAMENTO DE CARÁTER PERMANENTE DAS ORGANIZAÇÕES DA SOCIEDADE CIVIL – OSC, na forma estabelecida neste Edital, com o obj
+
+- **Identificador:** `op-597d53cbacb6` · **Órgão/financiador:** MUNICIPIO DE PALMEIRA DOS INDIOS
+- **Decisão:** V (edital vigente) · **Validação dos 12 pontos:** parcial
+- **Selo estimado do livro:** prata — unico: edição anterior a 2026 em um só ano ([2025])
+- **Página oficial usada:** https://pncp.gov.br/app/editais/12356879000198/2025/58
+
+**Serve para uma OSC de Goiás?** sim — Município fora de Goiás; OSC goiana pode ter restrição de sede/atuação territorial no edital
+
+## Decisão e motivo
+
+Edital/credenciamento aberto no PNCP com encerramento de proposta em 2027-05-20 (>= 03/10/2026).
+
+## Os 12 pontos
+
+| Ponto | Situação | Conteúdo / motivo |
+|---|---|---|
+| Objeto | confirmado | Credenciamento de caráter permanente de OSC para firmar possíveis e futuras parcerias técnicas e operacionais em atividades culturais, artísticas e sociais, festejos, promoção e educação cultural e patrimônio |
+| Prazo de inscrição | confirmado | 2025-05-20 a 2027-05-20 (proposta, conforme API PNCP) |
+| Resultado | não localizado | Resultado/homologação não consta nos metadados da API; edital em PDF não lido |
+| Prazo de recurso | não localizado | Não consta nos metadados da API; texto integral do edital (PDF) não lido nesta coleta |
+| Valor | confirmado | R$ 200.000,00 (estimado, API PNCP) |
+| Órgão / financiador | confirmado | Município — Palmeira dos Índios/AL |
+| Território | confirmado | Palmeira dos Índios/AL |
+| Esfera | confirmado | Municipal |
+| Requisitos | não localizado | Requisitos do edital (PDF) não lidos; só metadados via API PNCP |
+| Anexos | não localizado | Anexos/PDF do edital não lidos; só metadados da API PNCP |
+| Destinação | confirmado | Parceria da Administração municipal com OSC (Lei 13.019/2014) |
+| Área de atuação | confirmado | Cultura, arte, festejos e ação social |
+
+## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
+
+| Ano | Edição | Abertura | Encerramento | Valor | Prova | Página oficial |
+|---|---|---|---|---|---|---|
+| 2025 | Credenciamento permanente de OSC – Palmeira dos Índios 58/2025 | 2025-05-20 | 2027-05-20 | R$ 200.000,00 (estimado, API PNCP) | resumo | https://pncp.gov.br/app/editais/12356879000198/2025/58 |
+
+## Estudo preditivo
+
+- **Mês típico:** sem base
+- **Duração típica (dias):** sem base
+- **Próxima janela:** sem base para prever
+- **Confiança:** baixa
+- **Base:** sem edição anterior comprovada em página oficial: não há base para prever
+- **Calculado por:** script
+
+## O que ainda precisa ser conferido
+
+- **Resultado:** Resultado/homologação não consta nos metadados da API; edital em PDF não lido
+- **Prazo de recurso:** Não consta nos metadados da API; texto integral do edital (PDF) não lido nesta coleta
+- **Requisitos:** Requisitos do edital (PDF) não lidos; só metadados via API PNCP
+- **Anexos:** Anexos/PDF do edital não lidos; só metadados da API PNCP
+
+## Observações da pesquisa
+
+Dados obtidos da API pública PNCP (consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq}), somente leitura. Texto integral do edital não lido. Mesmo edital do item op-79b6e875580f. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF.
+
+Mesma pesquisa dos livros: op-79b6e875580f
+
+_Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

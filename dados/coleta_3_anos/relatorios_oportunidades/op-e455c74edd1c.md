@@ -1,0 +1,57 @@
+# Rede Memória Viva abre edital para fortalecer afroturismo e cultura negra
+
+- **Identificador:** `op-e455c74edd1c` · **Órgão/financiador:** 
+- **Decisão:** V (edital vigente) · **Validação dos 12 pontos:** parcial
+- **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
+- **Página oficial usada:** https://vivapequenaafrica.com/rede-memoria-viva-inscricoes-organizacoes-culturais/
+
+**Serve para uma OSC de Goiás?** depende — Aberto a OSC de qualquer UF, mas exige atuação com memória/cultura afro-brasileira e inscrição via Prosas; prazo acaba em 05/10/2026.
+
+## Decisão e motivo
+
+Inscrições até 05/10/2026 (>= 03/10/2026); OSCs; resultado em 22/10/2026.
+
+## Os 12 pontos
+
+| Ponto | Situação | Conteúdo / motivo |
+|---|---|---|
+| Objeto | confirmado | Selecionar organizações para compor a Rede Memória Viva (rede nacional de cooperação para memória e herança africana e afro-brasileira); 4 recebem apoio a projetos técnico-conceituais (arquitetura, interpretação do patrimônio, museologia) |
+| Prazo de inscrição | confirmado | 3 de agosto a 5 de outubro de 2026, pela plataforma Prosas |
+| Resultado | confirmado | 22 de outubro de 2026 (divulgação das organizações selecionadas) |
+| Prazo de recurso | não localizado | edital completo está no Prosas e não foi lido |
+| Valor | não informado no edital | a página oficial não informa valor; apoio é técnico (projetos técnico-conceituais) |
+| Órgão / financiador | confirmado | Consórcio Viva Pequena África (CEAP, Diaspora.Black e Feira Preta), com apoio do BNDES |
+| Território | confirmado | Brasil |
+| Esfera | confirmado | Privada com apoio de banco público (BNDES) |
+| Requisitos | confirmado | Organizações da sociedade civil que atuem na preservação e valorização da memória, cultura e herança africana e afro-brasileira (museus comunitários, centros culturais, quilombos, comunidades tradicionais, roteiros de memória) |
+| Anexos | não localizado | documentos obrigatórios estão no edital no Prosas, não lido |
+| Destinação | confirmado | Participação em rede e apoio técnico a 4 iniciativas (sem repasse informado) |
+| Área de atuação | confirmado | Cultura / patrimônio / afroturismo |
+
+## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
+
+| Ano | Edição | Abertura | Encerramento | Valor | Prova | Página oficial |
+|---|---|---|---|---|---|---|
+| 2026 | Edital Rede Memória Viva | 2026-08-03 | 2026-10-05 | — | literal | https://vivapequenaafrica.com/rede-memoria-viva-inscricoes-organizacoes-culturais/ |
+
+## Estudo preditivo
+
+- **Mês típico:** ago–out
+- **Duração típica (dias):** 63
+- **Próxima janela:** sem base para prever
+- **Confiança:** baixa
+- **Base:** Primeira edição localizada; sem histórico.
+- **Calculado por:** agente (leitura da fonte)
+
+## O que ainda precisa ser conferido
+
+- **Prazo de recurso:** edital completo está no Prosas e não foi lido
+- **Anexos:** documentos obrigatórios estão no edital no Prosas, não lido
+
+## Observações da pesquisa
+
+Mesmo edital dos outros livros Rede Memória Viva do lote (agregadores/imprensa); fonte oficial lida: site Viva Pequena África. Edital completo no Prosas não lido.
+
+Mesma pesquisa dos livros: op-ea890a898b0a, op-edd38c624f34, op-1774cb83232d
+
+_Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

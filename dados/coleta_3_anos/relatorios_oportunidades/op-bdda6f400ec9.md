@@ -1,0 +1,56 @@
+# iFood Chega Junto – 2ª edição
+
+- **Identificador:** `op-bdda6f400ec9` · **Órgão/financiador:** iFood
+- **Decisão:** A (última edição encerrada (histórico)) · **Validação dos 12 pontos:** parcial
+- **Selo estimado do livro:** prata — unico: edição anterior a 2026 em um só ano ([2025])
+- **Página oficial usada:** https://entregador.ifood.com.br/programa-de-incentivo-ifood-chega-junto/
+
+**Serve para uma OSC de Goiás?** depende — Aceita OSC sem fins lucrativos, mas o projeto deve beneficiar entregadores do iFood ou famílias; quatro chamadas já encerradas.
+
+## Decisão e motivo
+
+As quatro chamadas da 2ª edição estão encerradas (4ª: 29/06 a 03/08/2026; resultado 14/09/2026).
+
+## Os 12 pontos
+
+| Ponto | Situação | Conteúdo / motivo |
+|---|---|---|
+| Objeto | confirmado | Investimento em soluções de inovação social que melhorem a vida de entregadores e suas comunidades (2ª edição, quatro chamadas, jun/2025 a fim de 2026) |
+| Prazo de inscrição | confirmado | 1ª 17/07–08/09/2025; 2ª 20/10–30/11/2025; 3ª 30/03–04/05/2026; 4ª 29/06–03/08/2026 (todas encerradas) |
+| Resultado | confirmado | 4ª chamada: 14/09/2026 (divulgação de aprovados) |
+| Prazo de recurso | não informado no edital | Página resumo não traz prazo de recurso; edital PDF não lido. |
+| Valor | confirmado | R$ 10 milhões no total do programa |
+| Órgão / financiador | confirmado | iFood |
+| Território | confirmado | Brasil (ações em todas as regiões) |
+| Esfera | confirmado | Privada |
+| Requisitos | confirmado | PJ sem fins lucrativos com experiência em um dos eixos e formalização há mais de 3 meses; beneficiários devem ser entregadores ou suas famílias; 1 projeto por chamada |
+| Anexos | não localizado | Documentos estão no edital completo (PDF), não lido. |
+| Destinação | confirmado | Financiamento direto de projetos selecionados |
+| Área de atuação | confirmado | Saúde e bem-estar; segurança viária; empoderamento e inclusão produtiva; renda e inclusão financeira; meio ambiente |
+
+## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
+
+| Ano | Edição | Abertura | Encerramento | Valor | Prova | Página oficial |
+|---|---|---|---|---|---|---|
+| 2025 | iFood Chega Junto - 2ª edição (4 chamadas) | 2025-07-17 | 2026-08-03 | R$ 10 milhões | literal | https://entregador.ifood.com.br/programa-de-incentivo-ifood-chega-junto/ |
+
+## Estudo preditivo
+
+- **Mês típico:** jun–set
+- **Duração típica (dias):** 45
+- **Próxima janela:** sem base para prever
+- **Confiança:** baixa
+- **Base:** Edição 2 encerrou com a 4ª chamada em 03/08/2026; página não anuncia 3ª edição.
+- **Calculado por:** agente (leitura da fonte)
+
+## O que ainda precisa ser conferido
+
+- **Anexos:** Documentos estão no edital completo (PDF), não lido.
+
+## Observações da pesquisa
+
+Lido via Chrome (WebFetch 403).
+
+Mesma pesquisa dos livros: op-067bb76f97c8
+
+_Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._
