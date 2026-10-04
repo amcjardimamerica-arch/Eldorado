@@ -136,18 +136,29 @@ def aplicar_resultados(C: dict, cfg: dict, hoje: str) -> dict:
     """Aplica o que voltou do computador do titular (bronze: site oficial; prata: edital, prazos, 12 dados)."""
     if not RESULTADOS.exists():
         return {"aplicados": 0}
-    feito = _j(APLICADOS, {"linhas": 0}); linhas = RESULTADOS.read_text(encoding="utf-8").splitlines()
+    # 04/10 (titular): REAPLICA TODAS AS LINHAS em toda passagem (a aplicação é idempotente). Antes um contador marcava
+    # "N linhas aplicadas" — quando outro fluxo regravava o catálogo inteiro por cima (versão sem os dados), o contador já
+    # dizia "aplicado" e os dados se perdiam em silêncio (ex.: os 12 critérios do captacao-240). Vale a linha MAIS RECENTE
+    # de cada (livro, etapa); o histórico não se repete.
+    linhas = RESULTADOS.read_text(encoding="utf-8").splitlines()
     por_id = {x.get("id"): x for x in C.get("motores") or []}
     n = Counter()
-    for l in linhas[int(feito.get("linhas") or 0):]:
+    ultima: dict = {}
+    for l in linhas:
         try:
-            r = json.loads(l)
+            r0 = json.loads(l)
         except ValueError:
             continue
+        ultima[(r0.get("livro"), r0.get("etapa"))] = r0
+    for r in ultima.values():
         x = por_id.get(r.get("livro"))
         if not x:
             continue
         e = x.setdefault("esteira", {})
+        _sig = hashlib.sha1(json.dumps(r, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:12]
+        nova = _sig not in (e.get("linhas_aplicadas") or [])           # tentativas só contam para linha NOVA
+        e["linhas_aplicadas"] = ((e.get("linhas_aplicadas") or []) + ([_sig] if nova else []))[-20:]
+        n["linhas_novas" if nova else "linhas_reaplicadas"] += 1
         # 03/10 (titular): EDIÇÕES ANTERIORES trazidas pela verificação dos livros — alimentam a análise preditiva
         # (meses e valores em que o programa abriu). Entram no histórico sem repetir (mesma página e mesmo fim).
         for ed in (r.get("edicoes") or [])[:30]:
@@ -173,7 +184,8 @@ def aplicar_resultados(C: dict, cfg: dict, hoje: str) -> dict:
                     e["url_edital"] = r["url_edital"]
                 n["bronze_confirmados"] += 1
             else:
-                e["tentativas_bronze"] = int(e.get("tentativas_bronze") or 0) + 1; n["bronze_sem_sucesso"] += 1
+                if nova:
+                    e["tentativas_bronze"] = int(e.get("tentativas_bronze") or 0) + 1; n["bronze_sem_sucesso"] += 1
         elif r.get("etapa") == "prata":
             ck = x.setdefault("livro", {}).setdefault("checklist", {})
             for item, v in (r.get("doze") or {}).items():
@@ -181,12 +193,14 @@ def aplicar_resultados(C: dict, cfg: dict, hoje: str) -> dict:
                     ck[item] = {"v": str(v)[:300], "de": f"esteira prata ({r.get('modelo')})", "em": hoje}
             for item, motivo in (r.get("dispensas") or {}).items():
                 x.setdefault("checklist12", {})[item] = {"s": "disp", "v": str(motivo)[:200], "de": "esteira prata"}
-            if r.get("prazo_inscricao_fim"):
-                x.setdefault("historico", []).append({"id": "prata-" + hashlib.sha1(str(r.get("url_edital")).encode()).hexdigest()[:8],
+            _hid = "prata-" + hashlib.sha1(str(r.get("url_edital")).encode()).hexdigest()[:8]
+            if r.get("prazo_inscricao_fim") and not any(isinstance(h, dict) and h.get("id") == _hid for h in x.get("historico") or []):
+                x.setdefault("historico", []).append({"id": _hid,
                                                       "titulo": x.get("programa"), "fim": r["prazo_inscricao_fim"], "inicio": r.get("prazo_inscricao_inicio"),
                                                       "pagina_oficial": r.get("url_edital") or e.get("site_oficial"), "origem": "esteira prata", "visto_em": hoje})
             if not r.get("edital_validado"):
-                e["tentativas_prata"] = int(e.get("tentativas_prata") or 0) + 1; n["prata_sem_validacao"] += 1
+                if nova:
+                    e["tentativas_prata"] = int(e.get("tentativas_prata") or 0) + 1; n["prata_sem_validacao"] += 1
             else:
                 n["prata_validados"] += 1
     APLICADOS.parent.mkdir(parents=True, exist_ok=True)
