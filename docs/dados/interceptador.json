@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-04T22:34:01+00:00",
+  "em": "2026-10-04T22:47:04+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-04T22:18:28+00:00",
+  "ultimo_voo": "2026-10-04T22:36:57+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,89 @@
     "empresas sem ficha": 118
   },
   "acumulado": {
-    "missoes": 314,
+    "missoes": 315,
     "validadas": 3,
     "parciais": 83,
-    "insuficientes": 228,
+    "insuficientes": 229,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 49,
-      "sim": 207
+      "sim": 208
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
     "tempo_medio_min": 12.3
   },
   "missoes": [
+    {
+      "em": "2026-10-04T22:36:57+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Projeto de segurança alimentar comunitária — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://agencia.go.gov.br/especial/governo-de-goias-investe-r-11-bilhao-em-programas-sociais/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O projeto mencionado está alinhado com ações de segurança alimentar e programas sociais, que são relevantes para a AMC.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar com os programas sociais para os mais vulneráveis e demonstrar sua capacidade de implementar ações de segurança alimentar em sua região.",
+        "proximo_passo": "Consultar os editais oficiais do Governo de Goiás para obter informações detalhadas sobre o processo de inscrição e requisitos específicos.",
+        "risco": "A falta de informações sobre prazo de inscrição e requisitos pode impedir a associação de se candidatar adequadamente ao edital."
+      },
+      "erro": null,
+      "segundos": 606,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 5,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-captacao-111",
+      "encontrou": {
+        "Objeto": {
+          "valor": "programas sociais para os mais vulneráveis",
+          "trecho": "Governo de Goiás realiza investimentos da ordem de R$ 1,1 bilhão em programas sociais para a parcela mais vulnerável da população nos 246 municípios do Estado.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 1,1 bilhão",
+          "trecho": "Governo de Goiás realiza investimentos da ordem de R$ 1,1 bilhão em programas sociais para a parcela mais vulnerável da população nos 246 municípios do Estado.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Governo de Goiás",
+          "trecho": "Governo de Goiás realiza investimentos da ordem de R$ 1,1 bilhão em programas sociais para a parcela mais vulnerável da população nos 246 municípios do Estado.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Governo de Goiás realiza investimentos da ordem de R$ 1,1 bilhão em programas sociais para a parcela mais vulnerável da população nos 246 municípios do Estado.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Ministério dos Direitos Humanos e da Cidadania",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador"
+      ]
+    },
     {
       "em": "2026-10-04T22:18:28+00:00",
       "modo": "validar",
@@ -2408,33 +2476,6 @@
       "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
       "avaliacao": "falhou: o modelo não devolveu JSON",
       "id": "op-op-fd2a7afdda1a",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-10-04T11:16:50+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Edital nº 2/2023 - longa documentário - lei paulo gustavo — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "o modelo não devolveu JSON",
-      "segundos": 1056,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: o modelo não devolveu JSON",
-      "id": "op-op-0e4e4f549fd4",
       "encontrou": {},
       "financiador": null,
       "indicios": [],
