@@ -1,13 +1,13 @@
 {
- "em": "2026-10-04T02:02:08+00:00",
+ "em": "2026-10-04T05:48:39+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
   "coletados": 17917,
   "oportunidades_distintas": 2083,
   "entidades_em_2_ou_mais_canais": 14,
   "etapas": {
-   "CONSOLIDADO": 17216,
-   "EM_LIVRO": 576,
+   "CONSOLIDADO": 17220,
+   "EM_LIVRO": 572,
    "REPROCESSAR": 86,
    "QUALIFICADO": 39
   },
@@ -46,7 +46,7 @@
    "entidades": 1387,
    "exclusivas": 1384,
    "corroboradas": 3,
-   "validadas_como_reais": 120
+   "validadas_como_reais": 121
   },
   {
    "canal": "pncp-api",
@@ -55,7 +55,7 @@
    "entidades": 433,
    "exclusivas": 432,
    "corroboradas": 1,
-   "validadas_como_reais": 34
+   "validadas_como_reais": 108
   },
   {
    "canal": "piloto-aberto",
@@ -175,9 +175,27 @@
    "validadas_como_reais": 1
   },
   {
+   "canal": "f260-captacao-237",
+   "familia": "orgao_publico",
+   "registros": 3,
+   "entidades": 3,
+   "exclusivas": 3,
+   "corroboradas": 0,
+   "validadas_como_reais": 1
+  },
+  {
    "canal": "bndes-social",
    "familia": "orgao_publico",
    "registros": 4,
+   "entidades": 2,
+   "exclusivas": 2,
+   "corroboradas": 0,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "f260-curadoria-006",
+   "familia": "orgao_publico",
+   "registros": 2,
    "entidades": 2,
    "exclusivas": 2,
    "corroboradas": 0,
@@ -283,15 +301,6 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "f260-captacao-237",
-   "familia": "orgao_publico",
-   "registros": 3,
-   "entidades": 3,
-   "exclusivas": 3,
-   "corroboradas": 0,
-   "validadas_como_reais": 0
-  },
-  {
    "canal": "secult-go",
    "familia": "outros",
    "registros": 3,
@@ -329,15 +338,6 @@
   },
   {
    "canal": "f260-curadoria-001",
-   "familia": "orgao_publico",
-   "registros": 2,
-   "entidades": 2,
-   "exclusivas": 2,
-   "corroboradas": 0,
-   "validadas_como_reais": 0
-  },
-  {
-   "canal": "f260-curadoria-006",
    "familia": "orgao_publico",
    "registros": 2,
    "entidades": 2,
@@ -556,5 +556,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 0
+ "eventos_no_livro_razao": 4
 }
