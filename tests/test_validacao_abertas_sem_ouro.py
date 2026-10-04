@@ -9,11 +9,18 @@ class TesteEntrada(unittest.TestCase):
     def test_sem_pendente(self):              # "pendente" substituiria uma validação anterior melhor
         self.assertFalse([x for x in V["itens"] if x["decisao"] == "pendente"])
 
-    def test_sem_ponto_nao_lido(self):         # "não lido nesta rodada" apagaria um ponto já confirmado
-        self.assertFalse([k for x in V["itens"] for k, v in (x.get("doze_itens") or {}).items() if v.get("status") == "não localizado"
-                          and not str(v.get("fundamento") or "").strip() and x.get("via", "").startswith("validação das abertas") and False])
-        novos = [v for x in V["itens"] for v in (x.get("doze_itens") or {}).values() if v.get("status") == "não localizado"]
-        self.assertTrue(all("não localizado" == v["status"] for v in novos))   # só os herdados das validações anteriores
+    def test_sem_ponto_nao_lido(self):         # "não lido nesta rodada" não pode entrar: só herdado das validações anteriores
+        import glob
+        ant = {}
+        for f in sorted(glob.glob(str(ROOT / "dados/oportunidades/validacao_mapa/validacao_*.json"))):
+            if f.endswith("sem-ouro.json"):
+                continue
+            for x in json.loads(Path(f).read_text(encoding="utf-8")).get("itens") or []:
+                ant.setdefault(x["id"], {}).update(x.get("doze_itens") or {})
+        for x in V["itens"]:
+            for k, v in (x.get("doze_itens") or {}).items():
+                if v.get("status") == "não localizado":
+                    self.assertEqual(v, ant.get(x["id"], {}).get(k), (x["id"], k))
 
     def test_sem_injecao(self):
         self.assertFalse([x for x in V["itens"] if x.get("injecao")])
