@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-04T14:14:24+00:00",
+  "em": "2026-10-04T14:30:06+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-04T14:01:56+00:00",
+  "ultimo_voo": "2026-10-04T14:17:32+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,88 @@
     "empresas sem ficha": 116
   },
   "acumulado": {
-    "missoes": 285,
+    "missoes": 286,
     "validadas": 3,
-    "parciais": 72,
+    "parciais": 73,
     "insuficientes": 210,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 46,
-      "sim": 184
+      "sim": 185
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
     "tempo_medio_min": 12.1
   },
   "missoes": [
+    {
+      "em": "2026-10-04T14:17:32+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Edital seleciona entidades sociais de Goiás para receber recursos de penas pecuniárias — Goiás",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://atos.cnj.jus.br/jurisprudencia",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprova que entidades sociais em Goiás podem receber recursos de penas pecuniárias através do CNJ, sendo válido para a AMC.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital, apresentando os documentos necessários conforme os anexos, e demonstrar sua atuação em áreas como assistência social, cultura, educação ou esporte.",
+        "proximo_passo": "Verificar os anexos do edital para compreender os requisitos e documentos necessários para inscrição.",
+        "risco": "A falta de informações sobre prazo de inscrição e requisitos específicos pode impedir a participação da AMC no processo."
+      },
+      "erro": null,
+      "segundos": 752,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 1,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "op-op-a89e958cbd8b",
+      "encontrou": {
+        "Objeto": {
+          "valor": "receber recursos de penas pecuniárias",
+          "trecho": "Edital seleciona entidades sociais de Goiás para receber recursos de penas pecuniárias — Goiás",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "CNJ",
+          "trecho": "Informativo de JURISPRUDÊNCIA do CNJ Número 9/2026 Brasília, 22 de junho de 2026",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Edital seleciona entidades sociais de Goiás para receber recursos de penas pecuniárias — Goiás",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · outro",
+          "trecho": "Edital seleciona entidades sociais de Goiás para receber recursos de penas pecuniárias — Goiás",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "CNJ",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador"
+      ]
+    },
     {
       "em": "2026-10-04T14:01:56+00:00",
       "modo": "validar",
@@ -2218,33 +2285,6 @@
         "site_do_financiador",
         "site_do_financiador_edital"
       ]
-    },
-    {
-      "em": "2026-10-04T02:06:16+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Edital 002/2023 Áreas - Inciso I - Goiânia-GO — Goiás / Goiânia — Goiás / Goiânia",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "o modelo não devolveu JSON",
-      "segundos": 1098,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: o modelo não devolveu JSON",
-      "id": "op-op-fbacb4dc6735",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
     }
   ]
 }
