@@ -8,6 +8,25 @@ Validação: **dispensa_individual:mp** — Ministério Público: a tabela ofici
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://www.mpgo.mp.br/portal/ — Ministério Público de Goiás — editais e destinações (página registrada do livro (não foi possível confirmar portal próprio); verificado: não)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — MPGO - TAC com destinação social (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Resultado: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Prazo de recurso: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Valor: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Órgão / financiador: catalogo — Ministério Público de Goiás — editais e destinações (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Anexos: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Destinação: catalogo — tipo: Destinação judicial; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Geral (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

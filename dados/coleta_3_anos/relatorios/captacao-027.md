@@ -8,6 +8,25 @@ Validação: **validado_parcial** — há edição anterior comprovada, mas só 
 
 Mês típico: ago · duração típica: 42 dias · próxima janela: 2027-08 · confiança: media
 
+## Site oficial
+
+https://goias.gov.br/cultura/pnab/ — Secretaria de Estado da Cultura (Secult-GO) (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — PNAB Goiás 2024 — editais por linguagem (edição 2024-08 (já coletada))
+- Prazo de inscrição: confirmado — prorrogado até 20/09/2024 (edição 2024-08 (já coletada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: confirmado — R$ 45.307.000,00 em 18 editais (edição 2024-08 (já coletada))
+- Órgão / financiador: catalogo — Secretaria de Estado da Cultura de Goiás (Secult-GO) (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Destinação: catalogo — tipo: Edital; público: Crianças e adolescentes (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 ### 2024-08 — PNAB Goiás 2024 — editais por linguagem

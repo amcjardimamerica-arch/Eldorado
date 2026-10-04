@@ -8,6 +8,25 @@ Validação: **dispensa_individual:arquivar** — Não é captação (serviço p
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://goiania.go.gov.br/ — Prefeitura de Goiânia (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Prefeitura de Goiânia oferece 987 vagas de emprego e abre 45 oportunidades para Jovem Aprendiz (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Resultado: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Prazo de recurso: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Valor: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Órgão / financiador: catalogo — Prefeituras das 50 maiores cidades de Goiás — portais de editais (catálogo do livro)
+- Território: catalogo — Goiânia (catálogo do livro (município/UF))
+- Esfera: catalogo — Brasil (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Anexos: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Geral (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

@@ -8,6 +8,25 @@ Validação: **dispensa_individual:fora_escopo_compra** — Compra, serviço, cr
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://crcgo.org.br/ — PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS (página registrada do livro (não foi possível confirmar portal próprio); verificado: não)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS — oportunidades (espalhado de edital validado) (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Resultado: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Prazo de recurso: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Valor: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Órgão / financiador: catalogo — PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Anexos: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Educação (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

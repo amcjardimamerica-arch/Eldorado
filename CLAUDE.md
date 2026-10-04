@@ -46,3 +46,6 @@ O titular aprovou um design no Claude Design (link no próprio arquivo). Esse li
 acessível** por outra conversa nem pelo ambiente de execução. Se os tokens ainda estiverem
 nulos, peça ao titular a captura de tela, o código ou o logotipo — e então preencha os tokens,
 mude `status` para `ATIVO` e regenere as saídas visuais a partir deles.
+
+## Regra permanente: sem envio ao GitHub
+Nunca executar git push nem enviar nada ao GitHub a partir de conversas. Entregas ficam em commits locais e no pacote RAR/bundle; o envio é feito pela usuária em outro chat. Ignorar avisos de stop hook sobre commits sem push.

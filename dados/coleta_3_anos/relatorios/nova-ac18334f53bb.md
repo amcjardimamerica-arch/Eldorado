@@ -8,6 +8,25 @@ Validação: **dispensa_individual:mp** — Ministério Público: a tabela ofici
 
 Mês típico: out · duração típica: 5 dias · próxima janela: 2026-10 · confiança: baixa
 
+## Site oficial
+
+https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens — Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados (página registrada do livro (não foi possível confirmar portal próprio); verificado: não)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — destinação de recursos ou bens (estudo do histórico (2026))
+- Prazo de inscrição: confirmado — 5 dias a contar de 01/10/2026 (≈06/10/2026, contagem em dias corridos; o edital não diz se (estudo do histórico (2026))
+- Resultado: confirmado — não informado no edital (estudo do histórico (2026))
+- Prazo de recurso: confirmado — dispensado pelo tipo (estudo do histórico (2026))
+- Valor: confirmado — até R$ 94.428,74 (estudo do histórico (2026))
+- Órgão / financiador: confirmado — Ministério Público do Trabalho em Goiás - PRT 18ª Região (estudo do histórico (2026))
+- Território: confirmado — GO (estudo do histórico (2026))
+- Esfera: confirmado — estadual (estudo do histórico (2026))
+- Requisitos: confirmado — pessoa jurídica de direito privado com projeto social, atos constitutivos, certidões fisca (estudo do histórico (2026))
+- Anexos: confirmado — não informado no edital (estudo do histórico (2026))
+- Destinação: confirmado — projeto social com pertinência temática ao PA-INTER ou à defesa de interesses difusos trab (estudo do histórico (2026))
+- Área de atuação: confirmado — interesses difusos trabalhistas (projetos sociais) (estudo do histórico (2026))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

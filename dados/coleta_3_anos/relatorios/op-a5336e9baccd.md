@@ -8,6 +8,25 @@ Validação: **serie_indicada_ordinal** — SERIE INDICADA PELA FONTE OFICIAL: o
 
 Mês típico: jul · duração típica: — dias · próxima janela: 2027-07 · confiança: baixa
 
+## Site oficial
+
+https://cidadeocidental.go.gov.br/ — Prefeitura de Cidade Ocidental (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Cidade Ocidental — EDITAIS DA PNAB PÚBLICADOS (estudo do histórico (?))
+- Prazo de inscrição: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Órgão / financiador: confirmado — Prefeitura de Cidade Ocidental (estudo do histórico (?))
+- Território: confirmado — GO (estudo do histórico (?))
+- Esfera: catalogo — municipal (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: confirmado — https://cidadeocidental.go.gov.br/editais-da-pnab-publicados/ (estudo do histórico (?))
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

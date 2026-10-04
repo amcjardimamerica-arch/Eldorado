@@ -8,6 +8,25 @@ Validação: **validado_parcial** — há edição anterior comprovada, mas só 
 
 Mês típico: ago · duração típica: — dias · próxima janela: 2027-08 · confiança: media
 
+## Site oficial
+
+https://goias.gov.br/social/ — Secretaria de Desenvolvimento Social (Goiás Social) (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Edital de Chamamento — Comitê de Participação de Adolescente de Goiás, biênio 2025-2026 (edição 2024-08 (já coletada))
+- Prazo de inscrição: confirmado — 2024-08-19 a ? (edição 2024-08 (já coletada))
+- Resultado: confirmado — homologação do resultado final da seleção (edição 2024-08 (já coletada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Órgão / financiador: catalogo — Fundo Estadual dos Direitos da Pessoa Idosa Goiás (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Brasil (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: confirmado — ofício de indicação de adolescentes titulares e suplente (edição 2024-08 (já coletada))
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Pessoa idosa (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 ### 2024-08 — Edital de Chamamento — Comitê de Participação de Adolescente de Goiás, biênio 2025-2026

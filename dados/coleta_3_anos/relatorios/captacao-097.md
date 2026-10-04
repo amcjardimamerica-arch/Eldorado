@@ -8,6 +8,25 @@ Validação: **dispensa_individual:estrutural** — Oportunidade estrutural (cat
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://goias.gov.br/social/ — Secretaria de Desenvolvimento Social (Goiás Social) (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Protege Goiás - financiamento indireto de programas sociais (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Resultado: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Prazo de recurso: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Valor: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Órgão / financiador: catalogo — Secretaria de Estado de Desenvolvimento Social (SEDS-GO) / FEAS (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Anexos: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Destinação: catalogo — tipo: Fundo; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Assistência social (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

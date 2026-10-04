@@ -8,6 +8,25 @@ Validação: **dispensa_individual:mp** — Ministério Público: a tabela ofici
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go/1090-evento-marca-entrega-de-certificados-de-capacitacao-profissional-a-adolescentes-e-jovens-em-vulnerabilidade-da-cidade-de-goias — MPT-GO — PRT 18ª Região (Goiânia/GO) (página registrada do livro (não foi possível confirmar portal próprio); verificado: não)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Evento marca entrega de certificados de capacitação profissional a adolescentes e jovens em vulnerabilidade da Cidade de Goiás (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Resultado: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Prazo de recurso: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Valor: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Órgão / financiador: catalogo — MPT-GO — PRT 18ª Região (Goiânia/GO) (catálogo do livro)
+- Território: catalogo — Goiânia (catálogo do livro (município/UF))
+- Esfera: catalogo — municipal (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Anexos: dispensa_individual (Ministério Público: a tabela oficial só lista editais vigentes; sem série anterior publicada.)
+- Destinação: catalogo — tipo: Destinação judicial; público: Crianças e adolescentes (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Criança e adolescente (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

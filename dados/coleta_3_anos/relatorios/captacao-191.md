@@ -8,6 +8,25 @@ Validação: **dispensa_individual:judicial** — Destinação judicial: sem edi
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://www.cnj.jus.br/ — CNJ — política de destinação de penas e prestações pecuniárias (página registrada do livro (não foi possível confirmar portal próprio); verificado: não)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — TJGO - penas pecuniárias em comarcas do interior (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
+- Resultado: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
+- Prazo de recurso: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
+- Valor: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
+- Órgão / financiador: catalogo — CNJ — política de destinação de penas e prestações pecuniárias (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Brasil (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
+- Anexos: dispensa_individual (Destinação judicial: sem edição própria comparável; valor e escolha são atos do juízo.)
+- Destinação: catalogo — tipo: Destinação judicial; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Geral (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

@@ -8,6 +8,25 @@ Validação: **dispensa_individual:fora_escopo_compra** — Chamamento para aqui
 
 Mês típico: set · duração típica: — dias · próxima janela: 2027-09 · confiança: baixa
 
+## Site oficial
+
+https://pncp.gov.br/app/editais/12260233000102/2024/23 — PNCP — FUNDO MUNICIPAL DE SAUDE DE SAO PATRICIO (PNCP (portal oficial de contratações; o município não tem página própria do edital); verificado: 2026-10-03 (página do edital já registrada))
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — ABERTURA DE PROCESSO LICITATORIO PARA  CHAMAMENTO PÚBLICO REFERENTE AQUISIÇÃO DE GÊNEROS ALIMENTÍCIOS DA AGRICULTURA FAMILIAR PARA ALIMENTAÇÃO ESCOLAR/PNAE, FME (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
+- Resultado: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
+- Prazo de recurso: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
+- Valor: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
+- Órgão / financiador: catalogo — PNCP — FUNDO MUNICIPAL DE SAUDE DE SAO PATRICIO (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
+- Anexos: dispensa_individual (Chamamento para aquisição de gêneros alimentícios da agricultura familiar por fundo municipal de saúde (PNCP 2024/23): compra pública; fora do escopo.)
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

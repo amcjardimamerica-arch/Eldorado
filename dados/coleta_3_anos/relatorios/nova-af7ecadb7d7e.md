@@ -8,6 +8,25 @@ Validação: **dispensa_individual:fora_escopo_perfil** — Aviso 3/2026 do Fund
 
 Mês típico: out · duração típica: 14 dias · próxima janela: 2026-10 · confiança: baixa
 
+## Site oficial
+
+https://www.in.gov.br/ — Diário Oficial da União (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Prefeitura de Corumbá de Goiás — AVISO DE CHAMAMENTO PÚBLICO Nº 3/2026 (nome do livro (título do programa))
+- Prazo de inscrição: confirmado — 2026-10-01 a 2026-10-15 (janela mais recente registrada no livro)
+- Resultado: dispensa_individual (Aviso 3/2026 do Fundo Municipal de Cultura de Corumbá de Goiás (DOU 01/10/2026): premiação presencial de agentes culturais (PNAB) de 01 a 15/10/2026; pessoa física; a AMC não é proponente.)
+- Prazo de recurso: dispensa_individual (Aviso 3/2026 do Fundo Municipal de Cultura de Corumbá de Goiás (DOU 01/10/2026): premiação presencial de agentes culturais (PNAB) de 01 a 15/10/2026; pessoa física; a AMC não é proponente.)
+- Valor: dispensa_individual (Aviso 3/2026 do Fundo Municipal de Cultura de Corumbá de Goiás (DOU 01/10/2026): premiação presencial de agentes culturais (PNAB) de 01 a 15/10/2026; pessoa física; a AMC não é proponente.)
+- Órgão / financiador: catalogo — Diário Oficial da União (catálogo do livro)
+- Território: catalogo — Corumbá de Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Aviso 3/2026 do Fundo Municipal de Cultura de Corumbá de Goiás (DOU 01/10/2026): premiação presencial de agentes culturais (PNAB) de 01 a 15/10/2026; pessoa física; a AMC não é proponente.)
+- Anexos: dispensa_individual (Aviso 3/2026 do Fundo Municipal de Cultura de Corumbá de Goiás (DOU 01/10/2026): premiação presencial de agentes culturais (PNAB) de 01 a 15/10/2026; pessoa física; a AMC não é proponente.)
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

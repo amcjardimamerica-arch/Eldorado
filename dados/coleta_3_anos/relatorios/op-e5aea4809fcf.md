@@ -8,6 +8,25 @@ Validação: **validado_parcial** — há edição anterior comprovada, mas só 
 
 Mês típico: ago · duração típica: — dias · próxima janela: 2027-08 · confiança: media
 
+## Site oficial
+
+https://planaltina.go.gov.br/ — Prefeitura Municipal de Planaltina (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — [Portal de Compras Públicas] - Seleção de Propostas apresentadas pelas Organizações da Sociedade Civil de Planaltina, que visem à execução de Atividades Esportivas e gestão de CAMP (edição 2024-08 (já coletada))
+- Prazo de inscrição: confirmado — 2024-08-06 a ? (edição 2024-08 (já coletada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Órgão / financiador: confirmado — dispensado pelo edital (estudo do histórico (2026))
+- Território: confirmado — GO (estudo do histórico (2026))
+- Esfera: confirmado — municipal (estudo do histórico (2026))
+- Requisitos: confirmado — O cadastro deverá ser feito no Portal de Compras Públicas, no sítio www.portaldecompraspub (estudo do histórico (2026))
+- Anexos: confirmado — 1 anexo(s) (estudo do histórico (2026))
+- Destinação: confirmado — dispensado pelo edital (estudo do histórico (2026))
+- Área de atuação: confirmado — dispensado pelo edital (estudo do histórico (2026))
+
 ## Edições anteriores e os 12 itens
 
 ### 2024-08 — [Portal de Compras Públicas] - Seleção de Propostas apresentadas pelas Organizações da Sociedade Civil de Planaltina, que visem à execução de Atividades Esportivas e gestão de CAMP

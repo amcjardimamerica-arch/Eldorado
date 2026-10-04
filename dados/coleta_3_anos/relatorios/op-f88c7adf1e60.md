@@ -15,14 +15,14 @@ Página oficial: https://www.fundobrasil.org.br/edital/edital-geral-2024-vozes-p
 
 - Objeto: confirmado — Edital Geral 2024 — Vozes por Direitos e Justiça
 - Prazo de inscrição: confirmado — 2023-12-10 a ?
-- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Resultado: confirmado — a partir de 24/06/2024
 - Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
-- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
-- Órgão / financiador: catalogo — Fundo Brasil de Direitos Humanos
+- Valor: confirmado — até R$ 40.000,00 por projeto, totalizando até R$ 800.000,00
+- Órgão / financiador: confirmado — Fundo Brasil de Direitos Humanos
 - Território: catalogo — BR
 - Esfera: catalogo — nacional
-- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
-- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Requisitos: confirmado — organizações sem fins lucrativos que apoiam grupos e coletivos no enfrentamento a violações e defesa de direitos humanos
+- Anexos: confirmado — formulário de inscrição (rascunho para download) e modelo de orçamento da proposta, via Portal de Projetos
 - Destinação: catalogo — tipo: Fundo; público: OSC e associações
 - Área de atuação: catalogo — Direitos humanos
 
@@ -31,14 +31,14 @@ Página oficial: https://www.fundobrasil.org.br/edital/democracia-e-direitos-con
 
 - Objeto: confirmado — Edital Geral 2025 — Democracia e Direitos
 - Prazo de inscrição: confirmado — 2024-12-13 a ?
-- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Resultado: confirmado — 27/06/2025
 - Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
-- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
-- Órgão / financiador: catalogo — Fundo Brasil de Direitos Humanos
+- Valor: confirmado — até R$ 50.000,00 por organização, totalizando até R$ 1.000.000,00 (20 organizações)
+- Órgão / financiador: confirmado — Fundo Brasil de Direitos Humanos
 - Território: catalogo — BR
 - Esfera: catalogo — nacional
-- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
-- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Requisitos: confirmado — grupos, coletivos e organizações sem fins lucrativos em defesa de direitos humanos; não aceita indivíduos, governo, universidades, partidos nem empresas
+- Anexos: confirmado — formulário, proposta orçamentária e demonstrativo financeiro 2024 (ou declaração se sem movimentação)
 - Destinação: catalogo — tipo: Fundo; público: OSC e associações
 - Área de atuação: catalogo — Direitos humanos
 
@@ -47,21 +47,21 @@ Página oficial: https://www.fundobrasil.org.br/edital/geral-2026-fortalecendo-d
 
 - Objeto: confirmado — Edital Geral 2026 — Fortalecendo Direitos e Gestando um Mundo Novo
 - Prazo de inscrição: confirmado — 2025-12-05 a ?
-- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Resultado: confirmado — a partir de 22/06/2026
 - Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
-- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
-- Órgão / financiador: catalogo — Fundo Brasil de Direitos Humanos
+- Valor: confirmado — até R$ 50.000,00 por proposta, total até R$ 1.000.000,00
+- Órgão / financiador: confirmado — Fundo Brasil de Direitos Humanos
 - Território: catalogo — BR
 - Esfera: catalogo — nacional
-- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
-- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Requisitos: confirmado — grupos/coletivos/movimentos sem fins lucrativos em defesa de direitos humanos; máximo 12 meses de execução
+- Anexos: confirmado — formulário de inscrição, orçamento detalhado e demonstrativo financeiro de 2024
 - Destinação: catalogo — tipo: Fundo; público: OSC e associações
 - Área de atuação: catalogo — Direitos humanos
 
 ## Conselho de 7 lentes
 
 - extremamente pessimista: Com 3 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
-- pessimista: Itens ainda não lidos nas edições: Resultado, Prazo de recurso, Valor. Sem eles, requisitos e anexos da próxima podem diferir.
+- pessimista: Itens ainda não lidos nas edições: Prazo de recurso. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
 - neutro: Situação: validado. Tratar dez como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 3 ano(s) (2023, 2024, 2025) já dá referência de calendário e de valor.

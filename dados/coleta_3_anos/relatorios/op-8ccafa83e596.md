@@ -8,6 +8,25 @@ Validação: **verificado_sem_serie** — VERIFICADO em 03/10/2026 (imprensa e A
 
 Mês típico: out · duração típica: — dias · próxima janela: 2026-10 · confiança: baixa
 
+## Site oficial
+
+https://goias.gov.br/cultura/ — Secretaria de Estado da Cultura (Secult-GO) (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — SECULT-GO (cultura) — Secult Goiás lança edital para levar produção artística goiana ao Rio de Janeiro (nome do livro (título do programa))
+- Prazo de inscrição: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Órgão / financiador: catalogo — Site oficial do Governo de Goiás (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Destinação: catalogo — tipo: Edital; público: Artistas e produtores culturais (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

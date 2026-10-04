@@ -8,6 +8,25 @@ Validação: **dispensa_individual:arquivar** — Não é captação (serviço p
 
 Mês típico: out · duração típica: — dias · próxima janela: 2026-10 · confiança: baixa
 
+## Site oficial
+
+https://diariooficial.abc.go.gov.br/ — Prefeitura (município a confirmar) (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Prefeitura (município a confirmar) — Edital nº 004/2026 — a aquisição parcelada e contínua de gêneros alimentícios hortifrutigranjeiros, produzidos pela Agricul (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Resultado: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Prazo de recurso: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Valor: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Órgão / financiador: catalogo — Prefeitura (município a confirmar) (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Brasil (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Anexos: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Direitos humanos (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

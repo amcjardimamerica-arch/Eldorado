@@ -8,6 +8,25 @@ Validação: **validado_parcial** — há edição anterior comprovada, mas só 
 
 Mês típico: mar · duração típica: 32 dias · próxima janela: 2027-03 · confiança: media
 
+## Site oficial
+
+https://goias.gov.br/cultura/fundo-de-arte-e-cultura/ — Secretaria de Estado da Cultura (Secult-GO) (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Editais do Fundo de Arte e Cultura 2025 (edição 2025-03 (já coletada))
+- Prazo de inscrição: confirmado — 2025-03-24 a 2025-04-25 (edição 2025-03 (já coletada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: confirmado — R$ 6,7 milhões em 4 editais (edição 2025-03 (já coletada))
+- Órgão / financiador: catalogo — Secretaria de Estado da Cultura de Goiás (Secult-GO) (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Destinação: catalogo — tipo: Fundo; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 ### 2025-03 — Editais do Fundo de Arte e Cultura 2025

@@ -8,6 +8,25 @@ Validação: **serie_indicada_ordinal** — SERIE INDICADA PELA FONTE OFICIAL: o
 
 Mês típico: set · duração típica: 13 dias · próxima janela: 2027-09 · confiança: baixa
 
+## Site oficial
+
+https://pncp.gov.br/app/editais/46658543000100/2026/143 — FUNDO MUNICIPAL DE EDUCACAO DE ALVORADA DO NORTE - FME (PNCP (portal oficial de contratações; o município não tem página própria do edital); verificado: 2026-10-03 (página do edital já registrada))
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Chamamento Público Nº 006/2026 para Seleção de Projetos (estudo do histórico (?))
+- Prazo de inscrição: confirmado — 2026-09-29 (estudo do histórico (?))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Órgão / financiador: confirmado — FUNDO MUNICIPAL DE EDUCACAO DE ALVORADA DO NORTE - FME (estudo do histórico (?))
+- Território: confirmado — GO (estudo do histórico (?))
+- Esfera: catalogo — municipal (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: confirmado — https://pncp.gov.br/app/editais/46658543000100/2026/143 (estudo do histórico (?))
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Educação (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

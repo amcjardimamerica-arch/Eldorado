@@ -8,6 +8,25 @@ Validação: **dispensa_individual:arquivar** — Não é captação (serviço p
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://goias.gov.br/social/ — Secretaria de Desenvolvimento Social (Goiás Social) (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Capacitações sobre gênero (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Resultado: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Prazo de recurso: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Valor: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Órgão / financiador: catalogo — Fundo Estadual dos Direitos da Pessoa Idosa Goiás (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Brasil (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Anexos: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Destinação: catalogo — tipo: Fundo; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Pessoa idosa (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

@@ -8,6 +8,25 @@ Validação: **serie_indicada_ordinal** — SERIE INDICADA PELO TÍTULO: o próp
 
 Mês típico: out · duração típica: 12 dias · próxima janela: 2026-10 · confiança: baixa
 
+## Site oficial
+
+https://goiatuba.go.gov.br/ — Prefeitura de Goiatuba (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — seleção de projetos culturais para Termo de Execução Cultural com recursos da PNAB Ciclo 2 (estudo do histórico (2026))
+- Prazo de inscrição: confirmado — 01/10/2026 a 13/10/2026 (presencial 8h-11h e 14h-17h; e-mail até 23h59 de 13/10) (estudo do histórico (2026))
+- Resultado: confirmado — preliminar de mérito 20/10/2026; pós-recursos 26/10/2026 (estudo do histórico (2026))
+- Prazo de recurso: confirmado — 21/10/2026 a 23/10/2026 (por e-mail) (estudo do histórico (2026))
+- Valor: confirmado — R$ 156.000,00 no total; no máximo um projeto por agente (estudo do histórico (2026))
+- Órgão / financiador: confirmado — Prefeitura Municipal de Goiatuba (estudo do histórico (2026))
+- Território: confirmado — Município de Goiatuba/GO (estudo do histórico (2026))
+- Esfera: confirmado — municipal (estudo do histórico (2026))
+- Requisitos: confirmado — agente cultural pessoa física ou coletivo sem CNPJ representado por pessoa física; ações n (estudo do histórico (2026))
+- Anexos: confirmado — Anexo I (formulário/plano de trabalho), Anexo V (representação de coletivo), Anexos VI e V (estudo do histórico (2026))
+- Destinação: confirmado — Termo de Execução Cultural (fomento a projetos culturais) (estudo do histórico (2026))
+- Área de atuação: confirmado — cultura (estudo do histórico (2026))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

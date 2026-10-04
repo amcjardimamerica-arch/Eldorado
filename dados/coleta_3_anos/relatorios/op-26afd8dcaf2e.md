@@ -8,6 +8,25 @@ Validação: **dispensa_individual:fora_escopo_perfil** — Seleção de pessoas
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://mapagoiano.cultura.go.gov.br/ — Mapa Goiano (plataforma da Secult Goiás) (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Agenda aberta para shows, eventos públicos e festas de prefeitura (estudo do histórico (?))
+- Prazo de inscrição: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Resultado: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Prazo de recurso: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Valor: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Órgão / financiador: confirmado — Mapa Goiano (plataforma da Secult Goiás) (estudo do histórico (?))
+- Território: confirmado — GO (estudo do histórico (?))
+- Esfera: catalogo — estadual (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Anexos: confirmado — https://mapagoiano.cultura.go.gov.br/oportunidade/957/ (estudo do histórico (?))
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Geral (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).
