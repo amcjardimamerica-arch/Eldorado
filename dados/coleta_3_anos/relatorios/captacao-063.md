@@ -8,6 +8,25 @@ Validação: **dispensa_individual:emenda** — Emenda parlamentar: não há edi
 
 Mês típico: out · duração típica: 60 dias · próxima janela: 2026-10 · confiança: baixa
 
+## Site oficial
+
+https://portal.al.go.leg.br/ — ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento) (página registrada do livro (não foi possível confirmar portal próprio); verificado: não)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Equipagem esportiva comunitária (nome do livro (título do programa))
+- Prazo de inscrição: confirmado — 2026-10-01 a 2026-11-30 (janela mais recente registrada no livro)
+- Resultado: dispensa_individual (Emenda parlamentar: não há edital; a janela vem da LOA e da indicação do parlamentar (itens de edital dispensados pelo regime).)
+- Prazo de recurso: dispensa_individual (Emenda parlamentar: não há edital; a janela vem da LOA e da indicação do parlamentar (itens de edital dispensados pelo regime).)
+- Valor: dispensa_individual (Emenda parlamentar: não há edital; a janela vem da LOA e da indicação do parlamentar (itens de edital dispensados pelo regime).)
+- Órgão / financiador: catalogo — ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento) (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Brasil (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Emenda parlamentar: não há edital; a janela vem da LOA e da indicação do parlamentar (itens de edital dispensados pelo regime).)
+- Anexos: dispensa_individual (Emenda parlamentar: não há edital; a janela vem da LOA e da indicação do parlamentar (itens de edital dispensados pelo regime).)
+- Destinação: catalogo — tipo: Emenda; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Esporte (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

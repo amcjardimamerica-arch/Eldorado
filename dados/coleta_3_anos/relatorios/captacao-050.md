@@ -8,6 +8,25 @@ Validação: **validado_parcial** — há edição anterior comprovada, mas só 
 
 Mês típico: out · duração típica: 5 dias · próxima janela: 2026-10 · confiança: media
 
+## Site oficial
+
+https://goias.gov.br/esporte/ — Secretaria de Estado de Esporte e Lazer (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Edital Pró-Goiás Atleta (480 vagas) (edição 2025-10 (já coletada))
+- Prazo de inscrição: confirmado — 2025-10-31 a 2025-11-05 (edição 2025-10 (já coletada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: confirmado — bolsa mensal de R$ 500 (categoria Goiás Social) (edição 2025-10 (já coletada))
+- Órgão / financiador: catalogo — Secretaria de Estado de Esporte e Lazer (SEEL-GO) (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Destinação: catalogo — tipo: Edital; público: OSC e associações, Atletas e entidades esportivas (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Esporte (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 ### 2025-10 — Edital Pró-Goiás Atleta (480 vagas)

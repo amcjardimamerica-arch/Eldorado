@@ -8,6 +8,25 @@ Validação: **serie_indicada_ordinal** — SERIE INDICADA PELA FONTE OFICIAL: o
 
 Mês típico: set · duração típica: 10 dias · próxima janela: 2027-09 · confiança: baixa
 
+## Site oficial
+
+https://pncp.gov.br/app/editais/01068030000100/2026/355 — MUNICIPIO DE SILVANIA (PNCP (portal oficial de contratações; o município não tem página própria do edital); verificado: 2026-10-03 (página do edital já registrada))
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Edital Ciclo 2 da PNAB de Silvânia (estudo do histórico (2026))
+- Prazo de inscrição: confirmado — 2026-09-29 17h30 a 2026-10-09 17h (estudo do histórico (2026))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: confirmado — R$ 179.926,00 (estimado) (estudo do histórico (2026))
+- Órgão / financiador: confirmado — Município de Silvânia (PNAB) (estudo do histórico (2026))
+- Território: confirmado — Silvânia/GO (estudo do histórico (2026))
+- Esfera: confirmado — municipal (estudo do histórico (2026))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: confirmado — cultura (estudo do histórico (2026))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

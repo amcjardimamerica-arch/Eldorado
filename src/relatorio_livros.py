@@ -261,6 +261,10 @@ def relatorio(x: dict) -> dict:
                       "intervalo_entre_edicoes_dias": [(b - a).days for a, b in zip(ab, ab[1:])]},
         "edicoes": [{k: v for k, v in e.items() if k != "itens12"} | {"itens": e.pop("_status")} for e in eds],
     }
+    if sel.get("bloco") == "GO" and sel.get("selo") != "ouro":
+        from .perfil_go import itens_do_livro, site_oficial
+        out["site_oficial"] = site_oficial(x)
+        out["itens12_livro"] = itens_do_livro(x, out["edicoes"], _derivado, sit, motivo)
     out["conselho_7_lentes"] = _conselho(x, [{**e, "_status": e["itens"], "itens12": {}} for e in out["edicoes"]], out["preditivo"], sit)
     return out
 
@@ -270,6 +274,10 @@ def md(r: dict) -> str:
          "", f"Validação: **{r['validacao']['situacao']}** — {r['validacao']['motivo']}", "", "## Estudo preditivo", ""]
     p = r["preditivo"]
     L.append(f"Mês típico: {MESES[p['mes_tipico'] - 1] if p.get('mes_tipico') else 'sem dados'} · duração típica: {p.get('duracao_tipica_dias') or '—'} dias · próxima janela: {p.get('proxima_janela') or '—'} · confiança: {p.get('confianca')}")
+    if r.get("site_oficial"):
+        so = r["site_oficial"]
+        L += ["", "## Site oficial", "", f"{so['url'] or 'não localizado'} — {so['orgao_site'] or ''} ({so['tipo']}; verificado: {so['verificado']})"]
+        L += ["", "## Os 12 itens consolidados do histórico", ""] + [f"- {k}: {v['estado']}" + (f" — {v['valor']}" if v.get("valor") else "") + f" ({v['origem']})" for k, v in r["itens12_livro"].items()]
     L += ["", "## Edições anteriores e os 12 itens", ""]
     if not r["edicoes"]:
         L.append("Nenhuma edição anterior comprovada (ver validação).")

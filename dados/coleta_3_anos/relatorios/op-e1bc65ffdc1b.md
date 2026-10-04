@@ -8,6 +8,25 @@ Validação: **dispensa_individual:fora_escopo_contratacao** — Credenciamento 
 
 Mês típico: set · duração típica: — dias · próxima janela: 2027-09 · confiança: baixa
 
+## Site oficial
+
+https://pncp.gov.br/app/editais/01629276000104/2024/3 — PNCP — MUNICIPIO DE NOVO GAMA (PNCP (portal oficial de contratações; o município não tem página própria do edital); verificado: 2026-10-03 (página do edital já registrada))
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — A PREFEITURA MUNICIPAL DE NOVO GAMA - GO TORNA PÚBLICO QUE REALIZARÁ CHAMAMENTO PÚBLICO, POR CREDENCIAMENTO, PARA SELECIONAR EMPRESA DO RAMO DA CONSTRUÇÃO CIVIL (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Credenciamento da Prefeitura de Novo Gama (PNCP 2024/3, Lei 14.133 art. 79) de contratados (empresas/profissionais): contratação remunerada, não fomento a OSC; fora do escopo.)
+- Resultado: dispensa_individual (Credenciamento da Prefeitura de Novo Gama (PNCP 2024/3, Lei 14.133 art. 79) de contratados (empresas/profissionais): contratação remunerada, não fomento a OSC; fora do escopo.)
+- Prazo de recurso: dispensa_individual (Credenciamento da Prefeitura de Novo Gama (PNCP 2024/3, Lei 14.133 art. 79) de contratados (empresas/profissionais): contratação remunerada, não fomento a OSC; fora do escopo.)
+- Valor: dispensa_individual (Credenciamento da Prefeitura de Novo Gama (PNCP 2024/3, Lei 14.133 art. 79) de contratados (empresas/profissionais): contratação remunerada, não fomento a OSC; fora do escopo.)
+- Órgão / financiador: catalogo — PNCP — MUNICIPIO DE NOVO GAMA (catálogo do livro)
+- Território: catalogo — Novo Gama (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Credenciamento da Prefeitura de Novo Gama (PNCP 2024/3, Lei 14.133 art. 79) de contratados (empresas/profissionais): contratação remunerada, não fomento a OSC; fora do escopo.)
+- Anexos: dispensa_individual (Credenciamento da Prefeitura de Novo Gama (PNCP 2024/3, Lei 14.133 art. 79) de contratados (empresas/profissionais): contratação remunerada, não fomento a OSC; fora do escopo.)
+- Destinação: catalogo — tipo: Credenciamento; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Geral (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

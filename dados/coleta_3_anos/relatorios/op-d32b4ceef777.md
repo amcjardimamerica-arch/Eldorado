@@ -8,6 +8,25 @@ Validação: **dispensa_individual:fora_escopo_compra** — Compra, serviço, cr
 
 Mês típico: set · duração típica: — dias · próxima janela: 2027-09 · confiança: baixa
 
+## Site oficial
+
+https://saude.goiania.go.gov.br/ — SMS Goiânia - parceria com entidade de saúde (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — credenciamento de pessoas jurídicas interessadas em participar, de forma complementar, do Sistema Único de Saúde do Município de Goiânia para prestação dos serviços ambul (estudo do histórico (2026))
+- Prazo de inscrição: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Resultado: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Prazo de recurso: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Valor: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Órgão / financiador: confirmado — Secretaria Municipal de Saúde (estudo do histórico (2026))
+- Território: confirmado — GO (estudo do histórico (2026))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Compra, serviço, credenciamento profissional, RH ou gestão de imóveis/saúde de órgão público: não é captação para entidade do terceiro setor; fora do escopo da AMC. Arquivar.)
+- Anexos: confirmado — https://saude.goiania.go.gov.br/editas-de-chamamento-publico/edital-de-chamamento-publico-no-001-2026/ (estudo do histórico (2026))
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Saúde (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

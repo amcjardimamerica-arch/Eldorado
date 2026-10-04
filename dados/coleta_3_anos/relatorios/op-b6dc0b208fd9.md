@@ -8,6 +8,25 @@ Validação: **dispensa_individual:fora_escopo_perfil** — Seleção de pessoas
 
 Mês típico: mai · duração típica: — dias · próxima janela: 2027-05 · confiança: baixa
 
+## Site oficial
+
+https://senadorcanedo.go.gov.br/ — Prefeitura de Senador Canedo (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Senador Canedo — Senador Canedo lança projeto Embaixador do Turismo (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Resultado: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Prazo de recurso: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Valor: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Órgão / financiador: catalogo — Prefeitura de Senador Canedo (catálogo do livro)
+- Território: catalogo — Senador Canedo (catálogo do livro (município/UF))
+- Esfera: catalogo — municipal (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Anexos: dispensa_individual (Seleção de pessoas, eleição de conselho, agenda, capacitação ou vaga (não é fomento a entidade): fora do escopo da AMC; mantido como radar.)
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Geral (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

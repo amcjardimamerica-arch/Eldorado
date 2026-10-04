@@ -8,6 +8,25 @@ Validação: **dispensa_individual:fundo** — Fundo de conselho: o edital segue
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://www.gov.br/ — Conanda — Fundo Nacional para a Criança e o Adolescente (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Projeto de mediação de leitura para crianças (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
+- Resultado: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
+- Prazo de recurso: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
+- Valor: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
+- Órgão / financiador: catalogo — Conanda — Fundo Nacional para a Criança e o Adolescente (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
+- Anexos: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
+- Destinação: catalogo — tipo: Fundo; público: Crianças e adolescentes (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

@@ -8,6 +8,25 @@ Validação: **validado_parcial** — há edição anterior comprovada, mas só 
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: media
 
+## Site oficial
+
+https://goiania.go.gov.br/ — Prefeitura de Goiânia (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Lei Municipal de Incentivo à Cultura 2024 — inscrições (edição 2024-06 (já coletada))
+- Prazo de inscrição: confirmado — prorrogado até 14/06/2024 23h59 (edição 2024-06 (já coletada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: confirmado — R$ 4.199.000,00 (edição 2024-06 (já coletada))
+- Órgão / financiador: catalogo — Secretaria Municipal de Cultura de Goiânia (catálogo do livro)
+- Território: catalogo — Goiânia (catálogo do livro (município/UF))
+- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: confirmado — projetos de circo, dança, teatro, artes visuais, audiovisual, literatura, música, cultura popular, terceiro setor e outras modalidades (edição 2024-06 (já coletada))
+- Anexos: confirmado — edital e formulários no site da Secult (edição 2024-06 (já coletada))
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 ### 2024-06 — Lei Municipal de Incentivo à Cultura 2024 — inscrições

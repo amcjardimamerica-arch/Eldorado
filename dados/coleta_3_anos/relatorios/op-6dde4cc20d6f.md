@@ -8,6 +8,25 @@ Validação: **dispensa_individual:ato_derivado** — Ato derivado de um edital 
 
 Mês típico: abr · duração típica: — dias · próxima janela: 2027-04 · confiança: baixa
 
+## Site oficial
+
+https://goianesia.go.gov.br/ — Prefeitura de Goianésia (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Credenciamento de organizações da sociedade civil (associações/cooperativas relacionadas à (estudo do histórico (2026))
+- Prazo de inscrição: confirmado — dispensado pelo edital (estudo do histórico (2026))
+- Resultado: confirmado — Certificado de Credenciamento e publicação no site do Município (estudo do histórico (2026))
+- Prazo de recurso: confirmado — 5 dias úteis (estudo do histórico (2026))
+- Valor: confirmado — dispensado pelo edital (estudo do histórico (2026))
+- Órgão / financiador: confirmado — SECRETARIA DE ESTADO DE MEIO AMBIENTE E DESENVOLVIMENTO SUSTENTÁVEL - SEMAD (estudo do histórico (2026))
+- Território: confirmado — GO (estudo do histórico (2026))
+- Esfera: confirmado — estadual (estudo do histórico (2026))
+- Requisitos: confirmado — Estejam legalmente constituídas há pelo menos 1 (um) ano;, Suas atividades estejam diretam (estudo do histórico (2026))
+- Anexos: confirmado — 4 anexo(s) (estudo do histórico (2026))
+- Destinação: confirmado — elegível · fomento (estudo do histórico (2026))
+- Área de atuação: confirmado — assistência social / promoção social (estudo do histórico (2026))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

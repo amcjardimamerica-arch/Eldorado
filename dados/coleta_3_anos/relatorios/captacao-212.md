@@ -8,6 +8,25 @@ Validação: **dispensa_individual:estrutural** — Oportunidade estrutural (cat
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://www.tcm.go.gov.br/ — Tribunal de Contas dos Municípios de Goiás (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — TCM-GO - regularidade municipal e controle (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Resultado: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Prazo de recurso: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Valor: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Órgão / financiador: catalogo — Tribunal de Contas dos Municípios de Goiás (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Anexos: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Geral (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

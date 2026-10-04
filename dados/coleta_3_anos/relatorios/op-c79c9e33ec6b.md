@@ -8,6 +8,25 @@ Validação: **dispensa_individual:ruido_diario** — Edição de diário oficia
 
 Mês típico: ago · duração típica: — dias · próxima janela: 2027-08 · confiança: baixa
 
+## Site oficial
+
+https://catalao.go.gov.br/ — MINISTÉRIO DA CULTURA (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — O presente edital possui valor total de R$591.740,18 (quinhentos e noventa e um mil setece (estudo do histórico (2026))
+- Prazo de inscrição: dispensa_individual (Edição de diário oficial/pesquisa no DOU: a edição do diário não é uma oportunidade recorrente; o edital citado nela tem livro próprio ou é compra/serviço. Arquivar.)
+- Resultado: dispensa_individual (Edição de diário oficial/pesquisa no DOU: a edição do diário não é uma oportunidade recorrente; o edital citado nela tem livro próprio ou é compra/serviço. Arquivar.)
+- Prazo de recurso: dispensa_individual (Edição de diário oficial/pesquisa no DOU: a edição do diário não é uma oportunidade recorrente; o edital citado nela tem livro próprio ou é compra/serviço. Arquivar.)
+- Valor: confirmado — R$591.740,18 (estudo do histórico (2026))
+- Órgão / financiador: confirmado — Prefeitura Municipal de Catalão (estudo do histórico (2026))
+- Território: confirmado — GO (estudo do histórico (2026))
+- Esfera: confirmado — estadual (estudo do histórico (2026))
+- Requisitos: dispensa_individual (Edição de diário oficial/pesquisa no DOU: a edição do diário não é uma oportunidade recorrente; o edital citado nela tem livro próprio ou é compra/serviço. Arquivar.)
+- Anexos: confirmado — 3 anexo(s) (estudo do histórico (2026))
+- Destinação: confirmado — elegível · fomento (estudo do histórico (2026))
+- Área de atuação: confirmado — cultura (estudo do histórico (2026))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

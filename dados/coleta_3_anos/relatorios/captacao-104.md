@@ -8,6 +8,25 @@ Validação: **dispensa_individual:ato_derivado** — Ato derivado de um edital 
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://goias.gov.br/social/ — Secretaria de Desenvolvimento Social (Goiás Social) (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Termo de Fomento estadual para entidade social (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe.)
+- Resultado: dispensa_individual (Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe.)
+- Prazo de recurso: dispensa_individual (Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe.)
+- Valor: dispensa_individual (Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe.)
+- Órgão / financiador: catalogo — Secretaria de Estado de Desenvolvimento Social (SEDS-GO) / FEAS (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe.)
+- Anexos: dispensa_individual (Ato derivado de um edital (resultado, termo ou plano de ação): não tem prazo próprio; o estudo preditivo vale para o livro do edital-mãe.)
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Assistência social (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

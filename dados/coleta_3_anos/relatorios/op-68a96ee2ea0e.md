@@ -8,6 +8,25 @@ Validação: **validado_parcial** — há edição anterior comprovada, mas só 
 
 Mês típico: jan · duração típica: 4 dias · próxima janela: 2027-01 · confiança: media
 
+## Site oficial
+
+https://goias.gov.br/cultura/ — Secretaria de Estado da Cultura (Secult-GO) (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Secretaria de Estado da Cultura (Secult) — Governo de Goiás publica cronograma do edital de apoio a blocos de pré e carnaval de rua (edição 2025-01 (já coletada))
+- Prazo de inscrição: confirmado — 2025-01-27 a 2025-01-31 (edição 2025-01 (já coletada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Órgão / financiador: catalogo — Secretaria de Estado da Cultura (Secult) (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — estadual (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 ### 2025-01 — Secretaria de Estado da Cultura (Secult) — Governo de Goiás publica cronograma do edital de apoio a blocos de pré e carnaval de rua

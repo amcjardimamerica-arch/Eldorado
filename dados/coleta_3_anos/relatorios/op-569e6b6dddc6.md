@@ -8,6 +8,25 @@ Validação: **validado_parcial** — há edição anterior comprovada, mas só 
 
 Mês típico: jun · duração típica: — dias · próxima janela: 2027-06 · confiança: media
 
+## Site oficial
+
+https://anapolis.go.gov.br/ — Prefeitura de Anápolis (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Anápolis — Quarta Cultural abre junho com música e dança no Teatro Municipal (edição 2025-06 (já coletada))
+- Prazo de inscrição: confirmado — 2025-06-02 a ? (edição 2025-06 (já coletada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Órgão / financiador: confirmado — Prefeitura de Anápolis (estudo do histórico (?))
+- Território: confirmado — GO (estudo do histórico (?))
+- Esfera: catalogo — municipal (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: confirmado — https://www.anapolis.go.gov.br/quarta-cultural-abre-junho-com-musica-e-danca-no-teatro-municipal/ (estudo do histórico (?))
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 ### 2025-06 — Anápolis — Quarta Cultural abre junho com música e dança no Teatro Municipal

@@ -8,6 +8,25 @@ Validação: **dispensa_individual:arquivar** — Não é captação (serviço p
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://www.gov.br/ — FEAS-GO - cofinanciamento da assistência social (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Eventos e Prêmios (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Resultado: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Prazo de recurso: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Valor: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Órgão / financiador: catalogo — FEAS-GO - cofinanciamento da assistência social (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Anexos: dispensa_individual (Não é captação (serviço público/ruído do motor): arquivar o livro, sem estudo preditivo.)
+- Destinação: catalogo — tipo: Prêmio; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Assistência social (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

@@ -8,6 +8,25 @@ Validação: **dispensa_individual:fora_escopo_perfil** — Chamada de pesquisa,
 
 Mês típico: mar · duração típica: 3 dias · próxima janela: 2027-03 · confiança: baixa
 
+## Site oficial
+
+https://goias.gov.br/fapeg/ — FAPEG (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — apoio à pesquisa e inovação em educação especial inclusiva (estudo do histórico (2026))
+- Prazo de inscrição: confirmado — ? a 2026-03-09 (janela de inscrição registrada no livro)
+- Resultado: confirmado — 2026-10-01 (estudo do histórico (2026))
+- Prazo de recurso: dispensa_individual (Chamada de pesquisa, inovação ou bolsa para pesquisador/instituição científica ou empresa (agência de fomento à C&T): a AMC não é proponente elegível; mantida como radar. Agência com chamadas anuais próprias, sem edição específica a estudar para a AMC.)
+- Valor: dispensa_individual (Chamada de pesquisa, inovação ou bolsa para pesquisador/instituição científica ou empresa (agência de fomento à C&T): a AMC não é proponente elegível; mantida como radar. Agência com chamadas anuais próprias, sem edição específica a estudar para a AMC.)
+- Órgão / financiador: confirmado — Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG) (estudo do histórico (2026))
+- Território: confirmado — GO (estudo do histórico (2026))
+- Esfera: confirmado — estadual (estudo do histórico (2026))
+- Requisitos: dispensa_individual (Chamada de pesquisa, inovação ou bolsa para pesquisador/instituição científica ou empresa (agência de fomento à C&T): a AMC não é proponente elegível; mantida como radar. Agência com chamadas anuais próprias, sem edição específica a estudar para a AMC.)
+- Anexos: confirmado — 3 anexo(s) (estudo do histórico (2026))
+- Destinação: confirmado — fora do escopo · fomento (estudo do histórico (2026))
+- Área de atuação: confirmado — educacao (estudo do histórico (2026))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

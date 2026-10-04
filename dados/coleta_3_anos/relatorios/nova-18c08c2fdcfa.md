@@ -8,6 +8,25 @@ Validação: **dispensa_individual:regime_incentivo_fiscal** — Incentivo fisca
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://goias.gov.br/meioambiente/ — SEMAD (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — Resíduos sólidos: edital para seleção de projetos que receberão apoio na implantação (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
+- Resultado: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
+- Prazo de recurso: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
+- Valor: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
+- Órgão / financiador: catalogo — SEMAD Goiás - banco de projetos de autocomposição ambiental (catálogo do livro)
+- Território: catalogo — Goiás (catálogo do livro (município/UF))
+- Esfera: catalogo — Brasil (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
+- Anexos: dispensa_individual (Incentivo fiscal: a captação é contínua por projeto aprovado (sem edital com prazo); a janela vem do calendário da lei/portaria, itens de prazo dispensados pelo regime.)
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Meio ambiente (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).

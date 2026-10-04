@@ -8,6 +8,25 @@ Validação: **dispensa_individual:ciclo_unico** — Ciclo único da Lei Paulo G
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: media
 
+## Site oficial
+
+https://goias.gov.br/cultura/ — Secretaria de Estado da Cultura (Secult-GO) (portal oficial do órgão; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Lei Paulo Gustavo — editais Secult Goiás (inscrições prorrogadas) (edição 2023-10 (já coletada))
+- Prazo de inscrição: confirmado — ? a 2023-10-16 (edição 2023-10 (já coletada))
+- Resultado: dispensa_individual (Ciclo único da Lei Paulo Gustavo (2023): o edital é a própria edição de 2023; a recorrência estadual passou à PNAB (livro próprio). Sem série anterior a comparar.)
+- Prazo de recurso: dispensa_individual (Ciclo único da Lei Paulo Gustavo (2023): o edital é a própria edição de 2023; a recorrência estadual passou à PNAB (livro próprio). Sem série anterior a comparar.)
+- Valor: confirmado — R$ 62,15 milhões em 20 editais (edição 2023-10 (já coletada))
+- Órgão / financiador: confirmado — Secretaria de Estado da Cultura de Goiás (estudo do histórico (?))
+- Território: confirmado — GO (estudo do histórico (?))
+- Esfera: catalogo — estadual (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: confirmado — pessoas físicas maiores de 18 anos, residentes em Goiás há no mínimo dois anos (edição 2023-10 (já coletada))
+- Anexos: confirmado — https://goias.gov.br/cultura/editais/ (estudo do histórico (?))
+- Destinação: catalogo — tipo: Edital; público: Povos e comunidades tradicionais (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 ### 2023-10 — Lei Paulo Gustavo — editais Secult Goiás (inscrições prorrogadas)

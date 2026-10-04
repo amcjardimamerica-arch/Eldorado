@@ -8,6 +8,25 @@ Validação: **validado_parcial** — há edição anterior comprovada, mas só 
 
 Mês típico: out · duração típica: 30 dias · próxima janela: 2026-10 · confiança: media
 
+## Site oficial
+
+https://goiania.go.gov.br/ — Prefeitura de Goiânia (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: confirmado — Edital 004/2023 Áreas - Inciso III - Goiânia-GO (edição 2023-10 (já coletada))
+- Prazo de inscrição: confirmado — 2023-10-10 a 2023-11-09 (edição 2023-10 (já coletada))
+- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Valor: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Órgão / financiador: confirmado — Secretaria Municipal de Cultura de Goiânia (estudo do histórico (?))
+- Território: confirmado — GO (estudo do histórico (?))
+- Esfera: catalogo — municipal (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
+- Anexos: confirmado — https://www.goiania.go.gov.br/secult/leipaulogustavo/ (estudo do histórico (?))
+- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 ### 2023-10 — Edital 004/2023 Áreas - Inciso III - Goiânia-GO

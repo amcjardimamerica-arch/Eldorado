@@ -8,6 +8,25 @@ Validação: **dispensa_individual:estrutural** — Oportunidade estrutural (cat
 
 Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
 
+## Site oficial
+
+https://goiania.go.gov.br/ — Prefeitura de Goiânia (portal oficial do município; verificado: 2026-10-03)
+
+## Os 12 itens consolidados do histórico
+
+- Objeto: catalogo — SEMASDH Goiânia - serviço de acolhimento para adolescentes (nome do livro (título do programa))
+- Prazo de inscrição: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Resultado: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Prazo de recurso: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Valor: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Órgão / financiador: catalogo — SEMASDH Goiânia / Fundo Municipal de Assistência Social (CMAS) (catálogo do livro)
+- Território: catalogo — Goiânia (catálogo do livro (município/UF))
+- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
+- Requisitos: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Anexos: dispensa_individual (Oportunidade estrutural (catálogo de financiador): a recorrência depende do ciclo do financiador, não de edital próprio.)
+- Destinação: catalogo — tipo: Fundo; público: Crianças e adolescentes (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
+- Área de atuação: catalogo — Criança e adolescente (catálogo do livro (área do objeto))
+
 ## Edições anteriores e os 12 itens
 
 Nenhuma edição anterior comprovada (ver validação).
