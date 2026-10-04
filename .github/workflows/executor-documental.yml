@@ -1,0 +1,37 @@
+name: 27 · Executor documental dos motores (robôs; o Claude no Chrome é o último recurso)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 9 * * *"
+permissions:
+  contents: write
+concurrency:
+  group: eldorado-executor-documental
+  cancel-in-progress: false
+jobs:
+  executar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+      ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pypdf --quiet
+      - name: Um motor por vez, uma oportunidade por vez
+        run: timeout 6600 python -m src.executor_skills || echo "terminou com aviso"
+      - name: Importar (confere cada linha) e gravar só as entradas
+        if: always()
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          rm -rf /tmp/x && mkdir -p /tmp/x && cp entrada_manual/skills_documentais/resultados_robo_*.jsonl entrada_manual/skills_documentais/fila_chrome.json /tmp/x/ 2>/dev/null || exit 0
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            cp /tmp/x/* entrada_manual/skills_documentais/
+            python3 scripts/importar_verificacao_livros.py entrada_manual/skills_documentais/resultados_robo_*.jsonl || true
+            git add entrada_manual/skills_documentais estado/esteira/resultados_local.jsonl dados/oportunidades/pareceres_livros
+            git commit -q -m "executor documental: $(date -u +%F\ %H:%M)" || break
+            git push -q origin main && break; sleep 7
+          done
