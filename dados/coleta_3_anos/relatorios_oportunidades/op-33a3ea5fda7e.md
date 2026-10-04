@@ -1,0 +1,48 @@
+# MUNICIPIO DE CANELA — [Portal de Compras Públicas] - contratação de pessoas jurídicas especializadas na prestação de serviço de acolhimento institucional, conti
+
+- **Identificador:** `op-33a3ea5fda7e` · **Órgão/financiador:** MUNICIPIO DE CANELA
+- **Decisão:** D (não é recurso para OSC) · **Validação dos 12 pontos:** completa
+- **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
+- **Página oficial usada:** https://pncp.gov.br/app/editais/88585518000185/2026/128
+
+**Serve para uma OSC de Goiás?** depende — ILPI/entidade sem fins lucrativos pode credenciar-se como prestadora, mas é contratação de serviço e exige atuação no município/região (SC/RS), improvável para OSC de Goiás.
+
+## Decisão e motivo
+
+Credenciamento/contratação remunerada de serviço de acolhimento (compra de serviço), regido por licitações e contratos, não termo de fomento/colaboração; OSC filantrópica pode participar como prestadora.
+
+## Os 12 pontos
+
+| Ponto | Situação | Conteúdo / motivo |
+|---|---|---|
+| Objeto | confirmado | Contratação de pessoas jurídicas para acolhimento institucional/residência inclusiva, Canela-RS (2026-03-05 a 2027-03-03, R$ 208.960,50). |
+| Prazo de inscrição | dispensado | não é recurso para OSC |
+| Resultado | dispensado | não é recurso para OSC |
+| Prazo de recurso | dispensado | não é recurso para OSC |
+| Valor | dispensado | não é recurso para OSC |
+| Órgão / financiador | dispensado | não é recurso para OSC |
+| Território | dispensado | não é recurso para OSC |
+| Esfera | dispensado | não é recurso para OSC |
+| Requisitos | dispensado | não é recurso para OSC |
+| Anexos | dispensado | não é recurso para OSC |
+| Destinação | dispensado | não é recurso para OSC |
+| Área de atuação | dispensado | não é recurso para OSC |
+
+## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
+
+Nenhuma edição anterior comprovada em página oficial.
+
+## Estudo preditivo
+
+- **Mês típico:** sem base
+- **Duração típica (dias):** sem base
+- **Próxima janela:** sem base para prever
+- **Confiança:** baixa
+- **Base:** sem edição anterior comprovada em página oficial: não há base para prever
+- **Calculado por:** script
+
+## Observações da pesquisa
+
+Lido o registro oficial no PNCP (API pública de consulta, objeto e datas), não só o título; edital em PDF não aberto. 
+
+_Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._
