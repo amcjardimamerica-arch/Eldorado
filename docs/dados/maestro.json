@@ -1,17 +1,18 @@
 {
  "dia": "2026-10-04",
- "em": "2026-10-04T08:41:11+00:00",
+ "em": "2026-10-04T08:56:28+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 122,
  "cobertura": {
-  "aguardando_horario": 93,
-  "completa": 28,
+  "completa": 29,
+  "aguardando_horario": 92,
   "pendente_local": 1
  },
- "cobertura_percentual": 96.6,
+ "cobertura_percentual": 96.7,
  "a_disparar": [
-  "motor-patrocinio",
-  "motor-gife"
+  "motor-gife",
+  "plat-piloto-aberto",
+  "motor-patrocinio"
  ],
  "esgotaram_tentativas": [],
  "dia_fechado": false,
@@ -34,13 +35,13 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 4.45,
+   "prioridade": 4.4235,
    "diagnostico": "falha_parcial",
-   "livros_com_abertura_proxima": 214,
+   "livros_com_abertura_proxima": 213,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "aguardando_horario",
+   "cobertura": "completa",
    "tentativas_hoje": 0
   },
   {
