@@ -1,208 +1,16 @@
 {
- "em": "2026-10-04T05:48:49+00:00",
+ "em": "2026-10-04T07:04:57+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1810,
  "positivos": 715,
- "pendentes": 358,
- "calibracao": {
-  "temperatura": 9.25,
-  "perda_log_antes": 1.6462,
-  "perda_log_depois": 0.4975
- },
+ "pendentes": 361,
  "validacao_cruzada": {
   "auc": 0.829,
   "precisao": 0.721,
   "revocacao": 0.622,
   "brier": 0.1647
  },
- "linha_de_base_regras": {
-  "auc": 0.492,
-  "precisao": 0.391,
-  "revocacao": 0.917,
-  "brier": 0.5978
- },
- "rotulos_suspeitos": [
-  {
-   "titulo": "Prêmio Guardiãs FNRB",
-   "url": "https://www.gov.br/mma/pt-br/assuntos/bioeconomia/patrimonio-genetico/reparticao-de-beneficios/premio-guardias-da-sociobiodiversidade",
-   "decisao": "real",
-   "rede": 0.014
-  },
-  {
-   "titulo": "Aviso de Chamamento Público – Complexo Serra Dourada",
-   "url": "https://goias.gov.br/esporte/aviso-de-chamamento-publico-complexo-serra-dourada",
-   "decisao": "real",
-   "rede": 0.019
-  },
-  {
-   "titulo": "CONSORCIO INTERMUNICIPAL MULTIFINALITARIO DA REGIAO DA AMFRI - CIM-AMFRI — CHAMAMENTO PÚBLICO, para CREDENCIAMENTO ELETRÔNICO de pessoas jur",
-   "url": "https://pncp.gov.br/app/editais/32980376000104/2026/29",
-   "decisao": "real",
-   "rede": 0.022
-  },
-  {
-   "titulo": "Diário Oficial de Londrina (PR) 2026-09-11 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/4113700/2026-09-11/3394cc476309a156b88189575183d884455657ec.pdf",
-   "decisao": "real",
-   "rede": 0.025
-  },
-  {
-   "titulo": "Diário Oficial de Alagoinhas (BA) 2026-09-28 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/2900702/2026-09-28/e4fb235782027e28c5a644900e63b3548d46cc7b.pdf",
-   "decisao": "real",
-   "rede": 0.03
-  },
-  {
-   "titulo": "ODS 17 – Parcerias",
-   "url": "https://observatorio3setor.org.br/ods/ods-17",
-   "decisao": "descartada",
-   "rede": 0.969
-  },
-  {
-   "titulo": "MUNICIPIO DE TUBARAO — [Portal de Compras Públicas] - Credenciamento de empresas para prestação de serviços de acolhimento institucional de ",
-   "url": "https://pncp.gov.br/app/editais/82928656000133/2026/245",
-   "decisao": "descartada",
-   "rede": 0.963
-  },
-  {
-   "titulo": "Credenciamento de organizações da sociedade civil, para fins de habilitação prévia e composição de cadastro de parceiros aptos a propor, est",
-   "url": "https://pncp.gov.br/app/editais/18299670000116/2026/59",
-   "decisao": "real",
-   "rede": 0.041
-  },
-  {
-   "titulo": "Diário Oficial de Macaé (RJ) 2026-09-22 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/3302403/2026-09-22/37ca40098b7c456e4e815f686cebe348d3a16f77.pdf",
-   "decisao": "real",
-   "rede": 0.047
-  },
-  {
-   "titulo": "Convênios e parcerias",
-   "url": "https://goias.gov.br/esporte",
-   "decisao": "real",
-   "rede": 0.049
-  },
-  {
-   "titulo": "Como Solicitar uma Doação",
-   "url": "https://climaesociedade.org/como-solicitar-uma-doacao",
-   "decisao": "real",
-   "rede": 0.053
-  },
-  {
-   "titulo": "Editais de Destinação de Recursos ou Bens",
-   "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-   "decisao": "real",
-   "rede": 0.058
-  },
-  {
-   "titulo": "Diário Oficial de Campo Mourão (PR) 2026-09-22 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/4104303/2026-09-22/cfcacca93f18232b715a151f26dd58b1dd53dce5.pdf",
-   "decisao": "real",
-   "rede": 0.065
-  },
-  {
-   "titulo": "Diário Oficial de Campo Mourão (PR) 2026-09-11 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/4104303/2026-09-11/af8dc0de0aa9c537cb17d94196e4032f6f20ed11.pdf",
-   "decisao": "real",
-   "rede": 0.065
-  },
-  {
-   "titulo": "Diário Oficial de Florianópolis (SC) 2026-09-18 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/4205407/2026-09-18/df6ad72f6266a4c151d35d538dfc3fbf0210f79a.pdf",
-   "decisao": "real",
-   "rede": 0.066
-  },
-  {
-   "titulo": "Edital 2 | Seleção de OSCs para desenvolver ações nos territórios",
-   "url": "https://unaids.org.br/edital-2-acoes-comunitarias-nos-territorios",
-   "decisao": "real",
-   "rede": 0.07
-  },
-  {
-   "titulo": "Convênios e parcerias",
-   "url": "https://goias.gov.br/esporte/dispensa-de-licitacoes",
-   "decisao": "descartada",
-   "rede": 0.928
-  },
-  {
-   "titulo": "MINAS GERAIS SECRETARIA DE ESTADO DA EDUCACAO — Reabertura do Edital de Credenciamento SEE nº 02/2025 - Credenciamento de instituições públi",
-   "url": "https://pncp.gov.br/app/editais/18715599000105/2026/622",
-   "decisao": "real",
-   "rede": 0.074
-  },
-  {
-   "titulo": "Eventos e Prêmios",
-   "url": "https://www.gov.br/governodigital/pt-br/capacitacao/eventos-e-premios",
-   "decisao": "descartada",
-   "rede": 0.925
-  },
-  {
-   "titulo": "Política Nacional Aldir Blanc - PNAB",
-   "url": "https://goias.gov.br/cultura/pnab",
-   "decisao": "descartada",
-   "rede": 0.925
-  },
-  {
-   "titulo": "Diário Oficial de Santa Cruz Cabrália (BA) 2026-09-11 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/2927705/2026-09-11/ba32b6f165220b8bad2ee2d423d480613091b269.pdf",
-   "decisao": "real",
-   "rede": 0.076
-  },
-  {
-   "titulo": "MUNICIPIO DE IGUAPE — Credenciamento de Instituições de Longa Permanência para Idosos(ILPIs), classificadas nos Graus I, II e III de complex",
-   "url": "https://pncp.gov.br/app/editais/45550167000164/2026/492",
-   "decisao": "real",
-   "rede": 0.079
-  },
-  {
-   "titulo": "MUNICIPIO DE CONFINS — CHAMADA PÚBLICA PARA CREDENCIAMENTO DE ARTISTAS, BANDAS, GRUPOS CULTURAIS, COLETIVOS ARTÍSTICOS, PROFISSIONAIS DO AUD",
-   "url": "https://pncp.gov.br/app/editais/01006232000110/2026/40",
-   "decisao": "real",
-   "rede": 0.08
-  },
-  {
-   "titulo": "Diário Oficial de Santa Cruz Cabrália (BA) 2026-08-18 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/2927705/2026-08-18/e412e2b0b2d6472e29b436233d0a3b5f6ab924e5.pdf",
-   "decisao": "real",
-   "rede": 0.085
-  },
-  {
-   "titulo": "12ª edição do Prêmio Fundação Banco do Brasil de Tecnologia Social recebe inscrições",
-   "url": "https://captadores.org.br/editais/12a-edicao-do-premio-fundacao-banco-do-brasil-de-tecnologia-social-recebe-inscricoes",
-   "decisao": "real",
-   "rede": 0.088
-  },
-  {
-   "titulo": "Entidades Assistenciais",
-   "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
-   "decisao": "descartada",
-   "rede": 0.912
-  },
-  {
-   "titulo": "Diário Oficial de Feira de Santana (BA) 2026-09-29 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/2910800/2026-09-29/92632ec5e8d9356c93597839a21c8374fd65d2e3.pdf",
-   "decisao": "real",
-   "rede": 0.089
-  },
-  {
-   "titulo": "Secretaria de Fomento e Incentivo à Cultura",
-   "url": "https://www.gov.br/cultura/pt-br/composicao/secretaria-de-economia-criativa-e-fomento-cultural",
-   "decisao": "descartada",
-   "rede": 0.91
-  },
-  {
-   "titulo": "Comunicação para Ação Climática no Brasil",
-   "url": "https://climaesociedade.org/edital/comunicacao-para-acao-climatica-no-brasil",
-   "decisao": "real",
-   "rede": 0.093
-  },
-  {
-   "titulo": "Diário Oficial de Vinhedo (SP) 2026-09-14 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/3556701/2026-09-14/df0de3249f9bc1eebf3cd7c171c828134923d796.pdf",
-   "decisao": "real",
-   "rede": 0.094
-  }
- ],
+ "modelo_treinado_em": "2026-10-04T05:48:49+00:00",
  "fila_de_validacao": [
   {
    "titulo": "SALA DO EMPREENDEDOR - ITABAIANINHA",
@@ -377,6 +185,12 @@
    "url": "https://www.ibermusicas.org/index.php/convocatorias/",
    "nota": 0.527,
    "incerteza": 0.946
+  },
+  {
+   "titulo": "CHAMADA FAPESPA Nº 005/2025 – PROGRAMA TECNOVA III Subvenção Econômica à Inovação",
+   "url": "https://www.fapespa.pa.gov.br/2026/09/28/chamada-fapespa-no-005-2025-programa-tecnova-iii-subvencao-economica-a-inovacao",
+   "nota": 0.47,
+   "incerteza": 0.94
   },
   {
    "titulo": "Cursos Leis de Incentivo",
@@ -556,12 +370,6 @@
    "titulo": "[Portal de Compras Públicas] - Chamamento Público nº 06/2026 – Seleção de Organização Social para a prestação de serviços técnicos especiali",
    "url": "https://www.portaldecompraspublicas.com.br/processos/RS/Prefeitura-Municipal-de-Sao-Lourenco-do-Sul-1026/CRED-06-2026-2026-513843",
    "nota": 0.443,
-   "incerteza": 0.885
-  },
-  {
-   "titulo": "MMA (meio ambiente) — AVISO DO CHAMAMENTO PÚBLICO Nº 3/2026",
-   "url": "https://www.in.gov.br/web/dou/-/aviso-do-chamamento-publico-n-3/2026-733656174",
-   "nota": 0.557,
    "incerteza": 0.885
   }
  ],
