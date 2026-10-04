@@ -15,32 +15,32 @@ Página oficial: https://pncp.gov.br/app/editais/02367597000132/2023/423
 
 - Objeto: confirmado — Chamamento 003/2023 – Agentes culturais de audiovisual (LPG)
 - Prazo de inscrição: confirmado — 13/11/2023 a 19/12/2023
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: confirmado — R$ 11.279,91
 - Órgão / financiador: confirmado — Município de Alvorada do Norte
 - Território: confirmado — GO
 - Esfera: confirmado — municipal
 - Requisitos: nao_localizado (está no PDF do edital (não lido))
 - Anexos: confirmado — 9 arquivos (errata, homologação, ata, termo de dispensa)
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Destinação: catalogo — tipo: Chamamento público; público: Artistas e produtores culturais
+- Área de atuação: catalogo — Cultura
 
 ### 2024-10 — Realização de Chamamento Público visando a Seleção de Agentes Culturais de Audiovisual que tenham prestado relevante contribuição ao desenvolvimento artístico ou cultural do Municí
 Página oficial: https://pncp.gov.br/app/editais/02367597000132/2023/423
 
 - Objeto: confirmado — Chamamento 003/2023 – Agentes culturais de audiovisual (LPG)
 - Prazo de inscrição: confirmado — 13/11/2023 a 19/12/2023
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: confirmado — R$ 11.279,91
 - Órgão / financiador: confirmado — Município de Alvorada do Norte
 - Território: confirmado — GO
 - Esfera: confirmado — municipal
 - Requisitos: nao_localizado (está no PDF do edital (não lido))
 - Anexos: confirmado — 9 arquivos (errata, homologação, ata, termo de dispensa)
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Destinação: catalogo — tipo: Chamamento público; público: Artistas e produtores culturais
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 

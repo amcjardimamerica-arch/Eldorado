@@ -89,7 +89,52 @@ def _item_status(nome: str, ed: dict, x: dict, reg: str) -> dict:
     disp = (matriz().get("regimes", {}).get(reg, {}).get("itens") or {}).get(nome)
     if disp:
         return {"estado": "dispensa_tipo", "valor": None, "porque": disp.get("porque"), "confianca": disp.get("confianca")}
-    return {"estado": "nao_localizado", "valor": None}
+    d = _derivado(nome, x)
+    if d:
+        return d
+    return {"estado": "nao_localizado", "valor": None, "porque": _PORQUE.get(nome, "Não consta na página lida da edição; leitura do edital/anexos pendente.")}
+
+
+_PORQUE = {
+    "Resultado": "A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.",
+    "Prazo de recurso": "O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.",
+    "Valor": "O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.",
+    "Requisitos": "Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.",
+    "Anexos": "A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.",
+}
+
+
+def _derivado(nome: str, x: dict) -> dict | None:
+    """Itens que o catálogo do livro já sabe (esfera, área, destinação/público, órgão), marcados como derivados do catálogo."""
+    org = str(x.get("orgao") or "")
+    if nome == "Esfera":
+        e = x.get("esfera") or x.get("abrangencia")
+        if not e:
+            if re.search(r"prefeitura|munic[íi]pi|c[âa]mara municipal|fundo municipal", org, re.I):
+                e = "Municipal"
+            elif re.search(r"estado|governo de|secult|goi[áa]s|seds|secretaria de estado", org, re.I) and not re.search(r"minist", org, re.I):
+                e = "Estadual"
+            elif re.search(r"minist[ée]rio|gov\.br|federal|funarte|bndes|iphan|ibama|mma|minc|embratur|anvisa|caixa", org, re.I):
+                e = "Federal"
+            elif re.search(r"funda[cç][ãa]o|instituto|banco|seguros|ita[úu]|petrobras|vale|ong|associa", org, re.I):
+                e = "Privada/terceiro setor"
+        if e:
+            return {"estado": "catalogo", "valor": str(e), "fonte": "catálogo do livro (esfera/abrangência/órgão)"}
+    if nome == "Área de atuação":
+        a = x.get("objeto_area") or x.get("area_atuacao") or x.get("segmento")
+        if a:
+            return {"estado": "catalogo", "valor": str(a), "fonte": "catálogo do livro (área do objeto)"}
+    if nome == "Destinação":
+        t = x.get("tipo_objeto"); pub = x.get("publico")
+        if t or pub:
+            pub = ", ".join(pub) if isinstance(pub, list) else (pub or "")
+            return {"estado": "catalogo", "valor": "; ".join(v for v in [f"tipo: {t}" if t else "", f"público: {pub}" if pub else ""] if v),
+                    "fonte": "catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital"}
+    if nome == "Órgão / financiador":
+        v = x.get("orgao") or x.get("municipio")
+        if v:
+            return {"estado": "catalogo", "valor": str(v)}
+    return None
 
 
 def _itens_por_pagina() -> dict:

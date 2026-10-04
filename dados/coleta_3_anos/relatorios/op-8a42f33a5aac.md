@@ -15,16 +15,16 @@ Página oficial: https://pncp.gov.br/app/editais/11420595000150/2024/14
 
 - Objeto: confirmado — CHAMAMENTO DE INTERESSADOS PARA CREDENCIAMENTO PARA CONTRATAÇÃO DE PRESTAÇÃO DE SERVIÇOS DE ACOLHIMENTO/LONGA PERMANÊNCI (edição PNCP 2024/14)
 - Prazo de inscrição: confirmado — 2024-12-04 a 2024-12-06
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
 - Órgão / financiador: confirmado — CNPJ 11420595000150 (órgão publicador no PNCP)
 - Território: catalogo — SC
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Credenciamento; público: OSC e associações
+- Área de atuação: catalogo — Saúde
 
 ## Conselho de 7 lentes
 

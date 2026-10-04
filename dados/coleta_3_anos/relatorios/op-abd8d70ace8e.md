@@ -15,16 +15,16 @@ Página oficial: https://pncp.gov.br/app/editais/01068030000100/2024/291
 
 - Objeto: confirmado — Edital Municipal da Política Nacional Aldir Blanc
 - Prazo de inscrição: confirmado — 25/11/2024 a 02/12/2024
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: confirmado — R$ 170.164,75
 - Órgão / financiador: confirmado — Município de Silvânia
 - Território: confirmado — GO
 - Esfera: confirmado — municipal
 - Requisitos: nao_localizado (está no PDF do edital (não lido))
 - Anexos: confirmado — 15 arquivos (inclui Anexo VIII formulário de recurso)
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 

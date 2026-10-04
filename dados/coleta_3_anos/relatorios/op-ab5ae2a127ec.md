@@ -16,20 +16,20 @@ Página oficial: https://goias.gov.br/social/edital-de-chamamento-cpago-gestao-2
 - Objeto: confirmado — Edital de Chamamento — Comitê de Participação de Adolescente de Goiás, biênio 2025-2026
 - Prazo de inscrição: confirmado — 2024-08-19 a ?
 - Resultado: confirmado — homologação do resultado final da seleção
-- Prazo de recurso: nao_localizado
-- Valor: nao_localizado
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
+- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
 - Órgão / financiador: catalogo — Goiás Social
 - Território: catalogo — GO
-- Esfera: nao_localizado
-- Requisitos: nao_localizado
+- Esfera: catalogo — estadual
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
 - Anexos: confirmado — ofício de indicação de adolescentes titulares e suplente
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações
+- Área de atuação: catalogo — Geral
 
 ## Conselho de 7 lentes
 
 - extremamente pessimista: Com 1 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
-- pessimista: Itens ainda não lidos nas edições: Prazo de recurso, Valor, Esfera. Sem eles, requisitos e anexos da próxima podem diferir.
+- pessimista: Itens ainda não lidos nas edições: Prazo de recurso, Valor, Requisitos. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
 - neutro: Situação: validado_parcial. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 1 ano(s) (2024) já dá referência de calendário e de valor.

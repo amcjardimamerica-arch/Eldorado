@@ -15,16 +15,16 @@ Página oficial: https://pncp.gov.br/app/editais/01006232000110/2024/69
 
 - Objeto: confirmado — CHAMAMENTO PÚBLICO POR CREDENCIAMENTO PARA PREMIAÇÃO DE AGENTE CULTURAL, ATIVIDADES OU AÇÕES DE CULTURA DO MUNICÍPIO DE CONFINS, NOS TERMOS DOS RECURSOS DA POLÍTICA NACIONAL ALDIR 
 - Prazo de inscrição: confirmado — 2024-12-02 a ?
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
 - Órgão / financiador: catalogo — PNCP — MUNICIPIO DE CONFINS
 - Território: catalogo — MG
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Credenciamento; público: OSC e associações
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 

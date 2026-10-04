@@ -16,15 +16,15 @@ Página oficial: https://goias.gov.br/social/conselho-estadual-dos-direitos-da-c
 - Objeto: confirmado — Edital de convocação — representantes da sociedade civil no CEDCA
 - Prazo de inscrição: confirmado — 07/10 a 01/11/2024
 - Resultado: confirmado — 08/11/2024, no Diário Oficial do Estado (organizações aptas)
-- Prazo de recurso: nao_localizado
-- Valor: nao_localizado
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
+- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
 - Órgão / financiador: catalogo — Fundo Estadual dos Direitos da Pessoa Idosa Goiás
 - Território: catalogo — GO
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Chamamento público; público: Crianças e adolescentes
+- Área de atuação: catalogo — Pessoa idosa
 
 ## Conselho de 7 lentes
 
