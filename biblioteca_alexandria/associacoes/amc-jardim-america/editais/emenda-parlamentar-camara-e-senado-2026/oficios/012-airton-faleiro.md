@@ -1,4 +1,4 @@
-Ofício nº 012/2026 – AMC-JA      Goiânia, 03 de outubro de 2026.
+Ofício nº 012/2026 – AMC-JA      Goiânia, 04 de outubro de 2026.
 
 Ao Excelentíssimo Senhor
 
