@@ -1,13 +1,13 @@
-# Pacote do conselho — validação do Claude (2026-10-02, últimos 3 dias)
+# Pacote do conselho — validação do Claude (2026-10-04, últimos 3 dias)
 
 Piloto: modelo **qwen3-8b**. Ao responder, o Claude anota o modelo com que trabalhou.
 
 ## O que o Piloto fez
 
-- 2026-09-29T23:54 — Esquadrilha 2026-09-29 (Qwen3-8B): 7 missão(ões) — 7 alvo(s) novo(s) abatido(s), 7 proposta(s) ao todo, 3.8 min de voo.
-- 2026-09-30T23:59 — Esquadrilha 2026-09-30 (Qwen3-8B): 7 missão(ões) — 9 alvo(s) novo(s) abatido(s), 9 proposta(s) ao todo, 5.8 min de voo.
 - 2026-10-01T23:56 — Esquadrilha 2026-10-01 (Qwen3-8B): 7 missão(ões) — 6 alvo(s) novo(s) abatido(s), 6 proposta(s) ao todo, 2.3 min de voo.
-- 2026-10-02T13:07 — Esquadrilha 2026-10-02 (Qwen3-8B): 7 missão(ões) — 9 alvo(s) novo(s) abatido(s), 9 proposta(s) ao todo, 4.3 min de voo.
+- 2026-10-02T23:57 — Esquadrilha 2026-10-02 (Qwen3-8B): 7 missão(ões) — 12 alvo(s) novo(s) abatido(s), 12 proposta(s) ao todo, 4.4 min de voo.
+- 2026-10-03T23:57 — Esquadrilha 2026-10-03 (Qwen3-8B): 7 missão(ões) — 7 alvo(s) novo(s) abatido(s), 7 proposta(s) ao todo, 4.6 min de voo.
+- 2026-10-04T12:36 — Esquadrilha 2026-10-04 (Qwen3-8B): 7 missão(ões) — 5 alvo(s) novo(s) abatido(s), 5 proposta(s) ao todo, 4.5 min de voo.
 
 ## Relatório de aprendizado e bloqueios (0)
 
