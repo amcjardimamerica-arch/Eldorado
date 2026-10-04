@@ -185,6 +185,11 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
          "o_que_procurar": (r or {}).get("o_que_procurar") or [],
          "nivel": (r or {}).get("nivel") or "nacional",
          "resultado": {"achados": None}}
+    # 04/10: o modelo devolvia o TEXTO DO EXEMPLO ("a pergunta que orienta o voo") em 396 de 400 voos — eco do modelo vale
+    # como pergunta vazia: o rumo sai do catálogo de ângulos
+    _p = re.sub(r"\s+", " ", str(b["pergunta_de_pesquisa"] or "")).strip().lower()
+    if len(_p) < 20 or _p in ("a pergunta que orienta o voo", "pergunta", "q") or "orienta o voo" in _p:
+        b["pergunta_de_pesquisa"] = None
     if not b["pergunta_de_pesquisa"]:
         # REDE DE SEGURANÇA COM RUMO DE VERDADE (23/09). Antes ela devolvia sempre a mesma
         # pergunta genérica: em 12 voos houve 2 apostas distintas, porque o modelo ficou mudo

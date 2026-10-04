@@ -13,7 +13,7 @@ class Teste(unittest.TestCase):
             if not arq.exists():
                 continue                                   # motores que saíram do painel (agregados)
             s = arq.read_text(encoding="utf-8")
-            for sec in ("## 1.", "## 2.", "## 3.", "## 4.", "## 5.", "## 6."):
+            for sec in ("## 1.", "## 2.", "## 3.", "## 4.", "## 5.", "## 6. Quem executa", "## 7."):
                 self.assertIn(sec, s, mid)
             lig = (SM.get(mid) or SM.get("plat-" + mid) or {}).get("skills") or []
             self.assertIn(f"motores/por_motor/{mid}", lig, mid)

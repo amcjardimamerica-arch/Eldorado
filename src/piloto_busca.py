@@ -520,6 +520,36 @@ def inedita(c: str, usadas: list[str], teto: float | None = None) -> bool:
     return all(_similar(c, u) < teto for u in usadas)
 
 
+UF_SIGLAS = "ac al am ap ba ce df es ma mg ms mt pa pb pe pi pr rj rn ro rr rs sc se sp to".split()
+_GO = re.compile(r"\bgoi[aá]s\b|goi[aâ]nia|an[aá]polis|aparecida de goi|rio verde|catal[aã]o|luzi[aâ]nia|senador canedo|\bgo\b ?- ?brasil", re.I)
+_BR = re.compile(r"todo o (territ[oó]rio )?(nacional|brasil)|abrang[eê]ncia nacional|em todo o pa[ií]s|todas as regi[oõ]es|organiza[cç][oõ]es de todo o brasil|edital nacional", re.I)
+_INT_BR = re.compile(r"\bbrazil\b|\bbrasil\b|latin america|am[eé]rica latina|worldwide|global call|all countries|any country|todos os pa[ií]ses", re.I)
+
+
+def territorio(url: str, texto: str = "") -> str:
+    """04/10 (titular): o Espião foca em GOIÁS, no que vale para TODO O BRASIL e no INTERNACIONAL aberto ao Brasil.
+    GO · BR · INT · fora (outro estado, ou internacional sem o Brasil)."""
+    h = (urllib.parse.urlsplit(url or "").hostname or "").lower()
+    t = (texto or "")[:6000]
+    if h.endswith(".go.gov.br") or h.endswith(".go.leg.br") or "goias" in h or "goiania" in h or _GO.search(t):
+        return "GO"
+    m = re.search(r"\.([a-z]{2})\.(gov|leg|jus|mp)\.br$", h)
+    if m and m.group(1) in UF_SIGLAS:
+        return "BR" if _BR.search(t) else "fora"
+    if h.endswith(".br") or h.endswith("gov.br"):
+        return "BR"
+    return "INT" if _INT_BR.search(t) else "fora"
+
+
+def foco_da_consulta(consulta: str, n: int) -> str:
+    """Consulta sem território ganha o foco, em rodízio: Goiás → nacional → internacional aberto ao Brasil."""
+    if re.search(r"goi[aá]s|goi[aâ]nia|nacional|brasil|brazil|international|internacional", consulta, re.I):
+        return consulta
+    foco = (load_json(CFG).get("espiao") or {}).get("foco_territorial") or {}
+    suf = foco.get("sufixos") or ["Goiás", "nacional todo o Brasil", "internacional elegível Brasil"]
+    return f"{consulta} {suf[n % len(suf)]}"
+
+
 def caçar(ia, angulo: dict, conhecidos: set[str], max_consultas: int = 3, max_paginas: int = 4) -> tuple[list[dict], str, list[str]]:
     """O voo completo: o Piloto cria as consultas, busca, lê e decide.
     Devolve (achados, lição, consultas usadas)."""
@@ -553,6 +583,7 @@ def caçar(ia, angulo: dict, conhecidos: set[str], max_consultas: int = 3, max_p
         consultas = [re.sub(r"\s+", " ", angulo["pergunta"])[:100] + " " + tempero]
     # 2) BUSCA DE VERDADE
     brutos, vistos = [], set()
+    consultas = [foco_da_consulta(c, len(usadas) + k) for k, c in enumerate(consultas)]   # 04/10: GO → BR → INT
     for c in consultas:
         for it in buscar(c, 8):
             if it["url"] in vistos:
@@ -602,7 +633,8 @@ def caçar(ia, angulo: dict, conhecidos: set[str], max_consultas: int = 3, max_p
                         "quem_pode": str(c.get("quem_pode") or "")[:120], "valor": str(c.get("valor") or "")[:90],
                         "recorrente": bool(c.get("recorrente")), "onde_inscrever": c.get("onde_inscrever"),
                         "consulta": b["consulta"][:90], "confirmado_na_pagina": ok,
-                        "novo": ok and _oficial(b["url"]) and chave not in conhecidos})
+                        "territorio": (terr := territorio(b["url"], texto)),
+                        "novo": ok and _oficial(b["url"]) and chave not in conhecidos and terr in ("GO", "BR", "INT")})
     novos = sum(1 for a in achados if a["novo"])
     abertas = sum(1 for a in achados if a.get("situacao") == "aberta")
     arquiv = sum(1 for a in achados if a.get("situacao") == "arquivada")

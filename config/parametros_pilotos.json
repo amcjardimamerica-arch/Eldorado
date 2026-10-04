@@ -473,7 +473,25 @@
   "estrategias_anteriores": [],
   "max_buscas_duckduckgo_por_voo_local": 30,
   "intervalo_busca_local_s": 6.0,
-  "max_buscas_ponte_por_voo": 3
+  "max_buscas_ponte_por_voo": 3,
+  "foco_territorial": {
+   "regra": "04/10/2026 (titular): o Espião pesquisa oportunidades de GOIÁS, as que valem para TODO O BRASIL e as INTERNACIONAIS abertas ao Brasil; outro estado e internacional sem o Brasil ficam registrados, mas não contam como novos",
+   "territorios": [
+    "GO",
+    "BR",
+    "INT"
+   ],
+   "sufixos": [
+    "Goiás",
+    "nacional todo o Brasil",
+    "internacional elegível Brasil"
+   ],
+   "pesos": {
+    "GO": 0.5,
+    "BR": 0.3,
+    "INT": 0.2
+   }
+  }
  },
  "atualizado_em": "2026-10-04T17:16:43+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
