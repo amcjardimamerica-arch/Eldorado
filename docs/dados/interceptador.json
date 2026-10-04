@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-04T21:46:12+00:00",
+  "em": "2026-10-04T22:03:23+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-04T21:31:29+00:00",
+  "ultimo_voo": "2026-10-04T21:48:58+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,85 @@
     "empresas sem ficha": 118
   },
   "acumulado": {
-    "missoes": 311,
+    "missoes": 312,
     "validadas": 3,
     "parciais": 82,
-    "insuficientes": 226,
+    "insuficientes": 227,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 48,
-      "sim": 205
+      "sim": 206
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
     "tempo_medio_min": 12.3
   },
   "missoes": [
+    {
+      "em": "2026-10-04T21:48:58+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Pernambuco — Projetos sociais recebem R$ 360 mil de verba pecuniária em Pernambuco — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 3,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "pagina_oficial": "https://cnj15anos.cnj.jus.br",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O valor e o órgão financiador foram comprovados, indicando que a verba está disponível para projetos sociais.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria apresentar um projeto alinhado à área de assistência social, comprovando sua capacidade de execução e impacto social.",
+        "proximo_passo": "Consultar os requisitos e o edital completo para submeter a proposta de acordo com as normas estabelecidas.",
+        "risco": "A falta de informações sobre requisitos e prazos pode impedir a participação efetiva da associação."
+      },
+      "erro": null,
+      "segundos": 864,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 1,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-9b56a1195028",
+      "encontrou": {
+        "Valor": {
+          "valor": "R$ 360 mil",
+          "trecho": "R$ 360 mil de verba pecuniária",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Conselho Nacional de Justiça",
+          "trecho": "Conselho Nacional de Justiça",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "assistencia_social",
+          "trecho": "Projetos sociais",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "CNJ",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador"
+      ]
+    },
     {
       "em": "2026-10-04T21:31:29+00:00",
       "modo": "validar",
@@ -2394,33 +2458,6 @@
         "site_do_financiador",
         "site_do_financiador_edital"
       ]
-    },
-    {
-      "em": "2026-10-04T10:24:36+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Edital nº 18/2023 - ocupa goiás - lei paulo gustavo — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "o modelo não devolveu JSON",
-      "segundos": 948,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: o modelo não devolveu JSON",
-      "id": "op-op-01ac9ac0bf13",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
     }
   ]
 }
