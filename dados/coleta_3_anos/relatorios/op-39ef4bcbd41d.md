@@ -15,16 +15,16 @@ Página oficial: https://mapa.cultura.gov.br/oportunidade/5069/
 
 - Objeto: confirmado — PRESTAÇÃO DE INFORMAÇÕES - Edital de Patrocínio MINC/SECOM-PR nº 1/2024 - Cultura Viva - Apoio Cultural às Rád (edição anterior: 5069)
 - Prazo de inscrição: confirmado — 2024-09-16 a 2024-10-07
-- Resultado: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
 - Prazo de recurso: dispensa_tipo (regulamento privado não é obrigado a ter fase de recurso (a Lei 13.019 rege parcerias com a administração pública, não patrocínio privado))
-- Valor: nao_localizado
-- Órgão / financiador: nao_localizado
+- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
+- Órgão / financiador: nao_localizado (Não consta na página lida da edição; leitura do edital/anexos pendente.)
 - Território: catalogo — BR
 - Esfera: catalogo — Brasil
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Doação/patrocínio; público: OSC e associações
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 

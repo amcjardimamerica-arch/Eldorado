@@ -16,15 +16,15 @@ Página oficial: https://goias.gov.br/social/edital-de-chamamento-cpago-gestao-2
 - Objeto: confirmado — Edital de Chamamento — Comitê de Participação de Adolescente de Goiás, biênio 2025-2026
 - Prazo de inscrição: confirmado — 2024-08-19 a ?
 - Resultado: confirmado — homologação do resultado final da seleção
-- Prazo de recurso: nao_localizado
-- Valor: nao_localizado
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
+- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
 - Órgão / financiador: catalogo — Fundo Estadual dos Direitos da Pessoa Idosa Goiás
 - Território: catalogo — GO
 - Esfera: catalogo — Brasil
-- Requisitos: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
 - Anexos: confirmado — ofício de indicação de adolescentes titulares e suplente
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações
+- Área de atuação: catalogo — Pessoa idosa
 
 ## Conselho de 7 lentes
 

@@ -15,32 +15,32 @@ Página oficial: https://mapacultural.secult.ce.gov.br/oportunidade/5256/
 
 - Objeto: confirmado — CENA OCUPA: Convocatória de Ocupação Artística (edição anterior: 5256)
 - Prazo de inscrição: confirmado — 2024-06-07 a 2024-06-23
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
-- Valor: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
+- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
 - Órgão / financiador: catalogo — Mapa Cultural
 - Território: catalogo — CE
-- Esfera: nao_localizado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Esfera: catalogo — estadual
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Edital; público: Artistas e produtores culturais
+- Área de atuação: catalogo — Cultura
 
 ### 2025-08 — CENA OCUPA: Convocatória de Ocupação Artística (edição anterior: 7036)
 Página oficial: https://mapacultural.secult.ce.gov.br/oportunidade/7036/
 
 - Objeto: confirmado — CENA OCUPA: Convocatória de Ocupação Artística (edição anterior: 7036)
 - Prazo de inscrição: confirmado — 2025-08-21 a 2025-09-10
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
-- Valor: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
+- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
 - Órgão / financiador: catalogo — Mapa Cultural
 - Território: catalogo — CE
-- Esfera: nao_localizado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Esfera: catalogo — estadual
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Edital; público: Artistas e produtores culturais
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 

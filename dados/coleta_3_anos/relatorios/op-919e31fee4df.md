@@ -15,16 +15,16 @@ Página oficial: https://pncp.gov.br/app/editais/04153748000185/2025/4
 
 - Objeto: confirmado — Chamamento Público para credenciar instituições interessadas na DOAÇÃO DE BENS MÓVEIS considerados INSERVÍVEIS ou ANTIECONÔMICOS à Administração, sem ônus ao donatário, de possívei
 - Prazo de inscrição: confirmado — 2025-02-05 a ?
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (doação de bens: o que se recebe é o bem, avaliado pelo órgão, não um valor de edital)
 - Órgão / financiador: catalogo — PNCP — PROCURADORIA GERAL DE JUSTICA DO ESTADO DO AMAZONAS
 - Território: catalogo — AM
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações
+- Área de atuação: catalogo — Meio ambiente
 
 ## Conselho de 7 lentes
 

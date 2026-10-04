@@ -15,16 +15,16 @@ Página oficial: https://pncp.gov.br/app/editais/08167306000149/2024/58
 
 - Objeto: confirmado — credenciamento de instituições reconhecidas como Organizações da Sociedade Civil (OSC) junto à Secretaria Municipal de Saúde para possíveis e futuras parcerias na seguinte área GER
 - Prazo de inscrição: confirmado — 2024-06-05 a ?
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
 - Órgão / financiador: catalogo — PNCP — MUNICIPIO DE NISIA FLORESTA
 - Território: catalogo — RN
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Credenciamento; público: OSC e associações
+- Área de atuação: catalogo — Saúde
 
 ## Conselho de 7 lentes
 

@@ -15,32 +15,32 @@ Página oficial: https://pncp.gov.br/app/editais/18314609000109/2024/16
 
 - Objeto: confirmado — O PRESENTE EDITAL DE CHAMAMENTO PÚBLICO TEM POR OBJETO O CREDENCIAMENTO DE ATRAÇÕES ARTÍSTICAS, NAS MODALIDADES ARTISTAS (edição PNCP 2024/16)
 - Prazo de inscrição: confirmado — 2024-07-11 a 2024-07-14
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
 - Órgão / financiador: confirmado — CNPJ 18314609000109 (órgão publicador no PNCP)
 - Território: catalogo — MG
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Credenciamento; público: Artistas e produtores culturais
+- Área de atuação: catalogo — Cultura
 
 ### 2025-05 — O PRESENTE EDITAL DE CHAMAMENTO PÚBLICO TEM POR OBJETO O CREDENCIAMENTO DE ATRAÇÕES ARTÍSTICAS, NAS MODALIDADES ARTISTAS (edição PNCP 2025/24)
 Página oficial: https://pncp.gov.br/app/editais/18314609000109/2025/24
 
 - Objeto: confirmado — O PRESENTE EDITAL DE CHAMAMENTO PÚBLICO TEM POR OBJETO O CREDENCIAMENTO DE ATRAÇÕES ARTÍSTICAS, NAS MODALIDADES ARTISTAS (edição PNCP 2025/24)
 - Prazo de inscrição: confirmado — 2025-05-27 a 2025-05-30
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
 - Órgão / financiador: confirmado — CNPJ 18314609000109 (órgão publicador no PNCP)
 - Território: catalogo — MG
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Credenciamento; público: Artistas e produtores culturais
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 
