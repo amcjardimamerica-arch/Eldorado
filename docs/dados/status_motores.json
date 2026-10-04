@@ -1,25 +1,25 @@
 {
- "gerado_em": "2026-10-04T05:56-03:00",
- "proxima_atualizacao": "2026-10-04T11:56-03:00",
+ "gerado_em": "2026-10-04T09:44-03:00",
+ "proxima_atualizacao": "2026-10-04T15:44-03:00",
  "a_cada_horas": 6,
  "regra": "STATUS DOS MOTORES A CADA 6 HORAS (titular, 01/10/2026) — monitoramento e tomada de decisão.\n\nPara cada motor regular: a data e a hora da ÚLTIMA LEITURA, o resultado e UMA de três luzes:\n  VERDE     coletou hoje (horário de Brasília), com dados ou sem dados novos\n  VERMELHO  a coleta de hoje teve erro ou falha\n  CINZA     o motor não rodou hoje (fora da agenda, aguardando coleta local, parado)",
  "contagem": {
-  "verde": 9,
-  "vermelho": 0,
-  "cinza": 33
+  "verde": 17,
+  "vermelho": 1,
+  "cinza": 24
  },
  "motores": [
   {
    "id": "do-goiania",
    "nome": "Diário Oficial do Município de Goiânia",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "verde",
+   "resultado": "coletou hoje — 1 achado(s) (atenção: 4 falha(s) na leitura: URLError: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:)",
    "leitura_do_dia": {
-    "estado": "pendente",
-    "texto": "o dia ainda não foi lido"
+    "estado": "parcial",
+    "texto": "dia lido em parte — 4 falha(s) na leitura: URLError: <urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-03T21:10-03:00",
+   "ultima_leitura": "2026-10-04T09:34-03:00",
    "agenda": "todos 06:23,12:53,20:23"
   },
   {
@@ -38,14 +38,14 @@
   {
    "id": "dou",
    "nome": "Diário Oficial da União",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos (atenção: 1 falha(s) na leitura: etapa: NameError: name 'tinha_estado' is not defined)",
    "leitura_do_dia": {
-    "estado": "pendente",
-    "texto": "o dia ainda não foi lido"
+    "estado": "parcial",
+    "texto": "dia lido em parte — 1 falha(s) na leitura: etapa: NameError: name 'tinha_estado' is not defined"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-03T21:12-03:00",
+   "ultima_leitura": "2026-10-04T09:35-03:00",
    "agenda": "todos 06:23,12:53,20:23"
   },
   {
@@ -119,36 +119,36 @@
   {
    "id": "judiciario-tjgo",
    "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos (atenção: 2 falha(s) na leitura: RSS página 1: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte B)",
    "leitura_do_dia": {
-    "estado": "pendente",
-    "texto": "o dia ainda não foi lido"
+    "estado": "parcial",
+    "texto": "dia lido em parte — 2 falha(s) na leitura: RSS página 1: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte B"
    },
    "observacoes": [
     "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular."
    ],
-   "ultima_leitura": "2026-10-03T16:32-03:00",
+   "ultima_leitura": "2026-10-04T09:35-03:00",
    "agenda": "todos 07:53,16:23"
   },
   {
    "id": "judiciario-cnj",
    "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
    "leitura_do_dia": {
-    "estado": "pendente",
-    "texto": "o dia ainda não foi lido"
+    "estado": "parcial",
+    "texto": "dia lido em parte — a leitura foi cortada pelo tempo — o restante volta na próxima passagem"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-03T09:17-03:00",
+   "ultima_leitura": "2026-10-04T09:36-03:00",
    "agenda": "todos 07:53"
   },
   {
    "id": "mpgo-destinacao",
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
    "leitura_do_dia": {
     "estado": "regra_fixa",
     "texto": "sem leitura automática: o site do MP-GO proíbe robôs. Leitura indireta pelo Diário do Estado: feita. Conferência manual mensal: ainda não registrada."
@@ -159,20 +159,20 @@
     "O site do MP-GO proíbe robôs (robots.txt 'Disallow: /'): o motor não lê o site; a conferência é manual, uma vez por mês.",
     "Histórico de 3 anos: só 2 registros públicos. Para completar, pedir ao COMPOR, pela Lei de Acesso à Informação, as destinações de 2023 a 2025 (área, valor, entidade)."
    ],
-   "ultima_leitura": "2026-10-03T10:48-03:00",
+   "ultima_leitura": "2026-10-04T09:35-03:00",
    "agenda": "todos 07:53"
   },
   {
    "id": "mptgo-destinacao",
    "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
    "leitura_do_dia": {
-    "estado": "pendente",
-    "texto": "o dia ainda não foi lido"
+    "estado": "completa",
+    "texto": "dia lido por completo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-03T16:32-03:00",
+   "ultima_leitura": "2026-10-04T09:35-03:00",
    "agenda": "todos 07:53,16:23"
   },
   {
@@ -235,14 +235,14 @@
   {
    "id": "salic",
    "nome": "Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "vermelho",
+   "resultado": "falha na coleta de hoje — nenhuma página leu · 3 achado(s) mesmo assim",
    "leitura_do_dia": {
-    "estado": "pendente",
-    "texto": "o dia ainda não foi lido"
+    "estado": "parcial",
+    "texto": "dia lido em parte — nenhuma página leu"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-03T20:09-03:00",
+   "ultima_leitura": "2026-10-04T09:40-03:00",
    "agenda": "todos 08:53,13:53,19:53"
   },
   {
@@ -276,40 +276,40 @@
   {
    "id": "cnpq-extensao",
    "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
    "leitura_do_dia": {
-    "estado": "pendente",
-    "texto": "o dia ainda não foi lido"
+    "estado": "completa",
+    "texto": "dia lido por completo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-03T15:45-03:00",
+   "ultima_leitura": "2026-10-04T09:40-03:00",
    "agenda": "todos 09:23,15:23"
   },
   {
    "id": "piloto-aberto",
    "nome": "Piloto - Espião — busca aberta no terceiro setor",
    "luz": "verde",
-   "resultado": "coletou hoje — 42 achado(s)",
+   "resultado": "coletou hoje — 23 achado(s)",
    "leitura_do_dia": {
     "estado": "completa",
     "texto": "dia lido por completo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-04T05:52-03:00",
+   "ultima_leitura": "2026-10-04T09:40-03:00",
    "agenda": "com o Piloto contínuo"
   },
   {
    "id": "estaduais-go-gov",
    "nome": "Oportunidade Estaduais Governamentais de Goiás",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "verde",
+   "resultado": "coletou hoje — 1 achado(s)",
    "leitura_do_dia": {
-    "estado": "pendente",
-    "texto": "o dia ainda não foi lido"
+    "estado": "parcial",
+    "texto": "dia lido em parte — 1 órgão(s) ainda não lido(s) hoje: seds — o maestro dispara de novo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-03T16:34-03:00",
+   "ultima_leitura": "2026-10-04T09:39-03:00",
    "agenda": "todos 09:23,15:23"
   },
   {
@@ -569,7 +569,7 @@
     "texto": "dia lido por completo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-04T05:17-03:00",
+   "ultima_leitura": "2026-10-04T08:50-03:00",
    "agenda": null
   }
  ]
