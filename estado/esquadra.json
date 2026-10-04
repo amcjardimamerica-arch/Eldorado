@@ -542,18 +542,18 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 66,
-      "achados_total": 2638,
+      "leituras": 67,
+      "achados_total": 2873,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-04T22:14:45+00:00",
+      "ultima": "2026-10-04T23:14:54+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 218,
+      "achados_ultima": 235,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
           "http": 200,
-          "bytes": 7165
+          "bytes": 6760
         },
         {
           "url": "https://pncp.gov.br/api/search/",
@@ -563,9 +563,9 @@
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 265,
-        "links_total": 8903,
-        "links_candidatos": 219,
+        "paginas_lidas": 271,
+        "links_total": 8498,
+        "links_candidatos": 236,
         "descobertas": [],
         "pdf_links": 0,
         "motivo_zero": null,
@@ -573,11 +573,16 @@
         "fontes": {
           "A": {
             "falhas": [],
-            "consultas": 218,
-            "itens": 7165,
+            "consultas": 224,
+            "itens": 6760,
             "ufs_lidas": [
               "GO",
               "DF",
+              "CE",
+              "ES",
+              "MA",
+              "MT",
+              "MS",
               "MG",
               "PA",
               "PB",
@@ -597,15 +602,12 @@
               "AL",
               "AP",
               "AM",
-              "BA",
-              "CE"
+              "BA"
             ],
-            "cortados": 28,
+            "cortados": 3,
             "paginas_pendentes": [
-              "MG/Credenciamento: páginas 41–53",
-              "PR/Credenciamento: páginas 21–21",
-              "RS/Credenciamento: páginas 21–27",
-              "BA/Credenciamento: páginas 21–27"
+              "SC/Credenciamento: páginas 21–22",
+              "SP/Credenciamento: páginas 21–21"
             ]
           },
           "B": {
@@ -624,6 +626,11 @@
           "ufs_lidas": [
             "GO",
             "DF",
+            "CE",
+            "ES",
+            "MA",
+            "MT",
+            "MS",
             "MG",
             "PA",
             "PB",
@@ -643,21 +650,20 @@
             "AL",
             "AP",
             "AM",
-            "BA",
-            "CE"
+            "BA"
           ],
           "proxima_comeca_em": null,
           "faltam_no_dia": []
         },
-        "cortados": 28,
+        "cortados": 3,
         "vereditos": {
-          "OPORTUNIDADE": 218,
+          "OPORTUNIDADE": 235,
           "ACOMPANHAR": 1,
-          "RUIDO": 8311,
+          "RUIDO": 7881,
           "quarentena": 0
         }
       },
-      "duracao_s": 901
+      "duracao_s": 918
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
@@ -3410,10 +3416,10 @@
     "plat-salic": {
       "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
       "tipo": "plataforma",
-      "leituras": 29,
-      "achados_total": 131,
+      "leituras": 30,
+      "achados_total": 134,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-04T18:07:57+00:00",
+      "ultima": "2026-10-04T23:15:09+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 3,
       "falhas_ultima": 1,
@@ -3421,9 +3427,9 @@
         {
           "url": "https://api.salic.cultura.gov.br/api/v1/projetos/?UF=GO&ano_projeto=26&limit=100&offset=0&format=json",
           "erro": "salic_api",
-          "code": 503,
+          "code": 500,
           "waf": null,
-          "causa": "HTTPError: HTTP Error 503: Service Unavailable"
+          "causa": "HTTPError: HTTP Error 500: Internal Server Error"
         }
       ],
       "alerta": null,
@@ -3529,7 +3535,7 @@
           }
         ]
       },
-      "duracao_s": 20
+      "duracao_s": 15
     },
     "plat-secult-go": {
       "nome": "Secult Goiás — Goyazes e Aldir Blanc",
@@ -7550,30 +7556,30 @@
   },
   "ultima_execucao": {
     "data": "2026-10-04",
-    "em": "2026-10-04T22:14:59+00:00",
+    "em": "2026-10-04T23:15:09+00:00",
     "manual": [
-      "plat-gife",
+      "plat-salic",
       "pncp-api"
     ],
     "bloco": "manual",
     "sensores_executados": 2,
     "adiados_por_tempo": [],
-    "duracao_s": 915,
+    "duracao_s": 933,
     "em_espera": 125,
     "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 220,
+    "achados": 238,
     "novos_na_base": 0,
     "por_tipo": {
       "api": {
         "sensores": 1,
-        "achados": 218,
+        "achados": 235,
         "falhas": 0
       },
       "plataforma": {
         "sensores": 1,
-        "achados": 2,
-        "falhas": 0
+        "achados": 3,
+        "falhas": 1
       }
     }
   }
