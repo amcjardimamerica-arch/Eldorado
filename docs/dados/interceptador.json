@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-04T22:54:54+00:00",
+  "em": "2026-10-04T23:11:27+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-04T22:49:50+00:00",
+  "ultimo_voo": "2026-10-04T22:57:30+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,99 @@
     "empresas sem ficha": 121
   },
   "acumulado": {
-    "missoes": 316,
+    "missoes": 317,
     "validadas": 3,
-    "parciais": 83,
+    "parciais": 84,
     "insuficientes": 230,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 50,
-      "sim": 208
+      "sim": 209
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
     "tempo_medio_min": 12.3
   },
   "missoes": [
+    {
+      "em": "2026-10-04T22:57:30+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Regulamenta o cadastramento de entidades e órgãos para recebimento de bens e valores e a prestação de contas — Goiás",
+      "qualidade": "parcial",
+      "comprovados": 8,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor"
+      ],
+      "pagina_oficial": "https://biblioteca.mpf.mp.br/server/api/core/bitstreams/f0a50f1b-b873-482a-b98b-52d48e4b5d65/content",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona que o objetivo é regulamentar o cadastramento de entidades e órgãos para recebimento de bens e valores e a prestação de contas, o que é relevante para a AMC.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria informar a área temática de sua atuação e seguir os requisitos mencionados no texto, como apresentar documentos exigidos para o cadastramento.",
+        "proximo_passo": "Consultar os requisitos específicos e anexos mencionados no edital para iniciar o processo de cadastramento.",
+        "risco": "A falta de documentos ou informações necessárias pode impedir o acesso ao cadastramento."
+      },
+      "erro": null,
+      "segundos": 836,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "op-op-2333f2d2746d",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Regulamenta o cadastramento de entidades e órgãos para recebimento de bens e valores e a prestação de contas",
+          "trecho": "Regulamenta o cadastramento de pessoas jurídicas de direito privado sem fins lucrativos e de instituições, entidades e órgãos públicos federais, estaduais, distritais ou municipais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Ministério Público Federal",
+          "trecho": "MINISTÉRIO PÚBLICO FEDERAL",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Ministério Público Federal",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "dispensado — O texto menciona que os interessados devem informar a área temática de sua atuação.",
+          "trecho": "Os interessados devem informar, sempre que possível, a área temática de sua atuação.",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Destinação": {
+          "valor": "elegível · outro",
+          "trecho": "Regulamenta o cadastramento de pessoas jurídicas de direito privado sem fins lucrativos e de instituições, entidades e órgãos públicos federais, estaduais, distritais ou municipais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "documento ou exigência",
+          "trecho": "Os editais devem seguir o padrão mínimo estabelecido no Anexo I desta Portaria, sem prejuízo de complementação que as unidades do MPF considerarem pertinentes de acordo com as espe",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Ministério Público Federal",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-04T22:49:50+00:00",
       "modo": "validar",
@@ -2475,33 +2553,6 @@
       "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
       "avaliacao": "falhou: o modelo não devolveu JSON",
       "id": "op-op-5eb8c461293c",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-10-04T11:50:53+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Edital nº 4/2023 - curta, seriada, telefilme, documentário - lei paulo gustavo — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "o modelo não devolveu JSON",
-      "segundos": 631,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: o modelo não devolveu JSON",
-      "id": "op-op-cfb44471e6a4",
       "encontrou": {},
       "financiador": null,
       "indicios": [],
