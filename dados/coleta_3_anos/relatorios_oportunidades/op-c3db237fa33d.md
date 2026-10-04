@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Portal geral de licitações CAIXA exige pesquisa interativa; chamamento nº 0001/2026-5688 não acessível; provável licitação de fornecedor.
+Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Prazo de inscrição | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Resultado | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Prazo de recurso | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Valor | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Órgão / financiador | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Território | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Esfera | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Requisitos | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Anexos | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Destinação | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
-| Área de atuação | não localizado | Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor. |
+| Objeto | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Prazo de inscrição | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Resultado | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Prazo de recurso | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Valor | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Órgão / financiador | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Território | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Esfera | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Requisitos | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Anexos | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Destinação | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
+| Área de atuação | não localizado | Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio. |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Prazo de inscrição:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Resultado:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Prazo de recurso:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Valor:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Órgão / financiador:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Território:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Esfera:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Requisitos:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Anexos:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Destinação:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
-- **Área de atuação:** Página é o portal geral de licitações da CAIXA; o Chamamento nº 0001/2026-5688 não aparece sem pesquisa interativa (formulário), que não foi usada. Pode ser licitação/credenciamento de fornecedor.
+- **Objeto:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Prazo de inscrição:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Resultado:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Prazo de recurso:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Valor:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Órgão / financiador:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Território:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Esfera:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Requisitos:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Anexos:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Destinação:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
+- **Área de atuação:** Portal de licitações CAIXA exige pesquisa interativa/formulário; chamamento 0001/2026-5688 não acessível; provável compra/patrocínio.
 
 ## Observações da pesquisa
 
-Buscar o número do chamamento no portal e conferir se é patrocínio ou compra.
+Buscar o número do chamamento no portal e conferir se é patrocínio ou compra. | Buscar o número no portal e conferir se é patrocínio ou compra.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

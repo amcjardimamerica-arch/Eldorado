@@ -1,32 +1,32 @@
 # Linhas de Fomento | FAPEMIG
 
 - **Identificador:** `op-4d4cfc242a2f` · **Órgão/financiador:** 
-- **Decisão:** P (pendente) · **Validação dos 12 pontos:** pendente
+- **Decisão:** R (programa permanente / fluxo contínuo) · **Validação dos 12 pontos:** parcial
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
-- **Página oficial usada:** https://fapemig.br/pt/linhas-de-fomento/
+- **Página oficial usada:** https://fapemig.br/oportunidades/chamadas-e-editais
 
-**Serve para uma OSC de Goiás?** não — FAPEMIG é fundação de amparo à pesquisa de Minas Gerais, voltada a pesquisadores/ICTs mineiros.
+**Serve para uma OSC de Goiás?** não — Público ICT/pesquisadores de MG.
 
 ## Decisão e motivo
 
-fapemig.br/pt/linhas-de-fomento bloqueado por robots.txt; URL do livro (TCU) está errada. FAPEMIG é agência de fomento à pesquisa de MG (ICTs/pesquisadores), provável baixa aderência a OSC de Goiás, mas não confirmado.
+A página linhas-de-fomento redireciona para a home da FAPEMIG; chamadas vigentes (ex.: 007/2026, eventos científicos, até 27/out/2026) têm público-alvo ICT e pesquisadores com vínculo em Minas Gerais, sem linha para OSC de Goiás.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | não lido na fonte consultada |
-| Prazo de inscrição | não localizado | não lido na fonte consultada |
-| Resultado | não localizado | não lido na fonte consultada |
-| Prazo de recurso | não localizado | não lido na fonte consultada |
-| Valor | não localizado | não lido na fonte consultada |
-| Órgão / financiador | não localizado | não lido na fonte consultada |
-| Território | não localizado | não lido na fonte consultada |
-| Esfera | não localizado | não lido na fonte consultada |
-| Requisitos | não localizado | não lido na fonte consultada |
-| Anexos | não localizado | não lido na fonte consultada |
-| Destinação | não localizado | não lido na fonte consultada |
-| Área de atuação | não localizado | não lido na fonte consultada |
+| Objeto | confirmado | Agência de fomento à pesquisa, tecnologia e inovação de MG; exemplo: Chamada 007/2026 apoia organização de eventos técnico-científicos em MG |
+| Prazo de inscrição | confirmado | Chamada 007/2026: limite 27/10/2026 (página da chamada); outras chamadas têm prazos próprios |
+| Resultado | confirmado | Chamada 007/2026: 16/12/2026 (prev.) |
+| Prazo de recurso | não localizado | não lido o edital da chamada |
+| Valor | confirmado | Chamada 007/2026: R$ 7,5 milhões |
+| Órgão / financiador | confirmado | FAPEMIG (Fundação de Amparo à Pesquisa do Estado de MG) |
+| Território | confirmado | Minas Gerais |
+| Esfera | confirmado | Estadual (MG) |
+| Requisitos | confirmado | Público-alvo: ICT, pesquisadores com vínculo (página da chamada 007/2026) |
+| Anexos | não localizado | documentos das chamadas não abertos |
+| Destinação | confirmado | Auxílio à divulgação científica (chamada 007/2026) |
+| Área de atuação | confirmado | Ciência, tecnologia e inovação |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,11 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** não lido na fonte consultada
-- **Prazo de inscrição:** não lido na fonte consultada
-- **Resultado:** não lido na fonte consultada
-- **Prazo de recurso:** não lido na fonte consultada
-- **Valor:** não lido na fonte consultada
-- **Órgão / financiador:** não lido na fonte consultada
-- **Território:** não lido na fonte consultada
-- **Esfera:** não lido na fonte consultada
-- **Requisitos:** não lido na fonte consultada
-- **Anexos:** não lido na fonte consultada
-- **Destinação:** não lido na fonte consultada
-- **Área de atuação:** não lido na fonte consultada
+- **Prazo de recurso:** não lido o edital da chamada
+- **Anexos:** documentos das chamadas não abertos
 
 ## Observações da pesquisa
 
-Titular: abrir a URL corrigida no navegador e verificar se alguma linha admite OSC/entidade sem fins lucrativos fora de MG.
+Titular: abrir a URL corrigida no navegador e verificar se alguma linha admite OSC/entidade sem fins lucrativos fora de MG. | Livro genérico 'Linhas de Fomento'; url_original do motor (TCU) estava errada.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

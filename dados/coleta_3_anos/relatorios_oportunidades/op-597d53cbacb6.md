@@ -17,14 +17,14 @@ Edital/credenciamento aberto no PNCP com encerramento de proposta em 2027-05-20 
 |---|---|---|
 | Objeto | confirmado | Credenciamento de caráter permanente de OSC para firmar possíveis e futuras parcerias técnicas e operacionais em atividades culturais, artísticas e sociais, festejos, promoção e educação cultural e patrimônio |
 | Prazo de inscrição | confirmado | 2025-05-20 a 2027-05-20 (proposta, conforme API PNCP) |
-| Resultado | não localizado | Resultado/homologação não consta nos metadados da API; edital em PDF não lido |
-| Prazo de recurso | não localizado | Não consta nos metadados da API; texto integral do edital (PDF) não lido nesta coleta |
+| Resultado | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
+| Prazo de recurso | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
 | Valor | confirmado | R$ 200.000,00 (estimado, API PNCP) |
 | Órgão / financiador | confirmado | Município — Palmeira dos Índios/AL |
 | Território | confirmado | Palmeira dos Índios/AL |
 | Esfera | confirmado | Municipal |
-| Requisitos | não localizado | Requisitos do edital (PDF) não lidos; só metadados via API PNCP |
-| Anexos | não localizado | Anexos/PDF do edital não lidos; só metadados da API PNCP |
+| Requisitos | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
+| Anexos | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
 | Destinação | confirmado | Parceria da Administração municipal com OSC (Lei 13.019/2014) |
 | Área de atuação | confirmado | Cultura, arte, festejos e ação social |
 
@@ -45,14 +45,14 @@ Edital/credenciamento aberto no PNCP com encerramento de proposta em 2027-05-20 
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** Resultado/homologação não consta nos metadados da API; edital em PDF não lido
-- **Prazo de recurso:** Não consta nos metadados da API; texto integral do edital (PDF) não lido nesta coleta
-- **Requisitos:** Requisitos do edital (PDF) não lidos; só metadados via API PNCP
-- **Anexos:** Anexos/PDF do edital não lidos; só metadados da API PNCP
+- **Resultado:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
+- **Prazo de recurso:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
+- **Requisitos:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
+- **Anexos:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
 
 ## Observações da pesquisa
 
-Dados obtidos da API pública PNCP (consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq}), somente leitura. Texto integral do edital não lido. Mesmo edital do item op-79b6e875580f. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF.
+Dados obtidos da API pública PNCP (consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq}), somente leitura. Texto integral do edital não lido. Mesmo edital do item op-79b6e875580f. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF. | PDF não lido: PNCP fora do ar (503) durante a coleta; reprocessar quando a API voltar. Decisão mantida sem alteração. Mesmo edital de op-79b6e875580f (compartilha_com).
 
 Mesma pesquisa dos livros: op-79b6e875580f
 

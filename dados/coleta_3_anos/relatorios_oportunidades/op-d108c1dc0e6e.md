@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-A página (BNDES, FI 01/2026) mostra inscrições de 28/08 a 25/09/2026, já encerradas; e os municípios elegíveis (Rio, São Paulo, Recife, Brasília) não incluem Goiânia.
+BNDES FI 01/2026: inscrições 28/08 a 25/09/2026 encerradas; elegíveis os CDI de Rio, São Paulo, Recife, Estaduais RJ/SP/PE, Distrital e Nacional; Goiânia não é elegível.
 
 ## Os 12 pontos
 
@@ -18,13 +18,13 @@ A página (BNDES, FI 01/2026) mostra inscrições de 28/08 a 25/09/2026, já enc
 | Objeto | confirmado | Apoio a projetos para pessoas idosas com recursos incentivados (Lei 12.213/2010): situação de rua, violência, prevenção ao uso de drogas, acolhimento, segurança alimentar. |
 | Prazo de inscrição | confirmado | 28/08/2026 a 25/09/2026 |
 | Resultado | confirmado | Pré-qualificação até 08/10/2026; resultados finais 09/11 a 01/12/2026 |
-| Prazo de recurso | não localizado | Não aparece no resumo lido. |
+| Prazo de recurso | não localizado | PDF do edital (29 páginas) aberto no Chrome; só a p.1 foi lida; a página oficial do edital diz que não menciona prazo de recurso. Conferir cláusulas de seleção/contestação. |
 | Valor | confirmado | R$ 500.000 a R$ 5 milhões por projeto; total R$ 10-15 milhões; 2 a 8 projetos |
 | Órgão / financiador | confirmado | BNDES (doações de recursos incentivados aos Fundos do Idoso) |
 | Território | confirmado | Rio de Janeiro, São Paulo, Recife e Brasília (Plano Piloto); Goiânia não consta |
 | Esfera | confirmado | Federal (BNDES) |
 | Requisitos | confirmado | Entidade privada sem fins lucrativos ou pública dos municípios elegíveis, com aprovação do Conselho de Direitos do Idoso local |
-| Anexos | não localizado | Não lidos. |
+| Anexos | confirmado | Anexo I Minuta do Termo de Compromisso e Adesão; II Minuta da Declaração do CDI; III Modelo de Planilha Orçamentária Global; IV Modelo de Declaração; V Formulário de Detalhamento do Projeto; VI Declaração sobre Administração e Representação |
 | Destinação | dispensado | Doação incentivada — Recursos incentivados doados aos fundos do idoso (Lei 12.213/2010). |
 | Área de atuação | confirmado | Pessoa idosa |
 
@@ -45,11 +45,10 @@ A página (BNDES, FI 01/2026) mostra inscrições de 28/08 a 25/09/2026, já enc
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de recurso:** Não aparece no resumo lido.
-- **Anexos:** Não lidos.
+- **Prazo de recurso:** PDF do edital (29 páginas) aberto no Chrome; só a p.1 foi lida; a página oficial do edital diz que não menciona prazo de recurso. Conferir cláusulas de seleção/contestação.
 
 ## Observações da pesquisa
 
-Livro nomeia Goiânia/MDHC, mas a página é do BNDES para RJ/SP/Recife/Brasília.
+Livro nomeia Goiânia/MDHC, mas a página é do BNDES para RJ/SP/Recife/Brasília. | Livro nomeia Goiânia/MDHC mas a fonte é o BNDES para RJ/SP/Recife/DF. Não aplicável a Goiânia.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

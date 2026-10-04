@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Convocatória 2026 encerrada em 14/09/2026; mecanismo uruguaio de incentivo fiscal.
+Bases FIC 2026 lidas: postulação 12/08 a 14/09/2026 (mediodía); encerrado.
 
 ## Os 12 pontos
 
@@ -17,14 +17,14 @@ Convocatória 2026 encerrada em 14/09/2026; mecanismo uruguaio de incentivo fisc
 |---|---|---|
 | Objeto | confirmado | Projetos culturais aprovados recebem contribuições dedutíveis de pessoas físicas e jurídicas (artes visuais, fotografia, design, audiovisual, artes cênicas, literatura, museus, música, turismo cultural) |
 | Prazo de inscrição | confirmado | Até segunda-feira 14/09/2026, 12h (meio-dia) |
-| Resultado | não localizado | Não consta na notícia lida. |
-| Prazo de recurso | não localizado | Não consta na notícia lida. |
+| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Prazo de recurso | dispensado | não informado no edital — fallos inapelables; apenas 10 dias corridos para pedir ajuste de modalidade/tipo de produção, sem revisão do fallo |
 | Valor | confirmado | Sem subvenção direta; benefício fiscal de 35% a 75% ao contribuinte conforme fundo |
 | Órgão / financiador | confirmado | Ministerio de Educación y Cultura (MEC), Uruguai |
 | Território | confirmado | Uruguai (categorias Montevidéu, Interior, Oficial) |
 | Esfera | confirmado | Nacional (Uruguai) |
 | Requisitos | confirmado | Pessoas físicas maiores de 18 com residência legal permanente no Uruguai, pessoas jurídicas públicas ou privadas, associações e consórcios |
-| Anexos | não localizado | Inscrição na plataforma fondosdeincentivocultural.gub.uy; lista de anexos não lida. |
+| Anexos | confirmado | Documentos do responsável (cédula ou certificado notarial, BPS e DGI, declaração jurada, méritos, equipe, cartas de aceitação) e do projeto (síntese até 700 caracteres, descrição, cronograma, orçamento) |
 | Destinação | confirmado | Incentivo fiscal: projeto capta doações de contribuintes |
 | Área de atuação | confirmado | Cultura e artes |
 
@@ -45,12 +45,10 @@ Convocatória 2026 encerrada em 14/09/2026; mecanismo uruguaio de incentivo fisc
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** Não consta na notícia lida.
-- **Prazo de recurso:** Não consta na notícia lida.
-- **Anexos:** Inscrição na plataforma fondosdeincentivocultural.gub.uy; lista de anexos não lida.
+- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
 
 ## Observações da pesquisa
 
-Fonte é notícia do portal gub.uy (governo uruguaio); data de abertura não constava no trecho lido.
+Fonte é notícia do portal gub.uy (governo uruguaio); data de abertura não constava no trecho lido. | Abertura 12/08/2026 (confirma lacuna da observação anterior). Mecanismo de incentivo fiscal uruguaio.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

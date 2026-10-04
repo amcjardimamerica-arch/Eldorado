@@ -1,7 +1,7 @@
 # Pdf edital de credenciamento de no001/2026 - organizações da sociedade civil — Goiás
 
 - **Identificador:** `op-6dde4cc20d6f` · **Órgão/financiador:** MUNICÍPIO DE GOIANÉSIA, ESTADO DE GOIÁS
-- **Decisão:** R (programa permanente / fluxo contínuo) · **Validação dos 12 pontos:** parcial
+- **Decisão:** R (programa permanente / fluxo contínuo) · **Validação dos 12 pontos:** completa
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
 - **Página oficial usada:** https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-Credenciamento-Promocao.pdf
 
@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Credenciamento permanente em fluxo contínuo de OSCs (Edital nº 001/2026, publicado em 15/04/2026).
+Credenciamento permanente em fluxo contínuo de OSCs (Edital 001/2026).
 
 ## Os 12 pontos
 
@@ -18,7 +18,7 @@ Credenciamento permanente em fluxo contínuo de OSCs (Edital nº 001/2026, publi
 | Objeto | confirmado | Credenciamento permanente de OSCs para execução de atividades de assistência social (proteção social básica e especial, segurança alimentar, inclusão produtiva, defesa de direitos) |
 | Prazo de inscrição | dispensado | Fluxo contínuo desde 17/04/2026, por tempo indeterminado, sem calendário fixo (edital de credenciamento). |
 | Resultado | dispensado | Emissão de Certificado de Credenciamento conforme os requisitos são atendidos; sem data de resultado em fluxo contínuo. |
-| Prazo de recurso | não localizado | Não lido no resumo do PDF. |
+| Prazo de recurso | confirmado | 5 dias úteis (decisão em 10 dias úteis) — item 6.4, p. 3/26 |
 | Valor | não informado no edital | Dotação 3.3.50.43 (Subvenções Sociais) conforme disponibilidade; valor depende de cada proposta. |
 | Órgão / financiador | confirmado | Município de Goianésia-GO (Secretaria de Assistência Social) |
 | Território | confirmado | Goianésia-GO |
@@ -43,12 +43,8 @@ Credenciamento permanente em fluxo contínuo de OSCs (Edital nº 001/2026, publi
 - **Base:** Credenciamento por prazo indeterminado.
 - **Calculado por:** agente (leitura da fonte)
 
-## O que ainda precisa ser conferido
-
-- **Prazo de recurso:** Não lido no resumo do PDF.
-
 ## Observações da pesquisa
 
-URL do PDF tem pasta uploads/2023/11, mas conteúdo traz publicação em 15/04/2026; leitura via resumo.
+URL do PDF tem pasta uploads/2023/11, mas conteúdo traz publicação em 15/04/2026; leitura via resumo. | Anexos I a VI (plano de trabalho, pedido de credenciamento, declarações, minuta do termo, relatório, justificativa de dispensa de chamamento) segundo a leitura.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Inscrições 25/03 a 18/05/2026; resultado 12/06/2026 divulgado.
+Edital lido: inscrições 25/03 a 18/05/2026; avaliação até 07/06; resultados 08/06/2026 (página diz 12/06). Encerrado.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de inscrição | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Objeto | confirmado | Seleção de projetos de inclusão socioprodutiva de mulheres de baixa renda (empreendedorismo e empregabilidade) |
+| Prazo de inscrição | confirmado | 25/03 a 18/05/2026 |
+| Resultado | confirmado | Divulgação 08/06/2026 no PDF (página do instituto informa 12/06/2026) |
 | Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Valor | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Órgão / financiador | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Território | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Esfera | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Requisitos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Anexos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Destinação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Área de atuação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Valor | confirmado | R$ 220.000,00 por projeto; até 10% para desenvolvimento institucional |
+| Órgão / financiador | confirmado | Instituto Lojas Renner |
+| Território | confirmado | Meio urbano, todo o Brasil; atuação comprovada na região ou parceria indicada |
+| Esfera | confirmado | Privada (investimento social corporativo), abrangência nacional |
+| Requisitos | confirmado | OSC com CNPJ ativo há no mínimo 1 ano; atuação/parceria territorial; experiência em inclusão produtiva feminina; projeto novo de 18 meses (12 + 6 de monitoramento) |
+| Anexos | confirmado | Estatuto social registrado, comprovante de CNPJ, Planilha de Atividade, Planilha de Orçamento |
+| Destinação | confirmado | Atividades diretas com o público (12 meses) e monitoramento (6 meses); até 10% desenvolvimento institucional |
+| Área de atuação | confirmado | Geração de trabalho e renda para mulheres: empreendedorismo (brechós, conserto têxtil, confecção) e empregabilidade (atendimento, logística, tecnologia, confecção) |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -45,17 +45,10 @@ Inscrições 25/03 a 18/05/2026; resultado 12/06/2026 divulgado.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de inscrição:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
 - **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Valor:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Órgão / financiador:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Território:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Esfera:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Requisitos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Anexos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Destinação:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Área de atuação:** item não retornado pela leitura da fonte; abrir o edital e copiar
+
+## Observações da pesquisa
+
+Execução a partir de agosto/2026. Página oficial lista PDF 'Projetos Selecionados'. Páginas de número de cláusula não fornecidas pela leitura.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

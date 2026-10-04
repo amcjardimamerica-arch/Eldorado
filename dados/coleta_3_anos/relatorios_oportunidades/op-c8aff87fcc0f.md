@@ -7,7 +7,7 @@
 
 ## Decisão e motivo
 
-verificado em 2026-09-29: Edital Educação em Tecnologia (Baobá + MOVER) aceita organizações negras, mas está com inscrições encerradas; datas não informadas na página.
+Educação em Tecnologia (Baobá/MOVER): inscrições encerradas; edital em PDF não está na página oficial (só lista de selecionados, carta e orçamento).
 
 ## Os 12 pontos
 
@@ -16,7 +16,7 @@ verificado em 2026-09-29: Edital Educação em Tecnologia (Baobá + MOVER) aceit
 | Objeto | confirmado | Apoio a processos formativos que ampliem a inserção de pessoas negras no mercado de trabalho em tecnologia (programação, UX/UI, segurança da informação etc.) |
 | Prazo de inscrição | não informado no edital | item não retornado pela leitura da fonte; abrir o edital e copiar |
 | Resultado | confirmado | Lista de selecionados divulgada (PDF datado de 03/10/2024, atualizado em 01/10) |
-| Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Prazo de recurso | não localizado | página oficial só traz lista de selecionados (PDF 03/10/2024, sem menção a recurso), modelo de carta e planilha; regulamento não publicado |
 | Valor | confirmado | R$ 250.000,00 a R$ 500.000,00 por projeto; até 16 projetos |
 | Órgão / financiador | confirmado | Fundo Baobá para Equidade Racial e MOVER - Movimento pela Equidade Racial |
 | Território | confirmado | Nacional |
@@ -41,6 +41,10 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Prazo de recurso:** página oficial só traz lista de selecionados (PDF 03/10/2024, sem menção a recurso), modelo de carta e planilha; regulamento não publicado
+
+## Observações da pesquisa
+
+Em 03-04/10/2026 a página baoba.org.br apareceu com conteúdo estranho (spam) ao ser lida pelo navegador; a leitura via WebFetch mostrou conteúdo normal. Nenhum link seguido.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

@@ -17,14 +17,14 @@ Edital/credenciamento aberto no PNCP com encerramento de proposta em 2026-10-13 
 |---|---|---|
 | Objeto | confirmado | Formalização de parceria da Administração Pública com OSC para projetos de promoção, proteção, defesa e garantia dos direitos (texto da API truncado) |
 | Prazo de inscrição | confirmado | 2026-09-10 a 2026-10-13 (proposta, conforme API PNCP) |
-| Resultado | não localizado | Resultado/homologação não consta nos metadados da API; edital em PDF não lido |
-| Prazo de recurso | não localizado | Não consta nos metadados da API; texto integral do edital (PDF) não lido nesta coleta |
+| Resultado | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
+| Prazo de recurso | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
 | Valor | confirmado | R$ 119.000,00 (estimado, API PNCP) |
 | Órgão / financiador | confirmado | Município — Parobé/RS |
 | Território | confirmado | Parobé/RS |
 | Esfera | confirmado | Municipal |
-| Requisitos | não localizado | Requisitos do edital (PDF) não lidos; só metadados via API PNCP |
-| Anexos | não localizado | Anexos/PDF do edital não lidos; só metadados da API PNCP |
+| Requisitos | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
+| Anexos | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
 | Destinação | confirmado | Parceria da Administração municipal com OSC (Lei 13.019/2014) |
 | Área de atuação | confirmado | Direitos / assistência social (conforme objeto parcial) |
 
@@ -45,13 +45,13 @@ Edital/credenciamento aberto no PNCP com encerramento de proposta em 2026-10-13 
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** Resultado/homologação não consta nos metadados da API; edital em PDF não lido
-- **Prazo de recurso:** Não consta nos metadados da API; texto integral do edital (PDF) não lido nesta coleta
-- **Requisitos:** Requisitos do edital (PDF) não lidos; só metadados via API PNCP
-- **Anexos:** Anexos/PDF do edital não lidos; só metadados da API PNCP
+- **Resultado:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
+- **Prazo de recurso:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
+- **Requisitos:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
+- **Anexos:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
 
 ## Observações da pesquisa
 
-Dados obtidos da API pública PNCP (consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq}), somente leitura. Texto integral do edital não lido. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF.
+Dados obtidos da API pública PNCP (consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq}), somente leitura. Texto integral do edital não lido. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF. | PDF não lido: PNCP fora do ar (503) durante a coleta; reprocessar quando a API voltar. Decisão mantida sem alteração.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

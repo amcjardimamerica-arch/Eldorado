@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Edital Ambev Brasilidade 2026: período adicional de inscrições de 01/10 a 31/10/2026, exclusivamente para projetos de temática Carnaval; demais temas encerraram em 30/09/2026. Leitura feita na página do Prosas (plataforma que hospeda o regulamento), não no site da Ambev.
+Retificação nº 01 (29/09/2026) e comunicado lidos: período adicional 01/10 a 31/10/2026 exclusivo para projetos de temática Carnaval; demais temas encerrados em 30/09/2026.
 
 ## Os 12 pontos
 
@@ -18,7 +18,7 @@ Edital Ambev Brasilidade 2026: período adicional de inscrições de 01/10 a 31/
 | Objeto | confirmado | Patrocínio incentivado a projetos de cultura e esporte via leis de incentivo; prorrogação só para Carnaval |
 | Prazo de inscrição | confirmado | 11/11/2025 a 30/09/2026; prorrogado até 31/10/2026 17:59 apenas para Carnaval |
 | Resultado | não informado no edital | Não constou no resumo lido; regulamento não lido. |
-| Prazo de recurso | não localizado | Regulamento PDF não lido. |
+| Prazo de recurso | não localizado | Regulamento (S3 do Prosas) retornou Access Denied/bloqueio CORS; só retificação e comunicado, em Oracle Object Storage, foram lidos; a retificação cita o item 10.14 do Regulamento |
 | Valor | confirmado | R$ 67 milhões (título do livro; não confirmado no texto lido) |
 | Órgão / financiador | confirmado | Ambev S.A. |
 | Território | confirmado | Brasil; leis estaduais de incentivo (SP, RJ, RS, SC, RN e outros listados) |
@@ -45,11 +45,11 @@ Edital Ambev Brasilidade 2026: período adicional de inscrições de 01/10 a 31/
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de recurso:** Regulamento PDF não lido.
+- **Prazo de recurso:** Regulamento (S3 do Prosas) retornou Access Denied/bloqueio CORS; só retificação e comunicado, em Oracle Object Storage, foram lidos; a retificação cita o item 10.14 do Regulamento
 - **Requisitos:** Regulamento não lido.
 
 ## Observações da pesquisa
 
-Página de plataforma, não site oficial da Ambev; marcar para revisão.
+Página de plataforma, não site oficial da Ambev; marcar para revisão. | Regulamento e FAQ não puderam ser abertos (arquivo bloqueado); leitura limitada à Retificação nº 01 e ao Comunicado de prorrogação.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

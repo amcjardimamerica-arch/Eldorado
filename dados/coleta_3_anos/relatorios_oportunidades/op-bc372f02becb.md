@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-PDF do Querido Diário inacessível: curl via proxy 403, WebFetch devolve binário/robots bloqueado, e a aba do Chrome não abre o domínio. Titular: abrir o PDF no navegador (ou diariooficial.goiania.go.gov.br, edição correspondente), localizar o chamamento e copiar objeto, prazo e valor.
+PDF do Diário Oficial de Goiânia (ed. 8869, 23/09/2026) no Querido Diário segue ilegível: curl via proxy 403, WebFetch devolve binário, Chrome em aba própria falhou (extensão sem acesso). Páginas oficiais goiania.go.gov.br/casa-civil/diario-oficial só remetem ao sistema sileg, sem link da edição. Titular: abrir o PDF no navegador e copiar o chamamento.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Prazo de inscrição | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Resultado | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Prazo de recurso | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Valor | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Órgão / financiador | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Território | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Esfera | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Requisitos | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Anexos | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Destinação | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Área de atuação | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
+| Objeto | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Prazo de inscrição | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Resultado | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Prazo de recurso | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Valor | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Órgão / financiador | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Território | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Esfera | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Requisitos | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Anexos | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Destinação | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
+| Área de atuação | não localizado | PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição) |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Prazo de inscrição:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Resultado:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Prazo de recurso:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Valor:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Órgão / financiador:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Território:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Esfera:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Requisitos:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Anexos:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Destinação:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Área de atuação:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
+- **Objeto:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Prazo de inscrição:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Resultado:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Prazo de recurso:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Valor:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Órgão / financiador:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Território:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Esfera:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Requisitos:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Anexos:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Destinação:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
+- **Área de atuação:** PDF inacessível pela automação (curl 403, WebFetch binário, Chrome falhou, página oficial sem link da edição)
 
 ## Observações da pesquisa
 
-Edição 8869 de 23/09/2026. | Tentativas: curl, WebFetch, API do Querido Diário, Chrome.
+Edição 8869 de 23/09/2026. | Tentativas: curl, WebFetch, API do Querido Diário, Chrome. | Tentativas em 04/10/2026: curl, WebFetch, Chrome, página oficial do Diário.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

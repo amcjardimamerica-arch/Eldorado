@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Seleção já encerrada com resultado divulgado em 28/09/2026; edital oficial de origem não localizado.
+Notícias oficiais lidas; edital do Programa Locus não localizado (seleção parece ter ocorrido fora de chamada pública aberta).
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
 | Objeto | confirmado | Fortalecimento do jornalismo local, periférico e independente por apoio e fomento a organizações de comunicação, por dois anos. |
-| Prazo de inscrição | não localizado | não localizado edital oficial do programa Locus; só a notícia do resultado |
+| Prazo de inscrição | não localizado | Notícias de 18/09 e 28/09/2026 e busca do site fundacaoitau.org.br não trazem datas de inscrição nem link de edital. |
 | Resultado | confirmado | Dez iniciativas selecionadas, anunciadas em 28/09/2026 no Museu do Amanhã (RJ). |
-| Prazo de recurso | não localizado | não localizado edital oficial do programa Locus; só a notícia do resultado |
-| Valor | não localizado | não localizado edital oficial do programa Locus; só a notícia do resultado |
+| Prazo de recurso | não localizado | Sem edital localizado. |
+| Valor | não localizado | Notícias não informam valor. |
 | Órgão / financiador | confirmado | Fundação Itaú |
 | Território | confirmado | Nacional (selecionadas de MT, PE, AM, BA, SE e outros) |
-| Esfera | não localizado | não localizado edital oficial do programa Locus; só a notícia do resultado |
-| Requisitos | não localizado | não localizado edital oficial do programa Locus; só a notícia do resultado |
-| Anexos | não localizado | não localizado edital oficial do programa Locus; só a notícia do resultado |
-| Destinação | não localizado | não localizado edital oficial do programa Locus; só a notícia do resultado |
-| Área de atuação | não localizado | não localizado edital oficial do programa Locus; só a notícia do resultado |
+| Esfera | confirmado | Privada (Fundação Itaú) |
+| Requisitos | não localizado | Sem edital; notícia descreve só os 10 selecionados. |
+| Anexos | não localizado | Sem edital localizado. |
+| Destinação | confirmado | Apoio e fomento por dois anos a organizações de jornalismo independente, local e periférico, com espaços de troca |
+| Área de atuação | confirmado | Jornalismo local, periférico e independente |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -45,17 +45,14 @@ Seleção já encerrada com resultado divulgado em 28/09/2026; edital oficial de
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de inscrição:** não localizado edital oficial do programa Locus; só a notícia do resultado
-- **Prazo de recurso:** não localizado edital oficial do programa Locus; só a notícia do resultado
-- **Valor:** não localizado edital oficial do programa Locus; só a notícia do resultado
-- **Esfera:** não localizado edital oficial do programa Locus; só a notícia do resultado
-- **Requisitos:** não localizado edital oficial do programa Locus; só a notícia do resultado
-- **Anexos:** não localizado edital oficial do programa Locus; só a notícia do resultado
-- **Destinação:** não localizado edital oficial do programa Locus; só a notícia do resultado
-- **Área de atuação:** não localizado edital oficial do programa Locus; só a notícia do resultado
+- **Prazo de inscrição:** Notícias de 18/09 e 28/09/2026 e busca do site fundacaoitau.org.br não trazem datas de inscrição nem link de edital.
+- **Prazo de recurso:** Sem edital localizado.
+- **Valor:** Notícias não informam valor.
+- **Requisitos:** Sem edital; notícia descreve só os 10 selecionados.
+- **Anexos:** Sem edital localizado.
 
 ## Observações da pesquisa
 
-Fonte é notícia no site oficial da Fundação Itaú, não o edital. Descrita como primeira edição. | Notícia de 28/09/2026 informa Locus selecionou 10 iniciativas (lançamento 18/09/2026); sem datas de inscrição encontradas. | não verificado: Datas de inscrição do Programa Locus: fundacaoitau.org.br/noticias e página do Locus; Chamadas Itaú Social (itausocial.org.br), Itaú Cultural (itaucultural.org.br), Itaú Educação e Trabalho 2023-2025
+Fonte é notícia no site oficial da Fundação Itaú, não o edital. Descrita como primeira edição. | Tentados: /locus, /programa-locus, busca interna; só 2 notícias. | Notícia de 28/09/2026 informa Locus selecionou 10 iniciativas (lançamento 18/09/2026); sem datas de inscrição encontradas. | não verificado: Datas de inscrição do Programa Locus: fundacaoitau.org.br/noticias e página do Locus; Chamadas Itaú Social (itausocial.org.br), Itaú Cultural (itaucultural.org.br), Itaú Educação e Trabalho 2023-2025
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

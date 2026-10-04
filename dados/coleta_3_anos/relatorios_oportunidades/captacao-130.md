@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Página do Conanda/MDHC exige autenticação ('Conteúdo Restrito') no navegador e no WebFetch; é página genérica do conselho, sem edital do programa. Titular: procurar no site do MDHC/Transferegov o chamamento específico deste fundo e informar o prazo.
+Sem edital do FNCA/Conanda para o tema do livro (confirmado novamente em 03/10/2026). Recomendação: arquivar ou vincular a edital real.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Prazo de inscrição | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Resultado | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Prazo de recurso | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Valor | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
+| Objeto | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
+| Prazo de inscrição | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
+| Resultado | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
+| Prazo de recurso | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
+| Valor | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
 | Órgão / financiador | confirmado | Ministério dos Direitos Humanos e da Cidadania / fundo correspondente |
-| Território | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Esfera | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Requisitos | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Anexos | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Destinação | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Área de atuação | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
+| Território | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
+| Esfera | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
+| Requisitos | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
+| Anexos | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
+| Destinação | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
+| Área de atuação | não localizado | Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler. |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Prazo de inscrição:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Resultado:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Prazo de recurso:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Valor:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Território:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Esfera:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Requisitos:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Anexos:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Destinação:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Área de atuação:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
+- **Objeto:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Prazo de inscrição:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Resultado:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Prazo de recurso:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Valor:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Território:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Esfera:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Requisitos:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Anexos:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Destinação:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
+- **Área de atuação:** Livro de tema sem edital do FNCA/Conanda identificável: páginas gov.br/mdh de FNCA/Conanda retornam 404 ou sem chamamento (WebFetch 03/10/2026; notícias do MDHC sem chamamento do FNCA); busca do DOU bloqueada por robots.txt; curl bloqueado pelo proxy. Não há PDF a ler.
 
 ## Observações da pesquisa
 
-Todos os livros do grupo apontam para a mesma página genérica do Conanda; necessário localizar edital oficial de cada fundo (FDD, Pronasci, Fundo do Idoso, CNDPD). | Mesma página restrita compartilhada por 8 livros do lote; lida uma vez. | Páginas-semente e variações em gov.br/mdh retornaram 404 via WebFetch; busca do DOU em in.gov.br bloqueada por robots.txt. Nenhuma edição registrada por falta de prova oficial. | não verificado: gov.br/mdh: página atual do Fundo Nacional da Pessoa Idosa (URL mudou; localizar via menu do CNDPI); gov.br/mdh/pt-br/assuntos/noticias: chamamentos públicos do FNI 2023-2026; in.gov.br (DOU seção 3): extratos de edital/chamamento do FNI/SNDPI 2023-2026 (acesso manual, robots bloqueia)
+Todos os livros do grupo apontam para a mesma página genérica do Conanda; necessário localizar edital oficial de cada fundo (FDD, Pronasci, Fundo do Idoso, CNDPD). | Mesma página restrita compartilhada por 8 livros do lote; lida uma vez. | PDF não lido: não existe edital identificável. Recomendação: arquivar ou vincular. | Páginas-semente e variações em gov.br/mdh retornaram 404 via WebFetch; busca do DOU em in.gov.br bloqueada por robots.txt. Nenhuma edição registrada por falta de prova oficial. | não verificado: gov.br/mdh: página atual do Fundo Nacional da Pessoa Idosa (URL mudou; localizar via menu do CNDPI); gov.br/mdh/pt-br/assuntos/noticias: chamamentos públicos do FNI 2023-2026; in.gov.br (DOU seção 3): extratos de edital/chamamento do FNI/SNDPI 2023-2026 (acesso manual, robots bloqueia)
 
 Mesma pesquisa dos livros: captacao-135, captacao-166, captacao-165, captacao-168, captacao-169, captacao-131
 

@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Sem edital identificável: link é busca genérica do DOU. Titular deve abrir o DOU Seção 3 no navegador, buscar o nome do programa e copiar órgão, prazo e link do aviso; ou consultar o PNCP/portal do órgão financiador.
+Sem edital específico identificável; recomendação: arquivar ou vincular a edital real.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Prazo de inscrição | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Resultado | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Prazo de recurso | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Valor | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Órgão / financiador | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Território | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Esfera | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Requisitos | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Anexos | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Destinação | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Área de atuação | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
+| Objeto | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Prazo de inscrição | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Resultado | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Prazo de recurso | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Valor | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Órgão / financiador | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Território | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Esfera | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Requisitos | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Anexos | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Destinação | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Área de atuação | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,22 +43,22 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Prazo de inscrição:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Resultado:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Prazo de recurso:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Valor:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Órgão / financiador:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Território:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Esfera:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Requisitos:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Anexos:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Destinação:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Área de atuação:** in.gov.br não abre; busca genérica do DOU sem edital específico
+- **Objeto:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Prazo de inscrição:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Resultado:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Prazo de recurso:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Valor:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Órgão / financiador:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Território:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Esfera:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Requisitos:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Anexos:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Destinação:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Área de atuação:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
 
 ## Observações da pesquisa
 
-Mesma página de busca do DOU compartilhada pelos 4 primeiros livros do lote.
+Mesma página de busca do DOU compartilhada pelos 4 primeiros livros do lote. | PDF não lido: não há edital identificável. Recomendação: arquivar ou vincular.
 
 Mesma pesquisa dos livros: captacao-199, captacao-092, captacao-093, captacao-213
 

@@ -15,18 +15,18 @@ cnj.jus.br devolve 403; título sugere capacitação/controle para OSC (não fin
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Prazo de inscrição | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Resultado | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Prazo de recurso | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Valor | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Órgão / financiador | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Território | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Esfera | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Requisitos | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Anexos | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Destinação | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
-| Área de atuação | não localizado | cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado. |
+| Objeto | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Prazo de inscrição | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Resultado | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Prazo de recurso | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Valor | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Órgão / financiador | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Território | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Esfera | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Requisitos | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Anexos | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Destinação | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Área de atuação | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Prazo de inscrição:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Resultado:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Prazo de recurso:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Valor:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Órgão / financiador:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Território:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Esfera:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Requisitos:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Anexos:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Destinação:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
-- **Área de atuação:** cnj.jus.br devolveu 403; página inicial sem relação direta com o título. O livro parece capacitação/controle (não financiamento) e vinculado a destinação de penas; não verificado.
+- **Objeto:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Prazo de inscrição:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Resultado:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Prazo de recurso:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Valor:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Órgão / financiador:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Território:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Esfera:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Requisitos:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Anexos:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Destinação:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Área de atuação:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
 
 ## Observações da pesquisa
 
-Provável D (capacitação) ou R (destinação judicial); precisa de fonte específica. | Titular: abrir cnj.jus.br e buscar o curso/evento 'Tribunal de Contas - capacitação e controle para OSC'; se for apenas capacitação, marcar D.
+Provável D (capacitação) ou R (destinação judicial); precisa de fonte específica. | Titular: abrir cnj.jus.br e buscar o curso/evento 'Tribunal de Contas - capacitação e controle para OSC'; se for apenas capacitação, marcar D. | Edital não lido nesta passagem. PNCP não se aplica (sem URL PNCP). Titular: abrir a fonte no navegador.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Aberto até 08/02/2028 (Art. 79, II), fluxo contínuo: R. A numeração PNCP '2027/3' diverge da publicação (2026-05-11), anotada.
+Aberto até 08/02/2028 (Art. 79, II), fluxo contínuo: R. A numeração PNCP '2027/3' diverge da publicação (2026-05-11), anotada. (mantida; edital em PDF não lido por indisponibilidade do PNCP)
 
 ## Os 12 pontos
 
@@ -23,8 +23,8 @@ Aberto até 08/02/2028 (Art. 79, II), fluxo contínuo: R. A numeração PNCP '20
 | Órgão / financiador | confirmado | Universidade Federal de Pernambuco |
 | Território | confirmado | Recife/PE |
 | Esfera | confirmado | Federal (universidade federal) |
-| Requisitos | não localizado | Requisitos detalhados constam do PDF do edital, não lido; PNCP traz apenas metadados. Objeto indica exigência de associação/cooperativa de catadores. |
-| Anexos | não localizado | Lista de anexos acessível só nos arquivos do PNCP, não consultados nesta coleta. |
+| Requisitos | não localizado | não localizado — API de arquivos do PNCP (pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) respondeu 503 Service Unavailable em todas as tentativas (WebFetch, Chrome em aba própria, curl bloqueado pelo proxy), com nova tentativa ao final em 03-04/10/2026; PDF do edital não lido. |
+| Anexos | não localizado | não localizado — API de arquivos do PNCP (pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) respondeu 503 Service Unavailable em todas as tentativas (WebFetch, Chrome em aba própria, curl bloqueado pelo proxy), com nova tentativa ao final em 03-04/10/2026; PDF do edital não lido. |
 | Destinação | confirmado | Associação/cooperativa de catadores presta coleta de recicláveis do órgão (Decreto 10.936/2022, coleta seletiva solidária); sem repasse de recursos. |
 | Área de atuação | confirmado | Meio ambiente / catadores de materiais recicláveis / coleta seletiva solidária |
 
@@ -45,11 +45,11 @@ Aberto até 08/02/2028 (Art. 79, II), fluxo contínuo: R. A numeração PNCP '20
 
 ## O que ainda precisa ser conferido
 
-- **Requisitos:** Requisitos detalhados constam do PDF do edital, não lido; PNCP traz apenas metadados. Objeto indica exigência de associação/cooperativa de catadores.
-- **Anexos:** Lista de anexos acessível só nos arquivos do PNCP, não consultados nesta coleta.
+- **Requisitos:** API de arquivos do PNCP (pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) respondeu 503 Service Unavailable em todas as tentativas (WebFetch, Chrome em aba própria, curl bloqueado pelo proxy), com nova tentativa ao final em 03-04/10/2026; PDF do edital não lido.
+- **Anexos:** API de arquivos do PNCP (pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) respondeu 503 Service Unavailable em todas as tentativas (WebFetch, Chrome em aba própria, curl bloqueado pelo proxy), com nova tentativa ao final em 03-04/10/2026; PDF do edital não lido.
 
 ## Observações da pesquisa
 
-API PNCP; PDF não lido.
+API PNCP; PDF não lido. | Pendente: reabrir quando o PNCP voltar (arquivos em /compras/24134488000108/2027/3/arquivos). 
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Aberto em fluxo contínuo até 26/04/2034: R.
+Aberto em fluxo contínuo até 26/04/2034: R. (mantida; edital em PDF não lido por indisponibilidade do PNCP)
 
 ## Os 12 pontos
 
@@ -23,8 +23,8 @@ Aberto em fluxo contínuo até 26/04/2034: R.
 | Órgão / financiador | confirmado | Tribunal Regional do Trabalho da 4ª Região (publicado via TST) |
 | Território | confirmado | Rio Grande do Sul |
 | Esfera | confirmado | Federal (Justiça do Trabalho) |
-| Requisitos | não localizado | Requisitos detalhados constam do PDF do edital, não lido; PNCP traz apenas metadados. Objeto indica exigência de associação/cooperativa de catadores. |
-| Anexos | não localizado | Lista de anexos acessível só nos arquivos do PNCP, não consultados nesta coleta. |
+| Requisitos | não localizado | não localizado — API de arquivos do PNCP (pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) respondeu 503 Service Unavailable em todas as tentativas (WebFetch, Chrome em aba própria, curl bloqueado pelo proxy), com nova tentativa ao final em 03-04/10/2026; PDF do edital não lido. |
+| Anexos | não localizado | não localizado — API de arquivos do PNCP (pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) respondeu 503 Service Unavailable em todas as tentativas (WebFetch, Chrome em aba própria, curl bloqueado pelo proxy), com nova tentativa ao final em 03-04/10/2026; PDF do edital não lido. |
 | Destinação | confirmado | Associação/cooperativa de catadores presta coleta de recicláveis do órgão (Decreto 10.936/2022, coleta seletiva solidária); sem repasse de recursos. |
 | Área de atuação | confirmado | Meio ambiente / catadores de materiais recicláveis / coleta seletiva solidária |
 
@@ -45,11 +45,11 @@ Aberto em fluxo contínuo até 26/04/2034: R.
 
 ## O que ainda precisa ser conferido
 
-- **Requisitos:** Requisitos detalhados constam do PDF do edital, não lido; PNCP traz apenas metadados. Objeto indica exigência de associação/cooperativa de catadores.
-- **Anexos:** Lista de anexos acessível só nos arquivos do PNCP, não consultados nesta coleta.
+- **Requisitos:** API de arquivos do PNCP (pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) respondeu 503 Service Unavailable em todas as tentativas (WebFetch, Chrome em aba própria, curl bloqueado pelo proxy), com nova tentativa ao final em 03-04/10/2026; PDF do edital não lido.
+- **Anexos:** API de arquivos do PNCP (pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) respondeu 503 Service Unavailable em todas as tentativas (WebFetch, Chrome em aba própria, curl bloqueado pelo proxy), com nova tentativa ao final em 03-04/10/2026; PDF do edital não lido.
 
 ## Observações da pesquisa
 
-Informação complementar do PNCP: nova divulgação do Credenciamento TRT4 01/2023 por não haver ferramenta própria antes. | Nenhuma edicao comprovada. Pagina CNJ chamadas-publicas (lida via get_page_text em 03/10/2026) lista apenas chamamentos de artigos, Justica Pesquisa, imoveis, Trabalho Decente e banco de instrutores ANPJ; nenhum de destinacao de prestacoes pecuniarias. URLs tentadas deram 404/403: TST (/web/guest/prestacoes-pecuniarias, /busca), Receita (mercadorias-apreendidas, destinacao-de-mercadorias, busca in | não verificado: CNJ: pagina da Politica de Destinacao de Penas/Prestacoes Pecuniarias (Res. CNJ 154/2012) - localizar URL correta a partir da home cnj.jus.br; TST: editais de prestacoes pecuniarias (pode ser a Comissao Gestora / Corregedoria; buscar na home tst.jus.br pelo menu Transparencia/Prestacoes de contas); Receita Federal: URL correta de destinacao de mercadorias (doacao/cessao a entidades; Portaria RFB 1
+Informação complementar do PNCP: nova divulgação do Credenciamento TRT4 01/2023 por não haver ferramenta própria antes. | Pendente: reabrir quando o PNCP voltar (arquivos em /compras/00509968000148/2024/969/arquivos).  | Nenhuma edicao comprovada. Pagina CNJ chamadas-publicas (lida via get_page_text em 03/10/2026) lista apenas chamamentos de artigos, Justica Pesquisa, imoveis, Trabalho Decente e banco de instrutores ANPJ; nenhum de destinacao de prestacoes pecuniarias. URLs tentadas deram 404/403: TST (/web/guest/prestacoes-pecuniarias, /busca), Receita (mercadorias-apreendidas, destinacao-de-mercadorias, busca in | não verificado: CNJ: pagina da Politica de Destinacao de Penas/Prestacoes Pecuniarias (Res. CNJ 154/2012) - localizar URL correta a partir da home cnj.jus.br; TST: editais de prestacoes pecuniarias (pode ser a Comissao Gestora / Corregedoria; buscar na home tst.jus.br pelo menu Transparencia/Prestacoes de contas); Receita Federal: URL correta de destinacao de mercadorias (doacao/cessao a entidades; Portaria RFB 1
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

@@ -18,12 +18,12 @@ Credenciamento com prazo final >= 03/10/2026, dirigido a entidades do tipo OSC (
 | Objeto | confirmado | Credenciamento de cooperativas e associações para coleta seletiva de resíduos recicláveis do município |
 | Prazo de inscrição | confirmado | Abertura 2027-07-23; encerramento 2027-07-23 (credenciamento aberto durante o período) |
 | Resultado | não informado no edital | Dado da API do PNCP não traz data de resultado; credenciamento é de fluxo contínuo; edital integral não lido. |
-| Prazo de recurso | não localizado | Não consta na API do PNCP; edital integral não lido. |
+| Prazo de recurso | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
 | Valor | confirmado | R$ 43200 |
 | Órgão / financiador | confirmado | Prefeitura Municipal de Castelo/ES |
 | Território | confirmado | Castelo/ES |
 | Esfera | confirmado | Municipal |
-| Requisitos | não localizado | Edital/anexos em PDF não lidos; só a API pública do PNCP foi consultada (requisitos). |
+| Requisitos | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
 | Anexos | confirmado | Edital (CREDENCIAMENTO 004 2026), 1 documento no PNCP |
 | Destinação | confirmado | Pagamento por serviço prestado mediante credenciamento (Lei 14.133/2021, art. 79), não é transferência de fomento |
 | Área de atuação | confirmado | Resíduos sólidos / coleta seletiva e inclusão socioprodutiva |
@@ -43,11 +43,11 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de recurso:** Não consta na API do PNCP; edital integral não lido.
-- **Requisitos:** Edital/anexos em PDF não lidos; só a API pública do PNCP foi consultada (requisitos).
+- **Prazo de recurso:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
+- **Requisitos:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
 
 ## Observações da pesquisa
 
-Castelo/ES; credenciamento aberto até 2027-07-23. Dados da API pública do PNCP; edital integral não lido. Atenção: PNCP traz abertura e encerramento no mesmo dia (2027-07-23), possível erro de digitação do órgão; confirmar no edital. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF.
+Castelo/ES; credenciamento aberto até 2027-07-23. Dados da API pública do PNCP; edital integral não lido. Atenção: PNCP traz abertura e encerramento no mesmo dia (2027-07-23), possível erro de digitação do órgão; confirmar no edital. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF. | PDF não lido: PNCP fora do ar (503) durante a coleta; reprocessar quando a API voltar. Decisão mantida sem alteração.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

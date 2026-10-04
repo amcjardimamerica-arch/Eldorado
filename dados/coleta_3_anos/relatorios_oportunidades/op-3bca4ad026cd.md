@@ -15,15 +15,15 @@ Indaiatuba/SP — chamamento de OSC de proteção animal (FMPA), processo 23/202
 |---|---|---|
 | Objeto | confirmado | parceria com OSC de proteção animal para ações de proteção e bem-estar animal com recursos do FMPA |
 | Prazo de inscrição | confirmado | sessão de entrega em 25/09/2026 às 09h (data declarada pelo órgão no PNCP; PDF do edital não abriu) |
-| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Resultado | não localizado | PDF do edital no PNCP inacessível: API de arquivos respondeu 503 em duas rodadas (curl bloqueado pelo proxy, WebFetch e Chrome com 503); nenhuma outra fonte oficial do edital localizada. |
+| Prazo de recurso | não localizado | PDF do edital no PNCP inacessível: API de arquivos respondeu 503 em duas rodadas (curl bloqueado pelo proxy, WebFetch e Chrome com 503); nenhuma outra fonte oficial do edital localizada. |
 | Valor | confirmado | R$ 93.000,00 (valor total estimado) |
 | Órgão / financiador | confirmado | Prefeitura de Indaiatuba — Secretaria Municipal de Serviços Urbanos e Meio Ambiente / FMPA |
 | Território | confirmado | OSCs de proteção animal constituídas no Município de Indaiatuba/SP |
 | Esfera | confirmado | municipal |
 | Requisitos | confirmado | OSC de proteção animal legalizada no município; aprovação prévia do Conselho Municipal de Proteção Animal |
-| Anexos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Destinação | não localizado | parceria MROSC com recursos do FMPA (instrumento não confirmado no PDF) — item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Anexos | não localizado | PDF do edital no PNCP inacessível: API de arquivos respondeu 503 em duas rodadas (curl bloqueado pelo proxy, WebFetch e Chrome com 503); nenhuma outra fonte oficial do edital localizada. |
+| Destinação | não localizado | PDF do edital no PNCP inacessível: API de arquivos respondeu 503 em duas rodadas (curl bloqueado pelo proxy, WebFetch e Chrome com 503); nenhuma outra fonte oficial do edital localizada. |
 | Área de atuação | confirmado | proteção animal / meio ambiente |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
@@ -41,9 +41,13 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Anexos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Destinação:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Resultado:** PDF do edital no PNCP inacessível: API de arquivos respondeu 503 em duas rodadas (curl bloqueado pelo proxy, WebFetch e Chrome com 503); nenhuma outra fonte oficial do edital localizada.
+- **Prazo de recurso:** PDF do edital no PNCP inacessível: API de arquivos respondeu 503 em duas rodadas (curl bloqueado pelo proxy, WebFetch e Chrome com 503); nenhuma outra fonte oficial do edital localizada.
+- **Anexos:** PDF do edital no PNCP inacessível: API de arquivos respondeu 503 em duas rodadas (curl bloqueado pelo proxy, WebFetch e Chrome com 503); nenhuma outra fonte oficial do edital localizada.
+- **Destinação:** PDF do edital no PNCP inacessível: API de arquivos respondeu 503 em duas rodadas (curl bloqueado pelo proxy, WebFetch e Chrome com 503); nenhuma outra fonte oficial do edital localizada.
+
+## Observações da pesquisa
+
+PNCP 503 (API de arquivos) em duas tentativas; edital não lido.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

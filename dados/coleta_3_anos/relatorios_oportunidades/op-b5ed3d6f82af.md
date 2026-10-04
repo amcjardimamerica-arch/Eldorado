@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Chamamento público para selecionar projetos esportivos com repasse de recursos financeiros; recebimento até 30/11/2026 (>= 03/10/2026).
+Mantida a decisão anterior (metadados oficiais); PDF do edital não lido por indisponibilidade do PNCP.
 
 ## Os 12 pontos
 
@@ -17,14 +17,14 @@ Chamamento público para selecionar projetos esportivos com repasse de recursos 
 |---|---|---|
 | Objeto | confirmado | Chamamento público para selecionar projetos esportivos do Programa de Fomento e Incentivo ao Esporte no Município de Santa Helena (Esporte e Cidadania), mediante repasse de recursos financeiros. |
 | Prazo de inscrição | confirmado | 2026-02-02 a 2026-11-30 |
-| Resultado | não localizado | Edital/anexos em PDF não lidos; apenas metadados da API pública de consulta do PNCP (somente leitura) foram acessados. |
-| Prazo de recurso | não localizado | Edital/anexos em PDF não lidos; apenas metadados da API pública de consulta do PNCP (somente leitura) foram acessados. |
+| Resultado | não localizado | PNCP fora do ar na coleta (API /pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos e /api/pncp/v1 retornaram 503 em 03/10/2026, com novas tentativas após pausa; via proxy do ambiente 403); lista de arquivos e PDF do edital não acessados. |
+| Prazo de recurso | não localizado | PNCP fora do ar na coleta (API /pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos e /api/pncp/v1 retornaram 503 em 03/10/2026, com novas tentativas após pausa; via proxy do ambiente 403); lista de arquivos e PDF do edital não acessados. |
 | Valor | confirmado | 1170000.0 |
 | Órgão / financiador | confirmado | Município de Santa Helena |
 | Território | confirmado | Município de Santa Helena (CNPJ 76.206.457: PR) |
 | Esfera | confirmado | Municipal |
-| Requisitos | não localizado | Edital/anexos em PDF não lidos; apenas metadados da API pública de consulta do PNCP (somente leitura) foram acessados. |
-| Anexos | não localizado | Edital/anexos em PDF não lidos; apenas metadados da API pública de consulta do PNCP (somente leitura) foram acessados. |
+| Requisitos | não localizado | PNCP fora do ar na coleta (API /pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos e /api/pncp/v1 retornaram 503 em 03/10/2026, com novas tentativas após pausa; via proxy do ambiente 403); lista de arquivos e PDF do edital não acessados. |
+| Anexos | não localizado | PNCP fora do ar na coleta (API /pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos e /api/pncp/v1 retornaram 503 em 03/10/2026, com novas tentativas após pausa; via proxy do ambiente 403); lista de arquivos e PDF do edital não acessados. |
 | Destinação | confirmado | Repasse de recursos financeiros a projetos esportivos selecionados |
 | Área de atuação | confirmado | Esporte |
 
@@ -45,13 +45,13 @@ Chamamento público para selecionar projetos esportivos com repasse de recursos 
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** Edital/anexos em PDF não lidos; apenas metadados da API pública de consulta do PNCP (somente leitura) foram acessados.
-- **Prazo de recurso:** Edital/anexos em PDF não lidos; apenas metadados da API pública de consulta do PNCP (somente leitura) foram acessados.
-- **Requisitos:** Edital/anexos em PDF não lidos; apenas metadados da API pública de consulta do PNCP (somente leitura) foram acessados.
-- **Anexos:** Edital/anexos em PDF não lidos; apenas metadados da API pública de consulta do PNCP (somente leitura) foram acessados.
+- **Resultado:** PNCP fora do ar na coleta (API /pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos e /api/pncp/v1 retornaram 503 em 03/10/2026, com novas tentativas após pausa; via proxy do ambiente 403); lista de arquivos e PDF do edital não acessados.
+- **Prazo de recurso:** PNCP fora do ar na coleta (API /pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos e /api/pncp/v1 retornaram 503 em 03/10/2026, com novas tentativas após pausa; via proxy do ambiente 403); lista de arquivos e PDF do edital não acessados.
+- **Requisitos:** PNCP fora do ar na coleta (API /pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos e /api/pncp/v1 retornaram 503 em 03/10/2026, com novas tentativas após pausa; via proxy do ambiente 403); lista de arquivos e PDF do edital não acessados.
+- **Anexos:** PNCP fora do ar na coleta (API /pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos e /api/pncp/v1 retornaram 503 em 03/10/2026, com novas tentativas após pausa; via proxy do ambiente 403); lista de arquivos e PDF do edital não acessados.
 
 ## Observações da pesquisa
 
-Edital de 2025 (nº 299), abertura de propostas em 02/02/2026. Edital em PDF não lido; confirmar se OSC é elegível. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF.
+Edital de 2025 (nº 299), abertura de propostas em 02/02/2026. Edital em PDF não lido; confirmar se OSC é elegível. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF. | Itens do corpo do edital seguem pendentes: reexecutar quando o PNCP voltar. 
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

@@ -1,7 +1,7 @@
 # Zurich Seguros – edital de apoio a projetos sociais com incentivo fiscal 2025
 
 - **Identificador:** `op-ae7fc0847fed` · **Órgão/financiador:** Zurich Seguros (apoio técnico IDIS)
-- **Decisão:** V (edital vigente) · **Validação dos 12 pontos:** parcial
+- **Decisão:** V (edital vigente) · **Validação dos 12 pontos:** completa
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
 - **Página oficial usada:** https://www.zurich.com.br/leis-de-incentivo-2026
 
@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Edital Zurich de Leis de Incentivo 2026 com inscrições até 19/10/2026 (>= 03/10/2026). O livro cita 2025; a edição vigente é 2026.
+Regulamento Zurich 2026 lido: inscrições 21/09 a 19/10/2026, resultado 02/12/2026; exige projeto já aprovado em lei de incentivo (Rouanet, Esporte, FIA, Pessoa Idosa) com captação aberta até 31/12/2026. Edição 2026 (não 2025).
 
 ## Os 12 pontos
 
@@ -24,7 +24,7 @@ Edital Zurich de Leis de Incentivo 2026 com inscrições até 19/10/2026 (>= 03/
 | Território | confirmado | Nacional |
 | Esfera | confirmado | Privada (recurso incentivado: Rouanet, Esporte, Fundo da Pessoa Idosa, FIA) |
 | Requisitos | confirmado | OSC sem fins lucrativos; projeto aprovado e apto para captação; atuação nacional; regularidade fiscal, trabalhista e documental |
-| Anexos | não localizado | Documentação listada apenas no FAQ colapsado e no edital PDF, não lidos. |
+| Anexos | confirmado | Anexo I - Minuta do Termo de Doação; Anexo II - Formulário de Inscrição |
 | Destinação | confirmado | Recursos incentivados (doação/patrocínio com dedução fiscal) para projetos aprovados, execução em 2027 |
 | Área de atuação | confirmado | Educação e desenvolvimento social; formação e inclusão produtiva; comunidades e resiliência |
 
@@ -43,12 +43,8 @@ Edital Zurich de Leis de Incentivo 2026 com inscrições até 19/10/2026 (>= 03/
 - **Base:** Só a edição 2026 foi comprovada em página oficial; a de 2025 citada no livro não foi confirmada.
 - **Calculado por:** agente (leitura da fonte)
 
-## O que ainda precisa ser conferido
-
-- **Anexos:** Documentação listada apenas no FAQ colapsado e no edital PDF, não lidos.
-
 ## Observações da pesquisa
 
-Prazo de recurso e anexos estão no edital PDF, não lido.
+Prazo de recurso e anexos estão no edital PDF, não lido. | Leitura via resumo do PDF. Seleção final p. 9: 'Não caberá recurso contra a decisão final do processo seletivo'; resultado em 02/12/2026 (p. 10). Dúvidas: editaldeincentivadoszurich@idis.org.br.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

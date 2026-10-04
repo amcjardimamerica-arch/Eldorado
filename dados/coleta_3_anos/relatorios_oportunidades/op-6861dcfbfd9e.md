@@ -7,24 +7,24 @@
 
 ## Decisão e motivo
 
-Página da oportunidade 8125 no Mapa Cultural do Ceará (16º Edital Ceará de Cinema e Audiovisual, Modalidade 2 Roteiro/Núcleos Criativos) não pôde ser lida (robots.txt, 3 tentativas); sem datas nem valores confirmados.
+mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de inscrição | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Valor | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Órgão / financiador | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Território | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Esfera | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Requisitos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Anexos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Destinação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Área de atuação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Objeto | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Prazo de inscrição | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Resultado | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Prazo de recurso | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Valor | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Órgão / financiador | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Território | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Esfera | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Requisitos | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Anexos | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Destinação | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
+| Área de atuação | não localizado | mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido. |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -41,18 +41,18 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de inscrição:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Valor:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Órgão / financiador:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Território:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Esfera:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Requisitos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Anexos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Destinação:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Área de atuação:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Objeto:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Prazo de inscrição:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Resultado:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Prazo de recurso:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Valor:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Órgão / financiador:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Território:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Esfera:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Requisitos:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Anexos:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Destinação:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
+- **Área de atuação:** mapacultural.secult.ce.gov.br bloqueado por robots no WebFetch (API findOne também); curl bloqueado pelo proxy. Não lido.
 
 ## Observações da pesquisa
 

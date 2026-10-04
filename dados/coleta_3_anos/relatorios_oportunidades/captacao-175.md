@@ -5,11 +5,11 @@
 - **Selo estimado do livro:** prata — BNDES Periferias: edição anterior a 2026 só com prova por resumo (conferir o trecho)
 - **Página oficial usada:** https://www.bndes.gov.br/periferias
 
-**Serve para uma OSC de Goiás?** depende — OSC sem fins lucrativos pode propor, mas o projeto precisa somar no mínimo R$ 20 milhões e atuar de forma indireta, apoiando subprojetos de organizações menores.
+**Serve para uma OSC de Goiás?** sim — 'Quem pode solicitar: pessoas jurídicas de direito privado sem fins lucrativos'; investimento total mínimo R$ 20 milhões; participação BNDES até 50% ou 90%
 
 ## Decisão e motivo
 
-Página oficial do BNDES: 6º ciclo do BNDES Periferias recebe propostas de 18/08/2026 até 17h de 04/12/2026 (frente 'BNDES Periferias em Rede').
+Página oficial lida em 03/10/2026: chamada do 6º ciclo BNDES Periferias (Periferias em Rede) de 18/08/2026 até 17h de 04/12/2026; elegíveis pessoas jurídicas de direito privado sem fins lucrativos; 'Editais abertos: não há'.
 
 ## Os 12 pontos
 
@@ -18,7 +18,7 @@ Página oficial do BNDES: 6º ciclo do BNDES Periferias recebe propostas de 18/0
 | Objeto | confirmado | Apoio financeiro a projetos em periferias urbanas, na chamada permanente do Fundo Socioambiental organizada em ciclos |
 | Prazo de inscrição | confirmado | Até as 17h de 04/12/2026 (6º ciclo) |
 | Resultado | não informado no edital | Página não informa data para o 6º ciclo; resultado do 5º ciclo (Mulheres) previsto para o último trimestre de 2026 |
-| Prazo de recurso | não localizado | Roteiro e regulamento do 6º ciclo não lidos |
+| Prazo de recurso | não localizado | Página bndes.gov.br/periferias lida integralmente (texto da chamada permanente): sem menção a recurso; o PDF 'modelo de roteiro de apresentação de projetos' não pôde ser aberto |
 | Valor | confirmado | Investimento total mínimo de R$ 20 milhões por projeto (incluindo contrapartida); participação do BNDES até 50% do projeto (proponente com receita livre média superior ao orçamento anual do projeto) ou até 90% nos demais casos |
 | Órgão / financiador | confirmado | BNDES – Fundo Socioambiental |
 | Território | confirmado | Brasil, periferias urbanas |
@@ -51,10 +51,10 @@ Página oficial do BNDES: 6º ciclo do BNDES Periferias recebe propostas de 18/0
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de recurso:** Roteiro e regulamento do 6º ciclo não lidos
+- **Prazo de recurso:** Página bndes.gov.br/periferias lida integralmente (texto da chamada permanente): sem menção a recurso; o PDF 'modelo de roteiro de apresentação de projetos' não pôde ser aberto
 
 ## Observações da pesquisa
 
-Página diz 'Editais abertos: não há' para editais específicos; a chamada permanente está aberta. Fundo Socioambiental também menciona Edição Mulheres aberta. | Resultado do 5º ciclo (Mulheres) previsto para o último trimestre de 2026; dúvidas: periferias_chamadas@bndes.gov.br. | Aberturas de ciclos anteriores nao constam na pagina atual; 4º ciclo nao localizado. Patrocinios: pagina oficial lista 'ciclos indicativos' de 2026 (fluxo continuo, nao selecao com inscricao datada) e Selecao Publica 01/2025 (Longa-metragem) e Edital de Cinema 2026 sem datas lidas; nao registrados.
+Página diz 'Editais abertos: não há' para editais específicos; a chamada permanente está aberta. Fundo Socioambiental também menciona Edição Mulheres aberta. | Resultado do 5º ciclo (Mulheres) previsto para o último trimestre de 2026; dúvidas: periferias_chamadas@bndes.gov.br. | Resultado do 5º ciclo (Mulheres) previsto para o último trimestre de 2026. | Aberturas de ciclos anteriores nao constam na pagina atual; 4º ciclo nao localizado. Patrocinios: pagina oficial lista 'ciclos indicativos' de 2026 (fluxo continuo, nao selecao com inscricao datada) e Selecao Publica 01/2025 (Longa-metragem) e Edital de Cinema 2026 sem datas lidas; nao registrados.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

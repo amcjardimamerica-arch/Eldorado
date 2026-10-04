@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Cadastro traz apenas tema genérico ('órgão a localizar'), sem programa, órgão financiador ou página; não há edital a ler. Sem nenhuma fonte oficial indicada, a leitura é impossível nesta passagem. Para resolver, o titular precisa indicar o órgão ou programa financiador pretendido (ex.: Ministério, secretaria, fundo ou fundação) ou autorizar a busca de editais por tema; sem isso o livro permanece pendente.
+Livro de tema sem órgão nem edital identificável; manter P com recomendação arquivar ou vincular.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Prazo de inscrição | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Resultado | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Prazo de recurso | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Valor | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Órgão / financiador | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Território | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Esfera | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Requisitos | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Anexos | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Destinação | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
-| Área de atuação | não localizado | Sem página oficial no cadastro; livro é tema genérico. |
+| Objeto | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Prazo de inscrição | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Resultado | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Prazo de recurso | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Valor | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Órgão / financiador | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Território | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Esfera | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Requisitos | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Anexos | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Destinação | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
+| Área de atuação | não localizado | Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** Sem página oficial no cadastro; livro é tema genérico.
-- **Prazo de inscrição:** Sem página oficial no cadastro; livro é tema genérico.
-- **Resultado:** Sem página oficial no cadastro; livro é tema genérico.
-- **Prazo de recurso:** Sem página oficial no cadastro; livro é tema genérico.
-- **Valor:** Sem página oficial no cadastro; livro é tema genérico.
-- **Órgão / financiador:** Sem página oficial no cadastro; livro é tema genérico.
-- **Território:** Sem página oficial no cadastro; livro é tema genérico.
-- **Esfera:** Sem página oficial no cadastro; livro é tema genérico.
-- **Requisitos:** Sem página oficial no cadastro; livro é tema genérico.
-- **Anexos:** Sem página oficial no cadastro; livro é tema genérico.
-- **Destinação:** Sem página oficial no cadastro; livro é tema genérico.
-- **Área de atuação:** Sem página oficial no cadastro; livro é tema genérico.
+- **Objeto:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Prazo de inscrição:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Resultado:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Prazo de recurso:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Valor:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Órgão / financiador:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Território:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Esfera:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Requisitos:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Anexos:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Destinação:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
+- **Área de atuação:** Sem edital identificável: cadastro traz só tema ('órgão a localizar'), sem fonte oficial
 
 ## Observações da pesquisa
 
-Livro genérico de ideia/tema de projeto, sem programa, órgão ou página oficial identificada; nada a verificar. | Tema de projeto, não edital.
+Livro genérico de ideia/tema de projeto, sem programa, órgão ou página oficial identificada; nada a verificar. | Tema de projeto, não edital. | Livro genérico de tema, sem órgão, programa ou página oficial; não há edital a ler. Recomendação: arquivar ou vincular a edital real.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._
