@@ -15,32 +15,32 @@ Página oficial: https://casa.org.br/chamadas/amazonia-viva-fortalecendo-a-auton
 
 - Objeto: confirmado — Amazônia Viva – Fortalecendo a Autonomia e Resiliência dos Povos da Floresta
 - Prazo de inscrição: confirmado — 2024-03-20 a ?
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
-- Valor: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
+- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
 - Órgão / financiador: catalogo — Fundo Casa Socioambiental (apoio: Gordon and Betty Moore Foundation)
 - Território: catalogo — BR
-- Esfera: nao_localizado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Esfera: catalogo — nacional
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Fundo; público: OSC e associações
+- Área de atuação: catalogo — Meio ambiente
 
 ### 2025-05 — Amazônia Viva – Fortalecendo a Autonomia e a Resiliência dos Povos da Floresta
 Página oficial: https://casa.org.br/chamadas/amazonia-viva-fortalecendo-a-autonomia-e-a-resiliencia-dos-povos-da-floresta/
 
 - Objeto: confirmado — Amazônia Viva – Fortalecendo a Autonomia e a Resiliência dos Povos da Floresta
 - Prazo de inscrição: confirmado — 2025-05-06 a ?
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
-- Valor: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
+- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
 - Órgão / financiador: catalogo — Fundo Casa Socioambiental (apoio: Gordon and Betty Moore Foundation)
 - Território: catalogo — BR
-- Esfera: nao_localizado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Esfera: catalogo — nacional
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Fundo; público: OSC e associações
+- Área de atuação: catalogo — Meio ambiente
 
 ## Conselho de 7 lentes
 

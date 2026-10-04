@@ -15,16 +15,16 @@ Página oficial: https://pncp.gov.br/app/editais/01130277000100/2025/23
 
 - Objeto: confirmado — Chamamento – Lei Paulo Gustavo (audiovisual/demais áreas)
 - Prazo de inscrição: confirmado — 24/04/2025 a 24/04/2026
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: confirmado — R$ 14.198,55
 - Órgão / financiador: confirmado — Município de Davinópolis
 - Território: confirmado — GO
 - Esfera: confirmado — municipal
 - Requisitos: nao_localizado (está no PDF do edital (não lido))
 - Anexos: confirmado — 2 arquivos (certidão, edital)
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Destinação: catalogo — tipo: Edital; público: OSC e associações
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 

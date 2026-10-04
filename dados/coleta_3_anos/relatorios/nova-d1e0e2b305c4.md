@@ -15,16 +15,16 @@ Página oficial: https://pncp.gov.br/app/editais/14205959000178/2025/54
 
 - Objeto: confirmado — Credenciamento de Pessoas Físicas e/ou Jurídicas para prestação dos serviços artístico-musicais locais e ou… — MUNICIPIO (edição PNCP 2025/54)
 - Prazo de inscrição: confirmado — 2025-06-10 a 2025-12-26
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
 - Órgão / financiador: confirmado — CNPJ 14205959000178 (órgão publicador no PNCP)
 - Território: catalogo — BA
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Credenciamento; público: Artistas e produtores culturais
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 

@@ -15,32 +15,32 @@ Página oficial: https://pncp.gov.br/app/editais/18133926000110/2024/40
 
 - Objeto: confirmado — CREDENCIAMENTO DE ARTISTAS NAS SEGUINTES CATEGORIAS: CANTOR SOLO, BANDA, DJ E LOCUTOR DE EVENTOS, PARA… — MUNICIPIO DE S (edição PNCP 2024/40)
 - Prazo de inscrição: confirmado — 2024-04-26 a 2024-05-20
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
 - Órgão / financiador: confirmado — CNPJ 18133926000110 (órgão publicador no PNCP)
 - Território: catalogo — BR
 - Esfera: catalogo — Brasil
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Credenciamento; público: Artistas e produtores culturais
+- Área de atuação: catalogo — Cultura
 
 ### 2024-10 — CREDENCIAMENTO DE ARTISTAS NAS SEGUINTES CATEGORIAS: CANTOR SOLO, BANDA, DJ E LOCUTOR DE EVENTOS, PARA… — MUNICIPIO DE S (edição PNCP 2024/92)
 Página oficial: https://pncp.gov.br/app/editais/18133926000110/2024/92
 
 - Objeto: confirmado — CREDENCIAMENTO DE ARTISTAS NAS SEGUINTES CATEGORIAS: CANTOR SOLO, BANDA, DJ E LOCUTOR DE EVENTOS, PARA… — MUNICIPIO DE S (edição PNCP 2024/92)
 - Prazo de inscrição: confirmado — 2024-10-25 a 2024-11-25
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
 - Órgão / financiador: confirmado — CNPJ 18133926000110 (órgão publicador no PNCP)
 - Território: catalogo — BR
 - Esfera: catalogo — Brasil
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Credenciamento; público: Artistas e produtores culturais
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 

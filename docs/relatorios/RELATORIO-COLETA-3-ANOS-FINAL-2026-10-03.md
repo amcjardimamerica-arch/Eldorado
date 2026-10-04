@@ -44,7 +44,7 @@ Como ler cada situação. **Validado** é recorrência comprovada em 2 ou mais a
 
 ## 3. Os 12 itens das edições anteriores
 
-Nas edições comprovadas, os 12 itens somam 8760 leituras: 1874 confirmados na página da edição, 1666 vindos do catálogo do próprio livro, 211 dispensados pelo tipo do edital (por exemplo, valor em edital de credenciamento) e 5009 ainda não localizados. O maior vazio está em Requisitos, Anexos, Resultado e Prazo de recurso quando estão dentro de PDF não lido. Esses itens ficaram como "não localizado" e nunca foram preenchidos por suposição.
+Nas 730 edições comprovadas, os 12 itens somam 8.760 leituras: 1.874 confirmados na página da edição, 3.467 vindos do catálogo do livro (esfera, área, destinação/público, órgão, território), 211 dispensados pelo tipo do edital e 3.208 ainda não localizados. Cada não localizado traz o motivo escrito (Resultado, Prazo de recurso, Requisitos, Anexos e Valor ficam no corpo do edital em PDF ou em publicação posterior, não lidos nesta rodada) e é pendência explícita, nunca suposição. Esses 3.208 só se fecham lendo cada PDF; não foram fechados nesta rodada.
 
 ## 4. Relatório preditivo por oportunidade
 
@@ -52,7 +52,7 @@ Cada livro tem mês típico de abertura, duração típica, próxima janela prov
 
 ## 5. Conselho de 7 lentes (decisão do neutro)
 
-Cada relatório traz as sete lentes, do extremamente pessimista ao extremamente otimista. O consolidado do neutro para esta coleta é o seguinte. Os pessimistas apontam que 621 livros estão apenas verificados sem série, que 5.009 itens de edições ficaram não localizados e que parte das aberturas pode ser a data da notícia, e não a da inscrição. Os otimistas apontam que 242 livros estão validados, que a janela de 3 anos já dá calendário para os de ouro e que o preditivo antecipa o aviso e o reuso do plano de trabalho. O neutro decide: usar a previsão de mês apenas nos ouro e na prata com data; tratar o restante como radar; conferir a página do órgão 30 dias antes da janela (Lei 13.019/2014, art. 26); ler as datas das edições "série indicada" antes de apostar em calendário; e auditar a série por amostra de 10% a cada trimestre.
+Cada relatório traz as sete lentes, do extremamente pessimista ao extremamente otimista. O consolidado do neutro para esta coleta é o seguinte. Os pessimistas apontam que 621 livros estão apenas verificados sem série, que 3.208 itens de edições ficaram não localizados e que parte das aberturas pode ser a data da notícia, e não a da inscrição. Os otimistas apontam que 242 livros estão validados, que a janela de 3 anos já dá calendário para os de ouro e que o preditivo antecipa o aviso e o reuso do plano de trabalho. O neutro decide: usar a previsão de mês apenas nos ouro e na prata com data; tratar o restante como radar; conferir a página do órgão 30 dias antes da janela (Lei 13.019/2014, art. 26); ler as datas das edições "série indicada" antes de apostar em calendário; e auditar a série por amostra de 10% a cada trimestre.
 
 ## 6. Auditoria feita nesta etapa
 

@@ -15,16 +15,16 @@ Página oficial: https://goias.gov.br/esporte/governo-de-goias-abre-novo-edital-
 
 - Objeto: confirmado — Edital Pró-Goiás Atleta (480 vagas)
 - Prazo de inscrição: confirmado — 2025-10-31 a 2025-11-05
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: confirmado — bolsa mensal de R$ 500 (categoria Goiás Social)
 - Órgão / financiador: catalogo — Secretaria de Estado de Esporte e Lazer (SEEL-GO)
 - Território: catalogo — GO
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Edital; público: OSC e associações, Atletas e entidades esportivas
+- Área de atuação: catalogo — Esporte
 
 ## Conselho de 7 lentes
 

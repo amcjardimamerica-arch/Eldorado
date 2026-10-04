@@ -15,16 +15,16 @@ Página oficial: https://pncp.gov.br/app/editais/07847379000119/2024/118
 
 - Objeto: confirmado — CHAMAMENTO PÚBLICO, EM CARÁTER EMERGENCIAL, DE ENTIDADES DE DIREITO PRIVADO, SEM FINS LUCRATIVOS, PARA SE QUALIFICAREM COMO ORGANIZAÇÃO SOCIAL (OS), NA ÁREA DE SAÚDE NO ÂMBITO DO M
 - Prazo de inscrição: confirmado — 2024-11-05 a ?
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
-- Valor: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
+- Valor: nao_localizado (O valor global/por projeto não aparece na página lida da edição (está no edital ou na notícia de lançamento); pendência explícita.)
 - Órgão / financiador: catalogo — PNCP — MUNICIPIO DE ACOPIARA
 - Território: catalogo — CE
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Chamamento público; público: OSC e associações
+- Área de atuação: catalogo — Saúde
 
 ## Conselho de 7 lentes
 

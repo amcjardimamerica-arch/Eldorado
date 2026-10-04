@@ -15,16 +15,16 @@ Página oficial: https://pncp.gov.br/app/editais/77857183000190/2024/257
 
 - Objeto: confirmado — Credenciamento das entidades hospitalares filantrópicas ou privadas sem fins lucrativos, interessados em participar de forma complementar do Sistema Único de Saúde - SUS, no municí
 - Prazo de inscrição: confirmado — 2024-08-05 a ?
-- Resultado: nao_localizado
-- Prazo de recurso: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
+- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
 - Valor: dispensa_tipo (pagamento por tabela ou valor fixado pela Administração, igual para todos os credenciados)
 - Órgão / financiador: catalogo — PNCP — MUNICIPIO DE GUAIRA
 - Território: catalogo — PR
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Credenciamento; público: OSC e associações
+- Área de atuação: catalogo — Saúde
 
 ## Conselho de 7 lentes
 

@@ -15,37 +15,37 @@ Página oficial: https://goias.gov.br/cultura/programa-goyazes-abre-inscricoes-n
 
 - Objeto: confirmado — Programa Goyazes 2024
 - Prazo de inscrição: confirmado — 2024-04-02 a 2024-04-30
-- Resultado: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
 - Prazo de recurso: dispensa_tipo (o rito de recurso, quando existe, está na norma do programa e não em edital de seleção)
 - Valor: confirmado — R$ 40 milhões
 - Órgão / financiador: catalogo — Conanda — Fundo Nacional para a Criança e o Adolescente
 - Território: catalogo — GO
 - Esfera: catalogo — Estado
-- Requisitos: nao_localizado
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Requisitos: nao_localizado (Os requisitos de habilitação estão no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Incentivo fiscal; público: OSC e associações
+- Área de atuação: catalogo — Cultura
 
 ### 2025-02 — Programa Goyazes 2025
 Página oficial: https://goias.gov.br/cultura/governo-de-goias-abre-inscricoes-para-o-programa-goyazes-2025-com-novas-regras/
 
 - Objeto: confirmado — Programa Goyazes 2025
 - Prazo de inscrição: confirmado — até 28/02/2025, improrrogável
-- Resultado: nao_localizado
+- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
 - Prazo de recurso: dispensa_tipo (o rito de recurso, quando existe, está na norma do programa e não em edital de seleção)
 - Valor: confirmado — R$ 40 milhões
 - Órgão / financiador: catalogo — Conanda — Fundo Nacional para a Criança e o Adolescente
 - Território: catalogo — GO
 - Esfera: catalogo — Estado
 - Requisitos: confirmado — projetos excepcionais devem atender o decreto 10.302/2023 e o art. 17 da nova normativa
-- Anexos: nao_localizado
-- Destinação: nao_localizado
-- Área de atuação: nao_localizado
+- Anexos: nao_localizado (A lista de anexos está no corpo do edital (PDF), não lido nesta rodada; pendência explícita, não suposta.)
+- Destinação: catalogo — tipo: Incentivo fiscal; público: OSC e associações
+- Área de atuação: catalogo — Cultura
 
 ## Conselho de 7 lentes
 
 - extremamente pessimista: Com 2 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
-- pessimista: Itens ainda não lidos nas edições: Resultado, Anexos, Destinação. Sem eles, requisitos e anexos da próxima podem diferir.
+- pessimista: Itens ainda não lidos nas edições: Resultado, Anexos, Requisitos. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
 - neutro: Situação: validado. Tratar fev como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 2 ano(s) (2024, 2025) já dá referência de calendário e de valor.
