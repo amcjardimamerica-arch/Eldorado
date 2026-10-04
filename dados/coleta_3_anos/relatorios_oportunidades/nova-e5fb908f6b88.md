@@ -1,7 +1,7 @@
 # Rede Memória Viva abre inscrições para organizações que preservam a memória africana e afro-brasileira
 
 - **Identificador:** `nova-e5fb908f6b88` · **Órgão/financiador:** Observatório do Terceiro Setor — editais
-- **Decisão:** V (edital vigente) · **Validação dos 12 pontos:** parcial
+- **Decisão:** R (programa permanente / fluxo contínuo) · **Validação dos 12 pontos:** completa
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
 - **Página oficial usada:** https://vivapequenaafrica.com/rede-memoria-viva-inscricoes-organizacoes-culturais/
 
@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Inscrições abertas até 5/10/2026 pela plataforma Prosas, para OSCs de memória e cultura afro-brasileira (Viva Pequena África, apoio BNDES).
+Edital Rede Memória Viva lido em PDF (Prosas): inscrições 03/08 a 05/10/2026 18h, mas a seleção 'não resultará em investimento financeiro direto' (item 4.3); apoio só para planejamento e projeto técnico/conceitual, sem repasse, logo não é recurso para captação.
 
 ## Os 12 pontos
 
@@ -17,14 +17,14 @@ Inscrições abertas até 5/10/2026 pela plataforma Prosas, para OSCs de memóri
 |---|---|---|
 | Objeto | confirmado | Inscrições para organizações culturais que preservam a memória africana e afro-brasileira (apenas pelo título). |
 | Prazo de inscrição | confirmado | Até 5 de outubro de 2026, pela plataforma Prosas |
-| Resultado | não localizado | WebFetch falhou com ROBOTS_DISALLOWED; página não lida. |
-| Prazo de recurso | não localizado | WebFetch falhou com ROBOTS_DISALLOWED; página não lida. |
-| Valor | não localizado | WebFetch falhou com ROBOTS_DISALLOWED; página não lida. |
+| Resultado | confirmado | Divulgação das ações selecionadas: 11/2026 |
+| Prazo de recurso | não informado no edital | Edital PDF sem cláusula de recurso/reconsideração; FAQ_Perguntas_Frequentes.pdf não lido. |
+| Valor | confirmado | Sem investimento financeiro direto; apoio ao planejamento, qualificação técnica e estruturação conceitual de até 4 ações |
 | Órgão / financiador | confirmado | Consórcio Viva Pequena África (CEAP, Diaspora.Black e Feira Preta), com apoio do BNDES |
 | Território | confirmado | Brasil (rede nacional) |
 | Esfera | confirmado | Privada/sociedade civil com apoio do BNDES |
 | Requisitos | confirmado | Organizações da sociedade civil que atuem na preservação e valorização da memória, da cultura e da herança africana e afro-brasileira (museus comunitários, centros culturais, quilombos, comunidades tradicionais, roteiros de memória etc.), conforme critérios do edital |
-| Anexos | não localizado | WebFetch falhou com ROBOTS_DISALLOWED; página não lida. |
+| Anexos | confirmado | Formulário A (adesão à Rede) e Formulário B (seleção de ações) |
 | Destinação | confirmado | Participação na rede; quatro iniciativas selecionadas recebem apoio técnico-conceituais |
 | Área de atuação | confirmado | Cultura, patrimônio e memória afro-brasileira; museologia; turismo de base comunitária |
 
@@ -41,15 +41,8 @@ Nenhuma edição anterior comprovada em página oficial.
 - **Base:** sem edição anterior comprovada em página oficial: não há base para prever
 - **Calculado por:** script
 
-## O que ainda precisa ser conferido
-
-- **Resultado:** WebFetch falhou com ROBOTS_DISALLOWED; página não lida.
-- **Prazo de recurso:** WebFetch falhou com ROBOTS_DISALLOWED; página não lida.
-- **Valor:** WebFetch falhou com ROBOTS_DISALLOWED; página não lida.
-- **Anexos:** WebFetch falhou com ROBOTS_DISALLOWED; página não lida.
-
 ## Observações da pesquisa
 
-Retomar via navegador Chrome ou outra fonte oficial. | Prazo muito curto (2 dias): titular precisa abrir a página da Prosas do edital e copiar valor, resultado e anexos. Notícia lida via Chrome em aba própria; WebFetch bloqueado por robots.
+Retomar via navegador Chrome ou outra fonte oficial. | Prazo muito curto (2 dias): titular precisa abrir a página da Prosas do edital e copiar valor, resultado e anexos. Notícia lida via Chrome em aba própria; WebFetch bloqueado por robots. | Leitura via resumo do PDF. Aceita PJ com e sem fins lucrativos. Prazo de inscrição 05/10/2026 18h (2 dias).
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

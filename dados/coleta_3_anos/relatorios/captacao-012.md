@@ -1,56 +1,44 @@
 # PNAB Goiânia - Pontos de Cultura — Goiás / Goiânia
 
-Órgão: Secretaria Municipal de Cultura de Goiânia · bloco GO · regime chamamento_publico · selo do livro **prata** · selo da oportunidade prata
+Órgão: Secretaria Municipal de Cultura de Goiânia · bloco GO · regime chamamento_publico · selo do livro **ouro** · selo da oportunidade prata
 
-Validação: **validado_parcial** — há edição anterior comprovada, mas só um ano ou sem datas completas: previsão com confiança média
+Validação: **validado** — recorrência comprovada em 2 ou mais anos com página oficial
 
 ## Estudo preditivo
 
-Mês típico: ago · duração típica: 24 dias · próxima janela: 2027-08 · confiança: media
+Mês típico: ago · duração típica: 32 dias · próxima janela: 2027-08 · confiança: alta
 
-## Site oficial
+## Parecer do livro (leitura documental)
 
-https://goiania.go.gov.br/ — Prefeitura de Goiânia (portal oficial do município; verificado: 2026-10-03)
+Veredito: **ouro**
 
-## Os 12 itens consolidados do histórico
+Série PNAB Goiânia, linha Cultura Viva / Pontos de Cultura: Edital 013/2024 (inscrições 05/08 a 05/09/2024, depois prorrogadas conforme a página oficial; R$ 2.401.960,50 para 40 projetos) e Edital 06/2026 do Ciclo II (inscrições 05/03 a 06/04/2026, depois prorrogadas; 10 projetos com valores anuais de R$ 90.000,00), acompanhado dos Editais 10/2026 (2 pontões, R$ 600.000,00) e 11/2026 (premiação de 13 iniciativas, R$ 600.000,00). Quem pode: Pontos ou Pontões de Cultura certificados pelo MinC com CNPJ (em 2024 também OSC sem fins lucrativos com atividade cultural comunitária); certificação cobrada na habilitação. Recurso em 3 dias úteis e resultado no DOM. Exigir plano de trabalho com metas padronizadas, planilha, declarações para cotas e documentos de habilitação em 5 dias úteis. Risco: exigência de certificação do MinC e do CNPJ da entidade. Recomendação à AMC: confirmar a certificação como Ponto de Cultura antes do próximo ciclo e preparar o plano de trabalho.
 
-- Objeto: confirmado — PNAB Goiânia 2024 — editais 08 a 13/2024 (Secult Goiânia) (edição 2024-08 (já coletada))
-- Prazo de inscrição: confirmado — 05/08 a 20/08/2024, plataforma 1 DOC (edição 2024-08 (já coletada))
-- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Valor: confirmado — R$ 9.607.842,49 em 6 editais (edição 2024-08 (já coletada))
-- Órgão / financiador: catalogo — Secretaria Municipal de Cultura de Goiânia (catálogo do livro)
-- Território: catalogo — Goiânia (catálogo do livro (município/UF))
-- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
-- Requisitos: confirmado — trabalhadores da cultura, entidades, pessoas físicas e jurídicas que atuem na produção, difusão, promoção e preservação cultural (edição 2024-08 (já coletada))
-- Anexos: confirmado — documentação anexada na plataforma 1 DOC conforme edital (edição 2024-08 (já coletada))
-- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
-- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
 
 ## Edições anteriores e os 12 itens
 
 ### 2024-08 — PNAB Goiânia 2024 — editais 08 a 13/2024 (Secult Goiânia)
 Página oficial: https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-publica-seis-editais-da-lei-aldir-blanc-de-fomento-a-cultura
 
-- Objeto: confirmado — PNAB Goiânia 2024 — editais 08 a 13/2024 (Secult Goiânia)
-- Prazo de inscrição: confirmado — 05/08 a 20/08/2024, plataforma 1 DOC
-- Resultado: nao_localizado (A data do resultado é ato posterior ao edital (publicação separada); não constava na página/PDF lido da edição. Pendência: conferir a ata/resultado no site do órgão.)
-- Prazo de recurso: nao_localizado (O prazo de recurso está no corpo do edital (PDF) ou na publicação do resultado; não foi lido na página da edição. Pendência explícita.)
-- Valor: confirmado — R$ 9.607.842,49 em 6 editais
-- Órgão / financiador: catalogo — Secretaria Municipal de Cultura de Goiânia
-- Território: catalogo — Goiânia
-- Esfera: catalogo — Município
-- Requisitos: confirmado — trabalhadores da cultura, entidades, pessoas físicas e jurídicas que atuem na produção, difusão, promoção e preservação cultural
-- Anexos: confirmado — documentação anexada na plataforma 1 DOC conforme edital
-- Destinação: catalogo — tipo: Edital; público: OSC e associações
-- Área de atuação: catalogo — Cultura
+- Objeto: confirmado — Seleção de projetos de Pontos de Cultura (Política Nacional de Cultura Viva)
+- Prazo de inscrição: confirmado — 2024-08-05 a 2024-09-05
+- Resultado: confirmado — Resultado final publicado no DOM e no site da Secult
+- Prazo de recurso: confirmado — 3 dias úteis
+- Valor: confirmado — R$ 2.401.960,50 para 40 projetos
+- Órgão / financiador: confirmado — Secretaria Municipal de Cultura de Goiânia; recursos da PNAB
+- Território: confirmado — Pontos de Cultura de Goiânia
+- Esfera: confirmado — Municipal
+- Requisitos: confirmado — Pontos de Cultura certificados pelo MinC com CNPJ, ou OSC sem fins lucrativos que desenvolvam e articulem atividades culturais em suas comunidades
+- Anexos: confirmado — Anexos 1 a 9 (categorias e cotas, critérios, formulário, plano de trabalho, planilha, declarações)
+- Destinação: confirmado — Projetos continuados de Pontos de Cultura; despesas definidas no Plano de Trabalho (Anexo 4)
+- Área de atuação: confirmado — Cultura Viva - Pontos de Cultura
 
 ## Conselho de 7 lentes
 
 - extremamente pessimista: Com 1 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
-- pessimista: Itens ainda não lidos nas edições: Resultado, Prazo de recurso. Sem eles, requisitos e anexos da próxima podem diferir.
+- pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: validado_parcial. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: validado. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 1 ano(s) (2024) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em ago, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

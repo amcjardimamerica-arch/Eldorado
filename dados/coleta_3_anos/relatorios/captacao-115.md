@@ -1,31 +1,19 @@
 # FMDCA Goiânia - projeto aprovado pelo CMDCA — Goiás / Goiânia
 
-Órgão: Conanda — Fundo Nacional para a Criança e o Adolescente · bloco GO · regime incentivo_fiscal · selo do livro **bronze** · selo da oportunidade prata
+Órgão: Conanda — Fundo Nacional para a Criança e o Adolescente · bloco GO · regime incentivo_fiscal · selo do livro **ouro** · selo da oportunidade prata
 
-Validação: **dispensa_individual:fundo** — Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.
+Validação: **validado_regime** — regime permanente documentado: Lei 8.069/1990 (ECA), art. 260 (doações aos Fundos dos Direitos da Criança e do Adolescente) e art. 88; Lei 13.019/2014 (MROSC); Lei Municipal de Goiânia 8.483/2006; Decreto Municipal 1.900/2012 (alterado pelo Decreto 2.298/2014); Resoluções CMDCA 47/2014, 65/2018, 77 e 78/2021, 81/2022.
 
 ## Estudo preditivo
 
-Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
+Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: alta
 
-## Site oficial
+## Parecer do livro (leitura documental)
 
-https://www.gov.br/ — Conanda — Fundo Nacional para a Criança e o Adolescente (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+Veredito: **ouro_regime** · base legal: Lei 8.069/1990 (ECA), art. 260 (doações aos Fundos dos Direitos da Criança e do Adolescente) e art. 88; Lei 13.019/2014 (MROSC); Lei Municipal de Goiânia 8.483/2006; Decreto Municipal 1.900/2012 (alterado pelo Decreto 2.298/2014); Resoluções CMDCA 47/2014, 65/2018, 77 e 78/2021, 81/2022.
 
-## Os 12 itens consolidados do histórico
+Regime permanente do FMDCA de Goiânia. Série documental: chamamentos do CMDCA em 2019 e 2023 (com resultado e etapas), ambos com termo de fomento/colaboração financiado pelo fundo. Janela por edital, aberta por deliberação do conselho; exigir registro da OSC no CMDCA, plano de trabalho com cronograma e declarações dos anexos. Risco: tabela de prazos e valores variam por edital; o PDF principal de 2023 não abriu na leitura. Recomendação à AMC: manter registro no CMDCA atualizado e monitorar assembleias; estudar também a captação de doações IR pelo art. 260 do ECA.
 
-- Objeto: catalogo — FMDCA Goiânia - projeto aprovado pelo CMDCA (nome do livro (título do programa))
-- Prazo de inscrição: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Resultado: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Prazo de recurso: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Valor: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Órgão / financiador: catalogo — Conanda — Fundo Nacional para a Criança e o Adolescente (catálogo do livro)
-- Território: catalogo — Goiânia (catálogo do livro (município/UF))
-- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
-- Requisitos: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Anexos: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Destinação: catalogo — tipo: Fundo; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
-- Área de atuação: catalogo — Criança e adolescente (catálogo do livro (área do objeto))
 
 ## Edições anteriores e os 12 itens
 
@@ -35,7 +23,7 @@ Nenhuma edição anterior comprovada (ver validação).
 - extremamente pessimista: Com 0 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: dispensa_individual:fundo. Tratar sem mês típico como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: validado_regime. Tratar sem mês típico como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 0 ano(s) (—) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em sem mês típico, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

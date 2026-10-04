@@ -126,7 +126,10 @@ jobs:
             timeout 60 python -m src.reset_pilotos >/dev/null 2>&1 || true   # 01/10: missões anteriores ao reset ficam só no histórico
             timeout 120 python -m src.skills.aprendizado >/dev/null 2>&1 || echo 'aprendizado: falhou'   # skill: a cada 100 erros, parâmetros novos
             timeout 60 python -m src.achados_pilotos >/dev/null 2>&1 || echo 'achados por dia: falhou'
+            cp biblioteca_alexandria/fontes/motores.json /tmp/catalogo_da_main.json   # 04/10: o catálogo da main ANTES de regenerar
             timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa (curadoria + validação + fluxo): falhou"
+            # 04/10 (titular): o Piloto grava SÓ o livro em que trabalhou — o resto da Biblioteca volta a ser o da main
+            timeout 60 python scripts/gravar_so_o_livro.py /tmp/catalogo_da_main.json estado/interceptador/relatorios || cp /tmp/catalogo_da_main.json biblioteca_alexandria/fontes/motores.json   # falhou: nada da Biblioteca muda
             timeout 120 python -m src.achados_motores >/dev/null 2>&1 || echo "oportunidades por motor: falhou"   # lista única de cada motor, a cada pouso
             GITHUB_TOKEN="${{ github.token }}" timeout 120 python -m src.saude >/dev/null 2>&1 || echo "saúde: falhou"
             # 30/09: só os caminhos que EXISTEM — "git add" de arquivo inexistente (dossies_empresas.json, ainda sem dossiê) saía com erro e a etapa inteira falhava: nenhum resultado do Interceptador era gravado

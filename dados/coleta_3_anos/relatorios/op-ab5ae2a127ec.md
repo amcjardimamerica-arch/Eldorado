@@ -2,7 +2,7 @@
 
 Órgão: Goiás Social · bloco GO · regime chamamento_publico · selo do livro **prata** · selo da oportunidade prata
 
-Validação: **validado_parcial** — há edição anterior comprovada, mas só um ano ou sem datas completas: previsão com confiança média
+Validação: **inaplicavel:fora_perfil** — Edital CPA-GO (CEDCA-GO/SEDS) seleciona adolescentes indicados por secretarias, OSC e conselhos para o Comitê de Participação de Adolescente; 'Não há financiamento a projetos' e sem repasse. Edições: biênio 2023-2024 (edital em .docx publicado em 2022, resultado até 10/10/2022) e 2025-2026 (https://goias.gov.br/social/wp-content/uploads/sites/24/2024/08/Edital-CPA-2025-e-2026-Minuta-Final-2-2.pdf, inscrição 20/08 a 20/09/2024, resultado até 30/09/2024).
 
 ## Estudo preditivo
 
@@ -27,6 +27,15 @@ https://goias.gov.br/social/ — Secretaria de Desenvolvimento Social (Goiás So
 - Destinação: catalogo — tipo: Chamamento público; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
 - Área de atuação: catalogo — Geral (catálogo do livro (área do objeto))
 
+## Parecer do livro (leitura documental)
+
+Veredito: **inaplicavel**
+
+Série bienal comprovada (CPA 2023-2024 e 2025-2026), mas é seleção de adolescentes para comitê consultivo: cada instituição (inclusive OSC) indica 3 adolescentes de 12 a 16 anos (2 titulares e 1 suplente), com ofício de indicação, autorização do responsável e declaração de compromisso; mandato de 2 anos; sem recursos financeiros. Recomendação à AMC: não é captação; só indicar adolescentes se a entidade atender o público. Próxima edição esperada em 2026 para o biênio 2027-2028.
+
+Inaplicabilidade: Edital CPA-GO (CEDCA-GO/SEDS) seleciona adolescentes indicados por secretarias, OSC e conselhos para o Comitê de Participação de Adolescente; 'Não há financiamento a projetos' e sem repasse. Edições: biênio 2023-2024 (edital em .docx publicado em 2022, resultado até 10/10/2022) e 2025-2026 (https://goias.gov.br/social/wp-content/uploads/sites/24/2024/08/Edital-CPA-2025-e-2026-Minuta-Final-2-2.pdf, inscrição 20/08 a 20/09/2024, resultado até 30/09/2024).
+
+
 ## Edições anteriores e os 12 itens
 
 ### 2024-08 — Edital de Chamamento — Comitê de Participação de Adolescente de Goiás, biênio 2025-2026
@@ -50,7 +59,7 @@ Página oficial: https://goias.gov.br/social/edital-de-chamamento-cpago-gestao-2
 - extremamente pessimista: Com 1 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: Prazo de recurso, Valor, Requisitos. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: validado_parcial. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: inaplicavel:fora_perfil. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 1 ano(s) (2024) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em ago, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

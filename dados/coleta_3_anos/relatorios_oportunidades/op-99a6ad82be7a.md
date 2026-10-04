@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Página de editais da Cáritas relida no Chrome: edital de até R$ 25 mil não aparece; só o TR PIAJ-2026-001 (consultoria PJ).
+Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Prazo de inscrição | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Resultado | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Prazo de recurso | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Valor | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Órgão / financiador | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Território | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Esfera | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Requisitos | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Anexos | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Destinação | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
-| Área de atuação | não localizado | Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento. |
+| Objeto | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Prazo de inscrição | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Resultado | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Prazo de recurso | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Valor | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Órgão / financiador | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Território | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Esfera | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Requisitos | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Anexos | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Destinação | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
+| Área de atuação | não localizado | Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ). |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Prazo de inscrição:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Resultado:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Prazo de recurso:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Valor:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Órgão / financiador:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Território:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Esfera:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Requisitos:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Anexos:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Destinação:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
-- **Área de atuação:** Página oficial da Cáritas (editais-e-vagas) lista só vagas e termos de referência de 2026; o edital de até R$ 25 mil para violência sexual infantojuvenil não aparece nas 7 entradas mais recentes. O TR PIAJ-2026-001 (10/09/2026) é contratação de consultoria PJ, não fomento.
+- **Objeto:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Prazo de inscrição:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Resultado:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Prazo de recurso:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Valor:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Órgão / financiador:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Território:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Esfera:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Requisitos:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Anexos:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Destinação:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
+- **Área de atuação:** Página oficial caritas.org.br/editais-e-vagas relida: só filtros e TRs de 2026; edital de até R$ 25 mil não aparece (TR PIAJ-2026-001 é consultoria PJ).
 
 ## Observações da pesquisa
 
-Pesquisar a notícia original e o link do edital no site da Cáritas.
+Pesquisar a notícia original e o link do edital no site da Cáritas. | Pesquisar a notícia original e o link do edital no site da Cáritas.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

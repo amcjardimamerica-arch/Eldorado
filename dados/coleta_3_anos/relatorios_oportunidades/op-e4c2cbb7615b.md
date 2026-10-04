@@ -1,32 +1,32 @@
 # Chamada Instituto Cultural Vale 2026
 
 - **Identificador:** `op-e4c2cbb7615b` · **Órgão/financiador:** Instituto Cultural Vale
-- **Decisão:** A (última edição encerrada (histórico)) · **Validação dos 12 pontos:** parcial
+- **Decisão:** A (última edição encerrada (histórico)) · **Validação dos 12 pontos:** completa
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
 - **Página oficial usada:** https://institutoculturalvale.org/
 
-**Serve para uma OSC de Goiás?** não — Território restrito a PA, MA, MG, ES e RJ; Goiás não é contemplado.
+**Serve para uma OSC de Goiás?** sim — Qualquer PJ com CNPJ e atuação cultural comprovada; abrangência nacional. Chamada encerrada em 15/05/2026.
 
 ## Decisão e motivo
 
-Inscrições 16/04/2026 a 15/05/2026; encerrada.
+Regulamento lido: inscrições 16/04 a 15/05/2026; resultado final até 31/10/2026; encerrada. Abrangência nacional (qualquer PJ com CNPJ), corrigindo a nota anterior de que Goiás ficaria fora.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de inscrição | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Valor | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Órgão / financiador | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Território | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Esfera | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Requisitos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Anexos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Destinação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Área de atuação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Objeto | confirmado | Seleção para patrocínio de projetos culturais com incentivos fiscais da Lei 8.313/1991 (Rouanet) |
+| Prazo de inscrição | confirmado | 16/04/2026 a 15/05/2026, até 23h59 (Brasília), plataforma digital gratuita |
+| Resultado | confirmado | Divulgação do resultado final no site até 31/10/2026 |
+| Prazo de recurso | não informado no edital | Regulamento item 12.15, p. 10: 'não cabendo recursos de qualquer espécie' |
+| Valor | confirmado | Até R$ 30.000.000 no total; máximo R$ 1.500.000 por projeto |
+| Órgão / financiador | confirmado | Instituto Cultural Vale, com recursos de incentivo fiscal (Lei 8.313/1991), em parceria com o MinC |
+| Território | confirmado | Abrangência em todo o território brasileiro; o Anexo 1 (municípios de atuação da Vale) só dá bonificação de pontuação |
+| Esfera | confirmado | Privada com incentivo fiscal federal (Lei Rouanet) |
+| Requisitos | confirmado | PJ com CNPJ ativo, com ou sem fins lucrativos; atuação cultural comprovada; CNAE adequado; projeto aprovado no art. 18 da Lei 8.313 ou novo até R$ 1,5 milhão; máximo 3 projetos por proponente |
+| Anexos | confirmado | Ata/estatuto, cartão CNPJ, CPF/RG do dirigente, portfólio, ficha técnica e orçamentária, publicação no DOU, termo de abertura da conta de captação, formulário de cadastro Vale |
+| Destinação | confirmado | Depósito em conta do proponente selecionado, em parcela única, para execução do projeto cultural |
+| Área de atuação | confirmado | Artes cênicas, humanidades, artes visuais, música, patrimônio cultural, museu e memória, audiovisual |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,23 +43,8 @@ Inscrições 16/04/2026 a 15/05/2026; encerrada.
 - **Base:** Uma edição comprovada na janela.
 - **Calculado por:** agente (leitura da fonte)
 
-## O que ainda precisa ser conferido
-
-- **Objeto:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de inscrição:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Valor:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Órgão / financiador:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Território:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Esfera:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Requisitos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Anexos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Destinação:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Área de atuação:** item não retornado pela leitura da fonte; abrir o edital e copiar
-
 ## Observações da pesquisa
 
-Território (Goiás fora) torna inaplicável a OSC goiana.
+Território (Goiás fora) torna inaplicável a OSC goiana. | Resultado final ainda não divulgado em 04/10/2026 (prazo 31/10/2026). Extração via WebFetch; a observação anterior de restrição territorial a Goiás não se confirma na cláusula 2.5.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Programa Pronon tem chamamentos anuais; a edição 2024 específica não foi localizada na página (apenas descrição geral); referência usada: Chamamento 3/2025, encerrado em 12/11/2025.
+Página do programa e lista oficial de chamamentos (2025) não trazem edição 2024; referência é o Chamamento 3/2025 (encerrado 12/11/2025).
 
 ## Os 12 pontos
 
@@ -17,14 +17,14 @@ Programa Pronon tem chamamentos anuais; a edição 2024 específica não foi loc
 |---|---|---|
 | Objeto | confirmado | Pronon: projetos de atenção oncológica (serviços, formação de RH, pesquisa) — dados da edição 2025. |
 | Prazo de inscrição | confirmado | 07/10/2025 a 12/11/2025 (edição 2025) |
-| Resultado | não localizado | Não lido. |
-| Prazo de recurso | não localizado | Não lido. |
+| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Prazo de recurso | confirmado | Edição de referência 2025: 5 dias corridos (cl. 7.6.1) |
 | Valor | confirmado | R$ 500.000 a R$ 13.000.000 (edição 2025) |
 | Órgão / financiador | confirmado | Ministério da Saúde - Secretaria-Executiva |
 | Território | confirmado | Nacional |
 | Esfera | confirmado | Federal |
 | Requisitos | confirmado | Entidade privada sem fins lucrativos sem credenciamento prévio (edição 2025) |
-| Anexos | não localizado | Não lido. |
+| Anexos | confirmado | Edição de referência 2025: Anexos I a VII (Ciência, Formulário de Projetos, Capacidade Técnico-Operativa, Orçamento, Equipamentos, Habilitação, Termo de Compromisso) |
 | Destinação | confirmado | Incentivo fiscal (Lei 12.715/2012) |
 | Área de atuação | confirmado | Saúde — oncologia |
 
@@ -45,13 +45,11 @@ Programa Pronon tem chamamentos anuais; a edição 2024 específica não foi loc
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** Não lido.
-- **Prazo de recurso:** Não lido.
-- **Anexos:** Não lido.
+- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
 
 ## Observações da pesquisa
 
-Página do programa não lista a edição 2024.
+Página do programa não lista a edição 2024. | Mesmo edital que op-035581c627a1 (compartilha_com). Listagem oficial lida só mostra 2025; 2023/2024 não aparecem.
 
 Mesma pesquisa dos livros: op-035581c627a1
 

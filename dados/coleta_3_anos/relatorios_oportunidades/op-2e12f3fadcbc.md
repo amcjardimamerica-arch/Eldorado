@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-PDF do Edital 01/2024 (Plano de Desenvolvimento Sustentável dos Povos e Comunidades Tradicionais) segue 'Conteúdo Restrito' (exige login gov.br); listagem 'Outros editais' do MMA também restrita; sem outra fonte oficial pública localizada.
+PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
 | Objeto | confirmado | Título indica Plano de Desenvolvimento Sustentável dos Povos e Comunidades Tradicionais (apenas pelo título). |
-| Prazo de inscrição | não localizado | PDF restrito, exige login; não acessado. |
-| Resultado | não localizado | PDF restrito, exige login; não acessado. |
-| Prazo de recurso | não localizado | PDF restrito, exige login; não acessado. |
-| Valor | não localizado | PDF restrito, exige login; não acessado. |
-| Órgão / financiador | não localizado | PDF restrito, exige login; não acessado. |
-| Território | não localizado | PDF restrito, exige login; não acessado. |
-| Esfera | não localizado | PDF restrito, exige login; não acessado. |
-| Requisitos | não localizado | PDF restrito, exige login; não acessado. |
-| Anexos | não localizado | PDF restrito, exige login; não acessado. |
-| Destinação | não localizado | PDF restrito, exige login; não acessado. |
-| Área de atuação | não localizado | PDF restrito, exige login; não acessado. |
+| Prazo de inscrição | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Resultado | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Prazo de recurso | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Valor | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Órgão / financiador | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Território | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Esfera | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Requisitos | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Anexos | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Destinação | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
+| Área de atuação | não localizado | PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido. |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,17 +43,17 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de inscrição:** PDF restrito, exige login; não acessado.
-- **Resultado:** PDF restrito, exige login; não acessado.
-- **Prazo de recurso:** PDF restrito, exige login; não acessado.
-- **Valor:** PDF restrito, exige login; não acessado.
-- **Órgão / financiador:** PDF restrito, exige login; não acessado.
-- **Território:** PDF restrito, exige login; não acessado.
-- **Esfera:** PDF restrito, exige login; não acessado.
-- **Requisitos:** PDF restrito, exige login; não acessado.
-- **Anexos:** PDF restrito, exige login; não acessado.
-- **Destinação:** PDF restrito, exige login; não acessado.
-- **Área de atuação:** PDF restrito, exige login; não acessado.
+- **Prazo de inscrição:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Resultado:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Prazo de recurso:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Valor:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Órgão / financiador:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Território:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Esfera:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Requisitos:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Anexos:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Destinação:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
+- **Área de atuação:** PDF do MMA devolve 'Conteúdo Restrito' (login gov.br) no WebFetch; sem outra fonte pública. Não lido.
 
 ## Observações da pesquisa
 

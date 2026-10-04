@@ -5,9 +5,11 @@
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
 - **Página oficial usada:** https://chamadas.funbio.org.br/usopublico-rppn
 
+**Serve para uma OSC de Goiás?** sim — FAQ: elegíveis associações civis, fundações privadas e cooperativas sem fins lucrativos
+
 ## Decisão e motivo
 
-Chamada de Projetos 08/2026 do Programa Biodiversidade Litoral do Paraná (FUNBIO) aberta até 09/10/2026; a Chamada 07/2026 (planos de manejo) já encerrou (até 25/09).
+Chamada 08/2026 FUNBIO (RPPN, Litoral do Paraná): até R$ 1 mi, máx. R$ 500 mil/proposta, inscrição até 09/10/2026, contrapartida mín. 20%, até 24 meses.
 
 ## Os 12 pontos
 
@@ -16,7 +18,7 @@ Chamada de Projetos 08/2026 do Programa Biodiversidade Litoral do Paraná (FUNBI
 | Objeto | confirmado | Implementação de Planos de Uso Público e fortalecimento de negócios sustentáveis em RPPNs do litoral do Paraná |
 | Prazo de inscrição | confirmado | 2026-10-09 |
 | Resultado | não informado no edital | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Prazo de recurso | não localizado | Página oficial e FAQ lidas; o link 'Baixe o regulamento' retornou erro 500 do servidor em duas tentativas (03/10/2026); prazo de recurso não consta na página (cronograma: publicação 07/07, dúvidas 04/09, inscrição final 09/10/2026) |
 | Valor | confirmado | R$ 1.000.000 total; até R$ 500 mil por proposta; contrapartida mínima de 20% |
 | Órgão / financiador | confirmado | FUNBIO — Programa Biodiversidade Litoral do Paraná |
 | Território | confirmado | Antonina, Guaraqueçaba, Morretes, Paranaguá, Guaratuba, Matinhos e Pontal do Paraná (PR) |
@@ -41,6 +43,10 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Prazo de recurso:** Página oficial e FAQ lidas; o link 'Baixe o regulamento' retornou erro 500 do servidor em duas tentativas (03/10/2026); prazo de recurso não consta na página (cronograma: publicação 07/07, dúvidas 04/09, inscrição final 09/10/2026)
+
+## Observações da pesquisa
+
+Regulamento fora do ar (HTTP 500); tentar de novo mais tarde.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

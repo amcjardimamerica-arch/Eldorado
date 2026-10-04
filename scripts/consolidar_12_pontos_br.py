@@ -50,12 +50,15 @@ def carregar():
     for f in sorted(glob.glob(str(PASTA / "lotes12_out/lote_*.json"))):
         for r in _lista(_j(f)):
             p1[r["id"]] = r
-    p2 = {}
+    p2, p3 = {}, {}
     for f in sorted(glob.glob(str(PASTA / "lotes12b_out/lote_*.json"))):
         for r in _lista(_j(f)):
             p2[r["id"]] = r
+    for f in sorted(glob.glob(str(PASTA / "lotes12c_out/lote_*.json"))):   # 3ª passagem (leitura dos PDFs)
+        for r in _lista(_j(f)):
+            p3[r["id"]] = r
     ent = _j(PASTA / "entrada/br_2026-10-03.json")
-    return fila, par, p1, p2, ent
+    return fila, par, p1, p2, ent, p3
 
 
 def norm_item(v, padrao_motivo):
@@ -67,9 +70,10 @@ def norm_item(v, padrao_motivo):
     return out
 
 
-def edicoes_do_livro(bid, p1, p2, ent):
+def edicoes_do_livro(bid, p1, p2, ent, p3=None):
+    p3 = p3 or {}
     eds = []
-    for fonte in (p1.get(bid, {}).get("edicoes") or [], p2.get(bid, {}).get("edicoes_novas") or [], (ent.get(bid) or {}).get("edicoes") or []):
+    for fonte in (p1.get(bid, {}).get("edicoes") or [], p2.get(bid, {}).get("edicoes_novas") or [], p3.get(bid, {}).get("edicoes_novas") or [], (ent.get(bid) or {}).get("edicoes") or []):
         for e in fonte:
             eds.append(dict(e))
     # remove duplicatas por (pagina, ano, titulo)
@@ -113,7 +117,7 @@ def previsao(eds, agente):
 
 
 def consolidar():
-    fila, par, p1, p2, ent = carregar()
+    fila, par, p1, p2, ent, p3 = carregar()
     regs = {}
     for bid, livro in fila.items():
         a1, b2 = p1.get(bid), p2.get(bid)
@@ -123,12 +127,19 @@ def consolidar():
         for k, v in ((b2 or {}).get("dados_novos") or {}).items():
             if k in ITENS and isinstance(v, dict) and v.get("status") in STATUS_OK:
                 dados[k] = v
-        decisao = (b2 or {}).get("decisao") or base.get("decisao") or "P"
-        motivo = (b2 or {}).get("motivo") or base.get("motivo") or ""
+        c3 = p3.get(bid) or {}
+        for k, v in (c3.get("dados_novos") or {}).items():
+            if k in ITENS and isinstance(v, dict):
+                if v.get("status") in STATUS_OK:
+                    dados[k] = v
+                elif v.get("motivo") and dados.get(k, {}).get("status") not in STATUS_OK:
+                    dados[k] = v
+        decisao = c3.get("decisao") or (b2 or {}).get("decisao") or base.get("decisao") or "P"
+        motivo = c3.get("motivo") or (b2 or {}).get("motivo") or base.get("motivo") or ""
         itens = {k: norm_item(dados.get(k), "item não retornado pela leitura da fonte; abrir o edital e copiar") for k in ITENS}
-        eds = edicoes_do_livro(bid, p1, p2, ent)
+        eds = edicoes_do_livro(bid, p1, p2, ent, p3)
         selo, selo_motivo, anos = X.selo(bid, eds)
-        agente = (b2 or {}).get("preditivo") or (a1 or {}).get("preditivo")
+        agente = c3.get("preditivo") or (b2 or {}).get("preditivo") or (a1 or {}).get("preditivo")
         faltam = [k for k, v in itens.items() if v["status"] == "não localizado"]
         if decisao == "P":
             val = "pendente"
@@ -140,7 +151,8 @@ def consolidar():
             val = "parcial"
         regs[bid] = {
             "id": bid, "nome": livro["nome"], "orgao": livro["orgao"], "tipo_catalogo": livro["tipo"],
-            "pagina_do_livro": livro["pagina"], "url_corrigida": (b2 or {}).get("url_corrigida"),
+            "pagina_do_livro": livro["pagina"], "url_corrigida": c3.get("url_corrigida") or (b2 or {}).get("url_corrigida"),
+            "pdf_lido": bool(c3.get("pdf_lido")), "pdf_url": c3.get("pdf_url"),
             "decisao": decisao, "motivo": motivo,
             "regime": base.get("regime"), "origem_dos_12_pontos": "rodada anterior (01–02/10)" if pr else "coleta de 03/10/2026",
             "edital_referencia": base.get("edital_referencia") or {},
@@ -148,9 +160,9 @@ def consolidar():
             "dados": itens, "validacao": val, "itens_a_conferir": faltam,
             "edicoes_3_anos": eds, "selo_estimado": selo, "selo_motivo": selo_motivo, "anos_com_edicao": anos,
             "preditivo": previsao(eds, agente),
-            "aplica_osc": (b2 or {}).get("aplica_osc") or (a1 or {}).get("aplica_osc"),
+            "aplica_osc": c3.get("aplica_osc") or (b2 or {}).get("aplica_osc") or (a1 or {}).get("aplica_osc"),
             "compartilha_com": (a1 or {}).get("compartilha_com") or (b2 or {}).get("compartilha_com"),
-            "observacao": " | ".join(x for x in ((a1 or {}).get("observacao"), (b2 or {}).get("observacao"), (ent.get(bid) or {}).get("observacao")) if x),
+            "observacao": " | ".join(x for x in ((a1 or {}).get("observacao"), (b2 or {}).get("observacao"), c3.get("observacao"), (ent.get(bid) or {}).get("observacao")) if x),
             "ancora": (ent.get(bid) or {}).get("ancora"),
         }
     return regs

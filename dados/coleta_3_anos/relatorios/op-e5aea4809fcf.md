@@ -2,7 +2,7 @@
 
 Órgão: PNCP — MUNICIPIO DE PLANALTINA · bloco GO · regime chamamento_publico · selo do livro **prata** · selo da oportunidade prata
 
-Validação: **validado_parcial** — há edição anterior comprovada, mas só um ano ou sem datas completas: previsão com confiança média
+Validação: **inaplicavel:duplicata** — Edição 02/2025 (12/03 a 31/03/2025, R$ 80 mil) do mesmo programa de chamamento de OSCs da Secretaria Municipal de Esporte e Lazer de Planaltina; já incorporada como edição do livro-mãe op-5b7729a78e26 (série 2025/2026 com ouro).
 
 ## Estudo preditivo
 
@@ -27,6 +27,15 @@ https://planaltina.go.gov.br/ — Prefeitura Municipal de Planaltina (portal ofi
 - Destinação: confirmado — dispensado pelo edital (estudo do histórico (2026))
 - Área de atuação: confirmado — dispensado pelo edital (estudo do histórico (2026))
 
+## Parecer do livro (leitura documental)
+
+Veredito: **inaplicavel** · livro-mãe: op-5b7729a78e26
+
+Documento lido em PDF: Chamamento 02/2025, Secretaria de Esporte e Lazer de Planaltina, seleção de propostas de OSCs para atividades esportivas, valor máximo R$ 80.000,00, propostas de 12/03 a 31/03/2025. É a edição anterior da série cujo livro-mãe é op-5b7729a78e26, onde as 12 informações constam por edição. Recomendação: consultar o livro-mãe.
+
+Inaplicabilidade: Edição 02/2025 (12/03 a 31/03/2025, R$ 80 mil) do mesmo programa de chamamento de OSCs da Secretaria Municipal de Esporte e Lazer de Planaltina; já incorporada como edição do livro-mãe op-5b7729a78e26 (série 2025/2026 com ouro).
+
+
 ## Edições anteriores e os 12 itens
 
 ### 2024-08 — [Portal de Compras Públicas] - Seleção de Propostas apresentadas pelas Organizações da Sociedade Civil de Planaltina, que visem à execução de Atividades Esportivas e gestão de CAMP
@@ -50,7 +59,7 @@ Página oficial: https://portaldecompraspublicas.com.br/processos/GO/Prefeitura-
 - extremamente pessimista: Com 1 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: Resultado, Prazo de recurso, Valor. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: validado_parcial. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: inaplicavel:duplicata. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 1 ano(s) (2024) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em ago, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

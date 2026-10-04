@@ -17,13 +17,13 @@ Credenciamento de OSCs para celebração de termos de colaboração (Lei 14.133 
 |---|---|---|
 | Objeto | confirmado | Credenciamento de OSCs sem fins lucrativos para termos de colaboração de vagas na Educação Infantil (creche e pré-escola) |
 | Prazo de inscrição | confirmado | 2025-11-11 a 2030-11-11 (fluxo contínuo) |
-| Resultado | não localizado | Edital em PDF no PNCP não foi lido (arquivo em PDF; só metadados da API acessados); credenciamento contínuo sem data única de resultado. |
-| Prazo de recurso | não localizado | Não escrito nos metadados da API; edital em PDF não lido. |
+| Resultado | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
+| Prazo de recurso | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
 | Valor | confirmado | R$ 16.140.811,00 (valor estimado no PNCP) |
 | Órgão / financiador | confirmado | Município de Estância Velha (RS) |
 | Território | confirmado | Estância Velha/RS (oferta de vagas no município) |
 | Esfera | confirmado | Municipal |
-| Requisitos | não localizado | Edital 014/2025 em PDF no PNCP não foi lido; objeto indica OSCs sem fins lucrativos (Lei 13.019/2014). |
+| Requisitos | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido |
 | Anexos | confirmado | Edital de Credenciamento 014.2025 (OSCs vagas), ETP, avisos, pedidos de esclarecimento e atas (22 documentos no PNCP) |
 | Destinação | confirmado | Termos de colaboração para oferta de vagas em Educação Infantil (creche e pré-escola) |
 | Área de atuação | confirmado | Educação infantil |
@@ -45,12 +45,12 @@ Credenciamento de OSCs para celebração de termos de colaboração (Lei 14.133 
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** Edital em PDF no PNCP não foi lido (arquivo em PDF; só metadados da API acessados); credenciamento contínuo sem data única de resultado.
-- **Prazo de recurso:** Não escrito nos metadados da API; edital em PDF não lido.
-- **Requisitos:** Edital 014/2025 em PDF no PNCP não foi lido; objeto indica OSCs sem fins lucrativos (Lei 13.019/2014).
+- **Resultado:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
+- **Prazo de recurso:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
+- **Requisitos:** API de arquivos do PNCP (pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos) retornou 503 'No server is available' em 03/10/2026, via curl (túnel 403), WebFetch e Chrome em aba própria, com 4 tentativas e pausas de 5 a 60 s; PDF do edital não obtido
 
 ## Observações da pesquisa
 
-Pregão/edital divulgado só no PNCP; PDF não lido. Dados lidos da API pública de consulta do PNCP (somente leitura): abertura 2025-11-11, encerramento de propostas 2030-11-11, publicação 2025-11-10. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF.
+Pregão/edital divulgado só no PNCP; PDF não lido. Dados lidos da API pública de consulta do PNCP (somente leitura): abertura 2025-11-11, encerramento de propostas 2030-11-11, publicação 2025-11-10. | Decisão mantida; metadados oficiais já confirmavam abertura/OSC. Itens do corpo do edital pendentes de leitura manual do PDF. | PDF não lido: PNCP fora do ar (503) durante a coleta; reprocessar quando a API voltar. Decisão mantida sem alteração.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

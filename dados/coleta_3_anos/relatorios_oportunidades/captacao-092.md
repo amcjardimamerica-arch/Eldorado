@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Sem edital identificável: link é busca genérica do DOU. Titular deve abrir o DOU Seção 3 no navegador, buscar o nome do programa e copiar órgão, prazo e link do aviso; ou consultar o PNCP/portal do órgão financiador.
+Origem é busca genérica do DOU Seção 3 (in.gov.br/consulta), sem edital identificável; PNCP/gov.br pesquisados sem chamamento específico do tema. Recomendação: arquivar ou vincular a edital real quando publicado.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Prazo de inscrição | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Resultado | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Prazo de recurso | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Valor | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Órgão / financiador | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Território | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Esfera | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Requisitos | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Anexos | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Destinação | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
-| Área de atuação | não localizado | in.gov.br não abre; busca genérica do DOU sem edital específico |
+| Objeto | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Prazo de inscrição | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Resultado | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Prazo de recurso | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Valor | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Órgão / financiador | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Território | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Esfera | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Requisitos | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Anexos | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Destinação | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
+| Área de atuação | não localizado | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,22 +43,22 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Prazo de inscrição:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Resultado:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Prazo de recurso:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Valor:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Órgão / financiador:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Território:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Esfera:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Requisitos:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Anexos:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Destinação:** in.gov.br não abre; busca genérica do DOU sem edital específico
-- **Área de atuação:** in.gov.br não abre; busca genérica do DOU sem edital específico
+- **Objeto:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Prazo de inscrição:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Resultado:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Prazo de recurso:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Valor:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Órgão / financiador:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Território:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Esfera:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Requisitos:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Anexos:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Destinação:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
+- **Área de atuação:** Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido.
 
 ## Observações da pesquisa
 
-Mesma página de busca do DOU compartilhada pelos 4 primeiros livros do lote. | Páginas anuais de Editais Abertos 2025 e 2023 listam só licitações administrativas (sem chamamento OSC). A página 'Editais de chamamento público' (participação social) está 'Conteúdo em atualização'; URL /chamamentos-publicos dá 404. Cisternas/sistemas alimentares circulares não localizados no site MDS nesta rodada. Resultado do chamamento 01/2026 já divulgado (definitivo retificado). Habilitação/ | não verificado: Chamamentos Cisternas/tecnologias sociais de água (SESAN, possivelmente via Portal de Convênios/Transferegov ou páginas de Acesso à Informação > Convênios); Chamamentos Cozinha Solidária 2023-2025 (possível portaria/edital anterior; procurar em gov.br/mds notícias e DOU); Sistemas alimentares circulares / Fome Zero chamadas públicas
+Mesma página de busca do DOU compartilhada pelos 4 primeiros livros do lote. | Tentado: página MMA/FNMA (404 em /fnma/editais), busca gov.br/mma por tema; nenhum edital específico do tema identificado nesta rodada. Livro não vinculado a documento lido. | Páginas anuais de Editais Abertos 2025 e 2023 listam só licitações administrativas (sem chamamento OSC). A página 'Editais de chamamento público' (participação social) está 'Conteúdo em atualização'; URL /chamamentos-publicos dá 404. Cisternas/sistemas alimentares circulares não localizados no site MDS nesta rodada. Resultado do chamamento 01/2026 já divulgado (definitivo retificado). Habilitação/ | não verificado: Chamamentos Cisternas/tecnologias sociais de água (SESAN, possivelmente via Portal de Convênios/Transferegov ou páginas de Acesso à Informação > Convênios); Chamamentos Cozinha Solidária 2023-2025 (possível portaria/edital anterior; procurar em gov.br/mds notícias e DOU); Sistemas alimentares circulares / Fome Zero chamadas públicas
 
 Mesma pesquisa dos livros: captacao-199, captacao-092, captacao-093, captacao-213
 

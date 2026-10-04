@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Sem edital identificável: link é busca genérica do DOU. Titular deve abrir o DOU Seção 3 no navegador, buscar o nome do programa e copiar órgão, prazo e link do aviso; ou consultar o PNCP/portal do órgão financiador.
+Sem edital específico identificável; recomendação: arquivar ou vincular a edital real.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Prazo de inscrição | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Resultado | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Prazo de recurso | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Valor | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Órgão / financiador | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Território | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Esfera | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Requisitos | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Anexos | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Destinação | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
-| Área de atuação | não localizado | A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado. |
+| Objeto | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Prazo de inscrição | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Resultado | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Prazo de recurso | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Valor | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Órgão / financiador | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Território | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Esfera | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Requisitos | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Anexos | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Destinação | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
+| Área de atuação | não localizado | Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável. |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Prazo de inscrição:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Resultado:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Prazo de recurso:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Valor:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Órgão / financiador:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Território:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Esfera:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Requisitos:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Anexos:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Destinação:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
-- **Área de atuação:** A página indicada é uma busca genérica do DOU (Seção 3) por 'chamamento público organizações da sociedade civil', sem edital específico; o livro descreve um instrumento (Acordo de Cooperação, Lei 13.019/2014) e não um edital determinado.
+- **Objeto:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Prazo de inscrição:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Resultado:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Prazo de recurso:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Valor:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Órgão / financiador:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Território:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Esfera:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Requisitos:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Anexos:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Destinação:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
+- **Área de atuação:** Livro de busca genérica do DOU, sem edital específico: in.gov.br bloqueado por robots.txt; páginas do FNMA/MMA em gov.br retornaram 404 em 03/10/2026; sem PDF identificável.
 
 ## Observações da pesquisa
 
-Busca do DOU não consultada (in.gov.br/consulta não deve ser insistida).
+Busca do DOU não consultada (in.gov.br/consulta não deve ser insistida). | PDF não lido: não há edital identificável. Recomendação: arquivar ou vincular.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

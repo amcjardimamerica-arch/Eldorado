@@ -182,6 +182,14 @@ def _edicoes_livro(x: dict) -> list[dict]:
 
 def _situacao(x: dict, eds: list[dict], reg: str | None = None) -> tuple[str, str]:
     selo = (x.get("selo_livro") or {}).get("selo")
+    from .leitor_documental import pareceres as _pareceres
+    pg = _pareceres().get(x.get("id")) or {}
+    if pg.get("veredito") == "inaplicavel":
+        return "inaplicavel:" + str(pg.get("tipo_inaplicavel") or "ruido"), str(pg.get("motivo_inaplicavel") or "")
+    if pg.get("veredito") == "edicao_unica" and selo != "ouro":
+        return "edicao_unica_comprovada", "Edição única comprovada no documento oficial, após busca em outros anos: " + str(pg.get("busca_realizada") or "")
+    if selo == "ouro" and (x.get("selo_livro") or {}).get("via") == "regime_permanente_documentado":
+        return "validado_regime", "regime permanente documentado: " + str(pg.get("base_legal") or "")
     m0 = _manual().get(x.get("id"))
     if m0 and m0.get("situacao") == "dispensa_individual:ciclo_unico":     # ciclo único declarado: a própria edição não vira série
         return m0["situacao"], m0["motivo"]
@@ -235,6 +243,11 @@ def _conselho(x: dict, eds: list[dict], prev: dict, sit: str) -> dict:
     }
 
 
+def _pareceres_go() -> dict:
+    from .leitor_documental import pareceres
+    return pareceres()
+
+
 def relatorio(x: dict) -> dict:
     hoje = hoje_brt()
     reg, _ = regime(x, x.get("programa") or "", privada=(x.get("esfera") == "privada"))
@@ -265,6 +278,16 @@ def relatorio(x: dict) -> dict:
         from .perfil_go import itens_do_livro, site_oficial
         out["site_oficial"] = site_oficial(x)
         out["itens12_livro"] = itens_do_livro(x, out["edicoes"], _derivado, sit, motivo)
+    pg = _pareceres_go().get(x.get("id"))
+    if pg:
+        out["parecer_go"] = {k: pg.get(k) for k in ("veredito", "livro_mae", "site_oficial", "parecer", "base_legal", "itens_dispensados", "itens_pendentes", "motivo_inaplicavel")}
+        disp = pg.get("itens_dispensados") or {}
+        for e in out["edicoes"]:
+            for k, v in e["itens"].items():
+                if v["estado"] == "nao_localizado" and k in disp:
+                    e["itens"][k] = {"estado": "dispensa_individual", "valor": None, "porque": disp[k]}
+                elif v["estado"] == "nao_localizado" and k in (pg.get("itens_pendentes") or {}):
+                    v["porque"] = "Pendência após leitura do documento: " + str(pg["itens_pendentes"][k])
     out["conselho_7_lentes"] = _conselho(x, [{**e, "_status": e["itens"], "itens12": {}} for e in out["edicoes"]], out["preditivo"], sit)
     return out
 
@@ -278,6 +301,10 @@ def md(r: dict) -> str:
         so = r["site_oficial"]
         L += ["", "## Site oficial", "", f"{so['url'] or 'não localizado'} — {so['orgao_site'] or ''} ({so['tipo']}; verificado: {so['verificado']})"]
         L += ["", "## Os 12 itens consolidados do histórico", ""] + [f"- {k}: {v['estado']}" + (f" — {v['valor']}" if v.get("valor") else "") + f" ({v['origem']})" for k, v in r["itens12_livro"].items()]
+    if r.get("parecer_go"):
+        pg = r["parecer_go"]
+        L += ["", "## Parecer do livro (leitura documental)", "", f"Veredito: **{pg['veredito']}**" + (f" · livro-mãe: {pg['livro_mae']}" if pg.get("livro_mae") else "") + (f" · base legal: {pg['base_legal']}" if pg.get("base_legal") else ""),
+              "", str(pg.get("parecer") or ""), ""] + ([f"Inaplicabilidade: {pg['motivo_inaplicavel']}", ""] if pg.get("motivo_inaplicavel") else [])
     L += ["", "## Edições anteriores e os 12 itens", ""]
     if not r["edicoes"]:
         L.append("Nenhuma edição anterior comprovada (ver validação).")
@@ -304,9 +331,14 @@ def gerar() -> dict:
             itens.update(v["estado"] for v in e["itens"].values())
         resumo.append({"id": r["id"], "livro": r["livro"], "bloco": r["bloco"], "selo": r["selo_livro"], "situacao": r["validacao"]["situacao"],
                        "edicoes": len(r["edicoes"]), "mes_tipico": r["preditivo"].get("mes_tipico"), "proxima_janela": r["preditivo"].get("proxima_janela")})
-    RESUMO.write_text(json.dumps({"gerado_em": hoje_brt().isoformat(), "por_situacao": dict(cont), "itens_das_edicoes": dict(itens), "livros": resumo},
+    go = [r for r in resumo if r["bloco"] == "GO"]
+    inap = [r for r in go if r["situacao"].startswith("inaplicavel")]
+    valid = [r for r in go if not r["situacao"].startswith("inaplicavel")]
+    universo_go = {"livros_go": len(go), "inaplicaveis": len(inap), "validos": len(valid), "ouro": sum(r["selo"] == "ouro" for r in valid),
+                   "faltam_ouro": [{"id": r["id"], "livro": r["livro"], "selo": r["selo"], "situacao": r["situacao"]} for r in valid if r["selo"] != "ouro"]}
+    RESUMO.write_text(json.dumps({"gerado_em": hoje_brt().isoformat(), "por_situacao": dict(cont), "itens_das_edicoes": dict(itens), "universo_go": universo_go, "livros": resumo},
                                  ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    return {"por_situacao": dict(cont), "itens_das_edicoes": dict(itens), "livros": len(resumo)}
+    return {"por_situacao": dict(cont), "itens_das_edicoes": dict(itens), "universo_go": {k: v for k, v in universo_go.items() if k != "faltam_ouro"} | {"faltam": len(universo_go["faltam_ouro"])}, "livros": len(resumo)}
 
 
 if __name__ == "__main__":

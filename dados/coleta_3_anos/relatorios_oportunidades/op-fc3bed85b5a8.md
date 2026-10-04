@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-Inscrições de 14/05/2026 a 19/06/2026 (prorrogado); encerrado.
+Edital IVM 2026: inscrições 14/05 a 19/06/2026 (prorrogado), divulgação 16/10/2026, repasse até 31/12/2026. Encerrado; resultado ainda a sair.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de inscrição | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Valor | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Órgão / financiador | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Objeto | confirmado | Projetos que promovem e garantem os direitos da população 60+, conforme o Estatuto da Pessoa Idosa |
+| Prazo de inscrição | confirmado | 14/05 a 19/06/2026 18h (prorrogado) |
+| Resultado | confirmado | Divulgação em 16/10/2026 |
+| Prazo de recurso | não localizado | não localizado — regulamento PDF (Google Drive) não aberto; página não informa |
+| Valor | não localizado | não localizado — página não informa valor; consta no regulamento (Drive) não aberto |
+| Órgão / financiador | confirmado | Itaú Viver Mais, com recursos de Fundo de Direitos da Pessoa Idosa |
 | Território | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Esfera | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Requisitos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Esfera | confirmado | Privada com recursos de fundos de direitos (incentivo fiscal), nacional |
+| Requisitos | não localizado | não localizado — detalhados só no regulamento (Drive) não aberto |
 | Anexos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Destinação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Área de atuação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Destinação | não localizado | não localizado — consta no regulamento (Drive) não aberto |
+| Área de atuação | confirmado | Infraestrutura; promoção e garantia de direitos; empreendedorismo e geração de renda; letramento financeiro; inclusão digital; cultura; esporte |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -46,22 +46,16 @@ Inscrições de 14/05/2026 a 19/06/2026 (prorrogado); encerrado.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de inscrição:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Valor:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Órgão / financiador:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Prazo de recurso:** regulamento PDF (Google Drive) não aberto; página não informa
+- **Valor:** página não informa valor; consta no regulamento (Drive) não aberto
 - **Território:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Esfera:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Requisitos:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Requisitos:** detalhados só no regulamento (Drive) não aberto
 - **Anexos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Destinação:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Área de atuação:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Destinação:** consta no regulamento (Drive) não aberto
 
 ## Observações da pesquisa
 
-Compartilha com op-b0eb8c8aebca.
+Compartilha com op-b0eb8c8aebca. | Regulamento em Google Drive (PDF não acessível sem login/visualizador); dados lidos da página oficial do edital. Compartilha com op-b0eb8c8aebca (edição anterior, regulamento distinto).
 
 Mesma pesquisa dos livros: op-b0eb8c8aebca
 

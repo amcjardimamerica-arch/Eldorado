@@ -1,7 +1,7 @@
 # BNDES — Edital de Cinema 2026 (Seleção Pública de Patrocínio Cultural 01/2026)
 
 - **Identificador:** `op-602ab2f5b5fc` · **Órgão/financiador:** BNDES
-- **Decisão:** A (última edição encerrada (histórico)) · **Validação dos 12 pontos:** parcial
+- **Decisão:** A (última edição encerrada (histórico)) · **Validação dos 12 pontos:** completa
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
 - **Página oficial usada:** https://www.bndes.gov.br/wps/portal/site/home/transparencia/patrocinios/selecao-publica-patrocinio-cultural-01-2026
 
@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Inscrições encerraram em 13/08/2026 (antes de 03/10/2026); resultado final previsto 27/10/2026.
+Inscrições 29/06 a 13/08/2026 (17h59); pré-qualificados 04/09; classificação 16/10; resultado final 27/10/2026.
 
 ## Os 12 pontos
 
@@ -24,9 +24,9 @@ Inscrições encerraram em 13/08/2026 (antes de 03/10/2026); resultado final pre
 | Território | confirmado | Nacional; produções brasileiras |
 | Esfera | confirmado | Federal |
 | Requisitos | confirmado | Pessoa jurídica regular fiscalmente e titular dos direitos do projeto; longas com estreia em 2027; festivais com ao menos 4 edições anteriores; exclui pessoa física, MEI, entidades político-partidárias/religiosas e quem tem contrato de serviço com o BNDES |
-| Anexos | não localizado | Lista de anexos não lida; só o resumo da página. |
+| Anexos | confirmado | Edital principal; Anexo I minuta de contrato; II contrapartidas ao BNDES; III modelo de cronograma de execução global; IV modelo de declaração de não impedimento; V planilhas orçamentárias (filmes e festivais); VI manual de prestação de contas; esclarecimentos 15/07/2026 |
 | Destinação | confirmado | Patrocínio: 90% após entrega de materiais de divulgação e compromissos de distribuição; 10% após aprovação da prestação de contas |
-| Área de atuação | não localizado | Não lido na sessão (página indisponível ou sem o dado). |
+| Área de atuação | confirmado | Patrocínio cultural ao cinema brasileiro (longas-metragens e festivais de cinema) |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,14 +43,9 @@ Inscrições encerraram em 13/08/2026 (antes de 03/10/2026); resultado final pre
 - **Base:** Só uma edição lida (2026); a página de patrocínios cita ciclos indicativos.
 - **Calculado por:** agente (leitura da fonte)
 
-## O que ainda precisa ser conferido
-
-- **Anexos:** Lista de anexos não lida; só o resumo da página.
-- **Área de atuação:** Não lido na sessão (página indisponível ou sem o dado).
-
 ## Observações da pesquisa
 
-compartilha_com op-aaed373e3236 (mesmo programa de patrocínio cultural)
+compartilha_com op-aaed373e3236 (mesmo programa de patrocínio cultural) | Lista de anexos lida na página oficial; PDF do edital não aberto (link não exposto).
 
 Mesma pesquisa dos livros: op-aaed373e3236
 

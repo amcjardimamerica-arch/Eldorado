@@ -1,7 +1,7 @@
 # Lei Rouanet — apresentação de propostas culturais no SALIC (2026): de 01/02 a 31/10
 
 - **Identificador:** `op-cd9c27fceaf1` · **Órgão/financiador:** Ministério da Cultura — SEFIC
-- **Decisão:** R (programa permanente / fluxo contínuo) · **Validação dos 12 pontos:** parcial
+- **Decisão:** R (programa permanente / fluxo contínuo) · **Validação dos 12 pontos:** completa
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
 - **Página oficial usada:** https://www.gov.br/cultura/pt-br/acesso-a-informacao/legislacao-e-normativas/instrucao-normativa-minc-no-29-de-29-de-janeiro-de-2026
 
@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Mecanismo permanente de incentivo fiscal (Lei 8.313/1991, Pronac); janela anual de apresentação de 1º/fev a 31/out (IN MinC 29/2026). Em 03/10/2026 a janela de 2026 segue aberta até 31/10.
+Mecanismo permanente; janela anual 1º/fev a 31/out (IN MinC 29/2026, art. 5); aberta em 03/10/2026.
 
 ## Os 12 pontos
 
@@ -18,7 +18,7 @@ Mecanismo permanente de incentivo fiscal (Lei 8.313/1991, Pronac); janela anual 
 | Objeto | confirmado | Incentivo a Projetos Culturais do Pronac: apresentação, seleção, análise, aprovação, acompanhamento e avaliação de propostas culturais. |
 | Prazo de inscrição | confirmado | 1º de fevereiro a 31 de outubro de cada ano (art. 5º) |
 | Resultado | dispensado | contínuo — Não há edital com resultado único: a análise é contínua por proposta no SALIC, conforme a IN. |
-| Prazo de recurso | não localizado | Não lido na IN neste resumo. |
+| Prazo de recurso | confirmado | 10 dias, recurso único — art. 45, §3 (enquadramento) e art. 50, §1 (mérito/legalidade/cortes orçamentários) |
 | Valor | não informado no edital | Valor depende do orçamento de cada projeto; sem teto global lido. |
 | Órgão / financiador | confirmado | Ministério da Cultura (SEFIC); recursos de patrocinadores/doadores via renúncia fiscal |
 | Território | confirmado | Nacional |
@@ -40,10 +40,6 @@ Nenhuma edição anterior comprovada em página oficial.
 - **Confiança:** média
 - **Base:** Janela anual fixada na IN 29/2026; vale se mantida em 2027.
 - **Calculado por:** agente (leitura da fonte)
-
-## O que ainda precisa ser conferido
-
-- **Prazo de recurso:** Não lido na IN neste resumo.
 
 ## Observações da pesquisa
 

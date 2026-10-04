@@ -2,7 +2,7 @@
 
 Órgão: Goiás Social · bloco GO · regime chamamento_publico · selo do livro **prata** · selo da oportunidade None
 
-Validação: **validado_parcial** — há edição anterior comprovada, mas só um ano ou sem datas completas: previsão com confiança média
+Validação: **inaplicavel:fora_perfil** — Edital de seleção de representantes de entidades da sociedade civil para ocupar vaga no Conselho Estadual (CEDHIRCOP), processo eleitoral de conselho, sem repasse de recursos. Prova limitada ao título/objeto do edital: o portal goias.gov.br substituiu as páginas de notícia por comunicado eleitoral (26/06/2026) e o PDF não foi localizado.
 
 ## Estudo preditivo
 
@@ -27,6 +27,15 @@ https://goias.gov.br/social/ — Secretaria de Desenvolvimento Social (Goiás So
 - Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
 - Área de atuação: catalogo — Direitos humanos (catálogo do livro (área do objeto))
 
+## Parecer do livro (leitura documental)
+
+Veredito: **inaplicavel** · livro-mãe: op-6545c843a8c7
+
+Livro de seleção de entidades da sociedade civil para o Conselho Estadual de Direitos Humanos, Igualdade Racial e Combate ao Preconceito (CEDHIRCOP). Não há financiamento: é representação em conselho. Prova: título do edital e do objeto. Limite: o documento não pôde ser aberto (notícia bloqueada). Recomendação à AMC: relevante só como oportunidade de assento institucional, não de captação; não acompanhar como fonte de recursos.
+
+Inaplicabilidade: Edital de seleção de representantes de entidades da sociedade civil para ocupar vaga no Conselho Estadual (CEDHIRCOP), processo eleitoral de conselho, sem repasse de recursos. Prova limitada ao título/objeto do edital: o portal goias.gov.br substituiu as páginas de notícia por comunicado eleitoral (26/06/2026) e o PDF não foi localizado.
+
+
 ## Edições anteriores e os 12 itens
 
 ### 2024-01 — Goiás Social — Inscrições abertas para representantes da sociedade civil interessados em integrar o Conselho Estadual de Direitos Humanos, Igualdade Racial e Combate ao Preconceito
@@ -50,7 +59,7 @@ Página oficial: https://goias.gov.br/social/inscricoes-abertas-para-representan
 - extremamente pessimista: Com 1 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: Resultado, Prazo de recurso, Valor. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: validado_parcial. Tratar jan como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: inaplicavel:fora_perfil. Tratar jan como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 1 ano(s) (2024) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em jan, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

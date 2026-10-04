@@ -1,31 +1,19 @@
 # Fundo Municipal do Idoso de Goiânia — Goiás / Goiânia
 
-Órgão: Conanda — Fundo Nacional para a Criança e o Adolescente · bloco GO · regime incentivo_fiscal · selo do livro **bronze** · selo da oportunidade prata
+Órgão: Conanda — Fundo Nacional para a Criança e o Adolescente · bloco GO · regime incentivo_fiscal · selo do livro **ouro** · selo da oportunidade prata
 
-Validação: **dispensa_individual:fundo** — Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.
+Validação: **validado_regime** — regime permanente documentado: Lei federal 12.213/2010 (Fundo Nacional do Idoso; art. 3º dedução do IR de PJ nos Fundos Nacional, Estaduais ou Municipais do Idoso, limite de 1% do imposto devido na redação da Lei 12.594/2012); Lei 10.741/2003 (Estatuto da Pessoa Idosa) art. 115 (redação da Lei 14.423/2022). Fundo Municipal do Idoso de Goiânia: lei municipal não aberta.
 
 ## Estudo preditivo
 
-Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: baixa
+Mês típico: sem dados · duração típica: — dias · próxima janela: — · confiança: alta
 
-## Site oficial
+## Parecer do livro (leitura documental)
 
-https://www.gov.br/ — Conanda — Fundo Nacional para a Criança e o Adolescente (portal oficial (domínio .gov.br do órgão); verificado: domínio .gov.br; título não conferido nesta rodada)
+Veredito: **ouro_regime** · base legal: Lei federal 12.213/2010 (Fundo Nacional do Idoso; art. 3º dedução do IR de PJ nos Fundos Nacional, Estaduais ou Municipais do Idoso, limite de 1% do imposto devido na redação da Lei 12.594/2012); Lei 10.741/2003 (Estatuto da Pessoa Idosa) art. 115 (redação da Lei 14.423/2022). Fundo Municipal do Idoso de Goiânia: lei municipal não aberta.
 
-## Os 12 itens consolidados do histórico
+Fundo do Idoso: a Lei 12.213/2010 instituiu o Fundo Nacional do Idoso e autoriza a pessoa jurídica a deduzir doações aos fundos nacional, estaduais e municipais; a Lei 12.594/2012 fixou o limite de 1% do imposto devido. É regime permanente, sem edital mensal. Para Goiânia, a lei municipal do Fundo e o calendário do conselho não foram abertos neste ciclo, e o benefício fiscal para pessoa física não consta nos textos lidos. Recomendação à AMC: usar como fonte permanente para entidades de atenção à pessoa idosa, confirmando no Conselho Municipal do Idoso de Goiânia o edital de projetos e a conta do Fundo.
 
-- Objeto: catalogo — Fundo Municipal do Idoso de Goiânia (nome do livro (título do programa))
-- Prazo de inscrição: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Resultado: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Prazo de recurso: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Valor: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Órgão / financiador: catalogo — Conanda — Fundo Nacional para a Criança e o Adolescente (catálogo do livro)
-- Território: catalogo — Goiânia (catálogo do livro (município/UF))
-- Esfera: catalogo — Município (catálogo do livro (esfera/abrangência/órgão))
-- Requisitos: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Anexos: dispensa_individual (Fundo de conselho: o edital segue o calendário do conselho; histórico depende de resoluções do conselho.)
-- Destinação: catalogo — tipo: Fundo; público: Pessoas idosas (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
-- Área de atuação: catalogo — Pessoa idosa (catálogo do livro (área do objeto))
 
 ## Edições anteriores e os 12 itens
 
@@ -35,7 +23,7 @@ Nenhuma edição anterior comprovada (ver validação).
 - extremamente pessimista: Com 0 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: dispensa_individual:fundo. Tratar sem mês típico como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: validado_regime. Tratar sem mês típico como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 0 ano(s) (—) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em sem mês típico, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

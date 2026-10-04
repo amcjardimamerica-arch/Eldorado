@@ -1,32 +1,32 @@
 # Fundo de Cidadania Ativa prorroga inscrições para apoiar até 30 iniciativas comunitárias em periferias de Campinas
 
 - **Identificador:** `op-cadde20d792d` · **Órgão/financiador:** 
-- **Decisão:** P (pendente) · **Validação dos 12 pontos:** pendente
+- **Decisão:** R (programa permanente / fluxo contínuo) · **Validação dos 12 pontos:** parcial
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
-- **Página oficial usada:** https://casahacker.org/
+- **Página oficial usada:** https://casahacker.org/iniciativas/quebrada-em-movimento/
 
-**Serve para uma OSC de Goiás?** não — Território restrito ao distrito de Campo Grande, Campinas/SP.
+**Serve para uma OSC de Goiás?** não — Território restrito a Campo Grande, Campinas.
 
 ## Decisão e motivo
 
-Casa Hacker (OSC) é a organização; site principal não traz o edital do Fundo de Cidadania Ativa (Campinas) e a página específica não foi encontrada.
+Fundo de Cidadania Ativa (ex-Fundo da Quebrada) é restrito ao distrito do Campo Grande, Campinas/SP; página da iniciativa Quebrada em Movimento: até R$ 225 mil previstos, até 30 iniciativas, edital 2026. Regulamento publicado (PDF 2025) limita a quem reside ou atua no distrito: entidade de Goiás não elegível.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | confirmado | Fundo de Cidadania Ativa (iniciativa Quebrada em Movimento, Casa Hacker): apoio a coletivos, lideranças e associações do distrito Campo Grande, Campinas |
-| Prazo de inscrição | não localizado | não lido na fonte consultada |
-| Resultado | não localizado | não lido na fonte consultada |
-| Prazo de recurso | não localizado | não lido na fonte consultada |
-| Valor | não localizado | não lido na fonte consultada |
-| Órgão / financiador | não localizado | não lido na fonte consultada |
-| Território | não localizado | não lido na fonte consultada |
-| Esfera | não localizado | não lido na fonte consultada |
-| Requisitos | não localizado | não lido na fonte consultada |
-| Anexos | não localizado | não lido na fonte consultada |
-| Destinação | não localizado | não lido na fonte consultada |
-| Área de atuação | não localizado | não lido na fonte consultada |
+| Objeto | confirmado | Fundo apoia iniciativas comunitárias no distrito do Campo Grande, Campinas (SP) (PDF 2025, Apresentação) |
+| Prazo de inscrição | não localizado | PDF específico do edital 2026 não localizado; o link do site ainda aponta o PDF de 2025; prazo prorrogado não consta na página |
+| Resultado | não localizado | idem |
+| Prazo de recurso | não localizado | idem |
+| Valor | confirmado | Edital 2026: até R$ 225 mil previstos, até 30 iniciativas (página oficial); edição 2025: R$ 40.000 total, 4 de até R$ 5 mil e 2 de até R$ 10 mil (PDF 2025) |
+| Órgão / financiador | confirmado | Casa Hacker (OSC), Fundo de Cidadania Ativa |
+| Território | confirmado | Distrito do Campo Grande, Campinas/SP |
+| Esfera | confirmado | Privada/OSC |
+| Requisitos | confirmado | PF com vínculo ao Campo Grande; coletivos, associações, OSCs e empresas sociais com atuação mínima de 1 ano no território (PDF 2025, Critérios de participação) |
+| Anexos | não localizado | idem |
+| Destinação | não localizado | idem |
+| Área de atuação | confirmado | Educação, combate à pobreza, meio ambiente, igualdade de gênero, saúde e mobilidade urbana (PDF 2025) |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,20 +43,14 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de inscrição:** não lido na fonte consultada
-- **Resultado:** não lido na fonte consultada
-- **Prazo de recurso:** não lido na fonte consultada
-- **Valor:** não lido na fonte consultada
-- **Órgão / financiador:** não lido na fonte consultada
-- **Território:** não lido na fonte consultada
-- **Esfera:** não lido na fonte consultada
-- **Requisitos:** não lido na fonte consultada
-- **Anexos:** não lido na fonte consultada
-- **Destinação:** não lido na fonte consultada
-- **Área de atuação:** não lido na fonte consultada
+- **Prazo de inscrição:** PDF específico do edital 2026 não localizado; o link do site ainda aponta o PDF de 2025; prazo prorrogado não consta na página
+- **Resultado:** idem
+- **Prazo de recurso:** idem
+- **Anexos:** idem
+- **Destinação:** idem
 
 ## Observações da pesquisa
 
-Página inicial menciona 'até 30 iniciativas apoiadas'; sem datas. | Titular: procurar em casahacker.org 'Quebrada em Movimento'/'Fundo de Cidadania Ativa' e anotar prazo prorrogado.
+Página inicial menciona 'até 30 iniciativas apoiadas'; sem datas. | Titular: procurar em casahacker.org 'Quebrada em Movimento'/'Fundo de Cidadania Ativa' e anotar prazo prorrogado. | Lido o regulamento 2025 (17 mil caracteres) no site oficial.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

@@ -7,24 +7,24 @@
 
 ## Decisão e motivo
 
-Chamamento Público 7/2026 de Itagibá/BA só visto no CapitaAí; o site da prefeitura bloqueia acesso (robots.txt) — não confirmado na fonte oficial
+Chamamento 7/2026 de Itagibá/BA não achado na fonte oficial (portal da transparência e PNCP só têm chamamentos médicos e de combustíveis); URL do livro é a Lei 12.305. Recomendação: arquivar ou vincular.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de inscrição | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Valor | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Órgão / financiador | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Território | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Esfera | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Requisitos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Anexos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Destinação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Área de atuação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Objeto | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Prazo de inscrição | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Resultado | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Prazo de recurso | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Valor | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Órgão / financiador | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Território | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Esfera | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Requisitos | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Anexos | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Destinação | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
+| Área de atuação | não localizado | Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -41,17 +41,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de inscrição:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Valor:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Órgão / financiador:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Território:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Esfera:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Requisitos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Anexos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Destinação:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Área de atuação:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Objeto:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Prazo de inscrição:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Resultado:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Prazo de recurso:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Valor:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Órgão / financiador:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Território:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Esfera:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Requisitos:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Anexos:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Destinação:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+- **Área de atuação:** Prefeitura de Itagibá/BA: site e portal da transparência abrem; lista de licitações de 2026 mostra só chamamentos médicos e de combustível; PNCP não traz chamamento cultural/OSC do município; URL do livro é lei federal (planalto.gov.br), não edital
+
+## Observações da pesquisa
+
+Só existe o agregador CapitaAí como fonte.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

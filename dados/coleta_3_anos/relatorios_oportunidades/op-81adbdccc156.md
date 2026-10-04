@@ -15,18 +15,18 @@ trensurb.gov.br bloqueado por robots/timeout; aviso 180/2026 não lido. Credenci
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Prazo de inscrição | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Resultado | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Prazo de recurso | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Valor | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Órgão / financiador | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Território | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Esfera | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Requisitos | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Anexos | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Destinação | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
-| Área de atuação | não localizado | Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch). |
+| Objeto | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Prazo de inscrição | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Resultado | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Prazo de recurso | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Valor | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Órgão / financiador | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Território | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Esfera | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Requisitos | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Anexos | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Destinação | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Área de atuação | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Prazo de inscrição:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Resultado:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Prazo de recurso:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Valor:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Órgão / financiador:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Território:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Esfera:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Requisitos:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Anexos:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Destinação:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
-- **Área de atuação:** Aviso não localizado: www.trensurb.gov.br carregou sem o aviso (Chrome) e /licitacoes/ foi bloqueado por robots/timeout (WebFetch).
+- **Objeto:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Prazo de inscrição:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Resultado:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Prazo de recurso:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Valor:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Órgão / financiador:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Território:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Esfera:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Requisitos:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Anexos:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Destinação:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Área de atuação:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
 
 ## Observações da pesquisa
 
-Pendente de leitura do aviso. | Titular: abrir trensurb.gov.br > Licitações e conferir o Aviso 180/2026; se for credenciamento de fornecedores, marcar D.
+Pendente de leitura do aviso. | Titular: abrir trensurb.gov.br > Licitações e conferir o Aviso 180/2026; se for credenciamento de fornecedores, marcar D. | Edital não lido nesta passagem. PNCP não se aplica (sem URL PNCP). Titular: abrir a fonte no navegador.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

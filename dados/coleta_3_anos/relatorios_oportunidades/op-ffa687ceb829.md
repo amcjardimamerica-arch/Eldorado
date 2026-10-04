@@ -1,7 +1,7 @@
 # Goiânia — Diário Oficial de Goiânia — edição 8867 (2026-09-21) — chamamento público
 
 - **Identificador:** `op-ffa687ceb829` · **Órgão/financiador:** Prefeitura Municipal de Goiânia
-- **Decisão:** P (pendente) · **Validação dos 12 pontos:** pendente
+- **Decisão:** D (não é recurso para OSC) · **Validação dos 12 pontos:** completa
 - **Selo estimado do livro:** bronze — nenhuma edição anterior a 2026 provada em página oficial
 - **Página oficial usada:** https://data.queridodiario.ok.org.br/5208707/2026-09-21/39710b928ff8ee2dd1c18f2fba243796fec97a2e.pdf
 
@@ -9,24 +9,24 @@
 
 ## Decisão e motivo
 
-PDF do Querido Diário inacessível: curl via proxy 403, WebFetch devolve binário/robots bloqueado, e a aba do Chrome não abre o domínio. Titular: abrir o PDF no navegador (ou diariooficial.goiania.go.gov.br, edição correspondente), localizar o chamamento e copiar objeto, prazo e valor.
+Edição 8867 (21/09/2026) do Diário Oficial de Goiânia lida no PDF oficial (goiania.go.gov.br): traz apenas decretos de pessoal, portarias de gestores e extratos de Termos de Fomento (inexigibilidade art. 29, Lei 13.019). Nenhum chamamento público aberto com prazo de inscrição.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Prazo de inscrição | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Resultado | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Prazo de recurso | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Valor | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Órgão / financiador | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Território | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Esfera | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Requisitos | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Anexos | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Destinação | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
-| Área de atuação | não localizado | PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo. |
+| Objeto | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Prazo de inscrição | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Resultado | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Prazo de recurso | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Valor | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Órgão / financiador | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Território | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Esfera | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Requisitos | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Anexos | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Destinação | dispensado | Edição sem edital de chamamento aberto; item inexistente |
+| Área de atuação | dispensado | Edição sem edital de chamamento aberto; item inexistente |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -40,21 +40,6 @@ Nenhuma edição anterior comprovada em página oficial.
 - **Confiança:** baixa
 - **Base:** sem edição anterior comprovada em página oficial: não há base para prever
 - **Calculado por:** script
-
-## O que ainda precisa ser conferido
-
-- **Objeto:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Prazo de inscrição:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Resultado:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Prazo de recurso:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Valor:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Órgão / financiador:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Território:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Esfera:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Requisitos:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Anexos:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Destinação:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
-- **Área de atuação:** PDF do Diário Oficial hospedado no Querido Diário retornou 'binary data' ao WebFetch e curl é bloqueado pelo proxy; não foi possível ler o conteúdo.
 
 ## Observações da pesquisa
 

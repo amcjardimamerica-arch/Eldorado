@@ -1,7 +1,7 @@
 # iFood Chega Junto – 2ª edição
 
 - **Identificador:** `op-bdda6f400ec9` · **Órgão/financiador:** iFood
-- **Decisão:** A (última edição encerrada (histórico)) · **Validação dos 12 pontos:** parcial
+- **Decisão:** A (última edição encerrada (histórico)) · **Validação dos 12 pontos:** completa
 - **Selo estimado do livro:** prata — unico: edição anterior a 2026 em um só ano ([2025])
 - **Página oficial usada:** https://entregador.ifood.com.br/programa-de-incentivo-ifood-chega-junto/
 
@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-As quatro chamadas da 2ª edição estão encerradas (4ª: 29/06 a 03/08/2026; resultado 14/09/2026).
+Quatro chamadas da 2ª edição encerradas (4ª: 29/06 a 03/08/2026; resultado 14/09/2026).
 
 ## Os 12 pontos
 
@@ -24,7 +24,7 @@ As quatro chamadas da 2ª edição estão encerradas (4ª: 29/06 a 03/08/2026; r
 | Território | confirmado | Brasil (ações em todas as regiões) |
 | Esfera | confirmado | Privada |
 | Requisitos | confirmado | PJ sem fins lucrativos com experiência em um dos eixos e formalização há mais de 3 meses; beneficiários devem ser entregadores ou suas famílias; 1 projeto por chamada |
-| Anexos | não localizado | Documentos estão no edital completo (PDF), não lido. |
+| Anexos | confirmado | Documentos obrigatórios (cl. 4.1, pp. 9-10): PJ - cartão CNPJ, contrato social/estatuto, RG e CPF de 2 responsáveis legais, comprovante de endereço; PF - RG/CPF, comprovante de endereço, comprovante de ativação na plataforma iFood (print). Documento PDF detalhando a proposta é opcional (p. 10). Sem anexos-modelo separados |
 | Destinação | confirmado | Financiamento direto de projetos selecionados |
 | Área de atuação | confirmado | Saúde e bem-estar; segurança viária; empoderamento e inclusão produtiva; renda e inclusão financeira; meio ambiente |
 
@@ -43,13 +43,9 @@ As quatro chamadas da 2ª edição estão encerradas (4ª: 29/06 a 03/08/2026; r
 - **Base:** Edição 2 encerrou com a 4ª chamada em 03/08/2026; página não anuncia 3ª edição.
 - **Calculado por:** agente (leitura da fonte)
 
-## O que ainda precisa ser conferido
-
-- **Anexos:** Documentos estão no edital completo (PDF), não lido.
-
 ## Observações da pesquisa
 
-Lido via Chrome (WebFetch 403).
+Lido via Chrome (WebFetch 403). | Edital completo (PDF, 19 p.) 'Edital-iFood-Chega-Junto-JUNHO-de-2026.pdf' lido via Chrome (WebFetch 403). Mesmo edital do livro op-067bb76f97c8.
 
 Mesma pesquisa dos livros: op-067bb76f97c8
 

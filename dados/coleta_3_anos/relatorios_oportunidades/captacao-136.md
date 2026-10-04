@@ -16,17 +16,17 @@ Tema do livro não corresponde a edital do FNCA/Conanda localizado; página inst
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
 | Objeto | confirmado | Projeto temático ('Conselho de Igualdade Racial - projetos de promoção da igualdade') atribuído ao FNCA/Conanda, sem edital oficial localizado. |
-| Prazo de inscrição | não localizado | Página oficial lida não contém edital. |
-| Resultado | não localizado | Página oficial lida não contém edital. |
-| Prazo de recurso | não localizado | Página oficial lida não contém edital. |
-| Valor | não localizado | Página oficial lida não contém edital. |
-| Órgão / financiador | não localizado | Página oficial lida não contém edital. |
-| Território | não localizado | Página oficial lida não contém edital. |
-| Esfera | não localizado | Página oficial lida não contém edital. |
-| Requisitos | não localizado | Página oficial lida não contém edital. |
-| Anexos | não localizado | Página oficial lida não contém edital. |
-| Destinação | não localizado | Página oficial lida não contém edital. |
-| Área de atuação | não localizado | Página oficial lida não contém edital. |
+| Prazo de inscrição | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Resultado | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Prazo de recurso | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Valor | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Órgão / financiador | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Território | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Esfera | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Requisitos | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Anexos | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Destinação | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Área de atuação | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -43,21 +43,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Prazo de inscrição:** Página oficial lida não contém edital.
-- **Resultado:** Página oficial lida não contém edital.
-- **Prazo de recurso:** Página oficial lida não contém edital.
-- **Valor:** Página oficial lida não contém edital.
-- **Órgão / financiador:** Página oficial lida não contém edital.
-- **Território:** Página oficial lida não contém edital.
-- **Esfera:** Página oficial lida não contém edital.
-- **Requisitos:** Página oficial lida não contém edital.
-- **Anexos:** Página oficial lida não contém edital.
-- **Destinação:** Página oficial lida não contém edital.
-- **Área de atuação:** Página oficial lida não contém edital.
+- **Prazo de inscrição:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Resultado:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Prazo de recurso:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Valor:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Órgão / financiador:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Território:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Esfera:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Requisitos:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Anexos:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Destinação:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Área de atuação:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
 
 ## Observações da pesquisa
 
-Leitura única compartilhada pelos 9 livros Conanda. | Só a área Criança e Adolescente (SNDCA/CONANDA) foi comprovada. Nenhum edital em 2025 encontrado na página-semente. Trechos vieram via resumo do WebFetch, não confirmados como literais. | não verificado: Página chamamentos-publicos (licitacoes-e-contratos) retornou 404; Editais de outras áreas do MDHC (defensores de DH, igualdade racial, pessoa com deficiência, idosos, LGBT, etc.) 2023-2026; Edição 2025 (nenhuma achada; checar gov.br/mdh editais e Transferegov)
+Leitura única compartilhada pelos 9 livros Conanda. | Página do Conanda/MDHC exige autenticação (Conteúdo Restrito); sem edital identificável para o tema. Recomendação: arquivar ou vincular a edital real. | Só a área Criança e Adolescente (SNDCA/CONANDA) foi comprovada. Nenhum edital em 2025 encontrado na página-semente. Trechos vieram via resumo do WebFetch, não confirmados como literais. | não verificado: Página chamamentos-publicos (licitacoes-e-contratos) retornou 404; Editais de outras áreas do MDHC (defensores de DH, igualdade racial, pessoa com deficiência, idosos, LGBT, etc.) 2023-2026; Edição 2025 (nenhuma achada; checar gov.br/mdh editais e Transferegov)
 
 Mesma pesquisa dos livros: captacao-137, captacao-062, captacao-187, captacao-108, captacao-132, captacao-186, captacao-156, captacao-185
 

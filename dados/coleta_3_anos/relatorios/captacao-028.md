@@ -1,31 +1,19 @@
 # PNAB Goiás - Cultura no Social — Goiás
 
-Órgão: Secretaria de Estado da Cultura de Goiás (Secult-GO) · bloco GO · regime chamamento_publico · selo do livro **prata** · selo da oportunidade prata
+Órgão: Secretaria de Estado da Cultura de Goiás (Secult-GO) · bloco GO · regime chamamento_publico · selo do livro **ouro** · selo da oportunidade prata
 
-Validação: **validado_parcial** — há edição anterior comprovada, mas só um ano ou sem datas completas: previsão com confiança média
+Validação: **validado** — recorrência comprovada em 2 ou mais anos com página oficial
 
 ## Estudo preditivo
 
-Mês típico: ago · duração típica: 42 dias · próxima janela: 2027-08 · confiança: media
+Mês típico: ago · duração típica: 42 dias · próxima janela: 2027-08 · confiança: alta
 
-## Site oficial
+## Parecer do livro (leitura documental)
 
-https://goias.gov.br/cultura/pnab/ — Secretaria de Estado da Cultura (Secult-GO) (portal oficial do órgão; verificado: 2026-10-03)
+Veredito: **pendente** · base legal: Lei 14.399/2022 (PNAB)
 
-## Os 12 itens consolidados do histórico
+Linha nova do 2º ciclo da PNAB Goiás (edital nº 06/2026, categorias A-E: periferias, população de rua, socioeducação, saúde, mulheres), inscrições 13/03 a 17/04/2026 pela plataforma Baru. Cronograma retificado: resultado preliminar 05/08/2026, recurso 06 a 10/08, final 14/08/2026. Não há edição equivalente em 2024, então a série de dois anos não está documentada; mantido pendente até haver ciclo 2027 ou prova de edição anterior. Recomendação à AMC: monitorar como oportunidade provável de ciclo seguinte (mesma lei e mesmo órgão), sem prometer recorrência. Leitura por extração automática de PDF; conferir no original.
 
-- Objeto: confirmado — PNAB Goiás 2024 — editais por linguagem (edição 2024-08 (já coletada))
-- Prazo de inscrição: confirmado — prorrogado até 20/09/2024 (edição 2024-08 (já coletada))
-- Resultado: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Prazo de recurso: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Valor: confirmado — R$ 45.307.000,00 em 18 editais (edição 2024-08 (já coletada))
-- Órgão / financiador: catalogo — Secretaria de Estado da Cultura de Goiás (Secult-GO) (catálogo do livro)
-- Território: catalogo — Goiás (catálogo do livro (município/UF))
-- Esfera: catalogo — Estado (catálogo do livro (esfera/abrangência/órgão))
-- Requisitos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Anexos: pendente (não consta nos dados já coletados das edições anteriores; fica no edital/ata do órgão (não lido por decisão da titular nesta rodada))
-- Destinação: catalogo — tipo: Edital; público: OSC e associações (catálogo do livro (tipo de objeto e público); destino exato do recurso é lido no edital)
-- Área de atuação: catalogo — Cultura (catálogo do livro (área do objeto))
 
 ## Edições anteriores e os 12 itens
 
@@ -50,7 +38,7 @@ Página oficial: https://goias.gov.br/cultura/secult-goias-prorroga-inscricoes-p
 - extremamente pessimista: Com 1 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: Resultado, Prazo de recurso, Requisitos. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: validado_parcial. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: validado. Tratar ago como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 1 ano(s) (2024) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em ago, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.

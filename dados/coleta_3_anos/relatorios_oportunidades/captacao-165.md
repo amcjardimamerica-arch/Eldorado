@@ -15,18 +15,18 @@ Página do Conanda/MDHC exige autenticação ('Conteúdo Restrito') no navegador
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Prazo de inscrição | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Resultado | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Prazo de recurso | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Valor | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
+| Objeto | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Prazo de inscrição | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Resultado | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Prazo de recurso | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Valor | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
 | Órgão / financiador | confirmado | Ministério dos Direitos Humanos e da Cidadania / fundo correspondente |
-| Território | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Esfera | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Requisitos | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Anexos | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Destinação | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
-| Área de atuação | não localizado | Página retornou conteúdo restrito/genérico; nenhuma informação do programa. |
+| Território | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Esfera | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Requisitos | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Anexos | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Destinação | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
+| Área de atuação | não localizado | não localizado — fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -45,21 +45,21 @@ Página do Conanda/MDHC exige autenticação ('Conteúdo Restrito') no navegador
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Prazo de inscrição:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Resultado:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Prazo de recurso:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Valor:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Território:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Esfera:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Requisitos:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Anexos:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Destinação:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
-- **Área de atuação:** Página retornou conteúdo restrito/genérico; nenhuma informação do programa.
+- **Objeto:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Prazo de inscrição:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Resultado:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Prazo de recurso:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Valor:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Território:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Esfera:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Requisitos:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Anexos:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Destinação:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
+- **Área de atuação:** fonte inacessível: robots/403/404/autenticação; tentativas de WebFetch e busca sem sucesso
 
 ## Observações da pesquisa
 
-Todos os livros do grupo apontam para a mesma página genérica do Conanda; necessário localizar edital oficial de cada fundo (FDD, Pronasci, Fundo do Idoso, CNDPD). | Mesma página restrita compartilhada por 8 livros do lote; lida uma vez. | Página 'Seleções Anteriores' do FDD (gov.br/mj, direitos-difusos) lista como mais recentes só NAS e PRONASCI 2 (2023); 'Seleções em Andamento' diz 'Não há' (atualizada 08/07/2026). Divergência: o resumo da listagem dá 24/10 a 14/11/2023 para o NAS, mas o PDF do edital traz 07/11/2023 (cronograma sujeito a alteração; possível prorrogação não confirmada). PRONASCI 2 (28/07 a 12/09/2023) é anterior à
+Todos os livros do grupo apontam para a mesma página genérica do Conanda; necessário localizar edital oficial de cada fundo (FDD, Pronasci, Fundo do Idoso, CNDPD). | Mesma página restrita compartilhada por 8 livros do lote; lida uma vez. | Página do Conanda/MDHC exige autenticação (Conteúdo Restrito); sem edital identificável para o tema. Recomendação: arquivar ou vincular a edital real. | Página 'Seleções Anteriores' do FDD (gov.br/mj, direitos-difusos) lista como mais recentes só NAS e PRONASCI 2 (2023); 'Seleções em Andamento' diz 'Não há' (atualizada 08/07/2026). Divergência: o resumo da listagem dá 24/10 a 14/11/2023 para o NAS, mas o PDF do edital traz 07/11/2023 (cronograma sujeito a alteração; possível prorrogação não confirmada). PRONASCI 2 (28/07 a 12/09/2023) é anterior à
 
 Mesma pesquisa dos livros: captacao-135, captacao-166, captacao-168, captacao-169, captacao-130, captacao-131
 

@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Mantida (inscrições até 20/10/2026). A página do Mapa Cultural ES de Divino de São Lourenço traz só uma imagem de divulgação, sem regulamento nem anexos.
+PNAB Divino de São Lourenço/ES 02/2026: inscrições 14/09 a 20/10/2026 (>= 03/10/2026).
 
 ## Os 12 pontos
 
@@ -17,14 +17,14 @@ Mantida (inscrições até 20/10/2026). A página do Mapa Cultural ES de Divino 
 |---|---|---|
 | Objeto | confirmado | Seleção de projetos culturais para apoio financeiro nas categorias Múltiplas Linguagens, Grupos Populares e Patrimônio Cultural, no Município de Divino de São Lourenço/ES |
 | Prazo de inscrição | confirmado | 14/09/2026 a 20/10/2026 (23:59), conforme campos de inscrição do Mapa Cultural ES |
-| Resultado | não localizado | Cronograma está no regulamento (PDF) não lido; página só traz objeto e datas de inscrição |
-| Prazo de recurso | não localizado | regulamento não lido |
-| Valor | não localizado | regulamento não lido |
+| Resultado | não localizado | Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas. |
+| Prazo de recurso | não localizado | Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas. |
+| Valor | não localizado | Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas. |
 | Órgão / financiador | confirmado | Município de Divino de São Lourenço (ES) - PNAB |
 | Território | confirmado | Divino de São Lourenço/ES |
 | Esfera | confirmado | Municipal |
-| Requisitos | não localizado | regulamento não lido; não consta se aceita OSC |
-| Anexos | não localizado | regulamento não lido |
+| Requisitos | não localizado | Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas. |
+| Anexos | não localizado | Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas. |
 | Destinação | confirmado | Apoio financeiro a projetos culturais (PNAB) |
 | Área de atuação | confirmado | Cultura |
 
@@ -45,14 +45,14 @@ Mantida (inscrições até 20/10/2026). A página do Mapa Cultural ES de Divino 
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** Cronograma está no regulamento (PDF) não lido; página só traz objeto e datas de inscrição
-- **Prazo de recurso:** regulamento não lido
-- **Valor:** regulamento não lido
-- **Requisitos:** regulamento não lido; não consta se aceita OSC
-- **Anexos:** regulamento não lido
+- **Resultado:** Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas.
+- **Prazo de recurso:** Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas.
+- **Valor:** Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas.
+- **Requisitos:** Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas.
+- **Anexos:** Página do Mapa Cultural ES mostra só período de inscrição e descrição curta; não há arquivo de edital anexado/visível (nenhum link de download na página) e a API do mapa respondeu erro 500 nas tentativas.
 
 ## Observações da pesquisa
 
-Datas lidas da API da própria plataforma Mapa Cultural ES; regulamento em PDF não lido. | Edital municipal PNAB 02/2026.
+Datas lidas da API da própria plataforma Mapa Cultural ES; regulamento em PDF não lido. | Edital municipal PNAB 02/2026. | Página informa fase 'Publicação final do resultado' sem data; objeto: apoio financeiro a categorias Múltiplas Linguagens, Grupos Populares e Patrimônio Cultural em Divino de São Lourenço.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

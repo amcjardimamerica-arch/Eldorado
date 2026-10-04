@@ -7,24 +7,24 @@
 
 ## Decisão e motivo
 
-Sites do Instituto Coca-Cola Brasil (institutococacolabrasil.com.br e institutococacola.org.br) falham por certificado SSL inválido; não foi possível verificar editais.
+Sites do Instituto Coca-Cola Brasil com erro de certificado SSL (hostname mismatch); WebFetch barrado e Chrome sem acesso. Nenhum edital lido. Mantido P.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de inscrição | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Valor | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Órgão / financiador | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Território | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Esfera | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Requisitos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Anexos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Destinação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Área de atuação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Objeto | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Prazo de inscrição | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Resultado | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Prazo de recurso | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Valor | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Órgão / financiador | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Território | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Esfera | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Requisitos | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Anexos | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Destinação | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
+| Área de atuação | não localizado | Tentado WebFetch (SSL) e Chrome (falha). |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -41,21 +41,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de inscrição:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Valor:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Órgão / financiador:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Território:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Esfera:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Requisitos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Anexos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Destinação:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Área de atuação:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Objeto:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Prazo de inscrição:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Resultado:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Prazo de recurso:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Valor:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Órgão / financiador:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Território:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Esfera:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Requisitos:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Anexos:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Destinação:** Tentado WebFetch (SSL) e Chrome (falha).
+- **Área de atuação:** Tentado WebFetch (SSL) e Chrome (falha).
 
 ## Observações da pesquisa
 
-Site oficial inacessivel: WebFetch bloqueado por robots.txt/erro SSL (hostname mismatch) e extensao Chrome falhou (get_page_text, javascript, screenshot). Nenhuma edicao registrada sem prova oficial. | não verificado: https://www.institutococacolabrasil.com.br/ (secoes de editais/chamadas, Coletivo, Reciclar, Y Bank, selecao de projetos); Perfis oficiais do instituto (LinkedIn/Instagram) para anuncios de chamadas 2023-2026
+Tentado WebFetch (SSL) e Chrome (falha). | Site oficial inacessivel: WebFetch bloqueado por robots.txt/erro SSL (hostname mismatch) e extensao Chrome falhou (get_page_text, javascript, screenshot). Nenhuma edicao registrada sem prova oficial. | não verificado: https://www.institutococacolabrasil.com.br/ (secoes de editais/chamadas, Coletivo, Reciclar, Y Bank, selecao de projetos); Perfis oficiais do instituto (LinkedIn/Instagram) para anuncios de chamadas 2023-2026
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

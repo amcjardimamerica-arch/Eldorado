@@ -119,6 +119,15 @@ def avaliar(x: dict, hoje: date | None = None) -> dict:
                                  + ("sem página oficial ou data de inscrição para prever com segurança" if not prova else "recorrência em um só ano"))
     else:
         selo, porque = "bronze", ("só a edição de " + str(hoje.year) if E else "nenhuma edição registrada") + " nos últimos 3 anos — coletar o histórico"
+    via = "serie_de_edicoes"
+    try:
+        from .leitor_documental import regimes as _reg
+        rg = _reg().get(x.get("id"))
+    except Exception:
+        rg = None
+    if rg and selo != "ouro":
+        selo, via = "ouro", "regime_permanente_documentado"
+        porque = "regime permanente documentado (base legal e 2 ou mais anos de funcionamento comprovados): " + str(rg.get("base_legal") or "")[:160]
     meses = [int(e["abertura"][5:7]) for e in E if e["abertura"]]
     duracoes = [(date.fromisoformat(e["encerramento"]) - date.fromisoformat(e["abertura"])).days for e in E if e["abertura"] and e["encerramento"]]
     mes_tipico = Counter(meses).most_common(1)[0][0] if meses else None
@@ -133,7 +142,7 @@ def avaliar(x: dict, hoje: date | None = None) -> dict:
             "preditivo": {"mes_tipico": mes_tipico, "duracao_tipica_dias": sorted(duracoes)[len(duracoes) // 2] if duracoes else None,
                           "proxima_janela": (f"{hoje.year + (1 if mes_tipico and mes_tipico < hoje.month else 0)}-{mes_tipico:02d}" if mes_tipico else None),
                           "confianca": {"ouro": "alta", "prata": "media", "bronze": "baixa"}[selo]},
-            "falta_para_ouro": falta, "bloco": bloco(x), "tipo": x.get("tipo_objeto") or "Edital", "em": hoje.isoformat()}
+            "via": via, "falta_para_ouro": falta, "bloco": bloco(x), "tipo": x.get("tipo_objeto") or "Edital", "em": hoje.isoformat()}
 
 
 ENTRADA = FILAS / "entrada"

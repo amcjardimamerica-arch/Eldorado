@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Credenciamento aberto (vigência até 2029-06-13) de entidades socioassistenciais pagas por serviço; enquadrado como R, mas é credenciamento Lei 14.133 e exige revisão humana quanto a ser parceria ou compra.
+Decisão anterior mantida (credenciamento de entidades pago pelo Município, sujeito a revisão humana); edital em PDF não lido porque a API de arquivos do PNCP respondeu 503.
 
 ## Os 12 pontos
 
@@ -17,14 +17,14 @@ Credenciamento aberto (vigência até 2029-06-13) de entidades socioassistenciai
 |---|---|---|
 | Objeto | confirmado | Credenciar empresas, instituições e/ou entidades socioassistenciais para serviços de média complexidade na modalidade Centro Dia para pessoa com deficiência (18 a 59 anos), em São José dos Pinhais. |
 | Prazo de inscrição | confirmado | Abertura 2024-06-13; encerramento das propostas 2029-06-13 |
-| Resultado | não localizado | Edital/ata em PDF não lido; API de consulta do PNCP traz só metadados da compra. |
-| Prazo de recurso | não localizado | Prazo de recurso só consta no edital em PDF, não lido; não inventado. |
+| Resultado | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/76105543000135/compras/2024/62/arquivos) respondeu 503 em várias tentativas espaçadas (curl bloqueado pelo proxy; Chrome em aba própria e fetch na origem pncp.gov.br), inclusive a nova tentativa final em 04/10/2026; edital não lido. |
+| Prazo de recurso | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/76105543000135/compras/2024/62/arquivos) respondeu 503 em várias tentativas espaçadas (curl bloqueado pelo proxy; Chrome em aba própria e fetch na origem pncp.gov.br), inclusive a nova tentativa final em 04/10/2026; edital não lido. |
 | Valor | confirmado | 734751.6 |
 | Órgão / financiador | confirmado | Município de São José dos Pinhais (PR) |
 | Território | confirmado | São José dos Pinhais/PR |
 | Esfera | confirmado | municipal |
-| Requisitos | não localizado | Exigências não lidas (edital em PDF não aberto) — Edital em PDF não lido; API de consulta só traz metadados. |
-| Anexos | não localizado | Lista de arquivos do edital no PNCP não lida nesta verificação. |
+| Requisitos | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/76105543000135/compras/2024/62/arquivos) respondeu 503 em várias tentativas espaçadas (curl bloqueado pelo proxy; Chrome em aba própria e fetch na origem pncp.gov.br), inclusive a nova tentativa final em 04/10/2026; edital não lido. |
+| Anexos | não localizado | API de arquivos do PNCP (pncp-api/v1/orgaos/76105543000135/compras/2024/62/arquivos) respondeu 503 em várias tentativas espaçadas (curl bloqueado pelo proxy; Chrome em aba própria e fetch na origem pncp.gov.br), inclusive a nova tentativa final em 04/10/2026; edital não lido. |
 | Destinação | não informado no edital | Repasse/contratação pelo Município — Natureza do pagamento não detalhada nos metadados lidos. |
 | Área de atuação | confirmado | Assistência social (Centro Dia, pessoa com deficiência) |
 
@@ -45,13 +45,13 @@ Credenciamento aberto (vigência até 2029-06-13) de entidades socioassistenciai
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** Edital/ata em PDF não lido; API de consulta do PNCP traz só metadados da compra.
-- **Prazo de recurso:** Prazo de recurso só consta no edital em PDF, não lido; não inventado.
-- **Requisitos:** Edital em PDF não lido; API de consulta só traz metadados.
-- **Anexos:** Lista de arquivos do edital no PNCP não lida nesta verificação.
+- **Resultado:** API de arquivos do PNCP (pncp-api/v1/orgaos/76105543000135/compras/2024/62/arquivos) respondeu 503 em várias tentativas espaçadas (curl bloqueado pelo proxy; Chrome em aba própria e fetch na origem pncp.gov.br), inclusive a nova tentativa final em 04/10/2026; edital não lido.
+- **Prazo de recurso:** API de arquivos do PNCP (pncp-api/v1/orgaos/76105543000135/compras/2024/62/arquivos) respondeu 503 em várias tentativas espaçadas (curl bloqueado pelo proxy; Chrome em aba própria e fetch na origem pncp.gov.br), inclusive a nova tentativa final em 04/10/2026; edital não lido.
+- **Requisitos:** API de arquivos do PNCP (pncp-api/v1/orgaos/76105543000135/compras/2024/62/arquivos) respondeu 503 em várias tentativas espaçadas (curl bloqueado pelo proxy; Chrome em aba própria e fetch na origem pncp.gov.br), inclusive a nova tentativa final em 04/10/2026; edital não lido.
+- **Anexos:** API de arquivos do PNCP (pncp-api/v1/orgaos/76105543000135/compras/2024/62/arquivos) respondeu 503 em várias tentativas espaçadas (curl bloqueado pelo proxy; Chrome em aba própria e fetch na origem pncp.gov.br), inclusive a nova tentativa final em 04/10/2026; edital não lido.
 
 ## Observações da pesquisa
 
-Classificação limítrofe: credenciamento Art. 79 I Lei 14.133 que admite empresas; marcado R pela regra do titular (credenciamento que repassa a OSC). | Pendência: titular deve abrir a página PNCP no navegador, baixar o edital em 'Documentos' e conferir resultado, prazo de recurso, requisitos, anexos e destinação. Decisão anterior mantida com base nos metadados oficiais.
+Classificação limítrofe: credenciamento Art. 79 I Lei 14.133 que admite empresas; marcado R pela regra do titular (credenciamento que repassa a OSC). | Pendência: titular deve abrir a página PNCP no navegador, baixar o edital em 'Documentos' e conferir resultado, prazo de recurso, requisitos, anexos e destinação. Decisão anterior mantida com base nos metadados oficiais. | Pendente: reler quando o PNCP voltar (lista de arquivos e download por sequencialDocumento).
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

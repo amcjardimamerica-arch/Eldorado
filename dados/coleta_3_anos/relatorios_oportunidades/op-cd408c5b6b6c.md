@@ -9,7 +9,7 @@
 
 ## Decisão e motivo
 
-Mantida (prazo até 05/10/2026 12:00). A página do Mapa Cultural de Guaramiranga não publica regulamento nem anexos (campo de regulamento vazio, API sem arquivos); o edital completo não está acessível nessa fonte.
+Mantida: inscrições até 05/10/2026 12:00. Mapa Cultural não publica regulamento nem anexos.
 
 ## Os 12 pontos
 
@@ -17,14 +17,14 @@ Mantida (prazo até 05/10/2026 12:00). A página do Mapa Cultural de Guaramirang
 |---|---|---|
 | Objeto | confirmado | Edital de fomento à cultura PNAB 2026 ciclo 2, Guaramiranga-CE |
 | Prazo de inscrição | confirmado | 17/09/2026 a 05/10/2026 às 12:00 |
-| Resultado | não localizado | Regulamento em PDF não lido; página não traz data de resultado. |
-| Prazo de recurso | não localizado | Regulamento não lido. |
-| Valor | não localizado | Regulamento não lido. |
+| Resultado | não localizado | Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga |
+| Prazo de recurso | não localizado | Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga |
+| Valor | não localizado | Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga |
 | Órgão / financiador | confirmado | Secretaria da Cultura de Guaramiranga (recursos PNAB/MinC) |
 | Território | confirmado | Guaramiranga, Ceará |
 | Esfera | confirmado | Municipal |
-| Requisitos | não localizado | Regulamento em PDF não lido. |
-| Anexos | não localizado | Regulamento para download; não lido. |
+| Requisitos | não localizado | Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga |
+| Anexos | não localizado | Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga |
 | Destinação | confirmado | Fomento a projetos culturais (PNAB) |
 | Área de atuação | confirmado | Cultura |
 
@@ -45,14 +45,14 @@ Mantida (prazo até 05/10/2026 12:00). A página do Mapa Cultural de Guaramirang
 
 ## O que ainda precisa ser conferido
 
-- **Resultado:** Regulamento em PDF não lido; página não traz data de resultado.
-- **Prazo de recurso:** Regulamento não lido.
-- **Valor:** Regulamento não lido.
-- **Requisitos:** Regulamento em PDF não lido.
-- **Anexos:** Regulamento para download; não lido.
+- **Resultado:** Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga
+- **Prazo de recurso:** Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga
+- **Valor:** Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga
+- **Requisitos:** Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga
+- **Anexos:** Página oficial https://mapacultural.secult.ce.gov.br/oportunidade/8381/ e API pública (opportunity/find) lidas em 03/10/2026: shortDescription 'Edital de fomento a cultura PNAB 2026 cilco 2', longDescription nulo, sem arquivos anexos; findOne com files retorna erro do site. Edital completo precisa ser pedido à Secult de Guaramiranga
 
 ## Observações da pesquisa
 
-Página sem corpo do edital; PDF não lido. | Edital municipal PNAB ciclo 2.
+Página sem corpo do edital; PDF não lido. | Edital municipal PNAB ciclo 2. | Sem PDF disponível; inscrição exige login (não feito). Recomenda-se contatar a Secult de Guaramiranga para obter o edital.
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

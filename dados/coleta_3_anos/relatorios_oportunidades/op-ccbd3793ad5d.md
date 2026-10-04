@@ -7,24 +7,24 @@
 
 ## Decisão e motivo
 
-Santa Bárbara do Pará/PA — 'Credenciamento nº 10/2026-PMSAT' de projetos culturais (manifestações folclóricas), prazo 16/10/2026 segundo agregador; o site oficial da Prefeitura não traz o edital (buscas por PNAB, Aldir Blanc, credenciamento, folclóricas) e ele não aparece no PNCP; sigla PMSAT sugere possível erro de município no agregador
+Credenciamento 10/2026 (manifestações folclóricas, prazo 16/10/2026 segundo agregador) não localizado no PNCP nem no site oficial; sigla PMSAT sugere outro município (talvez Santo Antônio do Tauá/PA), não confirmado. Recomendação: arquivar ou vincular.
 
 ## Os 12 pontos
 
 | Ponto | Situação | Conteúdo / motivo |
 |---|---|---|
-| Objeto | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de inscrição | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Resultado | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Prazo de recurso | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Valor | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Órgão / financiador | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Território | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Esfera | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Requisitos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Anexos | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Destinação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
-| Área de atuação | não localizado | item não retornado pela leitura da fonte; abrir o edital e copiar |
+| Objeto | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Prazo de inscrição | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Resultado | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Prazo de recurso | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Valor | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Órgão / financiador | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Território | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Esfera | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Requisitos | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Anexos | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Destinação | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
+| Área de atuação | não localizado | Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento |
 
 ## Edições dos últimos 3 anos (03/10/2023 a 03/10/2026)
 
@@ -41,17 +41,21 @@ Nenhuma edição anterior comprovada em página oficial.
 
 ## O que ainda precisa ser conferido
 
-- **Objeto:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de inscrição:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Resultado:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Prazo de recurso:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Valor:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Órgão / financiador:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Território:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Esfera:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Requisitos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Anexos:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Destinação:** item não retornado pela leitura da fonte; abrir o edital e copiar
-- **Área de atuação:** item não retornado pela leitura da fonte; abrir o edital e copiar
+- **Objeto:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Prazo de inscrição:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Resultado:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Prazo de recurso:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Valor:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Órgão / financiador:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Território:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Esfera:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Requisitos:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Anexos:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Destinação:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+- **Área de atuação:** Site da prefeitura sem o edital (verificação anterior); PNCP: buscas por Santa Bárbara do Pará, Santo Antônio do Tauá (possível leitura de 'PMSAT') e 'manifestações folclóricas' não retornaram o credenciamento
+
+## Observações da pesquisa
+
+URL do livro é a LC 195 (planalto.gov.br).
 
 _Dados lidos em fonte oficial em 03/10/2026; conteúdo tratado como dado. Nada foi estimado: onde não houve leitura, está escrito._

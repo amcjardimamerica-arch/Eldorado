@@ -4,40 +4,53 @@ Esta rodada completa a coleta dos 3 anos (relatório `COLETA-3-ANOS-LIVROS-BR-20
 
 ## Resultado em uma linha
 
-Os 1.123 livros têm decisão e os 12 pontos preenchidos, ou com dispensa individual e motivo, ou com "não localizado" e o que fazer. **110 livros seguem pendentes (P)** e **245 têm itens que só o edital em PDF traz**. Eles ficam numa fila de 411 conferências para o navegador do computador do titular.
+Os 1.123 livros têm decisão e os 12 pontos preenchidos, ou com dispensa individual e motivo, ou com "não localizado" e o que fazer. Após a 3ª passagem (leitura dos editais em PDF), **924 livros têm os 12 pontos fechados, 129 ficam parciais e 70 seguem pendentes (P)**. Em 146 livros o edital em PDF foi de fato aberto e lido.
 
-**O que não foi possível fechar por dentro do sistema, e por quê:** páginas que exigem login ou CAPTCHA (Conanda/MDHC, gov.br, Transferegov), páginas bloqueadas por robots.txt, PDFs que o ambiente não extrai e o limite de requisições do PNCP. Nada disso foi contornado.
+**O que não foi possível fechar, e por quê:** a API de arquivos do PNCP (que lista os PDFs dos editais) respondeu 503 durante toda a 3ª passagem e foi testada de novo em 04/10 com o mesmo resultado; por isso os editais de credenciamento e chamamento hospedados no PNCP continuam só com os metadados. Há também páginas com login ou CAPTCHA, bloqueio por robots.txt e PDFs ilegíveis pela automação. Nada disso foi contornado. Quando a API voltar, basta repetir os lotes 1 a 3 (e parte dos lotes 4, 6, 7, 9, 10, 18, 20, 21 e 24) de `lotes12c/`.
 
 ## Como foi feito
 
 1. A fila de 1.123 livros foi separada em 142 livros que já tinham os 12 pontos (rodadas de 29/09 a 02/10) e 981 novos.
-2. **1ª passagem:** 45 lotes, um livro por vez, na página oficial. Cada livro recebeu decisão (V, A, R, D ou P), os 12 pontos da edição de referência, as edições dos 3 anos com página oficial e trecho, e a previsão.
-3. **2ª passagem:** 14 lotes sobre os 274 livros com pendência (185 P, 78 V e 11 R com itens não lidos). Os agentes tentaram outra URL oficial, o Chrome, PDFs e a API do PNCP.
-4. O script `scripts/consolidar_12_pontos_br.py` junta tudo, calcula selo e previsão e gera os relatórios.
-5. **Dispensa individual:** o item só é "dispensado" quando há motivo escrito (por exemplo, "fluxo contínuo sem data final" ou "não é recurso para OSC"). Item que existe e não foi lido é "não localizado".
+2. **1ª passagem:** 45 lotes, na página oficial: decisão, 12 pontos, edições dos 3 anos e previsão.
+3. **2ª passagem:** 14 lotes sobre os 274 livros com pendência (outra URL oficial, Chrome, PDFs, API do PNCP).
+4. **3ª passagem:** 26 lotes para abrir o edital em PDF de cada V, R e A e completar Resultado, Prazo de recurso, Requisitos e Anexos. Mudou várias decisões (por exemplo, Rouanet nas Favelas 2 passou a R, por ser restrito a 8 locais fora de Goiás).
+5. `scripts/consolidar_12_pontos_br.py` junta as 3 passagens, calcula selo e previsão e gera os relatórios.
+6. **Dispensa individual:** o item só é "dispensado" com motivo escrito. Item que existe e não foi lido é "não localizado".
 
 ## Números
 
 | Decisão | Livros | Significado |
 |---|---:|---|
-| V | 142 | edital vigente (inscrição aberta ou credenciamento em vigor) |
-| A | 247 | última edição encerrada (histórico) |
-| R | 88 | programa permanente ou fluxo contínuo |
-| D | 536 | não é recurso para OSC: compra de serviço, artista, pessoa física, vaga, concurso, notícia |
-| P | 110 | pendente, com motivo e ação |
+| V | 143 | edital vigente (inscrição aberta ou credenciamento em vigor) |
+| A | 259 | última edição encerrada (histórico) |
+| R | 110 | programa permanente ou fluxo contínuo |
+| D | 541 | não é recurso para OSC: compra de serviço, artista, pessoa física, vaga, concurso, notícia |
+| P | 70 | pendente, com motivo e ação |
 
-- **Validação dos 12 pontos:** 768 completa (todos os 536 D e 232 vigentes, históricos ou permanentes), 245 parcial, 110 pendente.
-- **Pontos nos 587 livros que não são D:** 4.185 confirmados, 409 "não informado no edital", 284 dispensados (45 pelo próprio edital) e 2.166 "não localizados".
-- **Selo estimado dos 587 livros que não são D:** 21 ouro, 119 prata e 447 bronze.
-- **Previsão:** 118 livros têm próxima janela. Só 1 tem confiança alta e 39 média; os outros 78 têm confiança baixa.
-- **Por que tantos "não localizados":** o edital em PDF só foi lido onde o ambiente conseguiu. No PNCP, só os metadados (objeto, datas, valor) estão confirmados, e os itens Resultado, Prazo de recurso, Requisitos e Anexos exigem abrir a aba Documentos.
-- **Aplicabilidade ao titular (V):** 13 "sim", 80 "depende" (território ou perfil), 24 "não". Os demais estão sem resposta registrada.
+- **Validação dos 12 pontos:** 924 completa, 129 parcial, 70 pendente.
+- **Pontos nos 582 livros que não são D:** 5.020 confirmados (antes 4.185), 515 "não informado no edital", 298 dispensados e 1.151 "não localizados" (antes 2.166).
+- **Selo estimado dos 582 livros que não são D:** 21 ouro, 128 prata e 433 bronze.
+- **Previsão:** 120 livros têm próxima janela: 1 alta, 39 média e 80 baixa.
+- **Aplicabilidade ao titular (V):** 25 "sim", 72 "depende", 21 "não"; 18 sem resposta registrada.
 
-### Os 110 pendentes
+### Os 70 pendentes
 
-- **24** são livros de tema ou busca genérica do DOU, sem edital identificável. Recomendação: vincular a um edital real ou arquivar.
-- **53** têm fonte restrita ou ilegível: login, robots, formulário, PDF binário ou site fora do ar.
-- **33** têm edital oficial não localizado.
+- **28** são livros de tema ou busca genérica do DOU, sem edital identificável. Recomendação: vincular a um edital real ou arquivar.
+- **27** têm fonte restrita ou ilegível: login, robots, formulário ou PDF binário.
+- **15** têm edital oficial não localizado: conferir o site do órgão.
+
+### Principais achados da leitura dos PDFs
+
+- **Pontões Cultura Viva 11/2026 (MinC):** 02 a 30/10/2026, R$ 7,85 mi, recurso em 3 dias úteis.
+- **Natal no Parque (Goiânia):** até 26/10/2026, R$ 5 mi, 12 anexos.
+- **Goiatuba, PNAB Ciclo 2:** R$ 156 mil, inscrição até 13/10, resultado final 06/11, recursos em 21 a 23/10 e 31/10 a 04/11.
+- **Criança Esperança/UNESCO:** 05/10 a 08/11/2026, R$ 150/200/250 mil por projeto, exige 3 anos de CNPJ; Goiás entra na cota do Centro-Oeste.
+- **Fundo Baobá, Marielle Franco 2:** inscrições de 14/09 a 19/10, resultado 11/01/2027.
+- **Zurich:** projeto já aprovado em lei de incentivo; sem recurso contra o resultado final.
+- **Lei Rouanet:** recurso em 10 dias (IN MinC 29/2026). **Esporte:** a Lei de Incentivo foi substituída pela LC 222/2025.
+- **Fundo Ecos 50º e 51º:** só PI, MA, BA e MS. **Fundação Aperam:** só Vale do Aço e Jequitinhonha. **Camargo Fellowship:** só pessoa física.
+- **BNDES Fundo Socioambiental:** chamada permanente aberta apenas para Periferias 5º ciclo e Corais; o Roteiro está no Portal do Cliente (login).
+- **Divergências entre PDF e página** (registradas na observação): Renner, Oncoguia, Vozes Periféricas, Escolas Livres, Evoluir 2024, iCS, Ibama/Fundo Rio Doce (22/10 na nota contra 29/10 no PDF) e Mestra Francisca Rodrigues (28/09 no edital contra 05/10 no Mapa Cultural).
 
 ## Janelas abertas e próximas que interessam à A.M.C.
 
@@ -45,7 +58,9 @@ Os 1.123 livros têm decisão e os 12 pontos preenchidos, ou com dispensa indivi
 |---|---|---|
 | 03/10 (hoje) | Embratur, patrocínio 2026 | depende |
 | 04/10 | Fundação Aperam Acesita, 15º edital | não (só Vale do Aço e Jequitinhonha, MG) |
-| 05/10 | Rede Memória Viva (Prosas) | sim |
+| 05/10 | Rede Memória Viva (Prosas) | sim (apoio técnico, sem financiamento direto) |
+| 07 e 09/10 | Chamamentos PNAB/Aldir Blanc municipais (8/2026 e 003/2026) | depende do município |
+| 14/10 | 1º chamamento público do programa de Fortaleza (fuso Fortaleza) | depende |
 | 08/10 | Fundo Ecos, 52º edital (chamada induzida, protegida por senha) | a conferir |
 | 09/10 | Silvânia/GO, PNAB Ciclo 2 | depende |
 | 11/10 | CONANDA/SNDCA 01/2026 (prorrogado) | depende |
@@ -72,7 +87,7 @@ Os 1.123 livros têm decisão e os 12 pontos preenchidos, ou com dispensa indivi
 
 ## Estudo preditivo
 
-A previsão só nasce de edições com página oficial e data. O script exige 2 ou mais anos com edição para apontar o mês típico e a próxima janela. Se os meses das edições forem muito diferentes, a confiança cai para baixa. O arquivo `estudo_preditivo_br_2026-10-03.json` reúne as 142 janelas abertas e as 118 próximas janelas. Entre as previsões de confiança média ou alta:
+A previsão só nasce de edições com página oficial e data. O script exige 2 ou mais anos com edição para apontar o mês típico e a próxima janela. Se os meses das edições forem muito diferentes, a confiança cai para baixa. O arquivo `estudo_preditivo_br_2026-10-03.json` reúne as 143 janelas abertas e as 120 próximas janelas. Entre as previsões de confiança média ou alta:
 
 - Fundação Cargill, Nutrindo Soluções Locais: junho de 2027 (edições de 2024, 2025 e 2026). Confiança alta.
 - Banco do Nordeste, Editais Sociais: agosto de 2027. Confiança média.
@@ -83,7 +98,7 @@ A previsão só nasce de edições com página oficial e data. O script exige 2 
 ## Limites da prova
 
 - O texto dos editais em PDF foi lido só onde o ambiente extraiu. A prova das edições é **literal** apenas onde houve trecho entre aspas de página oficial. No restante é "resumo".
-- Todos os livros do PNCP têm só os metadados do registro. Em vários o objeto sugere compra de serviço (credenciamento de ILPI, catadores, exames SUS). Foram classificados D quando contratam serviço remunerado e V quando firmam parceria com OSC. **Os casos limítrofes estão marcados na observação de cada livro**, para o titular decidir.
+- Os livros do PNCP têm só os metadados do registro (API de arquivos em 503, testada de novo em 04/10). Em vários o objeto sugere compra de serviço (credenciamento de ILPI, catadores, exames SUS). Foram classificados D quando contratam serviço remunerado e V quando firmam parceria com OSC. **Os casos limítrofes estão marcados na observação de cada livro**, para o titular decidir.
 - Alguns livros apontam para a página errada. Isso está registrado em `url_corrigida` e deve ser aplicado ao catálogo.
 - Algumas decisões D foram tomadas pelo título porque a página não abriu. A decisão tem esse aviso na observação. Vale uma conferência por amostra.
 - O PNCP limitou as consultas (429) por longos períodos e a API de arquivos ficou fora do ar em parte da rodada.
@@ -92,11 +107,11 @@ A previsão só nasce de edições com página oficial e data. O script exige 2 
 
 ## Conselho de 7 lentes
 
-- **Extremamente pessimista:** 2.166 itens "não localizados" e 110 livros pendentes. Um painel que mostra "12 pontos" sem dizer que o PDF não foi lido vira falsa segurança. Alguns D foram decididos só pelo título e podem esconder uma oportunidade.
-- **Pessimista:** a API do PNCP entrega só metadados. Em dezenas de credenciamentos municipais e de órgãos (41 V citam credenciamento) o titular precisará abrir o edital antes de decidir. A linha entre compra de serviço (D) e parceria com OSC (V) é de julgamento.
-- **Levemente pessimista:** a previsão com base em uma ou duas edições é fraca, e a maioria dos livros não tem nem isso. Das 118 previsões, 78 são de confiança baixa.
+- **Extremamente pessimista:** 1.151 itens "não localizados" e 70 livros pendentes; o PNCP ficou sem PDFs. Um painel que mostra "12 pontos" sem dizer que o PDF não foi lido vira falsa segurança. Alguns D foram decididos só pelo título e podem esconder uma oportunidade.
+- **Pessimista:** a API do PNCP entrega só metadados. Em dezenas de credenciamentos municipais e de órgãos (dezenas de V citam credenciamento) o titular precisará abrir o edital antes de decidir. A linha entre compra de serviço (D) e parceria com OSC (V) é de julgamento.
+- **Levemente pessimista:** a previsão com base em uma ou duas edições é fraca, e a maioria dos livros não tem nem isso. Das 120 previsões, 80 são de confiança baixa.
 - **Neutro (síntese):**
-  - **Decisão:** aplicar. Tratar V e R como candidatos e conferir o edital antes de qualquer inscrição. Rodar a fila de 411 conferências no navegador do computador e recalcular com `python -m src.selo_livros`.
+  - **Decisão:** aplicar. Tratar V e R como candidatos e conferir o edital antes de qualquer inscrição. Rodar a fila de conferências do arquivo `fila_navegador_local_br_2026-10-03.json` no navegador do computador e recalcular com `python -m src.selo_livros`.
   - **Parâmetros de qualidade:**
     - nenhum item sem status e sem motivo;
     - dispensa só com motivo individual;
@@ -110,8 +125,8 @@ A previsão só nasce de edições com página oficial e data. O script exige 2 
     | Item dado como "dispensado" que existe | motivo escrito e conferência por amostra de 10% |
     | Página do livro errada | `url_corrigida` aplicada ao catálogo |
     | Prazo vencido no dia | datas conferidas em 03/10; recalcular nas rodadas diárias |
-- **Levemente otimista:** 768 livros têm os 12 pontos fechados e cada um tem seu relatório. As 536 exclusões (D) liberam a atenção para o que importa.
-- **Otimista:** 142 vigentes, 13 "sim" e 80 "depende" formam uma carteira concreta; a tabela de janelas acima lista as que fecham até 31/10.
+- **Levemente otimista:** 924 livros têm os 12 pontos fechados e cada um tem seu relatório. As 541 exclusões (D) liberam a atenção para o que importa.
+- **Otimista:** 143 vigentes, 25 "sim" e 72 "depende" formam uma carteira concreta; a tabela de janelas acima lista as que fecham até 31/10.
 - **Extremamente otimista:** com a fila local fechada e a série de 3 anos, o painel avisará a janela seguinte de cada programa antes de o edital sair.
 
 ## Arquivos
@@ -120,4 +135,4 @@ A previsão só nasce de edições com página oficial e data. O script exige 2 
 - `dados/coleta_3_anos/relatorios_oportunidades/<id>.md` (1.123 relatórios) e `INDICE-OPORTUNIDADES-BR.csv`.
 - `dados/coleta_3_anos/estudo_preditivo_br_2026-10-03.json` e `fila_navegador_local_br_2026-10-03.json`.
 - `scripts/consolidar_12_pontos_br.py` e `tests/test_consolidacao_12_pontos_br_2026_10_03.py` (11 testes).
-- Materiais de pesquisa: `lotes12/`, `lotes12_out/`, `lotes12b/`, `lotes12b_out/`.
+- Materiais de pesquisa: `lotes12/`, `lotes12_out/`, `lotes12b/`, `lotes12b_out/`, `lotes12c/`, `lotes12c_out/`.
