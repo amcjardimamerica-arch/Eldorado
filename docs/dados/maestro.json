@@ -1,15 +1,17 @@
 {
  "dia": "2026-10-03",
- "em": "2026-10-03T23:14:15+00:00",
+ "em": "2026-10-04T00:18:53+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 123,
  "cobertura": {
-  "completa": 60,
-  "parcial": 35,
+  "completa": 59,
+  "parcial": 36,
   "aguardando_horario": 28
  },
- "cobertura_percentual": 63.2,
- "a_disparar": [],
+ "cobertura_percentual": 62.1,
+ "a_disparar": [
+  "camara-goiania-pl"
+ ],
  "esgotaram_tentativas": [
   "pncp-api",
   "plat-prefeituras-50-go",
@@ -76,14 +78,15 @@
   "f260-captacao-190",
   "f260-captacao-151",
   "f260-captacao-196",
-  "f260-captacao-238"
+  "f260-captacao-238",
+  "camara-goiania-pl"
  ],
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 4.87,
+   "prioridade": 4.55,
    "diagnostico": "falha_parcial",
-   "livros_com_abertura_proxima": 235,
+   "livros_com_abertura_proxima": 219,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -158,7 +161,7 @@
   },
   {
    "motor": "do-goias",
-   "prioridade": 0.0849,
+   "prioridade": 0.0833,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
@@ -740,17 +743,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "congresso-nacional",
-   "prioridade": 0.0625,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "10:53,20:53",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "mptgo-destinacao",
    "prioridade": 0.0625,
    "diagnostico": "saudavel",
@@ -782,6 +774,17 @@
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
    "tentativas_hoje": 3
+  },
+  {
+   "motor": "congresso-nacional",
+   "prioridade": 0.0556,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "10:53,20:53",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
   },
   {
    "motor": "f260-captacao-069",
@@ -895,7 +898,7 @@
   },
   {
    "motor": "dou",
-   "prioridade": 0.0424,
+   "prioridade": 0.0417,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
@@ -928,7 +931,7 @@
   },
   {
    "motor": "do-goiania",
-   "prioridade": 0.0263,
+   "prioridade": 0.0259,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
@@ -1423,13 +1426,13 @@
   },
   {
    "motor": "camara-goiania-pl",
-   "prioridade": 0.0053,
+   "prioridade": 0.0052,
    "diagnostico": "falha_parcial",
    "livros_com_abertura_proxima": 0,
    "horarios": "12:53,20:23",
    "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
    "tentativas_hoje": 0
   }
  ]

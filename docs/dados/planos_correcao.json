@@ -1,5 +1,5 @@
 {
- "em": "2026-10-03",
+ "em": "2026-10-04",
  "regra": "PLANOS DE CORREÇÃO DOS CANAIS (titular, 02/10/2026).\n\nCada motor e Piloto é diagnosticado a cada ciclo pelo seu histórico (estado/esquadra*.json, status dos motores, bloqueios)\ne recebe o plano previsto no fluxograma (config/linha_producao.json › planos_de_correcao):\n  sem_rendimento · falha_parcial · bloqueio · exige_brasil · formato_mudou · (contrato_violado e injecao: por registro)\nO plano nunca desliga um canal sozinho: ele diz o que fazer e qual skill usar.",
  "resumo": {
   "bloqueio": 1,
@@ -44,14 +44,14 @@
    "canal": "camara-goiania-pl",
    "familia": "orgao_publico",
    "diagnostico": "falha_parcial",
-   "evidencia": "falhas em 6 dos últimos 7 dias",
+   "evidencia": "falhas em 7 dos últimos 7 dias",
    "plano": [
     "repetir com espera crescente (backoff)",
     "trocar a ordem das rotas",
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 42,
+   "leituras": 43,
    "achados_total": 0
   },
   {
@@ -751,7 +751,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -762,8 +762,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 52,
-   "achados_total": 9
+   "leituras": 53,
+   "achados_total": 10
   },
   {
    "motor": "do-goias",
@@ -773,8 +773,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 48,
-   "achados_total": 132
+   "leituras": 49,
+   "achados_total": 136
   },
   {
    "motor": "dou",
@@ -784,8 +784,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 54,
-   "achados_total": 33
+   "leituras": 55,
+   "achados_total": 36
   },
   {
    "motor": "f260-captacao-025",
