@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-05T07:12:08+00:00",
+  "em": "2026-10-05T07:30:47+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-05T06:54:50+00:00",
+  "ultimo_voo": "2026-10-05T07:15:05+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,87 @@
     "empresas sem ficha": 121
   },
   "acumulado": {
-    "missoes": 346,
+    "missoes": 347,
     "validadas": 4,
-    "parciais": 99,
+    "parciais": 100,
     "insuficientes": 243,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 53,
-      "sim": 235
+      "sim": 236
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 6,
     "tempo_medio_min": 12.4
   },
   "missoes": [
+    {
+      "em": "2026-10-05T07:15:05+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Senador Canedo — Inscrições da 2ª Chamada da Lei Aldir Blanc começam nesta quinta-feira em Senador Canedo — Goiás / Senador Canedo",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos"
+      ],
+      "pagina_oficial": "https://senadorcanedo.go.gov.br/aldirblanc/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprova que o município de Senador Canedo oferece fomento à cultura, com resultado previsto para 2024-11-11, e que a destinação é elegível para fomento.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se sua atividade está alinhada ao objeto do edital (fomento à cultura) e se ela atende aos requisitos não especificados, além de se inscrever no prazo definido pelo edital, que não foi encontrado no texto.",
+        "proximo_passo": "Verificar os anexos do edital para entender os requisitos e o prazo de inscrição, e se alinhar à área de atuação do edital.",
+        "risco": "O prazo de inscrição não foi encontrado, o que pode impedir a participação da associação no processo se não for identificado a tempo."
+      },
+      "erro": null,
+      "segundos": 942,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Prazo de recurso, Valor, Território",
+      "id": "op-op-d165eb2a5ffe",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fomento à cultura",
+          "trecho": "Política Nacional Aldir Blanc de Fomento à Cultura (PNAB)",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Município de Senador Canedo",
+          "trecho": "O MUNICÍPIO DE SENADOR CANEDO, por intermédio da Secretaria Municipal de Cultura e da Comissão de Habilitação estabelecida pelo Decreto nº 2.254/2024",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "Política Nacional Aldir Blanc de Fomento à Cultura (PNAB)",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "Política Nacional Aldir Blanc de Fomento à Cultura (PNAB)",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Senador Canedo",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador"
+      ]
+    },
     {
       "em": "2026-10-05T06:54:50+00:00",
       "modo": "validar",
@@ -2859,73 +2925,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-04T20:21:08+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Itaberaí — edital de chamamento publico nº 001-cmdca-2025 — Goiás — Goiás",
-      "qualidade": "parcial",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://itaberai.go.gov.br/wp-content/uploads/2025/04/EDITAL-DE-CHAMAMENTO-PUBLICO-No-001-CMDCA-2025.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre seu objeto, financiador, território, esfera e requisitos.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é a promoção, proteção, defesa e atendimento dos direitos das crianças e dos adolescentes, e garantir uma pontuação mínima de 60 (sessenta) pontos na etapa classificatória.",
-        "proximo_passo": "Consultar os anexos do edital para obter detalhes adicionais sobre os requisitos e ações necessárias para participar.",
-        "risco": "A falta de informações sobre prazo de inscrição e valor pode impedir a associação de planejar e executar a candidatura dentro do tempo necessário."
-      },
-      "erro": null,
-      "segundos": 999,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 6,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "op-op-6749b810b600",
-      "encontrou": {
-        "Objeto": {
-          "valor": "promogao, protegao, defesa e atendimento dos Direitos das Criangas e dos Adolescentes",
-          "trecho": "visando a celebragao e execugao de parcerias destinadas a promogao, protegao, defesa e atendimento dos Direitos das Criangas e dos Adolescentes",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "MUNICIPIO DE ITABERAI, Estado de Goias, por meio do CONSELHO MUNICIPAL DOS DIREITOS DA CRIANGA E DO ADOLESCENTE - CMDCA",
-          "trecho": "O MUNICIPIO DE ITABERAI, Estado de Goias, por meio do CONSELHO MUNICIPAL DOS DIREITOS DA CRIANGA E DO ADOLESCENTE - CMDCA, torna de conhecimento publico que, mediante o presente CH",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "com sede ou instalagoes no Municipio de Itaberai",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "pontua^cao minima de 60 (sessenta) pontos para classifica^qc na eiapa classificatoria",
-          "trecho": "As propostas deverao ser apresentadas e aprovadas nos termos deste Edital, sendo necessario que as Organiza^des da Sociedade Civil (OSCs) obtenham a pontua^cao minima de 60 (sessen",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura de Itaberaí",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ]
