@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-05T13:52:17+00:00",
+  "em": "2026-10-05T14:09:25+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-05T13:38:28+00:00",
+  "ultimo_voo": "2026-10-05T13:55:29+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,109 @@
     "empresas sem ficha": 121
   },
   "acumulado": {
-    "missoes": 371,
-    "validadas": 4,
+    "missoes": 372,
+    "validadas": 5,
     "parciais": 107,
     "insuficientes": 260,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 54,
-      "sim": 258
+      "sim": 259
     },
     "estrelas_de_ouro": 30,
-    "fontes_novas_para_os_motores": 10,
+    "fontes_novas_para_os_motores": 11,
     "tempo_medio_min": 12.4
   },
   "missoes": [
+    {
+      "em": "2026-10-05T13:55:29+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · estante bronze · tentativa 1",
+      "alvo": "Parque Bondinho Pão de Açúcar abre edital para projetos culturais incentivados — Brasil",
+      "qualidade": "validada",
+      "comprovados": 9,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de recurso",
+        "Valor",
+        "Anexos"
+      ],
+      "pagina_oficial": "https://blog.bondinho.com.br/parque-bondinho-pao-de-acucar-abre-inscricoes-para-o-edital-2026-de-selecao-de-projetos-culturais/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, resultado, órgão financiador, território, esfera, requisitos e destinação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria ler o Regulamento do edital, preencher os modelos de documentos obrigatórios e garantir que seu projeto esteja alinhado à área de atuação cultural.",
+        "proximo_passo": "Verificar os requisitos do edital e preparar os documentos necessários para inscrição.",
+        "risco": "O prazo de inscrição é limitado e a falta de acesso aos anexos pode dificultar a compreensão completa dos requisitos."
+      },
+      "erro": null,
+      "segundos": 834,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 9,
+      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
+      "avaliacao": "pronta para a decisão do Claude",
+      "id": "op-op-c164ab14c73c",
+      "encontrou": {
+        "Objeto": {
+          "valor": "apoio financeiro para projetos culturais",
+          "trecho": "A proposta é apoiar iniciativas que unam cultura, educação, meio ambiente e fortalecimento das comunidades do entorno.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-09-16 a 2026-10-09",
+          "trecho": "Período de inscrições: 16/09 a 09/10/2026",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Parque Bondinho Pão de Açúcar®",
+          "trecho": "Parque Bondinho Pão de Açúcar® abre inscrições para o Edital 2026 de Seleção de Projetos Culturais – Parque Bondinho Pão de Açúcar®",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RJ",
+          "trecho": "recurso incentivado pela Lei Municipal de Incentivo à Cultura da cidade do Rio de Janeiro (Lei do ISS)",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "apoio financeiro para projetos culturais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · fomento",
+          "trecho": "apoio financeiro para projetos culturais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "ler o Regulamento, preencher os modelos de documentos obrigatórios",
+          "trecho": "Antes de se inscrever, leia  o Regulamento e preencha os modelos de documentos obrigatórios.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Parque Bondinho Pão de Açúcar",
+      "indicios": [
+        {
+          "url": "https://observatorio3setor.org.br/parque-bondinho-pao-de-acucar-abre-edital-para-projetos-culturais-incentivados",
+          "tipo": "noticia"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-10-05T13:38:28+00:00",
       "modo": "validar",
@@ -2887,89 +2975,6 @@
         }
       },
       "financiador": "Secretaria de Estado da Cultura (Secult) de Goiás",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-05T03:00:44+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás publica cronograma do edital de apoio a blocos de … — Goiás",
-      "qualidade": "parcial",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2025/01/Edital-de-Chamamento-Publico-no-01.2025.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto fornece informações detalhadas sobre o edital, incluindo objeto, valor, órgãos envolvidos, requisitos e área de atuação, o que é suficiente para orientar uma associação comunitária.",
-        "para_a_amc": "A associação comunitária precisa se enquadrar como Bloco de Pré e Carnaval com pelo menos dois anos de existência comprovados, ter um produtor cultural que atue ou resida em Goiânia ou nas cidades do interior há pelo menos dois anos, e seguir os requisitos apresentados no edital.",
-        "proximo_passo": "Verificar os anexos do edital e garantir que todos os requisitos sejam atendidos antes de se inscrever.",
-        "risco": "A falta de comprovação de dois anos de existência como Bloco de Pré e Carnaval ou da residência e atuação do produtor cultural pode impedir a elegibilidade."
-      },
-      "erro": null,
-      "segundos": 753,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 8,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso",
-      "id": "op-op-68a96ee2ea0e",
-      "encontrou": {
-        "Objeto": {
-          "valor": "seleção de projetos para o fomento aos Blocos de Pré e Carnaval",
-          "trecho": "O objeto deste Edital é a seleção de projetos para o fomento aos Blocos de Pré e Carnaval, com o objetivo de conceder apoio financeiro nas categorias descritas no item 1.2, visando",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 2.800.000,00 (dois milhões e oitocentos mil reais)",
-          "trecho": "O valor total deste Edital é de R$ 2.800.000,00 (dois milhões e oitocentos mil reais).",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado da Cultura e Secretaria da Retomada",
-          "trecho": "O Governo do Estado de Goiás, por meio da Secretaria de Estado da Cultura e da Secretaria da Retomada, torna público o presente edital.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "O Governo do Estado de Goiás, por meio da Secretaria de Estado da Cultura e da Secretaria da Retomada, torna público o presente edital.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "O objeto deste Edital é a seleção de projetos para o fomento aos Blocos de Pré e Carnaval, com o objetivo de conceder apoio financeiro nas categorias descritas no item 1.2, visando",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Podem se inscrever no Edital quaisquer Blocos de Pré e Carnaval (com tempo de existência de no mínimo dois anos comprovados), representados por seu produtor cultural que atue ou re",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Bloco de Pré e Carnaval (com tempo de existência de no mínimo dois anos comprovados), Produtor Cultural que atue ou resida na cidade de Goiânia ou nas cidades do interior há pelo menos 2 (dois) anos",
-          "trecho": "Podem se inscrever no Edital quaisquer Blocos de Pré e Carnaval (com tempo de existência de no mínimo dois anos comprovados), representados por seu produtor cultural que atue ou re",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás",
       "indicios": [],
       "rotas": [
         "site_do_financiador",
