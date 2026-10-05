@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-05T02:05:12+00:00",
+  "em": "2026-10-05T02:15:06+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-05T01:47:46+00:00",
+  "ultimo_voo": "2026-10-05T02:08:12+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,89 @@
     "empresas sem ficha": 121
   },
   "acumulado": {
-    "missoes": 327,
+    "missoes": 328,
     "validadas": 3,
     "parciais": 89,
-    "insuficientes": 235,
+    "insuficientes": 236,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 52,
-      "sim": 217
+      "sim": 218
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
-    "tempo_medio_min": 12.4
+    "tempo_medio_min": 12.3
   },
   "missoes": [
+    {
+      "em": "2026-10-05T02:08:12+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás abre seleção de pareceristas para projetos cultura… — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona a seleção de pareceristas para projetos culturais da PNAB, indicando que a Secretaria de Estado da Cultura (Secult) do Governo de Goiás está envolvida em um processo de seleção de pareceristas para projetos culturais.",
+        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria se inscrever como candidata a parecerista, apresentando projetos culturais que se encaixem no escopo da PNAB, embora os requisitos específicos não sejam mencionados.",
+        "proximo_passo": "Consultar o edital completo ou entrar em contato com a Secult para obter informações detalhadas sobre os requisitos e o processo de inscrição.",
+        "risco": "A falta de informações sobre prazos, requisitos e outros detalhes pode impedir a associação de se inscrever adequadamente."
+      },
+      "erro": null,
+      "segundos": 413,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-96e7ff1f222a",
+      "encontrou": {
+        "Objeto": {
+          "valor": "seleção de pareceristas para projetos culturais da PNAB",
+          "trecho": "Governo de Goiás abre seleção de pareceristas para projetos cultura…",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Governo de Goiás",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "seleção de pareceristas para projetos culturais da PNAB",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secretaria de Estado da Cultura (Secult) - Governo de Goiás",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-05T01:47:46+00:00",
       "modo": "validar",
@@ -2671,63 +2739,6 @@
       "rotas": [
         "site_municipal",
         "financiador_programa_edital"
-      ]
-    },
-    {
-      "em": "2026-10-04T14:55:10+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Senador Canedo — SEMASC abre Chamamento Público para seleção de projetos voltados à proteção de crianças e ado… — Goiás / Senador Canedo",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Território",
-        "Requisitos",
-        "Destinação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre o objeto, esfera e área de atuação, o que permite identificar a relevância para a AMC.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é a proteção de crianças e adolescentes em situação de vulnerabilidade social, e garantir que seu projeto esteja dentro da área de atuação de assistência social.",
-        "proximo_passo": "Verificar os anexos do edital para obter detalhes sobre os requisitos e ações necessárias para participar do chamamento público.",
-        "risco": "A falta de informações sobre prazo de inscrição e requisitos pode impedir a associação de se preparar adequadamente para o processo seletivo."
-      },
-      "erro": null,
-      "segundos": 836,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-688f443a3f8d",
-      "encontrou": {
-        "Objeto": {
-          "valor": "projetos voltados à proteção de crianças e adolescentes em situação de vulnerabilidade social",
-          "trecho": "projetos voltados à proteção de crianças e adolescentes em situação de vulnerabilidade social",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "assistencia_social",
-          "trecho": "projetos voltados à proteção de crianças e adolescentes em situação de vulnerabilidade social",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Senador Canedo",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ]
