@@ -1,9 +1,9 @@
 {
- "em": "2026-10-05T02:00:22+00:00",
+ "em": "2026-10-05T07:20:32+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1821,
- "positivos": 719,
- "pendentes": 380,
+ "rotulados": 1825,
+ "positivos": 723,
+ "pendentes": 389,
  "validacao_cruzada": {
   "auc": 0.829,
   "precisao": 0.721,
@@ -205,6 +205,12 @@
    "incerteza": 0.946
   },
   {
+   "titulo": "Secretaria de Estado da Cultura (Secult) — Secult Goiás publica novo cronograma de seleção da OSC que operacio… — Goiás",
+   "url": "https://goias.gov.br/cultura/secult-goias-publica-novo-cronograma-de-selecao-da-osc-que-operacionalizara-2-ciclo-da-pnab/",
+   "nota": 0.472,
+   "incerteza": 0.944
+  },
+  {
    "titulo": "Editais inscricoes abertas setembro outubro 2026",
    "url": "https://gife.org.br/editais-inscricoes-abertas-setembro-outubro-2026/",
    "nota": 0.47,
@@ -263,6 +269,12 @@
    "url": "https://pncp.gov.br/app/editais/13112875000127/2026/21",
    "nota": 0.467,
    "incerteza": 0.933
+  },
+  {
+   "titulo": "Secretaria de Estado da Cultura (Secult) — Secult realiza ajustes no Chamamento Público do projeto Cine Goiás … — Goiás",
+   "url": "https://goias.gov.br/cultura/secult-realiza-ajustes-no-chamamento-publico-do-projeto-cine-goias-itinerante/",
+   "nota": 0.466,
+   "incerteza": 0.931
   },
   {
    "titulo": "Edital Rio Doce Participativo e Comunitário abre seleção de projetos",
@@ -359,19 +371,7 @@
    "url": "https://www.planalto.gov.br/ccivil_03/leis/l8666cons.htm",
    "nota": 0.555,
    "incerteza": 0.891
-  },
-  {
-   "titulo": "Últimos dias para o encerramento das nossas convocatórias 2026",
-   "url": "https://www.ibermusicas.org/index.php/faltam-30-dias-para-o-encerramento-das-nossas-convocatorias-2026/",
-   "nota": 0.555,
-   "incerteza": 0.89
-  },
-  {
-   "titulo": "Banco do Nordeste abre inscrições para editais sociais com aportes de até R$ 1,5 milhão por projeto",
-   "url": "https://www.bnb.gov.br/ConveniosWeb/Logar.aspx?ReturnUrl=%2fconveniosweb%2f",
-   "nota": 0.445,
-   "incerteza": 0.89
   }
  ],
- "pendentes_provaveis_reais": 146
+ "pendentes_provaveis_reais": 151
 }
