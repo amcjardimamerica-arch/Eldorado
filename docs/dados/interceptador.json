@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-05T00:02:22+00:00",
+  "em": "2026-10-05T00:19:14+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-04T23:48:58+00:00",
+  "ultimo_voo": "2026-10-05T00:05:08+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,80 @@
     "empresas sem ficha": 121
   },
   "acumulado": {
-    "missoes": 320,
+    "missoes": 321,
     "validadas": 3,
     "parciais": 85,
-    "insuficientes": 232,
+    "insuficientes": 233,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 51,
-      "sim": 211
+      "sim": 212
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 5,
     "tempo_medio_min": 12.3
   },
   "missoes": [
+    {
+      "em": "2026-10-05T00:05:08+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Projeto de segurança alimentar comunitária — Goiás — Goiás — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 3,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "pagina_oficial": "https://goias.gov.br/social/programa-maes-de-goias-lista-de-beneficiarias/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O Governo do Estado de Goiás é o órgão financiador do projeto, o que indica que ele pode ser uma fonte de recursos para organizações da sociedade civil.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar às áreas de atuação do Governo do Estado de Goiás, que é assistência social, e demonstrar sua capacidade de atuar nesse campo para acessar o financiamento.",
+        "proximo_passo": "Consultar os canais oficiais do Governo do Estado de Goiás para obter informações sobre como se inscrever em programas de fomento.",
+        "risco": "A falta de informações sobre prazos, requisitos e outros detalhes pode impedir a associação de se candidatar ao financiamento."
+      },
+      "erro": null,
+      "segundos": 846,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 3,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-7a832a21dc7e",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Governo do Estado de Goiás",
+          "trecho": "GOIAS.GOV.BR",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "assistencia_social",
+          "trecho": "assistencia_social",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Governo do Estado de Goiás",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-04T23:48:58+00:00",
       "modo": "validar",
@@ -2579,33 +2638,6 @@
       "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
       "avaliacao": "falhou: o modelo não devolveu JSON",
       "id": "op-op-66f930b94f79",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-10-04T12:54:01+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Edital nº 7/2023 - dinamização de salas de cinema - lei paulo gustavo — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "o modelo não devolveu JSON",
-      "segundos": 1018,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: o modelo não devolveu JSON",
-      "id": "op-op-8495a642ef7b",
       "encontrou": {},
       "financiador": null,
       "indicios": [],
