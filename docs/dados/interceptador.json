@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-05T13:35:14+00:00",
+  "em": "2026-10-05T13:52:17+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-05T13:22:22+00:00",
+  "ultimo_voo": "2026-10-05T13:38:28+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 121
   },
   "acumulado": {
-    "missoes": 370,
+    "missoes": 371,
     "validadas": 4,
     "parciais": 107,
-    "insuficientes": 259,
+    "insuficientes": 260,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "nao": 53,
+      "nao": 54,
       "sim": 258
     },
     "estrelas_de_ouro": 30,
@@ -52,6 +52,79 @@
     "tempo_medio_min": 12.4
   },
   "missoes": [
+    {
+      "em": "2026-10-05T13:38:28+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · estante bronze · tentativa 1",
+      "alvo": "Applying for an UNDEF project grant and selection process | Democracy Fund — Brasil",
+      "qualidade": "insuficiente",
+      "comprovados": 7,
+      "dispensados": 2,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "Não há informações suficientes sobre o objeto, valor, prazo de recurso e requisitos necessários para a associação comunitária de Goiânia acessar o edital.",
+        "para_a_amc": "null",
+        "proximo_passo": "null",
+        "risco": "A falta de informações sobre requisitos e prazo de recurso pode impedir a associação comunitária de Goiânia de se qualificar para o edital."
+      },
+      "erro": null,
+      "segundos": 828,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-7346710e2293",
+      "encontrou": {
+        "Prazo de inscrição": {
+          "valor": "dispensado — O prazo de inscrição é explicitamente mencionado.",
+          "trecho": "UNDEF accepts on-line proposals during an annual window, which will open from the first of February 2025 to 28th February 2025. [rejeitado: data implausível para edital aberto]",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Órgão / financiador": {
+          "valor": "United Nations Democracy Fund",
+          "trecho": "UNDEF accepts on-line proposals during an annual window, which will open from the first of February 2025 to 28th February 2025.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "internacional",
+          "trecho": "UNDEF has supported more than 1,000 projects in over 130 countries",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "direitos",
+          "trecho": "Projects fall under one or more of seven areas • Rule of law and human rights",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · fomento",
+          "trecho": "UNDEF supports projects that strengthen the voice of civil society, promote human rights, and encourage the participation of all groups in democratic processes.",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "United Nations Development Programme (UNDP)",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-10-05T13:22:22+00:00",
       "modo": "validar",
@@ -2897,89 +2970,6 @@
         }
       },
       "financiador": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-05T02:44:04+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás lança edital para contemplar manifestações da cult… — Goiás",
-      "qualidade": "parcial",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2025/10/SEI_81439519_Edital-1.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital da Secretaria de Estado da Cultura de Goiás (Secult/GO) é uma fonte válida para apoio a manifestações carnavalescas no Estado de Goiás.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital, indicando qual manifestação carnavalesca deseja concorrer, apresentando a documentação necessária para a inscrição e avaliação do projeto.",
-        "proximo_passo": "Consultar os requisitos e anexos do edital para preparar a inscrição.",
-        "risco": "A falta de informações sobre o prazo de inscrição pode impedir a participação no edital."
-      },
-      "erro": null,
-      "segundos": 791,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 9,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso",
-      "id": "op-op-a7de4588f64f",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fomentar, valorizar e fortalecer as manifestações carnavalescas no Estado de Goiás",
-          "trecho": "O presente edital tem como objetivo fomentar, valorizar e fortalecer as manifestações carnavalescas no Estado de Goiás",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 2.000.000,00",
-          "trecho": "aporte financeiro para este edital de R$ 2.000.000,00 (dois de reais).",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado da Cultura de Goiás - Secult/GO",
-          "trecho": "O Estado de Goiás, por intermédio da Secretaria de Estado da Cultura de Goiás - Secult/GO",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Estado de Goiás",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "O presente edital tem como objetivo fomentar, valorizar e fortalecer as manifestações carnavalescas no Estado de Goiás",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "apoiar iniciativas que promovam o acesso democrático à cultura",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "indicar em qual deseja concorrer, a documentação necessária para a inscrição e avaliação do projeto",
-          "trecho": "No Anexo I, deste Edital, estão inseridas as categorias com os respectivos valores para cada proposta concorrente indicar em qual deseja concorrer e, a documentação necessária para",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Estado da Cultura (Secult) - Governo de Goiás",
       "indicios": [],
       "rotas": [
         "site_do_financiador",
