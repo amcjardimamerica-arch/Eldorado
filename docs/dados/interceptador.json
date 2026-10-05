@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-05T17:56:31+00:00",
+  "em": "2026-10-05T18:12:47+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-05T17:44:47+00:00",
+  "ultimo_voo": "2026-10-05T17:59:45+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,80 @@
     "empresas sem ficha": 121
   },
   "acumulado": {
-    "missoes": 386,
+    "missoes": 387,
     "validadas": 7,
     "parciais": 114,
-    "insuficientes": 265,
+    "insuficientes": 266,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 55,
-      "sim": 272
+      "sim": 273
     },
     "estrelas_de_ouro": 30,
     "fontes_novas_para_os_motores": 17,
     "tempo_medio_min": 12.4
   },
   "missoes": [
+    {
+      "em": "2026-10-05T17:59:45+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Certificado de Vacinação — Goiás — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 3,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "http://www.administracao.go.gov.br/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O órgão financiador é a Secretaria de Estado de Administração, que está localizada no estado de Goiás, o que comprova que o certificado de vacinação é uma fonte de financiamento estadual.",
+        "para_a_amc": "Para acessar o certificado de vacinação, a associação comunitária de Goiânia precisaria se cadastrar no sistema da Secretaria de Estado de Administração e comprovar sua atuação em áreas como assistência social, cultura, educação ou esporte.",
+        "proximo_passo": "Consultar o site da Secretaria de Estado de Administração para obter mais informações sobre o processo de acesso ao certificado de vacinação.",
+        "risco": "A falta de informações detalhadas sobre o objeto, prazos e requisitos pode impedir a associação de seguir o processo corretamente."
+      },
+      "erro": null,
+      "segundos": 781,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 3,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-ad34e4aeb414",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Secretaria de Estado de Administração",
+          "trecho": "Secretaria de Estado de Administração",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "GOIÁS.GOV.BR",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secretaria de Estado de Administração",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-10-05T17:44:47+00:00",
       "modo": "validar",
@@ -2868,72 +2927,6 @@
           "valor": "ser organizado e mantido por pessoas, organizações da sociedade civil, microempresas culturais",
           "trecho": "I – seja organizado e mantido por pessoas, organizações da sociedade civil, microempresas culturais /no_think",
           "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Senador Canedo",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-05T07:15:05+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Senador Canedo — Inscrições da 2ª Chamada da Lei Aldir Blanc começam nesta quinta-feira em Senador Canedo — Goiás / Senador Canedo",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos"
-      ],
-      "pagina_oficial": "https://senadorcanedo.go.gov.br/aldirblanc/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprova que o município de Senador Canedo oferece fomento à cultura, com resultado previsto para 2024-11-11, e que a destinação é elegível para fomento.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se sua atividade está alinhada ao objeto do edital (fomento à cultura) e se ela atende aos requisitos não especificados, além de se inscrever no prazo definido pelo edital, que não foi encontrado no texto.",
-        "proximo_passo": "Verificar os anexos do edital para entender os requisitos e o prazo de inscrição, e se alinhar à área de atuação do edital.",
-        "risco": "O prazo de inscrição não foi encontrado, o que pode impedir a participação da associação no processo se não for identificado a tempo."
-      },
-      "erro": null,
-      "segundos": 942,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 6,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Prazo de recurso, Valor, Território",
-      "id": "op-op-d165eb2a5ffe",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fomento à cultura",
-          "trecho": "Política Nacional Aldir Blanc de Fomento à Cultura (PNAB)",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Município de Senador Canedo",
-          "trecho": "O MUNICÍPIO DE SENADOR CANEDO, por intermédio da Secretaria Municipal de Cultura e da Comissão de Habilitação estabelecida pelo Decreto nº 2.254/2024",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "Política Nacional Aldir Blanc de Fomento à Cultura (PNAB)",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Política Nacional Aldir Blanc de Fomento à Cultura (PNAB)",
-          "oficial": true,
           "dispensado": false
         }
       },
