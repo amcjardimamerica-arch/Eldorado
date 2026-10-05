@@ -1,15 +1,15 @@
 {
- "em": "2026-10-05T18:58:43+00:00",
+ "em": "2026-10-05T19:40:26+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17769,
-  "oportunidades_distintas": 1984,
+  "coletados": 17878,
+  "oportunidades_distintas": 2082,
   "entidades_em_2_ou_mais_canais": 17,
   "etapas": {
-   "CONSOLIDADO": 17199,
-   "EM_LIVRO": 474,
-   "REPROCESSAR": 72,
-   "QUALIFICADO": 24
+   "CONSOLIDADO": 17208,
+   "EM_LIVRO": 549,
+   "REPROCESSAR": 80,
+   "QUALIFICADO": 41
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 63,
@@ -21,7 +21,15 @@
    "PRAZO_IMPOSSIVEL: prazo impossível: 2034-04-26 → reler o prazo na fonte": 1,
    "PRAZO_IMPOSSIVEL: prazo impossível: 2035-07-18 → reler o prazo na fonte": 1,
    "PRAZO_IMPOSSIVEL: prazo impossível: 2036-07-01 → reler o prazo na fonte": 1,
-   "PRAZO_IMPOSSIVEL: prazo impossível: 2034-02-15 → reler o prazo na fonte": 1
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2034-02-15 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2034-03-10 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2035-03-12 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2035-05-14 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2035-12-31 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2036-06-16 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2036-07-29 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2050-12-30 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2099-11-09 → reler o prazo na fonte": 1
   }
  },
  "canais": [
@@ -37,11 +45,11 @@
   {
    "canal": "pncp-api",
    "familia": "portal_chamamentos",
-   "registros": 328,
-   "entidades": 299,
-   "exclusivas": 299,
+   "registros": 432,
+   "entidades": 400,
+   "exclusivas": 400,
    "corroboradas": 0,
-   "validadas_como_reais": 58
+   "validadas_como_reais": 96
   },
   {
    "canal": "piloto-aberto",
@@ -89,21 +97,21 @@
    "validadas_como_reais": 4
   },
   {
-   "canal": "recorrencia",
-   "familia": "terceiro_setor",
-   "registros": 15,
-   "entidades": 14,
-   "exclusivas": 12,
-   "corroboradas": 2,
-   "validadas_como_reais": 2
-  },
-  {
    "canal": "dou",
    "familia": "diario_oficial",
    "registros": 22,
    "entidades": 13,
    "exclusivas": 13,
    "corroboradas": 0,
+   "validadas_como_reais": 2
+  },
+  {
+   "canal": "recorrencia",
+   "familia": "terceiro_setor",
+   "registros": 13,
+   "entidades": 12,
+   "exclusivas": 10,
+   "corroboradas": 2,
    "validadas_como_reais": 2
   },
   {
@@ -145,9 +153,9 @@
   {
    "canal": "prefeituras-50-go",
    "familia": "portal_chamamentos",
-   "registros": 12,
-   "entidades": 5,
-   "exclusivas": 4,
+   "registros": 11,
+   "entidades": 4,
+   "exclusivas": 3,
    "corroboradas": 1,
    "validadas_como_reais": 1
   },
@@ -563,5 +571,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 4
+ "eventos_no_livro_razao": 5
 }
