@@ -1,15 +1,15 @@
 {
- "em": "2026-10-05T19:40:26+00:00",
+ "em": "2026-10-05T23:35:59+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17878,
-  "oportunidades_distintas": 2082,
-  "entidades_em_2_ou_mais_canais": 17,
+  "coletados": 17904,
+  "oportunidades_distintas": 2102,
+  "entidades_em_2_ou_mais_canais": 19,
   "etapas": {
-   "CONSOLIDADO": 17208,
-   "EM_LIVRO": 549,
-   "REPROCESSAR": 80,
-   "QUALIFICADO": 41
+   "CONSOLIDADO": 17210,
+   "EM_LIVRO": 567,
+   "REPROCESSAR": 84,
+   "QUALIFICADO": 43
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 63,
@@ -29,7 +29,11 @@
    "PRAZO_IMPOSSIVEL: prazo impossível: 2036-06-16 → reler o prazo na fonte": 1,
    "PRAZO_IMPOSSIVEL: prazo impossível: 2036-07-29 → reler o prazo na fonte": 1,
    "PRAZO_IMPOSSIVEL: prazo impossível: 2050-12-30 → reler o prazo na fonte": 1,
-   "PRAZO_IMPOSSIVEL: prazo impossível: 2099-11-09 → reler o prazo na fonte": 1
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2099-11-09 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2033-12-20 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2035-02-27 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2035-09-23 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2036-05-27 → reler o prazo na fonte": 1
   }
  },
  "canais": [
@@ -38,26 +42,26 @@
    "familia": "diario_oficial",
    "registros": 17002,
    "entidades": 1387,
-   "exclusivas": 1386,
-   "corroboradas": 1,
+   "exclusivas": 1385,
+   "corroboradas": 2,
    "validadas_como_reais": 119
   },
   {
    "canal": "pncp-api",
    "familia": "portal_chamamentos",
-   "registros": 432,
-   "entidades": 400,
-   "exclusivas": 400,
-   "corroboradas": 0,
-   "validadas_como_reais": 96
+   "registros": 450,
+   "entidades": 418,
+   "exclusivas": 417,
+   "corroboradas": 1,
+   "validadas_como_reais": 103
   },
   {
    "canal": "piloto-aberto",
    "familia": "pilotos",
    "registros": 115,
    "entidades": 110,
-   "exclusivas": 107,
-   "corroboradas": 3,
+   "exclusivas": 106,
+   "corroboradas": 4,
    "validadas_como_reais": 8
   },
   {
@@ -153,7 +157,16 @@
   {
    "canal": "prefeituras-50-go",
    "familia": "portal_chamamentos",
-   "registros": 11,
+   "registros": 12,
+   "entidades": 5,
+   "exclusivas": 4,
+   "corroboradas": 1,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "gife",
+   "familia": "terceiro_setor",
+   "registros": 4,
    "entidades": 4,
    "exclusivas": 3,
    "corroboradas": 1,
@@ -286,15 +299,6 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "gife",
-   "familia": "terceiro_setor",
-   "registros": 3,
-   "entidades": 3,
-   "exclusivas": 3,
-   "corroboradas": 0,
-   "validadas_como_reais": 0
-  },
-  {
    "canal": "alego-pl",
    "familia": "orgao_publico",
    "registros": 3,
@@ -385,6 +389,15 @@
    "validadas_como_reais": 0
   },
   {
+   "canal": "mptgo-destinacao",
+   "familia": "outros",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 2,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
    "canal": "f260-captacao-090",
    "familia": "orgao_publico",
    "registros": 2,
@@ -447,7 +460,7 @@
   "orgao_publico": 24,
   "empresas": 2,
   "justica_mp": 1,
-  "outros": 6
+  "outros": 7
  },
  "corroboradas": [
   {
@@ -484,6 +497,13 @@
    "canais": [
     "observatorio-3setor",
     "piloto-aberto"
+   ]
+  },
+  {
+   "entidade": "0fbc79bf69e4084959e8",
+   "canais": [
+    "pncp-api",
+    "querido-diario"
    ]
   },
   {
@@ -569,7 +589,14 @@
     "do-goias",
     "estaduais-go-gov"
    ]
+  },
+  {
+   "entidade": "1078158fdb0136be112b",
+   "canais": [
+    "gife",
+    "piloto-aberto"
+   ]
   }
  ],
- "eventos_no_livro_razao": 5
+ "eventos_no_livro_razao": 0
 }
