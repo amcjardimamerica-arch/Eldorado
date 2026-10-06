@@ -1,18 +1,18 @@
 {
  "dia": "2026-10-06",
- "em": "2026-10-06T20:06:38+00:00",
+ "em": "2026-10-06T22:22:27+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 125,
  "cobertura": {
-  "completa": 38,
+  "completa": 39,
   "parcial": 6,
-  "aguardando_horario": 80,
+  "aguardando_horario": 79,
   "pendente_local": 1
  },
- "cobertura_percentual": 84.4,
+ "cobertura_percentual": 84.8,
  "a_disparar": [
   "pncp-api",
-  "plat-estaduais-go-gov"
+  "recorrencia"
  ],
  "esgotaram_tentativas": [
   "plat-prefeituras-50-go",
@@ -38,9 +38,9 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 4.9814,
+   "prioridade": 4.9614,
    "diagnostico": "falha_parcial",
-   "livros_com_abertura_proxima": 243,
+   "livros_com_abertura_proxima": 242,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -49,25 +49,25 @@
   },
   {
    "motor": "pncp-api",
-   "prioridade": 0.8697,
+   "prioridade": 1.4252,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 5,
+   "livros_com_abertura_proxima": 6,
    "horarios": "08:53,13:53,19:53",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "prioridade": 0.2768,
+   "prioridade": 0.265,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 2,
    "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "cobertura": "completa",
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-176",
@@ -119,17 +119,6 @@
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 3,
    "horarios": "09:23,15:23",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 3
-  },
-  {
-   "motor": "plat-empresas-editais-incentivados",
-   "prioridade": 0.0868,
-   "diagnostico": "falha_parcial",
-   "livros_com_abertura_proxima": 4,
-   "horarios": "10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
@@ -321,6 +310,17 @@
    "dia_anterior": "observado",
    "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
+  },
+  {
+   "motor": "plat-empresas-editais-incentivados",
+   "prioridade": 0.0666,
+   "diagnostico": "falha_parcial",
+   "livros_com_abertura_proxima": 3,
+   "horarios": "10:23",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 3
   },
   {
    "motor": "f260-captacao-212",
@@ -687,13 +687,13 @@
   },
   {
    "motor": "recorrencia",
-   "prioridade": 0.05,
+   "prioridade": 0.0481,
    "diagnostico": "falha_parcial",
    "livros_com_abertura_proxima": 0,
    "horarios": "11:23,17:53",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "aguardando_horario",
+   "cobertura": "parcial",
    "tentativas_hoje": 0
   },
   {
@@ -1104,17 +1104,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "plat-gife",
-   "prioridade": 0.0122,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "11:23,17:53",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-captacao-051",
    "prioridade": 0.0119,
    "diagnostico": "saudavel",
@@ -1123,6 +1112,17 @@
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "aguardando_horario",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "plat-gife",
+   "prioridade": 0.0119,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "11:23,17:53",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
    "tentativas_hoje": 0
   },
   {
