@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-06T02:54:23+00:00",
+  "em": "2026-10-06T03:10:13+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-06T02:39:29+00:00",
+  "ultimo_voo": "2026-10-06T02:57:45+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,99 @@
     "empresas sem ficha": 122
   },
   "acumulado": {
-    "missoes": 400,
+    "missoes": 401,
     "validadas": 10,
-    "parciais": 117,
+    "parciais": 118,
     "insuficientes": 273,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 58,
-      "sim": 281
+      "sim": 282
     },
     "estrelas_de_ouro": 31,
-    "fontes_novas_para_os_motores": 20,
+    "fontes_novas_para_os_motores": 21,
     "tempo_medio_min": 12.4
   },
   "missoes": [
+    {
+      "em": "2026-10-06T02:57:45+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · estante bronze · tentativa 1",
+      "alvo": "Edital de Seleção de Projetos via Incentivo Fiscal 2026 – Zurich Seguros Zurich Seguros Aceita: organizações d… — Brasil",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.zurich.com.br/leis-de-incentivo-2026",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre seu objeto, financiador, território, esfera, requisitos e destinação, o que permite identificar sua relevância para a AMC.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria alinhar seu projeto a um dos três programas de Responsabilidade Social Corporativa da Zurich e garantir relação direta com um desses programas para ser elegível.",
+        "proximo_passo": "Verificar os anexos do edital para obter detalhes sobre os programas de Responsabilidade Social Corporativa da Zurich e os requisitos específicos para participação.",
+        "risco": "A falta de alinhamento com os programas de Responsabilidade Social Corporativa da Zurich pode impedir a elegibilidade do projeto."
+      },
+      "erro": null,
+      "segundos": 747,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 0,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "op-op-31b4a13545ca",
+      "encontrou": {
+        "Objeto": {
+          "valor": "selecionar e apoiar projetos sociais alinhados à estratégia de Responsabilidade Social Corporativa da compania, por meio da destinação de recursos provenientes de leis federais de incentivo fiscal",
+          "trecho": "O Edital de Seleção de Projetos via Incentivo Fiscal 2026 da Zurich Seguros tem como objetivo selecionar e apoiar projetos sociais alinhados à estratégia de Responsabilidade Social",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Zurich Seguros",
+          "trecho": "A Zurich Seguros torna público o presente Edital de Seleção de Projetos via Incentivo Fiscal 2026",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "nacional",
+          "trecho": "Com apoio técnico do Instituto para o Desenvolvimento do Investimento Social (IDIS), este Edital integra o compromisso da Zurich Seguros com a geração de impacto social positivo e ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "Serão considerados projetos aprovados e aptos à captação por meio dos seguintes mecanismos: • Lei de Incentivo à Cultura - Lei Rouanet; • Fundo da Pessoa Idosa; • Fundo da Infância",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "relação direta com um dos três programas de Responsabilidade Social Corporativa da Zurich",
+          "trecho": "Os projetos inscritos deverão apresentar relação direta com um dos três programas de Responsabilidade Social Corporativa da Zurich.",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Zurich Seguros",
+      "indicios": [
+        {
+          "url": "https://capitaai.com.br/captacao/edital-selecao-projetos-via-incentivo-fiscal-2026-zurich-uucllb",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-06T02:39:29+00:00",
       "modo": "validar",
@@ -2721,69 +2799,6 @@
         }
       },
       "financiador": "Tutóia",
-      "indicios": [],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "parceiro"
-      ]
-    },
-    {
-      "em": "2026-10-05T10:52:21+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Torcedor de Pernambuco — Juizado do Torcedor de Pernambuco financia projetos sociais com recursos de prestaçõe… — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 3,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona que o Juizado do Torcedor de Pernambuco financia projetos sociais com recursos de prestações pecuniárias, o que é relevante para ações de fomento a organizações da sociedade civil.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há alinhamento entre o objeto do edital e suas atividades, além de se adequar ao escopo do financiador, que é o Juizado do Torcedor de Pernambuco, apesar de o financiador ser estadual e o território não estar comprovado.",
-        "proximo_passo": "Verificar se há divulgação do edital em fontes confiáveis e se há possibilidade de contato com o financiador para esclarecimento de dúvidas.",
-        "risco": "O território de atuação não está comprovado, o que pode impedir o acesso ao edital, já que o financiador é estadual e o projeto está localizado em Goiânia."
-      },
-      "erro": null,
-      "segundos": 917,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-af85ca3d9e40",
-      "encontrou": {
-        "Objeto": {
-          "valor": "financia projetos sociais com recursos de prestações pecuniárias",
-          "trecho": "Juizado do Torcedor de Pernambuco financia projetos sociais com recursos de prestações pecuniárias",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Juizado do Torcedor de Pernambuco",
-          "trecho": "Juizado do Torcedor de Pernambuco",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Juizado do Torcedor de Pernambuco",
       "indicios": [],
       "rotas": [
         "financiador_programa_edital",
