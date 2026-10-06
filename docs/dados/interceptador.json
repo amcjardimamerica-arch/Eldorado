@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-06T12:42:23+00:00",
+  "em": "2026-10-06T13:01:04+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-06T12:29:51+00:00",
+  "ultimo_voo": "2026-10-06T12:45:51+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,10 +37,10 @@
     "empresas sem ficha": 122
   },
   "acumulado": {
-    "missoes": 440,
+    "missoes": 441,
     "validadas": 15,
     "parciais": 136,
-    "insuficientes": 289,
+    "insuficientes": 290,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
@@ -52,6 +52,33 @@
     "tempo_medio_min": 12.3
   },
   "missoes": [
+    {
+      "em": "2026-10-06T12:45:51+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · oportunidade do mapa · prazo até 2026-12-11",
+      "alvo": "Chamada CNPq/CAPES Nº 30/2026 Programa de Mestrado e Doutorado Acadêmico para Inovação – MAI/DAI",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": null,
+      "total": 12,
+      "nao_resolvidos": null,
+      "pagina_oficial": null,
+      "parecer_fonte": {},
+      "erro": "o modelo não devolveu JSON",
+      "segundos": 912,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "falhou: o modelo não devolveu JSON",
+      "id": "agr-168747de7e13",
+      "encontrou": {},
+      "financiador": null,
+      "indicios": [],
+      "rotas": []
+    },
     {
       "em": "2026-10-06T12:29:51+00:00",
       "modo": "validar",
@@ -2790,84 +2817,6 @@
       },
       "financiador": "Fundo Brasil",
       "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-06T02:57:45+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · estante bronze · tentativa 1",
-      "alvo": "Edital de Seleção de Projetos via Incentivo Fiscal 2026 – Zurich Seguros Zurich Seguros Aceita: organizações d… — Brasil",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.zurich.com.br/leis-de-incentivo-2026",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre seu objeto, financiador, território, esfera, requisitos e destinação, o que permite identificar sua relevância para a AMC.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria alinhar seu projeto a um dos três programas de Responsabilidade Social Corporativa da Zurich e garantir relação direta com um desses programas para ser elegível.",
-        "proximo_passo": "Verificar os anexos do edital para obter detalhes sobre os programas de Responsabilidade Social Corporativa da Zurich e os requisitos específicos para participação.",
-        "risco": "A falta de alinhamento com os programas de Responsabilidade Social Corporativa da Zurich pode impedir a elegibilidade do projeto."
-      },
-      "erro": null,
-      "segundos": 747,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 0,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "op-op-31b4a13545ca",
-      "encontrou": {
-        "Objeto": {
-          "valor": "selecionar e apoiar projetos sociais alinhados à estratégia de Responsabilidade Social Corporativa da compania, por meio da destinação de recursos provenientes de leis federais de incentivo fiscal",
-          "trecho": "O Edital de Seleção de Projetos via Incentivo Fiscal 2026 da Zurich Seguros tem como objetivo selecionar e apoiar projetos sociais alinhados à estratégia de Responsabilidade Social",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Zurich Seguros",
-          "trecho": "A Zurich Seguros torna público o presente Edital de Seleção de Projetos via Incentivo Fiscal 2026",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "nacional",
-          "trecho": "Com apoio técnico do Instituto para o Desenvolvimento do Investimento Social (IDIS), este Edital integra o compromisso da Zurich Seguros com a geração de impacto social positivo e ",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Serão considerados projetos aprovados e aptos à captação por meio dos seguintes mecanismos: • Lei de Incentivo à Cultura - Lei Rouanet; • Fundo da Pessoa Idosa; • Fundo da Infância",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "relação direta com um dos três programas de Responsabilidade Social Corporativa da Zurich",
-          "trecho": "Os projetos inscritos deverão apresentar relação direta com um dos três programas de Responsabilidade Social Corporativa da Zurich.",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Zurich Seguros",
-      "indicios": [
-        {
-          "url": "https://capitaai.com.br/captacao/edital-selecao-projetos-via-incentivo-fiscal-2026-zurich-uucllb",
-          "tipo": "agregador"
-        }
-      ],
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
