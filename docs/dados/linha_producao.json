@@ -1,13 +1,13 @@
 {
- "em": "2026-10-06T17:34:02+00:00",
+ "em": "2026-10-06T18:15:54+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17777,
-  "oportunidades_distintas": 1992,
-  "entidades_em_2_ou_mais_canais": 16,
+  "coletados": 17772,
+  "oportunidades_distintas": 1991,
+  "entidades_em_2_ou_mais_canais": 12,
   "etapas": {
    "CONSOLIDADO": 17202,
-   "EM_LIVRO": 479,
+   "EM_LIVRO": 474,
    "REPROCESSAR": 72,
    "QUALIFICADO": 24
   },
@@ -57,8 +57,8 @@
    "familia": "terceiro_setor",
    "registros": 43,
    "entidades": 36,
-   "exclusivas": 30,
-   "corroboradas": 6,
+   "exclusivas": 34,
+   "corroboradas": 2,
    "validadas_como_reais": 8
   },
   {
@@ -91,9 +91,9 @@
   {
    "canal": "recorrencia",
    "familia": "terceiro_setor",
-   "registros": 15,
-   "entidades": 14,
-   "exclusivas": 12,
+   "registros": 14,
+   "entidades": 13,
+   "exclusivas": 11,
    "corroboradas": 2,
    "validadas_como_reais": 2
   },
@@ -123,15 +123,6 @@
    "exclusivas": 2,
    "corroboradas": 0,
    "validadas_como_reais": 2
-  },
-  {
-   "canal": "empresas-editais-incentivados",
-   "familia": "empresas",
-   "registros": 18,
-   "entidades": 17,
-   "exclusivas": 13,
-   "corroboradas": 4,
-   "validadas_como_reais": 1
   },
   {
    "canal": "salic",
@@ -249,6 +240,15 @@
    "exclusivas": 1,
    "corroboradas": 0,
    "validadas_como_reais": 1
+  },
+  {
+   "canal": "empresas-editais-incentivados",
+   "familia": "empresas",
+   "registros": 14,
+   "entidades": 13,
+   "exclusivas": 13,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
   },
   {
    "canal": "f260-captacao-217",
@@ -437,9 +437,9 @@
   "pilotos": 1,
   "terceiro_setor": 4,
   "orgao_publico": 24,
-  "empresas": 2,
   "justica_mp": 1,
-  "outros": 6
+  "outros": 6,
+  "empresas": 2
  },
  "corroboradas": [
   {
@@ -455,13 +455,6 @@
    "canais": [
     "abcr",
     "piloto-aberto"
-   ]
-  },
-  {
-   "entidade": "09590060f0bad9ff9a05",
-   "canais": [
-    "abcr",
-    "empresas-editais-incentivados"
    ]
   },
   {
@@ -493,13 +486,6 @@
    ]
   },
   {
-   "entidade": "3fcf54ff80b9976a9194",
-   "canais": [
-    "abcr",
-    "empresas-editais-incentivados"
-   ]
-  },
-  {
    "entidade": "4d519a11c8b5c23bd8d5",
    "canais": [
     "goyazes-programa",
@@ -528,20 +514,6 @@
    ]
   },
   {
-   "entidade": "813667a55d0d8aeefdae",
-   "canais": [
-    "abcr",
-    "empresas-editais-incentivados"
-   ]
-  },
-  {
-   "entidade": "97292f2d3c686703e79e",
-   "canais": [
-    "abcr",
-    "empresas-editais-incentivados"
-   ]
-  },
-  {
    "entidade": "9a3b706226b8076711a1",
    "canais": [
     "alego-pl",
@@ -556,5 +528,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 3
+ "eventos_no_livro_razao": 1
 }
