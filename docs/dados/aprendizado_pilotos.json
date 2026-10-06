@@ -1,44 +1,11 @@
 {
- "em": "2026-10-06T08:50:11+00:00",
+ "em": "2026-10-06T08:53:55+00:00",
  "lote": 100,
  "estado": {
   "interceptador_erros_vistos": 268,
-  "espiao_erros_vistos": 297490
+  "espiao_erros_vistos": 300870
  },
  "ultimos_ciclos": [
-  {
-   "piloto": "espiao",
-   "em": "2026-10-06T07:07:24+00:00",
-   "erros_no_lote": 1000,
-   "motivos": [
-    [
-     "nada_no_crivo",
-     988
-    ],
-    [
-     "busca_vazia",
-     7
-    ],
-    [
-     "sem_texto",
-     5
-    ]
-   ],
-   "rendimento_por_missao": {
-    "descobrir": "0/3548",
-    "aposta": "0/1420",
-    "catalogar": "0/32"
-   },
-   "parametros_novos": {
-    "pesos_missao": {
-     "descobrir": 0.1,
-     "aposta": 0.1,
-     "catalogar": 0.1
-    },
-    "termos_fora_do_objeto": []
-   },
-   "onde_falha": "missões que quase nunca rendem (descobrir, aposta, catalogar) perdem vagas; termos de 'fora do objeto' descartados na origem"
-  },
   {
    "piloto": "espiao",
    "em": "2026-10-06T07:20:32+00:00",
@@ -203,6 +170,39 @@
     "termos_fora_do_objeto": []
    },
    "onde_falha": "missões que quase nunca rendem (descobrir, aposta, catalogar) perdem vagas; termos de 'fora do objeto' descartados na origem"
+  },
+  {
+   "piloto": "espiao",
+   "em": "2026-10-06T08:53:55+00:00",
+   "erros_no_lote": 1000,
+   "motivos": [
+    [
+     "nada_no_crivo",
+     987
+    ],
+    [
+     "busca_vazia",
+     7
+    ],
+    [
+     "sem_texto",
+     6
+    ]
+   ],
+   "rendimento_por_missao": {
+    "descobrir": "0/3552",
+    "aposta": "0/1416",
+    "catalogar": "0/32"
+   },
+   "parametros_novos": {
+    "pesos_missao": {
+     "aposta": 0.1,
+     "descobrir": 0.1,
+     "catalogar": 0.1
+    },
+    "termos_fora_do_objeto": []
+   },
+   "onde_falha": "missões que quase nunca rendem (aposta, descobrir, catalogar) perdem vagas; termos de 'fora do objeto' descartados na origem"
   }
  ],
  "parametros": {
@@ -265,8 +265,8 @@
   },
   "espiao": {
    "pesos_missao": {
-    "descobrir": 0.1,
     "aposta": 0.1,
+    "descobrir": 0.1,
     "catalogar": 0.1
    },
    "termos_fora_do_objeto": [],
@@ -682,7 +682,7 @@
    "intervalo_busca_local_s": 6.0,
    "max_buscas_ponte_por_voo": 3
   },
-  "atualizado_em": "2026-10-06T08:39:10+00:00",
+  "atualizado_em": "2026-10-06T08:53:55+00:00",
   "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
  }
 }
