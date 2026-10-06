@@ -3,9 +3,9 @@
  "regra": "PLANOS DE CORREÇÃO DOS CANAIS (titular, 02/10/2026).\n\nCada motor e Piloto é diagnosticado a cada ciclo pelo seu histórico (estado/esquadra*.json, status dos motores, bloqueios)\ne recebe o plano previsto no fluxograma (config/linha_producao.json › planos_de_correcao):\n  sem_rendimento · falha_parcial · bloqueio · exige_brasil · formato_mudou · (contrato_violado e injecao: por registro)\nO plano nunca desliga um canal sozinho: ele diz o que fazer e qual skill usar.",
  "resumo": {
   "bloqueio": 1,
-  "falha_parcial": 10,
+  "falha_parcial": 9,
   "sem_rendimento": 43,
-  "saudavel": 73
+  "saudavel": 74
  },
  "motores": [
   {
@@ -20,7 +20,7 @@
     "se 403 persistente da nuvem: marcar 'exige IP brasileiro' e mandar à coleta local"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 17,
+   "leituras": 18,
    "achados_total": 0
   },
   {
@@ -125,23 +125,8 @@
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 31,
-   "achados_total": 161
-  },
-  {
-   "motor": "plat-gife",
-   "canal": "gife",
-   "familia": "terceiro_setor",
-   "diagnostico": "falha_parcial",
-   "evidencia": "falhas em 3 dos últimos 7 dias",
-   "plano": [
-    "repetir com espera crescente (backoff)",
-    "trocar a ordem das rotas",
-    "registrar páginas que falham sempre como rota morta"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 35,
-   "achados_total": 27
+   "leituras": 32,
+   "achados_total": 181
   },
   {
    "motor": "plat-piloto-aberto",
@@ -155,8 +140,8 @@
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 28,
-   "achados_total": 926
+   "leituras": 29,
+   "achados_total": 941
   },
   {
    "motor": "recorrencia",
@@ -850,7 +835,7 @@
    "canal": "cnpq-extensao",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
-   "evidencia": "29 leituras e nenhum achado",
+   "evidencia": "30 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -858,7 +843,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 29,
+   "leituras": 30,
    "achados_total": 0
   },
   {
@@ -891,8 +876,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 63,
-   "achados_total": 20
+   "leituras": 64,
+   "achados_total": 21
   },
   {
    "motor": "do-goias",
@@ -1606,8 +1591,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 4,
-   "achados_total": 4
+   "leituras": 5,
+   "achados_total": 5
   },
   {
    "motor": "mptgo-destinacao",
@@ -1628,8 +1613,19 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 11,
-   "achados_total": 5
+   "leituras": 12,
+   "achados_total": 6
+  },
+  {
+   "motor": "plat-gife",
+   "canal": "gife",
+   "familia": "terceiro_setor",
+   "diagnostico": "saudavel",
+   "evidencia": "saudável",
+   "plano": [],
+   "skill": null,
+   "leituras": 36,
+   "achados_total": 29
   },
   {
    "motor": "plat-prefeituras-50-go",
@@ -1639,8 +1635,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 32,
-   "achados_total": 28
+   "leituras": 33,
+   "achados_total": 29
   },
   {
    "motor": "plat-salic",
@@ -1650,8 +1646,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 33,
-   "achados_total": 143
+   "leituras": 34,
+   "achados_total": 146
   },
   {
    "motor": "pncp-api",
