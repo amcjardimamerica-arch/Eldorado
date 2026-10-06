@@ -1,15 +1,15 @@
 {
- "em": "2026-10-06T22:23:34+00:00",
+ "em": "2026-10-06T23:46:37+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17934,
-  "oportunidades_distintas": 2129,
+  "coletados": 17944,
+  "oportunidades_distintas": 2137,
   "entidades_em_2_ou_mais_canais": 19,
   "etapas": {
    "CONSOLIDADO": 17223,
-   "EM_LIVRO": 585,
-   "REPROCESSAR": 84,
-   "QUALIFICADO": 42
+   "EM_LIVRO": 592,
+   "REPROCESSAR": 86,
+   "QUALIFICADO": 43
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 63,
@@ -33,7 +33,9 @@
    "PRAZO_IMPOSSIVEL: prazo impossível: 2035-09-23 → reler o prazo na fonte": 1,
    "PRAZO_IMPOSSIVEL: prazo impossível: 2036-05-27 → reler o prazo na fonte": 1,
    "PRAZO_IMPOSSIVEL: prazo impossível: 2036-06-16 → reler o prazo na fonte": 1,
-   "PRAZO_IMPOSSIVEL: prazo impossível: 2036-07-29 → reler o prazo na fonte": 1
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2036-07-29 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2033-12-20 → reler o prazo na fonte": 1,
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2035-02-27 → reler o prazo na fonte": 1
   }
  },
  "canais": [
@@ -49,11 +51,11 @@
   {
    "canal": "pncp-api",
    "familia": "portal_chamamentos",
-   "registros": 467,
-   "entidades": 433,
-   "exclusivas": 432,
+   "registros": 475,
+   "entidades": 441,
+   "exclusivas": 440,
    "corroboradas": 1,
-   "validadas_como_reais": 105
+   "validadas_como_reais": 108
   },
   {
    "canal": "piloto-aberto",
@@ -598,5 +600,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 4
+ "eventos_no_livro_razao": 0
 }
