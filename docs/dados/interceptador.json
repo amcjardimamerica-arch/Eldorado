@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-06T10:22:28+00:00",
+  "em": "2026-10-06T10:35:39+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-06T10:09:11+00:00",
+  "ultimo_voo": "2026-10-06T10:25:54+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,100 @@
     "empresas sem ficha": 122
   },
   "acumulado": {
-    "missoes": 431,
+    "missoes": 432,
     "validadas": 13,
-    "parciais": 131,
+    "parciais": 132,
     "insuficientes": 287,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 63,
-      "sim": 306
+      "sim": 307
     },
     "estrelas_de_ouro": 32,
     "fontes_novas_para_os_motores": 39,
     "tempo_medio_min": 12.3
   },
   "missoes": [
+    {
+      "em": "2026-10-06T10:25:54+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · oportunidade do mapa · prazo até 2026-10-30",
+      "alvo": "Art Explora – Cité internationale des arts Residency programme 2027",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Resultado",
+        "Prazo de recurso",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado fornece informações sobre prazo de inscrição, valor, órgão financiador, território, esfera e requisitos do programa, o que é suficiente para construir a resposta.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar aos requisitos do programa, como ser artista ou pesquisador trabalhando em disciplinas artísticas ou acadêmicas, e garantir que seu projeto esteja alinhado com o objetivo do programa, mesmo que não seja uma organização de origem internacional.",
+        "proximo_passo": "Pesquisar mais sobre o programa e verificar se há possibilidade de parceria ou envio de artistas ou pesquisadores da região de Goiânia para participar do programa.",
+        "risco": "O programa é internacional e pode exigir participação em outro país, o que pode ser uma barreira para uma associação comunitária de Goiânia que não tem capacidade de mobilizar recursos ou envolver artistas em viagens internacionais."
+      },
+      "erro": null,
+      "segundos": 584,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Objeto, Resultado, Prazo de recurso, Anexos",
+      "id": "agr-22c7a96b8e88",
+      "encontrou": {
+        "Prazo de inscrição": {
+          "valor": "dispensado — O prazo de inscrição é explicitado no texto.",
+          "trecho": "Tuesday 29 September 2026 12:00",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Valor": {
+          "valor": "um bônus de 3.000EUR para produção, e um subsídio de vida de 1.000EUR por mês",
+          "trecho": "A production grant of up to 3.000EUR",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Art Explora Foundation e Cité internationale des arts",
+          "trecho": "The Art Explora Foundation and the Cité internationale des arts are launching their 7th open call",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "internacional",
+          "trecho": "open to artists and writers working across visual arts, performance, digital practices, literary works, or other experimental disciplines.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "ser artista ou pesquisador, trabalhar em disciplinas artísticas ou acadêmicas",
+          "trecho": "open to artists and writers working across visual arts, performance, digital practices, literary works, or other experimental disciplines.",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Art Explora Foundation",
+      "indicios": [
+        {
+          "url": "https://www.transartists.org/en/news/art-explora-cite-internationale-des-arts-residency-programme-2027",
+          "tipo": "noticia"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-10-06T10:09:11+00:00",
       "modo": "validar",
@@ -2818,33 +2897,6 @@
         "governo",
         "programa_puro"
       ]
-    },
-    {
-      "em": "2026-10-06T00:49:14+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · oportunidade do mapa · prazo até 2026-11-03",
-      "alvo": "SES-GO (saúde) — Edital nº 01/2026",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "o modelo não devolveu JSON",
-      "segundos": 802,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: o modelo não devolveu JSON",
-      "id": "f21883b496ac29435132",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
     }
   ]
 }
