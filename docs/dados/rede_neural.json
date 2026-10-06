@@ -1,9 +1,9 @@
 {
- "em": "2026-10-06T15:58:07+00:00",
+ "em": "2026-10-06T17:34:12+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1842,
  "positivos": 730,
- "pendentes": 413,
+ "pendentes": 420,
  "validacao_cruzada": {
   "auc": 0.829,
   "precisao": 0.721,
@@ -37,12 +37,6 @@
    "incerteza": 0.993
   },
   {
-   "titulo": "MUNICIPIO DE SAO SEBASTIAO DO PARAISO — Constitui objeto do presente chamamento público o credenciamento de pessoa jurídica para a prestação",
-   "url": "https://pncp.gov.br/app/editais/18241349000180/2026/146",
-   "nota": 0.496,
-   "incerteza": 0.992
-  },
-  {
    "titulo": "Chamada nº 009/2026 – FAPESPA/CNPq/CAPES",
    "url": "https://www.fapespa.pa.gov.br/2026/07/01/chamada-n-o-009-2026-fapespa-cnpq-capes",
    "nota": 0.505,
@@ -73,10 +67,22 @@
    "incerteza": 0.987
   },
   {
+   "titulo": "MUNICIPIO DE SAO LOURENCO DO SUL — [Portal de Compras Públicas] - Seleção de Organização Social para a prestação de serviços técnicos especi",
+   "url": "https://pncp.gov.br/app/editais/87893111000152/2026/419",
+   "nota": 0.493,
+   "incerteza": 0.987
+  },
+  {
    "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 003/2026 - SELEÇÃO DE PROJETOS NA CATEGORIA DE ARTESANATO E AUDIOVISUAL PARA FIRMAR TERMO DE EXECUÇÃO CULTUR",
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8386/",
    "nota": 0.493,
    "incerteza": 0.987
+  },
+  {
+   "titulo": "INSTITUTO DE ASSISTENCIA MEDICA AO SERVIDOR PUBLICO ESTADUAL — Credenciamento de Prest. de Serv. de Assist. à Saúde, em regime hospitalar pa",
+   "url": "https://pncp.gov.br/app/editais/60747318000162/2026/925",
+   "nota": 0.508,
+   "incerteza": 0.985
   },
   {
    "titulo": "Chamada para propostas",
@@ -94,6 +100,12 @@
    "titulo": "Credenciamento de Consultores Ad Hoc para o 4º Concurso de Artigos Científicos em Homenagem ao Desembargador Milson de Souza Coutinho",
    "url": "https://www.fapema.br/edital-fapema-esmam-n-21-2026",
    "nota": 0.488,
+   "incerteza": 0.976
+  },
+  {
+   "titulo": "UNIVERSIDADE FEDERAL DE RORAIMA — seleção de ensaios fotográficos inéditos sobre a temática “Onde os meus pés me levam?”, mediante avaliação",
+   "url": "https://pncp.gov.br/app/editais/34792077000163/2026/49",
+   "nota": 0.512,
    "incerteza": 0.976
   },
   {
@@ -137,12 +149,6 @@
    "url": "https://www.fundacaoitau.org.br/noticias/cultura/fundacao-itau-cria-canal-de-transmissao-com-o-publico-interessado-em-arte-e-educacao",
    "nota": 0.481,
    "incerteza": 0.962
-  },
-  {
-   "titulo": "ESTADO DO ACRE — 4º PRÊMIO DE COMUNICAÇÃO DO GOVERNO DO ESTADO DO ACRE “MOISÉS ALENCASTRO\"",
-   "url": "https://pncp.gov.br/app/editais/63606479000124/2026/123",
-   "nota": 0.519,
-   "incerteza": 0.961
   },
   {
    "titulo": "Edital de eleição do CNPC",
@@ -205,10 +211,10 @@
    "incerteza": 0.952
   },
   {
-   "titulo": "Brasília - 11/08/ 2026 - Está aberto o processo de seleção pública para Organizações da Sociedade Civil (OSCs) interessadas em concorrer ao ",
-   "url": "https://www.anater.org/edital-da-acao-da-terra-a-mesa-garantia-safra-semiarido-esta-com-inscricoes-abertas",
-   "nota": 0.475,
-   "incerteza": 0.951
+   "titulo": "MUNICIPIO DE SAO SEBASTIAO DO PARAISO — Constitui objeto do presente chamamento público o credenciamento de pessoa jurídica para a prestação",
+   "url": "https://pncp.gov.br/app/editais/18241349000180/2026/146",
+   "nota": 0.526,
+   "incerteza": 0.947
   },
   {
    "titulo": "Prêmio Ibermúsicas de composição de obra para Orquestra Sinfônica 2026: USD 2.500 e estreia por orquestra nacional",
@@ -229,6 +235,12 @@
    "incerteza": 0.941
   },
   {
+   "titulo": "Edital 04/2026 Floresta Viva – Águas do São Francisco",
+   "url": "https://chamadas.funbio.org.br/florestas-viva-sao-francisco",
+   "nota": 0.47,
+   "incerteza": 0.941
+  },
+  {
    "titulo": "CHAMADA FAPESPA Nº 005/2025 – PROGRAMA TECNOVA III Subvenção Econômica à Inovação",
    "url": "https://www.fapespa.pa.gov.br/2026/09/28/chamada-fapespa-no-005-2025-programa-tecnova-iii-subvencao-economica-a-inovacao",
    "nota": 0.47,
@@ -238,6 +250,12 @@
    "titulo": "Cursos Leis de Incentivo",
    "url": "https://www.fundacaovale.org/materiais/cursos",
    "nota": 0.469,
+   "incerteza": 0.938
+  },
+  {
+   "titulo": "MUNICIPIO DE CEDRO — CREDECIAMENTO DE PESSOAS JURÍDICAS DE DIREITO PRIVADO, COM OU SEM FINS LUCRATIVOS, ASSEGURADA A PREFERÊNCIA ÀS ENTIDADE",
+   "url": "https://pncp.gov.br/app/editais/07812241000184/2026/57",
+   "nota": 0.531,
    "incerteza": 0.938
   },
   {
@@ -325,6 +343,12 @@
    "incerteza": 0.926
   },
   {
+   "titulo": "FUNDO MUNICIPAL DE SAUDE - FMS — CREDENCIAMENTO DE ENTIDADES PRIVADAS SEM FINS LUCRATIVOS COM FINALIDADE ESTATUTÁRIA COMPATÍVEL COM SAÚDE E ",
+   "url": "https://pncp.gov.br/app/editais/13864377000130/2027/2",
+   "nota": 0.462,
+   "incerteza": 0.924
+  },
+  {
    "titulo": "Chamada Pública CNPq/ERC Nº 21/2026",
    "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-21-2026/chamada-publica-cnpq-N-21-2026",
    "nota": 0.461,
@@ -347,31 +371,7 @@
    "url": "https://www.itausocial.org.br/editais/edital-educacao-e-trabalho-2026-escola-e-territorio",
    "nota": 0.457,
    "incerteza": 0.913
-  },
-  {
-   "titulo": "BNDES abre edital de R$ 35 milhões para fortalecer organizações sociais do Norte e Nordeste",
-   "url": "https://www.ekloos.org/periferiasfortes",
-   "nota": 0.456,
-   "incerteza": 0.912
-  },
-  {
-   "titulo": "Credenciamento de músicos, cantores, bandas e/ou grupos musicais, de renome local ou regional para… — MUNICIPIO DE CASINHAS",
-   "url": "https://pncp.gov.br/app/editais/01618704000195/2026/135",
-   "nota": 0.455,
-   "incerteza": 0.91
-  },
-  {
-   "titulo": "MUNICIPIO DE PAROBE — Formalização de parceria estabelecida pela administração pública com Organização de Sociedade Civil (OSC) para a conse",
-   "url": "https://pncp.gov.br/app/editais/88372883000101/2026/270",
-   "nota": 0.452,
-   "incerteza": 0.904
-  },
-  {
-   "titulo": "Chamamento Público para Credenciamento de Atrações Artísticas e Culturais para compor a programação de… — MUNICIPIO DE PACO DO LUMIAR",
-   "url": "https://pncp.gov.br/app/editais/06003636000173/2026/46",
-   "nota": 0.451,
-   "incerteza": 0.902
   }
  ],
- "pendentes_provaveis_reais": 163
+ "pendentes_provaveis_reais": 165
 }
