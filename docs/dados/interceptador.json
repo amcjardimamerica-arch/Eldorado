@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-06T03:10:13+00:00",
+  "em": "2026-10-06T03:25:04+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-06T02:57:45+00:00",
+  "ultimo_voo": "2026-10-06T03:13:17+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,105 @@
     "empresas sem ficha": 122
   },
   "acumulado": {
-    "missoes": 401,
+    "missoes": 402,
     "validadas": 10,
-    "parciais": 118,
+    "parciais": 119,
     "insuficientes": 273,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 58,
-      "sim": 282
+      "sim": 283
     },
     "estrelas_de_ouro": 31,
-    "fontes_novas_para_os_motores": 21,
+    "fontes_novas_para_os_motores": 22,
     "tempo_medio_min": 12.4
   },
   "missoes": [
+    {
+      "em": "2026-10-06T03:13:17+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · estante bronze · tentativa 1",
+      "alvo": "Fundo Brasil oferece apoio emergencial a defensores de direitos humanos em risco — Brasil",
+      "qualidade": "parcial",
+      "comprovados": 8,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Anexos"
+      ],
+      "pagina_oficial": "https://www.fundobrasil.org.br/edital/apoio-emergencial-defensores-de-direitos-humanos/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado descreve o Fundo Brasil oferecendo apoio emergencial a defensores de direitos humanos em risco, com prazo de inscrição dispensado e área de atuação em direitos.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria ser uma organização não governamental, grupo, coletivo ou indivíduo atuando em direitos humanos, e demonstrar que há demandas emergenciais para atender defensores em risco.",
+        "proximo_passo": "Verificar os requisitos específicos do Fundo Brasil e preparar a documentação necessária para solicitar o apoio financeiro.",
+        "risco": "A associação pode não atender aos requisitos de atuação em direitos humanos ou não conseguir comprovar a necessidade de apoio emergencial."
+      },
+      "erro": null,
+      "segundos": 706,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor, Anexos",
+      "id": "op-op-beb625683100",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Apoio financeiro direto para atender demandas emergenciais de defensores de direitos humanos em risco",
+          "trecho": "A resposta a demandas emergenciais se dará por meio do apoio financeiro direto, podendo englobar, entre outras, atividades de logística, alimentação, atendimento à saúde física e p",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "dispensado — O prazo de inscrição não se aplica, pois o texto menciona 'Sem limite'.",
+          "trecho": "PRAZO DE INSCRIÇÕES: Sem limite",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Órgão / financiador": {
+          "valor": "Fundo Brasil",
+          "trecho": "Conheça o Fundo Brasil",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "nacional",
+          "trecho": "Apoio à Sociedade Civil",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "direitos",
+          "trecho": "Apoio Emergencial Defensores de Direitos Humanos",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "As solicitações podem ser formuladas por organizações não governamentais, grupos, coletivos e/ou indivíduos.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "organizações não governamentais, grupos, coletivos e/ou indivíduos",
+          "trecho": "As solicitações podem ser formuladas por organizações não governamentais, grupos, coletivos e/ou indivíduos.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Fundo Brasil",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-06T02:57:45+00:00",
       "modo": "validar",
@@ -2749,64 +2833,6 @@
       "rotas": [
         "financiador_programa_edital",
         "financiador_regulamento"
-      ]
-    },
-    {
-      "em": "2026-10-05T11:10:29+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Tutóia — Tutóia divulga resultado de seleção para projetos sociais — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 2,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Território",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.cnj.jus.br/comarca-de-tutoia-divulga-resultado-de-selecao-para-projetos-sociais/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona que a Tutóia realiza uma seleção para projetos sociais, o que indica que a entidade pode ser uma fonte relevante para organizações da sociedade civil interessadas em participar de editais de fomento.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria se inscrever no edital de seleção para projetos sociais da Tutóia, apresentando um projeto alinhado às áreas de atuação da entidade, como assistência social, cultura, educação e esporte.",
-        "proximo_passo": "Consultar o edital completo da Tutóia para obter informações detalhadas sobre os requisitos, prazos e processos de seleção.",
-        "risco": "O prazo de inscrição, resultado e outros detalhes não foram encontrados no texto comprovado, o que pode impedir a associação de se preparar adequadamente para o processo seletivo."
-      },
-      "erro": null,
-      "segundos": 881,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 2,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "op-op-ac30ecfe738a",
-      "encontrou": {
-        "Objeto": {
-          "valor": "seleção para projetos sociais",
-          "trecho": "seleção para projetos sociais",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Tutóia",
-      "indicios": [],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "parceiro"
       ]
     }
   ]
