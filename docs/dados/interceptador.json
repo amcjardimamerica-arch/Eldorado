@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-06T16:29:36+00:00",
+  "em": "2026-10-06T16:42:38+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-06T16:13:35+00:00",
+  "ultimo_voo": "2026-10-06T16:33:18+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,89 @@
     "empresas sem ficha": 123
   },
   "acumulado": {
-    "missoes": 453,
+    "missoes": 454,
     "validadas": 17,
-    "parciais": 140,
+    "parciais": 141,
     "insuficientes": 296,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 67,
-      "sim": 322
+      "sim": 323
     },
     "estrelas_de_ouro": 37,
     "fontes_novas_para_os_motores": 46,
     "tempo_medio_min": 12.4
   },
   "missoes": [
+    {
+      "em": "2026-10-06T16:33:18+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Secult Goiás lança edital para levar produção artística goiana ao Rio de Janeiro — Goiás",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": "https://goias.gov.br/cultura/pnab/edital-2026-pnab/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre o objeto, órgão financiador, território, esfera e área de atuação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital, apresentar proposta de produção artística goiana para levar ao Rio de Janeiro e seguir as instruções dos anexos.",
+        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre a inscrição e a proposta.",
+        "risco": "A falta de prazo de inscrição e outros requisitos específicos pode impedir a participação da associação."
+      },
+      "erro": null,
+      "segundos": 559,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 3,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "op-nova-46501809b230",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Levar produção artística goiana ao Rio de Janeiro",
+          "trecho": "Levar produção artística goiana ao Rio de Janeiro",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Secult Goiás",
+          "trecho": "Secult Goiás",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Goiás",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "cultura",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secult Goiás",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-06T16:13:35+00:00",
       "modo": "validar",
@@ -2801,63 +2869,6 @@
         "financiador_ano",
         "governo",
         "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-10-06T06:11:09+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · estante bronze · tentativa 1",
-      "alvo": "Convocatoria para la residencia “Onde o Corpo Mora, Amanhece o Mundo”, de Encantarias Transoceânicas [Saquarem… — Brasil",
-      "qualidade": "insuficiente",
-      "comprovados": 1,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Território",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "nao",
-        "por_que": "Não há informações suficientes para confirmar se essa convocação é uma fonte válida para editais de fomento no Brasil, já que o texto menciona uma residência artística em um contexto internacional e não fornece detalhes sobre editais de fomento para organizações da sociedade civil no Brasil.",
-        "para_a_amc": "Para acessar, uma associação comunitária de Goiânia precisaria verificar se há alinhamento entre o objeto da residência artística e suas atividades, além de possuir os requisitos mínimos para participar de editais de fomento, como registro no CNPJ e atuação em áreas como cultura, educação ou assistência social.",
-        "proximo_passo": "Consultar editais específicos de fomento para organizações da sociedade civil no Brasil, verificando se há chamadas que se alinhem com o objeto da residência artística mencionada.",
-        "risco": "A falta de informações sobre prazos, requisitos e outros detalhes essenciais pode impedir a associação de se candidatar adequadamente."
-      },
-      "erro": null,
-      "segundos": 333,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "op-op-c90d349017ac",
-      "encontrou": {},
-      "financiador": "iberescena.org",
-      "indicios": [
-        {
-          "url": "https://iberescena.org/Noticias/2574",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ]
