@@ -1,9 +1,9 @@
 {
- "em": "2026-10-06T18:16:05+00:00",
+ "em": "2026-10-06T20:07:51+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1842,
  "positivos": 730,
- "pendentes": 420,
+ "pendentes": 426,
  "validacao_cruzada": {
   "auc": 0.829,
   "precisao": 0.721,
@@ -103,12 +103,6 @@
    "incerteza": 0.976
   },
   {
-   "titulo": "UNIVERSIDADE FEDERAL DE RORAIMA — seleção de ensaios fotográficos inéditos sobre a temática “Onde os meus pés me levam?”, mediante avaliação",
-   "url": "https://pncp.gov.br/app/editais/34792077000163/2026/49",
-   "nota": 0.512,
-   "incerteza": 0.976
-  },
-  {
    "titulo": "The BNDES System - BNDES",
    "url": "https://bndes.gov.br/SiteBNDES/bndes/bndes_en/Institucional/The_BNDES/the_BNDES_system.html",
    "nota": 0.512,
@@ -149,6 +143,12 @@
    "url": "https://www.fundacaoitau.org.br/noticias/cultura/fundacao-itau-cria-canal-de-transmissao-com-o-publico-interessado-em-arte-e-educacao",
    "nota": 0.481,
    "incerteza": 0.962
+  },
+  {
+   "titulo": "ESTADO DO ACRE — 4º PRÊMIO DE COMUNICAÇÃO DO GOVERNO DO ESTADO DO ACRE “MOISÉS ALENCASTRO\"",
+   "url": "https://pncp.gov.br/app/editais/63606479000124/2026/123",
+   "nota": 0.519,
+   "incerteza": 0.961
   },
   {
    "titulo": "Edital de eleição do CNPC",
@@ -253,12 +253,6 @@
    "incerteza": 0.938
   },
   {
-   "titulo": "MUNICIPIO DE CEDRO — CREDECIAMENTO DE PESSOAS JURÍDICAS DE DIREITO PRIVADO, COM OU SEM FINS LUCRATIVOS, ASSEGURADA A PREFERÊNCIA ÀS ENTIDADE",
-   "url": "https://pncp.gov.br/app/editais/07812241000184/2026/57",
-   "nota": 0.531,
-   "incerteza": 0.938
-  },
-  {
    "titulo": "16º Edital Ceará de Cinema e Audiovisual - Modalidade 2 - Roteiro - Núcleos Criativos",
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8125/",
    "nota": 0.531,
@@ -343,12 +337,6 @@
    "incerteza": 0.926
   },
   {
-   "titulo": "FUNDO MUNICIPAL DE SAUDE - FMS — CREDENCIAMENTO DE ENTIDADES PRIVADAS SEM FINS LUCRATIVOS COM FINALIDADE ESTATUTÁRIA COMPATÍVEL COM SAÚDE E ",
-   "url": "https://pncp.gov.br/app/editais/13864377000130/2027/2",
-   "nota": 0.462,
-   "incerteza": 0.924
-  },
-  {
    "titulo": "Chamada Pública CNPq/ERC Nº 21/2026",
    "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-21-2026/chamada-publica-cnpq-N-21-2026",
    "nota": 0.461,
@@ -371,7 +359,19 @@
    "url": "https://www.itausocial.org.br/editais/edital-educacao-e-trabalho-2026-escola-e-territorio",
    "nota": 0.457,
    "incerteza": 0.913
+  },
+  {
+   "titulo": "BNDES abre edital de R$ 35 milhões para fortalecer organizações sociais do Norte e Nordeste",
+   "url": "https://www.ekloos.org/periferiasfortes",
+   "nota": 0.456,
+   "incerteza": 0.912
+  },
+  {
+   "titulo": "Credenciamento de músicos, cantores, bandas e/ou grupos musicais, de renome local ou regional para… — MUNICIPIO DE CASINHAS",
+   "url": "https://pncp.gov.br/app/editais/01618704000195/2026/135",
+   "nota": 0.455,
+   "incerteza": 0.91
   }
  ],
- "pendentes_provaveis_reais": 165
+ "pendentes_provaveis_reais": 164
 }

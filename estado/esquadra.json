@@ -525,30 +525,30 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 70,
-      "achados_total": 3534,
+      "leituras": 71,
+      "achados_total": 3772,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-05T23:25:51+00:00",
+      "ultima": "2026-10-06T20:01:58+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 211,
+      "achados_ultima": 238,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
           "http": 200,
-          "bytes": 6844
+          "bytes": 6671
         },
         {
           "url": "https://pncp.gov.br/api/search/",
           "http": 200,
-          "bytes": 1707
+          "bytes": 1710
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 259,
-        "links_total": 8551,
-        "links_candidatos": 211,
+        "paginas_lidas": 265,
+        "links_total": 8381,
+        "links_candidatos": 238,
         "descobertas": [],
         "pdf_links": 0,
         "motivo_zero": null,
@@ -556,11 +556,16 @@
         "fontes": {
           "A": {
             "falhas": [],
-            "consultas": 212,
-            "itens": 6844,
+            "consultas": 219,
+            "itens": 6671,
             "ufs_lidas": [
               "GO",
               "DF",
+              "RJ",
+              "RN",
+              "RS",
+              "RO",
+              "RR",
               "SC",
               "SP",
               "SE",
@@ -579,21 +584,19 @@
               "PA",
               "PB",
               "PR",
-              "PE",
-              "PI",
-              "RJ"
+              "PE"
             ],
-            "cortados": 9,
+            "cortados": 43,
             "paginas_pendentes": [
-              "SP/Credenciamento: páginas 21–21",
-              "BA/Credenciamento: páginas 21–27",
-              "PR/Credenciamento: páginas 21–21"
+              "RS/Credenciamento: páginas 21–27",
+              "SC/Credenciamento: páginas 21–22",
+              "MG/Credenciamento: páginas 21–54"
             ]
           },
           "B": {
             "falhas": [],
-            "consultas": 47,
-            "itens": 1707
+            "consultas": 46,
+            "itens": 1710
           },
           "C": {
             "falhas": [],
@@ -606,6 +609,11 @@
           "ufs_lidas": [
             "GO",
             "DF",
+            "RJ",
+            "RN",
+            "RS",
+            "RO",
+            "RR",
             "SC",
             "SP",
             "SE",
@@ -624,22 +632,25 @@
             "PA",
             "PB",
             "PR",
-            "PE",
-            "PI",
-            "RJ"
+            "PE"
           ],
           "proxima_comeca_em": null,
-          "faltam_no_dia": []
+          "faltam_no_dia": [
+            "PI"
+          ]
         },
-        "cortados": 9,
+        "paginas_nao_lidas": [
+          "propostas abertas — PI"
+        ],
+        "cortados": 43,
         "vereditos": {
-          "OPORTUNIDADE": 211,
+          "OPORTUNIDADE": 238,
           "ACOMPANHAR": 0,
-          "RUIDO": 7967,
+          "RUIDO": 7762,
           "quarentena": 0
         }
       },
-      "duracao_s": 820
+      "duracao_s": 857
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
@@ -2548,10 +2559,10 @@
     "plat-cnpq-extensao": {
       "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
       "tipo": "plataforma",
-      "leituras": 30,
+      "leituras": 31,
       "achados_total": 0,
-      "vazias_seguidas": 30,
-      "ultima": "2026-10-06T15:00:11+00:00",
+      "vazias_seguidas": 31,
+      "ultima": "2026-10-06T20:02:12+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2559,12 +2570,12 @@
         {
           "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
           "http": 200,
-          "bytes": 138779
+          "bytes": 138785
         },
         {
           "url": "https://www.gov.br/mcti/pt-br/centrais-de-conteudo/comunicados-mcti",
           "http": 200,
-          "bytes": 175044
+          "bytes": 175642
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
@@ -2600,7 +2611,7 @@
         "camada1_direcionados": 20,
         "paginas_alem_do_limite": 1
       },
-      "duracao_s": 12
+      "duracao_s": 15
     },
     "plat-empresas-editais-incentivados": {
       "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
@@ -3254,17 +3265,17 @@
     "plat-prefeituras-50-go": {
       "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
       "tipo": "plataforma",
-      "leituras": 35,
-      "achados_total": 31,
+      "leituras": 36,
+      "achados_total": 32,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-06T18:09:31+00:00",
+      "ultima": "2026-10-06T19:43:51+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.goiania.go.gov.br",
-          "status": "parcial"
+          "status": "lida"
         },
         {
           "url": "https://aparecida.go.gov.br",
@@ -3283,19 +3294,18 @@
         "origem": "GitHub",
         "livros": {
           "livros_novos": 0,
-          "livros_atualizados": 1,
+          "livros_atualizados": 4,
           "vetados_pelas_restricoes": 0,
           "pendentes_das_restricoes": 0
         },
         "cidades_por_status": {
-          "parcial": 4,
-          "lida": 11,
+          "lida": 13,
+          "parcial": 2,
           "falhou": 9,
           "não lida": 1
         },
         "paginas_lidas": 13,
         "paginas_nao_lidas": [
-          "Goiânia · qd: falhou (Querido Diário instável)",
           "Aparecida de Goiânia · qd: falhou (Querido Diário instável)",
           "Rio Verde: não alcançada nesta execução (tempo)",
           "Luziânia · portal: parcial (tempo)",
@@ -3307,22 +3317,21 @@
           "Planaltina: não alcançada nesta execução (tempo)",
           "Santo Antônio do Descoberto: não alcançada nesta execução (tempo)",
           "Mineiros: não alcançada nesta execução (tempo)",
-          "Inhumas · wp: falhou (http 503)",
           "Itaberaí: não alcançada nesta execução (tempo)",
           "Jaraguá: não alcançada nesta execução (tempo)",
           "Quirinópolis: não alcançada nesta execução (tempo)"
         ],
         "leitura_do_dia": {
           "cidades": 25,
-          "lidas": 11,
-          "parciais": 4,
+          "lidas": 13,
+          "parciais": 2,
           "aguardando_brasil": 0,
           "falharam": 9,
           "rotas_aguardando_brasil": 0,
-          "rotas_nao_lidas": 16
+          "rotas_nao_lidas": 14
         }
       },
-      "duracao_s": 908
+      "duracao_s": 907
     },
     "plat-prosas": {
       "nome": "Prosas — editais para o terceiro setor",
@@ -5867,11 +5876,11 @@
     "judiciario-tjgo": {
       "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
       "tipo": "diario_justica",
-      "leituras": 20,
+      "leituras": 21,
       "achados_total": 0,
-      "vazias_seguidas": 20,
+      "vazias_seguidas": 21,
       "duracao_s": 3,
-      "ultima": "2026-10-06T17:54:23+00:00",
+      "ultima": "2026-10-06T19:28:38+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -6081,11 +6090,11 @@
     "mptgo-destinacao": {
       "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
       "tipo": "ministerio_publico",
-      "leituras": 9,
-      "achados_total": 18,
+      "leituras": 10,
+      "achados_total": 20,
       "vazias_seguidas": 0,
-      "duracao_s": 9,
-      "ultima": "2026-10-06T10:55:18+00:00",
+      "duracao_s": 6,
+      "ultima": "2026-10-06T19:28:44+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
       "falhas_ultima": 0,
@@ -6154,7 +6163,7 @@
           "mpgo.mp.br",
           "destinacoes.mpt.mp.br"
         ],
-        "pdfs_lidos": 1,
+        "pdfs_lidos": 0,
         "sem_texto": 0,
         "vereditos": {
           "OPORTUNIDADE": 2,
@@ -6184,11 +6193,11 @@
     "mpu-destinacao": {
       "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
       "tipo": "ministerio_publico",
-      "leituras": 5,
+      "leituras": 6,
       "achados_total": 0,
-      "vazias_seguidas": 5,
+      "vazias_seguidas": 6,
       "duracao_s": 0,
-      "ultima": "2026-10-05T22:57:09+00:00",
+      "ultima": "2026-10-06T19:28:44+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -6455,13 +6464,13 @@
     "plat-estaduais-go-gov": {
       "nome": "Oportunidade Estaduais Governamentais de Goiás",
       "tipo": "plataforma",
-      "leituras": 13,
-      "achados_total": 6,
-      "vazias_seguidas": 1,
-      "duracao_s": 99,
-      "ultima": "2026-10-06T15:53:01+00:00",
+      "leituras": 14,
+      "achados_total": 7,
+      "vazias_seguidas": 0,
+      "duracao_s": 230,
+      "ultima": "2026-10-06T19:47:41+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 0,
+      "achados_ultima": 1,
       "falhas_ultima": 0,
       "saude": [
         {
@@ -6479,19 +6488,31 @@
         "orgaos": 37,
         "descobertos_agora": 0,
         "camadas_feitas": {
-          "4": 36
+          "4": 36,
+          "1": 1,
+          "2": 1,
+          "3": 1
         },
         "falhas": [],
-        "paginas_lidas": 36,
-        "motivo_zero": "36 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje",
+        "paginas_lidas": 39,
+        "motivo_zero": null,
+        "livros": {
+          "livros_novos": 0,
+          "livros_atualizados": 4,
+          "vetados_pelas_restricoes": 1,
+          "pendentes_das_restricoes": 0
+        },
         "pendentes_livros": 0,
         "cobertura_orgaos": {
-          "devidos": 36,
+          "devidos": 37,
           "monitorados_hoje": 36,
-          "pendentes": []
+          "pendentes": [
+            "seds"
+          ]
         },
+        "paginas_nao_lidas": 1,
         "orgaos_por_camada": {
-          "camada 4": 36
+          "camada 4": 37
         }
       }
     },
@@ -7534,51 +7555,49 @@
   },
   "ultima_execucao": {
     "data": "2026-10-06",
-    "em": "2026-10-06T18:10:08+00:00",
+    "em": "2026-10-06T20:02:12+00:00",
     "manual": [
-      "camara-goiania-pl",
-      "do-goiania",
-      "do-goias",
-      "dou",
       "judiciario-tjgo",
+      "mptgo-destinacao",
+      "mpu-destinacao",
+      "plat-cnpq-extensao",
       "plat-empresas-editais-incentivados",
+      "plat-estaduais-go-gov",
       "plat-prefeituras-50-go",
-      "plat-salic",
       "pncp-api",
       "recorrencia"
     ],
     "bloco": "manual",
     "sensores_executados": 7,
     "adiados_por_tempo": [
-      "pncp-api",
       "plat-empresas-editais-incentivados",
       "recorrencia"
     ],
-    "duracao_s": 2093,
-    "em_espera": 117,
+    "duracao_s": 2018,
+    "em_espera": 118,
     "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 10,
-    "novos_na_base": 6,
+    "achados": 242,
+    "novos_na_base": 128,
     "por_tipo": {
-      "diario_oficial": {
-        "sensores": 3,
-        "achados": 6,
-        "falhas": 0
-      },
-      "legislativo": {
-        "sensores": 1,
-        "achados": 0,
-        "falhas": 0
-      },
       "diario_justica": {
         "sensores": 1,
         "achados": 0,
         "falhas": 2
       },
-      "plataforma": {
+      "ministerio_publico": {
         "sensores": 2,
-        "achados": 4,
+        "achados": 2,
+        "falhas": 0
+      },
+      "plataforma": {
+        "sensores": 3,
+        "achados": 2,
+        "falhas": 0
+      },
+      "api": {
+        "sensores": 1,
+        "achados": 238,
         "falhas": 0
       }
     }
