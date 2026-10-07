@@ -1,5 +1,5 @@
 {
- "em": "2026-10-07T22:30:27+00:00",
+ "em": "2026-10-07T22:45:42+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1844,
  "positivos": 731,
@@ -37,6 +37,12 @@
    "incerteza": 0.993
   },
   {
+   "titulo": "MUNICIPIO DE SAO SEBASTIAO DO PARAISO — Constitui objeto do presente chamamento público o credenciamento de pessoa jurídica para a prestação",
+   "url": "https://pncp.gov.br/app/editais/18241349000180/2026/146",
+   "nota": 0.496,
+   "incerteza": 0.992
+  },
+  {
    "titulo": "Chamada nº 009/2026 – FAPESPA/CNPq/CAPES",
    "url": "https://www.fapespa.pa.gov.br/2026/07/01/chamada-n-o-009-2026-fapespa-cnpq-capes",
    "nota": 0.505,
@@ -64,12 +70,6 @@
    "titulo": "Edital de Chamada Pública FAPESC/EPAGRI N.º 049/2026 - Programa de Fomento à Agropecuária Catarinense",
    "url": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-epagri-n-o-49-2026-programa-de-fomento-a-agropecuaria-catarinense-estimulo-na-formacao-de-recursos-humanos-por-meio-de-bolsas-de-producao-cientifica-tecnologica",
    "nota": 0.494,
-   "incerteza": 0.987
-  },
-  {
-   "titulo": "MUNICIPIO DE SAO LOURENCO DO SUL — [Portal de Compras Públicas] - Seleção de Organização Social para a prestação de serviços técnicos especi",
-   "url": "https://pncp.gov.br/app/editais/87893111000152/2026/419",
-   "nota": 0.493,
    "incerteza": 0.987
   },
   {
@@ -151,6 +151,12 @@
    "incerteza": 0.962
   },
   {
+   "titulo": "ESTADO DO ACRE — 4º PRÊMIO DE COMUNICAÇÃO DO GOVERNO DO ESTADO DO ACRE “MOISÉS ALENCASTRO\"",
+   "url": "https://pncp.gov.br/app/editais/63606479000124/2026/123",
+   "nota": 0.519,
+   "incerteza": 0.961
+  },
+  {
    "titulo": "Edital de eleição do CNPC",
    "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-de-eleicao-do-cnpc/edital-de-eleicao-do-cnpc",
    "nota": 0.48,
@@ -215,12 +221,6 @@
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8409/",
    "nota": 0.474,
    "incerteza": 0.948
-  },
-  {
-   "titulo": "MUNICIPIO DE SAO SEBASTIAO DO PARAISO — Constitui objeto do presente chamamento público o credenciamento de pessoa jurídica para a prestação",
-   "url": "https://pncp.gov.br/app/editais/18241349000180/2026/146",
-   "nota": 0.526,
-   "incerteza": 0.947
   },
   {
    "titulo": "Prêmio Ibermúsicas de composição de obra para Orquestra Sinfônica 2026: USD 2.500 e estreia por orquestra nacional",
@@ -373,5 +373,5 @@
    "incerteza": 0.913
   }
  ],
- "pendentes_provaveis_reais": 170
+ "pendentes_provaveis_reais": 172
 }
