@@ -1,13 +1,13 @@
 {
- "em": "2026-10-07T07:26:34+00:00",
+ "em": "2026-10-07T10:28:54+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17944,
-  "oportunidades_distintas": 2137,
+  "coletados": 17948,
+  "oportunidades_distintas": 2141,
   "entidades_em_2_ou_mais_canais": 19,
   "etapas": {
-   "CONSOLIDADO": 17224,
-   "EM_LIVRO": 591,
+   "CONSOLIDADO": 17226,
+   "EM_LIVRO": 593,
    "REPROCESSAR": 86,
    "QUALIFICADO": 43
   },
@@ -60,9 +60,9 @@
   {
    "canal": "piloto-aberto",
    "familia": "pilotos",
-   "registros": 118,
-   "entidades": 113,
-   "exclusivas": 109,
+   "registros": 121,
+   "entidades": 116,
+   "exclusivas": 112,
    "corroboradas": 4,
    "validadas_como_reais": 8
   },
@@ -114,9 +114,9 @@
   {
    "canal": "dou",
    "familia": "diario_oficial",
-   "registros": 22,
-   "entidades": 13,
-   "exclusivas": 13,
+   "registros": 23,
+   "entidades": 14,
+   "exclusivas": 14,
    "corroboradas": 0,
    "validadas_como_reais": 2
   },
@@ -600,5 +600,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 0
+ "eventos_no_livro_razao": 3
 }
