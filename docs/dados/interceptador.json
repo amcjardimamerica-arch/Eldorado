@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-07T09:10:16+00:00",
+  "em": "2026-10-07T09:22:45+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-07T09:08:23+00:00",
+  "ultimo_voo": "2026-10-07T09:14:58+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,80 @@
     "empresas sem ficha": 124
   },
   "acumulado": {
-    "missoes": 513,
+    "missoes": 514,
     "validadas": 22,
     "parciais": 158,
-    "insuficientes": 333,
+    "insuficientes": 334,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 80,
-      "sim": 363
+      "sim": 364
     },
     "estrelas_de_ouro": 43,
     "fontes_novas_para_os_motores": 66,
-    "tempo_medio_min": 12.4
+    "tempo_medio_min": 12.3
   },
   "missoes": [
+    {
+      "em": "2026-10-07T09:14:58+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · livro da Biblioteca",
+      "alvo": "Contratação de artistas, grupos e bandas musicais, em diferentes estilos musicais a fim de atender aos… — MUNI… — Brasil",
+      "qualidade": "insuficiente",
+      "comprovados": 1,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O PNCP é uma fonte oficial de informações sobre contratações públicas no Brasil, incluindo editais de fomento para organizações da sociedade civil.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há editais disponíveis no PNCP que sejam compatíveis com suas áreas de atuação (assistência social, cultura, educação, esporte) e seguir o processo de inscrição e submissão de propostas conforme definido no edital.",
+        "proximo_passo": "Consultar regularmente o PNCP para identificar editais relevantes e verificar os requisitos e prazos de cada um.",
+        "risco": "A falta de informações detalhadas, como prazos e requisitos, pode dificultar o acesso ao edital e a elaboração de uma proposta adequada."
+      },
+      "erro": null,
+      "segundos": 466,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-8476c2b2ed36",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "PNCP - Portal Nacional de Contratações Públicas",
+          "trecho": "PNCP - Portal Nacional de Contratações Públicas",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "MUNI…",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-10-07T09:08:23+00:00",
       "modo": "validar",
@@ -2644,94 +2703,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-06T22:38:08+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · oportunidade do mapa",
-      "alvo": "Edital 001/2026 - Recaatingar: Apoio à Recuperação Socioprodutiva de Terras Degradadas do Bioma Caatinga",
-      "qualidade": "parcial",
-      "comprovados": 10,
-      "dispensados": 1,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de recurso",
-        "Anexos"
-      ],
-      "pagina_oficial": "https://floresta-viva.fbds.org.br/edital-001-2026",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre objeto, valor, prazo de inscrição, resultado, financiador e requisitos.",
-        "para_a_amc": "A associação comunitária precisa estar legalmente constituída no Brasil há pelo menos 2 anos e submeter um projeto de recuperação socioprodutiva de terras degradadas na Caatinga.",
-        "proximo_passo": "Verificar os requisitos do edital e preparar o projeto de acordo com o objeto do edital.",
-        "risco": "A associação pode não atender aos requisitos de constituição há pelo menos 2 anos ou não ter capacidade de desenvolver o projeto conforme o edital."
-      },
-      "erro": null,
-      "segundos": 915,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 9,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de recurso, Anexos",
-      "id": "agr-45f01404a044",
-      "encontrou": {
-        "Objeto": {
-          "valor": "selecionar projetos para a implementação de ações de recuperação socioprodutiva de terras degradadas na Caatinga",
-          "trecho": "O presente Edital tem como objetivo selecionar projetos para a implementação de ações de recuperação socioprodutiva de terras degradadas na Caatinga",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "dispensado — O edital dispensa a menção de prazo de inscrição único, pois apresenta dois ciclos com datas específicas.",
-          "trecho": "10 de junho, por Ricardo Porto",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Valor": {
-          "valor": "até R$ 55.200.000,00 (cinquenta e cinco milhões e duzentos mil reais)",
-          "trecho": "Serão disponibilizados até R$ 55.200.000,00 (cinquenta e cinco milhões e duzentos mil reais) para apoio a projetos no âmbito deste Edital",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Floresta Viva",
-          "trecho": "Edital 001/2026 - Floresta Viva",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "null",
-          "trecho": "Cada proposta poderá contemplar áreas localizadas em diferentes municípios, desde que todos pertençam ao mesmo estado da federação",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "meio_ambiente",
-          "trecho": "Apoio à Recuperação Socioprodutiva de Terras Degradadas do Bioma Caatinga",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "São elegíveis como proponentes pessoas jurídicas de direito privado sem fins lucrativos, sediadas no País, incluindo associações civis, fundações privadas e cooperativas em qualque",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "estar legalmente constituídas no Brasil há pelo menos 2 anos, contados da data de constituição até a data de submissão d",
-          "trecho": "As pessoas jurídicas de direito privado deverão estar legalmente constituídas no Brasil há pelo menos 2 anos, contados da data de constituição até a data de submissão da proposta",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Floresta Viva",
-      "indicios": [],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento"
       ]
     }
   ]
