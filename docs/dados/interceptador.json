@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-07T05:51:26+00:00",
+  "em": "2026-10-07T06:08:15+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-07T05:36:22+00:00",
+  "ultimo_voo": "2026-10-07T05:56:15+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,95 @@
     "empresas sem ficha": 124
   },
   "acumulado": {
-    "missoes": 500,
+    "missoes": 501,
     "validadas": 21,
-    "parciais": 153,
+    "parciais": 154,
     "insuficientes": 326,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 76,
-      "sim": 356
+      "sim": 357
     },
     "estrelas_de_ouro": 43,
-    "fontes_novas_para_os_motores": 59,
+    "fontes_novas_para_os_motores": 60,
     "tempo_medio_min": 12.4
   },
   "missoes": [
+    {
+      "em": "2026-10-07T05:56:15+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · oportunidade do mapa",
+      "alvo": "Prêmio Academia Assaí",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Resultado",
+        "Prazo de recurso",
+        "Requisitos",
+        "Anexos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.assai.com.br/campanha/premio-academia-assai-encerrada",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O prazo de inscrição foi mencionado como dispensado até 23/05/24, o que indica que o prazo está definido, embora não tenha sido especificado como recurso.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no prazo definido (até 23/05/24) e demonstrar que sua atividade está alinhada com os objetivos do prêmio, embora o objeto não tenha sido especificado.",
+        "proximo_passo": "Verificar o prazo de inscrição e se a atividade da associação se enquadra no escopo do prêmio.",
+        "risco": "O prazo de inscrição pode expirar sem que a associação tenha se preparado adequadamente, e a falta de especificação do objeto pode dificultar o acesso ao prêmio."
+      },
+      "erro": null,
+      "segundos": 719,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 5,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Objeto, Resultado, Prazo de recurso, Requisitos",
+      "id": "3fb88f219963db3a0799",
+      "encontrou": {
+        "Prazo de inscrição": {
+          "valor": "dispensado — O texto menciona o prazo de inscrição até 23/05/24.",
+          "trecho": "Inscrições até 23/05/24. [rejeitado: data implausível para edital aberto]",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Valor": {
+          "valor": "R$1.3 milhão",
+          "trecho": "Ao todo, serão R$1.3 milhão em prêmios para 2.100 empreendedores de alimentação em todo o país.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Assaí Atacadista",
+          "trecho": "Prêmio Academia Assaí | Assaí Atacadista",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "nacional",
+          "trecho": "Ao todo, serão R$1.3 milhão em prêmios para 2.100 empreendedores de alimentação em todo o país.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · premio",
+          "trecho": "Prêmio Academia Assaí | Assaí Atacadista",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Assaí",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-10-07T05:36:22+00:00",
       "modo": "validar",
@@ -2612,84 +2686,6 @@
       "indicios": [],
       "rotas": [
         "financiador_programa_edital"
-      ]
-    },
-    {
-      "em": "2026-10-06T18:32:35+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · oportunidade do mapa",
-      "alvo": "Chamada FAPEMIG 007/2026 – Organização de Eventos de Caráter Técnico-Científico",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de recurso",
-        "Órgão / financiador",
-        "Anexos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://fapemig.br/oportunidades/chamadas-e-editais/chamada-fapemig-007-2026-organizacao-de-eventos-de-carater-tecnico-cientifico-oet-1a-entrada",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "A Chamada FAPEMIG 007/2026 está comprovada com dados de objeto, prazo de inscrição, resultado e outros requisitos.",
-        "para_a_amc": "Uma associação comunitária de Goiânia precisaria verificar se é uma ICT-MG cadastrada na FAPEMIG, ter um coordenador com vínculo empregatício formal e currículo atualizado na Plataforma Latte para acessar o edital.",
-        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos de cadastramento como ICT-MG na FAPEMIG.",
-        "risco": "A associação comunitária de Goiânia pode não ser uma ICT-MG cadastrada na FAPEMIG, o que impediria seu acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 1289,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 8,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de recurso, Órgão / financiador, Anexos, Área de atuação",
-      "id": "agr-21c5278a274a",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Incentivar a divulgação de resultados de pesquisas científicas, tecnológicas e de inovação e contribuir para a promoção do intercâmbio científico e tecnológico por meio do apoio à organização de eventos científico-tecnológicos no Estado de Minas Gerais.",
-          "trecho": "Incentivar a divulgação de resultados de pesquisas científicas, tecnológicas e de inovação e contribuir para a promoção do intercâmbio científico e tecnológico por meio do apoio à ",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-05-21 a 2026-07-28",
-          "trecho": "Submissão de Proposta: 21/05/2026 - 28/07/2026",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 7,5 milhões",
-          "trecho": "Valor da chamada: R$ 7,5 milhões",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "MG",
-          "trecho": "no Estado de Minas Gerais",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "Incentivar a divulgação de resultados de pesquisas científicas, tecnológicas e de inovação e contribuir para a promoção do intercâmbio científico e tecnológico por meio do apoio à ",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Instituição Proponente (Executora): Deve ser uma ICT-MG cadastrada na FAPEMIG, conforme a Portaria PRE nº 20/2024., Coordenador da Proposta: Ter vínculo empregatício formal com a ICT-MG (celetista, estatutário ou contratual)., Coordenador da Proposta: Possuir currículo atualizado na Plataforma Latte",
-          "trecho": "1. Instituição Proponente (Executora): Deve ser uma ICT-MG cadastrada na FAPEMIG, conforme a Portaria PRE nº 20/2024. 2. Coordenador da Proposta: Ter vínculo empregatício formal co",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "FAPEMIG",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ]
