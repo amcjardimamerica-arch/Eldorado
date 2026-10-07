@@ -1,40 +1,11 @@
 {
- "em": "2026-10-07T14:43:50+00:00",
+ "em": "2026-10-07T14:52:57+00:00",
  "lote": 100,
  "estado": {
   "interceptador_erros_vistos": 268,
-  "espiao_erros_vistos": 716511
+  "espiao_erros_vistos": 721244
  },
  "ultimos_ciclos": [
-  {
-   "piloto": "espiao",
-   "em": "2026-10-07T12:52:02+00:00",
-   "erros_no_lote": 1000,
-   "motivos": [
-    [
-     "nada_no_crivo",
-     997
-    ],
-    [
-     "sem_texto",
-     3
-    ]
-   ],
-   "rendimento_por_missao": {
-    "descobrir": "0/3529",
-    "aposta": "0/1438",
-    "catalogar": "0/33"
-   },
-   "parametros_novos": {
-    "pesos_missao": {
-     "descobrir": 0.1,
-     "aposta": 0.1,
-     "catalogar": 0.1
-    },
-    "termos_fora_do_objeto": []
-   },
-   "onde_falha": "missões que quase nunca rendem (descobrir, aposta, catalogar) perdem vagas; termos de 'fora do objeto' descartados na origem"
-  },
   {
    "piloto": "espiao",
    "em": "2026-10-07T13:04:45+00:00",
@@ -66,7 +37,7 @@
   },
   {
    "piloto": "espiao",
-   "em": "2026-10-07T13:33:48+00:00",
+   "em": "2026-10-07T13:35:16+00:00",
    "erros_no_lote": 1000,
    "motivos": [
     [
@@ -95,7 +66,7 @@
   },
   {
    "piloto": "espiao",
-   "em": "2026-10-07T13:52:31+00:00",
+   "em": "2026-10-07T13:53:24+00:00",
    "erros_no_lote": 1000,
    "motivos": [
     [
@@ -124,7 +95,7 @@
   },
   {
    "piloto": "espiao",
-   "em": "2026-10-07T14:06:56+00:00",
+   "em": "2026-10-07T14:13:54+00:00",
    "erros_no_lote": 1000,
    "motivos": [
     [
@@ -153,7 +124,7 @@
   },
   {
    "piloto": "espiao",
-   "em": "2026-10-07T14:29:38+00:00",
+   "em": "2026-10-07T14:33:28+00:00",
    "erros_no_lote": 1000,
    "motivos": [
     [
@@ -168,6 +139,35 @@
    "rendimento_por_missao": {
     "descobrir": "0/3541",
     "aposta": "0/1426",
+    "catalogar": "0/33"
+   },
+   "parametros_novos": {
+    "pesos_missao": {
+     "descobrir": 0.1,
+     "aposta": 0.1,
+     "catalogar": 0.1
+    },
+    "termos_fora_do_objeto": []
+   },
+   "onde_falha": "missões que quase nunca rendem (descobrir, aposta, catalogar) perdem vagas; termos de 'fora do objeto' descartados na origem"
+  },
+  {
+   "piloto": "espiao",
+   "em": "2026-10-07T14:52:57+00:00",
+   "erros_no_lote": 1000,
+   "motivos": [
+    [
+     "nada_no_crivo",
+     999
+    ],
+    [
+     "sem_texto",
+     1
+    ]
+   ],
+   "rendimento_por_missao": {
+    "descobrir": "0/3525",
+    "aposta": "0/1442",
     "catalogar": "0/33"
    },
    "parametros_novos": {
@@ -249,7 +249,7 @@
    "consultas_boas": [
     {
      "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas",
-     "tentativas": 94936,
+     "tentativas": 94937,
      "com_resultado": 912,
      "achados": 1216,
      "missao": "aposta"
@@ -511,8 +511,8 @@
     "fundação",
     "empresarial",
     "prêmio",
-    "municipal",
     "câmara",
+    "municipal",
     "bndes"
    ],
    "rendimento_das_buscas": {
@@ -527,7 +527,7 @@
      "taxa": 0.0
     }
    },
-   "consultas_aprendidas_em": "2026-10-07T14:30:07+00:00",
+   "consultas_aprendidas_em": "2026-10-07T14:33:55+00:00",
    "restricoes_fixas": {
     "regra": "FIXAS e só NEGATIVAS (titular, 01/10): o que falhou repetidamente não volta; todo o resto é busca criativa, renovada a cada 100 pesquisas",
     "desde": "2026-10-01T14:01:07+00:00",
@@ -658,7 +658,7 @@
    "intervalo_busca_local_s": 6.0,
    "max_buscas_ponte_por_voo": 3
   },
-  "atualizado_em": "2026-10-07T14:29:38+00:00",
+  "atualizado_em": "2026-10-07T14:52:57+00:00",
   "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
  }
 }
