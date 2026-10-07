@@ -6,7 +6,7 @@
       "leituras": 71,
       "achados_total": 28,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T17:36:32+00:00",
+      "ultima": "2026-10-07T18:17:34+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -70,7 +70,7 @@
           "2026-10-01 nº 8875"
         ]
       },
-      "duracao_s": 301
+      "duracao_s": 541
     },
     "do-goias": {
       "nome": "Diário Oficial do Estado de Goiás",
@@ -78,7 +78,7 @@
       "leituras": 59,
       "achados_total": 183,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T17:38:56+00:00",
+      "ultima": "2026-10-07T18:19:07+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 5,
       "falhas_ultima": 0,
@@ -137,7 +137,7 @@
           "C": "leu"
         }
       },
-      "duracao_s": 145
+      "duracao_s": 92
     },
     "dou": {
       "nome": "Diário Oficial da União",
@@ -145,26 +145,30 @@
       "leituras": 68,
       "achados_total": 51,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T17:39:37+00:00",
+      "ultima": "2026-10-07T18:21:09+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
-      "falhas_ultima": 0,
+      "falhas_ultima": 7,
       "saude": [
         {
-          "url": "https://www.in.gov.br/leiturajornal?data=07-10-2026&secao=do1",
-          "http": 200,
-          "bytes": 0
+          "url": "https://www.in.gov.br/leiturajornal?data=07-10-2026&secao=do3",
+          "erro": "edicao_nao_lida",
+          "code": null,
+          "waf": null,
+          "causa": "2026-10-07 do1: conexão derrubada pelo servidor: Remote end closed connection without response"
         },
         {
-          "url": "https://www.in.gov.br/leiturajornal?data=07-10-2026&secao=do3",
-          "http": 200,
-          "bytes": 0
+          "url": "https://www.in.gov.br/leiturajornal",
+          "erro": "secao_nao_lida",
+          "code": null,
+          "waf": null,
+          "causa": "2026-10-07 do1: conexão derrubada pelo servidor: Remote end closed connection without response"
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 9,
-        "links_total": 7409,
+        "paginas_lidas": 0,
+        "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
@@ -173,56 +177,42 @@
         "nuvem": true,
         "fontes": {
           "A": {
-            "falhas": [],
+            "falhas": [
+              "2026-10-07 do1: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "2026-10-07 do3: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "2026-10-06 do1: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "2026-10-06 do3: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "2026-10-05 do1: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "2026-10-05 do3: conexão derrubada pelo servidor: Remote end closed connection without response"
+            ],
             "materias_lidas": 0,
-            "secoes_lidas": 9,
-            "materias_no_jornal": 7409,
+            "secoes_lidas": 0,
+            "materias_no_jornal": 0,
             "textos_abertos": 0,
-            "cortes": {
-              "sem_termo": 3
-            },
+            "cortes": {},
             "edicoes_do_dia": {
-              "2026-10-07": [
-                "DO1E"
-              ],
+              "2026-10-07": [],
               "2026-10-06": [],
-              "2026-10-05": [
-                "DO1E",
-                "DO3E"
-              ]
+              "2026-10-05": []
             },
-            "lidas_ok": [
-              "2026-10-07|do1",
-              "2026-10-07|do3",
-              "2026-10-07|do1e",
-              "2026-10-06|do1",
-              "2026-10-06|do3",
-              "2026-10-05|do1",
-              "2026-10-05|do3",
-              "2026-10-05|do3e",
-              "2026-10-05|do1e"
-            ],
-            "com_materias": [
-              "2026-10-07|do1",
-              "2026-10-07|do3",
-              "2026-10-07|do1e",
-              "2026-10-06|do1",
-              "2026-10-06|do3",
-              "2026-10-05|do1",
-              "2026-10-05|do3",
-              "2026-10-05|do3e",
-              "2026-10-05|do1e"
-            ],
+            "lidas_ok": [],
+            "com_materias": [],
             "retroativos": [],
             "cortados": 0,
             "dias_nao_lidos": []
           },
           "B": {
             "falhas": [
+              "chamamento público organizações da socie: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "termo de fomento chamamento: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "seleção de projetos entidades sem fins l: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "doação de bens inservíveis entidades: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "catadores de materiais recicláveis chama: conexão derrubada pelo servidor: Remote end closed connection without response",
+              "Política Nacional Aldir Blanc Goiás: conexão derrubada pelo servidor: Remote end closed connection without response",
               "etapa: NameError: name 'tinha_estado' is not defined"
             ],
-            "materias_lidas": 3,
-            "consultas": 6
+            "materias_lidas": 0,
+            "consultas": 0
           }
         },
         "vereditos": {
@@ -231,9 +221,9 @@
           "RUIDO": 0,
           "quarentena": 0
         },
-        "dou_json_materias": 7409
+        "dou_json_materias": 0
       },
-      "duracao_s": 40
+      "duracao_s": 122
     },
     "alego-pl": {
       "nome": "Assembleia Legislativa de Goiás — proposições",
@@ -303,7 +293,7 @@
       "leituras": 54,
       "achados_total": 0,
       "vazias_seguidas": 54,
-      "ultima": "2026-10-07T17:40:41+00:00",
+      "ultima": "2026-10-07T18:21:27+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -381,7 +371,7 @@
           "motivo": "o robots.txt do SUAP (suap.camaragyn.go.gov.br) proíbe robôs (Disallow: /) — os processos e a tramitação vêm das pautas do Plenário no portal; a ficha do processo da associação no SUAP é conferida pelo titular (consulta humana)"
         }
       },
-      "duracao_s": 65
+      "duracao_s": 18
     },
     "cnj-destinacoes": {
       "nome": "CNJ — destinações de penas e prestações pecuniárias",
@@ -1071,10 +1061,10 @@
     "f260-captacao-118": {
       "nome": "Destinação de IR pessoa física para FMDCA",
       "tipo": "site_oficial",
-      "leituras": 44,
-      "achados_total": 21,
+      "leituras": 43,
+      "achados_total": 20,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T18:06:21+00:00",
+      "ultima": "2026-10-07T15:47:18+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
       "falhas_ultima": 1,
@@ -1082,7 +1072,7 @@
         {
           "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
           "http": 200,
-          "bytes": 52767
+          "bytes": 52761
         },
         {
           "url": "https://www.gov.br/pt-br/temas/transparencia-fiscal-orcamento-nacional",
@@ -1122,10 +1112,10 @@
     "f260-captacao-151": {
       "nome": "Emenda estadual para saúde comunitária",
       "tipo": "site_oficial",
-      "leituras": 43,
-      "achados_total": 53,
+      "leituras": 42,
+      "achados_total": 52,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T18:05:30+00:00",
+      "ultima": "2026-10-07T15:46:27+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
       "falhas_ultima": 1,
@@ -1133,12 +1123,12 @@
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 134060
+          "bytes": 134072
         },
         {
           "url": "https://goias.gov.br/saude/",
           "http": 200,
-          "bytes": 309729
+          "bytes": 311949
         }
       ],
       "alerta": null,
@@ -1173,7 +1163,7 @@
         "camada1_vetados": 5,
         "camada1_direcionados": 7
       },
-      "duracao_s": 25
+      "duracao_s": 24
     },
     "f260-captacao-190": {
       "nome": "TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia",
@@ -1234,10 +1224,10 @@
     "f260-captacao-196": {
       "nome": "MPGO - TAC com destinação social",
       "tipo": "site_oficial",
-      "leituras": 43,
+      "leituras": 42,
       "achados_total": 0,
-      "vazias_seguidas": 43,
-      "ultima": "2026-10-07T18:06:08+00:00",
+      "vazias_seguidas": 42,
+      "ultima": "2026-10-07T15:47:05+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1245,7 +1235,7 @@
         {
           "url": "https://www.mpf.mp.br/",
           "http": 200,
-          "bytes": 250224
+          "bytes": 250212
         },
         {
           "url": "https://mpt.mp.br/",
@@ -1288,7 +1278,7 @@
           "https://www.mpgo.mp.br/portal/"
         ]
       },
-      "duracao_s": 37
+      "duracao_s": 39
     },
     "f260-captacao-238": {
       "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
@@ -1296,7 +1286,7 @@
       "leituras": 45,
       "achados_total": 0,
       "vazias_seguidas": 45,
-      "ultima": "2026-10-07T18:06:23+00:00",
+      "ultima": "2026-10-07T18:43:24+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1320,15 +1310,15 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       },
-      "duracao_s": 2
+      "duracao_s": 1
     },
     "f260-captacao-035": {
       "nome": "Lei Rouanet - doação de pessoa física",
       "tipo": "site_oficial",
-      "leituras": 29,
-      "achados_total": 79,
+      "leituras": 30,
+      "achados_total": 84,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T10:21:59+00:00",
+      "ultima": "2026-10-07T18:43:30+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 5,
       "falhas_ultima": 0,
@@ -1336,7 +1326,7 @@
         {
           "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
           "http": 200,
-          "bytes": 126214
+          "bytes": 126220
         },
         {
           "url": "https://www.gov.br/cultura/pt-br/acesso-a-informacao/licitacoes-e-contratos",
@@ -1376,7 +1366,7 @@
         "camada1_vetados": 5,
         "camada1_direcionados": 40
       },
-      "duracao_s": 7
+      "duracao_s": 5
     },
     "f260-captacao-044": {
       "nome": "Projetos aptos à captação na LIE",
@@ -1384,7 +1374,7 @@
       "leituras": 32,
       "achados_total": 0,
       "vazias_seguidas": 32,
-      "ultima": "2026-10-07T18:04:38+00:00",
+      "ultima": "2026-10-07T18:43:23+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1408,7 +1398,7 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       },
-      "duracao_s": 1
+      "duracao_s": 0
     },
     "f260-captacao-060": {
       "nome": "Escolinha de natação/paradesporto adaptado",
@@ -1655,7 +1645,7 @@
       "leituras": 32,
       "achados_total": 0,
       "vazias_seguidas": 32,
-      "ultima": "2026-10-07T18:03:50+00:00",
+      "ultima": "2026-10-07T18:43:05+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1693,7 +1683,7 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       },
-      "duracao_s": 4
+      "duracao_s": 3
     },
     "f260-captacao-223": {
       "nome": "Fundação Bradesco",
@@ -1701,7 +1691,7 @@
       "leituras": 32,
       "achados_total": 0,
       "vazias_seguidas": 32,
-      "ultima": "2026-10-07T18:04:09+00:00",
+      "ultima": "2026-10-07T18:43:16+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1749,15 +1739,15 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       },
-      "duracao_s": 10
+      "duracao_s": 6
     },
     "f260-captacao-227": {
       "nome": "Instituto Coca-Cola Brasil",
       "tipo": "privada",
-      "leituras": 32,
+      "leituras": 31,
       "achados_total": 0,
-      "vazias_seguidas": 32,
-      "ultima": "2026-10-07T18:04:19+00:00",
+      "vazias_seguidas": 31,
+      "ultima": "2026-10-07T15:45:17+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1781,7 +1771,7 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       },
-      "duracao_s": 1
+      "duracao_s": 0
     },
     "f260-captacao-229": {
       "nome": "Instituto Votorantim",
@@ -1824,7 +1814,7 @@
       "leituras": 32,
       "achados_total": 0,
       "vazias_seguidas": 32,
-      "ultima": "2026-10-07T18:03:58+00:00",
+      "ultima": "2026-10-07T18:43:11+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -1872,7 +1862,7 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       },
-      "duracao_s": 9
+      "duracao_s": 5
     },
     "f260-captacao-231": {
       "nome": "Fundação Vale",
@@ -1880,7 +1870,7 @@
       "leituras": 32,
       "achados_total": 0,
       "vazias_seguidas": 32,
-      "ultima": "2026-10-07T18:04:18+00:00",
+      "ultima": "2026-10-07T18:43:23+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -1928,7 +1918,7 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 1
       },
-      "duracao_s": 10
+      "duracao_s": 6
     },
     "f260-captacao-232": {
       "nome": "Instituto Neoenergia",
@@ -1984,10 +1974,10 @@
     "f260-captacao-233": {
       "nome": "Instituto Sicoob",
       "tipo": "privada",
-      "leituras": 32,
+      "leituras": 31,
       "achados_total": 0,
-      "vazias_seguidas": 32,
-      "ultima": "2026-10-07T18:04:37+00:00",
+      "vazias_seguidas": 31,
+      "ultima": "2026-10-07T15:45:34+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -2014,7 +2004,7 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       },
-      "duracao_s": 18
+      "duracao_s": 17
     },
     "f260-captacao-234": {
       "nome": "Instituto Unibanco",
@@ -2158,12 +2148,12 @@
       "nome": "Instituto Sabin",
       "tipo": "privada",
       "leituras": 18,
-      "achados_total": 40,
-      "vazias_seguidas": 0,
-      "ultima": "2026-10-07T18:01:38+00:00",
+      "achados_total": 37,
+      "vazias_seguidas": 1,
+      "ultima": "2026-10-07T18:41:50+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 3,
-      "falhas_ultima": 2,
+      "achados_ultima": 0,
+      "falhas_ultima": 1,
       "saude": [
         {
           "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
@@ -2178,37 +2168,16 @@
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 5,
-        "links_total": 186,
-        "links_candidatos": 129,
-        "descobertas": [
-          {
-            "de": "https://www.institutosabin.org.br/",
-            "para": "https://institutosabin.org.br/transparencia",
-            "rotulo": "Transparência"
-          },
-          {
-            "de": "https://www.institutosabin.org.br/",
-            "para": "https://institutosabin.org.br/category/publicacoes",
-            "rotulo": "Publicações"
-          },
-          {
-            "de": "https://www.institutosabin.org.br/",
-            "para": "https://institutosabin.org.br/edital-da-jornada-transformacao-de-2026-e-lancado",
-            "rotulo": ""
-          },
-          {
-            "de": "https://www.institutosabin.org.br/",
-            "para": "https://institutosabin.org.br/publicacoes",
-            "rotulo": "Publicações"
-          }
-        ],
+        "paginas_lidas": 2,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": null,
+        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
         "camada1_vetados": 0,
-        "camada1_direcionados": 14
+        "camada1_direcionados": 0
       },
-      "duracao_s": 12
+      "duracao_s": 3
     },
     "f260-captacao-038": {
       "nome": "Editais FICA Goiás - artes visuais/exposição",
@@ -2275,7 +2244,7 @@
       "leituras": 37,
       "achados_total": 2,
       "vazias_seguidas": 5,
-      "ultima": "2026-10-07T18:03:36+00:00",
+      "ultima": "2026-10-07T18:42:57+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2327,15 +2296,15 @@
         ],
         "paginas_alem_do_limite": 2
       },
-      "duracao_s": 17
+      "duracao_s": 8
     },
     "f260-captacao-068": {
       "nome": "Emenda estadual para projeto educativo em Goiás",
       "tipo": "site_oficial",
-      "leituras": 41,
+      "leituras": 40,
       "achados_total": 10,
-      "vazias_seguidas": 21,
-      "ultima": "2026-10-07T18:05:05+00:00",
+      "vazias_seguidas": 20,
+      "ultima": "2026-10-07T15:46:02+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -2343,19 +2312,19 @@
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 134060
+          "bytes": 134072
         },
         {
           "url": "https://goias.gov.br/educacao/",
           "http": 200,
-          "bytes": 255489
+          "bytes": 252854
         }
       ],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 5,
-        "links_total": 623,
-        "links_candidatos": 339,
+        "links_total": 616,
+        "links_candidatos": 345,
         "descobertas": [
           {
             "de": "https://portal.al.go.leg.br/",
@@ -2449,7 +2418,7 @@
       "leituras": 30,
       "achados_total": 0,
       "vazias_seguidas": 30,
-      "ultima": "2026-10-07T18:03:46+00:00",
+      "ultima": "2026-10-07T18:43:03+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -2497,7 +2466,7 @@
         "camada1_vetados": 1,
         "camada1_direcionados": 1
       },
-      "duracao_s": 10
+      "duracao_s": 6
     },
     "f260-curadoria-006": {
       "nome": "Instituto Clima e Sociedade (iCS) — chamadas de comunicação e clima",
@@ -2588,23 +2557,23 @@
     "plat-cnpq-extensao": {
       "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
       "tipo": "plataforma",
-      "leituras": 32,
+      "leituras": 33,
       "achados_total": 0,
-      "vazias_seguidas": 32,
-      "ultima": "2026-10-07T13:38:16+00:00",
-      "motivo": "motor regular e geral — todo dia",
+      "vazias_seguidas": 33,
+      "ultima": "2026-10-07T18:39:40+00:00",
+      "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
           "http": 200,
-          "bytes": 144544
+          "bytes": 144676
         },
         {
           "url": "https://www.gov.br/mcti/pt-br/centrais-de-conteudo/comunicados-mcti",
           "http": 200,
-          "bytes": 175515
+          "bytes": 175455
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
@@ -2640,7 +2609,7 @@
         "camada1_direcionados": 20,
         "paginas_alem_do_limite": 1
       },
-      "duracao_s": 11
+      "duracao_s": 8
     },
     "plat-empresas-editais-incentivados": {
       "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
@@ -2648,7 +2617,7 @@
       "leituras": 36,
       "achados_total": 275,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T17:58:37+00:00",
+      "ultima": "2026-10-07T18:41:37+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 23,
       "falhas_ultima": 6,
@@ -2661,7 +2630,7 @@
         {
           "url": "https://www.alcoa.com/brasil/pt/institute/local-project-support-program",
           "http": 200,
-          "bytes": 48553
+          "bytes": 48552
         }
       ],
       "alerta": null,
@@ -2697,7 +2666,7 @@
         "camada1_direcionados": 111,
         "encerrados_no_titulo": 4
       },
-      "duracao_s": 147
+      "duracao_s": 116
     },
     "plat-fapeg": {
       "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
@@ -3295,11 +3264,11 @@
       "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
       "tipo": "plataforma",
       "leituras": 38,
-      "achados_total": 34,
-      "vazias_seguidas": 0,
-      "ultima": "2026-10-07T17:55:45+00:00",
+      "achados_total": 33,
+      "vazias_seguidas": 1,
+      "ultima": "2026-10-07T18:36:31+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 1,
+      "achados_ultima": 0,
       "falhas_ultima": 0,
       "saude": [
         {
@@ -3317,9 +3286,9 @@
         "cidades": 25,
         "falhas": [],
         "camadas": {
-          "4": 12
+          "4": 13
         },
-        "motivo_zero": null,
+        "motivo_zero": "lida: 13; parcial: 2; falhou: 9; não lida: 1 — nenhuma seleção aberta nova hoje",
         "origem": "GitHub",
         "livros": {
           "livros_novos": 0,
@@ -3328,16 +3297,16 @@
           "pendentes_das_restricoes": 0
         },
         "cidades_por_status": {
-          "lida": 14,
-          "parcial": 1,
+          "lida": 13,
+          "parcial": 2,
           "falhou": 9,
           "não lida": 1
         },
-        "paginas_lidas": 12,
+        "paginas_lidas": 13,
         "paginas_nao_lidas": [
-          "Goiânia · qd: parcial (tempo)",
+          "Anápolis · wp: falhou (http 0)",
           "Rio Verde: não alcançada nesta execução (tempo)",
-          "Luziânia: não alcançada nesta execução (tempo)",
+          "Luziânia · portal: parcial (tempo)",
           "Valparaíso de Goiás: não alcançada nesta execução (tempo)",
           "Novo Gama: não alcançada nesta execução (tempo)",
           "Senador Canedo: não alcançada nesta execução (tempo)",
@@ -3352,15 +3321,15 @@
         ],
         "leitura_do_dia": {
           "cidades": 25,
-          "lidas": 14,
-          "parciais": 1,
+          "lidas": 13,
+          "parciais": 2,
           "aguardando_brasil": 0,
           "falharam": 9,
           "rotas_aguardando_brasil": 0,
           "rotas_nao_lidas": 14
         }
       },
-      "duracao_s": 901
+      "duracao_s": 902
     },
     "plat-prosas": {
       "nome": "Prosas — editais para o terceiro setor",
@@ -3413,21 +3382,22 @@
       "leituras": 38,
       "achados_total": 158,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T17:56:09+00:00",
+      "ultima": "2026-10-07T18:39:32+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 3,
-      "falhas_ultima": 0,
+      "falhas_ultima": 1,
       "saude": [
         {
           "url": "https://api.salic.cultura.gov.br/api/v1/projetos/?UF=GO&ano_projeto=26&limit=100&offset=0&format=json",
-          "http": 200,
-          "bytes": 0,
-          "itens": 124
+          "erro": "salic_api",
+          "code": 403,
+          "waf": null,
+          "causa": "HTTPError: HTTP Error 403: Forbidden"
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 2,
+        "paginas_lidas": 0,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
@@ -3448,12 +3418,6 @@
           "dias_restantes": 24
         },
         "fontes": {
-          "2026": {
-            "projetos_go": 124,
-            "novos_no_arquivo": 1,
-            "captado": 3500255.61,
-            "aprovado": 169883168.1
-          },
           "editais_minc": {
             "listados": 4,
             "lidos": 4
@@ -3494,7 +3458,7 @@
           }
         ]
       },
-      "duracao_s": 25
+      "duracao_s": 5
     },
     "plat-secult-go": {
       "nome": "Secult Goiás — Goyazes e Aldir Blanc",
@@ -3554,30 +3518,30 @@
     "recorrencia": {
       "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
       "tipo": "recorrencia",
-      "leituras": 24,
-      "achados_total": 414,
+      "leituras": 23,
+      "achados_total": 397,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T18:01:04+00:00",
+      "ultima": "2026-10-07T15:49:49+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 17,
-      "falhas_ultima": 6,
+      "achados_ultima": 19,
+      "falhas_ultima": 5,
       "saude": [
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 134060
+          "bytes": 134072
         },
         {
           "url": "https://www.gov.br/transferegov/pt-br",
           "http": 200,
-          "bytes": 742113
+          "bytes": 742104
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 37,
-        "links_total": 1993,
-        "links_candidatos": 1403,
+        "paginas_lidas": 38,
+        "links_total": 2219,
+        "links_candidatos": 1529,
         "descobertas": [
           {
             "de": "https://portal.al.go.leg.br/",
@@ -3600,15 +3564,15 @@
             "rotulo": "Credenciamento para a Imprensa"
           }
         ],
-        "pdf_links": 96,
+        "pdf_links": 99,
         "motivo_zero": null,
-        "camada1_vetados": 28,
-        "camada1_direcionados": 93,
+        "camada1_vetados": 30,
+        "camada1_direcionados": 101,
         "rotas_pendentes_local": [
           "https://www.goiania.go.leg.br/parlamentares"
         ]
       },
-      "duracao_s": 147
+      "duracao_s": 137
     },
     "f260-espalhado-acessoainformacao-cavalcante-go-gov-br": {
       "nome": "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE — oportunidades (espalhado de edital validado)",
@@ -3616,55 +3580,31 @@
       "leituras": 16,
       "achados_total": 0,
       "vazias_seguidas": 16,
-      "ultima": "2026-10-07T18:06:30+00:00",
+      "ultima": "2026-10-07T18:43:25+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 0,
+      "falhas_ultima": 1,
       "saude": [
         {
           "url": "https://acessoainformacao.cavalcante.go.gov.br/",
-          "http": 200,
-          "bytes": 199883
-        },
-        {
-          "url": "https://acessoainformacao.cavalcante.go.gov.br/cidadao/transparencia/mgreceitas",
-          "http": 200,
-          "bytes": 46037
+          "erro": "RemoteDisconnected",
+          "code": null,
+          "waf": null,
+          "causa": "conexão recusada/derrubada — filtro de rede ou IP estrangeiro"
         }
       ],
-      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
+      "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 5,
-        "links_total": 779,
-        "links_candidatos": 341,
-        "descobertas": [
-          {
-            "de": "https://acessoainformacao.cavalcante.go.gov.br/",
-            "para": "https://acessoainformacao.cavalcante.go.gov.br/cidadao/transparencia/mgreceitas",
-            "rotulo": "Receitas"
-          },
-          {
-            "de": "https://acessoainformacao.cavalcante.go.gov.br/",
-            "para": "https://acessoainformacao.cavalcante.go.gov.br/cidadao/transparencia/divida_ativa_mg",
-            "rotulo": "Inscritos em Dívida Ativa"
-          },
-          {
-            "de": "https://acessoainformacao.cavalcante.go.gov.br/",
-            "para": "https://acessoainformacao.cavalcante.go.gov.br/cidadao/transparencia/mgdespesas",
-            "rotulo": "Despesas"
-          },
-          {
-            "de": "https://acessoainformacao.cavalcante.go.gov.br/",
-            "para": "https://acessoainformacao.cavalcante.go.gov.br/cidadao/transparencia/mgliquidacoes",
-            "rotulo": "Liquidações"
-          }
-        ],
+        "paginas_lidas": 0,
+        "links_total": 0,
+        "links_candidatos": 0,
+        "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
-        "camada1_vetados": 7,
-        "camada1_direcionados": 5
+        "motivo_zero": "falha: RemoteDisconnected",
+        "camada1_vetados": 0,
+        "camada1_direcionados": 0
       },
-      "duracao_s": 6
+      "duracao_s": 1
     },
     "f260-espalhado-senadorcanedo-go-gov-br": {
       "nome": "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC — oportunidades (espalhado de edital validado)",
@@ -3992,8 +3932,8 @@
       "leituras": 10,
       "achados_total": 0,
       "vazias_seguidas": 10,
-      "duracao_s": 23,
-      "ultima": "2026-10-07T18:02:01+00:00",
+      "duracao_s": 19,
+      "ultima": "2026-10-07T18:42:09+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -4001,7 +3941,7 @@
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 134060
+          "bytes": 134112
         },
         {
           "url": "https://transparencia.al.go.leg.br/legislacoes",
@@ -4051,16 +3991,16 @@
       "leituras": 11,
       "achados_total": 0,
       "vazias_seguidas": 11,
-      "duracao_s": 21,
-      "ultima": "2026-10-07T18:02:22+00:00",
+      "duracao_s": 6,
+      "ultima": "2026-10-07T18:42:15+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 134060
+          "bytes": 134112
         },
         {
           "url": "https://transparencia.al.go.leg.br/legislacoes",
@@ -4068,11 +4008,11 @@
           "bytes": 12850
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 4,
-        "links_total": 341,
-        "links_candidatos": 208,
+        "paginas_lidas": 5,
+        "links_total": 526,
+        "links_candidatos": 370,
         "descobertas": [
           {
             "de": "https://portal.al.go.leg.br/",
@@ -4095,9 +4035,9 @@
             "rotulo": "Credenciamento para a Imprensa"
           }
         ],
-        "pdf_links": 36,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
-        "camada1_vetados": 5,
+        "pdf_links": 38,
+        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
+        "camada1_vetados": 7,
         "camada1_direcionados": 3,
         "rotas_pendentes_local": [
           "https://www.goiania.go.gov.br/educacao/"
@@ -4775,8 +4715,8 @@
       "leituras": 12,
       "achados_total": 0,
       "vazias_seguidas": 12,
-      "duracao_s": 21,
-      "ultima": "2026-10-07T18:02:46+00:00",
+      "duracao_s": 10,
+      "ultima": "2026-10-07T18:42:27+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -4831,8 +4771,8 @@
       "leituras": 12,
       "achados_total": 0,
       "vazias_seguidas": 12,
-      "duracao_s": 10,
-      "ultima": "2026-10-07T18:02:56+00:00",
+      "duracao_s": 6,
+      "ultima": "2026-10-07T18:42:33+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -5038,7 +4978,7 @@
       "achados_total": 0,
       "vazias_seguidas": 12,
       "duracao_s": 0,
-      "ultima": "2026-10-07T18:02:57+00:00",
+      "ultima": "2026-10-07T18:42:33+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -5069,8 +5009,8 @@
       "leituras": 12,
       "achados_total": 0,
       "vazias_seguidas": 12,
-      "duracao_s": 5,
-      "ultima": "2026-10-07T18:03:01+00:00",
+      "duracao_s": 2,
+      "ultima": "2026-10-07T18:42:35+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -5274,11 +5214,11 @@
     "f260-captacao-242": {
       "nome": "PNUD – Small Grants Programme",
       "tipo": "internacional",
-      "leituras": 12,
+      "leituras": 11,
       "achados_total": 0,
-      "vazias_seguidas": 12,
+      "vazias_seguidas": 11,
       "duracao_s": 0,
-      "ultima": "2026-10-07T18:03:02+00:00",
+      "ultima": "2026-10-07T15:44:18+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -5422,8 +5362,8 @@
       "leituras": 12,
       "achados_total": 0,
       "vazias_seguidas": 12,
-      "duracao_s": 2,
-      "ultima": "2026-10-07T18:03:04+00:00",
+      "duracao_s": 3,
+      "ultima": "2026-10-07T18:42:38+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -5431,9 +5371,9 @@
         {
           "url": "https://www.unesco.org/creativity/pt/ifcd",
           "erro": "HTTPError",
-          "code": 404,
+          "code": 503,
           "waf": null,
-          "causa": "HTTP 404"
+          "causa": "HTTP 503"
         }
       ],
       "alerta": null,
@@ -5574,8 +5514,8 @@
       "leituras": 8,
       "achados_total": 14,
       "vazias_seguidas": 0,
-      "duracao_s": 21,
-      "ultima": "2026-10-07T18:01:25+00:00",
+      "duracao_s": 9,
+      "ultima": "2026-10-07T18:41:46+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
       "falhas_ultima": 0,
@@ -5583,7 +5523,7 @@
         {
           "url": "https://www.bnb.gov.br/web/guest/sustentabilidade/investimentos-sociais-e-esportivos",
           "http": 200,
-          "bytes": 146177
+          "bytes": 148241
         },
         {
           "url": "https://www.bnb.gov.br/ConveniosWeb/Logar.aspx",
@@ -5752,8 +5692,8 @@
       "leituras": 12,
       "achados_total": 0,
       "vazias_seguidas": 12,
-      "duracao_s": 14,
-      "ultima": "2026-10-07T18:03:18+00:00",
+      "duracao_s": 9,
+      "ultima": "2026-10-07T18:42:47+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -5864,8 +5804,8 @@
       "leituras": 24,
       "achados_total": 0,
       "vazias_seguidas": 24,
-      "duracao_s": 3,
-      "ultima": "2026-10-07T17:40:44+00:00",
+      "duracao_s": 2,
+      "ultima": "2026-10-07T18:21:29+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -6449,13 +6389,13 @@
     "plat-estaduais-go-gov": {
       "nome": "Oportunidade Estaduais Governamentais de Goiás",
       "tipo": "plataforma",
-      "leituras": 17,
-      "achados_total": 8,
-      "vazias_seguidas": 1,
-      "duracao_s": 95,
-      "ultima": "2026-10-07T15:39:57+00:00",
+      "leituras": 18,
+      "achados_total": 9,
+      "vazias_seguidas": 0,
+      "duracao_s": 176,
+      "ultima": "2026-10-07T18:39:27+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 0,
+      "achados_ultima": 1,
       "falhas_ultima": 0,
       "saude": [
         {
@@ -6473,19 +6413,31 @@
         "orgaos": 37,
         "descobertos_agora": 0,
         "camadas_feitas": {
-          "4": 36
+          "4": 36,
+          "1": 1,
+          "2": 1,
+          "3": 1
         },
         "falhas": [],
-        "paginas_lidas": 36,
-        "motivo_zero": "36 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje",
+        "paginas_lidas": 39,
+        "motivo_zero": null,
+        "livros": {
+          "livros_novos": 0,
+          "livros_atualizados": 4,
+          "vetados_pelas_restricoes": 1,
+          "pendentes_das_restricoes": 0
+        },
         "pendentes_livros": 0,
         "cobertura_orgaos": {
-          "devidos": 36,
+          "devidos": 37,
           "monitorados_hoje": 36,
-          "pendentes": []
+          "pendentes": [
+            "seds"
+          ]
         },
+        "paginas_nao_lidas": 1,
         "orgaos_por_camada": {
-          "camada 4": 36
+          "camada 4": 37
         }
       }
     },
@@ -6749,11 +6701,11 @@
     "f260-espalhado-rouanet-cultura-gov-br": {
       "nome": "Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado)",
       "tipo": "privada",
-      "leituras": 12,
+      "leituras": 11,
       "achados_total": 0,
-      "vazias_seguidas": 12,
+      "vazias_seguidas": 11,
       "duracao_s": 0,
-      "ultima": "2026-10-07T18:03:18+00:00",
+      "ultima": "2026-10-07T15:44:33+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -6841,7 +6793,7 @@
       "achados_total": 0,
       "vazias_seguidas": 12,
       "duracao_s": 1,
-      "ultima": "2026-10-07T18:03:19+00:00",
+      "ultima": "2026-10-07T18:42:48+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -6873,7 +6825,7 @@
       "achados_total": 0,
       "vazias_seguidas": 12,
       "duracao_s": 1,
-      "ultima": "2026-10-07T18:03:19+00:00",
+      "ultima": "2026-10-07T18:42:49+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -7102,8 +7054,8 @@
       "leituras": 11,
       "achados_total": 0,
       "vazias_seguidas": 11,
-      "duracao_s": 3,
-      "ultima": "2026-10-07T18:02:25+00:00",
+      "duracao_s": 1,
+      "ultima": "2026-10-07T18:42:16+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -7135,7 +7087,7 @@
       "achados_total": 0,
       "vazias_seguidas": 11,
       "duracao_s": 1,
-      "ultima": "2026-10-07T18:02:25+00:00",
+      "ultima": "2026-10-07T18:42:17+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -7533,7 +7485,7 @@
   },
   "ultima_execucao": {
     "data": "2026-10-07",
-    "em": "2026-10-07T18:06:30+00:00",
+    "em": "2026-10-07T18:43:30+00:00",
     "manual": [
       "camara-goiania-pl",
       "do-goiania",
@@ -7576,33 +7528,43 @@
       "f260-espalhado-www-novohamburgo-rs-gov-br",
       "f260-espalhado-www-rosariodosul-rs-gov-br",
       "judiciario-tjgo",
+      "plat-cnpq-extensao",
       "plat-empresas-editais-incentivados",
+      "plat-estaduais-go-gov",
       "plat-prefeituras-50-go",
       "plat-salic",
       "pncp-api",
       "recorrencia"
     ],
     "bloco": "manual",
-    "sensores_executados": 40,
+    "sensores_executados": 34,
     "adiados_por_tempo": [
       "pncp-api",
+      "recorrencia",
+      "f260-captacao-242",
+      "f260-espalhado-rouanet-cultura-gov-br",
+      "f260-captacao-227",
+      "f260-captacao-233",
+      "f260-captacao-068",
+      "f260-captacao-151",
+      "f260-captacao-196",
+      "f260-captacao-118",
       "f260-captacao-206",
       "f260-espalhado-senadorcanedo-go-gov-br",
-      "f260-captacao-035",
       "f260-captacao-060",
       "f260-captacao-090"
     ],
-    "duracao_s": 2099,
-    "em_espera": 81,
+    "duracao_s": 2096,
+    "em_espera": 79,
     "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 58,
-    "novos_na_base": 10,
+    "achados": 41,
+    "novos_na_base": 9,
     "por_tipo": {
       "diario_oficial": {
         "sensores": 3,
         "achados": 7,
-        "falhas": 0
+        "falhas": 7
       },
       "legislativo": {
         "sensores": 1,
@@ -7615,29 +7577,24 @@
         "falhas": 2
       },
       "plataforma": {
-        "sensores": 3,
+        "sensores": 5,
         "achados": 27,
-        "falhas": 6
-      },
-      "recorrencia": {
-        "sensores": 1,
-        "achados": 17,
-        "falhas": 6
+        "falhas": 7
       },
       "site_oficial": {
-        "sensores": 15,
-        "achados": 4,
-        "falhas": 12
+        "sensores": 12,
+        "achados": 7,
+        "falhas": 8
       },
       "privada": {
-        "sensores": 14,
-        "achados": 3,
-        "falhas": 18
+        "sensores": 11,
+        "achados": 0,
+        "falhas": 14
       },
       "internacional": {
-        "sensores": 2,
+        "sensores": 1,
         "achados": 0,
-        "falhas": 2
+        "falhas": 1
       }
     }
   }
