@@ -195,6 +195,27 @@ def aplicar(hoje: date | None = None, gravar: bool = True) -> dict:
     cont = Counter()
     for x in livros:
         s = avaliar(x, hoje)
+        # 04/10 (titular): o LIVRO segue o mesmo critério dos 12 itens, sobre o HISTÓRICO conhecido do livro;
+        # a série de edições continua no livro (selo_serie) como informação da análise preditiva
+        try:
+            from .criterio_selos import nivel, faltando
+            _it = dict((x.get("livro") or {}).get("checklist") or {})
+            for _k, _m in (x.get("checklist12") or {}).items():          # dispensas registradas pela verificação
+                _it.setdefault(_k, {"s": "disp", "v": str(_m)})
+            # o HISTÓRICO conhecido do livro também conta (campos do próprio livro e das edições)
+            _hs = sorted([h for h in x.get("historico") or [] if isinstance(h, dict)], key=lambda h: str(h.get("fim") or h.get("inicio") or ""))
+            _u = _hs[-1] if _hs else {}
+            _deriv = {"Objeto": _u.get("titulo") or x.get("programa"),
+                      "Prazo de inscrição": (f'{_u.get("inicio") or "?"} a {_u.get("fim")}' if _u.get("fim") else None),
+                      "Território": x.get("municipio") or ({"BR": "nacional", "INT": "internacional"}.get(str(x.get("geo"))) or x.get("uf")),
+                      "Órgão / financiador": x.get("orgao"), "Esfera": x.get("esfera"), "Área de atuação": x.get("objeto_area"),
+                      "Valor": _u.get("valor")}
+            for _k, _v in _deriv.items():
+                if _v and not str(_v).startswith("?") and _k not in _it:
+                    _it[_k] = {"s": "ok", "v": str(_v), "de": "histórico do livro"}
+            s = dict(s); s["selo_serie"] = s.get("selo"); s["selo"] = nivel(_it); s["faltando"] = faltando(_it)
+        except Exception:  # noqa: BLE001
+            pass
         x["selo_livro"] = s
         cont[s["selo"]] += 1
         blocos[s["bloco"]][s["tipo"]].append({"id": x.get("id"), "nome": x.get("nome_classificado") or x.get("programa"), "selo_livro": s["selo"],
@@ -205,7 +226,7 @@ def aplicar(hoje: date | None = None, gravar: bool = True) -> dict:
     res = {"gerado_em": hoje.isoformat(), "regra": __doc__.split("Também")[0].strip(), "livros": len(livros), "por_selo": dict(cont),
            "ordem_de_resolucao": [NOME_BLOCO[b] for b in BLOCOS], "blocos": {}}
     for b in BLOCOS:
-        tipos = {t: sorted(v, key=lambda r: (ordem[r["selo_livro"]], str(r["nome"]))) for t, v in sorted(blocos[b].items(), key=lambda kv: -len(kv[1]))}
+        tipos = {t: sorted(v, key=lambda r: (ordem.get(r["selo_livro"], 9), str(r["nome"]))) for t, v in sorted(blocos[b].items(), key=lambda kv: -len(kv[1]))}
         res["blocos"][b] = {"nome": NOME_BLOCO[b], "total": sum(len(v) for v in tipos.values()),
                             "por_selo": dict(Counter(r["selo_livro"] for v in tipos.values() for r in v)),
                             "por_tipo": {t: len(v) for t, v in tipos.items()}, "tipos": tipos}
