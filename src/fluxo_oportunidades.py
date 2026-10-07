@@ -451,6 +451,10 @@ def _selos_dos_itens(itens: list[dict]) -> dict:
         it["selo"] = nivel(ck)
         it["selo_faltando"] = faltando(ck)
         it["selo_de"] = "edital atual" if it["selo"] else "edital atual sem objeto, prazo e território identificados"
+    from .criterio_selos import auditar_estrelas
+    _casos = auditar_estrelas(itens)                                       # 04/10: regra permanente — nada acima do critério
+    if _casos:
+        (ROOT / "estado/auditoria_selos.json").write_text(json.dumps({"em": hoje, "rebaixados": _casos}, ensure_ascii=False, indent=1), encoding="utf-8")
     return dict(Counter(it["selo"] for it in itens if it.get("selo")))
 
 

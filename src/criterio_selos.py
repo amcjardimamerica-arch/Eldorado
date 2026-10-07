@@ -43,3 +43,22 @@ def nivel(itens: dict) -> str | None:
 
 def faltando(itens: dict) -> list[str]:
     return [k for k in DOZE if not resolvido((itens or {}).get(k))]
+
+
+ORDEM = {None: 0, "bronze": 1, "prata": 2, "ouro": 3}
+
+
+def auditar_estrelas(itens: list[dict]) -> list[dict]:
+    """REGRA PERMANENTE (04/10): nenhuma estrela acima do que os 12 itens permitem. Recalcula e REBAIXA; devolve os casos."""
+    casos = []
+    for it in itens:
+        devido = nivel(it.get("checklist") or {}) if it.get("selo") else None
+        if ORDEM.get(it.get("selo"), 0) > ORDEM.get(devido, 0):
+            casos.append({"id": it.get("id"), "tinha": it.get("selo"), "ficou": devido, "faltando": faltando(it.get("checklist") or {})})
+            it["selo"] = devido; it["selo_rebaixado_pela_auditoria"] = True
+    return casos
+
+
+def dispensa_valida(motivo: str) -> bool:
+    """Dispensa só com a justificativa de que o item NÃO SE APLICA ("não informado" é falta)."""
+    return bool(JUSTIFICA.search(str(motivo or ""))) and len(str(motivo or "").strip()) >= 20

@@ -37,6 +37,10 @@ def conferir(r: dict, catalogo: set[str]) -> list[str]:
     for ed in r.get("edicoes") or []:
         if ed.get("pagina_oficial") and AGREGADORES.search(str(ed["pagina_oficial"])):
             erros.append("edição com página de agregador")
+    from src.criterio_selos import dispensa_valida
+    for k, m in (r.get("dispensas") or {}).items():                       # 04/10: dispensa sem justificativa de não aplicabilidade
+        if not dispensa_valida(m):
+            erros.append(f"dispensa de '{k}' sem justificativa de que não se aplica (\"não informado\" é falta)")
     texto = json.dumps({k: v for k, v in r.items() if k in ("motivo", "aprendizado", "doze", "dispensas")}, ensure_ascii=False)
     if has_prompt_injection(texto):
         erros.append("texto com instrução dirigida a robô (possível injeção) — recusado")
