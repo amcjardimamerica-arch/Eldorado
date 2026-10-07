@@ -1,13 +1,13 @@
 {
- "em": "2026-10-07T18:44:52+00:00",
+ "em": "2026-10-07T20:46:42+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17795,
-  "oportunidades_distintas": 2004,
+  "coletados": 17798,
+  "oportunidades_distintas": 2007,
   "entidades_em_2_ou_mais_canais": 18,
   "etapas": {
    "CONSOLIDADO": 17212,
-   "EM_LIVRO": 487,
+   "EM_LIVRO": 490,
    "REPROCESSAR": 72,
    "QUALIFICADO": 24
   },
@@ -145,9 +145,9 @@
   {
    "canal": "prefeituras-50-go",
    "familia": "portal_chamamentos",
-   "registros": 11,
-   "entidades": 4,
-   "exclusivas": 3,
+   "registros": 12,
+   "entidades": 5,
+   "exclusivas": 4,
    "corroboradas": 1,
    "validadas_como_reais": 1
   },
@@ -377,6 +377,15 @@
    "validadas_como_reais": 0
   },
   {
+   "canal": "mptgo-destinacao",
+   "familia": "outros",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 2,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
    "canal": "f260-captacao-090",
    "familia": "orgao_publico",
    "registros": 2,
@@ -439,7 +448,7 @@
   "orgao_publico": 24,
   "empresas": 2,
   "justica_mp": 1,
-  "outros": 6
+  "outros": 7
  },
  "corroboradas": [
   {
@@ -570,5 +579,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 3
+ "eventos_no_livro_razao": 0
 }

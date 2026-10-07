@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-10-07T15:43-03:00",
- "proxima_atualizacao": "2026-10-07T21:43-03:00",
+ "gerado_em": "2026-10-07T17:45-03:00",
+ "proxima_atualizacao": "2026-10-07T23:45-03:00",
  "a_cada_horas": 6,
  "regra": "STATUS DOS MOTORES A CADA 6 HORAS (titular, 01/10/2026) — monitoramento e tomada de decisão.\n\nPara cada motor regular: a data e a hora da ÚLTIMA LEITURA, o resultado e UMA de três luzes:\n  VERDE     coletou hoje (horário de Brasília), com dados ou sem dados novos\n  VERMELHO  a coleta de hoje teve erro ou falha\n  CINZA     o motor não rodou hoje (fora da agenda, aguardando coleta local, parado)",
  "contagem": {
-  "verde": 28,
-  "vermelho": 2,
-  "cinza": 12
+  "verde": 30,
+  "vermelho": 1,
+  "cinza": 11
  },
  "motores": [
   {
@@ -19,7 +19,7 @@
     "texto": "dia lido em parte — 3 falha(s) na leitura: pdf 2026-10-06: ErroPonte"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-07T15:17-03:00",
+   "ultima_leitura": "2026-10-07T17:18-03:00",
    "agenda": "todos 06:23,12:53,20:23"
   },
   {
@@ -39,13 +39,13 @@
    "id": "dou",
    "nome": "Diário Oficial da União",
    "luz": "verde",
-   "resultado": "coletou hoje — sem dados novos (atenção: 10 falha(s) na leitura: 2026-10-07 do1: conexão derrubada pelo servidor: Remote end closed connection without response)",
+   "resultado": "coletou hoje — sem dados novos (atenção: 1 falha(s) na leitura: etapa: NameError: name 'tinha_estado' is not defined)",
    "leitura_do_dia": {
     "estado": "parcial",
-    "texto": "dia lido em parte — 10 falha(s) na leitura: 2026-10-07 do1: conexão derrubada pelo servidor: Remote end closed connection without response"
+    "texto": "dia lido em parte — 1 falha(s) na leitura: etapa: NameError: name 'tinha_estado' is not defined"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-07T15:21-03:00",
+   "ultima_leitura": "2026-10-07T17:19-03:00",
    "agenda": "todos 06:23,12:53,20:23"
   },
   {
@@ -128,7 +128,7 @@
    "observacoes": [
     "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular."
    ],
-   "ultima_leitura": "2026-10-07T15:21-03:00",
+   "ultima_leitura": "2026-10-07T17:19-03:00",
    "agenda": "todos 07:53,16:23"
   },
   {
@@ -172,17 +172,17 @@
     "texto": "dia lido por completo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-07T12:23-03:00",
+   "ultima_leitura": "2026-10-07T17:19-03:00",
    "agenda": "todos 07:53,16:23"
   },
   {
    "id": "mpu-destinacao",
    "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
-   "luz": "cinza",
-   "resultado": "não rodou hoje — ainda não rodou hoje",
+   "luz": "verde",
+   "resultado": "coletou hoje — sem dados novos",
    "leitura_do_dia": {
-    "estado": "pendente",
-    "texto": "o dia ainda não foi lido"
+    "estado": "completa",
+    "texto": "dia lido por completo"
    },
    "observacoes": [
     "PENDÊNCIA DO TITULAR — pedidos de acesso à informação (Lei 12.527/2011) prontos para envio: docs/relatorios/lai/pedidos-lai-motor-10-2026-10-03.md.",
@@ -190,7 +190,7 @@
     "MPT (Procuradoria-Geral do Trabalho): pedir as destinações nacionais a entidades de Goiás de 2023 a 2026 e as regras do Sistema de Destinações.",
     "FDD/CFDD: conferido em 03/10/2026 — a página 'seleção em andamento' diz 'Não há' (atualizada em 08/07/2026). O aviso anterior era falso: vinha do código da página lido como texto (corrigido no motor)."
    ],
-   "ultima_leitura": "2026-10-06T16:28-03:00",
+   "ultima_leitura": "2026-10-07T17:19-03:00",
    "agenda": "todos 16:23"
   },
   {
@@ -235,21 +235,21 @@
   {
    "id": "salic",
    "nome": "Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)",
-   "luz": "vermelho",
-   "resultado": "falha na coleta de hoje — nenhuma página leu · 3 achado(s) mesmo assim",
+   "luz": "verde",
+   "resultado": "coletou hoje — 3 achado(s)",
    "leitura_do_dia": {
-    "estado": "parcial",
-    "texto": "dia lido em parte — nenhuma página leu"
+    "estado": "completa",
+    "texto": "dia lido por completo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-07T15:39-03:00",
+   "ultima_leitura": "2026-10-07T17:36-03:00",
    "agenda": "todos 08:53,13:53,19:53"
   },
   {
    "id": "prefeituras-50-go",
    "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
    "luz": "verde",
-   "resultado": "coletou hoje — sem dados novos",
+   "resultado": "coletou hoje — 1 achado(s)",
    "leitura_do_dia": {
     "estado": "parcial",
     "texto": "dia lido em parte — a leitura foi cortada pelo tempo — o restante volta na próxima passagem"
@@ -257,7 +257,7 @@
    "observacoes": [
     "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados."
    ],
-   "ultima_leitura": "2026-10-07T15:36-03:00",
+   "ultima_leitura": "2026-10-07T17:34-03:00",
    "agenda": "todos 09:23,15:23"
   },
   {
@@ -270,7 +270,7 @@
     "texto": "dia lido em parte — 6 página(s) com falha; as demais foram lidas"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-07T15:41-03:00",
+   "ultima_leitura": "2026-10-07T17:39-03:00",
    "agenda": "todos 10:23"
   },
   {
@@ -303,13 +303,13 @@
    "id": "estaduais-go-gov",
    "nome": "Oportunidade Estaduais Governamentais de Goiás",
    "luz": "verde",
-   "resultado": "coletou hoje — 1 achado(s)",
+   "resultado": "coletou hoje — sem dados novos",
    "leitura_do_dia": {
-    "estado": "parcial",
-    "texto": "dia lido em parte — 1 órgão(s) ainda não lido(s) hoje: seds — o maestro dispara de novo"
+    "estado": "completa",
+    "texto": "dia lido por completo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-07T15:39-03:00",
+   "ultima_leitura": "2026-10-07T17:36-03:00",
    "agenda": "todos 09:23,15:23"
   },
   {
@@ -569,7 +569,7 @@
     "texto": "dia lido por completo"
    },
    "observacoes": [],
-   "ultima_leitura": "2026-10-07T14:03-03:00",
+   "ultima_leitura": "2026-10-07T16:48-03:00",
    "agenda": null
   }
  ]
