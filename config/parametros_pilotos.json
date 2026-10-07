@@ -1,34 +1,31 @@
 {
  "interceptador": {
   "expressoes_extras": {
-   "Resultado": [
-    "lista\\s+(?:final\\s+)?(?:de\\s+)?(?:selecionad|classificad|aprovad)",
-    "classifica[cç][aã]o\\s+final",
-    "resultado\\s+ser[aá]\\s+(?:publicado|divulgado)"
-   ],
    "Prazo de recurso": [
     "recurso[s]?\\s+(?:administrativo|contra)",
     "\\d+\\s*\\(\\w+\\)\\s*dias\\s+(?:[uú]teis|corridos)[^.]{0,40}recurso",
     "impugna[cç][aã]o"
    ],
-   "Valor": [
-    "montante",
-    "aporte",
-    "teto\\s+(?:por|de)",
-    "at[eé]\\s+R\\$"
+   "Resultado": [
+    "lista\\s+(?:final\\s+)?(?:de\\s+)?(?:selecionad|classificad|aprovad)",
+    "classifica[cç][aã]o\\s+final",
+    "resultado\\s+ser[aá]\\s+(?:publicado|divulgado)"
+   ],
+   "Requisitos": [
+    "crit[eé]rios\\s+de\\s+elegibilidade",
+    "quem\\s+pode\\s+participar",
+    "n[aã]o\\s+poder[aã]o\\s+participar"
    ]
   },
-  "origens_baixo_rendimento": [
-   "empresa de Goiás · dossiê",
-   "radar do Espião"
-  ],
+  "origens_baixo_rendimento": [],
   "rotas_ordem": [
-   "financiador_regulamento",
    "site_do_financiador",
-   "financiador_programa_edital",
+   "financiador_regulamento",
    "link_da_noticia_para_o_financiador",
+   "financiador_programa_edital",
    "site_do_financiador_edital",
    "site_citado_na_noticia",
+   "site_municipal",
    "financiador_pdf"
   ],
   "restricoes_fixas": {
@@ -58,258 +55,258 @@
  },
  "espiao": {
   "pesos_missao": {
-   "descobrir": 0.1,
    "aposta": 0.1,
+   "descobrir": 0.1,
    "catalogar": 0.1
   },
   "termos_fora_do_objeto": [],
   "consultas_boas": [
    {
     "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas",
-    "tentativas": 106896,
-    "com_resultado": 972,
-    "achados": 1296,
+    "tentativas": 107493,
+    "com_resultado": 975,
+    "achados": 1300,
     "missao": "aposta"
    }
   ],
   "consultas_ruins": [
    {
     "consulta": "edital criança e adolescente organizações da sociedade civil inscriçõe",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "edital pessoa idosa organizações da sociedade civil inscrições goiás",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "quais editais de apoio a iniciativas de saúde privada estão disponívei",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "zurich abre edital nacional para apoiar",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "fundo de fomento a filantropia amplia pa",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "1ª edição do prêmio parceiros voluntár",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "fundação comunitária edital doações 2026",
-    "tentativas": 38215,
+    "tentativas": 38400,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "1ª edição do prêmio parceiros voluntár organizações da sociedade civ",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "fundação empresarial goiás edital projetos 2026 organizações da socied",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "abertas inscrições para prêmio nestlé de",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "parque bondinho pao de acucar abre inscr",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "fundação empresarial goiás edital projetos 2026",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "edital abre inscrições para rede memória organizações da sociedade civ",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "edital cultura organizações da sociedade civil inscrições",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "edital saúde organizações da sociedade civil inscrições goiás",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "fundação apoia projetos sociais goiás inscrições 2026",
-    "tentativas": 36032,
+    "tentativas": 36205,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "associação comercial industrial goiás projeto social apoio",
-    "tentativas": 34435,
+    "tentativas": 34601,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "cooperativa goiana fundo social edital 2026",
-    "tentativas": 35307,
+    "tentativas": 35478,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "empresa goiana responsabilidade social edital",
-    "tentativas": 36680,
+    "tentativas": 36855,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "prêmio empresa iniciativas sociais inscrições 2026",
-    "tentativas": 35911,
+    "tentativas": 36084,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "câmara municipal de goiânia abre financiamento de projetos itumbiara o",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "doação para associações educação inscrições 2026",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "instituto \"edital\" \"osc\" goiás 2026",
-    "tentativas": 35483,
+    "tentativas": 35654,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "câmara municipal de goiânia chamamento público inclusão",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "fundo direitos humanos osc 2026 inscrições abertas",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "edital saúde organizações da sociedade civil inscrições",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "edital esporte e lazer organizações da sociedade civil inscrições goiá",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "grupo empresarial instituto social chamada de projetos 2026",
-    "tentativas": 36519,
+    "tentativas": 36697,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "juventude prêmio entidades sem fins lucrativos catalão",
-    "tentativas": 1562,
+    "tentativas": 1572,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "bndes patrocínio cultura organizações da sociedade civil goiás",
-    "tentativas": 1458,
+    "tentativas": 1471,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "como inscrever associação chamada pública bndes",
-    "tentativas": 4485,
+    "tentativas": 4507,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "investimento social pessoa com deficiência osc 2026 inscrições abertas",
-    "tentativas": 5273,
+    "tentativas": 5299,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "observatório do terceiro setor — editais programa de apoio voluntariado",
-    "tentativas": 4627,
+    "tentativas": 4651,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "bndes patrocínio cultura organizações da sociedade civil",
-    "tentativas": 991,
+    "tentativas": 1000,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "como inscrever associação programa de apoio câmara municipal de goiânia",
-    "tentativas": 4625,
+    "tentativas": 4649,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "voluntariado doação entidades sem fins lucrativos itumbiara goiás",
-    "tentativas": 2241,
+    "tentativas": 2258,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "seleção de projetos pessoa idosa osc 2026 inscrições abertas",
-    "tentativas": 4625,
+    "tentativas": 4649,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "como inscrever associação seleção de projetos câmara municipal de goiânia",
-    "tentativas": 4626,
+    "tentativas": 4650,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "como inscrever associação bolsa observatório do 3º setor",
-    "tentativas": 4625,
+    "tentativas": 4649,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "observatório do terceiro setor — editais programa de apoio voluntariad",
-    "tentativas": 324,
+    "tentativas": 325,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    }
@@ -334,17 +331,17 @@
   ],
   "rendimento_das_buscas": {
    "aposta": {
-    "tentativas": 227087,
-    "com_resultado": 972,
+    "tentativas": 228412,
+    "com_resultado": 975,
     "taxa": 0.004
    },
    "descobrir": {
-    "tentativas": 551164,
+    "tentativas": 554384,
     "com_resultado": 0,
     "taxa": 0.0
    }
   },
-  "consultas_aprendidas_em": "2026-10-07T23:33:15+00:00",
+  "consultas_aprendidas_em": "2026-10-07T23:41:02+00:00",
   "restricoes_fixas": {
    "regra": "FIXAS e só NEGATIVAS (titular, 01/10): o que falhou repetidamente não volta; todo o resto é busca criativa, renovada a cada 100 pesquisas",
    "desde": "2026-10-01T14:01:07+00:00",
@@ -475,6 +472,6 @@
   "intervalo_busca_local_s": 6.0,
   "max_buscas_ponte_por_voo": 3
  },
- "atualizado_em": "2026-10-07T22:02:43+00:00",
+ "atualizado_em": "2026-10-07T23:28:23+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
 }
