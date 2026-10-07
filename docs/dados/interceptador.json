@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-07T13:04:00+00:00",
+  "em": "2026-10-07T13:16:12+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-07T12:55:23+00:00",
+  "ultimo_voo": "2026-10-07T13:08:15+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,99 @@
     "empresas sem ficha": 125
   },
   "acumulado": {
-    "missoes": 532,
+    "missoes": 533,
     "validadas": 22,
-    "parciais": 162,
+    "parciais": 163,
     "insuficientes": 348,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 81,
-      "sim": 377
+      "sim": 378
     },
     "estrelas_de_ouro": 44,
     "fontes_novas_para_os_motores": 68,
     "tempo_medio_min": 12.2
   },
   "missoes": [
+    {
+      "em": "2026-10-07T13:08:15+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · livro da Biblioteca",
+      "alvo": "MUNICIPIO DE CARAZINHO — Celebração de termo de colaboração, com Organização da Sociedade Civil (OSC), em regi… — Brasil",
+      "qualidade": "parcial",
+      "comprovados": 8,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Requisitos"
+      ],
+      "pagina_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/87613535000116/compras/2025/869/arquivos/1",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado descreve um edital de fomento para colaboração com OSCs, com valor e objeto definidos, o que é suficiente para identificar a fonte.",
+        "para_a_amc": "Para acessar, uma associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é a celebração de termo de colaboração com a Prefeitura Municipal de Carazinho, e demonstrar como sua atuação se enquadra nas finalidades de interesse público e recíproco.",
+        "proximo_passo": "Verificar os anexos do edital para obter informações detalhadas sobre requisitos, documentação necessária e outros detalhes específicos.",
+        "risco": "O prazo de inscrição e outros requisitos não foram encontrados no texto comprovado, o que pode impedir a participação no edital."
+      },
+      "erro": null,
+      "segundos": 475,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 8,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Requisitos",
+      "id": "op-op-3f7791ae99be",
+      "encontrou": {
+        "Objeto": {
+          "valor": "celebração de termo de colaboração, com Organização da Sociedade Civil (OSC), em regime de mutua cooperação com a Administração Pública, para a consecução de finalidades de interesse público e recíproco",
+          "trecho": "para a celebração de termo de colaboração, com Organização da Sociedade Civil (OSC), em regime de mutua cooperação com a Administração Pública, para a consecução de finalidades de ",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "até R$ 4.419.864,00",
+          "trecho": "A Administração disponibilizará, para a execução do objeto das parcerias recursos financeiros no montante de até R$ 4.419.864,00",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "PREFEITURA MUNICIPAL DE CARAZINHO",
+          "trecho": "O Município de Carazinho comunica aos interessados que está procedendo o CHAMAMENTO PÚBLICO",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RS",
+          "trecho": "ESTADO DO RIO GRANDE DO SUL",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "assistencia_social",
+          "trecho": "Ação: 2432 - SERV CONVIVENCIA FORT VINCULOS (SCFV)",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "O Município de Carazinho comunica aos interessados que está procedendo o CHAMAMENTO PÚBLICO para a seleção de Organizações da Sociedade Civil - OSCs, para a celebração de termo de ",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "MUNICIPIO DE CARAZINHO",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-10-07T12:55:23+00:00",
       "modo": "validar",
@@ -2444,93 +2522,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-07T03:46:51+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · oportunidade do mapa",
-      "alvo": "Instituto Genésio A. Mendes abre edital de R$ 1 milhão para projetos de OSCs em Santa Catarina",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://institutogenesio.org.br/wp-content/uploads/2026/10/Edital-Nao-Incentivado-Instituto-Genesio-A-Mendes-2026.pdf?utm_source=Link+da+Bio+do+RD+Station&utm_medium=social&utm_campaign=CTA+no+Link+da+Bio",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto fornece informações sobre o edital, incluindo objeto, prazo de inscrição, valor e outros detalhes relevantes.",
-        "para_a_amc": "A associação comunitária de Goiânia precisa verificar se sua atividade está alinhada com as áreas de educação, saúde e assistência social mencionadas no edital e se está localizada em Santa Catarina, além de seguir o prazo de inscrição e anexar os documentos necessários.",
-        "proximo_passo": "Verificar se a associação comunitária atende aos critérios do edital e iniciar a preparação dos documentos necessários para inscrição.",
-        "risco": "A associação pode não atender aos critérios de elegibilidade ou não estar localizada em Santa Catarina, o que impediria o acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 984,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 8,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Requisitos, Área de atuação",
-      "id": "6d06351ee0a98f70bf95",
-      "encontrou": {
-        "Objeto": {
-          "valor": "seleção de projetos apresentados por Organizações da Sociedade Civil - OSCs de educação, saúde e assistência social",
-          "trecho": "Constitui objeto do presente edital a seleção de projetos apresentados por Organizações da Sociedade Civil - OSCs de educação, saúde e assistência social",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-10-02 a 2026-10-30",
-          "trecho": "entre os dias 02/10/2026 e 30/10/2026",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 1.020.000,00",
-          "trecho": "Investimento Total Nº de projetos Investimento por projeto R$ 1.020.000,00 34 R$ 30.000,00",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "INSTITUTO GENÉSIO A. MENDES",
-          "trecho": "O INSTITUTO GENÉSIO ANTÔNIO MENDES, constituído em 13/03/2020, inscrito no CNPJ sob nº 36.754.164/0001-51, é uma associação civil sem finalidade lucrativa, vinculação política ou p",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SC",
-          "trecho": "com sede na Avenida Padre Geraldo Spettmann, nº 63, Sala 4, Centro, Tubarão, SC., CEP 88704-350",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "seleção de projetos apresentados por Organizações da Sociedade Civil - OSCs de educação, saúde e assistência social",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Instituto Genésio A. Mendes",
-      "indicios": [
-        {
-          "url": "https://captadores.org.br/editais/instituto-genesio-a-mendes-abre-edital-de-r-1-milhao-para-projetos-de-oscs-em-santa-catarina",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
       ]
     }
   ]
