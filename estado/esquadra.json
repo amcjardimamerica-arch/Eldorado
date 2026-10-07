@@ -527,18 +527,18 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 73,
-      "achados_total": 4231,
+      "leituras": 74,
+      "achados_total": 4453,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-07T00:20:13+00:00",
+      "ultima": "2026-10-07T02:54:08+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 241,
+      "achados_ultima": 222,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
           "http": 200,
-          "bytes": 7070
+          "bytes": 6932
         },
         {
           "url": "https://pncp.gov.br/api/search/",
@@ -548,9 +548,9 @@
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 263,
-        "links_total": 8790,
-        "links_candidatos": 241,
+        "paginas_lidas": 273,
+        "links_total": 8652,
+        "links_candidatos": 222,
         "descobertas": [],
         "pdf_links": 0,
         "motivo_zero": null,
@@ -558,11 +558,16 @@
         "fontes": {
           "A": {
             "falhas": [],
-            "consultas": 217,
-            "itens": 7070,
+            "consultas": 227,
+            "itens": 6932,
             "ufs_lidas": [
               "GO",
               "DF",
+              "CE",
+              "ES",
+              "MA",
+              "MT",
+              "MS",
               "MG",
               "PA",
               "PB",
@@ -582,14 +587,13 @@
               "AL",
               "AP",
               "AM",
-              "BA",
-              "CE"
+              "BA"
             ],
-            "cortados": 11,
+            "cortados": 42,
             "paginas_pendentes": [
-              "PR/Credenciamento: páginas 21–22",
-              "RS/Credenciamento: páginas 21–27",
-              "SC/Credenciamento: páginas 21–22"
+              "MG/Credenciamento: páginas 21–54",
+              "SP/Credenciamento: páginas 21–21",
+              "BA/Credenciamento: páginas 21–27"
             ]
           },
           "B": {
@@ -608,6 +612,11 @@
           "ufs_lidas": [
             "GO",
             "DF",
+            "CE",
+            "ES",
+            "MA",
+            "MT",
+            "MS",
             "MG",
             "PA",
             "PB",
@@ -627,21 +636,20 @@
             "AL",
             "AP",
             "AM",
-            "BA",
-            "CE"
+            "BA"
           ],
           "proxima_comeca_em": null,
           "faltam_no_dia": []
         },
-        "cortados": 11,
+        "cortados": 42,
         "vereditos": {
-          "OPORTUNIDADE": 241,
+          "OPORTUNIDADE": 222,
           "ACOMPANHAR": 0,
-          "RUIDO": 8149,
+          "RUIDO": 8044,
           "quarentena": 0
         }
       },
-      "duracao_s": 790
+      "duracao_s": 832
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
@@ -3556,30 +3564,30 @@
     "recorrencia": {
       "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
       "tipo": "recorrencia",
-      "leituras": 21,
-      "achados_total": 363,
+      "leituras": 22,
+      "achados_total": 378,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-06T22:18:02+00:00",
+      "ultima": "2026-10-07T02:56:28+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 19,
-      "falhas_ultima": 5,
+      "achados_ultima": 15,
+      "falhas_ultima": 8,
       "saude": [
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 133887
+          "bytes": 133826
         },
         {
           "url": "https://www.gov.br/transferegov/pt-br",
           "http": 200,
-          "bytes": 742042
+          "bytes": 742044
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 38,
-        "links_total": 2199,
-        "links_candidatos": 1540,
+        "paginas_lidas": 35,
+        "links_total": 1580,
+        "links_candidatos": 1162,
         "descobertas": [
           {
             "de": "https://portal.al.go.leg.br/",
@@ -3602,15 +3610,15 @@
             "rotulo": "Credenciamento para a Imprensa"
           }
         ],
-        "pdf_links": 79,
+        "pdf_links": 71,
         "motivo_zero": null,
-        "camada1_vetados": 29,
-        "camada1_direcionados": 98,
+        "camada1_vetados": 27,
+        "camada1_direcionados": 80,
         "rotas_pendentes_local": [
           "https://www.goiania.go.leg.br/parlamentares"
         ]
       },
-      "duracao_s": 169
+      "duracao_s": 140
     },
     "f260-espalhado-acessoainformacao-cavalcante-go-gov-br": {
       "nome": "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE — oportunidades (espalhado de edital validado)",
@@ -7534,49 +7542,30 @@
   },
   "ultima_execucao": {
     "data": "2026-10-06",
-    "em": "2026-10-07T00:20:35+00:00",
+    "em": "2026-10-07T02:56:28+00:00",
     "manual": [
-      "alego-pl",
-      "camara-goiania-pl",
-      "congresso-nacional",
-      "do-goiania",
-      "do-goias",
-      "dou",
-      "plat-salic",
       "pncp-api",
       "recorrencia"
     ],
     "bloco": "manual",
-    "sensores_executados": 8,
-    "adiados_por_tempo": [
-      "recorrencia"
-    ],
-    "duracao_s": 1988,
-    "em_espera": 118,
+    "sensores_executados": 2,
+    "adiados_por_tempo": [],
+    "duracao_s": 972,
+    "em_espera": 125,
     "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 250,
-    "novos_na_base": 10,
+    "achados": 237,
+    "novos_na_base": 0,
     "por_tipo": {
-      "diario_oficial": {
-        "sensores": 3,
-        "achados": 6,
-        "falhas": 0
-      },
-      "legislativo": {
-        "sensores": 3,
-        "achados": 0,
-        "falhas": 0
-      },
       "api": {
         "sensores": 1,
-        "achados": 241,
+        "achados": 222,
         "falhas": 0
       },
-      "plataforma": {
+      "recorrencia": {
         "sensores": 1,
-        "achados": 3,
-        "falhas": 0
+        "achados": 15,
+        "falhas": 8
       }
     }
   }
