@@ -1,4 +1,4 @@
-Ofício nº 021/2026 – AMC-JA      Goiânia, 06 de outubro de 2026.
+Ofício nº 021/2026 – AMC-JA      Goiânia, 07 de outubro de 2026.
 
 Ao Excelentíssimo Senhor
 

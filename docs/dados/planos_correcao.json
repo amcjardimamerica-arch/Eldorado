@@ -2,26 +2,11 @@
  "em": "2026-10-07",
  "regra": "PLANOS DE CORREÇÃO DOS CANAIS (titular, 02/10/2026).\n\nCada motor e Piloto é diagnosticado a cada ciclo pelo seu histórico (estado/esquadra*.json, status dos motores, bloqueios)\ne recebe o plano previsto no fluxograma (config/linha_producao.json › planos_de_correcao):\n  sem_rendimento · falha_parcial · bloqueio · exige_brasil · formato_mudou · (contrato_violado e injecao: por registro)\nO plano nunca desliga um canal sozinho: ele diz o que fazer e qual skill usar.",
  "resumo": {
-  "falha_parcial": 8,
+  "falha_parcial": 7,
   "sem_rendimento": 44,
-  "saudavel": 75
+  "saudavel": 76
  },
  "motores": [
-  {
-   "motor": "camara-goiania-pl",
-   "canal": "camara-goiania-pl",
-   "familia": "orgao_publico",
-   "diagnostico": "falha_parcial",
-   "evidencia": "falhas em 3 dos últimos 7 dias",
-   "plano": [
-    "repetir com espera crescente (backoff)",
-    "trocar a ordem das rotas",
-    "registrar páginas que falham sempre como rota morta"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 52,
-   "achados_total": 0
-  },
   {
    "motor": "empresas-incentivadas",
    "canal": "empresas-incentivadas",
@@ -109,8 +94,8 @@
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 33,
-   "achados_total": 205
+   "leituras": 34,
+   "achados_total": 228
   },
   {
    "motor": "recorrencia",
@@ -132,7 +117,7 @@
    "canal": "dj-trf1-go",
    "familia": "diario_oficial",
    "diagnostico": "sem_rendimento",
-   "evidencia": "43 leituras e nenhum achado",
+   "evidencia": "44 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -140,7 +125,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 43,
+   "leituras": 44,
    "achados_total": 0
   },
   {
@@ -788,7 +773,7 @@
    "canal": "judiciario-tjgo",
    "familia": "outros",
    "diagnostico": "sem_rendimento",
-   "evidencia": "21 leituras e nenhum achado",
+   "evidencia": "22 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -796,7 +781,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 21,
+   "leituras": 22,
    "achados_total": 0
   },
   {
@@ -820,7 +805,7 @@
    "canal": "cnpq-extensao",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
-   "evidencia": "31 leituras e nenhum achado",
+   "evidencia": "32 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -828,7 +813,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 31,
+   "leituras": 32,
    "achados_total": 0
   },
   {
@@ -839,8 +824,19 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 48,
+   "leituras": 49,
    "achados_total": 17
+  },
+  {
+   "motor": "camara-goiania-pl",
+   "canal": "camara-goiania-pl",
+   "familia": "orgao_publico",
+   "diagnostico": "saudavel",
+   "evidencia": "saudável",
+   "plano": [],
+   "skill": null,
+   "leituras": 53,
+   "achados_total": 0
   },
   {
    "motor": "congresso-nacional",
@@ -850,7 +846,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 12,
+   "leituras": 13,
    "achados_total": 0
   },
   {
@@ -861,8 +857,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 68,
-   "achados_total": 25
+   "leituras": 69,
+   "achados_total": 26
   },
   {
    "motor": "do-goias",
@@ -872,8 +868,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 57,
-   "achados_total": 173
+   "leituras": 58,
+   "achados_total": 178
   },
   {
    "motor": "dou",
@@ -883,8 +879,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 66,
-   "achados_total": 49
+   "leituras": 67,
+   "achados_total": 50
   },
   {
    "motor": "f260-captacao-025",
@@ -894,8 +890,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 4,
-   "achados_total": 21
+   "leituras": 5,
+   "achados_total": 25
   },
   {
    "motor": "f260-captacao-035",
@@ -1554,7 +1550,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 6,
+   "leituras": 7,
    "achados_total": 2
   },
   {
@@ -1565,7 +1561,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 2
   },
   {
@@ -1598,8 +1594,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 15,
-   "achados_total": 7
+   "leituras": 16,
+   "achados_total": 8
   },
   {
    "motor": "plat-gife",
@@ -1609,8 +1605,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 37,
-   "achados_total": 31
+   "leituras": 38,
+   "achados_total": 33
   },
   {
    "motor": "plat-piloto-aberto",
@@ -1620,8 +1616,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 31,
-   "achados_total": 1036
+   "leituras": 32,
+   "achados_total": 1084
   },
   {
    "motor": "plat-prefeituras-50-go",
@@ -1642,8 +1638,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 36,
-   "achados_total": 152
+   "leituras": 37,
+   "achados_total": 155
   },
   {
    "motor": "pncp-api",

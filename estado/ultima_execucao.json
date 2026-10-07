@@ -1,20 +1,20 @@
 {
-  "executado_em": "2026-10-03T17:41:20+00:00",
+  "executado_em": "2026-10-07T12:57:13+00:00",
   "fontes_catalogadas": 85,
   "fontes_total": 68,
-  "fontes_ok": 51,
-  "fontes_falha": 17,
+  "fontes_ok": 50,
+  "fontes_falha": 18,
   "fontes_fora_escopo": 0,
   "fontes_manuais": 2,
   "fontes_api": 2,
   "novas": 1,
-  "atualizadas": 42,
+  "atualizadas": 12,
   "quarentena": 0,
   "falhas": [
     {
-      "fonte": "goias-cultura-raiz",
-      "erro": "ValueError",
-      "mensagem": "tipo não permitido: application/pdf",
+      "fonte": "bndes-social",
+      "erro": "TimeoutError",
+      "mensagem": "The read operation timed out",
       "etapa": "leitura do site"
     },
     {
@@ -22,6 +22,12 @@
       "erro": "HTTPError",
       "mensagem": "HTTP Error 404: Not Found",
       "etapa": "processamento (http_error_default)"
+    },
+    {
+      "fonte": "goias-cultura-raiz",
+      "erro": "ValueError",
+      "mensagem": "tipo não permitido: application/pdf",
+      "etapa": "leitura do site"
     },
     {
       "fonte": "fundacao-bb",
@@ -72,28 +78,28 @@
       "etapa": "leitura do site"
     },
     {
+      "fonte": "portal-ms",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
+    },
+    {
       "fonte": "portal-pa",
       "erro": "URLError",
       "mensagem": "<urlopen error timed out>",
       "etapa": "processamento (do_open)"
     },
     {
-      "fonte": "portal-pi",
-      "erro": "ValueError",
-      "mensagem": "redirecionamento para domínio não autorizado",
-      "etapa": "leitura do site"
+      "fonte": "portal-pb",
+      "erro": "URLError",
+      "mensagem": "<urlopen error timed out>",
+      "etapa": "processamento (do_open)"
     },
     {
       "fonte": "portal-se",
       "erro": "URLError",
       "mensagem": "<urlopen error [Errno 101] Network is unreachable>",
       "etapa": "processamento (do_open)"
-    },
-    {
-      "fonte": "portal-sp",
-      "erro": "HTTPError",
-      "mensagem": "HTTP Error 404: Not Found",
-      "etapa": "processamento (http_error_default)"
     },
     {
       "fonte": "pronon-pronas",
@@ -152,6 +158,6 @@
       "internacional"
     ]
   },
-  "paginas_alteradas": 160,
-  "fora_do_terceiro_setor": 304
+  "paginas_alteradas": 146,
+  "fora_do_terceiro_setor": 289
 }

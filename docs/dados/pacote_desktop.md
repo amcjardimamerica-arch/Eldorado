@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-10-06
+# Pacote para o Claude Desktop — 2026-10-07
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
@@ -8,16 +8,16 @@ Nenhum motor aguardando coleta local hoje.
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
-- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 4 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 5 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://observatorio3setor.org.br/editais/ e procurar: edital, seleção de projetos, investimento social, responsabilidade social, patrocínio, incentivo fiscal
-- **TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO** — todas as páginas falharam em 2026-10-06. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
+- **TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO** — todas as páginas falharam em 2026-10-07. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
     - abrir https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
     - abrir https://www.tjgo.jus.br/files/ e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
     - abrir https://corregedoria.tjgo.jus.br/basesocial e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
 
 Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `dados/editais/`. Devolva em `dados/editais/coleta_navegador/<data>-motores.json` no formato `{"<id ou novo>": {"objeto":..., "inicio":..., "fim":..., "pagina_oficial":..., "observacao":...}}`.
 
-## Etapa 3 — oportunidades aguardando ação externa (91)
+## Etapa 3 — oportunidades aguardando ação externa (93)
 
 - `3f4e0f749a5a6e40f2c4` — Edital prevê seleção de 58 apresentações artísticas para o Natal do Bem 2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/edital-preve-selecao-de-58-apresentacoes-artisticas-para-o-natal-do-bem-2026
 - `4d519a11c8b5c23bd8d5` — Termo de Fomento nº 01/2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf
