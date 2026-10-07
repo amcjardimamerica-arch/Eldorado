@@ -1,23 +1,22 @@
 {
  "dia": "2026-10-07",
- "em": "2026-10-07T21:22:15+00:00",
+ "em": "2026-10-07T21:55:40+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 125,
  "cobertura": {
   "completa": 64,
-  "pendente": 1,
+  "parcial": 33,
   "aguardando_horario": 25,
-  "parcial": 32,
   "pendente_local": 3
  },
  "cobertura_percentual": 64.0,
  "a_disparar": [
-  "pncp-api",
-  "plat-prefeituras-50-go",
-  "recorrencia"
+  "pncp-api"
  ],
  "esgotaram_tentativas": [
   "plat-empresas-editais-incentivados",
+  "plat-prefeituras-50-go",
+  "recorrencia",
   "f260-captacao-237",
   "do-goiania",
   "judiciario-tjgo",
@@ -84,9 +83,9 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 5.1897,
+   "prioridade": 5.1297,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 248,
+   "livros_com_abertura_proxima": 245,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -95,13 +94,13 @@
   },
   {
    "motor": "pncp-api",
-   "prioridade": 0.8532,
+   "prioridade": 0.8438,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 5,
    "horarios": "08:53,13:53,19:53",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "pendente",
+   "cobertura": "parcial",
    "tentativas_hoje": 0
   },
   {
@@ -172,14 +171,14 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "prioridade": 0.0941,
+   "prioridade": 0.0933,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 3,
    "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 2
+   "tentativas_hoje": 3
   },
   {
    "motor": "do-goias",
@@ -688,17 +687,6 @@
    "tentativas_hoje": 1
   },
   {
-   "motor": "f260-captacao-206",
-   "prioridade": 0.05,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-captacao-025",
    "prioridade": 0.05,
    "diagnostico": "saudavel",
@@ -732,17 +720,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "recorrencia",
-   "prioridade": 0.0431,
-   "diagnostico": "falha_parcial",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "11:23,17:53",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 2
-  },
-  {
    "motor": "judiciario-cnj",
    "prioridade": 0.0417,
    "diagnostico": "saudavel",
@@ -752,6 +729,17 @@
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 0
+  },
+  {
+   "motor": "recorrencia",
+   "prioridade": 0.0417,
+   "diagnostico": "falha_parcial",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "11:23,17:53",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 3
   },
   {
    "motor": "f260-curadoria-001",
@@ -825,6 +813,17 @@
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "10:53,20:53",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-206",
+   "prioridade": 0.025,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
