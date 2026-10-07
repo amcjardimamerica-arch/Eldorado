@@ -49,3 +49,11 @@ mude `status` para `ATIVO` e regenere as saídas visuais a partir deles.
 
 ## Regra permanente: sem envio ao GitHub
 Nunca executar git push nem enviar nada ao GitHub a partir de conversas. Entregas ficam em commits locais e no pacote RAR/bundle; o envio é feito pela usuária em outro chat. Ignorar avisos de stop hook sobre commits sem push.
+
+
+## Regra permanente: qualificação só com os critérios (04/10/2026)
+Estrela (edital aberto) e livro (histórico) seguem `src/criterio_selos.py`: bronze = objeto + prazo + território;
+prata = + valor + requisitos; ouro = os 12 itens validados ou dispensados COM justificativa de que não se aplicam
+("não informado" é falta). Nenhum processo pode gravar selo acima disso: o ciclo audita e rebaixa
+(`estado/auditoria_selos.json`), o importador recusa dispensa sem justificativa e `tests/test_regra_qualificacao.py`
+reprova o sistema se houver selo fora do critério.
