@@ -9,20 +9,23 @@ sys.path.insert(0, str(ROOT))
 
 class TesteSelosNasAbertas(unittest.TestCase):
     def test_estrela_e_do_edital_atual(self):
-        """03/10 (titular): bronze = site oficial; prata = + prazo de inscrição; ouro = + os 12 critérios (ou dispensados);
-        sem site oficial ou fechada = sem estrela; NÃO herda do livro (o livro tem o seu selo, pelo histórico)."""
+        """04/10 (titular): bronze = objeto + prazo + território; prata = + valor + requisitos; ouro = os 12 validados ou
+        dispensados COM justificativa ("não informado" é falta); fechada = sem estrela."""
         from src import fluxo_oportunidades as F
-        doze = {k: {"s": "ok"} for k in json.loads((ROOT / "config/esteira.json").read_text(encoding="utf-8"))["doze_dados"]}
-        itens = [{"id": "1", "opressor": "op-l", "url": "https://instituto.org/x"},                           # sem site oficial → sem estrela
-                 {"id": "2", "link_oficial": "https://cultura.go.gov.br/e"},                                     # só o site → bronze
-                 {"id": "3", "link_oficial": "https://cultura.go.gov.br/e", "fim": "2099-11-30"},                # + prazo → prata
-                 {"id": "4", "link_oficial": "https://cultura.go.gov.br/e", "fim": "2099-11-30", "checklist": doze},  # + 12 → ouro
-                 {"id": "5", "link_oficial": "https://cultura.go.gov.br/e", "fim": "2020-01-31", "checklist": doze},  # fechada → sem estrela
-                 {"id": "6", "url": "https://www.gov.br/cultura/edital"}]                                        # endereço oficial → bronze
-        r = F._selos_dos_itens(itens)
-        self.assertEqual([i["selo"] for i in itens], [None, "bronze", "prata", "ouro", None, "bronze"])
-        self.assertEqual(r, {"bronze": 2, "prata": 1, "ouro": 1})
-        self.assertIn("vira histórico do livro", itens[4]["selo_de"])
+        from src.criterio_selos import DOZE
+        base = {"Objeto": {"s": "ok", "v": "Seleção de projetos culturais"}, "Prazo de inscrição": {"s": "val", "v": "01/10 a 30/11/2099"},
+                "Território": {"s": "ok", "v": "Goiânia/GO"}}
+        prata = {**base, "Valor": {"s": "ok", "v": "R$ 50.000"}, "Requisitos": {"s": "ok", "v": "OSC com 2 anos"}}
+        doze = {**prata, **{k: {"s": "ok", "v": "informado no edital"} for k in DOZE if k not in prata}}
+        falso = {**doze, "Resultado": {"s": "disp", "v": "não informado no edital"}}
+        just = {**doze, "Prazo de recurso": {"s": "disp", "v": "dispensado pelo edital: não há fase de recurso"}}
+        itens = [{"id": "1", "checklist": {}, "fim": "2099-11-30"}, {"id": "2", "checklist": base, "fim": "2099-11-30"},
+                 {"id": "3", "checklist": prata, "fim": "2099-11-30"}, {"id": "4", "checklist": doze, "fim": "2099-11-30"},
+                 {"id": "5", "checklist": falso, "fim": "2099-11-30"}, {"id": "6", "checklist": just, "fim": "2099-11-30"},
+                 {"id": "7", "checklist": doze, "fim": "2020-01-31"}]
+        F._selos_dos_itens(itens)
+        self.assertEqual([i["selo"] for i in itens], [None, "bronze", "prata", "ouro", "prata", "ouro", None])
+        self.assertIn("Resultado", itens[4]["selo_faltando"])
 
     def test_painel_estrelas_e_classificacao(self):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")

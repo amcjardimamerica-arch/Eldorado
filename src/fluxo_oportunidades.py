@@ -443,13 +443,14 @@ def _selos_dos_itens(itens: list[dict]) -> dict:
         continuo = "contínuo" in reg or "continuo" in reg
         if fim and fim < hoje:
             it["selo"] = None; it["selo_de"] = "fechada — a estrela vira histórico do livro"; continue
-        if not oficial:
-            it["selo"] = None; it["selo_de"] = "sem site oficial da publicação"; continue
+        it["site_oficial_conhecido"] = bool(oficial)                       # informação; o selo vem dos 12 itens
+        # 04/10 (titular): critério único — bronze = objeto + prazo + território; prata = + valor + requisitos;
+        # ouro = os 12 validados ou dispensados COM justificativa ("não informado" é falta, não dispensa)
+        from .criterio_selos import nivel, faltando
         ck = it.get("checklist") or {}
-        resolvidos = sum(1 for v in ck.values() if isinstance(v, dict) and v.get("s") in ("ok", "disp", "val", "dt"))
-        prazo = bool(fim) or continuo
-        it["selo"] = "ouro" if prazo and resolvidos >= 12 else ("prata" if prazo else "bronze")
-        it["selo_de"] = "edital atual"
+        it["selo"] = nivel(ck)
+        it["selo_faltando"] = faltando(ck)
+        it["selo_de"] = "edital atual" if it["selo"] else "edital atual sem objeto, prazo e território identificados"
     return dict(Counter(it["selo"] for it in itens if it.get("selo")))
 
 
