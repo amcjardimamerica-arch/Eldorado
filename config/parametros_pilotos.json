@@ -1,31 +1,34 @@
 {
  "interceptador": {
   "expressoes_extras": {
-   "Prazo de recurso": [
-    "recurso[s]?\\s+(?:administrativo|contra)",
-    "\\d+\\s*\\(\\w+\\)\\s*dias\\s+(?:[uú]teis|corridos)[^.]{0,40}recurso",
-    "impugna[cç][aã]o"
-   ],
    "Resultado": [
     "lista\\s+(?:final\\s+)?(?:de\\s+)?(?:selecionad|classificad|aprovad)",
     "classifica[cç][aã]o\\s+final",
     "resultado\\s+ser[aá]\\s+(?:publicado|divulgado)"
    ],
-   "Requisitos": [
-    "crit[eé]rios\\s+de\\s+elegibilidade",
-    "quem\\s+pode\\s+participar",
-    "n[aã]o\\s+poder[aã]o\\s+participar"
+   "Prazo de recurso": [
+    "recurso[s]?\\s+(?:administrativo|contra)",
+    "\\d+\\s*\\(\\w+\\)\\s*dias\\s+(?:[uú]teis|corridos)[^.]{0,40}recurso",
+    "impugna[cç][aã]o"
+   ],
+   "Valor": [
+    "montante",
+    "aporte",
+    "teto\\s+(?:por|de)",
+    "at[eé]\\s+R\\$"
    ]
   },
-  "origens_baixo_rendimento": [],
+  "origens_baixo_rendimento": [
+   "empresa de Goiás · dossiê",
+   "radar do Espião"
+  ],
   "rotas_ordem": [
-   "site_do_financiador",
    "financiador_regulamento",
-   "link_da_noticia_para_o_financiador",
+   "site_do_financiador",
    "financiador_programa_edital",
+   "link_da_noticia_para_o_financiador",
    "site_do_financiador_edital",
    "site_citado_na_noticia",
-   "site_municipal",
    "financiador_pdf"
   ],
   "restricoes_fixas": {
@@ -55,8 +58,8 @@
  },
  "espiao": {
   "pesos_missao": {
-   "aposta": 0.1,
    "descobrir": 0.1,
+   "aposta": 0.1,
    "catalogar": 0.1
   },
   "termos_fora_do_objeto": [],
@@ -270,7 +273,7 @@
    },
    {
     "consulta": "bndes patrocínio cultura organizações da sociedade civil",
-    "tentativas": 1000,
+    "tentativas": 1001,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
@@ -325,23 +328,23 @@
    "fundação",
    "empresarial",
    "prêmio",
-   "câmara",
    "municipal",
+   "câmara",
    "bndes"
   ],
   "rendimento_das_buscas": {
    "aposta": {
-    "tentativas": 228412,
+    "tentativas": 228414,
     "com_resultado": 975,
     "taxa": 0.004
    },
    "descobrir": {
-    "tentativas": 554384,
+    "tentativas": 554389,
     "com_resultado": 0,
     "taxa": 0.0
    }
   },
-  "consultas_aprendidas_em": "2026-10-07T23:41:02+00:00",
+  "consultas_aprendidas_em": "2026-10-07T23:50:01+00:00",
   "restricoes_fixas": {
    "regra": "FIXAS e só NEGATIVAS (titular, 01/10): o que falhou repetidamente não volta; todo o resto é busca criativa, renovada a cada 100 pesquisas",
    "desde": "2026-10-01T14:01:07+00:00",
@@ -472,6 +475,6 @@
   "intervalo_busca_local_s": 6.0,
   "max_buscas_ponte_por_voo": 3
  },
- "atualizado_em": "2026-10-07T23:28:23+00:00",
+ "atualizado_em": "2026-10-07T22:02:43+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
 }
