@@ -4873,9 +4873,13 @@ function desenhaMotores(){
   // 08/10 (titular): os livros em uso ficam ocultos; no quadro, só as NOVAS sem referência histórica. Os livros por área
   // ficam num campo com filtro (área e localização), vazio até a escolha — nada carrega antes do filtro.
   window._bibRows=rows; window._bibChip=chipAceso;
-  const _areas=[...new Set(rows.map(m=>m.objeto_area||"Geral"))].sort((a,b)=>a.localeCompare(b,"pt"));
+  // 08/10 (titular): Biblioteca e disjuntores UNIFICADOS — um campo, filtros de situação (todos/lendo/sem leitura), área e localização
+  const _areaDe=m=>m.objeto_area||(m.area_atuacao?AREA(m.area_atuacao).rotulo:"Geral");
+  window._bibAreaDe=_areaDe;
+  const _areas=[...new Set([...rows,...MT.filter(m=>!mtAtivo(m.id))].map(_areaDe))].sort((a,b)=>a.localeCompare(b,"pt"));
   const filtroLivros=`<div class="mt-fam bib-filtro"><div class="mt-famt">Livros da Biblioteca — escolha um filtro <button class="btn" style="float:right" onclick="bibAtualizaTudo()">Atualizar a Biblioteca (completa)</button></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0">
+      <select id="bib-sit" onchange="bibFiltra()"><option value="">— situação —</option><option value="*">Todos os livros</option><option value="lendo">Lendo</option><option value="sem">Sem leitura</option></select>
       <select id="bib-area" onchange="bibFiltra()"><option value="">— área —</option><option value="*">Todas as áreas</option>${_areas.map(a=>`<option>${esc(a)}</option>`).join("")}</select>
       <select id="bib-loc" onchange="bibFiltra()"><option value="">— localização —</option><option value="*">Todas</option><option value="GO">Goiás</option><option value="BR">Nacional</option><option value="INT">Internacional</option><option value="UF">Outros estados</option></select>
     </div><div id="bib-livros"></div></div>`;
@@ -4888,12 +4892,15 @@ window.bibAtualizaTudo=async function(){   // 08/10: UMA execução que faz tudo
   alert(r.ok?"Atualização completa disparada: esteira, leitor documental, selos, mapa, status e publicação — numa só execução (alguns minutos). Clicar de novo só entra na fila.":"Não disparou: "+(r.motivo||""));
 };
 window.bibFiltra=function(){
-  const a=($("bib-area")||{}).value||"", l=($("bib-loc")||{}).value||"", alvo=$("bib-livros"); if(!alvo) return;
-  if(!a&&!l){ alvo.innerHTML=""; return; }                                        // nada carrega antes do filtro
+  const s=($("bib-sit")||{}).value||"", a=($("bib-area")||{}).value||"", l=($("bib-loc")||{}).value||"", alvo=$("bib-livros"); if(!alvo) return;
+  if(!s&&!a&&!l){ alvo.innerHTML=""; return; }                                    // nada carrega antes do filtro
   const geo=m=>{const g=String(m.geo||"");return ["GO","BR","INT"].includes(g)?g:"UF";};
-  const L=(window._bibRows||[]).filter(m=>(!a||a==="*"||(m.objeto_area||"Geral")===a)&&(!l||l==="*"||geo(m)===l))
-    .sort((x,y)=>String(x.nome_classificado||x.programa).localeCompare(String(y.nome_classificado||y.programa),"pt"));
-  alvo.innerHTML=L.length?`<div class=meta>${L.length} livro(s)</div><div class="dj-grade">${L.map(window._bibChip).join("")}</div>`:'<div class=meta>Nenhum livro neste filtro.</div>';
+  const ok=m=>(!a||a==="*"||(window._bibAreaDe||(x=>x.objeto_area||"Geral"))(m)===a)&&(!l||l==="*"||geo(m)===l);
+  const nome=m=>String(m.nome_classificado||m.programa||"");
+  const lendo=(s==="sem")?[]:(window._bibRows||[]).filter(ok).sort((x,y)=>nome(x).localeCompare(nome(y),"pt"));
+  const sem=(s==="lendo")?[]:(window._djInat||[]).filter(ok).sort((x,y)=>nome(x).localeCompare(nome(y),"pt"));
+  const bloco=(t,L,f)=>L.length?`<div class="meta" style="margin-top:6px"><b>${t}</b> · ${L.length} livro(s)</div><div class="dj-grade">${L.map(f).join("")}</div>`:"";
+  alvo.innerHTML=(bloco("Lendo",lendo,window._bibChip)+bloco("Sem leitura",sem,window._djChip))||'<div class=meta>Nenhum livro neste filtro.</div>';
 };
 /* QUADRO DE DISJUNTORES — todos os recursos INATIVOS, com a poça à esquerda para
    ligar (30 dias de busca diária, IA a cada 3 dias, conselho Fable 5.1 no 9º).
@@ -4931,14 +4938,10 @@ function desenhaDisjuntores(){
       const ordem=Object.keys(porArea).sort((a,b)=>(a==="outros")-(b==="outros")||AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt"));
       return ordem.map(a=>`<div class="dj-area"><div class="dj-areat" style="color:${AREA(a).cor}"><span class=ponto style="background:${AREA(a).cor};width:10px;height:10px"></span>${esc(AREA(a).rotulo)} <span class=meta>${porArea[a].length} motor(es)</span></div>
         <div class="dj-grade">${porArea[a].map(chip).join("")}</div></div>`).join("");})()}`;
-  // 08/10 (titular): o quadro de disjuntores fica OCULTO como os livros em uso — campo com filtro, vazio até a escolha
+  // 08/10 (titular): disjuntores UNIFICADOS na Biblioteca — o quadro separado sai da tela; os livros sem leitura
+  // aparecem no campo único (filtro "Sem leitura")
   window._djInat=inativos; window._djChip=chip;
-  const _ar=[...new Set(inativos.map(m=>m.area_atuacao||"outros"))].sort((x,y)=>AREA(x).rotulo.localeCompare(AREA(y).rotulo,"pt"));
-  box.innerHTML=`<div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif;font-size:15px">Quadro de disjuntores <span class=meta>${inativos.length} livro(s) fora de uso — ${rosa.length} com época chegando</span></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0">
-      <select id="dj-area" onchange="djFiltra()"><option value="">— área —</option><option value="*">Todas as áreas</option>${_ar.map(x=>`<option value="${esc(x)}">${esc(AREA(x).rotulo)}</option>`).join("")}</select>
-      <select id="dj-loc" onchange="djFiltra()"><option value="">— localização —</option><option value="*">Todas</option><option value="GO">Goiás</option><option value="BR">Nacional</option><option value="INT">Internacional</option><option value="UF">Outros estados</option></select>
-    </div><div id="dj-livros"></div>`;
+  box.innerHTML=""; box.style.display="none";
 }
 window.djFiltra=function(){
   const a=($("dj-area")||{}).value||"", l=($("dj-loc")||{}).value||"", alvo=$("dj-livros"); if(!alvo) return;
