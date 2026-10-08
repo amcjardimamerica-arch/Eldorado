@@ -1,0 +1,38 @@
+name: 28 · Atualizar a Biblioteca (completa, numa só execução)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  actions: write
+concurrency:
+  group: eldorado-atualizar-biblioteca
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pypdf --quiet
+      - name: Tudo em sequência e gravação (refaz sobre o main mais novo se outro fluxo gravou antes)
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            python -c "from src.leitor_documental import aplicar; print(aplicar())" || true   # 1. leitor documental
+            python -m src.selo_livros || true                                                 # 2. selo do livro (critério)
+            timeout 900 python -m src.fluxo_oportunidades --completo >/dev/null || true       # 3. esteira, estrela, mapa
+            python -m src.motores >/dev/null || true                                          # 4. painel dos motores
+            python -m src.status_motores >/dev/null || true                                   # 5. status
+            git add -A biblioteca_alexandria docs/dados estado dados/coleta_3_anos
+            git commit -q -m "Biblioteca atualizada por completo $(date -u +%F\ %H:%M)" || break
+            git push -q origin main && break; sleep 10
+          done
+      - name: Publicar o site
+        env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          gh workflow run publicar-painel.yml --ref main || echo "publicacao do site falhou: disparar manualmente"
