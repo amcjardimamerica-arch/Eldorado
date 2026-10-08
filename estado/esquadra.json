@@ -524,30 +524,30 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 79,
-      "achados_total": 5586,
+      "leituras": 80,
+      "achados_total": 5801,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-08T17:49:07+00:00",
+      "ultima": "2026-10-08T20:36:18+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 237,
-      "falhas_ultima": 3,
+      "achados_ultima": 215,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
           "http": 200,
-          "bytes": 6497
+          "bytes": 6345
         },
         {
           "url": "https://pncp.gov.br/api/search/",
           "http": 200,
-          "bytes": 1358
+          "bytes": 1705
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 236,
-        "links_total": 7855,
-        "links_candidatos": 237,
+        "paginas_lidas": 263,
+        "links_total": 8050,
+        "links_candidatos": 215,
         "descobertas": [],
         "pdf_links": 0,
         "motivo_zero": null,
@@ -555,11 +555,18 @@
         "fontes": {
           "A": {
             "falhas": [],
-            "consultas": 197,
-            "itens": 6497,
+            "consultas": 216,
+            "itens": 6345,
             "ufs_lidas": [
               "GO",
               "DF",
+              "ES",
+              "MA",
+              "MT",
+              "MS",
+              "MG",
+              "PA",
+              "PB",
               "PR",
               "PE",
               "PI",
@@ -577,28 +584,22 @@
               "AP",
               "AM",
               "BA",
-              "CE",
-              "ES"
+              "CE"
             ],
-            "cortados": 6,
+            "cortados": 13,
             "paginas_pendentes": [
-              "PR/Credenciamento: páginas 21–22",
-              "SC/Credenciamento: páginas 21–22",
-              "SP/Credenciamento: páginas 21–22"
+              "RS/Credenciamento: páginas 21–27",
+              "BA/Credenciamento: páginas 21–26"
             ]
           },
           "B": {
-            "falhas": [
-              "projetos esportivos {}: prazo da execução esgotado — o restante fica para a próxima passagem",
-              "CMDCA {}: prazo da execução esgotado — o restante fica para a próxima passagem",
-              "fundo municipal {}: prazo da execução esgotado — o restante fica para a próxima passagem"
-            ],
-            "consultas": 39,
-            "itens": 1358
+            "falhas": [],
+            "consultas": 47,
+            "itens": 1705
           },
           "C": {
             "falhas": [],
-            "consultas": 0,
+            "consultas": 1,
             "itens": 0,
             "localizados": 0
           }
@@ -607,6 +608,13 @@
           "ufs_lidas": [
             "GO",
             "DF",
+            "ES",
+            "MA",
+            "MT",
+            "MS",
+            "MG",
+            "PA",
+            "PB",
             "PR",
             "PE",
             "PI",
@@ -624,36 +632,20 @@
             "AP",
             "AM",
             "BA",
-            "CE",
-            "ES"
+            "CE"
           ],
           "proxima_comeca_em": null,
-          "faltam_no_dia": [
-            "MA",
-            "MT",
-            "MS",
-            "MG",
-            "PA",
-            "PB"
-          ]
+          "faltam_no_dia": []
         },
-        "paginas_nao_lidas": [
-          "propostas abertas — MA",
-          "propostas abertas — MT",
-          "propostas abertas — MS",
-          "propostas abertas — MG",
-          "propostas abertas — PA",
-          "propostas abertas — PB"
-        ],
-        "cortados": 6,
+        "cortados": 13,
         "vereditos": {
-          "OPORTUNIDADE": 237,
+          "OPORTUNIDADE": 215,
           "ACOMPANHAR": 0,
-          "RUIDO": 7247,
+          "RUIDO": 7449,
           "quarentena": 0
         }
       },
-      "duracao_s": 909
+      "duracao_s": 840
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
@@ -2572,10 +2564,10 @@
     "plat-cnpq-extensao": {
       "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
       "tipo": "plataforma",
-      "leituras": 34,
+      "leituras": 35,
       "achados_total": 0,
-      "vazias_seguidas": 34,
-      "ultima": "2026-10-08T15:00:26+00:00",
+      "vazias_seguidas": 35,
+      "ultima": "2026-10-08T20:36:58+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2588,7 +2580,7 @@
         {
           "url": "https://www.gov.br/mcti/pt-br/centrais-de-conteudo/comunicados-mcti",
           "http": 200,
-          "bytes": 175531
+          "bytes": 174485
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
@@ -2624,7 +2616,7 @@
         "camada1_direcionados": 20,
         "paginas_alem_do_limite": 1
       },
-      "duracao_s": 20
+      "duracao_s": 13
     },
     "plat-empresas-editais-incentivados": {
       "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
@@ -3278,10 +3270,10 @@
     "plat-prefeituras-50-go": {
       "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
       "tipo": "plataforma",
-      "leituras": 43,
-      "achados_total": 38,
+      "leituras": 44,
+      "achados_total": 39,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-08T17:33:58+00:00",
+      "ultima": "2026-10-08T20:18:04+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -3301,26 +3293,27 @@
         "cidades": 25,
         "falhas": [],
         "camadas": {
-          "4": 13
+          "4": 11
         },
         "motivo_zero": null,
         "origem": "GitHub",
         "livros": {
           "livros_novos": 0,
-          "livros_atualizados": 5,
+          "livros_atualizados": 1,
           "vetados_pelas_restricoes": 0,
           "pendentes_das_restricoes": 0
         },
         "cidades_por_status": {
-          "lida": 14,
-          "parcial": 1,
+          "lida": 13,
+          "parcial": 2,
           "falhou": 9,
           "não lida": 1
         },
-        "paginas_lidas": 13,
+        "paginas_lidas": 11,
         "paginas_nao_lidas": [
+          "Goiânia: não alcançada nesta execução (tempo)",
           "Rio Verde: não alcançada nesta execução (tempo)",
-          "Luziânia · portal: parcial (tempo)",
+          "Luziânia: não alcançada nesta execução (tempo)",
           "Valparaíso de Goiás: não alcançada nesta execução (tempo)",
           "Novo Gama: não alcançada nesta execução (tempo)",
           "Senador Canedo: não alcançada nesta execução (tempo)",
@@ -3328,6 +3321,8 @@
           "Jataí: não alcançada nesta execução (tempo)",
           "Planaltina: não alcançada nesta execução (tempo)",
           "Santo Antônio do Descoberto: não alcançada nesta execução (tempo)",
+          "Goianésia · wp: parcial (tempo)",
+          "Goianésia · portal: não lida (tempo da execução acabou)",
           "Mineiros: não alcançada nesta execução (tempo)",
           "Itaberaí: não alcançada nesta execução (tempo)",
           "Jaraguá: não alcançada nesta execução (tempo)",
@@ -3335,15 +3330,15 @@
         ],
         "leitura_do_dia": {
           "cidades": 25,
-          "lidas": 14,
-          "parciais": 1,
+          "lidas": 13,
+          "parciais": 2,
           "aguardando_brasil": 0,
           "falharam": 9,
           "rotas_aguardando_brasil": 0,
-          "rotas_nao_lidas": 13
+          "rotas_nao_lidas": 16
         }
       },
-      "duracao_s": 907
+      "duracao_s": 902
     },
     "plat-prosas": {
       "nome": "Prosas — editais para o terceiro setor",
@@ -3393,10 +3388,10 @@
     "plat-salic": {
       "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
       "tipo": "plataforma",
-      "leituras": 41,
-      "achados_total": 167,
+      "leituras": 42,
+      "achados_total": 170,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-08T15:00:06+00:00",
+      "ultima": "2026-10-08T20:36:45+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 3,
       "falhas_ultima": 0,
@@ -3433,9 +3428,9 @@
         "fontes": {
           "2026": {
             "projetos_go": 127,
-            "novos_no_arquivo": 1,
+            "novos_no_arquivo": 0,
             "captado": 3500255.61,
-            "aprovado": 176319831.89
+            "aprovado": 178820050.48
           },
           "editais_minc": {
             "listados": 4,
@@ -3477,7 +3472,7 @@
           }
         ]
       },
-      "duracao_s": 22
+      "duracao_s": 26
     },
     "plat-secult-go": {
       "nome": "Secult Goiás — Goyazes e Aldir Blanc",
@@ -5826,11 +5821,11 @@
     "judiciario-tjgo": {
       "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
       "tipo": "diario_justica",
-      "leituras": 28,
+      "leituras": 29,
       "achados_total": 0,
-      "vazias_seguidas": 28,
+      "vazias_seguidas": 29,
       "duracao_s": 3,
-      "ultima": "2026-10-08T17:18:50+00:00",
+      "ultima": "2026-10-08T20:02:54+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -6040,11 +6035,11 @@
     "mptgo-destinacao": {
       "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
       "tipo": "ministerio_publico",
-      "leituras": 13,
-      "achados_total": 26,
+      "leituras": 14,
+      "achados_total": 28,
       "vazias_seguidas": 0,
       "duracao_s": 7,
-      "ultima": "2026-10-08T14:39:38+00:00",
+      "ultima": "2026-10-08T20:03:02+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
       "falhas_ultima": 0,
@@ -6143,11 +6138,11 @@
     "mpu-destinacao": {
       "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
       "tipo": "ministerio_publico",
-      "leituras": 7,
+      "leituras": 8,
       "achados_total": 0,
-      "vazias_seguidas": 7,
+      "vazias_seguidas": 8,
       "duracao_s": 0,
-      "ultima": "2026-10-07T20:19:46+00:00",
+      "ultima": "2026-10-08T20:03:02+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -6414,13 +6409,13 @@
     "plat-estaduais-go-gov": {
       "nome": "Oportunidade Estaduais Governamentais de Goiás",
       "tipo": "plataforma",
-      "leituras": 21,
-      "achados_total": 10,
-      "vazias_seguidas": 1,
-      "duracao_s": 116,
-      "ultima": "2026-10-08T16:07:51+00:00",
+      "leituras": 22,
+      "achados_total": 11,
+      "vazias_seguidas": 0,
+      "duracao_s": 255,
+      "ultima": "2026-10-08T20:22:18+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 0,
+      "achados_ultima": 1,
       "falhas_ultima": 0,
       "saude": [
         {
@@ -6438,19 +6433,31 @@
         "orgaos": 37,
         "descobertos_agora": 0,
         "camadas_feitas": {
-          "4": 36
+          "4": 36,
+          "1": 1,
+          "2": 1,
+          "3": 1
         },
         "falhas": [],
-        "paginas_lidas": 36,
-        "motivo_zero": "36 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje",
+        "paginas_lidas": 39,
+        "motivo_zero": null,
+        "livros": {
+          "livros_novos": 0,
+          "livros_atualizados": 4,
+          "vetados_pelas_restricoes": 1,
+          "pendentes_das_restricoes": 0
+        },
         "pendentes_livros": 0,
         "cobertura_orgaos": {
-          "devidos": 36,
+          "devidos": 37,
           "monitorados_hoje": 36,
-          "pendentes": []
+          "pendentes": [
+            "seds"
+          ]
         },
+        "paginas_nao_lidas": 1,
         "orgaos_por_camada": {
-          "camada 4": 36
+          "camada 4": 37
         }
       }
     },
@@ -7498,57 +7505,51 @@
   },
   "ultima_execucao": {
     "data": "2026-10-08",
-    "em": "2026-10-08T17:49:07+00:00",
+    "em": "2026-10-08T20:36:58+00:00",
     "manual": [
-      "camara-goiania-pl",
-      "do-goiania",
-      "do-goias",
-      "dou",
       "judiciario-tjgo",
+      "mptgo-destinacao",
+      "mpu-destinacao",
+      "plat-cnpq-extensao",
       "plat-empresas-editais-incentivados",
+      "plat-estaduais-go-gov",
       "plat-prefeituras-50-go",
       "plat-salic",
       "pncp-api",
       "recorrencia"
     ],
     "bloco": "manual",
-    "sensores_executados": 7,
+    "sensores_executados": 8,
     "adiados_por_tempo": [
-      "plat-salic",
       "plat-empresas-editais-incentivados",
       "recorrencia"
     ],
-    "duracao_s": 2185,
+    "duracao_s": 2047,
     "em_espera": 117,
     "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 245,
-    "novos_na_base": 128,
+    "achados": 222,
+    "novos_na_base": 32,
     "por_tipo": {
-      "diario_oficial": {
-        "sensores": 3,
-        "achados": 7,
-        "falhas": 0
-      },
-      "legislativo": {
-        "sensores": 1,
-        "achados": 0,
-        "falhas": 0
-      },
       "diario_justica": {
         "sensores": 1,
         "achados": 0,
         "falhas": 2
       },
+      "ministerio_publico": {
+        "sensores": 2,
+        "achados": 2,
+        "falhas": 0
+      },
       "plataforma": {
-        "sensores": 1,
-        "achados": 1,
+        "sensores": 4,
+        "achados": 5,
         "falhas": 0
       },
       "api": {
         "sensores": 1,
-        "achados": 237,
-        "falhas": 3
+        "achados": 215,
+        "falhas": 0
       }
     }
   }
