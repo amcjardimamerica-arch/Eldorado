@@ -1,5 +1,5 @@
 {
- "em": "2026-10-07T23:09:38+00:00",
+ "em": "2026-10-08T06:00:27+00:00",
  "regra": "sites que o robô não pode ler (robots.txt, JavaScript, bloqueio que nem o IP brasileiro passa) ou cuja rota ainda precisa ser levantada. O titular — ou o Claude no Chrome — abre cada página e captura o que ela mostra; o arquivo vai para entrada_manual/indexadores/ e vira indício na próxima rodada. Enquanto isso, a rota indireta e o Piloto cobrem.",
  "itens": [
   {
@@ -126,6 +126,19 @@
    "motivo": "coleta assistida",
    "como": "abrir a página e clicar no botão 'Capturar indícios' (docs/coleta-assistida.html), depois enviar o arquivo",
    "prioridade": "media",
+   "rota_indireta": null,
+   "caminhos_indiretos": null,
+   "cobertos_pela_rota_indireta": 0,
+   "ultima_captura": null,
+   "itens_ultima_captura": null
+  },
+  {
+   "id": "auto-faperj-br",
+   "nome": "faperj.br",
+   "abrir": "https://www.faperj.br/rp/downloads/",
+   "motivo": "o computador do titular não lê este site desde 2026-10-05 (computador desligado ou coleta parada): leia pelo navegador enquanto isso",
+   "como": "abrir a página e clicar no botão 'Capturar indícios' (docs/coleta-assistida.html), depois enviar o arquivo",
+   "prioridade": "baixa",
    "rota_indireta": null,
    "caminhos_indiretos": null,
    "cobertos_pela_rota_indireta": 0,
