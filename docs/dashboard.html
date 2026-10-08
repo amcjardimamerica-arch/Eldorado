@@ -4931,7 +4931,22 @@ function desenhaDisjuntores(){
       const ordem=Object.keys(porArea).sort((a,b)=>(a==="outros")-(b==="outros")||AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt"));
       return ordem.map(a=>`<div class="dj-area"><div class="dj-areat" style="color:${AREA(a).cor}"><span class=ponto style="background:${AREA(a).cor};width:10px;height:10px"></span>${esc(AREA(a).rotulo)} <span class=meta>${porArea[a].length} motor(es)</span></div>
         <div class="dj-grade">${porArea[a].map(chip).join("")}</div></div>`).join("");})()}`;
+  // 08/10 (titular): o quadro de disjuntores fica OCULTO como os livros em uso — campo com filtro, vazio até a escolha
+  window._djInat=inativos; window._djChip=chip;
+  const _ar=[...new Set(inativos.map(m=>m.area_atuacao||"outros"))].sort((x,y)=>AREA(x).rotulo.localeCompare(AREA(y).rotulo,"pt"));
+  box.innerHTML=`<div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif;font-size:15px">Quadro de disjuntores <span class=meta>${inativos.length} livro(s) fora de uso — ${rosa.length} com época chegando</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0">
+      <select id="dj-area" onchange="djFiltra()"><option value="">— área —</option><option value="*">Todas as áreas</option>${_ar.map(x=>`<option value="${esc(x)}">${esc(AREA(x).rotulo)}</option>`).join("")}</select>
+      <select id="dj-loc" onchange="djFiltra()"><option value="">— localização —</option><option value="*">Todas</option><option value="GO">Goiás</option><option value="BR">Nacional</option><option value="INT">Internacional</option><option value="UF">Outros estados</option></select>
+    </div><div id="dj-livros"></div>`;
 }
+window.djFiltra=function(){
+  const a=($("dj-area")||{}).value||"", l=($("dj-loc")||{}).value||"", alvo=$("dj-livros"); if(!alvo) return;
+  if(!a&&!l){ alvo.innerHTML=""; return; }                                         // nada carrega antes do filtro
+  const geo=m=>{const g=String(m.geo||"");return ["GO","BR","INT"].includes(g)?g:"UF";};
+  const L=(window._djInat||[]).filter(m=>(!a||a==="*"||(m.area_atuacao||"outros")===a)&&(!l||l==="*"||geo(m)===l));
+  alvo.innerHTML=L.length?`<div class=meta>${L.length} livro(s)</div><div class="dj-grade">${L.map(window._djChip).join("")}</div>`:'<div class=meta>Nenhum livro neste filtro.</div>';
+};
 window.mtLigar30=function(id){const e=mtEstado();e.ativos=e.ativos||{};e.ativos[id]=true;e.ligados_em=e.ligados_em||{};e.ligados_em[id]=new Date().toISOString();mtSalva(e);desenhaMotores();atualizaMotoresAtivos();};
 window.mtAtivar=function(){
   const sel=mtFiltrados().filter(m=>mtAtivo(m.id));
