@@ -78,7 +78,26 @@ def brasil_ativo(piloto: str, agora: datetime | None = None) -> tuple[bool, str]
     return True, f"{piloto} voando no Brasil ({b.get('maquina')}), batimento há {idade:.0f} min"
 
 
+def dentro_da_janela(piloto: str, agora: datetime | None = None) -> tuple[bool, str]:
+    """08/10 (titular): o Piloto só voa na sua janela de sucesso (config/parametros_pilotos.json › janelas_de_voo)."""
+    import json as _json
+    from datetime import timedelta as _td, timezone as _tz
+    try:
+        J = (_json.loads((ROOT / "config/parametros_pilotos.json").read_text(encoding="utf-8")).get("janelas_de_voo") or {}).get(piloto)
+    except Exception:  # noqa: BLE001
+        J = None
+    if not J:
+        return True, "sem janela configurada"
+    t = (agora or datetime.now(_tz.utc)).astimezone(_tz.utc) - _td(hours=3)          # horário de Brasília
+    if t.weekday() in (J.get("dias") or range(7)) and t.hour in (J.get("horas_brt") or range(24)):
+        return True, f"dentro da janela ({t:%a %Hh} BRT)"
+    return False, f"fora da janela de voo ({t:%a %Hh} BRT) — {J.get('porque', '')[:120]}"
+
+
 def nuvem_deve_voar(piloto: str, agora: datetime | None = None) -> tuple[bool, str]:
+    ok, motivo_janela = dentro_da_janela(piloto, agora)
+    if not ok:
+        return False, motivo_janela
     sede = (cfg().get("sede") or "automatica").lower()
     if sede == "nuvem":
         return True, "sede fixada na nuvem pelo titular"
