@@ -118,11 +118,12 @@ Mesmo com OCR, o resultado permanece PISTA: card de divulgação não é edital 
 <footer>Eldorado · Farol de Alexandria — relatório gerado sem consumo de tokens.
 Dados automatizados exigem conferência na fonte primária.</footer>
 </main><!-- 08/10 (titular): botão "voltar ao topo" em todas as páginas -->
-<style>#btn-topo{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:44px;height:44px;border-radius:50%;border:none;
-background:#0E2A55;color:#fff;font-size:22px;line-height:44px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);
+<style>#btn-topo{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:52px;height:52px;border-radius:50%;
+background:#fff;border:2px solid #0E2A55;padding:0;overflow:visible;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);
 opacity:0;pointer-events:none;transition:opacity .25s;z-index:9999}#btn-topo.ver{opacity:.9;pointer-events:auto}#btn-topo:hover{opacity:1}
+#btn-topo img{width:40px;height:40px;display:block;margin:4px auto 0}#btn-topo .seta{position:absolute;top:-7px;right:-4px;width:20px;height:20px;border-radius:50%;background:#0E2A55;color:#fff;font-size:12px;line-height:20px;text-align:center;font-weight:bold}#btn-topo:hover img{transform:translateY(-2px);transition:transform .2s}
 @media print{#btn-topo{display:none}}</style>
-<button id="btn-topo" type="button" aria-label="Voltar ao topo da página" title="Voltar ao topo">&#8593;</button>
+<button id="btn-topo" type="button" aria-label="Voltar ao topo da página" title="Voltar ao topo"><img src="img/logo-topo.png" alt=""><span class="seta">&#8593;</span></button>
 <script>(function(){var b=document.getElementById("btn-topo");if(!b)return;
 function v(){b.classList.toggle("ver",(window.scrollY||document.documentElement.scrollTop)>300);}
 window.addEventListener("scroll",v,{passive:true});v();
