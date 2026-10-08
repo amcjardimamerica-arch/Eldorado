@@ -2,11 +2,20 @@
 
 Órgão: PNCP — MUNICIPIO DE RIO DO SUL · bloco UF · regime credenciamento · selo do livro **bronze** · selo da oportunidade prata
 
-Validação: **dispensa_individual:fora_escopo_contratacao** — Credenciamento/chamamento para contratar serviços, fornecimento, imóvel ou consultoria pelo órgão público (Lei 14.133): é contratação ou compra, não fomento a entidade do terceiro setor; fora do escopo da AMC. Arquivar.
+Validação: **inaplicavel:fora_perfil** — [fora_escopo_contratacao] Credenciamento/chamamento para contratar serviços, fornecimento, imóvel ou consultoria pelo órgão público (Lei 14.133): é contratação ou compra, não fomento a entidade do terceiro setor; fora do escopo da AMC. Arquivar.
 
 ## Estudo preditivo
 
 Mês típico: out · duração típica: — dias · próxima janela: 2026-10 · confiança: baixa
+
+## Parecer do livro (leitura documental)
+
+Veredito: **inaplicavel**
+
+Livro inaplicável (fora_perfil), triagem individual do sistema em 03/10/2026, a confirmar na leitura documental: Credenciamento/chamamento para contratar serviços, fornecimento, imóvel ou consultoria pelo órgão público (Lei 14.133): é contratação ou compra, não fomento a entidade do terceiro setor; fora do escopo da AMC. Arquivar.
+
+Inaplicabilidade: [fora_escopo_contratacao] Credenciamento/chamamento para contratar serviços, fornecimento, imóvel ou consultoria pelo órgão público (Lei 14.133): é contratação ou compra, não fomento a entidade do terceiro setor; fora do escopo da AMC. Arquivar.
+
 
 ## Edições anteriores e os 12 itens
 
@@ -16,7 +25,7 @@ Nenhuma edição anterior comprovada (ver validação).
 - extremamente pessimista: Com 0 edição(ões) comprovada(s), qualquer previsão de janela pode estar errada; órgão pode extinguir ou suspender o programa.
 - pessimista: Itens ainda não lidos nas edições: nenhum. Sem eles, requisitos e anexos da próxima podem diferir.
 - levemente pessimista: Abertura registrada pode ser a data de publicação, não a de abertura real; a janela pode deslocar semanas.
-- neutro: Situação: dispensa_individual:fora_escopo_contratacao. Tratar out como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
+- neutro: Situação: inaplicavel:fora_perfil. Tratar out como mês provável apenas se houver 2 anos; conferir a página do órgão 30 dias antes (Lei 13.019, art. 26) e auditar a série por amostra.
 - levemente otimista: Série em 0 ano(s) (—) já dá referência de calendário e de valor.
 - otimista: Reuso de documentos e do plano de trabalho das edições anteriores encurta a preparação da inscrição.
 - extremamente otimista: Com mês típico em out, o painel avisa a janela antes do edital sair e a AMC chega com a proposta pronta.
