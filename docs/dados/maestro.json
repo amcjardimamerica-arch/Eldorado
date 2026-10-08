@@ -1,13 +1,12 @@
 {
  "dia": "2026-10-08",
- "em": "2026-10-08T16:13:21+00:00",
+ "em": "2026-10-08T17:10:36+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 125,
  "cobertura": {
   "completa": 38,
-  "pendente": 1,
+  "parcial": 6,
   "aguardando_horario": 80,
-  "parcial": 5,
   "pendente_local": 1
  },
  "cobertura_percentual": 84.4,
@@ -16,13 +15,12 @@
   "plat-empresas-editais-incentivados",
   "plat-prefeituras-50-go",
   "recorrencia",
-  "do-goiania",
   "judiciario-tjgo",
-  "camara-goiania-pl",
-  "dou",
-  "do-goias"
+  "plat-salic"
  ],
- "esgotaram_tentativas": [],
+ "esgotaram_tentativas": [
+  "do-goiania"
+ ],
  "dia_fechado": false,
  "dia_anterior_nao_observado": [
   "judiciario-tjgo",
@@ -52,13 +50,13 @@
   },
   {
    "motor": "pncp-api",
-   "prioridade": 1.4513,
+   "prioridade": 1.4355,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 6,
    "horarios": "08:53,13:53,19:53",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "pendente",
+   "cobertura": "parcial",
    "tentativas_hoje": 0
   },
   {
@@ -125,22 +123,22 @@
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "prioridade": 0.0919,
+   "prioridade": 0.0912,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 3,
    "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "do-goias",
-   "prioridade": 0.0672,
+   "prioridade": 0.0662,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
@@ -686,7 +684,7 @@
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "tentativas_hoje": 2
   },
   {
    "motor": "judiciario-cnj",
@@ -756,7 +754,7 @@
   },
   {
    "motor": "dou",
-   "prioridade": 0.0325,
+   "prioridade": 0.0321,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
@@ -855,14 +853,14 @@
   },
   {
    "motor": "do-goiania",
-   "prioridade": 0.0185,
+   "prioridade": 0.0183,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
    "coleta": "nuvem + local",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 2
+   "tentativas_hoje": 3
   },
   {
    "motor": "f260-captacao-236",
@@ -920,17 +918,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "judiciario-tjgo",
-   "prioridade": 0.0156,
-   "diagnostico": "bloqueio",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "07:53,16:23",
-   "coleta": "nuvem + local",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 1
-  },
-  {
    "motor": "f260-captacao-069",
    "prioridade": 0.0156,
    "diagnostico": "sem_rendimento",
@@ -940,6 +927,17 @@
    "dia_anterior": "observado",
    "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
+  },
+  {
+   "motor": "judiciario-tjgo",
+   "prioridade": 0.0152,
+   "diagnostico": "bloqueio",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "07:53,16:23",
+   "coleta": "nuvem + local",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-242",
@@ -1196,7 +1194,7 @@
   },
   {
    "motor": "camara-goiania-pl",
-   "prioridade": 0.0081,
+   "prioridade": 0.0079,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "12:53,20:23",
