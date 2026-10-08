@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-08T07:02:57+00:00",
+  "em": "2026-10-08T07:19:12+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-08T06:47:57+00:00",
+  "ultimo_voo": "2026-10-08T07:07:22+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,104 @@
     "empresas sem ficha": 126
   },
   "acumulado": {
-    "missoes": 601,
-    "validadas": 28,
+    "missoes": 602,
+    "validadas": 29,
     "parciais": 181,
     "insuficientes": 392,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 92,
-      "sim": 426
+      "sim": 427
     },
     "estrelas_de_ouro": 48,
-    "fontes_novas_para_os_motores": 79,
+    "fontes_novas_para_os_motores": 80,
     "tempo_medio_min": 12.0
   },
   "missoes": [
+    {
+      "em": "2026-10-08T07:07:22+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · livro da Biblioteca",
+      "alvo": "Editais inscricoes abertas setembro outubro 2026 — Brasil",
+      "qualidade": "validada",
+      "comprovados": 9,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://fas-amazonia.org/edital-oferece-apoio-de-ate-r-50-mil-para-negocios-de-turismo-comunitario/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona diretamente o objeto, prazo de inscrição, valor, órgão financiador, requisitos e anexos, o que permite a identificação do edital.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria comprovar pelo menos seis meses de atuação e apresentar um anexo, além de se alinhar ao objeto do edital, que é fortalecer pousadas e restaurantes comunitários.",
+        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos do edital e preparar os documentos necessários para a inscrição.",
+        "risco": "A associação pode não atender aos requisitos de comprovação de seis meses de atuação ou não se alinhar ao objeto do edital."
+      },
+      "erro": null,
+      "segundos": 709,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 9,
+      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
+      "avaliacao": "pronta para a decisão do Claude",
+      "id": "op-op-d6d8591b0ffb",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fortalecer pousadas e restaurantes comunitários como alternativas de geração de renda, valorização dos territórios e conservação da floresta em pé",
+          "trecho": "A iniciativa busca fortalecer pousadas e restaurantes comunitários como alternativas de geração de renda, valorização dos territórios e conservação da floresta em pé.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-09-26 a 2026-10-05",
+          "trecho": "Estão abertas, até 5 de outubro, as inscrições para o edital do Projeto Prospera na Floresta",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "apoio de até R$ 50 mil para a aceleração dos negócios",
+          "trecho": "Outros quatro empreendimentos, com maior nível de maturidade, receberão apoio de até R$ 50 mil para a aceleração dos negócios.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Fundação Amazônia Sustentável",
+          "trecho": "Edital oferece apoio de até R$ 50 mil para negócios de turismo comunitário - FAS - Fundação Amazônia Sustentável",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "AM",
+          "trecho": "Empreendimentos liderados por povos indígenas, ribeirinhos, quilombolas e outras populações tradicionais. As inscrições devem ser realizadas por meio da página fas-amazonia.org/edi",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "Podem participar empreendimentos liderados por povos indígenas, ribeirinhos, quilombolas e outras populações tradicionais.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "comprovar pelo menos seis meses de atuação",
+          "trecho": "Os empreendimentos devem atuar como pousada ou restaurante em uma das áreas abrangidas, comprovar pelo menos seis meses de atuação e atender aos requisitos de regularidad",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Fundo Amazônia",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-10-08T06:47:57+00:00",
       "modo": "validar",
@@ -2460,79 +2543,6 @@
         }
       },
       "financiador": "FAPEMIG",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-07T20:54:49+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · livro da Biblioteca",
-      "alvo": "Chamada CNPq/CAPES Nº 30/2026 Programa de Mestrado e Doutorado Acadêmico para Inovação – MAI/DAI — Brasil",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos"
-      ],
-      "pagina_oficial": "https://rit.org.br/edital-no-165-proppei-2026-editais-univali-2/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona o objeto e a área de atuação do edital, o que permite identificar sua relevância para a AMC.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se sua atividade está alinhada com a área de educação e se há possibilidade de parceria com instituições de ensino para participar do programa.",
-        "proximo_passo": "Consultar os anexos do edital para obter informações detalhadas sobre as regras e requisitos de participação.",
-        "risco": "A falta de informações sobre prazo de inscrição e requisitos pode dificultar a participação da AMC no edital."
-      },
-      "erro": null,
-      "segundos": 859,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 6,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "op-op-e87411db3e80",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Programa de Mestrado e Doutorado Acadêmico para Inovação – MAI/DAI",
-          "trecho": "Edital Nº 165/PROPPEI/2026 | Editais – Univali",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "CNPq",
-          "trecho": "Organização Ofertante: CNPq",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "nacional",
-          "trecho": "Áreas de Interesse: Educação, Inovação, Inteligência Artificial, Pesquisa",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "educacao",
-          "trecho": "Áreas de Interesse: Educação, Inovação, Inteligência Artificial, Pesquisa",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "A RIT é uma associação sem fins lucrativos criada para apoiar organizações que atuam com educação, cultura, esporte e escotismo.",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Conselho Nacional de Desenvolvimento Científico e Tecnológico - CNPq e Coordenação de Aperfeiçoamento de Pessoal de Nível Superior – CAPES",
       "indicios": [],
       "rotas": [
         "site_do_financiador",
