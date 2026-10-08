@@ -329,6 +329,29 @@ def _bloqueio_vigente(reg: dict | None, sensor: dict | None) -> dict | None:
     return {**reg, "vigente": True, "base": "sem leitura bem-sucedida registrada"}
 
 
+def _so_primeira_leitura(dias: list[dict]) -> list[dict]:
+    """08/10 (titular): cada oportunidade aparece UMA vez no calendário do motor — no dia da PRIMEIRA leitura que a
+    encontrou. A releitura nos dias seguintes é desconsiderada: o dia fica com as suas condições (lido, sem leitura,
+    erro) e com as OUTRAS oportunidades, se houver."""
+    import re as _re
+    vistos = set()
+    chave = lambda d: (_re.sub(r"[?#].*$", "", str(d.get("u") or "")).rstrip("/").lower() if d.get("u") not in (None, "None", "")
+                       else _re.sub(r"\W+", " ", str(d.get("t") or "")).strip().lower())
+    for d in sorted([x for x in dias if isinstance(x, dict)], key=lambda x: str(x.get("d") or "")):
+        if d.get("t") in (None, "None", "") and d.get("u") in (None, "None", ""):
+            continue
+        k = chave(d)
+        if not k:
+            continue
+        if k in vistos:                                              # releitura: sai do dia
+            d["releitura_de"] = d.get("t"); d["t"] = None; d["u"] = None; d["n"] = 0
+            if d.get("cor") not in ("cinza", "vermelho", "laranja"):
+                d["cor"] = "azul"                                    # lido, sem novidade
+        else:
+            vistos.add(k)
+    return dias
+
+
 def _trinta_dias(reg: dict, hoje) -> list[dict]:
     """Calendário do motor: do 1º dia do mês anterior até o fim do mês corrente
     (o painel recorta o mês que o titular escolher). Cada dia: cor e trecho."""
@@ -502,7 +525,7 @@ def run() -> dict:
         s = esq.get(f"plat-{p['id']}")
         b = _bloqueio_vigente(blq.get(urlsplit(p["url"]).hostname), esq.get(p.get("id")))
         plataformas.append({"id": p["id"], "nome": p["nome"], "url": p["url"],
-                            "dias": _trinta_dias(diario.get(f"plat-{p['id']}", {}), hoje),
+                            "dias": _so_primeira_leitura(_trinta_dias(diario.get(f"plat-{p['id']}", {}), hoje)),
                             "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
                             "leituras": (s or {}).get("leituras", 0),
                             "situacao": ("bloqueada" if b else "sem leitura ainda" if not s else
@@ -518,7 +541,7 @@ def run() -> dict:
         _dg = (s or {}).get("diagnostico") or {}
         oficiais.append({"id": e["id"], "nome": e["nome"], "tipo": e["tipo"], "url": e["urls"][0],
                          "diagnostico": {k: _dg.get(k) for k in ("motivo_zero", "paginas_lidas", "links_total", "descobertas", "dou_json_materias", "exige_brasil", "origem") if k in _dg},
-                         "dias": _trinta_dias(diario.get(e["id"], {}), hoje),
+                         "dias": _so_primeira_leitura(_trinta_dias(diario.get(e["id"], {}), hoje)),
                          "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
                          "situacao": ("aguardando coleta local" if _aguarda_local(s, e) else "bloqueado" if b else "sem leitura ainda" if not s else
                                       "ativo — captando" if s.get("achados_total") else "ativo, sem achados")})
@@ -543,7 +566,7 @@ def run() -> dict:
             _ult = max((x.get("ultima") for x in _sx if x.get("ultima")), default=None) or _st.get("ultima_leitura")
             _nf = sum(int(x.get("indicios_no_fluxo") or 0) for x in _sx)
             plataformas.append({"id": _mid, "nome": _m.get("nome"), "tipo": "regular", "url": _url,
-                                "dias": _trinta_dias(_dx.get(_mid, {}), hoje), "ultima_leitura": _ult, "achados": _nf,
+                                "dias": _so_primeira_leitura(_trinta_dias(_dx.get(_mid, {}), hoje)), "ultima_leitura": _ult, "achados": _nf,
                                 "diagnostico": {"local": _m.get("local"), "finalidade": _m.get("finalidade"), "fonte": _m.get("fonte"),
                                                 "metodo": _m.get("metodo"), "reune": _m.get("reune"), "criado_automaticamente": _m.get("criado_automaticamente"),
                                                 "sites": [{"id": x["id"], "nome": x.get("nome"), "rota": x.get("rota"), "ultima": x.get("ultima"),
