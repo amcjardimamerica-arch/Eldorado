@@ -133,7 +133,8 @@ class Sede(unittest.TestCase):
             p = mock.patch.object(S, nome, self.tmp / alvo); p.start(); self.addCleanup(p.stop)
         (self.tmp / "cfg.json").write_text(json.dumps({"sede": "automatica", "minutos_batimento": 45}), encoding="utf-8")
 
-    def test_troca_automatica(self):
+    @__import__('unittest').mock.patch('src.pilotos_sede.dentro_da_janela', return_value=(True, 'teste'))   # 08/10: a janela é testada à parte
+    def test_troca_automatica(self, _janela=None):
         agora = datetime(2026, 10, 2, 20, 0, tzinfo=timezone.utc)
         self.assertTrue(S.nuvem_deve_voar("interceptador", agora)[0])                    # ninguém no Brasil
         S.batimento("vm", ["interceptador", "espiao"], agora=agora - timedelta(minutes=10))
@@ -185,3 +186,16 @@ class Integracao(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+
+class JanelaDeVoo(__import__("unittest").TestCase):
+    """08/10: os Pilotos só voam na janela de sucesso (config/parametros_pilotos.json › janelas_de_voo)."""
+    def test_janela(self):
+        from datetime import datetime, timezone
+        from src.pilotos_sede import dentro_da_janela as J, nuvem_deve_voar as N
+        d = lambda s: datetime.fromisoformat(s).replace(tzinfo=timezone.utc)   # noqa: E731
+        self.assertTrue(J("espiao", d("2026-10-08T13:00:00"))[0])          # quinta, 10h BRT
+        self.assertFalse(J("espiao", d("2026-10-10T13:00:00"))[0])         # sábado
+        self.assertTrue(J("interceptador", d("2026-10-09T02:00:00"))[0])   # 23h BRT
+        self.assertFalse(N("interceptador", d("2026-10-08T21:00:00"))[0])  # 18h BRT: não voa
