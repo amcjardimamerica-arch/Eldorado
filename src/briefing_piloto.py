@@ -229,7 +229,8 @@ def fechar(briefing: dict, achados: list[dict], abertas: int = 0, arquivadas: in
     briefing["resultado"] = {"achados": len(achados), "oportunidades_abertas": abertas,
                              "arquivadas": arquivadas,
                              "alvos": [{"nome": a.get("titulo", "")[:90], "url": a.get("url"),
-                                        "prazo": a.get("prazo"), "situacao": a.get("situacao")} for a in achados[:12]],
+                                        "prazo": a.get("prazo"), "situacao": a.get("situacao"),
+                                        "territorio": a.get("territorio"), "novo": a.get("novo")} for a in achados[:12]],   # 08/10
                              "fechado_em": now_iso()}
     arqs = sorted(PASTA.glob("*.json"), reverse=True) if PASTA.exists() else []
     if arqs:

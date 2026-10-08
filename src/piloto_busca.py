@@ -583,6 +583,13 @@ def caçar(ia, angulo: dict, conhecidos: set[str], max_consultas: int = 3, max_p
         consultas = [re.sub(r"\s+", " ", angulo["pergunta"])[:100] + " " + tempero]
     # 2) BUSCA DE VERDADE
     brutos, vistos = [], set()
+    # 08/10 (titular): o que foi APRENDIDO como ruim deixa de ser tentado — uma consulta tinha 137 mil tentativas sem nada
+    _ruins = [str(r.get("consulta") or "") for r in ((load_json(CFG).get("espiao") or {}).get("consultas_ruins") or [])
+              if int(r.get("tentativas") or 0) >= 20]
+    _antes = len(consultas)
+    consultas = [c for c in consultas if all(_similar(c, r) < 0.85 for r in _ruins)]
+    if not consultas and _antes:
+        consultas = [re.sub(r"\s+", " ", str(angulo.get("pergunta") or angulo.get("tema") or "edital organizações da sociedade civil"))[:90]]
     consultas = [foco_da_consulta(c, len(usadas) + k) for k, c in enumerate(consultas)]   # 04/10: GO → BR → INT
     for c in consultas:
         for it in buscar(c, 8):
