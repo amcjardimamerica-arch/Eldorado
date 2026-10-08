@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-08T15:29:09+00:00",
+  "em": "2026-10-08T15:43:03+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-08T15:18:58+00:00",
+  "ultimo_voo": "2026-10-08T15:34:02+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,104 @@
     "empresas sem ficha": 126
   },
   "acumulado": {
-    "missoes": 630,
-    "validadas": 31,
+    "missoes": 631,
+    "validadas": 32,
     "parciais": 187,
     "insuficientes": 412,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 97,
-      "sim": 447
+      "sim": 448
     },
     "estrelas_de_ouro": 51,
     "fontes_novas_para_os_motores": 91,
     "tempo_medio_min": 12.0
   },
   "missoes": [
+    {
+      "em": "2026-10-08T15:34:02+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · livro da Biblioteca",
+      "alvo": "Gráfica do Exército — AVISO DE CHAMAMENTO PÚBLICO Nº 1/2026 — é selecionar as associações e/ou cooperativas de… — Brasil",
+      "qualidade": "validada",
+      "comprovados": 9,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor"
+      ],
+      "pagina_oficial": "https://goias.gov.br/inovacao/wp-content/uploads/sites/26/2026/03/Chamamento-Publico-01-2026-Aviso-de-Chamamento.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona claramente o objeto, prazo de inscrição, órgão financiador, território, esfera, requisitos, anexos, destinação e área de atuação, sendo suficiente para responder à pergunta.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se enquadrar como Organização da Sociedade Civil (OSC), estar atuando na área de educação e seguir os requisitos estabelecidos no edital, incluindo anexar os documentos necessários.",
+        "proximo_passo": "Verificar os requisitos e anexos do edital e se inscrever no prazo estabelecido.",
+        "risco": "O prazo de inscrição não foi especificado, o que pode impedir a participação a tempo."
+      },
+      "erro": null,
+      "segundos": 540,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 9,
+      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
+      "avaliacao": "pronta para a decisão do Claude",
+      "id": "op-op-f906f17ab63d",
+      "encontrou": {
+        "Objeto": {
+          "valor": "seleção de Organização da Sociedade Civil (OSC) para celebração de Termo de Colaboração objetivando a execução do Projeto Educacional em Transformação Digital voltado a lideranças, gestores e servidores públicos municipais",
+          "trecho": "para seleção de Organização da Sociedade Civil (OSC) para celebração de Termo de Colaboração objetivando a execução do Projeto Educacional em Transformação Digital voltado a lidera",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "? a 2026-04-30",
+          "trecho": "até às 18h00 do dia 30/04/2026",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Secretaria de Estado de Ciência, Tecnologia e Inovação",
+          "trecho": "Secretaria de Estado de Ciência, Tecnologia e Inovação – SECTI",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "ESTADO DE GOIÁS",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "educacao",
+          "trecho": "Projeto Educacional em Transformação Digital",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · convenio",
+          "trecho": "para seleção de Organização da Sociedade Civil (OSC) para celebração de Termo de Colaboração",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "Organização da Sociedade Civil (OSC)",
+          "trecho": "para seleção de Organização da Sociedade Civil (OSC) para celebração de Termo de Colaboração",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Gráfica do Exército",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-08T15:18:58+00:00",
       "modo": "validar",
@@ -2497,40 +2580,6 @@
           "dispensado": false
         }
       },
-      "financiador": "null",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-08T04:50:13+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · livro da Biblioteca",
-      "alvo": "Credenciamento de bandas, artistas em diferentes estilos musicais e grupos de manifestações culturais, a fim… … — Brasil",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "nenhuma fonte legível",
-      "segundos": 154,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: nenhuma fonte legível",
-      "id": "op-op-179a5fe5b56c",
-      "encontrou": {},
       "financiador": "null",
       "indicios": [],
       "rotas": [
