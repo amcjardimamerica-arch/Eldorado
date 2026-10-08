@@ -4870,10 +4870,31 @@ function desenhaMotores(){
       <div class="mt-lado-dir"></div></div>`).join("")}</div>`:"";
   $("mt-lista").innerHTML=oficiaisHtml||'<div class=meta>Nenhum local de publicação neste filtro.</div>';
   if(window._bibAba==="leis"){ desenhaLeis(); return; }
-  if($("mo-lista"))$("mo-lista").innerHTML=(novasHtml+listaFontes)||'<div class=meta>Nenhuma fonte ativa neste filtro — inativas ficam ocultas até menção em local oficial ou época prevista.</div>';
+  // 08/10 (titular): os livros em uso ficam ocultos; no quadro, só as NOVAS sem referência histórica. Os livros por área
+  // ficam num campo com filtro (área e localização), vazio até a escolha — nada carrega antes do filtro.
+  window._bibRows=rows; window._bibChip=chipAceso;
+  const _areas=[...new Set(rows.map(m=>m.objeto_area||"Geral"))].sort((a,b)=>a.localeCompare(b,"pt"));
+  const filtroLivros=`<div class="mt-fam bib-filtro"><div class="mt-famt">Livros da Biblioteca — escolha um filtro <button class="btn" style="float:right" onclick="bibAtualizaTudo()">Atualizar a Biblioteca (completa)</button></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0">
+      <select id="bib-area" onchange="bibFiltra()"><option value="">— área —</option><option value="*">Todas as áreas</option>${_areas.map(a=>`<option>${esc(a)}</option>`).join("")}</select>
+      <select id="bib-loc" onchange="bibFiltra()"><option value="">— localização —</option><option value="*">Todas</option><option value="GO">Goiás</option><option value="BR">Nacional</option><option value="INT">Internacional</option><option value="UF">Outros estados</option></select>
+    </div><div id="bib-livros"></div></div>`;
+  if($("mo-lista"))$("mo-lista").innerHTML=(novasHtml||'<div class=meta>Nenhuma oportunidade nova sem referência histórica.</div>')+filtroLivros;
   if($("mt-sel"))$("mt-sel").textContent=`${mtFiltrados().filter(m=>mtAtivo(m.id)).length} com fogo no filtro atual`;
   desenhaDisjuntores();
 }
+window.bibAtualizaTudo=async function(){   // 08/10: UMA execução que faz tudo (fluxo 28), sem fatias
+  const r=await ghDispatch("atualizar-biblioteca.yml",{});
+  alert(r.ok?"Atualização completa disparada: esteira, leitor documental, selos, mapa, status e publicação — numa só execução (alguns minutos). Clicar de novo só entra na fila.":"Não disparou: "+(r.motivo||""));
+};
+window.bibFiltra=function(){
+  const a=($("bib-area")||{}).value||"", l=($("bib-loc")||{}).value||"", alvo=$("bib-livros"); if(!alvo) return;
+  if(!a&&!l){ alvo.innerHTML=""; return; }                                        // nada carrega antes do filtro
+  const geo=m=>{const g=String(m.geo||"");return ["GO","BR","INT"].includes(g)?g:"UF";};
+  const L=(window._bibRows||[]).filter(m=>(!a||a==="*"||(m.objeto_area||"Geral")===a)&&(!l||l==="*"||geo(m)===l))
+    .sort((x,y)=>String(x.nome_classificado||x.programa).localeCompare(String(y.nome_classificado||y.programa),"pt"));
+  alvo.innerHTML=L.length?`<div class=meta>${L.length} livro(s)</div><div class="dj-grade">${L.map(window._bibChip).join("")}</div>`:'<div class=meta>Nenhum livro neste filtro.</div>';
+};
 /* QUADRO DE DISJUNTORES — todos os recursos INATIVOS, com a poça à esquerda para
    ligar (30 dias de busca diária, IA a cada 3 dias, conselho Fable 5.1 no 9º).
    Cinza: sem época prevista · Rosa: época chegando (ainda não ligado). */
