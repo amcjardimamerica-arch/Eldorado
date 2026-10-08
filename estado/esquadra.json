@@ -305,19 +305,19 @@
     "camara-goiania-pl": {
       "nome": "Câmara Municipal de Goiânia — projetos de lei",
       "tipo": "legislativo",
-      "leituras": 55,
+      "leituras": 56,
       "achados_total": 0,
-      "vazias_seguidas": 55,
-      "ultima": "2026-10-08T00:01:53+00:00",
+      "vazias_seguidas": 56,
+      "ultima": "2026-10-08T02:14:14+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.goiania.go.leg.br",
           "http": 200,
-          "bytes": 49700,
-          "itens": 0
+          "bytes": 284452,
+          "itens": 25
         },
         {
           "url": "https://www.goiania.go.leg.br",
@@ -326,14 +326,14 @@
           "itens": 0
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 3,
-        "links_total": 0,
-        "links_candidatos": 0,
+        "paginas_lidas": 13,
+        "links_total": 25,
+        "links_candidatos": 5,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "0 itens lidos (pautas D 0 projetos em 0 pauta(s) · processos A 0 · própria B 0 · notícias C 0): nenhum chamamento aberto para OSC · 0 a acompanhar · 0 utilidade(s) pública(s) para a lista de habilitação",
+        "motivo_zero": "25 itens lidos (pautas D 0 projetos em 0 pauta(s) · processos A 0 · própria B 0 · notícias C 25): nenhum chamamento aberto para OSC · 5 a acompanhar · 0 utilidade(s) pública(s) para a lista de habilitação",
         "versao": "motor-05 v2 (01/10/2026)",
         "fontes": {
           "A": {
@@ -349,12 +349,10 @@
             "proibido_robots": true
           },
           "C": {
-            "falhas": [
-              "direto: The read operation timed out · pela ponte Brasil: HTTP 504 pela ponte"
-            ],
-            "consultas": 2,
-            "itens": 0,
-            "bytes": 49700
+            "falhas": [],
+            "consultas": 12,
+            "itens": 25,
+            "bytes": 284452
           },
           "D": {
             "falhas": [],
@@ -368,8 +366,8 @@
         },
         "vereditos": {
           "OPORTUNIDADE": 0,
-          "ACOMPANHAR": 0,
-          "RUIDO": 0,
+          "ACOMPANHAR": 5,
+          "RUIDO": 20,
           "quarentena": 0,
           "erros": 0
         },
@@ -377,7 +375,7 @@
         "leitura_do_dia": {
           "pautas_publicadas": 0,
           "pautas_lidas": 0,
-          "noticias": 0,
+          "noticias": 25,
           "nao_lidas": []
         },
         "proibido_robots": {
@@ -388,7 +386,7 @@
           "motivo": "o robots.txt do SUAP (suap.camaragyn.go.gov.br) proíbe robôs (Disallow: /) — os processos e a tramitação vêm das pautas do Plenário no portal; a ficha do processo da associação no SUAP é conferida pelo titular (consulta humana)"
         }
       },
-      "duracao_s": 92
+      "duracao_s": 32
     },
     "cnj-destinacoes": {
       "nome": "CNJ — destinações de penas e prestações pecuniárias",
@@ -533,18 +531,18 @@
     "pncp-api": {
       "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
       "tipo": "api",
-      "leituras": 77,
-      "achados_total": 5133,
+      "leituras": 78,
+      "achados_total": 5349,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-08T00:15:41+00:00",
+      "ultima": "2026-10-08T02:26:47+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 233,
+      "achados_ultima": 216,
       "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
           "http": 200,
-          "bytes": 6995
+          "bytes": 6652
         },
         {
           "url": "https://pncp.gov.br/api/search/",
@@ -554,9 +552,9 @@
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 259,
-        "links_total": 8715,
-        "links_candidatos": 233,
+        "paginas_lidas": 268,
+        "links_total": 8372,
+        "links_candidatos": 216,
         "descobertas": [],
         "pdf_links": 0,
         "motivo_zero": null,
@@ -564,11 +562,17 @@
         "fontes": {
           "A": {
             "falhas": [],
-            "consultas": 213,
-            "itens": 6995,
+            "consultas": 222,
+            "itens": 6652,
             "ufs_lidas": [
               "GO",
               "DF",
+              "PE",
+              "PI",
+              "RJ",
+              "RN",
+              "RS",
+              "RO",
               "RR",
               "SC",
               "SP",
@@ -587,15 +591,13 @@
               "MG",
               "PA",
               "PB",
-              "PR",
-              "PE"
+              "PR"
             ],
-            "cortados": 39,
+            "cortados": 28,
             "paginas_pendentes": [
-              "SC/Credenciamento: páginas 21–22",
-              "SP/Credenciamento: páginas 21–21",
-              "MG/Credenciamento: páginas 21–54",
-              "PR/Credenciamento: páginas 21–22"
+              "RS/Credenciamento: páginas 21–27",
+              "BA/Credenciamento: páginas 21–27",
+              "MG/Credenciamento: páginas 41–54"
             ]
           },
           "B": {
@@ -605,7 +607,7 @@
           },
           "C": {
             "falhas": [],
-            "consultas": 1,
+            "consultas": 0,
             "itens": 0,
             "localizados": 0
           }
@@ -614,6 +616,12 @@
           "ufs_lidas": [
             "GO",
             "DF",
+            "PE",
+            "PI",
+            "RJ",
+            "RN",
+            "RS",
+            "RO",
             "RR",
             "SC",
             "SP",
@@ -632,21 +640,20 @@
             "MG",
             "PA",
             "PB",
-            "PR",
-            "PE"
+            "PR"
           ],
           "proxima_comeca_em": null,
           "faltam_no_dia": []
         },
-        "cortados": 39,
+        "cortados": 28,
         "vereditos": {
-          "OPORTUNIDADE": 233,
+          "OPORTUNIDADE": 216,
           "ACOMPANHAR": 0,
-          "RUIDO": 8095,
+          "RUIDO": 7771,
           "quarentena": 0
         }
       },
-      "duracao_s": 771
+      "duracao_s": 753
     },
     "plat-abcr": {
       "nome": "ABCR — Associação Brasileira de Captadores",
@@ -7509,45 +7516,29 @@
   },
   "ultima_execucao": {
     "data": "2026-10-07",
-    "em": "2026-10-08T00:16:06+00:00",
+    "em": "2026-10-08T02:26:47+00:00",
     "manual": [
-      "alego-pl",
       "camara-goiania-pl",
-      "congresso-nacional",
-      "do-goiania",
-      "do-goias",
-      "dou",
-      "plat-salic",
       "pncp-api"
     ],
     "bloco": "manual",
-    "sensores_executados": 8,
+    "sensores_executados": 2,
     "adiados_por_tempo": [],
-    "duracao_s": 1421,
-    "em_espera": 119,
+    "duracao_s": 785,
+    "em_espera": 125,
     "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 243,
-    "novos_na_base": 15,
+    "achados": 216,
+    "novos_na_base": 0,
     "por_tipo": {
-      "diario_oficial": {
-        "sensores": 3,
-        "achados": 7,
-        "falhas": 0
-      },
       "legislativo": {
-        "sensores": 3,
+        "sensores": 1,
         "achados": 0,
-        "falhas": 1
+        "falhas": 0
       },
       "api": {
         "sensores": 1,
-        "achados": 233,
-        "falhas": 0
-      },
-      "plataforma": {
-        "sensores": 1,
-        "achados": 3,
+        "achados": 216,
         "falhas": 0
       }
     }

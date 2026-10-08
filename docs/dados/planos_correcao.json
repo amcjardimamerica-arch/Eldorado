@@ -3,9 +3,9 @@
  "regra": "PLANOS DE CORREÇÃO DOS CANAIS (titular, 02/10/2026).\n\nCada motor e Piloto é diagnosticado a cada ciclo pelo seu histórico (estado/esquadra*.json, status dos motores, bloqueios)\ne recebe o plano previsto no fluxograma (config/linha_producao.json › planos_de_correcao):\n  sem_rendimento · falha_parcial · bloqueio · exige_brasil · formato_mudou · (contrato_violado e injecao: por registro)\nO plano nunca desliga um canal sozinho: ele diz o que fazer e qual skill usar.",
  "resumo": {
   "bloqueio": 1,
-  "falha_parcial": 8,
+  "falha_parcial": 7,
   "sem_rendimento": 44,
-  "saudavel": 74
+  "saudavel": 75
  },
  "motores": [
   {
@@ -21,21 +21,6 @@
    ],
    "skill": "comum/plano_correcao",
    "leituras": 25,
-   "achados_total": 0
-  },
-  {
-   "motor": "camara-goiania-pl",
-   "canal": "camara-goiania-pl",
-   "familia": "orgao_publico",
-   "diagnostico": "falha_parcial",
-   "evidencia": "falhas em 3 dos últimos 7 dias",
-   "plano": [
-    "repetir com espera crescente (backoff)",
-    "trocar a ordem das rotas",
-    "registrar páginas que falham sempre como rota morta"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 55,
    "achados_total": 0
   },
   {
@@ -859,6 +844,17 @@
    "achados_total": 17
   },
   {
+   "motor": "camara-goiania-pl",
+   "canal": "camara-goiania-pl",
+   "familia": "orgao_publico",
+   "diagnostico": "saudavel",
+   "evidencia": "saudável",
+   "plano": [],
+   "skill": null,
+   "leituras": 56,
+   "achados_total": 0
+  },
+  {
    "motor": "congresso-nacional",
    "canal": "congresso-nacional",
    "familia": "orgao_publico",
@@ -1658,8 +1654,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 77,
-   "achados_total": 5133
+   "leituras": 78,
+   "achados_total": 5349
   }
  ]
 }
