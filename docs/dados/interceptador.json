@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-08T11:18:11+00:00",
+  "em": "2026-10-08T11:48:51+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-08T11:10:37+00:00",
+  "ultimo_voo": "2026-10-08T11:24:47+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,81 @@
     "empresas sem ficha": 126
   },
   "acumulado": {
-    "missoes": 616,
+    "missoes": 617,
     "validadas": 31,
     "parciais": 184,
-    "insuficientes": 401,
+    "insuficientes": 402,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 92,
-      "sim": 440
+      "sim": 441
     },
-    "estrelas_de_ouro": 50,
-    "fontes_novas_para_os_motores": 86,
-    "tempo_medio_min": 12.0
+    "estrelas_de_ouro": 51,
+    "fontes_novas_para_os_motores": 87,
+    "tempo_medio_min": 12.1
   },
   "missoes": [
+    {
+      "em": "2026-10-08T11:24:47+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · livro da Biblioteca",
+      "alvo": "Emenda Parlamentar — Câmara e Senado — captação 2026 — Brasil",
+      "qualidade": "insuficiente",
+      "comprovados": 2,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.congressonacional.leg.br/web/orcamento/acompanhe/orcamento-anual/-/loa/2027/etapas/apresentacao-loa",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "Porque há informações comprovadas sobre o prazo de inscrição e o território de atuação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o território de atuação (DF) é compatível com sua atuação e se está dentro do prazo de inscrição (2026-09-18 a 2026-10-31).",
+        "proximo_passo": "Consultar os órgãos responsáveis pela gestão da Emenda Parlamentar para obter mais detalhes sobre o edital e os requisitos necessários.",
+        "risco": "O território de atuação (DF) pode não ser compatível com a atuação da associação comunitária de Goiânia, limitando o acesso ao fomento."
+      },
+      "erro": null,
+      "segundos": 1443,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 2,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-16e26666deb6",
+      "encontrou": {
+        "Prazo de inscrição": {
+          "valor": "2026-09-18 a 2026-10-31",
+          "trecho": "Informações Complementares (MSG nº 755) - em 18/09/2026",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "DF",
+          "trecho": "Praça dos Três Poderes - Brasília, DF - CEP 70165-900",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Congresso Nacional",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-10-08T11:10:37+00:00",
       "modo": "validar",
@@ -2510,82 +2570,6 @@
         "financiador_ano",
         "governo",
         "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-10-08T01:42:09+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · livro da Biblioteca",
-      "alvo": "BNDES abre chamada para apoiar projetos de organizações periféricas em todo o país — BNDES",
-      "qualidade": "validada",
-      "comprovados": 10,
-      "dispensados": 1,
-      "total": 12,
-      "nao_resolvidos": [
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social/bndes-periferias",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital do BNDES menciona apoio a projetos de organizações periféricas, incluindo a inclusão produtiva urbana em favelas e periferias, o que se alinha com a atuação de uma associação comunitária de Goiânia.",
-        "para_a_amc": "A associação comunitária de Goiânia precisa ser uma pessoa jurídica de direito privado sem fins lucrativos, elaborar um projeto alinhado ao objeto do edital e seguir o prazo de inscrição de 2026-08-18 a 2026-12-04.",
-        "proximo_passo": "Verificar os requisitos do edital e preparar o projeto de acordo com o objeto e o prazo estabelecido.",
-        "risco": "A falta de clareza sobre o valor do apoio e a área de atuação pode impedir a elaboração de um projeto adequado."
-      },
-      "erro": null,
-      "segundos": 643,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 9,
-      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
-      "avaliacao": "pronta para a decisão do Claude",
-      "id": "op-op-9b1d2dfcbd4e",
-      "encontrou": {
-        "Objeto": {
-          "valor": "inclusão produtiva urbana em favelas e periferias",
-          "trecho": "Serão elegíveis propostas relacionadas à inclusão produtiva urbana em favelas e periferias em uma única frente, a saber:",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-08-18 a 2026-12-04",
-          "trecho": "Ciclo para recebimento de propostas: de 18.08.2026 até às 17h de 04.12.2026.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "BNDES",
-          "trecho": "BNDES Periferias",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "nacional",
-          "trecho": "Chamada de projetos para 6º ciclo do BNDES Periferias - até às 17h de 04.12.2026.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Serão elegíveis propostas relacionadas à inclusão produtiva urbana em favelas e periferias em uma única frente, a saber:",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Pessoas jurídicas de direito privado sem fins lucrativos.",
-          "trecho": "Quem pode solicitar Pessoas jurídicas de direito privado sem fins lucrativos.",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "BNDES",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ]
