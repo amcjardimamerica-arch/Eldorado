@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-08T01:38:03+00:00",
+  "em": "2026-10-08T01:52:53+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-08T01:29:34+00:00",
+  "ultimo_voo": "2026-10-08T01:42:09+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,97 @@
     "empresas sem ficha": 126
   },
   "acumulado": {
-    "missoes": 576,
-    "validadas": 26,
+    "missoes": 577,
+    "validadas": 27,
     "parciais": 177,
     "insuficientes": 373,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 89,
-      "sim": 410
+      "sim": 411
     },
     "estrelas_de_ouro": 47,
     "fontes_novas_para_os_motores": 79,
     "tempo_medio_min": 12.2
   },
   "missoes": [
+    {
+      "em": "2026-10-08T01:42:09+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · livro da Biblioteca",
+      "alvo": "BNDES abre chamada para apoiar projetos de organizações periféricas em todo o país — BNDES",
+      "qualidade": "validada",
+      "comprovados": 10,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Valor",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/social/bndes-periferias",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital do BNDES menciona apoio a projetos de organizações periféricas, incluindo a inclusão produtiva urbana em favelas e periferias, o que se alinha com a atuação de uma associação comunitária de Goiânia.",
+        "para_a_amc": "A associação comunitária de Goiânia precisa ser uma pessoa jurídica de direito privado sem fins lucrativos, elaborar um projeto alinhado ao objeto do edital e seguir o prazo de inscrição de 2026-08-18 a 2026-12-04.",
+        "proximo_passo": "Verificar os requisitos do edital e preparar o projeto de acordo com o objeto e o prazo estabelecido.",
+        "risco": "A falta de clareza sobre o valor do apoio e a área de atuação pode impedir a elaboração de um projeto adequado."
+      },
+      "erro": null,
+      "segundos": 643,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 9,
+      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
+      "avaliacao": "pronta para a decisão do Claude",
+      "id": "op-op-9b1d2dfcbd4e",
+      "encontrou": {
+        "Objeto": {
+          "valor": "inclusão produtiva urbana em favelas e periferias",
+          "trecho": "Serão elegíveis propostas relacionadas à inclusão produtiva urbana em favelas e periferias em uma única frente, a saber:",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-08-18 a 2026-12-04",
+          "trecho": "Ciclo para recebimento de propostas: de 18.08.2026 até às 17h de 04.12.2026.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "BNDES",
+          "trecho": "BNDES Periferias",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "nacional",
+          "trecho": "Chamada de projetos para 6º ciclo do BNDES Periferias - até às 17h de 04.12.2026.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "Serão elegíveis propostas relacionadas à inclusão produtiva urbana em favelas e periferias em uma única frente, a saber:",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "Pessoas jurídicas de direito privado sem fins lucrativos.",
+          "trecho": "Quem pode solicitar Pessoas jurídicas de direito privado sem fins lucrativos.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "BNDES",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-08T01:29:34+00:00",
       "modo": "validar",
@@ -2767,36 +2843,6 @@
         }
       },
       "financiador": "Aesthetica Magazine",
-      "indicios": [],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento"
-      ]
-    },
-    {
-      "em": "2026-10-07T14:10:07+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · livro da Biblioteca",
-      "alvo": "A4 Residency Art Center International Residency Program launch — Brasil",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "nenhuma fonte legível",
-      "segundos": 117,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: nenhuma fonte legível",
-      "id": "op-op-3ccf31d1eba4",
-      "encontrou": {},
-      "financiador": "A4 Residency Art Center",
       "indicios": [],
       "rotas": [
         "financiador_programa_edital",
