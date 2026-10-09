@@ -431,3 +431,82 @@ def localizar_ato(paginas_: list[str], titulo: str, orgao: str = "") -> list[str
         return None
     manter = {j for i in idx for j in (i, i + 1) if j < len(paginas_)}
     return [t if j in manter else "" for j, t in enumerate(paginas_)]
+
+
+# ── GABARITO POR ÓRGÃO (v4, 09/10/2026) ────────────────────────────────────────────────────────────────────────────
+# Cada órgão tende a usar o mesmo modelo de edital. Ao ler um documento OFICIAL, o Cartório guarda o RÓTULO que vem
+# antes de cada valor ("Período de inscrições:", "Valor global do repasse:"); no próximo edital do mesmo órgão, procura
+# esses rótulos e aceita o valor só se tiver a FORMA do item (data no prazo, R$ no valor). Nada é inventado: o valor e o
+# trecho continuam literais do documento.
+FORMA = {"Prazo de inscrição": DATA, "Resultado": DATA + r"|\d+\s*[(\[]?[a-z ]*[)\]]?\s*dias", "Prazo de recurso": DATA + r"|\d+\s*[(\[]?[a-zç ]*[)\]]?\s*dias",
+         "Valor": r"R\$\s?\d"}
+
+
+def chave_orgao(url: str, orgao: str = "") -> str | None:
+    """CNPJ do órgão (PNCP), senão o domínio oficial, senão o nome normalizado."""
+    m = re.search(r"/orgaos/(\d{14})/", str(url or "")) or re.search(r"/editais/(\d{14})/", str(url or ""))
+    if m:
+        return "cnpj:" + m.group(1)
+    try:
+        h = (urlsplit(str(url or "")).hostname or "").lower()
+    except ValueError:
+        h = ""
+    h = re.sub(r"^www\.", "", h)
+    if h and GOV.search(h) and h not in ("in.gov.br", "gov.br", "pncp.gov.br", "dados.gov.br", "transferegov.sistema.gov.br"):
+        return "dominio:" + h                            # domínio compartilhado por muitos órgãos não é chave de órgão
+    o = _sem_acento(orgao)
+    return ("orgao:" + re.sub(r"[^a-z0-9]+", " ", o).strip()[:60]) if o.strip() else None
+
+
+COM_ROTULO = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Requisitos", "Anexos", "Destinação")
+
+
+def chaves_orgao(url: str, orgao: str = "") -> list[str]:
+    """Todas as chaves do órgão (CNPJ/domínio pelo endereço e o nome): o que se aprende por uma vale pela outra."""
+    ks = [chave_orgao(url, ""), chave_orgao("", orgao)]
+    return [k for k in dict.fromkeys(ks) if k]
+
+
+def ancora(trecho: str, valor: str) -> str | None:
+    """O rótulo que antecede o valor no trecho literal (até 45 caracteres), sem números — o 'endereço' do item."""
+    t, v = _sem_acento(trecho), _sem_acento(valor)[:25]
+    i = t.find(v) if v else -1
+    if i <= 0:
+        return None
+    a = re.sub(r"\d+", " ", t[max(0, i - 45):i])
+    a = re.sub(r"\s+", " ", re.sub(r"[^a-z ]+", " ", a)).strip()
+    a = " ".join(a.split()[-5:])
+    return a if len(a) >= 8 and len(a.split()) >= 2 else None
+
+
+def aplicar_gabarito(paginas_: list[str], ancoras: dict, documento: str, ja: set) -> dict:
+    """Itens que a extração padrão não achou, procurados pelos rótulos aprendidos deste órgão."""
+    T = Texto(paginas_)
+    alvo = _sem_acento(T.t)
+    out = {}
+    for item, lista in (ancoras or {}).items():
+        if item in ja:
+            continue
+        for a in lista:
+            rx = r"\s+".join(map(re.escape, a.split()))
+            m = re.search(rx + r"[\s:.\-–]*([^\n]{3,260})", alvo)
+            if not m:
+                continue
+            ini, fim = m.start(1), m.end(1)
+            fonte = T.t if len(alvo) == len(T.t) else alvo                 # posições batem quando o comprimento se mantém
+            bruto = re.sub(r"\s+", " ", fonte[ini:fim]).strip()
+            frase = re.split(r"(?<=[.;])\s", bruto)[0]
+            f = FORMA.get(item)
+            if f:
+                mm = re.search(f, frase, re.I)
+                if not mm:
+                    continue
+                valor = frase[:mm.end() + 40].strip(" .;:")
+            else:
+                if len(frase) < 15 or len(a.split()) < 3:          # sem forma própria: só com rótulo de 3+ palavras
+                    continue
+                valor = frase
+            out[item] = {"valor": valor[:300], "trecho": T.trecho(m.start(), fim), "pagina": T.pagina(m.start()),
+                         "documento": documento, "metodo": f"gabarito do órgão (rótulo “{a}”)"}
+            break
+    return out

@@ -108,7 +108,8 @@ function montar(){
   const cards=[["Eficiência dos itens",pct(R.eficiencia_itens),`${R.itens_obtidos||0} obtidos + ${R.itens_dispensados||0} dispensados de ${R.itens_que_faltavam||0}`,1],
     ["Certidões emitidas",R.certidoes||0,`${R.nesta_execucao||0} na última execução`],["Com site oficial",pct(R.taxa_link_oficial),`${R.com_link_oficial||0} certidões`],
     ["Completas",R.certidoes_completas||0,"site oficial + todos os itens que faltavam"],["Na fila",(R.fila_estrelas||0)+(R.fila_livros||0),`${R.fila_estrelas||0} estrelas · ${R.fila_livros||0} livros`],
-    ["Ao Interceptador",R.para_o_interceptador||0,`${R.para_o_chrome||0} ao Chrome (robots.txt)`]];
+    ["Ao Interceptador",R.para_o_interceptador||0,`${R.para_o_chrome||0} ao Chrome (robots.txt)`],
+    ["Gabarito por órgão",(DADOS.gabarito||{}).orgaos_com_gabarito||0,`órgãos aprendidos · ${Object.values((DADOS.gabarito||{}).itens_achados_pelo_gabarito||{}).reduce((a,b)=>a+b,0)} itens achados pelo gabarito`]];
   document.getElementById("cards").innerHTML=cards.map(c=>`<div class="card${c[3]?" destaque":""}"><b>${esc(c[1])}</b><span>${esc(c[0])}<br>${esc(c[2])}</span></div>`).join("");
   document.getElementById("barras").innerHTML=DOZE.map(k=>{const x=(DADOS.por_item||{})[k]||{};const f=x.faltavam||0;
     const o=f?100*(x.obtidos||0)/f:0,d=f?100*(x.dispensados||0)/f:0;

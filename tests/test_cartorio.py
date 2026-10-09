@@ -182,11 +182,50 @@ class TesteV3b(unittest.TestCase):
         self.assertEqual(c["documentos"][0]["motivo"], "ato_nao_localizado")
 
 
+class TesteGabarito(unittest.TestCase):
+    """v4: o gabarito aprende com itens VALIDADOS rótulos que a extração padrão não conhece e os aplica ao mesmo órgão."""
+    FLUXO = {"itens_por_uf": {"GO": [{"id": "v1", "url": "https://pncp.gov.br/app/editais/11222333000144/2026/7", "orgao": "Prefeitura de X",
+              "checklist": {"Prazo de inscrição": {"s": "ok", "v": "20/11/2026", "t": "8.2 Encerramento do cadastramento: 20/11/2026, às 18h"},
+                            "Valor": {"s": "ok", "v": "R$ 80.000,00", "t": "Montante reservado ao chamamento — R$ 80.000,00 por projeto"}}}]}}
+    NOVO = ["EDITAL 9/2026 DA PREFEITURA DE X\nTexto de apresentacao sem cronograma formal e sem secao de valores do edital.\n"
+            "8.2 Encerramento do cadastramento: 05/12/2026, as 18h\nMontante reservado ao chamamento — R$ 120.000,00 por projeto"]
+
+    def test_aprende_com_validacao_e_aplica_ao_mesmo_orgao(self):
+        gab = {}
+        self.assertGreaterEqual(C.aprender_das_validacoes(gab, self.FLUXO), 2)
+        self.assertEqual(C.aprender_das_validacoes(gab, self.FLUXO), 0, "a mesma validação não conta duas vezes")
+        chave = "cnpj:11222333000144"; self.assertIn(chave, gab)
+        u = "https://pncp.gov.br/pncp-api/v1/orgaos/11222333000144/compras/2026/9/arquivos/1"
+        padrao = L.extrair(self.NOVO, u, "Edital 9/2026")["pontos"]
+        self.assertNotIn("Prazo de inscrição", padrao, "a extração padrão não conhece esse rótulo")
+        extra = L.aplicar_gabarito(self.NOVO, C.ancoras_do_orgao(gab, chave), u, set(padrao))
+        self.assertEqual(extra["Prazo de inscrição"]["valor"][:10], "05/12/2026")
+        self.assertIn("120.000,00", extra.get("Valor", padrao.get("Valor", {})).get("valor", ""))
+        self.assertIn("gabarito do órgão", extra["Prazo de inscrição"]["metodo"])
+
+    def test_forma_errada_e_outro_orgao_nao_valem(self):
+        gab = {}; C.aprender_das_validacoes(gab, self.FLUXO)
+        anc = C.ancoras_do_orgao(gab, "cnpj:11222333000144")
+        ruim = ["8.2 Encerramento do cadastramento: conforme cronograma a ser divulgado oportunamente pela comissao"]
+        self.assertNotIn("Prazo de inscrição", L.aplicar_gabarito(ruim, anc, "u", set()), "sem data não é prazo")
+        self.assertEqual(C.ancoras_do_orgao(gab, "cnpj:99999999000199"), {}, "outro órgão não herda o gabarito")
+
+    def test_dominio_compartilhado_nao_e_chave(self):
+        self.assertIsNone(L.chave_orgao("https://www.in.gov.br/web/dou/-/edital-1"))
+        self.assertEqual(L.chave_orgao("https://www.anapolis.go.gov.br/x.pdf"), "dominio:anapolis.go.gov.br")
+
+    def test_certidao_registra_o_gabarito(self):
+        u = "https://pncp.gov.br/pncp-api/v1/orgaos/11222333000144/compras/2026/9/arquivos/1"
+        gab = {}; C.aprender_das_validacoes(gab, self.FLUXO)
+        c = C.certificar({"id": "n1", "titulo": "Edital 9/2026", "url_documento": u}, ["Prazo de inscrição"], Rede({u: _pdf(self.NOVO)}), 4, gab)
+        self.assertEqual(c["resolvidos"], ["Prazo de inscrição"]); self.assertEqual(c["gabarito"]["itens_pelo_gabarito"], ["Prazo de inscrição"])
+
+
 class TesteIntegracao(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); T = Path(self.tmp.name)
-        self.orig = {k: getattr(C, k) for k in ("PASTA", "CERTIDOES", "LIVROS_OUT", "INTERCEPTADOR", "RELATORIO")}
-        C.PASTA = T; C.CERTIDOES = T / "certidoes.json"; C.LIVROS_OUT = T / "livros.jsonl"
+        self.orig = {k: getattr(C, k) for k in ("PASTA", "CERTIDOES", "LIVROS_OUT", "INTERCEPTADOR", "RELATORIO", "GABARITOS")}
+        C.PASTA = T; C.CERTIDOES = T / "certidoes.json"; C.LIVROS_OUT = T / "livros.jsonl"; C.GABARITOS = T / "gabaritos.json"
         C.INTERCEPTADOR = T / "para_int.json"; C.RELATORIO = T / "cartorio.json"; C._CACHE.clear()
 
     def tearDown(self):
