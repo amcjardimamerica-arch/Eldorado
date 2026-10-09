@@ -612,10 +612,7 @@ def voo(ia) -> dict:
     t0 = time.time()
     try:                                        # 09/10 (titular): contagem semanal zerada pelo próprio Piloto, ao decolar
         from .reset_pilotos import zerar_se_preciso as _zerar
-        _zerou = _zerar("interceptador")
-        if _zerou.get("zerou"):                 # o quadro da esquadrilha soma os dois bordos: republica já zerado
-            from .esquadrilha import _publicar as _pub_esq, bordo as _bordo_esq
-            _pub_esq(_bordo_esq())
+        _zerou = _zerar("interceptador")       # 09/10: o quadro da esquadrilha é do Espião — ele o republica na próxima missão
     except Exception as ex:
         _zerou = {"erro": f"{type(ex).__name__}: {ex}"}
     a = proximo_alvo()
