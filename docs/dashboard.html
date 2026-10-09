@@ -4484,15 +4484,72 @@ function _desenhaAbertasFluxo(){
           const SIM={conhecido:"✓",disp:"⊘",buscar:"✕"};
           const NOTA={ok:"confirmado no edital, com trecho",val:"confirmado na validação individual",dt:"confirmado",disp:"dispensado — não se aplica a este edital",
             prov:"dispensa provável pelo tipo de recurso, ainda não confirmada no edital",ref:"há dado de uma edição anterior, ainda não confirmado para esta",falta:"buscado e ainda não encontrado",pend:"ainda não buscado"};
-          const curto=(k,v)=>{v=String(v||"").replace(/\s+/g," ").trim();
-            if(k==="Valor"){const m=v.match(/R\$\s?[\d.]+(?:,\d{2})?/);if(m)return m[0];}
-            if(k==="Prazo de inscrição"||k==="Resultado"){const d=v.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/g);if(d)return k==="Resultado"?d[d.length-1]:(d.length>1?d[0]+" a "+d[d.length-1]:"até "+d[d.length-1]);}
-            if(k==="Território"&&/nacional/i.test(v)&&!/munic|estado d/i.test(v))return "Nacional";
-            if(k==="Território"){const m=v.match(/nacional|estadual|municipal|internacional/i);const u=v.match(/\b(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)\b/);
-              const c=v.replace(/^(n?[oa]s?|d[oa]s?)\s+/i,"").replace(/^(Munic[ií]pio|Estado)\s+d[eoa]\s+/i,"");return u&&!/munic/i.test(v)?u[0]:(m&&v.length>28?m[0]:c);}
-            return v;};
+          // 10/10 (titular): PADRÃO ÚNICO de apresentação dos itens conhecidos (o dado original fica no balão)
+          const MESES={janeiro:1,fevereiro:2,"março":3,marco:3,abril:4,maio:5,junho:6,julho:7,agosto:8,setembro:9,outubro:10,novembro:11,dezembro:12};
+          const p2=n=>String(n).padStart(2,"0");
+          const datas=v=>{const out=[];let anoRef=null;
+            const rx=/(\d{4})-(\d{2})-(\d{2})|(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?|(\d{1,2})º?\s+(?:de\s+)?(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)[a-zç]*\.?\s+(?:de\s+)?(\d{4})/gi;let m;
+            while((m=rx.exec(v))){ if(m[1]) out.push([+m[3],+m[2],+m[1]]);
+              else if(m[4]){const a=m[6]?(+m[6]<100?2000+ +m[6]:+m[6]):null; if(+m[5]<=12&&+m[4]<=31) out.push([+m[4],+m[5],a]);}
+              else if(m[7]){const ab={jan:1,fev:2,mar:3,abr:4,mai:5,jun:6,jul:7,ago:8,set:9,out:10,nov:11,dez:12}[m[8].toLowerCase().slice(0,3)]; if(ab) out.push([+m[7],ab,+m[9]]);} }
+            out.forEach(d=>{if(d[2])anoRef=d[2];}); return out.map(d=>`${p2(d[0])}/${p2(d[1])}/${d[2]||anoRef||""}`.replace(/\/$/,""));};
+          const brl=n=>n.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+          const dinheiro=v=>{
+            const rx=/(R\$|US\$|USD|€|EUR|euros?|d[óo]lares?)?\s*(\d(?:[\d.,]|\s(?=\d{1,3}\.\d))*\d|\d)\s*(bilh(?:ão|ões|oes|ao)|milh(?:ão|ões|oes|ao)|mil\b|mi\b)?\s*(EUR|euros?|USD|d[óo]lares?|reais)?/gi;
+            const achados=[];let m;
+            const numero=(t,mult)=>{t=t.replace(/\s+/g,"");const uc=t.lastIndexOf(","),up=t.lastIndexOf(".");
+              let dec=null;                                            // separador decimal: o último, se tiver 1–2 dígitos depois
+              if(uc>-1&&up>-1) dec=uc>up?",":".";
+              else if(uc>-1) dec=/,\d{1,2}$/.test(t)?",":null;
+              else if(up>-1) dec=(/\.\d{1,2}$/.test(t)&&(mult>1||/\.\d{3}\./.test(t)))?".":null;
+              const mil=dec===","?".":dec==="."?",":(uc>-1?",":".");
+              let x=t.split(mil).join(""); if(dec) x=x.replace(dec,".");
+              return parseFloat(x);};
+            while((m=rx.exec(v))){const moeda=(m[1]||m[4]||"").toLowerCase(); if(!moeda&&!m[3]) continue; if(!moeda&&!/R\$|reais/i.test(v)) continue;
+              const mult=m[3]?(/bilh/i.test(m[3])?1e9:/milh|^mi$/i.test(m[3])?1e6:1e3):1;
+              const val=numero(m[2],mult)*mult;
+              if(!isFinite(val)) continue;
+              const sim=/€|eur/.test(moeda)?"€":/us\$|usd|d[óo]lar/.test(moeda)?"US$":"R$";
+              const antes=v.slice(Math.max(0,m.index-18),m.index).toLowerCase();
+              const q=(/at[ée]\s*$|m[áa]ximo|teto/.test(antes)||(!achados.length&&/\bteto\b/i.test(v.slice(0,m.index))))?"até ":/mais de\s*$/.test(antes)?"mais de ":/cerca de\s*$/.test(antes)?"cerca de ":/m[íi]nimo/.test(antes)?"a partir de ":"";
+              achados.push(`${q}${sim} ${brl(val)}`);}
+            if(achados.length) return achados[0]+(achados.length>1?` (+${achados.length-1} ${achados.length===2?"valor":"valores"})`:"");
+            if(/sem (valor|dinheiro|contrapresta|repasse)|não (fixado|informad)/i.test(v)) return "sem valor em dinheiro";
+            const pc=v.match(/at[ée] \d+\s?%/i); if(pc) return pc[0].replace(/^a/,"A")+" do projeto";
+            return null;};
+          const titulo=v=>v.replace(/([a-zà-ú])([A-ZÀ-Ú])/g,"$1 $2").replace(/[!?]+$/,"").toLowerCase()
+            .replace(/(^|[\s/(-])([a-zà-ú])/g,(x,a,b)=>a+b.toUpperCase()).replace(/ (De|Da|Do|Das|Dos|E|Em|Para|A|O|À)(?= )/g,x=>x.toLowerCase())
+            .replace(/\b(Municipio)\b/g,"Município").replace(/\b(Sp|Go|Df|Mg|Rj|Ba|Pr|Sc|Rs|Ce|Pe|Pa|Ma|Ms|Mt|To|Ro|Rr|Ap|Am|Ac|Al|Se|Pb|Rn|Pi|Es)\b/g,x=>x.toUpperCase())
+            .replace(/\b(Pnab|Fapesp|Fapeg|Secult|Bndes|Sesc|Senac|Sebrae|Osc|Oscs|Ong|Ongs|Fia|Unesco|Onu|Unicef|Ietm|Pncp)\b/g,x=>x.toUpperCase());
+          const ACENTO={Educacao:"Educação",Saude:"Saúde",Consorcio:"Consórcio",Assistencia:"Assistência",Servicos:"Serviços",Acao:"Ação",
+            Habitacao:"Habitação",Administracao:"Administração",Gestao:"Gestão",Ciencia:"Ciência",Inovacao:"Inovação",Publica:"Pública",Publico:"Público",
+            Agua:"Água",Economico:"Econômico",Desenvolvimento:"Desenvolvimento",Juridico:"Jurídico",Seguranca:"Segurança",Familia:"Família",Infancia:"Infância",
+            Promocao:"Promoção",Fundacao:"Fundação",Associacao:"Associação",Cooperacao:"Cooperação",Comunicacao:"Comunicação",Agencia:"Agência",Regiao:"Região",
+            premio:"prêmio",convenio:"convênio",cooperacao:"cooperação",doacao:"doação",colaboracao:"colaboração",subvencao:"subvenção"};
+          const acentua=v=>v.replace(/\b[A-Za-z]+\b/g,w=>ACENTO[w]||w);
+          const frase=v=>{v=v.replace(/\s+/g," ").trim().replace(/[;,.]+$/,""); return v.charAt(0).toUpperCase()+v.slice(1);};
+          const AREAS={meio_ambiente:"Meio ambiente",educacao:"Educação",assistencia_social:"Assistência social",assistencia:"Assistência social",saude:"Saúde",
+            esporte:"Esporte",cultura:"Cultura",crianca:"Criança e adolescente",idoso:"Pessoa idosa",direitos_humanos:"Direitos humanos",ciencia:"Ciência e tecnologia"};
+          const padroniza=(k,v)=>{v=String(v||"").replace(/\s+/g," ").trim(); if(!v) return v;
+            if(k==="Valor") return dinheiro(v)||frase(v);
+            if(k==="Prazo de inscrição"){const d=datas(v); if(!d.length) return frase(v);
+              const iso=x=>x.split("/").reverse().join("-");
+              if(d.length===1||/^\D*(at[ée]|prorrogad|encerra)/i.test(v)) return `até ${d[0]}`;    // "prorrogado até X (DOM Y)": vale X
+              const ini=d[0], fim=d[d.length-1]; return iso(fim)>=iso(ini)?`${ini} a ${fim}`:`até ${ini}`;}
+            if(k==="Resultado"){const d=datas(v); if(d.length) return d[d.length-1]; const n=v.match(/^0*(\d+)\s*(?:\([^)]*\)\s*)?dias?\s*(úteis|corridos)?/i); if(n) return `${n[1]} dia${+n[1]>1?"s":""}${n[2]?" "+n[2].toLowerCase():""}`; return frase(v);}
+            if(k==="Prazo de recurso"){const n=v.match(/0*(\d+)\s*(?:\([^)]*\)\s*)?dias?\s*(úteis|corridos)?/i); if(n) return `${n[1]} dia${+n[1]>1?"s":""}${n[2]?" "+n[2].toLowerCase():""}`; const d=datas(v); if(d.length) return d[d.length-1]; return frase(v);}
+            if(k==="Órgão / financiador") return acentua(titulo(v));
+            if(k==="Destinação") return frase(acentua(v));
+            if(k==="Território"){ if(/^(todo o territ[óo]rio )?nacional|^brasil$/i.test(v)) return "Nacional"; if(/^internacional$/i.test(v)) return "Internacional";
+              if(/^[A-Z]{2}$/i.test(v)) return v.toUpperCase();
+              const c=v.replace(/^(n?[oa]s?|d[oa]s?)\s+/i,"").replace(/^(munic[íi]pio|estado|cidade)\s+d[eoa]\s+/i,"").replace(/\s*\/\s*/,"/");
+              return titulo(c);}
+            if(k==="Esfera"||k==="Área de atuação"){ if(AREAS[v.toLowerCase()]) return AREAS[v.toLowerCase()]; return frase(v.replace(/_/g," "));}
+            if(k==="Anexos"){const n=v.match(/^(\d+)\s*anexo/i); if(n) return `${n[1]} anexo${+n[1]>1?"s":""}`;
+              const lista=v.match(/anexo\s+[ivxl]+\b/gi); if(lista&&lista.length>1) return `${lista.length} anexos`; return frase(v);}
+            return frase(v);};
           return `<div class="oa-kt"><b>Checklist ${feitos}/12</b> <span class=meta>${n("conhecido")} conhecido(s) · ${n("disp")} dispensado(s) · ${n("buscar")} a buscar</span>${x.regime&&x.regime!=="chamamento_publico"?` <span class=meta title="tipo de recurso que define quais itens podem ser dispensados">· tipo: ${esc((x.dispensa_analise||{}).nome||x.regime)}</span>`:""}</div>
-            <div class="oa-kl">${ord.map(k=>{const it=K[k]||{s:"pend"}, g=grupo(it.s), rot=g==="conhecido"&&it.v?curto(k,it.v):k;
+            <div class="oa-kl">${ord.map(k=>{const it=K[k]||{s:"pend"}, g=grupo(it.s), rot=g==="conhecido"&&it.v?padroniza(k,it.v):k;
               return `<span class="oa-ki ${g}" title="${esc(k)} — ${NOTA[it.s]||NOTA.pend}${it.v?": "+esc(it.v):""}${it.t?" · “"+esc(it.t)+"”":""}"><i>${SIM[g]}</i>${esc(rot)}</span>`;}).join("")}</div>`;})()}
         ${I?`<div class=meta style="margin-top:3px">estudada pelo Interceptador em ${esc(I.em.slice(8,10)+"/"+I.em.slice(5,7))}: ${esc(I.qualidade||"—")} ${I.comprovados??""}/12</div>`:`<div class=meta style="margin-top:3px">na fila do Interceptador${x._uf==="GO"?" (Goiás tem prioridade)":""} — ele busca os itens com ✕ (até 3 vezes por oportunidade)</div>`}</div>
       <div class="oa-r">${x.opressor?`livro <b>${esc(x.opressor)}</b>${x.opressor_edicoes?` · ${x.opressor_edicoes} edição(ões) guardada(s)`:""}${x.opressor_previsao?` · próxima janela prevista: ${esc(x.opressor_previsao.proxima_janela)}`:""}`:x.opressor_dispensa?`sem livro — ${esc(x.opressor_dispensa)}`:"livro será criado no próximo ciclo"}</div>

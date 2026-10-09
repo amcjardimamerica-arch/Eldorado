@@ -16,7 +16,7 @@ class TestePainel(unittest.TestCase):
         self.assertIn(".oa-ki.disp i{background:#2F79D0", h, "dispensado em azul")
         self.assertIn(".oa-ki.buscar i{background:#FBE3E1;color:#B3261E}", h, "✕ vermelho")
         self.assertNotIn(".oa-ki.pend", h, "sem o ponto cinza"); self.assertNotIn('pend:"·"', h)
-        self.assertIn('rot=g==="conhecido"&&it.v?curto(k,it.v):k', h, "a informação confirmada substitui o nome")
+        self.assertIn('rot=g==="conhecido"&&it.v?padroniza(k,it.v):k', h, "a informação confirmada (padronizada) substitui o nome")
         self.assertIn("até 3 vezes por oportunidade", h)
 
 
