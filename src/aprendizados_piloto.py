@@ -265,13 +265,23 @@ def faxina(dias: int = 3) -> dict:
         resumo_velhas[k] = resumo_velhas.get(k, 0) + 1
         por_mes.setdefault(f"{_d(a)[:4]}-{_d(a)[4:6]}", []).append({"arquivo": a.name, "avaliacao": v})
     for mes, linhas in por_mes.items():
+        # 09/10: SEM REPETIÇÃO. O pouso dos voos recoloca os .json já arquivados (a exclusão não chega à main) e a
+        # faxina os anexava de novo: arquivo-2026-10 chegou a 1.397.115 linhas para 6.872 avaliações. Agora a
+        # avaliação que já está no arquivo (pelo nome) não entra de novo, e o arquivo é regravado sem as cópias.
         arq = AVAL / f"arquivo-{mes}.jsonl.xz"
-        ant = lzma.decompress(arq.read_bytes()).decode("utf-8") if arq.exists() else ""
-        novo = ant + "".join(json.dumps(x, ensure_ascii=False) + "\n" for x in linhas)
-        arq.write_bytes(lzma.compress(novo.encode("utf-8"), preset=9))
-        if lzma.decompress(arq.read_bytes()).decode("utf-8") == novo:          # confere antes de apagar
+        ja, unicas = set(), []
+        for l, nome in linhas_unicas(arq):
+            ja.add(nome); unicas.append(l)
+        novas = [x for x in linhas if x["arquivo"] not in ja]
+        novo = b"".join(unicas) + "".join(json.dumps(x, ensure_ascii=False) + "\n" for x in novas).encode("utf-8")
+        tmp = arq.with_suffix(".tmp")
+        tmp.write_bytes(lzma.compress(novo, preset=9))
+        if lzma.decompress(tmp.read_bytes()) == novo:                          # confere antes de trocar e apagar
+            tmp.replace(arq)
             for x in linhas:
                 (AVAL / x["arquivo"]).unlink(missing_ok=True)
+        else:
+            tmp.unlink(missing_ok=True)
     d = load_json(LICOES) if LICOES.exists() else {"itens": {}}
     d["ultima_faxina"] = {"em": now_iso(), "dias": dias, "arquivos_de_quarentena_apagados": apagados,
                           "achados_descartados_removidos": guardados,
@@ -309,6 +319,47 @@ def publicar() -> dict:
     return {k: v for k, v in saida.items() if k not in ("licoes", "melhorias_pendentes")}
 
 
+_NOME_ARQ = re.compile(rb'"arquivo":\s*"([^"]+)"')
+
+
+def linhas_unicas(arq: Path):
+    """Linhas de um arquivo mensal (avaliacoes/arquivo-AAAA-MM.jsonl.xz), em fluxo e SEM REPETIÇÃO pelo nome da
+    avaliação (09/10): o arquivo de outubro tinha cada avaliação ~200 vezes. Devolve (linha_em_bytes, nome)."""
+    import lzma
+    if not arq.exists():
+        return
+    vistos = set()
+    try:
+        with lzma.open(arq, "rb") as fh:
+            for l in fh:
+                if not l.strip():
+                    continue
+                m = _NOME_ARQ.search(l[:400])
+                nome = m.group(1).decode("utf-8", "ignore") if m else l[:200].decode("utf-8", "ignore")
+                if nome in vistos:
+                    continue
+                vistos.add(nome)
+                yield (l if l.endswith(b"\n") else l + b"\n"), nome
+    except (EOFError, lzma.LZMAError):
+        return
+
+
+def avaliacoes_arquivadas(pasta: Path | None = None, desde: str | None = None) -> list[dict]:
+    """Avaliações dos arquivos mensais, sem repetição; `desde` (ISO) pula os meses inteiros anteriores sem abri-los."""
+    out = []
+    for f in sorted((pasta or AVAL).glob("arquivo-*.jsonl.xz")):
+        mes = re.search(r"arquivo-(\d{4}-\d{2})", f.name)
+        if desde and mes and mes.group(1) < desde[:7]:
+            continue
+        for l, _n in linhas_unicas(f):
+            try:
+                out.append(json.loads(l).get("avaliacao") or {})
+            except Exception:  # noqa: BLE001
+                continue
+    return out
+
+
 if __name__ == "__main__":
     import sys
     print(json.dumps(faxina() if "faxina" in sys.argv else publicar(), ensure_ascii=False, indent=1))
+

@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import json
 import lzma
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -182,12 +183,25 @@ def run() -> dict:
     for f in D.glob("*.json") if D.exists() else []:
         if str(_j(f, {}).get("em") or "") < RESET:
             f.unlink(); n_av += 1
+    # 09/10: em fluxo e só regrava quando há o que tirar (antes descomprimia e recomprimia o arquivo do mês a cada
+    # pouso — 927 MB em outubro, por causa das cópias repetidas)
     for f in D.glob("arquivo-*.jsonl.xz") if D.exists() else []:
-        try:
-            fica = [l for l in lzma.decompress(f.read_bytes()).decode().splitlines() if l.strip() and str((json.loads(l).get("avaliacao") or {}).get("em") or "") >= RESET]
-        except Exception:
-            fica = []
-        f.write_bytes(lzma.compress(("\n".join(fica) + "\n").encode())) if fica else f.unlink(); n_arq += 1
+        _m = re.search(r"arquivo-(\d{4}-\d{2})", f.name)
+        if _m and _m.group(1) > RESET[:7]:
+            continue                                  # mês inteiro posterior a 01/10: nada a tirar
+        from .aprendizados_piloto import linhas_unicas
+        fica, tirou = [], 0
+        for l, _n in linhas_unicas(f):
+            try:
+                ok = str((json.loads(l).get("avaliacao") or {}).get("em") or "") >= RESET
+            except Exception:
+                ok = False
+            if ok:
+                fica.append(l)
+            else:
+                tirou += 1
+        if tirou:
+            f.write_bytes(lzma.compress(b"".join(fica))) if fica else f.unlink(); n_arq += 1
     B = ROOT / "estado/piloto/bordo.json"; b = _j(B, {})
     if b.get("missoes"):
         antes = len(b["missoes"]); b["missoes"] = [m for m in b["missoes"] if str(m.get("inicio") or m.get("fim") or "") >= RESET]
