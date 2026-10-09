@@ -396,6 +396,9 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
     return {"pontos": P, "dispensas": D, "fim": fim}
 
 
+DIARIO_URL = re.compile(r"queridodiario|in\.gov\.br|diariooficial|/diario|diariomunicipal|/Download/legislacao/diariooficial|/edicao|/edicoes", re.I)
+
+
 def _sem_acento(s: str) -> str:
     import unicodedata
     return "".join(c for c in unicodedata.normalize("NFD", str(s or "").lower()) if unicodedata.category(c) != "Mn")
