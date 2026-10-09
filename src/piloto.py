@@ -828,6 +828,12 @@ def ciclo(porta: int | None = None) -> dict:
         _zerou = {"erro": f"{type(ex).__name__}: {ex}"}
     c = cfg(); hoje = date.today().isoformat(); t0 = time.time()
     orc = c.get("orcamento", {}); par = (load_json(ROOT / "config/cargo_piloto.json") or {}).get("parametros", {})
+    try:                                        # 09/10 (titular): foco privado/internacional; a cada 100 voos, avaliação com a rede neural
+        _foco = load_json(ROOT / "config/espiao_foco.json") if (ROOT / "config/espiao_foco.json").exists() else {}
+        from .espiao_foco import inicio_do_voo as _foco_voo
+        _foco_rel = _foco_voo() if _foco.get("ativo") else None
+    except Exception as ex:
+        _foco, _foco_rel = {}, {"erro": f"{type(ex).__name__}: {ex}"}
     ent = entender()
     ia = IALocal(porta=porta) if porta else IALocal()
     rel = {"em": now_iso(), "modelo": c.get("modelo_vencedor"), "ocupante": ocupante().get("nome"),
@@ -853,18 +859,24 @@ def ciclo(porta: int | None = None) -> dict:
     if rumo:
         rel["rumo"] = {k: rumo[k] for k in ("rumo", "nivel", "alvo", "porque") if k in rumo}
     plano = []
+    if _foco.get("ativo"):
+        # 09/10 (titular): SÓ editais de empresas, oportunidades de empresas e internacionais — fora dos motores
+        rel["foco"] = {"modo": "privado e internacional", "voo": _foco_rel}
+        for _o in range(int(_foco.get("missoes_por_voo", 7))):
+            plano.append({"tipo": "espionar", "motor": "piloto-aberto", "ordem": _o + 1, "alvo_id": f"espionar-{_o + 1}",
+                          "_alvo": {"titulo": "privado e internacional fora dos motores"}})
     # PILOTO - ESPIÃO (titular, 26/09): missão única de DESCOBERTA — sites, empresas e possíveis fontes de recurso.
     # O resgate (comprovar prazo e página oficial) passou ao Piloto - Interceptador, que tem fila e arquivos
     # próprios; o Espião não toca na fila de resgate. O que ele descobre vira candidata para o Interceptador.
     rel["papel"] = "Piloto - Espião"; rel["resgates_na_fila"] = 0; rel["resgates_fora_dos_30_dias"] = 0
     # 1) A APOSTA DO BRIEFING VIRA MISSÃO — duas buscas (nacional e Goiás) antes de tudo
-    if brief.get("pergunta_de_pesquisa") or (isinstance(brief.get("aposta"), dict) and brief["aposta"].get("onde")):
+    if not _foco.get("ativo") and (brief.get("pergunta_de_pesquisa") or (isinstance(brief.get("aposta"), dict) and brief["aposta"].get("onde"))):
         for o in (1, 2):
             plano.append({"tipo": "aposta", "motor": "piloto-aberto", "ordem": len(plano) + 1, "alvo_id": f"aposta-{o}",
                           "_alvo": {"titulo": f"aposta do briefing ({'nacional' if o == 1 else 'Goiás'})"}, "_brief": brief, "_ordem": o})
     # 2) catálogo e busca ativa até PREENCHER O VOO (o tempo é o único limite; sem isto o voo pousava aos 3 min)
     from .catalogo_terceiro_setor import proximo_site as _proximo_site
-    vagas = int(par.get("missoes_por_voo", 7)) - len(plano)
+    vagas = 0 if _foco.get("ativo") else int(par.get("missoes_por_voo", 7)) - len(plano)
     try:                                        # 29/09: pesos da skill de aprendizado (catalogar/prospectar rendem 0,2%)
         from .skills.aprendizado import parametros as _parp
         _pesos = (_parp().get("espiao") or {}).get("pesos_missao") or {}
@@ -919,7 +931,10 @@ def ciclo(porta: int | None = None) -> dict:
         except Exception:
             pass
         try:
-            if m["tipo"] == "resgate":
+            if m["tipo"] == "espionar":
+                from .espiao_foco import missao as _espionar
+                alvo, ach, licao = _espionar(m["ordem"])
+            elif m["tipo"] == "resgate":
                 alvo, ach, licao = missao_resgate(ia, m["_alvo"], conhecidos)
             elif m["tipo"] == "descobrir":
                 alvo, ach, licao = missao_descobrir(m["ordem"])
