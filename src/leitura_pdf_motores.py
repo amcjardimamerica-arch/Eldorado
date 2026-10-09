@@ -54,6 +54,13 @@ def _N(t) -> str:
     return re.sub(r"\s+", " ", t).upper()
 
 
+def links_de_documento(texto: str, limite: int = 5) -> list[str]:
+    """Links de documento citados no texto de um ato (o edital "disponível em www…/edital.pdf"). 'www.' sem esquema vira
+    https://; endereço só http:// fica de fora (os motores leem só https)."""
+    t = re.sub(r"(?<![/\w])(www\.)", r"https://\1", str(texto or ""))
+    return list(dict.fromkeys(m.group(0).rstrip(".,;") for m in DOC_URL.finditer(t)))[:limite]
+
+
 def documentos_do_achado(a: dict) -> list[str]:
     """Os documentos de uma oportunidade, do mais oficial para o menos: o arquivo anexado (url_documento/url_edital), o
     próprio endereço quando é arquivo, o site oficial quando é arquivo e os links de documento citados no texto."""
@@ -62,7 +69,7 @@ def documentos_do_achado(a: dict) -> list[str]:
         u = str(a.get(k) or "")
         if u.startswith("https://") and (k in ("url_documento", "url_edital") or DOC_URL.fullmatch(u.split("#")[0]) or DOC_URL.match(u)):
             out.append(u.split("#")[0])
-    for k in ("documentos", "fontes"):
+    for k in ("links_documento", "documentos", "fontes"):
         for u in a.get(k) or []:
             u = str((u or {}).get("url") if isinstance(u, dict) else u or "")
             if u.startswith("https://") and DOC_URL.match(u):

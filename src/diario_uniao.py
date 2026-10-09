@@ -668,6 +668,11 @@ def _chave(ato: dict, m: dict) -> str:
     return atos.chave_ato(_chave_orgao(m, ato), ato["numero"], m.get("titulo") or ato["cabecalho"], m.get("data"))
 
 
+def _links_doc(texto) -> list[str]:
+    from .leitura_pdf_motores import links_de_documento
+    return links_de_documento(texto or "")
+
+
 def _registro(ato: dict, m: dict) -> dict:
     ev = atos.mascarar_pii(re.sub(r"\s+", " ", ((m.get("titulo") or "") + " " + (m.get("texto") or ""))))[:700]
     titulo = " — ".join(x for x in [ato["orgao"] or "Governo Federal", (m.get("titulo") or ato["cabecalho"][:90])[:140],
@@ -683,6 +688,7 @@ def _registro(ato: dict, m: dict) -> dict:
         "prazo_texto": ato["prazo_texto"], "fim": ato["fim"], "valor_texto": (ato["valores"] or [None])[0],
         "objeto": ato["objeto"], "orgao": ato["orgao"], "regime": ato["regime"], "caminho_sumario": m.get("caminho"),
         "evidencia": ev, "hash_evidencia": sha256(ev.encode()), "fontes_observadas": [m["fonte"]],
+        "links_documento": _links_doc(m.get("texto")),            # 09/10: anexos citados na matéria (leitura de PDF)
         "classificacao_ato": {k: ato[k] for k in ("veredito", "tipo", "regime", "publico", "motivos", "sinais")},
         "sensor": MOTOR_ID, "forca_lexica": 3,
     }
