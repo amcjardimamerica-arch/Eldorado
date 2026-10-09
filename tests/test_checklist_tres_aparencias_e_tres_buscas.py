@@ -1,5 +1,5 @@
 """09/10 (titular): no checklist das oportunidades abertas, o item CONHECIDO mostra a informação confirmada no lugar do
-nome (✓ verde claro), o DISPENSADO fica azul e o resto é ✕ vermelho (sem o ponto cinza); o Interceptador e o Cartório
+nome (✓ verde forte), o DISPENSADO fica azul e o resto é ✕ vermelho (sem o ponto cinza); o Interceptador e o Cartório
 buscam cada oportunidade até 3 vezes."""
 import json, sys, tempfile, unittest
 from datetime import date, timedelta
@@ -11,11 +11,11 @@ sys.path.insert(0, str(ROOT))
 class TestePainel(unittest.TestCase):
     def test_tres_aparencias_e_informacao_no_lugar_do_nome(self):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        self.assertIn('.oa-ki.conhecido i{background:#8FC9A3', h, "um só verde, o claro")
+        self.assertIn('.oa-ki.conhecido i{background:#1E7E4B', h, "um só verde, o forte (titular, 09/10)")
+        self.assertNotIn('.oa-ki.conhecido i{background:#8FC9A3', h, "sem o verde claro")
         self.assertIn(".oa-ki.disp i{background:#2F79D0", h, "dispensado em azul")
         self.assertIn(".oa-ki.buscar i{background:#FBE3E1;color:#B3261E}", h, "✕ vermelho")
         self.assertNotIn(".oa-ki.pend", h, "sem o ponto cinza"); self.assertNotIn('pend:"·"', h)
-        self.assertNotIn(".oa-ki.ok i{background:#1E7E4B", h, "sem o verde escuro")
         self.assertIn('rot=g==="conhecido"&&it.v?curto(k,it.v):k', h, "a informação confirmada substitui o nome")
         self.assertIn("até 3 vezes por oportunidade", h)
 

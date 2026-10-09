@@ -447,9 +447,9 @@ box-shadow:0 1px 3px #0002}
 .oa-kt{margin-bottom:4px}.oa-kl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 8px}
 .oa-ki{font-size:10.5px;line-height:1.5;display:flex;align-items:center;gap:4px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:help}
 .oa-ki i{font-style:normal;width:14px;height:14px;line-height:14px;text-align:center;border-radius:4px;font-size:9.5px;font-weight:800;flex:0 0 14px}
-/* 09/10 (titular): três aparências — ✓ verde claro = item conhecido (mostra a informação confirmada no lugar do nome);
+/* 09/10 (titular): três aparências — ✓ verde forte = item conhecido (mostra a informação confirmada no lugar do nome);
    azul = dispensado (não se aplica a este edital); ✕ vermelho = ainda não conhecido (o Interceptador busca, até 3 vezes) */
-.oa-ki.conhecido i{background:#8FC9A3;color:#fff}.oa-ki.conhecido{color:#23422F;font-weight:600}
+.oa-ki.conhecido i{background:#1E7E4B;color:#fff}.oa-ki.conhecido{color:#23422F;font-weight:600}
 .oa-ki.disp i{background:#2F79D0;color:#fff}.oa-ki.disp{color:#2F5F96}
 .oa-ki.buscar i{background:#FBE3E1;color:#B3261E}.oa-ki.buscar{color:#8A2A22}
 .oa-cab{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.oa-fil{display:flex;gap:6px;flex-wrap:wrap}
@@ -4477,7 +4477,7 @@ function _desenhaAbertasFluxo(){
         ${u?`<span class="oa-s${of?" ok":""}">${of?"site oficial ✓":"indício — site oficial em busca"}</span>`:""}</div>
       ${x.objeto?`<div class="oa-o" title="${esc(x.objeto)}">${esc(String(x.objeto).slice(0,180))}</div>`:""}
       <div class="oa-k">${(()=>{const K=x.checklist||{}; const ord=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
-          // 09/10 (titular): CONHECIDO (✓ verde claro) mostra a INFORMAÇÃO CONFIRMADA no lugar do nome do item;
+          // 09/10 (titular): CONHECIDO (✓ verde forte) mostra a INFORMAÇÃO CONFIRMADA no lugar do nome do item;
           // DISPENSADO (azul) mantém o nome; tudo o que ainda não é conhecido é ✕ vermelho (o Interceptador busca, até 3 vezes).
           const grupo=s=>["ok","val","dt"].includes(s)?"conhecido":(s==="disp"?"disp":"buscar");
           const n=g=>ord.filter(k=>grupo((K[k]||{}).s)===g).length; const feitos=n("conhecido")+n("disp");
