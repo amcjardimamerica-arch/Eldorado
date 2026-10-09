@@ -226,11 +226,14 @@ class TesteIntegracao(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(); T = Path(self.tmp.name)
         self.orig = {k: getattr(C, k) for k in ("PASTA", "CERTIDOES", "LIVROS_OUT", "INTERCEPTADOR", "RELATORIO", "GABARITOS")}
         C.PASTA = T; C.CERTIDOES = T / "certidoes.json"; C.LIVROS_OUT = T / "livros.jsonl"; C.GABARITOS = T / "gabaritos.json"
+        from src import cartorio_linha as _LN
+        self._LN, self._bib0 = _LN, _LN.BIBLIOTECA; _LN.BIBLIOTECA = T / "biblioteca.json"
         C.INTERCEPTADOR = T / "para_int.json"; C.RELATORIO = T / "cartorio.json"; C._CACHE.clear()
 
     def tearDown(self):
         for k, v in self.orig.items():
             setattr(C, k, v)
+        self._LN.BIBLIOTECA = self._bib0
         C._CACHE.clear(); self.tmp.cleanup()
 
     def test_fila_certidao_checklist_livro_e_relatorio(self):
@@ -242,11 +245,13 @@ class TesteIntegracao(unittest.TestCase):
         catalogo = {"motores": [{"id": "livro1", "programa": "Edital 003/2026", "esteira": {"selo": "prata", "doze_faltando": ["Valor", "Prazo de recurso"], "site_confirmado_por": "domínio"},
                                  "parametros": {"edital": {"url": pdf}}}]}
         r = C.run(10, 60, Rede({pdf: _pdf(EDITAL)}), fluxo, catalogo)
-        self.assertEqual((r["fila_estrelas"], r["fila_livros"], r["certificadas"]), (1, 1, 2), "só entra quem tem item indisponível")
+        self.assertEqual(sum(r["na_linha"].values()), 2, "só entra quem tem item indisponível (a estrela completa fica fora)")
+        self.assertEqual(r["certificadas"], 2)
         self.assertEqual(C.item_checklist("est1", "Valor")["s"], "ok")
         self.assertEqual(C.link_oficial("est1"), pdf)
         cert = json.loads(C.CERTIDOES.read_text())["certidoes"]["estrela:est1"]
         self.assertEqual(cert["selo_depois"], "ouro", "a certidão transforma a estrela em ouro")
+        self.assertEqual(cert["abordagens"][0]["n"], 1); self.assertEqual(cert["tentativa"], 1)
         linhas = [json.loads(l) for l in C.LIVROS_OUT.read_text().splitlines()]
         self.assertEqual(linhas[0]["livro"], "livro1"); self.assertIn("Valor", linhas[0]["doze"])
         sys.path.insert(0, str(ROOT / "scripts"))
@@ -254,15 +259,9 @@ class TesteIntegracao(unittest.TestCase):
         self.assertEqual(conferir(linhas[0], {"livro1"}), [], "o importador aceita a linha do Cartório")
         rel = json.loads(C.RELATORIO.read_text())
         self.assertEqual(rel["resumo"]["certidoes"], 2); self.assertEqual(rel["resumo"]["eficiencia_itens"], 1.0)
-        self.assertIn("itens", rel["certidoes"][0])
-        self.assertEqual(C.run(10, 60, Rede({}), fluxo, catalogo)["certificadas"], 0, "não refaz o que não mudou")
-        cs = json.loads(C.CERTIDOES.read_text()); cs["certidoes"]["estrela:est1"]["versao"] = "antiga"; cs["certidoes"]["estrela:est1"]["ainda_faltam"] = ["Valor"]
-        C.CERTIDOES.write_text(json.dumps(cs)); C._CACHE.clear()
-        self.assertEqual(C.run(10, 60, Rede({pdf: _pdf(EDITAL)}), fluxo, catalogo)["certificadas"], 1, "leitor novo refaz a certidão incompleta")
-        rel = json.loads(C.RELATORIO.read_text())
-        self.assertIn("orgaos_com_gabarito", rel["gabarito"])
-        self.assertEqual(rel["por_safra"]["refeitas"]["certidoes"], 1); self.assertEqual(rel["por_safra"]["primeira tentativa"]["certidoes"], 1)
-        self.assertEqual(json.loads(C.CERTIDOES.read_text())["certidoes"]["estrela:est1"]["tentativa"], 2)
+        self.assertEqual(rel["por_abordagem"]["1"]["vezes"] if "1" in rel["por_abordagem"] else rel["por_abordagem"][1]["vezes"], 2)
+        self.assertIn("linha_de_producao", rel); self.assertIn("por_balcao_selo", rel)
+        self.assertEqual(C.run(10, 60, Rede({}), fluxo, catalogo)["certificadas"], 0, "intervalo de 12 h entre tentativas")
 
     def test_um_erro_nao_derruba_a_fila(self):
         pg = "https://www.goias.gov.br/editais/x"
@@ -293,3 +292,77 @@ class TesteIntegracao(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteLinhaDeProducao(unittest.TestCase):
+    """09/10 (titular): balcões por selo, 10 abordagens diferentes, itens acumulados, promoção em cadeia, rede neural."""
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(); T = Path(self.tmp.name)
+        self.orig = {k: getattr(C, k) for k in ("PASTA", "CERTIDOES", "LIVROS_OUT", "INTERCEPTADOR", "RELATORIO", "GABARITOS")}
+        C.PASTA = T; C.CERTIDOES = T / "c.json"; C.LIVROS_OUT = T / "l.jsonl"; C.INTERCEPTADOR = T / "i.json"
+        C.RELATORIO = T / "r.json"; C.GABARITOS = T / "g.json"; C._CACHE.clear()
+        from src import cartorio_linha as LN
+        self.LN = LN; self.bib0 = LN.BIBLIOTECA; LN.BIBLIOTECA = T / "bib.json"
+
+    def tearDown(self):
+        for k, v in self.orig.items():
+            setattr(C, k, v)
+        self.LN.BIBLIOTECA = self.bib0; C._CACHE.clear(); self.tmp.cleanup()
+
+    def test_balcoes_e_ordem_das_abordagens(self):
+        LN = self.LN
+        sem = {"_tipo": "estrela", "checklist": {}}
+        bronze = {"_tipo": "estrela", "checklist": {k: {"s": "ok", "v": "valor"} for k in ("Objeto", "Prazo de inscrição", "Território")}}
+        prata = {"_tipo": "estrela", "checklist": {k: {"s": "ok", "v": "valor"} for k in ("Objeto", "Prazo de inscrição", "Território", "Valor", "Requisitos")}}
+        ouro = {"_tipo": "estrela", "checklist": {k: {"s": "ok", "v": "valor"} for k in L.DOZE}}
+        self.assertEqual([LN.estagio(x) for x in (sem, bronze, prata, ouro)], ["sem_estrela", "bronze", "prata", None])
+        self.assertEqual(LN.proxima_abordagem("sem_estrela", [1])[0], 4, "sem estrela: depois do documento na mão, a biblioteca de sites")
+        self.assertEqual(LN.proxima_abordagem("bronze", [1])[0], 2, "bronze: anexos completos (valor e requisitos)")
+        self.assertEqual(sorted(LN.ORDEM["prata"]), list(range(1, 11)), "cada balcão percorre as 10 abordagens")
+        self.assertEqual(len(set(LN.ABORDAGENS.values())), 10, "10 abordagens diferentes")
+
+    def test_acumula_e_esgota_na_decima(self):
+        LN = self.LN
+        c = LN.acumular(None, {"itens": {"Valor": {"valor": "R$ 1,00"}}, "link_oficial": "https://x.go.gov.br/a", "em": "t1"}, 1, ["Valor", "Requisitos"])
+        c = LN.acumular(c, {"itens": {}, "dispensas": {}, "em": "t2"}, 2, ["Requisitos"])
+        self.assertIn("Valor", c["itens"], "a 2ª tentativa não apaga o que a 1ª achou")
+        self.assertEqual(c["abordagens"][1]["ganhou"], []); self.assertEqual(c["tentativa"], 2)
+        for n in range(3, 11):
+            c = LN.acumular(c, {"em": f"t{n}"}, n, ["Requisitos"])
+        self.assertTrue(c["esgotada"]); self.assertIn("10 abordagens", c["encaminhado"])
+
+    def test_bronze_vira_prata_e_segue_na_mesma_execucao(self):
+        pg = "https://www.anapolis.go.gov.br/editais/chamamento-003-2026"
+        pdf = "https://www.anapolis.go.gov.br/wp-content/uploads/edital-003-2026.pdf"
+        html = f'<html><body><p>{"Chamamento publico da Secretaria de Cultura de Anapolis para organizacoes. " * 6}</p><a href="{pdf}">Edital completo</a></body></html>'
+        ck = {k: {"s": "ok", "v": "valor conhecido"} for k in ("Objeto", "Prazo de inscrição", "Território")}
+        ck.update({k: {"s": "falta"} for k in L.DOZE if k not in ck})
+        fluxo = {"itens_por_uf": {"GO": [{"id": "b1", "titulo": "Edital 003/2026", "link_oficial": pg, "fim": "2026-11-12", "checklist": ck}]}}
+        r = C.run(10, 60, Rede({pg: html, pdf: _pdf(EDITAL)}), fluxo, {"motores": []})
+        cert = json.loads(C.CERTIDOES.read_text())["certidoes"]["estrela:b1"]
+        self.assertEqual(cert["estagio_inicio"], "bronze")
+        self.assertGreaterEqual(r["promovidas"], 1, "subiu de selo")
+        self.assertEqual(cert["selo_depois"], "ouro")
+        self.assertIn(cert["abordagens"][0]["n"], (1, 2), "balcão bronze começa pelo documento na mão / anexos")
+
+    def test_biblioteca_de_sites_e_municipio(self):
+        LN = self.LN
+        cat = {"motores": [{"id": "l1", "orgao": "Prefeitura Municipal de Monteiro Lobato", "uf": "SP", "municipio": "Monteiro Lobato",
+                            "pagina": "https://www.monteirolobato.sp.gov.br/editais"}]}
+        bib = LN.construir_biblioteca(cat, {})
+        op = {"titulo": 'Diário Oficial de Monteiro Lobato (SP) 2026-09-11 — "edital de chamamento público"', "url": "https://data.queridodiario.ok.org.br/x.pdf"}
+        self.assertIn("https://www.monteirolobato.sp.gov.br/editais", LN.sites_conhecidos(op, bib), "o Querido Diário leva ao site da prefeitura")
+        docs, aj = LN.documentos(4, op, Rede({}), None, bib)
+        self.assertTrue(docs and aj["seguir_links"])
+
+    def test_mapa_do_site(self):
+        LN = self.LN
+        sm = b'<?xml version="1.0"?><urlset><url><loc>https://x.go.gov.br/noticia-qualquer</loc></url><url><loc>https://x.go.gov.br/edital-chamamento-003-2026-cultura</loc></url></urlset>'
+        op = {"titulo": "Edital 003/2026 de cultura", "link_oficial": "https://x.go.gov.br/editais"}
+        achou = LN.mapa_do_site(op, Rede({"https://x.go.gov.br/sitemap.xml": sm}), {}, {})
+        self.assertEqual([d["url"] for d in achou], ["https://x.go.gov.br/edital-chamamento-003-2026-cultura"])
+
+    def test_rede_neural_le_a_certidao(self):
+        self.assertIn("cart:link_oficial=", (ROOT / "src/rede_neural.py").read_text(encoding="utf-8"))
+        wf = (ROOT / ".github/workflows/cartorio.yml").read_text(encoding="utf-8")
+        self.assertIn('cron: "41 * * * *"', wf, "linha de produção permanente, de hora em hora")

@@ -69,6 +69,14 @@ def entradas(reg: dict) -> list[int]:
           f"url:gov={'.gov.br' in u or '.leg.br' in u or '.jus.br' in u or '.mp.br' in u}", f"url:pdf={u.endswith('.pdf')}",
           f"url:busca={'duckduckgo' in u or 'google.' in u}", f"canal:{canal}", f"familia:{familia(canal)}",
           f"corrob:{min(3, int(reg.get('_canais') or 1))}", "vies"}
+    try:                                       # 09/10: o que o CARTÓRIO certificou também é entrada (site oficial, itens, dispensas)
+        from .cartorio import certidao as _cert
+        _c = _cert(str(reg.get("id") or "")) or {}
+        if _c:
+            f |= {f"cart:link_oficial={bool(_c.get('link_oficial'))}", f"cart:dispensas={min(3, len(_c.get('dispensas') or {}))}",
+                  f"cart:itens={min(12, len(_c.get('itens') or {})) // 3}", f"cart:esgotada={bool(_c.get('esgotada'))}"}
+    except Exception:  # noqa: BLE001
+        pass
     try:                                       # 02/10: sinais de integridade da leitura também são entrada
         from .integridade import verificar
         f |= {f"int:{x['codigo']}" for x in verificar(reg)}

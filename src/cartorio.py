@@ -94,9 +94,9 @@ def ancoras_do_orgao(gab: dict, chave, minimo: int = 1, por_item: int = 5) -> di
     return {item: [a for a, n in sorted(c.items(), key=lambda x: -x[1]) if n >= minimo][:por_item] for item, c in soma.items()}
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
 CATALOGO = ROOT / "biblioteca_alexandria/fontes/motores.json"
-VERSAO = "cartório v4 (09/10/2026)"
+VERSAO = "cartório v5 · linha de produção (09/10/2026)"
 FALTA = ("falta", "pend", "ref", "prov", None)
-BUSCAS_MAX = 3                                             # 09/10 (titular): até 3 buscas por oportunidade
+BUSCAS_MAX = 10                                            # 09/10 (titular): até 10 tentativas, cada uma com abordagem diferente
 
 
 def cfg() -> dict:
@@ -211,11 +211,12 @@ def _prioridade_anexo(nome: str) -> int:
     return 3
 
 
-def documentos(op: dict, rede: Rede, maximo: int = 4) -> list[dict]:
+def documentos(op: dict, rede: Rede, maximo: int = 4, pncp_teto: int | None = None) -> list[dict]:
     """Escada de degraus: devolve documentos candidatos [{url, degrau, como, bytes, tipo}] — o oficial primeiro."""
     b = balcao(op); out, vistos = [], set()
 
-    teto = max(maximo, PNCP_ANEXOS) if b == "pncp" else maximo
+    _pt = PNCP_ANEXOS if pncp_teto is None else pncp_teto
+    teto = max(maximo, _pt) if b == "pncp" else maximo
 
     def add(url, degrau, como):
         if url and url not in vistos and len(out) < teto:
@@ -235,7 +236,7 @@ def documentos(op: dict, rede: Rede, maximo: int = 4) -> list[dict]:
                 arqs = []
             arqs = [a for a in arqs if isinstance(a, dict) and a.get("statusAtivo", True) and (a.get("url") or a.get("uri"))]
             arqs.sort(key=lambda a: _prioridade_anexo(f"{a.get('titulo')} {a.get('tipoDocumentoNome')}"))
-            for a in arqs[:max(maximo, PNCP_ANEXOS)]:
+            for a in arqs[:max(maximo, _pt)]:
                 u = re.sub(r"^https://pncp\.gov\.br:\d+/", "https://pncp.gov.br/", a.get("url") or a.get("uri"))
                 add(u, 0, f"PNCP: arquivo anexado pelo órgão ({a.get('tipoDocumentoNome') or a.get('titulo') or 'documento'})")
     for k in ("link_oficial", "url", "pagina_oficial", "site_oficial"):
@@ -262,7 +263,8 @@ def _wordpress(base: str, numero: str, rede: Rede) -> list[str]:
 
 
 # ── CERTIDÃO ───────────────────────────────────────────────────────────────────────────────────────────────────────
-def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4, gab: dict | None = None) -> dict:
+def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4, gab: dict | None = None,
+               docs: list[dict] | None = None, ajustes: dict | None = None) -> dict:
     """Uma oportunidade: escada de degraus → leitura → extração → certidão (só os itens que FALTAVAM contam)."""
     cert = {"id": op.get("id"), "tipo": op.get("_tipo", "estrela"), "titulo": str(op.get("titulo") or "")[:200], "balcao": balcao(op),
             "faltavam": list(faltam), "em": _agora(), "versao": VERSAO, "link_oficial": None, "degrau": None, "como": None,
@@ -271,26 +273,27 @@ def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4, ga
         cert.update({"encaminhado": "motor próprio já lê o documento (Ministério Público / Judiciário)",
                      "resolvidos": [], "ainda_faltam": list(faltam), "eficiencia": 0.0})
         return cert
-    fila = documentos(op, rede, maximo_docs)
+    aj = ajustes or {"seguir_links": True, "paginas": 60}
+    fila = list(docs) if docs is not None else documentos(op, rede, maximo_docs)
     titulo = str(op.get("titulo") or "")
     lidos = 0
     i = 0
-    teto_lidos = max(maximo_docs, PNCP_ANEXOS) if cert["balcao"] == "pncp" else maximo_docs
+    teto_lidos = max(maximo_docs, PNCP_ANEXOS, len(fila)) if (cert["balcao"] == "pncp" or docs is not None) else maximo_docs
     while i < len(fila) and lidos < teto_lidos:
         d = fila[i]; i += 1
         raw, tipo, err = rede.get(d["url"])
         reg = {"url": d["url"], "degrau": d["degrau"], "como": d["como"]}
         if err:
             reg["falha"] = err; cert["documentos"].append(reg); continue
-        lido = L.paginas(raw, tipo)
+        lido = L.paginas(raw, tipo, int(aj.get("paginas") or 60))
         reg.update({"motivo": lido.get("motivo"), "tipo": lido.get("tipo"), "paginas": len(lido.get("paginas") or []),
                     "sha1": hashlib.sha1(raw).hexdigest()[:16]})
         # degrau 1 e 2: a página não é o documento — segue os links do próprio site oficial / da pista
-        if lido.get("tipo") == "html":
+        if lido.get("tipo") == "html" and aj.get("seguir_links", True):
             html = lido.get("html") or ""
             if L.regua(d["url"])[0]:
                 for u, rot in L.links_de_documento(html, d["url"]):
-                    if len(fila) < maximo_docs + 4 and u not in {x["url"] for x in fila}:
+                    if len(fila) < maximo_docs + int(aj.get("extra") or 4) and u not in {x["url"] for x in fila}:
                         fila.append({"url": u, "degrau": max(1, d["degrau"]), "como": f"documento citado na página oficial: {rot or u}"})
                 num = re.search(r"\b(\d{1,4}\s*/\s*20\d{2})\b", titulo)
                 if num and L.GOV.search(urlsplit(d["url"]).hostname or "") and re.search(r"(?i)wp-content|wordpress|wp-json", html):
@@ -391,7 +394,8 @@ def fila_livros(catalogo: dict | None = None) -> list[dict]:
         out.append({"id": x.get("id"), "_tipo": "livro", "_faltam": faltam, "_sem_site": sem_site, "titulo": x.get("programa") or x.get("nome_classificado"),
                     "orgao": x.get("orgao"), "uf": x.get("uf"), "nota_rede": x.get("nota_rede"), "selo": e.get("selo"),
                     "url_edital": (p.get("edital") or {}).get("url") or e.get("url_edital"),
-                    "link_oficial": p.get("fonte_oficial") or e.get("site_oficial"), "url": x.get("pagina")})
+                    "link_oficial": p.get("fonte_oficial") or e.get("site_oficial"), "url": x.get("pagina"),
+                    "historico_urls": [h.get("pagina_oficial") for h in (x.get("historico") or []) if isinstance(h, dict) and h.get("pagina_oficial")][-5:]})
     return out
 
 
@@ -472,64 +476,152 @@ def link_oficial(eid: str) -> str | None:
 
 
 # ── EXECUÇÃO ───────────────────────────────────────────────────────────────────────────────────────────────────────
+def _baixar_ponte(url: str) -> tuple[bytes, str]:
+    """Abordagem 8: só pela ponte do computador do titular (IP do Brasil)."""
+    from . import ponte_brasil as PB
+    if not PB.configurada():
+        raise RuntimeError("ponte do titular não configurada")
+    st, _f, corpo, hdr = PB.abrir(url, timeout=60)
+    if st != 200 or not corpo:
+        raise RuntimeError(f"ponte: HTTP {st}")
+    return corpo, (hdr or {}).get("content-type", "")
+
+
+INTERVALO_HORAS = 12                                       # entre duas tentativas da mesma oportunidade
+
+
+def _ultima(c: dict) -> str:
+    h = c.get("abordagens") or []
+    return str((h[-1] if h else c).get("em") or "")
+
+
+def _vez(op: dict, certs: dict, agora: datetime) -> tuple[bool, dict | None, list[int]]:
+    """(é a vez dela?, certidão anterior, abordagens já usadas). Limite de 10; informação nova entra na hora."""
+    from . import cartorio_linha as LN
+    ant = certs.get(f"{op['_tipo']}:{op['id']}")
+    usadas = [h["n"] for h in (ant or {}).get("abordagens") or []] or ([1] if ant else [])
+    if len(usadas) >= LN.MAX_TENTATIVAS:
+        return False, ant, usadas
+    if not ant or ant.get("assinatura") != _assinatura(op):
+        return True, ant, usadas
+    return _ultima(ant) < (agora - timedelta(hours=INTERVALO_HORAS)).isoformat(), ant, usadas
+
+
 def run(limite: int | None = None, segundos: int | None = None, rede: Rede | None = None,
-        fluxo: dict | None = None, catalogo: dict | None = None, gravar: bool = True) -> dict:
-    c = cfg(); hoje = date.today().isoformat(); t0 = time.time()
+        fluxo: dict | None = None, catalogo: dict | None = None, gravar: bool = True, rede_ponte: Rede | None = None) -> dict:
+    """LINHA DE PRODUÇÃO (09/10): balcões por selo (sem estrela → bronze → prata → ouro), uma abordagem diferente por
+    tentativa (até 10), itens acumulados, e a oportunidade que sobe de selo segue na hora para o balcão seguinte."""
+    from collections import deque
+    from . import cartorio_linha as LN
+    c = cfg(); hoje = date.today().isoformat(); t0 = time.time(); agora = datetime.now(timezone.utc)
     limite = limite or int(c["oportunidades_por_execucao"]); segundos = segundos or int(c["segundos_por_execucao"])
     rede = rede or Rede(pausa=float(c["pausa_segundos"]))
+    rede_ponte = rede_ponte or Rede(baixar=_baixar_ponte, pausa=float(c["pausa_segundos"]))
     base = _j(CERTIDOES, {}) or {}
+    certs = base.get("certidoes") or {}
     gab = _j(GABARITOS, {}) or {}
+    fluxo = fluxo if fluxo is not None else _j(FLUXO, {})
+    catalogo = catalogo if catalogo is not None else _j(CATALOGO, {})
     try:
-        aprender_das_validacoes(gab, fluxo if fluxo is not None else _j(FLUXO, {}))
+        aprender_das_validacoes(gab, fluxo)
     except Exception:  # noqa: BLE001
         pass
-    certs = base.get("certidoes") or {}
-    estrelas = devidos(fila_estrelas(fluxo), certs, int(c["revisitar_dias"]))
-    livros = devidos(fila_livros(catalogo), certs, int(c["revisitar_dias"]))
-    estrelas.sort(key=lambda o: prioridade(o, hoje)); livros.sort(key=lambda o: prioridade(o, hoje))
-    lote = estrelas[:max(1, limite - min(len(livros), int(c["livros_por_execucao"])))] + livros[:int(c["livros_por_execucao"])]
-    lote = lote[:limite]
-    feitas, novas_linhas, erros = [], [], []
-    for op in lote:
-        if time.time() - t0 > segundos:
-            break
-        faltam = op["_faltam"] or (["Objeto"] if op.get("_sem_site") else [])
+    bib = LN.construir_biblioteca(catalogo, certs)
+    todas = fila_estrelas(fluxo) + fila_livros(catalogo)
+    na_linha = {"sem_estrela": 0, "bronze": 0, "prata": 0}
+    devidas, esgotadas = [], 0
+    for op in todas:
+        op["_estagio"] = LN.estagio(op)
+        if not op["_estagio"]:
+            continue
+        na_linha[op["_estagio"]] += 1
+        vez, ant, usadas = _vez(op, certs, agora)
+        if len(usadas) >= LN.MAX_TENTATIVAS:
+            esgotadas += 1
+        if vez:
+            op["_usadas"] = usadas
+            devidas.append(op)
+
+    def prio(op):
+        fim = str(op.get("fim") or "")[:10]
+        foco_falta = sum(1 for k in LN.FOCO[op["_estagio"]] if k in (op.get("_faltam") or []))
+        return (0 if (fim and fim >= hoje) else 1, fim or "9999", len(op["_usadas"]), -_nota_rede(op), foco_falta)
+    devidas.sort(key=prio)
+    livros_max = int(c["livros_por_execucao"])
+    est_q = [o for o in devidas if o["_tipo"] == "estrela"]; liv_q = [o for o in devidas if o["_tipo"] == "livro"]
+    fila = deque((est_q[:max(1, limite - min(len(liv_q), livros_max))] + liv_q[:livros_max])[:limite])
+    feitas, novas_linhas, erros, promovidas, sem_material, repassadas = [], [], [], 0, 0, set()
+    while fila and time.time() - t0 <= segundos:
+        op = fila.popleft()
+        chave = f"{op['_tipo']}:{op['id']}"
+        ant = certs.get(chave)
+        usadas = [h["n"] for h in (ant or {}).get("abordagens") or []] or ([1] if ant else [])
+        faltam = op.get("_faltam") or (["Objeto"] if op.get("_sem_site") else [])
+        est0 = op["_estagio"]
+        escolhida, docs, aj = None, [], {}
+        for n in LN.proxima_abordagem(est0, usadas):
+            try:
+                docs, aj = LN.documentos(n, op, rede, ant, bib, int(c["documentos_por_oportunidade"]))
+            except Exception:  # noqa: BLE001
+                docs = []
+            if docs:
+                escolhida = n
+                break
+        if not escolhida:
+            sem_material += 1                              # nada novo a tentar agora: volta quando chegar material
+            continue
         try:
-            cert = certificar(op, faltam, rede, int(c["documentos_por_oportunidade"]), gab)
+            nova = certificar(op, faltam, rede_ponte if aj.get("ponte") else rede, int(c["documentos_por_oportunidade"]), gab, docs, aj)
         except Exception as ex:  # noqa: BLE001 — uma oportunidade com erro nunca derruba a fila inteira
             import traceback
-            cert = {"id": op.get("id"), "tipo": op.get("_tipo"), "titulo": str(op.get("titulo") or "")[:200], "balcao": "?",
-                    "faltavam": faltam, "resolvidos": [], "ainda_faltam": faltam, "eficiencia": 0.0, "documentos": [], "itens": {},
-                    "dispensas": {}, "em": _agora(), "versao": VERSAO, "link_oficial": None,
+            nova = {"id": op.get("id"), "tipo": op.get("_tipo"), "titulo": str(op.get("titulo") or "")[:200], "balcao": "?",
+                    "documentos": [], "itens": {}, "dispensas": {}, "em": _agora(), "versao": VERSAO, "link_oficial": None,
                     "encaminhado": f"Interceptador: erro no Cartório ({type(ex).__name__})", "erro": traceback.format_exc()[-800:]}
             erros.append({"id": op.get("id"), "erro": f"{type(ex).__name__}: {str(ex)[:200]}"})
-        cert.pop("_aprendeu", None)
-        cert["assinatura"] = _assinatura(op)
-        _ant = certs.get(f"{op['_tipo']}:{op['id']}") or {}
-        cert["tentativa"] = int(_ant.get("tentativa") or (1 if _ant else 0)) + 1
-        cert["primeira_em"] = _ant.get("primeira_em") or _ant.get("em") or cert["em"]
-        cert["selo_antes"] = op.get("selo")
-        cert["prazo"] = op.get("fim"); cert["uf"] = op.get("uf"); cert["orgao"] = op.get("orgao")
-        cert["origem"] = op.get("origem")
+        nova.pop("_aprendeu", None)
+        cert = LN.acumular(ant, nova, escolhida, faltam)
+        cert.update({"assinatura": _assinatura(op), "primeira_em": (ant or {}).get("primeira_em") or (ant or {}).get("em") or cert.get("em"),
+                     "prazo": op.get("fim"), "uf": op.get("uf"), "orgao": op.get("orgao"), "origem": op.get("origem"),
+                     "estagio_inicio": (ant or {}).get("estagio_inicio") or est0, "versao": VERSAO})
         if op["_tipo"] == "estrela":
             from .criterio_selos import nivel
-            ck = {k: v for k, v in (op.get("checklist") or {}).items()}
-            for k in cert.get("resolvidos") or []:
+            ck = dict(op.get("checklist") or {})
+            for k in list(cert["itens"]) + list(cert["dispensas"]):
                 ck[k] = item_checklist_de(cert, k)
+            cert["selo_antes"] = (ant or {}).get("selo_antes", nivel(op.get("checklist") or {}))
             cert["selo_depois"] = nivel(ck)
-            cert["selo_antes"] = nivel(op.get("checklist") or {})
+            op2 = {**op, "checklist": ck}
+            est1 = LN.estagio(op2)
+            cert["estagio"] = est1 or "ouro"
+            # LINHA DE PRODUÇÃO: subiu de selo nesta tentativa → segue já para o balcão seguinte (uma vez por execução)
+            if est1 != est0:
+                promovidas += 1
+                if est1 and chave not in repassadas and cert["tentativa"] < LN.MAX_TENTATIVAS:
+                    repassadas.add(chave)
+                    op2["_estagio"] = est1; op2["_faltam"] = [k for k in L.DOZE if (ck.get(k) or {}).get("s") in FALTA]
+                    fila.appendleft(op2)
         else:
+            cert["estagio"] = est0
             novas_linhas += linhas_livro(op, cert)
-        certs[f"{op['_tipo']}:{op['id']}"] = cert
+        certs[chave] = cert
         feitas.append(cert)
     para_int = [{"id": x["id"], "tipo": x["tipo"], "titulo": x["titulo"], "motivo": x["encaminhado"], "faltam": x.get("ainda_faltam")}
-                for x in certs.values() if x.get("encaminhado", "") and str(x.get("encaminhado")).startswith("Interceptador")]
-    rel = relatorio(certs, feitas, len(estrelas), len(livros), gab)
+                for x in certs.values() if str(x.get("encaminhado") or "").startswith("Interceptador")]
+    rel = relatorio(certs, feitas, sum(1 for o in todas if o.get("_tipo") == "estrela" and o.get("_estagio")),
+                    sum(1 for o in todas if o.get("_tipo") == "livro" and o.get("_estagio")), gab)
+    rel["linha_de_producao"] = {"na_linha": na_linha, "devidas_nesta_hora": len(devidas), "promovidas_nesta_execucao": promovidas,
+                                "sem_material_agora": sem_material, "esgotadas_10_abordagens": esgotadas,
+                                "biblioteca_de_sites": {"chaves": len(bib), "sites": sum(len(v["urls"]) for v in bib.values())},
+                                "intervalo_horas": INTERVALO_HORAS, "limite": LN.MAX_TENTATIVAS,
+                                "balcoes": {k: {"nome": LN.NOME_BALCAO[k], "foco": LN.FOCO[k],
+                                                "ordem": [f"{n} · {LN.ABORDAGENS[n]}" for n in LN.ORDEM[k]]} for k in LN.ORDEM}}
     if gravar:
         PASTA.mkdir(parents=True, exist_ok=True)
         CERTIDOES.write_text(json.dumps({"em": _agora(), "versao": VERSAO, "certidoes": certs}, ensure_ascii=False, indent=1), encoding="utf-8")
         GABARITOS.write_text(json.dumps(gab, ensure_ascii=False, indent=1), encoding="utf-8")
-        INTERCEPTADOR.write_text(json.dumps({"em": _agora(), "regra": "só o que o Cartório não resolveu nos degraus 0–2", "itens": para_int[:300]},
+        LN.BIBLIOTECA.parent.mkdir(parents=True, exist_ok=True)
+        LN.BIBLIOTECA.write_text(json.dumps({"em": _agora(), "chaves": len(bib), "sites": bib}, ensure_ascii=False, indent=1), encoding="utf-8")
+        INTERCEPTADOR.write_text(json.dumps({"em": _agora(), "regra": "só o que o Cartório não resolveu (até 10 abordagens)", "itens": para_int[:300]},
                                             ensure_ascii=False, indent=1), encoding="utf-8")
         if novas_linhas:
             (PASTA / "novos_livros.jsonl").write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in novas_linhas) + "\n", encoding="utf-8")
@@ -539,7 +631,8 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
         RELATORIO.parent.mkdir(parents=True, exist_ok=True)
         RELATORIO.write_text(json.dumps(rel, ensure_ascii=False, indent=1), encoding="utf-8")
         _CACHE.clear()
-    return {"certificadas": len(feitas), "fila_estrelas": len(estrelas), "fila_livros": len(livros), "linhas_livros": len(novas_linhas),
+    return {"certificadas": len(feitas), "na_linha": na_linha, "devidas": len(devidas), "promovidas": promovidas,
+            "sem_material": sem_material, "esgotadas": esgotadas, "linhas_livros": len(novas_linhas),
             "acessos": rede.n, "segundos": round(time.time() - t0), "eficiencia": rel["resumo"]["eficiencia_itens"], "erros": erros[:20]}
 
 
@@ -582,6 +675,24 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int, gab: di
                 "com_link_oficial": sum(1 for c in grupo if c.get("link_oficial")),
                 "taxa_link_oficial": round(sum(1 for c in grupo if c.get("link_oficial")) / len(grupo), 3) if grupo else None}
     pelo_gabarito = Counter(k for c in todas for k in ((c.get("gabarito") or {}).get("itens_pelo_gabarito") or []))
+    # 09/10 (linha de produção): o que cada uma das 10 abordagens rendeu, e cada balcão de selo
+    from .cartorio_linha import ABORDAGENS, NOME_BALCAO
+    por_abordagem = {n: {"nome": nome, "vezes": 0, "renderam": 0, "itens": 0, "links_oficiais": 0} for n, nome in ABORDAGENS.items()}
+    for c in todas:
+        for h in c.get("abordagens") or []:
+            a = por_abordagem.get(h.get("n"))
+            if a and not h.get("legado"):
+                a["vezes"] += 1; a["itens"] += len(h.get("ganhou") or []); a["renderam"] += bool(h.get("ganhou"))
+                a["links_oficiais"] += bool(h.get("link_oficial_novo"))
+    for a in por_abordagem.values():
+        a["taxa_de_acerto"] = round(a["renderam"] / a["vezes"], 3) if a["vezes"] else None
+    por_balcao_selo = {}
+    for k, nome in {**NOME_BALCAO, "ouro": "Ouro (saiu da linha)"}.items():
+        g = [c for c in todas if (c.get("estagio") or c.get("estagio_inicio")) == k]
+        f = sum(len(c.get("faltavam") or []) for c in g); r = sum(len(c.get("resolvidos") or []) for c in g)
+        por_balcao_selo[k] = {"nome": nome, "certidoes": len(g), "faltavam": f, "resolvidos": r, "eficiencia": round(r / f, 3) if f else None,
+                              "entraram_aqui": sum(1 for c in todas if c.get("estagio_inicio") == k),
+                              "esgotadas": sum(1 for c in g if c.get("esgotada"))}
     safras = {"primeira tentativa": _safra([c for c in todas if int(c.get("tentativa") or 1) == 1]),
               "refeitas": _safra([c for c in todas if int(c.get("tentativa") or 1) > 1])}
     versoes = {}
@@ -592,9 +703,11 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int, gab: di
                  "eficiencia": round((obtido[k] + dispensado[k]) / pedido[k], 3) if pedido[k] else None} for k in L.DOZE}
     lista = sorted(todas, key=lambda c: (-(c.get("eficiencia") or 0), c.get("titulo") or ""))
     enxuta = [{k: c.get(k) for k in ("id", "tipo", "titulo", "balcao", "link_oficial", "degrau", "como", "faltavam", "resolvidos", "ainda_faltam", "tentativa", "versao", "gabarito",
+                                      "estagio", "estagio_inicio", "esgotada",
                                       "eficiencia", "encaminhado", "selo_antes", "selo_depois", "em", "prazo", "uf", "orgao", "fim")} |
               {"itens": {k: {kk: v.get(kk) for kk in ("valor", "trecho", "pagina", "documento", "metodo")} for k, v in (c.get("itens") or {}).items()},
                "dispensas": {k: {kk: v.get(kk) for kk in ("motivo", "trecho", "pagina", "documento")} for k, v in (c.get("dispensas") or {}).items()},
+               "abordagens": [{kk: h.get(kk) for kk in ("n", "nome", "em", "ganhou", "legado")} for h in (c.get("abordagens") or [])],
                "documentos": [{kk: d.get(kk) for kk in ("url", "degrau", "como", "motivo", "falha", "oficial", "paginas", "edicao_inteira")} for d in c.get("documentos") or []]}
               for c in lista[:400]]
     return {"em": _agora(), "versao": VERSAO, "regra": __doc__.split("Execução:")[0].strip(),
@@ -609,6 +722,7 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int, gab: di
                        "para_o_chrome": sum(1 for c in todas if str(c.get("encaminhado") or "").startswith("Chrome")),
                        "selos_que_mudaram": dict(selos), "por_degrau": dict(por_degrau)},
             "por_item": itens, "por_balcao": por_balcao, "por_safra": safras, "por_versao": por_versao,
+            "por_abordagem": por_abordagem, "por_balcao_selo": por_balcao_selo,
             "gabarito": {"orgaos_com_gabarito": sum(1 for g in (gab if gab is not None else (_j(GABARITOS, {}) or {})).values() if g.get("itens")), "itens_achados_pelo_gabarito": dict(pelo_gabarito),
                          "certidoes_ajudadas": sum(1 for c in todas if (c.get("gabarito") or {}).get("itens_pelo_gabarito"))},
             "certidoes": enxuta}

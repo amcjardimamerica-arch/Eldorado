@@ -52,14 +52,16 @@ class TesteInterceptador(unittest.TestCase):
 
 
 class TesteCartorio(unittest.TestCase):
-    def test_tres_tentativas_salvo_informacao_nova(self):
+    """09/10 (titular, revisto): o Cartório tem até 10 tentativas, cada uma com abordagem diferente (o Interceptador, 3)."""
+    def test_dez_tentativas(self):
+        from datetime import datetime, timezone
         from src import cartorio as C
         op = {"id": "e1", "_tipo": "estrela", "_faltam": ["Valor"], "url": "https://x.go.gov.br/a"}
-        cert = {"tentativa": 3, "assinatura": C._assinatura(op), "em": "2000-01-01", "versao": "antiga", "ainda_faltam": ["Valor"]}
-        self.assertEqual(C.devidos([op], {"estrela:e1": cert}, 7), [], "3ª tentativa feita: para")
-        op2 = {**op, "url_documento": "https://x.go.gov.br/edital-novo.pdf"}
-        self.assertEqual(len(C.devidos([op2], {"estrela:e1": cert}, 7)), 1, "informação nova dos motores reabre")
-        self.assertEqual(len(C.devidos([op], {"estrela:e1": {**cert, "tentativa": 2}}, 7)), 1)
+        hist = [{"n": n, "em": "2000-01-01T00:00:00+00:00", "ganhou": []} for n in range(1, 11)]
+        cert = {"abordagens": hist, "assinatura": C._assinatura(op)}
+        agora = datetime.now(timezone.utc)
+        self.assertFalse(C._vez(op, {"estrela:e1": cert}, agora)[0], "10ª tentativa feita: para")
+        self.assertTrue(C._vez(op, {"estrela:e1": {**cert, "abordagens": hist[:9]}}, agora)[0], "9 feitas: ainda tem a 10ª")
 
 
 if __name__ == "__main__":

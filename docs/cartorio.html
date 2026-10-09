@@ -70,6 +70,13 @@ footer{margin-top:30px;color:var(--suave);font-size:12.5px}
 
 <div class="cards" id="cards"></div>
 
+<h2>Linha de produção <span class="meta">(sem estrela → bronze → prata → ouro · até 10 abordagens por oportunidade)</span></h2>
+<div class="cards" id="linha"></div>
+<p class="meta" id="linha-nota"></p>
+
+<h2>As 10 abordagens <span class="meta">(uma diferente a cada tentativa, na ordem afiada de cada balcão)</span></h2>
+<div class="tab"><table id="abordagens"></table></div>
+
 <h2>Eficiência por item dos 12</h2>
 <div class="barras" id="barras"></div>
 <p class="meta">Verde: obtido no documento oficial · amarelo: dispensado (o edital comprova que o requisito não se aplica) · cinza: ainda falta.</p>
@@ -114,6 +121,14 @@ function montar(){
   document.getElementById("barras").innerHTML=DOZE.map(k=>{const x=(DADOS.por_item||{})[k]||{};const f=x.faltavam||0;
     const o=f?100*(x.obtidos||0)/f:0,d=f?100*(x.dispensados||0)/f:0;
     return `<div class="barra"><span>${esc(k)}</span><div class="trilho" title="${x.obtidos||0} obtidos · ${x.dispensados||0} dispensados · ${f} faltavam"><i class="o" style="width:${o}%"></i><i class="d" style="width:${d}%"></i></div><small>${pct(x.eficiencia)} de ${f}</small></div>`}).join("");
+  const LP=DADOS.linha_de_producao||{}, BS=DADOS.por_balcao_selo||{}, NL=LP.na_linha||{};
+  const etapa=[["sem_estrela","Sem estrela → bronze"],["bronze","Bronze → prata"],["prata","Prata → ouro"],["ouro","Ouro"]];
+  document.getElementById("linha").innerHTML=etapa.map(([k,n])=>{const b=BS[k]||{};const foco=((LP.balcoes||{})[k]||{}).foco||[];
+    return `<div class="card${k==="ouro"?" destaque":""}"><b>${k==="ouro"?(b.certidoes||0):(NL[k]||0)}</b><span>${esc(n)}<br>${k==="ouro"?"certidões que chegaram ao ouro":`na fila · ${b.certidoes||0} certidões · eficiência ${pct(b.eficiencia)}`}${foco.length?`<br>foco: ${esc(foco.slice(0,3).join(", "))}${foco.length>3?"…":""}`:""}${b.esgotadas?`<br>${b.esgotadas} esgotaram as 10`:""}</span></div>`;}).join("");
+  document.getElementById("linha-nota").textContent=LP.balcoes?`Nesta execução: ${LP.promovidas_nesta_execucao||0} subiram de selo e seguiram na hora para o balcão seguinte · ${LP.devidas_nesta_hora||0} na vez · ${LP.sem_material_agora||0} sem material novo agora · ${LP.esgotadas_10_abordagens||0} esgotaram as 10 abordagens (seguem ao Interceptador) · biblioteca de sites: ${(LP.biblioteca_de_sites||{}).sites||0} sites oficiais de ${(LP.biblioteca_de_sites||{}).chaves||0} órgãos/municípios · intervalo de ${LP.intervalo_horas||12} h entre tentativas da mesma oportunidade.`:"";
+  const AB=DADOS.por_abordagem||{};
+  document.getElementById("abordagens").innerHTML="<tr><th>#</th><th>Abordagem</th><th>Vezes usada</th><th>Renderam algo</th><th>Taxa de acerto</th><th>Itens trazidos</th><th>Sites oficiais novos</th></tr>"+
+    Object.entries(AB).map(([n,a])=>`<tr><td>${esc(n)}</td><td>${esc(a.nome)}</td><td>${a.vezes}</td><td>${a.renderam}</td><td><b>${pct(a.taxa_de_acerto)}</b></td><td>${a.itens}</td><td>${a.links_oficiais}</td></tr>`).join("");
   const B=DADOS.por_balcao||{};
   document.getElementById("balcoes").innerHTML="<tr><th>Balcão</th><th>Certidões</th><th>Com site oficial</th><th>Itens resolvidos</th><th>Eficiência</th></tr>"+
     Object.entries(B).map(([k,v])=>`<tr><td>${esc(BALCAO[k]||k)}</td><td>${v.certidoes}</td><td>${pct(v.taxa_link_oficial)}</td><td>${v.resolvidos} de ${v.faltavam}</td><td><b>${pct(v.eficiencia)}</b></td></tr>`).join("");
@@ -143,10 +158,11 @@ function lista(){
     const selo=c.tipo==="estrela"&&c.selo_depois!==c.selo_antes?` · selo ${esc(c.selo_antes||"nenhum")} → <b>${esc(c.selo_depois||"nenhum")}</b>`:"";
     return `<details class="c"><summary><div><div class="tt">${esc(c.titulo)}</div>
       <div class="meta"><span class="pill ${c.tipo==="estrela"?"est":"liv"}">${c.tipo==="estrela"?"estrela":"livro"}</span><span class="pill">${esc(BALCAO[c.balcao]||c.balcao)}</span>
-      ${(c.resolvidos||[]).length} de ${(c.faltavam||[]).length} itens resolvidos${c.tentativa>1?" · "+c.tentativa+"ª tentativa":""}${c.uf?" · "+esc(c.uf):""}${c.prazo?" · prazo "+br(c.prazo):""}${selo}</div><div class="mini">${mini}</div></div>
+      ${(c.resolvidos||[]).length} de ${(c.faltavam||[]).length} itens resolvidos${c.tentativa>1?" · "+c.tentativa+"ª tentativa":""}${c.estagio?" · balcão "+esc({sem_estrela:"sem estrela",bronze:"bronze",prata:"prata",ouro:"ouro"}[c.estagio]||c.estagio):""}${c.uf?" · "+esc(c.uf):""}${c.prazo?" · prazo "+br(c.prazo):""}${selo}</div><div class="mini">${mini}</div></div>
       <div class="pct">${pct(c.eficiencia)}</div></summary>
       <div class="corpo"><p class="meta">Site oficial: ${link(c.link_oficial)}${c.degrau!=null?` · degrau ${c.degrau}: ${esc(c.como||"")}`:""}</p>
       <div class="doze">${DOZE.map(k=>item(c,k)).join("")}</div>
+      ${(c.abordagens||[]).length?`<div class="docs"><b>Tentativas (${c.abordagens.length} de 10):</b> ${c.abordagens.map(h=>`${esc(h.n)}·${esc(h.nome)}${h.legado?" (anterior à linha)":""} → ${(h.ganhou||[]).length?esc(h.ganhou.join(", ")):"nada novo"}`).join(" | ")}</div>`:""}
       ${c.encaminhado?`<div class="enc">Encaminhado: ${esc(c.encaminhado)}</div>`:""}
       <ul class="docs">${(c.documentos||[]).map(d=>`<li>degrau ${esc(d.degrau)} · ${link(d.url)} — ${esc(d.oficial||d.falha||d.motivo||d.como||"")}${d.paginas?" · "+d.paginas+" pág.":""}${d.edicao_inteira?" · só as páginas do ato":""}</li>`).join("")}</ul></div></details>`}).join("")+
     (L.length>300?`<p class="meta">Mostrando 300 de ${L.length}. Use a busca para encontrar as demais.</p>`:"");
