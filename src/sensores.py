@@ -132,6 +132,12 @@ def registro() -> list[dict]:
     sens = [dict(s, origem="especial") for s in cfg["sensores_especiais"]]
     # motor de destinação tributária: sites das PRÓPRIAS empresas maiores contribuintes do ICMS de GO
     for s in sens:
+        if s.get("urls_dinamicas") == "fontes_irmas":       # 10/10 (conselho): domínios oficiais que já renderam e nenhum motor vigiava
+            try:
+                _fi = load_json(ROOT / "estado/conselho/fontes_irmas.json").get("fontes") or []
+                s["urls"] = [f["url"] for f in _fi if f.get("url")][:int(s.get("max_paginas") or 40)]
+            except Exception:  # noqa: BLE001
+                s["urls"] = list(s.get("urls") or [])
         if s.get("urls_dinamicas") == "base_empresas_go":
             s["urls"] = list(s.get("urls") or []) + _sites_empresas_go(limite=max(0, int(s.get("max_paginas") or 24) - len(s.get("urls") or [])))
     vistos = {u for s in sens for u in s["urls"]}
@@ -493,6 +499,13 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
         return ler_motor_est(sensor, data, limites)
     # MOTOR 08 v2 (parecer complementar de 02/10/2026): as 25 maiores prefeituras de Goiás lidas onde publicam — diário
     # AGM, API do WordPress, Querido Diário (domínio novo) e portais próprios —, com status honesto por cidade e por rota
+    # 10/10 (conselho dos motores): ADAPTADORES POR PLATAFORMA — um leitor cobre todos os órgãos da mesma plataforma
+    if sensor.get("id") == "plataforma-wordpress":
+        from .motor_plataformas import ler_wordpress
+        return ler_wordpress(sensor, data, limites)
+    if sensor.get("id") == "plataforma-mapas-culturais":
+        from .motor_plataformas import ler_mapas
+        return ler_mapas(sensor, data, limites)
     if sensor.get("id") == "plat-prefeituras-50-go":
         from .prefeituras_25_go import ler_motor as ler_motor_pref
         return ler_motor_pref(sensor, data, limites)
