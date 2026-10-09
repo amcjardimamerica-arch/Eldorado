@@ -11,6 +11,16 @@
   "indicios": [],
   "tentativas": [
    {
+    "rota": "site_do_financiador",
+    "consulta": "site:transparencia.ipiau.ba.gov.br Editais de ocupação cultural municipal — Goiás / Goiânia",
+    "resultados": 2
+   },
+   {
+    "rota": "site_do_financiador_edital",
+    "consulta": "site:transparencia.ipiau.ba.gov.br edital editais ocupação cultural municipal",
+    "resultados": 4
+   },
+   {
     "rota": "financiador_programa_edital",
     "consulta": "\"Editais de ocupação cultural municipal — Goiás / Goiânia\" Prefeitura Municipal de Goiânia edital inscrições",
     "resultados": 0
@@ -27,7 +37,7 @@
    },
    {
     "rota": "financiador_ano",
-    "consulta": "Prefeitura Municipal de Goiânia edital 2026 editais cultura ocupação cultural municipal Goiânia",
+    "consulta": "Prefeitura Municipal de Goiânia edital 2026 editais ocupação cultural municipal",
     "resultados": 8
    },
    {
@@ -50,13 +60,53 @@
     "ok": false,
     "porque": "termos do edital 0% · sinais de edital 0",
     "rota": "site_citado_na_noticia"
+   },
+   {
+    "validou": "https://transparencia.ipiau.ba.gov.br/?_f[mes_referencia]=8&_f[ano_referencia]=2025&page=3",
+    "ok": false,
+    "porque": "site de outro estado (.ba.gov.br) para oportunidade de GO",
+    "rota": "site_do_financiador"
+   },
+   {
+    "validou": "https://transparencia.ipiau.ba.gov.br/wp-includes/ExternalApps/downloader.php?hurl=aHR0cDovL2RvZW0ub3JnLmJyL2JhL2lwaWF1L2FycXVpdm9zL2Rvd25sb",
+    "ok": false,
+    "porque": "site de outro estado (.ba.gov.br) para oportunidade de GO",
+    "rota": "site_do_financiador"
+   },
+   {
+    "validou": "https://transparencia.ipiau.ba.gov.br/editais/",
+    "ok": false,
+    "porque": "site de outro estado (.ba.gov.br) para oportunidade de GO",
+    "rota": "site_do_financiador_edital"
+   },
+   {
+    "validou": "https://transparencia.ipiau.ba.gov.br/transparencia/",
+    "ok": false,
+    "porque": "site de outro estado (.ba.gov.br) para oportunidade de GO",
+    "rota": "site_do_financiador_edital"
+   },
+   {
+    "validou": "https://transparencia.ipiau.ba.gov.br/wp-includes/ExternalApps/downloader.php?hurl=aHR0cDovL2RvZW0ub3JnLmJyL2JhL2lwaWF1L2FycXVpdm9zL2Rvd25sb",
+    "ok": false,
+    "porque": "site de outro estado (.ba.gov.br) para oportunidade de GO",
+    "rota": "site_do_financiador_edital"
+   },
+   {
+    "validou": "https://transparencia.ipiau.ba.gov.br/licitacoes/",
+    "ok": false,
+    "porque": "site de outro estado (.ba.gov.br) para oportunidade de GO",
+    "rota": "site_do_financiador_edital"
    }
   ],
   "financiador": "Prefeitura Municipal de Goiânia",
-  "programa": "Editais de ocupação cultural municipal — Goiás / Goiânia"
+  "programa": "Editais de ocupação cultural municipal — Goiás / Goiânia",
+  "territorio": {
+   "uf": "GO",
+   "municipio": "Goiânia"
+  }
  },
  "investigacao_ia": {
-  "em": "2026-10-01T21:49:58",
+  "em": "2026-10-09T08:24:47",
   "modelo": "qwen3-8b",
   "passos": [
    "dados indicados: título «Editais de ocupação cultural municipal — Goiás / Goiânia», fonte —, órgão Secretaria Municipal de Cultura de Goiânia, prazo —",
