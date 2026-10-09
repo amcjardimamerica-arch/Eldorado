@@ -1,0 +1,51 @@
+name: 30 · Cartório de fontes oficiais (certifica o que falta nas estrelas e nos livros)
+# 09/10/2026 (titular): os motores descobrem; o Cartório certifica. Roda depois de cada passagem dos motores (o que acabou
+# de chegar com item indisponível) e a cada 2 horas (a fila de estrelas e livros). Grava só os seus caminhos.
+on:
+  workflow_run:
+    workflows: ["22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro)",
+                "01 · Eldorado — motores por hora (00h–06h BRT)",
+                "27 · Executor documental dos motores (robôs; o Claude no Chrome é o último recurso)"]
+    types: [completed]
+  schedule:
+    - cron: "41 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      limite:
+        description: "oportunidades nesta execução"
+        default: "40"
+permissions:
+  contents: write
+concurrency:
+  group: eldorado-cartorio
+  cancel-in-progress: false
+jobs:
+  certificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+      ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -q pypdf pdfplumber || pip install -q pypdf
+      - name: Certificar (degraus 0–2, sem IA; o resto vai ao Interceptador)
+        run: timeout 1800 python -m src.cartorio --limite "${{ github.event.inputs.limite || '40' }}" || echo "terminou com aviso"
+      - name: Gravar só o que é do Cartório (à prova de conflito) e entregar os livros à esteira
+        if: always()
+        run: |
+          git config user.name "cartorio-eldorado" && git config user.email "cartorio@eldorado"
+          rm -rf /tmp/c && mkdir -p /tmp/c && cp -r estado/cartorio /tmp/c/ 2>/dev/null || exit 0
+          cp docs/dados/cartorio.json /tmp/c/ 2>/dev/null || true
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            mkdir -p estado/cartorio && cp -r /tmp/c/cartorio/. estado/cartorio/ && cp /tmp/c/cartorio.json docs/dados/ 2>/dev/null || true
+            [ -s estado/cartorio/novos_livros.jsonl ] && python3 scripts/importar_verificacao_livros.py estado/cartorio/novos_livros.jsonl || true
+            rm -f estado/cartorio/novos_livros.jsonl
+            for P in estado/cartorio docs/dados/cartorio.json estado/esteira/resultados_local.jsonl dados/oportunidades/pareceres_livros; do [ -e "$P" ] && git add -A -- "$P"; done; true
+            git commit -q -m "cartório: $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; break; }
+            git push -q origin main && { echo "gravado ($i)"; break; }; sleep 9
+          done

@@ -1195,6 +1195,14 @@ def selo_validacao(e: dict, ex: dict | None = None) -> dict:
     objeto = itens.get("Objeto") or e.get("objeto")
     prazo = itens.get("Prazo de inscrição") or e.get("fim") or ciclo.get("fim")
     site = ex.get("pagina_divulgacao") or e.get("pagina_divulgacao")
+    try:                                               # 09/10 (titular): link oficial certificado pelo Cartório (régua única)
+        from .cartorio import certidao as _cert
+        _c = _cert(str(e.get("id") or "")) or {}
+        site = site or _c.get("link_oficial")
+        objeto = objeto or ((_c.get("itens") or {}).get("Objeto") or {}).get("valor")
+        prazo = prazo or _c.get("fim")
+    except Exception:  # noqa: BLE001
+        pass
     if site and re.search(r"pncp\.gov|queridodiario|in\.gov\.br|diariooficial|observatorio3setor|captadores\.org|bussolasocial|prosas\.com", str(site), re.I):
         # exceção: o ARQUIVO do edital do órgão hospedado no PNCP é o documento oficial;
         # o que nunca vale é a PÁGINA de anúncio (o portal não é fonte).

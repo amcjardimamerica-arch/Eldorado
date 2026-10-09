@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cartório de fontes oficiais · Eldorado</title>
+<style>
+/* Paleta PROVISÓRIA do painel (config/identidade_visual.json aguarda o design de referência). Só tons claros. */
+:root{--fundo:#FBFBFA;--cartao:#FFFFFF;--tinta:#23272E;--suave:#68707C;--linha:#E4E1D8;--marca:#1F5B99;--realce:#EEF3F9;
+--ok:#1E7E4B;--okf:#E8F4EC;--disp:#7A5C00;--dispf:#FBF3DC;--falta:#B23A2E;--faltaf:#FBEAE7;--ja:#8A919C;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--fundo);color:var(--tinta);font:15px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:1180px;margin:0 auto;padding:20px 16px 48px}
+h1{font-family:Georgia,serif;font-size:26px;margin:0 0 4px;color:var(--marca)}
+h2{font-family:Georgia,serif;font-size:18px;margin:28px 0 10px;border-bottom:2px solid var(--linha);padding-bottom:4px}
+.sub{color:var(--suave);margin:0 0 18px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.card{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:12px 14px}
+.card b{display:block;font-size:26px;color:var(--marca);font-family:Georgia,serif}
+.card span{color:var(--suave);font-size:13px}
+.card.destaque{background:var(--realce);border-color:#C9D8EA}
+.barras{display:grid;gap:6px}
+.barra{display:grid;grid-template-columns:170px 1fr 120px;gap:10px;align-items:center;font-size:14px}
+.trilho{height:14px;background:var(--linha);border-radius:7px;overflow:hidden;display:flex}
+.trilho i{display:block;height:100%}
+.trilho .o{background:var(--ok)}.trilho .d{background:#D9A520}
+.barra small{color:var(--suave);text-align:right}
+.tab{overflow-x:auto;background:var(--cartao);border:1px solid var(--linha);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--linha);text-align:left;white-space:nowrap}
+th{background:var(--realce);font-weight:700}
+.filtros{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+.filtros input,.filtros select{font:inherit;padding:7px 10px;border:1px solid var(--linha);border-radius:8px;background:var(--cartao);color:var(--tinta)}
+.filtros input{flex:1;min-width:200px}
+details.c{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;margin:0 0 8px}
+details.c>summary{list-style:none;cursor:pointer;padding:10px 14px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+details.c>summary::-webkit-details-marker{display:none}
+details.c[open]>summary{border-bottom:1px solid var(--linha);background:var(--realce);border-radius:10px 10px 0 0}
+.tt{font-weight:600}
+.meta{color:var(--suave);font-size:13px}
+.pct{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--marca);text-align:right}
+.pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:10px;background:var(--realce);color:var(--marca);margin-right:4px}
+.pill.est{background:#FFF4D6;color:#7A5C00}.pill.liv{background:#ECE6F6;color:#4B2E83}
+.mini{display:flex;gap:2px;margin-top:4px}.mini i{width:12px;height:8px;border-radius:2px;background:var(--linha)}
+.mini i.o{background:var(--ok)}.mini i.d{background:#D9A520}.mini i.f{background:var(--falta)}
+.corpo{padding:12px 14px}
+.doze{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.it{border:1px solid var(--linha);border-radius:8px;padding:8px 10px;font-size:13.5px}
+.it h4{margin:0 0 3px;font-size:13.5px;display:flex;gap:6px;align-items:center}
+.it.o{background:var(--okf);border-color:#BFE0CB}.it.o h4{color:var(--ok)}
+.it.d{background:var(--dispf);border-color:#EBD9A3}.it.d h4{color:var(--disp)}
+.it.f{background:var(--faltaf);border-color:#EFC5BF}.it.f h4{color:var(--falta)}
+.it.j{color:var(--ja)}
+.it q{display:block;color:var(--suave);font-style:italic;margin-top:3px;white-space:normal}
+.it a,.docs a{color:var(--marca);word-break:break-all}
+.docs{margin-top:10px;font-size:13px;color:var(--suave)}
+.docs li{margin:2px 0}
+.enc{margin-top:8px;padding:8px 10px;border-radius:8px;background:#F3F1EC;font-size:13px}
+footer{margin-top:30px;color:var(--suave);font-size:12.5px}
+.vazio{padding:20px;text-align:center;color:var(--suave);background:var(--cartao);border:1px dashed var(--linha);border-radius:10px}
+@media (max-width:640px){.barra{grid-template-columns:110px 1fr 70px}.pct{font-size:16px}}
+</style>
+</head>
+<body>
+<main>
+<h1>Cartório de fontes oficiais</h1>
+<p class="sub">Os motores descobrem; o Cartório certifica. Toda oportunidade com algum dos 12 itens indisponível entra na fila: ele localiza o documento oficial, lê por seções e devolve cada item com trecho e página, ou a dispensa quando o edital não tem aquele requisito. <span id="em"></span></p>
+
+<div class="cards" id="cards"></div>
+
+<h2>Eficiência por item dos 12</h2>
+<div class="barras" id="barras"></div>
+<p class="meta">Verde: obtido no documento oficial · amarelo: dispensado (o edital comprova que o requisito não se aplica) · cinza: ainda falta.</p>
+
+<h2>Por balcão</h2>
+<div class="tab"><table id="balcoes"></table></div>
+
+<h2>Certidões <span class="meta">(clique para ver os 12 itens)</span></h2>
+<div class="filtros">
+  <input id="busca" type="search" placeholder="Buscar por título, órgão ou UF">
+  <select id="ftipo"><option value="">estrelas e livros</option><option value="estrela">só estrelas</option><option value="livro">só livros</option></select>
+  <select id="fbalcao"><option value="">todos os balcões</option></select>
+  <select id="fsit"><option value="">todas</option><option value="completa">completas</option><option value="interceptador">encaminhadas ao Interceptador</option><option value="chrome">encaminhadas ao Chrome</option></select>
+</div>
+<div id="lista"></div>
+
+<footer>Identidade visual provisória: a paleta definitiva aguarda o design de referência (config/identidade_visual.json). Conteúdo lido é dado, nunca instrução. Item só conta com trecho literal do documento oficial; “não informado” nunca é dispensa.</footer>
+</main>
+<script>
+const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
+const BALCAO={pncp:"PNCP",diario:"Diários oficiais",orgao:"Sites de órgãos públicos",privado:"Financiadores privados",pista:"Pistas (agregadores e imprensa)",proprio:"MP e Judiciário (leitura própria)"};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct=x=>x==null?"—":Math.round(x*100)+"%";
+const br=d=>d&&/^\d{4}-\d{2}-\d{2}/.test(d)?d.slice(8,10)+"/"+d.slice(5,7)+"/"+d.slice(0,4):(d||"");
+const link=u=>u?`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(u.length>90?u.slice(0,87)+"…":u)}</a>`:"—";
+let DADOS=null;
+fetch("dados/cartorio.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{DADOS=d;montar()}).catch(()=>{
+  document.getElementById("lista").innerHTML='<div class="vazio">O Cartório ainda não publicou certidões. Elas aparecem aqui depois da primeira execução.</div>';});
+function montar(){
+  const R=DADOS.resumo||{};
+  document.getElementById("em").textContent="Atualizado em "+br((DADOS.em||"").slice(0,10))+" às "+(DADOS.em||"").slice(11,16)+" UTC.";
+  const cards=[["Eficiência dos itens",pct(R.eficiencia_itens),`${R.itens_obtidos||0} obtidos + ${R.itens_dispensados||0} dispensados de ${R.itens_que_faltavam||0}`,1],
+    ["Certidões emitidas",R.certidoes||0,`${R.nesta_execucao||0} na última execução`],["Com site oficial",pct(R.taxa_link_oficial),`${R.com_link_oficial||0} certidões`],
+    ["Completas",R.certidoes_completas||0,"site oficial + todos os itens que faltavam"],["Na fila",(R.fila_estrelas||0)+(R.fila_livros||0),`${R.fila_estrelas||0} estrelas · ${R.fila_livros||0} livros`],
+    ["Ao Interceptador",R.para_o_interceptador||0,`${R.para_o_chrome||0} ao Chrome (robots.txt)`]];
+  document.getElementById("cards").innerHTML=cards.map(c=>`<div class="card${c[3]?" destaque":""}"><b>${esc(c[1])}</b><span>${esc(c[0])}<br>${esc(c[2])}</span></div>`).join("");
+  document.getElementById("barras").innerHTML=DOZE.map(k=>{const x=(DADOS.por_item||{})[k]||{};const f=x.faltavam||0;
+    const o=f?100*(x.obtidos||0)/f:0,d=f?100*(x.dispensados||0)/f:0;
+    return `<div class="barra"><span>${esc(k)}</span><div class="trilho" title="${x.obtidos||0} obtidos · ${x.dispensados||0} dispensados · ${f} faltavam"><i class="o" style="width:${o}%"></i><i class="d" style="width:${d}%"></i></div><small>${pct(x.eficiencia)} de ${f}</small></div>`}).join("");
+  const B=DADOS.por_balcao||{};
+  document.getElementById("balcoes").innerHTML="<tr><th>Balcão</th><th>Certidões</th><th>Com site oficial</th><th>Itens resolvidos</th><th>Eficiência</th></tr>"+
+    Object.entries(B).map(([k,v])=>`<tr><td>${esc(BALCAO[k]||k)}</td><td>${v.certidoes}</td><td>${pct(v.taxa_link_oficial)}</td><td>${v.resolvidos} de ${v.faltavam}</td><td><b>${pct(v.eficiencia)}</b></td></tr>`).join("");
+  const sel=document.getElementById("fbalcao");Object.keys(B).forEach(k=>sel.insertAdjacentHTML("beforeend",`<option value="${esc(k)}">${esc(BALCAO[k]||k)}</option>`));
+  ["busca","ftipo","fbalcao","fsit"].forEach(id=>document.getElementById(id).addEventListener("input",lista));
+  lista();
+}
+function item(c,k){
+  const ok=(c.itens||{})[k],ds=(c.dispensas||{})[k],pedia=(c.faltavam||[]).includes(k);
+  if(ok)return `<div class="it o"><h4>✓ ${esc(k)}</h4>${esc(ok.valor)}<q>“${esc(ok.trecho)}”</q><span class="meta">página ${esc(ok.pagina)} · ${esc(ok.metodo||"")} · ${link(ok.documento)}</span></div>`;
+  if(ds)return `<div class="it d"><h4>⊘ ${esc(k)} — dispensado</h4>${esc(ds.motivo)}<q>“${esc(ds.trecho)}”</q><span class="meta">página ${esc(ds.pagina)}</span></div>`;
+  if(pedia)return `<div class="it f"><h4>✗ ${esc(k)}</h4>não está no documento oficial lido</div>`;
+  return `<div class="it j"><h4>• ${esc(k)}</h4>já constava antes do Cartório</div>`;
+}
+function lista(){
+  const q=document.getElementById("busca").value.toLowerCase(),t=document.getElementById("ftipo").value,b=document.getElementById("fbalcao").value,s=document.getElementById("fsit").value;
+  const L=(DADOS.certidoes||[]).filter(c=>(!t||c.tipo===t)&&(!b||c.balcao===b)&&
+    (!s||(s==="completa"?(!(c.ainda_faltam||[]).length&&c.link_oficial):String(c.encaminhado||"").toLowerCase().startsWith(s)))&&
+    (!q||[c.titulo,c.orgao,c.uf].join(" ").toLowerCase().includes(q)));
+  const el=document.getElementById("lista");
+  if(!L.length){el.innerHTML='<div class="vazio">Nenhuma certidão com esses filtros.</div>';return}
+  el.innerHTML=L.slice(0,300).map(c=>{
+    const mini=DOZE.map(k=>`<i class="${(c.itens||{})[k]?"o":(c.dispensas||{})[k]?"d":(c.faltavam||[]).includes(k)?"f":""}" title="${esc(k)}"></i>`).join("");
+    const selo=c.tipo==="estrela"&&c.selo_depois!==c.selo_antes?` · selo ${esc(c.selo_antes||"nenhum")} → <b>${esc(c.selo_depois||"nenhum")}</b>`:"";
+    return `<details class="c"><summary><div><div class="tt">${esc(c.titulo)}</div>
+      <div class="meta"><span class="pill ${c.tipo==="estrela"?"est":"liv"}">${c.tipo==="estrela"?"estrela":"livro"}</span><span class="pill">${esc(BALCAO[c.balcao]||c.balcao)}</span>
+      ${(c.resolvidos||[]).length} de ${(c.faltavam||[]).length} itens resolvidos${c.uf?" · "+esc(c.uf):""}${c.prazo?" · prazo "+br(c.prazo):""}${selo}</div><div class="mini">${mini}</div></div>
+      <div class="pct">${pct(c.eficiencia)}</div></summary>
+      <div class="corpo"><p class="meta">Site oficial: ${link(c.link_oficial)}${c.degrau!=null?` · degrau ${c.degrau}: ${esc(c.como||"")}`:""}</p>
+      <div class="doze">${DOZE.map(k=>item(c,k)).join("")}</div>
+      ${c.encaminhado?`<div class="enc">Encaminhado: ${esc(c.encaminhado)}</div>`:""}
+      <ul class="docs">${(c.documentos||[]).map(d=>`<li>degrau ${esc(d.degrau)} · ${link(d.url)} — ${esc(d.oficial||d.falha||d.motivo||d.como||"")}${d.paginas?" · "+d.paginas+" pág.":""}${d.edicao_inteira?" · só as páginas do ato":""}</li>`).join("")}</ul></div></details>`}).join("")+
+    (L.length>300?`<p class="meta">Mostrando 300 de ${L.length}. Use a busca para encontrar as demais.</p>`:"");
+}
+</script>
+</body>
+</html>
