@@ -155,6 +155,19 @@ class TesteCorrecoesV2(unittest.TestCase):
         self.assertIn("deverao comprovar", r["pontos"]["Requisitos"]["valor"])
 
 
+class TesteV3(unittest.TestCase):
+    def test_pncp_le_os_anexos_ate_achar_os_itens(self):
+        api = "https://pncp.gov.br/pncp-api/v1/orgaos/46634481000198/compras/2026/9/arquivos"
+        aviso = _pdf(["AVISO DE CHAMAMENTO PUBLICO N 003/2026\nA Prefeitura torna publico o chamamento. O edital completo esta nos anexos deste processo no portal."])
+        arqs = [{"url": f"{api}/{i}", "titulo": t, "statusAtivo": True} for i, t in
+                ((1, "Ata de sessão"), (2, "Aviso de chamamento"), (3, "Anexo I - Plano de trabalho"), (4, "Planilha"), (5, "Planilha 2"), (6, "EDITAL COMPLETO"))]
+        mapa = {api: json.dumps(arqs), f"{api}/1": aviso, f"{api}/2": aviso, f"{api}/3": aviso, f"{api}/4": aviso, f"{api}/5": aviso, f"{api}/6": _pdf(EDITAL)}
+        c = C.certificar({"id": "p9", "titulo": "Edital 003/2026", "url": "https://pncp.gov.br/app/editais/46634481000198/2026/9"}, ["Valor", "Prazo de recurso", "Requisitos"], Rede(mapa))
+        self.assertEqual(c["resolvidos"], ["Valor", "Prazo de recurso", "Requisitos"])
+        self.assertTrue(c["documentos"][0]["url"].endswith("/6"), "o EDITAL vem antes da ata e das planilhas")
+        self.assertEqual(C._prioridade_anexo("Ata de julgamento"), 4); self.assertEqual(C._prioridade_anexo("Termo de Referência"), 1); self.assertEqual(C._prioridade_anexo("Aviso de chamamento"), 2)
+
+
 class TesteIntegracao(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); T = Path(self.tmp.name)
@@ -193,6 +206,9 @@ class TesteIntegracao(unittest.TestCase):
         cs = json.loads(C.CERTIDOES.read_text()); cs["certidoes"]["estrela:est1"]["versao"] = "antiga"; cs["certidoes"]["estrela:est1"]["ainda_faltam"] = ["Valor"]
         C.CERTIDOES.write_text(json.dumps(cs)); C._CACHE.clear()
         self.assertEqual(C.run(10, 60, Rede({pdf: _pdf(EDITAL)}), fluxo, catalogo)["certificadas"], 1, "leitor novo refaz a certidão incompleta")
+        rel = json.loads(C.RELATORIO.read_text())
+        self.assertEqual(rel["por_safra"]["refeitas"]["certidoes"], 1); self.assertEqual(rel["por_safra"]["primeira tentativa"]["certidoes"], 1)
+        self.assertEqual(json.loads(C.CERTIDOES.read_text())["certidoes"]["estrela:est1"]["tentativa"], 2)
 
     def test_um_erro_nao_derruba_a_fila(self):
         pg = "https://www.goias.gov.br/editais/x"

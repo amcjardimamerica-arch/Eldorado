@@ -77,6 +77,10 @@ footer{margin-top:30px;color:var(--suave);font-size:12.5px}
 <h2>Por balcão</h2>
 <div class="tab"><table id="balcoes"></table></div>
 
+<h2>Por safra <span class="meta">(1ª tentativa × refeitas, e por versão do leitor)</span></h2>
+<div class="tab"><table id="safras"></table></div>
+<p class="meta">As refeitas são os casos difíceis que voltaram à fila (informação nova, leitor novo ou revisita de 7 dias). Compare safras iguais para medir progresso.</p>
+
 <h2>Certidões <span class="meta">(clique para ver os 12 itens)</span></h2>
 <div class="filtros">
   <input id="busca" type="search" placeholder="Buscar por título, órgão ou UF">
@@ -112,6 +116,9 @@ function montar(){
   const B=DADOS.por_balcao||{};
   document.getElementById("balcoes").innerHTML="<tr><th>Balcão</th><th>Certidões</th><th>Com site oficial</th><th>Itens resolvidos</th><th>Eficiência</th></tr>"+
     Object.entries(B).map(([k,v])=>`<tr><td>${esc(BALCAO[k]||k)}</td><td>${v.certidoes}</td><td>${pct(v.taxa_link_oficial)}</td><td>${v.resolvidos} de ${v.faltavam}</td><td><b>${pct(v.eficiencia)}</b></td></tr>`).join("");
+  const linhaS=(n,v)=>`<tr><td>${esc(n)}</td><td>${v.certidoes}</td><td>${pct(v.taxa_link_oficial)}</td><td>${v.resolvidos} de ${v.faltavam}</td><td><b>${pct(v.eficiencia)}</b></td></tr>`;
+  document.getElementById("safras").innerHTML="<tr><th>Safra / versão</th><th>Certidões</th><th>Com site oficial</th><th>Itens resolvidos</th><th>Eficiência</th></tr>"+
+    Object.entries(DADOS.por_safra||{}).map(([k,v])=>linhaS(k,v)).join("")+Object.entries(DADOS.por_versao||{}).map(([k,v])=>linhaS(k,v)).join("");
   const sel=document.getElementById("fbalcao");Object.keys(B).forEach(k=>sel.insertAdjacentHTML("beforeend",`<option value="${esc(k)}">${esc(BALCAO[k]||k)}</option>`));
   ["busca","ftipo","fbalcao","fsit"].forEach(id=>document.getElementById(id).addEventListener("input",lista));
   lista();
@@ -135,7 +142,7 @@ function lista(){
     const selo=c.tipo==="estrela"&&c.selo_depois!==c.selo_antes?` · selo ${esc(c.selo_antes||"nenhum")} → <b>${esc(c.selo_depois||"nenhum")}</b>`:"";
     return `<details class="c"><summary><div><div class="tt">${esc(c.titulo)}</div>
       <div class="meta"><span class="pill ${c.tipo==="estrela"?"est":"liv"}">${c.tipo==="estrela"?"estrela":"livro"}</span><span class="pill">${esc(BALCAO[c.balcao]||c.balcao)}</span>
-      ${(c.resolvidos||[]).length} de ${(c.faltavam||[]).length} itens resolvidos${c.uf?" · "+esc(c.uf):""}${c.prazo?" · prazo "+br(c.prazo):""}${selo}</div><div class="mini">${mini}</div></div>
+      ${(c.resolvidos||[]).length} de ${(c.faltavam||[]).length} itens resolvidos${c.tentativa>1?" · "+c.tentativa+"ª tentativa":""}${c.uf?" · "+esc(c.uf):""}${c.prazo?" · prazo "+br(c.prazo):""}${selo}</div><div class="mini">${mini}</div></div>
       <div class="pct">${pct(c.eficiencia)}</div></summary>
       <div class="corpo"><p class="meta">Site oficial: ${link(c.link_oficial)}${c.degrau!=null?` · degrau ${c.degrau}: ${esc(c.como||"")}`:""}</p>
       <div class="doze">${DOZE.map(k=>item(c,k)).join("")}</div>
