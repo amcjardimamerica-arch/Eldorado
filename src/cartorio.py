@@ -44,7 +44,7 @@ RELATORIO = ROOT / "docs/dados/cartorio.json"
 CFG = ROOT / "config/cartorio.json"
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
 CATALOGO = ROOT / "biblioteca_alexandria/fontes/motores.json"
-VERSAO = "cartório v2 (09/10/2026)"
+VERSAO = "cartório v3 (09/10/2026)"
 FALTA = ("falta", "pend", "ref", None)
 
 
@@ -143,12 +143,31 @@ def _balcao(op: dict) -> str:
     return "pista"
 
 
+PNCP_ANEXOS = 10                                       # v3: o aviso do PNCP é curto; o edital completo vem nos anexos
+
+
+def _prioridade_anexo(nome: str) -> int:
+    """Edital primeiro; depois termo de referência e anexos do edital; atas, resultados e erratas por último."""
+    n = str(nome or "")
+    if re.search(r"(?i)ata\b|resultado|homologa|errata|retifica|impugna|recurso|esclarecimento", n):
+        return 4
+    if re.search(r"(?i)edital|regulamento", n):
+        return 0
+    if re.search(r"(?i)termo de refer|plano de trabalho|projeto b[áa]sico|anexo", n):
+        return 1
+    if re.search(r"(?i)chamamento|chamada|aviso", n):
+        return 2                                         # o aviso costuma ser o resumo do edital
+    return 3
+
+
 def documentos(op: dict, rede: Rede, maximo: int = 4) -> list[dict]:
     """Escada de degraus: devolve documentos candidatos [{url, degrau, como, bytes, tipo}] — o oficial primeiro."""
     b = balcao(op); out, vistos = [], set()
 
+    teto = max(maximo, PNCP_ANEXOS) if b == "pncp" else maximo
+
     def add(url, degrau, como):
-        if url and url not in vistos and len(out) < maximo:
+        if url and url not in vistos and len(out) < teto:
             vistos.add(url); out.append({"url": url, "degrau": degrau, "como": como})
 
     for k in ("url_documento", "url_edital"):
@@ -164,8 +183,8 @@ def documentos(op: dict, rede: Rede, maximo: int = 4) -> list[dict]:
             except ValueError:
                 arqs = []
             arqs = [a for a in arqs if isinstance(a, dict) and a.get("statusAtivo", True) and (a.get("url") or a.get("uri"))]
-            arqs.sort(key=lambda a: 0 if re.search(r"(?i)edital", f"{a.get('titulo')} {a.get('tipoDocumentoNome')}") else 1)
-            for a in arqs[:maximo]:
+            arqs.sort(key=lambda a: _prioridade_anexo(f"{a.get('titulo')} {a.get('tipoDocumentoNome')}"))
+            for a in arqs[:max(maximo, PNCP_ANEXOS)]:
                 u = re.sub(r"^https://pncp\.gov\.br:\d+/", "https://pncp.gov.br/", a.get("url") or a.get("uri"))
                 add(u, 0, f"PNCP: arquivo anexado pelo órgão ({a.get('tipoDocumentoNome') or a.get('titulo') or 'documento'})")
     for k in ("link_oficial", "url", "pagina_oficial", "site_oficial"):
@@ -205,7 +224,8 @@ def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4) ->
     titulo = str(op.get("titulo") or "")
     lidos = 0
     i = 0
-    while i < len(fila) and lidos < maximo_docs:
+    teto_lidos = max(maximo_docs, PNCP_ANEXOS) if cert["balcao"] == "pncp" else maximo_docs
+    while i < len(fila) and lidos < teto_lidos:
         d = fila[i]; i += 1
         raw, tipo, err = rede.get(d["url"])
         reg = {"url": d["url"], "degrau": d["degrau"], "como": d["como"]}
@@ -248,6 +268,7 @@ def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4) ->
             for k, v in ex["pontos"].items():
                 if k in faltam and k not in cert["itens"]:
                     cert["itens"][k] = v
+                    cert["dispensas"].pop(k, None)
             for k, v in ex["dispensas"].items():
                 if k in faltam and k not in cert["itens"] and k not in cert["dispensas"]:
                     cert["dispensas"][k] = v
@@ -412,6 +433,9 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
                     "encaminhado": f"Interceptador: erro no Cartório ({type(ex).__name__})", "erro": traceback.format_exc()[-800:]}
             erros.append({"id": op.get("id"), "erro": f"{type(ex).__name__}: {str(ex)[:200]}"})
         cert["assinatura"] = _assinatura(op)
+        _ant = certs.get(f"{op['_tipo']}:{op['id']}") or {}
+        cert["tentativa"] = int(_ant.get("tentativa") or (1 if _ant else 0)) + 1
+        cert["primeira_em"] = _ant.get("primeira_em") or _ant.get("em") or cert["em"]
         cert["selo_antes"] = op.get("selo")
         cert["prazo"] = op.get("fim"); cert["uf"] = op.get("uf"); cert["orgao"] = op.get("orgao")
         cert["origem"] = op.get("origem")
@@ -478,10 +502,22 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int) -> dict
         b["eficiencia"] = round(b["resolvidos"] / b["faltavam"], 3) if b["faltavam"] else None
         b["taxa_link_oficial"] = round(b["com_link_oficial"] / b["certidoes"], 3) if b["certidoes"] else None
     tf, tr = sum(pedido.values()), sum(obtido.values()) + sum(dispensado.values())
+    # v3: EFICIÊNCIA POR SAFRA — 1ª tentativa (fila nova) separada das refeitas (os casos difíceis) e por versão do leitor
+    def _safra(grupo):
+        f = sum(len(c.get("faltavam") or []) for c in grupo); r = sum(len(c.get("resolvidos") or []) for c in grupo)
+        return {"certidoes": len(grupo), "faltavam": f, "resolvidos": r, "eficiencia": round(r / f, 3) if f else None,
+                "com_link_oficial": sum(1 for c in grupo if c.get("link_oficial")),
+                "taxa_link_oficial": round(sum(1 for c in grupo if c.get("link_oficial")) / len(grupo), 3) if grupo else None}
+    safras = {"primeira tentativa": _safra([c for c in todas if int(c.get("tentativa") or 1) == 1]),
+              "refeitas": _safra([c for c in todas if int(c.get("tentativa") or 1) > 1])}
+    versoes = {}
+    for c in todas:
+        versoes.setdefault(str(c.get("versao") or "?").split(" (")[0], []).append(c)
+    por_versao = {v: _safra(g) for v, g in sorted(versoes.items())}
     itens = {k: {"faltavam": pedido[k], "obtidos": obtido[k], "dispensados": dispensado[k],
                  "eficiencia": round((obtido[k] + dispensado[k]) / pedido[k], 3) if pedido[k] else None} for k in L.DOZE}
     lista = sorted(todas, key=lambda c: (-(c.get("eficiencia") or 0), c.get("titulo") or ""))
-    enxuta = [{k: c.get(k) for k in ("id", "tipo", "titulo", "balcao", "link_oficial", "degrau", "como", "faltavam", "resolvidos", "ainda_faltam",
+    enxuta = [{k: c.get(k) for k in ("id", "tipo", "titulo", "balcao", "link_oficial", "degrau", "como", "faltavam", "resolvidos", "ainda_faltam", "tentativa", "versao",
                                       "eficiencia", "encaminhado", "selo_antes", "selo_depois", "em", "prazo", "uf", "orgao", "fim")} |
               {"itens": {k: {kk: v.get(kk) for kk in ("valor", "trecho", "pagina", "documento", "metodo")} for k, v in (c.get("itens") or {}).items()},
                "dispensas": {k: {kk: v.get(kk) for kk in ("motivo", "trecho", "pagina", "documento")} for k, v in (c.get("dispensas") or {}).items()},
@@ -498,7 +534,7 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int) -> dict
                        "para_o_interceptador": sum(1 for c in todas if str(c.get("encaminhado") or "").startswith("Interceptador")),
                        "para_o_chrome": sum(1 for c in todas if str(c.get("encaminhado") or "").startswith("Chrome")),
                        "selos_que_mudaram": dict(selos), "por_degrau": dict(por_degrau)},
-            "por_item": itens, "por_balcao": por_balcao, "certidoes": enxuta}
+            "por_item": itens, "por_balcao": por_balcao, "por_safra": safras, "por_versao": por_versao, "certidoes": enxuta}
 
 
 if __name__ == "__main__":
