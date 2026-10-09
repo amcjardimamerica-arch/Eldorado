@@ -2,27 +2,11 @@
  "em": "2026-10-09",
  "regra": "PLANOS DE CORREÇÃO DOS CANAIS (titular, 02/10/2026).\n\nCada motor e Piloto é diagnosticado a cada ciclo pelo seu histórico (estado/esquadra*.json, status dos motores, bloqueios)\ne recebe o plano previsto no fluxograma (config/linha_producao.json › planos_de_correcao):\n  sem_rendimento · falha_parcial · bloqueio · exige_brasil · formato_mudou · (contrato_violado e injecao: por registro)\nO plano nunca desliga um canal sozinho: ele diz o que fazer e qual skill usar.",
  "resumo": {
-  "bloqueio": 1,
-  "falha_parcial": 7,
-  "sem_rendimento": 44,
-  "saudavel": 75
+  "falha_parcial": 8,
+  "sem_rendimento": 48,
+  "saudavel": 71
  },
  "motores": [
-  {
-   "motor": "judiciario-tjgo",
-   "canal": "judiciario-tjgo",
-   "familia": "outros",
-   "diagnostico": "bloqueio",
-   "evidencia": "respostas de bloqueio no status",
-   "plano": [
-    "espaçar as leituras (respeitar Crawl-Delay)",
-    "mudar o horário na agenda",
-    "se 403 persistente da nuvem: marcar 'exige IP brasileiro' e mandar à coleta local"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 29,
-   "achados_total": 0
-  },
   {
    "motor": "empresas-incentivadas",
    "canal": "empresas-incentivadas",
@@ -37,6 +21,21 @@
    "skill": "comum/plano_correcao",
    "leituras": 8,
    "achados_total": 24
+  },
+  {
+   "motor": "f260-captacao-038",
+   "canal": "f260-captacao-038",
+   "familia": "orgao_publico",
+   "diagnostico": "falha_parcial",
+   "evidencia": "falhas em 3 dos últimos 7 dias",
+   "plano": [
+    "repetir com espera crescente (backoff)",
+    "trocar a ordem das rotas",
+    "registrar páginas que falham sempre como rota morta"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 39,
+   "achados_total": 96
   },
   {
    "motor": "f260-captacao-068",
@@ -95,8 +94,8 @@
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 18,
-   "achados_total": 37
+   "leituras": 19,
+   "achados_total": 40
   },
   {
    "motor": "plat-empresas-editais-incentivados",
@@ -181,6 +180,22 @@
    "canal": "f260-captacao-069",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
+   "evidencia": "12 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 12,
+   "achados_total": 0
+  },
+  {
+   "motor": "f260-captacao-107",
+   "canal": "f260-captacao-107",
+   "familia": "orgao_publico",
+   "diagnostico": "sem_rendimento",
    "evidencia": "11 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
@@ -190,22 +205,6 @@
    ],
    "skill": "comum/plano_correcao",
    "leituras": 11,
-   "achados_total": 0
-  },
-  {
-   "motor": "f260-captacao-107",
-   "canal": "f260-captacao-107",
-   "familia": "orgao_publico",
-   "diagnostico": "sem_rendimento",
-   "evidencia": "10 leituras e nenhum achado",
-   "plano": [
-    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
-    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
-    "testar rotas alternativas do motor (config/rotas_motores.json)",
-    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 10,
    "achados_total": 0
   },
   {
@@ -257,8 +256,8 @@
    "achados_total": 0
   },
   {
-   "motor": "f260-captacao-206",
-   "canal": "f260-captacao-206",
+   "motor": "f260-captacao-200",
+   "canal": "f260-captacao-200",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
    "evidencia": "5 leituras e nenhum achado",
@@ -270,6 +269,22 @@
    ],
    "skill": "comum/plano_correcao",
    "leituras": 5,
+   "achados_total": 0
+  },
+  {
+   "motor": "f260-captacao-206",
+   "canal": "f260-captacao-206",
+   "familia": "orgao_publico",
+   "diagnostico": "sem_rendimento",
+   "evidencia": "6 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 6,
    "achados_total": 0
   },
   {
@@ -533,7 +548,7 @@
    "canal": "f260-captacao-236",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
-   "evidencia": "9 leituras e nenhum achado",
+   "evidencia": "10 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -541,7 +556,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 9,
+   "leituras": 10,
    "achados_total": 0
   },
   {
@@ -597,7 +612,7 @@
    "canal": "f260-captacao-252",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
-   "evidencia": "7 leituras e nenhum achado",
+   "evidencia": "8 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -605,7 +620,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 7,
+   "leituras": 8,
    "achados_total": 0
   },
   {
@@ -613,7 +628,7 @@
    "canal": "f260-captacao-256",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
-   "evidencia": "7 leituras e nenhum achado",
+   "evidencia": "8 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -621,7 +636,39 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 7,
+   "leituras": 8,
+   "achados_total": 0
+  },
+  {
+   "motor": "f260-curadoria-002",
+   "canal": "f260-curadoria-002",
+   "familia": "orgao_publico",
+   "diagnostico": "sem_rendimento",
+   "evidencia": "5 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 5,
+   "achados_total": 0
+  },
+  {
+   "motor": "f260-curadoria-003",
+   "canal": "f260-curadoria-003",
+   "familia": "orgao_publico",
+   "diagnostico": "sem_rendimento",
+   "evidencia": "5 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 5,
    "achados_total": 0
   },
   {
@@ -725,7 +772,7 @@
    "canal": "f260-espalhado-transparencia-agilicloud-com-br",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
-   "evidencia": "6 leituras e nenhum achado",
+   "evidencia": "7 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -733,7 +780,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 6,
+   "leituras": 7,
    "achados_total": 0
   },
   {
@@ -757,7 +804,7 @@
    "canal": "f260-espalhado-www-ipora-pr-gov-br",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
-   "evidencia": "6 leituras e nenhum achado",
+   "evidencia": "7 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -765,7 +812,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 6,
+   "leituras": 7,
    "achados_total": 0
   },
   {
@@ -798,6 +845,22 @@
    ],
    "skill": "comum/plano_correcao",
    "leituras": 12,
+   "achados_total": 0
+  },
+  {
+   "motor": "judiciario-tjgo",
+   "canal": "judiciario-tjgo",
+   "familia": "outros",
+   "diagnostico": "sem_rendimento",
+   "evidencia": "29 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 29,
    "achados_total": 0
   },
   {
@@ -906,8 +969,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 5,
-   "achados_total": 25
+   "leituras": 6,
+   "achados_total": 28
   },
   {
    "motor": "f260-captacao-035",
@@ -919,17 +982,6 @@
    "skill": null,
    "leituras": 30,
    "achados_total": 84
-  },
-  {
-   "motor": "f260-captacao-038",
-   "canal": "f260-captacao-038",
-   "familia": "orgao_publico",
-   "diagnostico": "saudavel",
-   "evidencia": "saudável",
-   "plano": [],
-   "skill": null,
-   "leituras": 38,
-   "achados_total": 93
   },
   {
    "motor": "f260-captacao-039",
@@ -961,8 +1013,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 5,
-   "achados_total": 10
+   "leituras": 6,
+   "achados_total": 12
   },
   {
    "motor": "f260-captacao-098",
@@ -972,8 +1024,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 39,
-   "achados_total": 56
+   "leituras": 40,
+   "achados_total": 58
   },
   {
    "motor": "f260-captacao-152",
@@ -983,8 +1035,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 5,
-   "achados_total": 11
+   "leituras": 6,
+   "achados_total": 13
   },
   {
    "motor": "f260-captacao-169",
@@ -1042,17 +1094,6 @@
    "achados_total": 4
   },
   {
-   "motor": "f260-captacao-200",
-   "canal": "f260-captacao-200",
-   "familia": "orgao_publico",
-   "diagnostico": "saudavel",
-   "evidencia": "saudável",
-   "plano": [],
-   "skill": null,
-   "leituras": 4,
-   "achados_total": 0
-  },
-  {
    "motor": "f260-captacao-212",
    "canal": "f260-captacao-212",
    "familia": "orgao_publico",
@@ -1071,8 +1112,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 25,
-   "achados_total": 13
+   "leituras": 26,
+   "achados_total": 15
   },
   {
    "motor": "f260-captacao-217",
@@ -1082,8 +1123,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 25,
-   "achados_total": 87
+   "leituras": 26,
+   "achados_total": 91
   },
   {
    "motor": "f260-captacao-220",
@@ -1115,7 +1156,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 24,
+   "leituras": 25,
    "achados_total": 9
   },
   {
@@ -1313,30 +1354,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 8,
-   "achados_total": 14
-  },
-  {
-   "motor": "f260-curadoria-002",
-   "canal": "f260-curadoria-002",
-   "familia": "orgao_publico",
-   "diagnostico": "saudavel",
-   "evidencia": "saudável",
-   "plano": [],
-   "skill": null,
-   "leituras": 4,
-   "achados_total": 0
-  },
-  {
-   "motor": "f260-curadoria-003",
-   "canal": "f260-curadoria-003",
-   "familia": "orgao_publico",
-   "diagnostico": "saudavel",
-   "evidencia": "saudável",
-   "plano": [],
-   "skill": null,
-   "leituras": 4,
-   "achados_total": 0
+   "leituras": 9,
+   "achados_total": 16
   },
   {
    "motor": "f260-curadoria-004",
@@ -1346,8 +1365,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 4,
-   "achados_total": 16
+   "leituras": 5,
+   "achados_total": 20
   },
   {
    "motor": "f260-curadoria-006",
@@ -1357,7 +1376,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 34,
+   "leituras": 35,
    "achados_total": 84
   },
   {
@@ -1368,8 +1387,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 4,
-   "achados_total": 4
+   "leituras": 5,
+   "achados_total": 5
   },
   {
    "motor": "f260-curadoria-009",
@@ -1379,8 +1398,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
-   "achados_total": 30
+   "leituras": 4,
+   "achados_total": 40
   },
   {
    "motor": "f260-curadoria-010",
@@ -1390,7 +1409,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1401,7 +1420,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1412,7 +1431,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1423,8 +1442,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
-   "achados_total": 12
+   "leituras": 4,
+   "achados_total": 16
   },
   {
    "motor": "f260-espalhado-crcgo-org-br",
@@ -1434,8 +1453,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
-   "achados_total": 3
+   "leituras": 4,
+   "achados_total": 4
   },
   {
    "motor": "f260-espalhado-transparencia-cacoal-ro-gov-br",
@@ -1445,7 +1464,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1456,7 +1475,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1467,7 +1486,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1478,7 +1497,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1489,8 +1508,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
-   "achados_total": 6
+   "leituras": 4,
+   "achados_total": 8
   },
   {
    "motor": "f260-espalhado-www-ribeiraodasneves-mg-gov-br",
@@ -1500,7 +1519,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1511,7 +1530,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1522,7 +1541,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1533,7 +1552,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
@@ -1544,7 +1563,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 3,
+   "leituras": 4,
    "achados_total": 0
   },
   {
