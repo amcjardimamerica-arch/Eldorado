@@ -179,6 +179,10 @@ def run(uf: str = "GO") -> dict:
     grava a saída para o painel."""
     col = coletar(uf)
     achados = load_json(PASTA / uf.lower() / "patrocinios.json").get("achados", [])
+    # 09/10 (titular): empresas privadas/internacionais descobertas pelo Piloto - Espião (fora da lista de incentivo fiscal)
+    _esp = PASTA / uf.lower() / "espiao_empresas.json"
+    if _esp.exists():
+        achados = achados + [a for a in (load_json(_esp).get("achados") or []) if a.get("empresa") and a.get("url")]
     base = carregar_base()
     por_emp: dict[str, list] = {}
     for a in achados:
