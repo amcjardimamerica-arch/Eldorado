@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-09T01:31:51+00:00",
+  "em": "2026-10-09T01:49:56+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-09T01:22:22+00:00",
+  "ultimo_voo": "2026-10-09T01:36:22+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -34,24 +34,87 @@
     "editais novos dos motores": 30,
     "indícios do Espião": 17,
     "abertos com itens em falta": 43,
-    "empresas sem ficha": 127
+    "empresas sem ficha": 126
   },
   "acumulado": {
-    "missoes": 670,
+    "missoes": 671,
     "validadas": 36,
     "parciais": 189,
-    "insuficientes": 445,
+    "insuficientes": 446,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 105,
-      "sim": 469
+      "sim": 470
     },
     "estrelas_de_ouro": 55,
     "fontes_novas_para_os_motores": 98,
     "tempo_medio_min": 11.9
   },
   "missoes": [
+    {
+      "em": "2026-10-09T01:36:22+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Chamamento público publicado no Diário Oficial em 25/09/2026 — Goiás / Goiânia",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260925_000008871.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O chamamento público foi publicado no Diário Oficial em 25/09/2026 e tem como objeto atender às programações previstas no Anexo I deste Decreto, indicando que é uma fonte válida para obtenção de informações.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar os anexos do edital, especialmente o Anexo I, para entender as programações e os requisitos necessários para participar, além de se certificar de que sua área de atuação (assistência social, cultura, educação, esporte) esteja alinhada com o objeto do chamamento.",
+        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre as programações e os requisitos de participação.",
+        "risco": "A falta de informações sobre prazo de inscrição, valor e requisitos específicos pode impedir a associação de se preparar adequadamente para o processo seletivo."
+      },
+      "erro": null,
+      "segundos": 813,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 5,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-b6129b4007f2",
+      "encontrou": {
+        "Objeto": {
+          "valor": "atender às programações previstas no Anexo I deste Decreto",
+          "trecho": "Art. 1º Ficam abertos à Secretaria Municipal de Infraestrutura Urbana, dois créditos adicionais de natureza suplementar, no valor de R$ 4.253.257,53 (quatro milhões, duzentos e cin",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura de Goiânia",
+          "trecho": "PREFEITURA DE GOIÂNIA SECRETARIA MUNICIPAL DA CASA CIVIL",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "PREFEITURA DE GOIÂNIA SECRETARIA MUNICIPAL DA CASA CIVIL",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Goiânia",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-09T01:22:22+00:00",
       "modo": "validar",
@@ -2295,89 +2358,6 @@
         "financiador_ano",
         "governo",
         "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-10-08T15:34:02+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · livro da Biblioteca",
-      "alvo": "Gráfica do Exército — AVISO DE CHAMAMENTO PÚBLICO Nº 1/2026 — é selecionar as associações e/ou cooperativas de… — Brasil",
-      "qualidade": "validada",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Valor"
-      ],
-      "pagina_oficial": "https://goias.gov.br/inovacao/wp-content/uploads/sites/26/2026/03/Chamamento-Publico-01-2026-Aviso-de-Chamamento.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona claramente o objeto, prazo de inscrição, órgão financiador, território, esfera, requisitos, anexos, destinação e área de atuação, sendo suficiente para responder à pergunta.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se enquadrar como Organização da Sociedade Civil (OSC), estar atuando na área de educação e seguir os requisitos estabelecidos no edital, incluindo anexar os documentos necessários.",
-        "proximo_passo": "Verificar os requisitos e anexos do edital e se inscrever no prazo estabelecido.",
-        "risco": "O prazo de inscrição não foi especificado, o que pode impedir a participação a tempo."
-      },
-      "erro": null,
-      "segundos": 540,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 9,
-      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
-      "avaliacao": "pronta para a decisão do Claude",
-      "id": "op-op-f906f17ab63d",
-      "encontrou": {
-        "Objeto": {
-          "valor": "seleção de Organização da Sociedade Civil (OSC) para celebração de Termo de Colaboração objetivando a execução do Projeto Educacional em Transformação Digital voltado a lideranças, gestores e servidores públicos municipais",
-          "trecho": "para seleção de Organização da Sociedade Civil (OSC) para celebração de Termo de Colaboração objetivando a execução do Projeto Educacional em Transformação Digital voltado a lidera",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "? a 2026-04-30",
-          "trecho": "até às 18h00 do dia 30/04/2026",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado de Ciência, Tecnologia e Inovação",
-          "trecho": "Secretaria de Estado de Ciência, Tecnologia e Inovação – SECTI",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "ESTADO DE GOIÁS",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "educacao",
-          "trecho": "Projeto Educacional em Transformação Digital",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · convenio",
-          "trecho": "para seleção de Organização da Sociedade Civil (OSC) para celebração de Termo de Colaboração",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Organização da Sociedade Civil (OSC)",
-          "trecho": "para seleção de Organização da Sociedade Civil (OSC) para celebração de Termo de Colaboração",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Gráfica do Exército",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ]
