@@ -260,6 +260,7 @@ class TesteIntegracao(unittest.TestCase):
         C.CERTIDOES.write_text(json.dumps(cs)); C._CACHE.clear()
         self.assertEqual(C.run(10, 60, Rede({pdf: _pdf(EDITAL)}), fluxo, catalogo)["certificadas"], 1, "leitor novo refaz a certidão incompleta")
         rel = json.loads(C.RELATORIO.read_text())
+        self.assertIn("orgaos_com_gabarito", rel["gabarito"])
         self.assertEqual(rel["por_safra"]["refeitas"]["certidoes"], 1); self.assertEqual(rel["por_safra"]["primeira tentativa"]["certidoes"], 1)
         self.assertEqual(json.loads(C.CERTIDOES.read_text())["certidoes"]["estrela:est1"]["tentativa"], 2)
 

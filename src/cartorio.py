@@ -519,7 +519,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
         feitas.append(cert)
     para_int = [{"id": x["id"], "tipo": x["tipo"], "titulo": x["titulo"], "motivo": x["encaminhado"], "faltam": x.get("ainda_faltam")}
                 for x in certs.values() if x.get("encaminhado", "") and str(x.get("encaminhado")).startswith("Interceptador")]
-    rel = relatorio(certs, feitas, len(estrelas), len(livros))
+    rel = relatorio(certs, feitas, len(estrelas), len(livros), gab)
     if gravar:
         PASTA.mkdir(parents=True, exist_ok=True)
         CERTIDOES.write_text(json.dumps({"em": _agora(), "versao": VERSAO, "certidoes": certs}, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -546,7 +546,7 @@ def item_checklist_de(cert: dict, item: str) -> dict:
     return {"s": "disp", "v": d.get("motivo", "")[:160]}
 
 
-def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int) -> dict:
+def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int, gab: dict | None = None) -> dict:
     """Taxas de eficiência (por item, por balcão, por degrau) e a lista clicável de certidões."""
     from collections import Counter
     todas = list(certs.values())
@@ -604,7 +604,7 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int) -> dict
                        "para_o_chrome": sum(1 for c in todas if str(c.get("encaminhado") or "").startswith("Chrome")),
                        "selos_que_mudaram": dict(selos), "por_degrau": dict(por_degrau)},
             "por_item": itens, "por_balcao": por_balcao, "por_safra": safras, "por_versao": por_versao,
-            "gabarito": {"orgaos_com_gabarito": len(_j(GABARITOS, {}) or {}), "itens_achados_pelo_gabarito": dict(pelo_gabarito),
+            "gabarito": {"orgaos_com_gabarito": sum(1 for g in (gab if gab is not None else (_j(GABARITOS, {}) or {})).values() if g.get("itens")), "itens_achados_pelo_gabarito": dict(pelo_gabarito),
                          "certidoes_ajudadas": sum(1 for c in todas if (c.get("gabarito") or {}).get("itens_pelo_gabarito"))},
             "certidoes": enxuta}
 
