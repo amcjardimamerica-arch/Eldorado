@@ -611,6 +611,7 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
                  "paginas_lidas": len(saude), "links_total": len(itens), "links_candidatos": cont["OPORTUNIDADE"] + cont["ACOMPANHAR"],
                  "inventario": {k: v for k, v in inv.items() if k != "resultado"},
                  "motivo_zero": None if abertas else "nenhum edital de destinação aberto hoje nas fontes lidas"})
+    diag["pdfs_em_memoria"] = len(pdf_cache)   # 09/10: PDF já lido fica na memória — 'pdfs_lidos' 0 não quer dizer que nunca leu
     if diag.get("sem_texto"):          # 03/10: edital cujo PDF não foi lido = leitura parcial (o maestro dispara de novo)
         diag["cortados"] = diag["sem_texto"]
     if diag.get("paginas_nao_lidas"):                    # 03/10: o maestro vê "parcial" e dispara de novo

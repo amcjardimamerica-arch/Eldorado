@@ -456,6 +456,20 @@ def reprogramar_recorrencia(sensor: dict, resultado: dict) -> None:
 
 
 def ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, data: date | None = None) -> dict:
+    """Uma leitura do sensor e, nos motores principais (diários oficiais, PNCP e prefeituras), a leitura do DOCUMENTO
+    de cada oportunidade — PDF (ou ZIP com PDF) aberto com o extrator do executor documental (09/10/2026,
+    src/leitura_pdf_motores.py). Falha na leitura do documento nunca derruba a leitura do motor."""
+    r = _ler(sensor, limites, pausa, data)
+    try:
+        from .leitura_pdf_motores import enriquecer
+        r = enriquecer(r, sensor)
+    except Exception as exc:  # noqa: BLE001
+        if isinstance(r, dict) and isinstance(r.get("diagnostico"), dict):
+            r["diagnostico"]["leitura_pdf"] = {"erro": f"{type(exc).__name__}: {str(exc)[:160]}"}
+    return r
+
+
+def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, data: date | None = None) -> dict:
     """Uma leitura do sensor: páginas → links → léxico → destinação → achados.
     livros de oportunidades da Biblioteca (fontes_260) também casam pelo léxico ESPECÍFICO."""
     if data:

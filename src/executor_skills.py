@@ -54,11 +54,11 @@ def permitido(url: str) -> bool:
     return True if _robots[base] is None else _robots[base].can_fetch("EldoradoBot", url)
 
 
-def baixar(url: str) -> tuple[bytes, str]:
+def baixar(url: str, max_bytes: int = 15_000_000, timeout: int = 40) -> tuple[bytes, str]:
     from .certificados import contexto
     try:
-        with build_opener(HTTPSHandler(context=contexto())).open(Request(url, headers={"User-Agent": UA}), timeout=40) as r:
-            return r.read(15_000_000), r.headers.get("Content-Type") or ""
+        with build_opener(HTTPSHandler(context=contexto())).open(Request(url, headers={"User-Agent": UA}), timeout=timeout) as r:
+            return r.read(max_bytes), r.headers.get("Content-Type") or ""
     except Exception as e1:  # noqa: BLE001
         from . import ponte_brasil as PB
         if PB.usar(url):
@@ -68,10 +68,10 @@ def baixar(url: str) -> tuple[bytes, str]:
         raise e1
 
 
-def paginas_de_texto(b: bytes, tipo: str) -> list[str]:
+def paginas_de_texto(b: bytes, tipo: str, max_paginas: int = 40) -> list[str]:
     if "pdf" in tipo.lower() or b[:4] == b"%PDF":
         from pypdf import PdfReader
-        return [(p.extract_text() or "") for p in PdfReader(io.BytesIO(b)).pages[:40]]
+        return [(p.extract_text() or "") for p in PdfReader(io.BytesIO(b)).pages[:max_paginas]]
     h = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", b.decode("utf-8", "ignore"))
     return [re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h))]
 
