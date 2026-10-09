@@ -16,10 +16,11 @@ DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valo
         "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"]
 
 # ── RÉGUA ÚNICA DE SITE OFICIAL (regra do titular de 07/09: vetor não é fonte) ──────────────────────────────────────
-VETOR = re.compile(r"pncp\.gov\.br/(?:app|pncp-api/v1/(?:orgaos/[^/]+/compras/[^/]+/[^/]+)?$)|queridodiario|capitaai|prosas\.com|"
-                   r"observatorio3setor|captadores\.org|editaisculturais|bussolasocial|filantropia\.ong|nossacausa|farolcultural|"
-                   r"bit\.ly|google\.|facebook\.|instagram\.|linkedin\.|youtube\.|g1\.globo|uol\.com|folha\.|estadao\.|metropoles|"
-                   r"jornal|noticia|portaldoterceirosetor|gife\.org\.br/(?!.*edital)", re.I)
+VETOR_ESTRITO = re.compile(r"pncp\.gov\.br/(?:app|pncp-api/v1/(?:orgaos/[^/]+/compras/[^/]+/[^/]+)?$)|queridodiario|capitaai|prosas\.com|"
+                           r"observatorio3setor|captadores\.org|editaisculturais|bussolasocial|filantropia\.ong|nossacausa|farolcultural|"
+                           r"bit\.ly|google\.|facebook\.|instagram\.|linkedin\.|youtube\.|portaldoterceirosetor|gife\.org\.br/(?!.*edital)", re.I)
+IMPRENSA = re.compile(r"g1\.globo|uol\.com|folha\.|estadao\.|metropoles|jornal|noticia", re.I)
+VETOR = re.compile(VETOR_ESTRITO.pattern + "|" + IMPRENSA.pattern, re.I)
 DOC_ORGAO = re.compile(r"pncp\.gov\.br/pncp-api/v1/orgaos/\d+/compras/\d+/\d+/arquivos/\d+", re.I)
 PUBLICO = re.compile(r"\.(gov|leg|jus|mp|def|tc)\.br$|(^|\.)in\.gov\.br$|\.edu\.br$|\.org\.br$|\.(com|org)\.br$|\.org$|\.com$|\.int$", re.I)
 GOV = re.compile(r"\.(gov|leg|jus|mp|def|tc)\.br$", re.I)
@@ -37,8 +38,13 @@ def regua(url: str | None) -> tuple[bool, str]:
         return False, "endereço malformado"
     if DOC_ORGAO.search(u):
         return True, "arquivo do edital anexado pelo órgão no PNCP"
-    if VETOR.search(u):
-        return False, "vetor (anúncio, republicador, agregador ou imprensa) — não é fonte"
+    if VETOR_ESTRITO.search(u):
+        return False, "vetor (anúncio, republicador ou agregador) — não é fonte"
+    _h = (urlsplit(u).hostname or "").lower()
+    if GOV.search(_h) or _h.endswith("in.gov.br"):
+        return True, "domínio público oficial"          # 09/10 v2: notícia em domínio de governo é oficial (o órgão publica)
+    if IMPRENSA.search(u):
+        return False, "imprensa — não é fonte"
     try:
         from .sites_oficiais import e_republicador
         if e_republicador(u):
@@ -138,6 +144,7 @@ def paginas(b: bytes, tipo: str = "", max_paginas: int = 60, min_letras: int = 4
 
 
 DOC_LINK = re.compile(r"""href=["']([^"']+?)["'][^>]*>(.{0,200}?)</a>""", re.I | re.S)
+EMBUTIDO = re.compile(r"""<(?:iframe|embed|object)[^>]+(?:src|data)=["']([^"']+)["']|data-pdf=["']([^"']+)["']|["'](https?://[^"'\s]+\.pdf(?:\?[^"'\s]*)?)["']""", re.I)
 
 
 def links_de_documento(html: str, base: str) -> list[tuple[str, str]]:
@@ -157,6 +164,14 @@ def links_de_documento(html: str, base: str) -> list[tuple[str, str]]:
             peso = (3 if re.search(r"(?i)edital|regulamento|chamamento", r + u) else 0) + (2 if doc else 0) - \
                    (2 if re.search(r"(?i)resultado|homologa|errata|retifica|ata\b|recurso", r + u) else 0)
             out.append((peso, u, r[:120]))
+    for m in EMBUTIDO.finditer(html or ""):                 # PDF embutido no visualizador (iframe/embed/object/data-pdf)
+        src = next((g for g in m.groups() if g), None)
+        try:
+            u = urljoin(base, src.strip()) if src else None
+        except ValueError:
+            u = None
+        if u and u.startswith("http"):
+            out.append((6, u, "documento embutido na página"))
     vistos, res = set(), []
     for _p, u, r in sorted(out, key=lambda x: -x[0]):
         if u not in vistos:
@@ -176,9 +191,11 @@ def links_de_saida(html: str, base: str) -> list[str]:
             continue
         if not u.startswith("http") or not h or h == hb or VETOR.search(u):
             continue
-        if re.search(r"(?i)edital|regulamento|inscri|chamamento|chamada|sele[çc][ãa]o|pr[êe]mio|programa", rot + " " + u):
-            out.append(u)
-    return list(dict.fromkeys(out))[:5]
+        alvo = re.search(r"(?i)edital|regulamento|inscri|chamamento|chamada|sele[çc][ãa]o|pr[êe]mio|programa|\.pdf", rot + " " + u) or \
+            re.search(r"(?i)clique aqui|acesse|saiba mais|site oficial|p[áa]gina oficial|confira|link", rot) or GOV.search(h)
+        if alvo:
+            out.append((0 if re.search(r"(?i)edital|regulamento|\.pdf", rot + u) else 1, u))
+    return list(dict.fromkeys(u for _p, u in sorted(out)))[:6]
 
 
 # ── EXTRAÇÃO POR SEÇÕES ────────────────────────────────────────────────────────────────────────────────────────────
@@ -246,7 +263,7 @@ def _achar(T: Texto, rx: str, secao_rx: str | None = None, grupo: int = 1, flags
     for base, txt in alvos:
         m = re.search(rx, txt, flags)
         if m:
-            g = m.group(grupo) if grupo is not None else m.group(0)
+            g = m.group(grupo) if (grupo is not None and m.lastindex and grupo <= m.lastindex) else m.group(0)
             return re.sub(r"\s+", " ", g).strip(), base + m.start(), base + m.end()
     return None
 
@@ -302,7 +319,7 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
     # ÓRGÃO / FINANCIADOR — cabeçalho da primeira página primeiro
     cab = "\n".join(paginas_[:1])[:2500]
     m = re.search(r"((?:PREFEITURA MUNICIPAL DE|MUNIC[ÍI]PIO DE|GOVERNO DO ESTADO D[EOA]|SECRETARIA (?:MUNICIPAL|ESTADUAL|DE ESTADO)?\s*D[EOA]S?|MINIST[ÉE]RIO D[EOA]S?|"
-                  r"FUNDA[ÇC][ÃA]O|INSTITUTO|FUNDO (?:MUNICIPAL|ESTADUAL|NACIONAL)|AG[ÊE]NCIA|C[ÂA]MARA MUNICIPAL DE|TRIBUNAL|MINIST[ÉE]RIO P[ÚU]BLICO)[^\n,;]{3,90})", cab, re.I)
+                  r"FUNDA[ÇC][ÃA]O|INSTITUTO|FUNDO (?:MUNICIPAL|ESTADUAL|NACIONAL)|AG[ÊE]NCIA|C[ÂA]MARA MUNICIPAL DE|TRIBUNAL|MINIST[ÉE]RIO P[ÚU]BLICO)[^\n,;.]{3,90})", cab, re.I)
     if m:
         pôr("Órgão / financiador", re.sub(r"\s+", " ", m.group(1)), m.start(1), m.end(1), "cabeçalho")
     elif orgao_hint:
@@ -329,7 +346,9 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
         if m:
             pôr("Requisitos", m.group(1), s[0], s[0] + 300)
     if "Requisitos" not in P:
-        r = _achar(T, r"((?:poder[ãa]o participar|est[ãa]o aptas? a participar|s[ãa]o requisitos|requisitos? (?:para|de) (?:participa|inscri|habilita))[^.;]{20,320}[.;])")
+        r = _achar(T, r"((?:poder[ãa]o participar|poder[ãa]o se inscrever|est[ãa]o aptas? a participar|s[ãa]o requisitos|requisitos? (?:para|de) (?:participa|inscri|habilita)|"
+                      r"(?:as|os) (?:proponentes|interessad[oa]s|organiza[çc][õo]es) dever[ãa]o (?:comprovar|apresentar|possuir)|habilita[çc][ãa]o jur[íi]dica|"
+                      r"documentos? (?:necess[áa]rios|exigidos) (?:para|à|a) (?:inscri|habilita))[^.;]{20,320}[.;])")
         if r:
             pôr("Requisitos", r[0], r[1], r[2], "texto")
     # ANEXOS
@@ -338,7 +357,9 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
         i = T.t.find("ANEXO")
         P["Anexos"] = {"valor": "; ".join(an)[:300], "trecho": T.trecho(i, i + 120), "pagina": T.pagina(i), "documento": documento, "metodo": "lista de anexos"}
     # DESTINAÇÃO
-    r = _achar(T, r"((?:os |o )?(?:recursos?|valores?|pr[êe]mios?) (?:ser[ãa]o|dever[ãa]o ser|poder[ãa]o ser) (?:destinados?|aplicados?|utilizados?)[^.;]{15,250}[.;]|destina-se a[^.;]{15,250}[.;])",
+    r = _achar(T, r"((?:os |o )?(?:recursos?|valores?|pr[êe]mios?|apoio) (?:ser[ãa]o|dever[ãa]o ser|poder[ãa]o ser) (?:destinados?|aplicados?|utilizados?|empregados?)[^.;]{15,250}[.;]|"
+                  r"destina-se a[^.;]{15,250}[.;]|(?:s[ãa]o |ser[ãa]o )?(?:consideradas )?despesas (?:eleg[ií]veis|financi[áa]veis|permitidas)[^.;]{10,250}[.;]|"
+                  r"(?:poder[ãa]o|dever[ãa]o) ser (?:financiad[oa]s|custead[oa]s)[^.;]{10,250}[.;]|itens financi[áa]veis[^.;]{10,250}[.;])",
                r"DESTINA|FINALIDADE|RECURSO|OBJETO")
     if r:
         pôr("Destinação", r[0], r[1], r[2])
@@ -375,14 +396,35 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
     return {"pontos": P, "dispensas": D, "fim": fim}
 
 
-def localizar_ato(paginas_: list[str], titulo: str) -> list[str] | None:
-    """Edição inteira de diário: só as páginas em que o número do ato aparece (e a seguinte). Sem número: None."""
-    m = re.search(r"\b(\d{1,4})\s*/\s*(20\d{2})\b", titulo or "")
-    if not m:
-        return None
-    rx = re.compile(rf"\b0*{int(m.group(1))}\s*/\s*{m.group(2)}\b")
-    idx = [i for i, t in enumerate(paginas_) if rx.search(t or "")]
+def _sem_acento(s: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", str(s or "").lower()) if unicodedata.category(c) != "Mn")
+
+
+def localizar_ato(paginas_: list[str], titulo: str, orgao: str = "") -> list[str] | None:
+    """Edição inteira de diário: só as páginas do ato (e a seguinte). Procura, nesta ordem: número com ano (003/2026);
+    "nº 4" perto de edital/chamamento; os termos entre aspas do título (busca do Querido Diário); o órgão + chamamento.
+    Sem nada que identifique o ato: None (nada é extraído, para não atribuir dado de ato vizinho)."""
+    pg = [_sem_acento(t) for t in paginas_]
+    tit = _sem_acento(titulo)
+    idx: list[int] = []
+    m = re.search(r"\b(\d{1,4})\s*/\s*(20\d{2})\b", tit)
+    if m:
+        rx = re.compile(rf"\b0*{int(m.group(1))}\s*/\s*{m.group(2)}\b")
+        idx = [i for i, t in enumerate(pg) if rx.search(t)]
     if not idx:
+        m = re.search(r"\bn[ºo°.]*\s*0*(\d{1,4})\b", tit)
+        if m:
+            rx = re.compile(rf"(edital|chamamento|chamada|aviso)[^\n]{{0,60}}\bn[ºo°.]*\s*0*{int(m.group(1))}\b")
+            idx = [i for i, t in enumerate(pg) if rx.search(t)]
+    if not idx:
+        frases = [f for f in re.findall(r'"([^"]{6,80})"', tit)]
+        if frases:
+            idx = [i for i, t in enumerate(pg) if all(f in t for f in frases)]
+    if not idx and orgao:
+        o = _sem_acento(orgao)[:40]
+        idx = [i for i, t in enumerate(pg) if o and o in t and re.search(r"chamamento publico|edital de selecao|chamada publica", t)]
+    if not idx or len(idx) > 6:                              # ausente, ou espalhado demais para ser um ato só
         return None
     manter = {j for i in idx for j in (i, i + 1) if j < len(paginas_)}
     return [t if j in manter else "" for j, t in enumerate(paginas_)]
