@@ -8,7 +8,13 @@ Nenhum motor aguardando coleta local hoje.
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
+- **Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)** — 7 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+    - abrir https://observatorio3setor.org.br/editais/ e procurar: edital, seleção de projetos, investimento social, responsabilidade social, patrocínio, incentivo fiscal
 - **TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO** — todas as páginas falharam em 2026-10-09. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
+    - abrir https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
+    - abrir https://www.tjgo.jus.br/files/ e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
+    - abrir https://corregedoria.tjgo.jus.br/basesocial e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
+- **Judiciário — CNJ e TJGO: editais das varas de execução penal e das comarcas (prestações pecuniárias) e credenciamentos de entidades** — 2 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
     - abrir https://www.tjgo.jus.br/files/ e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
     - abrir https://corregedoria.tjgo.jus.br/basesocial e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
