@@ -42,9 +42,59 @@ LIVROS_OUT = PASTA / "resultados_livros.jsonl"
 INTERCEPTADOR = PASTA / "para_o_interceptador.json"
 RELATORIO = ROOT / "docs/dados/cartorio.json"
 CFG = ROOT / "config/cartorio.json"
+GABARITOS = PASTA / "gabaritos.json"
+APRENDE = ("seção", "texto", "cronograma")                  # métodos cujo rótulo vale aprender (não: cabeçalho, domínio, palavras-chave)
+
+
+def aprender(gab: dict, chave: str | None, pontos: dict) -> int:
+    """Guarda o rótulo de cada item achado num documento OFICIAL deste órgão (os mais frequentes primeiro)."""
+    if not chave:
+        return 0
+    n = 0
+    g = gab.setdefault(chave, {"itens": {}, "documentos": 0, "atualizado": None})
+    g["documentos"] += 1; g["atualizado"] = _agora()
+    for item, v in pontos.items():
+        if v.get("metodo") not in APRENDE or item not in L.COM_ROTULO:
+            continue
+        a = L.ancora(v.get("trecho") or "", v.get("valor") or "")
+        if a:
+            cont = g["itens"].setdefault(item, {})
+            cont[a] = cont.get(a, 0) + 1; n += 1
+            if len(cont) > 12:                                   # guarda só os rótulos mais frequentes
+                for k in sorted(cont, key=lambda k: cont[k])[:len(cont) - 12]:
+                    cont.pop(k)
+    return n
+
+
+def aprender_das_validacoes(gab: dict, fluxo: dict) -> int:
+    """Os itens JÁ VALIDADOS com trecho (Interceptador, validação individual, titular) ensinam os rótulos de cada órgão —
+    inclusive rótulos que a extração padrão não conhece. É o que faz o gabarito render além do que o Cartório já acha."""
+    n = 0
+    for lista in (fluxo.get("itens_por_uf") or {}).values():
+        for x in lista:
+            pts = {k: {"valor": v.get("v"), "trecho": v.get("t"), "metodo": "texto"} for k, v in (x.get("checklist") or {}).items()
+                   if isinstance(v, dict) and v.get("s") in ("ok", "val") and v.get("v") and v.get("t") and v.get("de") != "Cartório"}
+            if pts:
+                for chave in L.chaves_orgao(str(x.get("link_oficial") or x.get("url") or ""), str(x.get("orgao") or "")):
+                    sig = hashlib.sha1(json.dumps([x.get("id"), sorted(pts)], ensure_ascii=False).encode()).hexdigest()[:10]
+                    if sig in ((gab.get(chave) or {}).get("validacoes_vistas") or []):
+                        continue                                  # não conta a mesma validação duas vezes
+                    n += aprender(gab, chave, pts)
+                    gab[chave]["validacoes_vistas"] = ((gab[chave].get("validacoes_vistas") or []) + [sig])[-200:]
+    return n
+
+
+def ancoras_do_orgao(gab: dict, chave, minimo: int = 1, por_item: int = 5) -> dict:
+    """Rótulos aprendidos do órgão — aceita uma chave ou a lista de chaves (CNPJ/domínio + nome), somando as contagens."""
+    soma: dict = {}
+    for k in ([chave] if isinstance(chave, str) or chave is None else chave):
+        for item, c in (((gab or {}).get(k or "") or {}).get("itens") or {}).items():
+            for a, n in c.items():
+                soma.setdefault(item, {}); soma[item][a] = soma[item].get(a, 0) + n
+    return {item: [a for a, n in sorted(c.items(), key=lambda x: -x[1]) if n >= minimo][:por_item] for item, c in soma.items()}
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
 CATALOGO = ROOT / "biblioteca_alexandria/fontes/motores.json"
-VERSAO = "cartório v3b (09/10/2026)"
+VERSAO = "cartório v4 (09/10/2026)"
 FALTA = ("falta", "pend", "ref", None)
 
 
@@ -211,7 +261,7 @@ def _wordpress(base: str, numero: str, rede: Rede) -> list[str]:
 
 
 # ── CERTIDÃO ───────────────────────────────────────────────────────────────────────────────────────────────────────
-def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4) -> dict:
+def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4, gab: dict | None = None) -> dict:
     """Uma oportunidade: escada de degraus → leitura → extração → certidão (só os itens que FALTAVAM contam)."""
     cert = {"id": op.get("id"), "tipo": op.get("_tipo", "estrela"), "titulo": str(op.get("titulo") or "")[:200], "balcao": balcao(op),
             "faltavam": list(faltam), "em": _agora(), "versao": VERSAO, "link_oficial": None, "degrau": None, "como": None,
@@ -265,6 +315,16 @@ def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4) ->
             lidos += 1
             ex = L.extrair(pgs, d["url"], titulo, str(op.get("orgao") or ""))
             oficial, porque = L.regua(d["url"])
+            # GABARITO DO ÓRGÃO: o que a extração padrão não achou, pelos rótulos aprendidos deste órgão; e aprende com este
+            if gab is not None and oficial:
+                chaves = list(dict.fromkeys(L.chaves_orgao(d["url"], str(op.get("orgao") or "")) + L.chaves_orgao(str(op.get("url") or ""), "")))
+                chave = chaves[0] if chaves else None
+                extra = L.aplicar_gabarito(pgs, ancoras_do_orgao(gab, chaves), d["url"], set(ex["pontos"]))
+                for k, v in extra.items():
+                    ex["pontos"][k] = v; ex["dispensas"].pop(k, None)
+                cert["gabarito"] = {"orgao": chave, "itens_pelo_gabarito": sorted(extra)} if extra else cert.get("gabarito")
+                for _k in chaves:
+                    aprender(gab, _k, {k: v for k, v in ex["pontos"].items() if k not in extra})
             reg["oficial"] = porque
             for k, v in ex["pontos"].items():
                 if k in faltam and k not in cert["itens"]:
@@ -413,6 +473,11 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     limite = limite or int(c["oportunidades_por_execucao"]); segundos = segundos or int(c["segundos_por_execucao"])
     rede = rede or Rede(pausa=float(c["pausa_segundos"]))
     base = _j(CERTIDOES, {}) or {}
+    gab = _j(GABARITOS, {}) or {}
+    try:
+        aprender_das_validacoes(gab, fluxo if fluxo is not None else _j(FLUXO, {}))
+    except Exception:  # noqa: BLE001
+        pass
     certs = base.get("certidoes") or {}
     estrelas = devidos(fila_estrelas(fluxo), certs, int(c["revisitar_dias"]))
     livros = devidos(fila_livros(catalogo), certs, int(c["revisitar_dias"]))
@@ -425,7 +490,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
             break
         faltam = op["_faltam"] or (["Objeto"] if op.get("_sem_site") else [])
         try:
-            cert = certificar(op, faltam, rede, int(c["documentos_por_oportunidade"]))
+            cert = certificar(op, faltam, rede, int(c["documentos_por_oportunidade"]), gab)
         except Exception as ex:  # noqa: BLE001 — uma oportunidade com erro nunca derruba a fila inteira
             import traceback
             cert = {"id": op.get("id"), "tipo": op.get("_tipo"), "titulo": str(op.get("titulo") or "")[:200], "balcao": "?",
@@ -433,6 +498,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
                     "dispensas": {}, "em": _agora(), "versao": VERSAO, "link_oficial": None,
                     "encaminhado": f"Interceptador: erro no Cartório ({type(ex).__name__})", "erro": traceback.format_exc()[-800:]}
             erros.append({"id": op.get("id"), "erro": f"{type(ex).__name__}: {str(ex)[:200]}"})
+        cert.pop("_aprendeu", None)
         cert["assinatura"] = _assinatura(op)
         _ant = certs.get(f"{op['_tipo']}:{op['id']}") or {}
         cert["tentativa"] = int(_ant.get("tentativa") or (1 if _ant else 0)) + 1
@@ -457,6 +523,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     if gravar:
         PASTA.mkdir(parents=True, exist_ok=True)
         CERTIDOES.write_text(json.dumps({"em": _agora(), "versao": VERSAO, "certidoes": certs}, ensure_ascii=False, indent=1), encoding="utf-8")
+        GABARITOS.write_text(json.dumps(gab, ensure_ascii=False, indent=1), encoding="utf-8")
         INTERCEPTADOR.write_text(json.dumps({"em": _agora(), "regra": "só o que o Cartório não resolveu nos degraus 0–2", "itens": para_int[:300]},
                                             ensure_ascii=False, indent=1), encoding="utf-8")
         if novas_linhas:
@@ -509,6 +576,7 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int) -> dict
         return {"certidoes": len(grupo), "faltavam": f, "resolvidos": r, "eficiencia": round(r / f, 3) if f else None,
                 "com_link_oficial": sum(1 for c in grupo if c.get("link_oficial")),
                 "taxa_link_oficial": round(sum(1 for c in grupo if c.get("link_oficial")) / len(grupo), 3) if grupo else None}
+    pelo_gabarito = Counter(k for c in todas for k in ((c.get("gabarito") or {}).get("itens_pelo_gabarito") or []))
     safras = {"primeira tentativa": _safra([c for c in todas if int(c.get("tentativa") or 1) == 1]),
               "refeitas": _safra([c for c in todas if int(c.get("tentativa") or 1) > 1])}
     versoes = {}
@@ -518,7 +586,7 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int) -> dict
     itens = {k: {"faltavam": pedido[k], "obtidos": obtido[k], "dispensados": dispensado[k],
                  "eficiencia": round((obtido[k] + dispensado[k]) / pedido[k], 3) if pedido[k] else None} for k in L.DOZE}
     lista = sorted(todas, key=lambda c: (-(c.get("eficiencia") or 0), c.get("titulo") or ""))
-    enxuta = [{k: c.get(k) for k in ("id", "tipo", "titulo", "balcao", "link_oficial", "degrau", "como", "faltavam", "resolvidos", "ainda_faltam", "tentativa", "versao",
+    enxuta = [{k: c.get(k) for k in ("id", "tipo", "titulo", "balcao", "link_oficial", "degrau", "como", "faltavam", "resolvidos", "ainda_faltam", "tentativa", "versao", "gabarito",
                                       "eficiencia", "encaminhado", "selo_antes", "selo_depois", "em", "prazo", "uf", "orgao", "fim")} |
               {"itens": {k: {kk: v.get(kk) for kk in ("valor", "trecho", "pagina", "documento", "metodo")} for k, v in (c.get("itens") or {}).items()},
                "dispensas": {k: {kk: v.get(kk) for kk in ("motivo", "trecho", "pagina", "documento")} for k, v in (c.get("dispensas") or {}).items()},
@@ -535,7 +603,10 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int) -> dict
                        "para_o_interceptador": sum(1 for c in todas if str(c.get("encaminhado") or "").startswith("Interceptador")),
                        "para_o_chrome": sum(1 for c in todas if str(c.get("encaminhado") or "").startswith("Chrome")),
                        "selos_que_mudaram": dict(selos), "por_degrau": dict(por_degrau)},
-            "por_item": itens, "por_balcao": por_balcao, "por_safra": safras, "por_versao": por_versao, "certidoes": enxuta}
+            "por_item": itens, "por_balcao": por_balcao, "por_safra": safras, "por_versao": por_versao,
+            "gabarito": {"orgaos_com_gabarito": len(_j(GABARITOS, {}) or {}), "itens_achados_pelo_gabarito": dict(pelo_gabarito),
+                         "certidoes_ajudadas": sum(1 for c in todas if (c.get("gabarito") or {}).get("itens_pelo_gabarito"))},
+            "certidoes": enxuta}
 
 
 if __name__ == "__main__":
