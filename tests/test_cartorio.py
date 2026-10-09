@@ -112,6 +112,10 @@ class TesteBalcoes(unittest.TestCase):
         self.assertTrue(c["link_oficial"].startswith("https://www.anapolis.go.gov.br/"))
         self.assertEqual(c["resolvidos"], ["Prazo de inscrição", "Valor", "Requisitos"])
 
+    def test_motor_proprio_devolve_certidao_completa(self):
+        c = C.certificar({"id": "mp1", "titulo": "MPT-GO destinação", "origem": "motor mptgo-destinacao"}, ["Valor"], Rede({}))
+        self.assertEqual((c["balcao"], c["resolvidos"], c["ainda_faltam"]), ("proprio", [], ["Valor"]))
+
     def test_robots_vai_ao_chrome(self):
         u = "https://www.goias.gov.br/edital.pdf"
         c = C.certificar({"id": "e3", "titulo": "x", "url": u}, ["Valor"], Rede({u: b""}, proibidos={u}))
