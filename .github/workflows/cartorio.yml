@@ -1,6 +1,6 @@
 name: 30 · Cartório de fontes oficiais (certifica o que falta nas estrelas e nos livros)
 # 09/10/2026 (titular): os motores descobrem; o Cartório certifica. Roda depois de cada passagem dos motores (o que acabou
-# de chegar com item indisponível) e a cada 2 horas (a fila de estrelas e livros). Grava só os seus caminhos.
+# de chegar com item indisponível) e de hora em hora (a fila de estrelas e livros). Grava só os seus caminhos.
 on:
   workflow_run:
     workflows: ["22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro)",
@@ -8,7 +8,7 @@ on:
                 "27 · Executor documental dos motores (robôs; o Claude no Chrome é o último recurso)"]
     types: [completed]
   schedule:
-    - cron: "41 */2 * * *"
+    - cron: "41 * * * *"          # 09/10: linha de produção permanente, de hora em hora (até organizar tudo)
   workflow_dispatch:
     inputs:
       limite:
