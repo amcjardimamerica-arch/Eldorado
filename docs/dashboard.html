@@ -447,9 +447,11 @@ box-shadow:0 1px 3px #0002}
 .oa-kt{margin-bottom:4px}.oa-kl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 8px}
 .oa-ki{font-size:10.5px;line-height:1.5;display:flex;align-items:center;gap:4px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:help}
 .oa-ki i{font-style:normal;width:14px;height:14px;line-height:14px;text-align:center;border-radius:4px;font-size:9.5px;font-weight:800;flex:0 0 14px}
-.oa-ki.ok i{background:#1E7E4B;color:#fff}.oa-ki.val i{background:#8FC9A3;color:#fff}.oa-ki.disp i{background:#2F79D0;color:#fff}
-.oa-ki.prov i{background:#FFF3D6;color:#8A6100}.oa-ki.prov{color:#8A6100}.oa-ki.ref i{background:#E6F0FA;color:#2F5F96}
-.oa-ki.falta i{background:#FBE3E1;color:#B3261E}.oa-ki.falta{color:#8A2A22}.oa-ki.pend i{background:#EEF1F4;color:#9AA5B1}.oa-ki.pend{color:#9AA5B1}
+/* 09/10 (titular): três aparências — ✓ verde claro = item conhecido (mostra a informação confirmada no lugar do nome);
+   azul = dispensado (não se aplica a este edital); ✕ vermelho = ainda não conhecido (o Interceptador busca, até 3 vezes) */
+.oa-ki.conhecido i{background:#8FC9A3;color:#fff}.oa-ki.conhecido{color:#23422F;font-weight:600}
+.oa-ki.disp i{background:#2F79D0;color:#fff}.oa-ki.disp{color:#2F5F96}
+.oa-ki.buscar i{background:#FBE3E1;color:#B3261E}.oa-ki.buscar{color:#8A2A22}
 .oa-cab{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.oa-fil{display:flex;gap:6px;flex-wrap:wrap}
 .oa-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px}
 .oa-c{border:1px solid #E6EAF0;border-top:4px solid var(--c);border-radius:10px;padding:10px 12px;background:#fff;display:flex;flex-direction:column;gap:5px;min-width:0;font-size:12.5px}
@@ -4475,11 +4477,24 @@ function _desenhaAbertasFluxo(){
         ${u?`<span class="oa-s${of?" ok":""}">${of?"site oficial ✓":"indício — site oficial em busca"}</span>`:""}</div>
       ${x.objeto?`<div class="oa-o" title="${esc(x.objeto)}">${esc(String(x.objeto).slice(0,180))}</div>`:""}
       <div class="oa-k">${(()=>{const K=x.checklist||{}; const ord=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
-          const n=s=>ord.filter(k=>(K[k]||{}).s===s).length; const feitos=n("ok")+n("disp")+n("val");
-          const SIM={ok:"✓",disp:"◐",val:"✓",prov:"?",ref:"≈",falta:"✕",pend:"·"}, DIZ={ok:"comprovado na fonte, com trecho",disp:"dispensado pelo próprio edital",val:"confirmado na validação individual",prov:"dispensa PROVÁVEL pelo tipo de recurso — confirmar no edital (não conta como feito)",ref:"dado da edição de referência do livro — não confirmado como o desta oportunidade (não conta como feito)",falta:"estudado e ainda não encontrado",pend:"ainda não estudado pelo Interceptador"};
-          return `<div class="oa-kt"><b>Checklist ${feitos}/12</b> <span class=meta>${n("ok")} comprovado(s) · ${n("disp")} dispensado(s) · ${n("val")} da validação${n("prov")?` · ${n("prov")} dispensa(s) provável(is)`:""}${n("ref")?` · ${n("ref")} de referência`:""} · ${n("falta")} em falta${n("pend")?` · ${n("pend")} a estudar`:""}</span>${x.regime&&x.regime!=="chamamento_publico"?` <span class=meta title="tipo de recurso que define quais itens podem ser dispensados">· tipo: ${esc((x.dispensa_analise||{}).nome||x.regime)}</span>`:""}</div>
-            <div class="oa-kl">${ord.map(k=>{const it=K[k]||{s:"pend"}; return `<span class="oa-ki ${it.s}" title="${esc(k)} — ${DIZ[it.s]}${it.v?": "+esc(it.v):""}${it.t?" · “"+esc(it.t)+"”":""}"><i>${SIM[it.s]}</i>${esc(k)}</span>`;}).join("")}</div>`;})()}
-        ${I?`<div class=meta style="margin-top:3px">estudada pelo Interceptador em ${esc(I.em.slice(8,10)+"/"+I.em.slice(5,7))}: ${esc(I.qualidade||"—")} ${I.comprovados??""}/12</div>`:`<div class=meta style="margin-top:3px">na fila do Interceptador${x._uf==="GO"?" (Goiás tem prioridade)":""}</div>`}</div>
+          // 09/10 (titular): CONHECIDO (✓ verde claro) mostra a INFORMAÇÃO CONFIRMADA no lugar do nome do item;
+          // DISPENSADO (azul) mantém o nome; tudo o que ainda não é conhecido é ✕ vermelho (o Interceptador busca, até 3 vezes).
+          const grupo=s=>["ok","val","dt"].includes(s)?"conhecido":(s==="disp"?"disp":"buscar");
+          const n=g=>ord.filter(k=>grupo((K[k]||{}).s)===g).length; const feitos=n("conhecido")+n("disp");
+          const SIM={conhecido:"✓",disp:"⊘",buscar:"✕"};
+          const NOTA={ok:"confirmado no edital, com trecho",val:"confirmado na validação individual",dt:"confirmado",disp:"dispensado — não se aplica a este edital",
+            prov:"dispensa provável pelo tipo de recurso, ainda não confirmada no edital",ref:"há dado de uma edição anterior, ainda não confirmado para esta",falta:"buscado e ainda não encontrado",pend:"ainda não buscado"};
+          const curto=(k,v)=>{v=String(v||"").replace(/\s+/g," ").trim();
+            if(k==="Valor"){const m=v.match(/R\$\s?[\d.]+(?:,\d{2})?/);if(m)return m[0];}
+            if(k==="Prazo de inscrição"||k==="Resultado"){const d=v.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/g);if(d)return k==="Resultado"?d[d.length-1]:(d.length>1?d[0]+" a "+d[d.length-1]:"até "+d[d.length-1]);}
+            if(k==="Território"&&/nacional/i.test(v)&&!/munic|estado d/i.test(v))return "Nacional";
+            if(k==="Território"){const m=v.match(/nacional|estadual|municipal|internacional/i);const u=v.match(/\b(AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)\b/);
+              const c=v.replace(/^(n?[oa]s?|d[oa]s?)\s+/i,"").replace(/^(Munic[ií]pio|Estado)\s+d[eoa]\s+/i,"");return u&&!/munic/i.test(v)?u[0]:(m&&v.length>28?m[0]:c);}
+            return v;};
+          return `<div class="oa-kt"><b>Checklist ${feitos}/12</b> <span class=meta>${n("conhecido")} conhecido(s) · ${n("disp")} dispensado(s) · ${n("buscar")} a buscar</span>${x.regime&&x.regime!=="chamamento_publico"?` <span class=meta title="tipo de recurso que define quais itens podem ser dispensados">· tipo: ${esc((x.dispensa_analise||{}).nome||x.regime)}</span>`:""}</div>
+            <div class="oa-kl">${ord.map(k=>{const it=K[k]||{s:"pend"}, g=grupo(it.s), rot=g==="conhecido"&&it.v?curto(k,it.v):k;
+              return `<span class="oa-ki ${g}" title="${esc(k)} — ${NOTA[it.s]||NOTA.pend}${it.v?": "+esc(it.v):""}${it.t?" · “"+esc(it.t)+"”":""}"><i>${SIM[g]}</i>${esc(rot)}</span>`;}).join("")}</div>`;})()}
+        ${I?`<div class=meta style="margin-top:3px">estudada pelo Interceptador em ${esc(I.em.slice(8,10)+"/"+I.em.slice(5,7))}: ${esc(I.qualidade||"—")} ${I.comprovados??""}/12</div>`:`<div class=meta style="margin-top:3px">na fila do Interceptador${x._uf==="GO"?" (Goiás tem prioridade)":""} — ele busca os itens com ✕ (até 3 vezes por oportunidade)</div>`}</div>
       <div class="oa-r">${x.opressor?`livro <b>${esc(x.opressor)}</b>${x.opressor_edicoes?` · ${x.opressor_edicoes} edição(ões) guardada(s)`:""}${x.opressor_previsao?` · próxima janela prevista: ${esc(x.opressor_previsao.proxima_janela)}`:""}`:x.opressor_dispensa?`sem livro — ${esc(x.opressor_dispensa)}`:"livro será criado no próximo ciclo"}</div>
     </div>`;};
   cx.innerHTML=`<div class="oa-cab"><div><b style="font-size:15px;color:#0E2A55">Oportunidades abertas</b>
