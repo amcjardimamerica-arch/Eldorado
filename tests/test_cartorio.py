@@ -168,6 +168,20 @@ class TesteV3(unittest.TestCase):
         self.assertEqual(C._prioridade_anexo("Ata de julgamento"), 4); self.assertEqual(C._prioridade_anexo("Termo de Referência"), 1); self.assertEqual(C._prioridade_anexo("Aviso de chamamento"), 2)
 
 
+class TesteV3b(unittest.TestCase):
+    def test_edital_longo_de_orgao_e_lido_inteiro(self):
+        u = "https://pncp.gov.br/pncp-api/v1/orgaos/1/compras/2026/1/arquivos/1"
+        longo = _pdf(["Clausulas gerais do edital, sem identificacao de numero."] * 33 + EDITAL)
+        c = C.certificar({"id": "l1", "titulo": "Chamamento sem número", "url_documento": u}, ["Valor", "Requisitos"], Rede({u: longo}))
+        self.assertEqual(c["resolvidos"], ["Valor", "Requisitos"]); self.assertFalse(c["documentos"][0].get("edicao_inteira"))
+
+    def test_edicao_de_diario_continua_so_no_ato(self):
+        u = "https://data.queridodiario.ok.org.br/5208707/2026-09-30/x.pdf"
+        ed = _pdf(["DECRETO 55 nomeia servidor publico municipal para o cargo de assessor da secretaria de obras."] * 35)
+        c = C.certificar({"id": "d1", "titulo": "Diario sem numero", "url": u}, ["Valor"], Rede({u: ed}))
+        self.assertEqual(c["documentos"][0]["motivo"], "ato_nao_localizado")
+
+
 class TesteIntegracao(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); T = Path(self.tmp.name)

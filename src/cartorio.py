@@ -44,7 +44,7 @@ RELATORIO = ROOT / "docs/dados/cartorio.json"
 CFG = ROOT / "config/cartorio.json"
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
 CATALOGO = ROOT / "biblioteca_alexandria/fontes/motores.json"
-VERSAO = "cartório v3 (09/10/2026)"
+VERSAO = "cartório v3b (09/10/2026)"
 FALTA = ("falta", "pend", "ref", None)
 
 
@@ -253,7 +253,8 @@ def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4) ->
                         fila.append({"url": u, "degrau": 1, "como": "link de saída da pista para o site do financiador"})
         pgs = lido.get("paginas") or []
         if lido.get("ok") and pgs:
-            if len(pgs) > 30:                                    # edição inteira de diário: só o ato
+            if len(pgs) > 30 and (cert["balcao"] == "diario" or L.DIARIO_URL.search(d["url"])):   # só EDIÇÃO de diário: só o ato
+                                                         # (v3b: edital longo de órgão é lido inteiro — antes era descartado)
                 sel = L.localizar_ato(pgs, titulo, str(op.get("orgao") or ""))
                 if sel is None:
                     reg["motivo"] = "ato_nao_localizado"; cert["documentos"].append(reg); continue
