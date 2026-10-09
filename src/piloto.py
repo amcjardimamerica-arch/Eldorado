@@ -329,13 +329,17 @@ def missao_local(ia: IALocal, motor_id: str, conhecidos: set[str]) -> tuple[str,
 
 
 def _contar_voo() -> int:
+    """Voos por dia da contagem em vigor. 09/10: o carimbo '_contagem' (src/reset_pilotos.py) viaja junto com os
+    números — sem ele, um voo antigo regravava números de outra semana e ninguém percebia."""
     arq = PASTA / "voos.json"
     d = load_json(arq) if arq.exists() else {}
     hoje = date.today().isoformat()
-    d[hoje] = int(d.get(hoje, 0)) + 1
-    d = {k: v for k, v in sorted(d.items())[-14:]}
-    write_json(arq, d)
-    return d[hoje]
+    meta = {k: v for k, v in d.items() if str(k).startswith("_")}
+    dias = {k: v for k, v in d.items() if not str(k).startswith("_")}
+    dias[hoje] = int(dias.get(hoje, 0)) + 1
+    dias = {k: v for k, v in sorted(dias.items())[-14:]}
+    write_json(arq, {**meta, **dias})
+    return dias[hoje]
 
 
 
@@ -814,13 +818,21 @@ def ciclo(porta: int | None = None) -> dict:
     """VOO DO PILOTO: missões sorteadas, uma de cada vez, com diário de bordo."""
     from .esquadrilha import sortear, abrir_missao, fechar_missao, resumo
     from .cargo_piloto import ocupante
+    try:                                        # 09/10 (titular): contagem semanal zerada pelo próprio Piloto, ao decolar
+        from .reset_pilotos import zerar_se_preciso as _zerar
+        _zerou = _zerar("espiao")
+        if _zerou.get("zerou"):                 # o quadro da esquadrilha mostra o zero já na decolagem
+            from .esquadrilha import _publicar as _pub_esq, bordo as _bordo_esq
+            _pub_esq(_bordo_esq())
+    except Exception as ex:
+        _zerou = {"erro": f"{type(ex).__name__}: {ex}"}
     c = cfg(); hoje = date.today().isoformat(); t0 = time.time()
     orc = c.get("orcamento", {}); par = (load_json(ROOT / "config/cargo_piloto.json") or {}).get("parametros", {})
     ent = entender()
     ia = IALocal(porta=porta) if porta else IALocal()
     rel = {"em": now_iso(), "modelo": c.get("modelo_vencedor"), "ocupante": ocupante().get("nome"),
            "entendimento": {k: (v.get("total") if isinstance(v, dict) else v) for k, v in ent.items() if k != "acervo_compacto"},
-           "missoes": [], "abates": 0, "propostas": 0}
+           "missoes": [], "abates": 0, "propostas": 0, "contagem_semanal": _zerou}
     if not ia.disponivel():
         rel["nota"] = "o avião não decolou: servidor do modelo fora do ar neste job"
         write_json(PASTA / f"relatorio-{hoje}.json", rel); return rel

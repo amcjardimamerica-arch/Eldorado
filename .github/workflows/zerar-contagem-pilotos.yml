@@ -1,0 +1,38 @@
+name: 29 · Zerar contagem dos Pilotos (a pedido da titular)
+# 09/10 (titular): toda segunda-feira à 0h (Brasília) os Pilotos zeram sozinhos, no início do voo. Este botão é para o
+# zeramento FORA da segunda: grava o pedido em estado/pilotos/zerar_contagem.json e o Espião e o Interceptador o
+# cumprem no próximo voo, guardando antes os números antigos em estado/pilotos/historico/contagem_semanal/.
+on:
+  workflow_dispatch:
+    inputs:
+      motivo:
+        description: "por que zerar agora (fica registrado)"
+        required: false
+        default: "pedido da titular"
+permissions:
+  contents: write
+concurrency:
+  group: eldorado-zerar-contagem
+  cancel-in-progress: false
+jobs:
+  pedir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Gravar o pedido (só o arquivo do pedido)
+        env:
+          MOTIVO: ${{ github.event.inputs.motivo }}
+        run: |
+          git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            python -m src.reset_pilotos --pedir "${MOTIVO:-pedido da titular}"
+            git add estado/pilotos/zerar_contagem.json
+            git commit -q -m "pilotos: pedido de zeramento da contagem" || break
+            git push -q origin main && break; sleep 7
+          done
+          python -m src.reset_pilotos --situacao
