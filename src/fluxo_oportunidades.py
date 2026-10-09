@@ -63,6 +63,15 @@ def _nu(u: str) -> str:
     p = urlsplit(str(u or "")); return ((p.hostname or "").replace("www.", "") + p.path.rstrip("/")).lower()
 
 
+def _cart_item(eid, item):
+    """09/10: o item que o Cartório certificou para esta estrela (ou None)."""
+    try:
+        from .cartorio import item_checklist
+        return item_checklist(str(eid or ""), item) if eid else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def _oficial(*us) -> str | None:
     from .sites_oficiais import e_republicador       # catálogo de republicadores (config/republicadores.json)
     for u in us:
@@ -190,7 +199,12 @@ def consolidar() -> list[dict]:
         fim = _d(e.get("fim"), ve.get("prazo"), val.get("prazo_valor"), m.get("fim"))
         if m.get("_emenda"):
             e = {**e, "inicio": m.get("inicio")}
-        link = _oficial(ve.get("pagina_oficial"), e.get("pagina_oficial"), val.get("site"), m.get("url"))
+        try:                                   # 09/10 (titular): o link CERTIFICADO pelo Cartório vem primeiro (régua única)
+            from .cartorio import link_oficial as _lo_cart
+            _lcart = _lo_cart(m.get("id"))
+        except Exception:  # noqa: BLE001
+            _lcart = None
+        link = _oficial(_lcart, ve.get("pagina_oficial"), e.get("pagina_oficial"), val.get("site"), m.get("url"))
         objeto = m.get("objeto") or e.get("objeto") or ((campos.get("Objeto") or {}).get("valor") if (campos.get("Objeto") or {}).get("comprovado") else None)
         if v and v["decisao"] in ("valida_aberta", "valida_fora_abrangencia") and v.get("fonte_oficial"):
             fim = v.get("prazo") or fim; link = v["fonte_oficial"]; objeto = v.get("objeto") or objeto
@@ -257,6 +271,9 @@ def consolidar() -> list[dict]:
                 # parâmetros do livro: valem como 'val'/'disp' só se for o MESMO edital; senão são 'ref' (edição de referência)
                 st = "val" if (_mesmo and pz["status"] == "confirmado") else ("disp" if (_mesmo and pz["status"] != "confirmado") else "ref")
                 checklist[k] = {"s": st, "v": str(pz.get("valor") or pz["status"])[:90], "t": "parâmetros do livro" + ("" if _mesmo else " (edital de referência, não confirmado como o desta oportunidade)")}
+            elif _cart_item(m.get("id"), k):
+                # 09/10 (titular): CARTÓRIO — item lido no documento oficial (trecho + página) ou dispensa justificada
+                checklist[k] = _cart_item(m.get("id"), k)
             elif campos:
                 checklist[k] = {"s": "falta"}
             elif m.get("_emenda"):

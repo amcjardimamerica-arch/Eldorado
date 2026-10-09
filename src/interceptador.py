@@ -125,6 +125,15 @@ def alvos(maximo: int = 40) -> list[dict]:
         vistos.add(eid); out.append({"id": eid, "de": "fila de resgate", "fila_id": it.get("id"), "titulo": it.get("titulo")})
         if len(out) >= maximo:
             return out
+    # 09/10 (titular): o que o CARTÓRIO não resolveu nos degraus 0–2 (site oficial não localizado ou item fora do documento)
+    _car = load_json(ROOT / "estado/cartorio/para_o_interceptador.json") if (ROOT / "estado/cartorio/para_o_interceptador.json").exists() else {}
+    for it in (_car.get("itens") or []):
+        eid = str(it.get("id") or "")
+        if it.get("tipo") != "estrela" or not eid or eid in vistos or recente(eid) or not registro(eid):
+            continue
+        vistos.add(eid); out.append({"id": eid, "de": "encaminhado pelo Cartório", "titulo": it.get("titulo"), "motivo": it.get("motivo")})
+        if len(out) >= maximo:
+            return out
     # editais ABERTOS com itens em falta: o prazo aberto vive no registro (verificação do titular ou
     # investigação anterior), não no arquivo mestre — é por ele que o painel monta os cartões
     hoje = date.today().isoformat()
