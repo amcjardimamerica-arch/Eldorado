@@ -126,6 +126,14 @@ class TesteMotor(_Base):
                                                      "https://cultura.go.gov.br/wp-content/uploads/2026/10/edital.pdf"])
         self.assertEqual(L.documentos_do_achado({"url": "https://www.in.gov.br/web/dou/-/edital-737063275"}), [])
 
+    def test_anexo_citado_no_texto_do_diario(self):
+        t = "O edital está disponível em www.cultura.go.gov.br/wp-content/uploads/2026/10/edital-01.pdf. Ver http://y.gov.br/b.pdf"
+        self.assertEqual(L.links_de_documento(t), ["https://www.cultura.go.gov.br/wp-content/uploads/2026/10/edital-01.pdf"])
+        from src import diario_uniao as du
+        self.assertEqual(du._links_doc(t), L.links_de_documento(t))
+        a = {"url": "https://www.in.gov.br/web/dou/-/edital-1", "links_documento": L.links_de_documento(t)}
+        self.assertEqual(L.documentos_do_achado(a), a["links_documento"])
+
     def test_enriquecer_orcamento_memoria_e_campos_do_motor(self):
         docs = {f"https://p.go.gov.br/e{i}.pdf": (pdf([EDITAL]), "application/pdf") for i in range(4)}
         res = {"sensor": "pncp-api", "achados": [{"titulo": f"Edital nº 004/2026 ({i})", "url_documento": f"https://p.go.gov.br/e{i}.pdf",

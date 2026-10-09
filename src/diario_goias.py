@@ -285,6 +285,11 @@ def cobertura(diag: dict, proc: dict) -> dict:
 
 
 # ─────────────────────────── o motor ───────────────────────────
+def _links_doc(texto) -> list[str]:
+    from .leitura_pdf_motores import links_de_documento
+    return links_de_documento(texto or "")
+
+
 def _registro(ato: dict, m: dict) -> dict:
     nivel, terr = atos.territorio_do_caminho(m.get("caminho"))
     if (ato.get("orgao") or "").startswith("Prefeitura de "):
@@ -305,7 +310,7 @@ def _registro(ato: dict, m: dict) -> dict:
         "pagina": m.get("pagina"), "numero_edital": ato["numero"], "prazo_texto": ato["prazo_texto"], "fim": ato["fim"],
         "valor_texto": (ato["valores"] or [None])[0], "objeto": ato["objeto"], "orgao": ato["orgao"], "regime": ato["regime"],
         "caminho_sumario": m.get("caminho"), "evidencia": ev, "hash_evidencia": sha256(ev.encode()),
-        "fontes_observadas": [m["fonte"]],
+        "fontes_observadas": [m["fonte"]], "links_documento": _links_doc(m.get("texto")),   # 09/10: anexos citados no ato (leitura de PDF)
         "classificacao_ato": {k: ato[k] for k in ("veredito", "tipo", "regime", "publico", "motivos", "sinais")},
         "sensor": MOTOR_ID, "forca_lexica": 3,
     }
