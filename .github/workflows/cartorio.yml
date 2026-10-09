@@ -31,7 +31,7 @@ jobs:
         with: { fetch-depth: 1 }
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: pip install -q pypdf pdfplumber || pip install -q pypdf
+      - run: pip install -q pypdf pdfplumber fonttools || pip install -q pypdf
       - name: Certificar (degraus 0–2, sem IA; o resto vai ao Interceptador)
         run: |
           mkdir -p estado/cartorio

@@ -118,6 +118,39 @@ class TesteBalcoes(unittest.TestCase):
         self.assertTrue(c["encaminhado"].startswith("Chrome"))
 
 
+class TesteCorrecoesV2(unittest.TestCase):
+    """Casos reais da 1ª medição (09/10): notícia em gov.br, IndexError, PDF embutido, ato no diário, Destinação/Requisitos."""
+    def test_noticia_em_dominio_de_governo_e_oficial(self):
+        self.assertTrue(L.regua("https://www.gov.br/mdh/pt-br/assuntos/noticias/2026/prazo-de-inscricoes")[0])
+        self.assertFalse(L.regua("https://g1.globo.com/noticia/edital.ghtml")[0])
+        self.assertFalse(L.regua("https://jornalopcao.com.br/noticia-edital")[0])
+
+    def test_orgao_sem_grupo_nao_quebra(self):
+        r = L.extrair(["Texto do Conselho Nacional dos Direitos da Crianca sem cabecalho. " * 5], "https://x.gov.br/a.pdf", "t", "Conselho Nacional dos Direitos da Crianca")
+        self.assertEqual(r["pontos"]["Órgão / financiador"]["valor"], "Conselho Nacional dos Direitos da Crianca")   # antes: IndexError
+        r = L.extrair(["SECRETARIA DE ESTADO DA CULTURA. Edital de selecao."], "https://x.go.gov.br/a.pdf", "t")
+        self.assertEqual(r["pontos"]["Órgão / financiador"]["valor"], "SECRETARIA DE ESTADO DA CULTURA")
+
+    def test_pdf_embutido_no_visualizador(self):
+        html = '<html><body><iframe src="/portal/edicoes/7401/arquivo.pdf"></iframe></body></html>'
+        ls = L.links_de_documento(html, "https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7401/")
+        self.assertEqual(ls[0][0], "https://diariooficial.abc.go.gov.br/portal/edicoes/7401/arquivo.pdf")
+
+    def test_ato_no_diario_por_no_e_por_termo_do_querido_diario(self):
+        pgs = ["DECRETO 55 nomeia servidor"] * 20 + ["AVISO DE CHAMAMENTO PUBLICO Nº 4 - selecao de projetos culturais"] + ["outros atos"] * 15
+        self.assertEqual(sum(1 for t in L.localizar_ato(pgs, "Aviso de Chamamento Público nº 4") if t), 2)
+        pgs2 = ["portaria"] * 30 + ["Edital de chamamento público para organizações da sociedade civil"] + ["licitacao"] * 5
+        sel = L.localizar_ato(pgs2, 'Diário Oficial de Penápolis (SP) 2026-09-15 — "chamamento público" "organizações da sociedade civil"')
+        self.assertEqual(sum(1 for t in sel if t), 2)
+        self.assertIsNone(L.localizar_ato(pgs2, "Diário Oficial sem identificação"))
+
+    def test_destinacao_e_requisitos_em_outras_redacoes(self):
+        r = L.extrair(["Sao despesas elegiveis: pagamento de pessoal, material de consumo e servicos de terceiros. "
+                       "As proponentes deverao comprovar no minimo dois anos de existencia e regularidade fiscal."], "https://x.go.gov.br/a.pdf", "t")
+        self.assertIn("despesas elegiveis", r["pontos"]["Destinação"]["valor"])
+        self.assertIn("deverao comprovar", r["pontos"]["Requisitos"]["valor"])
+
+
 class TesteIntegracao(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); T = Path(self.tmp.name)
@@ -153,6 +186,9 @@ class TesteIntegracao(unittest.TestCase):
         self.assertEqual(rel["resumo"]["certidoes"], 2); self.assertEqual(rel["resumo"]["eficiencia_itens"], 1.0)
         self.assertIn("itens", rel["certidoes"][0])
         self.assertEqual(C.run(10, 60, Rede({}), fluxo, catalogo)["certificadas"], 0, "não refaz o que não mudou")
+        cs = json.loads(C.CERTIDOES.read_text()); cs["certidoes"]["estrela:est1"]["versao"] = "antiga"; cs["certidoes"]["estrela:est1"]["ainda_faltam"] = ["Valor"]
+        C.CERTIDOES.write_text(json.dumps(cs)); C._CACHE.clear()
+        self.assertEqual(C.run(10, 60, Rede({pdf: _pdf(EDITAL)}), fluxo, catalogo)["certificadas"], 1, "leitor novo refaz a certidão incompleta")
 
     def test_um_erro_nao_derruba_a_fila(self):
         pg = "https://www.goias.gov.br/editais/x"

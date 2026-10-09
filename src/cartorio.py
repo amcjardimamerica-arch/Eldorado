@@ -44,7 +44,7 @@ RELATORIO = ROOT / "docs/dados/cartorio.json"
 CFG = ROOT / "config/cartorio.json"
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
 CATALOGO = ROOT / "biblioteca_alexandria/fontes/motores.json"
-VERSAO = "cartório v1 (09/10/2026)"
+VERSAO = "cartório v2 (09/10/2026)"
 FALTA = ("falta", "pend", "ref", None)
 
 
@@ -70,8 +70,20 @@ def _agora() -> str:
 
 # ── REDE (injetável nos testes) ────────────────────────────────────────────────────────────────────────────────────
 def _baixar(url: str) -> tuple[bytes, str]:
+    """Direto; se o site oficial recusar a nuvem (DOU: RemoteDisconnected; 403), tenta pela ponte do computador do titular."""
     from .executor_skills import baixar
-    return baixar(url)
+    try:
+        return baixar(url)
+    except Exception as e1:  # noqa: BLE001
+        try:
+            from . import ponte_brasil as PB
+            if PB.na_nuvem() and PB.configurada() and not PB.precisa(url):     # precisa(): o executor já tentou a ponte
+                st, _f, corpo, hdr = PB.abrir(url, timeout=60)
+                if st == 200 and corpo:
+                    return corpo, (hdr or {}).get("content-type", "")
+        except Exception:  # noqa: BLE001
+            pass
+        raise e1
 
 
 def _permitido(url: str) -> bool:
@@ -220,7 +232,7 @@ def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4) ->
         pgs = lido.get("paginas") or []
         if lido.get("ok") and pgs:
             if len(pgs) > 30:                                    # edição inteira de diário: só o ato
-                sel = L.localizar_ato(pgs, titulo)
+                sel = L.localizar_ato(pgs, titulo, str(op.get("orgao") or ""))
                 if sel is None:
                     reg["motivo"] = "ato_nao_localizado"; cert["documentos"].append(reg); continue
                 pgs = sel; reg["edicao_inteira"] = True
@@ -315,7 +327,8 @@ def devidos(fila: list[dict], certidoes: dict, revisitar_dias: int) -> list[dict
     out = []
     for op in fila:
         c = certidoes.get(f"{op['_tipo']}:{op['id']}")
-        if not c or c.get("assinatura") != _assinatura(op) or str(c.get("em") or "") < limite:
+        leitor_novo = c and c.get("versao") != VERSAO and (c.get("ainda_faltam") or not c.get("link_oficial"))
+        if not c or c.get("assinatura") != _assinatura(op) or str(c.get("em") or "") < limite or leitor_novo:
             out.append(op)
     return out
 
