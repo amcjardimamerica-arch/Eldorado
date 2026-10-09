@@ -1,19 +1,19 @@
 {
- "em": "2026-10-09T20:36:37+00:00",
- "versao": "cartório v2 (09/10/2026)",
+ "em": "2026-10-09T20:49:42+00:00",
+ "versao": "cartório v3 (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "certidoes": 47,
   "nesta_execucao": 40,
-  "fila_estrelas": 478,
+  "fila_estrelas": 477,
   "fila_livros": 2257,
-  "itens_que_faltavam": 284,
-  "itens_obtidos": 70,
-  "itens_dispensados": 9,
-  "eficiencia_itens": 0.278,
-  "com_link_oficial": 34,
-  "taxa_link_oficial": 0.723,
+  "itens_que_faltavam": 275,
+  "itens_obtidos": 63,
+  "itens_dispensados": 8,
+  "eficiencia_itens": 0.258,
+  "com_link_oficial": 33,
+  "taxa_link_oficial": 0.702,
   "certidoes_completas": 4,
   "para_o_interceptador": 36,
   "para_o_chrome": 6,
@@ -24,27 +24,27 @@
    "sem selo → ouro": 1
   },
   "por_degrau": {
-   "degrau 0": 34
+   "degrau 0": 33
   }
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 23,
-   "obtidos": 9,
+   "faltavam": 22,
+   "obtidos": 8,
    "dispensados": 0,
-   "eficiencia": 0.391
+   "eficiencia": 0.364
   },
   "Prazo de inscrição": {
-   "faltavam": 15,
-   "obtidos": 4,
+   "faltavam": 14,
+   "obtidos": 3,
    "dispensados": 1,
-   "eficiencia": 0.333
+   "eficiencia": 0.286
   },
   "Resultado": {
-   "faltavam": 29,
+   "faltavam": 28,
    "obtidos": 4,
-   "dispensados": 6,
-   "eficiencia": 0.345
+   "dispensados": 5,
+   "eficiencia": 0.321
   },
   "Prazo de recurso": {
    "faltavam": 31,
@@ -53,40 +53,40 @@
    "eficiencia": 0.129
   },
   "Valor": {
-   "faltavam": 22,
-   "obtidos": 3,
+   "faltavam": 21,
+   "obtidos": 2,
    "dispensados": 2,
-   "eficiencia": 0.227
+   "eficiencia": 0.19
   },
   "Órgão / financiador": {
-   "faltavam": 15,
-   "obtidos": 7,
+   "faltavam": 14,
+   "obtidos": 6,
    "dispensados": 0,
-   "eficiencia": 0.467
+   "eficiencia": 0.429
   },
   "Território": {
-   "faltavam": 20,
+   "faltavam": 19,
    "obtidos": 2,
    "dispensados": 0,
-   "eficiencia": 0.1
+   "eficiencia": 0.105
   },
   "Esfera": {
-   "faltavam": 14,
-   "obtidos": 9,
-   "dispensados": 0,
-   "eficiencia": 0.643
-  },
-  "Requisitos": {
-   "faltavam": 33,
+   "faltavam": 13,
    "obtidos": 8,
    "dispensados": 0,
-   "eficiencia": 0.242
+   "eficiencia": 0.615
+  },
+  "Requisitos": {
+   "faltavam": 32,
+   "obtidos": 7,
+   "dispensados": 0,
+   "eficiencia": 0.219
   },
   "Anexos": {
-   "faltavam": 32,
-   "obtidos": 9,
+   "faltavam": 31,
+   "obtidos": 8,
    "dispensados": 0,
-   "eficiencia": 0.281
+   "eficiencia": 0.258
   },
   "Destinação": {
    "faltavam": 33,
@@ -104,11 +104,11 @@
  "por_balcao": {
   "pncp": {
    "certidoes": 29,
-   "com_link_oficial": 25,
-   "faltavam": 200,
-   "resolvidos": 69,
-   "eficiencia": 0.345,
-   "taxa_link_oficial": 0.862
+   "com_link_oficial": 24,
+   "faltavam": 191,
+   "resolvidos": 61,
+   "eficiencia": 0.319,
+   "taxa_link_oficial": 0.828
   },
   "diario": {
    "certidoes": 5,
@@ -151,6 +151,50 @@
    "taxa_link_oficial": 0.0
   }
  },
+ "por_safra": {
+  "primeira tentativa": {
+   "certidoes": 7,
+   "faltavam": 33,
+   "resolvidos": 11,
+   "eficiencia": 0.333,
+   "com_link_oficial": 5,
+   "taxa_link_oficial": 0.714
+  },
+  "refeitas": {
+   "certidoes": 40,
+   "faltavam": 242,
+   "resolvidos": 60,
+   "eficiencia": 0.248,
+   "com_link_oficial": 28,
+   "taxa_link_oficial": 0.7
+  }
+ },
+ "por_versao": {
+  "cartório v1": {
+   "certidoes": 6,
+   "faltavam": 30,
+   "resolvidos": 8,
+   "eficiencia": 0.267,
+   "com_link_oficial": 4,
+   "taxa_link_oficial": 0.667
+  },
+  "cartório v2": {
+   "certidoes": 1,
+   "faltavam": 3,
+   "resolvidos": 3,
+   "eficiencia": 1.0,
+   "com_link_oficial": 1,
+   "taxa_link_oficial": 1.0
+  },
+  "cartório v3": {
+   "certidoes": 40,
+   "faltavam": 242,
+   "resolvidos": 60,
+   "eficiencia": 0.248,
+   "com_link_oficial": 28,
+   "taxa_link_oficial": 0.7
+  }
+ },
  "certidoes": [
   {
    "id": "agr-5e19b6c24272",
@@ -167,6 +211,8 @@
     "Destinação"
    ],
    "ainda_faltam": [],
+   "tentativa": null,
+   "versao": "cartório v1 (09/10/2026)",
    "eficiencia": 1.0,
    "encaminhado": null,
    "selo_antes": "prata",
@@ -224,6 +270,8 @@
     "Objeto"
    ],
    "ainda_faltam": [],
+   "tentativa": null,
+   "versao": "cartório v1 (09/10/2026)",
    "eficiencia": 1.0,
    "encaminhado": null,
    "selo_antes": null,
@@ -287,6 +335,8 @@
     "Anexos"
    ],
    "ainda_faltam": [],
+   "tentativa": null,
+   "versao": "cartório v1 (09/10/2026)",
    "eficiencia": 1.0,
    "encaminhado": null,
    "selo_antes": "bronze",
@@ -389,6 +439,8 @@
     "Valor"
    ],
    "ainda_faltam": [],
+   "tentativa": null,
+   "versao": "cartório v2 (09/10/2026)",
    "eficiencia": 1.0,
    "encaminhado": null,
    "selo_antes": null,
@@ -464,20 +516,22 @@
     "Prazo de recurso",
     "Valor",
     "Órgão / financiador",
+    "Território",
     "Esfera",
     "Requisitos",
     "Anexos",
     "Área de atuação"
    ],
    "ainda_faltam": [
-    "Território",
     "Destinação"
    ],
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-09T20:31:25+00:00",
+   "selo_depois": "prata",
+   "em": "2026-10-09T20:44:16+00:00",
    "prazo": "2026-10-13",
    "uf": null,
    "orgao": "ARACAJU CAMARA MUNICIPAL",
@@ -545,6 +599,13 @@
      "pagina": 1,
      "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/1",
      "metodo": "palavras-chave do objeto"
+    },
+    "Território": {
+     "valor": "do Município de Aracaju",
+     "trecho": "meio de produções autorais de alunos matriculados na Rede de Ensino do Município de Aracaju, que receber ão prêmios (10 (dez) alunos , 1 (uma) escola e 1 (um) o",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/6",
+     "metodo": "texto"
     }
    },
    "dispensas": {
@@ -595,6 +656,46 @@
      "oficial": "arquivo do edital anexado pelo órgão no PNCP",
      "paginas": 2,
      "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/5",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/6",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 3,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/7",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 3,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/8",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 8,
+     "edicao_inteira": null
     }
    ]
   },
@@ -636,11 +737,13 @@
     "Território",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.833,
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:30:14+00:00",
+   "em": "2026-10-09T20:43:19+00:00",
    "prazo": "2026-10-13",
    "uf": null,
    "orgao": "UNIVERSIDADE FEDERAL RURAL DA AMAZONIA",
@@ -774,11 +877,13 @@
    "ainda_faltam": [
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.8,
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:35:39+00:00",
+   "em": "2026-10-09T20:48:56+00:00",
    "prazo": null,
    "uf": "BR",
    "orgao": "UNIVERSIDADE FEDERAL DE PERNAMBUCO",
@@ -826,6 +931,16 @@
      "edicao_inteira": null
     },
     {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/24134488000108/compras/2027/3/arquivos/4",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Termo de Referência)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 7,
+     "edicao_inteira": null
+    },
+    {
      "url": "https://pncp.gov.br/pncp-api/v1/orgaos/24134488000108/compras/2027/3/arquivos/1",
      "degrau": 0,
      "como": "PNCP: arquivo anexado pelo órgão (Ato que autoriza a Contratação Direta)",
@@ -843,142 +958,6 @@
      "falha": null,
      "oficial": "arquivo do edital anexado pelo órgão no PNCP",
      "paginas": 35,
-     "edicao_inteira": true
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/24134488000108/compras/2027/3/arquivos/4",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Termo de Referência)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 7,
-     "edicao_inteira": null
-    }
-   ]
-  },
-  {
-   "id": "eaf338374cd00fe1e042",
-   "tipo": "estrela",
-   "titulo": "MUNICIPIO DE CAFELANDIA — SELEÇÃO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL - OSCS, SEM FINS LUCRATIVOS, PARA CELEBRAÇÃO DE TERMO DE COLABORAÇÃO, NOS TERMOS DA LEI FEDERAL Nº 13.019/2014,",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos"
-   ],
-   "ainda_faltam": [
-    "Prazo de recurso",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "eficiencia": 0.75,
-   "encaminhado": "Interceptador: 3 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": "prata",
-   "em": "2026-10-09T17:13:42+00:00",
-   "prazo": "2026-10-19",
-   "uf": null,
-   "orgao": "MUNICIPIO DE CAFELANDIA",
-   "fim": "2026-10-16",
-   "itens": {
-    "Prazo de inscrição": {
-     "valor": "até 16 de outubro de 2026",
-     "trecho": "Trabalho 16 de setembro a 16 de outubro de 2026 4. Encerramento do recebimento das propostas 16 de outubro de 2026 5. Avaliação e classificação das propostas pela Comissão de Seleção",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-     "metodo": "cronograma"
-    },
-    "Valor": {
-     "valor": "R$ 70.632,00",
-     "trecho": "essoas com R$ 70.632,00 [TABELA] Item | Descrição do Objeto | | | Valor Máximo [TABELA] 1 | | Execução de serviços socioassistenciais voltados ao | | R$ 70.632,00 [TABELA] | | atendimento de famílias e indivíduos em situação de |",
-     "pagina": 4,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "O presente Chamamento Público tem por objet o a seleção de Organizações da \nSociedade Civil – OSCs, sem fins lucrativos, regularmente constituídas, para \ncelebração de Termo de Colaboração com o Município de Cafelândia/PR, nos termos \nda Lei Federal nº 13.",
-     "trecho": "do Termo de Colaboração Após a homologação CLÁUSULA PRIMEIRA – DO OBJETO 1.1. O presente Chamamento Público tem por objet o a seleção de Organizações da Sociedade Civil – OSCs, sem fins lucrativos, regularmente constituídas, para celebração de Termo de Colaboração com o Município de Cafelândia/PR, nos termos da Lei Federal nº 13.019, de 31 de julho de 2014, visando à execução de projetos e ativida",
-     "pagina": 3,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "MUNICÍPIO DE CAFELÂNDIA",
-     "trecho": ", DO DECRETO MUNICIPAL Nº 042/2017 E DEMAIS NORMAS APLICÁVEIS. O MUNICÍPIO DE CAFELÂNDIA, Estado do Paraná, pessoa jurídica de direito público interno, inscr",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "no Município de Cafelândia",
-     "trecho": "à operacionalização do auxílio transporte para estudantes residentes no Município de Cafelândia regularmente matriculados em cu rsos de ensino supe rior ou educação",
-     "pagina": 5,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "federal",
-     "trecho": "domínio/órgão: pncp.gov.br · MUNICÍPIO DE CAFELÂNDIA MUNICIPIO DE CAFELANDIA",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "SOCIEDADE \nCIVIL CLASSIFICADA E DAS VEDAÇÕES  \n8.",
-     "trecho": "ficada em primeiro lugar para o respectivo objeto. CLÁUSULA OITAVA – DA HABILITAÇÃO DA ORGANIZAÇÃO DA SOCIEDADE CIVIL CLASSIFICADA E DAS VEDAÇÕES 8.1. Após o julgamento dos recursos relativos à classificação, a Comissão de Seleção verificará a documentação da Organização da Sociedade Civil classificada em primeiro lugar para o respectivo objeto. 8.2. Serão verificados, entre outros, a regularidade",
-     "pagina": 10,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-     "metodo": "seção"
-    },
-    "Anexos": {
-     "valor": "ANEXO V - RELAÇÃO DE DOCUMENTOS; ANEXO VII – MINUTA DO TERMO DE COLABORAÇÃO (SUJEITO A",
-     "trecho": "1156 CNPJ : 78.121.878/0001-72 - Site: www.cafelandia.pr.gov.br ANEXO V - RELAÇÃO DE DOCUMENTOS 1 HABILITAÇÂO JURÍDICA 1.1 Cópia do Estatuto Social registrado no Cartório de Registro Civil das Pessoas Jurídicas, acompanhado de todas as alterações o",
-     "pagina": 27,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-     "metodo": "lista de anexos"
-    }
-   },
-   "dispensas": {
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "e: www.cafelandia.pr.gov.br 16.5. A Comissão de Se leção poderá, a qualquer tempo, promover diligências destinadas a esclarecer ou complem entar a ins",
-     "pagina": 20,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1"
-    }
-   },
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 42,
      "edicao_inteira": true
     }
    ]
@@ -1017,11 +996,13 @@
     "Território",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.7,
    "encaminhado": "Interceptador: 3 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:32:44+00:00",
+   "em": "2026-10-09T20:45:53+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "MUNICIPIO DE GRAVATAI",
@@ -1111,11 +1092,13 @@
    "ainda_faltam": [
     "Requisitos"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.667,
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido (pdf_escaneado)",
    "selo_antes": "bronze",
    "selo_depois": "bronze",
-   "em": "2026-10-09T20:31:45+00:00",
+   "em": "2026-10-09T20:44:44+00:00",
    "prazo": "2026-10-15",
    "uf": null,
    "orgao": "MUNICIPIO DE LAURO DE FREITAS",
@@ -1177,6 +1160,66 @@
      "oficial": null,
      "paginas": 1,
      "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13927819000140/compras/2026/143/arquivos/4",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 3,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13927819000140/compras/2026/143/arquivos/5",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 13,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13927819000140/compras/2026/143/arquivos/6",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13927819000140/compras/2026/143/arquivos/7",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13927819000140/compras/2026/143/arquivos/9",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 6,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13927819000140/compras/2026/143/arquivos/10",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
     }
    ]
   },
@@ -1204,11 +1247,13 @@
     "Prazo de recurso",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.6,
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido (formato_desconhecido)",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:35:26+00:00",
+   "em": "2026-10-09T20:48:46+00:00",
    "prazo": null,
    "uf": "BR",
    "orgao": "MUNICIPIO DE RIO NEGRO",
@@ -1298,11 +1343,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.5,
    "encaminhado": "Interceptador: 6 item(ns) não estão no documento oficial lido (ato_nao_localizado)",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:33:36+00:00",
+   "em": "2026-10-09T20:46:50+00:00",
    "prazo": null,
    "uf": "BR",
    "orgao": "(UO) ESP-CIA.PTA DE TRENS METROPS-CPTM",
@@ -1413,11 +1460,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.5,
    "encaminhado": "Interceptador: 6 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:32:51+00:00",
+   "em": "2026-10-09T20:45:59+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "MUNICIPIO DE SOBRAL",
@@ -1504,11 +1553,13 @@
     "Prazo de recurso",
     "Anexos"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.4,
    "encaminhado": "Interceptador: 3 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": "prata",
-   "em": "2026-10-09T20:32:10+00:00",
+   "em": "2026-10-09T20:45:21+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "MUNICIPIO DE ITACOATIARA",
@@ -1587,11 +1638,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.4,
    "encaminhado": "Interceptador: 6 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:29:39+00:00",
+   "em": "2026-10-09T20:42:46+00:00",
    "prazo": "2026-10-09",
    "uf": null,
    "orgao": "MUNICIPIO DE NOVA AURORA",
@@ -1678,11 +1731,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.333,
    "encaminhado": "Interceptador: 8 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:29:35+00:00",
+   "em": "2026-10-09T20:42:42+00:00",
    "prazo": "2026-10-09",
    "uf": null,
    "orgao": "Prefeitura de Santa Rita do Araguaia",
@@ -1757,11 +1812,13 @@
     "Território",
     "Requisitos"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.167,
    "encaminhado": "Interceptador: 5 item(ns) não estão no documento oficial lido (pagina_vazia)",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:29:57+00:00",
+   "em": "2026-10-09T20:43:04+00:00",
    "prazo": "2026-10-11",
    "uf": null,
    "orgao": "Ministério dos Direitos Humanos e da Cidadania",
@@ -1867,6 +1924,8 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": null,
+   "versao": "cartório v1 (09/10/2026)",
    "eficiencia": 0.167,
    "encaminhado": "Interceptador: 10 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
@@ -1921,11 +1980,13 @@
    "ainda_faltam": [
     "Objeto"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:36:27+00:00",
+   "em": "2026-10-09T20:49:34+00:00",
    "prazo": null,
    "uf": "BR",
    "orgao": "MUNICIPIO DE ANTONIO CARDOSO",
@@ -1974,11 +2035,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 8 item(ns) não estão no documento oficial lido",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:34:23+00:00",
+   "em": "2026-10-09T20:47:22+00:00",
    "prazo": null,
    "uf": "SP",
    "orgao": "PNCP — MUNICIPIO DE PERUIBE",
@@ -2035,11 +2098,13 @@
     "Destinação",
     "Área de atuação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: site oficial não localizado nos degraus 0–2 (ato_nao_localizado)",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:35:57+00:00",
+   "em": "2026-10-09T20:49:11+00:00",
    "prazo": null,
    "uf": "PR",
    "orgao": "PNCP — SERVICO AUTONOMO MUNICIPAL DE AGUA E ESGOTO",
@@ -2076,6 +2141,8 @@
     "Requisitos",
     "Anexos"
    ],
+   "tentativa": null,
+   "versao": "cartório v1 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Chrome (último recurso): o robots.txt do site oficial proíbe a leitura automática",
    "selo_antes": "bronze",
@@ -2119,11 +2186,13 @@
     "Requisitos",
     "Anexos"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Chrome (último recurso): o robots.txt do site oficial proíbe a leitura automática",
    "selo_antes": "bronze",
    "selo_depois": "bronze",
-   "em": "2026-10-09T20:30:13+00:00",
+   "em": "2026-10-09T20:43:18+00:00",
    "prazo": "2026-10-13",
    "uf": null,
    "orgao": "FAPESP",
@@ -2164,11 +2233,13 @@
     "Valor",
     "Anexos"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 4 item(ns) não estão no documento oficial lido",
    "selo_antes": "bronze",
    "selo_depois": "bronze",
-   "em": "2026-10-09T20:32:28+00:00",
+   "em": "2026-10-09T20:45:37+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "Prefeitura de Cajuru",
@@ -2235,11 +2306,13 @@
     "Destinação",
     "Área de atuação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: site oficial não localizado nos degraus 0–2 (pagina_vazia)",
    "selo_antes": "bronze",
    "selo_depois": null,
-   "em": "2026-10-09T20:34:50+00:00",
+   "em": "2026-10-09T20:47:48+00:00",
    "prazo": null,
    "uf": "BR",
    "orgao": "Iberescena",
@@ -2296,11 +2369,13 @@
     "Destinação",
     "Área de atuação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: site oficial não localizado nos degraus 0–2 (pagina_vazia)",
    "selo_antes": "bronze",
    "selo_depois": null,
-   "em": "2026-10-09T20:35:55+00:00",
+   "em": "2026-10-09T20:49:10+00:00",
    "prazo": null,
    "uf": "BR",
    "orgao": "Iberescena",
@@ -2351,11 +2426,13 @@
     "Destinação",
     "Área de atuação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 9 item(ns) não estão no documento oficial lido",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:34:32+00:00",
+   "em": "2026-10-09T20:47:32+00:00",
    "prazo": null,
    "uf": "MG",
    "orgao": "PNCP — MUNICIPIO DE IPATINGA",
@@ -2396,11 +2473,13 @@
     "Valor",
     "Requisitos"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Chrome (último recurso): o robots.txt do site oficial proíbe a leitura automática",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:33:21+00:00",
+   "em": "2026-10-09T20:46:29+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "Município de Penápolis",
@@ -2445,11 +2524,13 @@
    "ainda_faltam": [
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido (ato_nao_localizado)",
    "selo_antes": "prata",
    "selo_depois": "prata",
-   "em": "2026-10-09T20:30:45+00:00",
+   "em": "2026-10-09T20:43:45+00:00",
    "prazo": "2026-10-13",
    "uf": null,
    "orgao": null,
@@ -2528,11 +2609,13 @@
     "Prazo de recurso",
     "Área de atuação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Chrome (último recurso): o robots.txt do site oficial proíbe a leitura automática",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:32:10+00:00",
+   "em": "2026-10-09T20:45:20+00:00",
    "prazo": "2026-10-15",
    "uf": null,
    "orgao": "Fundação Amazônia Sustentável (FAS)",
@@ -2569,11 +2652,13 @@
     "Resultado",
     "Área de atuação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "motor próprio já lê o documento (Ministério Público / Judiciário)",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:29:35+00:00",
+   "em": "2026-10-09T20:42:42+00:00",
    "prazo": "2026-10-09",
    "uf": null,
    "orgao": "MINISTÉRIO PÚBLICO DO TRABALHO (MPT)/ PROCURADORIA REGIONAL DO TRABALHO DA 18ª REGIÃO",
@@ -2603,11 +2688,13 @@
     "Requisitos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: site oficial não localizado nos degraus 0–2 (ato_nao_localizado)",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:34:39+00:00",
+   "em": "2026-10-09T20:47:40+00:00",
    "prazo": null,
    "uf": "SC",
    "orgao": "MUNICIPIO DE BALNEARIO CAMBORIU",
@@ -2623,6 +2710,51 @@
      "falha": null,
      "oficial": null,
      "paginas": 48,
+     "edicao_inteira": null
+    }
+   ]
+  },
+  {
+   "id": "eaf338374cd00fe1e042",
+   "tipo": "estrela",
+   "titulo": "MUNICIPIO DE CAFELANDIA — SELEÇÃO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL - OSCS, SEM FINS LUCRATIVOS, PARA CELEBRAÇÃO DE TERMO DE COLABORAÇÃO, NOS TERMOS DA LEI FEDERAL Nº 13.019/2014,",
+   "balcao": "pncp",
+   "link_oficial": null,
+   "degrau": null,
+   "como": null,
+   "faltavam": [
+    "Prazo de recurso",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [],
+   "ainda_faltam": [
+    "Prazo de recurso",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
+   "eficiencia": 0.0,
+   "encaminhado": "Interceptador: site oficial não localizado nos degraus 0–2 (ato_nao_localizado)",
+   "selo_antes": "prata",
+   "selo_depois": "prata",
+   "em": "2026-10-09T20:46:42+00:00",
+   "prazo": "2026-10-19",
+   "uf": null,
+   "orgao": "MUNICIPIO DE CAFELANDIA",
+   "fim": null,
+   "itens": {},
+   "dispensas": {},
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/205/arquivos/1",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": "ato_nao_localizado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 42,
      "edicao_inteira": null
     }
    ]
@@ -2650,11 +2782,13 @@
     "Requisitos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 5 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:33:21+00:00",
+   "em": "2026-10-09T20:46:29+00:00",
    "prazo": "2026-10-17",
    "uf": null,
    "orgao": "MUNICIPIO DE JACAREI",
@@ -2689,11 +2823,13 @@
    "ainda_faltam": [
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:34:52+00:00",
+   "em": "2026-10-09T20:47:50+00:00",
    "prazo": null,
    "uf": "CE",
    "orgao": "MUNICIPIO DE MARACANAU",
@@ -2740,6 +2876,66 @@
      "oficial": "arquivo do edital anexado pelo órgão no PNCP",
      "paginas": 1,
      "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/2",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 60,
+     "edicao_inteira": true
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/3",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/4",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/5",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/9",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/10",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 1,
+     "edicao_inteira": null
     }
    ]
   },
@@ -2762,11 +2958,13 @@
     "Requisitos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 3 item(ns) não estão no documento oficial lido",
    "selo_antes": "bronze",
    "selo_depois": "bronze",
-   "em": "2026-10-09T20:30:27+00:00",
+   "em": "2026-10-09T20:43:30+00:00",
    "prazo": "2026-10-13",
    "uf": null,
    "orgao": "MUNICIPIO DE OLINDINA",
@@ -2835,11 +3033,13 @@
     "Requisitos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 3 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:31:36+00:00",
+   "em": "2026-10-09T20:44:35+00:00",
    "prazo": "2026-10-13",
    "uf": null,
    "orgao": "MUNICIPIO DE PAROBE",
@@ -2880,11 +3080,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
-   "encaminhado": "Interceptador: 4 item(ns) não estão no documento oficial lido (ato_nao_localizado)",
+   "encaminhado": "Interceptador: 4 item(ns) não estão no documento oficial lido (ato_nao_localizado, formato_desconhecido)",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:35:10+00:00",
+   "em": "2026-10-09T20:48:30+00:00",
    "prazo": null,
    "uf": "BR",
    "orgao": "MUNICIPIO DE PASSOS",
@@ -2931,6 +3133,16 @@
      "oficial": "arquivo do edital anexado pelo órgão no PNCP",
      "paginas": 1,
      "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/api/consulta/v1/orgaos/18241745000108/compras/2026/37",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": "formato_desconhecido",
+     "falha": null,
+     "oficial": null,
+     "paginas": 0,
+     "edicao_inteira": null
     }
    ]
   },
@@ -2963,11 +3175,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 8 item(ns) não estão no documento oficial lido",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:34:27+00:00",
+   "em": "2026-10-09T20:47:26+00:00",
    "prazo": null,
    "uf": "SP",
    "orgao": "PNCP — MUNICIPIO DE PERUIBE",
@@ -3012,11 +3226,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 6 item(ns) não estão no documento oficial lido (pdf_escaneado)",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:29:23+00:00",
+   "em": "2026-10-09T20:42:28+00:00",
    "prazo": "2026-10-09",
    "uf": null,
    "orgao": "MUNICIPIO DE PIRAPETINGA",
@@ -3083,11 +3299,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 7 item(ns) não estão no documento oficial lido (ato_nao_localizado)",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:36:05+00:00",
+   "em": "2026-10-09T20:49:17+00:00",
    "prazo": null,
    "uf": "PR",
    "orgao": "PNCP — MUNICIPIO DE QUATRO BARRAS",
@@ -3144,11 +3362,13 @@
     "Prazo de recurso",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": "prata",
    "selo_depois": null,
-   "em": "2026-10-09T20:35:03+00:00",
+   "em": "2026-10-09T20:48:25+00:00",
    "prazo": null,
    "uf": "BR",
    "orgao": "MUNICIPIO DE TARUMA",
@@ -3193,11 +3413,13 @@
     "Anexos",
     "Destinação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 6 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:31:17+00:00",
+   "em": "2026-10-09T20:44:10+00:00",
    "prazo": "2026-10-13",
    "uf": null,
    "orgao": "Prefeitura de Goiatuba",
@@ -3260,6 +3482,8 @@
     "Destinação",
     "Área de atuação"
    ],
+   "tentativa": null,
+   "versao": "cartório v1 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: site oficial não localizado nos degraus 0–2",
    "selo_antes": null,
@@ -3299,11 +3523,13 @@
    "ainda_faltam": [
     "Anexos"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Chrome (último recurso): o robots.txt do site oficial proíbe a leitura automática",
    "selo_antes": "prata",
    "selo_depois": "prata",
-   "em": "2026-10-09T20:32:28+00:00",
+   "em": "2026-10-09T20:45:37+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "FAPESP / CNPq",
@@ -3338,11 +3564,13 @@
    "ainda_faltam": [
     "Anexos"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido (erro_rede: RemoteDisconnected)",
    "selo_antes": "prata",
    "selo_depois": "prata",
-   "em": "2026-10-09T20:29:45+00:00",
+   "em": "2026-10-09T20:42:53+00:00",
    "prazo": "2026-10-10",
    "uf": null,
    "orgao": null,
@@ -3419,11 +3647,13 @@
     "Destinação",
     "Área de atuação"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: site oficial não localizado nos degraus 0–2 (zip_sem_pdf)",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T20:33:04+00:00",
+   "em": "2026-10-09T20:46:08+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "SECRETARIA MUNICIPAL DE EDUCACAO",
@@ -3458,11 +3688,13 @@
    "ainda_faltam": [
     "Anexos"
    ],
+   "tentativa": 2,
+   "versao": "cartório v3 (09/10/2026)",
    "eficiencia": 0.0,
    "encaminhado": "Chrome (último recurso): o robots.txt do site oficial proíbe a leitura automática",
    "selo_antes": "prata",
    "selo_depois": "prata",
-   "em": "2026-10-09T20:32:33+00:00",
+   "em": "2026-10-09T20:45:42+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "PNCP - Portal Nacional de Contratações Públicas",
