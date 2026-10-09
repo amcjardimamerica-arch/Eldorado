@@ -1,6 +1,6 @@
 {
  "dia": "2026-10-09",
- "em": "2026-10-09T16:40:35+00:00",
+ "em": "2026-10-09T17:12:30+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 125,
  "cobertura": {
@@ -14,10 +14,11 @@
  "a_disparar": [
   "pncp-api",
   "plat-estaduais-go-gov",
-  "plat-prefeituras-50-go",
   "plat-empresas-editais-incentivados",
+  "plat-prefeituras-50-go",
   "do-goiania",
-  "judiciario-tjgo"
+  "judiciario-tjgo",
+  "plat-salic"
  ],
  "esgotaram_tentativas": [
   "f260-captacao-237",
@@ -81,9 +82,9 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 5.0824,
+   "prioridade": 5.0624,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 244,
+   "livros_com_abertura_proxima": 243,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -157,22 +158,22 @@
    "tentativas_hoje": 1
   },
   {
-   "motor": "plat-prefeituras-50-go",
-   "prioridade": 0.0894,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 3,
-   "horarios": "09:23,15:23",
+   "motor": "plat-empresas-editais-incentivados",
+   "prioridade": 0.096,
+   "diagnostico": "falha_parcial",
+   "livros_com_abertura_proxima": 4,
+   "horarios": "10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
    "tentativas_hoje": 1
   },
   {
-   "motor": "plat-empresas-editais-incentivados",
-   "prioridade": 0.0853,
-   "diagnostico": "falha_parcial",
-   "livros_com_abertura_proxima": 4,
-   "horarios": "10:23",
+   "motor": "plat-prefeituras-50-go",
+   "prioridade": 0.0894,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 3,
+   "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
