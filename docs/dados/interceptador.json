@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-09T11:04:34+00:00",
+  "em": "2026-10-09T11:20:19+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-09T10:50:49+00:00",
+  "ultimo_voo": "2026-10-09T11:12:44+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,79 @@
     "empresas sem ficha": 127
   },
   "acumulado": {
-    "missoes": 710,
+    "missoes": 711,
     "validadas": 37,
     "parciais": 197,
-    "insuficientes": 476,
+    "insuficientes": 477,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "nao": 116,
-      "sim": 489
+      "sim": 490
     },
     "estrelas_de_ouro": 55,
     "fontes_novas_para_os_motores": 100,
     "tempo_medio_min": 11.7
   },
   "missoes": [
+    {
+      "em": "2026-10-09T11:12:44+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "2 · Brasil · livro da Biblioteca",
+      "alvo": "Chamamento publico visando o credenciamento de artistas bandas e grupos musicais locais constituidos como… — M… — Brasil",
+      "qualidade": "insuficiente",
+      "comprovados": 2,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O PNCP é uma fonte oficial de informações sobre contratações públicas federais, incluindo chamamentos públicos para credenciamento de artistas e grupos musicais.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o chamamento público está disponível no PNCP, validar se atende aos requisitos de elegibilidade e se inscrever conforme as normas estabelecidas no edital.",
+        "proximo_passo": "Consultar o PNCP para obter detalhes sobre o chamamento público e verificar se há disponibilidade de inscrição.",
+        "risco": "A falta de informações detalhadas, como prazo de inscrição e requisitos, pode impedir a associação de se inscrever adequadamente."
+      },
+      "erro": null,
+      "segundos": 454,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-19ac1d272fcb",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "PNCP - Portal Nacional de Contratações Públicas",
+          "trecho": "PNCP - Portal Nacional de Contratações Públicas",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secretaria de Cultura e Economia Criativa do Estado de Minas Gerais",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-10-09T10:50:49+00:00",
       "modo": "validar",
@@ -2243,69 +2301,6 @@
         "Território": {
           "valor": "GO",
           "trecho": "Goiás / Goiânia — Goiás / Goiânia",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura de Goiânia",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-09T01:36:22+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Chamamento público publicado no Diário Oficial em 25/09/2026 — Goiás / Goiânia",
-      "qualidade": "insuficiente",
-      "comprovados": 5,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260925_000008871.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O chamamento público foi publicado no Diário Oficial em 25/09/2026 e tem como objeto atender às programações previstas no Anexo I deste Decreto, indicando que é uma fonte válida para obtenção de informações.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar os anexos do edital, especialmente o Anexo I, para entender as programações e os requisitos necessários para participar, além de se certificar de que sua área de atuação (assistência social, cultura, educação, esporte) esteja alinhada com o objeto do chamamento.",
-        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre as programações e os requisitos de participação.",
-        "risco": "A falta de informações sobre prazo de inscrição, valor e requisitos específicos pode impedir a associação de se preparar adequadamente para o processo seletivo."
-      },
-      "erro": null,
-      "segundos": 813,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 5,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-b6129b4007f2",
-      "encontrou": {
-        "Objeto": {
-          "valor": "atender às programações previstas no Anexo I deste Decreto",
-          "trecho": "Art. 1º Ficam abertos à Secretaria Municipal de Infraestrutura Urbana, dois créditos adicionais de natureza suplementar, no valor de R$ 4.253.257,53 (quatro milhões, duzentos e cin",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura de Goiânia",
-          "trecho": "PREFEITURA DE GOIÂNIA SECRETARIA MUNICIPAL DA CASA CIVIL",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "PREFEITURA DE GOIÂNIA SECRETARIA MUNICIPAL DA CASA CIVIL",
           "oficial": true,
           "dispensado": false
         }
