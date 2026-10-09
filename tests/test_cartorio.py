@@ -154,6 +154,25 @@ class TesteIntegracao(unittest.TestCase):
         self.assertIn("itens", rel["certidoes"][0])
         self.assertEqual(C.run(10, 60, Rede({}), fluxo, catalogo)["certificadas"], 0, "não refaz o que não mudou")
 
+    def test_um_erro_nao_derruba_a_fila(self):
+        pg = "https://www.goias.gov.br/editais/x"
+        html = '<html><body><p>' + 'Texto da página oficial com o chamamento público. ' * 8 + '</p><a href="https://[quebrado/edital.pdf">Edital</a><a href="http://host:porta/edital.pdf">Edital 2</a></body></html>'
+        c = C.certificar({"id": "m1", "titulo": "Edital 1/2026", "url": pg}, ["Valor"], Rede({pg: html}))
+        self.assertEqual(c["balcao"], "orgao")                       # href malformado ignorado, sem exceção
+        fluxo = {"itens_por_uf": {"GO": [{"id": f"e{i}", "titulo": "t", "link_oficial": pg, "checklist": {"Valor": {"s": "falta"}}} for i in range(3)]}}
+        orig = C.certificar
+        def quebra(op, *a, **k):
+            if op["id"] == "e1":
+                raise ValueError("Invalid IPv6 URL")
+            return orig(op, *a, **k)
+        C.certificar = quebra
+        try:
+            r = C.run(10, 60, Rede({pg: html}), fluxo, {"motores": []})
+        finally:
+            C.certificar = orig
+        self.assertEqual(r["certificadas"], 3); self.assertEqual(len(r["erros"]), 1)
+        self.assertIn("erro no Cartório", json.loads(C.CERTIDOES.read_text())["certidoes"]["estrela:e1"]["encaminhado"])
+
     def test_ganchos(self):
         for f, s in (("src/fluxo_oportunidades.py", "_cart_item(m.get(\"id\"), k)"), ("src/fluxo_oportunidades.py", "link_oficial as _lo_cart"),
                      ("src/dashboard_dados.py", "from .cartorio import certidao"), ("src/interceptador.py", "encaminhado pelo Cartório")):

@@ -110,6 +110,13 @@ PROPRIOS = ("mpgo-destinacao", "mptgo-destinacao", "mpu-destinacao", "plat-mp-de
 
 
 def balcao(op: dict) -> str:
+    try:
+        return _balcao(op)
+    except ValueError:                                   # endereço malformado na pista
+        return "pista"
+
+
+def _balcao(op: dict) -> str:
     us = " ".join(str(op.get(k) or "") for k in ("url", "link_oficial", "url_documento"))
     if str(op.get("origem") or "").split("motor ")[-1].split(" ")[0] in PROPRIOS:
         return "proprio"
@@ -375,12 +382,20 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     estrelas.sort(key=lambda o: prioridade(o, hoje)); livros.sort(key=lambda o: prioridade(o, hoje))
     lote = estrelas[:max(1, limite - min(len(livros), int(c["livros_por_execucao"])))] + livros[:int(c["livros_por_execucao"])]
     lote = lote[:limite]
-    feitas, novas_linhas = [], []
+    feitas, novas_linhas, erros = [], [], []
     for op in lote:
         if time.time() - t0 > segundos:
             break
         faltam = op["_faltam"] or (["Objeto"] if op.get("_sem_site") else [])
-        cert = certificar(op, faltam, rede, int(c["documentos_por_oportunidade"]))
+        try:
+            cert = certificar(op, faltam, rede, int(c["documentos_por_oportunidade"]))
+        except Exception as ex:  # noqa: BLE001 — uma oportunidade com erro nunca derruba a fila inteira
+            import traceback
+            cert = {"id": op.get("id"), "tipo": op.get("_tipo"), "titulo": str(op.get("titulo") or "")[:200], "balcao": "?",
+                    "faltavam": faltam, "resolvidos": [], "ainda_faltam": faltam, "eficiencia": 0.0, "documentos": [], "itens": {},
+                    "dispensas": {}, "em": _agora(), "versao": VERSAO, "link_oficial": None,
+                    "encaminhado": f"Interceptador: erro no Cartório ({type(ex).__name__})", "erro": traceback.format_exc()[-800:]}
+            erros.append({"id": op.get("id"), "erro": f"{type(ex).__name__}: {str(ex)[:200]}"})
         cert["assinatura"] = _assinatura(op)
         cert["selo_antes"] = op.get("selo")
         cert["prazo"] = op.get("fim"); cert["uf"] = op.get("uf"); cert["orgao"] = op.get("orgao")
@@ -413,7 +428,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
         RELATORIO.write_text(json.dumps(rel, ensure_ascii=False, indent=1), encoding="utf-8")
         _CACHE.clear()
     return {"certificadas": len(feitas), "fila_estrelas": len(estrelas), "fila_livros": len(livros), "linhas_livros": len(novas_linhas),
-            "acessos": rede.n, "segundos": round(time.time() - t0), "eficiencia": rel["resumo"]["eficiencia_itens"]}
+            "acessos": rede.n, "segundos": round(time.time() - t0), "eficiencia": rel["resumo"]["eficiencia_itens"], "erros": erros[:20]}
 
 
 def item_checklist_de(cert: dict, item: str) -> dict:
