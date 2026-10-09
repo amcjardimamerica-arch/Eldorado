@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-09T15:56:11+00:00",
+  "em": "2026-10-09T16:07:14+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-09T15:53:40+00:00",
+  "ultimo_voo": "2026-10-09T15:58:45+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,70 @@
     "empresas sem ficha": 128
   },
   "acumulado": {
-    "missoes": 91,
+    "missoes": 92,
     "validadas": 3,
     "parciais": 11,
-    "insuficientes": 77,
+    "insuficientes": 78,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "sim": 47,
-      "nao": 20
+      "nao": 21
     },
     "estrelas_de_ouro": 0,
     "fontes_novas_para_os_motores": 4,
-    "tempo_medio_min": 8.8
+    "tempo_medio_min": 8.7
   },
   "missoes": [
+    {
+      "em": "2026-10-09T15:58:45+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Prefeitura de Piracanjuba — DOE - PIRACANJUBA - CHAMAMENTO 01 — Goiás / Piracanjuba",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "Não há informações comprovadas sobre o edital para que seja considerado uma fonte válida.",
+        "para_a_amc": null,
+        "proximo_passo": null,
+        "risco": null
+      },
+      "erro": null,
+      "segundos": 508,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-6fc0595a4af7",
+      "encontrou": {},
+      "financiador": "Prefeitura de Piracanjuba",
+      "indicios": [],
+      "rotas": [
+        "site_municipal",
+        "financiador_programa_edital"
+      ]
+    },
     {
       "em": "2026-10-09T15:53:40+00:00",
       "modo": "validar",
@@ -2184,74 +2233,6 @@
         "financiador_pdf",
         "financiador_ano",
         "governo"
-      ]
-    },
-    {
-      "em": "2026-10-09T06:45:09+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "PNAB Goiás - Teatro — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 5,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação"
-      ],
-      "pagina_oficial": "https://cantodaprimavera.cultura.go.gov.br/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre o objeto e o financiador, o que permite identificar sua relevância para a AMC.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é fomentar cultura e música em Pirenópolis, Goiás, e demonstrar como sua atuação se encaixa nesse âmbito.",
-        "proximo_passo": "Verificar se há requisitos não explicitados no edital e se a AMC se enquadra nos critérios de elegibilidade.",
-        "risco": "A falta de informações sobre prazo de inscrição, requisitos e destinação pode impedir a associação de se candidatar adequadamente."
-      },
-      "erro": null,
-      "segundos": 621,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 5,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-captacao-015",
-      "encontrou": {
-        "Objeto": {
-          "valor": "O edital financia ações de fomento à cultura e à música em Pirenópolis, Goiás.",
-          "trecho": "O Canto da Primavera é um evento musical em formato de festival idealizado e realizado anualmente pelo Governo de Goiás, por meio da Secretaria de Estado da Cultura (Secult), na ci",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado da Cultura (Secult), Governo de Goiás",
-          "trecho": "O Canto da Primavera é um evento musical em formato de festival idealizado e realizado anualmente pelo Governo de Goiás, por meio da Secretaria de Estado da Cultura (Secult), na ci",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "O Canto da Primavera é um evento musical em formato de festival idealizado e realizado anualmente pelo Governo de Goiás, por meio da Secretaria de Estado da Cultura (Secult), na ci",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "O Canto da Primavera é um evento musical em formato de festival idealizado e realizado anualmente pelo Governo de Goiás, por meio da Secretaria de Estado da Cultura (Secult), na ci",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Estado da Cultura",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ],
