@@ -148,8 +148,10 @@ class TesteProducaoReal(_Base):
                 if (ROOT / a).exists():
                     (self.tmp / a).parent.mkdir(parents=True, exist_ok=True); shutil.copy2(ROOT / a, self.tmp / a)
         antes = {a: (ROOT / a).read_bytes() for arqs in R.ARQUIVOS.values() for a in arqs if (ROOT / a).exists()}
+        from datetime import timedelta
+        prox_segunda = R.inicio_semana() + timedelta(days=7, minutes=1)   # já carimbados: a próxima semana zera
         for piloto in R.ARQUIVOS:
-            r = R.zerar_se_preciso(piloto)
+            r = R.zerar_se_preciso(piloto, agora=prox_segunda)
             self.assertTrue(r["zerou"])
             h = json.loads(lzma.decompress((self.tmp / r["numeros_antigos_em"]).read_bytes()))
             for a in R.ARQUIVOS[piloto]:
