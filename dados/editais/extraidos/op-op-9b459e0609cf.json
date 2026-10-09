@@ -45,7 +45,7 @@
   }
  ],
  "investigacao_ia": {
-  "em": "2026-10-01T13:53:18",
+  "em": "2026-10-09T02:58:19",
   "modelo": "qwen3-8b",
   "fontes": [
    {
@@ -63,8 +63,9 @@
    },
    {
     "url": "https://pncp.gov.br/app/editais/11267244000151/2024/47",
-    "ok": false,
-    "erro": "RemoteDisconnected"
+    "ok": true,
+    "tipo": "html",
+    "chars": 84
    }
   ],
   "campos": {
@@ -102,12 +103,14 @@
    },
    "Território": {
     "valor": "RJ",
-    "trecho": "http://redelog.rj.gov.br/redelog/wp-content/uploads/2026/05/TERMO-DE-USO-DO-PORTAL-REDELOG-SEPLAG-RJ.pdf",
-    "comprovado": true
+    "trecho": "Redecompras",
+    "comprovado": true,
+    "fonte": "https://redelog.rj.gov.br/redecompras/pncp/",
+    "fonte_oficial": true
    },
    "Esfera": {
     "valor": "estadual",
-    "trecho": "Rede Logística - Redecompras",
+    "trecho": "Redecompras",
     "comprovado": true,
     "fonte": "https://redelog.rj.gov.br/redecompras/pncp/",
     "fonte_oficial": true
@@ -138,21 +141,21 @@
   "regra": "só entra na ficha o que tem trecho literal encontrado na fonte",
   "dispensados": 0,
   "passos": [
-   "dados indicados: título «/serviço o “chamamento público na forma de credenciamento de pessoa jurídica par», fonte —, órgão PNCP — FUNDO MUNICIPAL DE SAUDE DE BURITI ALEGRE, prazo —",
-   "página oficial: https://redelog.rj.gov.br/redecompras/pncp/ — site_do_financiador — termos do edital 60% · sinais de edital 3",
+   "dados indicados: título «/serviço o “chamamento público na forma de credenciamento de pessoa jurídica par», fonte —, órgão Rede Logística - Redecompras, prazo —",
+   "página oficial: https://redelog.rj.gov.br/redecompras/pncp/ — página oficial de rodada anterior",
    "doze perguntas respondidas: 4 comprovadas na fonte",
    "dispensas justificadas: 0 (nenhuma)",
    "sem informação nem dispensa: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor, Requisitos, Destinação, Área de atuação"
   ],
-  "s": 433,
+  "s": 535,
   "qualidade": "insuficiente",
   "parecer_fonte": {
    "serve_como_fonte": "nao",
-   "por_que": "O texto comprovado não menciona diretamente o serviço de 'chamamento público na forma de credenciamento de pessoa jurídica para prestação de serviços médicos' em Goiás, mas sim informações sobre um edital relacionado a outro território e esfera.",
-   "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há editais específicos para o setor de assistência social, cultura, educação ou esporte em Goiás, e se qualifica conforme os requisitos exigidos.",
-   "proximo_passo": "Consultar o site da Rede Logística - Redecompras para verificar se há editais disponíveis para o território de Goiás e se a AME se enquadra nas áreas de atuação mencionadas.",
-   "risco": "A falta de informações específicas sobre o edital e a não correspondência do território e esfera mencionados no texto comprovado podem impedir o acesso à oportunidade."
+   "por_que": "O texto comprovado não menciona diretamente o serviço de 'chamamento público na forma de credenciamento de pessoa jurídica para prestação de serviços médicos' em Goiás, mas sim informações sobre um edital vinculado à Rede Logística - Redecompras no RJ, estadual.",
+   "para_a_amc": "Para acessar esse chamamento público, uma associação comunitária de Goiânia precisaria verificar se o edital é realmente voltado para o Estado de Goiás, pois o comprovado menciona o território como RJ. Caso seja, ela precisaria se inscrever conforme os requisitos do edital, que não foram encontrados no texto.",
+   "proximo_passo": "Verificar se há um edital específico para Goiás relacionado ao serviço de prestação de serviços médicos e se os requisitos estão disponíveis.",
+   "risco": "O risco é que o edital mencionado no comprovado é para o RJ e não para Goiás, o que pode impedir que a associação comunitária de Goiânia participe do processo."
   }
  },
- "confirmacao": "investigado pela IA (qwen3-8b) em 01/10/2026: 4/12 itens (comprovados ou dispensados)"
+ "confirmacao": "investigado pela IA (qwen3-8b) em 09/10/2026: 4/12 itens (comprovados ou dispensados)"
 }

@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-09T02:48:29+00:00",
+  "em": "2026-10-09T03:03:54+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-09T02:45:28+00:00",
+  "ultimo_voo": "2026-10-09T02:53:00+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 127
   },
   "acumulado": {
-    "missoes": 675,
+    "missoes": 676,
     "validadas": 36,
     "parciais": 189,
-    "insuficientes": 450,
+    "insuficientes": 451,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "nao": 105,
+      "nao": 106,
       "sim": 473
     },
     "estrelas_de_ouro": 55,
@@ -52,6 +52,64 @@
     "tempo_medio_min": 11.8
   },
   "missoes": [
+    {
+      "em": "2026-10-09T02:53:00+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "/serviço o “chamamento público na forma de credenciamento de pessoa jurídica para \"prestação de serviços médic… — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://redelog.rj.gov.br/redecompras/pncp/",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O texto comprovado não menciona diretamente o serviço de 'chamamento público na forma de credenciamento de pessoa jurídica para prestação de serviços médicos' em Goiás, mas sim informações sobre um edital vinculado à Rede Logística - Redecompras no RJ, estadual.",
+        "para_a_amc": "Para acessar esse chamamento público, uma associação comunitária de Goiânia precisaria verificar se o edital é realmente voltado para o Estado de Goiás, pois o comprovado menciona o território como RJ. Caso seja, ela precisaria se inscrever conforme os requisitos do edital, que não foram encontrados no texto.",
+        "proximo_passo": "Verificar se há um edital específico para Goiás relacionado ao serviço de prestação de serviços médicos e se os requisitos estão disponíveis.",
+        "risco": "O risco é que o edital mencionado no comprovado é para o RJ e não para Goiás, o que pode impedir que a associação comunitária de Goiânia participe do processo."
+      },
+      "erro": null,
+      "segundos": 654,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 3,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-9b459e0609cf",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Rede Logística - Redecompras",
+          "trecho": "Rede Logística - Redecompras",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RJ",
+          "trecho": "Redecompras",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "PNCP - Portal Nacional de Contratações Públicas",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-09T02:45:28+00:00",
       "modo": "validar",
@@ -2155,85 +2213,6 @@
       "rotas": [
         "financiador_programa_edital",
         "financiador_regulamento"
-      ]
-    },
-    {
-      "em": "2026-10-08T16:56:34+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · livro da Biblioteca",
-      "alvo": "Instituto Impactarte abre edital para projetos de impacto social com apoio de até R$ 150 mil — Instituto Impactarte",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 1,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Anexos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://conjunta.org/recurso-financeiro/edital-continuo-de-apoio-a-projetos-sociais-ciclo-2026-instituto-impactarte/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital do Instituto Impactarte oferece apoio financeiro a iniciativas de impacto social, sendo uma fonte válida para organizações comunitárias que atuam em áreas como assistência social, cultura, educação e esporte.",
-        "para_a_amc": "Uma associação comunitária de Goiânia precisaria demonstrar clareza de propósito, boa governança e potencial de impacto social consistente, além de se alinhar ao objeto do edital, que é o apoio a iniciativas de impacto social.",
-        "proximo_passo": "A associação deve verificar os requisitos do edital e preparar a proposta com base nos critérios apresentados, mesmo que o prazo de inscrição não esteja disponível.",
-        "risco": "O prazo de inscrição não foi encontrado, o que pode impedir a participação da associação em tempo hábil, além de possíveis dificuldades na elaboração de uma proposta adequada."
-      },
-      "erro": null,
-      "segundos": 379,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 6,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Anexos",
-      "id": "op-op-2d6b198ea3b4",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoio financeiro a iniciativas de impacto social",
-          "trecho": "O Instituto Impactarte mantém inscrições abertas, em regime contínuo, para apoiar financeiramente iniciativas de impacto social ao longo de 2026.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "dispensado — O edital informa que os valores são definidos caso a caso.",
-          "trecho": "O edital não informa valores mínimos ou máximos de aporte, indicando que os investimentos são definidos caso a caso, a partir da análise da proposta e do alinhamento com a estratég",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Órgão / financiador": {
-          "valor": "Instituto Impactarte",
-          "trecho": "Instituto Impactarte",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "nacional",
-          "trecho": "Nacional",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Direcionado para organizações da sociedade civil (associações e fundações), produtores culturais e outras iniciativas socioculturais formalmente constituídas que desenvolvam projet",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "clareza de propósito, boa governança, potencial de impacto social consistente",
-          "trecho": "Direcionado para organizações da sociedade civil (associações e fundações), produtores culturais e outras iniciativas socioculturais formalmente constituídas que desenvolvam projet",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Instituto Impactarte",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ]
