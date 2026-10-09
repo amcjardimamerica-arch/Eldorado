@@ -20,7 +20,7 @@ import json
 import os
 import re
 import time
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from .investigador import DOZE, investigar_um, registro
@@ -98,13 +98,44 @@ def _mestre_por_url() -> dict:
     return {v.get("url"): k for k, v in _mestre().items() if v.get("url")}
 
 
+BUSCAS_MAX = 3                                             # 09/10 (titular): até 3 buscas por oportunidade
+REVISITA_DIAS_X = 2                                        # intervalo mínimo entre buscas da mesma oportunidade
+
+
+def _com_buscas(est: dict, eid: str, dados: dict) -> dict:
+    """Grava o estudo somando a busca (o registro antigo, sem contagem, vale como 1)."""
+    ant = (est.get("feitos") or {}).get(eid) or {}
+    dados["buscas"] = int(ant.get("buscas") or (1 if ant else 0)) + 1
+    return dados
+
+
+def _itens_em_x() -> dict:
+    """Oportunidades ABERTAS do painel e quantos dos 12 itens ainda estão em ✕ (não conhecidos nem dispensados)."""
+    try:
+        d = load_json(ROOT / "docs/dados/fluxo_oportunidades.json")
+    except Exception:  # noqa: BLE001
+        return {}
+    hoje = date.today().isoformat(); out = {}
+    for lista in (d.get("itens_por_uf") or {}).values():
+        for x in lista:
+            fim = str(x.get("fim") or "")[:10]
+            if fim and fim < hoje:
+                continue
+            ck = x.get("checklist") or {}
+            nx = sum(1 for k in DOZE if (ck.get(k) or {}).get("s") not in ("ok", "val", "dt", "disp"))
+            if nx and x.get("id"):
+                out[str(x["id"])] = {"x": nx, "titulo": x.get("titulo"), "fim": fim}
+    return out
+
+
 def alvos(maximo: int = 40) -> list[dict]:
     """Quem precisa de comprovação, em ordem: fila de resgate (mais urgente primeiro), depois os editais
     abertos do painel com itens em falta. Um alvo já interceptado só volta depois de REVISITA_DIAS."""
     est = load_json(ESTADO) if ESTADO.exists() else {}
     feitos = est.get("feitos") or {}
     def recente(k):
-        return k in feitos                                     # nunca refaz o que já fez (titular, 26/09)
+        # 09/10 (titular): até 3 buscas por oportunidade (antes: nunca refazia). Volta só pela revisita dos itens em ✕.
+        return k in feitos
     out, vistos = [], set()
     fila = (load_json(FILA) or {}).get("itens") or {} if FILA.exists() else {}
     por_url = _mestre_por_url()
@@ -132,6 +163,17 @@ def alvos(maximo: int = 40) -> list[dict]:
         if it.get("tipo") != "estrela" or not eid or eid in vistos or recente(eid) or not registro(eid):
             continue
         vistos.add(eid); out.append({"id": eid, "de": "encaminhado pelo Cartório", "titulo": it.get("titulo"), "motivo": it.get("motivo")})
+        if len(out) >= maximo:
+            return out
+    # 09/10 (titular): REVISITA — oportunidade aberta que ainda tem itens em ✕ volta à fila, até a 3ª busca, com
+    # intervalo mínimo de REVISITA_DIAS_X dias (o que fecha antes vem primeiro)
+    _lim = (date.today() - timedelta(days=REVISITA_DIAS_X)).isoformat()
+    for eid, info in sorted(_itens_em_x().items(), key=lambda kv: (kv[1]["fim"] or "9999", -kv[1]["x"])):
+        f = feitos.get(eid) or {}
+        if not f or eid in vistos or int(f.get("buscas") or 1) >= BUSCAS_MAX or str(f.get("em") or "")[:10] > _lim or not registro(eid):
+            continue
+        vistos.add(eid); out.append({"id": eid, "de": f"revisita dos itens em ✕ (busca {int(f.get('buscas') or 1) + 1} de {BUSCAS_MAX})",
+                                     "titulo": info.get("titulo"), "prazo": info.get("fim")})
         if len(out) >= maximo:
             return out
     # editais ABERTOS com itens em falta: o prazo aberto vive no registro (verificação do titular ou
@@ -639,7 +681,7 @@ def voo(ia) -> dict:
         # DESCARTE DE ENTIDADE (titular, 27/09): de outro estado sem vínculo nacional nem com Goiás — não gasta voo
         rel.update({"id": a["id"], "modo": a.get("modo"), "tipo": a.get("tipo"), "alvo": a.get("titulo"), "de": a.get("de"),
                     "qualidade": "descartada", "comprovados": 0, "total": 12, "erro": motivo})
-        est["feitos"][a["id"]] = {"em": now_iso(), "tipo": a.get("tipo"), "qualidade": "descartada", "motivo": motivo}
+        est["feitos"][a["id"]] = _com_buscas(est, a["id"], {"em": now_iso(), "tipo": a.get("tipo"), "qualidade": "descartada", "motivo": motivo})
         a = None
         rel["resultado_descarte"] = motivo
     if not a and rel.get("qualidade") == "descartada":
@@ -653,7 +695,7 @@ def voo(ia) -> dict:
         rel.update({"modo": "dossie", "tipo": "dossie_empresa", "alvo": a.get("empresa"), "de": a["de"], "qualidade": f"dossiê {dz.get('completude')}/6",
                     "socios": len((dz.get("composicao") or {}).get("socios") or []), "projetos": len(dz.get("projetos") or []),
                     "resumo": (dz.get("resumo_investigativo") or {}).get("resumo")})
-        est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "dossie_empresa", "qualidade": f"dossiê {dz.get('completude')}/6"}
+        est["feitos"][a["id"]] = _com_buscas(est, a["id"], {"em": now_iso(), "tipo": "dossie_empresa", "qualidade": f"dossiê {dz.get('completude')}/6"})
     elif a["tipo"] == "empresa":
         AV.etapa("lendo o site da empresa: ficha de fonte de recurso (8 itens)", a.get("empresa") or "")
         f = investigar_empresa(ia, a)
@@ -662,7 +704,7 @@ def voo(ia) -> dict:
         rel.update({"modo": a["modo"], "tipo": "empresa", "alvo": a["empresa"], "de": a["de"], "qualidade": f.get("qualidade"),
                     "comprovados": f.get("comprovados"), "total": f.get("total"), "site_oficial": f.get("site_oficial"), "erro": f.get("erro"),
                     "itens": {k: {"valor": v.get("valor"), "comprovado": v.get("comprovado")} for k, v in (f.get("itens") or {}).items()}})
-        est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "empresa", "qualidade": f.get("qualidade")}
+        est["feitos"][a["id"]] = _com_buscas(est, a["id"], {"em": now_iso(), "tipo": "empresa", "qualidade": f.get("qualidade")})
     else:
         x = investigar_um(a["id"], ia, "qwen3-8b", avisar=AV.etapa)
         reg = registro(a["id"]) or {}; inv = reg.get("investigacao_ia") or {}
@@ -698,7 +740,7 @@ def voo(ia) -> dict:
                     "nao_resolvidos": x.get("nao_resolvidos"), "pagina_oficial": x.get("pagina_oficial"), "passos": x.get("passos"),
                     "fontes_oficiais": [c for c, v in (inv.get("campos") or {}).items() if v.get("fonte_oficial")],
                     "parecer_fonte": par, "erro": x.get("erro")})
-        est["feitos"][a["id"]] = {"em": now_iso(), "tipo": "edital", "qualidade": q, "comprovados": x.get("comprovados"), "de": a["de"]}
+        est["feitos"][a["id"]] = _com_buscas(est, a["id"], {"em": now_iso(), "tipo": "edital", "qualidade": q, "comprovados": x.get("comprovados"), "de": a["de"]})
         # CONTINUIDADE (parecer dos pilotos, 02/10): falha de REDE não é resultado. Fonte ilegível (o site recusou o IP
         # do servidor) ou busca sem resposta voltam para a fila de retentativa — no computador do titular / VM do Brasil
         # primeiro, e na nuvem de novo depois de 3 dias, até 3 tentativas.
@@ -764,7 +806,7 @@ def rodada(ia, minutos: float = 280, maximo: int = 40) -> dict:
         e_inv = (registro(a["id"]) or {}).get("investigacao_ia") or {}
         _devolver_a_fila(a, e_inv)
         _abate(a, e_inv)
-        est["feitos"][a["id"]] = {"em": now_iso(), "comprovados": x.get("comprovados"), "de": a["de"]}
+        est["feitos"][a["id"]] = _com_buscas(est, a["id"], {"em": now_iso(), "comprovados": x.get("comprovados"), "de": a["de"]})
         write_json(ESTADO, est)
         print(f"{a['id']} · {x.get('comprovados', '-')}/{len(DOZE)} · {x.get('s', '-')} s · {a['de']} · {str(a.get('titulo'))[:60]} · {x.get('erro') or ''}", flush=True)
     r["resumo"] = {"interceptados": len(r["editais"]),

@@ -95,7 +95,8 @@ def ancoras_do_orgao(gab: dict, chave, minimo: int = 1, por_item: int = 5) -> di
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
 CATALOGO = ROOT / "biblioteca_alexandria/fontes/motores.json"
 VERSAO = "cartório v4 (09/10/2026)"
-FALTA = ("falta", "pend", "ref", None)
+FALTA = ("falta", "pend", "ref", "prov", None)
+BUSCAS_MAX = 3                                             # 09/10 (titular): até 3 buscas por oportunidade
 
 
 def cfg() -> dict:
@@ -412,7 +413,11 @@ def devidos(fila: list[dict], certidoes: dict, revisitar_dias: int) -> list[dict
     for op in fila:
         c = certidoes.get(f"{op['_tipo']}:{op['id']}")
         leitor_novo = c and c.get("versao") != VERSAO and (c.get("ainda_faltam") or not c.get("link_oficial"))
-        if not c or c.get("assinatura") != _assinatura(op) or str(c.get("em") or "") < limite or leitor_novo:
+        info_nova = c and c.get("assinatura") != _assinatura(op)
+        # 09/10 (titular): até 3 buscas por oportunidade; depois disso só volta se chegar informação NOVA dos motores
+        if c and int(c.get("tentativa") or 1) >= BUSCAS_MAX and not info_nova:
+            continue
+        if not c or info_nova or str(c.get("em") or "") < limite or leitor_novo:
             out.append(op)
     return out
 

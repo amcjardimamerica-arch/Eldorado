@@ -118,7 +118,9 @@ class TestFluxoLigado(unittest.TestCase):
 
     def test_saida_nao_conta_prov_nem_ref_como_feito(self):
         html = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        self.assertIn('feitos=n("ok")+n("disp")+n("val")', html)
+        # 09/10 (titular): três aparências — só ok/val/dt (✓) e disp (⊘) contam; prov e ref aparecem como ✕ (a buscar)
+        self.assertIn('const grupo=s=>["ok","val","dt"].includes(s)?"conhecido":(s==="disp"?"disp":"buscar");', html)
+        self.assertIn('const feitos=n("conhecido")+n("disp");', html)
         self.assertIn("prov:", html)
 
 
