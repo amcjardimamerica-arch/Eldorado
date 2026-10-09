@@ -38,11 +38,8 @@ def montar() -> dict:
     B = _j(ROOT / "estado/piloto/bordo.json", {}); P = _j(ROOT / "docs/dados/piloto.json", {}); E = _j(ROOT / "docs/dados/esquadrilha.json", {})
     I = _j(ROOT / "docs/dados/interceptador.json", {})
     av = [a for a in (_j(f, None) for f in glob.glob(str(ROOT / "estado/piloto/aprendizados/avaliacoes/*.json"))) if a]
-    for f in glob.glob(str(ROOT / "estado/piloto/aprendizados/avaliacoes/arquivo-*.jsonl.xz")):
-        try:
-            av += [json.loads(l).get("avaliacao") or {} for l in lzma.decompress(Path(f).read_bytes()).decode().splitlines() if l.strip()]
-        except Exception:
-            pass
+    from .aprendizados_piloto import avaliacoes_arquivadas   # 09/10: em fluxo e sem as ~200 cópias por avaliação
+    av += avaliacoes_arquivadas()
     from .reset_pilotos import inicio_contagem   # 09/10 (titular): o quadro conta só a semana em vigor
     _desde = inicio_contagem()
     av = [a for a in av if str(a.get("em") or "") >= _desde]

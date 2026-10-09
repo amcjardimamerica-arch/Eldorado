@@ -81,11 +81,11 @@ def _erros_espiao() -> tuple[list[dict], list[dict]]:
         a = _j(Path(f), None)
         if a:
             av.append(a)
-    for f in glob.glob(str(ROOT / "estado/piloto/aprendizados/avaliacoes/arquivo-*.jsonl.xz")):
-        try:
-            av += [json.loads(l).get("avaliacao") or {} for l in lzma.decompress(Path(f).read_bytes()).decode().splitlines() if l.strip()]
-        except Exception:
-            pass
+    try:                                             # 09/10: em fluxo e sem as ~200 cópias por avaliação
+        from ..aprendizados_piloto import avaliacoes_arquivadas
+        av += avaliacoes_arquivadas()
+    except Exception:
+        pass
     av.sort(key=lambda a: str(a.get("em") or ""))
     return [a for a in av if a.get("motivo_do_insucesso")], av
 
