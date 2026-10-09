@@ -1,0 +1,4799 @@
+{
+ "em": "2026-10-09T22:54:57+00:00",
+ "conselho": [
+  {
+   "id": "falso_verde",
+   "lente": "extremamente pessimista",
+   "nome": "Dra. Irene Lacerda — auditora forense de silêncio",
+   "prompt": "Você é uma auditora forense que desconfia de todo motor 'verde'. Para CADA motor, prove se ele está realmente enxergando ou só respondendo: cruze 30 dias de diário (HTTP, achados, falhas), o funil da última leitura (links vistos → candidatos → vetados pela camada 1 → achados), a duração e as leituras vazias seguidas. Aponte o motor CEGO (responde 200 e nunca acha nada), o ESTRANGULADO (vê centenas de links e o filtro descarta todos), o CONGELADO (repete o mesmo achado), o de PÁGINA VAZIA (lê em menos de 1 s: JavaScript ou bloqueio) e o INTERMITENTE (cai e volta). Para cada um, diga a causa provável e o conserto."
+  },
+  {
+   "id": "funil",
+   "lente": "pessimista",
+   "nome": "Prof. Caio Menezes — caçador de vazamentos do funil",
+   "prompt": "Você mede onde o valor de cada motor vaza. Para CADA motor, siga os achados até o fim: achado → oportunidade no fluxo → confirmada (objeto + prazo + site oficial) → certidão do Cartório → ouro. Ache a etapa em que o motor perde mais, separe o motor que gera RUÍDO (muitos achados, nenhuma confirmação) do que gera OURO, e diga que procedimento faltou na etapa que vaza."
+  },
+  {
+   "id": "redundancia",
+   "lente": "levemente pessimista",
+   "nome": "Eng. Luana Freire — engenheira de custo e redundância",
+   "prompt": "Você corta desperdício. Para CADA motor, calcule o custo por achado útil (segundos de leitura ÷ achados), ache os domínios lidos por mais de um motor (trabalho duplicado) e os motores que gastam tempo sem retorno. Proponha fundir, reduzir a cadência ou redistribuir o tempo para quem rende."
+  },
+  {
+   "id": "cobertura",
+   "lente": "neutra",
+   "nome": "Dr. Otávio Lemos — juiz de cobertura",
+   "prompt": "Você é o juiz imparcial do alcance. Compare onde as oportunidades REALMENTE aparecem (UF, tipo de financiador, origem: motor, Piloto ou agregador) com onde os motores olham. Cada oportunidade achada fora dos motores é um ponto cego. Diga quais territórios e tipos de fonte não têm motor e quanto do total vem de fora deles."
+  },
+  {
+   "id": "ritmo",
+   "lente": "levemente otimista",
+   "nome": "Eng. Diego Arakaki — arquiteto do ritmo",
+   "prompt": "Você ajusta o relógio de cada motor ao ritmo da fonte. Para CADA motor, veja em quais dias ele achou algo nos últimos 30 dias e com que intervalo; compare com a cadência da agenda. Recomende a cadência certa: ler mais quem publica muito, ler menos quem publica pouco, e o dia da semana em que a fonte costuma publicar."
+  },
+  {
+   "id": "fontes_irmas",
+   "lente": "otimista",
+   "nome": "Profa. Clara Nogueira — mineradora de fontes irmãs",
+   "prompt": "Você descobre fontes que o sistema já tocou mas não vigia. Liste os domínios OFICIAIS que aparecem nas oportunidades, nas certidões do Cartório e na biblioteca de sites, e que NENHUM motor cobre. Ordene pelo número de oportunidades que já renderam e transforme a lista num motor novo, lido todos os dias."
+  },
+  {
+   "id": "plataformas",
+   "lente": "extremamente otimista",
+   "nome": "Dr. Fábio Rangel — inventor de alcance em massa",
+   "prompt": "Você pensa em escala: uma solução que cubra centenas de fontes de uma vez. Agrupe os endereços oficiais conhecidos pela PLATAFORMA que os gera (WordPress, portais de transparência de fornecedores, diários municipais em lote, Mapas Culturais, sistemas de editais) e calcule quantos órgãos cada adaptador cobriria. Proponha as inovações que multiplicam o alcance: adaptador por plataforma, detecção de mudança por sitemap/feed, consultas inversas."
+  }
+ ],
+ "resumo": {
+  "motores": 142,
+  "motores_com_falha": 91,
+  "falhas_por_tipo": {
+   "CONGELADO": 12,
+   "TRABALHO DUPLICADO": 28,
+   "ESTRANGULADO": 1,
+   "SILÊNCIO LONGO": 45,
+   "VAZAMENTO": 30,
+   "CEGO": 26,
+   "CUSTO SEM RETORNO": 2,
+   "CADÊNCIA FORA DO RITMO": 12,
+   "PÁGINA VAZIA": 9,
+   "INTERMITENTE": 2,
+   "RUÍDO": 18
+  }
+ },
+ "cobertura": {
+  "origem_das_oportunidades": {
+   "agregador/outra": 311,
+   "motor": 206,
+   "Piloto": 81
+  },
+  "fora_dos_motores_pct": 65.6,
+  "ufs_sem_motor_com_oportunidade": [],
+  "motores_por_uf": {
+   "?": 142
+  }
+ },
+ "fontes_irmas": {
+  "total": 197,
+  "top": [
+   {
+    "dominio": "chamadas.funbio.org.br",
+    "peso": 12,
+    "url": "https://chamadas.funbio.org.br/floresta-viva-sao-francisco"
+   },
+   {
+    "dominio": "fundoecos.org.br",
+    "peso": 12,
+    "url": "https://fundoecos.org.br/edital/edital-47-ticcas/"
+   },
+   {
+    "dominio": "baoba.org.br",
+    "peso": 12,
+    "url": "https://baoba.org.br/"
+   },
+   {
+    "dominio": "mariaemilia.org.br",
+    "peso": 9,
+    "url": "https://mariaemilia.org.br/wp-content/uploads/2026/08/Edital-FME-Transforma-2026.pdf"
+   },
+   {
+    "dominio": "resartis.org",
+    "peso": 7,
+    "url": "https://resartis.org/open-call/2027-a4-residency-art-center-international-residency-program-launch/"
+   },
+   {
+    "dominio": "fundacaogrupoboticario.org.br",
+    "peso": 7,
+    "url": "https://fundacaogrupoboticario.org.br/etapa-de-inscricao-de-desafios-para-teia-esta-encerrada/"
+   },
+   {
+    "dominio": "itausocial.org.br",
+    "peso": 6,
+    "url": "https://www.itausocial.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2025/"
+   },
+   {
+    "dominio": "notasocial.com.br",
+    "peso": 6,
+    "url": "https://notasocial.com.br/edital-de-selecao-de-projetos-incentivados-2025-abre-inscricoes/"
+   },
+   {
+    "dominio": "goias365.com.br",
+    "peso": 6,
+    "url": "https://www.goias365.com.br/prefeito-vilela-sanciona-lei-que-reduz-aliquota-do-itbi-para-15-em-aparecida/"
+   },
+   {
+    "dominio": "luppa.comidadoamanha.org",
+    "peso": 5,
+    "url": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf"
+   },
+   {
+    "dominio": "fondationfrancoisschneider.org",
+    "peso": 5,
+    "url": "https://www.fondationfrancoisschneider.org/concours-talents-contemporains/concours-talents-contemporains-leau-wattwiller/"
+   },
+   {
+    "dominio": "sapl.arapongas.pr.leg.br",
+    "peso": 5,
+    "url": "https://sapl.arapongas.pr.leg.br/media/sapl/public/documentoacessorio/2026/888/plano_municipal_voo_cultural_2026_1_1.pdf"
+   },
+   {
+    "dominio": "corrivus.com.br",
+    "peso": 5,
+    "url": "https://corrivus.com.br/santa-catarina/itajai/concurso-itajai-em-tracos-inscricoes-gratuitas"
+   },
+   {
+    "dominio": "iracemapolis.siscam.com.br",
+    "peso": 4,
+    "url": "https://iracemapolis.siscam.com.br/arquivo?Id=41354"
+   },
+   {
+    "dominio": "institutoacp.org.br",
+    "peso": 4,
+    "url": "https://www.institutoacp.org.br/chamadaaberta"
+   },
+   {
+    "dominio": "institutogenesio.org.br",
+    "peso": 4,
+    "url": "https://institutogenesio.org.br/wp-content/uploads/2026/10/Edital-Nao-Incentivado-Instituto-Genesio-A-Mendes-2026.pdf?utm_source=Link+da+Bio+do+RD+Station&utm_medium=social&utm_campaign=CTA+no+Link+da+Bio"
+   },
+   {
+    "dominio": "ecrie.com.br",
+    "peso": 4,
+    "url": "https://ecrie.com.br/sistema/conteudos/arquivo/a_61_0_1_31032025131336.pdf"
+   },
+   {
+    "dominio": "dopaonlineupload.procempa.com.br",
+    "peso": 4,
+    "url": "https://dopaonlineupload.procempa.com.br/dopaonlineupload/5970_ce_601372_1.pdf"
+   },
+   {
+    "dominio": "folhauberaba.com.br",
+    "peso": 4,
+    "url": "https://www.folhauberaba.com.br/fundacao-cultural-de-uberaba-publica-editais-da-pnab-de-fomento-a-cultura/"
+   },
+   {
+    "dominio": "blog.bondinho.com.br",
+    "peso": 4,
+    "url": "https://blog.bondinho.com.br/parque-bondinho-pao-de-acucar-abre-inscricoes-para-o-edital-2026-de-selecao-de-projetos-culturais/"
+   },
+   {
+    "dominio": "zurich.com.br",
+    "peso": 3,
+    "url": "https://www.zurich.com.br/leis-de-incentivo-2026"
+   },
+   {
+    "dominio": "agenciadobem.org.br",
+    "peso": 3,
+    "url": "https://www.agenciadobem.org.br/inscricoes-abertas-para-o-vi-edital-de-microprojetos-da-rede-do-bem/"
+   },
+   {
+    "dominio": "shop.aestheticamagazine.com",
+    "peso": 3,
+    "url": "https://shop.aestheticamagazine.com/products/aesthetica-art-prize-entry"
+   },
+   {
+    "dominio": "impactarte.com.br",
+    "peso": 3,
+    "url": "https://impactarte.com.br/"
+   },
+   {
+    "dominio": "licitacoes.agencia.baciaspcj.org.br",
+    "peso": 3,
+    "url": "https://licitacoes.agencia.baciaspcj.org.br/licitacao"
+   }
+  ]
+ },
+ "plataformas": {
+  "plataformas": {
+   "WordPress": {
+    "orgaos": 37,
+    "exemplos": [
+     "alvoradadonorte.go.gov.br",
+     "baoba.org.br",
+     "casafluminense.org.br",
+     "cavalcante.go.gov.br",
+     "childfundbrasil.org.br",
+     "climaesociedade.org"
+    ]
+   },
+   "Mapas Culturais": {
+    "orgaos": 10,
+    "exemplos": [
+     "culteditais.cultura.gov.br",
+     "mapa.cultura.es.gov.br",
+     "mapa.cultura.gov.br",
+     "mapacultural.cim-amfri.sc.gov.br",
+     "mapacultural.pa.gov.br",
+     "mapacultural.pe.gov.br"
+    ]
+   },
+   "Diário municipal em lote (AGM/DOM)": {
+    "orgaos": 5,
+    "exemplos": [
+     "diariooficial.abc.go.gov.br",
+     "diariooficial.goiania.go.gov.br",
+     "diariooficial.vitoria.es.gov.br",
+     "dom.mossoro.rn.gov.br",
+     "goiania.go.gov.br"
+    ]
+   },
+   "Portal de transparência de fornecedor": {
+    "orgaos": 14,
+    "exemplos": [
+     "acessoinformacao.com.br",
+     "bndes.gov.br",
+     "codau.com.br",
+     "comunidade.transparenciainternacional.org.br",
+     "mpf.mp.br",
+     "saude.mg.gov.br"
+    ]
+   },
+   "Sistemas de editais (Prosas/Editais)": {
+    "orgaos": 33,
+    "exemplos": [
+     "adustina.ba.gov.br",
+     "arapongas.pr.gov.br",
+     "banrisulcultural.com.br",
+     "chamamentos.serpro.gov.br",
+     "climaesociedade.org",
+     "confap.org.br"
+    ]
+   },
+   "Querido Diário": {
+    "orgaos": 0,
+    "exemplos": []
+   },
+   "PNCP": {
+    "orgaos": 1,
+    "exemplos": [
+     "pncp.gov.br"
+    ]
+   },
+   "Leis e atos (Leis Municipais)": {
+    "orgaos": 1,
+    "exemplos": [
+     "sapl.arapongas.pr.leg.br"
+    ]
+   }
+  },
+  "inovacoes": [
+   {
+    "inovacao": "Adaptador por plataforma",
+    "o_que": "um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão",
+    "alcance": "37 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez"
+   },
+   {
+    "inovacao": "Detecção de mudança barata",
+    "o_que": "ler o sitemap.xml (lastmod) e os feeds RSS/Atom dos sites oficiais; só baixar a página quando muda",
+    "alcance": "permite vigiar 10× mais fontes no mesmo tempo de execução"
+   },
+   {
+    "inovacao": "Consulta inversa",
+    "o_que": "frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios",
+    "alcance": "cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo"
+   },
+   {
+    "inovacao": "Motor de fontes irmãs",
+    "o_que": "domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias",
+    "alcance": "ver lista da Profa. Clara — implantado nesta rodada (motor 'fontes-irmas')"
+   }
+  ]
+ },
+ "por_motor": {
+  "do-goiania": {
+   "nome": "Diário Oficial do Município de Goiânia",
+   "tipo": "diario_oficial",
+   "saude": [
+    {
+     "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20261008_000008880.pdf",
+     "http": 200,
+     "bytes": 19597
+    },
+    {
+     "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20261007_000008879.pdf",
+     "http": 200,
+     "bytes": 16598
+    }
+   ],
+   "achados_total": 39,
+   "valor": "confirma",
+   "achados_30d": 9,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "quinta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 9 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    }
+   ]
+  },
+  "do-goias": {
+   "nome": "Diário Oficial do Estado de Goiás",
+   "tipo": "diario_oficial",
+   "saude": [
+    {
+     "url": "https://diariooficial.abc.go.gov.br",
+     "http": 200,
+     "bytes": 154
+    }
+   ],
+   "achados_total": 216,
+   "valor": "confirma",
+   "achados_30d": 116,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-025, f260-captacao-038, f260-captacao-051, f260-captacao-098",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "dou": {
+   "nome": "Diário Oficial da União",
+   "tipo": "diario_oficial",
+   "saude": [
+    {
+     "url": "https://www.in.gov.br/leiturajornal?data=09-10-2026&secao=do1",
+     "http": 200,
+     "bytes": 0
+    },
+    {
+     "url": "https://www.in.gov.br/leiturajornal?data=09-10-2026&secao=do3",
+     "http": 200,
+     "bytes": 0
+    }
+   ],
+   "achados_total": 59,
+   "valor": "confirma",
+   "achados_30d": 28,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "terça"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "ESTRANGULADO",
+     "prova": "viu 7672 links e nenhum virou candidato",
+     "melhoria": "o filtro de candidatos está estreito demais: incluir termos de chamamento/edital da fonte e seguir PDFs"
+    }
+   ]
+  },
+  "alego-pl": {
+   "nome": "Assembleia Legislativa de Goiás — proposições",
+   "tipo": "legislativo",
+   "saude": [
+    {
+     "url": "https://portal.al.go.leg.br/noticias",
+     "http": 200,
+     "bytes": 115258
+    },
+    {
+     "url": "https://portal.al.go.leg.br/",
+     "http": 200,
+     "bytes": 133542
+    }
+   ],
+   "achados_total": 17,
+   "valor": "baixo volume",
+   "achados_30d": 9,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "quarta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "24 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-068, f260-captacao-151",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "camara-goiania-pl": {
+   "nome": "Câmara Municipal de Goiânia — projetos de lei",
+   "tipo": "legislativo",
+   "saude": [
+    {
+     "url": "https://www.goiania.go.leg.br",
+     "http": 200,
+     "bytes": 285233,
+     "itens": 23
+    },
+    {
+     "url": "https://www.goiania.go.leg.br",
+     "http": 200,
+     "bytes": 13021,
+     "itens": 0
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 30 de 30 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "60 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "138 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 33 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "cnj-destinacoes": {
+   "nome": "CNJ — destinações de penas e prestações pecuniárias",
+   "tipo": "diario_justica",
+   "saude": [
+    {
+     "url": "https://www.cnj.jus.br/",
+     "http": 200,
+     "bytes": 364575
+    },
+    {
+     "url": "https://www.cnj.jus.br/transparencia-cnj/licitacoes-e-contratos/",
+     "http": 200,
+     "bytes": 275632
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 30,
+    "cadencia_recomendada": 30,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 26 de 27 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "40 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "dj-trf1-go": {
+   "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
+   "tipo": "diario_justica",
+   "saude": [],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 25 de 30 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "46 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 32 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "dje-tjgo": {
+   "nome": "Diário da Justiça Eletrônico — TJGO",
+   "tipo": "diario_justica",
+   "saude": [
+    {
+     "url": "https://www.jusbrasil.com.br/diarios/DJGO/",
+     "http": 200,
+     "bytes": 55879
+    },
+    {
+     "url": "https://www.jusbrasil.com.br/diarios",
+     "http": 200,
+     "bytes": 217073
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 21 de 26 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "INTERMITENTE",
+     "prova": "5 dias vermelhos alternados com dias bons",
+     "melhoria": "retentativa com espera e rota de reserva (ponte do titular)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "40 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que judiciario-cnj, judiciario-cnj-tjgo",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 26 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "pncp-api": {
+   "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
+   "tipo": "api",
+   "saude": [
+    {
+     "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
+     "http": 200,
+     "bytes": 7463
+    },
+    {
+     "url": "https://pncp.gov.br/api/search/",
+     "http": 200,
+     "bytes": 1717
+    }
+   ],
+   "achados_total": 6939,
+   "valor": "ouro",
+   "achados_30d": 1788,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "terça"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "INTERMITENTE",
+     "prova": "6 dias vermelhos alternados com dias bons",
+     "melhoria": "retentativa com espera e rota de reserva (ponte do titular)"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 98% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "plat-abcr": {
+   "nome": "ABCR — Associação Brasileira de Captadores",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://captadores.org.br/editais/",
+     "http": 200,
+     "bytes": 139166
+    },
+    {
+     "url": "https://captadores.org.br/transparencia",
+     "http": 200,
+     "bytes": 120424
+    }
+   ],
+   "achados_total": 169,
+   "valor": "confirma",
+   "achados_30d": 90,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": []
+  },
+  "plat-captamos": {
+   "nome": "Captamos — oportunidades de captação",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://captadores.org.br/noticias/",
+     "erro": "HTTPError"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "plat-gife": {
+   "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://gife.org.br/wp-json/wp/v2/posts",
+     "http": 200,
+     "bytes": 161798,
+     "posts": 14
+    },
+    {
+     "url": "https://capta.org.br/wp-json/wp/v2/posts",
+     "http": 200,
+     "bytes": 11989,
+     "posts": 5
+    }
+   ],
+   "achados_total": 45,
+   "valor": "confirma",
+   "achados_30d": 21,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "terça"
+   },
+   "falhas": []
+  },
+  "plat-observatorio-3setor": {
+   "nome": "Observatório do Terceiro Setor — editais",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://observatorio3setor.org.br/editais/",
+     "http": 200,
+     "bytes": 221899
+    },
+    {
+     "url": "https://observatorio3setor.org.br/secoes_tematicas/editais",
+     "http": 200,
+     "bytes": 221899
+    }
+   ],
+   "achados_total": 198,
+   "valor": "confirma",
+   "achados_30d": 115,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": []
+  },
+  "plat-prosas-premios": {
+   "nome": "Prosas — prêmios, concursos e cursos para OSCs",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://prosas.com.br/editais?natureza=premio",
+     "http": 200,
+     "bytes": 73169
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 13 de 13 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "26 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "plat-rede-filantropia": {
+   "nome": "Rede Filantropia — editais",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://www.filantropia.ong/editais",
+     "erro": "HTTPError"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "empresas-incentivadas": {
+   "nome": "Editais incentivados de empresas — destinação tributária (Rouanet, LIE, FIA, PRONON)",
+   "tipo": "empresas_incentivo",
+   "saude": [
+    {
+     "url": "https://www.saneago.com.br/",
+     "http": 200,
+     "bytes": 56950
+    },
+    {
+     "url": "https://observatorio3setor.org.br/editais/",
+     "http": 200,
+     "bytes": 221856
+    }
+   ],
+   "achados_total": 24,
+   "valor": "ruído",
+   "achados_30d": 24,
+   "cadencia": {
+    "cadencia_atual": 7,
+    "cadencia_recomendada": 7,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "24 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-175, f260-captacao-176, f260-captacao-220, plat-observatorio-3setor",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-051": {
+   "nome": "Programa estadual de eventos esportivos",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/esporte/",
+     "http": 200,
+     "bytes": 175277
+    },
+    {
+     "url": "https://goias.gov.br/esporte/solicitacao-de-transporte",
+     "http": 200,
+     "bytes": 132108
+    }
+   ],
+   "achados_total": 108,
+   "valor": "ruído",
+   "achados_30d": 78,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 13 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "108 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-098",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-098": {
+   "nome": "FEAS-GO - cofinanciamento da assistência social",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
+     "http": 200,
+     "bytes": 52761
+    },
+    {
+     "url": "https://goias.gov.br/social/",
+     "http": 200,
+     "bytes": 192046
+    }
+   ],
+   "achados_total": 58,
+   "valor": "ruído",
+   "achados_30d": 41,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 28 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "58 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-118": {
+   "nome": "Destinação de IR pessoa física para FMDCA",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
+     "http": 200,
+     "bytes": 52767
+    },
+    {
+     "url": "https://www.gov.br/pt-br/temas/transparencia-fiscal-orcamento-nacional",
+     "http": 200,
+     "bytes": 64755
+    }
+   ],
+   "achados_total": 24,
+   "valor": "ruído",
+   "achados_30d": 13,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 13 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "24 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-169, f260-captacao-180",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-151": {
+   "nome": "Emenda estadual para saúde comunitária",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://portal.al.go.leg.br/",
+     "http": 200,
+     "bytes": 133504
+    },
+    {
+     "url": "https://goias.gov.br/saude/",
+     "http": 200,
+     "bytes": 311777
+    }
+   ],
+   "achados_total": 56,
+   "valor": "ruído",
+   "achados_30d": 33,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "56 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que alego-pl, do-goias, f260-captacao-025, f260-captacao-038",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-190": {
+   "nome": "TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.cnj.jus.br/",
+     "http": 200,
+     "bytes": 364693
+    },
+    {
+     "url": "https://www.trt18.jus.br/portal/",
+     "http": 200,
+     "bytes": 214959
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 29 de 29 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "45 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 29 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "f260-captacao-196": {
+   "nome": "MPGO - TAC com destinação social",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.mpf.mp.br/",
+     "http": 200,
+     "bytes": 250716
+    },
+    {
+     "url": "https://mpt.mp.br/",
+     "http": 200,
+     "bytes": 51262
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 29 de 29 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "46 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 29 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "f260-captacao-238": {
+   "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://sebraego.com.br/",
+     "erro": "HTTPError",
+     "code": 403,
+     "waf": null,
+     "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "49 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 29 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "f260-captacao-035": {
+   "nome": "Lei Rouanet - doação de pessoa física",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
+     "http": 200,
+     "bytes": 126220
+    },
+    {
+     "url": "https://www.gov.br/cultura/pt-br/acesso-a-informacao/licitacoes-e-contratos",
+     "http": 200,
+     "bytes": 143586
+    }
+   ],
+   "achados_total": 89,
+   "valor": "ruído",
+   "achados_30d": 55,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 20 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "89 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-090, f260-captacao-118, f260-captacao-169, f260-captacao-180",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-044": {
+   "nome": "Projetos aptos à captação na LIE",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte",
+     "erro": "HTTPError",
+     "code": 401,
+     "waf": null,
+     "causa": "HTTP 401"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "36 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 20 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "f260-captacao-060": {
+   "nome": "Escolinha de natação/paradesporto adaptado",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/esporte/pt-br",
+     "http": 200,
+     "bytes": 237513
+    },
+    {
+     "url": "https://falabr.cgu.gov.br/v2",
+     "http": 200,
+     "bytes": 4215
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 19 de 20 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "28 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 20 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "f260-captacao-119": {
+   "nome": "Destinação de IR pessoa jurídica para Fundo da Criança",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.gov.br/participamaisbrasil/conanda",
+     "http": 200,
+     "bytes": 21139
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 19 de 20 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "28 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 20 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "f260-captacao-208": {
+   "nome": "Cessão de bens móveis apreendidos",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/receitafederal/pt-br",
+     "http": 200,
+     "bytes": 274066
+    },
+    {
+     "url": "https://www.gov.br/pt-br/servicos/consultar-editais-e-atos-declaratorios-executivos-da-receita-federal",
+     "http": 200,
+     "bytes": 103915
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 17 de 19 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "25 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-216": {
+   "nome": "Mapa das OSC - área de editais",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://mapaosc.ipea.gov.br/",
+     "http": 200,
+     "bytes": 58604
+    },
+    {
+     "url": "https://mapaosc.ipea.gov.br/editais",
+     "http": 200,
+     "bytes": 34842
+    }
+   ],
+   "achados_total": 15,
+   "valor": "baixo volume",
+   "achados_30d": 13,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "f260-captacao-217": {
+   "nome": "Bússola Social - Bússola Editais",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://bussolasocial.com.br/",
+     "http": 200,
+     "bytes": 121781
+    },
+    {
+     "url": "https://www.bussolasocial.com.br/",
+     "http": 200,
+     "bytes": 121781
+    }
+   ],
+   "achados_total": 91,
+   "valor": "ruído",
+   "achados_30d": 69,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "91 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "f260-captacao-218": {
+   "nome": "Capta - oportunidades e editais",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://prosas.com.br/editais",
+     "http": 200,
+     "bytes": 34760
+    },
+    {
+     "url": "https://produtos.prosas.com.br/editais",
+     "http": 200,
+     "bytes": 34760
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 19 de 19 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "37 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-223": {
+   "nome": "Fundação Bradesco",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.hrjanauba.com.br/",
+     "http": 200,
+     "bytes": 53160
+    },
+    {
+     "url": "https://www.hrjanauba.com.br/28.html",
+     "http": 200,
+     "bytes": 137117
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 19 de 19 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "36 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-227": {
+   "nome": "Instituto Coca-Cola Brasil",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.institutococacolabrasil.com.br/",
+     "erro": "URLError",
+     "code": null,
+     "waf": null,
+     "causa": "conexão recusada/derrubada — filtro de rede ou IP estrangeiro"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "35 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-229": {
+   "nome": "Instituto Votorantim",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
+     "http": 200,
+     "bytes": 52443
+    },
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/landing?destino=acompanhamento-compra&compra=42300220000012023",
+     "http": 200,
+     "bytes": 52443
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 19 de 19 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "25 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-230": {
+   "nome": "Fundação ArcelorMittal",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.hrjanauba.com.br/",
+     "http": 200,
+     "bytes": 53160
+    },
+    {
+     "url": "https://www.hrjanauba.com.br/28.html",
+     "http": 200,
+     "bytes": 137117
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 17 de 19 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "37 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-231": {
+   "nome": "Fundação Vale",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.hrjanauba.com.br/",
+     "http": 200,
+     "bytes": 53160
+    },
+    {
+     "url": "https://www.hrjanauba.com.br/28.html",
+     "http": 200,
+     "bytes": 137117
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 19 de 19 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "37 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-232": {
+   "nome": "Instituto Neoenergia",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
+     "http": 200,
+     "bytes": 52443
+    },
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/landing?destino=acompanhamento-compra&compra=42300220000012023",
+     "http": 200,
+     "bytes": 52443
+    }
+   ],
+   "achados_total": 9,
+   "valor": "baixo volume",
+   "achados_30d": 9,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-118, f260-captacao-169",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-233": {
+   "nome": "Instituto Sicoob",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
+     "http": 200,
+     "bytes": 52443
+    },
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/landing?destino=acompanhamento-compra&compra=42300220000012023",
+     "http": 200,
+     "bytes": 52443
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 16 de 18 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "35 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-234": {
+   "nome": "Instituto Unibanco",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
+     "http": 200,
+     "bytes": 52443
+    },
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/landing?destino=acompanhamento-compra&compra=42300220000012023",
+     "http": 200,
+     "bytes": 52443
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 18 de 18 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "25 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-235": {
+   "nome": "Instituto Lojas Renner",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
+     "http": 200,
+     "bytes": 52443
+    },
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/landing?destino=acompanhamento-compra&compra=42300220000012023",
+     "http": 200,
+     "bytes": 52443
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 16 de 16 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "22 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-236": {
+   "nome": "Instituto Grupo Boticário",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.fundacaogrupoboticario.org.br/",
+     "http": 200,
+     "bytes": 131289
+    },
+    {
+     "url": "https://fundacaogrupoboticario.org.br/transparencia",
+     "http": 200,
+     "bytes": 104642
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-237": {
+   "nome": "Instituto Sabin",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
+     "http": 200,
+     "bytes": 52443
+    },
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/landing?destino=acompanhamento-compra&compra=42300220000012023",
+     "http": 200,
+     "bytes": 52443
+    }
+   ],
+   "achados_total": 49,
+   "valor": "ruído",
+   "achados_30d": 12,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "49 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 6 de 9 dias",
+     "melhoria": "ler a cada 3 dia(s) — publica em média a cada 6.8 dias; dia forte: sábado"
+    }
+   ]
+  },
+  "f260-captacao-038": {
+   "nome": "Editais FICA Goiás - artes visuais/exposição",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/cultura/",
+     "http": 200,
+     "bytes": 235894
+    },
+    {
+     "url": "https://fica.go.gov.br",
+     "http": 200,
+     "bytes": 76703
+    }
+   ],
+   "achados_total": 99,
+   "valor": "ruído",
+   "achados_30d": 64,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "99 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-051, f260-captacao-098",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-039": {
+   "nome": "Editais de ocupação cultural municipal",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/",
+     "http": 200,
+     "bytes": 71497
+    },
+    {
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/patrocinios?1dmy&urile=wcm%3apath%3a%2Fbndes_institucional%2Fhome%2Ftransparencia%2Fpatrocinios%2Fselecao-publica-patrocinio-cultural-01-2025",
+     "http": 200,
+     "bytes": 93303
+    }
+   ],
+   "achados_total": 2,
+   "valor": "baixo volume",
+   "achados_30d": 2,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 1 de 27 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo; dia forte: sábado"
+    }
+   ]
+  },
+  "f260-captacao-068": {
+   "nome": "Emenda estadual para projeto educativo em Goiás",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://portal.al.go.leg.br/",
+     "http": 200,
+     "bytes": 133989
+    },
+    {
+     "url": "https://goias.gov.br/educacao/",
+     "http": 200,
+     "bytes": 280928
+    }
+   ],
+   "achados_total": 10,
+   "valor": "baixo volume",
+   "achados_30d": 5,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "quarta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "23 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que alego-pl, f260-captacao-151",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-207": {
+   "nome": "Acordo de cooperação sem transferência financeira",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
+     "http": 200,
+     "bytes": 232895
+    },
+    {
+     "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1",
+     "http": 200,
+     "bytes": 234215
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 16 de 17 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "23 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-222": {
+   "nome": "Fundação Itaú",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.hrjanauba.com.br/",
+     "http": 200,
+     "bytes": 53160
+    },
+    {
+     "url": "https://www.hrjanauba.com.br/28.html",
+     "http": 200,
+     "bytes": 137117
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 17 de 17 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "35 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-curadoria-006": {
+   "nome": "Instituto Clima e Sociedade (iCS) — chamadas de comunicação e clima",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://climaesociedade.org/editais/",
+     "http": 202,
+     "bytes": 178
+    }
+   ],
+   "achados_total": 84,
+   "valor": "ruído",
+   "achados_30d": 56,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "84 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "f260-curadoria-008": {
+   "nome": "Instituto Impactarte — cadastro de proponente em fluxo contínuo",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.impactarte.org.br/cadastro-proponente",
+     "http": 200,
+     "bytes": 5457
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 3,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 23 de 23 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "34 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "ritmo",
+     "falha": "CADÊNCIA FORA DO RITMO",
+     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 23 dias",
+     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+    }
+   ]
+  },
+  "plat-cnpq-extensao": {
+   "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+     "http": 200,
+     "bytes": 144670
+    },
+    {
+     "url": "https://www.gov.br/mcti/pt-br/centrais-de-conteudo/comunicados-mcti",
+     "http": 200,
+     "bytes": 174965
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 18 de 18 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "37 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "plat-empresas-editais-incentivados": {
+   "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://captadores.org.br/editais/",
+     "http": 200,
+     "bytes": 139163
+    },
+    {
+     "url": "https://www.alcoa.com/brasil/pt/institute/local-project-support-program",
+     "http": 200,
+     "bytes": 48553
+    }
+   ],
+   "achados_total": 433,
+   "valor": "ruído",
+   "achados_30d": 137,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "433 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    }
+   ]
+  },
+  "plat-fapeg": {
+   "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/fapeg/",
+     "http": 200,
+     "bytes": 206749
+    },
+    {
+     "url": "https://goias.gov.br/fapeg/editais",
+     "http": 200,
+     "bytes": 169580
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 10 de 10 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "19 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "plat-fundos-estaduais-go": {
+   "nome": "Fundos estaduais de Goiás com conselho — FIA, Idoso, FUNJUVE, Meio Ambiente",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/desenvolvimento-social/",
+     "http": 200,
+     "bytes": 142438
+    },
+    {
+     "url": "https://goias.gov.br/meioambiente/",
+     "http": 200,
+     "bytes": 227335
+    }
+   ],
+   "achados_total": 19,
+   "valor": "baixo volume",
+   "achados_30d": 10,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 10 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "plat-goias-social": {
+   "nome": "Goiás Social — programas e editais para entidades",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/social/",
+     "http": 200,
+     "bytes": 191794
+    },
+    {
+     "url": "https://goias.gov.br/desenvolvimento-social/",
+     "http": 200,
+     "bytes": 142438
+    }
+   ],
+   "achados_total": 19,
+   "valor": "baixo volume",
+   "achados_30d": 10,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 10 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "plat-mp-destinacoes-reparacao": {
+   "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "http": 200,
+     "itens": 43
+    },
+    {
+     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "http": 200,
+     "itens": 0
+    }
+   ],
+   "achados_total": 42,
+   "valor": "ruído",
+   "achados_30d": 24,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "42 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "plat-ovg": {
+   "nome": "OVG — Organização das Voluntárias de Goiás: editais e chamamentos",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://www.ovg.org.br/",
+     "http": 200,
+     "bytes": 85439
+    },
+    {
+     "url": "https://goias.gov.br/social/",
+     "http": 200,
+     "bytes": 191794
+    }
+   ],
+   "achados_total": 19,
+   "valor": "baixo volume",
+   "achados_30d": 10,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 10 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "plat-prefeituras-50-go": {
+   "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://www.goiania.go.gov.br",
+     "status": "parcial"
+    },
+    {
+     "url": "https://aparecida.go.gov.br",
+     "status": "parcial"
+    }
+   ],
+   "achados_total": 42,
+   "valor": "ruído",
+   "achados_30d": 5,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 5 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "42 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'fluxo → confirmada'",
+     "melhoria": "faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "306 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
+    }
+   ]
+  },
+  "plat-prosas": {
+   "nome": "Prosas — editais para o terceiro setor",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://prosas.com.br/editais",
+     "http": 200,
+     "bytes": 34760
+    },
+    {
+     "url": "https://produtos.prosas.com.br/editais",
+     "http": 200,
+     "bytes": 34760
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 10 de 10 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "19 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "plat-salic": {
+   "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://api.salic.cultura.gov.br/api/v1/projetos/?UF=GO&ano_projeto=26&limit=100&offset=0&format=json",
+     "http": 200,
+     "bytes": 0,
+     "itens": 127
+    }
+   ],
+   "achados_total": 179,
+   "valor": "ouro",
+   "achados_30d": 76,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 98% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-118, f260-captacao-169",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "plat-secult-go": {
+   "nome": "Secult Goiás — Goyazes e Aldir Blanc",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/cultura/",
+     "http": 200,
+     "bytes": 229477
+    },
+    {
+     "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026/",
+     "http": 200,
+     "bytes": 162682
+    }
+   ],
+   "achados_total": 276,
+   "valor": "confirma",
+   "achados_30d": 145,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "recorrencia": {
+   "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
+   "tipo": "recorrencia",
+   "saude": [
+    {
+     "url": "https://portal.al.go.leg.br/",
+     "http": 200,
+     "bytes": 133511
+    },
+    {
+     "url": "https://www.gov.br/transferegov/pt-br",
+     "http": 200,
+     "bytes": 744872
+    }
+   ],
+   "achados_total": 531,
+   "valor": "confirma",
+   "achados_30d": 257,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "segunda"
+   },
+   "falhas": [
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-035, f260-captacao-038",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-espalhado-acessoainformacao-cavalcante-go-gov-br": {
+   "nome": "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://acessoainformacao.cavalcante.go.gov.br/",
+     "http": 200,
+     "bytes": 199883
+    },
+    {
+     "url": "https://acessoainformacao.cavalcante.go.gov.br/cidadao/transparencia/mgreceitas",
+     "http": 200,
+     "bytes": 46037
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 13 de 13 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "18 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-espalhado-senadorcanedo-go-gov-br": {
+   "nome": "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://senadorcanedo.go.gov.br/",
+     "http": 200,
+     "bytes": 248786
+    },
+    {
+     "url": "https://senadorcanedo.go.gov.br/transparencia",
+     "http": 200,
+     "bytes": 248896
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CEGO",
+     "prova": "respondeu 200 em 10 de 10 dias e não achou nada em 30 dias",
+     "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "14 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "plat-piloto-aberto": {
+   "nome": "Motor do Piloto — busca aberta no terceiro setor",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
+     "http": 200,
+     "bytes": 38899
+    },
+    {
+     "url": "https://html.duckduckgo.com/html/?q=",
+     "http": 200,
+     "bytes": 3108
+    }
+   ],
+   "achados_total": 1228,
+   "valor": "confirma",
+   "achados_30d": 547,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "terça"
+   },
+   "falhas": []
+  },
+  "plat-mapa-osc": {
+   "nome": "Mapa das OSC — editais",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://mapaosc.ipea.gov.br/editais",
+     "http": 200,
+     "bytes": 34871
+    },
+    {
+     "url": "https://mapaosc.ipea.gov.br/posts/2/publicacoes",
+     "http": 200,
+     "bytes": 32436
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "judiciario-cnj-tjgo": {
+   "nome": "Judiciário — CNJ e TJGO: editais das varas de execução penal e das comarcas (prestações pecuniárias) e credenciamentos de entidades",
+   "tipo": "diario_justica",
+   "saude": [
+    {
+     "url": "https://www.cnj.jus.br/",
+     "http": 200,
+     "bytes": 1623180,
+     "itens": 48
+    }
+   ],
+   "achados_total": 2,
+   "valor": "baixo volume",
+   "achados_30d": 1,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que dje-tjgo, judiciario-cnj",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "congresso-nacional": {
+   "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
+   "tipo": "legislativo",
+   "saude": [
+    {
+     "url": "https://www.congressonacional.leg.br",
+     "http": 200,
+     "bytes": 151528,
+     "itens": 9
+    },
+    {
+     "url": "https://dadosabertos.camara.leg.br/api/v2",
+     "http": 200,
+     "bytes": 2748,
+     "itens": 2
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "18 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-107": {
+   "nome": "Emenda municipal para entidade assistencial",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://portal.al.go.leg.br/",
+     "http": 200,
+     "bytes": 133989
+    },
+    {
+     "url": "https://transparencia.al.go.leg.br/legislacoes",
+     "http": 200,
+     "bytes": 12851
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-069": {
+   "nome": "Emenda municipal para projeto educativo em Goiânia",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://portal.al.go.leg.br/",
+     "http": 200,
+     "bytes": 133989
+    },
+    {
+     "url": "https://transparencia.al.go.leg.br/legislacoes",
+     "http": 200,
+     "bytes": 12851
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-152": {
+   "nome": "Emenda municipal para saúde preventiva",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://portal.al.go.leg.br/",
+     "http": 200,
+     "bytes": 133989
+    },
+    {
+     "url": "https://saude.goiania.go.gov.br/",
+     "http": 200,
+     "bytes": 107058
+    }
+   ],
+   "achados_total": 15,
+   "valor": "baixo volume",
+   "achados_30d": 10,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 5 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "f260-captacao-212": {
+   "nome": "TCM-GO - regularidade municipal e controle",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.tcm.go.gov.br/",
+     "http": 200,
+     "bytes": 235
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-206": {
+   "nome": "Convênio com órgão público estadual",
+   "tipo": "site_oficial",
+   "saude": [],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    }
+   ]
+  },
+  "f260-captacao-025": {
+   "nome": "PNAB Goiás - Artes Visuais",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/cultura/",
+     "http": 200,
+     "bytes": 236825
+    },
+    {
+     "url": "https://pnab.cultura.go.gov.br",
+     "http": 200,
+     "bytes": 123188
+    }
+   ],
+   "achados_total": 28,
+   "valor": "ruído",
+   "achados_30d": 25,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "28 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-038, f260-captacao-051, f260-captacao-098",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-177": {
+   "nome": "SEMAD Goiás - banco de projetos de autocomposição ambiental",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/meioambiente/",
+     "http": 200,
+     "bytes": 256134
+    },
+    {
+     "url": "https://goias.gov.br/meioambiente/transparencia",
+     "http": 200,
+     "bytes": 172546
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-244": {
+   "nome": "BID – Laboratório de Inovação",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.iadb.org/pt-br",
+     "http": 200,
+     "bytes": 115738
+    },
+    {
+     "url": "https://www.iadb.org/pt-br/quem-somos/transparencia",
+     "http": 200,
+     "bytes": 85672
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-176": {
+   "nome": "BNDES Corais - meio ambiente",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.bndes.gov.br/",
+     "http": 200,
+     "bytes": 66889
+    },
+    {
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia",
+     "http": 200,
+     "bytes": 71497
+    }
+   ],
+   "achados_total": 8,
+   "valor": "baixo volume",
+   "achados_30d": 8,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que empresas-incentivadas, f260-captacao-175, f260-captacao-220",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-220": {
+   "nome": "BNDES Fundo Socioambiental",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.bndes.gov.br/",
+     "http": 200,
+     "bytes": 66889
+    },
+    {
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/desenvolvimento-social-e-urbano/bndes-fundo-social",
+     "http": 200,
+     "bytes": 8190
+    }
+   ],
+   "achados_total": 8,
+   "valor": "baixo volume",
+   "achados_30d": 8,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que empresas-incentivadas, f260-captacao-175, f260-captacao-176",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-175": {
+   "nome": "BNDES Periferias - geração de emprego e renda",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.bndes.gov.br/",
+     "http": 200,
+     "bytes": 66889
+    },
+    {
+     "url": "https://www.bndes.gov.br/periferias",
+     "http": 200,
+     "bytes": 79059
+    }
+   ],
+   "achados_total": 8,
+   "valor": "baixo volume",
+   "achados_30d": 8,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que empresas-incentivadas, f260-captacao-176, f260-captacao-220",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-243": {
+   "nome": "Banco Mundial – Social Development Grants",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.worldbank.org/pt/country/brazil",
+     "http": 200,
+     "bytes": 61138
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-255": {
+   "nome": "Climate Justice Resilience Fund",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.cjrfund.org/",
+     "http": 200,
+     "bytes": 212430
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-259": {
+   "nome": "Echoing Green",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://echoinggreen.org/",
+     "http": 200,
+     "bytes": 42691
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-200": {
+   "nome": "Emenda parlamentar federal individual",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://portal.al.go.leg.br/",
+     "http": 200,
+     "bytes": 133989
+    },
+    {
+     "url": "https://www.camara.leg.br/",
+     "http": 200,
+     "bytes": 85442
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-169": {
+   "nome": "FDD/Pronasci - cultura e cidadania em territórios vulneráveis",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
+     "http": 200,
+     "bytes": 52767
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br",
+     "http": 200,
+     "bytes": 157604
+    }
+   ],
+   "achados_total": 4,
+   "valor": "baixo volume",
+   "achados_30d": 4,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-118, f260-captacao-180",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-249": {
+   "nome": "Ford Foundation",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.fordfoundation.org/",
+     "http": 200,
+     "bytes": 186472
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-221": {
+   "nome": "Fundação Banco do Brasil",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.fbb.org.br/",
+     "http": 200,
+     "bytes": 70482
+    },
+    {
+     "url": "https://fbb.org.br/sobre-a-fundacao-bb/transparencia-periodo-eleitoral",
+     "http": 200,
+     "bytes": 597502
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "17 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-224": {
+   "nome": "Fundação Telefônica Vivo",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.hrjanauba.com.br/",
+     "http": 200,
+     "bytes": 53160
+    },
+    {
+     "url": "https://www.hrjanauba.com.br/28.html",
+     "http": 200,
+     "bytes": 137117
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "17 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-256": {
+   "nome": "GEF Small Grants",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://sgp.undp.org/",
+     "http": 200,
+     "bytes": 104763
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-250": {
+   "nome": "Gates Foundation",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.gatesfoundation.org/",
+     "http": 200,
+     "bytes": 218370
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-254": {
+   "nome": "Global Fund for Women",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.globalfundforwomen.org/",
+     "http": 200,
+     "bytes": 219835
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-251": {
+   "nome": "Google.org",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.google.org/",
+     "http": 200,
+     "bytes": 30328
+    }
+   ],
+   "achados_total": 4,
+   "valor": "confirma",
+   "achados_30d": 4,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": []
+  },
+  "f260-captacao-225": {
+   "nome": "Instituto Claro",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.institutoclaro.org.br/",
+     "http": 200,
+     "bytes": 201148
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-228": {
+   "nome": "Instituto Localiza",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://institutolocaliza.com.br/",
+     "erro": "gaierror",
+     "code": null,
+     "waf": null,
+     "causa": "endereço não resolve (DNS) — URL errada ou domínio desativado"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "16 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-226": {
+   "nome": "Instituto Natura",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
+     "http": 200,
+     "bytes": 52443
+    },
+    {
+     "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/landing?destino=acompanhamento-compra&compra=42300220000012023",
+     "http": 200,
+     "bytes": 52443
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "17 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-090": {
+   "nome": "MDS - Cozinhas Solidárias 2026",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/mds/pt-br",
+     "http": 200,
+     "bytes": 215471
+    },
+    {
+     "url": "https://www.gov.br/mds/pt-br/acesso-a-informacao/internacional/editais-em-selecao",
+     "http": 200,
+     "bytes": 152721
+    }
+   ],
+   "achados_total": 12,
+   "valor": "baixo volume",
+   "achados_30d": 10,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 5 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-118, f260-captacao-169, f260-captacao-180",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-252": {
+   "nome": "Meta Community Grants",
+   "tipo": "internacional",
+   "saude": [],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    }
+   ]
+  },
+  "f260-captacao-253": {
+   "nome": "Microsoft Philanthropies",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.microsoft.com/pt-br/corporate-responsibility/philanthropies",
+     "http": 200,
+     "bytes": 205165
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-260": {
+   "nome": "Oak Foundation",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://oakfnd.org/",
+     "http": 200,
+     "bytes": 139759
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-248": {
+   "nome": "Open Society Foundations",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.opensocietyfoundations.org/",
+     "http": 200,
+     "bytes": 178079
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-242": {
+   "nome": "PNUD – Small Grants Programme",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.undp.org/pt/brazil",
+     "erro": "HTTPError",
+     "code": 403,
+     "waf": null,
+     "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "16 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-180": {
+   "nome": "Projeto de coleta seletiva inclusiva",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/mma/pt-br",
+     "http": 200,
+     "bytes": 230319
+    },
+    {
+     "url": "https://www.gov.br/mma/pt-br/assuntos/educacao-ambiental/eventos-noticias",
+     "http": 200,
+     "bytes": 57224
+    }
+   ],
+   "achados_total": 4,
+   "valor": "baixo volume",
+   "achados_30d": 4,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-118, f260-captacao-169",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-captacao-257": {
+   "nome": "Rockefeller Foundation",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.rockefellerfoundation.org/",
+     "http": 200,
+     "bytes": 134551
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-258": {
+   "nome": "Skoll Foundation",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://skoll.org/",
+     "http": 200,
+     "bytes": 176248
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-240": {
+   "nome": "UNESCO – Fundo Internacional para Diversidade Cultural",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.unesco.org/creativity/pt/ifcd",
+     "erro": "HTTPError",
+     "code": 404,
+     "waf": null,
+     "causa": "HTTP 404"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "17 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-captacao-241": {
+   "nome": "UNICEF – Programas de parceria com OSC",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.unicef.org/brazil/",
+     "http": 200,
+     "bytes": 277172
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-245": {
+   "nome": "USAID – Grants Globais",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://www.usaid.gov/",
+     "http": 200,
+     "bytes": 4941
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-246": {
+   "nome": "União Europeia – Erasmus+",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://erasmus-plus.ec.europa.eu/",
+     "http": 200,
+     "bytes": 201207
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-captacao-247": {
+   "nome": "União Europeia – EuropeAid",
+   "tipo": "internacional",
+   "saude": [
+    {
+     "url": "https://international-partnerships.ec.europa.eu/",
+     "http": 200,
+     "bytes": 18299
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-curadoria-001": {
+   "nome": "Banco do Nordeste — Editais Sociais (incentivo fiscal)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.bnb.gov.br/web/guest/sustentabilidade/investimentos-sociais-e-esportivos",
+     "http": 200,
+     "bytes": 148241
+    },
+    {
+     "url": "https://www.bnb.gov.br/ConveniosWeb/Logar.aspx",
+     "http": 200,
+     "bytes": 18861
+    }
+   ],
+   "achados_total": 20,
+   "valor": "ruído",
+   "achados_30d": 8,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "20 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "f260-curadoria-002": {
+   "nome": "Funbio — Programa Biodiversidade Litoral do Paraná",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://chamadas.funbio.org.br/planodemanejo-rppn",
+     "http": 200,
+     "bytes": 51860
+    },
+    {
+     "url": "https://chamadas.funbio.org.br/usopublico-rppn",
+     "http": 200,
+     "bytes": 52436
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-curadoria-003": {
+   "nome": "Movimento Bem Maior — Edital Futuro Bem Maior",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://editais.movimentobemmaior.org.br/2026/",
+     "http": 200,
+     "bytes": 39714
+    },
+    {
+     "url": "https://movimentobemmaior.org.br/",
+     "http": 200,
+     "bytes": 108535
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-curadoria-004": {
+   "nome": "Agência do Bem / Rede do Bem — Edital de Microprojetos",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://rededobem.org.br/editais/",
+     "http": 200,
+     "bytes": 62360
+    },
+    {
+     "url": "https://rededobem.org.br/editais-de-microprojetos",
+     "http": 200,
+     "bytes": 81539
+    }
+   ],
+   "achados_total": 20,
+   "valor": "ruído",
+   "achados_30d": 16,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "20 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    }
+   ]
+  },
+  "f260-curadoria-005": {
+   "nome": "Fundação Tide Setubal — Edital Territórios Clínicos",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://fundacaotidesetubal.org.br/editais/",
+     "http": 200,
+     "bytes": 89539
+    },
+    {
+     "url": "https://fundacaotidesetubal.org.br/transparencia-relatorios-anuais",
+     "http": 200,
+     "bytes": 90581
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "17 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-curadoria-007": {
+   "nome": "Banrisul Instituto Cultural e Social — Edital Merece!",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://banrisulcultural.com.br/editais/",
+     "http": 200,
+     "bytes": 80112
+    },
+    {
+     "url": "https://banrisulcultural.com.br/projeto/merece/",
+     "http": 200,
+     "bytes": 76412
+    }
+   ],
+   "achados_total": 5,
+   "valor": "baixo volume",
+   "achados_30d": 4,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "judiciario-tjgo": {
+   "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
+   "tipo": "diario_justica",
+   "saude": [
+    {
+     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs",
+     "erro": "judiciario",
+     "code": null,
+     "waf": null,
+     "causa": "A: RSS página 1: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: HTTP 403 pela ponte"
+    },
+    {
+     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs",
+     "erro": "judiciario",
+     "code": null,
+     "waf": null,
+     "causa": "A: carga inicial, página 7: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: HTTP 403 pela ponte"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "34 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "judiciario-cnj": {
+   "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
+   "tipo": "diario_justica",
+   "saude": [
+    {
+     "url": "https://www.cnj.jus.br/",
+     "http": 200,
+     "bytes": 1623180,
+     "itens": 48
+    }
+   ],
+   "achados_total": 2,
+   "valor": "baixo volume",
+   "achados_30d": 1,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que dje-tjgo, judiciario-cnj-tjgo",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "mpgo-destinacao": {
+   "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
+   "tipo": "ministerio_publico",
+   "saude": [],
+   "achados_total": 8,
+   "valor": "baixo volume",
+   "achados_30d": 7,
+   "cadencia": {
+    "cadencia_atual": 7,
+    "cadencia_recomendada": 7,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "CONGELADO",
+     "prova": "o mesmo achado repetido em 7 dias",
+     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
+  },
+  "mptgo-destinacao": {
+   "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
+   "tipo": "ministerio_publico",
+   "saude": [
+    {
+     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "http": 200,
+     "itens": 44
+    }
+   ],
+   "achados_total": 36,
+   "valor": "ruído",
+   "achados_30d": 14,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "36 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    }
+   ]
+  },
+  "mpu-destinacao": {
+   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
+   "tipo": "ministerio_publico",
+   "saude": [],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    }
+   ]
+  },
+  "plat-estaduais-go-gov": {
+   "nome": "Oportunidade Estaduais Governamentais de Goiás",
+   "tipo": "plataforma",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/cultura",
+     "http": 200
+    },
+    {
+     "url": "https://goias.gov.br/fapeg",
+     "http": 200
+    }
+   ],
+   "achados_total": 15,
+   "valor": "baixo volume",
+   "achados_30d": 1,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sexta"
+   },
+   "falhas": [
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-curadoria-009": {
+   "nome": "SECULT Goiás — chamamentos públicos da Lei 13.019/2014",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
+     "http": 200,
+     "bytes": 165044
+    },
+    {
+     "url": "https://goias.gov.br/cultura/editais/",
+     "http": 200,
+     "bytes": 215296
+    }
+   ],
+   "achados_total": 40,
+   "valor": "ruído",
+   "achados_30d": 40,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "40 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "TRABALHO DUPLICADO",
+     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
+     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
+    }
+   ]
+  },
+  "f260-curadoria-010": {
+   "nome": "MDHC / CONANDA — Chamamentos publicos de fomento a OSC",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais",
+     "http": 200,
+     "bytes": 237692
+    },
+    {
+     "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/governanca/transparencia-e-prestacao-de-contas/rol-de-responsaveis",
+     "http": 200,
+     "bytes": 208580
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-curadoria-011": {
+   "nome": "Fundacao Maria Emilia — Edital FME Transforma",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://mariaemilia.org.br/edital-fme-transforma/",
+     "http": 200,
+     "bytes": 112127
+    },
+    {
+     "url": "https://mariaemilia.org.br",
+     "http": 200,
+     "bytes": 170872
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-www-arapongas-pr-gov-br": {
+   "nome": "Querido Diário — diários oficiais municipais — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.arapongas.pr.gov.br/",
+     "http": 200,
+     "bytes": 201516
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-crcgo-org-br": {
+   "nome": "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://crcgo.org.br/",
+     "http": 200,
+     "bytes": 441430
+    },
+    {
+     "url": "https://www3.cfc.org.br/spw/PortalTransparencia/Consulta.aspx?CS=7DjWa47nCjc=",
+     "http": 200,
+     "bytes": 87312
+    }
+   ],
+   "achados_total": 4,
+   "valor": "baixo volume",
+   "achados_30d": 4,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": []
+  },
+  "f260-espalhado-rouanet-cultura-gov-br": {
+   "nome": "Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado)",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://rouanet.cultura.gov.br/",
+     "erro": "gaierror",
+     "code": null,
+     "waf": null,
+     "causa": "endereço não resolve (DNS) — URL errada ou domínio desativado"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    },
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "16 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-espalhado-www-ipora-pr-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE IPORA — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.ipora.pr.gov.br/",
+     "http": 200,
+     "bytes": 108859
+    },
+    {
+     "url": "https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp",
+     "http": 200,
+     "bytes": 201285
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-www-novohamburgo-rs-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.novohamburgo.rs.gov.br/",
+     "erro": "HTTPError",
+     "code": 403,
+     "waf": null,
+     "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "16 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-espalhado-sistema-mirassoldoeste-mt-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE MIRASSOL D'OESTE — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://sistema.mirassoldoeste.mt.gov.br/",
+     "erro": "URLError",
+     "code": null,
+     "waf": null,
+     "causa": "conexão recusada/derrubada — filtro de rede ou IP estrangeiro"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "16 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-espalhado-www-senadorpompeu-ce-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE SENADOR POMPEU — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.senadorpompeu.ce.gov.br/",
+     "http": 200,
+     "bytes": 162895
+    },
+    {
+     "url": "https://www.senadorpompeu.ce.gov.br/acessoainformacao.php",
+     "http": 200,
+     "bytes": 182818
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-carazinho-atende-net": {
+   "nome": "PNCP — MUNICIPIO DE CARAZINHO — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://carazinho.atende.net/",
+     "http": 200,
+     "bytes": 203720
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-www-detran-rj-gov-br": {
+   "nome": "PNCP — ESTADO DO RIO DE JANEIRO — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.detran.rj.gov.br/",
+     "http": 200,
+     "bytes": 81664
+    },
+    {
+     "url": "https://www.detran.rj.gov.br/transparencia/transparencia-outros/abertura-de-processos-peticionamento",
+     "http": 200,
+     "bytes": 119100
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-www-riopreto-sp-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE SAO JOSE DO RIO PRETO — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.riopreto.sp.gov.br/",
+     "http": 200,
+     "bytes": 1666378
+    },
+    {
+     "url": "https://radardatransparencia.atricon.org.br/",
+     "http": 200,
+     "bytes": 21836
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-www-rosariodosul-rs-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.rosariodosul.rs.gov.br/",
+     "erro": "HTTPError",
+     "code": 403,
+     "waf": "Cloudflare",
+     "causa": "bloqueio de robô pelo WAF Cloudflare"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "16 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-espalhado-www-bentogoncalves-rs-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE BENTO GONCALVES — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.bentogoncalves.rs.gov.br/",
+     "erro": "HTTPError",
+     "code": 403,
+     "waf": null,
+     "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter"
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "SILÊNCIO LONGO",
+     "prova": "16 leituras vazias seguidas",
+     "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    }
+   ]
+  },
+  "f260-espalhado-transparencia-cacoal-ro-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE CACOAL — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://transparencia.cacoal.ro.gov.br/",
+     "http": 200,
+     "bytes": 3294
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-www-itabaianinha-se-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE ITABAIANINHA — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.itabaianinha.se.gov.br/",
+     "http": 200,
+     "bytes": 142371
+    },
+    {
+     "url": "https://www.itabaianinha.se.gov.br/licitacoes",
+     "http": 200,
+     "bytes": 50563
+    }
+   ],
+   "achados_total": 8,
+   "valor": "baixo volume",
+   "achados_30d": 8,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": []
+  },
+  "f260-espalhado-transparencia-agilicloud-com-br": {
+   "nome": "PNCP — MUNICIPIO DE PARANATINGA — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://transparencia.agilicloud.com.br/",
+     "http": 200,
+     "bytes": 78659
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-www-ribeiraodasneves-mg-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE RIBEIRAO DAS NEVES — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.ribeiraodasneves.mg.gov.br/",
+     "http": 200,
+     "bytes": 37451
+    },
+    {
+     "url": "https://www.ribeiraodasneves.mg.gov.br/src/pages/transparencia.html",
+     "http": 200,
+     "bytes": 147432
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-www-santaluziadoparua-ma-gov-br": {
+   "nome": "ABCR — Associação Brasileira de Captadores — oportunidades (espalhado de edital validado)",
+   "tipo": "privada",
+   "saude": [
+    {
+     "url": "https://www.santaluziadoparua.ma.gov.br/",
+     "http": 200,
+     "bytes": 165630
+    },
+    {
+     "url": "https://www.santaluziadoparua.ma.gov.br/acessoainformacao.php",
+     "http": 200,
+     "bytes": 191698
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-transparencia-nobres-mt-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE NOBRES — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://transparencia.nobres.mt.gov.br/",
+     "http": 200,
+     "bytes": 78659
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-www-vilarica-mt-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE VILA RICA — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://www.vilarica.mt.gov.br/",
+     "http": 200,
+     "bytes": 196416
+    },
+    {
+     "url": "https://www.vilarica.mt.gov.br/Publicacoes/Audiencia-publica-13",
+     "http": 200,
+     "bytes": 91386
+    }
+   ],
+   "achados_total": 0,
+   "valor": "baixo volume",
+   "achados_30d": 0,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": null
+   },
+   "falhas": []
+  },
+  "f260-espalhado-carire-ce-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE CARIRE — oportunidades (espalhado de edital validado)",
+   "tipo": "site_oficial",
+   "saude": [
+    {
+     "url": "https://carire.ce.gov.br/",
+     "http": 200,
+     "bytes": 158741
+    },
+    {
+     "url": "https://carire.ce.gov.br/acessoainformacao.php",
+     "http": 200,
+     "bytes": 176837
+    }
+   ],
+   "achados_total": 16,
+   "valor": "baixo volume",
+   "achados_30d": 16,
+   "cadencia": {
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
+    "dia_forte": "sábado"
+   },
+   "falhas": []
+  }
+ }
+}

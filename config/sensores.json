@@ -335,6 +335,46 @@
    ],
    "o_que_procurar": "cadastro de entidades da PR-GO (MPF), editais do MPDFT, notícias do MPT nacional, o FDD (seleção em andamento) e as regras do CNMP",
    "leitor": "src/ministerios_publicos.py (parte MPU) — listagens, RSS, páginas avulsas e estado da página do FDD"
+  },
+  {
+   "id": "fontes-irmas",
+   "nome": "Fontes irmãs — sites oficiais que já renderam e nenhum motor vigiava",
+   "tipo": "site_oficial",
+   "nivel": "misto",
+   "uf": null,
+   "territorio": "BR",
+   "urls": [],
+   "urls_dinamicas": "fontes_irmas",
+   "max_paginas": 40,
+   "busca": null,
+   "confianca": "descoberta",
+   "o_que_procurar": "chamamentos, editais e seleções de projetos em domínios oficiais descobertos pelo conselho (10/10/2026)"
+  },
+  {
+   "id": "plataforma-wordpress",
+   "nome": "Adaptador WordPress — sites oficiais pela API pública",
+   "tipo": "api",
+   "nivel": "misto",
+   "uf": null,
+   "territorio": "BR",
+   "urls": [],
+   "max_paginas": 20,
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "posts de edital, chamamento e seleção dos últimos 45 dias"
+  },
+  {
+   "id": "plataforma-mapas-culturais",
+   "nome": "Adaptador Mapas Culturais — oportunidades com inscrição aberta",
+   "tipo": "api",
+   "nivel": "misto",
+   "uf": null,
+   "territorio": "BR",
+   "urls": [],
+   "max_paginas": 12,
+   "busca": null,
+   "confianca": "curada",
+   "o_que_procurar": "oportunidades culturais com inscrição aberta e data oficial de encerramento"
   }
  ],
  "nota_rede": "A rede deste ambiente não alcança os domínios; os sensores rodam no GitHub Actions. URLs 'curadas' são conferidas pelo próprio sensor (saúde HTTP) e trocadas quando três leituras seguidas não trazem nada.",
