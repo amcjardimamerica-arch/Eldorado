@@ -43,6 +43,9 @@ def montar() -> dict:
             av += [json.loads(l).get("avaliacao") or {} for l in lzma.decompress(Path(f).read_bytes()).decode().splitlines() if l.strip()]
         except Exception:
             pass
+    from .reset_pilotos import inicio_contagem   # 09/10 (titular): o quadro conta só a semana em vigor
+    _desde = inicio_contagem()
+    av = [a for a in av if str(a.get("em") or "") >= _desde]
     motivos = Counter("com_resultado" if int(a.get("uteis") or 0) > 0 else (a.get("motivo_do_insucesso") or "sem_registro") for a in av)
     ms = list(B.get("missoes") or [])
     durs = [d for d in (_dur(m.get("inicio"), m.get("fim")) for m in ms) if d is not None and d >= 0]
@@ -84,7 +87,8 @@ def montar() -> dict:
            "estado": "em atividade" if B.get("missao_atual") or (recente is not None and recente < 1800) else "aguardando o próximo voo",
            "ultimo_voo": {"voo_do_dia": P.get("voo_do_dia"), "em": P.get("em"), "missoes": len(P.get("missoes") or []), "abates": P.get("abates"),
                           "propostas": P.get("propostas")},
-           "fila": fila, "acumulado": acumulado, "missoes": missoes}
+           "fila": fila, "acumulado": acumulado, "missoes": missoes,
+           "contagem": {**(B.get("contagem") or {}), "missoes_contadas_desde": _desde}}
     SAIDA.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     return {"missoes_no_quadro": len(missoes), "acumulado": acumulado}
 

@@ -147,11 +147,26 @@ def aprender_consultas() -> dict:
     return {"consultas": len(por), "boas": len(boas), "ruins": len(ruins), "termos_bons": termos_bons[:6], "termos_ruins": termos_ruins[:6]}
 
 
+def _desde() -> str:
+    """09/10 (titular): o aprendizado a cada 100 conta DENTRO da semana (segunda 0h de Brasília ou o último pedido de
+    zeramento — src/reset_pilotos.py)."""
+    from ..reset_pilotos import inicio_contagem
+    return inicio_contagem()
+
+
+def _na_semana(xs: list[dict], desde: str) -> list[dict]:
+    return [x for x in xs if str(x.get("em") or x.get("inicio") or "") >= desde]
+
+
 def ciclo(forcar: bool = False) -> dict:
     E = _j(EST, {}); P = parametros(); feitos = []
     agora = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    desde = _desde()
+    if E.get("contagem_desde") != desde:                 # semana nova (ou pedido): os erros vistos recomeçam do zero
+        E["contagem_desde"] = desde; E["interceptador_erros_vistos"] = 0; E["espiao_erros_vistos"] = 0
     # ── INTERCEPTADOR
     ei, ti = _erros_interceptador()
+    ei, ti = _na_semana(ei, desde), _na_semana(ti, desde)
     novos = len(ei) - int(E.get("interceptador_erros_vistos", 0))
     if novos >= LOTE or (forcar and ei):
         lote = ei[-LOTE:]
@@ -173,6 +188,7 @@ def ciclo(forcar: bool = False) -> dict:
         feitos.append(diag); E["interceptador_erros_vistos"] = len(ei)
     # ── ESPIÃO
     ee, ta = _erros_espiao()
+    ee, ta = _na_semana(ee, desde), _na_semana(ta, desde)
     novos = len(ee) - int(E.get("espiao_erros_vistos", 0))
     if novos >= LOTE or (forcar and ee):
         lote = ee[-max(LOTE, 1000):]
@@ -269,10 +285,14 @@ def ciclo_criativo() -> dict:
     """A cada 100 pesquisas, uma estratégia nova para cada Piloto (sem regra fixa); mede a anterior."""
     import random
     P = parametros(); feito = {}
-    # ── ESPIÃO: pesquisas = avaliações de missão desde o reset
+    desde = _desde()
+    # ── ESPIÃO: pesquisas = avaliações de missão DA SEMANA (09/10: contadas dentro da semana)
     _, av = _erros_espiao()
+    av = _na_semana(av, desde)
     pe = P.setdefault("espiao", {}); est = pe.get("estrategia_criativa"); hist = pe.setdefault("estrategias_anteriores", [])
     n = len(av)
+    if est and est.get("contagem_desde") != desde:       # semana nova: a estratégia continua, a contagem recomeça
+        est["pesquisas_no_inicio"] = 0; est["contagem_desde"] = desde
     if not est or n - int(est.get("pesquisas_no_inicio") or 0) >= 100:
         if est:                                          # mede a estratégia que termina
             lote = av[int(est.get("pesquisas_no_inicio") or 0):]
@@ -282,21 +302,24 @@ def ciclo_criativo() -> dict:
             hist.append({"id": est["id"], "pesquisas": len(lote), "com_resultado": len(ok), "taxa": round(len(ok) / max(1, len(lote)), 3),
                          "elementos_bons": elems[:12], "pool": est.get("pool", [])})
             pe["estrategias_anteriores"] = hist[-30:]
-        est = _nova_estrategia_espiao(pe, hist); est["pesquisas_no_inicio"] = n
+        est = _nova_estrategia_espiao(pe, hist); est["pesquisas_no_inicio"] = n; est["contagem_desde"] = desde
         pe["estrategia_criativa"] = est; feito["espiao"] = est["id"]
     # 01/10: a estratégia em uso é sempre conferida contra as restrições fixas (um voo antigo gerou uma sem elas)
     _rf = pe.get("restricoes_fixas") or {}
     _limpo = [q for q in (est.get("pool") or []) if not _proibido(q, _rf)]
     if len(_limpo) != len(est.get("pool") or []):
         if len(_limpo) < 8:
-            _n0 = est.get("pesquisas_no_inicio"); est = _nova_estrategia_espiao(pe, hist); est["pesquisas_no_inicio"] = _n0
+            _n0 = est.get("pesquisas_no_inicio"); est = _nova_estrategia_espiao(pe, hist); est["pesquisas_no_inicio"] = _n0; est["contagem_desde"] = desde
             pe["estrategia_criativa"] = est; feito["espiao"] = est["id"] + " (refeita: havia consulta proibida)"
         else:
             est["pool"] = _limpo; pe["estrategia_criativa"] = est
     # ── INTERCEPTADOR: pesquisas = estudos desde o reset
     vs = [v for f in sorted(glob.glob(str(ROOT / "estado/interceptador/relatorios/*.json"))) for v in (_j(Path(f), {}).get("voos") or [])]
+    vs = _na_semana(vs, desde)
     pi = P.setdefault("interceptador", {}); ei = pi.get("estrategia_criativa"); hi = pi.setdefault("estrategias_anteriores", [])
     m = len(vs)
+    if ei and ei.get("contagem_desde") != desde:
+        ei["pesquisas_no_inicio"] = 0; ei["contagem_desde"] = desde
     if not ei or m - int(ei.get("pesquisas_no_inicio") or 0) >= 100:
         if ei:
             lote = vs[int(ei.get("pesquisas_no_inicio") or 0):]
@@ -310,7 +333,7 @@ def ciclo_criativo() -> dict:
         if melhor and melhor.get("rotas") and rnd.random() < 0.5:
             rotas = melhor["rotas"][:1] + [r for r in rotas if r != melhor["rotas"][0]]   # metade das vezes, parte da melhor
         ei = {"id": f"I{len(hi) + 1:03d}", "criada_em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "rotas": rotas,
-              "foco_area": rnd.choice(AREAS[:8]), "pesquisas_no_inicio": m}
+              "foco_area": rnd.choice(AREAS[:8]), "pesquisas_no_inicio": m, "contagem_desde": desde}
         pi["estrategia_criativa"] = ei; pi["rotas_ordem"] = rotas; feito["interceptador"] = ei["id"]
     PAR.write_text(json.dumps(P, ensure_ascii=False, indent=1), encoding="utf-8")
     _guardar_fixos(P)

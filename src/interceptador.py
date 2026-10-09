@@ -610,10 +610,20 @@ def _proximo_alvo_anterior() -> dict | None:
 def voo(ia) -> dict:
     """Um voo do Interceptador: um alvo, relatório ao pousar."""
     t0 = time.time()
+    try:                                        # 09/10 (titular): contagem semanal zerada pelo próprio Piloto, ao decolar
+        from .reset_pilotos import zerar_se_preciso as _zerar
+        _zerou = _zerar("interceptador")
+        if _zerou.get("zerou"):                 # o quadro da esquadrilha soma os dois bordos: republica já zerado
+            from .esquadrilha import _publicar as _pub_esq, bordo as _bordo_esq
+            _pub_esq(_bordo_esq())
+    except Exception as ex:
+        _zerou = {"erro": f"{type(ex).__name__}: {ex}"}
     a = proximo_alvo()
     est = load_json(ESTADO) if ESTADO.exists() else {"feitos": {}, "rodadas": []}
     est.setdefault("feitos", {}); est.setdefault("rodadas", [])
     rel = {"em": now_iso(), "papel": "Piloto - Interceptador", "modelo": "qwen3-8b", "parametros": PARAMETROS["regra"], "inicio": now_iso()}
+    if _zerou.get("zerou") or _zerou.get("erro"):
+        rel["contagem_semanal"] = _zerou
     from . import interceptador_ao_vivo as AV
     if a:
         AV.decolar(a)
@@ -827,6 +837,11 @@ def publicar_painel() -> dict:
     for f in sorted(RELATORIOS.glob("*.json")):
         voos += (load_json(f) or {}).get("voos", [])
     voos = [v for v in voos if v.get("alvo") or v.get("resultado")]
+    # 09/10 (titular): o painel conta só a semana em vigor (segunda 0h de Brasília ou o último pedido de zeramento)
+    from .reset_pilotos import inicio_contagem as _ini
+    _desde = _ini()
+    voos = [v for v in voos if str(v.get("em") or v.get("inicio") or "") >= _desde]
+    _cont = (load_json(PUB) if PUB.exists() else {}).get("contagem") or {}
     missoes = []
     for v in reversed(voos[-40:]):
         m = {k: v.get(k) for k in ("em", "modo", "tipo", "de", "alvo", "qualidade", "comprovados", "dispensados", "total", "nao_resolvidos",
@@ -867,6 +882,6 @@ def publicar_painel() -> dict:
                          "serve_como_fonte": dict(serve), "estrelas_de_ouro": ouro,
                          "fontes_novas_para_os_motores": sum(1 for v in voos if v.get("fonte_nova_para_os_motores")),
                          "tempo_medio_min": round(sum(tempos) / len(tempos) / 60, 1) if tempos else None},
-           "missoes": missoes}
+           "missoes": missoes, "contagem": {**_cont, "missoes_contadas_desde": _desde}}   # o carimbo "desde" só o zeramento grava
     write_json(PUB, pub)
     return pub["acumulado"]
