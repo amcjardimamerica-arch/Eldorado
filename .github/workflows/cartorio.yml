@@ -33,12 +33,16 @@ jobs:
         with: { python-version: "3.12" }
       - run: pip install -q pypdf pdfplumber || pip install -q pypdf
       - name: Certificar (degraus 0–2, sem IA; o resto vai ao Interceptador)
-        run: timeout 1800 python -m src.cartorio --limite "${{ github.event.inputs.limite || '40' }}" || echo "terminou com aviso"
+        run: |
+          mkdir -p estado/cartorio
+          set -o pipefail
+          timeout 1800 python -m src.cartorio --limite "${{ github.event.inputs.limite || '40' }}" 2>&1 | tee /tmp/cartorio.log || echo "terminou com aviso"
+          { date -u +%FT%TZ; tail -c 6000 /tmp/cartorio.log; } > estado/cartorio/ultima_execucao.log
       - name: Gravar só o que é do Cartório (à prova de conflito) e entregar os livros à esteira
         if: always()
         run: |
           git config user.name "cartorio-eldorado" && git config user.email "cartorio@eldorado"
-          rm -rf /tmp/c && mkdir -p /tmp/c && cp -r estado/cartorio /tmp/c/ 2>/dev/null || exit 0
+          rm -rf /tmp/c && mkdir -p /tmp/c && cp -r estado/cartorio /tmp/c/ 2>/dev/null || { echo "o Cartório não gerou saída"; exit 0; }
           cp docs/dados/cartorio.json /tmp/c/ 2>/dev/null || true
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main

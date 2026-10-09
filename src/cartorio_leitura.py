@@ -31,6 +31,10 @@ def regua(url: str | None) -> tuple[bool, str]:
     u = str(url or "")
     if not u.startswith("http"):
         return False, "sem endereço"
+    try:
+        urlsplit(u).hostname
+    except ValueError:
+        return False, "endereço malformado"
     if DOC_ORGAO.search(u):
         return True, "arquivo do edital anexado pelo órgão no PNCP"
     if VETOR.search(u):
@@ -50,7 +54,10 @@ def regua(url: str | None) -> tuple[bool, str]:
 
 
 def esfera_do_dominio(url: str) -> str | None:
-    h = (urlsplit(str(url or "")).hostname or "").lower()
+    try:
+        h = (urlsplit(str(url or "")).hostname or "").lower()
+    except ValueError:
+        return None
     if not h:
         return None
     if re.search(r"(^|\.)(gov\.br|in\.gov\.br)$", h) and not re.search(r"\.[a-z]{2}\.gov\.br$", h):
@@ -138,7 +145,10 @@ def links_de_documento(html: str, base: str) -> list[tuple[str, str]]:
     from urllib.parse import urljoin
     out = []
     for href, rot in DOC_LINK.findall(html or ""):
-        u = urljoin(base, href.strip())
+        try:
+            u = urljoin(base, href.strip()); urlsplit(u).hostname
+        except ValueError:
+            continue
         r = re.sub(r"<[^>]+>|\s+", " ", rot).strip()
         if not u.startswith("http"):
             continue
@@ -160,7 +170,10 @@ def links_de_saida(html: str, base: str) -> list[str]:
     hb = (urlsplit(base).hostname or "").lower()
     out = []
     for href, rot in DOC_LINK.findall(html or ""):
-        u = urljoin(base, href.strip()); h = (urlsplit(u).hostname or "").lower()
+        try:
+            u = urljoin(base, href.strip()); h = (urlsplit(u).hostname or "").lower()
+        except ValueError:
+            continue
         if not u.startswith("http") or not h or h == hb or VETOR.search(u):
             continue
         if re.search(r"(?i)edital|regulamento|inscri|chamamento|chamada|sele[çc][ãa]o|pr[êe]mio|programa", rot + " " + u):
