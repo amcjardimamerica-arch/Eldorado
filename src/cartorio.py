@@ -198,7 +198,9 @@ def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4) ->
             "faltavam": list(faltam), "em": _agora(), "versao": VERSAO, "link_oficial": None, "degrau": None, "como": None,
             "documentos": [], "itens": {}, "dispensas": {}, "fim": None, "encaminhado": None}
     if cert["balcao"] == "proprio":
-        cert["encaminhado"] = "motor próprio já lê o documento (Ministério Público / Judiciário)"; return cert
+        cert.update({"encaminhado": "motor próprio já lê o documento (Ministério Público / Judiciário)",
+                     "resolvidos": [], "ainda_faltam": list(faltam), "eficiencia": 0.0})
+        return cert
     fila = documentos(op, rede, maximo_docs)
     titulo = str(op.get("titulo") or "")
     lidos = 0
@@ -416,7 +418,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
         if op["_tipo"] == "estrela":
             from .criterio_selos import nivel
             ck = {k: v for k, v in (op.get("checklist") or {}).items()}
-            for k in cert["resolvidos"]:
+            for k in cert.get("resolvidos") or []:
                 ck[k] = item_checklist_de(cert, k)
             cert["selo_depois"] = nivel(ck)
             cert["selo_antes"] = nivel(op.get("checklist") or {})
