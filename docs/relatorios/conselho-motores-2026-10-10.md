@@ -55,7 +55,7 @@
 
 - chamadas.funbio.org.br (peso 12)
 - fundoecos.org.br (peso 12)
-- baoba.org.br (peso 12)
+- baoba.org.br (peso 11)
 - mariaemilia.org.br (peso 9)
 - resartis.org (peso 7)
 - fundacaogrupoboticario.org.br (peso 7)
