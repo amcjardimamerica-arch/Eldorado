@@ -1,6 +1,6 @@
 # Conselho dos motores — 2026-10-10
 
-145 motores avaliados; 90 com pelo menos uma falha.
+145 motores avaliados; 89 com pelo menos uma falha.
 
 ## Os sete prompts
 
@@ -34,63 +34,62 @@
 
 ## Falhas por tipo
 
-- SILÊNCIO LONGO: 45
-- VAZAMENTO: 35
+- SILÊNCIO LONGO: 46
+- VAZAMENTO: 34
 - CEGO: 26
 - CONGELADO: 18
 - RUÍDO: 18
-- PÁGINA VAZIA: 9
+- PÁGINA VAZIA: 10
 - INTERMITENTE: 2
 - ESTRANGULADO: 1
-- CUSTO SEM RETORNO: 1
 
 ## Cobertura (Dr. Otávio)
 
-74.5% das oportunidades vieram de fora dos motores: {'agregador/outra': 314, 'motor': 139, 'Piloto': 93}.
+74.8% das oportunidades vieram de fora dos motores: {'agregador/outra': 322, 'motor': 140, 'Piloto': 94}.
 
 
 ## Fontes irmãs (Profa. Clara)
 
-200 domínios oficiais já renderam e não têm motor. Os primeiros:
+203 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - fundopositivo.org.br (peso 15)
 - fundoecos.org.br (peso 12)
+- mariaemilia.org.br (peso 11)
 - chamadas.funbio.org.br (peso 11)
 - baoba.org.br (peso 11)
-- mariaemilia.org.br (peso 9)
+- institutoacp.org.br (peso 8)
 - fondationfrancoisschneider.org (peso 7)
 - resartis.org (peso 7)
 - fundacaogrupoboticario.org.br (peso 7)
+- zurich.com.br (peso 7)
 - blog.bondinho.com.br (peso 7)
 - itausocial.org.br (peso 6)
 - notasocial.com.br (peso 6)
-- institutoacp.org.br (peso 6)
 - goias365.com.br (peso 6)
 - institutolojasrenner.org.br (peso 6)
 - shop.aestheticamagazine.com (peso 5)
 - luppa.comidadoamanha.org (peso 5)
+- impactarte.com.br (peso 5)
+- fns.cnbb.org.br (peso 5)
 - itamarandibahoje.com.br (peso 5)
-- zurich.com.br (peso 5)
 - dopaonlineupload.procempa.com.br (peso 5)
 - sapl.arapongas.pr.leg.br (peso 5)
 - corrivus.com.br (peso 5)
 - institutogenesio.org.br (peso 5)
 - un.org (peso 5)
-- assai.com.br (peso 4)
-- iracemapolis.siscam.com.br (peso 4)
 
 ## Plataformas e inovações (Dr. Fábio)
 
-- WordPress: 46 órgãos
+- WordPress: 52 órgãos
 - Mapas Culturais: 9 órgãos
-- Diário municipal em lote (AGM/DOM): 5 órgãos
-- Portal de transparência de fornecedor: 14 órgãos
-- Sistemas de editais (Prosas/Editais): 34 órgãos
+- Diário municipal em lote (AGM/DOM): 7 órgãos
+- Portal de transparência de fornecedor: 15 órgãos
+- Sistemas de editais (Prosas/Editais): 38 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
 
-- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 46 órgãos WordPress e 9 instâncias de Mapas Culturais já conhecidos de uma vez.
+- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 52 órgãos WordPress e 9 instâncias de Mapas Culturais já conhecidos de uma vez.
 - **Detecção de mudança barata** — ler o sitemap.xml (lastmod) e os feeds RSS/Atom dos sites oficiais; só baixar a página quando muda. Alcance: permite vigiar 10× mais fontes no mesmo tempo de execução.
 - **Consulta inversa** — frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios. Alcance: cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo.
 - **Motor de fontes irmãs** — domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias. Alcance: implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia).
@@ -124,7 +123,7 @@
 
 ### Prefeituras das 50 maiores cidades de Goiás — portais de editais (`plat-prefeituras-50-go`) — ruído, 6 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 6 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **RUÍDO** (funil): 46 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **RUÍDO** (funil): 47 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
 ### MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos) (`mpgo-destinacao`) — baixo volume, 8 achados em 30 dias
@@ -133,12 +132,12 @@
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Assembleia Legislativa de Goiás — proposições (`alego-pl`) — baixo volume, 9 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 37 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 38 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Câmara Municipal de Goiânia — projetos de lei (`camara-goiania-pl`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 30 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 73 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 74 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### CNJ — destinações de penas e prestações pecuniárias (`cnj-destinacoes`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 26 de 27 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
@@ -250,7 +249,7 @@
 
 ### CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC (`plat-cnpq-extensao`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 19 de 19 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 41 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 42 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### FAPEG — Fundação de Amparo à Pesquisa de Goiás (`plat-fapeg`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 10 de 10 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
@@ -324,8 +323,12 @@
 - **RUÍDO** (funil): 20 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
+### CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024) (`judiciario-cnj`) — baixo volume, 1 achados em 30 dias
+- **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
+- **SILÊNCIO LONGO** (falso_verde): 14 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
 ### MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região) (`mptgo-destinacao`) — ruído, 15 achados em 30 dias
-- **RUÍDO** (funil): 41 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **RUÍDO** (funil): 42 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### SECULT Goiás — chamamentos públicos da Lei 13.019/2014 (`f260-curadoria-009`) — ruído, 40 achados em 30 dias
@@ -357,20 +360,17 @@
 ### Instituto Neoenergia (`f260-captacao-232`) — baixo volume, 9 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS (`plat-empresas-editais-incentivados`) — ruído, 158 achados em 30 dias
-- **RUÍDO** (funil): 503 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS (`plat-empresas-editais-incentivados`) — ruído, 159 achados em 30 dias
+- **RUÍDO** (funil): 525 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 
 ### SALIC — Lei Rouanet (Ministério da Cultura) (`plat-salic`) — ouro, 79 achados em 30 dias
 - **VAZAMENTO** (funil): perde 99% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Secult Goiás — Goyazes e Aldir Blanc (`plat-secult-go`) — ouro, 145 achados em 30 dias
-- **VAZAMENTO** (funil): perde 99% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
-
-### Motor do Piloto — busca aberta no terceiro setor (`plat-piloto-aberto`) — ouro, 569 achados em 30 dias
+### Motor do Piloto — busca aberta no terceiro setor (`plat-piloto-aberto`) — ouro, 563 achados em 30 dias
 - **VAZAMENTO** (funil): perde 99% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos) (`congresso-nacional`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 31 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 32 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Convênio com órgão público estadual (`f260-captacao-206`) — baixo volume, 0 achados em 30 dias
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
@@ -406,13 +406,10 @@
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO (`judiciario-tjgo`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 40 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 41 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024) (`judiciario-cnj`) — baixo volume, 1 achados em 30 dias
+### MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD) (`mpu-destinacao`) — baixo volume, 0 achados em 30 dias
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
-
-### Oportunidade Estaduais Governamentais de Goiás (`plat-estaduais-go-gov`) — baixo volume, 1 achados em 30 dias
-- **CUSTO SEM RETORNO** (redundancia): 157 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
 
 ### PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado) (`f260-espalhado-www-novohamburgo-rs-gov-br`) — baixo volume, 0 achados em 30 dias
 - **SILÊNCIO LONGO** (falso_verde): 16 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
@@ -454,6 +451,9 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Editais de ocupação cultural municipal (`f260-captacao-039`) — baixo volume, 2 achados em 30 dias
+Sem falha encontrada pelas quatro lentes motor a motor.
+
+### Secult Goiás — Goyazes e Aldir Blanc (`plat-secult-go`) — confirma, 145 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Motor de Recorrência — revisita as oportunidades identificadas (`recorrencia`) — confirma, 257 achados em 30 dias
@@ -540,7 +540,7 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 ### Movimento Bem Maior — Edital Futuro Bem Maior (`f260-curadoria-003`) — baixo volume, 0 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
-### MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD) (`mpu-destinacao`) — baixo volume, 0 achados em 30 dias
+### Oportunidade Estaduais Governamentais de Goiás (`plat-estaduais-go-gov`) — baixo volume, 2 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### MDHC / CONANDA — Chamamentos publicos de fomento a OSC (`f260-curadoria-010`) — baixo volume, 0 achados em 30 dias

@@ -8,9 +8,9 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 34,
- "testados": 28,
- "com_rota_nova": 12,
+ "cegos_da_1a_rodada": 35,
+ "testados": 29,
+ "com_rota_nova": 13,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
@@ -115,8 +115,8 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 503,
-   "achados_total_agora": 503,
+   "achados_total_1a": 525,
+   "achados_total_agora": 525,
    "no_fluxo": 4,
    "confirmadas": 0
   },
@@ -129,8 +129,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 46,
-   "achados_total_agora": 46,
+   "achados_total_1a": 47,
+   "achados_total_agora": 47,
    "no_fluxo": 9,
    "confirmadas": 0
   },
@@ -157,8 +157,8 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 41,
-   "achados_total_agora": 41,
+   "achados_total_1a": 42,
+   "achados_total_agora": 42,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -184,7 +184,7 @@
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 922
+ "exemplos_da_rede_de_rotas": 1011
 }
 ```
 
@@ -195,12 +195,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 74.5,
- "fora_dos_motores_pct_agora": 74.5,
+ "fora_dos_motores_pct_1a": 74.8,
+ "fora_dos_motores_pct_agora": 74.8,
  "origem": {
-  "agregador/outra": 314,
-  "motor": 139,
-  "Piloto": 93
+  "agregador/outra": 322,
+  "motor": 140,
+  "Piloto": 94
  },
  "dominios_so_de_agregador": [
   {
@@ -324,19 +324,19 @@
 
 ```json
 {
- "fontes_recebidas": 134,
+ "fontes_recebidas": 151,
  "por_origem": {
   "conselho (fontes irmãs)": 126,
-  "Cartório (site oficial certificado)": 8
+  "Cartório (site oficial certificado)": 25
  },
  "lidas_nas_ultimas_24h": 114,
  "dimensionamento": {
-  "fontes": 134,
+  "fontes": 151,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 3,
-  "cobertura_diaria": 134,
+  "cobertura_diaria": 151,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -374,14 +374,14 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 46,
+   "orgaos": 52,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
+    "anater.org",
     "baoba.org.br",
     "brasil.aperam.com",
-    "casafluminense.org.br",
-    "cavalcante.go.gov.br",
-    "childfundbrasil.org.br"
+    "cachoeiraalta.go.gov.br",
+    "casafluminense.org.br"
    ]
   },
   "Mapas Culturais": {
@@ -396,17 +396,18 @@
    ]
   },
   "Diário municipal em lote (AGM/DOM)": {
-   "orgaos": 5,
+   "orgaos": 7,
    "exemplos": [
     "diariooficial.abc.go.gov.br",
     "diariooficial.goiania.go.gov.br",
     "diariooficial.vitoria.es.gov.br",
+    "divinopolisdotocantins.to.gov.br",
     "dom.mossoro.rn.gov.br",
     "goiania.go.gov.br"
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 14,
+   "orgaos": 15,
    "exemplos": [
     "acessoinformacao.com.br",
     "bndes.gov.br",
@@ -417,14 +418,14 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 34,
+   "orgaos": 38,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
     "arapongas.pr.gov.br",
     "banrisulcultural.com.br",
     "bonde.org",
-    "chamamentos.serpro.gov.br"
+    "cajuru.sp.gov.br"
    ]
   }
  }
