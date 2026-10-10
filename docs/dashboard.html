@@ -698,7 +698,7 @@ box-shadow:0 1px 3px #0002}
 .ed-item.suspeita{border-left:3px solid var(--alerta)}
 .ed-suspeita{font-size:11.5px;background:#FFF8E8;border:1px solid #F3C58A;border-radius:8px;padding:4px 8px;margin-bottom:6px}
 .linha-val{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
-.selo-val{font-size:10.5px;font-weight:800;letter-spacing:.03em;padding:2px 8px;border-radius:10px;border:1px solid;white-space:nowrap}
+.selo-val{font-size:10.5px;font-weight:800;letter-spacing:.03em;padding:2px 8px;border-radius:10px;border:1px solid;white-space:nowrap}.selo-val.val-manual{background:#B3261E;color:#fff;border-color:#B3261E}
 .selo-val.val-ok{color:#1E7E4B;border-color:#1E7E4B;background:#E9F7EF}
 .selo-val.val-nao{color:#8a5a00;border-color:#E0B060;background:#FFF8E8}
 .selo-val-det{font-size:11px;color:var(--suave)}
@@ -1718,6 +1718,8 @@ function salvaDecisao(id,estado,extra){
 }
 function seloDe(id){return (D.analise_editais||{})[id]||null;}
 function seloVal(e){const v=e.validacao||{};const ok=e.selo_validacao==="validada";
+  // 11/10 (titular): VERMELHO — o edital não pôde ser lido nem pelo Chrome: validação e exclusão manuais
+  if(e.selo_validacao==="validacao_manual") return `<span class="selo-val val-manual" title="${esc(e.motivo_tipo||"")}">⛔ VALIDAÇÃO MANUAL</span><span class="selo-val-det">${esc(String(e.motivo_tipo||"").replace(/^VALIDAÇÃO MANUAL:\s*/,"").slice(0,180))} — confira e, se não servir, exclua manualmente</span>`;
   const det=ok?`objeto ✓ · prazo ${e.validacao.prazo_dispensado?"dispensado ("+esc(String(e.validacao.prazo_dispensado).slice(0,40))+")":(br(e.validacao.prazo_valor||e.fim||"")||"✓")} · site oficial ✓`
              :`falta: ${(v.faltam||[]).join(", ")} — na fila da verificação semanal da IA`;
   const site=v.site?` · <a href="${esc(v.site)}" target=_blank rel="noopener noreferrer">site oficial ↗</a>`:"";
