@@ -1,23 +1,23 @@
 {
-  "em": "2026-10-10T19:07:10+00:00",
+  "em": "2026-10-10T19:13:33+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 1,
-      "uteis": 0,
+      "achados": 6,
+      "uteis": 4,
       "motivos": {
-        "nada_no_crivo": 39,
+        "nada_no_crivo": 37,
         "sem_texto": 1
       },
-      "efetividade": 0.0
+      "efetividade": 0.67
     }
   },
   "licoes": [
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 8384,
+      "vezes": 8350,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -30,7 +30,7 @@
       ],
       "ultima": "2026-10-10",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 8384 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 8350 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -68,6 +68,20 @@
       "ultima": "2026-09-24",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
       "regra": "o motor 'empresas-incentivadas' falha por vieram resultados, mas nenhum era oportunidade de verdade há 130 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "piloto-aberto",
+      "motivo": "busca_vazia",
+      "vezes": 121,
+      "tipos": [
+        "cacar_oportunidade",
+        "descobrir",
+        "aposta",
+        "espionar"
+      ],
+      "ultima": "2026-10-10",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 121 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -108,22 +122,8 @@
     },
     {
       "motor": "piloto-aberto",
-      "motivo": "busca_vazia",
-      "vezes": 80,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir",
-        "aposta",
-        "espionar"
-      ],
-      "ultima": "2026-10-10",
-      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 80 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "piloto-aberto",
       "motivo": "sem_texto",
-      "vezes": 49,
+      "vezes": 45,
       "tipos": [
         "aposta",
         "descobrir",
@@ -131,7 +131,7 @@
       ],
       "ultima": "2026-10-10",
       "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 49 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 45 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -181,9 +181,23 @@
   "melhorias_pendentes": [
     {
       "motor": "piloto-aberto",
-      "sugestao": "O motor deveria extrair e validar automaticamente o trecho relevante do texto, garantindo que as informações sobre editais, patrocínios, doações e incentivos fiscais sejam identificadas e apresentadas com precisão.",
+      "sugestao": "Incluir uma função para extrair e validar trechos completos dos editais, garantindo que as informações como prazos, valores e objetivos sejam corretamente identificados e utilizados para avaliação.",
+      "efetividade_na_hora": 1.0,
+      "em": "2026-10-10T19:13",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor poderia melhorar ao extrair automaticamente trechos específicos de cada link, como prazos, valores, objetos e páginas, para facilitar a análise e a identificação de oportunidades.",
+      "efetividade_na_hora": 0.75,
+      "em": "2026-10-10T19:12",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deveria identificar e extrair informações específicas sobre editais, patrocínios, doações e incentivos fiscais, incluindo prazos, valores, objetos e links de inscrição, para que os usuários possam avaliar se um a",
       "efetividade_na_hora": 0.0,
-      "em": "2026-10-10T19:06",
+      "em": "2026-10-10T19:00",
       "aplicada": false
     },
     {
@@ -304,26 +318,12 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-10T04:19",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "Incluir mecanismo para extrair e validar trechos dos editais automaticamente, para evitar lacunas de informações e aumentar a precisão na análise.",
-      "efetividade_na_hora": 0.5,
-      "em": "2026-10-10T02:36",
-      "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "Incluir informações detalhadas sobre o objeto, prazo, valor e página de cada edital para facilitar a avaliação de compatibilidade com a missão da associação.",
-      "efetividade_na_hora": 0.33,
-      "em": "2026-10-10T02:20",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 494,
-  "entregues_ao_claude": 424,
+  "editais_tratados": 499,
+  "entregues_ao_claude": 425,
   "ultima_faxina": {
-    "em": "2026-10-10T19:07:10+00:00",
+    "em": "2026-10-10T19:13:33+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 12,
     "achados_descartados_removidos": 2415,
