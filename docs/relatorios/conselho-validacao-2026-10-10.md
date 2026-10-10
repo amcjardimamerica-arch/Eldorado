@@ -8,22 +8,26 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 33,
- "testados": 17,
- "com_rota_nova": 8,
+ "cegos_da_1a_rodada": 34,
+ "testados": 22,
+ "com_rota_nova": 9,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
   "f260-captacao-218",
   "f260-captacao-223",
   "f260-captacao-227",
+  "f260-captacao-229",
+  "f260-captacao-230",
   "f260-captacao-233",
   "f260-captacao-234",
   "f260-captacao-235",
+  "f260-captacao-222",
   "f260-curadoria-008",
-  "f260-espalhado-acessoainformacao-cavalcante-go-gov-br"
+  "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
+  "f260-captacao-228"
  ],
- "aguardando_afinador": 16
+ "aguardando_afinador": 12
 }
 ```
 
@@ -34,13 +38,20 @@
 
 ```json
 {
- "motores_de_ruido_1a": 18,
+ "motores_de_ruido_1a": 19,
  "ruido_agora": [
+  {
+   "motor": "plat-gife",
+   "achados_total_1a": 45,
+   "achados_total_agora": 45,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
   {
    "motor": "empresas-incentivadas",
    "achados_total_1a": 42,
    "achados_total_agora": 42,
-   "no_fluxo": 4,
+   "no_fluxo": 3,
    "confirmadas": 0
   },
   {
@@ -108,9 +119,9 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 433,
-   "achados_total_agora": 433,
-   "no_fluxo": 4,
+   "achados_total_1a": 454,
+   "achados_total_agora": 454,
+   "no_fluxo": 3,
    "confirmadas": 0
   },
   {
@@ -124,7 +135,7 @@
    "motor": "plat-prefeituras-50-go",
    "achados_total_1a": 42,
    "achados_total_agora": 42,
-   "no_fluxo": 9,
+   "no_fluxo": 8,
    "confirmadas": 0
   },
   {
@@ -174,10 +185,10 @@
 
 ```json
 {
- "pontos_com_redundancia": 9,
+ "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 0,
- "exemplos_da_rede_de_rotas": 419
+ "exemplos_da_rede_de_rotas": 554
 }
 ```
 
@@ -188,12 +199,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 65.0,
- "fora_dos_motores_pct_agora": 65.0,
+ "fora_dos_motores_pct_1a": 74.6,
+ "fora_dos_motores_pct_agora": 74.6,
  "origem": {
-  "agregador/outra": 308,
-  "motor": 212,
-  "Piloto": 86
+  "agregador/outra": 320,
+  "Piloto": 89,
+  "motor": 139
  },
  "dominios_so_de_agregador": [
   {
@@ -225,26 +236,6 @@
    "oportunidades": 2
   },
   {
-   "dominio": "penapolis.sp.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "chamamentos.itapevi.sp.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "indaiatuba.sp.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "monteazulpaulista.sp.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "fccr.sp.gov.br",
-   "oportunidades": 1
-  },
-  {
    "dominio": "performeurope.eu",
    "oportunidades": 1
   },
@@ -254,6 +245,26 @@
   },
   {
    "dominio": "veranstaltungen.emma-pf.de",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "itacoatiara.am.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "gulbenkian.pt",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "hto.ifsp.edu.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "www2.fab.mil.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "finep.gov.br",
    "oportunidades": 1
   }
  ],
@@ -271,7 +282,7 @@
  "dia_de_referencia": "2026-10-10",
  "ativos": 159,
  "lidos_ontem": 100,
- "lidos_hoje": 41,
+ "lidos_hoje": 44,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
   "plat-rede-filantropia"
@@ -317,19 +328,19 @@
 
 ```json
 {
- "fontes_recebidas": 128,
+ "fontes_recebidas": 129,
  "por_origem": {
-  "conselho (fontes irmãs)": 123,
+  "conselho (fontes irmãs)": 124,
   "Cartório (site oficial certificado)": 5
  },
- "lidas_nas_ultimas_24h": 51,
+ "lidas_nas_ultimas_24h": 67,
  "dimensionamento": {
-  "fontes": 128,
+  "fontes": 129,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 3,
-  "cobertura_diaria": 128,
+  "cobertura_diaria": 129,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -338,22 +349,22 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-10T11:41:22+00:00",
-   "duracao_s": 41,
+   "ultima": "2026-10-10T12:16:50+00:00",
+   "duracao_s": 48,
    "achados": 0
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-10T11:41:56+00:00",
-   "duracao_s": 34,
-   "achados": 1
+   "ultima": "2026-10-10T12:17:46+00:00",
+   "duracao_s": 56,
+   "achados": 2
   },
   "outras-oportunidades-3": {
-   "ultima": "2026-10-10T11:43:16+00:00",
-   "duracao_s": 79,
-   "achados": 7
+   "ultima": "2026-10-10T12:18:52+00:00",
+   "duracao_s": 66,
+   "achados": 2
   }
  },
- "com_achado": 2
+ "com_achado": 4
 }
 ```
 
@@ -367,7 +378,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 40,
+   "orgaos": 42,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "baoba.org.br",
