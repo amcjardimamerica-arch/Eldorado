@@ -9,8 +9,8 @@
 ```json
 {
  "cegos_da_1a_rodada": 33,
- "testados": 14,
- "com_rota_nova": 7,
+ "testados": 17,
+ "com_rota_nova": 8,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
@@ -19,9 +19,11 @@
   "f260-captacao-227",
   "f260-captacao-233",
   "f260-captacao-234",
-  "f260-curadoria-008"
+  "f260-captacao-235",
+  "f260-curadoria-008",
+  "f260-espalhado-acessoainformacao-cavalcante-go-gov-br"
  ],
- "aguardando_afinador": 19
+ "aguardando_afinador": 16
 }
 ```
 
@@ -175,7 +177,7 @@
  "pontos_com_redundancia": 9,
  "redundancia_vazia": [],
  "dominios_via_ponte": 0,
- "exemplos_da_rede_de_rotas": 319
+ "exemplos_da_rede_de_rotas": 419
 }
 ```
 

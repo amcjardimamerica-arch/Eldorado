@@ -1,19 +1,19 @@
 {
- "em": "2026-10-10T13:00:32+00:00",
+ "em": "2026-10-10T13:05:38+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
   "motores": 145,
   "alterar_rota": 77,
-  "rota_nova": 11,
+  "rota_nova": 13,
   "via_ponte": 0,
-  "exemplos_da_rede": 319
+  "exemplos_da_rede": 419
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    1.9111
+    1.5933
    ],
    [
     "tok:unidades",
@@ -25,7 +25,7 @@
    ],
    [
     "gov:True",
-    0.7707
+    0.7276
    ],
    [
     "tok:assuntos",
@@ -62,14 +62,6 @@
   ],
   "piores_sinais": [
    [
-    "tok:propostas",
-    -0.2895
-   ],
-   [
-    "tok:pgt",
-    -0.3618
-   ],
-   [
     "origem:câmara",
     -0.4727
    ],
@@ -79,19 +71,27 @@
    ],
    [
     "tipo:privada",
-    -0.5135
+    -0.4924
+   ],
+   [
+    "tok:edital",
+    -0.5148
+   ],
+   [
+    "raiz:False",
+    -0.5936
    ],
    [
     "via:ponte",
-    -0.5182
+    -0.6174
    ],
    [
     "gov:False",
-    -1.1563
+    -1.3621
    ],
    [
     "origem:padrão",
-    -1.5941
+    -1.6113
    ]
   ]
  },
@@ -731,8 +731,27 @@
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.in.gov.br/web/dou/-/aviso-de-selecao-publica-735913080"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 19,
+    "aprendido_em": "2026-10-10T13:03:06+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T13:03:06+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.in.gov.br/web/dou/-/aviso-de-selecao-publica-735913080",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 19,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-235": {
    "nome": "Instituto Lojas Renner",
@@ -747,7 +766,12 @@
    },
    "historico": [],
    "rota_aprendida": null,
-   "afinado": null
+   "afinado": {
+    "em": "2026-10-10T13:03:57+00:00",
+    "testes": 21,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
   },
   "plat-fapeg": {
    "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
@@ -792,7 +816,12 @@
    },
    "historico": [],
    "rota_aprendida": null,
-   "afinado": null
+   "afinado": {
+    "em": "2026-10-10T13:04:28+00:00",
+    "testes": 24,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
   },
   "f260-captacao-221": {
    "nome": "Fundação Banco do Brasil",
@@ -806,8 +835,27 @@
     "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.fbb.org.br/feed"
+    ],
+    "via": "direto",
+    "origem": "padrão",
+    "pontos": 9,
+    "aprendido_em": "2026-10-10T13:04:55+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T13:04:55+00:00",
+    "testes": 13,
+    "melhor": {
+     "url": "https://www.fbb.org.br/feed",
+     "via": "direto",
+     "origem": "padrão",
+     "pontos": 9,
+     "formato": "sitemap/feed"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-224": {
    "nome": "Fundação Telefônica Vivo",
@@ -822,7 +870,12 @@
    },
    "historico": [],
    "rota_aprendida": null,
-   "afinado": null
+   "afinado": {
+    "em": "2026-10-10T13:05:13+00:00",
+    "testes": 12,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
   },
   "f260-captacao-226": {
    "nome": "Instituto Natura",
@@ -852,7 +905,12 @@
    },
    "historico": [],
    "rota_aprendida": null,
-   "afinado": null
+   "afinado": {
+    "em": "2026-10-10T13:05:38+00:00",
+    "testes": 14,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
   },
   "f260-curadoria-005": {
    "nome": "Fundação Tide Setubal — Edital Territórios Clínicos",
