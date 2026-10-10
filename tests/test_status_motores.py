@@ -16,7 +16,8 @@ class TesteStatusMotores(unittest.TestCase):
         self.assertEqual(self.S.status_de({"id": "a", "ultima_leitura": "2026-10-01T14:00:00+00:00", "dias": [{"d": h, "cor": "azul"}]}, h)["luz"], "verde")
         self.assertEqual(self.S.status_de({"id": "b", "ultima_leitura": "2026-10-01T14:00:00+00:00", "dias": [{"d": h, "cor": "amarelo", "n": 3}]}, h)["luz"], "verde")
         self.assertEqual(self.S.status_de({"id": "c", "ultima_leitura": "2026-10-01T14:00:00+00:00", "dias": [{"d": h, "cor": "vermelho"}]}, h)["luz"], "vermelho")
-        self.assertEqual(self.S.status_de({"id": "d", "ultima_leitura": "2026-09-30T14:00:00+00:00", "dias": [{"d": h, "cor": "cinza"}]}, h)["luz"], "cinza")
+        self.assertEqual(self.S.status_de({"id": "d", "ultima_leitura": "2026-09-30T14:00:00+00:00", "dias": [{"d": h, "cor": "cinza"}]}, h)["luz"], "vermelho")
+        # 10/10 (titular): cinza agora é só INATIVO; motor ativo há mais de 26 h sem ler é FALHA
 
     def test_falha_parcial_e_vermelho(self):
         h = "2026-10-01"; self.S._DIARIO = {"plat-x": {h: {"cor": "amarelo", "falhas": 2, "achados": 5}}}

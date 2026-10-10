@@ -40,12 +40,57 @@ def _j(p: Path, padrao):
         return padrao
 
 
+try:
+    _AGENDA = json.loads((ROOT / "config/agenda_motores.json").read_text(encoding="utf-8")).get("motores") or {}
+except Exception:  # noqa: BLE001
+    _AGENDA = {}
+
+
 def _brt(iso) -> datetime | None:
     try:
         d = datetime.fromisoformat(str(iso).replace("Z", "+00:00"))
         return (d if d.tzinfo else d.replace(tzinfo=timezone.utc)).astimezone(BRT)
     except Exception:
         return None
+
+
+JANELA_HORAS = 26                                  # motor ativo lê todo dia: mais de 26 h sem ler é falha
+
+
+def _ultima_real(p: dict, ult):
+    """A leitura mais recente entre o painel, a esquadra e (no Interceptador/Espião) o registro de voo."""
+    cands = [ult]
+    e = _ESQ.get(p.get("id")) or _ESQ.get("plat-" + str(p.get("id"))) or {}
+    cands.append(_brt(e.get("ultima")))
+    if p.get("id") == "piloto-interceptador":
+        cands.append(_brt(_j(ROOT / "docs/dados/interceptador.json", {}).get("em")))
+    if p.get("id") in ("piloto-aberto", "piloto-espiao"):
+        cands.append(_brt(_j(ROOT / "docs/dados/espiao.json", {}).get("em")))
+    cands = [c for c in cands if c]
+    return max(cands) if cands else None
+
+
+def monitor(p: dict, ult, cor_dia: str, falha: str, dia: dict, hoje: str | None = None) -> tuple[str, str, object]:
+    """verde = FUNCIONANDO (leu nas últimas 26 h, sem falha) · vermelho = FALHA (a última leitura falhou, ou motor ativo
+    passou de 26 h sem ler) · cinza = INATIVO (desativado/agregado a outro motor, ou nunca leu)."""
+    ag = (_AGENDA.get(p.get("id")) or _AGENDA.get("plat-" + str(p.get("id"))) or {})
+    ult = _ultima_real(p, ult)
+    if str(ag.get("dias")) == "inativo" or ag.get("agregado_a"):
+        return "cinza", "inativo — " + (f"agregado ao motor {ag['agregado_a']}" if ag.get("agregado_a") else "desativado na agenda"), ult
+    if not ult:
+        return "cinza", "inativo — nunca leu", ult
+    agora = datetime.now(BRT)
+    if hoje and hoje != agora.date().isoformat():          # referência de outro dia (testes, reprocessamento): fim daquele dia
+        agora = datetime.fromisoformat(hoje + "T23:59:00").replace(tzinfo=BRT)
+    horas = (agora - ult).total_seconds() / 3600
+    quando = ult.strftime("%d/%m %H:%M")
+    if cor_dia == "vermelho" and ult.date().isoformat() == agora.date().isoformat():
+        return "vermelho", f"falha na leitura de {quando}" + (f" — {falha}" if falha else ""), ult
+    if horas > JANELA_HORAS:
+        dias_ = int(horas // 24)
+        return "vermelho", f"falha — não lê há {dias_} dia(s) ({int(horas)} h); última leitura {quando}", ult
+    n = int((dia or {}).get("n") or 0)
+    return "verde", f"funcionando — última leitura {quando}" + (f" · {n} achado(s)" if n else " · sem oportunidade nova") + (f" (atenção: {falha})" if falha else ""), ult
 
 
 def status_de(p: dict, hoje: str) -> dict:
@@ -144,7 +189,11 @@ def status_de(p: dict, hoje: str) -> dict:
     else:
         dia_lido = {"estado": "pendente", "texto": "o dia ainda não foi lido" + (" — exige acesso pelo Brasil" if pend_br else "")}
     obs = (_j(OBS, {}).get("motores") or {}).get(p.get("id")) or []
+    # 10/10 (titular): MONITORAMENTO EM TRÊS ESTADOS — funcionamento · falha · inatividade
+    luz_do_dia, resultado_do_dia = luz, resultado
+    luz, resultado, ult = monitor(p, ult, cor_dia, falha, dia, hoje)
     return {"id": p.get("id"), "nome": p.get("nome"), "luz": luz, "resultado": resultado, "leitura_do_dia": dia_lido,
+            "luz_do_dia": luz_do_dia, "resultado_do_dia": resultado_do_dia,
             "observacoes": obs,
             "ultima_leitura": ult.isoformat(timespec="minutes") if ult else None,
             "agenda": " ".join(x for x in (str(p.get("agenda_dias") or ""), str(p.get("agenda_hora") or "")) if x and x != "None") or None}
@@ -162,6 +211,8 @@ def run() -> dict:
     agora = datetime.now(BRT); hoje = agora.date().isoformat()
     motores = [status_de(p, hoje) for p in (M.get("oficiais") or []) + (M.get("plataformas") or []) if p.get("id")]
     cont = {c: sum(1 for m in motores if m["luz"] == c) for c in ("verde", "vermelho", "cinza")}
+    cont["legenda"] = {"verde": "funcionando (leu nas últimas 26 h)", "vermelho": "falha (leitura com erro ou mais de 26 h sem ler)",
+                       "cinza": "inativo (desativado, agregado a outro motor ou nunca leu)"}
     out = {"gerado_em": agora.isoformat(timespec="minutes"), "proxima_atualizacao": (agora + timedelta(hours=CADA_HORAS)).isoformat(timespec="minutes"),
            "a_cada_horas": CADA_HORAS, "regra": __doc__.split("Não existe")[0].strip(), "contagem": cont, "motores": motores}
     SAIDA.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")

@@ -4714,8 +4714,9 @@ window.abreDiaPiloto=function(p,k){
 };
 setTimeout(()=>{ try{ carregaAchadosPilotos(); }catch(e){} }, 2500);
 setInterval(()=>{ try{ carregaAchadosPilotos(); }catch(e){} }, 120000);
-/* STATUS DOS MOTORES — COR NA LATERAL DIREITA (titular, 01/10): verde = coletou hoje (com ou sem dados) · vermelho = algum erro ou
-   falha na coleta · cinza = não rodou. Atualizado a cada 6 horas (docs/dados/status_motores.json); sem o arquivo, a mesma
+/* STATUS DOS MOTORES — COR NA LATERAL DIREITA (titular, 10/10): painel de MONITORAMENTO em três estados —
+   verde = FUNCIONANDO (leu nas últimas 26 h) · vermelho = FALHA (leitura com erro ou motor ativo há mais de 26 h sem ler) ·
+   cinza = INATIVO (desativado, agregado a outro motor ou nunca leu). Atualizado a cada 6 horas (docs/dados/status_motores.json); sem o arquivo, a mesma
    regra é aplicada ao último dado do painel. */
 window._STM=null;
 window.carregaStatusMotores=async function(){ try{ const r=await fetch("dados/status_motores.json?v="+Date.now()); if(r.ok){ window._STM=await r.json(); if(typeof desenhaMotores==="function") desenhaMotores(); } }catch(e){} };
@@ -4723,8 +4724,9 @@ window.statusMotor=function(o){
   const s=((window._STM||{}).motores||[]).find(m=>m.id===o.id);
   if(s) return {luz:s.luz, resultado:s.resultado, ultima:s.ultima_leitura, obs:s.observacoes||[]};
   const hoje=new Date(Date.now()-3*3600e3).toISOString().slice(0,10), d=(o.dias||[]).find(x=>x.d===hoje)||{};
-  const luz=d.cor==="vermelho"?"vermelho":(d.cor==="verde"||String(o.ultima_leitura||"").slice(0,10)===hoje)?"verde":"cinza";
-  return {luz, resultado:luz==="verde"?(d.n?d.n+" achado(s)":"sem dados novos"):luz==="vermelho"?"falha na coleta":"ainda não rodou hoje", ultima:o.ultima_leitura||null};
+  const ult=o.ultima_leitura?new Date(o.ultima_leitura):null, h=ult?(Date.now()-ult.getTime())/3600e3:null;
+  const luz=!ult?"cinza":(d.cor==="vermelho"||h>26)?"vermelho":"verde";
+  return {luz, resultado:luz==="verde"?"funcionando"+(d.n?" · "+d.n+" achado(s)":""):luz==="vermelho"?(h>26?"falha — mais de 26 h sem ler":"falha na leitura"):"inativo — nunca leu", ultima:o.ultima_leitura||null};
 };
 setTimeout(()=>{ try{ carregaStatusMotores(); }catch(e){} }, 2000);
 setInterval(()=>{ try{ carregaStatusMotores(); }catch(e){} }, 10*60*1000);
@@ -4888,7 +4890,8 @@ function desenhaMotores(){
     `;};   /* 28/09 (titular): as "últimas 3" por dia repetiam a mesma oportunidade — a lista única fica em "Oportunidades encontradas" */
   const trintaDias=calendarioMotor;
   ofRows.sort((a,b)=>(a.rank||99)-(b.rank||99));
-  const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Motores regulares <span class=meta>${ofRows.length} · numerados: diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado</span></div>
+  const oficiaisHtml=ofRows.length?`<div class="mt-fam"><div class="mt-famt">Motores regulares <span class=meta>${ofRows.length} · numerados: diários oficiais → APIs → secretarias e órgãos → sites do terceiro setor → GIFE e Patrocínio Privado</span>${(()=>{const L=ofRows.map(o=>statusMotor(o).luz);const n=c=>L.filter(x=>x===c).length;
+      return `<div class=meta style="margin-top:3px" title="monitoramento de funcionamento dos motores (10/10)"><span class="mt-st mt-st-verde" style="display:inline;padding:1px 6px">● ${n("verde")} funcionando</span> <span class="mt-st mt-st-vermelho" style="display:inline;padding:1px 6px">● ${n("vermelho")} com falha</span> <span class="mt-st mt-st-cinza" style="display:inline;padding:1px 6px">● ${n("cinza")} inativo(s)</span> <span class=meta>· funcionando = leu nas últimas 26 h · falha = erro ou mais de 26 h sem ler · inativo = desativado ou nunca leu</span></div>`;})()}</div>
     ${ofRows.map(o=>{const S=statusMotor(o);const st=[S.luz];const ativo=mtAtivo(o.id);const E=window._ESQ||{};const ab=(E.abates||{})[o.id];const voa=E.missao_atual&&E.missao_atual.motor===o.id;
       return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">${ab&&ab.n?estrelasDeAbate(ab.n,(ab.ultimos||[]).filter(x=>x.em===new Date().toISOString().slice(0,10)).length,ab):""}
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
@@ -4896,7 +4899,7 @@ function desenhaMotores(){
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
         ${(o.agregados||[]).length?`<div class=meta title="03/10 (titular): sites que eram motores próprios e foram reunidos a este motor; continuam lidos pelo fluxo 16">Agrega: ${o.agregados.map(a=>esc(a.nome||a.site)+(a.rota?` (${esc(a.rota)})`:"")).join(" · ")}${o.indicios_agregados?` — ${o.indicios_agregados} indício(s)`:""}</div>`:""}
         ${S.luz!=="verde"&&o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag ${o.diagnostico.exige_brasil?"br":""}" title="diagnóstico individual da última leitura">${o.diagnostico.exige_brasil?"🇧🇷":"⚠"} ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
-        <div class="mt-st mt-st-${S.luz}"><b>${S.luz==="verde"?"Coletou hoje":S.luz==="vermelho"?"Falha na coleta":"Não rodou hoje"}</b> · última leitura ${S.ultima?br(S.ultima.slice(0,10))+" "+S.ultima.slice(11,16):"—"} · ${esc(S.resultado.replace(/^(coletou hoje|falha na coleta de hoje|não rodou hoje) — ?/,""))}</div>
+        <div class="mt-st mt-st-${S.luz}"><b title="${esc(S.resultado||"")}">${S.luz==="verde"?"Funcionando":S.luz==="vermelho"?"Falha":"Inativo"}</b> · última leitura ${S.ultima?br(S.ultima.slice(0,10))+" "+S.ultima.slice(11,16):"—"} · ${esc(S.resultado.replace(/^(coletou hoje|falha na coleta de hoje|não rodou hoje) — ?/,""))}</div>
         ${(S.obs||[]).length?`<div class="mt-obs"><b>Observações</b><ul>${S.obs.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
         <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a>${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+(o.produto==="empresas"?" empresa(s) mapeada(s)":" edital(is)"):""}</div>
         ${trintaDias(o)}
