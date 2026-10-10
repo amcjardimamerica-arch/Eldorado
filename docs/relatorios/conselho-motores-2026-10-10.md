@@ -45,7 +45,7 @@
 
 ## Cobertura (Dr. Otávio)
 
-75.9% das oportunidades vieram de fora dos motores: {'agregador/outra': 314, 'Piloto': 90, 'motor': 128}.
+76.0% das oportunidades vieram de fora dos motores: {'agregador/outra': 316, 'Piloto': 90, 'motor': 128}.
 
 
 ## Fontes irmãs (Profa. Clara)
@@ -57,15 +57,17 @@
 - fundoecos.org.br (peso 12)
 - chamadas.funbio.org.br (peso 11)
 - mariaemilia.org.br (peso 9)
+- fondationfrancoisschneider.org (peso 7)
 - resartis.org (peso 7)
 - fundacaogrupoboticario.org.br (peso 7)
 - blog.bondinho.com.br (peso 7)
 - itausocial.org.br (peso 6)
 - notasocial.com.br (peso 6)
 - goias365.com.br (peso 6)
+- institutolojasrenner.org.br (peso 6)
 - luppa.comidadoamanha.org (peso 5)
-- fondationfrancoisschneider.org (peso 5)
 - itamarandibahoje.com.br (peso 5)
+- zurich.com.br (peso 5)
 - dopaonlineupload.procempa.com.br (peso 5)
 - sapl.arapongas.pr.leg.br (peso 5)
 - corrivus.com.br (peso 5)
@@ -75,12 +77,10 @@
 - institutoacp.org.br (peso 4)
 - iracemapolis.siscam.com.br (peso 4)
 - ecrie.com.br (peso 4)
-- folhauberaba.com.br (peso 4)
-- institutolojasrenner.org.br (peso 4)
 
 ## Plataformas e inovações (Dr. Fábio)
 
-- WordPress: 43 órgãos
+- WordPress: 45 órgãos
 - Mapas Culturais: 9 órgãos
 - Diário municipal em lote (AGM/DOM): 5 órgãos
 - Portal de transparência de fornecedor: 14 órgãos
@@ -89,7 +89,7 @@
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
 
-- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 43 órgãos WordPress e 9 instâncias de Mapas Culturais já conhecidos de uma vez.
+- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 45 órgãos WordPress e 9 instâncias de Mapas Culturais já conhecidos de uma vez.
 - **Detecção de mudança barata** — ler o sitemap.xml (lastmod) e os feeds RSS/Atom dos sites oficiais; só baixar a página quando muda. Alcance: permite vigiar 10× mais fontes no mesmo tempo de execução.
 - **Consulta inversa** — frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios. Alcance: cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo.
 - **Motor de fontes irmãs** — domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias. Alcance: implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia).

@@ -9,8 +9,8 @@
 ```json
 {
  "cegos_da_1a_rodada": 35,
- "testados": 24,
- "com_rota_nova": 9,
+ "testados": 27,
+ "com_rota_nova": 12,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
@@ -29,7 +29,7 @@
   "f260-captacao-242",
   "f260-espalhado-rouanet-cultura-gov-br"
  ],
- "aguardando_afinador": 11
+ "aguardando_afinador": 8
 }
 ```
 
@@ -190,7 +190,7 @@
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 650
+ "exemplos_da_rede_de_rotas": 743
 }
 ```
 
@@ -201,10 +201,10 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 75.9,
- "fora_dos_motores_pct_agora": 75.9,
+ "fora_dos_motores_pct_1a": 76.0,
+ "fora_dos_motores_pct_agora": 76.0,
  "origem": {
-  "agregador/outra": 314,
+  "agregador/outra": 316,
   "Piloto": 90,
   "motor": 128
  },
@@ -330,19 +330,19 @@
 
 ```json
 {
- "fontes_recebidas": 131,
+ "fontes_recebidas": 133,
  "por_origem": {
   "conselho (fontes irmãs)": 125,
-  "Cartório (site oficial certificado)": 6
+  "Cartório (site oficial certificado)": 8
  },
  "lidas_nas_ultimas_24h": 67,
  "dimensionamento": {
-  "fontes": 131,
+  "fontes": 133,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 3,
-  "cobertura_diaria": 131,
+  "cobertura_diaria": 133,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -380,7 +380,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 43,
+   "orgaos": 45,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "baoba.org.br",
