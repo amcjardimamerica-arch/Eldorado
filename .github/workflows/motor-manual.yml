@@ -50,8 +50,8 @@ jobs:
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
             python -m src.motores_manuais definir "$MOTOR" "$ESTADO" "$MOTIVO"
-            git add config/motores_manuais.json docs/dados/motores_manuais.json estado/piloto_pausado estado/interceptador/pausado 2>/dev/null || true
-            git add -A estado/piloto_pausado estado/interceptador 2>/dev/null || true
+            # -A sobre as pastas: grava o arquivo novo, o alterado e o APAGADO (pausa dos Pilotos) sem falhar por caminho inexistente
+            git add -A config/motores_manuais.json docs/dados/motores_manuais.json estado/
             git diff --cached --quiet && { echo "nada mudou"; break; }
             git commit -q -m "fogo: $MOTOR $ESTADO pelo titular" && git push -q origin HEAD:main && { echo "gravado ($i)"; break; }
             sleep 7
