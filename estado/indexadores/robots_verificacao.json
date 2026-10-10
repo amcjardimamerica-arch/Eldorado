@@ -1,0 +1,98 @@
+{
+ "em": "2026-10-10T12:52:48+00:00",
+ "regra": "10/10 (titular, motor 40 — Mapa das OSC): a marcação \"o site proíbe robôs\" não tinha verificação registrada. Este\nscript lê o robots.txt, testa se cada caminho é permitido para robôs (RFC 9309, via urllib.robotparser), e — só nos\ncaminhos PERMITIDOS — abre a página e procura endpoints de dados (API/JSON) citados no código dela. Nada é lido em\ncaminho proibido. Resultado: estado/indexadores/robots_verificacao.json.\n",
+ "sites": {
+  "mapa-osc": {
+   "robots_http": 200,
+   "robots_txt": "User-agent: *\nDisallow:\n",
+   "caminhos": [
+    {
+     "caminho": "/",
+     "permitido_para_robos": true,
+     "http": 200,
+     "tipo": "text/html; charset=UTF-8",
+     "tamanho": 58604,
+     "links_edital": 0
+    },
+    {
+     "caminho": "/editais",
+     "permitido_para_robos": true,
+     "http": 200,
+     "tipo": "text/html; charset=UTF-8",
+     "tamanho": 34837,
+     "links_edital": 1
+    },
+    {
+     "caminho": "/editais.html",
+     "permitido_para_robos": true,
+     "http": 404,
+     "tipo": "",
+     "tamanho": 0,
+     "links_edital": 0
+    },
+    {
+     "caminho": "/api/",
+     "permitido_para_robos": true,
+     "http": 200,
+     "tipo": "text/html; charset=UTF-8",
+     "tamanho": 41,
+     "json": false
+    },
+    {
+     "caminho": "/api/editais",
+     "permitido_para_robos": true,
+     "http": 404,
+     "tipo": "",
+     "tamanho": 0,
+     "json": false
+    },
+    {
+     "caminho": "/api/edital",
+     "permitido_para_robos": true,
+     "http": 404,
+     "tipo": "",
+     "tamanho": 0,
+     "json": false
+    },
+    {
+     "caminho": "/api/osc/",
+     "permitido_para_robos": true,
+     "http": 404,
+     "tipo": "",
+     "tamanho": 0,
+     "json": false
+    },
+    {
+     "caminho": "/visualizar-osc.html",
+     "permitido_para_robos": true,
+     "http": 404,
+     "tipo": "",
+     "tamanho": 0,
+     "links_edital": 0
+    },
+    {
+     "caminho": "/dados-abertos",
+     "permitido_para_robos": true,
+     "http": null,
+     "tipo": "URLError",
+     "tamanho": 0,
+     "links_edital": 0
+    },
+    {
+     "caminho": "/arquivos/",
+     "permitido_para_robos": true,
+     "http": null,
+     "tipo": "URLError",
+     "tamanho": 0,
+     "links_edital": 0
+    }
+   ],
+   "endpoints_encontrados": [
+    "/api/api/documentation",
+    "https://mapaosc.ipea.gov.br/api/api/",
+    "https://mapaosc.ipea.gov.br/api/api/documentation"
+   ],
+   "conclusao": "há caminho PERMITIDO com dados: o motor pode sair da coleta assistida — /editais"
+  }
+ }
+}

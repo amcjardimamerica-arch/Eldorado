@@ -8,15 +8,19 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 34,
- "testados": 6,
+ "cegos_da_1a_rodada": 33,
+ "testados": 10,
  "com_rota_nova": 4,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
-  "f260-captacao-218"
+  "f260-captacao-218",
+  "f260-captacao-223",
+  "f260-captacao-227",
+  "f260-captacao-233",
+  "f260-curadoria-008"
  ],
- "aguardando_afinador": 28
+ "aguardando_afinador": 23
 }
 ```
 
@@ -31,9 +35,9 @@
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
-   "achados_total_1a": 24,
-   "achados_total_agora": 24,
-   "no_fluxo": 0,
+   "achados_total_1a": 42,
+   "achados_total_agora": 42,
+   "no_fluxo": 4,
    "confirmadas": 0
   },
   {
@@ -143,8 +147,8 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 36,
-   "achados_total_agora": 36,
+   "achados_total_1a": 37,
+   "achados_total_agora": 37,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -170,7 +174,7 @@
  "pontos_com_redundancia": 9,
  "redundancia_vazia": [],
  "dominios_via_ponte": 0,
- "exemplos_da_rede_de_rotas": 112
+ "exemplos_da_rede_de_rotas": 222
 }
 ```
 
@@ -181,12 +185,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 66.1,
- "fora_dos_motores_pct_agora": 66.1,
+ "fora_dos_motores_pct_1a": 65.0,
+ "fora_dos_motores_pct_agora": 65.0,
  "origem": {
   "agregador/outra": 308,
-  "motor": 202,
-  "Piloto": 85
+  "motor": 212,
+  "Piloto": 86
  },
  "dominios_so_de_agregador": [
   {
@@ -264,7 +268,7 @@
  "dia_de_referencia": "2026-10-10",
  "ativos": 159,
  "lidos_ontem": 100,
- "lidos_hoje": 34,
+ "lidos_hoje": 41,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
   "plat-rede-filantropia"
@@ -272,9 +276,6 @@
  "ainda_sem_primeira_leitura": [
   "motor-gife",
   "motor-patrocinio",
-  "outras-oportunidades-1",
-  "outras-oportunidades-2",
-  "outras-oportunidades-3",
   "outras-oportunidades-4",
   "outras-oportunidades-5",
   "outras-oportunidades-6",
@@ -313,27 +314,43 @@
 
 ```json
 {
- "fontes_recebidas": 125,
+ "fontes_recebidas": 128,
  "por_origem": {
-  "conselho (fontes irmãs)": 120,
+  "conselho (fontes irmãs)": 123,
   "Cartório (site oficial certificado)": 5
  },
- "lidas_nas_ultimas_24h": 0,
+ "lidas_nas_ultimas_24h": 51,
  "dimensionamento": {
-  "fontes": 125,
+  "fontes": 128,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 3,
-  "cobertura_diaria": 125,
+  "cobertura_diaria": 128,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
   },
   "le_todas_no_dia": true
  },
- "clones_que_ja_leram": {},
- "com_achado": 0
+ "clones_que_ja_leram": {
+  "outras-oportunidades-1": {
+   "ultima": "2026-10-10T11:41:22+00:00",
+   "duracao_s": 41,
+   "achados": 0
+  },
+  "outras-oportunidades-2": {
+   "ultima": "2026-10-10T11:41:56+00:00",
+   "duracao_s": 34,
+   "achados": 1
+  },
+  "outras-oportunidades-3": {
+   "ultima": "2026-10-10T11:43:16+00:00",
+   "duracao_s": 79,
+   "achados": 7
+  }
+ },
+ "com_achado": 2
 }
 ```
 
