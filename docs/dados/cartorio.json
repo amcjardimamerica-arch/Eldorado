@@ -1,22 +1,22 @@
 {
- "em": "2026-10-10T12:53:50+00:00",
+ "em": "2026-10-10T13:01:14+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
-  "certidoes": 200,
-  "nesta_execucao": 3,
+  "certidoes": 201,
+  "nesta_execucao": 2,
   "fila_estrelas": 489,
   "fila_livros": 2246,
-  "itens_que_faltavam": 1593,
+  "itens_que_faltavam": 1605,
   "itens_obtidos": 748,
   "itens_dispensados": 121,
-  "eficiencia_itens": 0.546,
+  "eficiencia_itens": 0.541,
   "com_link_oficial": 156,
-  "taxa_link_oficial": 0.78,
+  "taxa_link_oficial": 0.776,
   "certidoes_completas": 23,
   "para_o_interceptador": 157,
-  "para_o_chrome": 19,
+  "para_o_chrome": 20,
   "selos_que_mudaram": {
    "bronze → ouro": 1,
    "sem selo → ouro": 3,
@@ -32,76 +32,76 @@
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 125,
+   "faltavam": 126,
    "obtidos": 77,
    "dispensados": 0,
-   "eficiencia": 0.616
+   "eficiencia": 0.611
   },
   "Prazo de inscrição": {
-   "faltavam": 103,
+   "faltavam": 104,
    "obtidos": 25,
    "dispensados": 36,
-   "eficiencia": 0.592
+   "eficiencia": 0.587
   },
   "Resultado": {
-   "faltavam": 161,
+   "faltavam": 162,
    "obtidos": 34,
    "dispensados": 67,
-   "eficiencia": 0.627
+   "eficiencia": 0.623
   },
   "Prazo de recurso": {
-   "faltavam": 169,
+   "faltavam": 170,
    "obtidos": 73,
    "dispensados": 3,
-   "eficiencia": 0.45
+   "eficiencia": 0.447
   },
   "Valor": {
-   "faltavam": 119,
+   "faltavam": 120,
    "obtidos": 54,
    "dispensados": 13,
-   "eficiencia": 0.563
+   "eficiencia": 0.558
   },
   "Órgão / financiador": {
-   "faltavam": 105,
+   "faltavam": 106,
    "obtidos": 71,
    "dispensados": 0,
-   "eficiencia": 0.676
+   "eficiencia": 0.67
   },
   "Território": {
-   "faltavam": 113,
+   "faltavam": 114,
    "obtidos": 60,
    "dispensados": 0,
-   "eficiencia": 0.531
+   "eficiencia": 0.526
   },
   "Esfera": {
-   "faltavam": 115,
+   "faltavam": 116,
    "obtidos": 88,
    "dispensados": 0,
-   "eficiencia": 0.765
+   "eficiencia": 0.759
   },
   "Requisitos": {
-   "faltavam": 161,
+   "faltavam": 162,
    "obtidos": 90,
    "dispensados": 0,
-   "eficiencia": 0.559
+   "eficiencia": 0.556
   },
   "Anexos": {
-   "faltavam": 141,
+   "faltavam": 142,
    "obtidos": 71,
    "dispensados": 0,
-   "eficiencia": 0.504
+   "eficiencia": 0.5
   },
   "Destinação": {
-   "faltavam": 157,
+   "faltavam": 158,
    "obtidos": 13,
    "dispensados": 2,
-   "eficiencia": 0.096
+   "eficiencia": 0.095
   },
   "Área de atuação": {
-   "faltavam": 124,
+   "faltavam": 125,
    "obtidos": 92,
    "dispensados": 0,
-   "eficiencia": 0.742
+   "eficiencia": 0.736
   }
  },
  "por_balcao": {
@@ -130,12 +130,12 @@
    "taxa_link_oficial": 0.893
   },
   "pista": {
-   "certidoes": 25,
+   "certidoes": 26,
    "com_link_oficial": 1,
-   "faltavam": 218,
+   "faltavam": 230,
    "resolvidos": 16,
-   "eficiencia": 0.073,
-   "taxa_link_oficial": 0.04
+   "eficiencia": 0.07,
+   "taxa_link_oficial": 0.038
   },
   "privado": {
    "certidoes": 12,
@@ -156,12 +156,12 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 145,
-   "faltavam": 1146,
+   "certidoes": 146,
+   "faltavam": 1158,
    "resolvidos": 622,
-   "eficiencia": 0.543,
+   "eficiencia": 0.537,
    "com_link_oficial": 111,
-   "taxa_link_oficial": 0.766
+   "taxa_link_oficial": 0.76
   },
   "refeitas": {
    "certidoes": 55,
@@ -198,38 +198,38 @@
    "taxa_link_oficial": 1.0
   },
   "cartório v4": {
-   "certidoes": 37,
-   "faltavam": 280,
+   "certidoes": 36,
+   "faltavam": 276,
    "resolvidos": 104,
-   "eficiencia": 0.371,
-   "com_link_oficial": 29,
-   "taxa_link_oficial": 0.784
+   "eficiencia": 0.377,
+   "com_link_oficial": 28,
+   "taxa_link_oficial": 0.778
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 157,
-   "faltavam": 1302,
+   "certidoes": 159,
+   "faltavam": 1318,
    "resolvidos": 754,
-   "eficiencia": 0.579,
-   "com_link_oficial": 121,
-   "taxa_link_oficial": 0.771
+   "eficiencia": 0.572,
+   "com_link_oficial": 122,
+   "taxa_link_oficial": 0.767
   }
  },
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 134,
+   "vezes": 135,
    "renderam": 99,
    "itens": 638,
    "links_oficiais": 103,
-   "taxa_de_acerto": 0.739
+   "taxa_de_acerto": 0.733
   },
   "2": {
    "nome": "anexos completos",
-   "vezes": 22,
+   "vezes": 23,
    "renderam": 3,
    "itens": 3,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.136
+   "taxa_de_acerto": 0.13
   },
   "3": {
    "nome": "página oficial e citados",
@@ -299,20 +299,20 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 55,
-   "faltavam": 409,
+   "certidoes": 56,
+   "faltavam": 421,
    "resolvidos": 123,
-   "eficiencia": 0.301,
-   "entraram_aqui": 69,
+   "eficiencia": 0.292,
+   "entraram_aqui": 70,
    "esgotadas": 0
   },
   "bronze": {
    "nome": "Bronze → prata",
-   "certidoes": 7,
-   "faltavam": 46,
+   "certidoes": 8,
+   "faltavam": 50,
    "resolvidos": 20,
-   "eficiencia": 0.435,
-   "entraram_aqui": 7,
+   "eficiencia": 0.4,
+   "entraram_aqui": 8,
    "esgotadas": 0
   },
   "prata": {
@@ -21086,25 +21086,60 @@
     "Valor",
     "Anexos"
    ],
-   "tentativa": 4,
-   "versao": "cartório v4 (09/10/2026)",
+   "tentativa": 2,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
-   "estagio": null,
-   "estagio_inicio": null,
+   "estagio": "bronze",
+   "estagio_inicio": "bronze",
    "esgotada": null,
    "eficiencia": 0.0,
    "encaminhado": "Interceptador: 4 item(ns) não estão no documento oficial lido",
    "selo_antes": "bronze",
    "selo_depois": "bronze",
-   "em": "2026-10-09T21:19:21+00:00",
+   "em": "2026-10-10T13:01:07+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "Prefeitura de Cajuru",
    "fim": null,
    "itens": {},
    "dispensas": {},
-   "abordagens": [],
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-09T21:19:21+00:00",
+     "ganhou": [],
+     "legado": true
+    },
+    {
+     "n": 2,
+     "nome": "anexos completos",
+     "em": "2026-10-10T13:01:07+00:00",
+     "ganhou": [],
+     "legado": null
+    }
+   ],
    "documentos": [
+    {
+     "url": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-729541283",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mec/pt-br",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
     {
      "url": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-729541283",
      "degrau": 0,
@@ -23024,6 +23059,82 @@
    "documentos": []
   },
   {
+   "id": "op-ea89efb7da33",
+   "tipo": "livro",
+   "titulo": "FAPESP – Trans-Atlantic Platform (T-AP) Call for Proposals 2026 – Preparing for Tomorrow (P4T)",
+   "balcao": "pista",
+   "link_oficial": null,
+   "degrau": null,
+   "como": null,
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [],
+   "ainda_faltam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "sem_estrela",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 0.0,
+   "encaminhado": "Chrome (último recurso): o robots.txt do site oficial proíbe a leitura automática",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-10T13:01:13+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "FAPESP",
+   "fim": null,
+   "itens": {},
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-10T13:01:13+00:00",
+     "ganhou": [],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://fapesp.br/18135",
+     "degrau": 0,
+     "como": "pista (vetor): lida só para achar o link do financiador",
+     "motivo": null,
+     "falha": "robots_proibe",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    }
+   ]
+  },
+  {
    "id": "op-aff71483f39b",
    "tipo": "livro",
    "titulo": "Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática",
@@ -24404,13 +24515,13 @@
    "bronze": 69,
    "prata": 1456
   },
-  "devidas_nesta_hora": 2696,
+  "devidas_nesta_hora": 2693,
   "promovidas_nesta_execucao": 0,
   "sem_material_agora": 0,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
-   "chaves": 1034,
-   "sites": 1922
+   "chaves": 1036,
+   "sites": 1924
   },
   "intervalo_horas": 12,
   "limite": 10,

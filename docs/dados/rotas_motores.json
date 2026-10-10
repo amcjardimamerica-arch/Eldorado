@@ -1,27 +1,39 @@
 {
- "em": "2026-10-10T12:52:48+00:00",
+ "em": "2026-10-10T13:00:32+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
   "motores": 145,
   "alterar_rota": 77,
-  "rota_nova": 6,
+  "rota_nova": 11,
   "via_ponte": 0,
-  "exemplos_da_rede": 222
+  "exemplos_da_rede": 319
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    0.9855
+    1.9111
+   ],
+   [
+    "tok:unidades",
+    1.0401
    ],
    [
     "tok:mpf",
     0.957
    ],
    [
-    "tok:unidades",
-    0.8919
+    "gov:True",
+    0.7707
+   ],
+   [
+    "tok:assuntos",
+    0.6643
+   ],
+   [
+    "tok:receitafederal",
+    0.645
    ],
    [
     "tok:portarias",
@@ -32,66 +44,54 @@
     0.5885
    ],
    [
-    "tok:receitafederal",
-    0.5301
+    "tok:inscricoes",
+    0.5847
+   ],
+   [
+    "tok:cultura",
+    0.5701
    ],
    [
     "tok:sjgo",
     0.52
    ],
    [
-    "tok:assuntos",
-    0.4053
-   ],
-   [
-    "tok:cultura",
-    0.3359
-   ],
-   [
-    "tok:bens",
-    0.2984
-   ],
-   [
-    "tok:imprensa",
-    0.2955
-   ],
-   [
-    "tok:inscricoes",
-    0.275
+    "tok:programa",
+    0.436
    ]
   ],
   "piores_sinais": [
    [
-    "raiz:False",
-    -0.4948
+    "tok:propostas",
+    -0.2895
    ],
    [
-    "tipo:privada",
-    -0.5273
+    "tok:pgt",
+    -0.3618
    ],
    [
-    "tipo:site_oficial",
-    -0.5785
+    "origem:câmara",
+    -0.4727
    ],
    [
     "tipo:legislativo",
-    -0.5964
+    -0.4786
    ],
    [
-    "tld:br",
-    -0.7267
+    "tipo:privada",
+    -0.5135
    ],
    [
-    "sapl:False",
-    -0.7449
+    "via:ponte",
+    -0.5182
    ],
    [
     "gov:False",
-    -0.9889
+    -1.1563
    ],
    [
     "origem:padrão",
-    -1.573
+    -1.5941
    ]
   ]
  },
@@ -511,8 +511,27 @@
    "historico": [
     "v"
    ],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://portal.al.go.leg.br/"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 21,
+    "aprendido_em": "2026-10-10T12:57:25+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T12:57:25+00:00",
+    "testes": 20,
+    "melhor": {
+     "url": "https://portal.al.go.leg.br/",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 21,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-060": {
    "nome": "Escolinha de natação/paradesporto adaptado",
@@ -526,8 +545,27 @@
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 33,
+    "aprendido_em": "2026-10-10T12:57:52+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T12:57:52+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 33,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-119": {
    "nome": "Destinação de IR pessoa jurídica para Fundo da Criança",
@@ -541,8 +579,27 @@
     "motivo": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 33,
+    "aprendido_em": "2026-10-10T12:58:12+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T12:58:12+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 33,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "plat-prosas-premios": {
    "nome": "Prosas — prêmios, concursos e cursos para OSCs",
@@ -571,8 +628,27 @@
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 33,
+    "aprendido_em": "2026-10-10T12:58:36+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T12:58:36+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 33,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-229": {
    "nome": "Instituto Votorantim",
@@ -602,7 +678,12 @@
    },
    "historico": [],
    "rota_aprendida": null,
-   "afinado": null
+   "afinado": {
+    "em": "2026-10-10T12:58:39+00:00",
+    "testes": 13,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
   },
   "f260-captacao-068": {
    "nome": "Emenda estadual para projeto educativo em Goiás",
@@ -616,8 +697,27 @@
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://goias.gov.br/cultura/categoria/politica-nacional-aldir-blanc/"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 17,
+    "aprendido_em": "2026-10-10T13:00:32+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T13:00:32+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://goias.gov.br/cultura/categoria/politica-nacional-aldir-blanc/",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 17,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-207": {
    "nome": "Acordo de cooperação sem transferência financeira",

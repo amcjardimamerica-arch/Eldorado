@@ -9,8 +9,8 @@
 ```json
 {
  "cegos_da_1a_rodada": 33,
- "testados": 10,
- "com_rota_nova": 4,
+ "testados": 14,
+ "com_rota_nova": 7,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
@@ -18,9 +18,10 @@
   "f260-captacao-223",
   "f260-captacao-227",
   "f260-captacao-233",
+  "f260-captacao-234",
   "f260-curadoria-008"
  ],
- "aguardando_afinador": 23
+ "aguardando_afinador": 19
 }
 ```
 
@@ -174,7 +175,7 @@
  "pontos_com_redundancia": 9,
  "redundancia_vazia": [],
  "dominios_via_ponte": 0,
- "exemplos_da_rede_de_rotas": 222
+ "exemplos_da_rede_de_rotas": 319
 }
 ```
 
