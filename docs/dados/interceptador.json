@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-10T00:50:35+00:00",
+  "em": "2026-10-10T01:07:14+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-10T00:34:03+00:00",
+  "ultimo_voo": "2026-10-10T00:53:16+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,83 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 137,
+    "missoes": 138,
     "validadas": 3,
-    "parciais": 16,
+    "parciais": 17,
     "insuficientes": 118,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 73,
+      "sim": 74,
       "nao": 30
     },
     "estrelas_de_ouro": 0,
     "fontes_novas_para_os_motores": 6,
-    "tempo_medio_min": 8.4
+    "tempo_medio_min": 8.5
   },
   "missoes": [
+    {
+      "em": "2026-10-10T00:53:16+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Prefeitura de Goiatuba — Edital nº 004/2026 — Goiás / Goiatuba",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://goiatuba.go.gov.br/wp-content/uploads/2025/05/Edital-004-2025-Resultado-de-Merito.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprova que a Prefeitura de Goiatuba está homologando o resultado da Lei Complementar Aldir Blanc, o que pode indicar a disponibilidade de recursos para organizações da sociedade civil.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se está elegível para receber recursos da Lei Complementar Aldir Blanc, conforme o edital, e se alinha ao objeto do edital, que é a educação e cultura.",
+        "proximo_passo": "Consultar os anexos do edital para entender os critérios de elegibilidade e os requisitos específicos para acesso aos recursos.",
+        "risco": "A falta de informações sobre prazos, requisitos e destinação dos recursos pode impedir a associação de se candidatar adequadamente."
+      },
+      "erro": null,
+      "segundos": 837,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 4,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Prazo de recurso, Valor, Requisitos",
+      "id": "op-op-ff20213995f2",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Homologar o resultado da análise de mérito da Lei Complementar Aldir Blanc (Lei nº 14.399/2022), conforme Edital nº 004/2025.",
+          "trecho": "Dispõe acerca da homologação e publicação do RESULTADO ANÁLISE DE MÉRITO da Lei Complementar Aldir Blanc (Lei nº 14.399/2022), conforme Edital nº nº 004/2025.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Secretaria Municipal de Educação e Cultura (SEMEC) do Município de Goiatuba-GO",
+          "trecho": "A Secretaria Municipal de Educação e Cultura ( SEMEC) do Município de Goiatuba-GO , no uso de suas atribuições legais que lhe conferem.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "Município de Goiatuba-GO",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Goiatuba",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-10T00:34:03+00:00",
       "modo": "validar",
@@ -2124,36 +2186,6 @@
         }
       },
       "financiador": "Ministério da Cultura",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-09T17:19:59+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "2 · Brasil · livro da Biblioteca",
-      "alvo": "Credenciamento de artistas, bandas, djs e grupos culturais — municipio de presidente bernardes — Brasil",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "nenhuma fonte legível",
-      "segundos": 151,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: nenhuma fonte legível",
-      "id": "op-op-c33bb4f88401",
-      "encontrou": {},
-      "financiador": "PNCP - Portal Nacional de Contratações Públicas",
       "indicios": [],
       "rotas": [
         "site_do_financiador",
