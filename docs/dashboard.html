@@ -4009,8 +4009,18 @@ function decolarSobre(el){
   av.style.setProperty("--ciclo",(AV.ciclos*GIF_CICLO_MS)+"ms"); av.classList.add("voando");
   AV.esq=false; img.style.transform="none";
   img.src=GIF_SRC+"#v"+Date.now();                             // o gif parte junto com a primeira ida (do cache)
-  if(!AV.vira){ AV.vira=true; av.addEventListener("animationiteration",ev=>{ if(ev.animationName!=="pil-vaivem")return;
-      AV.esq=!AV.esq; av.firstElementChild.style.transform=AV.esq?"scaleX(-1)":"none"; }); }
+  // 10/10 (titular): o NARIZ segue o MOVIMENTO REAL, quadro a quadro. Antes a imagem virava contando os fins de
+  // trajeto (evento animationiteration); um evento perdido (aba em segundo plano, trajeto recalculado, ciclo alterado
+  // no meio do voo) deixava o avião voando de costas. A imagem original olha para a DIREITA: andando para a direita
+  // fica como está; andando para a esquerda, é espelhada (scaleX(-1)). Parado ou sem deslocamento: mantém o lado.
+  if(!AV.vira){ AV.vira=true; let antes=null;
+    const olhar=()=>{ const el=AV.el; if(el&&el.isConnected&&el.classList.contains("voando")){
+        let x=null; try{ x=new DOMMatrixReadOnly(getComputedStyle(el).transform).m41; }catch(e){}
+        if(x!==null&&antes!==null&&Math.abs(x-antes)>0.3){ const esq=x<antes;
+          if(esq!==AV.esq){ AV.esq=esq; const im=el.firstElementChild; if(im) im.style.transform=esq?"scaleX(-1)":"none"; } }
+        antes=x; } else antes=null;
+      requestAnimationFrame(olhar); };
+    requestAnimationFrame(olhar); }
 }
 function desenharAviao(){}
 function voarAviao(t){

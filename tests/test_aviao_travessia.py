@@ -34,7 +34,12 @@ class TesteAviaoSoNoLugarExato(unittest.TestCase):
         self.assertIn("MOVIMENTO NO COMPOSITOR", H)
 
     def test_o_nariz_aponta_para_onde_vai(self):
-        self.assertIn('AV.esq=!AV.esq; av.firstElementChild.style.transform=AV.esq?"scaleX(-1)":"none"', H)   # vira no fim de cada ida/volta
+        # 10/10 (titular): o nariz segue o DESLOCAMENTO REAL (não a contagem de viradas, que perdia o passo e o deixava
+        # voando de costas); a imagem original olha para a direita e é espelhada quando ele anda para a esquerda
+        self.assertIn("new DOMMatrixReadOnly(getComputedStyle(el).transform).m41", H)
+        self.assertIn("const esq=x<antes;", H)
+        self.assertIn('im.style.transform=esq?"scaleX(-1)":"none"', H)
+        self.assertNotIn('AV.esq=!AV.esq;', H, "sem virada por contagem")
 
     def test_sem_missao_ou_posicao_vencida_nao_aparece(self):
         self.assertIn('if(!P||P.estado!=="em_voo"||!P.missao) return false;', H)
