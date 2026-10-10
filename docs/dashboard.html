@@ -962,6 +962,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <button data-v="calendario" class="on">Calendário</button>
 <button data-v="editais">Oportunidades Abertas</button>
 <button data-v="bussola">Bússola</button>
+<button data-v="cartorio">Cartório</button>
 </div>
 <div class="subnav oculto" id="nav-farol">
 <button data-v="f-editais" class="on">Enquadramento</button>
@@ -982,7 +983,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <button onclick="modulo('eldorado');mostra('calendario')">Calendário</button>
     <button onclick="modulo('eldorado');mostra('editais')">Oportunidades Abertas</button>
     <button onclick="modulo('eldorado');mostra('bussola')">Bússola</button>
-    <button onclick="location.href='cartorio.html'" title="Certidões de fonte oficial e eficiência por item">Cartório</button>
+    <button onclick="modulo('eldorado');mostra('cartorio')" title="Certidões de fonte oficial e eficiência por item">Cartório</button>
   </nav>
 </div>
 <div class="hotzona" id="hot-farol">
@@ -1141,6 +1142,112 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <select id="ed-uf"><option value="">Todos os estados</option></select>
 </div>
 <div class="grade-ed" id="ed-grade"></div>
+</section>
+<section id="v-cartorio" class="oculto" style="margin-top:14px">
+<style>
+/* CARTÓRIO DENTRO DO PAINEL (titular, 10/10): seção do Eldorado, sem endereço próprio; estilo restrito a esta seção */
+#v-cartorio /* Paleta PROVISÓRIA do painel (config/identidade_visual.json aguarda o design de referência). Só tons claros. */
+:root{--fundo:#FBFBFA;--cartao:#FFFFFF;--tinta:#23272E;--suave:#68707C;--linha:#E4E1D8;--marca:#1F5B99;--realce:#EEF3F9;
+--ok:#1E7E4B;--okf:#E8F4EC;--disp:#1F4F8A;--dispf:#E8F0FB;--falta:#B23A2E;--faltaf:#FBEAE7;--ja:#8A919C;
+box-sizing:border-box;}
+#v-cartorio *{box-sizing:inherit}
+
+#v-cartorio{margin:0;background:var(--fundo);color:var(--tinta);font:15px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+#v-cartorio .car-main{max-width:1180px;margin:0 auto;padding:4px 0 32px}
+#v-cartorio h1{font-family:Georgia,serif;font-size:26px;margin:0 0 4px;color:var(--marca)}
+#v-cartorio h2{font-family:Georgia,serif;font-size:18px;margin:28px 0 10px;border-bottom:2px solid var(--linha);padding-bottom:4px}
+#v-cartorio .sub{color:var(--suave);margin:0 0 18px}
+#v-cartorio .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+#v-cartorio .card{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;padding:12px 14px}
+#v-cartorio .card b{display:block;font-size:26px;color:var(--marca);font-family:Georgia,serif}
+#v-cartorio .card span{color:var(--suave);font-size:13px}
+#v-cartorio .card.destaque{background:var(--realce);border-color:#C9D8EA}
+#v-cartorio .barras{display:grid;gap:6px}
+#v-cartorio .barra{display:grid;grid-template-columns:170px 1fr 120px;gap:10px;align-items:center;font-size:14px}
+#v-cartorio .trilho{height:14px;background:var(--linha);border-radius:7px;overflow:hidden;display:flex}
+#v-cartorio .trilho i{display:block;height:100%}
+#v-cartorio .trilho .o{background:var(--ok)}
+#v-cartorio .trilho .d{background:#2F79D0}
+#v-cartorio .barra small{color:var(--suave);text-align:right}
+#v-cartorio .tab{overflow-x:auto;background:var(--cartao);border:1px solid var(--linha);border-radius:10px}
+#v-cartorio table{border-collapse:collapse;width:100%;font-size:14px}
+#v-cartorio th,#v-cartorio td{padding:8px 10px;border-bottom:1px solid var(--linha);text-align:left;white-space:nowrap}
+#v-cartorio th{background:var(--realce);font-weight:700}
+#v-cartorio .filtros{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
+#v-cartorio .filtros input,#v-cartorio .filtros select{font:inherit;padding:7px 10px;border:1px solid var(--linha);border-radius:8px;background:var(--cartao);color:var(--tinta)}
+#v-cartorio .filtros input{flex:1;min-width:200px}
+#v-cartorio details.c{background:var(--cartao);border:1px solid var(--linha);border-radius:10px;margin:0 0 8px}
+#v-cartorio details.c>summary{list-style:none;cursor:pointer;padding:10px 14px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+#v-cartorio details.c>summary::-webkit-details-marker{display:none}
+#v-cartorio details.c[open]>summary{border-bottom:1px solid var(--linha);background:var(--realce);border-radius:10px 10px 0 0}
+#v-cartorio .tt{font-weight:600}
+#v-cartorio .meta{color:var(--suave);font-size:13px}
+#v-cartorio .pct{font-family:Georgia,serif;font-weight:800;font-size:20px;color:var(--marca);text-align:right}
+#v-cartorio .pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:10px;background:var(--realce);color:var(--marca);margin-right:4px}
+#v-cartorio .pill.est{background:#FFF4D6;color:#7A5C00}
+#v-cartorio .pill.liv{background:#ECE6F6;color:#4B2E83}
+#v-cartorio .mini{display:flex;gap:2px;margin-top:4px}
+#v-cartorio .mini i{width:12px;height:8px;border-radius:2px;background:var(--linha)}
+#v-cartorio .mini i.o{background:var(--ok)}
+#v-cartorio .mini i.d{background:#2F79D0}
+#v-cartorio .mini i.f{background:var(--falta)}
+#v-cartorio .mini i.j{background:#C9CED6}
+#v-cartorio .corpo{padding:12px 14px}
+#v-cartorio .doze{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+#v-cartorio .it{border:1px solid var(--linha);border-radius:8px;padding:8px 10px;font-size:13.5px}
+#v-cartorio .it h4{margin:0 0 3px;font-size:13.5px;display:flex;gap:6px;align-items:center}
+#v-cartorio .it.o{background:var(--okf);border-color:#BFE0CB}
+#v-cartorio .it.o h4{color:var(--ok)}
+#v-cartorio .it.d{background:var(--dispf);border-color:#B9CFEA}
+#v-cartorio .it.d h4{color:var(--disp)}
+#v-cartorio .it.f{background:var(--faltaf);border-color:#EFC5BF}
+#v-cartorio .it.f h4{color:var(--falta)}
+#v-cartorio .it.j{color:var(--ja)}
+#v-cartorio .it q{display:block;color:var(--suave);font-style:italic;margin-top:3px;white-space:normal}
+#v-cartorio .it a,#v-cartorio .docs a{color:var(--marca);word-break:break-all}
+#v-cartorio .docs{margin-top:10px;font-size:13px;color:var(--suave)}
+#v-cartorio .docs li{margin:2px 0}
+#v-cartorio .enc{margin-top:8px;padding:8px 10px;border-radius:8px;background:#F3F1EC;font-size:13px}
+#v-cartorio footer{margin-top:30px;color:var(--suave);font-size:12.5px}
+#v-cartorio .vazio{padding:20px;text-align:center;color:var(--suave);background:var(--cartao);border:1px dashed var(--linha);border-radius:10px}
+@media (max-width:640px){#v-cartorio .barra{grid-template-columns:110px 1fr 70px}
+#v-cartorio .pct{font-size:16px}}
+</style>
+<div class="car-main">
+<h1>Cartório de fontes oficiais</h1>
+<p class="sub">Os motores descobrem; o Cartório certifica. Toda oportunidade com algum dos 12 itens indisponível entra na fila: ele localiza o documento oficial, lê por seções e devolve cada item com trecho e página, ou a dispensa quando o edital não tem aquele requisito. <span id="car-em"></span></p>
+
+<div class="cards" id="car-cards"></div>
+
+<h2>Linha de produção <span class="meta">(sem estrela → bronze → prata → ouro · até 10 abordagens por oportunidade)</span></h2>
+<div class="cards" id="car-linha"></div>
+<p class="meta" id="car-linha-nota"></p>
+
+<h2>As 10 abordagens <span class="meta">(uma diferente a cada tentativa, na ordem afiada de cada balcão)</span></h2>
+<div class="tab"><table id="car-abordagens"></table></div>
+
+<h2>Eficiência por item dos 12</h2>
+<div class="barras" id="car-barras"></div>
+<p class="meta">Cada certidão tem 12 quadradinhos. Verde: certificado no documento oficial · azul: dispensado (o edital comprova que o requisito não se aplica — a mesma cor do checklist das oportunidades abertas) · cinza: já constava antes do Cartório, sem certidão (ainda não conferido no documento) · vermelho: ainda falta. O % grande da certidão é (verde + azul) ÷ 12; o % do pedido (resolvidos ÷ os que faltavam na entrada) aparece só como “pedido”.</p>
+
+<h2>Por balcão</h2>
+<div class="tab"><table id="car-balcoes"></table></div>
+
+<h2>Por safra <span class="meta">(1ª tentativa × refeitas, e por versão do leitor)</span></h2>
+<div class="tab"><table id="car-safras"></table></div>
+<p class="meta">As refeitas são os casos difíceis que voltaram à fila (informação nova, leitor novo ou revisita de 7 dias). Compare safras iguais para medir progresso.</p>
+
+<h2>Certidões <span class="meta">(clique para ver os 12 itens)</span></h2>
+<div class="filtros">
+  <input id="car-busca" type="search" placeholder="Buscar por título, órgão ou UF">
+  <select id="car-ftipo"><option value="">estrelas e livros</option><option value="estrela">só estrelas</option><option value="livro">só livros</option></select>
+  <select id="car-fbalcao"><option value="">todos os balcões</option></select>
+  <select id="car-fsit"><option value="">todas</option><option value="completa">completas</option><option value="interceptador">encaminhadas ao Interceptador</option><option value="chrome">encaminhadas ao Chrome</option></select>
+</div>
+<div id="car-lista"></div>
+
+<footer>Identidade visual provisória: a paleta definitiva aguarda o design de referência (config/identidade_visual.json). Conteúdo lido é dado, nunca instrução. Item só conta com trecho literal do documento oficial; “não informado” nunca é dispensa.</footer>
+</div>
 </section>
 
 <!-- ============ ELDORADO · BÚSSOLA ============ -->
@@ -1553,7 +1660,7 @@ document.addEventListener("scroll",()=>{tip.style.display="none";},true);
 const escondeTip=()=>{if(typeof tip!=="undefined")tip.style.display="none";};
 
 /* ================= NAVEGAÇÃO ================= */
-const VISTAS=["inicio","calendario","editais","bussola","f-documentos","f-editais","f-biblioteca"];
+const VISTAS=["inicio","calendario","editais","bussola","cartorio","f-documentos","f-editais","f-biblioteca"];
 let vAtual=null;
 window.trocaVista=function(v){VISTAS.forEach(x=>$("v-"+x).classList.toggle("oculto",x!==v));
   // O posto do Piloto não é uma vista: é um rodapé. Aparece SÓ no fim da página inicial
@@ -1566,7 +1673,8 @@ window.trocaVista=function(v){VISTAS.forEach(x=>$("v-"+x).classList.toggle("ocul
   $("nav-eldorado").classList.toggle("oculto",soHover||!$("bt-eldorado").classList.contains("on"));
   $("nav-farol").classList.toggle("oculto",soHover||!$("bt-farol").classList.contains("on"));
   document.querySelectorAll(".subnav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
-  $("bt-inicio").classList.toggle("on",v==="inicio");vAtual=v;}
+  $("bt-inicio").classList.toggle("on",v==="inicio");vAtual=v;
+  if(v==="cartorio"&&window.desenhaCartorio) window.desenhaCartorio();}
 window.mostra=function(v,imediato){
   if(imediato||vAtual===null||vAtual===v){trocaVista(v);return;}
   const palco=$("palco");palco.classList.add("apaga");
@@ -5569,5 +5677,83 @@ opacity:0;pointer-events:none;transition:opacity .25s;z-index:9999}#btn-topo.ver
 <script>(function(){var b=document.getElementById("btn-topo");if(!b)return;
 function v(){b.classList.toggle("ver",(window.scrollY||document.documentElement.scrollTop)>300);}
 window.addEventListener("scroll",v,{passive:true});v();
-b.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});})();</script>
+b.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});})();
+/* ═══ CARTÓRIO (titular, 10/10): seção do painel, desenhada ao abrir — antes era a página própria cartorio.html ═══ */
+window.desenhaCartorio=function(){ if(window._CAR_INIT) return; window._CAR_INIT=1;
+
+const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
+const BALCAO={pncp:"PNCP",diario:"Diários oficiais",orgao:"Sites de órgãos públicos",privado:"Financiadores privados",pista:"Pistas (agregadores e imprensa)",proprio:"MP e Judiciário (leitura própria)"};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct=x=>x==null?"—":Math.round(x*100)+"%";
+const br=d=>d&&/^\d{4}-\d{2}-\d{2}/.test(d)?d.slice(8,10)+"/"+d.slice(5,7)+"/"+d.slice(0,4):(d||"");
+const link=u=>u?`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(u.length>90?u.slice(0,87)+"…":u)}</a>`:"—";
+let DADOS=null;
+fetch("dados/cartorio.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{DADOS=d;montar()}).catch(()=>{
+  document.getElementById("car-lista").innerHTML='<div class="vazio">O Cartório ainda não publicou certidões. Elas aparecem aqui depois da primeira execução.</div>';});
+/* CARTORIO-12-PONTOS-V1 */
+function cob(c){const I=c.itens||{},D=c.dispensas||{},F=c.faltavam||[];const o=DOZE.filter(k=>I[k]).length,d=DOZE.filter(k=>!I[k]&&D[k]).length,f=DOZE.filter(k=>!I[k]&&!D[k]&&F.includes(k)).length,j=DOZE.length-o-d-f;return{o,d,f,j,cert:(o+d)/DOZE.length,cobre:(o+d+j)/DOZE.length}}
+function montar(){
+  const R=DADOS.resumo||{};
+  const KS=(DADOS.certidoes||[]).map(cob),SOMA=g=>KS.reduce((a,k)=>a+g(k),0),N12=KS.length*DOZE.length;
+  document.getElementById("car-em").textContent="Atualizado em "+br((DADOS.em||"").slice(0,10))+" às "+(DADOS.em||"").slice(11,16)+" UTC.";
+  const cards=[["Certificado nos 12 pontos",pct(N12?SOMA(k=>k.o+k.d)/N12:null),`${SOMA(k=>k.o)} verdes + ${SOMA(k=>k.d)} dispensados de ${N12} (${KS.length} certidões × 12) · ${SOMA(k=>k.j)} já constavam sem certidão · ${SOMA(k=>k.f)} faltam`,1],["Eficiência do pedido",pct(R.eficiencia_itens),`${R.itens_obtidos||0} obtidos + ${R.itens_dispensados||0} dispensados de ${R.itens_que_faltavam||0} que faltavam na entrada da fila (não é % dos 12)`],
+    ["Certidões emitidas",R.certidoes||0,`${R.nesta_execucao||0} na última execução`],["Com site oficial",pct(R.taxa_link_oficial),`${R.com_link_oficial||0} certidões`],
+    ["12 de 12 certificados",KS.filter(k=>k.o+k.d===12).length,"todos os 12 em verde ou azul, com certidão"],["Sem item faltando",KS.filter((k,i)=>k.f===0&&(DADOS.certidoes[i].link_oficial)).length,`site oficial + nenhum vermelho (pedido atendido: ${R.certidoes_completas||0}) · pode haver itens só da notícia (cinza)`],["Na fila",(R.fila_estrelas||0)+(R.fila_livros||0),`${R.fila_estrelas||0} estrelas · ${R.fila_livros||0} livros`],
+    ["Ao Interceptador",R.para_o_interceptador||0,`${R.para_o_chrome||0} ao Chrome (robots.txt)`],
+    ["Cinza conferidos",(DADOS.cinza_conferidos||{}).certificados||0,`certificados no documento, de ${(DADOS.cinza_conferidos||{}).conferidos||0} itens cinza conferidos em ${(DADOS.cinza_conferidos||{}).certidoes||0} certidões (o não achado segue cinza)`],
+    ["Gabarito por órgão",(DADOS.gabarito||{}).orgaos_com_gabarito||0,`órgãos aprendidos · ${Object.values((DADOS.gabarito||{}).itens_achados_pelo_gabarito||{}).reduce((a,b)=>a+b,0)} itens achados pelo gabarito`]];
+  document.getElementById("car-cards").innerHTML=cards.map(c=>`<div class="card${c[3]?" destaque":""}"><b>${esc(c[1])}</b><span>${esc(c[0])}<br>${esc(c[2])}</span></div>`).join("");
+  document.getElementById("car-barras").innerHTML=DOZE.map(k=>{const x=(DADOS.por_item||{})[k]||{};const f=x.faltavam||0;
+    const o=f?100*(x.obtidos||0)/f:0,d=f?100*(x.dispensados||0)/f:0;
+    return `<div class="barra"><span>${esc(k)}</span><div class="trilho" title="${x.obtidos||0} obtidos · ${x.dispensados||0} dispensados · ${f} faltavam"><i class="o" style="width:${o}%"></i><i class="d" style="width:${d}%"></i></div><small>${pct(x.eficiencia)} de ${f} pedidos</small></div>`}).join("");
+  const LP=DADOS.linha_de_producao||{}, BS=DADOS.por_balcao_selo||{}, NL=LP.na_linha||{};
+  const etapa=[["sem_estrela","Sem estrela → bronze"],["bronze","Bronze → prata"],["prata","Prata → ouro"],["ouro","Ouro"]];
+  document.getElementById("car-linha").innerHTML=etapa.map(([k,n])=>{const b=BS[k]||{};const foco=((LP.balcoes||{})[k]||{}).foco||[];
+    return `<div class="card${k==="ouro"?" destaque":""}"><b>${k==="ouro"?(b.certidoes||0):(NL[k]||0)}</b><span>${esc(n)}<br>${k==="ouro"?"certidões que chegaram ao ouro":`na fila · ${b.certidoes||0} certidões · eficiência ${pct(b.eficiencia)}`}${foco.length?`<br>foco: ${esc(foco.slice(0,3).join(", "))}${foco.length>3?"…":""}`:""}${b.esgotadas?`<br>${b.esgotadas} esgotaram as 10`:""}</span></div>`;}).join("");
+  document.getElementById("car-linha-nota").textContent=LP.balcoes?`Nesta execução: ${LP.promovidas_nesta_execucao||0} subiram de selo e seguiram na hora para o balcão seguinte · ${LP.devidas_nesta_hora||0} na vez · ${LP.sem_material_agora||0} sem material novo agora · ${LP.esgotadas_10_abordagens||0} esgotaram as 10 abordagens (seguem ao Interceptador) · biblioteca de sites: ${(LP.biblioteca_de_sites||{}).sites||0} sites oficiais de ${(LP.biblioteca_de_sites||{}).chaves||0} órgãos/municípios · intervalo de ${LP.intervalo_horas||12} h entre tentativas da mesma oportunidade.`:"";
+  const AB=DADOS.por_abordagem||{};
+  document.getElementById("car-abordagens").innerHTML="<tr><th>#</th><th>Abordagem</th><th>Vezes usada</th><th>Renderam algo</th><th>Taxa de acerto</th><th>Itens trazidos</th><th>Sites oficiais novos</th></tr>"+
+    Object.entries(AB).map(([n,a])=>`<tr><td>${esc(n)}</td><td>${esc(a.nome)}</td><td>${a.vezes}</td><td>${a.renderam}</td><td><b>${pct(a.taxa_de_acerto)}</b></td><td>${a.itens}</td><td>${a.links_oficiais}</td></tr>`).join("");
+  const B=DADOS.por_balcao||{};
+  document.getElementById("car-balcoes").innerHTML="<tr><th>Balcão</th><th>Certidões</th><th>Com site oficial</th><th>Itens resolvidos</th><th>Eficiência</th></tr>"+
+    Object.entries(B).map(([k,v])=>`<tr><td>${esc(BALCAO[k]||k)}</td><td>${v.certidoes}</td><td>${pct(v.taxa_link_oficial)}</td><td>${v.resolvidos} de ${v.faltavam}</td><td><b>${pct(v.eficiencia)}</b></td></tr>`).join("");
+  const linhaS=(n,v)=>`<tr><td>${esc(n)}</td><td>${v.certidoes}</td><td>${pct(v.taxa_link_oficial)}</td><td>${v.resolvidos} de ${v.faltavam}</td><td><b>${pct(v.eficiencia)}</b></td></tr>`;
+  document.getElementById("car-safras").innerHTML="<tr><th>Safra / versão</th><th>Certidões</th><th>Com site oficial</th><th>Itens resolvidos</th><th>Eficiência</th></tr>"+
+    Object.entries(DADOS.por_safra||{}).map(([k,v])=>linhaS(k,v)).join("")+Object.entries(DADOS.por_versao||{}).map(([k,v])=>linhaS(k,v)).join("");
+  const sel=document.getElementById("car-fbalcao");Object.keys(B).forEach(k=>sel.insertAdjacentHTML("beforeend",`<option value="${esc(k)}">${esc(BALCAO[k]||k)}</option>`));
+  ["car-busca","car-ftipo","car-fbalcao","car-fsit"].forEach(id=>document.getElementById(id).addEventListener("input",lista));
+  lista();
+}
+function item(c,k){
+  const ok=(c.itens||{})[k],ds=(c.dispensas||{})[k],pedia=(c.faltavam||[]).includes(k);
+  if(ok)return `<div class="it o"><h4>✓ ${esc(k)}</h4>${esc(ok.valor)}<q>“${esc(ok.trecho)}”</q><span class="meta">página ${esc(ok.pagina)} · ${esc(ok.metodo||"")} · ${link(ok.documento)}</span></div>`;
+  if(ds)return `<div class="it d"><h4>⊘ ${esc(k)} — dispensado</h4>${esc(ds.motivo)}<q>“${esc(ds.trecho)}”</q><span class="meta">página ${esc(ds.pagina)}</span></div>`;
+  if(pedia)return `<div class="it f"><h4>✗ ${esc(k)}</h4>não está no documento oficial lido</div>`;
+  return `<div class="it j"><h4>• ${esc(k)}</h4>já constava antes do Cartório · sem certidão (não conferido no documento oficial)</div>`;
+}
+function lista(){
+  const q=document.getElementById("car-busca").value.toLowerCase(),t=document.getElementById("car-ftipo").value,b=document.getElementById("car-fbalcao").value,s=document.getElementById("car-fsit").value;
+  const L=(DADOS.certidoes||[]).filter(c=>(!t||c.tipo===t)&&(!b||c.balcao===b)&&
+    (!s||(s==="completa"?(cob(c).f===0&&c.link_oficial):String(c.encaminhado||"").toLowerCase().startsWith(s)))&&
+    (!q||[c.titulo,c.orgao,c.uf].join(" ").toLowerCase().includes(q)));
+  L.sort((a,b)=>cob(b).cert-cob(a).cert||cob(b).cobre-cob(a).cobre);
+  const el=document.getElementById("car-lista");
+  if(!L.length){el.innerHTML='<div class="vazio">Nenhuma certidão com esses filtros.</div>';return}
+  el.innerHTML=L.slice(0,300).map(c=>{
+    const K=cob(c);const mini=DOZE.map(k=>`<i class="${(c.itens||{})[k]?"o":(c.dispensas||{})[k]?"d":(c.faltavam||[]).includes(k)?"f":"j"}" title="${esc(k)}"></i>`).join("");
+    const selo=c.tipo==="estrela"&&c.selo_depois!==c.selo_antes?` · selo ${esc(c.selo_antes||"nenhum")} → <b>${esc(c.selo_depois||"nenhum")}</b>`:"";
+    return `<details class="c"><summary><div><div class="tt">${esc(c.titulo)}</div>
+      <div class="meta"><span class="pill ${c.tipo==="estrela"?"est":"liv"}">${c.tipo==="estrela"?"estrela":"livro"}</span><span class="pill">${esc(BALCAO[c.balcao]||c.balcao)}</span>
+      ${K.o+K.d} de 12 pontos certificados (${K.o} verdes, ${K.d} dispensados) · ${K.j} já constavam sem certidão · ${K.f} faltam · pedido: ${(c.resolvidos||[]).length} de ${(c.faltavam||[]).length}${c.tentativa>1?" · "+c.tentativa+"ª tentativa":""}${c.estagio?" · balcão "+esc({sem_estrela:"sem estrela",bronze:"bronze",prata:"prata",ouro:"ouro"}[c.estagio]||c.estagio):""}${c.uf?" · "+esc(c.uf):""}${c.prazo?" · prazo "+br(c.prazo):""}${selo}</div><div class="mini">${mini}</div></div>
+      <div class="pct">${pct(K.cert)}<br><small style="font-size:11px;font-weight:400;color:var(--suave)">com os já constantes ${pct(K.cobre)}</small></div></summary>
+      <div class="corpo"><p class="meta">Site oficial: ${link(c.link_oficial)}${c.degrau!=null?` · degrau ${c.degrau}: ${esc(c.como||"")}`:""}</p>
+      <div class="doze">${DOZE.map(k=>item(c,k)).join("")}</div>
+      ${(c.abordagens||[]).length?`<div class="docs"><b>Tentativas (${c.abordagens.length} de 10):</b> ${c.abordagens.map(h=>`${esc(h.n)}·${esc(h.nome)}${h.legado?" (anterior à linha)":""} → ${(h.ganhou||[]).length?esc(h.ganhou.join(", ")):"nada novo"}`).join(" | ")}</div>`:""}
+      ${c.encaminhado?`<div class="enc">Encaminhado: ${esc(c.encaminhado)}</div>`:""}
+      <ul class="docs">${(c.documentos||[]).map(d=>`<li>degrau ${esc(d.degrau)} · ${link(d.url)} — ${esc(d.oficial||d.falha||d.motivo||d.como||"")}${d.paginas?" · "+d.paginas+" pág.":""}${d.edicao_inteira?" · só as páginas do ato":""}</li>`).join("")}</ul></div></details>`}).join("")+
+    (L.length>300?`<p class="meta">Mostrando 300 de ${L.length}. Use a busca para encontrar as demais.</p>`:"");
+}
+
+};
+</script>
 </body></html>
