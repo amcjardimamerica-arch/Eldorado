@@ -527,6 +527,13 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     rede_ponte = rede_ponte or Rede(baixar=_baixar_ponte, pausa=float(c["pausa_segundos"]))
     base = _j(CERTIDOES, {}) or {}
     certs = base.get("certidoes") or {}
+    # 10/10: CERTIDÕES DA REVISÃO HUMANA (Partes 1, 2 e 3) — incorporadas a cada execução; a revisão prevalece nos itens
+    for _k, _m in ((_j(PASTA / "certidoes_manuais.json", {}) or {}).get("certidoes") or {}).items():
+        _a = certs.get(_k) or {}
+        _it = {**(_a.get("itens") or {}), **(_m.get("itens") or {})}
+        certs[_k] = {**_a, **{k: v for k, v in _m.items() if v not in (None, [], {})}, "itens": _it,
+                     "dispensas": {k: d for k, d in {**(_a.get("dispensas") or {}), **(_m.get("dispensas") or {})}.items() if k not in _it},
+                     "revisao_humana": True, "abordagens": _a.get("abordagens") or _m.get("abordagens") or []}
     gab = _j(GABARITOS, {}) or {}
     fluxo = fluxo if fluxo is not None else _j(FLUXO, {})
     catalogo = catalogo if catalogo is not None else _j(CATALOGO, {})

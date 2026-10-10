@@ -1209,6 +1209,13 @@ def selo_validacao(e: dict, ex: dict | None = None) -> dict:
         if not re.search(r"pncp\.gov[^ ]*/arquivos/", str(site), re.I):
             site = None
     faltam = [k for k, v in (("objeto", objeto), ("prazo de inscrição", prazo), ("site oficial", site)) if not v]
+    # M7 (10/10/2026, revisão P1-GO: 7 de 8 "validadas" estavam encerradas ou fora do perfil): VALIDADA exige prazo VIGENTE.
+    _pt = prazo if isinstance(prazo, str) else (str((prazo or {}).get("fim") or (prazo or {}).get("v") or (prazo or {}).get("valor") or "")
+                                                 if isinstance(prazo, dict) else "")
+    _datas = [f"{a}-{m}-{d}" for a, m, d in re.findall(r"(20\d\d)-(\d\d)-(\d\d)", _pt)] + \
+             [f"{a}-{int(m):02d}-{int(d):02d}" for d, m, a in re.findall(r"\b(\d{1,2})/(\d{1,2})/(20\d\d)", _pt)]
+    if _datas and max(_datas) < date.today().isoformat() and "prazo de inscrição" not in faltam:
+        faltam.append("prazo vigente")          # a ÚLTIMA data do prazo já passou
     disp = ex.get("dispensaveis") or {}
     if "Prazo de inscrição" in disp and "prazo de inscrição" in faltam:
         faltam.remove("prazo de inscrição")          # dispensado com motivo pela análise
@@ -1723,12 +1730,33 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
         ids_nucleo = {e["id"] for e in dados.get("editais", [])}
         abertas = []
         hoje_iso = hoje.isoformat()
+        # SANEAMENTO DOS MOTORES (10/10/2026 · revisão da Parte 1-GO): duplicata/peça de edital, não-oportunidade,
+        # fora do perfil, edição de diário, UF pelo território, prazo PNCP suspeito. Nada é apagado: o descarte
+        # sai da caixa com motivo em estado/saneamento_motores.json e a revisão humana vence (src/saneamento_motores.py).
+        try:
+            from . import saneamento_motores as _san
+            _san.limpar_cache()
+            _san_base = [o for o in ops.values() if o["id"] not in ids_nucleo]
+            _san_dups = _san.agrupar_duplicatas(_san_base)
+        except Exception:  # noqa: BLE001 — o saneamento nunca derruba a geração da caixa
+            _san, _san_base, _san_dups = None, [], {}
+        _san_desc, _san_ok = [], []
         for o in ops.values():
             if o["id"] in ids_nucleo:
                 continue
             v = _pert(o)
             if not v["ok"]:
                 continue
+            _s = None
+            if _san:
+                try:
+                    _s = _san.sanear_registro(o, hoje, _san_dups)
+                except Exception:  # noqa: BLE001
+                    _s = None
+                if _s and _s["descartar"]:
+                    _san_desc.append({"id": o["id"], "titulo": (o.get("titulo") or "")[:140], "url": o.get("url"),
+                                      "fonte_nome": o.get("fonte_nome"), "motivo": _s["descartar"]})
+                    continue
             c = camp.get(o["id"]) or {}
             abertas.append({
                 "id": o["id"], "titulo": (o.get("titulo") or "")[:140], "url": o.get("url"),
@@ -1756,6 +1784,23 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                     "motivo_tipo": "mesmo edital captado por outra fonte"} if o["id"] in _duplicatas() else {}),
                 **{k: v for k, v in selo_validacao(o, load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}).items()},
             })
+            if _s and _s["regras"]:
+                _a = abertas[-1]
+                for _k in ("uf", "nivel", "tipo_registro", "motivo_tipo", "duplicata_de", "situacao", "fim"):
+                    if _k in _s["ajustes"]:
+                        _a[_k] = _s["ajustes"][_k]
+                if _s["ajustes"].get("prazo_pncp_suspeito") or _s["ajustes"].get("situacao") == "encerrada":
+                    _a["selo_validacao"] = "nao_verificada"         # M7: prazo vencido ou suspeito nunca é "validada"
+                if _s["alertas"]:
+                    _a["motivo_tipo"] = ((_a.get("motivo_tipo") or "") + " · " + " · ".join(_s["alertas"]))[:300]
+            _san_ok.append({**o, **abertas[-1]})
+        if _san:
+            try:
+                _san.gravar_estado({"descartes": _san_desc, "duplicatas": _san_dups},
+                                   _san.painel_qualidade(_san_base, _san_ok, _san_desc, hoje))
+                dados["abertas_descartadas_saneamento"] = len(_san_desc)
+            except Exception:  # noqa: BLE001
+                pass
         abertas.sort(key=lambda x: (x["area"] == "outros", x.get("uf") != "GO", x.get("coletado_em") or ""), )
         campos_a = ["id", "titulo", "url", "fonte_nome", "orgao", "uf", "nivel", "area", "fim", "prazo_texto",
                     "valor_texto", "coletado_em", "campanha", "campanha_dia", "pertinencia", "situacao", "objeto", "confirmacao",

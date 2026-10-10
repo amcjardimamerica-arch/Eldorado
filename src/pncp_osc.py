@@ -540,7 +540,17 @@ def _registro(c: dict, m: dict) -> dict:
         "evidencia": ev, "hash_evidencia": sha256(ev.encode()), "fontes_observadas": [m["fonte"]],
         "classificacao_ato": {k: c[k] for k in ("veredito", "regime", "motivos", "sinais")} | {"tipo": "abertura"},
         "sensor": MOTOR_ID, "forca_lexica": 3,
+        # M6 (10/10/2026, Pirenópolis 013/2025): data do REGISTRO distante da publicação não é prazo de inscrição
+        **({"prazo_pncp_suspeito": True, "prazo_origem": "registro PNCP (dataEncerramentoProposta) — conferir o cronograma do edital"}
+           if _prazo_suspeito(m.get("publicado"), c["fim"]) else {"prazo_origem": "registro PNCP (dataEncerramentoProposta)"}),
     }
+
+
+def _prazo_suspeito(publicado, fim, dias_max: int = 400) -> bool:
+    try:
+        return (date.fromisoformat(str(fim)[:10]) - date.fromisoformat(str(publicado)[:10])).days > dias_max
+    except (TypeError, ValueError):
+        return False
 
 
 def classificar_lote(itens: list[dict], hoje: date, ufs: list[str] | None = None) -> tuple[dict, dict, dict]:

@@ -165,6 +165,7 @@ def coletar_querido_diario(inicio: date, fim: date, escopo: dict, cfg: dict | No
                             "prazo_texto": None, "ano_referencia": int(dia[:4]) if dia else None,
                             "data_publicacao": dia or None,
                             "evidencia": (trecho or titulo)[:500], "hash_evidencia": sha256((trecho or titulo).encode()),
+                            "tipo_registro": "edicao_diario",   # M12 (10/10/2026): a edição não é o edital; o ato é lido depois
                         })
                     total = int(corpo.get("total_gazettes") or 0)
                     offset += int(cfg.get("size", 50))

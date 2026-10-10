@@ -129,6 +129,17 @@ def consolidar() -> list[dict]:
         if m.get("estado_export") in ("arquivado", "excluido"):
             continue
         brutos.append(("motor " + str(m.get("fonte_id") or m.get("fonte_nome") or ""), m))
+    # 10/10 (revisão humana, Partes 1 a 3): OPORTUNIDADES NOVAS (derivadas) — entram com o id da revisão, para a
+    # certidão da revisão (estrela:<id>) se ligar a elas; só as não descartadas (ruído, fora do perfil, encerrada, duplicata ficam fora)
+    for _rid, _dv in ((_j(ROOT / "dados/editais/derivadas_revisao.json", {}).get("derivadas") or {}).items()):
+        if (_dv or {}).get("veredito") in ("ruido", "fora_perfil", "encerrada", "duplicata"):
+            continue
+        _ob = ((_dv.get("itens") or {}).get("Objeto") or {}).get("valor") or _dv.get("parecer") or _rid
+        _pz = _dv.get("prazo") or {}
+        brutos.append(("revisão humana", {"id": _rid, "titulo": str(_ob)[:300], "url": _dv.get("link_documento") or _dv.get("site_oficial"),
+                                          "link_oficial": _dv.get("link_documento") or _dv.get("site_oficial"), "fim": (_pz.get("fim") or None),
+                                          "inicio": (_pz.get("inicio") or None), "fonte_id": "revisao-humana", "descoberto_em": str(_dv.get("em") or "")[:10],
+                                          "derivada_de": _dv.get("derivada_de"), "orgao": ((_dv.get("itens") or {}).get("Órgão / financiador") or {}).get("valor")}))
     for c in (_j(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}).get("candidatas") or []):
         cid = "cat-" + hashlib.sha1(c["url"].encode()).hexdigest()[:12]
         brutos.append(("Piloto - Espião", {"id": cid, "titulo": c.get("titulo"), "url": c.get("url"), "orgao": c.get("visto_em"),
