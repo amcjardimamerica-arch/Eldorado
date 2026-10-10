@@ -1,9 +1,9 @@
 {
- "em": "2026-10-10T03:11:57+00:00",
+ "em": "2026-10-10T07:20:00+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1858,
+ "rotulados": 1861,
  "positivos": 738,
- "pendentes": 480,
+ "pendentes": 486,
  "validacao_cruzada": {
   "auc": 0.829,
   "precisao": 0.721,
@@ -89,6 +89,12 @@
    "url": "https://captadores.org.br/editais/instituto-porto-abre-edital-de-r-400-mil-para-oscs-da-grande-sao-paulo-e-grande-belo-horizonte",
    "nota": 0.507,
    "incerteza": 0.987
+  },
+  {
+   "titulo": "Edital Prefeitura Municipal de Planaltina 2026 — Goiás / Planaltina",
+   "url": "https://planaltina.go.gov.br/chamamento-publico-no-06-2026-processo-no-23713-2026/",
+   "nota": 0.508,
+   "incerteza": 0.984
   },
   {
    "titulo": "Chamada para propostas",
@@ -221,6 +227,12 @@
    "url": "https://data.queridodiario.ok.org.br/2907905/2026-09-28/f66a6594d9fe7d60c5060d0b14ddf9dede04a3ab.pdf",
    "nota": 0.476,
    "incerteza": 0.952
+  },
+  {
+   "titulo": "Edital Prefeitura Municipal de Planaltina 2026 — Goiás / Planaltina — Goiás / Planaltina",
+   "url": "https://planaltina.go.gov.br/wp-content/uploads/2026/09/Edital_de_chamamento_publico_no_06-2026-.pdf",
+   "nota": 0.526,
+   "incerteza": 0.949
   },
   {
    "titulo": "Aviso de Chamamento Público Nº 6/2026 - Prefeitura Municipal de Arenópolis",
@@ -359,19 +371,7 @@
    "url": "https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en/Institucional/The_BNDES",
    "nota": 0.537,
    "incerteza": 0.927
-  },
-  {
-   "titulo": "CREDENCIAMENTO para FORMAÇÃO DE CADASTRO DE ARTISTAS, FAZEDORES DE CULTURA E TÉCNICOS CULTURAIS PARA ATENDER… — MUNICIPIO DE PILAR",
-   "url": "https://pncp.gov.br/app/editais/12200150000128/2026/15",
-   "nota": 0.537,
-   "incerteza": 0.926
-  },
-  {
-   "titulo": "Chamadas de Propostas",
-   "url": "https://www.dfg.de/en/research_funding/programmes/individual/research_grants/",
-   "nota": 0.463,
-   "incerteza": 0.926
   }
  ],
- "pendentes_provaveis_reais": 190
+ "pendentes_provaveis_reais": 193
 }
