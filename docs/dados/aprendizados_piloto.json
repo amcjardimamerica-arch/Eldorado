@@ -1,24 +1,24 @@
 {
-  "em": "2026-10-10T02:21:41+00:00",
+  "em": "2026-10-10T02:28:24+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 6,
-      "uteis": 1,
+      "achados": 2,
+      "uteis": 0,
       "motivos": {
+        "busca_vazia": 8,
         "nada_no_crivo": 31,
-        "sem_texto": 2,
-        "busca_vazia": 6
+        "sem_texto": 1
       },
-      "efetividade": 0.17
+      "efetividade": 0.0
     }
   },
   "licoes": [
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 7940,
+      "vezes": 7936,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -31,7 +31,7 @@
       ],
       "ultima": "2026-10-10",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 7940 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 7936 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -82,6 +82,20 @@
       "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 119 vezes — precisa de correção, não de mais tentativas"
     },
     {
+      "motor": "piloto-aberto",
+      "motivo": "busca_vazia",
+      "vezes": 93,
+      "tipos": [
+        "cacar_oportunidade",
+        "descobrir",
+        "aposta",
+        "espionar"
+      ],
+      "ultima": "2026-10-10",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 93 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
       "motor": "motor-patrocinio",
       "motivo": "nada_no_crivo",
       "vezes": 88,
@@ -109,22 +123,8 @@
     },
     {
       "motor": "piloto-aberto",
-      "motivo": "busca_vazia",
-      "vezes": 78,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir",
-        "aposta",
-        "espionar"
-      ],
-      "ultima": "2026-10-10",
-      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 78 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "piloto-aberto",
       "motivo": "sem_texto",
-      "vezes": 41,
+      "vezes": 34,
       "tipos": [
         "aposta",
         "descobrir",
@@ -132,7 +132,7 @@
       ],
       "ultima": "2026-10-10",
       "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 41 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 34 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -180,13 +180,6 @@
     }
   ],
   "melhorias_pendentes": [
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "Incluir informações detalhadas sobre o objeto, prazo, valor e página de cada edital para facilitar a avaliação de compatibilidade com a missão da associação.",
-      "efetividade_na_hora": 0.33,
-      "em": "2026-10-10T02:20",
-      "aplicada": false
-    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deveria identificar automaticamente editais com informações claras sobre prazos, valores, objetos e páginas, evitando resultados genéricos ou sem conteúdo relevante.",
@@ -319,12 +312,19 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-09T13:27",
       "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deveria identificar automaticamente editais de fomento para organizações da sociedade civil, com foco em áreas como assistência social e cultura, e extrair informações específicas como prazo, valor, objeto e pági",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-09T11:57",
+      "aplicada": false
     }
   ],
-  "editais_tratados": 466,
-  "entregues_ao_claude": 397,
+  "editais_tratados": 463,
+  "entregues_ao_claude": 395,
   "ultima_faxina": {
-    "em": "2026-10-10T02:21:41+00:00",
+    "em": "2026-10-10T02:28:24+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 12,
     "achados_descartados_removidos": 2415,
