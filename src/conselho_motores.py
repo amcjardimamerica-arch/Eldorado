@@ -164,9 +164,8 @@ def a_redundancia(D: dict) -> dict:
         f = []
         if dur >= 120 and ach == 0:
             f.append(("CUSTO SEM RETORNO", f"{round(dur)} s na última leitura sem achado", "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"))
-        if len(dup) >= 2:
-            f.append(("TRABALHO DUPLICADO", f"lê os mesmos domínios que {', '.join(dup[:4])}", "um motor dono por domínio; os demais só leem o que o dono não lê"))
-        out[mid] = {"duracao_s": dur, "segundos_por_achado": round(dur / ach, 1) if ach else None, "dominios": meus[:6], "duplicado_com": dup[:6], "falhas": f}
+        # 10/10 (titular): ler o mesmo ponto por mais de um motor é REDUNDÂNCIA de propósito — informa, não é falha
+        out[mid] = {"duracao_s": dur, "segundos_por_achado": round(dur / ach, 1) if ach else None, "dominios": meus[:6], "redundancia_com": dup[:6], "falhas": f}
     return out
 
 
@@ -205,10 +204,7 @@ def a_ritmo(D: dict) -> dict:
         rec = cad; motivo = "manter"
         if len(dias) >= 12 and cad > 1:
             rec, motivo = 1, "publica quase todo dia: ler diariamente"
-        elif lidos >= 20 and len(dias) <= 1 and cad <= 1:
-            rec, motivo = 3, "quase nunca publica: ler a cada 3 dias e liberar tempo"
-        elif intervalo and intervalo >= 6 and cad <= 1:
-            rec, motivo = max(2, int(intervalo // 2)), f"publica em média a cada {intervalo} dias"
+        # 10/10 (titular): a leitura é SEMPRE diária, mesmo sem oportunidade — nunca se recomenda espaçar
         f = [] if rec == cad else [("CADÊNCIA FORA DO RITMO", f"agenda a cada {cad} dia(s); a fonte rendeu em {len(dias)} de {lidos} dias",
                                     f"ler a cada {rec} dia(s) — {motivo}" + (f"; dia forte: {nomes[sem.most_common(1)[0][0]]}" if sem else ""))]
         out[mid] = {"dias_com_achado": len(dias), "dias_lidos": lidos, "intervalo_medio": intervalo, "cadencia_atual": cad,
@@ -280,7 +276,7 @@ def a_plataformas(D: dict) -> dict:
         {"inovacao": "Consulta inversa", "o_que": "frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios",
          "alcance": "cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo"},
         {"inovacao": "Motor de fontes irmãs", "o_que": "domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias",
-         "alcance": "ver lista da Profa. Clara — implantado nesta rodada (motor 'fontes-irmas')"}]
+         "alcance": "implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia)"}]
     return {"plataformas": plat, "inovacoes": inov}
 
 

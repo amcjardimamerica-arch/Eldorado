@@ -132,14 +132,25 @@ def registro() -> list[dict]:
     sens = [dict(s, origem="especial") for s in cfg["sensores_especiais"]]
     # motor de destinação tributária: sites das PRÓPRIAS empresas maiores contribuintes do ICMS de GO
     for s in sens:
-        if s.get("urls_dinamicas") == "fontes_irmas":       # 10/10 (conselho): domínios oficiais que já renderam e nenhum motor vigiava
-            try:
-                _fi = load_json(ROOT / "estado/conselho/fontes_irmas.json").get("fontes") or []
-                s["urls"] = [f["url"] for f in _fi if f.get("url")][:int(s.get("max_paginas") or 40)]
-            except Exception:  # noqa: BLE001
-                s["urls"] = list(s.get("urls") or [])
         if s.get("urls_dinamicas") == "base_empresas_go":
             s["urls"] = list(s.get("urls") or []) + _sites_empresas_go(limite=max(0, int(s.get("max_paginas") or 24) - len(s.get("urls") or [])))
+            try:                                             # 10/10: o motor de incentivos recebe sites de empresas novas (Espião, outras fontes)
+                _novas = load_json(ROOT / "estado/outras_oportunidades/sites_para_agregadores.json").get("incentivos") or []
+                s["urls"] = list(dict.fromkeys(s["urls"] + [x["url"] for x in _novas if x.get("url")]))[:int(s.get("max_paginas") or 24) + 12]
+            except Exception:  # noqa: BLE001
+                pass
+    # 10/10 (titular): MOTOR OUTRAS OPORTUNIDADES — o modelo vira N clones, cada um com a sua fatia de sites do horário
+    _exp = []
+    for s in sens:
+        if s.get("urls_dinamicas") == "outras_oportunidades":
+            try:
+                from .outras_oportunidades import expandir
+                _exp += expandir(s)
+            except Exception:  # noqa: BLE001
+                pass
+        else:
+            _exp.append(s)
+    sens = _exp
     vistos = {u for s in sens for u in s["urls"]}
     por_url: dict[str, dict] = {}
     if F260.exists():
@@ -193,6 +204,11 @@ def registro() -> list[dict]:
                          "confianca": "confirmada", "origem": "finalidade_motores", "max_paginas": 40,
                          "lexico_proprio": ["retificação", "prorrogação", "errata", "resultado", "homologação", "classificados", "recurso", "suspensão", "revogação", "novo edital", "inscrições", "cronograma"],
                          "rotas_recorrencia": [{"edital_id": r["edital_id"], "url": r["url"]} for r in rotas[:40]]})
+    try:                                                     # 10/10: rota aprendida primeiro; as originais ficam (redundância)
+        from .rotas_motores import aplicar as _rotas
+        sens = _rotas(sens)
+    except Exception:  # noqa: BLE001
+        pass
     return sens
 
 
@@ -829,6 +845,13 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         r.setdefault("sensor", s["id"]); r.setdefault("achados", []); r.setdefault("falhas", []); r.setdefault("saude", [])
         if not r.get("lido_em"):
             r["lido_em"] = now_iso()
+        try:                                                 # 10/10: aprendiz de rotas (5 vazias → alterar rota) e rede das outras oportunidades
+            from .rotas_motores import registrar as _rota_reg
+            _rota_reg(r, s)
+            from .outras_oportunidades import contabilizar as _oo
+            _oo(r, s)
+        except Exception:  # noqa: BLE001
+            pass
         executados += 1
         reg = sens.setdefault(s["id"], {"nome": s["nome"], "tipo": s["tipo"], "leituras": 0,
                                         "achados_total": 0, "vazias_seguidas": 0})
