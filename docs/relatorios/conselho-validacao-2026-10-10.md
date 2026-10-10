@@ -8,8 +8,8 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 34,
- "testados": 22,
+ "cegos_da_1a_rodada": 35,
+ "testados": 24,
  "com_rota_nova": 9,
  "via_ponte": 0,
  "continuam_cegos": [
@@ -25,9 +25,11 @@
   "f260-captacao-222",
   "f260-curadoria-008",
   "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
-  "f260-captacao-228"
+  "f260-captacao-228",
+  "f260-captacao-242",
+  "f260-espalhado-rouanet-cultura-gov-br"
  ],
- "aguardando_afinador": 12
+ "aguardando_afinador": 11
 }
 ```
 
@@ -51,7 +53,7 @@
    "motor": "empresas-incentivadas",
    "achados_total_1a": 42,
    "achados_total_agora": 42,
-   "no_fluxo": 3,
+   "no_fluxo": 2,
    "confirmadas": 0
   },
   {
@@ -133,8 +135,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 42,
-   "achados_total_agora": 42,
+   "achados_total_1a": 43,
+   "achados_total_agora": 43,
    "no_fluxo": 8,
    "confirmadas": 0
   },
@@ -161,8 +163,8 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 37,
-   "achados_total_agora": 37,
+   "achados_total_1a": 38,
+   "achados_total_agora": 38,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -187,8 +189,8 @@
 {
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
- "dominios_via_ponte": 0,
- "exemplos_da_rede_de_rotas": 554
+ "dominios_via_ponte": 1,
+ "exemplos_da_rede_de_rotas": 650
 }
 ```
 
@@ -199,12 +201,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 74.6,
- "fora_dos_motores_pct_agora": 74.6,
+ "fora_dos_motores_pct_1a": 75.9,
+ "fora_dos_motores_pct_agora": 75.9,
  "origem": {
-  "agregador/outra": 320,
-  "Piloto": 89,
-  "motor": 139
+  "agregador/outra": 314,
+  "Piloto": 90,
+  "motor": 128
  },
  "dominios_so_de_agregador": [
   {
@@ -282,7 +284,7 @@
  "dia_de_referencia": "2026-10-10",
  "ativos": 159,
  "lidos_ontem": 100,
- "lidos_hoje": 44,
+ "lidos_hoje": 46,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
   "plat-rede-filantropia"
@@ -328,19 +330,19 @@
 
 ```json
 {
- "fontes_recebidas": 129,
+ "fontes_recebidas": 131,
  "por_origem": {
-  "conselho (fontes irmãs)": 124,
-  "Cartório (site oficial certificado)": 5
+  "conselho (fontes irmãs)": 125,
+  "Cartório (site oficial certificado)": 6
  },
  "lidas_nas_ultimas_24h": 67,
  "dimensionamento": {
-  "fontes": 129,
+  "fontes": 131,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 3,
-  "cobertura_diaria": 129,
+  "cobertura_diaria": 131,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -378,7 +380,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 42,
+   "orgaos": 43,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "baoba.org.br",
@@ -421,14 +423,14 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 33,
+   "orgaos": 34,
    "exemplos": [
     "adustina.ba.gov.br",
+    "alteditais.com.br",
     "arapongas.pr.gov.br",
     "banrisulcultural.com.br",
     "bonde.org",
-    "chamamentos.serpro.gov.br",
-    "climaesociedade.org"
+    "chamamentos.serpro.gov.br"
    ]
   }
  }
