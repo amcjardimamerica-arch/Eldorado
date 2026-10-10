@@ -289,6 +289,22 @@ def eh_edicao_diario(r: dict) -> bool:
 
 
 # ── O REGISTRO SANEADO ──────────────────────────────────────────────────────────────────────────────────────────────
+def ato_no_trecho(texto: str) -> tuple[bool, str]:
+    """M14 (titular, 10/10/2026): o trecho encontrado na edição do diário mostra um ATO de abertura para o terceiro
+    setor? (abertura + destinatário, e não é ato posterior). Devolve (passa?, motivo)."""
+    c = cfg().get("M14_edicao_sem_ato") or {}
+    t = re.sub(r"\s+", " ", str(texto or ""))
+    if not t.strip():
+        return False, "sem trecho do ato"
+    if c.get("posterior") and re.search(c["posterior"], t, re.I):
+        return False, "ato posterior (resultado, homologação, extrato, aditivo)"
+    if not re.search(c.get("abertura") or r"$^", t, re.I):
+        return False, "o trecho não mostra ato de abertura (edital, chamamento, seleção, inscrições)"
+    if not re.search(c.get("destinatario") or r"$^", t, re.I):
+        return False, "o trecho não mostra destinatário do terceiro setor"
+    return True, ""
+
+
 def sanear_registro(r: dict, hoje: date | None = None, duplicatas: dict | None = None) -> dict:
     """Diagnóstico de UM registro. Devolve:
        descartar: motivo | None   (sai da caixa de abertas; gravado e reversível)
@@ -341,6 +357,14 @@ def sanear_registro(r: dict, hoje: date | None = None, duplicatas: dict | None =
         out["ajustes"]["tipo_registro"] = "edicao_diario"
         out["ajustes"]["motivo_tipo"] = "M12: edição inteira do diário — o que conta é o ATO dentro dela"
         out["regras"].append("M12")
+        # M14 (titular, 10/10/2026): sem ato no trecho, a edição não compreende o léxico/critério — ELIMINADA da caixa
+        _ext = ROOT / "dados/editais/extraidos" / f"{rid}.json"
+        if not r.get("fim") and not _ext.exists():
+            _ok, _porque = ato_no_trecho(r.get("evidencia") or "")
+            if not _ok:
+                out["descartar"] = f"M14: edição de diário eliminada no motor — {_porque}"
+                out["regras"].append("M14")
+                return out
         pub = str(r.get("data_publicacao") or "")[:10]
         lim = int(cfg().get("M4_prazo", {}).get("edicao_diario_dias_max_sem_ato", 120))
         try:
