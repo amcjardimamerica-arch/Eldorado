@@ -51,6 +51,28 @@ def verificar(base: str, caminhos: list[str]) -> dict:
             item.update({"http": s, "tipo": t[:60], "tamanho": len(corpo), "json": corpo.lstrip()[:1] in ("[", "{")})
         res["caminhos"].append(item)
     res["endpoints_encontrados"] = sorted(set(res["endpoints_encontrados"]))
+    # documentação da API (Swagger/OpenAPI): lista as rotas que falam de edital — só se a documentação for permitida
+    docs = [e for e in res["endpoints_encontrados"] if "documentation" in e or "swagger" in e or "api-docs" in e]
+    res["api"] = {}
+    for d in docs[:2]:
+        u = d if d.startswith("http") else base + ("/" + d.lstrip("/"))
+        if not rp.can_fetch(UA, u):
+            continue
+        s1, t1, h = _get(u, 400_000)
+        specs = sorted(set(re.findall(r"""["']([^"']*(?:api-docs[^"']*|swagger[^"']*\.json|openapi[^"']*\.json))["']""", h)))[:5]
+        res["api"][u] = {"http": s1, "specs": specs}
+        for sp in specs:
+            su = sp if sp.startswith("http") else base + "/" + sp.lstrip("/")
+            if not rp.can_fetch(UA, su):
+                continue
+            s2, t2, js = _get(su, 3_000_000)
+            try:
+                paths = list((json.loads(js).get("paths") or {}).keys())
+            except Exception:  # noqa: BLE001
+                paths = re.findall(r'"(/[^"]+)"\s*:\s*\{\s*"(?:get|post)"', js)
+            res["api"][u].setdefault("rotas_total", len(paths))
+            res["api"][u]["rotas_edital"] = [x for x in paths if re.search(r"(?i)edital|chamad|oportun", x)][:40]
+            res["api"][u]["base_spec"] = su
     permitidos_com_dado = [x for x in res["caminhos"] if x["permitido_para_robos"] and x.get("http") == 200 and (x.get("json") or x.get("links_edital"))]
     res["conclusao"] = ("há caminho PERMITIDO com dados: o motor pode sair da coleta assistida — " + ", ".join(x["caminho"] for x in permitidos_com_dado)
                         if permitidos_com_dado else
