@@ -31,7 +31,10 @@ from src.criterio_selos import DOZE, dispensa_valida, nivel  # noqa: E402
 
 VEREDITOS = ROOT / "dados/editais/vereditos_revisao.json"
 DERIVADAS = ROOT / "dados/editais/derivadas_revisao.json"
-CERTIDOES = ROOT / "estado/cartorio/certidoes.json"
+# 10/10 (implantação): as certidões da revisão humana vão para um arquivo PRÓPRIO, que o Cartório incorpora a cada
+# execução (a revisão humana prevalece). Gravar direto em estado/cartorio/certidoes.json se perdia: o fluxo do
+# Cartório regrava esse arquivo de hora em hora.
+CERTIDOES = ROOT / "estado/cartorio/certidoes_manuais.json"
 VIGENTES = ("ouro", "prata", "bronze", "pendente")
 
 
@@ -45,8 +48,8 @@ def ler_lotes(pasta: Path) -> dict:
         corpo = json.loads(arq.read_text(encoding="utf-8"))
         if isinstance(corpo, list):
             itens = corpo
-        elif any(k in corpo for k in ("resultados", "itens", "registros")):
-            itens = corpo.get("resultados") or corpo.get("itens") or corpo.get("registros") or []
+        elif any(k in corpo for k in ("resultados", "itens", "registros", "resultado")):   # "resultado": formato da Parte 2
+            itens = corpo.get("resultados") or corpo.get("itens") or corpo.get("registros") or corpo.get("resultado") or []
         else:                                                        # formato dos lotes: {id: registro}
             itens = corpo
         if isinstance(itens, dict):
@@ -58,7 +61,13 @@ def ler_lotes(pasta: Path) -> dict:
 
 
 def _item_ok(v) -> bool:
-    return isinstance(v, dict) and all(str(v.get(k) or "").strip() for k in ("valor", "trecho", "documento")) and v.get("pagina") not in (None, "")
+    """Valor + trecho literal + documento; a PÁGINA é exigida só de PDF (página de site/HTML não tem número de página —
+    a mesma regra do Cartório). 10/10: sem isso, itens certificados em páginas oficiais das Partes 2 e 3 eram ignorados."""
+    if not (isinstance(v, dict) and all(str(v.get(k) or "").strip() for k in ("valor", "trecho", "documento"))):
+        return False
+    doc = str(v.get("documento") or "").lower().split("?")[0]
+    eh_pdf = doc.endswith(".pdf") or "pdf" in str(v.get("metodo") or "").lower()
+    return v.get("pagina") not in (None, "") or not eh_pdf
 
 
 def certidao_de(x: dict, origem: str) -> tuple[dict, list[str]]:
@@ -110,11 +119,19 @@ def importar(pasta: Path, origem: str, gravar: bool = True) -> dict:
     avisos, n_cert, n_ver, n_der, selos = [], 0, 0, 0, {}
     for rid, x in regs.items():
         v = x.get("veredito") or "pendente"
-        if rid.startswith("novo-"):
+        if rid.startswith(("novo-", "der-")) or x.get("novo") is True:             # der-/novo: derivadas da Parte 3
             der["derivadas"][rid] = {"veredito": v, "site_oficial": x.get("site_oficial"), "link_documento": x.get("link_documento"),
                                      "parecer": x.get("parecer"), "itens": x.get("itens"), "pendentes": x.get("pendentes"),
-                                     "reclassificar": x.get("reclassificar"), "origem": origem, "em": _agora()}
+                                     "reclassificar": x.get("reclassificar"), "origem": origem, "em": _agora(),
+                                     "prazo": x.get("prazo"), "dispensas": x.get("dispensas"), "derivada_de": x.get("derivada_de")}
             n_der += 1
+            if v in VIGENTES or v in ("pendente", "nao_disponivel"):    # 10/10: a derivada também ganha certidão (estrela:<id>)
+                cert, av = certidao_de(x, origem)
+                avisos += av
+                if cert.get("itens") or cert.get("dispensas"):
+                    certs[f"estrela:{rid}"] = {**(certs.get(f"estrela:{rid}") or {}), **cert}
+                    n_cert += 1
+                    selos[cert.get("selo_depois") or "sem_estrela"] = selos.get(cert.get("selo_depois") or "sem_estrela", 0) + 1
             continue
         ver["vereditos"][rid] = {"veredito": v, "duplicata_de": x.get("duplicata_de") or None,
                                  "reclassificar": {k: y for k, y in (x.get("reclassificar") or {}).items() if y},

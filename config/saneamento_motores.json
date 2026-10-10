@@ -35,7 +35,20 @@
       "/ouvidoria",
       "inquerito-soroepidemiologico",
       "/solicitacao-de-transporte",
-      "/dispensa-de-licitac"
+      "/dispensa-de-licitac",
+      "capitaai\\.com\\.br/?$",
+      "capitaai\\.com\\.br/(editais|editais-abertos)(/|$)",
+      "/category/",
+      "/secoes_tematicas/",
+      "/search/label/",
+      "/tag/",
+      "alteditais\\.com\\.br/(oportunidades|segmentos|$)",
+      "produtos\\.prosas\\.com\\.br",
+      "vagas\\.terceirosetor\\.net",
+      "mapaosc\\.ipea\\.gov\\.br/editais",
+      "investidor\\.bussolasocial\\.com\\.br/?$",
+      "conjunta\\.org/?$",
+      "/editais/?$ (quando a página lista mais de 3 editais)"
     ],
     "titulo_exato": [
       "conv[êe]nios e parcerias",
@@ -56,10 +69,20 @@
       "^resultado (final|preliminar|definitivo)",
       "\\bprograma[çc][ãa]o d[oa] .{0,60}\\bter[áa] \\d+",
       "aumenta (o )?repasse",
-      "^termo de fomento\\s+(?:-|–|—)\\s+"
+      "^termo de fomento\\s+(?:-|–|—)\\s+",
+      "^\\d+ editais abertos",
+      "^Editais de .+ para ONGs",
+      "Radar (semanal|público)",
+      "Diário de editais",
+      "Editais abertos - ",
+      "Explore editais",
+      "Centralize editais",
+      "Encontre editais"
     ],
     "institucional_sem_edital": "/(sustentabilidade|quem-somos|institucional|sobre|a-empresa)(/|$)",
-    "palavras_de_edital": "edital|chamamento|chamada|inscri[çc]|inscrev|sele[çc][ãa]o|pr[êe]mio|credenciamento|aviso|apoio a projetos|fomento"
+    "palavras_de_edital": "edital|chamamento|chamada|inscri[çc]|inscrev|sele[çc][ãa]o|pr[êe]mio|credenciamento|aviso|apoio a projetos|fomento|subs[íi]dio|grants?|apoio|acelera|programa|ciclo|bolsas?|patroc[íi]nio|doa[çc]|incentivo|projetos|parcerias|fundo",
+    "nota_p3_m2": "10/10/2026 (Parte 3, M2): página-catálogo (listagem de editais de agregador, categoria, etiqueta, seção temática) não é oportunidade — é fonte de pistas",
+    "nota_p3_vocabulario": "10/10/2026 (gabarito da Parte 3): fontes privadas e internacionais falam de fomento com outro vocabulário (subsídio, grant, aceleração, apoio emergencial, programa, ciclo, bolsa, patrocínio, doação, incentivo, fundo); sem isso a regra 'institucional sem edital' tirava 8 úteis da caixa"
   },
   "M4_prazo": {
     "edicao_diario_dias_max_sem_ato": 120,
