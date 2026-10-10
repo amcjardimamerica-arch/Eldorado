@@ -1,15 +1,15 @@
 {
-  "em": "2026-10-10T04:45:29+00:00",
+  "em": "2026-10-10T04:53:07+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 3,
+      "achados": 1,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 32,
-        "busca_vazia": 5,
-        "sem_texto": 3
+        "nada_no_crivo": 37,
+        "sem_texto": 1,
+        "busca_vazia": 2
       },
       "efetividade": 0.0
     }
@@ -18,7 +18,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 7984,
+      "vezes": 8007,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -31,7 +31,7 @@
       ],
       "ultima": "2026-10-10",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 7984 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 8007 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -82,20 +82,6 @@
       "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 119 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "piloto-aberto",
-      "motivo": "busca_vazia",
-      "vezes": 106,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir",
-        "aposta",
-        "espionar"
-      ],
-      "ultima": "2026-10-10",
-      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 106 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
       "motor": "motor-patrocinio",
       "motivo": "nada_no_crivo",
       "vezes": 88,
@@ -123,8 +109,22 @@
     },
     {
       "motor": "piloto-aberto",
+      "motivo": "busca_vazia",
+      "vezes": 79,
+      "tipos": [
+        "cacar_oportunidade",
+        "descobrir",
+        "aposta",
+        "espionar"
+      ],
+      "ultima": "2026-10-10",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 79 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "piloto-aberto",
       "motivo": "sem_texto",
-      "vezes": 36,
+      "vezes": 42,
       "tipos": [
         "aposta",
         "descobrir",
@@ -132,7 +132,7 @@
       ],
       "ultima": "2026-10-10",
       "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 36 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 42 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -180,20 +180,6 @@
     }
   ],
   "melhorias_pendentes": [
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deveria verificar a existência de trechos literais com informações específicas sobre edital, como objeto, prazo, valor e abertura, para evitar achados genéricos ou incompletos.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-10T04:45",
-      "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve validar a existência de conteúdo no trecho do edital antes de considerar o achado como válido, para evitar análises imprecisas.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-10T04:44",
-      "aplicada": false
-    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deveria identificar e extrair automaticamente os trechos relevantes dos editais, como prazos, valores, objetos e páginas, para permitir uma avaliação mais precisa da compatibilidade com a missão e necessidades da",
@@ -319,12 +305,26 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-09T22:44",
       "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "Incluir filtros para verificar se o edital é voltado para organizações da sociedade civil e se há requisitos de elegibilidade para associações de moradores.",
+      "efetividade_na_hora": 1.0,
+      "em": "2026-10-09T18:37",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deve coletar e exibir trechos relevantes dos editais para permitir uma avaliação mais precisa de sua compatibilidade com a missão da organização.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-09T18:15",
+      "aplicada": false
     }
   ],
-  "editais_tratados": 471,
-  "entregues_ao_claude": 401,
+  "editais_tratados": 469,
+  "entregues_ao_claude": 399,
   "ultima_faxina": {
-    "em": "2026-10-10T04:45:29+00:00",
+    "em": "2026-10-10T04:53:07+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 12,
     "achados_descartados_removidos": 2415,
