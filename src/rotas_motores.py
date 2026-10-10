@@ -148,6 +148,7 @@ def candidatas(sensor: dict, bib: dict | None = None) -> list[dict]:
     return res[:24]
 
 
+_PONTE_FORA: dict = {}
 EDITAL = re.compile(r"(?i)edital|chamamento|chamada p[úu]blica|sele[çc][ãa]o|inscri[çc][õo]es|pauta|ordem do dia|sess[ãa]o|mat[ée]ria|projeto de lei|di[áa]rio")
 
 
@@ -167,10 +168,17 @@ def avaliar(b: bytes, tipo_ct: str = "") -> dict:
     return {"pontos": sinais * 2 + (1 if len(links) > 20 else 0), "links": len(links), "sinais": sinais, "formato": "html"}
 
 
+def baixar_rapido(url: str, timeout: int = 10) -> tuple[bytes, str]:
+    """Teste de rota: tempo-limite curto (10 s) — rota que não responde logo não serve como rota diária."""
+    import urllib.request
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Eldorado; rotas)", "Accept": "text/html,application/json,*/*"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.read(1_500_000), r.headers.get("content-type", "")
+
+
 def testar(sensor: dict, baixar=None, ponte=None, bib: dict | None = None, maximo: int = 16, prazo: float | None = None) -> dict:
     """Testa as candidatas (direto e, se recusar, pela ponte); devolve a melhor e ensina a rede."""
-    if baixar is None:
-        from .executor_skills import baixar as baixar
+    baixar = baixar or baixar_rapido
     tipo = sensor.get("tipo") or ""
     testes, melhor = [], None
     import time as _t
@@ -179,7 +187,7 @@ def testar(sensor: dict, baixar=None, ponte=None, bib: dict | None = None, maxim
             break                                           # orçamento de tempo do afinador
         for via in ("direto", "ponte"):
             fn = baixar if via == "direto" else ponte
-            if fn is None:
+            if fn is None or (via == "ponte" and _PONTE_FORA.get("fora")):
                 continue
             try:
                 if prazo and _t.time() > prazo:
@@ -187,6 +195,8 @@ def testar(sensor: dict, baixar=None, ponte=None, bib: dict | None = None, maxim
                 b, ct = fn(c["url"]); av = avaliar(b, ct); erro = None
             except Exception as e:  # noqa: BLE001
                 av, erro = {"pontos": 0, "links": 0, "sinais": 0}, f"{type(e).__name__}"
+                if via == "ponte" and isinstance(e, (OSError, RuntimeError, TimeoutError)):
+                    _PONTE_FORA["fora"] = True              # a ponte não respondeu: não insiste nesta execução
             ok = av["pontos"] >= 3
             aprender(c["url"], tipo, via, c["origem"], ok)
             testes.append({"url": c["url"], "origem": c["origem"], "via": via, **av, "erro": erro, "funcionou": ok})
@@ -221,6 +231,7 @@ def afinar(maximo_motores: int = 8, baixar=None, ponte="auto", segundos: int = 3
     pb = _ponte_baixar() if ponte == "auto" else ponte
     apr = _j(APRENDIDAS, {}) or {}; pon = _j(PONTE, {"dominios": []})
     feitos = []
+    _PONTE_FORA.clear()
     fila = sorted((mid for mid, m in est.items() if m.get("status") == "alterar rota" and mid in reg),
                   key=lambda mid: (str((afi.get(mid) or {}).get("em") or ""), -int(est[mid].get("vazias_seguidas") or 0)))
     import time as _t
@@ -242,7 +253,8 @@ def afinar(maximo_motores: int = 8, baixar=None, ponte="auto", segundos: int = 3
         feitos.append({"motor": mid, "melhor": r["melhor"], "testes": len(r["testes"])})
         _w(AFINADOR, afi); _w(APRENDIDAS, apr); _w(PONTE, pon)       # grava a cada motor: interrupção não perde nada
     _w(AFINADOR, afi); _w(APRENDIDAS, apr); _w(PONTE, pon)
-    return {"afinados": feitos, "ponte_disponivel": bool(pb)}
+    afi["_execucao"] = {"em": _agora(), "motores_testados": len(feitos), "ponte_respondeu": bool(pb) and not _PONTE_FORA.get("fora")}; _w(AFINADOR, afi)
+    return {"afinados": feitos, "ponte_disponivel": bool(pb) and not _PONTE_FORA.get("fora")}
 
 
 def aplicar(sensores: list[dict]) -> list[dict]:
