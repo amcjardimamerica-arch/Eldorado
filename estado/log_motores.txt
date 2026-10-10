@@ -31,3 +31,14 @@ Traceback (most recent call last):
     leve = [{k: m[k] for k in ("id", "programa", "orgao", "familia", "segmento", "tipo", "nivel", "uf", "goias",
                 ~^^^
 KeyError: 'segmento'
+src.motores FALHOU — o monitor da Bússola não atualiza sem este passo
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/work/Eldorado/Eldorado/src/motores.py", line 913, in <module>
+    print(json.dumps(run(), ensure_ascii=False, indent=2))
+                     ^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/motores.py", line 540, in run
+    s = esq.get(e["id"]); b = _bloqueio_vigente(blq.get(urlsplit(e["urls"][0]).hostname), s)
+                                                                 ~~~~~~~~~^^^
+IndexError: list index out of range
