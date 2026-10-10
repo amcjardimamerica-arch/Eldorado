@@ -9,7 +9,7 @@
 ```json
 {
  "cegos_da_1a_rodada": 35,
- "testados": 27,
+ "testados": 28,
  "com_rota_nova": 12,
  "via_ponte": 0,
  "continuam_cegos": [
@@ -26,10 +26,11 @@
   "f260-curadoria-008",
   "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
   "f260-captacao-228",
+  "f260-captacao-252",
   "f260-captacao-242",
   "f260-espalhado-rouanet-cultura-gov-br"
  ],
- "aguardando_afinador": 8
+ "aguardando_afinador": 7
 }
 ```
 
@@ -40,15 +41,8 @@
 
 ```json
 {
- "motores_de_ruido_1a": 19,
+ "motores_de_ruido_1a": 18,
  "ruido_agora": [
-  {
-   "motor": "plat-gife",
-   "achados_total_1a": 45,
-   "achados_total_agora": 45,
-   "no_fluxo": 0,
-   "confirmadas": 0
-  },
   {
    "motor": "empresas-incentivadas",
    "achados_total_1a": 42,
@@ -121,9 +115,9 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 454,
-   "achados_total_agora": 454,
-   "no_fluxo": 3,
+   "achados_total_1a": 482,
+   "achados_total_agora": 482,
+   "no_fluxo": 4,
    "confirmadas": 0
   },
   {
@@ -135,9 +129,9 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 43,
-   "achados_total_agora": 43,
-   "no_fluxo": 8,
+   "achados_total_1a": 45,
+   "achados_total_agora": 45,
+   "no_fluxo": 9,
    "confirmadas": 0
   },
   {
@@ -163,8 +157,8 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 38,
-   "achados_total_agora": 38,
+   "achados_total_1a": 40,
+   "achados_total_agora": 40,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -187,10 +181,10 @@
 
 ```json
 {
- "pontos_com_redundancia": 10,
+ "pontos_com_redundancia": 9,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 743
+ "exemplos_da_rede_de_rotas": 840
 }
 ```
 
@@ -201,12 +195,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 76.0,
- "fora_dos_motores_pct_agora": 76.0,
+ "fora_dos_motores_pct_1a": 74.4,
+ "fora_dos_motores_pct_agora": 74.4,
  "origem": {
-  "agregador/outra": 316,
-  "Piloto": 90,
-  "motor": 128
+  "agregador/outra": 314,
+  "motor": 139,
+  "Piloto": 90
  },
  "dominios_so_de_agregador": [
   {
@@ -284,7 +278,7 @@
  "dia_de_referencia": "2026-10-10",
  "ativos": 159,
  "lidos_ontem": 100,
- "lidos_hoje": 46,
+ "lidos_hoje": 47,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
   "plat-rede-filantropia"
@@ -330,19 +324,19 @@
 
 ```json
 {
- "fontes_recebidas": 133,
+ "fontes_recebidas": 134,
  "por_origem": {
-  "conselho (fontes irmãs)": 125,
+  "conselho (fontes irmãs)": 126,
   "Cartório (site oficial certificado)": 8
  },
- "lidas_nas_ultimas_24h": 67,
+ "lidas_nas_ultimas_24h": 114,
  "dimensionamento": {
-  "fontes": 133,
+  "fontes": 134,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 3,
-  "cobertura_diaria": 133,
+  "cobertura_diaria": 134,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -351,22 +345,22 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-10T12:16:50+00:00",
-   "duracao_s": 48,
-   "achados": 0
+   "ultima": "2026-10-10T18:31:47+00:00",
+   "duracao_s": 61,
+   "achados": 6
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-10T12:17:46+00:00",
-   "duracao_s": 56,
+   "ultima": "2026-10-10T18:32:37+00:00",
+   "duracao_s": 50,
    "achados": 2
   },
   "outras-oportunidades-3": {
-   "ultima": "2026-10-10T12:18:52+00:00",
-   "duracao_s": 66,
+   "ultima": "2026-10-10T15:56:50+00:00",
+   "duracao_s": 49,
    "achados": 2
   }
  },
- "com_achado": 4
+ "com_achado": 8
 }
 ```
 
