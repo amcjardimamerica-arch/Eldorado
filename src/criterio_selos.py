@@ -14,7 +14,9 @@ DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valo
 BRONZE = ("Objeto", "Prazo de inscrição", "Território")
 PRATA = BRONZE + ("Valor", "Requisitos")
 FALTA = re.compile(r"^\s*(n[ãa]o (informad|localizad|encontrad|consta)|sem informa|pendente|—|-|\?)", re.I)
-JUSTIFICA = re.compile(r"dispensad[oa] pel[oa]|n[ãa]o se aplica|n[ãa]o aplic[aá]vel|inaplic[aá]vel|n[ãa]o h[aá] (prazo de )?recurso|sem sele[çc][ãa]o competitiva|fluxo cont[ií]nuo|cadastro permanente|regime", re.I)
+# 11/10/2026 (titular): "não consta nos documentos oficiais lidos" é dispensa JUSTIFICADA (lista dos documentos lidos
+# registrada na certidão); nunca vale para o núcleo — objeto, prazo de inscrição e território (o importador barra).
+JUSTIFICA = re.compile(r"n[ãa]o consta nos documentos oficiais lidos|dispensad[oa] pel[oa]|n[ãa]o se aplica|n[ãa]o aplic[aá]vel|inaplic[aá]vel|n[ãa]o h[aá] (prazo de )?recurso|sem sele[çc][ãa]o competitiva|fluxo cont[ií]nuo|cadastro permanente|regime", re.I)
 
 
 def resolvido(item: dict | None) -> bool:
