@@ -1,97 +1,97 @@
 {
- "em": "2026-10-10T10:20:34+00:00",
+ "em": "2026-10-10T10:24:37+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
   "motores": 142,
   "alterar_rota": 78,
-  "rota_nova": 0,
+  "rota_nova": 5,
   "via_ponte": 0,
-  "exemplos_da_rede": 25
+  "exemplos_da_rede": 112
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
-    "tok:transparencia",
-    -0.0058
+    "origem:biblioteca",
+    1.1637
    ],
    [
-    "tok:chamadas",
-    -0.0145
+    "tok:mpf",
+    0.957
    ],
    [
-    "tok:publicas",
-    -0.0145
+    "tok:unidades",
+    0.8919
    ],
    [
-    "tok:chamamento",
-    -0.0163
+    "tok:portarias",
+    0.6257
    ],
    [
-    "tok:publico",
-    -0.0163
+    "tipo:plataforma",
+    0.5885
    ],
    [
-    "tok:chamamentos",
-    -0.0187
+    "tok:receitafederal",
+    0.5301
    ],
    [
-    "tok:edital",
-    -0.0217
+    "tok:sjgo",
+    0.52
    ],
    [
-    "tok:ordem",
-    -0.0279
+    "tipo:diario_justica",
+    0.441
    ],
    [
-    "tok:dia",
-    -0.0279
+    "tok:assuntos",
+    0.4053
    ],
    [
-    "tok:editais",
-    -0.0317
+    "via:direto",
+    0.3659
    ],
    [
-    "tok:materia",
-    -0.052
+    "origem:rota original",
+    0.3388
    ],
    [
-    "tok:materialegislativa",
-    -0.052
+    "tok:cultura",
+    0.3359
    ]
   ],
   "piores_sinais": [
    [
-    "origem:rota original",
-    -0.2194
+    "tok:dfre",
+    -0.2677
+   ],
+   [
+    "tok:fundo",
+    -0.2677
    ],
    [
     "origem:câmara",
     -0.2741
    ],
    [
-    "via:direto",
-    -0.4167
+    "tok:participacao",
+    -0.2762
    ],
    [
-    "sapl:False",
-    -0.4405
+    "tok:social",
+    -0.2762
+   ],
+   [
+    "tok:pgt",
+    -0.3618
    ],
    [
     "tipo:legislativo",
     -0.5964
    ],
    [
-    "tld:br",
-    -0.5964
-   ],
-   [
-    "gov:True",
-    -0.5964
-   ],
-   [
-    "raiz:False",
-    -0.5964
+    "origem:padrão",
+    -1.0648
    ]
   ]
  },
@@ -143,8 +143,27 @@
     "motivo": "o robots.txt do site proíbe leitura automática (3 página(s)) — conferência manual pelo titular; republicações chegam pelo motor do CNJ"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.trf1.jus.br/sjgo/imprensa/noticias"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 29,
+    "aprendido_em": "2026-10-10T10:23:30+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T10:23:30+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.trf1.jus.br/sjgo/imprensa/noticias",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 29,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-196": {
    "nome": "MPGO - TAC com destinação social",
@@ -158,8 +177,27 @@
     "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 13,
+    "aprendido_em": "2026-10-10T10:23:43+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T10:23:43+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 13,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-190": {
    "nome": "TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia",
@@ -173,8 +211,27 @@
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.trt18.jus.br/portal/"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 13,
+    "aprendido_em": "2026-10-10T10:23:49+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T10:23:49+00:00",
+    "testes": 12,
+    "melhor": {
+     "url": "https://www.trt18.jus.br/portal/",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 13,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "cnj-destinacoes": {
    "nome": "CNJ — destinações de penas e prestações pecuniárias",
@@ -219,7 +276,12 @@
    },
    "historico": [],
    "rota_aprendida": null,
-   "afinado": null
+   "afinado": {
+    "em": "2026-10-10T10:23:55+00:00",
+    "testes": 11,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
   },
   "f260-captacao-230": {
    "nome": "Fundação ArcelorMittal",
@@ -263,8 +325,27 @@
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.gov.br/mdh/pt-br/navegue-por-temas/participacao-social/editais"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 81,
+    "aprendido_em": "2026-10-10T10:24:18+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T10:24:18+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.gov.br/mdh/pt-br/navegue-por-temas/participacao-social/editais",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 81,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-044": {
    "nome": "Projetos aptos à captação na LIE",
@@ -278,8 +359,27 @@
     "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/leilao/pdm/doacoes"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 21,
+    "aprendido_em": "2026-10-10T10:24:37+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T10:24:37+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/leilao/pdm/doacoes",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 21,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-223": {
    "nome": "Fundação Bradesco",

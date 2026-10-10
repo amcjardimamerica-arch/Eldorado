@@ -1,21 +1,21 @@
 {
- "em": "2026-10-10T10:21:47+00:00",
+ "em": "2026-10-10T10:26:35+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
-  "certidoes": 194,
+  "certidoes": 198,
   "nesta_execucao": 5,
   "fila_estrelas": 478,
   "fila_livros": 2241,
-  "itens_que_faltavam": 1534,
-  "itens_obtidos": 711,
-  "itens_dispensados": 114,
-  "eficiencia_itens": 0.538,
-  "com_link_oficial": 151,
-  "taxa_link_oficial": 0.778,
+  "itens_que_faltavam": 1577,
+  "itens_obtidos": 742,
+  "itens_dispensados": 120,
+  "eficiencia_itens": 0.547,
+  "com_link_oficial": 155,
+  "taxa_link_oficial": 0.783,
   "certidoes_completas": 23,
-  "para_o_interceptador": 152,
+  "para_o_interceptador": 156,
   "para_o_chrome": 18,
   "selos_que_mudaram": {
    "bronze → ouro": 1,
@@ -26,92 +26,92 @@
    "sem selo → bronze": 2
   },
   "por_degrau": {
-   "degrau 0": 150,
+   "degrau 0": 154,
    "degrau 1": 1
   }
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 121,
-   "obtidos": 73,
+   "faltavam": 124,
+   "obtidos": 76,
    "dispensados": 0,
-   "eficiencia": 0.603
+   "eficiencia": 0.613
   },
   "Prazo de inscrição": {
-   "faltavam": 100,
-   "obtidos": 24,
-   "dispensados": 34,
-   "eficiencia": 0.58
+   "faltavam": 103,
+   "obtidos": 25,
+   "dispensados": 36,
+   "eficiencia": 0.592
   },
   "Resultado": {
-   "faltavam": 155,
-   "obtidos": 33,
-   "dispensados": 63,
-   "eficiencia": 0.619
+   "faltavam": 159,
+   "obtidos": 34,
+   "dispensados": 66,
+   "eficiencia": 0.629
   },
   "Prazo de recurso": {
-   "faltavam": 163,
-   "obtidos": 69,
+   "faltavam": 167,
+   "obtidos": 72,
    "dispensados": 3,
-   "eficiencia": 0.442
+   "eficiencia": 0.449
   },
   "Valor": {
-   "faltavam": 115,
-   "obtidos": 52,
-   "dispensados": 12,
-   "eficiencia": 0.557
+   "faltavam": 119,
+   "obtidos": 54,
+   "dispensados": 13,
+   "eficiencia": 0.563
   },
   "Órgão / financiador": {
-   "faltavam": 101,
-   "obtidos": 68,
+   "faltavam": 104,
+   "obtidos": 71,
    "dispensados": 0,
-   "eficiencia": 0.673
+   "eficiencia": 0.683
   },
   "Território": {
-   "faltavam": 109,
-   "obtidos": 57,
+   "faltavam": 112,
+   "obtidos": 60,
    "dispensados": 0,
-   "eficiencia": 0.523
+   "eficiencia": 0.536
   },
   "Esfera": {
-   "faltavam": 109,
-   "obtidos": 83,
-   "dispensados": 0,
-   "eficiencia": 0.761
-  },
-  "Requisitos": {
-   "faltavam": 155,
-   "obtidos": 85,
-   "dispensados": 0,
-   "eficiencia": 0.548
-  },
-  "Anexos": {
-   "faltavam": 137,
-   "obtidos": 67,
-   "dispensados": 0,
-   "eficiencia": 0.489
-  },
-  "Destinação": {
-   "faltavam": 151,
-   "obtidos": 13,
-   "dispensados": 2,
-   "eficiencia": 0.099
-  },
-  "Área de atuação": {
-   "faltavam": 118,
+   "faltavam": 113,
    "obtidos": 87,
    "dispensados": 0,
-   "eficiencia": 0.737
+   "eficiencia": 0.77
+  },
+  "Requisitos": {
+   "faltavam": 159,
+   "obtidos": 89,
+   "dispensados": 0,
+   "eficiencia": 0.56
+  },
+  "Anexos": {
+   "faltavam": 140,
+   "obtidos": 70,
+   "dispensados": 0,
+   "eficiencia": 0.5
+  },
+  "Destinação": {
+   "faltavam": 155,
+   "obtidos": 13,
+   "dispensados": 2,
+   "eficiencia": 0.097
+  },
+  "Área de atuação": {
+   "faltavam": 122,
+   "obtidos": 91,
+   "dispensados": 0,
+   "eficiencia": 0.746
   }
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 118,
-   "com_link_oficial": 110,
-   "faltavam": 1033,
-   "resolvidos": 722,
-   "eficiencia": 0.699,
-   "taxa_link_oficial": 0.932
+   "certidoes": 122,
+   "com_link_oficial": 114,
+   "faltavam": 1076,
+   "resolvidos": 759,
+   "eficiencia": 0.705,
+   "taxa_link_oficial": 0.934
   },
   "diario": {
    "certidoes": 11,
@@ -156,12 +156,12 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 139,
-   "faltavam": 1087,
-   "resolvidos": 578,
-   "eficiencia": 0.532,
-   "com_link_oficial": 106,
-   "taxa_link_oficial": 0.763
+   "certidoes": 143,
+   "faltavam": 1130,
+   "resolvidos": 615,
+   "eficiencia": 0.544,
+   "com_link_oficial": 110,
+   "taxa_link_oficial": 0.769
   },
   "refeitas": {
    "certidoes": 55,
@@ -198,30 +198,30 @@
    "taxa_link_oficial": 1.0
   },
   "cartório v4": {
-   "certidoes": 39,
-   "faltavam": 284,
+   "certidoes": 38,
+   "faltavam": 281,
    "resolvidos": 104,
-   "eficiencia": 0.366,
+   "eficiencia": 0.37,
    "com_link_oficial": 29,
-   "taxa_link_oficial": 0.744
+   "taxa_link_oficial": 0.763
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 149,
-   "faltavam": 1239,
-   "resolvidos": 710,
-   "eficiencia": 0.573,
-   "com_link_oficial": 116,
+   "certidoes": 154,
+   "faltavam": 1285,
+   "resolvidos": 747,
+   "eficiencia": 0.581,
+   "com_link_oficial": 120,
    "taxa_link_oficial": 0.779
   }
  },
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 128,
-   "renderam": 94,
-   "itens": 594,
-   "links_oficiais": 98,
-   "taxa_de_acerto": 0.734
+   "vezes": 132,
+   "renderam": 98,
+   "itens": 631,
+   "links_oficiais": 102,
+   "taxa_de_acerto": 0.742
   },
   "2": {
    "nome": "anexos completos",
@@ -233,11 +233,11 @@
   },
   "3": {
    "nome": "página oficial e citados",
-   "vezes": 3,
+   "vezes": 4,
    "renderam": 1,
    "itens": 7,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.333
+   "taxa_de_acerto": 0.25
   },
   "4": {
    "nome": "biblioteca de sites",
@@ -299,11 +299,11 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 53,
-   "faltavam": 400,
+   "certidoes": 54,
+   "faltavam": 403,
    "resolvidos": 123,
-   "eficiencia": 0.307,
-   "entraram_aqui": 67,
+   "eficiencia": 0.305,
+   "entraram_aqui": 68,
    "esgotadas": 0
   },
   "bronze": {
@@ -317,11 +317,11 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 87,
-   "faltavam": 774,
-   "resolvidos": 548,
-   "eficiencia": 0.708,
-   "entraram_aqui": 75,
+   "certidoes": 91,
+   "faltavam": 817,
+   "resolvidos": 585,
+   "eficiencia": 0.716,
+   "entraram_aqui": 79,
    "esgotadas": 0
   },
   "ouro": {
@@ -335,7 +335,7 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 288,
+  "orgaos_com_gabarito": 293,
   "itens_achados_pelo_gabarito": {
    "Objeto": 6
   },
@@ -3802,6 +3802,192 @@
     },
     {
      "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13844779000173/compras/2025/8/arquivos/2",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 3,
+     "edicao_inteira": null
+    }
+   ]
+  },
+  {
+   "id": "nova-654f6fca4731",
+   "tipo": "livro",
+   "titulo": "Credenciamento de prestadores de serviços artísticos de diversos segmentos culturais (artistas e fazedores de cultura) — Município de Simões Filho/BA",
+   "balcao": "pncp",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+   "degrau": 0,
+   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Destinação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-10T10:25:39+00:00",
+   "prazo": null,
+   "uf": "BA",
+   "orgao": "Município de Simões Filho/BA",
+   "fim": null,
+   "itens": {
+    "Prazo de recurso": {
+     "valor": "09 de janeiro de 2026",
+     "trecho": "azos  ANEXO XIII – Barema de Avaliação  ANEXO XIV- Formulário de Recurso  ANEXO XV- Calendário Municipal  ANEXO XVI- Minuta do Contrato Simões Filho, 09 de janeiro de 2026 PREFEITURA MUNICIPAL DE SIMÕES FILHO",
+     "pagina": 14,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 1.573.000,00 (um milhão, quinhentos e 39 (quatrocentos e trinta e nove)",
+     "trecho": "omprovação da atuação artístico -cultural implicará Será destinado o valor global de R$ 1.573.000,00 (um milhão, quinhentos e 39 (quatrocentos e trinta e nove) contratações. Os valores a serem pagos foram reajustados com base em",
+     "pagina": 7,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "VALORES \n, e será realizado pelo Município de Simões Filho, em moeda corrente nacional, por meio de \ninformada no ato da inscrição,  de titularidade do responsável legal constante da \n15.",
+     "trecho": "agamento observará os valores estabelecidos no ANEXO I – DETALHAMENTO DO OBJETO E VALORES , e será realizado pelo Município de Simões Filho, em moeda corrente nacional, por meio de informada no ato da inscrição, de titularidade do responsável legal constante da 15.3. É de responsabilidade exclusiva dos co-autores, integrantes ou demais parti",
+     "pagina": 11,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "metodo": "seção"
+    },
+    "Órgão / financiador": {
+     "valor": "PREFEITURA MUNICIPAL DE SIMÕES FILHO",
+     "trecho": "ESTADO DA BAHIA PREFEITURA MUNICIPAL DE SIMÕES FILHO SECRETARIA MUNICIPAL DE CULTURA",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "no Município de Simões Filho há pelo m",
+     "trecho": "Lei Complementar nº 123/2006. 4.2.5. Possuir Cadastro Cultural ativo no Município de Simões Filho há pelo m 4.2.6. Residir no município há mínimo de 24 (vinte e quatro) meses de",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: pncp.gov.br · PREFEITURA MUNICIPAL DE SIMÕES FILHO Município de Simões Filho/BA",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "O prazo estipulado para habilitação e credenciamento poderá ser prorrogado e/ou aditado por igual \nperíodo, a critério da Secretaria Municipal de Cultura, na hipótese de reconhecida necessidade pelos serviços.",
+     "trecho": "Município, no endereço eletrônico www.simoesfilho.ba.gov.br. 13. DA HABILITAÇÃO E CREDENCIAMENTO 13.1. O prazo estipulado para habilitação e credenciamento poderá ser prorrogado e/ou aditado por igual período, a critério da Secretaria Municipal de Cultura, na hipótese de reconhecida necessidade pelos serviços. Durante esse período, os credenciados pod quantidades que a Administração necessitar, ob",
+     "pagina": 9,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "metodo": "seção"
+    },
+    "Anexos": {
+     "valor": "ANEXO II b) Tabela de habilitação (ANEXO III; ANEXO IV d) Mapa de Palco (ANEXO V- devidamente preenchido);; ANEXO X);; ANEXO I b) Tabela de Habilitação (ANEXO II; ANEXO II - devidamente preenchido e assinado);; ANEXO III - em uma via devidamente assinada);; ANEXO IV - devidamente preenchido e assina",
+     "trecho": "7.1. PARA INSCRIÇÃO DE PESSOA FÍSICA: a) Formulário de Inscrição (ANEXO II b) Tabela de habilitação (ANEXO III c) Proposta de Apresentação (ANEXO IV d) Mapa de Palco (ANEXO V- devidamente preenchido); e) Portfólio do artista ou grupo que será credenciad",
+     "pagina": 5,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "metodo": "lista de anexos"
+    },
+    "Área de atuação": {
+     "valor": "Cultura",
+     "trecho": "termos do objeto e do título: Cultura",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "metodo": "palavras-chave do objeto"
+    }
+   },
+   "dispensas": {
+    "Prazo de inscrição": {
+     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
+     "trecho": ". 13.4. A Chamada de Credenciamento poderá ser revogada a competente, a qualquer tempo, excluir credenciado, por despacho motivado, caso tenha ciência de fa",
+     "pagina": 9,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2"
+    },
+    "Resultado": {
+     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
+     "trecho": ". 13.4. A Chamada de Credenciamento poderá ser revogada a competente, a qualquer tempo, excluir credenciado, por despacho motivado, caso tenha ciência de fa",
+     "pagina": 9,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-10T10:25:39+00:00",
+     "ganhou": [
+      "Anexos",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/2",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 60,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/1",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13927827000197/compras/2026/1/arquivos/4",
      "degrau": 0,
      "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
      "motivo": null,
@@ -7437,6 +7623,143 @@
    ]
   },
   {
+   "id": "op-29aa10c99fa6",
+   "tipo": "livro",
+   "titulo": "MUNICIPIO DE NOVA MUTUM — CHAMAMENTO PÚBLICO PARA SELEÇÃO DE PROJETOS CULTURAIS, VISANDO À CELEBRAÇÃO DE TERMO DE EXECUÇÃO CULTURAL COM AGENTES CULTURAIS DO MUN",
+   "balcao": "pncp",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/2",
+   "degrau": 0,
+   "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+   "faltavam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Esfera",
+    "Requisitos",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Destinação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.857,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido (formato_desconhecido)",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-10T10:24:42+00:00",
+   "prazo": null,
+   "uf": "MT",
+   "orgao": "MUNICIPIO DE NOVA MUTUM",
+   "fim": "2026-10-06",
+   "itens": {
+    "Resultado": {
+     "valor": "09/10/2026",
+     "trecho": "se e julgamento das propostas 07/10/2026 e 08/10/2026 Publicação de Resultado 09/10/2026 Fase de Recursos – Etapa Inscrições 13/10 a 15/10/2026 **Contrarraz",
+     "pagina": 18,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/2",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "15/10/2026",
+     "trecho": "7/10/2026 e 08/10/2026 Publicação de Resultado 09/10/2026 Fase de Recursos – Etapa Inscrições 13/10 a 15/10/2026 **Contrarrazões 16/10 a 19/10/2026 **Análise de Recursos 20/10/202",
+     "pagina": 18,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/2",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 293.000,00 (duzentos e noventa e três mil)",
+     "trecho": "culturais do município de Nova Mutum-MT. 4. DOS VALORES 4.1. O valor total disponibilizado para este Edital é de R$ 293.000,00 (duzentos e noventa e três mil), divididos da seguinte forma: Cód. Gextec Categorias Nº de Proj",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/2",
+     "metodo": "seção"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: pncp.gov.br · PREFEITURA MUNICIPAL DE NOVA MUTUM MUNICIPIO DE NOVA MUTUM",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/2",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "Poderão concorrer ao presente Edital os seguintes proponentes: \na) Pessoas Físicas maiores de 18 (dezoito) anos.",
+     "trecho": "s, conforme legislação municipal, estadual e federal vigente. 5. DOS REQUISITOS PARA PARTICIPAÇÃO 5.1. Poderão concorrer ao presente Edital os seguintes proponentes: a) Pessoas Físicas maiores de 18 (dezoito) anos. b) Pessoas Jurídicas com ou sem fins lucrativos. c) Coletivos culturais sem personalidade jurídica, representados por pessoa física, maior de 18 (dezoito) anos. 5.2. Comprovar residênci",
+     "pagina": 3,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/2",
+     "metodo": "seção"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Assistência social, Esporte",
+     "trecho": "termos do objeto e do título: Cultura, Assistência social, Esporte",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/2",
+     "metodo": "palavras-chave do objeto"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-10T10:24:42+00:00",
+     "ganhou": [
+      "Esfera",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Valor",
+      "Área de atuação"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/1",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": "formato_desconhecido",
+     "falha": null,
+     "oficial": null,
+     "paginas": 0,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/2",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 37,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/24772162000106/compras/2026/168/arquivos/3",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 3,
+     "edicao_inteira": null
+    }
+   ]
+  },
+  {
    "id": "c33c88172f0ce041cc81",
    "tipo": "estrela",
    "titulo": "COMPANHIA NACIONAL DE ABASTECIMENTO — Contratação de entidade sem fins lucrativos, inscrita e aprovada no Cadastro Nacional de Aprendizagem, com capacidade técnica e administrativa",
@@ -8243,6 +8566,185 @@
      "falha": null,
      "oficial": "arquivo do edital anexado pelo órgão no PNCP",
      "paginas": 4,
+     "edicao_inteira": null
+    }
+   ]
+  },
+  {
+   "id": "op-012ec9bd478b",
+   "tipo": "livro",
+   "titulo": "EDITAL Nº. 001/2025 CHAMAMENTO PÚBLICO – O Município de Canoas torna pública a abertura de inscrições que tem… — MUNICIPIO DE CANOAS",
+   "balcao": "pncp",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+   "degrau": 0,
+   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Valor",
+    "Destinação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.833,
+   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-10T10:26:14+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "MUNICIPIO DE CANOAS",
+   "fim": "2025-02-10",
+   "itens": {
+    "Prazo de inscrição": {
+     "valor": "até 10/02/2025",
+     "trecho": "rea e com os requisitos que as Leis Estaduais e/ou Federais exigem. Inscrições: A partir d e 10/02/2025, através d o e -mail: projetosculturais@canoas.rs.gov.br . Edital: s",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "metodo": "cronograma"
+    },
+    "Prazo de recurso": {
+     "valor": "10.1.15",
+     "trecho": "adastramento do projeto junto a editais de empresas para captação de recursos junto as Leis de Incentivo, nos prazos exigidos; 10.1.15. Se responsabilizar por todas as obrigações sociais de proteção aos s",
+     "pagina": 9,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "O presente Edital tem por objeto o credenciamento de empresas na área de produção cultural, \npara elaborar, formatar, executar e acompanhar Projetos Culturais que serão inscritos, posteriormente, \njunto às Leis de Incentivo a Cultura Estadual e Federal.",
+     "trecho": "m o Decreto Municipal nº 549/2023 e Lei Federal nº 14.133/2021. 1. DO OBJETO 1.1. Da definição do objeto 1.1.1. O presente Edital tem por objeto o credenciamento de empresas na área de produção cultural, para elaborar, formatar, executar e acompanhar Projetos Culturais que serão inscritos, posteriormente, junto às Leis de Incentivo a Cultura Estadual e Federal. O proponente deverá ser pessoa juríd",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "metodo": "seção"
+    },
+    "Órgão / financiador": {
+     "valor": "MUNICÍPIO DE CANOAS",
+     "trecho": "ESTADO DO RIO GRANDE DO SUL MUNICÍPIO DE CANOAS Secretaria Municipal de Licitações e Contratos Processo nº. 24.0.000",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "no Município de Canoas e projetos novos de acordo com o i",
+     "trecho": "2 que institui o Calendário Oficial de Eventos e Datas Comemorativas no Município de Canoas e projetos novos de acordo com o interesse da credenciante. 1.1.1.3. A empresa além da pré -produção,",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: pncp.gov.br · MUNICÍPIO DE CANOAS MUNICIPIO DE CANOAS",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "Para participar do certame a empresa deve ter sido proponente de projetos Culturais nas Leis de \nIncentivo à Cultura, junto aos Governos Federal e Estadual do Rio Grande do Sul, não tendo restrição \nquanto ao limite proposto, com projetos já aprovados junto as Leis Federal e Estadual.",
+     "trecho": "do Estudo Técnico Preliminar, apêndice do Termo de Referência. 4. DOS REQUISITOS PARA O CREDENCIAMENTO 4.1. Para participar do certame a empresa deve ter sido proponente de projetos Culturais nas Leis de Incentivo à Cultura, junto aos Governos Federal e Estadual do Rio Grande do Sul, não tendo restrição quanto ao limite proposto, com projetos já aprovados junto as Leis Federal e Estadual. 4.2. As ",
+     "pagina": 4,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "metodo": "seção"
+    },
+    "Anexos": {
+     "valor": "ANEXO I DESCRIÇÃO DOS ITEM(NS) E QUANTIDADE(S) MÁXIMA(S) DA CONTRATAÇÃO; ANEXO II – Formulários de Dados Pessoais; ANEXO III – MODELO DE DECLARAÇÃO PARA INDICAÇÃO DO(S); ANEXO IV – CARTA DE INTENÇÃO DE PROPONÊNCIA; ANEXO V - MINUTA DO TERMO DE CREDENCIAMENTO; ANEXO VI ESTADO DO RIO GRANDE DO SUL; AN",
+     "trecho": "24.0.000068326-0 15 EDITAL Nº. 001/2025 CHAMAMENTO PÚBLICO ANEXO I DESCRIÇÃO DOS ITEM(NS) E QUANTIDADE(S) MÁXIMA(S) DA CONTRATAÇÃO ITEM CAT MAT DESCRIÇÃO DO(S) ITEM(NS) UNIDADE QUANT V ALOR MÁXIMO UNITÁRIO V ALOR MÁXIMO TOTAL PARTICIPAÇ",
+     "pagina": 15,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "metodo": "lista de anexos"
+    },
+    "Área de atuação": {
+     "valor": "Cultura",
+     "trecho": "termos do objeto e do título: Cultura",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "metodo": "palavras-chave do objeto"
+    }
+   },
+   "dispensas": {
+    "Resultado": {
+     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
+     "trecho": "ação pelos credenciados, a Administração Municipal poderá solicitar, a qualquer tempo, os devidos comprovantes, a cada 12 (doze) meses a partir da data de",
+     "pagina": 3,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-10T10:26:14+00:00",
+     "ganhou": [
+      "Anexos",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 35,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/2",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/3",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 1,
      "edicao_inteira": null
     }
    ]
@@ -9336,6 +9838,183 @@
      "falha": null,
      "oficial": "arquivo do edital anexado pelo órgão no PNCP",
      "paginas": 30,
+     "edicao_inteira": null
+    }
+   ]
+  },
+  {
+   "id": "op-81991a04c231",
+   "tipo": "livro",
+   "titulo": "O presente procedimento tem por objeto subsidiar o Chamamento Público para a seleção de associações e/ou cooperativas para a coleta e destinação de resíduos rec",
+   "balcao": "pncp",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
+   "degrau": 0,
+   "como": "PNCP: arquivo anexado pelo órgão (Termo de Referência)",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Prazo de recurso",
+    "Destinação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.833,
+   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido (pdf_escaneado)",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-10T10:26:26+00:00",
+   "prazo": null,
+   "uf": "RJ",
+   "orgao": "PNCP — ESTADO DO RIO DE JANEIRO",
+   "fim": null,
+   "itens": {
+    "Objeto": {
+     "valor": "subsidiar o Chamamento Público para a seleção de Associações e/ou Cooperativas para a coleta e destinação de resíduos recicláveis gerados nas unidades do Departamento de Trânsito do Estado do Rio de Janeiro - DETRAN-RJ, conforme lotes relacionados no anexo C.",
+     "trecho": "1. OBJETO 1.1. O presente Termo de Referência tem como objetivo subsidiar o Chamamento Público para a seleção de Associações e/ou Cooperativas para a coleta e destinação de resíduos recicláveis gerados nas unidades do Departamento de Trânsito do Estado do Rio de Janeiro - DETRAN-RJ, conforme lotes relacionados no anexo C. 2. JUSTIFICATIVA 2.1. O encaminhamento dos recicláveis produzidos p",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
+     "metodo": "texto"
+    },
+    "Órgão / financiador": {
+     "valor": "Governo do Estado do Rio de Janeiro",
+     "trecho": "Governo do Estado do Rio de Janeiro Secretaria de Estado da Casa Civil Departamento de Trânsito do Estad",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "do Estado do Rio de Janeiro",
+     "trecho": "Governo do Estado do Rio de Janeiro Secretaria de Estado da Casa Civil Departamento de Trânsito do Estad",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: pncp.gov.br · Governo do Estado do Rio de Janeiro PNCP — ESTADO DO RIO DE JANEIRO",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "Poderão participar do processo seletivo as associações e/ou cooperativas de catadores de materiais recicláveis que atenderem aos seguintes requisitos, previstos no art.",
+     "trecho": "do do Rio de Janeiro – DETRAN-RJ. 6. DAS CONDIÇÕES GERAIS 6.1. Poderão participar do processo seletivo as associações e/ou cooperativas de catadores de materiais recicláveis que atenderem aos seguintes requisitos, previstos no art. 3º do Decreto Estadual 40.645/2007: Governo do Estado do Rio de Jane",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
+     "metodo": "texto"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Meio ambiente",
+     "trecho": "termos do objeto e do título: Cultura, Meio ambiente",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Anexos": {
+     "valor": "ANEXO V.; ANEXO V, informando ao DETRAN -RJ a eventual; ANEXO V - Divisão de Arquivo Central - conforme Resolução do CONARQ n º 40/14; ANEXO V: 2.29.1. O procedimento de recolhimento das placas veiculares inutiliza",
+     "trecho": "Casa Civil Departamento de Trânsito do Estado do Rio de Janeiro ANEXO A MINUTA DE ACORDO DE COOPERAÇÃO ACORDO DE COOPERAÇÃO PARA DESTINAÇÃO DE RESÍDUOS RECICLÁVEIS DESCARTADOS PELO DEPARTAMENTO DE TRÂNSITO DO ESTADO DO RIO DE JANEIRO – DETR",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/3",
+     "metodo": "lista de anexos"
+    }
+   },
+   "dispensas": {
+    "Prazo de inscrição": {
+     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
+     "trecho": "16. RESCISÃO 16.1. O termo de compromisso poderá ser reincidido a qualquer tempo: a) Por iniciativa de qualquer das partes, mediante comunicação fo",
+     "pagina": 10,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2"
+    },
+    "Resultado": {
+     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
+     "trecho": "16. RESCISÃO 16.1. O termo de compromisso poderá ser reincidido a qualquer tempo: a) Por iniciativa de qualquer das partes, mediante comunicação fo",
+     "pagina": 10,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2"
+    },
+    "Valor": {
+     "motivo": "dispensado pelo Cartório — não se aplica: sem repasse financeiro (cooperação, cessão ou habilitação sem recurso)",
+     "trecho": "aneiro 10. VALOR ESTIMADO DA CONTRATAÇÃO 10.1. Não haverá transferência de recursos financeiros entre as partes para execução do objeto de presente Term",
+     "pagina": 4,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-10T10:26:26+00:00",
+     "ganhou": [
+      "Anexos",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/1",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 7,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Termo de Referência)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 12,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/3",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 10,
      "edicao_inteira": null
     }
    ]
@@ -22103,29 +22782,54 @@
     "Prazo de recurso",
     "Área de atuação"
    ],
-   "tentativa": 4,
-   "versao": "cartório v4 (09/10/2026)",
+   "tentativa": 2,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
-   "estagio": null,
-   "estagio_inicio": null,
+   "estagio": "sem_estrela",
+   "estagio_inicio": "sem_estrela",
    "esgotada": null,
    "eficiencia": 0.0,
    "encaminhado": "Chrome (último recurso): o robots.txt do site oficial proíbe a leitura automática",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-09T21:19:00+00:00",
+   "em": "2026-10-10T10:24:39+00:00",
    "prazo": "2026-10-15",
    "uf": null,
    "orgao": "Fundação Amazônia Sustentável (FAS)",
    "fim": null,
    "itens": {},
    "dispensas": {},
-   "abordagens": [],
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-09T21:19:00+00:00",
+     "ganhou": [],
+     "legado": true
+    },
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-10T10:24:39+00:00",
+     "ganhou": [],
+     "legado": null
+    }
+   ],
    "documentos": [
     {
      "url": "https://fas-amazonia.org/editais-e-chamadas/",
      "degrau": 0,
      "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": "robots_proibe",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fas-amazonia.org/editais-e-chamadas/",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
      "motivo": null,
      "falha": "robots_proibe",
      "oficial": null,
@@ -23480,13 +24184,13 @@
    "bronze": 68,
    "prata": 1455
   },
-  "devidas_nesta_hora": 2655,
+  "devidas_nesta_hora": 2650,
   "promovidas_nesta_execucao": 0,
   "sem_material_agora": 0,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
-   "chaves": 1025,
-   "sites": 1906
+   "chaves": 1027,
+   "sites": 1910
   },
   "intervalo_horas": 12,
   "limite": 10,
