@@ -37,6 +37,18 @@ jobs:
             rc=${PIPESTATUS[0]}; set -e
             [ "$rc" -ne 0 ] && echo "src.sensores: falhou ou estourou (código $rc)" | tee -a estado/log_sensores.txt || true
           fi
+      - name: Empresas — leitura DIÁRIA dos sites (patrocínio privado e incentivos), uma vez por dia
+        if: always()
+        run: |
+          # 10/10 (titular): todo motor ativo lê diariamente. A base pesada do ICMS segue semanal (passo seguinte);
+          # a leitura dos sites (patrocínio privado e empresas incentivadas) passa a ser diária.
+          D=$(TZ=America/Sao_Paulo date +%F)
+          if [ "$(cat estado/empresas_leitura_diaria.txt 2>/dev/null)" != "$D" ]; then
+            { timeout 600 python -m src.patrocinios; echo "rc_patrocinios=$?"; } 2>&1 | tail -c 6000 > estado/log_empresas_diario.txt
+            { MOTORES_FONTES=empresas-incentivadas SENSORES_PRAZO_S=600 timeout 660 python -m src.sensores; echo "rc_sites_icms=$?"; } 2>&1 | tail -c 6000 >> estado/log_empresas_diario.txt
+            { timeout 300 python -m src.biblioteca_empresas; echo "rc_biblioteca=$?"; } 2>&1 | tail -c 4000 >> estado/log_empresas_diario.txt
+            echo "$D" > estado/empresas_leitura_diaria.txt
+          fi
       - name: Empresas (motores 20 e 21) — só quando a rotina semanal venceu
         if: always()
         run: |
