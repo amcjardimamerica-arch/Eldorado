@@ -60,12 +60,18 @@ def verificar(base: str, caminhos: list[str]) -> dict:
             continue
         s1, t1, h = _get(u, 400_000)
         specs = sorted(set(re.findall(r"""["']([^"']*(?:api-docs[^"']*|swagger[^"']*\.json|openapi[^"']*\.json))["']""", h)))[:5]
+        # padrões conhecidos (L5-Swagger/Laravel e afins), quando a página monta o endereço por código
+        specs += [c for c in ("/api/docs?api-docs.json", "/api/api/docs?api-docs.json", "/api/docs/api-docs.json",
+                              "/api/api-docs.json", "/docs/api-docs.json", "/api/api/docs/api-docs.json", "/api/swagger.json") if c not in specs]
+        res["api"][u]["trecho"] = re.sub(r"\s+", " ", h)[-1500:]
         res["api"][u] = {"http": s1, "specs": specs}
         for sp in specs:
             su = sp if sp.startswith("http") else base + "/" + sp.lstrip("/")
             if not rp.can_fetch(UA, su):
                 continue
             s2, t2, js = _get(su, 3_000_000)
+            if s2 != 200 or not js.lstrip().startswith("{"):
+                continue
             try:
                 paths = list((json.loads(js).get("paths") or {}).keys())
             except Exception:  # noqa: BLE001
