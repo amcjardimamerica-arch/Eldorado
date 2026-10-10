@@ -5715,7 +5715,7 @@ function v(){b.classList.toggle("ver",(window.scrollY||document.documentElement.
 window.addEventListener("scroll",v,{passive:true});v();
 b.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});})();
 /* ═══ CARTÓRIO (titular, 10/10): seção do painel, desenhada ao abrir — antes era a página própria cartorio.html ═══ */
-window.desenhaCartorio=function(){ if(window._CAR_INIT) return; window._CAR_INIT=1;
+window.desenhaCartorio=function(){ if(window._CAR_INIT){ if(window._carRecarregar) window._carRecarregar(); return; } window._CAR_INIT=1;
 
 const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
 const BALCAO={pncp:"PNCP",diario:"Diários oficiais",orgao:"Sites de órgãos públicos",privado:"Financiadores privados",pista:"Pistas (agregadores e imprensa)",proprio:"MP e Judiciário (leitura própria)"};
@@ -5724,14 +5724,23 @@ const pct=x=>x==null?"—":Math.round(x*100)+"%";
 const br=d=>d&&/^\d{4}-\d{2}-\d{2}/.test(d)?d.slice(8,10)+"/"+d.slice(5,7)+"/"+d.slice(0,4):(d||"");
 const link=u=>u?`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(u.length>90?u.slice(0,87)+"…":u)}</a>`:"—";
 let DADOS=null;
-fetch("dados/cartorio.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{DADOS=d;montar()}).catch(()=>{
-  document.getElementById("car-lista").innerHTML='<div class="vazio">O Cartório ainda não publicou certidões. Elas aparecem aqui depois da primeira execução.</div>';});
+// 10/10 (titular): TEMPO REAL — lê direto do repositório (como o fogo e o status), com a cópia do site como reserva;
+// recarrega a cada 3 minutos enquanto a seção estiver aberta
+async function carregarCartorio(){
+  for(const u of ["https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/cartorio.json?t="+Date.now(),"dados/cartorio.json?v="+Date.now()]){
+    try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ const d=await r.json(); if(!DADOS||String(d.em||"")>=String(DADOS.em||"")){ DADOS=d; montar(); } return; } }catch(e){} }
+  if(!DADOS) document.getElementById("car-lista").innerHTML='<div class="vazio">O Cartório ainda não publicou certidões. Elas aparecem aqui depois da primeira execução.</div>';
+}
+window._carRecarregar=carregarCartorio; carregarCartorio();
+setInterval(()=>{ if(typeof vAtual!=="undefined"&&vAtual==="cartorio") carregarCartorio(); },180000);
 /* CARTORIO-12-PONTOS-V1 */
 function cob(c){const I=c.itens||{},D=c.dispensas||{},F=c.faltavam||[];const o=DOZE.filter(k=>I[k]).length,d=DOZE.filter(k=>!I[k]&&D[k]).length,f=DOZE.filter(k=>!I[k]&&!D[k]&&F.includes(k)).length,j=DOZE.length-o-d-f;return{o,d,f,j,cert:(o+d)/DOZE.length,cobre:(o+d+j)/DOZE.length}}
 function montar(){
   const R=DADOS.resumo||{};
   const KS=(DADOS.certidoes||[]).map(cob),SOMA=g=>KS.reduce((a,k)=>a+g(k),0),N12=KS.length*DOZE.length;
-  document.getElementById("car-em").textContent="Atualizado em "+br((DADOS.em||"").slice(0,10))+" às "+(DADOS.em||"").slice(11,16)+" UTC.";
+  { const t=new Date(DADOS.em||0), min=Math.round((Date.now()-t.getTime())/60000);
+    const hora=t.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"});
+    document.getElementById("car-em").innerHTML=`Atualizado em ${hora} (Brasília) — há ${min<60?min+" min":Math.floor(min/60)+" h "+(min%60)+" min"}${min>90?' · <b style="color:#B3261E">atrasado: o Cartório roda de hora em hora</b>':""}. A seção se atualiza sozinha a cada 3 minutos.`; }
   const cards=[["Certificado nos 12 pontos",pct(N12?SOMA(k=>k.o+k.d)/N12:null),`${SOMA(k=>k.o)} verdes + ${SOMA(k=>k.d)} dispensados de ${N12} (${KS.length} certidões × 12) · ${SOMA(k=>k.j)} já constavam sem certidão · ${SOMA(k=>k.f)} faltam`,1],["Eficiência do pedido",pct(R.eficiencia_itens),`${R.itens_obtidos||0} obtidos + ${R.itens_dispensados||0} dispensados de ${R.itens_que_faltavam||0} que faltavam na entrada da fila (não é % dos 12)`],
     ["Certidões emitidas",R.certidoes||0,`${R.nesta_execucao||0} na última execução`],["Com site oficial",pct(R.taxa_link_oficial),`${R.com_link_oficial||0} certidões`],
     ["12 de 12 certificados",KS.filter(k=>k.o+k.d===12).length,"todos os 12 em verde ou azul, com certidão"],["Sem item faltando",KS.filter((k,i)=>k.f===0&&(DADOS.certidoes[i].link_oficial)).length,`site oficial + nenhum vermelho (pedido atendido: ${R.certidoes_completas||0}) · pode haver itens só da notícia (cinza)`],["Na fila",(R.fila_estrelas||0)+(R.fila_livros||0),`${R.fila_estrelas||0} estrelas · ${R.fila_livros||0} livros`],
@@ -5742,11 +5751,11 @@ function montar(){
   document.getElementById("car-barras").innerHTML=DOZE.map(k=>{const x=(DADOS.por_item||{})[k]||{};const f=x.faltavam||0;
     const o=f?100*(x.obtidos||0)/f:0,d=f?100*(x.dispensados||0)/f:0;
     return `<div class="barra"><span>${esc(k)}</span><div class="trilho" title="${x.obtidos||0} obtidos · ${x.dispensados||0} dispensados · ${f} faltavam"><i class="o" style="width:${o}%"></i><i class="d" style="width:${d}%"></i></div><small>${pct(x.eficiencia)} de ${f} pedidos</small></div>`}).join("");
-  const LP=DADOS.linha_de_producao||{}, BS=DADOS.por_balcao_selo||{}, NL=LP.na_linha||{};
+  const LP=DADOS.linha_de_producao||{}, BS=DADOS.por_balcao_selo||{}, NL=LP.na_linha||{}, NT=LP.na_linha_por_tipo||null;
   const etapa=[["sem_estrela","Sem estrela → bronze"],["bronze","Bronze → prata"],["prata","Prata → ouro"],["ouro","Ouro"]];
   document.getElementById("car-linha").innerHTML=etapa.map(([k,n])=>{const b=BS[k]||{};const foco=((LP.balcoes||{})[k]||{}).foco||[];
-    return `<div class="card${k==="ouro"?" destaque":""}"><b>${k==="ouro"?(b.certidoes||0):(NL[k]||0)}</b><span>${esc(n)}<br>${k==="ouro"?"certidões que chegaram ao ouro":`na fila · ${b.certidoes||0} certidões · eficiência ${pct(b.eficiencia)}`}${foco.length?`<br>foco: ${esc(foco.slice(0,3).join(", "))}${foco.length>3?"…":""}`:""}${b.esgotadas?`<br>${b.esgotadas} esgotaram as 10`:""}</span></div>`;}).join("");
-  document.getElementById("car-linha-nota").textContent=LP.balcoes?`Nesta execução: ${LP.promovidas_nesta_execucao||0} subiram de selo e seguiram na hora para o balcão seguinte · ${LP.devidas_nesta_hora||0} na vez · ${LP.sem_material_agora||0} sem material novo agora · ${LP.esgotadas_10_abordagens||0} esgotaram as 10 abordagens (seguem ao Interceptador) · biblioteca de sites: ${(LP.biblioteca_de_sites||{}).sites||0} sites oficiais de ${(LP.biblioteca_de_sites||{}).chaves||0} órgãos/municípios · intervalo de ${LP.intervalo_horas||12} h entre tentativas da mesma oportunidade.`:"";
+    return `<div class="card${k==="ouro"?" destaque":""}"><b>${k==="ouro"?(b.certidoes||0):(NT?((NT.estrela||{})[k]||0):(NL[k]||0))}</b><span>${esc(n)}<br>${k==="ouro"?"certidões que chegaram ao ouro":(NT?`oportunidades na fila · + ${(NT.livro||{})[k]||0} livros (histórico)`:"na fila")+` · ${b.certidoes||0} certidões · eficiência ${pct(b.eficiencia)}`}${foco.length?`<br>foco: ${esc(foco.slice(0,3).join(", "))}${foco.length>3?"…":""}`:""}${b.esgotadas?`<br>${b.esgotadas} esgotaram as 10`:""}</span></div>`;}).join("");
+  document.getElementById("car-linha-nota").textContent=LP.balcoes?(NT?`Fila: ${LP.fila_oportunidades||0} oportunidades abertas ou possíveis + ${LP.fila_livros||0} livros da Biblioteca (histórico dos programas, não são oportunidades abertas). `:"")+`Nesta execução: ${LP.promovidas_nesta_execucao||0} subiram de selo e seguiram na hora para o balcão seguinte · ${LP.devidas_nesta_hora||0} na vez · ${LP.sem_material_agora||0} sem material novo agora · ${LP.esgotadas_10_abordagens||0} esgotaram as 10 abordagens (seguem ao Interceptador) · biblioteca de sites: ${(LP.biblioteca_de_sites||{}).sites||0} sites oficiais de ${(LP.biblioteca_de_sites||{}).chaves||0} órgãos/municípios · intervalo de ${LP.intervalo_horas||12} h entre tentativas da mesma oportunidade.`:"";
   const AB=DADOS.por_abordagem||{};
   document.getElementById("car-abordagens").innerHTML="<tr><th>#</th><th>Abordagem</th><th>Vezes usada</th><th>Renderam algo</th><th>Taxa de acerto</th><th>Itens trazidos</th><th>Sites oficiais novos</th></tr>"+
     Object.entries(AB).map(([n,a])=>`<tr><td>${esc(n)}</td><td>${esc(a.nome)}</td><td>${a.vezes}</td><td>${a.renderam}</td><td><b>${pct(a.taxa_de_acerto)}</b></td><td>${a.itens}</td><td>${a.links_oficiais}</td></tr>`).join("");

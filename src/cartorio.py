@@ -367,6 +367,27 @@ def _nota_rede(op: dict) -> float:
         return float(op.get("nota_rede") or 0.5)
 
 
+_CAIXA: dict = {}
+
+
+def _situacao_caixa() -> dict:
+    """id → (situação, tipo) na caixa de abertas (docs/dados/abertas.json), já saneada."""
+    if "m" not in _CAIXA:
+        m = {}
+        try:
+            ab = json.loads((ROOT / "docs/dados/abertas.json").read_text(encoding="utf-8"))
+            cp, dc = ab["campos"], ab.get("dic") or {}
+            iid, isit, itp = cp.index("id"), cp.index("situacao"), cp.index("tipo_registro")
+            def v(l, i, c):
+                x = l[i]; return dc[c][x] if c in dc and isinstance(x, int) and x < len(dc[c]) else x
+            for l in ab["linhas"]:
+                m[str(v(l, iid, "id"))] = (v(l, isit, "situacao"), v(l, itp, "tipo_registro"))
+        except Exception:  # noqa: BLE001
+            pass
+        _CAIXA["m"] = m
+    return _CAIXA["m"]
+
+
 def fila_estrelas(fluxo: dict | None = None) -> list[dict]:
     d = fluxo if fluxo is not None else _j(FLUXO, {})
     out = []
@@ -381,6 +402,11 @@ def fila_estrelas(fluxo: dict | None = None) -> list[dict]:
             conferir = [k for k in L.DOZE if k not in faltam and (ck.get(k) or {}).get("s") in ("ok", "val", "dt")
                         and (ck.get(k) or {}).get("de") != "Cartório" and k not in (cert.get("itens") or {})
                         and k not in (cert.get("dispensas") or {})] if (x.get("link_oficial") or cert.get("link_oficial")) else []
+            _cx = _situacao_caixa().get(str(x.get("id") or ""))      # 10/10: o que a caixa já fechou não entra na fila
+            if _cx and (_cx[0] == "encerrada" or _cx[1] == "duplicata"):
+                continue
+            if x.get("fim") and str(x["fim"])[:10] < date.today().isoformat():
+                continue
             if (faltam or conferir) and x.get("id") and x.get("tipo") != "emenda":
                 out.append({**x, "_tipo": "estrela", "_faltam": faltam, "_conferir": conferir})
     return out
@@ -544,6 +570,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     bib = LN.construir_biblioteca(catalogo, certs)
     todas = fila_estrelas(fluxo) + fila_livros(catalogo)
     na_linha = {"sem_estrela": 0, "bronze": 0, "prata": 0}
+    na_linha_tipo = {"estrela": {"sem_estrela": 0, "bronze": 0, "prata": 0}, "livro": {"sem_estrela": 0, "bronze": 0, "prata": 0}}
     devidas, esgotadas = [], 0
     for op in todas:
         op["_estagio"] = LN.estagio(op)
@@ -552,6 +579,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
         if not op["_estagio"]:
             continue
         na_linha[op["_estagio"]] += 1
+        na_linha_tipo["livro" if op.get("_tipo") == "livro" else "estrela"][op["_estagio"]] += 1
         vez, ant, usadas = _vez(op, certs, agora)
         if len(usadas) >= LN.MAX_TENTATIVAS:
             esgotadas += 1
@@ -638,7 +666,8 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
                 for x in certs.values() if str(x.get("encaminhado") or "").startswith("Interceptador")]
     rel = relatorio(certs, feitas, sum(1 for o in todas if o.get("_tipo") == "estrela" and o.get("_estagio")),
                     sum(1 for o in todas if o.get("_tipo") == "livro" and o.get("_estagio")), gab)
-    rel["linha_de_producao"] = {"na_linha": na_linha, "devidas_nesta_hora": len(devidas), "promovidas_nesta_execucao": promovidas,
+    rel["linha_de_producao"] = {"na_linha": na_linha, "na_linha_por_tipo": na_linha_tipo,
+                                "fila_oportunidades": sum(na_linha_tipo["estrela"].values()), "fila_livros": sum(na_linha_tipo["livro"].values()), "devidas_nesta_hora": len(devidas), "promovidas_nesta_execucao": promovidas,
                                 "sem_material_agora": sem_material, "esgotadas_10_abordagens": esgotadas,
                                 "biblioteca_de_sites": {"chaves": len(bib), "sites": sum(len(v["urls"]) for v in bib.values())},
                                 "intervalo_horas": INTERVALO_HORAS, "limite": LN.MAX_TENTATIVAS,

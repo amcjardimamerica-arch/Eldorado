@@ -435,3 +435,24 @@ class TesteConferirCinza(unittest.TestCase):
         b = {"_faltam": ["Valor"], "_conferir": [], "_usadas": [], "_estagio": "bronze", "fim": "2026-12-01"}
         src = (ROOT / "src/cartorio.py").read_text(encoding="utf-8")
         self.assertIn("primeiro quem tem item FALTANDO", src)
+
+
+class TesteFilaETempoReal(unittest.TestCase):
+    """10/10 (titular): fila sem encerradas/duplicatas/vencidas; oportunidades e livros contados separados; seção do
+    painel em tempo real; os Pilotos garantem o Cartório quando o agendamento do GitHub falha."""
+    def test_fila_sem_fechadas(self):
+        C._CAIXA.clear(); C._CAIXA["m"] = {"e1": ("encerrada", "edital"), "e2": ("possivel", "duplicata"), "e3": ("possivel", "edital")}
+        ck = {"Objeto": {"s": "falta"}}
+        fl = {"itens_por_uf": {"GO": [{"id": i, "checklist": ck} for i in ("e1", "e2", "e3")] + [{"id": "e4", "checklist": ck, "fim": "2020-01-01"}]}}
+        try:
+            self.assertEqual([o["id"] for o in C.fila_estrelas(fl)], ["e3"])
+        finally:
+            C._CAIXA.clear()
+
+    def test_painel_e_garantia(self):
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
+        self.assertIn("raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/cartorio.json", h)
+        self.assertIn('vAtual==="cartorio") carregarCartorio()', h); self.assertIn("livros (histórico)", h)
+        self.assertIn('"na_linha_por_tipo"', (ROOT / "src/cartorio.py").read_text(encoding="utf-8"))
+        w = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
+        self.assertIn("Cartório em dia?", w); self.assertIn('gh workflow run cartorio.yml', w)
