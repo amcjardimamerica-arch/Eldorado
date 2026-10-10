@@ -1,14 +1,13 @@
 {
-  "em": "2026-10-10T11:25:35+00:00",
+  "em": "2026-10-10T11:33:19+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 1,
+      "achados": 0,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 38,
-        "sem_texto": 1,
+        "nada_no_crivo": 39,
         "busca_vazia": 1
       },
       "efetividade": 0.0
@@ -18,7 +17,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 8187,
+      "vezes": 8161,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -31,7 +30,7 @@
       ],
       "ultima": "2026-10-10",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 8187 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 8161 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -82,6 +81,20 @@
       "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 119 vezes — precisa de correção, não de mais tentativas"
     },
     {
+      "motor": "piloto-aberto",
+      "motivo": "busca_vazia",
+      "vezes": 117,
+      "tipos": [
+        "cacar_oportunidade",
+        "descobrir",
+        "aposta",
+        "espionar"
+      ],
+      "ultima": "2026-10-10",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 117 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
       "motor": "motor-patrocinio",
       "motivo": "nada_no_crivo",
       "vezes": 88,
@@ -109,22 +122,8 @@
     },
     {
       "motor": "piloto-aberto",
-      "motivo": "busca_vazia",
-      "vezes": 80,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir",
-        "aposta",
-        "espionar"
-      ],
-      "ultima": "2026-10-10",
-      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 80 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "piloto-aberto",
       "motivo": "sem_texto",
-      "vezes": 43,
+      "vezes": 37,
       "tipos": [
         "aposta",
         "descobrir",
@@ -132,7 +131,7 @@
       ],
       "ultima": "2026-10-10",
       "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 43 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 37 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -180,13 +179,6 @@
     }
   ],
   "melhorias_pendentes": [
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve garantir que os trechos dos editais sejam preenchidos e disponíveis para análise detalhada.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-10T11:25",
-      "aplicada": false
-    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor precisa coletar e exibir trechos completos dos textos dos editais para permitir uma avaliação precisa de sua relevância para a missão e necessidades da associação.",
@@ -319,12 +311,19 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-09T23:22",
       "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deveria buscar editais específicos com informações detalhadas sobre prazos, valores, objetos e critérios de seleção, em vez de apenas notícias ou cronogramas genéricos.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-09T23:07",
+      "aplicada": false
     }
   ],
-  "editais_tratados": 474,
-  "entregues_ao_claude": 404,
+  "editais_tratados": 473,
+  "entregues_ao_claude": 403,
   "ultima_faxina": {
-    "em": "2026-10-10T11:25:35+00:00",
+    "em": "2026-10-10T11:33:19+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 12,
     "achados_descartados_removidos": 2415,
