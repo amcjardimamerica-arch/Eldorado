@@ -1,13 +1,13 @@
 {
- "em": "2026-10-10T09:33:35+00:00",
+ "em": "2026-10-10T11:19:21+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17973,
-  "oportunidades_distintas": 2161,
+  "coletados": 17989,
+  "oportunidades_distintas": 2175,
   "entidades_em_2_ou_mais_canais": 20,
   "etapas": {
-   "CONSOLIDADO": 17240,
-   "EM_LIVRO": 606,
+   "CONSOLIDADO": 17242,
+   "EM_LIVRO": 620,
    "REPROCESSAR": 86,
    "QUALIFICADO": 41
   },
@@ -60,9 +60,9 @@
   {
    "canal": "piloto-aberto",
    "familia": "pilotos",
-   "registros": 131,
-   "entidades": 126,
-   "exclusivas": 122,
+   "registros": 132,
+   "entidades": 127,
+   "exclusivas": 123,
    "corroboradas": 4,
    "validadas_como_reais": 8
   },
@@ -145,6 +145,15 @@
    "entidades": 22,
    "exclusivas": 17,
    "corroboradas": 5,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "empresas-incentivadas",
+   "familia": "empresas",
+   "registros": 15,
+   "entidades": 13,
+   "exclusivas": 13,
+   "corroboradas": 0,
    "validadas_como_reais": 1
   },
   {
@@ -445,8 +454,8 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "empresas-incentivadas",
-   "familia": "empresas",
+   "canal": "mpgo-destinacao",
+   "familia": "outros",
    "registros": 1,
    "entidades": 1,
    "exclusivas": 1,
@@ -462,7 +471,7 @@
   "orgao_publico": 24,
   "empresas": 2,
   "justica_mp": 1,
-  "outros": 7
+  "outros": 8
  },
  "corroboradas": [
   {
@@ -607,5 +616,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 1
+ "eventos_no_livro_razao": 15
 }
