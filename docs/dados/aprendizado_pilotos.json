@@ -1,9 +1,9 @@
 {
- "em": "2026-10-10T20:42:57+00:00",
+ "em": "2026-10-10T20:34:57+00:00",
  "lote": 100,
  "estado": {
   "interceptador_erros_vistos": 100,
-  "espiao_erros_vistos": 1978,
+  "espiao_erros_vistos": 1985,
   "contagem_desde": "2026-10-08T18:21:48+00:00"
  },
  "ultimos_ciclos": [
@@ -184,7 +184,7 @@
   },
   {
    "piloto": "espiao",
-   "em": "2026-10-10T20:27:33+00:00",
+   "em": "2026-10-10T20:34:57+00:00",
    "erros_no_lote": 1000,
    "motivos": [
     [
@@ -201,7 +201,7 @@
     ]
    ],
    "rendimento_por_missao": {
-    "espionar": "5/1168",
+    "espionar": "5/1175",
     "descobrir": "0/487",
     "aposta": "2/278",
     "catalogar": "0/52"
@@ -331,43 +331,49 @@
    "consultas_ruins": [
     {
      "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas",
-     "tentativas": 473,
+     "tentativas": 475,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
      "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas goi",
-     "tentativas": 420,
+     "tentativas": 422,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
-     "consulta": "fundação apoia projetos sociais goiás inscrições 2026",
-     "tentativas": 53,
-     "motivo": "nada_no_crivo",
-     "missao": "descobrir"
-    },
-    {
-     "consulta": "associação comercial industrial goiás projeto social apoio",
-     "tentativas": 56,
-     "motivo": "nada_no_crivo",
-     "missao": "descobrir"
-    },
-    {
-     "consulta": "cooperativa goiana fundo social edital 2026",
-     "tentativas": 54,
-     "motivo": "nada_no_crivo",
-     "missao": "descobrir"
-    },
-    {
-     "consulta": "empresa goiana responsabilidade social edital",
+     "consulta": "instituto \"edital\" \"osc\" goiás 2026",
      "tentativas": 55,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
     {
+     "consulta": "fundação apoia projetos sociais goiás inscrições 2026",
+     "tentativas": 55,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "associação comercial industrial goiás projeto social apoio",
+     "tentativas": 58,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "cooperativa goiana fundo social edital 2026",
+     "tentativas": 56,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "empresa goiana responsabilidade social edital",
+     "tentativas": 57,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
      "consulta": "prêmio empresa iniciativas sociais inscrições 2026",
-     "tentativas": 53,
+     "tentativas": 54,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
@@ -404,12 +410,6 @@
     {
      "consulta": "programa de investimento social privado inscrições 2026",
      "tentativas": 832,
-     "motivo": "nada_no_crivo",
-     "missao": "descobrir"
-    },
-    {
-     "consulta": "instituto \"edital\" \"osc\" goiás 2026",
-     "tentativas": 54,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
@@ -584,28 +584,28 @@
     "fundação",
     "cultura",
     "base",
+    "educação",
     "voluntariado",
-    "juventude",
-    "onde"
+    "estão"
    ],
    "rendimento_das_buscas": {
     "aposta": {
-     "tentativas": 1612,
+     "tentativas": 1616,
      "com_resultado": 2,
      "taxa": 0.001
     },
     "descobrir": {
-     "tentativas": 4359,
+     "tentativas": 4369,
      "com_resultado": 0,
      "taxa": 0.0
     },
     "espionar": {
-     "tentativas": 1058,
+     "tentativas": 1051,
      "com_resultado": 5,
      "taxa": 0.005
     }
    },
-   "consultas_aprendidas_em": "2026-10-10T20:27:33+00:00",
+   "consultas_aprendidas_em": "2026-10-10T20:15:14+00:00",
    "restricoes_fixas": {
     "regra": "FIXAS e só NEGATIVAS (titular, 01/10): o que falhou repetidamente não volta; todo o resto é busca criativa, renovada a cada 100 pesquisas",
     "desde": "2026-10-01T14:01:07+00:00",
@@ -736,7 +736,7 @@
    "intervalo_busca_local_s": 6.0,
    "max_buscas_ponte_por_voo": 3
   },
-  "atualizado_em": "2026-10-10T20:27:33+00:00",
+  "atualizado_em": "2026-10-10T20:34:57+00:00",
   "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
  }
 }

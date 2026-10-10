@@ -1,39 +1,39 @@
 {
  "dia": "2026-10-10",
- "em": "2026-10-10T20:02:39+00:00",
+ "em": "2026-10-10T20:39:39+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
- "planejados": 120,
+ "planejados": 122,
  "cobertura": {
-  "completa": 37,
+  "completa": 38,
   "parcial": 7,
-  "aguardando_horario": 76
+  "aguardando_horario": 77
  },
- "cobertura_percentual": 84.1,
+ "cobertura_percentual": 84.4,
  "a_disparar": [
-  "alego-pl",
-  "mpgo-destinacao",
+  "plat-salic",
+  "plat-cnpq-extensao",
+  "do-goias",
+  "plat-gife",
+  "motor-patrocinio",
   "congresso-nacional",
+  "dou",
+  "judiciario-cnj",
+  "mptgo-destinacao",
+  "do-goiania",
+  "mpgo-destinacao",
   "mpu-destinacao",
   "plat-piloto-aberto",
-  "mptgo-destinacao",
-  "do-goias",
   "motor-gife",
-  "dou",
-  "motor-patrocinio",
-  "plat-salic",
-  "judiciario-cnj",
-  "do-goiania",
-  "plat-cnpq-extensao",
-  "plat-gife"
+  "alego-pl"
  ],
  "esgotaram_tentativas": [
   "pncp-api",
+  "plat-estaduais-go-gov",
   "plat-empresas-editais-incentivados",
   "plat-prefeituras-50-go",
   "outras-oportunidades-2",
   "outras-oportunidades-3",
-  "judiciario-tjgo",
-  "camara-goiania-pl"
+  "judiciario-tjgo"
  ],
  "dia_fechado": false,
  "dia_anterior_nao_observado": [
@@ -56,7 +56,7 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 5.4571,
+   "prioridade": 5.4535,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 264,
    "horarios": "05:53,10:23",
@@ -78,13 +78,13 @@
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "prioridade": 0.2124,
+   "prioridade": 0.2086,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 4,
    "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "completa",
+   "cobertura": "parcial",
    "tentativas_hoje": 3
   },
   {
@@ -166,7 +166,7 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "prioridade": 0.0944,
+   "prioridade": 0.0942,
    "diagnostico": "falha_parcial",
    "livros_com_abertura_proxima": 4,
    "horarios": "10:23",
@@ -177,7 +177,7 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "prioridade": 0.0863,
+   "prioridade": 0.0859,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 3,
    "horarios": "09:23,15:23",
@@ -397,7 +397,7 @@
   },
   {
    "motor": "do-goias",
-   "prioridade": 0.0536,
+   "prioridade": 0.0529,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
@@ -430,6 +430,17 @@
   },
   {
    "motor": "f260-captacao-169",
+   "prioridade": 0.05,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-249",
    "prioridade": 0.05,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
@@ -485,7 +496,7 @@
   },
   {
    "motor": "plat-salic",
-   "prioridade": 0.0446,
+   "prioridade": 0.0442,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 1,
    "horarios": "08:53,13:53,19:53",
@@ -540,22 +551,11 @@
   },
   {
    "motor": "plat-gife",
-   "prioridade": 0.0288,
+   "prioridade": 0.0283,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "11:23,17:53",
    "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "mpgo-destinacao",
-   "prioridade": 0.0278,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "07:53",
-   "coleta": "nuvem (indireta: Diário do Estado) + manual",
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 0
@@ -573,7 +573,7 @@
   },
   {
    "motor": "dou",
-   "prioridade": 0.0266,
+   "prioridade": 0.0263,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
@@ -583,22 +583,22 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "plat-cnpq-extensao",
-   "prioridade": 0.0254,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 1,
-   "horarios": "09:23,15:23",
-   "coleta": "nuvem",
+   "motor": "mpgo-destinacao",
+   "prioridade": 0.0263,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "07:53",
+   "coleta": "nuvem (indireta: Diário do Estado) + manual",
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 0
   },
   {
-   "motor": "judiciario-cnj",
-   "prioridade": 0.025,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "07:53",
+   "motor": "plat-cnpq-extensao",
+   "prioridade": 0.0253,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 1,
+   "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
@@ -825,6 +825,17 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "judiciario-cnj",
+   "prioridade": 0.0238,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "07:53",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-captacao-206",
    "prioridade": 0.0227,
    "diagnostico": "sem_rendimento",
@@ -881,7 +892,7 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "prioridade": 0.0179,
+   "prioridade": 0.0172,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "07:53,16:23",
@@ -935,17 +946,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "mpu-destinacao",
-   "prioridade": 0.0156,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "16:23",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-captacao-107",
    "prioridade": 0.0156,
    "diagnostico": "sem_rendimento",
@@ -958,11 +958,22 @@
   },
   {
    "motor": "do-goiania",
-   "prioridade": 0.015,
+   "prioridade": 0.0149,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
    "coleta": "nuvem + local",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "mpu-destinacao",
+   "prioridade": 0.0147,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "16:23",
+   "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 0
@@ -979,17 +990,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "congresso-nacional",
-   "prioridade": 0.0139,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "10:53,20:53",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-captacao-035",
    "prioridade": 0.0139,
    "diagnostico": "saudavel",
@@ -1001,9 +1001,31 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "congresso-nacional",
+   "prioridade": 0.0135,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "10:53,20:53",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-espalhado-senadorcanedo-go-gov-br",
    "prioridade": 0.0132,
    "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "aguardando_horario",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-231",
+   "prioridade": 0.0119,
+   "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": null,
    "coleta": "nuvem",
@@ -1155,17 +1177,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "judiciario-tjgo",
-   "prioridade": 0.0111,
-   "diagnostico": "bloqueio",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "07:53,16:23",
-   "coleta": "nuvem + local",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 3
-  },
-  {
    "motor": "f260-captacao-051",
    "prioridade": 0.0111,
    "diagnostico": "saudavel",
@@ -1175,6 +1186,17 @@
    "dia_anterior": "observado",
    "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
+  },
+  {
+   "motor": "judiciario-tjgo",
+   "prioridade": 0.0109,
+   "diagnostico": "bloqueio",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "07:53,16:23",
+   "coleta": "nuvem + local",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 3
   },
   {
    "motor": "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
@@ -1254,17 +1276,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "camara-goiania-pl",
-   "prioridade": 0.0064,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "12:53,20:23",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 3
-  },
-  {
    "motor": "f260-curadoria-008",
    "prioridade": 0.0064,
    "diagnostico": "sem_rendimento",
@@ -1274,6 +1285,17 @@
    "dia_anterior": "observado",
    "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
+  },
+  {
+   "motor": "camara-goiania-pl",
+   "prioridade": 0.0063,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "12:53,20:23",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 3
   },
   {
    "motor": "f260-captacao-227",

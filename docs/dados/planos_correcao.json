@@ -4,7 +4,7 @@
  "resumo": {
   "bloqueio": 1,
   "falha_parcial": 8,
-  "sem_rendimento": 58,
+  "sem_rendimento": 60,
   "saudavel": 57
  },
  "motores": [
@@ -20,7 +20,7 @@
     "se 403 persistente da nuvem: marcar 'exige IP brasileiro' e mandar à coleta local"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 40,
+   "leituras": 41,
    "achados_total": 0
   },
   {
@@ -125,8 +125,8 @@
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 47,
-   "achados_total": 503
+   "leituras": 48,
+   "achados_total": 525
   },
   {
    "motor": "recorrencia",
@@ -512,6 +512,22 @@
    "achados_total": 0
   },
   {
+   "motor": "f260-captacao-231",
+   "canal": "f260-captacao-231",
+   "familia": "orgao_publico",
+   "diagnostico": "sem_rendimento",
+   "evidencia": "37 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 37,
+   "achados_total": 0
+  },
+  {
    "motor": "f260-captacao-235",
    "canal": "f260-captacao-235",
    "familia": "orgao_publico",
@@ -658,6 +674,22 @@
   {
    "motor": "f260-captacao-248",
    "canal": "f260-captacao-248",
+   "familia": "orgao_publico",
+   "diagnostico": "sem_rendimento",
+   "evidencia": "5 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 5,
+   "achados_total": 0
+  },
+  {
+   "motor": "f260-captacao-249",
+   "canal": "f260-captacao-249",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
    "evidencia": "5 leituras e nenhum achado",
@@ -1044,7 +1076,7 @@
    "canal": "mpu-destinacao",
    "familia": "outros",
    "diagnostico": "sem_rendimento",
-   "evidencia": "11 leituras e nenhum achado",
+   "evidencia": "12 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -1052,7 +1084,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 11,
+   "leituras": 12,
    "achados_total": 0
   },
   {
@@ -1060,7 +1092,7 @@
    "canal": "cnpq-extensao",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
-   "evidencia": "41 leituras e nenhum achado",
+   "evidencia": "42 leituras e nenhum achado",
    "plano": [
     "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
     "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
@@ -1068,7 +1100,7 @@
     "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 41,
+   "leituras": 42,
    "achados_total": 0
   },
   {
@@ -1079,7 +1111,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 67,
+   "leituras": 68,
    "achados_total": 17
   },
   {
@@ -1090,7 +1122,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 73,
+   "leituras": 74,
    "achados_total": 0
   },
   {
@@ -1101,7 +1133,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 31,
+   "leituras": 32,
    "achados_total": 0
   },
   {
@@ -1112,8 +1144,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 95,
-   "achados_total": 52
+   "leituras": 96,
+   "achados_total": 53
   },
   {
    "motor": "do-goias",
@@ -1123,8 +1155,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 79,
-   "achados_total": 257
+   "leituras": 80,
+   "achados_total": 260
   },
   {
    "motor": "dou",
@@ -1134,7 +1166,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 89,
+   "leituras": 90,
    "achados_total": 63
   },
   {
@@ -1552,7 +1584,7 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 15,
+   "leituras": 16,
    "achados_total": 2
   },
   {
@@ -1563,8 +1595,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 13,
-   "achados_total": 13
+   "leituras": 14,
+   "achados_total": 14
   },
   {
    "motor": "mptgo-destinacao",
@@ -1574,8 +1606,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 23,
-   "achados_total": 41
+   "leituras": 24,
+   "achados_total": 42
   },
   {
    "motor": "outras-oportunidades-1",
@@ -1618,8 +1650,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 29,
-   "achados_total": 16
+   "leituras": 30,
+   "achados_total": 17
   },
   {
    "motor": "plat-gife",
@@ -1629,8 +1661,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 47,
-   "achados_total": 51
+   "leituras": 48,
+   "achados_total": 53
   },
   {
    "motor": "plat-piloto-aberto",
@@ -1640,8 +1672,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 43,
-   "achados_total": 1363
+   "leituras": 44,
+   "achados_total": 1384
   },
   {
    "motor": "plat-prefeituras-50-go",
@@ -1651,8 +1683,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 52,
-   "achados_total": 46
+   "leituras": 53,
+   "achados_total": 47
   },
   {
    "motor": "plat-salic",
@@ -1662,8 +1694,8 @@
    "evidencia": "saudável",
    "plano": [],
    "skill": null,
-   "leituras": 56,
-   "achados_total": 212
+   "leituras": 57,
+   "achados_total": 215
   },
   {
    "motor": "plataforma-mapas-culturais",
