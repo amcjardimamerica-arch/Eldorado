@@ -1,11 +1,11 @@
 {
- "em": "2026-10-10T15:37:16+00:00",
+ "em": "2026-10-10T15:57:21+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
   "motores": 145,
   "alterar_rota": 74,
-  "rota_nova": 20,
+  "rota_nova": 21,
   "via_ponte": 1,
   "exemplos_da_rede": 743
  },
@@ -13,19 +13,19 @@
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    1.1141
+    1.29
    ],
    [
     "tok:unidades",
-    1.0572
+    1.0537
    ],
    [
     "tok:mpf",
-    0.9777
+    0.9731
    ],
    [
     "tok:inscricoes",
-    0.7898
+    0.7819
    ],
    [
     "tok:assuntos",
@@ -37,61 +37,61 @@
    ],
    [
     "tok:portarias",
-    0.6335
-   ],
-   [
-    "tok:feed",
-    0.6026
+    0.6311
    ],
    [
     "tipo:plataforma",
     0.5885
    ],
    [
+    "tok:imprensa",
+    0.5802
+   ],
+   [
+    "tok:feed",
+    0.5635
+   ],
+   [
+    "tok:agencia",
+    0.5209
+   ],
+   [
     "tok:sjgo",
     0.52
-   ],
-   [
-    "tld:org",
-    0.5124
-   ],
-   [
-    "tok:abertas",
-    0.4366
    ]
   ],
   "piores_sinais": [
    [
-    "via:ponte",
-    -0.5323
+    "tld:br",
+    -0.5638
    ],
    [
-    "tld:br",
-    -0.5634
+    "raiz:False",
+    -0.617
+   ],
+   [
+    "origem:câmara",
+    -0.6203
    ],
    [
     "tok:prefeitura",
     -0.639
    ],
    [
-    "raiz:False",
-    -0.6435
-   ],
-   [
     "tok:edital",
-    -0.725
+    -0.7296
    ],
    [
     "tok:content",
-    -0.9573
+    -0.9642
    ],
    [
     "tok:uploads",
-    -0.9573
+    -0.9642
    ],
    [
     "origem:padrão",
-    -1.0996
+    -1.1473
    ]
   ]
  },
@@ -1037,10 +1037,10 @@
     "via": "direto",
     "origem": "biblioteca",
     "pontos": 7,
-    "aprendido_em": "2026-10-10T15:34:49+00:00"
+    "aprendido_em": "2026-10-10T15:54:54+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T15:34:49+00:00",
+    "em": "2026-10-10T15:54:54+00:00",
     "testes": 17,
     "melhor": {
      "url": "https://senadorcanedo.go.gov.br/senador-canedo-lanca-projeto-embaixador-do-turismo/",
@@ -1071,10 +1071,10 @@
     "via": "direto",
     "origem": "biblioteca",
     "pontos": 9,
-    "aprendido_em": "2026-10-10T15:35:08+00:00"
+    "aprendido_em": "2026-10-10T15:55:08+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T15:35:08+00:00",
+    "em": "2026-10-10T15:55:08+00:00",
     "testes": 16,
     "melhor": {
      "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
@@ -1098,12 +1098,26 @@
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
    "historico": [],
-   "rota_aprendida": null,
+   "rota_aprendida": {
+    "urls": [
+     "https://www.goiania.go.leg.br/sala-de-imprensa/agencia-camara-goiania/Agencia-Camara-Goiania_noticias/comeca-a-tramitar-a-lei-orcamentaria-anual-para-2027"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 5,
+    "aprendido_em": "2026-10-10T15:56:44+00:00"
+   },
    "afinado": {
-    "em": "2026-10-10T15:36:33+00:00",
+    "em": "2026-10-10T15:56:44+00:00",
     "testes": 16,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+    "melhor": {
+     "url": "https://www.goiania.go.leg.br/sala-de-imprensa/agencia-camara-goiania/Agencia-Camara-Goiania_noticias/comeca-a-tramitar-a-lei-orcamentaria-anual-para-2027",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 5,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
    }
   },
   "f260-captacao-236": {
@@ -1125,10 +1139,10 @@
     "via": "direto",
     "origem": "padrão",
     "pontos": 65,
-    "aprendido_em": "2026-10-10T15:36:40+00:00"
+    "aprendido_em": "2026-10-10T15:56:49+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T15:36:40+00:00",
+    "em": "2026-10-10T15:56:49+00:00",
     "testes": 12,
     "melhor": {
      "url": "https://www.fundacaogrupoboticario.org.br/noticias",
@@ -1163,10 +1177,10 @@
     "via": "direto",
     "origem": "padrão",
     "pontos": 91,
-    "aprendido_em": "2026-10-10T15:37:03+00:00"
+    "aprendido_em": "2026-10-10T15:57:10+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T15:37:03+00:00",
+    "em": "2026-10-10T15:57:10+00:00",
     "testes": 16,
     "melhor": {
      "url": "https://www.cnj.jus.br/editais",
@@ -1197,10 +1211,10 @@
     "via": "direto",
     "origem": "biblioteca",
     "pontos": 13,
-    "aprendido_em": "2026-10-10T15:37:16+00:00"
+    "aprendido_em": "2026-10-10T15:57:21+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T15:37:16+00:00",
+    "em": "2026-10-10T15:57:21+00:00",
     "testes": 16,
     "melhor": {
      "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb",
