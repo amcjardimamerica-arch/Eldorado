@@ -1,97 +1,12 @@
 {
- "em": "2026-10-10T07:42:29+00:00",
+ "em": "2026-10-10T07:49:07+00:00",
  "lote": 100,
  "estado": {
   "interceptador_erros_vistos": 100,
-  "espiao_erros_vistos": 1204,
+  "espiao_erros_vistos": 1309,
   "contagem_desde": "2026-10-08T18:21:48+00:00"
  },
  "ultimos_ciclos": [
-  {
-   "piloto": "interceptador",
-   "em": "2026-10-09T21:09:59+00:00",
-   "erros_no_lote": 100,
-   "condicoes_que_mais_faltam": [
-    [
-     "Resultado",
-     69
-    ],
-    [
-     "Prazo de recurso",
-     68
-    ],
-    [
-     "Requisitos",
-     68
-    ],
-    [
-     "Valor",
-     67
-    ],
-    [
-     "Destinação",
-     67
-    ],
-    [
-     "Prazo de inscrição",
-     65
-    ]
-   ],
-   "erros_tecnicos": [
-    [
-     "nenhuma fonte legível",
-     28
-    ],
-    [
-     "o modelo não devolveu JSON",
-     3
-    ]
-   ],
-   "origens_baixo_rendimento": [
-    [
-     "2 · Brasil · livro da Biblioteca",
-     "10/71"
-    ],
-    [
-     "1 · Goiás · livro da Biblioteca",
-     "7/38"
-    ]
-   ],
-   "parametros_novos": {
-    "expressoes_extras": {
-     "Resultado": [
-      "lista\\s+(?:final\\s+)?(?:de\\s+)?(?:selecionad|classificad|aprovad)",
-      "classifica[cç][aã]o\\s+final",
-      "resultado\\s+ser[aá]\\s+(?:publicado|divulgado)"
-     ],
-     "Prazo de recurso": [
-      "recurso[s]?\\s+(?:administrativo|contra)",
-      "\\d+\\s*\\(\\w+\\)\\s*dias\\s+(?:[uú]teis|corridos)[^.]{0,40}recurso",
-      "impugna[cç][aã]o"
-     ],
-     "Requisitos": [
-      "crit[eé]rios\\s+de\\s+elegibilidade",
-      "quem\\s+pode\\s+participar",
-      "n[aã]o\\s+poder[aã]o\\s+participar"
-     ]
-    },
-    "origens_baixo_rendimento": [
-     "2 · Brasil · livro da Biblioteca",
-     "1 · Goiás · livro da Biblioteca"
-    ],
-    "rotas_ordem": [
-     "site_do_financiador",
-     "financiador_regulamento",
-     "link_da_noticia_para_o_financiador",
-     "financiador_programa_edital",
-     "site_do_financiador_edital",
-     "site_citado_na_noticia",
-     "site_municipal",
-     "financiador_pdf"
-    ]
-   },
-   "onde_falha": "condições do cronograma (recurso/resultado/inscrição) não achadas no texto — expressões ampliadas; origens com rendimento < 25%: 2 · Brasil · livro da Biblioteca, 1 · Goiás · livro da Biblioteca — vão para o fim da fila"
-  },
   {
    "piloto": "espiao",
    "em": "2026-10-09T21:53:56+00:00",
@@ -264,6 +179,41 @@
     "termos_fora_do_objeto": []
    },
    "onde_falha": "missões que quase nunca rendem (descobrir, catalogar) perdem vagas; termos de 'fora do objeto' descartados na origem"
+  },
+  {
+   "piloto": "espiao",
+   "em": "2026-10-10T07:49:07+00:00",
+   "erros_no_lote": 1000,
+   "motivos": [
+    [
+     "nada_no_crivo",
+     906
+    ],
+    [
+     "busca_vazia",
+     66
+    ],
+    [
+     "sem_texto",
+     28
+    ]
+   ],
+   "rendimento_por_missao": {
+    "espionar": "3/497",
+    "descobrir": "0/487",
+    "aposta": "2/278",
+    "catalogar": "0/52"
+   },
+   "parametros_novos": {
+    "pesos_missao": {
+     "aposta": 0.36,
+     "descobrir": 0.1,
+     "catalogar": 0.1,
+     "espionar": 0.3
+    },
+    "termos_fora_do_objeto": []
+   },
+   "onde_falha": "missões que quase nunca rendem (descobrir, catalogar) perdem vagas; termos de 'fora do objeto' descartados na origem"
   }
  ],
  "parametros": {
@@ -329,7 +279,7 @@
     "aposta": 0.36,
     "descobrir": 0.1,
     "catalogar": 0.1,
-    "espionar": 0.38
+    "espionar": 0.3
    },
    "termos_fora_do_objeto": [],
    "consultas_boas": [
@@ -365,43 +315,37 @@
    "consultas_ruins": [
     {
      "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas",
-     "tentativas": 578,
+     "tentativas": 577,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
      "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas goi",
-     "tentativas": 525,
+     "tentativas": 524,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
-     "consulta": "instituto empresarial edital projetos sociais 2026",
-     "tentativas": 866,
-     "motivo": "nada_no_crivo",
-     "missao": "descobrir"
-    },
-    {
      "consulta": "fundação empresarial chamada pública organizações da sociedade civil 2026",
-     "tentativas": 851,
+     "tentativas": 850,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
     {
      "consulta": "empresa lança edital para ongs 2026",
-     "tentativas": 871,
+     "tentativas": 870,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
     {
      "consulta": "programa de investimento social privado inscrições 2026",
-     "tentativas": 877,
+     "tentativas": 876,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
     {
      "consulta": "instituto \"edital\" \"osc\" goiás 2026",
-     "tentativas": 102,
+     "tentativas": 101,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
@@ -444,6 +388,12 @@
     {
      "consulta": "fundação comunitária edital doações 2026",
      "tentativas": 96,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "instituto empresarial edital projetos sociais 2026",
+     "tentativas": 865,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
@@ -610,8 +560,8 @@
     "goiânia",
     "patrocínio",
     "aparecida",
-    "instituto",
     "goiás",
+    "instituto",
     "projeto",
     "editais",
     "chamada",
@@ -624,22 +574,22 @@
    ],
    "rendimento_das_buscas": {
     "aposta": {
-     "tentativas": 1822,
+     "tentativas": 1820,
      "com_resultado": 2,
      "taxa": 0.001
     },
     "descobrir": {
-     "tentativas": 4884,
+     "tentativas": 4879,
      "com_resultado": 0,
      "taxa": 0.0
     },
     "espionar": {
-     "tentativas": 389,
+     "tentativas": 396,
      "com_resultado": 3,
      "taxa": 0.008
     }
    },
-   "consultas_aprendidas_em": "2026-10-10T07:31:20+00:00",
+   "consultas_aprendidas_em": "2026-10-10T07:37:15+00:00",
    "restricoes_fixas": {
     "regra": "FIXAS e só NEGATIVAS (titular, 01/10): o que falhou repetidamente não volta; todo o resto é busca criativa, renovada a cada 100 pesquisas",
     "desde": "2026-10-01T14:01:07+00:00",
@@ -770,7 +720,7 @@
    "intervalo_busca_local_s": 6.0,
    "max_buscas_ponte_por_voo": 3
   },
-  "atualizado_em": "2026-10-10T05:54:13+00:00",
+  "atualizado_em": "2026-10-10T07:49:07+00:00",
   "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
  }
 }
