@@ -52,7 +52,8 @@ class TesteCartorioEFluxo(unittest.TestCase):
         d = json.loads((ROOT / "dados/editais/derivadas_revisao.json").read_text(encoding="utf-8"))["derivadas"]
         self.assertGreaterEqual(len(d), 25)
         v = json.loads((ROOT / "dados/editais/vereditos_revisao.json").read_text(encoding="utf-8"))["vereditos"]
-        self.assertEqual({x["origem"] for x in v.values()}, {"P1-GO-2026-10-10", "P2-BR-PUBLICAS-2026-10-10", "P3-BR-PRIVADAS-2026-10-10"})
+        # as três partes presentes; revisões posteriores (ex.: verificação pelo Chrome de 11/10) acrescentam origens
+        self.assertLessEqual({"P1-GO-2026-10-10", "P2-BR-PUBLICAS-2026-10-10", "P3-BR-PRIVADAS-2026-10-10"}, {x["origem"] for x in v.values()})
 
 
 if __name__ == "__main__":
