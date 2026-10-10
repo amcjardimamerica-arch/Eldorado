@@ -174,7 +174,8 @@ def _juntar(s: dict, o: dict) -> None:
         ck_s.setdefault(k, v)
     if not ck_s:
         s["livro"].pop("checklist", None)
-    s.setdefault("ids_juntados", []).extend([o["id"]] + (o.get("ids_juntados") or []))
+    # 11/10: sem repetição (o extend a cada rodada acumulava a mesma oportunidade dezenas de vezes)
+    s["ids_juntados"] = list(dict.fromkeys((s.get("ids_juntados") or []) + [o["id"]] + (o.get("ids_juntados") or [])))
     at = s["livro"].setdefault("atualizacoes", [])
     at.append({"em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "o_que": f"juntado com {o['id']} (mesma oportunidade)"}); s["livro"]["atualizacoes"] = at[-8:]
 
