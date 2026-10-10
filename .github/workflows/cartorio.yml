@@ -38,6 +38,7 @@ jobs:
           set -o pipefail
           timeout 120 python -m src.conselho_motores 2>&1 | tail -c 1500 || echo "conselho: aviso"
           timeout 400 python -m src.rotas_motores 6 2>&1 | tail -c 1500 || echo "rotas: aviso"
+          timeout 120 python -m src.conselho_validacao 2>&1 | tail -c 800 || echo "validação: aviso"
           timeout 1800 python -m src.cartorio --limite "${{ github.event.inputs.limite || '40' }}" 2>&1 | tee /tmp/cartorio.log || echo "terminou com aviso"
           { date -u +%FT%TZ; tail -c 6000 /tmp/cartorio.log; } > estado/cartorio/ultima_execucao.log
       - name: Gravar só o que é do Cartório (à prova de conflito) e entregar os livros à esteira
@@ -45,15 +46,15 @@ jobs:
         run: |
           git config user.name "cartorio-eldorado" && git config user.email "cartorio@eldorado"
           rm -rf /tmp/c && mkdir -p /tmp/c && cp -r estado/cartorio /tmp/c/ 2>/dev/null || { echo "o Cartório não gerou saída"; exit 0; }
-          mkdir -p /tmp/c/conselho /tmp/c/rotas && cp -r estado/conselho/. /tmp/c/conselho/ 2>/dev/null || true; for F in rotas_aprendidas ponte_aprendida modelo_rotas afinador; do cp estado/rotas/$F.json /tmp/c/rotas/ 2>/dev/null || true; done; cp estado/rotas/rotas.json /tmp/c/rotas_semente.json 2>/dev/null || true; cp docs/dados/rotas_motores.json /tmp/c/ 2>/dev/null || true; cp docs/dados/conselho_motores.json /tmp/c/ 2>/dev/null || true; cp -r docs/relatorios /tmp/c/ 2>/dev/null || true
+          mkdir -p /tmp/c/conselho /tmp/c/rotas && cp -r estado/conselho/. /tmp/c/conselho/ 2>/dev/null || true; for F in rotas_aprendidas ponte_aprendida modelo_rotas afinador; do cp estado/rotas/$F.json /tmp/c/rotas/ 2>/dev/null || true; done; cp estado/rotas/rotas.json /tmp/c/rotas_semente.json 2>/dev/null || true; cp docs/dados/rotas_motores.json /tmp/c/ 2>/dev/null || true; cp docs/dados/conselho_motores.json /tmp/c/ 2>/dev/null || true; cp docs/dados/conselho_validacao.json /tmp/c/ 2>/dev/null || true; cp -r docs/relatorios /tmp/c/ 2>/dev/null || true
           cp docs/dados/cartorio.json /tmp/c/ 2>/dev/null || true
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
             mkdir -p estado/cartorio && cp -r /tmp/c/cartorio/. estado/cartorio/ && cp /tmp/c/cartorio.json docs/dados/ 2>/dev/null || true
-            mkdir -p estado/conselho estado/rotas docs/relatorios && cp -r /tmp/c/conselho/. estado/conselho/ 2>/dev/null || true; cp /tmp/c/rotas/*.json estado/rotas/ 2>/dev/null || true; [ -f estado/rotas/rotas.json ] || cp /tmp/c/rotas_semente.json estado/rotas/rotas.json 2>/dev/null || true; cp /tmp/c/rotas_motores.json docs/dados/ 2>/dev/null || true; cp /tmp/c/conselho_motores.json docs/dados/ 2>/dev/null || true; cp -r /tmp/c/relatorios/. docs/relatorios/ 2>/dev/null || true
+            mkdir -p estado/conselho estado/rotas docs/relatorios && cp -r /tmp/c/conselho/. estado/conselho/ 2>/dev/null || true; cp /tmp/c/rotas/*.json estado/rotas/ 2>/dev/null || true; [ -f estado/rotas/rotas.json ] || cp /tmp/c/rotas_semente.json estado/rotas/rotas.json 2>/dev/null || true; cp /tmp/c/rotas_motores.json docs/dados/ 2>/dev/null || true; cp /tmp/c/conselho_motores.json docs/dados/ 2>/dev/null || true; cp /tmp/c/conselho_validacao.json docs/dados/ 2>/dev/null || true; cp -r /tmp/c/relatorios/. docs/relatorios/ 2>/dev/null || true
             [ -s estado/cartorio/novos_livros.jsonl ] && python3 scripts/importar_verificacao_livros.py estado/cartorio/novos_livros.jsonl || true
             rm -f estado/cartorio/novos_livros.jsonl
-            for P in estado/cartorio docs/dados/cartorio.json estado/conselho docs/dados/conselho_motores.json docs/relatorios estado/rotas docs/dados/rotas_motores.json estado/esteira/resultados_local.jsonl dados/oportunidades/pareceres_livros; do [ -e "$P" ] && git add -A -- "$P"; done; true
+            for P in estado/cartorio docs/dados/cartorio.json estado/conselho docs/dados/conselho_motores.json docs/relatorios estado/rotas docs/dados/rotas_motores.json docs/dados/conselho_validacao.json estado/esteira/resultados_local.jsonl dados/oportunidades/pareceres_livros; do [ -e "$P" ] && git add -A -- "$P"; done; true
             git commit -q -m "cartório: $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; break; }
             git push -q origin main && { echo "gravado ($i)"; break; }; sleep 9
           done
