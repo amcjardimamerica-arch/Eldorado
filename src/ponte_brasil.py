@@ -26,7 +26,12 @@ USO = {"pedidos": 0, "ok": 0, "falhas": 0}
 def _exige() -> set[str]:
     try:
         d = json.loads((ROOT / "config/sensores.json").read_text(encoding="utf-8"))
-        return set((d.get("exige_brasil") or {}).get("dominios") or [])
+        dom = set((d.get("exige_brasil") or {}).get("dominios") or [])
+        try:                                                 # 10/10: aprendidos pelo afinador de rotas (só funcionaram pela ponte)
+            dom |= set(json.loads((ROOT / "estado/rotas/ponte_aprendida.json").read_text(encoding="utf-8")).get("dominios") or [])
+        except Exception:  # noqa: BLE001
+            pass
+        return dom
     except Exception:  # noqa: BLE001
         return set()
 

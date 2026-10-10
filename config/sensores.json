@@ -3,18 +3,18 @@
  "doutrina": "Um sensor por fonte, independente mas coordenado. DIÁRIOS OFICIAIS, DIÁRIO DA JUSTIÇA e LEGISLATIVOS rodam TODOS os dias. Sites de fonte rodam em rodízio por dia da semana (hash do id), para não sobrecarregar; quando há previsão de edital para a fonte no mês corrente, o sensor passa a rodar TODOS os dias até o fim da janela. Cada sensor conhece o passado (dossiê), o presente (última leitura) e o futuro (previsão) da sua fonte.",
  "cadencia": {
   "diaria": [
-   "diario_oficial",
+   "api",
    "diario_justica",
+   "diario_oficial",
+   "internacional",
    "legislativo",
-   "api"
-  ],
-  "rodizio_semanal": [
-   "site_oficial",
    "plataforma",
    "privada",
-   "internacional"
+   "site_oficial"
   ],
-  "escalada_por_previsao": true
+  "rodizio_semanal": [],
+  "escalada_por_previsao": true,
+  "nota_10_10": "titular, 10/10/2026: a leitura das páginas é DIÁRIA para todos os motores, mesmo sem oportunidade"
  },
  "limites": {
   "paginas_por_sensor": 3,
@@ -337,20 +337,6 @@
    "leitor": "src/ministerios_publicos.py (parte MPU) — listagens, RSS, páginas avulsas e estado da página do FDD"
   },
   {
-   "id": "fontes-irmas",
-   "nome": "Fontes irmãs — sites oficiais que já renderam e nenhum motor vigiava",
-   "tipo": "site_oficial",
-   "nivel": "misto",
-   "uf": null,
-   "territorio": "BR",
-   "urls": [],
-   "urls_dinamicas": "fontes_irmas",
-   "max_paginas": 40,
-   "busca": null,
-   "confianca": "descoberta",
-   "o_que_procurar": "chamamentos, editais e seleções de projetos em domínios oficiais descobertos pelo conselho (10/10/2026)"
-  },
-  {
    "id": "plataforma-wordpress",
    "nome": "Adaptador WordPress — sites oficiais pela API pública",
    "tipo": "api",
@@ -375,6 +361,19 @@
    "busca": null,
    "confianca": "curada",
    "o_que_procurar": "oportunidades culturais com inscrição aberta e data oficial de encerramento"
+  },
+  {
+   "id": "outras-oportunidades",
+   "nome": "Outras Oportunidades",
+   "tipo": "site_oficial",
+   "nivel": "misto",
+   "uf": null,
+   "territorio": "BR",
+   "urls": [],
+   "urls_dinamicas": "outras_oportunidades",
+   "busca": null,
+   "confianca": "descoberta",
+   "o_que_procurar": "chamamentos, editais e seleções nas fontes oficiais que já renderam e nenhum outro motor vigiava; um site por vez, todos os dias (10/10/2026)"
   }
  ],
  "nota_rede": "A rede deste ambiente não alcança os domínios; os sensores rodam no GitHub Actions. URLs 'curadas' são conferidas pelo próprio sensor (saúde HTTP) e trocadas quando três leituras seguidas não trazem nada.",

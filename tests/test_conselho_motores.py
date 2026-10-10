@@ -82,11 +82,13 @@ class TesteAdaptadores(unittest.TestCase):
     def test_esquadra_e_agenda(self):
         cfg = json.loads((ROOT / "config/sensores.json").read_text(encoding="utf-8"))
         ids = {s["id"] for s in cfg["sensores_especiais"]}
-        for n in ("fontes-irmas", "plataforma-wordpress", "plataforma-mapas-culturais"):
+        ag = json.loads((ROOT / "config/agenda_motores.json").read_text(encoding="utf-8"))["motores"]
+        for n in ("outras-oportunidades", "plataforma-wordpress", "plataforma-mapas-culturais"):
             self.assertIn(n, ids)
-            self.assertIn(n, json.loads((ROOT / "config/agenda_motores.json").read_text(encoding="utf-8"))["motores"])
+        for n in ("outras-oportunidades-1", "plataforma-wordpress", "plataforma-mapas-culturais"):
+            self.assertIn(n, ag)
         s = (ROOT / "src/sensores.py").read_text(encoding="utf-8")
-        self.assertIn('urls_dinamicas") == "fontes_irmas"', s); self.assertIn("ler_wordpress", s); self.assertIn("ler_mapas", s)
+        self.assertIn('urls_dinamicas") == "outras_oportunidades"', s); self.assertIn("ler_wordpress", s); self.assertIn("ler_mapas", s)
         self.assertIn("python -m src.conselho_motores", (ROOT / ".github/workflows/cartorio.yml").read_text(encoding="utf-8"))
 
 

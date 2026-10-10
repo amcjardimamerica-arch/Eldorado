@@ -128,6 +128,12 @@ def coletar(uf: str = "GO", limite_paginas: int = 40) -> dict:
     destino = PASTA / uf.lower() / "patrocinios.json"
     atual = load_json(destino) if destino.exists() else {"uf": uf, "achados": [], "leituras": [], "cursor": 0}
     fontes = est["fontes"] + _fontes_descobertas(uf).get("verificadas", [])     # rol configurado + descobertas verificadas
+    try:                                             # 10/10: locais novos recebidos (Espião e Outras Oportunidades — privados)
+        _ag = load_json(ROOT / "estado/outras_oportunidades/sites_para_agregadores.json").get("patrocinio") or []
+        _ja = {str(f.get("url") or "").rstrip("/") for f in fontes}
+        fontes = fontes + [{"nome": x["nome"], "url": x["url"]} for x in _ag if x.get("url") and x["url"].rstrip("/") not in _ja][:60]
+    except Exception:  # noqa: BLE001
+        pass
     lidas, novos = 0, 0; html_lidos = {}
     inicio = atual.get("cursor", 0)
     for i in range(len(fontes)):
