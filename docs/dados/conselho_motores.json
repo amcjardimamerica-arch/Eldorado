@@ -1,5 +1,5 @@
 {
- "em": "2026-10-10T08:59:49+00:00",
+ "em": "2026-10-10T10:03:28+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -46,35 +46,33 @@
  ],
  "resumo": {
   "motores": 142,
-  "motores_com_falha": 93,
+  "motores_com_falha": 86,
   "falhas_por_tipo": {
    "CONGELADO": 18,
-   "TRABALHO DUPLICADO": 28,
    "ESTRANGULADO": 1,
    "SILÊNCIO LONGO": 45,
-   "VAZAMENTO": 34,
+   "VAZAMENTO": 33,
    "CEGO": 26,
-   "CADÊNCIA FORA DO RITMO": 12,
+   "CUSTO SEM RETORNO": 2,
    "PÁGINA VAZIA": 9,
    "INTERMITENTE": 2,
-   "RUÍDO": 18,
-   "CUSTO SEM RETORNO": 1
+   "RUÍDO": 18
   }
  },
  "cobertura": {
   "origem_das_oportunidades": {
    "agregador/outra": 308,
-   "motor": 201,
+   "motor": 202,
    "Piloto": 85
   },
-  "fora_dos_motores_pct": 66.2,
+  "fora_dos_motores_pct": 66.1,
   "ufs_sem_motor_com_oportunidade": [],
   "motores_por_uf": {
    "?": 142
   }
  },
  "fontes_irmas": {
-  "total": 196,
+  "total": 199,
   "top": [
    {
     "dominio": "chamadas.funbio.org.br",
@@ -130,6 +128,11 @@
     "dominio": "fondationfrancoisschneider.org",
     "peso": 5,
     "url": "https://www.fondationfrancoisschneider.org/concours-talents-contemporains/concours-talents-contemporains-leau-wattwiller/"
+   },
+   {
+    "dominio": "itamarandibahoje.com.br",
+    "peso": 5,
+    "url": "https://itamarandibahoje.com.br/business2/edital-de-projetos-fundacao-aperam-acesita-social-2026.html"
    },
    {
     "dominio": "sapl.arapongas.pr.leg.br",
@@ -195,18 +198,13 @@
     "dominio": "shop.aestheticamagazine.com",
     "peso": 3,
     "url": "https://shop.aestheticamagazine.com/products/aesthetica-art-prize-entry"
-   },
-   {
-    "dominio": "impactarte.com.br",
-    "peso": 3,
-    "url": "https://impactarte.com.br/"
    }
   ]
  },
  "plataformas": {
   "plataformas": {
    "WordPress": {
-    "orgaos": 38,
+    "orgaos": 40,
     "exemplos": [
      "alvoradadonorte.go.gov.br",
      "baoba.org.br",
@@ -249,14 +247,14 @@
     ]
    },
    "Sistemas de editais (Prosas/Editais)": {
-    "orgaos": 32,
+    "orgaos": 33,
     "exemplos": [
      "adustina.ba.gov.br",
      "arapongas.pr.gov.br",
      "banrisulcultural.com.br",
+     "bonde.org",
      "chamamentos.serpro.gov.br",
-     "climaesociedade.org",
-     "confap.org.br"
+     "climaesociedade.org"
     ]
    },
    "Querido Diário": {
@@ -280,7 +278,7 @@
    {
     "inovacao": "Adaptador por plataforma",
     "o_que": "um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão",
-    "alcance": "38 órgãos WordPress e 9 instâncias de Mapas Culturais já conhecidos de uma vez"
+    "alcance": "40 órgãos WordPress e 9 instâncias de Mapas Culturais já conhecidos de uma vez"
    },
    {
     "inovacao": "Detecção de mudança barata",
@@ -295,7 +293,7 @@
    {
     "inovacao": "Motor de fontes irmãs",
     "o_que": "domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias",
-    "alcance": "ver lista da Profa. Clara — implantado nesta rodada (motor 'fontes-irmas')"
+    "alcance": "implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia)"
    }
   ]
  },
@@ -315,7 +313,7 @@
      "bytes": 19597
     }
    ],
-   "achados_total": 44,
+   "achados_total": 46,
    "valor": "confirma",
    "achados_30d": 10,
    "cadencia": {
@@ -342,7 +340,7 @@
      "bytes": 124
     }
    ],
-   "achados_total": 233,
+   "achados_total": 239,
    "valor": "confirma",
    "achados_30d": 117,
    "cadencia": {
@@ -350,14 +348,7 @@
     "cadencia_recomendada": 1,
     "dia_forte": "segunda"
    },
-   "falhas": [
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-025, f260-captacao-038, f260-captacao-051, f260-captacao-098",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
-    }
-   ]
+   "falhas": []
   },
   "dou": {
    "nome": "Diário Oficial da União",
@@ -418,7 +409,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "29 leituras vazias seguidas",
+     "prova": "31 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     },
     {
@@ -426,12 +417,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-068, f260-captacao-151",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -442,8 +427,8 @@
     {
      "url": "https://www.goiania.go.leg.br",
      "http": 200,
-     "bytes": 285733,
-     "itens": 24
+     "bytes": 122330,
+     "itens": 0
     },
     {
      "url": "https://www.goiania.go.leg.br",
@@ -457,7 +442,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -470,14 +455,14 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "65 leituras vazias seguidas",
+     "prova": "67 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     },
     {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 34 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "153 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -528,7 +513,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -549,12 +534,6 @@
      "falha": "SILÊNCIO LONGO",
      "prova": "46 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 32 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
     }
    ]
   },
@@ -578,7 +557,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -599,18 +578,6 @@
      "falha": "SILÊNCIO LONGO",
      "prova": "40 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que judiciario-cnj, judiciario-cnj-tjgo",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 26 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
     }
    ]
   },
@@ -621,7 +588,7 @@
     {
      "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
      "http": 200,
-     "bytes": 6261
+     "bytes": 6087
     },
     {
      "url": "https://pncp.gov.br/api/search/",
@@ -629,9 +596,9 @@
      "bytes": 1718
     }
    ],
-   "achados_total": 8038,
+   "achados_total": 8493,
    "valor": "ouro",
-   "achados_30d": 1981,
+   "achados_30d": 1983,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -835,12 +802,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-175, f260-captacao-176, f260-captacao-220, plat-observatorio-3setor",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -885,12 +846,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-098",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -929,12 +884,6 @@
      "falha": "RUÍDO",
      "prova": "58 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -979,12 +928,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-169, f260-captacao-180",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -1023,12 +966,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que alego-pl, do-goias, f260-captacao-025, f260-captacao-038",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -1052,7 +989,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -1067,12 +1004,6 @@
      "falha": "SILÊNCIO LONGO",
      "prova": "45 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 29 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
     }
    ]
   },
@@ -1096,7 +1027,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -1111,12 +1042,6 @@
      "falha": "SILÊNCIO LONGO",
      "prova": "46 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 29 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
     }
    ]
   },
@@ -1137,7 +1062,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -1146,12 +1071,6 @@
      "falha": "SILÊNCIO LONGO",
      "prova": "49 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 29 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
     }
    ]
   },
@@ -1196,12 +1115,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-090, f260-captacao-118, f260-captacao-169, f260-captacao-180",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -1222,7 +1135,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -1231,12 +1144,6 @@
      "falha": "SILÊNCIO LONGO",
      "prova": "36 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 20 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
     }
    ]
   },
@@ -1260,7 +1167,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -1275,12 +1182,6 @@
      "falha": "SILÊNCIO LONGO",
      "prova": "28 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 20 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
     }
    ]
   },
@@ -1299,7 +1200,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -1314,12 +1215,6 @@
      "falha": "SILÊNCIO LONGO",
      "prova": "28 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 20 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
     }
    ]
   },
@@ -1685,12 +1580,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-118, f260-captacao-169",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -1853,7 +1742,7 @@
    "achados_30d": 12,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": "sábado"
    },
    "falhas": [
@@ -1868,12 +1757,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 6 de 9 dias",
-     "melhoria": "ler a cada 3 dia(s) — publica em média a cada 6.8 dias; dia forte: sábado"
     }
    ]
   },
@@ -1912,12 +1795,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-051, f260-captacao-098",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -1941,17 +1818,10 @@
    "achados_30d": 2,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": "sábado"
    },
-   "falhas": [
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 1 de 27 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo; dia forte: sábado"
-    }
-   ]
+   "falhas": []
   },
   "f260-captacao-068": {
    "nome": "Emenda estadual para projeto educativo em Goiás",
@@ -1988,12 +1858,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que alego-pl, f260-captacao-151",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -2121,7 +1985,7 @@
    "achados_30d": 0,
    "cadencia": {
     "cadencia_atual": 1,
-    "cadencia_recomendada": 3,
+    "cadencia_recomendada": 1,
     "dia_forte": null
    },
    "falhas": [
@@ -2136,12 +2000,6 @@
      "falha": "SILÊNCIO LONGO",
      "prova": "34 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "ritmo",
-     "falha": "CADÊNCIA FORA DO RITMO",
-     "prova": "agenda a cada 1 dia(s); a fonte rendeu em 0 de 23 dias",
-     "melhoria": "ler a cada 3 dia(s) — quase nunca publica: ler a cada 3 dias e liberar tempo"
     }
    ]
   },
@@ -2326,12 +2184,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -2408,12 +2260,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -2514,7 +2360,7 @@
      "itens": 127
     }
    ],
-   "achados_total": 194,
+   "achados_total": 200,
    "valor": "ouro",
    "achados_30d": 79,
    "cadencia": {
@@ -2528,12 +2374,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 98% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-118, f260-captacao-169",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -2560,14 +2400,7 @@
     "cadencia_recomendada": 1,
     "dia_forte": "segunda"
    },
-   "falhas": [
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
-    }
-   ]
+   "falhas": []
   },
   "recorrencia": {
    "nome": "Motor de Recorrência — revisita as oportunidades identificadas",
@@ -2592,14 +2425,7 @@
     "cadencia_recomendada": 1,
     "dia_forte": "segunda"
    },
-   "falhas": [
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-035, f260-captacao-038",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
-    }
-   ]
+   "falhas": []
   },
   "f260-espalhado-acessoainformacao-cavalcante-go-gov-br": {
    "nome": "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE — oportunidades (espalhado de edital validado)",
@@ -2684,7 +2510,7 @@
     {
      "url": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
      "http": 200,
-     "bytes": 38899
+     "bytes": 37266
     },
     {
      "url": "https://html.duckduckgo.com/html/?q=",
@@ -2692,9 +2518,9 @@
      "bytes": 3108
     }
    ],
-   "achados_total": 1228,
+   "achados_total": 1277,
    "valor": "ouro",
-   "achados_30d": 547,
+   "achados_30d": 571,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2753,14 +2579,7 @@
     "cadencia_recomendada": 1,
     "dia_forte": "sexta"
    },
-   "falhas": [
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que dje-tjgo, judiciario-cnj",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
-    }
-   ]
+   "falhas": []
   },
   "congresso-nacional": {
    "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
@@ -2769,7 +2588,7 @@
     {
      "url": "https://www.congressonacional.leg.br",
      "http": 200,
-     "bytes": 151533,
+     "bytes": 151532,
      "itens": 9
     },
     {
@@ -2791,7 +2610,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "23 leituras vazias seguidas",
+     "prova": "25 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -2960,12 +2779,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-038, f260-captacao-051, f260-captacao-098",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -3048,18 +2861,6 @@
      "falha": "CONGELADO",
      "prova": "o mesmo achado repetido em 5 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
-    },
-    {
-     "conselheiro": "funil",
-     "falha": "VAZAMENTO",
-     "prova": "perde 100% na etapa 'achado → fluxo'",
-     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que empresas-incentivadas, f260-captacao-175, f260-captacao-220",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -3098,12 +2899,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que empresas-incentivadas, f260-captacao-175, f260-captacao-176",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -3142,12 +2937,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que empresas-incentivadas, f260-captacao-176, f260-captacao-220",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -3271,12 +3060,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-118, f260-captacao-180",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -3573,12 +3356,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-118, f260-captacao-169, f260-captacao-180",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -3733,12 +3510,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que f260-captacao-035, f260-captacao-090, f260-captacao-118, f260-captacao-169",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
@@ -4130,14 +3901,7 @@
     "cadencia_recomendada": 1,
     "dia_forte": "sábado"
    },
-   "falhas": [
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que dje-tjgo, judiciario-cnj-tjgo",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
-    }
-   ]
+   "falhas": []
   },
   "mpgo-destinacao": {
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
@@ -4147,8 +3911,8 @@
    "valor": "baixo volume",
    "achados_30d": 7,
    "cadencia": {
-    "cadencia_atual": 7,
-    "cadencia_recomendada": 7,
+    "cadencia_atual": 1,
+    "cadencia_recomendada": 1,
     "dia_forte": "sábado"
    },
    "falhas": [
@@ -4247,14 +4011,7 @@
     "cadencia_recomendada": 1,
     "dia_forte": "sexta"
    },
-   "falhas": [
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
-    }
-   ]
+   "falhas": []
   },
   "f260-curadoria-009": {
    "nome": "SECULT Goiás — chamamentos públicos da Lei 13.019/2014",
@@ -4291,12 +4048,6 @@
      "falha": "VAZAMENTO",
      "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "TRABALHO DUPLICADO",
-     "prova": "lê os mesmos domínios que do-goias, f260-captacao-025, f260-captacao-038, f260-captacao-051",
-     "melhoria": "um motor dono por domínio; os demais só leem o que o dono não lê"
     }
    ]
   },
