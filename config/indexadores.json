@@ -232,11 +232,11 @@
    "posicao_relativa": 16
   },
   "site-mapa-osc": {
-   "nome": "Mapa das OSC (Ipea) — editais reunidos no portal (coleta assistida: o site proíbe robôs)",
+   "nome": "Mapa das OSC (Ipea) — editais reunidos no portal",
    "local": "Mapa das OSC (Ipea)",
-   "finalidade": "editais reunidos no portal do Ipea (coleta assistida: o site proíbe robôs)",
+   "finalidade": "editais reunidos no portal do Ipea; robots.txt libera robôs (verificado pela nuvem em 10/10/2026)",
    "fonte": "https://mapaosc.ipea.gov.br/editais",
-   "metodo": "coleta assistida pelo navegador do titular",
+   "metodo": "leitura automática pela nuvem (listagem /editais); API documentada em /api/api/documentation em verificação",
    "horarios_brt": "06:13",
    "familia_antiga": "idx-assistido",
    "reune": [
@@ -785,10 +785,11 @@
    "motor": "site-mapa-osc",
    "leitor": "html_listagem",
    "url": "https://mapaosc.ipea.gov.br/editais",
-   "rota": "assistida",
+   "rota": "nuvem",
    "prioridade": "media",
-   "cadencia_horas": 168,
-   "paginas_retroativas": 1
+   "cadencia_horas": 24,
+   "paginas_retroativas": 1,
+   "nota": "10/10/2026: a marcação 'o site proíbe robôs' estava errada — o robots.txt é 'User-agent: * / Disallow:' (tudo liberado), verificado pela nuvem (scripts/verificar_robots.py). Saiu da coleta assistida."
   },
   {
    "id": "prosas",
