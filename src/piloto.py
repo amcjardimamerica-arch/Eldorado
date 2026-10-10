@@ -816,6 +816,12 @@ def missao_reconhecimento(ia, rumo: dict, conhecidos: set[str]) -> tuple[str, li
 
 def ciclo(porta: int | None = None) -> dict:
     """VOO DO PILOTO: missões sorteadas, uma de cada vez, com diário de bordo."""
+    try:                                        # 10/10 (titular): desligado no FOGO do painel → não voa
+        from .motores_manuais import desligado as _desl
+        if _desl("piloto-aberto"):
+            return {"desligado_no_fogo": True, "resultado": "o titular desligou o Espião no fogo do painel"}
+    except Exception:
+        pass
     from .esquadrilha import sortear, abrir_missao, fechar_missao, resumo
     from .cargo_piloto import ocupante
     try:                                        # 09/10 (titular): contagem semanal zerada pelo próprio Piloto, ao decolar

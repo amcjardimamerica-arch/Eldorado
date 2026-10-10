@@ -1,0 +1,65 @@
+name: 31 · Motor ligado/desligado no fogo do painel
+
+# 10/10 (titular): apertar o FOGO ao lado esquerdo de um motor no painel desliga (ou religa) o motor. Desligado,
+# nenhum acionamento automático o executa (agenda, maestro, rede neural, voos dos Pilotos, empresas) até ser
+# religado. Grava config/motores_manuais.json e a cópia do painel; religar um Piloto já o faz decolar.
+
+on:
+  workflow_dispatch:
+    inputs:
+      motor:
+        description: "id do motor (ex.: dou, plat-salic, piloto-aberto)"
+        required: true
+      estado:
+        description: "ligado ou desligado"
+        required: true
+        type: choice
+        options: [desligado, ligado]
+      motivo:
+        description: "motivo (opcional)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: motor-manual
+  cancel-in-progress: false
+
+jobs:
+  aplicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Gravar a decisão (à prova de conflito)
+        env:
+          MOTOR: ${{ inputs.motor }}
+          ESTADO: ${{ inputs.estado }}
+          MOTIVO: ${{ inputs.motivo }}
+        run: |
+          case "$MOTOR" in *[!a-zA-Z0-9_.-]*|"") echo "id de motor inválido"; exit 1;; esac
+          git config user.name "fogo-eldorado" && git config user.email "fogo@eldorado"
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            python -m src.motores_manuais definir "$MOTOR" "$ESTADO" "$MOTIVO"
+            git add config/motores_manuais.json docs/dados/motores_manuais.json estado/piloto_pausado estado/interceptador/pausado 2>/dev/null || true
+            git add -A estado/piloto_pausado estado/interceptador 2>/dev/null || true
+            git diff --cached --quiet && { echo "nada mudou"; break; }
+            git commit -q -m "fogo: $MOTOR $ESTADO pelo titular" && git push -q origin HEAD:main && { echo "gravado ($i)"; break; }
+            sleep 7
+          done
+      - name: Religou um Piloto? Ele decola agora
+        if: inputs.estado == 'ligado' && (inputs.motor == 'piloto-aberto' || inputs.motor == 'piloto-espiao' || inputs.motor == 'piloto-interceptador')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ inputs.motor }}" = "piloto-interceptador" ]; then gh workflow run interceptador.yml --ref main || true
+          else gh workflow run piloto.yml --ref main -f modo=ciclo || gh workflow run piloto.yml --ref main || true; fi

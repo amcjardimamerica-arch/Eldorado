@@ -3239,7 +3239,25 @@ function mtSalva(e){try{localStorage.setItem("amc_motores",JSON.stringify(e));}c
 /* ativo = decisão manual do titular (fogo/óleo) quando houver; senão, a
    ativação AUTOMÁTICA do sistema (época prevista ou menção). Motores regulares
    nascem acesos. */
-function mtAtivo(id){const e=mtEstado();const man=(e.ativos||{})[id];if(man===true||man===false)return man;
+/* 10/10 (titular): FOGO MANUAL dos motores regulares. Apertar o fogo DESLIGA o motor (nenhum acionamento automático o
+   executa: agenda, maestro, rede neural, voos, empresas) até apertar de novo. A decisão é gravada no repositório pelo
+   fluxo "motor-manual" (config/motores_manuais.json); o painel lê a cópia publicada. Livros seguem a regra deles. */
+window._MANUAIS=null;
+async function carregaManuais(){
+  for(const u of ["https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/motores_manuais.json?t="+Date.now(),"dados/motores_manuais.json?v="+Date.now()]){
+    try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ window._MANUAIS=await r.json(); break; } }catch(e){} }
+  if(!window._MANUAIS) window._MANUAIS={desligados:{}};
+  try{ desenhaMotores(); atualizaMotoresAtivos(); }catch(e){}
+}
+setTimeout(carregaManuais,1200); setInterval(carregaManuais,180000);
+function ehRegular(id){ return [...((MT||{})._of||[]),...((MT||{})._plat||[])].some(o=>o.id===id) || !(MT||[]).some(m=>m.id===id); }
+function fogoDoRepositorio(id){ const D=(window._MANUAIS||{}).desligados||{}; const alt=String(id).startsWith("plat-")?String(id).slice(5):"plat-"+id;
+  return D[id]||D[alt]||null; }
+function fogoPendente(id){ const e=mtEstado(); const p=(e.fogo_pendente||{})[id]; if(!p) return null;
+  if(Date.now()-new Date(p.em).getTime()>15*60*1000){ delete e.fogo_pendente[id]; mtSalva(e); return null; } return p; }
+function mtAtivo(id){
+  if(ehRegular(id)){ const p=fogoPendente(id); if(p) return p.estado==="ligado"; return !fogoDoRepositorio(id); }
+  const e=mtEstado();const man=(e.ativos||{})[id];if(man===true||man===false)return man;
   // 28/09 (titular): aceso = LIGADO (disjuntor de 30 dias ou fonte permanente) — a marca 'ativa' do catálogo contava 774
   // motor REGULAR da Bússola não está no catálogo de livros: é sempre aceso (29/09 — a regra de 28/09 os apagou)
   const m=MT.find(x=>x.id===id);return m?m.proximidade==="ligado":true;}
@@ -3252,14 +3270,30 @@ function mtPendente(id){const e=mtEstado();const t=(e.imediatos||{})[id];if(!t)r
   if(lida||expirou){delete e.imediatos[id];mtSalva(e);return null;}
   return br(t.slice(0,10));}
 window.mtMesMotor=function(id,dx){window._mtMes[id]=(window._mtMes[id]||0)+dx;desenhaMotores();};
-window.mtLigar=function(id){const e=mtEstado();e.ativos=e.ativos||{};const liga=!mtAtivo(id);e.ativos[id]=liga;e.ligados_em=e.ligados_em||{};if(liga)e.ligados_em[id]=new Date().toISOString();mtSalva(e);desenhaMotores();atualizaMotoresAtivos();};
+window.mtLigar=async function(id){
+  if(ehRegular(id)){
+    const liga=!mtAtivo(id);
+    const nome=((window._DESC||{})[id]||{}).nome||id;
+    const msg=liga?`Religar o motor ${nome}?\n\nEle volta a integrar o workflow e a rede neural pode acioná-lo.`
+                  :`Desligar o motor ${nome}?\n\nO sistema deixa de acioná-lo automaticamente (agenda, maestro, rede neural) até você apertar o fogo de novo.`;
+    if(!confirm(msg)) return;
+    const e=mtEstado(); e.fogo_pendente=e.fogo_pendente||{}; e.fogo_pendente[id]={estado:liga?"ligado":"desligado",em:new Date().toISOString()}; mtSalva(e);
+    desenhaMotores(); atualizaMotoresAtivos();
+    const r=await ghDispatch("motor-manual.yml",{motor:id,estado:liga?"ligado":"desligado",motivo:"fogo do painel"});
+    abreModal(`<h3 style="margin:0">${liga?"Motor religado":"Motor desligado"}</h3><div class=meta>${esc(nome)}</div>`,
+      r.ok?`<p>${liga?"O fogo voltou: o motor volta ao workflow e a rede neural pode acioná-lo.":"O fogo apagou: nenhum acionamento automático executa este motor até você religá-lo."}</p><p class=meta>A decisão é gravada no repositório em alguns segundos (fluxo 31). A busca imediata pelo fósforo continua disponível.</p>`
+          :`<p><b style="color:#B3261E">Não foi possível gravar:</b> ${esc(r.motivo||"")}</p><p class=meta>O painel volta ao estado anterior em 15 minutos se a decisão não chegar ao repositório.</p>`);
+    if(!r.ok){ const e2=mtEstado(); delete (e2.fogo_pendente||{})[id]; mtSalva(e2); desenhaMotores(); atualizaMotoresAtivos(); }
+    return;
+  }
+  const e=mtEstado();e.ativos=e.ativos||{};const liga=!mtAtivo(id);e.ativos[id]=liga;e.ligados_em=e.ligados_em||{};if(liga)e.ligados_em[id]=new Date().toISOString();mtSalva(e);desenhaMotores();atualizaMotoresAtivos();};
 /* fogo com fumaça (ativo) / tonel azul (inativo) — clique alterna */
 function iconeMotor(id,ativo){
-  return ativo?`<button class="mt-ico fogo" onclick="mtLigar('${esc(id)}')" title="motor ATIVO — roda nas rotinas automáticas; clique para desativar">
+  return ativo?`<button class="mt-ico fogo" onclick="mtLigar('${esc(id)}')" title="motor LIGADO — integra o workflow e a rede neural pode acioná-lo; clique para DESLIGAR (fica parado até você religar)">
       <svg viewBox="0 0 32 40" width="30" height="36"><g class="fumaca"><circle cx="16" cy="7" r="3"/><circle cx="21" cy="4" r="2.2"/><circle cx="11" cy="5" r="1.8"/></g>
       <path class="chama" d="M16 12c4 5 8 8 8 15a8 8 0 0 1-16 0c0-4 2-6 3-9 1 3 2 4 3 4 0-4 0-7 2-10z"/>
       <path class="chama2" d="M16 22c2 3 4 4 4 7a4 4 0 0 1-8 0c0-2 1-3 2-5 .5 1.5 1 2 2 2 0-2 0-3 0-4z"/></svg></button>`
-    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor APAGADO (fogueira sem acender) — clique para ligar por 30 dias">
+    :`<button class="mt-ico oleo" onclick="mtLigar('${esc(id)}')" title="motor DESLIGADO — nenhum acionamento automático o executa; clique para RELIGAR">
       <svg viewBox="0 0 40 40" width="36" height="36" shape-rendering="geometricPrecision">
         <g stroke="#3a2a18" stroke-width=".8" stroke-linejoin="round">
           <path d="M6 31h28a2 2 0 0 1 0 4H6a2 2 0 0 1 0-4z" fill="#6b4a2b"/>

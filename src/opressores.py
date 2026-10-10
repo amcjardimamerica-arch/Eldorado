@@ -76,6 +76,11 @@ def sincronizar(hoje: date | None = None) -> dict:
     man = load_json(ROOT / "config/motores_ativos.json") if (ROOT / "config/motores_ativos.json").exists() else {}
     acesos = man.get("acesos_manualmente") or []
     desligados = set(man.get("inativos") or [])
+    try:                                   # 10/10 (titular): desligado no FOGO do painel
+        from .motores_manuais import desligados as _fogo
+        desligados |= _fogo()
+    except Exception:
+        pass
     try:                                   # 29/09: o que a pesquisa dos 12 parâmetros mostrou não ser recurso não religa
         from .parametros_opressores import dispensados as _disp
         desligados |= _disp()

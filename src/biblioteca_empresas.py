@@ -264,6 +264,12 @@ def ranking(categoria: str, limite: int = 100) -> list[dict]:
 
 
 def run() -> dict:
+    try:                                        # 10/10 (titular): motor Incentivos Fiscais desligado no FOGO → não roda
+        from .motores_manuais import desligado as _desl
+        if _desl("motor-gife"):
+            return {"desligado_no_fogo": True}
+    except Exception:  # noqa: BLE001
+        pass
     DESTINO.mkdir(parents=True, exist_ok=True)
     saida = {}
     from .incentivos_empresas import aplicar_em_ranking, carregar_bases
