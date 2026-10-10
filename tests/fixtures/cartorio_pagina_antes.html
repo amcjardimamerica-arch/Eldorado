@@ -1,0 +1,69 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Cartório de fontes oficiais · Eldorado</title>
+<style>
+.mini{display:flex;gap:2px;margin-top:4px}.mini i{width:12px;height:8px;border-radius:2px;background:var(--linha)}
+.mini i.o{background:var(--ok)}.mini i.d{background:#D9A520}.mini i.f{background:var(--falta)}
+.corpo{padding:12px 14px}
+.it.j{color:var(--ja)}
+</style></head><body><main>
+<h1>Cartório de fontes oficiais</h1><p id="em"></p><div class="cards" id="cards"></div><div id="barras"></div>
+<div id="linha"></div><p id="linha-nota"></p><table id="abordagens"></table><table id="balcoes"></table><table id="safras"></table>
+<input id="busca"><select id="ftipo"></select><select id="fbalcao"></select><select id="fsit"></select><div id="lista"></div>
+<p class="meta">Verde: obtido no documento oficial · amarelo: dispensado (o edital comprova que o requisito não se aplica) · cinza: ainda falta.</p>
+</main>
+<script>
+const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
+const BALCAO={pncp:"PNCP",diario:"Diários oficiais",orgao:"Sites de órgãos públicos",privado:"Financiadores privados",pista:"Pistas (agregadores e imprensa)",proprio:"MP e Judiciário (leitura própria)"};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct=x=>x==null?"—":Math.round(x*100)+"%";
+const br=d=>d&&/^\d{4}-\d{2}-\d{2}/.test(d)?d.slice(8,10)+"/"+d.slice(5,7)+"/"+d.slice(0,4):(d||"");
+const link=u=>u?`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(u.length>90?u.slice(0,87)+"…":u)}</a>`:"—";
+let DADOS=null;
+fetch("dados/cartorio.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject(r.status)).then(d=>{DADOS=d;montar()}).catch(()=>{
+  document.getElementById("lista").innerHTML='<div class="vazio">O Cartório ainda não publicou certidões. Elas aparecem aqui depois da primeira execução.</div>';});
+function montar(){
+  const R=DADOS.resumo||{};
+  document.getElementById("em").textContent="Atualizado em "+br((DADOS.em||"").slice(0,10))+" às "+(DADOS.em||"").slice(11,16)+" UTC.";
+  const cards=[["Eficiência dos itens",pct(R.eficiencia_itens),`${R.itens_obtidos||0} obtidos + ${R.itens_dispensados||0} dispensados de ${R.itens_que_faltavam||0}`,1],
+    ["Certidões emitidas",R.certidoes||0,`${R.nesta_execucao||0} na última execução`],["Com site oficial",pct(R.taxa_link_oficial),`${R.com_link_oficial||0} certidões`],
+    ["Completas",R.certidoes_completas||0,"site oficial + todos os itens que faltavam"],["Na fila",(R.fila_estrelas||0)+(R.fila_livros||0),`${R.fila_estrelas||0} estrelas · ${R.fila_livros||0} livros`],
+    ["Ao Interceptador",R.para_o_interceptador||0,`${R.para_o_chrome||0} ao Chrome (robots.txt)`],
+    ["Gabarito por órgão",(DADOS.gabarito||{}).orgaos_com_gabarito||0,`órgãos aprendidos · ${Object.values((DADOS.gabarito||{}).itens_achados_pelo_gabarito||{}).reduce((a,b)=>a+b,0)} itens achados pelo gabarito`]];
+  document.getElementById("cards").innerHTML=cards.map(c=>`<div class="card${c[3]?" destaque":""}"><b>${esc(c[1])}</b><span>${esc(c[0])}<br>${esc(c[2])}</span></div>`).join("");
+  document.getElementById("barras").innerHTML=DOZE.map(k=>{const x=(DADOS.por_item||{})[k]||{};const f=x.faltavam||0;
+    const o=f?100*(x.obtidos||0)/f:0,d=f?100*(x.dispensados||0)/f:0;
+    return `<div class="barra"><span>${esc(k)}</span><div class="trilho" title="${x.obtidos||0} obtidos · ${x.dispensados||0} dispensados · ${f} faltavam"><i class="o" style="width:${o}%"></i><i class="d" style="width:${d}%"></i></div><small>${pct(x.eficiencia)} de ${f}</small></div>`}).join("");
+  const LP=DADOS.linha_de_producao||{}, BS=DADOS.por_balcao_selo||{}, NL=LP.na_linha||{};
+  document.getElementById("linha").innerHTML="";
+  const B=DADOS.por_balcao||{};
+  const sel=document.getElementById("fbalcao");Object.keys(B).forEach(k=>sel.insertAdjacentHTML("beforeend",`<option value="${esc(k)}">${esc(BALCAO[k]||k)}</option>`));
+  ["busca","ftipo","fbalcao","fsit"].forEach(id=>document.getElementById(id).addEventListener("input",lista));
+  lista();
+}
+function item(c,k){
+  const ok=(c.itens||{})[k],ds=(c.dispensas||{})[k],pedia=(c.faltavam||[]).includes(k);
+  if(ok)return `<div class="it o"><h4>✓ ${esc(k)}</h4>${esc(ok.valor)}<q>“${esc(ok.trecho)}”</q><span class="meta">página ${esc(ok.pagina)} · ${esc(ok.metodo||"")} · ${link(ok.documento)}</span></div>`;
+  if(ds)return `<div class="it d"><h4>⊘ ${esc(k)} — dispensado</h4>${esc(ds.motivo)}<q>“${esc(ds.trecho)}”</q><span class="meta">página ${esc(ds.pagina)}</span></div>`;
+  if(pedia)return `<div class="it f"><h4>✗ ${esc(k)}</h4>não está no documento oficial lido</div>`;
+  return `<div class="it j"><h4>• ${esc(k)}</h4>já constava antes do Cartório</div>`;
+}
+function lista(){
+  const q=document.getElementById("busca").value.toLowerCase(),t=document.getElementById("ftipo").value,b=document.getElementById("fbalcao").value,s=document.getElementById("fsit").value;
+  const L=(DADOS.certidoes||[]).filter(c=>(!t||c.tipo===t)&&(!b||c.balcao===b)&&
+    (!s||(s==="completa"?(!(c.ainda_faltam||[]).length&&c.link_oficial):String(c.encaminhado||"").toLowerCase().startsWith(s)))&&
+    (!q||[c.titulo,c.orgao,c.uf].join(" ").toLowerCase().includes(q)));
+  const el=document.getElementById("lista");
+  if(!L.length){el.innerHTML='<div class="vazio">Nenhuma certidão com esses filtros.</div>';return}
+  el.innerHTML=L.slice(0,300).map(c=>{
+    const mini=DOZE.map(k=>`<i class="${(c.itens||{})[k]?"o":(c.dispensas||{})[k]?"d":(c.faltavam||[]).includes(k)?"f":""}" title="${esc(k)}"></i>`).join("");
+    const selo=c.tipo==="estrela"&&c.selo_depois!==c.selo_antes?` · selo ${esc(c.selo_antes||"nenhum")} → <b>${esc(c.selo_depois||"nenhum")}</b>`:"";
+    return `<details class="c"><summary><div><div class="tt">${esc(c.titulo)}</div>
+      <div class="meta"><span class="pill ${c.tipo==="estrela"?"est":"liv"}">${c.tipo==="estrela"?"estrela":"livro"}</span><span class="pill">${esc(BALCAO[c.balcao]||c.balcao)}</span>
+      ${(c.resolvidos||[]).length} de ${(c.faltavam||[]).length} itens resolvidos${c.tentativa>1?" · "+c.tentativa+"ª tentativa":""}${c.estagio?" · balcão "+esc({sem_estrela:"sem estrela",bronze:"bronze",prata:"prata",ouro:"ouro"}[c.estagio]||c.estagio):""}${c.uf?" · "+esc(c.uf):""}${c.prazo?" · prazo "+br(c.prazo):""}${selo}</div><div class="mini">${mini}</div></div>
+      <div class="pct">${pct(c.eficiencia)}</div></summary>
+      <div class="corpo"><p class="meta">Site oficial: ${link(c.link_oficial)}${c.degrau!=null?` · degrau ${c.degrau}: ${esc(c.como||"")}`:""}</p>
+      <div class="doze">${DOZE.map(k=>item(c,k)).join("")}</div>
+      ${c.encaminhado?`<div class="enc">Encaminhado: ${esc(c.encaminhado)}</div>`:""}
+      </div></details>`}).join("")+
+    (L.length>300?`<p class="meta">Mostrando 300 de ${L.length}. Use a busca para encontrar as demais.</p>`:"");
+}
+</script></body></html>
