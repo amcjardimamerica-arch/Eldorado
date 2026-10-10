@@ -63,9 +63,10 @@ class SemRevisaoHumana(unittest.TestCase):
 
     def test_edicoes_de_diario_reconhecidas(self):
         b = [rid for rid in self.res if self.ver[rid]["lista"] == "B"]
-        ed = [rid for rid in b if self.res[rid]["ajustes"].get("tipo_registro") in ("edicao_diario", "duplicata")]
+        ed = [rid for rid in b if self.res[rid]["ajustes"].get("tipo_registro") in ("edicao_diario", "duplicata") or str(self.res[rid]["descartar"] or "").startswith("M14")]
         self.assertGreaterEqual(len(ed) / len(b), 0.98)
-        antigas = [rid for rid in b if self.res[rid]["ajustes"].get("situacao") == "encerrada"]
+        # 10/10 (titular, M14): edição sem ato no trecho é ELIMINADA no motor (antes ia ao histórico como encerrada)
+        antigas = [rid for rid in b if self.res[rid]["ajustes"].get("situacao") == "encerrada" or str(self.res[rid]["descartar"] or "").startswith("M14")]
         self.assertGreaterEqual(len(antigas), 240)                     # 228 edições eram de 2021–2025 (e mais as de >120 dias)
 
     def test_ato_dentro_do_diario_nao_vira_edicao(self):
@@ -147,3 +148,18 @@ class Painel(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteM14EdicaoSemAto(unittest.TestCase):
+    """10/10/2026 (titular): edição de diário só passa se o trecho mostra ato de abertura para o terceiro setor."""
+    def test_criterio(self):
+        from src.saneamento_motores import ato_no_trecho, limpar_cache
+        limpar_cache()
+        self.assertTrue(ato_no_trecho("Chamamento Público nº 04/2026 Órgão Requisitante: Secretaria Municipal de Cultura, seleção de projetos culturais de agentes culturais")[0])
+        self.assertTrue(ato_no_trecho("O CMDCA, com esteio na Lei nº 13.019, torna público o Edital de Chamamento Público para organizações da sociedade civil")[0])
+        for t in ("ATO DE DECLARAÇÃO DE INEXIGIBILIDADE DE CHAMAMENTO PÚBLICO com a OSC",
+                  "RESULTADO FINAL do Edital de Chamamento Público para organizações da sociedade civil",
+                  "estrutura funcional da Administração Municipal, cria órgãos, cargos e funções",
+                  "Edital de concurso público para provimento de cargos efetivos",
+                  "Termo de Execução Cultural nº 01/2026, apoio financeiro a agentes culturais"):
+            self.assertFalse(ato_no_trecho(t)[0], t)

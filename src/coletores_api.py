@@ -137,6 +137,7 @@ def coletar_querido_diario(inicio: date, fim: date, escopo: dict, cfg: dict | No
     cfg = cfg or _cfg()["querido_diario"]
     ufs = set(escopo.get("ufs_ativas") or [])
     achados, falhas = [], []
+    eliminadas: dict = {}
     for base in cfg["bases"]:
         try:
             for consulta in cfg["consultas"]:
@@ -155,6 +156,14 @@ def coletar_querido_diario(inicio: date, fim: date, escopo: dict, cfg: dict | No
                         nome = g.get("territory_name") or "município"
                         dia = (g.get("date") or "")[:10]
                         trecho = " ".join((g.get("excerpts") or [""])[0].split())
+                        try:                       # M14 (titular, 10/10/2026): sem ato no trecho, nem entra
+                            from .saneamento_motores import ato_no_trecho as _ato
+                            _ok, _porque = _ato(trecho)
+                        except Exception:          # noqa: BLE001
+                            _ok, _porque = True, ""
+                        if not _ok:
+                            eliminadas[_porque] = eliminadas.get(_porque, 0) + 1
+                            continue
                         titulo = f"Diário Oficial de {nome} ({uf}) {dia} — {consulta}"
                         achados.append({
                             "id": sha256(("qd|" + url + "|" + dia).encode())[:20], "status": "capturada", "titulo": titulo[:300], "url": url,
@@ -171,6 +180,9 @@ def coletar_querido_diario(inicio: date, fim: date, escopo: dict, cfg: dict | No
                     offset += int(cfg.get("size", 50))
                     if offset >= total: break
                     time.sleep(0.5)
+            if eliminadas:
+                falhas.append({"api": "querido_diario", "eliminadas_no_motor_M14": sum(eliminadas.values()), "por_motivo": eliminadas,
+                               "nota": "edições cujo trecho não mostra ato de abertura para o terceiro setor (não entram como oportunidade)"})
             return achados, falhas
         except (HTTPError, URLError, OSError, ValueError, json.JSONDecodeError) as exc:
             falhas.append({"api": "querido_diario", "base": base, "erro": type(exc).__name__})
