@@ -5224,16 +5224,18 @@ function desenhaBzCards(){
   const mon=bp.monitoramentos||{}; const tot=bp.totais||{};
   // 28/09 (titular): os cartões leem o FLUXO VALIDADO e o catálogo real dos livros — não mais o conjunto antigo
   const FX=window._FLUXO||{}, OP=FX.opressores||{}, its=Object.values(FX.itens_por_uf||{}).flat();
+  // 11/10 (titular): PARÂMETRO ÚNICO — abertas = validadas + em verificação + validação manual (o mesmo número em todo o painel)
+  const PR=FX.parametro||{abertas:its.length,validadas:its.filter(x=>x.confirmada).length,em_verificacao:its.filter(x=>!x.confirmada).length,validacao_manual:0};
   const hj=HOJE.toISOString().slice(0,10), em7=new Date(HOJE.getTime()+7*864e5).toISOString().slice(0,10);
-  const conf=its.filter(x=>x.confirmada), urg=conf.filter(x=>x.fim&&x.fim>=hj&&x.fim<=em7);
+  const conf=its.filter(x=>x.estado?x.estado==="validada":x.confirmada), urg=conf.filter(x=>x.fim&&x.fim>=hj&&x.fim<=em7);
   const estud=its.filter(x=>x.inspecao), chk9=its.filter(x=>Object.values(x.checklist||{}).filter(c=>["ok","disp","val"].includes(c.s)).length>=9);
   // 28/09 (titular): só TÍTULO e NÚMERO — "disponível ou aguardando / total"; nenhum texto descritivo no cartão
   const fr=(a,b)=>`${a}<span class="bz-tot">/${b}</span>`;
   const cards=[
-    [IC("#C77E12").rosa,"Oportunidades",fr(conf.length,its.length-conf.length),"","vermelho","confirmadas (objeto, prazo e site oficial) / em verificação"],
+    [IC("#C77E12").rosa,"Oportunidades abertas",`${PR.abertas}`,"","vermelho",`${PR.validadas} validadas · ${PR.em_verificacao} em verificação · ${PR.validacao_manual} em validação manual (vermelho) — fechadas por veredito e prazos vencidos ficam fora`],
     [IC("#0B4EA2").banco,"Fontes monitoradas",fr(OP.ligados??0,OP.catalogo??0),"","azul","livros de oportunidades em leitura / livros de oportunidades na Biblioteca"],
-    [IC("#0B4EA2").escudo,"Validadas",fr(estud.length,its.length),"","azul","validadas pelo Interceptador / oportunidades abertas"],
-    [IC("#C0392B").relogio,"Prazos urgentes",fr(urg.length,conf.length),"","vermelho","inscrições confirmadas terminando em até 7 dias / confirmadas"],
+    [IC("#0B4EA2").escudo,"Validadas",fr(PR.validadas,PR.abertas),"","azul","validadas (objeto, prazo vigente e site oficial comprovados, ou ouro) / oportunidades abertas"],
+    [IC("#C0392B").relogio,"Prazos urgentes",fr(urg.length,conf.length),"","vermelho","inscrições validadas terminando em até 7 dias / validadas"],
     [IC("#0B4EA2").farol,"Repositório",fr(OP.com_historico_de_edicoes??0,OP.catalogo??0),"","azul","opressores com duas ou mais edições guardadas / livros de oportunidades na Biblioteca"],
     [IC("#0B4EA2").livro,"Base legal",((D.biblioteca||{}).acervos||{}).leis??0,"","azul","normas na Biblioteca"]];
   $("bz-cards").innerHTML=cards.map(c=>`<div class="bz-card" title="${esc(c[5])}">${c[0]}<div class=r>${c[1]}</div><div class=v>${c[2]}</div></div>`).join("");
