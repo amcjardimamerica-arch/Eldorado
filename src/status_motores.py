@@ -66,14 +66,53 @@ def _ultima_real(p: dict, ult):
         cands.append(_brt(_j(ROOT / "docs/dados/interceptador.json", {}).get("em")))
     if p.get("id") in ("piloto-aberto", "piloto-espiao"):
         cands.append(_brt(_j(ROOT / "docs/dados/espiao.json", {}).get("em")))
+    if str(p.get("id") or "").startswith("site-"):         # motores indexadores: a leitura registrada pelo próprio indexador
+        site, pub = _indexador_do_motor(str(p.get("id")))
+        cands.append(_brt((pub.get(site.get("id")) or {}).get("ultima")))
     cands = [c for c in cands if c]
     return max(cands) if cands else None
+
+
+def _indexador_do_motor(mid: str) -> tuple[dict, dict]:
+    """(configuração do site no catálogo de indexadores, estado publicado de todos os sites) para um motor site-*."""
+    cfg = _j(ROOT / "config/indexadores.json", {}).get("sites") or []
+    cfg = cfg if isinstance(cfg, list) else list(cfg.values())
+    pub = _j(ROOT / "docs/dados/indexadores.json", {}).get("sites") or []
+    pub = {s.get("id"): s for s in (pub if isinstance(pub, list) else pub.values())}
+    return next((s for s in cfg if s.get("motor") == mid), {}), pub
+
+
+def rota_assistida(p: dict) -> tuple[str, str, object] | None:
+    """10/10 (titular, motores 40 e 41): motor de COLETA ASSISTIDA (o site proíbe robôs). Se tem ROTA INDIRETA (outro
+    site legível que publica os mesmos editais), o motor é creditado pela leitura dela: verde quando ela leu nas
+    últimas 26 h, vermelho quando parou. Sem rota indireta e sem captura: cinza 'aguarda coleta assistida'."""
+    site, pub = _indexador_do_motor(str(p.get("id") or ""))
+    if site.get("rota") != "assistida":
+        return None
+    meu = pub.get(site.get("id")) or {}
+    if meu.get("ultima"):                                  # houve captura assistida: vale a leitura própria
+        return None
+    ri = (site.get("rota_indireta") or {}).get("site")
+    if not ri:
+        return "cinza", "inativo — aguarda coleta assistida (o site proíbe robôs; sem rota indireta)", None
+    via = pub.get(ri) or {}
+    ult = _brt(via.get("ultima"))
+    if not ult:
+        return "vermelho", f"falha — a rota indireta ({ri}) ainda não leu", None
+    horas = (datetime.now(BRT) - ult).total_seconds() / 3600
+    n = (via.get("diag") or {}).get(f"cartoes_rota_indireta_{site.get('id')}")
+    if horas > JANELA_HORAS:
+        return "vermelho", f"falha — a rota indireta ({ri}) não lê há {int(horas)} h", ult
+    return "verde", f"funcionando pela rota indireta ({ri}) — última leitura {ult.strftime('%d/%m %H:%M')}" + (f" · {n} cartão(ões) do site vistos" if n else ""), ult
 
 
 def monitor(p: dict, ult, cor_dia: str, falha: str, dia: dict, hoje: str | None = None) -> tuple[str, str, object]:
     """verde = FUNCIONANDO (leu nas últimas 26 h, sem falha) · vermelho = FALHA (a última leitura falhou, ou motor ativo
     passou de 26 h sem ler) · cinza = INATIVO (desativado/agregado a outro motor, ou nunca leu)."""
     ag = (_AGENDA.get(p.get("id")) or _AGENDA.get("plat-" + str(p.get("id"))) or {})
+    ass = rota_assistida(p)
+    if ass:
+        return ass
     ult = _ultima_real(p, ult)
     if str(ag.get("dias")) == "inativo" or ag.get("agregado_a"):
         return "cinza", "inativo — " + (f"agregado ao motor {ag['agregado_a']}" if ag.get("agregado_a") else "desativado na agenda"), ult

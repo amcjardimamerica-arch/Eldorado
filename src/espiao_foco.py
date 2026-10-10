@@ -100,6 +100,20 @@ def _empresas_semente() -> list[str]:
     return list(dict.fromkeys(out))[:300]
 
 
+SITES_FECHADOS = {
+    "idx-prosas": ['"inscrições" "pelo Prosas" edital {ano}', '"plataforma Prosas" edital projetos sociais {ano}', '"via Prosas" instituto edital inscrições {ano}',
+                   '"prosas.com.br" edital instituto fundação {ano} inscrições abertas'],
+    # FINEP fica com os motores e o DOU: domínio de governo é descartado pelo Espião por regra (não é o alvo dele)
+}
+
+
+def _consultas_sites_fechados() -> list[str]:
+    """Consultas para os sites fechados que os indexadores pediram ao Piloto (estado/indexadores/angulos_piloto.json)."""
+    ids = [a.get("id") for a in (_j(ROOT / "estado/indexadores/angulos_piloto.json", {}).get("angulos") or [])] or list(SITES_FECHADOS)
+    out = [q for i in ids for q in SITES_FECHADOS.get(i, [])]
+    return out or [q for v in SITES_FECHADOS.values() for q in v]
+
+
 def familias() -> dict:
     return {
         "setor_apoio_regiao": lambda r, a: f"{r.choice(SETORES)} {r.choice(APOIOS)} {r.choice(REGIOES)} {a}",
@@ -111,11 +125,14 @@ def familias() -> dict:
         "internacional_financiador": lambda r, a: f'"{r.choice(INTERNACIONAIS)}" {r.choice(["edital", "chamada", "call for proposals", "inscrições"])} {a}',
         "internacional_ingles": lambda r, a: r.choice(EN).format(ano=a),
         "internacional_espanhol": lambda r, a: r.choice(ES).format(ano=a),
+        # 10/10 (titular): SITES FECHADOS a robôs (Prosas, FINEP…) — o Espião acha o FINANCIADOR e o edital no site oficial
+        # dele, fora do site fechado (religa o ângulo dos indexadores, que ia nas missões de aposta desligadas pelo foco)
+        "sites_fechados": lambda r, a: (lambda q: q.format(ano=a) if q else None)(r.choice(_consultas_sites_fechados())),
         "premio_empresarial": lambda r, a: f"prêmio {r.choice(['inovação social', 'empreendedorismo social', 'impacto social', 'boas práticas'])} {r.choice(SETORES)} inscrições {a}",
     }
 
 
-FRENTE_DA_FAMILIA = {"internacional_financiador": "internacional", "internacional_ingles": "internacional", "internacional_espanhol": "internacional",
+FRENTE_DA_FAMILIA = {"sites_fechados": "editais_de_empresas", "internacional_financiador": "internacional", "internacional_ingles": "internacional", "internacional_espanhol": "internacional",
                      "nao_financeiro": "oportunidades_de_empresas", "rastro_de_patrocinio": "oportunidades_de_empresas"}
 
 
