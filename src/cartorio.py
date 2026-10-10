@@ -644,6 +644,16 @@ def item_checklist_de(cert: dict, item: str) -> dict:
     return {"s": "disp", "v": d.get("motivo", "")[:160]}
 
 
+def cobertura_12(c: dict) -> dict:
+    """Os 12 pontos da certidão em 4 estados — a mesma conta da página (docs/cartorio.html, função cob)."""
+    it, ds, fa = c.get("itens") or {}, c.get("dispensas") or {}, c.get("faltavam") or []
+    est = {k: "certificado" if k in it else "dispensado" if k in ds else "falta" if k in fa else "ja_constava" for k in L.DOZE}
+    n = lambda e: sum(1 for v in est.values() if v == e)
+    return {"estados": est, "certificados": n("certificado"), "dispensados": n("dispensado"), "ja_constavam": n("ja_constava"),
+            "faltam": n("falta"), "pct_certificado_12": round((n("certificado") + n("dispensado")) / 12, 4),
+            "pct_cobertura_12": round((n("certificado") + n("dispensado") + n("ja_constava")) / 12, 4)}
+
+
 def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int, gab: dict | None = None) -> dict:
     """Taxas de eficiência (por item, por balcão, por degrau) e a lista clicável de certidões."""
     from collections import Counter
@@ -710,9 +720,20 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int, gab: di
                "abordagens": [{kk: h.get(kk) for kk in ("n", "nome", "em", "ganhou", "legado")} for h in (c.get("abordagens") or [])],
                "documentos": [{kk: d.get(kk) for kk in ("url", "degrau", "como", "motivo", "falha", "oficial", "paginas", "edicao_inteira")} for d in c.get("documentos") or []]}
               for c in lista[:400]]
+    # 10/10 (titular): COBERTURA DOS 12 PONTOS — o % da certidão era resolvidos ÷ itens que faltavam na ENTRADA da fila
+    # (1 de 1 = 100% com um só ponto verde). Agora cada certidão leva os 12 em 4 estados e o resumo, o % sobre os 12.
+    for c in enxuta:
+        c["cobertura_12"] = cobertura_12(c)
+    _cb = [c["cobertura_12"] for c in enxuta]; _n12 = len(_cb) * 12
+    _som = {k: sum(x[k] for x in _cb) for k in ("certificados", "dispensados", "ja_constavam", "faltam")}
+    cob12 = {"pontos_12_total": _n12, **{f"pontos_{k}": v for k, v in _som.items()},
+             "pct_certificado_12": round((_som["certificados"] + _som["dispensados"]) / _n12, 4) if _n12 else None,
+             "certidoes_12_de_12": sum(1 for x in _cb if x["certificados"] + x["dispensados"] == 12),
+             "certidoes_sem_item_faltando": sum(1 for c in enxuta if c["cobertura_12"]["faltam"] == 0 and c.get("link_oficial")),
+             "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12"}
     return {"em": _agora(), "versao": VERSAO, "regra": __doc__.split("Execução:")[0].strip(),
             "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
-            "resumo": {"certidoes": len(todas), "nesta_execucao": len(feitas), "fila_estrelas": fila_e, "fila_livros": fila_l,
+            "resumo": {**cob12, "certidoes": len(todas), "nesta_execucao": len(feitas), "fila_estrelas": fila_e, "fila_livros": fila_l,
                        "itens_que_faltavam": tf, "itens_obtidos": sum(obtido.values()), "itens_dispensados": sum(dispensado.values()),
                        "eficiencia_itens": round(tr / tf, 3) if tf else None,
                        "com_link_oficial": sum(1 for c in todas if c.get("link_oficial")),

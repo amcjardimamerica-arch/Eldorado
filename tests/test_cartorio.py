@@ -366,3 +366,30 @@ class TesteLinhaDeProducao(unittest.TestCase):
         self.assertIn("cart:link_oficial=", (ROOT / "src/rede_neural.py").read_text(encoding="utf-8"))
         wf = (ROOT / ".github/workflows/cartorio.yml").read_text(encoding="utf-8")
         self.assertIn('cron: "41 * * * *"', wf, "linha de produção permanente, de hora em hora")
+
+
+class TesteCobertura12(unittest.TestCase):
+    """10/10 (titular): o % da certidão é sobre os 12 pontos; 1 de 1 pedido não é 100%."""
+    def test_um_verde_nao_e_cem_por_cento(self):
+        c = {"itens": {"Objeto": {}}, "dispensas": {}, "faltavam": ["Objeto"]}
+        b = C.cobertura_12(c)
+        self.assertEqual((b["certificados"], b["ja_constavam"], b["faltam"]), (1, 11, 0))
+        self.assertEqual(b["pct_certificado_12"], round(1 / 12, 4)); self.assertEqual(b["pct_cobertura_12"], 1.0)
+
+    def test_relatorio_publica_os_12(self):
+        certs = {"estrela:a": {"id": "a", "tipo": "estrela", "itens": {k: {"valor": "v"} for k in L.DOZE}, "dispensas": {}, "faltavam": list(L.DOZE),
+                               "resolvidos": list(L.DOZE), "link_oficial": "https://x.go.gov.br"},
+                 "estrela:b": {"id": "b", "tipo": "estrela", "itens": {"Valor": {"valor": "R$"}}, "dispensas": {"Resultado": {"motivo": "não se aplica: x"}},
+                               "faltavam": ["Valor", "Resultado", "Anexos"], "resolvidos": ["Valor", "Resultado"]}}
+        r = C.relatorio(certs, [], 0, 0, {})
+        self.assertEqual(r["resumo"]["certidoes_12_de_12"], 1); self.assertEqual(r["resumo"]["pontos_faltam"], 1)
+        self.assertEqual(r["resumo"]["pct_certificado_12"], round(14 / 24, 4))
+        b = next(c for c in r["certidoes"] if c["id"] == "b")["cobertura_12"]
+        self.assertEqual(b["estados"]["Resultado"], "dispensado"); self.assertEqual(b["estados"]["Objeto"], "ja_constava")
+
+    def test_pagina_quatro_estados_cores_do_painel(self):
+        h = (ROOT / "docs/cartorio.html").read_text(encoding="utf-8")
+        self.assertIn("CARTORIO-12-PONTOS-V1", h)
+        self.assertIn(".mini i.d{background:#2F79D0}", h, "dispensado em azul, como no checklist do painel")
+        self.assertIn(".mini i.j{background:#C9CED6}", h, "já constava em cinza")
+        self.assertNotIn("cinza: ainda falta", h)
