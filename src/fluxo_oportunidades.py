@@ -509,8 +509,42 @@ def _resumo_opressores(itens: list[dict]) -> dict:
                                          if "encerr" in json.dumps(v, ensure_ascii=False).lower())}
 
 
+FECHADAS = ("ruido", "encerrada", "fora_perfil", "duplicata")
+
+
+def aplicar_parametro(itens: list[dict], vereditos: dict | None = None, hoje: str | None = None) -> tuple[list[dict], dict]:
+    """PARÂMETRO ÚNICO (titular, 11/10/2026): OPORTUNIDADE ABERTA = está no fluxo, não foi fechada por veredito (ruído,
+    encerrada, fora do perfil, duplicata) e não tem prazo vencido. Cada aberta está em UM estado:
+      validada          objeto + prazo vigente + site oficial comprovados, ou veredito ouro
+      validacao_manual  veredito vermelho (aguarda validação/exclusão manual)
+      em_verificacao    as demais
+    Abertas = validadas + em verificação + validação manual — o mesmo número em todos os painéis."""
+    from datetime import date as _date
+    if vereditos is None:
+        vereditos = (_j(ROOT / "dados/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {}
+    hoje = hoje or _date.today().isoformat()
+    fora = {"fechada por veredito": 0, "prazo vencido": 0}
+    abertas = []
+    for it in itens:
+        v = (vereditos.get(str(it.get("id"))) or {}).get("veredito")
+        if v in FECHADAS:
+            fora["fechada por veredito"] += 1; continue
+        if it.get("fim") and str(it["fim"])[:10] < hoje:
+            fora["prazo vencido"] += 1; continue
+        it["estado"] = ("validacao_manual" if v == "validacao_manual" else
+                        "validada" if (v == "ouro" or it.get("confirmada")) else "em_verificacao")
+        abertas.append(it)
+    par = {"regra": aplicar_parametro.__doc__.split("\n")[0].strip(), "abertas": len(abertas),
+           "validadas": sum(1 for x in abertas if x["estado"] == "validada"),
+           "em_verificacao": sum(1 for x in abertas if x["estado"] == "em_verificacao"),
+           "validacao_manual": sum(1 for x in abertas if x["estado"] == "validacao_manual"),
+           "fora_do_parametro": fora, "em": hoje}
+    return abertas, par
+
+
 def montar() -> dict:
     itens = consolidar()
+    itens, _PARAM = aplicar_parametro(itens)
     etapa = opressores_e_preditivo(itens)
     try:                                     # 02/10 (titular): marcador de iniciativa (poder público / privada / mista)
         from .pareceres_livros import iniciativa_por_id
@@ -538,6 +572,7 @@ def montar() -> dict:
     _V = _vm2.carregar()
     res = {"validacao": {"aplicada": True, "decisoes": len(_V), "arquivos": sorted({v.get("_arquivo") for v in _V.values()}),
                          "sem_decisao": sum(1 for x in itens if not x.get("validacao") and not x.get("confirmada"))},   # confirmada (objeto+prazo+link) não precisa de decisão
+           "parametro": _PARAM,
            "em": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Publica")[0].strip(),
            "etapas": {"possiveis_abertas": tot["possiveis"], "confirmadas_com_minimo": tot["confirmadas"],
                       "por_origem": {o: sum(1 for x in itens if x["origem"].startswith(o)) for o in ("motor", "Piloto - Espião", "Piloto - Interceptador")},
@@ -547,7 +582,7 @@ def montar() -> dict:
            "selos": _selos_dos_itens(itens),
            "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal, "opressores": _resumo_opressores(itens),
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
-           "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "inspecao", "orgao", "publicado_em", "validacao",
+           "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "estado", "inspecao", "orgao", "publicado_em", "validacao",
                                                                   "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao", "selo", "selo_de", "iniciativa", "selo_livro")}
                                        for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
                             for k in mapa},
