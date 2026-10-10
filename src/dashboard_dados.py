@@ -1786,7 +1786,7 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
             })
             if _s and _s["regras"]:
                 _a = abertas[-1]
-                for _k in ("uf", "nivel", "tipo_registro", "motivo_tipo", "duplicata_de", "situacao", "fim"):
+                for _k in ("uf", "nivel", "tipo_registro", "motivo_tipo", "duplicata_de", "situacao", "fim", "selo_validacao"):
                     if _k in _s["ajustes"]:
                         _a[_k] = _s["ajustes"][_k]
                 if _s["ajustes"].get("prazo_pncp_suspeito") or _s["ajustes"].get("situacao") == "encerrada":

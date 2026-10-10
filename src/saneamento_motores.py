@@ -322,6 +322,9 @@ def sanear_registro(r: dict, hoje: date | None = None, duplicatas: dict | None =
         rec = {k: x for k, x in (hum.get("reclassificar") or {}).items() if x}
         if v in ("ruido", "fora_perfil"):
             out["descartar"] = f"revisão humana ({hum.get('origem') or 'leitura do documento oficial'}): {v}"
+        elif v == "validacao_manual":                               # 11/10 (titular): VERMELHO — validação/exclusão manual
+            out["ajustes"].update({"selo_validacao": "validacao_manual",
+                                   "motivo_tipo": ("VALIDAÇÃO MANUAL: o edital não pôde ser lido pelo Chrome — " + str(hum.get("motivo") or ""))[:300]})
         elif v == "duplicata":
             out["ajustes"].update({"tipo_registro": "duplicata", "duplicata_de": hum.get("duplicata_de"),
                                    "motivo_tipo": "revisão humana: mesmo edital de outro registro"})
@@ -343,6 +346,18 @@ def sanear_registro(r: dict, hoje: date | None = None, duplicatas: dict | None =
     if motivo:
         out["descartar"] = motivo; out["regras"].append("M3")
         return out
+    # M15 (titular, 11/10/2026): SÓ para oportunidade SEM nenhuma informação de prazo — sem validação há mais de
+    # 30 dias na fila → arquivada (sai da caixa, com motivo). Com prazo de inscrição delimitado (no campo ou no texto,
+    # vigente ou vencido), a regra NÃO se aplica: o próprio prazo decide (aberta até ele; depois, encerrada).
+    _entrou = str(r.get("descoberto_em") or r.get("coletado_em") or "")[:10]
+    _dias = int((cfg().get("M15_fila") or {}).get("dias_sem_validacao", 30))
+    _tem_prazo = bool(r.get("fim") or r.get("inicio") or re.search(r"\d{1,2}[/.]\d{1,2}|\d{4}-\d{2}-\d{2}|\d{1,2}\s+de\s+[a-zç]+", str(r.get("prazo_texto") or ""), re.I))
+    try:
+        if _entrou and not _tem_prazo and not r.get("validado") and (hoje - date.fromisoformat(_entrou)).days > _dias:
+            out["descartar"] = f"M15: {_dias} dias na fila sem validação (entrou em {_entrou}) — arquivada"; out["regras"].append("M15")
+            return out
+    except ValueError:
+        pass
     motivo = fora_do_perfil(r)
     if motivo:
         out["descartar"] = motivo; out["regras"].append("M8")

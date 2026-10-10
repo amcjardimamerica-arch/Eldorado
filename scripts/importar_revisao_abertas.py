@@ -35,7 +35,11 @@ DERIVADAS = ROOT / "dados/editais/derivadas_revisao.json"
 # execução (a revisão humana prevalece). Gravar direto em estado/cartorio/certidoes.json se perdia: o fluxo do
 # Cartório regrava esse arquivo de hora em hora.
 CERTIDOES = ROOT / "estado/cartorio/certidoes_manuais.json"
-VIGENTES = ("ouro", "prata", "bronze", "pendente")
+VIGENTES = ("ouro", "prata", "bronze", "pendente", "validacao_manual")
+# 11/10/2026 (titular): "não consta" pode ser DISPENSA JUSTIFICADA (documentos oficiais lidos e a informação não existe
+# neles), mas nunca para o núcleo — objeto, prazo de inscrição e território precisam estar certificados. "Não lido"
+# (bloqueio, erro, robots) nunca é dispensa nem conta para o ouro.
+NUCLEO = ("Objeto", "Prazo de inscrição", "Território")
 
 
 def _agora() -> str:
@@ -82,8 +86,12 @@ def certidao_de(x: dict, origem: str) -> tuple[dict, list[str]]:
             avisos.append(f"{x['id']}: item {k} sem valor/trecho/documento/página — ignorado")
     for k, v in (x.get("dispensas") or {}).items():
         motivo = str((v or {}).get("motivo") or (v or {}).get("valor") or "")
+        lidos = [d for d in ((v or {}).get("documentos_lidos") or []) if str(d).startswith("http")]
         if k in DOZE and k not in itens and dispensa_valida(motivo) and (v or {}).get("trecho"):
             disp[k] = {"motivo": motivo, "trecho": v["trecho"], "pagina": v.get("pagina"), "documento": v.get("documento")}
+        elif k in DOZE and k not in itens and k not in NUCLEO and (v or {}).get("tipo") == "nao_consta" and lidos:
+            disp[k] = {"motivo": f"não consta nos documentos oficiais lidos ({len(lidos)})" + (f": {motivo}" if motivo else ""),
+                       "tipo": "nao_consta", "documentos_lidos": lidos[:10]}
         elif k in DOZE:
             avisos.append(f"{x['id']}: dispensa de {k} recusada (sem justificativa de que não se aplica)")
     ck = {k: {"s": "ok", "v": itens[k]["valor"][:90]} for k in itens} | {k: {"s": "disp", "v": disp[k]["motivo"][:160]} for k in disp}
