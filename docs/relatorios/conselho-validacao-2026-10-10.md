@@ -41,7 +41,7 @@
 
 ```json
 {
- "motores_de_ruido_1a": 18,
+ "motores_de_ruido_1a": 19,
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
@@ -115,8 +115,8 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 525,
-   "achados_total_agora": 525,
+   "achados_total_1a": 547,
+   "achados_total_agora": 547,
    "no_fluxo": 4,
    "confirmadas": 0
   },
@@ -129,8 +129,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 47,
-   "achados_total_agora": 47,
+   "achados_total_1a": 48,
+   "achados_total_agora": 48,
    "no_fluxo": 9,
    "confirmadas": 0
   },
@@ -157,8 +157,8 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 42,
-   "achados_total_agora": 42,
+   "achados_total_1a": 43,
+   "achados_total_agora": 43,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -167,6 +167,13 @@
    "achados_total_1a": 40,
    "achados_total_agora": 40,
    "no_fluxo": 0,
+   "confirmadas": 0
+  },
+  {
+   "motor": "outras-oportunidades-1",
+   "achados_total_1a": 31,
+   "achados_total_agora": 31,
+   "no_fluxo": 9,
    "confirmadas": 0
   }
  ],
@@ -184,7 +191,7 @@
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 1011
+ "exemplos_da_rede_de_rotas": 1135
 }
 ```
 
@@ -195,11 +202,11 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 74.8,
- "fora_dos_motores_pct_agora": 74.8,
+ "fora_dos_motores_pct_1a": 74.0,
+ "fora_dos_motores_pct_agora": 74.0,
  "origem": {
   "agregador/outra": 322,
-  "motor": 140,
+  "motor": 146,
   "Piloto": 94
  },
  "dominios_so_de_agregador": [
@@ -324,19 +331,19 @@
 
 ```json
 {
- "fontes_recebidas": 151,
+ "fontes_recebidas": 152,
  "por_origem": {
-  "conselho (fontes irmãs)": 126,
+  "conselho (fontes irmãs)": 127,
   "Cartório (site oficial certificado)": 25
  },
- "lidas_nas_ultimas_24h": 114,
+ "lidas_nas_ultimas_24h": 120,
  "dimensionamento": {
-  "fontes": 151,
+  "fontes": 152,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 3,
-  "cobertura_diaria": 151,
+  "cobertura_diaria": 152,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -345,22 +352,22 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-10T18:31:47+00:00",
-   "duracao_s": 61,
-   "achados": 6
+   "ultima": "2026-10-10T21:59:34+00:00",
+   "duracao_s": 30,
+   "achados": 22
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-10T18:32:37+00:00",
-   "duracao_s": 50,
+   "ultima": "2026-10-10T22:00:11+00:00",
+   "duracao_s": 37,
    "achados": 2
   },
   "outras-oportunidades-3": {
-   "ultima": "2026-10-10T20:02:28+00:00",
-   "duracao_s": 74,
-   "achados": 3
+   "ultima": "2026-10-10T22:01:03+00:00",
+   "duracao_s": 51,
+   "achados": 0
   }
  },
- "com_achado": 9
+ "com_achado": 12
 }
 ```
 
