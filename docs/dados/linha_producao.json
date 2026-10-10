@@ -1,15 +1,15 @@
 {
- "em": "2026-10-10T21:18:51+00:00",
+ "em": "2026-10-10T22:02:30+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17856,
-  "oportunidades_distintas": 2058,
-  "entidades_em_2_ou_mais_canais": 19,
+  "coletados": 17873,
+  "oportunidades_distintas": 2074,
+  "entidades_em_2_ou_mais_canais": 18,
   "etapas": {
-   "CONSOLIDADO": 17227,
-   "EM_LIVRO": 530,
+   "CONSOLIDADO": 17230,
+   "EM_LIVRO": 543,
    "REPROCESSAR": 74,
-   "QUALIFICADO": 25
+   "QUALIFICADO": 26
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 63,
@@ -44,6 +44,15 @@
    "exclusivas": 310,
    "corroboradas": 0,
    "validadas_como_reais": 59
+  },
+  {
+   "canal": "outras-oportunidades-1",
+   "familia": "outros",
+   "registros": 23,
+   "entidades": 21,
+   "exclusivas": 21,
+   "corroboradas": 0,
+   "validadas_como_reais": 9
   },
   {
    "canal": "piloto-aberto",
@@ -86,8 +95,8 @@
    "familia": "orgao_publico",
    "registros": 13,
    "entidades": 12,
-   "exclusivas": 9,
-   "corroboradas": 3,
+   "exclusivas": 10,
+   "corroboradas": 2,
    "validadas_como_reais": 4
   },
   {
@@ -145,21 +154,12 @@
    "validadas_como_reais": 1
   },
   {
-   "canal": "outras-oportunidades-1",
-   "familia": "outros",
-   "registros": 6,
-   "entidades": 6,
-   "exclusivas": 6,
-   "corroboradas": 0,
-   "validadas_como_reais": 1
-  },
-  {
    "canal": "salic",
    "familia": "portal_chamamentos",
    "registros": 6,
    "entidades": 5,
-   "exclusivas": 4,
-   "corroboradas": 1,
+   "exclusivas": 5,
+   "corroboradas": 0,
    "validadas_como_reais": 1
   },
   {
@@ -481,11 +481,11 @@
  "familias": {
   "diario_oficial": 4,
   "portal_chamamentos": 3,
+  "outros": 11,
   "pilotos": 1,
   "terceiro_setor": 4,
   "orgao_publico": 24,
   "empresas": 2,
-  "outros": 11,
   "justica_mp": 1
  },
  "corroboradas": [
@@ -575,13 +575,6 @@
    ]
   },
   {
-   "entidade": "61208c62e6d5fade40d4",
-   "canais": [
-    "estaduais-go-gov",
-    "salic"
-   ]
-  },
-  {
    "entidade": "6a6c37dcb037c09baa6c",
    "canais": [
     "f260-captacao-038",
@@ -624,5 +617,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 3
+ "eventos_no_livro_razao": 17
 }
