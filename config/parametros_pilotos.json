@@ -61,7 +61,7 @@
    "aposta": 0.36,
    "descobrir": 0.1,
    "catalogar": 0.1,
-   "espionar": 0.25
+   "espionar": 0.24
   },
   "termos_fora_do_objeto": [],
   "consultas_boas": [
@@ -97,43 +97,37 @@
   "consultas_ruins": [
    {
     "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas",
-    "tentativas": 544,
+    "tentativas": 543,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
     "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas goi",
-    "tentativas": 491,
+    "tentativas": 490,
     "motivo": "nada_no_crivo",
     "missao": "aposta"
    },
    {
-    "consulta": "fundação empresarial chamada pública organizações da sociedade civil 2026",
-    "tentativas": 835,
-    "motivo": "nada_no_crivo",
-    "missao": "descobrir"
-   },
-   {
     "consulta": "empresa lança edital para ongs 2026",
-    "tentativas": 855,
+    "tentativas": 854,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "programa de investimento social privado inscrições 2026",
-    "tentativas": 862,
+    "tentativas": 861,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "instituto \"edital\" \"osc\" goiás 2026",
-    "tentativas": 86,
+    "tentativas": 85,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
    {
     "consulta": "fundação apoia projetos sociais goiás inscrições 2026",
-    "tentativas": 84,
+    "tentativas": 83,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
@@ -176,6 +170,12 @@
    {
     "consulta": "instituto empresarial edital projetos sociais 2026",
     "tentativas": 851,
+    "motivo": "nada_no_crivo",
+    "missao": "descobrir"
+   },
+   {
+    "consulta": "fundação empresarial chamada pública organizações da sociedade civil 2026",
+    "tentativas": 834,
     "motivo": "nada_no_crivo",
     "missao": "descobrir"
    },
@@ -338,8 +338,8 @@
   ],
   "termos_bons": [],
   "termos_ruins": [
-   "goiânia",
    "prêmio",
+   "goiânia",
    "patrocínio",
    "aparecida",
    "instituto",
@@ -350,28 +350,28 @@
    "esporte",
    "verde",
    "cultura",
-   "voluntariado",
    "fundação",
+   "estão",
    "onde"
   ],
   "rendimento_das_buscas": {
    "aposta": {
-    "tentativas": 1754,
+    "tentativas": 1752,
     "com_resultado": 2,
     "taxa": 0.001
    },
    "descobrir": {
-    "tentativas": 4714,
+    "tentativas": 4709,
     "com_resultado": 0,
     "taxa": 0.0
    },
    "espionar": {
-    "tentativas": 616,
+    "tentativas": 623,
     "com_resultado": 3,
     "taxa": 0.005
    }
   },
-  "consultas_aprendidas_em": "2026-10-10T11:41:48+00:00",
+  "consultas_aprendidas_em": "2026-10-10T11:50:01+00:00",
   "restricoes_fixas": {
    "regra": "FIXAS e só NEGATIVAS (titular, 01/10): o que falhou repetidamente não volta; todo o resto é busca criativa, renovada a cada 100 pesquisas",
    "desde": "2026-10-01T14:01:07+00:00",
@@ -502,6 +502,6 @@
   "intervalo_busca_local_s": 6.0,
   "max_buscas_ponte_por_voo": 3
  },
- "atualizado_em": "2026-10-10T09:48:23+00:00",
+ "atualizado_em": "2026-10-10T09:55:17+00:00",
  "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
 }
