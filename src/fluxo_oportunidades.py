@@ -630,6 +630,11 @@ def atualizar_mapa() -> dict:
         c["conferencia_dos_livros"] = conferir()
     except Exception as ex:
         c["conferencia_dos_livros"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 11/10 (titular): UMA OPORTUNIDADE = UM LIVRO; duplicatas num único livro
+        from .unificar_livros import unificar as _unificar
+        c["um_livro_por_oportunidade"] = _unificar()["resumo"]
+    except Exception as ex:
+        c["um_livro_por_oportunidade"] = f"falhou: {type(ex).__name__}"
     try:                                     # 02/10: guarda contra dados de teste (domínios reservados) — antes de tudo
         from .guarda_dados_teste import run as _guarda
         c["guarda_dados_teste"] = _guarda()

@@ -121,6 +121,23 @@ def _previsao(hist: list[dict]) -> dict | None:
     return {"proxima_janela": f"{ano}-{mes}", "base": f"{len(fins)} edições em {len(anos)} anos", "confianca": "média" if len(anos) == 2 else "alta"}
 
 
+def canonica_por_revisao() -> dict:
+    """id → id da oportunidade CANÔNICA, pelos vereditos de duplicata da revisão humana (segue cadeias)."""
+    try:
+        V = json.loads((ROOT / "dados/editais/vereditos_revisao.json").read_text(encoding="utf-8")).get("vereditos") or {}
+    except Exception:  # noqa: BLE001
+        return {}
+    out = {}
+    for i, x in V.items():
+        if x.get("veredito") != "duplicata" or not x.get("duplicata_de"):
+            continue
+        r, vis = str(x["duplicata_de"]), {i}
+        while (V.get(r) or {}).get("veredito") == "duplicata" and (V.get(r) or {}).get("duplicata_de") and r not in vis:
+            vis.add(r); r = str(V[r]["duplicata_de"])
+        out[i] = r
+    return out
+
+
 def sincronizar() -> dict:
     C = _j(CAT, {"motores": []}); L = _j(LIG, {"ligados": {}}); L.setdefault("ligados", {})
     try:                                   # 29/09: opressor que a pesquisa dos 12 parâmetros descartou não religa
@@ -141,6 +158,13 @@ def sincronizar() -> dict:
         if x.get("pagina"):
             por_pag.setdefault(_pg(x["pagina"]), x)
     hoje = date.today(); idx = {}; st = Counter()
+    # 11/10 (titular): UMA OPORTUNIDADE = UM LIVRO; duplicatas têm um único livro, o da oportunidade canônica.
+    por_item = {}
+    for x in C.get("motores") or []:
+        for h in x.get("historico") or []:
+            if isinstance(h, dict) and h.get("id"):
+                por_item.setdefault(str(h["id"]), x)
+    _canon = canonica_por_revisao()
 
     def opressor_de(item: dict, origem: str, aberta: bool) -> str:
         k = chave(item.get("titulo") or "", item.get("orgao") or "")
@@ -165,6 +189,12 @@ def sincronizar() -> dict:
                     x = por_chave.get(k)
             except Exception:
                 pass
+        _iid = str(item.get("id") or "")
+        _x0 = por_item.get(_canon.get(_iid, _iid)) or por_item.get(_iid)     # duplicata → o livro da canônica
+        if _x0 is not None:
+            x = _x0
+            if _canon.get(_iid, _iid) != _iid:
+                st["duplicatas_no_livro_da_canonica"] += 1
         if not x:
             pag = item.get("link_oficial") or item.get("pagina_oficial") or item.get("url")
             x = {"id": "op-" + hashlib.sha1(k.encode()).hexdigest()[:12], "programa": str(item.get("titulo") or "")[:160],
@@ -178,6 +208,10 @@ def sincronizar() -> dict:
             st["criados_" + origem] += 1
         hist = x.setdefault("historico", [])
         e = _edicao(item, origem)
+        if e.get("id"):
+            por_item.setdefault(str(e["id"]), x); por_item.setdefault(_canon.get(str(e["id"]), str(e["id"])), x)
+            if _canon.get(str(e["id"]), str(e["id"])) != str(e["id"]):
+                e["duplicata_de"] = _canon[str(e["id"])]
         if e.get("id") and not any(h.get("id") == e["id"] for h in hist):
             hist.append(e); st["edicoes_novas"] += 1
         elif e.get("id"):
@@ -202,6 +236,15 @@ def sincronizar() -> dict:
 
     # 1) oportunidades ABERTAS do fluxo validado
     F = _j(FLUXO, {})
+    try:                                    # 11/10: duplicatas AUTOMÁTICAS (URL canônica, nº do edital + órgão — regra M1 do
+        from .saneamento_motores import agrupar_duplicatas   # saneamento) também vão para o livro da canônica
+        _todos = [x for L_ in (F.get("itens_por_uf") or {}).values() for x in L_]
+        for _dup, _inf in (agrupar_duplicatas(_todos) or {}).items():
+            _can = (_inf or {}).get("canonico") if isinstance(_inf, dict) else _inf
+            if _can and str(_can) != str(_dup):
+                _canon.setdefault(str(_dup), str(_can))
+    except Exception:  # noqa: BLE001
+        pass
     for uf, itens in (F.get("itens_por_uf") or {}).items():
         for it in itens:
             if (it.get("validacao") or {}).get("decisao") in ("descartada",):
