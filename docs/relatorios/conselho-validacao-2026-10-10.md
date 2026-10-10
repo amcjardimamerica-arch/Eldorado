@@ -8,7 +8,7 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 35,
+ "cegos_da_1a_rodada": 34,
  "testados": 28,
  "com_rota_nova": 12,
  "via_ponte": 0,
@@ -30,7 +30,7 @@
   "f260-captacao-242",
   "f260-espalhado-rouanet-cultura-gov-br"
  ],
- "aguardando_afinador": 7
+ "aguardando_afinador": 6
 }
 ```
 
@@ -115,8 +115,8 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 482,
-   "achados_total_agora": 482,
+   "achados_total_1a": 503,
+   "achados_total_agora": 503,
    "no_fluxo": 4,
    "confirmadas": 0
   },
@@ -129,8 +129,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 45,
-   "achados_total_agora": 45,
+   "achados_total_1a": 46,
+   "achados_total_agora": 46,
    "no_fluxo": 9,
    "confirmadas": 0
   },
@@ -157,8 +157,8 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 40,
-   "achados_total_agora": 40,
+   "achados_total_1a": 41,
+   "achados_total_agora": 41,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -181,10 +181,10 @@
 
 ```json
 {
- "pontos_com_redundancia": 9,
+ "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 840
+ "exemplos_da_rede_de_rotas": 922
 }
 ```
 
@@ -195,12 +195,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 74.4,
- "fora_dos_motores_pct_agora": 74.4,
+ "fora_dos_motores_pct_1a": 74.5,
+ "fora_dos_motores_pct_agora": 74.5,
  "origem": {
   "agregador/outra": 314,
   "motor": 139,
-  "Piloto": 90
+  "Piloto": 93
  },
  "dominios_so_de_agregador": [
   {
@@ -278,7 +278,7 @@
  "dia_de_referencia": "2026-10-10",
  "ativos": 159,
  "lidos_ontem": 100,
- "lidos_hoje": 47,
+ "lidos_hoje": 48,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
   "plat-rede-filantropia"
@@ -355,12 +355,12 @@
    "achados": 2
   },
   "outras-oportunidades-3": {
-   "ultima": "2026-10-10T15:56:50+00:00",
-   "duracao_s": 49,
-   "achados": 2
+   "ultima": "2026-10-10T20:02:28+00:00",
+   "duracao_s": 74,
+   "achados": 3
   }
  },
- "com_achado": 8
+ "com_achado": 9
 }
 ```
 
@@ -374,7 +374,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 45,
+   "orgaos": 46,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "baoba.org.br",
