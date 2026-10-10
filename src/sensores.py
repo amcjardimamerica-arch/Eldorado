@@ -765,6 +765,19 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
                 "lexico": lx["termos"], "forca_lexica": lx["forca"],
                 "destinacao": dest, "sensor": sensor["id"],
             })
+            try:                                         # 10/10 (revisão P1-GO): saneamento já na origem — M3/M8 descartam, M5 corrige a UF
+                from . import saneamento_motores as _san
+                _ult = achados[-1]
+                _mot = _san.nao_oportunidade(_ult) or _san.fora_do_perfil(_ult)
+                if _mot:
+                    achados.pop()
+                    diag.setdefault("saneamento_descartes", []).append({"url": u, "motivo": _mot})
+                    continue
+                _t = _san.territorio_corrigido(_ult)
+                if _t:
+                    _ult["saneamento_territorio"] = _t.pop("motivo"); _ult.update(_t)
+            except Exception:  # noqa: BLE001
+                pass
             if len(achados) >= lim["links_por_pagina"]:
                 break
         if pausa: time.sleep(pausa)

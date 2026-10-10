@@ -4207,8 +4207,12 @@ class SystemTests(unittest.TestCase):
         from src.dashboard_dados import selo_validacao
         pagina=selo_validacao({"id":"a","objeto":"x","fim":"2026-10-01"},{"pagina_divulgacao":"https://pncp.gov.br/app/editais/1/2026/1"})
         self.assertEqual(pagina["selo_validacao"],"nao_verificada")
-        arquivo=selo_validacao({"id":"b","objeto":"x","fim":"2026-10-01"},{"pagina_divulgacao":"https://pncp.gov.br/pncp-api/v1/orgaos/876/compras/2026/373/arquivos/1"})
+        import datetime as _dt                                     # 10/10/2026 (M7): "validada" exige prazo VIGENTE
+        _futuro=(_dt.date.today()+_dt.timedelta(days=30)).isoformat()
+        arquivo=selo_validacao({"id":"b","objeto":"x","fim":_futuro},{"pagina_divulgacao":"https://pncp.gov.br/pncp-api/v1/orgaos/876/compras/2026/373/arquivos/1"})
         self.assertEqual(arquivo["selo_validacao"],"validada")
+        vencido=selo_validacao({"id":"c","objeto":"x","fim":"2025-10-01"},{"pagina_divulgacao":"https://pncp.gov.br/pncp-api/v1/orgaos/876/compras/2026/373/arquivos/1"})
+        self.assertEqual(vencido["selo_validacao"],"nao_verificada"); self.assertIn("prazo vigente",vencido["validacao"]["faltam"])
         an=load_json(pathlib.Path("dados/editais/analises.json"))
         self.assertGreaterEqual(sum(1 for v in an.values() if v["selo"]=="conformidade"),60)
         from src.compacto import expandir

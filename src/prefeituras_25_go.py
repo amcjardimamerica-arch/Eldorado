@@ -1058,7 +1058,10 @@ def _registro(r: dict) -> dict:
             "data_publicacao": r.get("data") or None, "fim": r.get("prazo"), "prazo_texto": r.get("prazo"), "orgao": f"Prefeitura de {r['cidade']}",
             "evidencia": ev, "hash_evidencia": sha256(ev.encode()).hexdigest(),
             "classificacao_ato": {"veredito": r["veredito"], "categoria": r["categoria"], "motivos": [r["motivo"]]},
-            "sensor": MOTOR_ID, "forca_lexica": 3}
+            "sensor": MOTOR_ID, "forca_lexica": 3,
+            # M12 (10/10/2026, revisão P1-GO): a edição inteira do diário não é edital — o que conta é o ato dentro dela
+            **({"tipo_registro": "edicao_diario"} if r["rota"] in ("diário AGM", "Querido Diário")
+               and re.search(r"di[áa]rio oficial .{0,60}edi[çc][ãa]o", f"{r['cidade']} — {r['titulo']}", re.I) else {})}
 
 
 def _livros(est: dict, itens: list[dict], diag: dict) -> None:

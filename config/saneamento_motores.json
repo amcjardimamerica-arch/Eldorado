@@ -1,0 +1,110 @@
+{
+  "versao": "saneamento-motores v1 (10/10/2026)",
+  "origem": "Revisão das oportunidades abertas da Parte 1 (Goiás), 10/10/2026: 338 registros lidos no documento oficial; 11 vigentes certificados (3,3%). Regras medidas contra o gabarito tests/fixtures/gabarito_abertas_p1_go_2026_10_10.json.",
+  "regra_de_ouro": "Nenhuma regra apaga registro. Descarte = sai da caixa de abertas com MOTIVO gravado em estado/saneamento_motores.json e pode ser revertido. Revisão humana (dados/editais/vereditos_revisao.json) vence qualquer regra automática.",
+  "M1_dedupe": {
+    "remover_parametros": [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+      "fbclid",
+      "gclid",
+      "mc_cid",
+      "mc_eid"
+    ],
+    "pecas_de_edital": "^\\s*(\\d+\\s*[ªº]?\\s*)?(altera[çc][ãa]o do cronograma|anexo\\s+[ivxlc\\d]+|minuta|retifica[çc][ãa]o|errata|adendo|termo aditivo|ata de)\\b",
+    "contencao_minima_sem_numero": 0.85
+  },
+  "M3_nao_oportunidade": {
+    "dominios": [
+      "youtube.com",
+      "youtu.be",
+      "facebook.com",
+      "instagram.com",
+      "x.com",
+      "twitter.com",
+      "linkedin.com",
+      "tiktok.com"
+    ],
+    "url": [
+      "blogspot\\.com/search/label",
+      "/bndes-data",
+      "portal\\.al\\.go\\.leg\\.br/noticias",
+      "/ouvidoria",
+      "inquerito-soroepidemiologico",
+      "/solicitacao-de-transporte",
+      "/dispensa-de-licitac"
+    ],
+    "titulo_exato": [
+      "conv[êe]nios e parcerias",
+      "chamamentos? p[úu]blicos?( \\d{4})?( \\(lei 13\\.019/14\\))?",
+      "eventos e pr[êe]mios",
+      "pr[êe]mios e reconhecimentos",
+      "aten[çc][ãa]o [àa] sa[úu]de",
+      "bndes data",
+      "youtube.*",
+      "ouvidoria.*",
+      "resultados? igm.*",
+      "banco para ong.*"
+    ],
+    "titulo": [
+      "^extrato do termo",
+      "divulgada lista de aprovados",
+      "lista de (aprovados|selecionados|classificados)",
+      "^resultado (final|preliminar|definitivo)",
+      "\\bprograma[çc][ãa]o d[oa] .{0,60}\\bter[áa] \\d+",
+      "aumenta (o )?repasse",
+      "^termo de fomento\\s+(?:-|–|—)\\s+"
+    ],
+    "institucional_sem_edital": "/(sustentabilidade|quem-somos|institucional|sobre|a-empresa)(/|$)",
+    "palavras_de_edital": "edital|chamamento|chamada|inscri[çc]|inscrev|sele[çc][ãa]o|pr[êe]mio|credenciamento|aviso|apoio a projetos|fomento"
+  },
+  "M4_prazo": {
+    "edicao_diario_dias_max_sem_ato": 120,
+    "padroes": [
+      "(?:inscri[çc][õo]es|propostas|envio)[^.\\n]{0,80}?\\bat[ée]\\s+(?:[àa]s?\\s+\\d{1,2}h\\d{0,2}(?:min)?\\s+do\\s+dia\\s+)?(\\d{1,2})\\s*/\\s*(\\d{1,2})\\s*/\\s*(\\d{4})",
+      "\\bde\\s+\\d{1,2}\\s*/\\s*\\d{1,2}\\s*/\\s*\\d{4}\\s+(?:a|at[ée])\\s+(\\d{1,2})\\s*/\\s*(\\d{1,2})\\s*/\\s*(\\d{4})"
+    ]
+  },
+  "M5_territorio": {
+    "dominios_go": "(\\.go\\.gov\\.br|goias\\.gov\\.br|\\.go\\.leg\\.br|abc\\.go\\.gov\\.br)$",
+    "dominios_federais": [
+      "anater.org",
+      "bndes.gov.br",
+      "caixa.gov.br",
+      "bb.com.br",
+      "bancoamazonia.com.br",
+      "gov.br"
+    ],
+    "mencao_goias": "goi[áa]s|goi[âa]nia|\\(go\\)|/go\\b|\\bgo\\b|aparecida de goi|an[áa]polis|rio verde",
+    "niveis_sujeitos": [
+      "privada",
+      "misto",
+      null,
+      ""
+    ]
+  },
+  "M6_pncp": {
+    "dias_max_publicacao_ate_fim": 400,
+    "nota": "Pirenópolis 013/2025: registro PNCP dizia 16/09/2027, o edital fechou em 17/10/2025. Senador Canedo 006/2026 (credenciamento de 12 meses, 383 dias) é legítimo."
+  },
+  "M8_perfil": {
+    "fora_perfil": "profissiona(?:l|is) d[ae] sa[úu]de|prestador(?:es)? de servi[çc]os? (?:especializados? )?de sa[úu]de|credenciamento de (?:cl[íi]nicas|m[ée]dicos|laborat[óo]rios)|\\bpronaf\\b|linhas?[- ]de[- ](?:cr[ée]dito|fomento)|orientacao-formento|financiamento rural|procedimento de manifesta[çc][ãa]o de interesse"
+  },
+  "M12_tipo_registro": {
+    "titulo_edicao": "di[áa]rio oficial d[aeo] .{0,60}(edi[çc][ãa]o|\\([a-z]{2}\\) \\d{4}-\\d{2}-\\d{2})",
+    "hosts_diario": [
+      "data.queridodiario.ok.org.br",
+      "queridodiario.ok.org.br",
+      "diariooficial.abc.go.gov.br",
+      "dom.",
+      "diariomunicipal"
+    ]
+  },
+  "M13_painel": {
+    "rebaixar_abaixo_de_precisao": 0.05,
+    "ciclos_para_rebaixar": 2
+  }
+}
