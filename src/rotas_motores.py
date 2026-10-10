@@ -167,18 +167,23 @@ def avaliar(b: bytes, tipo_ct: str = "") -> dict:
     return {"pontos": sinais * 2 + (1 if len(links) > 20 else 0), "links": len(links), "sinais": sinais, "formato": "html"}
 
 
-def testar(sensor: dict, baixar=None, ponte=None, bib: dict | None = None, maximo: int = 16) -> dict:
+def testar(sensor: dict, baixar=None, ponte=None, bib: dict | None = None, maximo: int = 16, prazo: float | None = None) -> dict:
     """Testa as candidatas (direto e, se recusar, pela ponte); devolve a melhor e ensina a rede."""
     if baixar is None:
         from .executor_skills import baixar as baixar
     tipo = sensor.get("tipo") or ""
     testes, melhor = [], None
+    import time as _t
     for c in candidatas(sensor, bib)[:maximo]:
+        if prazo and _t.time() > prazo:
+            break                                           # orçamento de tempo do afinador
         for via in ("direto", "ponte"):
             fn = baixar if via == "direto" else ponte
             if fn is None:
                 continue
             try:
+                if prazo and _t.time() > prazo:
+                    break
                 b, ct = fn(c["url"]); av = avaliar(b, ct); erro = None
             except Exception as e:  # noqa: BLE001
                 av, erro = {"pontos": 0, "links": 0, "sinais": 0}, f"{type(e).__name__}"
@@ -207,7 +212,7 @@ def _ponte_baixar():
         return None
 
 
-def afinar(maximo_motores: int = 8, baixar=None, ponte="auto") -> dict:
+def afinar(maximo_motores: int = 8, baixar=None, ponte="auto", segundos: int = 330) -> dict:
     """Para cada motor em 'alterar rota' (5+ vazias seguidas): testa rotas, grava a melhor e ensina a rede."""
     from .sensores import registro
     est = _j(ESTADO, {}) or {}; afi = _j(AFINADOR, {}) or {}
@@ -218,8 +223,12 @@ def afinar(maximo_motores: int = 8, baixar=None, ponte="auto") -> dict:
     feitos = []
     fila = sorted((mid for mid, m in est.items() if m.get("status") == "alterar rota" and mid in reg),
                   key=lambda mid: (str((afi.get(mid) or {}).get("em") or ""), -int(est[mid].get("vazias_seguidas") or 0)))
+    import time as _t
+    fim = _t.time() + segundos
     for mid in fila[:maximo_motores]:
-        r = testar(reg[mid], baixar, pb, bib)
+        if _t.time() > fim:
+            break
+        r = testar(reg[mid], baixar, pb, bib, prazo=fim)
         afi[mid] = {"em": _agora(), "testes": len(r["testes"]), "melhor": r["melhor"], "detalhe": r["testes"][:16]}
         if r["melhor"]:
             apr[mid] = {"urls": [r["melhor"]["url"]], "via": r["melhor"]["via"], "origem": r["melhor"]["origem"],
@@ -231,6 +240,7 @@ def afinar(maximo_motores: int = 8, baixar=None, ponte="auto") -> dict:
         else:
             afi[mid]["resultado"] = "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
         feitos.append({"motor": mid, "melhor": r["melhor"], "testes": len(r["testes"])})
+        _w(AFINADOR, afi); _w(APRENDIDAS, apr); _w(PONTE, pon)       # grava a cada motor: interrupção não perde nada
     _w(AFINADOR, afi); _w(APRENDIDAS, apr); _w(PONTE, pon)
     return {"afinados": feitos, "ponte_disponivel": bool(pb)}
 
@@ -281,6 +291,9 @@ def semear_da_esquadra() -> int:
 if __name__ == "__main__":
     import sys
     semear_da_esquadra()
-    out = afinar(int(sys.argv[1]) if len(sys.argv) > 1 else 8)
-    pub = publicar()
+    try:
+        out = afinar(int(sys.argv[1]) if len(sys.argv) > 1 else 8)
+    except Exception as ex:  # noqa: BLE001
+        out = {"afinados": [], "ponte_disponivel": None, "erro": f"{type(ex).__name__}: {ex}"}
+    pub = publicar()                                         # o relatório sai sempre
     print(json.dumps({"afinados": len(out["afinados"]), "ponte": out["ponte_disponivel"], "resumo": pub["resumo"]}, ensure_ascii=False))

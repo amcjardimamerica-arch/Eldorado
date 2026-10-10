@@ -37,7 +37,7 @@ jobs:
           mkdir -p estado/cartorio
           set -o pipefail
           timeout 120 python -m src.conselho_motores 2>&1 | tail -c 1500 || echo "conselho: aviso"
-          timeout 420 python -m src.rotas_motores 6 2>&1 | tail -c 1500 || echo "rotas: aviso"
+          timeout 400 python -m src.rotas_motores 6 2>&1 | tail -c 1500 || echo "rotas: aviso"
           timeout 1800 python -m src.cartorio --limite "${{ github.event.inputs.limite || '40' }}" 2>&1 | tee /tmp/cartorio.log || echo "terminou com aviso"
           { date -u +%FT%TZ; tail -c 6000 /tmp/cartorio.log; } > estado/cartorio/ultima_execucao.log
       - name: Gravar só o que é do Cartório (à prova de conflito) e entregar os livros à esteira

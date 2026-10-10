@@ -109,3 +109,20 @@ class TesteConfig(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteValidacao(unittest.TestCase):
+    def test_segunda_rodada_tem_perguntas_novas_e_responde(self):
+        from src import conselho_validacao as CV
+        self.assertEqual(len(CV.PERGUNTAS), 7)
+        o = CV.run(gravar=False)
+        for k in CV.PERGUNTAS:
+            self.assertIn(k, o["respostas"])
+        self.assertIn("## Dra. Irene", CV.relatorio_md(o))
+
+    def test_afinador_respeita_o_orcamento(self):
+        import time
+        lento = lambda u: (time.sleep(0.2), (b"<html></html>", "text/html"))[1]
+        t0 = time.time()
+        r = RM.testar({"id": "x", "tipo": "site_oficial", "urls": ["https://x.go.gov.br/"]}, lento, None, None, 16, prazo=time.time() + 0.5)
+        self.assertLess(time.time() - t0, 1.5); self.assertLess(len(r["testes"]), 16)
