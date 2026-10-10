@@ -374,8 +374,15 @@ def fila_estrelas(fluxo: dict | None = None) -> list[dict]:
         for x in lista:
             ck = x.get("checklist") or {}
             faltam = [k for k in L.DOZE if (ck.get(k) or {}).get("s") in FALTA]
-            if faltam and x.get("id") and x.get("tipo") != "emenda":
-                out.append({**x, "_tipo": "estrela", "_faltam": faltam})
+            # 10/10 (titular): CONFERIR OS CINZA — itens conhecidos (lidos pelo motor na notícia/página) ainda sem
+            # certidão, nas estrelas que têm site oficial. Achado no documento → certificado (verde); não achado →
+            # continua "já constava" (cinza), NUNCA vira falta.
+            cert = certidao(str(x.get("id") or "")) or {}
+            conferir = [k for k in L.DOZE if k not in faltam and (ck.get(k) or {}).get("s") in ("ok", "val", "dt")
+                        and (ck.get(k) or {}).get("de") != "Cartório" and k not in (cert.get("itens") or {})
+                        and k not in (cert.get("dispensas") or {})] if (x.get("link_oficial") or cert.get("link_oficial")) else []
+            if (faltam or conferir) and x.get("id") and x.get("tipo") != "emenda":
+                out.append({**x, "_tipo": "estrela", "_faltam": faltam, "_conferir": conferir})
     return out
 
 
@@ -408,6 +415,7 @@ def prioridade(op: dict, hoje: str) -> tuple:
 
 def _assinatura(op: dict) -> str:
     return hashlib.sha1(json.dumps([op.get(k) for k in ("url", "link_oficial", "url_edital", "url_documento", "_faltam")], default=str).encode()).hexdigest()[:12]
+    # (os itens a conferir não entram na assinatura: conferir não é informação nova, segue o intervalo de 12 h)
 
 
 def devidos(fila: list[dict], certidoes: dict, revisitar_dias: int) -> list[dict]:
@@ -532,6 +540,8 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     devidas, esgotadas = [], 0
     for op in todas:
         op["_estagio"] = LN.estagio(op)
+        if not op["_estagio"] and op.get("_conferir"):
+            op["_estagio"] = "prata"                       # já é ouro pelos itens conhecidos: só falta CONFERIR os cinza
         if not op["_estagio"]:
             continue
         na_linha[op["_estagio"]] += 1
@@ -545,7 +555,8 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     def prio(op):
         fim = str(op.get("fim") or "")[:10]
         foco_falta = sum(1 for k in LN.FOCO[op["_estagio"]] if k in (op.get("_faltam") or []))
-        return (0 if (fim and fim >= hoje) else 1, fim or "9999", len(op["_usadas"]), -_nota_rede(op), foco_falta)
+        return (0 if op.get("_faltam") or op.get("_sem_site") else 1,       # primeiro quem tem item FALTANDO; conferir os cinza depois
+                0 if (fim and fim >= hoje) else 1, fim or "9999", len(op["_usadas"]), -_nota_rede(op), foco_falta)
     devidas.sort(key=prio)
     livros_max = int(c["livros_por_execucao"])
     est_q = [o for o in devidas if o["_tipo"] == "estrela"]; liv_q = [o for o in devidas if o["_tipo"] == "livro"]
@@ -571,7 +582,8 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
             sem_material += 1                              # nada novo a tentar agora: volta quando chegar material
             continue
         try:
-            nova = certificar(op, faltam, rede_ponte if aj.get("ponte") else rede, int(c["documentos_por_oportunidade"]), gab, docs, aj)
+            nova = certificar(op, list(faltam) + list(op.get("_conferir") or []), rede_ponte if aj.get("ponte") else rede,
+                              int(c["documentos_por_oportunidade"]), gab, docs, aj)
         except Exception as ex:  # noqa: BLE001 — uma oportunidade com erro nunca derruba a fila inteira
             import traceback
             nova = {"id": op.get("id"), "tipo": op.get("_tipo"), "titulo": str(op.get("titulo") or "")[:200], "balcao": "?",
@@ -580,6 +592,16 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
             erros.append({"id": op.get("id"), "erro": f"{type(ex).__name__}: {str(ex)[:200]}"})
         nova.pop("_aprendeu", None)
         cert = LN.acumular(ant, nova, escolhida, faltam)
+        if op.get("_conferir"):
+            conf = list(dict.fromkeys(list((ant or {}).get("conferidos") or []) + list(op["_conferir"])))
+            cert["conferidos"] = conf
+            cert["cinza_certificados"] = [k for k in conf if k in (cert.get("itens") or {})]
+        if not cert.get("esgotada"):                       # o aviso considera só o que FALTA (cinza não achado não vai ao Interceptador)
+            if cert.get("link_oficial") and not cert.get("ainda_faltam"):
+                cert["encaminhado"] = None
+            elif cert.get("ainda_faltam") and str(cert.get("encaminhado") or "").startswith("Interceptador"):
+                cert["encaminhado"] = (f"Interceptador: {len(cert['ainda_faltam'])} item(ns) não estão no documento oficial lido"
+                                       if cert.get("link_oficial") else cert["encaminhado"])
         cert.update({"assinatura": _assinatura(op), "primeira_em": (ant or {}).get("primeira_em") or (ant or {}).get("em") or cert.get("em"),
                      "prazo": op.get("fim"), "uf": op.get("uf"), "orgao": op.get("orgao"), "origem": op.get("origem"),
                      "estagio_inicio": (ant or {}).get("estagio_inicio") or est0, "versao": VERSAO})
@@ -645,7 +667,7 @@ def item_checklist_de(cert: dict, item: str) -> dict:
 
 
 def cobertura_12(c: dict) -> dict:
-    """Os 12 pontos da certidão em 4 estados — a mesma conta da página (docs/cartorio.html, função cob)."""
+    """Os 12 pontos da certidão em 4 estados — a mesma conta da seção Cartório do painel (docs/dashboard.html, função cob)."""
     it, ds, fa = c.get("itens") or {}, c.get("dispensas") or {}, c.get("faltavam") or []
     est = {k: "certificado" if k in it else "dispensado" if k in ds else "falta" if k in fa else "ja_constava" for k in L.DOZE}
     n = lambda e: sum(1 for v in est.values() if v == e)
@@ -663,10 +685,11 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int, gab: di
     for c in todas:
         for k in c.get("faltavam") or []:
             pedido[k] += 1
-        for k in c.get("itens") or {}:
-            obtido[k] += 1
+        _ped = set(c.get("faltavam") or [])            # eficiência do PEDIDO: só os itens que faltavam (os cinza certificados
+        for k in c.get("itens") or {}:                  # contam na cobertura dos 12, não aqui)
+            obtido[k] += k in _ped
         for k in c.get("dispensas") or {}:
-            dispensado[k] += 1
+            dispensado[k] += k in _ped
         b = por_balcao.setdefault(c.get("balcao") or "?", {"certidoes": 0, "com_link_oficial": 0, "faltavam": 0, "resolvidos": 0})
         b["certidoes"] += 1; b["com_link_oficial"] += bool(c.get("link_oficial"))
         b["faltavam"] += len(c.get("faltavam") or []); b["resolvidos"] += len(c.get("resolvidos") or [])
@@ -742,6 +765,9 @@ def relatorio(certs: dict, feitas: list[dict], fila_e: int, fila_l: int, gab: di
                        "para_o_interceptador": sum(1 for c in todas if str(c.get("encaminhado") or "").startswith("Interceptador")),
                        "para_o_chrome": sum(1 for c in todas if str(c.get("encaminhado") or "").startswith("Chrome")),
                        "selos_que_mudaram": dict(selos), "por_degrau": dict(por_degrau)},
+            "cinza_conferidos": {"conferidos": sum(len(c.get("conferidos") or []) for c in todas),
+                                 "certificados": sum(len(c.get("cinza_certificados") or []) for c in todas),
+                                 "certidoes": sum(1 for c in todas if c.get("conferidos"))},
             "por_item": itens, "por_balcao": por_balcao, "por_safra": safras, "por_versao": por_versao,
             "por_abordagem": por_abordagem, "por_balcao_selo": por_balcao_selo,
             "gabarito": {"orgaos_com_gabarito": sum(1 for g in (gab if gab is not None else (_j(GABARITOS, {}) or {})).values() if g.get("itens")), "itens_achados_pelo_gabarito": dict(pelo_gabarito),

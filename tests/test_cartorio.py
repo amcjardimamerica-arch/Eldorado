@@ -286,8 +286,9 @@ class TesteIntegracao(unittest.TestCase):
         for f, s in (("src/fluxo_oportunidades.py", "_cart_item(m.get(\"id\"), k)"), ("src/fluxo_oportunidades.py", "link_oficial as _lo_cart"),
                      ("src/dashboard_dados.py", "from .cartorio import certidao"), ("src/interceptador.py", "encaminhado pelo Cartório")):
             self.assertIn(s, (ROOT / f).read_text(encoding="utf-8"), f)
-        h = (ROOT / "docs/cartorio.html").read_text(encoding="utf-8")
-        self.assertIn("dados/cartorio.json", h); self.assertIn("<details", h); self.assertNotIn("prefers-color-scheme: dark", h)
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")     # 10/10: o Cartório é uma seção do painel
+        self.assertIn('id="v-cartorio"', h); self.assertIn('data-v="cartorio"', h); self.assertIn("dados/cartorio.json", h)
+        self.assertFalse((ROOT / "docs/cartorio.html").exists(), "sem página própria")
 
 
 if __name__ == "__main__":
@@ -388,8 +389,49 @@ class TesteCobertura12(unittest.TestCase):
         self.assertEqual(b["estados"]["Resultado"], "dispensado"); self.assertEqual(b["estados"]["Objeto"], "ja_constava")
 
     def test_pagina_quatro_estados_cores_do_painel(self):
-        h = (ROOT / "docs/cartorio.html").read_text(encoding="utf-8")
+        h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn("CARTORIO-12-PONTOS-V1", h)
         self.assertIn(".mini i.d{background:#2F79D0}", h, "dispensado em azul, como no checklist do painel")
         self.assertIn(".mini i.j{background:#C9CED6}", h, "já constava em cinza")
         self.assertNotIn("cinza: ainda falta", h)
+
+
+class TesteConferirCinza(unittest.TestCase):
+    """10/10 (titular): o Cartório confere no documento os itens CINZA (conhecidos sem certidão) das estrelas com site
+    oficial; achado vira certificado; não achado continua cinza — nunca vira falta nem vai ao Interceptador."""
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(); T = Path(self.tmp.name)
+        self.orig = {k: getattr(C, k) for k in ("PASTA", "CERTIDOES", "LIVROS_OUT", "INTERCEPTADOR", "RELATORIO", "GABARITOS")}
+        C.PASTA = T; C.CERTIDOES = T / "c.json"; C.LIVROS_OUT = T / "l.jsonl"; C.INTERCEPTADOR = T / "i.json"
+        C.RELATORIO = T / "r.json"; C.GABARITOS = T / "g.json"; C._CACHE.clear()
+        from src import cartorio_linha as LN
+        self.LN, self.b0 = LN, LN.BIBLIOTECA; LN.BIBLIOTECA = T / "b.json"
+
+    def tearDown(self):
+        for k, v in self.orig.items():
+            setattr(C, k, v)
+        self.LN.BIBLIOTECA = self.b0; C._CACHE.clear(); self.tmp.cleanup()
+
+    def test_cinza_achado_vira_certificado_e_nao_achado_continua_cinza(self):
+        pdf = "https://www.anapolis.go.gov.br/edital-003-2026.pdf"
+        ck = {k: {"s": "ok", "v": "lido na notícia"} for k in L.DOZE}           # todos conhecidos pelo motor (já é ouro)
+        fluxo = {"itens_por_uf": {"GO": [{"id": "z1", "titulo": "Edital 003/2026", "link_oficial": pdf, "fim": "2026-11-12", "checklist": ck},
+                                         {"id": "z2", "titulo": "sem site", "checklist": dict(ck)}]}}
+        fila = C.fila_estrelas(fluxo)
+        self.assertEqual([o["id"] for o in fila], ["z1"], "só estrela com site oficial entra para conferir")
+        self.assertEqual(len(fila[0]["_conferir"]), 12); self.assertEqual(fila[0]["_faltam"], [])
+        so_valor = _pdf(["PREFEITURA MUNICIPAL DE ANAPOLIS\n1. DO OBJETO\n1.1. O presente edital tem por objeto a selecao de organizacoes da sociedade civil para projetos culturais no Municipio de Anapolis.\n2. DOS RECURSOS\n2.1. O valor global disponivel e de R$ 300.000,00 para os projetos selecionados neste chamamento publico."])
+        r = C.run(10, 60, Rede({pdf: so_valor}), fluxo, {"motores": []})
+        self.assertEqual(r["certificadas"], 1)
+        c = json.loads(C.CERTIDOES.read_text())["certidoes"]["estrela:z1"]
+        self.assertIn("Valor", c["cinza_certificados"]); self.assertIn("Objeto", c["cinza_certificados"])
+        cb = C.cobertura_12(c)
+        self.assertEqual(cb["faltam"], 0, "cinza não achado nunca vira falta")
+        self.assertEqual(cb["estados"]["Valor"], "certificado"); self.assertEqual(cb["estados"]["Prazo de recurso"], "ja_constava")
+        self.assertIsNone(c.get("encaminhado"), "nada falta: não vai ao Interceptador")
+
+    def test_quem_tem_item_faltando_vem_antes(self):
+        a = {"_faltam": [], "_conferir": ["Valor"], "_usadas": [], "_estagio": "prata", "fim": "2026-10-11"}
+        b = {"_faltam": ["Valor"], "_conferir": [], "_usadas": [], "_estagio": "bronze", "fim": "2026-12-01"}
+        src = (ROOT / "src/cartorio.py").read_text(encoding="utf-8")
+        self.assertIn("primeiro quem tem item FALTANDO", src)
