@@ -1,47 +1,12 @@
 {
- "em": "2026-10-10T18:11:51+00:00",
+ "em": "2026-10-10T18:19:04+00:00",
  "lote": 100,
  "estado": {
   "interceptador_erros_vistos": 100,
-  "espiao_erros_vistos": 1756,
+  "espiao_erros_vistos": 1861,
   "contagem_desde": "2026-10-08T18:21:48+00:00"
  },
  "ultimos_ciclos": [
-  {
-   "piloto": "espiao",
-   "em": "2026-10-10T05:54:13+00:00",
-   "erros_no_lote": 1000,
-   "motivos": [
-    [
-     "nada_no_crivo",
-     907
-    ],
-    [
-     "busca_vazia",
-     66
-    ],
-    [
-     "sem_texto",
-     27
-    ]
-   ],
-   "rendimento_por_missao": {
-    "descobrir": "0/487",
-    "espionar": "3/392",
-    "aposta": "2/278",
-    "catalogar": "0/52"
-   },
-   "parametros_novos": {
-    "pesos_missao": {
-     "aposta": 0.36,
-     "descobrir": 0.1,
-     "catalogar": 0.1,
-     "espionar": 0.38
-    },
-    "termos_fora_do_objeto": []
-   },
-   "onde_falha": "missões que quase nunca rendem (descobrir, catalogar) perdem vagas; termos de 'fora do objeto' descartados na origem"
-  },
   {
    "piloto": "espiao",
    "em": "2026-10-10T07:50:39+00:00",
@@ -216,6 +181,41 @@
     "termos_fora_do_objeto": []
    },
    "onde_falha": "missões que quase nunca rendem (descobrir, catalogar, espionar) perdem vagas; termos de 'fora do objeto' descartados na origem"
+  },
+  {
+   "piloto": "espiao",
+   "em": "2026-10-10T18:19:04+00:00",
+   "erros_no_lote": 1000,
+   "motivos": [
+    [
+     "nada_no_crivo",
+     912
+    ],
+    [
+     "busca_vazia",
+     57
+    ],
+    [
+     "sem_texto",
+     31
+    ]
+   ],
+   "rendimento_por_missao": {
+    "espionar": "3/1049",
+    "descobrir": "0/487",
+    "aposta": "2/278",
+    "catalogar": "0/52"
+   },
+   "parametros_novos": {
+    "pesos_missao": {
+     "aposta": 0.36,
+     "descobrir": 0.1,
+     "catalogar": 0.1,
+     "espionar": 0.14
+    },
+    "termos_fora_do_objeto": []
+   },
+   "onde_falha": "missões que quase nunca rendem (descobrir, catalogar, espionar) perdem vagas; termos de 'fora do objeto' descartados na origem"
   }
  ],
  "parametros": {
@@ -281,7 +281,7 @@
     "aposta": 0.36,
     "descobrir": 0.1,
     "catalogar": 0.1,
-    "espionar": 0.16
+    "espionar": 0.14
    },
    "termos_fora_do_objeto": [],
    "consultas_boas": [
@@ -316,44 +316,38 @@
    ],
    "consultas_ruins": [
     {
+     "consulta": "cooperativa goiana fundo social edital 2026",
+     "tentativas": 64,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
      "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas",
-     "tentativas": 494,
+     "tentativas": 493,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
      "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas goi",
-     "tentativas": 441,
+     "tentativas": 440,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
-     "consulta": "programa de investimento social privado inscrições 2026",
-     "tentativas": 840,
-     "motivo": "nada_no_crivo",
-     "missao": "descobrir"
-    },
-    {
      "consulta": "instituto \"edital\" \"osc\" goiás 2026",
-     "tentativas": 64,
+     "tentativas": 63,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
     {
      "consulta": "fundação apoia projetos sociais goiás inscrições 2026",
-     "tentativas": 64,
+     "tentativas": 63,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
     {
      "consulta": "associação comercial industrial goiás projeto social apoio",
-     "tentativas": 67,
-     "motivo": "nada_no_crivo",
-     "missao": "descobrir"
-    },
-    {
-     "consulta": "cooperativa goiana fundo social edital 2026",
-     "tentativas": 64,
+     "tentativas": 66,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
@@ -396,6 +390,12 @@
     {
      "consulta": "empresa lança edital para ongs 2026",
      "tentativas": 833,
+     "motivo": "nada_no_crivo",
+     "missao": "descobrir"
+    },
+    {
+     "consulta": "programa de investimento social privado inscrições 2026",
+     "tentativas": 839,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
@@ -572,26 +572,26 @@
     "verde",
     "cultura",
     "voluntariado",
-    "estão"
+    "onde"
    ],
    "rendimento_das_buscas": {
-    "aposta": {
-     "tentativas": 1654,
-     "com_resultado": 2,
-     "taxa": 0.001
-    },
     "descobrir": {
-     "tentativas": 4464,
+     "tentativas": 4460,
      "com_resultado": 0,
      "taxa": 0.0
     },
+    "aposta": {
+     "tentativas": 1652,
+     "com_resultado": 2,
+     "taxa": 0.001
+    },
     "espionar": {
-     "tentativas": 923,
+     "tentativas": 928,
      "com_resultado": 3,
      "taxa": 0.003
     }
    },
-   "consultas_aprendidas_em": "2026-10-10T17:58:29+00:00",
+   "consultas_aprendidas_em": "2026-10-10T18:06:12+00:00",
    "restricoes_fixas": {
     "regra": "FIXAS e só NEGATIVAS (titular, 01/10): o que falhou repetidamente não volta; todo o resto é busca criativa, renovada a cada 100 pesquisas",
     "desde": "2026-10-01T14:01:07+00:00",
@@ -722,7 +722,7 @@
    "intervalo_busca_local_s": 6.0,
    "max_buscas_ponte_por_voo": 3
   },
-  "atualizado_em": "2026-10-10T16:27:00+00:00",
+  "atualizado_em": "2026-10-10T18:19:04+00:00",
   "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
  }
 }
