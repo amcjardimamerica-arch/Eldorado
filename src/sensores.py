@@ -230,6 +230,15 @@ def _casa_previsao(sensor: dict, ativos: set[str]) -> bool:
     return any(sum(1 for t in toks if t in a) >= 2 for a in ativos) if toks else False
 
 
+def _fogo_todos() -> set:
+    """Motores desligados à mão no fogo do painel (10/10)."""
+    try:
+        from .motores_manuais import desligados
+        return desligados()
+    except Exception:  # noqa: BLE001
+        return set()
+
+
 def escala_do_dia(hoje: date | None = None) -> dict:
     """Quem sai hoje: diários/justiça/legislativo/API sempre; sites em rodízio
     por dia da semana; escalada para diário quando há previsão no mês."""
@@ -268,7 +277,14 @@ def escala_do_dia(hoje: date | None = None) -> dict:
     saem = regulares + pontos[:sobra]
     saem.sort(key=lambda s: (s["tipo"] not in diarios, s.get("fontes_260") is not None, not s.get("goias"), s["id"]))
     cortados = max(0, len(pontos) - sobra)
-    return {"data": hoje.isoformat(), "saem": saem, "ficam": len(ficam) + cortados,
+    try:                                              # 10/10 (titular): motor desligado no FOGO não sai em acionamento automático
+        from .motores_manuais import desligados as _desl
+        _d = _desl()
+        _fora = [x["id"] for x in saem if x.get("id") in _d]
+        saem = [x for x in saem if x.get("id") not in _d]
+    except Exception:  # noqa: BLE001
+        _fora = []
+    return {"data": hoje.isoformat(), "desligados_no_fogo": _fora, "saem": saem, "ficam": len(ficam) + cortados,
             "total": len(saem) + len(ficam) + cortados, "previsoes_ativas": len(ativos),
             "regulares_garantidos": len(regulares), "pontos_cortados_pelo_limite": cortados}
 
@@ -796,7 +812,7 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
     if bloco == "regulares":
         escala["saem"] = [s for s in escala["saem"] if not s.get("fontes_260")] + \
             [{**s, "motivo": "bloco regulares: teste de todos os motores"} for s in registro()
-             if not s.get("fontes_260") and s["id"] not in {x["id"] for x in escala["saem"]}]
+             if not s.get("fontes_260") and s["id"] not in {x["id"] for x in escala["saem"]} and s["id"] not in _fogo_todos()]
         escala["bloco"] = bloco
     elif bloco not in ("completo", "manual") and hz.exists():
         for b in load_json(hz).get("blocos", []):

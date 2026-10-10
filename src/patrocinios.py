@@ -183,6 +183,12 @@ def run(uf: str = "GO") -> dict:
     """Coleta nas fontes de comunicação, cruza com a base do motor GIFE (agrega o
     campo `patrocinios`), cria registros para empresas novas identificadas e
     grava a saída para o painel."""
+    try:                                        # 10/10 (titular): desligado no FOGO do painel → não lê
+        from .motores_manuais import desligado as _desl
+        if _desl("motor-patrocinio"):
+            return {"desligado_no_fogo": True}
+    except Exception:  # noqa: BLE001
+        pass
     col = coletar(uf)
     achados = load_json(PASTA / uf.lower() / "patrocinios.json").get("achados", [])
     # 09/10 (titular): empresas privadas/internacionais descobertas pelo Piloto - Espião (fora da lista de incentivo fiscal)

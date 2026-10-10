@@ -110,6 +110,13 @@ def monitor(p: dict, ult, cor_dia: str, falha: str, dia: dict, hoje: str | None 
     """verde = FUNCIONANDO (leu nas últimas 26 h, sem falha) · vermelho = FALHA (a última leitura falhou, ou motor ativo
     passou de 26 h sem ler) · cinza = INATIVO (desativado/agregado a outro motor, ou nunca leu)."""
     ag = (_AGENDA.get(p.get("id")) or _AGENDA.get("plat-" + str(p.get("id"))) or {})
+    try:                                   # 10/10 (titular): desligado à mão no fogo do painel
+        from .motores_manuais import info as _fogo
+        _i = _fogo(str(p.get("id") or ""))
+        if _i:
+            return "cinza", f"inativo — desligado por você no fogo em {str(_i.get('desde') or '')[8:10]}/{str(_i.get('desde') or '')[5:7]}", _ultima_real(p, ult)
+    except Exception:  # noqa: BLE001
+        pass
     ass = rota_assistida(p)
     if ass:
         return ass
