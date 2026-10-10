@@ -1,9 +1,9 @@
 {
- "em": "2026-10-10T20:41:06+00:00",
+ "em": "2026-10-10T21:19:01+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1874,
+ "rotulados": 1875,
  "positivos": 738,
- "pendentes": 509,
+ "pendentes": 517,
  "validacao_cruzada": {
   "auc": 0.829,
   "precisao": 0.721,
@@ -85,12 +85,6 @@
    "incerteza": 0.987
   },
   {
-   "titulo": "Instituto Porto abre edital de R$ 400 mil para OSCs da Grande São Paulo e Grande Belo Horizonte",
-   "url": "https://captadores.org.br/editais/instituto-porto-abre-edital-de-r-400-mil-para-oscs-da-grande-sao-paulo-e-grande-belo-horizonte",
-   "nota": 0.507,
-   "incerteza": 0.987
-  },
-  {
    "titulo": "INSTITUTO DE ASSISTENCIA MEDICA AO SERVIDOR PUBLICO ESTADUAL — Credenciamento de Prest. de Serv. de Assist. à Saúde, em regime hospitalar pa",
    "url": "https://pncp.gov.br/app/editais/60747318000162/2026/925",
    "nota": 0.508,
@@ -169,6 +163,12 @@
    "incerteza": 0.968
   },
   {
+   "titulo": "MUNICIPIO DE IVAIPORA — PREMIAÇÃO POR TRAJETÓRIA, PREVISTO EM PLANO DE AÇÃO DA PNAB, EM ATENDIMENTO ÀS NECESSIDADES DA SECRETARIA MUNICIPAL ",
+   "url": "https://pncp.gov.br/app/editais/75741330000137/2026/334",
+   "nota": 0.517,
+   "incerteza": 0.966
+  },
+  {
    "titulo": "Chamamento Público nº 06/2026 - Secretaria Executiva (SE) | PRONON",
    "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon",
    "nota": 0.482,
@@ -179,12 +179,6 @@
    "url": "https://www.fundacaoitau.org.br/noticias/cultura/fundacao-itau-cria-canal-de-transmissao-com-o-publico-interessado-em-arte-e-educacao",
    "nota": 0.481,
    "incerteza": 0.962
-  },
-  {
-   "titulo": "MUNICIPIO DE PAROBE — Formalização de parceria estabelecida pela administração pública com Organização de Sociedade Civil (OSC) para a conse",
-   "url": "https://pncp.gov.br/app/editais/88372883000101/2026/270",
-   "nota": 0.48,
-   "incerteza": 0.961
   },
   {
    "titulo": "Edital de eleição do CNPC",
@@ -227,12 +221,6 @@
    "url": "https://pncp.gov.br/app/editais/11097375000138/2026/46",
    "nota": 0.478,
    "incerteza": 0.955
-  },
-  {
-   "titulo": "CNBB lança edital do FNS para apoio financeiro a projetos relativos à Campanha da Fraternidade 2026",
-   "url": "https://captadores.org.br/editais/cnbb-lanca-edital-do-fns-para-apoio-financeiro-a-projetos-relativos-a-campanha-da-fraternidade-2026",
-   "nota": 0.477,
-   "incerteza": 0.954
   },
   {
    "titulo": "Chamada Pública CNPq/MMULHERES Nº 19/2026 - Programa Asas para o Futuro",
@@ -289,6 +277,12 @@
    "incerteza": 0.944
   },
   {
+   "titulo": "FUNDACAO JOAQUIM NABUCO FUNDAJ — Realização de concurso de premiação destinado à seleção de Práticas Pedagógicas em Educação Contextualizada",
+   "url": "https://pncp.gov.br/app/editais/09773169000159/2026/121",
+   "nota": 0.472,
+   "incerteza": 0.944
+  },
+  {
    "titulo": "Editais inscricoes abertas setembro outubro 2026",
    "url": "https://gife.org.br/editais-inscricoes-abertas-setembro-outubro-2026/",
    "nota": 0.47,
@@ -305,6 +299,12 @@
    "url": "https://www.fapespa.pa.gov.br/2026/09/28/chamada-fapespa-no-005-2025-programa-tecnova-iii-subvencao-economica-a-inovacao",
    "nota": 0.47,
    "incerteza": 0.94
+  },
+  {
+   "titulo": "Seleção de 2 projetos de Pontos de Cultura (Política Nacional de Cultura Viva)",
+   "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+   "nota": 0.47,
+   "incerteza": 0.939
   },
   {
    "titulo": "Cursos Leis de Incentivo",
@@ -331,12 +331,6 @@
    "incerteza": 0.938
   },
   {
-   "titulo": "MUNICIPIO DE ARTUR NOGUEIRA — CREDENCIAMENTO DE SELEÇÃO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL (OSC) PARA CELEBRAÇÃO DE TERMO DE COLABORAÇÃO PAR",
-   "url": "https://pncp.gov.br/app/editais/45735552000186/2026/3",
-   "nota": 0.532,
-   "incerteza": 0.937
-  },
-  {
    "titulo": "SECTI-GO (ciência e tecnologia) — Edital nº 002/2026 — Goiás",
    "url": "https://goias.gov.br/inovacao/wp-content/uploads/sites/26/2026/09/Edital-1.pdf",
    "nota": 0.532,
@@ -361,17 +355,23 @@
    "incerteza": 0.933
   },
   {
-   "titulo": "FUNDACAO JOAQUIM NABUCO FUNDAJ — Realização de concurso de premiação destinado à seleção de Práticas Pedagógicas em Educação Contextualizada",
-   "url": "https://pncp.gov.br/app/editais/09773169000159/2026/121",
-   "nota": 0.466,
-   "incerteza": 0.932
-  },
-  {
    "titulo": "Secretaria de Estado da Cultura (Secult) — Secult realiza ajustes no Chamamento Público do projeto Cine Goiás … — Goiás",
    "url": "https://goias.gov.br/cultura/secult-realiza-ajustes-no-chamamento-publico-do-projeto-cine-goias-itinerante/",
    "nota": 0.466,
    "incerteza": 0.931
+  },
+  {
+   "titulo": "Edital Rio Doce Participativo e Comunitário abre seleção de projetos",
+   "url": "https://fbb.org.br/edital-publico/editalriodoce/",
+   "nota": 0.536,
+   "incerteza": 0.929
+  },
+  {
+   "titulo": "Mapa de Fomento em Ciência, Tecnologia e Inovação - Bolsas e Projetos Vigentes",
+   "url": "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/bolsas-e-auxilios/mapa-de-fomento-em-ciencia-tecnologia-e-inovacao",
+   "nota": 0.536,
+   "incerteza": 0.927
   }
  ],
- "pendentes_provaveis_reais": 205
+ "pendentes_provaveis_reais": 210
 }
