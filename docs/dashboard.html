@@ -4896,7 +4896,7 @@ function desenhaMotores(){
       return `<div class="bdia mtd-${x.cor}" title="${esc(x.d.slice(8,10)+"/"+x.d.slice(5,7))} · ${ROT[x.cor]||x.cor}${x.http?" · HTTP "+x.http:""}${x.n?" · "+x.n+" achado(s)":""}${x.t?" · "+esc(x.t):""}">
         <div class=n>${dt.getDate()}<span class=sem>${SEMd[dt.getDay()]}</span></div>
         <div class="s">${x.cor==="amarelo"?"Parcial":x.cor==="verde"?"12 itens":x.cor==="azul"?"Sem oport.":x.cor==="vermelho"?"Falha":x.cor==="futuro"?"—":x.cor==="fora"?"Fora da agenda":"Não exec."}</div>
-        ${x.t?`<div class=mt-trecho title="${esc(x.t)}">${esc(x.t.slice(0,26))}…</div>`:""}</div>`;}).join("")}</div>
+        ${(x.n||x.t)?(q=>`<div class=mt-trecho title="${esc(x.t||"")}">${q} ${q===1?"edital":"editais"}</div>`)(Number(x.n)||1):""}</div>`;}).join("")}</div>
     `;};   /* 28/09 (titular): as "últimas 3" por dia repetiam a mesma oportunidade — a lista única fica em "Oportunidades encontradas" */
   const trintaDias=calendarioMotor;
   ofRows.sort((a,b)=>(a.rank||99)-(b.rank||99));
