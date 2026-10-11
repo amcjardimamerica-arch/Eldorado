@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T11:22:09+00:00",
+  "em": "2026-10-11T11:42:29+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T11:10:51+00:00",
+  "ultimo_voo": "2026-10-11T11:30:10+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 272,
+    "missoes": 273,
     "validadas": 16,
     "parciais": 66,
-    "insuficientes": 190,
+    "insuficientes": 191,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 183,
+      "sim": 184,
       "nao": 49
     },
     "estrelas_de_ouro": 5,
@@ -52,6 +52,83 @@
     "tempo_medio_min": 10.1
   },
   "missoes": [
+    {
+      "em": "2026-10-11T11:30:10+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Chamamento Público - Lei Aldir Blanc – 008/2024 - Seleção de Projetos para firmar Termo de Execução Cultural - Fomento à Cultura. \n         ",
+      "qualidade": "insuficiente",
+      "comprovados": 7,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona o objeto, prazo de inscrição, órgão financiador, território, esfera e área de atuação, o que é suficiente para identificar a fonte.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto da chamada, que é fomento à cultura, e verificar se sua atividade se enquadra na área de atuação mencionada. Além disso, deve garantir que sua sede esteja localizada no território indicado (SP), o que não é compatível com Goiânia, GO.",
+        "proximo_passo": "Verificar se há outras chamadas disponíveis para o território de Goiânia, GO, que sejam compatíveis com a área de atuação da associação.",
+        "risco": "A localização da associação em Goiânia, GO, não corresponde ao território indicado na chamada (SP), o que pode impedir o acesso ao edital."
+      },
+      "erro": null,
+      "segundos": 738,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "c41089a3cb01813d91f5",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Seleção de Projetos para firmar Termo de Execução Cultural - Fomento à Cultura",
+          "trecho": "Seleção de Projetos para firmar Termo de Execução Cultural - Fomento à Cultura.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "dispensado — O prazo de inscrição foi explicitado no texto.",
+          "trecho": "Período de Inscrição do Chamamento: de 07 de Outubro de 2024 até 01/11/2024 às 23h59. [rejeitado: data implausível para edital aberto]",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Ribeirão Pires - SP",
+          "trecho": "O Município de Ribeirão Pires, através da Secretaria de Educação e Cultura, TORNA PÚBLICO os seguintes editais...",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Prefeitura Municipal de Ribeirão Pires - SP",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "Seleção de Projetos para firmar Termo de Execução Cultural - Fomento à Cultura.",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Ribeirão Pires",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-11T11:10:51+00:00",
       "modo": "validar",
@@ -2786,63 +2863,6 @@
         }
       },
       "financiador": "Prefeitura Municipal de Goiatuba",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-11T01:31:54+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · estante bronze · tentativa 1",
-      "alvo": "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS — oportunidades (espalhado de edital validado) — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/governo/licitacoes-e-contratos/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprovado menciona o objeto da ação como 'Revitalização e Execução da Obra do Parque da Serrinha', o que pode ser relevante para organizações que atuam em projetos de desenvolvimento comunitário.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, demonstrando como sua atuação em assistência social, cultura, educação ou esporte pode contribuir para a revitalização do Parque da Serrinha.",
-        "proximo_passo": "Verificar os anexos do edital para obter mais detalhes sobre as exigências e requisitos específicos para participação.",
-        "risco": "A falta de informações sobre prazo de inscrição, valor e requisitos específicos pode dificultar o acesso ao edital e a elaboração de uma proposta adequada."
-      },
-      "erro": null,
-      "segundos": 345,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 4,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-espalhado-crcgo-org-br",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Revitalização e Execução da Obra do Parque da Serrinha",
-          "trecho": "Revitalização e Execução da Obra do Parque da Serrinha",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria-Geral de Governo",
-          "trecho": "Secretaria-Geral de Governo",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Conselho Regional de Contabilidade do Estado de Goiás (CRCGO)",
       "indicios": [],
       "rotas": [
         "site_do_financiador"
