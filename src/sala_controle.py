@@ -125,7 +125,7 @@ def montar(agora: datetime | None = None) -> dict:
     _instr(I, agora, id="rn_treino", sub="Núcleo · rede neural", nome="Idade do modelo", valor=round(idade_modelo / 24, 1) if idade_modelo is not None else None,
            unidade="dias", escala=[0, 14], faixa={"normal": [None, 7], "alarme": [None, 10]}, quando=rn.get("modelo_treinado_em"), cadencia_h=24 * 7,
            faz="Retreina quando há 5% mais decisões ou passou uma semana.", efeito=f"modelo treinado em {str(rn.get('modelo_treinado_em'))[:16]}",
-           resultado=f"{rn.get('pendentes_provaveis_reais', 0)} pendentes prováveis reais · fila de validação {rn.get('fila_de_validacao', 0)}")
+           resultado=f"{rn.get('pendentes_provaveis_reais', 0)} pendentes prováveis reais · fila de validação {len(rn['fila_de_validacao']) if isinstance(rn.get('fila_de_validacao'), list) else rn.get('fila_de_validacao', 0)}")
 
     # ── REGÊNCIA · maestro
     cob = ma.get("cobertura") or {}
@@ -231,7 +231,24 @@ def montar(agora: datetime | None = None) -> dict:
               {"etapa": "Cartório", "valor": rs.get("certidoes_sem_item_faltando")}, {"etapa": "Interceptador", "valor": rp.get("fila_interceptador")},
               {"etapa": "Verificação externa", "valor": rp.get("fila_busca_externa")}, {"etapa": "Prontas para o Farol", "valor": rp.get("prontas_para_o_farol")}]
     tempo = sorted(({"quando": x["quando"], "nome": x["nome"], "sub": x["sub"], "estado": x["estado"]} for x in I if x.get("quando")), key=lambda e: str(e["quando"]), reverse=True)
-    res = {"em": agora.replace(microsecond=0).isoformat(), "regra": __doc__.split("\n")[0], "indice_saude": indice,
+    # 11/10 (v3, constelação): o detalhe de cada etapa — cada motor vira uma estrela no fundo da página
+    detalhes = {
+        "motores": [{"id": m.get("id"), "nome": m.get("nome"), "luz": m.get("luz"), "ultima_leitura": m.get("ultima_leitura"),
+                     "resultado": m.get("resultado_do_dia") or m.get("resultado")} for m in (st.get("motores") or [])],
+        "maestro": [{"motor": x.get("motor"), "prioridade": x.get("prioridade"), "diagnostico": x.get("diagnostico"), "cobertura": x.get("cobertura"),
+                     "tentativas": x.get("tentativas_hoje"), "coleta": x.get("coleta"), "abertura_proxima": x.get("livros_com_abertura_proxima")}
+                    for x in (ma.get("plano") or [])][:160],
+        "cartorio_itens": ca.get("por_item") or {},
+        "reprocessar": (fu.get("fila_de_reprocessamento") or {}),
+        "proximo_passo": rp.get("proximo_passo") or {}, "por_etapa": rp.get("por_etapa") or {}, "estantes": rp.get("estantes") or {},
+        "por_origem": rp.get("por_origem") or {},
+        "interceptador_fila": it.get("fila") or {},
+        "interceptador_missoes": [{"em": m.get("em"), "alvo": str(m.get("alvo") or "")[:140], "modo": m.get("modo"), "resultado": str(m.get("resultado") or m.get("qualidade") or "")[:140]}
+                                  for m in (it.get("missoes") or [])[:10]],
+        "espiao_familias": {k: {"usos": v.get("usos"), "achados": v.get("achados"), "empresas": v.get("empresas")} for k, v in (es.get("familias") or {}).items()},
+        "espiao_modalidades": es.get("empresas_por_modalidade") or {},
+    }
+    res = {"em": agora.replace(microsecond=0).isoformat(), "regra": __doc__.split("\n")[0], "indice_saude": indice, "detalhes": detalhes,
            "contagem": {e: sum(1 for x in I if x["estado"] == e) for e in ("verde", "amarelo", "vermelho", "cinza")},
            "instrumentos": I, "anunciadores": anunc, "mimico": mimico, "linha_do_tempo": tempo[:40], "fluxos": fluxos}
     return res
