@@ -301,6 +301,12 @@ jobs:
         if: always()
         run: |
           timeout 300 python -m src.compactacao || echo "compactação falhou; a base fica como está"
+      - name: Uso dos arquivos — alerta para o que não é usado há mais de 30 dias (fora o banco de dados)
+        if: always()
+        continue-on-error: true
+        run: |
+          # 11/10/2026 (titular): medição de uso; o alerta (docs/dados/uso_arquivos.json) indica o que verificar e descartar
+          timeout 300 python -m src.uso_arquivos || echo "medição de uso: falhou"
       - name: Registrar somente alterações produzidas
         if: always()
         run: |

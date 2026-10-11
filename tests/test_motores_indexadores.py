@@ -503,8 +503,9 @@ class RodadaCompleta(unittest.TestCase):
         # fora do fluxo (mas no acervo): estrangeiro sem aplicação ao Brasil e bolsa de doutorado
         self.assertFalse(any("Berlim" in x["titulo"] for x in fluxo["itens"]))
         self.assertFalse(any("doutorado" in x["titulo"] for x in fluxo["itens"]))
-        self.assertEqual(fluxo["fora_do_fluxo"]["nao_se_aplica_ao_brasil"], 1)
-        self.assertEqual(fluxo["fora_do_fluxo"]["fora_do_perfil"], 1)
+        # 11/10/2026: a residência artística em Berlim sai pela régua de fomento a OSC (residência para artista) antes de
+        # chegar ao critério de país — continua fora do fluxo, só muda o motivo contado
+        self.assertEqual(fluxo["fora_do_fluxo"]["nao_se_aplica_ao_brasil"] + fluxo["fora_do_fluxo"]["fora_do_perfil"], 2)
         # o portal que recusa IP estrangeiro: 1ª falha conta; na 2ª sobe para a ponte
         est = json.loads((self.tmp / "estado/indexadores/estado.json").read_text(encoding="utf-8"))
         self.assertEqual(est["sites"]["portal-geo"]["falhas_seguidas"], 1)

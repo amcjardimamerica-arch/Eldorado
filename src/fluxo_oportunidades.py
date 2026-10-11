@@ -180,6 +180,10 @@ def consolidar() -> list[dict]:
     RUIDO = re.compile(r"^\s*\d{1,2}:\d{2}\b|vota[cç][õo]es|requerimentos|t[ií]tulos? de cidadania|utilidades? p[uú]blica|convoca[cç][aã]o de assembleia|"
                        r"^\s*extrato|resultado|lista de aprovados|aprovados e suplentes|heteroidentifica|homologa|inexigibilidade|dispensa de chamamento|termo aditivo", re.I)
     _IDX = (_j(ROOT / "estado/opressores_indice.json", {}) or {}).get("indice") or {}
+    try:                                     # 11/10 (validação das 558 abertas): a mesma régua do motor dos agregadores
+        from .indexadores.extracao import nao_e_fomento as _nao_fom
+    except Exception:  # noqa: BLE001
+        _nao_fom = lambda t: None
     _OPR = {x.get("id"): x for x in (_j(CAT_OPR, {}) or {}).get("motores", [])}
     _EO = (_j(EST_OPR, {}) or {}).get("ligados") or {}
     vistos_t, vistos_u, out = set(), set(), []
@@ -191,7 +195,7 @@ def consolidar() -> list[dict]:
     TRIAGEM.clear(); TRIAGEM.update({"saiu_por_validacao": 0, "saiu_por_arquivo": 0, "dispensado_pela_regra": 0, "regras": {}})
     for origem, m in brutos:
         tit = re.sub(r"\s+", " ", str(m.get("titulo") or "")).strip()
-        if not tit or RUIDO.search(tit):
+        if not tit or RUIDO.search(tit) or (not origem.startswith("motor") or "agregadores" in origem or "outras" in origem.lower() or "Espião" in origem) and _nao_fom(tit):
             continue
         v = VAL.get(m.get("id"))
         if not v:

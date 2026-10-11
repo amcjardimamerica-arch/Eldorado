@@ -272,6 +272,14 @@ def missao(ordem: int, buscar=None, ler_pagina=None, conhecida=None, rnd: random
             continue
         fr = frente(url, texto, fam); nt = nota_rede(titulo, texto, url); notas.append(nt)
         m = OPORT.search(base); trecho = re.sub(r"\s+", " ", base[max(0, m.start() - 120):m.end() + 160]).strip()
+        try:                                  # 11/10 (validação das 558 abertas): notícia, serviço ou benefício individual não é
+            from .indexadores.extracao import nao_e_fomento, perfil as _perfil   # fomento a OSC — nem candidata, nem livro
+            _nf = nao_e_fomento(titulo) or (_perfil(f"{titulo} {trecho}")[0] == "fora" and "fora")
+        except Exception:  # noqa: BLE001
+            _nf = None
+        if _nf:
+            motivos["não é fomento a OSC"] = motivos.get("não é fomento a OSC", 0) + 1
+            continue
         org = nome_da_organizacao(titulo, url)
         if fr in ("editais_de_empresas", "internacional") and url not in ja_cand:
             cand.append({"url": url, "titulo": titulo or url, "visto_em": f"Espião · {fr}", "enquadramento": "A VERIFICAR",
