@@ -683,6 +683,11 @@ def atualizar_mapa() -> dict:
         c["um_livro_por_oportunidade"] = _unificar()["resumo"]
     except Exception as ex:
         c["um_livro_por_oportunidade"] = f"falhou: {type(ex).__name__}"
+    try:                                     # 11/10: o repositório enxerga os livros da MESMA rodada (estantes e Farol em dia)
+        from .repositorio_unico import construir as _repo2
+        c["repositorio_depois_dos_livros"] = {k: v for k, v in _repo2().items() if k in ("abertas", "validadas", "em_verificacao", "prontas_para_o_farol", "estantes")}
+    except Exception as ex:
+        c["repositorio_depois_dos_livros"] = f"falhou: {type(ex).__name__}"
     try:                                     # 02/10: guarda contra dados de teste (domínios reservados) — antes de tudo
         from .guarda_dados_teste import run as _guarda
         c["guarda_dados_teste"] = _guarda()

@@ -200,7 +200,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         lv = livros.get(cid) or next((livros[i] for i in r["ids_origem"] if i in livros), None)
         # 11/10 (titular): a BIBLIOTECA direciona a busca — editais anteriores do livro e páginas onde o órgão publica
         anteriores = [h for h in ((lv or {}).get("historico") or []) if isinstance(h, dict) and str(h.get("id")) not in [cid] + r["ids_origem"]]
-        onde = list(dict.fromkeys(u for u in [link, (lv or {}).get("pagina"), ((lv or {}).get("parametros") or {}).get("fonte_oficial")]
+        onde = list(dict.fromkeys(u for u in [link, (lv or {}).get("pagina_aprendida"), (lv or {}).get("pagina"), ((lv or {}).get("parametros") or {}).get("fonte_oficial")]
                                   + [h.get("pagina_oficial") or h.get("url") for h in anteriores[-5:]] if u))[:8]
         estante = "sem_livro" if not lv else (selo if selo in ("ouro", "prata", "bronze") else "bronze")
         sk = _skill(r.get("origem"))
@@ -228,11 +228,13 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         else:
             passo = "Busca externa (Claude/Chrome): as 10 abordagens do Cartório se esgotaram"
         urg = 0 if (fim and str(fim)[:10] >= hoje) else 1
+        pronta = estado == "validada" and bool(lv) and bool(fim and str(fim)[:10] >= hoje)
+        etapa, ferramenta = _etapa(estado, passo, bool(lv), pronta)
         out.append({"id": cid, "ids_origem": r["ids_origem"], "fontes": r["fontes"], "titulo": str(r.get("titulo") or "")[:220], "url": r.get("url"),
                     "link_oficial": link, "orgao": r.get("orgao"), "uf": r.get("uf"), "fim": fim, "origem": r.get("origem"), "skill": sk,
                     "estado": estado, "motivo_estado": motivo, "estante": estante, "livro": (lv or {}).get("id"), "motivo_sem_livro": sem_livro, "selo_dos_itens": selo or "sem_selo",
                     "itens": itens, "faltam": faltam, "cartorio": {"tentativas": int(c.get("tentativa") or 0), "esgotada": bool(c.get("esgotada"))},
-                    "nota_rede": nt, "proximo_passo": passo,
+                    "nota_rede": nt, "proximo_passo": passo, "etapa": etapa, "ferramenta": ferramenta, "pronta_para_farol": pronta,
                     "livro_historico": {"editais_anteriores": len(anteriores), "ultimos": [{"id": h.get("id"), "titulo": str(h.get("titulo") or "")[:120], "fim": h.get("fim"),
                                         "pagina": h.get("pagina_oficial") or h.get("url")} for h in anteriores[-3:]]}, "onde_buscar": onde, "prioridade": (urg, str(fim or "9999"), -(nt or 0))})
     ant = {x["id"]: x for x in (_j(SAIDA, {}).get("registros") or [])}       # Prof. Caio: ninguém parado sem dono
@@ -255,6 +257,30 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         RESUMO.parent.mkdir(parents=True, exist_ok=True)
         RESUMO.write_text(json.dumps(resumo, ensure_ascii=False, indent=1), encoding="utf-8")
     return resumo
+
+
+ETAPAS = {1: "acionamento do motor (maestro, agenda e rede neural)", 2: "coleta pelo motor ou Piloto", 3: "repositório único (sem duplicatas)",
+          4: "pertinência a OSC (rede neural e saneamento)", 5: "livro na Biblioteca (criado ou vinculado)", 6: "site oficial (Cartório e Interceptador)",
+          7: "certificação dos 12 itens na fonte (Cartório e Interceptador)", 8: "verificação externa definitiva (Claude, exceção)", 9: "pronta para o Farol de Alexandria"}
+
+
+def _etapa(estado: str, passo: str, tem_livro: bool, pronta: bool) -> tuple[str, str]:
+    """A etapa da esteira mestre e a ferramenta que age agora (sem passo parado sem dono)."""
+    if estado == "fechada":
+        return "fim: fechada (arquivada ou eliminada)", "Biblioteca (livro guardado)"
+    if pronta:
+        return f"9 · {ETAPAS[9]}", "Farol de Alexandria (preparação da proposta)"
+    if passo.startswith("dispensar"):
+        return f"4 · {ETAPAS[4]}", "saneamento + rede neural (confirmar na fonte e dispensar)"
+    if passo.startswith(("Busca externa", "validação manual")):
+        return f"8 · {ETAPAS[8]}", "Claude (busca externa) ou titular (vermelho)"
+    if estado == "validada" and not tem_livro:
+        return f"5 · {ETAPAS[5]}", "criador de livros (opressores_repositorio)"
+    if estado == "validada":
+        return f"9 · {ETAPAS[9]} (aguarda prazo vigente)", "acompanhamento do prazo"
+    if "achar o site oficial" in passo:
+        return f"6 · {ETAPAS[6]}", "Interceptador" if passo.startswith("Interceptador") else "Cartório"
+    return f"7 · {ETAPAS[7]}", "Interceptador" if passo.startswith("Interceptador") else "Cartório"
 
 
 _ANT: dict = {}
@@ -283,6 +309,8 @@ def resumir(out: list[dict]) -> dict:
             "itens_em_verificacao": dict(Counter(st for x in ab if x["estado"] == "em_verificacao" for st in (i["estado"] for i in x["itens"].values()))),
             "fila_chrome": sum(1 for x in ab if x["proximo_passo"].startswith("Busca externa")),
             "fila_interceptador": sum(1 for x in ab if x["proximo_passo"].startswith("Interceptador")),
+            "prontas_para_o_farol": sum(1 for x in ab if x.get("pronta_para_farol")),
+            "por_etapa": dict(Counter(str(x.get("etapa", "")).split(" (")[0] for x in ab).most_common()),
             "fila_busca_externa": sum(1 for x in ab if x["proximo_passo"].startswith("Busca externa")),
             "cruzamento": {"com_certidao": sum(1 for x in ab if any(i["estado"] in ("comprovado", "dispensado") for i in x["itens"].values())),
                            "com_livro": sum(1 for x in ab if x["livro"]), "com_livro_de_editais_anteriores": sum(1 for x in ab if x["livro_historico"]["editais_anteriores"]),

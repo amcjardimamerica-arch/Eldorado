@@ -106,3 +106,38 @@ class TesteInterceptadorNaCadeia(unittest.TestCase):
         self.assertTrue(callable(IC.alvo_do_repositorio))
         s = (ROOT / "src/interceptador.py").read_text(encoding="utf-8")
         self.assertIn("r1 = alvo_do_repositorio(feitos)", s); self.assertIn('"contexto_do_repositorio"', s); self.assertIn('["site"] = x["link_oficial"]', s)
+
+
+class TesteEsteiraFarol(unittest.TestCase):
+    """11/10: toda aberta aplicável tem livro; etapa e ferramenta em cada registro; pronta vai ao Farol; aprendizado no livro."""
+    def test_etapas(self):
+        self.assertTrue(R._etapa("validada", "acompanhar o prazo", True, True)[0].startswith("9"))
+        self.assertTrue(R._etapa("em_verificacao", "dispensar: x", True, False)[0].startswith("4"))
+        self.assertTrue(R._etapa("em_verificacao", "Interceptador: achar o site oficial", False, False)[0].startswith("6"))
+        self.assertEqual(R._etapa("em_verificacao", "Interceptador: completar 3 item(ns)", True, False)[1], "Interceptador")
+        self.assertTrue(R._etapa("em_verificacao", "Busca externa (Claude/Chrome): …", True, False)[0].startswith("8"))
+        self.assertTrue(R._etapa("validada", "acompanhar o prazo", False, False)[0].startswith("5"))
+
+    def test_livro_farol_e_aprendizado(self):
+        o = (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8")
+        self.assertIn('if m and not re.match(r"(?i)fora da abrang|sem crit[ée]rio de sele", m):', o)
+        self.assertIn("não se aplica a OSC: o destino é a dispensa", o); self.assertIn('x["pagina_aprendida"]', o)
+        self.assertIn('"modelo": "oportunidade completa", "pronta": True', (ROOT / "src/preparacao_livros.py").read_text(encoding="utf-8"))
+        self.assertIn("repositorio_depois_dos_livros", (ROOT / "src/fluxo_oportunidades.py").read_text(encoding="utf-8"))
+        sys.path.insert(0, str(ROOT / "scripts")); import importar_revisao_abertas as I
+        self.assertTrue(callable(I.gravar_aprendizado))
+        self.assertIn('"aprendizado"', (ROOT / "docs/prompts/PROMPT-BUSCA-EXTERNA-PADRAO.md").read_text(encoding="utf-8"))
+
+    def test_gravar_aprendizado(self):
+        sys.path.insert(0, str(ROOT / "scripts")); import importar_revisao_abertas as I
+        import tempfile as _t
+        with _t.TemporaryDirectory() as d:
+            orig = I.ROOT; I.ROOT = Path(d)
+            try:
+                av = I.gravar_aprendizado({"a": {"veredito": "ouro", "aprendizado": {"onde_estava": "https://x.go.gov.br/e.pdf", "sugestao_para_o_motor": "ler a aba Chamamentos"}},
+                                           "b": {"veredito": "encerrada"}}, "EXTERNA-T")
+                ap = json.loads((Path(d) / "estado/biblioteca/aprendizados_externos.json").read_text())["aprendizados"]
+                me = json.loads((Path(d) / "docs/dados/melhorias_motores_externas.json").read_text())["melhorias"]
+            finally:
+                I.ROOT = orig
+        self.assertIn("a", ap); self.assertEqual(me[0]["sugestao"], "ler a aba Chamamentos"); self.assertEqual(av, ["b: sem relatório de aprendizado"])

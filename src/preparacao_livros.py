@@ -45,8 +45,26 @@ def run(hoje: date | None = None) -> dict:
             continue
         farol.append({"livro": x["id"], "nome": x.get("nome_classificado"), "geo": x.get("geo"), "modelo": x["preparacao"]["modelo"],
                       "edital": x["preparacao"].get("edital"), "janela": x["preparacao"].get("janela"), "passos": x["preparacao"].get("passos")})
+    # 11/10 (titular): a oportunidade COMPLETA (12/12, com livro e prazo vigente) chega ao Farol sozinha, em primeiro lugar
+    try:
+        _rep = json.loads((ROOT / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []
+        _ja = {f["livro"] for f in farol}
+        for r in _rep:
+            if not r.get("pronta_para_farol") or not r.get("livro"):
+                continue
+            item = {"livro": r["livro"], "nome": r.get("titulo"), "geo": r.get("uf"), "modelo": "oportunidade completa", "pronta": True,
+                    "oportunidade": r["id"], "edital": r.get("link_oficial"), "prazo": r.get("fim"),
+                    "itens": {k: v.get("valor") or v.get("motivo") for k, v in (r.get("itens") or {}).items()}}
+            if r["livro"] in _ja:
+                for f in farol:
+                    if f["livro"] == r["livro"]:
+                        f.update({k: v for k, v in item.items() if k not in ("modelo",)})
+            else:
+                farol.append(item)
+    except Exception:  # noqa: BLE001
+        pass
     CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    farol.sort(key=lambda f: (f["modelo"] != "próprio", f["geo"] != "GO", str(f["nome"])))
+    farol.sort(key=lambda f: (not f.get("pronta"), f["modelo"] != "próprio", f["geo"] != "GO", str(f["nome"])))
     FAROL.write_text(json.dumps({"gerado_em": hoje.isoformat(), "regra": __doc__.split("Parâmetros")[0].strip(), "documentos_base": base["documentos_base"],
                                  "projeto_base_roteiro": base["projeto_base_roteiro"], "livros": farol}, ensure_ascii=False, indent=1), encoding="utf-8")
     return {"preparacao_propria": n_prop, "preparacao_geral": n_geral}

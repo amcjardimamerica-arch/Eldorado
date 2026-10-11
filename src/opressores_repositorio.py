@@ -261,14 +261,23 @@ def sincronizar() -> dict:
     for x in _rep.get("registros") or []:
         if x.get("estado") not in ("em_verificacao", "validada", "validacao_manual"):
             continue
-        if any(i in idx for i in [x["id"]] + list(x.get("ids_origem") or [])):
+        _ja = [idx[i] for i in [x["id"]] + list(x.get("ids_origem") or []) if i in idx]
+        if any("opressor" in j for j in _ja):
             continue
+        _motivo = next((j.get("dispensa") for j in _ja if j.get("dispensa")), "") or ""
+        if re.match(r"(?i)n[ãa]o [ée] sele[çc][ãa]o aberta|empresa sem edital", _motivo):
+            continue                                    # não se aplica a OSC: o destino é a dispensa, não um livro
         it = {"id": x["id"], "titulo": x.get("titulo"), "orgao": x.get("orgao"), "link_oficial": x.get("link_oficial"), "url": x.get("url"),
               "fim": x.get("fim"), "uf": x.get("uf"), "origem": x.get("origem")}
         m = dispensa(it)
-        if m:
+        if m and not re.match(r"(?i)fora da abrang|sem crit[ée]rio de sele", m):
             idx[x["id"]] = {"dispensa": m}; st["dispensadas"] += 1; continue
-        idx[x["id"]] = {"opressor": opressor_de(it, "aberta", True)}; st["do_repositorio_unico"] += 1
+        _lid = opressor_de(it, "aberta", True)                 # 11/10: aberta (por decisão da titular) → tem livro
+        idx[x["id"]] = {"opressor": _lid}; st["do_repositorio_unico"] += 1
+        if m:
+            for _x in C.get("motores") or []:
+                if _x.get("id") == _lid:
+                    _x["abrangencia"] = m[:120]; break
     # 2) oportunidades CATALOGADAS na Biblioteca (histórico): encerradas também viram repositório
     for f in FICHAS.glob("*/*/ficha.json"):
         fi = _j(f, {})
@@ -301,6 +310,21 @@ def sincronizar() -> dict:
     for k in orfaos:
         L["ligados"].pop(k, None)
     st["ligados_orfaos_removidos"] = len(orfaos)
+    # 11/10 (titular): RELATÓRIO DE APRENDIZADO da busca externa gravado no LIVRO da oportunidade
+    try:
+        _apr = (json.loads((ROOT / "estado/biblioteca/aprendizados_externos.json").read_text(encoding="utf-8")).get("aprendizados") or {})
+        _por = {str(h.get("id")): x for x in C.get("motores") or [] for h in (x.get("historico") or []) if isinstance(h, dict) and h.get("id")}
+        for oid, a in _apr.items():
+            x = _por.get(_canon.get(oid, oid)) or _por.get(oid)
+            if not x:
+                continue
+            ap = x.setdefault("aprendizados", [])
+            if not any(z.get("oportunidade") == oid and z.get("em") == a.get("em") for z in ap):
+                ap.append({"oportunidade": oid, **a}); x["aprendizados"] = ap[-10:]; st["aprendizados_gravados"] += 1
+            if a.get("onde_estava") and str(a["onde_estava"]).startswith("http"):
+                x["pagina_aprendida"] = a["onde_estava"]          # o livro passa a indicar onde o edital realmente estava
+    except Exception:  # noqa: BLE001
+        pass
     # 11/10 (titular): FORA DO PRAZO → o livro é ATUALIZADO e GUARDADO (arquivado, nunca apagado): a edição fica com a
     # situação 'encerrada' e o prazo; o livro sai das estantes ativas até chegar uma edição nova aberta
     try:
