@@ -44,6 +44,14 @@ CRED = ["MUNICIPIO DE GOIANIA\nEDITAL DE CREDENCIAMENTO DE OSC PARA O SERVICO DE
         "3. DA DECISAO\n3.1. Nao cabera recurso da decisao de credenciamento, que e definitiva."]
 
 
+
+def setUpModule():                 # 11/10: os testes não dependem do repositório único real (a fila dele é testada à parte)
+    C._REP.clear(); C._REP["s"] = None
+
+
+def tearDownModule():
+    C._REP.clear()
+
 class Rede(C.Rede):
     def __init__(self, mapa, proibidos=()):
         super().__init__(baixar=lambda u: (mapa[u] if isinstance(mapa[u], bytes) else mapa[u].encode(), ""), permitido=lambda u: u not in proibidos, pausa=0)

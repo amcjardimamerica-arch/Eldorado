@@ -18,7 +18,10 @@ DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valo
 # ── RÉGUA ÚNICA DE SITE OFICIAL (regra do titular de 07/09: vetor não é fonte) ──────────────────────────────────────
 VETOR_ESTRITO = re.compile(r"pncp\.gov\.br/(?:app|pncp-api/v1/(?:orgaos/[^/]+/compras/[^/]+/[^/]+)?$)|queridodiario|capitaai|prosas\.com|"
                            r"observatorio3setor|captadores\.org|editaisculturais|bussolasocial|filantropia\.ong|nossacausa|farolcultural|"
-                           r"bit\.ly|google\.|facebook\.|instagram\.|linkedin\.|youtube\.|portaldoterceirosetor|gife\.org\.br/(?!.*edital)", re.I)
+                           r"bit\.ly|google\.|facebook\.|instagram\.|linkedin\.|youtube\.|portaldoterceirosetor|gife\.org\.br/(?!.*edital)|"
+                           # 11/10: agregadores, blogs e portais vistos nas provas do Interceptador — só pista, nunca fonte
+                           r"buscarlicitacao|querolicitacao|notasocial|corrivus|agenciadobem|acheconcursos|scbrnews|inclusaosocial\.com|"
+                           r"blog\.bondinho|artequemoraaqui|mosaicco", re.I)
 IMPRENSA = re.compile(r"g1\.globo|uol\.com|folha\.|estadao\.|metropoles|jornal|noticia", re.I)
 VETOR = re.compile(VETOR_ESTRITO.pattern + "|" + IMPRENSA.pattern, re.I)
 DOC_ORGAO = re.compile(r"pncp\.gov\.br/pncp-api/v1/orgaos/\d+/compras/\d+/\d+/arquivos/\d+", re.I)
