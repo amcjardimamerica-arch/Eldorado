@@ -169,7 +169,7 @@ def unificar(gravar: bool = True) -> dict:
                      "oportunidades_com_mais_de_um_livro_depois": sum(1 for v in li.values() if len(v) > 1)}
     if gravar:
         C["motores"] = ms
-        CAT.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+        CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
         LIG.parent.mkdir(parents=True, exist_ok=True); LIG.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
         REL.parent.mkdir(parents=True, exist_ok=True); REL.write_text(json.dumps(rel, ensure_ascii=False, indent=1), encoding="utf-8")
     return rel
