@@ -119,6 +119,8 @@ def certidao_de(x: dict, origem: str) -> tuple[dict, list[str]]:
 def importar(pasta: Path, origem: str, gravar: bool = True, externa: bool = False) -> dict:
     regs = ler_lotes(pasta)
     av_externa = cobrar_resolucao(regs) if externa else []     # busca externa: arquivar, eliminar ou completar
+    if externa and gravar:
+        av_externa += gravar_aprendizado(regs, origem)
     if not regs:
         raise SystemExit(f"nenhum resultado_ABERTAS_*.json em {pasta}")
     ver = json.loads(VEREDITOS.read_text(encoding="utf-8")) if VEREDITOS.exists() else {"vereditos": {}}
@@ -201,6 +203,29 @@ def cobrar_resolucao(regs: dict) -> list[str]:
             x["veredito"] = "validacao_manual"; x["parecer"] = f"resolução incompleta da busca externa — {incompleta}. " + str(x.get("parecer") or "")
             avisos.append(f"{rid}: {incompleta}")
     return avisos
+
+
+def gravar_aprendizado(regs: dict, origem: str) -> list[str]:
+    """11/10 (titular): cada verificação externa deixa um RELATÓRIO DE APRENDIZADO — vai para o livro da oportunidade
+    (onde o edital estava, que rota funcionou, por que os robôs não acharam) e para as melhorias dos motores."""
+    apr_p = ROOT / "estado/biblioteca/aprendizados_externos.json"; mel_p = ROOT / "docs/dados/melhorias_motores_externas.json"
+    apr = (json.loads(apr_p.read_text(encoding="utf-8")) if apr_p.exists() else {}).get("aprendizados") or {}
+    mel = json.loads(mel_p.read_text(encoding="utf-8")) if mel_p.exists() else {"melhorias": []}
+    av = []
+    for rid, x in regs.items():
+        a = x.get("aprendizado") or {}
+        if not a:
+            av.append(f"{rid}: sem relatório de aprendizado"); continue
+        apr[rid] = {"em": _agora(), "origem": origem, "veredito": x.get("veredito"), **{k: a.get(k) for k in
+                    ("onde_estava", "rota_que_funcionou", "por_que_os_robos_nao_acharam", "sugestao_para_o_motor", "padrao_do_endereco")}}
+        if a.get("sugestao_para_o_motor"):
+            mel["melhorias"].append({"oportunidade": rid, "em": _agora(), "origem": origem, "motor": x.get("fonte") or x.get("origem"),
+                                     "sugestao": a["sugestao_para_o_motor"], "por_que": a.get("por_que_os_robos_nao_acharam"), "onde_estava": a.get("onde_estava")})
+    apr_p.parent.mkdir(parents=True, exist_ok=True)
+    apr_p.write_text(json.dumps({"regra": "relatório de aprendizado de cada verificação externa (vai para o livro)", "aprendizados": apr}, ensure_ascii=False, indent=1), encoding="utf-8")
+    mel["melhorias"] = mel["melhorias"][-500:]; mel_p.parent.mkdir(parents=True, exist_ok=True)
+    mel_p.write_text(json.dumps(mel, ensure_ascii=False, indent=1), encoding="utf-8")
+    return av
 
 
 def main(argv: list[str]) -> None:
