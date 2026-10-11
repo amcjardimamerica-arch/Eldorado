@@ -81,6 +81,39 @@ def _privada(r: dict) -> bool:
     return bool(re.search(r"espi[ãa]o|agregador|patroc|incentiv|gife|empresa|salic|rouanet", o))
 
 
+_MUN = re.compile(r"(?i)\bmunic[íi]pio d[eoa]s? |prefeitura (municipal )?d[eoa]s? |c[âa]mara municipal|secretaria municipal|"
+                  r"fundo municipal|funda[çc][ãa]o cultural de|conselho municipal|\bmunicipal de ")
+_DOM_UF = re.compile(r"https?://(?:www\.)?[\w.-]*?\.([a-z]{2})\.(?:gov|leg)\.br")
+_ESTADOS = [("acre", "AC"), ("alagoas", "AL"), ("amap[aá]", "AP"), ("amazonas", "AM"), ("bahia", "BA"), ("cear[aá]", "CE"), ("esp[ií]rito santo", "ES"),
+            ("maranh[aã]o", "MA"), ("mato grosso do sul", "MS"), ("minas gerais", "MG"), ("par[aá]", "PA"), ("para[ií]ba", "PB"), ("paran[aá]", "PR"),
+            ("pernambuco", "PE"), ("piau[ií]", "PI"), ("rio de janeiro", "RJ"), ("rio grande do norte", "RN"), ("rio grande do sul", "RS"),
+            ("rond[oô]nia", "RO"), ("roraima", "RR"), ("santa catarina", "SC"), ("s[aã]o paulo", "SP"), ("sergipe", "SE"), ("tocantins", "TO"),
+            ("goi[aá]s", "GO"), ("distrito federal", "DF")]
+UFS = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}
+
+
+def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | None:
+    """11/10/2026 (titular): oportunidade MUNICIPAL de fora de Goiás é arquivada (o livro fica; o contador de abertas cai).
+    Internacionais, nacionais e estaduais ficam. Só arquiva com a UF DETERMINADA (registro, agregador ou endereço
+    oficial .uf.gov.br/.uf.leg.br) e diferente de GO — sem UF certa, fica (há municípios homônimos)."""
+    t = f"{r.get('titulo') or ''} {r.get('orgao') or ''}"
+    municipal = str(r.get("nivel") or "").lower() == "municipal" or bool(_MUN.search(t))
+    if not municipal or str(r.get("nivel") or "").lower() in ("estadual", "federal", "internacional"):
+        return None
+    uf = str(r.get("uf") or uf_agregador or "").upper()
+    if uf not in UFS:
+        m = _DOM_UF.search(f"{r.get('link_oficial') or ''} {r.get('url') or ''}")
+        uf = m.group(1).upper() if m and m.group(1).upper() in UFS else ""
+    if uf not in UFS:                                  # nome do estado por extenso no endereço ou no título (um só)
+        txt = re.sub(r"[-_/]", " ", f"{r.get('url') or ''} {r.get('link_oficial') or ''} {r.get('titulo') or ''}".lower())
+        achados = {sig for nome, sig in _ESTADOS if re.search(rf"\b{nome}\b", txt)}
+        if len(achados) == 1:
+            uf = achados.pop()
+    if uf and uf != "GO":
+        return f"arquivada: municipal fora de Goiás ({uf}) — o livro fica guardado na Biblioteca"
+    return None
+
+
 def _oficial(url: str) -> bool:
     """A régua única do Cartório: agregador, notícia e republicador são só pista, nunca fonte."""
     try:
@@ -121,6 +154,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             if isinstance(h, dict) and h.get("id"):
                 livros.setdefault(str(h["id"]), m)
     skills = (_j(ROOT / "config/skills_extracao_origem.json", {}) or {}).get("skills") or {}
+    uf_ag = {str(x.get("id")): x.get("uf") for x in ((_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []) if x.get("uf")}
     # 11/10: o criador de livros já concluiu, para algumas, que não são seleção para OSC — o repositório usa o motivo
     disp_livro = {k: (v or {}).get("dispensa") for k, v in ((_j(ROOT / "estado/opressores_indice.json", {}) or {}).get("indice") or {}).items() if (v or {}).get("dispensa")}
 
@@ -149,7 +183,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         f = f"{b['_fonte']}: {b.get('origem') or ''}".strip(": ")
         if f not in r["fontes"]:
             r["fontes"].append(f)
-        for k in ("titulo", "url", "link_oficial", "fim", "inicio", "orgao", "uf", "origem", "objeto", "prazo_texto"):
+        for k in ("titulo", "url", "link_oficial", "fim", "inicio", "orgao", "uf", "origem", "objeto", "prazo_texto", "nivel"):
             if not r.get(k) and b.get(k):
                 r[k] = b[k]
         for k, v in (b.get("checklist") or {}).items():
@@ -198,8 +232,11 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         link = c.get("link_oficial") or r.get("link_oficial")
         fim = r.get("fim") or (((c.get("itens") or {}).get("Prazo de inscrição") or {}).get("fim"))
         v = (ver or {}).get("veredito")
+        _mun = municipal_fora_de_goias(r, next((uf_ag[i] for i in [cid] + r["ids_origem"] if i in uf_ag), None))
         if v in FECHADAS:
             estado, motivo = "fechada", f"veredito: {v}"
+        elif _mun:
+            estado, motivo = "fechada", _mun
         elif fim and str(fim)[:10] < hoje:
             estado, motivo = "fechada", "prazo vencido"
         elif selo == "ouro" and link:                       # prova completa na fonte supera qualquer marcação anterior
@@ -321,6 +358,7 @@ def resumir(out: list[dict]) -> dict:
             "registros": len(out), "abertas": len(ab),
             "validadas": sum(1 for x in ab if x["estado"] == "validada"), "em_verificacao": sum(1 for x in ab if x["estado"] == "em_verificacao"),
             "validacao_manual": sum(1 for x in ab if x["estado"] == "validacao_manual"), "fechadas": sum(1 for x in out if x["estado"] == "fechada"),
+            "arquivadas_municipais_fora_de_goias": sum(1 for x in out if str(x.get("motivo_estado") or "").startswith("arquivada: municipal fora de Goiás")),
             "estantes": dict(Counter(x["estante"] for x in ab)), "proximo_passo": dict(passo.most_common()),
             "por_origem": dict(Counter(x["skill"] for x in ab if x["estado"] == "em_verificacao")),
             "itens_em_verificacao": dict(Counter(st for x in ab if x["estado"] == "em_verificacao" for st in (i["estado"] for i in x["itens"].values()))),

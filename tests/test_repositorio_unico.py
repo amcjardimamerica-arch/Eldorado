@@ -141,3 +141,18 @@ class TesteEsteiraFarol(unittest.TestCase):
             finally:
                 I.ROOT = orig
         self.assertIn("a", ap); self.assertEqual(me[0]["sugestao"], "ler a aba Chamamentos"); self.assertEqual(av, ["b: sem relatório de aprendizado"])
+
+
+class TesteMunicipaisForaDeGoias(unittest.TestCase):
+    """11/10/2026 (titular): municipal de fora de Goiás é arquivada (livro fica); internacionais, nacionais e
+    estaduais ficam; sem UF determinada, fica."""
+    def test_regra(self):
+        f = R.municipal_fora_de_goias
+        self.assertTrue(f({"titulo": "MUNICIPIO DE OLINDINA — Chamamento", "uf": "BA"}))
+        self.assertTrue(f({"titulo": "Prefeitura de Itajaí — concurso", "url": "https://corrivus.com.br/santa-catarina/itajai/x"}))
+        self.assertTrue(f({"titulo": "Chamamento", "orgao": "Prefeitura Municipal de Iguatu", "link_oficial": "https://iguatu.ce.gov.br/x"}))
+        self.assertIsNone(f({"titulo": "Edital Cultura Goiatuba 2026", "orgao": "Prefeitura de Goiatuba", "link_oficial": "https://goiatuba.go.gov.br/x"}))
+        self.assertIsNone(f({"titulo": "MUNICIPIO DE TRINDADE — credenciamento", "url": "https://pncp.gov.br/app/editais/1/2026/1"}), "sem UF: fica")
+        self.assertIsNone(f({"titulo": "Edital estadual", "orgao": "Secretaria de Estado da Cultura de São Paulo", "nivel": "estadual", "uf": "SP"}))
+        self.assertIsNone(f({"titulo": "Programa federal de fomento", "nivel": "federal", "uf": "DF"}))
+        self.assertIn("_arq_mun", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"), "o livro fica")

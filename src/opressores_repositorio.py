@@ -259,7 +259,8 @@ def sincronizar() -> dict:
     #     dos motores (não passam pelo fluxo); as mesmas regras de dispensa valem
     _rep = _j(ROOT / "dados/oportunidades/repositorio_unico.json", {})
     for x in _rep.get("registros") or []:
-        if x.get("estado") not in ("em_verificacao", "validada", "validacao_manual") or str(x.get("proximo_passo") or "").startswith("dispensar"):
+        _arq_mun = str(x.get("motivo_estado") or "").startswith("arquivada: municipal fora de Goiás")   # 11/10: só o livro fica
+        if (x.get("estado") not in ("em_verificacao", "validada", "validacao_manual") and not _arq_mun) or str(x.get("proximo_passo") or "").startswith("dispensar"):
             continue                                    # 11/10: o que vai ser dispensado (não é chamamento) não ganha livro
         _ja = [idx[i] for i in [x["id"]] + list(x.get("ids_origem") or []) if i in idx]
         if any("opressor" in j for j in _ja):
