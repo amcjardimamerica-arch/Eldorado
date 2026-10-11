@@ -116,8 +116,9 @@ def certidao_de(x: dict, origem: str) -> tuple[dict, list[str]]:
     return cert, avisos
 
 
-def importar(pasta: Path, origem: str, gravar: bool = True) -> dict:
+def importar(pasta: Path, origem: str, gravar: bool = True, externa: bool = False) -> dict:
     regs = ler_lotes(pasta)
+    av_externa = cobrar_resolucao(regs) if externa else []     # busca externa: arquivar, eliminar ou completar
     if not regs:
         raise SystemExit(f"nenhum resultado_ABERTAS_*.json em {pasta}")
     ver = json.loads(VEREDITOS.read_text(encoding="utf-8")) if VEREDITOS.exists() else {"vereditos": {}}
@@ -168,6 +169,7 @@ def importar(pasta: Path, origem: str, gravar: bool = True) -> dict:
     ver.update({"regra": "Veredito da revisão humana (leitura do documento oficial). Aplicado pelo saneamento antes de qualquer regra automática.",
                 "em": _agora()})
     rel = {"lidos": len(regs), "vereditos": n_ver, "certidoes": n_cert, "derivadas": n_der, "selos_das_certidoes": selos,
+           "resolucao_incompleta_da_busca_externa": av_externa,
            "avisos": avisos[:50], "gravado": gravar}
     if gravar:
         VEREDITOS.parent.mkdir(parents=True, exist_ok=True)
@@ -179,11 +181,34 @@ def importar(pasta: Path, origem: str, gravar: bool = True) -> dict:
     return rel
 
 
+RESOLUCOES_EXTERNAS = ("ouro", "encerrada", "ruido", "fora_perfil", "duplicata", "validacao_manual")
+
+
+def cobrar_resolucao(regs: dict) -> list[str]:
+    """11/10 (titular): toda busca EXTERNA termina em arquivar (encerrada, com o prazo comprovado), eliminar (ruído/fora do
+    perfil, com motivo) ou completar (ouro 12/12). Parcial volta à fila como 'validacao_manual: resolução incompleta'."""
+    avisos = []
+    for rid, x in regs.items():
+        v = x.get("veredito")
+        incompleta = None
+        if v not in RESOLUCOES_EXTERNAS:
+            incompleta = f"veredito '{v}' não é resolução"
+        elif v == "encerrada" and not ((x.get("prazo") or {}).get("fim") and (x.get("prazo") or {}).get("trecho")):
+            incompleta = "arquivar exige o prazo de inscrição comprovado (fim + trecho do documento oficial)"
+        elif v in ("ruido", "fora_perfil") and not str(x.get("parecer") or x.get("motivo") or "").strip():
+            incompleta = "eliminar exige o motivo"
+        if incompleta:
+            x["veredito"] = "validacao_manual"; x["parecer"] = f"resolução incompleta da busca externa — {incompleta}. " + str(x.get("parecer") or "")
+            avisos.append(f"{rid}: {incompleta}")
+    return avisos
+
+
 def main(argv: list[str]) -> None:
     args = [a for a in argv if not a.startswith("--")]
     pasta = Path(args[0]) if args else ROOT / "dados/revisoes/abertas_p1_go_2026_10_10"
     origem = next((a.split("=", 1)[1] for a in argv if a.startswith("--origem=")), pasta.name)
-    print(json.dumps(importar(pasta if pasta.is_absolute() else ROOT / pasta, origem, gravar="--verificar" not in argv),
+    print(json.dumps(importar(pasta if pasta.is_absolute() else ROOT / pasta, origem, gravar="--verificar" not in argv,
+                              externa="--externa" in argv),
                      ensure_ascii=False, indent=2))
 
 
