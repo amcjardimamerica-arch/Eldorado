@@ -1361,6 +1361,15 @@ box-sizing:border-box;}
 #v-neural .holo .inst>div,#nv-portal .holo .inst>div{min-width:0}
 #v-neural .holo .bloco,#nv-portal .holo .bloco{margin-top:22px}
 #v-neural .holo .bloco h4,#nv-portal .holo .bloco h4{margin:0 0 10px;font:400 14px "Michroma",sans-serif;color:var(--aurora)}
+#v-neural [data-det],#nv-portal [data-det]{cursor:pointer;border-radius:7px;transition:background .2s}
+#v-neural [data-det]:hover,#nv-portal [data-det]:hover{background:rgba(94,230,200,.12)!important}
+#nv-portal .det-caixa{grid-column:1/-1;margin:6px 0 10px;padding:12px 14px;border-radius:12px;background:rgba(94,230,200,.08);border:1px solid rgba(94,230,200,.35);font-size:13.5px;line-height:1.5;color:#DDE2F6}
+#nv-portal .det-caixa b{color:#EAF2FF}#nv-portal .det-caixa .faint{color:#8B93B8}
+#nv-portal .cabeca-const{display:flex;gap:16px;align-items:center;margin:2px 0 10px;padding:10px 14px;border-radius:14px;background:rgba(155,140,255,.10);border:1px solid rgba(155,140,255,.28)}
+#nv-portal .cabeca-const b{font:400 15px "Michroma",sans-serif;color:#EAF2FF}
+#v-neural .tubo button,#v-neural .nucleo,#v-neural .contagens span{cursor:pointer}
+#v-neural .tubo button{border:0;text-align:left;font:inherit;color:inherit;background:rgba(94,230,200,.07);border-radius:12px;padding:8px 10px}
+#v-neural .tubo button:hover{background:rgba(94,230,200,.16)}
 #v-neural .matriz,#nv-portal .matriz{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:5px}
 #v-neural .matriz span,#nv-portal .matriz span{font-size:12px;padding:5px 7px;border-radius:7px;background:rgba(255,255,255,.04);display:flex;gap:6px;align-items:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 #v-neural .matriz i,#nv-portal .matriz i{width:7px;height:7px;border-radius:50%;flex:none}
@@ -1372,7 +1381,7 @@ box-sizing:border-box;}
     <div class="topo">
       <div class="titulo"><h2>Sala de controle</h2>
         <p>Cada estrela deste céu é um motor do Eldorado; cada constelação, uma etapa da rede neural. Siga o sinal de cima para baixo e clique em qualquer etapa, mostrador ou estrela para abrir o detalhe.</p>
-        <div class="vidro nucleo"><div id="nv-indice" style="width:150px"></div><div class="contagens" id="nv-contagens"></div></div></div>
+        <div class="vidro nucleo" onclick="nvVisao(this)" title="abrir a composição do índice"><div id="nv-indice" style="width:150px"></div><div class="contagens" id="nv-contagens"></div></div></div>
       <div class="vidro alarmes"><h3 id="nv-alarmes-tit">Painel de alarmes</h3><div class="janelas" id="nv-janelas"></div></div>
       <div class="vidro esteira"><h3>O caminho do dado</h3><div class="tubo" id="nv-tubo"></div><div class="faint" id="nv-leitura" style="font-size:13px;margin-top:12px">lendo…</div></div>
     </div>
@@ -1439,8 +1448,8 @@ box-sizing:border-box;}
   function faixaTxt(f,u){ if(!f) return "—"; const N=f.normal||[null,null],A=f.alarme||[null,null],p=[],s=u?" "+u:"";
     if(N[0]!=null||N[1]!=null) p.push("normal "+(N[0]!=null&&N[1]!=null?`de ${n(N[0])} a ${n(N[1])}`:N[0]!=null?`a partir de ${n(N[0])}`:`até ${n(N[1])}`)+s);
     if(A[0]!=null) p.push(`alarme abaixo de ${n(A[0])}${s}`); if(A[1]!=null) p.push(`alarme acima de ${n(A[1])}${s}`); return p.join("; "); }
-  const linhas=(obj,lim=6,fmt)=>Object.entries(obj||{}).sort((a,b)=>(typeof b[1]==="number"?b[1]:0)-(typeof a[1]==="number"?a[1]:0)).slice(0,lim)
-    .map(([k,v])=>`<div><span title="${e(k)}">${e(k)}</span><b>${fmt?fmt(v):n(v)}</b></div>`).join("");
+  const linhas=(obj,lim=6,fmt,tipo)=>Object.entries(obj||{}).sort((a,b)=>(typeof b[1]==="number"?b[1]:0)-(typeof a[1]==="number"?a[1]:0)).slice(0,lim)
+    .map(([k,v])=>`<div${tipo?` data-det="${tipo}|${e(k)}"`:""}><span title="${e(k)}">${e(k)}</span><b>${fmt?fmt(v):n(v)}</b></div>`).join("");
   /* o que cada etapa lista ao lado dos mostradores (resumo) e no holograma (completo) */
   function resumo(et){ const D=SC.detalhes||{}, M=SC.mimico||[];
     switch(et.id){
@@ -1470,28 +1479,57 @@ box-sizing:border-box;}
       :`<button class="cnt cam" style="--d:1.2;border:0;border-left:1px solid rgba(155,140,255,.25);background:none;color:inherit;text-align:left;cursor:pointer" onclick="event.stopPropagation();nvHolo('${et.id}',this,'${x.id}')"><b class="mx">${n(x.valor)}</b><small>${e(CURTO[x.id]||x.nome)}</small></button>`).join(""); }
   /* holograma: nasce do elemento clicado (morph do retângulo de origem até o centro) */
   function completo(et){ const D=SC.detalhes||{}; let h="";
-    if(et.id==="regencia") h=`<div class="bloco"><h4>Plano do maestro · ${n((D.maestro||[]).length)} motores</h4><div class="matriz">${(D.maestro||[]).map(m=>`<span title="${e(m.motor)} · ${e(m.cobertura)} · tentativas ${n(m.tentativas)}"><i style="background:${m.cobertura==="completa"?COR.verde:m.cobertura==="parcial"?COR.amarelo:m.cobertura==="pendente_local"?COR.violeta||"#9B8CFF":COR.cinza}"></i>${e(m.motor)}</span>`).join("")}</div></div>`;
-    if(et.id==="coleta") h=`<div class="bloco"><h4>Cada motor · ${n((D.motores||[]).length)}</h4><div class="matriz">${(D.motores||[]).map(m=>`<span title="${e(m.resultado)}"><i style="background:${m.luz==="vermelho"?COR.vermelho:m.luz==="verde"?COR.verde:COR.cinza}"></i>${e(m.nome)}</span>`).join("")}</div></div>`;
-    if(et.id==="repositorio"||et.id==="aprendizado") h=`<div class="bloco"><h4>Próximo passo de cada aberta</h4><div class="lista">${linhas(D.proximo_passo,10)}</div></div><div class="bloco"><h4>Etapa da esteira</h4><div class="lista">${linhas(D.por_etapa,9)}</div></div>`;
-    if(et.id==="biblioteca") h=`<div class="bloco"><h4>Estantes</h4><div class="lista">${linhas(D.estantes,4)}</div></div>`;
-    if(et.id==="certificacao") h=`<div class="bloco"><h4>Os 12 itens</h4><div class="lista">${Object.entries(D.cartorio_itens||{}).map(([k,v])=>`<div style="display:block"><span style="display:flex;justify-content:space-between"><span>${e(k)}</span><b>${Math.round(100*(v.eficiencia||0))}% · ${n(v.obtidos)} obtidos de ${n(v.faltavam)}</b></span><div class="barra"><i style="width:${Math.round(100*(v.eficiencia||0))}%"></i></div></div>`).join("")}</div></div>`;
-    if(et.id==="investigacao") h=`<div class="bloco"><h4>Últimas missões do Interceptador</h4><div class="lista">${(D.interceptador_missoes||[]).map(m=>`<div><span title="${e(m.alvo)}">${dm(m.em)} · ${e(m.alvo)}</span><b>${e(m.modo)}</b></div>`).join("")}</div></div>
-      <div class="bloco"><h4>Famílias de busca do Espião</h4><div class="lista">${Object.entries(D.espiao_familias||{}).sort((a,b)=>(b[1].usos||0)-(a[1].usos||0)).map(([k,v])=>`<div><span>${e(k.replace(/_/g," "))}</span><b>${n(v.usos)} voos · ${n(v.achados)} achados · ${n(v.empresas)} empresas</b></div>`).join("")}</div></div>`;
-    if(et.id==="externa") h=`<div class="bloco"><h4>Fila de reprocessamento</h4><div class="lista">${linhas(D.reprocessar,14)}</div></div>`;
+    if(et.id==="regencia") h=`<div class="bloco"><h4>Plano do maestro · ${n((D.maestro||[]).length)} motores</h4><div class="matriz">${(D.maestro||[]).map(m=>`<span data-det="maestro|${e(m.motor)}" title="${e(m.motor)} · ${e(m.cobertura)} · tentativas ${n(m.tentativas)}"><i style="background:${m.cobertura==="completa"?COR.verde:m.cobertura==="parcial"?COR.amarelo:m.cobertura==="pendente_local"?COR.violeta||"#9B8CFF":COR.cinza}"></i>${e(m.motor)}</span>`).join("")}</div></div>`;
+    if(et.id==="coleta") h=`<div class="bloco"><h4>Cada motor · ${n((D.motores||[]).length)}</h4><div class="matriz">${(D.motores||[]).map(m=>`<span data-det="motor|${e(m.id)}" title="${e(m.resultado)}"><i style="background:${m.luz==="vermelho"?COR.vermelho:m.luz==="verde"?COR.verde:COR.cinza}"></i>${e(m.nome)}</span>`).join("")}</div></div>`;
+    if(et.id==="repositorio"||et.id==="aprendizado") h=`<div class="bloco"><h4>Próximo passo de cada aberta</h4><div class="lista">${linhas(D.proximo_passo,10,null,"passo")}</div></div><div class="bloco"><h4>Etapa da esteira</h4><div class="lista">${linhas(D.por_etapa,9,null,"etapa")}</div></div><div class="bloco"><h4>De onde vêm as abertas</h4><div class="lista">${linhas(D.por_origem,9,null,"origem")}</div></div>`;
+    if(et.id==="biblioteca") h=`<div class="bloco"><h4>Estantes</h4><div class="lista">${linhas(D.estantes,4,null,"estante")}</div></div>`;
+    if(et.id==="certificacao") h=`<div class="bloco"><h4>Os 12 itens</h4><div class="lista">${Object.entries(D.cartorio_itens||{}).map(([k,v])=>`<div style="display:block" data-det="item|${e(k)}"><span style="display:flex;justify-content:space-between"><span>${e(k)}</span><b>${Math.round(100*(v.eficiencia||0))}% · ${n(v.obtidos)} obtidos de ${n(v.faltavam)}</b></span><div class="barra"><i style="width:${Math.round(100*(v.eficiencia||0))}%"></i></div></div>`).join("")}</div></div>`;
+    if(et.id==="investigacao") h=`<div class="bloco"><h4>Últimas missões do Interceptador</h4><div class="lista">${(D.interceptador_missoes||[]).map((m,ix)=>`<div data-det="missao|${ix}"><span title="${e(m.alvo)}">${dm(m.em)} · ${e(m.alvo)}</span><b>${e(m.modo)}</b></div>`).join("")}</div></div>
+      <div class="bloco"><h4>Famílias de busca do Espião</h4><div class="lista">${Object.entries(D.espiao_familias||{}).sort((a,b)=>(b[1].usos||0)-(a[1].usos||0)).map(([k,v])=>`<div data-det="familia|${e(k)}"><span>${e(k.replace(/_/g," "))}</span><b>${n(v.usos)} voos · ${n(v.achados)} achados · ${n(v.empresas)} empresas</b></div>`).join("")}</div></div>`;
+    if(et.id==="externa") h=`<div class="bloco"><h4>Fila de reprocessamento</h4><div class="lista">${linhas(D.reprocessar,14,null,"reproc")}</div></div>`;
     return h; }
-  function instrumentoHtml(x){ return `<div class="inst" id="nv-i-${x.id}">${x.escala&&typeof x.valor==="number"?mostrador(x,120):`<div class="mx" style="font-size:26px;align-self:center;text-align:center">${n(x.valor)}<div class="faint" style="font:500 13px Saira Semi Condensed">${e(x.unidade||"")}</div></div>`}
+  function instrumentoHtml(x){ return `<div class="inst" id="nv-i-${x.id}" data-det="hist|${x.id}" title="clique para ver o histórico das leituras">${x.escala&&typeof x.valor==="number"?mostrador(x,120):`<div class="mx" style="font-size:26px;align-self:center;text-align:center">${n(x.valor)}<div class="faint" style="font:500 13px Saira Semi Condensed">${e(x.unidade||"")}</div></div>`}
       <div><h4>${e(x.nome)}</h4><span style="color:${COR[x.estado]};font-weight:600;font-size:13.5px">${EST[x.estado]}</span> <span class="faint" style="font-size:13px">· ${e(x.motivo)}</span>
       <dl><dt>O que faz</dt><dd>${e(x.faz)}</dd><dt>Acionado</dt><dd>${x.quando?dm(x.quando)+" · "+idade(x.idade_h):"sem registro"} (a cada ${n(x.cadencia_h)} h)</dd>
       <dt>Efeito</dt><dd>${e(x.efeito)}</dd><dt>Resultado</dt><dd><b>${n(x.valor)} ${e(x.unidade||"")}</b> — ${e(x.resultado)}</dd><dt>Faixa</dt><dd>${e(faixaTxt(x.faixa,x.unidade))}</dd>
       <dt>Tendência</dt><dd>${trilha(x.id)}</dd></dl></div></div>`; }
+  const SIGN={estante:{ouro:"livro com recorrência comprovada: dá para prever a próxima edição com segurança",prata:"há histórico anterior, mas falta prova para prever com segurança",
+      bronze:"só a edição atual: o livro ainda precisa de histórico",sem_livro:"oportunidade aberta ainda sem livro na Biblioteca"},
+    origem:{agregador:"veio de um agregador de editais (pista; a prova é no site oficial)",interceptador:"veio da investigação do Interceptador",site_oficial:"lida direto no site oficial",
+      espiao:"descoberta pelo Piloto Espião",querido_diario:"publicação no Querido Diário",pncp:"Portal Nacional de Contratações Públicas",revisao:"incluída pela revisão humana",diario_oficial:"diário oficial"}};
+  function detalheItem(tipo,chave){ const D=SC.detalhes||{};
+    if(tipo==="motor"||tipo==="maestro"){ const mo=(D.motores||[]).find(m=>m.id===chave||m.nome===chave), pl=(D.maestro||[]).find(m=>m.motor===chave||(mo&&m.motor===mo.id));
+      return `<b>${e(mo?.nome||chave)}</b> <span class="faint">(${e(chave)})</span><br>${mo?`estado: <span class="luz ${mo.luz==="vermelho"?"vermelho":mo.luz==="verde"?"verde":"cinza"}" style="width:9px;height:9px"></span> ${mo.luz==="vermelho"?"em falha":mo.luz==="verde"?"funcionando":"inativo"} · última leitura ${dm(mo.ultima_leitura)}<br>resultado do dia: ${e(mo.resultado||"—")}<br>`:""}
+        ${pl?`plano do maestro hoje: cobertura <b>${e(pl.cobertura)}</b> · prioridade ${n(pl.prioridade)} · diagnóstico ${e(pl.diagnostico||"—")} · tentativas hoje ${n(pl.tentativas)} · coleta ${e(pl.coleta||"—")}${pl.abertura_proxima?` · ${n(pl.abertura_proxima)} livros com abertura próxima no índice`:""}`:"sem plano do maestro para hoje"}`; }
+    if(tipo==="hist"){ const L=(SC.historico||[]).map(q=>({em:q.em,v:(q.v||{})[chave]})).filter(q=>typeof q.v==="number").slice(-12).reverse(), x=I(chave);
+      return `<b>Histórico das leituras · ${e(x?.nome||chave)}</b><br>${L.length?L.map(q=>`${dm(q.em)} — <b>${n(q.v)}</b> ${e(x?.unidade||"")}`).join("<br>"):"<span class='faint'>as leituras se acumulam a cada passagem do maestro</span>"}`; }
+    if(tipo==="missao"){ const m=(D.interceptador_missoes||[])[+chave]; return m?`<b>Missão de ${dm(m.em)}</b><br>alvo: ${e(m.alvo)}<br>modo: ${e(m.modo)}${m.resultado?`<br>resultado: ${e(m.resultado)}`:""}`:"—"; }
+    if(tipo==="familia"){ const f=(D.espiao_familias||{})[chave]||{}; const tx=f.usos?Math.round(100*(f.achados||0)/f.usos):0;
+      return `<b>Família de busca: ${e(chave.replace(/_/g," "))}</b><br>${n(f.usos)} voos · ${n(f.achados)} achados (${tx}% dos voos) · ${n(f.empresas)} empresas novas<br><span class="faint">o Espião usa mais as famílias que rendem mais (aprendizado por recompensa)</span>`; }
+    if(tipo==="item"){ const v=(D.cartorio_itens||{})[chave]||{}; return `<b>${e(chave)}</b><br>faltavam ${n(v.faltavam)} · obtidos na fonte oficial ${n(v.obtidos)} · dispensados ${n(v.dispensados)} · eficiência <b>${Math.round(100*(v.eficiencia||0))}%</b><br><span class="faint">eficiência = obtidos ÷ itens que faltavam quando entraram no Cartório</span>`; }
+    const mapa={passo:D.proximo_passo,etapa:D.por_etapa,estante:D.estantes,origem:D.por_origem,reproc:D.reprocessar}[tipo]||{}; const v=mapa[chave], tot=Object.values(mapa).reduce((s,q)=>s+(typeof q==="number"?q:0),0);
+    const sig=(SIGN[tipo]||{})[chave]||{passo:"é o próximo passo que a esteira dará com estas oportunidades",etapa:"é a etapa da esteira em que estas oportunidades estão agora",reproc:"é o motivo pelo qual estes registros voltaram para ser relidos na fonte"}[tipo]||"";
+    return `<b>${e(chave)}</b><br><b>${n(v)}</b> de ${n(tot)} (${tot?Math.round(100*v/tot):0}%)${sig?`<br><span class="faint">${e(sig)}</span>`:""}`; }
+  function ligarDetalhes(H){ H.onclick=ev=>{ const el=ev.target.closest("[data-det]"); if(!el||!H.contains(el)||ev.target.closest("a,.fechar")) return;
+      const prox=el.nextElementSibling; if(prox&&prox.classList.contains("det-caixa")){ prox.remove(); return; }
+      H.querySelectorAll(".det-caixa").forEach(c=>c.remove()); const [tipo,...r]=el.dataset.det.split("|"); const c=document.createElement("div"); c.className="det-caixa"; c.innerHTML=detalheItem(tipo,r.join("|"));
+      el.insertAdjacentElement("afterend",c); }; }
+  window.nvVisao=function(origem){ const H=$("nv-holo"),V=$("nv-veu"); foco=null; const ord=["vermelho","amarelo","cinza","verde"];
+    H.innerHTML=`<div class="conteudo"><button class="fechar" onclick="nvFecha()">Fechar</button><div class="faint" style="font-size:13px">observatório</div><h3>Índice de saúde do sistema: ${n(SC.indice_saude)}</h3>
+      <p style="color:#C9CFEA;margin:0;max-width:80ch">Cada instrumento conta 100 quando normal, 60 em atenção e 15 em alarme; o índice é a média. Clique num instrumento para abrir a etapa dele.</p>
+      ${ord.map(k=>{const L=(SC.instrumentos||[]).filter(x=>x.estado===k); return L.length?`<div class="bloco"><h4><span class="luz ${k}"></span>&nbsp; ${EST[k]} · ${L.length}</h4><div class="lista">${L.map(x=>`<div onclick="nvHolo('${(ETAPAS.find(t=>t.ids.includes(x.id))||{id:"farol"}).id}',this,'${x.id}')" style="cursor:pointer"><span>${e(x.nome)}</span><b>${n(x.valor)} ${e(x.unidade||"")}</b></div>`).join("")}</div></div>`:"";}).join("")}</div>`;
+    abrirJanela(H,V,origem,null); };
   window.nvHolo=function(etId,origem,instId){
     const et=ETAPAS.find(x=>x.id===etId); if(!et) return; const H=$("nv-holo"), V=$("nv-veu"); foco=etId;
     const L=et.ids.map(I).filter(Boolean);
-    H.innerHTML=`<div class="conteudo"><button class="fechar" onclick="nvFecha()">Fechar</button><div class="faint" style="font-size:13px">etapa ${ETAPAS.indexOf(et)+1} de ${ETAPAS.length} · ${EST[pior(L)]}</div>
+    const C=CONSTELACOES[et.id];
+    H.innerHTML=`<div class="conteudo"><button class="fechar" onclick="nvFecha()">Fechar</button>${C?`<div class="cabeca-const">${desenhoConst(C)}<div><span class="faint" style="font-size:12.5px">constelação desta etapa</span><br><b>${e(C.nome)}</b><br><span style="color:#C9CFEA;font-size:13.5px">${e(C.rel)}</span></div></div>`:""}<div class="faint" style="font-size:13px">etapa ${ETAPAS.indexOf(et)+1} de ${ETAPAS.length} · ${EST[pior(L)]}</div>
       <h3>${e(et.nome)}</h3><p style="color:#C9CFEA;margin:0;max-width:80ch">${e(et.faz)}</p>${L.length?`<div class="grade">${L.map(instrumentoHtml).join("")}</div>`:""}${completo(et)}</div>`;
     abrirJanela(H,V,origem,instId); observarVivos(H);
   };
-  function abrirJanela(H,V,origem,instId){
+  function desenhoConst(C){ const w=96,h=64; return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${C.a.map(([a,b])=>{const A=C.p[a],B=C.p[b];return `<line x1="${(4+A[0]*(w-8)).toFixed(1)}" y1="${(4+A[1]*(h-8)).toFixed(1)}" x2="${(4+B[0]*(w-8)).toFixed(1)}" y2="${(4+B[1]*(h-8)).toFixed(1)}" stroke="rgba(155,140,255,.75)" stroke-width="1.2"/>`;}).join("")}
+      ${C.p.map(([x,y,m])=>`<circle cx="${(4+x*(w-8)).toFixed(1)}" cy="${(4+y*(h-8)).toFixed(1)}" r="${m===1?2.8:m===2?2.1:1.5}" fill="#EAF2FF"/>`).join("")}</svg>`; }
+  function abrirJanela(H,V,origem,instId){ ligarDetalhes(H);
     clearTimeout(H._tFecha); clearTimeout(H._tPronta); H._sessao=(H._sessao||0)+1; const sessao=H._sessao;   // cancela o fechamento pendente
     H.style.transition="none"; H.style.transform="none"; H.style.display="block"; H.classList.remove("pronta");
     const w=H.offsetWidth, h=Math.min(H.offsetHeight, Math.round(innerHeight*.86));   // tamanho real, sem a transformação anterior
@@ -1581,7 +1619,7 @@ box-sizing:border-box;}
       for(const no of NOS){ const y=no.y-off; if(y<-300||y>Hh+300) continue; const acesa=foco===no.id||no.hover; g.strokeStyle=acesa?"rgba(94,230,200,.9)":"rgba(155,140,255,.30)"; g.lineWidth=acesa?1.6:.9;
         g.beginPath(); (no.arestas||[]).forEach(([a,b])=>{const A=no.cons[a],B=no.cons[b]; if(A&&B){g.moveTo(A.x,A.y-off); g.lineTo(B.x,B.y-off);}}); g.stroke();
         no.cons.forEach(p=>{ const r=(p.m===1?3.4:p.m===2?2.5:1.8)*(acesa?1.25:1); g.globalAlpha=acesa?1:.8; g.drawImage(sprite("e","rgba(234,242,255,.9)",14),p.x-r*2.2,p.y-off-r*2.2,r*4.4,r*4.4); g.globalAlpha=1; });
-        if(no.nome){ g.font="500 12px 'Saira Semi Condensed',sans-serif"; g.fillStyle=acesa?"rgba(234,242,255,.85)":"rgba(234,242,255,.38)"; g.fillText(no.nome+(acesa?" · "+no.rel:""),no.lx,no.ly-off); }
+
       } }
     requestAnimationFrame(desenharCeu); }
   function interacoes(){ const P=$("nv-palco"), dica=$("nv-dica");
@@ -1611,7 +1649,8 @@ box-sizing:border-box;}
     const ord={vermelho:0,amarelo:1,cinza:2,verde:3}; jan.sort((a,b)=>ord[a.nivel]-ord[b.nivel]);
     $("nv-alarmes-tit").textContent=`Painel de alarmes · ${jan.filter(j=>j.nivel!=="verde").length} acesos de ${jan.length}`;
     $("nv-janelas").innerHTML=jan.map(j=>`<button class="jan ${j.nivel}" title="${e(j.motivo)}" onclick="nvHolo('${j.et}',this,'${e(j.id)}')"><span class="luz ${j.nivel==="verde"?"verde":j.nivel}"></span>${e(j.nome)}</button>`).join("");
-    $("nv-tubo").innerHTML=M.map(m=>`<div><b>${n(m.valor)}</b><small>${e(m.etapa)}</small></div>`).join("");
+    const TUBO={"Coleta":"coleta","Distintas":"repositorio","Abertas":"repositorio","Com livro":"biblioteca","Cartório":"certificacao","Interceptador":"investigacao","Verificação externa":"externa","Prontas para o Farol":"farol"};
+    $("nv-tubo").innerHTML=M.map(m=>`<button onclick="nvHolo('${TUBO[m.etapa]||"farol"}',this)" title="abrir a etapa"><b>${n(m.valor)}</b><small>${e(m.etapa)}</small></button>`).join("");
     $("nv-leitura").textContent=`leitura de ${dm(d.em)} · atualiza a cada passagem do maestro`;
     $("nv-faixas").innerHTML=ETAPAS.map((et,k)=>{ const L=et.ids.map(I).filter(Boolean); const p=et.id==="farol"&&(d.fluxos||[]).some(f=>f.conclusao==="failure")?pior([...L,{estado:"amarelo"}])
         :et.id==="externa"?((M[6]?.valor||0)>0?"amarelo":"verde"):pior(L.length?L:[{estado:"cinza"}]);
