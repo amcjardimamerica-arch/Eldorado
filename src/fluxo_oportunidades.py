@@ -588,6 +588,15 @@ def montar() -> dict:
                             for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}
     SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    try:                                     # 11/10 (titular): REPOSITÓRIO ÚNICO — todas as origens num só lugar; a tela
+        from .repositorio_unico import construir as _repo     # inicial, o Cartório e o Chrome contam o MESMO universo
+        _r = _repo()
+        res["parametro"] = {**(res.get("parametro") or {}), **{k: _r[k] for k in ("abertas", "validadas", "em_verificacao", "validacao_manual")},
+                            "estantes": _r.get("estantes"), "fonte": "repositório único (dados/oportunidades/repositorio_unico.json)",
+                            "auditoria": _r.get("auditoria")}
+        SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    except Exception as ex:  # noqa: BLE001 — o repositório nunca derruba o fluxo
+        res.setdefault("etapas", {})["repositorio_unico"] = f"falhou: {type(ex).__name__}"
     return {"mapa_total": tot, **res["etapas"]}
 
 

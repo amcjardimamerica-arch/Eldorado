@@ -388,6 +388,28 @@ def _situacao_caixa() -> dict:
     return _CAIXA["m"]
 
 
+_REP: dict = {}
+
+
+def _repositorio() -> set | None:
+    """ids (todas as origens) das oportunidades ABERTAS do repositório único; None se ele ainda não existe."""
+    if "s" not in _REP:
+        d = _j(ROOT / "dados/oportunidades/repositorio_unico.json", {})
+        _REP["s"] = ({i for x in (d.get("registros") or []) if x.get("estado") in ("em_verificacao", "validada", "validacao_manual")
+                      for i in [x["id"]] + list(x.get("ids_origem") or [])} if d.get("registros") else None)
+    return _REP["s"]
+
+
+def _ordem_da_skill(op: dict) -> list[int] | None:
+    """Profa. Clara: a ordem de abordagens da SKILL da origem (config/skills_extracao_origem.json)."""
+    try:
+        from .repositorio_unico import _skill
+        sk = (_j(ROOT / "config/skills_extracao_origem.json", {}).get("skills") or {}).get(_skill(op.get("origem")))
+        return list(sk.get("ordem") or []) or None
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def fila_estrelas(fluxo: dict | None = None) -> list[dict]:
     d = fluxo if fluxo is not None else _j(FLUXO, {})
     out = []
@@ -402,6 +424,9 @@ def fila_estrelas(fluxo: dict | None = None) -> list[dict]:
             conferir = [k for k in L.DOZE if k not in faltam and (ck.get(k) or {}).get("s") in ("ok", "val", "dt")
                         and (ck.get(k) or {}).get("de") != "Cartório" and k not in (cert.get("itens") or {})
                         and k not in (cert.get("dispensas") or {})] if (x.get("link_oficial") or cert.get("link_oficial")) else []
+            _rp = _repositorio()                                      # 11/10 (Eng. Diego): a fila é a do repositório único
+            if _rp is not None and str(x.get("id") or "") not in _rp:
+                continue
             _cx = _situacao_caixa().get(str(x.get("id") or ""))      # 10/10: o que a caixa já fechou não entra na fila
             if _cx and (_cx[0] == "encerrada" or _cx[1] == "duplicata"):
                 continue
@@ -605,7 +630,8 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
         faltam = op.get("_faltam") or (["Objeto"] if op.get("_sem_site") else [])
         est0 = op["_estagio"]
         escolhida, docs, aj = None, [], {}
-        for n in LN.proxima_abordagem(est0, usadas):
+        _ord = _ordem_da_skill(op) if op.get("_tipo") == "estrela" else None
+        for n in ([k for k in _ord if k not in usadas] if _ord else LN.proxima_abordagem(est0, usadas)):
             try:
                 docs, aj = LN.documentos(n, op, rede, ant, bib, int(c["documentos_por_oportunidade"]))
             except Exception:  # noqa: BLE001
