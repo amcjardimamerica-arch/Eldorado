@@ -586,6 +586,43 @@ def deduplicar(itens: list[dict]) -> tuple[list[dict], dict]:
     return fica, {"duplicatas_fundidas_antes_do_registro": fundidas}
 
 
+def incluir_do_repositorio(res: dict) -> int:
+    """11/10/2026 (titular): a tela inicial contava a lista do fluxo (465) e a Bússola o repositório único (558) — as
+    oportunidades que vêm só da caixa dos motores não estavam na lista. Elas entram aqui, com o estado do repositório,
+    e a lista passa a ter o mesmo universo do parâmetro."""
+    rep = (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}) or {}).get("registros") or []
+    por_uf = res.setdefault("itens_por_uf", {})
+    if rep:                                  # a lista segue o repositório: sem fechadas e uma linha por oportunidade
+        dono = {i: r for r in rep for i in [r["id"], *(r.get("ids_origem") or [])]}
+        vistos = set()
+        for uf in list(por_uf):
+            fica = []
+            for x in por_uf[uf]:
+                r = dono.get(str(x.get("id")))
+                if r is None:
+                    fica.append(x); continue
+                if r.get("estado") == "fechada" or r["id"] in vistos:
+                    continue
+                vistos.add(r["id"]); x["estado"] = r.get("estado"); fica.append(x)
+            por_uf[uf] = fica
+    ja = {str(x.get("id")) for L in por_uf.values() for x in L} | {str(i) for L in por_uf.values() for x in L for i in (x.get("ids_origem") or [])}
+    n = 0
+    for r in rep:
+        if r.get("estado") == "fechada" or r["id"] in ja or any(i in ja for i in r.get("ids_origem") or []):
+            continue
+        ck = {k: ({"s": "ok", "v": str(v.get("valor") or "")[:120]} if v.get("estado") == "comprovado" else
+                  {"s": "disp", "v": str(v.get("motivo") or "")[:120]} if v.get("estado") == "dispensado" else
+                  {"s": "ok", "v": str(v.get("valor") or "")[:120]} if v.get("estado") == "nao_comprovado" else {"s": "falta"})
+              for k, v in (r.get("itens") or {}).items()}
+        item = {"id": r["id"], "titulo": r.get("titulo"), "url": r.get("url"), "link_oficial": r.get("link_oficial"), "fim": r.get("fim"),
+                "orgao": r.get("orgao"), "uf": r.get("uf"), "origem": r.get("origem") or "repositório único", "estado": r.get("estado"),
+                "confirmada": r.get("estado") == "validada", "checklist": ck, "livro": r.get("livro"), "ids_origem": r.get("ids_origem"),
+                "do_repositorio": True}
+        por_uf.setdefault(r.get("uf") or "__nac__", []).append(item)
+        n += 1
+    return n
+
+
 def montar() -> dict:
     itens = consolidar()
     itens, _DEDUP = deduplicar(itens)
@@ -636,6 +673,7 @@ def montar() -> dict:
     try:                                     # 11/10 (titular): REPOSITÓRIO ÚNICO — todas as origens num só lugar; a tela
         from .repositorio_unico import construir as _repo     # inicial, o Cartório e o Chrome contam o MESMO universo
         _r = _repo()
+        res["incluidas_do_repositorio"] = incluir_do_repositorio(res)        # 11/10: UM universo — a lista = o repositório
         res["parametro"] = {**(res.get("parametro") or {}), **{k: _r[k] for k in ("abertas", "validadas", "em_verificacao", "validacao_manual")},
                             "estantes": _r.get("estantes"), "fonte": "repositório único (dados/oportunidades/repositorio_unico.json)",
                             "auditoria": _r.get("auditoria")}

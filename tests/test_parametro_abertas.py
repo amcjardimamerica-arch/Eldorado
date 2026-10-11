@@ -25,3 +25,25 @@ class TesteParametro(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteUmUniverso(unittest.TestCase):
+    """11/10: a lista do fluxo (tela inicial) e o repositório (Bússola) têm o mesmo universo."""
+    def test_lista_segue_o_repositorio(self):
+        import tempfile, json as _json
+        from src import fluxo_oportunidades as F
+        rep = {"registros": [{"id": "a", "ids_origem": ["a", "a2"], "estado": "em_verificacao", "itens": {}},
+                             {"id": "b", "ids_origem": ["b"], "estado": "fechada", "itens": {}},
+                             {"id": "c", "ids_origem": ["c"], "estado": "validada", "uf": "GO", "titulo": "só da caixa", "itens": {"Objeto": {"estado": "comprovado", "valor": "x"}}}]}
+        res = {"itens_por_uf": {"GO": [{"id": "a"}, {"id": "a2"}, {"id": "b"}]}}
+        with tempfile.TemporaryDirectory() as t:
+            orig = F.ROOT; F.ROOT = Path(t)
+            (Path(t) / "dados/oportunidades").mkdir(parents=True)
+            (Path(t) / "dados/oportunidades/repositorio_unico.json").write_text(_json.dumps(rep))
+            try:
+                n = F.incluir_do_repositorio(res)
+            finally:
+                F.ROOT = orig
+        ids = [x["id"] for L in res["itens_por_uf"].values() for x in L]
+        self.assertEqual(sorted(ids), ["a", "c"], "duplicata e fechada saem; a que só o repositório tinha entra")
+        self.assertEqual(n, 1)
