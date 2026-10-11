@@ -8,8 +8,8 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 33,
- "testados": 26,
+ "cegos_da_1a_rodada": 32,
+ "testados": 25,
  "com_rota_nova": 9,
  "via_ponte": 0,
  "continuam_cegos": [
@@ -28,8 +28,7 @@
   "f260-captacao-228",
   "f260-captacao-252",
   "f260-captacao-242",
-  "f260-espalhado-rouanet-cultura-gov-br",
-  "f260-espalhado-www-rosariodosul-rs-gov-br"
+  "f260-espalhado-rouanet-cultura-gov-br"
  ],
  "aguardando_afinador": 7
 }
@@ -42,7 +41,7 @@
 
 ```json
 {
- "motores_de_ruido_1a": 21,
+ "motores_de_ruido_1a": 22,
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
@@ -95,8 +94,8 @@
   },
   {
    "motor": "f260-captacao-237",
-   "achados_total_1a": 55,
-   "achados_total_agora": 55,
+   "achados_total_1a": 61,
+   "achados_total_agora": 61,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -115,9 +114,16 @@
    "confirmadas": 0
   },
   {
+   "motor": "plat-cnpq-extensao",
+   "achados_total_1a": 24,
+   "achados_total_agora": 24,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
+  {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 679,
-   "achados_total_agora": 679,
+   "achados_total_1a": 723,
+   "achados_total_agora": 723,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -130,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 53,
-   "achados_total_agora": 53,
+   "achados_total_1a": 55,
+   "achados_total_agora": 55,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -158,22 +164,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 22,
-   "achados_total_agora": 22,
+   "achados_total_1a": 24,
+   "achados_total_agora": 24,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 50,
-   "achados_total_agora": 50,
+   "achados_total_1a": 52,
+   "achados_total_agora": 52,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 20,
-   "achados_total_agora": 20,
+   "achados_total_1a": 21,
+   "achados_total_agora": 21,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -206,7 +212,7 @@
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 2061
+ "exemplos_da_rede_de_rotas": 2142
 }
 ```
 
@@ -300,15 +306,8 @@
  "dia_de_referencia": "2026-10-11",
  "ativos": 159,
  "lidos_ontem": 48,
- "lidos_hoje": 91,
+ "lidos_hoje": 98,
  "nao_lidos_ontem_nem_hoje": [
-  "f260-captacao-118",
-  "f260-captacao-222",
-  "f260-captacao-226",
-  "f260-captacao-232",
-  "f260-captacao-233",
-  "f260-captacao-238",
-  "f260-curadoria-008",
   "plat-captamos",
   "plat-rede-filantropia",
   "recorrencia"
@@ -354,19 +353,20 @@
 
 ```json
 {
- "fontes_recebidas": 207,
+ "fontes_recebidas": 217,
  "por_origem": {
   "conselho (fontes irmãs)": 129,
-  "Cartório (site oficial certificado)": 78
+  "Cartório (site oficial certificado)": 81,
+  "Espião (privado/internacional)": 7
  },
  "lidas_nas_ultimas_24h": 120,
  "dimensionamento": {
-  "fontes": 207,
+  "fontes": 217,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 5,
-  "cobertura_diaria": 207,
+  "cobertura_diaria": 217,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
