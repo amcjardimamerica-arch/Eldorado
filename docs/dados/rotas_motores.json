@@ -1,70 +1,66 @@
 {
- "em": "2026-10-10T23:16:58+00:00",
+ "em": "2026-10-11T00:51:21+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
   "motores": 146,
   "alterar_rota": 74,
-  "rota_nova": 34,
+  "rota_nova": 35,
   "via_ponte": 1,
-  "exemplos_da_rede": 1347
+  "exemplos_da_rede": 1452
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    1.3363
+    1.3274
    ],
    [
     "tok:unidades",
-    1.1542
+    1.2059
    ],
    [
     "tok:inscricoes",
-    1.1444
+    1.2031
    ],
    [
     "tok:mpf",
     1.0878
    ],
    [
+    "tok:feed",
+    0.8713
+   ],
+   [
+    "tok:abertas",
+    0.8158
+   ],
+   [
     "tipo:plataforma",
     0.8118
+   ],
+   [
+    "tok:assuntos",
+    0.7336
+   ],
+   [
+    "tok:receitafederal",
+    0.7278
+   ],
+   [
+    "tok:programa",
+    0.7133
    ],
    [
     "tok:portarias",
     0.6759
    ],
    [
-    "tok:receitafederal",
-    0.6667
-   ],
-   [
     "tok:secult",
     0.6645
-   ],
-   [
-    "tok:assuntos",
-    0.6643
-   ],
-   [
-    "origem:rota original",
-    0.6416
-   ],
-   [
-    "tok:cultura",
-    0.6341
-   ],
-   [
-    "tok:goias",
-    0.6315
    ]
   ],
   "piores_sinais": [
-   [
-    "via:ponte",
-    -0.9423
-   ],
    [
     "tok:content",
     -0.9718
@@ -74,12 +70,8 @@
     -0.9718
    ],
    [
-    "tok:edital",
-    -0.9968
-   ],
-   [
-    "gov:False",
-    -1.0751
+    "via:ponte",
+    -1.0072
    ],
    [
     "origem:câmara",
@@ -87,11 +79,19 @@
    ],
    [
     "raiz:False",
-    -1.3422
+    -1.1318
+   ],
+   [
+    "tok:edital",
+    -1.1511
+   ],
+   [
+    "gov:False",
+    -1.1544
    ],
    [
     "origem:padrão",
-    -1.5976
+    -1.5002
    ]
   ]
  },
@@ -201,15 +201,17 @@
   "judiciario-tjgo": {
    "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
    "status": "alterar rota",
-   "vazias_seguidas": 42,
-   "leituras": 42,
+   "vazias_seguidas": 44,
+   "leituras": 44,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-10T21:38:38+00:00",
+    "em": "2026-10-11T00:35:55+00:00",
     "classe": "vazia",
     "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 1 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar"
    },
    "historico": [
+    "v",
+    "v",
     "v",
     "v",
     "v",
@@ -399,7 +401,7 @@
    "historico": [],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-10T12:52:26+00:00",
+    "em": "2026-10-11T00:50:04+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -459,7 +461,7 @@
    "historico": [],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-10T12:52:48+00:00",
+    "em": "2026-10-11T00:50:10+00:00",
     "testes": 13,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -479,21 +481,21 @@
    "historico": [],
    "rota_aprendida": {
     "urls": [
-     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1"
+     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-de-eleicao-do-cnpc/edital-de-eleicao-do-cnpc"
     ],
     "via": "direto",
     "origem": "biblioteca",
-    "pontos": 33,
-    "aprendido_em": "2026-10-10T12:57:52+00:00"
+    "pontos": 23,
+    "aprendido_em": "2026-10-11T00:50:34+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T12:57:52+00:00",
+    "em": "2026-10-11T00:50:34+00:00",
     "testes": 16,
     "melhor": {
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-de-eleicao-do-cnpc/edital-de-eleicao-do-cnpc",
      "via": "direto",
      "origem": "biblioteca",
-     "pontos": 33,
+     "pontos": 23,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -513,18 +515,18 @@
    "historico": [],
    "rota_aprendida": {
     "urls": [
-     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1"
+     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-cultura-viva-2023-fomento-a-pontoes-de-cultura"
     ],
     "via": "direto",
     "origem": "biblioteca",
     "pontos": 33,
-    "aprendido_em": "2026-10-10T12:58:12+00:00"
+    "aprendido_em": "2026-10-11T00:50:57+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T12:58:12+00:00",
+    "em": "2026-10-11T00:50:57+00:00",
     "testes": 16,
     "melhor": {
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-cultura-viva-2023-fomento-a-pontoes-de-cultura",
      "via": "direto",
      "origem": "biblioteca",
      "pontos": 33,
@@ -562,18 +564,18 @@
    "historico": [],
    "rota_aprendida": {
     "urls": [
-     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1"
+     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-cultura-viva-2023-fomento-a-pontoes-de-cultura"
     ],
     "via": "direto",
     "origem": "biblioteca",
     "pontos": 33,
-    "aprendido_em": "2026-10-10T12:58:36+00:00"
+    "aprendido_em": "2026-10-11T00:51:21+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T12:58:36+00:00",
+    "em": "2026-10-11T00:51:21+00:00",
     "testes": 16,
     "melhor": {
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-cultura-viva-2023-fomento-a-pontoes-de-cultura",
      "via": "direto",
      "origem": "biblioteca",
      "pontos": 33,
@@ -1273,49 +1275,6 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
-  "alego-pl": {
-   "nome": "Assembleia Legislativa de Goiás — proposições",
-   "status": "alterar rota",
-   "vazias_seguidas": 6,
-   "leituras": 69,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-10T21:38:00+00:00",
-    "classe": "vazia",
-    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://portal.al.go.leg.br/"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 21,
-    "aprendido_em": "2026-10-10T23:16:58+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-10T23:16:58+00:00",
-    "testes": 16,
-    "melhor": {
-     "url": "https://portal.al.go.leg.br/",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 21,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
   "f260-captacao-039": {
    "nome": "Editais de ocupação cultural municipal",
    "status": "alterar rota",
@@ -1350,47 +1309,6 @@
     "resultado": "rota nova em teste"
    }
   },
-  "plat-cnpq-extensao": {
-   "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
-   "status": "alterar rota",
-   "vazias_seguidas": 6,
-   "leituras": 43,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-10T21:56:41+00:00",
-    "classe": "vazia",
-    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1"
-    ],
-    "via": "direto",
-    "origem": "biblioteca",
-    "pontos": 33,
-    "aprendido_em": "2026-10-10T23:14:23+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-10T23:14:23+00:00",
-    "testes": 16,
-    "melhor": {
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
-     "via": "direto",
-     "origem": "biblioteca",
-     "pontos": 33,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
   "f260-captacao-206": {
    "nome": "Convênio com órgão público estadual",
    "status": "alterar rota",
@@ -1420,6 +1338,51 @@
      "via": "direto",
      "origem": "rota original",
      "pontos": 4,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
+  "judiciario-cnj": {
+   "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
+   "status": "alterar rota",
+   "vazias_seguidas": 6,
+   "leituras": 19,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-11T00:36:42+00:00",
+    "classe": "vazia",
+    "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 48) e 0 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanha"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.cnj.jus.br/editais"
+    ],
+    "via": "direto",
+    "origem": "padrão",
+    "pontos": 91,
+    "aprendido_em": "2026-10-10T15:57:10+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T15:57:10+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.cnj.jus.br/editais",
+     "via": "direto",
+     "origem": "padrão",
+     "pontos": 91,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -1707,8 +1670,27 @@
     "motivo": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
    },
    "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.institutoclaro.org.br/feed"
+    ],
+    "via": "direto",
+    "origem": "padrão",
+    "pontos": 30,
+    "aprendido_em": "2026-10-11T00:49:55+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-11T00:49:55+00:00",
+    "testes": 20,
+    "melhor": {
+     "url": "https://www.institutoclaro.org.br/feed",
+     "via": "direto",
+     "origem": "padrão",
+     "pontos": 30,
+     "formato": "sitemap/feed"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-captacao-253": {
    "nome": "Microsoft Philanthropies",
@@ -1995,6 +1977,46 @@
     "resultado": "rota nova em teste"
    }
   },
+  "mpu-destinacao": {
+   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
+   "status": "alterar rota",
+   "vazias_seguidas": 5,
+   "leituras": 15,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-11T00:36:03+00:00",
+    "classe": "vazia",
+    "motivo": "nenhum edital de destinação aberto hoje nas fontes lidas"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 13,
+    "aprendido_em": "2026-10-10T15:57:21+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T15:57:21+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 13,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
   "plat-captamos": {
    "nome": "Captamos — oportunidades de captação",
    "status": "ok",
@@ -2024,49 +2046,6 @@
    "historico": [],
    "rota_aprendida": null,
    "afinado": null
-  },
-  "judiciario-cnj": {
-   "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 4,
-   "leituras": 17,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-10T21:38:45+00:00",
-    "classe": "vazia",
-    "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 0 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.cnj.jus.br/editais"
-    ],
-    "via": "direto",
-    "origem": "padrão",
-    "pontos": 91,
-    "aprendido_em": "2026-10-10T15:57:10+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-10T15:57:10+00:00",
-    "testes": 16,
-    "melhor": {
-     "url": "https://www.cnj.jus.br/editais",
-     "via": "direto",
-     "origem": "padrão",
-     "pontos": 91,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
   },
   "f260-curadoria-010": {
    "nome": "MDHC / CONANDA — Chamamentos publicos de fomento a OSC",
@@ -2265,39 +2244,72 @@
    "rota_aprendida": null,
    "afinado": null
   },
-  "mpu-destinacao": {
-   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 13,
-   "ok": 0,
+  "do-goiania": {
+   "nome": "Diário Oficial do Município de Goiânia",
+   "status": "ok",
+   "vazias_seguidas": 1,
+   "leituras": 99,
+   "ok": 9,
    "ultima": {
-    "em": "2026-10-10T21:38:45+00:00",
+    "em": "2026-10-11T00:32:11+00:00",
     "classe": "vazia",
-    "motivo": "nenhum edital de destinação aberto hoje nas fontes lidas"
+    "motivo": "7 edição(ões) lida(s), 75 ato(s) do terceiro setor: nenhum chamamento aberto para OSC hoje · 49 a acompanhar · 26 ruído (credenciamento, OS da saúde, decretos)"
    },
    "historico": [
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": null
+  },
+  "alego-pl": {
+   "nome": "Assembleia Legislativa de Goiás — proposições",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 1,
+   "leituras": 71,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-11T00:35:14+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
     "v",
     "v",
     "v"
    ],
    "rota_aprendida": {
     "urls": [
-     "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb"
+     "https://portal.al.go.leg.br/"
     ],
     "via": "direto",
-    "origem": "biblioteca",
-    "pontos": 13,
-    "aprendido_em": "2026-10-10T15:57:21+00:00"
+    "origem": "rota original",
+    "pontos": 21,
+    "aprendido_em": "2026-10-10T23:16:58+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T15:57:21+00:00",
+    "em": "2026-10-10T23:16:58+00:00",
     "testes": 16,
     "melhor": {
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb",
+     "url": "https://portal.al.go.leg.br/",
      "via": "direto",
-     "origem": "biblioteca",
-     "pontos": 13,
+     "origem": "rota original",
+     "pontos": 21,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -2369,26 +2381,6 @@
    "rota_aprendida": null,
    "afinado": null
   },
-  "plat-estaduais-go-gov": {
-   "nome": "Oportunidade Estaduais Governamentais de Goiás",
-   "status": "ok",
-   "vazias_seguidas": 1,
-   "leituras": 31,
-   "ok": 2,
-   "ultima": {
-    "em": "2026-10-10T21:56:13+00:00",
-    "classe": "vazia",
-    "motivo": "50 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje"
-   },
-   "historico": [
-    "o",
-    "v",
-    "o",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": null
-  },
   "outras-oportunidades-3": {
    "nome": "Outras Oportunidades 3/3",
    "status": "ok",
@@ -2410,42 +2402,20 @@
    "rota_aprendida": null,
    "afinado": null
   },
-  "do-goiania": {
-   "nome": "Diário Oficial do Município de Goiânia",
-   "status": "ok",
-   "vazias_seguidas": 0,
-   "leituras": 97,
-   "ok": 8,
-   "ultima": {
-    "em": "2026-10-10T21:34:48+00:00",
-    "classe": "ok",
-    "motivo": ""
-   },
-   "historico": [
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o"
-   ],
-   "rota_aprendida": null,
-   "afinado": null
-  },
   "do-goias": {
    "nome": "Diário Oficial do Estado de Goiás",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 81,
-   "ok": 8,
+   "leituras": 83,
+   "ok": 10,
    "ultima": {
-    "em": "2026-10-10T21:36:47+00:00",
+    "em": "2026-10-11T00:33:56+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
+    "o",
     "o",
     "o",
     "o",
@@ -2462,14 +2432,16 @@
    "nome": "Diário Oficial da União",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 91,
-   "ok": 8,
+   "leituras": 93,
+   "ok": 10,
    "ultima": {
-    "em": "2026-10-10T21:37:20+00:00",
+    "em": "2026-10-11T00:34:31+00:00",
     "classe": "ok",
     "motivo": "5160 matérias no jornal, 0 de interesse (0 íntegras): nenhuma seleção aberta para OSC hoje · 0 a acompanhar · 0 ruído"
    },
    "historico": [
+    "o",
+    "o",
     "o",
     "o",
     "o",
@@ -2486,10 +2458,10 @@
    "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 75,
-   "ok": 5,
+   "leituras": 77,
+   "ok": 7,
    "ultima": {
-    "em": "2026-10-10T21:37:40+00:00",
+    "em": "2026-10-11T00:34:53+00:00",
     "classe": "ok",
     "motivo": "26 itens lidos (pautas D 0 projetos em 0 pauta(s) · processos A 0 · própria B 0 · notícias C 26): nenhum chamamento aberto para OSC · 3 a acompanhar · 0 utilida"
    },
@@ -2500,6 +2472,8 @@
     "v",
     "o",
     "v",
+    "o",
+    "o",
     "o",
     "o"
    ],
@@ -2547,14 +2521,15 @@
    "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 49,
-   "ok": 5,
+   "leituras": 50,
+   "ok": 6,
    "ultima": {
-    "em": "2026-10-10T21:56:55+00:00",
+    "em": "2026-10-11T00:41:23+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",
@@ -2731,18 +2706,62 @@
    "rota_aprendida": null,
    "afinado": null
   },
-  "plat-empresas-editais-incentivados": {
-   "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
-   "status": "ok",
+  "plat-cnpq-extensao": {
+   "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
+   "status": "rota nova funcionando",
    "vazias_seguidas": 0,
-   "leituras": 49,
-   "ok": 6,
+   "leituras": 45,
+   "ok": 1,
    "ultima": {
-    "em": "2026-10-10T21:58:53+00:00",
+    "em": "2026-10-11T00:41:10+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "o"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 33,
+    "aprendido_em": "2026-10-10T23:14:23+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T23:14:23+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 33,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
+  "plat-empresas-editais-incentivados": {
+   "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
+   "status": "ok",
+   "vazias_seguidas": 0,
+   "leituras": 50,
+   "ok": 7,
+   "ultima": {
+    "em": "2026-10-11T00:43:27+00:00",
+    "classe": "ok",
+    "motivo": ""
+   },
+   "historico": [
+    "o",
     "o",
     "o",
     "o",
@@ -2817,14 +2836,15 @@
    "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 54,
-   "ok": 6,
+   "leituras": 55,
+   "ok": 7,
    "ultima": {
-    "em": "2026-10-10T21:53:46+00:00",
+    "em": "2026-10-10T23:33:10+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",
@@ -2839,14 +2859,16 @@
    "nome": "Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 58,
-   "ok": 6,
+   "leituras": 60,
+   "ok": 8,
    "ultima": {
-    "em": "2026-10-10T21:56:29+00:00",
+    "em": "2026-10-11T00:40:58+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
+    "o",
     "o",
     "o",
     "o",
@@ -2891,14 +2913,16 @@
    "nome": "Piloto - Espião — busca aberta no terceiro setor",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 45,
-   "ok": 6,
+   "leituras": 47,
+   "ok": 8,
    "ultima": {
-    "em": "2026-10-10T21:59:04+00:00",
+    "em": "2026-10-11T00:43:39+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
+    "o",
     "o",
     "o",
     "o",
@@ -2913,14 +2937,16 @@
    "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 33,
-   "ok": 8,
+   "leituras": 35,
+   "ok": 10,
    "ultima": {
-    "em": "2026-10-10T21:38:36+00:00",
+    "em": "2026-10-11T00:35:53+00:00",
     "classe": "ok",
     "motivo": "55 itens lidos (CMO A 9 · Câmara B 2 · Senado C 5 · notícias D 35 · convocações E 4): nenhuma janela de emendas aberta nem chamamento para OSC · 14 a acompanhar"
    },
    "historico": [
+    "o",
+    "o",
     "o",
     "o",
     "o",
@@ -3117,14 +3143,16 @@
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 15,
-   "ok": 7,
+   "leituras": 17,
+   "ok": 9,
    "ultima": {
-    "em": "2026-10-10T21:38:38+00:00",
+    "em": "2026-10-11T00:35:55+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
+    "o",
     "o",
     "o",
     "o",
@@ -3140,10 +3168,10 @@
    "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 25,
-   "ok": 7,
+   "leituras": 27,
+   "ok": 9,
    "ultima": {
-    "em": "2026-10-10T21:38:45+00:00",
+    "em": "2026-10-11T00:36:03+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3154,6 +3182,29 @@
     "o",
     "o",
     "o",
+    "o",
+    "o",
+    "o"
+   ],
+   "rota_aprendida": null,
+   "afinado": null
+  },
+  "plat-estaduais-go-gov": {
+   "nome": "Oportunidade Estaduais Governamentais de Goiás",
+   "status": "ok",
+   "vazias_seguidas": 0,
+   "leituras": 32,
+   "ok": 3,
+   "ultima": {
+    "em": "2026-10-11T00:40:43+00:00",
+    "classe": "ok",
+    "motivo": ""
+   },
+   "historico": [
+    "o",
+    "v",
+    "o",
+    "v",
     "o"
    ],
    "rota_aprendida": null,
