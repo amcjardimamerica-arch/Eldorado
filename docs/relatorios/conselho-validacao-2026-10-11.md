@@ -115,15 +115,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 42,
-   "achados_total_agora": 42,
+   "achados_total_1a": 45,
+   "achados_total_agora": 45,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 855,
-   "achados_total_agora": 855,
+   "achados_total_1a": 877,
+   "achados_total_agora": 877,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -136,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 60,
-   "achados_total_agora": 60,
+   "achados_total_1a": 61,
+   "achados_total_agora": 61,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,22 +164,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 30,
-   "achados_total_agora": 30,
+   "achados_total_1a": 31,
+   "achados_total_agora": 31,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 58,
-   "achados_total_agora": 58,
+   "achados_total_1a": 59,
+   "achados_total_agora": 59,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 24,
-   "achados_total_agora": 24,
+   "achados_total_1a": 25,
+   "achados_total_agora": 25,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 2934
+ "exemplos_da_rede_de_rotas": 3008
 }
 ```
 
@@ -239,10 +239,10 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 82.7,
- "fora_dos_motores_pct_agora": 82.7,
+ "fora_dos_motores_pct_1a": 82.8,
+ "fora_dos_motores_pct_agora": 82.8,
  "origem": {
-  "agregador/outra": 202,
+  "agregador/outra": 205,
   "motor": 64,
   "Piloto": 103
  },
@@ -369,8 +369,8 @@
 {
  "fontes_recebidas": 239,
  "por_origem": {
-  "conselho (fontes irmãs)": 131,
-  "Cartório (site oficial certificado)": 92,
+  "conselho (fontes irmãs)": 130,
+  "Cartório (site oficial certificado)": 93,
   "Espião (privado/internacional)": 16
  },
  "lidas_nas_ultimas_24h": 182,
