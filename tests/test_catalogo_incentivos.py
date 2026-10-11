@@ -23,7 +23,8 @@ class TesteCatalogo(unittest.TestCase):
 
     def test_pat_incentivo_indicio_so_de_empresa_existente(self):
         """29/09: PAT é incentivo fiscal da empresa (indício), só matriz; nunca inclui empresa nem é fonte para associação."""
-        self.assertTrue(all(("Rouanet" in e["incentivos"] or "Goyazes" in e["incentivos"] or e.get("no_sistema")) for e in self.cat),
+        # 11/10: Esporte, FIA, Idoso, PRONON e PRONAS também são incentivos de DESTINAÇÃO (busca do Chrome); o PAT nunca inclui empresa
+        self.assertTrue(all((any(m in e["incentivos"] for m in ("Rouanet", "Goyazes", "Esporte", "FIA", "Idoso", "PRONON", "PRONAS")) or e.get("no_sistema")) for e in self.cat),
                         "empresa que só está no PAT não pode entrar")
         pat = [e["incentivos"]["PAT"] for e in self.cat if "PAT" in e["incentivos"]]
         self.assertGreater(len(pat), 1000)

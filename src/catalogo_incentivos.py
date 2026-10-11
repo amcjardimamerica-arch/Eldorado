@@ -256,6 +256,64 @@ def construir() -> dict:
                                                   for a, p in sorted(g["por_ano"].items())},
                                       "grafias": sorted(g["grafias"]), "casamento": modo, "fonte": "Secult-GO — créditos concedidos (Programa Goyazes)"}
         g_st[modo.split(" (")[0]] += 1
+    # 11/10/2026 (titular): BASES EXTERNAS — busca do Claude no Chrome, só fonte oficial (biblioteca_alexandria/base/
+    # incentivos/externos): Lei de Incentivo ao Esporte (painel completo 2007–2026, com CNPJ), FIA e Goyazes 2024–2026.
+    # Esporte/FIA entram como incentivos novos (por ano: valor e número de doações); Goyazes completa os anos que faltam
+    # (casamento pelo nome, como a planilha da Secult). Pessoa física nunca entra (só CNPJ de 14 dígitos ou nome de PJ).
+    ext_st = Counter()
+    nomes_cat = {}                       # casamento pelo nome: a empresa de GOIÁS tem preferência (Goyazes é goiano)
+    for e in sorted(cat.values(), key=lambda x: (not x.get("goias"), str(x.get("raiz")))):
+        if e.get("nome"):
+            nomes_cat.setdefault(norm(e["nome"]), e)
+    for arq in sorted((BASE / "externos").glob("incentivos_*.jsonl.gz")):
+        with gzip.open(arq, "rt", encoding="utf-8") as fh:
+            for l in fh:
+                r = json.loads(l); prog = r.get("programa"); ano = str(r.get("ano") or "")
+                if prog not in ("Esporte", "FIA", "Goyazes", "Idoso", "PRONON", "PRONAS") or not ano:
+                    continue
+                c = dig(r.get("cnpj"))
+                nome = str(r.get("nome") or "").strip()
+                anon = "não cadastrado" in nome.lower()
+                if len(c) == 14:
+                    e = pega(c[:8], (f"Incentivador não identificado no painel (CNPJ {c})" if anon else nome), r.get("uf"), r.get("municipio"), c)
+                    if anon is False and str(e.get("nome") or "").startswith("Incentivador não identificado"):
+                        e["nome"] = nome
+                elif nome and not anon:
+                    e = nomes_cat.get(norm(nome))
+                    if not e:
+                        e = pega("nome:" + norm(nome), nome, r.get("uf"), r.get("municipio")); nomes_cat[norm(nome)] = e; ext_st["criadas_pelo_nome"] += 1
+                else:
+                    continue
+                inc = e["incentivos"].setdefault(prog, {"por_ano": {}, "fonte": r.get("fundo_ou_conselho") or prog, "fonte_oficial": r.get("fonte_oficial")})
+                pa = inc.setdefault("por_ano", {}).setdefault(ano, {})
+                if prog == "Goyazes" and "valor" in pa and "doacoes" not in pa:
+                    continue                                     # ano já vindo da planilha da Secult: não duplica
+                pa["doacoes"] = int(pa.get("doacoes") or 0) + 1
+                if r.get("valor") is not None:
+                    pa["valor"] = round(float(pa.get("valor") or 0) + float(r["valor"]), 2)
+                if r.get("projeto"):
+                    pa.setdefault("projetos_citados", [])
+                    if len(pa["projetos_citados"]) < 8 and r["projeto"] not in pa["projetos_citados"]:
+                        pa["projetos_citados"].append(str(r["projeto"])[:160])
+                if r.get("uf") == "GO":
+                    e["goias"] = True
+                ext_st[prog] += 1
+    # empresa registrada só pelo NOME (planilha sem CNPJ) que ganhou o CNPJ por outra fonte: os dois registros se fundem
+    # no da raiz (uma empresa = uma raiz de CNPJ)
+    por_nome_real = {}
+    for k, e in cat.items():
+        if not k.startswith("nome:") and e.get("nome"):
+            por_nome_real.setdefault(norm(e["nome"]), e)
+    for k in [k for k in cat if k.startswith("nome:")]:
+        alvo = por_nome_real.get(norm(cat[k].get("nome") or ""))
+        if not alvo:
+            continue
+        for prog, inc in cat[k]["incentivos"].items():
+            dst = alvo["incentivos"].setdefault(prog, {kk: vv for kk, vv in inc.items() if kk != "por_ano"})
+            for a, v in (inc.get("por_ano") or {}).items():
+                dst.setdefault("por_ano", {}).setdefault(a, v)
+        alvo["goias"] = alvo.get("goias") or cat[k].get("goias")
+        del cat[k]; ext_st["fundidas_pelo_nome_com_cnpj"] += 1
     # COMPLEMENTO — adesão ao PAT (só matriz) para cada empresa que JÁ está no catálogo
     usados = {}
     for e in cat.values():
@@ -282,11 +340,12 @@ def construir() -> dict:
     combo = Counter("+".join(sorted(e["incentivos"])) for e in cat.values())
     res = {"gerado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Fontes brutas")[0].strip(),
            "empresas": len(cat), "de_goias": sum(1 for e in cat.values() if e.get("goias")),
-           "por_incentivo": {m: sum(1 for e in cat.values() if m in e["incentivos"]) for m in ("Rouanet", "Goyazes")},
+           "por_incentivo": {m: sum(1 for e in cat.values() if m in e["incentivos"]) for m in ("Rouanet", "Goyazes", "Esporte", "FIA", "Idoso", "PRONON", "PRONAS")},
+           "bases_externas": dict(ext_st),
            "pat": {"com_adesao": sum(1 for e in cat.values() if "PAT" in e["incentivos"]), "sem_adesao": sum(1 for e in cat.values() if e.get("pat_adesao") is False),
                    "regra": "incentivo (indício) das empresas já existentes, só matriz; nenhuma empresa entra por estar no PAT"},
            "combinacoes": dict(combo.most_common()), "goyazes_casamento": dict(g_st),
-           "goias_por_incentivo": {m: sum(1 for e in cat.values() if e.get("goias") and m in e["incentivos"]) for m in ("Rouanet", "Goyazes")}}
+           "goias_por_incentivo": {m: sum(1 for e in cat.values() if e.get("goias") and m in e["incentivos"]) for m in ("Rouanet", "Goyazes", "Esporte", "FIA")}}
     RESUMO.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
     return res
 
