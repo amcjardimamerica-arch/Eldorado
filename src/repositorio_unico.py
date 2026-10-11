@@ -67,6 +67,20 @@ def _fluxo() -> list[dict]:
     return [{**x, "id": str(x["id"]), "_fonte": "fluxo"} for L in (fl.get("itens_por_uf") or {}).values() for x in L]
 
 
+CHAMAMENTO = re.compile(r"(?i)edita(l|is)|chamamento|chamada|sele[çc][ãa]o|inscri[çc][õo]es|regulamento|pr[êe]mio|concurso|"
+                        r"credenciamento|resid[êe]ncia|residency|open call|convocat[óo]ria|call for|grants?|bolsas?|fundo|"
+                        r"programa de (acelera|apoio|fomento)|apoio a projetos|mecenas|festival|mostra|seleciona")
+# ação JÁ REALIZADA pela empresa (doação feita, patrocínio dado, entrega) — não é oportunidade sem chamamento
+REALIZADA = re.compile(r"(?i)\b(doa[çc](ão|ões)|doou|doam|entreg(a|ou|am)|transforma|benefici(a|ou|ará)|inaugur|patrocin(ou|a)\b|"
+                       r"apoiou|arrecad|distribu(i|iu)|cobertores|cestas b[áa]sicas|campanha de doa)")
+
+
+def _privada(r: dict) -> bool:
+    """Registro da ramificação PRIVADA: Espião, agregadores de editais ou motores de empresas/incentivos/patrocínio."""
+    o = str(r.get("origem") or "").lower()
+    return bool(re.search(r"espi[ãa]o|agregador|patroc|incentiv|gife|empresa|salic|rouanet", o))
+
+
 def _oficial(url: str) -> bool:
     """A régua única do Cartório: agregador, notícia e republicador são só pista, nunca fonte."""
     try:
@@ -209,6 +223,9 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         nt = _nota(r) if estado == "em_verificacao" else None
         if estado != "em_verificacao":
             passo = {"fechada": "nenhum (fechada)", "validada": "acompanhar o prazo", "validacao_manual": "validação manual pela titular"}[estado]
+        elif (_privada(r) and REALIZADA.search(f"{r.get('titulo') or ''} {r.get('objeto') or ''}")
+              and not CHAMAMENTO.search(f"{r.get('titulo') or ''} {r.get('objeto') or ''}") and not any(x["estado"] == "comprovado" for x in itens.values())):
+            passo = "dispensar: empresa sem chamamento (doação, patrocínio ou ação já realizada não é oportunidade) — confirmar na fonte"
         elif sem_livro and re.match(r"(?i)n[ãa]o [ée] sele[çc][ãa]o aberta|empresa sem edital", sem_livro):
             passo = f"dispensar: {sem_livro[:120]} — confirmar na fonte"
         elif nt is not None and nt < LIMIAR_OSC and not fim and not any(x["estado"] == "comprovado" for x in itens.values()):

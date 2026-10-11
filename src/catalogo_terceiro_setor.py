@@ -227,5 +227,8 @@ def candidatas_do_catalogo() -> int:
                 pass
             vistos[k] = ja.get(u) or {"url": u, "titulo": titulo[:160], "visto_em": (v.get("nome") or "").split(" · ")[0], "enquadramento": enq,
                                        "descoberto_em": hoje, "origem": "catálogo do Piloto - Espião"}
-    write_json(arq, {"em": hoje, "regra": "o que o Espião descobre; o Interceptador comprova", "candidatas": list(vistos.values())})
+    # 11/10: preserva as candidatas de OUTRAS origens (o Espião privado/internacional grava no mesmo arquivo); antes
+    # esta regravação as apagava a cada rodada
+    outras = [c for c in (ant.get("candidatas") or []) if c.get("origem") != "catálogo do Piloto - Espião" and c.get("url") not in vistos]
+    write_json(arq, {"em": hoje, "regra": "o que o Espião descobre; o Interceptador comprova", "candidatas": list(vistos.values()) + outras})
     return len(vistos)

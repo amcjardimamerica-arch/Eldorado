@@ -297,7 +297,7 @@ jobs:
           BASE_DO_VOO=$(git rev-parse HEAD)          # onde a cópia do voo começou
           rm -rf docs/dados/dados                    # 27/09: pasta aninhada de 22/09 (220 MB) — nunca mais volta
           rm -rf /tmp/sind && mkdir -p /tmp/sind
-          for P in config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados; do
+          for P in config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados dados/empresas/go/espiao_empresas.json; do
             # cp -r PASTA DESTINO copia PARA DENTRO quando o destino ja existe (gerava docs/dados/dados).
             # Com diretorio, copiamos o CONTEUDO; com arquivo, o arquivo.
             if [ -d "$P" ]; then mkdir -p "/tmp/sind/$P" && cp -r "$P/." "/tmp/sind/$P/" || true

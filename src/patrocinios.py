@@ -195,6 +195,17 @@ def run(uf: str = "GO") -> dict:
     _esp = PASTA / uf.lower() / "espiao_empresas.json"
     if _esp.exists():
         achados = achados + [a for a in (load_json(_esp).get("achados") or []) if a.get("empresa") and a.get("url")]
+    try:                                             # 11/10 (titular): toda empresa com CHAMAMENTO privado aberto entra/atualiza
+        from .repositorio_unico import _privada, CHAMAMENTO   # o banco de patrocinadoras e doadoras (sem virar oportunidade por si)
+        _rep = load_json(ROOT / "dados/oportunidades/repositorio_unico.json").get("registros") or []
+        for r in _rep:
+            if r.get("estado") in ("em_verificacao", "validada") and _privada(r) and CHAMAMENTO.search(str(r.get("titulo") or "")) and r.get("orgao"):
+                achados.append({"empresa": str(r["orgao"])[:120], "evento": str(r.get("titulo") or "")[:160], "area": classificar_area(str(r.get("titulo") or "")),
+                                "fonte": "repositório único (chamamento privado)", "tipo_fonte": "chamamento privado aberto",
+                                "url": r.get("link_oficial") or r.get("url"), "trecho": str(r.get("titulo") or "")[:300], "em": now_iso(),
+                                "modalidade": "chamamento próprio", "oportunidade": r["id"], "livro": r.get("livro")})
+    except Exception:  # noqa: BLE001
+        pass
     base = carregar_base()
     por_emp: dict[str, list] = {}
     for a in achados:
