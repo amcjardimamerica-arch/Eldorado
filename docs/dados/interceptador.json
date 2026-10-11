@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T19:56:28+00:00",
+  "em": "2026-10-11T20:15:45+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T19:38:38+00:00",
+  "ultimo_voo": "2026-10-11T20:00:43+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,113 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 303,
+    "missoes": 304,
     "validadas": 17,
-    "parciais": 75,
+    "parciais": 76,
     "insuficientes": 207,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 202,
+      "sim": 203,
       "nao": 53
     },
     "estrelas_de_ouro": 5,
-    "fontes_novas_para_os_motores": 9,
+    "fontes_novas_para_os_motores": 10,
     "tempo_medio_min": 10.3
   },
   "missoes": [
+    {
+      "em": "2026-10-11T20:00:43+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Iracemápolis (SP) 2026-09-29 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "parcial",
+      "comprovados": 9,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso"
+      ],
+      "pagina_oficial": "https://iracemapolis.siscam.com.br/arquivo?Id=45429",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprovado menciona o objeto, valor, órgão financiador, território, esfera, requisitos, anexos, destinação e área de atuação, sendo suficiente para identificar a oportunidade de fomento.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é o serviço de acolhimento institucional para crianças e adolescentes em situação de risco, e garantir a prestação de contas conforme solicitado pelo município de Iracemápolis.",
+        "proximo_passo": "Verificar os anexos do edital e se alinhar ao objeto e requisitos para participar do chamamento público.",
+        "risco": "A falta de informações sobre o prazo de inscrição e resultado pode impedir a associação de se inscrever oportunamente."
+      },
+      "erro": null,
+      "segundos": 901,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 9,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso",
+      "id": "c14277a8b11a19a8396e",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Servico de Acolhimento Institucional para Crianças e Adolescentes que estejam em situacao de risco",
+          "trecho": "para seu completo desenvolvimento psicossocial - Modelo Casa-Lar, pertinente a Protecao Social Básica na dotaçao Orçamentária/Funcional programática",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 300.000,00 (Trezentos mil reais)",
+          "trecho": "o valor de RS 300.000,00 (Trezentos mil reais) para execucao do Servico de Acolhimento.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Iracemápolis",
+          "trecho": "Prefeitura Municipal de Iracemápolis",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Prefeitura Municipal de Iracemápolis",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "assistencia_social",
+          "trecho": "Servico de Acolhimento Institucional para Crianças e Adolescentes que estejam em situacao de risco",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "à Entidade sem fins lucrativos abaixo relacionada, o seguinte valor:",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "prestacao de contas sobre a aplicacao dos recursos ora concedidos, nos moldes solicitados pelo Município de Iracemápolis",
+          "trecho": "prestacao de contas sobre a aplicacao dos recursos ora concedidos, nos moldes solicitados pelo Município de Iracemápolis através de legislação vigente que declara a periodicidade Q",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Iracemápolis",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3521408/2026-09-29/c3eeeda482d41cfddf4aa8e66e9f010a5f180bb0.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-11T19:38:38+00:00",
       "modo": "validar",
@@ -2626,64 +2718,6 @@
       "rotas": [
         "site_municipal",
         "financiador_programa_edital"
-      ]
-    },
-    {
-      "em": "2026-10-11T08:55:14+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Canguçu — Norma do CNJ garante verbas para projetos sociais em Canguçu (RS) — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 3,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "http://www.cnj.jus.br",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona o objeto do edital como apoiar projetos sociais em Canguçu (RS) com recursos do Fundo de Modernização do Conselho Nacional de Justiça (FMCNJ), indicando que é uma fonte válida para ações sociais.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é apoiar projetos sociais em Canguçu (RS), e verificar se sua atuação se enquadra na área de atuação do CNJ, mesmo que o território não seja o mesmo.",
-        "proximo_passo": "Verificar se a associação comunitária de Goiânia pode se adaptar ao objeto do edital e buscar informações adicionais sobre os requisitos, mesmo que não estejam explicitamente mencionados no texto comprovado.",
-        "risco": "O território mencionado no edital é Canguçu (RS), enquanto a associação está em Goiânia (GO), o que pode impedir o acesso ao edital, já que o objeto está vinculado a uma região específica."
-      },
-      "erro": null,
-      "segundos": 729,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 3,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-7451e52233f6",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoiar projetos sociais em Canguçu (RS) com recursos do Fundo de Modernização do Conselho Nacional de Justiça (FMCNJ)",
-          "trecho": "Norma do CNJ garante verbas para projetos sociais em Canguçu (RS) — Goiás",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Conselho Nacional de Justiça (CNJ)",
-          "trecho": "Norma do CNJ garante verbas para projetos sociais em Canguçu (RS) — Goiás",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "CNJ",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ],
